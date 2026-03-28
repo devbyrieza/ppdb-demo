@@ -1,0 +1,314 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { AlertCircle, Send, CheckCircle2, XCircle, Search, Filter, Loader2 } from "lucide-react";
+import { toast } from "react-hot-toast";
+
+export default function PengumumanPage() {
+  const [loading, setLoading] = useState(false);
+  const [candidates, setCandidates] = useState<any[]>([]);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [stats, setStats] = useState({ total: 0, ready: 0, accepted: 0 });
+  const [filter, setFilter] = useState({
+    jenjang: "",
+    status: "scheduled", // Default to those who have taken exams/interview
+  });
+
+  const [sendingProgress, setSendingProgress] = useState<{
+    active: boolean;
+    curr: number;
+    total: number;
+    logs: string[];
+  }>({
+    active: false,
+    curr: 0,
+    total: 0,
+    logs: []
+  });
+
+  const toTitleCase = (str: string) => {
+    if (!str) return "";
+    return str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+  };
+
+  const fetchCandidates = async () => {
+    try {
+      setLoading(true);
+      // Construct query
+      const params = new URLSearchParams();
+      if (filter.jenjang) params.append("jenjang", filter.jenjang);
+      if (filter.status) params.append("status", filter.status);
+      params.append("limit", "100"); // Fetch ample amount
+
+      const res = await fetch(`/api/admin/pendaftar/list?${params.toString()}`);
+      const data = await res.json();
+
+      if (res.ok) {
+        setCandidates(data.data || []);
+        // Calculate basic stats from this batch
+        const ready = data.data.filter((c: any) => c.status_pendaftaran === 'scheduled').length;
+        const accepted = data.data.filter((c: any) => c.status_pendaftaran === 'accepted').length;
+        setStats({ total: data.data.length, ready, accepted });
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Gagal memuat data kandidat");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCandidates();
+  }, [filter]);
+
+  const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      setSelectedIds(candidates.map(c => c.id));
+    } else {
+      setSelectedIds([]);
+    }
+  };
+
+  const handleSelectOne = (id: string) => {
+    if (selectedIds.includes(id)) {
+      setSelectedIds(selectedIds.filter(i => i !== id));
+    } else {
+      setSelectedIds([...selectedIds, id]);
+    }
+  };
+
+  const handlePublish = async () => {
+    if (selectedIds.length === 0) return;
+
+    if (!confirm(`Apakah Anda yakin ingin meluluskan ${selectedIds.length} santri ini? Notifikasi WA akan dikirim.`)) return;
+
+    try {
+      setLoading(true);
+      const res = await fetch("/api/admin/pengumuman/publish", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          pendaftar_ids: selectedIds,
+          new_status: "accepted",
+          announcement_message: "Selamat! Anda dinyatakan LULUS seleksi PPDB."
+        })
+      });
+
+      const result = await res.json();
+      if (res.ok) {
+        // Logic Batch Notification
+        if (result.queue && result.queue.length > 0) {
+          setSendingProgress({ active: true, curr: 0, total: result.queue.length, logs: ["Mulai mengirim pengumuman..."] });
+
+          let successParams = 0;
+          for (let i = 0; i < result.queue.length; i++) {
+            const item = result.queue[i];
+            setSendingProgress(prev => ({
+              ...prev,
+              curr: i + 1,
+              logs: [`Mengirim ke ${item.nama}...`, ...prev.logs.slice(0, 3)]
+            }));
+
+            try {
+              await fetch("/api/admin/notifications/send", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  type: "status",
+                  ...item
+                })
+              });
+              successParams++;
+            } catch (e) { console.error(e); }
+
+            // Jeda 4 Detik
+            if (i < result.queue.length - 1) {
+              await new Promise(r => setTimeout(r, 4000));
+            }
+          }
+          toast.success(`Selesai! ${successParams} notifikasi terkirim.`);
+          setSendingProgress({ active: false, curr: 0, total: 0, logs: [] });
+        } else {
+          toast.success(`Berhasil update status ${result.updated} santri (Tanpa Notifikasi)`);
+        }
+
+        fetchCandidates();
+        setSelectedIds([]);
+      } else {
+        toast.error(result.error || "Gagal mempublish pengumuman");
+      }
+    } catch (error) {
+      toast.error("Terjadi kesalahan sistem");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Header Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
+          <p className="text-stone-500 text-sm font-medium">Kandidat Tampil</p>
+          <h3 className="text-2xl font-bold text-stone-800">{stats.total}</h3>
+        </div>
+        <div className="bg-blue-50 p-6 rounded-xl shadow-sm border border-blue-100">
+          <p className="text-blue-600 text-sm font-medium">Siap Diumumkan (Sudah Ujian)</p>
+          <h3 className="text-2xl font-bold text-blue-700">{stats.ready}</h3>
+        </div>
+        <div className="bg-green-50 p-6 rounded-xl shadow-sm border border-green-100">
+          <p className="text-green-600 text-sm font-medium">Sudah Lulus</p>
+          <h3 className="text-2xl font-bold text-green-700">{stats.accepted}</h3>
+        </div>
+      </div>
+
+      {/* Filters & Actions */}
+      <div className="bg-white p-4 rounded-xl shadow-sm border border-stone-100 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="flex items-center gap-4 w-full md:w-auto">
+          <div className="flex items-center gap-2 px-3 py-2 bg-stone-50 rounded-lg border border-stone-200">
+            <Filter className="w-4 h-4 text-stone-500" />
+            <select
+              className="bg-transparent text-sm focus:outline-none"
+              value={filter.jenjang}
+              onChange={(e) => setFilter({ ...filter, jenjang: e.target.value })}
+            >
+              <option value="">Semua Jenjang</option>
+              <option value="MTs">MTs</option>
+              <option value="SMA">SMA</option>
+            </select>
+          </div>
+
+          <div className="flex items-center gap-2 px-3 py-2 bg-stone-50 rounded-lg border border-stone-200">
+            <Search className="w-4 h-4 text-stone-500" />
+            <select
+              className="bg-transparent text-sm focus:outline-none"
+              value={filter.status}
+              onChange={(e) => setFilter({ ...filter, status: e.target.value })}
+            >
+              <option value="scheduled">Sudah Ujian (Siap Diumumkan)</option>
+              <option value="accepted">Sudah Lulus</option>
+              <option value="verified">Lolos Berkas</option>
+            </select>
+          </div>
+        </div>
+
+        <button
+          onClick={handlePublish}
+          disabled={selectedIds.length === 0 || loading}
+          className="flex items-center gap-2 px-6 py-2.5 bg-green-600 hover:bg-green-700 disabled:bg-stone-300 text-white rounded-xl font-bold transition-all shadow-lg shadow-green-200 disabled:shadow-none"
+        >
+          {loading ? "Memproses..." : (
+            <>
+              <Send className="w-4 h-4" />
+              Umumkan Kelulusan ({selectedIds.length})
+            </>
+          )}
+        </button>
+      </div>
+
+      {/* Table */}
+      <div className="bg-white rounded-xl shadow-lg border border-stone-200 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-stone-50 border-b border-stone-200">
+              <tr>
+                <th className="px-6 py-4 w-12">
+                  <input
+                    type="checkbox"
+                    className="w-4 h-4 rounded border-stone-300 text-green-600 focus:ring-green-500"
+                    onChange={handleSelectAll}
+                    checked={candidates.length > 0 && selectedIds.length === candidates.length}
+                  />
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-bold text-stone-500 uppercase">Nama Lengkap</th>
+                <th className="px-6 py-4 text-left text-xs font-bold text-stone-500 uppercase">Jenjang</th>
+                <th className="px-6 py-4 text-left text-xs font-bold text-stone-500 uppercase">Nilai Ujian</th>
+                <th className="px-6 py-4 text-center text-xs font-bold text-stone-500 uppercase">Status Saat Ini</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-stone-100">
+              {candidates.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="px-6 py-8 text-center text-stone-500">
+                    Tidak ada data kandidat sesuai filter
+                  </td>
+                </tr>
+              ) : (
+                candidates.map((c) => (
+                  <tr key={c.id} className="hover:bg-stone-50/50">
+                    <td className="px-6 py-4">
+                      <input
+                        type="checkbox"
+                        className="w-4 h-4 rounded border-stone-300 text-green-600 focus:ring-green-500"
+                        checked={selectedIds.includes(c.id)}
+                        onChange={() => handleSelectOne(c.id)}
+                      />
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="font-bold text-stone-800">{toTitleCase(c.nama_lengkap)}</div>
+                      <div className="text-xs text-stone-500">{c.nomor_pendaftaran}</div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className="px-2 py-1 bg-stone-100 text-stone-600 rounded text-xs font-bold">
+                        {c.jenjang}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="font-medium text-stone-700">
+                        {c.nilai_ujian?.nilai_total || "-"}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      {c.status_pendaftaran === 'accepted' ? (
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-green-100 text-green-700 text-xs font-bold">
+                          <CheckCircle2 className="w-3 h-3" /> Lulus
+                        </span>
+                      ) : c.status_pendaftaran === 'scheduled' ? (
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-bold">
+                          Siap Diumumkan
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-stone-100 text-stone-700 text-xs font-bold">
+                          {c.status_pendaftaran}
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Sending Progress Modal */}
+      {
+        sendingProgress.active && (
+          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-ink-900/80 backdrop-blur-sm">
+            <div className="bg-white rounded-3xl w-full max-w-md shadow-2xl border border-white p-8 text-center animate-pulse">
+              <Loader2 className="w-12 h-12 text-purple-600 animate-spin mx-auto mb-4" />
+              <h2 className="text-2xl font-black text-ink-900 mb-2">Mengirim Pengumuman...</h2>
+              <p className="font-bold text-red-500 mb-6 uppercase tracking-widest text-xs">JANGAN TUTUP HALAMAN INI!</p>
+
+              <div className="w-full bg-cream-100 h-4 rounded-full overflow-hidden mb-4 border border-ink-100">
+                <div
+                  className="h-full bg-gradient-to-r from-green-500 to-emerald-600 transition-all duration-500 ease-out"
+                  style={{ width: `${(sendingProgress.curr / sendingProgress.total) * 100}%` }}
+                ></div>
+              </div>
+
+              <p className="font-mono font-bold text-ink-500 mb-4">{sendingProgress.curr} / {sendingProgress.total}</p>
+
+              <div className="bg-cream-50 rounded-xl p-4 text-left h-32 overflow-hidden flex flex-col-reverse gap-1 border border-ink-100">
+                {sendingProgress.logs.map((log, idx) => (
+                  <p key={idx} className="text-xs font-mono text-ink-400 truncate">{log}</p>
+                ))}
+              </div>
+            </div>
+          </div>
+        )
+      }
+    </div >
+  );
+}

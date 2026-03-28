@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ren \"c:\\\\Users\\\\itpua\\\\Dev\\\\Work\\\\pp-alimam\\\\src\\\\lib\\\\whatsapp\\\\twilio.ts\" \"twilio.ts.bak\")"
+    ]
+  }
+}

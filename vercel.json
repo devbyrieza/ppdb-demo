@@ -1,0 +1,31 @@
+{
+  "name": "pp-alimam",
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "env": {
+    "NEXT_PUBLIC_APP_NAME": "PPDB Al-Imam Islamic Boarding School",
+    "NEXT_PUBLIC_APP_DESCRIPTION": "Sistem PPDB modern untuk Pondok Pesantren Al-Imam"
+  },
+  "regions": ["sin1"],
+  "functions": {
+    "app/api/**/*.ts": {
+      "maxDuration": 30
+    }
+  },
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, must-revalidate"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+# PPDB AL-IMAM PROJECT RULES
+
+## Tech Stack
+- Next.js 16 (App Router)
+- React 19
+- TypeScript
+- Tailwind CSS v4 (CSS-first, no config!)
+- Supabase (PostgreSQL + Auth)
+- React Hook Form + Zod
+
+## Coding Style
+- Use TypeScript for all files
+- Use Bahasa Indonesia for comments
+- Follow Next.js App Router conventions
+- Use Server Components by default
+- Add "use client" only when needed
+
+## Tailwind CSS v4 Rules
+- No tailwind.config.js (CSS-first approach)
+- All custom theme in globals.css @theme
+- Use Islamic theme colors: brown, gold, teal, cream
+
+## Component Structure
+- Create reusable components in src/components
+- Use Server Components when possible
+- Client Components for interactivity only
+- Proper TypeScript types from database.ts
+
+## Database
+- Use Supabase Client from @/lib/supabase/client
+- Follow RLS policies
+- Type-safe queries using database.ts types
+
+## Best Practices
+- Clean, readable code
+- Proper error handling
+- Loading states for async operations
+- Responsive design (mobile-first)
+- Accessibility (ARIA labels, semantic HTML)
+- Islamic design principles (modest, professional)
+
+## File Naming
+- Components: PascalCase (StudentForm.tsx)
+- Utils/Libs: camelCase (supabase.ts)
+- Pages: lowercase-with-dashes
+
+## Comments
+- Use Bahasa Indonesia
+- Explain WHY, not WHAT
+- Add emoji for readability (🔐 🎯 ✅)

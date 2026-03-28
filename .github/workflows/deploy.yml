@@ -1,0 +1,28 @@
+name: Auto Deploy to Production
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Trigger Coolify Deployment
+      run: |
+        if [ -z "${{ secrets.COOLIFY_WEBHOOK }}" ]; then
+          echo "❌ Error: COOLIFY_WEBHOOK secret is not set in GitHub repository."
+          echo "Please add it to: Settings -> Secrets and variables -> Actions"
+          exit 1
+        fi
+        
+        echo "🚀 Triggering Coolify deployment..."
+        curl -s -X GET "${{ secrets.COOLIFY_WEBHOOK }}"
+        echo "✅ Trigger sent successfully."
+          
+    - name: Notify Deployment Status
+      run: |
+        echo "📊 Changes pushed to main. Coolify trigger sent."
+        echo "🌐 Monitor progress at: https://pesantren-alimam.com"

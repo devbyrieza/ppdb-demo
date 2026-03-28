@@ -1,0 +1,81 @@
+import fs from 'fs';
+import path from 'path';
+
+// Define storage directory outside of public to prevent direct access
+const STORAGE_DIR = path.join(process.cwd(), 'storage_data');
+
+/**
+ * Save a file to the local filesystem
+ * @param file The file object from FormData
+ * @param category The category folder (e.g., 'dokumen-pendaftaran', 'bukti-pembayaran')
+ * @param subfolder The subfolder (usually user ID or registration number)
+ * @param filename The desired filename
+ * @returns The relative path to the saved file
+ */
+export async function saveFileLocal(
+    file: File,
+    category: string,
+    subfolder: string,
+    filename: string
+): Promise<string> {
+    // Ensure the directory exists
+    const targetDir = path.join(STORAGE_DIR, category, subfolder);
+    if (!fs.existsSync(targetDir)) {
+        fs.mkdirSync(targetDir, { recursive: true });
+    }
+
+    // Convert file to buffer
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+
+    // Define full path
+    const filePath = path.join(targetDir, filename);
+
+    // Write file
+    fs.writeFileSync(filePath, buffer);
+
+    // Return relative path for database storage
+    // Format: category/subfolder/filename
+    return path.posix.join(category, subfolder, filename);
+}
+
+/**
+ * Get a file buffer from local storage
+ * @param relativePath The relative path stored in database
+ * @returns The file buffer and mime type, or null if not found
+ */
+export function getFileLocal(relativePath: string): { buffer: Buffer; mimeType: string } | null {
+    const fullPath = path.join(STORAGE_DIR, relativePath);
+
+    // Basic security check to prevent directory traversal
+    if (!fullPath.startsWith(STORAGE_DIR)) {
+        return null;
+    }
+
+    if (fs.existsSync(fullPath)) {
+        const buffer = fs.readFileSync(fullPath);
+        // Simple mime type detection based on extension
+        const ext = path.extname(fullPath).toLowerCase();
+        let mimeType = 'application/octet-stream';
+        if (ext === '.jpg' || ext === '.jpeg') mimeType = 'image/jpeg';
+        else if (ext === '.png') mimeType = 'image/png';
+        else if (ext === '.pdf') mimeType = 'application/pdf';
+
+        return { buffer, mimeType };
+    }
+    console.log(`[Storage] Check failed. Path: ${fullPath}, Exists: ${fs.existsSync(fullPath)}, CWD: ${process.cwd()}, StorageDir: ${STORAGE_DIR}`);
+    return null;
+}
+
+/**
+ * Delete a file from local storage
+ * @param relativePath The relative path stored in database
+ */
+export function deleteFileLocal(relativePath: string): boolean {
+    const fullPath = path.join(STORAGE_DIR, relativePath);
+    if (fs.existsSync(fullPath)) {
+        fs.unlinkSync(fullPath);
+        return true;
+    }
+    return false;
+}
