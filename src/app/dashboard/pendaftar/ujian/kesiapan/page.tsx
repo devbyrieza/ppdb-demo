@@ -137,7 +137,7 @@ export default function KesiapanTestPage() {
                 </div>
             ))}
 
-            <div className="sticky bottom-4 z-10">
+            <div className="sticky bottom-4 z-50">
                 <button onClick={handleSubmit} disabled={loading}
                     className="w-full py-4 bg-emerald-600 hover:bg-emerald-700 disabled:bg-stone-300 text-white font-bold rounded-xl shadow-lg transition-colors flex items-center justify-center gap-2">
                     {loading ? <><Loader2 className="w-5 h-5 animate-spin" /> Mengirim...</> : 'Kirim Jawaban'}

@@ -410,37 +410,39 @@ export default function DashboardLayout({
             </div>
             
             {/* Mobile Bottom Navigation (Fintech Style) */}
-            <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-cream-200 pb-safe z-40 shadow-[0_-10px_40px_-10px_rgba(0,0,0,0.1)] rounded-t-[1.5rem]">
-              <div className="flex justify-around items-center px-4 py-3">
-                <Link href="/dashboard/pendaftar" className="flex flex-col items-center p-2 group w-16">
-                  <div className={`w-10 h-8 rounded-full flex items-center justify-center mb-1 transition-colors ${pathname === '/dashboard/pendaftar' ? 'bg-cream-100' : 'bg-transparent group-hover:bg-cream-50'}`}>
-                    <Home className={`w-5 h-5 transition-colors ${pathname === '/dashboard/pendaftar' ? 'text-maroon-700' : 'text-ink-400 group-hover:text-maroon-600'}`} />
-                  </div>
-                  <span className={`text-[10px] font-bold text-center ${pathname === '/dashboard/pendaftar' ? 'text-maroon-800' : 'text-ink-400'}`}>Beranda</span>
-                </Link>
-                
-                <Link href="/dashboard/pendaftar/pembayaran-pendaftaran" className="flex flex-col items-center p-2 group w-16">
-                  <div className={`w-10 h-8 rounded-full flex items-center justify-center mb-1 transition-colors ${pathname.includes('pembayaran') ? 'bg-cream-100' : 'bg-transparent group-hover:bg-cream-50'}`}>
-                    <CreditCard className={`w-5 h-5 transition-colors ${pathname.includes('pembayaran') ? 'text-maroon-700' : 'text-ink-400 group-hover:text-maroon-600'}`} />
-                  </div>
-                  <span className={`text-[10px] font-bold text-center ${pathname.includes('pembayaran') ? 'text-maroon-800' : 'text-ink-400'}`}>Bayar</span>
-                </Link>
+            {!pathname.includes('/ujian/') && (
+              <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-cream-200 pb-safe z-40 shadow-[0_-10px_40px_-10px_rgba(0,0,0,0.1)] rounded-t-[1.5rem]">
+                <div className="flex justify-around items-center px-4 py-3">
+                  <Link href="/dashboard/pendaftar" className="flex flex-col items-center p-2 group w-16">
+                    <div className={`w-10 h-8 rounded-full flex items-center justify-center mb-1 transition-colors ${pathname === '/dashboard/pendaftar' ? 'bg-cream-100' : 'bg-transparent group-hover:bg-cream-50'}`}>
+                      <Home className={`w-5 h-5 transition-colors ${pathname === '/dashboard/pendaftar' ? 'text-maroon-700' : 'text-ink-400 group-hover:text-maroon-600'}`} />
+                    </div>
+                    <span className={`text-[10px] font-bold text-center ${pathname === '/dashboard/pendaftar' ? 'text-maroon-800' : 'text-ink-400'}`}>Beranda</span>
+                  </Link>
+                  
+                  <Link href="/dashboard/pendaftar/pembayaran-pendaftaran" className="flex flex-col items-center p-2 group w-16">
+                    <div className={`w-10 h-8 rounded-full flex items-center justify-center mb-1 transition-colors ${pathname.includes('pembayaran') ? 'bg-cream-100' : 'bg-transparent group-hover:bg-cream-50'}`}>
+                      <CreditCard className={`w-5 h-5 transition-colors ${pathname.includes('pembayaran') ? 'text-maroon-700' : 'text-ink-400 group-hover:text-maroon-600'}`} />
+                    </div>
+                    <span className={`text-[10px] font-bold text-center ${pathname.includes('pembayaran') ? 'text-maroon-800' : 'text-ink-400'}`}>Bayar</span>
+                  </Link>
 
-                <Link href="/dashboard/pendaftar/kelengkapan-berkas" className="flex flex-col items-center p-2 group w-16">
-                  <div className={`w-10 h-8 rounded-full flex items-center justify-center mb-1 transition-colors ${pathname.includes('kelengkapan-berkas') || pathname.includes('upload-berkas') ? 'bg-cream-100' : 'bg-transparent group-hover:bg-cream-50'}`}>
-                    <ClipboardList className={`w-5 h-5 transition-colors ${pathname.includes('kelengkapan-berkas') || pathname.includes('upload-berkas') ? 'text-maroon-700' : 'text-ink-400 group-hover:text-maroon-600'}`} />
-                  </div>
-                  <span className={`text-[10px] font-bold text-center ${pathname.includes('kelengkapan-berkas') || pathname.includes('upload-berkas') ? 'text-maroon-800' : 'text-ink-400'}`}>Berkas</span>
-                </Link>
+                  <Link href="/dashboard/pendaftar/kelengkapan-berkas" className="flex flex-col items-center p-2 group w-16">
+                    <div className={`w-10 h-8 rounded-full flex items-center justify-center mb-1 transition-colors ${pathname.includes('kelengkapan-berkas') || pathname.includes('upload-berkas') ? 'bg-cream-100' : 'bg-transparent group-hover:bg-cream-50'}`}>
+                      <ClipboardList className={`w-5 h-5 transition-colors ${pathname.includes('kelengkapan-berkas') || pathname.includes('upload-berkas') ? 'text-maroon-700' : 'text-ink-400 group-hover:text-maroon-600'}`} />
+                    </div>
+                    <span className={`text-[10px] font-bold text-center ${pathname.includes('kelengkapan-berkas') || pathname.includes('upload-berkas') ? 'text-maroon-800' : 'text-ink-400'}`}>Berkas</span>
+                  </Link>
 
-                <button onClick={() => setSidebarOpen(true)} className="flex flex-col items-center p-2 group w-16">
-                  <div className="w-10 h-8 rounded-full flex items-center justify-center mb-1 bg-transparent group-hover:bg-cream-50 transition-colors">
-                    <Menu className="w-5 h-5 text-ink-400 group-hover:text-maroon-600 transition-colors" />
-                  </div>
-                  <span className="text-[10px] font-bold text-ink-400 text-center">Menu</span>
-                </button>
+                  <button onClick={() => setSidebarOpen(true)} className="flex flex-col items-center p-2 group w-16">
+                    <div className="w-10 h-8 rounded-full flex items-center justify-center mb-1 bg-transparent group-hover:bg-cream-50 transition-colors">
+                      <Menu className="w-5 h-5 text-ink-400 group-hover:text-maroon-600 transition-colors" />
+                    </div>
+                    <span className="text-[10px] font-bold text-ink-400 text-center">Menu</span>
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
           </main>
         </div>
       </div>

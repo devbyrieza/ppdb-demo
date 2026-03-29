@@ -203,7 +203,7 @@ export default function AkademikTestPage() {
                 ))}
             </div>
 
-            <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-40">
+            <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-50">
                 <div className="max-w-4xl mx-auto flex justify-between items-center">
                     <span className="text-sm text-stone-500 hidden sm:inline">{Object.keys(answers).length}/{questions.length} soal terjawab</span>
                     <button onClick={() => handleSubmit(false)} disabled={loading}
