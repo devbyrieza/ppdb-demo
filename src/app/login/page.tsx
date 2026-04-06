@@ -55,7 +55,7 @@ const AuthInput = ({
   <div className="space-y-3">
     <label className="text-[10px] font-black text-ink-600 uppercase tracking-[0.2em] ml-1">{label}</label>
     <div className="relative group">
-      <div className="absolute left-6 top-1/2 -translate-y-1/2 text-ink-500 group-focus-within:text-maroon-600 transition-colors duration-300">
+      <div className="absolute left-6 top-1/2 -translate-y-1/2 text-ink-500 group-focus-within:text-brand-blue-600 transition-colors duration-300">
         <Icon className="w-5 h-5" />
       </div>
       {children}
@@ -227,8 +227,8 @@ export default function LoginPage() {
   return (
     <main className="min-h-screen bg-white flex items-center justify-center p-6 relative overflow-hidden">
       {/* Background Decor */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-cream-50/50 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-cream-100/30 rounded-full blur-[100px] -translate-x-1/2 translate-y-1/2 pointer-events-none" />
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-blue-50/50 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-brand-yellow-100/30 rounded-full blur-[100px] -translate-x-1/2 translate-y-1/2 pointer-events-none" />
       <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.02] pointer-events-none" />
 
       <Container className="relative z-10 flex flex-col items-center">
@@ -239,12 +239,12 @@ export default function LoginPage() {
           className="text-center mb-12"
         >
           <Link href="/">
-            <div className="app-card inline-flex items-center justify-center w-20 h-20 bg-white rounded-3xl shadow-sm border border-cream-200 mb-8 hover:scale-110 transition-transform group overflow-hidden">
-              <img src="/images/logo.webp" alt="Logo Al-Imam" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+            <div className="app-card inline-flex items-center justify-center w-20 h-20 bg-white rounded-3xl shadow-sm border border-brand-blue-100 mb-8 hover:scale-110 transition-transform group overflow-hidden">
+              <img src="/images/logo.webp" alt="Logo Ulul Albaab" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
             </div>
           </Link>
           <h1 className="text-4xl md:text-5xl font-display font-black text-ink-950 mb-3 tracking-tight">
-            Portal <span className="text-gradient-maroon">Al-Imam</span>
+            Portal <span className="text-gradient-blue font-black">Ulul Albaab</span>
           </h1>
           <p className="text-lg text-ink-700 font-medium">
             Masuk ke Sistem Administrasi & Pendaftaran
@@ -256,31 +256,31 @@ export default function LoginPage() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.1 }}
-          className="app-card w-full max-w-[480px] bg-white rounded-[2.5rem] md:rounded-[4rem] shadow-lg border border-cream-200 p-6 md:p-14 relative overflow-hidden"
+          className="app-card w-full max-w-[480px] bg-white rounded-[2.5rem] md:rounded-[4rem] shadow-lg border border-brand-blue-100 p-6 md:p-14 relative overflow-hidden"
         >
           {/* Subtle inside gradient */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-cream-50/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+          <div className="absolute top-0 right-0 w-64 h-64 bg-brand-blue-50/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
 
           {/* Tab Switcher - Premium "Pill" style */}
           {!roleSelectionData && (
-            <div className="bg-cream-50 p-2 rounded-[2rem] flex relative mb-12 border border-cream-200">
+            <div className="bg-brand-blue-50 p-2 rounded-[2rem] flex relative mb-12 border border-brand-blue-100">
               {/* Animated Background Pill */}
               <motion.div
                 layoutId="auth-tab"
                 transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                className={`absolute top-2 bottom-2 rounded-[1.5rem] bg-white shadow-sm ${activeTab === 'pendaftar' ? 'left-2 w-[calc(50%-8px)]' : 'left-[calc(50%+4px)] w-[calc(50%-8px)]'
+                className={`absolute top-2 bottom-2 rounded-2xl bg-white shadow-sm ${activeTab === 'pendaftar' ? 'left-2 w-[calc(50%-8px)]' : 'left-[calc(50%+4px)] w-[calc(50%-8px)]'
                   }`}
               />
 
               <button
                 onClick={() => { setActiveTab("pendaftar"); setError(""); }}
-                className={`flex-1 relative z-10 py-3.5 text-xs font-black uppercase tracking-widest text-center rounded-2xl transition-colors duration-300 ${activeTab === "pendaftar" ? "text-maroon-700" : "text-ink-600 hover:text-ink-800"}`}
+                className={`flex-1 relative z-10 py-3.5 text-xs font-black uppercase tracking-widest text-center rounded-2xl transition-colors duration-300 ${activeTab === "pendaftar" ? "text-brand-blue-700" : "text-ink-600 hover:text-ink-800"}`}
               >
                 Pendaftar
               </button>
               <button
                 onClick={() => { setActiveTab("admin"); setError(""); }}
-                className={`flex-1 relative z-10 py-3.5 text-xs font-black uppercase tracking-widest text-center rounded-2xl transition-colors duration-300 ${activeTab === "admin" ? "text-maroon-700" : "text-ink-600 hover:text-ink-800"}`}
+                className={`flex-1 relative z-10 py-3.5 text-xs font-black uppercase tracking-widest text-center rounded-2xl transition-colors duration-300 ${activeTab === "admin" ? "text-brand-blue-700" : "text-ink-600 hover:text-ink-800"}`}
               >
                 Portal Staf
               </button>
@@ -317,8 +317,8 @@ export default function LoginPage() {
                   className="space-y-5"
                 >
                   <div className="text-center mb-6">
-                    <div className="w-14 h-14 bg-cream-100 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-cream-200">
-                      <Layers className="w-7 h-7 text-maroon-700" />
+                    <div className="w-14 h-14 bg-brand-yellow-100 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-brand-yellow-200">
+                      <Layers className="w-7 h-7 text-brand-blue-700" />
                     </div>
                     <h2 className="text-xl font-black text-ink-950">Selamat datang, {roleSelectionData.full_name.split(' ')[0]}!</h2>
                     <p className="text-sm text-ink-600 font-medium mt-1">Pilih dashboard yang ingin diakses</p>
@@ -334,7 +334,7 @@ export default function LoginPage() {
                           whileTap={{ scale: 0.98 }}
                           onClick={() => handleSelectRole(role)}
                           disabled={selectingRole}
-                          className={`w-full p-4 rounded-2xl bg-gradient-to-r ${info.color} border text-left flex items-center gap-4 transition-all hover:shadow-md disabled:opacity-60`}
+                          className={`w-full p-4 rounded-2xl bg-linear-to-r ${info.color} border text-left flex items-center gap-4 transition-all hover:shadow-md disabled:opacity-60`}
                         >
                           <div className="text-3xl">{info.icon}</div>
                           <div className="flex-1">
@@ -373,7 +373,7 @@ export default function LoginPage() {
                       value={nomorPendaftaran}
                       onChange={(e) => setNomorPendaftaran(e.target.value.toUpperCase())}
                       placeholder="Contoh: MTI2600001"
-                      className="w-full px-5 py-3 md:px-8 md:py-5 pl-12 md:pl-16 rounded-xl md:rounded-2xl bg-cream-50 border border-transparent focus:bg-white focus:border-maroon-200 focus:ring-4 focus:ring-cream-50 transition-all font-bold text-ink-950 uppercase placeholder:normal-case placeholder:font-medium placeholder:text-ink-500 text-sm md:text-base"
+                      className="w-full px-5 py-3 md:px-8 md:py-5 pl-12 md:pl-16 rounded-xl md:rounded-2xl bg-brand-blue-50 border border-transparent focus:bg-white focus:border-brand-blue-200 focus:ring-4 focus:ring-brand-blue-50 transition-all font-bold text-ink-950 uppercase placeholder:normal-case placeholder:font-medium placeholder:text-ink-500 text-sm md:text-base"
                       disabled={isLoading}
                     />
                   </AuthInput>
@@ -386,7 +386,7 @@ export default function LoginPage() {
                       value={nikPendaftar}
                       onChange={(e) => setNikPendaftar(e.target.value.replace(/\D/g, ""))}
                       placeholder="16 Digit NIK Sesuai KK"
-                      className="w-full px-5 py-3 md:px-8 md:py-5 pl-12 md:pl-16 rounded-xl md:rounded-2xl bg-cream-50 border border-transparent focus:bg-white focus:border-maroon-200 focus:ring-4 focus:ring-cream-50 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-500 text-sm md:text-base"
+                      className="w-full px-5 py-3 md:px-8 md:py-5 pl-12 md:pl-16 rounded-xl md:rounded-2xl bg-brand-blue-50 border border-transparent focus:bg-white focus:border-brand-blue-200 focus:ring-4 focus:ring-brand-blue-50 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-500 text-sm md:text-base"
                       disabled={isLoading}
                     />
                   </AuthInput>
@@ -396,7 +396,7 @@ export default function LoginPage() {
                     whileTap={{ scale: 0.98 }}
                     type="submit"
                     disabled={isLoading}
-                    className="w-full py-4 md:py-6 rounded-pill bg-maroon-900 text-white font-black text-lg md:text-xl hover:bg-cream-100 shadow-md transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                    className="w-full py-4 md:py-6 rounded-pill bg-brand-blue-600 text-white font-black text-lg md:text-xl hover:bg-brand-blue-700 shadow-xl shadow-brand-blue-100 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
                   >
                     {isLoading ? (
                       <Loader2 className="w-6 h-6 animate-spin" />
@@ -412,7 +412,7 @@ export default function LoginPage() {
                     <p className="text-sm text-ink-600 font-bold uppercase tracking-widest mb-4">Belum Punya Akun?</p>
                     <Link
                       href="/daftar"
-                      className="inline-flex items-center gap-2 px-10 py-3 rounded-pill bg-cream-50 text-maroon-700 font-black text-sm border border-cream-200 hover:bg-white hover:shadow-sm transition-all"
+                      className="inline-flex items-center gap-2 px-10 py-3 rounded-pill bg-brand-blue-50 text-brand-blue-700 font-black text-sm border border-brand-blue-100 hover:bg-white hover:shadow-sm transition-all"
                     >
                       Daftar Baru Di Sini
                     </Link>
@@ -432,8 +432,8 @@ export default function LoginPage() {
                       type="email"
                       value={emailAdmin}
                       onChange={(e) => setEmailAdmin(e.target.value)}
-                      placeholder="admin@pesantren-alimam.com"
-                      className="w-full px-5 py-3 md:px-8 md:py-5 pl-12 md:pl-16 rounded-xl md:rounded-2xl bg-cream-50 border border-transparent focus:bg-white focus:border-maroon-200 focus:ring-4 focus:ring-cream-50 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-500 text-sm md:text-base"
+                      placeholder="admin@andalus.sch.id"
+                      className="w-full px-5 py-3 md:px-8 md:py-5 pl-12 md:pl-16 rounded-xl md:rounded-2xl bg-brand-blue-50 border border-transparent focus:bg-white focus:border-brand-blue-200 focus:ring-4 focus:ring-brand-blue-50 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-500 text-sm md:text-base"
                       disabled={isLoading}
                     />
                   </AuthInput>
@@ -445,7 +445,7 @@ export default function LoginPage() {
                         value={passwordAdmin}
                         onChange={(e) => setPasswordAdmin(e.target.value)}
                         placeholder="••••••••"
-                        className="w-full px-5 py-3 md:px-8 md:py-5 pl-12 md:pl-16 pr-12 md:pr-16 rounded-xl md:rounded-2xl bg-cream-50 border border-transparent focus:bg-white focus:border-maroon-200 focus:ring-4 focus:ring-cream-50 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-500 text-sm md:text-base"
+                        className="w-full px-5 py-3 md:px-8 md:py-5 pl-12 md:pl-16 pr-12 md:pr-16 rounded-xl md:rounded-2xl bg-brand-blue-50 border border-transparent focus:bg-white focus:border-brand-blue-200 focus:ring-4 focus:ring-brand-blue-50 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-500 text-sm md:text-base"
                         disabled={isLoading}
                       />
                       <button
@@ -463,7 +463,7 @@ export default function LoginPage() {
                     whileTap={{ scale: 0.98 }}
                     type="submit"
                     disabled={isLoading}
-                    className="w-full py-4 md:py-6 rounded-pill bg-cream-100 text-maroon-900 font-black text-lg md:text-xl hover:bg-maroon-900 hover:text-white shadow-md border border-cream-200 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                    className="w-full py-4 md:py-6 rounded-pill bg-brand-yellow-400 text-brand-blue-900 font-black text-lg md:text-xl hover:bg-brand-yellow-500 shadow-xl shadow-brand-yellow-100 border border-brand-yellow-300 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
                   >
                     {isLoading ? (
                       <Loader2 className="w-6 h-6 animate-spin" />
@@ -475,8 +475,8 @@ export default function LoginPage() {
                     )}
                   </motion.button>
 
-                  <div className="p-6 bg-cream-50/50 rounded-3xl border border-cream-100 flex items-start gap-4">
-                    <div className="w-8 h-8 rounded-xl bg-cream-100 flex items-center justify-center text-maroon-700 shrink-0">
+                  <div className="p-6 bg-cream-50/50 rounded-3xl border border-brand-yellow-100 flex items-start gap-4">
+                    <div className="w-8 h-8 rounded-xl bg-brand-yellow-100 flex items-center justify-center text-brand-blue-700 shrink-0">
                       <Sparkles className="w-4 h-4" />
                     </div>
                     <p className="text-xs text-ink-600 font-bold leading-relaxed">
@@ -498,9 +498,9 @@ export default function LoginPage() {
         >
           <Link
             href="/"
-            className="group flex items-center gap-3 text-ink-600 hover:text-maroon-700 font-black uppercase tracking-[0.2em] text-[10px] transition-all"
+            className="group flex items-center gap-3 text-ink-600 hover:text-brand-blue-700 font-black uppercase tracking-[0.2em] text-[10px] transition-all"
           >
-            <div className="w-8 h-8 rounded-full bg-cream-50 border border-cream-200 flex items-center justify-center group-hover:scale-110 transition-transform">
+            <div className="w-8 h-8 rounded-full bg-brand-blue-50 border border-brand-blue-100 flex items-center justify-center group-hover:scale-110 transition-transform">
               <ArrowLeft className="w-4 h-4" />
             </div>
             Kembali ke Beranda

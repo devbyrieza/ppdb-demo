@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Cron endpoint for H-0 reminders (1 hour before exam).
  * Called every 15 minutes by external cron.
  * Finds all jadwal with exams starting within the next 60-75 minutes
@@ -89,7 +89,7 @@ export async function GET(request: Request) {
                 { hour: "2-digit", minute: "2-digit" }
             );
 
-            const lokasi = jadwal.exam_session.location || "Pesantren Al-Andalus Al-Imam";
+            const lokasi = jadwal.exam_session.location || "Pesantren Al-Andalus Ulul Albaab";
             const jenisUjian = jadwal.exam_session.title || "Seleksi Santri Baru";
 
             const message = buildMessageReminderH0(

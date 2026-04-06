@@ -82,7 +82,7 @@ export default function GallerySection() {
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 lg:mb-16">
           <div className="max-w-xl">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-cream-50 border border-cream-200 text-maroon-700 text-xs font-bold uppercase tracking-widest mb-4 shadow-sm">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-cream-50 border border-cream-200 text-brand-blue-700 text-xs font-bold uppercase tracking-widest mb-4 shadow-sm">
               <Images className="w-3.5 h-3.5" />
               <span>Dokumentasi</span>
             </div>
@@ -111,8 +111,8 @@ export default function GallerySection() {
         </div>
 
         {/* Daily Schedule Preview (Wablas Card like - Modified to Cream/Maroon style) */}
-        <div className="bg-gradient-to-br from-cream-100 to-white p-8 md:p-12 relative overflow-hidden rounded-t-[3rem] border border-cream-200 border-b-0 shadow-[0_-15px_40px_-15px_rgba(0,0,0,0.05)]">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-maroon-50/50 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
+        <div className="bg-gradient-to-br from-brand-yellow-100 to-white p-8 md:p-12 relative overflow-hidden rounded-t-[3rem] border border-cream-200 border-b-0 shadow-[0_-15px_40px_-15px_rgba(0,0,0,0.05)]">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-brand-blue-50/50 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
 
           <div className="relative z-10 grid lg:grid-cols-2 gap-10 items-center max-w-6xl mx-auto">
             <div>
@@ -138,7 +138,7 @@ export default function GallerySection() {
                 </div>
               </div>
               <div className="app-card p-4 sm:p-5 flex items-center gap-4">
-                <div className="w-12 h-12 rounded-[14px] bg-maroon-50 flex items-center justify-center text-maroon-600 shadow-sm shrink-0">
+                <div className="w-12 h-12 rounded-[14px] bg-brand-blue-50 flex items-center justify-center text-brand-blue-600 shadow-sm shrink-0">
                   <BookOpen className="w-6 h-6" />
                 </div>
                 <div>

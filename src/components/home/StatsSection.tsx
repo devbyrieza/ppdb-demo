@@ -4,43 +4,13 @@ import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useEffect, useState } from "react";
 import { Container } from "@/components/layout/Container";
-import {
-  Users,
-  GraduationCap,
-  Award,
-  TrendingUp,
-  Calendar
-} from "lucide-react";
+import { Calendar, Users, GraduationCap, Award, TrendingUp, BookOpen } from 'lucide-react';
 
 const STATS = [
-  {
-    id: "years",
-    value: 30,
-    label: "Tahun Pengalaman",
-    icon: Calendar,
-    color: "maroon"
-  },
-  {
-    id: "students",
-    value: 150,
-    label: "Santri Aktif",
-    icon: Users,
-    color: "cream"
-  },
-  {
-    id: "graduates",
-    value: 500,
-    label: "Alumni Sukses",
-    icon: GraduationCap,
-    color: "gold"
-  },
-  {
-    id: "programs",
-    value: 15,
-    label: "Program Ekstra",
-    icon: Award,
-    color: "maroon-alt"
-  }
+  { id: 'years', label: 'Tahun Mengabdi', value: 30, icon: Calendar, color: 'brand-blue' as const },
+  { id: 'students', label: 'Pendaftar / Thn', value: 1200, icon: Users, color: 'brand-yellow' as const },
+  { id: 'graduates', label: 'Alumni Sukses', value: 500, icon: GraduationCap, color: 'gold' as const },
+  { id: 'programs', label: 'Program Unggulan', value: 12, icon: BookOpen, color: 'brand-blue' as const },
 ] as const;
 
 export default function StatsSection() {
@@ -83,7 +53,7 @@ export default function StatsSection() {
     <section className="py-16 md:py-24 bg-white relative overflow-hidden border-b border-cream-200">
       {/* Sophisticated Background Element */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-maroon-50/50 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-cream-100/40 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/2" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-brand-yellow-100/40 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/2" />
 
       <Container className="relative z-10">
         <div className="max-w-6xl mx-auto">
@@ -99,19 +69,19 @@ export default function StatsSection() {
                 className="app-card p-6 md:p-8 flex flex-col items-center text-center group"
               >
                 <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-5 transition-transform duration-500 group-hover:scale-110 shadow-sm
-                  ${stat.color === 'maroon' ? 'bg-maroon-50 text-maroon-600' :
-                  stat.color === 'cream' ? 'bg-cream-100 text-maroon-700' :
+                  ${stat.color === 'brand-blue' ? 'bg-brand-blue-50 text-brand-blue-600' :
+                  stat.color === 'brand-yellow' ? 'bg-brand-yellow-100 text-brand-yellow-700' :
                   stat.color === 'gold' ? 'bg-yellow-50 text-yellow-600' :
-                  'bg-maroon-100 text-maroon-800'
+                  'bg-brand-blue-100 text-brand-blue-800'
                   }`}>
                   <stat.icon className="w-6 h-6" />
                 </div>
 
                 <div className="relative">
                   <motion.div
-                    className="text-4xl md:text-5xl font-black text-maroon-900 mb-2 tracking-tighter"
+                    className="text-4xl md:text-5xl font-black text-brand-blue-700 mb-2 tracking-tighter"
                   >
-                    {counters[stat.id as keyof typeof counters]}<span className="text-maroon-600">+</span>
+                    {counters[stat.id as keyof typeof counters]}<span className="text-brand-blue-600">+</span>
                   </motion.div>
                 </div>
 
@@ -138,11 +108,11 @@ export default function StatsSection() {
               <span className="text-[10px] font-bold text-ink-700 uppercase tracking-widest">Pendaftaran Dibuka</span>
             </div>
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-cream-50 rounded-pill border border-cream-200">
-              <Award className="w-3.5 h-3.5 text-maroon-600" />
+              <Award className="w-3.5 h-3.5 text-brand-blue-600" />
               <span className="text-[10px] font-bold text-ink-700 uppercase tracking-widest">Resmi Kemendikdasmen</span>
             </div>
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-cream-50 rounded-pill border border-cream-200">
-              <TrendingUp className="w-3.5 h-3.5 text-maroon-600" />
+              <TrendingUp className="w-3.5 h-3.5 text-brand-blue-600" />
               <span className="text-[10px] font-bold text-ink-700 uppercase tracking-widest">Kurikulum Terintegrasi</span>
             </div>
           </motion.div>

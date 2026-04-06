@@ -1,43 +1,46 @@
+# ========================================
+# DOCKER COMPOSE PRODUCTION - ULUL ALBAAB
+# ========================================
 version: '3.8'
 
 services:
-  postgres:
+  postgres-ulul:
     image: postgres:15-alpine
-    container_name: pp-alimam-db
+    container_name: pp-ululalbaab-db
     restart: always
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_DB: ${POSTGRES_DB:-pp_alimam}
+      POSTGRES_USER: ${POSTGRES_USER:-admin_ulul}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password123}
+      POSTGRES_DB: ${POSTGRES_DB:-db_ululalbaab_prod}
     ports:
-      - "5432:5432"
+      - "5436:5432" # Pindah port lagi demi keamanan & isolasi
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_ululalbaab_prod_data:/var/lib/postgresql/data
 
-  app:
+  app-ulul:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: pp-alimam-app
+      args:
+        DATABASE_URL: postgresql://${POSTGRES_USER:-admin_ulul}:${POSTGRES_PASSWORD:-password123}@postgres-ulul:5432/${POSTGRES_DB:-db_ululalbaab_prod}
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-https://ppdb.alandalus-ululalbaab.com}
+        NEXTAUTH_URL: ${NEXTAUTH_URL:-https://ppdb.alandalus-ululalbaab.com}
+        NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-supersecretkeyulul123}
+    container_name: pp-ululalbaab-app
     restart: always
     ports:
-      - "3000:3000"
+      - "3001:3000" # Port diubah supaya tidak bentrok dengan Al-Imam
     environment:
-      DATABASE_URL: postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-pp_alimam}
-      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-supersecretkey}
-      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3000}
-      WABLAS_API_KEY: ${WABLAS_API_KEY}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-admin_ulul}:${POSTGRES_PASSWORD:-password123}@postgres-ulul:5432/${POSTGRES_DB:-db_ululalbaab_prod}
+      NEXTAUTH_URL: ${NEXTAUTH_URL:-https://ppdb.alandalus-ululalbaab.com}
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-supersecretkeyulul123}
+      FAGI_WA_KEY: ${FAGI_WA_KEY}
     depends_on:
-      - postgres
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:3000/api/health" ]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
+      - postgres-ulul
     volumes:
-      - storage_data:/app/storage_data
+      - storage_ululalbaab_data:/app/public/storage
+      - storage_ululalbaab_data:/app/storage_data
 
 volumes:
-  postgres_data:
-  storage_data:
+  postgres_ululalbaab_prod_data:
+  storage_ululalbaab_data:

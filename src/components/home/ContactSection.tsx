@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { Container } from "@/components/layout/Container";
@@ -24,14 +24,14 @@ const CONTACT_INFO = [
   {
     icon: Phone,
     title: "Layanan Telepon",
-    content: "+62 851-1152-4441",
+    content: "+62 888-0993-4970",
     detail: "Senin-Sabtu (08.00 - 16.00)",
     color: "teal",
   },
   {
     icon: Mail,
     title: "Email Resmi",
-    content: "pesantrenalimamsukabumi@gmail.com",
+    content: "alandalus.ululalbaab@gmail.com",
     detail: "Kirim pertanyaan kapan saja",
     color: "gold",
   },

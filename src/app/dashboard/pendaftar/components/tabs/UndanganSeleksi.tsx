@@ -128,7 +128,7 @@ export default function UndanganSeleksiTab() {
       text: "Apakah Anda yakin ingin memilih jadwal ini? Jadwal tidak dapat diubah setelah dipilih.",
       icon: "question",
       showCancelButton: true,
-      confirmButtonColor: "#7c3aed",
+      confirmButtonColor: "#0066ff", // brand-blue-600
       cancelButtonColor: "#ef4444",
       confirmButtonText: "Ya, Pilih Jadwal",
       cancelButtonText: "Batal",
@@ -153,7 +153,7 @@ export default function UndanganSeleksiTab() {
           icon: "success",
           title: "Berhasil!",
           text: "Jadwal ujian Anda telah tersimpan. Notifikasi WhatsApp akan dikirimkan.",
-          confirmButtonColor: "#7c3aed",
+          confirmButtonColor: "#0066ff",
         });
         fetchData();
       } else {
@@ -192,7 +192,7 @@ export default function UndanganSeleksiTab() {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 animate-spin text-maroon-700 mx-auto mb-4" />
+          <Loader2 className="w-12 h-12 animate-spin text-brand-blue-600 mx-auto mb-4" />
           <p className="text-stone-600">Memuat info seleksi...</p>
         </div>
       </div>
@@ -214,12 +214,12 @@ export default function UndanganSeleksiTab() {
   return (
     <div className="space-y-6">
       {/* ========== HEADER ========== */}
-      <div className="bg-linear-to-r from-emerald-600 to-maroon-800 rounded-2xl p-6 md:p-8 text-white shadow-lg relative overflow-hidden">
+      <div className="bg-linear-to-r from-brand-blue-700 to-brand-blue-900 rounded-2xl p-6 md:p-8 text-white shadow-lg relative overflow-hidden">
         <div className="relative z-10">
           <h1 className="text-2xl font-black mb-2 text-white">
             Undangan Seleksi
           </h1>
-          <p className="text-emerald-100 text-sm md:text-base">
+          <p className="text-brand-yellow-100 text-sm md:text-base">
             Jadwal ujian seleksi calon santri baru — selesaikan semua tahapan di bawah ini
           </p>
         </div>
@@ -230,7 +230,7 @@ export default function UndanganSeleksiTab() {
           <a
             href="/dashboard/pendaftar/kartu-ujian"
             target="_blank"
-            className="bg-white/20 hover:bg-white/30 text-white border border-white/50 px-4 py-2 rounded-xl flex items-center gap-2 transition-all font-bold backdrop-blur-sm text-sm"
+            className="bg-white/20 hover:bg-white/30 text-white border border-white/50 px-4 py-2 rounded-xl flex items-center gap-2 transition-all font-black backdrop-blur-sm text-sm"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9" /><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /><rect x="6" y="14" width="12" height="8" /></svg>
             Cetak Jadwal
@@ -241,16 +241,16 @@ export default function UndanganSeleksiTab() {
       {/* ========== PROGRESS BAR ========== */}
       <div className="bg-white rounded-xl border border-stone-200 p-5 shadow-sm">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="font-bold text-stone-800 text-sm">
+          <h3 className="font-bold text-ink-800 text-sm">
             Progress Seleksi
           </h3>
-          <span className="text-sm font-bold text-emerald-600">
+          <span className="text-sm font-black text-brand-blue-600">
             {data.progress.completed}/{data.progress.total} Tahap
           </span>
         </div>
-        <div className="w-full h-3 bg-stone-100 rounded-full overflow-hidden">
+        <div className="w-full h-3 bg-surface-100 rounded-full overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-emerald-500 to-maroon-600 rounded-full transition-all duration-700"
+            className="h-full bg-linear-to-r from-brand-blue-500 to-brand-blue-700 rounded-full transition-all duration-700 shadow-lg shadow-brand-blue-500/20"
             style={{ width: `${data.progress.percentage}%` }}
           />
         </div>
@@ -262,8 +262,8 @@ export default function UndanganSeleksiTab() {
       {/* ========== GRUP A: TES ONLINE INSTAN ========== */}
       <div className="space-y-4">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-            <BookOpen className="w-4 h-4 text-blue-600" />
+          <div className="w-8 h-8 bg-brand-blue-100 rounded-lg flex items-center justify-center">
+            <BookOpen className="w-4 h-4 text-brand-blue-600" />
           </div>
           <div>
             <h2 className="font-bold text-stone-900 text-lg">
@@ -287,17 +287,17 @@ export default function UndanganSeleksiTab() {
                   }`}
               >
                 <div className="flex items-start justify-between mb-3">
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${item.completed ? "bg-emerald-100" : "bg-blue-50"
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${item.completed ? "bg-emerald-100" : "bg-brand-blue-50"
                     }`}>
-                    <Icon className={`w-5 h-5 ${item.completed ? "text-emerald-600" : "text-blue-600"
+                    <Icon className={`w-5 h-5 ${item.completed ? "text-emerald-600" : "text-brand-blue-600"
                       }`} />
                   </div>
                   {item.completed ? (
-                    <span className="flex items-center gap-1 px-2.5 py-1 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-full">
+                    <span className="flex items-center gap-1 px-2.5 py-1 bg-emerald-100 text-emerald-700 text-xs font-black rounded-full">
                       <CheckCircle className="w-3 h-3" /> Selesai
                     </span>
                   ) : (
-                    <span className="px-2.5 py-1 bg-blue-100 text-blue-700 text-xs font-bold rounded-full">
+                    <span className="px-2.5 py-1 bg-brand-blue-100 text-brand-blue-700 text-xs font-black rounded-full">
                       Tersedia
                     </span>
                   )}
@@ -314,7 +314,7 @@ export default function UndanganSeleksiTab() {
                 ) : (
                   <Link
                     href={`/dashboard/pendaftar/ujian/${key}`}
-                    className="inline-flex items-center gap-2 mt-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition-colors shadow-sm"
+                    className="inline-flex items-center gap-2 mt-2 px-4 py-2 bg-brand-yellow-400 hover:bg-brand-yellow-300 text-brand-blue-950 text-xs font-black rounded-lg transition-colors shadow-sm border border-brand-yellow-500"
                   >
                     Mulai Tes
                   </Link>
@@ -328,8 +328,8 @@ export default function UndanganSeleksiTab() {
       {/* ========== GRUP B: TES TERJADWAL ========== */}
       <div className="space-y-4">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-            <Calendar className="w-4 h-4 text-purple-600" />
+          <div className="w-8 h-8 bg-brand-yellow-100 rounded-lg flex items-center justify-center">
+            <Calendar className="w-4 h-4 text-brand-blue-700" />
           </div>
           <div>
             <h2 className="font-bold text-stone-900 text-lg">
@@ -362,36 +362,36 @@ export default function UndanganSeleksiTab() {
                 return (
                   <div
                     key={item.id}
-                    className="bg-white rounded-xl shadow-sm p-5 border-2 border-purple-100 relative overflow-hidden"
+                    className="bg-white rounded-xl shadow-sm p-5 border-2 border-brand-blue-100 relative overflow-hidden"
                   >
-                    <div className="absolute top-0 right-0 p-2 bg-purple-100 rounded-bl-xl">
-                      <CheckCircle className="w-4 h-4 text-purple-600" />
+                    <div className="absolute top-0 right-0 p-2 bg-brand-blue-50 rounded-bl-xl">
+                      <CheckCircle className="w-4 h-4 text-brand-blue-600" />
                     </div>
 
                     <div className="flex items-center gap-2 mb-3">
-                      <Icon className="w-4 h-4 text-purple-600" />
-                      <h3 className="text-sm font-bold text-stone-900">
+                      <Icon className="w-4 h-4 text-brand-blue-600" />
+                      <h3 className="text-sm font-black text-ink-900">
                         {item.jenis_ujian}
                       </h3>
                     </div>
 
                     <div className="space-y-2 text-xs text-stone-600">
                       <div className="flex items-center gap-2">
-                        <Calendar className="w-3.5 h-3.5 text-purple-500" />
-                        <span className="font-semibold text-stone-800">
+                        <Calendar className="w-3.5 h-3.5 text-brand-blue-500" />
+                        <span className="font-bold text-ink-800">
                           {formatDate(item.tanggal_ujian)}
                         </span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Clock className="w-3.5 h-3.5 text-purple-500" />
-                        <span className="font-semibold text-stone-800">
+                        <Clock className="w-3.5 h-3.5 text-brand-blue-500" />
+                        <span className="font-bold text-ink-800">
                           {formatTime(item.waktu_mulai)} WIB
                         </span>
                       </div>
                       {item.lokasi && (
                         <div className="flex items-center gap-2">
-                          <MapPin className="w-3.5 h-3.5 text-purple-500" />
-                          <span className="font-medium">{item.lokasi}</span>
+                          <MapPin className="w-3.5 h-3.5 text-brand-blue-500" />
+                          <span className="font-medium text-ink-700">{item.lokasi}</span>
                         </div>
                       )}
                     </div>
@@ -439,11 +439,11 @@ export default function UndanganSeleksiTab() {
         {/* Condition 2: Sessions available — show picker */}
         {data.grupB.hasSchedules && data.grupB.availableSlots.length > 0 && (
           <div className="space-y-3">
-            <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-xl">
-              <h3 className="font-bold text-blue-900 text-sm">
+            <div className="bg-brand-blue-50 border-l-4 border-brand-blue-500 p-4 rounded-r-xl">
+              <h3 className="font-black text-brand-blue-900 text-sm">
                 Alhamdulillah, jadwal seleksi sudah bisa dipilih!
               </h3>
-              <p className="text-xs text-blue-700 mt-1">
+              <p className="text-xs text-brand-blue-700 mt-1 font-medium">
                 Silakan pilih sesi ujian untuk jenis ujian yang{" "}
                 <strong>belum Anda ambil</strong>.
               </p>
@@ -477,15 +477,15 @@ export default function UndanganSeleksiTab() {
                       <div
                         key={slot.id}
                         className={`bg-white rounded-xl shadow-sm p-5 border-2 transition-all ${slot.isFull
-                          ? "opacity-75 border-stone-100 bg-stone-50"
-                          : "border-stone-100 hover:border-purple-300 hover:shadow-md"
+                          ? "opacity-75 border-surface-200 bg-surface-50"
+                          : "border-surface-100 hover:border-brand-blue-300 hover:shadow-md"
                           }`}
                       >
                         <div className="flex justify-between items-start mb-3">
                           <div className="flex items-center gap-2">
-                            <Icon className="w-4 h-4 text-purple-600" />
+                            <Icon className="w-4 h-4 text-brand-blue-600" />
                             <h4
-                              className="font-bold text-stone-900 text-sm line-clamp-1"
+                              className="font-black text-ink-900 text-sm line-clamp-1"
                               title={slot.title}
                             >
                               {slot.title}
@@ -502,20 +502,20 @@ export default function UndanganSeleksiTab() {
                           )}
                         </div>
 
-                        <div className="space-y-2 mb-4 text-xs text-stone-600">
-                          <div className="flex items-center gap-2">
-                            <Calendar className="w-3.5 h-3.5 text-purple-500" />
+                        <div className="space-y-2 mb-4 text-xs text-ink-600">
+                          <div className="flex items-center gap-2 font-medium">
+                            <Calendar className="w-3.5 h-3.5 text-brand-blue-500" />
                             {formatDate(slot.start_time)}
                           </div>
-                          <div className="flex items-center gap-2">
-                            <Clock className="w-3.5 h-3.5 text-purple-500" />
+                          <div className="flex items-center gap-2 font-medium">
+                            <Clock className="w-3.5 h-3.5 text-brand-blue-500" />
                             {formatTime(slot.start_time)} WIB
                           </div>
                           <div className="flex items-center gap-2">
-                            <MapPin className="w-3.5 h-3.5 text-purple-500" />
-                            <span className="line-clamp-1">{slot.location}</span>
+                            <MapPin className="w-3.5 h-3.5 text-brand-blue-500" />
+                            <span className="line-clamp-1 font-medium">{slot.location}</span>
                           </div>
-                          <div className="text-xs text-stone-400">
+                          <div className="text-xs text-ink-400 font-bold">
                             Kuota: {slot.booked}/{slot.quota} terisi
                           </div>
                         </div>
@@ -523,7 +523,7 @@ export default function UndanganSeleksiTab() {
                         <button
                           onClick={() => handleBooking(slot.id)}
                           disabled={slot.isFull || bookingId !== null}
-                          className="w-full py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-lg disabled:bg-stone-300 disabled:cursor-not-allowed transition-colors flex justify-center items-center gap-2 text-sm"
+                          className="w-full py-2.5 bg-brand-yellow-400 hover:bg-brand-yellow-300 text-brand-blue-950 font-black rounded-lg disabled:bg-surface-200 disabled:text-ink-400 disabled:cursor-not-allowed transition-all shadow-sm flex justify-center items-center gap-2 text-sm border border-brand-yellow-500"
                         >
                           {bookingId === slot.id && (
                             <Loader2 className="animate-spin w-4 h-4" />

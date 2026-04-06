@@ -7,19 +7,29 @@ services:
     container_name: ppdb_postgres_dev
     restart: unless-stopped
     environment:
-      POSTGRES_USER: ppdb_user
-      POSTGRES_PASSWORD: ppdb_password123
-      POSTGRES_DB: ppdb_alimam_dev
+      POSTGRES_USER: admin_ulul
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: postgres
     ports:
-      - "5432:5432"
+      - "5435:5432"
     volumes:
-      - postgres_dev_data:/var/lib/postgresql/data
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ppdb_user -d ppdb_alimam_dev" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      - postgres_ululalbaab_data:/var/lib/postgresql/data
+
+  # MySQL Database for Legacy App Migration (Ulul Albaab)
+  mysql_legacy:
+    image: mysql:8.0
+    container_name: ppdb_mysql_legacy_dev
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: password123
+      MYSQL_DATABASE: ppdb_laravel_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_legacy_data:/var/lib/mysql
 
 volumes:
-  postgres_dev_data:
+  postgres_ululalbaab_data:
+    driver: local
+  mysql_legacy_data:
     driver: local

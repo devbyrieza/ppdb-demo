@@ -82,7 +82,7 @@ export default function AdminSMSDashboard() {
             <ol className="list-decimal list-inside text-blue-700 space-y-1">
               <li>Salin nomor HP dan OTP di bawah</li>
               <li>Kirim SMS dari HP Admin ke nomor tersebut</li>
-              <li>Pesan: "PPDB AL-IMAM: Kode OTP: [OTP] untuk [NAMA]"</li>
+              <li>Pesan: "PPDB ULUL ALBAAB: Kode OTP: [OTP] untuk [NAMA]"</li>
               <li>Klik tombol "✓ Sudah Dikirim" setelah selesai</li>
             </ol>
           </div>
@@ -156,12 +156,12 @@ export default function AdminSMSDashboard() {
                       📝 Pesan yang dikirim:
                     </p>
                     <pre className="bg-gray-900 text-white p-4 rounded-lg text-sm">
-                      {`PPDB AL-IMAM
+                      {`PPDB ULUL ALBAAB
 Kode OTP: ${item.otp}
 Untuk: ${item.nama}
 
 Jangan bagikan kode ini.
-Hubungi 0851-1152-4441 jika ada masalah.`}
+Hubungi 0812-85-300800 jika ada masalah.`}
                     </pre>
                   </div>
 
@@ -174,7 +174,7 @@ Hubungi 0851-1152-4441 jika ada masalah.`}
                     </button>
 
                     <a
-                      href={`sms:${item.phone}&body=PPDB AL-IMAM: Kode OTP: ${item.otp} untuk ${item.nama}`}
+                      href={`sms:${item.phone}&body=PPDB ULUL ALBAAB: Kode OTP: ${item.otp} untuk ${item.nama}`}
                       className="px-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700"
                     >
                       📱 Buka Aplikasi SMS

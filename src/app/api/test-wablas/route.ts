@@ -19,13 +19,13 @@ export async function GET(request: Request) {
     try {
         const result = await sendMessage({
             phone,
-            message: `🎉 *Test Wablas Integration*\n\nAssalamu'alaikum!\n\nIni adalah pesan test dari sistem PPDB Al-Imam.\n\nJika Anda menerima pesan ini, berarti integrasi Wablas berhasil! ✅\n\nWaktu: ${new Date().toLocaleString('id-ID')}\n\nJazakumullahu khairan,\nTim IT Al-Imam`,
+            message: `Halo! Ini adalah pesan tes koneksi WABLAS. Jika Anda menerima ini, berarti sistem PPDB Al-Andalus Ulul Albaab sudah terhubung dengan benar.\n\n_Pesanan ini dikirim secara otomatis oleh sistem PPDB Al-Andalus Ulul Albaab._\n\nTerima kasih,\nTim IT Al-Andalus Ulul Albaab.`,
         });
 
         return NextResponse.json({
             success: true,
             message: 'Test message sent successfully',
-            data: result,
+            lokasi: "Pesantren Al-Andalus Ulul Albaab",
         });
     } catch (error) {
         console.error('Error testing Wablas:', error);

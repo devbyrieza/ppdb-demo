@@ -1,4 +1,4 @@
-﻿// app/api/verifikasi/generate/route.ts
+// app/api/verifikasi/generate/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
       message: "OTP generated and saved successfully",
       whatsappTemplate: `Assalamu'alaikum ${nama},
 
-Kode verifikasi PPDB Ponpes Al-Andalus Al-Imam Anda:
+Kode verifikasi PPDB Ponpes Al-Andalus Ulul Albaab Anda:
 
 🔐 *${otp}*
 

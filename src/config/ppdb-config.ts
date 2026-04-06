@@ -6,40 +6,45 @@
 export const PPDB_CONFIG = {
   // 🏫 INFO PESANTREN (GANTI INI DULU!)
   pesantren: {
-    nama: "Pesantren Al-Andalus [Nama Cabang]",
-    singkatan: "Al-Andalus [Cabang]",
-    alamat: "[Alamat Pesantren — Sesuaikan!]",
-    telepon: "[Nomor Telepon — Sesuaikan!]",
-    email: "[Email Pesantren — Sesuaikan!]",
-    emailPpdb: "[Email PPDB — Sesuaikan!]",
-    website: "https://www.pesantren-alandalus.com",
+    nama: "Pesantren Al-Andalus Ulul Albaab",
+    singkatan: "Al-Andalus Ulul Albaab",
+    alamat: "Jl. KH Mama Oyon, Cihaur, Kec. Cicantayan, Kabupaten Sukabumi, Jawa Barat 43155",
+    telepon: "+62 888-0993-4970",
+    email: "alandalus.ululalbaab@gmail.com",
+    emailPpdb: "alandalus.ululalbaab@gmail.com",
+    website: "https://www.pesantren-ululalbaab.com",
   },
 
   // 🎨 BRAND COLORS (GANTI SESUAI LOGO)
   colors: {
+    // Primary Colors (Biru Muda / Sky)
     primary: {
-      50: "#fdf8f6",
-      100: "#f2e8e5",
-      200: "#eaddd7",
-      300: "#e0cec7",
-      400: "#d2bab0",
-      500: "#a18072",
-      600: "#8d6e63",
-      700: "#5d4037",
-      800: "#4e342e",
-      900: "#3e2723",
+      50: "#f0f9ff",
+      100: "#e0f2fe",
+      200: "#bae6fd",
+      300: "#7dd3fc",
+      400: "#38bdf8",
+      500: "#0ea5e9",
+      600: "#0284c7",  // Warna tombol & aksi utama
+      700: "#0369a1",  // Warna teks penting
+      800: "#075985",
+      900: "#0c4a6e",  // Warna teks gelap
     },
+
+    // Secondary Colors (Kuning / Amber)
     secondary: {
-      50: "#fffcf5",
-      100: "#fdf8f3",
-      200: "#f5ebe0",
-      300: "#ebe0d1",
-      400: "#d4b06e",
+      50: "#fffbeb",
+      100: "#fef3c7",
+      200: "#fde68a",
+      300: "#fcd34d",
+      400: "#fbbf24",
     },
+
+    // Accent Colors (Warna Aksen)
     accent: {
-      gold: "#fbbf24",
-      teal: "#14b8a6",
-      red: "#ef4444",
+      gold: "#fbbf24",     // Untuk highlight & achievement
+      teal: "#14b8a6",     // Untuk success & info
+      red: "#ef4444",      // Untuk error & warning
     }
   },
 
@@ -97,15 +102,15 @@ export const PPDB_CONFIG = {
 
   // 🔗 KONTAK & SOSMED (GANTI SESUAI!)
   contact: {
-    whatsapp: "[Nomor WhatsApp — Sesuaikan!]",
-    instagram: "@pesantrenalandalus",
-    facebook: "Pesantren Al-Andalus (Official Fanpage)",
-    youtube: "Al-Andalus Official"
+    whatsapp: "+6288809934970",
+    instagram: "@pesantrenululalbaab",
+    facebook: "Pesantren Al-Andalus Ulul Albaab (Official Fanpage)",
+    youtube: "Al-Andalus Ulul Albaab"
   },
 
-  // ⚙️ SETTING TEKNIS
+  // ⚙️ SETTING TEKNIS (UMUMNYA TIDAK PERLU DIUBAH)
   technical: {
-    appName: "PPDB Al-Andalus [Nama Cabang]",
+    appName: "PPDB Al-Andalus Ulul Albaab",
     appDescription: "Sistem Penerimaan Peserta Didik Baru",
     version: "2.0.0",
     author: "Rieza Eka Tomara"
@@ -123,8 +128,10 @@ export const getRequirements = () => PPDB_CONFIG.requirements;
 export const getContact = () => PPDB_CONFIG.contact;
 export const getColors = () => PPDB_CONFIG.colors;
 
+// Untuk generate CSS variables otomatis
 export const generateCSSVariables = () => {
   const { colors } = PPDB_CONFIG;
+
   return {
     primary: colors.primary,
     secondary: colors.secondary,

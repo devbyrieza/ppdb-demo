@@ -82,7 +82,7 @@ interface DashboardStats {
 }
 
 const JENJANG_LABELS: Record<string, string> = {
-  MTs: "MTs Al-Imam",
+  MTs: "MTs Ulul Albaab",
   IL: "I'dad Lughowi (Setara SMA)",
 };
 
@@ -234,7 +234,7 @@ export default function AdminDashboardPage() {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 animate-spin text-maroon-600 mx-auto mb-4" />
+          <Loader2 className="w-12 h-12 animate-spin text-brand-blue-600 mx-auto mb-4" />
           <p className="text-ink-400 font-medium">Memuat data dashboard...</p>
         </div>
       </div>
@@ -250,11 +250,11 @@ export default function AdminDashboardPage() {
       {(() => {
         const daysLeft = getPPDBCountdown();
         if (daysLeft === null) return null;
-        const urgency = daysLeft <= 7 ? "red" : daysLeft <= 30 ? "amber" : "teal";
+        const urgency = daysLeft <= 7 ? "red" : daysLeft <= 30 ? "amber" : "blue";
         const urgencyStyles = {
           red: "bg-red-50 border-red-200 text-red-800",
           amber: "bg-amber-50 border-amber-200 text-amber-800",
-          teal: "bg-maroon-50 border-maroon-200 text-maroon-900",
+          blue: "bg-brand-yellow-50 border-brand-yellow-200 text-brand-blue-900",
         }[urgency];
         return (
           <div className={`rounded-2xl border-2 px-6 py-4 flex flex-wrap items-center justify-between gap-4 ${urgencyStyles}`}>
@@ -270,7 +270,7 @@ export default function AdminDashboardPage() {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: urgency === "teal" ? "#14b8a6" : urgency === "amber" ? "#f59e0b" : "#ef4444" }} />
+              <div className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: urgency === "blue" ? "#0066ff" : urgency === "amber" ? "#f59e0b" : "#ef4444" }} />
               <span className="text-xs font-bold uppercase tracking-wider">
                 {daysLeft > 30 ? "Berjalan Normal" : daysLeft > 7 ? "Segera Tutup" : "MENDESAK"}
               </span>
@@ -308,23 +308,23 @@ export default function AdminDashboardPage() {
         <div>
           <div className="flex items-center gap-3 mb-3">
             <div className="flex items-center gap-2">
-              <span className="badge badge-success bg-maroon-50 text-maroon-700 border-maroon-200 px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase">
+              <span className="badge badge-success bg-brand-blue-50 text-brand-blue-700 border-brand-blue-200 px-3 py-1 rounded-full text-xs font-black tracking-widest uppercase">
                 Tahun Ajaran {tahunAjaranList.find(t => t.id === selectedTahunAjaranId)?.nama || "..."}
               </span>
               <span className="flex h-2 w-2 relative">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-maroon-500 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-maroon-600"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-blue-500 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-blue-600"></span>
               </span>
             </div>
 
-            <div className="h-4 w-px bg-cream-200"></div>
+            <div className="h-4 w-px bg-brand-yellow-200"></div>
 
             <div className="flex items-center gap-2">
               <Calendar className="w-4 h-4 text-ink-400" />
               <select
                 value={selectedTahunAjaranId}
                 onChange={(e) => setSelectedTahunAjaranId(e.target.value)}
-                className="bg-cream-50 border border-cream-200 rounded-lg px-3 py-1 text-sm font-bold text-ink-600 focus:outline-none focus:ring-2 focus:ring-maroon-600/20 focus:border-maroon-600 transition-all cursor-pointer hover:bg-white"
+                className="bg-brand-yellow-50 border border-brand-yellow-200 rounded-lg px-3 py-1 text-sm font-black text-brand-blue-900 focus:outline-none focus:ring-2 focus:ring-brand-blue-600/20 focus:border-brand-blue-600 transition-all cursor-pointer hover:bg-white"
               >
                 {tahunAjaranList.map((ta) => (
                   <option key={ta.id} value={ta.id}>
@@ -345,7 +345,7 @@ export default function AdminDashboardPage() {
         </div>
 
         <div className="flex gap-3">
-          <Link href="/dashboard/admin/pendaftar" className="btn-primary shadow-teal-glow">
+          <Link href="/dashboard/admin/pendaftar" className="btn-primary shadow-brand-blue-glow">
             <Users className="w-5 h-5" />
             <span>Data Pendaftar</span>
           </Link>
@@ -367,23 +367,23 @@ export default function AdminDashboardPage() {
 
         {/* TOTAL PENDAFTAR - Default / Super Admin / Berkas */}
         {(!isKeuanganOnly && !isPengujiOnly) && (
-          <div className="bg-white rounded-3xl border border-cream-200 shadow-sm app-card p-5 md:p-8 relative overflow-hidden group">
+          <div className="bg-white rounded-3xl border border-brand-yellow-100 shadow-sm app-card p-5 md:p-8 relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
-              <Users className="w-24 h-24 text-maroon-700" />
+              <Users className="w-24 h-24 text-brand-blue-700" />
             </div>
-            <p className="text-ink-500 font-medium mb-2">Total Pendaftar</p>
+            <p className="text-ink-500 font-black tracking-widest uppercase text-[10px] mb-2">Total Pendaftar</p>
             <div className="flex items-baseline gap-2">
-              <h2 className="text-5xl font-bold text-ink-900 tracking-tight">
+              <h2 className="text-5xl font-black text-ink-900 tracking-tight">
                 {stats.total_pendaftar}
               </h2>
-              <span className="text-sm font-medium text-maroon-700 bg-maroon-50 px-2 py-0.5 rounded-full">
+              <span className="text-sm font-black text-brand-blue-700 bg-brand-blue-50 px-2.5 py-1 rounded-full">
                 Calon Santri
               </span>
             </div>
             <div className="mt-4 pt-4 border-t border-ink-100 flex items-center justify-between text-sm">
-              <span className="text-ink-400">Target: 500</span>
+              <span className="text-ink-400 font-bold">Target: 500</span>
               <div className="w-24 h-1.5 bg-ink-100 rounded-full overflow-hidden">
-                <div className="h-full bg-maroon-600 rounded-full" style={{ width: `${(stats.total_pendaftar / 500) * 100}%` }}></div>
+                <div className="h-full bg-brand-blue-600 rounded-full" style={{ width: `${(stats.total_pendaftar / 500) * 100}%` }}></div>
               </div>
             </div>
           </div>
@@ -391,12 +391,12 @@ export default function AdminDashboardPage() {
 
         {/* KEUANGAN HERO - Admin Keuangan gets a bigger card or first slot */}
         {canViewKeuangan && (
-          <div className={`bg-white rounded-3xl border border-cream-200 shadow-sm app-card p-5 md:p-6 relative overflow-hidden group hover:border-maroon-200 ${isKeuanganOnly ? 'col-span-2 bg-gradient-to-br from-maroon-50 to-white' : ''}`}>
+          <div className={`bg-white rounded-3xl border border-brand-yellow-100 shadow-sm app-card p-5 md:p-6 relative overflow-hidden group hover:border-brand-blue-200 ${isKeuanganOnly ? 'col-span-2 bg-linear-to-br from-brand-blue-50 to-white' : ''}`}>
             <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
-              <Wallet className="w-32 h-32 text-maroon-700" />
+              <Wallet className="w-32 h-32 text-brand-blue-700" />
             </div>
             <div className="flex justify-between items-start mb-4">
-              <div className="p-3 bg-maroon-100 rounded-2xl text-maroon-700">
+              <div className="p-3 bg-brand-blue-100 rounded-2xl text-brand-blue-700">
                 <Wallet className="w-6 h-6" />
               </div>
               <span className="badge badge-neutral">Keuangan</span>
@@ -415,12 +415,12 @@ export default function AdminDashboardPage() {
 
         {/* BERKAS HERO - Admin Berkas Focus */}
         {canViewBerkas && (
-          <div className={`bg-white rounded-3xl border border-cream-200 shadow-sm app-card p-5 md:p-6 relative overflow-hidden group hover:border-gold-200 ${isBerkasOnly ? 'col-span-2 bg-gold-50/30' : ''}`}>
+          <div className={`bg-white rounded-3xl border border-brand-yellow-100 shadow-sm app-card p-5 md:p-6 relative overflow-hidden group hover:border-brand-yellow-200 ${isBerkasOnly ? 'col-span-2 bg-brand-yellow-50/30' : ''}`}>
             <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
-              <FileCheck className="w-32 h-32 text-gold-600" />
+              <FileCheck className="w-32 h-32 text-brand-yellow-600" />
             </div>
             <div className="flex justify-between items-start mb-4">
-              <div className="p-3 bg-gold-100 rounded-2xl text-gold-600">
+              <div className="p-3 bg-brand-yellow-100 rounded-2xl text-brand-yellow-600">
                 <FileCheck className="w-6 h-6" />
               </div>
               <span className="badge badge-neutral">Berkas</span>
@@ -430,11 +430,11 @@ export default function AdminDashboardPage() {
             <p className="text-sm text-ink-400 mb-4">Siap diverifikasi & seleksi</p>
 
             <div className="flex gap-2 relative z-10">
-              <Link href="/dashboard/admin/verifikasi-dokumen" className="flex-1 btn-secondary text-xs border-gold-200 text-gold-800 hover:bg-gold-50">
+              <Link href="/dashboard/admin/verifikasi-dokumen" className="flex-1 btn-secondary text-xs border-brand-yellow-200 text-brand-yellow-800 hover:bg-brand-yellow-50">
                 Cek Dokumen ({stats.menunggu_verifikasi_dokumen})
               </Link>
               {isBerkasOnly && (
-                <Link href="/dashboard/admin/pendaftar?filter=belum_upload_dokumen" className="btn-ghost bg-white/50 hover:bg-white text-gold-700">
+                <Link href="/dashboard/admin/pendaftar?filter=belum_upload_dokumen" className="btn-ghost bg-white/50 hover:bg-white text-brand-yellow-700">
                   <TrendingUp className="w-4 h-4" /> Cek Data
                 </Link>
               )}
@@ -444,7 +444,7 @@ export default function AdminDashboardPage() {
 
         {/* SELEKSI CARD - Penguji Focus */}
         {canViewSeleksi && (
-          <div className="bg-white rounded-3xl border border-cream-200 shadow-sm app-card p-5 md:p-6 relative overflow-hidden group hover:border-blue-200">
+          <div className="bg-white rounded-3xl border border-brand-yellow-100 shadow-sm app-card p-5 md:p-6 relative overflow-hidden group hover:border-brand-blue-200">
             <div className="flex justify-between items-start mb-4">
               <div className="p-3 bg-blue-50 rounded-2xl text-blue-600">
                 <GraduationCap className="w-6 h-6" />
@@ -470,15 +470,15 @@ export default function AdminDashboardPage() {
         {/* Left: Detailed Program Stats */}
         <div className="lg:col-span-2 space-y-6">
           <div className="flex items-center justify-between">
-            <h3 className="text-xl font-bold text-ink-900">Performa Program Studi</h3>
-            <button className="text-sm text-maroon-700 font-medium hover:text-maroon-800">Lihat Detail</button>
+            <h3 className="text-xl font-black text-brand-blue-950">Performa Program Studi</h3>
+            <button className="text-sm text-brand-blue-700 font-black hover:text-brand-blue-800 uppercase tracking-widest px-2 py-1">Lihat Detail</button>
           </div>
 
-          <div className="bg-white rounded-3xl border border-cream-200 shadow-sm app-card p-0 overflow-hidden">
+          <div className="bg-white rounded-3xl border border-brand-yellow-100 shadow-sm app-card p-0 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse min-w-[600px]">
                 <thead>
-                  <tr className="border-b border-ink-100 bg-cream-50/50">
+                  <tr className="border-b border-ink-100 bg-brand-yellow-50/50">
                     <th className="px-6 py-4 text-xs font-bold text-ink-500 uppercase tracking-wider">Jenjang Pendidikan</th>
                     <th className="px-6 py-4 text-xs font-bold text-ink-500 uppercase tracking-wider text-center">Kuota</th>
                     <th className="px-6 py-4 text-xs font-bold text-ink-500 uppercase tracking-wider text-center">Pendaftar</th>
@@ -488,12 +488,12 @@ export default function AdminDashboardPage() {
                 </thead>
                 <tbody className="divide-y divide-ink-50">
                   {(stats.stats_per_jenjang || []).map((item, idx) => (
-                    <tr key={idx} className="group hover:bg-cream-50 transition-colors">
+                    <tr key={idx} className="group hover:bg-brand-yellow-50/50 transition-colors">
                       <td className="px-6 py-5">
                         <div className="flex items-center gap-3">
-                          <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-md
-                                   ${item.jenjang === 'MTs' ? 'bg-gradient-to-br from-maroon-500 to-maroon-700' :
-                              'bg-gradient-to-br from-gold-400 to-gold-600'}
+                          <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white font-black text-sm shadow-md
+                                   ${item.jenjang === 'MTs' ? 'bg-linear-to-br from-brand-blue-500 to-brand-blue-700' :
+                              'bg-linear-to-br from-brand-yellow-400 to-brand-yellow-600'}
                                 `}>
                             {item.jenjang.substring(0, 2)}
                           </div>
@@ -505,12 +505,12 @@ export default function AdminDashboardPage() {
                       </td>
                       <td className="px-6 py-5 text-center text-ink-500 font-medium">-</td>
                       <td className="px-6 py-5 text-center">
-                        <span className="text-ink-900 font-bold bg-cream-200 px-3 py-1 rounded-lg">
+                        <span className="text-brand-blue-900 font-black bg-brand-yellow-100 px-3 py-1 rounded-lg border border-brand-yellow-200">
                           {item.pendaftar}
                         </span>
                       </td>
                       <td className="px-6 py-5 text-center">
-                        <span className="text-maroon-800 font-bold bg-maroon-50 px-3 py-1 rounded-lg border border-maroon-100">
+                        <span className="text-brand-blue-800 font-black bg-brand-blue-50 px-3 py-1 rounded-lg border border-brand-blue-100">
                           {item.diterima}
                         </span>
                       </td>
@@ -529,8 +529,8 @@ export default function AdminDashboardPage() {
 
           {/* Registration Funnel - NEW ENHANCEMENT */}
           <div className="pt-4">
-            <h3 className="text-xl font-bold text-ink-900 mb-6 flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-maroon-700" />
+            <h3 className="text-xl font-black text-brand-blue-950 mb-6 flex items-center gap-2">
+              <TrendingUp className="w-5 h-5 text-brand-blue-700" />
               Tingkat Konversi Pendaftaran (Funnel Pendaftaran)
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-5 gap-2 relative">
@@ -573,9 +573,9 @@ export default function AdminDashboardPage() {
           {/* Stats Distribution - NEW ENHANCEMENT */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
             {/* Status Distribution */}
-            <div className="bg-white rounded-3xl border border-cream-200 shadow-sm app-card p-6">
-              <h4 className="text-lg font-bold text-ink-950 mb-6 flex items-center gap-2">
-                <BarChart3 className="w-5 h-5 text-maroon-700" />
+            <div className="bg-white rounded-3xl border border-brand-yellow-100 shadow-sm app-card p-6">
+              <h4 className="text-lg font-black text-brand-blue-950 mb-6 flex items-center gap-2">
+                <BarChart3 className="w-5 h-5 text-brand-blue-700" />
                 Distribusi Status
               </h4>
               <div className="space-y-4">
@@ -605,9 +605,9 @@ export default function AdminDashboardPage() {
             </div>
 
             {/* Gender Distribution */}
-            <div className="bg-white rounded-3xl border border-cream-200 shadow-sm app-card p-6">
-              <h4 className="text-lg font-bold text-ink-950 mb-6 flex items-center gap-2">
-                <Users className="w-5 h-5 text-maroon-700" />
+            <div className="bg-white rounded-3xl border border-brand-yellow-100 shadow-sm app-card p-6">
+              <h4 className="text-lg font-black text-brand-blue-950 mb-6 flex items-center gap-2">
+                <Users className="w-5 h-5 text-brand-blue-700" />
                 Komposisi Gender
               </h4>
               <div className="flex items-center justify-center py-4">
@@ -628,7 +628,7 @@ export default function AdminDashboardPage() {
               </div>
               <div className="mt-4 px-2">
                 <p className="text-xs text-ink-500 text-center italic">
-                  Perbandingan santri putra dan putri yang terdaftar tahun ini.
+                Selamat datang kembali di panel kendali utama PPDB Ulul Albaab. Berikut adalah ikhtisar pendaftaran hari ini.
                 </p>
               </div>
             </div>
@@ -641,9 +641,9 @@ export default function AdminDashboardPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {(stats.stats_per_provinsi || []).slice(0, 4).map((item, idx) => (
-              <div key={idx} className="bg-white rounded-3xl border border-cream-200 shadow-sm app-card p-4 flex items-center justify-between group hover:border-maroon-200 cursor-default">
+              <div key={idx} className="bg-white rounded-3xl border border-brand-yellow-100 shadow-sm app-card p-4 flex items-center justify-between group hover:border-brand-blue-200 cursor-default transition-all">
                 <div className="flex items-center gap-3">
-                  <div className="p-2.5 bg-cream-100 text-ink-500 rounded-xl group-hover:bg-maroon-50 group-hover:text-maroon-700 transition-colors">
+                  <div className="p-2.5 bg-brand-yellow-100 text-ink-500 rounded-xl group-hover:bg-brand-blue-50 group-hover:text-brand-blue-700 transition-colors border border-brand-yellow-200">
                     <MapPin className="w-5 h-5" />
                   </div>
                   <span className="font-semibold text-ink-700">{item.provinsi}</span>
@@ -657,12 +657,12 @@ export default function AdminDashboardPage() {
         {/* Right: Quick Actions & Status Stack */}
         <div className="space-y-6">
           {/* Quick Action Stack */}
-          <div className="bg-white rounded-3xl border border-cream-200 shadow-sm app-card p-6">
-            <h3 className="text-lg font-bold text-ink-950 mb-4">Aksi Cepat</h3>
+          <div className="bg-white rounded-3xl border border-brand-yellow-100 shadow-sm app-card p-6">
+            <h3 className="text-lg font-black text-brand-blue-950 mb-4 uppercase tracking-widest text-[10px]">Aksi Cepat</h3>
             <div className="space-y-3">
               {canViewKeuangan && (
                 <Link href="/dashboard/admin/verifikasi-pembayaran"
-                  className="flex items-center justify-between p-3 rounded-xl hover:bg-cream-50 border border-transparent hover:border-ink-200 transition-all group">
+                  className="flex items-center justify-between p-3 rounded-xl hover:bg-brand-yellow-50 border border-transparent hover:border-brand-yellow-200 transition-all group">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-amber-50 rounded-lg text-amber-600 group-hover:scale-110 transition-transform">
                       <CreditCard className="w-5 h-5" />
@@ -678,7 +678,7 @@ export default function AdminDashboardPage() {
 
               {canViewBerkas && (
                 <Link href="/dashboard/admin/verifikasi-dokumen"
-                  className="flex items-center justify-between p-3 rounded-xl hover:bg-cream-50 border border-transparent hover:border-ink-200 transition-all group">
+                  className="flex items-center justify-between p-3 rounded-xl hover:bg-brand-yellow-50 border border-transparent hover:border-brand-yellow-200 transition-all group">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-blue-50 rounded-lg text-blue-600 group-hover:scale-110 transition-transform">
                       <FileCheck className="w-5 h-5" />
@@ -694,7 +694,7 @@ export default function AdminDashboardPage() {
 
               {canViewSeleksi && (
                 <Link href="/dashboard/admin/jadwal-ujian"
-                  className="flex items-center justify-between p-3 rounded-xl hover:bg-cream-50 border border-transparent hover:border-ink-200 transition-all group">
+                  className="flex items-center justify-between p-3 rounded-xl hover:bg-brand-yellow-50 border border-transparent hover:border-brand-yellow-200 transition-all group">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-purple-50 rounded-lg text-purple-600 group-hover:scale-110 transition-transform">
                       <Calendar className="w-5 h-5" />

@@ -596,25 +596,25 @@ function AdminPendaftarContent() {
   const formatStatus = (status: string) => {
     const statusMap: Record<string, { label: string; color: string }> = {
       draft: { label: "Draft", color: "bg-stone-100 text-stone-700" },
-      waiting_payment: { label: "Menunggu Pembayaran", color: "bg-amber-100 text-amber-700" },
-      awaiting_payment: { label: "Menunggu Pembayaran", color: "bg-amber-100 text-amber-700" },
-      payment_verification: { label: "Verifikasi Pembayaran", color: "bg-orange-100 text-orange-700" },
+      waiting_payment: { label: "Menunggu Pembayaran", color: "bg-brand-yellow-100 text-brand-yellow-700" },
+      awaiting_payment: { label: "Menunggu Pembayaran", color: "bg-brand-yellow-100 text-brand-yellow-700" },
+      payment_verification: { label: "Verifikasi Pembayaran", color: "bg-brand-blue-50 text-brand-blue-700 border border-brand-blue-100" },
       payment_rejected: { label: "Pembayaran Ditolak", color: "bg-red-100 text-red-700" },
-      paid: { label: "Sudah Bayar", color: "bg-blue-100 text-blue-700" },
-      data_completed: { label: "Data Lengkap", color: "bg-maroon-100 text-maroon-800" },
-      docs_uploaded: { label: "Dokumen Terupload", color: "bg-indigo-100 text-indigo-700" },
-      docs_verified: { label: "Dokumen Terverifikasi", color: "bg-green-100 text-green-700" },
+      paid: { label: "Sudah Bayar", color: "bg-emerald-100 text-emerald-700" },
+      data_completed: { label: "Data Lengkap", color: "bg-brand-blue-100 text-brand-blue-800" },
+      docs_uploaded: { label: "Dokumen Terupload", color: "bg-brand-blue-50 text-brand-blue-600" },
+      docs_verified: { label: "Dokumen Terverifikasi", color: "bg-emerald-100 text-emerald-700" },
       docs_rejected: { label: "Dokumen Ditolak", color: "bg-red-100 text-red-700" },
-      scheduled: { label: "Terjadwal Ujian", color: "bg-purple-100 text-purple-700" },
-      exam_scheduled: { label: "Terjadwal Ujian", color: "bg-purple-100 text-purple-700" },
-      exam_completed: { label: "Sudah Ujian", color: "bg-violet-100 text-violet-700" },
-      tested: { label: "Sudah Ujian", color: "bg-violet-100 text-violet-700" },
-      announced: { label: "Diumumkan", color: "bg-cyan-100 text-cyan-700" },
-      accepted: { label: "Diterima", color: "bg-green-100 text-green-700" },
-      rejected: { label: "Ditolak", color: "bg-red-100 text-red-700" },
-      enrolled: { label: "Terdaftar", color: "bg-emerald-100 text-emerald-700" },
+      scheduled: { label: "Terjadwal Ujian", color: "bg-brand-yellow-100 text-brand-yellow-800 border border-brand-yellow-200 shadow-sm" },
+      exam_scheduled: { label: "Terjadwal Ujian", color: "bg-brand-yellow-100 text-brand-yellow-800 border border-brand-yellow-200" },
+      exam_completed: { label: "Sudah Ujian", color: "bg-brand-blue-600 text-white shadow-sm" },
+      tested: { label: "Sudah Ujian", color: "bg-brand-blue-600 text-white" },
+      announced: { label: "Diumumkan", color: "bg-brand-blue-50 text-brand-blue-700" },
+      accepted: { label: "Diterima", color: "bg-emerald-600 text-white" },
+      rejected: { label: "Ditolak", color: "bg-rose-600 text-white" },
+      enrolled: { label: "Terdaftar", color: "bg-emerald-100 text-emerald-800" },
       // Fix for legacy/seed data
-      verified: { label: "Terverifikasi", color: "bg-green-100 text-green-700" },
+      verified: { label: "Terverifikasi", color: "bg-emerald-100 text-emerald-700" },
     };
 
     const statusInfo = statusMap[status] || { label: status, color: "bg-stone-100 text-stone-700" };
@@ -643,7 +643,7 @@ function AdminPendaftarContent() {
       {urlFilter && (
         <Link
           href="/dashboard/admin"
-          className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium"
+          className="inline-flex items-center gap-2 text-brand-blue-600 hover:text-brand-blue-800 font-bold"
         >
           <ArrowLeft className="w-4 h-4" />
           Kembali ke Dashboard
@@ -651,14 +651,14 @@ function AdminPendaftarContent() {
       )}
 
       {/* Header */}
-      <div className="bg-white rounded-xl shadow-lg p-4 md:p-6 border-2 border-blue-100">
+      <div className="bg-white rounded-3xl shadow-sm p-4 md:p-8 border border-brand-yellow-100">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3 md:gap-4 min-w-0">
-            <div className="p-2.5 md:p-3 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex-shrink-0">
-              <Users className="w-6 h-6 md:w-8 md:h-8 text-white" />
+          <div className="flex items-center gap-3 md:gap-5 min-w-0">
+            <div className="p-2.5 md:p-4 bg-linear-to-br from-brand-blue-600 to-brand-blue-900 rounded-2xl shadow-xl shadow-brand-blue-900/20 flex-shrink-0">
+              <Users className="w-6 h-6 md:w-8 md:h-8 text-brand-yellow-300" />
             </div>
             <div className="min-w-0">
-              <h2 className="text-lg md:text-2xl font-black text-stone-900 truncate">
+              <h2 className="text-lg md:text-3xl font-black text-brand-blue-950 tracking-tight leading-none truncate">
                 {activeFilterLabel || "Pendaftar"}
               </h2>
               <p className="text-sm text-stone-600">
@@ -714,12 +714,12 @@ function AdminPendaftarContent() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-blue-100">
+      <div className="bg-white rounded-2xl shadow-sm p-6 border border-brand-yellow-100">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Search */}
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-stone-700 mb-2">
-              <Search className="w-4 h-4 inline mr-2" />
+            <label className="block text-sm font-bold text-brand-blue-900 mb-2 leading-none uppercase tracking-widest text-[10px]">
+              <Search className="w-3.5 h-3.5 inline mr-1" />
               Cari Pendaftar
             </label>
             <div className="flex gap-2">
@@ -728,12 +728,12 @@ function AdminPendaftarContent() {
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && handleSearch()}
-                placeholder="Cari nama, NIK, atau nomor per..."
-                className="flex-1 min-w-0 px-3 md:px-4 py-2 border-2 border-stone-200 rounded-lg focus:border-blue-500 focus:outline-none text-sm md:text-base"
+                placeholder="Cari nama, NIK, atau nomor pendaftaran..."
+                className="flex-1 min-w-0 px-3 md:px-4 py-3 bg-brand-yellow-50/50 border border-brand-yellow-100 rounded-xl focus:border-brand-blue-500 focus:bg-white focus:outline-none text-sm md:text-base font-bold text-brand-blue-950 placeholder:text-ink-200"
               />
               <button
                 onClick={handleSearch}
-                className="px-4 md:px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors flex-shrink-0 text-sm md:text-base"
+                className="px-4 md:px-8 py-3 bg-brand-blue-700 hover:bg-brand-blue-800 text-white rounded-xl font-black transition-all flex-shrink-0 text-sm md:text-base shadow-lg shadow-brand-blue-700/20 active:scale-95"
               >
                 Cari
               </button>
@@ -742,8 +742,8 @@ function AdminPendaftarContent() {
 
           {/* Status Filter */}
           <div>
-            <label className="block text-sm font-medium text-stone-700 mb-2">
-              <Filter className="w-4 h-4 inline mr-2" />
+            <label className="block text-sm font-bold text-brand-blue-900 mb-2 leading-none uppercase tracking-widest text-[10px]">
+              <Filter className="w-3.5 h-3.5 inline mr-1" />
               Filter Status
             </label>
             <select
@@ -752,7 +752,7 @@ function AdminPendaftarContent() {
                 setStatusFilter(e.target.value);
                 setPagination((prev) => ({ ...prev, page: 1 }));
               }}
-              className="w-full px-4 py-2 border-2 border-stone-200 rounded-lg focus:border-blue-500 focus:outline-none"
+              className="w-full px-4 py-3 bg-brand-yellow-50/50 border border-brand-yellow-100 rounded-xl focus:border-brand-blue-500 focus:bg-white focus:outline-none font-bold text-brand-blue-950"
             >
               <option value="">Semua Status</option>
 
@@ -1031,7 +1031,7 @@ function AdminPendaftarContent() {
       }
 
       {/* Table */}
-      <div className="bg-white rounded-xl shadow-lg border-2 border-blue-100 overflow-hidden">
+      <div className="bg-white rounded-3xl shadow-sm border border-brand-yellow-100 overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center py-20">
             <div className="text-center">
@@ -1053,12 +1053,12 @@ function AdminPendaftarContent() {
           <>
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b-2 border-blue-200">
+                <thead className="bg-linear-to-r from-brand-blue-50 to-brand-yellow-50 border-b border-brand-yellow-100">
                   <tr>
-                    <th className="px-4 py-3 text-center">
+                    <th className="px-4 py-4 text-center">
                       <button
                         onClick={handleSelectAll}
-                        className="text-blue-600 hover:text-blue-800"
+                        className="text-brand-blue-600 hover:text-brand-blue-800"
                       >
                         {selectedIds.length === pendaftar.length ? (
                           <CheckSquare className="w-5 h-5" />
@@ -1067,10 +1067,10 @@ function AdminPendaftarContent() {
                         )}
                       </button>
                     </th>
-                    <th className="px-4 py-3 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">
+                    <th className="px-4 py-4 text-left text-[10px] font-black text-brand-blue-900 uppercase tracking-widest">
                       No. Pendaftaran
                     </th>
-                    <th className="px-4 py-3 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">
+                    <th className="px-4 py-4 text-left text-[10px] font-black text-brand-blue-900 uppercase tracking-widest">
                       Nama Lengkap
                     </th>
                     {!canViewKeuangan && (
@@ -1282,7 +1282,7 @@ function AdminPendaftarContent() {
                       <td className="px-4 py-3 whitespace-nowrap">
                         <Link
                           href={`/dashboard/admin/pendaftar/${item.id}`}
-                          className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold transition-all shadow-sm hover:shadow-md"
+                          className="inline-flex items-center gap-2 px-4 py-2 bg-brand-blue-700 hover:bg-brand-blue-800 text-white rounded-xl text-xs font-black transition-all shadow-lg shadow-brand-blue-700/20 active:scale-95"
                         >
                           <Eye className="w-4 h-4" />
                           <span>Buka Detail</span>

@@ -9,13 +9,17 @@ import {
   LogOut,
   Menu,
   X,
-  Home,
   Shield,
   Loader2,
   ChevronRight,
-  UserCheck
+  UserCheck,
+  ShieldCheck,
+  Search,
+  ExternalLink,
+  Home
 } from "lucide-react";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 import IdleTimeoutTracker from "@/components/auth/IdleTimeoutTracker";
 import { UserRole, ROLE_LABELS } from "@/lib/access-control";
 
@@ -40,7 +44,6 @@ export default function PengujiDashboardLayout({
         if (!sessionRes.ok) throw new Error("Failed to get session");
 
         const sessionData = await sessionRes.json();
-        // Support both new session format (sessionData.session.full_name) and legacy format
         const name =
           sessionData.session?.full_name ||
           sessionData.full_name ||
@@ -63,7 +66,7 @@ export default function PengujiDashboardLayout({
 
   const menuItems = [
     {
-      name: "Dashboard",
+      name: "Beranda",
       href: "/dashboard/penguji",
       icon: LayoutDashboard,
       active: pathname === "/dashboard/penguji",
@@ -107,40 +110,40 @@ export default function PengujiDashboardLayout({
     }
   };
 
-  const NavLink = ({ item }: { item: (typeof menuItems)[0] }) => {
-    return (
-      <div className="px-3 py-1">
+  const SidebarNav = () => (
+    <nav className="space-y-1">
+      {menuItems.map((item) => (
         <Link
+          key={item.name}
           href={item.href}
-          className={`group flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 ${item.active
-            ? "bg-maroon-600 text-white shadow-lg shadow-maroon-200"
-            : "text-ink-600 hover:bg-maroon-50 hover:text-maroon-700"
-            }`}
+          onClick={() => setSidebarOpen(false)}
+          className={`group flex items-center px-4 py-3 text-sm font-bold rounded-xl transition-all duration-200 ${
+            item.active
+              ? "bg-brand-blue-600 text-white shadow-lg shadow-brand-blue-200"
+              : "text-ink-600 hover:bg-brand-blue-50 hover:text-brand-blue-700"
+          }`}
         >
-          <item.icon className={`w-5 h-5 mr-3 flex-shrink-0 transition-colors ${item.active ? 'text-white' : 'text-ink-400 group-hover:text-maroon-600'}`} />
-          <span className="flex-1 truncate">{item.name}</span>
-
-          {item.active && (
-            <ChevronRight className="w-4 h-4 text-maroon-200" />
-          )}
+          <item.icon className={`w-5 h-5 mr-3 shrink-0 transition-colors ${item.active ? 'text-white' : 'text-ink-400 group-hover:text-brand-blue-600'}`} />
+          <span className="flex-1 truncate tracking-tight">{item.name}</span>
+          {item.active && <ChevronRight className="w-4 h-4 text-brand-blue-200" />}
         </Link>
-      </div>
-    );
-  };
+      ))}
+    </nav>
+  );
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-cream-50 flex items-center justify-center">
-        <div className="bg-white p-8 rounded-3xl shadow-xl text-center max-w-sm w-full mx-4">
+      <div className="min-h-screen bg-surface-50 flex items-center justify-center p-6">
+        <div className="text-center">
           <div className="relative w-16 h-16 mx-auto mb-6">
-            <div className="absolute inset-0 border-4 border-cream-100 rounded-full" />
-            <div className="absolute inset-0 border-4 border-maroon-600 rounded-full border-t-transparent animate-spin" />
+            <div className="absolute inset-0 border-4 border-brand-blue-100 rounded-full" />
+            <div className="absolute inset-0 border-4 border-brand-blue-600 rounded-full border-t-transparent animate-spin" />
             <div className="absolute inset-0 flex items-center justify-center">
-              <Shield className="w-6 h-6 text-maroon-600" />
+              <Shield className="w-6 h-6 text-brand-blue-600" />
             </div>
           </div>
-          <h2 className="text-xl font-bold text-ink-950 mb-2">Memuat Panel Tim Seleksi</h2>
-          <p className="text-cream-500 text-sm">Mohon tunggu sebentar...</p>
+          <h2 className="text-xl font-black text-ink-950 mb-2">Ulul Albaab</h2>
+          <p className="text-ink-500 text-sm font-medium animate-pulse">Menghubungkan ke sistem seleksi...</p>
         </div>
       </div>
     );
@@ -149,70 +152,78 @@ export default function PengujiDashboardLayout({
   return (
     <>
       <IdleTimeoutTracker />
-      <div className="min-h-screen bg-cream-50 font-sans selection:bg-maroon-100 selection:text-maroon-900">
-        {/* Mobile Header (Fintech Style) */}
-        <div className="lg:hidden bg-white/90 backdrop-blur-xl sticky top-0 z-40 px-5 py-4 flex items-center justify-between border-b border-cream-200 shadow-sm">
-          <div className="flex flex-col">
-            <span className="text-[10px] uppercase font-black tracking-widest text-cream-500 mb-0.5">PPDB Al-Imam</span>
-            <span className="text-base font-black text-ink-950 leading-none">Beranda</span>
-          </div>
-
+      <div className="min-h-screen bg-surface-50 font-sans selection:bg-brand-blue-100 selection:text-brand-blue-900">
+        
+        {/* Mobile Header */}
+        <header className="lg:hidden sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-surface-200 px-5 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-linear-to-br from-maroon-600 to-maroon-700 flex items-center justify-center text-white text-sm font-black shadow-md border-2 border-cream-100">
-              {pengujiName.charAt(0)}
+            <div className="w-9 h-9 rounded-xl bg-linear-to-br from-brand-blue-600 to-brand-blue-700 flex items-center justify-center text-white text-sm font-black shadow-md">
+              UA
             </div>
+            <span className="font-black text-ink-950 tracking-tight leading-none text-base">Seleksi Panel</span>
           </div>
-        </div>
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="p-2 text-ink-600 hover:bg-surface-100 rounded-xl transition-colors"
+          >
+            <Menu className="w-6 h-6" />
+          </button>
+        </header>
 
         <div className="flex relative">
           {/* Desktop Sidebar */}
-          <aside className="hidden lg:flex lg:w-72 lg:flex-col lg:fixed lg:top-0 lg:left-0 lg:h-screen z-50">
-            <div className="flex flex-col h-full bg-white border-r border-cream-200 shadow-[4px_0_24px_-12px_rgba(0,0,0,0.1)]">
-              {/* Brand */}
-              <div className="px-6 pt-8 pb-6">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-maroon-600 to-maroon-700 flex items-center justify-center text-white shadow-lg shadow-maroon-200">
-                    <Shield className="w-6 h-6" />
+          <aside className="hidden lg:flex lg:w-72 lg:flex-col lg:fixed lg:top-0 lg:left-0 lg:h-screen z-50 bg-white border-r border-surface-200 shadow-premium-sm transition-all duration-300">
+            <div className="flex flex-col h-full">
+              {/* Brand Header */}
+              <div className="px-8 pt-10 pb-8 border-b border-surface-100 mb-8">
+                <div className="flex items-center gap-4 mb-2">
+                  <div className="w-10 h-10 rounded-xl bg-linear-to-br from-brand-blue-600 to-brand-blue-700 flex items-center justify-center text-white shadow-lg shadow-brand-blue-200">
+                    <ShieldCheck className="w-6 h-6" />
                   </div>
                   <div>
-                    <h1 className="font-black text-xl text-ink-950 leading-none tracking-tight">Panel <span className="text-maroon-600">Tim Seleksi</span></h1>
-                    <p className="text-xs text-cream-500 font-medium mt-1">Seleksi PPDB</p>
-                  </div>
-                </div>
-
-                {/* Penguji Info */}
-                <div className="p-4 rounded-2xl bg-cream-50 border border-cream-100 relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-20 transition-opacity">
-                    <UserCheck className="w-16 h-16 text-maroon-600" />
-                  </div>
-                  <p className="text-xs font-semibold text-cream-500 mb-1">Masuk sebagai,</p>
-                  <p className="font-bold text-ink-950 truncate mb-2">{pengujiName}</p>
-                  <div className="flex items-center gap-1 text-xs text-maroon-600 bg-maroon-50 px-2 py-1 rounded-lg inline-flex border border-maroon-100">
-                    <Shield className="w-3 h-3" />
-                    <span className="font-bold">Tim Seleksi</span>
+                    <h1 className="font-black text-xl text-ink-950 leading-none tracking-tight">Seleksi <span className="text-brand-blue-600">Panel</span></h1>
+                    <p className="text-[10px] uppercase tracking-widest font-black text-brand-yellow-600 mt-1">Ulul Albaab</p>
                   </div>
                 </div>
               </div>
 
-              {/* Navigation */}
-              <nav className="flex-1 overflow-y-auto px-3 pb-6 space-y-1 scrollbar-hide">
-                <div className="px-3 mb-2">
-                  <p className="text-xs font-bold text-ink-400 uppercase tracking-wider">Menu Utama</p>
+              {/* User Info Card */}
+              <div className="px-6 mb-8">
+                <div className="p-5 rounded-[1.5rem] bg-surface-50 border border-surface-100 relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 p-3 opacity-5 group-hover:opacity-10 transition-opacity">
+                    <UserCheck className="w-16 h-16 text-brand-blue-600" />
+                  </div>
+                  <div className="relative z-10 flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-full bg-white shadow-premium-sm flex items-center justify-center border border-surface-100 font-black text-brand-blue-700">
+                       {pengujiName.charAt(0)}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-black text-ink-950 text-sm truncate">{pengujiName}</p>
+                      <span className="text-[10px] font-bold text-ink-400 capitalize">{userRole}</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 text-[9px] font-black text-brand-blue-700 bg-brand-blue-50 px-2.5 py-1 rounded-lg border border-brand-blue-100 uppercase tracking-widest">
+                    <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                    Aktif Sesi
+                  </div>
                 </div>
-                {menuItems.map((item) => (
-                  <NavLink key={item.name} item={item} />
-                ))}
-              </nav>
+              </div>
 
-              {/* Footer */}
-              <div className="p-4 border-t border-cream-100 bg-cream-50">
-                {availableRoles && availableRoles.length > 1 && (
+              {/* Navigation Menu */}
+              <div className="flex-1 px-6 overflow-y-auto custom-scrollbar">
+                <p className="text-[10px] font-black text-ink-300 uppercase tracking-[0.2em] mb-4 pl-1">Navigasi Utama</p>
+                <SidebarNav />
+              </div>
+
+              {/* Footer Actions */}
+              <div className="p-6 border-t border-surface-50 mt-auto">
+                {availableRoles.length > 1 && (
                   <div className="mb-4">
-                    <label className="text-xs font-bold text-cream-500 uppercase tracking-wider mb-2 block">Switch Role</label>
+                    <p className="text-[10px] font-bold text-ink-400 uppercase tracking-widest mb-2 pl-1">Ganti Role</p>
                     <select
-                      value={userRole || ""}
+                      value={userRole}
                       onChange={handleRoleSwitch}
-                      className="w-full bg-white border border-cream-200 text-sm text-ink-900 rounded-xl py-2 px-3 focus:ring-2 focus:ring-maroon-500/20 shadow-sm"
+                      className="w-full bg-surface-50 border border-surface-100 text-xs font-bold text-ink-900 rounded-xl py-2.5 px-3 focus:ring-4 focus:ring-brand-blue-500/10 focus:border-brand-blue-200 outline-none transition-all shadow-premium-sm"
                     >
                       {availableRoles.map((role) => (
                         <option key={role} value={role}>{ROLE_LABELS[role as UserRole] || role}</option>
@@ -222,127 +233,130 @@ export default function PengujiDashboardLayout({
                 )}
                 <button
                   onClick={handleLogout}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium text-red-600 bg-white border border-red-100 hover:bg-red-50 hover:border-red-200 rounded-xl transition-all shadow-sm"
+                  className="flex items-center w-full px-4 py-3 text-sm font-black text-red-500 hover:bg-red-50 rounded-xl transition-all group"
                 >
-                  <LogOut className="w-4 h-4" />
-                  <span>Keluar</span>
+                  <LogOut className="w-5 h-5 mr-3 shrink-0 text-red-300 group-hover:text-red-500 transition-colors" />
+                  <span>Logout</span>
                 </button>
               </div>
             </div>
           </aside>
 
           {/* Mobile Sidebar Overlay */}
-          <div className={`fixed inset-0 z-50 lg:hidden transition-opacity duration-300 ${sidebarOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}>
-            <div className="absolute inset-0 bg-ink-950/60 backdrop-blur-sm" onClick={() => setSidebarOpen(false)} />
-            <div className={`absolute top-0 left-0 bottom-0 w-80 bg-white shadow-2xl transition-transform duration-300 transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
-              <div className="flex flex-col h-full overflow-hidden">
-                <div className="p-6 border-b border-cream-100 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-maroon-600 flex items-center justify-center text-white">
-                      <Shield className="w-5 h-5" />
+          <AnimatePresence>
+            {sidebarOpen && (
+              <>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setSidebarOpen(false)}
+                  className="lg:hidden fixed inset-0 z-[60] bg-ink-950/20 backdrop-blur-md"
+                />
+                <motion.aside
+                  initial={{ x: -280 }}
+                  animate={{ x: 0 }}
+                  exit={{ x: -280 }}
+                  transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                  className="lg:hidden fixed left-0 top-0 bottom-0 w-[280px] z-[70] bg-white shadow-2xl flex flex-col p-6"
+                >
+                  <div className="flex items-center justify-between mb-10">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-linear-to-br from-brand-blue-600 to-brand-blue-700 flex items-center justify-center text-white shadow-md">
+                        <ShieldCheck className="w-5 h-5" />
+                      </div>
+                      <span className="font-black text-ink-950">Tim Seleksi</span>
                     </div>
-                    <span className="font-bold text-lg text-ink-950">Panel Tim Seleksi</span>
+                    <button onClick={() => setSidebarOpen(false)} className="p-2 hover:bg-surface-100 rounded-xl">
+                      <X className="w-5 h-5 text-ink-400" />
+                    </button>
                   </div>
-                  <button onClick={() => setSidebarOpen(false)} className="p-2 text-ink-400 hover:text-ink-950">
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
 
-                <nav className="flex-1 overflow-y-auto p-4 space-y-1">
-                  {menuItems.map((item) => (
-                    <div key={item.name} onClick={() => setSidebarOpen(false)}>
-                      <NavLink item={item} />
-                    </div>
-                  ))}
-                </nav>
+                  <div className="flex-1 overflow-y-auto">
+                    <SidebarNav />
+                  </div>
 
-                <div className="p-4 border-t border-cream-100">
-                  {availableRoles && availableRoles.length > 1 && (
-                    <div className="mb-4">
-                      <label className="text-xs font-bold text-cream-500 mb-2 block">Switch Role</label>
-                      <select
-                        value={userRole || ""}
-                        onChange={handleRoleSwitch}
-                        className="w-full bg-cream-50 border border-cream-200 text-sm text-ink-900 rounded-xl py-3 px-3 focus:ring-2 focus:ring-maroon-500/20"
-                      >
-                        {availableRoles.map((role) => (
-                          <option key={role} value={role}>{ROLE_LABELS[role as UserRole] || role}</option>
-                        ))}
-                      </select>
-                    </div>
-                  )}
                   <button
                     onClick={handleLogout}
-                    className="w-full py-3 bg-red-50 text-red-600 font-bold rounded-xl flex items-center justify-center gap-2"
+                    className="mt-auto flex items-center w-full px-4 py-4 text-sm font-black text-red-600 bg-red-50 rounded-xl"
                   >
-                    <LogOut className="w-5 h-5" /> Keluar
+                    <LogOut className="w-5 h-5 mr-3" />
+                    Logout Akun
                   </button>
-                </div>
-              </div>
-            </div>
-          </div>
+                </motion.aside>
+              </>
+            )}
+          </AnimatePresence>
 
-          {/* Main Content Area */}
-          <main className="flex-1 lg:pl-72 w-full transition-all duration-300 flex flex-col min-h-screen relative pb-24 lg:pb-0">
-            {/* Desktop Topbar */}
-            <header className="hidden lg:flex sticky top-4 z-30 mx-8 mt-4 rounded-[1.5rem] bg-white/70 backdrop-blur-xl px-6 py-4 items-center justify-between shadow-sm border border-cream-200">
-              <div>
-                <h2 className="text-xl font-black text-ink-950 tracking-tight">Panel Tim Seleksi</h2>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-cream-500">Penguji & Pewawancara - Seleksi PPDB</p>
-              </div>
+          {/* Main Content Content */}
+          <div className="flex-1 flex flex-col min-w-0 lg:ml-72 min-h-screen">
+            {/* Topbar Desktop */}
+            <header className="hidden lg:flex items-center justify-between h-24 px-10 sticky top-0 bg-surface-50/80 backdrop-blur-md z-30 shrink-0">
+               <div className="flex-1 max-w-xl">
+                  <div className="relative group">
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-300 group-focus-within:text-brand-blue-600 transition-colors" />
+                    <input 
+                      type="text" 
+                      placeholder="Cari data pendaftar..." 
+                      className="w-full bg-white border border-surface-200 focus:border-brand-blue-300 focus:ring-4 focus:ring-brand-blue-500/5 rounded-[1.25rem] py-3 pl-11 pr-4 text-sm font-medium outline-none transition-all shadow-premium-sm"
+                    />
+                  </div>
+               </div>
 
-              <div className="flex items-center gap-4">
-                <Link href="/" className="p-2 text-ink-400 hover:text-maroon-600 bg-cream-50 hover:bg-cream-100 rounded-full transition-colors" title="Lihat Website">
-                  <Home className="w-5 h-5" />
-                </Link>
-
-                <div className="h-8 w-px bg-cream-200" />
-
-                <div className="flex items-center gap-3 px-4 py-2 rounded-full bg-maroon-50 border border-maroon-100 text-maroon-700 shadow-sm">
-                  <div className="w-2 h-2 rounded-full bg-maroon-500 animate-pulse" />
-                  <span className="text-[10px] uppercase font-black tracking-widest">Akses Penilai</span>
-                </div>
-              </div>
+               <div className="flex items-center gap-6">
+                  <div className="flex items-center gap-4">
+                    <Link href="/" target="_blank" className="p-3 text-ink-400 hover:text-brand-blue-600 bg-white hover:bg-brand-blue-50 border border-surface-100 rounded-full transition-all shadow-premium-sm">
+                      <ExternalLink className="w-5 h-5" />
+                    </Link>
+                    <div className="w-px h-6 bg-surface-200" />
+                    <div className="flex items-center gap-3">
+                       <div className="text-right hidden xl:block">
+                          <p className="text-sm font-black text-ink-950 leading-none">{pengujiName}</p>
+                          <p className="text-[10px] font-bold text-brand-blue-600 uppercase tracking-widest mt-1">Penguji Penilai</p>
+                       </div>
+                       <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-brand-blue-50 to-brand-blue-100 flex items-center justify-center border border-brand-blue-200 shadow-premium-sm text-brand-blue-700 font-black">
+                          {pengujiName.charAt(0)}
+                       </div>
+                    </div>
+                  </div>
+               </div>
             </header>
 
-            {/* Content Wrapper */}
-            <div className="flex-1 pt-6 lg:pt-0 p-4 md:p-6 lg:p-8 max-w-7xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
-              {children}
-            </div>
-
-            {/* Mobile Bottom Navigation (Fintech Style) */}
-            <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-cream-200 pb-safe z-40 shadow-[0_-10px_40px_-10px_rgba(0,0,0,0.1)] rounded-t-[1.5rem]">
-              <div className="flex justify-around items-center px-4 py-3">
-                <Link href="/dashboard/penguji" className="flex flex-col items-center p-2 group w-16">
-                  <div className={`w-10 h-8 rounded-full flex items-center justify-center mb-1 transition-colors ${pathname === '/dashboard/penguji' ? 'bg-maroon-50' : 'bg-transparent group-hover:bg-cream-50'}`}>
-                    <LayoutDashboard className={`w-5 h-5 transition-colors ${pathname === '/dashboard/penguji' ? 'text-maroon-700' : 'text-ink-400 group-hover:text-maroon-600'}`} />
-                  </div>
-                  <span className={`text-[10px] font-bold text-center ${pathname === '/dashboard/penguji' ? 'text-maroon-800' : 'text-ink-400'}`}>Beranda</span>
-                </Link>
-                
-                <Link href="/dashboard/penguji/jadwal" className="flex flex-col items-center p-2 group w-16">
-                  <div className={`w-10 h-8 rounded-full flex items-center justify-center mb-1 transition-colors ${pathname.includes('/jadwal') ? 'bg-maroon-50' : 'bg-transparent group-hover:bg-cream-50'}`}>
-                    <Calendar className={`w-5 h-5 transition-colors ${pathname.includes('/jadwal') ? 'text-maroon-700' : 'text-ink-400 group-hover:text-maroon-600'}`} />
-                  </div>
-                  <span className={`text-[10px] font-bold text-center ${pathname.includes('/jadwal') ? 'text-maroon-800' : 'text-ink-400'}`}>Jadwal</span>
-                </Link>
-
-                <Link href="/dashboard/penguji/input-nilai" className="flex flex-col items-center p-2 group w-16">
-                  <div className={`w-10 h-8 rounded-full flex items-center justify-center mb-1 transition-colors ${pathname.includes('/input-nilai') ? 'bg-maroon-50' : 'bg-transparent group-hover:bg-cream-50'}`}>
-                    <ClipboardCheck className={`w-5 h-5 transition-colors ${pathname.includes('/input-nilai') ? 'text-maroon-700' : 'text-ink-400 group-hover:text-maroon-600'}`} />
-                  </div>
-                  <span className={`text-[10px] font-bold text-center ${pathname.includes('/input-nilai') ? 'text-maroon-800' : 'text-ink-400'}`}>Nilai</span>
-                </Link>
-
-                <button onClick={() => setSidebarOpen(true)} className="flex flex-col items-center p-2 group w-16">
-                  <div className="w-10 h-8 rounded-full flex items-center justify-center mb-1 bg-transparent group-hover:bg-cream-50 transition-colors">
-                    <Menu className="w-5 h-5 text-ink-400 group-hover:text-maroon-600 transition-colors" />
-                  </div>
-                  <span className="text-[10px] font-bold text-ink-400 text-center">Menu</span>
-                </button>
+            {/* Content Area */}
+            <main className="flex-1 p-6 lg:p-10">
+              <div className="max-w-7xl mx-auto">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={pathname}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {children}
+                  </motion.div>
+                </AnimatePresence>
               </div>
-            </div>
-          </main>
+            </main>
+
+            {/* Mobile Bottom Navigation */}
+            <footer className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-surface-200 px-2 py-3 z-40 flex items-center justify-around shadow-[0_-10px_40px_-5px_rgba(0,0,0,0.05)] rounded-t-[2rem]">
+               {menuItems.map((item) => (
+                  <Link key={item.name} href={item.href} className="flex flex-col items-center gap-1 group py-1 min-w-[70px]">
+                     <div className={`p-2 rounded-2xl transition-all ${item.active ? 'bg-brand-blue-600 text-white shadow-lg shadow-brand-blue-200' : 'text-ink-400 group-hover:bg-brand-blue-50'}`}>
+                        <item.icon className="w-5 h-5" />
+                     </div>
+                     <span className={`text-[9px] font-black uppercase tracking-widest ${item.active ? 'text-brand-blue-700' : 'text-ink-400'}`}>{item.name}</span>
+                  </Link>
+               ))}
+               <button onClick={() => setSidebarOpen(true)} className="flex flex-col items-center gap-1 group py-1 min-w-[70px]">
+                  <div className="p-2 rounded-2xl text-ink-400 group-hover:bg-brand-blue-50 transition-all">
+                    <Menu className="w-5 h-5" />
+                  </div>
+                  <span className="text-[9px] font-black uppercase tracking-widest text-ink-400">Menu</span>
+               </button>
+            </footer>
+          </div>
         </div>
       </div>
     </>

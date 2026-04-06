@@ -10,7 +10,7 @@ export async function sendSms(
     const phone = normalizePhone(to);
 
     // Kirim via Wablas (WhatsApp message, lebih reliable dari SMS)
-    const message = `Kode verifikasi PPDB Ponpes Al-Andalus [Template Demo]: ${otp}`;
+    const message = `Kode verifikasi PPDB Ponpes Al-Andalus Ulul Albaab: ${otp}`;
     const result = await sendMessage({ phone, message });
 
     if (result.status) {

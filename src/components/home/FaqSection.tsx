@@ -13,10 +13,10 @@ const FAQS = [
     },
     {
         question: "Apakah santri diwajibkan untuk tinggal di asrama?",
-        answer: "Ya, seluruh santri di Pesantren Al-Andalus Al-Imam wajib tinggal di asrama untuk mengikuti seluruh rangkaian kegiatan tarbiyah, halaqah tahfidz, dan pembelajaran kitab turots secara maksimal.",
+        answer: "Ya, seluruh santri di Pesantren Al-Andalus Ulul Albaab wajib tinggal di asrama untuk mengikuti seluruh rangkaian kegiatan tarbiyah, halaqah tahfidz, dan pembelajaran kitab turots secara maksimal.",
     },
     {
-        question: "Kurikulum apa yang diterapkan di Pesantren Al-Andalus Al-Imam?",
+        question: "Kurikulum apa yang diterapkan di Pesantren Al-Andalus Ulul Albaab?",
         answer: "Kami menerapkan Kurikulum Terpadu yang menggabungkan kurikulum Nasional dengan kurikulum khas Al-Andalus yang berfokus pada penguasaan Bahasa Arab, Tahfidz Al-Qur'an, dan Kitab Turots.",
     },
     {
@@ -29,21 +29,21 @@ const FAQS = [
     },
     {
         question: "Apakah tersedia program beasiswa?",
-        answer: "Ya, Al-Andalus Al-Imam menyediakan program beasiswa bagi santri berprestasi (tahfidz 30 juz) dan santri dari keluarga yatim/piatu/dhuafa dengan syarat dan ketentuan yang berlaku.",
+        answer: "Ya, Al-Andalus Ulul Albaab menyediakan program beasiswa bagi santri berprestasi (tahfidz 30 juz) dan santri dari keluarga yatim/piatu/dhuafa dengan syarat dan ketentuan yang berlaku.",
     },
 ] as const;
 
 function FaqItem({ question, answer, isOpen, toggle }: { question: string, answer: string, isOpen: boolean, toggle: () => void }) {
     return (
-        <div className={`rounded-[24px] border transition-all duration-300 overflow-hidden ${isOpen ? 'bg-white border-cream-200 shadow-md ring-1 ring-cream-100' : 'bg-white border-cream-200 hover:border-maroon-200 hover:bg-cream-50/50'}`}>
+        <div className={`rounded-[24px] border transition-all duration-300 overflow-hidden ${isOpen ? 'bg-white border-cream-200 shadow-md ring-1 ring-brand-yellow-100' : 'bg-white border-cream-200 hover:border-maroon-200 hover:bg-cream-50/50'}`}>
             <button
                 onClick={toggle}
-                className="w-full px-6 py-5 md:px-8 md:py-6 text-left flex items-center justify-between gap-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-maroon-500 rounded-[24px]"
+                className="w-full px-6 py-5 md:px-8 md:py-6 text-left flex items-center justify-between gap-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue-500 rounded-[24px]"
             >
-                <span className={`font-bold text-base md:text-lg tracking-tight transition-colors pr-4 ${isOpen ? 'text-maroon-700' : 'text-ink-950'}`}>
+                <span className={`font-bold text-base md:text-lg tracking-tight transition-colors pr-4 ${isOpen ? 'text-brand-blue-700' : 'text-ink-950'}`}>
                     {question}
                 </span>
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${isOpen ? 'bg-maroon-600 text-white rotate-180 shadow-md' : 'bg-cream-100 text-maroon-600 group-hover:bg-maroon-100'}`}>
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${isOpen ? 'bg-brand-blue-600 text-white rotate-180 shadow-md' : 'bg-brand-yellow-100 text-brand-blue-600 group-hover:bg-maroon-100'}`}>
                     <ChevronDown className="w-5 h-5" />
                 </div>
             </button>
@@ -74,7 +74,7 @@ export default function FaqSection() {
     return (
         <section id="faq" className="section-std relative">
             {/* Decorative Blur */}
-            <div className="absolute top-1/2 left-0 -translate-y-1/2 w-64 h-64 bg-cream-100 rounded-full blur-[100px] opacity-60 pointer-events-none" />
+            <div className="absolute top-1/2 left-0 -translate-y-1/2 w-64 h-64 bg-brand-yellow-100 rounded-full blur-[100px] opacity-60 pointer-events-none" />
 
             <Container className="relative z-10">
                 <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
@@ -82,7 +82,7 @@ export default function FaqSection() {
                         initial={{ opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-cream-50 border border-cream-200 text-maroon-700 text-xs font-bold uppercase tracking-widest mb-6 shadow-sm"
+                        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-cream-50 border border-cream-200 text-brand-blue-700 text-xs font-bold uppercase tracking-widest mb-6 shadow-sm"
                     >
                         <HelpCircle className="w-3.5 h-3.5" />
                         <span>Tanya Jawab</span>
@@ -103,13 +103,13 @@ export default function FaqSection() {
                         viewport={{ once: true }}
                         className="section-subtitle max-w-2xl mx-auto"
                     >
-                        Temukan jawaban cepat untuk pertanyaan umum seputar pendaftaran, biaya, dan sistem pendidikan di Al-Andalus Al-Imam.
+                        Temukan jawaban cepat untuk pertanyaan umum seputar pendaftaran, biaya, dan sistem pendidikan di Al-Andalus Ulul Albaab.
                     </motion.p>
                 </div>
 
                 <div className="max-w-4xl mx-auto space-y-4 relative">
                     {/* Decorative element behind FAQs */}
-                    <div className="absolute top-10 -right-20 w-40 h-40 bg-cream-100/50 rounded-full blur-[60px] -z-10 pointer-events-none" />
+                    <div className="absolute top-10 -right-20 w-40 h-40 bg-brand-yellow-100/50 rounded-full blur-[60px] -z-10 pointer-events-none" />
                     
                     {FAQS.map((faq, idx) => (
                         <motion.div
@@ -137,10 +137,10 @@ export default function FaqSection() {
                     className="mt-16 sm:mt-20 text-center max-w-md mx-auto"
                 >
                     <div className="bg-cream-50 rounded-3xl p-8 border border-cream-200 text-center shadow-sm relative overflow-hidden group">
-                        <div className="absolute inset-0 bg-gradient-to-r from-cream-100/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-brand-yellow-100/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                         <p className="text-ink-600 font-bold mb-5 relative z-10 text-sm tracking-wide uppercase">Punya pertanyaan lain?</p>
                         <a
-                            href="https://wa.me/6285111524441"
+                            href="https://wa.me/6288809934970"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="btn-primary w-full relative z-10 justify-center shadow-md bg-[#25D366] hover:bg-[#20BE5A] hover:shadow-lg"

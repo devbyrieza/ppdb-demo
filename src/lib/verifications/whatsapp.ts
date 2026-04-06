@@ -10,7 +10,7 @@ export async function sendWhatsAppMessage(
     const phone = normalizePhone(to);
 
     // Create OTP message
-    const message = `🔐 *Kode Verifikasi PPDB [Template Demo]*
+    const message = `🔐 *Kode Verifikasi PPDB Ulul Albaab*
 
 Kode OTP Anda adalah: *${otp}*
 
@@ -19,7 +19,7 @@ Kode ini berlaku selama 5 menit.
 ⚠️ Jangan berikan kode ini kepada siapapun!
 
 Jazakumullahu khairan,
-Panitia PPDB [Template Demo]`;
+Panitia PPDB Ulul Albaab`;
 
     // Kirim via Wablas API
     const result = await sendMessage({ phone, message });

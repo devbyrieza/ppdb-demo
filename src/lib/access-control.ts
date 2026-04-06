@@ -232,7 +232,7 @@ export const ROLE_LABELS: Record<UserRole, string> = {
 
 // Role descriptions
 export const ROLE_DESCRIPTIONS: Record<UserRole, string> = {
-  pendaftar: 'Calon santri yang mendaftar ke Ponpes Al-Andalus [Template Demo]',
+  pendaftar: 'Calon santri yang mendaftar ke Ponpes Al-Andalus Ulul Albaab',
   admin_berkas: 'Memverifikasi berkas/dokumen dan data pendaftaran santri',
   admin_keuangan: 'Mengelola verifikasi pembayaran dan keuangan',
   penguji_calsan: 'Melakukan penilaian tahsin/hafalan Al-Quran calon santri',

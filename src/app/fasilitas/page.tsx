@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -47,11 +47,11 @@ const HeroStat = ({ icon: Icon, value, label, delay = 0 }: { icon: any, value: s
     transition={{ delay, duration: 0.5 }}
     className="app-card bg-white p-5 flex flex-col items-center text-center min-w-[140px]"
   >
-    <div className="w-12 h-12 rounded-xl bg-cream-100/50 flex items-center justify-center text-maroon-700 mb-3 border border-cream-200 shadow-sm">
+    <div className="w-12 h-12 rounded-xl bg-brand-blue-50 flex items-center justify-center text-brand-blue-600 mb-3 border border-brand-blue-100 shadow-sm">
       <Icon className="w-6 h-6" />
     </div>
-    <p className="text-2xl font-black text-ink-950 leading-none mb-1">{value}</p>
-    <p className="text-[10px] text-ink-500 font-extrabold uppercase tracking-widest">{label}</p>
+    <p className="text-2xl font-black text-brand-blue-950 leading-none mb-1">{value}</p>
+    <p className="text-[10px] text-brand-blue-500/70 font-extrabold uppercase tracking-widest">{label}</p>
   </motion.div>
 );
 
@@ -60,7 +60,7 @@ export default function FasilitasPage() {
     <main className="bg-white min-h-screen">
       {/* 1. Hero Section - Airy & Clean */}
       <section className="relative py-24 md:py-32 overflow-hidden section-std">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-cream-100/60 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-blue-50/60 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.02] pointer-events-none" />
 
         <Container className="relative z-10">
@@ -69,7 +69,7 @@ export default function FasilitasPage() {
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-cream-50 border border-cream-200 text-maroon-700 text-xs font-bold uppercase tracking-widest mb-8 shadow-sm"
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-brand-blue-50 border border-brand-blue-100 text-brand-blue-700 text-xs font-bold uppercase tracking-widest mb-8 shadow-sm"
               >
                 <Building2 className="w-3.5 h-3.5" />
                 <span>Sarana & Prasarana</span>
@@ -82,7 +82,7 @@ export default function FasilitasPage() {
                 className="text-4xl sm:text-7xl lg:text-8xl font-black mb-6 md:mb-10 tracking-tight leading-[0.9] text-ink-950"
               >
                 Fasilitas <br />
-                <span className="text-gradient-maroon">Terbaik Kita</span>
+                <span className="text-gradient-blue">Terbaik Kita</span>
               </motion.h1>
 
               <motion.p
@@ -109,38 +109,38 @@ export default function FasilitasPage() {
               className="relative hidden lg:grid grid-cols-2 gap-6 h-[600px]"
             >
               <div className="space-y-6 pt-12">
-                <div className="aspect-[4/5] rounded-[3rem] overflow-hidden shadow-lg relative group border border-cream-200">
+                <div className="aspect-4/5 rounded-[3rem] overflow-hidden shadow-lg relative group border border-brand-blue-100">
                   <Image src="/images/masjid.webp" alt="Masjid" fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-maroon-950/60 to-transparent flex items-end p-8">
+                  <div className="absolute inset-0 bg-linear-to-t from-brand-blue-950/70 to-transparent flex items-end p-8">
                     <span className="text-white font-bold text-xl drop-shadow-md">Masjid Jami'</span>
                   </div>
                 </div>
-                <div className="aspect-square rounded-[3rem] overflow-hidden shadow-lg relative group border border-cream-200">
+                <div className="aspect-square rounded-[3rem] overflow-hidden shadow-lg relative group border border-brand-blue-100">
                   <Image src="/images/lapangan-minisoccer.webp" alt="Lapangan" fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-maroon-950/60 to-transparent flex items-end p-8">
+                  <div className="absolute inset-0 bg-linear-to-t from-brand-blue-950/70 to-transparent flex items-end p-8">
                     <span className="text-white font-bold text-lg drop-shadow-md">Area Olahraga</span>
                   </div>
                 </div>
               </div>
               <div className="space-y-6">
-                <div className="aspect-square rounded-[3rem] overflow-hidden shadow-lg relative group border border-cream-200">
+                <div className="aspect-square rounded-[3rem] overflow-hidden shadow-lg relative group border border-brand-blue-100">
                   <Image src="/images/asrama.webp" alt="Asrama" fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-maroon-950/60 to-transparent flex items-end p-8">
+                  <div className="absolute inset-0 bg-linear-to-t from-brand-blue-950/70 to-transparent flex items-end p-8">
                     <span className="text-white font-bold text-lg drop-shadow-md">Asrama Nyaman</span>
                   </div>
                 </div>
-                <div className="aspect-[4/5] rounded-[3rem] overflow-hidden shadow-lg relative group border border-cream-200">
+                <div className="aspect-4/5 rounded-[3rem] overflow-hidden shadow-lg relative group border border-brand-blue-100">
                   <Image src="/images/kelas-dari-dalam.webp" alt="Kelas" fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-maroon-950/60 to-transparent flex items-end p-8">
+                  <div className="absolute inset-0 bg-linear-to-t from-brand-blue-950/70 to-transparent flex items-end p-8">
                     <span className="text-white font-bold text-xl drop-shadow-md">Kelas Modern</span>
                   </div>
                 </div>
               </div>
               {/* Floating Badge */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-5 rounded-[2rem] shadow-xl border border-cream-200 flex flex-col items-center gap-1 z-20">
-                <Camera className="w-8 h-8 text-maroon-600 mb-1" />
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-ink-500">Sneak Peek</span>
-                <span className="text-sm font-black text-maroon-900">Campus Tour</span>
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-5 rounded-[2rem] shadow-xl border border-brand-blue-100 flex flex-col items-center gap-1 z-20">
+                <Camera className="w-8 h-8 text-brand-blue-600 mb-1" />
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-blue-500">Sneak Peek</span>
+                <span className="text-sm font-black text-brand-blue-900">Campus Tour</span>
               </div>
             </motion.div>
           </div>
@@ -148,14 +148,14 @@ export default function FasilitasPage() {
       </section>
 
       {/* 2. Main Facilities - Big Sections */}
-      <section className="py-24 md:py-32 relative section-alt border-y border-cream-200">
+      <section className="py-24 md:py-32 relative section-alt border-y border-brand-blue-100">
         <Container>
           <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-24">
             <motion.span
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              className="text-maroon-700 font-bold tracking-[0.2em] uppercase text-[10px] xl:text-xs mb-3 block"
+              className="text-brand-blue-700 font-bold tracking-[0.2em] uppercase text-[10px] xl:text-xs mb-3 block"
             >
               Fasilitas Utama
             </motion.span>
@@ -174,7 +174,7 @@ export default function FasilitasPage() {
               transition={{ delay: 0.1 }}
               className="section-subtitle"
             >
-              Sarana vital yang menjadi jantung aktivitas harian di <br className="hidden md:block" /> Pesantren Al-Andalus Al-Imam untuk kenyamanan dan kekhusyukan.
+              Sarana vital yang menjadi jantung aktivitas harian di <br className="hidden md:block" /> Pesantren Al-Andalus Ulul Albaab untuk kenyamanan dan kekhusyukan.
             </motion.p>
           </div>
 
@@ -192,32 +192,32 @@ export default function FasilitasPage() {
                     <Home className="w-48 h-48" />
                   </div>
 
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-cream-100 rounded-2xl flex items-center justify-center text-maroon-700 mb-8 sm:mb-10 shadow-sm transition-transform group-hover:scale-110 border border-cream-200">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-brand-blue-50 rounded-2xl flex items-center justify-center text-brand-blue-700 mb-8 sm:mb-10 shadow-sm transition-transform group-hover:scale-110 border border-brand-blue-100">
                     <Home className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
-                  <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-ink-950 mb-6 leading-[1.1]">Masjid Jami' <br className="hidden sm:block" /> Al-Imam</h3>
-                  <p className="text-base sm:text-lg lg:text-xl text-ink-600 mb-8 sm:mb-10 leading-relaxed font-medium">
+                  <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-brand-blue-950 mb-6 leading-[1.1]">Masjid Jami' <br className="hidden sm:block" /> Ulul Albaab</h3>
+                  <p className="text-base sm:text-lg lg:text-xl text-brand-blue-950/70 mb-8 sm:mb-10 leading-relaxed font-medium">
                     Pusat peribadatan santri yang mampu menampung 1000 jamaah. Dilengkapi pendingin ruangan, karpet premium, dan sistem audio berkualitas tinggi.
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
                     <div className="flex items-start gap-4 group/item">
-                      <div className="w-8 h-8 rounded-full bg-maroon-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                      <div className="w-8 h-8 rounded-full bg-brand-blue-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
-                        <h4 className="font-black text-ink-950 text-[15px] sm:text-lg uppercase tracking-tight">Kapasitas Luas</h4>
-                        <p className="text-xs sm:text-sm text-ink-500 font-medium">2 Lantai utama luas</p>
+                        <h4 className="font-black text-brand-blue-950 text-[15px] sm:text-lg uppercase tracking-tight">Kapasitas Luas</h4>
+                        <p className="text-xs sm:text-sm text-brand-blue-500 font-medium">2 Lantai utama luas</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-4 group/item">
-                      <div className="w-8 h-8 rounded-full bg-maroon-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                      <div className="w-8 h-8 rounded-full bg-brand-blue-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
-                        <h4 className="font-black text-ink-950 text-[15px] sm:text-lg uppercase tracking-tight">Kenyamanan</h4>
-                        <p className="text-xs sm:text-sm text-ink-500 font-medium">Full AC & Karpet Empuk</p>
+                        <h4 className="font-black text-brand-blue-950 text-[15px] sm:text-lg uppercase tracking-tight">Kenyamanan</h4>
+                        <p className="text-xs sm:text-sm text-brand-blue-500 font-medium">Full AC & Karpet Empuk</p>
                       </div>
                     </div>
                   </div>
@@ -230,11 +230,11 @@ export default function FasilitasPage() {
                 viewport={{ once: true }}
                 className="order-1 lg:order-2"
               >
-                <div className="aspect-square rounded-[3rem] sm:rounded-[4rem] bg-white p-3 sm:p-4 shadow-xl relative rotate-2 hover:rotate-0 transition-transform duration-700 border border-cream-200">
+                <div className="aspect-square rounded-[3rem] sm:rounded-[4rem] bg-white p-3 sm:p-4 shadow-xl relative rotate-2 hover:rotate-0 transition-transform duration-700 border border-brand-blue-100">
                   <div className="relative w-full h-full rounded-[2.5rem] sm:rounded-[3.2rem] overflow-hidden">
                     <Image
                       src="/images/masjid.webp"
-                      alt="Masjid Jami' Al-Imam"
+                      alt="Masjid Jami' Ulul Albaab"
                       fill
                       className="object-cover transition-transform duration-700 hover:scale-110"
                     />
@@ -251,7 +251,7 @@ export default function FasilitasPage() {
                 viewport={{ once: true }}
                 className="order-1"
               >
-                <div className="aspect-square rounded-[3rem] sm:rounded-[4rem] bg-white p-3 sm:p-4 shadow-xl relative -rotate-2 hover:rotate-0 transition-transform duration-700 border border-cream-200">
+                <div className="aspect-square rounded-[3rem] sm:rounded-[4rem] bg-white p-3 sm:p-4 shadow-xl relative -rotate-2 hover:rotate-0 transition-transform duration-700 border border-brand-blue-100">
                   <div className="relative w-full h-full rounded-[2.5rem] sm:rounded-[3.2rem] overflow-hidden">
                     <Image
                       src="/images/asrama.webp"
@@ -274,32 +274,32 @@ export default function FasilitasPage() {
                     <Building className="w-48 h-48" />
                   </div>
 
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-cream-100 rounded-2xl flex items-center justify-center text-maroon-700 mb-8 sm:mb-10 shadow-sm transition-transform group-hover:scale-110 border border-cream-200">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-brand-blue-50 rounded-2xl flex items-center justify-center text-brand-blue-700 mb-8 sm:mb-10 shadow-sm transition-transform group-hover:scale-110 border border-brand-blue-100">
                     <Building className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
-                  <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-ink-950 mb-6 leading-[1.1]">Asrama <br className="hidden sm:block" /> Berkualitas</h3>
-                  <p className="text-base sm:text-lg lg:text-xl text-ink-600 mb-8 sm:mb-10 leading-relaxed font-medium">
+                  <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-brand-blue-950 mb-6 leading-[1.1]">Asrama <br className="hidden sm:block" /> Berkualitas</h3>
+                  <p className="text-base sm:text-lg lg:text-xl text-brand-blue-950/70 mb-8 sm:mb-10 leading-relaxed font-medium">
                     Hunian nyaman dengan sirkulasi udara optimal. Setiap kamar didesain dengan konsep kekeluargaan dan dilengkapi fasilitas penyimpanan pribadi.
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
                     <div className="flex items-start gap-4 group/item">
-                      <div className="w-8 h-8 rounded-full bg-maroon-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                      <div className="w-8 h-8 rounded-full bg-brand-blue-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
-                        <h4 className="font-black text-ink-950 text-[15px] sm:text-lg uppercase tracking-tight">Kekeluargaan</h4>
-                        <p className="text-xs sm:text-sm text-ink-500 font-medium">Musyrif Pembimbing 24 jam</p>
+                        <h4 className="font-black text-brand-blue-950 text-[15px] sm:text-lg uppercase tracking-tight">Kekeluargaan</h4>
+                        <p className="text-xs sm:text-sm text-brand-blue-500 font-medium">Musyrif Pembimbing 24 jam</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-4 group/item">
-                      <div className="w-8 h-8 rounded-full bg-maroon-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                      <div className="w-8 h-8 rounded-full bg-brand-blue-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
-                        <h4 className="font-black text-ink-950 text-[15px] sm:text-lg uppercase tracking-tight">Higienitas</h4>
-                        <p className="text-xs sm:text-sm text-ink-500 font-medium">Standar kebersihan tinggi</p>
+                        <h4 className="font-black text-brand-blue-950 text-[15px] sm:text-lg uppercase tracking-tight">Higienitas</h4>
+                        <p className="text-xs sm:text-sm text-brand-blue-500 font-medium">Standar kebersihan tinggi</p>
                       </div>
                     </div>
                   </div>
@@ -319,7 +319,7 @@ export default function FasilitasPage() {
                     <School className="w-48 h-48" />
                   </div>
 
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-cream-100 rounded-2xl flex items-center justify-center text-maroon-700 mb-8 sm:mb-10 shadow-sm transition-transform group-hover:scale-110 border border-cream-200">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-brand-blue-50 rounded-2xl flex items-center justify-center text-brand-blue-700 mb-8 sm:mb-10 shadow-sm transition-transform group-hover:scale-110 border border-brand-blue-100">
                     <School className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
@@ -330,7 +330,7 @@ export default function FasilitasPage() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
                     <div className="flex items-start gap-4 group/item">
-                      <div className="w-8 h-8 rounded-full bg-maroon-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                      <div className="w-8 h-8 rounded-full bg-brand-blue-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
@@ -339,7 +339,7 @@ export default function FasilitasPage() {
                       </div>
                     </div>
                     <div className="flex items-start gap-4 group/item">
-                      <div className="w-8 h-8 rounded-full bg-maroon-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                      <div className="w-8 h-8 rounded-full bg-brand-blue-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
@@ -357,7 +357,7 @@ export default function FasilitasPage() {
                 viewport={{ once: true }}
                 className="order-1 lg:order-2"
               >
-                <div className="aspect-square rounded-[3rem] sm:rounded-[4rem] bg-white p-3 sm:p-4 shadow-xl relative rotate-2 hover:rotate-0 transition-transform duration-700 border border-cream-200">
+                <div className="aspect-square rounded-[3rem] sm:rounded-[4rem] bg-white p-3 sm:p-4 shadow-xl relative rotate-2 hover:rotate-0 transition-transform duration-700 border border-brand-blue-100">
                   <div className="relative w-full h-full rounded-[2.5rem] sm:rounded-[3.2rem] overflow-hidden">
                     <Image
                       src="/images/kelas-dari-dalam.webp"
@@ -378,7 +378,7 @@ export default function FasilitasPage() {
                 viewport={{ once: true }}
                 className="order-1"
               >
-                <div className="aspect-square rounded-[3rem] sm:rounded-[4rem] bg-white p-3 sm:p-4 shadow-xl relative -rotate-2 hover:rotate-0 transition-transform duration-700 border border-cream-200">
+                <div className="aspect-square rounded-[3rem] sm:rounded-[4rem] bg-white p-3 sm:p-4 shadow-xl relative -rotate-2 hover:rotate-0 transition-transform duration-700 border border-brand-blue-100">
                   <div className="relative w-full h-full rounded-[2.5rem] sm:rounded-[3.2rem] overflow-hidden">
                     <Image
                       src="/images/lapangan-minisoccer.webp"
@@ -401,7 +401,7 @@ export default function FasilitasPage() {
                     <Trophy className="w-48 h-48" />
                   </div>
 
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-cream-100 rounded-2xl flex items-center justify-center text-maroon-700 mb-8 sm:mb-10 shadow-sm transition-transform group-hover:scale-110 border border-cream-200">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-brand-blue-50 rounded-2xl flex items-center justify-center text-brand-blue-700 mb-8 sm:mb-10 shadow-sm transition-transform group-hover:scale-110 border border-brand-blue-100">
                     <Trophy className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
@@ -412,7 +412,7 @@ export default function FasilitasPage() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
                     <div className="flex items-start gap-4 group/item">
-                      <div className="w-8 h-8 rounded-full bg-maroon-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                      <div className="w-8 h-8 rounded-full bg-brand-blue-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
@@ -421,7 +421,7 @@ export default function FasilitasPage() {
                       </div>
                     </div>
                     <div className="flex items-start gap-4 group/item">
-                      <div className="w-8 h-8 rounded-full bg-maroon-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                      <div className="w-8 h-8 rounded-full bg-brand-blue-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
@@ -442,7 +442,7 @@ export default function FasilitasPage() {
                 viewport={{ once: true }}
                 className="order-1"
               >
-                <div className="aspect-square rounded-[3rem] sm:rounded-[4rem] bg-white p-3 sm:p-4 shadow-xl relative -rotate-2 hover:rotate-0 transition-transform duration-700 border border-cream-200">
+                <div className="aspect-square rounded-[3rem] sm:rounded-[4rem] bg-white p-3 sm:p-4 shadow-xl relative -rotate-2 hover:rotate-0 transition-transform duration-700 border border-brand-blue-100">
                   <div className="relative w-full h-full rounded-[2.5rem] sm:rounded-[3.2rem] overflow-hidden">
                     <Image
                       src="/images/kantor-ppdb-tamu.webp"
@@ -465,7 +465,7 @@ export default function FasilitasPage() {
                     <Building className="w-48 h-48" />
                   </div>
 
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-cream-100 rounded-2xl flex items-center justify-center text-maroon-700 mb-8 sm:mb-10 shadow-sm transition-transform group-hover:scale-110 border border-cream-200">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-brand-blue-50 rounded-2xl flex items-center justify-center text-brand-blue-700 mb-8 sm:mb-10 shadow-sm transition-transform group-hover:scale-110 border border-brand-blue-100">
                     <Building className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
@@ -476,7 +476,7 @@ export default function FasilitasPage() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
                     <div className="flex items-start gap-4 group/item">
-                      <div className="w-8 h-8 rounded-full bg-maroon-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                      <div className="w-8 h-8 rounded-full bg-brand-blue-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
@@ -485,7 +485,7 @@ export default function FasilitasPage() {
                       </div>
                     </div>
                     <div className="flex items-start gap-4 group/item">
-                      <div className="w-8 h-8 rounded-full bg-maroon-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                      <div className="w-8 h-8 rounded-full bg-brand-blue-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
@@ -509,15 +509,15 @@ export default function FasilitasPage() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-3xl md:text-5xl font-black text-ink-950 mb-4"
+              className="text-3xl md:text-5xl font-black text-brand-blue-950 mb-4"
             >
-              Fasilitas <span className="text-maroon-700">Penunjang</span>
+              Fasilitas <span className="text-brand-blue-600">Penunjang</span>
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-base md:text-lg text-ink-600 font-medium leading-relaxed"
+              className="text-base md:text-lg text-brand-blue-950/70 font-medium leading-relaxed"
             >
               Lengkap dengan sarana pendukung untuk mengembangkan <br className="hidden md:block" /> minat, bakat, dan kesehatan santri.
             </motion.p>
@@ -531,15 +531,15 @@ export default function FasilitasPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform"
+              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform border border-brand-blue-50 shadow-sm"
             >
-              <div className="w-12 h-12 bg-cream-50 rounded-xl flex items-center justify-center text-maroon-700 mb-5 group-hover:scale-110 transition-transform border border-cream-200 shadow-sm">
+              <div className="w-12 h-12 bg-brand-blue-50 rounded-xl flex items-center justify-center text-brand-blue-700 mb-5 group-hover:scale-110 transition-transform border border-brand-blue-100 shadow-sm">
                 <BookOpen className="w-6 h-6" />
               </div>
-              <h3 className="font-black text-lg text-ink-950 mb-2">Perpustakaan</h3>
-              <p className="text-sm text-ink-600 font-medium">Ribuan koleksi kitab & buku</p>
-              <div className="mt-4 pt-4 border-t border-cream-200/50 w-full">
-                <span className="text-xs text-maroon-700 font-bold uppercase tracking-widest">📚 Akademik</span>
+              <h3 className="font-black text-lg text-brand-blue-950 mb-2">Perpustakaan</h3>
+              <p className="text-sm text-brand-blue-950/60 font-medium">Ribuan koleksi kitab & buku</p>
+              <div className="mt-4 pt-4 border-t border-brand-blue-50 w-full">
+                <span className="text-xs text-brand-blue-600 font-bold uppercase tracking-widest">📚 Akademik</span>
               </div>
             </motion.div>
 
@@ -548,15 +548,15 @@ export default function FasilitasPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform"
+              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform border border-brand-blue-50 shadow-sm"
             >
-              <div className="w-12 h-12 bg-cream-50 rounded-xl flex items-center justify-center text-maroon-700 mb-5 group-hover:scale-110 transition-transform border border-cream-200 shadow-sm">
+              <div className="w-12 h-12 bg-brand-blue-50 rounded-xl flex items-center justify-center text-brand-blue-700 mb-5 group-hover:scale-110 transition-transform border border-brand-blue-100 shadow-sm">
                 <FlaskConical className="w-6 h-6" />
               </div>
-              <h3 className="font-black text-lg text-ink-950 mb-2">Laboratorium</h3>
-              <p className="text-sm text-ink-600 font-medium">Sains & Komputer</p>
-              <div className="mt-4 pt-4 border-t border-cream-200/50 w-full">
-                <span className="text-xs text-maroon-700 font-bold uppercase tracking-widest">🔬 Praktikum</span>
+              <h3 className="font-black text-lg text-brand-blue-950 mb-2">Laboratorium</h3>
+              <p className="text-sm text-brand-blue-950/60 font-medium">Sains & Komputer</p>
+              <div className="mt-4 pt-4 border-t border-brand-blue-50 w-full">
+                <span className="text-xs text-brand-blue-600 font-bold uppercase tracking-widest">🔬 Praktikum</span>
               </div>
             </motion.div>
 
@@ -565,15 +565,15 @@ export default function FasilitasPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
-              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform"
+              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform border border-brand-blue-50 shadow-sm"
             >
-              <div className="w-12 h-12 bg-cream-50 rounded-xl flex items-center justify-center text-maroon-700 mb-5 group-hover:scale-110 transition-transform border border-cream-200 shadow-sm">
+              <div className="w-12 h-12 bg-brand-blue-50 rounded-xl flex items-center justify-center text-brand-blue-700 mb-5 group-hover:scale-110 transition-transform border border-brand-blue-100 shadow-sm">
                 <Utensils className="w-6 h-6" />
               </div>
-              <h3 className="font-black text-lg text-ink-950 mb-2">Dapur Sehat</h3>
-              <p className="text-sm text-ink-600 font-medium">Menu bergizi 3x sehari</p>
-              <div className="mt-4 pt-4 border-t border-cream-200/50 w-full">
-                <span className="text-xs text-maroon-700 font-bold uppercase tracking-widest">🍽️ Nutrisi</span>
+              <h3 className="font-black text-lg text-brand-blue-950 mb-2">Dapur Sehat</h3>
+              <p className="text-sm text-brand-blue-950/60 font-medium">Menu bergizi 3x sehari</p>
+              <div className="mt-4 pt-4 border-t border-brand-blue-50 w-full">
+                <span className="text-xs text-brand-blue-600 font-bold uppercase tracking-widest">🍽️ Nutrisi</span>
               </div>
             </motion.div>
 
@@ -583,15 +583,15 @@ export default function FasilitasPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.4 }}
-              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform"
+              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform border border-brand-blue-50 shadow-sm"
             >
-              <div className="w-12 h-12 bg-cream-50 rounded-xl flex items-center justify-center text-maroon-700 mb-5 group-hover:scale-110 transition-transform border border-cream-200 shadow-sm">
+              <div className="w-12 h-12 bg-brand-blue-50 rounded-xl flex items-center justify-center text-brand-blue-700 mb-5 group-hover:scale-110 transition-transform border border-brand-blue-100 shadow-sm">
                 <Droplet className="w-6 h-6" />
               </div>
-              <h3 className="font-black text-lg text-ink-950 mb-2">Depot Air</h3>
-              <p className="text-sm text-ink-600 font-medium">Air minum higienis gratis</p>
-              <div className="mt-4 pt-4 border-t border-cream-200/50 w-full">
-                <span className="text-xs text-maroon-700 font-bold uppercase tracking-widest">💧 Minuman</span>
+              <h3 className="font-black text-lg text-brand-blue-950 mb-2">Depot Air</h3>
+              <p className="text-sm text-brand-blue-950/60 font-medium">Air minum higienis gratis</p>
+              <div className="mt-4 pt-4 border-t border-brand-blue-50 w-full">
+                <span className="text-xs text-brand-blue-600 font-bold uppercase tracking-widest">💧 Minuman</span>
               </div>
             </motion.div>
 
@@ -601,15 +601,15 @@ export default function FasilitasPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.5 }}
-              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform"
+              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform border border-brand-blue-50 shadow-sm"
             >
-              <div className="w-12 h-12 bg-cream-50 rounded-xl flex items-center justify-center text-maroon-700 mb-5 group-hover:scale-110 transition-transform border border-cream-200 shadow-sm">
+              <div className="w-12 h-12 bg-brand-blue-50 rounded-xl flex items-center justify-center text-brand-blue-700 mb-5 group-hover:scale-110 transition-transform border border-brand-blue-100 shadow-sm">
                 <Heart className="w-6 h-6" />
               </div>
-              <h3 className="font-black text-lg text-ink-950 mb-2">Klinik Santri</h3>
-              <p className="text-sm text-ink-600 font-medium">Layanan medis internal</p>
-              <div className="mt-4 pt-4 border-t border-cream-200/50 w-full">
-                <span className="text-xs text-maroon-700 font-bold uppercase tracking-widest">🏥 Kesehatan</span>
+              <h3 className="font-black text-lg text-brand-blue-950 mb-2">Klinik Santri</h3>
+              <p className="text-sm text-brand-blue-950/60 font-medium">Layanan medis internal</p>
+              <div className="mt-4 pt-4 border-t border-brand-blue-50 w-full">
+                <span className="text-xs text-brand-blue-600 font-bold uppercase tracking-widest">🏥 Kesehatan</span>
               </div>
             </motion.div>
 
@@ -618,15 +618,15 @@ export default function FasilitasPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.6 }}
-              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform"
+              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform border border-brand-blue-50 shadow-sm"
             >
-              <div className="w-12 h-12 bg-cream-50 rounded-xl flex items-center justify-center text-maroon-700 mb-5 group-hover:scale-110 transition-transform border border-cream-200 shadow-sm">
+              <div className="w-12 h-12 bg-brand-blue-50 rounded-xl flex items-center justify-center text-brand-blue-700 mb-5 group-hover:scale-110 transition-transform border border-brand-blue-100 shadow-sm">
                 <Shield className="w-6 h-6" />
               </div>
-              <h3 className="font-black text-lg text-ink-950 mb-2">Security</h3>
-              <p className="text-sm text-ink-600 font-medium">Keamanan CCTV 24 Jam</p>
-              <div className="mt-4 pt-4 border-t border-cream-200/50 w-full">
-                <span className="text-xs text-maroon-700 font-bold uppercase tracking-widest">🛡️ Keamanan</span>
+              <h3 className="font-black text-lg text-brand-blue-950 mb-2">Security</h3>
+              <p className="text-sm text-brand-blue-950/60 font-medium">Keamanan CCTV 24 Jam</p>
+              <div className="mt-4 pt-4 border-t border-brand-blue-50 w-full">
+                <span className="text-xs text-brand-blue-600 font-bold uppercase tracking-widest">🛡️ Keamanan</span>
               </div>
             </motion.div>
 
@@ -635,15 +635,15 @@ export default function FasilitasPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.7 }}
-              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform"
+              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform border border-brand-blue-50 shadow-sm"
             >
-              <div className="w-12 h-12 bg-cream-50 rounded-xl flex items-center justify-center text-maroon-700 mb-5 group-hover:scale-110 transition-transform border border-cream-200 shadow-sm">
+              <div className="w-12 h-12 bg-brand-blue-50 rounded-xl flex items-center justify-center text-brand-blue-700 mb-5 group-hover:scale-110 transition-transform border border-brand-blue-100 shadow-sm">
                 <Building2 className="w-6 h-6" />
               </div>
-              <h3 className="font-black text-lg text-ink-950 mb-2">Aula Besar</h3>
-              <p className="text-sm text-ink-600 font-medium">Kapasitas 500 orang</p>
-              <div className="mt-4 pt-4 border-t border-cream-200/50 w-full">
-                <span className="text-xs text-maroon-700 font-bold uppercase tracking-widest">🏛️ Event</span>
+              <h3 className="font-black text-lg text-brand-blue-950 mb-2">Aula Besar</h3>
+              <p className="text-sm text-brand-blue-950/60 font-medium">Kapasitas 500 orang</p>
+              <div className="mt-4 pt-4 border-t border-brand-blue-50 w-full">
+                <span className="text-xs text-brand-blue-600 font-bold uppercase tracking-widest">🏛️ Event</span>
               </div>
             </motion.div>
 
@@ -653,15 +653,15 @@ export default function FasilitasPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.8 }}
-              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform"
+              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform border border-brand-blue-50 shadow-sm"
             >
-              <div className="w-12 h-12 bg-cream-50 rounded-xl flex items-center justify-center text-maroon-700 mb-5 group-hover:scale-110 transition-transform border border-cream-200 shadow-sm">
+              <div className="w-12 h-12 bg-brand-blue-50 rounded-xl flex items-center justify-center text-brand-blue-700 mb-5 group-hover:scale-110 transition-transform border border-brand-blue-100 shadow-sm">
                 <Wifi className="w-6 h-6" />
               </div>
-              <h3 className="font-black text-lg text-ink-950 mb-2">Internet</h3>
-              <p className="text-sm text-ink-600 font-medium">Akses WiFi Terfilter</p>
-              <div className="mt-4 pt-4 border-t border-cream-200/50 w-full">
-                <span className="text-xs text-maroon-700 font-bold uppercase tracking-widest">📶 Teknologi</span>
+              <h3 className="font-black text-lg text-brand-blue-950 mb-2">Internet</h3>
+              <p className="text-sm text-brand-blue-950/60 font-medium">Akses WiFi Terfilter</p>
+              <div className="mt-4 pt-4 border-t border-brand-blue-50 w-full">
+                <span className="text-xs text-brand-blue-600 font-bold uppercase tracking-widest">📶 Teknologi</span>
               </div>
             </motion.div>
 
@@ -670,15 +670,15 @@ export default function FasilitasPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.9 }}
-              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform"
+              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform border border-brand-blue-50 shadow-sm"
             >
-              <div className="w-12 h-12 bg-cream-50 rounded-xl flex items-center justify-center text-maroon-700 mb-5 group-hover:scale-110 transition-transform border border-cream-200 shadow-sm">
+              <div className="w-12 h-12 bg-brand-blue-50 rounded-xl flex items-center justify-center text-brand-blue-700 mb-5 group-hover:scale-110 transition-transform border border-brand-blue-100 shadow-sm">
                 <Trophy className="w-6 h-6" />
               </div>
-              <h3 className="font-black text-lg text-ink-950 mb-2">Lapangan Basket</h3>
-              <p className="text-sm text-ink-600 font-medium">Lapangan olahraga standar</p>
-              <div className="mt-4 pt-4 border-t border-cream-200/50 w-full">
-                <span className="text-xs text-maroon-700 font-bold uppercase tracking-widest">🏀 Olahraga</span>
+              <h3 className="font-black text-lg text-brand-blue-950 mb-2">Lapangan Basket</h3>
+              <p className="text-sm text-brand-blue-950/60 font-medium">Lapangan olahraga standar</p>
+              <div className="mt-4 pt-4 border-t border-brand-blue-50 w-full">
+                <span className="text-xs text-brand-blue-600 font-bold uppercase tracking-widest">🏀 Olahraga</span>
               </div>
             </motion.div>
           </div>
@@ -686,14 +686,14 @@ export default function FasilitasPage() {
       </section>
 
       {/* 4. Photo Gallery - Enhanced Layout */}
-      <section id="gallery" className="py-24 md:py-32 section-alt border-y border-cream-200">
+      <section id="gallery" className="py-24 md:py-32 section-alt border-y border-brand-blue-100">
         <Container>
           <div className="text-center md:text-left max-w-3xl mb-12 sm:mb-16">
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-white border border-cream-200 text-maroon-700 text-xs font-bold uppercase tracking-widest mb-6 shadow-sm"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-white border border-brand-blue-100 text-brand-blue-700 text-xs font-bold uppercase tracking-widest mb-6 shadow-sm"
             >
               <Camera className="w-3.5 h-3.5" />
               <span>Dokumentasi</span>
@@ -704,7 +704,7 @@ export default function FasilitasPage() {
               viewport={{ once: true }}
               className="section-title mb-6 md:mb-4 lg:mb-6 text-center md:text-left lg:ml-0"
             >
-              Galeri <span className="text-gradient-maroon">Fasilitas</span>
+              Galeri <span className="text-gradient-blue">Fasilitas</span>
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 10 }}
@@ -712,7 +712,7 @@ export default function FasilitasPage() {
               viewport={{ once: true }}
               className="section-subtitle lg:ml-0"
             >
-              Lihat langsung suasana dan lingkungan Pesantren Al-Andalus Al-Imam dari berbagai sudut.
+              Lihat langsung suasana dan lingkungan Pesantren Al-Andalus Ulul Albaab dari berbagai sudut.
             </motion.p>
           </div>
 
@@ -726,18 +726,18 @@ export default function FasilitasPage() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
-                className="lg:col-span-2 row-span-2 relative rounded-[2rem] md:rounded-[2.5rem] overflow-hidden group aspect-[4/3] shadow-md hover:shadow-xl transition-all duration-500 border border-cream-200"
+                className="lg:col-span-2 row-span-2 relative rounded-[2rem] md:rounded-[2.5rem] overflow-hidden group aspect-4/3 shadow-md hover:shadow-xl transition-all duration-500 border border-brand-blue-100"
               >
                 <Image
                   src="/images/masjid.webp"
-                  alt="Masjid Jami' Al-Imam"
+                  alt="Masjid Jami' Ulul Albaab"
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-maroon-950/70 via-maroon-950/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+                <div className="absolute inset-0 bg-linear-to-t from-brand-blue-950/80 via-brand-blue-950/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
                 <div className="absolute bottom-6 md:bottom-8 left-6 md:left-8 right-6 md:right-8">
-                  <span className="text-white font-black text-2xl md:text-3xl drop-shadow-md">Masjid Jami' Al-Imam</span>
-                  <p className="text-cream-50/90 text-sm md:text-lg mt-1 md:mt-2 font-medium">Pusat peribadatan</p>
+                  <span className="text-white font-black text-2xl md:text-3xl drop-shadow-md">Masjid Jami' Ulul Albaab</span>
+                  <p className="text-brand-blue-50/90 text-sm md:text-lg mt-1 md:mt-2 font-medium">Pusat peribadatan</p>
                 </div>
               </motion.div>
 
@@ -747,7 +747,7 @@ export default function FasilitasPage() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.2 }}
-                className="lg:col-span-1 row-span-2 relative rounded-[2rem] md:rounded-[2.5rem] overflow-hidden group aspect-[4/3] lg:aspect-[2/3] shadow-md hover:shadow-xl transition-all duration-500 border border-cream-200"
+                className="lg:col-span-1 row-span-2 relative rounded-[2rem] md:rounded-[2.5rem] overflow-hidden group aspect-4/3 lg:aspect-2/3 shadow-md hover:shadow-xl transition-all duration-500 border border-brand-blue-100"
               >
                 <Image
                   src="/images/kelas-dari-dalam.webp"
@@ -755,10 +755,10 @@ export default function FasilitasPage() {
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-maroon-950/70 via-maroon-950/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+                <div className="absolute inset-0 bg-linear-to-t from-brand-blue-950/80 via-brand-blue-950/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
                 <div className="absolute bottom-6 md:bottom-8 left-6 md:left-8 right-6 md:right-8">
                   <span className="text-white font-black text-xl md:text-2xl drop-shadow-md leading-tight">Ruang Kelas</span>
-                  <p className="text-cream-50/90 text-xs md:text-sm mt-1 md:mt-2 font-medium">Fasilitas pembelajaran modern</p>
+                  <p className="text-brand-blue-50/90 text-xs md:text-sm mt-1 md:mt-2 font-medium">Fasilitas pembelajaran modern</p>
                 </div>
               </motion.div>
             </div>
@@ -770,7 +770,7 @@ export default function FasilitasPage() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.3 }}
-                className="relative rounded-[1.5rem] sm:rounded-[2rem] overflow-hidden group aspect-square shadow-sm hover:shadow-md transition-all duration-500 border border-cream-200"
+                className="relative rounded-2xl sm:rounded-[2rem] overflow-hidden group aspect-square shadow-sm hover:shadow-md transition-all duration-500 border border-brand-blue-100"
               >
                 <Image
                   src="/images/gedung-kelas.webp"
@@ -778,7 +778,7 @@ export default function FasilitasPage() {
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-maroon-950/70 to-transparent opacity-70 group-hover:opacity-90 transition-opacity" />
+                <div className="absolute inset-0 bg-linear-to-t from-brand-blue-950/80 to-transparent opacity-70 group-hover:opacity-90 transition-opacity" />
                 <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6">
                   <span className="text-white font-black text-[15px] sm:text-lg">Gedung Kelas</span>
                 </div>
@@ -788,7 +788,7 @@ export default function FasilitasPage() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.4 }}
-                className="relative rounded-[1.5rem] sm:rounded-[2rem] overflow-hidden group aspect-square shadow-sm hover:shadow-md transition-all duration-500 border border-cream-200"
+                className="relative rounded-2xl sm:rounded-[2rem] overflow-hidden group aspect-square shadow-sm hover:shadow-md transition-all duration-500 border border-brand-blue-100"
               >
                 <Image
                   src="/images/asrama.webp"
@@ -796,7 +796,7 @@ export default function FasilitasPage() {
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-maroon-950/70 to-transparent opacity-70 group-hover:opacity-90 transition-opacity" />
+                <div className="absolute inset-0 bg-linear-to-t from-brand-blue-950/80 to-transparent opacity-70 group-hover:opacity-90 transition-opacity" />
                 <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6">
                   <span className="text-white font-black text-[15px] sm:text-lg">Asrama</span>
                 </div>
@@ -806,7 +806,7 @@ export default function FasilitasPage() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.5 }}
-                className="lg:col-span-2 relative rounded-[1.5rem] sm:rounded-[2rem] overflow-hidden group aspect-[2/1] lg:aspect-auto h-full shadow-sm hover:shadow-md transition-all duration-500 border border-cream-200"
+                className="lg:col-span-2 relative rounded-2xl sm:rounded-[2rem] overflow-hidden group aspect-2/1 lg:aspect-auto h-full shadow-sm hover:shadow-md transition-all duration-500 border border-brand-blue-100"
               >
                 <Image
                   src="/images/lapangan-minisoccer.webp"
@@ -814,10 +814,10 @@ export default function FasilitasPage() {
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-maroon-950/70 to-transparent opacity-70 group-hover:opacity-90 transition-opacity" />
+                <div className="absolute inset-0 bg-linear-to-t from-brand-blue-950/80 to-transparent opacity-70 group-hover:opacity-90 transition-opacity" />
                 <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6">
                   <span className="text-white font-black text-[15px] sm:text-xl">Lapangan Minisoccer</span>
-                  <p className="text-cream-50/90 text-xs sm:text-sm mt-1 font-medium hidden sm:block">Sarana olahraga berkualitas</p>
+                  <p className="text-brand-blue-50/90 text-xs sm:text-sm mt-1 font-medium hidden sm:block">Sarana olahraga berkualitas</p>
                 </div>
               </motion.div>
             </div>
@@ -828,12 +828,12 @@ export default function FasilitasPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.6 }}
-                 className="mt-8 app-card bg-cream-50 p-6 flex items-start gap-4 border border-cream-200 max-w-2xl mx-auto"
+                 className="mt-8 app-card bg-brand-blue-50 p-6 flex items-start gap-4 border border-brand-blue-100 max-w-2xl mx-auto"
             >
-                <div className="w-10 h-10 rounded-full bg-cream-200 text-maroon-700 flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-full bg-brand-blue-100 text-brand-blue-700 flex items-center justify-center shrink-0">
                    <Info className="w-5 h-5" />
                 </div>
-                 <p className="text-sm font-medium text-ink-700">Masih banyak fasilitas pendukung lainnya di dalam Pesantren Al-Andalus Al-Imam. Silakan jadwalkan kunjungan untuk melihat langsung.</p>
+                 <p className="text-sm font-medium text-ink-700">Masih banyak fasilitas pendukung lainnya di dalam Pesantren Al-Andalus Ulul Albaab. Silakan jadwalkan kunjungan untuk melihat langsung.</p>
              </motion.div>
 
           </div>

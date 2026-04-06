@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { GraduationCap, Award, Globe, BookOpen, Users, CheckCircle } from "lucide-react";
 import { Container } from "@/components/layout/Container";
@@ -63,7 +63,7 @@ export default function TeachersSection() {
                         viewport={{ once: true }}
                         className="lg:w-[40%] text-center lg:text-left lg:sticky lg:top-32"
                     >
-                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-white border border-cream-200 text-maroon-700 text-xs font-bold uppercase tracking-widest mb-6 shadow-sm">
+                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-white border border-brand-yellow-400 text-brand-blue-700 text-xs font-bold uppercase tracking-widest mb-6 shadow-sm">
                             <GraduationCap className="w-3.5 h-3.5" />
                             <span>Tenaga Pendidik</span>
                         </div>
@@ -73,20 +73,20 @@ export default function TeachersSection() {
                         </h2>
 
                         <p className="section-subtitle lg:ml-0 text-justify lg:text-left mb-10">
-                            Pesantren Al-Andalus Al-Imam didukung oleh asatidzah profesional lulusan universitas terbaik dunia Islam serta pakar pendidikan nasional.
+                            Pesantren Al-Andalus Ulul Albaab didukung oleh asatidzah profesional lulusan universitas terbaik dunia Islam serta pakar pendidikan nasional.
                         </p>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-5">
                             {[
-                                { icon: Globe, label: "Lulusan Luar Negeri", sub: "Timur Tengah, Mesir & Maroko", color: "maroon" },
-                                { icon: Users, label: "Native Speakers", sub: "Timur Tengah", color: "cream" },
+                                { icon: Globe, label: "Lulusan Luar Negeri", sub: "Timur Tengah, Mesir & Maroko", color: "brand-blue" },
+                                { icon: Users, label: "Native Speakers", sub: "Timur Tengah", color: "brand-yellow" },
                                 { icon: BookOpen, label: "Lulusan Terbaik", sub: "Dalam Negeri & Pondok Unggulan", color: "gold" },
-                                { icon: Award, label: "Dosen & Pakar", sub: "Tenaga Pendidik Profesional", color: "maroon" }
+                                { icon: Award, label: "Dosen & Pakar", sub: "Tenaga Pendidik Profesional", color: "brand-blue" }
                             ].map((feature, i) => (
                                 <div key={i} className="app-card p-4 flex items-center gap-5">
                                     <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 shadow-sm ${
-                                        feature.color === 'maroon' ? 'bg-maroon-50 text-maroon-600' :
-                                        feature.color === 'cream' ? 'bg-cream-100 text-maroon-800' :
+                                        feature.color === 'brand-blue' ? 'bg-brand-blue-500 text-brand-blue-600' :
+                                        feature.color === 'brand-yellow' ? 'bg-brand-yellow-100 text-maroon-800' :
                                         'bg-yellow-50 text-yellow-600'
                                         }`}>
                                         <feature.icon className="w-6 h-6" />
@@ -111,8 +111,8 @@ export default function TeachersSection() {
                                 transition={{ delay: idx * 0.05 }}
                                 className="app-card p-6 flex items-start gap-4 group"
                             >
-                                <div className="mt-1 w-6 h-6 rounded-full bg-cream-100 flex items-center justify-center shrink-0 shadow-sm transition-transform group-hover:scale-110">
-                                    <CheckCircle className="w-3.5 h-3.5 text-maroon-700" />
+                                <div className="mt-1 w-6 h-6 rounded-full bg-brand-yellow-100 flex items-center justify-center shrink-0 shadow-sm transition-transform group-hover:scale-110">
+                                    <CheckCircle className="w-3.5 h-3.5 text-brand-blue-700" />
                                 </div>
                                 <div className="space-y-1.5 mt-0.5">
                                     <h4 className="font-bold text-ink-900 text-[15px] leading-snug group-hover:text-maroon-800 transition-colors">{item.institution}</h4>

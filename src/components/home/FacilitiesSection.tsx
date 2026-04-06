@@ -34,7 +34,7 @@ export default function FacilitiesSection() {
     return (
         <section id="fasilitas" className="section-std">
             {/* Background decorative element */}
-            <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-cream-100 rounded-full blur-[100px] translate-y-1/2 translate-x-1/2 opacity-50" />
+            <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-brand-yellow-100 rounded-full blur-[100px] translate-y-1/2 translate-x-1/2 opacity-50" />
 
             <Container className="relative z-10">
                 <div className="text-center mb-16 max-w-3xl mx-auto">
@@ -42,7 +42,7 @@ export default function FacilitiesSection() {
                         initial={{ opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-cream-50 border border-cream-200 text-maroon-700 text-xs font-bold uppercase tracking-widest mb-6 shadow-sm"
+                        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-cream-50 border border-cream-200 text-brand-blue-700 text-xs font-bold uppercase tracking-widest mb-6 shadow-sm"
                     >
                         <MapPin className="w-3.5 h-3.5" />
                         <span>Lingkungan Pesantren</span>
@@ -83,10 +83,10 @@ export default function FacilitiesSection() {
                                 alt={img.label}
                                 fill
                                 priority={idx < 2} // Preload top 2 images 
-                                className="object-cover transition-transform duration-700 group-hover:scale-110 bg-cream-100 animate-pulse"
-                                onLoadingComplete={(img) => img.classList.remove('animate-pulse')}
+                                className="object-cover transition-transform duration-700 group-hover:scale-110 bg-brand-yellow-100 animate-pulse"
+                                onLoad={(e) => e.currentTarget.classList.remove('animate-pulse')}
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-maroon-900/60 via-transparent to-transparent opacity-80" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-brand-blue-500/60 via-transparent to-transparent opacity-80" />
                             <div className="absolute bottom-3 left-3 md:bottom-5 md:left-5 right-3">
                                 <span className="text-white font-bold text-xs sm:text-sm md:text-base drop-shadow-lg leading-tight block">{img.label}</span>
                             </div>
@@ -106,8 +106,8 @@ export default function FacilitiesSection() {
                             className="flex items-center gap-4 p-4 rounded-2xl bg-white border border-cream-200 group hover:bg-cream-50 hover:border-maroon-200 hover:shadow-md transition-all duration-300"
                         >
                             <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shrink-0 shadow-sm transition-transform duration-500 group-hover:scale-110 ${
-                                facility.color === 'maroon' ? 'bg-maroon-50 text-maroon-600' :
-                                facility.color === 'cream' ? 'bg-cream-100 text-maroon-800' :
+                                facility.color === 'maroon' ? 'bg-maroon-50 text-brand-blue-600' :
+                                facility.color === 'cream' ? 'bg-brand-yellow-100 text-maroon-800' :
                                 facility.color === 'gold' ? 'bg-yellow-50 text-yellow-600' :
                                 facility.color === 'teal' ? 'bg-teal-50 text-teal-600' :
                                 facility.color === 'red' ? 'bg-red-50 text-red-600' :

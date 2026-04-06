@@ -4,7 +4,14 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { AKADEMIK_MTS, AKADEMIK_IL, AKADEMIK_MA } from '@/lib/questions';
 import type { Question } from '@/lib/questions';
-import { CheckCircle, Loader2, ArrowLeft, Timer } from 'lucide-react';
+import { 
+  CheckCircle, 
+  Loader2, 
+  ArrowLeft, 
+  Timer, 
+  AlertCircle, 
+  FileText 
+} from 'lucide-react';
 import Swal from 'sweetalert2';
 
 export default function AkademikTestPage() {
@@ -75,7 +82,7 @@ export default function AkademikTestPage() {
                 text: `Anda menjawab ${Object.keys(answers).length} dari ${questions.length} soal. Jawaban tidak dapat diubah.`,
                 icon: 'question',
                 showCancelButton: true,
-                confirmButtonColor: '#4f46e5',
+                confirmButtonColor: '#1e40af',
                 cancelButtonColor: '#6b7280',
                 confirmButtonText: 'Ya, Kirim',
                 cancelButtonText: 'Batal',
@@ -95,7 +102,7 @@ export default function AkademikTestPage() {
             });
             if (!res.ok) throw new Error('Gagal mengirim');
 
-            await Swal.fire({ icon: 'success', title: 'Alhamdulillah!', text: 'Tes Akademik berhasil diselesaikan.', confirmButtonColor: '#4f46e5' });
+            await Swal.fire({ icon: 'success', title: 'Alhamdulillah!', text: 'Tes Akademik berhasil diselesaikan.', confirmButtonColor: '#1e40af' });
             router.push('/dashboard/pendaftar/undangan-seleksi');
         } catch (err: any) {
             Swal.fire('Error', err.message, 'error');
@@ -105,7 +112,7 @@ export default function AkademikTestPage() {
     };
 
     if (checking) {
-        return <div className="flex items-center justify-center min-h-[400px]"><Loader2 className="w-10 h-10 animate-spin text-indigo-600" /></div>;
+        return <div className="flex items-center justify-center min-h-[400px]"><Loader2 className="w-10 h-10 animate-spin text-brand-blue-600" /></div>;
     }
 
     if (alreadyDone) {
@@ -115,7 +122,7 @@ export default function AkademikTestPage() {
                     <CheckCircle className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
                     <h2 className="text-xl font-bold mb-2">Tes Sudah Dikerjakan</h2>
                     <p className="text-stone-600 mb-6">Anda sudah menyelesaikan Tes Akademik sebelumnya.</p>
-                    <button onClick={() => router.push('/dashboard/pendaftar/undangan-seleksi')} className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition-colors">
+                    <button onClick={() => router.push('/dashboard/pendaftar/undangan-seleksi')} className="px-6 py-3 bg-brand-blue-600 hover:bg-brand-blue-700 text-white font-bold rounded-xl transition-colors">
                         Kembali ke Undangan Seleksi
                     </button>
                 </div>
@@ -129,8 +136,20 @@ export default function AkademikTestPage() {
                 <button onClick={() => router.back()} className="flex items-center gap-2 text-stone-500 hover:text-stone-700 mb-4 text-sm font-medium">
                     <ArrowLeft className="w-4 h-4" /> Kembali
                 </button>
+                
+                <div className="bg-gradient-to-r from-brand-blue-600 to-brand-blue-800 rounded-[2rem] p-8 mb-8 text-white relative overflow-hidden shadow-lg border border-brand-blue-500">
+                    <div className="absolute top-0 right-0 p-8 opacity-10">
+                        <FileText className="w-32 h-32" />
+                    </div>
+                    <div className="relative z-10 text-center md:text-left">
+                        <h1 className="text-2xl md:text-4xl font-black mb-2 tracking-tight">Tes Akademik & Potensi</h1>
+                        <p className="text-brand-blue-100 font-medium text-sm md:text-base opacity-90 max-w-lg">
+                            Ujian Berbasis Komputer (CBT) untuk mengukur kemampuan dasar dan potensi akademik calon santri.
+                        </p>
+                    </div>
+                </div>
+
                 <div className="bg-white rounded-2xl shadow-sm border p-8">
-                    <h2 className="text-2xl font-bold text-center mb-6">Tes Kemampuan Dasar Akademik</h2>
                     <div className="space-y-4 text-stone-700">
                         <div className="grid grid-cols-2 gap-4 bg-stone-50 p-4 rounded-xl text-sm">
                             <div><span className="text-stone-500">Jenjang:</span> <strong>{jenjang}</strong></div>
@@ -147,16 +166,18 @@ export default function AkademikTestPage() {
                                 <li>• Jawaban otomatis dikirim jika waktu habis</li>
                             </ul>
                         </div>
-                        <div className="bg-maroon-50 border border-maroon-200 rounded-xl p-4">
-                            <div className="flex items-start gap-3">
-                                <span className="text-2xl">🕌</span>
+                        <div className="bg-brand-blue-50 border border-brand-blue-200 rounded-xl p-6">
+                            <div className="flex gap-5">
+                                <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center border border-brand-blue-100 flex-shrink-0 shadow-sm">
+                                    <AlertCircle className="w-7 h-7 text-brand-blue-600" />
+                                </div>
                                 <div>
-                                    <h4 className="font-bold text-maroon-800 mb-1 text-sm">Pesan dari Mudir</h4>
-                                    <p className="text-sm text-maroon-700 leading-relaxed italic">
-                                        "Kejujuran anda saat mengerjakan ujian ini, adalah keberkahan selanjutnya dalam menuntut ilmu."
+                                    <h4 className="font-black text-brand-blue-900 mb-1.5 text-base">Pesan dari Mudir</h4>
+                                    <p className="text-sm text-brand-blue-800 leading-relaxed italic font-medium">
+                                        "Bismillah, kerjakan dengan jujur dan penuh optimisme. Hasil terbaik adalah buah dari kejujuran dan usaha yang ikhlas."
                                     </p>
-                                    <p className="text-sm text-maroon-600 leading-relaxed mt-1">
-                                        Mengisi secara mandiri akan mengefektifkan waktu yang tersedia.
+                                    <p className="text-xs text-brand-blue-600 leading-relaxed mt-2 font-bold uppercase tracking-widest">
+                                        - Ustadz Juju Junaedi, M.Pd.
                                     </p>
                                 </div>
                             </div>

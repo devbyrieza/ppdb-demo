@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import {
@@ -52,7 +52,7 @@ export default function JadwalUjianPage() {
     start_time: "",
     end_time: "",
     quota: 10,
-    location: "Pesantren Al-Andalus Al-Imam",
+    location: "Pesantren Al-Andalus Ulul Albaab",
     notes: ""
   });
 
@@ -281,7 +281,7 @@ export default function JadwalUjianPage() {
                       <div className="flex items-center gap-4 mt-2">
                         <span className="flex items-center gap-1.5 text-xs font-bold text-ink-400 uppercase tracking-wider">
                           <MapPin className="w-3.5 h-3.5" />
-                          {s.location || "Pesantren Al-Andalus Al-Imam"}
+                          {s.location || "Pesantren Al-Andalus Ulul Albaab"}
                         </span>
                         <span className="flex items-center gap-1.5 text-xs font-bold text-purple-600 uppercase tracking-wider">
                           <Users className="w-3.5 h-3.5" />

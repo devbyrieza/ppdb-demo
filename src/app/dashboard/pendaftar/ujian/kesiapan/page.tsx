@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { KESIAPAN_QUESTIONS } from '@/lib/questions';
-import { CheckCircle, Loader2, ArrowLeft } from 'lucide-react';
+import { CheckCircle, Loader2, ArrowLeft, AlertCircle } from 'lucide-react';
 import Swal from 'sweetalert2';
 
 export default function KesiapanTestPage() {
@@ -90,22 +90,24 @@ export default function KesiapanTestPage() {
                 <ArrowLeft className="w-4 h-4" /> Kembali
             </button>
 
-            <div className="bg-gradient-to-r from-emerald-600 to-teal-700 rounded-xl p-6 mb-6">
+            <div className="bg-gradient-to-r from-brand-blue-600 to-brand-blue-800 rounded-xl p-6 mb-6">
                 <h1 className="text-xl font-bold text-white">Tes Kesiapan Calon Santri/Wati</h1>
-                <p className="text-emerald-100 text-sm mt-1">15 pernyataan • Skala 1-5 • Durasi 45 menit</p>
+                <p className="text-brand-blue-100 text-sm mt-1">15 pernyataan • Skala 1-5 • Durasi 45 menit</p>
             </div>
 
             {/* Pesan Mudir */}
-            <div className="bg-maroon-50 border border-maroon-200 rounded-xl p-4 mb-6">
-                <div className="flex items-start gap-3">
-                    <span className="text-2xl">🕌</span>
+            <div className="bg-brand-blue-50 border border-brand-blue-200 rounded-xl p-4 mb-6">
+                <div className="flex gap-4">
+                    <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center border border-brand-blue-100 flex-shrink-0">
+                        <AlertCircle className="w-6 h-6 text-brand-blue-600" />
+                    </div>
                     <div>
-                        <h4 className="font-bold text-maroon-800 mb-1 text-sm">Pesan dari Mudir</h4>
-                        <p className="text-sm text-maroon-700 leading-relaxed italic">
-                            "Kejujuran anda saat mengerjakan ujian ini, adalah keberkahan selanjutnya dalam menuntut ilmu."
+                        <h4 className="font-bold text-brand-blue-800 mb-1 text-sm">Pesan dari Mudir</h4>
+                        <p className="text-sm text-brand-blue-700 leading-relaxed italic">
+                            "Bismillah, kerjakan dengan jujur dan penuh optimisme. Hasil terbaik adalah buah dari kejujuran dan usaha yang ikhlas."
                         </p>
-                        <p className="text-sm text-maroon-600 leading-relaxed mt-1">
-                            Mengisi secara mandiri akan mengefektifkan waktu yang tersedia.
+                        <p className="text-sm text-brand-blue-600 leading-relaxed mt-1">
+                            - Ustadz Juju Junaedi, M.Pd.
                         </p>
                     </div>
                 </div>

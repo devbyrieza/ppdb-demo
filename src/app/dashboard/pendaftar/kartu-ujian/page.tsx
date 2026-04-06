@@ -1,4 +1,4 @@
-﻿
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -56,7 +56,7 @@ export default function ExamCardPage() {
                         jenis_ujian: j.jenis_ujian,
                         tanggal_ujian: new Date(j.tanggal_ujian).toLocaleDateString('id-ID'),
                         waktu: j.waktu_mulai.substring(0, 5),
-                        lokasi: j.lokasi || 'Pesantren Al-Andalus Al-Imam'
+                        lokasi: j.lokasi || 'Pesantren Al-Andalus Ulul Albaab'
                     })) || []
                 };
 
@@ -106,7 +106,7 @@ export default function ExamCardPage() {
                         {/* KOP */}
                         <div className="text-center border-b-2 border-black pb-4 mb-6">
                             <h2 className="text-2xl font-serif font-bold tracking-wide uppercase">Panitia Penerimaan Santri Baru</h2>
-                            <h1 className="text-3xl font-serif font-black uppercase text-green-900 mb-2">Pondok Pesantren Al-Andalus Al-Imam</h1>
+                            <h1 className="text-3xl font-serif font-black uppercase text-green-900 mb-2">Pondok Pesantren Al-Andalus Ulul Albaab</h1>
                             <p className="text-sm font-serif italic">Jl. Raya Fiksi No. 123, Sleman, Yogyakarta - Telp: (0274) 123456</p>
                         </div>
 

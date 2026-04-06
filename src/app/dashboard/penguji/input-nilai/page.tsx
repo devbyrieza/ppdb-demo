@@ -351,48 +351,40 @@ export default function InputNilaiPage() {
   // ============================================================================
   const renderQuranForm = (p: Peserta) => {
     const isEditing = editingId === p.id;
-    const data = isEditing ? quranForm : p.detail_quran || {};
     const isSaved = !!p.detail_quran?.rekomendasi;
 
     return (
-      <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-5 space-y-4">
-        <div className="flex items-center gap-2 mb-2">
-          <BookOpen className="w-5 h-5 text-emerald-700" />
-          <h3 className="text-lg font-bold text-emerald-800">Tes Al-Qur&apos;an</h3>
+      <div className="bg-emerald-50/50 border border-emerald-100 rounded-3xl p-6 md:p-8 space-y-6 shadow-sm">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="p-2.5 bg-emerald-100 rounded-xl">
+            <BookOpen className="w-6 h-6 text-emerald-700" />
+          </div>
+          <h3 className="text-xl font-black text-emerald-900 tracking-tight">Tes Al-Qur&apos;an</h3>
           {isSaved && !isEditing && (
-            <span className="ml-auto px-3 py-1 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-full flex items-center gap-1">
-              <CheckCircle className="w-3 h-3" /> Sudah Dinilai
+            <span className="ml-auto px-4 py-1.5 bg-emerald-600 text-white text-[10px] font-black uppercase tracking-widest rounded-xl flex items-center gap-1.5 shadow-sm">
+              <CheckCircle className="w-3.5 h-3.5" /> Sudah Dinilai
             </span>
           )}
         </div>
 
-        {/* Read-only info */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
-          <div><span className="text-gray-500">Nama:</span> <span className="font-semibold">{toTitleCase(p.nama_lengkap)}</span></div>
-          <div><span className="text-gray-500">No. Daftar:</span> <span className="font-semibold">{p.nomor_pendaftaran}</span></div>
-          <div><span className="text-gray-500">Jenjang:</span> <span className="font-semibold">{p.jenjang}</span></div>
-        </div>
-
         {isEditing ? (
-          <div className="space-y-4">
-            {/* Tajwid */}
-            <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">Nilai Kualitas Tajwid (1-100) *</label>
-              <input type="number" min="1" max="100" value={quranForm.tajwid || ""} onChange={(e) => setQuranForm({ ...quranForm, tajwid: e.target.value })} className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-emerald-500 outline-none" placeholder="Masukkan nilai 1-100" />
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+              <div>
+                <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-3">Nilai Tajwid (1-100) *</label>
+                <input type="number" min="1" max="100" value={quranForm.tajwid || ""} onChange={(e) => setQuranForm({ ...quranForm, tajwid: e.target.value })} className="w-full px-5 py-4 bg-white border-2 border-emerald-100 rounded-2xl focus:border-emerald-500 outline-none font-bold text-emerald-950 transition-all placeholder:text-ink-100" placeholder="0-100" />
+              </div>
+              <div>
+                <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-3">Nilai Kelancaran (1-100) *</label>
+                <input type="number" min="1" max="100" value={quranForm.kelancaran || ""} onChange={(e) => setQuranForm({ ...quranForm, kelancaran: e.target.value })} className="w-full px-5 py-4 bg-white border-2 border-emerald-100 rounded-2xl focus:border-emerald-500 outline-none font-bold text-emerald-950 transition-all placeholder:text-ink-100" placeholder="0-100" />
+              </div>
             </div>
 
-            {/* Kelancaran */}
             <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">Nilai Kelancaran Bacaan (1-100) *</label>
-              <input type="number" min="1" max="100" value={quranForm.kelancaran || ""} onChange={(e) => setQuranForm({ ...quranForm, kelancaran: e.target.value })} className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-emerald-500 outline-none" placeholder="Masukkan nilai 1-100" />
-            </div>
-
-            {/* Rekomendasi */}
-            <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">Rekomendasi Penguji *</label>
-              <div className="flex flex-col sm:flex-row gap-3">
+              <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-4">Rekomendasi Penguji *</label>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {["Diterima", "Cadangan", "Ditolak"].map((opt) => (
-                  <label key={opt} className={`px-4 py-2 rounded-lg cursor-pointer border-2 transition-all text-sm font-semibold text-center sm:text-left ${quranForm.rekomendasi === opt ? (opt === "Diterima" ? "border-green-500 bg-green-100 text-green-700" : opt === "Cadangan" ? "border-yellow-500 bg-yellow-100 text-yellow-700" : "border-red-500 bg-red-100 text-red-700") : "border-gray-200 hover:border-gray-400"}`}>
+                  <label key={opt} className={`px-5 py-4 rounded-xl cursor-pointer border-2 transition-all text-sm font-bold text-center ${quranForm.rekomendasi === opt ? (opt === "Diterima" ? "border-emerald-500 bg-emerald-50 text-emerald-700" : opt === "Cadangan" ? "border-brand-yellow-500 bg-brand-yellow-50 text-brand-yellow-700" : "border-red-500 bg-red-50 text-red-700") : "border-emerald-50 bg-white hover:border-emerald-200"}`}>
                     <input type="radio" name={`rekom-quran-${p.id}`} value={opt} checked={quranForm.rekomendasi === opt} onChange={() => setQuranForm({ ...quranForm, rekomendasi: opt })} className="hidden" />
                     {opt}
                   </label>
@@ -400,40 +392,43 @@ export default function InputNilaiPage() {
               </div>
             </div>
 
-            {/* Nama Penguji */}
             <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">Nama Penguji *</label>
-              <select value={quranForm.nama_penguji || ""} onChange={(e) => setQuranForm({ ...quranForm, nama_penguji: e.target.value })} className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-emerald-500 outline-none">
+              <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-3">Nama Penguji *</label>
+              <select value={quranForm.nama_penguji || ""} onChange={(e) => setQuranForm({ ...quranForm, nama_penguji: e.target.value })} className="w-full px-5 py-4 bg-white border-2 border-emerald-100 rounded-2xl focus:border-emerald-500 outline-none font-bold text-emerald-950 transition-all">
                 <option value="">Pilih Penguji</option>
                 {(p.jenjang?.toLowerCase().includes("putri") ? PENGUJI_QURAN_LIST_PUTRI : PENGUJI_QURAN_LIST_PUTRA).map((n) => <option key={n} value={n}>{n}</option>)}
               </select>
             </div>
 
-            {/* Catatan */}
             <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">Catatan Tambahan (opsional)</label>
-              <textarea value={quranForm.catatan || ""} onChange={(e) => setQuranForm({ ...quranForm, catatan: e.target.value })} rows={3} className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-emerald-500 outline-none resize-none" placeholder="Catatan tambahan penguji..." />
+              <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-3">Catatan Tambahan (opsional)</label>
+              <textarea value={quranForm.catatan || ""} onChange={(e) => setQuranForm({ ...quranForm, catatan: e.target.value })} rows={3} className="w-full px-5 py-4 bg-white border-2 border-emerald-100 rounded-2xl focus:border-emerald-500 outline-none font-bold text-emerald-950 transition-all resize-none" placeholder="Catatan tambahan penguji..." />
             </div>
 
-            {/* Actions */}
-            <div className="flex flex-col sm:flex-row gap-3 pt-2">
-              <button onClick={cancelEditing} className="px-5 py-2 bg-gray-200 text-gray-700 rounded-lg justify-center font-semibold hover:bg-gray-300 transition-colors w-full sm:w-auto">Batal</button>
-              <button onClick={() => saveForm(p, "quran")} disabled={!quranForm.tajwid || !quranForm.kelancaran || !quranForm.rekomendasi || !quranForm.nama_penguji || saving === p.id + "quran"} className="w-full sm:w-auto px-5 py-2 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
-                {saving === p.id + "quran" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} Simpan
+            <div className="flex flex-col sm:flex-row gap-4 pt-2">
+              <button onClick={cancelEditing} className="w-full sm:w-auto px-8 py-4 bg-emerald-100 text-emerald-700 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-emerald-200 transition-all active:scale-95">Batal</button>
+              <button onClick={() => saveForm(p, "quran")} disabled={!quranForm.tajwid || !quranForm.kelancaran || !quranForm.rekomendasi || !quranForm.nama_penguji || saving === p.id + "quran"} className="w-full sm:w-auto px-8 py-4 bg-emerald-600 text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-emerald-700 transition-all shadow-xl shadow-emerald-900/20 disabled:opacity-50 flex items-center justify-center gap-2 active:scale-95">
+                {saving === p.id + "quran" ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />} Simpan
               </button>
             </div>
           </div>
         ) : (
           <div>
             {isSaved ? (
-              <div className="flex items-center gap-2 py-3">
-                <CheckCircle className="w-5 h-5 text-emerald-600" />
-                <span className="text-emerald-700 font-semibold">Nilai sudah tersimpan. Hasil dapat dilihat di Dashboard Admin.</span>
+              <div className="flex items-center gap-4 py-5 bg-white/50 rounded-2xl px-6 border border-emerald-100/50 shadow-inner">
+                <CheckCircle className="w-7 h-7 text-emerald-600 shrink-0" />
+                <div>
+                  <p className="text-emerald-900 font-bold text-sm leading-none">Nilai sudah tersimpan.</p>
+                  <p className="text-emerald-700/60 text-xs font-bold mt-2 uppercase tracking-widest">Rekomendasi: {p.detail_quran?.rekomendasi}</p>
+                </div>
               </div>
             ) : (
-              <p className="text-gray-400 text-sm italic">Belum dinilai</p>
+              <div className="flex items-center gap-3 text-emerald-700/40 py-2">
+                <AlertCircle className="w-5 h-5" />
+                <span className="text-sm font-black uppercase tracking-widest italic">Peserta belum mengikuti tes Al-Qur&apos;an</span>
+              </div>
             )}
-            <button onClick={() => startEditing(p)} className="mt-3 px-4 py-2 bg-emerald-600 text-white rounded-lg text-sm font-semibold hover:bg-emerald-700 transition-colors">
+            <button onClick={() => startEditing(p)} className="mt-6 px-8 py-4 bg-emerald-600 text-white rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-900/20 active:scale-95">
               {isSaved ? "Edit Nilai" : "Input Nilai"}
             </button>
           </div>
@@ -442,43 +437,33 @@ export default function InputNilaiPage() {
     );
   };
 
-  // ============================================================================
-  // RENDER: Wawancara Calsan Form
-  // ============================================================================
   const renderCalsanForm = (p: Peserta) => {
     const isEditing = editingId === p.id;
-    const data = isEditing ? calsanForm : p.detail_wawancara || {};
     const isSaved = !!p.detail_wawancara?.rekomendasi;
 
     return (
-      <div className="bg-maroon-50 border border-maroon-200 rounded-xl p-5 space-y-4">
-        <div className="flex items-center gap-2 mb-2">
-          <MessageSquare className="w-5 h-5 text-maroon-700" />
-          <h3 className="text-lg font-bold text-maroon-800">Wawancara Calon Santri</h3>
+      <div className="bg-brand-blue-50/50 border border-brand-blue-100 rounded-3xl p-6 md:p-8 space-y-6 shadow-sm">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="p-2.5 bg-brand-blue-100 rounded-xl">
+            <MessageSquare className="w-6 h-6 text-brand-blue-700" />
+          </div>
+          <h3 className="text-xl font-black text-brand-blue-900 tracking-tight">Wawancara Calon Santri</h3>
           {isSaved && !isEditing && (
-            <span className="ml-auto px-3 py-1 bg-maroon-100 text-maroon-700 text-xs font-bold rounded-full flex items-center gap-1">
-              <CheckCircle className="w-3 h-3" /> Sudah Dinilai
+            <span className="ml-auto px-4 py-1.5 bg-brand-blue-600 text-white text-[10px] font-black uppercase tracking-widest rounded-xl flex items-center gap-1.5 shadow-sm">
+              <CheckCircle className="w-3.5 h-3.5" /> Sudah Dinilai
             </span>
           )}
         </div>
 
-        {/* Read-only info */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
-          <div><span className="text-gray-500">Nama:</span> <span className="font-semibold">{toTitleCase(p.nama_lengkap)}</span></div>
-          <div><span className="text-gray-500">No. Daftar:</span> <span className="font-semibold">{p.nomor_pendaftaran}</span></div>
-          <div><span className="text-gray-500">Jenjang:</span> <span className="font-semibold">{p.jenjang}</span></div>
-        </div>
-
         {isEditing ? (
-          <div className="space-y-5">
-            {/* 7 Criteria */}
+          <div className="space-y-6">
             {CALSAN_CRITERIA.map((criterion) => (
-              <div key={criterion.key} className="bg-white rounded-lg p-4 border border-maroon-100">
-                <label className="block text-sm font-bold text-gray-800 mb-3">{criterion.label} *</label>
-                <div className="space-y-2">
+              <div key={criterion.key} className="bg-white rounded-2xl p-6 border border-brand-blue-100 shadow-xs">
+                <label className="block text-sm font-black text-brand-blue-950 mb-4">{criterion.label} *</label>
+                <div className="space-y-2.5">
                   {criterion.options.map((opt) => (
-                    <label key={opt.value} className={`flex items-start gap-3 p-3 rounded-lg cursor-pointer border-2 transition-all text-sm ${calsanForm[criterion.key] === opt.value ? "border-maroon-500 bg-maroon-50" : "border-gray-100 hover:border-maroon-200"}`}>
-                      <input type="radio" name={`${criterion.key}-${p.id}`} value={opt.value} checked={calsanForm[criterion.key] === opt.value} onChange={() => setCalsanForm({ ...calsanForm, [criterion.key]: opt.value })} className="w-4 h-4 shrink-0 mt-0.5 accent-maroon-600" />
+                    <label key={opt.value} className={`flex items-start gap-4 p-4 rounded-xl cursor-pointer border-2 transition-all text-sm font-bold ${calsanForm[criterion.key] === opt.value ? "border-brand-blue-600 bg-brand-blue-50 text-brand-blue-900" : "border-brand-blue-50/50 hover:border-brand-blue-200 bg-ink-50/30"}`}>
+                      <input type="radio" name={`${criterion.key}-${p.id}`} value={opt.value} checked={calsanForm[criterion.key] === opt.value} onChange={() => setCalsanForm({ ...calsanForm, [criterion.key]: opt.value })} className="w-5 h-5 shrink-0 mt-0.5 accent-brand-blue-600" />
                       <span>{opt.label}</span>
                     </label>
                   ))}
@@ -486,59 +471,63 @@ export default function InputNilaiPage() {
               </div>
             ))}
 
-            {/* Nama Pewawancara */}
-            <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">Nama Pewawancara *</label>
-              <select value={calsanForm.nama_pewawancara || ""} onChange={(e) => setCalsanForm({ ...calsanForm, nama_pewawancara: e.target.value })} className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-maroon-500 outline-none">
-                <option value="">Pilih Pewawancara</option>
-                {(p.jenjang?.toLowerCase().includes("putri") ? PEWAWANCARA_CALSAN_LIST_PUTRI : PEWAWANCARA_CALSAN_LIST_PUTRA).map((n) => <option key={n} value={n}>{n}</option>)}
-              </select>
-            </div>
+            <div className="bg-white rounded-2xl p-6 border border-brand-blue-100 shadow-xs space-y-6">
+              <div>
+                <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-3">Nama Pewawancara *</label>
+                <select value={calsanForm.nama_pewawancara || ""} onChange={(e) => setCalsanForm({ ...calsanForm, nama_pewawancara: e.target.value })} className="w-full px-5 py-4 bg-ink-50/50 border-2 border-ink-100 rounded-2xl focus:border-brand-blue-500 outline-none font-bold text-brand-blue-950 transition-all">
+                  <option value="">Pilih Pewawancara</option>
+                  {(p.jenjang?.toLowerCase().includes("putri") ? PEWAWANCARA_CALSAN_LIST_PUTRI : PEWAWANCARA_CALSAN_LIST_PUTRA).map((n) => <option key={n} value={n}>{n}</option>)}
+                </select>
+              </div>
 
-            {/* Rekomendasi */}
-            <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">Rekomendasi Pewawancara *</label>
-              <div className="space-y-2">
-                {[
-                  "A. Sangat Layak diterima (potensi besar berkembang di pesantren).",
-                  "B. Layak diterima dengan catatan pembinaan.",
-                  "C. Perlu Pertimbangan (butuh bimbingan khusus).",
-                  "D. Tidak disarankan (risiko tinggi, banyak faktor negatif).",
-                  "E. Tidak layak diterima saat ini.",
-                ].map((opt) => (
-                  <label key={opt} className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer border-2 transition-all text-sm ${calsanForm.rekomendasi === opt ? "border-maroon-500 bg-maroon-50" : "border-gray-100 hover:border-maroon-200"}`}>
-                    <input type="radio" name={`rekom-calsan-${p.id}`} value={opt} checked={calsanForm.rekomendasi === opt} onChange={() => setCalsanForm({ ...calsanForm, rekomendasi: opt })} className="w-4 h-4 shrink-0 mt-1 accent-maroon-600" />
-                    <span>{opt}</span>
-                  </label>
-                ))}
+              <div>
+                <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-4">Rekomendasi Pewawancara *</label>
+                <div className="space-y-2.5">
+                  {[
+                    "A. Sangat Layak diterima (potensi besar berkembang di pesantren).",
+                    "B. Layak diterima dengan catatan pembinaan.",
+                    "C. Perlu Pertimbangan (butuh bimbingan khusus).",
+                    "D. Tidak disarankan (risiko tinggi, banyak faktor negatif).",
+                    "E. Tidak layak diterima saat ini.",
+                  ].map((opt) => (
+                    <label key={opt} className={`flex items-center gap-4 p-4 rounded-xl cursor-pointer border-2 transition-all text-sm font-bold ${calsanForm.rekomendasi === opt ? "border-brand-blue-600 bg-brand-blue-50 text-brand-blue-900" : "border-ink-100 hover:border-brand-blue-200 bg-ink-50/30"}`}>
+                      <input type="radio" name={`rekom-calsan-${p.id}`} value={opt} checked={calsanForm.rekomendasi === opt} onChange={() => setCalsanForm({ ...calsanForm, rekomendasi: opt })} className="w-5 h-5 shrink-0 accent-brand-blue-600" />
+                      <span>{opt}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-3">Catatan Pewawancara (opsional)</label>
+                <textarea value={calsanForm.catatan || ""} onChange={(e) => setCalsanForm({ ...calsanForm, catatan: e.target.value })} rows={4} className="w-full px-5 py-4 bg-ink-50/50 border-2 border-ink-100 rounded-2xl focus:border-brand-blue-500 outline-none font-bold text-brand-blue-950 transition-all resize-none" placeholder="Catatan pewawancara..." />
               </div>
             </div>
 
-            {/* Catatan */}
-            <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">Catatan Pewawancara (opsional)</label>
-              <textarea value={calsanForm.catatan || ""} onChange={(e) => setCalsanForm({ ...calsanForm, catatan: e.target.value })} rows={3} className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-maroon-500 outline-none resize-none" placeholder="Catatan pewawancara..." />
-            </div>
-
-            {/* Actions */}
-            <div className="flex flex-col sm:flex-row gap-3 pt-2">
-              <button onClick={cancelEditing} className="w-full sm:w-auto px-5 py-2 bg-gray-200 text-gray-700 rounded-lg justify-center font-semibold hover:bg-gray-300 transition-colors">Batal</button>
-              <button onClick={() => saveForm(p, "wawancara")} disabled={!CALSAN_CRITERIA.every((c) => calsanForm[c.key]) || !calsanForm.rekomendasi || !calsanForm.nama_pewawancara || saving === p.id + "wawancara"} className="w-full sm:w-auto px-5 py-2 bg-maroon-600 text-white rounded-lg font-semibold hover:bg-maroon-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
-                {saving === p.id + "wawancara" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} Simpan
+            <div className="flex flex-col sm:flex-row gap-4 pt-2">
+              <button onClick={cancelEditing} className="w-full sm:w-auto px-8 py-4 bg-ink-100 text-ink-700 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-ink-200 transition-all active:scale-95">Batal</button>
+              <button onClick={() => saveForm(p, "wawancara")} disabled={!CALSAN_CRITERIA.every((c) => calsanForm[c.key]) || !calsanForm.rekomendasi || !calsanForm.nama_pewawancara || saving === p.id + "wawancara"} className="w-full sm:w-auto px-8 py-4 bg-brand-blue-700 text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-brand-blue-800 transition-all shadow-xl shadow-brand-blue-900/20 disabled:opacity-50 flex items-center justify-center gap-2 active:scale-95">
+                {saving === p.id + "wawancara" ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-4 h-4" />} Simpan
               </button>
             </div>
           </div>
         ) : (
           <div>
             {isSaved ? (
-              <div className="flex items-center gap-2 py-3">
-                <CheckCircle className="w-5 h-5 text-maroon-600" />
-                <span className="text-maroon-700 font-semibold">Nilai sudah tersimpan. Hasil dapat dilihat di Dashboard Admin.</span>
+              <div className="flex items-center gap-4 py-5 bg-white/50 rounded-2xl px-6 border border-brand-blue-100/50 shadow-inner">
+                <CheckCircle className="w-7 h-7 text-brand-blue-600 shrink-0" />
+                <div>
+                  <p className="text-brand-blue-950 font-bold text-sm leading-none">Hasil wawancara santri sudah tersimpan.</p>
+                  <p className="text-brand-blue-700/60 text-xs font-bold mt-2 uppercase tracking-widest">Rekomendasi: {p.detail_wawancara?.rekomendasi?.split('.')[0] || 'Tersimpan'}</p>
+                </div>
               </div>
             ) : (
-              <p className="text-gray-400 text-sm italic">Belum dinilai</p>
+              <div className="flex items-center gap-3 text-brand-blue-700/40 py-2">
+                <AlertCircle className="w-5 h-5" />
+                <span className="text-sm font-black uppercase tracking-widest italic">Belum ada data wawancara santri</span>
+              </div>
             )}
-            <button onClick={() => startEditing(p)} className="mt-3 px-4 py-2 bg-maroon-600 text-white rounded-lg text-sm font-semibold hover:bg-maroon-700 transition-colors">
+            <button onClick={() => startEditing(p)} className="mt-6 px-8 py-4 bg-brand-blue-700 text-white rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-brand-blue-800 transition-all shadow-lg shadow-brand-blue-900/20 active:scale-95">
               {isSaved ? "Edit Nilai" : "Input Nilai"}
             </button>
           </div>
@@ -552,146 +541,146 @@ export default function InputNilaiPage() {
   // ============================================================================
   const renderCawalsanForm = (p: Peserta) => {
     const isEditing = editingId === p.id;
-    const data = isEditing ? cawalsanForm : p.detail_cawalsan || {};
     const isSaved = !!p.detail_cawalsan?.rekomendasi;
 
     return (
-      <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 space-y-4">
-        <div className="flex items-center gap-2 mb-2">
-          <Users className="w-5 h-5 text-amber-700" />
-          <h3 className="text-lg font-bold text-amber-800">Wawancara Calon Wali Santri</h3>
+      <div className="bg-brand-yellow-50/50 border border-brand-yellow-100 rounded-3xl p-6 md:p-8 space-y-6 shadow-sm">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="p-2.5 bg-brand-yellow-100 rounded-xl">
+            <Users className="w-6 h-6 text-brand-yellow-700" />
+          </div>
+          <h3 className="text-xl font-black text-brand-blue-950 tracking-tight">Wawancara Wali Santri</h3>
           {isSaved && !isEditing && (
-            <span className="ml-auto px-3 py-1 bg-amber-100 text-amber-700 text-xs font-bold rounded-full flex items-center gap-1">
-              <CheckCircle className="w-3 h-3" /> Sudah Dinilai
+            <span className="ml-auto px-4 py-1.5 bg-brand-yellow-400 text-brand-blue-950 text-[10px] font-black uppercase tracking-widest rounded-xl flex items-center gap-1.5 shadow-sm border border-brand-yellow-500/20">
+              <CheckCircle className="w-3.5 h-3.5" /> Sudah Dinilai
             </span>
           )}
         </div>
 
-        {/* Read-only info */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
-          <div><span className="text-gray-500">Nama Calon Santri:</span> <span className="font-semibold block sm:inline">{toTitleCase(p.nama_lengkap)}</span></div>
-          <div><span className="text-gray-500">No. Daftar:</span> <span className="font-semibold block sm:inline">{p.nomor_pendaftaran}</span></div>
-          <div><span className="text-gray-500">Jenjang:</span> <span className="font-semibold block sm:inline">{p.jenjang}</span></div>
-        </div>
-
         {isEditing ? (
-          <div className="space-y-5">
-            {/* Nama Orangtua */}
-            <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">Nama Audiens/Orangtua *</label>
-              <input type="text" value={cawalsanForm.nama_orangtua || ""} onChange={(e) => setCawalsanForm({ ...cawalsanForm, nama_orangtua: e.target.value })} className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-amber-500 outline-none" placeholder="Nama orangtua/wali" />
-            </div>
-
-            {/* Asal */}
-            <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">Asal *</label>
-              <input type="text" value={cawalsanForm.asal || ""} onChange={(e) => setCawalsanForm({ ...cawalsanForm, asal: e.target.value })} className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-amber-500 outline-none" placeholder="Asal daerah" />
-            </div>
-
-            {/* Kategori */}
-            <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">Kategori Calon Santri *</label>
-              <div className="space-y-2">
-                {KATEGORI_OPTIONS.map((opt) => (
-                  <label key={opt} className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer border-2 transition-all text-sm ${cawalsanForm.kategori === opt ? "border-amber-500 bg-amber-50" : "border-gray-100 hover:border-amber-200"}`}>
-                    <input type="radio" name={`kategori-${p.id}`} value={opt} checked={cawalsanForm.kategori === opt} onChange={() => setCawalsanForm({ ...cawalsanForm, kategori: opt })} className="w-4 h-4 shrink-0 mt-0.5 accent-amber-600" />
-                    <span>{opt}</span>
-                  </label>
-                ))}
+          <div className="space-y-6">
+            {/* Dasar Informasi */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white rounded-2xl p-6 border border-brand-yellow-100 shadow-xs">
+              <div>
+                <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-3">Nama Audiens/Orangtua *</label>
+                <input type="text" value={cawalsanForm.nama_orangtua || ""} onChange={(e) => setCawalsanForm({ ...cawalsanForm, nama_orangtua: e.target.value })} className="w-full px-5 py-4 bg-ink-50/30 border-2 border-ink-100 rounded-2xl focus:border-brand-yellow-500 outline-none font-bold text-brand-blue-950 transition-all placeholder:text-ink-100" placeholder="Nama orangtua/wali" />
+              </div>
+              <div>
+                <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-3">Asal Daerah *</label>
+                <input type="text" value={cawalsanForm.asal || ""} onChange={(e) => setCawalsanForm({ ...cawalsanForm, asal: e.target.value })} className="w-full px-5 py-4 bg-ink-50/30 border-2 border-ink-100 rounded-2xl focus:border-brand-yellow-500 outline-none font-bold text-brand-blue-950 transition-all placeholder:text-ink-100" placeholder="Contoh: Sukabumi, Jakarta" />
               </div>
             </div>
 
-            {/* Sumber Info */}
-            <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">Sumber informasi awal tentang pesantren *</label>
-              <select value={cawalsanForm.sumber_info || ""} onChange={(e) => setCawalsanForm({ ...cawalsanForm, sumber_info: e.target.value })} className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-amber-500 outline-none">
-                <option value="">Pilih sumber</option>
-                {SUMBER_INFO_OPTIONS.map((n) => <option key={n} value={n}>{n}</option>)}
-              </select>
-            </div>
-
-            {/* 12 Questions */}
-            {CAWALSAN_QUESTIONS.map((q) => (
-              <div key={q.key} className="bg-white rounded-lg p-4 border border-amber-100">
-                <label className="block text-sm font-bold text-gray-800 mb-3">{q.label} *</label>
-                <div className="space-y-2">
-                  {q.options.map((opt) => (
-                    <label key={opt} className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer border-2 transition-all text-sm ${cawalsanForm[q.key] === opt ? "border-amber-500 bg-amber-50" : "border-gray-100 hover:border-amber-200"}`}>
-                      <input type="radio" name={`${q.key}-${p.id}`} value={opt} checked={cawalsanForm[q.key] === opt} onChange={() => setCawalsanForm({ ...cawalsanForm, [q.key]: opt })} className="w-4 h-4 shrink-0 mt-0.5 accent-amber-600" />
+            {/* Kategori & Sumber */}
+            <div className="bg-white rounded-2xl p-6 border border-brand-yellow-100 shadow-xs space-y-6">
+              <div>
+                <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-4">Kategori Calon Santri *</label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {KATEGORI_OPTIONS.map((opt) => (
+                    <label key={opt} className={`flex items-center gap-4 p-4 rounded-xl cursor-pointer border-2 transition-all text-sm font-bold ${cawalsanForm.kategori === opt ? "border-brand-yellow-400 bg-brand-yellow-50 text-brand-blue-950 shadow-sm" : "border-ink-50 hover:border-brand-yellow-200 bg-ink-50/30"}`}>
+                      <input type="radio" name={`kategori-${p.id}`} value={opt} checked={cawalsanForm.kategori === opt} onChange={() => setCawalsanForm({ ...cawalsanForm, kategori: opt })} className="w-5 h-5 shrink-0 accent-brand-yellow-500" />
                       <span>{opt}</span>
                     </label>
                   ))}
                 </div>
               </div>
-            ))}
 
-            {/* Karakter */}
-            <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">Apa karakter ananda yang menonjol: positif & negatif *</label>
-              <textarea value={cawalsanForm.karakter || ""} onChange={(e) => setCawalsanForm({ ...cawalsanForm, karakter: e.target.value })} rows={3} className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-amber-500 outline-none resize-none" placeholder="Karakter positif dan negatif..." />
-            </div>
-
-            {/* SPP */}
-            <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">Apakah sudah mengetahui biaya SPP satu tahun? *</label>
-              <div className="flex flex-col sm:flex-row gap-4">
-                {["Sudah", "Belum"].map((opt) => (
-                  <label key={opt} className={`px-5 py-2 rounded-lg cursor-pointer border-2 transition-all text-sm font-semibold flex-1 text-center sm:flex-none ${cawalsanForm.tahu_spp === opt ? "border-amber-500 bg-amber-100" : "border-gray-200 hover:border-amber-300"}`}>
-                    <input type="radio" name={`spp-${p.id}`} value={opt} checked={cawalsanForm.tahu_spp === opt} onChange={() => setCawalsanForm({ ...cawalsanForm, tahu_spp: opt })} className="hidden" />
-                    {opt}
-                  </label>
-                ))}
+              <div>
+                <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-3">Sumber Informasi *</label>
+                <select value={cawalsanForm.sumber_info || ""} onChange={(e) => setCawalsanForm({ ...cawalsanForm, sumber_info: e.target.value })} className="w-full px-5 py-4 bg-ink-50/30 border-2 border-ink-100 rounded-2xl focus:border-brand-yellow-500 outline-none font-bold text-brand-blue-950 transition-all cursor-pointer">
+                  <option value="">Pilih Sumber Informasi</option>
+                  {SUMBER_INFO_OPTIONS.map((n) => <option key={n} value={n}>{n}</option>)}
+                </select>
               </div>
             </div>
 
-            {/* Rekomendasi */}
-            <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">Rekomendasi Pewawancara *</label>
-              <div className="space-y-2">
-                {["Diterima", "Diterima dengan catatan", "Ditolak"].map((opt) => (
-                  <label key={opt} className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer border-2 transition-all text-sm font-semibold ${cawalsanForm.rekomendasi === opt ? (opt === "Diterima" ? "border-green-500 bg-green-50 text-green-700" : opt.includes("catatan") ? "border-yellow-500 bg-yellow-50 text-yellow-700" : "border-red-500 bg-red-50 text-red-700") : "border-gray-100 hover:border-gray-300"}`}>
-                    <input type="radio" name={`rekom-cawalsan-${p.id}`} value={opt} checked={cawalsanForm.rekomendasi === opt} onChange={() => setCawalsanForm({ ...cawalsanForm, rekomendasi: opt })} className="hidden" />
-                    {opt}
-                  </label>
-                ))}
+            {/* 12 Pertanyaan */}
+            <div className="space-y-4">
+              {CAWALSAN_QUESTIONS.map((q) => (
+                <div key={q.key} className="bg-white rounded-2xl p-6 border border-brand-yellow-100 shadow-xs">
+                  <label className="block text-sm font-black text-brand-blue-950 mb-4">{q.label} *</label>
+                  <div className="space-y-2.5">
+                    {q.options.map((opt) => (
+                      <label key={opt} className={`flex items-start gap-4 p-4 rounded-xl cursor-pointer border-2 transition-all text-sm font-bold ${cawalsanForm[q.key] === opt ? "border-brand-yellow-400 bg-brand-yellow-50 text-brand-blue-950 shadow-sm" : "border-ink-50 hover:border-brand-yellow-200 bg-ink-50/30"}`}>
+                        <input type="radio" name={`${q.key}-${p.id}`} value={opt} checked={cawalsanForm[q.key] === opt} onChange={() => setCawalsanForm({ ...cawalsanForm, [q.key]: opt })} className="w-5 h-5 shrink-0 mt-0.5 accent-brand-yellow-500" />
+                        <span>{opt}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Karakter & SPP & Rekomendasi */}
+            <div className="bg-white rounded-2xl p-6 border border-brand-yellow-100 shadow-xs space-y-6">
+              <div>
+                <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-3">Karakter Santri (Positif & Negatif) *</label>
+                <textarea value={cawalsanForm.karakter || ""} onChange={(e) => setCawalsanForm({ ...cawalsanForm, karakter: e.target.value })} rows={3} className="w-full px-5 py-4 bg-ink-50/30 border-2 border-ink-100 rounded-2xl focus:border-brand-yellow-500 outline-none font-bold text-brand-blue-950 transition-all resize-none placeholder:text-ink-100" placeholder="Deskripsikan karakter santri yang menonjol..." />
+              </div>
+
+              <div>
+                <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-4">Sudah Tahu Biaya SPP? *</label>
+                <div className="flex gap-4">
+                  {["Sudah", "Belum"].map((opt) => (
+                    <label key={opt} className={`flex-1 px-5 py-4 rounded-xl cursor-pointer border-2 transition-all text-sm font-black shadow-sm text-center uppercase tracking-widest ${cawalsanForm.tahu_spp === opt ? "border-brand-yellow-400 bg-brand-yellow-50 text-brand-blue-950" : "border-ink-50 bg-ink-50/30 text-ink-300"}`}>
+                      <input type="radio" name={`spp-${p.id}`} value={opt} checked={cawalsanForm.tahu_spp === opt} onChange={() => setCawalsanForm({ ...cawalsanForm, tahu_spp: opt })} className="hidden" />
+                      {opt}
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-4">Rekomendasi Pewawancara *</label>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  {["Diterima", "Diterima dengan catatan", "Ditolak"].map((opt) => (
+                    <label key={opt} className={`px-5 py-4 rounded-xl cursor-pointer border-2 transition-all text-xs font-black uppercase tracking-widest text-center shadow-sm ${cawalsanForm.rekomendasi === opt ? (opt === "Diterima" ? "border-emerald-500 bg-emerald-50 text-emerald-700" : opt.includes("catatan") ? "border-brand-yellow-500 bg-brand-yellow-50 text-brand-yellow-700" : "border-red-500 bg-red-50 text-red-700") : "border-ink-50 bg-ink-50/30 text-ink-300"}`}>
+                      <input type="radio" name={`rekom-cawalsan-${p.id}`} value={opt} checked={cawalsanForm.rekomendasi === opt} onChange={() => setCawalsanForm({ ...cawalsanForm, rekomendasi: opt })} className="hidden" />
+                      {opt}
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-3">Nama Pewawancara *</label>
+                <select value={cawalsanForm.nama_pewawancara || ""} onChange={(e) => setCawalsanForm({ ...cawalsanForm, nama_pewawancara: e.target.value })} className="w-full px-5 py-4 bg-ink-50/30 border-2 border-ink-100 rounded-2xl focus:border-brand-yellow-500 outline-none font-bold text-brand-blue-950 transition-all cursor-pointer">
+                  <option value="">Pilih Pewawancara</option>
+                  {(p.jenjang?.toLowerCase().includes("putri") ? PEWAWANCARA_CAWALSAN_LIST_PUTRI : PEWAWANCARA_CAWALSAN_LIST_PUTRA).map((n) => <option key={n} value={n}>{n}</option>)}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-3">Catatan Tambahan (opsional)</label>
+                <textarea value={cawalsanForm.catatan || ""} onChange={(e) => setCawalsanForm({ ...cawalsanForm, catatan: e.target.value })} rows={3} className="w-full px-5 py-4 bg-ink-50/30 border-2 border-ink-100 rounded-2xl focus:border-brand-yellow-500 outline-none font-bold text-brand-blue-950 transition-all resize-none placeholder:text-ink-100" placeholder="Catatan tambahan pewawancara..." />
               </div>
             </div>
 
-            {/* Nama Pewawancara */}
-            <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">Nama Pewawancara *</label>
-              <select value={cawalsanForm.nama_pewawancara || ""} onChange={(e) => setCawalsanForm({ ...cawalsanForm, nama_pewawancara: e.target.value })} className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-amber-500 outline-none">
-                <option value="">Pilih Pewawancara</option>
-                {(p.jenjang?.toLowerCase().includes("putri") ? PEWAWANCARA_CAWALSAN_LIST_PUTRI : PEWAWANCARA_CAWALSAN_LIST_PUTRA).map((n) => <option key={n} value={n}>{n}</option>)}
-              </select>
-            </div>
-
-            {/* Catatan */}
-            <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">Catatan Pewawancara (opsional)</label>
-              <textarea value={cawalsanForm.catatan || ""} onChange={(e) => setCawalsanForm({ ...cawalsanForm, catatan: e.target.value })} rows={3} className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-amber-500 outline-none resize-none" placeholder="Catatan pewawancara..." />
-            </div>
-
-            {/* Actions */}
-            <div className="flex flex-col sm:flex-row gap-3 pt-2">
-              <button onClick={cancelEditing} className="w-full sm:w-auto px-5 py-2 bg-gray-200 text-gray-700 rounded-lg justify-center font-semibold hover:bg-gray-300 transition-colors">Batal</button>
-              <button onClick={() => saveForm(p, "ortu")} disabled={!cawalsanForm.nama_orangtua || !cawalsanForm.asal || !cawalsanForm.kategori || !cawalsanForm.sumber_info || !cawalsanForm.karakter || !cawalsanForm.tahu_spp || !cawalsanForm.rekomendasi || !cawalsanForm.nama_pewawancara || !CAWALSAN_QUESTIONS.every((q) => cawalsanForm[q.key]) || saving === p.id + "ortu"} className="w-full sm:w-auto px-5 py-2 bg-amber-600 text-white rounded-lg font-semibold hover:bg-amber-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
-                {saving === p.id + "ortu" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} Simpan
+            <div className="flex flex-col sm:flex-row gap-4 pt-2">
+              <button onClick={cancelEditing} className="w-full sm:w-auto px-8 py-4 bg-brand-yellow-100 text-brand-yellow-800 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-brand-yellow-200 transition-all active:scale-95">Batal</button>
+              <button onClick={() => saveForm(p, "ortu")} disabled={!cawalsanForm.nama_orangtua || !cawalsanForm.asal || !cawalsanForm.kategori || !cawalsanForm.sumber_info || !cawalsanForm.karakter || !cawalsanForm.tahu_spp || !cawalsanForm.rekomendasi || !cawalsanForm.nama_pewawancara || !CAWALSAN_QUESTIONS.every((q) => cawalsanForm[q.key]) || saving === p.id + "ortu"} className="w-full sm:w-auto px-8 py-4 bg-brand-yellow-400 text-brand-blue-950 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-brand-yellow-500 transition-all shadow-xl shadow-brand-yellow-400/20 disabled:opacity-50 flex items-center justify-center gap-2 active:scale-95">
+                {saving === p.id + "ortu" ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />} Simpan
               </button>
             </div>
           </div>
         ) : (
           <div>
             {isSaved ? (
-              <div className="flex items-center gap-2 py-3">
-                <CheckCircle className="w-5 h-5 text-amber-600" />
-                <span className="text-amber-700 font-semibold">Nilai sudah tersimpan. Hasil dapat dilihat di Dashboard Admin.</span>
+              <div className="flex items-center gap-4 py-5 bg-white/50 rounded-2xl px-6 border border-brand-yellow-100/50 shadow-inner">
+                <CheckCircle className="w-7 h-7 text-brand-yellow-600 shrink-0" />
+                <div>
+                  <p className="text-brand-blue-950 font-bold text-sm">Wawancara calon wali santri sudah tersimpan.</p>
+                  <p className="text-brand-yellow-700/60 text-xs font-bold mt-2 uppercase tracking-widest italic">Rekomendasi: {p.detail_cawalsan?.rekomendasi}</p>
+                </div>
               </div>
             ) : (
-              <p className="text-gray-400 text-sm italic">Belum dinilai</p>
+              <div className="flex items-center gap-3 text-brand-yellow-700/50 py-2">
+                <AlertCircle className="w-5 h-5" />
+                <span className="text-sm font-black uppercase tracking-widest italic font-medium">Belum ada data wawancara wali santri</span>
+              </div>
             )}
-            <button onClick={() => startEditing(p)} className="mt-3 px-4 py-2 bg-amber-600 text-white rounded-lg text-sm font-semibold hover:bg-amber-700 transition-colors">
-              {isSaved ? "Edit Nilai" : "Input Nilai"}
+            <button onClick={() => startEditing(p)} className="mt-6 px-8 py-4 bg-brand-yellow-400 text-brand-blue-950 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-brand-yellow-500 transition-all shadow-lg shadow-brand-yellow-400/20 active:scale-95">
+              {isSaved ? "Edit Hasil" : "Input Hasil"}
             </button>
           </div>
         )}
@@ -703,25 +692,26 @@ export default function InputNilaiPage() {
   // RENDER: Main Page
   // ============================================================================
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="max-w-4xl mx-auto space-y-8">
       {/* Header */}
-      <div className="bg-white rounded-3xl p-6 md:p-8 border border-cream-200 shadow-sm app-card">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 bg-maroon-50 rounded-2xl flex items-center justify-center border border-maroon-100 shrink-0">
-              <ClipboardCheck className="w-7 h-7 text-maroon-600" />
+      <div className="bg-white rounded-4xl p-8 md:p-10 border border-brand-yellow-100 shadow-sm app-card overflow-hidden relative">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-brand-blue-600/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+        <div className="flex items-center justify-between relative z-10">
+          <div className="flex items-center gap-6">
+            <div className="w-16 h-16 bg-brand-blue-50 rounded-2xl flex items-center justify-center border border-brand-blue-100 shrink-0 shadow-sm">
+              <ClipboardCheck className="w-8 h-8 text-brand-blue-600" />
             </div>
             <div>
-              <h1 className="text-2xl font-black text-ink-950 font-display tracking-tight">Input Nilai Ujian</h1>
-              <p className="text-sm font-bold text-ink-500 mt-1">Total: <span className="text-maroon-700">{peserta.length} peserta</span></p>
+              <h1 className="text-3xl font-black text-brand-blue-950 font-display tracking-tight leading-none">Input Nilai Ujian</h1>
+              <p className="text-sm font-bold text-ink-300 mt-2">Total Terdaftar: <span className="text-brand-blue-700 bg-brand-blue-50 px-2 py-0.5 rounded-lg">{peserta.length} peserta</span></p>
             </div>
           </div>
         </div>
 
         {/* Search */}
-        <div className="mt-6 relative">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-ink-400" />
-          <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Cari nama atau nomor pendaftaran..." className="w-full pl-12 pr-4 py-3.5 bg-cream-50 border border-cream-200 rounded-2xl focus:border-maroon-500 focus:ring-4 focus:ring-maroon-500/10 outline-none text-sm font-semibold transition-all" />
+        <div className="mt-8 relative z-10">
+          <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-ink-300" />
+          <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Cari nama atau nomor pendaftaran..." className="w-full pl-14 pr-6 py-4.5 bg-ink-50/50 border border-ink-100 rounded-3xl focus:border-brand-blue-500 focus:ring-8 focus:ring-brand-blue-500/5 outline-none text-base font-bold text-brand-blue-950 transition-all placeholder:text-ink-200" />
         </div>
       </div>
 
@@ -735,32 +725,32 @@ export default function InputNilaiPage() {
 
       {/* Loading */}
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-20 bg-white rounded-3xl border border-cream-200 shadow-sm app-card">
-          <Loader2 className="w-10 h-10 animate-spin text-maroon-600 mb-4" />
-          <span className="text-ink-600 font-bold">Memuat data peserta...</span>
+        <div className="flex flex-col items-center justify-center py-24 bg-white rounded-4xl border border-brand-yellow-100 shadow-sm app-card">
+          <Loader2 className="w-12 h-12 animate-spin text-brand-blue-600 mb-4" />
+          <span className="text-ink-300 font-black uppercase tracking-widest text-sm">Memuat data peserta...</span>
         </div>
       ) : filteredPeserta.length === 0 ? (
-        <div className="text-center py-20 bg-white rounded-3xl border border-cream-200 shadow-sm app-card">
-          <User className="w-16 h-16 mx-auto mb-4 text-ink-300" />
-          <p className="font-black text-ink-950 text-lg">Tidak ada peserta ditemukan</p>
-          <p className="text-sm font-medium text-ink-500 mt-1">Coba gunakan kata kunci pencarian yang lain.</p>
+        <div className="text-center py-24 bg-white rounded-4xl border border-brand-yellow-100 shadow-sm app-card">
+          <User className="w-20 h-20 mx-auto mb-6 text-ink-100" />
+          <p className="font-black text-brand-blue-950 text-2xl tracking-tight">Tidak ada peserta ditemukan</p>
+          <p className="text-sm font-bold text-ink-300 mt-2">Coba gunakan kata kunci pencarian yang lain.</p>
         </div>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-8">
           {filteredPeserta.map((p) => (
-            <div key={p.id} className="bg-white rounded-3xl p-6 md:p-8 border border-cream-200 shadow-sm app-card">
+            <div key={p.id} className="bg-white rounded-4xl p-8 md:p-10 border border-brand-yellow-100 shadow-sm shadow-brand-blue-900/5 app-card">
               {/* Peserta Header */}
-              <div className="flex items-center gap-4 mb-6 pb-5 border-b border-cream-100">
-                <div className="w-14 h-14 bg-cream-50 rounded-2xl flex items-center justify-center border border-cream-200 shrink-0">
-                  <User className="w-7 h-7 text-ink-400" />
+              <div className="flex items-center gap-6 mb-8 pb-8 border-b border-ink-100/50">
+                <div className="w-20 h-20 bg-ink-50 rounded-3xl flex items-center justify-center border border-ink-100 shrink-0 shadow-inner">
+                  <User className="w-10 h-10 text-brand-blue-300" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-black text-ink-950 font-display">{toTitleCase(p.nama_lengkap)}</h2>
-                  <div className="flex flex-wrap items-center gap-2 mt-1.5">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-maroon-50 text-maroon-700 text-[10px] font-black uppercase tracking-widest border border-maroon-100">
-                      <Hash className="w-3 h-3" /> {p.nomor_pendaftaran}
+                  <h2 className="text-2xl font-black text-brand-blue-950 font-display tracking-tight leading-none">{toTitleCase(p.nama_lengkap)}</h2>
+                  <div className="flex flex-wrap items-center gap-3 mt-3">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-brand-blue-50 text-brand-blue-700 text-[10px] font-black uppercase tracking-widest border border-brand-blue-100 shadow-xs">
+                      <Hash className="w-3.5 h-3.5" /> {p.nomor_pendaftaran}
                     </span>
-                    <span className="inline-flex items-center px-2.5 py-1 rounded-lg bg-surface-100 text-ink-600 text-[10px] font-black uppercase tracking-widest border border-surface-200">
+                    <span className="inline-flex items-center px-3 py-1.5 rounded-xl bg-brand-yellow-400 text-brand-blue-950 text-[10px] font-black uppercase tracking-widest shadow-sm">
                       {p.jenjang}
                     </span>
                   </div>

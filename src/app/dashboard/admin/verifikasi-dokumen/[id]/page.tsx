@@ -294,21 +294,21 @@ export default function VerifikasiDokumenDetailPage() {
     if (loading) {
         return (
             <div className="flex flex-col items-center justify-center min-h-[400px]">
-                <Loader2 className="w-12 h-12 animate-spin text-amber-600 mb-4" />
-                <p className="text-stone-600">Memuat berkas pendaftar...</p>
+                <Loader2 className="w-12 h-12 animate-spin text-brand-blue-600 mb-4" />
+                <p className="text-ink-300 font-bold tracking-wide">Memuat berkas pendaftar...</p>
             </div>
         );
     }
 
     if (!pendaftar && !loading) {
         return (
-            <div className="bg-white rounded-xl shadow-lg p-10 border-2 border-amber-100 text-center">
-                <AlertCircle className="w-16 h-16 text-amber-500 mx-auto mb-4" />
-                <h2 className="text-2xl font-bold text-stone-900 mb-2">Data Tidak Ditemukan</h2>
-                <p className="text-stone-600 mb-6">Pendaftar ini belum mengunggah berkas apapun atau data salah.</p>
+            <div className="bg-white rounded-3xl shadow-sm p-10 border border-brand-yellow-200 text-center">
+                <AlertCircle className="w-16 h-16 text-brand-blue-500 mx-auto mb-4" />
+                <h2 className="text-2xl font-black text-brand-blue-950 mb-2">Data Tidak Ditemukan</h2>
+                <p className="text-ink-300 font-medium mb-6">Pendaftar ini belum mengunggah berkas apapun atau data salah.</p>
                 <button
                     onClick={() => router.back()}
-                    className="btn-secondary"
+                    className="px-6 py-3 bg-brand-blue-700 hover:bg-brand-blue-800 text-white rounded-xl font-bold transition-all shadow-lg shadow-brand-blue-700/20 active:scale-95"
                 >
                     Kembali ke Daftar
                 </button>
@@ -326,26 +326,26 @@ export default function VerifikasiDokumenDetailPage() {
                 accept="image/jpeg, image/png, application/pdf"
             />
             {/* Header */}
-            <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-amber-100">
+            <div className="bg-white rounded-3xl shadow-sm p-6 border border-brand-yellow-100">
                 <div className="flex items-center justify-between flex-wrap gap-4">
                     <div className="flex items-center gap-4">
                         <button
                             onClick={() => router.back()}
-                            className="p-2 hover:bg-stone-100 rounded-lg text-stone-500 transition-colors"
+                            className="p-2 hover:bg-brand-yellow-50 rounded-lg text-ink-300 transition-colors"
                             title="Kembali"
                         >
                             <ChevronLeft className="w-6 h-6" />
                         </button>
-                        <div className="p-3 bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl">
-                            <User className="w-8 h-8 text-white" />
+                        <div className="p-4 bg-linear-to-br from-brand-blue-600 to-brand-blue-900 rounded-2xl shadow-xl shadow-brand-blue-900/20">
+                            <User className="w-8 h-8 text-brand-yellow-300" />
                         </div>
                         <div>
-                            <h2 className="text-2xl font-black text-stone-900">
+                            <h2 className="text-3xl font-black text-brand-blue-950 leading-none mb-1">
                                 {toTitleCase(pendaftar?.nama_lengkap || "")}
                             </h2>
-                            <div className="flex items-center gap-3 text-stone-600">
-                                <span className="font-mono bg-stone-100 px-2 py-0.5 rounded text-sm">{pendaftar?.nomor_pendaftaran}</span>
-                                <span className="px-2 py-0.5 bg-purple-100 text-purple-700 rounded text-xs font-bold uppercase">
+                            <div className="flex items-center gap-3 text-ink-300">
+                                <span className="font-mono bg-brand-blue-50 px-2.5 py-1 rounded-lg text-sm font-black text-brand-blue-600 border border-brand-blue-100">{pendaftar?.nomor_pendaftaran}</span>
+                                <span className="px-2.5 py-1 bg-brand-yellow-400 text-brand-blue-900 rounded-lg text-[10px] font-black uppercase shadow-xs">
                                     {pendaftar?.jenjang}
                                 </span>
                             </div>
@@ -366,11 +366,11 @@ export default function VerifikasiDokumenDetailPage() {
                 {dokumenList.map((dok) => (
                     <div
                         key={dok.id}
-                        className={`bg-white border-2 rounded-2xl overflow-hidden transition-all shadow-sm hover:shadow-md ${dok.status_verifikasi === "verified"
-                            ? "border-emerald-100"
+                        className={`bg-white border rounded-3xl overflow-hidden transition-all shadow-xs hover:shadow-xl hover:shadow-brand-blue-900/5 ${dok.status_verifikasi === "verified"
+                            ? "border-emerald-200"
                             : dok.status_verifikasi === "rejected"
-                                ? "border-rose-100"
-                                : "border-amber-100"
+                                ? "border-rose-200"
+                                : "border-brand-yellow-200"
                             }`}
                     >
                         {/* Document Preview */}
@@ -424,10 +424,9 @@ export default function VerifikasiDokumenDetailPage() {
                             )}
                         </div>
 
-                        {/* Document Info */}
                         <div className="p-5">
                             <div className="flex items-start justify-between mb-2">
-                                <h3 className="font-bold text-stone-900 capitalize">{dok.jenis_dokumen.replace(/_/g, " ")}</h3>
+                                <h3 className="font-black text-brand-blue-950 capitalize tracking-tight leading-tight">{dok.jenis_dokumen.replace(/_/g, " ")}</h3>
                                 {dok.status_verifikasi === "verified" ? (
                                     <div className="flex items-center gap-1 text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg text-[10px] font-black uppercase">
                                         <CheckCircle className="w-3 h-3" />
@@ -439,20 +438,20 @@ export default function VerifikasiDokumenDetailPage() {
                                         Ditolak
                                     </div>
                                 ) : (
-                                    <div className="flex items-center gap-1 text-amber-600 bg-amber-50 px-2 py-1 rounded-lg text-[10px] font-black uppercase">
+                                    <div className="flex items-center gap-1 text-brand-yellow-700 bg-brand-yellow-50 px-2 py-1 rounded-lg text-[10px] font-black uppercase border border-brand-yellow-200">
                                         <RefreshCw className="w-3 h-3" />
                                         Menunggu
                                     </div>
                                 )}
                             </div>
                             <div className="flex items-center justify-between mb-4">
-                                <p className="text-[10px] text-stone-500 font-bold uppercase tracking-widest">
+                                <p className="text-[10px] text-ink-300 font-black uppercase tracking-widest leading-none">
                                     {formatDate(dok.created_at)}
                                 </p>
                                 <button
                                     onClick={() => handleReplaceClick(dok.id, dok.jenis_dokumen)}
                                     disabled={uploadingDoc === dok.id}
-                                    className="flex items-center gap-1 text-[10px] font-bold text-blue-600 hover:text-blue-800 transition-colors uppercase disabled:opacity-50"
+                                    className="flex items-center gap-1 text-[10px] font-black text-brand-blue-600 hover:text-brand-blue-800 transition-colors uppercase disabled:opacity-50 italic"
                                 >
                                     {uploadingDoc === dok.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <UploadCloud className="w-3 h-3" />}
                                     Ubah Data
@@ -489,9 +488,9 @@ export default function VerifikasiDokumenDetailPage() {
                                         setRejectReason(dok.catatan || "");
                                     }}
                                     disabled={processingDocs.has(dok.id)}
-                                    className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold transition-all ${dok.status_verifikasi === "rejected"
-                                        ? "bg-rose-50 text-rose-600 border border-rose-100"
-                                        : "bg-white border-2 border-stone-100 hover:border-rose-200 hover:text-rose-600 text-stone-600 active:scale-95 disabled:opacity-50"
+                                    className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-black transition-all active:scale-95 disabled:opacity-50 ${dok.status_verifikasi === "rejected"
+                                        ? "bg-rose-100 text-rose-700 border border-rose-200"
+                                        : "bg-white border-2 border-brand-yellow-100 hover:border-rose-400 hover:text-rose-600 text-ink-300"
                                         }`}
                                 >
                                     {processingDocs.has(dok.id) ? (

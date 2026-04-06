@@ -54,12 +54,12 @@ async function main() {
 
     // 2. Create Users (Profiles) DIRECTLY in Database (No Supabase Auth)
     const usersToCreate = [
-        { email: 'admin@alimam.com', password: 'password123', role: 'admin_super', name: 'Super Admin', phone: '081234567890', label: 'ADMIN_SUPER' },
+        { email: 'admin@ululalbaab.com', password: 'password123', role: 'admin_super', name: 'Super Admin', phone: '081234567890', label: 'ADMIN_SUPER' },
 
         // Specific Role Admins
-        { email: 'admin.berkas@alimam.com', password: 'password123', role: 'admin_berkas', name: 'Admin Berkas', phone: '081234567801', label: 'ADMIN_BERKAS' },
-        { email: 'admin.keuangan@alimam.com', password: 'password123', role: 'admin_keuangan', name: 'Admin Keuangan', phone: '081234567802', label: 'ADMIN_KEUANGAN' },
-        { email: 'penguji@alimam.com', password: 'password123', role: 'penguji', name: 'Ustadz Penguji', phone: '081234567803', label: 'PENGUJI' },
+        { email: 'admin.berkas@ululalbaab.com', password: 'password123', role: 'admin_berkas', name: 'Admin Berkas', phone: '081234567801', label: 'ADMIN_BERKAS' },
+        { email: 'admin.keuangan@ululalbaab.com', password: 'password123', role: 'admin_keuangan', name: 'Admin Keuangan', phone: '081234567802', label: 'ADMIN_KEUANGAN' },
+        { email: 'penguji@ululalbaab.com', password: 'password123', role: 'penguji', name: 'Ustadz Penguji', phone: '081234567803', label: 'PENGUJI' },
 
         // Pendaftar Test Accounts
         { email: 'user.draft@example.com', password: 'password123', role: 'pendaftar', name: 'Ahmad Draft', phone: '081234567891', label: 'DRAFT' },

@@ -12,6 +12,8 @@ import { Container } from "@/components/layout/Container";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
+import { BRANDING } from "@/config/branding";
+
 export default function HeroSection() {
   const [ref, inView] = useInView({
     triggerOnce: true,
@@ -24,7 +26,7 @@ export default function HeroSection() {
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] bg-maroon-100/40 blur-[120px] rounded-full" />
         <div className="absolute top-[20%] -right-[10%] w-[40%] h-[50%] bg-cream-300/30 blur-[100px] rounded-full" />
-        <div className="absolute bottom-[0%] left-[20%] w-[40%] h-[40%] bg-maroon-50/60 blur-[100px] rounded-full" />
+        <div className="absolute bottom-[0%] left-[20%] w-[40%] h-[40%] bg-brand-blue-50/60 blur-[100px] rounded-full" />
       </div>
 
       <Container className="relative z-10">
@@ -42,10 +44,10 @@ export default function HeroSection() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="inline-flex items-center gap-2 px-4 py-2 mt-4 lg:mt-0 rounded-pill bg-white border border-cream-200 shadow-sm text-maroon-700 text-[10px] lg:text-xs font-bold uppercase tracking-widest mx-auto lg:mx-0"
+                className="inline-flex items-center gap-2 px-4 py-2 mt-4 lg:mt-0 rounded-pill bg-white border border-cream-200 shadow-sm text-brand-blue-700 text-[10px] lg:text-xs font-bold uppercase tracking-widest mx-auto lg:mx-0"
               >
                 <Sparkles className="w-3.5 h-3.5 text-cream-500" />
-                <span>Terakreditasi BAN-PDM • Sejak 1995</span>
+                <span>Terakreditasi BAN-PDM • {BRANDING.schoolName.includes("Al-Andalus") ? "Islamic Boarding School" : "Managed by Al-Andalus"}</span>
               </motion.div>
 
               <h1 className="leading-[1.15] tracking-tight mx-auto lg:mx-0 max-w-2xl lg:max-w-none text-maroon-900">
@@ -60,7 +62,7 @@ export default function HeroSection() {
               
               <div className="mt-4 pt-4 border-t border-cream-200/50">
                 <p className="text-sm lg:text-base font-bold text-maroon-800 text-center lg:text-left italic">
-                  "Warisan 30 tahun, diperkuat sistem Al-Andalus"
+                  "Pendidikan Berkualitas, Diperkuat Sistem {BRANDING.schoolName.includes("Al-Andalus") ? "Al-Andalus" : BRANDING.schoolShortName}"
                 </p>
               </div>
             </div>
@@ -91,7 +93,7 @@ export default function HeroSection() {
                   ))}
                 </div>
                 <p className="text-xs font-semibold text-ink-500">
-                  <span className="text-maroon-700 font-bold">300+</span> Santri Bergabung
+                  <span className="text-brand-blue-700 font-bold">300+</span> Santri Bergabung
                 </p>
               </div>
             </div>
@@ -108,7 +110,7 @@ export default function HeroSection() {
             <div className="relative z-10 rounded-[2rem] sm:rounded-[2.5rem] overflow-hidden shadow-xl border-8 sm:border-[12px] border-white ring-1 ring-cream-200 bg-white">
               <Image
                 src="/images/hero.webp"
-                alt="Pesantren Al-Andalus Al-Imam"
+                alt={BRANDING.schoolName}
                 width={800}
                 height={600}
                 className="w-full h-auto object-cover aspect-[4/3] hover:scale-105 transition-transform duration-700"
@@ -123,12 +125,12 @@ export default function HeroSection() {
               transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
               className="absolute -top-4 lg:-top-6 -right-2 lg:-right-8 z-20 flex items-center gap-3 bg-white/90 backdrop-blur-md p-3 px-4 lg:p-4 rounded-2xl shadow-lg border border-white/50"
             >
-              <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl bg-cream-100 flex items-center justify-center text-cream-600">
+              <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl bg-brand-yellow-100 flex items-center justify-center text-cream-600">
                 <GraduationCap className="w-5 h-5 lg:w-6 lg:h-6" />
               </div>
               <div>
                 <p className="text-[10px] lg:text-xs font-bold text-ink-400 uppercase tracking-widest">Tersedia</p>
-                <p className="text-xs lg:text-sm font-black text-maroon-900">Beasiswa Tahfidz</p>
+                <p className="text-xs lg:text-sm font-black text-maroon-900">MTs, IL &amp; SMA</p>
               </div>
             </motion.div>
 
@@ -137,7 +139,7 @@ export default function HeroSection() {
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
               className="absolute -bottom-6 lg:-bottom-10 -left-2 lg:-left-8 z-20 flex items-center gap-3 bg-white/90 backdrop-blur-md p-3 px-4 lg:p-4 rounded-2xl shadow-lg border border-white/50"
             >
-              <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl bg-maroon-50 flex items-center justify-center text-maroon-600">
+              <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl bg-brand-blue-50 flex items-center justify-center text-brand-blue-600">
                 <Globe className="w-5 h-5 lg:w-6 lg:h-6" />
               </div>
               <div>
@@ -148,7 +150,7 @@ export default function HeroSection() {
 
             {/* Aesthetic Blobs */}
             <div className="absolute -z-10 -bottom-12 -right-12 w-48 h-48 sm:w-64 sm:h-64 bg-maroon-300/20 blur-3xl rounded-full" />
-            <div className="absolute -z-10 -top-12 -left-12 w-36 h-36 sm:w-48 sm:h-48 bg-cream-400/20 blur-2xl rounded-full" />
+            <div className="absolute -z-10 -top-12 -left-12 w-36 h-36 sm:w-48 sm:h-48 bg-brand-yellow-400/20 blur-2xl rounded-full" />
           </motion.div>
         </div>
       </Container>

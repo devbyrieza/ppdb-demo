@@ -549,7 +549,7 @@ function pickOpening(): string {
 export function buildMessageJadwalBelum(nama: string): string {
     return `${pickOpening()} ${nama},
 
-Terima kasih telah mendaftar di Pesantren Al-Andalus [Template Demo].
+Terima kasih telah mendaftar di Pesantren Al-Andalus Ulul Albaab.
 
 Saat ini jadwal tes lanjutan (Tes Al-Qur'an, Wawancara Calsan, dan Wawancara Cawalsan Santri) belum tersedia. Mohon bersabar, kami akan menginformasikan kembali begitu jadwal sudah siap.
 
@@ -558,10 +558,10 @@ Untuk sementara, Anda sudah bisa mengerjakan tes online yang tersedia di dashboa
 - Identifikasi Kepribadian
 - Tes Kesiapan
 
-Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-alandalus.com'}/dashboard/pendaftar/undangan-seleksi
+Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-ululalbaab.com'}/dashboard/pendaftar/undangan-seleksi
 
 Jazakumullahu khairan,
-Panitia PPDB [Template Demo]`;
+Panitia PPDB Ulul Albaab`;
 }
 
 export function buildMessageJadwalTersedia(nama: string): string {
@@ -576,16 +576,16 @@ Silakan login ke dashboard dan pilih jadwal yang sesuai untuk:
 
 Segera pilih jadwal sebelum kuota penuh.
 
-Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-alandalus.com'}/dashboard/pendaftar/undangan-seleksi
+Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-ululalbaab.com'}/dashboard/pendaftar/undangan-seleksi
 
 Jazakumullahu khairan,
-Panitia PPDB [Template Demo]`;
+Panitia PPDB Ulul Albaab`;
 }
 
 export function buildMessageJadwalLangsungTersedia(nama: string): string {
     return `${pickOpening()} ${nama},
 
-Terima kasih telah mencapai tahap Seleksi Pesantren Al-Andalus [Template Demo].
+Terima kasih telah mencapai tahap Seleksi Pesantren Al-Andalus Ulul Albaab.
 
 Saat ini **jadwal tes lanjutan sudah tersedia dan bisa langsung Anda pilih**.
 
@@ -596,10 +596,10 @@ Silakan login ke dashboard dan pilih sesi jadwal untuk:
 
 Harap segera memilih jadwal sebelum rentang waktu habis atau kuota penuh. Jangan lupa juga untuk menyelesaikan Tes Online (Akademik & Kepribadian).
 
-Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-alandalus.com'}/dashboard/pendaftar/undangan-seleksi
+Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-ululalbaab.com'}/dashboard/pendaftar/undangan-seleksi
 
 Jazakumullahu khairan,
-Panitia PPDB [Template Demo]`;
+Panitia PPDB Ulul Albaab`;
 }
 
 export function buildMessageKonfirmasiJadwal(
@@ -622,10 +622,10 @@ Persiapan:
 - Berpakaian sopan dan rapi
 - Bawa alat tulis
 
-Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-alandalus.com'}/dashboard/pendaftar/undangan-seleksi
+Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-ululalbaab.com'}/dashboard/pendaftar/undangan-seleksi
 
 Jazakumullahu khairan,
-Panitia PPDB [Template Demo]`;
+Panitia PPDB Ulul Albaab`;
 }
 
 export function buildMessageReminderH1(
@@ -646,10 +646,10 @@ Pengingat: ${jenisUjian} Anda dijadwalkan besok.
 
 Mohon hadir tepat waktu dan persiapkan diri dengan baik. Semoga dimudahkan dan diberkahi.
 
-Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-alandalus.com'}/dashboard/pendaftar/undangan-seleksi
+Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-ululalbaab.com'}/dashboard/pendaftar/undangan-seleksi
 
 Jazakumullahu khairan,
-Panitia PPDB [Template Demo]`;
+Panitia PPDB Ulul Albaab`;
 }
 
 export function buildMessageReminderH0(
@@ -670,7 +670,7 @@ Mohon segera bersiap. Pastikan koneksi internet stabil jika ujian dilakukan seca
 Semoga dimudahkan dan diberkahi.
 
 Jazakumullahu khairan,
-Panitia PPDB [Template Demo]`;
+Panitia PPDB Ulul Albaab`;
 }
 
 export function buildMessageHasilTes(nama: string): string {
@@ -680,10 +680,10 @@ Alhamdulillah, hasil tes seleksi Anda sudah tersedia.
 
 Silakan login ke dashboard untuk melihat hasil lengkap Anda.
 
-Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-alandalus.com'}/dashboard/pendaftar/pengumuman
+Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-ululalbaab.com'}/dashboard/pendaftar/pengumuman
 
 Jazakumullahu khairan,
-Panitia PPDB [Template Demo]`;
+Panitia PPDB Ulul Albaab`;
 }
 
 // ============================================================================

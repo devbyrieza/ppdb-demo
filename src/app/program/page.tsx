@@ -42,9 +42,9 @@ const PROGRAMS = [
             "Kecakapan Hidup & Ekstrakurikuler"
         ],
         image: "/images/mts.webp",
-        theme: "maroon",
-        accent: "text-maroon-600",
-        bg: "bg-maroon-50"
+        theme: "blue",
+        accent: "text-brand-blue-600",
+        bg: "bg-brand-blue-50"
     },
     {
         id: "il",
@@ -65,9 +65,9 @@ const PROGRAMS = [
             "Pembinaan Dakwah & Organisasi"
         ],
         image: "/images/il.webp",
-        theme: "cream",
-        accent: "text-cream-600",
-        bg: "bg-cream-50"
+        theme: "yellow",
+        accent: "text-brand-yellow-600",
+        bg: "bg-brand-yellow-50"
     },
 ];
 
@@ -98,14 +98,14 @@ export default function ProgramPage() {
         <main className="bg-white min-h-screen">
             {/* 1. Hero Section - Airy & Clean */}
             <section className="relative py-24 md:py-32 overflow-hidden bg-white">
-                <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-brown-50/50 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+                <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-yellow-50/50 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
                 <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.02] pointer-events-none" />
 
                 <Container className="relative z-10 text-center">
                     <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-cream-50 border border-cream-200 text-maroon-700 text-xs font-bold uppercase tracking-widest mb-8 shadow-sm"
+                        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-brand-blue-50 border border-brand-blue-100 text-brand-blue-700 text-xs font-bold uppercase tracking-widest mb-8 shadow-sm"
                     >
                         <GraduationCap className="w-3.5 h-3.5" />
                         <span>Jenjang Pendidikan</span>
@@ -118,7 +118,7 @@ export default function ProgramPage() {
                         className="text-5xl md:text-7xl lg:text-8xl font-display font-black mb-10 tracking-tight leading-[0.9] text-ink-950"
                     >
                         Program <br />
-                        <span className="text-gradient-maroon">Terbaik Kita</span>
+                        <span className="text-gradient-blue">Terbaik Kita</span>
                     </motion.h1>
 
                     <motion.p
@@ -144,10 +144,10 @@ export default function ProgramPage() {
                                 }}
                                 className={`px-8 py-3 rounded-pill font-black text-sm transition-all border shadow-sm
                                 ${activeSection === program.id
-                                        ? program.theme === 'maroon'
-                                            ? 'bg-maroon-600 text-white border-maroon-600'
-                                            : 'bg-brown-600 text-white border-brown-600'
-                                        : 'bg-white text-ink-500 border-cream-200 hover:border-maroon-200 hover:text-maroon-700'
+                                        ? program.theme === 'blue'
+                                            ? 'bg-brand-blue-600 text-white border-brand-blue-600'
+                                            : 'bg-brand-yellow-500 text-white border-brand-yellow-500'
+                                        : 'bg-white text-ink-500 border-brand-blue-100 hover:border-brand-blue-300 hover:text-brand-blue-700'
                                     }`}
                             >
                                 {program.name}
@@ -171,7 +171,7 @@ export default function ProgramPage() {
                                     viewport={{ once: true }}
                                     className={`relative ${idx % 2 === 1 ? 'lg:col-start-2' : ''}`}
                                 >
-                                    <div className="aspect-[4/5] rounded-[3.5rem] overflow-hidden shadow-lg relative z-10 p-3 bg-white border border-cream-200">
+                                    <div className="aspect-4/5 rounded-[3.5rem] overflow-hidden shadow-lg relative z-10 p-3 bg-white border border-brand-blue-100">
                                         <div className="relative w-full h-full rounded-[2.8rem] overflow-hidden">
                                             <Image
                                                 src={program.image}
@@ -179,13 +179,13 @@ export default function ProgramPage() {
                                                 fill
                                                 priority={idx === 0}
                                                 className="object-cover transition-transform duration-700 hover:scale-110 bg-surface-200 animate-pulse"
-                                                onLoadingComplete={(img) => img.classList.remove('animate-pulse')}
+                                                onLoad={(e) => e.currentTarget.classList.remove('animate-pulse')}
                                             />
                                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
                                             <div className="absolute bottom-10 left-10 right-10 z-20">
                                                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-white/20 backdrop-blur-md border border-white/30 text-white text-[10px] font-black uppercase tracking-widest mb-3">
-                                                    <Star className="w-3.5 h-3.5 fill-gold-400 text-gold-400" />
+                                                    <Star className="w-3.5 h-3.5 fill-brand-yellow-400 text-brand-yellow-400" />
                                                     <span>Program Unggulan</span>
                                                 </div>
                                                 <h3 className="text-3 font-display font-black text-white text-4xl leading-none">
@@ -197,7 +197,7 @@ export default function ProgramPage() {
 
                                     {/* Decorative Blob */}
                                     <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] rounded-full blur-[120px] -z-10 opacity-30
-                                        ${program.theme === 'maroon' ? 'bg-maroon-200' : 'bg-cream-200'}
+                                        ${program.theme === 'blue' ? 'bg-brand-blue-200' : 'bg-brand-yellow-200'}
                                     `} />
                                 </motion.div>
 
@@ -220,16 +220,10 @@ export default function ProgramPage() {
                                     {/* Stats Grid - Modern Design */}
                                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
                                         {program.stats.map((stat, sIdx) => (
-                                            <motion.div
-                                                key={sIdx}
-                                                initial={{ opacity: 0, scale: 0.9 }}
-                                                whileInView={{ opacity: 1, scale: 1 }}
-                                                viewport={{ once: true }}
-                                                transition={{ delay: sIdx * 0.1 }}
-                                                className="app-card bg-white p-5 rounded-[2rem] border border-cream-100 shadow-sm hover:shadow-md transition-all text-center group"
+                                             <div key={sIdx} className={`app-card bg-white p-5 rounded-[2rem] border border-brand-blue-50 shadow-sm hover:shadow-md transition-all text-center group`}
                                             >
-                                                <div className={`w-10 h-10 rounded-xl mx-auto mb-3 flex items-center justify-center transition-transform group-hover:scale-110 border border-cream-200
-                                                    ${program.theme === 'maroon' ? 'bg-cream-50 text-maroon-600' : 'bg-white text-brown-600'}
+                                                <div className={`w-10 h-10 rounded-xl mx-auto mb-3 flex items-center justify-center transition-transform group-hover:scale-110 border border-brand-blue-100
+                                                    ${program.theme === 'blue' ? 'bg-brand-blue-50 text-brand-blue-600' : 'bg-brand-yellow-50 text-brand-yellow-700'}
                                                 `}>
                                                     <stat.icon className="w-5 h-5" />
                                                 </div>
@@ -237,7 +231,7 @@ export default function ProgramPage() {
                                                 <p className={`font-black text-ink-950 ${stat.value.length > 20 ? 'text-sm leading-tight' : 'text-lg'}`}>
                                                     {stat.value}
                                                 </p>
-                                            </motion.div>
+                                            </div>
                                         ))}
                                     </div>
 
@@ -246,14 +240,14 @@ export default function ProgramPage() {
                                         initial={{ opacity: 0, y: 20 }}
                                         whileInView={{ opacity: 1, y: 0 }}
                                         viewport={{ once: true }}
-                                        className={`app-card rounded-[3rem] p-10 mb-10 border ${program.bg} ${program.theme === 'maroon' ? 'border-cream-200' : 'border-cream-200'} shadow-sm relative overflow-hidden`}
+                                        className={`app-card rounded-[3rem] p-10 mb-10 border ${program.bg} border-brand-blue-100 shadow-sm relative overflow-hidden`}
                                     >
                                         <div className="absolute top-0 right-0 p-8 opacity-5">
-                                            <BookOpen className="w-32 h-32" />
+                                            <BookOpen className="w-32 h-32 text-brand-blue-900" />
                                         </div>
 
                                         <h3 className="text-2xl font-black text-ink-950 mb-8 flex items-center gap-3">
-                                            <div className={`w-3 h-10 rounded-full ${program.theme === 'maroon' ? 'bg-maroon-600' : 'bg-brown-600'}`} />
+                                            <div className={`w-3 h-10 rounded-full ${program.theme === 'blue' ? 'bg-brand-blue-600' : 'bg-brand-yellow-500'}`} />
                                             Kurikulum & Fokus
                                         </h3>
 
@@ -261,7 +255,7 @@ export default function ProgramPage() {
                                             {program.curriculum.map((item, cIdx) => (
                                                 <li key={cIdx} className="flex items-start gap-4 group/item">
                                                     <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5 shadow-sm
-                                                        ${program.theme === 'maroon' ? 'bg-maroon-600 text-white' : 'bg-brown-600 text-white'}
+                                                        ${program.theme === 'blue' ? 'bg-brand-blue-600 text-white' : 'bg-brand-yellow-500 text-white'}
                                                     `}>
                                                         <CheckCircle2 className="w-4 h-4" />
                                                     </div>
@@ -280,7 +274,7 @@ export default function ProgramPage() {
                                     >
                                         <Link href={`/daftar?program=${program.id}`}>
                                             <button className={`w-full sm:w-auto px-14 py-5 rounded-pill font-black text-white text-lg shadow-md transition-all hover:-translate-y-1
-                                                ${program.theme === 'maroon' ? 'bg-maroon-700 hover:bg-maroon-800' : 'bg-brown-700 hover:bg-brown-800'}
+                                                ${program.theme === 'blue' ? 'bg-brand-blue-700 hover:bg-brand-blue-800' : 'bg-brand-yellow-600 hover:bg-brand-yellow-700'}
                                             `}>
                                                 Daftarkan Sekarang
                                             </button>
@@ -301,21 +295,21 @@ export default function ProgramPage() {
                         initial={{ opacity: 0, scale: 0.95 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
-                        className="bg-maroon-800 rounded-[2rem] md:rounded-[3rem] lg:rounded-[4rem] p-6 sm:p-8 md:p-16 lg:p-24 text-center text-white relative overflow-hidden"
+                        className="bg-brand-blue-900 bg-linear-to-br from-brand-blue-800 to-brand-blue-950 rounded-[2rem] md:rounded-[3rem] lg:rounded-[4rem] p-6 sm:p-8 md:p-16 lg:p-24 text-center text-white relative overflow-hidden"
                     >
                         <div className="absolute top-0 right-0 w-32 h-32 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-white/5 rounded-full blur-[60px] md:blur-[100px] -translate-y-1/2 translate-x-1/2" />
                         <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-5" />
 
                         <div className="relative z-10">
                             <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-display font-black mb-4 sm:mb-6 md:mb-8 text-white leading-tight">
-                                Mulai Perjalanan <br /> <span className="text-gold-400">Terbaik</span> Mereka
+                                Mulai Perjalanan <br /> <span className="text-brand-yellow-400">Terbaik</span> Mereka
                             </h2>
-                            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-brown-100 max-w-2xl mx-auto mb-6 sm:mb-8 md:mb-10 lg:mb-12 font-medium px-2">
+                            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-brand-blue-50 max-w-2xl mx-auto mb-6 sm:mb-8 md:mb-10 lg:mb-12 font-medium px-2">
                                 Konsultasikan rencana pendidikan putra-putri Anda dengan tim kami untuk mendapatkan pilihan program yang paling tepat.
                             </p>
                             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 justify-center px-4">
                                 <Link href="/daftar">
-                                    <button className="w-full sm:w-auto px-6 sm:px-10 py-3.5 sm:py-4 md:py-5 rounded-pill bg-white text-maroon-900 font-black text-sm sm:text-base md:text-lg hover:bg-cream-100 shadow-md transition-all min-h-[48px] sm:min-h-[52px]">
+                                    <button className="w-full sm:w-auto px-6 sm:px-10 py-3.5 sm:py-4 md:py-5 rounded-pill bg-white text-brand-blue-900 font-black text-sm sm:text-base md:text-lg hover:bg-brand-blue-50 shadow-md transition-all min-h-[48px] sm:min-h-[52px]">
                                         Pendaftaran Online
                                     </button>
                                 </Link>

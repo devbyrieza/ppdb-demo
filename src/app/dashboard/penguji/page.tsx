@@ -51,8 +51,8 @@ export default function PengujiDashboardPage() {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 animate-spin text-maroon-600 mx-auto mb-4" />
-          <p className="text-ink-600 font-medium">Memuat statistik dashboard...</p>
+          <Loader2 className="w-12 h-12 animate-spin text-brand-blue-600 mx-auto mb-4" />
+          <p className="text-ink-600 font-bold tracking-tight">Memuat statistik dashboard...</p>
         </div>
       </div>
     );
@@ -63,17 +63,17 @@ export default function PengujiDashboardPage() {
       title: "Total Jadwal",
       value: stats.total_jadwal,
       icon: Calendar,
-      accent: "maroon",
-      bgColor: "bg-maroon-50",
-      iconColor: "text-maroon-600",
+      accent: "brand-blue",
+      bgColor: "bg-brand-blue-50",
+      iconColor: "text-brand-blue-600",
     },
     {
       title: "Hari Ini",
       value: stats.jadwal_hari_ini,
       icon: Clock,
-      accent: "maroon",
-      bgColor: "bg-maroon-50",
-      iconColor: "text-maroon-600",
+      accent: "brand-blue",
+      bgColor: "bg-brand-blue-50",
+      iconColor: "text-brand-blue-600",
     },
     {
       title: "Selesai",
@@ -87,26 +87,26 @@ export default function PengujiDashboardPage() {
       title: "Belum Dinilai",
       value: stats.belum_dinilai,
       icon: ClipboardCheck,
-      accent: "amber",
-      bgColor: "bg-amber-50",
-      iconColor: "text-amber-600",
+      accent: "brand-yellow",
+      bgColor: "bg-brand-yellow-50",
+      iconColor: "text-brand-yellow-600",
     },
   ];
 
   return (
     <div className="space-y-8">
       {/* Page Title / Header Banner */}
-      <div className="relative overflow-hidden rounded-4xl bg-linear-to-br from-maroon-700 to-maroon-900 border border-maroon-600 p-8 md:p-10 text-white shadow-lg app-card">
-        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-cream-50/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+      <div className="relative overflow-hidden rounded-4xl bg-linear-to-br from-brand-blue-700 to-brand-blue-900 border border-brand-blue-600 p-8 md:p-14 text-white shadow-2xl shadow-brand-blue-900/30 app-card">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-yellow-400/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="flex items-center gap-5">
-            <div className="w-16 h-16 rounded-3xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-sm shrink-0">
-              <TrendingUp className="w-8 h-8 text-cream-100" />
+          <div className="flex items-center gap-6">
+            <div className="w-20 h-20 rounded-3xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-inner shrink-0 text-brand-yellow-300">
+              <TrendingUp className="w-10 h-10" />
             </div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-black mb-2 tracking-tight text-white font-display">Ikhtisar Dashboard</h1>
-              <p className="text-cream-100/90 font-medium max-w-xl text-sm md:text-base leading-relaxed">
-                Selamat datang kembali di panel penilaian Seleksi PPDB Al-Imam. Berikut ringkasan tugas Anda hari ini.
+              <h1 className="text-2xl md:text-4xl font-black mb-2 tracking-tight text-white font-display">Ikhtisar Dashboard</h1>
+              <p className="text-brand-blue-100 font-bold max-w-xl text-sm md:text-lg leading-relaxed opacity-90">
+                Selamat datang kembali di panel penilaian Seleksi PPDB Ulul Albaab. Berikut ringkasan tugas Anda hari ini.
               </p>
             </div>
           </div>
@@ -118,14 +118,14 @@ export default function PengujiDashboardPage() {
         {statCards.map((card, index) => (
           <div
             key={index}
-            className="bg-white rounded-3xl p-5 md:p-6 border border-cream-200 shadow-sm hover:shadow-md transition-all duration-300 app-card group"
+            className="bg-white rounded-3xl p-5 md:p-8 border border-brand-yellow-100 shadow-xs hover:shadow-xl hover:shadow-brand-blue-900/5 transition-all duration-500 app-card group"
           >
-            <div className={`w-12 h-12 ${card.bgColor} rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300`}>
-              <card.icon className={`w-6 h-6 ${card.iconColor}`} />
+            <div className={`w-14 h-14 ${card.bgColor} rounded-2xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}>
+              <card.icon className={`w-7 h-7 ${card.iconColor}`} />
             </div>
             <div>
-              <p className="text-[10px] md:text-xs font-black text-ink-400 mb-1 uppercase tracking-widest">{card.title}</p>
-              <p className="text-2xl md:text-3xl font-black text-ink-950 font-display">
+              <p className="text-[10px] md:text-xs font-black text-ink-300 mb-1 uppercase tracking-widest">{card.title}</p>
+              <p className="text-2xl md:text-4xl font-black text-brand-blue-950 font-display tracking-tight leading-none">
                 {card.value}
               </p>
             </div>
@@ -134,26 +134,26 @@ export default function PengujiDashboardPage() {
       </div>
 
       {/* Quick Actions */}
-      <div className="bg-white rounded-4xl p-8 border border-cream-200 shadow-sm app-card">
+      <div className="bg-white rounded-4xl p-8 border border-brand-yellow-100 shadow-sm app-card">
         <div className="flex items-center justify-between mb-8">
-          <h3 className="text-xl font-black text-ink-950 tracking-tight font-display">
+          <h3 className="text-2xl font-black text-brand-blue-950 tracking-tight font-display">
             Aksi Cepat
           </h3>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Link
             href="/dashboard/penguji/jadwal"
-            className="flex items-center gap-5 p-6 bg-cream-50 hover:bg-cream-100 rounded-3xl transition-all duration-300 border border-cream-200 hover:shadow-md group relative overflow-hidden"
+            className="flex items-center gap-6 p-7 bg-brand-yellow-50/50 hover:bg-brand-yellow-100/50 rounded-4xl transition-all duration-500 border border-brand-yellow-100 hover:shadow-xl hover:shadow-brand-yellow-400/10 group relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-              <Calendar className="w-16 h-16 text-maroon-900" />
+              <Calendar className="w-20 h-20 text-brand-blue-900" />
             </div>
-            <div className="w-14 h-14 bg-maroon-600 rounded-2xl flex items-center justify-center shadow-lg shadow-maroon-200 group-hover:scale-110 transition-transform shrink-0">
-              <Calendar className="w-7 h-7 text-white" />
+            <div className="w-16 h-16 bg-brand-yellow-400 rounded-2xl flex items-center justify-center shadow-lg shadow-brand-yellow-400/20 group-hover:scale-110 group-hover:-rotate-3 transition-all shrink-0">
+              <Calendar className="w-8 h-8 text-brand-blue-950" />
             </div>
             <div>
-              <p className="text-lg font-black text-ink-950 font-display">Lihat Jadwal</p>
-              <p className="text-xs font-bold text-ink-500 uppercase tracking-wider mt-1">
+              <p className="text-xl font-black text-brand-blue-950 font-display">Lihat Jadwal</p>
+              <p className="text-xs font-black text-ink-300 uppercase tracking-widest mt-1">
                 Jadwal ujian ditugaskan
               </p>
             </div>
@@ -161,17 +161,17 @@ export default function PengujiDashboardPage() {
 
           <Link
             href="/dashboard/penguji/input-nilai"
-            className="flex items-center gap-5 p-6 bg-maroon-600 hover:bg-maroon-700 rounded-3xl transition-all duration-300 border border-maroon-800 shadow-lg shadow-maroon-200 hover:shadow-xl group relative overflow-hidden"
+            className="flex items-center gap-6 p-7 bg-brand-blue-700 hover:bg-brand-blue-800 rounded-4xl transition-all duration-500 border border-brand-blue-800 shadow-xl shadow-brand-blue-900/20 hover:shadow-2xl hover:shadow-brand-blue-900/30 group relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-              <ClipboardCheck className="w-16 h-16 text-white" />
+              <ClipboardCheck className="w-20 h-20 text-white" />
             </div>
-            <div className="w-14 h-14 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/20 group-hover:scale-110 transition-transform shrink-0">
-              <ClipboardCheck className="w-7 h-7 text-white" />
+            <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/20 group-hover:scale-110 group-hover:rotate-3 transition-all shrink-0">
+              <ClipboardCheck className="w-8 h-8 text-white" />
             </div>
             <div>
-              <p className="text-lg font-black text-white font-display">Input Nilai</p>
-              <p className="text-xs font-bold text-maroon-100 uppercase tracking-wider mt-1">
+              <p className="text-xl font-black text-white font-display tracking-tight">Input Nilai</p>
+              <p className="text-xs font-black text-brand-blue-100 uppercase tracking-widest mt-1">
                 {stats.belum_dinilai} Tugas Penilaian
               </p>
             </div>

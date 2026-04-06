@@ -1,11 +1,11 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X } from "lucide-react";
 
-const WA_NUMBER = "6285111524441";
-const WA_MESSAGE = "Assalamu'alaikum, saya ingin bertanya tentang PPDB Al-Andalus Al-Imam Tahun Ajaran 2026/2027.";
+const WA_NUMBER = "6288809934970";
+const WA_MESSAGE = "Assalamu'alaikum, saya ingin bertanya tentang PPDB Al-Andalus Ulul Albaab Tahun Ajaran 2026/2027.";
 
 export default function FloatingWhatsApp() {
     const [showTooltip, setShowTooltip] = useState(false);

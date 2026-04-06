@@ -1,10 +1,10 @@
-# 🏫 PPDB Al-Imam Islamic Boarding School
+# 🏫 PPDB Al-Andalus Ulul Albaab
 
-A modern PPDB (Penerimaan Peserta Didik Baru) registration system built for Al-Imam Islamic Boarding School. This project showcases a complete student registration workflow with form validation, OTP verification, and responsive design.
+A modern PPDB (Penerimaan Peserta Didik Baru) registration system built for Pesantren Al-Andalus Ulul Albaab. This project showcases a complete student registration workflow with form validation, OTP verification, and responsive design.
 
 ## 🚀 Live Demo
 
-🌐 **[View Live Application](https://pp-alimam.vercel.app)**
+🌐 **[View Live Application](https://ppdb.alandalus-ululalbaab.com)**
 
 ## 📋 Project Overview
 
@@ -61,8 +61,8 @@ src/
 
 ```bash
 # Clone the repository
-git clone https://github.com/riezaekatomara/pp-alimam.git
-cd pp-alimam
+git clone https://github.com/riezaekatomara/alandalus-ululalbaab.git
+cd alandalus-ululalbaab
 
 # Install dependencies
 npm install
@@ -101,7 +101,7 @@ This is a client project. For contributions or issues, please contact the develo
 
 ## 📄 License
 
-This project is proprietary software developed for Al-Imam Islamic Boarding School.
+This project is proprietary software developed for Pesantren Al-Andalus Ulul Albaab.
 
 ## 👨‍💻 About Developer
 
@@ -120,4 +120,4 @@ This project is proprietary software developed for Al-Imam Islamic Boarding Scho
 
 ---
 
-**Note**: This project demonstrates expertise in modern web development, React ecosystem, and building production-ready applications for educational institutions.
+**Note**: This project demonstrates expertise in modern web development, React ecosystem, and building production-ready applications for educational institutions like Pesantren Al-Andalus Ulul Albaab.

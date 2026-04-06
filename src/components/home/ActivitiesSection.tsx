@@ -88,7 +88,7 @@ export default function ActivitiesSection() {
                                     fill
                                     priority={idx < 2}
                                     className="object-cover transition-transform duration-700 group-hover:scale-110 bg-cream-100 animate-pulse"
-                                    onLoadingComplete={(img) => img.classList.remove('animate-pulse')}
+                                    onLoad={(e) => e.currentTarget.classList.remove('animate-pulse')}
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-maroon-900/60 to-transparent opacity-80" />
                             </div>

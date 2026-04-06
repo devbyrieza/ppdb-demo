@@ -203,20 +203,20 @@ export default function PendaftarDetailPage() {
   const formatStatus = (status: string) => {
     const statusMap: Record<string, { label: string; color: string }> = {
       draft: { label: "Draft", color: "bg-stone-100 text-stone-700" },
-      awaiting_payment: { label: "Menunggu Pembayaran", color: "bg-amber-100 text-amber-700" },
-      paid: { label: "Sudah Bayar", color: "bg-blue-100 text-blue-700" },
-      data_completed: { label: "Data Lengkap", color: "bg-maroon-100 text-maroon-800" },
-      docs_uploaded: { label: "Dokumen Terupload", color: "bg-indigo-100 text-indigo-700" },
-      docs_verified: { label: "Dokumen Terverifikasi", color: "bg-green-100 text-green-700" },
-      scheduled: { label: "Terjadwal Ujian", color: "bg-purple-100 text-purple-700" },
-      tested: { label: "Sudah Ujian", color: "bg-violet-100 text-violet-700" },
-      announced: { label: "Diumumkan", color: "bg-cyan-100 text-cyan-700" },
-      accepted: { label: "Diterima", color: "bg-green-100 text-green-700" },
-      rejected: { label: "Ditolak", color: "bg-red-100 text-red-700" },
-      enrolled: { label: "Terdaftar", color: "bg-emerald-100 text-emerald-700" },
+      awaiting_payment: { label: "Menunggu Pembayaran", color: "bg-brand-yellow-100 text-brand-yellow-700 border border-brand-yellow-200" },
+      paid: { label: "Sudah Bayar", color: "bg-emerald-100 text-emerald-700" },
+      data_completed: { label: "Data Lengkap", color: "bg-brand-blue-100 text-brand-blue-800" },
+      docs_uploaded: { label: "Dokumen Terupload", color: "bg-brand-blue-50 text-brand-blue-600" },
+      docs_verified: { label: "Dokumen Terverifikasi", color: "bg-emerald-100 text-emerald-700" },
+      scheduled: { label: "Terjadwal Ujian", color: "bg-brand-yellow-100 text-brand-yellow-800 border border-brand-yellow-200" },
+      tested: { label: "Sudah Ujian", color: "bg-brand-blue-600 text-white shadow-sm" },
+      announced: { label: "Diumumkan", color: "bg-brand-blue-50 text-brand-blue-700" },
+      accepted: { label: "Diterima", color: "bg-emerald-600 text-white" },
+      rejected: { label: "Ditolak", color: "bg-rose-600 text-white" },
+      enrolled: { label: "Terdaftar", color: "bg-emerald-100 text-emerald-800" },
       // Added missing keys matching seed/list
-      verified: { label: "Terverifikasi", color: "bg-green-100 text-green-700" },
-      payment_verification: { label: "Verifikasi Pembayaran", color: "bg-orange-100 text-orange-700" },
+      verified: { label: "Terverifikasi", color: "bg-emerald-100 text-emerald-700" },
+      payment_verification: { label: "Verifikasi Pembayaran", color: "bg-brand-blue-50 text-brand-blue-700 border border-brand-blue-100" },
     };
     return statusMap[status] || { label: status, color: "bg-stone-100 text-stone-700" };
   };
@@ -284,28 +284,29 @@ export default function PendaftarDetailPage() {
       {/* Back Button */}
       <Link
         href="/dashboard/admin/pendaftar"
-        className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium"
+        className="inline-flex items-center gap-2 text-brand-blue-600 hover:text-brand-blue-800 font-bold"
       >
         <ArrowLeft className="w-4 h-4" />
         Kembali ke Daftar Pendaftar
       </Link>
 
       {/* Summary Card */}
-      <div className="bg-linear-to-r from-blue-600 to-indigo-700 rounded-2xl shadow-xl p-6 text-white">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+      <div className="bg-linear-to-br from-brand-blue-600 to-brand-blue-900 rounded-3xl shadow-xl shadow-brand-blue-900/20 p-8 text-white relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-brand-yellow-400/10 rounded-full -mr-20 -mt-20 blur-3xl pointer-events-none"></div>
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 relative z-10">
           {/* Main Info */}
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center text-white">
-              <User className="w-8 h-8" />
+          <div className="flex items-center gap-5">
+            <div className="w-20 h-20 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-brand-yellow-300 shadow-inner">
+              <User className="w-10 h-10" />
             </div>
             <div>
-              <h1 className="text-2xl font-black text-white">{toTitleCase(pendaftar.nama_lengkap)}</h1>
-              <div className="flex flex-wrap items-center gap-3 mt-1">
-                <span className="font-mono text-blue-100">{pendaftar.nomor_pendaftaran}</span>
-                <span className="px-2 py-0.5 bg-white/20 rounded text-xs font-bold text-white">
+              <h1 className="text-3xl font-black text-white tracking-tight leading-tight">{toTitleCase(pendaftar.nama_lengkap)}</h1>
+              <div className="flex flex-wrap items-center gap-3 mt-2">
+                <span className="font-mono bg-white/20 px-2.5 py-1 rounded-lg text-sm font-black text-white border border-white/20">{pendaftar.nomor_pendaftaran}</span>
+                <span className="px-2.5 py-1 bg-brand-yellow-400 text-brand-blue-900 rounded-lg text-xs font-black uppercase shadow-sm">
                   {pendaftar.jenjang}
                 </span>
-                <span className="text-blue-100">
+                <span className="text-brand-blue-100 font-bold">
                   {pendaftar.jenis_kelamin === "L" ? "Laki-laki" : "Perempuan"}
                 </span>
               </div>
@@ -314,23 +315,23 @@ export default function PendaftarDetailPage() {
 
           {/* Quick Stats */}
           <div className="flex flex-wrap gap-4">
-            <div className="bg-white/10 rounded-xl px-4 py-3 min-w-[100px]">
-              <p className="text-xs text-blue-100 mb-1">Pembayaran</p>
-              <p className="font-bold text-lg flex items-center gap-1 text-white">
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl px-5 py-4 min-w-[120px] border border-white/10">
+              <p className="text-[10px] text-brand-blue-100 font-black uppercase tracking-widest mb-1">Pembayaran</p>
+              <p className="font-black text-xl flex items-center gap-1.5 text-white">
                 {hasPaid ? (
-                  <><CheckCircle className="w-4 h-4 text-green-300" /> Lunas</>
+                  <><CheckCircle className="w-5 h-5 text-emerald-400" /> Lunas</>
                 ) : (
-                  <><AlertCircle className="w-4 h-4 text-amber-300" /> Pending</>
+                  <><AlertCircle className="w-5 h-5 text-brand-yellow-400" /> Pending</>
                 )}
               </p>
             </div>
-            <div className="bg-white/10 rounded-xl px-4 py-3 min-w-[100px]">
-              <p className="text-xs text-blue-100 mb-1">Dokumen</p>
-              <p className="font-bold text-lg text-white">{verifiedDocs}/{totalDocs} Verified</p>
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl px-5 py-4 min-w-[120px] border border-white/10">
+              <p className="text-[10px] text-brand-blue-100 font-black uppercase tracking-widest mb-1">Dokumen</p>
+              <p className="font-black text-xl text-white">{verifiedDocs}/{totalDocs} <span className="text-xs font-medium text-brand-blue-200">Verified</span></p>
             </div>
-            <div className="bg-white/10 rounded-xl px-4 py-3 min-w-[100px]">
-              <p className="text-xs text-blue-100 mb-1">Tahun Ajaran</p>
-              <p className="font-bold text-lg text-white">{pendaftar.tahun_ajaran?.nama || "-"}</p>
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl px-5 py-4 min-w-[120px] border border-white/10">
+              <p className="text-[10px] text-brand-blue-100 font-black uppercase tracking-widest mb-1">Thn. Ajaran</p>
+              <p className="font-black text-xl text-white">{pendaftar.tahun_ajaran?.nama || "-"}</p>
             </div>
           </div>
         </div>
@@ -344,7 +345,7 @@ export default function PendaftarDetailPage() {
                 <select
                   value={newStatus}
                   onChange={(e) => setNewStatus(e.target.value)}
-                  className="px-3 py-1.5 bg-white text-stone-800 rounded-lg text-sm focus:outline-none"
+                  className="px-3 py-1.5 bg-white text-brand-blue-950 rounded-lg text-sm font-bold focus:outline-none focus:ring-2 focus:ring-brand-yellow-400"
                   disabled={savingStatus}
                 >
                   <option value="draft">Draft</option>
@@ -418,9 +419,9 @@ export default function PendaftarDetailPage() {
                 }
               }}
               disabled={savingStatus || pendaftar.status_proses === "draft"}
-              className="px-3 py-1.5 bg-rose-500 hover:bg-rose-600 rounded-lg text-sm font-medium transition-colors flex items-center gap-1 disabled:opacity-50"
+              className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-black transition-all flex items-center gap-1 disabled:opacity-50 shadow-sm active:scale-95"
             >
-              <X className="w-3 h-3" />
+              <X className="w-3.5 h-3.5" />
               Buka Kunci
             </button>
             {pendaftar.no_hp && (
@@ -428,18 +429,18 @@ export default function PendaftarDetailPage() {
                 href={`https://wa.me/${pendaftar.no_hp.replace(/\D/g, "")}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-3 py-1.5 bg-green-500 hover:bg-green-600 rounded-lg text-sm font-medium transition-colors flex items-center gap-1"
+                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black transition-all flex items-center gap-1 shadow-sm active:scale-95"
               >
-                <Phone className="w-3 h-3" />
+                <Phone className="w-3.5 h-3.5" />
                 WhatsApp
               </a>
             )}
             {pendaftar.email && (
               <a
                 href={`mailto:${pendaftar.email}`}
-                className="px-3 py-1.5 bg-white/20 hover:bg-white/30 rounded-lg text-sm font-medium transition-colors flex items-center gap-1"
+                className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-xl text-xs font-black transition-all flex items-center gap-1 backdrop-blur-md active:scale-95"
               >
-                <Mail className="w-3 h-3" />
+                <Mail className="w-3.5 h-3.5" />
                 Email
               </a>
             )}
@@ -452,12 +453,12 @@ export default function PendaftarDetailPage() {
         <div className="lg:col-span-2 space-y-6">
           {/* Untuk Admin Berkas: Dokumen pindah ke kolom utama paling atas */}
           {isBerkas && (
-            <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-maroon-100">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-maroon-100 rounded-lg">
-                  <FileText className="w-6 h-6 text-maroon-700" />
+            <div className="bg-white rounded-3xl shadow-sm p-6 border border-brand-yellow-100">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-3 bg-brand-blue-50 rounded-xl">
+                  <FileText className="w-6 h-6 text-brand-blue-700" />
                 </div>
-                <h3 className="text-lg font-bold text-stone-900">Dokumen (Prioritas Verifikasi)</h3>
+                <h3 className="text-xl font-black text-brand-blue-950 tracking-tight">Dokumen (Prioritas Verifikasi)</h3>
               </div>
               {pendaftar.dokumen.length === 0 ? (
                 <p className="text-sm text-stone-500">Belum ada dokumen terupload</p>
@@ -518,16 +519,14 @@ export default function PendaftarDetailPage() {
 
           {/* Hasil Seleksi & Ujian (Tampil untuk Admin Super, Admin Umum, dan Penguji) */}
           {(isPenguji || userRole === "admin_super" || userRole === "admin" || userRole === "head_of_it") && (
-            <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-purple-100">
+            <div className="bg-white rounded-3xl shadow-sm p-6 border border-brand-yellow-100">
               <div className="flex items-center gap-3 mb-6">
-                <div className="p-2 bg-purple-100 rounded-lg">
-                  <div className="w-6 h-6 text-purple-600 flex items-center justify-center">
-                    <Trophy className="w-5 h-5" />
-                  </div>
+                <div className="p-3 bg-brand-yellow-50 rounded-xl">
+                  <Trophy className="w-6 h-6 text-brand-yellow-600" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-stone-900">Hasil Seleksi & Ujian</h3>
-                  <p className="text-sm text-stone-500">Rincian nilai 6 komponen tes Calon Santri & Wali Santri</p>
+                  <h3 className="text-xl font-black text-brand-blue-950 tracking-tight leading-tight">Hasil Seleksi & Ujian</h3>
+                  <p className="text-sm text-ink-300 font-medium tracking-tight">Rincian nilai 6 komponen tes Calon Santri & Wali Santri</p>
                 </div>
               </div>
 
@@ -535,15 +534,15 @@ export default function PendaftarDetailPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 
                 {/* 1. Tes Kemampuan Akademik (CBT) */}
-                <div className="bg-blue-50/50 p-4 rounded-xl border border-blue-100 relative">
-                  <span className="block text-xs text-blue-600 font-bold uppercase tracking-wide mb-1">CBT: Akademik</span>
+                <div className="bg-brand-blue-50/50 p-4 rounded-2xl border border-brand-blue-100 relative">
+                  <span className="block text-[10px] text-brand-blue-600 font-black uppercase tracking-widest mb-1 leading-none">CBT: Akademik</span>
                   {!pendaftar.nilai_ujian ?
-                    <span className="text-sm font-bold text-stone-400 italic">Belum Ujian</span> :
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-3xl font-black text-blue-900">
+                    <span className="text-sm font-bold text-ink-200 italic">Belum Ujian</span> :
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-4xl font-black text-brand-blue-950">
                         {pendaftar.nilai_ujian?.score_akademik ?? "-"}
                       </span>
-                      <span className="text-sm text-blue-400 font-medium">/ 100</span>
+                      <span className="text-xs text-brand-blue-300 font-black uppercase">pts</span>
                     </div>
                   }
                 </div>
@@ -666,29 +665,29 @@ export default function PendaftarDetailPage() {
           {/* Untuk Admin Keuangan: Pembayaran pindah ke kolom utama paling atas */}
           {/* TODO: Ganti logic check permission dengan session role yang sebenarnya */}
           {isKeuangan && (
-            <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-emerald-100">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-emerald-100 rounded-lg">
-                  <CreditCard className="w-6 h-6 text-emerald-600" />
+            <div className="bg-white rounded-3xl shadow-sm p-6 border border-brand-yellow-100">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-3 bg-brand-yellow-100 rounded-xl shadow-sm">
+                  <CreditCard className="w-6 h-6 text-brand-yellow-700" />
                 </div>
-                <h3 className="text-lg font-bold text-stone-900">Pembayaran (Prioritas Keuangan)</h3>
+                <h3 className="text-xl font-black text-brand-blue-950 tracking-tight">Pembayaran (Prioritas Keuangan)</h3>
               </div>
               {pendaftar.pembayaran.length === 0 ? (
-                <p className="text-sm text-stone-500">Belum ada pembayaran</p>
+                <p className="text-sm text-ink-300 font-bold italic">Belum ada pembayaran</p>
               ) : (
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {pendaftar.pembayaran.map((payment) => (
-                    <div key={payment.id} className="p-3 bg-stone-50 rounded-lg border border-stone-200">
+                    <div key={payment.id} className="p-4 bg-brand-yellow-50/50 rounded-2xl border border-brand-yellow-100 shadow-xs">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-lg font-bold text-stone-900">
+                        <span className="text-2xl font-black text-brand-blue-950 tracking-tighter">
                           {formatRupiah(payment.jumlah)}
                         </span>
                         <span
-                          className={`px-3 py-1 rounded-full text-xs font-bold ${payment.status_pembayaran === "verified"
-                            ? "bg-green-100 text-green-700"
+                          className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${payment.status_pembayaran === "verified"
+                            ? "bg-emerald-100 text-emerald-700 border border-emerald-200"
                             : payment.status_pembayaran === "rejected"
-                              ? "bg-red-100 text-red-700"
-                              : "bg-amber-100 text-amber-700"
+                              ? "bg-rose-100 text-rose-700 border border-rose-200"
+                              : "bg-brand-yellow-100 text-brand-yellow-700 border border-brand-yellow-200"
                             }`}
                         >
                           {payment.status_pembayaran === "verified"
@@ -698,14 +697,14 @@ export default function PendaftarDetailPage() {
                               : "Pending"}
                         </span>
                       </div>
-                      <div className="grid grid-cols-2 gap-2 text-sm text-stone-600">
+                      <div className="grid grid-cols-2 gap-4 pt-2 border-t border-brand-yellow-200/50">
                         <div>
-                          <span className="block text-xs text-stone-400">Metode</span>
-                          <span className="font-medium">{payment.metode_pembayaran}</span>
+                          <span className="block text-[10px] text-ink-200 font-black uppercase tracking-widest leading-none mb-1">Metode</span>
+                          <span className="font-bold text-brand-blue-950 text-sm">{payment.metode_pembayaran}</span>
                         </div>
                         <div>
-                          <span className="block text-xs text-stone-400">Tanggal</span>
-                          <span className="font-medium">{formatDate(payment.tanggal_pembayaran)}</span>
+                          <span className="block text-[10px] text-ink-200 font-black uppercase tracking-widest leading-none mb-1">Tanggal</span>
+                          <span className="font-bold text-brand-blue-950 text-sm">{formatDate(payment.tanggal_pembayaran)}</span>
                         </div>
                       </div>
                     </div>
@@ -716,12 +715,12 @@ export default function PendaftarDetailPage() {
           )}
 
           {/* Data Pribadi (Selalu tampil, tapi mungkin disederhanakan) */}
-          <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-blue-100">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <User className="w-6 h-6 text-blue-600" />
+          <div className="bg-white rounded-3xl shadow-sm p-6 border border-brand-yellow-100">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-3 bg-brand-blue-50 rounded-xl">
+                <User className="w-6 h-6 text-brand-blue-600" />
               </div>
-              <h3 className="text-lg font-bold text-stone-900">Data Pribadi</h3>
+              <h3 className="text-xl font-black text-brand-blue-950 tracking-tight">Data Pribadi</h3>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -749,12 +748,12 @@ export default function PendaftarDetailPage() {
           </div>
 
           {/* Kontak & Alamat (Penting untuk Penagihan) */}
-          <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-blue-100">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="p-2 bg-green-100 rounded-lg">
-                <MapPin className="w-6 h-6 text-green-600" />
+          <div className="bg-white rounded-3xl shadow-sm p-6 border border-brand-yellow-100">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-3 bg-emerald-50 rounded-xl">
+                <MapPin className="w-6 h-6 text-emerald-600" />
               </div>
-              <h3 className="text-lg font-bold text-stone-900">Kontak & Alamat</h3>
+              <h3 className="text-xl font-black text-brand-blue-950 tracking-tight">Kontak & Alamat</h3>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -779,12 +778,12 @@ export default function PendaftarDetailPage() {
 
           {/* Asal Sekolah (Sembunyikan untuk Keuangan) */}
           {!isKeuangan && (
-            <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-blue-100">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-purple-100 rounded-lg">
-                  <School className="w-6 h-6 text-purple-600" />
+            <div className="bg-white rounded-3xl shadow-sm p-6 border border-brand-yellow-100">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-3 bg-brand-yellow-50 rounded-xl">
+                  <School className="w-6 h-6 text-brand-yellow-600" />
                 </div>
-                <h3 className="text-lg font-bold text-stone-900">Asal Sekolah</h3>
+                <h3 className="text-xl font-black text-brand-blue-950 tracking-tight">Asal Sekolah</h3>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -799,12 +798,12 @@ export default function PendaftarDetailPage() {
 
           {/* Data Orang Tua (Penting untuk Penagihan) */}
           {pendaftar.orang_tua && (
-            <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-blue-100">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-amber-100 rounded-lg">
-                  <Users className="w-6 h-6 text-amber-600" />
+            <div className="bg-white rounded-3xl shadow-sm p-6 border border-brand-yellow-100">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-3 bg-brand-yellow-100 rounded-xl">
+                  <Users className="w-6 h-6 text-brand-yellow-700" />
                 </div>
-                <h3 className="text-lg font-bold text-stone-900">Data Orang Tua/Wali</h3>
+                <h3 className="text-xl font-black text-brand-blue-950 tracking-tight">Data Orang Tua/Wali</h3>
               </div>
 
               <div className="space-y-8">
@@ -1041,10 +1040,10 @@ function InfoItem({
 }) {
   return (
     <div>
-      <p className="text-xs text-stone-500 mb-1">{label}</p>
+      <p className="text-[10px] text-ink-200 font-black uppercase tracking-widest mb-1 leading-none">{label}</p>
       <div className="flex items-center gap-2">
-        {icon && <span className="text-stone-400">{icon}</span>}
-        <p className="font-medium text-stone-900">{value || "-"}</p>
+        {icon && <span className="text-brand-blue-300">{icon}</span>}
+        <p className="font-bold text-brand-blue-950 leading-tight">{value || "-"}</p>
       </div>
     </div>
   );

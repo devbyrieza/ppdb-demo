@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Cron endpoint for H-1 reminders.
  * Called daily at 08:00 WIB by external cron.
  * Finds all jadwal with tes tomorrow and enqueues reminder if not already sent.
@@ -105,7 +105,7 @@ export async function GET(request: Request) {
                 });
 
             const lokasi =
-                jadwal.exam_session?.location || jadwal.tempat_santri || "Pesantren Al-Andalus Al-Imam";
+                jadwal.exam_session?.location || jadwal.tempat_santri || "Pesantren Al-Andalus Ulul Albaab";
             const jenisUjian = jadwal.exam_session?.title || "Seleksi Santri Baru";
 
             const message = buildMessageReminderH1(

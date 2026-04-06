@@ -155,7 +155,7 @@ const TEMPLATES: Record<string, string> = {
 
 Assalamu'alaikum {{nama}},
 
-Alhamdulillah, pendaftaran Anda di Pesantren Al-Andalus [Template Demo] telah berhasil!
+Alhamdulillah, pendaftaran Anda di Pesantren Al-Andalus Ulul Albaab telah berhasil!
 
 📋 *Detail Pendaftaran:*
 • Nomor Pendaftaran: {{nomor_pendaftaran}}
@@ -172,7 +172,7 @@ Alhamdulillah, pendaftaran Anda di Pesantren Al-Andalus [Template Demo] telah be
 Hubungi kami di {{kontak}}
 
 Jazakumullahu khairan,
-Panitia PPDB [Template Demo]`,
+Panitia PPDB Ulul Albaab`,
 
     // Dokumen diverifikasi - Approved
     'document_verified': `✅ *Dokumen Diverifikasi*
@@ -190,7 +190,7 @@ Silakan pilih jadwal tes masuk melalui dashboard Anda (Menu Jadwal Ujian).
 Dashboard: {{dashboard_url}}
 
 Jazakumullahu khairan,
-Panitia PPDB [Template Demo]`,
+Panitia PPDB Ulul Albaab`,
 
     // Dokumen ditolak
     'document_rejected': `❌ *Dokumen Perlu Diperbaiki*
@@ -214,7 +214,7 @@ Mohon maaf, dokumen Anda perlu diperbaiki.
 Hubungi kami di {{kontak}}
 
 Jazakumullahu khairan,
-Panitia PPDB [Template Demo]`,
+Panitia PPDB Ulul Albaab`,
 
     // Pembayaran diverifikasi - Approved
     'payment_verified': `✅ *Pembayaran Diterima*
@@ -235,7 +235,7 @@ Setelah data lengkap, Anda bisa memilih jadwal tes.
 Dashboard: {{dashboard_url}}
 
 Jazakumullahu khairan,
-Panitia PPDB [Template Demo]`,
+Panitia PPDB Ulul Albaab`,
 
     // Pembayaran ditolak
     'payment_rejected': `❌ *Pembayaran Perlu Diperbaiki*
@@ -256,7 +256,7 @@ Mohon maaf, bukti pembayaran Anda perlu diperbaiki.
 Hubungi kami di {{kontak}}
 
 Jazakumullahu khairan,
-Panitia PPDB [Template Demo]`,
+Panitia PPDB Ulul Albaab`,
 
     // Reminder deadline
     'deadline_reminder': `⏰ *Pengingat Deadline*
@@ -276,7 +276,7 @@ Ini adalah pengingat bahwa deadline {{jenis_deadline}} akan berakhir pada:
 Dashboard: {{dashboard_url}}
 
 Jazakumullahu khairan,
-Panitia PPDB [Template Demo]`,
+Panitia PPDB Ulul Albaab`,
 
     // Jadwal tes masuk
     'test_schedule': `📅 *Jadwal Tes Masuk*
@@ -301,14 +301,14 @@ Berikut jadwal tes masuk Anda:
 Dashboard: {{dashboard_url}}
 
 Jazakumullahu khairan,
-Panitia PPDB [Template Demo]`,
+Panitia PPDB Ulul Albaab`,
 
     // Pengumuman kelulusan - Diterima
     'announcement_accepted': `🎉 *SELAMAT! Anda DITERIMA*
 
 Assalamu'alaikum {{nama}},
 
-Alhamdulillah, kami dengan senang hati mengumumkan bahwa Anda *DITERIMA* di Pesantren Al-Andalus [Template Demo]!
+Alhamdulillah, kami dengan senang hati mengumumkan bahwa Anda *DITERIMA* di Pesantren Al-Andalus Ulul Albaab!
 
 📋 *Detail:*
 • Jenjang: {{jenjang}}
@@ -321,17 +321,17 @@ Alhamdulillah, kami dengan senang hati mengumumkan bahwa Anda *DITERIMA* di Pesa
 
 Dashboard: {{dashboard_url}}
 
-Selamat bergabung di keluarga besar Al-Andalus! 🎓
+Selamat bergabung di keluarga besar Ulul Albaab! 🎓
 
 Jazakumullahu khairan,
-Panitia PPDB [Template Demo]`,
+Panitia PPDB Ulul Albaab`,
 
     // Pengumuman kelulusan - Cadangan
     'announcement_reserve': `📋 *PENGUMUMAN HASIL SELEKSI*
 
 Assalamu'alaikum {{nama}},
 
-Berdasarkan hasil seleksi PPDB Pesantren Al-Andalus [Template Demo], kami informasikan bahwa Anda dinyatakan *CADANGAN*.
+Berdasarkan hasil seleksi PPDB Pesantren Al-Andalus Ulul Albaab, kami informasikan bahwa Anda dinyatakan *CADANGAN*.
 
 📋 *Detail:*
 • Jenjang: {{jenjang}}
@@ -344,14 +344,14 @@ Pantau terus dashboard Anda untuk update terbaru.
 Dashboard: {{dashboard_url}}
 
 Jazakumullahu khairan,
-Panitia PPDB [Template Demo]`,
+Panitia PPDB Ulul Albaab`,
 
     // Pengumuman kelulusan - Ditolak
     'announcement_rejected': `📋 *PENGUMUMAN HASIL SELEKSI*
 
 Assalamu'alaikum {{nama}},
 
-Berdasarkan hasil seleksi PPDB Pesantren Al-Andalus [Template Demo], kami informasikan bahwa Anda *BELUM DITERIMA* pada periode ini.
+Berdasarkan hasil seleksi PPDB Pesantren Al-Andalus Ulul Albaab, kami informasikan bahwa Anda *BELUM DITERIMA* pada periode ini.
 
 📋 *Detail:*
 • Jenjang: {{jenjang}}
@@ -360,7 +360,7 @@ Berdasarkan hasil seleksi PPDB Pesantren Al-Andalus [Template Demo], kami inform
 Kami mengapresiasi semangat dan usaha Anda. Semoga dimudahkan jalannya untuk menuntut ilmu di manapun.
 
 Jazakumullahu khairan,
-Panitia PPDB [Template Demo]`,
+Panitia PPDB Ulul Albaab`,
 
     // Google Form Link
     'google_form_link': `📝 *LINK FORMULIR TAMBAHAN*
@@ -379,7 +379,7 @@ Pastikan mengisi dengan data yang benar dan lengkap.
 Dashboard: {{dashboard_url}}
 
 Jazakumullahu khairan,
-Panitia PPDB [Template Demo]`,
+Panitia PPDB Ulul Albaab`,
 
     // Zoom/Online Meeting Link
     'zoom_meeting': `🎥 *UNDANGAN TES ONLINE*
@@ -401,7 +401,7 @@ Berikut jadwal {{jenis_ujian}} secara online:
 Dashboard: {{dashboard_url}}
 
 Jazakumullahu khairan,
-Panitia PPDB [Template Demo]`,
+Panitia PPDB Ulul Albaab`,
 
     // Data Lengkap -> Unlock Upload Berkas
     'data_complete': `✅ *DATA LENGKAP*
@@ -418,14 +418,14 @@ Silakan login ke dashboard dan unggah dokumen yang diperlukan (KK, Akta, dll).
 Dashboard: {{dashboard_url}}
 
 Jazakumullahu khairan,
-Panitia PPDB [Template Demo]`,
+Panitia PPDB Ulul Albaab`,
 
     // Semua Ujian Selesai
     'all_exams_complete': `🎉 *RANGKAIAN SELEKSI SELESAI*
 
 Assalamu'alaikum {{nama}},
 
-Alhamdulillah, Anda telah menyelesaikan seluruh rangkaian ujian/seleksi masuk Pesantren Al-Andalus [Template Demo].
+Alhamdulillah, Anda telah menyelesaikan seluruh rangkaian ujian/seleksi masuk Pesantren Al-Andalus Ulul Albaab.
 
 🔐 *Status Terkini:*
 Halaman Pengumuman Hasil Seleksi kini telah terbuka di dashboard Anda.
@@ -436,7 +436,7 @@ Pengumuman kelulusan belum tersedia saat ini. Mohon menunggu update selanjutnya 
 Dashboard: {{dashboard_url}}
 
 Jazakumullahu khairan,
-Panitia PPDB [Template Demo]`,
+Panitia PPDB Ulul Albaab`,
 };
 
 // ============================================
@@ -459,8 +459,8 @@ export async function notifyRegistrationSuccess(data: {
             nama: data.nama,
             nomor_pendaftaran: data.nomor_pendaftaran,
             jenjang: data.jenjang === 'MTs' ? 'Madrasah Tsanawiyah (MTs)' : "I'dad Lughowi (Setara SMA)",
-            dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-alandalus.com'}/dashboard/pendaftar`,
-            kontak: '0851-1152-4441',
+            dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-ululalbaab.com'}/dashboard/pendaftar`,
+            kontak: '0888-0993-4970',
         },
     });
 }
@@ -484,8 +484,8 @@ export async function notifyDocumentVerified(data: {
             nama: data.nama,
             dokumen_list: data.dokumen_list,
             catatan: data.catatan || '',
-            dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-alandalus.com'}/dashboard/pendaftar/${data.status === 'verified' ? 'undangan-seleksi' : 'upload-berkas'}`,
-            kontak: '0851-1152-4441',
+            dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-ululalbaab.com'}/dashboard/pendaftar/${data.status === 'verified' ? 'undangan-seleksi' : 'upload-berkas'}`,
+            kontak: '0888-0993-4970',
         },
     });
 }
@@ -513,8 +513,8 @@ export async function notifyPaymentVerified(data: {
             metode: data.metode,
             tanggal: data.tanggal,
             catatan: data.catatan || '',
-            dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-alandalus.com'}/dashboard/pendaftar/${data.status === 'verified' ? 'kelengkapan-berkas' : 'pembayaran-pendaftaran'}`,
-            kontak: '0851-1152-4441',
+            dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-ululalbaab.com'}/dashboard/pendaftar/${data.status === 'verified' ? 'kelengkapan-berkas' : 'pembayaran-pendaftaran'}`,
+            kontak: '0888-0993-4970',
         },
     });
 }
@@ -556,7 +556,7 @@ export async function notifyTestSchedule(data: {
         tanggal: data.tanggal,
         waktu: data.waktu,
         tempat: data.tempat,
-        dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-alandalus.com'}/dashboard/pendaftar/undangan-seleksi`,
+        dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-ululalbaab.com'}/dashboard/pendaftar/undangan-seleksi`,
     };
 
     Object.entries(variables).forEach(([key, value]) => {
@@ -608,7 +608,7 @@ export async function notifyStatusChange(data: {
             nama: data.nama,
             jenjang: data.jenjang || '-',
             tahun_ajaran: data.tahun_ajaran || '2025/2026',
-            dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-alandalus.com'}/dashboard/pendaftar/${data.status === 'accepted' ? 'daftar-ulang' : 'pengumuman'}`,
+            dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-ululalbaab.com'}/dashboard/pendaftar/${data.status === 'accepted' ? 'daftar-ulang' : 'pengumuman'}`,
         },
     });
 }
@@ -835,7 +835,7 @@ export async function notifySelectionResult(data: {
         DITOLAK: 'rejected',
     };
 
-    const dashboardUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-alandalus.com'}/dashboard/pendaftar/${data.status === 'DITERIMA' ? 'daftar-ulang' : 'pengumuman'}`;
+    const dashboardUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-ululalbaab.com'}/dashboard/pendaftar/${data.status === 'DITERIMA' ? 'daftar-ulang' : 'pengumuman'}`;
 
     // Kirim pesan notifikasi
     const notifResult = await notifyStatusChange({
@@ -849,7 +849,7 @@ export async function notifySelectionResult(data: {
 
     // Jika ada surat keputusan, kirim juga sebagai dokumen
     if (data.suratPath) {
-        const suratUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-alandalus.com'}/api/files/${data.suratPath}`;
+        const suratUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-ululalbaab.com'}/api/files/${data.suratPath}`;
         await sendDocumentMessage({
             phone: data.phone,
             message: `📄 Surat Keputusan Hasil Seleksi — ${data.nama}`,
@@ -878,7 +878,7 @@ export async function notifyGoogleFormLink(data: {
             form_link: data.formLink,
             keterangan: data.keterangan || 'pendaftaran',
             batas_waktu: data.batasWaktu || 'Sesuai instruksi panitia',
-            dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-alandalus.com'}/dashboard/pendaftar`,
+            dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-ululalbaab.com'}/dashboard/pendaftar`,
         },
     });
 }
@@ -903,7 +903,7 @@ export async function notifyZoomMeeting(data: {
             tanggal: data.tanggal,
             waktu: data.waktu,
             zoom_link: data.zoomLink,
-            dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-alandalus.com'}/dashboard/pendaftar`,
+            dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-ululalbaab.com'}/dashboard/pendaftar`,
         },
     });
 }
@@ -920,7 +920,7 @@ export async function notifyDataComplete(data: {
         templateId: 'data_complete',
         variables: {
             nama: data.nama,
-            dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-alandalus.com'}/dashboard/pendaftar/upload-berkas`,
+            dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-ululalbaab.com'}/dashboard/pendaftar/upload-berkas`,
         },
     });
 }
@@ -937,7 +937,7 @@ export async function notifyAllExamsComplete(data: {
         templateId: 'all_exams_complete',
         variables: {
             nama: data.nama,
-            dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-alandalus.com'}/dashboard/pendaftar/pengumuman`,
+            dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://pesantren-ululalbaab.com'}/dashboard/pendaftar/pengumuman`,
         },
     });
 }

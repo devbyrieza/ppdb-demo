@@ -1,4 +1,4 @@
-﻿import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "@/lib/session";
 import { logAdminAction } from "@/lib/audit";
@@ -40,10 +40,10 @@ export async function POST(req: NextRequest) {
                     tanggal_ujian: examSession.start_time,
                     waktu_mulai_santri: examSession.start_time,
                     waktu_selesai_santri: examSession.end_time,
-                    tempat_santri: examSession.location || "Pesantren Al-Andalus Al-Imam",
+                    tempat_santri: examSession.location || "Pesantren Al-Andalus Ulul Albaab",
                     waktu_mulai_ortu: examSession.start_time,
                     waktu_selesai_ortu: examSession.end_time,
-                    tempat_ortu: examSession.location || "Pesantren Al-Andalus Al-Imam",
+                    tempat_ortu: examSession.location || "Pesantren Al-Andalus Ulul Albaab",
                 },
                 create: {
                     pendaftar_id,
@@ -52,10 +52,10 @@ export async function POST(req: NextRequest) {
                     tanggal_ujian: examSession.start_time,
                     waktu_mulai_santri: examSession.start_time,
                     waktu_selesai_santri: examSession.end_time,
-                    tempat_santri: examSession.location || "Pesantren Al-Andalus Al-Imam",
+                    tempat_santri: examSession.location || "Pesantren Al-Andalus Ulul Albaab",
                     waktu_mulai_ortu: examSession.start_time,
                     waktu_selesai_ortu: examSession.end_time,
-                    tempat_ortu: examSession.location || "Pesantren Al-Andalus Al-Imam",
+                    tempat_ortu: examSession.location || "Pesantren Al-Andalus Ulul Albaab",
                 },
             }),
             prisma.examSession.update({
@@ -97,7 +97,7 @@ export async function POST(req: NextRequest) {
                         day: 'numeric'
                     }),
                     waktu: `${new Date(examSession.start_time).toLocaleTimeString("id-ID", { hour: '2-digit', minute: '2-digit' })} - ${new Date(examSession.end_time).toLocaleTimeString("id-ID", { hour: '2-digit', minute: '2-digit' })}`,
-                    tempat: examSession.location || "Pesantren Al-Andalus Al-Imam",
+                    tempat: examSession.location || "Pesantren Al-Andalus Ulul Albaab",
                 });
             }
         } catch (waError) {

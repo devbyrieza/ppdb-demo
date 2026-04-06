@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import "./globals.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
@@ -14,39 +14,32 @@ import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
 // Using local font display via CSS (see globals.css)
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
+import { BRANDING } from "@/config/branding";
+
 // METADATA CONFIGURATION
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ||
-    (process.env.NODE_ENV === "production"
-      ? "https://pesantren-alandalus.com"
-      : "http://localhost:3000"),
-  ),
+  metadataBase: new URL(BRANDING.websiteUrl),
 
   title: {
-    default: "Pesantren Al-Andalus [Template Demo] | PPDB 2026/2027",
-    template: "%s | Pesantren Al-Andalus [Template Demo]",
+    default: `${BRANDING.schoolName} | PPDB 2026/2027`,
+    template: `%s | ${BRANDING.schoolName}`,
   },
   description:
-    "Pendaftaran Santri Baru Pesantren Al-Andalus [Template Demo]. Pendidikan berbasis Al-Qur'an dan As-Sunnah sesuai pemahaman salafush shalih. Sukabumi, Jawa Barat.",
+    `Pendaftaran Santri Baru ${BRANDING.schoolName}. Pendidikan berbasis Al-Qur'an dan As-Sunnah sesuai pemahaman salafush shalih.`,
   keywords: [
-    "Ponpes Al-Andalus [Template Demo]",
+    BRANDING.schoolName,
     "pesantren sukabumi",
     "ppdb 2026",
     "pendaftaran santri",
     "pesantren salafi",
     "tahfidz quran",
-    "mts [Template Demo]",
-    "ma [Template Demo]",
-    "pondok pesantren jawa barat",
-    "pesantren salafiyah",
     "pendidikan islam",
   ],
 
-  authors: [{ name: "Pesantren Al-Andalus [Template Demo]" }],
-  creator: "Pesantren Al-Andalus [Template Demo]",
-  publisher: "Pesantren Al-Andalus [Template Demo]",
+  authors: [{ name: BRANDING.schoolName }],
+  creator: BRANDING.schoolName,
+  publisher: BRANDING.schoolName,
 
   formatDetection: {
     email: false,
@@ -67,23 +60,23 @@ export const metadata: Metadata = {
   },
 
   icons: {
-    icon: "/favicon.ico",
+    icon: BRANDING.faviconPath,
     apple: "/apple-touch-icon.png",
-    shortcut: "/favicon.ico",
+    shortcut: BRANDING.faviconPath,
   },
 
   openGraph: {
-    title: "Pesantren Al-Andalus [Template Demo] | PPDB 2026/2027",
+    title: `${BRANDING.schoolName} | PPDB 2026/2027`,
     description:
       "Pendidikan berbasis Al-Qur'an dan As-Sunnah sesuai pemahaman salafush shalih. Daftar sekarang untuk tahun ajaran 2026/2027.",
-    url: "https://www.pesantren-alandalus.com",
-    siteName: "Pesantren Al-Andalus [Template Demo]",
+    url: BRANDING.websiteUrl,
+    siteName: BRANDING.schoolName,
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Pesantren Al-Andalus [Template Demo]",
+        alt: BRANDING.schoolName,
       },
     ],
     locale: "id_ID",
@@ -92,11 +85,11 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Pesantren Al-Andalus [Template Demo] | PPDB 2026/2027",
+    title: `${BRANDING.schoolName} | PPDB 2026/2027`,
     description:
       "Pendidikan berbasis Al-Qur'an dan As-Sunnah sesuai pemahaman salafush shalih.",
     images: ["/twitter-image.jpg"],
-    creator: "@pesantranalandalus",
+    creator: "@alandalus_ppdb",
   },
 
   verification: {
@@ -104,9 +97,9 @@ export const metadata: Metadata = {
   },
 
   alternates: {
-    canonical: "https://www.pesantren-alandalus.com",
+    canonical: BRANDING.websiteUrl,
     languages: {
-      "id-ID": "https://www.pesantren-alandalus.com",
+      "id-ID": BRANDING.websiteUrl,
     },
   },
 
@@ -126,13 +119,19 @@ export default function RootLayout({
     <html lang="id" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#8b5a3c" />
-        <meta name="msapplication-navbutton-color" content="#8b5a3c" />
+        <meta name="theme-color" content={BRANDING.primaryColor} />
+        <meta name="msapplication-navbutton-color" content={BRANDING.primaryColor} />
         <meta
           name="apple-mobile-web-app-status-bar-style"
           content="black-translucent"
         />
         <meta name="color-scheme" content="light only" />
+        <style dangerouslySetInnerHTML={{ __html: `
+          :root {
+            --brand-primary: ${BRANDING.primaryColor};
+            --brand-secondary: ${BRANDING.secondaryColor};
+          }
+        `}} />
       </head>
       <body
         className="font-sans antialiased bg-white text-ink-900 overflow-x-hidden transition-colors duration-500"
