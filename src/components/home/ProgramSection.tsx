@@ -100,7 +100,7 @@ export default function ProgramSection() {
                                 {/* Top Accents */}
                                 <div className="flex items-start justify-between mb-8">
                                     <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm ${
-                                        program.color === 'brand-blue' ? 'bg-brand-blue-500 text-brand-blue-600' : 'bg-brand-yellow-100 text-maroon-800'
+                                        program.color === 'brand-blue' ? 'bg-brand-blue-50 text-brand-blue-600' : 'bg-brand-yellow-100 text-maroon-800'
                                         }`}>
                                         <program.icon className="w-7 h-7" />
                                     </div>
@@ -109,7 +109,7 @@ export default function ProgramSection() {
                                     </div>
                                 </div>
 
-                                <div className="flex-grow">
+                                <div className="grow">
                                     <h3 className="text-2xl font-bold text-ink-950 mb-2">{program.title}</h3>
                                     <p className="text-xs font-bold text-brand-blue-600/80 mb-6 tracking-wide uppercase">{program.subtitle}</p>
                                     <p className="text-[15px] text-ink-600 leading-relaxed mb-8 font-medium text-justify">
@@ -120,7 +120,7 @@ export default function ProgramSection() {
                                     <ul className="space-y-4 mb-10">
                                         {program.features.map((feature, fIdx) => (
                                             <li key={fIdx} className="flex items-start gap-3">
-                                                <div className="mt-1 w-5 h-5 rounded-full bg-cream-100 flex items-center justify-center flex-shrink-0">
+                                                <div className="mt-1 w-5 h-5 rounded-full bg-cream-100 flex items-center justify-center shrink-0">
                                                     <CheckCircle className="w-3.5 h-3.5 text-brand-blue-700" />
                                                 </div>
                                                 <span className="text-sm font-bold text-ink-700">{feature}</span>

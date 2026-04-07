@@ -86,7 +86,7 @@ export default function FacilitiesSection() {
                                 className="object-cover transition-transform duration-700 group-hover:scale-110 bg-brand-yellow-100 animate-pulse"
                                 onLoad={(e) => e.currentTarget.classList.remove('animate-pulse')}
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-brand-blue-500/60 via-transparent to-transparent opacity-80" />
+                            <div className="absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-transparent" />
                             <div className="absolute bottom-3 left-3 md:bottom-5 md:left-5 right-3">
                                 <span className="text-white font-bold text-xs sm:text-sm md:text-base drop-shadow-lg leading-tight block">{img.label}</span>
                             </div>

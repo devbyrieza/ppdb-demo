@@ -85,7 +85,7 @@ export default function TeachersSection() {
                             ].map((feature, i) => (
                                 <div key={i} className="app-card p-4 flex items-center gap-5">
                                     <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 shadow-sm ${
-                                        feature.color === 'brand-blue' ? 'bg-brand-blue-500 text-brand-blue-600' :
+                                        feature.color === 'brand-blue' ? 'bg-brand-blue-50 text-brand-blue-600' :
                                         feature.color === 'brand-yellow' ? 'bg-brand-yellow-100 text-maroon-800' :
                                         'bg-yellow-50 text-yellow-600'
                                         }`}>
