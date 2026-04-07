@@ -259,7 +259,7 @@ export default function ProgramPage() {
                                                     `}>
                                                         <CheckCircle2 className="w-4 h-4" />
                                                     </div>
-                                                    <span className="text-ink-800 font-bold text-lg leading-tight uppercase tracking-tight group-hover/item:text-ink-950 transition-colors">
+                                                    <span className="text-ink-800 font-bold text-lg leading-tight tracking-tight group-hover/item:text-ink-950 transition-colors">
                                                         {item}
                                                     </span>
                                                 </li>
