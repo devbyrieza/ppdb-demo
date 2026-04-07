@@ -90,11 +90,11 @@ export default function ActivitiesSection() {
                                     className="object-cover transition-transform duration-700 group-hover:scale-110 bg-cream-100 animate-pulse"
                                     onLoad={(e) => e.currentTarget.classList.remove('animate-pulse')}
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-maroon-900/60 to-transparent opacity-80" />
+                                <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent" />
                             </div>
-                            <div className="p-6 md:p-8 flex-grow flex flex-col">
+                            <div className="p-6 md:p-8 grow flex flex-col">
                                 <h3 className="text-xl font-bold text-ink-950 mb-3 tracking-tight group-hover:text-maroon-700 transition-colors">{activity.name}</h3>
-                                <p className="text-ink-500 font-medium text-[15px] leading-relaxed mb-6 flex-grow">
+                                <p className="text-ink-500 font-medium text-[15px] leading-relaxed mb-6 grow">
                                     {activity.description}
                                 </p>
                             </div>
@@ -130,7 +130,7 @@ export default function ActivitiesSection() {
                                 whileInView={{ opacity: 1, scale: 1 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: idx * 0.03 }}
-                                className="bg-white p-5 md:p-6 rounded-[1.5rem] border border-cream-200 flex flex-col items-center justify-center text-center group hover:bg-cream-50 hover:border-maroon-200 hover:shadow-md transition-all duration-500 cursor-default"
+                                className="bg-white p-5 md:p-6 rounded-2xl border border-cream-200 flex flex-col items-center justify-center text-center group hover:bg-cream-50 hover:border-maroon-200 hover:shadow-md transition-all duration-500 cursor-default"
                             >
                                 <div className={`w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center mb-3 md:mb-4 shadow-sm group-hover:scale-110 transition-transform duration-500 ${
                                     item.color === 'maroon' ? 'bg-maroon-50 text-maroon-600' :
@@ -139,7 +139,7 @@ export default function ActivitiesSection() {
                                     }`}>
                                     <item.icon className="w-6 h-6 md:w-7 md:h-7" />
                                 </div>
-                                <p className="text-[9px] md:text-[10px] font-bold tracking-[0.1em] text-ink-950 uppercase group-hover:text-maroon-800 transition-colors leading-tight">
+                                <p className="text-[9px] md:text-[10px] font-bold tracking-widest text-ink-950 uppercase group-hover:text-maroon-800 transition-colors leading-tight">
                                     {item.name}
                                 </p>
                             </motion.div>
