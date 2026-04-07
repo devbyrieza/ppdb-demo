@@ -734,7 +734,7 @@ export default function FasilitasPage() {
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-linear-to-t from-brand-blue-950/80 via-brand-blue-950/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
                 <div className="absolute bottom-6 md:bottom-8 left-6 md:left-8 right-6 md:right-8">
                   <span className="text-white font-black text-2xl md:text-3xl drop-shadow-md">Masjid Jami' Ulul Albaab</span>
                   <p className="text-brand-blue-50/90 text-sm md:text-lg mt-1 md:mt-2 font-medium">Pusat peribadatan</p>
@@ -755,7 +755,7 @@ export default function FasilitasPage() {
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-linear-to-t from-brand-blue-950/80 via-brand-blue-950/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
                 <div className="absolute bottom-6 md:bottom-8 left-6 md:left-8 right-6 md:right-8">
                   <span className="text-white font-black text-xl md:text-2xl drop-shadow-md leading-tight">Ruang Kelas</span>
                   <p className="text-brand-blue-50/90 text-xs md:text-sm mt-1 md:mt-2 font-medium">Fasilitas pembelajaran modern</p>
@@ -778,7 +778,7 @@ export default function FasilitasPage() {
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-linear-to-t from-brand-blue-950/80 to-transparent opacity-70 group-hover:opacity-90 transition-opacity" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
                 <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6">
                   <span className="text-white font-black text-[15px] sm:text-lg">Gedung Kelas</span>
                 </div>
@@ -796,7 +796,7 @@ export default function FasilitasPage() {
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-linear-to-t from-brand-blue-950/80 to-transparent opacity-70 group-hover:opacity-90 transition-opacity" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
                 <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6">
                   <span className="text-white font-black text-[15px] sm:text-lg">Asrama</span>
                 </div>
@@ -806,7 +806,7 @@ export default function FasilitasPage() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.5 }}
-                className="lg:col-span-2 relative rounded-2xl sm:rounded-[2rem] overflow-hidden group aspect-2/1 lg:aspect-auto h-full shadow-sm hover:shadow-md transition-all duration-500 border border-brand-blue-100"
+                className="lg:col-span-2 col-span-2 relative rounded-2xl sm:rounded-[2rem] overflow-hidden group aspect-2/1 shadow-sm hover:shadow-md transition-all duration-500 border border-brand-blue-100"
               >
                 <Image
                   src="/images/lapangan-minisoccer.webp"
@@ -814,7 +814,7 @@ export default function FasilitasPage() {
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-linear-to-t from-brand-blue-950/80 to-transparent opacity-70 group-hover:opacity-90 transition-opacity" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
                 <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6">
                   <span className="text-white font-black text-[15px] sm:text-xl">Lapangan Minisoccer</span>
                   <p className="text-brand-blue-50/90 text-xs sm:text-sm mt-1 font-medium hidden sm:block">Sarana olahraga berkualitas</p>
