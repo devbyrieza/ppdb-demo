@@ -897,8 +897,8 @@ export default function DataLengkapForm({ onSuccess }: { onSuccess?: () => void 
                     options={countries.map(c => c.name)}
                     required
                   />
-                  <InputField label="Anak Ke" name="anak_ke" value={formData.santri.anak_ke} onChange={(v) => updateSantri("anak_ke", parseInt(v) || 1)} type="number" required />
-                  <InputField label="Berapa Bersaudara" name="berapa_bersaudara" value={formData.santri.berapa_bersaudara} onChange={(v) => updateSantri("berapa_bersaudara", parseInt(v) || 1)} type="number" required />
+                  <InputField label="Anak Ke" name="anak_ke" value={formData.santri.anak_ke} onChange={(v) => updateSantri("anak_ke", v === "" ? "" : (parseInt(v) || ""))} type="number" required />
+                  <InputField label="Berapa Bersaudara" name="berapa_bersaudara" value={formData.santri.berapa_bersaudara} onChange={(v) => updateSantri("berapa_bersaudara", v === "" ? "" : (parseInt(v) || ""))} type="number" required />
 
                   <InputField
                     label="Tinggal Bersama"
