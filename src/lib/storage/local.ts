@@ -45,7 +45,9 @@ export async function saveFileLocal(
  * @returns The file buffer and mime type, or null if not found
  */
 export function getFileLocal(relativePath: string): { buffer: Buffer; mimeType: string } | null {
-    const fullPath = path.join(STORAGE_DIR, relativePath);
+    // Sanitize relative path to remove leading slashes which can mess up path.join
+    const sanitizedPath = relativePath.startsWith('/') ? relativePath.substring(1) : relativePath;
+    const fullPath = path.join(STORAGE_DIR, sanitizedPath);
 
     // Basic security check to prevent directory traversal
     if (!fullPath.startsWith(STORAGE_DIR)) {
@@ -59,11 +61,23 @@ export function getFileLocal(relativePath: string): { buffer: Buffer; mimeType: 
         let mimeType = 'application/octet-stream';
         if (ext === '.jpg' || ext === '.jpeg') mimeType = 'image/jpeg';
         else if (ext === '.png') mimeType = 'image/png';
+        else if (ext === '.webp') mimeType = 'image/webp';
         else if (ext === '.pdf') mimeType = 'application/pdf';
 
+        console.log(`[Storage] File found: ${fullPath} (${mimeType})`);
         return { buffer, mimeType };
     }
-    console.log(`[Storage] Check failed. Path: ${fullPath}, Exists: ${fs.existsSync(fullPath)}, CWD: ${process.cwd()}, StorageDir: ${STORAGE_DIR}`);
+    
+    // Enhanced logging for diagnostics
+    console.error(`[Storage] ❌ File NOT found: ${fullPath}`);
+    console.log(`[Storage] Checked Path: ${fullPath}`);
+    console.log(`[Storage] Process CWD: ${process.cwd()}`);
+    console.log(`[Storage] STORAGE_DIR: ${STORAGE_DIR}`);
+    
+    // Check if parent directory exists
+    const parentDir = path.dirname(fullPath);
+    console.log(`[Storage] Parent Directory exists: ${fs.existsSync(parentDir)} (${parentDir})`);
+    
     return null;
 }
 

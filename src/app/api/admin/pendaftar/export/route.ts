@@ -113,7 +113,7 @@ export async function GET(req: NextRequest) {
       "Nomor Pendaftaran": item.nomor_pendaftaran || "-",
       "NIK": item.nik ? `'${item.nik}` : "-", // Text format for Excel
       "Nama Lengkap": item.nama_lengkap || "-",
-      "Jenis Kelamin": item.jenis_kelamin === "L" ? "Laki-laki" : "Perempuan",
+      "Jenis Kelamin": ["L", "Laki-laki"].includes(item.jenis_kelamin || "") ? "Laki-laki" : "Perempuan",
       "Tempat Lahir": item.tempat_lahir || "-",
       "Tanggal Lahir": item.tanggal_lahir
         ? new Date(item.tanggal_lahir).toLocaleDateString("id-ID")

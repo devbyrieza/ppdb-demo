@@ -47,7 +47,7 @@ export async function GET() {
         tanggal_lahir: pendaftar.tanggal_lahir
           ? new Date(pendaftar.tanggal_lahir).toISOString().split('T')[0]
           : dataLengkap.santri?.tanggal_lahir || "",
-        jenis_kelamin: pendaftar.jenis_kelamin === "L" ? "Laki-laki" : pendaftar.jenis_kelamin === "P" ? "Perempuan" : dataLengkap.santri?.jenis_kelamin || "",
+        jenis_kelamin: ["L", "Laki-laki"].includes(pendaftar.jenis_kelamin || "") ? "Laki-laki" : ["P", "Perempuan"].includes(pendaftar.jenis_kelamin || "") ? "Perempuan" : dataLengkap.santri?.jenis_kelamin || "",
         no_hp: pendaftar.no_hp || dataLengkap.santri?.no_hp || "",
       },
       ayah: dataLengkap.ayah || { status_hidup: "Masih Hidup" },
@@ -103,8 +103,8 @@ export async function POST(request: NextRequest) {
 
     // Prepare data for individual columns (identity sync)
     let jenisKelaminDb = null;
-    if (santri?.jenis_kelamin === "Laki-laki") jenisKelaminDb = "L";
-    else if (santri?.jenis_kelamin === "Perempuan") jenisKelaminDb = "P";
+    if (["L", "Laki-laki"].includes(santri?.jenis_kelamin)) jenisKelaminDb = "L";
+    else if (["P", "Perempuan"].includes(santri?.jenis_kelamin)) jenisKelaminDb = "P";
 
     // Reconstruct data_lengkap object to be saved
     const dataLengkapObj = {

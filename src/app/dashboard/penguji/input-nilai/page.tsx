@@ -1,767 +1,521 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Swal from "sweetalert2";
 import {
-  ClipboardCheck,
-  Search,
+  User,
+  Activity,
+  Award,
+  BookOpen,
+  MessageSquare,
   Save,
   Loader2,
   CheckCircle,
-  User,
-  Hash,
-  FileSpreadsheet,
-  FileText,
   AlertCircle,
-  BookOpen,
-  MessageSquare,
-  Users,
+  ChevronRight,
+  ChevronLeft,
+  Clock,
+  Lock,
+  Search,
+  Filter,
+  Users
 } from "lucide-react";
+import Swal from "sweetalert2";
 
-// ============================================================================
-// TYPES
-// ============================================================================
+// --- Types ---
 
-interface Peserta {
+interface Student {
   id: string;
-  jadwal_id: string;
   nomor_pendaftaran: string;
   nama_lengkap: string;
   jenjang: string;
-  roles: string[];
-  nilai_wawancara_santri: number | null;
+  // Scores
   nilai_tes_quran: number | null;
+  nilai_wawancara_santri: number | null;
   nilai_wawancara_ortu: number | null;
-  catatan_santri: string | null;
   catatan_quran: string | null;
+  catatan_santri: string | null;
   catatan_ortu: string | null;
-  detail_quran: any;
-  detail_wawancara: any;
-  detail_cawalsan: any;
-  score_quran: number | null;
-  score_wawancara: number | null;
-  nilai_id: string | null;
+  // Details (Prisma/JSON)
+  detail_quran: any | null;
+  detail_wawancara: any | null;
+  detail_cawalsan: any | null;
+  // Meta
+  input_at_quran: string | null;
+  input_at_santri: string | null;
+  input_at_ortu: string | null;
+  roles: string[]; // ["quran", "wawancara", "ortu"]
 }
 
-// ============================================================================
-// FORM DEFINITIONS
-// ============================================================================
-
-const CALSAN_CRITERIA = [
-  {
-    key: "motivasi",
-    label: "Motivasi masuk pesantren",
-    options: [
-      { value: 5, label: "5: Sangat jelas, kuat, dan sesuai visi pesantren (ingin belajar agama, mandiri, dekat dengan Allah)." },
-      { value: 4, label: "4: Cukup jelas, alasan positif namun masih umum." },
-      { value: 3, label: "3: Alasan kurang terarah, dipengaruhi orang tua, tapi ada kesediaan." },
-      { value: 2, label: "2: Alasan lemah, tidak paham tujuan pesantren." },
-      { value: 1, label: "1: Tidak ada motivasi, terpaksa, atau menolak." },
-    ],
-  },
-  {
-    key: "lingkungan",
-    label: "Lingkungan di rumah",
-    options: [
-      { value: 5, label: "5: Lingkungan sangat mendukung (keluarga islami, shalat berjamaah, kontrol gadget baik)." },
-      { value: 4, label: "4: Lingkungan cukup mendukung, ada perhatian orang tua." },
-      { value: 3, label: "3: Lingkungan biasa saja, kadang ada pengaruh negatif." },
-      { value: 2, label: "2: Lingkungan kurang mendukung (teman/saudara sering pengaruh negatif)." },
-      { value: 1, label: "1: Lingkungan sangat tidak mendukung (bebas tanpa kontrol, pergaulan buruk)." },
-    ],
-  },
-  {
-    key: "game",
-    label: "Permainan / Game yang Disuka",
-    options: [
-      { value: 5, label: "5: Hobi bermanfaat (olahraga, membaca, permainan edukatif)." },
-      { value: 4, label: "4: Game rekreasi wajar, tidak berlebihan." },
-      { value: 3, label: "3: Game online, tapi masih bisa dikontrol." },
-      { value: 2, label: "2: Game online intens, mulai kecanduan." },
-      { value: 1, label: "1: Sangat kecanduan game, mengganggu sekolah/ibadah." },
-    ],
-  },
-  {
-    key: "teman",
-    label: "Teman / Nongkrong di Rumah",
-    options: [
-      { value: 5, label: "5: Berteman dengan lingkungan positif (masjid, teman shalih/shalihah)." },
-      { value: 4, label: "4: Mayoritas teman baik, ada sedikit yang kurang baik." },
-      { value: 3, label: "3: Teman biasa saja, netral." },
-      { value: 2, label: "2: Lebih sering bersama teman berpengaruh negatif." },
-      { value: 1, label: "1: Nongkrong dengan kelompok bermasalah (merokok, tawuran, dll)." },
-    ],
-  },
-  {
-    key: "rokok",
-    label: "Tentang Rokok/Vape/Pod",
-    options: [
-      { value: 5, label: "5: Jelas menolak, punya alasan agama/ilmu." },
-      { value: 4, label: "4: Menolak, tapi alasannya umum." },
-      { value: 3, label: "3: Netral/tidak tahu, belum ada sikap tegas." },
-      { value: 2, label: "2: Pernah mencoba atau terpengaruh." },
-      { value: 1, label: "1: Aktif menggunakan rokok/vape/pod." },
-    ],
-  },
-  {
-    key: "pornografi",
-    label: "Pornografi",
-    options: [
-      { value: 5, label: "5: Menolak dengan tegas, paham bahaya dan dosa." },
-      { value: 4, label: "4: Menolak, tapi belum terlalu paham alasannya." },
-      { value: 3, label: "3: Pernah melihat, tapi merasa salah dan ingin menjauhi." },
-      { value: 2, label: "2: Sering terpapar, belum bisa lepas." },
-      { value: 1, label: "1: Kecanduan pornografi." },
-    ],
-  },
-  {
-    key: "hobi",
-    label: "Hobi / Kesukaan",
-    options: [
-      { value: 5, label: "5: Hobi positif, produktif, mendukung pengembangan diri (olahraga, membaca, seni islami)." },
-      { value: 4, label: "4: Hobi umum yang wajar (menggambar, dll)." },
-      { value: 3, label: "3: Hobi kurang bermanfaat, tapi tidak berbahaya." },
-      { value: 2, label: "2: Hobi berisiko (main game berlebihan, nongkrong tanpa tujuan)." },
-      { value: 1, label: "1: Hobi negatif (rokok, balapan liar, dll)." },
-    ],
-  },
-];
-
-const CAWALSAN_QUESTIONS = [
-  { key: "q1", label: "1. Abu/Ummu ingin ananda menjadi seperti apa di masa depan?", options: ["A. Condong ke orientasi akhirat/agama", "B. Condong ke orientasi dunia/umum", "C. Hanya berorientasi dunia/umum"] },
-  { key: "q2", label: "2. Bagaimana pandangan  Abu/Ummu  tentang sistem pendidikan berbasis pesantren?", options: ["A. Pilihan utama untuk agama, akhlak, dan karakter", "B. Pilihan utama untuk akhlak", "C. Pesantren juga mengajarkan pelajaran umum"] },
-  { key: "q3", label: "3. Ananda mau bersekolah di Pesantren Al-Andalus atas keinginan siapa?", options: ["A. Orang tua & anak", "B. Anak", "C. Orang tua / ikut teman"] },
-  { key: "q4", label: "4. Apa yang  Abu/Ummu   lakukan sehingga ananda mau bersekolah di pesantren?", options: ["A. Memberikan pengertian", "B. Memberikan hadiah/iming-iming", "C. Memaksa"] },
-  { key: "q5", label: "5. Sejauh apa pendidikan agama/Al-Qur’an ananda sebelumnya?", options: ["A. Intensif (tahfizh, sekolah Islam)", "B. Non intensif (swasta biasa)", "C. Seadanya (sekolah negeri)"] },
-  { key: "q6", label: "6. Menurut Bapak/Ibu, keberhasilan proses pendidikan anak merupakan tanggung jawab siapa?", options: ["A. Bersama", "Orang Tua", "Sekolah"] },
-  { key: "q7", label: "7. Sejauh apa kesiapan  Abu/Ummu   memenuhi kewajiban SPP?", options: ["A. Yakin", "B. Ragu-ragu", "C. Tidak tahu"] },
-  { key: "q8", label: "8. Bagaimana pandangan  Abu/Ummu   tentang pendidikan agama & tahfizh Al-Qur’an?", options: ["A. Sangat penting", "B. Cukup penting", "C. Penting"] },
-  { key: "q9", label: "9. Apa saja yang akan dilakukan oleh Bapak/Ibu untuk mendukung program pendidikan Pesantren?", options: ["A. Mendukung semua program dan memberikan masukan positif/ memantau perkembangan anak", "B. Menyerahkan semua urusan ke Pesan", "C. Tidak Tahu"] },
-  { key: "q10", label: "10. Seberapa sering  Abu/Ummu   akan menjenguk ananda?", options: ["A. Berkala", "B. Tidak menjenguk karena jauh", "C. Sesempatnya saja"] },
-  { key: "q11", label: "11. Jika ananda diganggu teman (iseng/jail/bully), apa langkah  Abu/Ummu?", options: ["A. Klarifikasi & beri semangat pada anak", "B. Serahkan ke pesantren", "C. Komplain ke pesantren"] },
-  { key: "q12", label: "12. Jika ananda terkena sanksi, apa reaksi  Abu/Ummu?", options: ["A. Menerima sebagai konsekuensi (selama bimbingan sudah maksimal)", "B. Menasehati anak", "C. Tidak terima"] },
-];
-
-const PENGUJI_QURAN_LIST_PUTRA = ["Agus Cahyono", "Fuad Khomsatun", "Jusman", "Testing"];
-const PEWAWANCARA_CALSAN_LIST_PUTRA = ["Muhajir", "Muhammad Syauqi Al Faruq", "Rizaldi", "Testing"];
-const PEWAWANCARA_CAWALSAN_LIST_PUTRA = ["Abah", "Teguh", "Maulidin Bachtiar", "Muhammad Adib Achsan", "Testing"];
-
-const PENGUJI_QURAN_LIST_PUTRI = ["Andi Fatimah Azzahra Rahman", "Testing"];
-const PEWAWANCARA_CALSAN_LIST_PUTRI = ["Halimah Fauziah", "Rima Maryani Putri Utami", "Testing"];
-const PEWAWANCARA_CAWALSAN_LIST_PUTRI = ["Abah", "Teguh", "Maulidin Bachtiar", "Muhammad Adib Achsan", "Testing"]; // Sama dengan Putra
-
-const JENJANG_OPTIONS = ["MTs Putra", "MTs Putri", "IL Putra", "IL Putri", "SMA Putra", "SMA Putri"];
-
-const KATEGORI_OPTIONS = ["Yatim/ah", "Memiliki keluarga/saudara/kerabat di Andalus", "Memiliki teman/rekan/tetangga di Andalus", "Baru"];
-
-const SUMBER_INFO_OPTIONS = ["Searching umum", "IG", "FB", "YouTube", "TikTok", "Lainnya"];
-
-// ============================================================================
-// MAIN COMPONENT
-// ============================================================================
-
-// Map session role to which form types are visible
-const ROLE_TO_FORM_TYPES: Record<string, string[]> = {
-  penguji_calsan: ['quran'],
-  pewawancara_calsan: ['wawancara'],
-  pewawancara_cawalsan: ['ortu'],
-  // Admin roles see all forms
-  admin: ['quran', 'wawancara', 'ortu'],
-  admin_super: ['quran', 'wawancara', 'ortu'],
-  head_of_it: ['quran', 'wawancara', 'ortu'],
-};
+// --- Component ---
 
 export default function InputNilaiPage() {
-  const [peserta, setPeserta] = useState<Peserta[]>([]);
+  const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
-  const [saving, setSaving] = useState<string | null>(null);
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+  const [view, setView] = useState<'list' | 'form'>('list');
   const [activeRole, setActiveRole] = useState<string>("");
 
-  // Form states for each type
-  const [quranForm, setQuranForm] = useState<any>({});
-  const [calsanForm, setCalsanForm] = useState<any>({});
-  const [cawalsanForm, setCawalsanForm] = useState<any>({});
+  // Filter & Search
+  const [search, setSearch] = useState("");
+  const [filterRole, setFilterRole] = useState<string>("all");
 
-  // Determine which form types are visible based on the active session role
-  const visibleFormTypes = ROLE_TO_FORM_TYPES[activeRole] || ['quran', 'wawancara', 'ortu'];
+  // Form State
+  const [formType, setFormType] = useState<'quran' | 'wawancara' | 'ortu'>('quran');
+  const [formScore, setFormScore] = useState<number>(0);
+  const [formNotes, setFormNotes] = useState("");
+  const [formDetails, setFormDetails] = useState<any>({});
+  const [saving, setSaving] = useState(false);
 
-  const toTitleCase = (str: string) => {
-    if (!str) return "";
-    return str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
-  };
+  // --- Fetchers ---
 
-  useEffect(() => {
-    // Fetch session to get active role
-    fetch("/api/auth/session")
-      .then((res) => res.json())
-      .then((data) => {
-        const role = data.session?.role || "";
-        setActiveRole(role);
-      })
-      .catch((err) => console.error("Error fetching session:", err));
-
-    fetchPeserta();
-  }, []);
-
-  const fetchPeserta = async (showLoading = true) => {
+  const fetchStudents = async () => {
     try {
-      if (showLoading) setLoading(true);
-      const response = await fetch("/api/penguji/peserta");
-      if (response.ok) {
-        const result = await response.json();
-        setPeserta(result.data || []);
+      setLoading(true);
+      const res = await fetch("/api/penguji/peserta");
+      const result = await res.json();
+      if (res.ok) {
+        setStudents(result.data || []);
       }
     } catch (error) {
-      console.error("Error fetching peserta:", error);
+      console.error("Fetch failed", error);
     } finally {
       setLoading(false);
     }
   };
 
-  const startEditing = (p: Peserta) => {
-    setEditingId(p.id);
-    // Pre-fill forms from existing data
-    setQuranForm(p.detail_quran || {});
-    setCalsanForm(p.detail_wawancara || {});
-    setCawalsanForm(p.detail_cawalsan || {});
-    setMessage(null);
-  };
+  useEffect(() => {
+    fetchStudents();
+    // Also fetch current session for role detection
+    fetch("/api/auth/session").then(res => res.json()).then(data => {
+        if (data.session) setActiveRole(data.session.role);
+    });
+  }, []);
 
-  const cancelEditing = () => {
-    setEditingId(null);
-    setQuranForm({});
-    setCalsanForm({});
-    setCawalsanForm({});
-  };
+  // --- Handlers ---
 
-  const saveForm = async (p: Peserta, formType: "quran" | "wawancara" | "ortu") => {
-    setSaving(p.id + formType);
-    setMessage(null);
-
-    try {
-      let body: any = {};
-
-      if (formType === "quran") {
-        const tajwid = parseFloat(quranForm.tajwid) || 0;
-        const kelancaran = parseFloat(quranForm.kelancaran) || 0;
-        const totalScore = (tajwid + kelancaran) / 2;
-        body = {
-          detail_quran: quranForm,
-          score_quran: totalScore,
-          nilai_tes_quran: totalScore,
-          catatan_quran: quranForm.catatan || "",
-        };
-      } else if (formType === "wawancara") {
-        const scores = CALSAN_CRITERIA.map((c) => calsanForm[c.key] || 0);
-        const avgScore = scores.reduce((a: number, b: number) => a + b, 0) / scores.length;
-        body = {
-          detail_wawancara: calsanForm,
-          score_wawancara: avgScore,
-          nilai_wawancara_santri: avgScore,
-          catatan_santri: calsanForm.catatan || "",
-        };
-      } else if (formType === "ortu") {
-        body = {
-          detail_cawalsan: cawalsanForm,
-          catatan_ortu: cawalsanForm.catatan || "",
-          nilai_wawancara_ortu: 1, // Flag that form is filled
-        };
+  const openForm = (student: Student, type: 'quran' | 'wawancara' | 'ortu') => {
+    // 1. Check for lock status (Ported logic from backend)
+    const inputAt = type === 'quran' ? student.input_at_quran : 
+                    type === 'wawancara' ? student.input_at_santri : 
+                    student.input_at_ortu;
+    
+    const isAdmin = ['admin', 'admin_super', 'head_of_it'].includes(activeRole);
+    if (inputAt && !isAdmin) {
+      const lockDate = new Date(new Date(inputAt).getTime() + 24 * 60 * 60 * 1000);
+      if (new Date() > lockDate) {
+        Swal.fire('Terkunci!', 'Penilaian ini sudah tersimpan lebih dari 24 jam dan tidak dapat diubah lagi.', 'info');
+        // We still allow viewing, but the save button will be hidden/disabled
       }
+    }
 
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 seconds timeout
+    setSelectedStudent(student);
+    setFormType(type);
+    
+    // Load existing values
+    if (type === 'quran') {
+      setFormScore(student.nilai_tes_quran || 0);
+      setFormNotes(student.catatan_quran || "");
+      setFormDetails(student.detail_quran || {});
+    } else if (type === 'wawancara') {
+      setFormScore(student.nilai_wawancara_santri || 0);
+      setFormNotes(student.catatan_santri || "");
+      setFormDetails(student.detail_wawancara || {});
+    } else {
+      setFormScore(student.nilai_wawancara_ortu || 0);
+      setFormNotes(student.catatan_ortu || "");
+      setFormDetails(student.detail_cawalsan || {});
+    }
 
-      console.log("[saveForm] Sending PATCH to /api/penguji/nilai/" + p.id, body);
+    setView('form');
+  };
 
-      const res = await fetch(`/api/penguji/nilai/${p.id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-        signal: controller.signal,
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedStudent) return;
+    
+    setSaving(true);
+    try {
+      const res = await fetch(`/api/penguji/nilai/${selectedStudent.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: formType,
+          score: formScore,
+          notes: formNotes,
+          details: formDetails
+        })
       });
 
-      clearTimeout(timeoutId);
-
-      console.log("[saveForm] Response status:", res.status);
-
       if (res.ok) {
-        setSaving(null); // Clear saving state BEFORE showing popup
-        setEditingId(null); // Clear editing state BEFORE showing popup
-
+        // Show success alert
+        const result = await res.json();
         await Swal.fire({
-          icon: 'success',
           title: 'Berhasil!',
-          text: 'Data penilaian berhasil disimpan.',
-          timer: 1500,
-          showConfirmButton: false
+          text: result.isAllComplete 
+            ? 'Penilaian berhasil disimpan. Semua rangkai ujian santri ini telah SELESAI!' 
+            : 'Penilaian berhasil disimpan.',
+          icon: 'success'
         });
-
-        // Silently refresh data without showing full-page loading spinner
-        try {
-          await fetchPeserta(false);
-        } catch (e) {
-          console.error("[saveForm] Error refreshing data:", e);
-        }
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        // Refresh and return
+        fetchStudents();
+        setView('list');
       } else {
-        let errMsg = "Terjadi kesalahan sistem";
-        try {
-          const err = await res.json();
-          errMsg = err.error || errMsg;
-        } catch (e) {
-          console.error("[saveForm] Error parsing error response:", e);
-        }
-        await Swal.fire({
-          icon: 'error',
-          title: 'Gagal Menyimpan',
-          text: errMsg
-        });
+        const err = await res.json();
+        Swal.fire('Gagal!', err.error || 'Terjadi kesalahan saat menyimpan.', 'error');
       }
-    } catch (error: any) {
-      console.error("[saveForm] Catch error:", error);
-      if (error.name === "AbortError") {
-        await Swal.fire({
-          icon: 'error',
-          title: 'Timeout',
-          text: 'Koneksi terputus atau server terlalu lama merespon. Silakan coba lagi.'
-        });
-      } else {
-        await Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: error.message || 'Terjadi kesalahan yang tidak terduga'
-        });
-      }
+    } catch (error) {
+      console.error(error);
+      Swal.fire('Error!', 'Tidak dapat menyambung ke server.', 'error');
     } finally {
-      setSaving(null);
+      setSaving(false);
     }
   };
 
-  const filteredPeserta = peserta.filter(
-    (p) =>
-      p.nama_lengkap.toLowerCase().includes(search.toLowerCase()) ||
-      p.nomor_pendaftaran.toLowerCase().includes(search.toLowerCase())
-  );
+  // --- Filtering ---
+  const filteredStudents = students.filter(s => {
+    const matchesSearch = s.nama_lengkap.toLowerCase().includes(search.toLowerCase()) || 
+                          s.nomor_pendaftaran.includes(search);
+    const matchesRole = filterRole === 'all' || s.roles.includes(filterRole);
+    return matchesSearch && matchesRole;
+  });
 
-  // ============================================================================
-  // RENDER: Tes Al-Qur'an Form
-  // ============================================================================
-  const renderQuranForm = (p: Peserta) => {
-    const isEditing = editingId === p.id;
-    const isSaved = !!p.detail_quran?.rekomendasi;
-
-    return (
-      <div className="bg-emerald-50/50 border border-emerald-100 rounded-3xl p-6 md:p-8 space-y-6 shadow-sm">
-        <div className="flex items-center gap-3 mb-2">
-          <div className="p-2.5 bg-emerald-100 rounded-xl">
-            <BookOpen className="w-6 h-6 text-emerald-700" />
-          </div>
-          <h3 className="text-xl font-black text-emerald-900 tracking-tight">Tes Al-Qur&apos;an</h3>
-          {isSaved && !isEditing && (
-            <span className="ml-auto px-4 py-1.5 bg-emerald-600 text-white text-[10px] font-black uppercase tracking-widest rounded-xl flex items-center gap-1.5 shadow-sm">
-              <CheckCircle className="w-3.5 h-3.5" /> Sudah Dinilai
-            </span>
-          )}
-        </div>
-
-        {isEditing ? (
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
-              <div>
-                <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-3">Nilai Tajwid (1-100) *</label>
-                <input type="number" min="1" max="100" value={quranForm.tajwid || ""} onChange={(e) => setQuranForm({ ...quranForm, tajwid: e.target.value })} className="w-full px-5 py-4 bg-white border-2 border-emerald-100 rounded-2xl focus:border-emerald-500 outline-none font-bold text-emerald-950 transition-all placeholder:text-ink-100" placeholder="0-100" />
-              </div>
-              <div>
-                <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-3">Nilai Kelancaran (1-100) *</label>
-                <input type="number" min="1" max="100" value={quranForm.kelancaran || ""} onChange={(e) => setQuranForm({ ...quranForm, kelancaran: e.target.value })} className="w-full px-5 py-4 bg-white border-2 border-emerald-100 rounded-2xl focus:border-emerald-500 outline-none font-bold text-emerald-950 transition-all placeholder:text-ink-100" placeholder="0-100" />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-4">Rekomendasi Penguji *</label>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                {["Diterima", "Cadangan", "Ditolak"].map((opt) => (
-                  <label key={opt} className={`px-5 py-4 rounded-xl cursor-pointer border-2 transition-all text-sm font-bold text-center ${quranForm.rekomendasi === opt ? (opt === "Diterima" ? "border-emerald-500 bg-emerald-50 text-emerald-700" : opt === "Cadangan" ? "border-brand-yellow-500 bg-brand-yellow-50 text-brand-yellow-700" : "border-red-500 bg-red-50 text-red-700") : "border-emerald-50 bg-white hover:border-emerald-200"}`}>
-                    <input type="radio" name={`rekom-quran-${p.id}`} value={opt} checked={quranForm.rekomendasi === opt} onChange={() => setQuranForm({ ...quranForm, rekomendasi: opt })} className="hidden" />
-                    {opt}
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-3">Nama Penguji *</label>
-              <select value={quranForm.nama_penguji || ""} onChange={(e) => setQuranForm({ ...quranForm, nama_penguji: e.target.value })} className="w-full px-5 py-4 bg-white border-2 border-emerald-100 rounded-2xl focus:border-emerald-500 outline-none font-bold text-emerald-950 transition-all">
-                <option value="">Pilih Penguji</option>
-                {(p.jenjang?.toLowerCase().includes("putri") ? PENGUJI_QURAN_LIST_PUTRI : PENGUJI_QURAN_LIST_PUTRA).map((n) => <option key={n} value={n}>{n}</option>)}
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-3">Catatan Tambahan (opsional)</label>
-              <textarea value={quranForm.catatan || ""} onChange={(e) => setQuranForm({ ...quranForm, catatan: e.target.value })} rows={3} className="w-full px-5 py-4 bg-white border-2 border-emerald-100 rounded-2xl focus:border-emerald-500 outline-none font-bold text-emerald-950 transition-all resize-none" placeholder="Catatan tambahan penguji..." />
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-4 pt-2">
-              <button onClick={cancelEditing} className="w-full sm:w-auto px-8 py-4 bg-emerald-100 text-emerald-700 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-emerald-200 transition-all active:scale-95">Batal</button>
-              <button onClick={() => saveForm(p, "quran")} disabled={!quranForm.tajwid || !quranForm.kelancaran || !quranForm.rekomendasi || !quranForm.nama_penguji || saving === p.id + "quran"} className="w-full sm:w-auto px-8 py-4 bg-emerald-600 text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-emerald-700 transition-all shadow-xl shadow-emerald-900/20 disabled:opacity-50 flex items-center justify-center gap-2 active:scale-95">
-                {saving === p.id + "quran" ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />} Simpan
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div>
-            {isSaved ? (
-              <div className="flex items-center gap-4 py-5 bg-white/50 rounded-2xl px-6 border border-emerald-100/50 shadow-inner">
-                <CheckCircle className="w-7 h-7 text-emerald-600 shrink-0" />
-                <div>
-                  <p className="text-emerald-900 font-bold text-sm leading-none">Nilai sudah tersimpan.</p>
-                  <p className="text-emerald-700/60 text-xs font-bold mt-2 uppercase tracking-widest">Rekomendasi: {p.detail_quran?.rekomendasi}</p>
-                </div>
-              </div>
-            ) : (
-              <div className="flex items-center gap-3 text-emerald-700/40 py-2">
-                <AlertCircle className="w-5 h-5" />
-                <span className="text-sm font-black uppercase tracking-widest italic">Peserta belum mengikuti tes Al-Qur&apos;an</span>
-              </div>
-            )}
-            <button onClick={() => startEditing(p)} className="mt-6 px-8 py-4 bg-emerald-600 text-white rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-900/20 active:scale-95">
-              {isSaved ? "Edit Nilai" : "Input Nilai"}
-            </button>
-          </div>
-        )}
-      </div>
-    );
+  // --- Helpers ---
+  const getLockInfo = (inputAt: string | null) => {
+    if (!inputAt) return { isLocked: false, text: "Baru" };
+    const isAdmin = ['admin', 'admin_super', 'head_of_it'].includes(activeRole);
+    const lockDate = new Date(new Date(inputAt).getTime() + 24 * 60 * 60 * 1000);
+    const isLocked = new Date() > lockDate;
+    
+    if (isAdmin) return { isLocked: false, text: "Admin Access" };
+    if (isLocked) return { isLocked: true, text: "Terkunci (24j)" };
+    
+    // Calculate remaining
+    const diff = lockDate.getTime() - new Date().getTime();
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    return { isLocked: false, text: `Edit: ${hours}j ${mins}m` };
   };
 
-  const renderCalsanForm = (p: Peserta) => {
-    const isEditing = editingId === p.id;
-    const isSaved = !!p.detail_wawancara?.rekomendasi;
+  // --- Render ---
+
+  if (view === 'form' && selectedStudent) {
+    const lockInfo = getLockInfo(formType === 'quran' ? selectedStudent.input_at_quran : formType === 'wawancara' ? selectedStudent.input_at_santri : selectedStudent.input_at_ortu);
+    const isEditingLocked = lockInfo.isLocked;
 
     return (
-      <div className="bg-brand-blue-50/50 border border-brand-blue-100 rounded-3xl p-6 md:p-8 space-y-6 shadow-sm">
-        <div className="flex items-center gap-3 mb-2">
-          <div className="p-2.5 bg-brand-blue-100 rounded-xl">
-            <MessageSquare className="w-6 h-6 text-brand-blue-700" />
-          </div>
-          <h3 className="text-xl font-black text-brand-blue-900 tracking-tight">Wawancara Calon Santri</h3>
-          {isSaved && !isEditing && (
-            <span className="ml-auto px-4 py-1.5 bg-brand-blue-600 text-white text-[10px] font-black uppercase tracking-widest rounded-xl flex items-center gap-1.5 shadow-sm">
-              <CheckCircle className="w-3.5 h-3.5" /> Sudah Dinilai
-            </span>
-          )}
-        </div>
+      <div className="space-y-6 animate-in fade-in duration-300">
+        <button 
+          onClick={() => setView('list')}
+          className="flex items-center gap-2 text-ink-500 hover:text-maroon-600 font-bold transition-colors"
+        >
+          <ChevronLeft className="w-5 h-5" /> Kembali ke Daftar
+        </button>
 
-        {isEditing ? (
-          <div className="space-y-6">
-            {CALSAN_CRITERIA.map((criterion) => (
-              <div key={criterion.key} className="bg-white rounded-2xl p-6 border border-brand-blue-100 shadow-xs">
-                <label className="block text-sm font-black text-brand-blue-950 mb-4">{criterion.label} *</label>
-                <div className="space-y-2.5">
-                  {criterion.options.map((opt) => (
-                    <label key={opt.value} className={`flex items-start gap-4 p-4 rounded-xl cursor-pointer border-2 transition-all text-sm font-bold ${calsanForm[criterion.key] === opt.value ? "border-brand-blue-600 bg-brand-blue-50 text-brand-blue-900" : "border-brand-blue-50/50 hover:border-brand-blue-200 bg-ink-50/30"}`}>
-                      <input type="radio" name={`${criterion.key}-${p.id}`} value={opt.value} checked={calsanForm[criterion.key] === opt.value} onChange={() => setCalsanForm({ ...calsanForm, [criterion.key]: opt.value })} className="w-5 h-5 shrink-0 mt-0.5 accent-brand-blue-600" />
-                      <span>{opt.label}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-            ))}
-
-            <div className="bg-white rounded-2xl p-6 border border-brand-blue-100 shadow-xs space-y-6">
-              <div>
-                <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-3">Nama Pewawancara *</label>
-                <select value={calsanForm.nama_pewawancara || ""} onChange={(e) => setCalsanForm({ ...calsanForm, nama_pewawancara: e.target.value })} className="w-full px-5 py-4 bg-ink-50/50 border-2 border-ink-100 rounded-2xl focus:border-brand-blue-500 outline-none font-bold text-brand-blue-950 transition-all">
-                  <option value="">Pilih Pewawancara</option>
-                  {(p.jenjang?.toLowerCase().includes("putri") ? PEWAWANCARA_CALSAN_LIST_PUTRI : PEWAWANCARA_CALSAN_LIST_PUTRA).map((n) => <option key={n} value={n}>{n}</option>)}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-4">Rekomendasi Pewawancara *</label>
-                <div className="space-y-2.5">
-                  {[
-                    "A. Sangat Layak diterima (potensi besar berkembang di pesantren).",
-                    "B. Layak diterima dengan catatan pembinaan.",
-                    "C. Perlu Pertimbangan (butuh bimbingan khusus).",
-                    "D. Tidak disarankan (risiko tinggi, banyak faktor negatif).",
-                    "E. Tidak layak diterima saat ini.",
-                  ].map((opt) => (
-                    <label key={opt} className={`flex items-center gap-4 p-4 rounded-xl cursor-pointer border-2 transition-all text-sm font-bold ${calsanForm.rekomendasi === opt ? "border-brand-blue-600 bg-brand-blue-50 text-brand-blue-900" : "border-ink-100 hover:border-brand-blue-200 bg-ink-50/30"}`}>
-                      <input type="radio" name={`rekom-calsan-${p.id}`} value={opt} checked={calsanForm.rekomendasi === opt} onChange={() => setCalsanForm({ ...calsanForm, rekomendasi: opt })} className="w-5 h-5 shrink-0 accent-brand-blue-600" />
-                      <span>{opt}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-3">Catatan Pewawancara (opsional)</label>
-                <textarea value={calsanForm.catatan || ""} onChange={(e) => setCalsanForm({ ...calsanForm, catatan: e.target.value })} rows={4} className="w-full px-5 py-4 bg-ink-50/50 border-2 border-ink-100 rounded-2xl focus:border-brand-blue-500 outline-none font-bold text-brand-blue-950 transition-all resize-none" placeholder="Catatan pewawancara..." />
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-4 pt-2">
-              <button onClick={cancelEditing} className="w-full sm:w-auto px-8 py-4 bg-ink-100 text-ink-700 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-ink-200 transition-all active:scale-95">Batal</button>
-              <button onClick={() => saveForm(p, "wawancara")} disabled={!CALSAN_CRITERIA.every((c) => calsanForm[c.key]) || !calsanForm.rekomendasi || !calsanForm.nama_pewawancara || saving === p.id + "wawancara"} className="w-full sm:w-auto px-8 py-4 bg-brand-blue-700 text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-brand-blue-800 transition-all shadow-xl shadow-brand-blue-900/20 disabled:opacity-50 flex items-center justify-center gap-2 active:scale-95">
-                {saving === p.id + "wawancara" ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-4 h-4" />} Simpan
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div>
-            {isSaved ? (
-              <div className="flex items-center gap-4 py-5 bg-white/50 rounded-2xl px-6 border border-brand-blue-100/50 shadow-inner">
-                <CheckCircle className="w-7 h-7 text-brand-blue-600 shrink-0" />
-                <div>
-                  <p className="text-brand-blue-950 font-bold text-sm leading-none">Hasil wawancara santri sudah tersimpan.</p>
-                  <p className="text-brand-blue-700/60 text-xs font-bold mt-2 uppercase tracking-widest">Rekomendasi: {p.detail_wawancara?.rekomendasi?.split('.')[0] || 'Tersimpan'}</p>
-                </div>
-              </div>
-            ) : (
-              <div className="flex items-center gap-3 text-brand-blue-700/40 py-2">
-                <AlertCircle className="w-5 h-5" />
-                <span className="text-sm font-black uppercase tracking-widest italic">Belum ada data wawancara santri</span>
-              </div>
-            )}
-            <button onClick={() => startEditing(p)} className="mt-6 px-8 py-4 bg-brand-blue-700 text-white rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-brand-blue-800 transition-all shadow-lg shadow-brand-blue-900/20 active:scale-95">
-              {isSaved ? "Edit Nilai" : "Input Nilai"}
-            </button>
-          </div>
-        )}
-      </div>
-    );
-  };
-
-  // ============================================================================
-  // RENDER: Wawancara Cawalsan Form
-  // ============================================================================
-  const renderCawalsanForm = (p: Peserta) => {
-    const isEditing = editingId === p.id;
-    const isSaved = !!p.detail_cawalsan?.rekomendasi;
-
-    return (
-      <div className="bg-brand-yellow-50/50 border border-brand-yellow-100 rounded-3xl p-6 md:p-8 space-y-6 shadow-sm">
-        <div className="flex items-center gap-3 mb-2">
-          <div className="p-2.5 bg-brand-yellow-100 rounded-xl">
-            <Users className="w-6 h-6 text-brand-yellow-700" />
-          </div>
-          <h3 className="text-xl font-black text-brand-blue-950 tracking-tight">Wawancara Wali Santri</h3>
-          {isSaved && !isEditing && (
-            <span className="ml-auto px-4 py-1.5 bg-brand-yellow-400 text-brand-blue-950 text-[10px] font-black uppercase tracking-widest rounded-xl flex items-center gap-1.5 shadow-sm border border-brand-yellow-500/20">
-              <CheckCircle className="w-3.5 h-3.5" /> Sudah Dinilai
-            </span>
-          )}
-        </div>
-
-        {isEditing ? (
-          <div className="space-y-6">
-            {/* Dasar Informasi */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white rounded-2xl p-6 border border-brand-yellow-100 shadow-xs">
-              <div>
-                <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-3">Nama Audiens/Orangtua *</label>
-                <input type="text" value={cawalsanForm.nama_orangtua || ""} onChange={(e) => setCawalsanForm({ ...cawalsanForm, nama_orangtua: e.target.value })} className="w-full px-5 py-4 bg-ink-50/30 border-2 border-ink-100 rounded-2xl focus:border-brand-yellow-500 outline-none font-bold text-brand-blue-950 transition-all placeholder:text-ink-100" placeholder="Nama orangtua/wali" />
-              </div>
-              <div>
-                <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-3">Asal Daerah *</label>
-                <input type="text" value={cawalsanForm.asal || ""} onChange={(e) => setCawalsanForm({ ...cawalsanForm, asal: e.target.value })} className="w-full px-5 py-4 bg-ink-50/30 border-2 border-ink-100 rounded-2xl focus:border-brand-yellow-500 outline-none font-bold text-brand-blue-950 transition-all placeholder:text-ink-100" placeholder="Contoh: Sukabumi, Jakarta" />
-              </div>
-            </div>
-
-            {/* Kategori & Sumber */}
-            <div className="bg-white rounded-2xl p-6 border border-brand-yellow-100 shadow-xs space-y-6">
-              <div>
-                <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-4">Kategori Calon Santri *</label>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {KATEGORI_OPTIONS.map((opt) => (
-                    <label key={opt} className={`flex items-center gap-4 p-4 rounded-xl cursor-pointer border-2 transition-all text-sm font-bold ${cawalsanForm.kategori === opt ? "border-brand-yellow-400 bg-brand-yellow-50 text-brand-blue-950 shadow-sm" : "border-ink-50 hover:border-brand-yellow-200 bg-ink-50/30"}`}>
-                      <input type="radio" name={`kategori-${p.id}`} value={opt} checked={cawalsanForm.kategori === opt} onChange={() => setCawalsanForm({ ...cawalsanForm, kategori: opt })} className="w-5 h-5 shrink-0 accent-brand-yellow-500" />
-                      <span>{opt}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-3">Sumber Informasi *</label>
-                <select value={cawalsanForm.sumber_info || ""} onChange={(e) => setCawalsanForm({ ...cawalsanForm, sumber_info: e.target.value })} className="w-full px-5 py-4 bg-ink-50/30 border-2 border-ink-100 rounded-2xl focus:border-brand-yellow-500 outline-none font-bold text-brand-blue-950 transition-all cursor-pointer">
-                  <option value="">Pilih Sumber Informasi</option>
-                  {SUMBER_INFO_OPTIONS.map((n) => <option key={n} value={n}>{n}</option>)}
-                </select>
-              </div>
-            </div>
-
-            {/* 12 Pertanyaan */}
-            <div className="space-y-4">
-              {CAWALSAN_QUESTIONS.map((q) => (
-                <div key={q.key} className="bg-white rounded-2xl p-6 border border-brand-yellow-100 shadow-xs">
-                  <label className="block text-sm font-black text-brand-blue-950 mb-4">{q.label} *</label>
-                  <div className="space-y-2.5">
-                    {q.options.map((opt) => (
-                      <label key={opt} className={`flex items-start gap-4 p-4 rounded-xl cursor-pointer border-2 transition-all text-sm font-bold ${cawalsanForm[q.key] === opt ? "border-brand-yellow-400 bg-brand-yellow-50 text-brand-blue-950 shadow-sm" : "border-ink-50 hover:border-brand-yellow-200 bg-ink-50/30"}`}>
-                        <input type="radio" name={`${q.key}-${p.id}`} value={opt} checked={cawalsanForm[q.key] === opt} onChange={() => setCawalsanForm({ ...cawalsanForm, [q.key]: opt })} className="w-5 h-5 shrink-0 mt-0.5 accent-brand-yellow-500" />
-                        <span>{opt}</span>
-                      </label>
-                    ))}
+        <div className="bg-white rounded-3xl p-6 md:p-8 border border-cream-200 shadow-sm app-card">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+            <div className="flex items-center gap-5">
+               <div className="w-16 h-16 bg-maroon-50 rounded-2xl flex items-center justify-center border border-maroon-100 shrink-0">
+                  <User className="w-8 h-8 text-maroon-600" />
+               </div>
+               <div>
+                  <h2 className="text-2xl font-black text-ink-950 font-display tracking-tight">{selectedStudent.nama_lengkap}</h2>
+                  <div className="flex items-center gap-3 mt-1.5">
+                    <span className="px-2.5 py-1 bg-surface-100 text-ink-600 border border-surface-200 rounded-lg text-xs font-black uppercase tracking-widest">{selectedStudent.jenjang}</span>
+                    <span className="text-ink-400 font-mono text-sm font-bold">{selectedStudent.nomor_pendaftaran}</span>
                   </div>
-                </div>
-              ))}
+               </div>
             </div>
-
-            {/* Karakter & SPP & Rekomendasi */}
-            <div className="bg-white rounded-2xl p-6 border border-brand-yellow-100 shadow-xs space-y-6">
-              <div>
-                <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-3">Karakter Santri (Positif & Negatif) *</label>
-                <textarea value={cawalsanForm.karakter || ""} onChange={(e) => setCawalsanForm({ ...cawalsanForm, karakter: e.target.value })} rows={3} className="w-full px-5 py-4 bg-ink-50/30 border-2 border-ink-100 rounded-2xl focus:border-brand-yellow-500 outline-none font-bold text-brand-blue-950 transition-all resize-none placeholder:text-ink-100" placeholder="Deskripsikan karakter santri yang menonjol..." />
-              </div>
-
-              <div>
-                <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-4">Sudah Tahu Biaya SPP? *</label>
-                <div className="flex gap-4">
-                  {["Sudah", "Belum"].map((opt) => (
-                    <label key={opt} className={`flex-1 px-5 py-4 rounded-xl cursor-pointer border-2 transition-all text-sm font-black shadow-sm text-center uppercase tracking-widest ${cawalsanForm.tahu_spp === opt ? "border-brand-yellow-400 bg-brand-yellow-50 text-brand-blue-950" : "border-ink-50 bg-ink-50/30 text-ink-300"}`}>
-                      <input type="radio" name={`spp-${p.id}`} value={opt} checked={cawalsanForm.tahu_spp === opt} onChange={() => setCawalsanForm({ ...cawalsanForm, tahu_spp: opt })} className="hidden" />
-                      {opt}
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-4">Rekomendasi Pewawancara *</label>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  {["Diterima", "Diterima dengan catatan", "Ditolak"].map((opt) => (
-                    <label key={opt} className={`px-5 py-4 rounded-xl cursor-pointer border-2 transition-all text-xs font-black uppercase tracking-widest text-center shadow-sm ${cawalsanForm.rekomendasi === opt ? (opt === "Diterima" ? "border-emerald-500 bg-emerald-50 text-emerald-700" : opt.includes("catatan") ? "border-brand-yellow-500 bg-brand-yellow-50 text-brand-yellow-700" : "border-red-500 bg-red-50 text-red-700") : "border-ink-50 bg-ink-50/30 text-ink-300"}`}>
-                      <input type="radio" name={`rekom-cawalsan-${p.id}`} value={opt} checked={cawalsanForm.rekomendasi === opt} onChange={() => setCawalsanForm({ ...cawalsanForm, rekomendasi: opt })} className="hidden" />
-                      {opt}
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-3">Nama Pewawancara *</label>
-                <select value={cawalsanForm.nama_pewawancara || ""} onChange={(e) => setCawalsanForm({ ...cawalsanForm, nama_pewawancara: e.target.value })} className="w-full px-5 py-4 bg-ink-50/30 border-2 border-ink-100 rounded-2xl focus:border-brand-yellow-500 outline-none font-bold text-brand-blue-950 transition-all cursor-pointer">
-                  <option value="">Pilih Pewawancara</option>
-                  {(p.jenjang?.toLowerCase().includes("putri") ? PEWAWANCARA_CAWALSAN_LIST_PUTRI : PEWAWANCARA_CAWALSAN_LIST_PUTRA).map((n) => <option key={n} value={n}>{n}</option>)}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-black text-ink-300 uppercase tracking-widest mb-3">Catatan Tambahan (opsional)</label>
-                <textarea value={cawalsanForm.catatan || ""} onChange={(e) => setCawalsanForm({ ...cawalsanForm, catatan: e.target.value })} rows={3} className="w-full px-5 py-4 bg-ink-50/30 border-2 border-ink-100 rounded-2xl focus:border-brand-yellow-500 outline-none font-bold text-brand-blue-950 transition-all resize-none placeholder:text-ink-100" placeholder="Catatan tambahan pewawancara..." />
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-4 pt-2">
-              <button onClick={cancelEditing} className="w-full sm:w-auto px-8 py-4 bg-brand-yellow-100 text-brand-yellow-800 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-brand-yellow-200 transition-all active:scale-95">Batal</button>
-              <button onClick={() => saveForm(p, "ortu")} disabled={!cawalsanForm.nama_orangtua || !cawalsanForm.asal || !cawalsanForm.kategori || !cawalsanForm.sumber_info || !cawalsanForm.karakter || !cawalsanForm.tahu_spp || !cawalsanForm.rekomendasi || !cawalsanForm.nama_pewawancara || !CAWALSAN_QUESTIONS.every((q) => cawalsanForm[q.key]) || saving === p.id + "ortu"} className="w-full sm:w-auto px-8 py-4 bg-brand-yellow-400 text-brand-blue-950 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-brand-yellow-500 transition-all shadow-xl shadow-brand-yellow-400/20 disabled:opacity-50 flex items-center justify-center gap-2 active:scale-95">
-                {saving === p.id + "ortu" ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />} Simpan
-              </button>
+            
+            <div className={`px-5 py-3 rounded-2xl border flex items-center gap-3 ${isEditingLocked ? 'bg-red-50 border-red-100 text-red-700' : 'bg-green-50 border-green-100 text-green-700'}`}>
+               {isEditingLocked ? <Lock className="w-5 h-5" /> : <Clock className="w-5 h-5" />}
+               <div className="text-sm font-bold">
+                 <p className="opacity-70 text-[10px] uppercase tracking-wider leading-none mb-1">Status Kunci Edit</p>
+                 <p>{lockInfo.text}</p>
+               </div>
             </div>
           </div>
-        ) : (
-          <div>
-            {isSaved ? (
-              <div className="flex items-center gap-4 py-5 bg-white/50 rounded-2xl px-6 border border-brand-yellow-100/50 shadow-inner">
-                <CheckCircle className="w-7 h-7 text-brand-yellow-600 shrink-0" />
-                <div>
-                  <p className="text-brand-blue-950 font-bold text-sm">Wawancara calon wali santri sudah tersimpan.</p>
-                  <p className="text-brand-yellow-700/60 text-xs font-bold mt-2 uppercase tracking-widest italic">Rekomendasi: {p.detail_cawalsan?.rekomendasi}</p>
+
+          <form onSubmit={handleSave} className="space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Score Input */}
+              <div className="space-y-4">
+                <label className="flex items-center gap-2 text-sm font-black text-ink-900 uppercase tracking-widest">
+                  <Award className="w-4 h-4 text-maroon-600" /> Skor Penilaian (0-100)
+                </label>
+                <div className="relative group">
+                   <input 
+                    type="number" 
+                    min="0" 
+                    max="100" 
+                    required 
+                    readOnly={isEditingLocked}
+                    value={formScore || ""} 
+                    onChange={e => setFormScore(Number(e.target.value))}
+                    className={`w-full text-4xl font-black p-6 rounded-3xl text-center border-2 transition-all outline-none ${isEditingLocked ? 'bg-cream-50 border-cream-200 text-ink-400' : 'bg-white border-cream-200 focus:border-maroon-500 text-ink-950 focus:ring-4 focus:ring-maroon-50 shadow-sm'}`}
+                    placeholder="0"
+                  />
+                  {!isEditingLocked && <div className="absolute inset-x-0 -bottom-2 flex justify-center opacity-0 group-hover:opacity-100 transition-opacity"><span className="bg-maroon-600 text-white text-[10px] px-2 py-0.5 rounded-full font-bold uppercase">Ketik Skor</span></div>}
                 </div>
               </div>
-            ) : (
-              <div className="flex items-center gap-3 text-brand-yellow-700/50 py-2">
-                <AlertCircle className="w-5 h-5" />
-                <span className="text-sm font-black uppercase tracking-widest italic font-medium">Belum ada data wawancara wali santri</span>
+
+              {/* Notes Input */}
+              <div className="space-y-4">
+                <label className="flex items-center gap-2 text-sm font-black text-ink-900 uppercase tracking-widest">
+                  <MessageSquare className="w-4 h-4 text-maroon-600" /> Catatan {formType === 'quran' ? 'Tilawah' : 'Wawancara'}
+                </label>
+                <textarea 
+                  rows={4}
+                  readOnly={isEditingLocked}
+                  value={formNotes || ""}
+                  onChange={e => setFormNotes(e.target.value)}
+                  className={`w-full p-5 rounded-3xl border-2 transition-all outline-none font-medium ${isEditingLocked ? 'bg-cream-50 border-cream-200 text-ink-400' : 'bg-white border-cream-200 focus:border-maroon-500 text-ink-900 focus:ring-4 focus:ring-maroon-50 shadow-sm'}`}
+                  placeholder="Berikan catatan mendalam mengenai hasil ujian hari ini..."
+                />
+              </div>
+            </div>
+
+            {/* Criteria / Details (Dynamic based on formType) */}
+            <div className="bg-cream-50/50 rounded-3xl p-6 md:p-8 border border-cream-100">
+               <h3 className="text-sm font-black text-maroon-900 uppercase tracking-widest mb-6 flex items-center gap-2">
+                 <Activity className="w-4 h-4" /> Detail Kriteria Penilaian
+               </h3>
+               
+               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                 {formType === 'quran' && [
+                   { key: 'tahsin', label: 'Tahsin & Makhroj' },
+                   { key: 'tajwid', label: 'Tajwid' },
+                   { key: 'kelancaran', label: 'Kelancaran' },
+                   { key: 'hafalan', label: 'Kualitas Hafalan' },
+                   { key: 'adab', label: 'Adab Berinteraksi' },
+                 ].map(item => (
+                   <div key={item.key} className="space-y-2">
+                     <label className="text-[11px] font-bold text-ink-400 uppercase tracking-wider">{item.label}</label>
+                     <select 
+                      disabled={isEditingLocked}
+                      value={formDetails[item.key] || ""}
+                      onChange={e => setFormDetails({...formDetails, [item.key]: e.target.value})}
+                      className="w-full px-4 py-2.5 rounded-xl border border-cream-200 bg-white text-sm font-bold text-ink-900 outline-none focus:ring-2 focus:ring-maroon-500 transition-all cursor-pointer disabled:bg-cream-50 disabled:text-ink-300"
+                    >
+                       <option value="">Pilih...</option>
+                       <option value="Sangat Baik">Sangat Baik (A)</option>
+                       <option value="Baik">Baik (B)</option>
+                       <option value="Cukup">Cukup (C)</option>
+                       <option value="Kurang">Kurang (D)</option>
+                     </select>
+                   </div>
+                 ))}
+
+                 {formType !== 'quran' && [
+                   { key: 'akhlak', label: 'Akhlak & Adab' },
+                   { key: 'kemandirian', label: 'Kemandirian' },
+                   { key: 'motivasi', label: 'Motivasi Belajar' },
+                   { key: 'kesehatan', label: 'Kesehatan Fisik' },
+                   { key: 'lingkungan', label: 'Latar Belakang Lingkungan' },
+                   { key: 'komitmen', label: 'Komitmen Orang Tua' },
+                 ].map(item => (
+                   <div key={item.key} className="space-y-2">
+                     <label className="text-[11px] font-bold text-ink-400 uppercase tracking-wider">{item.label}</label>
+                     <select 
+                      disabled={isEditingLocked}
+                      value={formDetails[item.key] || ""}
+                      onChange={e => setFormDetails({...formDetails, [item.key]: e.target.value})}
+                       className="w-full px-4 py-2.5 rounded-xl border border-cream-200 bg-white text-sm font-bold text-ink-900 outline-none focus:ring-2 focus:ring-maroon-500 transition-all cursor-pointer disabled:bg-cream-50 disabled:text-ink-300"
+                    >
+                       <option value="">Pilih...</option>
+                       <option value="Sangat Tinggi">Sangat Tinggi (A)</option>
+                       <option value="Tinggi">Tinggi (B)</option>
+                       <option value="Cukup">Cukup (C)</option>
+                       <option value="Kurang">Kurang (D)</option>
+                     </select>
+                   </div>
+                 ))}
+               </div>
+            </div>
+
+            {!isEditingLocked && (
+              <div className="flex justify-end pt-4">
+                <button 
+                  type="submit" 
+                  disabled={saving}
+                  className="px-10 py-4 bg-maroon-600 hover:bg-maroon-700 text-white rounded-2xl font-black shadow-lg shadow-maroon-100 transition-all flex items-center gap-3 active:scale-95 disabled:opacity-50"
+                >
+                  {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
+                  Simpan Penilaian
+                </button>
               </div>
             )}
-            <button onClick={() => startEditing(p)} className="mt-6 px-8 py-4 bg-brand-yellow-400 text-brand-blue-950 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-brand-yellow-500 transition-all shadow-lg shadow-brand-yellow-400/20 active:scale-95">
-              {isSaved ? "Edit Hasil" : "Input Hasil"}
-            </button>
-          </div>
-        )}
+            
+            {isEditingLocked && (
+              <div className="p-5 bg-amber-50 border border-amber-200 rounded-3xl flex items-start gap-4 ring-4 ring-amber-50/50">
+                <AlertCircle className="w-6 h-6 text-amber-600 shrink-0" />
+                <div>
+                   <h4 className="font-bold text-amber-900">Ulasan Mode Baca</h4>
+                   <p className="text-sm text-amber-700 mt-1 font-medium leading-relaxed">Penilaian ini telah diproses oleh sistem. Untuk melakukan perbaikan data setelah batas waktu 24 jam, hubungi Koordinator Penguji atau Admin IT PPDB.</p>
+                </div>
+              </div>
+            )}
+          </form>
+        </div>
       </div>
     );
-  };
+  }
 
-  // ============================================================================
-  // RENDER: Main Page
-  // ============================================================================
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
-      {/* Header */}
-      <div className="bg-white rounded-4xl p-8 md:p-10 border border-brand-yellow-100 shadow-sm app-card overflow-hidden relative">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-brand-blue-600/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-        <div className="flex items-center justify-between relative z-10">
-          <div className="flex items-center gap-6">
-            <div className="w-16 h-16 bg-brand-blue-50 rounded-2xl flex items-center justify-center border border-brand-blue-100 shrink-0 shadow-sm">
-              <ClipboardCheck className="w-8 h-8 text-brand-blue-600" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-black text-brand-blue-950 font-display tracking-tight leading-none">Input Nilai Ujian</h1>
-              <p className="text-sm font-bold text-ink-300 mt-2">Total Terdaftar: <span className="text-brand-blue-700 bg-brand-blue-50 px-2 py-0.5 rounded-lg">{peserta.length} peserta</span></p>
-            </div>
-          </div>
+    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      {/* Header & Description */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+           <div className="flex items-center gap-3 mb-2">
+              <span className="w-8 h-1 bg-maroon-600 rounded-full"></span>
+              <span className="text-sm font-black text-maroon-600 uppercase tracking-[0.2em]">Testing Panel</span>
+           </div>
+           <h1 className="text-3xl md:text-4xl font-black text-ink-950 font-display tracking-tight">Input Nilai Seleksi</h1>
+           <p className="text-ink-500 mt-2 font-bold max-w-xl">Berikan penilaian objektif untuk setiap santri. Perlu diperhatikan bahwa data yang telah disimpan hanya dapat diubah dalam waktu <span className="text-maroon-600">24 jam</span>.</p>
         </div>
-
-        {/* Search */}
-        <div className="mt-8 relative z-10">
-          <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-ink-300" />
-          <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Cari nama atau nomor pendaftaran..." className="w-full pl-14 pr-6 py-4.5 bg-ink-50/50 border border-ink-100 rounded-3xl focus:border-brand-blue-500 focus:ring-8 focus:ring-brand-blue-500/5 outline-none text-base font-bold text-brand-blue-950 transition-all placeholder:text-ink-200" />
+        
+        <div className="flex bg-white p-2 rounded-2xl border border-cream-200 shadow-sm">
+           <div className="px-4 py-2 bg-maroon-50 rounded-xl flex items-center gap-3">
+              <Users className="w-5 h-5 text-maroon-600" />
+              <div className="text-xs font-bold leading-tight">
+                 <p className="text-maroon-900">{students.length}</p>
+                 <p className="text-maroon-600/60 uppercase tracking-tighter">Terdaftar</p>
+              </div>
+           </div>
         </div>
       </div>
 
-      {/* Message */}
-      {message && (
-        <div className={`mb-4 p-4 rounded-xl flex items-center gap-2 text-sm font-semibold ${message.type === "success" ? "bg-green-50 text-green-700 border border-green-200" : "bg-red-50 text-red-700 border border-red-200"}`}>
-          {message.type === "success" ? <CheckCircle className="w-4 h-4" /> : <AlertCircle className="w-4 h-4" />}
-          {message.text}
-        </div>
-      )}
+      {/* Controls: Search & Filter */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+         <div className="lg:col-span-2 relative">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-ink-300" />
+            <input 
+              type="text" 
+              placeholder="Cari berdasarkan nama atau nomor pendaftaran..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              className="w-full pl-12 pr-4 py-4 bg-white border border-cream-200 rounded-2xl focus:ring-4 focus:ring-maroon-50 focus:border-maroon-400 outline-none font-bold text-ink-900 transition-all placeholder:text-ink-200"
+            />
+         </div>
+         <div className="relative">
+            <Filter className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-maroon-500" />
+            <select 
+              value={filterRole}
+              onChange={e => setFilterRole(e.target.value)}
+              className="w-full pl-12 pr-10 py-4 bg-white border border-cream-200 rounded-2xl focus:ring-4 focus:ring-maroon-50 focus:border-maroon-400 outline-none font-bold text-ink-900 appearance-none cursor-pointer transition-all"
+            >
+              <option value="all">Semua Tipe Ujian</option>
+              <option value="quran">Tes Al-Quran</option>
+              <option value="wawancara">Wawancara Calsan</option>
+              <option value="ortu">Wawancara Cawalsan</option>
+            </select>
+         </div>
+      </div>
 
-      {/* Loading */}
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-24 bg-white rounded-4xl border border-brand-yellow-100 shadow-sm app-card">
-          <Loader2 className="w-12 h-12 animate-spin text-brand-blue-600 mb-4" />
-          <span className="text-ink-300 font-black uppercase tracking-widest text-sm">Memuat data peserta...</span>
+        <div className="flex flex-col items-center justify-center py-24 gap-4">
+           <Loader2 className="w-12 h-12 text-maroon-600 animate-spin" />
+           <p className="text-ink-400 font-bold animate-pulse">Menghubungkan ke pangkalan data...</p>
         </div>
-      ) : filteredPeserta.length === 0 ? (
-        <div className="text-center py-24 bg-white rounded-4xl border border-brand-yellow-100 shadow-sm app-card">
-          <User className="w-20 h-20 mx-auto mb-6 text-ink-100" />
-          <p className="font-black text-brand-blue-950 text-2xl tracking-tight">Tidak ada peserta ditemukan</p>
-          <p className="text-sm font-bold text-ink-300 mt-2">Coba gunakan kata kunci pencarian yang lain.</p>
+      ) : filteredStudents.length === 0 ? (
+        <div className="bg-white rounded-[2rem] p-16 border border-cream-200 text-center shadow-sm">
+           <div className="w-20 h-20 bg-cream-50 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Search className="w-10 h-10 text-ink-200" />
+           </div>
+           <h3 className="text-xl font-black text-ink-950 font-display">Pendaftar Tidak Ditemukan</h3>
+           <p className="text-ink-400 mt-2 font-medium max-w-sm mx-auto">Kami tidak menemukan pendaftar yang sesuai dengan kriteria pencarian Anda.</p>
         </div>
       ) : (
-        <div className="space-y-8">
-          {filteredPeserta.map((p) => (
-            <div key={p.id} className="bg-white rounded-4xl p-8 md:p-10 border border-brand-yellow-100 shadow-sm shadow-brand-blue-900/5 app-card">
-              {/* Peserta Header */}
-              <div className="flex items-center gap-6 mb-8 pb-8 border-b border-ink-100/50">
-                <div className="w-20 h-20 bg-ink-50 rounded-3xl flex items-center justify-center border border-ink-100 shrink-0 shadow-inner">
-                  <User className="w-10 h-10 text-brand-blue-300" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredStudents.map((student) => (
+            <div key={student.id} className="bg-white rounded-[2rem] border border-cream-200 shadow-sm hover:shadow-xl hover:border-maroon-200 hover:-translate-y-1 transition-all duration-300 p-6 flex flex-col group app-card">
+              {/* Card Header */}
+              <div className="flex items-start justify-between mb-4">
+                <div className="w-12 h-12 bg-maroon-50 rounded-2xl flex items-center justify-center border border-maroon-100 group-hover:bg-maroon-600 group-hover:border-maroon-700 transition-colors">
+                  <User className="w-6 h-6 text-maroon-600 group-hover:text-white transition-colors" />
                 </div>
-                <div>
-                  <h2 className="text-2xl font-black text-brand-blue-950 font-display tracking-tight leading-none">{toTitleCase(p.nama_lengkap)}</h2>
-                  <div className="flex flex-wrap items-center gap-3 mt-3">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-brand-blue-50 text-brand-blue-700 text-[10px] font-black uppercase tracking-widest border border-brand-blue-100 shadow-xs">
-                      <Hash className="w-3.5 h-3.5" /> {p.nomor_pendaftaran}
-                    </span>
-                    <span className="inline-flex items-center px-3 py-1.5 rounded-xl bg-brand-yellow-400 text-brand-blue-950 text-[10px] font-black uppercase tracking-widest shadow-sm">
-                      {p.jenjang}
-                    </span>
-                  </div>
+                <div className="text-right">
+                  <span className="text-[10px] font-black text-ink-200 uppercase tracking-widest">{student.jenjang}</span>
+                  <p className="text-xs font-mono font-bold text-ink-950">{student.nomor_pendaftaran}</p>
                 </div>
               </div>
 
-              {/* Forms based on roles AND active session role */}
-              <div className="space-y-4">
-                {p.roles.includes("quran") && visibleFormTypes.includes("quran") && renderQuranForm(p)}
-                {p.roles.includes("wawancara") && visibleFormTypes.includes("wawancara") && renderCalsanForm(p)}
-                {p.roles.includes("ortu") && visibleFormTypes.includes("ortu") && renderCawalsanForm(p)}
+              {/* Identity */}
+              <div className="mb-6">
+                <h3 className="text-lg font-black text-ink-950 font-display leading-tight">{student.nama_lengkap}</h3>
+              </div>
+
+              {/* Status & Scores (Master Merge View) */}
+              <div className="space-y-3 mb-8">
+                 {/* Quran Score */}
+                 <div className="flex items-center justify-between p-3 rounded-2xl bg-cream-50/50 border border-cream-100">
+                    <div className="flex items-center gap-2.5">
+                       <BookOpen className="w-4 h-4 text-emerald-600" />
+                       <span className="text-xs font-black text-ink-900 uppercase tracking-tight">Quran</span>
+                    </div>
+                    {student.nilai_tes_quran !== null ? (
+                      <span className="text-sm font-black text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-100">{student.nilai_tes_quran}</span>
+                    ) : (
+                      <span className="text-[10px] font-bold text-ink-300 italic">Belum Ujian</span>
+                    )}
+                 </div>
+
+                 {/* Santri Score */}
+                 <div className="flex items-center justify-between p-3 rounded-2xl bg-cream-50/50 border border-cream-100">
+                    <div className="flex items-center gap-2.5">
+                       <Activity className="w-4 h-4 text-blue-600" />
+                       <span className="text-xs font-black text-ink-900 uppercase tracking-tight">Calsan</span>
+                    </div>
+                    {student.nilai_wawancara_santri !== null ? (
+                      <span className="text-sm font-black text-blue-700 bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-100">{student.nilai_wawancara_santri}</span>
+                    ) : (
+                      <span className="text-[10px] font-bold text-ink-300 italic">Belum Ujian</span>
+                    )}
+                 </div>
+
+                 {/* Ortu Score */}
+                 <div className="flex items-center justify-between p-3 rounded-2xl bg-cream-50/50 border border-cream-100">
+                    <div className="flex items-center gap-2.5">
+                       <Users className="w-4 h-4 text-purple-600" />
+                       <span className="text-xs font-black text-ink-900 uppercase tracking-tight">Cawalsan</span>
+                    </div>
+                    {student.nilai_wawancara_ortu !== null ? (
+                      <span className="text-sm font-black text-purple-700 bg-purple-50 px-2.5 py-1 rounded-lg border border-purple-100">{student.nilai_wawancara_ortu}</span>
+                    ) : (
+                      <span className="text-[10px] font-bold text-ink-300 italic">Belum Ujian</span>
+                    )}
+                 </div>
+              </div>
+
+              {/* Action: Entry Buttons based on roles */}
+              <div className="mt-auto space-y-2">
+                 {student.roles.includes('quran') && (
+                   <button 
+                    onClick={() => openForm(student, 'quran')}
+                    className="w-full py-3 px-4 bg-maroon-600 hover:bg-maroon-700 text-white rounded-2xl font-black text-xs transition-all flex items-center justify-between shadow-lg shadow-maroon-50 active:scale-95"
+                  >
+                     INPUT NILAI QURAN 
+                     <ChevronRight className="w-4 h-4" />
+                   </button>
+                 )}
+                 {student.roles.includes('wawancara') && (
+                   <button 
+                    onClick={() => openForm(student, 'wawancara')}
+                    className="w-full py-3 px-4 bg-ink-950 hover:bg-ink-800 text-white rounded-2xl font-black text-xs transition-all flex items-center justify-between shadow-lg shadow-ink-100 active:scale-95"
+                  >
+                     WAWANCARA CALSAN
+                     <ChevronRight className="w-4 h-4" />
+                   </button>
+                 )}
+                 {student.roles.includes('ortu') && (
+                   <button 
+                    onClick={() => openForm(student, 'ortu')}
+                    className="w-full py-3 px-4 border-2 border-maroon-600 text-maroon-600 hover:bg-maroon-50 rounded-2xl font-black text-xs transition-all flex items-center justify-between active:scale-95"
+                  >
+                     WAWANCARA CAWALSAN
+                     <ChevronRight className="w-4 h-4" />
+                   </button>
+                 )}
               </div>
             </div>
           ))}

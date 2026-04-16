@@ -821,20 +821,20 @@ export default function FasilitasPage() {
                 </div>
               </motion.div>
             </div>
-            
-             {/* Note Info Component using App Card Style */}
-             <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.6 }}
-                 className="mt-8 app-card bg-brand-blue-50 p-6 flex items-start gap-4 border border-brand-blue-100 max-w-2xl mx-auto"
+
+            {/* Note Info Component using App Card Style */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.6 }}
+              className="mt-8 app-card bg-brand-blue-50 p-6 flex items-start gap-4 border border-brand-blue-100 max-w-2xl mx-auto"
             >
-                <div className="w-10 h-10 rounded-full bg-brand-blue-100 text-brand-blue-700 flex items-center justify-center shrink-0">
-                   <Info className="w-5 h-5" />
-                </div>
-                 <p className="text-sm font-medium text-ink-700">Masih banyak fasilitas pendukung lainnya di dalam Pesantren Al-Andalus Ulul Albaab. Silakan jadwalkan kunjungan untuk melihat langsung.</p>
-             </motion.div>
+              <div className="w-10 h-10 rounded-full bg-brand-blue-100 text-brand-blue-700 flex items-center justify-center shrink-0">
+                <Info className="w-5 h-5" />
+              </div>
+              <p className="text-sm font-medium text-ink-700">Masih banyak fasilitas pendukung lainnya di dalam Pesantren Al-Andalus Ulul Albaab. Silakan jadwalkan kunjungan untuk melihat langsung.</p>
+            </motion.div>
 
           </div>
         </Container>

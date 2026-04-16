@@ -143,15 +143,38 @@ export async function GET(request: NextRequest) {
       }),
     ]);
 
-    // Transform data to match frontend expectations
-    const transformedData = data.map(item => ({
-      ...item,
-      nilai_ujian: item.nilai_ujian && item.nilai_ujian.length > 0 ? item.nilai_ujian[0] : null,
-      dokumen: item.dokumen.map(doc => ({
-        jenis_dokumen: doc.jenis_dokumen,
-        status_verifikasi: doc.is_verified ? "verified" : (doc.catatan ? "rejected" : "pending")
-      }))
-    }));
+    // Transform data: Master Merge for NilaiUjian and document status
+    const isEmpty = (v: any) => v == null || v === "" || (typeof v === 'object' && Object.keys(v).length === 0 && v.constructor === Object);
+    
+    const transformedData = data.map(item => {
+      // 1. Merge multiple NilaiUjian records if exists
+      const scores = item.nilai_ujian || [];
+      let mergedNilai = null;
+      
+      if (scores.length > 0) {
+        // Sort oldest to newest to let newer field values prevail
+        const sorted = [...scores].sort((a: any, b: any) => 
+          new Date(a.updated_at || 0).getTime() - new Date(b.updated_at || 0).getTime()
+        );
+        
+        const master: any = {};
+        sorted.forEach(s => {
+          Object.entries(s).forEach(([k, v]) => {
+            if (!isEmpty(v)) master[k] = v;
+          });
+        });
+        mergedNilai = master;
+      }
+
+      return {
+        ...item,
+        nilai_ujian: mergedNilai,
+        dokumen: item.dokumen.map(doc => ({
+          jenis_dokumen: doc.jenis_dokumen,
+          status_verifikasi: doc.is_verified ? "verified" : (doc.catatan ? "rejected" : "pending")
+        }))
+      };
+    });
 
     console.log(`[API] Pendaftar List: Role=${session.role}, Count=${total}, Limit=${limit}, Where=${JSON.stringify(where)}`);
 

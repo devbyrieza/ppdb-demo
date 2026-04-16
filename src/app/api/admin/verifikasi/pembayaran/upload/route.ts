@@ -1,98 +1,146 @@
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
+import { getServerSession } from "@/lib/session";
 import { saveFileLocal } from "@/lib/storage/local";
-
-const UPLOAD_CONFIG = {
-    maxSize: 5 * 1024 * 1024,
-    allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
-};
-
-function formatFileSize(bytes: number): string {
-    if (bytes < 1024) return bytes + " B";
-    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
-    return (bytes / (1024 * 1024)).toFixed(1) + " MB";
-}
+import { logAdminAction } from "@/lib/audit";
 
 export async function POST(request: NextRequest) {
     try {
-        const cookieStore = await cookies();
-        const sessionCookie = cookieStore.get("app_session");
-
-        if (!sessionCookie) {
-            return NextResponse.json({ success: false, error: "Sesi tidak ditemukan" }, { status: 401 });
+        // 1. Auth Check
+        const session = await getServerSession();
+        if (!session) {
+            return NextResponse.json({ success: false, error: "Sesi telah berakhir, silakan login kembali" }, { status: 401 });
         }
 
-        let session;
-        try {
-            session = JSON.parse(sessionCookie.value);
-        } catch {
-            return NextResponse.json({ success: false, error: "Sesi tidak valid" }, { status: 401 });
-        }
-
-        const allowedRoles = ["admin_keuangan", "admin", "admin_super"];
+        const allowedRoles = [
+            "admin",
+            "admin_super",
+            "admin_berkas",
+            "admin_keuangan",
+            "penguji",
+            "penguji_calsan",
+            "pewawancara_cawalsan",
+            "pewawancara_calsan",
+            "head_of_it",
+            "tim_it"
+        ];
+        
         if (!allowedRoles.includes(session.role)) {
-            return NextResponse.json({ success: false, error: "Akses ditolak" }, { status: 403 });
+            return NextResponse.json({ success: false, error: "Anda tidak memiliki akses untuk melakukan upload" }, { status: 403 });
         }
 
-        const formData = await request.formData();
-        const file = formData.get("file") as File | null;
-        const pembayaranId = formData.get("pembayaran_id") as string | null;
-
-        if (!file || !pembayaranId) {
-            return NextResponse.json(
-                { success: false, error: "File dan pembayaran ID wajib diisi" },
-                { status: 400 }
-            );
+        // 2. Parse Form Data
+        let formData;
+        try {
+            formData = await request.formData();
+        } catch (e) {
+            console.error("Error parsing form data:", e);
+            return NextResponse.json({ success: false, error: "Format data tidak valid" }, { status: 400 });
         }
 
-        if (file.size > UPLOAD_CONFIG.maxSize) {
-            return NextResponse.json(
-                { success: false, error: `Ukuran file terlalu besar! Maksimal ${formatFileSize(UPLOAD_CONFIG.maxSize)}` },
-                { status: 400 }
-            );
+        const file = formData.get("file") as File;
+        const pembayaranId = formData.get("pembayaran_id") as string;
+
+        if (!file) {
+            return NextResponse.json({ success: false, error: "File bukti pembayaran belum dipilih" }, { status: 400 });
         }
 
-        if (!UPLOAD_CONFIG.allowedTypes.includes(file.type)) {
-            return NextResponse.json({ success: false, error: "Format file tidak didukung" }, { status: 400 });
+        if (!pembayaranId) {
+            return NextResponse.json({ success: false, error: "ID Pembayaran tidak ditemukan" }, { status: 400 });
         }
 
+        // 3. Find Payment & Validate
         const pembayaran = await prisma.pembayaran.findUnique({
             where: { id: pembayaranId },
-            include: { pendaftar: { select: { nomor_pendaftaran: true, id: true } } },
+            include: { 
+                pendaftar: { 
+                    select: { 
+                        nomor_pendaftaran: true, 
+                        id: true,
+                        nama_lengkap: true
+                    } 
+                } 
+            },
         });
 
-        if (!pembayaran || !pembayaran.pendaftar) {
-            return NextResponse.json({ success: false, error: "Data pembayaran tidak ditemukan" }, { status: 404 });
+        if (!pembayaran) {
+            return NextResponse.json({ success: false, error: "Data pembayaran tidak ditemukan di database" }, { status: 404 });
         }
 
-        const fileExtension = file.name.split(".").pop()?.toLowerCase() || "bin";
-        const timestamp = Date.now();
-        const fileName = `bukti_admin_${pembayaran.pendaftar.nomor_pendaftaran}_${timestamp}.${fileExtension}`;
+        // 4. Save File
+        let filePath;
+        try {
+            const timestamp = Date.now();
+            const originalName = file.name || "bukti_transfer";
+            const fileExtension = originalName.split('.').pop() || 'jpg';
+            const fileName = `admin-upload-${pembayaran.pendaftar.nomor_pendaftaran}-${timestamp}.${fileExtension}`;
+            
+            filePath = await saveFileLocal(file, 'bukti-pembayaran', pembayaran.pendaftar.id, fileName);
+            
+            if (!filePath) {
+                throw new Error("saveFileLocal returned null");
+            }
+        } catch (e: any) {
+            console.error("Error saving file local:", e);
+            return NextResponse.json({ 
+                success: false, 
+                error: `Gagal menyimpan file ke server: ${e.message || 'Check storage permissions'}` 
+            }, { status: 500 });
+        }
 
-        const filePath = await saveFileLocal(file, 'bukti-pembayaran', pembayaran.pendaftar.id, fileName);
+        // 5. Update Database
+        try {
+            await prisma.pembayaran.update({
+                where: { id: pembayaranId },
+                data: {
+                    bukti_transfer_path: filePath,
+                    bukti_transfer_filename: file.name,
+                    status_pembayaran: "verified",
+                    verified_by: session.id,
+                    verified_at: new Date(),
+                    catatan_verifikasi: "Diunggah dan diverifikasi otomatis oleh Admin",
+                    updated_at: new Date(),
+                },
+            });
 
-        await prisma.pembayaran.update({
-            where: { id: pembayaranId },
-            data: {
-                bukti_transfer_filename: fileName,
-                bukti_transfer_path: filePath,
-                status_pembayaran: "verified",
-                catatan_verifikasi: "Bukti diubah dan disetujui oleh Admin Keuangan",
-                updated_at: new Date(),
+            // Also update pendaftar status
+            await prisma.pendaftar.update({
+                where: { id: pembayaran.pendaftar_id },
+                data: {
+                    status_pendaftaran: "verified",
+                    updated_at: new Date()
+                }
+            });
+        } catch (e: any) {
+            console.error("Error updating database:", e);
+            return NextResponse.json({ 
+                success: false, 
+                error: `Gambar berhasil diupload, namun gagal memperbarui status di database: ${e.message}` 
+            }, { status: 500 });
+        }
+
+        // 6. Logging
+        logAdminAction({
+            action: 'UPLOAD_PAYMENT_PROOF',
+            adminId: session.id || 'system',
+            adminName: session.full_name || 'Admin',
+            targetId: pembayaran.pendaftar.id,
+            targetName: pembayaran.pendaftar.nama_lengkap,
+            details: { 
+                pembayaran_id: pembayaranId,
+                file_path: filePath
             }
         });
 
-        return NextResponse.json({
-            success: true,
-            message: "Bukti pembayaran berhasil diubah",
-            data: { file_path: filePath },
+        return NextResponse.json({ 
+            success: true, 
+            message: "Bukti pembayaran berhasil diunggah dan diverifikasi" 
         });
 
     } catch (error: any) {
-        console.error("Admin upload bukti pembayaran error:", error);
+        console.error("Critical error in admin upload:", error);
         return NextResponse.json(
-            { success: false, error: "Terjadi kesalahan sistem saat mengubah bukti pembayaran" },
+            { success: false, error: `Kesalahan sistem kritis: ${error.message || 'Unknown error'}` },
             { status: 500 }
         );
     }

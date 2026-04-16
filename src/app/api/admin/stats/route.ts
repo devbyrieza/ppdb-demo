@@ -71,13 +71,23 @@ export async function GET(request: Request) {
     const statusCounts: Record<string, number> = {};
     const jenjangCounts: Record<string, { total: number; diterima: number }> = {};
     const provinsiCounts: Record<string, number> = {};
-    const genderCounts: Record<string, number> = { "Laki-laki": 0, "Perempuan": 0 };
+    const genderCounts: Record<string, number> = { "Laki-laki": 0, "Perempuan": 0, "Belum Diisi": 0 };
 
     pendaftarData.forEach((item) => {
       const status = item.status_pendaftaran;
       const jenjang = item.jenjang || "Unknown";
-      const provinsi = item.provinsi || "Tidak Diketahui";
-      const gender = item.jenis_kelamin || "Unknown";
+      
+      // Normalize Provinsi
+      let provinsi = item.provinsi || "Belum Diisi";
+      if (provinsi && provinsi !== "Belum Diisi") {
+        // Normalize to Title Case (e.g., JAWA BARAT -> Jawa Barat)
+        provinsi = provinsi.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+      }
+      
+      // Normalize Gender mapping (L/P -> Laki-laki/Perempuan)
+      let gender = item.jenis_kelamin || "Unknown";
+      if (gender === "L") gender = "Laki-laki";
+      if (gender === "P") gender = "Perempuan";
 
       // Status counts
       statusCounts[status] = (statusCounts[status] || 0) + 1;
@@ -97,6 +107,8 @@ export async function GET(request: Request) {
       // Gender counts
       if (gender === "Laki-laki" || gender === "Perempuan") {
         genderCounts[gender] += 1;
+      } else {
+        genderCounts["Belum Diisi"] += 1;
       }
     });
 
@@ -199,7 +211,6 @@ export async function GET(request: Request) {
       // === STATISTIK PER PROVINSI (Top 10) ===
       stats_per_provinsi: Object.entries(provinsiCounts)
         .sort((a, b) => b[1] - a[1])
-        .slice(0, 10)
         .map(([provinsi, jumlah]) => ({
           provinsi,
           jumlah,
@@ -210,9 +221,11 @@ export async function GET(request: Request) {
 
       // === PIE CHART DATA ===
       pie_chart_status: {
-        diterima: statusCounts.accepted || 0,
-        menunggu: (statusCounts.scheduled || 0) + (statusCounts.verified || 0),
-        proses: (statusCounts.draft || 0) + (statusCounts.payment_verification || 0),
+        diterima: (statusCounts.accepted || 0) + (statusCounts.enrolled || 0),
+        menunggu: (statusCounts.docs_verified || 0) + (statusCounts.scheduled || 0) + (statusCounts.tested || 0) + (statusCounts.announced || 0),
+        proses: (statusCounts.draft || 0) + (statusCounts.waiting_payment || 0) + (statusCounts.awaiting_payment || 0) + 
+                (statusCounts.paid || 0) + (statusCounts.payment_verification || 0) + (statusCounts.payment_rejected || 0) +
+                (statusCounts.verified || 0) + (statusCounts.data_completed || 0) + (statusCounts.docs_uploaded || 0),
         ditolak: statusCounts.rejected || 0,
       },
 

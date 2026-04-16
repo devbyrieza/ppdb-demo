@@ -15,6 +15,7 @@ model Profile {
   full_name             String
   email                 String?
   phone                 String
+  google_meet_link      String?
   created_at            DateTime              @default(now()) @db.Timestamptz(6)
   updated_at            DateTime              @default(now()) @db.Timestamptz(6)
   password_hash         String?
@@ -264,6 +265,9 @@ model JadwalUjian {
   zoom_link_ortu       String?
   zoom_link_quran      String?
   zoom_link_santri     String?
+  notif_interviewer_terkirim Boolean              @default(false)
+  notif_h1_pendaftar_terkirim Boolean              @default(false)
+  notif_h1_penguji_terkirim   Boolean              @default(false)
   notif_reminders      JadwalNotifReminder[]
   exam_session         ExamSession?          @relation(fields: [exam_session_id], references: [id])
   pendaftar            Pendaftar             @relation(fields: [pendaftar_id], references: [id], onDelete: Cascade)

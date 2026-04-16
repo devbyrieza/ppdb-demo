@@ -1,7 +1,13 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
-import { enqueueWhatsapp, buildMessageKonfirmasiJadwal } from "@/lib/whatsapp-queue";
+import { 
+    enqueueWhatsapp, 
+    buildMessageKonfirmasiJadwal, 
+    buildMessageKonfirmasiJadwalInterviewer, 
+    buildMessageReminderH1Santri, 
+    buildMessageReminderH1Penguji 
+} from "@/lib/whatsapp-queue";
 
 async function getSession() {
     const cookieStore = await cookies();
@@ -122,15 +128,29 @@ export async function POST(request: Request) {
             const pendaftar = await tx.pendaftar.findUnique({ where: { id: session.id } });
             if (!pendaftar) throw new Error("Data pendaftar tidak ditemukan");
 
-            let pengujiFields: Record<string, string> = {};
+            let pengujiFields: Record<string, string | null> = {};
             const sessionTitle = (examSession.title || "").toLowerCase();
             if (examSession.created_by) {
+                const interviewer = await tx.profile.findUnique({
+                    where: { id: examSession.created_by },
+                    select: { google_meet_link: true, full_name: true, phone: true }
+                });
+
                 if (sessionTitle.includes("qur") || sessionTitle.includes("quran")) {
-                    pengujiFields = { penguji_quran_id: examSession.created_by };
+                    pengujiFields = {
+                        penguji_quran_id: examSession.created_by,
+                        google_meet_link: interviewer?.google_meet_link || null
+                    };
                 } else if (sessionTitle.includes("calsan") || sessionTitle.includes("santri")) {
-                    pengujiFields = { penguji_santri_id: examSession.created_by };
+                    pengujiFields = {
+                        penguji_santri_id: examSession.created_by,
+                        google_meet_link: interviewer?.google_meet_link || null
+                    };
                 } else if (sessionTitle.includes("cawalsan") || sessionTitle.includes("ortu") || sessionTitle.includes("orang")) {
-                    pengujiFields = { penguji_ortu_id: examSession.created_by };
+                    pengujiFields = {
+                        penguji_ortu_id: examSession.created_by,
+                        google_meet_link: interviewer?.google_meet_link || null
+                    };
                 }
             }
 
@@ -181,7 +201,7 @@ export async function POST(request: Request) {
             const startTime = new Date(examSession.start_time);
             const dateStr = startTime.toLocaleDateString("id-ID", { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
             const timeStr = startTime.toLocaleTimeString("id-ID", { hour: '2-digit', minute: '2-digit' }) + ' WIB';
-            const lokasi = examSession.location || "Pesantren Al-Andalus Ulul Albaab";
+            const lokasi = examSession.location || "Pesantren Al-Imam";
             const jenisUjian = examSession.title || "Seleksi Santri Baru";
 
             const message = buildMessageKonfirmasiJadwal(
@@ -199,6 +219,116 @@ export async function POST(request: Request) {
                 jenisNotif: "konfirmasi_jadwal",
                 messageContent: message,
             }).catch((err: any) => console.error("Failed to enqueue jadwal confirmation:", err));
+
+            // 2. Notify Interviewer (Layer 2.1: Delayed notification for staff)
+            if (examSession.created_by) {
+                const interviewer = await prisma.profile.findUnique({
+                    where: { id: examSession.created_by },
+                    select: { full_name: true, phone: true, google_meet_link: true }
+                });
+
+                if (interviewer && interviewer.phone) {
+                    const intMessage = buildMessageKonfirmasiJadwalInterviewer(
+                        interviewer.full_name,
+                        pendaftarInfo.nama_lengkap,
+                        dateStr,
+                        timeStr,
+                        interviewer.google_meet_link || lokasi,
+                        jenisUjian
+                    );
+
+                    // Stall interviewer notification by 1 minute to avoid consecutive message bursts (Anti-BAN)
+                    const scheduledAt = new Date();
+                    scheduledAt.setMinutes(scheduledAt.getMinutes() + 1);
+
+                    enqueueWhatsapp({
+                        pendaftarId: session.id,
+                        phone: interviewer.phone,
+                        jenisNotif: "konfirmasi_jadwal_interviewer",
+                        messageContent: intMessage,
+                        scheduledAt: scheduledAt,
+                    }).catch((err: any) => console.error("Failed to enqueue interviewer notification:", err));
+                }
+            }
+
+            // 3. SCHEDULE H-1 REMINDERS (Pukul 20.00 WIB H-1)
+            try {
+                const examDate = new Date(examSession.start_time);
+                const reminderTime = new Date(examDate);
+                reminderTime.setDate(reminderTime.getDate() - 1); // H-1
+                reminderTime.setUTCHours(13, 0, 0, 0); // 20:00 WIB = 13:00 UTC
+
+                // Only schedule if the reminder time is in the future
+                if (reminderTime > new Date()) {
+                    // 3.1. Reminder for Santri
+                    const remSantriMsg = buildMessageReminderH1Santri(
+                        pendaftarInfo.nama_lengkap,
+                        dateStr.split(',')[0] || "Besok", // Day name
+                        dateStr,
+                        timeStr,
+                        lokasi,
+                        jenisUjian
+                    );
+
+                    enqueueWhatsapp({
+                        pendaftarId: session.id,
+                        phone: pendaftarInfo.no_hp,
+                        jenisNotif: "reminder_h1",
+                        messageContent: remSantriMsg,
+                        scheduledAt: reminderTime,
+                    }).then(async () => {
+                         // Update flag safely - using try catch to avoid crash if DB not pushed yet
+                         try {
+                            await prisma.jadwalUjian.update({
+                                where: { id: result.id },
+                                data: { notif_h1_pendaftar_terkirim: true }
+                            });
+                         } catch (e) {
+                            console.warn("Could not update H1 santri flag (DB sync might be pending)");
+                         }
+                    }).catch(err => console.error("Failed to enqueue H1 santri reminder:", err));
+
+                    // 3.2. Reminder for Interviewer
+                    if (examSession.created_by) {
+                        const interviewer = await prisma.profile.findUnique({
+                            where: { id: examSession.created_by },
+                            select: { full_name: true, phone: true, google_meet_link: true }
+                        });
+
+                        if (interviewer && interviewer.phone) {
+                            const remIntMessage = buildMessageReminderH1Penguji(
+                                interviewer.full_name,
+                                pendaftarInfo.nama_lengkap,
+                                dateStr.split(',')[0] || "Besok",
+                                dateStr,
+                                timeStr,
+                                interviewer.google_meet_link || lokasi,
+                                jenisUjian
+                            );
+
+                            enqueueWhatsapp({
+                                pendaftarId: session.id,
+                                phone: interviewer.phone,
+                                jenisNotif: "reminder_h1",
+                                messageContent: remIntMessage,
+                                scheduledAt: reminderTime,
+                            }).then(async () => {
+                                 // Update flag safely
+                                 try {
+                                    await prisma.jadwalUjian.update({
+                                        where: { id: result.id },
+                                        data: { notif_h1_penguji_terkirim: true }
+                                    });
+                                 } catch (e) {
+                                    console.warn("Could not update H1 interviewer flag (DB sync might be pending)");
+                                 }
+                            }).catch(err => console.error("Failed to enqueue H1 penguji reminder:", err));
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error("Error scheduling H1 reminders:", error);
+            }
         }
 
         return NextResponse.json({ success: true, data: result });

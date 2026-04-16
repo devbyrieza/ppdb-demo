@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { recalculateNilaiUjian } from "@/lib/scoring";
+import { markExamComponentAsComplete } from "@/lib/exam-status";
 
 async function getSession() {
     const cookieStore = await cookies();
@@ -14,7 +15,6 @@ async function getSession() {
     }
 }
 
-// PATCH: Update score (Upsert)
 // PATCH: Update score (Upsert)
 export async function PATCH(
     request: Request,
@@ -47,7 +47,6 @@ export async function PATCH(
             }
         });
 
-        // If examiner, only specific fields.
         const isWawancara = assignment?.penguji_santri_id === userId;
         const isQuran = assignment?.penguji_quran_id === userId;
         const isOrtu = assignment?.penguji_ortu_id === userId;
@@ -60,12 +59,11 @@ export async function PATCH(
         const allRoles = userProfile ? [userProfile.role, ...(userProfile.secondary_roles || [])] : [];
         const isAdmin = allRoles.some(r => ['admin_super', 'admin', 'head_of_it'].includes(r));
 
-        // Let admins bypass the assignment check
         if (!assignment && !isAdmin) {
             return NextResponse.json({ error: "Forbidden: Not assigned to this student" }, { status: 403 });
         }
 
-        // Fallback: if matched via exam_session.created_by, derive role from session title
+        // Fallback: derive role from session title
         let isWawancaraFallback = false;
         let isQuranFallback = false;
         let isOrtuFallback = false;
@@ -76,7 +74,6 @@ export async function PATCH(
             const hasWawancaraMatch = title.includes("calsan") || title.includes("santri") || title.includes("wawancara");
             const hasOrtuMatch = title.includes("cawalsan") || title.includes("ortu") || title.includes("orang");
 
-            // If the title is generic (e.g. "Tes PPDB 1"), grant access to all forms (matches frontend behavior roles: [])
             if (!hasQuranMatch && !hasWawancaraMatch && !hasOrtuMatch) {
                 isQuranFallback = true;
                 isWawancaraFallback = true;
@@ -87,64 +84,111 @@ export async function PATCH(
                 isOrtuFallback = hasOrtuMatch;
             }
         }
+        
+        const baseRole = session.role || "";
+        const canEditQuran = isAdmin || isQuran || isQuranFallback || (baseRole.includes("quran") || baseRole === "penguji" || baseRole === "penguji_calsan");
+        const canEditWawancara = isAdmin || isWawancara || isWawancaraFallback || baseRole.includes("calsan") || baseRole === "pewawancara_calsan";
+        const canEditOrtu = isAdmin || isOrtu || isOrtuFallback || baseRole.includes("cawalsan") || baseRole === "pewawancara_cawalsan";
+
+        // Pre-fetch existing record
+        const existing = await prisma.nilaiUjian.findFirst({ 
+            where: { pendaftar_id: pendaftarId },
+            orderBy: { created_at: 'desc' }
+        });
 
         const updateData: any = {};
+        const now = new Date();
+        const LOCK_TIME = 24 * 60 * 60 * 1000; // 24 hours in ms
 
-        // If user is Admin, they get access to completely bypass the assignment and update all fields provided.
-        // Otherwise, they only update the fields they're assigned to.
+        // 1. Quran Update
+        if (canEditQuran && body.detail_quran !== undefined) {
+            if (existing?.input_at_quran && !isAdmin) {
+                const diff = now.getTime() - new Date(existing.input_at_quran).getTime();
+                if (diff > LOCK_TIME) {
+                    return NextResponse.json({ error: "Masa edit (24 jam) untuk Tes Quran sudah habis. Silakan hubungi Admin Super." }, { status: 403 });
+                }
+            }
 
-        // Only update Quran if payload contains detail_quran
-        if ((isAdmin || isQuran || isQuranFallback) && body.detail_quran !== undefined) {
             if (body.nilai_tes_quran !== undefined) updateData.nilai_tes_quran = body.nilai_tes_quran;
             if (body.catatan_quran !== undefined) updateData.catatan_quran = body.catatan_quran;
             if (body.detail_quran !== undefined) updateData.detail_quran = body.detail_quran;
             if (body.score_quran !== undefined) updateData.score_quran = body.score_quran;
-            if (session.user_id) updateData.input_by_quran = session.user_id;
-            updateData.input_at_quran = new Date();
+            updateData.input_by_quran = userId;
+            if (!existing?.input_at_quran) updateData.input_at_quran = now;
         }
 
-        // Only update Santri (Calsan) if payload contains detail_wawancara
-        if ((isAdmin || isWawancara || isWawancaraFallback) && body.detail_wawancara !== undefined) {
+        // 2. Santri (Calsan) Update
+        if (canEditWawancara && body.detail_wawancara !== undefined) {
+             if (existing?.input_at_santri && !isAdmin) {
+                const diff = now.getTime() - new Date(existing.input_at_santri).getTime();
+                if (diff > LOCK_TIME) {
+                    return NextResponse.json({ error: "Masa edit (24 jam) untuk Wawancara Santri sudah habis. Silakan hubungi Admin Super." }, { status: 403 });
+                }
+            }
+
             if (body.nilai_wawancara_santri !== undefined) updateData.nilai_wawancara_santri = body.nilai_wawancara_santri;
             if (body.catatan_santri !== undefined) updateData.catatan_santri = body.catatan_santri;
             if (body.detail_wawancara !== undefined) updateData.detail_wawancara = body.detail_wawancara;
             if (body.score_wawancara !== undefined) updateData.score_wawancara = body.score_wawancara;
-            if (session.user_id) updateData.input_by_santri = session.user_id;
-            updateData.input_at_santri = new Date();
+            updateData.input_by_santri = userId;
+            if (!existing?.input_at_santri) updateData.input_at_santri = now;
         }
 
-        // Only update Ortu (Cawalsan) if payload contains detail_cawalsan
-        if ((isAdmin || isOrtu || isOrtuFallback) && body.detail_cawalsan !== undefined) {
+        // 3. Ortu (Cawalsan) Update
+        if (canEditOrtu && body.detail_cawalsan !== undefined) {
+            if (existing?.input_at_ortu && !isAdmin) {
+                const diff = now.getTime() - new Date(existing.input_at_ortu).getTime();
+                if (diff > LOCK_TIME) {
+                    return NextResponse.json({ error: "Masa edit (24 jam) untuk Wawancara Wali Santri sudah habis. Silakan hubungi Admin Super." }, { status: 403 });
+                }
+            }
+
             if (body.nilai_wawancara_ortu !== undefined) updateData.nilai_wawancara_ortu = body.nilai_wawancara_ortu;
             if (body.catatan_ortu !== undefined) updateData.catatan_ortu = body.catatan_ortu;
             if (body.detail_cawalsan !== undefined) updateData.detail_cawalsan = body.detail_cawalsan;
-            if (session.user_id) updateData.input_by_ortu = session.user_id;
-            updateData.input_at_ortu = new Date();
+            updateData.input_by_ortu = userId;
+            if (!existing?.input_at_ortu) updateData.input_at_ortu = now;
         }
-        // Upsert
-        // Check if exists
-        const existing = await prisma.nilaiUjian.findFirst({ where: { pendaftar_id: pendaftarId } });
 
         if (existing) {
             await prisma.nilaiUjian.update({
                 where: { id: existing.id },
                 data: {
                     ...updateData,
-                    updated_at: new Date(),
+                    jadwal_ujian_id: assignment?.id,
+                    updated_at: now,
                 }
             });
         } else {
             await prisma.nilaiUjian.create({
                 data: {
                     pendaftar_id: pendaftarId,
-                    jadwal_ujian_id: assignment?.id, // Link if assignment exists
+                    jadwal_ujian_id: assignment?.id,
                     ...updateData,
                 }
             });
         }
 
-        // 4. Trigger Recalculation
         await recalculateNilaiUjian(pendaftarId);
+
+        if (assignment) {
+            try {
+                let componentType: 'santri' | 'quran' | 'ortu' | undefined = undefined;
+                if (body.detail_quran) componentType = 'quran';
+                else if (body.detail_wawancara) componentType = 'santri';
+                else if (body.detail_cawalsan) componentType = 'ortu';
+
+                if (componentType) {
+                    await markExamComponentAsComplete({
+                        jadwalId: assignment.id,
+                        userId,
+                        componentType
+                    });
+                }
+            } catch (err) {
+                console.error("Automation Error (Ignored):", err);
+            }
+        }
 
         return NextResponse.json({ success: true });
     } catch (error: any) {

@@ -1,54 +1,54 @@
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
-import { generateMagicToken } from "@/lib/utils/magic-link";
+import { getServerSession } from "@/lib/session";
+import { generateMagicToken, generateTinyUrl } from "@/lib/utils/magic-link";
 
-export async function POST(request: NextRequest) {
+/**
+ * Administrative endpoint to generate magic links for users (examiners/staff).
+ * Synchronized with Al-Imam stateless utility logic.
+ */
+
+export async function POST(req: NextRequest) {
     try {
-        const cookieStore = await cookies();
-        const sessionCookie = cookieStore.get("app_session");
-
-        if (!sessionCookie) {
+        const session = await getServerSession();
+        if (!session || !["admin", "admin_super", "head_of_it"].includes(session.role)) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
-        const session = JSON.parse(sessionCookie.value);
-
-        // Only super admin or head of IT can generate magic links
-        if (!["admin_super", "head_of_it", "tim_it", "admin"].includes(session.role)) {
-            return NextResponse.json({ error: "Forbidden: Akses ditolak" }, { status: 403 });
-        }
-
-        const body = await request.json();
-        const { userId } = body;
+        const { userId, expiresHours } = await req.json();
 
         if (!userId) {
-            return NextResponse.json({ error: "User ID wajib diisi" }, { status: 400 });
+            return NextResponse.json({ error: "User ID is required" }, { status: 400 });
         }
 
         const user = await prisma.profile.findUnique({
             where: { id: userId },
-            select: { id: true, role: true, full_name: true }
+            select: { id: true, email: true, full_name: true, role: true }
         });
 
         if (!user) {
-            return NextResponse.json({ error: "User tidak ditemukan" }, { status: 404 });
+            return NextResponse.json({ error: "User not found" }, { status: 404 });
         }
 
-        // Generate token (valid for 24 hours)
-        const token = generateMagicToken(user.id, user.role, user.full_name, 24);
+        // Generate stateless token (Valid for X hours)
+        const token = generateMagicToken(user.id, user.role, user.full_name, expiresHours || 24);
 
-        // Create full URL wrapper
-        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://pesantren-alimam.com";
-        const magicLinkUrl = `${baseUrl}/api/auth/magic?token=${token}`;
+        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+        const rawUrl = `${baseUrl}/api/auth/magic?token=${token}`;
 
-        return NextResponse.json({ success: true, link: magicLinkUrl });
+        // Generate automatic tinyurl for the magic link
+        const shortUrl = await generateTinyUrl(rawUrl);
+
+        console.log(`[magic-link] Generated stateless link for ${user.full_name} (${user.role}).`);
+
+        return NextResponse.json({
+            success: true,
+            url: shortUrl,
+            rawUrl: rawUrl,
+        });
 
     } catch (error: any) {
-        console.error("Generate Magic Link Error:", error);
-        return NextResponse.json(
-            { error: "Gagal membuat magic link: " + error.message },
-            { status: 500 }
-        );
+        console.error("[magic-link] Error generating token:", error);
+        return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }

@@ -7,6 +7,7 @@
 
 type AuditAction =
     | 'VERIFY_PAYMENT'
+    | 'UPLOAD_PAYMENT_PROOF'
     | 'VERIFY_DOCUMENT'
     | 'ASSIGN_EXAM'
     | 'PUBLISH_ANNOUNCEMENT'

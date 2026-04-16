@@ -1,19 +1,22 @@
 import { createHmac } from "crypto";
 
 const MAGIC_LINK_SECRET =
-    process.env.MAGIC_LINK_SECRET || "fallback-secret-for-dev";
+    process.env.MAGIC_LINK_SECRET || "fallback-secret-for-dev-2026";
 
-// Token Structure: base64(payload).signature
-// payload: { id: string, role: string, full_name: string, exp: number }
+/**
+ * Token Structure: base64(payload).signature
+ * payload: { id: string, role: string, full_name: string, exp: number }
+ */
 
 export function generateMagicToken(
     profileId: string,
     role: string,
     fullName: string,
-    expiresInHours = 24
+    expiresInHours = 24,
+    redirect?: string
 ): string {
     const exp = Date.now() + expiresInHours * 60 * 60 * 1000;
-    const payload = { id: profileId, role, full_name: fullName, exp };
+    const payload = { id: profileId, role, full_name: fullName, exp, redirect };
 
     // Convert payload to base64
     const payloadStr = Buffer.from(JSON.stringify(payload)).toString("base64");
@@ -28,7 +31,7 @@ export function generateMagicToken(
 
 export function verifyMagicToken(token: string): {
     valid: boolean;
-    data?: { id: string; role: string; full_name: string };
+    data?: { id: string; role: string; full_name: string; redirect?: string };
     reason?: string;
 } {
     try {
@@ -63,9 +66,71 @@ export function verifyMagicToken(token: string): {
                 id: payload.id,
                 role: payload.role,
                 full_name: payload.full_name,
+                redirect: payload.redirect,
             },
         };
     } catch (error) {
         return { valid: false, reason: "Terjadi kesalahan saat verifikasi" };
     }
+}
+
+// ============================================================================
+// PERMANENT SHORT LINKS MAPPING (Slug -> Name query)
+// ============================================================================
+
+export const PERMANENT_SLUGS: Record<string, string> = {
+    "abah": "Abah",
+    "agus": "Agus Cahyono",
+    "fuad": "Fuad Khomsatun",
+    "jusman": "Jusman",
+    "bachtiar": "Maulidin Bachtiar",
+    "muhajir": "Muhajir",
+    "syauqi": "Muhammad Syauqi Al Faruq",
+    "teguh": "Teguh"
+};
+
+// ============================================================================
+// MANUAL TINYURL MAPPING (Name -> Short URL)
+// ============================================================================
+
+export const MANUAL_TINYURLS: Record<string, string> = {
+    "Agus Cahyono": "https://tinyurl.com/alimam-aguscahyono",
+    "Jusman": "https://tinyurl.com/alimam-jusmann",
+    "Muhammad Syauqi Al Faruq": "https://tinyurl.com/alimam-syauqialfaruq",
+    "Maulidin Bachtiar": "https://tinyurl.com/alimam-maulidinbachtiar"
+};
+
+/**
+ * Get manual tinyurl for a specific user (if exists)
+ */
+export function getManualTinyUrl(fullName: string): string | null {
+    if (!fullName) return null;
+    
+    // Normalize input
+    const normalizedInput = fullName.trim().toLowerCase();
+
+    // Find match in MANUAL_TINYURLS (also normalized)
+    const matchKey = Object.keys(MANUAL_TINYURLS).find(
+        key => key.trim().toLowerCase() === normalizedInput
+    );
+
+    return matchKey ? MANUAL_TINYURLS[matchKey] : null;
+}
+
+/**
+ * Generate automatic TinyURL for any long URL
+ * Ported from Al-Imam reference
+ */
+export async function generateTinyUrl(longUrl: string): Promise<string> {
+    try {
+        const response = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`);
+        if (response.ok) {
+            const shortUrl = await response.text();
+            return shortUrl;
+        }
+    } catch (error) {
+        console.error('Failed to generate TinyURL:', error);
+    }
+    // Fallback to original URL if TinyURL generation fails
+    return longUrl;
 }

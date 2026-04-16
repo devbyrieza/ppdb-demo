@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { sendMessage } from "@/lib/wablas";
+import { enqueueWhatsapp } from "@/lib/whatsapp-queue";
 import { getServerSession } from "@/lib/session";
+
+/**
+ * Administrative endpoint for mass broadcasting WhatsApp messages.
+ * Logic ported from Al-Imam reference project.
+ */
 
 export async function POST(req: NextRequest) {
     try {
@@ -24,6 +29,7 @@ export async function POST(req: NextRequest) {
         const recipients = await prisma.pendaftar.findMany({
             where: {
                 id: { in: ids },
+                deleted_at: null, // Don't broadcast to deleted users
             },
             select: {
                 id: true,
@@ -47,16 +53,13 @@ export async function POST(req: NextRequest) {
             const finalMessage = `${formattedHeader}${salutation}${personalizedMessage}${formattedFooter}`;
 
             try {
-                const response = await sendMessage({
+                await enqueueWhatsapp({
+                    pendaftarId: recipient.id,
                     phone: recipient.no_hp,
-                    message: finalMessage,
+                    jenisNotif: "broadcast",
+                    messageContent: finalMessage,
                 });
-
-                if (response.status) {
-                    results.push({ id: recipient.id, status: "success" });
-                } else {
-                    results.push({ id: recipient.id, status: "failed", error: response.message });
-                }
+                results.push({ id: recipient.id, status: "success" });
             } catch (error: any) {
                 results.push({ id: recipient.id, status: "failed", error: error.message });
             }
@@ -70,7 +73,7 @@ export async function POST(req: NextRequest) {
             details: results,
         });
     } catch (error: any) {
-        console.error("Broadcast error:", error);
+        console.error("[broadcast] Error:", error);
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }

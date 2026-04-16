@@ -13,7 +13,9 @@ import {
   CheckCircle,
   XCircle,
   Hash,
+  AlertTriangle,
 } from "lucide-react";
+import Swal from "sweetalert2";
 
 // --- Types ---
 
@@ -124,6 +126,19 @@ export default function JadwalPengujiPage() {
     notes: "",
   });
   const [submittingSlot, setSubmittingSlot] = useState(false);
+  
+  // Bulk Modal State
+  const [isBulkModalOpen, setIsBulkModalOpen] = useState(false);
+  const [submittingBulk, setSubmittingBulk] = useState(false);
+  const [activeDay, setActiveDay] = useState<number>(new Date().getDay());
+  const [bulkForm, setBulkForm] = useState({
+    title: "",
+    startDate: new Date().toISOString().split('T')[0],
+    endDate: "", 
+    selectedDays: [] as number[], // 0=Sun, 1=Mon, etc.
+    daySlots: {} as Record<number, { start: string, end: string }[]>,
+    notes: ""
+  });
 
   // --- Fetchers ---
 
@@ -185,8 +200,24 @@ export default function JadwalPengujiPage() {
     const autoTitle = ROLE_TO_SESSION_TITLE[activeRole];
     if (autoTitle) {
       setSlotForm(prev => ({ ...prev, title: autoTitle }));
+      setBulkForm(prev => ({ ...prev, title: autoTitle }));
     }
   }, [activeRole]);
+
+  // Initialize active day's slots if empty when modal opens or activeDay changes
+  useEffect(() => {
+    if (isBulkModalOpen) {
+      if (!bulkForm.daySlots[activeDay]) {
+        setBulkForm(prev => ({
+          ...prev,
+          daySlots: {
+            ...prev.daySlots,
+            [activeDay]: [{ start: "08:00", end: "09:00" }]
+          }
+        }));
+      }
+    }
+  }, [isBulkModalOpen, activeDay]);
 
   // --- Handlers ---
 
@@ -218,7 +249,7 @@ export default function JadwalPengujiPage() {
         start_time: startDateTime.toISOString(),
         end_time: endDateTime.toISOString(),
         quota: 1, // Fixed quota to 1 as per requirement (Private/1-on-1)
-        location: slotForm.location || "Online",
+        location: "Online",
         notes: slotForm.notes,
       };
 
@@ -246,12 +277,149 @@ export default function JadwalPengujiPage() {
     }
   };
 
-  const handleDeleteSlot = async (id: string, count: number) => {
-    if (count > 0) {
-      alert("Tidak dapat menghapus sesi yang sudah ada pendaftar!");
+  const handleCreateBulk = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (bulkForm.selectedDays.length === 0) {
+      alert("Pilih minimal satu hari!");
       return;
     }
-    if (!confirm("Hapus sesi waktu ini?")) return;
+    if (!bulkForm.endDate) {
+      alert("Pilih tanggal berakhir!");
+      return;
+    }
+
+    // Filter daySlots to only include selectedDays
+    const daySlotsToSend: Record<number, any[]> = {};
+    bulkForm.selectedDays.forEach(day => {
+      daySlotsToSend[day] = bulkForm.daySlots[day] || [];
+    });
+
+    setSubmittingBulk(true);
+    try {
+      const res = await fetch("/api/exam-sessions/bulk", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...bulkForm,
+          daySlots: daySlotsToSend
+        }),
+      });
+      const result = await res.json();
+      if (res.ok) {
+        Swal.fire('Berhasil!', result.message, 'success');
+        setIsBulkModalOpen(false);
+        fetchSlots();
+      } else {
+        Swal.fire('Gagal!', result.error, 'error');
+      }
+    } catch (e) {
+      console.error(e);
+      Swal.fire('Error!', "Terjadi kesalahan sistem", 'error');
+    } finally {
+      setSubmittingBulk(false);
+    }
+  };
+
+  const addTimeSlot = () => {
+    const currentSlots = bulkForm.daySlots[activeDay] || [];
+    setBulkForm({
+      ...bulkForm,
+      daySlots: {
+        ...bulkForm.daySlots,
+        [activeDay]: [...currentSlots, { start: "16:00", end: "17:00" }]
+      }
+    });
+  };
+
+  const removeTimeSlot = (index: number) => {
+    const currentSlots = bulkForm.daySlots[activeDay] || [];
+    if (currentSlots.length <= 1) return;
+    const newSlots = [...currentSlots];
+    newSlots.splice(index, 1);
+    setBulkForm({
+      ...bulkForm,
+      daySlots: {
+        ...bulkForm.daySlots,
+        [activeDay]: newSlots
+      }
+    });
+  };
+
+  const toggleDay = (day: number) => {
+    const current = [...bulkForm.selectedDays];
+    
+    // Case 1: Day is not selected -> Select it and make it active
+    if (!current.includes(day)) {
+      const newSelected = [...current, day];
+      
+      // Initialize slots for this day if they don't exist
+      if (!bulkForm.daySlots[day]) {
+        setBulkForm(prev => ({
+          ...prev,
+          selectedDays: newSelected,
+          daySlots: {
+            ...prev.daySlots,
+            [day]: prev.daySlots[activeDay] ? JSON.parse(JSON.stringify(prev.daySlots[activeDay])) : [{ start: "08:00", end: "09:00" }]
+          }
+        }));
+      } else {
+        setBulkForm(prev => ({ ...prev, selectedDays: newSelected }));
+      }
+      setActiveDay(day);
+      return;
+    }
+
+    // Case 2: Day is selected but NOT active -> Make it active (to edit its times)
+    if (activeDay !== day) {
+      setActiveDay(day);
+      return;
+    }
+
+    // Case 3: Day is selected AND active -> Deselect it
+    const newSelected = current.filter(d => d !== day);
+    setBulkForm(prev => ({ ...prev, selectedDays: newSelected }));
+    
+    // If we have other days selected, pick one to be the new active day
+    if (newSelected.length > 0) {
+      setActiveDay(newSelected[0]);
+    }
+  };
+
+  const copySlotsToAll = () => {
+    const currentSlots = bulkForm.daySlots[activeDay] || [];
+    const newDaySlots = { ...bulkForm.daySlots };
+    bulkForm.selectedDays.forEach(day => {
+      newDaySlots[day] = JSON.parse(JSON.stringify(currentSlots));
+    });
+    setBulkForm({ ...bulkForm, daySlots: newDaySlots });
+    Swal.fire({
+      toast: true,
+      position: 'top-end',
+      icon: 'success',
+      title: 'Disalin ke semua hari terpilih',
+      showConfirmButton: false,
+      timer: 1500
+    });
+  };
+
+  const handleDeleteSlot = async (id: string, count: number) => {
+    if (count > 0) {
+      Swal.fire('Gagal!', 'Tidak dapat menghapus sesi yang sudah ada pendaftar!', 'error');
+      return;
+    }
+    
+    const { isConfirmed } = await Swal.fire({
+      title: 'Hapus Sesi?',
+      text: "Apakah Anda yakin ingin menghapus sesi waktu ini?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Ya, Hapus!',
+      cancelButtonText: 'Batal'
+    });
+
+    if (!isConfirmed) return;
 
     try {
       const response = await fetch(`/api/exam-sessions?id=${id}`, { method: "DELETE" });
@@ -267,7 +435,18 @@ export default function JadwalPengujiPage() {
   };
 
   const handleCompleteExam = async (jadwalId: string) => {
-    if (!confirm("Apakah Anda yakin ingin menandai ujian ini selesai? Status akan diperbarui.")) return;
+    const { isConfirmed } = await Swal.fire({
+      title: 'Tandai Selesai?',
+      text: "Apakah Anda yakin ingin menandai ujian ini selesai? Status akan diperbarui.",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#059669', // green-600
+      cancelButtonColor: '#94a3b8',
+      confirmButtonText: 'Ya, Tandai Selesai!',
+      cancelButtonText: 'Batal'
+    });
+
+    if (!isConfirmed) return;
 
     try {
       const response = await fetch("/api/penguji/jadwal/complete", {
@@ -280,7 +459,11 @@ export default function JadwalPengujiPage() {
       if (response.ok) {
         setMessage({ type: "success", text: result.message });
         if (result.isAllDone) {
-          alert("Semua rangkaian ujian santri ini telah SELESAI! Notifikasi telah dikirim.");
+          Swal.fire({
+            title: 'Selesai!',
+            text: 'Semua rangkaian ujian santri ini telah SELESAI! Notifikasi telah dikirim.',
+            icon: 'success'
+          });
         }
         fetchAssignments(); // Refresh data
       } else {
@@ -288,6 +471,48 @@ export default function JadwalPengujiPage() {
       }
     } catch (error: any) {
       setMessage({ type: "error", text: error.message });
+    }
+  };
+  
+  const handleCancelAssignment = async (jadwalId: string, pendaftarNama: string) => {
+    const { value: reason } = await Swal.fire({
+      title: 'Batalkan Jadwal?',
+      text: `Apakah Anda yakin ingin membatalkan jadwal ${pendaftarNama}? Santri akan mendapatkan notifikasi untuk memilih jadwal ulang dan slot waktu Anda akan dihapus.`,
+      icon: 'warning',
+      input: 'text',
+      inputLabel: 'Alasan Pembatalan (Opsional)',
+      inputPlaceholder: 'Ustadz Berhalangan Hadir',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Ya, Batalkan!',
+      cancelButtonText: 'Kembali'
+    });
+
+    if (reason === undefined) return; // User cancelled the modal
+
+    try {
+      setLoadingAssignments(true);
+      const response = await fetch("/api/penguji/jadwal/cancel", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          jadwal_id: jadwalId,
+          alasan: reason || "Ustadz Berhalangan Hadir"
+        }),
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        Swal.fire('Terhapus!', result.message, 'success');
+        fetchAssignments();
+      } else {
+        throw new Error(result.error || "Gagal membatalkan jadwal");
+      }
+    } catch (error: any) {
+      Swal.fire('Gagal!', error.message, 'error');
+    } finally {
+      setLoadingAssignments(false);
     }
   };
 
@@ -299,7 +524,7 @@ export default function JadwalPengujiPage() {
       day: "numeric",
       month: "long",
       year: "numeric",
-    });
+    }).replace("Minggu", "Ahad");
   };
 
   const formatTime = (dateString: string) => {
@@ -317,8 +542,8 @@ export default function JadwalPengujiPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-white rounded-3xl p-6 md:p-8 border border-cream-200 shadow-sm app-card">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div className="bg-white rounded-3xl p-5 md:p-8 border border-cream-200 shadow-sm app-card">
+        <div className="flex flex-col gap-4">
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 bg-maroon-50 rounded-2xl flex items-center justify-center border border-maroon-100 shrink-0">
               <Calendar className="w-7 h-7 text-maroon-600" />
@@ -328,22 +553,22 @@ export default function JadwalPengujiPage() {
                 Jadwal & Sesi Ujian
               </h2>
               <p className="text-sm font-bold text-ink-500 mt-1">
-                Kelola jadwal menguji dan ketersediaan waktu
+                Kelola jadwal seleksi dan ketersediaan waktu
               </p>
             </div>
           </div>
-          <div className="flex bg-cream-50 p-1.5 rounded-2xl border border-cream-200">
+          <div className="flex bg-cream-50 p-1.5 rounded-2xl border border-cream-200 w-full">
             <button
               onClick={() => setActiveTab('assigned')}
-              className={`flex-1 px-5 py-2.5 rounded-xl font-black text-sm transition-all text-center ${activeTab === 'assigned' ? 'bg-white shadow-sm text-maroon-700 border border-cream-100' : 'text-ink-400 hover:text-ink-700 hover:bg-cream-100/50'}`}
+              className={`flex-1 py-3 px-3 rounded-xl font-black text-xs md:text-sm transition-all text-center ${activeTab === 'assigned' ? 'bg-white shadow-sm text-maroon-700 border border-cream-100' : 'text-ink-400 hover:text-ink-700 hover:bg-cream-100/50'}`}
             >
               Jadwal Saya
             </button>
             <button
               onClick={() => setActiveTab('slots')}
-              className={`flex-1 px-5 py-2.5 rounded-xl font-black text-sm transition-all text-center ${activeTab === 'slots' ? 'bg-white shadow-sm text-maroon-700 border border-cream-100' : 'text-ink-400 hover:text-ink-700 hover:bg-cream-100/50'}`}
+              className={`flex-1 py-3 px-3 rounded-xl font-black text-xs md:text-sm transition-all text-center ${activeTab === 'slots' ? 'bg-white shadow-sm text-maroon-700 border border-cream-100' : 'text-ink-400 hover:text-ink-700 hover:bg-cream-100/50'}`}
             >
-              Kelola Sesi Ketersediaan
+              Sesi Ketersediaan
             </button>
           </div>
         </div>
@@ -394,123 +619,119 @@ export default function JadwalPengujiPage() {
             }
 
             return (
-              <div className="grid gap-5">
+              <div className="grid gap-4">
                 {filteredAssignments.map(item => (
-                  <div key={item.id} className={`bg-white rounded-3xl p-6 md:p-8 border transition-all app-card ${isToday(item.tanggal_ujian) ? "border-emerald-200 shadow-md ring-4 ring-emerald-50" : "border-cream-200 shadow-sm hover:border-maroon-200 hover:shadow-md"}`}>
-                    <div className="flex md:items-center justify-between flex-col md:flex-row gap-6">
-                      <div className="flex items-start gap-5">
-                        <div className={`p-4 rounded-2xl font-bold text-center min-w-[70px] shrink-0 border ${isToday(item.tanggal_ujian) ? 'bg-emerald-50 border-emerald-100 text-emerald-700' : 'bg-maroon-50 border-maroon-100 text-maroon-700'}`}>
-                          <div className="text-xs uppercase tracking-wider">{new Date(item.tanggal_ujian).toLocaleDateString('id-ID', { month: 'short' })}</div>
-                          <div className="text-3xl font-display mt-0.5">{new Date(item.tanggal_ujian).getDate()}</div>
+                  <div key={item.id} className={`bg-white rounded-3xl p-5 md:p-8 border transition-all app-card ${isToday(item.tanggal_ujian) ? "border-emerald-200 shadow-md ring-4 ring-emerald-50" : "border-cream-200 shadow-sm hover:border-maroon-200 hover:shadow-md"}`}>
+                    {/* Top section: Date badge + Name */}
+                    <div className="flex items-start gap-4 mb-4">
+                      <div className={`p-3 rounded-2xl font-bold text-center min-w-[72px] shrink-0 border flex flex-col justify-center ${isToday(item.tanggal_ujian) ? 'bg-emerald-50 border-emerald-100 text-emerald-700' : 'bg-maroon-50 border-maroon-100 text-maroon-700'}`}>
+                        <div className="text-[9px] uppercase tracking-widest opacity-70 mb-0.5">
+                          {new Date(item.tanggal_ujian).toLocaleDateString('id-ID', { weekday: 'short' }).replace('Min', 'Ahd')}
                         </div>
-                        <div>
-                          <div className="flex flex-wrap items-center gap-2 mb-2">
-                            <span className="px-2.5 py-1 bg-surface-100 text-ink-600 border border-surface-200 rounded-lg text-[10px] font-black uppercase tracking-widest">{item.pendaftar.jenjang}</span>
-                            <span className="px-2.5 py-1 bg-maroon-50 text-maroon-700 border border-maroon-100 rounded-lg text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5"><Hash className="w-3 h-3" /> {item.pendaftar.nomor_pendaftaran}</span>
-                          </div>
-                          <h3 className="text-xl font-black text-ink-950 font-display">{item.pendaftar.nama_lengkap}</h3>
-                          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-sm text-ink-500 mt-1.5 font-bold">
-                            <div className="flex items-center gap-1.5">
-                              <FileText className="w-4 h-4 text-ink-400" />
-                              Tugas:
-                            </div>
-                            <span className="text-maroon-700 uppercase tracking-wide text-xs">{item.jenis_tugas}</span>
-                          </div>
-
-                          {/* Action Buttons: Status Completion */}
-                          {(() => {
-                            // Determine which roles this penguji has for this jadwal
-                            const isSantri = item.penguji_santri_id === userId;
-                            const isQuran = item.penguji_quran_id === userId;
-                            const isOrtu = item.penguji_ortu_id === userId;
-                            const isCreator = item.session_created_by === userId;
-
-                            // Fallback: if matched via session creator, derive from jenis_tugas
-                            let showSantri = isSantri;
-                            let showQuran = isQuran;
-                            let showOrtu = isOrtu;
-                            if (!isSantri && !isQuran && !isOrtu && isCreator) {
-                              const tugas = (item.jenis_tugas || "").toLowerCase();
-                              if (tugas.includes("calsan") || tugas.includes("santri")) showSantri = true;
-                              if (tugas.includes("qur")) showQuran = true;
-                              if (tugas.includes("cawalsan") || tugas.includes("ortu")) showOrtu = true;
-                            }
-
-                            return (
-                              <div className="mt-3 flex flex-wrap gap-2">
-                                {userId && showSantri && (
-                                  item.status_santri === 'completed' ? (
-                                    <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full flex items-center gap-1">
-                                      <CheckCircle className="w-3 h-3" /> Wawancara Calsan Selesai
-                                    </span>
-                                  ) : (
-                                    <button
-                                      onClick={() => handleCompleteExam(item.id)}
-                                      className="px-3 py-1 bg-maroon-600 hover:bg-maroon-700 text-white text-xs font-bold rounded-lg transition-colors"
-                                    >
-                                      Tandai Wawancara Selesai
-                                    </button>
-                                  )
-                                )}
-
-                                {userId && showQuran && (
-                                  item.status_quran === 'completed' ? (
-                                    <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full flex items-center gap-1">
-                                      <CheckCircle className="w-3 h-3" /> Tes Al-Qur'an Selesai
-                                    </span>
-                                  ) : (
-                                    <button
-                                      onClick={() => handleCompleteExam(item.id)}
-                                      className="px-3 py-1 bg-maroon-600 hover:bg-maroon-700 text-white text-xs font-bold rounded-lg transition-colors"
-                                    >
-                                      Tandai Tes Al-Qur'an Selesai
-                                    </button>
-                                  )
-                                )}
-
-                                {userId && showOrtu && (
-                                  item.status_ortu === 'completed' ? (
-                                    <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full flex items-center gap-1">
-                                      <CheckCircle className="w-3 h-3" /> Wawancara Cawalsan Selesai
-                                    </span>
-                                  ) : (
-                                    <button
-                                      onClick={() => handleCompleteExam(item.id)}
-                                      className="px-3 py-1 bg-maroon-600 hover:bg-maroon-700 text-white text-xs font-bold rounded-lg transition-colors"
-                                    >
-                                      Tandai Wawancara Cawalsan Selesai
-                                    </button>
-                                  )
-                                )}
-                              </div>
-                            );
-                          })()}
-
-                          <button
-                            onClick={() => {
-                              setSelectedPendaftar(item.pendaftar);
-                              setIsDetailModalOpen(true);
-                            }}
-                            className="mt-2 text-xs font-bold text-maroon-600 hover:text-maroon-800 underline"
-                          >
-                            Lihat Data Pendaftar
-                          </button>
+                        <div className="text-2xl font-display leading-none">{new Date(item.tanggal_ujian).getDate()}</div>
+                        <div className="text-[9px] uppercase tracking-wider mt-1 opacity-70">
+                          {new Date(item.tanggal_ujian).toLocaleDateString('id-ID', { month: 'short' })}
                         </div>
                       </div>
-                      <div className="flex flex-col gap-2 min-w-[200px] border-l pl-0 md:pl-6 border-cream-100">
-                        <div className="flex items-center gap-2 text-sm text-ink-600">
-                          <Clock className="w-4 h-4 text-maroon-500" />
-                          {formatTime(item.waktu_mulai)} WIB
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                          <span className="px-2 py-0.5 bg-surface-100 text-ink-600 border border-surface-200 rounded-lg text-[10px] font-black uppercase tracking-widest">{item.pendaftar.jenjang}</span>
+                          <span className="px-2 py-0.5 bg-maroon-50 text-maroon-700 border border-maroon-100 rounded-lg text-[10px] font-black uppercase tracking-widest flex items-center gap-1"><Hash className="w-3 h-3" /> {item.pendaftar.nomor_pendaftaran}</span>
                         </div>
-                        <div className="flex items-center gap-2 text-sm text-ink-600">
-                          <MapPin className="w-4 h-4 text-maroon-500" />
-                          {item.lokasi || "Lokasi belum ditentukan"}
+                        <h3 className="text-base md:text-xl font-black text-ink-950 font-display leading-tight">{item.pendaftar.nama_lengkap}</h3>
+                        <div className="flex items-center gap-1.5 text-xs text-ink-500 mt-1 font-bold">
+                          <FileText className="w-3.5 h-3.5 text-ink-400 shrink-0" />
+                          <span className="text-maroon-700 uppercase tracking-wide">{item.jenis_tugas}</span>
                         </div>
-                        {item.session_title && (
-                          <div className="text-xs text-ink-400 mt-1">Sesi: {item.session_title}</div>
-                        )}
                       </div>
                     </div>
+
+                    {/* Time & Location Row */}
+                    <div className="flex flex-wrap items-center gap-3 mb-4 px-1 py-3 bg-cream-50 rounded-2xl border border-cream-100">
+                      <div className="flex items-center gap-2 text-sm text-ink-600 font-bold">
+                        <Clock className="w-4 h-4 text-maroon-500 shrink-0" />
+                        {formatTime(item.waktu_mulai)} WIB
+                      </div>
+                      <div className="w-px h-4 bg-cream-200" />
+                      <div className="flex items-center gap-2 text-sm text-ink-600 font-bold">
+                        <MapPin className="w-4 h-4 text-maroon-500 shrink-0" />
+                        {item.lokasi || "Lokasi belum ditentukan"}
+                      </div>
+                      {item.session_title && (
+                        <span className="text-xs text-ink-400 ml-auto">Sesi: {item.session_title}</span>
+                      )}
+                    </div>
+
+                    {/* Action Buttons: Status Completion */}
+                    {(() => {
+                      const isSantri = item.penguji_santri_id === userId;
+                      const isQuran = item.penguji_quran_id === userId;
+                      const isOrtu = item.penguji_ortu_id === userId;
+                      const isCreator = item.session_created_by === userId;
+
+                      let showSantri = isSantri;
+                      let showQuran = isQuran;
+                      let showOrtu = isOrtu;
+                      if (!isSantri && !isQuran && !isOrtu && isCreator) {
+                        const tugas = (item.jenis_tugas || "").toLowerCase();
+                        if (tugas.includes("calsan") || tugas.includes("santri")) showSantri = true;
+                        if (tugas.includes("qur")) showQuran = true;
+                        if (tugas.includes("cawalsan") || tugas.includes("ortu")) showOrtu = true;
+                      }
+
+                      return (
+                        <div className="flex flex-col gap-2">
+                          {userId && showSantri && (
+                            item.status_santri === 'completed' ? (
+                              <div className="flex items-center gap-2 px-4 py-3 bg-green-50 text-green-700 rounded-2xl text-sm font-bold border border-green-100">
+                                <CheckCircle className="w-4 h-4" /> Wawancara Calsan Selesai
+                              </div>
+                            ) : (
+                              <button onClick={() => handleCompleteExam(item.id)} className="w-full py-3.5 bg-maroon-600 hover:bg-maroon-700 text-white text-sm font-black rounded-2xl transition-colors active:scale-95">
+                                ✓ Tandai Wawancara Selesai
+                              </button>
+                            )
+                          )}
+                          {userId && showQuran && (
+                            item.status_quran === 'completed' ? (
+                              <div className="flex items-center gap-2 px-4 py-3 bg-green-50 text-green-700 rounded-2xl text-sm font-bold border border-green-100">
+                                <CheckCircle className="w-4 h-4" /> Tes Al-Qur'an Selesai
+                              </div>
+                            ) : (
+                              <button onClick={() => handleCompleteExam(item.id)} className="w-full py-3.5 bg-maroon-600 hover:bg-maroon-700 text-white text-sm font-black rounded-2xl transition-colors active:scale-95">
+                                ✓ Tandai Tes Al-Qur'an Selesai
+                              </button>
+                            )
+                          )}
+                          {userId && showOrtu && (
+                            item.status_ortu === 'completed' ? (
+                              <div className="flex items-center gap-2 px-4 py-3 bg-green-50 text-green-700 rounded-2xl text-sm font-bold border border-green-100">
+                                <CheckCircle className="w-4 h-4" /> Wawancara Cawalsan Selesai
+                              </div>
+                            ) : (
+                              <button onClick={() => handleCompleteExam(item.id)} className="w-full py-3.5 bg-maroon-600 hover:bg-maroon-700 text-white text-sm font-black rounded-2xl transition-colors active:scale-95">
+                                ✓ Tandai Wawancara Cawalsan Selesai
+                              </button>
+                            )
+                          )}
+                          {/* Bottom row: Lihat Data + Batalkan */}
+                          <div className="flex gap-2 mt-1">
+                            <button
+                              onClick={() => { setSelectedPendaftar(item.pendaftar); setIsDetailModalOpen(true); }}
+                              className="flex-1 py-3 border border-cream-200 text-ink-600 hover:bg-cream-50 rounded-2xl text-xs font-bold transition-all flex items-center justify-center gap-2 active:scale-95"
+                            >
+                              <FileText className="w-3.5 h-3.5" /> Lihat Data
+                            </button>
+                            <button
+                              onClick={() => handleCancelAssignment(item.id, item.pendaftar.nama_lengkap)}
+                              className="flex-1 py-3 border border-red-200 text-red-600 hover:bg-red-50 rounded-2xl text-xs font-bold transition-all flex items-center justify-center gap-2 active:scale-95"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" /> Batalkan
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })()}
                   </div>
                 ))}
               </div>
@@ -522,17 +743,27 @@ export default function JadwalPengujiPage() {
       {/* TAB CONTENT: SLOTS */}
       {activeTab === 'slots' && (
         <>
-          <div className="flex justify-between items-center bg-white p-4 rounded-xl border border-cream-200">
-            <div>
-              <h3 className="font-bold text-ink-950">Sesi Ketersediaan Anda</h3>
-              <p className="text-sm text-cream-500">Buat sesi waktu dimana Anda bersedia menguji.</p>
+          <div className="bg-white p-5 md:p-6 rounded-2xl border border-cream-200 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div>
+                <h3 className="font-bold text-ink-950">Sesi Ketersediaan Anda</h3>
+                <p className="text-xs text-cream-500 mt-0.5">Buat sesi waktu dimana Anda bersedia menguji.</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setIsBulkModalOpen(true)}
+                  className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-3 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-2xl font-bold border border-indigo-200 transition-all text-sm active:scale-95"
+                >
+                  <Plus className="w-4 h-4" /> Buat Massal
+                </button>
+                <button
+                  onClick={() => setIsSlotModalOpen(true)}
+                  className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-3 bg-maroon-600 hover:bg-maroon-700 text-white rounded-2xl font-bold shadow-lg shadow-maroon-200 transition-all text-sm active:scale-95"
+                >
+                  <Plus className="w-4 h-4" /> Buat Sesi
+                </button>
+              </div>
             </div>
-            <button
-              onClick={() => setIsSlotModalOpen(true)}
-              className="flex items-center gap-2 px-4 py-2 bg-maroon-600 hover:bg-maroon-700 text-white rounded-lg font-bold shadow-lg shadow-maroon-200 transition-all"
-            >
-              <Plus className="w-4 h-4" /> Buat Sesi
-            </button>
           </div>
 
           {loadingSlots ? (
@@ -629,7 +860,20 @@ export default function JadwalPengujiPage() {
                     required
                     className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-maroon-500 outline-none"
                     value={slotForm.start_time}
-                    onChange={e => setSlotForm({ ...slotForm, start_time: e.target.value })}
+                    onChange={e => {
+                      const newStart = e.target.value;
+                      let newEnd = slotForm.end_time;
+                      
+                      if (newStart) {
+                        const [hours, minutes] = newStart.split(':').map(Number);
+                        const date = new Date();
+                        date.setHours(hours + 1, minutes);
+                        newEnd = date.getHours().toString().padStart(2, '0') + ':' + 
+                                 date.getMinutes().toString().padStart(2, '0');
+                      }
+                      
+                      setSlotForm({ ...slotForm, start_time: newStart, end_time: newEnd });
+                    }}
                   />
                 </div>
                 <div>
@@ -645,15 +889,14 @@ export default function JadwalPengujiPage() {
               </div>
               <p className="text-xs text-ink-400 -mt-2">⏱ Maksimal durasi sesi adalah <strong>1 jam</strong>.</p>
 
-              <div>
-                <label className="block text-sm font-bold text-ink-700 mb-1">Link Google Meet / Lokasi</label>
-                <input
-                  type="text"
-                  placeholder="Paste Link Google Meet di sini (Contoh: https://meet.google.com/abc-xyz-123)"
-                  className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-maroon-500 outline-none"
-                  value={slotForm.location}
-                  onChange={e => setSlotForm({ ...slotForm, location: e.target.value })}
-                />
+              <div className="bg-purple-50 rounded-xl p-4 border border-purple-100 flex items-start gap-3">
+                <div className="mt-0.5 text-lg">💡</div>
+                <div>
+                  <p className="text-xs font-bold text-purple-900 uppercase tracking-wider mb-1">Informasi Otomatis</p>
+                  <p className="text-[11px] text-purple-700 leading-relaxed">
+                    Sesi ini diatur sebagai <b>Full Online</b>. Sistem akan otomatis menyertakan <b>Link Google Meet</b> dari profil Anda saat pendaftar mengambil jadwal ini.
+                  </p>
+                </div>
               </div>
 
 
@@ -772,6 +1015,183 @@ export default function JadwalPengujiPage() {
                 Tutup
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL BULK CREATE SLOT */}
+      {isBulkModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm overflow-hidden">
+          <div className="bg-white rounded-3xl shadow-xl w-full max-w-lg max-h-[90vh] flex flex-col animate-in zoom-in-95 duration-300">
+            <div className="p-6 border-b border-cream-100 flex justify-between items-center bg-cream-50 rounded-t-3xl shrink-0">
+              <h3 className="text-xl font-black text-ink-950 font-display">Buat Jadwal Sekaligus (Massal)</h3>
+              <button onClick={() => setIsBulkModalOpen(false)} className="p-2 hover:bg-cream-100 rounded-full">
+                <XCircle className="w-6 h-6 text-ink-400 hover:text-ink-600" />
+              </button>
+            </div>
+            
+            <form onSubmit={handleCreateBulk} className="p-8 space-y-6 overflow-y-auto">
+              {/* Jenis Ujian Info */}
+              <div className="bg-maroon-50 border border-maroon-100 p-4 rounded-2xl">
+                <p className="text-xs font-black text-maroon-800 uppercase tracking-widest mb-1">Mata Ujian</p>
+                <p className="text-lg font-black text-maroon-700">{bulkForm.title || "—"}</p>
+              </div>
+
+              {/* Day Selection */}
+              <div>
+                <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-3">Pilih Hari Rutin</label>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    { id: 1, label: "Sen" },
+                    { id: 2, label: "Sel" },
+                    { id: 3, label: "Rab" },
+                    { id: 4, label: "Kam" },
+                    { id: 5, label: "Jum" },
+                    { id: 6, label: "Sab" },
+                    { id: 0, label: "Ahd" },
+                  ].map((day) => {
+                    const isSelected = bulkForm.selectedDays.includes(day.id);
+                    const isActive = activeDay === day.id;
+                    return (
+                      <button
+                        key={day.id}
+                        type="button"
+                        onClick={() => toggleDay(day.id)}
+                        className={`px-4 py-2 rounded-xl text-sm font-bold transition-all border relative ${isSelected 
+                          ? (isActive 
+                              ? "bg-maroon-700 text-white border-maroon-800 shadow-lg ring-4 ring-maroon-100 scale-105 z-10" 
+                              : "bg-maroon-100 text-maroon-800 border-maroon-200 hover:bg-maroon-200")
+                          : "bg-white text-ink-500 border-cream-200 hover:bg-cream-50"}`}
+                      >
+                        {day.label}
+                        {isSelected && !isActive && (
+                          <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-maroon-600 rounded-full border-2 border-white" />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+                <p className="text-[10px] text-ink-400 mt-2">💡 Klik untuk mengaktifkan hari, klik lagi untuk mengatur jam ketersediaan hari tersebut.</p>
+              </div>
+
+              {/* Date Range */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2">Dari Tanggal</label>
+                  <input
+                    type="date"
+                    required
+                    className="w-full px-4 py-3 bg-cream-50 border-none rounded-xl focus:ring-2 focus:ring-maroon-500 outline-none font-bold"
+                    value={bulkForm.startDate}
+                    onChange={e => setBulkForm({ ...bulkForm, startDate: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2">Sampai Tanggal</label>
+                  <input
+                    type="date"
+                    required
+                    className="w-full px-4 py-3 bg-cream-50 border-none rounded-xl focus:ring-2 focus:ring-maroon-500 outline-none font-bold"
+                    value={bulkForm.endDate}
+                    onChange={e => setBulkForm({ ...bulkForm, endDate: e.target.value })}
+                  />
+                </div>
+              </div>
+
+              {/* Time Slots */}
+              <div>
+                <div className="flex items-center justify-between mb-3 border-b border-cream-100 pb-2">
+                  <label className="block text-xs font-black text-ink-400 uppercase tracking-widest">
+                    Jam Sesi: <span className="text-maroon-600">{
+                      ["Ahad", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"][activeDay]
+                    }</span>
+                  </label>
+                  {bulkForm.selectedDays.length > 1 && (
+                    <button 
+                      type="button" 
+                      onClick={copySlotsToAll}
+                      className="text-[10px] bg-maroon-50 text-maroon-700 px-2 py-1 rounded-lg border border-maroon-100 font-bold hover:bg-maroon-100 transition-colors"
+                    >
+                      Sama untuk semua hari
+                    </button>
+                  )}
+                </div>
+                <div className="space-y-3">
+                  {(bulkForm.daySlots[activeDay] || []).map((slot, index) => (
+                    <div key={index} className="flex items-center gap-3 bg-cream-50 p-3 rounded-2xl border border-cream-100">
+                      <div className="flex-1 grid grid-cols-2 gap-2">
+                        <input
+                          type="time"
+                          required
+                          className="bg-white border-none rounded-xl px-3 py-2 text-sm font-bold shadow-sm"
+                          value={slot.start}
+                          onChange={e => {
+                            const newStart = e.target.value;
+                            const newSlots = [...(bulkForm.daySlots[activeDay] || [])];
+                            newSlots[index].start = newStart;
+                            
+                            if (newStart) {
+                              const [hours, minutes] = newStart.split(':').map(Number);
+                              const date = new Date();
+                              date.setHours(hours + 1, minutes);
+                              newSlots[index].end = date.getHours().toString().padStart(2, '0') + ':' + 
+                                                   date.getMinutes().toString().padStart(2, '0');
+                            }
+                            
+                            setBulkForm({ ...bulkForm, daySlots: { ...bulkForm.daySlots, [activeDay]: newSlots } });
+                          }}
+                        />
+                        <input
+                          type="time"
+                          required
+                          className="bg-white border-none rounded-xl px-3 py-2 text-sm font-bold shadow-sm"
+                          value={slot.end}
+                          onChange={e => {
+                            const newSlots = [...(bulkForm.daySlots[activeDay] || [])];
+                            newSlots[index].end = e.target.value;
+                            setBulkForm({ ...bulkForm, daySlots: { ...bulkForm.daySlots, [activeDay]: newSlots } });
+                          }}
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => removeTimeSlot(index)}
+                        className="p-2 text-ink-300 hover:text-red-600 transition-colors"
+                      >
+                        <Trash2 className="w-5 h-5" />
+                      </button>
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={addTimeSlot}
+                    className="w-full py-2 border-2 border-dashed border-cream-300 rounded-2xl text-xs font-black text-ink-400 hover:border-maroon-300 hover:text-maroon-600 transition-all flex items-center justify-center gap-2"
+                  >
+                    <Plus className="w-4 h-4" /> Tambah Jam Lain
+                  </button>
+                </div>
+              </div>
+
+              {/* Automated Note */}
+              <div className="bg-purple-50 rounded-2xl p-4 border border-purple-100 flex items-start gap-3">
+                <div className="text-lg">✨</div>
+                <div>
+                  <p className="text-xs font-black text-purple-900 uppercase tracking-widest mb-1">Informasi Otomatis</p>
+                  <p className="text-[11px] text-purple-700 leading-relaxed font-medium">
+                    Semua sesi yang dibuat massal akan otomatis diset sebagai <b>Online</b> dan memiliki <b>Kuota 1 Santri</b>.
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={submittingBulk}
+                className="w-full py-4 bg-maroon-600 hover:bg-maroon-700 text-white font-black rounded-2xl shadow-lg shadow-maroon-200 transition-all flex justify-center items-center gap-2"
+              >
+                {submittingBulk && <Loader2 className="w-5 h-5 animate-spin" />}
+                Generate Jadwal Sekarang
+              </button>
+            </form>
           </div>
         </div>
       )}
