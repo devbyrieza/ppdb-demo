@@ -15,6 +15,9 @@ async function checkAdmin() {
   return null;
 }
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -27,7 +30,17 @@ export async function GET(request: Request) {
 
     // Build where clause
     const where: any = {
-      deleted_at: null
+      deleted_at: null,
+      NOT: [
+        {
+          AND: [
+            { nama_lengkap: { contains: " Tes", mode: "insensitive" } },
+            { nama_lengkap: { not: { contains: "Rieza Tes", mode: "insensitive" } } }
+          ]
+        },
+        { nama_lengkap: { startsWith: "TEST ", mode: "insensitive" } },
+        { nama_lengkap: { contains: "BYPASS", mode: "insensitive" } }
+      ]
     };
     if (tahunAjaranId) {
       where.tahun_ajaran_id = tahunAjaranId;

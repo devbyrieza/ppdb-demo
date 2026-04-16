@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "@/lib/session";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function GET(req: NextRequest) {
     try {
         const session = await getServerSession();
@@ -22,6 +25,16 @@ export async function GET(req: NextRequest) {
 
         const where: any = {
             deleted_at: null,
+            NOT: [
+                {
+                    AND: [
+                        { nama_lengkap: { contains: " Tes", mode: "insensitive" } },
+                        { nama_lengkap: { not: { contains: "Rieza Tes", mode: "insensitive" } } }
+                    ]
+                },
+                { nama_lengkap: { startsWith: "TEST ", mode: "insensitive" } },
+                { nama_lengkap: { contains: "BYPASS", mode: "insensitive" } }
+            ]
         };
         if (tahunAjaranId) {
             where.tahun_ajaran_id = tahunAjaranId;
