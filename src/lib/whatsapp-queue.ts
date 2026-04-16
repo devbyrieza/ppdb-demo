@@ -347,7 +347,7 @@ export function buildMessageRegistrationSuccess(
 
 Assalamu'alaikum ${nama},
 
-Alhamdulillah, pendaftaran Anda di Proyek Al-Andalus (Demo) telah berhasil!
+Alhamdulillah, pendaftaran Anda di Pesantren Al-Andalus Demo telah berhasil!
 
 📋 *Detail Pendaftaran:*
 • Nomor Pendaftaran: ${nomor}
@@ -408,15 +408,59 @@ Panitia PPDB Al-Andalus Demo`;
 }
 
 export function buildMessageJadwalBelum(nama: string): string {
-    return `${pickOpening()} ${nama}, jadwal tes belum tersedia. Mohon bersabar.`;
+    return `${pickOpening()} ${nama},
+
+Terima kasih telah mendaftar di Pesantren Al-Andalus Demo.
+
+Saat ini jadwal tes lanjutan (Tes Al-Qur'an, Wawancara Calsan, dan Wawancara Cawalsan Santri) belum tersedia. Mohon bersabar, kami akan menginformasikan kembali begitu jadwal sudah siap.
+
+Untuk sementara, Anda sudah bisa mengerjakan tes online yang tersedia di dashboard:
+- Kemampuan Dasar Akademik
+- Identifikasi Kepribadian
+- Tes Kesiapan
+
+Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/undangan-seleksi
+
+Jazakumullahu khairan,
+Panitia PPDB Al-Andalus Demo`;
 }
 
 export function buildMessageJadwalTersedia(nama: string): string {
-    return `${pickOpening()} ${nama}, jadwal tes sudah tersedia! Silakan pilih di dashboard.`;
+    return `${pickOpening()} ${nama},
+  
+Alhamdulillah, jadwal tes lanjutan sudah tersedia!
+  
+Silakan login ke dashboard dan pilih jadwal yang sesuai untuk:
+- Tes Al-Qur'an
+- Wawancara Calsan
+- Wawancara Cawalsan
+  
+Segera pilih jadwal sebelum kuota penuh.
+  
+Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/undangan-seleksi
+  
+Jazakumullahu khairan,
+Panitia PPDB Al-Andalus Demo`;
 }
 
 export function buildMessageJadwalLangsungTersedia(nama: string): string {
-    return `${pickOpening()} ${nama}, jadwal tes sudah tersedia dan bisa langsung Anda pilih.`;
+    return `${pickOpening()} ${nama},
+  
+Terima kasih telah mencapai tahap Seleksi Pesantren Al-Andalus Demo.
+  
+Saat ini **jadwal tes lanjutan sudah tersedia dan bisa langsung Anda pilih**.
+  
+Silakan login ke dashboard dan pilih sesi jadwal untuk:
+- Tes Al-Qur'an
+- Wawancara Calsan
+- Wawancara Cawalsan
+  
+Harap segera memilih jadwal sebelum rentang waktu habis atau kuota penuh. Jangan lupa juga untuk menyelesaikan Tes Online (Akademik & Kepribadian).
+  
+Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/undangan-seleksi
+  
+Jazakumullahu khairan,
+Panitia PPDB Al-Andalus Demo`;
 }
 
 export function buildMessageKonfirmasiJadwal(
@@ -426,7 +470,23 @@ export function buildMessageKonfirmasiJadwal(
     lokasi: string,
     jenisUjian: string
 ): string {
-    return `${pickOpening()} ${nama}, Jadwal ${jenisUjian} Anda telah terkonfirmasi: ${tanggal} ${waktu} WIB.`;
+    return `${pickOpening()} ${nama},
+
+Jadwal ${jenisUjian} Anda telah terkonfirmasi:
+
+Tanggal: ${tanggal}
+Waktu: ${waktu} WIB
+Tempat: ${lokasi}
+
+Persiapan:
+- Hadir 30 menit sebelum waktu tes
+- Berpakaian sopan dan rapi
+- Bawa alat tulis
+
+Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/undangan-seleksi
+
+Jazakumullahu khairan,
+Panitia PPDB Al-Andalus Demo`;
 }
 
 export function buildMessageReminderH1(
@@ -436,7 +496,21 @@ export function buildMessageReminderH1(
     lokasi: string,
     jenisUjian: string
 ): string {
-    return `${pickOpening()} ${nama}, Pengingat jadwal ${jenisUjian} Anda: ${tanggal} ${waktu} WIB.`;
+    return `${pickOpening()} ${nama},
+
+Pengingat jadwal ${jenisUjian} Anda:
+
+📋 *${jenisUjian}*
+📅 Tanggal: ${tanggal}
+⏰ Waktu: ${waktu} WIB
+📍 Tempat/Link: ${lokasi}
+
+Mohon hadir tepat waktu dan persiapkan diri dengan baik. Semoga dimudahkan dan diberkahi.
+
+Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/undangan-seleksi
+
+Jazakumullahu khairan,
+Panitia PPDB Al-Andalus Demo`;
 }
 
 export function buildMessageReminderH0(
@@ -445,11 +519,32 @@ export function buildMessageReminderH0(
     lokasi: string,
     jenisUjian: string
 ): string {
-    return `${pickOpening()} ${nama}, ⏰ *PENGINGAT: ${jenisUjian} dimulai 1 jam lagi!*`;
+    return `${pickOpening()} ${nama},
+
+⏰ *PENGINGAT: ${jenisUjian} dimulai 1 jam lagi!*
+
+🕐 Waktu: ${waktu} WIB
+📍 Tempat/Link: ${lokasi}
+
+Mohon segera bersiap. Pastikan koneksi internet stabil jika ujian dilakukan secara online.
+
+Semoga dimudahkan dan diberkahi.
+
+Jazakumullahu khairan,
+Panitia PPDB Al-Andalus Demo`;
 }
 
 export function buildMessageHasilTes(nama: string): string {
-    return `${pickOpening()} ${nama}, Hasil tes seleksi Anda sudah tersedia. Silakan cek dashboard.`;
+    return `${pickOpening()} ${nama},
+ 
+ Alhamdulillah, hasil tes seleksi Anda sudah tersedia.
+ 
+ Silakan login ke dashboard untuk melihat hasil lengkap Anda.
+ 
+ Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/pengumuman
+ 
+ Jazakumullahu khairan,
+ Panitia PPDB Al-Andalus Demo`;
 }
 
 export function buildMessageKonfirmasiJadwalInterviewer(
@@ -462,7 +557,24 @@ export function buildMessageKonfirmasiJadwalInterviewer(
     inputNilaiLink?: string
 ): string {
     const title = (namaInterviewer || "").toLowerCase().includes("ustadzah") ? "Ustadzah" : "Ustadz";
-    return `${pickOpening()} ${title} ${namaInterviewer}, Jadwal ${jenisUjian} baru untuk santri ${namaSantri}: ${tanggal} ${waktu} WIB. Link: ${inputNilaiLink || "-"}`;
+    const opening = pickOpening();
+    let msg = `${opening} ${title} ${namaInterviewer},
+ 
+ Informasikan jadwal ${jenisUjian} baru untuk santri berikut:
+ 
+ Nama Santri: ${namaSantri}
+ Tanggal: ${tanggal}
+ Waktu: ${waktu} WIB
+ Tempat: ${lokasi}`;
+
+    if (inputNilaiLink) {
+        msg += `\n\n🔗 *Input Hasil:* ${inputNilaiLink}\n(PIN: 4 digit terakhir No. HP Anda)`;
+    }
+
+    msg += `\n\nMohon untuk bersiap di ruangan virtual/fisik tepat waktu. Syukran.
+ 
+ Panitia PPDB Al-Andalus Demo`;
+    return msg;
 }
 
 export function buildMessageReminderH1Santri(
@@ -473,15 +585,34 @@ export function buildMessageReminderH1Santri(
     lokasi: string,
     jenisUjian: string
 ): string {
-    const finalJam = (jam || "").toLowerCase().includes("wib") ? jam : `${jam} WIB`;
-    const finalHari = (tanggal || "").toLowerCase().includes(hari.toLowerCase()) ? "" : `${hari}, `;
+    // Robust deduplication for Time - remove any existing WIB and ensure single WIB at end
+    let cleanJam = (jam || "").replace(/\s*WIB\s*/gi, " ").trim();
+    cleanJam = cleanJam.replace(/\s+/g, " "); // collapse multiple spaces
+    const finalJam = `${cleanJam} WIB`;
+
+    // Robust deduplication for Day - handle various formats
+    let cleanTanggal = (tanggal || "").trim();
+    // Remove day name if it appears at the start (case insensitive, with or without comma)
+    if (hari) {
+        const dayPattern = new RegExp(`^${hari}\\s*,?\\s*`, "i");
+        cleanTanggal = cleanTanggal.replace(dayPattern, "");
+    }
+    // Also remove any day name pattern at the start (e.g., "Kamis, ")
+    cleanTanggal = cleanTanggal.replace(/^(?:senin|selasa|rabu|kamis|jumat|sabtu|ahad|minggu)\s*,?\s*/i, "");
+
+    const finalHariTanggal = `${hari}, ${cleanTanggal}`;
 
     return `*PENGINGAT UJIAN SELEKSI*
 
 Assalamu'alaikum *${nama}*,
 
-📅 *Hari/Tanggal:* ${finalHari}${tanggal}
+Ini adalah pengingat bahwa Anda dijadwalkan mengikuti *${jenisUjian}* pada:
+
+📅 *Hari/Tanggal:* ${finalHariTanggal}
 ⏰ *Waktu:* ${finalJam}
+📍 *Lokasi/Link:* ${lokasi}
+
+Mohon persiapkan diri dengan baik dan pastikan koneksi internet stabil jika ujian online. Sampai jumpa!
 
 ---
 *Panitia PPDB Al-Andalus Demo*`;
@@ -498,18 +629,42 @@ export function buildMessageReminderH1Penguji(
     inputNilaiLink?: string
 ): string {
     const title = (namaPenguji || "").toLowerCase().includes("ustadzah") ? "Ustadzah" : "Ustadz";
-    const finalJam = (jam || "").toLowerCase().includes("wib") ? jam : `${jam} WIB`;
-    const finalHari = (tanggal || "").toLowerCase().includes(hari.toLowerCase()) ? "" : `${hari}, `;
+    const isWawancara = jenisUjian.toLowerCase().includes("wawancara");
+    
+    // Robust deduplication for Time - remove any existing WIB and ensure single WIB at end
+    let cleanJam = (jam || "").replace(/\s*WIB\s*/gi, " ").trim();
+    cleanJam = cleanJam.replace(/\s+/g, " "); // collapse multiple spaces
+    const finalJam = `${cleanJam} WIB`;
 
-    return `*REMINDER JADWAL WAWANCARA*
+    // Robust deduplication for Day - handle various formats
+    let cleanTanggal = (tanggal || "").trim();
+    // Remove day name if it appears at the start (case insensitive, with or without comma)
+    if (hari) {
+        const dayPattern = new RegExp(`^${hari}\\s*,?\\s*`, "i");
+        cleanTanggal = cleanTanggal.replace(dayPattern, "");
+    }
+    // Also remove any day name pattern at the start (e.g., "Kamis, ")
+    cleanTanggal = cleanTanggal.replace(/^(?:senin|selasa|rabu|kamis|jumat|sabtu|ahad|minggu)\s*,?\s*/i, "");
+
+    const finalHariTanggal = `${hari}, ${cleanTanggal}`;
+
+    const templateTitle = isWawancara ? "*REMINDER JADWAL WAWANCARA*" : "*REMINDER JADWAL MENGUJI*";
+    const agendaText = isWawancara ? "Wawancara Calon Santri / Ortu" : jenisUjian;
+
+    return `${templateTitle}
 
 Assalamu'alaikum ${title} *${namaPenguji}*,
 
+Mengingatkan jadwal ${isWawancara ? "wawancara" : "menguji"} Anda:
+
+📝 *Agenda:* ${agendaText}
 👤 *Nama Santri:* ${namaSantri}
-📅 *Hari/Tanggal:* ${finalHari}${tanggal}
+📅 *Hari/Tanggal:* ${finalHariTanggal}
 ⏰ *Waktu:* ${finalJam}
 📍 *Link Meet:* ${lokasi}
 🔗 *Input Hasil:* ${inputNilaiLink || "-"}
+
+Mohon kehadirannya tepat waktu. Syukron.
 
 ---
 *Sistem PPDB Al-Andalus Demo*`;
@@ -524,7 +679,18 @@ export function buildMessagePembatalanJadwal(
 ): string {
     return `*PEMBATALAN JADWAL UJIAN*
 
-Jadwal ${jenisUjian} Anda pada ${tanggal} ${jam} WIB dibatalkan karena: ${alasan}.
+Assalamu'alaikum *${namaSantri}*,
+
+Kami menginformasikan bahwa jadwal *${jenisUjian}* Anda pada:
+
+📅 *Tanggal:* ${tanggal}
+⏰ *Waktu:* ${jam} WIB
+
+Telah *DIBATALKAN* oleh Penguji karena alasan: *${alasan}*.
+
+Mohon segera login ke Dashboard PPDB untuk memilih kembali jadwal pengganti yang tersedia di menu Undangan Seleksi.
+
+Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/undangan-seleksi
 
 ---
 *Panitia PPDB Al-Andalus Demo*`;
@@ -538,5 +704,6 @@ export async function getQueueStats() {
         prisma.whatsappLog.count({ where: { status: "failed" } }),
         prisma.whatsappLog.count({ where: { status: "blocked" } }),
     ]);
+
     return { queue: { pending, processing, sent, failed, blocked } };
 }

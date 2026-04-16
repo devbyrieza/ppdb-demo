@@ -8,6 +8,7 @@ import {
     buildMessageReminderH1Santri, 
     buildMessageReminderH1Penguji 
 } from "@/lib/whatsapp-queue";
+import { generateMagicToken, getManualTinyUrl, generateTinyUrl } from "@/lib/utils/magic-link";
 
 async function getSession() {
     const cookieStore = await cookies();
@@ -260,13 +261,28 @@ export async function POST(request: Request) {
 
                 // Only schedule if the reminder time is in the future
                 if (reminderTime > new Date()) {
+                    // Get interviewer info early for Google Meet link
+                    let interviewerGoogleMeetLink = null;
+                    if (examSession.created_by) {
+                        const interviewer = await prisma.profile.findUnique({
+                            where: { id: examSession.created_by },
+                            select: { google_meet_link: true }
+                        });
+                        interviewerGoogleMeetLink = interviewer?.google_meet_link;
+                    }
+
+                    // Build location with Google Meet link if available
+                    const lokasiWithMeet = interviewerGoogleMeetLink
+                        ? (interviewerGoogleMeetLink.startsWith("http") ? interviewerGoogleMeetLink : `Online (${interviewerGoogleMeetLink})`)
+                        : lokasi;
+
                     // 3.1. Reminder for Santri
                     const remSantriMsg = buildMessageReminderH1Santri(
                         pendaftarInfo.nama_lengkap,
                         dateStr.split(',')[0] || "Besok", // Day name
                         dateStr,
                         timeStr,
-                        lokasi,
+                        lokasiWithMeet,
                         jenisUjian
                     );
 
@@ -296,6 +312,20 @@ export async function POST(request: Request) {
                         });
 
                         if (interviewer && interviewer.phone) {
+                            // Generate Magic Link for 4-hour reminder
+                            const redirectPathH1 = `/dashboard/penguji/input-nilai?search=${encodeURIComponent(pendaftarInfo.nama_lengkap)}`;
+                            const tokenH1 = generateMagicToken(
+                                examSession.created_by,
+                                "penguji",
+                                interviewer.full_name,
+                                48,
+                                redirectPathH1
+                            );
+                            const magicLinkRem4h = `${process.env.NEXT_PUBLIC_APP_URL || 'https://ppdb-demo.com'}/api/auth/magic?token=${tokenH1}`;
+
+                            const manualTinyUrl = getManualTinyUrl(interviewer.full_name);
+                            const shortUrlRem4h = manualTinyUrl || await generateTinyUrl(magicLinkRem4h);
+
                             const remIntMessage = buildMessageReminderH1Penguji(
                                 interviewer.full_name,
                                 pendaftarInfo.nama_lengkap,
@@ -303,7 +333,8 @@ export async function POST(request: Request) {
                                 dateStr,
                                 timeStr,
                                 interviewer.google_meet_link || lokasi,
-                                jenisUjian
+                                jenisUjian,
+                                shortUrlRem4h
                             );
 
                             enqueueWhatsapp({

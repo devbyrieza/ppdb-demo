@@ -59,13 +59,13 @@ export async function GET(request: Request) {
             const jenisUjian = jadwal.exam_session?.title || "Seleksi Santri Baru";
 
             const googleMeetLink = 
+                jadwal.google_meet_link ||
                 jadwal.penguji_santri?.google_meet_link || 
                 jadwal.penguji_quran?.google_meet_link || 
-                jadwal.penguji_ortu?.google_meet_link || 
-                jadwal.google_meet_link;
+                jadwal.penguji_ortu?.google_meet_link;
 
             const lokasi = googleMeetLink 
-                ? `${jadwal.exam_session?.location || "Online"} (Link: ${googleMeetLink})` 
+                ? (googleMeetLink.startsWith("http") ? googleMeetLink : `${jadwal.exam_session?.location || "Online"} (${googleMeetLink})`)
                 : (jadwal.exam_session?.location || "Pesantren Al-Andalus Demo");
 
             if (jadwal.pendaftar.no_hp) {

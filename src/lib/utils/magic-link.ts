@@ -94,9 +94,9 @@ export const PERMANENT_SLUGS: Record<string, string> = {
  */
 export function getSlugByName(fullName: string): string | null {
     if (!fullName) return null;
-    const normalized = fullName.trim().toLowerCase();
+    const normalized = fullName.trim().toLowerCase().replace(/\s+/g, " ");
     const entry = Object.entries(PERMANENT_SLUGS).find(
-        ([_, name]) => name.toLowerCase() === normalized
+        ([_, name]) => name.toLowerCase().replace(/\s+/g, " ") === normalized
     );
     return entry ? entry[0] : null;
 }
@@ -105,6 +105,7 @@ export function getSlugByName(fullName: string): string | null {
 // MANUAL TINYURL MAPPING (Name -> Short URL)
 // ============================================================================
 
+// Manual tinyurls for specific examiners/interviewers (pointing to correct production URLs)
 export const MANUAL_TINYURLS: Record<string, string> = {
     "Agus Cahyono": "https://tinyurl.com/alimam-aguscahyono",
     "Jusman": "https://tinyurl.com/alimam-jusmann",
@@ -118,12 +119,12 @@ export const MANUAL_TINYURLS: Record<string, string> = {
 export function getManualTinyUrl(fullName: string): string | null {
     if (!fullName) return null;
     
-    // Normalize input
-    const normalizedInput = fullName.trim().toLowerCase();
+    // Normalize input: trim, lowercase, and collapse multiple spaces to one
+    const normalizedInput = fullName.trim().toLowerCase().replace(/\s+/g, " ");
 
     // Find match in MANUAL_TINYURLS (also normalized)
     const matchKey = Object.keys(MANUAL_TINYURLS).find(
-        key => key.trim().toLowerCase() === normalizedInput
+        key => key.trim().toLowerCase().replace(/\s+/g, " ") === normalizedInput
     );
 
     return matchKey ? MANUAL_TINYURLS[matchKey] : null;
