@@ -9,7 +9,6 @@
  * Layer 6: Natural message templates with personalization
  *
  * Queue is processed by internal cron calling GET /api/cron/whatsapp every 1 minute.
- * Ported from Al-Imam reference.
  */
 
 import { prisma } from "@/lib/prisma";
@@ -49,11 +48,11 @@ export interface EnqueueParams {
 // CONSTANTS
 // ============================================================================
 
-const MAX_MESSAGES_PER_HOUR = 120; // Increased from 20 for faster queue clearing
-const MAX_MESSAGES_PER_10MIN = 30;  // Increased from 10
-const COOLDOWN_MINUTES = 5;         // Reduced from 15 to recover faster
-const MIN_DELAY_MS = 3000;          // Reduced from 5000
-const MAX_DELAY_MS = 7000;          // Reduced from 10000
+const MAX_MESSAGES_PER_HOUR = 120;
+const MAX_MESSAGES_PER_10MIN = 30;
+const COOLDOWN_MINUTES = 5;
+const MIN_DELAY_MS = 3000;
+const MAX_DELAY_MS = 7000;
 const MAX_RETRY_ATTEMPTS = 3;
 const RETRY_DELAY_MINUTES = 5;
 
@@ -63,16 +62,11 @@ const DEFAULT_APP_URL = 'https://ppdb-demo.com';
 // LAYER 1: Anti-Duplicate — Check flag before enqueue
 // ============================================================================
 
-/**
- * Check if a notification of this type has already been sent/queued for this pendaftar.
- * Uses both the Pendaftar flag columns AND the WhatsappLog table.
- */
 async function isDuplicate(
     pendaftarId: string,
     jenisNotif: NotifType,
     phone: string
 ): Promise<boolean> {
-    // Check Pendaftar flag columns for persistent flags
     const flagMap: Partial<Record<NotifType, string>> = {
         jadwal_belum: "notif_belum_jadwal_terkirim",
         jadwal_tersedia: "notif_jadwal_tersedia_terkirim",
@@ -98,13 +92,12 @@ async function isDuplicate(
         }
     }
 
-    // For non-flag types (konfirmasi_jadwal, reminder_h1), check WhatsappLog
     const recentWindow = new Date(Date.now() - 48 * 60 * 60 * 1000); 
 
     const existingLog = await prisma.whatsappLog.findFirst({
         where: {
             pendaftar_id: pendaftarId,
-            phone: phone, 
+            phone: phone,
             jenis_notif: jenisNotif,
             status: { in: ["pending", "processing", "sent"] },
             created_at: { gte: recentWindow }
@@ -115,48 +108,95 @@ async function isDuplicate(
 }
 
 // ============================================================================
-// LOGIC: Rate Limits, Cooldowns, Jitter
+// LAYER 3+4: Rate Limiting & Cooldown Check
 // ============================================================================
 
-async function checkRateLimits(): Promise<{ canSend: boolean; reason?: string; waitMs?: number }> {
+async function checkRateLimits(): Promise<{
+    canSend: boolean;
+    reason?: string;
+    waitMs?: number;
+}> {
     const now = new Date();
-    let cooldown = await prisma.whatsappCooldown.findUnique({ where: { id: "global" } });
+
+    let cooldown = await prisma.whatsappCooldown.findUnique({
+        where: { id: "global" },
+    });
+
     if (!cooldown) {
         cooldown = await prisma.whatsappCooldown.create({
-            data: { id: "global", sent_count_10m: 0, hourly_count: 0, hourly_reset: now },
+            data: {
+                id: "global",
+                sent_count_10m: 0,
+                hourly_count: 0,
+                hourly_reset: now,
+            },
         });
     }
 
     if (cooldown.cooldown_until && cooldown.cooldown_until > now) {
-        return { canSend: false, reason: "Cooldown aktif", waitMs: cooldown.cooldown_until.getTime() - now.getTime() };
+        const waitMs = cooldown.cooldown_until.getTime() - now.getTime();
+        return { canSend: false, reason: "Cooldown aktif", waitMs };
     }
 
     const hourlyReset = cooldown.hourly_reset || now;
     const hoursSinceReset = (now.getTime() - hourlyReset.getTime()) / (1000 * 60 * 60);
 
     if (hoursSinceReset >= 1) {
-        await prisma.whatsappCooldown.update({ where: { id: "global" }, data: { hourly_count: 0, hourly_reset: now } });
+        await prisma.whatsappCooldown.update({
+            where: { id: "global" },
+            data: { hourly_count: 0, hourly_reset: now },
+        });
     } else if (cooldown.hourly_count >= MAX_MESSAGES_PER_HOUR) {
-        return { canSend: false, reason: "Limit per jam tercapai", waitMs: (1 - hoursSinceReset) * 3600000 };
+        const waitMs = (1 - hoursSinceReset) * 60 * 60 * 1000;
+        return { canSend: false, reason: "Limit per jam tercapai", waitMs };
     }
 
     return { canSend: true };
 }
 
-async function waitRandomDelay() {
-    const delay = Math.floor(Math.random() * (MAX_DELAY_MS - MIN_DELAY_MS) + MIN_DELAY_MS);
-    await new Promise(resolve => setTimeout(resolve, delay));
+// ============================================================================
+// LAYER 3: Random Jitter Delay
+// ============================================================================
+
+function getRandomDelay(): number {
+    return Math.floor(Math.random() * (MAX_DELAY_MS - MIN_DELAY_MS) + MIN_DELAY_MS);
+}
+
+async function waitRandomDelay(): Promise<void> {
+    const delay = getRandomDelay();
+    await new Promise((resolve) => setTimeout(resolve, delay));
+}
+
+// ============================================================================
+// LAYER 5: Check if number is problematic
+// ============================================================================
+
+async function isNumberBlocked(phone: string): Promise<boolean> {
+    const failedCount = await prisma.whatsappLog.count({
+        where: {
+            phone,
+            status: "failed",
+            created_at: { gte: new Date(Date.now() - 24 * 60 * 60 * 1000) },
+        },
+    });
+    return failedCount >= MAX_RETRY_ATTEMPTS;
 }
 
 // ============================================================================
 // MAIN: Enqueue & Process
 // ============================================================================
 
-export async function enqueueWhatsapp(params: EnqueueParams) {
+export async function enqueueWhatsapp(
+    params: EnqueueParams
+): Promise<{ queued: boolean; reason?: string; logId?: string }> {
     const { pendaftarId, phone, jenisNotif, messageContent, scheduledAt } = params;
 
-    if (jenisNotif !== "broadcast") {
-        if (await isDuplicate(pendaftarId, jenisNotif, phone)) return { queued: false, reason: "Duplicate" };
+    if (await isDuplicate(pendaftarId, jenisNotif, phone)) {
+        return { queued: false, reason: "Duplicate" };
+    }
+
+    if (await isNumberBlocked(phone)) {
+        return { queued: false, reason: "Nomor bermasalah" };
     }
 
     const log = await prisma.whatsappLog.create({
@@ -173,45 +213,118 @@ export async function enqueueWhatsapp(params: EnqueueParams) {
     return { queued: true, logId: log.id };
 }
 
-export async function processWhatsappQueue() {
+export async function processWhatsappQueue(): Promise<{
+    processed: boolean;
+    logId?: string;
+    status?: string;
+    reason?: string;
+}> {
     const rateLimitCheck = await checkRateLimits();
     if (!rateLimitCheck.canSend) return { processed: false, reason: rateLimitCheck.reason };
 
+    const now = new Date();
     const pendingMessage = await prisma.whatsappLog.findFirst({
-        where: { status: "pending", scheduled_at: { lte: new Date() }, attempt_count: { lt: MAX_RETRY_ATTEMPTS } },
+        where: {
+            status: "pending",
+            scheduled_at: { lte: now },
+            attempt_count: { lt: MAX_RETRY_ATTEMPTS },
+        },
         orderBy: { scheduled_at: "asc" },
     });
 
-    if (!pendingMessage) return { processed: false, reason: "Queue empty" };
+    if (!pendingMessage) return { processed: false, reason: "Antrian kosong" };
 
     await prisma.whatsappLog.update({
         where: { id: pendingMessage.id },
-        data: { status: "processing", attempt_count: { increment: 1 }, updated_at: new Date() },
+        data: {
+            status: "processing",
+            attempt_count: { increment: 1 },
+            updated_at: now,
+        },
     });
 
     await waitRandomDelay();
 
     try {
-        const result = await sendMessage({ phone: pendingMessage.phone, message: pendingMessage.message_content || "" });
+        const result = await sendMessage({
+            phone: pendingMessage.phone,
+            message: pendingMessage.message_content || "",
+        });
+
         if (result.status) {
             await prisma.whatsappLog.update({
                 where: { id: pendingMessage.id },
-                data: { status: "sent", sent_at: new Date(), response_data: JSON.stringify(result.data), updated_at: new Date() },
+                data: {
+                    status: "sent",
+                    sent_at: new Date(),
+                    response_data: JSON.stringify(result.data),
+                    updated_at: new Date(),
+                },
             });
+
+            if (pendingMessage.pendaftar_id) {
+                await updateNotifFlag(pendingMessage.pendaftar_id, pendingMessage.jenis_notif as NotifType);
+            }
+
+            await prisma.whatsappCooldown.upsert({
+                where: { id: "global" },
+                update: {
+                    last_sent_at: new Date(),
+                    hourly_count: { increment: 1 },
+                    updated_at: new Date(),
+                },
+                create: {
+                    id: "global",
+                    last_sent_at: new Date(),
+                    hourly_count: 1,
+                    hourly_reset: new Date(),
+                },
+            });
+
             return { processed: true, logId: pendingMessage.id, status: "sent" };
         } else {
             await prisma.whatsappLog.update({
                 where: { id: pendingMessage.id },
-                data: { status: "failed", failed_at: new Date(), error_message: result.message, updated_at: new Date() },
+                data: {
+                    status: pendingMessage.attempt_count + 1 >= MAX_RETRY_ATTEMPTS ? "failed" : "pending",
+                    failed_at: new Date(),
+                    error_message: result.message,
+                    updated_at: new Date(),
+                },
             });
-            return { processed: true, logId: pendingMessage.id, status: "failed" };
+
+            return { processed: true, logId: pendingMessage.id, status: "failed", reason: result.message };
         }
     } catch (error: any) {
         await prisma.whatsappLog.update({
             where: { id: pendingMessage.id },
             data: { status: "failed", failed_at: new Date(), error_message: error.message, updated_at: new Date() },
         });
-        return { processed: true, logId: pendingMessage.id, status: "error" };
+        return { processed: true, logId: pendingMessage.id, status: "error", reason: error.message };
+    }
+}
+
+async function updateNotifFlag(
+    pendaftarId: string,
+    jenisNotif: NotifType
+): Promise<void> {
+    const flagMap: Partial<Record<NotifType, string>> = {
+        jadwal_belum: "notif_belum_jadwal_terkirim",
+        jadwal_tersedia: "notif_jadwal_tersedia_terkirim",
+        jadwal_langsung_tersedia: "notif_jadwal_tersedia_terkirim",
+        hasil_tes: "notif_hasil_tes_terkirim",
+    };
+
+    const flagColumn = flagMap[jenisNotif];
+    if (!flagColumn) return;
+
+    try {
+        await prisma.pendaftar.update({
+            where: { id: pendaftarId },
+            data: { [flagColumn]: true },
+        });
+    } catch (e) {
+        console.error(`Failed to update flag ${flagColumn}:`, e);
     }
 }
 
@@ -219,86 +332,202 @@ export async function processWhatsappQueue() {
 // LAYER 6: Natural Message Builders
 // ============================================================================
 
-const OPENINGS = [
-    "Assalamu'alaikum Warahmatullahi Wabarakatuh",
-];
+const OPENINGS = ["Assalamu'alaikum Warahmatullahi Wabarakatuh"];
 
 function pickOpening(): string {
     return OPENINGS[Math.floor(Math.random() * OPENINGS.length)];
 }
 
-export function buildMessageRegistrationSuccess(nama: string, nomor: string, jenjang: string) {
+export function buildMessageRegistrationSuccess(
+    nama: string,
+    nomor: string,
+    jenjang: string
+): string {
     return `🎉 *Pendaftaran Berhasil!*
 
 Assalamu'alaikum ${nama},
 
 Alhamdulillah, pendaftaran Anda di Proyek Al-Andalus (Demo) telah berhasil!
 
-Nomor Pendaftaran: ${nomor}
-Jenjang: ${jenjang}
+📋 *Detail Pendaftaran:*
+• Nomor Pendaftaran: ${nomor}
+• Jenjang: ${jenjang}
+• Nama: ${nama}
 
-Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar`;
+📝 *Langkah Selanjutnya:*
+Login ke dashboard untuk melengkapi biodata & upload dokumen.
+
+Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar
+
+Jazakumullahu khairan,
+Panitia PPDB Al-Andalus Demo`;
 }
 
-export function buildMessageDocumentVerified(nama: string, dokumenList: string) {
+export function buildMessageDocumentVerified(nama: string, dokumenList: string): string {
     return `✅ *Dokumen Diverifikasi*
-Assalamu'alaikum ${nama}, dokumen Anda telah diverifikasi.`;
+
+Assalamu'alaikum ${nama},
+
+Alhamdulillah, dokumen Anda telah diverifikasi dan *DITERIMA*.
+
+Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/undangan-seleksi
+
+Jazakumullahu khairan,
+Panitia PPDB Al-Andalus Demo`;
 }
 
-export function buildMessageDocumentRejected(nama: string, dokumenList: string, catatan: string) {
-    return `❌ *Dokumen Ditolak*\nCatatan: ${catatan}`;
+export function buildMessageDocumentRejected(nama: string, dokumenList: string, catatan: string): string {
+    return `❌ *Dokumen Perlu Diperbaiki*
+
+Assalamu'alaikum ${nama}, mohon maaf dokumen Anda perlu diperbaiki.
+
+📝 *Catatan:* ${catatan}
+
+Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/upload-berkas
+
+Jazakumullahu khairan,
+Panitia PPDB Al-Andalus Demo`;
 }
 
-export function buildMessagePaymentVerified(nama: string, jumlah: string) {
-    return `✅ *Pembayaran Diverifikasi*\nJumlah: ${jumlah}`;
+export function buildMessagePaymentVerified(nama: string, jumlah: string, metode: string, tanggal: string): string {
+    return `✅ *Pembayaran Diterima*
+
+Assalamu'alaikum ${nama}, Alhamdulillah pendaftaran Anda telah diverifikasi.
+
+Jazakumullahu khairan,
+Panitia PPDB Al-Andalus Demo`;
 }
 
-export function buildMessagePaymentRejected(nama: string, catatan: string) {
-    return `❌ *Pembayaran Ditolak*\nCatatan: ${catatan}`;
+export function buildMessagePaymentRejected(nama: string, catatan: string): string {
+    return `❌ *Pembayaran Perlu Diperbaiki*
+
+📝 *Catatan:* ${catatan}
+
+Jazakumullahu khairan,
+Panitia PPDB Al-Andalus Demo`;
 }
 
-export function buildMessageJadwalBelum(nama: string) {
-    return `Jadwal belum tersedia untuk ${nama}.`;
+export function buildMessageJadwalBelum(nama: string): string {
+    return `${pickOpening()} ${nama}, jadwal tes belum tersedia. Mohon bersabar.`;
 }
 
-export function buildMessageJadwalTersedia(nama: string) {
-    return `Alhamdulillah ${nama}, jadwal sudah tersedia!`;
+export function buildMessageJadwalTersedia(nama: string): string {
+    return `${pickOpening()} ${nama}, jadwal tes sudah tersedia! Silakan pilih di dashboard.`;
 }
 
-export function buildMessageJadwalLangsungTersedia(nama: string) {
-    return `Jadwal sudah tersedia dan bisa dipilih untuk ${nama}.`;
+export function buildMessageJadwalLangsungTersedia(nama: string): string {
+    return `${pickOpening()} ${nama}, jadwal tes sudah tersedia dan bisa langsung Anda pilih.`;
 }
 
-export function buildMessageKonfirmasiJadwal(nama: string, tgl: string, jam: string, loc: string, tipe: string) {
-    return `Konfirmasi: ${tipe} pada ${tgl} jam ${jam} di ${loc}.`;
+export function buildMessageKonfirmasiJadwal(
+    nama: string,
+    tanggal: string,
+    waktu: string,
+    lokasi: string,
+    jenisUjian: string
+): string {
+    return `${pickOpening()} ${nama}, Jadwal ${jenisUjian} Anda telah terkonfirmasi: ${tanggal} ${waktu} WIB.`;
 }
 
-export function buildMessageReminderH1(nama: string, tgl: string, jam: string, loc: string, tipe: string) {
-    return `Reminder H-1: ${tipe} besok pada ${tgl} jam ${jam}.`;
+export function buildMessageReminderH1(
+    nama: string,
+    tanggal: string,
+    waktu: string,
+    lokasi: string,
+    jenisUjian: string
+): string {
+    return `${pickOpening()} ${nama}, Pengingat jadwal ${jenisUjian} Anda: ${tanggal} ${waktu} WIB.`;
 }
 
-export function buildMessageReminderH0(nama: string, jam: string, loc: string, tipe: string) {
-    return `Reminder H-0: ${tipe} dimulai 1 jam lagi (jam ${jam}).`;
+export function buildMessageReminderH0(
+    nama: string,
+    waktu: string,
+    lokasi: string,
+    jenisUjian: string
+): string {
+    return `${pickOpening()} ${nama}, ⏰ *PENGINGAT: ${jenisUjian} dimulai 1 jam lagi!*`;
 }
 
-export function buildMessageHasilTes(nama: string) {
-    return `Hasil tes sudah tersedia untuk ${nama}.`;
+export function buildMessageHasilTes(nama: string): string {
+    return `${pickOpening()} ${nama}, Hasil tes seleksi Anda sudah tersedia. Silakan cek dashboard.`;
 }
 
-export function buildMessageKonfirmasiJadwalInterviewer(namaI: string, namaS: string, tgl: string, jam: string, loc: string, tipe: string, linkNilai?: string) {
-    return `Jadwal menguji baru: ${tipe} santri ${namaS} pada ${tgl} jam ${jam}. Link: ${linkNilai || "-"}`;
+export function buildMessageKonfirmasiJadwalInterviewer(
+    namaInterviewer: string,
+    namaSantri: string,
+    tanggal: string,
+    waktu: string,
+    lokasi: string,
+    jenisUjian: string,
+    inputNilaiLink?: string
+): string {
+    const title = (namaInterviewer || "").toLowerCase().includes("ustadzah") ? "Ustadzah" : "Ustadz";
+    return `${pickOpening()} ${title} ${namaInterviewer}, Jadwal ${jenisUjian} baru untuk santri ${namaSantri}: ${tanggal} ${waktu} WIB. Link: ${inputNilaiLink || "-"}`;
 }
 
-export function buildMessageReminderH1Santri(nama: string, hari: string, tgl: string, jam: string, loc: string, tipe: string) {
-    return `Reminder Santri H-1: ${tipe} pada ${hari}, ${tgl} jam ${jam}.`;
+export function buildMessageReminderH1Santri(
+    nama: string,
+    hari: string,
+    tanggal: string,
+    jam: string,
+    lokasi: string,
+    jenisUjian: string
+): string {
+    const finalJam = (jam || "").toLowerCase().includes("wib") ? jam : `${jam} WIB`;
+    const finalHari = (tanggal || "").toLowerCase().includes(hari.toLowerCase()) ? "" : `${hari}, `;
+
+    return `*PENGINGAT UJIAN SELEKSI*
+
+Assalamu'alaikum *${nama}*,
+
+📅 *Hari/Tanggal:* ${finalHari}${tanggal}
+⏰ *Waktu:* ${finalJam}
+
+---
+*Panitia PPDB Al-Andalus Demo*`;
 }
 
-export function buildMessageReminderH1Penguji(namaP: string, namaS: string, hari: string, tgl: string, jam: string, loc: string, tipe: string, linkNilai?: string) {
-    return `Reminder Penguji H-1: ${tipe} santri ${namaS} besok pada ${hari}, ${tgl} jam ${jam}. Link: ${linkNilai || "-"}`;
+export function buildMessageReminderH1Penguji(
+    namaPenguji: string,
+    namaSantri: string,
+    hari: string,
+    tanggal: string,
+    jam: string,
+    lokasi: string,
+    jenisUjian: string,
+    inputNilaiLink?: string
+): string {
+    const title = (namaPenguji || "").toLowerCase().includes("ustadzah") ? "Ustadzah" : "Ustadz";
+    const finalJam = (jam || "").toLowerCase().includes("wib") ? jam : `${jam} WIB`;
+    const finalHari = (tanggal || "").toLowerCase().includes(hari.toLowerCase()) ? "" : `${hari}, `;
+
+    return `*REMINDER JADWAL WAWANCARA*
+
+Assalamu'alaikum ${title} *${namaPenguji}*,
+
+👤 *Nama Santri:* ${namaSantri}
+📅 *Hari/Tanggal:* ${finalHari}${tanggal}
+⏰ *Waktu:* ${finalJam}
+📍 *Link Meet:* ${lokasi}
+🔗 *Input Hasil:* ${inputNilaiLink || "-"}
+
+---
+*Sistem PPDB Al-Andalus Demo*`;
 }
 
-export function buildMessagePembatalanJadwal(namaS: string, tipe: string, tgl: string, jam: string, alasan: string) {
-    return `Jadwal ${tipe} pada ${tgl} dibatalkan karena: ${alasan}.`;
+export function buildMessagePembatalanJadwal(
+    namaSantri: string,
+    jenisUjian: string,
+    tanggal: string,
+    jam: string,
+    alasan: string = "Ustadz Berhalangan Hadir"
+): string {
+    return `*PEMBATALAN JADWAL UJIAN*
+
+Jadwal ${jenisUjian} Anda pada ${tanggal} ${jam} WIB dibatalkan karena: ${alasan}.
+
+---
+*Panitia PPDB Al-Andalus Demo*`;
 }
 
 export async function getQueueStats() {

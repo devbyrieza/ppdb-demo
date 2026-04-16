@@ -89,6 +89,18 @@ export const PERMANENT_SLUGS: Record<string, string> = {
     "teguh": "Teguh"
 };
 
+/**
+ * Get slug by full name matching
+ */
+export function getSlugByName(fullName: string): string | null {
+    if (!fullName) return null;
+    const normalized = fullName.trim().toLowerCase();
+    const entry = Object.entries(PERMANENT_SLUGS).find(
+        ([_, name]) => name.toLowerCase() === normalized
+    );
+    return entry ? entry[0] : null;
+}
+
 // ============================================================================
 // MANUAL TINYURL MAPPING (Name -> Short URL)
 // ============================================================================
@@ -115,6 +127,19 @@ export function getManualTinyUrl(fullName: string): string | null {
     );
 
     return matchKey ? MANUAL_TINYURLS[matchKey] : null;
+}
+
+/**
+ * Get internal short link (permanent) for a slug
+ * Supports optional pendaftar number for deep-linking
+ */
+export function getPermanentAuthUrl(slug: string, pendaftarNomor?: string): string {
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://pesantren-alimam.com";
+    let url = `${baseUrl}/api/auth/short/${slug}`;
+    if (pendaftarNomor) {
+        url += `?p=${encodeURIComponent(pendaftarNomor)}`;
+    }
+    return url;
 }
 
 /**
