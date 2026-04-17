@@ -154,8 +154,11 @@ export default function PengujiDashboardLayout({
       <IdleTimeoutTracker />
       <div className="min-h-screen bg-surface-50 font-sans selection:bg-brand-blue-100 selection:text-brand-blue-900">
         
-        {/* Mobile Header - hamburger hanya ada di bottom nav, header hanya untuk branding */}
-        <header className="lg:hidden sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-surface-200 px-5 py-4 flex items-center gap-3">
+        {/* Mobile Header - branding only */}
+        <header 
+          data-ui-version="2"
+          className="lg:hidden sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-surface-200 px-5 py-4 flex items-center gap-3"
+        >
           <div className="w-9 h-9 rounded-xl bg-linear-to-br from-brand-blue-600 to-brand-blue-700 flex items-center justify-center text-white text-sm font-black shadow-md">
             UA
           </div>
