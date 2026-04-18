@@ -174,7 +174,7 @@ export default function FasilitasPage() {
               transition={{ delay: 0.1 }}
               className="section-subtitle"
             >
-              Sarana vital yang menjadi jantung aktivitas harian di <br className="hidden md:block" /> Pesantren Al-Andalus Ulul Albaab untuk kenyamanan dan kekhusyukan.
+              Sarana vital yang menjadi jantung aktivitas harian di <br className="hidden md:block" /> Pesantren Sistem PPDB Modern untuk kenyamanan dan kekhusyukan.
             </motion.p>
           </div>
 
@@ -196,7 +196,7 @@ export default function FasilitasPage() {
                     <Home className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
-                  <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-brand-blue-950 mb-6 leading-[1.1]">Masjid Jami' <br className="hidden sm:block" /> Ulul Albaab</h3>
+                  <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-brand-blue-950 mb-6 leading-[1.1]">Masjid Jami' <br className="hidden sm:block" /> PPDB</h3>
                   <p className="text-base sm:text-lg lg:text-xl text-brand-blue-950/70 mb-8 sm:mb-10 leading-relaxed font-medium">
                     Pusat peribadatan santri yang mampu menampung 1000 jamaah. Dilengkapi pendingin ruangan, karpet premium, dan sistem audio berkualitas tinggi.
                   </p>
@@ -234,7 +234,7 @@ export default function FasilitasPage() {
                   <div className="relative w-full h-full rounded-[2.5rem] sm:rounded-[3.2rem] overflow-hidden">
                     <Image
                       src="/images/masjid.webp"
-                      alt="Masjid Jami' Ulul Albaab"
+                      alt="Masjid Jami' PPDB"
                       fill
                       className="object-cover transition-transform duration-700 hover:scale-110"
                     />
@@ -446,7 +446,7 @@ export default function FasilitasPage() {
                   <div className="relative w-full h-full rounded-[2.5rem] sm:rounded-[3.2rem] overflow-hidden">
                     <Image
                       src="/images/kantor-ppdb-tamu.webp"
-                      alt="Kantor PPDB & Tamu"
+                      alt="Kantor PPDB PPDB"
                       fill
                       className="object-cover transition-transform duration-700 hover:scale-110"
                     />
@@ -712,7 +712,7 @@ export default function FasilitasPage() {
               viewport={{ once: true }}
               className="section-subtitle lg:ml-0"
             >
-              Lihat langsung suasana dan lingkungan Pesantren Al-Andalus Ulul Albaab dari berbagai sudut.
+              Lihat langsung suasana dan lingkungan Pesantren Sistem PPDB Modern dari berbagai sudut.
             </motion.p>
           </div>
 
@@ -730,13 +730,13 @@ export default function FasilitasPage() {
               >
                 <Image
                   src="/images/masjid.webp"
-                  alt="Masjid Jami' Ulul Albaab"
+                  alt="Masjid Jami' PPDB"
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
                 <div className="absolute bottom-6 md:bottom-8 left-6 md:left-8 right-6 md:right-8">
-                  <span className="text-white font-black text-2xl md:text-3xl drop-shadow-md">Masjid Jami' Ulul Albaab</span>
+                  <span className="text-white font-black text-2xl md:text-3xl drop-shadow-md">Masjid Jami' PPDB</span>
                   <p className="text-brand-blue-50/90 text-sm md:text-lg mt-1 md:mt-2 font-medium">Pusat peribadatan</p>
                 </div>
               </motion.div>
@@ -821,20 +821,20 @@ export default function FasilitasPage() {
                 </div>
               </motion.div>
             </div>
-
-            {/* Note Info Component using App Card Style */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.6 }}
-              className="mt-8 app-card bg-brand-blue-50 p-6 flex items-start gap-4 border border-brand-blue-100 max-w-2xl mx-auto"
+            
+             {/* Note Info Component using App Card Style */}
+             <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.6 }}
+                 className="mt-8 app-card bg-brand-blue-50 p-6 flex items-start gap-4 border border-brand-blue-100 max-w-2xl mx-auto"
             >
-              <div className="w-10 h-10 rounded-full bg-brand-blue-100 text-brand-blue-700 flex items-center justify-center shrink-0">
-                <Info className="w-5 h-5" />
-              </div>
-              <p className="text-sm font-medium text-ink-700">Masih banyak fasilitas pendukung lainnya di dalam Pesantren Al-Andalus Ulul Albaab. Silakan jadwalkan kunjungan untuk melihat langsung.</p>
-            </motion.div>
+                <div className="w-10 h-10 rounded-full bg-brand-blue-100 text-brand-blue-700 flex items-center justify-center shrink-0">
+                   <Info className="w-5 h-5" />
+                </div>
+                 <p className="text-sm font-medium text-ink-700">Masih banyak fasilitas pendukung lainnya di dalam Pesantren Sistem PPDB Modern. Silakan jadwalkan kunjungan untuk melihat langsung.</p>
+             </motion.div>
 
           </div>
         </Container>

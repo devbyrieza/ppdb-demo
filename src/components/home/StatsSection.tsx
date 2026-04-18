@@ -7,10 +7,10 @@ import { Container } from "@/components/layout/Container";
 import { Calendar, Users, GraduationCap, Award, TrendingUp, BookOpen } from 'lucide-react';
 
 const STATS = [
-  { id: 'years', label: 'Tahun Mengabdi', value: 30, icon: Calendar, color: 'brand-blue' as const },
-  { id: 'students', label: 'Pendaftar / Thn', value: 1200, icon: Users, color: 'brand-yellow' as const },
-  { id: 'graduates', label: 'Alumni Sukses', value: 500, icon: GraduationCap, color: 'gold' as const },
-  { id: 'programs', label: 'Program Unggulan', value: 12, icon: BookOpen, color: 'brand-blue' as const },
+  { id: 'batch', label: 'Angkatan Ke-1', value: 1, icon: Calendar, color: 'brand-blue' as const, suffix: '', sublabel: 'TA 2026/2027' },
+  { id: 'quality', label: 'Standar Global', value: 100, icon: Award, color: 'brand-yellow' as const, suffix: '%', sublabel: 'Kurikulum PPDB Modern IIBS' },
+  { id: 'levels', label: 'Jenjang Tersedia', value: 2, icon: GraduationCap, color: 'gold' as const, suffix: '', sublabel: 'MTs · IL' },
+  { id: 'quota', label: 'Kuota Per Jenjang', value: 25, icon: Users, color: 'brand-blue' as const, suffix: '', sublabel: 'Santri (Terbatas)' },
 ] as const;
 
 export default function StatsSection() {
@@ -81,13 +81,19 @@ export default function StatsSection() {
                   <motion.div
                     className="text-4xl md:text-5xl font-black text-brand-blue-700 mb-2 tracking-tighter"
                   >
-                    {counters[stat.id as keyof typeof counters]}<span className="text-brand-blue-600">+</span>
+                    {counters[stat.id as keyof typeof counters]}
+                    {stat.suffix && <span className="text-brand-blue-600 ml-0.5">{stat.suffix}</span>}
                   </motion.div>
                 </div>
 
                 <p className="text-[10px] md:text-xs font-bold text-ink-500 uppercase tracking-widest mt-1">
                   {stat.label}
                 </p>
+                {stat.sublabel && (
+                  <p className="text-[9px] md:text-[10px] font-semibold text-ink-400 tracking-wide mt-0.5">
+                    {stat.sublabel}
+                  </p>
+                )}
 
                 {/* Subtle underline decoration */}
                 <div className="mt-4 w-6 h-1 bg-cream-200 rounded-full group-hover:w-12 group-hover:bg-maroon-400 transition-all duration-500" />

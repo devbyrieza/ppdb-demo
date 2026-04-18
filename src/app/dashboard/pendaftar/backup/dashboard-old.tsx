@@ -31,7 +31,7 @@ export default function DashboardPendaftarPage() {
               <h1 className="text-2xl font-black text-stone-900">
                 Dashboard Pendaftar
               </h1>
-              <p className="text-sm text-stone-600">Ponpes Al-Andalus Ulul Albaab</p>
+              <p className="text-sm text-stone-600">Ponpes Sistem PPDB Modern</p>
             </div>
             <button
               onClick={handleLogout}

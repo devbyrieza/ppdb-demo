@@ -343,7 +343,7 @@ interface InputFieldProps {
   placeholder?: string;
   required?: boolean;
   disabled?: boolean;
-  options?: string[];
+  options?: (string | { label: string; value: string })[];
   maxLength?: number;
   inputFilter?: 'letters' | 'numbers';
 }
@@ -397,11 +397,15 @@ function InputField({
             className={`${baseInputClass} appearance-none cursor-pointer`}
           >
             <option value="" disabled={value !== ""}>Pilih {label}</option>
-            {options.map((opt) => (
-              <option key={opt} value={opt}>
-                {opt}
-              </option>
-            ))}
+            {options.map((opt) => {
+              const label = typeof opt === "string" ? opt : opt.label;
+              const val = typeof opt === "string" ? opt : opt.value;
+              return (
+                <option key={val} value={val}>
+                  {label}
+                </option>
+              );
+            })}
           </select>
           <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-400 pointer-events-none" />
         </div>
@@ -888,7 +892,7 @@ export default function DataLengkapForm({ onSuccess }: { onSuccess?: () => void 
                     required
                   />
                   <InputField label="Tanggal Lahir" name="tanggal_lahir" value={formData.santri.tanggal_lahir} onChange={(v) => updateSantri("tanggal_lahir", v)} type="date" required />
-                  <InputField label="Jenis Kelamin" name="jenis_kelamin" value={formData.santri.jenis_kelamin} onChange={(v) => updateSantri("jenis_kelamin", v)} options={["Laki-laki", "Perempuan"]} required />
+                  <InputField label="Jenis Kelamin" name="jenis_kelamin" value={formData.santri.jenis_kelamin} onChange={(v) => updateSantri("jenis_kelamin", v)} options={[{ label: "Laki-laki", value: "L" }, { label: "Perempuan", value: "P" }]} required />
                   <InputField
                     label="Kewarganegaraan"
                     name="kewarganegaraan"

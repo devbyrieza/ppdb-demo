@@ -17,6 +17,19 @@ import {
     buildMessageJadwalLangsungTersedia,
 } from "@/lib/whatsapp-queue";
 
+function getExamCategory(title: string): string {
+    const t = title.toLowerCase();
+    if (t.includes('quran') || t.includes('qur\'an')) return 'QURAN';
+    if (t.includes('calsan') || t.includes('santri')) return 'W_SANTRI';
+    if (t.includes('cawalsan') || t.includes('ortu') || t.includes('orang tua')) return 'W_ORTU';
+    return 'OTHER';
+}
+
+function sanitizeTitle(title: string): string {
+    // Remove anything in parentheses (e.g. examiner names)
+    return title.replace(/\s*\(.*?\)\s*/g, '').trim();
+}
+
 async function getSession() {
     const cookieStore = await cookies();
     const sessionCookie = cookieStore.get("app_session");
@@ -37,13 +50,14 @@ export async function GET() {
     try {
         const pendaftarId = session.id;
 
-        // 1. Fetch pendaftar with notification flags
+        // 1. Fetch pendaftar with notification flags and status
         const pendaftar = await prisma.pendaftar.findUnique({
             where: { id: pendaftarId },
             select: {
                 id: true,
                 nama_lengkap: true,
                 no_hp: true,
+                status_pendaftaran: true,
                 notif_belum_jadwal_terkirim: true,
                 notif_jadwal_tersedia_terkirim: true,
                 notif_hasil_tes_terkirim: true,
@@ -55,6 +69,20 @@ export async function GET() {
                 { error: "Data pendaftar tidak ditemukan" },
                 { status: 404 }
             );
+        }
+
+        // --- ACCESS GUARD: Only allow if docs are verified ---
+        const ALLOWED_STATUSES = ['docs_verified', 'scheduled', 'tested', 'announced', 'accepted', 'enrolled'];
+        const isLocked = !ALLOWED_STATUSES.includes(pendaftar.status_pendaftaran || '');
+
+        if (isLocked) {
+            return NextResponse.json({
+                data: {
+                    locked: true,
+                    message: "Tahap Seleksi & Tes Online akan terbuka secara otomatis setelah seluruh dokumen Anda diverifikasi oleh Admin.",
+                    current_status: pendaftar.status_pendaftaran
+                }
+            });
         }
 
         // 2. Fetch Grup A — Online test completion status
@@ -124,7 +152,11 @@ export async function GET() {
         const hasGrupBSessions = availableSessions.length > 0;
 
         // 6. Trigger WhatsApp notifications (flag-guarded, async, non-blocking)
-        if (pendaftar.no_hp) {
+        // GUARD: Only notify if they have exactly ZERO existing schedules (past or future)
+        // EXTRA GUARD: Only notify if status is 'paid' or 'docs_verified' (prevent 'tested'/'scheduled' alerts)
+        const isEligibleForNotif = ['paid', 'docs_verified'].includes(pendaftar.status_pendaftaran);
+
+        if (pendaftar.no_hp && bookedJadwal.length === 0 && isEligibleForNotif) {
             if (!hasGrupBSessions && !pendaftar.notif_belum_jadwal_terkirim) {
                 // Kondisi 1: No sessions yet, send "jadwal belum tersedia"
                 const message = buildMessageJadwalBelum(pendaftar.nama_lengkap);
@@ -158,7 +190,9 @@ export async function GET() {
             .filter((s) => s._count.bookings < s.quota)
             .map((s) => ({
                 id: s.id,
-                title: s.title,
+                title: sanitizeTitle(s.title || "Seleksi Santri Baru"),
+                raw_title: s.title, // Keep for reference if needed
+                category: getExamCategory(s.title || ""),
                 start_time: s.start_time,
                 end_time: s.end_time,
                 quota: s.quota,
@@ -169,19 +203,23 @@ export async function GET() {
             }));
 
         // Transform booked jadwal
-        const booked = bookedJadwal.map((j) => ({
-            id: j.id,
-            jenis_ujian: j.exam_session?.title || "Seleksi Santri Baru",
-            tanggal_ujian: j.tanggal_ujian,
-            waktu_mulai: j.exam_session?.start_time || j.waktu_mulai_santri,
-            waktu_selesai: j.exam_session?.end_time || j.waktu_selesai_santri,
-            lokasi: j.exam_session?.location || j.tempat_santri,
-            keterangan: j.catatan || j.exam_session?.notes,
-            online_test_link: j.online_test_link,
-            status_santri: j.status_santri,
-            status_quran: j.status_quran,
-            status_ortu: j.status_ortu,
-        }));
+        const booked = bookedJadwal.map((j) => {
+            const rawTitle = j.exam_session?.title || "Seleksi Santri Baru";
+            return {
+                id: j.id,
+                jenis_ujian: sanitizeTitle(rawTitle),
+                category: getExamCategory(rawTitle),
+                tanggal_ujian: j.tanggal_ujian,
+                waktu_mulai: j.exam_session?.start_time || j.waktu_mulai_santri,
+                waktu_selesai: j.exam_session?.end_time || j.waktu_selesai_santri,
+                lokasi: j.exam_session?.location || j.tempat_santri,
+                keterangan: j.catatan || j.exam_session?.notes,
+                online_test_link: j.online_test_link,
+                status_santri: j.status_santri,
+                status_quran: j.status_quran,
+                status_ortu: j.status_ortu,
+            };
+        });
 
         // Calculate overall progress
         // Grup B: only count as completed when status is "completed", not just "scheduled"

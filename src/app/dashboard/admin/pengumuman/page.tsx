@@ -14,17 +14,7 @@ export default function PengumumanPage() {
     status: "scheduled", // Default to those who have taken exams/interview
   });
 
-  const [sendingProgress, setSendingProgress] = useState<{
-    active: boolean;
-    curr: number;
-    total: number;
-    logs: string[];
-  }>({
-    active: false,
-    curr: 0,
-    total: 0,
-    logs: []
-  });
+  const [isPublishing, setIsPublishing] = useState(false);
 
   const toTitleCase = (str: string) => {
     if (!str) return "";
@@ -81,10 +71,10 @@ export default function PengumumanPage() {
   const handlePublish = async () => {
     if (selectedIds.length === 0) return;
 
-    if (!confirm(`Apakah Anda yakin ingin meluluskan ${selectedIds.length} santri ini? Notifikasi WA akan dikirim.`)) return;
+    if (!confirm(`Apakah Anda yakin ingin meluluskan ${selectedIds.length} santri ini? Status akan diperbarui dan pengumuman akan masuk antrean WhatsApp otomatis.`)) return;
 
     try {
-      setLoading(true);
+      setIsPublishing(true);
       const res = await fetch("/api/admin/pengumuman/publish", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -97,42 +87,7 @@ export default function PengumumanPage() {
 
       const result = await res.json();
       if (res.ok) {
-        // Logic Batch Notification
-        if (result.queue && result.queue.length > 0) {
-          setSendingProgress({ active: true, curr: 0, total: result.queue.length, logs: ["Mulai mengirim pengumuman..."] });
-
-          let successParams = 0;
-          for (let i = 0; i < result.queue.length; i++) {
-            const item = result.queue[i];
-            setSendingProgress(prev => ({
-              ...prev,
-              curr: i + 1,
-              logs: [`Mengirim ke ${item.nama}...`, ...prev.logs.slice(0, 3)]
-            }));
-
-            try {
-              await fetch("/api/admin/notifications/send", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  type: "status",
-                  ...item
-                })
-              });
-              successParams++;
-            } catch (e) { console.error(e); }
-
-            // Jeda 4 Detik
-            if (i < result.queue.length - 1) {
-              await new Promise(r => setTimeout(r, 4000));
-            }
-          }
-          toast.success(`Selesai! ${successParams} notifikasi terkirim.`);
-          setSendingProgress({ active: false, curr: 0, total: 0, logs: [] });
-        } else {
-          toast.success(`Berhasil update status ${result.updated} santri (Tanpa Notifikasi)`);
-        }
-
+        toast.success(result.message || `Berhasil! ${result.queued} pengumuman sedang mengantri untuk dikirim.`);
         fetchCandidates();
         setSelectedIds([]);
       } else {
@@ -141,7 +96,7 @@ export default function PengumumanPage() {
     } catch (error) {
       toast.error("Terjadi kesalahan sistem");
     } finally {
-      setLoading(false);
+      setIsPublishing(false);
     }
   };
 
@@ -195,10 +150,10 @@ export default function PengumumanPage() {
 
         <button
           onClick={handlePublish}
-          disabled={selectedIds.length === 0 || loading}
+          disabled={selectedIds.length === 0 || isPublishing}
           className="flex items-center gap-2 px-6 py-2.5 bg-green-600 hover:bg-green-700 disabled:bg-stone-300 text-white rounded-xl font-bold transition-all shadow-lg shadow-green-200 disabled:shadow-none"
         >
-          {loading ? "Memproses..." : (
+          {isPublishing ? "Memproses..." : (
             <>
               <Send className="w-4 h-4" />
               Umumkan Kelulusan ({selectedIds.length})
@@ -207,9 +162,69 @@ export default function PengumumanPage() {
         </button>
       </div>
 
-      {/* Table */}
+      {/* Table & Mobile View */}
       <div className="bg-white rounded-xl shadow-lg border border-stone-200 overflow-hidden">
-        <div className="overflow-x-auto">
+        {/* Mobile View: Cards */}
+        <div className="md:hidden divide-y divide-stone-100 select-none">
+          {candidates.length === 0 ? (
+            <div className="px-6 py-12 text-center text-stone-500 italic">
+              Tidak ada data kandidat sesuai filter
+            </div>
+          ) : (
+            candidates.map((c) => (
+              <div 
+                key={c.id} 
+                onClick={() => handleSelectOne(c.id)}
+                className={`p-4 flex items-start gap-4 active:bg-stone-50 transition-colors ${selectedIds.includes(c.id) ? 'bg-green-50/50' : ''}`}
+              >
+                <div className="mt-1" onClick={(e) => e.stopPropagation()}>
+                  <input
+                    type="checkbox"
+                    className="w-5 h-5 rounded border-stone-300 text-green-600 focus:ring-green-500"
+                    checked={selectedIds.includes(c.id)}
+                    onChange={() => handleSelectOne(c.id)}
+                  />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex justify-between items-start mb-1 gap-2">
+                    <h4 className="font-black text-stone-900 leading-tight uppercase text-sm truncate">
+                      {toTitleCase(c.nama_lengkap)}
+                    </h4>
+                    <span className="px-2 py-0.5 bg-stone-100 text-stone-600 rounded text-[9px] font-black uppercase shrink-0">
+                      {c.jenjang}
+                    </span>
+                  </div>
+                  <p className="text-[10px] font-mono font-bold text-stone-400 tracking-tighter mb-2">{c.nomor_pendaftaran}</p>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="flex flex-col">
+                      <span className="text-[9px] font-black text-stone-300 uppercase tracking-widest leading-none mb-1">Total Nilai</span>
+                      <span className="text-sm font-black text-stone-700">{c.nilai_ujian?.nilai_total || "-"}</span>
+                    </div>
+                    <div>
+                      {c.status_pendaftaran === 'accepted' ? (
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-green-100 text-green-700 text-[10px] font-black uppercase">
+                          <CheckCircle2 className="w-3 h-3" /> Lulus
+                        </span>
+                      ) : c.status_pendaftaran === 'scheduled' ? (
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 text-[10px] font-black uppercase">
+                          Siap
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-stone-100 text-stone-600 text-[10px] font-black uppercase">
+                          {c.status_pendaftaran}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Desktop View: Table */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full">
             <thead className="bg-stone-50 border-b border-stone-200">
               <tr>
@@ -281,34 +296,6 @@ export default function PengumumanPage() {
           </table>
         </div>
       </div>
-
-      {/* Sending Progress Modal */}
-      {
-        sendingProgress.active && (
-          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-ink-900/80 backdrop-blur-sm">
-            <div className="bg-white rounded-3xl w-full max-w-md shadow-2xl border border-white p-8 text-center animate-pulse">
-              <Loader2 className="w-12 h-12 text-purple-600 animate-spin mx-auto mb-4" />
-              <h2 className="text-2xl font-black text-ink-900 mb-2">Mengirim Pengumuman...</h2>
-              <p className="font-bold text-red-500 mb-6 uppercase tracking-widest text-xs">JANGAN TUTUP HALAMAN INI!</p>
-
-              <div className="w-full bg-cream-100 h-4 rounded-full overflow-hidden mb-4 border border-ink-100">
-                <div
-                  className="h-full bg-gradient-to-r from-green-500 to-emerald-600 transition-all duration-500 ease-out"
-                  style={{ width: `${(sendingProgress.curr / sendingProgress.total) * 100}%` }}
-                ></div>
-              </div>
-
-              <p className="font-mono font-bold text-ink-500 mb-4">{sendingProgress.curr} / {sendingProgress.total}</p>
-
-              <div className="bg-cream-50 rounded-xl p-4 text-left h-32 overflow-hidden flex flex-col-reverse gap-1 border border-ink-100">
-                {sendingProgress.logs.map((log, idx) => (
-                  <p key={idx} className="text-xs font-mono text-ink-400 truncate">{log}</p>
-                ))}
-              </div>
-            </div>
-          </div>
-        )
-      }
     </div >
   );
 }

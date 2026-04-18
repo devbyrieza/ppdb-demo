@@ -29,14 +29,15 @@ export async function POST(request: Request) {
         const {
             startDate, // ISO String (e.g. 2026-04-01)
             endDate,   // ISO String (e.g. 2026-04-30)
-            daysOfWeek, // Array of numbers [0..6] (0=Ahad, 1=Senin, ...)
-            timeSlots, // Array of { start: "HH:mm", end: "HH:mm" }
+            daysOfWeek, // Legacy: Array of numbers [0..6]
+            timeSlots, // Legacy: Array of { start: "HH:mm", end: "HH:mm" }
+            daySlots, // New: Record<number, { start: string, end: string }[]>
             title,
             location,
             notes
         } = body;
 
-        if (!startDate || !endDate || !daysOfWeek || !timeSlots || timeSlots.length === 0) {
+        if (!startDate || !endDate || (!daySlots && (!daysOfWeek || !timeSlots))) {
             return NextResponse.json({ error: "Data tidak lengkap" }, { status: 400 });
         }
 
@@ -66,14 +67,23 @@ export async function POST(request: Request) {
         while (currentDate <= end) {
             const dayOfWeek = currentDate.getDay();
             
-            if (daysOfWeek.includes(dayOfWeek)) {
+            // Logic for day-specific slots
+            let currentDaySlots = [];
+            if (daySlots && daySlots[dayOfWeek]) {
+                currentDaySlots = daySlots[dayOfWeek];
+            } else if (daysOfWeek && daysOfWeek.includes(dayOfWeek) && timeSlots) {
+                // Backward compatibility
+                currentDaySlots = timeSlots;
+            }
+
+            if (currentDaySlots.length > 0) {
                 // Formatting date part: YYYY-MM-DD
                 const dateStr = currentDate.toISOString().split('T')[0];
 
-                for (const slot of timeSlots) {
-                    // Combine dateStr + slot.start to create full ISO
-                    const startISO = `${dateStr}T${slot.start}:00`;
-                    const endISO = `${dateStr}T${slot.end}:00`;
+                for (const slot of currentDaySlots) {
+                    // Combine dateStr + slot.start to create full ISO in WIB (+07:00)
+                    const startISO = `${dateStr}T${slot.start}:00+07:00`;
+                    const endISO = `${dateStr}T${slot.end}:00+07:00`;
 
                     sessionsToCreate.push({
                         title: finalTitle,

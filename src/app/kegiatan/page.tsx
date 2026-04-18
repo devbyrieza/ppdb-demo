@@ -86,7 +86,7 @@ interface JadwalHarian {
   iconColor: string;
 }
 
-interface KegiatanMingguan {
+interface KegiatanPekanan {
   title: string;
   desc: string;
   detail: string;
@@ -264,7 +264,7 @@ const WeeklyActivityCard = ({
   activity,
   index,
 }: {
-  activity: KegiatanMingguan;
+  activity: KegiatanPekanan;
   index: number;
 }) => (
    <motion.div
@@ -394,7 +394,7 @@ export default function KegiatanPage() {
       stats: [
         { label: "Pilihan Ekskul", value: "10+" },
         { label: "Pelatih Ahli", value: "15+" },
-        { label: "Jam/Minggu", value: "6+" },
+        { label: "Jam/Pekan", value: "6+" },
       ],
       results: [
         { icon: Trophy, text: "Juara Kompetisi Sains & Ketangkasan Fisik" },
@@ -453,7 +453,7 @@ export default function KegiatanPage() {
     },
   ];
 
-  const kegiatanMingguan: KegiatanMingguan[] = [
+  const kegiatanPekanan: KegiatanPekanan[] = [
     {
       title: "Sholat Berjama'ah",
       desc: "5 Waktu Disiplin",
@@ -651,7 +651,7 @@ export default function KegiatanPage() {
         </Container>
       </section>
 
-      {/* 5. Weekly Program */}
+      {/* 5. Weekly Program (Pekanan) */}
       <section className="py-24 md:py-32">
         <Container>
           <div className="text-center max-w-3xl mx-auto mb-20">
@@ -659,12 +659,12 @@ export default function KegiatanPage() {
               Kegiatan Penunjang
             </h2>
             <p className="text-xl text-ink-600 font-medium leading-relaxed">
-              Aktivitas rutin mingguan dan bulanan yang dirancang untuk mematangkan <span className="text-brand-blue-600 font-bold uppercase tracking-tight">keterampilan non-teknis</span> dan pengalaman santri.
+              Aktivitas rutin pekanan dan bulanan yang dirancang untuk mematangkan <span className="text-brand-blue-600 font-bold uppercase tracking-tight">keterampilan non-teknis</span> dan pengalaman santri.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {kegiatanMingguan.map((activity, idx) => (
+            {kegiatanPekanan.map((activity, idx) => (
               <WeeklyActivityCard key={idx} activity={activity} index={idx} />
             ))}
           </div>

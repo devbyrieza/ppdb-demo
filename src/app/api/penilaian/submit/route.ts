@@ -59,6 +59,22 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
         }
 
+        // --- ACCESS GUARD: Check pendaftar status ---
+        // Super admin can bypass, but examiners/others must wait for verification
+        if (!isSuper) {
+            const pendaftar = await prisma.pendaftar.findUnique({
+                where: { id: pendaftar_id },
+                select: { status_pendaftaran: true }
+            });
+
+            const ALLOWED_STATUSES = ['docs_verified', 'scheduled', 'tested', 'announced', 'accepted', 'enrolled'];
+            if (!pendaftar || !ALLOWED_STATUSES.includes(pendaftar.status_pendaftaran || '')) {
+                return NextResponse.json({ 
+                    error: 'Forbidden: Input nilai ditolak karena pendaftar belum berstatus "Terverifikasi Berkas".' 
+                }, { status: 403 });
+            }
+        }
+
         // Determine numeric score to save
         let numericScore = score;
         if (grade && (score === undefined || score === null)) {

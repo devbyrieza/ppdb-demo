@@ -53,7 +53,11 @@ export default function PengujiDashboardLayout({
         setPengujiName(name);
         setUserId(sessionData.session?.id || "");
         setUserRole(sessionData.session?.role || "");
-        setAvailableRoles(sessionData.availableRoles || []);
+        
+        // Debug: log available roles
+        const roles = sessionData.availableRoles || [];
+        console.log("[Penguji Layout] Available roles:", roles);
+        setAvailableRoles(roles);
       } catch (error) {
         console.error("Error fetching penguji data:", error);
       } finally {
@@ -142,7 +146,7 @@ export default function PengujiDashboardLayout({
               <Shield className="w-6 h-6 text-brand-blue-600" />
             </div>
           </div>
-          <h2 className="text-xl font-black text-ink-950 mb-2">Ulul Albaab</h2>
+          <h2 className="text-xl font-black text-ink-950 mb-2">PPDB</h2>
           <p className="text-ink-500 text-sm font-medium animate-pulse">Menghubungkan ke sistem seleksi...</p>
         </div>
       </div>
@@ -154,15 +158,17 @@ export default function PengujiDashboardLayout({
       <IdleTimeoutTracker />
       <div className="min-h-screen bg-surface-50 font-sans selection:bg-brand-blue-100 selection:text-brand-blue-900">
         
-        {/* Mobile Header - branding only */}
+        {/* Mobile Header - branding only, NO hamburger */}
         <header 
           data-ui-version="2"
-          className="lg:hidden sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-surface-200 px-5 py-4 flex items-center gap-3"
+          className="lg:hidden sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-surface-200 px-5 py-4 flex items-center justify-center"
         >
-          <div className="w-9 h-9 rounded-xl bg-linear-to-br from-brand-blue-600 to-brand-blue-700 flex items-center justify-center text-white text-sm font-black shadow-md">
-            UA
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-linear-to-br from-brand-blue-600 to-brand-blue-700 flex items-center justify-center text-white text-sm font-black shadow-md">
+              <ShieldCheck className="w-4 h-4" />
+            </div>
+            <span className="font-black text-ink-950 tracking-tight leading-none text-sm">Seleksi Panel</span>
           </div>
-          <span className="font-black text-ink-950 tracking-tight leading-none text-base">Seleksi Panel</span>
         </header>
 
         <div className="flex relative">
@@ -177,7 +183,7 @@ export default function PengujiDashboardLayout({
                   </div>
                   <div>
                     <h1 className="font-black text-xl text-ink-950 leading-none tracking-tight">Seleksi <span className="text-brand-blue-600">Panel</span></h1>
-                    <p className="text-[10px] uppercase tracking-widest font-black text-brand-yellow-600 mt-1">Ulul Albaab</p>
+                    <p className="text-[10px] uppercase tracking-widest font-black text-brand-yellow-600 mt-1">PPDB</p>
                   </div>
                 </div>
               </div>
@@ -260,7 +266,7 @@ export default function PengujiDashboardLayout({
                       <div className="w-8 h-8 rounded-lg bg-linear-to-br from-brand-blue-600 to-brand-blue-700 flex items-center justify-center text-white shadow-md">
                         <ShieldCheck className="w-5 h-5" />
                       </div>
-                      <span className="font-black text-ink-950">Tim Seleksi</span>
+                      <span className="font-black text-ink-950">Seleksi Panel</span>
                     </div>
                     <button onClick={() => setSidebarOpen(false)} className="p-2 hover:bg-surface-100 rounded-xl">
                       <X className="w-5 h-5 text-ink-400" />
@@ -282,10 +288,10 @@ export default function PengujiDashboardLayout({
                     <SidebarNav />
                   </div>
 
-                  {/* Switch Role - hanya tampil untuk multi-role */}
-                  {availableRoles.length > 1 && (
-                    <div className="mt-4 pt-4 border-t border-surface-100">
-                      <p className="text-[10px] font-bold text-ink-400 uppercase tracking-widest mb-2 pl-1">Ganti Role</p>
+                  {/* Switch Role - SELALU tampilkan di mobile untuk akses mudah */}
+                  <div className="mt-4 pt-4 border-t border-surface-100">
+                    <p className="text-[10px] font-bold text-ink-400 uppercase tracking-widest mb-2 pl-1">Role</p>
+                    {availableRoles && availableRoles.length > 1 ? (
                       <select
                         value={userRole}
                         onChange={handleRoleSwitch}
@@ -295,8 +301,12 @@ export default function PengujiDashboardLayout({
                           <option key={role} value={role}>{ROLE_LABELS[role as UserRole] || role}</option>
                         ))}
                       </select>
-                    </div>
-                  )}
+                    ) : (
+                      <div className="w-full bg-brand-blue-50 border border-brand-blue-100 text-xs font-bold text-brand-blue-900 rounded-xl py-2.5 px-3">
+                        {ROLE_LABELS[userRole as UserRole] || userRole || "Penguji"}
+                      </div>
+                    )}
+                  </div>
 
                   <button
                     onClick={handleLogout}

@@ -1,161 +1,134 @@
-import { prisma } from "@/lib/prisma";
-import { notifyAllExamsComplete } from "@/lib/wablas";
+import { prisma } from "./prisma";
+import { notifyAllExamsComplete } from "./wablas";
 
 /**
- * Utility to manage and update exam component completion states.
- * Logic ported from Al-Imam reference project.
- */
-
-interface ExamCompletionResult {
-    santri: boolean;
-    quran: boolean;
-    ortu: boolean;
-    isAllComplete: boolean;
-}
-
-/**
- * Checks if all exam components (Santri, Quran, Ortu) are marked as completed 
- * across ANY jadwal records for a student.
- */
-export async function checkStudentExamCompletion(pendaftarId: string): Promise<ExamCompletionResult> {
-    const schedules = await prisma.jadwalUjian.findMany({
-        where: { pendaftar_id: pendaftarId },
-        select: {
-            status_santri: true,
-            status_quran: true,
-            status_ortu: true,
-            penguji_santri_id: true,
-            penguji_quran_id: true,
-            penguji_ortu_id: true
-        }
-    });
-
-    // A component is "complete" if it's marked 'completed' OR if it was never assigned
-    const result = {
-        santri: schedules.every(s => !s.penguji_santri_id || s.status_santri === 'completed'),
-        quran: schedules.every(s => !s.penguji_quran_id || s.status_quran === 'completed'),
-        ortu: schedules.every(s => !s.penguji_ortu_id || s.status_ortu === 'completed'),
-    };
-
-    return {
-        ...result,
-        isAllComplete: result.santri && result.quran && result.ortu
-    };
-}
-
-/**
- * Marks a specific component as complete for a student.
- * If all components are then finished, triggers the 'All Exams Complete' notification.
+ * Utility to mark a specific exam component as complete and trigger pendaftar status update if all done.
  */
 export async function markExamComponentAsComplete({
     jadwalId,
     userId,
     componentType
 }: {
-    jadwalId: string,
-    userId: string,
-    componentType?: 'santri' | 'quran' | 'ortu'
+    jadwalId: string;
+    userId: string;
+    componentType?: 'santri' | 'quran' | 'ortu';
 }) {
-    console.log(`[exam-status] Marking ${componentType || 'assigned component'} for schedule ${jadwalId} as complete...`);
-
-    // 1. Fetch current jadwal
-    const currentJadwal = await prisma.jadwalUjian.findUnique({
+    // 1. Get Jadwal
+    const jadwal = await prisma.jadwalUjian.findUnique({
         where: { id: jadwalId },
-        select: {
-            pendaftar_id: true,
-            penguji_santri_id: true,
-            penguji_quran_id: true,
-            penguji_ortu_id: true
+        include: {
+            pendaftar: {
+                select: {
+                    id: true,
+                    nama_lengkap: true,
+                    no_hp: true,
+                    orang_tua: { select: { no_hp_ayah: true, no_hp_ibu: true } }
+                }
+            }
         }
     });
 
-    if (!currentJadwal) throw new Error("Jadwal not found");
+    if (!jadwal) throw new Error("Jadwal not found");
 
     // 2. Determine what to update
-    const updateData: any = {};
+    const updates: any = {};
+    let updatedField = "";
+
+    // If componentType is provided, prioritize it (useful for backend automation where we know what's being saved)
     if (componentType) {
-        if (componentType === 'santri') updateData.status_santri = 'completed';
-        else if (componentType === 'quran') updateData.status_quran = 'completed';
-        else if (componentType === 'ortu') updateData.status_ortu = 'completed';
+        if (componentType === 'santri') {
+            updates.status_santri = "completed";
+            updatedField = "Wawancara Calsan";
+        } else if (componentType === 'quran') {
+            updates.status_quran = "completed";
+            updatedField = "Tes Al-Qur'an";
+        } else if (componentType === 'ortu') {
+            updates.status_ortu = "completed";
+            updatedField = "Wawancara Cawalsan";
+        }
     } else {
-        // Fallback to auto-detection based on userId
-        if (currentJadwal.penguji_santri_id === userId) updateData.status_santri = 'completed';
-        if (currentJadwal.penguji_quran_id === userId) updateData.status_quran = 'completed';
-        if (currentJadwal.penguji_ortu_id === userId) updateData.status_ortu = 'completed';
-    }
-
-    if (Object.keys(updateData).length === 0) {
-        console.warn(`[exam-status] Nothing to update for user ${userId} on schedule ${jadwalId}`);
-        return { isAllComplete: false };
-    }
-
-    await prisma.jadwalUjian.update({
-        where: { id: jadwalId },
-        data: updateData
-    });
-
-    // 3. Update the pendaftar status to 'tested' (Telah Diuji)
-    await prisma.pendaftar.update({
-        where: { id: currentJadwal.pendaftar_id },
-        data: { status_pendaftaran: 'tested' }
-    });
-
-    // 4. Check if this was the last component needed
-    const { isAllComplete } = await checkStudentExamCompletion(currentJadwal.pendaftar_id);
-
-    if (isAllComplete) {
-        console.log(`[exam-status] ALL components complete for ${currentJadwal.pendaftar_id}. Triggering notification...`);
-        
-        // Fetch student details for notification
-        const student = await prisma.pendaftar.findUnique({
-            where: { id: currentJadwal.pendaftar_id },
-            select: {
-                nama_lengkap: true,
-                no_hp: true,
-                nomor_pendaftaran: true
-            }
-        });
-
-        if (student && student.no_hp) {
-            try {
-                await notifyAllExamsComplete({
-                    phone: student.no_hp,
-                    nama: student.nama_lengkap
-                });
-                console.log(`[exam-status] Notification sent successfully to ${student.no_hp}`);
-            } catch (err) {
-                console.error(`[exam-status] Failed to send notification:`, err);
+        // Fallback to manual check (logic from original /complete endpoint)
+        if (jadwal.penguji_santri_id === userId) {
+            updates.status_santri = "completed";
+            updatedField = "Wawancara Calsan";
+        } else if (jadwal.penguji_quran_id === userId) {
+            updates.status_quran = "completed";
+            updatedField = "Tes Al-Qur'an";
+        } else if (jadwal.penguji_ortu_id === userId) {
+            updates.status_ortu = "completed";
+            updatedField = "Wawancara Cawalsan";
+        } else {
+            // Check session creator fallback
+            const sess = await prisma.examSession.findFirst({
+                where: { id: jadwal.exam_session_id ?? undefined },
+                select: { created_by: true, title: true }
+            });
+            if (sess && sess.created_by === userId) {
+                const title = (sess.title || "").toLowerCase();
+                if (title.includes("qur") || title.includes("quran")) {
+                    updates.status_quran = "completed";
+                    updates.penguji_quran_id = userId; 
+                    updatedField = "Tes Al-Qur'an";
+                } else if (title.includes("calsan") || title.includes("santri")) {
+                    updates.status_santri = "completed";
+                    updates.penguji_santri_id = userId;
+                    updatedField = "Wawancara Calsan";
+                } else if (title.includes("cawalsan") || title.includes("ortu") || title.includes("orang")) {
+                    updates.status_ortu = "completed";
+                    updates.penguji_ortu_id = userId;
+                    updatedField = "Wawancara Cawalsan";
+                }
             }
         }
     }
 
-    return { isAllComplete };
-}
-
-/**
- * Returns a score lock status (24 hours after input).
- * Admin roles bypass this lock.
- */
-export function getScoreLockStatus(inputAt: Date | null | string, role: string) {
-    if (!inputAt) return { isLocked: false, remainingText: "" };
-    
-    // Admins are never locked out
-    if (['admin_super', 'admin', 'head_of_it'].includes(role)) {
-        return { isLocked: false, remainingText: "Akses Admin" };
+    if (!updatedField) {
+        throw new Error("You are not assigned to this exam component or component type is unknown");
     }
 
-    const inputDate = new Date(inputAt);
-    const lockDate = new Date(inputDate.getTime() + 24 * 60 * 60 * 1000);
-    const now = new Date();
-    
-    const isLocked = now > lockDate;
-    
-    if (isLocked) {
-        return { isLocked: true, remainingText: "Terkunci (Batas 24 jam)" };
-    } else {
-        const diffMs = lockDate.getTime() - now.getTime();
-        const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-        const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-        return { isLocked: false, remainingText: `${diffHours}j ${diffMins}m` };
+    // 3. Update Status
+    const updatedJadwal = await prisma.jadwalUjian.update({
+        where: { id: jadwalId },
+        data: updates
+    });
+
+    // 4. Check if ALL DONE
+    const isSantriDone = !updatedJadwal.penguji_santri_id || updatedJadwal.status_santri === "completed";
+    const isQuranDone = !updatedJadwal.penguji_quran_id || updatedJadwal.status_quran === "completed";
+    const isOrtuDone = !updatedJadwal.penguji_ortu_id || updatedJadwal.status_ortu === "completed";
+
+    const isAllDone = isSantriDone && isQuranDone && isOrtuDone;
+
+    if (isAllDone) {
+        // Update pendaftar status to 'tested'
+        const pendaftar = await prisma.pendaftar.findUnique({
+            where: { id: jadwal.pendaftar_id },
+            select: { status_pendaftaran: true }
+        });
+
+        const currentStatus = pendaftar?.status_pendaftaran;
+        const advancedStatuses = ['tested', 'passed', 'not_passed', 're_registered', 'withdrawn'];
+
+        if (currentStatus && !advancedStatuses.includes(currentStatus)) {
+            await prisma.pendaftar.update({
+                where: { id: jadwal.pendaftar_id },
+                data: { status_pendaftaran: 'tested' }
+            });
+        }
+
+        // Send Notification
+        const phone = jadwal.pendaftar.no_hp || jadwal.pendaftar.orang_tua?.no_hp_ayah || jadwal.pendaftar.orang_tua?.no_hp_ibu;
+        if (phone) {
+            await notifyAllExamsComplete({
+                phone,
+                nama: jadwal.pendaftar.nama_lengkap
+            });
+        }
     }
+
+    return {
+        success: true,
+        updatedField,
+        isAllDone
+    };
 }

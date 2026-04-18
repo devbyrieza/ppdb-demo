@@ -2,17 +2,37 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button'; // Assuming at least Button exists
+import { Button } from '@/components/ui/button';
 import Swal from 'sweetalert2';
+import { 
+    ClipboardEdit, 
+    MessageSquare, 
+    Download, 
+    RefreshCcw, 
+    Send, 
+    BarChart3, 
+    AlertCircle, 
+    CheckCircle2, 
+    Clock,
+    LayoutDashboard,
+    Zap,
+    Users,
+    ChevronRight,
+    Search,
+    Filter
+} from 'lucide-react';
+
+import { utils, writeFile } from 'xlsx';
 
 // Simplified type for MVP.
 type Student = {
     id: string;
+    status_pendaftaran: string;
     nama_lengkap: string;
     jenjang: string;
     nomor_pendaftaran: string;
     nilai_ujian?: {
-        total_score: number;
+        nilai_total: number;
         status_kelulusan: string;
         catatan_kelulusan: string;
         score_quran: number;
@@ -22,13 +42,20 @@ type Student = {
         score_kepribadian: number;
         score_kesiapan: number;
         nilai_wawancara_ortu: number;
-    }
+    },
+    whatsapp_status?: {
+        status: string;
+        updated_at: string;
+        error_message?: string;
+    } | null;
 };
 
 export default function ExaminerDashboard() {
+    const [activeTab, setActiveTab] = useState<'data' | 'system'>('data');
     const [students, setStudents] = useState<Student[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+    const [searchQuery, setSearchQuery] = useState('');
 
     // Form State for Modal
     const [inputType, setInputType] = useState<'quran' | 'wawancara_santri' | 'wawancara_ortu'>('quran');
@@ -36,6 +63,10 @@ export default function ExaminerDashboard() {
     const [grade, setGrade] = useState<string>('');
     const [catatan, setCatatan] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isBroadcasting, setIsBroadcasting] = useState(false);
+    const [isProcessingQueue, setIsProcessingQueue] = useState(false);
+    const [queueStats, setQueueStats] = useState<{ pending: number, sent: number, failed: number } | null>(null);
+    const [flushProgress, setFlushProgress] = useState(0);
 
     useEffect(() => {
         fetchStudents();
@@ -44,13 +75,21 @@ export default function ExaminerDashboard() {
     const fetchStudents = async () => {
         try {
             setLoading(true);
-            const res = await fetch('/api/admin/pendaftar/list?limit=100'); // Removed 'status=scheduled' to allow all applicants to populate
-            // Using existing API which we modified to include scores.
-            // For MVP just list all applicants 
-
+            const res = await fetch('/api/admin/pendaftar/list?limit=100'); 
             if (!res.ok) throw new Error('Failed to fetch');
             const json = await res.json();
             setStudents(json.data || []);
+            
+            // Also fetch stats from cron result (using same secret)
+            const statsRes = await fetch('/api/cron/whatsapp?secret=ppdb-alimam-cron-2026');
+            const statsJson = await statsRes.json();
+            if (statsJson.stats?.queue) {
+                setQueueStats({
+                    pending: statsJson.stats.queue.pending || 0,
+                    sent: statsJson.stats.queue.sent || 0,
+                    failed: statsJson.stats.queue.failed || 0
+                });
+            }
         } catch (error) {
             console.error(error);
         } finally {
@@ -99,183 +138,581 @@ export default function ExaminerDashboard() {
         }
     };
 
+    const handleFlushQueue = async () => {
+        try {
+            const currentPending = queueStats?.pending || 0;
+            if (currentPending === 0) {
+                Swal.fire('Info', 'Tidak ada antrean yang perlu diproses', 'info');
+                return;
+            }
+
+            setIsProcessingQueue(true);
+            setFlushProgress(0);
+            
+            let processedInLoop = 0;
+            // Limit to max 50 per manual trigger to prevent timeout
+            const maxToProcess = Math.min(currentPending, 50);
+
+            for (let i = 0; i < maxToProcess; i++) {
+                try {
+                    const res = await fetch('/api/cron/whatsapp?secret=ppdb-alimam-cron-2026');
+                    if (!res.ok) break;
+                    
+                    const data = await res.json();
+                    if (!data?.result?.processed) break;
+                    
+                    processedInLoop++;
+                    setFlushProgress(Math.round(((i + 1) / maxToProcess) * 100));
+                    
+                    // Small delay to prevent rate limit issues
+                    await new Promise(r => setTimeout(r, 200));
+                } catch (err) {
+                    console.warn('Individual flush failed:', err);
+                    break;
+                }
+            }
+
+            Swal.fire({
+                title: 'Antrean Diproses',
+                text: `${processedInLoop} pesan telah dikirim ke Wablas.`,
+                icon: 'success'
+            });
+            fetchStudents();
+        } catch (error) {
+            console.error(error);
+            Swal.fire('Error', 'Gagal memproses antrean', 'error');
+        } finally {
+            setIsProcessingQueue(false);
+            setFlushProgress(0);
+        }
+    };
+
+    const filteredStudents = (students || []).filter(s => {
+        const name = (s?.nama_lengkap || '').toLowerCase();
+        const regNum = (s?.nomor_pendaftaran || '').toLowerCase();
+        const query = (searchQuery || '').toLowerCase();
+        return name.includes(query) || regNum.includes(query);
+    });
+
+    const handleExportExcel = () => {
+        if (!students?.length) return Swal.fire('Info', 'Tidak ada data untuk diekspor', 'info');
+
+        const exportData = students.map(s => ({
+            'No Pendaftaran': s.nomor_pendaftaran || '-',
+            'Nama Lengkap': (s.nama_lengkap || '').toUpperCase(),
+            'Jenjang': s.jenjang || '-',
+            'Status': (s.status_pendaftaran || '').replace('_', ' ').toUpperCase(),
+            'Skor Akad.': s.nilai_ujian?.score_akademik || 0,
+            'Skor Quran': s.nilai_ujian?.score_quran || 0,
+            'W. Santri': s.nilai_ujian?.nilai_wawancara_santri || 0,
+            'W. Ortu': s.nilai_ujian?.nilai_wawancara_ortu || 0,
+            'Nilai Total': s.nilai_ujian?.nilai_total || 0,
+            'Keputusan': s.nilai_ujian?.status_kelulusan || 'PENDING'
+        }));
+
+        const worksheet = utils.json_to_sheet(exportData);
+        const workbook = utils.book_new();
+        utils.book_append_sheet(workbook, worksheet, 'Data Penilaian');
+
+        // Set column widths
+        const wscols = [
+            { wch: 15 }, // No Daftar
+            { wch: 35 }, // Nama
+            { wch: 10 }, // Jenjang
+            { wch: 20 }, // Status
+            { wch: 12 }, // Akad
+            { wch: 12 }, // Quran
+            { wch: 12 }, // Santri
+            { wch: 12 }, // Ortu
+            { wch: 12 }, // Total
+            { wch: 15 }, // Keputusan
+        ];
+        worksheet['!cols'] = wscols;
+
+        writeFile(workbook, `Rekap_Nilai_PPDB_${new Date().toISOString().split('T')[0]}.xlsx`);
+    };
+
     return (
-        <div className="p-6">
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold">Dashboard Penilaian</h1>
-                <div className="flex gap-2">
-                    <Button onClick={() => {
-                        // Simple CSV Export implementation logic without heavy library
-                        if (students.length === 0) return Swal.fire('Info', 'Tidak ada data', 'info');
-
-                        const headers = ['No Pendaftaran', 'Nama', 'Jenjang', 'Status', 'Nilai Akademik', 'Nilai Quran', 'Nilai Wawancara'];
-                        const csvContent = [
-                            headers.join(','),
-                            ...students.map(s => [
-                                s.nomor_pendaftaran,
-                                s.nama_lengkap.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()),
-                                s.jenjang,
-                                s.nilai_ujian?.status_kelulusan || 'BELUM DINILAI',
-                                s.nilai_ujian?.score_akademik || 0,
-                                s.nilai_ujian?.score_quran || 0,
-                                s.nilai_ujian?.score_wawancara || 0
-                            ].map(v => `"${v}"`).join(','))
-                        ].join('\n');
-
-                        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-                        const url = URL.createObjectURL(blob);
-                        const link = document.createElement('a');
-                        link.href = url;
-                        link.setAttribute('download', 'rekap_nilai_ujian.csv');
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-                    }} variant="outline" className="border-green-600 text-green-700 hover:bg-green-50">
-                        Export Excel (CSV)
-                    </Button>
-                    <Button onClick={async () => {
-                        try {
-                            const res = await fetch('/api/penilaian/recalculate', { method: 'POST' });
-                            if (!res.ok) throw new Error('Failed');
-                            const result = await res.json();
-                            Swal.fire('Sukses', `${result.recalculated} data berhasil dihitung ulang`, 'success');
-                            fetchStudents();
-                        } catch {
-                            Swal.fire('Error', 'Gagal menghitung ulang', 'error');
-                        }
-                    }} variant="outline" className="border-purple-600 text-purple-700 hover:bg-purple-50">Hitung Ulang Semua</Button>
-                    <Button onClick={fetchStudents} variant="outline" className="border-gray-300">Refresh Data</Button>
+        <div className="space-y-6 max-w-7xl mx-auto pb-10">
+            {/* Header Section */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h1 className="text-3xl font-black text-ink-900 tracking-tight flex items-center gap-3">
+                        <div className="p-2 bg-brand-blue-600 rounded-xl shadow-lg shadow-brand-blue-600/20">
+                            <ClipboardEdit className="w-6 h-6 text-white" />
+                        </div>
+                        Pusat <span className="text-brand-blue-700">Penilaian</span>
+                    </h1>
+                    <p className="text-ink-500 font-medium mt-1">Kelola skor ujian dan monitoring notifikasi pendaftar.</p>
+                </div>
+                
+                <div className="flex bg-ink-50 p-1 rounded-2xl border border-ink-100 w-fit">
+                    <button 
+                        onClick={() => setActiveTab('data')}
+                        className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all ${
+                            activeTab === 'data' 
+                                ? "bg-white text-brand-blue-700 shadow-clay-sm" 
+                                : "text-ink-500 hover:text-ink-800"
+                        }`}
+                    >
+                        <Users className="w-4 h-4" />
+                        Data Penilaian
+                    </button>
+                    <button 
+                        onClick={() => setActiveTab('system')}
+                        className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all ${
+                            activeTab === 'system' 
+                                ? "bg-white text-brand-blue-700 shadow-clay-sm" 
+                                : "text-ink-500 hover:text-ink-800"
+                        }`}
+                    >
+                        <Zap className={`w-4 h-4 ${queueStats?.pending ? 'text-amber-500 animate-pulse' : ''}`} />
+                        Monitoring Notifikasi
+                        {queueStats?.pending ? (
+                            <span className="bg-amber-100 text-amber-700 text-[10px] px-1.5 py-0.5 rounded-full ml-1">{queueStats.pending}</span>
+                        ) : null}
+                    </button>
                 </div>
             </div>
 
-            <div className="bg-white rounded-lg shadow overflow-hidden border">
-                <div className="px-6 py-4 border-b">
-                    <h3 className="text-lg font-medium leading-6 text-gray-900">Daftar Peserta Tes</h3>
-                </div>
-                <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50">
-                            <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No. Daftar</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jenjang</th>
-                                <th className="px-6 py-3 text-left text-xs font-black text-stone-500 uppercase tracking-wider">Status</th>
-                                <th className="px-6 py-3 text-left text-xs font-black text-stone-500 uppercase tracking-wider">Akademik</th>
-                                <th className="px-6 py-3 text-left text-xs font-black text-stone-500 uppercase tracking-wider">Kepribadian</th>
-                                <th className="px-6 py-3 text-left text-xs font-black text-stone-500 uppercase tracking-wider">Kesiapan</th>
-                                <th className="px-6 py-3 text-left text-xs font-black text-stone-500 uppercase tracking-wider">Quran</th>
-                                <th className="px-6 py-3 text-left text-xs font-black text-stone-500 uppercase tracking-wider">Waw. Calsan</th>
-                                <th className="px-6 py-3 text-left text-xs font-black text-stone-500 uppercase tracking-wider">Waw. Cawalsan</th>
-                                <th className="px-6 py-3 text-left text-xs font-black text-stone-500 uppercase tracking-wider">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
-                            {loading ? (
-                                <tr><td colSpan={8} className="px-6 py-4 text-center text-sm text-gray-500">Loading...</td></tr>
-                            ) : students.length === 0 ? (
-                                <tr><td colSpan={8} className="px-6 py-4 text-center text-sm text-gray-500">Belum ada data</td></tr>
-                            ) : (
-                                students.map(s => (
-                                    <tr key={s.id} className="hover:bg-gray-50">
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{s.nomor_pendaftaran}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                            {s.nama_lengkap.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())}
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{s.jenjang}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${s.nilai_ujian?.status_kelulusan === 'LULUS' || s.nilai_ujian?.status_kelulusan === 'DITERIMA' ? 'bg-green-100 text-green-800' :
-                                                s.nilai_ujian?.status_kelulusan === 'CADANGAN' ? 'bg-yellow-100 text-yellow-800' :
-                                                    s.nilai_ujian?.status_kelulusan === 'DITOLAK' ? 'bg-red-100 text-red-800' :
-                                                        s.nilai_ujian?.status_kelulusan === 'BELUM LENGKAP' ? 'bg-blue-100 text-blue-800' :
-                                                            'bg-gray-100 text-gray-800'
-                                                }`}>
-                                                {s.nilai_ujian?.status_kelulusan || '-'}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-stone-500 font-bold">{s.nilai_ujian?.score_akademik != null ? Number(s.nilai_ujian.score_akademik).toFixed(1) : '-'}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-stone-500 font-bold">{s.nilai_ujian?.score_kepribadian != null ? Number(s.nilai_ujian.score_kepribadian).toFixed(1) : '-'}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-stone-500 font-bold">{s.nilai_ujian?.score_kesiapan != null ? Number(s.nilai_ujian.score_kesiapan).toFixed(1) : '-'}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-stone-500 font-bold">{s.nilai_ujian?.score_quran != null ? Number(s.nilai_ujian.score_quran).toFixed(1) : '-'}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-stone-500 font-bold">{s.nilai_ujian?.nilai_wawancara_santri != null ? Number(s.nilai_ujian.nilai_wawancara_santri).toFixed(1) : '-'}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-stone-500 font-bold">{s.nilai_ujian?.nilai_wawancara_ortu != null && Number(s.nilai_ujian.nilai_wawancara_ortu) >= 1 ? (Number(s.nilai_ujian.nilai_wawancara_ortu) > 1 ? Number(s.nilai_ujian.nilai_wawancara_ortu).toFixed(1) : 'Lengkap') : '-'}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                            <div className="flex gap-2">
-                                                <button onClick={() => handleOpenInput(s, 'quran')} className="text-indigo-600 hover:text-indigo-900 bg-indigo-50 px-2 py-1 rounded">Quran</button>
-                                                <button onClick={() => handleOpenInput(s, 'wawancara_santri')} className="text-blue-600 hover:text-blue-900 bg-blue-50 px-2 py-1 rounded">Wawancara</button>
-                                            </div>
-                                        </td>
+            {activeTab === 'data' ? (
+                /* TAB 1: DATA PENILAIAN */
+                <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
+                    <div className="bg-white rounded-3xl shadow-clay-md border border-white/40 overflow-hidden">
+                        <div className="p-6 border-b border-ink-50 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 bg-ink-50/30">
+                            <div className="relative w-full lg:w-96">
+                                <Search className="absolute left-3 top-2.5 w-4 h-4 text-ink-400" />
+                                <input 
+                                    type="text" 
+                                    placeholder="Cari nama atau no. pendaftaran..."
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    className="w-full bg-white border border-ink-100 rounded-xl pl-9 pr-4 py-2 text-sm focus:ring-2 focus:ring-brand-blue-600/10 outline-none shadow-inner"
+                                />
+                            </div>
+
+                            <div className="flex flex-wrap gap-2 w-full lg:w-auto">
+                                <Button 
+                                    onClick={handleExportExcel} 
+                                    className="btn-secondary flex items-center gap-2 bg-emerald-50 text-emerald-700 border-emerald-100 hover:bg-emerald-100 rounded-xl font-bold py-2"
+                                >
+                                    <Download className="w-4 h-4" /> Export Excel
+                                </Button>
+
+                                <Button 
+                                    onClick={async () => {
+                                        try {
+                                            const res = await fetch('/api/penilaian/recalculate', { method: 'POST' });
+                                            if (!res.ok) throw new Error('Failed');
+                                            const result = await res.json();
+                                            Swal.fire('Sukses', `${result.recalculated} data berhasil dihitung ulang`, 'success');
+                                            fetchStudents();
+                                        } catch {
+                                            Swal.fire('Error', 'Gagal menghitung ulang', 'error');
+                                        }
+                                    }} 
+                                    className="btn-secondary flex items-center gap-2 bg-purple-50 text-purple-700 border-purple-100 hover:bg-purple-100 rounded-xl font-bold py-2"
+                                >
+                                    <RefreshCcw className="w-4 h-4" /> Hitung Ulang
+                                </Button>
+
+                                <Button onClick={fetchStudents} variant="outline" className="rounded-xl border-ink-200">
+                                    <RefreshCcw className="w-4 h-4 mr-2" /> Refresh
+                                </Button>
+                            </div>
+                        </div>
+
+                        {/* Desktop Table View */}
+                        <div className="hidden md:block overflow-x-auto">
+                            <table className="min-w-full divide-y divide-ink-100">
+                                <thead className="bg-ink-50/50">
+                                    <tr>
+                                        <th className="px-6 py-4 text-left text-[10px] font-black text-ink-400 uppercase tracking-widest">No. Daftar</th>
+                                        <th className="px-6 py-4 text-left text-[10px] font-black text-ink-400 uppercase tracking-widest">Nama Peserta</th>
+                                        <th className="px-4 py-4 text-left text-[10px] font-black text-ink-400 uppercase tracking-widest">Jenjang</th>
+                                        <th className="px-4 py-4 text-left text-[10px] font-black text-ink-400 uppercase tracking-widest">Status Ujian</th>
+                                        <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">Akad.</th>
+                                        <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">Keprib.</th>
+                                        <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">Kesiapan</th>
+                                        <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">Quran</th>
+                                        <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">W. Calsan</th>
+                                        <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">W. Cawalsan</th>
+                                        <th className="px-3 py-4 text-center text-[10px] font-black text-brand-blue-700 uppercase tracking-widest bg-brand-blue-50/30">Total</th>
+                                        <th className="px-6 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">Aksi Input</th>
                                     </tr>
+                                </thead>
+                                <tbody className="bg-white divide-y divide-ink-50">
+                                    {loading ? (
+                                        <tr><td colSpan={8} className="px-6 py-12 text-center text-ink-400 font-medium italic">Memuat data santri...</td></tr>
+                                    ) : filteredStudents.length === 0 ? (
+                                        <tr><td colSpan={8} className="px-6 py-12 text-center text-ink-400 font-medium italic">Tidak ada data pendaftar yang cocok.</td></tr>
+                                    ) : (
+                                        filteredStudents.map(s => (
+                                            <tr key={s.id} className="hover:bg-brand-blue-50/30 transition-colors group">
+                                                <td className="px-6 py-4 whitespace-nowrap text-xs font-mono font-bold text-ink-400">{s.nomor_pendaftaran || '-'}</td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <p className="text-sm font-black text-ink-900 leading-tight">
+                                                        {(s.nama_lengkap || 'Tanpa Nama').toLowerCase().replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())}
+                                                    </p>
+                                                    <p className="text-[10px] font-bold text-ink-400 uppercase tracking-wider mt-0.5">{(s.status_pendaftaran || '').replace('_', ' ')}</p>
+                                                </td>
+                                                <td className="px-4 py-4 whitespace-nowrap">
+                                                    <span className="text-xs font-bold text-ink-600 bg-ink-100 px-2 py-1 rounded-lg">{s.jenjang}</span>
+                                                </td>
+                                                <td className="px-4 py-4 whitespace-nowrap">
+                                                    {(() => {
+                                                        const examStatus = s.nilai_ujian?.status_kelulusan;
+                                                        const colors: any = {
+                                                            'LULUS': 'bg-green-100 text-green-700 border-green-200',
+                                                            'DITERIMA': 'bg-green-100 text-green-700 border-green-200',
+                                                            'CADANGAN': 'bg-amber-100 text-amber-700 border-amber-200',
+                                                            'DITOLAK': 'bg-red-100 text-red-700 border-red-200',
+                                                            'BELUM LENGKAP': 'bg-orange-100 text-orange-700 border-orange-200',
+                                                            'pending': 'bg-ink-100 text-ink-500 border-ink-200'
+                                                        };
+                                                        const color = colors[examStatus || 'pending'] || 'bg-ink-100 text-ink-500 border-ink-200';
+                                                        return (
+                                                            <span className={`px-2.5 py-1 text-[10px] font-black rounded-full border shadow-sm ${color}`}>
+                                                                {examStatus || 'MENUNGGU'}
+                                                            </span>
+                                                        );
+                                                    })()}
+                                                </td>
+                                                {/* Kolom Nilai: Akad, Keprib, Kesiapan, Quran, W.Calsan, W.Cawalsan */}
+                                                <td className="px-3 py-4 text-center whitespace-nowrap text-sm font-bold text-ink-800">{s.nilai_ujian?.score_akademik != null ? Math.round(s.nilai_ujian.score_akademik) : <span className="text-ink-300">-</span>}</td>
+                                                <td className="px-3 py-4 text-center whitespace-nowrap text-sm font-bold text-ink-800">{s.nilai_ujian?.score_kepribadian != null ? Math.round(s.nilai_ujian.score_kepribadian) : <span className="text-ink-300">-</span>}</td>
+                                                <td className="px-3 py-4 text-center whitespace-nowrap text-sm font-bold text-ink-800">{s.nilai_ujian?.score_kesiapan != null ? Math.round(s.nilai_ujian.score_kesiapan) : <span className="text-ink-300">-</span>}</td>
+                                                <td className="px-3 py-4 text-center whitespace-nowrap text-sm font-bold text-ink-800">{s.nilai_ujian?.score_quran != null ? Math.round(s.nilai_ujian.score_quran) : <span className="text-ink-300">-</span>}</td>
+                                                <td className="px-3 py-4 text-center whitespace-nowrap text-sm font-bold text-ink-800">{s.nilai_ujian?.nilai_wawancara_santri != null ? Math.round(s.nilai_ujian.nilai_wawancara_santri) : <span className="text-ink-300">-</span>}</td>
+                                                <td className="px-3 py-4 text-center whitespace-nowrap text-sm font-bold text-ink-800">{s.nilai_ujian?.nilai_wawancara_ortu != null ? Math.round(s.nilai_ujian.nilai_wawancara_ortu) : <span className="text-ink-300">-</span>}</td>
+                                                {/* Total */}
+                                                <td className="px-3 py-4 text-center whitespace-nowrap bg-brand-blue-50/20">
+                                                    <span className="text-base font-black text-brand-blue-700">
+                                                        {s.nilai_ujian?.nilai_total != null
+                                                            ? Number(s.nilai_ujian.nilai_total).toFixed(1)
+                                                            : <span className="text-ink-300 font-bold">-</span>
+                                                        }
+                                                    </span>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-center">
+                                                    <div className="flex justify-center items-center gap-1">
+                                                        <button 
+                                                            onClick={() => handleOpenInput(s, 'quran')} 
+                                                            className="flex items-center gap-1.5 bg-ink-900 text-white px-3 py-1.5 rounded-xl text-[10px] font-black hover:bg-brand-blue-600 transition-all shadow-md group-hover:scale-105"
+                                                        >
+                                                            <Zap className="w-3 h-3" /> QURAN
+                                                        </button>
+                                                        <button 
+                                                            onClick={() => handleOpenInput(s, 'wawancara_santri')} 
+                                                            className="flex items-center gap-1.5 bg-white border border-ink-200 text-ink-700 px-3 py-1.5 rounded-xl text-[10px] font-black hover:border-brand-blue-600 transition-all shadow-sm group-hover:scale-105"
+                                                        >
+                                                            <MessageSquare className="w-3 h-3" /> WAWANCARA
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {/* Mobile Card View */}
+                        <div className="md:hidden space-y-3 p-4">
+                            {loading ? (
+                                <div className="py-12 text-center text-ink-400 font-medium italic">Memuat data pendaftar...</div>
+                            ) : filteredStudents.length === 0 ? (
+                                <div className="py-12 text-center text-ink-400 font-medium italic">Tidak ada data pendaftar.</div>
+                            ) : (
+                                filteredStudents.map(s => (
+                                    <div key={s.id} className="bg-white rounded-3xl p-5 shadow-clay-sm border border-ink-50 space-y-4">
+                                        {/* Header: No. Daftar + Nama + Jenjang */}
+                                        <div className="flex items-start justify-between gap-3">
+                                            <div className="flex-1 min-w-0">
+                                                <div className="flex items-center gap-2 mb-1">
+                                                    <span className="text-[10px] font-mono font-bold text-ink-400 tracking-tight">{s.nomor_pendaftaran || '-'}</span>
+                                                    <span className="text-[9px] font-black text-brand-blue-700 bg-brand-blue-50 px-2 py-0.5 rounded-lg uppercase">{s.jenjang}</span>
+                                                </div>
+                                                <h3 className="text-sm font-black text-ink-900 uppercase leading-snug">
+                                                    {(s.nama_lengkap || 'Tanpa Nama').toLowerCase().replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())}
+                                                </h3>
+                                                <p className="text-[10px] font-bold text-ink-400 uppercase tracking-wider mt-0.5">{(s.status_pendaftaran || '').replace('_', ' ')}</p>
+                                            </div>
+                                            {/* Total Badge */}
+                                            <div className="bg-brand-blue-600 px-4 py-2.5 rounded-2xl text-white text-center shrink-0">
+                                                <p className="text-[8px] font-black opacity-70 uppercase">Total</p>
+                                                <p className="text-xl font-black leading-none mt-0.5">
+                                                    {s.nilai_ujian?.nilai_total != null
+                                                        ? Number(s.nilai_ujian.nilai_total).toFixed(1)
+                                                        : '-'
+                                                    }
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        {/* Status Ujian */}
+                                        {(() => {
+                                            const examStatus = s.nilai_ujian?.status_kelulusan;
+                                            const colors: any = {
+                                                'LULUS': 'bg-green-100 text-green-700 border-green-200',
+                                                'DITERIMA': 'bg-green-100 text-green-700 border-green-200',
+                                                'CADANGAN': 'bg-amber-100 text-amber-700 border-amber-200',
+                                                'DITOLAK': 'bg-red-100 text-red-700 border-red-200',
+                                                'BELUM LENGKAP': 'bg-orange-100 text-orange-700 border-orange-200',
+                                                'pending': 'bg-ink-100 text-ink-500 border-ink-200'
+                                            };
+                                            const color = colors[examStatus || 'pending'] || 'bg-ink-100 text-ink-500 border-ink-200';
+                                            return (
+                                                <span className={`inline-flex px-3 py-1 text-[10px] font-black rounded-full border ${color}`}>
+                                                    {examStatus || 'MENUNGGU'}
+                                                </span>
+                                            );
+                                        })()}
+
+                                        {/* 6 Nilai Grid — 3x2 */}
+                                        <div className="grid grid-cols-3 gap-2">
+                                            {[
+                                                { label: 'Akademik', value: s.nilai_ujian?.score_akademik },
+                                                { label: 'Kepribadian', value: s.nilai_ujian?.score_kepribadian },
+                                                { label: 'Kesiapan', value: s.nilai_ujian?.score_kesiapan },
+                                                { label: 'Al-Qur\'an', value: s.nilai_ujian?.score_quran },
+                                                { label: 'W. Calsan', value: s.nilai_ujian?.nilai_wawancara_santri },
+                                                { label: 'W. Cawalsan', value: s.nilai_ujian?.nilai_wawancara_ortu },
+                                            ].map((item) => (
+                                                <div key={item.label} className="bg-ink-50 rounded-xl p-2.5 text-center">
+                                                    <p className="text-sm font-black text-ink-900 leading-none">
+                                                        {item.value != null ? Math.round(item.value) : <span className="text-ink-300">-</span>}
+                                                    </p>
+                                                    <p className="text-[8px] font-bold text-ink-400 uppercase tracking-wide mt-1 leading-tight">{item.label}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+
+                                        {/* Action Buttons */}
+                                        <div className="grid grid-cols-2 gap-2">
+                                            <button 
+                                                onClick={() => handleOpenInput(s, 'quran')} 
+                                                className="flex items-center justify-center gap-2 bg-ink-900 text-white py-3 rounded-2xl text-[11px] font-black shadow-lg shadow-ink-900/10 active:scale-95 transition-all"
+                                            >
+                                                <Zap className="w-3.5 h-3.5" /> TES QURAN
+                                            </button>
+                                            <button 
+                                                onClick={() => handleOpenInput(s, 'wawancara_santri')} 
+                                                className="flex items-center justify-center gap-2 bg-brand-yellow-400 text-brand-blue-900 py-3 rounded-2xl text-[11px] font-black shadow-lg shadow-brand-yellow-400/20 active:scale-95 transition-all"
+                                            >
+                                                <MessageSquare className="w-3.5 h-3.5" /> WAWANCARA
+                                            </button>
+                                        </div>
+                                    </div>
                                 ))
                             )}
-                        </tbody>
-                    </table>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            ) : (
+                /* TAB 2: MONITORING NOTIFIKASI */
+                <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
+                    {/* Progress Monitor if Processing */}
+                    {isProcessingQueue && (
+                        <div className="bg-brand-blue-600 rounded-3xl p-6 text-white shadow-xl shadow-brand-blue-600/20 overflow-hidden relative">
+                            <div className="absolute top-0 right-0 p-8 opacity-10">
+                                <Send className="w-32 h-32 rotate-12" />
+                            </div>
+                            <div className="relative z-10">
+                                <h3 className="text-lg font-black flex items-center gap-2 mb-2">
+                                    <RefreshCcw className="w-5 h-5 animate-spin" /> Sedang Mengirim Pesan...
+                                </h3>
+                                <div className="w-full bg-white/20 rounded-full h-4 mb-2">
+                                    <div 
+                                        className="bg-white h-4 rounded-full transition-all duration-500" 
+                                        style={{ width: `${flushProgress}%` }}
+                                    ></div>
+                                </div>
+                                <p className="text-sm font-bold opacity-80">{flushProgress}% Selesai. Jangan tutup halaman ini.</p>
+                            </div>
+                        </div>
+                    )}
 
-            {/* Custom Modal */}
+                    {/* Stats Cards */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="bg-white rounded-3xl p-6 shadow-clay-md border border-white/40 flex items-center gap-4">
+                            <div className="p-4 bg-amber-50 text-amber-600 rounded-2xl">
+                                <Clock className="w-8 h-8" />
+                            </div>
+                            <div>
+                                <p className="text-[10px] font-black text-ink-400 uppercase tracking-widest leading-none mb-1">Antrean Pending</p>
+                                <p className="text-3xl font-black text-ink-900">{queueStats?.pending || 0}</p>
+                            </div>
+                        </div>
+                        <div className="bg-white rounded-3xl p-6 shadow-clay-md border border-white/40 flex items-center gap-4">
+                            <div className="p-4 bg-green-50 text-green-600 rounded-2xl">
+                                <CheckCircle2 className="w-8 h-8" />
+                            </div>
+                            <div>
+                                <p className="text-[10px] font-black text-ink-400 uppercase tracking-widest leading-none mb-1">Berhasil Terkirim</p>
+                                <p className="text-3xl font-black text-ink-900">{queueStats?.sent || 0}</p>
+                            </div>
+                        </div>
+                        <div className="bg-white rounded-3xl p-6 shadow-clay-md border border-white/40 flex items-center gap-4">
+                            <div className="p-4 bg-red-50 text-red-600 rounded-2xl">
+                                <AlertCircle className="w-8 h-8" />
+                            </div>
+                            <div>
+                                <p className="text-[10px] font-black text-ink-400 uppercase tracking-widest leading-none mb-1">Gagal / Error</p>
+                                <p className="text-3xl font-black text-ink-900">{queueStats?.failed || 0}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* System Actions Area */}
+                    <div className="bg-white rounded-3xl shadow-clay-md border border-white/40 overflow-hidden">
+                        <div className="p-8 space-y-8">
+                            <div className="flex items-center gap-4">
+                                <div className="p-3 bg-ink-50 rounded-2xl">
+                                    <LayoutDashboard className="w-6 h-6 text-ink-600" />
+                                </div>
+                                <div>
+                                    <h2 className="text-xl font-black text-ink-900 leading-tight">Kontrol Notifikasi Sistem</h2>
+                                    <p className="text-sm font-medium text-ink-400">Jalankan proses batch notifikasi secara manual di sini.</p>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-4">
+                                <div className="p-6 bg-brand-blue-50/30 rounded-3xl border border-brand-blue-100/50 hover:bg-brand-blue-50 transition-colors">
+                                    <h4 className="font-black text-brand-blue-900 mb-2">Broadcast Jadwal Seleksi</h4>
+                                    <p className="text-xs text-brand-blue-700/70 mb-6 font-medium leading-relaxed">Sistem akan memindai pendaftar yang sudah terverifikasi berkasnya tapi belum memiliki jadwal, lalu memasukkannya ke antrean notifikasi.</p>
+                                    <Button 
+                                        onClick={async () => {
+                                            const result = await Swal.fire({
+                                                title: 'Siarkan Jadwal?',
+                                                text: `Sistem akan mencari pendaftar layak yang belum diberi notifikasi jadwal.`,
+                                                icon: 'warning',
+                                                showCancelButton: true,
+                                                confirmButtonColor: '#2563eb',
+                                                confirmButtonText: 'Ya, Siarkan!',
+                                                cancelButtonText: 'Batal'
+                                            });
+                                            if (result.isConfirmed) {
+                                                try {
+                                                    setIsBroadcasting(true);
+                                                    const res = await fetch('/api/admin/notifications/broadcast-availability', { 
+                                                        method: 'POST',
+                                                        headers: { 'Content-Type': 'application/json' },
+                                                        body: JSON.stringify({ reset_flags: false })
+                                                    });
+                                                    if (!res.ok) throw new Error('Failed');
+                                                    const data = await res.json();
+                                                    Swal.fire('Berhasil', `${data.count || 0} pendaftar masuk antrean.`, 'success');
+                                                    fetchStudents();
+                                                } catch (error) {
+                                                    console.error(error);
+                                                    Swal.fire('Error', 'Gagal memproses broadcast', 'error');
+                                                } finally {
+                                                    setIsBroadcasting(false);
+                                                }
+                                            }
+                                        }} 
+                                        disabled={isBroadcasting}
+                                        className="w-full bg-brand-blue-600 hover:bg-brand-blue-700 text-white rounded-2xl py-6 font-black text-base shadow-lg shadow-brand-blue-600/20"
+                                    >
+                                        {isBroadcasting ? 'Memproses...' : 'Siarkan Jadwal Sekarang'}
+                                    </Button>
+                                </div>
+
+                                <div className="p-6 bg-emerald-50/30 rounded-3xl border border-emerald-100/50 hover:bg-emerald-50 transition-colors">
+                                    <h4 className="font-black text-emerald-900 mb-2">Kirim Paksa Antrean (Flush)</h4>
+                                    <p className="text-xs text-emerald-700/70 mb-6 font-medium leading-relaxed">Jalankan pemicu manual untuk mengirim pesan yang sedang tertahan di antrean ke server provider WhatsApp (Wablas).</p>
+                                    <Button 
+                                        onClick={handleFlushQueue} 
+                                        disabled={isProcessingQueue || !queueStats?.pending}
+                                        className="w-full bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl py-6 font-black text-base shadow-lg shadow-emerald-600/20 disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none"
+                                    >
+                                        {isProcessingQueue ? `Mengirim (${flushProgress}%)...` : 'Kirim Seluruh Antrean'}
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Custom Modal for Input Nilai */}
             {selectedStudent && (
                 <div className="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
                     <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" onClick={() => setSelectedStudent(null)}></div>
+                        <div className="fixed inset-0 bg-ink-900/60 backdrop-blur-sm transition-opacity" aria-hidden="true" onClick={() => setSelectedStudent(null)}></div>
                         <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-                        <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                            <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                                <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                                    Input Nilai: {inputType === 'quran' ? 'Tes Al-Quran' : 'Wawancara'} - {selectedStudent.nama_lengkap.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())}
-                                </h3>
-                                <div className="mt-4 space-y-4">
+                        <div className="inline-block align-bottom bg-white rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-white/20">
+                            <div className="bg-white px-6 pt-8 pb-6 sm:p-8">
+                                <div className="flex items-center gap-3 mb-6">
+                                    <div className="p-3 bg-brand-blue-50 text-brand-blue-600 rounded-2xl">
+                                        <Zap className="w-5 h-5 font-black" />
+                                    </div>
+                                    <h3 className="text-xl leading-6 font-black text-ink-900" id="modal-title">
+                                        Input Nilai {inputType === 'quran' ? 'Al-Quran' : 'Wawancara'}
+                                    </h3>
+                                </div>
+
+                                <div className="bg-ink-50 rounded-2xl p-4 mb-6 border border-ink-100">
+                                    <p className="text-[10px] font-black text-ink-400 uppercase tracking-widest mb-1">Peserta Tes</p>
+                                    <p className="text-lg font-black text-ink-900">{(selectedStudent.nama_lengkap || '').replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())}</p>
+                                    <p className="text-xs font-bold text-ink-500 font-mono mt-0.5">{selectedStudent.nomor_pendaftaran || '-'} • {selectedStudent.jenjang || '-'}</p>
+                                </div>
+                                
+                                <div className="space-y-4">
                                     {inputType === 'quran' && (
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700">Rekomendasi / Grade</label>
+                                            <label className="block text-xs font-black text-ink-400 uppercase tracking-wider mb-2">Rekomendasi / Grade</label>
                                             <select
                                                 value={grade}
                                                 onChange={(e) => setGrade(e.target.value)}
-                                                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                                                className="w-full bg-ink-50 border border-ink-100 rounded-xl px-4 py-3 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-brand-blue-600/10 outline-none"
                                             >
                                                 <option value="">Pilih Grade</option>
-                                                <option value="A">A (Sangat Baik/Lulus)</option>
-                                                <option value="B">B (Baik/Lulus)</option>
-                                                <option value="C">C (Cukup/Cadangan)</option>
-                                                <option value="D">D (Kurang/Gagal)</option>
+                                                <option value="A">A (Sangat Baik / Lulus)</option>
+                                                <option value="B">B (Baik / Lulus)</option>
+                                                <option value="C">C (Cukup / Cadangan)</option>
+                                                <option value="D">D (Kurang / Gagal)</option>
                                                 <option value="E">E (Sangat Kurang)</option>
                                             </select>
                                         </div>
                                     )}
 
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700">Skor Angka (0-100)</label>
+                                        <label className="block text-xs font-black text-ink-400 uppercase tracking-wider mb-2">Skor Angka (0-100)</label>
                                         <input
                                             type="number"
                                             value={score}
                                             onChange={(e) => setScore(e.target.value)}
-                                            placeholder="0-100" // Use placeholder for optional logic
-                                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                            placeholder="Masukkan nilai 0-100..."
+                                            className="w-full bg-ink-50 border border-ink-100 rounded-xl px-4 py-3 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-brand-blue-600/10 outline-none"
                                         />
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700">Catatan</label>
+                                        <label className="block text-xs font-black text-ink-400 uppercase tracking-wider mb-2">Catatan Khusus</label>
                                         <textarea
                                             value={catatan}
                                             onChange={(e) => setCatatan(e.target.value)}
                                             rows={3}
-                                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                            placeholder="Tambahkan catatan jika diperlukan..."
+                                            className="w-full bg-ink-50 border border-ink-100 rounded-xl px-4 py-3 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-brand-blue-600/10 outline-none"
                                         ></textarea>
                                     </div>
                                 </div>
                             </div>
-                            <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                            <div className="bg-ink-50 px-6 py-6 sm:px-8 sm:flex sm:flex-row-reverse gap-3 border-t border-ink-100">
                                 <Button
                                     onClick={handleSubmitScore}
                                     disabled={isSubmitting}
-                                    className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm"
+                                    className="w-full sm:w-auto bg-brand-blue-600 hover:bg-brand-blue-700 text-white rounded-2xl px-8 py-3 font-black shadow-lg shadow-brand-blue-600/20 disabled:opacity-50"
                                 >
                                     {isSubmitting ? 'Menyimpan...' : 'Simpan Nilai'}
                                 </Button>
                                 <button
                                     type="button"
                                     onClick={() => setSelectedStudent(null)}
-                                    className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                                    className="mt-3 sm:mt-0 w-full sm:w-auto bg-white border border-ink-200 text-ink-600 hover:bg-ink-100 rounded-2xl px-8 py-3 font-black shadow-sm transition-all"
                                 >
                                     Batal
                                 </button>

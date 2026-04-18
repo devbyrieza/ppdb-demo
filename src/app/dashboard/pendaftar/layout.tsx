@@ -175,6 +175,9 @@ export default function DashboardLayout({
 
   // Function untuk cek apakah tab bisa diakses
   const isTabAccessible = (tabName: TabName) => {
+    // SPECIAL BYPASS FOR TESTING ACCOUNT: RIEZA TES
+    if (nomorPendaftaran === "ILI2600007") return true;
+    
     return canAccessTab(tabName, statusProses);
   };
 
@@ -251,7 +254,7 @@ export default function DashboardLayout({
               <User className="w-6 h-6 text-brand-blue-700" />
             </div>
           </div>
-          <h1 className="text-3xl font-serif font-black uppercase text-brand-blue-950 mb-2">Pondok Pesantren Al-Andalus Ulul Albaab</h1>
+          <h1 className="text-3xl font-serif font-black uppercase text-brand-blue-950 mb-2">Pondok Pesantren Sistem PPDB Modern</h1>
           <p className="text-ink-500 text-sm">Mohon tunggu sebentar...</p>
         </div>
       </div>
@@ -266,7 +269,7 @@ export default function DashboardLayout({
         {/* Mobile Header (Fintech Style) */}
         <div className="lg:hidden bg-white/90 backdrop-blur-xl sticky top-0 z-40 px-5 py-4 flex items-center justify-between border-b border-brand-yellow-200 shadow-sm">
           <div className="flex flex-col">
-            <span className="text-[10px] uppercase font-black tracking-widest text-ink-400 mb-0.5">PPDB Al-Andalus Ulul Albaab</span>
+            <span className="text-[10px] uppercase font-black tracking-widest text-ink-400 mb-0.5">PPDB Sistem PPDB Modern</span>
             <span className="text-base font-black text-brand-blue-950 leading-none">Beranda</span>
           </div>
 
@@ -291,7 +294,7 @@ export default function DashboardLayout({
                     <School className="w-5 h-5" />
                   </div>
                   <div>
-                    <h1 className="font-black text-xl text-brand-blue-950 leading-none tracking-tight">PPDB <span className="text-brand-blue-700">Al-Andalus Ulul Albaab</span></h1>
+                    <h1 className="font-black text-xl text-brand-blue-950 leading-none tracking-tight">PPDB <span className="text-brand-blue-700">Sistem PPDB Modern</span></h1>
                     <p className="text-[10px] text-ink-500 font-bold mt-1 uppercase tracking-widest">Tahun 2026/2027</p>
                   </div>
                 </div>
@@ -330,7 +333,7 @@ export default function DashboardLayout({
                   <span>Keluar Akun</span>
                 </button>
                 <p className="text-[10px] text-center text-ink-400 mt-4">
-                  &copy; 2026 Ponpes Al-Andalus Ulul Albaab
+                  &copy; 2026 Ponpes Sistem PPDB Modern
                 </p>
               </div>
             </div>
@@ -347,7 +350,7 @@ export default function DashboardLayout({
                     <div className="w-10 h-10 rounded-xl bg-brand-blue-800 flex items-center justify-center text-white">
                       <School className="w-5 h-5" />
                     </div>
-                    <span className="font-black text-lg text-brand-blue-950 tracking-tight">PPDB Al-Andalus Ulul Albaab</span>
+                    <span className="font-black text-lg text-brand-blue-950 tracking-tight">PPDB Sistem PPDB Modern</span>
                   </div>
                   <button onClick={() => setSidebarOpen(false)} className="p-2 text-ink-400 hover:text-brand-blue-700 bg-brand-yellow-50 rounded-full">
                     <X className="w-5 h-5" />
@@ -405,7 +408,7 @@ export default function DashboardLayout({
             </header>
 
             {/* Content Wrapper */}
-            <div className="flex-1 pt-6 lg:pt-0 p-4 md:p-6 lg:p-8 max-w-6xl w-full mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500 z-10">
+            <div className="flex-1 pt-14 lg:pt-12 p-4 md:p-6 lg:p-8 max-w-6xl w-full mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500 z-10">
               {children}
             </div>
             

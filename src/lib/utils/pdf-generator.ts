@@ -1,4 +1,4 @@
-﻿import jsPDF from "jspdf";
+import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
 export interface PendaftarPdfData {
@@ -17,7 +17,7 @@ export interface PendaftarPdfData {
     lokasi_ujian?: string;
 }
 
-const BRAND_NAME = "Pesantren Al-Andalus Ulul Albaab";
+const BRAND_NAME = "Pesantren Sistem PPDB Modern";
 const BRAND_SUBTITLE = "Penerimaan Santri Baru (PPDB)";
 const BRAND_ADDRESS = "Jl. Karamat No. 123, Gunungpuyuh, Kota Sukabumi, Jawa Barat";
 
@@ -30,7 +30,7 @@ const drawHeader = (doc: jsPDF) => {
     const pageWidth = doc.internal.pageSize.getWidth();
 
     // Header Box Decor
-    doc.setFillColor(22, 163, 74); // Green-600
+    doc.setFillColor(126, 27, 34); // Maroon-700 (#7E1B22)
     doc.rect(0, 0, pageWidth, 40, "F");
 
     // Text
@@ -55,7 +55,7 @@ const drawFooter = (doc: jsPDF) => {
 
     doc.setFontSize(8);
     doc.setTextColor(150, 150, 150);
-    doc.text(`Dicetak secara sistem melalui website PPDB Ulul Albaab pada: ${new Date().toLocaleString("id-ID")}`, pageWidth / 2, pageHeight - 10, { align: "center" });
+    doc.text(`Dicetak secara sistem melalui website PPDB PPDB pada: ${new Date().toLocaleString("id-ID")}`, pageWidth / 2, pageHeight - 10, { align: "center" });
 };
 
 /**
@@ -136,7 +136,7 @@ export const generateKartuUjian = (data: PendaftarPdfData) => {
         ["NIK", `: ${data.nik}`],
         ["Jenjang", `: ${data.jenjang}`],
         ["Jadwal Ujian", `: ${data.jadwal_ujian || "Menunggu Konfirmasi"}`],
-        ["Lokasi", `: ${data.lokasi_ujian || "Kampus Ulul Albaab"}`],
+        ["Lokasi", `: ${data.lokasi_ujian || "Kampus PPDB"}`],
     ];
 
     autoTable(doc, {
@@ -153,7 +153,7 @@ export const generateKartuUjian = (data: PendaftarPdfData) => {
     // Admin Signature Space
     doc.setFontSize(10);
     doc.text("Panitia PPDB,", pageWidth - 60, finalY);
-    doc.text("Ponpes Al-Andalus Ulul Albaab", pageWidth - 60, finalY + 5);
+    doc.text("Ponpes Sistem PPDB Modern", pageWidth - 60, finalY + 5);
     doc.text("(............................)", pageWidth - 60, finalY + 30);
 
     drawFooter(doc);
@@ -203,7 +203,7 @@ export const generateSuratKelulusan = (data: PendaftarPdfData) => {
 
     doc.setFont("helvetica", "normal");
     doc.setFontSize(11);
-    const closing = "Selamat bergabung menjadi keluarga besar Pesantren Al-Andalus Ulul Albaab. Silakan segera melakukan proses daftar ulang sesuai jadwal yang ditentukan.";
+    const closing = "Selamat bergabung menjadi keluarga besar Pesantren Sistem PPDB Modern. Silakan segera melakukan proses daftar ulang sesuai jadwal yang ditentukan.";
     doc.text(doc.splitTextToSize(closing, pageWidth - 40), 20, finalY + 25);
 
     drawFooter(doc);

@@ -1,12 +1,10 @@
 import { createHmac } from "crypto";
 
 const MAGIC_LINK_SECRET =
-    process.env.MAGIC_LINK_SECRET || "fallback-secret-for-dev-2026";
+    process.env.MAGIC_LINK_SECRET || "fallback-secret-for-dev";
 
-/**
- * Token Structure: base64(payload).signature
- * payload: { id: string, role: string, full_name: string, exp: number }
- */
+// Token Structure: base64(payload).signature
+// payload: { id: string, role: string, full_name: string, exp: number }
 
 export function generateMagicToken(
     profileId: string,
@@ -94,9 +92,9 @@ export const PERMANENT_SLUGS: Record<string, string> = {
  */
 export function getSlugByName(fullName: string): string | null {
     if (!fullName) return null;
-    const normalized = fullName.trim().toLowerCase().replace(/\s+/g, " ");
+    const normalized = fullName.trim().toLowerCase();
     const entry = Object.entries(PERMANENT_SLUGS).find(
-        ([_, name]) => name.toLowerCase().replace(/\s+/g, " ") === normalized
+        ([_, name]) => name.toLowerCase() === normalized
     );
     return entry ? entry[0] : null;
 }
@@ -135,7 +133,7 @@ export function getManualTinyUrl(fullName: string): string | null {
  * Supports optional pendaftar number for deep-linking
  */
 export function getPermanentAuthUrl(slug: string, pendaftarNomor?: string): string {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://pesantren-alimam.com";
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://demo-ppdb.vercel.app";
     let url = `${baseUrl}/api/auth/short/${slug}`;
     if (pendaftarNomor) {
         url += `?p=${encodeURIComponent(pendaftarNomor)}`;
@@ -145,7 +143,7 @@ export function getPermanentAuthUrl(slug: string, pendaftarNomor?: string): stri
 
 /**
  * Generate automatic TinyURL for any long URL
- * Ported from Al-Imam reference
+ * Uses TinyURL API for short link generation
  */
 export async function generateTinyUrl(longUrl: string): Promise<string> {
     try {

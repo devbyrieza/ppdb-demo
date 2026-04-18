@@ -66,7 +66,7 @@ export async function GET(request: NextRequest) {
                         year: "numeric",
                         hour: "2-digit",
                         minute: "2-digit"
-                    })
+                    }).replace("Minggu", "Ahad")
                     : null,
                 status_kelulusan: data.pengumuman?.status_kelulusan || null
             }

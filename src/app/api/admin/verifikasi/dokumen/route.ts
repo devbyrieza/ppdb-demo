@@ -3,6 +3,19 @@ import { prisma } from "@/lib/prisma";
 import { notifyDocumentVerified } from "@/lib/wablas";
 import { getServerSession } from "@/lib/session";
 import { logAdminAction } from "@/lib/audit";
+import { enqueueWhatsapp, buildMessageJadwalLangsungTersedia, buildMessageJadwalBelum, buildMessageDocumentVerified, buildMessageDocumentRejected } from "@/lib/whatsapp-queue";
+
+const REQUIRED_DOC_TYPES = [
+  'kartu_keluarga',
+  'akta_kelahiran',
+  'rapor_sem1',
+  'rapor_sem2',
+  'nisn',
+  'foto_setengah_badan',
+  'surat_kesehatan',
+  'pakta_integritas',
+  'pernyataan_bebas_negatif'
+];
 
 // GET: List dokumen yang perlu diverifikasi
 export async function GET(request: NextRequest) {
@@ -120,6 +133,7 @@ export async function PATCH(request: NextRequest) {
             id: true,
             nama_lengkap: true,
             no_hp: true,
+            status_pendaftaran: true,
           },
         },
       },
@@ -149,29 +163,42 @@ export async function PATCH(request: NextRequest) {
       const pendingDocs = allDocs.filter(d => !d.is_verified && !d.catatan);
 
       if (pendingDocs.length === 0) {
-        // All documents processed! Send Summary Notification.
-        try {
-          const rejectedDocs = allDocs.filter(d => !d.is_verified && d.catatan);
-          const isAllVerified = rejectedDocs.length === 0;
+        // All documents UP TO NOW have been processed.
+        const rejectedDocs = allDocs.filter(d => !d.is_verified && d.catatan);
+        const verifiedTypes = new Set(allDocs.filter(d => d.is_verified).map(d => d.jenis_dokumen));
+        const hasAllRequired = REQUIRED_DOC_TYPES.every(type => verifiedTypes.has(type));
 
-          if (dokumen.pendaftar?.no_hp) {
-            let docListStr = "";
-            if (isAllVerified) {
-              docListStr = "Semua Dokumen Lengkap";
-            } else {
-              docListStr = rejectedDocs.map(d => `• ${d.jenis_dokumen}`).join("\n");
+        const isSomeRejected = rejectedDocs.length > 0;
+        const isAllVerifiedAndComplete = !isSomeRejected && hasAllRequired;
+
+        // ONLY Notify if we have rejections OR if they are FINALLY complete (all 9 verified)
+        if (isSomeRejected || isAllVerifiedAndComplete) {
+          try {
+            if (dokumen.pendaftar?.no_hp) {
+              let docListStr = "";
+              if (isAllVerifiedAndComplete) {
+                docListStr = "Lengkap (9/9 Dokumen Terverifikasi)";
+              } else {
+                docListStr = rejectedDocs.map(d => `• ${d.jenis_dokumen}`).join("\n");
+              }
+
+              const isVerifiedBatch = isAllVerifiedAndComplete;
+              await enqueueWhatsapp({
+                pendaftarId: dokumen.pendaftar_id,
+                phone: dokumen.pendaftar.no_hp!,
+                jenisNotif: isVerifiedBatch ? "document_verified" : "document_rejected",
+                messageContent: isVerifiedBatch
+                  ? buildMessageDocumentVerified(dokumen.pendaftar.nama_lengkap, docListStr)
+                  : buildMessageDocumentRejected(dokumen.pendaftar.nama_lengkap, docListStr, isAllVerifiedAndComplete ? "" : "Terdapat dokumen yang perlu diperbaiki. Silakan cek dashboard."),
+              });
             }
-
-            await notifyDocumentVerified({
-              phone: dokumen.pendaftar.no_hp,
-              nama: dokumen.pendaftar.nama_lengkap,
-              dokumen_list: docListStr,
-              status: isAllVerified ? "verified" : "rejected",
-              catatan: isAllVerified ? undefined : "Terdapat dokumen yang perlu diperbaiki. Silakan cek dashboard.",
-            });
+          } catch (error) {
+            console.error("WhatsApp batch notification error:", error);
           }
-        } catch (error) {
-          console.error("WhatsApp batch notification error:", error);
+        } else {
+          // All currently uploaded are verified, but they haven't uploaded all 9 yet!
+          // We WAIT. Do not send "Verified" message yet.
+          console.log(`[VERIF] Pendaftar ${dokumen.pendaftar_id} has ${verifiedTypes.size}/9 verified docs. Waiting for completion before notify.`);
         }
       }
     }
@@ -189,21 +216,64 @@ export async function PATCH(request: NextRequest) {
           where: { pendaftar_id: dokumen.pendaftar_id }
         });
 
-        // 2. Define required docs
-        const REQUIRED_DOCS = [
-          'kartu_keluarga', 'akta_kelahiran', 'rapor_sem1', 'rapor_sem2',
-          'nisn', 'foto_setengah_badan', 'surat_kesehatan', 'pakta_integritas', 'pernyataan_bebas_negatif'
-        ];
-
-        // 3. check if every required doc is present and verified
+        // 2. check if every required doc is present and verified
         const verifiedTypes = new Set(allDocs.filter(d => d.is_verified).map(d => d.jenis_dokumen));
-        const allRequiredVerified = REQUIRED_DOCS.every(type => verifiedTypes.has(type));
+        const allRequiredVerified = REQUIRED_DOC_TYPES.every(type => verifiedTypes.has(type));
 
         if (allRequiredVerified && currentPendaftar?.status_pendaftaran === 'docs_uploaded') {
           await prisma.pendaftar.update({
             where: { id: dokumen.pendaftar_id },
             data: { status_pendaftaran: 'docs_verified' }
           });
+
+          // --- AUTOMATED NOTIFICATION LOGIC ---
+          try {
+            const existingSchedulesCount = await prisma.jadwalUjian.count({
+              where: { pendaftar_id: dokumen.pendaftar_id }
+            });
+
+            // EXTRA GUARD: Only notify if status is 'paid', 'docs_verified', or 'docs_uploaded' (the pre-transition state)
+            const isEligibleForNotif = ['paid', 'docs_verified', 'docs_uploaded'].includes(dokumen.pendaftar.status_pendaftaran);
+
+            if (existingSchedulesCount === 0 && isEligibleForNotif) {
+              // Check available slots
+              const sessions = await prisma.examSession.findMany({
+                where: { is_active: true, start_time: { gte: new Date() } },
+                include: { _count: { select: { bookings: true } } }
+              });
+
+              const totalAvailableSlots = sessions.reduce((acc, s) => acc + Math.max(0, s.quota - s._count.bookings), 0);
+
+              if (dokumen.pendaftar?.no_hp) {
+                if (totalAvailableSlots > 0) {
+                  // Skenario A: Jadwal Langsung Tersedia
+                  await enqueueWhatsapp({
+                    pendaftarId: dokumen.pendaftar_id,
+                    phone: dokumen.pendaftar.no_hp!,
+                    jenisNotif: "jadwal_langsung_tersedia",
+                    messageContent: buildMessageJadwalLangsungTersedia(dokumen.pendaftar.nama_lengkap),
+                  });
+                  // Mark flag so they don't get double notified by manual broadcast later (unless reset)
+                  await prisma.pendaftar.update({
+                    where: { id: dokumen.pendaftar_id },
+                    data: { notif_jadwal_tersedia_terkirim: true }
+                  });
+                } else {
+                  // Skenario B: Jadwal Belum Ada (Tapi Verifikasi Berhasil)
+                  await enqueueWhatsapp({
+                    pendaftarId: dokumen.pendaftar_id,
+                    phone: dokumen.pendaftar.no_hp!,
+                    jenisNotif: "jadwal_belum",
+                    messageContent: buildMessageJadwalBelum(dokumen.pendaftar.nama_lengkap),
+                  });
+                }
+              }
+            } else {
+              console.log(`[VERIF] Pendaftar ${dokumen.pendaftar_id} transition suppressed: already has ${existingSchedulesCount} schedule(s).`);
+            }
+          } catch (notifErr) {
+            console.error("Automated notification error:", notifErr);
+          }
         }
       } else {
         // REJECTED: Revert status if it was 'docs_verified'

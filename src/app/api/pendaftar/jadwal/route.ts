@@ -8,7 +8,20 @@ import {
     buildMessageReminderH1Santri, 
     buildMessageReminderH1Penguji 
 } from "@/lib/whatsapp-queue";
-import { generateMagicToken, getManualTinyUrl, generateTinyUrl } from "@/lib/utils/magic-link";
+import { generateMagicToken } from "@/lib/utils/magic-link";
+
+function getExamCategory(title: string): string {
+    const t = (title || "").toLowerCase();
+    if (t.includes('quran') || t.includes('qur\'an')) return 'QURAN';
+    if (t.includes('calsan') || t.includes('santri')) return 'W_SANTRI';
+    if (t.includes('cawalsan') || t.includes('ortu') || t.includes('orang tua')) return 'W_ORTU';
+    return 'OTHER';
+}
+
+function sanitizeTitle(title: string): string {
+    // Remove anything in parentheses (e.g. examiner names)
+    return (title || "").replace(/\s*\(.*?\)\s*/g, '').trim();
+}
 
 async function getSession() {
     const cookieStore = await cookies();
@@ -40,7 +53,8 @@ export async function GET() {
         // Transform to match front-end expectation
         const data = jadwal.map(item => ({
             id: item.id,
-            jenis_ujian: "Seleksi Santri Baru", // Static label or derive
+            jenis_ujian: sanitizeTitle(item.exam_session?.title || "Seleksi Santri Baru"),
+            category: getExamCategory(item.exam_session?.title || ""),
             tanggal_ujian: item.tanggal_ujian,
             waktu_mulai: item.exam_session?.start_time || item.waktu_mulai_santri,
             waktu_selesai: item.exam_session?.end_time || item.waktu_selesai_santri,
@@ -83,27 +97,29 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: "Kuota penuh" }, { status: 400 });
         }
 
-        // 2. Check for reduced duplication (Same Exam Type)
+        // 2. Check for categorical duplication (Quran, Santri, Ortu)
         const existingBookings = await prisma.jadwalUjian.findMany({
             where: { pendaftar_id: session.id },
             include: { exam_session: true }
         });
+        
+        const currentCategory = getExamCategory(examSession.title || "");
 
-        // Check if any existing booking has the same title/type
-        const duplicateType = existingBookings.find(booking => {
-            // If booking has a session, compare titles
-            if (booking.exam_session?.title && examSession.title) {
-                return booking.exam_session.title === examSession.title;
-            }
-            // If legacy booking (no session) or untitled, maybe block to be safe? 
-            // Or assume manual schedule covers everything?
-            // For now, let's assume if titles match, it's a duplicate.
-            return false;
+        // Check if any existing booking has the same category
+        const duplicateCategory = existingBookings.find(booking => {
+            const bookedTitle = booking.exam_session?.title || "";
+            return getExamCategory(bookedTitle) === currentCategory;
         });
 
-        if (duplicateType) {
+        if (duplicateCategory) {
+            const categoryLabel = 
+                currentCategory === 'QURAN' ? 'Ujian Al-Quran' :
+                currentCategory === 'W_SANTRI' ? 'Wawancara Calon Santri' :
+                currentCategory === 'W_ORTU' ? 'Wawancara Orang Tua' : 
+                'Ujian ini';
+            
             return NextResponse.json({
-                error: `Anda sudah memiliki jadwal untuk ${examSession.title || 'Ujian ini'}.`
+                error: `Anda sudah memiliki jadwal untuk ${categoryLabel}.`
             }, { status: 400 });
         }
 
@@ -200,10 +216,10 @@ export async function POST(request: Request) {
 
         if (pendaftarInfo && pendaftarInfo.no_hp) {
             const startTime = new Date(examSession.start_time);
-            const dateStr = startTime.toLocaleDateString("id-ID", { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-            const timeStr = startTime.toLocaleTimeString("id-ID", { hour: '2-digit', minute: '2-digit' }) + ' WIB';
-            const lokasi = examSession.location || "Pesantren Al-Imam";
-            const jenisUjian = examSession.title || "Seleksi Santri Baru";
+            const dateStr = startTime.toLocaleDateString("id-ID", { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Jakarta' });
+            const timeStr = startTime.toLocaleTimeString("id-ID", { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Jakarta' }) + ' WIB';
+            const lokasi = examSession.location || "Pesantren PPDB";
+            const jenisUjian = sanitizeTitle(examSession.title || "Seleksi Santri Baru");
 
             const message = buildMessageKonfirmasiJadwal(
                 pendaftarInfo.nama_lengkap,
@@ -229,13 +245,25 @@ export async function POST(request: Request) {
                 });
 
                 if (interviewer && interviewer.phone) {
+                    // Generate Magic Link for this interviewer
+                    const redirectPathPath = `/dashboard/penguji/input-nilai?search=${encodeURIComponent(pendaftarInfo.nama_lengkap)}`; // Fallback search by name if nomor_pendaftaran is not easily accessible here
+                    const token = generateMagicToken(
+                        examSession.created_by,
+                        "penguji", 
+                        interviewer.full_name,
+                        72, // 3 days expiry for confirmation
+                        redirectPathPath
+                    );
+                    const magicLink = `${process.env.NEXT_PUBLIC_APP_URL || 'https://demo-ppdb.vercel.app'}/api/auth/magic?token=${token}`;
+
                     const intMessage = buildMessageKonfirmasiJadwalInterviewer(
                         interviewer.full_name,
                         pendaftarInfo.nama_lengkap,
                         dateStr,
                         timeStr,
                         interviewer.google_meet_link || lokasi,
-                        jenisUjian
+                        jenisUjian,
+                        magicLink
                     );
 
                     // Stall interviewer notification by 1 minute to avoid consecutive message bursts (Anti-BAN)
@@ -252,63 +280,64 @@ export async function POST(request: Request) {
                 }
             }
 
-            // 3. SCHEDULE H-1 REMINDERS (Pukul 20.00 WIB H-1)
+            // 3. SCHEDULE 4-HOUR REMINDERS (Sent 4 hours before exam)
             try {
-                const examDate = new Date(examSession.start_time);
-                const reminderTime = new Date(examDate);
-                reminderTime.setDate(reminderTime.getDate() - 1); // H-1
-                reminderTime.setUTCHours(13, 0, 0, 0); // 20:00 WIB = 13:00 UTC
+                const examStartTime = new Date(examSession.start_time);
+                // Calculate individualized scheduled time (StartTime - 4 hours)
+                const reminderTime = new Date(examStartTime.getTime() - 4 * 60 * 60 * 1000);
 
-                // Only schedule if the reminder time is in the future
-                if (reminderTime > new Date()) {
-                    // Get interviewer info early for Google Meet link
-                    let interviewerGoogleMeetLink = null;
-                    if (examSession.created_by) {
-                        const interviewer = await prisma.profile.findUnique({
-                            where: { id: examSession.created_by },
-                            select: { google_meet_link: true }
+                // Schedule if in the future, or send now if already within 16h window
+                const now = new Date();
+                const finalScheduledAt = reminderTime < now ? now : reminderTime;
+
+                // Get interviewer info early for Google Meet link
+                let interviewerGoogleMeetLink = null;
+                if (examSession.created_by) {
+                    const interviewer = await prisma.profile.findUnique({
+                        where: { id: examSession.created_by },
+                        select: { google_meet_link: true }
+                    });
+                    interviewerGoogleMeetLink = interviewer?.google_meet_link;
+                }
+
+                // Build location with Google Meet link if available
+                const lokasiWithMeet = interviewerGoogleMeetLink
+                    ? (interviewerGoogleMeetLink.startsWith("http") ? interviewerGoogleMeetLink : `Online (${interviewerGoogleMeetLink})`)
+                    : lokasi;
+
+                // 3.1. Reminder for Santri
+                const remSantriMsg = buildMessageReminderH1Santri(
+                    pendaftarInfo.nama_lengkap,
+                    dateStr.split(',')[0] || "", // Removed "Besok"
+                    dateStr,
+                    timeStr,
+                    lokasiWithMeet,
+                    jenisUjian
+                );
+
+                enqueueWhatsapp({
+                    pendaftarId: session.id,
+                    phone: pendaftarInfo.no_hp,
+                    jenisNotif: "reminder_h1",
+                    messageContent: remSantriMsg,
+                    scheduledAt: finalScheduledAt,
+                }).then(async () => {
+                     // Update flag safely - using try catch to avoid crash if DB not pushed yet
+                     try {
+                        await prisma.jadwalUjian.update({
+                            where: { id: result.id },
+                            data: { notif_h1_pendaftar_terkirim: true }
                         });
-                        interviewerGoogleMeetLink = interviewer?.google_meet_link;
-                    }
+                     } catch (e) {
+                        console.warn("Could not update H1 santri flag (DB sync might be pending)");
+                     }
+                }).catch(err => console.error("Failed to enqueue H1 santri reminder:", err));
 
-                    // Build location with Google Meet link if available
-                    const lokasiWithMeet = interviewerGoogleMeetLink
-                        ? (interviewerGoogleMeetLink.startsWith("http") ? interviewerGoogleMeetLink : `Online (${interviewerGoogleMeetLink})`)
-                        : lokasi;
-
-                    // 3.1. Reminder for Santri
-                    const remSantriMsg = buildMessageReminderH1Santri(
-                        pendaftarInfo.nama_lengkap,
-                        dateStr.split(',')[0] || "Besok", // Day name
-                        dateStr,
-                        timeStr,
-                        lokasiWithMeet,
-                        jenisUjian
-                    );
-
-                    enqueueWhatsapp({
-                        pendaftarId: session.id,
-                        phone: pendaftarInfo.no_hp,
-                        jenisNotif: "reminder_h1",
-                        messageContent: remSantriMsg,
-                        scheduledAt: reminderTime,
-                    }).then(async () => {
-                         // Update flag safely - using try catch to avoid crash if DB not pushed yet
-                         try {
-                            await prisma.jadwalUjian.update({
-                                where: { id: result.id },
-                                data: { notif_h1_pendaftar_terkirim: true }
-                            });
-                         } catch (e) {
-                            console.warn("Could not update H1 santri flag (DB sync might be pending)");
-                         }
-                    }).catch(err => console.error("Failed to enqueue H1 santri reminder:", err));
-
-                    // 3.2. Reminder for Interviewer
-                    if (examSession.created_by) {
-                        const interviewer = await prisma.profile.findUnique({
-                            where: { id: examSession.created_by },
-                            select: { full_name: true, phone: true, google_meet_link: true }
+                // 3.2. Reminder for Interviewer
+                if (examSession.created_by) {
+                    const interviewer = await prisma.profile.findUnique({
+                        where: { id: examSession.created_by },
+                        select: { full_name: true, phone: true, google_meet_link: true }
                         });
 
                         if (interviewer && interviewer.phone) {
@@ -318,18 +347,20 @@ export async function POST(request: Request) {
                                 examSession.created_by,
                                 "penguji",
                                 interviewer.full_name,
-                                48,
+                                48, // 2 days
                                 redirectPathH1
                             );
-                            const magicLinkRem4h = `${process.env.NEXT_PUBLIC_APP_URL || 'https://ppdb-demo.com'}/api/auth/magic?token=${tokenH1}`;
+                            const magicLinkRem4h = `${process.env.NEXT_PUBLIC_APP_URL || 'https://demo-ppdb.vercel.app'}/api/auth/magic?token=${tokenH1}`;
 
+                            // Use manual tinyurl if available for this user, otherwise generate automatic
+                            const { getManualTinyUrl, generateTinyUrl } = await import("@/lib/utils/magic-link");
                             const manualTinyUrl = getManualTinyUrl(interviewer.full_name);
                             const shortUrlRem4h = manualTinyUrl || await generateTinyUrl(magicLinkRem4h);
 
                             const remIntMessage = buildMessageReminderH1Penguji(
                                 interviewer.full_name,
                                 pendaftarInfo.nama_lengkap,
-                                dateStr.split(',')[0] || "Besok",
+                                dateStr.split(',')[0] || "",
                                 dateStr,
                                 timeStr,
                                 interviewer.google_meet_link || lokasi,
@@ -337,12 +368,15 @@ export async function POST(request: Request) {
                                 shortUrlRem4h
                             );
 
+                            const finalScheduledAtInt = new Date(finalScheduledAt);
+                            finalScheduledAtInt.setMinutes(finalScheduledAtInt.getMinutes() + 5);
+
                             enqueueWhatsapp({
                                 pendaftarId: session.id,
                                 phone: interviewer.phone,
-                                jenisNotif: "reminder_h1",
+                                jenisNotif: "reminder_h1", // Keep same key for DB compatibility or use a new one
                                 messageContent: remIntMessage,
-                                scheduledAt: reminderTime,
+                                scheduledAt: finalScheduledAtInt,
                             }).then(async () => {
                                  // Update flag safely
                                  try {
@@ -353,10 +387,9 @@ export async function POST(request: Request) {
                                  } catch (e) {
                                     console.warn("Could not update H1 interviewer flag (DB sync might be pending)");
                                  }
-                            }).catch(err => console.error("Failed to enqueue H1 penguji reminder:", err));
+                            }).catch(err => console.error("Failed to enqueue 4h penguji reminder:", err));
                         }
                     }
-                }
             } catch (error) {
                 console.error("Error scheduling H1 reminders:", error);
             }

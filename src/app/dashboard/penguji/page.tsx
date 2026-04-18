@@ -106,7 +106,7 @@ export default function PengujiDashboardPage() {
             <div>
               <h1 className="text-2xl md:text-4xl font-black mb-2 tracking-tight text-white font-display">Ikhtisar Dashboard</h1>
               <p className="text-brand-blue-100 font-bold max-w-xl text-sm md:text-lg leading-relaxed opacity-90">
-                Selamat datang kembali di panel penilaian Seleksi PPDB Ulul Albaab. Berikut ringkasan tugas Anda hari ini.
+                Selamat datang kembali di panel penilaian Seleksi PPDB PPDB. Berikut ringkasan tugas Anda hari ini.
               </p>
             </div>
           </div>

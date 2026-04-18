@@ -24,6 +24,7 @@ import {
 import { Container } from "@/components/layout/Container";
 import { motion, AnimatePresence } from "framer-motion";
 import { BRANDING } from "@/config/branding";
+import DemoLoginHelper from "@/components/auth/DemoLoginHelper";
 
 // Role label & icon map
 const ROLE_INFO: Record<string, { label: string; icon: string; desc: string; color: string }> = {
@@ -46,20 +47,27 @@ const AuthInput = ({
   label,
   icon: Icon,
   error,
-  children
+  children,
+  rightElement
 }: {
   label: string,
   icon: any,
   error?: string,
-  children: React.ReactNode
+  children: React.ReactNode,
+  rightElement?: React.ReactNode
 }) => (
   <div className="space-y-3">
     <label className="text-[10px] font-black text-ink-600 uppercase tracking-[0.2em] ml-1">{label}</label>
     <div className="relative group">
-      <div className="absolute left-5 md:left-6 top-0 bottom-0 flex items-center text-ink-500 group-focus-within:text-brand-blue-600 transition-colors duration-300">
+      <div className="absolute left-5 md:left-6 top-0 bottom-0 flex items-center text-ink-500 group-focus-within:text-brand-blue-600 transition-colors duration-300 pointer-events-none">
         <Icon className="w-5 h-5" />
       </div>
       {children}
+      {rightElement && (
+        <div className="absolute right-5 md:right-6 top-0 bottom-0 flex items-center">
+          {rightElement}
+        </div>
+      )}
     </div>
     {error && (
       <motion.p
@@ -439,24 +447,27 @@ export default function LoginPage() {
                     />
                   </AuthInput>
 
-                  <AuthInput label="Kata Sandi" icon={Lock}>
-                    <div className="relative">
-                      <input
-                        type={showPassword ? "text" : "password"}
-                        value={passwordAdmin}
-                        onChange={(e) => setPasswordAdmin(e.target.value)}
-                        placeholder="••••••••"
-                        className="w-full px-5 py-3 md:px-8 md:py-5 pl-14 md:pl-16 pr-12 md:pr-16 rounded-xl md:rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-maroon-300 focus:ring-4 focus:ring-maroon-50 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-400 text-sm md:text-base shadow-inner"
-                        disabled={isLoading}
-                      />
+                  <AuthInput 
+                    label="Kata Sandi" 
+                    icon={Lock}
+                    rightElement={
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-6 top-1/2 -translate-y-1/2 text-ink-500 hover:text-ink-800 transition-colors duration-300"
+                        className="text-ink-500 hover:text-ink-800 transition-colors duration-300 p-2"
                       >
                         {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                       </button>
-                    </div>
+                    }
+                  >
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      value={passwordAdmin}
+                      onChange={(e) => setPasswordAdmin(e.target.value)}
+                      placeholder="••••••••"
+                      className="w-full px-5 py-3 md:px-8 md:py-5 pl-14 md:pl-16 pr-12 md:pr-16 rounded-xl md:rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-maroon-300 focus:ring-4 focus:ring-maroon-50 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-400 text-sm md:text-base shadow-inner"
+                      disabled={isLoading}
+                    />
                   </AuthInput>
 
                   <motion.button
@@ -488,6 +499,21 @@ export default function LoginPage() {
               )}
             </AnimatePresence>
           </div>
+
+          <DemoLoginHelper 
+            onSelect={(val1, val2, type) => {
+              setError("");
+              if (type === "admin") {
+                setActiveTab("admin");
+                setEmailAdmin(val1);
+                setPasswordAdmin(val2);
+              } else {
+                setActiveTab("pendaftar");
+                setNikPendaftar(val1);
+                setNomorPendaftaran(val2);
+              }
+            }} 
+          />
         </motion.div>
 
         {/* Footer Link */}

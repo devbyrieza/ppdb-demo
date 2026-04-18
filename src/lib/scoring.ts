@@ -5,6 +5,7 @@ import {
     evaluateKepribadianGrade,
     evaluateQuranGrade,
     evaluateWawancaraGrade,
+    evaluateKesiapanGrade,
     determineFinalDecision
 } from './grading';
 
@@ -56,18 +57,28 @@ export async function recalculateNilaiUjian(pendaftarId: string) {
     if (allNilai.length === 0) return null;
 
     // Helper to check if a value is effectively empty
-    const isEmpty = (v: any) => v == null || v === "" || (typeof v === 'object' && Object.keys(v).length === 0 && v.constructor === Object);
+    const isEmpty = (v: any) => {
+        if (v == null || v === "") return true;
+        if (typeof v === 'object') {
+            if (Array.isArray(v)) return v.length === 0;
+            const keys = Object.keys(v);
+            if (keys.length === 0) return true;
+            // Check if all values are null or empty
+            return keys.every(key => v[key] == null || v[key] === "");
+        }
+        return false;
+    };
 
     // 1. Master Merge: Build a unified 'master' object from all records
-    // We iterate from OLDEST to NEWEST so that newer records overwrite older ones for the same field
+    // We iterate through all records and pick the best (non-empty) value for each field
     const master: any = {};
-    [...allNilai].reverse().forEach(record => {
+    allNilai.forEach(record => {
         Object.entries(record).forEach(([key, val]) => {
-            // Ignore system fields that shouldn't be blindly merged
+            // Ignore system fields
             if (['id', 'created_at', 'updated_at', 'pendaftar_id'].includes(key)) return;
             
-            // Only overwrite if the value is NOT empty
-            if (!isEmpty(val)) {
+            // Pick newest non-empty value
+            if (!isEmpty(val) && isEmpty(master[key])) {
                 master[key] = val;
             }
         });
@@ -107,10 +118,11 @@ export async function recalculateNilaiUjian(pendaftarId: string) {
     const grdQuran = quran > 0 ? evaluateQuranGrade(quran) : null;
     const grdAk = ak > 0 ? evaluateAkademikGrade(ak) : null;
     const grdKp = kp > 0 ? evaluateKepribadianGrade(kp) : null;
+    const grdKs = ks > 0 ? evaluateKesiapanGrade(ks) : null;
     const grdWs = ws > 0 ? evaluateWawancaraGrade(ws) : null; 
     const grdWo = wo > 0 ? evaluateWawancaraGrade(wo) : null; 
 
-    const allGraded = grdQuran !== null && grdAk !== null && grdKp !== null && grdWs !== null && grdWo !== null;
+    const allGraded = grdQuran !== null && grdAk !== null && grdKp !== null && grdKs !== null && grdWs !== null && grdWo !== null;
 
     let status: string;
     if (allGraded) {
@@ -118,6 +130,7 @@ export async function recalculateNilaiUjian(pendaftarId: string) {
             quran: grdQuran,
             akademik: grdAk,
             kepribadian: grdKp,
+            kesiapan: grdKs!,
             wawancaraCalsan: grdWs,
             wawancaraCawalsan: grdWo
         });
@@ -148,6 +161,7 @@ export async function recalculateNilaiUjian(pendaftarId: string) {
         data: {
             ...master,
             total_score: totalScore,
+            nilai_total: totalScore, // Sync legacy field for other pages
             status_kelulusan: status,
             score_wawancara: wawancaraTotal,
             nilai_wawancara_ortu: wo,

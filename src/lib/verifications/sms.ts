@@ -1,4 +1,4 @@
-﻿// lib/verification/sms.ts
+// lib/verification/sms.ts
 import { normalizePhone } from "./multi-channel";
 import { sendMessage } from "@/lib/wablas";
 
@@ -10,7 +10,7 @@ export async function sendSms(
     const phone = normalizePhone(to);
 
     // Kirim via Wablas (WhatsApp message, lebih reliable dari SMS)
-    const message = `Kode verifikasi PPDB Ponpes Al-Andalus Ulul Albaab: ${otp}`;
+    const message = `Kode verifikasi PPDB Ponpes Sistem PPDB Modern: ${otp}`;
     const result = await sendMessage({ phone, message });
 
     if (result.status) {

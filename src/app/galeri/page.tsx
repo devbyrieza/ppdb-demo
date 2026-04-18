@@ -10,7 +10,7 @@ const GALLERY_CATEGORIES = [
   {
     title: "Fasilitas Pesantren",
     items: [
-      { src: "/images/masjid.webp", label: "Masjid Jami' Ulul Albaab" },
+      { src: "/images/masjid.webp", label: "Masjid Jami' PPDB" },
       { src: "/images/asrama.webp", label: "Asrama Santri" },
       { src: "/images/tentang.webp", label: "Gedung Utama" },
       { src: "/images/gedung-utama-dan-lapangan-basket.webp", label: "Gedung Utama & Lapangan Basket" },
@@ -33,7 +33,7 @@ const GALLERY_CATEGORIES = [
   {
     title: "Suasana Pesantren",
     items: [
-      { src: "/images/welcome-selamat-datang.webp", label: "Selamat Datang di Ulul Albaab" },
+      { src: "/images/welcome-selamat-datang.webp", label: "Selamat Datang di PPDB" },
       { src: "/images/halaman-dekat-masjid.webp", label: "Halaman Pesantren" },
     ],
   },
@@ -64,7 +64,7 @@ export default function GaleriPage() {
             className="text-5xl md:text-7xl lg:text-8xl font-display font-black mb-10 tracking-tight leading-[0.9] text-ink-950"
           >
             Galeri <br />
-            <span className="text-gradient-blue">Ulul Albaab</span>
+            <span className="text-gradient-blue">PPDB</span>
           </motion.h1>
 
           <motion.p
@@ -73,7 +73,7 @@ export default function GaleriPage() {
             transition={{ delay: 0.2 }}
             className="text-xl md:text-2xl text-ink-600 max-w-3xl mx-auto leading-relaxed font-medium"
           >
-            Koleksi foto suasana, fasilitas, dan kegiatan santri di Pesantren Al-Andalus Ulul Albaab.
+            Koleksi foto suasana, fasilitas, dan kegiatan santri di Pesantren Sistem PPDB Modern.
           </motion.p>
         </Container>
       </section>

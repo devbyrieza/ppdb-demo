@@ -1,0 +1,109 @@
+import { NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import { prisma } from "@/lib/prisma";
+
+export async function GET(request: NextRequest) {
+    try {
+        const cookieStore = await cookies();
+        const sessionCookie = cookieStore.get("app_session");
+
+        if (!sessionCookie) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
+        let session;
+        try {
+            session = JSON.parse(sessionCookie.value);
+        } catch {
+            return NextResponse.json({ error: "Invalid session" }, { status: 401 });
+        }
+
+        // Only Admin types can access
+        const allowedRoles = ["admin", "admin_super", "head_of_it", "tim_it"];
+        if (!allowedRoles.includes(session.role)) {
+            return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+        }
+
+        // Fetch all JadwalUjian with relations (filtering out deleted students)
+        const schedules = await prisma.jadwalUjian.findMany({
+            where: {
+                pendaftar: {
+                    deleted_at: null
+                }
+            },
+            include: {
+                pendaftar: {
+                    select: {
+                        id: true,
+                        nomor_pendaftaran: true,
+                        nama_lengkap: true,
+                        jenjang: true,
+                    }
+                },
+                exam_session: {
+                    select: {
+                        id: true,
+                        title: true,
+                        start_time: true,
+                        end_time: true,
+                        location: true,
+                    }
+                },
+                penguji_quran: {
+                    select: {
+                        id: true,
+                        full_name: true,
+                    }
+                },
+                penguji_santri: {
+                    select: {
+                        id: true,
+                        full_name: true,
+                    }
+                },
+                penguji_ortu: {
+                    select: {
+                        id: true,
+                        full_name: true,
+                        google_meet_link: true,
+                    }
+                }
+            },
+            orderBy: [
+                { tanggal_ujian: 'desc' },
+                { waktu_mulai_santri: 'asc' }
+            ]
+        });
+
+        // Map to a cleaner format
+        const formatted = schedules.map(s => ({
+            id: s.id,
+            pendaftar: {
+                nomor: s.pendaftar.nomor_pendaftaran,
+                nama: s.pendaftar.nama_lengkap,
+                jenjang: s.pendaftar.jenjang,
+            },
+            sesi: {
+                title: s.exam_session?.title || "Sesi Ujian",
+                start: s.exam_session?.start_time || s.waktu_mulai_santri,
+                end: s.exam_session?.end_time || s.waktu_selesai_santri,
+                location: s.exam_session?.location || s.tempat_santri,
+            },
+            ustadz: {
+                quran: s.penguji_quran?.full_name || '-',
+                santri: s.penguji_santri?.full_name || '-',
+                ortu: s.penguji_ortu?.full_name || '-',
+            },
+            status: {
+                quran: s.status_quran || 'scheduled',
+                santri: s.status_santri || 'scheduled',
+                ortu: s.status_ortu || 'scheduled',
+            }
+        }));
+
+        return NextResponse.json({ data: formatted });
+    } catch (error: any) {
+        console.error("Monitoring API Error:", error);
+        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    }
+}

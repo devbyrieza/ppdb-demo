@@ -6,29 +6,29 @@
 export const PPDB_CONFIG = {
   // 🏫 INFO PESANTREN (GANTI INI DULU!)
   pesantren: {
-    nama: "Pesantren Al-Andalus Ulul Albaab",
-    singkatan: "Al-Andalus Ulul Albaab",
+    nama: "Pesantren Al-Andalus Al-Imam",
+    singkatan: "Al-Andalus Al-Imam",
     alamat: "Jl. KH Mama Oyon, Cihaur, Kec. Cicantayan, Kabupaten Sukabumi, Jawa Barat 43155",
     telepon: "+62 888-0993-4970",
-    email: "alandalus.ululalbaab@gmail.com",
-    emailPpdb: "alandalus.ululalbaab@gmail.com",
-    website: "https://www.pesantren-ululalbaab.com",
+    email: "alandalus.alimam@gmail.com",
+    emailPpdb: "alandalus.alimam@gmail.com",
+    website: "https://www.pesantren-alimam.com",
   },
 
   // 🎨 BRAND COLORS (GANTI SESUAI LOGO)
   colors: {
-    // Primary Colors (Biru Muda / Sky)
+    // Primary Colors (Maroon / Cream - Warna Khas Al-Imam)
     primary: {
-      50: "#f0f9ff",
-      100: "#e0f2fe",
-      200: "#bae6fd",
-      300: "#7dd3fc",
-      400: "#38bdf8",
-      500: "#0ea5e9",
-      600: "#0284c7",  // Warna tombol & aksi utama
-      700: "#0369a1",  // Warna teks penting
-      800: "#075985",
-      900: "#0c4a6e",  // Warna teks gelap
+      50: "#fdf6e3",
+      100: "#f9e8c8",
+      200: "#f0cc99",
+      300: "#e0a868",
+      400: "#c07840",
+      500: "#9b5e28",
+      600: "#7c3a1e",  // Warna tombol & aksi utama
+      700: "#6b1c1c",  // Warna teks penting
+      800: "#521414",
+      900: "#3d0d0d",  // Warna teks gelap
     },
 
     // Secondary Colors (Kuning / Amber)
@@ -72,7 +72,7 @@ export const PPDB_CONFIG = {
   pricing: [
     {
       label: "Uang Pendaftaran",
-      amount: "Rp 200.000",
+      amount: "Rp 250.000",
       note: "Tidak dapat dikembalikan"
     },
     {
@@ -103,14 +103,14 @@ export const PPDB_CONFIG = {
   // 🔗 KONTAK & SOSMED (GANTI SESUAI!)
   contact: {
     whatsapp: "+6288809934970",
-    instagram: "@pesantrenululalbaab",
-    facebook: "Pesantren Al-Andalus Ulul Albaab (Official Fanpage)",
-    youtube: "Al-Andalus Ulul Albaab"
+    instagram: "@pesantrenalimam",
+    facebook: "Pesantren Al-Andalus Al-Imam (Official Fanpage)",
+    youtube: "Al-Andalus Al-Imam"
   },
 
   // ⚙️ SETTING TEKNIS (UMUMNYA TIDAK PERLU DIUBAH)
   technical: {
-    appName: "PPDB Al-Andalus Ulul Albaab",
+    appName: "PPDB Al-Andalus Al-Imam",
     appDescription: "Sistem Penerimaan Peserta Didik Baru",
     version: "2.0.0",
     author: "Rieza Eka Tomara"

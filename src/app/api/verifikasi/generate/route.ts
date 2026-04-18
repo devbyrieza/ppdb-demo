@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
       message: "OTP generated and saved successfully",
       whatsappTemplate: `Assalamu'alaikum ${nama},
 
-Kode verifikasi PPDB Ponpes Al-Andalus Ulul Albaab Anda:
+Kode verifikasi PPDB Ponpes Sistem PPDB Modern
 
 🔐 *${otp}*
 

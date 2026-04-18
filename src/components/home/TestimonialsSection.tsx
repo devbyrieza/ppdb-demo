@@ -8,45 +8,45 @@ const TESTIMONIALS = [
   {
     no: "001",
     name: "Bpk. Surwanto",
-    role: "Wali Santri",
+    role: "Wali Santri PPDB Modern Pusat",
     city: "Sukoharjo, Jawa Tengah",
     initial: "S",
     date: "Oktober 2024",
     quote:
-      "Tujuan kami menyekolahkan anak ke pesantren adalah agar mereka benar-benar paham agama, bukan sekadar hafal pelajaran. Alhamdulillah, sistem Al-Andalus telah memberikan perubahan nyata pada anak kami — cara bicara, cara bersikap kepada orang tua, dan keseriusannya dalam ibadah.",
+      "Tujuan kami menyekolahkan anak ke PPDB Modern Pusat adalah agar mereka benar-benar paham agama. Alhamdulillah, sistem PPDB Modern memberikan perubahan nyata pada anak kami — cara bicara, sikap, dan keseriusannya dalam ibadah.",
     color: "maroon"
   },
   {
     no: "002",
     name: "Ibu Endah Wulandari",
-    role: "Wali Santri",
+    role: "Wali Santri PPDB Modern Pusat",
     city: "Kebumen, Jawa Tengah",
     initial: "E",
     date: "Januari 2025",
     quote:
-      "Awalnya saya khawatir dengan sistem boarding, takut anak susah adaptasi. Ternyata kurikulum tahfidznya sangat sistematis — sangat ditekankan pada makhraj dan tajwid yang benar. Dalam 6 bulan, anak saya sudah mampu memimpin shalat berjamaah di rumah.",
+      "Awalnya saya khawatir dengan sistem boarding, namun kurikulum tahfidz di PPDB Modern Jonggol sangat sistematis. Dalam 6 bulan, anak saya sudah mampu memimpin shalat berjamaah di rumah dengan makhraj yang benar.",
     color: "cream"
   },
   {
     no: "003",
     name: "Muhammad Razan",
-    role: "Alumni Al-Andalus",
+    role: "Alumni PPDB Modern Jonggol",
     city: "Purwokerto, Jawa Tengah",
     initial: "R",
     date: "Maret 2025",
     quote:
-      "Disiplin bahasa Arab dan hafalan Al-Qur'an sangat membantu saat saya melanjutkan pendidikan ke jenjang lebih tinggi. Saat teman-teman lain masih belajar dasar-dasar nahwu, saya sudah bisa langsung membaca kitab.",
+      "Disiplin bahasa Arab dan hafalan Al-Qur'an di PPDB Modern sangat membantu saat saya melanjutkan pendidikan tinggi. Saat teman-teman lain masih belajar dasar nahwu, saya sudah bisa langsung membaca kitab.",
     color: "gold"
   },
   {
     no: "004",
     name: "Faisal Ahmad",
-    role: "Alumni Al-Andalus",
+    role: "Alumni PPDB Modern Jonggol",
     city: "Cilacap, Jawa Tengah",
     initial: "A",
     date: "Agustus 2024",
     quote:
-      "Berkat bimbingan intensif para asatidz di Pesantren Al-Andalus, saya berhasil lulus seleksi masuk universitas di Timur Tengah. Fondasi bahasa Arab aktif yang ditanamkan sejak awal benar-benar menjadi kunci.",
+      "Berkat bimbingan intensif para asatidz di Pesantren PPDB Modern Pusat, saya berhasil lulus seleksi masuk universitas di Timur Tengah. Fondasi bahasa Arab aktif yang ditanamkan benar-benar menjadi kunci.",
     color: "teal"
   },
 ] as const;
@@ -84,13 +84,13 @@ function TestimonialCard({
         ))}
       </div>
 
-      <p className="text-ink-700 leading-relaxed mb-8 flex-grow font-medium relative z-10 text-[15px]">
+      <p className="text-ink-700 leading-relaxed mb-8 grow font-medium relative z-10 text-[15px]">
         "{quote}"
       </p>
 
       <div className="flex items-center justify-between mt-auto pt-6 border-t border-cream-200/60">
         <div className="flex items-center gap-4">
-          <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-maroon-600 to-maroon-900 flex items-center justify-center text-white font-display font-black shadow-sm group-hover:scale-110 transition-transform duration-500">
+          <div className="w-11 h-11 rounded-2xl bg-linear-to-br from-maroon-600 to-maroon-900 flex items-center justify-center text-white font-display font-black shadow-sm group-hover:scale-110 transition-transform duration-500">
             {initial}
           </div>
           <div>
@@ -120,7 +120,7 @@ export default function TestimonialsSection() {
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-white border border-cream-200 text-maroon-700 text-xs font-bold uppercase tracking-widest mb-6 shadow-sm"
           >
             <MessageCircle className="w-3.5 h-3.5" />
-            <span>Cerita Nyata Wali Santri & Alumni</span>
+            <span>Reputasi PPDB Modern Pusat (Jonggol)</span>
           </motion.div>
 
           <motion.h2
@@ -130,7 +130,7 @@ export default function TestimonialsSection() {
             transition={{ delay: 0.1 }}
             className="section-title mb-6"
           >
-            Apa Kata <span className="text-gradient-maroon">Mereka?</span>
+            Cerita Keberhasilan <span className="text-gradient-maroon">Keluarga PPDB Modern</span>
           </motion.h2>
 
           <motion.p
@@ -140,7 +140,7 @@ export default function TestimonialsSection() {
             transition={{ delay: 0.2 }}
             className="section-subtitle mb-6"
           >
-            Kepercayaan wali santri dan alumni adalah amanah bagi kami untuk terus memberikan yang terbaik.
+            PPDB menerapkan standar keunggulan dan sistem yang sama dengan Pesantren PPDB Modern Pusat (Jonggol) International Islamic Boarding School.
           </motion.p>
 
           <motion.div
@@ -150,7 +150,7 @@ export default function TestimonialsSection() {
             transition={{ delay: 0.3 }}
             className="inline-flex items-center gap-2 bg-maroon-50 text-maroon-800 px-4 py-2 rounded-xl border border-maroon-100 font-bold text-sm shadow-sm"
           >
-            <span className="text-maroon-600">✦</span> Dari Keluarga Besar Al-Andalus
+            <span className="text-maroon-600">✦</span> Reputasi Global yang Teruji
           </motion.div>
         </div>
 

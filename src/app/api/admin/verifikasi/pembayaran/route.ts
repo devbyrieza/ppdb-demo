@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { notifyPaymentVerified } from "@/lib/wablas";
+import { enqueueWhatsapp, buildMessagePaymentVerified, buildMessagePaymentRejected } from "@/lib/whatsapp-queue";
 import { getServerSession } from "@/lib/session";
 import { logAdminAction } from "@/lib/audit";
 
@@ -167,21 +167,24 @@ export async function PATCH(request: NextRequest) {
       details: { status_pembayaran, payment_id: pembayaran_id }
     });
 
-    // Send WhatsApp notification
+    // Send WhatsApp notification via Queue
     try {
       if (pembayaran.pendaftar?.no_hp) {
-        await notifyPaymentVerified({
+        const isVerifiedPayment = status_pembayaran === "verified";
+        const formattedAmount = `Rp ${parseInt(pembayaran.jumlah.toString()).toLocaleString('id-ID')}`;
+        const paymentDate = new Date(pembayaran.created_at).toLocaleDateString('id-ID');
+
+        await enqueueWhatsapp({
+          pendaftarId: pembayaran.pendaftar_id,
           phone: pembayaran.pendaftar.no_hp,
-          nama: pembayaran.pendaftar.nama_lengkap,
-          jumlah: `Rp ${parseInt(pembayaran.jumlah.toString()).toLocaleString('id-ID')}`,
-          metode: pembayaran.metode_pembayaran,
-          tanggal: new Date(pembayaran.created_at).toLocaleDateString('id-ID'),
-          status: status_pembayaran,
-          catatan: catatan || undefined,
+          jenisNotif: isVerifiedPayment ? "payment_verified" : "payment_rejected",
+          messageContent: isVerifiedPayment
+            ? buildMessagePaymentVerified(pembayaran.pendaftar.nama_lengkap, formattedAmount, pembayaran.metode_pembayaran, paymentDate)
+            : buildMessagePaymentRejected(pembayaran.pendaftar.nama_lengkap, catatan || ""),
         });
       }
     } catch (error) {
-      console.error("WhatsApp notification error:", error);
+      console.error("WhatsApp notification enqueue error:", error);
       // Don't fail verification if notification fails
     }
 

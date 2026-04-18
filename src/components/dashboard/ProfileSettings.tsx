@@ -180,7 +180,12 @@ export default function ProfileSettings({ user }: { user: UserSession }) {
                                     placeholder="Contoh: 08123456789"
                                     className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
                                 />
-                                <p className="text-[10px] text-gray-400 mt-1.5 ml-1 leading-relaxed">Digunakan untuk mengirim pengingat jadwal otomatis H-1.</p>
+                                <div className="mt-1.5 flex flex-col gap-1">
+                                    <p className="text-[10px] text-gray-400 ml-1 leading-relaxed">Digunakan untuk mengirim pengingat jadwal otomatis H-1.</p>
+                                    <p className="text-[10px] text-blue-500 font-bold ml-1 flex items-center gap-1 uppercase tracking-wider">
+                                        <Lock className="w-2.5 h-2.5" /> PIN Login: 4 Digit Terakhir Nomor Ini
+                                    </p>
+                                </div>
                             </div>
                         </div>
 

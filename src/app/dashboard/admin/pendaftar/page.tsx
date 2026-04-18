@@ -1051,7 +1051,66 @@ function AdminPendaftarContent() {
           </div>
         ) : (
           <>
-            <div className="overflow-x-auto">
+            {/* Mobile Card View — hanya tampil di layar kecil */}
+            <div className="md:hidden divide-y divide-brand-yellow-50">
+              {pendaftar.map((item) => (
+                <div key={item.id} className={`p-5 ${selectedIds.includes(item.id) ? 'bg-purple-50' : 'bg-white'}`}>
+                  <div className="flex items-start gap-3">
+                    <button onClick={() => handleSelectOne(item.id)} className="mt-1 shrink-0 text-purple-600">
+                      {selectedIds.includes(item.id) ? <CheckSquare className="w-5 h-5" /> : <Square className="w-5 h-5 text-stone-400" />}
+                    </button>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex flex-wrap items-center gap-2 mb-1">
+                        <span className="font-mono text-xs font-bold text-brand-blue-700 bg-brand-blue-50 px-2 py-0.5 rounded">
+                          {item.nomor_pendaftaran}
+                        </span>
+                        <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 bg-purple-100 text-purple-700 rounded-full">
+                          {item.jenjang}
+                        </span>
+                      </div>
+                      <p className="font-black text-brand-blue-950 leading-tight text-sm">{toTitleCase(item.nama_lengkap)}</p>
+                      <p className="text-xs text-stone-500 mt-0.5">
+                        {["L", "Laki-laki"].includes(item.jenis_kelamin) ? "Laki-laki" : "Perempuan"}
+                        {item.no_hp && <> &bull; {item.no_hp}</>}
+                      </p>
+                      <div className="flex flex-wrap items-center gap-2 mt-2">
+                        {formatStatus(item.status_pendaftaran)}
+                        <span className="text-[10px] text-stone-400">{formatDate(item.created_at)}</span>
+                      </div>
+                      <div className="flex gap-2 mt-3">
+                        <Link
+                          href={`/dashboard/admin/pendaftar/${item.id}`}
+                          className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-brand-blue-700 hover:bg-brand-blue-800 text-white rounded-xl text-xs font-black transition-all active:scale-95"
+                        >
+                          <Eye className="w-3.5 h-3.5" /> Buka Detail
+                        </Link>
+                        {userRole === 'admin_super' && (
+                          <>
+                            <button
+                              onClick={() => handleOpenAnnouncement(item)}
+                              className="px-3 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black transition-all active:scale-95"
+                              title="Input Hasil Seleksi"
+                            >
+                              <FileCheck className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => handleOpenDelete(item)}
+                              className="px-3 py-2.5 bg-red-100 hover:bg-red-600 text-red-600 hover:text-white rounded-xl text-xs font-black transition-all active:scale-95"
+                              title="Hapus"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop Table View — disembunyikan di mobile */}
+            <div className="hidden md:block overflow-x-auto">
               <table className="w-full">
                 <thead className="bg-linear-to-r from-brand-blue-50 to-brand-yellow-50 border-b border-brand-yellow-100">
                   <tr>
@@ -1142,7 +1201,7 @@ function AdminPendaftarContent() {
                             {toTitleCase(item.nama_lengkap)}
                           </div>
                           <div className="text-xs text-stone-500">
-                            {item.jenis_kelamin === "L" ? "Laki-laki" : "Perempuan"}
+                            {["L", "Laki-laki"].includes(item.jenis_kelamin) ? "Laki-laki" : "Perempuan"}
                           </div>
                         </div>
                       </td>

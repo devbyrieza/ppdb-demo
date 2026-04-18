@@ -219,7 +219,7 @@ export default function TrashPage() {
                                                         {toTitleCase(item.nama_lengkap)}
                                                     </div>
                                                     <div className="text-xs text-stone-500">
-                                                        {item.jenis_kelamin === "L" ? "Laki-laki" : "Perempuan"}
+                                                        {["L", "Laki-laki"].includes(item.jenis_kelamin) ? "Laki-laki" : "Perempuan"}
                                                     </div>
                                                 </div>
                                             </td>

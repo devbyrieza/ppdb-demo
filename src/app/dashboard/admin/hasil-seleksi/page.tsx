@@ -163,9 +163,62 @@ export default function HasilSeleksiPage() {
                 </button>
             </div>
 
-            {/* Table */}
+            {/* Table & Mobile View */}
             <div className="bg-white rounded-xl shadow-sm border border-stone-200 overflow-hidden">
-                <div className="overflow-x-auto">
+                {/* Mobile View: Cards */}
+                <div className="md:hidden divide-y divide-stone-100">
+                    {loading ? (
+                        <div className="px-6 py-12 text-center text-stone-500">
+                            <Loader2 className="w-8 h-8 animate-spin mx-auto mb-2 text-stone-400" />
+                            <p>Memuat rekapitulasi data...</p>
+                        </div>
+                    ) : candidates.length === 0 ? (
+                        <div className="px-6 py-12 text-center text-stone-500 italic">
+                            Tidak ada data rekapitulasi yang ditemukan.
+                        </div>
+                    ) : (
+                        candidates.map((c) => (
+                            <div key={c.id} className="p-5 space-y-4">
+                                <div className="flex justify-between items-start gap-4">
+                                    <div className="flex-1 min-w-0">
+                                        <h4 className="font-black text-stone-900 leading-tight uppercase text-sm truncate">
+                                            {c.nama_lengkap.replace(/\w\S*/g, (txt: string) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())}
+                                        </h4>
+                                        <p className="text-[10px] font-mono font-bold text-stone-400 tracking-tighter mt-1">{c.nomor_pendaftaran}</p>
+                                    </div>
+                                    <span className="px-2 py-0.5 bg-stone-100 text-stone-600 rounded text-[9px] font-black uppercase shrink-0 border border-stone-200 shadow-sm">
+                                        {c.jenjang}
+                                    </span>
+                                </div>
+
+                                <div className="flex items-center justify-between pt-2 border-t border-stone-50">
+                                    <div className="flex flex-col">
+                                        <span className="text-[9px] font-black text-stone-300 uppercase tracking-widest leading-none mb-1">Total Nilai</span>
+                                        <span className="text-lg font-black text-stone-800">{c.nilai_ujian?.nilai_total || "-"}</span>
+                                    </div>
+                                    <div className="shrink-0">
+                                        {(c.status_pendaftaran === 'accepted' || c.status_pendaftaran === 'enrolled') ? (
+                                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-green-100 text-green-700 text-[10px] font-black uppercase border border-green-200">
+                                                <CheckCircle2 className="w-3 h-3" /> LULUS
+                                            </span>
+                                        ) : c.status_pendaftaran === 'cadangan' ? (
+                                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-100 text-amber-700 text-[10px] font-black uppercase border border-amber-200">
+                                                CADANGAN
+                                            </span>
+                                        ) : (
+                                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-rose-100 text-rose-700 text-[10px] font-black uppercase border border-rose-200">
+                                                TIDAK LULUS
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        ))
+                    )}
+                </div>
+
+                {/* Desktop View: Table */}
+                <div className="hidden md:block overflow-x-auto">
                     <table className="w-full">
                         <thead className="bg-stone-100/50 border-b border-stone-200">
                             <tr>

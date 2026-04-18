@@ -46,7 +46,7 @@ export default function LayoutWrapper({
       {/* ✅ FLOATING WIDGETS - Always visible on public pages */}
       {!hideNavbarFooter && (
         <>
-          <TawkToScript />
+          {/* <TawkToScript /> */}
           <ChatSystem />
           <ScrollToTop />
           <LiveActivityToast />

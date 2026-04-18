@@ -19,11 +19,27 @@ export async function GET(request: NextRequest) {
             return NextResponse.redirect(new URL(`/login?error=${errReason}`, request.url));
         }
 
-        const { id, role, full_name } = verification.data;
+        const { id, role, full_name, redirect } = verification.data;
 
-        // 2. Build secure cookie directly based on the token's authenticated payload
-        // To minimize database lookups, we trust the HMAC-SHA256 valid signature.
-        const response = NextResponse.redirect(new URL("/dashboard/penguji/input-nilai", request.url));
+        // 3. Check if user needs PIN (has phone number)
+        const { prisma } = await import("@/lib/prisma");
+        const user = await prisma.profile.findUnique({
+            where: { id },
+            select: { phone: true }
+        });
+
+        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://demo-ppdb.vercel.app";
+        
+        // If user has a valid phone number, they MUST verify PIN
+        if (user && user.phone && user.phone !== "-" && user.phone.length > 5) {
+            const pinUrl = new URL("/auth/verify-pin", baseUrl);
+            pinUrl.searchParams.set("token", token);
+            return NextResponse.redirect(pinUrl);
+        }
+
+        // 4. Fallback: Build secure cookie directly if no PIN protection is active
+        const targetUrl = redirect || "/dashboard/penguji/input-nilai";
+        const response = NextResponse.redirect(new URL(targetUrl, baseUrl));
 
         response.cookies.set(
             "app_session",

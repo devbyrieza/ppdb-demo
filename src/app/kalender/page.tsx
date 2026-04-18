@@ -20,7 +20,7 @@ export default function CalendarPage() {
 
           <p className="text-lg text-ink-600 mb-10 leading-relaxed font-medium">
             Mohon maaf, halaman Kalender Akademik sedang dalam tahap penyempurnaan.
-            Kami sedang menyusun jadwal terbaik untuk santri Ulul Albaab.
+            Kami sedang menyusun jadwal terbaik untuk santri PPDB.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

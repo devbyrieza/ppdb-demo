@@ -69,7 +69,7 @@ export default function ChatSystem() {
 
     const openWhatsApp = () => {
         const waNumber = "6281285300800";
-        const waMessage = encodeURIComponent("Halo Panitia PPDB Pesantren Ulul Albaab, saya ingin bertanya...");
+        const waMessage = encodeURIComponent("Halo Panitia PPDB Pesantren PPDB, saya ingin bertanya...");
         window.open(`https://wa.me/${waNumber}?text=${waMessage}`, "_blank");
         setIsMenuOpen(false);
     };
@@ -114,7 +114,7 @@ export default function ChatSystem() {
                             style={{ transformOrigin: "bottom right" }}
                         >
                             <div className="px-3 pb-3 pt-2 mb-2 border-b border-surface-100 flex items-center justify-between">
-                                <span className="text-[10px] uppercase font-black tracking-widest text-cream-500 mb-0.5">PPDB Ulul Albaab</span>
+                                <span className="text-[10px] uppercase font-black tracking-widest text-cream-500 mb-0.5">PPDB PPDB</span>
                                 <button
                                     onClick={() => setIsMenuOpen(false)}
                                     className="p-1.5 hover:bg-surface-50 rounded-full transition-colors text-ink-400 hover:text-ink-600"
@@ -140,6 +140,7 @@ export default function ChatSystem() {
                                     </div>
                                 </button>
 
+{/* 
                                 <button
                                     onClick={openTawkTo}
                                     className="w-full flex items-center gap-3 p-3 hover:bg-teal-50 rounded-xl transition-colors group text-left"
@@ -152,6 +153,7 @@ export default function ChatSystem() {
                                         <p className="text-[11px] text-ink-500 font-medium">Chat langsung dengan panitia</p>
                                     </div>
                                 </button>
+*/}
 
                                 <button
                                     onClick={openWhatsApp}
@@ -182,7 +184,7 @@ export default function ChatSystem() {
                             >
                                 <div className="flex-1">
                                     <p className="text-[13px] font-black text-ink-950 leading-tight mb-1">Butuh Bantuan?</p>
-                                    <p className="text-xs text-ink-400 font-medium tracking-wide">Ulul Albaab PPDB</p>
+                                    <p className="text-xs text-ink-400 font-medium tracking-wide">PPDB PPDB</p>
                                 </div>
                                 <button
                                     onClick={() => setShowTooltip(false)}

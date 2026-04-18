@@ -11,6 +11,8 @@ export default function KesiapanTestPage() {
     const [loading, setLoading] = useState(false);
     const [checking, setChecking] = useState(true);
     const [alreadyDone, setAlreadyDone] = useState(false);
+    const [isLocked, setIsLocked] = useState(false);
+    const [lockMessage, setLockMessage] = useState('');
     const [answers, setAnswers] = useState<Record<number, number>>({});
 
     const totalQuestions = KESIAPAN_QUESTIONS.reduce((acc, s) => acc + s.items.length, 0);
@@ -21,7 +23,11 @@ export default function KesiapanTestPage() {
         fetch('/api/pendaftar/undangan-seleksi')
             .then(res => res.json())
             .then(data => {
-                if (data.data?.grupA?.kesiapan?.completed) {
+                const info = data.data;
+                if (info?.locked) {
+                    setIsLocked(true);
+                    setLockMessage(info.message || '');
+                } else if (info?.grupA?.kesiapan?.completed) {
                     setAlreadyDone(true);
                 }
             })
@@ -76,8 +82,27 @@ export default function KesiapanTestPage() {
                     <CheckCircle className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
                     <h2 className="text-xl font-bold mb-2">Tes Sudah Dikerjakan</h2>
                     <p className="text-stone-600 mb-6">Anda sudah menyelesaikan Tes Kesiapan sebelumnya.</p>
-                    <button onClick={() => router.push('/dashboard/pendaftar/undangan-seleksi')} className="px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-xl transition-colors">
+                    <button onClick={() => router.push('/dashboard/pendaftar?tab=undangan-seleksi')} className="px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-xl transition-colors">
                         Kembali ke Undangan Seleksi
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
+    if (isLocked) {
+        return (
+            <div className="max-w-lg mx-auto p-8 text-center mt-10">
+                <div className="bg-white rounded-[2rem] shadow-xl border p-10">
+                    <div className="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <AlertCircle className="w-10 h-10 text-amber-600" />
+                    </div>
+                    <h2 className="text-2xl font-black mb-4 uppercase tracking-tight text-ink-950">Akses Terkunci</h2>
+                    <p className="text-ink-600 mb-8 leading-relaxed font-medium">
+                        {lockMessage || "Anda belum dapat mengakses halaman tes ini. Silakan selesaikan tahap verifikasi dokumen terlebih dahulu."}
+                    </p>
+                    <button onClick={() => router.push('/dashboard/pendaftar')} className="w-full px-6 py-4 bg-brand-blue-700 hover:bg-brand-blue-800 text-white font-black rounded-xl transition-all shadow-md uppercase tracking-widest text-sm">
+                        Kembali ke Dashboard
                     </button>
                 </div>
             </div>

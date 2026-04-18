@@ -28,7 +28,7 @@ const PROGRAMS = [
         name: "Madrasah Tsanawiyah",
         buttonLabel: "Daftar MTs",
         fullName: "Program Madrasah Tsanawiyah (SMP)",
-        description: "Kami menerapkan Kurikulum Terpadu yang menggabungkan kurikulum Nasional dengan kurikulum khas Al-Andalus yang berfokus pada penguasaan Bahasa Arab, Tahfidz Al-Qur'an, dan Kitab Turots secara komprehensif.",
+        description: "Kami menerapkan Kurikulum Terpadu yang menggabungkan kurikulum Nasional dengan kurikulum khas PPDB Modern yang berfokus pada penguasaan Bahasa Arab, Tahfidz Al-Qur'an, dan Kitab Turots secara komprehensif.",
         stats: [
             { label: "Durasi", value: "3 Tahun", icon: Clock },
             { label: "Target", value: "12 Juz", icon: Trophy },
@@ -51,7 +51,7 @@ const PROGRAMS = [
         name: "I'dad Lughowi",
         buttonLabel: "Daftar IL",
         fullName: "Program I'dad Lughowi (SMA)",
-        description: "Program intensif yang menggunakan Kurikulum Terpadu (Nasional & khas Al-Andalus), berfokus pada pemantapan Bahasa Arab & Tahfidz di tahun I'dad, dilanjutkan jenjang Madrasah Aliyah yang resmi.",
+        description: "Program intensif yang menggunakan Kurikulum Terpadu (Nasional & khas PPDB Modern), berfokus pada pemantapan Bahasa Arab & Tahfidz di tahun I'dad, dilanjutkan jenjang Madrasah Aliyah yang resmi.",
         stats: [
             { label: "Durasi", value: "1 Tahun Pendalaman Bahasa Arab + 3 Tahun Aliyah", icon: Clock },
             { label: "Target", value: "16 Juz", icon: Trophy },
@@ -181,7 +181,7 @@ export default function ProgramPage() {
                                                 className="object-cover transition-transform duration-700 hover:scale-110 bg-surface-200 animate-pulse"
                                                 onLoad={(e) => e.currentTarget.classList.remove('animate-pulse')}
                                             />
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                                            <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
 
                                             <div className="absolute bottom-10 left-10 right-10 z-20">
                                                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-white/20 backdrop-blur-md border border-white/30 text-white text-[10px] font-black uppercase tracking-widest mb-3">

@@ -34,11 +34,11 @@ export default function Footer() {
               </div>
               <div>
                 <h3 className="text-xl font-black text-white tracking-tight leading-none">{BRANDING.schoolName}</h3>
-                <p className="text-[10px] font-bold text-brand-yellow-100/80 uppercase tracking-widest mt-2">{BRANDING.schoolName.includes("Al-Andalus") ? "Islamic Boarding School" : "Academic Center"}</p>
+                <p className="text-[10px] font-bold text-brand-yellow-100/80 uppercase tracking-widest mt-2">Islamic Boarding School</p>
               </div>
             </Link>
             <p className="text-brand-yellow-100/80 font-medium leading-relaxed max-w-xs text-justify">
-              Membangun generasi Qur'ani yang cerdas & berakhlak mulia melalui sistem terintegrasi Al-Andalus.
+              Membangun generasi Qur&apos;ani yang cerdas &amp; berakhlak mulia melalui sistem terintegrasi PPDB Modern.
             </p>
             <div className="flex gap-3">
               {[Instagram, Youtube, Facebook, Twitter].map((Icon, i) => (
@@ -81,7 +81,7 @@ export default function Footer() {
             <h4 className="text-sm font-black text-brand-yellow-400 uppercase tracking-widest">Kontak Kami</h4>
             <div className="space-y-5">
               <div className="flex gap-4">
-                <div className="w-10 h-10 rounded-xl bg-brand-blue-900 flex items-center justify-center text-brand-yellow-400 flex-shrink-0 border border-brand-blue-800">
+                <div className="w-10 h-10 rounded-xl bg-brand-blue-900 flex items-center justify-center text-brand-yellow-400 shrink-0 border border-brand-blue-800">
                   <MapPin className="w-5 h-5" />
                 </div>
                 <div className="text-sm font-medium text-brand-yellow-100/80 text-left pt-1">
@@ -89,7 +89,7 @@ export default function Footer() {
                 </div>
               </div>
               <div className="flex gap-4">
-                <div className="w-10 h-10 rounded-xl bg-brand-blue-900 flex items-center justify-center text-brand-yellow-400 flex-shrink-0 border border-brand-blue-800">
+                <div className="w-10 h-10 rounded-xl bg-brand-blue-900 flex items-center justify-center text-brand-yellow-400 shrink-0 border border-brand-blue-800">
                   <Phone className="w-5 h-5" />
                 </div>
                 <div className="text-sm font-bold text-white text-left pt-1">
@@ -98,11 +98,11 @@ export default function Footer() {
                 </div>
               </div>
               <div className="flex gap-4">
-                <div className="w-10 h-10 rounded-xl bg-brand-blue-900 flex items-center justify-center text-brand-yellow-400 flex-shrink-0 border border-brand-blue-800">
+                <div className="w-10 h-10 rounded-xl bg-brand-blue-900 flex items-center justify-center text-brand-yellow-400 shrink-0 border border-brand-blue-800">
                   <Mail className="w-5 h-5" />
                 </div>
                 <div className="text-sm font-bold text-white text-left pt-2.5 break-all">
-                  ululalbaab@andalus.sch.id
+                  alimam@andalus.sch.id
                 </div>
               </div>
             </div>
@@ -117,7 +117,7 @@ export default function Footer() {
           </p>
           <div className="flex flex-wrap justify-center items-center gap-6 text-sm font-bold text-brand-yellow-100/60 order-1 md:order-2">
             <Link href="#" className="hover:text-white transition-colors">Kebijakan Privasi</Link>
-            <Link href="#" className="hover:text-white transition-colors">Syarat & Ketentuan</Link>
+            <Link href="#" className="hover:text-white transition-colors">Syarat &amp; Ketentuan</Link>
             <div className="flex items-center gap-2 bg-brand-blue-900 px-3 py-1.5 rounded-lg border border-brand-blue-800 text-brand-yellow-100">
               <Globe className="w-4 h-4" />
               <span className="text-xs">ID / AR</span>

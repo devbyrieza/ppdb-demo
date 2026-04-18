@@ -65,6 +65,64 @@ function formatFileSize(bytes: number): string {
   return (bytes / (1024 * 1024)).toFixed(1) + " MB";
 }
 
+async function compressImage(file: File): Promise<File> {
+  // Hanya kompres jika file adalah gambar
+  if (!file.type.startsWith("image/")) return file;
+
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = new window.Image();
+      img.src = event.target?.result as string;
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let width = img.width;
+        let height = img.height;
+
+        // Maksimal resolusi (misal 1600px lebar/tinggi)
+        const MAX_DIMENSION = 1600;
+        if (width > height) {
+          if (width > MAX_DIMENSION) {
+            height *= MAX_DIMENSION / width;
+            width = MAX_DIMENSION;
+          }
+        } else {
+          if (height > MAX_DIMENSION) {
+            width *= MAX_DIMENSION / height;
+            height = MAX_DIMENSION;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx?.drawImage(img, 0, 0, width, height);
+
+        // Kompres kualitas ke 0.7 (70%)
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              const compressedFile = new File([blob], file.name, {
+                type: "image/jpeg",
+                lastModified: Date.now(),
+              });
+              // Hanya gunakan hasil kompresi jika ukurannya lebih kecil
+              resolve(compressedFile.size < file.size ? compressedFile : file);
+            } else {
+              resolve(file);
+            }
+          },
+          "image/jpeg",
+          0.7
+        );
+      };
+      img.onerror = () => resolve(file);
+    };
+    reader.onerror = () => resolve(file);
+  });
+}
+
 function getFileIcon(fileType: string | null) {
   if (!fileType) return FileText;
   if (fileType.startsWith("image/")) return Image;
@@ -568,13 +626,25 @@ export default function UploadBerkasTab() {
   // Handle upload
   const handleUpload = async (key: string, file: File) => {
     try {
+      // 1. Auto Compress Image (wuz-wuz mode)
+      let fileToUpload = file;
+      if (file.type.startsWith("image/")) {
+        fileToUpload = await compressImage(file);
+      }
+
+      // 2. Cek ukuran setelah kompresi
+      const config = dokumenConfig[key];
+      if (config && fileToUpload.size > config.maxSize) {
+        throw new Error(`Ukuran file terlalu besar! Maksimal ${formatFileSize(config.maxSize)}`);
+      }
+
       // Add to uploading set
       setUploadingKeys((prev) => new Set(prev).add(key));
       setUploadProgress((prev) => ({ ...prev, [key]: 0 }));
 
       // Create form data
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", fileToUpload);
       formData.append("jenis_dokumen", key);
 
       // Simulate progress (karena fetch tidak support progress untuk upload)

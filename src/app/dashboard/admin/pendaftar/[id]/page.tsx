@@ -307,7 +307,7 @@ export default function PendaftarDetailPage() {
                   {pendaftar.jenjang}
                 </span>
                 <span className="text-brand-blue-100 font-bold">
-                  {pendaftar.jenis_kelamin === "L" ? "Laki-laki" : "Perempuan"}
+                  {["L", "Laki-laki"].includes(pendaftar.jenis_kelamin) ? "Laki-laki" : "Perempuan"}
                 </span>
               </div>
             </div>
@@ -728,7 +728,7 @@ export default function PendaftarDetailPage() {
               <InfoItem label="NIK" value={pendaftar.nik} />
               <InfoItem
                 label="Jenis Kelamin"
-                value={pendaftar.jenis_kelamin === "L" ? "Laki-laki" : "Perempuan"}
+                value={["L", "Laki-laki"].includes(pendaftar.jenis_kelamin) ? "Laki-laki" : "Perempuan"}
               />
               <InfoItem label="Jenjang" value={pendaftar.jenjang} />
               {/* Hide extensive personal details for Finance/Berkas/Penguji to reduce noise */}

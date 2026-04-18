@@ -113,11 +113,22 @@ export async function POST(request: Request) {
             }
         }
 
+        // Helper to parse date with WIB fallback if no timezone provided
+        const parseWIB = (dt: string) => {
+            if (!dt) return new Date();
+            // If it already has Z or + offset, use as is
+            if (dt.includes('Z') || dt.match(/[+-]\d{2}(:?\d{2})?$/)) {
+                return new Date(dt);
+            }
+            // Otherwise append WIB offset
+            return new Date(`${dt}+07:00`);
+        };
+
         const newSession = await prisma.examSession.create({
             data: {
                 title: finalTitle,
-                start_time: new Date(start_time),
-                end_time: new Date(end_time),
+                start_time: parseWIB(start_time),
+                end_time: parseWIB(end_time),
                 quota: parseInt(quota),
                 location,
                 notes,

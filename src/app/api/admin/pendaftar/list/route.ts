@@ -121,6 +121,7 @@ export async function GET(request: NextRequest) {
           },
           nilai_ujian: {
             select: {
+              id: true,
               nilai_total: true,
               score_akademik: true,
               score_kepribadian: true,
@@ -131,10 +132,16 @@ export async function GET(request: NextRequest) {
               nilai_wawancara_ortu: true,
               status_kelulusan: true,
               catatan_kelulusan: true,
+              updated_at: true,
             }
           },
           pengumuman: {
             select: { status_kelulusan: true }
+          },
+          whatsapp_logs: {
+            orderBy: { created_at: "desc" },
+            take: 1,
+            select: { status: true, updated_at: true, error_message: true }
           }
         },
         orderBy: { created_at: "desc" },
@@ -144,7 +151,17 @@ export async function GET(request: NextRequest) {
     ]);
 
     // Transform data: Master Merge for NilaiUjian and document status
-    const isEmpty = (v: any) => v == null || v === "" || (typeof v === 'object' && Object.keys(v).length === 0 && v.constructor === Object);
+    const isEmpty = (v: any) => {
+      if (v == null || v === "") return true;
+      if (typeof v === 'object') {
+        if (Array.isArray(v)) return v.length === 0;
+        const keys = Object.keys(v);
+        if (keys.length === 0) return true;
+        // Check if all values are null or empty
+        return keys.every(key => v[key] == null || v[key] === "");
+      }
+      return false;
+    };
     
     const transformedData = data.map(item => {
       // 1. Merge multiple NilaiUjian records if exists
@@ -152,15 +169,18 @@ export async function GET(request: NextRequest) {
       let mergedNilai = null;
       
       if (scores.length > 0) {
-        // Sort oldest to newest to let newer field values prevail
+        // Sort newest to oldest so first non-empty value found is the newest
         const sorted = [...scores].sort((a: any, b: any) => 
-          new Date(a.updated_at || 0).getTime() - new Date(b.updated_at || 0).getTime()
+          new Date(b.updated_at || 0).getTime() - new Date(a.updated_at || 0).getTime()
         );
         
         const master: any = {};
         sorted.forEach(s => {
           Object.entries(s).forEach(([k, v]) => {
-            if (!isEmpty(v)) master[k] = v;
+            // Pick newest non-empty value
+            if (!isEmpty(v) && isEmpty(master[k])) {
+              master[k] = v;
+            }
           });
         });
         mergedNilai = master;
@@ -169,6 +189,7 @@ export async function GET(request: NextRequest) {
       return {
         ...item,
         nilai_ujian: mergedNilai,
+        whatsapp_status: item.whatsapp_logs?.[0] || null,
         dokumen: item.dokumen.map(doc => ({
           jenis_dokumen: doc.jenis_dokumen,
           status_verifikasi: doc.is_verified ? "verified" : (doc.catatan ? "rejected" : "pending")

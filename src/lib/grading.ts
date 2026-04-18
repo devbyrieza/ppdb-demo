@@ -142,6 +142,15 @@ export function evaluateWawancaraGrade(score: number): 'A' | 'B' | 'C' {
     return 'C';
 }
 
+export function evaluateKesiapanGrade(score: number): 'A' | 'B' | 'C' {
+    // Kesiapan Santri (Hasil survei/likert)
+    // Grade A: Sangat Siap -> >= 75
+    // Grade B: Cukup Siap -> >= 55
+    if (score >= 75) return 'A';
+    if (score >= 55) return 'B';
+    return 'C';
+}
+
 export function evaluateStatusGrade(status: string | null | undefined): 'A' | 'B' | 'C' {
     const s = status?.toLowerCase() || '';
     if (s.includes('sangat layak') || s === 'siap' || s.includes('diterima')) return 'A';
@@ -153,6 +162,7 @@ export function determineFinalDecision(grades: {
     quran: 'A' | 'B' | 'C',
     akademik: 'A' | 'B' | 'C',
     kepribadian: 'A' | 'B' | 'C',
+    kesiapan: 'A' | 'B' | 'C',
     wawancaraCalsan: 'A' | 'B' | 'C',
     wawancaraCawalsan: 'A' | 'B' | 'C'
 }): 'DITERIMA' | 'CADANGAN' | 'DITOLAK' {

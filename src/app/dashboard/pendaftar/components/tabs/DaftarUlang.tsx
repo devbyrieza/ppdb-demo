@@ -55,8 +55,8 @@ export default function DaftarUlangTab() {
   };
 
   const calculateTipe = (amount: number) => {
-    if (amount >= 8500000) return "LUNAS";
-    if (amount >= 4250000) return "CICILAN 50% ATAU LEBIH";
+    if (amount >= 9800000) return "LUNAS";
+    if (amount >= 4900000) return "CICILAN 50% ATAU LEBIH";
     return "CICILAN DIBAWAH 50%";
   };
 
@@ -65,8 +65,8 @@ export default function DaftarUlangTab() {
     if (!pernyataan || !file || !nominal) return;
 
     const amount = parseInt(nominal.replace(/\D/g, ""));
-    if (amount < 1000000) {
-      setMessage({ type: "error", text: "Minimal pembayaran adalah Rp 1.000.000" });
+    if (amount < 4900000) {
+      setMessage({ type: "error", text: "Pembayaran cicilan pertama DAFTAR ULANG minimal adalah 50% dari uang pangkal (Minimal Rp 4.900.000)" });
       return;
     }
 
@@ -109,7 +109,9 @@ export default function DaftarUlangTab() {
 
   // Cek Status Kelulusan
   const statusKelulusan = dataUser?.hasil_kelulusan?.status;
-  if (statusKelulusan !== "LULUS") {
+  const isTestingAccount = dataUser?.nomor_pendaftaran === "ILI2600007";
+
+  if (statusKelulusan !== "LULUS" && !isTestingAccount) {
     return (
       <div className="max-w-xl mx-auto text-center py-12 px-4">
         <div className="bg-slate-100 rounded-full p-4 w-20 h-20 mx-auto mb-6 flex items-center justify-center">
@@ -144,8 +146,8 @@ export default function DaftarUlangTab() {
       <div className="grid md:grid-cols-2 gap-6">
         <div className="bg-white p-6 rounded-xl border border-brand-blue-100 shadow-sm">
           <h3 className="text-sm font-black text-brand-blue-900 uppercase tracking-wider mb-2">Total Biaya Masuk</h3>
-          <div className="text-3xl font-black text-brand-blue-600">Rp 8.500.000</div>
-          <p className="text-xs text-ink-400 mt-1">Uang Pangkal (7.5jt) + SPP Bulan Pertama (1jt)</p>
+          <div className="text-3xl font-black text-brand-blue-600">Rp 9.800.000</div>
+          <p className="text-xs text-ink-400 mt-1">Uang Pangkal Pesantren PPDB</p>
         </div>
 
         <div className="bg-brand-blue-50 p-6 rounded-xl border border-brand-blue-100">
@@ -154,8 +156,8 @@ export default function DaftarUlangTab() {
           </h3>
           <ul className="text-sm text-brand-blue-700 space-y-1 list-disc list-inside font-medium">
             <li>Transfer ke Rekening <strong>BSI 7171717171</strong></li>
-            <li>a.n <strong>PP Al-Andalus Ulul Albaab</strong></li>
-            <li>Wajib bayar cicilan pertama min. <strong>Rp 1.000.000</strong></li>
+            <li>a.n <strong>PP Sistem PPDB Modern</strong></li>
+            <li>Wajib bayar cicilan pertama min. <strong>Rp 4.900.000 (50%)</strong></li>
             <li>Pelunasan maksimal bulan <strong>Juli 2026</strong> (3x Cicilan)</li>
           </ul>
         </div>

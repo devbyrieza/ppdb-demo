@@ -27,28 +27,28 @@ export async function POST() {
             return NextResponse.json({ error: 'Forbidden: Only admin super can recalculate' }, { status: 403 });
         }
 
-        // Fetch all NilaiUjian records
-        const allNilai = await prisma.nilaiUjian.findMany({
-            select: { id: true, pendaftar_id: true }
+        // Fetch unique pendaftar_ids from NilaiUjian records
+        const uniquePendaftars = await prisma.nilaiUjian.groupBy({
+            by: ['pendaftar_id']
         });
 
         let successCount = 0;
         let errorCount = 0;
         const errors: string[] = [];
 
-        for (const nilai of allNilai) {
+        for (const item of uniquePendaftars) {
             try {
-                await recalculateNilaiUjian(nilai.pendaftar_id);
+                await recalculateNilaiUjian(item.pendaftar_id);
                 successCount++;
             } catch (err: any) {
                 errorCount++;
-                errors.push(`${nilai.pendaftar_id}: ${err.message}`);
+                errors.push(`${item.pendaftar_id}: ${err.message}`);
             }
         }
 
         return NextResponse.json({
             success: true,
-            total: allNilai.length,
+            total: uniquePendaftars.length,
             recalculated: successCount,
             errors: errorCount,
             errorDetails: errors.slice(0, 10) // Limit error details

@@ -73,7 +73,7 @@ export default function TeachersSection() {
                         </h2>
 
                         <p className="section-subtitle lg:ml-0 text-justify lg:text-left mb-10">
-                            Pesantren Al-Andalus Ulul Albaab didukung oleh asatidzah profesional lulusan universitas terbaik dunia Islam serta pakar pendidikan nasional.
+                            Pesantren Sistem PPDB Modern didukung oleh asatidzah profesional lulusan universitas terbaik dunia Islam serta pakar pendidikan nasional.
                         </p>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-5">
@@ -84,7 +84,7 @@ export default function TeachersSection() {
                                 { icon: Award, label: "Dosen & Pakar", sub: "Tenaga Pendidik Profesional", color: "brand-blue" }
                             ].map((feature, i) => (
                                 <div key={i} className="app-card p-4 flex items-center gap-5">
-                                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 shadow-sm ${
+                                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 shadow-sm transition-transform duration-300 hover:scale-110 ${
                                         feature.color === 'brand-blue' ? 'bg-brand-blue-50 text-brand-blue-600' :
                                         feature.color === 'brand-yellow' ? 'bg-brand-yellow-100 text-maroon-800' :
                                         'bg-yellow-50 text-yellow-600'

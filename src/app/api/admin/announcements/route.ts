@@ -37,8 +37,11 @@ export async function POST(request: Request) {
         }
 
         // 1. Get Pendaftar to find Tahun Ajaran and details for notification
-        const pendaftar = await prisma.pendaftar.findUnique({
-            where: { id: pendaftar_id },
+        const pendaftar = await prisma.pendaftar.findFirst({
+            where: { 
+                id: pendaftar_id,
+                deleted_at: null 
+            },
             select: {
                 id: true,
                 tahun_ajaran_id: true,

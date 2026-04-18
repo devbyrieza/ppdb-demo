@@ -77,7 +77,7 @@ export default function FacilitiesSection() {
                     className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-16"
                 >
                     {FACILITY_IMAGES.map((img, idx) => (
-                        <div key={idx} className={`${img.span} relative rounded-3xl overflow-hidden group aspect-[4/3] shadow-md border-4 border-white ring-1 ring-cream-200`}>
+                        <div key={idx} className={`${img.span} relative rounded-3xl overflow-hidden group aspect-4/3 shadow-md border-4 border-white ring-1 ring-cream-200`}>
                             <Image
                                 src={img.src}
                                 alt={img.label}

@@ -33,6 +33,19 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
         }
 
+        // --- ACCESS GUARD: Check pendaftar status ---
+        const pendaftar = await prisma.pendaftar.findUnique({
+            where: { id: pendaftar_id },
+            select: { status_pendaftaran: true }
+        });
+
+        const ALLOWED_STATUSES = ['docs_verified', 'scheduled', 'tested', 'announced', 'accepted', 'enrolled'];
+        if (!pendaftar || !ALLOWED_STATUSES.includes(pendaftar.status_pendaftaran || '')) {
+            return NextResponse.json({ 
+                error: 'Forbidden: Tahap seleksi belum diizinkan karena berkas belum diverifikasi.' 
+            }, { status: 403 });
+        }
+
         // 2. Calculate Score
         let score = 0;
         let dbFieldScore = '';

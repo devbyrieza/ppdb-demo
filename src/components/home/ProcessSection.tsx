@@ -76,7 +76,7 @@ export default function ProcessSection() {
                         viewport={{ once: true }}
                         className="section-subtitle max-w-2xl mx-auto"
                     >
-                        Ikuti langkah-langkah mudah berikut untuk menjadi bagian dari keluarga besar Pesantren Al-Andalus Ulul Albaab.
+                        Ikuti langkah-langkah mudah berikut untuk menjadi bagian dari keluarga besar Pesantren Sistem PPDB Modern.
                     </motion.p>
                 </div>
 

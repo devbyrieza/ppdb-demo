@@ -1,4 +1,4 @@
-﻿// File: /src/lib/notifications/whatsapp.ts
+// File: /src/lib/notifications/whatsapp.ts
 /**
  * WhatsApp OTP Service using Wablas API
  */
@@ -13,7 +13,7 @@ export async function sendWhatsAppOTP(
 ): Promise<{ success: boolean; messageId?: string; error?: string }> {
   try {
     // OTP Message Template
-    const message = `🔐 *Kode Verifikasi PPDB Ulul Albaab*
+    const message = `🔐 *Kode Verifikasi PPDB Sistem PPDB Modern*
 
 Assalamu'alaikum ${nama},
 
@@ -25,10 +25,10 @@ Kode ini berlaku selama *5 menit*.
 
 ⚠️ *PENTING:*
 • Jangan berikan kode ini kepada siapapun
-• Tim Ulul Albaab tidak akan pernah meminta kode OTP Anda
+• Tim Sistem PPDB Modern tidak akan pernah meminta kode OTP Anda
 
 Jazakumullahu khairan,
-Panitia PPDB Ulul Albaab`;
+Panitia PPDB Sistem PPDB Modern`;
 
     const result = await sendMessage({ phone, message });
 

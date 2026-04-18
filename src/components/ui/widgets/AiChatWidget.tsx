@@ -20,7 +20,7 @@ export default function AiChatWidget({ onClose, onEscalate }: AiChatWidgetProps)
         {
             id: "welcome",
             role: "ai",
-            content: "👋 Assalamu'alaikum! Saya asisten virtual Al-Andalus. Ada yang bisa saya bantu terkait informasi pendaftaran, program unggulan, atau jadwal tes?",
+            content: "👋 Assalamu'alaikum! Saya asisten virtual PPDB Modern. Ada yang bisa saya bantu terkait informasi pendaftaran, program unggulan, atau jadwal tes?",
         }
     ]);
     const [input, setInput] = useState("");
@@ -129,7 +129,7 @@ export default function AiChatWidget({ onClose, onEscalate }: AiChatWidgetProps)
                     </div>
                     <div>
                         <h3 className="font-bold text-[15px] leading-tight flex items-center gap-2">
-                            Al-Andalus Ulul Albaab Assistant
+                            Sistem PPDB Modern Assistant
                             <span className="flex w-2 h-2 rounded-full bg-green-400"></span>
                         </h3>
                         <p className="text-[11px] text-brand-blue-200 mt-0.5 font-medium">Online • Bertenaga AI</p>

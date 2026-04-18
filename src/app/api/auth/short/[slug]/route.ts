@@ -30,7 +30,7 @@ export async function GET(
             return NextResponse.json({ error: "User tidak ditemukan di sistem" }, { status: 404 });
         }
 
-        // Determine active role for input nilai
+        // Determine active role for input nilai (prioritize examiner/interviewer roles)
         const activeRole = (user.role.includes('admin') && user.secondary_roles.length > 0)
             ? user.secondary_roles.find(r => r.includes('penguji') || r.includes('pewawancara')) || user.role
             : user.role;
@@ -45,7 +45,7 @@ export async function GET(
         const token = generateMagicToken(user.id, activeRole, user.full_name, 48, redirectPath);
 
         // Redirect to the actual auth magic handler
-        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://ppdb-demo.com";
+        const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://demo-ppdb.vercel.app";
         const targetUrl = `${baseUrl}/api/auth/magic?token=${token}`;
 
         return NextResponse.redirect(new URL(targetUrl, baseUrl));

@@ -19,7 +19,7 @@ const PROGRAMS = [
         desc: "Pendidikan 3 tahun yang mencakup Tahfidz, Dasar Ilmu Syar'i, dan Akademik Nasional, serta pembentukan Adab sebagai fondasi utama.",
         features: [
             "Target Hafalan 12 Juz",
-            "Sinergi Kurikulum Nasional & Al-Andalus",
+            "Sinergi Kurikulum Nasional & PPDB Modern",
             "Bahasa Arab & Kitab Turots",
             "Sanad Al-Qur'an & Hadith",
             "Program TICE & Global"
@@ -37,7 +37,7 @@ const PROGRAMS = [
             "Penguasaan Kitab Turots",
             "Bahasa Arab Aktif & Formal",
             "Persiapan Universitas Timur Tengah & Dalam Negeri",
-            "Ziarah Ilmiah & Pengabdian"
+            "Ziarah Ilmiah"
         ],
         quota: "25 Kursi",
         icon: BookOpen,
@@ -99,7 +99,7 @@ export default function ProgramSection() {
                             <div className="app-card bg-white p-8 md:p-10 h-full flex flex-col group">
                                 {/* Top Accents */}
                                 <div className="flex items-start justify-between mb-8">
-                                    <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm ${
+                                    <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm transition-transform duration-500 group-hover:scale-110 ${
                                         program.color === 'brand-blue' ? 'bg-brand-blue-50 text-brand-blue-600' : 'bg-brand-yellow-100 text-maroon-800'
                                         }`}>
                                         <program.icon className="w-7 h-7" />

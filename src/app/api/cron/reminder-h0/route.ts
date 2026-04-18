@@ -89,7 +89,7 @@ export async function GET(request: Request) {
                 { hour: "2-digit", minute: "2-digit" }
             );
 
-            const lokasi = jadwal.exam_session.location || "Pesantren Al-Andalus Ulul Albaab";
+            const lokasi = jadwal.exam_session.location || "Pesantren Sistem PPDB Modern";
             const jenisUjian = jadwal.exam_session.title || "Seleksi Santri Baru";
 
             const message = buildMessageReminderH0(

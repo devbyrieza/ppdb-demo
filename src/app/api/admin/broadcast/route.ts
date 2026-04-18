@@ -3,11 +3,6 @@ import { prisma } from "@/lib/prisma";
 import { enqueueWhatsapp } from "@/lib/whatsapp-queue";
 import { getServerSession } from "@/lib/session";
 
-/**
- * Administrative endpoint for mass broadcasting WhatsApp messages.
- * Logic ported from Al-Imam reference project.
- */
-
 export async function POST(req: NextRequest) {
     try {
         const session = await getServerSession();
@@ -73,7 +68,7 @@ export async function POST(req: NextRequest) {
             details: results,
         });
     } catch (error: any) {
-        console.error("[broadcast] Error:", error);
+        console.error("Broadcast error:", error);
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }

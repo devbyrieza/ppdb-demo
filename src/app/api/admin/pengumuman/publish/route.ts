@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { notifyStatusChange } from "@/lib/wablas";
+import { enqueueWhatsapp, buildMessageHasilTes } from "@/lib/whatsapp-queue";
 import { getServerSession } from "@/lib/session";
 import { logAdminAction } from "@/lib/audit";
 
@@ -47,25 +48,30 @@ export async function POST(request: NextRequest) {
             details: { count: result.count, new_status, pendaftar_ids }
         });
 
-        // 5. Build Notification Queue (For Frontend Processing)
+        // 5. Enqueue Notifications to Server-Side Queue
         const updatedUsers = await prisma.pendaftar.findMany({
             where: { id: { in: pendaftar_ids } },
             select: { id: true, nama_lengkap: true, no_hp: true, jenjang: true }
         });
-
-        const queue = updatedUsers
-            .filter(u => u.no_hp)
-            .map(u => ({
-                phone: u.no_hp,
-                nama: u.nama_lengkap,
-                status: new_status,
-                jenjang: u.jenjang
-            }));
-
+        
+        let queuedCount = 0;
+        for (const user of updatedUsers) {
+            if (user.no_hp) {
+                await enqueueWhatsapp({
+                    pendaftarId: user.id,
+                    phone: user.no_hp,
+                    jenisNotif: "hasil_tes",
+                    messageContent: buildMessageHasilTes(user.nama_lengkap),
+                });
+                queuedCount++;
+            }
+        }
+        
         return NextResponse.json({
             success: true,
             updated: result.count,
-            queue: queue
+            queued: queuedCount,
+            message: `${queuedCount} pengumuman telah masuk antrean pengiriman.`
         });
 
     } catch (error: any) {

@@ -255,7 +255,7 @@ export async function GET(request: NextRequest) {
 <body>
   <div class="container">
     <div class="header">
-      <h1>Ponpes Al-Andalus Ulul Albaab</h1>
+      <h1>Ponpes Sistem PPDB Modern</h1>
       <p>Jl. Pelabuhan Ratu II KM 18, Cikembar, Sukabumi, Jawa Barat 43157</p>
       <p>Telp: +62 888-0993-4970 | Email: alandalus.ululalbaab@gmail.com</p>
     </div>

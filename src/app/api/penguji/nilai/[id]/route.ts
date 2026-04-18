@@ -16,6 +16,7 @@ async function getSession() {
 }
 
 // PATCH: Update score (Upsert)
+// PATCH: Update score (Upsert)
 export async function PATCH(
     request: Request,
     { params }: { params: Promise<{ id: string }> }
@@ -47,6 +48,7 @@ export async function PATCH(
             }
         });
 
+        // If examiner, only specific fields.
         const isWawancara = assignment?.penguji_santri_id === userId;
         const isQuran = assignment?.penguji_quran_id === userId;
         const isOrtu = assignment?.penguji_ortu_id === userId;
@@ -59,11 +61,12 @@ export async function PATCH(
         const allRoles = userProfile ? [userProfile.role, ...(userProfile.secondary_roles || [])] : [];
         const isAdmin = allRoles.some(r => ['admin_super', 'admin', 'head_of_it'].includes(r));
 
+        // Let admins bypass the assignment check
         if (!assignment && !isAdmin) {
             return NextResponse.json({ error: "Forbidden: Not assigned to this student" }, { status: 403 });
         }
 
-        // Fallback: derive role from session title
+        // Fallback: if matched via exam_session.created_by, derive role from session title
         let isWawancaraFallback = false;
         let isQuranFallback = false;
         let isOrtuFallback = false;
@@ -74,6 +77,7 @@ export async function PATCH(
             const hasWawancaraMatch = title.includes("calsan") || title.includes("santri") || title.includes("wawancara");
             const hasOrtuMatch = title.includes("cawalsan") || title.includes("ortu") || title.includes("orang");
 
+            // If the title is generic (e.g. "Tes PPDB 1"), grant access to all forms (matches frontend behavior roles: [])
             if (!hasQuranMatch && !hasWawancaraMatch && !hasOrtuMatch) {
                 isQuranFallback = true;
                 isWawancaraFallback = true;
@@ -85,12 +89,13 @@ export async function PATCH(
             }
         }
         
+        // Unified permission flags using session role as final fallback
         const baseRole = session.role || "";
         const canEditQuran = isAdmin || isQuran || isQuranFallback || (baseRole.includes("quran") || baseRole === "penguji" || baseRole === "penguji_calsan");
         const canEditWawancara = isAdmin || isWawancara || isWawancaraFallback || baseRole.includes("calsan") || baseRole === "pewawancara_calsan";
         const canEditOrtu = isAdmin || isOrtu || isOrtuFallback || baseRole.includes("cawalsan") || baseRole === "pewawancara_cawalsan";
 
-        // Pre-fetch existing record
+        // 0. Pre-fetch existing record to check timestamps
         const existing = await prisma.nilaiUjian.findFirst({ 
             where: { pendaftar_id: pendaftarId },
             orderBy: { created_at: 'desc' }
@@ -102,6 +107,7 @@ export async function PATCH(
 
         // 1. Quran Update
         if (canEditQuran && body.detail_quran !== undefined) {
+            // Check Lock
             if (existing?.input_at_quran && !isAdmin) {
                 const diff = now.getTime() - new Date(existing.input_at_quran).getTime();
                 if (diff > LOCK_TIME) {
@@ -114,11 +120,16 @@ export async function PATCH(
             if (body.detail_quran !== undefined) updateData.detail_quran = body.detail_quran;
             if (body.score_quran !== undefined) updateData.score_quran = body.score_quran;
             updateData.input_by_quran = userId;
-            if (!existing?.input_at_quran) updateData.input_at_quran = now;
+            
+            // Only set input_at if it's the first time
+            if (!existing?.input_at_quran) {
+                updateData.input_at_quran = now;
+            }
         }
 
         // 2. Santri (Calsan) Update
         if (canEditWawancara && body.detail_wawancara !== undefined) {
+             // Check Lock
              if (existing?.input_at_santri && !isAdmin) {
                 const diff = now.getTime() - new Date(existing.input_at_santri).getTime();
                 if (diff > LOCK_TIME) {
@@ -131,11 +142,16 @@ export async function PATCH(
             if (body.detail_wawancara !== undefined) updateData.detail_wawancara = body.detail_wawancara;
             if (body.score_wawancara !== undefined) updateData.score_wawancara = body.score_wawancara;
             updateData.input_by_santri = userId;
-            if (!existing?.input_at_santri) updateData.input_at_santri = now;
+            
+            // Only set input_at if it's the first time
+            if (!existing?.input_at_santri) {
+                updateData.input_at_santri = now;
+            }
         }
 
         // 3. Ortu (Cawalsan) Update
         if (canEditOrtu && body.detail_cawalsan !== undefined) {
+            // Check Lock
             if (existing?.input_at_ortu && !isAdmin) {
                 const diff = now.getTime() - new Date(existing.input_at_ortu).getTime();
                 if (diff > LOCK_TIME) {
@@ -147,15 +163,20 @@ export async function PATCH(
             if (body.catatan_ortu !== undefined) updateData.catatan_ortu = body.catatan_ortu;
             if (body.detail_cawalsan !== undefined) updateData.detail_cawalsan = body.detail_cawalsan;
             updateData.input_by_ortu = userId;
-            if (!existing?.input_at_ortu) updateData.input_at_ortu = now;
+
+            // Only set input_at if it's the first time
+            if (!existing?.input_at_ortu) {
+                updateData.input_at_ortu = now;
+            }
         }
 
+        // 4. Upsert Score - Link to the schedule being graded
         if (existing) {
             await prisma.nilaiUjian.update({
                 where: { id: existing.id },
                 data: {
                     ...updateData,
-                    jadwal_ujian_id: assignment?.id,
+                    jadwal_ujian_id: assignment?.id, // Ensure the link is established/updated
                     updated_at: now,
                 }
             });
@@ -169,8 +190,10 @@ export async function PATCH(
             });
         }
 
+        // 4. Trigger Recalculation
         await recalculateNilaiUjian(pendaftarId);
 
+        // 5. AUTOMATION: Mark as finished if assignment exists
         if (assignment) {
             try {
                 let componentType: 'santri' | 'quran' | 'ortu' | undefined = undefined;
@@ -187,6 +210,7 @@ export async function PATCH(
                 }
             } catch (err) {
                 console.error("Automation Error (Ignored):", err);
+                // We ignore automation errors so the score save still succeeds
             }
         }
 

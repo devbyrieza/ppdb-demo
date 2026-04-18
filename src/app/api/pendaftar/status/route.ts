@@ -61,6 +61,19 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    // Check if slots are available and pendaftar hasn't booked yet
+    const sessions = await prisma.examSession.findMany({
+      where: { is_active: true, start_time: { gte: new Date() } },
+      include: { _count: { select: { bookings: true } } }
+    });
+    const totalAvailableSlots = sessions.reduce((acc, s) => acc + Math.max(0, s.quota - s._count.bookings), 0);
+    
+    const existingBooking = await prisma.jadwalUjian.findFirst({
+        where: { pendaftar_id: pendaftarId }
+    });
+
+    const schedules_available = totalAvailableSlots > 0 && !existingBooking;
+
     // select nilai_ujian status
     const dataWithNilai = await prisma.pendaftar.findUnique({
       where: { id: pendaftarId },
@@ -78,6 +91,7 @@ export async function GET(request: NextRequest) {
       nomor_pendaftaran: data.nomor_pendaftaran,
       status_proses: data.status_pendaftaran || "draft",
       updated_at: data.updated_at,
+      schedules_available: schedules_available,
       hasil_kelulusan: {
         status: (nilai as any)?.status_kelulusan || null,
         catatan: (nilai as any)?.catatan_kelulusan || null

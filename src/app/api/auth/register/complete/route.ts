@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { generateNomorPendaftaran } from "@/lib/utils/nomor-pendaftaran";
-import { notifyRegistrationSuccess } from "@/lib/wablas";
+import { enqueueWhatsapp, buildMessageRegistrationSuccess } from "@/lib/whatsapp-queue";
 
 export async function POST(request: NextRequest) {
   try {
@@ -86,18 +86,30 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Send WhatsApp notification
+    // Send WhatsApp notification via Queue
     try {
       if (no_hp) {
-        await notifyRegistrationSuccess({
-          phone: no_hp,
-          nama: nama_lengkap,
-          nomor_pendaftaran: nomorPendaftaran,
-          jenjang,
+        // Find pendaftar id since we didn't capture it from the create call
+        const pendaftar = await prisma.pendaftar.findUnique({
+          where: { nomor_pendaftaran: nomorPendaftaran },
+          select: { id: true }
         });
+
+        if (pendaftar) {
+          await enqueueWhatsapp({
+            pendaftarId: pendaftar.id,
+            phone: no_hp,
+            jenisNotif: "registration_success",
+            messageContent: buildMessageRegistrationSuccess(
+              nama_lengkap,
+              nomorPendaftaran,
+              jenjang
+            ),
+          });
+        }
       }
     } catch (error) {
-      console.error("WhatsApp notification error:", error);
+      console.error("WhatsApp notification enqueue error:", error);
       // Don't fail registration if notification fails
     }
 

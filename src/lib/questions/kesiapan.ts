@@ -1,4 +1,4 @@
-﻿import type { KesiapanSection } from './types';
+import type { KesiapanSection } from './types';
 
 export const KESIAPAN_QUESTIONS: KesiapanSection[] = [
     {
@@ -13,7 +13,7 @@ export const KESIAPAN_QUESTIONS: KesiapanSection[] = [
     {
         section: 'Motivasi & Semangat Belajar', items: [
             { id: 6, text: 'Saya memilih pesantren sebagai tempat belajar karena dorongan dan keinginan yang kuat.', labelMin: 'Tidak ada dorongan', labelMax: 'Sangat kuat' },
-            { id: 7, text: 'Saya merasa Pesantren Al-Andalus Ulul Albaab adalah tempat belajar yang sesuai dengan harapan saya.', labelMin: 'Sangat tidak sesuai', labelMax: 'Sangat sesuai' },
+            { id: 7, text: 'Saya merasa Pesantren Sistem PPDB Modern adalah tempat belajar yang sesuai dengan harapan saya.', labelMin: 'Sangat tidak sesuai', labelMax: 'Sangat sesuai' },
             { id: 8, text: 'Ada tokoh atau seseorang yang membuat saya semangat dalam belajar.', labelMin: 'Tidak ada', labelMax: 'Ada dan sangat menginspirasi' },
             { id: 9, text: 'Saya tetap semangat belajar meskipun dalam kondisi sulit (misalnya sakit ringan, rindu orang tua, atau merasa jenuh).', labelMin: 'Sangat mudah menyerah', labelMax: 'Tetap semangat penuh' },
             { id: 10, text: 'Saya lebih menyukai pelajaran agama dibanding pelajaran umum.', labelMin: 'Hanya suka salah satu', labelMax: 'Suka keduanya' },

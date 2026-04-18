@@ -17,6 +17,7 @@ import TestimonialsSection from "@/components/home/TestimonialsSection";
 import FaqSection from "@/components/home/FaqSection";
 import ContactSection from "@/components/home/ContactSection";
 import CtaSection from "@/components/home/CtaSection";
+import { Zap } from "lucide-react";
 
 export default function HomePage() {
   useEffect(() => {
@@ -78,6 +79,22 @@ export default function HomePage() {
       <ScrollAnimation delay={0.1}>
         <CtaSection />
       </ScrollAnimation>
+
+      {/* Floating Demo Access for Presentation */}
+      <div className="fixed bottom-8 left-8 z-50">
+        <Link href="/login">
+          <motion.button
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="flex items-center gap-3 px-6 py-4 bg-brand-yellow-400 text-brand-blue-900 font-black rounded-pill shadow-2xl border-2 border-white group"
+          >
+            <Zap className="w-5 h-5 fill-brand-blue-900 group-hover:animate-pulse" />
+            <span className="text-sm uppercase tracking-widest">Coba Demo</span>
+          </motion.button>
+        </Link>
+      </div>
     </main>
   );
 }

@@ -144,7 +144,7 @@ const STATUS_LABELS: Record<
     border: "border-emerald-200",
     text: "text-emerald-700",
     icon: Trophy,
-    message: "Alhamdulillah! Selamat, putra/putri Anda diterima di Pesantren Al-Andalus Ulul Albaab!",
+    message: "Alhamdulillah! Selamat, putra/putri Anda diterima di Pesantren Sistem PPDB Modern!",
   },
   payment_rejected: {
     label: "Pembayaran Bermasalah",

@@ -33,7 +33,7 @@ export default function TentangPage() {
                         className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-brand-blue-50 border border-brand-blue-100 text-brand-blue-700 text-xs font-bold uppercase tracking-widest mb-8 shadow-sm"
                     >
                         <Sparkles className="w-3.5 h-3.5" />
-                        <span>Mengenal Ulul Albaab</span>
+                        <span>Mengenal PPDB • Managed by PPDB Modern IIBS</span>
                     </motion.div>
 
                     <motion.h1
@@ -42,8 +42,8 @@ export default function TentangPage() {
                         transition={{ delay: 0.1 }}
                         className="text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-black mb-6 md:mb-10 tracking-tight leading-[0.95] md:leading-[0.9] text-ink-950"
                     >
-                        Bimbingan & <br />
-                        <span className="text-gradient-blue pb-2 block sm:inline">Pengawasan Melekat</span>
+                        Babak Baru <br />
+                        <span className="text-gradient-blue pb-2 block sm:inline">Pendidikan Qur'ani</span>
                     </motion.h1>
 
                     <motion.p
@@ -52,7 +52,7 @@ export default function TentangPage() {
                         transition={{ delay: 0.2 }}
                         className="text-base sm:text-lg md:text-xl text-ink-600 max-w-3xl mx-auto leading-relaxed font-medium mb-12 px-4"
                     >
-                        Bukan sekadar tempat belajar agama, tetapi sistem pembentukan karakter berbasis Lingkungan, Kebiasaan, Komunitas, dan Spiritualitas — untuk mencetak generasi yang memiliki pribadi Hanif, Kontributif, dan Adaptif.
+                        Menghadirkan standar keunggulan PPDB Modern International di Sukabumi — sistem pembentukan karakter Angkatan Pertama yang mencetak generasi Hanif, Kontributif, dan Adaptif.
                     </motion.p>
                 </Container>
             </section>
@@ -86,7 +86,7 @@ export default function TentangPage() {
                     >
                         <Image
                             src="/images/welcome-selamat-datang.webp"
-                            alt="Selamat Datang di Al-Andalus Ulul Albaab"
+                            alt="Selamat Datang di Sistem PPDB Modern"
                             fill
                             className="object-cover transition-transform duration-1000 group-hover:scale-105"
                         />
@@ -110,7 +110,7 @@ export default function TentangPage() {
                                 <div className="relative w-full h-full rounded-[2rem] md:rounded-[2.5rem] overflow-hidden">
                                     <Image
                                         src="/images/tentang.webp"
-                                        alt="Pesantren Al-Andalus Ulul Albaab"
+                                        alt="Pesantren Sistem PPDB Modern"
                                         fill
                                         className="object-cover"
                                     />
@@ -131,10 +131,10 @@ export default function TentangPage() {
                                         <Award className="w-6 h-6 md:w-8 md:h-8" />
                                     </div>
                                     <div>
-                                        <p className="text-2xl sm:text-3xl md:text-4xl font-black text-ink-950 tracking-tight leading-none mb-1">1995</p>
-                                        <p className="text-brand-blue-700 font-bold text-[9px] md:text-[10px] uppercase tracking-widest mb-1.5 md:mb-2">Tahun Berdiri</p>
+                                        <p className="text-2xl sm:text-3xl md:text-4xl font-black text-ink-950 tracking-tight leading-none mb-1">2026</p>
+                                        <p className="text-brand-blue-700 font-bold text-[9px] md:text-[10px] uppercase tracking-widest mb-1.5 md:mb-2">Era Baru</p>
                                         <div className="text-[9px] md:text-[10px] font-bold text-brand-blue-900 bg-brand-blue-50 px-2.5 py-1.5 rounded-lg border border-brand-blue-100 leading-tight">
-                                            Mulai Januari 2026 dikelola <br className="block sm:hidden" /> sepenuhnya oleh Al-Andalus
+                                            Managed by PPDB Modern IIBS
                                         </div>
                                     </div>
                                 </div>
@@ -166,16 +166,16 @@ export default function TentangPage() {
                                 className="space-y-4 md:space-y-6 text-base md:text-[17px] text-ink-700 font-medium leading-[1.8] text-justify"
                             >
                                 <p>
-                                    <span className="text-ink-950 font-black">Pesantren Al-Andalus Ulul Albaab</span> berlokasi di Cicantayan, Kabupaten Sukabumi. Sebagai cabang resmi dari <span className="text-brand-blue-700 italic font-bold">Pesantren Islam Internasional Al-Andalus</span>, kami hadir dengan visi mencetak kader ulama rabbani yang beraqidah lurus dan berwawasan luas.
+                                    <span className="text-ink-950 font-black">Pesantren Sistem PPDB Modern</span> hadir sebagai babak baru dalam dunia pendidikan Islam di Sukabumi. Sebagai cabang resmi dari <span className="text-brand-blue-700 italic font-bold">Managed by PPDB Modern International Islamic Boarding School</span>, kami menerapkan standar operasional, kurikulum, dan pengasuhan yang identik dengan kampus pusat.
                                 </p>
                                 <p>
-                                    Kami berkomitmen penuh untuk berkhidmah kepada umat melalui jalur pendidikan dan dakwah, dengan menjaga biaya pendidikan tetap terjangkau tanpa mengurangi kualitas layanan dan fasilitas.
+                                    Kami berkomitmen mencetak kader ulama rabbani yang beraqidah lurus dan berwawasan luas dengan dukungan fasilitas modern serta barisan asatidzah yang kompeten di bidangnya.
                                 </p>
                                 <p>
-                                    Sejak Januari 2026, Ulul Albaab dikelola sepenuhnya oleh Al Andalus International Boarding School, mencakup seluruh aspek kelembagaan secara terintegrasi. Pengelolaan ini meliputi hirarki kepengurusan di tingkat yayasan, pengelolaan sumber daya manusia, sistem pendidikan dan kurikulum, sistem pelayanan beserta sarana dan prasarana.
+                                    Mulai tahun 2026, PPDB bertransformasi total untuk memberikan layanan pendidikan terbaik, mencakup hirarki kepengurusan yang profesional, sistem pendidikan tahfidz intensif, dan pengasuhan berbasis adab.
                                 </p>
                                 <p className="font-bold text-brand-blue-800 bg-brand-blue-50/50 p-4 rounded-xl border border-brand-blue-100 italic text-center text-lg mt-6">
-                                    "Warisan 30 tahun, diperkuat sistem Al-Andalus"
+                                    "Standar Internasional, Kini Hadir di Sukabumi"
                                 </p>
                             </motion.div>
 
@@ -188,17 +188,17 @@ export default function TentangPage() {
                             >
                                 <div className="app-card bg-white p-5 md:p-6 flex flex-col items-start group">
                                     <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-orange-50 flex items-center justify-center mb-4 text-orange-600 group-hover:scale-110 transition-transform shadow-sm">
-                                        <Users className="w-5 h-5 md:w-6 md:h-6" />
+                                        <Sparkles className="w-5 h-5 md:w-6 md:h-6" />
                                     </div>
-                                    <h4 className="font-black text-ink-950 text-xl md:text-2xl mb-1">150+</h4>
-                                    <p className="text-[9px] md:text-[10px] font-bold text-ink-500 uppercase tracking-widest">Santri Aktif</p>
+                                    <h4 className="font-black text-ink-950 text-xl md:text-2xl mb-1">PREMIUM</h4>
+                                    <p className="text-[9px] md:text-[10px] font-bold text-ink-500 uppercase tracking-widest">Fasilitas Modern</p>
                                 </div>
                                 <div className="app-card bg-white p-5 md:p-6 flex flex-col items-start group">
                                     <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-teal-50 flex items-center justify-center mb-4 text-teal-600 group-hover:scale-110 transition-transform shadow-sm">
-                                        <Award className="w-5 h-5 md:w-6 md:h-6" />
+                                        <ShieldCheck className="w-5 h-5 md:w-6 md:h-6" />
                                     </div>
-                                    <h4 className="font-black text-ink-950 text-lg md:text-xl tracking-tighter mb-1">RESMI</h4>
-                                    <p className="text-[9px] md:text-[10px] font-bold text-ink-500 uppercase tracking-widest">Akreditasi BAN-PDM</p>
+                                    <h4 className="font-black text-ink-950 text-lg md:text-xl tracking-tighter mb-1">STABIL</h4>
+                                    <p className="text-[9px] md:text-[10px] font-bold text-ink-500 uppercase tracking-widest">Jaringan PPDB Modern</p>
                                 </div>
                             </motion.div>
                         </div>
@@ -278,7 +278,7 @@ export default function TentangPage() {
                                         <div className="w-6 h-6 rounded-full bg-yellow-500 text-white flex items-center justify-center text-[10px] font-bold shrink-0 shadow-sm">
                                             <CheckCircle2 className="w-3.5 h-3.5" />
                                         </div>
-                                        <span className="text-ink-800 font-bold text-[13px] md:text-sm tracking-tight group-hover/item:text-yellow-700 transition-colors uppercase pt-0.5">{item}</span>
+                                        <span className="text-ink-800 font-bold text-[13px] md:text-sm tracking-tight group-hover/item:text-yellow-700 transition-colors pt-0.5">{item}</span>
                                     </li>
                                 ))}
                             </ul>
@@ -337,7 +337,7 @@ export default function TentangPage() {
                         <div className="relative z-10 max-w-3xl mx-auto">
                             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-6 md:mb-8 text-white tracking-tight leading-[1.1]">
                                 Mari Menjadi Bagian <br />
-                                Keluarga <span className="text-brand-yellow-300">Ulul Albaab</span>
+                                Keluarga <span className="text-brand-yellow-300">PPDB</span>
                             </h2>
                             <p className="text-base md:text-lg lg:text-xl text-white/90 mb-8 md:mb-10 lg:mb-12 max-w-2xl mx-auto leading-relaxed font-medium px-2">
                                 Daftarkan putra Anda sekarang dan persiapkan masa depan gemilang bersama kami.
@@ -371,7 +371,7 @@ export default function TentangPage() {
                                 </div>
                                 <div className="flex items-center gap-2 text-brand-yellow-100/70">
                                     <BookOpen className="w-4 h-4 text-yellow-400" />
-                                    <span className="text-[10px] font-bold uppercase tracking-widest">Sejak 1995</span>
+                                    <span className="text-[10px] font-bold uppercase tracking-widest">Kurikulum PPDB Modern</span>
                                 </div>
                                 <div className="flex items-center gap-2 text-brand-yellow-100/70">
                                     <Award className="w-4 h-4 text-blue-400" />

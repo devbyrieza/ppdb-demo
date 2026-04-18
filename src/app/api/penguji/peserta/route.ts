@@ -35,10 +35,10 @@ export async function GET() {
         if (!isAdmin) {
             whereClause = {
                 OR: [
-                    { penguji_santri_id: userId },
-                    { penguji_quran_id: userId },
-                    { penguji_ortu_id: userId },
-                    { exam_session: { created_by: userId } },
+                    { penguji_santri_id: userId }, // Wawancara Calsan (or general Interview)
+                    { penguji_quran_id: userId },   // Tes Quran
+                    { penguji_ortu_id: userId },    // Wawancara Cawalsan
+                    { exam_session: { created_by: userId } }, // Sessions created by this penguji
                 ]
             };
         }
@@ -52,7 +52,7 @@ export async function GET() {
                         nama_lengkap: true,
                         nomor_pendaftaran: true,
                         jenjang: true,
-                        nilai_ujian: true,
+                        nilai_ujian: true, // Fetch scores directly from pendaftar
                     }
                 },
                 exam_session: { select: { title: true, created_by: true } },
@@ -61,6 +61,7 @@ export async function GET() {
         });
 
         // Fetch ALL jadwal records for the exam sessions we're dealing with
+        // This is needed to properly match scores to their jadwal records
         const examSessionIds = [...new Set(assigned.map(j => j.exam_session_id).filter((id): id is string => Boolean(id)))];
         const allJadwalInSessions = examSessionIds.length > 0 ? await prisma.jadwalUjian.findMany({
             where: {
@@ -84,11 +85,13 @@ export async function GET() {
             return false;
         };
 
+        // Build a map to deduplicate by pendaftar.id
         const pesertaMap = new Map<string, any>();
 
         for (const item of assigned) {
             const pendaftarId = item.pendaftar.id;
 
+            // Determine roles for this jadwal record
             const roles: string[] = [];
             if (isAdmin) {
                 roles.push('wawancara', 'quran', 'ortu');
@@ -109,28 +112,64 @@ export async function GET() {
                 }
             }
 
+            // Find ALL score records for this pendaftar
+            // Include both session-specific scores and general scores to ensure no data is lost
             const allScoresInSession = (item.pendaftar.nilai_ujian || []).filter(
                 (s: any) => {
+                    // If score has jadwal_ujian_id, check if it belongs to the same exam session
                     if (s.jadwal_ujian_id) {
+                        // Find the jadwal record for this score from ALL jadwal in the session
                         const scoreJadwal = allJadwalInSessions.find((j: any) => j.id === s.jadwal_ujian_id);
+                        // Include if it's in the same exam session OR if it's a Quran score (to ensure Quran scores are always visible)
                         return (scoreJadwal && scoreJadwal.exam_session_id === item.exam_session_id) || 
                                (s.score_quran != null || s.nilai_tes_quran != null || s.detail_quran != null);
                     }
+                    // If score has no jadwal_ujian_id (old data), include it
                     return true;
                 }
             );
 
+            // DEBUG: Log for Farid to understand the issue
+            if (item.pendaftar.nama_lengkap.toLowerCase().includes("farid")) {
+                console.log("\n=== DEBUG FARID ===");
+                console.log("Pendaftar ID:", item.pendaftar.id);
+                console.log("Jadwal ID:", item.id);
+                console.log("Exam Session ID:", item.exam_session_id);
+                console.log("All scores for Farid:", JSON.stringify(item.pendaftar.nilai_ujian, null, 2));
+                console.log("Scores in session:", JSON.stringify(allScoresInSession, null, 2));
+                console.log("All jadwal in sessions:", JSON.stringify(allJadwalInSessions, null, 2));
+                console.log("===================\n");
+            }
+
+            // Define fields that are allowed to travel across sessions (Universal)
+            const UNIVERSAL_FIELDS = [
+                'nilai_tes_quran', 'score_quran', 'detail_quran', 
+                'catatan_quran', 'input_at_quran', 'input_by_quran'
+            ];
+
+            // Merge all scores found, but apply session-aware logic
             const mergedSessionScore: any = {};
             allScoresInSession.forEach((s: any) => {
+                // Determine if this score record belongs to the CURRENT exam session
+                const scoreJadwal = s.jadwal_ujian_id ? allJadwalInSessions.find((j: any) => j.id === s.jadwal_ujian_id) : null;
+                const isCurrentSession = scoreJadwal && scoreJadwal.exam_session_id === item.exam_session_id;
+
                 Object.entries(s).forEach(([k, v]) => {
                     if (!isEmpty(v)) {
-                        if (mergedSessionScore[k] == null || mergedSessionScore[k] === "") {
-                            mergedSessionScore[k] = v;
+                        // Logic:
+                        // 1. If it's the current session, we take everything.
+                        // 2. If it's a different session (or orphan), we ONLY take Universal fields (Quran).
+                        if (isCurrentSession || UNIVERSAL_FIELDS.includes(k)) {
+                            // Prefer existing values if already set (merging strategy)
+                            if (mergedSessionScore[k] == null || mergedSessionScore[k] === "") {
+                                mergedSessionScore[k] = v;
+                            }
                         }
                     }
                 });
             });
 
+            // Use merged session score, or empty object if none exists
             const scoreData: any = Object.keys(mergedSessionScore).length > 0 ? mergedSessionScore : {};
 
             if (pesertaMap.has(pendaftarId)) {
@@ -139,6 +178,8 @@ export async function GET() {
                     if (!existing.roles.includes(r)) existing.roles.push(r);
                 }
 
+                // Merge scores from the same exam session into existing map entry
+                // This handles cases where a student has multiple jadwal records in the same session
                 Object.entries(scoreData).forEach(([k, v]) => {
                     if (!isEmpty(v) && isEmpty(existing[k])) {
                         existing[k] = v;
@@ -152,6 +193,7 @@ export async function GET() {
                     jenjang: item.pendaftar.jenjang,
                     jadwal_id: item.id,
                     roles: roles,
+                    // Score fields - merged from ALL jadwal in the SAME exam session
                     nilai_id: scoreData.id || null,
                     nilai_wawancara_santri: scoreData.nilai_wawancara_santri,
                     nilai_tes_quran: scoreData.nilai_tes_quran,

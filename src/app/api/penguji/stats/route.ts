@@ -36,42 +36,87 @@ export async function GET() {
                 ]
             },
             include: {
-                nilai_ujian: true,
+                pendaftar: {
+                    include: {
+                        nilai_ujian: true
+                    }
+                },
                 exam_session: { select: { title: true, created_by: true } },
             }
         });
 
-        const total_jadwal = assigned.length;
-        const jadwal_hari_ini = assigned.filter(item => {
-            const date = new Date(item.tanggal_ujian);
-            return date >= today && date < tomorrow;
-        }).length;
+        const isEmpty = (v: any) => {
+            if (v == null || v === "") return true;
+            if (typeof v === 'object') {
+                if (Array.isArray(v)) return v.length === 0;
+                const keys = Object.keys(v);
+                if (keys.length === 0) return true;
+                return keys.every(key => v[key] == null || v[key] === "");
+            }
+            return false;
+        };
 
-        let selesai_dinilai = 0;
-        let belum_dinilai = 0;
+        // Deduplicate by pendaftar.id to get unique students
+        const pesertaMap = new Map<string, any>();
 
-        assigned.forEach(item => {
+        for (const item of assigned) {
+            const pendaftarId = item.pendaftar.id;
+            
             const roles: string[] = [];
             if (item.penguji_santri_id === userId) roles.push('santri');
             if (item.penguji_quran_id === userId) roles.push('quran');
             if (item.penguji_ortu_id === userId) roles.push('ortu');
 
-            // Fallback: if matched via exam_session.created_by
             if (roles.length === 0 && item.exam_session && item.exam_session.created_by === userId) {
                 const title = (item.exam_session.title || "").toLowerCase();
                 if (title.includes("qur") || title.includes("quran")) roles.push('quran');
-                else if (title.includes("calsan") || title.includes("santri")) roles.push('santri');
-                else if (title.includes("cawalsan") || title.includes("ortu") || title.includes("orang")) roles.push('ortu');
+                if (title.includes("calsan") || title.includes("santri") || title.includes("wawancara")) roles.push('santri');
+                if (title.includes("cawalsan") || title.includes("ortu") || title.includes("orang")) roles.push('ortu');
             }
 
-            const score = (item as any).nilai_ujian?.[0] || {};
+            if (pesertaMap.has(pendaftarId)) {
+                const existing = pesertaMap.get(pendaftarId);
+                roles.forEach(r => {
+                    if (!existing.roles.includes(r)) existing.roles.push(r);
+                });
+                // Update today status if this schedule is today
+                const date = new Date(item.tanggal_ujian);
+                if (date >= today && date < tomorrow) existing.isToday = true;
+            } else {
+                const date = new Date(item.tanggal_ujian);
+                pesertaMap.set(pendaftarId, {
+                    id: pendaftarId,
+                    roles: roles,
+                    isToday: date >= today && date < tomorrow,
+                    nilai_ujian: item.pendaftar.nilai_ujian || []
+                });
+            }
+        }
+
+        const uniquePeserta = Array.from(pesertaMap.values());
+        const total_jadwal = uniquePeserta.length;
+        const jadwal_hari_ini = uniquePeserta.filter(p => p.isToday).length;
+
+        let selesai_dinilai = 0;
+        let belum_dinilai = 0;
+
+        uniquePeserta.forEach(p => {
+            // Build a merged score view for this student from all their records
+            const mergedScore: any = {};
+            [...p.nilai_ujian].sort((a: any, b: any) => 
+                new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+            ).forEach(s => {
+                Object.entries(s).forEach(([k, v]) => {
+                    if (!isEmpty(v)) mergedScore[k] = v;
+                });
+            });
 
             // Logic: Is it finished for THIS examiner?
             let isItemFinished = true;
-            if (roles.includes('santri') && !score.nilai_wawancara_santri) isItemFinished = false;
-            if (roles.includes('quran') && !score.nilai_tes_quran) isItemFinished = false;
-            if (roles.includes('ortu') && !score.nilai_wawancara_ortu) isItemFinished = false;
-            if (roles.length === 0) isItemFinished = false; // unknown role = not finished
+            if (p.roles.includes('santri') && !mergedScore.nilai_wawancara_santri) isItemFinished = false;
+            if (p.roles.includes('quran') && !mergedScore.nilai_tes_quran) isItemFinished = false;
+            if (p.roles.includes('ortu') && !mergedScore.nilai_wawancara_ortu) isItemFinished = false;
+            if (p.roles.length === 0) isItemFinished = false;
 
             if (isItemFinished) selesai_dinilai++;
             else belum_dinilai++;
