@@ -16,7 +16,8 @@ import ActivitiesSection from "@/components/home/ActivitiesSection";
 import TestimonialsSection from "@/components/home/TestimonialsSection";
 import FaqSection from "@/components/home/FaqSection";
 import ContactSection from "@/components/home/ContactSection";
-import CtaSection from "@/components/home/CtaSection";
+import Link from "next/link";
+import { motion } from "framer-motion";
 import { Zap } from "lucide-react";
 
 export default function HomePage() {
