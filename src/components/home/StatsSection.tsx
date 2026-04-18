@@ -7,12 +7,10 @@ import { Container } from "@/components/layout/Container";
 import { Calendar, Users, GraduationCap, Award, TrendingUp, BookOpen } from 'lucide-react';
 
 const STATS = [
-const STATS = [
   { id: 'batch', label: 'Angkatan Ke-1', value: 1, icon: Calendar, color: 'emerald' as const, suffix: '', sublabel: 'Andalus Modern Academy' },
   { id: 'quality', label: 'Standar Global', value: 100, icon: Award, color: 'gold' as const, suffix: '%', sublabel: 'Kurikulum Internasional' },
   { id: 'levels', label: 'Jenjang Elit', value: 2, icon: GraduationCap, color: 'emerald' as const, suffix: '', sublabel: 'MTs · SMA' },
   { id: 'quota', label: 'Kuota Terbatas', value: 30, icon: Users, color: 'gold' as const, suffix: '', sublabel: 'Per Jenjang (Eksklusif)' },
-] as const;
 ] as const;
 
 export default function StatsSection() {
