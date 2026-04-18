@@ -7,10 +7,12 @@ import { Container } from "@/components/layout/Container";
 import { Calendar, Users, GraduationCap, Award, TrendingUp, BookOpen } from 'lucide-react';
 
 const STATS = [
-  { id: 'batch', label: 'Angkatan Ke-1', value: 1, icon: Calendar, color: 'brand-blue' as const, suffix: '', sublabel: 'TA 2026/2027' },
-  { id: 'quality', label: 'Standar Global', value: 100, icon: Award, color: 'brand-yellow' as const, suffix: '%', sublabel: 'Kurikulum PPDB Modern IIBS' },
-  { id: 'levels', label: 'Jenjang Tersedia', value: 2, icon: GraduationCap, color: 'gold' as const, suffix: '', sublabel: 'MTs · IL' },
-  { id: 'quota', label: 'Kuota Per Jenjang', value: 25, icon: Users, color: 'brand-blue' as const, suffix: '', sublabel: 'Santri (Terbatas)' },
+const STATS = [
+  { id: 'batch', label: 'Angkatan Ke-1', value: 1, icon: Calendar, color: 'emerald' as const, suffix: '', sublabel: 'Andalus Modern Academy' },
+  { id: 'quality', label: 'Standar Global', value: 100, icon: Award, color: 'gold' as const, suffix: '%', sublabel: 'Kurikulum Internasional' },
+  { id: 'levels', label: 'Jenjang Elit', value: 2, icon: GraduationCap, color: 'emerald' as const, suffix: '', sublabel: 'MTs · SMA' },
+  { id: 'quota', label: 'Kuota Terbatas', value: 30, icon: Users, color: 'gold' as const, suffix: '', sublabel: 'Per Jenjang (Eksklusif)' },
+] as const;
 ] as const;
 
 export default function StatsSection() {
@@ -50,9 +52,9 @@ export default function StatsSection() {
   }, [inView]);
 
   return (
-    <section className="py-16 md:py-24 bg-white relative overflow-hidden border-b border-cream-200">
+    <section className="py-16 md:py-24 bg-white relative overflow-hidden border-b border-brand-blue-50">
       {/* Sophisticated Background Element */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-maroon-50/50 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-blue-50/50 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-brand-yellow-100/40 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/2" />
 
       <Container className="relative z-10">
@@ -69,9 +71,8 @@ export default function StatsSection() {
                 className="app-card p-6 md:p-8 flex flex-col items-center text-center group"
               >
                 <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-5 transition-transform duration-500 group-hover:scale-110 shadow-sm
-                  ${stat.color === 'brand-blue' ? 'bg-brand-blue-50 text-brand-blue-600' :
-                  stat.color === 'brand-yellow' ? 'bg-brand-yellow-100 text-brand-yellow-700' :
-                  stat.color === 'gold' ? 'bg-yellow-50 text-yellow-600' :
+                  ${stat.color === 'emerald' ? 'bg-brand-blue-50 text-brand-blue-700' :
+                  stat.color === 'gold' ? 'bg-brand-yellow-100 text-brand-yellow-600' :
                   'bg-brand-blue-100 text-brand-blue-800'
                   }`}>
                   <stat.icon className="w-6 h-6" />
@@ -96,7 +97,7 @@ export default function StatsSection() {
                 )}
 
                 {/* Subtle underline decoration */}
-                <div className="mt-4 w-6 h-1 bg-cream-200 rounded-full group-hover:w-12 group-hover:bg-maroon-400 transition-all duration-500" />
+                <div className="mt-4 w-6 h-1 bg-brand-blue-100 rounded-full group-hover:w-12 group-hover:bg-brand-yellow-400 transition-all duration-500" />
               </motion.div>
             ))}
           </div>
@@ -109,17 +110,17 @@ export default function StatsSection() {
             transition={{ delay: 0.6 }}
             className="mt-12 flex flex-wrap justify-center items-center gap-x-8 gap-y-4"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-cream-50 rounded-pill border border-cream-200">
-              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-brand-blue-50/50 rounded-pill border border-brand-blue-100">
+              <div className="w-2 h-2 rounded-full bg-brand-blue-500 animate-pulse" />
               <span className="text-[10px] font-bold text-ink-700 uppercase tracking-widest">Pendaftaran Dibuka</span>
             </div>
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-cream-50 rounded-pill border border-cream-200">
-              <Award className="w-3.5 h-3.5 text-brand-blue-600" />
-              <span className="text-[10px] font-bold text-ink-700 uppercase tracking-widest">Resmi Kemendikdasmen</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-brand-blue-50/50 rounded-pill border border-brand-blue-100">
+              <Award className="w-3.5 h-3.5 text-brand-yellow-600" />
+              <span className="text-[10px] font-bold text-ink-700 uppercase tracking-widest">Resmi Andalus Academy</span>
             </div>
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-cream-50 rounded-pill border border-cream-200">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-brand-blue-50/50 rounded-pill border border-brand-blue-100">
               <TrendingUp className="w-3.5 h-3.5 text-brand-blue-600" />
-              <span className="text-[10px] font-bold text-ink-700 uppercase tracking-widest">Kurikulum Terintegrasi</span>
+              <span className="text-[10px] font-bold text-ink-700 uppercase tracking-widest">Digital-First System</span>
             </div>
           </motion.div>
         </div>
