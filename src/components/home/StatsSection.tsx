@@ -70,8 +70,8 @@ export default function StatsSection() {
               >
                 <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-5 transition-transform duration-500 group-hover:scale-110 shadow-sm
                   ${stat.color === 'emerald' ? 'bg-brand-blue-50 text-brand-blue-700' :
-                  stat.color === 'gold' ? 'bg-brand-yellow-100 text-brand-yellow-600' :
-                  'bg-brand-blue-100 text-brand-blue-800'
+                    stat.color === 'gold' ? 'bg-brand-yellow-100 text-brand-yellow-600' :
+                      'bg-brand-blue-100 text-brand-blue-800'
                   }`}>
                   <stat.icon className="w-6 h-6" />
                 </div>
