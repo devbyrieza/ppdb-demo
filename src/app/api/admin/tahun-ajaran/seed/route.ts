@@ -34,37 +34,54 @@ export async function POST() {
     });
 
     if (existing) {
-      // Force update price to 200000
-      await prisma.tahunAjaran.update({
-        where: { id: existing.id },
-        data: { biaya_pendaftaran: 200000 },
-      });
-
-      // If exists but not active, activate it
-      if (!existing.is_active) {
-        // Deactivate all others first
-        await prisma.$transaction([
-          prisma.tahunAjaran.updateMany({
-            where: { is_active: true },
-            data: { is_active: false },
-          }),
-          prisma.tahunAjaran.update({
-            where: { id: existing.id },
-            data: { is_active: true },
-          }),
-        ]);
-
-        return NextResponse.json({
-          success: true,
-          message: "Tahun Ajaran 2026/2027 diaktifkan & harga diupdate ke 200.000",
-          data: { ...existing, is_active: true, biaya_pendaftaran: 200000 },
+      // Force update price to 200000 and ensure it is active
+      await prisma.$transaction(async (tx) => {
+        await tx.tahunAjaran.update({
+          where: { id: existing.id },
+          data: { biaya_pendaftaran: 200000, is_active: true },
         });
-      }
+
+        // Deactivate others
+        await tx.tahunAjaran.updateMany({
+          where: { 
+            id: { not: existing.id },
+            is_active: true 
+          },
+          data: { is_active: false },
+        });
+
+        // MIGRASI DATA: Pindahkan semua data ke 2026/2027
+        console.log(`[SEED] Migrating data to ${existing.id} (2026/2027)`);
+        await tx.pendaftar.updateMany({
+          where: { tahun_ajaran_id: { not: existing.id } },
+          data: { tahun_ajaran_id: existing.id }
+        });
+        await tx.pembayaran.updateMany({
+          where: { tahun_ajaran_id: { not: existing.id } },
+          data: { tahun_ajaran_id: existing.id }
+        });
+        await tx.jadwalUjian.updateMany({
+          where: { tahun_ajaran_id: { not: existing.id } },
+          data: { tahun_ajaran_id: existing.id }
+        });
+        await tx.pengumuman.updateMany({
+          where: { tahun_ajaran_id: { not: existing.id } },
+          data: { tahun_ajaran_id: existing.id }
+        });
+        await tx.hasilSeleksi.updateMany({
+          where: { tahun_ajaran_id: { not: existing.id } },
+          data: { tahun_ajaran_id: existing.id }
+        });
+        await tx.reservasiPSB.updateMany({
+          where: { tahun_ajaran_id: { not: existing.id } },
+          data: { tahun_ajaran_id: existing.id }
+        });
+      });
 
       return NextResponse.json({
         success: true,
-        message: "Tahun Ajaran 2026/2027 harga diupdate ke 200.000",
-        data: { ...existing, biaya_pendaftaran: 200000 },
+        message: "Tahun Ajaran 2026/2027 diaktifkan & Data Berhasil Dimigrasi!",
+        data: { ...existing, is_active: true },
       });
     }
 
@@ -77,7 +94,7 @@ export async function POST() {
       });
 
       // Create 2026/2027
-      return await tx.tahunAjaran.create({
+      const newTA = await tx.tahunAjaran.create({
         data: {
           tahun_mulai: 2026,
           tahun_selesai: 2027,
@@ -88,6 +105,17 @@ export async function POST() {
           biaya_pendaftaran: 200000,
         },
       });
+
+      // MIGRASI DATA: Pindahkan semua data ke 2026/2027 baru
+      console.log(`[SEED] Migrating data to ${newTA.id} (New 2026/2027)`);
+      await tx.pendaftar.updateMany({ data: { tahun_ajaran_id: newTA.id } });
+      await tx.pembayaran.updateMany({ data: { tahun_ajaran_id: newTA.id } });
+      await tx.jadwalUjian.updateMany({ data: { tahun_ajaran_id: newTA.id } });
+      await tx.pengumuman.updateMany({ data: { tahun_ajaran_id: newTA.id } });
+      await tx.hasilSeleksi.updateMany({ data: { tahun_ajaran_id: newTA.id } });
+      await tx.reservasiPSB.updateMany({ data: { tahun_ajaran_id: newTA.id } });
+
+      return newTA;
     });
 
     return NextResponse.json({

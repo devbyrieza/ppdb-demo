@@ -64,15 +64,44 @@ export default function StatistikWilayahPage() {
     const [activeTab, setActiveTab] = useState<TabId>("santri");
     const [expandedProv, setExpandedProv] = useState<string | null>(null);
     const [searchQuery, setSearchQuery] = useState("");
+    const [tahunAjaranList, setTahunAjaranList] = useState<any[]>([]);
+    const [selectedTahunAjaranId, setSelectedTahunAjaranId] = useState<string>("");
 
     useEffect(() => {
-        fetchStats();
+        const fetchTA = async () => {
+            try {
+                const res = await fetch("/api/admin/tahun-ajaran");
+                if (res.ok) {
+                    const json = await res.json();
+                    const list = json.data || [];
+                    setTahunAjaranList(list);
+                    const active = list.find((t: any) => t.is_active);
+                    if (active) {
+                        setSelectedTahunAjaranId(active.id);
+                    } else if (list.length > 0) {
+                        setSelectedTahunAjaranId(list[0].id);
+                    } else {
+                        fetchStats("");
+                    }
+                }
+            } catch (err) {
+                console.error("Failed to fetch TA list", err);
+                fetchStats("");
+            }
+        };
+        fetchTA();
     }, []);
+    useEffect(() => {
+        if (selectedTahunAjaranId) {
+            fetchStats(selectedTahunAjaranId);
+        }
+    }, [selectedTahunAjaranId]);
 
-    const fetchStats = async () => {
+    const fetchStats = async (taId?: string) => {
+        const targetId = taId !== undefined ? taId : selectedTahunAjaranId;
         try {
             setLoading(true);
-            const res = await fetch("/api/admin/statistik/wilayah");
+            const res = await fetch(`/api/admin/statistik/wilayah?tahun_ajaran_id=${targetId}`);
             if (res.ok) {
                 const json = await res.json();
                 setData(json);
@@ -132,9 +161,24 @@ export default function StatistikWilayahPage() {
                         <MapPin className="w-8 h-8 text-[#0a2647]" />
                     </div>
                     <div>
-                        <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">
-                            Statistik <span className="text-[#ffcc00]">Wilayah</span>
-                        </h1>
+                        <div className="flex items-center gap-3 mb-1">
+                            <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">
+                                Statistik <span className="text-[#ffcc00]">Wilayah</span>
+                            </h1>
+                            {tahunAjaranList.length > 0 && (
+                                <select
+                                    value={selectedTahunAjaranId}
+                                    onChange={(e) => setSelectedTahunAjaranId(e.target.value)}
+                                    className="bg-white/10 text-white text-[10px] font-black uppercase tracking-widest border border-white/20 rounded-xl px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#ffcc00] cursor-pointer hover:bg-white/20 transition-all backdrop-blur-sm"
+                                >
+                                    {tahunAjaranList.map((ta: any) => (
+                                        <option key={ta.id} value={ta.id} className="bg-[#0a2647] text-white">
+                                            TA {ta.nama}
+                                        </option>
+                                    ))}
+                                </select>
+                            )}
+                        </div>
                         <p className="text-white/70 font-medium italic opacity-80 text-sm mt-1">
                             Analisis sebaran domisili pendaftar dan keluarga berdasar data wilayah.
                         </p>

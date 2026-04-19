@@ -85,55 +85,62 @@ export async function recalculateNilaiUjian(pendaftarId: string) {
     });
 
     // 2. Extract & Normalize Raw Scores from Master
-    const ak = Number(master.score_akademik) || 0;
-    const quran = Number(master.score_quran) || 0;
-    const kp = Number(master.score_kepribadian) || 0;
-    const ks = Number(master.score_kesiapan) || 0;
+    const ak = master.score_akademik != null ? Number(master.score_akademik) : null;
+    const quran = master.score_quran != null ? Number(master.score_quran) : null;
+    const kp = master.score_kepribadian != null ? Number(master.score_kepribadian) : null;
+    const ks = master.score_kesiapan != null ? Number(master.score_kesiapan) : null;
 
-    // Calsan (Santri) normalization (assuming value in DB is raw 1-5 if < 10)
-    let ws_raw = Number(master.nilai_wawancara_santri) || 0;
-    const ws = ws_raw > 10 ? ws_raw : normalizeCalsanScore(ws_raw);
+    let ws = master.nilai_wawancara_santri != null ? Number(master.nilai_wawancara_santri) : null;
+    if (ws != null && ws <= 10 && ws > 0) {
+        ws = normalizeCalsanScore(ws);
+    }
+    // Clean up legacy artifact where missing values were mistakenly saved as exactly 0
+    if (ws === 0) ws = null;
 
-    // Cawalsan (Ortu) score from detail or raw flag
-    let wo = 0;
-    if (master.detail_cawalsan) {
+    let wo = null;
+    if (master.detail_cawalsan && !isEmpty(master.detail_cawalsan)) {
         wo = calculateCawalsanScore(master.detail_cawalsan);
-    } else {
-        wo = Number(master.nilai_wawancara_ortu) || 0;
+    } else if (master.nilai_wawancara_ortu != null) {
+        wo = Number(master.nilai_wawancara_ortu);
         if (wo > 0 && wo < 10) wo = 75; // Default "Cukup" if only flag 1 is present
     }
+    if (wo === 0) wo = null;
 
-    // Wawancara summary = Average of both components
-    let wawancaraTotal = 0;
-    if (ws > 0 && wo > 0) {
+    // Wawancara summary
+    let wawancaraTotal = null;
+    if (ws != null && wo != null) {
         wawancaraTotal = (ws + wo) / 2;
     } else {
-        wawancaraTotal = ws || wo || 0;
+        wawancaraTotal = ws != null ? ws : (wo != null ? wo : null);
     }
 
     // 3. Calculate Final Score (Weights in grading.ts)
-    const totalScore = calculateFinalScore(ak, quran, wawancaraTotal, kp, ks);
+    // Treat nulls as 0 for calculation purposes to prevent NaN
+    const totalScore = calculateFinalScore(
+        ak || 0, 
+        quran || 0, 
+        wawancaraTotal || 0, 
+        kp || 0, 
+        ks || 0
+    );
 
-    // 4. Evaluate Status using Matrix Grade
-    const grdQuran = quran > 0 ? evaluateQuranGrade(quran) : null;
-    const grdAk = ak > 0 ? evaluateAkademikGrade(ak) : null;
-    const grdKp = kp > 0 ? evaluateKepribadianGrade(kp) : null;
-    const grdKs = ks > 0 ? evaluateKesiapanGrade(ks) : null;
-    const grdWs = ws > 0 ? evaluateWawancaraGrade(ws) : null; 
-    const grdWo = wo > 0 ? evaluateWawancaraGrade(wo) : null; 
-
-    const allGraded = grdQuran !== null && grdAk !== null && grdKp !== null && grdKs !== null && grdWs !== null && grdWo !== null;
+    // 4. Evaluate Status numerically
+    const allGraded = (ak != null && quran != null && kp != null && ks != null && (ws != null || wo != null));
 
     let status: string;
     if (allGraded) {
-        status = determineFinalDecision({
-            quran: grdQuran,
-            akademik: grdAk,
-            kepribadian: grdKp,
-            kesiapan: grdKs!,
-            wawancaraCalsan: grdWs,
-            wawancaraCawalsan: grdWo
-        });
+        // Use numerical decision 
+        // 70+ DITERIMA, 55+ CADANGAN, else DITOLAK
+        // Make sure to penalize if quran < 40
+        if ((quran || 0) < 40) {
+            status = 'DITOLAK';
+        } else if (totalScore >= 70) {
+            status = 'DITERIMA';
+        } else if (totalScore >= 55) {
+            status = 'CADANGAN';
+        } else {
+            status = 'DITOLAK';
+        }
 
         // Update Pendaftar Status to 'tested'
         const pendaftar = await prisma.pendaftar.findUnique({
@@ -160,11 +167,16 @@ export async function recalculateNilaiUjian(pendaftarId: string) {
         where: { id: newestRecord.id },
         data: {
             ...master,
+            score_akademik: ak,
+            score_quran: quran,
+            score_kepribadian: kp,
+            score_kesiapan: ks,
+            nilai_wawancara_santri: ws,
+            nilai_wawancara_ortu: wo,
+            score_wawancara: wawancaraTotal,
             total_score: totalScore,
             nilai_total: totalScore, // Sync legacy field for other pages
             status_kelulusan: status,
-            score_wawancara: wawancaraTotal,
-            nilai_wawancara_ortu: wo,
             updated_at: new Date()
         }
     });

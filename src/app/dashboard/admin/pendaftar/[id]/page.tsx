@@ -26,6 +26,7 @@ import {
   Trophy,
 } from "lucide-react";
 import Link from "next/link";
+import Swal from "sweetalert2";
 
 interface PendaftarDetail {
   id: string;
@@ -194,7 +195,7 @@ export default function PendaftarDetailPage() {
       setEditingStatus(false);
     } catch (error) {
       console.error("Error updating status:", error);
-      alert("Gagal mengubah status");
+      Swal.fire("Error", "Gagal mengubah status", "error");
     } finally {
       setSavingStatus(false);
     }
@@ -398,25 +399,34 @@ export default function PendaftarDetailPage() {
           {/* Quick Actions */}
           <div className="flex items-center gap-2">
             <button
-              onClick={async () => {
-                if (confirm("Buka kunci formulir? Pendaftar akan bisa mengedit data kembali.")) {
-                  setSavingStatus(true);
-                  try {
-                    const res = await fetch(`/api/admin/pendaftar/${params.id}`, {
-                      method: "PATCH",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify({ status_proses: "draft" }),
-                    });
-                    if (res.ok) {
-                      await fetchPendaftarDetail();
-                      alert("Formulir berhasil dibuka kuncinya.");
+              onClick={() => {
+                Swal.fire({
+                  title: 'Buka Kunci Formulir?',
+                  text: 'Pendaftar akan bisa mengedit data kembali.',
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#e11d48',
+                  confirmButtonText: 'Ya, buka kunci!'
+                }).then(async (result) => {
+                  if (result.isConfirmed) {
+                    setSavingStatus(true);
+                    try {
+                      const res = await fetch(`/api/admin/pendaftar/${params.id}`, {
+                        method: "PATCH",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ status_proses: "draft" }),
+                      });
+                      if (res.ok) {
+                        await fetchPendaftarDetail();
+                        Swal.fire("Selesai", "Formulir berhasil dibuka kuncinya.", "success");
+                      }
+                    } catch (e) {
+                      Swal.fire("Error", "Gagal membuka kunci.", "error");
+                    } finally {
+                      setSavingStatus(false);
                     }
-                  } catch (e) {
-                    alert("Gagal membuka kunci.");
-                  } finally {
-                    setSavingStatus(false);
                   }
-                }
+                });
               }}
               disabled={savingStatus || pendaftar.status_proses === "draft"}
               className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-black transition-all flex items-center gap-1 disabled:opacity-50 shadow-sm active:scale-95"

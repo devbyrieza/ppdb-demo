@@ -59,8 +59,11 @@ export default function ExaminerDashboard() {
 
     // Form State for Modal
     const [inputType, setInputType] = useState<'quran' | 'wawancara_santri' | 'wawancara_ortu'>('quran');
-    const [score, setScore] = useState<string>('');
-    const [grade, setGrade] = useState<string>('');
+    
+    // Dedicated Sub-form States
+    const [quranForm, setQuranForm] = useState({ tajwid: '', kelancaran: '' });
+    const [wsForm, setWsForm] = useState({ motivasi: '', lingkungan: '', permainan: '', teman: '', rokok: '', pornografi: '', hobi: '' });
+    const [woForm, setWoForm] = useState({ q1: '', q2: '', q3: '', q4: '', q5: '', q6: '', q7: '', q8: '', q9: '', q10: '' });
     const [catatan, setCatatan] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isBroadcasting, setIsBroadcasting] = useState(false);
@@ -100,8 +103,9 @@ export default function ExaminerDashboard() {
     const handleOpenInput = (student: Student, type: 'quran' | 'wawancara_santri' | 'wawancara_ortu') => {
         setSelectedStudent(student);
         setInputType(type);
-        setScore('');
-        setGrade('');
+        setQuranForm({ tajwid: '', kelancaran: '' });
+        setWsForm({ motivasi: '', lingkungan: '', permainan: '', teman: '', rokok: '', pornografi: '', hobi: '' });
+        setWoForm({ q1: '', q2: '', q3: '', q4: '', q5: '', q6: '', q7: '', q8: '', q9: '', q10: '' });
         setCatatan('');
     };
 
@@ -110,11 +114,26 @@ export default function ExaminerDashboard() {
 
         setIsSubmitting(true);
         try {
+            let finalScore = 0;
+            if (inputType === 'quran') {
+                finalScore = (Number(quranForm.tajwid) + Number(quranForm.kelancaran)) / 2;
+            } else if (inputType === 'wawancara_santri') {
+                const sum = Object.values(wsForm).reduce((acc, val) => acc + Number(val || 0), 0);
+                finalScore = (sum / 35) * 100;
+            } else if (inputType === 'wawancara_ortu') {
+                let total = 0; let counted = 0;
+                Object.values(woForm).forEach(val => {
+                    if (val === 'A') { total += 100; counted++; }
+                    else if (val === 'B') { total += 75; counted++; }
+                    else if (val === 'C') { total += 50; counted++; }
+                });
+                finalScore = counted > 0 ? total / counted : 0;
+            }
+
             const payload = {
                 pendaftar_id: selectedStudent.id,
                 type: inputType,
-                score: score ? parseFloat(score) : undefined,
-                grade: grade || undefined,
+                score: finalScore,
                 details: { catatan },
                 examiner_id: 'mock-examiner-id'
             };
@@ -406,7 +425,13 @@ export default function ExaminerDashboard() {
                                                             onClick={() => handleOpenInput(s, 'wawancara_santri')} 
                                                             className="flex items-center gap-1.5 bg-white border border-ink-200 text-ink-700 px-3 py-1.5 rounded-xl text-[10px] font-black hover:border-brand-blue-600 transition-all shadow-sm group-hover:scale-105"
                                                         >
-                                                            <MessageSquare className="w-3 h-3" /> WAWANCARA
+                                                            <MessageSquare className="w-3 h-3" /> W.SANTRI
+                                                        </button>
+                                                        <button 
+                                                            onClick={() => handleOpenInput(s, 'wawancara_ortu')} 
+                                                            className="flex items-center gap-1.5 bg-brand-yellow-50 border border-brand-yellow-200 text-brand-yellow-800 px-3 py-1.5 rounded-xl text-[10px] font-black hover:border-brand-yellow-400 transition-all shadow-sm group-hover:scale-105"
+                                                        >
+                                                            <MessageSquare className="w-3 h-3" /> W.ORTU
                                                         </button>
                                                     </div>
                                                 </td>
@@ -498,9 +523,15 @@ export default function ExaminerDashboard() {
                                             </button>
                                             <button 
                                                 onClick={() => handleOpenInput(s, 'wawancara_santri')} 
-                                                className="flex items-center justify-center gap-2 bg-brand-yellow-400 text-brand-blue-900 py-3 rounded-2xl text-[11px] font-black shadow-lg shadow-brand-yellow-400/20 active:scale-95 transition-all"
+                                                className="flex flex-col items-center justify-center bg-brand-yellow-400 text-brand-blue-900 py-2 rounded-2xl text-[10px] sm:text-[11px] font-black shadow-lg shadow-brand-yellow-400/20 active:scale-95 transition-all"
                                             >
-                                                <MessageSquare className="w-3.5 h-3.5" /> WAWANCARA
+                                                <span className="flex items-center gap-1"><MessageSquare className="w-3 h-3" /> SANTRI</span>
+                                            </button>
+                                            <button 
+                                                onClick={() => handleOpenInput(s, 'wawancara_ortu')} 
+                                                className="flex flex-col items-center justify-center bg-brand-yellow-200 text-brand-yellow-900 py-2 rounded-2xl text-[10px] sm:text-[11px] font-black shadow-lg shadow-brand-yellow-200/20 active:scale-95 transition-all"
+                                            >
+                                                <span className="flex items-center gap-1"><MessageSquare className="w-3 h-3" /> ORTU</span>
                                             </button>
                                         </div>
                                     </div>
@@ -649,7 +680,7 @@ export default function ExaminerDashboard() {
                                         <Zap className="w-5 h-5 font-black" />
                                     </div>
                                     <h3 className="text-xl leading-6 font-black text-ink-900" id="modal-title">
-                                        Input Nilai {inputType === 'quran' ? 'Al-Quran' : 'Wawancara'}
+                                        Input Nilai {inputType === 'quran' ? 'Al-Quran' : inputType === 'wawancara_santri' ? 'Wawancara Santri' : 'Wawancara Ortu/Wali'}
                                     </h3>
                                 </div>
 
@@ -661,33 +692,80 @@ export default function ExaminerDashboard() {
                                 
                                 <div className="space-y-4">
                                     {inputType === 'quran' && (
-                                        <div>
-                                            <label className="block text-xs font-black text-ink-400 uppercase tracking-wider mb-2">Rekomendasi / Grade</label>
-                                            <select
-                                                value={grade}
-                                                onChange={(e) => setGrade(e.target.value)}
-                                                className="w-full bg-ink-50 border border-ink-100 rounded-xl px-4 py-3 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-brand-blue-600/10 outline-none"
-                                            >
-                                                <option value="">Pilih Grade</option>
-                                                <option value="A">A (Sangat Baik / Lulus)</option>
-                                                <option value="B">B (Baik / Lulus)</option>
-                                                <option value="C">C (Cukup / Cadangan)</option>
-                                                <option value="D">D (Kurang / Gagal)</option>
-                                                <option value="E">E (Sangat Kurang)</option>
-                                            </select>
+                                        <div className="flex gap-4">
+                                            <div className="flex-1">
+                                                <label className="block text-xs font-black text-ink-400 uppercase tracking-wider mb-2">Nilai Tajwid (0-100)</label>
+                                                <input
+                                                    type="number"
+                                                    value={quranForm.tajwid}
+                                                    onChange={(e) => setQuranForm({ ...quranForm, tajwid: e.target.value })}
+                                                    placeholder="0-100"
+                                                    className="w-full bg-ink-50 border border-ink-100 rounded-xl px-4 py-3 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-brand-blue-600/10 outline-none"
+                                                />
+                                            </div>
+                                            <div className="flex-1">
+                                                <label className="block text-xs font-black text-ink-400 uppercase tracking-wider mb-2">Nilai Kelancaran (0-100)</label>
+                                                <input
+                                                    type="number"
+                                                    value={quranForm.kelancaran}
+                                                    onChange={(e) => setQuranForm({ ...quranForm, kelancaran: e.target.value })}
+                                                    placeholder="0-100"
+                                                    className="w-full bg-ink-50 border border-ink-100 rounded-xl px-4 py-3 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-brand-blue-600/10 outline-none"
+                                                />
+                                            </div>
                                         </div>
                                     )}
 
-                                    <div>
-                                        <label className="block text-xs font-black text-ink-400 uppercase tracking-wider mb-2">Skor Angka (0-100)</label>
-                                        <input
-                                            type="number"
-                                            value={score}
-                                            onChange={(e) => setScore(e.target.value)}
-                                            placeholder="Masukkan nilai 0-100..."
-                                            className="w-full bg-ink-50 border border-ink-100 rounded-xl px-4 py-3 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-brand-blue-600/10 outline-none"
-                                        />
-                                    </div>
+                                    {inputType === 'wawancara_santri' && (
+                                        <div className="grid grid-cols-2 gap-4">
+                                            {[
+                                                { k: 'motivasi', l: 'Motivasi (1-5)' },
+                                                { k: 'lingkungan', l: 'Lingkungan (1-5)' },
+                                                { k: 'permainan', l: 'Permainan (1-5)' },
+                                                { k: 'teman', l: 'Teman (1-5)' },
+                                                { k: 'rokok', l: 'Rokok (1-5)' },
+                                                { k: 'pornografi', l: 'Pornografi (1-5)' },
+                                                { k: 'hobi', l: 'Hobi Positif (1-5)' }
+                                            ].map(f => (
+                                                <div key={f.k}>
+                                                    <label className="block text-[10px] font-black text-ink-400 uppercase tracking-wider mb-2">{f.l}</label>
+                                                    <select
+                                                        value={(wsForm as any)[f.k]}
+                                                        onChange={(e) => setWsForm({ ...wsForm, [f.k]: e.target.value })}
+                                                        className="w-full bg-ink-50 border border-ink-100 rounded-xl px-3 py-2 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-brand-blue-600/10 outline-none"
+                                                    >
+                                                        <option value="">Pilih...</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                    </select>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+
+                                    {inputType === 'wawancara_ortu' && (
+                                        <div className="space-y-4 max-h-64 overflow-y-auto pr-2 custom-scrollbar">
+                                            <p className="text-[10px] font-black text-ink-500 uppercase">Pilih A/B/C untuk 10 Pertanyaan Standar Wawancara Wali</p>
+                                            {Array.from({ length: 10 }).map((_, idx) => (
+                                                <div key={idx} className="flex flex-col gap-1">
+                                                  <label className="block text-[10px] font-black text-ink-400 uppercase tracking-wider">Pertanyaan {idx + 1}</label>
+                                                  <select
+                                                      value={(woForm as any)[`q${idx+1}`]}
+                                                      onChange={(e) => setWoForm({ ...woForm, [`q${idx+1}`]: e.target.value })}
+                                                      className="w-full bg-ink-50 border border-ink-100 rounded-xl px-3 py-2 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-brand-blue-600/10 outline-none"
+                                                  >
+                                                      <option value="">Pilih...</option>
+                                                      <option value="A">A (Sangat Baik / Menerima)</option>
+                                                      <option value="B">B (Baik / Kondisional)</option>
+                                                      <option value="C">C (Kurang / Tidak Ideal)</option>
+                                                  </select>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
 
                                     <div>
                                         <label className="block text-xs font-black text-ink-400 uppercase tracking-wider mb-2">Catatan Khusus</label>

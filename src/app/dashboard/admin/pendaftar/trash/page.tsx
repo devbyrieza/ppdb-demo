@@ -14,6 +14,7 @@ import {
     Hash,
     Calendar,
 } from "lucide-react";
+import Swal from "sweetalert2";
 
 interface DeletedPendaftar {
     id: string;
@@ -94,13 +95,13 @@ export default function TrashPage() {
                 throw new Error(result.error || "Gagal merestore data");
             }
 
-            alert(result.message || "Data berhasil direstore");
+            Swal.fire("Berhasil", result.message || "Data berhasil direstore", "success");
             setIsRestoreModalOpen(false);
             setRestoringItem(null);
             fetchTrash();
         } catch (error: any) {
             console.error("Error restoring:", error);
-            alert(error.message || "Gagal merestore data");
+            Swal.fire("Gagal", error.message || "Gagal merestore data", "error");
         } finally {
             setIsRestoring(false);
         }

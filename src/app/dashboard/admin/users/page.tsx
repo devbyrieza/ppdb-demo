@@ -31,8 +31,9 @@ const ROLE_OPTIONS = [
     { value: "admin_super", label: "Admin Super" },
     { value: "admin_berkas", label: "Admin Berkas" },
     { value: "admin_keuangan", label: "Admin Keuangan" },
-    { value: "penguji_calsan", label: "Penguji" },
-    { value: "pewawancara_calsan", label: "Pewawancara" },
+    { value: "penguji", label: "Penguji" },
+    { value: "pewawancara_calsan", label: "Pewawancara Calsan" },
+    { value: "pewawancara_cawalsan", label: "Pewawancara Cawalsan" },
 ];
 
 export default function UserManagementPage() {
@@ -118,6 +119,34 @@ export default function UserManagementPage() {
         } catch (err) { setMessage({ type: "error", text: "An error occurred" }); }
     };
 
+    const handleDelete = async (id: string, name: string) => {
+        Swal.fire({
+            title: 'Hapus Akses?',
+            text: `Akses untuk ${name} akan dihapus secara permanen.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#e11d48',
+            cancelButtonColor: '#94a3b8',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    const response = await fetch(`/api/admin/users?id=${id}`, { method: "DELETE" });
+                    if (response.ok) {
+                        Swal.fire('Terhapus!', 'Sistem akses user berhasil dicabut.', 'success');
+                        fetchUsers();
+                    } else {
+                        const res = await response.json();
+                        Swal.fire('Gagal!', res.error || 'Gagal menghapus user', 'error');
+                    }
+                } catch (e: any) {
+                    Swal.fire('Error', e.message, 'error');
+                }
+            }
+        });
+    };
+
     const filteredUsers = users.filter(u => 
         u.full_name?.toLowerCase().includes(search.toLowerCase()) || 
         u.email?.toLowerCase().includes(search.toLowerCase())
@@ -153,12 +182,12 @@ export default function UserManagementPage() {
                         <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-stone-300" />
                         <input type="text" placeholder="Search system users..." value={search} onChange={(e) => setSearch(e.target.value)} className="w-full pl-16 pr-8 py-5 bg-white border-2 border-brand-yellow-100 rounded-[2.5rem] focus:outline-none focus:border-brand-blue-500 font-bold shadow-sm placeholder:text-stone-300" />
                     </div>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-ink-300 bg-stone-100 px-4 py-2 rounded-full">Total: {users.length} Database entries</p>
+                    <p className="text-[10px] font-black uppercase tracking-widest text-stone-500 bg-stone-100 px-4 py-2 rounded-full">Total: {users.length} Database entries</p>
                 </div>
 
                 <div className="overflow-x-auto">
                     <table className="w-full text-left">
-                        <thead className="bg-stone-50/50 text-[10px] font-black uppercase tracking-widest text-ink-300 border-b border-stone-50">
+                        <thead className="bg-stone-50/50 text-[10px] font-black uppercase tracking-widest text-stone-500 border-b border-stone-50">
                             <tr>
                                 <th className="p-8">Identitas Akun</th>
                                 <th className="p-8 text-center">Akses Sistem</th>
@@ -186,9 +215,16 @@ export default function UserManagementPage() {
                                             </div>
                                         </td>
                                         <td className="p-8 text-center">
-                                            <span className="px-4 py-1.5 bg-brand-blue-50 text-brand-blue-700 text-[10px] font-black rounded-xl border border-brand-blue-100 uppercase tracking-widest shadow-sm">
-                                                {user.role}
-                                            </span>
+                                            <div className="flex flex-wrap justify-center gap-2">
+                                                <span className="px-4 py-1.5 bg-brand-blue-50 text-brand-blue-700 text-[10px] font-black rounded-xl border border-brand-blue-100 uppercase tracking-widest shadow-sm">
+                                                    {user.role}
+                                                </span>
+                                                {user.secondary_roles && user.secondary_roles.filter(r => r !== user.role).map((r, i) => (
+                                                    <span key={i} className="px-4 py-1.5 bg-stone-100 text-stone-600 text-[10px] font-black rounded-xl border border-stone-200 uppercase tracking-widest shadow-sm">
+                                                        {r.replace('_', ' ')}
+                                                    </span>
+                                                ))}
+                                            </div>
                                         </td>
                                         <td className="p-8 text-right">
                                             <div className="flex justify-end gap-3 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-4 group-hover:translate-x-0">
@@ -198,7 +234,7 @@ export default function UserManagementPage() {
                                                 <button onClick={() => { setFormData({ id: user.id, email: user.email, password: "", full_name: user.full_name, role: user.role, secondary_roles: user.secondary_roles || [], phone: user.phone || "" }); setIsEditing(true); setIsModalOpen(true); }} className="p-4 bg-brand-blue-50 text-brand-blue-600 rounded-2xl hover:bg-brand-blue-600 hover:text-white transition-all shadow-sm">
                                                     <Edit className="w-5 h-5" />
                                                 </button>
-                                                <button className="p-4 bg-rose-50 text-rose-600 rounded-2xl hover:bg-rose-600 hover:text-white transition-all shadow-sm">
+                                                <button onClick={() => handleDelete(user.id, user.full_name)} className="p-4 bg-rose-50 text-rose-600 rounded-2xl hover:bg-rose-600 hover:text-white transition-all shadow-sm">
                                                     <Trash2 className="w-5 h-5" />
                                                 </button>
                                             </div>
@@ -224,24 +260,53 @@ export default function UserManagementPage() {
                         <form onSubmit={handleSubmit} className="p-12 space-y-8">
                             <div className="grid grid-cols-2 gap-8">
                                 <div className="col-span-2">
-                                    <label className="block text-[10px] font-black uppercase text-ink-300 mb-3 tracking-widest">Nama Lengkap Personal</label>
+                                    <label className="block text-[10px] font-black uppercase text-stone-500 mb-3 tracking-widest">Nama Lengkap Personal</label>
                                     <input required type="text" value={formData.full_name} onChange={e => setFormData({ ...formData, full_name: e.target.value })} className="w-full px-8 py-5 bg-stone-100/50 border-2 border-transparent focus:border-brand-blue-600 focus:bg-white focus:outline-none font-bold rounded-2xl transition-all" />
                                 </div>
                                 <div className="col-span-2">
-                                    <label className="block text-[10px] font-black uppercase text-ink-300 mb-3 tracking-widest">Database Identifier (Email)</label>
+                                    <label className="block text-[10px] font-black uppercase text-stone-500 mb-3 tracking-widest">Database Identifier (Email)</label>
                                     <input required type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className="w-full px-8 py-5 bg-stone-100/50 border-2 border-transparent focus:border-brand-blue-600 focus:bg-white focus:outline-none font-bold rounded-2xl transition-all" />
                                 </div>
                                 <div>
-                                    <label className="block text-[10px] font-black uppercase text-ink-300 mb-3 tracking-widest">Authority Role</label>
+                                    <label className="block text-[10px] font-black uppercase text-stone-500 mb-3 tracking-widest">Authority Role</label>
                                     <select value={formData.role} onChange={e => setFormData({ ...formData, role: e.target.value })} className="w-full px-8 py-5 bg-brand-blue-50 border-2 border-brand-blue-100 text-brand-blue-900 rounded-2xl font-black text-xs uppercase tracking-widest cursor-pointer">
                                         {ROLE_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="block text-[10px] font-black uppercase text-ink-300 mb-3 tracking-widest">Access Key (Password)</label>
-                                    <input required={!isEditing} type="password" value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })} className="w-full px-8 py-5 bg-stone-100/50 border-2 border-transparent focus:border-brand-blue-600 focus:bg-white focus:outline-none font-bold rounded-2xl transition-all" placeholder="••••••••" />
+                                    <label className="block text-[10px] font-black uppercase text-stone-500 mb-3 tracking-widest">Access Key (Password)</label>
+                                    <input required={!isEditing} type="password" value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })} className="w-full px-8 py-5 bg-stone-100/50 border-2 border-transparent focus:border-brand-blue-600 focus:bg-white focus:outline-none font-bold rounded-2xl transition-all" placeholder={isEditing ? "(Kosongkan jika tidak ubah)" : "••••••••"} />
+                                </div>
+                                <div className="col-span-2">
+                                    <label className="block text-[10px] font-black uppercase text-stone-500 mb-3 tracking-widest">Secondary Roles (Multi-Role)</label>
+                                    <div className="flex flex-wrap gap-3">
+                                        {ROLE_OPTIONS.map(o => (
+                                            <label key={o.value} className={`flex items-center gap-2 px-4 py-2 rounded-xl border cursor-pointer transition-all ${formData.secondary_roles.includes(o.value) ? 'bg-brand-blue-50 border-brand-blue-200 text-brand-blue-800' : 'bg-stone-50 border-stone-200 text-stone-500 hover:bg-stone-100'} ${formData.role === o.value ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                                                <input 
+                                                    type="checkbox" 
+                                                    className="w-4 h-4 rounded text-brand-blue-600 focus:ring-brand-blue-500 hidden"
+                                                    checked={formData.secondary_roles.includes(o.value)}
+                                                    onChange={e => {
+                                                        if (e.target.checked) {
+                                                            setFormData({ ...formData, secondary_roles: [...formData.secondary_roles, o.value] });
+                                                        } else {
+                                                            setFormData({ ...formData, secondary_roles: formData.secondary_roles.filter(r => r !== o.value) });
+                                                        }
+                                                    }}
+                                                    disabled={formData.role === o.value}
+                                                />
+                                                <div className={`w-4 h-4 rounded border flex flex-shrink-0 items-center justify-center ${formData.secondary_roles.includes(o.value) ? 'bg-brand-blue-600 border-brand-blue-600 text-white' : 'bg-white border-stone-300'}`}>
+                                                    {formData.secondary_roles.includes(o.value) && (
+                                                        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                                                    )}
+                                                </div>
+                                                <span className="font-bold text-xs">{o.label}</span>
+                                            </label>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
+
                             <div className="pt-10">
                                 <button type="submit" className="w-full py-6 bg-brand-blue-950 text-white font-black uppercase text-xs tracking-widest rounded-3xl shadow-2xl hover:bg-brand-blue-800 hover:scale-[1.02] active:scale-95 transition-all shadow-brand-blue-900/30">
                                     {isEditing ? "Synchronize Updates" : "Commit New User"}

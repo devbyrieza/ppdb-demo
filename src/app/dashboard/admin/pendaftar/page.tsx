@@ -32,6 +32,7 @@ import {
 import Link from "next/link";
 import { UserRole } from "@/lib/access-control";
 import { exportToExcel, exportToPDF } from "@/lib/utils/export";
+import Swal from "sweetalert2";
 
 // Filter labels for dashboard categories
 const FILTER_LABELS: Record<string, string> = {
@@ -236,7 +237,7 @@ function AdminPendaftarContent() {
   const handleSoftDelete = async () => {
     if (!deletingPendaftar) return;
     if (deleteConfirmName !== deletingPendaftar.nama_lengkap) {
-      alert("Nama tidak cocok. Silakan ketik nama lengkap pendaftar dengan benar.");
+      Swal.fire("Gagal!", "Nama tidak cocok. Silakan ketik nama lengkap pendaftar dengan benar.", "error");
       return;
     }
 
@@ -252,7 +253,7 @@ function AdminPendaftarContent() {
         throw new Error(result.error || "Gagal menghapus data");
       }
 
-      alert(result.message || "Data berhasil dihapus");
+      Swal.fire("Selesai!", result.message || "Data berhasil dihapus", "success");
       setIsDeleteModalOpen(false);
       setDeletingPendaftar(null);
       setDeleteConfirmName("");
@@ -260,7 +261,7 @@ function AdminPendaftarContent() {
       fetchPendaftar();
     } catch (error: any) {
       console.error("Error soft deleting:", error);
-      alert(error.message || "Gagal menghapus data");
+      Swal.fire("Error!", error.message || "Gagal menghapus data", "error");
     } finally {
       setIsDeleting(false);
     }
@@ -286,12 +287,12 @@ function AdminPendaftarContent() {
         throw new Error(err.error || "Gagal menyimpan pengumuman");
       }
 
-      alert("Berhasil menyimpan hasil seleksi!");
+      Swal.fire("Tersimpan!", "Berhasil menyimpan hasil seleksi!", "success");
       setIsAnnouncementModalOpen(false);
       fetchPendaftar(); // Refresh list
     } catch (error: any) {
       console.error("Error submitting announcement:", error);
-      alert(error.message);
+      Swal.fire("Error!", error.message, "error");
     } finally {
       setIsSubmittingAnnouncement(false);
     }
@@ -522,7 +523,7 @@ function AdminPendaftarContent() {
 
   const handleBulkUpdate = async () => {
     if (!bulkStatus || selectedIds.length === 0) {
-      alert("Pilih status dan minimal 1 pendaftar");
+      Swal.fire("Perhatian", "Pilih status dan minimal 1 pendaftar", "warning");
       return;
     }
 
@@ -540,13 +541,13 @@ function AdminPendaftarContent() {
 
       if (!response.ok) throw new Error("Failed to update");
 
-      alert("Berhasil update status!");
+      Swal.fire("Sukses", "Berhasil update status!", "success");
       setSelectedIds([]);
       setBulkStatus("");
       fetchPendaftar();
     } catch (error) {
       console.error("Error bulk updating:", error);
-      alert("Gagal update status");
+      Swal.fire("Gagal", "Gagal update status", "error");
     } finally {
       setBulkUpdating(false);
     }
@@ -578,7 +579,7 @@ function AdminPendaftarContent() {
       }
     } catch (error) {
       console.error("Error exporting:", error);
-      alert("Gagal export data");
+      Swal.fire("Gagal", "Gagal export data", "error");
     } finally {
       setExporting(false);
     }

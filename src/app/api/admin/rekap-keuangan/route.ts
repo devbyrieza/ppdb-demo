@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
+import { getAdminWhereClause } from "@/lib/utils/admin";
 
 export async function GET(request: NextRequest) {
     try {
@@ -18,12 +19,15 @@ export async function GET(request: NextRequest) {
             return NextResponse.json({ error: "Forbidden" }, { status: 403 });
         }
 
+        const { searchParams } = new URL(request.url);
+        const tahunAjaranId = searchParams.get("tahun_ajaran_id");
+
         // 2. Fetch Data
         // Get all students who PASSED
-        // Using any to bypass local type issues
+        const baseWhere = getAdminWhereClause(tahunAjaranId || undefined) as any;
         const students = await prisma.pendaftar.findMany({
             where: {
-                deleted_at: null, // Exclude soft-deleted applicants
+                ...baseWhere,
                 nilai_ujian: {
                     some: {
                         status_kelulusan: "LULUS"

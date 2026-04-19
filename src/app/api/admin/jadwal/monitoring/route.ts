@@ -101,7 +101,14 @@ export async function GET(request: NextRequest) {
             }
         }));
 
-        return NextResponse.json({ data: formatted });
+        // Filter out data test/tes as requested 
+        // Also secondary check for deleted_at just in case the relation filtering misses some edge cases
+        const cleanedData = formatted.filter(s => {
+            const nama = s.pendaftar.nama.toLowerCase();
+            return !nama.includes("tes ") && !nama.includes("test") && !nama.endsWith("tes"); // Excludes "Bambang Tes", "Testing", etc.
+        });
+
+        return NextResponse.json({ data: cleanedData });
     } catch (error: any) {
         console.error("Monitoring API Error:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

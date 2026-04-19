@@ -20,7 +20,7 @@ BERIKUT ADALAH INFORMASI TENTANG Pesantren Sistem PPDB Modern:
 - Kontributif: Memiliki karya, gagasan, dan peran nyata bagi lingkungannya.
 - Adaptif: Terbuka terhadap kritik, cerdas membaca realitas, kuat menjaga prinsip.
 - Lokasi: Jl. Pelabuhan Ratu II KM 18, Kp. Pupunjul, Cikembar, Sukabumi, Jawa Barat 43157.
-- Dikelola oleh PPDB Modern International Islamic Boarding School (IIBS) sejak Januari 2026.
+- Dikelola oleh Al-Andalus International Islamic Boarding School (IIBS) sejak Januari 2026.
 - Santri wajib asrama (boarding school).
 - Nomor WhatsApp CS: +62 888-0993-4970
 
@@ -43,7 +43,7 @@ PROGRAM PENDIDIKAN:
 1. Madrasah Tsanawiyah (MTs) - Tingkat Menengah (Setara SMP)
    - Kuota: 25 Kursi
    - Pendidikan 3 tahun: Tahfidz (Target 12 Juz), Dasar Ilmu Syar'i, Akademik Nasional, pembentukan Adab.
-   - Fitur: Sinergi Kurikulum Nasional & PPDB Modern, Bahasa Arab & Kitab Turots, Sanad Al-Qur'an & Hadith.
+   - Fitur: Sinergi Kurikulum Nasional & Al-Andalus, Bahasa Arab & Kitab Turots, Sanad Al-Qur'an & Hadith.
 2. I'dad Lughowi - Persiapan & Menengah Atas (Setara SMA)
    - Kuota: 25 Kursi
    - Program intensif Bahasa dan Syari'at untuk mencetak kader ulama.

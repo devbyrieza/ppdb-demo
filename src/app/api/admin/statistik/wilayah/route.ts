@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "@/lib/session";
+import { getAdminWhereClause } from "@/lib/utils/admin";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -15,30 +16,7 @@ export async function GET(req: NextRequest) {
         const { searchParams } = new URL(req.url);
         let tahunAjaranId = searchParams.get("tahun_ajaran_id");
 
-        // If no year specified, default to active academic year to prevent cross-year data pollution
-        if (!tahunAjaranId) {
-            const activeTA = await prisma.tahunAjaran.findFirst({
-                where: { is_active: true }
-            });
-            tahunAjaranId = activeTA?.id || null;
-        }
-
-        const where: any = {
-            deleted_at: null,
-            NOT: [
-                {
-                    AND: [
-                        { nama_lengkap: { contains: " Tes", mode: "insensitive" } },
-                        { nama_lengkap: { not: { contains: "Rieza Tes", mode: "insensitive" } } }
-                    ]
-                },
-                { nama_lengkap: { startsWith: "TEST ", mode: "insensitive" } },
-                { nama_lengkap: { contains: "BYPASS", mode: "insensitive" } }
-            ]
-        };
-        if (tahunAjaranId) {
-            where.tahun_ajaran_id = tahunAjaranId;
-        }
+        const where = getAdminWhereClause(tahunAjaranId || undefined) as any;
 
         // Aggregate Santri by Region
         const santriRaw = await prisma.pendaftar.groupBy({

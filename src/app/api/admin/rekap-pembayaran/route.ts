@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
+import { getAdminWhereClause } from "@/lib/utils/admin";
 
 export async function GET(request: NextRequest) {
     try {
@@ -16,11 +17,13 @@ export async function GET(request: NextRequest) {
             return NextResponse.json({ error: "Forbidden" }, { status: 403 });
         }
 
+        const { searchParams } = new URL(request.url);
+        const tahunAjaranId = searchParams.get("tahun_ajaran_id");
+
         // 2. Fetch all pendaftar with their PENDAFTARAN payment(s)
+        const where = getAdminWhereClause(tahunAjaranId || undefined) as any;
         const pendaftar = await prisma.pendaftar.findMany({
-            where: {
-                deleted_at: null,
-            },
+            where,
             select: {
                 id: true,
                 nama_lengkap: true,

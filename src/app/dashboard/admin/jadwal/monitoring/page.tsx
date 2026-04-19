@@ -150,6 +150,12 @@ export default function MonitoringJadwalPage() {
             .sort((a, b) => a.earliestSession - b.earliestSession);
     };
 
+    // Calculate Unique Stats
+    const totalTerjadwal = new Set(filteredSchedules.map(s => s.pendaftar.nomor)).size;
+    const selesaiQuran = new Set(filteredSchedules.filter(s => s.status.quran === 'completed').map(s => s.pendaftar.nomor)).size;
+    const selesaiWCalsan = new Set(filteredSchedules.filter(s => s.status.santri === 'completed').map(s => s.pendaftar.nomor)).size;
+    const selesaiWCawalsan = new Set(filteredSchedules.filter(s => s.status.ortu === 'completed').map(s => s.pendaftar.nomor)).size;
+
     return (
         <div className="space-y-6 max-w-7xl mx-auto">
             {/* Simplified Header */}
@@ -167,22 +173,27 @@ export default function MonitoringJadwalPage() {
                 </div>
             </div>
 
-            {/* Top Statistics - Moved from bottom */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
+            {/* Top Statistics - Split Wawancara */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
                 <div className="bg-white rounded-2xl p-4 md:p-6 border border-slate-100 shadow-clay-sm relative overflow-hidden group">
                     <div className="absolute top-0 right-0 w-12 h-12 bg-blue-500/5 rounded-full -mr-6 -mt-6 transition-transform group-hover:scale-150"></div>
                     <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1 relative z-10">Total Terjadwal</p>
-                    <p className="text-2xl md:text-3xl font-black text-slate-800 relative z-10">{filteredSchedules.length} <span className="text-xs text-slate-400 font-bold uppercase">Peserta</span></p>
+                    <p className="text-2xl md:text-3xl font-black text-slate-800 relative z-10">{totalTerjadwal} <span className="text-xs text-slate-400 font-bold uppercase">Peserta</span></p>
                 </div>
                 <div className="bg-white rounded-2xl p-4 md:p-6 border border-slate-100 shadow-clay-sm relative overflow-hidden group">
                     <div className="absolute top-0 right-0 w-12 h-12 bg-green-500/5 rounded-full -mr-6 -mt-6 transition-transform group-hover:scale-150"></div>
                     <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1 relative z-10">Selesai Quran</p>
-                    <p className="text-2xl md:text-3xl font-black text-emerald-600 relative z-10">{filteredSchedules.filter(s => s.status.quran === 'completed').length}</p>
+                    <p className="text-2xl md:text-3xl font-black text-emerald-600 relative z-10">{selesaiQuran}</p>
                 </div>
-                <div className="bg-white rounded-2xl p-4 md:p-6 border border-slate-100 shadow-clay-sm relative overflow-hidden group col-span-2 md:col-span-1">
+                <div className="bg-white rounded-2xl p-4 md:p-6 border border-slate-100 shadow-clay-sm relative overflow-hidden group">
                     <div className="absolute top-0 right-0 w-12 h-12 bg-indigo-500/5 rounded-full -mr-6 -mt-6 transition-transform group-hover:scale-150"></div>
-                    <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1 relative z-10">Selesai Wawancara</p>
-                    <p className="text-2xl md:text-3xl font-black text-indigo-600 relative z-10">{filteredSchedules.filter(s => s.status.santri === 'completed' || s.status.ortu === 'completed').length}</p>
+                    <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1 relative z-10">Selesai W. Calsan</p>
+                    <p className="text-2xl md:text-3xl font-black text-indigo-600 relative z-10">{selesaiWCalsan}</p>
+                </div>
+                <div className="bg-white rounded-2xl p-4 md:p-6 border border-slate-100 shadow-clay-sm relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 w-12 h-12 bg-purple-500/5 rounded-full -mr-6 -mt-6 transition-transform group-hover:scale-150"></div>
+                    <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1 relative z-10">Selesai W. Cawalsan</p>
+                    <p className="text-2xl md:text-3xl font-black text-purple-600 relative z-10">{selesaiWCawalsan}</p>
                 </div>
             </div>
 

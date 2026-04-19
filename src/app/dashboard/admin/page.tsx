@@ -66,24 +66,37 @@ export default function AdminDashboardPage() {
           const list = taData.data || [];
           setTahunAjaranList(list);
           const active = list.find((t: any) => t.is_active);
-          if (active) setSelectedTahunAjaranId(active.id);
+          if (active) {
+            setSelectedTahunAjaranId(active.id);
+          } else if (list.length > 0) {
+            // Fallback to first year if no active found
+            setSelectedTahunAjaranId(list[0].id);
+          } else {
+            // If truly no years exist, trigger fetch once anyway
+            fetchStats("");
+          }
         }
-      } catch (e) { console.error(e); }
+      } catch (e) {
+        console.error(e);
+        fetchStats(""); // Final fallback
+      }
     }
     init();
   }, []);
 
+  const fetchStats = async (id: string) => {
+    try {
+      setLoading(true);
+      const res = await fetch(`/api/admin/stats?tahun_ajaran_id=${id}`);
+      if (res.ok) setStats(await res.json());
+    } catch (e) { console.error(e); }
+    finally { setLoading(false); }
+  };
+
   useEffect(() => {
-    if (!selectedTahunAjaranId) return;
-    async function fetchStats() {
-      try {
-        setLoading(true);
-        const res = await fetch(`/api/admin/stats?tahun_ajaran_id=${selectedTahunAjaranId}`);
-        if (res.ok) setStats(await res.json());
-      } catch (e) { console.error(e); }
-      finally { setLoading(false); }
+    if (selectedTahunAjaranId) {
+      fetchStats(selectedTahunAjaranId);
     }
-    fetchStats();
   }, [selectedTahunAjaranId]);
 
   if (loading) return <div className="flex items-center justify-center min-h-[50vh]"><Loader2 className="w-8 h-8 animate-spin text-brand-blue-600" /></div>;
@@ -113,11 +126,27 @@ export default function AdminDashboardPage() {
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-yellow-400/10 rounded-full blur-3xl" />
         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10">
           <div>
-            <div className="flex items-center gap-3 mb-4">
+            <div className="flex flex-col sm:flex-row items-center gap-3 mb-4">
               <span className="bg-white/10 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border border-white/10">Admin Dashboard</span>
+              
+              {tahunAjaranList.length > 0 && (
+                <select
+                  value={selectedTahunAjaranId}
+                  onChange={(e) => setSelectedTahunAjaranId(e.target.value)}
+                  className="bg-brand-blue-800/50 text-white text-[10px] font-black uppercase tracking-widest border border-white/20 rounded-full px-3 py-1 focus:outline-none focus:ring-1 focus:ring-brand-yellow-400 cursor-pointer hover:bg-brand-blue-800 transition-colors"
+                >
+                  {tahunAjaranList.map((ta: any) => (
+                    <option key={ta.id} value={ta.id} className="bg-brand-blue-900 text-white">
+                      TA {ta.nama}
+                    </option>
+                  ))}
+                </select>
+              )}
             </div>
             <h1 className="text-4xl md:text-6xl font-black font-display tracking-tight leading-none mb-4 text-white">Monitor <br /> Pendaftaran</h1>
-            <p className="text-brand-blue-100 font-bold opacity-90 text-sm md:text-lg max-w-md">Ikhtisar real-time calon santri Sistem PPDB Modern Tahun Ajaran {tahunAjaranList.find(t => t.id === selectedTahunAjaranId)?.nama || "..."}.</p>
+            <p className="text-brand-blue-100 font-bold opacity-90 text-sm md:text-lg max-w-md italic">
+              Ikhtisar real-time calon santri Tahun Ajaran {tahunAjaranList.find(t => t.id === selectedTahunAjaranId)?.nama || "..."}.
+            </p>
           </div>
           <Link href="/dashboard/admin/pendaftar" className="bg-brand-yellow-400 hover:bg-brand-yellow-300 text-brand-blue-950 px-10 py-5 rounded-3xl font-black uppercase text-xs shadow-xl transition-all flex items-center gap-3">
             <Users className="w-6 h-6" /> Data Pendaftar
