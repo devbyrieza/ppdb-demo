@@ -138,24 +138,32 @@ export async function PATCH(request: NextRequest) {
           select: {
             nama_lengkap: true,
             no_hp: true,
+            status_pendaftaran: true,
           },
         },
       },
     });
 
     // Also update pendaftar status
-    const newPendaftarStatus = status_pembayaran === "verified" ? "verified" : "payment_rejected";
+    let newPendaftarStatus = pembayaran.pendaftar.status_pendaftaran;
+    
+    if (status_pembayaran === "verified") {
+       if (['draft', 'registered', 'payment_rejected'].includes(newPendaftarStatus)) {
+           newPendaftarStatus = 'verified';
+       }
+    } else {
+       newPendaftarStatus = 'payment_rejected';
+    }
 
-    // Only update pendaftar if payment is verified (move to verified) or rejected (back to rejected)
-    // Avoid overwriting if they are already in a later stage? 
-    // Logic from original: "rejected" -> "rejected", "verified" -> "verified"
-    await prisma.pendaftar.update({
-      where: { id: pembayaran.pendaftar_id },
-      data: {
-        status_pendaftaran: newPendaftarStatus,
-        updated_at: new Date()
-      }
-    });
+    if (newPendaftarStatus !== pembayaran.pendaftar.status_pendaftaran) {
+      await prisma.pendaftar.update({
+        where: { id: pembayaran.pendaftar_id },
+        data: {
+          status_pendaftaran: newPendaftarStatus,
+          updated_at: new Date()
+        }
+      });
+    }
 
     // Logging audit action
     logAdminAction({

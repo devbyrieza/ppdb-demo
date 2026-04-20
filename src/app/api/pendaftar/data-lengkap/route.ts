@@ -224,14 +224,16 @@ export async function POST(request: NextRequest) {
 
     // CHECK PROGRESSION & NOTIFY
     if (!is_draft) {
-      // Logic: If status is 'registered', move to 'data_completed'
+      // Logic: If status is 'registered' or 'verified', move to 'data_completed'
       // This unlocks Document Upload step
       const currentPendaftar = await prisma.pendaftar.findUnique({
         where: { id: pendaftarId },
         select: { status_pendaftaran: true, no_hp: true, nama_lengkap: true }
       });
 
-      if (currentPendaftar?.status_pendaftaran === 'registered') {
+      const allowedToComplete = ['draft', 'registered', 'verified', 'payment_rejected'];
+      
+      if (allowedToComplete.includes(currentPendaftar?.status_pendaftaran || '')) {
         const newStatus = 'data_completed';
 
         await prisma.pendaftar.update({
@@ -240,7 +242,7 @@ export async function POST(request: NextRequest) {
         });
 
         // Send Data Complete Notification
-        if (currentPendaftar.no_hp) {
+        if (currentPendaftar?.no_hp) {
           try {
             await notifyDataComplete({
               phone: currentPendaftar.no_hp,

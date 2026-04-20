@@ -75,9 +75,9 @@ export async function POST(request: NextRequest) {
             select: { status_pendaftaran: true }
         });
 
-        // Hanya update jika statusnya masih 'data_completed' atau 'docs_uploaded' (re-submit)
+        // Hanya update jika statusnya masih 'data_completed' atau 'docs_uploaded' (re-submit) atau 'verified'
         // Jika sudah 'docs_verified', jangan diubah mundur
-        if (['data_completed', 'docs_uploaded'].includes(pendaftar?.status_pendaftaran || '')) {
+        if (['data_completed', 'docs_uploaded', 'verified'].includes(pendaftar?.status_pendaftaran || '')) {
             await prisma.pendaftar.update({
                 where: { id: session.id },
                 data: {
