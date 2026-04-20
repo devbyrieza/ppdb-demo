@@ -67,6 +67,13 @@ export async function GET(request: NextRequest) {
                         full_name: true,
                         google_meet_link: true,
                     }
+                },
+                nilai_ujian: {
+                    select: {
+                        detail_quran: true,
+                        detail_wawancara: true,
+                        detail_cawalsan: true,
+                    }
                 }
             },
             orderBy: [
@@ -76,30 +83,47 @@ export async function GET(request: NextRequest) {
         });
 
         // Map to a cleaner format
-        const formatted = schedules.map(s => ({
-            id: s.id,
-            pendaftar: {
-                nomor: s.pendaftar.nomor_pendaftaran,
-                nama: s.pendaftar.nama_lengkap,
-                jenjang: s.pendaftar.jenjang,
-            },
-            sesi: {
-                title: s.exam_session?.title || "Sesi Ujian",
-                start: s.exam_session?.start_time || s.waktu_mulai_santri,
-                end: s.exam_session?.end_time || s.waktu_selesai_santri,
-                location: s.exam_session?.location || s.tempat_santri,
-            },
-            ustadz: {
-                quran: s.penguji_quran?.full_name || '-',
-                santri: s.penguji_santri?.full_name || '-',
-                ortu: s.penguji_ortu?.full_name || '-',
-            },
-            status: {
-                quran: s.status_quran || 'scheduled',
-                santri: s.status_santri || 'scheduled',
-                ortu: s.status_ortu || 'scheduled',
+        const isEmpty = (v: any) => {
+            if (v == null || v === "") return true;
+            if (typeof v === 'object') {
+                if (Array.isArray(v)) return v.length === 0;
+                const keys = Object.keys(v);
+                if (keys.length === 0) return true;
+                return keys.every(key => v[key] == null || v[key] === "");
             }
-        }));
+            return false;
+        };
+
+        const formatted = schedules.map(s => {
+            const hasScoreQuran = s.nilai_ujian.some(n => !isEmpty(n.detail_quran));
+            const hasScoreSantri = s.nilai_ujian.some(n => !isEmpty(n.detail_wawancara));
+            const hasScoreOrtu = s.nilai_ujian.some(n => !isEmpty(n.detail_cawalsan));
+
+            return {
+                id: s.id,
+                pendaftar: {
+                    nomor: s.pendaftar.nomor_pendaftaran,
+                    nama: s.pendaftar.nama_lengkap,
+                    jenjang: s.pendaftar.jenjang,
+                },
+                sesi: {
+                    title: s.exam_session?.title || "Sesi Ujian",
+                    start: s.exam_session?.start_time || s.waktu_mulai_santri,
+                    end: s.exam_session?.end_time || s.waktu_selesai_santri,
+                    location: s.exam_session?.location || s.tempat_santri,
+                },
+                ustadz: {
+                    quran: s.penguji_quran?.full_name || '-',
+                    santri: s.penguji_santri?.full_name || '-',
+                    ortu: s.penguji_ortu?.full_name || '-',
+                },
+                status: {
+                    quran: hasScoreQuran ? 'completed' : (s.status_quran || 'scheduled'),
+                    santri: hasScoreSantri ? 'completed' : (s.status_santri || 'scheduled'),
+                    ortu: hasScoreOrtu ? 'completed' : (s.status_ortu || 'scheduled'),
+                }
+            };
+        });
 
         // Filter out data test/tes as requested 
         // Also secondary check for deleted_at just in case the relation filtering misses some edge cases
