@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { enqueueWhatsapp, buildMessagePaymentVerified, buildMessagePaymentRejected } from "@/lib/whatsapp-queue";
 import { getServerSession } from "@/lib/session";
 import { logAdminAction } from "@/lib/audit";
+import { getAdminWhereClause } from "@/lib/utils/admin";
 
 // GET: List pembayaran yang perlu diverifikasi
 export async function GET(request: NextRequest) {
@@ -22,11 +23,9 @@ export async function GET(request: NextRequest) {
 
     // Build filter
     const where: any = {
-      // Exclude payments from soft-deleted applicants
+      // Use global admin filter to exclude tests and soft-deleted records
       pendaftar: {
-        is: {
-          deleted_at: null,
-        },
+        is: getAdminWhereClause(),
       },
     };
     if (status === "all") {
