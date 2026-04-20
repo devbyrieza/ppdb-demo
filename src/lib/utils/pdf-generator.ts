@@ -245,8 +245,8 @@ export const generateSuratKelulusan = async (data: PendaftarPdfData) => {
     doc.setFontSize(11);
     doc.text("Mudir Pondok Pesantren,", pageWidth - 80, finalY + 50);
 
-    const stempel = await fetchImageAsBase64('/images/stempel-pesantren.png');
-    const ttd = await fetchImageAsBase64('/images/ttd-mudir.png');
+    const stempel = await fetchImageAsBase64('/images/stempel-pesantren.png') || await fetchImageAsBase64('/images/stempel-pesantren.jpg');
+    const ttd = await fetchImageAsBase64('/images/ttd-mudir.png') || await fetchImageAsBase64('/images/ttd-mudir.jpg');
 
     if (stempel) {
         doc.addImage(stempel, 'PNG', pageWidth - 100, finalY + 55, 30, 30);
