@@ -18,31 +18,33 @@ export async function GET() {
             }
         });
 
-        // 2. Aggregate counts from NilaiUjian table
-        // We do this by grouping by the input fields
-        const quranGroups = await prisma.nilaiUjian.groupBy({
-            by: ['input_by_quran'],
-            _count: { _all: true },
-            where: { input_by_quran: { not: null } }
+        // 2. Fetch all valid schedules matching Monitoring Jadwal exclusions
+        const schedules = await prisma.jadwalUjian.findMany({
+            where: {
+                pendaftar: {
+                    deleted_at: null
+                }
+            },
+            include: {
+                pendaftar: {
+                    select: {
+                        nama_lengkap: true,
+                    }
+                }
+            }
         });
 
-        const santriGroups = await prisma.nilaiUjian.groupBy({
-            by: ['input_by_santri'],
-            _count: { _all: true },
-            where: { input_by_santri: { not: null } }
+        // 3. Filter out "tes" data exactly like Monitoring Jadwal
+        const cleanedData = schedules.filter(s => {
+            const nama = s.pendaftar.nama_lengkap.toLowerCase();
+            return !nama.includes("tes ") && !nama.includes("test") && !nama.endsWith("tes");
         });
 
-        const ortuGroups = await prisma.nilaiUjian.groupBy({
-            by: ['input_by_ortu'],
-            _count: { _all: true },
-            where: { input_by_ortu: { not: null } }
-        });
-
-        // 3. Map aggregates to profiles
+        // 4. Map aggregates to profiles by counting actual valid schedule assignments
         const recap = profiles.map(p => {
-            const quranCount = quranGroups.find(g => g.input_by_quran === p.id)?._count._all || 0;
-            const santriCount = santriGroups.find(g => g.input_by_santri === p.id)?._count._all || 0;
-            const ortuCount = ortuGroups.find(g => g.input_by_ortu === p.id)?._count._all || 0;
+            const quranCount = cleanedData.filter(s => s.penguji_quran_id === p.id).length;
+            const santriCount = cleanedData.filter(s => s.penguji_santri_id === p.id).length;
+            const ortuCount = cleanedData.filter(s => s.penguji_ortu_id === p.id).length;
 
             return {
                 id: p.id,
@@ -55,7 +57,7 @@ export async function GET() {
                     total: quranCount + santriCount + ortuCount
                 }
             };
-        }).filter(item => item.counts.total > 0); // Only show those who have actually tested
+        }).filter(item => item.counts.total > 0); // Only show those who have actually been scheduled
 
         return NextResponse.json({ success: true, data: recap });
 
