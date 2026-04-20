@@ -100,23 +100,12 @@ export async function markExamComponentAsComplete({
     const isAllDone = isSantriDone && isQuranDone && isOrtuDone;
 
     if (isAllDone) {
-        // Update pendaftar status to 'tested'
-        const pendaftar = await prisma.pendaftar.findUnique({
-            where: { id: jadwal.pendaftar_id },
-            select: { status_pendaftaran: true }
-        });
+        // Recalculate scores — this will set status_pendaftaran to 'tested' only if ALL 6 score components are present
+        // Import here to avoid circular dependency
+        const { recalculateNilaiUjian } = await import('./scoring');
+        await recalculateNilaiUjian(jadwal.pendaftar_id);
 
-        const currentStatus = pendaftar?.status_pendaftaran;
-        const advancedStatuses = ['tested', 'passed', 'not_passed', 're_registered', 'withdrawn'];
-
-        if (currentStatus && !advancedStatuses.includes(currentStatus)) {
-            await prisma.pendaftar.update({
-                where: { id: jadwal.pendaftar_id },
-                data: { status_pendaftaran: 'tested' }
-            });
-        }
-
-        // Send Notification
+        // Send Notification (always triggered when all 3 scheduled components finish)
         const phone = jadwal.pendaftar.no_hp || jadwal.pendaftar.orang_tua?.no_hp_ayah || jadwal.pendaftar.orang_tua?.no_hp_ibu;
         if (phone) {
             await notifyAllExamsComplete({

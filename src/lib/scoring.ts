@@ -125,7 +125,8 @@ export async function recalculateNilaiUjian(pendaftarId: string) {
     );
 
     // 4. Evaluate Status numerically
-    const allGraded = (ak != null && quran != null && kp != null && ks != null && (ws != null || wo != null));
+    // All 6 components must be present: Akademik, Quran, Kepribadian, Kesiapan, W.Santri, W.Ortu
+    const allGraded = (ak != null && quran != null && kp != null && ks != null && ws != null && wo != null);
 
     let status: string;
     if (allGraded) {

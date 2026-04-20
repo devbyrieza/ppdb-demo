@@ -190,9 +190,36 @@ export async function GET(request: NextRequest) {
         mergedNilai = master;
       }
 
+      // 2. Count completed score components (6 total)
+      let examScoreCount = 0;
+      if (mergedNilai) {
+        if (mergedNilai.score_akademik != null) examScoreCount++;
+        if (mergedNilai.score_kepribadian != null) examScoreCount++;
+        if (mergedNilai.score_kesiapan != null) examScoreCount++;
+        if (mergedNilai.score_quran != null) examScoreCount++;
+        if (mergedNilai.nilai_wawancara_santri != null) examScoreCount++;
+        if (mergedNilai.nilai_wawancara_ortu != null) examScoreCount++;
+      }
+
+      // 3. Derive virtual exam_status label for UI
+      const sp = (item as any).status_pendaftaran;
+      const examProgressStatuses = ['scheduled', 'testing', 'tested', 'announced', 'accepted', 'enrolled'];
+      let examStatus = sp;
+      if (examProgressStatuses.includes(sp)) {
+        if (examScoreCount === 6) {
+          examStatus = 'tested'; // Sudah Ujian
+        } else if (examScoreCount > 0) {
+          examStatus = 'testing'; // Sedang Ujian
+        } else {
+          examStatus = 'scheduled'; // Terjadwal, belum ada nilai
+        }
+      }
+
       return {
         ...item,
         nilai_ujian: mergedNilai,
+        exam_score_count: examScoreCount,
+        exam_status: examStatus,
         whatsapp_status: item.whatsapp_logs?.[0] || null,
         dokumen: item.dokumen.map(doc => ({
           jenis_dokumen: doc.jenis_dokumen,

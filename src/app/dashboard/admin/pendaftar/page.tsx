@@ -611,6 +611,7 @@ function AdminPendaftarContent() {
       docs_rejected: { label: "Dokumen Ditolak", color: "bg-red-100 text-red-700" },
       scheduled: { label: "Terjadwal Ujian", color: "bg-brand-yellow-100 text-brand-yellow-800 border border-brand-yellow-200 shadow-sm" },
       exam_scheduled: { label: "Terjadwal Ujian", color: "bg-brand-yellow-100 text-brand-yellow-800 border border-brand-yellow-200" },
+      testing: { label: "Sedang Ujian", color: "bg-violet-100 text-violet-700 border border-violet-200 shadow-sm" },
       exam_completed: { label: "Sudah Ujian", color: "bg-brand-blue-600 text-white shadow-sm" },
       tested: { label: "Sudah Ujian", color: "bg-brand-blue-600 text-white" },
       announced: { label: "Diumumkan", color: "bg-brand-blue-50 text-brand-blue-700" },
@@ -1024,6 +1025,7 @@ function AdminPendaftarContent() {
                   <option value="docs_uploaded">Dokumen Terupload</option>
                   <option value="docs_verified">Dokumen Terverifikasi</option>
                   <option value="scheduled">Terjadwal Ujian</option>
+                  <option value="testing">Sedang Ujian</option>
                   <option value="tested">Sudah Ujian</option>
                   <option value="announced">Diumumkan</option>
                   <option value="accepted">Diterima</option>

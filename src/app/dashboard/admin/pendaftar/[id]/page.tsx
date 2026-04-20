@@ -210,6 +210,7 @@ export default function PendaftarDetailPage() {
       docs_uploaded: { label: "Dokumen Terupload", color: "bg-brand-blue-50 text-brand-blue-600" },
       docs_verified: { label: "Dokumen Terverifikasi", color: "bg-emerald-100 text-emerald-700" },
       scheduled: { label: "Terjadwal Ujian", color: "bg-brand-yellow-100 text-brand-yellow-800 border border-brand-yellow-200" },
+      testing: { label: "Sedang Ujian", color: "bg-violet-100 text-violet-700 border border-violet-200" },
       tested: { label: "Sudah Ujian", color: "bg-brand-blue-600 text-white shadow-sm" },
       announced: { label: "Diumumkan", color: "bg-brand-blue-50 text-brand-blue-700" },
       accepted: { label: "Diterima", color: "bg-emerald-600 text-white" },

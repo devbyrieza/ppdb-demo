@@ -11,7 +11,7 @@ export default function PengumumanPage() {
   const [stats, setStats] = useState({ total: 0, ready: 0, accepted: 0 });
   const [filter, setFilter] = useState({
     jenjang: "",
-    status: "scheduled", // Default to those who have taken exams/interview
+    status: "tested", // Default to those who have completed ALL 6 exams
   });
 
   const [isPublishing, setIsPublishing] = useState(false);
@@ -36,7 +36,7 @@ export default function PengumumanPage() {
       if (res.ok) {
         setCandidates(data.data || []);
         // Calculate basic stats from this batch
-        const ready = data.data.filter((c: any) => c.status_pendaftaran === 'scheduled').length;
+        const ready = data.data.filter((c: any) => c.exam_status === 'tested' || c.status_pendaftaran === 'tested').length;
         const accepted = data.data.filter((c: any) => c.status_pendaftaran === 'accepted').length;
         setStats({ total: data.data.length, ready, accepted });
       }
@@ -141,9 +141,9 @@ export default function PengumumanPage() {
               value={filter.status}
               onChange={(e) => setFilter({ ...filter, status: e.target.value })}
             >
-              <option value="scheduled">Sudah Ujian (Siap Diumumkan)</option>
-              <option value="accepted">Sudah Lulus</option>
-              <option value="verified">Lolos Berkas</option>
+              <option value="tested">Sudah Ujian (Siap Diumumkan)</option>
+              <option value="accepted">Sudah Lulus/Diumumkan</option>
+              <option value="scheduled">Terjadwal Ujian</option>
             </select>
           </div>
         </div>

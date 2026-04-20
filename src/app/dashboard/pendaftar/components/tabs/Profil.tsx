@@ -77,6 +77,7 @@ export default function ProfilTab() {
       docs_uploaded: { label: "Dokumen Terupload", color: "bg-indigo-100 text-indigo-700" },
       docs_verified: { label: "Dokumen Terverifikasi", color: "bg-green-100 text-green-700" },
       scheduled: { label: "Terjadwal Ujian", color: "bg-purple-100 text-purple-700" },
+      testing: { label: "Sedang Ujian", color: "bg-violet-100 text-violet-800 border border-violet-200" },
       tested: { label: "Sudah Ujian", color: "bg-violet-100 text-violet-700" },
       announced: { label: "Diumumkan", color: "bg-cyan-100 text-cyan-700" },
       accepted: { label: "Diterima", color: "bg-green-100 text-green-700" },
