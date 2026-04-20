@@ -109,9 +109,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 7. Save File Local
-    const fileExtension = file.name.split(".").pop()?.toLowerCase() || "bin";
-    const fileName = `${pendaftar.nomor_pendaftaran}_${jenisDokumen}.${fileExtension}`;
+    const timestamp = Date.now();
+    const safeFileName = file.name || "berkas_tanpa_nama.bin";
+    const fileExtension = safeFileName.split(".").pop()?.toLowerCase() || "bin";
+    const fileName = `${jenisDokumen}-${pendaftar.nomor_pendaftaran}-${timestamp}.${fileExtension}`;
 
     // Save to storage_data/dokumen-pendaftaran/{pendaftar_id}/...
     const filePath = await saveFileLocal(file, 'dokumen-pendaftaran', session.id, fileName);

@@ -182,7 +182,8 @@ export async function POST(request: NextRequest) {
 
     // 9. Generate nama file & Save Local
     const timestamp = Date.now();
-    const fileExtension = file.name.split(".").pop()?.toLowerCase() || "bin";
+    const safeFileName = file.name || "bukti_tanpa_nama.bin";
+    const fileExtension = safeFileName.split(".").pop()?.toLowerCase() || "bin";
     const fileName = `bukti-${jenisPembayaran.toLowerCase()}-${timestamp}.${fileExtension}`;
 
     // Save to storage_data/bukti-pembayaran/{pendaftar_id}/...
@@ -197,7 +198,7 @@ export async function POST(request: NextRequest) {
           jumlah: biaya,
           tipe_cicilan: tipeCicilan as any,
           bukti_transfer_path: filePath,
-          bukti_transfer_filename: file.name,
+          bukti_transfer_filename: safeFileName,
           status_pembayaran: "pending",
           catatan_verifikasi: null,
           updated_at: new Date(),
@@ -214,7 +215,7 @@ export async function POST(request: NextRequest) {
           jumlah: biaya,
           total_tagihan: jenisPembayaran === "DAFTAR_ULANG" ? 8500000 : biaya,
           bukti_transfer_path: filePath,
-          bukti_transfer_filename: file.name,
+          bukti_transfer_filename: safeFileName,
           status_pembayaran: "pending",
         }
       });
@@ -241,7 +242,7 @@ export async function POST(request: NextRequest) {
       data: {
         pembayaran_id: pembayaranResult.id,
         file_path: filePath,
-        file_name: file.name,
+        file_name: safeFileName,
         file_size: file.size,
         status: "pending",
       },
@@ -250,7 +251,7 @@ export async function POST(request: NextRequest) {
   } catch (error: any) {
     console.error("Error in POST /api/pembayaran/manual/upload:", error);
     return NextResponse.json(
-      { success: false, error: "Terjadi kesalahan saat mengupload bukti pembayaran" },
+      { success: false, error: "DEBUG: " + (error?.message || "Unknown error") + " STACK: " + (error?.stack?.split('\n')[1] || "") },
       { status: 500 }
     );
   }
