@@ -152,6 +152,7 @@ function AdminPendaftarContent() {
   */
 
   const [jenjangFilter, setJenjangFilter] = useState("");
+  const [jenisKelaminFilter, setJenisKelaminFilter] = useState("");
   const [tahunAjaranFilter, setTahunAjaranFilter] = useState("");
   const [tahunAjaranList, setTahunAjaranList] = useState<TahunAjaran[]>([]);
   // Location filters
@@ -316,6 +317,7 @@ function AdminPendaftarContent() {
       if (search) params.append("search", search);
       if (statusFilter) params.append("status", statusFilter);
       if (jenjangFilter) params.append("jenjang", jenjangFilter);
+      if (jenisKelaminFilter) params.append("jenis_kelamin", jenisKelaminFilter);
       if (tahunAjaranFilter) params.append("tahun_ajaran", tahunAjaranFilter);
       if (provinsiFilter) params.append("provinsi", provinsiFilter);
       if (kabupatenFilter) params.append("kabupaten", kabupatenFilter);
@@ -342,6 +344,7 @@ function AdminPendaftarContent() {
     search,
     statusFilter,
     jenjangFilter,
+    jenisKelaminFilter,
     tahunAjaranFilter,
     provinsiFilter,
     kabupatenFilter,
@@ -821,7 +824,26 @@ function AdminPendaftarContent() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4">
+          {/* Gender Filter */}
+          <div>
+            <label className="block text-sm font-medium text-stone-700 mb-2">
+              Filter Putra / Putri
+            </label>
+            <select
+              value={jenisKelaminFilter}
+              onChange={(e) => {
+                setJenisKelaminFilter(e.target.value);
+                setPagination((prev) => ({ ...prev, page: 1 }));
+              }}
+              className="w-full px-4 py-2 border-2 border-stone-200 rounded-lg focus:border-blue-500 focus:outline-none"
+            >
+              <option value="">Semua (Putra & Putri)</option>
+              <option value="L">Putra (Laki-laki)</option>
+              <option value="P">Putri (Perempuan)</option>
+            </select>
+          </div>
+
           {/* Jenjang Filter */}
           <div>
             <label className="block text-sm font-medium text-stone-700 mb-2">
@@ -864,7 +886,7 @@ function AdminPendaftarContent() {
           </div>
 
           {/* Clear Filters */}
-          {(search || statusFilter || jenjangFilter || tahunAjaranFilter) && (
+          {(search || statusFilter || jenjangFilter || tahunAjaranFilter || jenisKelaminFilter) && (
             <div className="flex items-end">
               <button
                 onClick={() => {
@@ -872,6 +894,7 @@ function AdminPendaftarContent() {
                   setSearchInput("");
                   setStatusFilter("");
                   setJenjangFilter("");
+                  setJenisKelaminFilter("");
                   setTahunAjaranFilter("");
                   // Clear location filters
                   setProvinsiFilter("");

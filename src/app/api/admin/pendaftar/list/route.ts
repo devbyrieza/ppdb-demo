@@ -34,6 +34,7 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get("search") || "";
     const status = searchParams.get("status") || "";
     const jenjang = searchParams.get("jenjang") || "";
+    const jenisKelamin = searchParams.get("jenis_kelamin") || "";
     const tahunAjaran = searchParams.get("tahun_ajaran") || "";
     const provinsi = searchParams.get("provinsi") || "";
     const kabupaten = searchParams.get("kabupaten") || "";
@@ -89,6 +90,7 @@ export async function GET(request: NextRequest) {
 
     // Other filters
     if (jenjang) where.jenjang = jenjang;
+    if (jenisKelamin) where.jenis_kelamin = jenisKelamin;
     if (tahunAjaran) where.tahun_ajaran_id = tahunAjaran;
     if (provinsi) where.provinsi = provinsi;
     if (kabupaten) where.kabupaten = kabupaten;
