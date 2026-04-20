@@ -77,12 +77,13 @@ export async function POST(request: NextRequest) {
     }
 
     // 4. Validasi tipe file — accept explicit list OR any image/* for mobile compatibility
-    const isAllowedType = UPLOAD_CONFIG.allowedTypes.includes(file.type) || file.type.startsWith("image/");
+    const safeFileType = file.type || '';
+    const isAllowedType = UPLOAD_CONFIG.allowedTypes.includes(safeFileType) || safeFileType.startsWith("image/");
     if (!isAllowedType) {
       return NextResponse.json(
         {
           success: false,
-          error: `Format file tidak didukung! Gunakan JPG, PNG, PDF, atau WebP. (File Anda: ${file.type || 'tidak dikenali'})`,
+          error: `Format file tidak didukung! Gunakan JPG, PNG, PDF, atau WebP. (File Anda: ${safeFileType || 'tidak dikenali'})`,
         },
         { status: 400 }
       );

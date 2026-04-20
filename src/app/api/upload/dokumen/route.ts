@@ -86,7 +86,8 @@ export async function POST(request: NextRequest) {
       );
     }
     const isImageAllowed = config.allowedTypes.includes("image/jpeg");
-    const isAllowedType = config.allowedTypes.includes(file.type) || (isImageAllowed && file.type.startsWith("image/"));
+    const safeFileType = file.type || '';
+    const isAllowedType = config.allowedTypes.includes(safeFileType) || (isImageAllowed && safeFileType.startsWith("image/"));
     
     if (!isAllowedType) {
       return NextResponse.json(
