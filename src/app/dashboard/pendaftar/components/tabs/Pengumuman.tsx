@@ -87,7 +87,7 @@ export default function PengumumanTab() {
       }
 
       if (currentDocData) {
-        generateSuratKelulusan(currentDocData);
+        await generateSuratKelulusan(currentDocData);
       }
     } catch (error) {
       console.error("Error generating surat kelulusan:", error);

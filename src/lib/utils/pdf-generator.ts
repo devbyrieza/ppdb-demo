@@ -160,23 +160,47 @@ export const generateKartuUjian = (data: PendaftarPdfData) => {
     doc.save(`PPDB_KartuUjian_${data.nomor_pendaftaran}.pdf`);
 };
 
+const fetchImageAsBase64 = async (url: string): Promise<string | null> => {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) return null;
+        const blob = await response.blob();
+        if (blob.type !== 'image/png' && blob.type !== 'image/jpeg') return null;
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result as string);
+            reader.readAsDataURL(blob);
+        });
+    } catch {
+        return null;
+    }
+};
+
 /**
  * Generate Surat Kelulusan 
  */
-export const generateSuratKelulusan = (data: PendaftarPdfData) => {
+export const generateSuratKelulusan = async (data: PendaftarPdfData) => {
     const doc = new jsPDF();
-    drawHeader(doc);
     const pageWidth = doc.internal.pageSize.getWidth();
+    
+    // Try to load Kop Surat
+    const kopSurat = await fetchImageAsBase64('/images/kop-surat.png');
+    if (kopSurat) {
+        // Adjust height accordingly for your actual proportional kop surat
+        doc.addImage(kopSurat, 'PNG', 0, 0, pageWidth, 40);
+    } else {
+        drawHeader(doc);
+    }
 
     doc.setFontSize(16);
     doc.setFont("helvetica", "bold");
-    doc.text("SURAT KETERANGAN LULUS SELEKSI", pageWidth / 2, 60, { align: "center" });
+    doc.text("SURAT KETERANGAN HASIL SELEKSI", pageWidth / 2, 60, { align: "center" });
     doc.setFontSize(10);
     doc.text(`Nomor: ${data.nomor_pendaftaran}/SKL-PPDB/${new Date().getFullYear()}`, pageWidth / 2, 66, { align: "center" });
 
     doc.setFontSize(11);
     doc.setFont("helvetica", "normal");
-    const content = `Berdasarkan hasil seleksi Penerimaan Santri Baru (PPDB) Tahun Ajaran ${data.tahun_ajaran}, dengan ini Panitia menyatatakan bahwa:`;
+    const content = `Berdasarkan hasil seleksi Penerimaan Santri Baru (PPDB) Tahun Ajaran ${data.tahun_ajaran}, dengan ini Panitia menyatakan bahwa:`;
     doc.text(doc.splitTextToSize(content, pageWidth - 40), 20, 80);
 
     const tableData = [
@@ -199,13 +223,41 @@ export const generateSuratKelulusan = (data: PendaftarPdfData) => {
 
     doc.setFont("helvetica", "bold");
     doc.setFontSize(14);
-    doc.text("DINYATAKAN: LULUS / DITERIMA", pageWidth / 2, finalY + 10, { align: "center" });
+    
+    // Support for Cadangan / Ditolak if needed, though this is primarily for LULUS
+    let statusText = "LULUS / DITERIMA";
+    if (data.status_kelulusan === "cadangan") statusText = "CADANGAN";
+    if (data.status_kelulusan === "ditolak" || data.status_kelulusan === "rejected") statusText = "BELUM DITERIMA";
+    
+    doc.text(`DINYATAKAN: ${statusText}`, pageWidth / 2, finalY + 10, { align: "center" });
 
     doc.setFont("helvetica", "normal");
     doc.setFontSize(11);
-    const closing = "Selamat bergabung menjadi keluarga besar Pesantren Sistem PPDB Modern. Silakan segera melakukan proses daftar ulang sesuai jadwal yang ditentukan.";
+    
+    let closing = "Selamat bergabung menjadi keluarga besar Pesantren Sistem PPDB Modern. Silakan segera melakukan proses daftar ulang sesuai jadwal yang ditentukan.";
+    if (statusText === "CADANGAN") closing = "Anda masuk dalam daftar cadangan. Panitia akan menghubungi Anda jika terdapat kuota yang kosong.";
+    if (statusText === "BELUM DITERIMA") closing = "Tetap semangat dan jangan berkecil hati. Anda dapat kembali mendaftar pada gelombang atau periode berikutnya.";
+    
     doc.text(doc.splitTextToSize(closing, pageWidth - 40), 20, finalY + 25);
 
+    // Signature and Stamp Area
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(11);
+    doc.text("Mudir Pondok Pesantren,", pageWidth - 80, finalY + 50);
+
+    const stempel = await fetchImageAsBase64('/images/stempel-pesantren.png');
+    const ttd = await fetchImageAsBase64('/images/ttd-mudir.png');
+
+    if (stempel) {
+        doc.addImage(stempel, 'PNG', pageWidth - 100, finalY + 55, 30, 30);
+    }
+    if (ttd) {
+        doc.addImage(ttd, 'PNG', pageWidth - 70, finalY + 55, 30, 30);
+    }
+
+    doc.setFont("helvetica", "bold");
+    doc.text("Mudir PPDB", pageWidth - 80, finalY + 90);
+
     drawFooter(doc);
-    doc.save(`PPDB_SuratKelulusan_${data.nomor_pendaftaran}.pdf`);
+    doc.save(`PPDB_SuratHasilSeleksi_${data.nomor_pendaftaran}.pdf`);
 };
