@@ -6,7 +6,15 @@ import { saveFileLocal } from "@/lib/storage/local";
 // Konfigurasi upload bukti pembayaran
 const UPLOAD_CONFIG = {
   maxSize: 5 * 1024 * 1024, // 5MB
-  allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
+  allowedTypes: [
+    "image/jpeg",
+    "image/jpg",       // WhatsApp photos often use this variant
+    "image/png",
+    "image/webp",      // Modern photo formats
+    "image/heic",      // iPhone photos
+    "image/heif",
+    "application/pdf"
+  ],
 };
 
 // Helper function untuk format ukuran file
@@ -68,12 +76,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 4. Validasi tipe file
-    if (!UPLOAD_CONFIG.allowedTypes.includes(file.type)) {
+    // 4. Validasi tipe file — accept explicit list OR any image/* for mobile compatibility
+    const isAllowedType = UPLOAD_CONFIG.allowedTypes.includes(file.type) || file.type.startsWith("image/");
+    if (!isAllowedType) {
       return NextResponse.json(
         {
           success: false,
-          error: "Format file tidak didukung! Gunakan JPG, PNG, atau PDF",
+          error: `Format file tidak didukung! Gunakan JPG, PNG, PDF, atau WebP. (File Anda: ${file.type || 'tidak dikenali'})`,
         },
         { status: 400 }
       );

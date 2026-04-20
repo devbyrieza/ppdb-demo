@@ -415,7 +415,7 @@ function UploadArea({
           ref={fileInputRef}
           type="file"
           className="hidden"
-          accept="image/jpeg,image/png,application/pdf"
+          accept="image/jpeg,image/jpg,image/png,image/webp,image/heic,application/pdf"
           onChange={handleFileSelect}
         />
 
@@ -596,8 +596,9 @@ export default function PembayaranPendaftaranTab({
       setUploadProgress(0);
 
       if (file.size > 5 * 1024 * 1024) throw new Error("Ukuran file terlalu besar! Maksimal 5MB");
-      const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
-      if (!allowedTypes.includes(file.type)) throw new Error("Format file tidak didukung! Gunakan JPG, PNG, atau PDF");
+      // Accept any image format (JPG, PNG, WebP, HEIC from mobile/WhatsApp) + PDF
+      const isValidType = file.type.startsWith("image/") || file.type === "application/pdf";
+      if (!isValidType) throw new Error("Format file tidak didukung! Gunakan JPG, PNG, WebP, atau PDF");
 
       const formData = new FormData();
       formData.append("file", file);
@@ -754,7 +755,7 @@ export default function PembayaranPendaftaranTab({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 gap-8">
         {/* Main Content Column */}
         <div className="lg:col-span-2 space-y-8">
 
@@ -837,7 +838,7 @@ export default function PembayaranPendaftaranTab({
               </div>
 
               {/* PAYMENT CARDS GRID */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
 
                 {/* CARD 1: MIDTRANS (DEV) */}
                 <div className="relative group bg-white rounded-[2.5rem] p-8 border border-ink-100 shadow-sm transition-all hover:shadow-lg hover:-translate-y-1 overflow-hidden opacity-80 hover:opacity-100 grayscale-[0.5] hover:grayscale-0">
@@ -959,7 +960,7 @@ export default function PembayaranPendaftaranTab({
                       <p className="text-ink-500">Silakan transfer sesuai nominal ke rekening di bawah ini, lalu upload bukti transfer.</p>
                     </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-stretch">
                       {/* LEFT COLUMN: BANK INFO */}
                       <div className="bg-gradient-to-br from-cream-50 to-white border border-cream-100 rounded-[2.5rem] p-8 shadow-sm relative overflow-hidden flex flex-col justify-between">
                         <div className="absolute top-0 right-0 w-64 h-64 bg-cream-100/50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
@@ -976,7 +977,7 @@ export default function PembayaranPendaftaranTab({
 
                           <div className="mb-8">
                             <div className="flex flex-wrap items-center gap-4 mb-2">
-                              <h4 className="font-black text-4xl sm:text-5xl text-ink-900 tracking-tight">{BANK_INFO.nomor_rekening}</h4>
+                              <h4 className="font-black text-3xl sm:text-4xl md:text-5xl text-ink-900 tracking-tight break-all">{BANK_INFO.nomor_rekening}</h4>
                               <CopyButton text={BANK_INFO.nomor_rekening} label="Salin" />
                             </div>
                             <p className="text-lg font-bold text-ink-500">a.n {BANK_INFO.atas_nama}</p>
@@ -1002,7 +1003,7 @@ export default function PembayaranPendaftaranTab({
                             <Upload className="w-5 h-5 text-maroon-700" />
                             Upload Bukti Transfer
                           </h5>
-                          <p className="text-sm text-ink-400">Format: JPG, PNG, PDF (Maks. 5MB)</p>
+                          <p className="text-sm text-ink-400">Format: JPG, PNG, PDF, WebP (Maks. 5MB)</p>
                         </div>
 
                         <UploadArea
