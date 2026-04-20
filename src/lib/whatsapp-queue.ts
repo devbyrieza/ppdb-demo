@@ -812,9 +812,10 @@ export function buildMessageHasilTes(nama: string): string {
  
  Alhamdulillah, hasil tes seleksi Anda sudah tersedia.
  
- Silakan login ke dashboard untuk melihat hasil lengkap Anda.
+ Silakan login ke dashboard untuk melihat hasil lengkap Anda dan mendownload file *PDF Surat Keterangan Lulus (SKL)*.
  
- Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/pengumuman
+ 🔗 *Link Dasbor & Unduh Surat:* 
+ ${process.env.NEXT_PUBLIC_APP_URL || 'https://demo-ppdb.vercel.app'}/dashboard/pendaftar/pengumuman
  
  Jazakumullahu khairan,
  Panitia PPDB PPDB`;
