@@ -53,6 +53,9 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/package.json ./package.json
 
+# Buat direktori penyimpanan lokal dan atur CHOWN agar user nextjs bisa menulis file
+RUN mkdir -p /app/storage_data && chown -R nextjs:nodejs /app/storage_data
+
 USER nextjs
 
 EXPOSE 3000
