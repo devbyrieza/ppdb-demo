@@ -251,7 +251,7 @@ export async function POST(request: NextRequest) {
   } catch (error: any) {
     console.error("Error in POST /api/pembayaran/manual/upload:", error);
     return NextResponse.json(
-      { success: false, error: "DEBUG: " + (error?.message || "Unknown error") + " STACK: " + (error?.stack?.split('\n')[1] || "") },
+      { success: false, error: "Terjadi kesalahan sistem saat mengupload bukti pembayaran" },
       { status: 500 }
     );
   }

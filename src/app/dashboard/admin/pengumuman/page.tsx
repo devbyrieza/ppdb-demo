@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { AlertCircle, Send, CheckCircle2, XCircle, Search, Filter, Loader2 } from "lucide-react";
 import { toast } from "react-hot-toast";
+import Swal from "sweetalert2";
 
 export default function PengumumanPage() {
   const [loading, setLoading] = useState(false);
@@ -71,7 +72,19 @@ export default function PengumumanPage() {
   const handlePublish = async () => {
     if (selectedIds.length === 0) return;
 
-    if (!confirm(`Apakah Anda yakin ingin meluluskan ${selectedIds.length} santri ini? Status akan diperbarui dan pengumuman akan masuk antrean WhatsApp otomatis.`)) return;
+    const result = await Swal.fire({
+      title: "Umumkan Kelulusan?",
+      text: `Apakah Anda yakin ingin meluluskan ${selectedIds.length} santri ini? Status akan diperbarui dan pengumuman akan masuk antrean WhatsApp otomatis.`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#059669", // Emerald 600
+      cancelButtonColor: "#57534e", // Stone 600
+      confirmButtonText: "Ya, Umumkan!",
+      cancelButtonText: "Batal",
+      reverseButtons: true
+    });
+
+    if (!result.isConfirmed) return;
 
     try {
       setIsPublishing(true);
@@ -199,7 +212,7 @@ export default function PengumumanPage() {
                   <div className="flex items-center justify-between">
                     <div className="flex flex-col">
                       <span className="text-[9px] font-black text-stone-300 uppercase tracking-widest leading-none mb-1">Total Nilai</span>
-                      <span className="text-sm font-black text-stone-700">{c.nilai_ujian?.nilai_total || "-"}</span>
+                      <span className="text-sm font-black text-stone-700">                        {c.nilai_ujian?.nilai_total != null ? Number(c.nilai_ujian.nilai_total).toFixed(2) : "-"}</span>
                     </div>
                     <div>
                       {c.status_pendaftaran === 'accepted' ? (
@@ -271,7 +284,7 @@ export default function PengumumanPage() {
                     </td>
                     <td className="px-6 py-4">
                       <div className="font-medium text-stone-700">
-                        {c.nilai_ujian?.nilai_total || "-"}
+                                                {c.nilai_ujian?.nilai_total != null ? Number(c.nilai_ujian.nilai_total).toFixed(2) : "-"}
                       </div>
                     </td>
                     <td className="px-6 py-4 text-center">

@@ -4,6 +4,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Loader2, Printer } from 'lucide-react';
+import { PDF_BRANDING } from '@/config/pdf-branding';
 
 interface StudentData {
     id: string;
@@ -103,12 +104,27 @@ export default function ExamCardPage() {
                     <div className="border border-black p-6 relative">
                         {/* Watermark/Background Logo could go here */}
 
-                        {/* KOP */}
-                        <div className="text-center border-b-2 border-black pb-4 mb-6">
-                            <h2 className="text-2xl font-serif font-bold tracking-wide uppercase">Panitia Penerimaan Santri Baru</h2>
-                            <h1 className="text-3xl font-serif font-black uppercase text-green-900 mb-2">Pondok Pesantren Sistem PPDB Modern</h1>
-                            <p className="text-sm font-serif italic">Jl. Raya Fiksi No. 123, Sleman, Yogyakarta - Telp: (0274) 123456</p>
+                        {/* KOP - Professional Institutional Style (Polished version) */}
+                        <div className="flex items-center border-b-4 border-black pb-4 mb-6 relative">
+                            {/* Logo (Droplet) */}
+                            <div className="w-16 h-28 shrink-0 flex items-center justify-center border-r border-stone-300 pr-5">
+                                <img src={PDF_BRANDING.assets.logo} alt="Logo" className="h-full object-contain" />
+                            </div>
+                            
+                            {/* Text Info (More Padding) */}
+                            <div className="flex-grow pl-8 text-left">
+                                <p className="text-[11px] font-sans font-medium text-stone-500 uppercase tracking-widest leading-tight">{PDF_BRANDING.institution.subtitle}</p>
+                                <h1 className="text-2xl font-serif font-black uppercase text-brand-blue-900 mb-1 leading-tight tracking-tight">{PDF_BRANDING.institution.committee}</h1>
+                                <p className="text-sm font-serif font-bold text-gray-800 mb-1">Tahun Ajaran {PDF_BRANDING.institution.academic_year}</p>
+                                <div className="text-[9px] leading-tight font-sans text-stone-400 mt-2">
+                                    <p>{PDF_BRANDING.institution.address}</p>
+                                    <p className="mt-0.5">{PDF_BRANDING.institution.contact}</p>
+                                </div>
+                            </div>
                         </div>
+                        
+                        {/* Secondary Double line for HTML preview to match PDF */}
+                        <div className="absolute left-[2cm] right-[2cm] h-0.5 bg-black -mt-6"></div>
 
                         <div className="text-center mb-8">
                             <span className="bg-black text-white px-6 py-2 font-bold text-xl uppercase tracking-widest inline-block rounded-sm">JADWAL SELEKSI SANTRI</span>
@@ -176,7 +192,7 @@ export default function ExamCardPage() {
                         {/* Signature */}
                         <div className="flex justify-end mt-12">
                             <div className="text-center w-48">
-                                <p className="mb-16">Yogyakarta, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+                                <p className="mb-20">{PDF_BRANDING.authority.city}, {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
                                 <p className="font-bold underline uppercase">Panitia PPDB</p>
                             </div>
                         </div>

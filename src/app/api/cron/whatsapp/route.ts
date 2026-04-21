@@ -7,7 +7,7 @@
 import { NextResponse } from "next/server";
 import { processWhatsappQueue, getQueueStats } from "@/lib/whatsapp-queue";
 
-const CRON_SECRET = process.env.CRON_SECRET || "ppdb-alimam-cron-2026";
+const CRON_SECRET = process.env.CRON_SECRET || "ppdb-demo-cron-2026";
 
 export async function GET(request: Request) {
     // Verify cron secret

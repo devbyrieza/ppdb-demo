@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
-import { notifySelectionResult } from "@/lib/wablas";
+import { enqueueWhatsapp, buildMessageHasilTes } from "@/lib/whatsapp-queue";
 
 async function checkSuperAdmin() {
     const cookieStore = await cookies();
@@ -92,33 +92,28 @@ export async function POST(request: Request) {
             data: { status_pendaftaran: newStatus }
         });
 
-        // 4. Send Notification
+        // 4. Send Notification via Queue
         if (pendaftar.no_hp) {
             try {
-                // Map status to what notifySelectionResult expects
-                let statusParam: "DITERIMA" | "CADANGAN" | "DITOLAK" | undefined;
-                if (status_kelulusan === "Lulus") statusParam = "DITERIMA";
-                else if (status_kelulusan === "Cadangan") statusParam = "CADANGAN";
-                else if (status_kelulusan === "Tidak Lulus") statusParam = "DITOLAK";
+                // Build message using queue builder
+                const message = buildMessageHasilTes(pendaftar.nama_lengkap);
+                
+                await enqueueWhatsapp({
+                    pendaftarId: pendaftar.id,
+                    phone: pendaftar.no_hp,
+                    jenisNotif: "hasil_tes",
+                    messageContent: message,
+                    force: true // Always send even if previous hasil_tes existed (re-publish)
+                });
 
-                if (statusParam) {
-                    await notifySelectionResult({
-                        phone: pendaftar.no_hp,
-                        nama: pendaftar.nama_lengkap,
-                        status: statusParam,
-                        jenjang: pendaftar.jenjang,
-                        suratPath: surat_keputusan_url // Ensure this is just the path (filename), not full URL if logic appends prefix
-                    });
-
-                    // Mark as sent
-                    await prisma.pengumuman.update({
-                        where: { id: pengumuman.id },
-                        // @ts-ignore: Prisma types lag
-                        data: { wa_blast_sent: true, wa_blast_sent_at: new Date() }
-                    });
-                }
+                // Mark as sent/queued
+                await prisma.pengumuman.update({
+                    where: { id: pengumuman.id },
+                    // @ts-ignore: Prisma types lag
+                    data: { wa_blast_sent: true, wa_blast_sent_at: new Date() }
+                });
             } catch (e) {
-                console.error("Failed to send announcement notification", e);
+                console.error("Failed to enqueue announcement notification", e);
             }
         }
 

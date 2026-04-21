@@ -42,6 +42,7 @@ export interface EnqueueParams {
     jenisNotif: NotifType;
     messageContent: string;
     scheduledAt?: Date;
+    force?: boolean;
 }
 
 // ============================================================================
@@ -289,11 +290,11 @@ async function isNumberBlocked(phone: string): Promise<boolean> {
 export async function enqueueWhatsapp(
     params: EnqueueParams
 ): Promise<{ queued: boolean; reason?: string; logId?: string }> {
-    const { pendaftarId, phone, jenisNotif, messageContent, scheduledAt } =
+    const { pendaftarId, phone, jenisNotif, messageContent, scheduledAt, force } =
         params;
 
-    // Layer 1: Duplicate check
-    const duplicate = await isDuplicate(pendaftarId, jenisNotif, phone);
+    // Layer 1: Duplicate check (skip if force is true)
+    const duplicate = !force && await isDuplicate(pendaftarId, jenisNotif, phone);
     if (duplicate) {
         return { queued: false, reason: "Notifikasi serupa sudah pernah dikirim/diantri" };
     }

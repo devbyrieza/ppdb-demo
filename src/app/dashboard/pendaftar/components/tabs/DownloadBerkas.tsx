@@ -51,13 +51,13 @@ export default function DownloadBerkasTab() {
       name: "Bukti Pendaftaran",
       description: "Bukti sudah terdaftar di sistem",
       status: isDataCompleted ? "available" : "pending",
-      action: () => generateBuktiPendaftaran(data),
+      action: async () => await generateBuktiPendaftaran(data),
     },
     {
       name: "Kartu Ujian",
       description: "Kartu identitas ujian seleksi",
       status: isScheduled ? "available" : "pending",
-      action: () => generateKartuUjian(data),
+      action: async () => await generateKartuUjian(data),
     },
   ];
 
