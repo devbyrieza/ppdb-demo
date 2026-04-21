@@ -563,7 +563,12 @@ function AdminPendaftarContent() {
       if (search) params.append("search", search);
       if (statusFilter) params.append("status", statusFilter);
       if (jenjangFilter) params.append("jenjang", jenjangFilter);
+      if (jenisKelaminFilter) params.append("jenis_kelamin", jenisKelaminFilter);
       if (tahunAjaranFilter) params.append("tahun_ajaran", tahunAjaranFilter);
+      if (provinsiFilter) params.append("provinsi", provinsiFilter);
+      if (kabupatenFilter) params.append("kabupaten", kabupatenFilter);
+      if (kecamatanFilter) params.append("kecamatan", kecamatanFilter);
+      if (kelurahanFilter) params.append("kelurahan", kelurahanFilter);
 
       const response = await fetch(`/api/admin/pendaftar/export?${params}`);
       if (!response.ok) throw new Error("Failed to export");
@@ -734,7 +739,7 @@ function AdminPendaftarContent() {
                 onChange={(e) => setSearchInput(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && handleSearch()}
                 placeholder="Cari nama, NIK, atau nomor pendaftaran..."
-                className="flex-1 w-full px-4 py-3 bg-brand-yellow-50/50 border border-brand-yellow-100 rounded-xl focus:border-brand-blue-500 focus:bg-white focus:outline-none text-sm md:text-base font-bold text-brand-blue-950 placeholder:text-ink-200"
+                className="flex-1 w-full px-4 py-3 bg-brand-yellow-50/50 border border-brand-yellow-100 rounded-xl focus:border-brand-blue-500 focus:bg-white focus:outline-none text-sm md:text-base font-bold text-brand-blue-950 placeholder:text-ink-400"
               />
               <button
                 onClick={handleSearch}
@@ -1101,7 +1106,7 @@ function AdminPendaftarContent() {
                       </p>
                       <div className="flex flex-wrap items-center gap-2 mt-2">
                         {formatStatus(item.status_pendaftaran)}
-                        <span className="text-[10px] text-stone-400">{formatDate(item.created_at)}</span>
+                        <span className="text-[10px] text-stone-500">{formatDate(item.created_at)}</span>
                       </div>
                       <div className="flex gap-2 mt-3">
                         <Link
@@ -1226,7 +1231,7 @@ function AdminPendaftarContent() {
                           <div className="font-bold text-stone-900">
                             {toTitleCase(item.nama_lengkap)}
                           </div>
-                          <div className="text-xs text-stone-500">
+                          <div className="text-xs text-stone-600 font-medium">
                             {["L", "Laki-laki"].includes(item.jenis_kelamin) ? "Laki-laki" : "Perempuan"}
                           </div>
                         </div>
@@ -1259,7 +1264,7 @@ function AdminPendaftarContent() {
                                 ? "Perlu Cek"
                                 : "Belum Upload"}
                           </span>
-                          <div className="text-xs text-stone-500 mt-1">
+                          <div className="text-xs text-stone-600 font-medium mt-1">
                             {item.dokumen?.length || 0} Dokumen
                           </div>
                         </td>
@@ -1326,7 +1331,7 @@ function AdminPendaftarContent() {
                                 item.pembayaran[0].status_pembayaran === 'pending' ? 'Cek' : 'Belum'}
                             </span>
                           ) : (
-                            <span className="text-stone-400 text-xs">-</span>
+                            <span className="text-stone-500 text-xs">-</span>
                           )}
                         </td>
                       ) : (

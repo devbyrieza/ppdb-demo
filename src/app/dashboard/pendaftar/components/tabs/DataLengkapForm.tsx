@@ -310,14 +310,14 @@ function SectionHeader({
             ? "bg-emerald-100 text-emerald-600"
             : isOpen
               ? "bg-cream-100 text-maroon-700"
-              : "bg-surface-200 text-ink-400"
+              : "bg-surface-200 text-ink-600"
             }`}
         >
           {isCompleted ? <CheckCircle className="w-6 h-6" /> : <Icon className="w-6 h-6" />}
         </div>
         <div className="text-left">
           <h3 className={`font-bold text-lg ${isOpen ? "text-ink-900" : "text-ink-600"}`}>{title}</h3>
-          {subtitle && <p className="text-sm text-ink-400 font-medium">{subtitle}</p>}
+          {subtitle && <p className="text-sm text-ink-600 font-medium">{subtitle}</p>}
         </div>
       </div>
       <div className="flex items-center gap-3">
@@ -327,7 +327,7 @@ function SectionHeader({
           </span>
         )}
         <div className={`p-2 rounded-full transition-all ${isOpen ? "bg-surface-100 rotate-180" : "bg-transparent"}`}>
-          <ChevronDown className={`w-5 h-5 ${isOpen ? "text-ink-900" : "text-ink-400"}`} />
+          <ChevronDown className={`w-5 h-5 ${isOpen ? "text-ink-900" : "text-ink-600"}`} />
         </div>
       </div>
     </button>
@@ -361,7 +361,7 @@ function InputField({
   maxLength,
   inputFilter,
 }: InputFieldProps) {
-  const baseInputClass = "w-full px-4 py-3 bg-white border border-ink-200 rounded-xl text-ink-900 placeholder:text-ink-300 focus:border-maroon-600 focus:ring-4 focus:ring-maroon-600/10 transition-all outline-none disabled:bg-surface-100 disabled:text-ink-400 font-medium";
+  const baseInputClass = "w-full px-4 py-3 bg-white border border-ink-200 rounded-xl text-ink-900 placeholder:text-stone-600 focus:border-maroon-600 focus:ring-4 focus:ring-maroon-600/10 transition-all outline-none disabled:bg-surface-100 disabled:text-ink-600 font-medium";
 
   // Filter function for input validation
   const handleFilteredChange = (rawValue: string) => {
@@ -407,7 +407,7 @@ function InputField({
               );
             })}
           </select>
-          <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-400 pointer-events-none" />
+          <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-600 pointer-events-none" />
         </div>
       </div>
     );
@@ -429,7 +429,7 @@ function InputField({
           rows={3}
           className={`${baseInputClass} resize-none`}
         />
-        {filterHint && <p className="text-xs text-ink-400 ml-1">{filterHint}</p>}
+        {filterHint && <p className="text-xs text-ink-600 ml-1">{filterHint}</p>}
       </div>
     );
   }
@@ -451,7 +451,7 @@ function InputField({
         inputMode={inputMode}
         className={baseInputClass}
       />
-      {filterHint && <p className="text-xs text-ink-400 ml-1">{filterHint}</p>}
+      {filterHint && <p className="text-xs text-ink-600 ml-1">{filterHint}</p>}
     </div>
   );
 }
@@ -1248,7 +1248,7 @@ export default function DataLengkapForm({ onSuccess }: { onSuccess?: () => void 
       </fieldset>
 
       <div className="p-4 bg-surface-50 border border-ink-100 rounded-2xl flex items-center gap-3">
-        <AlertCircle className="w-5 h-5 text-ink-400" />
+        <AlertCircle className="w-5 h-5 text-ink-600" />
         <p className="text-sm text-ink-500 font-medium">
           Tanda <span className="text-red-500 font-bold">*</span> menunjukkan isian yang <strong>wajib</strong> diisi.
         </p>

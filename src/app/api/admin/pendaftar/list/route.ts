@@ -90,8 +90,12 @@ export async function GET(request: NextRequest) {
     }
 
     // Other filters
-    if (jenjang) where.jenjang = jenjang;
-    if (jenisKelamin) where.jenis_kelamin = jenisKelamin;
+    if (jenjang) {
+      where.jenjang = { contains: jenjang, mode: "insensitive" };
+    }
+    if (jenisKelamin) {
+      where.jenis_kelamin = { contains: jenisKelamin, mode: "insensitive" };
+    }
     if (tahunAjaran) where.tahun_ajaran_id = tahunAjaran;
     if (provinsi) where.provinsi = provinsi;
     if (kabupaten) where.kabupaten = kabupaten;

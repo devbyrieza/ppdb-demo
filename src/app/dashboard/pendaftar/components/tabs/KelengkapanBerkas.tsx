@@ -97,7 +97,7 @@ function getStatusColor(status: DokumenStatus) {
     case "rejected":
       return "text-red-600 bg-red-50";
     default:
-      return "text-ink-400 bg-surface-100";
+      return "text-ink-600 bg-surface-100";
   }
 }
 
@@ -241,12 +241,12 @@ function DokumenCard({
                     Wajib
                   </span>
                 ) : (
-                  <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-surface-200 text-ink-500 rounded-lg">
+                  <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-surface-200 text-ink-600 rounded-lg">
                     Opsional
                   </span>
                 )}
               </div>
-              <p className="text-sm text-ink-500 font-medium">
+              <p className="text-sm text-ink-600 font-medium">
                 {getStatusLabel(dokumen.status)}
               </p>
             </div>
@@ -258,16 +258,16 @@ function DokumenCard({
                   e.stopPropagation();
                   onPreview();
                 }}
-                className="p-2 text-ink-400 hover:text-brand-blue-700 hover:bg-brand-blue-50 rounded-xl transition-colors"
+                className="p-2 text-ink-600 hover:text-brand-blue-700 hover:bg-brand-blue-50 rounded-xl transition-colors"
                 title="Lihat Dokumen"
               >
                 <Eye className="w-5 h-5" />
               </button>
             )}
             {isExpanded ? (
-              <ChevronUp className="w-5 h-5 text-ink-400" />
+              <ChevronUp className="w-5 h-5 text-ink-600" />
             ) : (
-              <ChevronDown className="w-5 h-5 text-ink-400" />
+              <ChevronDown className="w-5 h-5 text-ink-600" />
             )}
           </div>
         </div>
@@ -276,7 +276,7 @@ function DokumenCard({
           <div className="mt-4">
             <div className="flex items-center justify-between text-xs font-bold mb-2">
               <span className="text-brand-blue-700 uppercase tracking-widest">MENGUPLOAD...</span>
-              <span className="text-ink-500">{uploadProgress}%</span>
+              <span className="text-ink-600">{uploadProgress}%</span>
             </div>
             <div className="h-2 bg-surface-200 rounded-full overflow-hidden">
               <div
@@ -297,7 +297,7 @@ function DokumenCard({
                   const FileIcon = getFileIcon(dokumen.file_type);
                   return (
                     <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center border border-ink-100 shadow-sm">
-                      <FileIcon className="w-6 h-6 text-ink-500" />
+                      <FileIcon className="w-6 h-6 text-ink-600" />
                     </div>
                   );
                 })()}
@@ -305,7 +305,7 @@ function DokumenCard({
                   <p className="font-bold text-ink-900 truncate text-sm">
                     {dokumen.file_name}
                   </p>
-                  <p className="text-xs text-ink-500 mt-0.5">
+                  <p className="text-xs text-ink-600 mt-0.5">
                     {formatFileSize(dokumen.file_size || 0)} &bull;{" "}
                     {dokumen.uploaded_at
                       ? new Date(dokumen.uploaded_at).toLocaleDateString(
@@ -375,7 +375,7 @@ function DokumenCard({
                     ? "Klik atau seret file ke sini"
                     : "Upload ulang file"}
                 </p>
-                <p className="text-xs text-ink-400 mt-1 font-medium bg-surface-100 inline-block px-2 py-1 rounded">
+                <p className="text-xs text-ink-600 mt-1 font-medium bg-surface-100 inline-block px-2 py-1 rounded">
                   {allowedExtensions} &bull; Maks {maxSizeDisplay}
                 </p>
               </div>
@@ -613,7 +613,7 @@ export default function KelengkapanBerkasTab() {
       <div className="flex flex-col items-center justify-center min-h-[400px]">
         <div className="text-center">
           <Loader2 className="w-10 h-10 text-brand-blue-500 animate-spin mx-auto mb-4" />
-          <p className="text-ink-500 font-medium">Memuat data dokumen...</p>
+          <p className="text-ink-600 font-medium">Memuat data dokumen...</p>
         </div>
       </div>
     );
@@ -689,10 +689,10 @@ export default function KelengkapanBerkasTab() {
               onClick={() => setActiveTab(tab.id as TabType)}
               className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-pill text-sm font-black transition-all duration-300 group ${isActive
                 ? 'bg-brand-blue-700 text-white shadow-md'
-                : 'text-ink-500 hover:bg-brand-yellow-100 hover:text-brand-blue-800'
+                : 'text-ink-600 hover:bg-brand-yellow-100 hover:text-brand-blue-800'
                 }`}
             >
-              <Icon className={`w-5 h-5 transition-colors ${isActive ? 'text-brand-yellow-200' : 'text-ink-400 group-hover:text-brand-blue-800'}`} />
+              <Icon className={`w-5 h-5 transition-colors ${isActive ? 'text-brand-yellow-200' : 'text-ink-600 group-hover:text-brand-blue-800'}`} />
               <span className="whitespace-nowrap">{tab.label}</span>
             </button>
           )
@@ -722,21 +722,21 @@ export default function KelengkapanBerkasTab() {
                 </div>
                 <div>
                   <h2 className="text-xl font-bold text-ink-900">Ringkasan Data</h2>
-                  <p className="text-ink-400 text-sm">Data yang telah tersimpan di sistem</p>
+                  <p className="text-ink-600 text-sm">Data yang telah tersimpan di sistem</p>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-surface-50 p-6 rounded-3xl border border-ink-100 shadow-inner">
                 <div className="md:col-span-2 lg:col-span-1">
-                  <p className="text-[10px] font-black text-ink-400 uppercase tracking-[0.2em] mb-1">Nomor Pendaftaran</p>
+                  <p className="text-[10px] font-black text-ink-600 uppercase tracking-[0.2em] mb-1">Nomor Pendaftaran</p>
                   <p className="text-xl font-black text-brand-blue-700 font-mono">{dataPendaftaran.nomor_pendaftaran}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] font-black text-ink-400 uppercase tracking-[0.2em] mb-1">Nama Lengkap Santri</p>
+                  <p className="text-[10px] font-black text-ink-600 uppercase tracking-[0.2em] mb-1">Nama Lengkap Santri</p>
                   <p className="text-base font-bold text-ink-900">{dataPendaftaran.nama_lengkap}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] font-black text-ink-400 uppercase tracking-[0.2em] mb-1">NIK Santri</p>
+                  <p className="text-[10px] font-black text-ink-600 uppercase tracking-[0.2em] mb-1">NIK Santri</p>
                   <p className="text-base font-bold text-ink-900">{dataPendaftaran.data_lengkap?.santri?.nik || dataPendaftaran.nik || "-"}</p>
                 </div>
               </div>
@@ -791,7 +791,7 @@ export default function KelengkapanBerkasTab() {
                       {/* Ayah */}
                       <div className="space-y-4">
                         <div className="flex items-center justify-between border-b border-ink-50 pb-2">
-                          <h4 className="font-black text-xs text-ink-400 uppercase tracking-[0.2em]">Data Ayah</h4>
+                          <h4 className="font-black text-xs text-ink-600 uppercase tracking-[0.2em]">Data Ayah</h4>
                           <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${dataPendaftaran.data_lengkap?.ayah?.status_hidup === "Masih Hidup" ? "bg-emerald-100 text-emerald-700" : "bg-stone-200 text-stone-600"}`}>
                             {dataPendaftaran.data_lengkap?.ayah?.status_hidup || "Masih Hidup"}
                           </span>
@@ -816,7 +816,7 @@ export default function KelengkapanBerkasTab() {
                       {/* Ibu */}
                       <div className="space-y-4">
                         <div className="flex items-center justify-between border-b border-ink-50 pb-2">
-                          <h4 className="font-black text-xs text-ink-400 uppercase tracking-[0.2em]">Data Ibu</h4>
+                          <h4 className="font-black text-xs text-ink-600 uppercase tracking-[0.2em]">Data Ibu</h4>
                           <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${dataPendaftaran.data_lengkap?.ibu?.status_hidup === "Masih Hidup" ? "bg-emerald-100 text-emerald-700" : "bg-stone-200 text-stone-600"}`}>
                             {dataPendaftaran.data_lengkap?.ibu?.status_hidup || "Masih Hidup"}
                           </span>
@@ -841,7 +841,7 @@ export default function KelengkapanBerkasTab() {
 
                     {(dataPendaftaran.data_lengkap?.santri?.tinggal_bersama === "Wali" || (dataPendaftaran.data_lengkap?.ayah?.status_hidup === "Sudah Meninggal" && dataPendaftaran.data_lengkap?.ibu?.status_hidup === "Sudah Meninggal")) && (
                       <div className="space-y-4 pt-8 border-t border-ink-50">
-                        <h4 className="font-black text-xs text-ink-400 uppercase tracking-[0.2em] border-b border-ink-50 pb-2">Data Wali</h4>
+                        <h4 className="font-black text-xs text-ink-600 uppercase tracking-[0.2em] border-b border-ink-50 pb-2">Data Wali</h4>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                           <SummaryItem label="Nama Wali" value={dataPendaftaran.data_lengkap?.wali?.nama_lengkap || "-"} />
                           <SummaryItem label="Hubungan" value={dataPendaftaran.data_lengkap?.wali?.hubungan || "-"} />
@@ -904,7 +904,7 @@ export default function KelengkapanBerkasTab() {
                   onClick={() => setShowConfirmModal(true)}
                   className={`w-full sm:w-auto py-3 px-10 rounded-xl text-lg font-black shadow-lg transition-all flex items-center justify-center gap-2 ${isDataComplete
                     ? 'bg-brand-yellow-400 hover:bg-brand-yellow-300 text-brand-blue-950 shadow-brand-yellow-400/20 border border-brand-yellow-500'
-                    : 'bg-stone-200 text-stone-400 cursor-not-allowed shadow-none'
+                    : 'bg-stone-200 text-stone-600 cursor-not-allowed shadow-none'
                     }`}
                 >
                   Konfirmasi Data & Lanjut ke Upload Berkas
@@ -917,7 +917,7 @@ export default function KelengkapanBerkasTab() {
               <div className="w-20 h-20 bg-surface-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <User className="w-10 h-10 text-ink-300" />
               </div>
-              <p className="text-ink-500 font-medium">Data pendaftaran belum tersedia.</p>
+              <p className="text-ink-600 font-medium">Data pendaftaran belum tersedia.</p>
             </div>
           )}
         </div>
@@ -982,7 +982,7 @@ export default function KelengkapanBerkasTab() {
 function SummaryItem({ label, value }: { label: string; value: string | number }) {
   return (
     <div>
-      <p className="text-[10px] font-black text-ink-400 uppercase tracking-[0.15em] mb-1">{label}</p>
+      <p className="text-[10px] font-black text-ink-600 uppercase tracking-[0.15em] mb-1">{label}</p>
       <p className="text-sm font-bold text-ink-800 break-words">{value}</p>
     </div>
   );

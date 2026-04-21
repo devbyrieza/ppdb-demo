@@ -201,17 +201,17 @@ export default function DashboardLayout({
           {/* Tooltip for locked state */}
           <div className="absolute left-14 top-full z-50 w-64 p-3 mt-2 text-xs text-white bg-ink-900 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0 lg:left-full lg:top-0 lg:ml-2">
             <div className="font-bold mb-1 flex items-center gap-2">
-              <Lock className="w-3 h-3 text-brand-yellow-400" />
+              <Lock className="w-3.5 h-3.5 text-brand-yellow-400" />
               <span>Akses Terkunci</span>
             </div>
-            <p className="text-ink-300 mb-2">{unlockMessage}</p>
+            <p className="text-ink-200 mb-2">{unlockMessage}</p>
             <div className="w-full h-1 bg-ink-700 rounded-full overflow-hidden">
               <div
                 className="h-full bg-brand-yellow-500 rounded-full"
                 style={{ width: `${progressToUnlock}%` }}
               />
             </div>
-            <p className="text-right text-[10px] text-ink-400 mt-1">{progressToUnlock}% Selesai</p>
+            <p className="text-right text-[10px] text-ink-300 mt-1">{progressToUnlock}% Selesai</p>
           </div>
         </div>
       );
@@ -337,8 +337,8 @@ export default function DashboardLayout({
                   <LogOut className="w-4 h-4" />
                   <span>Keluar Akun</span>
                 </button>
-                <p className="text-[10px] text-center text-ink-400 mt-4">
-                  &copy; 2026 Ponpes Sistem PPDB Modern
+                <p className="text-[10px] text-center text-ink-600 mt-4">
+                  &copy; 2026 Ponpes Al-Andalus Template Demo
                 </p>
               </div>
             </div>
@@ -394,7 +394,7 @@ export default function DashboardLayout({
             <header className="hidden lg:flex sticky top-4 z-30 mx-8 mt-4 rounded-[1.5rem] bg-white/70 backdrop-blur-xl px-6 py-4 items-center justify-between shadow-sm border border-brand-yellow-100">
               <div>
                 <h2 className="text-xl font-black text-brand-blue-950 tracking-tight">Dashboard Pendaftar</h2>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-ink-400">Panel Utama Pendaftaran Khusus Pendaftar Baru</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-ink-600">Panel Utama Pendaftaran Khusus Pendaftar Baru</p>
               </div>
 
               <div className="flex items-center gap-4">
@@ -446,7 +446,7 @@ export default function DashboardLayout({
                     <div className="w-10 h-8 rounded-full flex items-center justify-center mb-1 bg-transparent group-hover:bg-brand-yellow-50 transition-colors">
                       <Menu className="w-5 h-5 text-ink-400 group-hover:text-brand-blue-600 transition-colors" />
                     </div>
-                    <span className="text-[10px] font-bold text-ink-400 text-center">Menu</span>
+                    <span className="text-[10px] font-bold text-ink-600 text-center">Menu</span>
                   </button>
                 </div>
               </div>

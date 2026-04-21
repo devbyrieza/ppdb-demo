@@ -92,7 +92,7 @@ export default function HeroSection() {
                     </div>
                   ))}
                 </div>
-                <p className="text-xs font-semibold text-ink-500">
+                <p className="text-xs font-semibold text-ink-600">
                   <span className="text-brand-blue-700 font-bold uppercase tracking-wider">Angkatan Pertama</span> • Managed by PPDB Modern IIBS
                 </p>
               </div>
@@ -129,7 +129,7 @@ export default function HeroSection() {
                 <GraduationCap className="w-5 h-5 lg:w-6 lg:h-6" />
               </div>
               <div>
-                <p className="text-[10px] lg:text-xs font-bold text-ink-400 uppercase tracking-widest">Tersedia</p>
+                <p className="text-[10px] lg:text-xs font-bold text-ink-600 uppercase tracking-widest">Tersedia</p>
                 <p className="text-xs lg:text-sm font-black text-brand-blue-900">MTs &amp; SMA</p>
               </div>
             </motion.div>
@@ -144,7 +144,7 @@ export default function HeroSection() {
               </div>
               <div>
                 <p className="text-xs lg:text-sm font-black text-brand-blue-900">Jaringan Elit</p>
-                <p className="text-[10px] lg:text-xs font-semibold text-ink-500">Andalus Demo</p>
+                <p className="text-[10px] lg:text-xs font-semibold text-ink-600">Andalus Demo</p>
               </div>
             </motion.div>
 

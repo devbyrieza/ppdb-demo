@@ -201,18 +201,18 @@ const ActionCard = ({
         }`}
     >
       <div className="flex items-start justify-between mb-8">
-        <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-premium-xs transition-transform group-hover:scale-110 ${disabled ? "bg-ink-100 text-ink-300" : `bg-brand-blue-50 text-brand-blue-600`}`}>
+        <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-premium-xs transition-transform group-hover:scale-110 ${disabled ? "bg-ink-100 text-ink-500" : `bg-brand-blue-50 text-brand-blue-600`}`}>
           <Icon className="w-7 h-7" />
         </div>
-        <span className={`px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest ${disabled ? "bg-ink-100 text-ink-400" : "bg-brand-yellow-400 text-brand-blue-950 shadow-sm"}`}>
+        <span className={`px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest ${disabled ? "bg-ink-100 text-ink-600" : "bg-brand-yellow-400 text-brand-blue-950 shadow-sm"}`}>
           Tahap {step.replace('Step ', '')}
         </span>
       </div>
 
-      <h3 className={`text-xl font-display font-black mb-3 transition-colors ${disabled ? "text-ink-300" : "text-brand-blue-950 group-hover:text-brand-blue-700"}`}>
+      <h3 className={`text-xl font-display font-black mb-3 transition-colors ${disabled ? "text-ink-500" : "text-brand-blue-950 group-hover:text-brand-blue-700"}`}>
         {title}
       </h3>
-      <p className={`text-sm font-bold leading-relaxed mb-6 flex-grow ${disabled ? "text-ink-200" : "text-ink-400"}`}>
+      <p className={`text-sm font-bold leading-relaxed mb-6 flex-grow ${disabled ? "text-ink-200" : "text-ink-600"}`}>
         {description}
       </p>
 
@@ -342,7 +342,7 @@ export default function DashboardPage() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="text-xl md:text-2xl text-ink-300 font-bold max-w-2xl leading-relaxed tracking-tight"
+                className="text-xl md:text-2xl text-ink-500 font-bold max-w-2xl leading-relaxed tracking-tight"
               >
                 T.A 2026/2027 • Pantau progres pendaftaranmu secara berkala di sini dengan mudah.
               </motion.p>
@@ -357,7 +357,7 @@ export default function DashboardPage() {
               <button
                 onClick={handleLogout}
                 disabled={isLoggingOut}
-                className="group flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-4 sm:py-5 bg-white border border-ink-100 rounded-[2rem] font-black text-[10px] sm:text-xs uppercase tracking-widest text-ink-300 hover:bg-red-50 hover:text-red-700 hover:border-red-100 transition-all shadow-xl shadow-ink-900/5 active:scale-95 disabled:opacity-50"
+                className="group flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-4 sm:py-5 bg-white border border-ink-100 rounded-[2rem] font-black text-[10px] sm:text-xs uppercase tracking-widest text-ink-500 hover:bg-red-50 hover:text-red-700 hover:border-red-100 transition-all shadow-xl shadow-ink-900/5 active:scale-95 disabled:opacity-50"
               >
                 <LogOut className="w-5 h-5 transition-transform group-hover:rotate-12" />
                 <span>{isLoggingOut ? "Keluar..." : "Logout"}</span>
@@ -389,7 +389,7 @@ export default function DashboardPage() {
                     <StatusIcon className={`w-10 h-10 sm:w-12 sm:h-12 ${pendaftar.status_pendaftaran === 'payment_verification' ? 'animate-spin' : ''}`} />
                   </div>
                   <div>
-                    <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.4em] text-ink-300 mb-2 block">Status Pendaftaran</span>
+                    <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.4em] text-ink-500 mb-2 block">Status Pendaftaran</span>
                     <h2 className={`text-2xl sm:text-3xl md:text-5xl font-display font-black leading-none tracking-tight ${statusInfo.text}`}>
                       {statusInfo.label}
                     </h2>
@@ -497,7 +497,7 @@ export default function DashboardPage() {
               <div className="w-20 h-20 rounded-[2rem] bg-brand-blue-50 flex items-center justify-center text-brand-blue-600 mb-8 border border-brand-blue-100 shadow-sm transition-transform group-hover:scale-110">
                 <IdCard className="w-10 h-10" />
               </div>
-              <p className="text-[10px] font-black uppercase tracking-[0.4em] text-ink-300 mb-2">No. Registrasi</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.4em] text-ink-500 mb-2">No. Registrasi</p>
               <h4 className="text-4xl font-display font-black text-brand-blue-950 mb-8 leading-none tracking-tight">
                 {pendaftar.nomor_pendaftaran}
               </h4>
