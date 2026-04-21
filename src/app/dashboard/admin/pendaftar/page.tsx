@@ -727,18 +727,18 @@ function AdminPendaftarContent() {
               <Search className="w-3.5 h-3.5 inline mr-1" />
               Cari Pendaftar
             </label>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-3">
               <input
                 type="text"
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && handleSearch()}
                 placeholder="Cari nama, NIK, atau nomor pendaftaran..."
-                className="flex-1 min-w-0 px-3 md:px-4 py-3 bg-brand-yellow-50/50 border border-brand-yellow-100 rounded-xl focus:border-brand-blue-500 focus:bg-white focus:outline-none text-sm md:text-base font-bold text-brand-blue-950 placeholder:text-ink-200"
+                className="flex-1 w-full px-4 py-3 bg-brand-yellow-50/50 border border-brand-yellow-100 rounded-xl focus:border-brand-blue-500 focus:bg-white focus:outline-none text-sm md:text-base font-bold text-brand-blue-950 placeholder:text-ink-200"
               />
               <button
                 onClick={handleSearch}
-                className="px-4 md:px-8 py-3 bg-brand-blue-700 hover:bg-brand-blue-800 text-white rounded-xl font-black transition-all flex-shrink-0 text-sm md:text-base shadow-lg shadow-brand-blue-700/20 active:scale-95"
+                className="w-full sm:w-auto px-8 py-3 bg-brand-blue-700 hover:bg-brand-blue-800 text-white rounded-xl font-black transition-all flex-shrink-0 text-sm md:text-base shadow-lg shadow-brand-blue-700/20 active:scale-95"
               >
                 Cari
               </button>
@@ -828,7 +828,7 @@ function AdminPendaftarContent() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4">
           {/* Gender Filter */}
           <div>
-            <label className="block text-sm font-medium text-stone-700 mb-2">
+            <label className="block text-[10px] font-black text-brand-blue-900 mb-2 leading-none uppercase tracking-widest">
               Filter Putra / Putri
             </label>
             <select
@@ -837,7 +837,7 @@ function AdminPendaftarContent() {
                 setJenisKelaminFilter(e.target.value);
                 setPagination((prev) => ({ ...prev, page: 1 }));
               }}
-              className="w-full px-4 py-2 border-2 border-stone-200 rounded-lg focus:border-blue-500 focus:outline-none"
+              className="w-full px-4 py-3 bg-brand-yellow-50/50 border border-brand-yellow-100 rounded-xl focus:border-brand-blue-500 focus:bg-white focus:outline-none font-bold text-brand-blue-950"
             >
               <option value="">Semua (Putra & Putri)</option>
               <option value="L">Putra (Laki-laki)</option>
@@ -847,7 +847,7 @@ function AdminPendaftarContent() {
 
           {/* Jenjang Filter */}
           <div>
-            <label className="block text-sm font-medium text-stone-700 mb-2">
+            <label className="block text-[10px] font-black text-brand-blue-900 mb-2 leading-none uppercase tracking-widest">
               Filter Jenjang Sekolah
             </label>
             <select
@@ -856,7 +856,7 @@ function AdminPendaftarContent() {
                 setJenjangFilter(e.target.value);
                 setPagination((prev) => ({ ...prev, page: 1 }));
               }}
-              className="w-full px-4 py-2 border-2 border-stone-200 rounded-lg focus:border-blue-500 focus:outline-none"
+              className="w-full px-4 py-3 bg-brand-yellow-50/50 border border-brand-yellow-100 rounded-xl focus:border-brand-blue-500 focus:bg-white focus:outline-none font-bold text-brand-blue-950"
             >
               <option value="">Semua Jenjang</option>
               <option value="MTs">MTs (Madrasah Tsanawiyah)</option>
@@ -866,7 +866,7 @@ function AdminPendaftarContent() {
 
           {/* Tahun Ajaran Filter */}
           <div>
-            <label className="block text-sm font-medium text-stone-700 mb-2">
+            <label className="block text-[10px] font-black text-brand-blue-900 mb-2 leading-none uppercase tracking-widest">
               Filter Tahun Ajaran
             </label>
             <select
@@ -875,7 +875,7 @@ function AdminPendaftarContent() {
                 setTahunAjaranFilter(e.target.value);
                 setPagination((prev) => ({ ...prev, page: 1 }));
               }}
-              className="w-full px-4 py-2 border-2 border-stone-200 rounded-lg focus:border-blue-500 focus:outline-none"
+              className="w-full px-4 py-3 bg-brand-yellow-50/50 border border-brand-yellow-100 rounded-xl focus:border-brand-blue-500 focus:bg-white focus:outline-none font-bold text-brand-blue-950"
             >
               <option value="">Semua Tahun Ajaran</option>
               {tahunAjaranList.map((ta) => (
@@ -915,15 +915,15 @@ function AdminPendaftarContent() {
         {/* Location cascading filters */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4">
           <div>
-            <label className="block text-sm font-medium text-stone-700 mb-2">
-              Provinsi {provinsiLoading && <span className="inline-block ml-2 text-xs text-stone-500">Memuat...</span>}
+            <label className="block text-[10px] font-black text-brand-blue-900 mb-2 leading-none uppercase tracking-widest">
+              Provinsi {provinsiLoading && <span className="inline-block ml-2 text-[8px] text-stone-500 italic">Memuat...</span>}
             </label>
             <select
               value={provinsiFilter}
               onChange={(e) => setProvinsiFilter(e.target.value)}
               aria-label="Filter provinsi"
               aria-busy={provinsiLoading}
-              className="w-full px-4 py-2 border-2 border-stone-200 rounded-lg focus:border-blue-500 focus:outline-none"
+              className="w-full px-4 py-3 bg-brand-yellow-50/50 border border-brand-yellow-100 rounded-xl focus:border-brand-blue-500 focus:bg-white focus:outline-none font-bold text-brand-blue-950"
             >
               <option value="">Semua Provinsi</option>
               {provinsiList.map((p) => (
@@ -933,8 +933,8 @@ function AdminPendaftarContent() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-stone-700 mb-2">
-              Kabupaten / Kota {kabupatenLoading && <span className="inline-block ml-2 text-xs text-stone-500">Memuat...</span>}
+            <label className="block text-[10px] font-black text-brand-blue-900 mb-2 leading-none uppercase tracking-widest">
+              Kabupaten / Kota {kabupatenLoading && <span className="inline-block ml-2 text-[8px] text-stone-500 italic">Memuat...</span>}
             </label>
             <select
               value={kabupatenFilter}
@@ -942,7 +942,7 @@ function AdminPendaftarContent() {
               disabled={kabupatenList.length === 0 || kabupatenLoading}
               aria-label="Filter kabupaten atau kota"
               aria-busy={kabupatenLoading}
-              className="w-full px-4 py-2 border-2 border-stone-200 rounded-lg focus:border-blue-500 focus:outline-none disabled:opacity-50"
+              className="w-full px-4 py-3 bg-brand-yellow-50/50 border border-brand-yellow-100 rounded-xl focus:border-brand-blue-500 focus:bg-white focus:outline-none font-bold text-brand-blue-950 disabled:opacity-50"
             >
               <option value="">Semua Kabupaten / Kota</option>
               {kabupatenList.map((k) => (
@@ -952,8 +952,8 @@ function AdminPendaftarContent() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-stone-700 mb-2">
-              Kecamatan {kecamatanLoading && <span className="inline-block ml-2 text-xs text-stone-500">Memuat...</span>}
+            <label className="block text-[10px] font-black text-brand-blue-900 mb-2 leading-none uppercase tracking-widest">
+              Kecamatan {kecamatanLoading && <span className="inline-block ml-2 text-[8px] text-stone-500 italic">Memuat...</span>}
             </label>
             <select
               value={kecamatanFilter}
@@ -961,7 +961,7 @@ function AdminPendaftarContent() {
               disabled={kecamatanList.length === 0 || kecamatanLoading}
               aria-label="Filter kecamatan"
               aria-busy={kecamatanLoading}
-              className="w-full px-4 py-2 border-2 border-stone-200 rounded-lg focus:border-blue-500 focus:outline-none disabled:opacity-50"
+              className="w-full px-4 py-3 bg-brand-yellow-50/50 border border-brand-yellow-100 rounded-xl focus:border-brand-blue-500 focus:bg-white focus:outline-none font-bold text-brand-blue-950 disabled:opacity-50"
             >
               <option value="">Semua Kecamatan</option>
               {kecamatanList.map((c) => (
@@ -971,8 +971,8 @@ function AdminPendaftarContent() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-stone-700 mb-2">
-              Kelurahan {kelurahanLoading && <span className="inline-block ml-2 text-xs text-stone-500">Memuat...</span>}
+            <label className="block text-[10px] font-black text-brand-blue-900 mb-2 leading-none uppercase tracking-widest">
+              Kelurahan {kelurahanLoading && <span className="inline-block ml-2 text-[8px] text-stone-500 italic">Memuat...</span>}
             </label>
             <select
               value={kelurahanFilter}
@@ -980,7 +980,7 @@ function AdminPendaftarContent() {
               disabled={kelurahanList.length === 0 || kelurahanLoading}
               aria-label="Filter kelurahan"
               aria-busy={kelurahanLoading}
-              className="w-full px-4 py-2 border-2 border-stone-200 rounded-lg focus:border-blue-500 focus:outline-none disabled:opacity-50"
+              className="w-full px-4 py-3 bg-brand-yellow-50/50 border border-brand-yellow-100 rounded-xl focus:border-brand-blue-500 focus:bg-white focus:outline-none font-bold text-brand-blue-950 disabled:opacity-50"
             >
               <option value="">Semua Kelurahan</option>
               {kelurahanList.map((k) => (
@@ -1011,11 +1011,11 @@ function AdminPendaftarContent() {
                 </button>
               </div>
 
-              <div className="flex items-center gap-3">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
                 <select
                   value={bulkStatus}
                   onChange={(e) => setBulkStatus(e.target.value)}
-                  className="px-4 py-2 border-2 border-purple-300 rounded-lg focus:border-purple-500 focus:outline-none"
+                  className="w-full sm:w-64 px-4 py-2.5 bg-white border-2 border-purple-200 rounded-xl focus:border-purple-500 focus:outline-none font-bold text-purple-900"
                 >
                   <option value="" disabled={bulkStatus !== ""}>Pilih status baru...</option>
                   <option value="draft">Draft</option>
@@ -1036,7 +1036,7 @@ function AdminPendaftarContent() {
                 <button
                   onClick={handleBulkUpdate}
                   disabled={!bulkStatus || bulkUpdating}
-                  className="flex items-center gap-2 px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex items-center justify-center gap-2 px-8 py-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-black transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-purple-600/20 active:scale-95 text-sm"
                 >
                   {bulkUpdating ? (
                     <>

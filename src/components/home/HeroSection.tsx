@@ -123,7 +123,7 @@ export default function HeroSection() {
             <motion.div
               animate={{ y: [0, -12, 0] }}
               transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -top-4 lg:-top-6 -right-2 lg:-right-8 z-20 flex items-center gap-3 bg-white/95 backdrop-blur-md p-3 px-4 lg:p-4 rounded-2xl shadow-xl border border-white/50"
+              className="absolute -top-2 sm:-top-4 lg:-top-6 -right-1 sm:-right-2 lg:-right-8 z-20 flex items-center gap-2 sm:gap-3 bg-white/95 backdrop-blur-md p-2 px-3 sm:p-3 sm:px-4 lg:p-4 rounded-2xl shadow-xl border border-white/50 scale-[0.85] sm:scale-100 origin-right"
             >
               <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl bg-brand-yellow-100 flex items-center justify-center text-brand-yellow-600">
                 <GraduationCap className="w-5 h-5 lg:w-6 lg:h-6" />
@@ -137,7 +137,7 @@ export default function HeroSection() {
             <motion.div
               animate={{ y: [0, 12, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-              className="absolute -bottom-6 lg:-bottom-10 -left-2 lg:-left-8 z-20 flex items-center gap-3 bg-white/95 backdrop-blur-md p-3 px-4 lg:p-4 rounded-2xl shadow-xl border border-white/50"
+              className="absolute -bottom-4 sm:-bottom-6 lg:-bottom-10 -left-1 sm:-left-2 lg:-left-8 z-20 flex items-center gap-2 sm:gap-3 bg-white/95 backdrop-blur-md p-2 px-3 sm:p-3 sm:px-4 lg:p-4 rounded-2xl shadow-xl border border-white/50 scale-[0.85] sm:scale-100 origin-left"
             >
               <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl bg-brand-blue-100 flex items-center justify-center text-brand-blue-600">
                 <Globe className="w-5 h-5 lg:w-6 lg:h-6" />

@@ -692,7 +692,7 @@ export default function ExaminerDashboard() {
                                 
                                 <div className="space-y-4">
                                     {inputType === 'quran' && (
-                                        <div className="flex gap-4">
+                                        <div className="flex flex-col sm:flex-row gap-4">
                                             <div className="flex-1">
                                                 <label className="block text-xs font-black text-ink-400 uppercase tracking-wider mb-2">Nilai Tajwid (0-100)</label>
                                                 <input
@@ -717,7 +717,7 @@ export default function ExaminerDashboard() {
                                     )}
 
                                     {inputType === 'wawancara_santri' && (
-                                        <div className="grid grid-cols-2 gap-4">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             {[
                                                 { k: 'motivasi', l: 'Motivasi (1-5)' },
                                                 { k: 'lingkungan', l: 'Lingkungan (1-5)' },

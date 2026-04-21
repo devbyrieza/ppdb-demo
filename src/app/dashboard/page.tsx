@@ -332,7 +332,7 @@ export default function DashboardPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-black text-brand-blue-950 mb-6 leading-none tracking-tight"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-black text-brand-blue-950 mb-6 leading-none tracking-tight"
               >
                 Ahlan wa Sahlan, <br />
                 <span className="text-brand-blue-700 bg-brand-blue-50 px-4 py-1 rounded-3xl inline-block mt-2">{pendaftar.nama_lengkap.split(" ")[0]}!</span>
@@ -357,7 +357,7 @@ export default function DashboardPage() {
               <button
                 onClick={handleLogout}
                 disabled={isLoggingOut}
-                className="group flex items-center gap-3 px-10 py-5 bg-white border border-ink-100 rounded-[2rem] font-black text-xs uppercase tracking-widest text-ink-300 hover:bg-red-50 hover:text-red-700 hover:border-red-100 transition-all shadow-xl shadow-ink-900/5 active:scale-95 disabled:opacity-50"
+                className="group flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-4 sm:py-5 bg-white border border-ink-100 rounded-[2rem] font-black text-[10px] sm:text-xs uppercase tracking-widest text-ink-300 hover:bg-red-50 hover:text-red-700 hover:border-red-100 transition-all shadow-xl shadow-ink-900/5 active:scale-95 disabled:opacity-50"
               >
                 <LogOut className="w-5 h-5 transition-transform group-hover:rotate-12" />
                 <span>{isLoggingOut ? "Keluar..." : "Logout"}</span>
@@ -379,24 +379,24 @@ export default function DashboardPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className={`p-10 sm:p-14 md:p-16 rounded-[4rem] border-2 shadow-2xl relative overflow-hidden bg-gradient-to-br from-white to-ink-50/30 ${statusInfo.border}`}
+              className={`p-6 sm:p-10 md:p-12 lg:p-16 rounded-[2.5rem] md:rounded-[4rem] border-2 shadow-2xl relative overflow-hidden bg-gradient-to-br from-white to-ink-50/30 ${statusInfo.border}`}
             >
               <div className="absolute top-0 right-0 w-80 h-80 bg-brand-blue-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
 
               <div className="relative z-10">
-                <div className="flex flex-col md:flex-row md:items-center gap-10 mb-10">
-                  <div className={`w-24 h-24 rounded-[2.5rem] bg-white flex items-center justify-center ${statusInfo.text} shadow-xl border border-ink-50`}>
-                    <StatusIcon className={`w-12 h-12 ${pendaftar.status_pendaftaran === 'payment_verification' ? 'animate-spin' : ''}`} />
+                <div className="flex flex-col md:flex-row md:items-center gap-6 sm:gap-10 mb-8 sm:mb-10">
+                  <div className={`w-20 h-20 sm:w-24 sm:h-24 rounded-[2rem] sm:rounded-[2.5rem] bg-white flex items-center justify-center ${statusInfo.text} shadow-xl border border-ink-50 shrink-0`}>
+                    <StatusIcon className={`w-10 h-10 sm:w-12 sm:h-12 ${pendaftar.status_pendaftaran === 'payment_verification' ? 'animate-spin' : ''}`} />
                   </div>
                   <div>
-                    <span className="text-[10px] font-black uppercase tracking-[0.4em] text-ink-300 mb-2 block">Status Pendaftaran</span>
-                    <h2 className={`text-3xl sm:text-4xl md:text-5xl font-display font-black leading-none tracking-tight ${statusInfo.text}`}>
+                    <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.4em] text-ink-300 mb-2 block">Status Pendaftaran</span>
+                    <h2 className={`text-2xl sm:text-3xl md:text-5xl font-display font-black leading-none tracking-tight ${statusInfo.text}`}>
                       {statusInfo.label}
                     </h2>
                   </div>
                 </div>
 
-                <p className={`text-xl md:text-2xl font-bold leading-relaxed max-w-2xl text-brand-blue-950`}>
+                <p className={`text-base sm:text-lg md:text-xl xl:text-2xl font-bold leading-relaxed max-w-2xl text-brand-blue-950`}>
                   {statusInfo.message}
                 </p>
 

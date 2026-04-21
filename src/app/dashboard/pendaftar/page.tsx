@@ -73,7 +73,7 @@ export default function DashboardPendaftarPage() {
       <ProgressStepper currentStatus={data.status} />
 
       {/* Premium Hero Banner */}
-      <div className="relative overflow-hidden rounded-3xl md:rounded-4xl bg-linear-to-br from-brand-blue-700 to-brand-blue-900 text-white p-6 sm:p-10 md:p-20 shadow-2xl app-card border border-brand-blue-600">
+      <div className="relative overflow-hidden rounded-3xl md:rounded-4xl bg-linear-to-br from-brand-blue-700 to-brand-blue-900 text-white p-6 sm:p-8 md:p-16 shadow-2xl app-card border border-brand-blue-600">
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-yellow-400/10 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/2" />
         <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 md:gap-12">
           <div className="flex-1">
@@ -84,8 +84,8 @@ export default function DashboardPendaftarPage() {
                 Ditinjau {new Date(data.lastUpdate).toLocaleDateString('id-ID')}
               </span>
             </div>
-            <h1 className="text-2xl sm:text-4xl md:text-7xl font-black mb-3 md:mb-6 leading-none font-display tracking-tight text-white italic">Ahlan Wa Sahlan, <br /> <span className="text-brand-yellow-300 not-italic uppercase">{data.nama}!</span></h1>
-            <p className="text-brand-blue-100 text-base md:text-2xl font-bold max-w-xl opacity-90 leading-relaxed italic hidden sm:block">"Berdakwah dengan Akhlak, Belajar dengan Ikhlas."</p>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black mb-3 md:mb-6 leading-none font-display tracking-tight text-white italic">Ahlan Wa Sahlan, <br /> <span className="text-brand-yellow-300 not-italic uppercase">{data.nama}!</span></h1>
+            <p className="text-brand-blue-100 text-sm sm:text-base md:text-xl lg:text-2xl font-bold max-w-xl opacity-90 leading-relaxed italic hidden sm:block">"Berdakwah dengan Akhlak, Belajar dengan Ikhlas."</p>
           </div>
           <div className="flex flex-row md:flex-col gap-3 md:gap-6 w-full md:w-auto">
              <div className="flex-1 md:flex-none bg-white/10 backdrop-blur-md px-5 py-4 md:px-10 md:py-6 rounded-[1.5rem] border border-white/10 text-center shadow-inner">

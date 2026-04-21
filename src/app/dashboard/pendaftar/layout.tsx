@@ -267,17 +267,22 @@ export default function DashboardLayout({
       <div className="min-h-screen bg-surface-50 font-sans selection:bg-brand-blue-100 selection:text-brand-blue-900">
 
         {/* Mobile Header (Fintech Style) */}
-        <div className="lg:hidden bg-white/90 backdrop-blur-xl sticky top-0 z-40 px-5 py-4 flex items-center justify-between border-b border-brand-yellow-200 shadow-sm">
-          <div className="flex flex-col">
-            <span className="text-[10px] uppercase font-black tracking-widest text-ink-400 mb-0.5">PPDB Sistem PPDB Modern</span>
-            <span className="text-base font-black text-brand-blue-950 leading-none">Beranda</span>
+        <div className="lg:hidden bg-white/90 backdrop-blur-xl sticky top-0 z-40 px-4 sm:px-5 py-3 sm:py-4 flex items-center justify-between border-b border-brand-yellow-200 shadow-sm">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <button onClick={() => setSidebarOpen(true)} className="p-2 -ml-2 text-brand-blue-950 hover:bg-brand-yellow-50 rounded-xl transition-colors">
+              <Menu className="w-6 h-6" />
+            </button>
+            <div className="flex flex-col">
+              <span className="text-[9px] sm:text-[10px] uppercase font-black tracking-widest text-ink-400 mb-0.5" style={{ display: 'none' }}>PPDB Sistem PPDB Modern</span>
+              <span className="text-sm sm:text-base font-black text-brand-blue-950 leading-none">Portal Santri</span>
+            </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className={`px-2.5 py-1 rounded-full text-[10px] uppercase tracking-wider font-black border bg-opacity-10 ${statusInfo.color.replace('text-', 'border-')} ${statusInfo.color}`}>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className={`hidden sm:block px-2.5 py-1 rounded-full text-[10px] uppercase tracking-wider font-black border bg-opacity-10 ${statusInfo.color.replace('text-', 'border-')} ${statusInfo.color}`}>
               {statusInfo.label}
             </div>
-            <div className="w-9 h-9 rounded-full bg-linear-to-br from-brand-blue-700 to-brand-blue-900 flex items-center justify-center text-white text-sm font-black shadow-md border-2 border-brand-yellow-100">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-linear-to-br from-brand-blue-700 to-brand-blue-900 flex items-center justify-center text-white text-sm font-black shadow-md border border-brand-yellow-100">
               {namaLengkap.charAt(0)}
             </div>
           </div>
