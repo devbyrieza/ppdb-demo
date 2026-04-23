@@ -146,7 +146,7 @@ export default function HasilSeleksiPage() {
                             onChange={(e) => setFilter({ ...filter, status: e.target.value })}
                         >
                             <option value="semua_hasil">Semua Hasil</option>
-                            <option value="accepted">Lulus & Terdaftar</option>
+                            <option value="accepted">Diterima</option>
                             <option value="cadangan">Cadangan</option>
                             <option value="rejected">Tidak Lulus</option>
                         </select>

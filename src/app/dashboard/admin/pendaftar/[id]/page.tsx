@@ -204,21 +204,22 @@ export default function PendaftarDetailPage() {
   const formatStatus = (status: string) => {
     const statusMap: Record<string, { label: string; color: string }> = {
       draft: { label: "Draft", color: "bg-stone-100 text-stone-700" },
-      awaiting_payment: { label: "Menunggu Pembayaran", color: "bg-brand-yellow-100 text-brand-yellow-700 border border-brand-yellow-200" },
-      paid: { label: "Sudah Bayar", color: "bg-emerald-100 text-emerald-700" },
-      data_completed: { label: "Data Lengkap", color: "bg-brand-blue-100 text-brand-blue-800" },
-      docs_uploaded: { label: "Dokumen Terupload", color: "bg-brand-blue-50 text-brand-blue-600" },
-      docs_verified: { label: "Dokumen Terverifikasi", color: "bg-emerald-100 text-emerald-700" },
-      scheduled: { label: "Terjadwal Ujian", color: "bg-brand-yellow-100 text-brand-yellow-800 border border-brand-yellow-200" },
+      awaiting_payment: { label: "Draft", color: "bg-stone-100 text-stone-700" },
+      payment_verification: { label: "Verifikasi Bayar", color: "bg-brand-blue-50 text-brand-blue-700 border border-brand-blue-100" },
+      paid: { label: "Terdaftar", color: "bg-brand-blue-100 text-brand-blue-800" },
+      verified: { label: "Terdaftar", color: "bg-brand-blue-100 text-brand-blue-800" },
+      data_completed: { label: "Data Lengkap", color: "bg-brand-yellow-50 text-brand-yellow-800 border border-brand-yellow-100" },
+      docs_uploaded: { label: "Data Lengkap", color: "bg-brand-yellow-50 text-brand-yellow-800 border border-brand-yellow-100" },
+      docs_verified: { label: "Berkas Lengkap", color: "bg-emerald-50 text-emerald-800 border border-emerald-100" },
+      scheduled: { label: "Berkas Lengkap", color: "bg-emerald-50 text-emerald-800 border border-emerald-100" },
       testing: { label: "Sedang Ujian", color: "bg-violet-100 text-violet-700 border border-violet-200" },
       tested: { label: "Sudah Ujian", color: "bg-brand-blue-600 text-white shadow-sm" },
-      announced: { label: "Diumumkan", color: "bg-brand-blue-50 text-brand-blue-700" },
+      exam_completed: { label: "Sudah Ujian", color: "bg-brand-blue-600 text-white shadow-sm" },
+      announced: { label: "Cadangan", color: "bg-brand-yellow-100 text-brand-yellow-800 border border-brand-yellow-200" },
+      cadangan: { label: "Cadangan", color: "bg-brand-yellow-100 text-brand-yellow-800 border border-brand-yellow-200" },
       accepted: { label: "Diterima", color: "bg-emerald-600 text-white" },
       rejected: { label: "Ditolak", color: "bg-rose-600 text-white" },
-      enrolled: { label: "Terdaftar", color: "bg-emerald-100 text-emerald-800" },
-      // Added missing keys matching seed/list
-      verified: { label: "Terverifikasi", color: "bg-emerald-100 text-emerald-700" },
-      payment_verification: { label: "Verifikasi Pembayaran", color: "bg-brand-blue-50 text-brand-blue-700 border border-brand-blue-100" },
+      enrolled: { label: "Sudah Daftar Ulang", color: "bg-emerald-100 text-emerald-800" },
     };
     return statusMap[status] || { label: status, color: "bg-stone-100 text-stone-700" };
   };
@@ -353,15 +354,15 @@ export default function PendaftarDetailPage() {
                   <option value="draft">Draft</option>
                   <option value="awaiting_payment">Menunggu Pembayaran</option>
                   <option value="paid">Sudah Bayar</option>
+                  <option value="paid">Terdaftar</option>
                   <option value="data_completed">Data Lengkap</option>
-                  <option value="docs_uploaded">Dokumen Terupload</option>
-                  <option value="docs_verified">Dokumen Terverifikasi</option>
-                  <option value="scheduled">Terjadwal Ujian</option>
+                  <option value="docs_verified">Berkas Lengkap</option>
+                  <option value="testing">Sedang Ujian</option>
                   <option value="tested">Sudah Ujian</option>
-                  <option value="announced">Diumumkan</option>
                   <option value="accepted">Diterima</option>
+                  <option value="announced">Cadangan</option>
                   <option value="rejected">Ditolak</option>
-                  <option value="enrolled">Terdaftar</option>
+                  <option value="enrolled">Sudah Daftar Ulang</option>
                 </select>
                 <button
                   onClick={handleUpdateStatus}
