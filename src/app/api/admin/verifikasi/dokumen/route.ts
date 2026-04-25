@@ -134,6 +134,11 @@ export async function PATCH(request: NextRequest) {
             nama_lengkap: true,
             no_hp: true,
             status_pendaftaran: true,
+            user: {
+              select: {
+                phone: true
+              }
+            }
           },
         },
       },
@@ -172,12 +177,14 @@ export async function PATCH(request: NextRequest) {
         const isAllVerifiedAndComplete = !isSomeRejected && hasAllRequired;
 
         // ONLY Notify if we have rejections OR if they are FINALLY complete (all 9 verified)
+        const recipientPhone = dokumen.pendaftar.no_hp || (dokumen.pendaftar as any).user?.phone;
+
         if (isSomeRejected || isAllVerifiedAndComplete) {
           try {
-            if (dokumen.pendaftar?.no_hp) {
+            if (recipientPhone) {
               let docListStr = "";
               if (isAllVerifiedAndComplete) {
-                docListStr = "Lengkap (9/9 Dokumen Terverifikasi)";
+                docListStr = `Lengkap (${REQUIRED_DOC_TYPES.length}/${REQUIRED_DOC_TYPES.length} Dokumen Terverifikasi)`;
               } else {
                 docListStr = rejectedDocs.map(d => `• ${d.jenis_dokumen}`).join("\n");
               }
@@ -185,12 +192,14 @@ export async function PATCH(request: NextRequest) {
               const isVerifiedBatch = isAllVerifiedAndComplete;
               await enqueueWhatsapp({
                 pendaftarId: dokumen.pendaftar_id,
-                phone: dokumen.pendaftar.no_hp!,
+                phone: recipientPhone,
                 jenisNotif: isVerifiedBatch ? "document_verified" : "document_rejected",
                 messageContent: isVerifiedBatch
                   ? buildMessageDocumentVerified(dokumen.pendaftar.nama_lengkap, docListStr)
                   : buildMessageDocumentRejected(dokumen.pendaftar.nama_lengkap, docListStr, isAllVerifiedAndComplete ? "" : "Terdapat dokumen yang perlu diperbaiki. Silakan cek dashboard."),
               });
+            } else {
+              console.warn(`[VERIF] Cannot send notification for ${dokumen.pendaftar_id}: No phone number found in Pendaftar or User profile.`);
             }
           } catch (error) {
             console.error("WhatsApp batch notification error:", error);
@@ -198,7 +207,8 @@ export async function PATCH(request: NextRequest) {
         } else {
           // All currently uploaded are verified, but they haven't uploaded all 9 yet!
           // We WAIT. Do not send "Verified" message yet.
-          console.log(`[VERIF] Pendaftar ${dokumen.pendaftar_id} has ${verifiedTypes.size}/9 verified docs. Waiting for completion before notify.`);
+          const missingTypes = REQUIRED_DOC_TYPES.filter(type => !verifiedTypes.has(type));
+          console.log(`[VERIF] Pendaftar ${dokumen.pendaftar_id} has ${verifiedTypes.size}/${REQUIRED_DOC_TYPES.length} verified docs. Missing: ${missingTypes.join(', ')}. Waiting for completion before notify.`);
         }
       }
     }

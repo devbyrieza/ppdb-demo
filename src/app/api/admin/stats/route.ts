@@ -67,141 +67,117 @@ export async function GET(request: Request) {
       },
     });
 
-    // Calculate pendaftar status counts
+    // 4. Calculate Stats
     const total_pendaftar = pendaftarData.length;
     const statusCounts: Record<string, number> = {};
-    
-    // Detailed Jenjang Counts with gender breakdown
-    interface JenjangMetric {
-      total: number;
-      putra: number;
-      putri: number;
-      ujian_total: number;
-      ujian_putra: number;
-      ujian_putri: number;
-      ulang_total: number;
-      ulang_putra: number;
-      ulang_putri: number;
-      accepted: number;
-    }
-    const jenjangCounts: Record<string, JenjangMetric> = {};
+    const jenjangCounts: Record<string, any> = {};
     const provinsiCounts: Record<string, number> = {};
     const genderCounts: Record<string, number> = { "Laki-laki": 0, "Perempuan": 0, "Belum Diisi": 0 };
 
-    pendaftarData.forEach((item) => {
-      const status = item.status_pendaftaran;
-      const jenjang = (item.jenjang || "UNKNOWN").toUpperCase().trim();
-      
+    pendaftarData.forEach(p => {
+      const status = p.status_pendaftaran || "draft";
+      statusCounts[status] = (statusCounts[status] || 0) + 1;
+
+      // Normalize Jenjang: Handle common variations
+      let jRaw = (p.jenjang || "UNKNOWN").toUpperCase().trim();
+      let jenjang = "MTS"; // Default fallback
+      if (jRaw.includes("MTS")) jenjang = "MTS";
+      else if (jRaw.includes("IL")) jenjang = "IL";
+      else if (jRaw.includes("SMA")) jenjang = "SMA";
+      else jenjang = "MTS";
+
+      if (!jenjangCounts[jenjang]) {
+        jenjangCounts[jenjang] = {
+          total: 0, putra: 0, putri: 0,
+          accepted: 0, accepted_putra: 0, accepted_putri: 0,
+          cadangan: 0, cadangan_putra: 0, cadangan_putri: 0,
+          ulang_total: 0, ulang_putra: 0, ulang_putri: 0
+        };
+      }
+
+      const j = jenjangCounts[jenjang];
+      // Normalize Gender mapping (L/P or Full String)
+      const isL = p.jenis_kelamin === "L" || p.jenis_kelamin === "Laki-laki";
+      const isP = p.jenis_kelamin === "P" || p.jenis_kelamin === "Perempuan";
+
+      j.total++;
+      if (isL) { 
+        j.putra++; 
+        genderCounts["Laki-laki"]++; 
+      } else if (isP) { 
+        j.putri++; 
+        genderCounts["Perempuan"]++; 
+      } else { 
+        genderCounts["Belum Diisi"]++; 
+      }
+
+      // Diterima Logic: accepted or enrolled only (announced is for Cadangan)
+      if (status === "accepted" || status === "enrolled") {
+        j.accepted++;
+        if (isL) j.accepted_putra++;
+        if (isP) j.accepted_putri++;
+      }
+
+      // Cadangan Logic: announced
+      if (status === "announced") {
+        j.cadangan++;
+        if (isL) j.cadangan_putra++;
+        if (isP) j.cadangan_putri++;
+      }
+
+      // Daftar Ulang Logic: enrolled only
+      if (status === "enrolled") {
+        j.ulang_total++;
+        if (isL) j.ulang_putra++;
+        if (isP) j.ulang_putri++;
+      }
+
       // Normalize Provinsi
-      let provinsi = item.provinsi || "Belum Diisi";
+      let provinsi = p.provinsi || "Belum Diisi";
       if (provinsi && provinsi !== "Belum Diisi") {
         provinsi = provinsi.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
       }
-      
-      // Normalize Gender mapping (L/P -> Laki-laki/Perempuan)
-      let gender = item.jenis_kelamin || "Unknown";
-      if (gender === "L") gender = "Laki-laki";
-      if (gender === "P") gender = "Perempuan";
-
-      // Status counts
-      statusCounts[status] = (statusCounts[status] || 0) + 1;
-
-      // Jenjang metrics initialization
-      if (!jenjangCounts[jenjang]) {
-        jenjangCounts[jenjang] = { 
-          total: 0, putra: 0, putri: 0, 
-          ujian_total: 0, ujian_putra: 0, ujian_putri: 0,
-          ulang_total: 0, ulang_putra: 0, ulang_putri: 0,
-          accepted: 0
-        };
-      }
-      
-      const jData = jenjangCounts[jenjang];
-      jData.total += 1;
-      if (gender === "Laki-laki") jData.putra += 1;
-      if (gender === "Perempuan") jData.putri += 1;
-
-      // Sudah Ujian mapping
-      const isUjian = ["tested", "announced", "accepted", "enrolled"].includes(status);
-      if (isUjian) {
-        jData.ujian_total += 1;
-        if (gender === "Laki-laki") jData.ujian_putra += 1;
-        if (gender === "Perempuan") jData.ujian_putri += 1;
-      }
-
-      // Daftar Ulang mapping
-      if (status === "enrolled") {
-        jData.ulang_total += 1;
-        if (gender === "Laki-laki") jData.ulang_putra += 1;
-        if (gender === "Perempuan") jData.ulang_putri += 1;
-      }
-
-      // Accepted (Diterima) mapping
-      if (status === "accepted" || status === "enrolled") {
-        jData.accepted += 1;
-      }
-
-      // Provinsi counts
       provinsiCounts[provinsi] = (provinsiCounts[provinsi] || 0) + 1;
-
-      // Gender counts
-      if (gender === "Laki-laki" || gender === "Perempuan") {
-        genderCounts[gender] += 1;
-      } else {
-        genderCounts["Belum Diisi"] += 1;
-      }
     });
 
-    // Quota configuration
+    // Quota configuration (Standard Demo Quotas)
     const QUOTAS: Record<string, { putra: number; putri: number; total: number }> = {
       MTS: { putra: 32, putri: 30, total: 62 },
       IL: { putra: 32, putri: 30, total: 62 },
       SMA: { putra: 0, putri: 0, total: 0 }
     };
 
-    // Comprehensive stats mapping
     const stats = {
       total_pendaftar,
-      sudah_bayar:
-        (statusCounts.paid || 0) +
-        (statusCounts.verified || 0) +
-        (statusCounts.data_completed || 0) +
-        (statusCounts.docs_uploaded || 0) +
-        (statusCounts.docs_verified || 0) +
-        (statusCounts.scheduled || 0) +
-        (statusCounts.tested || 0) +
-        (statusCounts.announced || 0) +
-        (statusCounts.accepted || 0) +
-        (statusCounts.enrolled || 0),
-      sudah_isi_data:
-        (statusCounts.data_completed || 0) +
-        (statusCounts.docs_uploaded || 0) +
-        (statusCounts.docs_verified || 0) +
-        (statusCounts.scheduled || 0) +
-        (statusCounts.tested || 0) +
-        (statusCounts.announced || 0) +
-        (statusCounts.accepted || 0) +
-        (statusCounts.enrolled || 0),
       diterima: (statusCounts.accepted || 0) + (statusCounts.enrolled || 0),
+      cadangan: statusCounts.announced || 0,
+      daftar_ulang: statusCounts.enrolled || 0,
+      
+      // Secondary metrics (Legacy support)
+      sudah_bayar: total_pendaftar - (statusCounts.draft || 0) - (statusCounts.waiting_payment || 0), 
+      sudah_isi_data: total_pendaftar - (statusCounts.draft || 0) - (statusCounts.waiting_payment || 0) - (statusCounts.verified || 0),
 
-      // === STATISTIK PER JENJANG (Expanded) ===
-      stats_per_jenjang: Object.entries(jenjangCounts).map(([jenjang, data]) => {
-        const quota = QUOTAS[jenjang] || { putra: 0, putri: 0, total: 0 };
+      stats_per_jenjang: ["MTS", "IL", "SMA"].map(jenjang => {
+        const data = jenjangCounts[jenjang] || {
+          total: 0, putra: 0, putri: 0,
+          accepted: 0, accepted_putra: 0, accepted_putri: 0,
+          cadangan: 0, cadangan_putra: 0, cadangan_putri: 0,
+          ulang_total: 0, ulang_putra: 0, ulang_putri: 0
+        };
+        const q = QUOTAS[jenjang];
         return {
           jenjang,
-          kuota_putra: quota.putra,
-          kuota_putri: quota.putri,
-          kuota_total: quota.total,
-          pendaftar: data.total,
-          pendaftar_putra: data.putra,
-          pendaftar_putri: data.putri,
-          sudah_ujian: data.ujian_total,
-          ujian_putra: data.ujian_putra,
-          ujian_putri: data.ujian_putri,
+          kuota_putra: q.putra, kuota_putri: q.putri, kuota_total: q.total,
+          pendaftar: data.total, pendaftar_putra: data.putra, pendaftar_putri: data.putri,
+          diterima: data.accepted,
+          diterima_putra: data.accepted_putra,
+          diterima_putri: data.accepted_putri,
+          cadangan: data.cadangan,
+          cadangan_putra: data.cadangan_putra,
+          cadangan_putri: data.cadangan_putri,
           daftar_ulang: data.ulang_total,
           ulang_putra: data.ulang_putra,
-          ulang_putri: data.ulang_putri,
-          diterima: data.accepted
+          ulang_putri: data.ulang_putri
         };
       }),
 
@@ -211,10 +187,9 @@ export async function GET(request: Request) {
       stats_gender: genderCounts,
       pie_chart_status: {
         diterima: (statusCounts.accepted || 0) + (statusCounts.enrolled || 0),
-        menunggu: (statusCounts.docs_verified || 0) + (statusCounts.scheduled || 0) + (statusCounts.tested || 0) + (statusCounts.announced || 0),
-        proses: (statusCounts.draft || 0) + (statusCounts.waiting_payment || 0) + (statusCounts.awaiting_payment || 0) + 
-                (statusCounts.paid || 0) + (statusCounts.payment_verification || 0) + (statusCounts.payment_rejected || 0) +
-                (statusCounts.verified || 0) + (statusCounts.data_completed || 0) + (statusCounts.docs_uploaded || 0),
+        cadangan: statusCounts.announced || 0,
+        menunggu: (statusCounts.tested || 0) + (statusCounts.scheduled || 0) + (statusCounts.docs_verified || 0),
+        proses: (statusCounts.draft || 0) + (statusCounts.verified || 0) + (statusCounts.data_completed || 0),
         ditolak: statusCounts.rejected || 0,
       }
     };

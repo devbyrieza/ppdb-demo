@@ -1141,114 +1141,116 @@ function AdminPendaftarContent() {
             <div className="hidden md:block overflow-x-auto">
               <table className="w-full">
                 <thead className="bg-linear-to-r from-brand-blue-50 to-brand-yellow-50 border-b border-brand-yellow-100">
-                  <tr>
-                    <th className="px-4 py-4 text-center">
-                      <button
-                        onClick={handleSelectAll}
-                        className="text-brand-blue-600 hover:text-brand-blue-800"
-                      >
-                        {selectedIds.length === pendaftar.length ? (
-                          <CheckSquare className="w-5 h-5" />
-                        ) : (
-                          <Square className="w-5 h-5" />
-                        )}
-                      </button>
-                    </th>
-                    <th className="px-4 py-4 text-left text-[10px] font-black text-brand-blue-900 uppercase tracking-widest">
-                      No. Pendaftaran
-                    </th>
-                    <th className="px-4 py-4 text-left text-[10px] font-black text-brand-blue-900 uppercase tracking-widest">
-                      Nama Lengkap
-                    </th>
-                    {!canViewKeuangan && (
-                      <>
-                        <th className="px-4 py-3 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">
-                          NIK
-                        </th>
-                        {/* Custom Column for Penguji */}
-                        {isPenguji && (
-                          <th className="px-4 py-3 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">
-                            Hasil Seleksi
-                          </th>
-                        )}
-                        {/* Custom Column for Admin Berkas */}
-                        {isBerkas && (
-                          <th className="px-4 py-3 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">
-                            Status Berkas
-                          </th>
-                        )}
-
-                        {/* Hide extraneous columns for Admin Berkas to focus view */}
-                        {!isBerkas && (
-                          <>
-                            <th className="px-4 py-3 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">
-                              Kontak
-                            </th>
-                            <th className="px-4 py-3 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">
-                              Tanggal Daftar
-                            </th>
-                          </>
-                        )}
-                      </>
-                    )}
-                    <th className="px-4 py-3 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">
-                      Aksi
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-stone-200">
-                  {pendaftar.map((item) => (
-                    <tr
-                      key={item.id}
-                      className={`hover:bg-blue-50 transition-colors ${selectedIds.includes(item.id) ? "bg-purple-50" : ""
-                        }`}
-                    >
-                      <td className="px-4 py-3 text-center">
+                    <tr>
+                      <th className="px-4 py-4 text-center">
                         <button
-                          onClick={() => handleSelectOne(item.id)}
-                          className="text-purple-600 hover:text-purple-800"
+                          onClick={handleSelectAll}
+                          className="text-brand-blue-600 hover:text-brand-blue-800"
                         >
-                          {selectedIds.includes(item.id) ? (
+                          {selectedIds.length === pendaftar.length ? (
                             <CheckSquare className="w-5 h-5" />
                           ) : (
                             <Square className="w-5 h-5" />
                           )}
                         </button>
-                      </td>
-                      <td className="px-4 py-3 whitespace-nowrap">
-                        <div className="flex items-center gap-2">
-                          <Hash className="w-4 h-4 text-blue-600" />
-                          <span className="font-mono text-sm font-bold text-blue-700">
-                            {item.nomor_pendaftaran}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="px-4 py-3">
-                        <div>
-                          <div className="font-bold text-stone-900">
-                            {toTitleCase(item.nama_lengkap)}
+                      </th>
+                      <th className="px-4 py-4 text-left text-[10px] font-black text-brand-blue-900 uppercase tracking-widest">
+                        No. Pendaftaran
+                      </th>
+                      <th className="px-4 py-4 text-left text-[10px] font-black text-brand-blue-900 uppercase tracking-widest">
+                        Nama Lengkap
+                      </th>
+                      <th className="px-4 py-4 text-left text-[10px] font-black text-brand-blue-900 uppercase tracking-widest">
+                        NIK
+                      </th>
+                      <th className="px-4 py-4 text-left text-[10px] font-black text-brand-blue-900 uppercase tracking-widest">
+                        Kontak
+                      </th>
+                      <th className="px-4 py-4 text-left text-[10px] font-black text-brand-blue-900 uppercase tracking-widest">
+                        Jenjang
+                      </th>
+                      <th className="px-4 py-4 text-left text-[10px] font-black text-brand-blue-900 uppercase tracking-widest">
+                        Status Berkas
+                      </th>
+                      <th className="px-4 py-4 text-left text-[10px] font-black text-brand-blue-900 uppercase tracking-widest">
+                        Status Pendaftaran
+                      </th>
+                      {canViewKeuangan && (
+                        <th className="px-4 py-4 text-left text-[10px] font-black text-brand-blue-900 uppercase tracking-widest">
+                          Bayar
+                        </th>
+                      )}
+                      <th className="px-4 py-4 text-left text-[10px] font-black text-brand-blue-900 uppercase tracking-widest">
+                        Aksi
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-stone-200">
+                    {pendaftar.map((item) => (
+                      <tr
+                        key={item.id}
+                        className={`hover:bg-blue-50 transition-colors ${selectedIds.includes(item.id) ? "bg-purple-50" : ""
+                          }`}
+                      >
+                        <td className="px-4 py-3 text-center">
+                          <button
+                            onClick={() => handleSelectOne(item.id)}
+                            className="text-purple-600 hover:text-purple-800"
+                          >
+                            {selectedIds.includes(item.id) ? (
+                              <CheckSquare className="w-5 h-5" />
+                            ) : (
+                              <Square className="w-5 h-5" />
+                            )}
+                          </button>
+                        </td>
+                        <td className="px-4 py-3 whitespace-nowrap">
+                          <div className="flex items-center gap-2">
+                            <Hash className="w-4 h-4 text-blue-600" />
+                            <span className="font-mono text-sm font-bold text-blue-700">
+                              {item.nomor_pendaftaran}
+                            </span>
                           </div>
-                          <div className="text-xs text-stone-600 font-medium">
-                            {["L", "Laki-laki"].includes(item.jenis_kelamin) ? "Laki-laki" : "Perempuan"}
+                        </td>
+                        <td className="px-4 py-3">
+                          <div>
+                            <div className="font-bold text-stone-900">
+                              {toTitleCase(item.nama_lengkap)}
+                            </div>
+                            <div className="text-xs text-stone-600 font-medium">
+                              {["L", "Laki-laki"].includes(item.jenis_kelamin) ? "Laki-laki" : "Perempuan"}
+                            </div>
                           </div>
-                        </div>
-                      </td>
-                      {/* Admin Penguji Specific Column */}
-                      {isPenguji && (
-                        <td className="px-4 py-4 whitespace-nowrap">
-                          <span className={`px-2 py-1 inline-flex text-xs leading-5 font-bold rounded-full ${item.nilai_ujian && item.nilai_ujian.nilai_total > 0
-                            ? "bg-purple-100 text-purple-800"
-                            : "bg-stone-100 text-stone-500"
-                            }`}>
-                            {item.nilai_ujian && item.nilai_ujian.nilai_total > 0
-                              ? `Nilai: ${item.nilai_ujian.nilai_total}`
-                              : "Belum Ujian"}
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className="font-mono text-sm text-stone-700">
+                            {item.nik}
                           </span>
                         </td>
-                      )}
-                      {/* Admin Berkas Specific Column */}
-                      {isBerkas && (
-                        <td className="px-4 py-4 whitespace-nowrap">
+                        <td className="px-4 py-3">
+                          <div className="text-sm space-y-1">
+                            {item.no_hp && (
+                              <div className="flex items-center gap-1 text-stone-600">
+                                <Phone className="w-3 h-3" />
+                                <span className="text-xs">{item.no_hp}</span>
+                              </div>
+                            )}
+                            {item.email && (
+                              <div className="flex items-center gap-1 text-stone-600">
+                                <Mail className="w-3 h-3" />
+                                <span className="text-xs truncate max-w-[150px]">
+                                  {item.email}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-bold">
+                            {item.jenjang}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3">
                           <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${item.dokumen && item.dokumen.every((d: any) => d.status_verifikasi === 'verified') && item.dokumen.length > 0
                             ? "bg-green-100 text-green-800"
                             : item.dokumen && item.dokumen.some((d: any) => d.status_verifikasi === 'rejected')
@@ -1265,138 +1267,61 @@ function AdminPendaftarContent() {
                             {item.dokumen?.length || 0} Dokumen
                           </div>
                         </td>
-                      )}
-
-                      {/* Hide extraneous columns for Admin Berkas to focus view */}
-                      {!isBerkas && (
-                        <>
-                          <td className="px-4 py-3">
-                            <span className="font-mono text-sm text-stone-700">
-                              {item.nik}
-                            </span>
-                          </td>
-                          <td className="px-4 py-3">
-                            <div className="text-sm space-y-1">
-                              {item.no_hp && (
-                                <div className="flex items-center gap-1 text-stone-600">
-                                  <Phone className="w-3 h-3" />
-                                  <span className="text-xs">{item.no_hp}</span>
-                                </div>
-                              )}
-                              {item.email && (
-                                <div className="flex items-center gap-1 text-stone-600">
-                                  <Mail className="w-3 h-3" />
-                                  <span className="text-xs truncate max-w-[150px]">
-                                    {item.email}
-                                  </span>
-                                </div>
-                              )}
-                            </div>
-                          </td>
-                          <td className="px-4 py-3 whitespace-nowrap">
-                            <div className="flex items-center gap-1 text-stone-600">
-                              <Calendar className="w-4 h-4" />
-                              <span className="text-sm">
-                                {formatDate(item.created_at)}
-                              </span>
-                            </div>
-                          </td>
-                        </>
-                      )}
-                      <td className="px-4 py-3">
-                        <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-bold">
-                          {item.jenjang}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3">
-                        {formatStatus(item.status_pendaftaran)}
-                      </td>
-                      {canViewKeuangan ? (
                         <td className="px-4 py-3">
-                          {/* @ts-ignore */}
-                          {item.pembayaran?.length > 0 ? (
-                            <span className={`px-2 py-0.5 rounded text-xs font-bold ${
-                              /* @ts-ignore */
-                              item.pembayaran[0].status_pembayaran === 'verified' ? 'bg-green-100 text-green-700' :
+                          {formatStatus(item.status_pendaftaran)}
+                        </td>
+                        {canViewKeuangan && (
+                          <td className="px-4 py-3">
+                            {/* @ts-ignore */}
+                            {item.pembayaran?.length > 0 ? (
+                              <span className={`px-2 py-0.5 rounded text-xs font-bold ${
                                 /* @ts-ignore */
-                                item.pembayaran[0].status_pembayaran === 'pending' ? 'bg-amber-100 text-amber-700' :
-                                  'bg-stone-100 text-stone-700'
-                              }`}>
-                              {/* @ts-ignore */}
-                              {item.pembayaran[0].status_pembayaran === 'verified' ? 'Lunas' :
-                                /* @ts-ignore */
-                                item.pembayaran[0].status_pembayaran === 'pending' ? 'Cek' : 'Belum'}
-                            </span>
-                          ) : (
-                            <span className="text-stone-500 text-xs">-</span>
+                                item.pembayaran[0].status_pembayaran === 'verified' ? 'bg-green-100 text-green-700' :
+                                  /* @ts-ignore */
+                                  item.pembayaran[0].status_pembayaran === 'pending' ? 'bg-amber-100 text-amber-700' :
+                                    'bg-stone-100 text-stone-700'
+                                }`}>
+                                {/* @ts-ignore */}
+                                {item.pembayaran[0].status_pembayaran === 'verified' ? 'Lunas' :
+                                  /* @ts-ignore */
+                                  item.pembayaran[0].status_pembayaran === 'pending' ? 'Cek' : 'Belum'}
+                              </span>
+                            ) : (
+                              <span className="text-stone-500 text-xs">-</span>
+                            )}
+                          </td>
+                        )}
+                        <td className="px-4 py-3 whitespace-nowrap">
+                          <Link
+                            href={`/dashboard/admin/pendaftar/${item.id}`}
+                            className="inline-flex items-center gap-2 px-4 py-2 bg-brand-blue-700 hover:bg-brand-blue-800 text-white rounded-xl text-xs font-black transition-all shadow-lg shadow-brand-blue-700/20 active:scale-95"
+                          >
+                            <Eye className="w-4 h-4" />
+                            <span>Buka Detail</span>
+                          </Link>
+                          {/* Super Admin Action: Input Hasil Seleksi */}
+                          {userRole === 'admin_super' && (
+                            <button
+                              onClick={() => handleOpenAnnouncement(item)}
+                              className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-bold transition-all shadow-sm hover:shadow-md ml-2"
+                            >
+                              <FileCheck className="w-4 h-4" />
+                              <span>Hasil</span>
+                            </button>
+                          )}
+                          {userRole === 'admin_super' && (
+                            <button
+                              onClick={() => handleOpenDelete(item)}
+                              className="inline-flex items-center gap-1 px-3 py-2 bg-red-100 hover:bg-red-600 text-red-700 hover:text-white rounded-lg text-sm font-bold transition-all ml-2"
+                              title="Hapus data (soft delete)"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
                           )}
                         </td>
-                      ) : (
-                        <>
-                          <td className="px-4 py-3">
-                            <span className="font-mono text-sm text-stone-700">
-                              {item.nik}
-                            </span>
-                          </td>
-                          <td className="px-4 py-3">
-                            <div className="text-sm space-y-1">
-                              {item.no_hp && (
-                                <div className="flex items-center gap-1 text-stone-600">
-                                  <Phone className="w-3 h-3" />
-                                  <span className="text-xs">{item.no_hp}</span>
-                                </div>
-                              )}
-                              {item.email && (
-                                <div className="flex items-center gap-1 text-stone-600">
-                                  <Mail className="w-3 h-3" />
-                                  <span className="text-xs truncate max-w-[150px]">
-                                    {item.email}
-                                  </span>
-                                </div>
-                              )}
-                            </div>
-                          </td>
-                          <td className="px-4 py-3 whitespace-nowrap">
-                            <div className="flex items-center gap-1 text-stone-600">
-                              <Calendar className="w-4 h-4" />
-                              <span className="text-sm">
-                                {formatDate(item.created_at)}
-                              </span>
-                            </div>
-                          </td>
-                        </>
-                      )}
-                      <td className="px-4 py-3 whitespace-nowrap">
-                        <Link
-                          href={`/dashboard/admin/pendaftar/${item.id}`}
-                          className="inline-flex items-center gap-2 px-4 py-2 bg-brand-blue-700 hover:bg-brand-blue-800 text-white rounded-xl text-xs font-black transition-all shadow-lg shadow-brand-blue-700/20 active:scale-95"
-                        >
-                          <Eye className="w-4 h-4" />
-                          <span>Buka Detail</span>
-                        </Link>
-                        {/* Super Admin Action: Input Hasil Seleksi */}
-                        {userRole === 'admin_super' && (
-                          <button
-                            onClick={() => handleOpenAnnouncement(item)}
-                            className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-bold transition-all shadow-sm hover:shadow-md ml-2"
-                          >
-                            <FileCheck className="w-4 h-4" />
-                            <span>Input Hasil</span>
-                          </button>
-                        )}
-                        {userRole === 'admin_super' && (
-                          <button
-                            onClick={() => handleOpenDelete(item)}
-                            className="inline-flex items-center gap-1 px-3 py-2 bg-red-100 hover:bg-red-600 text-red-700 hover:text-white rounded-lg text-sm font-bold transition-all ml-2"
-                            title="Hapus data (soft delete)"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
+                      </tr>
+                    ))}
+                  </tbody>
               </table>
             </div>
 

@@ -480,6 +480,7 @@ export default function DataLengkapForm({ onSuccess }: { onSuccess?: () => void 
   const [saving, setSaving] = useState(false);
   const [requestStatus, setRequestStatus] = useState<any>(null);
   const [statusPendaftaran, setStatusPendaftaran] = useState<string>("draft");
+  const [jenjang, setJenjang] = useState<string>("");
 
   const toggleSection = (section: keyof typeof openSections) => {
     setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
@@ -580,9 +581,24 @@ export default function DataLengkapForm({ onSuccess }: { onSuccess?: () => void 
 
         const result = await dataRes.json();
         if (result.success && result.data) {
+          const loadedJenjang = result.data.jenjang || "";
+          setJenjang(loadedJenjang);
+
+          // Auto-determine gender based on jenjang
+          let autoGender = result.data.santri.jenis_kelamin;
+          if (loadedJenjang.toLowerCase().includes("putra")) {
+            autoGender = "Laki-laki";
+          } else if (loadedJenjang.toLowerCase().includes("putri")) {
+            autoGender = "Perempuan";
+          }
+
           setFormData((prev) => ({
             ...prev,
-            santri: { ...prev.santri, ...result.data.santri },
+            santri: { 
+              ...prev.santri, 
+              ...result.data.santri,
+              jenis_kelamin: autoGender 
+            },
             ayah: { ...prev.ayah, ...result.data.ayah },
             ibu: { ...prev.ibu, ...result.data.ibu },
             wali: { ...prev.wali, ...result.data.wali },
@@ -692,6 +708,9 @@ export default function DataLengkapForm({ onSuccess }: { onSuccess?: () => void 
     formData.santri.kecamatan &&
     formData.santri.kelurahan &&
     formData.santri.kode_pos &&
+    formData.santri.alamat &&
+    formData.santri.rt &&
+    formData.santri.rw &&
     formData.santri.anak_ke &&
     formData.santri.berapa_bersaudara &&
     formData.santri.golongan_darah &&
@@ -717,7 +736,10 @@ export default function DataLengkapForm({ onSuccess }: { onSuccess?: () => void 
       formData.ayah.kabupaten &&
       formData.ayah.kecamatan &&
       formData.ayah.kelurahan &&
-      formData.ayah.kode_pos
+      formData.ayah.kode_pos &&
+      formData.ayah.alamat &&
+      formData.ayah.rt &&
+      formData.ayah.rw
     ))
   ));
 
@@ -735,7 +757,10 @@ export default function DataLengkapForm({ onSuccess }: { onSuccess?: () => void 
       formData.ibu.kabupaten &&
       formData.ibu.kecamatan &&
       formData.ibu.kelurahan &&
-      formData.ibu.kode_pos
+      formData.ibu.kode_pos &&
+      formData.ibu.alamat &&
+      formData.ibu.rt &&
+      formData.ibu.rw
     ))
   ));
 
@@ -750,11 +775,14 @@ export default function DataLengkapForm({ onSuccess }: { onSuccess?: () => void 
       formData.wali.kabupaten &&
       formData.wali.kecamatan &&
       formData.wali.kelurahan &&
-      formData.wali.kode_pos
+      formData.wali.kode_pos &&
+      formData.wali.alamat &&
+      formData.wali.rt &&
+      formData.wali.rw
     ))
   ));
 
-  const isLocked = !['draft', 'awaiting_payment', 'verified', 'rejected'].includes(statusPendaftaran);
+  const isLocked = !['draft', 'awaiting_payment', 'payment_verification', 'verified', 'rejected', 'data_completed'].includes(statusPendaftaran);
   const isEditMode = requestStatus?.status === 'approved_to_edit';
   const canEdit = !isLocked || isEditMode;
 
@@ -892,7 +920,15 @@ export default function DataLengkapForm({ onSuccess }: { onSuccess?: () => void 
                     required
                   />
                   <InputField label="Tanggal Lahir" name="tanggal_lahir" value={formData.santri.tanggal_lahir} onChange={(v) => updateSantri("tanggal_lahir", v)} type="date" required />
-                  <InputField label="Jenis Kelamin" name="jenis_kelamin" value={formData.santri.jenis_kelamin} onChange={(v) => updateSantri("jenis_kelamin", v)} options={[{ label: "Laki-laki", value: "L" }, { label: "Perempuan", value: "P" }]} required />
+                   <InputField 
+                    label="Jenis Kelamin" 
+                    name="jenis_kelamin" 
+                    value={formData.santri.jenis_kelamin} 
+                    onChange={(v) => updateSantri("jenis_kelamin", v)} 
+                    options={[{ label: "Laki-laki", value: "Laki-laki" }, { label: "Perempuan", value: "Perempuan" }]} 
+                    required 
+                    disabled={jenjang.toLowerCase().includes("putra") || jenjang.toLowerCase().includes("putri")} 
+                  />
                   <InputField
                     label="Kewarganegaraan"
                     name="kewarganegaraan"

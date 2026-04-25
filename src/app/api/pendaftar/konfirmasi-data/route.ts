@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
+import { notifyDataComplete } from "@/lib/wablas";
 
 /**
  * POST /api/pendaftar/konfirmasi-data
@@ -62,6 +63,18 @@ export async function POST() {
                 updated_at: new Date(),
             },
         });
+
+        // Send Data Complete Notification
+        if (pendaftar.no_hp) {
+            try {
+                await notifyDataComplete({
+                    phone: pendaftar.no_hp,
+                    nama: pendaftar.nama_lengkap
+                });
+            } catch (e) {
+                console.error("Failed to send data complete notification", e);
+            }
+        }
 
         return NextResponse.json({
             success: true,
