@@ -10,6 +10,9 @@ import {
   Loader2,
   BarChart3,
   ArrowUpRight,
+  CreditCard,
+  ClipboardCheck,
+  Bell,
 } from "lucide-react";
 import Link from "next/link";
 import { UserRole } from "@/lib/access-control";
@@ -42,6 +45,8 @@ export default function AdminDashboardPage() {
     diterima: 0,
     cadangan: 0,
     daftar_ulang: 0,
+    waiting_payment: 0,
+    waiting_docs: 0,
     stats_per_jenjang: [],
   });
 
@@ -191,6 +196,12 @@ export default function AdminDashboardPage() {
     );
 
   const daysLeft = getPPDBCountdown();
+  const isAdminSuper = role === "admin_super";
+  const isKeuangan = role === "admin_keuangan";
+  const isBerkas = role === "admin_berkas";
+  
+  const canViewKeuangan = isAdminSuper || isKeuangan || role === "admin";
+  const canViewBerkas = isAdminSuper || isBerkas || role === "admin";
 
   return (
     <div className="space-y-8 pb-12">
@@ -259,6 +270,57 @@ export default function AdminDashboardPage() {
           </Link>
         </div>
       </div>
+
+      {/* Role-Specific Action Cards */}
+      {(isKeuangan || isBerkas || isAdminSuper) && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {(isKeuangan || isAdminSuper) && stats.waiting_payment > 0 && (
+            <Link
+              href="/dashboard/admin/keuangan"
+              className="group relative overflow-hidden rounded-3xl bg-amber-50 border border-amber-200 p-6 shadow-sm hover:shadow-md transition-all active:scale-[0.98]"
+            >
+              <div className="flex items-center gap-5">
+                <div className="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                  <CreditCard className="w-6 h-6" />
+                </div>
+                <div>
+                  <p className="text-[10px] font-black text-amber-600 uppercase tracking-widest mb-1">Perlu Tindakan</p>
+                  <h3 className="text-lg font-black text-amber-900 leading-none">
+                    {stats.waiting_payment} Pembayaran
+                  </h3>
+                  <p className="text-xs text-amber-700 font-medium mt-1">Menunggu verifikasi Anda hari ini</p>
+                </div>
+                <div className="ml-auto bg-amber-200/50 p-2 rounded-xl group-hover:bg-amber-200 transition-colors">
+                  <ArrowUpRight className="w-5 h-5 text-amber-700" />
+                </div>
+              </div>
+            </Link>
+          )}
+
+          {(isBerkas || isAdminSuper) && stats.waiting_docs > 0 && (
+            <Link
+              href="/dashboard/admin/verifikasi-dokumen"
+              className="group relative overflow-hidden rounded-3xl bg-brand-blue-50 border border-brand-blue-100 p-6 shadow-sm hover:shadow-md transition-all active:scale-[0.98]"
+            >
+              <div className="flex items-center gap-5">
+                <div className="w-12 h-12 rounded-2xl bg-brand-blue-600 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                  <ClipboardCheck className="w-6 h-6" />
+                </div>
+                <div>
+                  <p className="text-[10px] font-black text-brand-blue-600 uppercase tracking-widest mb-1">Perlu Tindakan</p>
+                  <h3 className="text-lg font-black text-brand-blue-950 leading-none">
+                    {stats.waiting_docs} Berkas Pendaftar
+                  </h3>
+                  <p className="text-xs text-brand-blue-800 font-medium mt-1">Siap untuk diverifikasi kelengkapannya</p>
+                </div>
+                <div className="ml-auto bg-brand-blue-200/50 p-2 rounded-xl group-hover:bg-brand-blue-200 transition-colors">
+                  <ArrowUpRight className="w-5 h-5 text-brand-blue-700" />
+                </div>
+              </div>
+            </Link>
+          )}
+        </div>
+      )}
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
         {[
