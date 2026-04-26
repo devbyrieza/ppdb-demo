@@ -13,7 +13,7 @@ import {
   Target
 } from "lucide-react";
 import Link from "next/link";
-import ProgressStepper from "@/components/dashboard/ProgressStepper";
+import ProgressTracker from "./components/ProgressTracker";
 import {
   getNextStep,
   formatStatusDisplay,
@@ -70,7 +70,7 @@ export default function DashboardPendaftarPage() {
 
   return (
     <div className="space-y-10 pb-16 animate-in fade-in duration-700">
-      <ProgressStepper currentStatus={data.status} />
+      <ProgressTracker currentStatus={data.status} />
 
       {/* Premium Hero Banner */}
       <div className="relative overflow-hidden rounded-3xl md:rounded-4xl bg-linear-to-br from-brand-blue-700 to-brand-blue-900 text-white p-6 sm:p-8 md:p-16 shadow-2xl app-card border border-brand-blue-600">

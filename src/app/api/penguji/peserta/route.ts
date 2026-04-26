@@ -21,6 +21,8 @@ export async function GET() {
     }
 
     const userId = session.user_id || session.id;
+    const full_name = session.full_name || session.name || "Reviewer";
+    console.log(`🔍 [API /penguji/peserta] userId: ${userId} | name: ${full_name}`);
 
     try {
         // Fetch user profile to see if they're an admin
@@ -113,43 +115,20 @@ export async function GET() {
             }
 
             // Find ALL score records for this pendaftar
-            // Include both session-specific scores and general scores to ensure no data is lost
-            const allScoresInSession = (item.pendaftar.nilai_ujian || []).filter(
-                (s: any) => {
-                    // If score has jadwal_ujian_id, check if it belongs to the same exam session
-                    if (s.jadwal_ujian_id) {
-                        // Find the jadwal record for this score from ALL jadwal in the session
-                        const scoreJadwal = allJadwalInSessions.find((j: any) => j.id === s.jadwal_ujian_id);
-                        // Include if it's in the same exam session OR if it's a Quran score (to ensure Quran scores are always visible)
-                        return (scoreJadwal && scoreJadwal.exam_session_id === item.exam_session_id) || 
-                               (s.score_quran != null || s.nilai_tes_quran != null || s.detail_quran != null);
-                    }
-                    // If score has no jadwal_ujian_id (old data), include it
-                    return true;
-                }
-            );
-
-            // DEBUG: Log for Farid to understand the issue
-            if (item.pendaftar.nama_lengkap.toLowerCase().includes("farid")) {
-                console.log("\n=== DEBUG FARID ===");
-                console.log("Pendaftar ID:", item.pendaftar.id);
-                console.log("Jadwal ID:", item.id);
-                console.log("Exam Session ID:", item.exam_session_id);
-                console.log("All scores for Farid:", JSON.stringify(item.pendaftar.nilai_ujian, null, 2));
-                console.log("Scores in session:", JSON.stringify(allScoresInSession, null, 2));
-                console.log("All jadwal in sessions:", JSON.stringify(allJadwalInSessions, null, 2));
-                console.log("===================\n");
-            }
+            const allScoresInPendaftar = (item.pendaftar.nilai_ujian || []);
 
             // Define fields that are allowed to travel across sessions (Universal)
             const UNIVERSAL_FIELDS = [
                 'nilai_tes_quran', 'score_quran', 'detail_quran', 
-                'catatan_quran', 'input_at_quran', 'input_by_quran'
+                'catatan_quran', 'input_at_quran', 'input_by_quran',
+                'nilai_wawancara_santri', 'detail_wawancara', 'catatan_santri', 'input_at_santri', 'input_by_santri',
+                'nilai_wawancara_ortu', 'detail_cawalsan', 'catatan_ortu', 'input_at_ortu', 'input_by_ortu',
+                'score_wawancara', 'nilai_tes_tertulis', 'nilai_tes_tertulis_total', 'detail_akademik'
             ];
 
             // Merge all scores found, but apply session-aware logic
             const mergedSessionScore: any = {};
-            allScoresInSession.forEach((s: any) => {
+            allScoresInPendaftar.forEach((s: any) => {
                 // Determine if this score record belongs to the CURRENT exam session
                 const scoreJadwal = s.jadwal_ujian_id ? allJadwalInSessions.find((j: any) => j.id === s.jadwal_ujian_id) : null;
                 const isCurrentSession = scoreJadwal && scoreJadwal.exam_session_id === item.exam_session_id;
@@ -158,7 +137,7 @@ export async function GET() {
                     if (!isEmpty(v)) {
                         // Logic:
                         // 1. If it's the current session, we take everything.
-                        // 2. If it's a different session (or orphan), we ONLY take Universal fields (Quran).
+                        // 2. If it's a different session (or orphan), we ONLY take Universal fields.
                         if (isCurrentSession || UNIVERSAL_FIELDS.includes(k)) {
                             // Prefer existing values if already set (merging strategy)
                             if (mergedSessionScore[k] == null || mergedSessionScore[k] === "") {

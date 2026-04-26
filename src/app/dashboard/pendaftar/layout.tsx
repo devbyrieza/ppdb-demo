@@ -37,6 +37,7 @@ import {
   type StatusProses,
   type TabName,
 } from "@/lib/access-control";
+import DashboardTabs from "./components/DashboardTabs";
 
 export default function DashboardLayout({
   children,
@@ -413,8 +414,11 @@ export default function DashboardLayout({
             </header>
 
             {/* Content Wrapper */}
-            <div className="flex-1 pt-14 lg:pt-12 p-4 md:p-6 lg:p-8 max-w-6xl w-full mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500 z-10">
-              {children}
+            <div className="flex-1 pt-14 lg:pt-12 max-w-6xl w-full mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500 z-10">
+              <DashboardTabs statusProses={statusProses} />
+              <div className="p-4 md:p-6 lg:p-8">
+                {children}
+              </div>
             </div>
             
             {/* Mobile Bottom Navigation (Fintech Style) */}
