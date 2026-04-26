@@ -161,7 +161,7 @@ Kode OTP: ${item.otp}
 Untuk: ${item.nama}
 
 Jangan bagikan kode ini.
-Hubungi 0812-85-300800 jika ada masalah.`}
+Hubungi 0812-8530-0800 jika ada masalah.`}
                     </pre>
                   </div>
 

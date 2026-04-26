@@ -41,8 +41,13 @@ export default function Footer() {
               Membangun generasi Qur&apos;ani yang cerdas &amp; berakhlak mulia melalui sistem terintegrasi PPDB Modern.
             </p>
             <div className="flex gap-3">
-              {[Instagram, Youtube, Facebook, Twitter].map((Icon, i) => (
-                <Link key={i} href="#" className="w-10 h-10 rounded-xl bg-brand-blue-900 border border-brand-blue-800 flex items-center justify-center text-brand-yellow-100 hover:bg-brand-yellow-400 hover:text-brand-blue-950 hover:border-brand-yellow-400 transition-all duration-300 shadow-sm">
+              {[
+                { Icon: Instagram, href: "https://www.instagram.com/alandalusululalbaab/" },
+                { Icon: Youtube, href: "https://www.youtube.com/@AlAndalusUlulAlbaab" },
+                { Icon: Facebook, href: "https://www.facebook.com/alandalus.ululalbaab/" },
+                { Icon: Twitter, href: "#" }
+              ].map(({ Icon, href }, i) => (
+                <Link key={i} href={href} className="w-10 h-10 rounded-xl bg-brand-blue-900 border border-brand-blue-800 flex items-center justify-center text-brand-yellow-100 hover:bg-brand-yellow-400 hover:text-brand-blue-950 hover:border-brand-yellow-400 transition-all duration-300 shadow-sm">
                   <Icon className="w-5 h-5" />
                 </Link>
               ))}
@@ -93,7 +98,7 @@ export default function Footer() {
                   <Phone className="w-5 h-5" />
                 </div>
                 <div className="text-sm font-bold text-white text-left pt-1">
-                  +62 812-85-300800
+                  +62 812-8530-0800
                   <p className="text-[10px] text-brand-yellow-100/80 font-medium tracking-wide mt-0.5">Layanan Pelanggan</p>
                 </div>
               </div>
@@ -102,7 +107,7 @@ export default function Footer() {
                   <Mail className="w-5 h-5" />
                 </div>
                 <div className="text-sm font-bold text-white text-left pt-2.5 break-all">
-                  alimam@andalus.sch.id
+                  alandalusululalbaab2@gmail.com
                 </div>
               </div>
             </div>

@@ -1101,7 +1101,7 @@ export default function PembayaranPendaftaranTab({
               </div>
               <div>
                 <p className="text-xs font-bold text-ink-400 uppercase">WhatsApp Admin</p>
-                <p className="font-bold text-ink-900 text-sm">0812-85-300800</p>
+                <p className="font-bold text-ink-900 text-sm">0812-8530-0800</p>
               </div>
             </a>
           </div>

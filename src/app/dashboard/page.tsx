@@ -540,7 +540,7 @@ export default function DashboardPage() {
                   </div>
                   <div className="text-left leading-none">
                     <p className="text-[10px] font-black uppercase tracking-widest text-brand-blue-600 mb-2">WhatsApp CS</p>
-                    <p className="font-black text-lg text-brand-blue-950">0812-85-300800</p>
+                    <p className="font-black text-lg text-brand-blue-950">0812-8530-0800</p>
                   </div>
                 </a>
               </div>

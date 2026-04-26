@@ -127,7 +127,7 @@ export default function ContactPage() {
     const SOCIAL_MEDIA = [
         {
             name: "Instagram",
-            username: "@demoppdbululalbaab",
+            username: "@alandalusululalbaab",
             url: "https://www.instagram.com/alandalusululalbaab/",
             icon: Instagram,
             textColor: "text-pink-600",
@@ -135,15 +135,15 @@ export default function ContactPage() {
         },
         {
             name: "Facebook",
-            username: "Pesantren Sistem PPDB Modern",
-            url: "https://www.facebook.com/search/top?q=pesantren%20al-andalus%20ulul%20albaab",
+            username: "Pesantren Al-Andalus Ulul Albaab",
+            url: "https://www.facebook.com/alandalus.ululalbaab/",
             icon: Facebook,
             textColor: "text-blue-600",
             bgLight: "bg-blue-50",
         },
         {
             name: "Youtube",
-            username: "Al Andalus PPDB",
+            username: "Al Andalus Ulul Albaab",
             url: "https://www.youtube.com/@AlAndalusUlulAlbaab",
             icon: Youtube,
             textColor: "text-red-600",
@@ -205,7 +205,7 @@ export default function ContactPage() {
                         <ContactInfoCard
                             icon={MessageCircle}
                             title="Nomor WhatsApp CS"
-                            content="+62 812-85-300800"
+                            content="+62 812-8530-0800"
                             href="https://wa.me/6281285300800"
                             subContent="Layanan Informasi Pelayanan"
                             delay={0.2}
@@ -213,8 +213,8 @@ export default function ContactPage() {
                         <ContactInfoCard
                             icon={Mail}
                             title="Email Resmi"
-                            content="alandalus.ululalbaab@gmail.com"
-                            href="mailto:alandalus.ululalbaab@gmail.com"
+                            content="alandalusululalbaab2@gmail.com"
+                            href="mailto:alandalusululalbaab2@gmail.com"
                             subContent="Surat Menyurat & Kerjasama"
                             delay={0.3}
                         />
