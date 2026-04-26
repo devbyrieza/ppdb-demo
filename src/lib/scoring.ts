@@ -146,7 +146,12 @@ export async function recalculateNilaiUjian(pendaftarId: string) {
         // Update Pendaftar Status to 'tested'
         const pendaftar = await prisma.pendaftar.findUnique({
             where: { id: pendaftarId },
-            select: { status_pendaftaran: true }
+            select: { 
+                status_pendaftaran: true,
+                nama_lengkap: true,
+                no_hp: true,
+                orang_tua: { select: { no_hp_ayah: true, no_hp_ibu: true } }
+            }
         });
 
         const currentStatus = pendaftar?.status_pendaftaran;
@@ -157,6 +162,16 @@ export async function recalculateNilaiUjian(pendaftarId: string) {
                 where: { id: pendaftarId },
                 data: { status_pendaftaran: 'tested' }
             });
+
+            // Send "Selection Complete" notification ONLY when all 6 components are finished
+            const { notifyAllExamsComplete } = await import('./wablas');
+            const phone = pendaftar.no_hp || pendaftar.orang_tua?.no_hp_ayah || pendaftar.orang_tua?.no_hp_ibu;
+            if (phone) {
+                await notifyAllExamsComplete({
+                    phone,
+                    nama: pendaftar.nama_lengkap
+                });
+            }
         }
     } else {
         status = 'BELUM LENGKAP';

@@ -1,5 +1,4 @@
 import { prisma } from "./prisma";
-import { notifyAllExamsComplete } from "./wablas";
 
 /**
  * Utility to mark a specific exam component as complete and trigger pendaftar status update if all done.
@@ -101,18 +100,9 @@ export async function markExamComponentAsComplete({
 
     if (isAllDone) {
         // Recalculate scores — this will set status_pendaftaran to 'tested' only if ALL 6 score components are present
-        // Import here to avoid circular dependency
+        // And it will trigger the notification only when it first reaches 'tested' state.
         const { recalculateNilaiUjian } = await import('./scoring');
         await recalculateNilaiUjian(jadwal.pendaftar_id);
-
-        // Send Notification (always triggered when all 3 scheduled components finish)
-        const phone = jadwal.pendaftar.no_hp || jadwal.pendaftar.orang_tua?.no_hp_ayah || jadwal.pendaftar.orang_tua?.no_hp_ibu;
-        if (phone) {
-            await notifyAllExamsComplete({
-                phone,
-                nama: jadwal.pendaftar.nama_lengkap
-            });
-        }
     }
 
     return {
