@@ -9,6 +9,7 @@ import {
     buildMessageReminderH1Penguji 
 } from "@/lib/whatsapp-queue";
 import { generateMagicToken } from "@/lib/utils/magic-link";
+import { getLeastLoadedExaminerFromPool } from "@/lib/utils/assignment";
 
 function getExamCategory(title: string): string {
     const t = (title || "").toLowerCase();
@@ -147,25 +148,38 @@ export async function POST(request: Request) {
 
             let pengujiFields: Record<string, string | null> = {};
             const sessionTitle = (examSession.title || "").toLowerCase();
-            if (examSession.created_by) {
+            const currentCategory = getExamCategory(examSession.title || "");
+
+            // IMPLEMENTASI LOAD BALANCING (PEMERATAAN PENGUJI)
+            // Cari penguji yang memiliki beban kerja paling sedikit di jam yang sama
+            const balancedAssignment = await getLeastLoadedExaminerFromPool(
+                examSession.start_time,
+                currentCategory,
+                pendaftar.tahun_ajaran_id
+            );
+
+            const finalExaminerId = balancedAssignment?.examiner_id || examSession.created_by;
+            const finalSessionId = balancedAssignment?.session_id || exam_session_id;
+
+            if (finalExaminerId) {
                 const interviewer = await tx.profile.findUnique({
-                    where: { id: examSession.created_by },
+                    where: { id: finalExaminerId },
                     select: { google_meet_link: true, full_name: true, phone: true }
                 });
 
-                if (sessionTitle.includes("qur") || sessionTitle.includes("quran")) {
+                if (currentCategory === 'QURAN') {
                     pengujiFields = {
-                        penguji_quran_id: examSession.created_by,
+                        penguji_quran_id: finalExaminerId,
                         google_meet_link: interviewer?.google_meet_link || null
                     };
-                } else if (sessionTitle.includes("calsan") || sessionTitle.includes("santri")) {
+                } else if (currentCategory === 'W_SANTRI') {
                     pengujiFields = {
-                        penguji_santri_id: examSession.created_by,
+                        penguji_santri_id: finalExaminerId,
                         google_meet_link: interviewer?.google_meet_link || null
                     };
-                } else if (sessionTitle.includes("cawalsan") || sessionTitle.includes("ortu") || sessionTitle.includes("orang")) {
+                } else if (currentCategory === 'W_ORTU') {
                     pengujiFields = {
-                        penguji_ortu_id: examSession.created_by,
+                        penguji_ortu_id: finalExaminerId,
                         google_meet_link: interviewer?.google_meet_link || null
                     };
                 }
@@ -175,7 +189,7 @@ export async function POST(request: Request) {
                 data: {
                     tahun_ajaran_id: pendaftar.tahun_ajaran_id,
                     pendaftar_id: session.id,
-                    exam_session_id: exam_session_id,
+                    exam_session_id: finalSessionId || exam_session_id,
                     tanggal_ujian: examSession.start_time, // Date part
                     waktu_mulai_santri: examSession.start_time, // Temporarily copy session time to specific fields for compat
                     waktu_selesai_santri: examSession.end_time,
@@ -205,8 +219,10 @@ export async function POST(request: Request) {
                 }
             });
 
-            return jadwal;
+            return { jadwal, pengujiFields };
         });
+
+        const { jadwal, pengujiFields } = result;
 
         // Send WhatsApp via Queue (Layer 2: Non-blocking, through queue)
         const pendaftarInfo = await prisma.pendaftar.findUnique({
@@ -238,9 +254,10 @@ export async function POST(request: Request) {
             }).catch((err: any) => console.error("Failed to enqueue jadwal confirmation:", err));
 
             // 2. Notify Interviewer (Layer 2.1: Delayed notification for staff)
-            if (examSession.created_by) {
+            const finalId = pengujiFields.penguji_quran_id || pengujiFields.penguji_santri_id || pengujiFields.penguji_ortu_id || examSession.created_by;
+            if (finalId) {
                 const interviewer = await prisma.profile.findUnique({
-                    where: { id: examSession.created_by },
+                    where: { id: finalId },
                     select: { full_name: true, phone: true, google_meet_link: true }
                 });
 
@@ -248,7 +265,7 @@ export async function POST(request: Request) {
                     // Generate Magic Link for this interviewer
                     const redirectPathPath = `/dashboard/penguji/input-nilai?search=${encodeURIComponent(pendaftarInfo.nama_lengkap)}`; // Fallback search by name if nomor_pendaftaran is not easily accessible here
                     const token = generateMagicToken(
-                        examSession.created_by,
+                        finalId,
                         "penguji", 
                         interviewer.full_name,
                         72, // 3 days expiry for confirmation
@@ -325,7 +342,7 @@ export async function POST(request: Request) {
                      // Update flag safely - using try catch to avoid crash if DB not pushed yet
                      try {
                         await prisma.jadwalUjian.update({
-                            where: { id: result.id },
+                            where: { id: jadwal.id },
                             data: { notif_h1_pendaftar_terkirim: true }
                         });
                      } catch (e) {
@@ -334,9 +351,10 @@ export async function POST(request: Request) {
                 }).catch(err => console.error("Failed to enqueue H1 santri reminder:", err));
 
                 // 3.2. Reminder for Interviewer
-                if (examSession.created_by) {
+                const finalIdRem = pengujiFields.penguji_quran_id || pengujiFields.penguji_santri_id || pengujiFields.penguji_ortu_id || examSession.created_by;
+                if (finalIdRem) {
                     const interviewer = await prisma.profile.findUnique({
-                        where: { id: examSession.created_by },
+                        where: { id: finalIdRem },
                         select: { full_name: true, phone: true, google_meet_link: true }
                         });
 
@@ -344,7 +362,7 @@ export async function POST(request: Request) {
                             // Generate Magic Link for 4-hour reminder
                             const redirectPathH1 = `/dashboard/penguji/input-nilai?search=${encodeURIComponent(pendaftarInfo.nama_lengkap)}`;
                             const tokenH1 = generateMagicToken(
-                                examSession.created_by,
+                                finalIdRem,
                                 "penguji",
                                 interviewer.full_name,
                                 48, // 2 days
@@ -380,10 +398,10 @@ export async function POST(request: Request) {
                             }).then(async () => {
                                  // Update flag safely
                                  try {
-                                    await prisma.jadwalUjian.update({
-                                        where: { id: result.id },
-                                        data: { notif_h1_penguji_terkirim: true }
-                                    });
+                                     await prisma.jadwalUjian.update({
+                                         where: { id: jadwal.id },
+                                         data: { notif_h1_penguji_terkirim: true }
+                                     });
                                  } catch (e) {
                                     console.warn("Could not update H1 interviewer flag (DB sync might be pending)");
                                  }
@@ -395,7 +413,7 @@ export async function POST(request: Request) {
             }
         }
 
-        return NextResponse.json({ success: true, data: result });
+        return NextResponse.json({ success: true, data: jadwal });
 
     } catch (error: any) {
         console.error("POST pendaftar/jadwal error:", error);
