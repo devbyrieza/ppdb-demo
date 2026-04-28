@@ -18,6 +18,9 @@ import {
   Trophy,
   AlertCircle,
   Edit2,
+  CheckSquare,
+  Square,
+  Layers,
 } from "lucide-react";
 import Swal from "sweetalert2";
 
@@ -136,8 +139,15 @@ export default function JadwalPengujiPage() {
   const [editingSlot, setEditingSlot] = useState<ExamSession | null>(null);
   const [editForm, setEditForm] = useState({ date: "", start_time: "08:00", end_time: "09:00", location: "", notes: "" });
   const [submittingEdit, setSubmittingEdit] = useState(false);
-  
-  // Bulk Modal State
+
+  // Multi-Select / Bulk Edit State
+  const [isSelectMode, setIsSelectMode] = useState(false);
+  const [selectedSlotIds, setSelectedSlotIds] = useState<Set<string>>(new Set());
+  const [isBulkEditModalOpen, setIsBulkEditModalOpen] = useState(false);
+  const [bulkEditForm, setBulkEditForm] = useState({ start_time: "", end_time: "", location: "", notes: "", changeTime: false, changeLocation: false, changeNotes: false });
+  const [submittingBulkEdit, setSubmittingBulkEdit] = useState(false);
+
+  // Bulk Create Modal State
   const [isBulkModalOpen, setIsBulkModalOpen] = useState(false);
   const [submittingBulk, setSubmittingBulk] = useState(false);
   const [activeDay, setActiveDay] = useState<number>(new Date().getDay());
@@ -471,6 +481,83 @@ export default function JadwalPengujiPage() {
       setMessage({ type: "error", text: error.message });
     } finally {
       setSubmittingEdit(false);
+    }
+  };
+
+  const toggleSelectSlot = (id: string) => {
+    setSelectedSlotIds(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedSlotIds.size === slots.length) {
+      setSelectedSlotIds(new Set());
+    } else {
+      setSelectedSlotIds(new Set(slots.map(s => s.id)));
+    }
+  };
+
+  const exitSelectMode = () => {
+    setIsSelectMode(false);
+    setSelectedSlotIds(new Set());
+  };
+
+  const handleBulkEdit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (selectedSlotIds.size === 0) return;
+    setSubmittingBulkEdit(true);
+
+    const idsToUpdate = Array.from(selectedSlotIds);
+    let successCount = 0;
+    let errorCount = 0;
+
+    for (const slotId of idsToUpdate) {
+      // Build patch payload from selected slot + form overrides
+      const slot = slots.find(s => s.id === slotId);
+      if (!slot) continue;
+
+      const start = new Date(slot.start_time);
+      const end = new Date(slot.end_time);
+
+      // If changing time, build new datetimes on same date
+      let newStart = start;
+      let newEnd = end;
+      if (bulkEditForm.changeTime && bulkEditForm.start_time && bulkEditForm.end_time) {
+        const dateStr = start.toISOString().split('T')[0];
+        newStart = new Date(`${dateStr}T${bulkEditForm.start_time}:00`);
+        newEnd = new Date(`${dateStr}T${bulkEditForm.end_time}:00`);
+      }
+
+      const payload: Record<string, any> = {
+        title: slot.title,
+        start_time: newStart.toISOString(),
+        end_time: newEnd.toISOString(),
+      };
+      if (bulkEditForm.changeLocation) payload.location = bulkEditForm.location || 'Online';
+      if (bulkEditForm.changeNotes) payload.notes = bulkEditForm.notes;
+
+      try {
+        const res = await fetch(`/api/exam-sessions?id=${slotId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (res.ok) successCount++; else errorCount++;
+      } catch { errorCount++; }
+    }
+
+    setSubmittingBulkEdit(false);
+    setIsBulkEditModalOpen(false);
+    exitSelectMode();
+    fetchSlots();
+
+    if (errorCount === 0) {
+      Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: `${successCount} sesi berhasil diperbarui!`, showConfirmButton: false, timer: 2500 });
+    } else {
+      Swal.fire('Selesai', `${successCount} berhasil, ${errorCount} gagal.`, 'warning');
     }
   };
 
@@ -834,18 +921,40 @@ export default function JadwalPengujiPage() {
                 <p className="text-xs font-bold text-ink-500 leading-relaxed uppercase tracking-widest opacity-60">Pilih waktu dimana Anda bersedia menguji calon santri atau orang tua.</p>
               </div>
               <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
-                <button
-                  onClick={() => setIsBulkModalOpen(true)}
-                  className="w-full sm:w-auto flex items-center justify-center gap-3 px-6 py-4 bg-brand-blue-50 hover:bg-brand-blue-100 text-brand-blue-700 rounded-2xl font-black border border-brand-blue-100 transition-all text-xs uppercase tracking-widest active:scale-95 shadow-sm"
-                >
-                  <Plus className="w-5 h-5" /> Buat Massal
-                </button>
-                <button
-                  onClick={() => setIsSlotModalOpen(true)}
-                  className="w-full sm:w-auto flex items-center justify-center gap-3 px-6 py-4 bg-brand-blue-600 hover:bg-brand-blue-700 text-white rounded-2xl font-black shadow-lg shadow-brand-blue-600/20 transition-all text-xs uppercase tracking-widest active:scale-95"
-                >
-                  <Plus className="w-5 h-5" /> Buat Sesi Tunggal
-                </button>
+                {!isSelectMode ? (
+                  <>
+                    {slots.length > 0 && (
+                      <button
+                        onClick={() => setIsSelectMode(true)}
+                        className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-4 bg-stone-50 hover:bg-stone-100 text-stone-600 rounded-2xl font-black border border-stone-200 transition-all text-xs uppercase tracking-widest active:scale-95"
+                      >
+                        <Layers className="w-4 h-4" /> Edit Massal
+                      </button>
+                    )}
+                    <button
+                      onClick={() => setIsBulkModalOpen(true)}
+                      className="w-full sm:w-auto flex items-center justify-center gap-3 px-6 py-4 bg-brand-blue-50 hover:bg-brand-blue-100 text-brand-blue-700 rounded-2xl font-black border border-brand-blue-100 transition-all text-xs uppercase tracking-widest active:scale-95 shadow-sm"
+                    >
+                      <Plus className="w-5 h-5" /> Buat Massal
+                    </button>
+                    <button
+                      onClick={() => setIsSlotModalOpen(true)}
+                      className="w-full sm:w-auto flex items-center justify-center gap-3 px-6 py-4 bg-brand-blue-600 hover:bg-brand-blue-700 text-white rounded-2xl font-black shadow-lg shadow-brand-blue-600/20 transition-all text-xs uppercase tracking-widest active:scale-95"
+                    >
+                      <Plus className="w-5 h-5" /> Buat Sesi Tunggal
+                    </button>
+                  </>
+                ) : (
+                  <div className="flex items-center gap-3">
+                    <button onClick={toggleSelectAll} className="flex items-center gap-2 px-4 py-3 bg-brand-blue-50 text-brand-blue-700 rounded-xl font-black text-xs border border-brand-blue-100 hover:bg-brand-blue-100 transition-all">
+                      {selectedSlotIds.size === slots.length ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4" />}
+                      {selectedSlotIds.size === slots.length ? 'Batal Semua' : 'Pilih Semua'}
+                    </button>
+                    <button onClick={exitSelectMode} className="px-4 py-3 border border-stone-200 text-stone-500 rounded-xl font-black text-xs hover:bg-stone-50 transition-all">
+                      Batal
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -859,8 +968,20 @@ export default function JadwalPengujiPage() {
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {slots.map(slot => (
-                <div key={slot.id} className="bg-white rounded-[2rem] p-6 border border-brand-yellow-100 shadow-sm hover:shadow-xl hover:shadow-brand-blue-600/5 transition-all group relative app-card">
-                  <div className="absolute top-6 right-6 flex items-center gap-1">
+                <div key={slot.id} onClick={isSelectMode ? () => toggleSelectSlot(slot.id) : undefined} className={`bg-white rounded-[2rem] p-6 border shadow-sm transition-all group relative app-card ${
+                  isSelectMode ? 'cursor-pointer hover:border-brand-blue-300' : 'hover:shadow-xl hover:shadow-brand-blue-600/5'
+                } ${
+                  selectedSlotIds.has(slot.id) ? 'border-brand-blue-400 ring-2 ring-brand-blue-200 shadow-brand-blue-100' : 'border-brand-yellow-100'
+                }`}>
+                  {/* Checkbox overlay in select mode */}
+                  {isSelectMode && (
+                    <div className="absolute top-5 left-5 z-10">
+                      {selectedSlotIds.has(slot.id)
+                        ? <CheckSquare className="w-6 h-6 text-brand-blue-600" />
+                        : <Square className="w-6 h-6 text-ink-300" />}
+                    </div>
+                  )}
+                  <div className={`absolute top-6 right-6 flex items-center gap-1 ${isSelectMode ? 'hidden' : ''}`}>
                     <button
                       onClick={() => handleOpenEdit(slot)}
                       className="p-2.5 text-ink-300 hover:text-brand-blue-600 hover:bg-brand-blue-50 rounded-full transition-all active:scale-90"
@@ -909,6 +1030,107 @@ export default function JadwalPengujiPage() {
             </div>
           )}
         </>
+      )}
+
+      {/* FLOATING BOTTOM BAR (select mode) */}
+      {isSelectMode && selectedSlotIds.size > 0 && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[55] animate-in slide-in-from-bottom-4 duration-300">
+          <div className="flex items-center gap-4 bg-brand-blue-950 text-white px-6 py-4 rounded-[2rem] shadow-2xl shadow-brand-blue-950/40">
+            <div className="flex items-center gap-2">
+              <CheckSquare className="w-5 h-5 text-brand-yellow-400" />
+              <span className="font-black text-sm">{selectedSlotIds.size} sesi dipilih</span>
+            </div>
+            <div className="w-px h-6 bg-white/20" />
+            <button
+              onClick={() => {
+                setBulkEditForm({ start_time: "08:00", end_time: "09:00", location: "", notes: "", changeTime: false, changeLocation: false, changeNotes: false });
+                setIsBulkEditModalOpen(true);
+              }}
+              className="flex items-center gap-2 px-5 py-2.5 bg-brand-yellow-400 text-brand-blue-950 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-brand-yellow-300 transition-all active:scale-95"
+            >
+              <Edit2 className="w-4 h-4" /> Edit Terpilih
+            </button>
+            <button
+              onClick={exitSelectMode}
+              className="px-4 py-2.5 border border-white/20 text-white/70 hover:text-white rounded-xl font-black text-xs transition-all"
+            >
+              Batal
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL BULK EDIT */}
+      {isBulkEditModalOpen && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-brand-blue-950/40 backdrop-blur-md animate-in fade-in duration-300">
+          <div className="bg-white rounded-[32px] shadow-2xl w-full max-w-md overflow-hidden border border-white/20 animate-in zoom-in-95 duration-300">
+            <div className="p-6 border-b border-stone-100 flex justify-between items-center bg-stone-50/50">
+              <div>
+                <h3 className="text-xl font-black text-brand-blue-950 tracking-tight leading-none">Edit Massal</h3>
+                <p className="text-[10px] text-ink-300 font-bold uppercase tracking-widest mt-1.5">{selectedSlotIds.size} sesi dipilih — centang yang ingin diubah</p>
+              </div>
+              <button onClick={() => setIsBulkEditModalOpen(false)} className="p-2 hover:bg-stone-200 rounded-full transition-colors text-stone-400">
+                <XCircle className="w-6 h-6" />
+              </button>
+            </div>
+
+            <form onSubmit={handleBulkEdit} className="p-8 space-y-5">
+              {/* Waktu */}
+              <div className={`p-4 rounded-2xl border-2 transition-all ${bulkEditForm.changeTime ? 'border-brand-blue-300 bg-brand-blue-50/30' : 'border-stone-100 bg-stone-50/50'}`}>
+                <label className="flex items-center gap-3 cursor-pointer mb-3">
+                  <input type="checkbox" checked={bulkEditForm.changeTime} onChange={e => setBulkEditForm({...bulkEditForm, changeTime: e.target.checked})} className="w-4 h-4 accent-brand-blue-600" />
+                  <span className="text-xs font-black text-ink-400 uppercase tracking-widest">Ubah Jam</span>
+                </label>
+                {bulkEditForm.changeTime && (
+                  <div className="grid grid-cols-2 gap-3 mt-2">
+                    <div>
+                      <label className="block text-[10px] font-black text-ink-400 uppercase tracking-widest mb-1.5">Mulai</label>
+                      <input type="time" required className="w-full px-3 py-2.5 bg-white border border-stone-200 rounded-xl font-bold text-brand-blue-950 text-sm focus:ring-2 focus:ring-brand-blue-400 outline-none" value={bulkEditForm.start_time} onChange={e => setBulkEditForm({...bulkEditForm, start_time: e.target.value})} />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black text-ink-400 uppercase tracking-widest mb-1.5">Selesai</label>
+                      <input type="time" required className="w-full px-3 py-2.5 bg-white border border-stone-200 rounded-xl font-bold text-brand-blue-950 text-sm focus:ring-2 focus:ring-brand-blue-400 outline-none" value={bulkEditForm.end_time} onChange={e => setBulkEditForm({...bulkEditForm, end_time: e.target.value})} />
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Lokasi */}
+              <div className={`p-4 rounded-2xl border-2 transition-all ${bulkEditForm.changeLocation ? 'border-brand-blue-300 bg-brand-blue-50/30' : 'border-stone-100 bg-stone-50/50'}`}>
+                <label className="flex items-center gap-3 cursor-pointer mb-3">
+                  <input type="checkbox" checked={bulkEditForm.changeLocation} onChange={e => setBulkEditForm({...bulkEditForm, changeLocation: e.target.checked})} className="w-4 h-4 accent-brand-blue-600" />
+                  <span className="text-xs font-black text-ink-400 uppercase tracking-widest">Ubah Lokasi</span>
+                </label>
+                {bulkEditForm.changeLocation && (
+                  <input type="text" placeholder="Online / Zoom / Pesantren" className="w-full px-3 py-2.5 bg-white border border-stone-200 rounded-xl font-bold text-brand-blue-950 text-sm focus:ring-2 focus:ring-brand-blue-400 outline-none mt-2" value={bulkEditForm.location} onChange={e => setBulkEditForm({...bulkEditForm, location: e.target.value})} />
+                )}
+              </div>
+
+              {/* Catatan */}
+              <div className={`p-4 rounded-2xl border-2 transition-all ${bulkEditForm.changeNotes ? 'border-brand-blue-300 bg-brand-blue-50/30' : 'border-stone-100 bg-stone-50/50'}`}>
+                <label className="flex items-center gap-3 cursor-pointer mb-3">
+                  <input type="checkbox" checked={bulkEditForm.changeNotes} onChange={e => setBulkEditForm({...bulkEditForm, changeNotes: e.target.checked})} className="w-4 h-4 accent-brand-blue-600" />
+                  <span className="text-xs font-black text-ink-400 uppercase tracking-widest">Ubah Catatan</span>
+                </label>
+                {bulkEditForm.changeNotes && (
+                  <textarea rows={2} placeholder="Catatan untuk semua sesi..." className="w-full px-3 py-2.5 bg-white border border-stone-200 rounded-xl font-bold text-brand-blue-950 text-sm focus:ring-2 focus:ring-brand-blue-400 outline-none resize-none mt-2" value={bulkEditForm.notes} onChange={e => setBulkEditForm({...bulkEditForm, notes: e.target.value})} />
+                )}
+              </div>
+
+              {!bulkEditForm.changeTime && !bulkEditForm.changeLocation && !bulkEditForm.changeNotes && (
+                <p className="text-xs text-amber-600 font-bold text-center">Centang minimal satu perubahan di atas.</p>
+              )}
+
+              <div className="flex gap-3 pt-2">
+                <button type="button" onClick={() => setIsBulkEditModalOpen(false)} className="flex-1 py-3.5 border border-stone-200 text-stone-600 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-stone-50 transition-all">Batal</button>
+                <button type="submit" disabled={submittingBulkEdit || (!bulkEditForm.changeTime && !bulkEditForm.changeLocation && !bulkEditForm.changeNotes)} className="flex-1 py-3.5 bg-brand-blue-600 hover:bg-brand-blue-700 disabled:opacity-40 text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-lg shadow-brand-blue-600/20">
+                  {submittingBulkEdit ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                  Simpan {selectedSlotIds.size} Sesi
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       )}
 
       {/* MODAL EDIT SLOT */}
