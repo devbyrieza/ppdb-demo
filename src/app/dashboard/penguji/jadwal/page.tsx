@@ -142,6 +142,7 @@ export default function JadwalPengujiPage() {
 
   // Multi-Select / Bulk Edit State
   const [isSelectMode, setIsSelectMode] = useState(false);
+  const [bulkActionType, setBulkActionType] = useState<'edit' | 'delete' | null>(null);
   const [selectedSlotIds, setSelectedSlotIds] = useState<Set<string>>(new Set());
   const [isBulkEditModalOpen, setIsBulkEditModalOpen] = useState(false);
   const [bulkEditForm, setBulkEditForm] = useState({ start_time: "", end_time: "", location: "", notes: "", changeTime: false, changeLocation: false, changeNotes: false });
@@ -502,6 +503,7 @@ export default function JadwalPengujiPage() {
 
   const exitSelectMode = () => {
     setIsSelectMode(false);
+    setBulkActionType(null);
     setSelectedSlotIds(new Set());
   };
 
@@ -1011,12 +1013,20 @@ export default function JadwalPengujiPage() {
                 {!isSelectMode ? (
                   <>
                     {slots.length > 0 && (
-                      <button
-                        onClick={() => setIsSelectMode(true)}
-                        className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-4 bg-stone-50 hover:bg-stone-100 text-stone-600 rounded-2xl font-black border border-stone-200 transition-all text-xs uppercase tracking-widest active:scale-95"
-                      >
-                        <Layers className="w-4 h-4" /> Edit Massal
-                      </button>
+                      <>
+                        <button
+                          onClick={() => { setIsSelectMode(true); setBulkActionType('edit'); }}
+                          className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-4 bg-stone-50 hover:bg-stone-100 text-stone-600 rounded-2xl font-black border border-stone-200 transition-all text-xs uppercase tracking-widest active:scale-95"
+                        >
+                          <Layers className="w-4 h-4" /> Edit Massal
+                        </button>
+                        <button
+                          onClick={() => { setIsSelectMode(true); setBulkActionType('delete'); }}
+                          className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-4 bg-red-50 hover:bg-red-100 text-red-600 rounded-2xl font-black border border-red-200 transition-all text-xs uppercase tracking-widest active:scale-95"
+                        >
+                          <Trash2 className="w-4 h-4" /> Hapus Massal
+                        </button>
+                      </>
                     )}
                     <button
                       onClick={() => setIsBulkModalOpen(true)}
@@ -1160,21 +1170,25 @@ export default function JadwalPengujiPage() {
               <span className="font-black text-sm">{selectedSlotIds.size} sesi dipilih</span>
             </div>
             <div className="w-px h-6 bg-white/20" />
-            <button
-              onClick={() => {
-                setBulkEditForm({ start_time: "08:00", end_time: "09:00", location: "", notes: "", changeTime: false, changeLocation: false, changeNotes: false });
-                setIsBulkEditModalOpen(true);
-              }}
-              className="flex items-center gap-2 px-5 py-2.5 bg-brand-yellow-400 text-brand-blue-950 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-brand-yellow-300 transition-all active:scale-95"
-            >
-              <Edit2 className="w-4 h-4" /> Edit Terpilih
-            </button>
-            <button
-              onClick={handleBulkDelete}
-              className="flex items-center gap-2 px-5 py-2.5 bg-red-500 text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-red-600 transition-all active:scale-95"
-            >
-              <Trash2 className="w-4 h-4" /> Hapus Terpilih
-            </button>
+            {bulkActionType === 'edit' && (
+              <button
+                onClick={() => {
+                  setBulkEditForm({ start_time: "08:00", end_time: "09:00", location: "", notes: "", changeTime: false, changeLocation: false, changeNotes: false });
+                  setIsBulkEditModalOpen(true);
+                }}
+                className="flex items-center gap-2 px-5 py-2.5 bg-brand-yellow-400 text-brand-blue-950 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-brand-yellow-300 transition-all active:scale-95"
+              >
+                <Edit2 className="w-4 h-4" /> Edit Terpilih
+              </button>
+            )}
+            {bulkActionType === 'delete' && (
+              <button
+                onClick={handleBulkDelete}
+                className="flex items-center gap-2 px-5 py-2.5 bg-red-500 text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-red-600 transition-all active:scale-95"
+              >
+                <Trash2 className="w-4 h-4" /> Hapus Terpilih
+              </button>
+            )}
             <button
               onClick={exitSelectMode}
               className="px-4 py-2.5 border border-white/20 text-white/70 hover:text-white rounded-xl font-black text-xs transition-all"
