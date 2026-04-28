@@ -95,9 +95,20 @@ export async function GET(request: NextRequest) {
         };
 
         const formatted = schedules.map(s => {
-            const hasScoreQuran = s.nilai_ujian.some(n => !isEmpty(n.detail_quran));
-            const hasScoreSantri = s.nilai_ujian.some(n => !isEmpty(n.detail_wawancara));
-            const hasScoreOrtu = s.nilai_ujian.some(n => !isEmpty(n.detail_cawalsan));
+            // Hanya dianggap selesai jika ada field meaningful (rekomendasi / nama_penguji)
+            // Mencegah data dev { skor: 90 } dari skip-ujian terhitung sebagai "Selesai"
+            const hasScoreQuran = s.nilai_ujian.some(n => {
+                const q = n.detail_quran as any;
+                return !!(q && typeof q === 'object' && (q.rekomendasi || q.nama_penguji));
+            });
+            const hasScoreSantri = s.nilai_ujian.some(n => {
+                const w = n.detail_wawancara as any;
+                return !!(w && typeof w === 'object' && (w.rekomendasi || w.nama_penguji));
+            });
+            const hasScoreOrtu = s.nilai_ujian.some(n => {
+                const c = n.detail_cawalsan as any;
+                return !!(c && typeof c === 'object' && (c.rekomendasi || c.nama_penguji));
+            });
 
             return {
                 id: s.id,
