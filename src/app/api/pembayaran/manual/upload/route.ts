@@ -89,12 +89,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 5. Ambil data pendaftar & tahun ajaran & nilai ujian (untuk cek kelulusan)
+    // 5. Ambil data pendaftar & tahun ajaran
     const pendaftar = await prisma.pendaftar.findUnique({
       where: { id: session.id },
       include: {
         tahun_ajaran: true,
-        nilai_ujian: true,
       },
     });
 
@@ -112,11 +111,13 @@ export async function POST(request: NextRequest) {
 
     // Logic khusus Daftar Ulang
     if (jenisPembayaran === "DAFTAR_ULANG") {
-      // Cek kelulusan
-      const nilai = pendaftar.nilai_ujian[0] as any;
-      if (!nilai || nilai.status_kelulusan !== "LULUS") {
+      // Cek kelulusan berdasarkan status_pendaftaran (bukan nilai_ujian)
+      // Status yang berhak melakukan daftar ulang: accepted, enrolled, atau Sudah Daftar Ulang
+      const ELIGIBLE_STATUSES = ["accepted", "enrolled", "sudah_daftar_ulang", "Sudah Daftar Ulang"];
+      const statusOk = ELIGIBLE_STATUSES.includes(pendaftar.status_pendaftaran ?? "");
+      if (!statusOk) {
         return NextResponse.json(
-          { success: false, error: "Anda belum dinyatakan LULUS, tidak bisa melakukan daftar ulang." },
+          { success: false, error: "Anda belum dinyatakan DITERIMA, tidak bisa melakukan daftar ulang." },
           { status: 400 }
         );
       }
