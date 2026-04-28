@@ -187,3 +187,68 @@ export async function DELETE(request: Request) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
+
+// PATCH: Edit exam session (owner or admin)
+export async function PATCH(request: Request) {
+    const session = await getSession();
+    if (!session) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get("id");
+    if (!id) return NextResponse.json({ error: "ID required" }, { status: 400 });
+
+    const allowedRoles = ['admin_super', 'admin', 'head_of_it', 'penguji', 'admin_berkas', 'penguji_calsan', 'pewawancara_calsan', 'pewawancara_cawalsan'];
+    if (!allowedRoles.includes(session.role)) {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+
+    try {
+        const targetSession = await prisma.examSession.findUnique({ where: { id } });
+        if (!targetSession) return NextResponse.json({ error: "Session not found" }, { status: 404 });
+
+        // Only owner or admin_super/admin can edit
+        const isAdmin = ['admin_super', 'admin', 'head_of_it'].includes(session.role);
+        const isOwner = targetSession.created_by === (session.user_id || session.id);
+        if (!isAdmin && !isOwner) {
+            return NextResponse.json({ error: "Anda tidak memiliki akses untuk mengedit sesi ini" }, { status: 403 });
+        }
+
+        const body = await request.json();
+        const { title, start_time, end_time, location, notes } = body;
+
+        if (!start_time || !end_time) {
+            return NextResponse.json({ error: "Waktu mulai dan selesai wajib diisi" }, { status: 400 });
+        }
+
+        const parseWIB = (dt: string) => {
+            if (!dt) return new Date();
+            if (dt.includes('Z') || dt.match(/[+-]\d{2}(:?\d{2})?$/)) return new Date(dt);
+            return new Date(`${dt}+07:00`);
+        };
+
+        const startDt = parseWIB(start_time);
+        const endDt = parseWIB(end_time);
+
+        if (endDt <= startDt) {
+            return NextResponse.json({ error: "Jam selesai harus lebih besar dari jam mulai" }, { status: 400 });
+        }
+
+        const updated = await prisma.examSession.update({
+            where: { id },
+            data: {
+                ...(title && { title }),
+                start_time: startDt,
+                end_time: endDt,
+                ...(location !== undefined && { location }),
+                ...(notes !== undefined && { notes }),
+            }
+        });
+
+        return NextResponse.json({ success: true, data: updated });
+    } catch (error: any) {
+        console.error("PATCH exam-sessions error:", error);
+        return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+}
