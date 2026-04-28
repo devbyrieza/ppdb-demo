@@ -180,7 +180,7 @@ export default function JadwalPengujiPage() {
   const fetchSlots = async () => {
     try {
       setLoadingSlots(true);
-      const response = await fetch("/api/exam-sessions?creator_id=me");
+      const response = await fetch("/api/exam-sessions?creator_id=me&is_active=true");
       if (response.ok) {
         const result = await response.json();
         setSlots(result.data || []);
