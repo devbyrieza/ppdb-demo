@@ -592,6 +592,62 @@ export default function JadwalPengujiPage() {
     }
   };
 
+  const handleBulkDelete = async () => {
+    if (selectedSlotIds.size === 0) return;
+
+    const idsToDelete = Array.from(selectedSlotIds);
+    const slotsToDelete = slots.filter(s => idsToDelete.includes(s.id));
+    const emptySlots = slotsToDelete.filter(s => (s._count?.bookings || 0) === 0);
+    const bookedSlots = slotsToDelete.length - emptySlots.length;
+
+    if (emptySlots.length === 0) {
+      Swal.fire('Gagal!', 'Semua sesi yang dipilih sudah ada pendaftar dan tidak dapat dihapus.', 'error');
+      return;
+    }
+
+    let textMsg = `Apakah Anda yakin ingin menghapus ${emptySlots.length} sesi kosong?`;
+    if (bookedSlots > 0) {
+      textMsg += `\n\n(${bookedSlots} sesi diabaikan karena sudah ada pendaftar)`;
+    }
+
+    const { isConfirmed } = await Swal.fire({
+      title: 'Hapus Sesi Terpilih?',
+      text: textMsg,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Ya, Hapus!',
+      cancelButtonText: 'Batal'
+    });
+
+    if (!isConfirmed) return;
+
+    // Use a custom state if you want a loading spinner, or just rely on SweetAlert
+    Swal.fire({ title: 'Menghapus...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+
+    let successCount = 0;
+    let errorCount = 0;
+
+    for (const slot of emptySlots) {
+      try {
+        const res = await fetch(`/api/exam-sessions?id=${slot.id}`, { method: "DELETE" });
+        if (res.ok) successCount++; else errorCount++;
+      } catch {
+        errorCount++;
+      }
+    }
+
+    exitSelectMode();
+    fetchSlots();
+
+    if (errorCount === 0) {
+      Swal.fire('Terhapus!', `${successCount} sesi berhasil dihapus.`, 'success');
+    } else {
+      Swal.fire('Selesai', `${successCount} berhasil dihapus, ${errorCount} gagal.`, 'warning');
+    }
+  };
+
   const handleDeleteSlot = async (id: string, count: number) => {
     if (count > 0) {
       Swal.fire('Gagal!', 'Tidak dapat menghapus sesi yang sudah ada pendaftar!', 'error');
@@ -1112,6 +1168,12 @@ export default function JadwalPengujiPage() {
               className="flex items-center gap-2 px-5 py-2.5 bg-brand-yellow-400 text-brand-blue-950 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-brand-yellow-300 transition-all active:scale-95"
             >
               <Edit2 className="w-4 h-4" /> Edit Terpilih
+            </button>
+            <button
+              onClick={handleBulkDelete}
+              className="flex items-center gap-2 px-5 py-2.5 bg-red-500 text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-red-600 transition-all active:scale-95"
+            >
+              <Trash2 className="w-4 h-4" /> Hapus Terpilih
             </button>
             <button
               onClick={exitSelectMode}
