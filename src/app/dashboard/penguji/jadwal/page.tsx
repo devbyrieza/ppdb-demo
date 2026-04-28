@@ -505,6 +505,37 @@ export default function JadwalPengujiPage() {
     setSelectedSlotIds(new Set());
   };
 
+  // Quick-select: pilih semua slot dengan jam mulai yang sama
+  const selectByTime = (startHHMM: string) => {
+    const matching = slots.filter(s => {
+      const d = new Date(s.start_time);
+      const hhmm = `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+      return hhmm === startHHMM;
+    });
+    const matchingIds = new Set(matching.map(s => s.id));
+    // Kalau semua sudah terpilih → deselect, kalau belum → select semua
+    const allSelected = matching.every(s => selectedSlotIds.has(s.id));
+    setSelectedSlotIds(prev => {
+      const next = new Set(prev);
+      matching.forEach(s => allSelected ? next.delete(s.id) : next.add(s.id));
+      return next;
+    });
+  };
+
+  // Dapatkan daftar jam unik dari slots untuk quick-select chips
+  const uniqueTimesForChips = Array.from(
+    slots.reduce((map, slot) => {
+      const start = new Date(slot.start_time);
+      const end = new Date(slot.end_time);
+      const hhmm = `${String(start.getHours()).padStart(2,'0')}:${String(start.getMinutes()).padStart(2,'0')}`;
+      const label = `${String(start.getHours()).padStart(2,'0')}.${String(start.getMinutes()).padStart(2,'0')} – ${String(end.getHours()).padStart(2,'0')}.${String(end.getMinutes()).padStart(2,'0')}`;
+      if (!map.has(hhmm)) map.set(hhmm, { hhmm, label, count: 0 });
+      map.get(hhmm)!.count++;
+      return map;
+    }, new Map<string, { hhmm: string; label: string; count: number }>())
+    .values()
+  ).sort((a, b) => a.hhmm.localeCompare(b.hhmm));
+
   const handleBulkEdit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (selectedSlotIds.size === 0) return;
@@ -958,6 +989,38 @@ export default function JadwalPengujiPage() {
               </div>
             </div>
           </div>
+
+          {/* PILIH CEPAT - muncul saat select mode aktif */}
+          {isSelectMode && uniqueTimesForChips.length > 1 && (
+            <div className="bg-white rounded-2xl border border-brand-blue-100 px-5 py-4 flex flex-wrap items-center gap-2">
+              <span className="text-[10px] font-black text-ink-400 uppercase tracking-widest shrink-0 mr-1">Pilih Cepat:</span>
+              {uniqueTimesForChips.map(({ hhmm, label, count }) => {
+                const matchingIds = slots.filter(s => {
+                  const d = new Date(s.start_time);
+                  return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}` === hhmm;
+                }).map(s => s.id);
+                const allSelected = matchingIds.every(id => selectedSlotIds.has(id));
+                return (
+                  <button
+                    key={hhmm}
+                    onClick={() => selectByTime(hhmm)}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-xl font-black text-xs border transition-all active:scale-95 ${
+                      allSelected
+                        ? 'bg-brand-blue-600 text-white border-brand-blue-600 shadow-sm'
+                        : 'bg-brand-blue-50 text-brand-blue-700 border-brand-blue-100 hover:bg-brand-blue-100'
+                    }`}
+                  >
+                    {allSelected ? <CheckSquare className="w-3.5 h-3.5" /> : <Square className="w-3.5 h-3.5" />}
+                    {label}
+                    <span className={`px-1.5 py-0.5 rounded-md text-[9px] font-black ${
+                      allSelected ? 'bg-white/20 text-white' : 'bg-brand-blue-100 text-brand-blue-700'
+                    }`}>{count}</span>
+                  </button>
+                );
+              })}
+              <div className="ml-auto text-[10px] text-ink-300 font-bold">{selectedSlotIds.size} / {slots.length} dipilih</div>
+            </div>
+          )}
 
           {loadingSlots ? (
             <div className="text-center py-12"><Loader2 className="w-8 h-8 animate-spin mx-auto text-maroon-500" /></div>
