@@ -1534,7 +1534,7 @@ export default function JadwalPengujiPage() {
 
       {/* MODAL BULK CREATE SLOT */}
       {isBulkModalOpen && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-brand-blue-950/40 backdrop-blur-md animate-in fade-in duration-300 overflow-hidden">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-brand-blue-950/40 backdrop-blur-md animate-in fade-in duration-300">
           <div className="bg-white rounded-[40px] shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col animate-in zoom-in-95 duration-300 border border-white/20">
             {/* Header */}
             <div className="p-8 border-b border-stone-100 flex justify-between items-center bg-stone-50/50 rounded-t-[40px] shrink-0">
@@ -1550,7 +1550,7 @@ export default function JadwalPengujiPage() {
               </button>
             </div>
             
-            <form onSubmit={handleCreateBulk} className="p-10 space-y-8 overflow-y-auto custom-scrollbar">
+            <form onSubmit={handleCreateBulk} className="p-10 space-y-8 overflow-y-auto overscroll-contain custom-scrollbar flex-1">
               {/* Jenis Ujian Info */}
               <div className="bg-brand-blue-600 rounded-3xl p-6 shadow-xl shadow-brand-blue-950/20 text-white relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
