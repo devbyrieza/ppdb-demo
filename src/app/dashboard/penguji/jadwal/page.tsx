@@ -1559,7 +1559,7 @@ export default function JadwalPengujiPage() {
                   <div className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center text-xl shadow-inner">
                     <Trophy className="w-5 h-5 text-brand-yellow-300" />
                   </div>
-                  <p className="text-2xl font-black tracking-tight">{bulkForm.title || "—"}</p>
+                  <p className="text-2xl font-black tracking-tight text-white">{bulkForm.title || "—"}</p>
                 </div>
               </div>
 
