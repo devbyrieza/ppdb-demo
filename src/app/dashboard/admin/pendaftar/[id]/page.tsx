@@ -135,6 +135,9 @@ export default function PendaftarDetailPage() {
   const [editingStatus, setEditingStatus] = useState(false);
   const [newStatus, setNewStatus] = useState("");
   const [savingStatus, setSavingStatus] = useState(false);
+  const [editingPhone, setEditingPhone] = useState(false);
+  const [newPhone, setNewPhone] = useState("");
+  const [savingPhone, setSavingPhone] = useState(false);
 
   useEffect(() => {
     const fetchSession = async () => {
@@ -198,6 +201,32 @@ export default function PendaftarDetailPage() {
       Swal.fire("Error", "Gagal mengubah status", "error");
     } finally {
       setSavingStatus(false);
+    }
+  };
+
+  const handleUpdatePhone = async () => {
+    if (!newPhone) return;
+    try {
+      setSavingPhone(true);
+      const response = await fetch(`/api/admin/pendaftar/${params.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ no_hp: newPhone }),
+      });
+
+      if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.error || "Gagal update nomor HP");
+      }
+
+      await fetchPendaftarDetail();
+      setEditingPhone(false);
+      Swal.fire("Berhasil", "Nomor HP berhasil diperbarui", "success");
+    } catch (error: any) {
+      console.error("Error updating phone:", error);
+      Swal.fire("Error", error.message || "Gagal memperbarui nomor HP", "error");
+    } finally {
+      setSavingPhone(false);
     }
   };
 
@@ -769,7 +798,57 @@ export default function PendaftarDetailPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <InfoItem label="No. HP" value={pendaftar.no_hp} icon={<Phone className="w-4 h-4" />} />
+              <div className="relative group">
+                {editingPhone ? (
+                  <div className="flex flex-col gap-1">
+                    <p className="text-[10px] text-ink-200 font-black uppercase tracking-widest mb-1 leading-none">No. HP (Update)</p>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        value={newPhone}
+                        onChange={(e) => setNewPhone(e.target.value)}
+                        className="flex-1 px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg text-sm font-bold text-brand-blue-950 focus:outline-none focus:ring-2 focus:ring-brand-blue-500"
+                        placeholder="Contoh: 0812..."
+                        disabled={savingPhone}
+                      />
+                      <button
+                        onClick={handleUpdatePhone}
+                        disabled={savingPhone}
+                        className="p-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors disabled:opacity-50"
+                        title="Simpan Nomor"
+                      >
+                        {savingPhone ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                      </button>
+                      <button
+                        onClick={() => setEditingPhone(false)}
+                        disabled={savingPhone}
+                        className="p-2 bg-stone-200 text-stone-600 rounded-lg hover:bg-stone-300 transition-colors"
+                        title="Batal"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                    <p className="text-[9px] text-stone-500 italic mt-0.5">*Mengubah ini juga akan mengubah nomor login pendaftar.</p>
+                  </div>
+                ) : (
+                  <div className="flex items-end justify-between">
+                    <InfoItem label="No. HP" value={pendaftar.no_hp} icon={<Phone className="w-4 h-4" />} />
+                    {userRole === "admin_super" && (
+                      <button
+                        onClick={() => {
+                          setNewPhone(pendaftar.no_hp || "");
+                          setEditingPhone(true);
+                        }}
+                        className="p-1.5 text-brand-blue-500 hover:text-brand-blue-700 bg-brand-blue-50 hover:bg-brand-blue-100 rounded-lg transition-colors flex items-center gap-1"
+                        title="Edit Nomor HP"
+                      >
+                        <Edit className="w-3.5 h-3.5" />
+                        <span className="text-[10px] font-bold">Edit</span>
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
               <InfoItem label="Email" value={pendaftar.email} icon={<Mail className="w-4 h-4" />} />
               <div className="md:col-span-2">
                 <InfoItem label="Alamat Lengkap" value={pendaftar.alamat} />
