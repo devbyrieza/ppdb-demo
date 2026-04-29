@@ -14,7 +14,8 @@ type AuditAction =
     | 'FORCE_UNLOCK_FORM'
     | 'BROADCAST_WA'
     | 'SOFT_DELETE_PENDAFTAR'
-    | 'RESTORE_PENDAFTAR';
+    | 'RESTORE_PENDAFTAR'
+    | 'UPDATE_PHONE_NUMBER';
 
 interface AuditLogParams {
     action: AuditAction;
