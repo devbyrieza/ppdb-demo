@@ -129,9 +129,9 @@ export function generatePrefix(jenjang: string, jenis_kelamin: string): string {
 
   // Gender suffix
   if (jenis_kelamin === "L") {
-    prefix += "I"; // Putra
+    prefix += "A"; // Putra
   } else if (jenis_kelamin === "P") {
-    prefix += "A"; // Putri
+    prefix += "I"; // Putri
   } else {
     throw new Error(`Jenis kelamin tidak valid: ${jenis_kelamin}`);
   }
@@ -157,7 +157,7 @@ export function validateNomorPendaftaranFormat(
   if (nomorPendaftaran.length !== 10) return false;
 
   // Check format: Valid prefix + 2 digits + 5 digits
-  const regex = /^(MTI|MTA|ILI|ILA|MAI|MAA)\d{7}$/;
+  const regex = /^(MTA|MTI|ILA|ILI|MAA|MAI)\d{7}$/;
   return regex.test(nomorPendaftaran);
 }
 
@@ -195,9 +195,9 @@ export function parseNomorPendaftaran(nomorPendaftaran: string): {
     jenjang = "SMA";
   }
 
-  if (prefix.endsWith("I")) {
+  if (prefix.endsWith("A")) {
     jenis_kelamin = "L"; // Putra
-  } else if (prefix.endsWith("A")) {
+  } else if (prefix.endsWith("I")) {
     jenis_kelamin = "P"; // Putri
   }
 
@@ -325,12 +325,12 @@ export async function getRegistrationStats(): Promise<{
  */
 export function getPrefixLabel(prefix: string): string {
   const labels: Record<string, string> = {
-    MTI: "MTs Putra (Laki-laki)",
-    MTA: "MTs Putri (Perempuan)",
-    ILI: "I'dad Lughowi Putra (Laki-laki)",
-    ILA: "I'dad Lughowi Putri (Perempuan)",
-    MAI: "SMA Putra (Laki-laki)",
-    MAA: "SMA Putri (Perempuan)",
+    MTA: "MTs Putra (Laki-laki)",
+    MTI: "MTs Putri (Perempuan)",
+    ILA: "I'dad Lughowi Putra (Laki-laki)",
+    ILI: "I'dad Lughowi Putri (Perempuan)",
+    MAA: "SMA Putra (Laki-laki)",
+    MAI: "SMA Putri (Perempuan)",
   };
 
   return labels[prefix] || prefix;
