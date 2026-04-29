@@ -152,8 +152,61 @@ export async function PATCH(
 
     // Get request body
     const body = await request.json();
-    const { status_proses } = body;
+    const { status_proses, no_hp } = body;
 
+    // SCENARIO 1: Update Phone Number (Admin Super Only)
+    if (no_hp) {
+      if (session.role !== "admin_super") {
+        return NextResponse.json(
+          { error: "Hanya Admin Super yang dapat mengubah nomor HP pendaftar" },
+          { status: 403 }
+        );
+      }
+
+      // 1. Fetch current pendaftar to get user_id
+      const pendaftar = await prisma.pendaftar.findUnique({
+        where: { id: params.id },
+        select: { user_id: true, nama_lengkap: true, no_hp: true }
+      });
+
+      if (!pendaftar) {
+        return NextResponse.json({ error: "Pendaftar not found" }, { status: 404 });
+      }
+
+      // 2. Update both Pendaftar and Profile in a transaction
+      await prisma.$transaction(async (tx) => {
+        // Update Pendaftar
+        await tx.pendaftar.update({
+          where: { id: params.id },
+          data: { no_hp, updated_at: new Date() }
+        });
+
+        // Update Profile (User) if linked
+        if (pendaftar.user_id) {
+          await tx.profile.update({
+            where: { id: pendaftar.user_id },
+            data: { phone: no_hp, updated_at: new Date() }
+          });
+        }
+      });
+
+      // Logging audit action
+      logAdminAction({
+        action: 'UPDATE_PHONE_NUMBER',
+        adminId: session.id || 'system',
+        adminName: session.full_name || session.name || 'Admin',
+        targetId: params.id,
+        targetName: pendaftar.nama_lengkap,
+        details: { previous_phone: pendaftar.no_hp, new_phone: no_hp }
+      });
+
+      return NextResponse.json({
+        success: true,
+        message: "Nomor HP berhasil diperbarui",
+      });
+    }
+
+    // SCENARIO 2: Update Status
     if (!status_proses) {
       return NextResponse.json(
         { error: "status_proses is required" },
