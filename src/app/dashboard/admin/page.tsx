@@ -297,7 +297,7 @@ export default function AdminDashboardPage() {
             </Link>
           )}
 
-          {(isBerkas || isAdminSuper) && stats.waiting_docs > 0 && (
+          {isBerkas && stats.waiting_docs > 0 && (
             <Link
               href="/dashboard/admin/verifikasi-dokumen"
               className="group relative overflow-hidden rounded-3xl bg-brand-blue-50 border border-brand-blue-100 p-6 shadow-sm hover:shadow-md transition-all active:scale-[0.98]"
@@ -322,11 +322,10 @@ export default function AdminDashboardPage() {
         </div>
       )}
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
         {[
           { label: "Total Pendaftar", val: stats.total_pendaftar, icon: Users, color: "blue" },
-          { label: "Lolos Utama", val: stats.diterima, icon: GraduationCap, color: "emerald" },
-          { label: "Cadangan", val: stats.cadangan, icon: Loader2, color: "yellow" },
+          { label: "Diterima", val: stats.diterima, icon: GraduationCap, color: "emerald" },
           { label: "Sudah Daftar Ulang", val: stats.daftar_ulang, icon: Wallet, color: "indigo" },
         ]
           .map((item, id) => (
@@ -380,7 +379,6 @@ export default function AdminDashboardPage() {
                   <th rowSpan={2} className="px-6 py-4 border-r border-brand-yellow-50">Jenjang</th>
                   <th colSpan={3} className="px-4 py-3 text-center border-r border-brand-yellow-50 bg-slate-100/50">Kuota</th>
                   <th colSpan={3} className="px-4 py-3 text-center border-r border-brand-yellow-50 bg-blue-50">Pendaftar</th>
-                  <th colSpan={3} className="px-4 py-3 text-center border-r border-brand-yellow-50 bg-orange-50">Cadangan</th>
                   <th colSpan={3} className="px-4 py-3 text-center border-r border-brand-yellow-50 bg-emerald-50">Diterima</th>
                   <th colSpan={3} className="px-4 py-3 text-center bg-purple-50">Sudah Daftar Ulang</th>
                 </tr>
@@ -393,10 +391,6 @@ export default function AdminDashboardPage() {
                   <th className="px-2 py-2 text-center border-r border-brand-yellow-50 text-blue-600">L</th>
                   <th className="px-2 py-2 text-center border-r border-brand-yellow-50 text-pink-600">P</th>
                   <th className="px-2 py-2 text-center border-r border-brand-yellow-50 font-black text-blue-800">T</th>
-                  {/* Cadangan */}
-                  <th className="px-2 py-2 text-center border-r border-brand-yellow-50 text-orange-600">L</th>
-                  <th className="px-2 py-2 text-center border-r border-brand-yellow-50 text-pink-600">P</th>
-                  <th className="px-2 py-2 text-center border-r border-brand-yellow-50 font-black text-orange-800">T</th>
                   {/* Diterima */}
                   <th className="px-2 py-2 text-center border-r border-brand-yellow-50 text-emerald-600">L</th>
                   <th className="px-2 py-2 text-center border-r border-brand-yellow-50 text-pink-600">P</th>
@@ -440,10 +434,6 @@ export default function AdminDashboardPage() {
                       <td className="px-2 py-4 text-center border-r border-brand-yellow-50 font-black text-blue-600 bg-blue-50/10">{item.pendaftar_putra}</td>
                       <td className="px-2 py-4 text-center border-r border-brand-yellow-50 font-black text-pink-600 bg-blue-50/10">{item.pendaftar_putri}</td>
                       <td className="px-2 py-4 text-center border-r border-brand-yellow-50 font-black text-blue-900 bg-blue-50/30">{item.pendaftar}</td>
-                      {/* Cadangan */}
-                      <td className="px-2 py-4 text-center border-r border-brand-yellow-50 font-black text-orange-600 bg-orange-50/10">{item.cadangan_putra}</td>
-                      <td className="px-2 py-4 text-center border-r border-brand-yellow-50 font-black text-pink-600 bg-orange-50/10">{item.cadangan_putri}</td>
-                      <td className="px-2 py-4 text-center border-r border-brand-yellow-50 font-black text-orange-900 bg-orange-50/30">{item.cadangan}</td>
                       {/* Diterima */}
                       <td className="px-2 py-4 text-center border-r border-brand-yellow-50 font-black text-emerald-600 bg-emerald-50/10">{item.diterima_putra}</td>
                       <td className="px-2 py-4 text-center border-r border-brand-yellow-50 font-black text-pink-600 bg-emerald-50/10">{item.diterima_putri}</td>
