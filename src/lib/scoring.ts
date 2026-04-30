@@ -124,24 +124,24 @@ export async function recalculateNilaiUjian(pendaftarId: string) {
         ks || 0
     );
 
-    // 4. Evaluate Status numerically
+    // 4. Evaluate Status using A/B/C Grade Matrix (Excel R.H Logic)
     // All 6 components must be present: Akademik, Quran, Kepribadian, Kesiapan, W.Santri, W.Ortu
     const allGraded = (ak != null && quran != null && kp != null && ks != null && ws != null && wo != null);
 
     let status: string;
     if (allGraded) {
-        // Use numerical decision 
-        // 70+ DITERIMA, 55+ CADANGAN, else DITOLAK
-        // Make sure to penalize if quran < 40
-        if ((quran || 0) < 40) {
-            status = 'DITOLAK';
-        } else if (totalScore >= 70) {
-            status = 'DITERIMA';
-        } else if (totalScore >= 55) {
-            status = 'CADANGAN';
-        } else {
-            status = 'DITOLAK';
-        }
+        // Convert raw numeric scores to A/B/C Grades
+        const grades = {
+            quran: evaluateQuranGrade(quran || 0),
+            akademik: evaluateAkademikGrade(ak || 0),
+            kepribadian: evaluateKepribadianGrade(kp || 0),
+            kesiapan: evaluateKesiapanGrade(ks || 0),
+            wawancaraCalsan: evaluateWawancaraGrade(ws || 0),
+            wawancaraCawalsan: evaluateWawancaraGrade(wo || 0)
+        };
+        
+        // Determine status based on Grade distribution
+        status = determineFinalDecision(grades);
 
         // Update Pendaftar Status to 'tested'
         const pendaftar = await prisma.pendaftar.findUnique({
