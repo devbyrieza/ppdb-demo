@@ -216,16 +216,38 @@ export default function ExaminerDashboard() {
     const handleExportExcel = () => {
         if (!students?.length) return Swal.fire('Info', 'Tidak ada data untuk diekspor', 'info');
 
+        const getGrade = (score: number | undefined | null, type: string) => {
+            if (score == null) return '-';
+            if (type === 'akademik') {
+                if (score >= 75) return 'A';
+                if (score >= 60) return 'B';
+                return 'C';
+            }
+            if (type === 'quran') {
+                if (score >= 80) return 'A';
+                if (score >= 65) return 'B';
+                return 'C';
+            }
+            if (type === 'kepribadian') {
+                if (score >= 70) return 'A';
+                if (score >= 50) return 'B';
+                return 'C';
+            }
+            // Wawancara & Kesiapan
+            if (score >= 80) return 'A';
+            if (score >= 60) return 'B';
+            return 'C';
+        };
+
         const exportData = students.map(s => ({
-            'No Pendaftaran': s.nomor_pendaftaran || '-',
-            'Nama Lengkap': (s.nama_lengkap || '').toUpperCase(),
+            'NP': s.nomor_pendaftaran || '-',
+            'Nama': (s.nama_lengkap || '').toUpperCase(),
             'Jenjang': s.jenjang || '-',
-            'Status': (s.status_pendaftaran || '').replace('_', ' ').toUpperCase(),
-            'Skor Akad.': s.nilai_ujian?.score_akademik || 0,
-            'Skor Quran': s.nilai_ujian?.score_quran || 0,
-            'W. Santri': s.nilai_ujian?.nilai_wawancara_santri || 0,
-            'W. Ortu': s.nilai_ujian?.nilai_wawancara_ortu || 0,
-            'Nilai Total': s.nilai_ujian?.nilai_total || 0,
+            'Al-Quran': getGrade(s.nilai_ujian?.score_quran, 'quran'),
+            'Akademi': getGrade(s.nilai_ujian?.score_akademik, 'akademik'),
+            'Kepribadian': getGrade(s.nilai_ujian?.score_kepribadian, 'kepribadian'),
+            'Kesesuaian': getGrade(s.nilai_ujian?.nilai_wawancara_ortu, 'wawancara'),
+            'Kesiapan': getGrade(s.nilai_ujian?.score_kesiapan || s.nilai_ujian?.nilai_wawancara_santri, 'kesiapan'),
             'Keputusan': s.nilai_ujian?.status_kelulusan || 'PENDING'
         }));
 
@@ -235,15 +257,14 @@ export default function ExaminerDashboard() {
 
         // Set column widths
         const wscols = [
-            { wch: 15 }, // No Daftar
+            { wch: 12 }, // NP
             { wch: 35 }, // Nama
-            { wch: 10 }, // Jenjang
-            { wch: 20 }, // Status
-            { wch: 12 }, // Akad
-            { wch: 12 }, // Quran
-            { wch: 12 }, // Santri
-            { wch: 12 }, // Ortu
-            { wch: 12 }, // Total
+            { wch: 12 }, // Jenjang
+            { wch: 10 }, // Quran
+            { wch: 10 }, // Akademi
+            { wch: 10 }, // Kepribadian
+            { wch: 12 }, // Kesesuaian
+            { wch: 10 }, // Kesiapan
             { wch: 15 }, // Keputusan
         ];
         worksheet['!cols'] = wscols;
@@ -346,16 +367,15 @@ export default function ExaminerDashboard() {
                             <table className="min-w-full divide-y divide-ink-100">
                                 <thead className="bg-ink-50/50">
                                     <tr>
-                                        <th className="px-6 py-4 text-left text-[10px] font-black text-ink-400 uppercase tracking-widest">No. Daftar</th>
+                                        <th className="px-6 py-4 text-left text-[10px] font-black text-ink-400 uppercase tracking-widest">NP</th>
                                         <th className="px-6 py-4 text-left text-[10px] font-black text-ink-400 uppercase tracking-widest">Nama Peserta</th>
                                         <th className="px-4 py-4 text-left text-[10px] font-black text-ink-400 uppercase tracking-widest">Jenjang</th>
-                                        <th className="px-4 py-4 text-left text-[10px] font-black text-ink-400 uppercase tracking-widest">Status Ujian</th>
-                                        <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">Akad.</th>
-                                        <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">Keprib.</th>
-                                        <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">Kesiapan</th>
+                                        <th className="px-4 py-4 text-left text-[10px] font-black text-ink-400 uppercase tracking-widest">Status</th>
                                         <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">Quran</th>
-                                        <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">W. Calsan</th>
-                                        <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">W. Cawalsan</th>
+                                        <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">Akademi</th>
+                                        <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">Keprib.</th>
+                                        <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">Sesuai</th>
+                                        <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">Siap</th>
                                         <th className="px-3 py-4 text-center text-[10px] font-black text-brand-blue-700 uppercase tracking-widest bg-brand-blue-50/30">Total</th>
                                         <th className="px-6 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">Aksi Input</th>
                                     </tr>
@@ -397,13 +417,52 @@ export default function ExaminerDashboard() {
                                                         );
                                                     })()}
                                                 </td>
-                                                {/* Kolom Nilai: Akad, Keprib, Kesiapan, Quran, W.Calsan, W.Cawalsan */}
-                                                <td className="px-3 py-4 text-center whitespace-nowrap text-sm font-bold text-ink-800">{s.nilai_ujian?.score_akademik != null ? Math.round(s.nilai_ujian.score_akademik) : <span className="text-ink-300">-</span>}</td>
-                                                <td className="px-3 py-4 text-center whitespace-nowrap text-sm font-bold text-ink-800">{s.nilai_ujian?.score_kepribadian != null ? Math.round(s.nilai_ujian.score_kepribadian) : <span className="text-ink-300">-</span>}</td>
-                                                <td className="px-3 py-4 text-center whitespace-nowrap text-sm font-bold text-ink-800">{s.nilai_ujian?.score_kesiapan != null ? Math.round(s.nilai_ujian.score_kesiapan) : <span className="text-ink-300">-</span>}</td>
-                                                <td className="px-3 py-4 text-center whitespace-nowrap text-sm font-bold text-ink-800">{s.nilai_ujian?.score_quran != null ? Math.round(s.nilai_ujian.score_quran) : <span className="text-ink-300">-</span>}</td>
-                                                <td className="px-3 py-4 text-center whitespace-nowrap text-sm font-bold text-ink-800">{s.nilai_ujian?.nilai_wawancara_santri != null ? Math.round(s.nilai_ujian.nilai_wawancara_santri) : <span className="text-ink-300">-</span>}</td>
-                                                <td className="px-3 py-4 text-center whitespace-nowrap text-sm font-bold text-ink-800">{s.nilai_ujian?.nilai_wawancara_ortu != null ? Math.round(s.nilai_ujian.nilai_wawancara_ortu) : <span className="text-ink-300">-</span>}</td>
+                                                {/* Kolom Nilai: Quran, Akad, Keprib, Sesuai, Siap */}
+                                                <td className="px-3 py-4 text-center whitespace-nowrap">
+                                                    {(() => {
+                                                        const score = s.nilai_ujian?.score_quran;
+                                                        if (score == null) return <span className="text-ink-200">-</span>;
+                                                        const grade = score >= 80 ? 'A' : score >= 65 ? 'B' : 'C';
+                                                        const color = grade === 'A' ? 'bg-green-500' : grade === 'B' ? 'bg-sky-400' : 'bg-amber-400';
+                                                        return <span className={`${color} text-white text-[10px] font-black px-2 py-1 rounded shadow-sm`}>{grade}</span>
+                                                    })()}
+                                                </td>
+                                                <td className="px-3 py-4 text-center whitespace-nowrap">
+                                                    {(() => {
+                                                        const score = s.nilai_ujian?.score_akademik;
+                                                        if (score == null) return <span className="text-ink-200">-</span>;
+                                                        const grade = score >= 75 ? 'A' : score >= 60 ? 'B' : 'C';
+                                                        const color = grade === 'A' ? 'bg-green-500' : grade === 'B' ? 'bg-sky-400' : 'bg-amber-400';
+                                                        return <span className={`${color} text-white text-[10px] font-black px-2 py-1 rounded shadow-sm`}>{grade}</span>
+                                                    })()}
+                                                </td>
+                                                <td className="px-3 py-4 text-center whitespace-nowrap">
+                                                    {(() => {
+                                                        const score = s.nilai_ujian?.score_kepribadian;
+                                                        if (score == null) return <span className="text-ink-200">-</span>;
+                                                        const grade = score >= 70 ? 'A' : score >= 50 ? 'B' : 'C';
+                                                        const color = grade === 'A' ? 'bg-green-500' : grade === 'B' ? 'bg-sky-400' : 'bg-amber-400';
+                                                        return <span className={`${color} text-white text-[10px] font-black px-2 py-1 rounded shadow-sm`}>{grade}</span>
+                                                    })()}
+                                                </td>
+                                                <td className="px-3 py-4 text-center whitespace-nowrap">
+                                                    {(() => {
+                                                        const score = s.nilai_ujian?.nilai_wawancara_ortu;
+                                                        if (score == null) return <span className="text-ink-200">-</span>;
+                                                        const grade = score >= 80 ? 'A' : score >= 60 ? 'B' : 'C';
+                                                        const color = grade === 'A' ? 'bg-green-500' : grade === 'B' ? 'bg-sky-400' : 'bg-amber-400';
+                                                        return <span className={`${color} text-white text-[10px] font-black px-2 py-1 rounded shadow-sm`}>{grade}</span>
+                                                    })()}
+                                                </td>
+                                                <td className="px-3 py-4 text-center whitespace-nowrap">
+                                                    {(() => {
+                                                        const score = s.nilai_ujian?.score_kesiapan || s.nilai_ujian?.nilai_wawancara_santri;
+                                                        if (score == null) return <span className="text-ink-200">-</span>;
+                                                        const grade = score >= 75 ? 'A' : score >= 55 ? 'B' : 'C';
+                                                        const color = grade === 'A' ? 'bg-green-500' : grade === 'B' ? 'bg-sky-400' : 'bg-amber-400';
+                                                        return <span className={`${color} text-white text-[10px] font-black px-2 py-1 rounded shadow-sm`}>{grade}</span>
+                                                    })()}
+                                                </td>
                                                 {/* Total */}
                                                 <td className="px-3 py-4 text-center whitespace-nowrap bg-brand-blue-50/20">
                                                     <span className="text-base font-black text-brand-blue-700">
