@@ -239,24 +239,32 @@ export const generateSuratKelulusan = async (data: PendaftarPdfData) => {
     if (statusText === "BELUM DITERIMA") closing = "Tetap semangat dan jangan berkecil hati. Anda dapat kembali mendaftar pada gelombang atau periode berikutnya.";
     
     doc.text(doc.splitTextToSize(closing, pageWidth - 40), 20, finalY + 25);
+    
+    // Add Enrollment Info for Accepted Candidates
+    if (statusText === "LULUS / DITERIMA") {
+        const daftarUlangInfo = "Pembayaran daftar ulang harus segera dibayarkan minimal 50% paling lambat sepekan setelah pengumuman hasil. Bagi yang membutuhkan keringanan, silakan menghubungi bagian Finance di 0812-2063-6945.";
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(10);
+        doc.text(doc.splitTextToSize(daftarUlangInfo, pageWidth - 40), 20, finalY + 40);
+    }
 
     // Signature and Stamp Area
     doc.setFont("helvetica", "normal");
     doc.setFontSize(11);
-    doc.text("Mudir Pondok Pesantren,", pageWidth - 80, finalY + 50);
+    doc.text("Mudir Pondok Pesantren,", pageWidth - 80, finalY + 65);
 
     const stempel = await fetchImageAsBase64('/images/stempel-pesantren.png') || await fetchImageAsBase64('/images/stempel-pesantren.jpg');
     const ttd = await fetchImageAsBase64('/images/ttd-mudir.png') || await fetchImageAsBase64('/images/ttd-mudir.jpg');
 
     if (stempel) {
-        doc.addImage(stempel, 'PNG', pageWidth - 100, finalY + 55, 30, 30);
+        doc.addImage(stempel, 'PNG', pageWidth - 100, finalY + 70, 30, 30);
     }
     if (ttd) {
-        doc.addImage(ttd, 'PNG', pageWidth - 70, finalY + 55, 30, 30);
+        doc.addImage(ttd, 'PNG', pageWidth - 70, finalY + 70, 30, 30);
     }
 
     doc.setFont("helvetica", "bold");
-    doc.text("Mudir PPDB", pageWidth - 80, finalY + 90);
+    doc.text("Mudir PPDB", pageWidth - 80, finalY + 105);
 
     drawFooter(doc);
     doc.save(`PPDB_SuratHasilSeleksi_${data.nomor_pendaftaran}.pdf`);
