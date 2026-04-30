@@ -818,6 +818,9 @@ export function buildMessageHasilTes(nama: string): string {
  🔗 *Dashboard & Unduh Surat:*
  ${process.env.NEXT_PUBLIC_APP_URL || 'https://demo-ppdb.vercel.app'}/dashboard/pendaftar/pengumuman
  
+ *Informasi Daftar Ulang:*
+ Pembayaran minimal 50% paling lambat sepekan setelah pengumuman. Keringanan hubungi Finance: 0812-2063-6945.
+ 
  Jazakumullahu khairan.
  Panitia PPDB Demo Sistem PPDB Modern`;
 }
