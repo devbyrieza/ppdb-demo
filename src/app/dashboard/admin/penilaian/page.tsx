@@ -239,17 +239,26 @@ export default function ExaminerDashboard() {
             return 'C';
         };
 
-        const exportData = students.map(s => ({
-            'NP': s.nomor_pendaftaran || '-',
-            'Nama': (s.nama_lengkap || '').toUpperCase(),
-            'Jenjang': s.jenjang || '-',
-            'Al-Quran': getGrade(s.nilai_ujian?.score_quran, 'quran'),
-            'Akademi': getGrade(s.nilai_ujian?.score_akademik, 'akademik'),
-            'Kepribadian': getGrade(s.nilai_ujian?.score_kepribadian, 'kepribadian'),
-            'Kesesuaian': getGrade(s.nilai_ujian?.nilai_wawancara_ortu, 'wawancara'),
-            'Kesiapan': getGrade(s.nilai_ujian?.score_kesiapan || s.nilai_ujian?.nilai_wawancara_santri, 'kesiapan'),
-            'Keputusan': s.nilai_ujian?.status_kelulusan || 'PENDING'
-        }));
+        const exportData = students.map(s => {
+            const wawancaraSantri = s.nilai_ujian?.nilai_wawancara_santri || 0;
+            const wawancaraOrtu = s.nilai_ujian?.nilai_wawancara_ortu || 0;
+            // Kesesuaian is the average of both interviews
+            const avgWawancara = (wawancaraSantri > 0 && wawancaraOrtu > 0) 
+                ? (wawancaraSantri + wawancaraOrtu) / 2 
+                : (wawancaraSantri || wawancaraOrtu || 0);
+
+            return {
+                'NP': s.nomor_pendaftaran || '-',
+                'Nama': (s.nama_lengkap || '').toUpperCase(),
+                'Jenjang': s.jenjang || '-',
+                'Al-Quran': getGrade(s.nilai_ujian?.score_quran, 'quran'),
+                'Akademi': getGrade(s.nilai_ujian?.score_akademik, 'akademik'),
+                'Kepribadian': getGrade(s.nilai_ujian?.score_kepribadian, 'kepribadian'),
+                'Kesesuaian': getGrade(avgWawancara, 'wawancara'),
+                'Kesiapan': getGrade(s.nilai_ujian?.score_kesiapan, 'kesiapan'),
+                'Keputusan': s.nilai_ujian?.status_kelulusan || 'PENDING'
+            };
+        });
 
         const worksheet = utils.json_to_sheet(exportData);
         const workbook = utils.book_new();
@@ -447,8 +456,10 @@ export default function ExaminerDashboard() {
                                                 </td>
                                                 <td className="px-3 py-4 text-center whitespace-nowrap">
                                                     {(() => {
-                                                        const score = s.nilai_ujian?.nilai_wawancara_ortu;
-                                                        if (score == null) return <span className="text-ink-200">-</span>;
+                                                        const ws = s.nilai_ujian?.nilai_wawancara_santri || 0;
+                                                        const wo = s.nilai_ujian?.nilai_wawancara_ortu || 0;
+                                                        if (ws === 0 && wo === 0) return <span className="text-ink-200">-</span>;
+                                                        const score = (ws > 0 && wo > 0) ? (ws + wo) / 2 : (ws || wo);
                                                         const grade = score >= 80 ? 'A' : score >= 60 ? 'B' : 'C';
                                                         const color = grade === 'A' ? 'bg-green-500' : grade === 'B' ? 'bg-sky-400' : 'bg-amber-400';
                                                         return <span className={`${color} text-white text-[10px] font-black px-2 py-1 rounded shadow-sm`}>{grade}</span>
@@ -456,7 +467,7 @@ export default function ExaminerDashboard() {
                                                 </td>
                                                 <td className="px-3 py-4 text-center whitespace-nowrap">
                                                     {(() => {
-                                                        const score = s.nilai_ujian?.score_kesiapan || s.nilai_ujian?.nilai_wawancara_santri;
+                                                        const score = s.nilai_ujian?.score_kesiapan;
                                                         if (score == null) return <span className="text-ink-200">-</span>;
                                                         const grade = score >= 75 ? 'A' : score >= 55 ? 'B' : 'C';
                                                         const color = grade === 'A' ? 'bg-green-500' : grade === 'B' ? 'bg-sky-400' : 'bg-amber-400';
