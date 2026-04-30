@@ -809,17 +809,17 @@ Panitia PPDB PPDB`;
 }
 
 export function buildMessageHasilTes(nama: string): string {
-    return `${pickOpening()} ${nama},
+    return `${pickOpening()}, *${nama}*.
  
- Alhamdulillah, hasil tes seleksi Anda sudah tersedia.
+ Alhamdulillah, hasil tes seleksi Ananda sudah tersedia.
  
- Silakan login ke dashboard untuk melihat hasil lengkap Anda dan mendownload file *PDF Surat Keterangan Lulus (SKL)*.
+ Silakan login ke dashboard untuk melihat hasil lengkap dan mengunduh *Surat Keterangan Lulus (SKL)* dalam format PDF.
  
- 🔗 *Link Dasbor & Unduh Surat:* 
+ 🔗 *Dashboard & Unduh Surat:*
  ${process.env.NEXT_PUBLIC_APP_URL || 'https://demo-ppdb.vercel.app'}/dashboard/pendaftar/pengumuman
  
- Jazakumullahu khairan,
- Panitia PPDB PPDB`;
+ Jazakumullahu khairan.
+ Panitia PPDB Demo Sistem PPDB Modern`;
 }
 
 /**
