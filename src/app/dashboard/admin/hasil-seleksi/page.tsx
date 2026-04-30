@@ -222,9 +222,9 @@ export default function HasilSeleksiPage() {
                     <table className="w-full">
                         <thead className="bg-stone-100/50 border-b border-stone-200">
                             <tr>
-                                <th className="px-6 py-4 text-left text-xs font-black text-stone-500 uppercase tracking-wider">Nama Lengkap</th>
+                                <th className="px-6 py-4 text-left text-xs font-black text-stone-500 uppercase tracking-wider">Nama & Detail Nilai</th>
                                 <th className="px-6 py-4 text-left text-xs font-black text-stone-500 uppercase tracking-wider">Jenjang</th>
-                                <th className="px-6 py-4 text-left text-xs font-black text-stone-500 uppercase tracking-wider">Total Nilai</th>
+                                <th className="px-6 py-4 text-left text-xs font-black text-stone-500 uppercase tracking-wider">Skor Akhir</th>
                                 <th className="px-6 py-4 text-center text-xs font-black text-stone-500 uppercase tracking-wider">Keputusan Akhir</th>
                             </tr>
                         </thead>
@@ -244,39 +244,73 @@ export default function HasilSeleksiPage() {
                                     </td>
                                 </tr>
                             ) : (
-                                candidates.map((c) => (
-                                    <tr key={c.id} className="hover:bg-stone-50/50 transition-colors">
-                                        <td className="px-6 py-4">
-                                            <div className="font-bold text-stone-800 text-sm">{c.nama_lengkap.replace(/\w\S*/g, (txt: string) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())}</div>
-                                            <div className="text-xs text-stone-500 mt-0.5">{c.nomor_pendaftaran}</div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <span className="px-2 py-1 bg-stone-100 text-stone-700 rounded-md text-xs font-bold border border-stone-200 shadow-sm">
-                                                {c.jenjang}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="font-black text-stone-800 text-lg">
-                                                {c.nilai_ujian?.nilai_total || "-"}
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4 text-center">
-                                            {(c.status_pendaftaran === 'accepted' || c.status_pendaftaran === 'enrolled') ? (
-                                                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-green-100 text-green-700 text-xs font-bold border border-green-200">
-                                                    <CheckCircle2 className="w-3.5 h-3.5" /> LULUS
+                                candidates.map((c) => {
+                                    const nu = c.nilai_ujian;
+                                    const getGradeBadge = (score: number | null | undefined, type: string) => {
+                                        if (score == null) return null;
+                                        let grade = 'C';
+                                        if (type === 'quran') grade = score >= 80 ? 'A' : score >= 65 ? 'B' : 'C';
+                                        else if (type === 'akademik') grade = score >= 75 ? 'A' : score >= 60 ? 'B' : 'C';
+                                        else if (type === 'kepribadian') grade = score >= 70 ? 'A' : score >= 50 ? 'B' : 'C';
+                                        else grade = score >= 80 ? 'A' : score >= 60 ? 'B' : 'C';
+
+                                        const color = grade === 'A' ? 'bg-green-500' : grade === 'B' ? 'bg-sky-400' : 'bg-amber-400';
+                                        return <span title={type} className={`${color} text-white text-[8px] font-black px-1.5 py-0.5 rounded-sm uppercase`}>{grade}</span>;
+                                    };
+
+                                    const ws = nu?.nilai_wawancara_santri || 0;
+                                    const wo = nu?.nilai_wawancara_ortu || 0;
+                                    const avgWawancara = (ws > 0 && wo > 0) ? (ws + wo) / 2 : (ws || wo);
+
+                                    return (
+                                        <tr key={c.id} className="hover:bg-stone-50/50 transition-colors">
+                                            <td className="px-6 py-4">
+                                                <div className="font-bold text-stone-800 text-sm">{c.nama_lengkap.replace(/\w\S*/g, (txt: string) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())}</div>
+                                                <div className="text-[10px] text-stone-400 font-mono mt-0.5">{c.nomor_pendaftaran}</div>
+                                                {/* Component Grades Mini Bar */}
+                                                <div className="flex gap-1 mt-2">
+                                                    {getGradeBadge(nu?.score_quran, 'quran')}
+                                                    {getGradeBadge(nu?.score_akademik, 'akademik')}
+                                                    {getGradeBadge(nu?.score_kepribadian, 'kepribadian')}
+                                                    {getGradeBadge(avgWawancara, 'wawancara')}
+                                                    {getGradeBadge(nu?.score_kesiapan, 'kesiapan')}
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <span className="px-2 py-1 bg-stone-100 text-stone-700 rounded-md text-xs font-bold border border-stone-200 shadow-sm">
+                                                    {c.jenjang}
                                                 </span>
-                                            ) : c.status_pendaftaran === 'cadangan' ? (
-                                                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-100 text-amber-700 text-xs font-bold border border-amber-200">
-                                                    CADANGAN
-                                                </span>
-                                            ) : (
-                                                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-rose-100 text-rose-700 text-xs font-bold border border-rose-200">
-                                                    TIDAK LULUS
-                                                </span>
-                                            )}
-                                        </td>
-                                    </tr>
-                                ))
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="flex flex-col">
+                                                    <div className="font-black text-stone-800 text-lg leading-none">
+                                                        {nu?.nilai_total != null ? Number(nu.nilai_total).toFixed(2) : "-"}
+                                                    </div>
+                                                    {nu?.nilai_total != null && (
+                                                        <span className="text-[10px] font-bold text-stone-400 mt-1 italic">
+                                                            Grade: {nu.nilai_total >= 80 ? 'A' : nu.nilai_total >= 65 ? 'B' : 'C'}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4 text-center">
+                                                {(c.status_pendaftaran === 'accepted' || c.status_pendaftaran === 'enrolled') ? (
+                                                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-green-100 text-green-700 text-xs font-bold border border-green-200">
+                                                        <CheckCircle2 className="w-3.5 h-3.5" /> LULUS
+                                                    </span>
+                                                ) : c.status_pendaftaran === 'cadangan' ? (
+                                                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-100 text-amber-700 text-xs font-bold border border-amber-200">
+                                                        CADANGAN
+                                                    </span>
+                                                ) : (
+                                                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-rose-100 text-rose-700 text-xs font-bold border border-rose-200">
+                                                        TIDAK LULUS
+                                                    </span>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    );
+                                })
                             )}
                         </tbody>
                     </table>

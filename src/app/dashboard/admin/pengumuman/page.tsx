@@ -184,55 +184,85 @@ export default function PengumumanPage() {
               Tidak ada data kandidat sesuai filter
             </div>
           ) : (
-            candidates.map((c) => (
-              <div 
-                key={c.id} 
-                onClick={() => handleSelectOne(c.id)}
-                className={`p-4 flex items-start gap-4 active:bg-stone-50 transition-colors ${selectedIds.includes(c.id) ? 'bg-green-50/50' : ''}`}
-              >
-                <div className="mt-1" onClick={(e) => e.stopPropagation()}>
-                  <input
-                    type="checkbox"
-                    className="w-5 h-5 rounded border-stone-300 text-green-600 focus:ring-green-500"
-                    checked={selectedIds.includes(c.id)}
-                    onChange={() => handleSelectOne(c.id)}
-                  />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex justify-between items-start mb-1 gap-2">
-                    <h4 className="font-black text-stone-900 leading-tight uppercase text-sm truncate">
-                      {toTitleCase(c.nama_lengkap)}
-                    </h4>
-                    <span className="px-2 py-0.5 bg-stone-100 text-stone-600 rounded text-[9px] font-black uppercase shrink-0">
-                      {c.jenjang}
-                    </span>
+            candidates.map((c) => {
+              const nu = c.nilai_ujian;
+              const getGradeBadge = (score: number | null | undefined, type: string) => {
+                if (score == null) return null;
+                let grade = 'C';
+                if (type === 'quran') grade = score >= 80 ? 'A' : score >= 65 ? 'B' : 'C';
+                else if (type === 'akademik') grade = score >= 75 ? 'A' : score >= 60 ? 'B' : 'C';
+                else if (type === 'kepribadian') grade = score >= 70 ? 'A' : score >= 50 ? 'B' : 'C';
+                else grade = score >= 80 ? 'A' : score >= 60 ? 'B' : 'C';
+
+                const color = grade === 'A' ? 'bg-green-500' : grade === 'B' ? 'bg-sky-400' : 'bg-amber-400';
+                return <span key={type} className={`${color} text-white text-[8px] font-black px-1.5 py-0.5 rounded-sm uppercase shrink-0`}>{grade}</span>;
+              };
+
+              const ws = nu?.nilai_wawancara_santri || 0;
+              const wo = nu?.nilai_wawancara_ortu || 0;
+              const avgWawancara = (ws > 0 && wo > 0) ? (ws + wo) / 2 : (ws || wo);
+
+              return (
+                <div 
+                  key={c.id} 
+                  onClick={() => handleSelectOne(c.id)}
+                  className={`p-4 flex items-start gap-4 active:bg-stone-50 transition-colors ${selectedIds.includes(c.id) ? 'bg-green-50/50' : ''}`}
+                >
+                  <div className="mt-1" onClick={(e) => e.stopPropagation()}>
+                    <input
+                      type="checkbox"
+                      className="w-5 h-5 rounded border-stone-300 text-green-600 focus:ring-green-500"
+                      checked={selectedIds.includes(c.id)}
+                      onChange={() => handleSelectOne(c.id)}
+                    />
                   </div>
-                  <p className="text-[10px] font-mono font-bold text-stone-400 tracking-tighter mb-2">{c.nomor_pendaftaran}</p>
-                  
-                  <div className="flex items-center justify-between">
-                    <div className="flex flex-col">
-                      <span className="text-[9px] font-black text-stone-300 uppercase tracking-widest leading-none mb-1">Total Nilai</span>
-                      <span className="text-sm font-black text-stone-700">                        {c.nilai_ujian?.nilai_total != null ? Number(c.nilai_ujian.nilai_total).toFixed(2) : "-"}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex justify-between items-start mb-1 gap-2">
+                      <h4 className="font-black text-stone-900 leading-tight uppercase text-sm truncate">
+                        {toTitleCase(c.nama_lengkap)}
+                      </h4>
+                      <span className="px-2 py-0.5 bg-stone-100 text-stone-600 rounded text-[9px] font-black uppercase shrink-0">
+                        {c.jenjang}
+                      </span>
                     </div>
-                    <div>
-                      {c.status_pendaftaran === 'accepted' ? (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-green-100 text-green-700 text-[10px] font-black uppercase">
-                          <CheckCircle2 className="w-3 h-3" /> Lulus
+                    <p className="text-[10px] font-mono font-bold text-stone-400 tracking-tighter mb-2">{c.nomor_pendaftaran}</p>
+                    
+                    <div className="flex gap-1 mb-3 overflow-x-auto pb-1 no-scrollbar">
+                      {getGradeBadge(nu?.score_quran, 'quran')}
+                      {getGradeBadge(nu?.score_akademik, 'akademik')}
+                      {getGradeBadge(nu?.score_kepribadian, 'kepribadian')}
+                      {getGradeBadge(avgWawancara, 'wawancara')}
+                      {getGradeBadge(nu?.score_kesiapan, 'kesiapan')}
+                    </div>
+
+                    <div className="flex items-center justify-between pt-2 border-t border-stone-50">
+                      <div className="flex flex-col">
+                        <span className="text-[9px] font-black text-stone-300 uppercase tracking-widest leading-none mb-1">Total Nilai</span>
+                        <span className="text-sm font-black text-stone-700">
+                          {nu?.nilai_total != null ? Number(nu.nilai_total).toFixed(2) : "-"} 
+                          <span className="ml-1 text-stone-400 font-bold">({nu?.nilai_total >= 80 ? 'A' : nu?.nilai_total >= 65 ? 'B' : 'C'})</span>
                         </span>
-                      ) : c.status_pendaftaran === 'scheduled' ? (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 text-[10px] font-black uppercase">
-                          Siap
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-stone-100 text-stone-600 text-[10px] font-black uppercase">
-                          {c.status_pendaftaran}
-                        </span>
-                      )}
+                      </div>
+                      <div>
+                        {c.status_pendaftaran === 'accepted' ? (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-green-100 text-green-700 text-[10px] font-black uppercase">
+                            <CheckCircle2 className="w-3 h-3" /> Lulus
+                          </span>
+                        ) : c.status_pendaftaran === 'scheduled' ? (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 text-[10px] font-black uppercase">
+                            Siap
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-stone-100 text-stone-600 text-[10px] font-black uppercase">
+                            {c.status_pendaftaran}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))
+              );
+            })
           )}
         </div>
 
@@ -249,10 +279,10 @@ export default function PengumumanPage() {
                     checked={candidates.length > 0 && selectedIds.length === candidates.length}
                   />
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-bold text-stone-500 uppercase">Nama Lengkap</th>
+                <th className="px-6 py-4 text-left text-xs font-bold text-stone-500 uppercase">Nama & Komponen</th>
                 <th className="px-6 py-4 text-left text-xs font-bold text-stone-500 uppercase">Jenjang</th>
-                <th className="px-6 py-4 text-left text-xs font-bold text-stone-500 uppercase">Nilai Ujian</th>
-                <th className="px-6 py-4 text-center text-xs font-bold text-stone-500 uppercase">Status Saat Ini</th>
+                <th className="px-6 py-4 text-left text-xs font-bold text-stone-500 uppercase">Total / Grade</th>
+                <th className="px-6 py-4 text-center text-xs font-bold text-stone-500 uppercase">Status</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-stone-100">
@@ -263,47 +293,80 @@ export default function PengumumanPage() {
                   </td>
                 </tr>
               ) : (
-                candidates.map((c) => (
-                  <tr key={c.id} className="hover:bg-stone-50/50">
-                    <td className="px-6 py-4">
-                      <input
-                        type="checkbox"
-                        className="w-4 h-4 rounded border-stone-300 text-green-600 focus:ring-green-500"
-                        checked={selectedIds.includes(c.id)}
-                        onChange={() => handleSelectOne(c.id)}
-                      />
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="font-bold text-stone-800">{toTitleCase(c.nama_lengkap)}</div>
-                      <div className="text-xs text-stone-500">{c.nomor_pendaftaran}</div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className="px-2 py-1 bg-stone-100 text-stone-600 rounded text-xs font-bold">
-                        {c.jenjang}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="font-medium text-stone-700">
-                                                {c.nilai_ujian?.nilai_total != null ? Number(c.nilai_ujian.nilai_total).toFixed(2) : "-"}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      {c.status_pendaftaran === 'accepted' ? (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-green-100 text-green-700 text-xs font-bold">
-                          <CheckCircle2 className="w-3 h-3" /> Lulus
+                candidates.map((c) => {
+                  const nu = c.nilai_ujian;
+                  const getGradeBadge = (score: number | null | undefined, type: string) => {
+                    if (score == null) return null;
+                    let grade = 'C';
+                    if (type === 'quran') grade = score >= 80 ? 'A' : score >= 65 ? 'B' : 'C';
+                    else if (type === 'akademik') grade = score >= 75 ? 'A' : score >= 60 ? 'B' : 'C';
+                    else if (type === 'kepribadian') grade = score >= 70 ? 'A' : score >= 50 ? 'B' : 'C';
+                    else grade = score >= 80 ? 'A' : score >= 60 ? 'B' : 'C';
+
+                    const color = grade === 'A' ? 'bg-green-500' : grade === 'B' ? 'bg-sky-400' : 'bg-amber-400';
+                    return <span key={type} className={`${color} text-white text-[8px] font-black px-1.5 py-0.5 rounded-sm uppercase`}>{grade}</span>;
+                  };
+
+                  const ws = nu?.nilai_wawancara_santri || 0;
+                  const wo = nu?.nilai_wawancara_ortu || 0;
+                  const avgWawancara = (ws > 0 && wo > 0) ? (ws + wo) / 2 : (ws || wo);
+
+                  return (
+                    <tr key={c.id} className="hover:bg-stone-50/50">
+                      <td className="px-6 py-4">
+                        <input
+                          type="checkbox"
+                          className="w-4 h-4 rounded border-stone-300 text-green-600 focus:ring-green-500"
+                          checked={selectedIds.includes(c.id)}
+                          onChange={() => handleSelectOne(c.id)}
+                        />
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="font-bold text-stone-800">{toTitleCase(c.nama_lengkap)}</div>
+                        <div className="text-xs text-stone-500 mb-2">{c.nomor_pendaftaran}</div>
+                        <div className="flex gap-1">
+                          {getGradeBadge(nu?.score_quran, 'quran')}
+                          {getGradeBadge(nu?.score_akademik, 'akademik')}
+                          {getGradeBadge(nu?.score_kepribadian, 'kepribadian')}
+                          {getGradeBadge(avgWawancara, 'wawancara')}
+                          {getGradeBadge(nu?.score_kesiapan, 'kesiapan')}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className="px-2 py-1 bg-stone-100 text-stone-600 rounded text-xs font-bold">
+                          {c.jenjang}
                         </span>
-                      ) : c.status_pendaftaran === 'scheduled' ? (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-bold">
-                          Siap Diumumkan
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-stone-100 text-stone-700 text-xs font-bold">
-                          {c.status_pendaftaran}
-                        </span>
-                      )}
-                    </td>
-                  </tr>
-                ))
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex flex-col">
+                          <div className="font-black text-stone-800 text-lg leading-none">
+                            {nu?.nilai_total != null ? Number(nu.nilai_total).toFixed(2) : "-"}
+                          </div>
+                          {nu?.nilai_total != null && (
+                            <span className="text-[10px] font-bold text-stone-400 mt-1 italic">
+                              Grade: {nu.nilai_total >= 80 ? 'A' : nu.nilai_total >= 65 ? 'B' : 'C'}
+                            </span>
+                          )}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-center">
+                        {c.status_pendaftaran === 'accepted' ? (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-green-100 text-green-700 text-xs font-bold">
+                            <CheckCircle2 className="w-3 h-3" /> Lulus
+                          </span>
+                        ) : c.status_pendaftaran === 'scheduled' ? (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-bold">
+                            Siap Diumumkan
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-stone-100 text-stone-700 text-xs font-bold">
+                            {c.status_pendaftaran}
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })
               )}
             </tbody>
           </table>
