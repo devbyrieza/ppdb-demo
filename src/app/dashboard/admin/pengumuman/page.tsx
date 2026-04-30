@@ -94,7 +94,7 @@ export default function PengumumanPage() {
         body: JSON.stringify({
           pendaftar_ids: selectedIds,
           new_status: "accepted",
-          announcement_message: "Selamat! Anda dinyatakan LULUS seleksi PPDB."
+          // Removed hardcoded announcement_message to use buildMessageHasilTes on backend
         })
       });
 
