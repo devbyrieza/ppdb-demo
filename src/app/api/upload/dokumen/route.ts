@@ -96,7 +96,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 5. Ambil data pendaftar (Check existence)
+    // 5. Detect Real Mime Type via Magic Bytes
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const hex = buffer.slice(0, 4).toString('hex').toUpperCase();
+    let detectedType = file.type;
+    
+    if (hex.startsWith('FFD8FF')) detectedType = 'image/jpeg';
+    else if (hex === '89504E47') detectedType = 'image/png';
+    else if (hex === '25504446') detectedType = 'application/pdf';
+
+    // 6. Ambil data pendaftar (Check existence)
     const pendaftar = await prisma.pendaftar.findUnique({
       where: { id: session.id },
       select: { nomor_pendaftaran: true },
@@ -111,7 +120,14 @@ export async function POST(request: NextRequest) {
 
     const timestamp = Date.now();
     const safeFileName = file.name || "berkas_tanpa_nama.bin";
-    const fileExtension = safeFileName.split(".").pop()?.toLowerCase() || "bin";
+    const originalExtension = safeFileName.split(".").pop()?.toLowerCase() || "bin";
+    
+    // Correct extension based on detected type
+    let fileExtension = originalExtension;
+    if (detectedType === 'image/jpeg') fileExtension = 'jpg';
+    else if (detectedType === 'image/png') fileExtension = 'png';
+    else if (detectedType === 'application/pdf') fileExtension = 'pdf';
+
     const fileName = `${jenisDokumen}-${pendaftar.nomor_pendaftaran}-${timestamp}.${fileExtension}`;
 
     // Save to storage_data/dokumen-pendaftaran/{pendaftar_id}/...
@@ -132,7 +148,7 @@ export async function POST(request: NextRequest) {
           file_name: fileName,
           file_path: filePath,
           file_size: file.size,
-          file_type: file.type,
+          file_type: detectedType, // Use detected type
           is_verified: false,
           verified_by: null,
           verified_at: null,
@@ -148,7 +164,7 @@ export async function POST(request: NextRequest) {
           file_name: fileName,
           file_path: filePath,
           file_size: file.size,
-          file_type: file.type,
+          file_type: detectedType, // Use detected type
           is_verified: false,
         }
       });

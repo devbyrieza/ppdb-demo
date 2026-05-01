@@ -181,10 +181,26 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    // 8. Detect Real Mime Type via Magic Bytes
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const hex = buffer.slice(0, 4).toString('hex').toUpperCase();
+    let detectedType = file.type;
+    
+    if (hex.startsWith('FFD8FF')) detectedType = 'image/jpeg';
+    else if (hex === '89504E47') detectedType = 'image/png';
+    else if (hex === '25504446') detectedType = 'application/pdf';
+
     // 9. Generate nama file & Save Local
     const timestamp = Date.now();
     const safeFileName = file.name || "bukti_tanpa_nama.bin";
-    const fileExtension = safeFileName.split(".").pop()?.toLowerCase() || "bin";
+    const originalExtension = safeFileName.split(".").pop()?.toLowerCase() || "bin";
+    
+    // Correct extension based on detected type
+    let fileExtension = originalExtension;
+    if (detectedType === 'image/jpeg') fileExtension = 'jpg';
+    else if (detectedType === 'image/png') fileExtension = 'png';
+    else if (detectedType === 'application/pdf') fileExtension = 'pdf';
+
     const fileName = `bukti-${jenisPembayaran.toLowerCase()}-${timestamp}.${fileExtension}`;
 
     // Save to storage_data/bukti-pembayaran/{pendaftar_id}/...

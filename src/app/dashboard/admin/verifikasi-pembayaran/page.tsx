@@ -504,11 +504,19 @@ export default function VerifikasiPembayaranPage() {
                     </button>
                   </div>
                   <div className="border-2 border-stone-100 rounded-2xl overflow-hidden bg-stone-50 relative group">
-                    <img
-                      src={selectedPembayaran.bukti_transfer_url}
-                      alt="Bukti Transfer"
-                      className="w-full max-h-[400px] object-contain"
-                    />
+                    {selectedPembayaran.bukti_transfer_url?.toLowerCase().endsWith('.pdf') ? (
+                      <iframe
+                        src={selectedPembayaran.bukti_transfer_url}
+                        className="w-full h-[500px] rounded-xl border-none"
+                        title="PDF Preview"
+                      />
+                    ) : (
+                      <img
+                        src={selectedPembayaran.bukti_transfer_url}
+                        alt="Bukti Transfer"
+                        className="w-full max-h-[500px] object-contain"
+                      />
+                    )}
                     <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                       <a
                         href={selectedPembayaran.bukti_transfer_url}

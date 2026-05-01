@@ -70,9 +70,25 @@ export async function POST(request: NextRequest) {
         // 4. Save File
         let filePath;
         try {
+            // Detect Real Mime Type via Magic Bytes
+            const buffer = Buffer.from(await file.arrayBuffer());
+            const hex = buffer.slice(0, 4).toString('hex').toUpperCase();
+            let detectedType = file.type;
+            
+            if (hex.startsWith('FFD8FF')) detectedType = 'image/jpeg';
+            else if (hex === '89504E47') detectedType = 'image/png';
+            else if (hex === '25504446') detectedType = 'application/pdf';
+
             const timestamp = Date.now();
             const originalName = file.name || "bukti_transfer";
-            const fileExtension = originalName.split('.').pop() || 'jpg';
+            const originalExtension = originalName.split('.').pop()?.toLowerCase() || 'bin';
+            
+            // Correct extension based on detected type
+            let fileExtension = originalExtension;
+            if (detectedType === 'image/jpeg') fileExtension = 'jpg';
+            else if (detectedType === 'image/png') fileExtension = 'png';
+            else if (detectedType === 'application/pdf') fileExtension = 'pdf';
+
             const fileName = `admin-upload-${pembayaran.pendaftar.nomor_pendaftaran}-${timestamp}.${fileExtension}`;
             
             filePath = await saveFileLocal(file, 'bukti-pembayaran', pembayaran.pendaftar.id, fileName);
