@@ -19,7 +19,8 @@ import {
     ZoomIn,
     ZoomOut,
     Maximize,
-    UploadCloud
+    UploadCloud,
+    Clock
 } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -98,12 +99,51 @@ export default function VerifikasiDokumenDetailPage() {
                 const firstDoc = result.data[0];
                 setPendaftar(firstDoc.pendaftar);
 
-                const docs = result.data.map((d: any) => {
-                    let label = d.jenis_dokumen;
+            // Process uploaded documents
+            const docsData = result.data || [];
+            const uploadedTypes = new Set(docsData.map((d: any) => d.jenis_dokumen));
+            
+            const processedDocs = docsData.map((d: any) => {
+                let label = d.jenis_dokumen;
+                switch (d.jenis_dokumen) {
+                    case 'foto_setengah_badan': label = "Foto Setengah Badan"; break;
+                    case 'kartu_keluarga': label = "Scan Kartu Keluarga"; break;
+                    case 'akta_kelahiran': label = "Scan Akte Kelahiran"; break;
+                    case 'rapor_sem1': label = "Scan Rapor 2 Semester Terakhir (1)"; break;
+                    case 'rapor_sem2': label = "Scan Rapor 2 Semester Terakhir (2)"; break;
+                    case 'nisn': label = "Scan NISN"; break;
+                    case 'surat_kesehatan': label = "Surat Keterangan Sehat"; break;
+                    case 'pakta_integritas': label = "Scan Pakta Integritas"; break;
+                    case 'pernyataan_bebas_negatif': label = "Scan Pernyataan Bebas Perilaku Negatif"; break;
+                    default: label = d.jenis_dokumen.replace(/_/g, " ");
+                }
 
-                    // Simple manual mapping if needed, otherwise backend config should be used ideally
-                    // But for now we map manually based on what we know
-                    switch (d.jenis_dokumen) {
+                return {
+                    id: d.id,
+                    jenis_dokumen: label,
+                    raw_jenis: d.jenis_dokumen,
+                    status_verifikasi: d.is_verified ? "verified" : (d.catatan ? "rejected" : "pending"),
+                    is_verified: d.is_verified,
+                    catatan: d.catatan,
+                    file_url: d.file_url,
+                    file_type: d.file_type,
+                    created_at: d.created_at,
+                    updated_at: d.updated_at,
+                    pendaftar_id: id,
+                };
+            });
+
+            // Add placeholders for missing required documents
+            const REQUIRED_RAW_TYPES = [
+                'foto_setengah_badan', 'kartu_keluarga', 'akta_kelahiran', 
+                'rapor_sem1', 'rapor_sem2', 'nisn', 'surat_kesehatan', 
+                'pakta_integritas', 'pernyataan_bebas_negatif'
+            ];
+
+            REQUIRED_RAW_TYPES.forEach(rawType => {
+                if (!uploadedTypes.has(rawType)) {
+                    let label = rawType;
+                    switch (rawType) {
                         case 'foto_setengah_badan': label = "Foto Setengah Badan"; break;
                         case 'kartu_keluarga': label = "Scan Kartu Keluarga"; break;
                         case 'akta_kelahiran': label = "Scan Akte Kelahiran"; break;
@@ -113,36 +153,35 @@ export default function VerifikasiDokumenDetailPage() {
                         case 'surat_kesehatan': label = "Surat Keterangan Sehat"; break;
                         case 'pakta_integritas': label = "Scan Pakta Integritas"; break;
                         case 'pernyataan_bebas_negatif': label = "Scan Pernyataan Bebas Perilaku Negatif"; break;
-                        default: label = d.jenis_dokumen.replace(/_/g, " ");
                     }
 
-                    return {
-                        id: d.id,
-                        jenis_dokumen: label, // Use the label for display
-                        raw_jenis: d.jenis_dokumen, // Keep raw for logic if needed
-                        status_verifikasi: d.is_verified ? "verified" : (d.catatan ? "rejected" : "pending"),
-                        is_verified: d.is_verified,
-                        catatan: d.catatan,
-                        file_url: d.file_url,
-                        file_type: d.file_type,
-                        created_at: d.created_at,
-                        updated_at: d.updated_at,
+                    processedDocs.push({
+                        id: `placeholder-${rawType}`,
+                        jenis_dokumen: label,
+                        raw_jenis: rawType,
+                        status_verifikasi: "empty",
+                        is_verified: false,
+                        catatan: null,
+                        file_url: null,
+                        file_type: null,
+                        created_at: new Date().toISOString(),
+                        updated_at: new Date().toISOString(),
                         pendaftar_id: id,
-                    };
-                });
+                    });
+                }
+            });
 
-                // Sort documents
-                docs.sort((a: any, b: any) => {
-                    const aIndex = JENIS_DOKUMEN_ORDER.indexOf(a.jenis_dokumen);
-                    const bIndex = JENIS_DOKUMEN_ORDER.indexOf(b.jenis_dokumen);
-                    // If not found in order list, push to bottom
-                    if (aIndex === -1 && bIndex === -1) return a.jenis_dokumen.localeCompare(b.jenis_dokumen);
-                    if (aIndex === -1) return 1;
-                    if (bIndex === -1) return -1;
-                    return aIndex - bIndex;
-                });
+            // Sort documents based on JENIS_DOKUMEN_ORDER
+            processedDocs.sort((a: any, b: any) => {
+                const aIndex = JENIS_DOKUMEN_ORDER.indexOf(a.jenis_dokumen);
+                const bIndex = JENIS_DOKUMEN_ORDER.indexOf(b.jenis_dokumen);
+                if (aIndex === -1 && bIndex === -1) return a.jenis_dokumen.localeCompare(b.jenis_dokumen);
+                if (aIndex === -1) return 1;
+                if (bIndex === -1) return -1;
+                return aIndex - bIndex;
+            });
 
-                setDokumenList(docs);
+            setDokumenList(processedDocs);
             } else {
                 // Handle case where no documents found or applicant doesn't exist/has no docs
                 // We might want to fetch pendaftar info separately if needed, 
@@ -436,6 +475,11 @@ export default function VerifikasiDokumenDetailPage() {
                                     <div className="flex items-center gap-1 text-rose-600 bg-rose-50 px-2 py-1 rounded-lg text-[10px] font-black uppercase">
                                         <XCircle className="w-3 h-3" />
                                         Ditolak
+                                    </div>
+                                ) : dok.status_verifikasi === "empty" ? (
+                                    <div className="flex items-center gap-1 text-stone-400 bg-stone-50 px-2 py-1 rounded-lg text-[10px] font-black uppercase border border-stone-200 italic">
+                                        <Clock className="w-3 h-3" />
+                                        Belum Ada
                                     </div>
                                 ) : (
                                     <div className="flex items-center gap-1 text-brand-yellow-700 bg-brand-yellow-50 px-2 py-1 rounded-lg text-[10px] font-black uppercase border border-brand-yellow-200">
