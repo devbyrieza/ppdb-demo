@@ -141,35 +141,45 @@ export async function recalculateNilaiUjian(pendaftarId: string) {
         };
         
         // Determine status based on Grade distribution
+        // Determine status based on Grade distribution
         status = determineFinalDecision(grades);
 
-        // Update Pendaftar Status to 'tested'
+        // Update Pendaftar Status to 'accepted', 'rejected', or 'announced' (for CADANGAN)
         const pendaftar = await prisma.pendaftar.findUnique({
             where: { id: pendaftarId },
             select: { 
                 status_pendaftaran: true,
                 nama_lengkap: true,
                 no_hp: true,
+                jenjang: true,
                 orang_tua: { select: { no_hp_ayah: true, no_hp_ibu: true } }
             }
         });
 
         const currentStatus = pendaftar?.status_pendaftaran;
-        const advancedStatuses = ['tested', 'passed', 'not_passed', 're_registered', 'withdrawn'];
+        // Don't downgrade status if they already re-registered or were accepted
+        const immutableStatuses = ['accepted', 'rejected', 'announced', 're_registered', 'enrolled', 'withdrawn'];
 
-        if (currentStatus && !advancedStatuses.includes(currentStatus)) {
+        if (currentStatus && !immutableStatuses.includes(currentStatus)) {
+            let nextStatus = 'announced'; // Default for CADANGAN
+            if (status === 'DITERIMA') nextStatus = 'accepted';
+            if (status === 'DITOLAK') nextStatus = 'rejected';
+
             await prisma.pendaftar.update({
                 where: { id: pendaftarId },
-                data: { status_pendaftaran: 'tested' }
+                data: { status_pendaftaran: nextStatus }
             });
 
-            // Send "Selection Complete" notification ONLY when all 6 components are finished
-            const { notifyAllExamsComplete } = await import('./wablas');
+            // Send Combined Selection Notification
+            const { notifyCombinedFinalResult } = await import('./wablas');
             const phone = pendaftar.no_hp || pendaftar.orang_tua?.no_hp_ayah || pendaftar.orang_tua?.no_hp_ibu;
             if (phone) {
-                await notifyAllExamsComplete({
+                await notifyCombinedFinalResult({
+                    pendaftarId,
                     phone,
-                    nama: pendaftar.nama_lengkap
+                    nama: pendaftar.nama_lengkap,
+                    status: status as 'DITERIMA' | 'CADANGAN' | 'DITOLAK',
+                    jenjang: pendaftar.jenjang
                 });
             }
         }

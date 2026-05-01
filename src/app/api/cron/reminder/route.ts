@@ -42,7 +42,11 @@ export async function GET(request: Request) {
                 },
             },
             include: {
-                pendaftar: true,
+                pendaftar: {
+                    include: {
+                        orang_tua: true,
+                    }
+                },
                 exam_session: true,
                 penguji_santri: true,
                 penguji_quran: true,
@@ -90,26 +94,53 @@ export async function GET(request: Request) {
                 ? (googleMeetLink.startsWith("http") ? googleMeetLink : `${jadwal.exam_session?.location || "Online"} (${googleMeetLink})`)
                 : (jadwal.exam_session?.location || "Pesantren Sistem PPDB Modern");
 
-            // 1. Enqueue for Santri
-            if (jadwal.pendaftar.no_hp) {
-                const msgSantri = buildMessageReminderH1Santri(
-                    jadwal.pendaftar.nama_lengkap,
-                    hari,
-                    tanggalStr,
-                    jam,
-                    lokasi,
-                    jenisUjian
-                );
+            // 1. Enqueue for Santri / Parents
+            const isCawalsan = jenisUjian.toLowerCase().includes("cawalsan") || (jadwal.exam_session?.title || "").toLowerCase().includes("cawalsan");
+            
+            if (isCawalsan) {
+                // Send to parents
+                const parentPhone = jadwal.pendaftar.orang_tua?.no_hp_ayah || jadwal.pendaftar.orang_tua?.no_hp_ibu || jadwal.pendaftar.no_hp;
+                if (parentPhone) {
+                    const { buildMessageReminderH1Cawalsan } = await import("@/lib/whatsapp-queue");
+                    const msgCawalsan = buildMessageReminderH1Cawalsan(
+                        jadwal.pendaftar.nama_lengkap,
+                        hari,
+                        tanggalStr,
+                        jam,
+                        lokasi
+                    );
 
-                const result = await enqueueWhatsapp({
-                    pendaftarId: jadwal.pendaftar_id,
-                    phone: jadwal.pendaftar.no_hp,
-                    jenisNotif: "reminder_h1", // Mapping to existing H1 type in DB for now
-                    messageContent: msgSantri,
-                    scheduledAt: finalScheduledAt,
-                });
+                    const result = await enqueueWhatsapp({
+                        pendaftarId: jadwal.pendaftar_id,
+                        phone: parentPhone,
+                        jenisNotif: "reminder_h1",
+                        messageContent: msgCawalsan,
+                        scheduledAt: finalScheduledAt,
+                    });
+                    if (result.queued) enqueuedSantri++;
+                }
+            } else {
+                // Send to santri
+                if (jadwal.pendaftar.no_hp) {
+                    const msgSantri = buildMessageReminderH1Santri(
+                        jadwal.pendaftar.nama_lengkap,
+                        hari,
+                        tanggalStr,
+                        jam,
+                        lokasi,
+                        jenisUjian
+                    );
 
-                if (result.queued) enqueuedSantri++;
+                    const result = await enqueueWhatsapp({
+                        pendaftarId: jadwal.pendaftar_id,
+                        phone: jadwal.pendaftar.no_hp,
+                        jenisNotif: "reminder_h1",
+                        messageContent: msgSantri,
+                        scheduledAt: finalScheduledAt,
+                    });
+
+                    if (result.queued) enqueuedSantri++;
+                }
             }
 
             // 2. Enqueue for Examiners (if assigned)
@@ -149,6 +180,8 @@ export async function GET(request: Request) {
                         shortUrl = await generateTinyUrl(magicLink);
                     }
 
+                    const gender = (profile.full_name.match(/halimah|maryani|fatimah|azzahra|putri|utami/i)) ? "P" : "L";
+
                     const msgPenguji = buildMessageReminderH1Penguji(
                         profile.full_name,
                         jadwal.pendaftar.nama_lengkap,
@@ -157,6 +190,7 @@ export async function GET(request: Request) {
                         jam,
                         profile.google_meet_link || "Menyesuaikan",
                         type,
+                        gender,
                         shortUrl
                     );
 

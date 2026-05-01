@@ -619,6 +619,29 @@ export async function notifyStatusChange(data: {
     });
 }
 
+/**
+ * Send combined final result (Test Complete + Announcement + Re-registration)
+ */
+export async function notifyCombinedFinalResult(data: {
+    pendaftarId: string;
+    phone: string | null;
+    nama: string;
+    status: 'DITERIMA' | 'CADANGAN' | 'DITOLAK';
+    jenjang: string;
+}) {
+    if (!data.phone) return { status: false, message: 'Phone number missing' };
+    const { enqueueWhatsapp, buildMessageCombinedFinal } = await import('./whatsapp-queue');
+
+    const message = buildMessageCombinedFinal(data.nama, data.status, data.jenjang);
+    
+    return enqueueWhatsapp({
+        pendaftarId: data.pendaftarId,
+        phone: data.phone,
+        jenisNotif: 'hasil_tes',
+        messageContent: message,
+    });
+}
+
 // ============================================
 // DOCUMENT & LINK MESSAGE FUNCTIONS
 // ============================================

@@ -563,53 +563,78 @@ function pickOpening(): string {
     return OPENINGS[Math.floor(Math.random() * OPENINGS.length)];
 }
 
+export function buildMessageOTP(nama: string, otp: string): string {
+    return `🔐 *Kode Verifikasi PPDB Al-Andalus Demo*
+
+Assalamu'alaikum *${nama}*,
+
+Kode OTP Anda adalah:
+
+*${otp}*
+
+Kode ini berlaku selama *5 menit*.
+
+⚠️ *PENTING:*
+• Jangan berikan kode ini kepada siapapun
+• Tim Al-Andalus Demo tidak akan pernah meminta kode OTP Anda
+
+Jazakumullahu khairan
+---
+*Panitia PPDB Al-Andalus Demo*`;
+}
+
 export function buildMessageRegistrationSuccess(
     nama: string,
     nomor_pendaftaran: string,
     jenjang: string
 ): string {
-    const jenjangStr = jenjang === 'MTs' ? 'Madrasah Tsanawiyah (MTs)' : "I'dad Lughowi (Setara SMA)";
+    let jenjangStr = jenjang;
+    if (jenjang === 'MTs') jenjangStr = 'Madrasah Tsanawiyah (MTs)';
+    else if (jenjang === 'IL') jenjangStr = "I'dad Lughowi [IL]";
+    else if (jenjang === 'MA') jenjangStr = 'Madrasah Aliyah (MA)';
+
     return `🎉 *Pendaftaran Berhasil!*
 
-Assalamu'alaikum ${nama},
+Assalamu'alaikum *${nama}*,
 
-Alhamdulillah, pendaftaran Anda di Pesantren Sistem PPDB Modern telah berhasil!
+Alhamdulillah, pendaftaran Anda di Pesantren Al-Andalus Demo telah berhasil!
 
 📋 *Detail Pendaftaran:*
 • Nomor Pendaftaran: ${nomor_pendaftaran}
 • Jenjang: ${jenjangStr}
-• Nama: ${nama}
 
 📝 *Langkah Selanjutnya:*
-1. Login ke dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar
+1. Login ke dashboard: https://demo-ppdb.alandalus.com/dashboard/pendaftar
    *(Gunakan Nomor Pendaftaran & NIK untuk Login)*
 2. Lakukan Pembayaran Pendaftaran (Transfer)
-3. Isi Data Lengkap & Upload Berkas (setelah pembayaran diverifikasi)
+3. Lengkapi biodata & upload dokumen (setelah pembayaran diverifikasi)
 
 💡 *Butuh Bantuan?*
 Hubungi kami di 0851-1152-4441
 
-Jazakumullahu khairan,
-Panitia PPDB Sistem PPDB Modern`;
+Jazakumullahu khairan
+---
+*Panitia PPDB Al-Andalus Demo*`;
 }
 
 export function buildMessageDocumentVerified(nama: string, dokumenList: string): string {
-    return `✅ *Dokumen Diverifikasi*
+    return `✅ *Dokumen Telah Diverifikasi*
 
-Assalamu'alaikum ${nama},
+Assalamu'alaikum *${nama}*,
 
 Alhamdulillah, dokumen Anda telah diverifikasi dan *DITERIMA*.
 
 📄 *Dokumen yang Diverifikasi:*
-${dokumenList}
+Semua Dokumen Lengkap
 
 📝 *Langkah Selanjutnya:*
 Silakan pilih jadwal tes masuk melalui dashboard Anda (Menu Jadwal Ujian).
 
-Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/undangan-seleksi
+Dashboard: https://demo-ppdb.alandalus.com/dashboard/pendaftar/undangan-seleksi
 
-Jazakumullahu khairan,
-Panitia PPDB Sistem PPDB Modern`;
+Jazakumullahu khairan
+---
+*Panitia PPDB Al-Andalus Demo*`;
 }
 
 export function buildMessageDocumentRejected(nama: string, dokumenList: string, catatan: string): string {
@@ -638,24 +663,19 @@ Panitia PPDB Sistem PPDB Modern`;
 }
 
 export function buildMessagePaymentVerified(nama: string, jumlah: string, metode: string, tanggal: string): string {
-    return `✅ *Pembayaran Diterima*
+    return `✅ *Pembayaran Pendaftaran Diterima*
 
-Assalamu'alaikum ${nama},
+Assalamu'alaikum *${nama}*,
 
-Alhamdulillah, pembayaran Anda telah kami terima dan verifikasi.
+Alhamdulillah, pembayaran pendaftaran Anda telah kami terima dan verifikasi.
 
 💰 *Detail Pembayaran:*
-* Jumlah: ${jumlah}
-* Metode: ${metode}
+* Jumlah: Rp 200.000
+* Metode: manual
 * Tanggal: ${tanggal}
 
 📝 *Langkah Selanjutnya:*
 Silakan login ke dashboard untuk melengkapi Data Santri & Upload Berkas.
-Setelah data lengkap, Anda bisa memilih jadwal tes.
-
-Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/isi-data-lengkap
-
-Jazakumullahu khairan,
 Panitia PPDB Sistem PPDB Modern`;
 }
 
@@ -889,7 +909,7 @@ export async function getQueueStats() {
 }
 
 /**
- * Template: Pengingat H-1 untuk Santri (H-1 Pukul 20.00 WIB)
+ * Template: Pengingat H-1 untuk Santri
  */
 export function buildMessageReminderH1Santri(
     nama: string,
@@ -899,41 +919,66 @@ export function buildMessageReminderH1Santri(
     lokasi: string,
     jenisUjian: string
 ): string {
-    // Robust deduplication for Time - remove any existing WIB and ensure single WIB at end
+    // Robust deduplication for Time
     let cleanJam = (jam || "").replace(/\s*WIB\s*/gi, " ").trim();
-    cleanJam = cleanJam.replace(/\s+/g, " "); // collapse multiple spaces
+    cleanJam = cleanJam.replace(/\s+/g, " ");
     const finalJam = `${cleanJam} WIB`;
 
-    // Robust deduplication for Day - handle various formats
-    let cleanTanggal = (tanggal || "").trim();
-    // Remove day name if it appears at the start (case insensitive, with or without comma)
-    if (hari) {
-        const dayPattern = new RegExp(`^${hari}\\s*,?\\s*`, "i");
-        cleanTanggal = cleanTanggal.replace(dayPattern, "");
-    }
-    // Also remove any day name pattern at the start (e.g., "Kamis, ")
-    cleanTanggal = cleanTanggal.replace(/^(?:senin|selasa|rabu|kamis|jumat|sabtu|ahad|minggu)\s*,?\s*/i, "");
+    const finalHariTanggal = `${hari}, ${tanggal}`;
 
-    const finalHariTanggal = `${hari}, ${cleanTanggal}`;
+    let agendaTitle = "";
+    if (jenisUjian.toLowerCase().includes("quran")) agendaTitle = "Tes Al-Qur'an";
+    else if (jenisUjian.toLowerCase().includes("calsan")) agendaTitle = "Wawancara Calon Santri";
+    else agendaTitle = jenisUjian;
 
-    return `*PENGINGAT UJIAN SELEKSI*
+    return `*PENGINGAT TES SELEKSI*
 
 Assalamu'alaikum *${nama}*,
 
-Ini adalah pengingat bahwa Anda dijadwalkan mengikuti *${jenisUjian}* pada:
+Ini adalah pengingat bahwa Anda dijadwalkan mengikuti *${agendaTitle}* pada:
 
 📅 *Hari/Tanggal:* ${finalHariTanggal}
 ⏰ *Waktu:* ${finalJam}
 📍 *Lokasi/Link:* ${lokasi}
 
-Mohon persiapkan diri dengan baik dan pastikan koneksi internet stabil jika ujian online. Sampai jumpa!
+Mohon persiapkan diri with baik and pastikan koneksi internet stabil. Sampai jumpa!
 
+Jazakumullahu khairan
 ---
-*Panitia PPDB Sistem PPDB Modern*`;
+*Panitia PPDB Al-Andalus Demo*`;
+}
+
+export function buildMessageReminderH1Cawalsan(
+    namaSantri: string,
+    hari: string,
+    tanggal: string,
+    jam: string,
+    lokasi: string
+): string {
+    let cleanJam = (jam || "").replace(/\s*WIB\s*/gi, " ").trim();
+    cleanJam = cleanJam.replace(/\s+/g, " ");
+    const finalJam = `${cleanJam} WIB`;
+    const finalHariTanggal = `${hari}, ${tanggal}`;
+
+    return `*PENGINGAT TES SELEKSI*
+
+Assalamu'alaikum Abi/Ummi dari Ananda *${namaSantri}*,
+
+Ini adalah pengingat bahwa Anda dijadwalkan mengikuti *Wawancara Calon Orangtua/Wali Santri* pada:
+
+📅 *Hari/Tanggal:* ${finalHariTanggal}
+⏰ *Waktu:* ${finalJam}
+📍 *Lokasi/Link:* ${lokasi}
+
+Mohon persiapkan diri with baik and pastikan koneksi internet stabil. Sampai jumpa!
+
+Jazakumullahu khairan
+---
+*Panitia PPDB Al-Andalus Demo*`;
 }
 
 /**
- * Template: Pengingat H-1 untuk Penguji (H-1 Pukul 20.00 WIB)
+ * Template: Pengingat H-1 untuk Penguji
  */
 export function buildMessageReminderH1Penguji(
     namaPenguji: string,
@@ -943,48 +988,91 @@ export function buildMessageReminderH1Penguji(
     jam: string,
     lokasi: string,
     jenisUjian: string,
+    gender: string = "L",
     inputNilaiLink?: string
 ): string {
-    const title = (namaPenguji || "").toLowerCase().includes("ustadzah") ? "Ustadzah" : "Ustadz";
-    const isWawancara = jenisUjian.toLowerCase().includes("wawancara");
-
-    // Robust deduplication for Time - remove any existing WIB and ensure single WIB at end
+    const title = gender === "P" ? "Ustadzah" : "Ustadz";
+    
     let cleanJam = (jam || "").replace(/\s*WIB\s*/gi, " ").trim();
-    cleanJam = cleanJam.replace(/\s+/g, " "); // collapse multiple spaces
+    cleanJam = cleanJam.replace(/\s+/g, " ");
     const finalJam = `${cleanJam} WIB`;
+    const finalHariTanggal = `${hari}, ${tanggal}`;
 
-    // Robust deduplication for Day - handle various formats
-    let cleanTanggal = (tanggal || "").trim();
-    // Remove day name if it appears at the start (case insensitive, with or without comma)
-    if (hari) {
-        const dayPattern = new RegExp(`^${hari}\\s*,?\\s*`, "i");
-        cleanTanggal = cleanTanggal.replace(dayPattern, "");
+    let agendaText = "";
+    let agendaTitle = "*PENGINGAT JADWAL MENGUJI*";
+    if (jenisUjian.toLowerCase().includes("quran")) {
+        agendaText = "Tes Al-Qur'an";
+    } else if (jenisUjian.toLowerCase().includes("calsan")) {
+        agendaText = "Wawancara Calon Santri";
+        agendaTitle = "*PENGINGAT JADWAL WAWANCARA*";
+    } else if (jenisUjian.toLowerCase().includes("cawalsan")) {
+        agendaText = "Wawancara Calon Orangtua/Wali Santri";
+        agendaTitle = "*PENGINGAT JADWAL WAWANCARA*";
+    } else {
+        agendaText = jenisUjian;
     }
-    // Also remove any day name pattern at the start (e.g., "Kamis, ")
-    cleanTanggal = cleanTanggal.replace(/^(?:senin|selasa|rabu|kamis|jumat|sabtu|ahad|minggu)\s*,?\s*/i, "");
 
-    const finalHariTanggal = `${hari}, ${cleanTanggal}`;
-
-    const templateTitle = isWawancara ? "*REMINDER JADWAL WAWANCARA*" : "*REMINDER JADWAL MENGUJI*";
-    const agendaText = isWawancara ? "Wawancara Calon Santri / Ortu" : jenisUjian;
-
-    return `${templateTitle}
+    return `${agendaTitle}
 
 Assalamu'alaikum ${title} *${namaPenguji}*,
 
-Mengingatkan jadwal ${isWawancara ? "wawancara" : "menguji"} Anda:
+Mengingatkan jadwal ${agendaText.includes("Wawancara") ? "wawancara" : "menguji"} Anda:
 
 📝 *Agenda:* ${agendaText}
-👤 *Nama Santri:* ${namaSantri}
-📅 *Hari/Tanggal:* ${finalHariTanggal}    
+👤 *Nama Santri:* *${namaSantri}*
+📅 *Hari/Tanggal:* ${finalHariTanggal}
 ⏰ *Waktu:* ${finalJam}
 📍 *Link Meet:* ${lokasi}
 🔗 *Input Hasil:* ${inputNilaiLink || "-"}
 
-Mohon kehadirannya tepat waktu. Syukron.
+Mohon kehadirannya tepat waktu.
 
+Jazakumullahu khairan
 ---
-*Sistem PPDB Sistem PPDB Modern*`;
+*Sistem PPDB Al-Andalus Demo*`;
+}
+
+export function buildMessageCombinedFinal(
+    nama: string,
+    status: 'DITERIMA' | 'CADANGAN' | 'DITOLAK',
+    jenjang: string
+): string {
+    let msg = `✅ *Hasil Seleksi PPDB Al-Andalus Demo*
+
+Assalamu'alaikum *${nama}*,
+
+Alhamdulillah, rangkaian tes seleksi Anda telah selesai dan hasil evaluasi telah diputuskan.
+
+📢 *HASIL SELEKSI:*
+Status: *${status}*
+Jenjang: ${jenjang}
+
+`;
+
+    if (status === 'DITERIMA') {
+        msg += `📝 *Langkah Selanjutnya:*
+Silakan login ke dashboard untuk melakukan *Daftar Ulang* dan melengkapi administrasi.
+Batas waktu daftar ulang adalah 7 hari setelah pengumuman ini.
+
+Dashboard: https://demo-ppdb.alandalus.com/dashboard/pendaftar/daftar-ulang`;
+    } else if (status === 'CADANGAN') {
+        msg += `📝 *Informasi:*
+Anda berada dalam daftar cadangan. Kami akan menghubungi Anda jika ada kuota yang tersedia di kemudian hari. Terus pantau dashboard Anda.
+
+Dashboard: https://demo-ppdb.alandalus.com/dashboard/pendaftar/pengumuman`;
+    } else {
+        msg += `Kami mengapresiasi semangat dan usaha Anda. Semoga dimudahkan jalannya untuk menuntut ilmu di manapun berada.
+
+Jazakumullahu khairan.`;
+    }
+
+    msg += `
+
+Jazakumullahu khairan
+---
+*Panitia PPDB Al-Andalus Demo*`;
+
+    return msg;
 }
 
 export function buildMessagePembatalanJadwal(
@@ -1007,8 +1095,9 @@ Telah *DIBATALKAN* oleh Penguji karena alasan: *${alasan}*.
 
 Mohon segera login ke Dashboard PPDB untuk memilih kembali jadwal pengganti yang tersedia di menu Undangan Seleksi.
 
-Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || 'https://demo-ppdb.vercel.app'}/dashboard/pendaftar/undangan-seleksi
+Dashboard: https://demo-ppdb.alandalus.com/dashboard/pendaftar/undangan-seleksi
 
+Jazakumullahu khairan
 ---
-*Panitia PPDB Sistem PPDB Modern*`;
+*Panitia PPDB Al-Andalus Demo*`;
 }
