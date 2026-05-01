@@ -379,6 +379,7 @@ export default function AdminDashboardPage() {
                   <th rowSpan={2} className="px-6 py-4 border-r border-brand-yellow-50">Jenjang</th>
                   <th colSpan={3} className="px-4 py-3 text-center border-r border-brand-yellow-50 bg-slate-100/50">Kuota</th>
                   <th colSpan={3} className="px-4 py-3 text-center border-r border-brand-yellow-50 bg-blue-50">Pendaftar</th>
+                  <th colSpan={3} className="px-4 py-3 text-center border-r border-brand-yellow-50 bg-amber-50">Sudah Bayar Pendaftaran</th>
                   <th colSpan={3} className="px-4 py-3 text-center border-r border-brand-yellow-50 bg-emerald-50">Diterima</th>
                   <th colSpan={3} className="px-4 py-3 text-center bg-purple-50">Sudah Daftar Ulang</th>
                 </tr>
@@ -391,6 +392,10 @@ export default function AdminDashboardPage() {
                   <th className="px-2 py-2 text-center border-r border-brand-yellow-50 text-blue-600">L</th>
                   <th className="px-2 py-2 text-center border-r border-brand-yellow-50 text-pink-600">P</th>
                   <th className="px-2 py-2 text-center border-r border-brand-yellow-50 font-black text-blue-800">T</th>
+                  {/* Sudah Bayar Pendaftaran */}
+                  <th className="px-2 py-2 text-center border-r border-brand-yellow-50 text-amber-600">L</th>
+                  <th className="px-2 py-2 text-center border-r border-brand-yellow-50 text-pink-600">P</th>
+                  <th className="px-2 py-2 text-center border-r border-brand-yellow-50 font-black text-amber-800">T</th>
                   {/* Diterima */}
                   <th className="px-2 py-2 text-center border-r border-brand-yellow-50 text-emerald-600">L</th>
                   <th className="px-2 py-2 text-center border-r border-brand-yellow-50 text-pink-600">P</th>
@@ -434,6 +439,10 @@ export default function AdminDashboardPage() {
                       <td className="px-2 py-4 text-center border-r border-brand-yellow-50 font-black text-blue-600 bg-blue-50/10">{item.pendaftar_putra}</td>
                       <td className="px-2 py-4 text-center border-r border-brand-yellow-50 font-black text-pink-600 bg-blue-50/10">{item.pendaftar_putri}</td>
                       <td className="px-2 py-4 text-center border-r border-brand-yellow-50 font-black text-blue-900 bg-blue-50/30">{item.pendaftar}</td>
+                      {/* Sudah Bayar Pendaftaran */}
+                      <td className="px-2 py-4 text-center border-r border-brand-yellow-50 font-black text-amber-600 bg-amber-50/10">{item.bayar_putra || 0}</td>
+                      <td className="px-2 py-4 text-center border-r border-brand-yellow-50 font-black text-pink-600 bg-amber-50/10">{item.bayar_putri || 0}</td>
+                      <td className="px-2 py-4 text-center border-r border-brand-yellow-50 font-black text-amber-900 bg-amber-50/30">{item.bayar_total || 0}</td>
                       {/* Diterima */}
                       <td className="px-2 py-4 text-center border-r border-brand-yellow-50 font-black text-emerald-600 bg-emerald-50/10">{item.diterima_putra}</td>
                       <td className="px-2 py-4 text-center border-r border-brand-yellow-50 font-black text-pink-600 bg-emerald-50/10">{item.diterima_putri}</td>

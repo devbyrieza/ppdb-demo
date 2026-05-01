@@ -52,18 +52,19 @@ export default function VerifikasiPembayaranPage() {
   const [processing, setProcessing] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [uploadingProof, setUploadingProof] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<"PENDAFTARAN" | "DAFTAR_ULANG">("PENDAFTARAN");
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetchPembayaran();
-  }, [statusFilter]);
+  }, [statusFilter, activeTab]);
 
   const fetchPembayaran = async () => {
     try {
       setLoading(true);
       const response = await fetch(
-        `/api/admin/verifikasi/pembayaran?status=${statusFilter}`
+        `/api/admin/verifikasi/pembayaran?status=${statusFilter}&jenis=${activeTab}`
       );
       if (!response.ok) throw new Error("Failed to fetch");
 
@@ -250,6 +251,30 @@ export default function VerifikasiPembayaranPage() {
               </p>
             </div>
           </div>
+          
+          <div className="flex bg-stone-100 p-1.5 rounded-[1.25rem] w-fit shadow-inner ring-1 ring-stone-200/50">
+            <button
+              onClick={() => setActiveTab("PENDAFTARAN")}
+              className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${
+                activeTab === "PENDAFTARAN"
+                  ? "bg-white text-brand-blue-700 shadow-clay-sm ring-1 ring-stone-100"
+                  : "text-stone-400 hover:text-stone-600 hover:bg-stone-50"
+              }`}
+            >
+              Pendaftaran
+            </button>
+            <button
+              onClick={() => setActiveTab("DAFTAR_ULANG")}
+              className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${
+                activeTab === "DAFTAR_ULANG"
+                  ? "bg-white text-brand-blue-700 shadow-clay-sm ring-1 ring-stone-100"
+                  : "text-stone-400 hover:text-stone-600 hover:bg-stone-50"
+              }`}
+            >
+              Daftar Ulang
+            </button>
+          </div>
+
           <div className="flex items-center gap-2 flex-shrink-0">
             <button
               onClick={() => handleExport("excel")}

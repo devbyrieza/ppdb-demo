@@ -89,6 +89,7 @@ export async function GET(request: Request) {
       if (!jenjangCounts[jenjang]) {
         jenjangCounts[jenjang] = {
           total: 0, putra: 0, putri: 0,
+          bayar_total: 0, bayar_putra: 0, bayar_putri: 0,
           accepted: 0, accepted_putra: 0, accepted_putri: 0,
           cadangan: 0, cadangan_putra: 0, cadangan_putri: 0,
           ulang_total: 0, ulang_putra: 0, ulang_putri: 0
@@ -109,6 +110,21 @@ export async function GET(request: Request) {
         genderCounts["Perempuan"]++; 
       } else { 
         genderCounts["Belum Diisi"]++; 
+      }
+
+      // Sudah Bayar Pendaftaran Logic: verified or higher
+      const verifiedIndex = 3; // 'verified' index in status list below
+      const statusList = [
+        'draft', 'awaiting_payment', 'payment_verification', 'verified', 'paid', 
+        'data_completed', 'docs_uploaded', 'docs_verified', 'scheduled', 'tested', 
+        'announced', 'accepted', 'enrolled'
+      ];
+      const currentIndex = statusList.indexOf(status);
+
+      if (currentIndex >= verifiedIndex || status === "paid") {
+        j.bayar_total++;
+        if (isL) j.bayar_putra++;
+        if (isP) j.bayar_putri++;
       }
 
       // Diterima Logic: accepted or enrolled only (announced is for Cadangan)
@@ -162,6 +178,7 @@ export async function GET(request: Request) {
       stats_per_jenjang: ["MTS", "IL", "SMA"].map(jenjang => {
         const data = jenjangCounts[jenjang] || {
           total: 0, putra: 0, putri: 0,
+          bayar_total: 0, bayar_putra: 0, bayar_putri: 0,
           accepted: 0, accepted_putra: 0, accepted_putri: 0,
           cadangan: 0, cadangan_putra: 0, cadangan_putri: 0,
           ulang_total: 0, ulang_putra: 0, ulang_putri: 0
@@ -171,6 +188,9 @@ export async function GET(request: Request) {
           jenjang,
           kuota_putra: q.putra, kuota_putri: q.putri, kuota_total: q.total,
           pendaftar: data.total, pendaftar_putra: data.putra, pendaftar_putri: data.putri,
+          bayar_total: data.bayar_total,
+          bayar_putra: data.bayar_putra,
+          bayar_putri: data.bayar_putri,
           diterima: data.accepted,
           diterima_putra: data.accepted_putra,
           diterima_putri: data.accepted_putri,

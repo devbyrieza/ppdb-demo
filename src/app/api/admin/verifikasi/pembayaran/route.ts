@@ -20,6 +20,7 @@ export async function GET(request: NextRequest) {
     // Get query params
     const searchParams = request.nextUrl.searchParams;
     const status = searchParams.get("status") || "pending";
+    const jenis = searchParams.get("jenis"); // PENDAFTARAN or DAFTAR_ULANG
 
     // Build filter
     const where: any = {
@@ -34,6 +35,10 @@ export async function GET(request: NextRequest) {
       where.status_pembayaran = { notIn: ["verified", "rejected"] };
     } else {
       where.status_pembayaran = status;
+    }
+
+    if (jenis) {
+      where.jenis_pembayaran = jenis;
     }
 
     // Fetch pembayaran
