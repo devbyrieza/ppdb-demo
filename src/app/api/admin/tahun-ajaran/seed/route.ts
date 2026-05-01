@@ -76,6 +76,19 @@ export async function POST() {
           where: { tahun_ajaran_id: { not: existing.id } },
           data: { tahun_ajaran_id: existing.id }
         });
+
+        // NEW: Fix existing payments that are 200000 for PENDAFTARAN
+        console.log(`[SEED] Updating existing PENDAFTARAN payments from 200000 to 250000`);
+        await tx.pembayaran.updateMany({
+          where: { 
+            jenis_pembayaran: 'PENDAFTARAN',
+            jumlah: 200000
+          },
+          data: { 
+            jumlah: 250000,
+            total_tagihan: 250000
+          }
+        });
       });
 
       return NextResponse.json({
