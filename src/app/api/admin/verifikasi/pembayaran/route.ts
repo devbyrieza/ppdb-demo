@@ -109,7 +109,7 @@ export async function PATCH(request: NextRequest) {
 
     // Get request body
     const body = await request.json();
-    const { pembayaran_id, status_pembayaran, catatan } = body;
+    const { pembayaran_id, status_pembayaran, catatan, jumlah } = body;
 
     if (!pembayaran_id || !status_pembayaran) {
       return NextResponse.json(
@@ -131,6 +131,7 @@ export async function PATCH(request: NextRequest) {
       data: {
         status_pembayaran,
         catatan_verifikasi: catatan,
+        jumlah: jumlah ? Number(jumlah) : undefined,
       },
       include: {
         pendaftar: {

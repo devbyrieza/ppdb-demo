@@ -48,6 +48,7 @@ export default function VerifikasiPembayaranPage() {
   const [selectedPembayaran, setSelectedPembayaran] = useState<Pembayaran | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [catatan, setCatatan] = useState("");
+  const [editJumlah, setEditJumlah] = useState("");
   const [processing, setProcessing] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [uploadingProof, setUploadingProof] = useState<string | null>(null);
@@ -135,6 +136,7 @@ export default function VerifikasiPembayaranPage() {
           pembayaran_id: pembayaranId,
           status_pembayaran: status,
           catatan: catatan.trim() || null,
+          jumlah: editJumlah ? parseFloat(editJumlah) : null,
         }),
       });
 
@@ -200,6 +202,7 @@ export default function VerifikasiPembayaranPage() {
   const openModal = (pay: Pembayaran) => {
     setSelectedPembayaran(pay);
     setCatatan(pay.catatan || "");
+    setEditJumlah(pay.jumlah);
     setShowModal(true);
   };
 
@@ -484,9 +487,17 @@ export default function VerifikasiPembayaranPage() {
                   <DollarSign className="w-6 h-6 text-brand-blue-700" />
                 </div>
                 <div>
-                  <p className="text-xs font-black text-brand-blue-700 uppercase tracking-widest mb-1 shadow-xs">Konfirmasi Nominal</p>
-                  <p className="text-2xl font-black text-brand-blue-950">{formatRupiah(selectedPembayaran.jumlah)}</p>
-                  <p className="text-sm text-brand-blue-800 mt-1 font-medium italic">Pastikan bukti transfer sesuai dengan nominal ini.</p>
+                  <p className="text-xs font-black text-brand-blue-700 uppercase tracking-widest mb-1 shadow-xs">Konfirmasi/Ubah Nominal</p>
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl font-black text-brand-blue-950">Rp</span>
+                    <input
+                      type="number"
+                      value={editJumlah}
+                      onChange={(e) => setEditJumlah(e.target.value)}
+                      className="text-2xl font-black text-brand-blue-950 bg-transparent border-b-2 border-brand-blue-200 focus:border-brand-blue-500 outline-none w-full max-w-[200px]"
+                    />
+                  </div>
+                  <p className="text-sm text-brand-blue-800 mt-1 font-medium italic">Anda dapat mengubah nominal jika tidak sesuai dengan bukti transfer.</p>
                 </div>
               </div>
 
