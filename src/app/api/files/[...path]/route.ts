@@ -51,9 +51,12 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         const fileData = getFileLocal(relativePath);
 
         if (!fileData) {
-            console.error(`[File Serve] Not Found: ${relativePath}`);
-            // Logs from getFileLocal should help, but let's log here too if needed
-            return NextResponse.json({ error: "File not found" }, { status: 404 });
+            console.error(`[File Serve] ❌ NOT FOUND: ${relativePath}`);
+            console.log(`[File Serve] Full Path Attempted: ${path.join(process.cwd(), 'storage_data', relativePath)}`);
+            return NextResponse.json({ 
+                error: "File tidak ditemukan di server. Kemungkinan file terhapus saat redeploy atau volume storage belum terpasang.",
+                path: relativePath 
+            }, { status: 404 });
         }
 
         // 4. Return File
