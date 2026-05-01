@@ -177,7 +177,7 @@ export async function GET() {
     const has2026 = data.find((ta) => ta.tahun_mulai === 2026 && ta.tahun_selesai === 2027);
 
     // MIGRATION: Also perform migration on GET if admin (to make it easy to trigger)
-    if (active && active.biaya_pendaftaran !== 250000) {
+    if (active && Number(active.biaya_pendaftaran) !== 250000) {
       console.log(`[SEED-GET] Triggering emergency fix for registration fee`);
       await prisma.tahunAjaran.update({
         where: { id: active.id },
