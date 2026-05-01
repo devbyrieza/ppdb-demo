@@ -685,7 +685,7 @@ export default function PendaftarDetailPage() {
               </div>
 
               <div className="bg-stone-50 p-4 rounded-lg border border-stone-200 mt-4">
-                <span className="block text-sm text-stone-500 font-medium mb-1">Catatan Total (Admin/Penguji Akhir)</span>
+                <span className="block text-sm text-stone-500 font-medium mb-1">Catatan Total (Admin/Penguji Al-Qur'an Akhir)</span>
                 <p className="text-stone-800 italic">
                   {pendaftar.nilai_ujian?.catatan_umum || pendaftar.nilai_ujian?.catatan || "Belum ada catatan umum/akhir."}
                 </p>

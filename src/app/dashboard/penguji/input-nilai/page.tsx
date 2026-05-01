@@ -543,7 +543,7 @@ function InputNilaiContent() {
             </div>
 
             <div>
-              <label className="block text-[10px] sm:text-xs font-black text-ink-700 uppercase tracking-widest mb-3 sm:mb-4">Rekomendasi Penguji *</label>
+              <label className="block text-[10px] sm:text-xs font-black text-ink-700 uppercase tracking-widest mb-3 sm:mb-4">Rekomendasi Penguji Al-Qur&apos;an *</label>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
                 {["Diterima", "Cadangan", "Ditolak"].map((opt) => (
                   <label key={opt} className={`px-4 sm:px-5 py-3.5 sm:py-4 rounded-xl cursor-pointer border-2 transition-all text-xs sm:text-sm font-black text-center ${quranForm.rekomendasi === opt ? (opt === "Diterima" ? "border-emerald-500 bg-emerald-50 text-emerald-700 shadow-sm" : opt === "Cadangan" ? "border-brand-yellow-500 bg-brand-yellow-50 text-brand-yellow-800 shadow-sm" : "border-red-500 bg-red-50 text-red-700 shadow-sm") : "border-emerald-50 bg-white hover:border-emerald-200"}`}>
@@ -555,7 +555,7 @@ function InputNilaiContent() {
             </div>
 
             <div>
-              <label className="block text-[10px] sm:text-xs font-black text-ink-700 uppercase tracking-widest mb-2 sm:mb-3">Nama Penguji (Otomatis)</label>
+              <label className="block text-[10px] sm:text-xs font-black text-ink-700 uppercase tracking-widest mb-2 sm:mb-3">Nama Penguji Al-Qur&apos;an (Otomatis)</label>
               <input type="text" value={quranForm.nama_penguji || activeName} readOnly className="w-full px-4 sm:px-5 py-3.5 sm:py-4 bg-emerald-50/50 border-2 border-emerald-100 rounded-xl sm:rounded-2xl font-black text-emerald-950 outline-none cursor-not-allowed" />
             </div>
 
@@ -592,7 +592,7 @@ function InputNilaiContent() {
                       )}
                       {p.detail_quran?.nama_penguji && (
                         <p className="text-emerald-700/70 text-[10px] sm:text-xs font-black uppercase tracking-widest">
-                          Penguji: {p.detail_quran.nama_penguji}
+                          Penguji Al-Qur&apos;an: {p.detail_quran.nama_penguji}
                         </p>
                       )}
                     </div>

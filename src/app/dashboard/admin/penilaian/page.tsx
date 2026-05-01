@@ -251,7 +251,7 @@ export default function ExaminerDashboard() {
                 'NP': s.nomor_pendaftaran || '-',
                 'Nama': (s.nama_lengkap || '').toUpperCase(),
                 'Jenjang': s.jenjang || '-',
-                'Al-Quran': getGrade(s.nilai_ujian?.score_quran, 'quran'),
+                "Al-Qur'an": getGrade(s.nilai_ujian?.score_quran, 'quran'),
                 'Akademi': getGrade(s.nilai_ujian?.score_akademik, 'akademik'),
                 'Kepribadian': getGrade(s.nilai_ujian?.score_kepribadian, 'kepribadian'),
                 'Kesesuaian': getGrade(avgWawancara, 'wawancara'),
@@ -489,7 +489,7 @@ export default function ExaminerDashboard() {
                                                             onClick={() => handleOpenInput(s, 'quran')} 
                                                             className="flex items-center gap-1.5 bg-ink-900 text-white px-3 py-1.5 rounded-xl text-[10px] font-black hover:bg-brand-blue-600 transition-all shadow-md group-hover:scale-105"
                                                         >
-                                                            <Zap className="w-3 h-3" /> QURAN
+                                                            <Zap className="w-3 h-3" /> QUR&apos;AN
                                                         </button>
                                                         <button 
                                                             onClick={() => handleOpenInput(s, 'wawancara_santri')} 
@@ -589,7 +589,7 @@ export default function ExaminerDashboard() {
                                                 onClick={() => handleOpenInput(s, 'quran')} 
                                                 className="flex items-center justify-center gap-2 bg-ink-900 text-white py-3 rounded-2xl text-[11px] font-black shadow-lg shadow-ink-900/10 active:scale-95 transition-all"
                                             >
-                                                <Zap className="w-3.5 h-3.5" /> TES QURAN
+                                                <Zap className="w-3.5 h-3.5" /> TES QUR&apos;AN
                                             </button>
                                             <button 
                                                 onClick={() => handleOpenInput(s, 'wawancara_santri')} 
@@ -750,7 +750,7 @@ export default function ExaminerDashboard() {
                                         <Zap className="w-5 h-5 font-black" />
                                     </div>
                                     <h3 className="text-xl leading-6 font-black text-ink-900" id="modal-title">
-                                        Input Nilai {inputType === 'quran' ? 'Al-Quran' : inputType === 'wawancara_santri' ? 'Wawancara Santri' : 'Wawancara Ortu/Wali'}
+                                        Input Nilai {inputType === 'quran' ? "Al-Qur'an" : inputType === 'wawancara_santri' ? 'Wawancara Santri' : 'Wawancara Ortu/Wali'}
                                     </h3>
                                 </div>
 

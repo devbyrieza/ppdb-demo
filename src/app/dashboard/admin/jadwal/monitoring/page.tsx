@@ -105,7 +105,7 @@ export default function MonitoringJadwalPage() {
 
         filteredSchedules.forEach(s => {
             const examiners = [
-                { name: s.ustadz.quran, role: "Al-Quran" },
+                { name: s.ustadz.quran, role: "Al-Qur'an" },
                 { name: s.ustadz.santri, role: "W. Santri" },
                 { name: s.ustadz.ortu, role: "W. Wali/Ortu" }
             ];
@@ -167,7 +167,7 @@ export default function MonitoringJadwalPage() {
                     <div>
                         <h1 className="text-2xl font-black text-ink-900 tracking-tight">Monitoring <span className="text-blue-600">Jadwal</span></h1>
                         <p className="text-ink-400 font-bold uppercase text-[9px] tracking-widest mt-0.5 flex items-center gap-2">
-                             Rekapitulasi Real-time Peserta & Penguji
+                             Rekapitulasi Real-time Peserta & Penguji Al-Qur'an
                         </p>
                     </div>
                 </div>
@@ -182,7 +182,7 @@ export default function MonitoringJadwalPage() {
                 </div>
                 <div className="bg-white rounded-2xl p-4 md:p-6 border border-slate-100 shadow-clay-sm relative overflow-hidden group">
                     <div className="absolute top-0 right-0 w-12 h-12 bg-green-500/5 rounded-full -mr-6 -mt-6 transition-transform group-hover:scale-150"></div>
-                    <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1 relative z-10">Selesai Quran</p>
+                    <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1 relative z-10">Selesai Al-Qur&apos;an</p>
                     <p className="text-2xl md:text-3xl font-black text-emerald-600 relative z-10">{selesaiQuran}</p>
                 </div>
                 <div className="bg-white rounded-2xl p-4 md:p-6 border border-slate-100 shadow-clay-sm relative overflow-hidden group">
@@ -206,7 +206,7 @@ export default function MonitoringJadwalPage() {
                             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-400" />
                             <input 
                                 type="text" 
-                                placeholder="Cari santri/penguji..."
+                                placeholder="Cari santri/penguji Al-Qur'an..."
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                                 className="w-full bg-white border border-slate-200 rounded-2xl pl-10 pr-4 py-2 text-sm focus:ring-4 focus:ring-blue-500/5 focus:border-blue-500 outline-none font-bold h-12 transition-all shadow-sm"
@@ -314,7 +314,7 @@ export default function MonitoringJadwalPage() {
                                     {/* Detailed Status Grid - Only show rows with assigned examiner */}
                                     <div className="grid grid-cols-1 gap-2 py-4 border-y border-slate-100/50">
                                         {[
-                                            { label: 'Ujian Al-Quran', status: s.status.quran, icon: getStatusIcon(s.status.quran), ustadz: s.ustadz.quran },
+                                            { label: 'Ujian Al-Qur&apos;an', status: s.status.quran, icon: getStatusIcon(s.status.quran), ustadz: s.ustadz.quran },
                                             { label: 'Wawancara Santri', status: s.status.santri, icon: getStatusIcon(s.status.santri), ustadz: s.ustadz.santri },
                                             { label: 'Wawancara Wali/Ortu', status: s.status.ortu, icon: getStatusIcon(s.status.ortu), ustadz: s.ustadz.ortu }
                                         ].filter(stat => stat.ustadz && stat.ustadz !== '-').map((stat, i) => (
@@ -359,7 +359,7 @@ export default function MonitoringJadwalPage() {
                                         <tr className="bg-slate-50/50">
                                             <th className="px-6 py-5 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100">Peserta</th>
                                             <th className="px-6 py-5 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100">Jadwal & Lokasi</th>
-                                            <th className="px-6 py-5 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100">Penguji Quran</th>
+                                            <th className="px-6 py-5 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100">Penguji Al-Qur'an</th>
                                             <th className="px-6 py-5 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100">W. Santri</th>
                                             <th className="px-6 py-5 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100">W. Ortu</th>
                                         </tr>
@@ -442,7 +442,7 @@ export default function MonitoringJadwalPage() {
                                         </div>
                                         <h2 className="text-[17px] font-extrabold text-slate-800">{group.name} <span className="text-blue-600 ml-1">({group.items.length})</span></h2>
                                     </div>
-                                    <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Penguji / Pewawancara</span>
+                                    <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Penguji Al-Qur'an / Pewawancara</span>
                                 </div>
                                 <div className="p-0">
                                     <table className="w-full text-left border-collapse">
@@ -513,7 +513,7 @@ export default function MonitoringJadwalPage() {
                                             </div>
                                             <div className="space-y-2.5">
                                                 {[
-                                                    { role: 'Quran', ustadz: s.ustadz.quran, status: s.status.quran },
+                                                    { role: 'Al-Qur&apos;an', ustadz: s.ustadz.quran, status: s.status.quran },
                                                     { role: 'Santri', ustadz: s.ustadz.santri, status: s.status.santri },
                                                     { role: 'Ortu', ustadz: s.ustadz.ortu, status: s.status.ortu }
                                                 ].filter(x => x.ustadz !== "-").map((x, i) => (

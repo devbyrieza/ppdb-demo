@@ -344,7 +344,7 @@ export default function PengujiDashboardLayout({
                     <div className="flex items-center gap-3">
                        <div className="text-right hidden xl:block">
                           <p className="text-sm font-black text-ink-950 leading-none">{pengujiName}</p>
-                          <p className="text-[10px] font-bold text-brand-blue-600 uppercase tracking-widest mt-1">Penguji Penilai</p>
+                          <p className="text-[10px] font-bold text-brand-blue-600 uppercase tracking-widest mt-1">Penguji Al-Qur&apos;an</p>
                        </div>
                        <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-brand-blue-50 to-brand-blue-100 flex items-center justify-center border border-brand-blue-200 shadow-premium-sm text-brand-blue-700 font-black">
                           {pengujiName.charAt(0)}

@@ -119,7 +119,7 @@ export default function RecapFeePage() {
         ];
         worksheet["!cols"] = wscols;
 
-        writeFile(workbook, `Rekap_Honor_Penguji_${new Date().toISOString().split('T')[0]}.xlsx`);
+        writeFile(workbook, `Rekap_Honor_Penguji_Al_Quran_${new Date().toISOString().split('T')[0]}.xlsx`);
     };
 
     const exportToPDF = () => {
@@ -129,7 +129,7 @@ export default function RecapFeePage() {
         
         // Header
         doc.setFontSize(18);
-        doc.text("Laporan Rekap Honor Penguji", 14, 22);
+        doc.text("Laporan Rekap Honor Penguji Al-Qur'an", 14, 22);
         doc.setFontSize(11);
         doc.setTextColor(100);
         doc.text(`Dicetak pada: ${new Date().toLocaleString('id-ID')}`, 14, 30);
@@ -166,7 +166,7 @@ export default function RecapFeePage() {
         doc.text("Mengetahui,", 140, finalY);
         doc.text("Pimpinan Pondok", 140, finalY + 25);
 
-        doc.save(`Rekap_Honor_Penguji_${new Date().toISOString().split('T')[0]}.pdf`);
+        doc.save(`Rekap_Honor_Penguji_Al_Quran_${new Date().toISOString().split('T')[0]}.pdf`);
     };
 
     return (
@@ -180,7 +180,7 @@ export default function RecapFeePage() {
                             <CreditCard className="w-7 h-7 md:w-8 md:h-8 text-white" />
                         </div>
                         <div>
-                            <h1 className="text-2xl md:text-3xl font-black text-ink-900 tracking-tight">Rekap <span className="text-brand-blue-700">Honor Penguji</span></h1>
+                            <h1 className="text-2xl md:text-3xl font-black text-ink-900 tracking-tight">Rekap <span className="text-brand-blue-700">Honor Penguji Al-Qur'an</span></h1>
                             <p className="text-ink-500 font-medium mt-1 uppercase text-[10px] tracking-widest leading-none">Manajemen Insentif Petugas Seleksi PPDB</p>
                         </div>
                     </div>
@@ -206,7 +206,7 @@ export default function RecapFeePage() {
                         <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:scale-110 transition-transform">
                             <ClipboardCheck className="w-16 h-16" />
                         </div>
-                        <p className="text-[9px] md:text-[10px] font-black text-ink-400 uppercase tracking-widest mb-2 leading-tight">Total Penguji</p>
+                        <p className="text-[9px] md:text-[10px] font-black text-ink-400 uppercase tracking-widest mb-2 leading-tight">Total Penguji Al-Qur'an</p>
                         <p className="text-2xl md:text-3xl font-black text-ink-900">{filteredRecap.length} <span className="text-xs text-ink-400 font-bold uppercase ml-1">Staff</span></p>
                     </div>
                     <div className="bg-white rounded-[1.5rem] md:rounded-[2rem] p-5 md:p-6 shadow-clay-md border border-white/40 relative overflow-hidden group">
@@ -274,7 +274,7 @@ export default function RecapFeePage() {
                         />
                     </div>
                     <div className="text-xs font-bold text-ink-400 uppercase tracking-widest">
-                        Menampilkan {filteredRecap.length} Penguji
+                        Menampilkan {filteredRecap.length} Penguji Al-Qur'an
                     </div>
                 </div>
 

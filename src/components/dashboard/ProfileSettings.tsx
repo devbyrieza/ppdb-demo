@@ -33,13 +33,13 @@ export default function ProfileSettings({ user }: { user: UserSession }) {
             admin_super: "Admin Super",
             admin_keuangan: "Admin Keuangan",
             admin_berkas: "Admin Berkas",
-            penguji_calsan: "Penguji",
+            penguji_calsan: "Penguji Al-Qur'an",
             pewawancara_calsan: "Pewawancara Calsan",
             pewawancara_cawalsan: "Pewawancara Cawalsan",
             tim_it: "Tim IT",
             head_of_it: "Kepala IT",
             admin: "Admin",
-            penguji: "Penguji"
+            penguji: "Penguji Al-Qur'an"
         };
         return roleMap[role] || role.replace("_", " ").toUpperCase();
     };

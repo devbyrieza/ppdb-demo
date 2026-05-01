@@ -15,6 +15,7 @@ import {
     Key
 } from "lucide-react";
 import Swal from "sweetalert2";
+import { ROLE_LABELS, UserRole } from "@/lib/access-control";
 
 interface AdminUser {
     id: string;
@@ -31,7 +32,7 @@ const ROLE_OPTIONS = [
     { value: "admin_super", label: "Admin Super" },
     { value: "admin_berkas", label: "Admin Berkas" },
     { value: "admin_keuangan", label: "Admin Keuangan" },
-    { value: "penguji", label: "Penguji" },
+    { value: "penguji", label: "Penguji Al-Qur'an" },
     { value: "pewawancara_calsan", label: "Pewawancara Calsan" },
     { value: "pewawancara_cawalsan", label: "Pewawancara Cawalsan" },
 ];
@@ -221,7 +222,7 @@ export default function UserManagementPage() {
                                                 </span>
                                                 {user.secondary_roles && user.secondary_roles.filter(r => r !== user.role).map((r, i) => (
                                                     <span key={i} className="px-4 py-1.5 bg-stone-100 text-stone-600 text-[10px] font-black rounded-xl border border-stone-200 uppercase tracking-widest shadow-sm">
-                                                        {r.replace('_', ' ')}
+                                                        {ROLE_LABELS[r as UserRole] || r.replace('_', ' ')}
                                                     </span>
                                                 ))}
                                             </div>
