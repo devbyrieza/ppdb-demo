@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import path from "path";
 import { getFileLocal } from "@/lib/storage/local";
 
 /**
@@ -19,7 +20,7 @@ export async function GET(request: NextRequest, props: { params: Promise<{ path:
 
         // Validate structure: category/ownerId/filename
         const [category, ownerId] = pathSegments;
-        const relativePath = pathSegments.join("/");
+        const relativePath = path.join(...pathSegments);
 
         // 1. Auth Check
         const cookieStore = await cookies();
@@ -57,13 +58,16 @@ export async function GET(request: NextRequest, props: { params: Promise<{ path:
         }
 
         // 4. Return File
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return new NextResponse(fileData.buffer as any, {
+        // Using Response instead of NextResponse for cleaner binary handling in some environments
+        const response = new Response(fileData.buffer, {
             headers: {
                 "Content-Type": fileData.mimeType,
+                "Content-Disposition": `inline; filename="${pathSegments[pathSegments.length - 1]}"`,
                 "Cache-Control": "private, max-age=3600",
             },
         });
+
+        return response;
 
     } catch (error) {
         console.error("File serve error:", error);
