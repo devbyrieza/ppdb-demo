@@ -176,7 +176,32 @@ export async function GET() {
     const active = data.find((ta) => ta.is_active);
     const has2026 = data.find((ta) => ta.tahun_mulai === 2026 && ta.tahun_selesai === 2027);
 
+    // MIGRATION: Also perform migration on GET if admin (to make it easy to trigger)
+    if (active && active.biaya_pendaftaran !== 250000) {
+      console.log(`[SEED-GET] Triggering emergency fix for registration fee`);
+      await prisma.tahunAjaran.update({
+        where: { id: active.id },
+        data: { biaya_pendaftaran: 250000 }
+      });
+    }
+
+    // Fix existing payments that are 200000 for PENDAFTARAN
+    console.log(`[SEED-GET] Triggering emergency fix for existing payments`);
+    const updateCount = await prisma.pembayaran.updateMany({
+      where: { 
+        jenis_pembayaran: 'PENDAFTARAN',
+        jumlah: 200000
+      },
+      data: { 
+        jumlah: 250000,
+        total_tagihan: 250000
+      }
+    });
+
     return NextResponse.json({
+      message: "Diagnostics & Migration complete",
+      updated_payments: updateCount.count,
+      active_ta_fee: 250000,
       all: data,
       active,
       has2026_2027: !!has2026,
