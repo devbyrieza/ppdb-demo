@@ -34,11 +34,11 @@ export async function POST() {
     });
 
     if (existing) {
-      // Force update price to 200000 and ensure it is active
+      // Force update price to 250000 and ensure it is active
       await prisma.$transaction(async (tx) => {
         await tx.tahunAjaran.update({
           where: { id: existing.id },
-          data: { biaya_pendaftaran: 200000, is_active: true },
+          data: { biaya_pendaftaran: 250000, is_active: true },
         });
 
         // Deactivate others
@@ -102,7 +102,7 @@ export async function POST() {
           is_active: true,
           tanggal_buka_pendaftaran: new Date("2026-01-01"),
           tanggal_tutup_pendaftaran: new Date("2026-07-31"),
-          biaya_pendaftaran: 200000,
+          biaya_pendaftaran: 250000,
         },
       });
 
