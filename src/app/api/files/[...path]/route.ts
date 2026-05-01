@@ -61,6 +61,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         const response = new Response(new Uint8Array(fileData.buffer), {
             headers: {
                 "Content-Type": fileData.mimeType,
+                "Content-Length": fileData.buffer.length.toString(),
                 "Content-Disposition": `inline; filename="${pathSegments[pathSegments.length - 1]}"`,
                 "Cache-Control": "private, max-age=3600",
             },
