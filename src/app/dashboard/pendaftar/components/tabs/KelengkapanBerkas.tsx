@@ -676,8 +676,8 @@ export default function KelengkapanBerkasTab() {
             <ClipboardList className="w-8 h-8 text-brand-yellow-100" />
           </div>
           <div>
-            <h1 className="text-2xl md:text-3xl font-black mb-2 tracking-tight text-white font-display">Kelengkapan Data & Berkas</h1>
-            <p className="text-brand-yellow-100/90 font-medium max-w-xl text-sm md:text-base">Lengkapi biodata diri dan upload dokumen persyaratan untuk melanjutkan proses seleksi.</p>
+            <h1 className="text-2xl md:text-3xl font-black mb-2 tracking-tight text-white font-display">Kelengkapan Data</h1>
+            <p className="text-brand-yellow-100/90 font-medium max-w-xl text-sm md:text-base">Lengkapi biodata diri santri dan orang tua untuk melanjutkan proses pendaftaran.</p>
           </div>
         </div>
       </div>

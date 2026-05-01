@@ -33,7 +33,7 @@ export default function DashboardTabs({ statusProses }: DashboardTabsProps) {
   const tabs: { id: TabName; label: string; icon: any; href: string }[] = [
     { id: "data-pribadi", label: "Beranda", icon: User, href: "/dashboard/pendaftar" },
     { id: "pembayaran-pendaftaran", label: "Pembayaran", icon: CreditCard, href: "/dashboard/pendaftar/pembayaran-pendaftaran" },
-    { id: "kelengkapan-berkas", label: "Isi Data", icon: ClipboardList, href: "/dashboard/pendaftar/kelengkapan-berkas" },
+    { id: "kelengkapan-berkas", label: "Isi Data", icon: ClipboardList, href: "/dashboard/pendaftar/isi-data-lengkap" },
     { id: "upload-berkas", label: "Upload", icon: Upload, href: "/dashboard/pendaftar/upload-berkas" },
     { id: "undangan-seleksi", label: "Ujian", icon: Calendar, href: "/dashboard/pendaftar/undangan-seleksi" },
     { id: "pengumuman", label: "Hasil", icon: Trophy, href: "/dashboard/pendaftar/pengumuman" },

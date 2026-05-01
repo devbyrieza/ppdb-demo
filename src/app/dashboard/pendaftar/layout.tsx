@@ -131,10 +131,10 @@ export default function DashboardLayout({
     },
     {
       name: "Isi Data Lengkap",
-      href: "/dashboard/pendaftar/kelengkapan-berkas",
+      href: "/dashboard/pendaftar/isi-data-lengkap",
       tabName: "kelengkapan-berkas" as TabName,
       icon: ClipboardList,
-      active: pathname === "/dashboard/pendaftar/kelengkapan-berkas",
+      active: pathname === "/dashboard/pendaftar/isi-data-lengkap",
     },
     {
       name: "Upload Berkas",
@@ -439,11 +439,11 @@ export default function DashboardLayout({
                     <span className={`text-[10px] font-bold text-center ${pathname.includes('pembayaran') ? 'text-brand-blue-800' : 'text-ink-400'}`}>Bayar</span>
                   </Link>
 
-                  <Link href="/dashboard/pendaftar/kelengkapan-berkas" className="flex flex-col items-center p-2 group w-16">
-                    <div className={`w-10 h-8 rounded-full flex items-center justify-center mb-1 transition-colors ${pathname.includes('kelengkapan-berkas') || pathname.includes('upload-berkas') ? 'bg-brand-yellow-100' : 'bg-transparent group-hover:bg-brand-yellow-50'}`}>
-                      <ClipboardList className={`w-5 h-5 transition-colors ${pathname.includes('kelengkapan-berkas') || pathname.includes('upload-berkas') ? 'text-brand-blue-700' : 'text-ink-400 group-hover:text-brand-blue-600'}`} />
+                  <Link href="/dashboard/pendaftar/isi-data-lengkap" className="flex flex-col items-center p-2 group w-16">
+                    <div className={`w-10 h-8 rounded-full flex items-center justify-center mb-1 transition-colors ${pathname.includes('isi-data-lengkap') || pathname.includes('upload-berkas') ? 'bg-brand-yellow-100' : 'bg-transparent group-hover:bg-brand-yellow-50'}`}>
+                      <ClipboardList className={`w-5 h-5 transition-colors ${pathname.includes('isi-data-lengkap') || pathname.includes('upload-berkas') ? 'text-brand-blue-700' : 'text-ink-400 group-hover:text-brand-blue-600'}`} />
                     </div>
-                    <span className={`text-[10px] font-bold text-center ${pathname.includes('kelengkapan-berkas') || pathname.includes('upload-berkas') ? 'text-brand-blue-800' : 'text-ink-400'}`}>Berkas</span>
+                    <span className={`text-[10px] font-bold text-center ${pathname.includes('isi-data-lengkap') || pathname.includes('upload-berkas') ? 'text-brand-blue-800' : 'text-ink-400'}`}>Data</span>
                   </Link>
 
                   <button onClick={() => setSidebarOpen(true)} className="flex flex-col items-center p-2 group w-16">

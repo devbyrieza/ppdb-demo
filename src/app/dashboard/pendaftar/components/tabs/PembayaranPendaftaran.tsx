@@ -1035,7 +1035,7 @@ export default function PembayaranPendaftaranTab({
               </p>
               <div className="flex justify-center">
                 <a
-                  href="/dashboard/pendaftar/kelengkapan-berkas"
+                  href="/dashboard/pendaftar/isi-data-lengkap"
                   className="px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold shadow-lg shadow-emerald-600/20 transition-all hover:scale-105 flex items-center gap-2"
                 >
                   <span>Lanjut Isi Data Diri</span>

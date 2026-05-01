@@ -1,5 +1,5 @@
-import KelengkapanBerkasTab from "../components/tabs/KelengkapanBerkas";
+import { redirect } from "next/navigation";
 
-export default function KelengkapanBerkasPage() {
-  return <KelengkapanBerkasTab />;
+export default function LegacyKelengkapanBerkasPage() {
+  redirect("/dashboard/pendaftar/isi-data-lengkap");
 }

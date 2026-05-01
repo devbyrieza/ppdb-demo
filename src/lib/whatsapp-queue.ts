@@ -584,7 +584,7 @@ Alhamdulillah, pendaftaran Anda di Pesantren Sistem PPDB Modern telah berhasil!
 1. Login ke dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar
    *(Gunakan Nomor Pendaftaran & NIK untuk Login)*
 2. Lakukan Pembayaran Pendaftaran (Transfer)
-3. Lengkapi biodata & upload dokumen (setelah pembayaran diverifikasi)
+3. Isi Data Lengkap & Upload Berkas (setelah pembayaran diverifikasi)
 
 💡 *Butuh Bantuan?*
 Hubungi kami di 0851-1152-4441
@@ -653,7 +653,7 @@ Alhamdulillah, pembayaran Anda telah kami terima dan verifikasi.
 Silakan login ke dashboard untuk melengkapi Data Santri & Upload Berkas.
 Setelah data lengkap, Anda bisa memilih jadwal tes.
 
-Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/kelengkapan-berkas
+Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/isi-data-lengkap
 
 Jazakumullahu khairan,
 Panitia PPDB Sistem PPDB Modern`;
