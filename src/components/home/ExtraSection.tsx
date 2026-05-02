@@ -73,26 +73,34 @@ export default function ExtraSection() {
                     </motion.p>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-5">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
                     {EXTRA_ACTIVITIES.map((item, idx) => (
                         <motion.div
                             key={idx}
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            transition={{ delay: idx * 0.03 }}
-                            className="bg-white p-5 md:p-6 rounded-[1.5rem] border border-cream-200 flex flex-col items-center justify-center text-center group hover:bg-cream-50 hover:border-brand-blue-500 hover:shadow-md transition-all duration-500 cursor-default"
+                            transition={{ delay: idx * 0.05 }}
+                            whileHover={{ y: -5, scale: 1.02 }}
+                            className="bg-white p-6 md:p-8 rounded-[2rem] border border-cream-200/60 flex flex-col items-center justify-center text-center group hover:bg-linear-to-b hover:from-white hover:to-cream-50 hover:border-brand-blue-300 hover:shadow-premium-xl transition-all duration-500 cursor-default relative overflow-hidden"
                         >
-                            <div className={`w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center mb-3 md:mb-4 shadow-sm group-hover:scale-110 transition-transform duration-500 ${
-                                item.color === 'brand-blue' ? 'bg-maroon-50 text-brand-blue-600' :
-                                item.color === 'brand-yellow' ? 'bg-brand-yellow-100 text-brand-blue-700' :
-                                'bg-yellow-50 text-yellow-600'
+                            {/* Hover Shine Effect */}
+                            <div className="absolute inset-0 bg-linear-to-tr from-transparent via-white/40 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+
+                            <div className={`w-14 h-14 md:w-16 md:h-16 rounded-[1.25rem] flex items-center justify-center mb-5 shadow-premium-sm group-hover:shadow-premium-md group-hover:scale-110 transition-all duration-500 relative z-10 ${
+                                item.color === 'brand-blue' ? 'bg-brand-blue-50 text-brand-blue-600' :
+                                item.color === 'brand-yellow' ? 'bg-brand-yellow-50 text-brand-blue-700' :
+                                'bg-brand-yellow-100/50 text-brand-yellow-700'
                                 }`}>
-                                <item.icon className="w-6 h-6 md:w-7 md:h-7" />
+                                <item.icon className="w-7 h-7 md:w-8 md:h-8" />
                             </div>
-                            <p className="text-[9px] md:text-[10px] font-bold tracking-[0.1em] text-ink-950 uppercase group-hover:text-maroon-800 transition-colors leading-tight">
+                            
+                            <p className="text-[10px] md:text-[11px] font-black tracking-[0.15em] text-ink-950 uppercase group-hover:text-brand-blue-900 transition-colors leading-tight relative z-10">
                                 {item.name}
                             </p>
+
+                            {/* Subtle decorative dot */}
+                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-brand-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity" />
                         </motion.div>
                     ))}
                 </div>

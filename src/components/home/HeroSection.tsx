@@ -50,14 +50,16 @@ export default function HeroSection() {
                 <span>Premium Quality • Managed by Andalus Demo System</span>
               </motion.div>
 
-              <h1 className="leading-[1.15] tracking-tight mx-auto lg:mx-0 max-w-2xl lg:max-w-none text-brand-blue-900 font-black">
-                <span className="block">Mencetak Generasi</span>
-                <span className="block text-gradient-gold drop-shadow-sm">Hanif, Kontributif,</span>
-                <span className="block text-brand-blue-800 drop-shadow-sm">dan Adaptif</span>
+              <h1 className="leading-[1.1] tracking-tight mx-auto lg:mx-0 max-w-2xl lg:max-w-none text-maroon-950 font-black text-4xl sm:text-5xl lg:text-6xl xl:text-7xl">
+                <span className="block mb-2">Sistem PPDB</span>
+                <span className="block text-transparent bg-clip-text bg-linear-to-r from-maroon-800 via-[#8B5A2B] to-maroon-900 drop-shadow-sm pb-2">
+                  Modern, Cepat, <br className="hidden xl:block" />
+                  dan Elegan
+                </span>
               </h1>
 
-              <p className="text-base lg:text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0 font-medium font-sans text-ink-600 text-center lg:text-left">
-                Bukan sekadar sistem pendaftaran — sebuah pengalaman digital berbasis <span className="font-bold text-brand-blue-700">Kecepatan, Kemudahan, Keamanan, dan Estetika</span> untuk institusi pendidikan modern.
+              <p className="text-base lg:text-xl leading-relaxed max-w-2xl mx-auto lg:mx-0 font-medium font-sans text-ink-700/80 text-center lg:text-left">
+                Bukan sekadar sistem pendaftaran — sebuah pengalaman digital berbasis <span className="font-bold text-maroon-900">Kecepatan, Kemudahan, Keamanan, dan Estetika</span> untuk institusi pendidikan modern.
               </p>
 
               <div className="mt-4 pt-4 border-t border-cream-200/50">

@@ -68,17 +68,24 @@ export default function FeaturesSection() {
                 </p>
               </div>
 
-              <div className="flex flex-col gap-5 pt-2">
+              <div className="flex flex-col gap-6 pt-2">
                 {FEATURES.map((feature, idx) => (
-                  <div key={idx} className="app-card p-5 flex gap-5 group items-start">
-                    <div className="w-14 h-14 rounded-2xl bg-brand-yellow-100 flex items-center justify-center shrink-0 shadow-sm group-hover:bg-brand-blue-600 transition-colors duration-300">
-                      <feature.icon className="w-7 h-7 text-brand-blue-700 group-hover:text-white transition-colors" />
+                  <motion.div 
+                    key={idx} 
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.1 }}
+                    className="bg-white p-6 rounded-[2rem] flex gap-6 group items-start border border-cream-200/60 hover:border-brand-blue-300 hover:shadow-premium-xl transition-all duration-500 cursor-default"
+                  >
+                    <div className="w-16 h-16 rounded-[1.25rem] bg-linear-to-br from-brand-yellow-50 to-brand-yellow-100 flex items-center justify-center shrink-0 shadow-premium-xs group-hover:bg-brand-blue-700 group-hover:rotate-6 transition-all duration-500">
+                      <feature.icon className="w-8 h-8 text-brand-blue-800 group-hover:text-white transition-colors" />
                     </div>
                     <div>
-                      <h4 className="font-bold text-ink-950 text-base mb-1.5 group-hover:text-brand-blue-700 transition-colors">{feature.title}</h4>
-                      <p className="text-sm text-ink-500 leading-relaxed font-medium">{feature.description}</p>
+                      <h4 className="font-black text-ink-950 text-lg mb-2 group-hover:text-brand-blue-800 transition-colors tracking-tight">{feature.title}</h4>
+                      <p className="text-[14px] text-ink-600 leading-relaxed font-medium">{feature.description}</p>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
 

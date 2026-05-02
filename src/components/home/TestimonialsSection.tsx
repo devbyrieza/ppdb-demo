@@ -68,37 +68,44 @@ function TestimonialCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: idx * 0.1 }}
-      className="app-card bg-white p-8 h-full flex flex-col relative group transition-all duration-500 hover:-translate-y-1"
+      whileHover={{ y: -5 }}
+      className="bg-white p-8 rounded-[2.5rem] h-full flex flex-col relative group transition-all duration-500 border border-cream-200/60 hover:border-maroon-200 hover:shadow-premium-xl overflow-hidden"
     >
+      {/* Decorative Gradient Background on Hover */}
+      <div className="absolute inset-0 bg-linear-to-br from-transparent to-maroon-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
       {/* Number badge */}
-      <div className="absolute top-8 left-8 w-10 h-10 rounded-[12px] bg-cream-50 border border-cream-200 flex items-center justify-center shadow-sm">
-        <span className="text-xs font-black text-maroon-700 tracking-wider">#{no}</span>
+      <div className="absolute top-8 left-8 w-10 h-10 rounded-[14px] bg-cream-50 border border-cream-200 flex items-center justify-center shadow-premium-xs group-hover:scale-110 transition-transform duration-500 z-10">
+        <span className="text-[10px] font-black text-maroon-700 tracking-wider">#{no}</span>
       </div>
 
-      <Quote className="absolute top-8 right-8 w-10 h-10 text-cream-100 group-hover:text-cream-200 transition-colors" />
+      <Quote className="absolute top-8 right-8 w-12 h-12 text-maroon-50 group-hover:text-maroon-100 transition-colors duration-500 -rotate-12" />
 
-      {/* Stars */}
-      <div className="flex gap-1 mb-6 mt-14">
+      {/* Stars with premium glow */}
+      <div className="flex gap-1.5 mb-6 mt-14 relative z-10">
         {[...Array(5)].map((_, i) => (
-          <Star key={i} className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+          <Star key={i} className="w-4 h-4 text-brand-yellow-500 fill-brand-yellow-500 drop-shadow-[0_0_8px_rgba(234,179,8,0.3)]" />
         ))}
       </div>
 
-      <p className="text-ink-700 leading-relaxed mb-8 grow font-medium relative z-10 text-[15px]">
+      <p className="text-ink-800 leading-relaxed mb-8 grow font-medium relative z-10 text-[15px] italic">
         "{quote}"
       </p>
 
-      <div className="flex items-center justify-between mt-auto pt-6 border-t border-cream-200/60">
+      <div className="flex flex-col gap-5 mt-auto pt-6 border-t border-cream-100 relative z-10">
         <div className="flex items-center gap-4">
-          <div className="w-11 h-11 rounded-2xl bg-linear-to-br from-maroon-600 to-maroon-900 flex items-center justify-center text-white font-display font-black shadow-sm group-hover:scale-110 transition-transform duration-500">
+          <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-maroon-700 to-maroon-900 flex items-center justify-center text-white font-display font-black shadow-premium-sm group-hover:shadow-premium-md group-hover:rotate-6 transition-all duration-500">
             {initial}
           </div>
-          <div>
-            <p className="text-[15px] font-bold text-ink-950 leading-tight mb-1">{name}</p>
-            <p className="text-[10px] text-maroon-700 font-bold uppercase tracking-widest">{role} · {city}</p>
+          <div className="flex-1 min-w-0">
+            <p className="text-[15px] font-bold text-ink-950 leading-tight mb-1 truncate">{name}</p>
+            <p className="text-[10px] text-maroon-800 font-bold uppercase tracking-widest truncate">{role}</p>
           </div>
         </div>
-        <span className="text-[10px] text-ink-400 font-bold shrink-0 bg-surface-50 px-2 py-1 rounded-md">{date}</span>
+        <div className="flex items-center justify-between">
+          <p className="text-[10px] text-ink-500 font-semibold tracking-wide">{city}</p>
+          <span className="text-[9px] text-maroon-700 font-black uppercase tracking-widest bg-maroon-50 px-2.5 py-1 rounded-full border border-maroon-100/50 shadow-premium-xs">{date}</span>
+        </div>
       </div>
     </motion.div>
   );

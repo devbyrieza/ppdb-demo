@@ -86,54 +86,70 @@ export default function ProgramSection() {
                 </div>
 
                 {/* Grid */}
-                <div className="grid md:grid-cols-2 gap-6 lg:gap-10 max-w-6xl mx-auto">
+                <div className="grid md:grid-cols-2 gap-8 lg:gap-12 max-w-6xl mx-auto">
                     {PROGRAMS.map((program, idx) => (
                         <motion.div
                             key={idx}
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            transition={{ delay: idx * 0.1 }}
-                            className="h-full"
+                            transition={{ delay: idx * 0.2, duration: 0.6 }}
+                            whileHover={{ y: -8 }}
+                            className="h-full group"
                         >
-                            <div className="app-card bg-white p-8 md:p-10 h-full flex flex-col group">
-                                {/* Top Accents */}
-                                <div className="flex items-start justify-between mb-8">
-                                    <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm transition-transform duration-500 group-hover:scale-110 ${
-                                        program.color === 'brand-blue' ? 'bg-brand-blue-50 text-brand-blue-600' : 'bg-brand-yellow-100 text-maroon-800'
-                                        }`}>
-                                        <program.icon className="w-7 h-7" />
+                            <div className="bg-white rounded-[3rem] p-10 md:p-12 h-full flex flex-col relative border border-cream-200/60 hover:border-brand-blue-200 hover:shadow-premium-2xl transition-all duration-500 overflow-hidden">
+                                {/* Glassmorphism Accent */}
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-br from-brand-blue-50/50 to-transparent rounded-bl-[4rem] -z-0" />
+                                
+                                <div className="relative z-10 flex flex-col h-full">
+                                    {/* Icon & Quota Row */}
+                                    <div className="flex items-start justify-between mb-10">
+                                        <div className={`w-16 h-16 rounded-2xl flex items-center justify-center shadow-premium-sm group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 ${
+                                            program.color === 'brand-blue' ? 'bg-brand-blue-600 text-white shadow-brand-blue-200/50' : 'bg-brand-yellow-400 text-maroon-950 shadow-brand-yellow-200/50'
+                                            }`}>
+                                            <program.icon className="w-8 h-8" />
+                                        </div>
+                                        <div className="flex flex-col items-end">
+                                            <span className="text-[10px] font-black text-ink-400 uppercase tracking-[0.2em] mb-1.5">Kapasitas</span>
+                                            <div className="bg-ink-950 text-white py-2 px-4 rounded-xl text-xs font-black shadow-lg">
+                                                {program.quota}
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="status-pill status-pill-pending bg-brand-yellow-100 py-1.5 px-3">
-                                        Kuota: {program.quota}
+
+                                    <div className="mb-10">
+                                        <h3 className="text-3xl md:text-4xl font-black text-ink-950 mb-3 tracking-tight group-hover:text-brand-blue-800 transition-colors">{program.title}</h3>
+                                        <p className="text-[11px] font-black text-brand-blue-600 tracking-[0.2em] uppercase mb-6 opacity-80">{program.subtitle}</p>
+                                        <p className="text-base text-ink-600 leading-relaxed font-medium text-justify md:text-left">
+                                            {program.desc}
+                                        </p>
                                     </div>
+
+                                    {/* Feature List with custom bullets */}
+                                    <div className="mb-12 grow">
+                                        <h4 className="text-xs font-black text-ink-900 uppercase tracking-widest mb-6 flex items-center gap-2">
+                                            <div className="w-8 h-[2px] bg-brand-yellow-400" />
+                                            Target & Kurikulum
+                                        </h4>
+                                        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-5 gap-x-6">
+                                            {program.features.map((feature, fIdx) => (
+                                                <li key={fIdx} className="flex items-start gap-3 group/item">
+                                                    <div className="mt-1 w-5 h-5 rounded-full bg-linear-to-br from-brand-blue-50 to-brand-blue-100 flex items-center justify-center shrink-0 border border-brand-blue-200 group-hover/item:bg-brand-blue-600 group-hover/item:border-brand-blue-600 transition-all">
+                                                        <CheckCircle className="w-3 h-3 text-brand-blue-600 group-hover/item:text-white transition-colors" />
+                                                    </div>
+                                                    <span className="text-sm font-bold text-ink-800 group-hover/item:text-ink-950 transition-colors">{feature}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+
+                                    <Link href="/program" onClick={() => navigateToDetail('/program', '#program')} className="relative z-10">
+                                        <button className="w-full bg-surface-50 border-2 border-surface-200 text-ink-950 hover:bg-brand-blue-700 hover:border-brand-blue-700 hover:text-white py-4.5 rounded-2xl font-black text-sm flex items-center justify-center gap-3 transition-all duration-500 shadow-premium-xs group-hover:shadow-premium-md">
+                                            Jelajahi Kurikulum Selengkapnya
+                                            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                        </button>
+                                    </Link>
                                 </div>
-
-                                <div className="grow">
-                                    <h3 className="text-2xl font-bold text-ink-950 mb-2">{program.title}</h3>
-                                    <p className="text-xs font-bold text-brand-blue-600/80 mb-6 tracking-wide uppercase">{program.subtitle}</p>
-                                    <p className="text-[15px] text-ink-600 leading-relaxed mb-8 font-medium text-justify">
-                                        {program.desc}
-                                    </p>
-
-                                    {/* Feature List */}
-                                    <ul className="space-y-4 mb-10">
-                                        {program.features.map((feature, fIdx) => (
-                                            <li key={fIdx} className="flex items-start gap-3">
-                                                <div className="mt-1 w-5 h-5 rounded-full bg-cream-100 flex items-center justify-center shrink-0">
-                                                    <CheckCircle className="w-3.5 h-3.5 text-brand-blue-700" />
-                                                </div>
-                                                <span className="text-sm font-bold text-ink-700">{feature}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-
-                                <Link href="/program" onClick={() => navigateToDetail('/program', '#program')}>
-                                    <button className="btn-secondary w-full py-3.5 justify-center mt-auto group-hover:bg-brand-yellow-50">
-                                        Detail Program
-                                    </button>
-                                </Link>
                             </div>
                         </motion.div>
                     ))}
