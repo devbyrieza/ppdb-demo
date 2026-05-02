@@ -32,6 +32,7 @@ import { logoutUser } from "@/lib/auth";
 import { hasReachedStatus, StatusProses } from "@/lib/access-control";
 import { motion, AnimatePresence } from "framer-motion";
 import { Container } from "@/components/layout/Container";
+import Swal from "sweetalert2";
 
 interface PendaftarData {
   id: string;
@@ -263,14 +264,25 @@ export default function DashboardPage() {
   };
 
   const handleLogout = async () => {
-    if (!confirm("Apakah Anda yakin ingin keluar?")) return;
+    const { isConfirmed } = await Swal.fire({
+      title: 'Logout?',
+      text: "Apakah Anda yakin ingin keluar?",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#1e40af',
+      confirmButtonText: 'Ya, Keluar!',
+      cancelButtonText: 'Batal'
+    });
+
+    if (!isConfirmed) return;
+
     setIsLoggingOut(true);
     const result = await logoutUser();
     if (result.success) {
       router.push("/login");
       router.refresh();
     } else {
-      alert("Gagal logout. Silakan coba lagi.");
+      Swal.fire("Gagal!", "Gagal logout. Silakan coba lagi.", "error");
       setIsLoggingOut(false);
     }
   };

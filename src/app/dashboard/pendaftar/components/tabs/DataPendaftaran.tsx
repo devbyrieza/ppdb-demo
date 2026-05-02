@@ -12,6 +12,7 @@ import {
   Clock,
   AlertCircle,
 } from "lucide-react";
+import Swal from "sweetalert2";
 
 // Dummy data sebagai fallback
 const DUMMY_DATA = {
@@ -109,7 +110,7 @@ export default function DataPendaftaranTab() {
           </div>
           <div className="mt-4 md:mt-0">
             <button
-              onClick={() => alert("Fitur lengkapi data akan tersedia segera!")}
+              onClick={() => Swal.fire("Info", "Fitur lengkapi data akan tersedia segera!", "info")}
               className="inline-flex items-center gap-2 px-5 py-3 bg-white text-maroon-800 font-bold rounded-xl hover:bg-maroon-50 transition-all"
             >
               <Edit className="w-4 h-4" />

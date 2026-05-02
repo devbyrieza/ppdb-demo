@@ -19,6 +19,7 @@ import {
 import { Container } from "@/components/layout/Container";
 import { countries } from "@/lib/data/countries";
 import { motion, AnimatePresence } from "framer-motion";
+import Swal from "sweetalert2";
 
 interface FormData {
   nik: string;
@@ -227,7 +228,7 @@ export default function DaftarPage() {
 
       router.push(`/verifikasi-otp?${params.toString()}`);
     } catch (error: any) {
-      alert(error.message || "Terjadi kesalahan saat mengirim OTP");
+      Swal.fire("Gagal!", error.message || "Terjadi kesalahan saat mengirim OTP", "error");
     } finally {
       setIsLoading(false);
     }
@@ -299,8 +300,18 @@ export default function DaftarPage() {
                     </p>
                     <button
                       type="button"
-                      onClick={() => {
-                        if (confirm("Hapus seluruh draf dan mulai dari awal?")) {
+                      onClick={async () => {
+                        const result = await Swal.fire({
+                          title: "Hapus Draf?",
+                          text: "Hapus seluruh draf dan mulai dari awal?",
+                          icon: "question",
+                          showCancelButton: true,
+                          confirmButtonColor: "#1e40af",
+                          confirmButtonText: "Ya, Hapus",
+                          cancelButtonText: "Batal"
+                        });
+
+                        if (result.isConfirmed) {
                           sessionStorage.removeItem("pendaftaran_form");
                           setFormData({
                             nik: "",

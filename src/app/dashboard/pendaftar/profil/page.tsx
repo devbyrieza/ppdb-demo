@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 interface RequestStatus {
   id: string;
@@ -70,7 +71,7 @@ export default function ProfilPage() {
 
   const handleRequestEdit = async () => {
     if (!reason.trim()) {
-      alert("Mohon isi alasan perubahan data.");
+      Swal.fire("Peringatan!", "Mohon isi alasan perubahan data.", "warning");
       return;
     }
 
@@ -93,12 +94,13 @@ export default function ProfilPage() {
         setRequestStatus(json.data);
         setIsRequesting(false);
         setReason("");
+        Swal.fire("Berhasil!", "Permintaan perubahan data telah dikirim.", "success");
       } else {
-        alert(json.error || "Gagal mengajukan perubahan.");
+        Swal.fire("Gagal!", json.error || "Gagal mengajukan perubahan.", "error");
       }
     } catch (error) {
       console.error("Error submitting request:", error);
-      alert("Terjadi kesalahan sistem.");
+      Swal.fire("Error!", "Terjadi kesalahan sistem.", "error");
     } finally {
       setSubmittingRequest(false);
     }

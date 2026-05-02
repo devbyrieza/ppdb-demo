@@ -9,6 +9,7 @@ import {
   Copy,
   Phone,
 } from "lucide-react";
+import Swal from "sweetalert2";
 
 interface PendingVerifikasi {
   id: string;
@@ -49,7 +50,14 @@ export default function VerifikasiManualPage() {
   const copyToClipboard = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
-      alert("Kode disalin!");
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'success',
+        title: 'Kode disalin!',
+        showConfirmButton: false,
+        timer: 1500
+      });
     } catch (error) {
       console.error("Gagal menyalin:", error);
     }
@@ -65,7 +73,7 @@ export default function VerifikasiManualPage() {
 
       if (res.ok) {
         fetchPending();
-        alert("Status berhasil diperbarui!");
+        Swal.fire("Berhasil!", "Status berhasil diperbarui!", "success");
       }
     } catch (error) {
       console.error("Gagal update status:", error);
@@ -90,10 +98,10 @@ export default function VerifikasiManualPage() {
 
       const data = await res.json();
       if (data.success) {
-        alert("SMS berhasil dikirim via Wablas!");
+        Swal.fire("Berhasil!", "SMS berhasil dikirim via Wablas!", "success");
         fetchPending();
       } else {
-        alert("Gagal kirim SMS: " + data.error);
+        Swal.fire("Gagal!", "Gagal kirim SMS: " + data.error, "error");
       }
     } catch (error) {
       console.error("Error send SMS:", error);

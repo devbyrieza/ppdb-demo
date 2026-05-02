@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { exportToExcel, exportToPDF } from "@/lib/utils/export";
+import Swal from "sweetalert2";
 
 interface Pembayaran {
   id: string;
@@ -126,7 +127,7 @@ export default function VerifikasiPembayaranPage() {
       }
     } catch (error) {
       console.error("Error exporting:", error);
-      alert("Gagal export data");
+      Swal.fire("Gagal!", "Gagal export data", "error");
     } finally {
       setExporting(false);
     }
@@ -159,7 +160,7 @@ export default function VerifikasiPembayaranPage() {
       setCatatan("");
     } catch (error) {
       console.error("Error verifying pembayaran:", error);
-      alert("Gagal memverifikasi pembayaran");
+      Swal.fire("Gagal!", "Gagal memverifikasi pembayaran", "error");
     } finally {
       setProcessing(false);
     }
@@ -190,15 +191,15 @@ export default function VerifikasiPembayaranPage() {
       const data = await response.json();
 
       if (data.success) {
-        alert("Bukti pembayaran berhasil diganti dan otomatis diverifikasi");
+        Swal.fire("Berhasil!", "Bukti pembayaran berhasil diganti dan otomatis diverifikasi", "success");
         fetchPembayaran(); // Refresh the list
         setShowModal(false); // Close modal
       } else {
-        alert(data.error || "Gagal mengunggah bukti pembayaran");
+        Swal.fire("Gagal!", data.error || "Gagal mengunggah bukti pembayaran", "error");
       }
     } catch (error) {
       console.error("Error replacing payment proof:", error);
-      alert("Terjadi kesalahan saat mengunggah");
+      Swal.fire("Error!", "Terjadi kesalahan saat mengunggah", "error");
     } finally {
       setUploadingProof(null);
       if (fileInputRef.current) fileInputRef.current.value = ""; // Reset input

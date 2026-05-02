@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { exportToExcel, exportToPDF } from "@/lib/utils/export";
 import Link from "next/link";
+import Swal from "sweetalert2";
 
 interface DokumenSummary {
   id: string;
@@ -116,7 +117,7 @@ export default function VerifikasiDokumenPage() {
       }
     } catch (error) {
       console.error("Error exporting:", error);
-      alert("Gagal export data");
+      Swal.fire("Gagal!", "Gagal export data", "error");
     } finally {
       setExporting(false);
     }

@@ -530,9 +530,18 @@ function AdminPendaftarContent() {
       return;
     }
 
-    if (!confirm(`Update status ${selectedIds.length} pendaftar menjadi ${bulkStatus}?`)) {
-      return;
-    }
+    const { isConfirmed } = await Swal.fire({
+      title: 'Konfirmasi Bulk Update',
+      text: `Update status ${selectedIds.length} pendaftar menjadi ${bulkStatus}?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#1e40af', // blue-800
+      cancelButtonColor: '#94a3b8',
+      confirmButtonText: 'Ya, Update!',
+      cancelButtonText: 'Batal'
+    });
+
+    if (!isConfirmed) return;
 
     try {
       setBulkUpdating(true);

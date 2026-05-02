@@ -25,6 +25,7 @@ import {
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useRef } from "react";
+import Swal from "sweetalert2";
 
 interface Dokumen {
     id: string;
@@ -228,7 +229,7 @@ export default function VerifikasiDokumenDetailPage() {
             }));
         } catch (error) {
             console.error("Error verifying dokumen:", error);
-            alert("Gagal memverifikasi dokumen");
+            Swal.fire("Gagal!", "Gagal memverifikasi dokumen", "error");
         } finally {
             setProcessingDocs(prev => {
                 const next = new Set(prev);
@@ -315,14 +316,14 @@ export default function VerifikasiDokumenDetailPage() {
             const data = await response.json();
 
             if (data.success) {
-                alert("Dokumen berhasil diganti dan otomatis diverifikasi");
+                Swal.fire("Berhasil!", "Dokumen berhasil diganti dan otomatis diverifikasi", "success");
                 fetchData(); // Reload all data to see the new document
             } else {
-                alert(data.error || "Gagal mengunggah dokumen");
+                Swal.fire("Gagal!", data.error || "Gagal mengunggah dokumen", "error");
             }
         } catch (error) {
             console.error("Error replacing dokumen:", error);
-            alert("Terjadi kesalahan saat mengunggah");
+            Swal.fire("Error!", "Terjadi kesalahan saat mengunggah", "error");
         } finally {
             setUploadingDoc(null);
             setSelectedUploadDoc(null);
@@ -729,7 +730,7 @@ export default function VerifikasiDokumenDetailPage() {
                             <button
                                 onClick={async () => {
                                     if (!rejectReason.trim()) {
-                                        alert("Mohon isi alasan penolakan");
+                                        Swal.fire("Peringatan", "Mohon isi alasan penolakan", "warning");
                                         return;
                                     }
                                     await handleVerify(rejectModal.docId, "rejected", rejectReason);

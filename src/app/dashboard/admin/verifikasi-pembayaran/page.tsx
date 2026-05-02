@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { exportToExcel, exportToPDF } from "@/lib/utils/export";
+import Swal from "sweetalert2";
 
 interface Pembayaran {
   id: string;
@@ -59,6 +60,7 @@ export default function VerifikasiPembayaranPage() {
   const [tipeCicilanFilter, setTipeCicilanFilter] = useState<"ALL" | "LUNAS" | "CICILAN">("ALL");
   const [editTipeCicilan, setEditTipeCicilan] = useState("LUNAS");
   const [editJumlahCicilan, setEditJumlahCicilan] = useState(1);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -66,9 +68,10 @@ export default function VerifikasiPembayaranPage() {
     fetchPembayaran();
   }, [statusFilter, activeTab]);
 
-  const fetchPembayaran = async () => {
+  const fetchPembayaran = async (silent = false) => {
     try {
-      setLoading(true);
+      if (!silent) setLoading(true);
+      else setIsRefreshing(true);
       const response = await fetch(
         `/api/admin/verifikasi/pembayaran?status=${statusFilter}&jenis=${activeTab}`
       );
@@ -80,6 +83,7 @@ export default function VerifikasiPembayaranPage() {
       console.error("Error fetching pembayaran:", error);
     } finally {
       setLoading(false);
+      setIsRefreshing(false);
     }
   };
 
@@ -126,7 +130,7 @@ export default function VerifikasiPembayaranPage() {
       }
     } catch (error) {
       console.error("Error exporting:", error);
-      alert("Gagal export data");
+      Swal.fire("Gagal!", "Gagal export data", "error");
     } finally {
       setExporting(false);
     }
@@ -159,9 +163,10 @@ export default function VerifikasiPembayaranPage() {
       setCatatan("");
     } catch (error) {
       console.error("Error verifying pembayaran:", error);
-      alert("Gagal memverifikasi pembayaran");
+      Swal.fire("Gagal!", "Gagal memverifikasi pembayaran", "error");
     } finally {
       setProcessing(false);
+      fetchPembayaran(true);
     }
   };
 
@@ -190,15 +195,15 @@ export default function VerifikasiPembayaranPage() {
       const data = await response.json();
 
       if (data.success) {
-        alert("Bukti pembayaran berhasil diganti dan otomatis diverifikasi");
-        fetchPembayaran(); // Refresh the list
+        Swal.fire("Berhasil!", "Bukti pembayaran berhasil diganti dan otomatis diverifikasi", "success");
+        fetchPembayaran(true); // Refresh the list
         setShowModal(false); // Close modal
       } else {
-        alert(data.error || "Gagal mengunggah bukti pembayaran");
+        Swal.fire("Gagal!", data.error || "Gagal mengunggah bukti pembayaran", "error");
       }
     } catch (error) {
       console.error("Error replacing payment proof:", error);
-      alert("Terjadi kesalahan saat mengunggah");
+      Swal.fire("Error!", "Terjadi kesalahan saat mengunggah", "error");
     } finally {
       setUploadingProof(null);
       if (fileInputRef.current) fileInputRef.current.value = ""; // Reset input
@@ -239,7 +244,17 @@ export default function VerifikasiPembayaranPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 relative">
+      {/* Refreshing Overlay */}
+      {isRefreshing && (
+        <div className="fixed inset-0 bg-white/40 backdrop-blur-[1px] z-[100] flex items-center justify-center pointer-events-none">
+          <div className="bg-white/80 px-6 py-3 rounded-2xl shadow-xl border border-stone-100 flex items-center gap-3 animate-in fade-in zoom-in duration-300">
+            <Loader2 className="w-5 h-5 animate-spin text-brand-blue-600" />
+            <span className="text-sm font-bold text-stone-700 tracking-tight">Memperbarui data...</span>
+          </div>
+        </div>
+      )}
+
       <input
         type="file"
         ref={fileInputRef}
@@ -315,7 +330,7 @@ export default function VerifikasiPembayaranPage() {
               <span className="hidden sm:inline">PDF</span>
             </button>
             <button
-              onClick={fetchPembayaran}
+              onClick={() => fetchPembayaran()}
               className="flex items-center gap-2 px-3 md:px-6 py-2.5 bg-white hover:bg-stone-50 border border-stone-200 text-stone-700 rounded-xl font-bold transition-all shadow-sm hover:shadow-md text-sm"
             >
               <RefreshCw className="w-4 h-4" />

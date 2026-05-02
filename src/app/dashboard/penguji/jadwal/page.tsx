@@ -301,11 +301,11 @@ export default function JadwalPengujiPage() {
   const handleCreateBulk = async (e: React.FormEvent) => {
     e.preventDefault();
     if (bulkForm.selectedDays.length === 0) {
-      alert("Pilih minimal satu hari!");
+      Swal.fire("Peringatan", "Pilih minimal satu hari!", "warning");
       return;
     }
     if (!bulkForm.endDate) {
-      alert("Pilih tanggal berakhir!");
+      Swal.fire("Peringatan", "Pilih tanggal berakhir!", "warning");
       return;
     }
 

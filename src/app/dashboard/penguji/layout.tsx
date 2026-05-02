@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import Swal from "sweetalert2";
 import IdleTimeoutTracker from "@/components/auth/IdleTimeoutTracker";
 import { UserRole, ROLE_LABELS } from "@/lib/access-control";
 
@@ -106,11 +107,11 @@ export default function PengujiDashboardLayout({
       if (data.success) {
         window.location.href = data.redirectTo;
       } else {
-        alert(data.error || "Gagal berpindah role");
+        Swal.fire("Gagal!", data.error || "Gagal berpindah role", "error");
       }
     } catch (error) {
       console.error(error);
-      alert("Terjadi kesalahan sistem");
+      Swal.fire("Error!", "Terjadi kesalahan sistem", "error");
     }
   };
 
