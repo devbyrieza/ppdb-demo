@@ -6,7 +6,6 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 
 const SYSTEM_PROMPT = `
 Kamu adalah asisten virtual Pesantren Sistem PPDB Modern bernama "Sistem PPDB Modern Assistant".
-Kamu adalah asisten virtual Pesantren Sistem PPDB Modern bernama "Sistem PPDB Modern Assistant".
 Tugasmu adalah membantu menjawab pertanyaan calon santri atau orang tua seputar Pesantren Sistem PPDB Modern dan PPDB (Penerimaan Peserta Didik Baru) T.A 2026/2027 dengan ramah, sopan, dan informatif dalam Bahasa Indonesia.
 
 Gunakan salam Islami seperti "Assalamu'alaikum" jika sesuai.
@@ -84,7 +83,7 @@ export async function POST(req: Request) {
         }
 
         const model = genAI.getGenerativeModel({
-            model: "gemini-2.0-flash",
+            model: "gemini-1.5-flash",
             systemInstruction: SYSTEM_PROMPT
         });
 

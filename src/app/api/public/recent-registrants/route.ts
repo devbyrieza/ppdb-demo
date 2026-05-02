@@ -55,12 +55,7 @@ export async function GET() {
             return { name: displayName, city, program };
         });
 
-        return NextResponse.json({ registrants: safe }, {
-            headers: {
-                // Cache 5 minutes to avoid DB spam
-                "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600",
-            },
-        });
+        return NextResponse.json({ registrants: safe });
     } catch (error) {
         console.error("Error fetching recent registrants:", error);
         return NextResponse.json({ registrants: [] });

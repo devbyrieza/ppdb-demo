@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, Suspense } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import {
   CreditCard,
   Filter,
@@ -44,10 +45,16 @@ interface Pembayaran {
   cicilan_ke: number;
 }
 
-export default function VerifikasiPembayaranPage() {
+function VerifikasiPembayaranContent() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const urlStatus = searchParams.get("status") || "pending";
+  const urlJenis = searchParams.get("jenis") || "PENDAFTARAN";
+
   const [pembayaran, setPembayaran] = useState<Pembayaran[]>([]);
   const [loading, setLoading] = useState(true);
-  const [statusFilter, setStatusFilter] = useState("pending");
+  const [statusFilter, setStatusFilter] = useState(urlStatus);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPembayaran, setSelectedPembayaran] = useState<Pembayaran | null>(null);
   const [showModal, setShowModal] = useState(false);
@@ -56,11 +63,49 @@ export default function VerifikasiPembayaranPage() {
   const [processing, setProcessing] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [uploadingProof, setUploadingProof] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"PENDAFTARAN" | "DAFTAR_ULANG">("PENDAFTARAN");
+  const [activeTab, setActiveTab] = useState<"PENDAFTARAN" | "DAFTAR_ULANG">(urlJenis as any);
   const [tipeCicilanFilter, setTipeCicilanFilter] = useState<"ALL" | "LUNAS" | "CICILAN">("ALL");
   const [editTipeCicilan, setEditTipeCicilan] = useState("LUNAS");
   const [editJumlahCicilan, setEditJumlahCicilan] = useState(1);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [userRole, setUserRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchSession = async () => {
+      try {
+        const res = await fetch("/api/auth/session");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.session?.role) {
+            setUserRole(data.session.role);
+          } else if (data.user?.user_metadata?.role) {
+            setUserRole(data.user.user_metadata.role);
+          }
+        }
+      } catch (e) {
+        console.error("Failed to fetch session", e);
+      }
+    };
+    fetchSession();
+  }, []);
+
+  const canVerify = userRole === "admin_super" || userRole === "admin" || userRole === "admin_keuangan";
+
+  useEffect(() => {
+    if (urlStatus && urlStatus !== statusFilter) {
+      setStatusFilter(urlStatus);
+    }
+    if (urlJenis && urlJenis !== activeTab) {
+      setActiveTab(urlJenis as any);
+    }
+  }, [urlStatus, urlJenis]);
+
+  const updateFilters = (newStatus?: string, newJenis?: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (newStatus) params.set("status", newStatus);
+    if (newJenis) params.set("jenis", newJenis);
+    router.push(`?${params.toString()}`);
+  };
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -100,14 +145,12 @@ export default function VerifikasiPembayaranPage() {
   const handleExport = async (type: "excel" | "pdf") => {
     try {
       setExporting(true);
-      // Fetch ALL data for export
       const response = await fetch(`/api/admin/verifikasi/pembayaran?status=all&jenis=${activeTab}`);
       if (!response.ok) throw new Error("Failed to export");
 
       const result = await response.json();
       const rawData = result.data;
 
-      // Format data for export
       const data = rawData.map((item: any) => ({
         "Nama Lengkap": item.pendaftar?.nama_lengkap ? toTitleCase(item.pendaftar.nama_lengkap) : "-",
         "Nomor Pendaftaran": item.pendaftar?.nomor_pendaftaran || "-",
@@ -138,8 +181,12 @@ export default function VerifikasiPembayaranPage() {
 
   const handleVerify = async (
     pembayaranId: string,
-    status: "verified" | "rejected"
+    status: "verified" | "rejected" | "pending"
   ) => {
+    if (!canVerify) {
+        Swal.fire("Akses Ditolak", "Anda tidak memiliki izin untuk melakukan verifikasi", "error");
+        return;
+    }
     try {
       setProcessing(true);
       const response = await fetch("/api/admin/verifikasi/pembayaran", {
@@ -157,7 +204,7 @@ export default function VerifikasiPembayaranPage() {
 
       if (!response.ok) throw new Error("Failed to verify");
 
-      await fetchPembayaran();
+      await fetchPembayaran(true);
       setShowModal(false);
       setSelectedPembayaran(null);
       setCatatan("");
@@ -166,7 +213,6 @@ export default function VerifikasiPembayaranPage() {
       Swal.fire("Gagal!", "Gagal memverifikasi pembayaran", "error");
     } finally {
       setProcessing(false);
-      fetchPembayaran(true);
     }
   };
 
@@ -182,7 +228,6 @@ export default function VerifikasiPembayaranPage() {
 
     try {
       setUploadingProof(selectedPembayaran.id);
-
       const formData = new FormData();
       formData.append("file", file);
       formData.append("pembayaran_id", selectedPembayaran.id);
@@ -196,8 +241,8 @@ export default function VerifikasiPembayaranPage() {
 
       if (data.success) {
         Swal.fire("Berhasil!", "Bukti pembayaran berhasil diganti dan otomatis diverifikasi", "success");
-        fetchPembayaran(true); // Refresh the list
-        setShowModal(false); // Close modal
+        fetchPembayaran(true);
+        setShowModal(false);
       } else {
         Swal.fire("Gagal!", data.error || "Gagal mengunggah bukti pembayaran", "error");
       }
@@ -206,7 +251,7 @@ export default function VerifikasiPembayaranPage() {
       Swal.fire("Error!", "Terjadi kesalahan saat mengunggah", "error");
     } finally {
       setUploadingProof(null);
-      if (fileInputRef.current) fileInputRef.current.value = ""; // Reset input
+      if (fileInputRef.current) fileInputRef.current.value = "";
     }
   };
 
@@ -245,7 +290,6 @@ export default function VerifikasiPembayaranPage() {
 
   return (
     <div className="space-y-6 relative">
-      {/* Refreshing Overlay */}
       {isRefreshing && (
         <div className="fixed inset-0 bg-white/40 backdrop-blur-[1px] z-[100] flex items-center justify-center pointer-events-none">
           <div className="bg-white/80 px-6 py-3 rounded-2xl shadow-xl border border-stone-100 flex items-center gap-3 animate-in fade-in zoom-in duration-300">
@@ -262,7 +306,6 @@ export default function VerifikasiPembayaranPage() {
         className="hidden"
         accept="image/jpeg, image/png, application/pdf"
       />
-      {/* Header */}
       <div className="bg-white rounded-[2rem] shadow-sm p-5 md:p-8 border border-stone-100">
         <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:justify-between">
           <div className="flex items-center gap-4">
@@ -281,7 +324,7 @@ export default function VerifikasiPembayaranPage() {
           
           <div className="flex bg-stone-100 p-1.5 rounded-[1.25rem] w-fit shadow-inner ring-1 ring-stone-200/50">
             <button
-              onClick={() => setActiveTab("PENDAFTARAN")}
+              onClick={() => updateFilters(undefined, "PENDAFTARAN")}
               className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${
                 activeTab === "PENDAFTARAN"
                   ? "bg-white text-brand-blue-700 shadow-clay-sm ring-1 ring-stone-100"
@@ -291,7 +334,7 @@ export default function VerifikasiPembayaranPage() {
               Pendaftaran
             </button>
             <button
-              onClick={() => setActiveTab("DAFTAR_ULANG")}
+              onClick={() => updateFilters(undefined, "DAFTAR_ULANG")}
               className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${
                 activeTab === "DAFTAR_ULANG"
                   ? "bg-white text-brand-blue-700 shadow-clay-sm ring-1 ring-stone-100"
@@ -309,11 +352,7 @@ export default function VerifikasiPembayaranPage() {
               className="flex items-center gap-2 px-3 md:px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold transition-all shadow-sm hover:shadow-md disabled:opacity-50 text-sm"
               title="Download Excel"
             >
-              {exporting ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <FileSpreadsheet className="w-4 h-4" />
-              )}
+              {exporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <FileSpreadsheet className="w-4 h-4" />}
               <span className="hidden sm:inline">Excel</span>
             </button>
             <button
@@ -322,15 +361,11 @@ export default function VerifikasiPembayaranPage() {
               className="flex items-center gap-2 px-3 md:px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold transition-all shadow-sm hover:shadow-md disabled:opacity-50 text-sm"
               title="Download PDF"
             >
-              {exporting ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <FileText className="w-4 h-4" />
-              )}
+              {exporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <FileText className="w-4 h-4" />}
               <span className="hidden sm:inline">PDF</span>
             </button>
             <button
-              onClick={() => fetchPembayaran()}
+              onClick={() => fetchPembayaran(true)}
               className="flex items-center gap-2 px-3 md:px-6 py-2.5 bg-white hover:bg-stone-50 border border-stone-200 text-stone-700 rounded-xl font-bold transition-all shadow-sm hover:shadow-md text-sm"
             >
               <RefreshCw className="w-4 h-4" />
@@ -339,7 +374,6 @@ export default function VerifikasiPembayaranPage() {
           </div>
         </div>
 
-        {/* Search Bar */}
         <div className="mt-5 relative group">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-stone-400 group-focus-within:text-brand-blue-600 transition-colors" />
           <input
@@ -351,7 +385,6 @@ export default function VerifikasiPembayaranPage() {
           />
         </div>
 
-        {/* Stats / Filter Bar */}
         <div className="mt-5 md:mt-8 flex flex-wrap items-center gap-3 border-t border-stone-100 pt-5 md:pt-6">
           <div className="px-4 py-2 bg-stone-100 rounded-lg text-sm font-bold text-stone-600">
             Total: {filteredPembayaran.length}
@@ -363,19 +396,19 @@ export default function VerifikasiPembayaranPage() {
             <Filter className="w-4 h-4 text-stone-400" />
             <div className="flex flex-wrap gap-2">
               <button
-                onClick={() => setStatusFilter("pending")}
+                onClick={() => updateFilters("pending")}
                 className={`px-3 md:px-4 py-2 rounded-lg text-sm font-bold transition-all ${statusFilter === "pending" ? "bg-amber-100 text-amber-700 ring-2 ring-amber-500/20" : "hover:bg-stone-50 text-stone-500"}`}
               >
                 Pending
               </button>
               <button
-                onClick={() => setStatusFilter("verified")}
+                onClick={() => updateFilters("verified")}
                 className={`px-3 md:px-4 py-2 rounded-lg text-sm font-bold transition-all ${statusFilter === "verified" ? "bg-emerald-100 text-emerald-700 ring-2 ring-emerald-500/20" : "hover:bg-stone-50 text-stone-500"}`}
               >
                 Terverifikasi
               </button>
               <button
-                onClick={() => setStatusFilter("rejected")}
+                onClick={() => updateFilters("rejected")}
                 className={`px-3 md:px-4 py-2 rounded-lg text-sm font-bold transition-all ${statusFilter === "rejected" ? "bg-red-100 text-red-700 ring-2 ring-red-500/20" : "hover:bg-stone-50 text-stone-500"}`}
               >
                 Ditolak
@@ -409,7 +442,6 @@ export default function VerifikasiPembayaranPage() {
         </div>
       </div>
 
-      {/* List */}
       <div className="bg-white rounded-[2rem] shadow-sm border border-stone-100 overflow-hidden min-h-[400px]">
         {loading ? (
           <div className="flex items-center justify-center h-[400px]">
@@ -439,7 +471,6 @@ export default function VerifikasiPembayaranPage() {
               >
                 <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-6">
                   <div className="flex-1">
-                    {/* Header Row */}
                     <div className="flex items-start gap-4 mb-3">
                       <div className="w-12 h-12 rounded-xl bg-brand-blue-50 flex items-center justify-center text-brand-blue-800 font-black text-lg shrink-0 border border-brand-blue-100">
                         {pay.pendaftar?.nama_lengkap ? pay.pendaftar.nama_lengkap.charAt(0).toUpperCase() : "?"}
@@ -461,7 +492,6 @@ export default function VerifikasiPembayaranPage() {
                       </div>
                     </div>
 
-                    {/* Details Grid */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 ml-16 bg-stone-50/50 p-4 rounded-xl border border-stone-100">
                       <div>
                         <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-1">Nominal Transfer</p>
@@ -496,10 +526,8 @@ export default function VerifikasiPembayaranPage() {
                         </div>
                       )}
                     </div>
-
                   </div>
 
-                  {/* Actions Column */}
                   <div className="flex sm:flex-col gap-3 sm:w-48 shrink-0">
                     {pay.bukti_transfer_url && (
                       <a
@@ -512,28 +540,20 @@ export default function VerifikasiPembayaranPage() {
                         Lihat Bukti
                       </a>
                     )}
-
-                    {statusFilter === "pending" && (
+                    {canVerify && (
                       <button
                         onClick={() => openModal(pay)}
-                        className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-3 bg-brand-blue-700 hover:bg-brand-blue-800 text-white rounded-xl text-sm font-bold shadow-lg shadow-brand-blue-700/20 transition-all hover:-translate-y-0.5"
+                        className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-bold shadow-lg transition-all hover:-translate-y-0.5 ${
+                          statusFilter === "pending"
+                            ? "bg-brand-blue-700 hover:bg-brand-blue-800 text-white shadow-brand-blue-700/20"
+                            : statusFilter === "verified"
+                            ? "bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-100"
+                            : "bg-red-50 hover:bg-red-100 text-red-700 border border-red-100"
+                        }`}
                       >
                         <CheckCircle className="w-4 h-4" />
-                        Verifikasi
+                        {statusFilter === "pending" ? "Verifikasi" : "Lihat Status"}
                       </button>
-                    )}
-
-                    {statusFilter === "verified" && (
-                      <div className="flex items-center justify-center gap-2 px-4 py-3 bg-emerald-50 text-emerald-700 rounded-xl font-bold text-sm border border-emerald-100">
-                        <CheckCircle className="w-4 h-4" />
-                        Sudah Valid
-                      </div>
-                    )}
-                    {statusFilter === "rejected" && (
-                      <div className="flex items-center justify-center gap-2 px-4 py-3 bg-red-50 text-red-700 rounded-xl font-bold text-sm border border-red-100">
-                        <XCircle className="w-4 h-4" />
-                        Ditolak
-                      </div>
                     )}
                   </div>
                 </div>
@@ -543,16 +563,12 @@ export default function VerifikasiPembayaranPage() {
         )}
       </div>
 
-      {/* Modal */}
       {showModal && selectedPembayaran && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
           <div className="bg-white rounded-[2rem] shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
-            {/* Header - Fixed */}
             <div className="p-6 border-b border-stone-100 bg-stone-50/50 flex justify-between items-center">
               <div>
-                <h3 className="text-xl font-black text-stone-900">
-                  Verifikasi Pembayaran
-                </h3>
+                <h3 className="text-xl font-black text-stone-900">Verifikasi Pembayaran</h3>
                 <p className="text-sm text-stone-500 font-medium">{selectedPembayaran.pendaftar?.nama_lengkap ? toTitleCase(selectedPembayaran.pendaftar.nama_lengkap || "") : ""}</p>
               </div>
               <button
@@ -563,9 +579,7 @@ export default function VerifikasiPembayaranPage() {
               </button>
             </div>
 
-            {/* Scrollable Content */}
             <div className="flex-1 overflow-y-auto p-6 space-y-6">
-
              <div className="flex gap-4 p-4 bg-brand-blue-50 rounded-2xl border border-brand-blue-100">
                 <div className="p-3 bg-white rounded-xl shadow-sm h-fit">
                   <DollarSign className="w-6 h-6 text-brand-blue-700" />
@@ -581,7 +595,6 @@ export default function VerifikasiPembayaranPage() {
                       className="text-2xl font-black text-brand-blue-950 bg-transparent border-b-2 border-brand-blue-200 focus:border-brand-blue-500 outline-none w-full max-w-[200px]"
                     />
                   </div>
-                  <p className="text-sm text-brand-blue-800 mt-1 font-medium italic">Anda dapat mengubah nominal jika tidak sesuai dengan bukti transfer.</p>
                 </div>
               </div>
 
@@ -650,17 +663,6 @@ export default function VerifikasiPembayaranPage() {
                         className="w-full max-h-[500px] object-contain"
                       />
                     )}
-                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <a
-                        href={selectedPembayaran.bukti_transfer_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-6 py-3 bg-white rounded-full font-bold text-stone-900 shadow-xl hover:scale-105 transition-transform flex items-center gap-2"
-                      >
-                        <Eye className="w-4 h-4" />
-                        Lihat Full Size
-                      </a>
-                    </div>
                   </div>
                 </div>
               ) : (
@@ -678,9 +680,7 @@ export default function VerifikasiPembayaranPage() {
               )}
 
               <div>
-                <label className="block text-sm font-bold text-stone-700 mb-2">
-                  Catatan untuk Pendaftar (Opsional)
-                </label>
+                <label className="block text-sm font-bold text-stone-700 mb-2">Catatan untuk Pendaftar (Opsional)</label>
                 <textarea
                   value={catatan}
                   onChange={(e) => setCatatan(e.target.value)}
@@ -691,45 +691,52 @@ export default function VerifikasiPembayaranPage() {
               </div>
             </div>
 
-            {/* Footer with Actions - Fixed */}
-            <div className="p-6 border-t border-stone-100 bg-stone-50/50 flex gap-3">
-              <button
-                onClick={() =>
-                  handleVerify(selectedPembayaran.id, "verified")
-                }
-                disabled={processing}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-bold transition-all hover:shadow-lg hover:shadow-emerald-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {processing ? (
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                ) : (
-                  <>
-                    <CheckCircle className="w-5 h-5" />
-                    Terima Pembayaran
-                  </>
-                )}
-              </button>
+            <div className="p-6 border-t border-stone-100 bg-stone-50/50 flex flex-col sm:flex-row gap-3">
+              <div className="flex-1 flex gap-3">
+                <button
+                  onClick={() => handleVerify(selectedPembayaran.id, "verified")}
+                  disabled={processing}
+                  className="flex-1 flex items-center justify-center gap-2 px-4 py-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-bold transition-all hover:shadow-lg hover:shadow-emerald-500/20 disabled:opacity-50"
+                >
+                  {processing ? <Loader2 className="w-5 h-5 animate-spin" /> : <>Terima</>}
+                </button>
 
-              <button
-                onClick={() =>
-                  handleVerify(selectedPembayaran.id, "rejected")
-                }
-                disabled={processing}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-4 bg-rose-500 hover:bg-rose-600 text-white rounded-xl font-bold transition-all hover:shadow-lg hover:shadow-rose-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {processing ? (
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                ) : (
-                  <>
-                    <XCircle className="w-5 h-5" />
-                    Tolak
-                  </>
-                )}
-              </button>
+                <button
+                  onClick={() => handleVerify(selectedPembayaran.id, "rejected")}
+                  disabled={processing}
+                  className="flex-1 flex items-center justify-center gap-2 px-4 py-4 bg-rose-500 hover:bg-rose-600 text-white rounded-xl font-bold transition-all hover:shadow-lg hover:shadow-rose-500/20 disabled:opacity-50"
+                >
+                  {processing ? <Loader2 className="w-5 h-5 animate-spin" /> : <>Tolak</>}
+                </button>
+              </div>
+
+              {selectedPembayaran.status_pembayaran !== "pending" && (
+                <button
+                  onClick={() => handleVerify(selectedPembayaran.id, "pending")}
+                  disabled={processing}
+                  className="px-6 py-4 bg-stone-100 hover:bg-stone-200 text-stone-600 rounded-xl font-bold transition-all disabled:opacity-50 border border-stone-200"
+                >
+                  {processing ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : "Batalkan Verifikasi"}
+                </button>
+              )}
             </div>
           </div>
         </div>
       )}
     </div>
+  );
+}
+
+export default function VerifikasiPembayaranPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center min-h-screen">
+          <Loader2 className="w-10 h-10 animate-spin text-brand-blue-600" />
+        </div>
+      }
+    >
+      <VerifikasiPembayaranContent />
+    </Suspense>
   );
 }

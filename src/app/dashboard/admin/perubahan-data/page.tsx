@@ -17,13 +17,18 @@ import Swal from "sweetalert2";
 
 export default function PerubahanDataPage() {
     const [loading, setLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
     const [requests, setRequests] = useState<any[]>([]);
     const [filter, setFilter] = useState("pending"); // pending, all
     const [processing, setProcessing] = useState<string | null>(null);
 
     const fetchRequests = async () => {
         try {
-            setLoading(true);
+            if (requests.length === 0) {
+                setLoading(true);
+            } else {
+                setRefreshing(true);
+            }
             const res = await fetch("/api/admin/perubahan-data");
             const data = await res.json();
             if (data.success) {
@@ -33,6 +38,7 @@ export default function PerubahanDataPage() {
             console.error("Error fetching requests:", error);
         } finally {
             setLoading(false);
+            setRefreshing(false);
         }
     };
 
@@ -70,7 +76,7 @@ export default function PerubahanDataPage() {
         return r.status === filter;
     });
 
-    if (loading) {
+    if (loading && requests.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
                 <Loader2 className="w-12 h-12 text-maroon-700 animate-spin" />
@@ -88,7 +94,10 @@ export default function PerubahanDataPage() {
         <div className="space-y-8 pb-12">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div>
-                    <h1 className="text-4xl font-black text-ink-900 tracking-tight">Permintaan Edit Data</h1>
+                    <div className="flex items-center gap-3">
+                        <h1 className="text-4xl font-black text-ink-900 tracking-tight">Permintaan Edit Data</h1>
+                        {refreshing && <Loader2 className="w-6 h-6 text-maroon-700 animate-spin" />}
+                    </div>
                     <p className="text-ink-500 mt-2 text-lg">Kelola izin perubahan data pendaftar yang sudah terkunci.</p>
                 </div>
 

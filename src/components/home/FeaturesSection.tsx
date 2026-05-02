@@ -113,12 +113,18 @@ export default function FeaturesSection() {
                   </div>
                 </div>
 
-                <div className="bg-maroon-900 bg-linear-to-br from-brand-blue-700 to-maroon-950 border border-brand-blue-600 p-6 sm:p-8 rounded-[2rem] shadow-lg min-h-64 md:h-72 flex flex-col justify-center items-center text-center relative overflow-hidden group hover:shadow-xl transition-all duration-300">
+                <div className="bg-linear-to-br from-brand-blue-600 via-brand-blue-700 to-brand-blue-900 border border-white/10 p-6 sm:p-8 rounded-[2rem] shadow-xl min-h-64 md:h-72 flex flex-col justify-center items-center text-center relative overflow-hidden group hover:shadow-2xl hover:-translate-y-1 transition-all duration-500">
                   <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-10 mix-blend-overlay" />
-                  <div className="w-20 h-20 rounded-full bg-white/10 flex items-center justify-center mb-6 backdrop-blur-sm group-hover:scale-110 transition-transform duration-500">
-                    <BookOpenCheck className="w-10 h-10 text-cream-200" />
+                  {/* Decorative glow */}
+                  <div className="absolute -top-24 -right-24 w-48 h-48 bg-brand-yellow-400/20 blur-[60px] rounded-full pointer-events-none group-hover:bg-brand-yellow-400/30 transition-colors" />
+                  
+                  <div className="w-20 h-20 rounded-2xl bg-white/10 flex items-center justify-center mb-6 backdrop-blur-md group-hover:scale-110 transition-transform duration-500 border border-white/20 shadow-inner">
+                    <BookOpenCheck className="w-10 h-10 text-brand-yellow-300" />
                   </div>
-                  <p className="font-black text-2xl text-white">Tahfidz<br />Intensif</p>
+                  <h3 className="font-black text-2xl text-white tracking-tight leading-tight group-hover:text-brand-yellow-100 transition-colors">
+                    Tahfidz<br />Intensif
+                  </h3>
+                  <div className="mt-4 w-12 h-1 bg-brand-yellow-400/30 rounded-full group-hover:w-16 group-hover:bg-brand-yellow-400 transition-all duration-500" />
                 </div>
               </div>
 

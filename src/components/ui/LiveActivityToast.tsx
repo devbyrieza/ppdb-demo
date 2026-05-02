@@ -23,7 +23,7 @@ export default function LiveActivityToast() {
 
     // Fetch real registrant data from API
     useEffect(() => {
-        fetch("/api/public/recent-registrants")
+        fetch("/api/public/recent-registrants", { cache: "no-store" })
             .then((res) => res.json())
             .then((data) => {
                 if (data.registrants && data.registrants.length > 0) {
