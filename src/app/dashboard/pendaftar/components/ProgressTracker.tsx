@@ -64,9 +64,9 @@ export default function ProgressTracker({ currentStatus }: ProgressTrackerProps)
 
         <div className="space-y-6 md:space-y-8">
           {phases.map((phase, idx) => {
-            const requiredIndex = getStatusIndex(phase.requiredStatus as StatusProses);
+            const requiredIndex = getStatusIndex(phase.requiredStatus);
             const isCompleted = currentIndex >= requiredIndex;
-            const isCurrent = !isCompleted && (idx === 0 || currentIndex >= getStatusIndex(phases[idx-1].requiredStatus as StatusProses));
+            const isCurrent = !isCompleted && (idx === 0 || currentIndex >= getStatusIndex(phases[idx-1].requiredStatus));
             const Icon = phase.icon;
 
             return (
