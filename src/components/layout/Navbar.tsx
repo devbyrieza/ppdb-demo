@@ -95,7 +95,7 @@ export default function Navbar() {
             <Link href="/" onClick={handleBerandaClick} className="flex items-center gap-3 group min-h-[44px]">
               <div className="relative">
                 <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-[14px] flex items-center justify-center bg-white border border-brand-blue-100 shadow-sm transition-transform duration-500 group-hover:scale-105 group-hover:-rotate-3 overflow-hidden">
-                  <img src={BRANDING.logoPath} alt={`Logo ${BRANDING.schoolName}`} className="w-full h-full object-cover" />
+                  <img src={BRANDING.logoPath} alt={`Logo ${BRANDING.schoolName}`} className="w-full h-full object-contain p-0.5" />
                 </div>
                 <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-emerald-500 border-2 border-white rounded-full z-10" />
               </div>
@@ -104,7 +104,7 @@ export default function Navbar() {
                   {BRANDING.schoolShortName}
                 </h1>
                 <p className="text-[9px] sm:text-[10px] font-bold text-brand-blue-600/70 uppercase tracking-widest mt-0.5 leading-tight">
-                  Managed by PPDB Modern IIBS
+                  Managed by Al Andalus IIBS
                 </p>
               </div>
             </Link>
@@ -132,7 +132,7 @@ export default function Navbar() {
                 Masuk
               </Link>
               <Link href="/ppdb" className="btn-primary flex items-center gap-2 group">
-                PPDB 2025
+                Daftar PPDB
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
@@ -215,7 +215,7 @@ export default function Navbar() {
                     onClick={() => setIsMenuOpen(false)}
                     className="w-full py-4 text-base font-bold rounded-2xl bg-brand-blue-700 text-white hover:bg-brand-blue-800 text-center transition-all min-h-[56px] flex items-center justify-center shadow-lg shadow-brand-blue-700/20"
                   >
-                    Daftar PPDB 2025
+                    Daftar PPDB Online
                   </Link>
 
                   <div className="h-6" /> {/* Safe padding */}

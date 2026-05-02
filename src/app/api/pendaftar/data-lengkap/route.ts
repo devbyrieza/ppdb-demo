@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
-import { notifyDataComplete } from "@/lib/wablas";
+
 
 /**
  * GET /api/pendaftar/data-lengkap
@@ -124,13 +124,14 @@ export async function POST(request: NextRequest) {
 
     // Sync individual columns for the Santri (Main Pendaftar Table)
     if (santri) {
+      // Identity Sync
       if (santri.nama_lengkap) updateData.nama_lengkap = santri.nama_lengkap;
       if (santri.nik) updateData.nik = santri.nik;
       if (santri.tanggal_lahir) updateData.tanggal_lahir = new Date(santri.tanggal_lahir);
       if (jenisKelaminDb) updateData.jenis_kelamin = jenisKelaminDb;
       if (santri.no_hp) updateData.no_hp = santri.no_hp;
 
-      // Sync Alamat & Wilayah
+      // Alamat & Wilayah Sync
       if (santri.alamat) updateData.alamat = santri.alamat;
       if (santri.rt) updateData.rt = santri.rt;
       if (santri.rw) updateData.rw = santri.rw;
@@ -140,19 +141,30 @@ export async function POST(request: NextRequest) {
       if (santri.provinsi) updateData.provinsi = santri.provinsi;
       if (santri.kode_pos) updateData.kode_pos = santri.kode_pos;
 
-      // Sync Academic & Bio
+      // Academic & Bio Sync (Safely handle 0 and NaN)
+      const parseSafeInt = (val: any) => {
+        if (val === undefined || val === null || val === "") return undefined;
+        const parsed = parseInt(val.toString());
+        return isNaN(parsed) ? undefined : parsed;
+      };
+
       if (santri.asal_sekolah) updateData.asal_sekolah = santri.asal_sekolah;
       if (santri.nisn) updateData.nisn = santri.nisn;
-      if (santri.anak_ke) updateData.anak_ke = parseInt(santri.anak_ke.toString());
-      if (santri.berapa_bersaudara) updateData.jumlah_saudara = parseInt(santri.berapa_bersaudara.toString());
+      
+      const anakKe = parseSafeInt(santri.anak_ke);
+      if (anakKe !== undefined) updateData.anak_ke = anakKe;
+      
+      const jumlahSaudara = parseSafeInt(santri.berapa_bersaudara);
+      if (jumlahSaudara !== undefined) updateData.jumlah_saudara = jumlahSaudara;
 
-      // Sync Additional Fields (Previously Missing)
       if (santri.tempat_lahir) updateData.tempat_lahir = santri.tempat_lahir;
       if (santri.golongan_darah) updateData.golongan_darah = santri.golongan_darah;
       if (santri.hobi) updateData.hobi = santri.hobi;
       if (santri.cita_cita) updateData.cita_cita = santri.cita_cita;
-      if (santri.alamat_sekolah) updateData.alamat_sekolah = santri.alamat_sekolah; // Note: schema might not have this, checking...
-      if (santri.tahun_lulus) updateData.tahun_lulus = parseInt(santri.tahun_lulus.toString());
+      if (santri.alamat_sekolah) updateData.alamat_sekolah = santri.alamat_sekolah;
+      
+      const tahunLulus = parseSafeInt(santri.tahun_lulus);
+      if (tahunLulus !== undefined) updateData.tahun_lulus = tahunLulus;
     }
 
     // UPDATE PENDAFTAR
@@ -163,68 +175,43 @@ export async function POST(request: NextRequest) {
 
     // SYNC TO ORANG_TUA TABLE
     if (ayah || ibu || wali) {
+      const parentData = {
+        // Ayah
+        nama_ayah: ayah?.nama_lengkap,
+        nik_ayah: ayah?.nik,
+        tempat_lahir_ayah: ayah?.tempat_lahir,
+        tanggal_lahir_ayah: ayah?.tanggal_lahir ? new Date(ayah.tanggal_lahir) : null,
+        pendidikan_ayah: ayah?.pendidikan_terakhir,
+        pekerjaan_ayah: ayah?.pekerjaan,
+        penghasilan_ayah: ayah?.penghasilan,
+        no_hp_ayah: ayah?.no_hp,
+        alamat_ayah: ayah?.alamat,
+        // Ibu
+        nama_ibu: ibu?.nama_lengkap,
+        nik_ibu: ibu?.nik,
+        tempat_lahir_ibu: ibu?.tempat_lahir,
+        tanggal_lahir_ibu: ibu?.tanggal_lahir ? new Date(ibu.tanggal_lahir) : null,
+        pendidikan_ibu: ibu?.pendidikan_terakhir,
+        pekerjaan_ibu: ibu?.pekerjaan,
+        penghasilan_ibu: ibu?.penghasilan,
+        no_hp_ibu: ibu?.no_hp,
+        alamat_ibu: ibu?.alamat,
+        // Wali
+        nama_wali: wali?.nama_lengkap,
+        no_hp_wali: wali?.no_hp,
+        hubungan_wali: wali?.hubungan_status,
+        alamat_wali: wali?.alamat,
+      };
+
       await prisma.orangTua.upsert({
         where: { pendaftar_id: pendaftarId },
         create: {
           pendaftar_id: pendaftarId,
-          // Ayah
-          nama_ayah: ayah?.nama_lengkap,
-          nik_ayah: ayah?.nik,
-          tempat_lahir_ayah: ayah?.tempat_lahir,
-          tanggal_lahir_ayah: ayah?.tanggal_lahir ? new Date(ayah.tanggal_lahir) : null,
-          pendidikan_ayah: ayah?.pendidikan_terakhir,
-          pekerjaan_ayah: ayah?.pekerjaan,
-          penghasilan_ayah: ayah?.penghasilan,
-          no_hp_ayah: ayah?.no_hp,
-          alamat_ayah: ayah?.alamat, // Added Address
-          // Ibu
-          nama_ibu: ibu?.nama_lengkap,
-          nik_ibu: ibu?.nik,
-          tempat_lahir_ibu: ibu?.tempat_lahir,
-          tanggal_lahir_ibu: ibu?.tanggal_lahir ? new Date(ibu.tanggal_lahir) : null,
-          pendidikan_ibu: ibu?.pendidikan_terakhir,
-          pekerjaan_ibu: ibu?.pekerjaan,
-          penghasilan_ibu: ibu?.penghasilan,
-          no_hp_ibu: ibu?.no_hp,
-          alamat_ibu: ibu?.alamat, // Added Address
-          // Wali
-          nama_wali: wali?.nama_lengkap,
-          no_hp_wali: wali?.no_hp,
-          hubungan_wali: wali?.hubungan_status,
-          alamat_wali: wali?.alamat,
+          ...parentData
         },
-        update: {
-          // Ayah
-          nama_ayah: ayah?.nama_lengkap,
-          nik_ayah: ayah?.nik,
-          tempat_lahir_ayah: ayah?.tempat_lahir,
-          tanggal_lahir_ayah: ayah?.tanggal_lahir ? new Date(ayah.tanggal_lahir) : null,
-          pendidikan_ayah: ayah?.pendidikan_terakhir,
-          pekerjaan_ayah: ayah?.pekerjaan,
-          penghasilan_ayah: ayah?.penghasilan,
-          no_hp_ayah: ayah?.no_hp,
-          alamat_ayah: ayah?.alamat, // Added Address
-          // Ibu
-          nama_ibu: ibu?.nama_lengkap,
-          nik_ibu: ibu?.nik,
-          tempat_lahir_ibu: ibu?.tempat_lahir,
-          tanggal_lahir_ibu: ibu?.tanggal_lahir ? new Date(ibu.tanggal_lahir) : null,
-          pendidikan_ibu: ibu?.pendidikan_terakhir,
-          pekerjaan_ibu: ibu?.pekerjaan,
-          penghasilan_ibu: ibu?.penghasilan,
-          no_hp_ibu: ibu?.no_hp,
-          alamat_ibu: ibu?.alamat, // Added Address
-          // Wali
-          nama_wali: wali?.nama_lengkap,
-          no_hp_wali: wali?.no_hp,
-          hubungan_wali: wali?.hubungan_status,
-          alamat_wali: wali?.alamat,
-        }
+        update: parentData
       });
     }
-
-    // NOTE: Progression logic removed from here to prevent premature WhatsApp notifications.
-    // It is now handled in /api/pendaftar/konfirmasi-data when the user clicks "Konfirmasi Data".
 
     return NextResponse.json({
       success: true,

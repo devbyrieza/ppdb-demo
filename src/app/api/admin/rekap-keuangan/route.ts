@@ -65,10 +65,8 @@ export async function GET(request: NextRequest) {
             let statusBayar = "BELUM_BAYAR";
             if (totalBayar >= 8500000) {
                 statusBayar = "LUNAS";
-            } else if (totalBayar >= 4250000) {
-                statusBayar = "CICIL_50_LEBIH";
             } else if (totalBayar > 0) {
-                statusBayar = "CICIL_DIBAWAH_50";
+                statusBayar = "CICILAN";
             }
 
             // Determine Last Updated (payment or student)

@@ -7,6 +7,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -44,6 +47,10 @@ export async function GET(request: NextRequest) {
         nomor_pendaftaran: true,
         status_pendaftaran: true,
         updated_at: true,
+        pembayaran: {
+          where: { status_pembayaran: "verified" },
+          take: 1
+        },
         pengumuman: {
           select: {
             status_kelulusan: true,
@@ -59,6 +66,19 @@ export async function GET(request: NextRequest) {
         { error: "Failed to fetch status" },
         { status: 404 },
       );
+    }
+
+    // AUTO-FIX: Sync status_pendaftaran if payment is verified
+    let currentStatus = data.status_pendaftaran || "draft";
+    const { getStatusIndex } = await import("@/lib/access-control");
+    
+    if (data.pembayaran.length > 0 && getStatusIndex(currentStatus) < getStatusIndex("verified")) {
+      console.log(`[AutoFix] Upgrading ${data.nomor_pendaftaran} status to verified (payment found)`);
+      await prisma.pendaftar.update({
+        where: { id: pendaftarId },
+        data: { status_pendaftaran: "verified" }
+      });
+      currentStatus = "verified";
     }
 
     // Check if slots are available and pendaftar hasn't booked yet
@@ -89,7 +109,7 @@ export async function GET(request: NextRequest) {
       id: data.id,
       nama_lengkap: data.nama_lengkap,
       nomor_pendaftaran: data.nomor_pendaftaran,
-      status_proses: data.status_pendaftaran || "draft",
+      status_proses: currentStatus,
       updated_at: data.updated_at,
       schedules_available: schedules_available,
       hasil_kelulusan: {

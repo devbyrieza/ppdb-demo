@@ -1,24 +1,23 @@
 /**
  * Single Source of Truth for Institutional PDF Branding
  * "Locked" specifications for headers, lines, and signatures.
- * Template Demo
  */
 
 export const PDF_BRANDING = {
     // Institution Labels
     institution: {
-        name: "PPDB MODERN DEMO SYSTEM",
-        subtitle: "Demo PPDB Managed by Andalus",
+        name: "ANDALUS MODERN ACADEMY",
+        subtitle: "Standardized PPDB Template for Modern Institutions",
         committee: "PANITIA PENERIMAAN SANTRI BARU",
         academic_year: "2026-2027",
-        address: "Jl. Demo No. 123, Kota Demo, Jawa Barat 40000",
-        contact: "Website: https://demo.pesantren.com | Email: info@demo.pesantren.com",
-        phones: "WhatsApp: 0812-0000-xxxx",
+        address: "Jl. Al-Andalus Raya No. 1, Kota Madani",
+        contact: "Website: https://ppdb-demo.vercel.app | Email: demo@alandalus.com",
+        phones: "WhatsApp: 0800-0000-0000", // Base phone
     },
 
     // Resource Paths
     assets: {
-        logo: "/images/kop-surat.png",
+        logo: "/images/logo.png",
         stamp: "/images/stempel-pesantren.jpg",
         signature: "/images/ttd-mudir.png",
     },
@@ -46,8 +45,8 @@ export const PDF_BRANDING = {
 
     // Official Mudir / Authority
     authority: {
-        name: "Mudir Demo System",
+        name: "Dr. Al-Andalus",
         role: "Mudir",
-        city: "Demo City"
+        city: "Kota Madani"
     }
 };

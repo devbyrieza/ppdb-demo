@@ -54,7 +54,10 @@ export async function GET(request: NextRequest) {
         bukti_transfer_filename: true,
         created_at: true,
         updated_at: true,
-        pendaftar: { // Corrected: pendaftar relation selected
+        tipe_cicilan: true,
+        cicilan_ke: true,
+        total_tagihan: true,
+        pendaftar: {
           select: {
             id: true,
             nomor_pendaftaran: true,
@@ -87,6 +90,9 @@ export async function GET(request: NextRequest) {
         created_at: pembayaran.created_at,
         updated_at: pembayaran.updated_at,
         pendaftar: pembayaran.pendaftar,
+        tipe_cicilan: pembayaran.tipe_cicilan,
+        cicilan_ke: pembayaran.cicilan_ke,
+        total_tagihan: pembayaran.total_tagihan,
       };
     });
 
@@ -114,7 +120,7 @@ export async function PATCH(request: NextRequest) {
 
     // Get request body
     const body = await request.json();
-    const { pembayaran_id, status_pembayaran, catatan, jumlah } = body;
+    const { pembayaran_id, status_pembayaran, catatan, jumlah, tipe_cicilan } = body;
 
     if (!pembayaran_id || !status_pembayaran) {
       return NextResponse.json(
@@ -123,9 +129,9 @@ export async function PATCH(request: NextRequest) {
       );
     }
 
-    if (!["verified", "rejected"].includes(status_pembayaran)) {
+    if (!["verified", "rejected", "pending"].includes(status_pembayaran)) {
       return NextResponse.json(
-        { error: "status_pembayaran must be verified or rejected" },
+        { error: "status_pembayaran must be verified, rejected or pending" },
         { status: 400 }
       );
     }
@@ -137,6 +143,7 @@ export async function PATCH(request: NextRequest) {
         status_pembayaran,
         catatan_verifikasi: catatan,
         jumlah: jumlah ? Number(jumlah) : undefined,
+        tipe_cicilan: tipe_cicilan || undefined,
       },
       include: {
         pendaftar: {
@@ -150,14 +157,17 @@ export async function PATCH(request: NextRequest) {
     });
 
     // Also update pendaftar status
+    const { getStatusIndex } = await import("@/lib/access-control");
     let newPendaftarStatus = pembayaran.pendaftar.status_pendaftaran;
     
     if (status_pembayaran === "verified") {
-       if (['draft', 'registered', 'payment_rejected'].includes(newPendaftarStatus)) {
+       if (getStatusIndex(newPendaftarStatus as any) < getStatusIndex('verified' as any)) {
            newPendaftarStatus = 'verified';
        }
-    } else {
-       newPendaftarStatus = 'payment_rejected';
+    } else if (status_pembayaran === "rejected") {
+       if (getStatusIndex(newPendaftarStatus as any) <= getStatusIndex('payment_verification' as any)) {
+           newPendaftarStatus = 'payment_rejected';
+       }
     }
 
     if (newPendaftarStatus !== pembayaran.pendaftar.status_pendaftaran) {
@@ -182,19 +192,36 @@ export async function PATCH(request: NextRequest) {
 
     // Send WhatsApp notification via Queue
     try {
-      if (pembayaran.pendaftar?.no_hp) {
+      if (pembayaran.pendaftar?.no_hp && status_pembayaran !== "pending") {
         const isVerifiedPayment = status_pembayaran === "verified";
-        const formattedAmount = `Rp ${parseInt(pembayaran.jumlah.toString()).toLocaleString('id-ID')}`;
-        const paymentDate = new Date(pembayaran.created_at).toLocaleDateString('id-ID');
+        
+        // Prevent duplicate 'payment_verified' notifications
+        let shouldSendNotif = true;
+        if (isVerifiedPayment) {
+          const existingVerifiedNotif = await prisma.whatsappLog.findFirst({
+            where: {
+              pendaftar_id: pembayaran.pendaftar_id,
+              jenis_notif: "payment_verified"
+            }
+          });
+          if (existingVerifiedNotif) {
+            shouldSendNotif = false;
+          }
+        }
 
-        await enqueueWhatsapp({
-          pendaftarId: pembayaran.pendaftar_id,
-          phone: pembayaran.pendaftar.no_hp,
-          jenisNotif: isVerifiedPayment ? "payment_verified" : "payment_rejected",
-          messageContent: isVerifiedPayment
-            ? buildMessagePaymentVerified(pembayaran.pendaftar.nama_lengkap, formattedAmount, pembayaran.metode_pembayaran, paymentDate)
-            : buildMessagePaymentRejected(pembayaran.pendaftar.nama_lengkap, catatan || ""),
-        });
+        if (shouldSendNotif) {
+          const formattedAmount = `Rp ${parseInt(pembayaran.jumlah.toString()).toLocaleString('id-ID')}`;
+          const paymentDate = new Date(pembayaran.created_at).toLocaleDateString('id-ID');
+
+          await enqueueWhatsapp({
+            pendaftarId: pembayaran.pendaftar_id,
+            phone: pembayaran.pendaftar.no_hp,
+            jenisNotif: isVerifiedPayment ? "payment_verified" : "payment_rejected",
+            messageContent: isVerifiedPayment
+              ? buildMessagePaymentVerified(pembayaran.pendaftar.nama_lengkap, formattedAmount, pembayaran.metode_pembayaran, paymentDate)
+              : buildMessagePaymentRejected(pembayaran.pendaftar.nama_lengkap, catatan || ""),
+          });
+        }
       }
     } catch (error) {
       console.error("WhatsApp notification enqueue error:", error);

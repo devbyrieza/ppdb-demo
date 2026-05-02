@@ -89,7 +89,7 @@ export const metadata: Metadata = {
     description:
       "Pendidikan berbasis Al-Qur'an dan As-Sunnah sesuai pemahaman salafush shalih.",
     images: ["/twitter-image.jpg"],
-    creator: "@demoppdb_ppdb",
+    creator: "@alandalus_ppdb",
   },
 
   verification: {

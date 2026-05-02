@@ -30,7 +30,7 @@ export default function Footer() {
           <div className="lg:col-span-1 space-y-8">
             <Link href="/" className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-brand-yellow-50 text-brand-blue-950 shadow-md overflow-hidden">
-                <img src={BRANDING.logoPath} alt={`Logo ${BRANDING.schoolName}`} className="w-full h-full object-cover" />
+                <img src={BRANDING.logoPath} alt={`Logo ${BRANDING.schoolName}`} className="w-full h-full object-contain p-1" />
               </div>
               <div>
                 <h3 className="text-xl font-black text-white tracking-tight leading-none">{BRANDING.schoolName}</h3>
@@ -38,13 +38,13 @@ export default function Footer() {
               </div>
             </Link>
             <p className="text-brand-yellow-100/80 font-medium leading-relaxed max-w-xs text-justify">
-              Membangun generasi Qur&apos;ani yang cerdas &amp; berakhlak mulia melalui sistem terintegrasi PPDB Modern.
+              Membangun generasi Qur&apos;ani yang cerdas &amp; berakhlak mulia melalui sistem terintegrasi Al Andalus.
             </p>
             <div className="flex gap-3">
               {[
-                { Icon: Instagram, href: "https://www.instagram.com/alandalusululalbaab/" },
-                { Icon: Youtube, href: "https://www.youtube.com/@AlAndalusUlulAlbaab" },
-                { Icon: Facebook, href: "https://www.facebook.com/alandalus.ululalbaab/" },
+                { Icon: Instagram, href: BRANDING.igUrl },
+                { Icon: Youtube, href: BRANDING.ytUrl },
+                { Icon: Facebook, href: BRANDING.fbUrl },
                 { Icon: Twitter, href: "#" }
               ].map(({ Icon, href }, i) => (
                 <Link key={i} href={href} className="w-10 h-10 rounded-xl bg-brand-blue-900 border border-brand-blue-800 flex items-center justify-center text-brand-yellow-100 hover:bg-brand-yellow-400 hover:text-brand-blue-950 hover:border-brand-yellow-400 transition-all duration-300 shadow-sm">
@@ -90,7 +90,7 @@ export default function Footer() {
                   <MapPin className="w-5 h-5" />
                 </div>
                 <div className="text-sm font-medium text-brand-yellow-100/80 text-left pt-1">
-                  Jl. KH Mama Oyon, Cihaur,<br />Kec. Cicantayan, Kabupaten Sukabumi,<br />Jawa Barat 43155
+                  <div dangerouslySetInnerHTML={{ __html: BRANDING.address.replace(/,/g, ',<br />') }} />
                 </div>
               </div>
               <div className="flex gap-4">
@@ -98,7 +98,7 @@ export default function Footer() {
                   <Phone className="w-5 h-5" />
                 </div>
                 <div className="text-sm font-bold text-white text-left pt-1">
-                  +62 812-8530-0800
+                  {BRANDING.phone}
                   <p className="text-[10px] text-brand-yellow-100/80 font-medium tracking-wide mt-0.5">Layanan Pelanggan</p>
                 </div>
               </div>
@@ -107,7 +107,7 @@ export default function Footer() {
                   <Mail className="w-5 h-5" />
                 </div>
                 <div className="text-sm font-bold text-white text-left pt-2.5 break-all">
-                  alandalusululalbaab2@gmail.com
+                  {BRANDING.email}
                 </div>
               </div>
             </div>

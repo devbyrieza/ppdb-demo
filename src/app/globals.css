@@ -16,80 +16,28 @@
   --font-display: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-arabic: "Amiri", "Traditional Arabic", "Arabic Typesetting", serif;
 
-  /* ─── Emerald Green (Main Demo Theme) ─── */
-  --color-brand-blue-50:  #f0fdf4;
-  --color-brand-blue-100: #dcfce7;
-  --color-brand-blue-200: #bbf7d0;
-  --color-brand-blue-300: #86efac;
-  --color-brand-blue-400: #4ade80;
-  --color-brand-blue-500: #22c55e;
-  --color-brand-blue-600: #059669; /* Main Brand Color - Emerald */
-  --color-brand-blue-700: #047857;
-  --color-brand-blue-800: #065f46; /* Deep Emerald */
-  --color-brand-blue-900: #064e3b;
-  --color-brand-blue-950: #022c22;
+  /* ─── Biru Cerah (Primary) — Dynamic Scaling ─── */
+  --color-brand-blue-50:  color-mix(in srgb, var(--brand-primary) 5%, white);
+  --color-brand-blue-100: color-mix(in srgb, var(--brand-primary) 15%, white);
+  --color-brand-blue-200: color-mix(in srgb, var(--brand-primary) 30%, white);
+  --color-brand-blue-300: color-mix(in srgb, var(--brand-primary) 50%, white);
+  --color-brand-blue-400: color-mix(in srgb, var(--brand-primary) 70%, white);
+  --color-brand-blue-500: var(--brand-primary);
+  --color-brand-blue-600: var(--brand-primary); /* Main Brand Color */
+  --color-brand-blue-700: color-mix(in srgb, var(--brand-primary) 85%, black);
+  --color-brand-blue-800: color-mix(in srgb, var(--brand-primary) 75%, black);
+  --color-brand-blue-900: color-mix(in srgb, var(--brand-primary) 60%, black);
+  --color-brand-blue-950: color-mix(in srgb, var(--brand-primary) 45%, black);
 
-  /* ─── Luxury Gold (Secondary Demo Theme) ─── */
-  --color-brand-yellow-50:  #fffbeb;
-  --color-brand-yellow-100: #fef3c7;
-  --color-brand-yellow-200: #fde68a;
-  --color-brand-yellow-300: #fcd34d;
-  --color-brand-yellow-400: #fbbf24; /* Main Secondary Color - Gold */
-  --color-brand-yellow-500: #f59e0b;
-  --color-brand-yellow-600: #d97706;
-  --color-brand-yellow-700: #b45309;
-
-  /* ─── Maroon (Al-Imam Primary) ─── */
-  --color-maroon-50:  #fdf2f2;
-  --color-maroon-100: #fde3e3;
-  --color-maroon-200: #fbbfbf;
-  --color-maroon-300: #f79292;
-  --color-maroon-400: #f05a5a;
-  --color-maroon-500: #e53232;
-  --color-maroon-600: #d01d1d;
-  --color-maroon-700: #800000;
-  --color-maroon-800: #650000;
-  --color-maroon-900: #500000;
-  --color-maroon-950: #3f0404;
-
-  /* ─── Cream (Al-Imam Secondary) ─── */
-  --color-cream-50:  #FDF5E6;
-  --color-cream-100: #FBE6D2;
-  --color-cream-200: #F7D2B6;
-  --color-cream-300: #F2B992;
-  --color-cream-400: #EB9967;
-  --color-cream-500: #E67A3D;
-  --color-cream-600: #D65A20;
-  --color-cream-700: #BB4317;
-  --color-cream-800: #993517;
-  --color-cream-900: #7C2E16;
-  --color-cream-950: #43140A;
-
-  /* ─── Maroon (Al-Imam Primary) ─── */
-  --color-maroon-50:  #fdf2f2;
-  --color-maroon-100: #fde3e3;
-  --color-maroon-200: #fbbfbf;
-  --color-maroon-300: #f79292;
-  --color-maroon-400: #f05a5a;
-  --color-maroon-500: #e53232;
-  --color-maroon-600: #d01d1d;
-  --color-maroon-700: #800000;
-  --color-maroon-800: #650000;
-  --color-maroon-900: #500000;
-  --color-maroon-950: #3f0404;
-
-  /* ─── Cream (Al-Imam Secondary) ─── */
-  --color-cream-50:  #FDF5E6;
-  --color-cream-100: #FBE6D2;
-  --color-cream-200: #F7D2B6;
-  --color-cream-300: #F2B992;
-  --color-cream-400: #EB9967;
-  --color-cream-500: #E67A3D;
-  --color-cream-600: #D65A20;
-  --color-cream-700: #BB4317;
-  --color-cream-800: #993517;
-  --color-cream-900: #7C2E16;
-  --color-cream-950: #43140A;
+  /* ─── Kuning Tua Cerah (Secondary) — Dynamic Scaling ─── */
+  --color-brand-yellow-50:  color-mix(in srgb, var(--brand-secondary) 5%, white);
+  --color-brand-yellow-100: color-mix(in srgb, var(--brand-secondary) 20%, white);
+  --color-brand-yellow-200: color-mix(in srgb, var(--brand-secondary) 40%, white);
+  --color-brand-yellow-300: color-mix(in srgb, var(--brand-secondary) 70%, white);
+  --color-brand-yellow-400: var(--brand-secondary); /* Main Secondary Color */
+  --color-brand-yellow-500: color-mix(in srgb, var(--brand-secondary) 85%, black);
+  --color-brand-yellow-600: color-mix(in srgb, var(--brand-secondary) 70%, black);
+  --color-brand-yellow-700: color-mix(in srgb, var(--brand-secondary) 55%, black);
 
   /* ─── White / Surface ─── */
   --color-white: #FFFFFF;

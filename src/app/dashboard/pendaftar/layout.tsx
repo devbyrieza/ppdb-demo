@@ -23,8 +23,8 @@ import {
   ShieldCheck,
   Bell,
   Search,
-  School
 } from "lucide-react";
+import { BRANDING } from "@/config/branding";
 import Link from "next/link";
 import IdleTimeoutTracker from "@/components/auth/IdleTimeoutTracker";
 import {
@@ -67,45 +67,46 @@ export default function DashboardLayout({
         // 1. Get session
         const sessionRes = await fetch("/api/auth/session");
         if (!sessionRes.ok) {
-          const errorText = await sessionRes.text();
-          throw new Error(`Failed to get session: ${sessionRes.status} - ${errorText}`);
+          throw new Error(`Failed to get session: ${sessionRes.status}`);
         }
 
         const sessionData = await sessionRes.json();
+        const fallbackName = sessionData.session?.full_name || sessionData.session?.name || sessionData.session?.email || "Pendaftar";
+
+        // 2. Validate pendaftar_id
         if (!sessionData.pendaftar_id) {
-          console.warn("No pendaftar_id in session");
-          // Still set basic info from session
-          const fallbackName = sessionData.session?.full_name || sessionData.session?.name || sessionData.session?.email || "Pendaftar";
+          console.warn("⚠️ [Layout] No pendaftar_id found in session");
           setNamaLengkap(fallbackName);
+          setStatusProses("draft");
           setLoading(false);
           return;
         }
-        const fallbackName =
-          sessionData.full_name || sessionData.name || sessionData.email || "Pendaftar";
 
-        // 2. Get user status
+        // 3. Fetch current registration status (Force dynamic & No-cache)
         const statusRes = await fetch(
-          `/api/pendaftar/status?pendaftar_id=${sessionData.pendaftar_id}`,
+          `/api/pendaftar/status?pendaftar_id=${sessionData.pendaftar_id}&t=${Date.now()}`,
+          { cache: 'no-store' }
         );
-
-        const statusText = await statusRes.text();
-
+        
         if (!statusRes.ok) {
-          console.error(`Status API failed: ${statusRes.status} - ${statusText}`);
-          // Set what we have from session
+          console.error("❌ [Layout] Status fetch failed:", statusRes.status);
           setNamaLengkap(fallbackName);
           setLoading(false);
           return;
         }
 
-        const userData = JSON.parse(statusText);
-        setStatusProses((userData.status_proses || "draft") as StatusProses);
+        const userData = await statusRes.json();
+        
+        // 4. Update state with fresh data
+        const currentStatus = (userData.status_proses || "draft") as StatusProses;
+        console.log(`✅ [Layout] Current Status: ${currentStatus}`);
+        
+        setStatusProses(currentStatus);
         setNomorPendaftaran(userData.nomor_pendaftaran || "-");
         setNamaLengkap(userData.nama_lengkap || fallbackName);
 
       } catch (error: any) {
-        console.error("Error fetching user data:", error?.message || error);
-        // Keep default values on error
+        console.error("Error in Layout fetchUserData:", error?.message || error);
       } finally {
         setLoading(false);
       }
@@ -255,7 +256,7 @@ export default function DashboardLayout({
               <User className="w-6 h-6 text-brand-blue-700" />
             </div>
           </div>
-          <h1 className="text-3xl font-serif font-black uppercase text-brand-blue-950 mb-2">Pondok Pesantren Sistem PPDB Modern</h1>
+          <h1 className="text-3xl font-serif font-black uppercase text-brand-blue-950 mb-2">Pondok Pesantren {BRANDING.schoolName}</h1>
           <p className="text-ink-500 text-sm">Mohon tunggu sebentar...</p>
         </div>
       </div>
@@ -274,7 +275,7 @@ export default function DashboardLayout({
               <Menu className="w-6 h-6" />
             </button>
             <div className="flex flex-col">
-              <span className="text-[9px] sm:text-[10px] uppercase font-black tracking-widest text-ink-400 mb-0.5" style={{ display: 'none' }}>PPDB Sistem PPDB Modern</span>
+              <span className="text-[9px] sm:text-[10px] uppercase font-black tracking-widest text-ink-400 mb-0.5" style={{ display: 'none' }}>PPDB {BRANDING.schoolName}</span>
               <span className="text-sm sm:text-base font-black text-brand-blue-950 leading-none">Portal Santri</span>
             </div>
           </div>
@@ -296,11 +297,11 @@ export default function DashboardLayout({
               {/* Brand */}
               <div className="px-6 pt-8 pb-6 border-b border-brand-yellow-100/50 mb-2">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 rounded-2xl bg-linear-to-br from-brand-blue-700 to-brand-blue-900 flex items-center justify-center text-white shadow-md border border-brand-blue-800 ring-4 ring-brand-yellow-50">
-                    <School className="w-5 h-5" />
+                  <div className="w-10 h-10 rounded-2xl bg-white flex items-center justify-center shadow-md ring-4 ring-brand-yellow-50 overflow-hidden">
+                    <img src={BRANDING.logoPath} alt="Logo" className="w-full h-full object-contain p-1" />
                   </div>
                   <div>
-                    <h1 className="font-black text-xl text-brand-blue-950 leading-none tracking-tight">PPDB <span className="text-brand-blue-700">Sistem PPDB Modern</span></h1>
+                    <h1 className="font-black text-xl text-brand-blue-950 leading-none tracking-tight">PPDB <span className="text-brand-blue-700">{BRANDING.schoolName}</span></h1>
                     <p className="text-[10px] text-ink-500 font-bold mt-1 uppercase tracking-widest">Tahun 2026/2027</p>
                   </div>
                 </div>
@@ -339,7 +340,7 @@ export default function DashboardLayout({
                   <span>Keluar Akun</span>
                 </button>
                 <p className="text-[10px] text-center text-ink-600 mt-4">
-                  &copy; 2026 Ponpes Al-Andalus Template Demo
+                  &copy; 2026 Ponpes {BRANDING.schoolName}
                 </p>
               </div>
             </div>
@@ -353,10 +354,10 @@ export default function DashboardLayout({
               <div className="flex flex-col h-full overflow-hidden">
                 <div className="p-6 border-b border-surface-100 flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-brand-blue-800 flex items-center justify-center text-white">
-                      <School className="w-5 h-5" />
+                    <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm overflow-hidden">
+                      <img src={BRANDING.logoPath} alt="Logo" className="w-full h-full object-contain p-1" />
                     </div>
-                    <span className="font-black text-lg text-brand-blue-950 tracking-tight">PPDB Sistem PPDB Modern</span>
+                    <span className="font-black text-lg text-brand-blue-950 tracking-tight">PPDB {BRANDING.schoolName}</span>
                   </div>
                   <button onClick={() => setSidebarOpen(false)} className="p-2 text-ink-400 hover:text-brand-blue-700 bg-brand-yellow-50 rounded-full">
                     <X className="w-5 h-5" />

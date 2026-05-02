@@ -28,9 +28,9 @@ function getPPDBCountdown() {
 }
 
 const JENJANG_LABELS: Record<string, string> = {
-  MTS: "Jenjang MTS",
-  IL: "Jenjang IL",
-  SMA: "Jenjang SMA",
+  MTS: "MTs",
+  IL: "IL",
+  SMA: "SMA",
 };
 
 import Swal from "sweetalert2";
@@ -322,10 +322,11 @@ export default function AdminDashboardPage() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
         {[
           { label: "Total Pendaftar", val: stats.total_pendaftar, icon: Users, color: "blue" },
           { label: "Diterima", val: stats.diterima, icon: GraduationCap, color: "emerald" },
+          { label: "Cadangan", val: stats.cadangan, icon: Loader2, color: "yellow" },
           { label: "Sudah Daftar Ulang", val: stats.daftar_ulang, icon: Wallet, color: "indigo" },
         ]
           .map((item, id) => (

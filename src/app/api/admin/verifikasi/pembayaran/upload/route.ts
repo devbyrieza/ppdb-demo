@@ -3,11 +3,12 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "@/lib/session";
 import { saveFileLocal } from "@/lib/storage/local";
 import { logAdminAction } from "@/lib/audit";
+import { Buffer } from "buffer";
 
 export async function POST(request: NextRequest) {
     try {
         // 1. Auth Check
-        const session = await getServerSession();
+        const session = await getServerSession() as any;
         if (!session) {
             return NextResponse.json({ success: false, error: "Sesi telah berakhir, silakan login kembali" }, { status: 401 });
         }
@@ -30,7 +31,7 @@ export async function POST(request: NextRequest) {
         }
 
         // 2. Parse Form Data
-        let formData;
+        let formData: FormData;
         try {
             formData = await request.formData();
         } catch (e) {
@@ -38,8 +39,8 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ success: false, error: "Format data tidak valid" }, { status: 400 });
         }
 
-        const file = formData.get("file") as File;
-        const pembayaranId = formData.get("pembayaran_id") as string;
+        const file = formData.get("file") as File | null;
+        const pembayaranId = formData.get("pembayaran_id") as string | null;
 
         if (!file) {
             return NextResponse.json({ success: false, error: "File bukti pembayaran belum dipilih" }, { status: 400 });
@@ -67,11 +68,16 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ success: false, error: "Data pembayaran tidak ditemukan di database" }, { status: 404 });
         }
 
+        if (!pembayaran.pendaftar) {
+            return NextResponse.json({ success: false, error: "Data pendaftar terkait tidak ditemukan" }, { status: 404 });
+        }
+
         // 4. Save File
-        let filePath;
+        let filePath: string;
         try {
             // Detect Real Mime Type via Magic Bytes
-            const buffer = Buffer.from(await file.arrayBuffer());
+            const arrayBuffer = await file.arrayBuffer();
+            const buffer = Buffer.from(arrayBuffer);
             const hex = buffer.slice(0, 4).toString('hex').toUpperCase();
             let detectedType = file.type;
             
@@ -139,9 +145,9 @@ export async function POST(request: NextRequest) {
         logAdminAction({
             action: 'UPLOAD_PAYMENT_PROOF',
             adminId: session.id || 'system',
-            adminName: session.full_name || 'Admin',
-            targetId: pembayaran.pendaftar.id,
-            targetName: pembayaran.pendaftar.nama_lengkap,
+            adminName: session.full_name || session.name || 'Admin',
+            targetId: pembayaran.pendaftar?.id || pembayaran.pendaftar_id,
+            targetName: pembayaran.pendaftar?.nama_lengkap || 'Unknown',
             details: { 
                 pembayaran_id: pembayaranId,
                 file_path: filePath

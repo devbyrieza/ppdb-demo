@@ -13,6 +13,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { sendMessage } from "@/lib/wablas";
+import { BRANDING } from "@/config/branding";
 
 // ============================================================================
 // TYPES
@@ -57,7 +58,7 @@ const MAX_DELAY_MS = 7000;          // Reduced from 10000
 const MAX_RETRY_ATTEMPTS = 3;
 const RETRY_DELAY_MINUTES = 5;
 
-const DEFAULT_APP_URL = 'https://demo-ppdb.vercel.app';
+const DEFAULT_APP_URL = BRANDING.websiteUrl;
 
 // ============================================================================
 // LAYER 1: Anti-Duplicate — Check flag before enqueue
@@ -564,7 +565,7 @@ function pickOpening(): string {
 }
 
 export function buildMessageOTP(nama: string, otp: string): string {
-    return `🔐 *Kode Verifikasi PPDB Al-Andalus Demo*
+    return `🔐 *Kode Verifikasi PPDB ${BRANDING.schoolName}*
 
 Assalamu'alaikum *${nama}*,
 
@@ -576,11 +577,11 @@ Kode ini berlaku selama *5 menit*.
 
 ⚠️ *PENTING:*
 • Jangan berikan kode ini kepada siapapun
-• Tim Al-Andalus Demo tidak akan pernah meminta kode OTP Anda
+• Tim ${BRANDING.schoolName} tidak akan pernah meminta kode OTP Anda
 
 Jazakumullahu khairan
 ---
-*Panitia PPDB Al-Andalus Demo*`;
+*Panitia PPDB ${BRANDING.schoolName}*`;
 }
 
 export function buildMessageRegistrationSuccess(
@@ -597,24 +598,24 @@ export function buildMessageRegistrationSuccess(
 
 Assalamu'alaikum *${nama}*,
 
-Alhamdulillah, pendaftaran Anda di Pesantren Al-Andalus Demo telah berhasil!
+Alhamdulillah, pendaftaran Anda di ${BRANDING.schoolName} telah berhasil!
 
 📋 *Detail Pendaftaran:*
 • Nomor Pendaftaran: ${nomor_pendaftaran}
 • Jenjang: ${jenjangStr}
 
 📝 *Langkah Selanjutnya:*
-1. Login ke dashboard: https://demo-ppdb.alandalus.com/dashboard/pendaftar
+1. Login ke dashboard: ${BRANDING.websiteUrl}/dashboard/pendaftar
    *(Gunakan Nomor Pendaftaran & NIK untuk Login)*
 2. Lakukan Pembayaran Pendaftaran (Transfer)
 3. Lengkapi biodata & upload dokumen (setelah pembayaran diverifikasi)
 
 💡 *Butuh Bantuan?*
-Hubungi kami di 0851-1152-4441
+Hubungi kami di ${BRANDING.phone}
 
 Jazakumullahu khairan
 ---
-*Panitia PPDB Al-Andalus Demo*`;
+*Panitia PPDB ${BRANDING.schoolName}*`;
 }
 
 export function buildMessageDocumentVerified(nama: string, dokumenList: string): string {
@@ -630,11 +631,11 @@ Semua Dokumen Lengkap
 📝 *Langkah Selanjutnya:*
 Silakan pilih jadwal tes masuk melalui dashboard Anda (Menu Jadwal Ujian).
 
-Dashboard: https://demo-ppdb.alandalus.com/dashboard/pendaftar/undangan-seleksi
+Dashboard: ${BRANDING.websiteUrl}/dashboard/pendaftar/undangan-seleksi
 
 Jazakumullahu khairan
 ---
-*Panitia PPDB Al-Andalus Demo*`;
+*Panitia PPDB ${BRANDING.schoolName}*`;
 }
 
 export function buildMessageDocumentRejected(nama: string, dokumenList: string, catatan: string): string {
@@ -656,10 +657,10 @@ ${catatan}
 3. Pastikan dokumen jelas dan sesuai ketentuan
 
 💡 *Butuh Bantuan?*
-Hubungi kami di 0851-1152-4441
+Hubungi kami di ${BRANDING.phone}
 
 Jazakumullahu khairan,
-Panitia PPDB Sistem PPDB Modern`;
+Panitia PPDB ${BRANDING.schoolName}`;
 }
 
 export function buildMessagePaymentVerified(nama: string, jumlah: string, metode: string, tanggal: string): string {
@@ -670,13 +671,19 @@ Assalamu'alaikum *${nama}*,
 Alhamdulillah, pembayaran pendaftaran Anda telah kami terima dan verifikasi.
 
 💰 *Detail Pembayaran:*
-* Jumlah: Rp 200.000
-* Metode: manual
+* Jumlah: ${jumlah}
+* Metode: ${metode}
 * Tanggal: ${tanggal}
 
 📝 *Langkah Selanjutnya:*
 Silakan login ke dashboard untuk melengkapi Data Santri & Upload Berkas.
-Panitia PPDB Sistem PPDB Modern`;
+Setelah data dan berkas lengkap, Anda bisa memilih jadwal tes.
+
+Dashboard: ${BRANDING.websiteUrl}/dashboard/pendaftar/isi-data-lengkap
+
+Jazakumullahu khairan
+---
+*Panitia PPDB ${BRANDING.schoolName}*`;
 }
 
 export function buildMessagePaymentRejected(nama: string, catatan: string): string {
@@ -695,16 +702,16 @@ ${catatan}
 3. Pastikan nominal dan rekening tujuan sesuai
 
 💡 *Butuh Bantuan?*
-Hubungi kami di 0851-1152-4441
+Hubungi kami di ${BRANDING.phone}
 
 Jazakumullahu khairan,
-Panitia PPDB Sistem PPDB Modern`;
+Panitia PPDB ${BRANDING.schoolName}`;
 }
 
 export function buildMessageJadwalBelum(nama: string): string {
     return `${pickOpening()} ${nama},
 
-Terima kasih telah mendaftar di Pesantren Sistem PPDB Modern.
+Terima kasih telah mendaftar di ${BRANDING.schoolName}.
 
 Saat ini jadwal tes lanjutan (Tes Al-Qur'an, Wawancara Calsan, dan Wawancara Cawalsan Santri) belum tersedia. Mohon bersabar, kami akan menginformasikan kembali begitu jadwal sudah siap.
 
@@ -713,10 +720,10 @@ Untuk sementara, Anda sudah bisa mengerjakan tes online yang tersedia di dashboa
 - Identifikasi Kepribadian
 - Tes Kesiapan
 
-Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || 'https://demo-ppdb.vercel.app'}/dashboard/pendaftar/undangan-seleksi
+Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/undangan-seleksi
 
 Jazakumullahu khairan,
-Panitia PPDB PPDB`;
+Panitia PPDB ${BRANDING.schoolName}`;
 }
 
 export function buildMessageJadwalTersedia(nama: string): string {
@@ -724,23 +731,23 @@ export function buildMessageJadwalTersedia(nama: string): string {
 
 Alhamdulillah, jadwal tes lanjutan sudah tersedia!
 
-Silakan login ke dashboard dan pilih jadwal yang sesuai untuk:
+Silakan login ke dashboard and pilih jadwal yang sesuai untuk:
 - Tes Al-Qur'an
 - Wawancara Calsan
 - Wawancara Cawalsan
 
 Segera pilih jadwal sebelum kuota penuh.
 
-Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || 'https://demo-ppdb.vercel.app'}/dashboard/pendaftar/undangan-seleksi
+Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/undangan-seleksi
 
 Jazakumullahu khairan,
-Panitia PPDB PPDB`;
+Panitia PPDB ${BRANDING.schoolName}`;
 }
 
 export function buildMessageJadwalLangsungTersedia(nama: string): string {
     return `${pickOpening()} ${nama},
 
-Terima kasih telah mencapai tahap Seleksi Pesantren Sistem PPDB Modern.
+Terima kasih telah mencapai tahap Seleksi ${BRANDING.schoolName}.
 
 Saat ini **jadwal tes lanjutan sudah tersedia dan bisa langsung Anda pilih**.
 
@@ -754,7 +761,7 @@ Harap segera memilih jadwal sebelum rentang waktu habis atau kuota penuh. Jangan
 Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/undangan-seleksi
 
 Jazakumullahu khairan,
-Panitia PPDB PPDB`;
+Panitia PPDB ${BRANDING.schoolName}`;
 }
 
 export function buildMessageKonfirmasiJadwal(
@@ -777,10 +784,10 @@ Persiapan:
 - Berpakaian sopan dan rapi
 - Bawa alat tulis
 
-Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || 'https://demo-ppdb.vercel.app'}/dashboard/pendaftar/undangan-seleksi
+Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/undangan-seleksi
 
 Jazakumullahu khairan,
-Panitia PPDB PPDB`;
+Panitia PPDB ${BRANDING.schoolName}`;
 }
 
 export function buildMessageReminderH1(
@@ -801,10 +808,10 @@ Pengingat jadwal ${jenisUjian} Anda:
 
 Mohon hadir tepat waktu dan persiapkan diri dengan baik. Semoga dimudahkan dan diberkahi.
 
-Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || 'https://demo-ppdb.vercel.app'}/dashboard/pendaftar/undangan-seleksi
+Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/undangan-seleksi
 
 Jazakumullahu khairan,
-Panitia PPDB PPDB`;
+Panitia PPDB ${BRANDING.schoolName}`;
 }
 
 export function buildMessageReminderH0(
@@ -825,7 +832,7 @@ Mohon segera bersiap. Pastikan koneksi internet stabil jika ujian dilakukan seca
 Semoga dimudahkan dan diberkahi.
 
 Jazakumullahu khairan,
-Panitia PPDB PPDB`;
+Panitia PPDB ${BRANDING.schoolName}`;
 }
 
 export function buildMessageHasilTes(nama: string): string {
@@ -836,13 +843,13 @@ export function buildMessageHasilTes(nama: string): string {
  Silakan login ke dashboard untuk melihat hasil lengkap dan mengunduh *Surat Keterangan Lulus (SKL)* dalam format PDF.
  
  🔗 *Dashboard & Unduh Surat:*
- ${process.env.NEXT_PUBLIC_APP_URL || 'https://demo-ppdb.vercel.app'}/dashboard/pendaftar/pengumuman
+ ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/pengumuman
  
  *Informasi Daftar Ulang:*
- Pembayaran minimal 50% paling lambat sepekan setelah pengumuman. Keringanan hubungi Finance: 0812-2063-6945.
+ Pembayaran minimal 50% paling lambat sepekan setelah pengumuman. Keringanan hubungi Finance: ${BRANDING.phone}.
  
  Jazakumullahu khairan.
- Panitia PPDB Demo Sistem PPDB Modern`;
+ Panitia PPDB ${BRANDING.schoolName}`;
 }
 
 /**
@@ -874,7 +881,7 @@ export function buildMessageKonfirmasiJadwalInterviewer(
 
     msg += `\n\nMohon untuk bersiap di ruangan virtual/fisik tepat waktu. Syukran.
  
- Panitia PPDB PPDB`;
+ Panitia PPDB ${BRANDING.schoolName}`;
     return msg;
 }
 
@@ -941,13 +948,16 @@ Ini adalah pengingat bahwa Anda dijadwalkan mengikuti *${agendaTitle}* pada:
 ⏰ *Waktu:* ${finalJam}
 📍 *Lokasi/Link:* ${lokasi}
 
-Mohon persiapkan diri with baik and pastikan koneksi internet stabil. Sampai jumpa!
+Mohon persiapkan diri dengan baik dan pastikan koneksi internet stabil. Sampai jumpa!
 
 Jazakumullahu khairan
 ---
-*Panitia PPDB Al-Andalus Demo*`;
+*Panitia PPDB ${BRANDING.schoolName}*`;
 }
 
+/**
+ * Template: Pengingat H-1 untuk Cawalsan (Orang Tua)
+ */
 export function buildMessageReminderH1Cawalsan(
     namaSantri: string,
     hari: string,
@@ -970,11 +980,11 @@ Ini adalah pengingat bahwa Anda dijadwalkan mengikuti *Wawancara Calon Orangtua/
 ⏰ *Waktu:* ${finalJam}
 📍 *Lokasi/Link:* ${lokasi}
 
-Mohon persiapkan diri with baik and pastikan koneksi internet stabil. Sampai jumpa!
+Mohon persiapkan diri dengan baik dan pastikan koneksi internet stabil. Sampai jumpa!
 
 Jazakumullahu khairan
 ---
-*Panitia PPDB Al-Andalus Demo*`;
+*Panitia PPDB ${BRANDING.schoolName}*`;
 }
 
 /**
@@ -1026,55 +1036,55 @@ Mengingatkan jadwal ${agendaText.includes("Wawancara") ? "wawancara" : "menguji"
 🔗 *Input Hasil:* ${inputNilaiLink || "-"}
 
 Mohon kehadirannya tepat waktu.
-
-Jazakumullahu khairan
----
-*Sistem PPDB Al-Andalus Demo*`;
+ 
+ Jazakumullahu khairan
+ ---
+ *Sistem PPDB ${BRANDING.schoolName}*`;
 }
-
+ 
 export function buildMessageCombinedFinal(
     nama: string,
     status: 'DITERIMA' | 'CADANGAN' | 'DITOLAK',
     jenjang: string
 ): string {
-    let msg = `✅ *Hasil Seleksi PPDB Al-Andalus Demo*
-
-Assalamu'alaikum *${nama}*,
-
-Alhamdulillah, rangkaian tes seleksi Anda telah selesai dan hasil evaluasi telah diputuskan.
-
-📢 *HASIL SELEKSI:*
-Status: *${status}*
-Jenjang: ${jenjang}
-
-`;
-
+    let msg = `✅ *Hasil Seleksi PPDB ${BRANDING.schoolName}*
+ 
+ Assalamu'alaikum *${nama}*,
+ 
+ Alhamdulillah, rangkaian tes seleksi Anda telah selesai dan hasil evaluasi telah diputuskan.
+ 
+ 📢 *HASIL SELEKSI:*
+ Status: *${status}*
+ Jenjang: ${jenjang}
+ 
+ `;
+ 
     if (status === 'DITERIMA') {
         msg += `📝 *Langkah Selanjutnya:*
-Silakan login ke dashboard untuk melakukan *Daftar Ulang* dan melengkapi administrasi.
-Batas waktu daftar ulang adalah 7 hari setelah pengumuman ini.
-
-Dashboard: https://demo-ppdb.alandalus.com/dashboard/pendaftar/daftar-ulang`;
+ Silakan login ke dashboard untuk melakukan *Daftar Ulang* dan melengkapi administrasi.
+ Batas waktu daftar ulang adalah 7 hari setelah pengumuman ini.
+ 
+ Dashboard: ${BRANDING.websiteUrl}/dashboard/pendaftar/daftar-ulang`;
     } else if (status === 'CADANGAN') {
         msg += `📝 *Informasi:*
-Anda berada dalam daftar cadangan. Kami akan menghubungi Anda jika ada kuota yang tersedia di kemudian hari. Terus pantau dashboard Anda.
-
-Dashboard: https://demo-ppdb.alandalus.com/dashboard/pendaftar/pengumuman`;
+ Anda berada dalam daftar cadangan. Kami akan menghubungi Anda jika ada kuota yang tersedia di kemudian hari. Terus pantau dashboard Anda.
+ 
+ Dashboard: ${BRANDING.websiteUrl}/dashboard/pendaftar/pengumuman`;
     } else {
         msg += `Kami mengapresiasi semangat dan usaha Anda. Semoga dimudahkan jalannya untuk menuntut ilmu di manapun berada.
-
-Jazakumullahu khairan.`;
+ 
+ Jazakumullahu khairan.`;
     }
-
+ 
     msg += `
-
-Jazakumullahu khairan
----
-*Panitia PPDB Al-Andalus Demo*`;
-
+ 
+ Jazakumullahu khairan
+ ---
+ *Panitia PPDB ${BRANDING.schoolName}*`;
+ 
     return msg;
 }
-
+ 
 export function buildMessagePembatalanJadwal(
     namaSantri: string,
     jenisUjian: string,
@@ -1095,9 +1105,8 @@ Telah *DIBATALKAN* oleh Penguji karena alasan: *${alasan}*.
 
 Mohon segera login ke Dashboard PPDB untuk memilih kembali jadwal pengganti yang tersedia di menu Undangan Seleksi.
 
-Dashboard: https://demo-ppdb.alandalus.com/dashboard/pendaftar/undangan-seleksi
+Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/undangan-seleksi
 
-Jazakumullahu khairan
 ---
-*Panitia PPDB Al-Andalus Demo*`;
+*Panitia PPDB ${BRANDING.schoolName}*`;
 }

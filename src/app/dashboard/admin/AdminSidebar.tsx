@@ -15,7 +15,6 @@ import {
     X,
     Home,
     PanelLeft,
-    Shield,
     FileText,
     Search,
     Bell,
@@ -32,6 +31,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { getMenuItemsForRole, UserRole, ROLE_LABELS } from "@/lib/access-control";
+import Swal from "sweetalert2";
 
 // Map icon strings to components
 const ICON_MAP: Record<string, any> = {
@@ -116,11 +116,11 @@ export default function AdminSidebar({ children, userRole, adminName, userId, av
             if (data.success) {
                 window.location.href = data.redirectTo;
             } else {
-                alert(data.error || "Gagal berpindah role");
+                Swal.fire("Gagal Switch Role", data.error || "Gagal berpindah role", "error");
             }
         } catch (error) {
             console.error(error);
-            alert("Terjadi kesalahan sistem");
+            Swal.fire("Error", "Terjadi kesalahan sistem saat berpindah role", "error");
         }
     };
 
@@ -155,8 +155,8 @@ export default function AdminSidebar({ children, userRole, adminName, userId, av
                     <div className="flex flex-col h-full bg-white">
                         <div className="p-6 flex items-center justify-between border-b border-ink-50">
                             <div className="flex items-center gap-3">
-                                <div className="w-9 h-9 rounded-xl bg-brand-blue-600 flex items-center justify-center text-white shadow-lg shadow-brand-blue-600/20">
-                                    <Shield className="w-4 h-4" />
+                                <div className="w-9 h-9 rounded-xl bg-white flex items-center justify-center shadow-md overflow-hidden">
+                                    <img src={BRANDING.logoPath} alt="Logo" className="w-full h-full object-contain p-1" />
                                 </div>
                                 <span className="font-black text-ink-900 uppercase tracking-tighter">Navigasi</span>
                             </div>
@@ -214,8 +214,8 @@ export default function AdminSidebar({ children, userRole, adminName, userId, av
                         {/* Brand Area */}
                         <div className="px-6 py-8 pb-4">
                             <div className="flex items-center gap-3 mb-8">
-                                <div className="w-10 h-10 rounded-xl bg-linear-to-br from-brand-blue-700 to-brand-blue-900 flex items-center justify-center text-white shadow-xl shadow-brand-blue-900/20 ring-4 ring-brand-yellow-50/50">
-                                    <Shield className="w-5 h-5 text-brand-yellow-100" />
+                                <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-xl shadow-brand-blue-900/10 ring-4 ring-brand-yellow-50/50 overflow-hidden">
+                                    <img src={BRANDING.logoPath} alt="Logo" className="w-full h-full object-contain p-1" />
                                 </div>
                                 <div>
                                     <h2 className="font-black text-lg text-brand-blue-950 leading-tight">Panel <span className="text-brand-blue-700">Admin</span></h2>
