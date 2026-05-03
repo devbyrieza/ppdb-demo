@@ -1,6 +1,5 @@
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   PONPES ULUL ALBAAB — GLOBAL STYLES
-   Branding: Kuning · Biru Muda · Putih
+   AL-ANDALUS TEMPLATE — GLOBAL STYLES
    Mobile-First · Fintech-Inspired UI
    Tailwind CSS v4
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
@@ -16,28 +15,49 @@
   --font-display: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-arabic: "Amiri", "Traditional Arabic", "Arabic Typesetting", serif;
 
-  /* ─── Biru Cerah (Primary) — Dynamic Scaling ─── */
-  --color-brand-blue-50:  color-mix(in srgb, var(--brand-primary) 5%, white);
-  --color-brand-blue-100: color-mix(in srgb, var(--brand-primary) 15%, white);
-  --color-brand-blue-200: color-mix(in srgb, var(--brand-primary) 30%, white);
-  --color-brand-blue-300: color-mix(in srgb, var(--brand-primary) 50%, white);
-  --color-brand-blue-400: color-mix(in srgb, var(--brand-primary) 70%, white);
-  --color-brand-blue-500: var(--brand-primary);
-  --color-brand-blue-600: var(--brand-primary); /* Main Brand Color */
-  --color-brand-blue-700: color-mix(in srgb, var(--brand-primary) 85%, black);
-  --color-brand-blue-800: color-mix(in srgb, var(--brand-primary) 75%, black);
-  --color-brand-blue-900: color-mix(in srgb, var(--brand-primary) 60%, black);
-  --color-brand-blue-950: color-mix(in srgb, var(--brand-primary) 45%, black);
+  /* ─── Biru Cerah (Primary) ─── */
+  --color-brand-blue-50:  #F0F9FF;
+  --color-brand-blue-100: #E0F2FE;
+  --color-brand-blue-200: #BAE6FD;
+  --color-brand-blue-300: #7DD3FC;
+  --color-brand-blue-400: #38BDF8;
+  --color-brand-blue-500: #0EA5E9;
+  --color-brand-blue-600: #0284C7; /* Main Brand Color */
+  --color-brand-blue-700: #0369A1;
+  --color-brand-blue-800: #075985;
+  --color-brand-blue-900: #0C4A6E;
+  --color-brand-blue-950: #082F49;
 
-  /* ─── Kuning Tua Cerah (Secondary) — Dynamic Scaling ─── */
-  --color-brand-yellow-50:  color-mix(in srgb, var(--brand-secondary) 5%, white);
-  --color-brand-yellow-100: color-mix(in srgb, var(--brand-secondary) 20%, white);
-  --color-brand-yellow-200: color-mix(in srgb, var(--brand-secondary) 40%, white);
-  --color-brand-yellow-300: color-mix(in srgb, var(--brand-secondary) 70%, white);
-  --color-brand-yellow-400: var(--brand-secondary); /* Main Secondary Color */
-  --color-brand-yellow-500: color-mix(in srgb, var(--brand-secondary) 85%, black);
-  --color-brand-yellow-600: color-mix(in srgb, var(--brand-secondary) 70%, black);
-  --color-brand-yellow-700: color-mix(in srgb, var(--brand-secondary) 55%, black);
+  /* ─── Kuning Tua Cerah (Secondary) ─── */
+  --color-brand-yellow-50:  #FFFBEB;
+  --color-brand-yellow-100: #FEF3C7;
+  --color-brand-yellow-200: #FDE68A;
+  --color-brand-yellow-300: #FCD34D;
+  --color-brand-yellow-400: #FBBF24;
+  --color-brand-yellow-500: #F59E0B;
+  --color-brand-yellow-600: #D97706;
+  --color-brand-yellow-700: #B45309;
+
+  /* ─── Maroon (Accent/Rich Style) ─── */
+  --color-maroon-50:  #FFF5F5;
+  --color-maroon-100: #FFE3E3;
+  --color-maroon-200: #FFC9C9;
+  --color-maroon-300: #FFA8A8;
+  --color-maroon-400: #FF8787;
+  --color-maroon-500: #FF6B6B;
+  --color-maroon-600: #FA5252;
+  --color-maroon-700: #F03E3E;
+  --color-maroon-800: #E03131;
+  --color-maroon-900: #C92A2A;
+  --color-maroon-950: #800000;
+
+  /* ─── Cream ─── */
+  --color-cream-50:  #FFFDF0;
+  --color-cream-100: #FDF9E0;
+  --color-cream-200: #FBF4C1;
+  --color-cream-300: #F9EFA1;
+  --color-cream-400: #F7E981;
+  --color-cream-500: #FDF5E6;
 
   /* ─── White / Surface ─── */
   --color-white: #FFFFFF;
@@ -69,10 +89,15 @@
   --color-info-100:    #E0F2FE;
 
   /* ─── Shadows ─── */
-  --shadow-sm:   0 1px 3px 0 rgba(0, 102, 255, 0.06);
-  --shadow-md:   0 4px 12px -2px rgba(0, 102, 255, 0.08), 0 2px 4px -2px rgba(0,0,0,0.04);
-  --shadow-lg:   0 12px 24px -4px rgba(0, 102, 255, 0.10), 0 4px 8px -4px rgba(0,0,0,0.06);
-  --shadow-xl:   0 24px 48px -6px rgba(0, 102, 255, 0.12), 0 8px 16px -6px rgba(0,0,0,0.08);
+  --shadow-sm:   0 1px 3px 0 rgba(0, 105, 161, 0.06);
+  --shadow-md:   0 4px 12px -2px rgba(0, 105, 161, 0.08), 0 2px 4px -2px rgba(0,0,0,0.04);
+  --shadow-lg:   0 12px 24px -4px rgba(0, 105, 161, 0.10), 0 4px 8px -4px rgba(0,0,0,0.06);
+  --shadow-xl:   0 24px 48px -6px rgba(0, 105, 161, 0.12), 0 8px 16px -6px rgba(0,0,0,0.08);
+  --shadow-premium-sm: 0 2px 8px rgba(0, 105, 161, 0.05);
+  --shadow-premium-md: 0 8px 24px rgba(0, 105, 161, 0.08);
+  --shadow-premium-lg: 0 16px 48px rgba(0, 105, 161, 0.12);
+  --shadow-premium-xl: 0 24px 64px rgba(0, 105, 161, 0.15);
+  --shadow-premium-2xl: 0 32px 80px rgba(0, 105, 161, 0.20);
   --shadow-brand-yellow: 0 4px 16px -4px rgba(255, 214, 0, 0.20), 0 2px 6px rgba(0,0,0,0.04);
   --shadow-brand-blue: 0 4px 16px -2px rgba(0, 102, 255, 0.22), 0 2px 6px rgba(0, 102, 255, 0.10);
 

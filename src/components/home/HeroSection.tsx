@@ -24,9 +24,9 @@ export default function HeroSection() {
     <section className="relative min-h-[95vh] flex items-center pt-20 pb-16 md:pt-24 lg:pt-28 lg:pb-24 overflow-hidden bg-brand-blue-50/30">
       {/* Sophisticated Background Elements */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] bg-brand-blue-200/40 blur-[120px] rounded-full" />
-        <div className="absolute top-[20%] -right-[10%] w-[40%] h-[50%] bg-brand-yellow-200/30 blur-[100px] rounded-full" />
-        <div className="absolute bottom-[0%] left-[20%] w-[40%] h-[40%] bg-brand-blue-100/60 blur-[100px] rounded-full" />
+        <div className="absolute -top-[15%] -left-[15%] w-[60%] h-[60%] bg-brand-blue-200/20 blur-[140px] rounded-full" />
+        <div className="absolute top-[20%] -right-[10%] w-[40%] h-[50%] bg-brand-yellow-200/20 blur-[100px] rounded-full" />
+        <div className="absolute bottom-[0%] left-[20%] w-[40%] h-[40%] bg-brand-blue-50/60 blur-[100px] rounded-full" />
       </div>
 
       <Container className="relative z-10">
@@ -50,20 +50,20 @@ export default function HeroSection() {
                 <span>Premium Quality • Managed by Andalus Demo System</span>
               </motion.div>
 
-              <h1 className="leading-[1.1] tracking-tight mx-auto lg:mx-0 max-w-2xl lg:max-w-none text-maroon-950 font-black text-4xl sm:text-5xl lg:text-6xl xl:text-7xl">
+              <h1 className="leading-[1.1] tracking-tight mx-auto lg:mx-0 max-w-2xl lg:max-w-none text-brand-blue-950 font-black text-4xl sm:text-5xl lg:text-6xl xl:text-7xl">
                 <span className="block mb-2">Sistem PPDB</span>
-                <span className="block text-transparent bg-clip-text bg-linear-to-r from-maroon-800 via-[#8B5A2B] to-maroon-900 drop-shadow-sm pb-2">
+                <span className="block text-transparent bg-clip-text bg-linear-to-r from-brand-blue-900 via-brand-yellow-600 to-brand-blue-950 drop-shadow-sm pb-2">
                   Modern, Cepat, <br className="hidden xl:block" />
                   dan Elegan
                 </span>
               </h1>
 
               <p className="text-base lg:text-xl leading-relaxed max-w-2xl mx-auto lg:mx-0 font-medium font-sans text-ink-700/80 text-center lg:text-left">
-                Bukan sekadar sistem pendaftaran — sebuah pengalaman digital berbasis <span className="font-bold text-maroon-900">Kecepatan, Kemudahan, Keamanan, dan Estetika</span> untuk institusi pendidikan modern.
+                Bukan sekadar sistem pendaftaran — sebuah pengalaman digital berbasis <span className="font-bold text-brand-blue-900">Kecepatan, Kemudahan, Keamanan, dan Estetika</span> untuk institusi pendidikan modern.
               </p>
 
               <div className="mt-4 pt-4 border-t border-cream-200/50">
-                <p className="text-sm lg:text-base font-bold text-maroon-800 text-center lg:text-left italic">
+                <p className="text-sm lg:text-base font-bold text-brand-blue-800 text-center lg:text-left italic">
                   "Pendidikan Berkualitas, Diperkuat Sistem {BRANDING.schoolName.includes("PPDB Modern") ? "PPDB Modern" : BRANDING.schoolShortName}"
                 </p>
               </div>
