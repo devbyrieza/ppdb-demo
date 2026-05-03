@@ -22,8 +22,8 @@ export default function TentangPage() {
             {/* 1. Hero Section - Professional Airy Design */}
             <section className="section-std pb-0! relative overflow-hidden">
                 {/* Sophisticated Background Elements */}
-                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-yellow-100/60 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-                <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-brand-blue-50/40 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2 pointer-events-none" />
+                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-khaki-100/60 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+                <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-army-50/40 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2 pointer-events-none" />
                 <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.02] pointer-events-none" />
 
                 <Container className="relative z-10 text-center">
@@ -58,18 +58,18 @@ export default function TentangPage() {
             </section>
 
             {/* 2. Welcome Banner - Refined Section */}
-            <section className="py-12 md:py-20 lg:py-24 bg-white overflow-hidden border-t border-brand-blue-100/50">
+            <section className="py-12 md:py-20 lg:py-24 bg-white overflow-hidden border-t border-army-100/50">
                 <Container>
                     <div className="mb-10 lg:mb-16 text-center">
                         <motion.div
                             initial={{ opacity: 0, y: 10 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            className="inline-flex items-center gap-3 text-brand-blue-700 mb-4"
+                            className="inline-flex items-center gap-3 text-army-700 mb-4"
                         >
-                            <div className="w-8 h-0.5 bg-brand-blue-600/30 rounded-full" />
+                            <div className="w-8 h-0.5 bg-army-600/30 rounded-full" />
                             <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.3em] text-army-700">Ahlan Wa Sahlan</span>
-                            <div className="w-8 h-0.5 bg-brand-blue-600/30 rounded-full" />
+                            <div className="w-8 h-0.5 bg-army-600/30 rounded-full" />
                         </motion.div>
                         <h2 className="section-title text-center text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.1] mb-0">
                             Masa Depan Qur'ani <br className="hidden md:block" />
@@ -96,7 +96,7 @@ export default function TentangPage() {
             </section>
 
             {/* 3. History & Profile - Enhanced Layout */}
-            <section className="section-alt border-y border-brand-blue-100">
+            <section className="section-alt border-y border-army-100">
                 <Container>
                     <div className="grid lg:grid-cols-2 gap-12 sm:gap-16 lg:gap-24 items-center">
                         {/* Image Column */}

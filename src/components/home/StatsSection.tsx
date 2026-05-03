@@ -50,10 +50,10 @@ export default function StatsSection() {
   }, [inView]);
 
   return (
-    <section className="py-16 md:py-24 bg-white relative overflow-hidden border-b border-brand-blue-50">
+    <section className="py-16 md:py-24 bg-white relative overflow-hidden border-b border-army-50">
       {/* Sophisticated Background Element */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-blue-50/50 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-brand-yellow-100/40 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/2" />
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-army-50/50 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-khaki-100/40 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/2" />
 
       <Container className="relative z-10">
         <div className="max-w-6xl mx-auto">
@@ -69,19 +69,19 @@ export default function StatsSection() {
                 className="app-card p-6 md:p-8 flex flex-col items-center text-center group"
               >
                 <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-5 transition-transform duration-500 group-hover:scale-110 shadow-sm
-                  ${stat.color === 'emerald' ? 'bg-brand-blue-50 text-brand-blue-700' :
-                    stat.color === 'gold' ? 'bg-brand-yellow-100 text-brand-yellow-600' :
-                      'bg-brand-blue-100 text-brand-blue-800'
+                  ${stat.color === 'emerald' ? 'bg-army-50 text-army-700' :
+                    stat.color === 'gold' ? 'bg-khaki-100 text-khaki-600' :
+                      'bg-army-100 text-army-800'
                   }`}>
                   <stat.icon className="w-6 h-6" />
                 </div>
 
                 <div className="relative">
                   <motion.div
-                    className="text-4xl md:text-5xl font-black text-brand-blue-700 mb-2 tracking-tighter"
+                    className="text-4xl md:text-5xl font-black text-army-700 mb-2 tracking-tighter"
                   >
                     {counters[stat.id as keyof typeof counters]}
-                    {stat.suffix && <span className="text-brand-blue-600 ml-0.5">{stat.suffix}</span>}
+                    {stat.suffix && <span className="text-army-600 ml-0.5">{stat.suffix}</span>}
                   </motion.div>
                 </div>
 
@@ -95,7 +95,7 @@ export default function StatsSection() {
                 )}
 
                 {/* Subtle underline decoration */}
-                <div className="mt-4 w-6 h-1 bg-brand-blue-100 rounded-full group-hover:w-12 group-hover:bg-brand-yellow-400 transition-all duration-500" />
+                <div className="mt-4 w-6 h-1 bg-army-100 rounded-full group-hover:w-12 group-hover:bg-khaki-400 transition-all duration-500" />
               </motion.div>
             ))}
           </div>
@@ -108,16 +108,16 @@ export default function StatsSection() {
             transition={{ delay: 0.6 }}
             className="mt-12 flex flex-wrap justify-center items-center gap-x-8 gap-y-4"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-brand-blue-50/50 rounded-pill border border-brand-blue-100">
-              <div className="w-2 h-2 rounded-full bg-brand-blue-500 animate-pulse" />
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-army-50/50 rounded-pill border border-army-100">
+              <div className="w-2 h-2 rounded-full bg-army-500 animate-pulse" />
               <span className="text-[10px] font-bold text-ink-700 uppercase tracking-widest">Pendaftaran Dibuka</span>
             </div>
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-brand-blue-50/50 rounded-pill border border-brand-blue-100">
-              <Award className="w-3.5 h-3.5 text-brand-yellow-600" />
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-khaki-50/50 rounded-pill border border-khaki-100">
+              <Award className="w-3.5 h-3.5 text-khaki-600" />
               <span className="text-[10px] font-bold text-ink-700 uppercase tracking-widest">Resmi Andalus Academy</span>
             </div>
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-brand-blue-50/50 rounded-pill border border-brand-blue-100">
-              <TrendingUp className="w-3.5 h-3.5 text-brand-blue-600" />
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-army-50/50 rounded-pill border border-army-100">
+              <TrendingUp className="w-3.5 h-3.5 text-army-600" />
               <span className="text-[10px] font-bold text-ink-700 uppercase tracking-widest">Digital-First System</span>
             </div>
           </motion.div>

@@ -141,7 +141,7 @@ export default function Navbar() {
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
                   className={`px-4 py-2 text-sm font-bold rounded-full transition-all duration-300 min-h-[40px] flex items-center ${isActive(link.href)
-                      ? "bg-[var(--color-army-800)] text-[var(--color-warm-100)] shadow-[var(--shadow-army)]"
+                      ? "bg-[var(--color-army-800)] text-[var(--color-khaki-100)] shadow-[var(--shadow-army)]"
                       : "text-[var(--color-ink-600)] hover:text-[var(--color-army-800)] hover:bg-[var(--color-army-50)]"
                     }`}
                 >
@@ -296,13 +296,13 @@ export default function Navbar() {
                           setIsMenuOpen(false);
                         }}
                         className={`px-4 py-4 rounded-xl text-base font-bold transition-all min-h-[56px] flex items-center justify-between group ${isActive(link.href)
-                            ? "bg-[var(--color-army-800)] text-[var(--color-warm-100)] shadow-[var(--shadow-army)]"
+                            ? "bg-[var(--color-army-800)] text-[var(--color-khaki-100)] shadow-[var(--shadow-army)]"
                             : "text-[var(--color-ink-800)] hover:bg-[var(--color-army-50)] hover:text-[var(--color-army-800)]"
                           }`}
                       >
                         <span>{link.label}</span>
                         {isActive(link.href) && (
-                          <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-warm-300)]/70" />
+                          <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-khaki-300)]/70" />
                         )}
                       </Link>
                     </motion.div>

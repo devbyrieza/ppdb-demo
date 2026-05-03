@@ -132,14 +132,14 @@ export default function HomePage() {
               transition={{ type: "spring", stiffness: 400, damping: 20 }}
               className="group flex items-center gap-3 px-6 py-4 rounded-full font-black text-sm uppercase tracking-widest border-2 border-white"
               style={{
-                background: "linear-gradient(135deg, var(--color-brand-yellow-400) 0%, var(--color-brand-yellow-500) 100%)",
-                color: "var(--color-brand-blue-900)",
-                boxShadow: "var(--shadow-yellow-lg), 0 0 0 1px rgba(0,0,0,0.04)",
+                background: "linear-gradient(135deg, var(--color-khaki-300) 0%, var(--color-khaki-500) 100%)",
+                color: "var(--color-army-900)",
+                boxShadow: "var(--shadow-khaki), 0 0 0 1px rgba(0,0,0,0.04)",
               }}
             >
               <Zap
                 className="w-5 h-5 transition-transform duration-200 group-hover:rotate-12"
-                style={{ fill: "var(--color-brand-blue-900)" }}
+                style={{ fill: "var(--color-army-900)" }}
                 aria-hidden="true"
               />
               <span>Coba Demo</span>

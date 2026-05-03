@@ -82,14 +82,14 @@ export default function AdminSidebar({ children, userRole, adminName, userId, av
             <Link
                 href={item.href}
                 className={`nav-link group flex items-center gap-3 px-3 py-2 rounded-xl transition-all duration-200 ${item.active
-                    ? "active bg-white text-brand-blue-700 shadow-clay-sm border border-brand-blue-100"
-                    : "text-ink-500 hover:bg-brand-yellow-50 hover:text-ink-900"
+                    ? "active bg-white text-army-700 shadow-clay-sm border border-army-100"
+                    : "text-ink-500 hover:bg-khaki-50 hover:text-ink-900"
                     }`}
             >
-                <item.icon className={`w-4 h-4 transition-colors ${item.active ? 'text-brand-blue-600' : 'text-ink-400 group-hover:text-ink-600'}`} />
+                <item.icon className={`w-4 h-4 transition-colors ${item.active ? 'text-army-600' : 'text-ink-400 group-hover:text-ink-600'}`} />
                 <span className="flex-1 font-bold text-[13px] tracking-tight">{item.name}</span>
                 {item.active && (
-                    <div className="w-1.5 h-1.5 rounded-full bg-brand-blue-600" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-army-600" />
                 )}
             </Link>
         );
@@ -125,22 +125,22 @@ export default function AdminSidebar({ children, userRole, adminName, userId, av
     };
 
     return (
-        <div className="min-h-screen font-sans bg-brand-yellow-50/30">
+        <div className="min-h-screen font-sans bg-khaki-50/30">
             {/* Mobile Header (Premium Glass) */}
             <div className="lg:hidden fixed top-0 left-0 right-0 z-[60] bg-white/80 backdrop-blur-xl border-b border-white/20 shadow-sm px-5 py-4 flex items-center justify-between">
                 <button
                     onClick={() => setSidebarOpen(true)}
-                    className="p-2.5 -ml-2 rounded-2xl text-ink-600 hover:bg-brand-yellow-100 active:scale-95 transition-all"
+                    className="p-2.5 -ml-2 rounded-2xl text-ink-600 hover:bg-khaki-100 active:scale-95 transition-all"
                 >
                     <Menu className="w-6 h-6" />
                 </button>
 
                 <div className="flex flex-col items-center">
-                    <span className="font-black text-brand-blue-900 tracking-tight leading-none text-base">{BRANDING.schoolShortName}</span>
-                    <span className="text-[9px] font-black text-brand-blue-600/60 uppercase tracking-widest mt-1">Admin Panel</span>
+                    <span className="font-black text-army-900 tracking-tight leading-none text-base">{BRANDING.schoolShortName}</span>
+                    <span className="text-[9px] font-black text-army-600/60 uppercase tracking-widest mt-1">Admin Panel</span>
                 </div>
 
-                <div className="w-9 h-9 rounded-2xl bg-linear-to-br from-brand-blue-700 to-brand-blue-900 flex items-center justify-center text-white text-sm font-black shadow-md border border-brand-yellow-100">
+                <div className="w-9 h-9 rounded-2xl bg-linear-to-br from-army-700 to-army-900 flex items-center justify-center text-white text-sm font-black shadow-md border border-khaki-100">
                     {adminName.charAt(0)}
                 </div>
             </div>
@@ -190,7 +190,7 @@ export default function AdminSidebar({ children, userRole, adminName, userId, av
                                     <select
                                         value={userRole || ""}
                                         onChange={handleRoleSwitch}
-                                        className="w-full bg-ink-50 border border-ink-200 text-sm text-ink-900 font-black rounded-xl py-2 px-3 focus:ring-2 focus:ring-brand-blue-600/20"
+                                        className="w-full bg-ink-50 border border-ink-200 text-sm text-ink-900 font-black rounded-xl py-2 px-3 focus:ring-2 focus:ring-army-600/20"
                                     >
                                         {availableRoles.map(role => (
                                             <option key={role} value={role}>{ROLE_LABELS[role as UserRole] || role}</option>
@@ -214,11 +214,11 @@ export default function AdminSidebar({ children, userRole, adminName, userId, av
                         {/* Brand Area */}
                         <div className="px-6 py-8 pb-4">
                             <div className="flex items-center gap-3 mb-8">
-                                <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-xl shadow-brand-blue-900/10 ring-4 ring-brand-yellow-50/50 overflow-hidden">
+                                <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-xl shadow-army-900/10 ring-4 ring-khaki-50/50 overflow-hidden">
                                     <img src={BRANDING.logoPath} alt="Logo" className="w-full h-full object-contain p-1" />
                                 </div>
                                 <div>
-                                    <h2 className="font-black text-lg text-brand-blue-950 leading-tight">Panel <span className="text-brand-blue-700">Admin</span></h2>
+                                    <h2 className="font-black text-lg text-army-950 leading-tight">Panel <span className="text-army-700">Admin</span></h2>
                                     <p className="text-[10px] text-ink-400 font-bold tracking-widest uppercase mt-0.5">{BRANDING.schoolShortName} PPDB</p>
                                 </div>
                             </div>
@@ -251,7 +251,7 @@ export default function AdminSidebar({ children, userRole, adminName, userId, av
                                     <select
                                         value={userRole || ""}
                                         onChange={handleRoleSwitch}
-                                        className="w-full bg-brand-yellow-100 border-none text-xs text-brand-blue-900 font-black rounded-lg py-1.5 focus:ring-2 focus:ring-brand-blue-600/20 cursor-pointer"
+                                        className="w-full bg-khaki-100 border-none text-xs text-army-900 font-black rounded-lg py-1.5 focus:ring-2 focus:ring-army-600/20 cursor-pointer"
                                     >
                                         {availableRoles.map(role => (
                                             <option key={role} value={role}>{ROLE_LABELS[role as UserRole] || role}</option>
@@ -259,8 +259,8 @@ export default function AdminSidebar({ children, userRole, adminName, userId, av
                                     </select>
                                 </div>
                             )}
-                            <div className="flex items-center gap-3 p-2.5 rounded-2xl hover:bg-white transition-all cursor-pointer group hover:shadow-clay-sm border border-transparent hover:border-brand-yellow-100">
-                                <div className="w-10 h-10 rounded-full bg-brand-yellow-100 flex items-center justify-center text-brand-blue-900 font-black group-hover:bg-brand-blue-50 group-hover:text-brand-blue-700 transition-colors border border-brand-yellow-200">
+                            <div className="flex items-center gap-3 p-2.5 rounded-2xl hover:bg-white transition-all cursor-pointer group hover:shadow-clay-sm border border-transparent hover:border-khaki-100">
+                                <div className="w-10 h-10 rounded-full bg-khaki-100 flex items-center justify-center text-army-900 font-black group-hover:bg-army-50 group-hover:text-army-700 transition-colors border border-khaki-200">
                                     {adminName.charAt(0)}
                                 </div>
                                 <div className="flex-1 min-w-0">
@@ -292,12 +292,12 @@ export default function AdminSidebar({ children, userRole, adminName, userId, av
                         </div>
 
                         <div className="flex items-center gap-4">
-                            <button className="p-2 text-ink-400 hover:text-brand-blue-700 hover:bg-brand-blue-50 rounded-full transition-colors relative">
+                            <button className="p-2 text-ink-400 hover:text-army-700 hover:bg-army-50 rounded-full transition-colors relative">
                                 <Bell className="w-5 h-5" />
                                 <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
                             </button>
                             <div className="flex items-center gap-3 pl-4 border-l border-ink-100">
-                                <Link href="/" className="text-sm font-black text-brand-blue-700 hover:underline">Lihat Website</Link>
+                                <Link href="/" className="text-sm font-black text-army-700 hover:underline">Lihat Website</Link>
                             </div>
                         </div>
                     </header>
