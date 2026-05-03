@@ -16,16 +16,16 @@ const SPRING: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 const misi = [
   {
-    label: "Hanif",
-    text: "Membentuk pribadi yang lurus akidahnya, benar ibadahnya, dan baik akhlaqnya.",
+    label: "Unggul",
+    text: "Membentuk pribadi yang memiliki standar kualitas tinggi dalam setiap aspek kehidupan.",
   },
   {
-    label: "Kontributif",
-    text: "Membentuk pribadi yang memiliki karya, gagasan, dan peran nyata bagi lingkungannya.",
+    label: "Cerdas",
+    text: "Membentuk pribadi yang memiliki kedalaman ilmu, kritis dalam berpikir, dan bijak dalam bertindak.",
   },
   {
-    label: "Adaptif",
-    text: "Membentuk pribadi yang terbuka terhadap kritik, cerdas membaca realitas, kuat menjaga prinsip.",
+    label: "Berintegritas",
+    text: "Membentuk pribadi yang jujur, amanah, dan teguh dalam memegang prinsip kebenaran.",
   },
   {
     label: "Dakwah",
@@ -109,7 +109,7 @@ export default function AboutSection() {
               </span>{" "}
               Sistem pembentukan karakter berbasis Lingkungan, Kebiasaan,
               Komunitas, dan Spiritualitas — untuk mencetak generasi yang
-              memiliki pribadi Hanif, Kontributif, dan Adaptif.
+              memiliki pribadi Unggul, Cerdas, dan Berintegritas.
             </motion.p>
           </motion.div>
 
@@ -142,8 +142,8 @@ export default function AboutSection() {
 
                   <blockquote className="max-w-2xl mx-auto">
                     <p className="font-display font-black text-2xl md:text-[2.15rem] leading-[1.2] tracking-tight text-army-900 italic">
-                      &ldquo;Mencetak Generasi yang Memiliki Pribadi Hanif,
-                      Kontributif, dan Adaptif.&rdquo;
+                      &ldquo;Mencetak Generasi yang Memiliki Pribadi Unggul,
+                      Cerdas, dan Berintegritas.&rdquo;
                     </p>
                   </blockquote>
 

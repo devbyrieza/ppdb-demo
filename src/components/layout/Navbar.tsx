@@ -123,7 +123,7 @@ export default function Navbar() {
                   {BRANDING.schoolShortName}
                 </h1>
                 <p className="text-[9px] sm:text-[10px] font-bold text-[var(--color-ink-400)] uppercase tracking-widest mt-0.5 leading-tight">
-                  Managed by Al Andalus IIBS
+                  Managed by PPDB Modern
                 </p>
               </div>
             </Link>
@@ -263,7 +263,7 @@ export default function Navbar() {
                     {BRANDING.schoolShortName}
                   </p>
                   <p className="text-[10px] text-[var(--color-ink-400)] font-semibold mt-0.5 uppercase tracking-wider">
-                    Al Andalus IIBS
+                    PPDB Modern
                   </p>
                 </div>
                 {/* Template label */}

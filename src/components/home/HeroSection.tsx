@@ -168,7 +168,7 @@ export default function HeroSection() {
                 className="leading-[1.06] tracking-[-0.03em] mx-auto lg:mx-0 max-w-2xl lg:max-w-none font-black text-balance"
                 style={{ color: "var(--color-army-950)" }}
               >
-                <span className="block">Sistem PPDB</span>
+                <span className="block">Mencetak Generasi</span>
                 <span
                   className="block mt-1"
                   style={{
@@ -180,9 +180,9 @@ export default function HeroSection() {
                     paddingBottom: "0.15em",
                   }}
                 >
-                  Modern, Cepat,{" "}
+                  Unggul, Cerdas,{" "}
                   <br className="hidden xl:block" />
-                  dan Elegan
+                  dan Berintegritas
                 </span>
               </h1>
             </motion.div>

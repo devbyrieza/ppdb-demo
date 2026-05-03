@@ -9,7 +9,7 @@ export const BRANDING = {
   dashboardTitle: process.env.NEXT_PUBLIC_DASHBOARD_TITLE || "Panel Admin Andalus Demo",
   address: process.env.NEXT_PUBLIC_ADDRESS || "Jl. Al-Andalus Raya No. 1, Kota Madani",
   phone: process.env.NEXT_PUBLIC_PHONE || "+62 800-0000-0000",
-  email: process.env.NEXT_PUBLIC_EMAIL || "demo@alandalus.com",
+  email: process.env.NEXT_PUBLIC_EMAIL || "demo@ppdbmodern.com",
   igUrl: process.env.NEXT_PUBLIC_IG_URL || "#",
   ytUrl: process.env.NEXT_PUBLIC_YT_URL || "#",
   fbUrl: process.env.NEXT_PUBLIC_FB_URL || "#",
