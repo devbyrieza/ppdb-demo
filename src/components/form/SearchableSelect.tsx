@@ -120,7 +120,7 @@ export default function SearchableSelect({
             filter: "blur(0px)",
             transition: {
                 duration: 0.22,
-                ease: [0.16, 1, 0.3, 1],
+                ease: [0.16, 1, 0.3, 1] as any,
             },
         },
         exit: {
@@ -130,7 +130,7 @@ export default function SearchableSelect({
             filter: "blur(2px)",
             transition: {
                 duration: 0.16,
-                ease: [0.4, 0, 1, 1],
+                ease: [0.4, 0, 1, 1] as any,
             },
         },
     };
