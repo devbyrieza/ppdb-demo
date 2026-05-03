@@ -76,6 +76,31 @@
   --color-cream-500: #E4C16F;
   --color-cream-600: #C9A84C;
 
+  /* ─── Hijau Army (Template-Demo Primary) ─── */
+  --color-army-50: #F2F7F2;
+  --color-army-100: #E0EDE0;
+  --color-army-200: #BDDABD;
+  --color-army-300: #90BF90;
+  --color-army-400: #5E9E5E;
+  --color-army-500: #3D7A3D;
+  --color-army-600: #2E6030;
+  --color-army-700: #224824;
+  --color-army-800: #193520;
+  --color-army-900: #11241A;
+  --color-army-950: #0A1610;
+
+  /* ─── Khaki (Template-Demo Secondary — pasangan army) ─── */
+  --color-khaki-50: #FAFAF5;
+  --color-khaki-100: #F4F3E8;
+  --color-khaki-200: #E8E5CC;
+  --color-khaki-300: #D8D3A8;
+  --color-khaki-400: #C5BC7E;
+  --color-khaki-500: #AFA55A;
+  --color-khaki-600: #8F8740;
+  --color-khaki-700: #6E6830;
+  --color-khaki-800: #504C22;
+  --color-khaki-900: #363317;
+
   /* ─── Surface / White ─── */
   --color-white: #FFFFFF;
   --color-surface-50: #F9FAFB;
@@ -111,8 +136,9 @@
 
   /* ━━━ TEMPLATE SEMANTIC TOKENS ━━━
      Override ini di masing-masing project untuk ganti branding.
-     Default: Biru + Kuning (Ulul Albaab)
-     Untuk Al-Imam: ganti dengan maroon/cream tokens
+     Default: Army + Khaki (Template-Demo)
+     Untuk Ulul Albaab: brand-blue + brand-yellow
+     Untuk Al-Imam: maroon + cream
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
   /* ─── Shadows — neutral, tidak condong ke brand mana pun ─── */
@@ -139,6 +165,9 @@
   --shadow-maroon-lg: 0 8px 28px -4px rgba(128, 0, 0, 0.36), 0 4px 10px rgba(128, 0, 0, 0.18);
   --shadow-gold: 0 4px 16px -2px rgba(245, 158, 11, 0.28), 0 2px 6px rgba(0, 0, 0, 0.06);
   --shadow-cream: 0 4px 14px -2px rgba(228, 193, 111, 0.32), 0 2px 6px rgba(0, 0, 0, 0.05);
+  --shadow-army: 0 4px 16px -2px rgba(34, 72, 36, 0.30), 0 2px 6px rgba(34, 72, 36, 0.15);
+  --shadow-army-lg: 0 8px 28px -4px rgba(34, 72, 36, 0.36), 0 4px 10px rgba(34, 72, 36, 0.18);
+  --shadow-khaki: 0 4px 14px -2px rgba(175, 165, 90, 0.30), 0 2px 6px rgba(0, 0, 0, 0.05);
 
   /* Legacy aliases — backward compat */
   --shadow-brand-blue: 0 4px 16px -2px rgba(3, 105, 199, 0.32), 0 2px 6px rgba(3, 105, 199, 0.16);
@@ -200,7 +229,6 @@
   }
 
   body {
-    /* Background netral — masing-masing project override ini */
     background-color: var(--color-surface-50);
     color: var(--color-ink-900);
     font-family: var(--font-sans);
@@ -282,13 +310,13 @@
   }
 
   a {
-    color: var(--color-brand-blue-600);
+    color: var(--color-army-600);
     text-decoration: none;
     transition: color var(--duration-fast) var(--ease-smooth);
   }
 
   a:hover {
-    color: var(--color-brand-blue-800);
+    color: var(--color-army-800);
   }
 
   img {
@@ -302,13 +330,13 @@
     overflow-wrap: break-word;
   }
 
-  /* ─── Selection — neutral ─── */
+  /* ─── Selection — army-tinted ─── */
   ::selection {
-    background: var(--color-brand-blue-200);
-    color: var(--color-brand-blue-900);
+    background: var(--color-army-200);
+    color: var(--color-army-900);
   }
 
-  /* ─── Custom Scrollbar — neutral gray ─── */
+  /* ─── Custom Scrollbar ─── */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -333,7 +361,7 @@
 
   /* ─── Focus Ring ─── */
   :focus-visible {
-    outline: 2px solid var(--color-brand-blue-500);
+    outline: 2px solid var(--color-army-500);
     outline-offset: 3px;
     border-radius: var(--radius-sm);
   }
@@ -364,13 +392,61 @@
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 @layer components {
 
-  /* ━━━ BUTTONS
-     Template menyediakan SEMUA varian dari kedua pesantren.
-     Setiap project hanya pakai yang relevan.
+  /* ━━━ BUTTONS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     Template menyediakan SEMUA varian.
+     Template-Demo default: army/khaki
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
-  /* ─── Primary (Blue — default template) ─── */
+  /* ─── Primary Army (Template-Demo default) ─── */
   .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 2rem;
+    border-radius: var(--radius-full);
+    font-weight: 700;
+    font-size: 0.9375rem;
+    letter-spacing: -0.01em;
+    color: var(--color-khaki-100);
+    background: linear-gradient(135deg, var(--color-army-600) 0%, var(--color-army-900) 100%);
+    box-shadow: var(--shadow-army);
+    transition: all var(--duration-base) var(--ease-spring);
+    border: none;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0) 60%);
+      border-radius: inherit;
+      pointer-events: none;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-army-lg);
+      filter: brightness(1.10);
+    }
+
+    &:active {
+      transform: translateY(0) scale(0.98);
+      box-shadow: var(--shadow-army);
+    }
+
+    &:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+  }
+
+  /* ─── Primary Blue (Ulul Albaab variant) ─── */
+  .btn-primary-blue {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -464,8 +540,44 @@
     }
   }
 
-  /* ─── Secondary ─── */
+  /* ─── Secondary Army (Template-Demo default) ─── */
   .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 2rem;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    letter-spacing: -0.01em;
+    color: var(--color-army-800);
+    background: var(--color-white);
+    border: 1.5px solid var(--color-army-200);
+    box-shadow: var(--shadow-xs);
+    transition: all var(--duration-base) var(--ease-smooth);
+    text-decoration: none;
+
+    &:hover {
+      background: var(--color-army-50);
+      border-color: var(--color-army-400);
+      box-shadow: var(--shadow-sm);
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    &:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+    }
+  }
+
+  /* ─── Secondary Blue (Ulul Albaab variant) ─── */
+  .btn-secondary-blue {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -523,6 +635,41 @@
       border-color: var(--color-maroon-400);
       box-shadow: var(--shadow-sm);
       transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    &:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+    }
+  }
+
+  /* ─── Khaki accent (Template-Demo) ─── */
+  .btn-khaki {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 2rem;
+    border-radius: var(--radius-full);
+    font-weight: 700;
+    font-size: 0.9375rem;
+    letter-spacing: -0.01em;
+    color: var(--color-army-900);
+    background: linear-gradient(135deg, var(--color-khaki-200) 0%, var(--color-khaki-400) 100%);
+    box-shadow: var(--shadow-khaki);
+    transition: all var(--duration-base) var(--ease-spring);
+    text-decoration: none;
+    border: 1px solid var(--color-khaki-300);
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -4px rgba(175, 165, 90, 0.40);
+      filter: brightness(1.05);
     }
 
     &:active {
@@ -656,7 +803,36 @@
     }
   }
 
-  /* ─── Outline Blue ─── */
+  /* ─── Outline Army (Template-Demo) ─── */
+  .btn-outline-army {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 2rem;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    color: var(--color-army-700);
+    background: transparent;
+    border: 1.5px solid var(--color-army-300);
+    transition: all var(--duration-base) var(--ease-smooth);
+    text-decoration: none;
+
+    &:hover {
+      background: var(--color-army-800);
+      color: var(--color-khaki-100);
+      border-color: var(--color-army-800);
+      box-shadow: var(--shadow-army);
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0) scale(0.98);
+    }
+  }
+
+  /* ─── Outline Blue (Ulul Albaab variant) ─── */
   .btn-outline-blue {
     display: inline-flex;
     align-items: center;
@@ -744,6 +920,59 @@
       background: rgba(255, 255, 255, 0.96);
       box-shadow: var(--shadow-premium-md);
       transform: translateY(-2px);
+    }
+  }
+
+  /* Army variant (Template-Demo) */
+  .card-army {
+    background: linear-gradient(145deg, var(--color-army-50) 0%, var(--color-white) 100%);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-army-100);
+    box-shadow: var(--shadow-premium-sm);
+    transition: all var(--duration-slow) var(--ease-spring);
+    overflow: hidden;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-premium-md);
+      border-color: var(--color-army-200);
+    }
+  }
+
+  /* Dark army (Template-Demo — hero/CTA) */
+  .card-dark-army {
+    background: linear-gradient(135deg, var(--color-army-700) 0%, var(--color-army-950) 100%);
+    border-radius: var(--radius-xl);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: var(--shadow-premium-lg);
+    overflow: hidden;
+    color: var(--color-khaki-100);
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.14), transparent);
+    }
+  }
+
+  /* Khaki variant (Template-Demo) */
+  .card-khaki {
+    background: linear-gradient(145deg, var(--color-khaki-50) 0%, var(--color-white) 100%);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-khaki-200);
+    box-shadow: var(--shadow-premium-sm);
+    transition: all var(--duration-slow) var(--ease-spring);
+    overflow: hidden;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-premium-md);
+      border-color: var(--color-khaki-300);
     }
   }
 
@@ -860,8 +1089,8 @@
 
     &:focus {
       background: var(--color-white);
-      border-color: var(--color-brand-blue-500);
-      box-shadow: 0 0 0 3px rgba(3, 105, 199, 0.10), var(--shadow-xs);
+      border-color: var(--color-army-500);
+      box-shadow: 0 0 0 3px rgba(61, 122, 61, 0.10), var(--shadow-xs);
     }
 
     &:invalid:not(:placeholder-shown) {
@@ -893,8 +1122,8 @@
 
     &:focus {
       background: var(--color-white);
-      border-color: var(--color-brand-blue-500);
-      box-shadow: 0 0 0 3px rgba(3, 105, 199, 0.10), var(--shadow-xs);
+      border-color: var(--color-army-500);
+      box-shadow: 0 0 0 3px rgba(61, 122, 61, 0.10), var(--shadow-xs);
     }
   }
 
@@ -921,8 +1150,8 @@
 
     &:focus {
       background: var(--color-white);
-      border-color: var(--color-brand-blue-500);
-      box-shadow: 0 0 0 3px rgba(3, 105, 199, 0.10), var(--shadow-xs);
+      border-color: var(--color-army-500);
+      box-shadow: 0 0 0 3px rgba(61, 122, 61, 0.10), var(--shadow-xs);
     }
   }
 
@@ -940,14 +1169,28 @@
     line-height: 1;
   }
 
-  /* Blue brand */
+  /* Army brand (Template-Demo) */
+  .badge-army {
+    background: var(--color-army-100);
+    color: var(--color-army-800);
+    border: 1px solid var(--color-army-200);
+  }
+
+  /* Khaki brand (Template-Demo) */
+  .badge-khaki {
+    background: var(--color-khaki-100);
+    color: var(--color-khaki-800);
+    border: 1px solid var(--color-khaki-200);
+  }
+
+  /* Blue brand (Ulul Albaab) */
   .badge-brand-blue {
     background: var(--color-brand-blue-100);
     color: var(--color-brand-blue-700);
     border: 1px solid var(--color-brand-blue-200);
   }
 
-  /* Yellow brand */
+  /* Yellow brand (Ulul Albaab) */
   .badge-brand-yellow {
     background: var(--color-brand-yellow-100);
     color: var(--color-brand-yellow-700);
@@ -1044,8 +1287,8 @@
   }
 
   .status-pill-pending {
-    background: var(--color-brand-yellow-100);
-    color: var(--color-brand-yellow-700);
+    background: var(--color-khaki-100);
+    color: var(--color-khaki-700);
   }
 
   /* ━━━ NAVIGATION ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
@@ -1068,8 +1311,8 @@
     }
 
     &.active {
-      background: var(--color-ink-900);
-      color: var(--color-white);
+      background: var(--color-army-900);
+      color: var(--color-khaki-100);
       font-weight: 600;
     }
   }
@@ -1109,8 +1352,8 @@
     cursor: pointer;
 
     &.active {
-      color: var(--color-brand-blue-600);
-      background: var(--color-brand-blue-50);
+      color: var(--color-army-700);
+      background: var(--color-army-50);
     }
 
     & svg,
@@ -1128,8 +1371,8 @@
 
   /* ─── App Header ─── */
   .app-header {
-    background: linear-gradient(135deg, var(--color-ink-800) 0%, var(--color-ink-950) 100%);
-    color: var(--color-white);
+    background: linear-gradient(135deg, var(--color-army-800) 0%, var(--color-army-950) 100%);
+    color: var(--color-khaki-100);
     padding: 1.5rem;
     position: relative;
     overflow: hidden;
@@ -1216,7 +1459,7 @@
   .progress-fill {
     height: 100%;
     border-radius: var(--radius-full);
-    background: linear-gradient(90deg, var(--color-brand-blue-400), var(--color-brand-blue-700));
+    background: linear-gradient(90deg, var(--color-army-400), var(--color-army-700));
     transition: width 0.7s var(--ease-spring);
     position: relative;
 
@@ -1241,7 +1484,7 @@
     background: var(--color-surface-50);
     border: 1px solid var(--color-surface-200);
     border-radius: var(--radius-lg);
-    border-left: 3px solid var(--color-brand-blue-500);
+    border-left: 3px solid var(--color-army-500);
   }
 
   /* ━━━ SECTIONS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
@@ -1262,7 +1505,44 @@
     overflow: hidden;
   }
 
-  /* Alias — blue tint (Ulul Albaab) */
+  /* Army tint (Template-Demo) */
+  .section-army {
+    padding-top: var(--space-section-y);
+    padding-bottom: var(--space-section-y);
+    background: linear-gradient(180deg, var(--color-army-50) 0%, var(--color-surface-50) 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Khaki tint (Template-Demo) */
+  .section-khaki {
+    padding-top: var(--space-section-y);
+    padding-bottom: var(--space-section-y);
+    background: linear-gradient(180deg, var(--color-khaki-50) 0%, var(--color-white) 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Dark Army (Template-Demo — hero/CTA) */
+  .section-dark-army {
+    padding-top: var(--space-section-y);
+    padding-bottom: var(--space-section-y);
+    background: linear-gradient(135deg, var(--color-army-800) 0%, var(--color-army-950) 100%);
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+    }
+  }
+
+  /* Blue tint (Ulul Albaab) */
   .section-blue {
     padding-top: var(--space-section-y);
     padding-bottom: var(--space-section-y);
@@ -1271,7 +1551,7 @@
     overflow: hidden;
   }
 
-  /* Alias — cream tint (Al-Imam) */
+  /* Cream tint (Al-Imam) */
   .section-cream {
     padding-top: var(--space-section-y);
     padding-bottom: var(--space-section-y);
@@ -1280,7 +1560,7 @@
     overflow: hidden;
   }
 
-  /* Dark section (Blue — Ulul Albaab) */
+  /* Dark Blue (Ulul Albaab) */
   .section-dark-blue {
     padding-top: var(--space-section-y);
     padding-bottom: var(--space-section-y);
@@ -1299,7 +1579,7 @@
     }
   }
 
-  /* Dark section (Maroon — Al-Imam) */
+  /* Dark Maroon (Al-Imam) */
   .section-maroon {
     padding-top: var(--space-section-y);
     padding-bottom: var(--space-section-y);
@@ -1320,7 +1600,7 @@
 
   /* Legacy — backward compat */
   .section-dark {
-    @extend .section-dark-blue;
+    @extend .section-dark-army;
   }
 
   .section-title {
@@ -1349,6 +1629,14 @@
 
   /* ━━━ SIDEBAR ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
+  /* Army sidebar (Template-Demo default) */
+  .sidebar-army {
+    background: linear-gradient(180deg, var(--color-army-800) 0%, var(--color-army-950) 100%);
+    color: var(--color-khaki-200);
+    height: 100%;
+    overflow-y: auto;
+  }
+
   /* Blue sidebar (Ulul Albaab) */
   .sidebar-brand-blue {
     background: linear-gradient(180deg, var(--color-brand-blue-800) 0%, var(--color-brand-blue-950) 100%);
@@ -1365,7 +1653,7 @@
     overflow-y: auto;
   }
 
-  /* Neutral sidebar (template default) */
+  /* Neutral sidebar */
   .sidebar-neutral {
     background: linear-gradient(180deg, var(--color-ink-900) 0%, var(--color-ink-950) 100%);
     color: rgba(255, 255, 255, 0.80);
@@ -1400,6 +1688,10 @@
   }
 
   /* Active state khusus per brand */
+  .sidebar-army .sidebar-link.active {
+    color: var(--color-khaki-300);
+  }
+
   .sidebar-brand-blue .sidebar-link.active {
     color: var(--color-brand-yellow-300);
   }
@@ -1426,6 +1718,13 @@
     margin: 0;
   }
 
+  .divider-army {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-army-200), transparent);
+    border: none;
+    margin: 0;
+  }
+
   .divider-blue {
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--color-brand-blue-100), transparent);
@@ -1447,6 +1746,20 @@
 @layer utilities {
 
   /* ─── Text Gradients — semua brand ─── */
+  .text-gradient-army {
+    background: linear-gradient(135deg, var(--color-army-500) 0%, var(--color-army-900) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-army-khaki {
+    background: linear-gradient(135deg, var(--color-army-700) 0%, var(--color-khaki-500) 60%, var(--color-army-900) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
   .text-gradient-blue {
     background: linear-gradient(135deg, var(--color-brand-blue-500) 0%, var(--color-brand-blue-900) 100%);
     -webkit-background-clip: text;
@@ -1483,6 +1796,18 @@
   }
 
   /* ─── Backgrounds — semua brand ─── */
+  .bg-army-gradient {
+    background: linear-gradient(135deg, var(--color-army-700) 0%, var(--color-army-950) 100%);
+  }
+
+  .bg-army-subtle {
+    background: linear-gradient(160deg, var(--color-army-50) 0%, var(--color-white) 60%, var(--color-khaki-50) 100%);
+  }
+
+  .bg-khaki-gradient {
+    background: linear-gradient(160deg, var(--color-khaki-50) 0%, var(--color-white) 50%, var(--color-khaki-100) 100%);
+  }
+
   .bg-blue-gradient {
     background: linear-gradient(135deg, var(--color-brand-blue-700) 0%, var(--color-brand-blue-950) 100%);
   }
@@ -1522,6 +1847,13 @@
     backdrop-filter: blur(24px) saturate(1.8);
     -webkit-backdrop-filter: blur(24px) saturate(1.8);
     border: 1px solid rgba(255, 255, 255, 0.55);
+  }
+
+  .glass-army {
+    background: rgba(34, 72, 36, 0.80);
+    backdrop-filter: blur(24px) saturate(1.5);
+    -webkit-backdrop-filter: blur(24px) saturate(1.5);
+    border: 1px solid rgba(255, 255, 255, 0.10);
   }
 
   .glass-blue {
