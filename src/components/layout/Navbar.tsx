@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ArrowRight } from "lucide-react";
+import { Menu, X, ArrowRight, GraduationCap } from "lucide-react";
 import { scrollToSection, scrollToTop, navigateToDetail } from "@/lib/navigation-scroll";
-
+import Image from "next/image";
 import { BRANDING } from "@/config/branding";
 
 export default function Navbar() {
@@ -40,31 +40,26 @@ export default function Navbar() {
   };
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    // Handle anchor links on homepage
     if (href.startsWith("#") && pathname === "/") {
       e.preventDefault();
       scrollToSection(href, 100);
       return;
     }
-
-    // Handle section links from other pages
     if (href.startsWith("#") && pathname !== "/") {
       e.preventDefault();
-      sessionStorage.setItem('scroll_to_section', href);
-      window.location.href = '/';
+      sessionStorage.setItem("scroll_to_section", href);
+      window.location.href = "/";
       return;
     }
-
-    // Handle detail page navigation
-    if (['/tentang', '/program', '/fasilitas', '/kegiatan', '/galeri', '/kontak'].includes(href)) {
+    if (["/tentang", "/program", "/fasilitas", "/kegiatan", "/galeri", "/kontak"].includes(href)) {
       e.preventDefault();
       const sectionMap: Record<string, string> = {
-        '/tentang': '#about',
-        '/program': '#program',
-        '/fasilitas': '#fasilitas',
-        '/kegiatan': '#kegiatan',
-        '/galeri': '#gallery',
-        '/kontak': '#kontak',
+        "/tentang": "#about",
+        "/program": "#program",
+        "/fasilitas": "#fasilitas",
+        "/kegiatan": "#kegiatan",
+        "/galeri": "#gallery",
+        "/kontak": "#kontak",
       };
       navigateToDetail(href, sectionMap[href]);
     }
@@ -75,9 +70,9 @@ export default function Navbar() {
     if (pathname === "/") {
       scrollToTop();
     } else {
-      sessionStorage.removeItem('scroll_to_section');
-      sessionStorage.removeItem('scroll_to_position');
-      window.location.href = '/';
+      sessionStorage.removeItem("scroll_to_section");
+      sessionStorage.removeItem("scroll_to_position");
+      window.location.href = "/";
     }
   };
 
@@ -85,40 +80,69 @@ export default function Navbar() {
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
-          ? "glass border-b border-brand-blue-100/50 py-2 shadow-sm"
-          : "bg-transparent py-4 lg:py-5"
+            ? "bg-[rgba(248,249,246,0.95)] backdrop-blur-[24px] saturate-[1.8] border-b border-[var(--color-army-100)] py-2 shadow-[0_2px_20px_rgba(58,80,41,0.09)]"
+            : "bg-transparent py-4 lg:py-5"
           }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
-            {/* Logo */}
-            <Link href="/" onClick={handleBerandaClick} className="flex items-center gap-3 group min-h-[44px]">
+
+            {/* ── Logo ── */}
+            <Link
+              href="/"
+              onClick={handleBerandaClick}
+              className="flex items-center gap-3 group min-h-[44px]"
+            >
               <div className="relative">
-                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-[14px] flex items-center justify-center bg-white border border-brand-blue-100 shadow-sm transition-transform duration-500 group-hover:scale-105 group-hover:-rotate-3 overflow-hidden">
-                  <img src={BRANDING.logoPath} alt={`Logo ${BRANDING.schoolName}`} className="w-full h-full object-contain p-0.5" />
+                <div
+                  className={`w-10 h-10 sm:w-11 sm:h-11 rounded-[14px] flex items-center justify-center border overflow-hidden transition-all duration-500 group-hover:scale-105 group-hover:-rotate-3 ${isScrolled
+                      ? "bg-white border-[var(--color-army-100)] shadow-[var(--shadow-premium-sm)]"
+                      : "bg-white/90 border-white/70 shadow-[0_2px_12px_rgba(58,80,41,0.12)]"
+                    }`}
+                >
+                  <Image
+                    src={BRANDING.logoPath}
+                    alt={`Logo ${BRANDING.schoolName}`}
+                    width={44}
+                    height={44}
+                    className="w-full h-full object-contain p-0.5"
+                    priority
+                  />
                 </div>
-                <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-emerald-500 border-2 border-white rounded-full z-10" />
+                {/* Status dot — army green */}
+                <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-[var(--color-army-600)] border-2 border-white rounded-full z-10 shadow-sm" />
               </div>
+
               <div className="block">
-                <h1 className="text-base sm:text-lg font-black text-brand-blue-900 leading-none tracking-tight">
+                <h1
+                  className={`text-base sm:text-lg font-black leading-none tracking-tight transition-colors duration-300 ${isScrolled
+                      ? "text-[var(--color-ink-900)]"
+                      : "text-[var(--color-ink-950)]"
+                    }`}
+                >
                   {BRANDING.schoolShortName}
                 </h1>
-                <p className="text-[9px] sm:text-[10px] font-bold text-brand-blue-600/70 uppercase tracking-widest mt-0.5 leading-tight">
+                <p className="text-[9px] sm:text-[10px] font-bold text-[var(--color-ink-400)] uppercase tracking-widest mt-0.5 leading-tight">
                   Managed by Al Andalus IIBS
                 </p>
               </div>
             </Link>
 
-            {/* Desktop Nav - visible from lg (1024px+) */}
-            <nav className="hidden lg:flex items-center gap-1 bg-white/60 backdrop-blur-md p-1.5 rounded-pill border border-brand-blue-100">
+            {/* ── Desktop Nav (lg+) ── */}
+            <nav
+              className={`hidden lg:flex items-center gap-0.5 p-1.5 rounded-full border transition-all duration-300 ${isScrolled
+                  ? "bg-white border-[var(--color-army-100)] shadow-[var(--shadow-xs)]"
+                  : "bg-white/70 backdrop-blur-md border-white/65 shadow-[0_2px_16px_rgba(58,80,41,0.10)]"
+                }`}
+            >
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
-                  className={`px-4 py-2 text-sm font-bold rounded-pill transition-all duration-300 min-h-[40px] flex items-center ${isActive(link.href)
-                    ? "bg-brand-blue-600 text-white shadow-md shadow-brand-blue-600/20"
-                    : "text-brand-blue-900/70 hover:text-brand-blue-900 hover:bg-brand-yellow-400/20"
+                  className={`px-4 py-2 text-sm font-bold rounded-full transition-all duration-300 min-h-[40px] flex items-center ${isActive(link.href)
+                      ? "bg-[var(--color-army-800)] text-[var(--color-warm-100)] shadow-[var(--shadow-army)]"
+                      : "text-[var(--color-ink-600)] hover:text-[var(--color-army-800)] hover:bg-[var(--color-army-50)]"
                     }`}
                 >
                   {link.label}
@@ -126,43 +150,79 @@ export default function Navbar() {
               ))}
             </nav>
 
-            {/* CTA Buttons - visible from lg */}
-            <div className="hidden lg:flex items-center gap-3 xl:gap-4 px-1">
-              <Link href="/login" className="text-sm font-bold text-brand-blue-700 hover:text-brand-blue-900 transition-colors px-4 py-2 min-h-[40px] flex items-center">
+            {/* ── CTA Buttons (lg+) ── */}
+            <div className="hidden lg:flex items-center gap-3">
+              <Link
+                href="/login"
+                className="text-sm font-bold text-[var(--color-ink-600)] hover:text-[var(--color-army-800)] transition-colors duration-200 px-4 py-2 min-h-[40px] flex items-center rounded-full hover:bg-[var(--color-army-50)]"
+              >
                 Masuk
               </Link>
-              <Link href="/ppdb" className="btn-primary flex items-center gap-2 group">
+              <Link
+                href="/daftar"
+                className="btn-primary flex items-center gap-2 group text-sm px-5 py-2.5"
+              >
                 Daftar PPDB
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </div>
 
-            {/* Hamburger - visible below lg */}
+            {/* ── Hamburger (below lg) ── */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden p-3 rounded-2xl bg-white border border-brand-yellow-400 text-brand-blue-800 hover:bg-brand-yellow-50 transition-all duration-300 min-h-[48px] min-w-[48px] flex items-center justify-center shadow-sm"
+              className={`lg:hidden p-3 rounded-2xl transition-all duration-300 min-h-[48px] min-w-[48px] flex items-center justify-center border ${isScrolled
+                  ? "bg-white border-[var(--color-army-100)] text-[var(--color-army-700)] hover:bg-[var(--color-army-50)] shadow-[var(--shadow-xs)]"
+                  : "bg-white/85 backdrop-blur-sm border-white/70 text-[var(--color-ink-800)] hover:bg-white/95 shadow-[0_2px_12px_rgba(58,80,41,0.10)]"
+                }`}
               aria-label={isMenuOpen ? "Tutup menu" : "Buka menu"}
             >
-              {isMenuOpen ? <X className="w-6 h-6 stroke-[2.5]" /> : <Menu className="w-6 h-6 stroke-[2.5]" />}
+              <AnimatePresence mode="wait" initial={false}>
+                {isMenuOpen ? (
+                  <motion.span
+                    key="close"
+                    initial={{ rotate: -45, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 45, opacity: 0 }}
+                    transition={{ duration: 0.18 }}
+                  >
+                    <X className="w-5 h-5 stroke-[2.5]" />
+                  </motion.span>
+                ) : (
+                  <motion.span
+                    key="menu"
+                    initial={{ rotate: 45, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: -45, opacity: 0 }}
+                    transition={{ duration: 0.18 }}
+                  >
+                    <Menu className="w-5 h-5 stroke-[2.5]" />
+                  </motion.span>
+                )}
+              </AnimatePresence>
             </button>
           </div>
         </div>
       </header>
 
-      {/* Mobile Menu - Bottom Sheet Style */}
+      {/* ── Mobile Menu — Bottom Sheet ── */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
             className="fixed inset-0 z-40 lg:hidden"
             role="dialog"
             aria-modal="true"
+            aria-label="Menu navigasi"
           >
             {/* Backdrop */}
-            <div
-              className="absolute inset-0 bg-brand-blue-950/40 backdrop-blur-sm"
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-[var(--color-army-950)]/40 backdrop-blur-sm"
               onClick={() => setIsMenuOpen(false)}
             />
 
@@ -171,55 +231,107 @@ export default function Navbar() {
               initial={{ y: "100%", opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: "100%", opacity: 0 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="absolute bottom-0 inset-x-0 bg-white shadow-xl rounded-t-[2.5rem] border-t border-brand-blue-100 overflow-hidden max-h-[85vh] flex flex-col"
+              transition={{ type: "spring", damping: 28, stiffness: 320 }}
+              className="absolute bottom-0 inset-x-0 rounded-t-[2rem] overflow-hidden max-h-[88vh] flex flex-col"
+              style={{
+                background: "linear-gradient(180deg, var(--color-surface-50) 0%, #fff 100%)",
+                borderTop: "1px solid var(--color-army-100)",
+                boxShadow: "0 -8px 40px rgba(58,80,41,0.12)",
+              }}
             >
-              {/* Drag Handle Area */}
-              <div className="w-full flex justify-center py-5 bg-white sticky top-0 z-10" onClick={() => setIsMenuOpen(false)}>
-                <div className="w-14 h-1.5 bg-brand-blue-50 rounded-full" />
+              {/* Drag Handle */}
+              <div
+                className="w-full flex justify-center pt-4 pb-2 cursor-pointer flex-shrink-0"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <div className="w-10 h-1 bg-[var(--color-army-200)] rounded-full" />
               </div>
 
-              {/* Scrollable Content */}
-              <div className="overflow-y-auto px-6 pb-8 pt-2">
-                <div className="flex flex-col gap-2">
-                  <h3 className="text-xs font-black text-brand-blue-800 uppercase tracking-widest pl-4 mb-2 mt-2">Menu</h3>
+              {/* School identity strip */}
+              <div className="flex items-center gap-3 px-6 py-3 border-b border-[var(--color-army-50)] flex-shrink-0">
+                <div className="w-9 h-9 rounded-xl bg-[var(--color-army-50)] border border-[var(--color-army-100)] flex items-center justify-center overflow-hidden">
+                  <Image
+                    src={BRANDING.logoPath}
+                    alt=""
+                    width={36}
+                    height={36}
+                    className="w-full h-full object-contain p-0.5"
+                  />
+                </div>
+                <div>
+                  <p className="text-sm font-black text-[var(--color-ink-900)] leading-none">
+                    {BRANDING.schoolShortName}
+                  </p>
+                  <p className="text-[10px] text-[var(--color-ink-400)] font-semibold mt-0.5 uppercase tracking-wider">
+                    Al Andalus IIBS
+                  </p>
+                </div>
+                {/* Template label */}
+                <div className="ml-auto">
+                  <span className="text-[10px] font-black px-2.5 py-1 rounded-full bg-[var(--color-army-50)] text-[var(--color-army-600)] border border-[var(--color-army-100)] uppercase tracking-wider">
+                    Template
+                  </span>
+                </div>
+              </div>
 
-                  {navLinks.map((link) => (
-                    <Link
+              {/* Scrollable Nav */}
+              <div className="overflow-y-auto flex-1 px-4 py-4 pb-safe">
+
+                <p className="text-[10px] font-black text-[var(--color-ink-400)] uppercase tracking-[0.12em] px-3 mb-3">
+                  Navigasi
+                </p>
+
+                <div className="flex flex-col gap-1">
+                  {navLinks.map((link, i) => (
+                    <motion.div
                       key={link.href}
-                      href={link.href}
-                      onClick={(e) => {
-                        handleNavClick(e, link.href);
-                        setIsMenuOpen(false);
-                      }}
-                      className={`px-6 py-5 rounded-2xl text-base font-bold transition-all min-h-[60px] flex items-center ${isActive(link.href)
-                        ? "bg-brand-blue-600 text-white shadow-lg shadow-brand-blue-600/20"
-                        : "text-brand-blue-950 hover:bg-brand-blue-50"
-                        }`}
+                      initial={{ opacity: 0, x: -12 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.04, duration: 0.22 }}
                     >
-                      {link.label}
-                    </Link>
+                      <Link
+                        href={link.href}
+                        onClick={(e) => {
+                          handleNavClick(e, link.href);
+                          setIsMenuOpen(false);
+                        }}
+                        className={`px-4 py-4 rounded-xl text-base font-bold transition-all min-h-[56px] flex items-center justify-between group ${isActive(link.href)
+                            ? "bg-[var(--color-army-800)] text-[var(--color-warm-100)] shadow-[var(--shadow-army)]"
+                            : "text-[var(--color-ink-800)] hover:bg-[var(--color-army-50)] hover:text-[var(--color-army-800)]"
+                          }`}
+                      >
+                        <span>{link.label}</span>
+                        {isActive(link.href) && (
+                          <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-warm-300)]/70" />
+                        )}
+                      </Link>
+                    </motion.div>
                   ))}
+                </div>
 
-                  <div className="h-px bg-brand-blue-50 my-5" />
+                {/* Divider */}
+                <div className="h-px bg-gradient-to-r from-transparent via-[var(--color-army-100)] to-transparent my-5" />
 
+                {/* Action Buttons */}
+                <div className="flex flex-col gap-3">
                   <Link
                     href="/login"
                     onClick={() => setIsMenuOpen(false)}
-                    className="w-full py-4 text-base font-bold rounded-2xl bg-brand-yellow-100 text-brand-blue-800 hover:bg-brand-yellow-200 text-center transition-all min-h-[56px] flex items-center justify-center mb-3"
+                    className="w-full py-4 text-sm font-bold rounded-xl border border-[var(--color-army-100)] text-[var(--color-army-700)] bg-[var(--color-army-50)] hover:bg-[var(--color-army-100)] text-center transition-all min-h-[52px] flex items-center justify-center gap-2"
                   >
                     Masuk ke Dashboard
                   </Link>
                   <Link
-                    href="/ppdb"
+                    href="/daftar"
                     onClick={() => setIsMenuOpen(false)}
-                    className="w-full py-4 text-base font-bold rounded-2xl bg-brand-blue-700 text-white hover:bg-brand-blue-800 text-center transition-all min-h-[56px] flex items-center justify-center shadow-lg shadow-brand-blue-700/20"
+                    className="btn-primary w-full justify-center gap-2 min-h-[52px]"
                   >
+                    <GraduationCap className="w-4 h-4" />
                     Daftar PPDB Online
                   </Link>
-
-                  <div className="h-6" /> {/* Safe padding */}
                 </div>
+
+                <div className="h-6" />
               </div>
             </motion.div>
           </motion.div>
