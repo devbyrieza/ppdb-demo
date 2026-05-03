@@ -33,13 +33,6 @@ export default function SearchableSelect({
     const searchInputRef = useRef<HTMLInputElement>(null);
     const listRef = useRef<HTMLDivElement>(null);
 
-    /* ── Sync options prop with internal state ── */
-    useEffect(() => {
-        if (Array.isArray(initialOptions) && initialOptions.length > 0) {
-            setOptions(initialOptions);
-        }
-    }, [initialOptions.join(",")]); // Use join as a simple stable dependency for strings
-
     /* ── Fetch options from URL ── */
     useEffect(() => {
         if (!optionsUrl) return;
@@ -48,9 +41,7 @@ export default function SearchableSelect({
                 setLoading(true);
                 const res = await fetch(optionsUrl);
                 const json = await res.json();
-                if (json.success && Array.isArray(json.data)) {
-                    setOptions(json.data);
-                }
+                if (json.success) setOptions(json.data);
             } catch (err) {
                 console.error("Failed to fetch options", err);
             } finally {
@@ -96,9 +87,11 @@ export default function SearchableSelect({
 
     const handleToggle = useCallback(() => {
         if (disabled) return;
-        if (isOpen) setSearch("");
-        setIsOpen((prev) => !prev);
-    }, [disabled, isOpen]);
+        setIsOpen((prev) => {
+            if (prev) setSearch("");
+            return !prev;
+        });
+    }, [disabled]);
 
     const handleSelect = useCallback(
         (opt: string) => {
@@ -109,8 +102,8 @@ export default function SearchableSelect({
         [onChange]
     );
 
-    const filteredOptions = (options || [])
-        .filter((opt) => (opt || "").toLowerCase().includes((search || "").toLowerCase()))
+    const filteredOptions = options
+        .filter((opt) => opt.toLowerCase().includes(search.toLowerCase()))
         .slice(0, 50);
 
     const dropdownVariants = {
@@ -203,8 +196,8 @@ export default function SearchableSelect({
                             >
                                 <ChevronDown
                                     className={`w-4 h-4 transition-colors duration-150 ${isOpen
-                                        ? "text-[var(--color-army-600)]"
-                                        : "text-[var(--color-ink-300)]"
+                                            ? "text-[var(--color-army-600)]"
+                                            : "text-[var(--color-ink-300)]"
                                         }`}
                                 />
                             </motion.span>
