@@ -359,11 +359,18 @@ export default function AdminDashboardPage() {
                                               <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider">{percentage}%</span>
                                               <span className="text-[10px] font-bold text-slate-400">Fill</span>
                                           </div>
-                                          <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                                          <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden flex">
                                               <motion.div 
-                                                initial={{ width: 0 }}
-                                                animate={{ width: `${percentage}%` }}
-                                                className={`h-full rounded-full ${percentage > 80 ? 'bg-teal-500' : 'bg-slate-400'}`} 
+                                                  initial={{ width: 0 }}
+                                                  animate={{ width: `${Math.round((item.pendaftar_putra / item.kuota_total) * 100) || 0}%` }}
+                                                  className="h-full bg-teal-500 transition-all duration-500" 
+                                                  title={`Putra: ${item.pendaftar_putra}`}
+                                              />
+                                              <motion.div 
+                                                  initial={{ width: 0 }}
+                                                  animate={{ width: `${Math.round((item.pendaftar_putri / item.kuota_total) * 100) || 0}%` }}
+                                                  className="h-full bg-pink-400 transition-all duration-500" 
+                                                  title={`Putri: ${item.pendaftar_putri}`}
                                               />
                                           </div>
                                       </div>

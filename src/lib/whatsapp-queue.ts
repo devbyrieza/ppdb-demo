@@ -931,7 +931,12 @@ export function buildMessageReminderH1Santri(
     cleanJam = cleanJam.replace(/\s+/g, " ");
     const finalJam = `${cleanJam} WIB`;
 
-    const finalHariTanggal = `${hari}, ${tanggal}`;
+    // Fix Duplicate Day & Change Minggu to Ahad
+    let cleanHari = (hari || "").replace(/Minggu/gi, "Ahad").split(",")[0].trim();
+    // Ensure tanggal doesn't start with day name if we already have it
+    let cleanTanggal = (tanggal || "").replace(new RegExp(`^${cleanHari},\\s*`, "i"), "");
+    
+    const finalHariTanggal = `${cleanHari}, ${cleanTanggal}`;
 
     let agendaTitle = "";
     if (jenisUjian.toLowerCase().includes("quran")) agendaTitle = "Tes Al-Qur'an";
@@ -950,7 +955,7 @@ Ini adalah pengingat bahwa Anda dijadwalkan mengikuti *${agendaTitle}* pada:
 
 Mohon persiapkan diri dengan baik dan pastikan koneksi internet stabil. Sampai jumpa!
 
-Jazakumullahu khairan
+Jazakumullahu khairan.
 ---
 *Panitia PPDB ${BRANDING.schoolName}*`;
 }
@@ -968,7 +973,10 @@ export function buildMessageReminderH1Cawalsan(
     let cleanJam = (jam || "").replace(/\s*WIB\s*/gi, " ").trim();
     cleanJam = cleanJam.replace(/\s+/g, " ");
     const finalJam = `${cleanJam} WIB`;
-    const finalHariTanggal = `${hari}, ${tanggal}`;
+    
+    let cleanHari = (hari || "").replace(/Minggu/gi, "Ahad").split(",")[0].trim();
+    let cleanTanggal = (tanggal || "").replace(new RegExp(`^${cleanHari},\\s*`, "i"), "");
+    const finalHariTanggal = `${cleanHari}, ${cleanTanggal}`;
 
     return `*PENGINGAT TES SELEKSI*
 
@@ -982,7 +990,7 @@ Ini adalah pengingat bahwa Anda dijadwalkan mengikuti *Wawancara Calon Orangtua/
 
 Mohon persiapkan diri dengan baik dan pastikan koneksi internet stabil. Sampai jumpa!
 
-Jazakumullahu khairan
+Jazakumullahu khairan.
 ---
 *Panitia PPDB ${BRANDING.schoolName}*`;
 }
@@ -1006,10 +1014,14 @@ export function buildMessageReminderH1Penguji(
     let cleanJam = (jam || "").replace(/\s*WIB\s*/gi, " ").trim();
     cleanJam = cleanJam.replace(/\s+/g, " ");
     const finalJam = `${cleanJam} WIB`;
-    const finalHariTanggal = `${hari}, ${tanggal}`;
+
+    let cleanHari = (hari || "").replace(/Minggu/gi, "Ahad").split(",")[0].trim();
+    let cleanTanggal = (tanggal || "").replace(new RegExp(`^${cleanHari},\\s*`, "i"), "");
+    const finalHariTanggal = `${cleanHari}, ${cleanTanggal}`;
 
     let agendaText = "";
     let agendaTitle = "*PENGINGAT JADWAL MENGUJI*";
+    
     if (jenisUjian.toLowerCase().includes("quran")) {
         agendaText = "Tes Al-Qur'an";
     } else if (jenisUjian.toLowerCase().includes("calsan")) {
@@ -1035,11 +1047,10 @@ Mengingatkan jadwal ${agendaText.includes("Wawancara") ? "wawancara" : "menguji"
 📍 *Link Meet:* ${lokasi}
 🔗 *Input Hasil:* ${inputNilaiLink || "-"}
 
-Mohon kehadirannya tepat waktu.
+Mohon kehadirannya tepat waktu. Jazakumullahu khairan.
  
- Jazakumullahu khairan
- ---
- *Sistem PPDB ${BRANDING.schoolName}*`;
+---
+*Sistem PPDB ${BRANDING.schoolName}*`;
 }
  
 export function buildMessageCombinedFinal(

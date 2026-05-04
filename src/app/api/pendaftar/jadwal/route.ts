@@ -237,6 +237,7 @@ export async function POST(request: Request) {
             const lokasi = examSession.location || "Pesantren PPDB";
             const jenisUjian = sanitizeTitle(examSession.title || "Seleksi Santri Baru");
 
+            /* 
             const message = buildMessageKonfirmasiJadwal(
                 pendaftarInfo.nama_lengkap,
                 dateStr,
@@ -252,6 +253,7 @@ export async function POST(request: Request) {
                 jenisNotif: "konfirmasi_jadwal",
                 messageContent: message,
             }).catch((err: any) => console.error("Failed to enqueue jadwal confirmation:", err));
+            */
 
             // 2. Notify Interviewer (Layer 2.1: Delayed notification for staff)
             const finalId = pengujiFields.penguji_quran_id || pengujiFields.penguji_santri_id || pengujiFields.penguji_ortu_id || examSession.created_by;
@@ -273,6 +275,7 @@ export async function POST(request: Request) {
                     );
                     const magicLink = `${process.env.NEXT_PUBLIC_APP_URL || 'https://demo-ppdb.vercel.app'}/api/auth/magic?token=${token}`;
 
+                    /* 
                     const intMessage = buildMessageKonfirmasiJadwalInterviewer(
                         interviewer.full_name,
                         pendaftarInfo.nama_lengkap,
@@ -294,6 +297,7 @@ export async function POST(request: Request) {
                         messageContent: intMessage,
                         scheduledAt: scheduledAt,
                     }).catch((err: any) => console.error("Failed to enqueue interviewer notification:", err));
+                    */
                 }
             }
 

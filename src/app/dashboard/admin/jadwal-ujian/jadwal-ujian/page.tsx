@@ -59,6 +59,37 @@ export default function JadwalUjianPage() {
 
   const [search, setSearch] = useState("");
   const [selectedPendaftarId, setSelectedPendaftarId] = useState<string | null>(null);
+
+  // Automatic End Time Calculation Logic
+  useEffect(() => {
+    if (newSession.start_time) {
+      const start = new Date(newSession.start_time);
+      const titleLower = newSession.title.toLowerCase();
+      
+      let durationMinutes = 60; // Default 1 hour
+      if (titleLower.includes("quran") || titleLower.includes("qur'an")) {
+        durationMinutes = 30;
+      } else if (titleLower.includes("calsan") || titleLower.includes("cawalsan") || titleLower.includes("wawancara")) {
+        durationMinutes = 60;
+      }
+
+      const end = new Date(start.getTime() + durationMinutes * 60000);
+      
+      // Format to YYYY-MM-DDTHH:mm
+      const year = end.getFullYear();
+      const month = String(end.getMonth() + 1).padStart(2, '0');
+      const day = String(end.getDate()).padStart(2, '0');
+      const hours = String(end.getHours()).padStart(2, '0');
+      const mins = String(end.getMinutes()).padStart(2, '0');
+      
+      const formattedEndTime = `${year}-${month}-${day}T${hours}:${mins}`;
+      
+      // Only update if different to avoid infinite loop
+      if (newSession.end_time !== formattedEndTime) {
+        setNewSession(prev => ({ ...prev, end_time: formattedEndTime }));
+      }
+    }
+  }, [newSession.start_time, newSession.title]);
   const [assigning, setAssigning] = useState(false);
   const [showBroadcastModal, setShowBroadcastModal] = useState(false);
   const [resetFlags, setResetFlags] = useState(false);
