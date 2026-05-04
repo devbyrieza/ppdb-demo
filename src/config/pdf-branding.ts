@@ -10,7 +10,7 @@ export const PDF_BRANDING = {
         subtitle: "Standardized PPDB Template for Modern Institutions",
         committee: "PANITIA PENERIMAAN SANTRI BARU",
         academic_year: "2026-2027",
-        address: "Jl. Al-Andalus Raya No. 1, Kota Madani",
+        address: "Jl. Al Andalus Raya No. 1, Kota Madani",
         contact: "Website: https://ppdb-demo.vercel.app | Email: demo@alandalus.com",
         phones: "WhatsApp: 0800-0000-0000", // Base phone
     },
@@ -45,7 +45,7 @@ export const PDF_BRANDING = {
 
     // Official Mudir / Authority
     authority: {
-        name: "Dr. Al-Andalus",
+        name: "Dr. Al Andalus",
         role: "Mudir",
         city: "Kota Madani"
     }

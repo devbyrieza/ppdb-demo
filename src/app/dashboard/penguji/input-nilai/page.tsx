@@ -216,7 +216,7 @@ const CALSAN_CRITERIA_PUTRI = [
 const CAWALSAN_QUESTIONS = [
   { key: "q1", label: "1. Abu/Ummu ingin ananda menjadi seperti apa di masa depan?", options: ["A. Condong ke orientasi akhirat/agama", "B. Condong ke orientasi dunia/umum", "C. Hanya berorientasi dunia/umum"] },
   { key: "q2", label: "2. Bagaimana pandangan  Abu/Ummu  tentang sistem pendidikan berbasis pesantren?", options: ["A. Pilihan utama untuk agama, akhlak, dan karakter", "B. Pilihan utama untuk akhlak", "C. Pesantren juga mengajarkan pelajaran umum"] },
-  { key: "q3", label: "3. Ananda mau bersekolah di Pesantren Al-Andalus atas keinginan siapa?", options: ["A. Orang tua & anak", "B. Anak", "C. Orang tua / ikut teman"] },
+  { key: "q3", label: "3. Ananda mau bersekolah di Pesantren Al Andalus atas keinginan siapa?", options: ["A. Orang tua & anak", "B. Anak", "C. Orang tua / ikut teman"] },
   { key: "q4", label: "4. Apa yang  Abu/Ummu   lakukan sehingga ananda mau bersekolah di pesantren?", options: ["A. Memberikan pengertian", "B. Memberikan hadiah/iming-iming", "C. Memaksa"] },
   { key: "q5", label: "5. Sejauh apa pendidikan agama/Al-Qur’an ananda sebelumnya?", options: ["A. Intensif (tahfizh, sekolah Islam)", "B. Non intensif (swasta biasa)", "C. Seadanya (sekolah negeri)"] },
   { key: "q6", label: "6. Menurut Bapak/Ibu, keberhasilan proses pendidikan anak merupakan tanggung jawab siapa?", options: ["A. Bersama", "Orang Tua", "Sekolah"] },
@@ -255,7 +255,6 @@ const ROLE_TO_FORM_TYPES: Record<string, string[]> = {
   // Admin roles see all forms
   admin: ['quran', 'wawancara', 'ortu'],
   admin_super: ['quran', 'wawancara', 'ortu'],
-  head_of_it: ['quran', 'wawancara', 'ortu'],
 };
 
 export default function InputNilaiPage() {
@@ -303,7 +302,7 @@ function InputNilaiContent() {
   const getLockInfo = (inputAt: string | null | undefined) => {
     if (!inputAt) return { isLocked: false, remainingText: "" };
     
-    const isAdmin = ['admin_super', 'admin', 'head_of_it'].includes(activeRole);
+    const isAdmin = ['admin_super', 'admin'].includes(activeRole);
     if (isAdmin) return { isLocked: false, remainingText: "Akses Admin: Bebas Edit" };
 
     const inputDate = new Date(inputAt);
@@ -768,7 +767,7 @@ function InputNilaiContent() {
           <div className="p-2 sm:p-2.5 bg-brand-yellow-100 rounded-xl">
             <Users className="w-5 h-5 sm:w-6 sm:h-6 text-brand-yellow-700" />
           </div>
-          <h3 className="text-lg sm:text-xl font-black text-brand-blue-950 tracking-tight">Wawancara Wali Santri</h3>
+          <h3 className="text-lg sm:text-xl font-black text-brand-blue-950 tracking-tight">Wawancara Calon Orangtua/Wali Santri</h3>
           {isSaved && !isEditing && (
             <span className="ml-auto px-3 py-1 sm:px-4 sm:py-1.5 bg-brand-yellow-400 text-brand-blue-950 text-[9px] sm:text-[10px] font-black uppercase tracking-widest rounded-lg sm:rounded-xl flex items-center gap-1.5 shadow-sm border border-brand-yellow-500/20">
               <CheckCircle className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> Dinilai

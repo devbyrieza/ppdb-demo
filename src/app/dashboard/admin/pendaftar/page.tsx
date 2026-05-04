@@ -128,7 +128,7 @@ function AdminPendaftarContent() {
 
   // Role helpers
   // const userRole = session?.user?.role; -- Handled by state above
-  const canViewKeuangan = userRole === "admin_super" || userRole === "admin_keuangan" || userRole === "head_of_it" || userRole === "admin";
+  const canViewKeuangan = userRole === "admin_super" || userRole === "admin_keuangan" || userRole === "admin";
   const canViewBerkas = userRole === "admin_super" || userRole === "admin_berkas" || userRole === "admin";
   const canViewSeleksi = userRole === "admin_super" || userRole === "penguji_calsan" || userRole === "pewawancara_calsan" || userRole === "pewawancara_cawalsan" || userRole === "admin";
 

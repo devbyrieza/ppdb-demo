@@ -34,10 +34,8 @@ export default function ProfileSettings({ user }: { user: UserSession }) {
             admin_keuangan: "Admin Keuangan",
             admin_berkas: "Admin Berkas",
             penguji_calsan: "Penguji Al-Qur'an",
-            pewawancara_calsan: "Pewawancara Calsan",
-            pewawancara_cawalsan: "Pewawancara Cawalsan",
-            tim_it: "Tim IT",
-            head_of_it: "Kepala IT",
+            pewawancara_calsan: "Pewawancara Calon Santri",
+            pewawancara_cawalsan: "Pewawancara Calon Orangtua/Wali Santri",
             admin: "Admin",
             penguji: "Penguji Al-Qur'an"
         };
@@ -197,7 +195,7 @@ export default function ProfileSettings({ user }: { user: UserSession }) {
                                 disabled
                                 className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-500 cursor-not-allowed focus:ring-0"
                             />
-                            <p className="text-[10px] text-gray-400 mt-1.5 ml-1 italic">Email tidak dapat diubah sendiri. Hubungi Tim IT jika ada kesalahan data.</p>
+                            <p className="text-[10px] text-gray-400 mt-1.5 ml-1 italic">Email tidak dapat diubah sendiri. Hubungi Admin Pusat jika ada kesalahan data.</p>
                         </div>
 
                         <div className="pt-2 flex items-center justify-between">

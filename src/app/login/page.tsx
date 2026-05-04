@@ -31,11 +31,9 @@ const ROLE_INFO: Record<string, { label: string; icon: string; desc: string; col
   admin_super: { label: "Admin Super", icon: "👑", desc: "Akses penuh semua fitur", color: "from-amber-50 to-yellow-50 border-amber-200" },
   admin_berkas: { label: "Admin Berkas", icon: "📂", desc: "Verifikasi dokumen pendaftar", color: "from-blue-50 to-indigo-50 border-blue-200" },
   admin_keuangan: { label: "Admin Keuangan", icon: "💰", desc: "Verifikasi pembayaran", color: "from-emerald-50 to-teal-50 border-emerald-200" },
-  pewawancara_cawalsan: { label: "Pewawancara Calon Orangtua/Wali Santri", icon: "🎙️", desc: "Wawancara calon wali santri", color: "from-purple-50 to-violet-50 border-purple-200" },
+  pewawancara_cawalsan: { label: "Pewawancara Calon Orangtua/Wali Santri", icon: "🎙️", desc: "Wawancara calon orangtua/wali santri", color: "from-purple-50 to-violet-50 border-purple-200" },
   pewawancara_calsan: { label: "Pewawancara Calon Santri", icon: "🎙️", desc: "Wawancara calon santri", color: "from-rose-50 to-pink-50 border-rose-200" },
   penguji_calsan: { label: "Penguji Al-Qur'an", icon: "📖", desc: "Penguji tes Al-Qur'an", color: "from-green-50 to-lime-50 border-green-200" },
-  head_of_it: { label: "Head of IT", icon: "💻", desc: "Manajemen sistem", color: "from-slate-50 to-gray-50 border-slate-200" },
-  tim_it: { label: "Tim IT", icon: "🛠️", desc: "Support teknis", color: "from-slate-50 to-gray-50 border-slate-200" },
   admin: { label: "Admin", icon: "⚙️", desc: "Panel administrasi", color: "from-orange-50 to-amber-50 border-orange-200" },
 };
 
@@ -133,7 +131,7 @@ export default function LoginPage() {
       return;
     }
 
-    if (!/^(MTI|MTA|ILI|ILA|MAI|MAA)\d{6,8}$/.test(no)) {
+    if (!/^(MTI|MTA|ILI|ILA)\d{6,8}$/.test(no)) {
       setError("Format nomor pendaftaran tidak valid (contoh: MTI2600001)");
       setIsLoading(false);
       return;
@@ -203,7 +201,7 @@ export default function LoginPage() {
       }
 
       // Single role: redirect
-      if (["admin", "admin_super", "admin_berkas", "admin_keuangan", "head_of_it", "tim_it"].includes(data.role)) {
+      if (["admin", "admin_super", "admin_berkas", "admin_keuangan"].includes(data.role)) {
         window.location.href = "/dashboard/admin";
       } else if (["penguji", "penguji_calsan", "pewawancara_calsan", "pewawancara_cawalsan"].includes(data.role)) {
         window.location.href = "/dashboard/penguji";
@@ -498,7 +496,7 @@ export default function LoginPage() {
                       <Sparkles className="w-4 h-4" />
                     </div>
                     <p className="text-xs text-ink-600 font-bold leading-relaxed">
-                      Lupa password? Silakan hubungi Head of IT atau Admin Pusat untuk reset akses Anda.
+                      Lupa password? Silakan hubungi Admin Pusat untuk reset akses Anda.
                     </p>
                   </div>
                 </motion.form>

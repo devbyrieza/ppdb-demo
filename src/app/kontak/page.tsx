@@ -135,7 +135,7 @@ export default function ContactPage() {
         },
         {
             name: "Facebook",
-            username: "Pesantren Al-Andalus Ulul Albaab",
+            username: "Pesantren Al Andalus Ulul Albaab",
             url: "https://www.facebook.com/alandalus.ululalbaab/",
             icon: Facebook,
             textColor: "text-blue-600",

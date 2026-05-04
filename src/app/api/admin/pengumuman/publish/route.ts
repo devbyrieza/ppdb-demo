@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
         if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
         // 2. Check Role: Only Super Admin (and maybe Head of IT/Admin) can publish
-        const allowedRoles = ["admin_super", "head_of_it", "admin"];
+        const allowedRoles = ["admin_super", "admin"];
         if (!allowedRoles.includes(session.role)) {
             return NextResponse.json({ error: "Forbidden" }, { status: 403 });
         }

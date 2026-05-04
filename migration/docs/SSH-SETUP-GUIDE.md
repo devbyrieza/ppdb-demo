@@ -8,7 +8,7 @@ ssh-keygen -t rsa -b 4096 -C "alimam.sukabumi@gmail.com"
 
 # Follow prompts:
 # - Save as: C:\Users\[username]\.ssh\id_rsa
-# - Passphrase: AlimamSSH2026! (optional but recommended)
+# - Passphrase: Al ImamSSH2026! (optional but recommended)
 ```
 
 ### 📋 Copy Public Key:
@@ -21,7 +21,7 @@ cat C:\Users\[username]\.ssh\id_rsa.pub
 
 ### 📋 Add to Hostinger:
 1. **Paste public key** di SSH key field
-2. **Give it a name**: "Alimam Laptop"
+2. **Give it a name**: "Al Imam Laptop"
 3. **Save SSH key**
 4. **Keep private key safe** - jangan dibagikan
 

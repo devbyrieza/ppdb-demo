@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { hashPassword } from "@/lib/utils/password";
 import crypto from "crypto";
 
-async function checkHeadOfIT() {
+async function checkAdminPrivilege() {
   const cookieStore = await cookies();
   const sessionCookie = cookieStore.get("app_session");
 
@@ -12,8 +12,8 @@ async function checkHeadOfIT() {
 
   try {
     const session = JSON.parse(sessionCookie.value);
-    // ONLY head_of_it and tim_it can manage users. Admin Super cannot.
-    if (session.role === "head_of_it" || session.role === "tim_it") {
+    // ONLY admin_super and admin can manage users.
+    if (session.role === "admin_super" || session.role === "admin") {
       return session;
     }
   } catch {
@@ -25,7 +25,7 @@ async function checkHeadOfIT() {
 
 // GET: List all admin/staff users
 export async function GET() {
-  const admin = await checkHeadOfIT();
+  const admin = await checkAdminPrivilege();
   if (!admin) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
@@ -33,7 +33,7 @@ export async function GET() {
   try {
     const profiles = await prisma.profile.findMany({
       where: {
-        role: { in: ["admin_berkas", "admin_keuangan", "penguji", "admin_super", "admin", "penguji_calsan", "pewawancara_calsan", "pewawancara_cawalsan", "tim_it"] },
+        role: { in: ["admin_berkas", "admin_keuangan", "penguji", "admin_super", "admin", "penguji_calsan", "pewawancara_calsan", "pewawancara_cawalsan"] },
       },
       orderBy: { created_at: "desc" },
     });
@@ -46,7 +46,7 @@ export async function GET() {
 
 // POST: Create new user
 export async function POST(request: Request) {
-  const admin = await checkHeadOfIT();
+  const admin = await checkAdminPrivilege();
   if (!admin) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
@@ -93,7 +93,7 @@ export async function POST(request: Request) {
 
 // PUT: Update user (Reset Password or Change Role)
 export async function PUT(request: Request) {
-  const admin = await checkHeadOfIT();
+  const admin = await checkAdminPrivilege();
   if (!admin) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
@@ -141,7 +141,7 @@ export async function PUT(request: Request) {
 
 // DELETE: Delete user
 export async function DELETE(request: Request) {
-  const admin = await checkHeadOfIT();
+  const admin = await checkAdminPrivilege();
   if (!admin) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }

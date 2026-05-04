@@ -128,7 +128,7 @@ export default function DashboardPendaftarPage() {
           </div>
           <div>
             <h3 className="font-black text-ink-950 text-2xl md:text-3xl font-display leading-tight mb-2">Ada Kendala Teknis?</h3>
-            <p className="text-ink-600 text-lg md:text-xl font-bold">Tim IT dan Panitia siap melayani Anda setiap jam kerja.</p>
+            <p className="text-ink-600 text-lg md:text-xl font-bold">Admin Pusat dan Panitia siap melayani Anda setiap jam kerja.</p>
           </div>
         </div>
         <a href="https://wa.me/6281285300800" target="_blank" className="relative z-10 px-12 py-5 bg-sand-400 text-teal-950 font-black text-sm uppercase tracking-widest rounded-3xl hover:bg-sand-300 shadow-2xl transition-all hover:scale-105 active:scale-95 text-center w-full md:w-auto font-display">

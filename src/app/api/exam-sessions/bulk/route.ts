@@ -19,7 +19,7 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const allowedRoles = ['admin_super', 'admin', 'head_of_it', 'penguji', 'penguji_calsan', 'pewawancara_calsan', 'pewawancara_cawalsan'];
+    const allowedRoles = ['admin_super', 'admin', 'penguji', 'penguji_calsan', 'pewawancara_calsan', 'pewawancara_cawalsan'];
     if (!allowedRoles.includes(session.role)) {
         return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }

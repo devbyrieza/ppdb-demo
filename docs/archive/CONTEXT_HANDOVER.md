@@ -11,7 +11,7 @@
 
 ## 🏗️ **PROJECT OVERVIEW (STATIC - TIDAK BERUBAH)**
 
-**Nama Project:** Sistem PPDB (Penerimaan Peserta Didik Baru) Ponpes Al-Imam Al-Islami Sukabumi  
+**Nama Project:** Sistem PPDB (Penerimaan Peserta Didik Baru) Ponpes Al Imam Al-Islami Sukabumi  
 **Tech Stack:** Next.js 14, TypeScript, Tailwind CSS, Supabase (PostgreSQL)  
 **Current Repo:** https://github.com/[username]/pp-alimam  
 **Status:** Development Phase - Menuju Demo MVP

@@ -1,6 +1,6 @@
 # 🔧 SUPABASE SETUP - PPDB AL-IMAM
 
-Panduan lengkap untuk menyinkronkan dan mengkonfigurasi Supabase dengan project PPDB Al-Imam.
+Panduan lengkap untuk menyinkronkan dan mengkonfigurasi Supabase dengan project PPDB Al Imam.
 
 ---
 

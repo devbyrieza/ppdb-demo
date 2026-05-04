@@ -29,7 +29,7 @@ export async function GET() {
             select: { role: true, secondary_roles: true }
         });
         const allRoles = userProfile ? [userProfile.role, ...(userProfile.secondary_roles || [])] : [];
-        const isAdmin = allRoles.some((r: string) => ['admin_super', 'admin', 'head_of_it'].includes(r));
+        const isAdmin = allRoles.some((r: string) => ['admin_super', 'admin'].includes(r));
 
         // Determine which field to check based on role? 
         // Actually, just check all fields since a person might have multiple roles or assignments

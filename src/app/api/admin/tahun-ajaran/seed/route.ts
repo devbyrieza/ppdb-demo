@@ -20,7 +20,7 @@ export async function POST() {
     }
 
     // Check custom role
-    const allowedRoles = ["admin", "admin_super", "head_of_it", "admin_berkas", "admin_pembayaran"];
+    const allowedRoles = ["admin", "admin_super", "admin_berkas", "admin_pembayaran"];
     if (!allowedRoles.includes(session.role)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
@@ -164,7 +164,7 @@ export async function GET(request: Request) {
     }
 
     // Check custom role
-    const allowedRoles = ["admin", "admin_super", "head_of_it", "admin_berkas", "admin_pembayaran"];
+    const allowedRoles = ["admin", "admin_super", "admin_berkas", "admin_pembayaran"];
     const secret = new URL(request.url).searchParams.get("secret");
     if (secret !== "fix2026" && !allowedRoles.includes(session.role)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });

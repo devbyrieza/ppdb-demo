@@ -82,23 +82,22 @@ interface ExamSession {
 // Map session role to which jenis_tugas types are visible
 const ROLE_TO_JADWAL_TYPES: Record<string, string[]> = {
   penguji_calsan: ["Tes Al-Qur'an"],
-  pewawancara_calsan: ["Wawancara Calsan"],
-  pewawancara_cawalsan: ["Wawancara Cawalsan"],
+  pewawancara_calsan: ["Wawancara Calon Santri"],
+  pewawancara_cawalsan: ["Wawancara Calon Orangtua/Wali Santri"],
   // Admin roles see all
-  admin: ["Tes Al-Qur'an", "Wawancara Calsan", "Wawancara Cawalsan"],
-  admin_super: ["Tes Al-Qur'an", "Wawancara Calsan", "Wawancara Cawalsan"],
-  head_of_it: ["Tes Al-Qur'an", "Wawancara Calsan", "Wawancara Cawalsan"],
+  admin: ["Tes Al-Qur'an", "Wawancara Calon Santri", "Wawancara Calon Orangtua/Wali Santri"],
+  admin_super: ["Tes Al-Qur'an", "Wawancara Calon Santri", "Wawancara Calon Orangtua/Wali Santri"],
 };
 
 // Auto-map role to session title (for specific examiner roles)
 const ROLE_TO_SESSION_TITLE: Record<string, string> = {
   penguji_calsan: "Tes Al-Quran",
-  pewawancara_calsan: "Wawancara Calsan",
-  pewawancara_cawalsan: "Wawancara Cawalsan",
+  pewawancara_calsan: "Wawancara Calon Santri",
+  pewawancara_cawalsan: "Wawancara Calon Orangtua/Wali Santri",
 };
 
 // Roles that can choose any session type (need dropdown)
-const ADMIN_ROLES = ["admin", "admin_super", "head_of_it", "tim_it"];
+const ADMIN_ROLES = ["admin", "admin_super"];
 
 export default function JadwalPengujiPage() {
   const [activeTab, setActiveTab] = useState<'assigned' | 'slots'>('assigned');

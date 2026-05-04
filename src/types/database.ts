@@ -2,7 +2,7 @@
 
 export type JenisKelamin = "L" | "P";
 export type Jenjang = "MTs" | "IL" | "SMA"; // UPDATED: Tambah IL (I'dad Lughowi), MA renamed to SMA
-export type Role = "pendaftar" | "admin" | "admin_super" | "admin_berkas" | "admin_keuangan" | "penguji" | "penguji_calsan" | "pewawancara_calsan" | "pewawancara_cawalsan" | "tim_it" | "head_of_it";
+export type Role = "pendaftar" | "admin" | "admin_super" | "admin_berkas" | "admin_keuangan" | "penguji" | "penguji_calsan" | "pewawancara_calsan" | "pewawancara_cawalsan";
 
 export interface RegisterFormData {
   nik: string;

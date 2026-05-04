@@ -31,7 +31,7 @@ export async function GET() {
             select: { role: true, secondary_roles: true }
         });
         const allRoles = userProfile ? [userProfile.role, ...(userProfile.secondary_roles || [])] : [];
-        const isAdmin = allRoles.some(r => ['admin_super', 'admin', 'head_of_it'].includes(r));
+        const isAdmin = allRoles.some(r => ['admin_super', 'admin'].includes(r));
 
         let whereClause: any = {};
         if (!isAdmin) {

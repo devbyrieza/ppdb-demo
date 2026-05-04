@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
         const session = JSON.parse(sessionCookie.value);
 
         // Only super admin or head of IT can generate magic links
-        if (!["admin_super", "head_of_it", "tim_it", "admin"].includes(session.role)) {
+        if (!["admin_super", "admin"].includes(session.role)) {
             return NextResponse.json({ error: "Forbidden: Akses ditolak" }, { status: 403 });
         }
 
@@ -77,7 +77,7 @@ export async function GET(request: NextRequest) {
         const session = JSON.parse(sessionCookie.value);
 
         // Only super admin or head of IT can see the bulk magic links
-        if (!["admin_super", "head_of_it", "tim_it"].includes(session.role)) {
+        if (!["admin_super", "admin"].includes(session.role)) {
             return NextResponse.json({ error: "Forbidden: Akses ditolak" }, { status: 403 });
         }
 

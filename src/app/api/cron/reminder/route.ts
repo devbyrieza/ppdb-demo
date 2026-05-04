@@ -147,7 +147,7 @@ export async function GET(request: Request) {
             const examinersToNotify = [
                 { profile: jadwal.penguji_santri, type: "Wawancara Calon Santri (Calsan)" },
                 { profile: jadwal.penguji_quran, type: "Tes Al-Qur'an" },
-                { profile: jadwal.penguji_ortu, type: "Wawancara Calon Wali Santri (Cawalsan/Ortu)" },
+                { profile: jadwal.penguji_ortu, type: "Wawancara Calon Orangtua/Wali Santri (Cawalsan/Ortu)" },
             ];
 
             for (const { profile, type } of examinersToNotify) {

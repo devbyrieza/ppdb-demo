@@ -224,9 +224,7 @@ export type UserRole =
   | 'penguji_calsan'   // Dashboard Penguji (Quran)
   | 'pewawancara_calsan' // Dashboard Pewawancara Calsan
   | 'pewawancara_cawalsan' // Dashboard Pewawancara Orang Tua (Cawalsan)
-  | 'head_of_it'      // Kepala IT / Root Admin - Manages users only
-  | 'tim_it'          // Tim IT - anggota tim IT, akses sama dengan head_of_it
-  | 'admin_super'     // Dashboard Admin Super - akses penuh ke semua fitur KECUALI user management
+  | 'admin_super'     // Dashboard Admin Super - akses penuh ke semua fitur
   | 'admin';          // Legacy Admin Role
 
 // Role display names
@@ -235,10 +233,8 @@ export const ROLE_LABELS: Record<UserRole, string> = {
   admin_berkas: 'Admin Berkas',
   admin_keuangan: 'Admin Keuangan',
   penguji_calsan: "Penguji Al-Qur'an",
-  pewawancara_calsan: 'Pewawancara Calsan',
-  pewawancara_cawalsan: 'Pewawancara Cawalsan',
-  head_of_it: 'Kepala IT (Root)',
-  tim_it: 'Tim IT',
+  pewawancara_calsan: 'Pewawancara Calon Santri',
+  pewawancara_cawalsan: 'Pewawancara Calon Orangtua/Wali Santri',
   admin_super: 'Admin Super',
   admin: 'Administrator (Legacy)',
 };
@@ -251,9 +247,7 @@ export const ROLE_DESCRIPTIONS: Record<UserRole, string> = {
   penguji_calsan: 'Melakukan penilaian tahsin/hafalan Al-Quran calon santri',
   pewawancara_calsan: 'Melakukan wawancara calon santri',
   pewawancara_cawalsan: 'Melakukan wawancara orang tua wali santri',
-  head_of_it: 'Super Admin yang hanya mengelola user. Tidak ada akses operasional.',
-  tim_it: 'Anggota Tim IT, akses dashboard dan pengaturan.',
-  admin_super: 'Akses penuh operasional PPDB (Tanpa manajemen user)',
+  admin_super: 'Akses penuh operasional PPDB & Manajemen User',
   admin: 'Administrator (Legacy - Full Access)',
 };
 
@@ -299,14 +293,6 @@ export const ROLE_PERMISSIONS: Record<UserRole, string[]> = {
     'input_exam_scores',
     'view_exam_results',
   ],
-  head_of_it: [
-    'manage_users',
-    'manage_settings',
-  ],
-  tim_it: [
-    'manage_users',
-    'manage_settings',
-  ],
   admin_super: [
     // Monitoring & Data
     'view_pendaftar_list',
@@ -323,7 +309,8 @@ export const ROLE_PERMISSIONS: Record<UserRole, string[]> = {
     'view_broadcast',
     'send_wa_blast',
     'send_google_form',
-    // Settings
+    // System & User Management
+    'manage_users',
     'manage_settings',
   ],
   admin: [
@@ -359,8 +346,6 @@ export const DASHBOARD_ROUTES: Record<UserRole, string> = {
   penguji_calsan: '/dashboard/penguji',
   pewawancara_calsan: '/dashboard/penguji',
   pewawancara_cawalsan: '/dashboard/penguji',
-  head_of_it: '/dashboard/admin/users',
-  tim_it: '/dashboard/admin/users',
   admin_super: '/dashboard/admin',
   admin: '/dashboard/admin',
 };
@@ -372,7 +357,7 @@ export function hasPermission(role: UserRole, permission: string): boolean {
 
 // Check if role is admin type (can access admin dashboard)
 export function isAdminRole(role: UserRole): boolean {
-  return ['admin_berkas', 'admin_keuangan', 'head_of_it', 'tim_it', 'admin_super', 'admin'].includes(role);
+  return ['admin_berkas', 'admin_keuangan', 'admin_super', 'admin'].includes(role);
 }
 
 // Check if role can verify documents
@@ -425,19 +410,6 @@ export function getMenuItemsForRole(role: UserRole): { name: string; href: strin
       { name: 'Input Nilai', href: '/dashboard/penguji/input-nilai', icon: 'ClipboardEdit' },
       { name: 'Profil Saya', href: '/dashboard/penguji/profil', icon: 'UserCircle' },
     ],
-    head_of_it: [
-      { name: 'Dashboard', href: '/dashboard/admin', icon: 'LayoutDashboard' },
-      { name: 'Manajemen User', href: '/dashboard/admin/users', icon: 'UserCog' },
-      { name: 'Pengaturan', href: '/dashboard/admin/pengaturan', icon: 'Settings' },
-      { name: 'Profil Saya', href: '/dashboard/admin/profil', icon: 'UserCircle' },
-    ],
-    tim_it: [
-      { name: 'Dashboard', href: '/dashboard/admin', icon: 'LayoutDashboard' },
-      { name: 'Manajemen User', href: '/dashboard/admin/users', icon: 'UserCog' },
-      { name: 'Pengaturan', href: '/dashboard/admin/pengaturan', icon: 'Settings' },
-      { name: 'Rekap Honor', href: '/dashboard/admin/recap-fee', icon: 'CreditCard' },
-      { name: 'Profil Saya', href: '/dashboard/admin/profil', icon: 'UserCircle' },
-    ],
     admin_super: [
       { name: 'Dashboard', href: '/dashboard/admin', icon: 'LayoutDashboard' },
       // Group: OPERASIONAL
@@ -454,6 +426,7 @@ export function getMenuItemsForRole(role: UserRole): { name: string; href: strin
       { name: 'Statistik Wilayah', href: '/dashboard/admin/statistik-wilayah', icon: 'Map', group: 'ANALITIK & BROADCAST' },
       { name: 'Broadcast WA', href: '/dashboard/admin/broadcast', icon: 'Zap', group: 'ANALITIK & BROADCAST' },
       // Group: SISTEM
+      { name: 'Manajemen User', href: '/dashboard/admin/users', icon: 'UserCog', group: 'SISTEM' },
       { name: 'Pengaturan', href: '/dashboard/admin/pengaturan', icon: 'Settings', group: 'SISTEM' },
       { name: 'Profil Saya', href: '/dashboard/admin/profil', icon: 'UserCircle', group: 'SISTEM' },
     ],
@@ -480,21 +453,12 @@ export function getMenuItemsForRole(role: UserRole): { name: string; href: strin
 
 // Validate role access to a route
 export function canAccessRoute(role: UserRole, route: string): boolean {
-  // Admin super can access everything EXCEPT users
+  // Admin super can access everything
   if (role === 'admin_super' || role === 'admin') {
-    return route !== '/dashboard/admin/users';
+    return true;
   }
 
-  // Head of IT / Tim IT can only access users, settings, and dashboard
-  if (role === 'head_of_it' || role === 'tim_it') {
-    const allowed = [
-      '/dashboard/admin',
-      '/dashboard/admin/users',
-      '/dashboard/admin/pengaturan',
-    ];
-    // Allow strict matches or sub-paths for users
-    return allowed.some(r => route === r || route.startsWith(r + '/'));
-  }
+
 
   // Pendaftar can only access pendaftar routes
   if (role === 'pendaftar') {

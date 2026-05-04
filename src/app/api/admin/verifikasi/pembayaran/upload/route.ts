@@ -21,9 +21,7 @@ export async function POST(request: NextRequest) {
             "penguji",
             "penguji_calsan",
             "pewawancara_cawalsan",
-            "pewawancara_calsan",
-            "head_of_it",
-            "tim_it"
+            "pewawancara_calsan"
         ];
         
         if (!allowedRoles.includes(session.role)) {

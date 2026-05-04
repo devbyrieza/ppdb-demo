@@ -6,7 +6,7 @@ export async function GET() {
         const users = await prisma.profile.findMany({
             where: {
                 role: {
-                    in: ["admin", "admin_super", "admin_berkas", "admin_keuangan", "head_of_it", "tim_it"]
+                    in: ["admin", "admin_super", "admin_berkas", "admin_keuangan"]
                 }
             },
             select: {

@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
         }
 
         // Only Admin types can access
-        const allowedRoles = ["admin", "admin_super", "head_of_it", "tim_it"];
+        const allowedRoles = ["admin", "admin_super"];
         if (!allowedRoles.includes(session.role)) {
             return NextResponse.json({ error: "Forbidden" }, { status: 403 });
         }

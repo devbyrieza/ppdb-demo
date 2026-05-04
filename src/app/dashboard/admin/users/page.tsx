@@ -28,7 +28,6 @@ interface AdminUser {
 }
 
 const ROLE_OPTIONS = [
-    { value: "tim_it", label: "Tim IT" },
     { value: "admin_super", label: "Admin Super" },
     { value: "admin_berkas", label: "Admin Berkas" },
     { value: "admin_keuangan", label: "Admin Keuangan" },
@@ -157,7 +156,7 @@ export default function UserManagementPage() {
 
     return (
         <div className="space-y-10 pb-16 animate-in fade-in duration-700">
-            {/* IT Banner */}
+            {/* Admin Banner */}
             <div className="relative overflow-hidden rounded-4xl bg-linear-to-br from-brand-blue-700 to-brand-blue-900 text-white p-10 md:p-14 shadow-2xl app-card border border-brand-blue-600">
                 <div className="absolute top-0 right-0 w-96 h-96 bg-brand-yellow-400/10 rounded-full blur-3xl pointer-events-none" />
                 <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10">
@@ -167,7 +166,7 @@ export default function UserManagementPage() {
                         </div>
                         <div>
                             <span className="bg-white/10 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border border-white/10">Control Console</span>
-                            <h1 className="text-3xl md:text-5xl font-black font-display tracking-tight mt-2 italic shadow-sm text-white">IT Management</h1>
+                            <h1 className="text-3xl md:text-5xl font-black font-display tracking-tight mt-2 italic shadow-sm text-white">Admin Management</h1>
                         </div>
                     </div>
                     <button onClick={() => { resetForm(); setIsModalOpen(true); }} className="bg-brand-yellow-400 hover:bg-brand-yellow-300 text-brand-blue-950 px-10 py-5 rounded-3xl font-black uppercase text-xs shadow-xl transition-all flex items-center justify-center gap-2 hover:scale-105 active:scale-95">

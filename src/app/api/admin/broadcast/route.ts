@@ -6,7 +6,7 @@ import { getServerSession } from "@/lib/session";
 export async function POST(req: NextRequest) {
     try {
         const session = await getServerSession();
-        if (!session || !["admin", "admin_super", "head_of_it"].includes(session.role)) {
+        if (!session || !["admin", "admin_super"].includes(session.role)) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 

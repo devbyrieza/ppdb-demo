@@ -23,7 +23,7 @@ export async function POST() {
         }
 
         // Only admin_super can trigger batch recalculation
-        if (session.role !== 'admin_super' && session.role !== 'tim_it') {
+        if (session.role !== 'admin_super') {
             return NextResponse.json({ error: 'Forbidden: Only admin super can recalculate' }, { status: 403 });
         }
 

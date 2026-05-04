@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   BUTTON — Al-Andalus Template (Master)
+   BUTTON — Al Andalus Template (Master)
    Primary: Hijau teal  |  Accent: Gold + Warm
    Token dari globals.css al-andalus:
 
@@ -54,7 +54,7 @@ const buttonVariants = cva(
       variant: {
         /* ════════════════════════════════════
            teal GROUP — Template Default
-           (Al-Andalus primary identity)
+           (Al Andalus primary identity)
            ════════════════════════════════════ */
 
         /* ─── PRIMARY teal ─── */
@@ -99,7 +99,7 @@ const buttonVariants = cva(
         ].join(" "),
 
         /* ════════════════════════════════════
-           MAROON GROUP — Al-Imam variant
+           MAROON GROUP — Al Imam variant
            ════════════════════════════════════ */
 
         /* ─── PRIMARY MAROON ─── */
@@ -239,7 +239,7 @@ const buttonVariants = cva(
           "active:translate-y-0",
         ].join(" "),
 
-        /* ─── CREAM — Al-Imam accent ─── */
+        /* ─── CREAM — Al Imam accent ─── */
         cream: [
           "relative overflow-hidden",
           "bg-gradient-to-br from-[var(--color-cream-200)] to-[var(--color-cream-400)]",
@@ -293,7 +293,7 @@ const buttonVariants = cva(
           "active:scale-100",
         ].join(" "),
 
-        /* ─── LINK MAROON — Inline text, Al-Imam ─── */
+        /* ─── LINK MAROON — Inline text, Al Imam ─── */
         "link-maroon": [
           "bg-transparent p-0 h-auto",
           "text-[var(--color-maroon-700)]",

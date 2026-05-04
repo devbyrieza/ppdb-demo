@@ -25,7 +25,7 @@ export async function PATCH(
         }
 
         // Check admin role
-        const allowedRoles = ["admin", "admin_super", "head_of_it"];
+        const allowedRoles = ["admin", "admin_super"];
         if (!allowedRoles.includes(session.role)) {
             return NextResponse.json({ error: "Forbidden" }, { status: 403 });
         }

@@ -6,7 +6,7 @@
 export const PPDB_CONFIG = {
   // 🏫 INFO PESANTREN (GANTI INI DULU!)
   pesantren: {
-    nama: "Pesantren Al-Andalus (Demo)",
+    nama: "Pesantren Al Andalus (Demo)",
     singkatan: "PPDB Demo",
     alamat: "Jl. Pesantren No. 1, Bogor, Jawa Barat",
     telepon: "+62 812-3456-7890",
@@ -17,7 +17,7 @@ export const PPDB_CONFIG = {
 
   // 🎨 BRAND COLORS (GANTI SESUAI LOGO)
   colors: {
-    // Primary Colors (Maroon / Cream - Warna Khas Al-Imam)
+    // Primary Colors (Maroon / Cream - Warna Khas Al Imam)
     primary: {
       50: "#fdf6e3",
       100: "#f9e8c8",
@@ -104,13 +104,13 @@ export const PPDB_CONFIG = {
   contact: {
     whatsapp: "+6288809934970",
     instagram: "@pesantrenalimam",
-    facebook: "Pesantren Al-Andalus Al-Imam (Official Fanpage)",
-    youtube: "Al-Andalus Al-Imam"
+    facebook: "Pesantren Al Andalus Al Imam (Official Fanpage)",
+    youtube: "Al Andalus Al Imam"
   },
 
   // ⚙️ SETTING TEKNIS (UMUMNYA TIDAK PERLU DIUBAH)
   technical: {
-    appName: "PPDB Demo Al-Andalus",
+    appName: "PPDB Demo Al Andalus",
     appDescription: "Sistem Demo Penerimaan Peserta Didik Baru",
     version: "2.1.0",
     author: "Rieza Eka Tomara"

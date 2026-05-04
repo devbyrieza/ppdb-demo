@@ -8,7 +8,7 @@ async function checkAdmin() {
     if (!sessionCookie) return null;
     try {
         const session = JSON.parse(sessionCookie.value);
-        if (["admin_super", "admin", "admin_berkas", "head_of_it"].includes(session.role)) {
+        if (["admin_super", "admin", "admin_berkas"].includes(session.role)) {
             return session;
         }
     } catch { }

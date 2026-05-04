@@ -127,7 +127,6 @@ interface PendaftarDetail {
 export default function PendaftarDetailPage() {
   const params = useParams();
   const router = useRouter();
-  /* const { data: session } = useSession(); -- Removed */
   const [userRole, setUserRole] = useState<string | null>(null);
 
   const [pendaftar, setPendaftar] = useState<PendaftarDetail | null>(null);
@@ -158,10 +157,10 @@ export default function PendaftarDetailPage() {
     fetchSession();
   }, []);
 
-  // Helper for role checks
   const isKeuangan = userRole === "admin_keuangan";
   const isBerkas = userRole === "admin_berkas";
   const isPenguji = userRole === "penguji_calsan" || userRole === "pewawancara_calsan" || userRole === "pewawancara_cawalsan";
+  const isAdminSuper = userRole === "admin_super";
 
   useEffect(() => {
     fetchPendaftarDetail();
@@ -306,14 +305,22 @@ export default function PendaftarDetailPage() {
 
   const statusInfo = formatStatus(pendaftar.status_proses);
 
-  // Calculate document and payment progress
   const totalDocs = pendaftar.dokumen.length;
   const verifiedDocs = pendaftar.dokumen.filter(d => d.is_verified).length;
   const hasPaid = pendaftar.pembayaran.some(p => p.status_pembayaran === "verified");
 
+  const InfoItem = ({ label, value, icon }: { label: string; value: string | null | undefined; icon?: React.ReactNode }) => (
+    <div>
+      <p className="text-[10px] text-stone-500 font-black uppercase tracking-widest mb-0.5">{label}</p>
+      <div className="flex items-center gap-2 font-bold text-stone-800">
+        {icon}
+        {value || "-"}
+      </div>
+    </div>
+  );
+
   return (
     <div className="space-y-6">
-      {/* Back Button */}
       <Link
         href="/dashboard/admin/pendaftar"
         className="inline-flex items-center gap-2 text-brand-blue-600 hover:text-brand-blue-800 font-bold"
@@ -322,11 +329,9 @@ export default function PendaftarDetailPage() {
         Kembali ke Daftar Pendaftar
       </Link>
 
-      {/* Summary Card */}
       <div className="bg-linear-to-br from-brand-blue-600 to-brand-blue-900 rounded-3xl shadow-xl shadow-brand-blue-900/20 p-8 text-white relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-brand-yellow-400/10 rounded-full -mr-20 -mt-20 blur-3xl pointer-events-none"></div>
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 relative z-10">
-          {/* Main Info */}
           <div className="flex items-center gap-5">
             <div className="w-20 h-20 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-brand-yellow-300 shadow-inner">
               <User className="w-10 h-10" />
@@ -345,7 +350,6 @@ export default function PendaftarDetailPage() {
             </div>
           </div>
 
-          {/* Quick Stats */}
           <div className="flex flex-wrap gap-4">
             <div className="bg-white/10 backdrop-blur-md rounded-2xl px-5 py-4 min-w-[120px] border border-white/10">
               <p className="text-[10px] text-brand-blue-100 font-black uppercase tracking-widest mb-1">Pembayaran</p>
@@ -368,7 +372,6 @@ export default function PendaftarDetailPage() {
           </div>
         </div>
 
-        {/* Status & Actions Bar */}
         <div className="mt-6 pt-6 border-t border-white/20 flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <span className="text-blue-100">Status:</span>
@@ -427,7 +430,6 @@ export default function PendaftarDetailPage() {
             )}
           </div>
 
-          {/* Quick Actions */}
           <div className="flex items-center gap-2">
             <button
               onClick={() => {
@@ -490,9 +492,7 @@ export default function PendaftarDetailPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Main Info - 2 columns */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Untuk Admin Berkas: Dokumen pindah ke kolom utama paling atas */}
           {isBerkas && (
             <div className="bg-white rounded-3xl shadow-sm p-6 border border-brand-yellow-100">
               <div className="flex items-center gap-3 mb-6">
@@ -558,8 +558,7 @@ export default function PendaftarDetailPage() {
             </div>
           )}
 
-          {/* Hasil Seleksi & Ujian (Tampil untuk Admin Super, Admin Umum, dan Penguji) */}
-          {(isPenguji || userRole === "admin_super" || userRole === "admin" || userRole === "head_of_it") && (
+          {(isPenguji || isAdminSuper || userRole === "admin") && (
             <div className="bg-white rounded-3xl shadow-sm p-6 border border-brand-yellow-100">
               <div className="flex items-center gap-3 mb-6">
                 <div className="p-3 bg-brand-yellow-50 rounded-xl">
@@ -567,14 +566,11 @@ export default function PendaftarDetailPage() {
                 </div>
                 <div>
                   <h3 className="text-xl font-black text-brand-blue-950 tracking-tight leading-tight">Hasil Seleksi & Ujian</h3>
-                  <p className="text-sm text-ink-300 font-medium tracking-tight">Rincian nilai 6 komponen tes Calon Santri & Wali Santri</p>
+                  <p className="text-sm text-ink-300 font-medium tracking-tight">Rincian nilai 6 komponen tes Calon Santri & Calon Orangtua/Wali Santri</p>
                 </div>
               </div>
 
-              {/* Grid 6 Test Results */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-
-                {/* 1. Tes Kemampuan Akademik (CBT) */}
                 <div className="bg-brand-blue-50/50 p-4 rounded-2xl border border-brand-blue-100 relative">
                   <span className="block text-[10px] text-brand-blue-600 font-black uppercase tracking-widest mb-1 leading-none">CBT: Akademik</span>
                   {!pendaftar.nilai_ujian ?
@@ -588,7 +584,6 @@ export default function PendaftarDetailPage() {
                   }
                 </div>
 
-                {/* 2. Tes Identifikasi Kepribadian (CBT) */}
                 <div className="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100">
                   <span className="block text-xs text-indigo-600 font-bold uppercase tracking-wide mb-1">CBT: Kepribadian</span>
                   {!pendaftar.nilai_ujian ?
@@ -602,7 +597,6 @@ export default function PendaftarDetailPage() {
                   }
                 </div>
 
-                {/* 3. Tes Kesiapan (CBT) */}
                 <div className="bg-violet-50/50 p-4 rounded-xl border border-violet-100">
                   <span className="block text-xs text-violet-600 font-bold uppercase tracking-wide mb-1">CBT: Kesiapan</span>
                   {!pendaftar.nilai_ujian ?
@@ -616,10 +610,9 @@ export default function PendaftarDetailPage() {
                   }
                 </div>
 
-                {/* 4. Tes Al-Qur'an (Offline) */}
                 <div className="bg-emerald-50/50 p-4 rounded-xl border border-emerald-100 flex flex-col justify-between">
                   <div>
-                    <span className="block text-xs text-emerald-600 font-bold uppercase tracking-wide mb-1">Wawancara: Al-Qur'an</span>
+                    <span className="block text-xs text-emerald-600 font-bold uppercase tracking-wide mb-1">Tes Al-Qur&apos;an</span>
                     {!pendaftar.nilai_ujian ?
                       <span className="text-sm font-bold text-stone-400 italic">Belum Ujian</span> :
                       <div className="flex items-baseline gap-2">
@@ -637,10 +630,9 @@ export default function PendaftarDetailPage() {
                   )}
                 </div>
 
-                {/* 5. Wawancara Calsan (Offline) */}
                 <div className="bg-amber-50/50 p-4 rounded-xl border border-amber-100 flex flex-col justify-between">
                   <div>
-                    <span className="block text-xs text-amber-600 font-bold uppercase tracking-wide mb-1">Wawancara: Calsan</span>
+                    <span className="block text-xs text-amber-600 font-bold uppercase tracking-wide mb-1">Wawancara: Calon Santri</span>
                     {!pendaftar.nilai_ujian ?
                       <span className="text-sm font-bold text-stone-400 italic">Belum Ujian</span> :
                       <div className="flex items-baseline gap-2">
@@ -658,10 +650,9 @@ export default function PendaftarDetailPage() {
                   )}
                 </div>
 
-                {/* 6. Wawancara Cawalsan (Offline) */}
                 <div className="bg-rose-50/50 p-4 rounded-xl border border-rose-100 flex flex-col justify-between">
                   <div>
-                    <span className="block text-xs text-rose-600 font-bold uppercase tracking-wide mb-1">Wawancara: Cawalsan</span>
+                    <span className="block text-xs text-rose-600 font-bold uppercase tracking-wide mb-1">Wawancara: Calon Orangtua/Wali Santri</span>
                     {!pendaftar.nilai_ujian ?
                       <span className="text-sm font-bold text-stone-400 italic inline-block mt-2 px-3 py-1 bg-stone-100 rounded">Belum Ada</span> :
                       (pendaftar.nilai_ujian?.nilai_wawancara_ortu || (pendaftar.nilai_ujian as any)?.detail_cawalsan ? (
@@ -691,7 +682,6 @@ export default function PendaftarDetailPage() {
                 </p>
               </div>
 
-              {/* Tampilkan tombol edit hanya jika itu penguji, biar admin super dkk cukup melihat hasil saja, jika mengedit lewat form khusus */}
               {isPenguji && (
                 <div className="mt-4 flex justify-end">
                   <Link href={`/dashboard/penguji/input-nilai?search=${pendaftar.nomor_pendaftaran}`} className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors shadow hover:shadow-md font-bold text-sm">
@@ -703,8 +693,6 @@ export default function PendaftarDetailPage() {
             </div>
           )}
 
-          {/* Untuk Admin Keuangan: Pembayaran pindah ke kolom utama paling atas */}
-          {/* TODO: Ganti logic check permission dengan session role yang sebenarnya */}
           {isKeuangan && (
             <div className="bg-white rounded-3xl shadow-sm p-6 border border-brand-yellow-100">
               <div className="flex items-center gap-3 mb-6">
@@ -755,7 +743,6 @@ export default function PendaftarDetailPage() {
             </div>
           )}
 
-          {/* Data Pribadi (Selalu tampil, tapi mungkin disederhanakan) */}
           <div className="bg-white rounded-3xl shadow-sm p-6 border border-brand-yellow-100">
             <div className="flex items-center gap-3 mb-6">
               <div className="p-3 bg-brand-blue-50 rounded-xl">
@@ -772,7 +759,6 @@ export default function PendaftarDetailPage() {
                 value={["L", "Laki-laki"].includes(pendaftar.jenis_kelamin) ? "Laki-laki" : "Perempuan"}
               />
               <InfoItem label="Jenjang" value={pendaftar.jenjang} />
-              {/* Hide extensive personal details for Finance/Berkas/Penguji to reduce noise */}
               {!isKeuangan && !isBerkas && !isPenguji && (
                 <>
                   <InfoItem label="Tempat Lahir" value={pendaftar.tempat_lahir} />
@@ -788,7 +774,6 @@ export default function PendaftarDetailPage() {
             </div>
           </div>
 
-          {/* Kontak & Alamat (Penting untuk Penagihan) */}
           <div className="bg-white rounded-3xl shadow-sm p-6 border border-brand-yellow-100">
             <div className="flex items-center gap-3 mb-6">
               <div className="p-3 bg-emerald-50 rounded-xl">
@@ -833,7 +818,7 @@ export default function PendaftarDetailPage() {
                 ) : (
                   <div className="flex items-end justify-between">
                     <InfoItem label="No. HP" value={pendaftar.no_hp} icon={<Phone className="w-4 h-4" />} />
-                    {userRole === "admin_super" && (
+                    {isAdminSuper && (
                       <button
                         onClick={() => {
                           setNewPhone(pendaftar.no_hp || "");

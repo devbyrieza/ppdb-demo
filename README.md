@@ -1,6 +1,6 @@
-# 🏫 PPDB Al-Andalus Ulul Albaab
+# 🏫 PPDB Al Andalus Ulul Albaab
 
-A modern PPDB (Penerimaan Peserta Didik Baru) registration system built for Pesantren Al-Andalus Ulul Albaab. This project showcases a complete student registration workflow with form validation, OTP verification, and responsive design.
+A modern PPDB (Penerimaan Peserta Didik Baru) registration system built for Pesantren Al Andalus Ulul Albaab. This project showcases a complete student registration workflow with form validation, OTP verification, and responsive design.
 
 ## 🚀 Live Demo
 
@@ -101,7 +101,7 @@ This is a client project. For contributions or issues, please contact the develo
 
 ## 📄 License
 
-This project is proprietary software developed for Pesantren Al-Andalus Ulul Albaab.
+This project is proprietary software developed for Pesantren Al Andalus Ulul Albaab.
 
 ## 👨‍💻 About Developer
 
@@ -120,4 +120,4 @@ This project is proprietary software developed for Pesantren Al-Andalus Ulul Alb
 
 ---
 
-**Note**: This project demonstrates expertise in modern web development, React ecosystem, and building production-ready applications for educational institutions like Pesantren Al-Andalus Ulul Albaab.
+**Note**: This project demonstrates expertise in modern web development, React ecosystem, and building production-ready applications for educational institutions like Pesantren Al Andalus Ulul Albaab.

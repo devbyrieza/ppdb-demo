@@ -32,7 +32,7 @@ export async function POST(req: Request) {
         if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
         const userRole = session.role;
-        const isSuper = userRole === 'admin_super' || userRole === 'tim_it';
+        const isSuper = userRole === 'admin_super';
 
         const body = await req.json();
         const { pendaftar_id, type } = body;

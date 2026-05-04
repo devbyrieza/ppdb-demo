@@ -27,15 +27,15 @@ async function main() {
         {
             email: 'rieza@ppdb-demo.com',
             full_name: 'Rieza Eka Tomara',
-            role: 'head_of_it',
-            secondary_roles: ['admin_super', 'admin_berkas', 'admin_keuangan'],
+            role: 'admin_super',
+            secondary_roles: ['admin_berkas', 'admin_keuangan'],
             password: 'Rieza26!'
         },
         {
             email: 'wahab@ppdb-demo.com',
             full_name: 'Wahab Rajasam',
             role: 'admin_super',
-            secondary_roles: ['head_of_it', 'admin_berkas', 'admin_keuangan'],
+            secondary_roles: ['admin_berkas', 'admin_keuangan'],
             password: 'Wahab26!'
         },
         {
@@ -62,7 +62,7 @@ async function main() {
         {
             email: 'quran@ppdb-demo.com',
             full_name: 'Penguji Al-Qur\'an Demo',
-            role: 'penguji_quran',
+            role: 'penguji_calsan',
             secondary_roles: [],
             password: 'Quran26!'
         },

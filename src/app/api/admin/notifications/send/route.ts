@@ -7,7 +7,7 @@ type NotificationType = "schedule" | "status";
 export async function POST(request: Request) {
     try {
         const session = await getServerSession();
-        if (!session || !["admin", "admin_super", "head_of_it", "penguji"].includes(session.role)) {
+        if (!session || !["admin", "admin_super", "penguji"].includes(session.role)) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 

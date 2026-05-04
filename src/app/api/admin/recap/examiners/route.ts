@@ -7,7 +7,7 @@ export async function GET() {
         const profiles = await prisma.profile.findMany({
             where: {
                 OR: [
-                    { role: { in: ['penguji_calsan', 'pewawancara_calsan', 'pewawancara_cawalsan', 'admin_super', 'tim_it'] } },
+                    { role: { in: ['penguji_calsan', 'pewawancara_calsan', 'pewawancara_cawalsan', 'admin_super'] } },
                     { secondary_roles: { hasSome: ['penguji_calsan', 'pewawancara_calsan', 'pewawancara_cawalsan'] } }
                 ]
             },

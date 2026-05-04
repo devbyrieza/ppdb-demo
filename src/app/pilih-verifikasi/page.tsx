@@ -40,16 +40,8 @@ function PilihVerifikasiContent() {
     const year = new Date().getFullYear();
     const prefix =
       jenis_kelamin === "L"
-        ? jenjang === "MTs"
-          ? "MTI"
-          : jenjang === "IL"
-            ? "ILI"
-            : "MAI"
-        : jenjang === "MTs"
-          ? "MTA"
-          : jenjang === "IL"
-            ? "ILA"
-            : "MAA";
+        ? (jenjang === "MTs" ? "MTI" : "ILI")
+        : (jenjang === "MTs" ? "MTA" : "ILA");
 
     // Random 4 digit untuk demo
     const randomNum = Math.floor(1000 + Math.random() * 9000);

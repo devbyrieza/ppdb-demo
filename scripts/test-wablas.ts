@@ -29,7 +29,7 @@ async function testWablas() {
             },
             body: new URLSearchParams({
                 phone: '6281234567890',
-                message: 'Test message from PPDB Al-Imam Debugger'
+                message: 'Test message from PPDB Al Imam Debugger'
             }).toString()
         });
 

@@ -221,10 +221,10 @@ function PPDBContent() {
               </div>
               <div>
                 <h3 className="text-xl md:text-2xl font-display font-black text-brand-blue-900 mb-2">
-                  ✨ Kesempatan Emas: Angkatan Pertama Era Al-Andalus
+                  ✨ Kesempatan Emas: Angkatan Pertama Era Al Andalus
                 </h3>
                 <p className="text-brand-blue-800 font-medium leading-relaxed">
-                  Menjadi bagian dari angkatan 2026/2027 adalah sebuah keistimewaan. Ananda akan menjadi <strong>pionir dan tonggak sejarah pertama</strong> yang merasakan secara penuh perpaduan mantap antara sistem unggulan Al-Andalus dengan kekayaan warisan PPDB.
+                  Menjadi bagian dari angkatan 2026/2027 adalah sebuah keistimewaan. Ananda akan menjadi <strong>pionir dan tonggak sejarah pertama</strong> yang merasakan secara penuh perpaduan mantap antara sistem unggulan Al Andalus dengan kekayaan warisan PPDB.
                 </p>
               </div>
             </motion.div>
@@ -411,7 +411,7 @@ function PPDBContent() {
                   <h3 className="text-2xl md:text-3xl font-display font-black mb-8 md:mb-10 text-white tracking-tight text-center lg:text-left">Kenapa Pilih Kami?</h3>
                   <div className="grid gap-4 md:gap-6">
                     {[
-                      { icon: BookOpen, title: "Kurikulum Mutakhir", desc: "Perpaduan kurikulum Nasional & kurikulum khas Al-Andalus." },
+                      { icon: BookOpen, title: "Kurikulum Mutakhir", desc: "Perpaduan kurikulum Nasional & kurikulum khas Al Andalus." },
                       { icon: GraduationCap, title: "Guru Berkompeten", desc: "Alumni Perguruan Tinggi Terbaik Dalam & Luar Negeri serta Pondok Pesantren Unggulan." },
                       { icon: MapPin, title: "Lingkungan Asri", desc: "Suasana belajar yang tenang & udara bersih." },
                     ].map((feat, i) => {
@@ -446,7 +446,7 @@ function PPDBContent() {
                     },
                     {
                       q: "Bagaimana sistem kurikulumnya?",
-                      a: "Kami menerapkan Kurikulum Terpadu yang menggabungkan kurikulum Nasional dengan kurikulum khas Al-Andalus yang berfokus pada penguasaan Bahasa Arab, Tahfidz Al-Qur'an, dan Kitab Turots."
+                      a: "Kami menerapkan Kurikulum Terpadu yang menggabungkan kurikulum Nasional dengan kurikulum khas Al Andalus yang berfokus pada penguasaan Bahasa Arab, Tahfidz Al-Qur'an, dan Kitab Turots."
                     }
                   ].map((faq, i) => (
                     <motion.div key={i} className="group">

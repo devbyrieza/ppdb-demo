@@ -15,7 +15,7 @@ NEXTAUTH_SECRET="local-secret-key-change-in-production"
 
 # Application Configuration
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
-NEXT_PUBLIC_APP_NAME="PPDB Al-Imam (LOCAL)"
+NEXT_PUBLIC_APP_NAME="PPDB Al Imam (LOCAL)"
 
 # WhatsApp Configuration (tetap aktif)
 NEXT_PUBLIC_WABLAS_API_KEY="your_wablas_api_key"
