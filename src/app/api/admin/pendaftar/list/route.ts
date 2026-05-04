@@ -22,7 +22,13 @@ export async function GET(request: NextRequest) {
     }
 
     // Check custom role
-    const allowedRoles = ["admin", "admin_super", "admin_berkas", "admin_keuangan", "penguji"];
+    const allowedRoles = [
+      "admin",
+      "admin_super",
+      "admin_berkas",
+      "admin_keuangan",
+      "penguji",
+    ];
     if (!allowedRoles.includes(session.role)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
@@ -63,13 +69,41 @@ export async function GET(request: NextRequest) {
       const filterMapping: Record<string, string[]> = {
         belum_bayar: ["draft", "waiting_payment", "awaiting_payment"],
         menunggu_verifikasi_pembayaran: ["payment_verification"],
-        sudah_bayar: ["paid", "verified", "data_completed", "docs_uploaded", "docs_verified", "scheduled", "tested", "announced", "accepted", "enrolled"],
+        sudah_bayar: [
+          "paid",
+          "verified",
+          "data_completed",
+          "docs_uploaded",
+          "docs_verified",
+          "scheduled",
+          "tested",
+          "announced",
+          "accepted",
+          "enrolled",
+        ],
         pembayaran_ditolak: ["rejected", "payment_rejected"],
         belum_isi_data: ["verified", "paid"],
-        sudah_isi_data: ["data_completed", "docs_uploaded", "docs_verified", "scheduled", "tested", "announced", "accepted", "enrolled"],
+        sudah_isi_data: [
+          "data_completed",
+          "docs_uploaded",
+          "docs_verified",
+          "scheduled",
+          "tested",
+          "announced",
+          "accepted",
+          "enrolled",
+        ],
         belum_upload_dokumen: ["data_completed"],
         menunggu_verifikasi_dokumen: ["docs_uploaded"],
-        dokumen_terverifikasi: ["docs_verified", "scheduled", "tested", "passed", "announced", "accepted", "enrolled"],
+        dokumen_terverifikasi: [
+          "docs_verified",
+          "scheduled",
+          "tested",
+          "passed",
+          "announced",
+          "accepted",
+          "enrolled",
+        ],
         dokumen_ditolak: ["docs_rejected"],
         terjadwal_ujian: ["scheduled"],
         belum_ujian: ["scheduled"],
@@ -120,13 +154,13 @@ export async function GET(request: NextRequest) {
           status_pendaftaran: true,
           created_at: true,
           tahun_ajaran: {
-            select: { nama: true }
+            select: { nama: true },
           },
           pembayaran: {
-            select: { status_pembayaran: true }
+            select: { status_pembayaran: true },
           },
           dokumen: {
-            select: { jenis_dokumen: true, is_verified: true, catatan: true }
+            select: { jenis_dokumen: true, is_verified: true, catatan: true },
           },
           nilai_ujian: {
             select: {
@@ -142,16 +176,16 @@ export async function GET(request: NextRequest) {
               status_kelulusan: true,
               catatan_kelulusan: true,
               updated_at: true,
-            }
+            },
           },
           pengumuman: {
-            select: { status_kelulusan: true }
+            select: { status_kelulusan: true },
           },
           whatsapp_logs: {
             orderBy: { created_at: "desc" },
             take: 1,
-            select: { status: true, updated_at: true, error_message: true }
-          }
+            select: { status: true, updated_at: true, error_message: true },
+          },
         },
         orderBy: { created_at: "desc" },
         skip,
@@ -162,29 +196,31 @@ export async function GET(request: NextRequest) {
     // Transform data: Master Merge for NilaiUjian and document status
     const isEmpty = (v: any) => {
       if (v == null || v === "") return true;
-      if (typeof v === 'object') {
+      if (typeof v === "object") {
         if (Array.isArray(v)) return v.length === 0;
         const keys = Object.keys(v);
         if (keys.length === 0) return true;
         // Check if all values are null or empty
-        return keys.every(key => v[key] == null || v[key] === "");
+        return keys.every((key) => v[key] == null || v[key] === "");
       }
       return false;
     };
-    
-    const transformedData = data.map(item => {
+
+    const transformedData = data.map((item) => {
       // 1. Merge multiple NilaiUjian records if exists
       const scores = item.nilai_ujian || [];
       let mergedNilai = null;
-      
+
       if (scores.length > 0) {
         // Sort newest to oldest so first non-empty value found is the newest
-        const sorted = [...scores].sort((a: any, b: any) => 
-          new Date(b.updated_at || 0).getTime() - new Date(a.updated_at || 0).getTime()
+        const sorted = [...scores].sort(
+          (a: any, b: any) =>
+            new Date(b.updated_at || 0).getTime() -
+            new Date(a.updated_at || 0).getTime(),
         );
-        
+
         const master: any = {};
-        sorted.forEach(s => {
+        sorted.forEach((s) => {
           Object.entries(s).forEach(([k, v]) => {
             // Pick newest non-empty value
             if (!isEmpty(v) && isEmpty(master[k])) {
@@ -208,15 +244,23 @@ export async function GET(request: NextRequest) {
 
       // 3. Derive virtual exam_status label for UI
       const sp = (item as any).status_pendaftaran;
-      const examProgressStatuses = ['scheduled', 'testing', 'tested', 'passed', 'announced', 'accepted', 'enrolled'];
+      const examProgressStatuses = [
+        "scheduled",
+        "testing",
+        "tested",
+        "passed",
+        "announced",
+        "accepted",
+        "enrolled",
+      ];
       let examStatus = sp;
       if (examProgressStatuses.includes(sp)) {
-        if (examScoreCount === 6 || sp === 'passed') {
-          examStatus = 'tested'; // Sudah Ujian / Passed by skip-ujian
+        if (examScoreCount === 6 || sp === "passed") {
+          examStatus = "tested"; // Sudah Ujian / Passed by skip-ujian
         } else if (examScoreCount > 0) {
-          examStatus = 'testing'; // Sedang Ujian
+          examStatus = "testing"; // Sedang Ujian
         } else {
-          examStatus = 'scheduled'; // Terjadwal, belum ada nilai
+          examStatus = "scheduled"; // Terjadwal, belum ada nilai
         }
       }
 
@@ -226,14 +270,20 @@ export async function GET(request: NextRequest) {
         exam_score_count: examScoreCount,
         exam_status: examStatus,
         whatsapp_status: item.whatsapp_logs?.[0] || null,
-        dokumen: item.dokumen.map(doc => ({
+        dokumen: item.dokumen.map((doc) => ({
           jenis_dokumen: doc.jenis_dokumen,
-          status_verifikasi: doc.is_verified ? "verified" : (doc.catatan ? "rejected" : "pending")
-        }))
+          status_verifikasi: doc.is_verified
+            ? "verified"
+            : doc.catatan
+              ? "rejected"
+              : "pending",
+        })),
       };
     });
 
-    console.log(`[API] Pendaftar List: Role=${session.role}, Count=${total}, Limit=${limit}, Where=${JSON.stringify(where)}`);
+    console.log(
+      `[API] Pendaftar List: Role=${session.role}, Count=${total}, Limit=${limit}, Where=${JSON.stringify(where)}`,
+    );
 
     return NextResponse.json({
       data: transformedData || [],
@@ -248,7 +298,7 @@ export async function GET(request: NextRequest) {
     console.error("Error in admin pendaftar list API:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

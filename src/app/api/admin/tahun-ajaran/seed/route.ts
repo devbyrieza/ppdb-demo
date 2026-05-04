@@ -20,7 +20,12 @@ export async function POST() {
     }
 
     // Check custom role
-    const allowedRoles = ["admin", "admin_super", "admin_berkas", "admin_pembayaran"];
+    const allowedRoles = [
+      "admin",
+      "admin_super",
+      "admin_berkas",
+      "admin_pembayaran",
+    ];
     if (!allowedRoles.includes(session.role)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
@@ -43,9 +48,9 @@ export async function POST() {
 
         // Deactivate others
         await tx.tahunAjaran.updateMany({
-          where: { 
+          where: {
             id: { not: existing.id },
-            is_active: true 
+            is_active: true,
           },
           data: { is_active: false },
         });
@@ -54,40 +59,42 @@ export async function POST() {
         console.log(`[SEED] Migrating data to ${existing.id} (2026/2027)`);
         await tx.pendaftar.updateMany({
           where: { tahun_ajaran_id: { not: existing.id } },
-          data: { tahun_ajaran_id: existing.id }
+          data: { tahun_ajaran_id: existing.id },
         });
         await tx.pembayaran.updateMany({
           where: { tahun_ajaran_id: { not: existing.id } },
-          data: { tahun_ajaran_id: existing.id }
+          data: { tahun_ajaran_id: existing.id },
         });
         await tx.jadwalUjian.updateMany({
           where: { tahun_ajaran_id: { not: existing.id } },
-          data: { tahun_ajaran_id: existing.id }
+          data: { tahun_ajaran_id: existing.id },
         });
         await tx.pengumuman.updateMany({
           where: { tahun_ajaran_id: { not: existing.id } },
-          data: { tahun_ajaran_id: existing.id }
+          data: { tahun_ajaran_id: existing.id },
         });
         await tx.hasilSeleksi.updateMany({
           where: { tahun_ajaran_id: { not: existing.id } },
-          data: { tahun_ajaran_id: existing.id }
+          data: { tahun_ajaran_id: existing.id },
         });
         await tx.reservasiPSB.updateMany({
           where: { tahun_ajaran_id: { not: existing.id } },
-          data: { tahun_ajaran_id: existing.id }
+          data: { tahun_ajaran_id: existing.id },
         });
 
         // NEW: Fix existing payments that are 200000 for PENDAFTARAN
-        console.log(`[SEED] Updating existing PENDAFTARAN payments from 200000 to 250000`);
+        console.log(
+          `[SEED] Updating existing PENDAFTARAN payments from 200000 to 250000`,
+        );
         await tx.pembayaran.updateMany({
-          where: { 
-            jenis_pembayaran: 'PENDAFTARAN',
-            jumlah: 200000
+          where: {
+            jenis_pembayaran: "PENDAFTARAN",
+            jumlah: 200000,
           },
-          data: { 
+          data: {
             jumlah: 250000,
-            total_tagihan: 250000
-          }
+            total_tagihan: 250000,
+          },
         });
       });
 
@@ -140,7 +147,7 @@ export async function POST() {
     console.error("Seed tahun ajaran error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -164,7 +171,12 @@ export async function GET(request: Request) {
     }
 
     // Check custom role
-    const allowedRoles = ["admin", "admin_super", "admin_berkas", "admin_pembayaran"];
+    const allowedRoles = [
+      "admin",
+      "admin_super",
+      "admin_berkas",
+      "admin_pembayaran",
+    ];
     const secret = new URL(request.url).searchParams.get("secret");
     if (secret !== "fix2026" && !allowedRoles.includes(session.role)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
@@ -175,28 +187,30 @@ export async function GET(request: Request) {
     });
 
     const active = data.find((ta) => ta.is_active);
-    const has2026 = data.find((ta) => ta.tahun_mulai === 2026 && ta.tahun_selesai === 2027);
+    const has2026 = data.find(
+      (ta) => ta.tahun_mulai === 2026 && ta.tahun_selesai === 2027,
+    );
 
     // MIGRATION: Also perform migration on GET if admin (to make it easy to trigger)
     if (active && Number(active.biaya_pendaftaran) !== 250000) {
       console.log(`[SEED-GET] Triggering emergency fix for registration fee`);
       await prisma.tahunAjaran.update({
         where: { id: active.id },
-        data: { biaya_pendaftaran: 250000 }
+        data: { biaya_pendaftaran: 250000 },
       });
     }
 
     // Fix existing payments that are 200000 for PENDAFTARAN
     console.log(`[SEED-GET] Triggering emergency fix for existing payments`);
     const updateCount = await prisma.pembayaran.updateMany({
-      where: { 
-        jenis_pembayaran: 'PENDAFTARAN',
-        jumlah: 200000
+      where: {
+        jenis_pembayaran: "PENDAFTARAN",
+        jumlah: 200000,
       },
-      data: { 
+      data: {
         jumlah: 250000,
-        total_tagihan: 250000
-      }
+        total_tagihan: 250000,
+      },
     });
 
     return NextResponse.json({
@@ -211,7 +225,7 @@ export async function GET(request: Request) {
     console.error("Get tahun ajaran error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

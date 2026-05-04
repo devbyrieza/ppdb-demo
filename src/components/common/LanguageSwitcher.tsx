@@ -20,10 +20,11 @@ export default function LanguageSwitcher() {
     // ─── Initialize Google Translate ───
     const addGoogleTranslateScript = () => {
       if (document.getElementById("google-translate-script")) return;
-      
+
       const script = document.createElement("script");
       script.id = "google-translate-script";
-      script.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+      script.src =
+        "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
       script.async = true;
       document.body.appendChild(script);
 
@@ -32,10 +33,11 @@ export default function LanguageSwitcher() {
           {
             pageLanguage: "id",
             includedLanguages: "en,ar,ms,zh-CN,id,fr,de,ja,ko",
-            layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
+            layout:
+              window.google.translate.TranslateElement.InlineLayout.SIMPLE,
             autoDisplay: false,
           },
-          "google_translate_element"
+          "google_translate_element",
         );
       };
     };
@@ -60,7 +62,9 @@ export default function LanguageSwitcher() {
   }, []);
 
   const changeLanguage = (langCode: string) => {
-    const select = document.querySelector(".goog-te-combo") as HTMLSelectElement;
+    const select = document.querySelector(
+      ".goog-te-combo",
+    ) as HTMLSelectElement;
     if (select) {
       select.value = langCode;
       select.dispatchEvent(new Event("change"));
@@ -83,53 +87,62 @@ export default function LanguageSwitcher() {
         <span className="text-[11px] font-black text-slate-600 uppercase tracking-wider hidden sm:block">
           {LANGUAGES.find((l) => l.code === currentLang)?.code}
         </span>
-        <ChevronDown className={`w-3 h-3 text-slate-400 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
+        <ChevronDown
+          className={`w-3 h-3 text-slate-400 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+        />
       </button>
 
       <AnimatePresence>
         {isOpen && (
           <>
-            <div className="fixed inset-0 z-[60]" onClick={() => setIsOpen(false)} />
+            <div
+              className="fixed inset-0 z-[60]"
+              onClick={() => setIsOpen(false)}
+            />
             <motion.div
               initial={{ opacity: 0, y: 10, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 10, scale: 0.95 }}
               className="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-2xl border border-slate-100 p-2 z-[70] overflow-hidden"
             >
-                <div className="px-3 py-2 border-b border-slate-50 mb-1">
-                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]">Pilih Bahasa</p>
-                </div>
-                <div className="space-y-0.5">
-                    {LANGUAGES.map((lang) => (
-                        <button
-                            key={lang.code}
-                            onClick={() => changeLanguage(lang.code)}
-                            className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm transition-all ${
-                                currentLang === lang.code 
-                                ? "bg-teal-50 text-teal-700 font-bold" 
-                                : "text-slate-600 hover:bg-slate-50"
-                            }`}
-                        >
-                            <div className="flex items-center gap-3">
-                                <span className="text-base">{lang.flag}</span>
-                                <span>{lang.name}</span>
-                            </div>
-                            {currentLang === lang.code && <Check className="w-4 h-4" />}
-                        </button>
-                    ))}
-                </div>
-                <div className="mt-2 pt-2 border-t border-slate-50">
-                    <button 
-                        onClick={() => {
-                            const el = document.querySelector(".goog-te-gadget-simple") as HTMLElement;
-                            if (el) el.click();
-                            setIsOpen(false);
-                        }}
-                        className="w-full text-center py-2 text-[10px] font-bold text-slate-400 hover:text-teal-600 transition-colors uppercase tracking-widest"
-                    >
-                        Bahasa Lainnya...
-                    </button>
-                </div>
+              <div className="px-3 py-2 border-b border-slate-50 mb-1">
+                <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]">
+                  Pilih Bahasa
+                </p>
+              </div>
+              <div className="space-y-0.5">
+                {LANGUAGES.map((lang) => (
+                  <button
+                    key={lang.code}
+                    onClick={() => changeLanguage(lang.code)}
+                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm transition-all ${
+                      currentLang === lang.code
+                        ? "bg-teal-50 text-teal-700 font-bold"
+                        : "text-slate-600 hover:bg-slate-50"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="text-base">{lang.flag}</span>
+                      <span>{lang.name}</span>
+                    </div>
+                    {currentLang === lang.code && <Check className="w-4 h-4" />}
+                  </button>
+                ))}
+              </div>
+              <div className="mt-2 pt-2 border-t border-slate-50">
+                <button
+                  onClick={() => {
+                    const el = document.querySelector(
+                      ".goog-te-gadget-simple",
+                    ) as HTMLElement;
+                    if (el) el.click();
+                    setIsOpen(false);
+                  }}
+                  className="w-full text-center py-2 text-[10px] font-bold text-slate-400 hover:text-teal-600 transition-colors uppercase tracking-widest"
+                >
+                  Bahasa Lainnya...
+                </button>
+              </div>
             </motion.div>
           </>
         )}

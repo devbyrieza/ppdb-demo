@@ -4,20 +4,20 @@ import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useInView, type Variants } from "framer-motion";
-import { 
-  ArrowRight, 
-  Sparkles, 
-  BookOpen, 
-  Target, 
-  Trophy, 
-  Clock, 
+import {
+  ArrowRight,
+  Sparkles,
+  BookOpen,
+  Target,
+  Trophy,
+  Clock,
   Calendar as CalendarIcon,
   Users,
   Shield,
   Monitor,
   Zap,
   Waves,
-  Palette
+  Palette,
 } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 
@@ -27,32 +27,38 @@ const ACTIVITIES = [
     id: 1,
     title: "Kajian Kitab Turots",
     category: "Akademik",
-    description: "Pendalaman literatur klasik Islam dengan bimbingan asatidzah berkompeten untuk membangun fondasi ilmu yang kokoh.",
+    description:
+      "Pendalaman literatur klasik Islam dengan bimbingan asatidzah berkompeten untuk membangun fondasi ilmu yang kokoh.",
     time: "Setiap Ba'da Subuh",
-    image: "https://images.unsplash.com/photo-1544648397-72285879f282?q=80&w=1200&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1544648397-72285879f282?q=80&w=1200&auto=format&fit=crop",
     icon: BookOpen,
-    color: "teal"
+    color: "teal",
   },
   {
     id: 2,
     title: "Halaqoh Tahfidz",
     category: "Al-Qur'an",
-    description: "Program intensif menghafal Al-Qur'an dengan metode talaqqi untuk memastikan kualitas bacaan dan kekuatan hafalan.",
+    description:
+      "Program intensif menghafal Al-Qur'an dengan metode talaqqi untuk memastikan kualitas bacaan dan kekuatan hafalan.",
     time: "Setiap Ba'da Ashar",
-    image: "https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=1200&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=1200&auto=format&fit=crop",
     icon: Target,
-    color: "emerald"
+    color: "emerald",
   },
   {
     id: 3,
     title: "Latihan Memanah",
     category: "Ekstrakurikuler",
-    description: "Melatih fokus, konsentrasi, dan kekuatan fisik melalui sunnah memanah dengan standar peralatan yang representatif.",
+    description:
+      "Melatih fokus, konsentrasi, dan kekuatan fisik melalui sunnah memanah dengan standar peralatan yang representatif.",
     time: "Sabtu & Ahad Pagi",
-    image: "https://images.unsplash.com/photo-1511394576932-520f97914872?q=80&w=1200&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1511394576932-520f97914872?q=80&w=1200&auto=format&fit=crop",
     icon: Trophy,
-    color: "sand"
-  }
+    color: "sand",
+  },
 ];
 
 // ─── DATA EKSTRAKURIKULER (Chips) ───
@@ -73,32 +79,32 @@ const EASE = [0.16, 1, 0.3, 1] as const;
 const containerVariants: Variants = {
   hidden: {},
   visible: {
-    transition: { staggerChildren: 0.1, delayChildren: 0.2 }
-  }
+    transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+  },
 };
 
 const fadeUpVariants: Variants = {
   hidden: { opacity: 0, y: 30, filter: "blur(8px)" },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
+  visible: {
+    opacity: 1,
+    y: 0,
     filter: "blur(0px)",
-    transition: { duration: 0.8, ease: EASE } 
-  }
+    transition: { duration: 0.8, ease: EASE },
+  },
 };
 
 const cardVariants: Variants = {
   hidden: { opacity: 0, scale: 0.95, y: 20 },
-  visible: { 
-    opacity: 1, 
-    scale: 1, 
+  visible: {
+    opacity: 1,
+    scale: 1,
     y: 0,
-    transition: { duration: 0.6, ease: EASE } 
-  }
+    transition: { duration: 0.6, ease: EASE },
+  },
 };
 
 // ─── COMPONENT: ACTIVITY CARD ───
-function ActivityCard({ activity }: { activity: typeof ACTIVITIES[0] }) {
+function ActivityCard({ activity }: { activity: (typeof ACTIVITIES)[0] }) {
   const Icon = activity.icon;
   return (
     <motion.div
@@ -126,7 +132,9 @@ function ActivityCard({ activity }: { activity: typeof ACTIVITIES[0] }) {
       <div className="flex-1 p-8 flex flex-col">
         <div className="flex items-center gap-2 mb-4">
           <Clock className="w-3.5 h-3.5 text-teal-600" />
-          <span className="text-[11px] font-bold text-ink-400 uppercase tracking-wider">{activity.time}</span>
+          <span className="text-[11px] font-bold text-ink-400 uppercase tracking-wider">
+            {activity.time}
+          </span>
         </div>
         <h3 className="text-xl font-black text-ink-950 mb-3 leading-tight group-hover:text-teal-800 transition-colors">
           {activity.title}
@@ -152,7 +160,10 @@ export default function ActivitiesSection() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="activities" className="section-std relative overflow-hidden bg-sand-50/30">
+    <section
+      id="activities"
+      className="section-std relative overflow-hidden bg-sand-50/30"
+    >
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-teal-50/50 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/4 pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-sand-100/50 rounded-full blur-[80px] translate-y-1/3 -translate-x-1/4 pointer-events-none" />
 
@@ -173,18 +184,21 @@ export default function ActivitiesSection() {
               </div>
             </motion.div>
 
-            <motion.h2 
+            <motion.h2
               variants={fadeUpVariants}
               className="text-4xl md:text-5xl font-black text-ink-950 mb-6 tracking-tight leading-[1.1]"
             >
-              Kegiatan <span className="text-teal-600">Terbaik</span> untuk Bekal Masa Depan
+              Kegiatan <span className="text-teal-600">Terbaik</span> untuk
+              Bekal Masa Depan
             </motion.h2>
 
-            <motion.p 
+            <motion.p
               variants={fadeUpVariants}
               className="text-lg text-ink-600 font-medium leading-relaxed"
             >
-              Kurikulum yang dirancang untuk membentuk karakter rabbani, kecerdasan akademik, dan kemandirian melalui program harian yang terstruktur.
+              Kurikulum yang dirancang untuk membentuk karakter rabbani,
+              kecerdasan akademik, dan kemandirian melalui program harian yang
+              terstruktur.
             </motion.p>
           </div>
 
@@ -196,20 +210,28 @@ export default function ActivitiesSection() {
           </div>
 
           {/* Extra Activities Chips - Menyamakan kelengkapan dengan Institusi */}
-          <motion.div variants={fadeUpVariants} className="w-full max-w-4xl mb-20 md:mb-24">
-             <div className="flex flex-wrap justify-center gap-3">
-                {EXTRA_ACTIVITIES.map((item, idx) => {
-                  const Icon = item.icon;
-                  return (
-                    <div key={idx} className="flex items-center gap-2.5 px-5 py-3 bg-white rounded-2xl border border-sand-100 shadow-premium-sm hover:border-teal-200 hover:shadow-premium-md transition-all duration-300 group cursor-default">
-                      <div className="w-8 h-8 rounded-lg bg-sand-50 flex items-center justify-center text-teal-600 group-hover:bg-teal-50 transition-colors">
-                        <Icon className="w-4 h-4" />
-                      </div>
-                      <span className="text-[11px] font-black text-ink-950 uppercase tracking-widest">{item.name}</span>
+          <motion.div
+            variants={fadeUpVariants}
+            className="w-full max-w-4xl mb-20 md:mb-24"
+          >
+            <div className="flex flex-wrap justify-center gap-3">
+              {EXTRA_ACTIVITIES.map((item, idx) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={idx}
+                    className="flex items-center gap-2.5 px-5 py-3 bg-white rounded-2xl border border-sand-100 shadow-premium-sm hover:border-teal-200 hover:shadow-premium-md transition-all duration-300 group cursor-default"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-sand-50 flex items-center justify-center text-teal-600 group-hover:bg-teal-50 transition-colors">
+                      <Icon className="w-4 h-4" />
                     </div>
-                  );
-                })}
-             </div>
+                    <span className="text-[11px] font-black text-ink-950 uppercase tracking-widest">
+                      {item.name}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
           </motion.div>
 
           {/* Footer Card */}
@@ -217,21 +239,24 @@ export default function ActivitiesSection() {
             <div className="relative p-10 md:p-12 rounded-[2.5rem] bg-teal-900 overflow-hidden shadow-2xl">
               <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
               <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-teal-400/20 rounded-full blur-[60px] -translate-y-1/2 translate-x-1/4" />
-              
+
               <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
                 <div className="max-w-md">
                   <h4 className="text-2xl md:text-3xl font-black text-white mb-4 tracking-tight">
                     Lihat Jadwal Harian Lengkap Santri
                   </h4>
                   <p className="text-teal-100/80 font-medium text-sm leading-relaxed">
-                    Setiap detik di sini adalah kesempatan belajar. Unduh jadwal harian lengkap untuk mengetahui rutinitas santri kami.
+                    Setiap detik di sini adalah kesempatan belajar. Unduh jadwal
+                    harian lengkap untuk mengetahui rutinitas santri kami.
                   </p>
                 </div>
-                
+
                 <div className="shrink-0">
                   <Link href="/kegiatan">
                     <button className="group relative inline-flex items-center gap-3 px-8 py-4 bg-white text-teal-900 font-black text-sm uppercase tracking-widest rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-105 active:scale-95">
-                      <span className="relative z-10">Eksplorasi Seluruh Kegiatan</span>
+                      <span className="relative z-10">
+                        Eksplorasi Seluruh Kegiatan
+                      </span>
                       <CalendarIcon className="relative z-10 w-5 h-5 transition-transform duration-300 group-hover:rotate-12" />
                       <div className="absolute inset-0 bg-sand-50 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
                     </button>

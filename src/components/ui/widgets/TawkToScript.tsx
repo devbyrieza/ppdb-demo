@@ -18,44 +18,44 @@ const TAWK_INIT_SCRIPT = `
 `;
 
 export default function TawkToScript() {
-    return (
-        <>
-            {/* Init script runs first (afterInteractive) to set onLoad BEFORE external script loads */}
-            <Script
-                id="tawk-init"
-                strategy="afterInteractive"
-                dangerouslySetInnerHTML={{ __html: TAWK_INIT_SCRIPT }}
-            />
-            {/* Tawk.to main script - loads lazily */}
-            <Script
-                id="tawk-to-script"
-                strategy="lazyOnload"
-                src={`https://embed.tawk.to/${PROPERTY_ID}/${WIDGET_ID}`}
-            />
-        </>
-    );
+  return (
+    <>
+      {/* Init script runs first (afterInteractive) to set onLoad BEFORE external script loads */}
+      <Script
+        id="tawk-init"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: TAWK_INIT_SCRIPT }}
+      />
+      {/* Tawk.to main script - loads lazily */}
+      <Script
+        id="tawk-to-script"
+        strategy="lazyOnload"
+        src={`https://embed.tawk.to/${PROPERTY_ID}/${WIDGET_ID}`}
+      />
+    </>
+  );
 }
 
 // TypeScript declarations for Tawk.to API
 declare global {
-    interface Window {
-        Tawk_API: {
-            onLoad?: () => void;
-            onStatusChange?: (status: string) => void;
-            hideWidget: () => void;
-            showWidget: () => void;
-            maximize: () => void;
-            minimize: () => void;
-            toggle: () => void;
-            popup: () => void;
-            getStatus: () => string;
-            isChatMaximized: () => boolean;
-            isChatMinimized: () => boolean;
-            isChatHidden: () => boolean;
-            isChatOngoing: () => boolean;
-            isVisitorEngaged: () => boolean;
-            isOnline: () => boolean;
-        };
-        Tawk_LoadStart: Date;
-    }
+  interface Window {
+    Tawk_API: {
+      onLoad?: () => void;
+      onStatusChange?: (status: string) => void;
+      hideWidget: () => void;
+      showWidget: () => void;
+      maximize: () => void;
+      minimize: () => void;
+      toggle: () => void;
+      popup: () => void;
+      getStatus: () => string;
+      isChatMaximized: () => boolean;
+      isChatMinimized: () => boolean;
+      isChatHidden: () => boolean;
+      isChatOngoing: () => boolean;
+      isVisitorEngaged: () => boolean;
+      isOnline: () => boolean;
+    };
+    Tawk_LoadStart: Date;
+  }
 }

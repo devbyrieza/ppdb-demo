@@ -30,14 +30,14 @@ const Container = React.forwardRef<HTMLDivElement, ContainerProps>(
             "max-w-7xl": size === "lg",
             "max-w-full": size === "full",
           },
-          className
+          className,
         )}
         {...props}
       >
         {children}
       </div>
     );
-  }
+  },
 );
 
 Container.displayName = "Container";

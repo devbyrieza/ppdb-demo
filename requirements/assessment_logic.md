@@ -16,10 +16,10 @@ Total Score = Weighted Average of 5 Components.
 
 | Component | Weight |
 | :--- | :--- |
-| **Tes Akademik** | 30% |
+| **Seleksi Akademik** | 30% |
 | **Tes Al-Quran** | 30% |
-| **Tes Kepribadian** | 10% |
-| **Tes Kesiapan** | 10% |
+| **Seleksi Kepribadian** | 10% |
+| **Seleksi Kesiapan** | 10% |
 | **Wawancara (Santri & Ortu)** | 20% |
 
 **Decision Rule:**
@@ -30,7 +30,7 @@ Total Score = Weighted Average of 5 Components.
 
 ---
 
-## 3. Answer Keys (Tes Akademik)
+## 3. Answer Keys (Seleksi Akademik)
 
 ### MTs (20 Questions)
 1.  B (Tiada Tuhan berhak disembah selain Allah)
@@ -94,12 +94,12 @@ Total Score = Weighted Average of 5 Components.
 
 ## 4. Scoring Logic (Non-Akademik)
 
-### Tes Kepribadian (100 Soal A/B)
+### Seleksi Kepribadian (100 Soal A/B)
 **Logic**: "Positive Character" matching.
 - We will define a key where choice A or B represents the "Pesantren-aligned" trait (Discipline, Honesty, Resilience).
 - Score = (Matches / 100) * 100.
 
-### Tes Kesiapan (15 Soal Skala 1-5)
+### Seleksi Kesiapan (15 Soal Skala 1-5)
 - **Score** = (Sum of Answers / 75) * 100.
 - Range 1-5 maps to linear score.
 

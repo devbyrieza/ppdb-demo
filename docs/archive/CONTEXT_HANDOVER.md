@@ -69,7 +69,7 @@ text
    - Data Pribadi
    - Pembayaran Pendaftaran
    - Kelengkapan Berkas
-   - Jadwal Ujian
+   - Jadwal Seleksi
    - Hasil Ujian
    - Pengumuman
    - Daftar Ulang

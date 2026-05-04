@@ -74,7 +74,6 @@ export default function AboutSection() {
 
       <Container className="relative z-10">
         <div className="max-w-5xl mx-auto">
-
           {/* ── Header ─────────────────────────────── */}
           <motion.div
             className="text-center mb-16 lg:mb-24"
@@ -115,7 +114,6 @@ export default function AboutSection() {
 
           {/* ── Visi & Misi Grid ─────────────────── */}
           <div className="grid gap-5 lg:gap-6 mb-16 lg:mb-20">
-
             {/* Visi — Full Width, Statement Card */}
             <motion.div
               initial={{ opacity: 0, y: 24 }}
@@ -253,7 +251,6 @@ export default function AboutSection() {
               </button>
             </Link>
           </motion.div>
-
         </div>
       </Container>
     </section>

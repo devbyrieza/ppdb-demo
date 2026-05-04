@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Optional: Validate that the session user owns this data if they are a pendaftar
-    // But this endpoint might be used by admins too? 
+    // But this endpoint might be used by admins too?
     // Assuming simple read is fine if authenticated
     const session = JSON.parse(sessionCookie.value);
 
@@ -49,15 +49,15 @@ export async function GET(request: NextRequest) {
         updated_at: true,
         pembayaran: {
           where: { status_pembayaran: "verified" },
-          take: 1
+          take: 1,
         },
         pengumuman: {
           select: {
             status_kelulusan: true,
             catatan: true,
-            surat_keputusan_url: true
-          }
-        }
+            surat_keputusan_url: true,
+          },
+        },
       },
     });
 
@@ -71,12 +71,17 @@ export async function GET(request: NextRequest) {
     // AUTO-FIX: Sync status_pendaftaran if payment is verified
     let currentStatus = data.status_pendaftaran || "draft";
     const { getStatusIndex } = await import("@/lib/access-control");
-    
-    if (data.pembayaran.length > 0 && getStatusIndex(currentStatus) < getStatusIndex("verified")) {
-      console.log(`[AutoFix] Upgrading ${data.nomor_pendaftaran} status to verified (payment found)`);
+
+    if (
+      data.pembayaran.length > 0 &&
+      getStatusIndex(currentStatus) < getStatusIndex("verified")
+    ) {
+      console.log(
+        `[AutoFix] Upgrading ${data.nomor_pendaftaran} status to verified (payment found)`,
+      );
       await prisma.pendaftar.update({
         where: { id: pendaftarId },
-        data: { status_pendaftaran: "verified" }
+        data: { status_pendaftaran: "verified" },
       });
       currentStatus = "verified";
     }
@@ -84,12 +89,15 @@ export async function GET(request: NextRequest) {
     // Check if slots are available and pendaftar hasn't booked yet
     const sessions = await prisma.examSession.findMany({
       where: { is_active: true, start_time: { gte: new Date() } },
-      include: { _count: { select: { bookings: true } } }
+      include: { _count: { select: { bookings: true } } },
     });
-    const totalAvailableSlots = sessions.reduce((acc, s) => acc + Math.max(0, s.quota - s._count.bookings), 0);
-    
+    const totalAvailableSlots = sessions.reduce(
+      (acc, s) => acc + Math.max(0, s.quota - s._count.bookings),
+      0,
+    );
+
     const existingBooking = await prisma.jadwalUjian.findFirst({
-        where: { pendaftar_id: pendaftarId }
+      where: { pendaftar_id: pendaftarId },
     });
 
     const schedules_available = totalAvailableSlots > 0 && !existingBooking;
@@ -98,8 +106,8 @@ export async function GET(request: NextRequest) {
     const dataWithNilai = await prisma.pendaftar.findUnique({
       where: { id: pendaftarId },
       include: {
-        nilai_ujian: true
-      }
+        nilai_ujian: true,
+      },
     });
 
     const nilai = dataWithNilai?.nilai_ujian[0];
@@ -114,8 +122,8 @@ export async function GET(request: NextRequest) {
       schedules_available: schedules_available,
       hasil_kelulusan: {
         status: (nilai as any)?.status_kelulusan || null,
-        catatan: (nilai as any)?.catatan_kelulusan || null
-      }
+        catatan: (nilai as any)?.catatan_kelulusan || null,
+      },
     });
   } catch (error) {
     console.error("Error in status API:", error);

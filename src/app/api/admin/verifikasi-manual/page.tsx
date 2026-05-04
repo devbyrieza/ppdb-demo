@@ -52,11 +52,11 @@ export default function VerifikasiManualPage() {
       await navigator.clipboard.writeText(text);
       Swal.fire({
         toast: true,
-        position: 'top-end',
-        icon: 'success',
-        title: 'Kode disalin!',
+        position: "top-end",
+        icon: "success",
+        title: "Kode disalin!",
         showConfirmButton: false,
-        timer: 1500
+        timer: 1500,
       });
     } catch (error) {
       console.error("Gagal menyalin:", error);

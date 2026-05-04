@@ -234,7 +234,10 @@ function PaymentTimeline({ paymentStatus }: { paymentStatus: PaymentStatus }) {
       id: 1,
       title: "Upload Bukti",
       description: "Kirim bukti transfer",
-      status: paymentStatus === "unpaid" || paymentStatus === "expired" ? "current" : "completed",
+      status:
+        paymentStatus === "unpaid" || paymentStatus === "expired"
+          ? "current"
+          : "completed",
     },
     {
       id: 2,
@@ -263,12 +266,18 @@ function PaymentTimeline({ paymentStatus }: { paymentStatus: PaymentStatus }) {
       <div className="flex justify-between items-start">
         {steps.map((step, index) => {
           let statusColor = "bg-surface-100 border-surface-300 text-ink-300"; // default upcoming
-          if (step.status === "completed") statusColor = "bg-emerald-500 border-emerald-500 text-white shadow-emerald-500/30";
-          if (step.status === "current") statusColor = "bg-white border-maroon-600 text-maroon-700 shadow-lg shadow-maroon-600/20";
+          if (step.status === "completed")
+            statusColor =
+              "bg-emerald-500 border-emerald-500 text-white shadow-emerald-500/30";
+          if (step.status === "current")
+            statusColor =
+              "bg-white border-maroon-600 text-maroon-700 shadow-lg shadow-maroon-600/20";
 
           return (
             <div key={step.id} className="flex flex-col items-center">
-              <div className={`w-10 h-10 rounded-full border-4 flex items-center justify-center transition-all duration-500 z-10 ${statusColor}`}>
+              <div
+                className={`w-10 h-10 rounded-full border-4 flex items-center justify-center transition-all duration-500 z-10 ${statusColor}`}
+              >
                 {step.status === "completed" ? (
                   <Check className="w-5 h-5" />
                 ) : (
@@ -276,11 +285,17 @@ function PaymentTimeline({ paymentStatus }: { paymentStatus: PaymentStatus }) {
                 )}
               </div>
               <div className="mt-3 text-center">
-                <p className={`text-xs font-bold transition-colors ${step.status === "upcoming" ? "text-ink-300" : "text-ink-900"}`}>{step.title}</p>
-                <p className="text-[10px] text-ink-400 mt-0.5 font-medium hidden sm:block">{step.description}</p>
+                <p
+                  className={`text-xs font-bold transition-colors ${step.status === "upcoming" ? "text-ink-300" : "text-ink-900"}`}
+                >
+                  {step.title}
+                </p>
+                <p className="text-[10px] text-ink-400 mt-0.5 font-medium hidden sm:block">
+                  {step.description}
+                </p>
               </div>
             </div>
-          )
+          );
         })}
       </div>
     </div>
@@ -331,17 +346,14 @@ function UploadArea({
     setIsDragging(false);
   }, []);
 
-  const handleDrop = useCallback(
-    (e: React.DragEvent) => {
-      e.preventDefault();
-      setIsDragging(false);
-      const files = e.dataTransfer.files;
-      if (files.length > 0) {
-        setSelectedFile(files[0]);
-      }
-    },
-    []
-  );
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      setSelectedFile(files[0]);
+    }
+  }, []);
 
   const handleFileSelect = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -353,7 +365,7 @@ function UploadArea({
         fileInputRef.current.value = "";
       }
     },
-    []
+    [],
   );
 
   const handleClick = () => {
@@ -387,8 +399,12 @@ function UploadArea({
             <FileText className="w-6 h-6 text-cream-500" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-bold text-blue-500 uppercase tracking-wide mb-0.5">File Terupload</p>
-            <p className="font-bold text-ink-900 truncate">{currentFile.name}</p>
+            <p className="text-xs font-bold text-blue-500 uppercase tracking-wide mb-0.5">
+              File Terupload
+            </p>
+            <p className="font-bold text-ink-900 truncate">
+              {currentFile.name}
+            </p>
           </div>
           <div className="w-8 h-8 rounded-full bg-cream-100 flex items-center justify-center">
             <Check className="w-4 h-4 text-maroon-600" />
@@ -398,14 +414,15 @@ function UploadArea({
 
       {/* Upload area */}
       <div
-        className={`relative overflow-hidden group border-2 border-dashed rounded-[2rem] transition-all ${isDragging
-          ? "border-maroon-600 bg-cream-50/50 scale-[1.01]"
-          : isRejected && !selectedFile
-            ? "border-red-300 bg-red-50 hover:border-red-400"
-            : selectedFile
-              ? "border-maroon-600 bg-white" // Solid border when file selected
-              : "border-ink-200 hover:border-maroon-400 hover:bg-surface-50 cursor-pointer"
-          } ${isUploading ? "pointer-events-none opacity-80" : ""}`}
+        className={`relative overflow-hidden group border-2 border-dashed rounded-[2rem] transition-all ${
+          isDragging
+            ? "border-maroon-600 bg-cream-50/50 scale-[1.01]"
+            : isRejected && !selectedFile
+              ? "border-red-300 bg-red-50 hover:border-red-400"
+              : selectedFile
+                ? "border-maroon-600 bg-white" // Solid border when file selected
+                : "border-ink-200 hover:border-maroon-400 hover:bg-surface-50 cursor-pointer"
+        } ${isUploading ? "pointer-events-none opacity-80" : ""}`}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
@@ -427,7 +444,11 @@ function UploadArea({
               <div className="relative group/preview">
                 {selectedFile.type.startsWith("image/") && previewUrl ? (
                   <div className="relative w-full max-w-sm mx-auto overflow-hidden rounded-2xl border border-ink-100 shadow-sm">
-                    <img src={previewUrl} alt="Preview" className="w-full h-auto max-h-[300px] object-contain bg-surface-50" />
+                    <img
+                      src={previewUrl}
+                      alt="Preview"
+                      className="w-full h-auto max-h-[300px] object-contain bg-surface-50"
+                    />
                   </div>
                 ) : (
                   <div className="w-24 h-24 bg-surface-100 rounded-2xl flex items-center justify-center mx-auto">
@@ -469,7 +490,11 @@ function UploadArea({
                   disabled={isUploading}
                   className="flex-1 sm:flex-none px-8 py-3 bg-cream-400 text-maroon-950 font-black rounded-xl hover:bg-cream-300 transition-colors shadow-lg shadow-cream-400/30 flex items-center justify-center gap-2"
                 >
-                  {isUploading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Upload className="w-5 h-5" />}
+                  {isUploading ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                    <Upload className="w-5 h-5" />
+                  )}
                   {isUploading ? "Mengirim..." : "Kirim Bukti"}
                 </button>
               </div>
@@ -480,9 +505,25 @@ function UploadArea({
               <div className="absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center z-20">
                 <div className="text-center">
                   <div className="relative w-20 h-20 mx-auto mb-4">
-                    <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
-                      <path className="text-surface-200" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="4" />
-                      <path className="text-cream-500 transition-all duration-300 ease-out" strokeDasharray={`${uploadProgress}, 100`} d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="4" />
+                    <svg
+                      className="w-full h-full -rotate-90"
+                      viewBox="0 0 36 36"
+                    >
+                      <path
+                        className="text-surface-200"
+                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="text-cream-500 transition-all duration-300 ease-out"
+                        strokeDasharray={`${uploadProgress}, 100`}
+                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
                     </svg>
                     <div className="absolute inset-0 flex items-center justify-center font-bold text-maroon-800 text-sm">
                       {uploadProgress}%
@@ -497,18 +538,20 @@ function UploadArea({
           // EMPTY STATE
           <div className="p-10 flex flex-col items-center gap-5 relative z-10">
             <div
-              className={`w-20 h-20 rounded-3xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-sm ${isRejected && !currentFile
-                ? "bg-red-100 text-red-600"
-                : "bg-cream-50 text-maroon-700"
-                }`}
+              className={`w-20 h-20 rounded-3xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-sm ${
+                isRejected && !currentFile
+                  ? "bg-red-100 text-red-600"
+                  : "bg-cream-50 text-maroon-700"
+              }`}
             >
               <Upload className="w-10 h-10" />
             </div>
 
             <div>
               <p
-                className={`font-bold text-xl ${isRejected && !currentFile ? "text-red-700" : "text-ink-900"
-                  }`}
+                className={`font-bold text-xl ${
+                  isRejected && !currentFile ? "text-red-700" : "text-ink-900"
+                }`}
               >
                 {isRejected && !currentFile
                   ? "Upload Ulang Bukti Transfer"
@@ -517,7 +560,8 @@ function UploadArea({
                     : "Klik atau Seret File ke Sini"}
               </p>
               <p className="text-sm text-ink-500 mt-2 font-medium max-w-xs mx-auto leading-relaxed text-center">
-                Pastikan foto bukti transfer terlihat jelas dan terbaca. Format: JPG, PNG, PDF (Max 5MB)
+                Pastikan foto bukti transfer terlihat jelas dan terbaca. Format:
+                JPG, PNG, PDF (Max 5MB)
               </p>
             </div>
           </div>
@@ -553,9 +597,12 @@ export default function PembayaranPendaftaranTab({
 
   // Auto-scroll ke instruksi pembayaran saat metode dipilih
   useEffect(() => {
-    if (activePaymentMethod === 'manual' && instruksiRef.current) {
+    if (activePaymentMethod === "manual" && instruksiRef.current) {
       setTimeout(() => {
-        instruksiRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        instruksiRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
       }, 100); // slight delay to let the section render first
     }
   }, [activePaymentMethod]);
@@ -595,10 +642,15 @@ export default function PembayaranPendaftaranTab({
       setIsUploading(true);
       setUploadProgress(0);
 
-      if (file.size > 5 * 1024 * 1024) throw new Error("Ukuran file terlalu besar! Maksimal 5MB");
+      if (file.size > 5 * 1024 * 1024)
+        throw new Error("Ukuran file terlalu besar! Maksimal 5MB");
       // Accept any image format (JPG, PNG, WebP, HEIC from mobile/WhatsApp) + PDF
-      const isValidType = file.type.startsWith("image/") || file.type === "application/pdf";
-      if (!isValidType) throw new Error("Format file tidak didukung! Gunakan JPG, PNG, WebP, atau PDF");
+      const isValidType =
+        file.type.startsWith("image/") || file.type === "application/pdf";
+      if (!isValidType)
+        throw new Error(
+          "Format file tidak didukung! Gunakan JPG, PNG, WebP, atau PDF",
+        );
 
       const formData = new FormData();
       formData.append("file", file);
@@ -617,7 +669,8 @@ export default function PembayaranPendaftaranTab({
 
       const result = await response.json();
 
-      if (!result.success) throw new Error(result.error || "Gagal mengupload bukti pembayaran");
+      if (!result.success)
+        throw new Error(result.error || "Gagal mengupload bukti pembayaran");
 
       showToast("success", "Bukti pembayaran berhasil diupload!");
       setActivePaymentMethod(null); // Close modal/section
@@ -633,10 +686,13 @@ export default function PembayaranPendaftaranTab({
   const handleMidtransPayment = async () => {
     try {
       setIsMidtransLoading(true);
-      const response = await fetch("/api/pembayaran/midtrans/create", { method: "POST" });
+      const response = await fetch("/api/pembayaran/midtrans/create", {
+        method: "POST",
+      });
       const result = await response.json();
 
-      if (!result.success) throw new Error(result.error || "Gagal membuat transaksi");
+      if (!result.success)
+        throw new Error(result.error || "Gagal membuat transaksi");
 
       if (result.data.redirect_url) {
         window.location.href = result.data.redirect_url;
@@ -647,7 +703,10 @@ export default function PembayaranPendaftaranTab({
             fetchPaymentStatus();
           },
           onPending: () => {
-            showToast("info", "Pembayaran pending. Silakan selesaikan pembayaran.");
+            showToast(
+              "info",
+              "Pembayaran pending. Silakan selesaikan pembayaran.",
+            );
             fetchPaymentStatus();
           },
           onError: () => {
@@ -680,9 +739,14 @@ export default function PembayaranPendaftaranTab({
     return (
       <div className="bg-red-50 border border-red-200 rounded-3xl p-8 text-center max-w-lg mx-auto">
         <XCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-        <h3 className="text-lg font-bold text-red-900 mb-2">Gagal Memuat Data</h3>
+        <h3 className="text-lg font-bold text-red-900 mb-2">
+          Gagal Memuat Data
+        </h3>
         <p className="text-red-600 mb-6">{error}</p>
-        <button onClick={fetchPaymentStatus} className="btn-primary bg-red-600 hover:bg-red-700 shadow-red-500/20">
+        <button
+          onClick={fetchPaymentStatus}
+          className="btn-primary bg-red-600 hover:bg-red-700 shadow-red-500/20"
+        >
           <RefreshCw className="w-4 h-4 mr-2" /> Coba Lagi
         </button>
       </div>
@@ -714,11 +778,25 @@ export default function PembayaranPendaftaranTab({
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
       {toast && (
-        <div className={`fixed top-6 right-6 z-50 px-6 py-4 rounded-2xl shadow-clay-lg flex items-center gap-3 animate-in slide-in-from-right duration-300 ${toast.type === "success" ? "bg-emerald-500" : toast.type === "error" ? "bg-red-500" : "bg-blue-500"
-          } text-white shadow-lg`}>
+        <div
+          className={`fixed top-6 right-6 z-50 px-6 py-4 rounded-2xl shadow-clay-lg flex items-center gap-3 animate-in slide-in-from-right duration-300 ${
+            toast.type === "success"
+              ? "bg-emerald-500"
+              : toast.type === "error"
+                ? "bg-red-500"
+                : "bg-blue-500"
+          } text-white shadow-lg`}
+        >
           <CheckCircle className="w-5 h-5" />
-          <span className="font-bold text-sm tracking-wide">{toast.message}</span>
-          <button onClick={() => setToast(null)} className="ml-2 hover:bg-white/20 p-1 rounded-lg">&times;</button>
+          <span className="font-bold text-sm tracking-wide">
+            {toast.message}
+          </span>
+          <button
+            onClick={() => setToast(null)}
+            className="ml-2 hover:bg-white/20 p-1 rounded-lg"
+          >
+            &times;
+          </button>
         </div>
       )}
 
@@ -758,66 +836,96 @@ export default function PembayaranPendaftaranTab({
       <div className="grid grid-cols-1 gap-8">
         {/* Main Content Column */}
         <div className="lg:col-span-2 space-y-8">
-
           {/* Status Card */}
           <div className="glass-panel p-8 rounded-[2rem] shadow-sm border border-cream-200 app-card relative overflow-hidden">
-            <div className={`absolute top-0 left-0 w-2 h-full ${statusConfig.bgColor}`} /> {/* Accent Bar */}
-
+            <div
+              className={`absolute top-0 left-0 w-2 h-full ${statusConfig.bgColor}`}
+            />{" "}
+            {/* Accent Bar */}
             <div className="flex flex-col md:flex-row gap-6 md:items-center justify-between mb-8">
               <div>
-                <p className="text-xs font-bold text-ink-400 uppercase tracking-widest mb-1">Status Pembayaran</p>
-                <div className={`inline-flex items-center gap-3 px-4 py-2 rounded-xl ${statusConfig.bgColor} border ${statusConfig.borderColor}`}>
+                <p className="text-xs font-bold text-ink-400 uppercase tracking-widest mb-1">
+                  Status Pembayaran
+                </p>
+                <div
+                  className={`inline-flex items-center gap-3 px-4 py-2 rounded-xl ${statusConfig.bgColor} border ${statusConfig.borderColor}`}
+                >
                   <StatusIcon className={`w-5 h-5 ${statusConfig.color}`} />
-                  <span className={`font-black text-lg ${statusConfig.color}`}>{statusConfig.label}</span>
+                  <span className={`font-black text-lg ${statusConfig.color}`}>
+                    {statusConfig.label}
+                  </span>
                 </div>
               </div>
 
-              {!data.is_deadline_passed && daysRemaining > 0 && !isPaymentCompleted && (
-                <div className="bg-amber-50 border border-amber-200 px-4 py-2 rounded-xl flex items-center gap-3">
-                  <Clock className="w-5 h-5 text-amber-600" />
-                  <div>
-                    <p className="text-[10px] font-bold text-amber-500 uppercase">Sisa Waktu</p>
-                    <p className="text-amber-800 font-bold">{daysRemaining} Hari Lagi</p>
+              {!data.is_deadline_passed &&
+                daysRemaining > 0 &&
+                !isPaymentCompleted && (
+                  <div className="bg-amber-50 border border-amber-200 px-4 py-2 rounded-xl flex items-center gap-3">
+                    <Clock className="w-5 h-5 text-amber-600" />
+                    <div>
+                      <p className="text-[10px] font-bold text-amber-500 uppercase">
+                        Sisa Waktu
+                      </p>
+                      <p className="text-amber-800 font-bold">
+                        {daysRemaining} Hari Lagi
+                      </p>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
               {data.is_deadline_passed && !isPaymentCompleted && (
                 <div className="bg-amber-50 border border-amber-200 px-4 py-2 rounded-xl flex items-center gap-3">
                   <AlertCircle className="w-5 h-5 text-amber-600" />
                   <div>
-                    <p className="text-[10px] font-bold text-amber-500 uppercase">Masa Pembayaran Terlewati</p>
-                    <p className="text-amber-800 font-bold">Silakan selesaikan pembayaran secepatnya.</p>
+                    <p className="text-[10px] font-bold text-amber-500 uppercase">
+                      Masa Pembayaran Terlewati
+                    </p>
+                    <p className="text-amber-800 font-bold">
+                      Silakan selesaikan pembayaran secepatnya.
+                    </p>
                   </div>
                 </div>
               )}
             </div>
-
             <PaymentTimeline paymentStatus={data.status} />
-
             {isPaymentRejected && data.pembayaran?.catatan_verifikasi && (
               <div className="mt-8 p-4 bg-red-50 border border-red-200 rounded-2xl flex gap-4">
                 <AlertCircle className="w-6 h-6 text-red-600 shrink-0 mt-1" />
                 <div>
-                  <h4 className="font-bold text-red-900 mb-1">Pembayaran Ditolak</h4>
-                  <p className="text-red-700 text-sm leading-relaxed">{data.pembayaran.catatan_verifikasi}</p>
+                  <h4 className="font-bold text-red-900 mb-1">
+                    Pembayaran Ditolak
+                  </h4>
+                  <p className="text-red-700 text-sm leading-relaxed">
+                    {data.pembayaran.catatan_verifikasi}
+                  </p>
                 </div>
               </div>
             )}
-
             {/* Ringkasan pembayaran (khusus halaman Status Pembayaran) */}
             {isStatusOnly && (
               <div className="mt-8 bg-white border border-ink-100 rounded-2xl p-5">
                 <div className="flex items-center justify-between gap-4 flex-wrap">
                   <div>
-                    <p className="text-xs font-bold text-ink-400 uppercase tracking-widest">Nomor Pendaftaran</p>
-                    <p className="font-black text-ink-900">{data.pendaftar.nomor_pendaftaran}</p>
-                    <p className="text-sm text-ink-500 mt-1">{data.pendaftar.nama_lengkap}</p>
+                    <p className="text-xs font-bold text-ink-400 uppercase tracking-widest">
+                      Nomor Pendaftaran
+                    </p>
+                    <p className="font-black text-ink-900">
+                      {data.pendaftar.nomor_pendaftaran}
+                    </p>
+                    <p className="text-sm text-ink-500 mt-1">
+                      {data.pendaftar.nama_lengkap}
+                    </p>
                   </div>
                   <div className="text-right">
-                    <p className="text-xs font-bold text-ink-400 uppercase tracking-widest">Metode</p>
-                    <p className="font-black text-ink-900">{data.pembayaran?.metode_pembayaran || "-"}</p>
+                    <p className="text-xs font-bold text-ink-400 uppercase tracking-widest">
+                      Metode
+                    </p>
+                    <p className="font-black text-ink-900">
+                      {data.pembayaran?.metode_pembayaran || "-"}
+                    </p>
                     <p className="text-sm text-ink-500 mt-1">
-                      {data.pembayaran?.updated_at ? `Update: ${formatDateTime(data.pembayaran.updated_at)}` : ""}
+                      {data.pembayaran?.updated_at
+                        ? `Update: ${formatDateTime(data.pembayaran.updated_at)}`
+                        : ""}
                     </p>
                   </div>
                 </div>
@@ -829,17 +937,20 @@ export default function PembayaranPendaftaranTab({
           {!isStatusOnly && canMakePayment && (
             <div className="space-y-8">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <h3 className="text-xl font-bold text-ink-900 px-2">Pilih Metode Pembayaran</h3>
+                <h3 className="text-xl font-bold text-ink-900 px-2">
+                  Pilih Metode Pembayaran
+                </h3>
                 {/* Total Price Tag */}
                 <div className="bg-indigo-50 text-indigo-700 px-6 py-3 rounded-2xl font-black text-lg border border-indigo-100 shadow-sm flex items-center gap-2">
                   <span>Total:</span>
-                  <span className="text-2xl">{formatRupiah(biayaPendaftaran)}</span>
+                  <span className="text-2xl">
+                    {formatRupiah(biayaPendaftaran)}
+                  </span>
                 </div>
               </div>
 
               {/* PAYMENT CARDS GRID */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-
                 {/* CARD 1: MIDTRANS (DEV) */}
                 <div className="relative group bg-white rounded-[2.5rem] p-8 border border-ink-100 shadow-sm transition-all hover:shadow-lg hover:-translate-y-1 overflow-hidden opacity-80 hover:opacity-100 grayscale-[0.5] hover:grayscale-0">
                   {/* Background Decor */}
@@ -850,9 +961,12 @@ export default function PembayaranPendaftaranTab({
                       <div className="w-16 h-16 bg-amber-100 rounded-2xl flex items-center justify-center mb-6 shadow-alert-100/50 text-amber-600">
                         <CreditCard className="w-8 h-8" />
                       </div>
-                      <h4 className="font-bold text-ink-500 uppercase tracking-widest text-xs mb-2">Tahap Pengembangan</h4>
-                      <h3 className="font-black text-2xl text-ink-900 mb-2">Virtual Account</h3>
-
+                      <h4 className="font-bold text-ink-500 uppercase tracking-widest text-xs mb-2">
+                        Tahap Pengembangan
+                      </h4>
+                      <h3 className="font-black text-2xl text-ink-900 mb-2">
+                        Virtual Account
+                      </h3>
 
                       <div className="inline-block bg-amber-100 text-amber-700 text-xs font-bold px-3 py-1 rounded-full mb-6">
                         Otomatis
@@ -862,9 +976,12 @@ export default function PembayaranPendaftaranTab({
                         {[
                           "BCA, BNI, BRI, Mandiri & QRIS",
                           "Verifikasi Otomatis",
-                          "Proses Instan (Real-time)"
+                          "Proses Instan (Real-time)",
                         ].map((item, idx) => (
-                          <li key={idx} className="flex items-start gap-3 text-ink-400 text-sm font-medium">
+                          <li
+                            key={idx}
+                            className="flex items-start gap-3 text-ink-400 text-sm font-medium"
+                          >
                             <div className="w-5 h-5 rounded-full bg-ink-100 flex items-center justify-center shrink-0 mt-0.5">
                               <Check className="w-3 h-3 text-ink-400" />
                             </div>
@@ -875,7 +992,10 @@ export default function PembayaranPendaftaranTab({
                     </div>
 
                     <div className="mt-auto">
-                      <button disabled className="w-full py-4 rounded-xl font-bold bg-ink-100 text-ink-400 cursor-not-allowed">
+                      <button
+                        disabled
+                        className="w-full py-4 rounded-xl font-bold bg-ink-100 text-ink-400 cursor-not-allowed"
+                      >
                         Segera Hadir
                       </button>
                     </div>
@@ -884,13 +1004,14 @@ export default function PembayaranPendaftaranTab({
 
                 {/* CARD 2: BSI MANUAL */}
                 <div
-                  onClick={() => setActivePaymentMethod('manual')}
-                  className={`relative group bg-white rounded-[2.5rem] p-8 border-2 transition-all cursor-pointer shadow-lg hover:-translate-y-1 hover:shadow-xl ${activePaymentMethod === 'manual'
-                    ? 'border-maroon-600 ring-4 ring-maroon-600/10 shadow-maroon-600/10'
-                    : 'border-white hover:border-maroon-300'
-                    }`}
+                  onClick={() => setActivePaymentMethod("manual")}
+                  className={`relative group bg-white rounded-[2.5rem] p-8 border-2 transition-all cursor-pointer shadow-lg hover:-translate-y-1 hover:shadow-xl ${
+                    activePaymentMethod === "manual"
+                      ? "border-maroon-600 ring-4 ring-maroon-600/10 shadow-maroon-600/10"
+                      : "border-white hover:border-maroon-300"
+                  }`}
                 >
-                  {activePaymentMethod === 'manual' && (
+                  {activePaymentMethod === "manual" && (
                     <div className="absolute top-6 right-6 lg:right-8">
                       <div className="w-8 h-8 bg-maroon-600 rounded-full flex items-center justify-center animate-in zoom-in">
                         <Check className="w-5 h-5 text-white" />
@@ -909,9 +1030,12 @@ export default function PembayaranPendaftaranTab({
                       <div className="w-16 h-16 bg-cream-50 rounded-2xl flex items-center justify-center mb-6 shadow-sm text-maroon-700">
                         <Building2 className="w-8 h-8" />
                       </div>
-                      <h4 className="font-bold text-maroon-700 uppercase tracking-widest text-xs mb-2">Transfer Manual</h4>
-                      <h3 className="font-black text-2xl text-ink-900 mb-2">Bank BSI</h3>
-
+                      <h4 className="font-bold text-maroon-700 uppercase tracking-widest text-xs mb-2">
+                        Transfer Manual
+                      </h4>
+                      <h3 className="font-black text-2xl text-ink-900 mb-2">
+                        Bank BSI
+                      </h3>
 
                       <div className="inline-block bg-cream-100 text-maroon-900 text-xs font-bold px-3 py-1 rounded-full mb-6">
                         Manual Check
@@ -922,9 +1046,12 @@ export default function PembayaranPendaftaranTab({
                           "Transfer ke Rekening Pesantren",
                           "Verifikasi Admin (1x24 Jam)",
                           "Aman & Terpercaya",
-                          "Upload Bukti Transfer"
+                          "Upload Bukti Transfer",
                         ].map((item, idx) => (
-                          <li key={idx} className="flex items-start gap-3 text-ink-600 text-sm font-medium">
+                          <li
+                            key={idx}
+                            className="flex items-start gap-3 text-ink-600 text-sm font-medium"
+                          >
                             <div className="w-5 h-5 rounded-full bg-cream-100 flex items-center justify-center shrink-0 mt-0.5">
                               <Check className="w-3 h-3 text-maroon-700" />
                             </div>
@@ -935,16 +1062,21 @@ export default function PembayaranPendaftaranTab({
                     </div>
 
                     <div className="mt-auto">
-                      <button className={`w-full py-4 rounded-xl font-black transition-all flex items-center justify-center gap-2 ${activePaymentMethod === 'manual'
-                        ? 'bg-cream-400 text-maroon-950 hover:bg-cream-300 shadow-lg shadow-cream-400/20 border border-cream-500'
-                        : 'bg-cream-50 text-maroon-800 hover:bg-cream-100'
-                        }`}>
-                        {activePaymentMethod === 'manual' ? (
+                      <button
+                        className={`w-full py-4 rounded-xl font-black transition-all flex items-center justify-center gap-2 ${
+                          activePaymentMethod === "manual"
+                            ? "bg-cream-400 text-maroon-950 hover:bg-cream-300 shadow-lg shadow-cream-400/20 border border-cream-500"
+                            : "bg-cream-50 text-maroon-800 hover:bg-cream-100"
+                        }`}
+                      >
+                        {activePaymentMethod === "manual" ? (
                           <>
                             <Check className="w-5 h-5" />
                             <span>Metode Dipilih</span>
                           </>
-                        ) : "Pilih Metode Ini"}
+                        ) : (
+                          "Pilih Metode Ini"
+                        )}
                       </button>
                     </div>
                   </div>
@@ -952,12 +1084,20 @@ export default function PembayaranPendaftaranTab({
               </div>
 
               {/* DETAIL & UPLOAD SECTION (SHOWN BELOW GRID) */}
-              {activePaymentMethod === 'manual' && (
-                <div ref={instruksiRef} className="mt-8 pt-8 border-t border-ink-100 animate-in slide-in-from-bottom-4 fade-in duration-500">
+              {activePaymentMethod === "manual" && (
+                <div
+                  ref={instruksiRef}
+                  className="mt-8 pt-8 border-t border-ink-100 animate-in slide-in-from-bottom-4 fade-in duration-500"
+                >
                   <div className="max-w-5xl mx-auto space-y-8">
                     <div className="text-center mb-8">
-                      <h3 className="text-2xl font-black text-ink-900 mb-2">Instruksi Pembayaran</h3>
-                      <p className="text-ink-500">Silakan transfer sesuai nominal ke rekening di bawah ini, lalu upload bukti transfer.</p>
+                      <h3 className="text-2xl font-black text-ink-900 mb-2">
+                        Instruksi Pembayaran
+                      </h3>
+                      <p className="text-ink-500">
+                        Silakan transfer sesuai nominal ke rekening di bawah
+                        ini, lalu upload bukti transfer.
+                      </p>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-stretch">
@@ -968,7 +1108,9 @@ export default function PembayaranPendaftaranTab({
                         <div className="relative z-10">
                           <div className="flex justify-between items-start mb-8">
                             <div>
-                              <p className="text-xs font-bold text-maroon-700 uppercase tracking-widest mb-2">Bank Syariah Indonesia (BSI)</p>
+                              <p className="text-xs font-bold text-maroon-700 uppercase tracking-widest mb-2">
+                                Bank Syariah Indonesia (BSI)
+                              </p>
                             </div>
                             <div className="bg-white p-3 rounded-2xl shadow-sm border border-cream-100 flex items-center justify-center text-maroon-700">
                               <Building2 className="w-8 h-8" />
@@ -977,10 +1119,17 @@ export default function PembayaranPendaftaranTab({
 
                           <div className="mb-8">
                             <div className="flex flex-wrap items-center gap-4 mb-2">
-                              <h4 className="font-black text-3xl sm:text-4xl md:text-5xl text-ink-900 tracking-tight break-all">{BANK_INFO.nomor_rekening}</h4>
-                              <CopyButton text={BANK_INFO.nomor_rekening} label="Salin" />
+                              <h4 className="font-black text-3xl sm:text-4xl md:text-5xl text-ink-900 tracking-tight break-all">
+                                {BANK_INFO.nomor_rekening}
+                              </h4>
+                              <CopyButton
+                                text={BANK_INFO.nomor_rekening}
+                                label="Salin"
+                              />
                             </div>
-                            <p className="text-lg font-bold text-ink-500">a.n {BANK_INFO.atas_nama}</p>
+                            <p className="text-lg font-bold text-ink-500">
+                              a.n {BANK_INFO.atas_nama}
+                            </p>
                           </div>
                         </div>
 
@@ -990,7 +1139,10 @@ export default function PembayaranPendaftaranTab({
                               <AlertCircle className="w-5 h-5 text-amber-600" />
                             </div>
                             <p className="text-sm text-ink-600 leading-relaxed font-medium text-left w-full">
-                              <strong>Penting:</strong> Pastikan nominal transfer tepat <strong>{formatRupiah(biayaPendaftaran)}</strong> agar proses verifikasi berjalan lancar.
+                              <strong>Penting:</strong> Pastikan nominal
+                              transfer tepat{" "}
+                              <strong>{formatRupiah(biayaPendaftaran)}</strong>{" "}
+                              agar proses verifikasi berjalan lancar.
                             </p>
                           </div>
                         </div>
@@ -1003,18 +1155,25 @@ export default function PembayaranPendaftaranTab({
                             <Upload className="w-5 h-5 text-maroon-700" />
                             Upload Bukti Transfer
                           </h5>
-                          <p className="text-sm text-ink-400">Format: JPG, PNG, PDF, WebP (Maks. 5MB)</p>
+                          <p className="text-sm text-ink-400">
+                            Format: JPG, PNG, PDF, WebP (Maks. 5MB)
+                          </p>
                         </div>
 
                         <UploadArea
                           onUpload={handleManualUpload}
                           isUploading={isUploading}
                           uploadProgress={uploadProgress}
-                          currentFile={data.pembayaran?.bukti_transfer_filename ? { name: data.pembayaran.bukti_transfer_filename, path: '' } : null}
+                          currentFile={
+                            data.pembayaran?.bukti_transfer_filename
+                              ? {
+                                  name: data.pembayaran.bukti_transfer_filename,
+                                  path: "",
+                                }
+                              : null
+                          }
                           isRejected={isPaymentRejected}
                         />
-
-
                       </div>
                     </div>
                   </div>
@@ -1029,9 +1188,13 @@ export default function PembayaranPendaftaranTab({
               <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-in zoom-in duration-300">
                 <CheckCircle className="w-10 h-10 text-emerald-600" />
               </div>
-              <h3 className="text-2xl font-black text-emerald-900 mb-2">Pembayaran Lunas</h3>
+              <h3 className="text-2xl font-black text-emerald-900 mb-2">
+                Pembayaran Lunas
+              </h3>
               <p className="text-emerald-700 max-w-md mx-auto mb-8">
-                Terima kasih telah melakukan pembayaran. Anda sekarang dapat melanjutkan ke tahap berikutnya yaitu mengisi formulir data diri lengkap.
+                Terima kasih telah melakukan pembayaran. Anda sekarang dapat
+                melanjutkan ke tahap berikutnya yaitu mengisi formulir data diri
+                lengkap.
               </p>
               <div className="flex justify-center">
                 <a
@@ -1048,9 +1211,12 @@ export default function PembayaranPendaftaranTab({
           {isStatusOnly && !isPaymentCompleted && (
             <div className="bg-white border border-ink-100 rounded-[2rem] p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
-                <h3 className="font-black text-ink-900 text-lg mb-1">Lakukan Pembayaran di Halaman Pembayaran</h3>
+                <h3 className="font-black text-ink-900 text-lg mb-1">
+                  Lakukan Pembayaran di Halaman Pembayaran
+                </h3>
                 <p className="text-sm text-ink-500">
-                  Untuk upload bukti transfer atau memilih metode pembayaran, silakan buka menu <strong>Pembayaran</strong>.
+                  Untuk upload bukti transfer atau memilih metode pembayaran,
+                  silakan buka menu <strong>Pembayaran</strong>.
                 </p>
               </div>
               <a
@@ -1072,8 +1238,12 @@ export default function PembayaranPendaftaranTab({
             </h3>
             <div className="space-y-3">
               <div className="flex justify-between items-center text-sm">
-                <span className="text-ink-500 font-medium">Biaya Pendaftaran</span>
-                <span className="font-bold text-ink-900">{formatRupiah(biayaPendaftaran)}</span>
+                <span className="text-ink-500 font-medium">
+                  Biaya Pendaftaran
+                </span>
+                <span className="font-bold text-ink-900">
+                  {formatRupiah(biayaPendaftaran)}
+                </span>
               </div>
               <div className="flex justify-between items-center text-sm">
                 <span className="text-ink-500 font-medium">Biaya Admin</span>
@@ -1082,7 +1252,9 @@ export default function PembayaranPendaftaranTab({
               <div className="h-px bg-ink-100 my-2" />
               <div className="flex justify-between items-center">
                 <span className="text-ink-900 font-bold">Total Pembayaran</span>
-                <span className="text-xl font-black text-maroon-700">{formatRupiah(biayaPendaftaran)}</span>
+                <span className="text-xl font-black text-maroon-700">
+                  {formatRupiah(biayaPendaftaran)}
+                </span>
               </div>
             </div>
           </div>
@@ -1093,14 +1265,22 @@ export default function PembayaranPendaftaranTab({
               Bantuan Pembayaran
             </h4>
             <p className="text-sm text-ink-500 mb-4 leading-relaxed">
-              Mengalami kendala saat melakukan pembayaran? Hubungi tim support kami.
+              Mengalami kendala saat melakukan pembayaran? Hubungi tim support
+              kami.
             </p>
-            <a href="https://wa.me/6281285300800" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 bg-white rounded-xl border border-ink-100 hover:border-cream-200 transition-colors group">
+            <a
+              href="https://wa.me/6281285300800"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 p-3 bg-white rounded-xl border border-ink-100 hover:border-cream-200 transition-colors group"
+            >
               <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center">
                 <MessageCircle className="w-5 h-5 text-green-600 group-hover:scale-110 transition-transform" />
               </div>
               <div>
-                <p className="text-xs font-bold text-ink-400 uppercase">WhatsApp Admin</p>
+                <p className="text-xs font-bold text-ink-400 uppercase">
+                  WhatsApp Admin
+                </p>
                 <p className="font-bold text-ink-900 text-sm">0812-8530-0800</p>
               </div>
             </a>

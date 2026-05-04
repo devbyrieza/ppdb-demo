@@ -11,8 +11,11 @@ export async function GET(request: NextRequest) {
 
     if (!sessionCookie) {
       return NextResponse.json(
-        { success: false, error: "Sesi tidak ditemukan. Silakan login kembali." },
-        { status: 401 }
+        {
+          success: false,
+          error: "Sesi tidak ditemukan. Silakan login kembali.",
+        },
+        { status: 401 },
       );
     }
 
@@ -23,7 +26,7 @@ export async function GET(request: NextRequest) {
     } catch {
       return NextResponse.json(
         { success: false, error: "Sesi tidak valid" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -31,7 +34,7 @@ export async function GET(request: NextRequest) {
     if (session.role !== "pendaftar") {
       return NextResponse.json(
         { success: false, error: "Akses tidak diizinkan" },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -47,7 +50,7 @@ export async function GET(request: NextRequest) {
     if (!pendaftar) {
       return NextResponse.json(
         { success: false, error: "Data pendaftar tidak ditemukan" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -57,12 +60,11 @@ export async function GET(request: NextRequest) {
       data: pendaftar,
       isDummy: false,
     });
-
   } catch (error: any) {
     console.error("Error in pendaftar-data API:", error);
     return NextResponse.json(
       { success: false, error: "Terjadi kesalahan server" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

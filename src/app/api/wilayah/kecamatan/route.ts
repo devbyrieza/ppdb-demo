@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 
 // Cache per kabupaten
-const kecamatanCache: Map<string, { data: any[]; timestamp: number }> = new Map();
+const kecamatanCache: Map<string, { data: any[]; timestamp: number }> =
+  new Map();
 const CACHE_DURATION = 60 * 60 * 1000; // 1 hour
 
 export async function GET(request: Request) {
@@ -12,7 +13,7 @@ export async function GET(request: Request) {
     if (!kabupatenId) {
       return NextResponse.json(
         { success: false, error: "kabupaten_id is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -24,7 +25,7 @@ export async function GET(request: Request) {
 
     const response = await fetch(
       `https://www.emsifa.com/api-wilayah-indonesia/api/districts/${kabupatenId}.json`,
-      { next: { revalidate: 3600 } }
+      { next: { revalidate: 3600 } },
     );
 
     if (!response.ok) {
@@ -35,7 +36,7 @@ export async function GET(request: Request) {
 
     // Sort alphabetically by name
     const data = rawData.sort((a: { name: string }, b: { name: string }) =>
-      a.name.localeCompare(b.name)
+      a.name.localeCompare(b.name),
     );
 
     // Cache the data
@@ -46,7 +47,7 @@ export async function GET(request: Request) {
     console.error("Error fetching kecamatan:", error);
     return NextResponse.json(
       { success: false, error: "Gagal mengambil data kecamatan" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

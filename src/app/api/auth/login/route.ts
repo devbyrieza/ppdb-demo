@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
           secure: process.env.NODE_ENV === "production",
           sameSite: "lax",
           maxAge: 60 * 60 * 24 * 7,
-        }
+        },
       );
 
       return responseJson;
@@ -105,7 +105,16 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      const allowedRoles = ["admin", "penguji", "admin_super", "admin_berkas", "admin_keuangan", "penguji_calsan", "pewawancara_calsan", "pewawancara_cawalsan"];
+      const allowedRoles = [
+        "admin",
+        "penguji",
+        "admin_super",
+        "admin_berkas",
+        "admin_keuangan",
+        "penguji_calsan",
+        "pewawancara_calsan",
+        "pewawancara_cawalsan",
+      ];
       if (!allowedRoles.includes(profile.role)) {
         return NextResponse.json(
           { error: "Akun ini tidak memiliki akses admin/penguji" },
@@ -160,13 +169,11 @@ export async function POST(request: NextRequest) {
           secure: process.env.NODE_ENV === "production",
           sameSite: "lax",
           maxAge: 60 * 60 * 24 * 30,
-        }
+        },
       );
 
       return responseJson;
-    }
-
-    else {
+    } else {
       return NextResponse.json(
         { error: "Tipe login tidak valid" },
         { status: 400 },

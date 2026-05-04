@@ -86,7 +86,7 @@ Panduan testing komprehensif dengan 8 test case
 | Data Pendaftaran | `/dashboard/pendaftar` | `/dashboard/pendaftar` | ✅ Sama |
 | Pembayaran | `/dashboard/pendaftar/status-pembayaran` | `/dashboard/pendaftar/pembayaran-pendaftaran` | 🔄 Renamed |
 | Kelengkapan Berkas | `/dashboard/pendaftar/kelengkapan-berkas` | `/dashboard/pendaftar/kelengkapan-berkas` | 🔄 Updated Content |
-| Undangan Seleksi | `/dashboard/pendaftar/undangan-seleksi` | `/dashboard/pendaftar/undangan-seleksi` | ✅ Sama |
+| Jadwal Seleksi | `/dashboard/pendaftar/undangan-seleksi` | `/dashboard/pendaftar/undangan-seleksi` | ✅ Sama |
 | Pengumuman | `/dashboard/pendaftar/pengumuman` | `/dashboard/pendaftar/pengumuman` | ✅ Sama |
 | Daftar Ulang | ❌ Tidak ada | `/dashboard/pendaftar/daftar-ulang` | ✨ Baru |
 | Profil | `/dashboard/pendaftar/profil` | `/dashboard/pendaftar/profil` | ✅ Sama |
@@ -102,7 +102,7 @@ Panduan testing komprehensif dengan 8 test case
 3. ✗ Upload Berkas             (Upload icon)
 4. ✗ Kelengkapan Berkas        (CheckSquare icon)
 5. ✗ Status Pembayaran         (CreditCard icon) ← POSISI SALAH!
-6. ✓ Undangan Seleksi          (Calendar icon)
+6. ✓ Jadwal Seleksi          (Calendar icon)
 7. ✓ Pengumuman                (Award icon)
 8. ✓ Profil                    (Settings icon)
 ```
@@ -112,7 +112,7 @@ Panduan testing komprehensif dengan 8 test case
 1. ✓ Data Pendaftaran          (ClipboardList icon)
 2. ✓ Pembayaran Pendaftaran    (CreditCard icon) ← POSISI BENAR!
 3. ✓ Kelengkapan Berkas        (FileCheck icon)  ← Upload/Download integrated
-4. ✓ Undangan Seleksi          (Calendar icon)
+4. ✓ Jadwal Seleksi          (Calendar icon)
 5. ✓ Pengumuman                (Trophy icon)
 6. ✓ Daftar Ulang              (CheckCircle icon) ← BARU
 7. ✓ Profil                    (Settings icon)

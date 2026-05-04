@@ -13,11 +13,17 @@ const GALLERY_CATEGORIES = [
       { src: "/images/masjid.webp", label: "Masjid Jami' PPDB" },
       { src: "/images/asrama.webp", label: "Asrama Santri" },
       { src: "/images/tentang.webp", label: "Gedung Utama" },
-      { src: "/images/gedung-utama-dan-lapangan-basket.webp", label: "Gedung Utama & Lapangan Basket" },
+      {
+        src: "/images/gedung-utama-dan-lapangan-basket.webp",
+        label: "Gedung Utama & Lapangan Basket",
+      },
       { src: "/images/gedung-kelas.webp", label: "Gedung Kelas" },
       { src: "/images/kelas-dari-dalam.webp", label: "Ruang Kelas dari Dalam" },
       { src: "/images/luar-kelas.webp", label: "Area Luar Kelas" },
-      { src: "/images/lapangan-minisoccer.webp", label: "Lapangan Mini Soccer" },
+      {
+        src: "/images/lapangan-minisoccer.webp",
+        label: "Lapangan Mini Soccer",
+      },
       { src: "/images/kantor-ppdb-tamu.webp", label: "Kantor PPDB & Tamu" },
       { src: "/images/depot-galon-gratis.webp", label: "Depot Galon Gratis" },
     ],
@@ -25,7 +31,10 @@ const GALLERY_CATEGORIES = [
   {
     title: "Kegiatan Santri",
     items: [
-      { src: "/images/pembelajaran-kitab-turotz.webp", label: "Pembelajaran Kitab Turots" },
+      {
+        src: "/images/pembelajaran-kitab-turotz.webp",
+        label: "Pembelajaran Kitab Turots",
+      },
       { src: "/images/tahfidz.webp", label: "Halaqoh Tahfidz Al-Qur'an" },
       { src: "/images/extra-karate.webp", label: "Ekstrakurikuler Karate" },
     ],
@@ -33,7 +42,10 @@ const GALLERY_CATEGORIES = [
   {
     title: "Suasana Pesantren",
     items: [
-      { src: "/images/welcome-selamat-datang.webp", label: "Selamat Datang di PPDB" },
+      {
+        src: "/images/welcome-selamat-datang.webp",
+        label: "Selamat Datang di PPDB",
+      },
       { src: "/images/halaman-dekat-masjid.webp", label: "Halaman Pesantren" },
     ],
   },
@@ -73,7 +85,8 @@ export default function GaleriPage() {
             transition={{ delay: 0.2 }}
             className="text-xl md:text-2xl text-ink-600 max-w-3xl mx-auto leading-relaxed font-medium"
           >
-            Koleksi foto suasana, fasilitas, dan kegiatan santri di Pesantren Sistem PPDB Modern.
+            Koleksi foto suasana, fasilitas, dan kegiatan santri di Pesantren
+            Sistem PPDB Modern.
           </motion.p>
         </Container>
       </section>
@@ -145,10 +158,14 @@ export default function GaleriPage() {
 
             <div className="relative z-10">
               <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-display font-black mb-4 sm:mb-6 md:mb-8 text-white leading-tight">
-                Tertarik? <br /> <span className="text-brand-yellow-400">Kunjungi Langsung!</span>
+                Tertarik? <br />{" "}
+                <span className="text-brand-yellow-400">
+                  Kunjungi Langsung!
+                </span>
               </h2>
               <p className="text-sm sm:text-base md:text-lg lg:text-xl text-brand-blue-50 max-w-2xl mx-auto mb-6 sm:mb-8 md:mb-10 lg:mb-12 font-medium px-2">
-                Foto tidak cukup menggambarkan suasana sesungguhnya. Jadwalkan kunjungan ke pesantren dan rasakan sendiri.
+                Foto tidak cukup menggambarkan suasana sesungguhnya. Jadwalkan
+                kunjungan ke pesantren dan rasakan sendiri.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 justify-center px-4">
                 <Link href="/kontak">

@@ -22,7 +22,10 @@ export async function POST(request: NextRequest) {
 
     if (!serverKey) {
       console.error("MIDTRANS_SERVER_KEY not configured");
-      return NextResponse.json({ status: "error", message: "Server key not configured" }, { status: 500 });
+      return NextResponse.json(
+        { status: "error", message: "Server key not configured" },
+        { status: 500 },
+      );
     }
 
     const signatureKey = notification.signature_key;
@@ -37,18 +40,24 @@ export async function POST(request: NextRequest) {
 
     if (signatureKey !== expectedSignature) {
       console.error("Invalid signature key");
-      return NextResponse.json({ status: "error", message: "Invalid signature" }, { status: 403 });
+      return NextResponse.json(
+        { status: "error", message: "Invalid signature" },
+        { status: 403 },
+      );
     }
 
     // 3. Find the payment record by order_id
     const pembayaran = await prisma.pembayaran.findFirst({
       where: { midtrans_order_id: orderId },
-      select: { id: true, pendaftar_id: true, status_pembayaran: true }
+      select: { id: true, pendaftar_id: true, status_pembayaran: true },
     });
 
     if (!pembayaran) {
       console.error("Payment not found for order_id:", orderId);
-      return NextResponse.json({ status: "error", message: "Payment not found" }, { status: 404 });
+      return NextResponse.json(
+        { status: "error", message: "Payment not found" },
+        { status: 404 },
+      );
     }
 
     // 4. Determine payment status based on notification
@@ -100,7 +109,7 @@ export async function POST(request: NextRequest) {
               ? `Pembayaran ${transactionStatus}`
               : null,
         updated_at: new Date(),
-      }
+      },
     });
 
     // 6. Update pendaftar status if payment is successful
@@ -108,7 +117,7 @@ export async function POST(request: NextRequest) {
       // Get current pendaftar status
       const pendaftar = await prisma.pendaftar.findUnique({
         where: { id: pembayaran.pendaftar_id },
-        select: { status_pendaftaran: true }
+        select: { status_pendaftaran: true },
       });
 
       // Only update if still waiting for payment
@@ -123,22 +132,33 @@ export async function POST(request: NextRequest) {
           data: {
             status_pendaftaran: "verified",
             updated_at: new Date(),
-          }
+          },
         });
 
-        console.log(`Pendaftar ${pembayaran.pendaftar_id} status updated to verified`);
+        console.log(
+          `Pendaftar ${pembayaran.pendaftar_id} status updated to verified`,
+        );
       }
     }
 
     // 7. Return success
     console.log(`Payment ${orderId} updated to status: ${newStatus}`);
-    return NextResponse.json({ status: "ok", message: "Notification processed successfully" });
+    return NextResponse.json({
+      status: "ok",
+      message: "Notification processed successfully",
+    });
   } catch (error: any) {
     console.error("Error processing Midtrans callback:", error);
-    return NextResponse.json({ status: "error", message: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { status: "error", message: "Internal server error" },
+      { status: 500 },
+    );
   }
 }
 
 export async function GET() {
-  return NextResponse.json({ status: "ok", message: "Midtrans callback endpoint is ready" });
+  return NextResponse.json({
+    status: "ok",
+    message: "Midtrans callback endpoint is ready",
+  });
 }

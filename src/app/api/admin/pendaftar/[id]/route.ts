@@ -5,7 +5,7 @@ import { logAdminAction } from "@/lib/audit";
 
 export async function GET(
   request: NextRequest,
-  props: { params: Promise<{ id: string }> }
+  props: { params: Promise<{ id: string }> },
 ) {
   const params = await props.params;
   try {
@@ -16,7 +16,13 @@ export async function GET(
     }
 
     // Check custom role
-    const allowedRoles = ["admin", "admin_super", "admin_berkas", "admin_keuangan", "penguji"];
+    const allowedRoles = [
+      "admin",
+      "admin_super",
+      "admin_berkas",
+      "admin_keuangan",
+      "penguji",
+    ];
     if (!allowedRoles.includes(session.role)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
@@ -52,7 +58,7 @@ export async function GET(
     if (!pendaftar) {
       return NextResponse.json(
         { error: "Pendaftar not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -67,10 +73,15 @@ export async function GET(
 
     const mergedPendaftar = {
       ...pendaftar,
-      nilai_ujian: pendaftar.nilai_ujian && pendaftar.nilai_ujian.length > 0 ? pendaftar.nilai_ujian[0] : null,
+      nilai_ujian:
+        pendaftar.nilai_ujian && pendaftar.nilai_ujian.length > 0
+          ? pendaftar.nilai_ujian[0]
+          : null,
       // Identity
       tempat_lahir: pendaftar.tempat_lahir || santri.tempat_lahir || null,
-      tanggal_lahir: pendaftar.tanggal_lahir || (santri.tanggal_lahir ? new Date(santri.tanggal_lahir) : null),
+      tanggal_lahir:
+        pendaftar.tanggal_lahir ||
+        (santri.tanggal_lahir ? new Date(santri.tanggal_lahir) : null),
       golongan_darah: pendaftar.golongan_darah || santri.golongan_darah || null,
       hobi: pendaftar.hobi || santri.hobi || null,
       cita_cita: pendaftar.cita_cita || santri.cita_cita || null,
@@ -88,37 +99,69 @@ export async function GET(
       // School
       asal_sekolah: pendaftar.asal_sekolah || santri.asal_sekolah || null,
       alamat_sekolah: pendaftar.alamat_sekolah || santri.alamat_sekolah || null,
-      tahun_lulus: pendaftar.tahun_lulus || (santri.tahun_lulus ? parseInt(santri.tahun_lulus) : null),
+      tahun_lulus:
+        pendaftar.tahun_lulus ||
+        (santri.tahun_lulus ? parseInt(santri.tahun_lulus) : null),
       nisn: pendaftar.nisn || santri.nisn || null,
-      anak_ke: pendaftar.anak_ke || (santri.anak_ke ? parseInt(santri.anak_ke) : null),
-      jumlah_saudara: pendaftar.jumlah_saudara || (santri.berapa_bersaudara ? parseInt(santri.berapa_bersaudara) : null),
+      anak_ke:
+        pendaftar.anak_ke || (santri.anak_ke ? parseInt(santri.anak_ke) : null),
+      jumlah_saudara:
+        pendaftar.jumlah_saudara ||
+        (santri.berapa_bersaudara ? parseInt(santri.berapa_bersaudara) : null),
 
       // Parents (Nested object override)
-      orang_tua: pendaftar.orang_tua ? {
-        ...pendaftar.orang_tua,
-        // Ayah
-        nama_ayah: pendaftar.orang_tua.nama_ayah || ayah.nama_lengkap || null,
-        nik_ayah: pendaftar.orang_tua.nik_ayah || ayah.nik || null,
-        tempat_lahir_ayah: pendaftar.orang_tua.tempat_lahir_ayah || ayah.tempat_lahir || null,
-        tanggal_lahir_ayah: pendaftar.orang_tua.tanggal_lahir_ayah || (ayah.tanggal_lahir ? new Date(ayah.tanggal_lahir) : null),
-        pekerjaan_ayah: pendaftar.orang_tua.pekerjaan_ayah || ayah.pekerjaan || null,
-        pendidikan_ayah: pendaftar.orang_tua.pendidikan_ayah || ayah.pendidikan_terakhir || null,
-        penghasilan_ayah: pendaftar.orang_tua.penghasilan_ayah || ayah.penghasilan || null,
-        no_hp_ayah: pendaftar.orang_tua.no_hp_ayah || ayah.no_hp || null,
-        alamat_ayah: pendaftar.orang_tua.alamat_ayah || ayah.alamat || null,
-        status_ayah: pendaftar.orang_tua.status_ayah || ayah.status_hidup || "Masih Hidup",
-        // Ibu
-        nama_ibu: pendaftar.orang_tua.nama_ibu || ibu.nama_lengkap || null,
-        nik_ibu: pendaftar.orang_tua.nik_ibu || ibu.nik || null,
-        tempat_lahir_ibu: pendaftar.orang_tua.tempat_lahir_ibu || ibu.tempat_lahir || null,
-        tanggal_lahir_ibu: pendaftar.orang_tua.tanggal_lahir_ibu || (ibu.tanggal_lahir ? new Date(ibu.tanggal_lahir) : null),
-        pekerjaan_ibu: pendaftar.orang_tua.pekerjaan_ibu || ibu.pekerjaan || null,
-        pendidikan_ibu: pendaftar.orang_tua.pendidikan_ibu || ibu.pendidikan_terakhir || null,
-        penghasilan_ibu: pendaftar.orang_tua.penghasilan_ibu || ibu.penghasilan || null,
-        no_hp_ibu: pendaftar.orang_tua.no_hp_ibu || ibu.no_hp || null,
-        alamat_ibu: pendaftar.orang_tua.alamat_ibu || ibu.alamat || null,
-        status_ibu: pendaftar.orang_tua.status_ibu || ibu.status_hidup || "Masih Hidup",
-      } : null
+      orang_tua: pendaftar.orang_tua
+        ? {
+            ...pendaftar.orang_tua,
+            // Ayah
+            nama_ayah:
+              pendaftar.orang_tua.nama_ayah || ayah.nama_lengkap || null,
+            nik_ayah: pendaftar.orang_tua.nik_ayah || ayah.nik || null,
+            tempat_lahir_ayah:
+              pendaftar.orang_tua.tempat_lahir_ayah ||
+              ayah.tempat_lahir ||
+              null,
+            tanggal_lahir_ayah:
+              pendaftar.orang_tua.tanggal_lahir_ayah ||
+              (ayah.tanggal_lahir ? new Date(ayah.tanggal_lahir) : null),
+            pekerjaan_ayah:
+              pendaftar.orang_tua.pekerjaan_ayah || ayah.pekerjaan || null,
+            pendidikan_ayah:
+              pendaftar.orang_tua.pendidikan_ayah ||
+              ayah.pendidikan_terakhir ||
+              null,
+            penghasilan_ayah:
+              pendaftar.orang_tua.penghasilan_ayah || ayah.penghasilan || null,
+            no_hp_ayah: pendaftar.orang_tua.no_hp_ayah || ayah.no_hp || null,
+            alamat_ayah: pendaftar.orang_tua.alamat_ayah || ayah.alamat || null,
+            status_ayah:
+              pendaftar.orang_tua.status_ayah ||
+              ayah.status_hidup ||
+              "Masih Hidup",
+            // Ibu
+            nama_ibu: pendaftar.orang_tua.nama_ibu || ibu.nama_lengkap || null,
+            nik_ibu: pendaftar.orang_tua.nik_ibu || ibu.nik || null,
+            tempat_lahir_ibu:
+              pendaftar.orang_tua.tempat_lahir_ibu || ibu.tempat_lahir || null,
+            tanggal_lahir_ibu:
+              pendaftar.orang_tua.tanggal_lahir_ibu ||
+              (ibu.tanggal_lahir ? new Date(ibu.tanggal_lahir) : null),
+            pekerjaan_ibu:
+              pendaftar.orang_tua.pekerjaan_ibu || ibu.pekerjaan || null,
+            pendidikan_ibu:
+              pendaftar.orang_tua.pendidikan_ibu ||
+              ibu.pendidikan_terakhir ||
+              null,
+            penghasilan_ibu:
+              pendaftar.orang_tua.penghasilan_ibu || ibu.penghasilan || null,
+            no_hp_ibu: pendaftar.orang_tua.no_hp_ibu || ibu.no_hp || null,
+            alamat_ibu: pendaftar.orang_tua.alamat_ibu || ibu.alamat || null,
+            status_ibu:
+              pendaftar.orang_tua.status_ibu ||
+              ibu.status_hidup ||
+              "Masih Hidup",
+          }
+        : null,
     };
 
     return NextResponse.json({ data: mergedPendaftar });
@@ -126,7 +169,7 @@ export async function GET(
     console.error("Error in admin pendaftar detail API:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -134,7 +177,7 @@ export async function GET(
 // PATCH: Update pendaftar status
 export async function PATCH(
   request: NextRequest,
-  props: { params: Promise<{ id: string }> }
+  props: { params: Promise<{ id: string }> },
 ) {
   const params = await props.params;
   try {
@@ -145,7 +188,13 @@ export async function PATCH(
     }
 
     // Check custom role
-    const allowedRoles = ["admin", "admin_super", "admin_berkas", "admin_keuangan", "penguji"];
+    const allowedRoles = [
+      "admin",
+      "admin_super",
+      "admin_berkas",
+      "admin_keuangan",
+      "penguji",
+    ];
     if (!allowedRoles.includes(session.role)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
@@ -159,18 +208,21 @@ export async function PATCH(
       if (session.role !== "admin_super") {
         return NextResponse.json(
           { error: "Hanya Admin Super yang dapat mengubah nomor HP pendaftar" },
-          { status: 403 }
+          { status: 403 },
         );
       }
 
       // 1. Fetch current pendaftar to get user_id
       const pendaftar = await prisma.pendaftar.findUnique({
         where: { id: params.id },
-        select: { user_id: true, nama_lengkap: true, no_hp: true }
+        select: { user_id: true, nama_lengkap: true, no_hp: true },
       });
 
       if (!pendaftar) {
-        return NextResponse.json({ error: "Pendaftar not found" }, { status: 404 });
+        return NextResponse.json(
+          { error: "Pendaftar not found" },
+          { status: 404 },
+        );
       }
 
       // 2. Update both Pendaftar and Profile in a transaction
@@ -178,26 +230,26 @@ export async function PATCH(
         // Update Pendaftar
         await tx.pendaftar.update({
           where: { id: params.id },
-          data: { no_hp, updated_at: new Date() }
+          data: { no_hp, updated_at: new Date() },
         });
 
         // Update Profile (User) if linked
         if (pendaftar.user_id) {
           await tx.profile.update({
             where: { id: pendaftar.user_id },
-            data: { phone: no_hp, updated_at: new Date() }
+            data: { phone: no_hp, updated_at: new Date() },
           });
         }
       });
 
       // Logging audit action
       logAdminAction({
-        action: 'UPDATE_PHONE_NUMBER',
-        adminId: session.id || 'system',
-        adminName: session.full_name || session.name || 'Admin',
+        action: "UPDATE_PHONE_NUMBER",
+        adminId: session.id || "system",
+        adminName: session.full_name || session.name || "Admin",
         targetId: params.id,
         targetName: pendaftar.nama_lengkap,
-        details: { previous_phone: pendaftar.no_hp, new_phone: no_hp }
+        details: { previous_phone: pendaftar.no_hp, new_phone: no_hp },
       });
 
       return NextResponse.json({
@@ -210,7 +262,7 @@ export async function PATCH(
     if (!status_proses) {
       return NextResponse.json(
         { error: "status_proses is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -225,12 +277,13 @@ export async function PATCH(
 
     // Logging audit action
     logAdminAction({
-      action: status_proses === 'draft' ? 'FORCE_UNLOCK_FORM' : 'VERIFY_DOCUMENT',
-      adminId: session.id || 'system',
-      adminName: session.full_name || session.name || 'Admin',
+      action:
+        status_proses === "draft" ? "FORCE_UNLOCK_FORM" : "VERIFY_DOCUMENT",
+      adminId: session.id || "system",
+      adminName: session.full_name || session.name || "Admin",
       targetId: params.id,
       targetName: data.nama_lengkap,
-      details: { previous_status: 'unknown', new_status: status_proses }
+      details: { previous_status: "unknown", new_status: status_proses },
     });
 
     return NextResponse.json({
@@ -241,7 +294,7 @@ export async function PATCH(
     console.error("Error in admin pendaftar update API:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -249,7 +302,7 @@ export async function PATCH(
 // DELETE: Soft delete pendaftar (admin_super only)
 export async function DELETE(
   request: NextRequest,
-  props: { params: Promise<{ id: string }> }
+  props: { params: Promise<{ id: string }> },
 ) {
   const params = await props.params;
   try {
@@ -263,7 +316,7 @@ export async function DELETE(
     if (session.role !== "admin_super") {
       return NextResponse.json(
         { error: "Hanya Admin Super yang dapat menghapus data pendaftar" },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -291,14 +344,14 @@ export async function DELETE(
     if (!pendaftar) {
       return NextResponse.json(
         { error: "Pendaftar tidak ditemukan" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
     if (pendaftar.deleted_at) {
       return NextResponse.json(
         { error: "Pendaftar sudah dihapus sebelumnya" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -347,7 +400,7 @@ export async function DELETE(
     console.error("Error in admin pendaftar soft delete API:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

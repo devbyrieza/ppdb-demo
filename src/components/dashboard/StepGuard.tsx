@@ -47,7 +47,7 @@ export default function StepGuard({
 
         // Get status
         const statusRes = await fetch(
-          `/api/pendaftar/status?pendaftar_id=${sessionData.pendaftar_id}`
+          `/api/pendaftar/status?pendaftar_id=${sessionData.pendaftar_id}`,
         );
 
         let status: StatusProses = "draft";

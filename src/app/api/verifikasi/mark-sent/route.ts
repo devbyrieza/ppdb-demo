@@ -19,23 +19,23 @@ export async function POST(request: NextRequest) {
 
     if (otp_id) {
       recordToUpdate = await prisma.otpVerification.findUnique({
-        where: { id: otp_id }
+        where: { id: otp_id },
       });
     } else {
       recordToUpdate = await prisma.otpVerification.findFirst({
         where: {
           phone: phone,
           verified_at: null,
-          expires_at: { gt: new Date() }
+          expires_at: { gt: new Date() },
         },
-        orderBy: { created_at: 'desc' }
+        orderBy: { created_at: "desc" },
       });
     }
 
     if (!recordToUpdate) {
       return NextResponse.json(
         { success: false, error: "OTP record not found or expired" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
       data: {
         sent_at: new Date(),
         status: "sent",
-      }
+      },
     });
 
     return NextResponse.json({

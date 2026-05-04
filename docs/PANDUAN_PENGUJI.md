@@ -28,7 +28,7 @@ VALUES
 5. Anda akan diarahkan otomatis ke `/dashboard/penguji`.
 
 ## 3. Fitur Dashboard Penguji
-- **Jadwal Ujian Saya**: Melihat daftar santri yang dijadwalkan untuk diuji oleh akun ini.
+- **Jadwal Seleksi Saya**: Melihat daftar santri yang dijadwalkan untuk diuji oleh akun ini.
 - **Input Nilai**: Menginput nilai ujian wawancara dan tes Al-Qur'an.
 - **Dashboard Utama**: Ringkasan jumlah siswa yang perlu diuji.
 

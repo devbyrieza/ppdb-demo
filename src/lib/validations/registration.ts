@@ -31,10 +31,7 @@ export const registrationSchema = z.object({
     .string()
     .min(10, "Nomor WhatsApp minimal 10 digit")
     .max(15, "Nomor WhatsApp maksimal 15 digit")
-    .regex(
-      /^\d{7,15}$/,
-      "Format nomor WhatsApp tidak valid",
-    ),
+    .regex(/^\d{7,15}$/, "Format nomor WhatsApp tidak valid"),
 
   jenis_kelamin: z
     .enum(["L", "P"])

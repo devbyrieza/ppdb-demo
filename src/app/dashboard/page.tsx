@@ -46,7 +46,15 @@ interface PendaftarData {
 
 const STATUS_LABELS: Record<
   string,
-  { label: string; color: string; bg: string; border: string; text: string; icon: any; message: string }
+  {
+    label: string;
+    color: string;
+    bg: string;
+    border: string;
+    text: string;
+    icon: any;
+    message: string;
+  }
 > = {
   draft: {
     label: "Belum Lengkap",
@@ -64,7 +72,8 @@ const STATUS_LABELS: Record<
     border: "border-sand-200",
     text: "text-sand-700",
     icon: Clock,
-    message: "Tinggal satu langkah lagi! Silakan lakukan pembayaran untuk melanjutkan.",
+    message:
+      "Tinggal satu langkah lagi! Silakan lakukan pembayaran untuk melanjutkan.",
   },
   payment_verification: {
     label: "Verifikasi Pembayaran",
@@ -73,7 +82,8 @@ const STATUS_LABELS: Record<
     border: "border-teal-200",
     text: "text-teal-700",
     icon: Loader2,
-    message: "Pembayaran Anda sedang kami verifikasi. Harap menunggu dengan sabar ya!",
+    message:
+      "Pembayaran Anda sedang kami verifikasi. Harap menunggu dengan sabar ya!",
   },
   data_lengkap: {
     label: "Data Lengkap",
@@ -118,7 +128,8 @@ const STATUS_LABELS: Record<
     border: "border-red-200",
     text: "text-red-700",
     icon: AlertCircle,
-    message: "Jangan berkecil hati. Tetap semangat untuk kesempatan berikutnya!",
+    message:
+      "Jangan berkecil hati. Tetap semangat untuk kesempatan berikutnya!",
   },
   scheduled: {
     label: "Dijadwalkan Ujian",
@@ -145,7 +156,8 @@ const STATUS_LABELS: Record<
     border: "border-emerald-200",
     text: "text-emerald-700",
     icon: Trophy,
-    message: "Alhamdulillah! Selamat, putra/putri Anda diterima di Pesantren Sistem PPDB Modern!",
+    message:
+      "Alhamdulillah! Selamat, putra/putri Anda diterima di Pesantren Sistem PPDB Modern!",
   },
   payment_rejected: {
     label: "Pembayaran Bermasalah",
@@ -154,7 +166,8 @@ const STATUS_LABELS: Record<
     border: "border-red-200",
     text: "text-red-700",
     icon: AlertCircle,
-    message: "Bukti pembayaran Anda ditolak. Silakan cek catatan admin atau hubungi panitia.",
+    message:
+      "Bukti pembayaran Anda ditolak. Silakan cek catatan admin atau hubungi panitia.",
   },
   rejected: {
     label: "Perlu Perbaikan",
@@ -163,7 +176,8 @@ const STATUS_LABELS: Record<
     border: "border-red-200",
     text: "text-red-700",
     icon: AlertCircle,
-    message: "Mohon maaf, ada kendala pada berkas atau pembayaran Anda. Silakan hubungi panitia.",
+    message:
+      "Mohon maaf, ada kendala pada berkas atau pembayaran Anda. Silakan hubungi panitia.",
   },
 };
 
@@ -179,16 +193,16 @@ const ActionCard = ({
   step,
   color,
   disabled,
-  delay = 0
+  delay = 0,
 }: {
-  href: string,
-  icon: any,
-  title: string,
-  description: string,
-  step: string,
-  color: string,
-  disabled: boolean,
-  delay?: number
+  href: string;
+  icon: any;
+  title: string;
+  description: string;
+  step: string;
+  color: string;
+  disabled: boolean;
+  delay?: number;
 }) => {
   const CardContent = (
     <motion.div
@@ -196,24 +210,33 @@ const ActionCard = ({
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.5 }}
       whileHover={!disabled ? { y: -8, scale: 1.02 } : {}}
-      className={`group h-full flex flex-col p-6 sm:p-8 rounded-[2.5rem] border-2 transition-all duration-300 ${disabled
-        ? "bg-ink-50/50 border-ink-100 opacity-60 grayscale cursor-not-allowed"
-        : `bg-white border-ink-50 hover:border-teal-500 hover:shadow-2xl hover:shadow-teal-900/10`
-        }`}
+      className={`group h-full flex flex-col p-6 sm:p-8 rounded-[2.5rem] border-2 transition-all duration-300 ${
+        disabled
+          ? "bg-ink-50/50 border-ink-100 opacity-60 grayscale cursor-not-allowed"
+          : `bg-white border-ink-50 hover:border-teal-500 hover:shadow-2xl hover:shadow-teal-900/10`
+      }`}
     >
       <div className="flex items-start justify-between mb-8">
-        <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-premium-xs transition-transform group-hover:scale-110 ${disabled ? "bg-ink-100 text-ink-500" : `bg-teal-50 text-teal-600`}`}>
+        <div
+          className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-premium-xs transition-transform group-hover:scale-110 ${disabled ? "bg-ink-100 text-ink-500" : `bg-teal-50 text-teal-600`}`}
+        >
           <Icon className="w-7 h-7" />
         </div>
-        <span className={`px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest ${disabled ? "bg-ink-100 text-ink-600" : "bg-sand-400 text-teal-950 shadow-sm"}`}>
-          Tahap {step.replace('Step ', '')}
+        <span
+          className={`px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest ${disabled ? "bg-ink-100 text-ink-600" : "bg-sand-400 text-teal-950 shadow-sm"}`}
+        >
+          Tahap {step.replace("Step ", "")}
         </span>
       </div>
 
-      <h3 className={`text-xl font-display font-black mb-3 transition-colors ${disabled ? "text-ink-500" : "text-teal-950 group-hover:text-teal-700"}`}>
+      <h3
+        className={`text-xl font-display font-black mb-3 transition-colors ${disabled ? "text-ink-500" : "text-teal-950 group-hover:text-teal-700"}`}
+      >
         {title}
       </h3>
-      <p className={`text-sm font-bold leading-relaxed mb-6 flex-grow ${disabled ? "text-ink-200" : "text-ink-600"}`}>
+      <p
+        className={`text-sm font-bold leading-relaxed mb-6 flex-grow ${disabled ? "text-ink-200" : "text-ink-600"}`}
+      >
         {description}
       </p>
 
@@ -265,13 +288,13 @@ export default function DashboardPage() {
 
   const handleLogout = async () => {
     const { isConfirmed } = await Swal.fire({
-      title: 'Logout?',
+      title: "Logout?",
       text: "Apakah Anda yakin ingin keluar?",
-      icon: 'question',
+      icon: "question",
       showCancelButton: true,
-      confirmButtonColor: '#3a5029',
-      confirmButtonText: 'Ya, Keluar!',
-      cancelButtonText: 'Batal'
+      confirmButtonColor: "#3a5029",
+      confirmButtonText: "Ya, Keluar!",
+      cancelButtonText: "Batal",
     });
 
     if (!isConfirmed) return;
@@ -296,7 +319,9 @@ export default function DashboardPage() {
             transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
             className="w-16 h-16 border-4 border-teal-50 border-t-teal-600 rounded-full mx-auto mb-6"
           />
-          <p className="text-xl font-display font-black text-teal-950 uppercase tracking-tighter">Memuat Portal Santri...</p>
+          <p className="text-xl font-display font-black text-teal-950 uppercase tracking-tighter">
+            Memuat Portal Santri...
+          </p>
         </div>
       </div>
     );
@@ -337,7 +362,9 @@ export default function DashboardPage() {
                   <LayoutDashboard className="w-6 h-6" />
                 </div>
                 <div className="h-0.5 w-12 bg-teal-100 rounded-full" />
-                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-teal-600">Santri Portal</span>
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-teal-600">
+                  Santri Portal
+                </span>
               </motion.div>
 
               <motion.h1
@@ -347,7 +374,9 @@ export default function DashboardPage() {
                 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-black text-teal-950 mb-6 leading-none tracking-tight"
               >
                 Ahlan wa Sahlan, <br />
-                <span className="text-teal-700 bg-teal-50 px-4 py-1 rounded-3xl inline-block mt-2">{pendaftar.nama_lengkap.split(" ")[0]}!</span>
+                <span className="text-teal-700 bg-teal-50 px-4 py-1 rounded-3xl inline-block mt-2">
+                  {pendaftar.nama_lengkap.split(" ")[0]}!
+                </span>
               </motion.h1>
 
               <motion.p
@@ -356,7 +385,8 @@ export default function DashboardPage() {
                 transition={{ delay: 0.2 }}
                 className="text-xl md:text-2xl text-ink-500 font-bold max-w-2xl leading-relaxed tracking-tight"
               >
-                T.A 2026/2027 • Pantau progres pendaftaranmu secara berkala di sini dengan mudah.
+                T.A 2026/2027 • Pantau progres pendaftaranmu secara berkala di
+                sini dengan mudah.
               </motion.p>
             </div>
 
@@ -382,10 +412,8 @@ export default function DashboardPage() {
       {/* MAIN CONTENT */}
       <Container className="pt-16 md:pt-24 relative z-10">
         <div className="grid lg:grid-cols-12 gap-12 items-start">
-
           {/* LEFT SIDE: FLOW & ACTIONS */}
           <div className="lg:col-span-8 space-y-16">
-
             {/* STATUS HIGHLIGHT (Portal Card) */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -397,18 +425,28 @@ export default function DashboardPage() {
 
               <div className="relative z-10">
                 <div className="flex flex-col md:flex-row md:items-center gap-6 sm:gap-10 mb-8 sm:mb-10">
-                  <div className={`w-20 h-20 sm:w-24 sm:h-24 rounded-[2rem] sm:rounded-[2.5rem] bg-white flex items-center justify-center ${statusInfo.text} shadow-xl border border-ink-50 shrink-0`}>
-                    <StatusIcon className={`w-10 h-10 sm:w-12 sm:h-12 ${pendaftar.status_pendaftaran === 'payment_verification' ? 'animate-spin' : ''}`} />
+                  <div
+                    className={`w-20 h-20 sm:w-24 sm:h-24 rounded-[2rem] sm:rounded-[2.5rem] bg-white flex items-center justify-center ${statusInfo.text} shadow-xl border border-ink-50 shrink-0`}
+                  >
+                    <StatusIcon
+                      className={`w-10 h-10 sm:w-12 sm:h-12 ${pendaftar.status_pendaftaran === "payment_verification" ? "animate-spin" : ""}`}
+                    />
                   </div>
                   <div>
-                    <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.4em] text-ink-500 mb-2 block">Status Pendaftaran</span>
-                    <h2 className={`text-2xl sm:text-3xl md:text-5xl font-display font-black leading-none tracking-tight ${statusInfo.text}`}>
+                    <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.4em] text-ink-500 mb-2 block">
+                      Status Pendaftaran
+                    </span>
+                    <h2
+                      className={`text-2xl sm:text-3xl md:text-5xl font-display font-black leading-none tracking-tight ${statusInfo.text}`}
+                    >
                       {statusInfo.label}
                     </h2>
                   </div>
                 </div>
 
-                <p className={`text-base sm:text-lg md:text-xl xl:text-2xl font-bold leading-relaxed max-w-2xl text-teal-950`}>
+                <p
+                  className={`text-base sm:text-lg md:text-xl xl:text-2xl font-bold leading-relaxed max-w-2xl text-teal-950`}
+                >
                   {statusInfo.message}
                 </p>
 
@@ -417,7 +455,11 @@ export default function DashboardPage() {
                     ID: {pendaftar.id.substring(0, 8).toUpperCase()}
                   </div>
                   <div className="px-8 py-3 rounded-2xl bg-teal-50 border border-teal-100 text-[10px] font-black uppercase tracking-[0.2em] text-teal-700 shadow-sm">
-                    Tgl: {new Date(pendaftar.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                    Tgl:{" "}
+                    {new Date(pendaftar.created_at).toLocaleDateString(
+                      "id-ID",
+                      { day: "numeric", month: "long", year: "numeric" },
+                    )}
                   </div>
                 </div>
               </div>
@@ -426,7 +468,9 @@ export default function DashboardPage() {
             {/* ACTION GRID */}
             <div>
               <div className="flex items-center justify-between mb-10 px-4">
-                <h3 className="text-3xl font-display font-black text-teal-950 tracking-tight">Alur Pendaftaran</h3>
+                <h3 className="text-3xl font-display font-black text-teal-950 tracking-tight">
+                  Alur Pendaftaran
+                </h3>
                 <div className="h-0.5 flex-1 mx-10 bg-ink-50 rounded-full" />
               </div>
 
@@ -448,7 +492,9 @@ export default function DashboardPage() {
                   description="Isi formulir lengkap mulai dari data diri, keluarga, hingga riwayat kesehatan santri."
                   step="Step 02"
                   color="teal"
-                  disabled={!hasReachedStatus(pendaftar.status_pendaftaran, "verified")}
+                  disabled={
+                    !hasReachedStatus(pendaftar.status_pendaftaran, "verified")
+                  }
                   delay={0.6}
                 />
                 <ActionCard
@@ -458,17 +504,27 @@ export default function DashboardPage() {
                   description="Unggah dokumen persyaratan (Akte, KK, KTP) untuk diverifikasi oleh tim panitia."
                   step="Step 03"
                   color="teal"
-                  disabled={!hasReachedStatus(pendaftar.status_pendaftaran, "data_completed")}
+                  disabled={
+                    !hasReachedStatus(
+                      pendaftar.status_pendaftaran,
+                      "data_completed",
+                    )
+                  }
                   delay={0.7}
                 />
                 <ActionCard
                   href="/dashboard/pendaftar/undangan-seleksi"
                   icon={ClipboardList}
-                  title="Undangan Seleksi"
-                  description="Lihat jadwal ujian Al-Qur'an dan wawancara setelah berkasmu dinyatakan lengkap."
+                  title="Jadwal Seleksi"
+                  description="Lihat jadwal seleksi Al-Qur'an dan wawancara setelah berkasmu dinyatakan lengkap."
                   step="Step 04"
                   color="teal"
-                  disabled={!hasReachedStatus(pendaftar.status_pendaftaran, "docs_verified")}
+                  disabled={
+                    !hasReachedStatus(
+                      pendaftar.status_pendaftaran,
+                      "docs_verified",
+                    )
+                  }
                   delay={0.8}
                 />
                 <ActionCard
@@ -478,7 +534,9 @@ export default function DashboardPage() {
                   description="Pengumuman hasil akhir seleksi penerimaan santri baru T.A 2026/2027."
                   step="Step 05"
                   color="teal"
-                  disabled={!hasReachedStatus(pendaftar.status_pendaftaran, "tested")}
+                  disabled={
+                    !hasReachedStatus(pendaftar.status_pendaftaran, "tested")
+                  }
                   delay={0.9}
                 />
                 <ActionCard
@@ -488,7 +546,9 @@ export default function DashboardPage() {
                   description="Konfirmasi kedatangan dan penyelesaian administrasi bagi santri yang dinyatakan lulus."
                   step="Step 06"
                   color="teal"
-                  disabled={!hasReachedStatus(pendaftar.status_pendaftaran, "accepted")}
+                  disabled={
+                    !hasReachedStatus(pendaftar.status_pendaftaran, "accepted")
+                  }
                   delay={1.0}
                 />
               </div>
@@ -497,7 +557,6 @@ export default function DashboardPage() {
 
           {/* RIGHT SIDE: SIDEBAR */}
           <aside className="lg:col-span-4 space-y-10">
-
             {/* REG CARD */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
@@ -509,7 +568,9 @@ export default function DashboardPage() {
               <div className="w-20 h-20 rounded-[2rem] bg-teal-50 flex items-center justify-center text-teal-600 mb-8 border border-teal-100 shadow-sm transition-transform group-hover:scale-110">
                 <IdCard className="w-10 h-10" />
               </div>
-              <p className="text-[10px] font-black uppercase tracking-[0.4em] text-ink-500 mb-2">No. Registrasi</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.4em] text-ink-500 mb-2">
+                No. Registrasi
+              </p>
               <h4 className="text-4xl font-display font-black text-teal-950 mb-8 leading-none tracking-tight">
                 {pendaftar.nomor_pendaftaran}
               </h4>
@@ -517,7 +578,9 @@ export default function DashboardPage() {
               <div className="flex items-center gap-3">
                 <Star className="w-6 h-6 text-sand-500 fill-sand-500 animate-pulse" />
                 <span className="font-black text-sm text-teal-700 uppercase tracking-widest leading-none">
-                  {pendaftar.jenjang === "MTs" ? "Madrasah Tsanawiyah" : "I'dad Lughowi"}
+                  {pendaftar.jenjang === "MTs"
+                    ? "Madrasah Tsanawiyah"
+                    : "I'dad Lughowi"}
                 </span>
               </div>
             </motion.div>
@@ -536,9 +599,13 @@ export default function DashboardPage() {
                 <div className="w-16 h-16 rounded-[1.5rem] bg-teal-900 flex items-center justify-center text-white mb-8 border border-teal-800 shadow-lg">
                   <MessageCircle className="w-8 h-8" />
                 </div>
-                <h4 className="text-3xl font-display font-black mb-4 text-white leading-tight tracking-tight">Butuh <br />Bantuan?</h4>
+                <h4 className="text-3xl font-display font-black mb-4 text-white leading-tight tracking-tight">
+                  Butuh <br />
+                  Bantuan?
+                </h4>
                 <p className="text-sm text-teal-200 font-bold leading-relaxed mb-10 opacity-80">
-                  Tim panitia kami siap membantu Bapak/Ibu setiap hari melalui layanan WhatsApp operasional.
+                  Tim panitia kami siap membantu Bapak/Ibu setiap hari melalui
+                  layanan WhatsApp operasional.
                 </p>
 
                 <a
@@ -551,13 +618,16 @@ export default function DashboardPage() {
                     <Phone className="w-7 h-7" />
                   </div>
                   <div className="text-left leading-none">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-teal-600 mb-2">WhatsApp CS</p>
-                    <p className="font-black text-lg text-teal-950">0812-8530-0800</p>
+                    <p className="text-[10px] font-black uppercase tracking-widest text-teal-600 mb-2">
+                      WhatsApp CS
+                    </p>
+                    <p className="font-black text-lg text-teal-950">
+                      0812-8530-0800
+                    </p>
                   </div>
                 </a>
               </div>
             </motion.div>
-
           </aside>
         </div>
       </Container>

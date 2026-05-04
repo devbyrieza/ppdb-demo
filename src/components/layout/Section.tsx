@@ -31,7 +31,7 @@ const Section = React.forwardRef<HTMLElement, SectionProps>(
       children,
       ...props
     },
-    ref
+    ref,
   ) => {
     return (
       <section
@@ -51,14 +51,14 @@ const Section = React.forwardRef<HTMLElement, SectionProps>(
             "bg-green-50": background === "green",
             "bg-transparent": background === "transparent",
           },
-          className
+          className,
         )}
         {...props}
       >
         {children}
       </section>
     );
-  }
+  },
 );
 
 Section.displayName = "Section";

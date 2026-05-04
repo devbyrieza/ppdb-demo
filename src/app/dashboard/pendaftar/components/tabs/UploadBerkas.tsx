@@ -114,7 +114,7 @@ async function compressImage(file: File): Promise<File> {
             }
           },
           "image/jpeg",
-          0.7
+          0.7,
         );
       };
       img.onerror = () => resolve(file);
@@ -217,7 +217,7 @@ function DokumenCard({
         onUpload(files[0]);
       }
     },
-    [onUpload]
+    [onUpload],
   );
 
   const handleFileSelect = useCallback(
@@ -231,7 +231,7 @@ function DokumenCard({
         fileInputRef.current.value = "";
       }
     },
-    [onUpload]
+    [onUpload],
   );
 
   const handleClick = () => {
@@ -254,23 +254,30 @@ function DokumenCard({
 
   return (
     <div
-      className={`group rounded-[1.5rem] border transition-all duration-300 overflow-hidden relative ${isDragging
-        ? "border-brand-blue-600 bg-brand-blue-50 shadow-lg scale-[1.02] ring-4 ring-brand-blue-600/10"
-        : dokumen.status === "verified"
-          ? "border-emerald-200 bg-emerald-50/50"
-          : dokumen.status === "rejected"
-            ? "border-red-200 bg-red-50/50"
-            : dokumen.status === "uploaded"
-              ? "border-brand-blue-200 bg-brand-blue-50/50"
-              : "border-ink-100 bg-white hover:border-brand-blue-300 hover:shadow-lg hover:shadow-brand-blue-950/5"
-        }`}
+      className={`group rounded-[1.5rem] border transition-all duration-300 overflow-hidden relative ${
+        isDragging
+          ? "border-brand-blue-600 bg-brand-blue-50 shadow-lg scale-[1.02] ring-4 ring-brand-blue-600/10"
+          : dokumen.status === "verified"
+            ? "border-emerald-200 bg-emerald-50/50"
+            : dokumen.status === "rejected"
+              ? "border-red-200 bg-red-50/50"
+              : dokumen.status === "uploaded"
+                ? "border-brand-blue-200 bg-brand-blue-50/50"
+                : "border-ink-100 bg-white hover:border-brand-blue-300 hover:shadow-lg hover:shadow-brand-blue-950/5"
+      }`}
     >
       {/* Status Bar */}
-      <div className={`absolute top-0 left-0 bottom-0 w-1.5 transition-colors ${dokumen.status === "verified" ? "bg-emerald-500" :
-        dokumen.status === "rejected" ? "bg-red-500" :
-          dokumen.status === "uploaded" ? "bg-brand-blue-500" :
-            "bg-transparent group-hover:bg-brand-blue-500"
-        }`} />
+      <div
+        className={`absolute top-0 left-0 bottom-0 w-1.5 transition-colors ${
+          dokumen.status === "verified"
+            ? "bg-emerald-500"
+            : dokumen.status === "rejected"
+              ? "bg-red-500"
+              : dokumen.status === "uploaded"
+                ? "bg-brand-blue-500"
+                : "bg-transparent group-hover:bg-brand-blue-500"
+        }`}
+      />
 
       {/* Header */}
       <div
@@ -280,17 +287,23 @@ function DokumenCard({
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-4 flex-1">
             <div
-              className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm transition-all ${dokumen.status === "verified" ? "bg-emerald-100 text-emerald-600" :
-                dokumen.status === "rejected" ? "bg-red-100 text-red-600" :
-                  dokumen.status === "uploaded" ? "bg-brand-blue-100 text-brand-blue-600" :
-                    "bg-surface-100 text-ink-400 group-hover:bg-brand-blue-50 group-hover:text-brand-blue-700"
-                }`}
+              className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm transition-all ${
+                dokumen.status === "verified"
+                  ? "bg-emerald-100 text-emerald-600"
+                  : dokumen.status === "rejected"
+                    ? "bg-red-100 text-red-600"
+                    : dokumen.status === "uploaded"
+                      ? "bg-brand-blue-100 text-brand-blue-600"
+                      : "bg-surface-100 text-ink-400 group-hover:bg-brand-blue-50 group-hover:text-brand-blue-700"
+              }`}
             >
               <StatusIcon className="w-6 h-6" />
             </div>
             <div className="flex-1">
               <div className="flex flex-wrap items-center gap-2 mb-1">
-                <h4 className="font-bold text-ink-900 text-lg">{dokumen.label}</h4>
+                <h4 className="font-bold text-ink-900 text-lg">
+                  {dokumen.label}
+                </h4>
                 {dokumen.required ? (
                   <span className="px-2 py-0.5 text-[10px] uppercase font-black tracking-wider bg-amber-100 text-amber-700 rounded-lg">
                     Wajib
@@ -301,11 +314,17 @@ function DokumenCard({
                   </span>
                 )}
               </div>
-              <p className={`text-sm font-medium ${dokumen.status === "verified" ? "text-emerald-700" :
-                dokumen.status === "rejected" ? "text-red-700" :
-                  dokumen.status === "uploaded" ? "text-brand-blue-700" :
-                    "text-ink-500"
-                }`}>
+              <p
+                className={`text-sm font-medium ${
+                  dokumen.status === "verified"
+                    ? "text-emerald-700"
+                    : dokumen.status === "rejected"
+                      ? "text-red-700"
+                      : dokumen.status === "uploaded"
+                        ? "text-brand-blue-700"
+                        : "text-ink-500"
+                }`}
+              >
                 {getStatusLabel(dokumen.status)}
               </p>
             </div>
@@ -323,7 +342,9 @@ function DokumenCard({
                 <Eye className="w-5 h-5" />
               </button>
             )}
-            <div className={`w-10 h-10 flex items-center justify-center rounded-xl transition-all ${isExpanded ? "bg-ink-900 text-white" : "bg-surface-100 text-ink-400 group-hover:bg-white group-hover:shadow-sm"}`}>
+            <div
+              className={`w-10 h-10 flex items-center justify-center rounded-xl transition-all ${isExpanded ? "bg-ink-900 text-white" : "bg-surface-100 text-ink-400 group-hover:bg-white group-hover:shadow-sm"}`}
+            >
               {isExpanded ? (
                 <ChevronUp className="w-5 h-5" />
               ) : (
@@ -374,7 +395,8 @@ function DokumenCard({
                   </p>
                   <div className="flex items-center gap-2 mt-1">
                     <span className="px-2 py-0.5 bg-surface-100 rounded text-[10px] font-bold text-ink-500 uppercase tracking-wide">
-                      {dokumen.file_type?.split("/")[1]?.toUpperCase() || "FILE"}
+                      {dokumen.file_type?.split("/")[1]?.toUpperCase() ||
+                        "FILE"}
                     </span>
                     <span className="text-xs text-ink-400">
                       {formatFileSize(dokumen.file_size || 0)}
@@ -382,13 +404,16 @@ function DokumenCard({
                     <span className="text-xs text-ink-300">&bull;</span>
                     <span className="text-xs text-ink-400">
                       {dokumen.uploaded_at
-                        ? new Date(dokumen.uploaded_at).toLocaleDateString("id-ID", {
-                          day: "numeric",
-                          month: "short",
-                          year: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit"
-                        })
+                        ? new Date(dokumen.uploaded_at).toLocaleDateString(
+                            "id-ID",
+                            {
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            },
+                          )
                         : "-"}
                     </span>
                   </div>
@@ -400,7 +425,9 @@ function DokumenCard({
                 <div className="mt-4 p-4 bg-red-50 border border-red-100 rounded-xl flex gap-3 items-start">
                   <XCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-xs font-black text-red-800 uppercase tracking-wider mb-1">Perlu Perbaikan</p>
+                    <p className="text-xs font-black text-red-800 uppercase tracking-wider mb-1">
+                      Perlu Perbaikan
+                    </p>
                     <p className="text-sm text-red-700 leading-relaxed">
                       {dokumen.catatan}
                     </p>
@@ -413,13 +440,19 @@ function DokumenCard({
                 <div className="mt-4 p-4 bg-emerald-50 border border-emerald-100 rounded-xl flex gap-3 items-center">
                   <CheckCircle className="w-5 h-5 text-emerald-500 shrink-0" />
                   <div>
-                    <p className="text-xs font-black text-emerald-800 uppercase tracking-wider mb-0.5">Terverifikasi</p>
+                    <p className="text-xs font-black text-emerald-800 uppercase tracking-wider mb-0.5">
+                      Terverifikasi
+                    </p>
                     <p className="text-sm text-emerald-700">
-                      Dokumen telah disetujui pada {new Date(dokumen.verified_at).toLocaleDateString("id-ID", {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      })}
+                      Dokumen telah disetujui pada{" "}
+                      {new Date(dokumen.verified_at).toLocaleDateString(
+                        "id-ID",
+                        {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                        },
+                      )}
                     </p>
                   </div>
                 </div>
@@ -429,10 +462,11 @@ function DokumenCard({
 
           {/* Upload Area */}
           <div
-            className={`border-2 border-dashed rounded-[1.5rem] p-8 text-center transition-all cursor-pointer group ${isDragging
-              ? "border-brand-blue-600 bg-brand-blue-50"
-              : "border-ink-200 hover:border-brand-blue-400 hover:bg-surface-50"
-              } ${(isUploading || isLocked) ? "pointer-events-none opacity-50" : ""}`}
+            className={`border-2 border-dashed rounded-[1.5rem] p-8 text-center transition-all cursor-pointer group ${
+              isDragging
+                ? "border-brand-blue-600 bg-brand-blue-50"
+                : "border-ink-200 hover:border-brand-blue-400 hover:bg-surface-50"
+            } ${isUploading || isLocked ? "pointer-events-none opacity-50" : ""}`}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
@@ -471,9 +505,15 @@ function DokumenCard({
                 </p>
                 {!isLocked && (
                   <p className="text-sm text-ink-400 mt-2 max-w-xs mx-auto leading-relaxed">
-                    Format: <span className="font-semibold text-ink-600">{allowedExtensions}</span>
+                    Format:{" "}
+                    <span className="font-semibold text-ink-600">
+                      {allowedExtensions}
+                    </span>
                     <br />
-                    Ukuran Maksimal: <span className="font-semibold text-ink-600">{maxSizeDisplay}</span>
+                    Ukuran Maksimal:{" "}
+                    <span className="font-semibold text-ink-600">
+                      {maxSizeDisplay}
+                    </span>
                   </p>
                 )}
                 {isLocked && (
@@ -521,8 +561,6 @@ export default function UploadBerkasTab() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-
-
   const handleSubmit = async () => {
     // 1. Konfirmasi User
     const result = await Swal.fire({
@@ -543,7 +581,7 @@ export default function UploadBerkasTab() {
     try {
       setIsSubmitting(true);
       const response = await fetch("/api/pendaftar/submit-dokumen", {
-        method: "POST"
+        method: "POST",
       });
       const apiResult = await response.json();
 
@@ -565,7 +603,6 @@ export default function UploadBerkasTab() {
 
       // Ke dashboard utama agar sidebar terupdate
       window.location.href = "/dashboard/pendaftar";
-
     } catch (err: any) {
       Swal.fire({
         title: "Gagal Mengunci",
@@ -614,8 +651,23 @@ export default function UploadBerkasTab() {
     fetchDokumenStatus();
   }, [fetchDokumenStatus]);
 
-  const isLocked = ['docs_uploaded', 'docs_verified', 'scheduled', 'tested', 'announced', 'accepted', 'enrolled'].includes(pendaftarStatus);
-  const isVerified = ['docs_verified', 'scheduled', 'tested', 'announced', 'accepted', 'enrolled'].includes(pendaftarStatus);
+  const isLocked = [
+    "docs_uploaded",
+    "docs_verified",
+    "scheduled",
+    "tested",
+    "announced",
+    "accepted",
+    "enrolled",
+  ].includes(pendaftarStatus);
+  const isVerified = [
+    "docs_verified",
+    "scheduled",
+    "tested",
+    "announced",
+    "accepted",
+    "enrolled",
+  ].includes(pendaftarStatus);
 
   // Show toast
   const showToast = (type: "success" | "error", message: string) => {
@@ -635,7 +687,9 @@ export default function UploadBerkasTab() {
       // 2. Cek ukuran setelah kompresi
       const config = dokumenConfig[key];
       if (config && fileToUpload.size > config.maxSize) {
-        throw new Error(`Ukuran file terlalu besar! Maksimal ${formatFileSize(config.maxSize)}`);
+        throw new Error(
+          `Ukuran file terlalu besar! Maksimal ${formatFileSize(config.maxSize)}`,
+        );
       }
 
       // Add to uploading set
@@ -751,10 +805,11 @@ export default function UploadBerkasTab() {
       {/* Toast Notification */}
       {toast && (
         <div
-          className={`fixed top-4 right-4 z-50 px-6 py-4 rounded-xl shadow-lg flex items-center gap-3 animate-fadeInRight ${toast.type === "success"
-            ? "bg-green-500 text-white"
-            : "bg-red-500 text-white"
-            }`}
+          className={`fixed top-4 right-4 z-50 px-6 py-4 rounded-xl shadow-lg flex items-center gap-3 animate-fadeInRight ${
+            toast.type === "success"
+              ? "bg-green-500 text-white"
+              : "bg-red-500 text-white"
+          }`}
         >
           {toast.type === "success" ? (
             <CheckCircle className="w-5 h-5" />
@@ -780,7 +835,9 @@ export default function UploadBerkasTab() {
               <Upload className="w-8 h-8 text-brand-yellow-100" />
             </div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-black mb-2 tracking-tight text-white font-display">Upload Berkas</h1>
+              <h1 className="text-2xl md:text-3xl font-black mb-2 tracking-tight text-white font-display">
+                Upload Berkas
+              </h1>
               <p className="text-brand-yellow-100/90 font-medium max-w-xl text-sm md:text-base">
                 Lengkapi dokumen persyaratan untuk verifikasi data.
               </p>
@@ -791,7 +848,7 @@ export default function UploadBerkasTab() {
             disabled={loading}
             className="inline-flex items-center gap-2 px-5 py-3 bg-white border border-ink-100 text-ink-600 font-bold rounded-xl hover:bg-surface-50 transition-all shadow-sm active:scale-95 disabled:opacity-50"
           >
-            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
             Refresh Status
           </button>
         </div>
@@ -806,7 +863,9 @@ export default function UploadBerkasTab() {
                 <FileText className="w-6 h-6 text-amber-600" />
               </div>
               <div>
-                <p className="text-xs font-bold text-ink-400 uppercase tracking-wider">Total Dokumen</p>
+                <p className="text-xs font-bold text-ink-400 uppercase tracking-wider">
+                  Total Dokumen
+                </p>
                 <p className="text-2xl font-black text-ink-900 leading-none mt-1">
                   {summary.total}
                 </p>
@@ -820,10 +879,16 @@ export default function UploadBerkasTab() {
                 <Upload className="w-6 h-6 text-blue-600" />
               </div>
               <div>
-                <p className="text-xs font-bold text-ink-400 uppercase tracking-wider">Sudah Diupload</p>
+                <p className="text-xs font-bold text-ink-400 uppercase tracking-wider">
+                  Sudah Diupload
+                </p>
                 <div className="flex items-baseline gap-1 mt-1">
-                  <p className="text-2xl font-black text-ink-900 leading-none">{summary.uploaded}</p>
-                  <span className="text-sm text-ink-400 font-medium">/ {summary.total}</span>
+                  <p className="text-2xl font-black text-ink-900 leading-none">
+                    {summary.uploaded}
+                  </p>
+                  <span className="text-sm text-ink-400 font-medium">
+                    / {summary.total}
+                  </span>
                 </div>
               </div>
             </div>
@@ -835,10 +900,16 @@ export default function UploadBerkasTab() {
                 <FileCheck className="w-6 h-6 text-emerald-600" />
               </div>
               <div>
-                <p className="text-xs font-bold text-ink-400 uppercase tracking-wider">Terverifikasi</p>
+                <p className="text-xs font-bold text-ink-400 uppercase tracking-wider">
+                  Terverifikasi
+                </p>
                 <div className="flex items-baseline gap-1 mt-1">
-                  <p className="text-2xl font-black text-ink-900 leading-none">{summary.verified}</p>
-                  <span className="text-sm text-ink-400 font-medium">/ {summary.total}</span>
+                  <p className="text-2xl font-black text-ink-900 leading-none">
+                    {summary.verified}
+                  </p>
+                  <span className="text-sm text-ink-400 font-medium">
+                    / {summary.total}
+                  </span>
                 </div>
               </div>
             </div>
@@ -854,7 +925,9 @@ export default function UploadBerkasTab() {
                 </div>
               </div>
               <div className="flex-1">
-                <p className="text-xs font-bold text-ink-400 uppercase tracking-wider">Progress Wajib</p>
+                <p className="text-xs font-bold text-ink-400 uppercase tracking-wider">
+                  Progress Wajib
+                </p>
                 <div className="w-full h-2.5 bg-surface-100 rounded-full mt-2 overflow-hidden">
                   <div
                     className="h-full bg-linear-to-r from-brand-blue-500 to-brand-blue-700 rounded-full transition-all duration-500 shadow-lg shadow-brand-blue-500/20"
@@ -875,12 +948,24 @@ export default function UploadBerkasTab() {
           <AlertCircle className="w-5 h-5" />
         </div>
         <div>
-          <h4 className="font-bold text-amber-900 mb-2 text-lg">Petunjuk Upload Dokumen</h4>
+          <h4 className="font-bold text-amber-900 mb-2 text-lg">
+            Petunjuk Upload Dokumen
+          </h4>
           <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 text-sm text-amber-800 list-disc pl-4 marker:text-amber-500">
-            <li>Pastikan dokumen hasil scan atau foto terlihat <strong>jelas dan terbaca</strong></li>
-            <li>Format yang diterima: <strong>JPG, PNG, atau PDF</strong></li>
-            <li>Ukuran maksimal file: <strong>5MB (Foto & Dokumen)</strong></li>
-            <li>Anda dapat mengupload ulang jika terjadi kesalahan sebelum diverifikasi</li>
+            <li>
+              Pastikan dokumen hasil scan atau foto terlihat{" "}
+              <strong>jelas dan terbaca</strong>
+            </li>
+            <li>
+              Format yang diterima: <strong>JPG, PNG, atau PDF</strong>
+            </li>
+            <li>
+              Ukuran maksimal file: <strong>5MB (Foto & Dokumen)</strong>
+            </li>
+            <li>
+              Anda dapat mengupload ulang jika terjadi kesalahan sebelum
+              diverifikasi
+            </li>
           </ul>
         </div>
       </div>
@@ -904,7 +989,7 @@ export default function UploadBerkasTab() {
                 uploadProgress={uploadProgress[dokumen.key] || 0}
                 onUpload={(file) => handleUpload(dokumen.key, file)}
                 onPreview={() => handlePreview(dokumen)}
-                isLocked={isLocked && dokumen.status !== 'rejected'}
+                isLocked={isLocked && dokumen.status !== "rejected"}
               />
             ))}
         </div>
@@ -942,7 +1027,7 @@ export default function UploadBerkasTab() {
       <div className="bg-white border text-center border-ink-200 rounded-3xl p-8 shadow-sm">
         <div className="max-w-xl mx-auto space-y-6">
           {isLocked ? (
-            dokumenList.some(d => d.status === 'rejected') ? (
+            dokumenList.some((d) => d.status === "rejected") ? (
               // Case: Locked but REJECTED docs exist
               <>
                 <div className="w-16 h-16 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center mx-auto transition-colors animate-pulse">
@@ -950,15 +1035,21 @@ export default function UploadBerkasTab() {
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-black text-red-700 mb-2">Dokumen Perlu Diperbaiki</h3>
+                  <h3 className="text-xl font-black text-red-700 mb-2">
+                    Dokumen Perlu Diperbaiki
+                  </h3>
                   <p className="text-red-600 font-medium leading-relaxed">
-                    Admin telah menolak beberapa dokumen Anda. Silakan cek catatan penolakan pada dokumen yang berwarna merah di atas, lalu upload ulang dokumen yang sesuai.
+                    Admin telah menolak beberapa dokumen Anda. Silakan cek
+                    catatan penolakan pada dokumen yang berwarna merah di atas,
+                    lalu upload ulang dokumen yang sesuai.
                   </p>
                 </div>
 
                 <div className="p-4 bg-red-50 border border-red-100 rounded-xl flex gap-3 items-center justify-center">
                   <XCircle className="w-5 h-5 text-red-600" />
-                  <span className="text-red-800 font-bold text-sm">Menunggu Perbaikan Anda</span>
+                  <span className="text-red-800 font-bold text-sm">
+                    Menunggu Perbaikan Anda
+                  </span>
                 </div>
               </>
             ) : isVerified ? (
@@ -969,7 +1060,9 @@ export default function UploadBerkasTab() {
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-black text-brand-blue-900 mb-2">Dokumen Telah Diverifikasi</h3>
+                  <h3 className="text-xl font-black text-brand-blue-900 mb-2">
+                    Dokumen Telah Diverifikasi
+                  </h3>
                   <p className="text-brand-blue-700 font-medium leading-relaxed mb-4">
                     Selamat! Semua berkas wajib Anda telah disetujui oleh admin.
                   </p>
@@ -977,7 +1070,7 @@ export default function UploadBerkasTab() {
                     href="/dashboard/pendaftar/undangan-seleksi"
                     className="inline-flex items-center gap-2 px-6 py-3 bg-brand-yellow-400 text-brand-blue-950 font-black rounded-xl hover:bg-brand-yellow-300 transition-all shadow-lg shadow-brand-yellow-400/20 hover:-translate-y-1 border border-brand-yellow-500"
                   >
-                    Buka Undangan Seleksi
+                    Buka Jadwal Seleksi
                     <FileCheck className="w-5 h-5" />
                   </Link>
                 </div>
@@ -990,24 +1083,33 @@ export default function UploadBerkasTab() {
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-black text-ink-900 mb-2">Dokumen Telah Dikunci</h3>
+                  <h3 className="text-xl font-black text-ink-900 mb-2">
+                    Dokumen Telah Dikunci
+                  </h3>
                   <p className="text-ink-500 font-medium leading-relaxed">
-                    Sistem mendeteksi dokumen Anda sedang dalam tahap verifikasi admin. Halaman <strong>Undangan Seleksi</strong> akan otomatis terbuka setelah admin menyetujui semua berkas wajib Anda.
+                    Sistem mendeteksi dokumen Anda sedang dalam tahap verifikasi
+                    admin. Halaman <strong>Jadwal Seleksi</strong> akan otomatis
+                    terbuka setelah admin menyetujui semua berkas wajib Anda.
                   </p>
                 </div>
 
                 <div className="p-4 bg-amber-50 border border-amber-100 rounded-xl flex gap-3 items-center justify-center">
                   <Clock className="w-5 h-5 text-amber-600" />
-                  <span className="text-amber-800 font-bold text-sm">Sedang Diverifikasi Admin</span>
+                  <span className="text-amber-800 font-bold text-sm">
+                    Sedang Diverifikasi Admin
+                  </span>
                 </div>
               </>
             )
           ) : (
             <>
-              <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mx-auto transition-colors ${summary && summary.progress.required.percentage === 100
-                ? "bg-brand-yellow-100 text-brand-blue-700"
-                : "bg-surface-100 text-ink-300"
-                }`}>
+              <div
+                className={`w-16 h-16 rounded-2xl flex items-center justify-center mx-auto transition-colors ${
+                  summary && summary.progress.required.percentage === 100
+                    ? "bg-brand-yellow-100 text-brand-blue-700"
+                    : "bg-surface-100 text-ink-300"
+                }`}
+              >
                 <FileCheck className="w-8 h-8" />
               </div>
 
@@ -1026,11 +1128,18 @@ export default function UploadBerkasTab() {
 
               <button
                 onClick={handleSubmit}
-                disabled={!summary || summary.progress.required.percentage < 100 || isSubmitting}
-                className={`w-full py-4 rounded-xl font-black text-lg flex items-center justify-center gap-3 transition-all ${summary && summary.progress.required.percentage === 100 && !isSubmitting
-                  ? "bg-brand-yellow-400 text-brand-blue-950 hover:bg-brand-yellow-300 shadow-xl shadow-brand-yellow-400/20 hover:-translate-y-1 border border-brand-yellow-500"
-                  : "bg-surface-200 text-ink-400 cursor-not-allowed"
-                  }`}
+                disabled={
+                  !summary ||
+                  summary.progress.required.percentage < 100 ||
+                  isSubmitting
+                }
+                className={`w-full py-4 rounded-xl font-black text-lg flex items-center justify-center gap-3 transition-all ${
+                  summary &&
+                  summary.progress.required.percentage === 100 &&
+                  !isSubmitting
+                    ? "bg-brand-yellow-400 text-brand-blue-950 hover:bg-brand-yellow-300 shadow-xl shadow-brand-yellow-400/20 hover:-translate-y-1 border border-brand-yellow-500"
+                    : "bg-surface-200 text-ink-400 cursor-not-allowed"
+                }`}
               >
                 {isSubmitting ? (
                   <>
@@ -1047,7 +1156,8 @@ export default function UploadBerkasTab() {
 
               {summary && summary.progress.required.percentage === 100 && (
                 <p className="text-xs text-ink-400 font-medium">
-                  Setelah dikunci, berkas hanya dapat diubah dengan menghubungi bantuan admin.
+                  Setelah dikunci, berkas hanya dapat diubah dengan menghubungi
+                  bantuan admin.
                 </p>
               )}
             </>

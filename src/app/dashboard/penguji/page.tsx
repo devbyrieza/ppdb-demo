@@ -52,7 +52,9 @@ export default function PengujiDashboardPage() {
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
           <Loader2 className="w-12 h-12 animate-spin text-brand-blue-600 mx-auto mb-4" />
-          <p className="text-ink-600 font-bold tracking-tight">Memuat statistik dashboard...</p>
+          <p className="text-ink-600 font-bold tracking-tight">
+            Memuat statistik dashboard...
+          </p>
         </div>
       </div>
     );
@@ -104,9 +106,12 @@ export default function PengujiDashboardPage() {
               <TrendingUp className="w-10 h-10" />
             </div>
             <div>
-              <h1 className="text-2xl md:text-4xl font-black mb-2 tracking-tight text-white font-display">Ikhtisar Dashboard</h1>
+              <h1 className="text-2xl md:text-4xl font-black mb-2 tracking-tight text-white font-display">
+                Ikhtisar Dashboard
+              </h1>
               <p className="text-brand-blue-100 font-bold max-w-xl text-sm md:text-lg leading-relaxed opacity-90">
-                Selamat datang kembali di panel penilaian Seleksi PPDB PPDB. Berikut ringkasan tugas Anda hari ini.
+                Selamat datang kembali di panel penilaian Seleksi PPDB PPDB.
+                Berikut ringkasan tugas Anda hari ini.
               </p>
             </div>
           </div>
@@ -120,11 +125,15 @@ export default function PengujiDashboardPage() {
             key={index}
             className="bg-white rounded-3xl p-5 md:p-8 border border-brand-yellow-100 shadow-xs hover:shadow-xl hover:shadow-brand-blue-900/5 transition-all duration-500 app-card group"
           >
-            <div className={`w-14 h-14 ${card.bgColor} rounded-2xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}>
+            <div
+              className={`w-14 h-14 ${card.bgColor} rounded-2xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}
+            >
               <card.icon className={`w-7 h-7 ${card.iconColor}`} />
             </div>
             <div>
-              <p className="text-[10px] md:text-xs font-black text-ink-300 mb-1 uppercase tracking-widest">{card.title}</p>
+              <p className="text-[10px] md:text-xs font-black text-ink-300 mb-1 uppercase tracking-widest">
+                {card.title}
+              </p>
               <p className="text-2xl md:text-4xl font-black text-brand-blue-950 font-display tracking-tight leading-none">
                 {card.value}
               </p>
@@ -152,7 +161,9 @@ export default function PengujiDashboardPage() {
               <Calendar className="w-8 h-8 text-brand-blue-950" />
             </div>
             <div>
-              <p className="text-xl font-black text-brand-blue-950 font-display">Lihat Jadwal</p>
+              <p className="text-xl font-black text-brand-blue-950 font-display">
+                Lihat Jadwal
+              </p>
               <p className="text-xs font-black text-ink-300 uppercase tracking-widest mt-1">
                 Jadwal ujian ditugaskan
               </p>
@@ -170,7 +181,9 @@ export default function PengujiDashboardPage() {
               <ClipboardCheck className="w-8 h-8 text-white" />
             </div>
             <div>
-              <p className="text-xl font-black text-white font-display tracking-tight">Input Nilai</p>
+              <p className="text-xl font-black text-white font-display tracking-tight">
+                Input Nilai
+              </p>
               <p className="text-xs font-black text-brand-blue-100 uppercase tracking-widest mt-1">
                 {stats.belum_dinilai} Tugas Penilaian
               </p>
@@ -197,19 +210,31 @@ export default function PengujiDashboardPage() {
             <ul className="text-sm text-amber-900/80 font-bold space-y-2">
               <li className="flex items-start gap-2">
                 <span className="text-amber-500">•</span>
-                <span>Nilai harus objektif dan sesuai rubrik penilaian yang ditetapkan pesantren.</span>
+                <span>
+                  Nilai harus objektif dan sesuai rubrik penilaian yang
+                  ditetapkan pesantren.
+                </span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-amber-500">•</span>
-                <span>Pastikan semua aspek dinilai dengan lengkap sebelum melakukan simpan data.</span>
+                <span>
+                  Pastikan semua aspek dinilai dengan lengkap sebelum melakukan
+                  simpan data.
+                </span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-amber-500">•</span>
-                <span>Berikan catatan deskriptif jika diperlukan untuk referensi panitia pusat.</span>
+                <span>
+                  Berikan catatan deskriptif jika diperlukan untuk referensi
+                  panitia pusat.
+                </span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-amber-500">•</span>
-                <span>Nilai yang sudah diinput dapat diubah kembali sebelum masa penilaian ditutup.</span>
+                <span>
+                  Nilai yang sudah diinput dapat diubah kembali sebelum masa
+                  penilaian ditutup.
+                </span>
               </li>
             </ul>
           </div>

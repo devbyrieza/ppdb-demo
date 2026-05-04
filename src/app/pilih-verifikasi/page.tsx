@@ -40,8 +40,12 @@ function PilihVerifikasiContent() {
     const year = new Date().getFullYear();
     const prefix =
       jenis_kelamin === "L"
-        ? (jenjang === "MTs" ? "MTI" : "ILI")
-        : (jenjang === "MTs" ? "MTA" : "ILA");
+        ? jenjang === "MTs"
+          ? "MTI"
+          : "ILI"
+        : jenjang === "MTs"
+          ? "MTA"
+          : "ILA";
 
     // Random 4 digit untuk demo
     const randomNum = Math.floor(1000 + Math.random() * 9000);
@@ -138,10 +142,11 @@ function PilihVerifikasiContent() {
             console.log("Memilih WhatsApp");
             setSelectedChannel("whatsapp");
           }}
-          className={`app-card w-full p-6 rounded-[1.5rem] border-2 transition-all duration-300 text-left relative ${selectedChannel === "whatsapp"
+          className={`app-card w-full p-6 rounded-[1.5rem] border-2 transition-all duration-300 text-left relative ${
+            selectedChannel === "whatsapp"
               ? "border-teal-600 bg-teal-50 shadow-md scale-[1.02]"
               : "border-sand-200 bg-white hover:border-teal-200 hover:shadow-sm"
-            }`}
+          }`}
         >
           {/* Selected Badge */}
           {selectedChannel === "whatsapp" && (
@@ -153,16 +158,18 @@ function PilihVerifikasiContent() {
           <div className="flex items-center gap-4">
             {/* Icon */}
             <div
-              className={`p-4 rounded-xl transition-all duration-300 ${selectedChannel === "whatsapp"
+              className={`p-4 rounded-xl transition-all duration-300 ${
+                selectedChannel === "whatsapp"
                   ? "bg-teal-600 shadow-md"
                   : "bg-sand-100"
-                }`}
+              }`}
             >
               <Smartphone
-                className={`w-8 h-8 ${selectedChannel === "whatsapp"
+                className={`w-8 h-8 ${
+                  selectedChannel === "whatsapp"
                     ? "text-white"
                     : "text-teal-700"
-                  }`}
+                }`}
               />
             </div>
 
@@ -170,10 +177,11 @@ function PilihVerifikasiContent() {
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
                 <h3
-                  className={`text-xl font-black ${selectedChannel === "whatsapp"
+                  className={`text-xl font-black ${
+                    selectedChannel === "whatsapp"
                       ? "text-teal-900"
                       : "text-ink-950"
-                    }`}
+                  }`}
                 >
                   WhatsApp
                 </h3>
@@ -188,10 +196,11 @@ function PilihVerifikasiContent() {
               </p>
               <div className="flex items-center gap-2">
                 <div
-                  className={`w-2 h-2 rounded-full ${selectedChannel === "whatsapp"
+                  className={`w-2 h-2 rounded-full ${
+                    selectedChannel === "whatsapp"
                       ? "bg-teal-600"
                       : "bg-sand-300"
-                    }`}
+                  }`}
                 />
                 <span className="text-xs text-ink-500 font-bold">
                   {DEMO_MODE
@@ -210,10 +219,11 @@ function PilihVerifikasiContent() {
             console.log("Memilih SMS");
             setSelectedChannel("sms");
           }}
-          className={`app-card w-full p-6 rounded-[1.5rem] border-2 transition-all duration-300 text-left relative ${selectedChannel === "sms"
+          className={`app-card w-full p-6 rounded-[1.5rem] border-2 transition-all duration-300 text-left relative ${
+            selectedChannel === "sms"
               ? "border-teal-600 bg-sand-50 shadow-md scale-[1.02]"
               : "border-sand-200 bg-white hover:border-teal-200 hover:shadow-sm"
-            }`}
+          }`}
         >
           {/* Selected Badge */}
           {selectedChannel === "sms" && (
@@ -225,22 +235,25 @@ function PilihVerifikasiContent() {
           <div className="flex items-center gap-4">
             {/* Icon */}
             <div
-              className={`p-4 rounded-xl transition-all duration-300 ${selectedChannel === "sms"
+              className={`p-4 rounded-xl transition-all duration-300 ${
+                selectedChannel === "sms"
                   ? "bg-teal-600 shadow-md"
                   : "bg-sand-100"
-                }`}
+              }`}
             >
               <MessageSquare
-                className={`w-8 h-8 ${selectedChannel === "sms" ? "text-white" : "text-teal-700"
-                  }`}
+                className={`w-8 h-8 ${
+                  selectedChannel === "sms" ? "text-white" : "text-teal-700"
+                }`}
               />
             </div>
 
             {/* Content */}
             <div className="flex-1">
               <h3
-                className={`text-xl font-black mb-1 ${selectedChannel === "sms" ? "text-teal-900" : "text-ink-950"
-                  }`}
+                className={`text-xl font-black mb-1 ${
+                  selectedChannel === "sms" ? "text-teal-900" : "text-ink-950"
+                }`}
               >
                 SMS
               </h3>
@@ -251,8 +264,9 @@ function PilihVerifikasiContent() {
               </p>
               <div className="flex items-center gap-2">
                 <div
-                  className={`w-2 h-2 rounded-full ${selectedChannel === "sms" ? "bg-teal-600" : "bg-sand-300"
-                    }`}
+                  className={`w-2 h-2 rounded-full ${
+                    selectedChannel === "sms" ? "bg-teal-600" : "bg-sand-300"
+                  }`}
                 />
                 <span className="text-xs text-ink-500 font-bold">
                   {DEMO_MODE
@@ -270,17 +284,13 @@ function PilihVerifikasiContent() {
         className={`relative z-10 mb-6 p-4 rounded-xl border transition-all duration-300 bg-sand-50 border-sand-200`}
       >
         <div className="flex items-center gap-3">
-          <div
-            className={`p-2 rounded-lg bg-teal-600`}
-          >
+          <div className={`p-2 rounded-lg bg-teal-600`}>
             <Check className="w-5 h-5 text-white" />
           </div>
           <div className="flex-1">
             <p className="text-sm font-bold text-ink-950">
               Anda memilih:{" "}
-              <span
-                className="text-teal-700"
-              >
+              <span className="text-teal-700">
                 {selectedChannel === "whatsapp" ? "WhatsApp" : "SMS"}
               </span>
             </p>
@@ -326,7 +336,9 @@ function PilihVerifikasiContent() {
           className="w-full py-4 px-6 border-2 border-sand-200 text-ink-600 font-bold rounded-pill app-card hover:bg-sand-50 transition-all duration-300 flex items-center justify-center gap-2"
         >
           <ArrowLeft className="w-5 h-5" />
-          <span className="uppercase tracking-widest text-xs font-black">Kembali</span>
+          <span className="uppercase tracking-widest text-xs font-black">
+            Kembali
+          </span>
         </button>
       </div>
 

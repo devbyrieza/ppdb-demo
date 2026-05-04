@@ -5,7 +5,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowRight, GraduationCap } from "lucide-react";
-import { scrollToSection, scrollToTop, navigateToDetail } from "@/lib/navigation-scroll";
+import {
+  scrollToSection,
+  scrollToTop,
+  navigateToDetail,
+} from "@/lib/navigation-scroll";
 import Image from "next/image";
 import { BRANDING } from "@/config/branding";
 import LanguageSwitcher from "@/components/common/LanguageSwitcher";
@@ -40,7 +44,10 @@ export default function Navbar() {
     return pathname.startsWith(href);
   };
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string,
+  ) => {
     if (href.startsWith("#") && pathname === "/") {
       e.preventDefault();
       scrollToSection(href, 100);
@@ -52,7 +59,16 @@ export default function Navbar() {
       window.location.href = "/";
       return;
     }
-    if (["/tentang", "/program", "/fasilitas", "/kegiatan", "/galeri", "/kontak"].includes(href)) {
+    if (
+      [
+        "/tentang",
+        "/program",
+        "/fasilitas",
+        "/kegiatan",
+        "/galeri",
+        "/kontak",
+      ].includes(href)
+    ) {
       e.preventDefault();
       const sectionMap: Record<string, string> = {
         "/tentang": "#about",
@@ -80,14 +96,14 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+          isScrolled
             ? "bg-[rgba(248,249,246,0.95)] backdrop-blur-[24px] saturate-[1.8] border-b border-[var(--color-teal-100)] py-2 shadow-[0_2px_20px_rgba(58,80,41,0.09)]"
             : "bg-transparent py-4 lg:py-5"
-          }`}
+        }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
-
             {/* ── Logo ── */}
             <Link
               href="/"
@@ -96,10 +112,11 @@ export default function Navbar() {
             >
               <div className="relative">
                 <div
-                  className={`w-10 h-10 sm:w-11 sm:h-11 rounded-[14px] flex items-center justify-center border overflow-hidden transition-all duration-500 group-hover:scale-105 group-hover:-rotate-3 ${isScrolled
+                  className={`w-10 h-10 sm:w-11 sm:h-11 rounded-[14px] flex items-center justify-center border overflow-hidden transition-all duration-500 group-hover:scale-105 group-hover:-rotate-3 ${
+                    isScrolled
                       ? "bg-white border-[var(--color-teal-100)] shadow-[var(--shadow-premium-sm)]"
                       : "bg-white/90 border-white/70 shadow-[0_2px_12px_rgba(58,80,41,0.12)]"
-                    }`}
+                  }`}
                 >
                   <Image
                     src={BRANDING.logoPath}
@@ -116,10 +133,11 @@ export default function Navbar() {
 
               <div className="block">
                 <h1
-                  className={`text-base sm:text-lg font-black leading-none tracking-tight transition-colors duration-300 ${isScrolled
+                  className={`text-base sm:text-lg font-black leading-none tracking-tight transition-colors duration-300 ${
+                    isScrolled
                       ? "text-[var(--color-ink-900)]"
                       : "text-[var(--color-ink-950)]"
-                    }`}
+                  }`}
                 >
                   {BRANDING.schoolShortName}
                 </h1>
@@ -131,20 +149,22 @@ export default function Navbar() {
 
             {/* ── Desktop Nav (lg+) ── */}
             <nav
-              className={`hidden lg:flex items-center gap-0.5 p-1.5 rounded-full border transition-all duration-300 ${isScrolled
+              className={`hidden lg:flex items-center gap-0.5 p-1.5 rounded-full border transition-all duration-300 ${
+                isScrolled
                   ? "bg-white border-[var(--color-teal-100)] shadow-[var(--shadow-xs)]"
                   : "bg-white/70 backdrop-blur-md border-white/65 shadow-[0_2px_16px_rgba(58,80,41,0.10)]"
-                }`}
+              }`}
             >
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
-                  className={`px-4 py-2 text-sm font-bold rounded-full transition-all duration-300 min-h-[40px] flex items-center ${isActive(link.href)
+                  className={`px-4 py-2 text-sm font-bold rounded-full transition-all duration-300 min-h-[40px] flex items-center ${
+                    isActive(link.href)
                       ? "bg-[var(--color-teal-800)] text-[var(--color-sand-100)] shadow-[var(--shadow-teal)]"
                       : "text-[var(--color-ink-600)] hover:text-[var(--color-teal-800)] hover:bg-[var(--color-teal-50)]"
-                    }`}
+                  }`}
                 >
                   {link.label}
                 </Link>
@@ -173,10 +193,11 @@ export default function Navbar() {
             {/* ── Hamburger (below lg) ── */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className={`lg:hidden p-3 rounded-2xl transition-all duration-300 min-h-[48px] min-w-[48px] flex items-center justify-center border ${isScrolled
+              className={`lg:hidden p-3 rounded-2xl transition-all duration-300 min-h-[48px] min-w-[48px] flex items-center justify-center border ${
+                isScrolled
                   ? "bg-white border-[var(--color-teal-100)] text-[var(--color-teal-700)] hover:bg-[var(--color-teal-50)] shadow-[var(--shadow-xs)]"
                   : "bg-white/85 backdrop-blur-sm border-white/70 text-[var(--color-ink-800)] hover:bg-white/95 shadow-[0_2px_12px_rgba(58,80,41,0.10)]"
-                }`}
+              }`}
               aria-label={isMenuOpen ? "Tutup menu" : "Buka menu"}
             >
               <AnimatePresence mode="wait" initial={false}>
@@ -237,7 +258,8 @@ export default function Navbar() {
               transition={{ type: "spring", damping: 28, stiffness: 320 }}
               className="absolute bottom-0 inset-x-0 rounded-t-[2rem] overflow-hidden max-h-[88vh] flex flex-col"
               style={{
-                background: "linear-gradient(180deg, var(--color-surface-50) 0%, #fff 100%)",
+                background:
+                  "linear-gradient(180deg, var(--color-surface-50) 0%, #fff 100%)",
                 borderTop: "1px solid var(--color-teal-100)",
                 boxShadow: "0 -8px 40px rgba(58,80,41,0.12)",
               }}
@@ -279,7 +301,6 @@ export default function Navbar() {
 
               {/* Scrollable Nav */}
               <div className="overflow-y-auto flex-1 px-4 py-4 pb-safe">
-
                 <p className="text-[10px] font-black text-[var(--color-ink-400)] uppercase tracking-[0.12em] px-3 mb-3">
                   Navigasi
                 </p>
@@ -298,10 +319,11 @@ export default function Navbar() {
                           handleNavClick(e, link.href);
                           setIsMenuOpen(false);
                         }}
-                        className={`px-4 py-4 rounded-xl text-base font-bold transition-all min-h-[56px] flex items-center justify-between group ${isActive(link.href)
+                        className={`px-4 py-4 rounded-xl text-base font-bold transition-all min-h-[56px] flex items-center justify-between group ${
+                          isActive(link.href)
                             ? "bg-[var(--color-teal-800)] text-[var(--color-sand-100)] shadow-[var(--shadow-teal)]"
                             : "text-[var(--color-ink-800)] hover:bg-[var(--color-teal-50)] hover:text-[var(--color-teal-800)]"
-                          }`}
+                        }`}
                       >
                         <span>{link.label}</span>
                         {isActive(link.href) && (

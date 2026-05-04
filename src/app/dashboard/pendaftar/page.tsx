@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
+
+// ─── ICONS ───
 import {
   User,
   CheckCircle,
@@ -10,16 +13,21 @@ import {
   ShieldCheck,
   TrendingUp,
   FileText,
-  Target
+  Target,
 } from "lucide-react";
-import Link from "next/link";
+
+// ─── COMPONENTS & UTILS ───
 import ProgressTracker from "./components/ProgressTracker";
 import {
   getNextStep,
   formatStatusDisplay,
-  type StatusProses
+  type StatusProses,
 } from "@/lib/access-control";
 
+/**
+ * DashboardPendaftarPage
+ * Template Demo Version.
+ */
 export default function DashboardPendaftarPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -29,28 +37,30 @@ export default function DashboardPendaftarPage() {
     status: "draft" as StatusProses,
     lastUpdate: new Date().toISOString(),
     schedulesAvailable: false,
-    pengumuman: null as any
+    pengumuman: null as any,
   });
 
   useEffect(() => {
     async function fetchData() {
       try {
         const sessionRes = await fetch("/api/auth/session");
-        if (!sessionRes.ok) throw new Error("Gagal mengambil sesi");
+        if (!sessionRes.ok) throw new Error("Session invalid");
         const session = await sessionRes.json();
-        
+
         if (session.pendaftar_id) {
-          const statusRes = await fetch(`/api/pendaftar/status?pendaftar_id=${session.pendaftar_id}`);
-          if (!statusRes.ok) throw new Error("Gagal mengambil status");
+          const statusRes = await fetch(
+            `/api/pendaftar/status?pendaftar_id=${session.pendaftar_id}`,
+          );
+          if (!statusRes.ok) throw new Error("Sync failed");
           const statusData = await statusRes.json();
 
           setData({
-            nama: (statusData.nama_lengkap || "Pendaftar").split(' ')[0],
+            nama: (statusData.nama_lengkap || "Pendaftar").split(" ")[0],
             nomorPendaftaran: statusData.nomor_pendaftaran || "-",
             status: statusData.status_proses || "draft",
             lastUpdate: statusData.updated_at || new Date().toISOString(),
             schedulesAvailable: !!statusData.schedules_available,
-            pengumuman: statusData.pengumuman || null
+            pengumuman: statusData.pengumuman || null,
           });
         }
       } catch (e: any) {
@@ -62,83 +72,226 @@ export default function DashboardPendaftarPage() {
     fetchData();
   }, []);
 
-  if (loading) return <div className="flex items-center justify-center min-vh-50 p-20"><Loader2 className="w-10 h-10 animate-spin text-teal-600" /></div>;
-  if (error) return <div className="p-20 text-center text-red-600 font-bold bg-white rounded-4xl border border-red-100 shadow-xl">{error}</div>;
+  if (loading) return <LoadingState />;
+  if (error) return <ErrorState message={error} />;
 
   const statusInfo = formatStatusDisplay(data.status);
   const nextStep = getNextStep(data.status);
 
   return (
-    <div className="space-y-10 pb-16 animate-in fade-in duration-700">
+    <div className="space-y-8 pb-16 animate-in fade-in slide-in-from-bottom-4 duration-1000">
       <ProgressTracker currentStatus={data.status} />
 
-      {/* Premium Hero Banner */}
-      <div className="relative overflow-hidden rounded-3xl md:rounded-4xl bg-linear-to-br from-teal-700 to-teal-900 text-white p-6 sm:p-8 md:p-16 shadow-2xl app-card border border-teal-600">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-sand-400/10 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/2" />
-        <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 md:gap-12">
-          <div className="flex-1">
-            <div className="flex flex-wrap items-center gap-3 mb-4 md:mb-8">
-              <span className="px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-[10px] tracking-widest font-black uppercase border border-white/20">PPDB 2026/2027</span>
-              <span className="flex items-center gap-2 text-xs font-bold text-sand-100">
-                <Clock className="w-4 h-4" />
-                Ditinjau {new Date(data.lastUpdate).toLocaleDateString('id-ID')}
-              </span>
-            </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black mb-3 md:mb-6 leading-none font-display tracking-tight text-white italic">Ahlan Wa Sahlan, <br /> <span className="text-sand-300 not-italic uppercase">{data.nama}!</span></h1>
-            <p className="text-teal-100 text-sm sm:text-base md:text-xl lg:text-2xl font-bold max-w-xl opacity-90 leading-relaxed italic hidden sm:block">"Berdakwah dengan Akhlak, Belajar dengan Ikhlas."</p>
+      <HeroBanner
+        nama={data.nama}
+        nomorPendaftaran={data.nomorPendaftaran}
+        lastUpdate={data.lastUpdate}
+      />
+
+      {nextStep && <GuidedActionCard nextStep={nextStep} />}
+
+      <StatusGrid
+        status={data.status}
+        statusLabel={statusInfo.label}
+        pengumuman={data.pengumuman}
+      />
+
+      <SupportCenter />
+    </div>
+  );
+}
+
+// ─── INTERNAL COMPONENTS ───
+
+function HeroBanner({ nama, nomorPendaftaran, lastUpdate }: any) {
+  return (
+    <div className="relative overflow-hidden rounded-[2.5rem] md:rounded-[3.5rem] bg-linear-to-br from-blue-700 to-blue-900 text-white p-8 md:p-16 shadow-2xl border border-blue-600/50">
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-amber-400/10 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/2" />
+      <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-10">
+        <div className="flex-1 space-y-6">
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-[10px] tracking-[0.2em] font-black uppercase border border-white/20 text-amber-200">
+              ACADEMIC EXCELLENCE
+            </span>
+            <span className="flex items-center gap-2 text-xs font-bold text-blue-100/70">
+              <Clock className="w-4 h-4" />
+              Update:{" "}
+              {new Date(lastUpdate).toLocaleDateString("id-ID", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
+            </span>
           </div>
-          <div className="flex flex-row md:flex-col gap-3 md:gap-6 w-full md:w-auto">
-             <div className="flex-1 md:flex-none bg-white/10 backdrop-blur-md px-5 py-4 md:px-10 md:py-6 rounded-[1.5rem] border border-white/10 text-center shadow-inner">
-                <p className="text-[9px] md:text-[10px] font-black uppercase text-sand-100 opacity-60 mb-1 md:mb-2 tracking-widest">Nomor Pendaftaran</p>
-                <p className="font-mono text-xl md:text-4xl font-black text-white">{data.nomorPendaftaran}</p>
-             </div>
-             {nextStep && (
-               <Link href={nextStep.href} className="flex-1 md:flex-none bg-sand-400 hover:bg-sand-300 text-teal-950 px-5 py-4 md:px-10 md:py-5 rounded-[1.5rem] font-black uppercase text-xs shadow-xl transition-all flex items-center justify-center gap-2 hover:scale-105 active:scale-95 group">
-                 {nextStep.action} <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-               </Link>
-             )}
-          </div>
+          <h1 className="text-3xl md:text-6xl lg:text-7xl font-black leading-[1.1] font-display tracking-tight text-white italic">
+            Welcome, <br />
+            <span className="text-amber-400 not-italic uppercase drop-shadow-lg">
+              {nama}!
+            </span>
+          </h1>
+          <p className="text-blue-100 text-lg md:text-xl font-medium max-w-xl opacity-80 leading-relaxed italic border-l-4 border-amber-500/50 pl-6">
+            "Providing a world-class educational foundation for your child's
+            future."
+          </p>
+        </div>
+        <div className="flex-1 lg:flex-none bg-black/20 backdrop-blur-xl px-8 py-6 rounded-[2rem] border border-white/10 text-center">
+          <p className="text-[10px] font-black uppercase text-amber-200/60 mb-1 tracking-[0.2em]">
+            REGISTRATION ID
+          </p>
+          <p className="font-mono text-3xl md:text-4xl font-black text-white tracking-tighter">
+            {nomorPendaftaran}
+          </p>
         </div>
       </div>
+    </div>
+  );
+}
 
-      {/* Grid Status Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-        {[
-          { label: "Status Pendaftaran", val: statusInfo.label, icon: ShieldCheck, color: statusInfo.color.split(' ')[1], bg: statusInfo.color.split(' ')[0] },
-          { label: "Kelengkapan Berkas", val: ['docs_verified', 'scheduled', 'tested', 'announced', 'accepted'].includes(data.status) ? "Tercatat" : "Proses", icon: FileText, color: "text-teal-600", bg: "bg-sand-50" },
-          { label: "Ujian Seleksi", val: ['tested', 'announced', 'accepted'].includes(data.status) ? "Telah Diikuti" : "Menunggu", icon: Target, color: "text-purple-600", bg: "bg-purple-50" },
-          { label: "Hasil Pengumuman", val: data.pengumuman ? data.pengumuman.status_kelulusan : "Belum Rilis", icon: CheckCircle, color: "text-emerald-600", bg: "bg-emerald-50" }
-        ].map((item, id) => (
-          <div key={id} className="bg-white p-8 rounded-4xl border border-sand-100 shadow-sm app-card group hover:shadow-2xl hover:-translate-y-1 transition-all duration-500">
-            <div className={`w-16 h-16 rounded-3xl flex items-center justify-center mb-8 shadow-clay-sm group-hover:scale-110 transition-transform ${item.bg}`}>
-              <item.icon className={`w-8 h-8 ${item.color}`} />
-            </div>
-            <p className="text-[10px] font-black text-ink-300 uppercase tracking-widest mb-2">{item.label}</p>
-            <p className={`text-2xl font-black text-teal-950 font-display leading-tight`}>{item.val}</p>
+function GuidedActionCard({ nextStep }: any) {
+  return (
+    <div className="bg-white rounded-[2.5rem] border-2 border-blue-100 shadow-xl shadow-blue-500/5 overflow-hidden group">
+      <div className="flex flex-col md:flex-row items-stretch">
+        <div className="bg-amber-400 p-8 md:p-12 flex flex-col items-center justify-center text-blue-950 min-w-[200px]">
+          <div className="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <Target className="w-8 h-8" />
           </div>
-        ))}
-      </div>
-
-      {/* Support Center */}
-      <div className="bg-sand-50 border-2 border-sand-200 rounded-[3rem] p-10 md:p-16 flex flex-col md:flex-row items-center justify-between gap-12 app-card relative overflow-hidden group">
-        <div className="absolute left-0 bottom-0 w-64 h-64 bg-white/40 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-1000" />
-        <div className="flex items-center gap-8 relative z-10">
-          <div className="w-20 h-20 rounded-full bg-white flex items-center justify-center border border-sand-300 shadow-xl group-hover:rotate-12 transition-transform">
-            <AlertCircle className="w-10 h-10 text-teal-600" />
-          </div>
+          <p className="text-[10px] font-black uppercase tracking-widest opacity-70">
+            Step
+          </p>
+          <p className="text-3xl font-black">NEXT</p>
+        </div>
+        <div className="flex-1 p-8 md:p-12 space-y-6">
           <div>
-            <h3 className="font-black text-ink-950 text-2xl md:text-3xl font-display leading-tight mb-2">Ada Kendala Teknis?</h3>
-            <p className="text-ink-600 text-lg md:text-xl font-bold">Admin Pusat dan Panitia siap melayani Anda setiap jam kerja.</p>
+            <h2 className="text-2xl md:text-3xl font-black text-blue-950 mb-2">
+              What should I do?
+            </h2>
+            <p className="text-ink-600 font-medium text-lg italic">
+              "Please click the button to{" "}
+              <span className="text-blue-700 font-black not-italic">
+                {nextStep.action.toLowerCase()}
+              </span>
+              ."
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-4">
+            <Link
+              href={nextStep.href}
+              className="px-10 py-5 bg-blue-700 hover:bg-blue-800 text-white rounded-2xl font-black uppercase text-sm shadow-2xl shadow-blue-200 transition-all hover:scale-105 active:scale-95 flex items-center gap-3 group/btn"
+            >
+              Get Started Now{" "}
+              <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-2 transition-transform" />
+            </Link>
           </div>
         </div>
-        <a href="https://wa.me/6281285300800" target="_blank" className="relative z-10 px-12 py-5 bg-sand-400 text-teal-950 font-black text-sm uppercase tracking-widest rounded-3xl hover:bg-sand-300 shadow-2xl transition-all hover:scale-105 active:scale-95 text-center w-full md:w-auto font-display">
-          Layanan WhatsApp
+      </div>
+    </div>
+  );
+}
+
+function StatusGrid({ status, statusLabel, pengumuman }: any) {
+  const items = [
+    {
+      label: "Status",
+      val: statusLabel,
+      desc: "Your current phase",
+      icon: ShieldCheck,
+      color: "text-blue-600",
+      bg: "bg-blue-50",
+    },
+    {
+      label: "Selection",
+      val: ["tested", "announced", "accepted", "enrolled"].includes(status)
+        ? "Completed"
+        : "Waiting",
+      desc: "Test results",
+      icon: Target,
+      color: "text-purple-600",
+      bg: "bg-purple-50",
+    },
+    {
+      label: "Result",
+      val: pengumuman ? pengumuman.status_kelulusan : "Pending",
+      desc: "Final admission result",
+      icon: CheckCircle,
+      color: "text-emerald-600",
+      bg: "bg-emerald-50",
+    },
+  ];
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {items.map((item, id) => (
+        <div
+          key={id}
+          className="bg-white p-8 rounded-[2rem] border border-stone-100 shadow-sm hover:shadow-xl transition-all duration-500 group"
+        >
+          <div
+            className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 ${item.bg} group-hover:scale-110 transition-transform shadow-inner`}
+          >
+            <item.icon className={`w-7 h-7 ${item.color}`} />
+          </div>
+          <p className="text-[10px] font-black text-stone-400 uppercase tracking-widest mb-1">
+            {item.label}
+          </p>
+          <p className="text-2xl font-black text-blue-950 mb-2 leading-none">
+            {item.val}
+          </p>
+          <p className="text-xs font-medium text-stone-400 italic">
+            {item.desc}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function SupportCenter() {
+  return (
+    <div className="bg-blue-950 text-white rounded-[3rem] p-10 md:p-16 relative overflow-hidden group shadow-2xl">
+      <div className="absolute top-0 right-0 w-96 h-96 bg-blue-800 rounded-full blur-[100px] opacity-20 -translate-y-1/2 translate-x-1/2" />
+      <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-12 text-center lg:text-left">
+        <div className="flex-1 space-y-4">
+          <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/10 rounded-full border border-white/10">
+            <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+            <span className="text-[10px] font-black uppercase tracking-widest">
+              PPDB SUPPORT CENTER
+            </span>
+          </div>
+          <h3 className="font-black text-3xl md:text-4xl lg:text-5xl font-display leading-tight">
+            Need Help? <br />
+            <span className="text-amber-400">Chat with Our Team!</span>
+          </h3>
+          <p className="text-blue-200 text-lg md:text-xl font-medium opacity-80 max-w-2xl">
+            Don't hesitate to ask. Our team is ready to help you complete the
+            registration smoothly.
+          </p>
+        </div>
+        <a
+          href="https://wa.me/6281285300800"
+          target="_blank"
+          className="px-12 py-5 bg-amber-400 text-blue-950 font-black text-sm uppercase tracking-widest rounded-[1.5rem] hover:bg-amber-300 shadow-xl transition-all hover:scale-105 active:scale-95 text-center"
+        >
+          Chat on WhatsApp
         </a>
       </div>
     </div>
   );
 }
 
-function Loader2(props: any) {
-  return <Clock {...props} className={props.className + " animate-spin"} />;
+// ─── HELPERS ───
+
+function LoadingState() {
+  return (
+    <div className="flex items-center justify-center min-vh-50 p-20">
+      <Clock className="w-10 h-10 animate-spin text-blue-600" />
+    </div>
+  );
+}
+
+function ErrorState({ message }: { message: string }) {
+  return (
+    <div className="p-20 text-center text-red-600 font-bold bg-white rounded-4xl border border-red-100 shadow-xl">
+      {message}
+    </div>
+  );
 }

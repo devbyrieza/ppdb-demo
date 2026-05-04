@@ -629,7 +629,7 @@ Alhamdulillah, dokumen Anda telah diverifikasi dan *DITERIMA*.
 Semua Dokumen Lengkap
 
 📝 *Langkah Selanjutnya:*
-Silakan pilih jadwal tes masuk melalui dashboard Anda (Menu Jadwal Ujian).
+Silakan pilih jadwal seleksi masuk melalui dashboard Anda (Menu Jadwal Seleksi).
 
 Dashboard: ${BRANDING.websiteUrl}/dashboard/pendaftar/undangan-seleksi
 
@@ -713,12 +713,12 @@ export function buildMessageJadwalBelum(nama: string): string {
 
 Terima kasih telah mendaftar di ${BRANDING.schoolName}.
 
-Saat ini jadwal tes lanjutan (Tes Al-Qur'an, Wawancara Calon Santri, dan Wawancara Calon Orangtua/Wali Santri) belum tersedia. Mohon bersabar, kami akan menginformasikan kembali begitu jadwal sudah siap.
+Saat ini jadwal tes lanjutan (Seleksi Al Qur'an, Seleksi Wawancara Santri, dan Seleksi Wawancara Orang Tua/Wali) belum tersedia. Mohon bersabar, kami akan menginformasikan kembali begitu jadwal sudah siap.
 
-Untuk sementara, Anda sudah bisa mengerjakan tes online yang tersedia di dashboard:
+Untuk sementara, Anda sudah bisa mengerjakan seleksi online yang tersedia di dashboard:
 - Kemampuan Dasar Akademik
 - Identifikasi Kepribadian
-- Tes Kesiapan
+- Seleksi Kesiapan
 
 Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/undangan-seleksi
 
@@ -732,9 +732,9 @@ export function buildMessageJadwalTersedia(nama: string): string {
 Alhamdulillah, jadwal tes lanjutan sudah tersedia!
 
 Silakan login ke dashboard and pilih jadwal yang sesuai untuk:
-- Tes Al-Qur'an
-- Wawancara Calon Santri
-- Wawancara Calon Orangtua/Wali Santri
+- Seleksi Al Qur'an
+- Seleksi Wawancara Santri
+- Seleksi Wawancara Orang Tua/Wali
 
 Segera pilih jadwal sebelum kuota penuh.
 
@@ -752,11 +752,11 @@ Terima kasih telah mencapai tahap Seleksi ${BRANDING.schoolName}.
 Saat ini **jadwal tes lanjutan sudah tersedia dan bisa langsung Anda pilih**.
 
 Silakan login ke dashboard dan pilih sesi jadwal untuk:
-- Tes Al-Qur'an
-- Wawancara Calon Santri
-- Wawancara Calon Orangtua/Wali Santri
+- Seleksi Al Qur'an
+- Seleksi Wawancara Santri
+- Seleksi Wawancara Orang Tua/Wali
 
-Harap segera memilih jadwal sebelum rentang waktu habis atau kuota penuh. Jangan lupa juga untuk menyelesaikan Tes Online (Akademik & Kepribadian).
+Harap segera memilih jadwal sebelum rentang waktu habis atau kuota penuh. Jangan lupa juga untuk menyelesaikan Seleksi Online (Akademik & Kepribadian).
 
 Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/undangan-seleksi
 
@@ -838,7 +838,7 @@ Panitia PPDB ${BRANDING.schoolName}`;
 export function buildMessageHasilTes(nama: string): string {
     return `${pickOpening()}, *${nama}*.
  
- Alhamdulillah, hasil tes seleksi Ananda sudah tersedia.
+ Alhamdulillah, hasil seleksi seleksi Ananda sudah tersedia.
  
  Silakan login ke dashboard untuk melihat hasil lengkap dan mengunduh *Surat Keterangan Lulus (SKL)* dalam format PDF.
  
@@ -939,11 +939,11 @@ export function buildMessageReminderH1Santri(
     const finalHariTanggal = `${cleanHari}, ${cleanTanggal}`;
 
     let agendaTitle = "";
-    if (jenisUjian.toLowerCase().includes("quran")) agendaTitle = "Tes Al-Qur'an";
-    else if (jenisUjian.toLowerCase().includes("calsan")) agendaTitle = "Wawancara Calon Santri";
+    if (jenisUjian.toLowerCase().includes("quran")) agendaTitle = "Seleksi Al Qur'an";
+    else if (jenisUjian.toLowerCase().includes("calsan")) agendaTitle = "Seleksi Wawancara Santri";
     else agendaTitle = jenisUjian;
 
-    return `*PENGINGAT TES SELEKSI*
+    return `*PENGINGAT Seleksi*
 
 Assalamu'alaikum *${nama}*,
 
@@ -961,9 +961,9 @@ Jazakumullahu khairan.
 }
 
 /**
- * Template: Pengingat H-1 untuk Cawalsan (Orang Tua)
+ * Template: Pengingat H-1 untuk Orang Tua (Orang Tua)
  */
-export function buildMessageReminderH1Cawalsan(
+export function buildMessageReminderH1Orang Tua(
     namaSantri: string,
     hari: string,
     tanggal: string,
@@ -978,11 +978,11 @@ export function buildMessageReminderH1Cawalsan(
     let cleanTanggal = (tanggal || "").replace(new RegExp(`^${cleanHari},\\s*`, "i"), "");
     const finalHariTanggal = `${cleanHari}, ${cleanTanggal}`;
 
-    return `*PENGINGAT TES SELEKSI*
+    return `*PENGINGAT Seleksi*
 
 Assalamu'alaikum Abi/Ummi dari Ananda *${namaSantri}*,
 
-Ini adalah pengingat bahwa Anda dijadwalkan mengikuti *Wawancara Calon Orangtua/Wali Santri* pada:
+Ini adalah pengingat bahwa Anda dijadwalkan mengikuti *Seleksi Wawancara Orang Tua/Wali* pada:
 
 📅 *Hari/Tanggal:* ${finalHariTanggal}
 ⏰ *Waktu:* ${finalJam}
@@ -1023,12 +1023,12 @@ export function buildMessageReminderH1Penguji(
     let agendaTitle = "*PENGINGAT JADWAL MENGUJI*";
     
     if (jenisUjian.toLowerCase().includes("quran")) {
-        agendaText = "Tes Al-Qur'an";
+        agendaText = "Seleksi Al Qur'an";
     } else if (jenisUjian.toLowerCase().includes("calsan")) {
-        agendaText = "Wawancara Calon Santri";
+        agendaText = "Seleksi Wawancara Santri";
         agendaTitle = "*PENGINGAT JADWAL WAWANCARA*";
     } else if (jenisUjian.toLowerCase().includes("cawalsan")) {
-        agendaText = "Wawancara Calon Orangtua/Wali Santri";
+        agendaText = "Seleksi Wawancara Orang Tua/Wali";
         agendaTitle = "*PENGINGAT JADWAL WAWANCARA*";
     } else {
         agendaText = jenisUjian;
@@ -1062,7 +1062,7 @@ export function buildMessageCombinedFinal(
  
  Assalamu'alaikum *${nama}*,
  
- Alhamdulillah, rangkaian tes seleksi Anda telah selesai dan hasil evaluasi telah diputuskan.
+ Alhamdulillah, rangkaian Seleksi Anda telah selesai dan hasil evaluasi telah diputuskan.
  
  📢 *HASIL SELEKSI:*
  Status: *${status}*
@@ -1114,7 +1114,7 @@ Kami menginformasikan bahwa jadwal *${jenisUjian}* Anda pada:
 
 Telah *DIBATALKAN* oleh Penguji karena alasan: *${alasan}*.
 
-Mohon segera login ke Dashboard PPDB untuk memilih kembali jadwal pengganti yang tersedia di menu Undangan Seleksi.
+Mohon segera login ke Dashboard PPDB untuk memilih kembali jadwal pengganti yang tersedia di menu Jadwal Seleksi.
 
 Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/undangan-seleksi
 

@@ -11,7 +11,7 @@ import { jsPDF } from "jspdf";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ type: string }> }
+  { params }: { params: Promise<{ type: string }> },
 ) {
   try {
     const { type } = await params;
@@ -21,12 +21,12 @@ export async function GET(
     if (!sessionCookie) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
     const session = JSON.parse(sessionCookie.value);
-    
+
     // Admin has access to download without fetching full pendaftar by default
     let pendaftarId = session.id;
     if (session.role === "admin") {
@@ -36,7 +36,10 @@ export async function GET(
       if (qId) {
         pendaftarId = qId;
       } else {
-        return NextResponse.json({ success: false, error: "Pendaftar ID required for admin" }, { status: 400 });
+        return NextResponse.json(
+          { success: false, error: "Pendaftar ID required for admin" },
+          { status: 400 },
+        );
       }
     }
 
@@ -50,7 +53,7 @@ export async function GET(
     if (!pendaftar) {
       return NextResponse.json(
         { success: false, error: "Pendaftar tidak ditemukan" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -73,27 +76,27 @@ export async function GET(
 
     let doc: any = null;
     if (type === "surat-kesehatan") {
-        doc = await generateSuratKesehatan(pdfData);
+      doc = await generateSuratKesehatan(pdfData);
     } else if (type === "surat-pernyataan") {
-        doc = await generateSuratPernyataan(pdfData);
+      doc = await generateSuratPernyataan(pdfData);
     } else if (type === "pakta-integritas") {
-        doc = await generatePaktaIntegritas(pdfData);
+      doc = await generatePaktaIntegritas(pdfData);
     } else {
-        return NextResponse.json(
-            { success: false, error: "Tipe dokumen tidak valid" },
-            { status: 400 }
-        );
+      return NextResponse.json(
+        { success: false, error: "Tipe dokumen tidak valid" },
+        { status: 400 },
+      );
     }
 
     if (doc) {
-        pdfOutput = doc.output('arraybuffer');
+      pdfOutput = doc.output("arraybuffer");
     }
-    
+
     if (!pdfOutput) {
-         return NextResponse.json(
-            { success: false, error: "Gagal men-generate PDF" },
-            { status: 500 }
-        );
+      return NextResponse.json(
+        { success: false, error: "Gagal men-generate PDF" },
+        { status: 500 },
+      );
     }
 
     // Return the PDF buffer directly
@@ -103,12 +106,11 @@ export async function GET(
         "Content-Disposition": `attachment; filename="${filename}"`,
       },
     });
-
   } catch (error: any) {
     console.error("Error generating PDF template:", error);
     return NextResponse.json(
       { success: false, error: "Terjadi kesalahan sistem saat generate PDF" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

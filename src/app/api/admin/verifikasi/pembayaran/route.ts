@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { enqueueWhatsapp, buildMessagePaymentVerified, buildMessagePaymentRejected } from "@/lib/whatsapp-queue";
+import {
+  enqueueWhatsapp,
+  buildMessagePaymentVerified,
+  buildMessagePaymentRejected,
+} from "@/lib/whatsapp-queue";
 import { getServerSession } from "@/lib/session";
 import { logAdminAction } from "@/lib/audit";
 import { getAdminWhereClause } from "@/lib/utils/admin";
@@ -9,10 +13,17 @@ import { getAdminWhereClause } from "@/lib/utils/admin";
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession();
-    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!session)
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     // Check custom role
-    const allowedRoles = ["admin", "admin_super", "admin_berkas", "admin_keuangan", "penguji"];
+    const allowedRoles = [
+      "admin",
+      "admin_super",
+      "admin_berkas",
+      "admin_keuangan",
+      "penguji",
+    ];
     if (!allowedRoles.includes(session.role)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
@@ -64,8 +75,8 @@ export async function GET(request: NextRequest) {
             nama_lengkap: true,
             jenjang: true,
             no_hp: true,
-          }
-        }
+          },
+        },
       },
       orderBy: { created_at: "desc" },
     });
@@ -101,7 +112,7 @@ export async function GET(request: NextRequest) {
     console.error("Error in pembayaran verification API:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -110,29 +121,37 @@ export async function GET(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   try {
     const session = await getServerSession();
-    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!session)
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     // Check custom role
-    const allowedRoles = ["admin", "admin_super", "admin_berkas", "admin_keuangan", "penguji"];
+    const allowedRoles = [
+      "admin",
+      "admin_super",
+      "admin_berkas",
+      "admin_keuangan",
+      "penguji",
+    ];
     if (!allowedRoles.includes(session.role)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
     // Get request body
     const body = await request.json();
-    const { pembayaran_id, status_pembayaran, catatan, jumlah, tipe_cicilan } = body;
+    const { pembayaran_id, status_pembayaran, catatan, jumlah, tipe_cicilan } =
+      body;
 
     if (!pembayaran_id || !status_pembayaran) {
       return NextResponse.json(
         { error: "pembayaran_id and status_pembayaran are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (!["verified", "rejected", "pending"].includes(status_pembayaran)) {
       return NextResponse.json(
         { error: "status_pembayaran must be verified, rejected or pending" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -159,15 +178,21 @@ export async function PATCH(request: NextRequest) {
     // Also update pendaftar status
     const { getStatusIndex } = await import("@/lib/access-control");
     let newPendaftarStatus = pembayaran.pendaftar.status_pendaftaran;
-    
+
     if (status_pembayaran === "verified") {
-       if (getStatusIndex(newPendaftarStatus as any) < getStatusIndex('verified' as any)) {
-           newPendaftarStatus = 'verified';
-       }
+      if (
+        getStatusIndex(newPendaftarStatus as any) <
+        getStatusIndex("verified" as any)
+      ) {
+        newPendaftarStatus = "verified";
+      }
     } else if (status_pembayaran === "rejected") {
-       if (getStatusIndex(newPendaftarStatus as any) <= getStatusIndex('payment_verification' as any)) {
-           newPendaftarStatus = 'payment_rejected';
-       }
+      if (
+        getStatusIndex(newPendaftarStatus as any) <=
+        getStatusIndex("payment_verification" as any)
+      ) {
+        newPendaftarStatus = "payment_rejected";
+      }
     }
 
     if (newPendaftarStatus !== pembayaran.pendaftar.status_pendaftaran) {
@@ -175,34 +200,34 @@ export async function PATCH(request: NextRequest) {
         where: { id: pembayaran.pendaftar_id },
         data: {
           status_pendaftaran: newPendaftarStatus,
-          updated_at: new Date()
-        }
+          updated_at: new Date(),
+        },
       });
     }
 
     // Logging audit action
     logAdminAction({
-      action: 'VERIFY_PAYMENT',
-      adminId: session.id || 'system',
-      adminName: session.full_name || session.name || 'Admin',
+      action: "VERIFY_PAYMENT",
+      adminId: session.id || "system",
+      adminName: session.full_name || session.name || "Admin",
       targetId: pembayaran.pendaftar_id,
       targetName: pembayaran.pendaftar.nama_lengkap,
-      details: { status_pembayaran, payment_id: pembayaran_id }
+      details: { status_pembayaran, payment_id: pembayaran_id },
     });
 
     // Send WhatsApp notification via Queue
     try {
       if (pembayaran.pendaftar?.no_hp && status_pembayaran !== "pending") {
         const isVerifiedPayment = status_pembayaran === "verified";
-        
+
         // Prevent duplicate 'payment_verified' notifications
         let shouldSendNotif = true;
         if (isVerifiedPayment) {
           const existingVerifiedNotif = await prisma.whatsappLog.findFirst({
             where: {
               pendaftar_id: pembayaran.pendaftar_id,
-              jenis_notif: "payment_verified"
-            }
+              jenis_notif: "payment_verified",
+            },
           });
           if (existingVerifiedNotif) {
             shouldSendNotif = false;
@@ -210,16 +235,28 @@ export async function PATCH(request: NextRequest) {
         }
 
         if (shouldSendNotif) {
-          const formattedAmount = `Rp ${parseInt(pembayaran.jumlah.toString()).toLocaleString('id-ID')}`;
-          const paymentDate = new Date(pembayaran.created_at).toLocaleDateString('id-ID');
+          const formattedAmount = `Rp ${parseInt(pembayaran.jumlah.toString()).toLocaleString("id-ID")}`;
+          const paymentDate = new Date(
+            pembayaran.created_at,
+          ).toLocaleDateString("id-ID");
 
           await enqueueWhatsapp({
             pendaftarId: pembayaran.pendaftar_id,
             phone: pembayaran.pendaftar.no_hp,
-            jenisNotif: isVerifiedPayment ? "payment_verified" : "payment_rejected",
+            jenisNotif: isVerifiedPayment
+              ? "payment_verified"
+              : "payment_rejected",
             messageContent: isVerifiedPayment
-              ? buildMessagePaymentVerified(pembayaran.pendaftar.nama_lengkap, formattedAmount, pembayaran.metode_pembayaran, paymentDate)
-              : buildMessagePaymentRejected(pembayaran.pendaftar.nama_lengkap, catatan || ""),
+              ? buildMessagePaymentVerified(
+                  pembayaran.pendaftar.nama_lengkap,
+                  formattedAmount,
+                  pembayaran.metode_pembayaran,
+                  paymentDate,
+                )
+              : buildMessagePaymentRejected(
+                  pembayaran.pendaftar.nama_lengkap,
+                  catatan || "",
+                ),
           });
         }
       }
@@ -228,12 +265,16 @@ export async function PATCH(request: NextRequest) {
       // Don't fail verification if notification fails
     }
 
-    return NextResponse.json({ success: true, data: pembayaran, pendaftar_status: newPendaftarStatus });
+    return NextResponse.json({
+      success: true,
+      data: pembayaran,
+      pendaftar_status: newPendaftarStatus,
+    });
   } catch (error) {
     console.error("Error in pembayaran verification update API:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     if (!sessionCookie) {
       return NextResponse.json(
         { success: false, error: "Sesi tidak ditemukan" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
     } catch {
       return NextResponse.json(
         { success: false, error: "Sesi tidak valid" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
     if (!jenisDokumen) {
       return NextResponse.json(
         { success: false, error: "Jenis dokumen wajib diisi" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -41,26 +41,28 @@ export async function GET(request: NextRequest) {
     const dokumen = await prisma.dokumen.findFirst({
       where: {
         pendaftar_id: session.id,
-        jenis_dokumen: jenisDokumen
+        jenis_dokumen: jenisDokumen,
       },
       select: {
         file_path: true,
         file_type: true,
-        updated_at: true // Select updated_at for cache busting
-      }
+        updated_at: true, // Select updated_at for cache busting
+      },
     });
 
     if (!dokumen) {
       return NextResponse.json(
         { success: false, error: "Dokumen tidak ditemukan" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
     // 4. Generate URL pointing to our local file serving API
     // file_path stored in DB is relative: "dokumen-pendaftaran/USER_ID/filename.pdf"
     // Our API route: /api/files/dokumen-pendaftaran/USER_ID/filename.pdf
-    const timestamp = dokumen.updated_at ? new Date(dokumen.updated_at).getTime() : Date.now();
+    const timestamp = dokumen.updated_at
+      ? new Date(dokumen.updated_at).getTime()
+      : Date.now();
     const fileUrl = `/api/files/${dokumen.file_path}?t=${timestamp}`;
 
     // 5. Return URL
@@ -76,7 +78,7 @@ export async function GET(request: NextRequest) {
     console.error("Preview error:", error);
     return NextResponse.json(
       { success: false, error: "Terjadi kesalahan server" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

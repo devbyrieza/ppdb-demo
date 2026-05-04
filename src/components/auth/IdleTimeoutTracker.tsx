@@ -67,7 +67,7 @@ export default function IdleTimeoutTracker() {
 
     // Redirect dengan message
     router.push(
-      "/login?timeout=true&message=Anda+telah+logout+otomatis+karena+tidak+ada+aktivitas+selama+30+menit"
+      "/login?timeout=true&message=Anda+telah+logout+otomatis+karena+tidak+ada+aktivitas+selama+30+menit",
     );
   };
 

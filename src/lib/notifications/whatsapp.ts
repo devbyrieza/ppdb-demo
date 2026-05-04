@@ -83,7 +83,7 @@ Panitia PPDB Sistem PPDB Modern`;
           error_message: error.message,
         },
       });
-    } catch (dbError) { }
+    } catch (dbError) {}
 
     // Fallback simulation only if explicitly requested
     if (process.env.SKIP_WHATSAPP_OTP === "true") {

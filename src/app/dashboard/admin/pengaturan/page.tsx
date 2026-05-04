@@ -79,7 +79,10 @@ export default function PengaturanPage() {
         setMessage({ type: "success", text: result.message });
         fetchTahunAjaran();
       } else {
-        setMessage({ type: "error", text: result.error || "Gagal menambahkan tahun ajaran" });
+        setMessage({
+          type: "error",
+          text: result.error || "Gagal menambahkan tahun ajaran",
+        });
       }
     } catch (error) {
       setMessage({ type: "error", text: "Terjadi kesalahan" });
@@ -114,12 +117,18 @@ export default function PengaturanPage() {
       });
 
       if (response.ok) {
-        setMessage({ type: "success", text: "Tahun ajaran berhasil diperbarui" });
+        setMessage({
+          type: "success",
+          text: "Tahun ajaran berhasil diperbarui",
+        });
         setEditingTa(null);
         fetchTahunAjaran();
       } else {
         const err = await response.json();
-        setMessage({ type: "error", text: err.error || "Gagal memperbarui data" });
+        setMessage({
+          type: "error",
+          text: err.error || "Gagal memperbarui data",
+        });
       }
     } catch (error) {
       setMessage({ type: "error", text: "Terjadi kesalahan sistem" });
@@ -130,7 +139,7 @@ export default function PengaturanPage() {
 
   const activeTahunAjaran = tahunAjaranList.find((ta) => ta.is_active);
   const has2026 = tahunAjaranList.some(
-    (ta) => ta.tahun_mulai === 2026 && ta.tahun_selesai === 2027
+    (ta) => ta.tahun_mulai === 2026 && ta.tahun_selesai === 2027,
   );
 
   const formatDate = (dateString: string) => {
@@ -177,10 +186,11 @@ export default function PengaturanPage() {
       {/* Message */}
       {message && (
         <div
-          className={`p-4 rounded-xl border-2 ${message.type === "success"
+          className={`p-4 rounded-xl border-2 ${
+            message.type === "success"
               ? "bg-green-50 border-green-200 text-green-800"
               : "bg-red-50 border-red-200 text-red-800"
-            }`}
+          }`}
         >
           <div className="flex items-center gap-2">
             {message.type === "success" ? (
@@ -222,10 +232,14 @@ export default function PengaturanPage() {
                       <p className="text-sm text-green-700">
                         Pendaftaran:{" "}
                         {formatDate(activeTahunAjaran.tanggal_buka_pendaftaran)}{" "}
-                        - {formatDate(activeTahunAjaran.tanggal_tutup_pendaftaran)}
+                        -{" "}
+                        {formatDate(
+                          activeTahunAjaran.tanggal_tutup_pendaftaran,
+                        )}
                       </p>
                       <p className="text-sm text-green-700 font-bold">
-                        Biaya: {formatCurrency(activeTahunAjaran.biaya_pendaftaran)}
+                        Biaya:{" "}
+                        {formatCurrency(activeTahunAjaran.biaya_pendaftaran)}
                       </p>
                     </div>
                   </div>
@@ -277,10 +291,11 @@ export default function PengaturanPage() {
                   {tahunAjaranList.map((ta) => (
                     <div
                       key={ta.id}
-                      className={`border-2 rounded-xl p-4 transition-all ${ta.is_active
+                      className={`border-2 rounded-xl p-4 transition-all ${
+                        ta.is_active
                           ? "border-green-300 bg-green-50"
                           : "border-stone-200 bg-stone-50"
-                        }`}
+                      }`}
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
@@ -290,7 +305,9 @@ export default function PengaturanPage() {
                             </span>
                           )}
                           <div>
-                            <p className="font-bold text-stone-900">{ta.nama}</p>
+                            <p className="font-bold text-stone-900">
+                              {ta.nama}
+                            </p>
                             <p className="text-sm text-stone-600">
                               {formatDate(ta.tanggal_buka_pendaftaran)} -{" "}
                               {formatDate(ta.tanggal_tutup_pendaftaran)}
@@ -331,18 +348,25 @@ export default function PengaturanPage() {
           <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden animate-in fade-in zoom-in duration-200">
             <div className="px-6 py-4 bg-gradient-to-r from-purple-600 to-indigo-700 text-white flex items-center justify-between">
               <h3 className="text-lg font-bold">Edit Tahun Ajaran</h3>
-              <button onClick={() => setEditingTa(null)} className="p-1 hover:bg-white/20 rounded-lg">
+              <button
+                onClick={() => setEditingTa(null)}
+                className="p-1 hover:bg-white/20 rounded-lg"
+              >
                 <X className="w-6 h-6" />
               </button>
             </div>
 
             <form onSubmit={handleUpdate} className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-bold text-stone-700 mb-1">Nama Tahun Ajaran</label>
+                <label className="block text-sm font-bold text-stone-700 mb-1">
+                  Nama Tahun Ajaran
+                </label>
                 <input
                   type="text"
                   value={editFormData.nama}
-                  onChange={e => setEditFormData({ ...editFormData, nama: e.target.value })}
+                  onChange={(e) =>
+                    setEditFormData({ ...editFormData, nama: e.target.value })
+                  }
                   className="w-full px-4 py-2 rounded-xl border-2 border-stone-200 focus:border-purple-500 outline-none transition-all"
                   required
                 />
@@ -350,21 +374,35 @@ export default function PengaturanPage() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-bold text-stone-700 mb-1">Buka Pendaftaran</label>
+                  <label className="block text-sm font-bold text-stone-700 mb-1">
+                    Buka Pendaftaran
+                  </label>
                   <input
                     type="date"
                     value={editFormData.tanggal_buka_pendaftaran}
-                    onChange={e => setEditFormData({ ...editFormData, tanggal_buka_pendaftaran: e.target.value })}
+                    onChange={(e) =>
+                      setEditFormData({
+                        ...editFormData,
+                        tanggal_buka_pendaftaran: e.target.value,
+                      })
+                    }
                     className="w-full px-4 py-2 rounded-xl border-2 border-stone-200 focus:border-purple-500 outline-none transition-all"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-stone-700 mb-1">Tutup Pendaftaran</label>
+                  <label className="block text-sm font-bold text-stone-700 mb-1">
+                    Tutup Pendaftaran
+                  </label>
                   <input
                     type="date"
                     value={editFormData.tanggal_tutup_pendaftaran}
-                    onChange={e => setEditFormData({ ...editFormData, tanggal_tutup_pendaftaran: e.target.value })}
+                    onChange={(e) =>
+                      setEditFormData({
+                        ...editFormData,
+                        tanggal_tutup_pendaftaran: e.target.value,
+                      })
+                    }
                     className="w-full px-4 py-2 rounded-xl border-2 border-stone-200 focus:border-purple-500 outline-none transition-all"
                     required
                   />
@@ -372,11 +410,18 @@ export default function PengaturanPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-stone-700 mb-1">Biaya Pendaftaran (Rp)</label>
+                <label className="block text-sm font-bold text-stone-700 mb-1">
+                  Biaya Pendaftaran (Rp)
+                </label>
                 <input
                   type="number"
                   value={editFormData.biaya_pendaftaran}
-                  onChange={e => setEditFormData({ ...editFormData, biaya_pendaftaran: Number(e.target.value) })}
+                  onChange={(e) =>
+                    setEditFormData({
+                      ...editFormData,
+                      biaya_pendaftaran: Number(e.target.value),
+                    })
+                  }
                   className="w-full px-4 py-2 rounded-xl border-2 border-stone-200 focus:border-purple-500 outline-none transition-all"
                   required
                 />
@@ -387,10 +432,20 @@ export default function PengaturanPage() {
                   type="checkbox"
                   id="is_active"
                   checked={editFormData.is_active}
-                  onChange={e => setEditFormData({ ...editFormData, is_active: e.target.checked })}
+                  onChange={(e) =>
+                    setEditFormData({
+                      ...editFormData,
+                      is_active: e.target.checked,
+                    })
+                  }
                   className="w-5 h-5 rounded border-2 border-stone-300 text-purple-600 focus:ring-purple-500"
                 />
-                <label htmlFor="is_active" className="text-sm font-bold text-stone-700">Aktifkan Tahun Ajaran Ini</label>
+                <label
+                  htmlFor="is_active"
+                  className="text-sm font-bold text-stone-700"
+                >
+                  Aktifkan Tahun Ajaran Ini
+                </label>
               </div>
 
               <div className="pt-4 flex gap-3">

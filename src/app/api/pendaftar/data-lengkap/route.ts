@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 
-
 /**
  * GET /api/pendaftar/data-lengkap
  * Mengambil data lengkap pendaftar yang sedang login
@@ -13,18 +12,27 @@ export async function GET() {
     const sessionCookie = cookieStore.get("app_session");
 
     if (!sessionCookie) {
-      return NextResponse.json({ success: false, error: "Sesi tidak ditemukan" }, { status: 401 });
+      return NextResponse.json(
+        { success: false, error: "Sesi tidak ditemukan" },
+        { status: 401 },
+      );
     }
 
     let session;
     try {
       session = JSON.parse(sessionCookie.value);
     } catch {
-      return NextResponse.json({ success: false, error: "Sesi tidak valid" }, { status: 401 });
+      return NextResponse.json(
+        { success: false, error: "Sesi tidak valid" },
+        { status: 401 },
+      );
     }
 
     if (session.role !== "pendaftar") {
-      return NextResponse.json({ success: false, error: "Akses tidak diizinkan" }, { status: 403 });
+      return NextResponse.json(
+        { success: false, error: "Akses tidak diizinkan" },
+        { status: 403 },
+      );
     }
 
     const pendaftarId = session.id;
@@ -33,7 +41,10 @@ export async function GET() {
     });
 
     if (!pendaftar) {
-      return NextResponse.json({ success: false, error: "Data pendaftar tidak ditemukan" }, { status: 404 });
+      return NextResponse.json(
+        { success: false, error: "Data pendaftar tidak ditemukan" },
+        { status: 404 },
+      );
     }
 
     const dataLengkap: any = pendaftar.data_lengkap || {};
@@ -43,11 +54,18 @@ export async function GET() {
       santri: {
         ...dataLengkap.santri,
         nik: pendaftar.nik || dataLengkap.santri?.nik || "",
-        nama_lengkap: pendaftar.nama_lengkap || dataLengkap.santri?.nama_lengkap || "",
+        nama_lengkap:
+          pendaftar.nama_lengkap || dataLengkap.santri?.nama_lengkap || "",
         tanggal_lahir: pendaftar.tanggal_lahir
-          ? new Date(pendaftar.tanggal_lahir).toISOString().split('T')[0]
+          ? new Date(pendaftar.tanggal_lahir).toISOString().split("T")[0]
           : dataLengkap.santri?.tanggal_lahir || "",
-        jenis_kelamin: ["L", "Laki-laki"].includes(pendaftar.jenis_kelamin || "") ? "Laki-laki" : ["P", "Perempuan"].includes(pendaftar.jenis_kelamin || "") ? "Perempuan" : dataLengkap.santri?.jenis_kelamin || "",
+        jenis_kelamin: ["L", "Laki-laki"].includes(
+          pendaftar.jenis_kelamin || "",
+        )
+          ? "Laki-laki"
+          : ["P", "Perempuan"].includes(pendaftar.jenis_kelamin || "")
+            ? "Perempuan"
+            : dataLengkap.santri?.jenis_kelamin || "",
         no_hp: pendaftar.no_hp || dataLengkap.santri?.no_hp || "",
       },
       ayah: dataLengkap.ayah || { status_hidup: "Masih Hidup" },
@@ -61,12 +79,15 @@ export async function GET() {
       data: {
         ...responseData,
         jenjang: pendaftar.jenjang,
-        status_pendaftaran: pendaftar.status_pendaftaran
+        status_pendaftaran: pendaftar.status_pendaftaran,
       },
     });
   } catch (error) {
     console.error("Error in GET /api/pendaftar/data-lengkap:", error);
-    return NextResponse.json({ success: false, error: "Terjadi kesalahan" }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: "Terjadi kesalahan" },
+      { status: 500 },
+    );
   }
 }
 
@@ -80,32 +101,43 @@ export async function POST(request: NextRequest) {
     const sessionCookie = cookieStore.get("app_session");
 
     if (!sessionCookie) {
-      return NextResponse.json({ success: false, error: "Sesi tidak ditemukan" }, { status: 401 });
+      return NextResponse.json(
+        { success: false, error: "Sesi tidak ditemukan" },
+        { status: 401 },
+      );
     }
 
     let session;
     try {
       session = JSON.parse(sessionCookie.value);
     } catch {
-      return NextResponse.json({ success: false, error: "Sesi tidak valid" }, { status: 401 });
+      return NextResponse.json(
+        { success: false, error: "Sesi tidak valid" },
+        { status: 401 },
+      );
     }
 
     const pendaftarId = session.id;
     const body = await request.json();
     const { santri, ayah, ibu, wali, wali_sama_dengan_ortu, is_draft } = body;
 
-    // Relaxation: If is_draft, we don't require anything. 
+    // Relaxation: If is_draft, we don't require anything.
     // If not draft (manual Save), we still keep some sanity checks but less strict.
     if (!is_draft) {
       if (!santri?.nama_lengkap) {
-        return NextResponse.json({ success: false, error: "Nama lengkap santri wajib diisi" }, { status: 400 });
+        return NextResponse.json(
+          { success: false, error: "Nama lengkap santri wajib diisi" },
+          { status: 400 },
+        );
       }
     }
 
     // Prepare data for individual columns (identity sync)
     let jenisKelaminDb = null;
-    if (["L", "Laki-laki"].includes(santri?.jenis_kelamin)) jenisKelaminDb = "L";
-    else if (["P", "Perempuan"].includes(santri?.jenis_kelamin)) jenisKelaminDb = "P";
+    if (["L", "Laki-laki"].includes(santri?.jenis_kelamin))
+      jenisKelaminDb = "L";
+    else if (["P", "Perempuan"].includes(santri?.jenis_kelamin))
+      jenisKelaminDb = "P";
 
     // Reconstruct data_lengkap object to be saved
     const dataLengkapObj = {
@@ -127,7 +159,8 @@ export async function POST(request: NextRequest) {
       // Identity Sync
       if (santri.nama_lengkap) updateData.nama_lengkap = santri.nama_lengkap;
       if (santri.nik) updateData.nik = santri.nik;
-      if (santri.tanggal_lahir) updateData.tanggal_lahir = new Date(santri.tanggal_lahir);
+      if (santri.tanggal_lahir)
+        updateData.tanggal_lahir = new Date(santri.tanggal_lahir);
       if (jenisKelaminDb) updateData.jenis_kelamin = jenisKelaminDb;
       if (santri.no_hp) updateData.no_hp = santri.no_hp;
 
@@ -150,19 +183,22 @@ export async function POST(request: NextRequest) {
 
       if (santri.asal_sekolah) updateData.asal_sekolah = santri.asal_sekolah;
       if (santri.nisn) updateData.nisn = santri.nisn;
-      
+
       const anakKe = parseSafeInt(santri.anak_ke);
       if (anakKe !== undefined) updateData.anak_ke = anakKe;
-      
+
       const jumlahSaudara = parseSafeInt(santri.berapa_bersaudara);
-      if (jumlahSaudara !== undefined) updateData.jumlah_saudara = jumlahSaudara;
+      if (jumlahSaudara !== undefined)
+        updateData.jumlah_saudara = jumlahSaudara;
 
       if (santri.tempat_lahir) updateData.tempat_lahir = santri.tempat_lahir;
-      if (santri.golongan_darah) updateData.golongan_darah = santri.golongan_darah;
+      if (santri.golongan_darah)
+        updateData.golongan_darah = santri.golongan_darah;
       if (santri.hobi) updateData.hobi = santri.hobi;
       if (santri.cita_cita) updateData.cita_cita = santri.cita_cita;
-      if (santri.alamat_sekolah) updateData.alamat_sekolah = santri.alamat_sekolah;
-      
+      if (santri.alamat_sekolah)
+        updateData.alamat_sekolah = santri.alamat_sekolah;
+
       const tahunLulus = parseSafeInt(santri.tahun_lulus);
       if (tahunLulus !== undefined) updateData.tahun_lulus = tahunLulus;
     }
@@ -180,7 +216,9 @@ export async function POST(request: NextRequest) {
         nama_ayah: ayah?.nama_lengkap,
         nik_ayah: ayah?.nik,
         tempat_lahir_ayah: ayah?.tempat_lahir,
-        tanggal_lahir_ayah: ayah?.tanggal_lahir ? new Date(ayah.tanggal_lahir) : null,
+        tanggal_lahir_ayah: ayah?.tanggal_lahir
+          ? new Date(ayah.tanggal_lahir)
+          : null,
         pendidikan_ayah: ayah?.pendidikan_terakhir,
         pekerjaan_ayah: ayah?.pekerjaan,
         penghasilan_ayah: ayah?.penghasilan,
@@ -190,7 +228,9 @@ export async function POST(request: NextRequest) {
         nama_ibu: ibu?.nama_lengkap,
         nik_ibu: ibu?.nik,
         tempat_lahir_ibu: ibu?.tempat_lahir,
-        tanggal_lahir_ibu: ibu?.tanggal_lahir ? new Date(ibu.tanggal_lahir) : null,
+        tanggal_lahir_ibu: ibu?.tanggal_lahir
+          ? new Date(ibu.tanggal_lahir)
+          : null,
         pendidikan_ibu: ibu?.pendidikan_terakhir,
         pekerjaan_ibu: ibu?.pekerjaan,
         penghasilan_ibu: ibu?.penghasilan,
@@ -207,9 +247,9 @@ export async function POST(request: NextRequest) {
         where: { pendaftar_id: pendaftarId },
         create: {
           pendaftar_id: pendaftarId,
-          ...parentData
+          ...parentData,
         },
-        update: parentData
+        update: parentData,
       });
     }
 
@@ -219,6 +259,9 @@ export async function POST(request: NextRequest) {
     });
   } catch (error: any) {
     console.error("Error in POST /api/pendaftar/data-lengkap:", error);
-    return NextResponse.json({ success: false, error: "Terjadi kesalahan saat menyimpan data" }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: "Terjadi kesalahan saat menyimpan data" },
+      { status: 500 },
+    );
   }
 }

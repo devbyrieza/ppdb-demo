@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
     if (!sessionCookie) {
       return NextResponse.json(
         { success: false, error: "Sesi tidak ditemukan" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -25,14 +25,14 @@ export async function GET(request: NextRequest) {
     } catch {
       return NextResponse.json(
         { success: false, error: "Sesi tidak valid" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
     if (session.role !== "pendaftar") {
       return NextResponse.json(
         { success: false, error: "Akses tidak diizinkan" },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -49,7 +49,7 @@ export async function GET(request: NextRequest) {
     if (!pendaftar) {
       return NextResponse.json(
         { success: false, error: "Data pendaftar tidak ditemukan" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -59,13 +59,13 @@ export async function GET(request: NextRequest) {
         pendaftar_id: pendaftarId,
         status_pembayaran: "verified",
       },
-      orderBy: { verified_at: "desc" }
+      orderBy: { verified_at: "desc" },
     });
 
     if (!pembayaran) {
       return NextResponse.json(
         { success: false, error: "Pembayaran belum terverifikasi" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -85,7 +85,7 @@ export async function GET(request: NextRequest) {
     // Format rupiah
     const formatRupiah = (amount: number | object) => {
       // Handle Decimal type from Prisma
-      const val = typeof amount === 'object' ? Number(amount) : amount;
+      const val = typeof amount === "object" ? Number(amount) : amount;
       return new Intl.NumberFormat("id-ID", {
         style: "currency",
         currency: "IDR",
@@ -336,7 +336,7 @@ export async function GET(request: NextRequest) {
     console.error("Error in GET /api/pembayaran/kwitansi:", error);
     return NextResponse.json(
       { success: false, error: "Terjadi kesalahan" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

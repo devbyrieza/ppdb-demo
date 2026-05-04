@@ -35,7 +35,7 @@ import {
   BadgeCheck,
   GraduationCap,
   ArrowRight,
-  Camera
+  Camera,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { Container } from "@/components/layout/Container";
@@ -118,11 +118,13 @@ const FeatureCard = ({
     initial={{ opacity: 0, y: 40 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
-    className={`grid lg:grid-cols-2 gap-12 lg:gap-20 items-center ${index % 2 === 1 ? 'lg:grid-flow-dense' : ''}`}
+    className={`grid lg:grid-cols-2 gap-12 lg:gap-20 items-center ${index % 2 === 1 ? "lg:grid-flow-dense" : ""}`}
   >
     {/* Image Side */}
-    <div className={`relative ${index % 2 === 1 ? 'lg:col-start-2' : ''}`}>
-      <div className={`aspect-4/3 rounded-[3.5rem] overflow-hidden shadow-lg relative group ${index % 2 === 0 ? 'rotate-2' : '-rotate-2'} hover:rotate-0 transition-transform duration-700 border border-brand-blue-100 p-2 bg-white`}>
+    <div className={`relative ${index % 2 === 1 ? "lg:col-start-2" : ""}`}>
+      <div
+        className={`aspect-4/3 rounded-[3.5rem] overflow-hidden shadow-lg relative group ${index % 2 === 0 ? "rotate-2" : "-rotate-2"} hover:rotate-0 transition-transform duration-700 border border-brand-blue-100 p-2 bg-white`}
+      >
         <div className="relative w-full h-full rounded-[3rem] overflow-hidden">
           <Image
             src={item.image}
@@ -133,17 +135,21 @@ const FeatureCard = ({
           <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-60" />
         </div>
       </div>
- 
+
       {/* Program Badge */}
       <div className="absolute -top-4 -right-4 bg-white px-6 py-3 rounded-pill shadow-md border border-brand-blue-100 z-10 flex items-center gap-2">
         <Trophy className="w-5 h-5 text-brand-yellow-500" />
-        <span className="text-xs font-black text-ink-950 uppercase tracking-widest">Unggulan</span>
+        <span className="text-xs font-black text-ink-950 uppercase tracking-widest">
+          Unggulan
+        </span>
       </div>
     </div>
 
     {/* Content Side */}
     <div className="flex flex-col justify-center">
-      <div className={`w-16 h-16 ${item.bgColor} rounded-2xl flex items-center justify-center shadow-sm mb-8 transition-transform hover:scale-110`}>
+      <div
+        className={`w-16 h-16 ${item.bgColor} rounded-2xl flex items-center justify-center shadow-sm mb-8 transition-transform hover:scale-110`}
+      >
         <item.icon className="w-8 h-8 text-white" />
       </div>
 
@@ -203,7 +209,7 @@ const FeatureCard = ({
 );
 
 const StatsCard = ({ icon: Icon, value, label, sublabel }: HeroStat) => (
-   <motion.div
+  <motion.div
     whileHover={{ y: -5 }}
     className="app-card bg-white p-4 md:p-6 rounded-[2rem] md:rounded-[2.5rem] border border-brand-blue-100 shadow-sm text-center min-w-[140px] md:min-w-[160px] flex flex-col items-center"
   >
@@ -213,8 +219,12 @@ const StatsCard = ({ icon: Icon, value, label, sublabel }: HeroStat) => (
     <div className="text-2xl md:text-3xl font-black text-ink-950 mb-1">
       {value}
     </div>
-    <div className="text-[10px] md:text-xs font-black text-ink-400 uppercase tracking-widest mb-1">{label}</div>
-    <div className="text-[9px] md:text-[10px] text-ink-400 font-bold">{sublabel}</div>
+    <div className="text-[10px] md:text-xs font-black text-ink-400 uppercase tracking-widest mb-1">
+      {label}
+    </div>
+    <div className="text-[9px] md:text-[10px] text-ink-400 font-bold">
+      {sublabel}
+    </div>
   </motion.div>
 );
 
@@ -225,7 +235,7 @@ const ScheduleCard = ({
   schedule: JadwalHarian;
   index: number;
 }) => (
-   <motion.div
+  <motion.div
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
@@ -250,7 +260,7 @@ const ScheduleCard = ({
         {schedule.detail}
       </p>
 
-       <div className="mt-auto inline-flex items-center gap-3 bg-white/60 p-4 rounded-2xl border border-brand-blue-100 shadow-sm">
+      <div className="mt-auto inline-flex items-center gap-3 bg-white/60 p-4 rounded-2xl border border-brand-blue-100 shadow-sm">
         <Zap className="w-5 h-5 text-brand-blue-600 flex-shrink-0" />
         <span className="text-sm font-black text-ink-950 uppercase tracking-tight">
           {schedule.benefit}
@@ -267,14 +277,16 @@ const WeeklyActivityCard = ({
   activity: KegiatanPekanan;
   index: number;
 }) => (
-   <motion.div
+  <motion.div
     initial={{ opacity: 0, scale: 0.95 }}
     whileInView={{ opacity: 1, scale: 1 }}
     viewport={{ once: true }}
     transition={{ delay: index * 0.05 }}
     className={`app-card group p-8 rounded-[2.5rem] bg-white border border-brand-blue-50 shadow-sm hover:shadow-md transition-all hover:-translate-y-2 text-center`}
   >
-    <div className={`w-14 h-14 ${activity.bg} rounded-2xl flex items-center justify-center ${activity.color} mx-auto mb-6 group-hover:scale-110 transition-transform border border-brand-blue-100`}>
+    <div
+      className={`w-14 h-14 ${activity.bg} rounded-2xl flex items-center justify-center ${activity.color} mx-auto mb-6 group-hover:scale-110 transition-transform border border-brand-blue-100`}
+    >
       <activity.icon className="w-8 h-8" />
     </div>
 
@@ -287,9 +299,7 @@ const WeeklyActivityCard = ({
     </p>
 
     <div className="pt-6 border-t border-surface-50 mb-6">
-      <p className="text-base text-ink-600 font-medium">
-        {activity.detail}
-      </p>
+      <p className="text-base text-ink-600 font-medium">{activity.detail}</p>
     </div>
 
     <div className="bg-teal-50 rounded-xl px-4 py-3 border border-teal-100">
@@ -307,7 +317,7 @@ const EkskulCard = ({
   ekskul: Ekstrakurikuler;
   index: number;
 }) => (
-   <motion.div
+  <motion.div
     initial={{ opacity: 0, y: 10 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
@@ -343,7 +353,8 @@ export default function KegiatanPage() {
     {
       image: "/images/pembelajaran-kitab-turotz.webp",
       title: "Pembelajaran Kitab Turots",
-      description: "Bukan sekadar hafalan! Santri kami PAHAM isi kitab, mampu berdiskusi ilmiah, dan disiapkan menjadi ilmuwan muda.",
+      description:
+        "Bukan sekadar hafalan! Santri kami PAHAM isi kitab, mampu berdiskusi ilmiah, dan disiapkan menjadi ilmuwan muda.",
       icon: BookOpen,
       accentColor: "bg-brand-blue-500",
       bgColor: "bg-brand-blue-600",
@@ -353,19 +364,24 @@ export default function KegiatanPage() {
         { label: "Jam/Hari", value: "4+" },
       ],
       results: [
-        { icon: TrendingUp, text: "Mampu membaca kitab gundul (Nahwu-Shorof Applied)" },
+        {
+          icon: TrendingUp,
+          text: "Mampu membaca kitab gundul (Nahwu-Shorof Applied)",
+        },
         { icon: Award, text: "Aktif dalam Bahtsul Masail & Muhadoroh" },
         { icon: GraduationCap, text: "Alumni tersebar di PTN & Timur Tengah" },
       ],
       testimonial: {
-        quote: "Prioritas utama kami adalah pendidikan agama. Di sini, kami melihat langsung bagaimana anak dididik menjaga adab dan shalat berjamaah tepat waktu. Investasi akhirat yang luar biasa.",
+        quote:
+          "Prioritas utama kami adalah pendidikan agama. Di sini, kami melihat langsung bagaimana anak dididik menjaga adab dan shalat berjamaah tepat waktu. Investasi akhirat yang luar biasa.",
         parent: "Bapak Surwanto (Wali Santri)",
       },
     },
     {
       image: "/images/tahfidz.webp",
       title: "Tahfidz Al-Qur'an Intensif",
-      description: "Metode menghafal terukur sesuai kemampuan santri dengan target yang jelas setiap jenjang pendidikan.",
+      description:
+        "Metode menghafal terukur sesuai kemampuan santri dengan target yang jelas setiap jenjang pendidikan.",
       icon: BookMarked,
       accentColor: "bg-brand-yellow-500",
       bgColor: "bg-brand-yellow-500",
@@ -380,14 +396,16 @@ export default function KegiatanPage() {
         { icon: CheckCircle2, text: "Mampu Menjadi Imam Shalat Berjamaah" },
       ],
       testimonial: {
-        quote: "Sinergi kurikulum nasional dan tahfidznya sangat menenangkan. Anak kami tidak hanya mengejar target hafalan, tapi juga PAHAM maknanya melalui bimbingan asatidz yang kompeten.",
+        quote:
+          "Sinergi kurikulum nasional dan tahfidznya sangat menenangkan. Anak kami tidak hanya mengejar target hafalan, tapi juga PAHAM maknanya melalui bimbingan asatidz yang kompeten.",
         parent: "Ibu Siti Aminah (Wali Santri)",
       },
     },
     {
       image: "/images/extra-karate.webp",
       title: "Pengembangan Bakat & Prestasi",
-      description: "Menyiapkan santri multitalenta yang juara di bidang olimpiade, olahraga, hingga public speaking.",
+      description:
+        "Menyiapkan santri multitalenta yang juara di bidang olimpiade, olahraga, hingga public speaking.",
       icon: Target,
       accentColor: "bg-teal-500",
       bgColor: "bg-teal-600",
@@ -402,16 +420,32 @@ export default function KegiatanPage() {
         { icon: Users, text: "Berjiwa Kepemimpinan & Mandiri" },
       ],
       testimonial: {
-        quote: "Fondasi ilmu syar'i dan disiplin bahasa Arab yang saya dapatkan menjadi modal utama saya saat melanjutkan studi. Lingkungan di sini sangat mendukung pembentukan karakter saya.",
+        quote:
+          "Fondasi ilmu syar'i dan disiplin bahasa Arab yang saya dapatkan menjadi modal utama saya saat melanjutkan studi. Lingkungan di sini sangat mendukung pembentukan karakter saya.",
         parent: "Muhammad Razan (Alumni)",
       },
     },
   ];
 
   const heroStats: HeroStat[] = [
-    { icon: BookOpen, value: "30+", label: "Kitab Turots", sublabel: "Kajian Mendalam" },
-    { icon: BookMarked, value: "28 Juz", label: "Target Tahfidz", sublabel: "Metode Talaqqi" },
-    { icon: Target, value: "10+", label: "Ekstrakurikuler", sublabel: "Asah bakat santri" },
+    {
+      icon: BookOpen,
+      value: "30+",
+      label: "Kitab Turots",
+      sublabel: "Kajian Mendalam",
+    },
+    {
+      icon: BookMarked,
+      value: "28 Juz",
+      label: "Target Tahfidz",
+      sublabel: "Metode Talaqqi",
+    },
+    {
+      icon: Target,
+      value: "10+",
+      label: "Ekstrakurikuler",
+      sublabel: "Asah bakat santri",
+    },
   ];
 
   const jadwalHarian: JadwalHarian[] = [
@@ -419,7 +453,8 @@ export default function KegiatanPage() {
       icon: Sun,
       time: "04:30 - 07:00",
       activity: "Subuh Berjamaah & Tahfidz",
-      detail: "Mulai hari dengan spiritualitas tinggi dan setoran hafalan segar di waktu terbaik.",
+      detail:
+        "Mulai hari dengan spiritualitas tinggi dan setoran hafalan segar di waktu terbaik.",
       benefit: "Membangun disiplin bangun pagi seumur hidup.",
       bgColor: "bg-brand-yellow-50/50",
       iconColor: "text-brand-yellow-600",
@@ -428,7 +463,8 @@ export default function KegiatanPage() {
       icon: Book,
       time: "07:30 - 14:00",
       activity: "KBM & Kajian Kitab",
-      detail: "Sekolah formal (MTs/IL) dipadu dengan pembelajaran kitab turots intensif.",
+      detail:
+        "Sekolah formal (MTs/IL) dipadu dengan pembelajaran kitab turots intensif.",
       benefit: "Akademik unggul & ilmu agama mendalam.",
       bgColor: "bg-brand-blue-50",
       iconColor: "text-brand-blue-700",
@@ -437,7 +473,8 @@ export default function KegiatanPage() {
       icon: Target,
       time: "15:30 - 17:00",
       activity: "Minat & Bakat",
-      detail: "Waktu khusus untuk eksplorasi bakat seni, olahraga, dan organisasi santri.",
+      detail:
+        "Waktu khusus untuk eksplorasi bakat seni, olahraga, dan organisasi santri.",
       benefit: "Menjadi santri multitalenta & adaptif.",
       bgColor: "bg-brand-blue-50/50",
       iconColor: "text-brand-blue-600",
@@ -446,7 +483,8 @@ export default function KegiatanPage() {
       icon: Moon,
       time: "19:30 - 21:00",
       activity: "Muhadharah & Kajian",
-      detail: "Latihan public speaking dan pendalaman etika serta kajian keislaman malam.",
+      detail:
+        "Latihan public speaking dan pendalaman etika serta kajian keislaman malam.",
       benefit: "Mental pemimpin & komunikator handal.",
       bgColor: "bg-white",
       iconColor: "text-ink-600",
@@ -484,7 +522,8 @@ export default function KegiatanPage() {
     {
       title: "Pramuka",
       desc: "Kepanduan",
-      detail: "Latihan kemandirian, kepemimpinan, dan keterampilan bertahan hidup.",
+      detail:
+        "Latihan kemandirian, kepemimpinan, dan keterampilan bertahan hidup.",
       benefit: "Jiwa Pemimpin",
       icon: Tent,
       color: "text-ink-600",
@@ -494,25 +533,100 @@ export default function KegiatanPage() {
 
   const ekstrakurikuler: Ekstrakurikuler[] = [
     // Baris 1: Establised & Populer
-    { name: "Karate", icon: Shield, desc: "Bela diri untuk ketahanan fisik dan disiplin diri.", benefit: "Mentalitas Tangguh" },
-    { name: "Pramuka", icon: Tent, desc: "Pembentukan karakter, kepemimpinan & kemandirian.", benefit: "Jiwa Pemimpin" },
-    { name: "Panahan", icon: Target, desc: "Olahraga sunnah untuk melatih fokus & ketenangan.", benefit: "Fokus & Konsentrasi" },
-    { name: "Futsal", icon: Dribbble, desc: "Olahraga tim untuk kesehatan dan sportivitas.", benefit: "Kerjasama Tim" },
-    { name: "Volly", icon: Trophy, desc: "Melatih koordinasi mata-tangan dan kerjasama regu.", benefit: "Ketangkasan Sosial" },
+    {
+      name: "Karate",
+      icon: Shield,
+      desc: "Bela diri untuk ketahanan fisik dan disiplin diri.",
+      benefit: "Mentalitas Tangguh",
+    },
+    {
+      name: "Pramuka",
+      icon: Tent,
+      desc: "Pembentukan karakter, kepemimpinan & kemandirian.",
+      benefit: "Jiwa Pemimpin",
+    },
+    {
+      name: "Panahan",
+      icon: Target,
+      desc: "Olahraga sunnah untuk melatih fokus & ketenangan.",
+      benefit: "Fokus & Konsentrasi",
+    },
+    {
+      name: "Futsal",
+      icon: Dribbble,
+      desc: "Olahraga tim untuk kesehatan dan sportivitas.",
+      benefit: "Kerjasama Tim",
+    },
+    {
+      name: "Volly",
+      icon: Trophy,
+      desc: "Melatih koordinasi mata-tangan dan kerjasama regu.",
+      benefit: "Ketangkasan Sosial",
+    },
 
     // Baris 2: Kompetensi & Soft Skills
-    { name: "Komputer", icon: Globe, desc: "Penguasaan software perkantoran & literasi digital.", benefit: "Kecakapan Teknologi" },
-    { name: "Design Grafis", icon: PenTool, desc: "Seni kreativitas digital dan pengolahan visual.", benefit: "Kreativitas Modern" },
-    { name: "Kaligrafi", icon: PenTool, desc: "Seni menulis indah ayat-ayat Al-Qur'an.", benefit: "Ketekunan Seni" },
-    { name: "Jurnalistik", icon: BookText, desc: "Melatih kemampuan menulis dan analisis informasi.", benefit: "Komunikasi Publik" },
-    { name: "Konten Kreator", icon: Camera, desc: "Edukasi pembuatan konten positif & beradab.", benefit: "Dakwah Digital" },
+    {
+      name: "Komputer",
+      icon: Globe,
+      desc: "Penguasaan software perkantoran & literasi digital.",
+      benefit: "Kecakapan Teknologi",
+    },
+    {
+      name: "Design Grafis",
+      icon: PenTool,
+      desc: "Seni kreativitas digital dan pengolahan visual.",
+      benefit: "Kreativitas Modern",
+    },
+    {
+      name: "Kaligrafi",
+      icon: PenTool,
+      desc: "Seni menulis indah ayat-ayat Al-Qur'an.",
+      benefit: "Ketekunan Seni",
+    },
+    {
+      name: "Jurnalistik",
+      icon: BookText,
+      desc: "Melatih kemampuan menulis dan analisis informasi.",
+      benefit: "Komunikasi Publik",
+    },
+    {
+      name: "Konten Kreator",
+      icon: Camera,
+      desc: "Edukasi pembuatan konten positif & beradab.",
+      benefit: "Dakwah Digital",
+    },
 
     // Baris 3: Pengembangan & Masa Depan
-    { name: "Basket", icon: Trophy, desc: "Olahraga dinamis untuk stamina dan tinggi badan.", benefit: "Stamina & Endurance" },
-    { name: "Bulutangkis", icon: Zap, desc: "Melatih ketangkasan dan koordinasi motorik.", benefit: "Kelincahan Fisik" },
-    { name: "Pertanian", icon: Home, desc: "Edukasi kemandirian pangan dan cinta alam.", benefit: "Kemandirian Hidup" },
-    { name: "Periklanan", icon: MessageCircle, desc: "Belajar strategi komunikasi visual dan pemasaran.", benefit: "Jiwa Entrepreneur" },
-    { name: "Web Programming", icon: Zap, desc: "Dasar-dasar pengembangan website (Coming Soon).", benefit: "Skill Masa Depan" },
+    {
+      name: "Basket",
+      icon: Trophy,
+      desc: "Olahraga dinamis untuk stamina dan tinggi badan.",
+      benefit: "Stamina & Endurance",
+    },
+    {
+      name: "Bulutangkis",
+      icon: Zap,
+      desc: "Melatih ketangkasan dan koordinasi motorik.",
+      benefit: "Kelincahan Fisik",
+    },
+    {
+      name: "Pertanian",
+      icon: Home,
+      desc: "Edukasi kemandirian pangan dan cinta alam.",
+      benefit: "Kemandirian Hidup",
+    },
+    {
+      name: "Periklanan",
+      icon: MessageCircle,
+      desc: "Belajar strategi komunikasi visual dan pemasaran.",
+      benefit: "Jiwa Entrepreneur",
+    },
+    {
+      name: "Web Programming",
+      icon: Zap,
+      desc: "Dasar-dasar pengembangan website (Coming Soon).",
+      benefit: "Skill Masa Depan",
+    },
   ];
 
   return (
@@ -548,7 +662,9 @@ export default function KegiatanPage() {
             transition={{ delay: 0.2 }}
             className="text-lg md:text-xl lg:text-2xl text-ink-600 max-w-3xl mx-auto leading-relaxed font-medium mb-12 md:mb-16"
           >
-            Sinergi Kurikulum Nasional & Pesantren yang terintegrasi secara komprehensif untuk mencetak generasi yang berilmu, beradab, dan adaptif.
+            Sinergi Kurikulum Nasional & Pesantren yang terintegrasi secara
+            komprehensif untuk mencetak generasi yang berilmu, beradab, dan
+            adaptif.
           </motion.p>
 
           <div className="flex flex-wrap gap-4 sm:gap-6 justify-center">
@@ -571,13 +687,17 @@ export default function KegiatanPage() {
             <div className="absolute top-0 right-0 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-brand-yellow-50/50 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/3 pointer-events-none" />
 
             <div className="relative z-10 max-w-4xl mx-auto">
-              <span className="text-brand-yellow-600 font-extrabold tracking-widest uppercase text-xs mb-4 md:mb-6 block">Output Santri</span>
+              <span className="text-brand-yellow-600 font-extrabold tracking-widest uppercase text-xs mb-4 md:mb-6 block">
+                Output Santri
+              </span>
               <h2 className="text-3xl md:text-5xl lg:text-6xl font-display font-black text-ink-950 mb-6 md:mb-8 leading-tight">
                 Hasil Nyata <br />
                 <span className="text-brand-blue-600">Pendidikan Kita</span>
               </h2>
               <p className="text-lg md:text-xl text-ink-600 font-medium leading-relaxed mb-8 md:mb-10 text-center max-w-2xl mx-auto">
-                Alhamdulillah, dengan izin Allah, santri kami telah menunjukkan perkembangan nyata baik dari sisi hafidz, pemahaman kitab, hingga mentalitas juara.
+                Alhamdulillah, dengan izin Allah, santri kami telah menunjukkan
+                perkembangan nyata baik dari sisi hafidz, pemahaman kitab,
+                hingga mentalitas juara.
               </p>
               <div className="flex justify-center">
                 <Link href="/kontak">
@@ -590,10 +710,22 @@ export default function KegiatanPage() {
 
             <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 w-full">
               {[
-                { text: "Bahasa Arab sebagai Bahasa Pengantar", icon: MessageCircle },
-                { text: "Target Hafalan Berstandar Sanad (± 4 Juz/Thn)", icon: BadgeCheck },
-                { text: "Lulusan Diterima di LIPIA, PTN & Timur Tengah", icon: GraduationCap },
-                { text: "Juara Musabaqah Nasional & Prestasi Sains", icon: Trophy },
+                {
+                  text: "Bahasa Arab sebagai Bahasa Pengantar",
+                  icon: MessageCircle,
+                },
+                {
+                  text: "Target Hafalan Berstandar Sanad (± 4 Juz/Thn)",
+                  icon: BadgeCheck,
+                },
+                {
+                  text: "Lulusan Diterima di LIPIA, PTN & Timur Tengah",
+                  icon: GraduationCap,
+                },
+                {
+                  text: "Juara Musabaqah Nasional & Prestasi Sains",
+                  icon: Trophy,
+                },
               ].map((item, idx) => (
                 <motion.div
                   key={idx}
@@ -603,7 +735,9 @@ export default function KegiatanPage() {
                   <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-brand-blue-50 shadow-sm flex items-center justify-center text-brand-blue-600 shrink-0 group-hover:bg-brand-blue-600 group-hover:text-white transition-colors border border-brand-blue-100">
                     <item.icon className="w-5 h-5 md:w-6 md:h-6" />
                   </div>
-                  <span className="font-black text-ink-900 text-sm md:text-lg leading-tight">{item.text}</span>
+                  <span className="font-black text-ink-900 text-sm md:text-lg leading-tight">
+                    {item.text}
+                  </span>
                 </motion.div>
               ))}
             </div>
@@ -619,7 +753,8 @@ export default function KegiatanPage() {
               Kurikulum Unggulan
             </motion.h2>
             <p className="text-xl text-ink-600 font-medium leading-relaxed">
-              Memberikan fondasi ilmu syar'i yang kokoh sekaligus mempersiapkan santri menghadapi tantangan global.
+              Memberikan fondasi ilmu syar'i yang kokoh sekaligus mempersiapkan
+              santri menghadapi tantangan global.
             </p>
           </div>
 
@@ -639,7 +774,8 @@ export default function KegiatanPage() {
               Produktivitas 24 Jam
             </h2>
             <p className="text-xl text-ink-600 font-medium leading-relaxed">
-              Kami membentuk karakter disiplin melalui jadwal yang terstandar dengan pendampingan penuh dari para murabbi.
+              Kami membentuk karakter disiplin melalui jadwal yang terstandar
+              dengan pendampingan penuh dari para murabbi.
             </p>
           </div>
 
@@ -659,7 +795,12 @@ export default function KegiatanPage() {
               Kegiatan Penunjang
             </h2>
             <p className="text-xl text-ink-600 font-medium leading-relaxed">
-              Aktivitas rutin pekanan dan bulanan yang dirancang untuk mematangkan <span className="text-brand-blue-600 font-bold uppercase tracking-tight">keterampilan non-teknis</span> dan pengalaman santri.
+              Aktivitas rutin pekanan dan bulanan yang dirancang untuk
+              mematangkan{" "}
+              <span className="text-brand-blue-600 font-bold uppercase tracking-tight">
+                keterampilan non-teknis
+              </span>{" "}
+              dan pengalaman santri.
             </p>
           </div>
 
@@ -679,7 +820,8 @@ export default function KegiatanPage() {
               Minat & Bakat
             </h2>
             <p className="text-xl text-ink-600 font-medium leading-relaxed">
-              Wadah eksplorasi potensi santri di luar disiplin ilmu syar'i agar menjadi individu yang seimbang dan tangguh.
+              Wadah eksplorasi potensi santri di luar disiplin ilmu syar'i agar
+              menjadi individu yang seimbang dan tangguh.
             </p>
           </div>
 
@@ -705,10 +847,12 @@ export default function KegiatanPage() {
 
             <div className="relative z-10">
               <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-display font-black mb-4 sm:mb-6 md:mb-8 text-white leading-tight">
-                Mulai Perjalanan <br /> <span className="text-brand-yellow-400">Terbaik</span> Mereka
+                Mulai Perjalanan <br />{" "}
+                <span className="text-brand-yellow-400">Terbaik</span> Mereka
               </h2>
               <p className="text-sm sm:text-base md:text-lg lg:text-xl text-brand-blue-100 max-w-2xl mx-auto mb-6 sm:mb-8 md:mb-10 lg:mb-12 font-medium px-2">
-                Pendidikan adalah investasi terbaik. Masuklah ke lingkungan yang menjaga iman, memacu ilmu, dan membangun karakter mereka.
+                Pendidikan adalah investasi terbaik. Masuklah ke lingkungan yang
+                menjaga iman, memacu ilmu, dan membangun karakter mereka.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 justify-center px-4">
                 <Link href="/ppdb">

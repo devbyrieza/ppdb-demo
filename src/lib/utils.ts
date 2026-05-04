@@ -21,22 +21,22 @@ export function formatCurrency(amount: number | string) {
 }
 
 /**
- * Expands technical abbreviations like Calsan and Cawalsan into full professional terms.
- * Used for user-facing displays (Dashboard Pendaftar, Kartu Ujian, etc.)
+ * Expands technical abbreviations like Santri and Orang Tua into full professional terms.
+ * Used for user-facing displays (Dashboard Pendaftar, kartu seleksi, etc.)
  */
 export function expandExamTitle(title: string | null): string {
-  if (!title) return "Tes Seleksi";
-  
+  if (!title) return "Seleksi";
+
   let expanded = title;
-  
-  // Expand Calsan
+
+  // Expand Santri
   expanded = expanded.replace(/calsan/gi, "Calon Santri");
-  
-  // Expand Cawalsan
+
+  // Expand Orang Tua
   expanded = expanded.replace(/cawalsan/gi, "Calon Orangtua/Wali Santri");
-  
+
   // Clean up potential double "Calon" or other artifacts
   expanded = expanded.replace(/Calon Santri Santri/gi, "Calon Santri");
-  
+
   return expanded;
 }

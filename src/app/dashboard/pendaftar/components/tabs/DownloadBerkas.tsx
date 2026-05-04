@@ -1,10 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Download, FileText, AlertCircle, CheckCircle, Loader2 } from "lucide-react";
+import {
+  Download,
+  FileText,
+  AlertCircle,
+  CheckCircle,
+  Loader2,
+} from "lucide-react";
 import {
   generateBuktiPendaftaran,
-  generateKartuUjian
+  generateKartuUjian,
 } from "@/lib/utils/pdf-generator";
 
 export default function DownloadBerkasTab() {
@@ -18,7 +24,9 @@ export default function DownloadBerkasTab() {
         const session = await sessionRes.json();
 
         if (session.pendaftar_id) {
-          const res = await fetch(`/api/pendaftar/document-data?pendaftar_id=${session.pendaftar_id}`);
+          const res = await fetch(
+            `/api/pendaftar/document-data?pendaftar_id=${session.pendaftar_id}`,
+          );
           const result = await res.json();
           setData(result.data);
         }
@@ -43,8 +51,23 @@ export default function DownloadBerkasTab() {
   }
 
   const status = data?.status_proses || "draft";
-  const isDataCompleted = ["data_completed", "docs_uploaded", "docs_verified", "scheduled", "tested", "announced", "accepted", "enrolled"].includes(status);
-  const isScheduled = ["scheduled", "tested", "announced", "accepted", "enrolled"].includes(status);
+  const isDataCompleted = [
+    "data_completed",
+    "docs_uploaded",
+    "docs_verified",
+    "scheduled",
+    "tested",
+    "announced",
+    "accepted",
+    "enrolled",
+  ].includes(status);
+  const isScheduled = [
+    "scheduled",
+    "tested",
+    "announced",
+    "accepted",
+    "enrolled",
+  ].includes(status);
 
   const documents = [
     {
@@ -54,7 +77,7 @@ export default function DownloadBerkasTab() {
       action: async () => await generateBuktiPendaftaran(data),
     },
     {
-      name: "Kartu Ujian",
+      name: "kartu seleksi",
       description: "Kartu identitas ujian seleksi",
       status: isScheduled ? "available" : "pending",
       action: async () => await generateKartuUjian(data),
@@ -127,10 +150,22 @@ export default function DownloadBerkasTab() {
           <div>
             <h4 className="font-bold text-blue-900 mb-2">Informasi</h4>
             <ul className="text-sm text-blue-800 space-y-1">
-              <li>• Bukti pendaftaran tersedia setelah data diri santri dilengkapi.</li>
-              <li>• Kartu Peserta Ujian akan muncul otomatis setelah jadwal ujian dikonfirmasi panitia.</li>
-              <li>• Pastikan browser Anda mengizinkan pop-up untuk mengunduh file PDF.</li>
-              <li>• Simpan semua dokumen yang diunduh dengan baik atau segera cetak.</li>
+              <li>
+                • Bukti pendaftaran tersedia setelah data diri santri
+                dilengkapi.
+              </li>
+              <li>
+                • Kartu Peserta Ujian akan muncul otomatis setelah jadwal
+                seleksi dikonfirmasi panitia.
+              </li>
+              <li>
+                • Pastikan browser Anda mengizinkan pop-up untuk mengunduh file
+                PDF.
+              </li>
+              <li>
+                • Simpan semua dokumen yang diunduh dengan baik atau segera
+                cetak.
+              </li>
             </ul>
           </div>
         </div>

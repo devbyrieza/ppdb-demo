@@ -25,7 +25,10 @@ Panitia PPDB PPDB`;
     const result = await sendMessage({ phone, message });
 
     if (result.status) {
-      return { success: true, messageId: result.data?.id || `wa_${Date.now()}` };
+      return {
+        success: true,
+        messageId: result.data?.id || `wa_${Date.now()}`,
+      };
     }
 
     // Fallback untuk development
@@ -34,7 +37,10 @@ Panitia PPDB PPDB`;
       return { success: true, messageId: "dev-" + Date.now() };
     }
 
-    return { success: false, error: result.message || "WhatsApp service error" };
+    return {
+      success: false,
+      error: result.message || "WhatsApp service error",
+    };
   } catch (error: any) {
     console.error("WhatsApp send error:", error);
     return { success: false, error: error.message };

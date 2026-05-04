@@ -147,7 +147,7 @@ function VerifikasiOTPContent() {
         nomor_pendaftaran: data.data.nomor_pendaftaran,
         nama_lengkap: data.data.nama_lengkap,
         nik: data.data.nik,
-        jenjang: data.data.jenjang
+        jenjang: data.data.jenjang,
       });
 
       router.push(`/daftar-sukses?${successParams.toString()}`);
@@ -156,8 +156,6 @@ function VerifikasiOTPContent() {
       setOtpError(error.message || "Terjadi kesalahan saat verifikasi OTP");
     }
   };
-
-
 
   // Resend OTP
   const handleResendOTP = async () => {
@@ -232,14 +230,21 @@ function VerifikasiOTPContent() {
             ? "Masukkan kode verifikasi yang tertera di bawah ini:"
             : "Kami telah mengirim kode 6 digit ke:"}
         </p>
-        {!sim_code && <p className="text-lg font-black text-teal-700">{no_hp}</p>}
+        {!sim_code && (
+          <p className="text-lg font-black text-teal-700">{no_hp}</p>
+        )}
 
         {/* OTP Display Banner (when WhatsApp not available) */}
         {sim_code && (
           <div className="mt-4 p-3 bg-sand-50 border border-sand-200 rounded-xl app-card shadow-sm">
-            <p className="text-xs font-black uppercase tracking-widest text-teal-800 mb-1">Kode Verifikasi Anda</p>
+            <p className="text-xs font-black uppercase tracking-widest text-teal-800 mb-1">
+              Kode Verifikasi Anda
+            </p>
             <p className="text-sm text-teal-950 font-medium">
-              Masukkan kode berikut: <span className="font-mono text-xl font-black bg-white px-2 py-0.5 rounded-lg border border-sand-100 shadow-sm ml-2">{sim_code}</span>
+              Masukkan kode berikut:{" "}
+              <span className="font-mono text-xl font-black bg-white px-2 py-0.5 rounded-lg border border-sand-100 shadow-sm ml-2">
+                {sim_code}
+              </span>
             </p>
             <p className="text-[10px] text-teal-600 mt-2 font-bold bg-teal-50 inline-block px-2 py-1 rounded-md">
               Layanan WhatsApp sedang dalam proses aktivasi
@@ -249,7 +254,10 @@ function VerifikasiOTPContent() {
       </div>
 
       {/* OTP Input Fields */}
-      <div className="flex gap-2 justify-center mb-6 relative z-10" onPaste={handlePaste}>
+      <div
+        className="flex gap-2 justify-center mb-6 relative z-10"
+        onPaste={handlePaste}
+      >
         {otpCode.map((digit, index) => (
           <input
             key={index}
@@ -260,12 +268,13 @@ function VerifikasiOTPContent() {
             value={digit}
             onChange={(e) => handleOTPChange(index, e.target.value)}
             onKeyDown={(e) => handleOTPKeyDown(index, e)}
-            className={`w-12 h-14 md:w-14 md:h-16 text-center text-3xl font-display font-black border-2 rounded-xl focus:outline-none focus:ring-4 transition-all app-card shadow-sm ${otpError
-              ? "border-red-500 bg-red-50 focus:ring-red-100 text-red-700"
-              : digit
-                ? "border-teal-600 bg-teal-50 text-teal-900"
-                : "border-sand-200 bg-white focus:ring-teal-50 focus:border-teal-300 text-ink-900"
-              }`}
+            className={`w-12 h-14 md:w-14 md:h-16 text-center text-3xl font-display font-black border-2 rounded-xl focus:outline-none focus:ring-4 transition-all app-card shadow-sm ${
+              otpError
+                ? "border-red-500 bg-red-50 focus:ring-red-100 text-red-700"
+                : digit
+                  ? "border-teal-600 bg-teal-50 text-teal-900"
+                  : "border-sand-200 bg-white focus:ring-teal-50 focus:border-teal-300 text-ink-900"
+            }`}
             disabled={isVerifying}
             autoFocus={index === 0}
           />
@@ -300,7 +309,9 @@ function VerifikasiOTPContent() {
           <p className="text-sm text-ink-600 font-medium flex items-center justify-center gap-2">
             <Clock className="w-4 h-4" />
             Kode berlaku selama{" "}
-            <strong className="text-teal-700 font-black">{formatTime(countdown)}</strong>
+            <strong className="text-teal-700 font-black">
+              {formatTime(countdown)}
+            </strong>
           </p>
         ) : (
           <p className="text-sm text-red-600 flex items-center justify-center gap-2 font-bold bg-red-50 inline-flex px-3 py-1.5 rounded-full border border-red-100">
@@ -354,23 +365,30 @@ function VerifikasiOTPContent() {
 
       {/* Help Info */}
       <div className="mt-6 p-4 bg-teal-50 border border-teal-100 rounded-[1.5rem] relative z-10 app-card shadow-sm">
-        <p className="text-xs uppercase tracking-widest text-ink-950 font-black mb-2 pl-1">Tips Verifikasi</p>
+        <p className="text-xs uppercase tracking-widest text-ink-950 font-black mb-2 pl-1">
+          Tips Verifikasi
+        </p>
         <ul className="text-xs text-ink-600 space-y-1.5 font-medium pl-1">
           <li className="flex gap-2">
-            <span className="text-teal-500 opacity-50">•</span> Pastikan nomor HP Anda aktif dan terdaftar di WhatsApp
+            <span className="text-teal-500 opacity-50">•</span> Pastikan nomor
+            HP Anda aktif dan terdaftar di WhatsApp
           </li>
           <li className="flex gap-2">
-            <span className="text-teal-500 opacity-50">•</span> Kode otomatis terverifikasi setelah 6 digit terisi
+            <span className="text-teal-500 opacity-50">•</span> Kode otomatis
+            terverifikasi setelah 6 digit terisi
           </li>
           <li className="flex gap-2">
-            <span className="text-teal-500 opacity-50">•</span> Jika tidak menerima kode, tunggu countdown habis
+            <span className="text-teal-500 opacity-50">•</span> Jika tidak
+            menerima kode, tunggu countdown habis
           </li>
         </ul>
       </div>
 
       {/* Contact Support */}
       <div className="mt-5 text-center relative z-10">
-        <p className="text-[10px] font-black uppercase tracking-widest text-ink-500 mb-1.5">Tidak Menerima Kode?</p>
+        <p className="text-[10px] font-black uppercase tracking-widest text-ink-500 mb-1.5">
+          Tidak Menerima Kode?
+        </p>
         <a
           href="https://wa.me/622667345601"
           target="_blank"

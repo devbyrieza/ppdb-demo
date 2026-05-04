@@ -7,14 +7,17 @@ const CACHE_DURATION = 60 * 60 * 1000; // 1 hour
 export async function GET() {
   try {
     // Check cache
-    if (provinsiCache && Date.now() - provinsiCache.timestamp < CACHE_DURATION) {
+    if (
+      provinsiCache &&
+      Date.now() - provinsiCache.timestamp < CACHE_DURATION
+    ) {
       return NextResponse.json({ data: provinsiCache.data });
     }
 
     // Fetch from external API
     const response = await fetch(
       "https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json",
-      { next: { revalidate: 3600 } }
+      { next: { revalidate: 3600 } },
     );
 
     if (!response.ok) {

@@ -175,7 +175,7 @@ function DokumenCard({
         onUpload(files[0]);
       }
     },
-    [onUpload]
+    [onUpload],
   );
 
   const handleFileSelect = useCallback(
@@ -188,7 +188,7 @@ function DokumenCard({
         fileInputRef.current.value = "";
       }
     },
-    [onUpload]
+    [onUpload],
   );
 
   const handleClick = () => {
@@ -210,16 +210,17 @@ function DokumenCard({
 
   return (
     <div
-      className={`card-glass transition-all duration-300 overflow-hidden ${isDragging
-        ? "border-brand-blue-600 bg-brand-blue-50/50 scale-[1.02]"
-        : dokumen.status === "verified"
-          ? "border-emerald-200"
-          : dokumen.status === "rejected"
-            ? "border-red-200"
-            : dokumen.status === "uploaded"
-              ? "border-brand-blue-200"
-              : "border-white/40 hover:border-brand-blue-300"
-        }`}
+      className={`card-glass transition-all duration-300 overflow-hidden ${
+        isDragging
+          ? "border-brand-blue-600 bg-brand-blue-50/50 scale-[1.02]"
+          : dokumen.status === "verified"
+            ? "border-emerald-200"
+            : dokumen.status === "rejected"
+              ? "border-red-200"
+              : dokumen.status === "uploaded"
+                ? "border-brand-blue-200"
+                : "border-white/40 hover:border-brand-blue-300"
+      }`}
     >
       <div
         className="p-5 cursor-pointer"
@@ -229,7 +230,7 @@ function DokumenCard({
           <div className="flex items-center gap-4">
             <div
               className={`w-12 h-12 rounded-xl flex items-center justify-center ${getStatusColor(
-                dokumen.status
+                dokumen.status,
               )}`}
             >
               <StatusIcon className="w-6 h-6" />
@@ -276,7 +277,9 @@ function DokumenCard({
         {isUploading && (
           <div className="mt-4">
             <div className="flex items-center justify-between text-xs font-bold mb-2">
-              <span className="text-brand-blue-700 uppercase tracking-widest">MENGUPLOAD...</span>
+              <span className="text-brand-blue-700 uppercase tracking-widest">
+                MENGUPLOAD...
+              </span>
               <span className="text-ink-600">{uploadProgress}%</span>
             </div>
             <div className="h-2 bg-surface-200 rounded-full overflow-hidden">
@@ -310,13 +313,13 @@ function DokumenCard({
                     {formatFileSize(dokumen.file_size || 0)} &bull;{" "}
                     {dokumen.uploaded_at
                       ? new Date(dokumen.uploaded_at).toLocaleDateString(
-                        "id-ID",
-                        {
-                          day: "numeric",
-                          month: "short",
-                          year: "numeric",
-                        }
-                      )
+                          "id-ID",
+                          {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                          },
+                        )
                       : "-"}
                   </p>
                 </div>
@@ -346,10 +349,11 @@ function DokumenCard({
           )}
 
           <div
-            className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-all cursor-pointer group ${isDragging
-              ? "border-brand-blue-600 bg-brand-blue-50"
-              : "border-ink-200 hover:border-brand-blue-400 hover:bg-surface-50"
-              } ${isUploading ? "pointer-events-none opacity-50" : ""}`}
+            className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-all cursor-pointer group ${
+              isDragging
+                ? "border-brand-blue-600 bg-brand-blue-50"
+                : "border-ink-200 hover:border-brand-blue-400 hover:bg-surface-50"
+            } ${isUploading ? "pointer-events-none opacity-50" : ""}`}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
@@ -399,9 +403,8 @@ export default function KelengkapanBerkasTab() {
   const [dokumenConfig, setDokumenConfig] = useState<
     Record<string, DokumenConfig>
   >({});
-  const [dataPendaftaran, setDataPendaftaran] = useState<DataPendaftaran | null>(
-    null
-  );
+  const [dataPendaftaran, setDataPendaftaran] =
+    useState<DataPendaftaran | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [uploadingKeys, setUploadingKeys] = useState<Set<string>>(new Set());
@@ -459,14 +462,31 @@ export default function KelengkapanBerkasTab() {
         const s = d.santri || {};
         // NIK can come from pendaftar top level or JSON blob
         const santriNik = s.nik || pendaftar.nik;
-        const isSantriBasic = s.nama_lengkap && santriNik && s.tempat_lahir && s.tanggal_lahir && s.provinsi && s.kabupaten && s.kecamatan && s.kelurahan && s.kode_pos && s.alamat && s.rt && s.rw;
-        const isSantriPhysical = 
-          (s.anak_ke !== undefined && s.anak_ke !== null && s.anak_ke !== "") && 
-          (s.berapa_bersaudara !== undefined && s.berapa_bersaudara !== null && s.berapa_bersaudara !== "") && 
-          s.golongan_darah && 
-          (Number(s.tinggi_badan) > 0) && 
-          (Number(s.berat_badan) > 0) && 
-          (s.riwayat_penyakit && s.riwayat_penyakit !== "");
+        const isSantriBasic =
+          s.nama_lengkap &&
+          santriNik &&
+          s.tempat_lahir &&
+          s.tanggal_lahir &&
+          s.provinsi &&
+          s.kabupaten &&
+          s.kecamatan &&
+          s.kelurahan &&
+          s.kode_pos &&
+          s.alamat &&
+          s.rt &&
+          s.rw;
+        const isSantriPhysical =
+          s.anak_ke !== undefined &&
+          s.anak_ke !== null &&
+          s.anak_ke !== "" &&
+          s.berapa_bersaudara !== undefined &&
+          s.berapa_bersaudara !== null &&
+          s.berapa_bersaudara !== "" &&
+          s.golongan_darah &&
+          Number(s.tinggi_badan) > 0 &&
+          Number(s.berat_badan) > 0 &&
+          s.riwayat_penyakit &&
+          s.riwayat_penyakit !== "";
         const isSekolahComplete = s.asal_sekolah && s.nisn && s.tahun_lulus;
 
         if (!isSantriBasic) missing.push("Identitas Santri");
@@ -480,29 +500,75 @@ export default function KelengkapanBerkasTab() {
         const isIbuDeceased = ibu.status_hidup === "Sudah Meninggal";
 
         // Logic tinggal bersama
-        const isAyahAddressRequired = !isAyahDeceased && !["Kedua Orang Tua", "Ayah"].includes(s.tinggal_bersama);
-        const isIbuAddressRequired = !isIbuDeceased && !["Kedua Orang Tua", "Ibu"].includes(s.tinggal_bersama);
+        const isAyahAddressRequired =
+          !isAyahDeceased &&
+          !["Kedua Orang Tua", "Ayah"].includes(s.tinggal_bersama);
+        const isIbuAddressRequired =
+          !isIbuDeceased &&
+          !["Kedua Orang Tua", "Ibu"].includes(s.tinggal_bersama);
         const isWaliAddressRequired = s.tinggal_bersama !== "Wali";
 
-        if (!isAyahDeceased && (
-          !ayah.nama_lengkap || !ayah.nik || !ayah.tanggal_lahir || !ayah.pendidikan_terakhir || !ayah.pekerjaan || !ayah.no_hp || !ayah.no_wa ||
-          (isAyahAddressRequired && (!ayah.alamat || !ayah.rt || !ayah.rw || !ayah.provinsi || !ayah.kabupaten || !ayah.kecamatan || !ayah.kelurahan || !ayah.kode_pos))
-        )) {
+        if (
+          !isAyahDeceased &&
+          (!ayah.nama_lengkap ||
+            !ayah.nik ||
+            !ayah.tanggal_lahir ||
+            !ayah.pendidikan_terakhir ||
+            !ayah.pekerjaan ||
+            !ayah.no_hp ||
+            !ayah.no_wa ||
+            (isAyahAddressRequired &&
+              (!ayah.alamat ||
+                !ayah.rt ||
+                !ayah.rw ||
+                !ayah.provinsi ||
+                !ayah.kabupaten ||
+                !ayah.kecamatan ||
+                !ayah.kelurahan ||
+                !ayah.kode_pos)))
+        ) {
           missing.push("Data Ayah");
         }
 
-        if (!isIbuDeceased && (
-          !ibu.nama_lengkap || !ibu.nik || !ibu.tanggal_lahir || !ibu.pendidikan_terakhir || !ibu.pekerjaan || !ibu.no_hp || !ibu.no_wa ||
-          (isIbuAddressRequired && (!ibu.alamat || !ibu.rt || !ibu.rw || !ibu.provinsi || !ibu.kabupaten || !ibu.kecamatan || !ibu.kelurahan || !ibu.kode_pos))
-        )) {
+        if (
+          !isIbuDeceased &&
+          (!ibu.nama_lengkap ||
+            !ibu.nik ||
+            !ibu.tanggal_lahir ||
+            !ibu.pendidikan_terakhir ||
+            !ibu.pekerjaan ||
+            !ibu.no_hp ||
+            !ibu.no_wa ||
+            (isIbuAddressRequired &&
+              (!ibu.alamat ||
+                !ibu.rt ||
+                !ibu.rw ||
+                !ibu.provinsi ||
+                !ibu.kabupaten ||
+                !ibu.kecamatan ||
+                !ibu.kelurahan ||
+                !ibu.kode_pos)))
+        ) {
           missing.push("Data Ibu");
         }
 
         // Check Wali if both parents deceased or lives with wali
         if ((isAyahDeceased && isIbuDeceased) || s.tinggal_bersama === "Wali") {
           const wali = d.wali || {};
-          if (!wali.nama_lengkap || !wali.nik || !wali.hubungan || !wali.no_hp ||
-            (isWaliAddressRequired && (!wali.alamat || !wali.rt || !wali.rw || !wali.provinsi || !wali.kabupaten || !wali.kecamatan || !wali.kelurahan || !wali.kode_pos))
+          if (
+            !wali.nama_lengkap ||
+            !wali.nik ||
+            !wali.hubungan ||
+            !wali.no_hp ||
+            (isWaliAddressRequired &&
+              (!wali.alamat ||
+                !wali.rt ||
+                !wali.rw ||
+                !wali.provinsi ||
+                !wali.kabupaten ||
+                !wali.kecamatan ||
+                !wali.kelurahan ||
+                !wali.kode_pos))
           ) {
             missing.push("Data Wali");
           }
@@ -599,7 +665,7 @@ export default function KelengkapanBerkasTab() {
   const handleDownload = async (dokumen: DokumenItem) => {
     try {
       const response = await fetch(
-        `/api/dokumen/download?jenis=${dokumen.key}`
+        `/api/dokumen/download?jenis=${dokumen.key}`,
       );
       const data = await response.json();
 
@@ -652,13 +718,20 @@ export default function KelengkapanBerkasTab() {
     <div className="space-y-8 animate-in fade-in duration-500">
       {toast && (
         <div
-          className={`fixed top-6 right-6 z-50 px-6 py-4 rounded-2xl shadow-clay-lg flex items-center gap-3 animate-in slide-in-from-right duration-300 ${toast.type === "success"
-            ? "bg-emerald-500 text-white shadow-emerald-500/20"
-            : "bg-red-500 text-white shadow-red-500/20"
-            }`}
+          className={`fixed top-6 right-6 z-50 px-6 py-4 rounded-2xl shadow-clay-lg flex items-center gap-3 animate-in slide-in-from-right duration-300 ${
+            toast.type === "success"
+              ? "bg-emerald-500 text-white shadow-emerald-500/20"
+              : "bg-red-500 text-white shadow-red-500/20"
+          }`}
         >
-          {toast.type === "success" ? <CheckCircle className="w-5 h-5" /> : <XCircle className="w-5 h-5" />}
-          <span className="font-bold text-sm tracking-wide">{toast.message}</span>
+          {toast.type === "success" ? (
+            <CheckCircle className="w-5 h-5" />
+          ) : (
+            <XCircle className="w-5 h-5" />
+          )}
+          <span className="font-bold text-sm tracking-wide">
+            {toast.message}
+          </span>
           <button
             onClick={() => setToast(null)}
             className="ml-2 hover:bg-white/20 p-1 rounded-lg transition-colors"
@@ -677,8 +750,13 @@ export default function KelengkapanBerkasTab() {
             <ClipboardList className="w-8 h-8 text-brand-yellow-100" />
           </div>
           <div>
-            <h1 className="text-2xl md:text-3xl font-black mb-2 tracking-tight text-white font-display">Kelengkapan Data</h1>
-            <p className="text-brand-yellow-100/90 font-medium max-w-xl text-sm md:text-base">Lengkapi biodata diri santri dan orang tua untuk melanjutkan proses pendaftaran.</p>
+            <h1 className="text-2xl md:text-3xl font-black mb-2 tracking-tight text-white font-display">
+              Kelengkapan Data
+            </h1>
+            <p className="text-brand-yellow-100/90 font-medium max-w-xl text-sm md:text-base">
+              Lengkapi biodata diri santri dan orang tua untuk melanjutkan
+              proses pendaftaran.
+            </p>
           </div>
         </div>
       </div>
@@ -693,27 +771,32 @@ export default function KelengkapanBerkasTab() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as TabType)}
-              className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-pill text-sm font-black transition-all duration-300 group ${isActive
-                ? 'bg-brand-blue-700 text-white shadow-md'
-                : 'text-ink-600 hover:bg-brand-yellow-100 hover:text-brand-blue-800'
-                }`}
+              className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-pill text-sm font-black transition-all duration-300 group ${
+                isActive
+                  ? "bg-brand-blue-700 text-white shadow-md"
+                  : "text-ink-600 hover:bg-brand-yellow-100 hover:text-brand-blue-800"
+              }`}
             >
-              <Icon className={`w-5 h-5 transition-colors ${isActive ? 'text-brand-yellow-200' : 'text-ink-600 group-hover:text-brand-blue-800'}`} />
+              <Icon
+                className={`w-5 h-5 transition-colors ${isActive ? "text-brand-yellow-200" : "text-ink-600 group-hover:text-brand-blue-800"}`}
+              />
               <span className="whitespace-nowrap">{tab.label}</span>
             </button>
-          )
+          );
         })}
       </div>
 
       {/* Tab: Isi Data Lengkap */}
       {activeTab === "isi-data" && (
         <div className="bg-transparent">
-          <DataLengkapForm onSuccess={() => {
-            fetchData(true);
-            setActiveTab("data");
-            // Scroll to top to see ringkasan
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }} />
+          <DataLengkapForm
+            onSuccess={() => {
+              fetchData(true);
+              setActiveTab("data");
+              // Scroll to top to see ringkasan
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+          />
         </div>
       )}
 
@@ -727,23 +810,41 @@ export default function KelengkapanBerkasTab() {
                   <FileText className="w-6 h-6 text-brand-blue-700" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-ink-900">Ringkasan Data</h2>
-                  <p className="text-ink-600 text-sm">Data yang telah tersimpan di sistem</p>
+                  <h2 className="text-xl font-bold text-ink-900">
+                    Ringkasan Data
+                  </h2>
+                  <p className="text-ink-600 text-sm">
+                    Data yang telah tersimpan di sistem
+                  </p>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-surface-50 p-6 rounded-3xl border border-ink-100 shadow-inner">
                 <div className="md:col-span-2 lg:col-span-1">
-                  <p className="text-[10px] font-black text-ink-600 uppercase tracking-[0.2em] mb-1">Nomor Pendaftaran</p>
-                  <p className="text-xl font-black text-brand-blue-700 font-mono">{dataPendaftaran.nomor_pendaftaran}</p>
+                  <p className="text-[10px] font-black text-ink-600 uppercase tracking-[0.2em] mb-1">
+                    Nomor Pendaftaran
+                  </p>
+                  <p className="text-xl font-black text-brand-blue-700 font-mono">
+                    {dataPendaftaran.nomor_pendaftaran}
+                  </p>
                 </div>
                 <div>
-                  <p className="text-[10px] font-black text-ink-600 uppercase tracking-[0.2em] mb-1">Nama Lengkap Santri</p>
-                  <p className="text-base font-bold text-ink-900">{dataPendaftaran.nama_lengkap}</p>
+                  <p className="text-[10px] font-black text-ink-600 uppercase tracking-[0.2em] mb-1">
+                    Nama Lengkap Santri
+                  </p>
+                  <p className="text-base font-bold text-ink-900">
+                    {dataPendaftaran.nama_lengkap}
+                  </p>
                 </div>
                 <div>
-                  <p className="text-[10px] font-black text-ink-600 uppercase tracking-[0.2em] mb-1">NIK Santri</p>
-                  <p className="text-base font-bold text-ink-900">{dataPendaftaran.data_lengkap?.santri?.nik || dataPendaftaran.nik || "-"}</p>
+                  <p className="text-[10px] font-black text-ink-600 uppercase tracking-[0.2em] mb-1">
+                    NIK Santri
+                  </p>
+                  <p className="text-base font-bold text-ink-900">
+                    {dataPendaftaran.data_lengkap?.santri?.nik ||
+                      dataPendaftaran.nik ||
+                      "-"}
+                  </p>
                 </div>
               </div>
 
@@ -753,19 +854,63 @@ export default function KelengkapanBerkasTab() {
                 <div className="bg-white border border-ink-100 rounded-[2rem] overflow-hidden shadow-sm">
                   <div className="bg-surface-50 px-6 py-4 border-b border-ink-100 flex items-center gap-3">
                     <User className="w-5 h-5 text-brand-blue-700" />
-                    <h3 className="font-bold text-ink-900 text-sm uppercase tracking-wider">Identitas & Fisik</h3>
+                    <h3 className="font-bold text-ink-900 text-sm uppercase tracking-wider">
+                      Identitas & Fisik
+                    </h3>
                   </div>
                   <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-6 gap-x-8">
-                    <SummaryItem label="Tempat, Tgl Lahir" value={`${dataPendaftaran.data_lengkap?.santri?.tempat_lahir || "-"}, ${dataPendaftaran.data_lengkap?.santri?.tanggal_lahir || "-"}`} />
-                    <SummaryItem label="Jenis Kelamin" value={dataPendaftaran.data_lengkap?.santri?.jenis_kelamin || "-"} />
-                    <SummaryItem label="Kewarganegaraan" value={dataPendaftaran.data_lengkap?.santri?.kewarganegaraan || "-"} />
-                    <SummaryItem label="Anak Ke / Bersaudara" value={`${dataPendaftaran.data_lengkap?.santri?.anak_ke || 0} dari ${dataPendaftaran.data_lengkap?.santri?.berapa_bersaudara || 0}`} />
-                    <SummaryItem label="Tinggi / Berat Badan" value={`${dataPendaftaran.data_lengkap?.santri?.tinggi_badan || 0} cm / ${dataPendaftaran.data_lengkap?.santri?.berat_badan || 0} kg`} />
-                    <SummaryItem label="Golongan Darah" value={dataPendaftaran.data_lengkap?.santri?.golongan_darah || "-"} />
-                    <SummaryItem label="Tinggal Bersama" value={dataPendaftaran.data_lengkap?.santri?.tinggal_bersama || "-"} />
-                    <SummaryItem label="Riwayat Penyakit" value={dataPendaftaran.data_lengkap?.santri?.riwayat_penyakit || "-"} />
+                    <SummaryItem
+                      label="Tempat, Tgl Lahir"
+                      value={`${dataPendaftaran.data_lengkap?.santri?.tempat_lahir || "-"}, ${dataPendaftaran.data_lengkap?.santri?.tanggal_lahir || "-"}`}
+                    />
+                    <SummaryItem
+                      label="Jenis Kelamin"
+                      value={
+                        dataPendaftaran.data_lengkap?.santri?.jenis_kelamin ||
+                        "-"
+                      }
+                    />
+                    <SummaryItem
+                      label="Kewarganegaraan"
+                      value={
+                        dataPendaftaran.data_lengkap?.santri?.kewarganegaraan ||
+                        "-"
+                      }
+                    />
+                    <SummaryItem
+                      label="Anak Ke / Bersaudara"
+                      value={`${dataPendaftaran.data_lengkap?.santri?.anak_ke || 0} dari ${dataPendaftaran.data_lengkap?.santri?.berapa_bersaudara || 0}`}
+                    />
+                    <SummaryItem
+                      label="Tinggi / Berat Badan"
+                      value={`${dataPendaftaran.data_lengkap?.santri?.tinggi_badan || 0} cm / ${dataPendaftaran.data_lengkap?.santri?.berat_badan || 0} kg`}
+                    />
+                    <SummaryItem
+                      label="Golongan Darah"
+                      value={
+                        dataPendaftaran.data_lengkap?.santri?.golongan_darah ||
+                        "-"
+                      }
+                    />
+                    <SummaryItem
+                      label="Tinggal Bersama"
+                      value={
+                        dataPendaftaran.data_lengkap?.santri?.tinggal_bersama ||
+                        "-"
+                      }
+                    />
+                    <SummaryItem
+                      label="Riwayat Penyakit"
+                      value={
+                        dataPendaftaran.data_lengkap?.santri
+                          ?.riwayat_penyakit || "-"
+                      }
+                    />
                     <div className="md:col-span-2">
-                      <SummaryItem label="Alamat Domisili" value={`${dataPendaftaran.data_lengkap?.santri?.alamat || "-"}, RT ${dataPendaftaran.data_lengkap?.santri?.rt || "00"}/RW ${dataPendaftaran.data_lengkap?.santri?.rw || "00"}, ${dataPendaftaran.data_lengkap?.santri?.kelurahan || "-"}, ${dataPendaftaran.data_lengkap?.santri?.kecamatan || "-"}, ${dataPendaftaran.data_lengkap?.santri?.kabupaten || "-"}, ${dataPendaftaran.data_lengkap?.santri?.provinsi || "-"}`} />
+                      <SummaryItem
+                        label="Alamat Domisili"
+                        value={`${dataPendaftaran.data_lengkap?.santri?.alamat || "-"}, RT ${dataPendaftaran.data_lengkap?.santri?.rt || "00"}/RW ${dataPendaftaran.data_lengkap?.santri?.rw || "00"}, ${dataPendaftaran.data_lengkap?.santri?.kelurahan || "-"}, ${dataPendaftaran.data_lengkap?.santri?.kecamatan || "-"}, ${dataPendaftaran.data_lengkap?.santri?.kabupaten || "-"}, ${dataPendaftaran.data_lengkap?.santri?.provinsi || "-"}`}
+                      />
                     </div>
                   </div>
                 </div>
@@ -774,14 +919,36 @@ export default function KelengkapanBerkasTab() {
                 <div className="bg-white border border-ink-100 rounded-[2rem] overflow-hidden shadow-sm">
                   <div className="bg-surface-50 px-6 py-4 border-b border-ink-100 flex items-center gap-3">
                     <School className="w-5 h-5 text-brand-blue-700" />
-                    <h3 className="font-bold text-ink-900 text-sm uppercase tracking-wider">Sekolah Asal</h3>
+                    <h3 className="font-bold text-ink-900 text-sm uppercase tracking-wider">
+                      Sekolah Asal
+                    </h3>
                   </div>
                   <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-6 gap-x-8">
-                    <SummaryItem label="Nama Sekolah" value={dataPendaftaran.data_lengkap?.santri?.asal_sekolah || "-"} />
-                    <SummaryItem label="NISN" value={dataPendaftaran.data_lengkap?.santri?.nisn || "-"} />
-                    <SummaryItem label="Tahun Lulus" value={dataPendaftaran.data_lengkap?.santri?.tahun_lulus || "-"} />
+                    <SummaryItem
+                      label="Nama Sekolah"
+                      value={
+                        dataPendaftaran.data_lengkap?.santri?.asal_sekolah ||
+                        "-"
+                      }
+                    />
+                    <SummaryItem
+                      label="NISN"
+                      value={dataPendaftaran.data_lengkap?.santri?.nisn || "-"}
+                    />
+                    <SummaryItem
+                      label="Tahun Lulus"
+                      value={
+                        dataPendaftaran.data_lengkap?.santri?.tahun_lulus || "-"
+                      }
+                    />
                     <div className="md:col-span-2">
-                      <SummaryItem label="Alamat Sekolah" value={dataPendaftaran.data_lengkap?.santri?.alamat_sekolah || "-"} />
+                      <SummaryItem
+                        label="Alamat Sekolah"
+                        value={
+                          dataPendaftaran.data_lengkap?.santri
+                            ?.alamat_sekolah || "-"
+                        }
+                      />
                     </div>
                   </div>
                 </div>
@@ -790,30 +957,80 @@ export default function KelengkapanBerkasTab() {
                 <div className="bg-white border border-ink-100 rounded-[2rem] overflow-hidden shadow-sm">
                   <div className="bg-surface-50 px-6 py-4 border-b border-ink-100 flex items-center gap-3">
                     <Users className="w-5 h-5 text-brand-blue-700" />
-                    <h3 className="font-bold text-ink-900 text-sm uppercase tracking-wider">Orang Tua / Wali</h3>
+                    <h3 className="font-bold text-ink-900 text-sm uppercase tracking-wider">
+                      Orang Tua / Wali
+                    </h3>
                   </div>
                   <div className="p-6 space-y-8">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                       {/* Ayah */}
                       <div className="space-y-4">
                         <div className="flex items-center justify-between border-b border-ink-50 pb-2">
-                          <h4 className="font-black text-xs text-ink-600 uppercase tracking-[0.2em]">Data Ayah</h4>
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${dataPendaftaran.data_lengkap?.ayah?.status_hidup === "Masih Hidup" ? "bg-emerald-100 text-emerald-700" : "bg-stone-200 text-stone-600"}`}>
-                            {dataPendaftaran.data_lengkap?.ayah?.status_hidup || "Masih Hidup"}
+                          <h4 className="font-black text-xs text-ink-600 uppercase tracking-[0.2em]">
+                            Data Ayah
+                          </h4>
+                          <span
+                            className={`px-2 py-0.5 rounded text-[10px] font-bold ${dataPendaftaran.data_lengkap?.ayah?.status_hidup === "Masih Hidup" ? "bg-emerald-100 text-emerald-700" : "bg-stone-200 text-stone-600"}`}
+                          >
+                            {dataPendaftaran.data_lengkap?.ayah?.status_hidup ||
+                              "Masih Hidup"}
                           </span>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          <SummaryItem label="Nama Lengkap" value={dataPendaftaran.data_lengkap?.ayah?.nama_lengkap || "-"} />
-                          <SummaryItem label="NIK" value={dataPendaftaran.data_lengkap?.ayah?.nik || "-"} />
-                          <SummaryItem label="Tempat, Tgl Lahir" value={`${dataPendaftaran.data_lengkap?.ayah?.tempat_lahir || "-"}, ${dataPendaftaran.data_lengkap?.ayah?.tanggal_lahir || "-"}`} />
-                          <SummaryItem label="Pendidikan" value={dataPendaftaran.data_lengkap?.ayah?.pendidikan_terakhir || "-"} />
-                          <SummaryItem label="Pekerjaan" value={`${dataPendaftaran.data_lengkap?.ayah?.pekerjaan}${dataPendaftaran.data_lengkap?.ayah?.pekerjaan === "Lainnya" ? ` (${dataPendaftaran.data_lengkap?.ayah?.pekerjaan_lainnya})` : ""} ` || "-"} />
-                          <SummaryItem label="Penghasilan" value={dataPendaftaran.data_lengkap?.ayah?.penghasilan || "-"} />
-                          <SummaryItem label="WhatsApp/HP" value={`${dataPendaftaran.data_lengkap?.ayah?.no_wa || "-"} / ${dataPendaftaran.data_lengkap?.ayah?.no_hp || "-"}`} />
-                          <SummaryItem label="Email" value={dataPendaftaran.data_lengkap?.ayah?.email || "-"} />
+                          <SummaryItem
+                            label="Nama Lengkap"
+                            value={
+                              dataPendaftaran.data_lengkap?.ayah
+                                ?.nama_lengkap || "-"
+                            }
+                          />
+                          <SummaryItem
+                            label="NIK"
+                            value={
+                              dataPendaftaran.data_lengkap?.ayah?.nik || "-"
+                            }
+                          />
+                          <SummaryItem
+                            label="Tempat, Tgl Lahir"
+                            value={`${dataPendaftaran.data_lengkap?.ayah?.tempat_lahir || "-"}, ${dataPendaftaran.data_lengkap?.ayah?.tanggal_lahir || "-"}`}
+                          />
+                          <SummaryItem
+                            label="Pendidikan"
+                            value={
+                              dataPendaftaran.data_lengkap?.ayah
+                                ?.pendidikan_terakhir || "-"
+                            }
+                          />
+                          <SummaryItem
+                            label="Pekerjaan"
+                            value={
+                              `${dataPendaftaran.data_lengkap?.ayah?.pekerjaan}${dataPendaftaran.data_lengkap?.ayah?.pekerjaan === "Lainnya" ? ` (${dataPendaftaran.data_lengkap?.ayah?.pekerjaan_lainnya})` : ""} ` ||
+                              "-"
+                            }
+                          />
+                          <SummaryItem
+                            label="Penghasilan"
+                            value={
+                              dataPendaftaran.data_lengkap?.ayah?.penghasilan ||
+                              "-"
+                            }
+                          />
+                          <SummaryItem
+                            label="WhatsApp/HP"
+                            value={`${dataPendaftaran.data_lengkap?.ayah?.no_wa || "-"} / ${dataPendaftaran.data_lengkap?.ayah?.no_hp || "-"}`}
+                          />
+                          <SummaryItem
+                            label="Email"
+                            value={
+                              dataPendaftaran.data_lengkap?.ayah?.email || "-"
+                            }
+                          />
                           {dataPendaftaran.data_lengkap?.ayah?.alamat && (
                             <div className="sm:col-span-2">
-                              <SummaryItem label="Alamat Ayah (Berbeda)" value={`${dataPendaftaran.data_lengkap?.ayah?.alamat}, RT ${dataPendaftaran.data_lengkap?.ayah?.rt}/RW ${dataPendaftaran.data_lengkap?.ayah?.rw}, ${dataPendaftaran.data_lengkap?.ayah?.kelurahan}, ${dataPendaftaran.data_lengkap?.ayah?.kecamatan}, ${dataPendaftaran.data_lengkap?.ayah?.kabupaten}`} />
+                              <SummaryItem
+                                label="Alamat Ayah (Berbeda)"
+                                value={`${dataPendaftaran.data_lengkap?.ayah?.alamat}, RT ${dataPendaftaran.data_lengkap?.ayah?.rt}/RW ${dataPendaftaran.data_lengkap?.ayah?.rw}, ${dataPendaftaran.data_lengkap?.ayah?.kelurahan}, ${dataPendaftaran.data_lengkap?.ayah?.kecamatan}, ${dataPendaftaran.data_lengkap?.ayah?.kabupaten}`}
+                              />
                             </div>
                           )}
                         </div>
@@ -822,43 +1039,146 @@ export default function KelengkapanBerkasTab() {
                       {/* Ibu */}
                       <div className="space-y-4">
                         <div className="flex items-center justify-between border-b border-ink-50 pb-2">
-                          <h4 className="font-black text-xs text-ink-600 uppercase tracking-[0.2em]">Data Ibu</h4>
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${dataPendaftaran.data_lengkap?.ibu?.status_hidup === "Masih Hidup" ? "bg-emerald-100 text-emerald-700" : "bg-stone-200 text-stone-600"}`}>
-                            {dataPendaftaran.data_lengkap?.ibu?.status_hidup || "Masih Hidup"}
+                          <h4 className="font-black text-xs text-ink-600 uppercase tracking-[0.2em]">
+                            Data Ibu
+                          </h4>
+                          <span
+                            className={`px-2 py-0.5 rounded text-[10px] font-bold ${dataPendaftaran.data_lengkap?.ibu?.status_hidup === "Masih Hidup" ? "bg-emerald-100 text-emerald-700" : "bg-stone-200 text-stone-600"}`}
+                          >
+                            {dataPendaftaran.data_lengkap?.ibu?.status_hidup ||
+                              "Masih Hidup"}
                           </span>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          <SummaryItem label="Nama Lengkap" value={dataPendaftaran.data_lengkap?.ibu?.nama_lengkap || "-"} />
-                          <SummaryItem label="NIK" value={dataPendaftaran.data_lengkap?.ibu?.nik || "-"} />
-                          <SummaryItem label="Tempat, Tgl Lahir" value={`${dataPendaftaran.data_lengkap?.ibu?.tempat_lahir || "-"}, ${dataPendaftaran.data_lengkap?.ibu?.tanggal_lahir || "-"}`} />
-                          <SummaryItem label="Pendidikan" value={dataPendaftaran.data_lengkap?.ibu?.pendidikan_terakhir || "-"} />
-                          <SummaryItem label="Pekerjaan" value={`${dataPendaftaran.data_lengkap?.ibu?.pekerjaan}${dataPendaftaran.data_lengkap?.ibu?.pekerjaan === "Lainnya" ? ` (${dataPendaftaran.data_lengkap?.ibu?.pekerjaan_lainnya})` : ""} ` || "-"} />
-                          <SummaryItem label="Penghasilan" value={dataPendaftaran.data_lengkap?.ibu?.penghasilan || "-"} />
-                          <SummaryItem label="WhatsApp/HP" value={`${dataPendaftaran.data_lengkap?.ibu?.no_wa || "-"} / ${dataPendaftaran.data_lengkap?.ibu?.no_hp || "-"}`} />
-                          <SummaryItem label="Email" value={dataPendaftaran.data_lengkap?.ibu?.email || "-"} />
+                          <SummaryItem
+                            label="Nama Lengkap"
+                            value={
+                              dataPendaftaran.data_lengkap?.ibu?.nama_lengkap ||
+                              "-"
+                            }
+                          />
+                          <SummaryItem
+                            label="NIK"
+                            value={
+                              dataPendaftaran.data_lengkap?.ibu?.nik || "-"
+                            }
+                          />
+                          <SummaryItem
+                            label="Tempat, Tgl Lahir"
+                            value={`${dataPendaftaran.data_lengkap?.ibu?.tempat_lahir || "-"}, ${dataPendaftaran.data_lengkap?.ibu?.tanggal_lahir || "-"}`}
+                          />
+                          <SummaryItem
+                            label="Pendidikan"
+                            value={
+                              dataPendaftaran.data_lengkap?.ibu
+                                ?.pendidikan_terakhir || "-"
+                            }
+                          />
+                          <SummaryItem
+                            label="Pekerjaan"
+                            value={
+                              `${dataPendaftaran.data_lengkap?.ibu?.pekerjaan}${dataPendaftaran.data_lengkap?.ibu?.pekerjaan === "Lainnya" ? ` (${dataPendaftaran.data_lengkap?.ibu?.pekerjaan_lainnya})` : ""} ` ||
+                              "-"
+                            }
+                          />
+                          <SummaryItem
+                            label="Penghasilan"
+                            value={
+                              dataPendaftaran.data_lengkap?.ibu?.penghasilan ||
+                              "-"
+                            }
+                          />
+                          <SummaryItem
+                            label="WhatsApp/HP"
+                            value={`${dataPendaftaran.data_lengkap?.ibu?.no_wa || "-"} / ${dataPendaftaran.data_lengkap?.ibu?.no_hp || "-"}`}
+                          />
+                          <SummaryItem
+                            label="Email"
+                            value={
+                              dataPendaftaran.data_lengkap?.ibu?.email || "-"
+                            }
+                          />
                           {dataPendaftaran.data_lengkap?.ibu?.alamat && (
                             <div className="sm:col-span-2">
-                              <SummaryItem label="Alamat Ibu (Berbeda)" value={`${dataPendaftaran.data_lengkap?.ibu?.alamat}, RT ${dataPendaftaran.data_lengkap?.ibu?.rt}/RW ${dataPendaftaran.data_lengkap?.ibu?.rw}, ${dataPendaftaran.data_lengkap?.ibu?.kelurahan}, ${dataPendaftaran.data_lengkap?.ibu?.kecamatan}, ${dataPendaftaran.data_lengkap?.ibu?.kabupaten}`} />
+                              <SummaryItem
+                                label="Alamat Ibu (Berbeda)"
+                                value={`${dataPendaftaran.data_lengkap?.ibu?.alamat}, RT ${dataPendaftaran.data_lengkap?.ibu?.rt}/RW ${dataPendaftaran.data_lengkap?.ibu?.rw}, ${dataPendaftaran.data_lengkap?.ibu?.kelurahan}, ${dataPendaftaran.data_lengkap?.ibu?.kecamatan}, ${dataPendaftaran.data_lengkap?.ibu?.kabupaten}`}
+                              />
                             </div>
                           )}
                         </div>
                       </div>
                     </div>
 
-                    {(dataPendaftaran.data_lengkap?.santri?.tinggal_bersama === "Wali" || (dataPendaftaran.data_lengkap?.ayah?.status_hidup === "Sudah Meninggal" && dataPendaftaran.data_lengkap?.ibu?.status_hidup === "Sudah Meninggal")) && (
+                    {(dataPendaftaran.data_lengkap?.santri?.tinggal_bersama ===
+                      "Wali" ||
+                      (dataPendaftaran.data_lengkap?.ayah?.status_hidup ===
+                        "Sudah Meninggal" &&
+                        dataPendaftaran.data_lengkap?.ibu?.status_hidup ===
+                          "Sudah Meninggal")) && (
                       <div className="space-y-4 pt-8 border-t border-ink-50">
-                        <h4 className="font-black text-xs text-ink-600 uppercase tracking-[0.2em] border-b border-ink-50 pb-2">Data Wali</h4>
+                        <h4 className="font-black text-xs text-ink-600 uppercase tracking-[0.2em] border-b border-ink-50 pb-2">
+                          Data Wali
+                        </h4>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                          <SummaryItem label="Nama Wali" value={dataPendaftaran.data_lengkap?.wali?.nama_lengkap || "-"} />
-                          <SummaryItem label="Hubungan" value={dataPendaftaran.data_lengkap?.wali?.hubungan || "-"} />
-                          <SummaryItem label="NIK" value={dataPendaftaran.data_lengkap?.wali?.nik || "-"} />
-                          <SummaryItem label="WhatsApp" value={dataPendaftaran.data_lengkap?.wali?.no_wa || "-"} />
-                          <SummaryItem label="Pendidikan" value={dataPendaftaran.data_lengkap?.wali?.pendidikan_terakhir || "-"} />
-                          <SummaryItem label="Pekerjaan" value={dataPendaftaran.data_lengkap?.wali?.pekerjaan || "-"} />
-                          <SummaryItem label="Penghasilan" value={dataPendaftaran.data_lengkap?.wali?.penghasilan || "-"} />
-                          <SummaryItem label="Email" value={dataPendaftaran.data_lengkap?.wali?.email || "-"} />
+                          <SummaryItem
+                            label="Nama Wali"
+                            value={
+                              dataPendaftaran.data_lengkap?.wali
+                                ?.nama_lengkap || "-"
+                            }
+                          />
+                          <SummaryItem
+                            label="Hubungan"
+                            value={
+                              dataPendaftaran.data_lengkap?.wali?.hubungan ||
+                              "-"
+                            }
+                          />
+                          <SummaryItem
+                            label="NIK"
+                            value={
+                              dataPendaftaran.data_lengkap?.wali?.nik || "-"
+                            }
+                          />
+                          <SummaryItem
+                            label="WhatsApp"
+                            value={
+                              dataPendaftaran.data_lengkap?.wali?.no_wa || "-"
+                            }
+                          />
+                          <SummaryItem
+                            label="Pendidikan"
+                            value={
+                              dataPendaftaran.data_lengkap?.wali
+                                ?.pendidikan_terakhir || "-"
+                            }
+                          />
+                          <SummaryItem
+                            label="Pekerjaan"
+                            value={
+                              dataPendaftaran.data_lengkap?.wali?.pekerjaan ||
+                              "-"
+                            }
+                          />
+                          <SummaryItem
+                            label="Penghasilan"
+                            value={
+                              dataPendaftaran.data_lengkap?.wali?.penghasilan ||
+                              "-"
+                            }
+                          />
+                          <SummaryItem
+                            label="Email"
+                            value={
+                              dataPendaftaran.data_lengkap?.wali?.email || "-"
+                            }
+                          />
                           <div className="sm:col-span-2 lg:col-span-4">
-                            <SummaryItem label="Alamat Wali" value={`${dataPendaftaran.data_lengkap?.wali?.alamat || "-"}, RT ${dataPendaftaran.data_lengkap?.wali?.rt || "00"}/RW ${dataPendaftaran.data_lengkap?.wali?.rw || "00"}, ${dataPendaftaran.data_lengkap?.wali?.kelurahan || "-"}, ${dataPendaftaran.data_lengkap?.wali?.kecamatan || "-"}, ${dataPendaftaran.data_lengkap?.wali?.kabupaten || "-"}, ${dataPendaftaran.data_lengkap?.wali?.provinsi || "-"}`} />
+                            <SummaryItem
+                              label="Alamat Wali"
+                              value={`${dataPendaftaran.data_lengkap?.wali?.alamat || "-"}, RT ${dataPendaftaran.data_lengkap?.wali?.rt || "00"}/RW ${dataPendaftaran.data_lengkap?.wali?.rw || "00"}, ${dataPendaftaran.data_lengkap?.wali?.kelurahan || "-"}, ${dataPendaftaran.data_lengkap?.wali?.kecamatan || "-"}, ${dataPendaftaran.data_lengkap?.wali?.kabupaten || "-"}, ${dataPendaftaran.data_lengkap?.wali?.provinsi || "-"}`}
+                            />
                           </div>
                         </div>
                       </div>
@@ -871,12 +1191,20 @@ export default function KelengkapanBerkasTab() {
                 <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl flex gap-3">
                   <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-sm font-bold text-amber-800">Data Belum Lengkap</p>
+                    <p className="text-sm font-bold text-amber-800">
+                      Data Belum Lengkap
+                    </p>
                     <p className="text-sm text-amber-700 mt-1">
-                      Anda belum mengisi seluruh data yang wajib diisi pada tab <strong>Isi Data Lengkap</strong>.
-                      Bagian yang belum lengkap: <span className="font-bold">{missingSections.join(", ")}</span>.
+                      Anda belum mengisi seluruh data yang wajib diisi pada tab{" "}
+                      <strong>Isi Data Lengkap</strong>. Bagian yang belum
+                      lengkap:{" "}
+                      <span className="font-bold">
+                        {missingSections.join(", ")}
+                      </span>
+                      .
                       <br />
-                      Silakan lengkapi data Anda terlebih dahulu sebelum melakukan konfirmasi.
+                      Silakan lengkapi data Anda terlebih dahulu sebelum
+                      melakukan konfirmasi.
                     </p>
                   </div>
                 </div>
@@ -884,11 +1212,18 @@ export default function KelengkapanBerkasTab() {
                 <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl flex gap-3">
                   <CheckCircle className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-sm font-bold text-emerald-800">Verifikasi Data Anda</p>
+                    <p className="text-sm font-bold text-emerald-800">
+                      Verifikasi Data Anda
+                    </p>
                     <p className="text-sm text-emerald-700 mt-1">
-                      Silakan pastikan semua data di atas sudah benar. Jika sudah yakin, silakan klik tombol konfirmasi di bawah untuk membuka menu <strong>Upload Berkas</strong>.
+                      Silakan pastikan semua data di atas sudah benar. Jika
+                      sudah yakin, silakan klik tombol konfirmasi di bawah untuk
+                      membuka menu <strong>Upload Berkas</strong>.
                       <br />
-                      <span className="text-xs text-emerald-600 mt-2 block italic">* Setelah dikonfirmasi, data tidak bisa diubah lagi kecuali melalui Admin Support.</span>
+                      <span className="text-xs text-emerald-600 mt-2 block italic">
+                        * Setelah dikonfirmasi, data tidak bisa diubah lagi
+                        kecuali melalui Admin Support.
+                      </span>
                     </p>
                   </div>
                 </div>
@@ -898,7 +1233,7 @@ export default function KelengkapanBerkasTab() {
                 <button
                   onClick={() => {
                     setActiveTab("isi-data");
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    window.scrollTo({ top: 0, behavior: "smooth" });
                   }}
                   className="w-full sm:w-auto py-3 px-8 rounded-xl text-lg font-bold border-2 border-brand-blue-600 text-brand-blue-700 hover:bg-brand-blue-50 transition-all"
                 >
@@ -908,10 +1243,11 @@ export default function KelengkapanBerkasTab() {
                 <button
                   disabled={!isDataComplete}
                   onClick={() => setShowConfirmModal(true)}
-                  className={`w-full sm:w-auto py-3 px-10 rounded-xl text-lg font-black shadow-lg transition-all flex items-center justify-center gap-2 ${isDataComplete
-                    ? 'bg-brand-yellow-400 hover:bg-brand-yellow-300 text-brand-blue-950 shadow-brand-yellow-400/20 border border-brand-yellow-500'
-                    : 'bg-stone-200 text-stone-600 cursor-not-allowed shadow-none'
-                    }`}
+                  className={`w-full sm:w-auto py-3 px-10 rounded-xl text-lg font-black shadow-lg transition-all flex items-center justify-center gap-2 ${
+                    isDataComplete
+                      ? "bg-brand-yellow-400 hover:bg-brand-yellow-300 text-brand-blue-950 shadow-brand-yellow-400/20 border border-brand-yellow-500"
+                      : "bg-stone-200 text-stone-600 cursor-not-allowed shadow-none"
+                  }`}
                 >
                   Konfirmasi Data & Lanjut ke Upload Berkas
                   <CheckCircle className="w-5 h-5 ml-1" />
@@ -923,7 +1259,9 @@ export default function KelengkapanBerkasTab() {
               <div className="w-20 h-20 bg-surface-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <User className="w-10 h-10 text-ink-300" />
               </div>
-              <p className="text-ink-600 font-medium">Data pendaftaran belum tersedia.</p>
+              <p className="text-ink-600 font-medium">
+                Data pendaftaran belum tersedia.
+              </p>
             </div>
           )}
         </div>
@@ -936,7 +1274,9 @@ export default function KelengkapanBerkasTab() {
               <AlertTriangle className="w-10 h-10 text-amber-500" />
             </div>
 
-            <h3 className="text-2xl font-black text-ink-900 mb-3 tracking-tight">Konfirmasi Permanen</h3>
+            <h3 className="text-2xl font-black text-ink-900 mb-3 tracking-tight">
+              Konfirmasi Permanen
+            </h3>
 
             <p className="text-ink-600 mb-8 leading-relaxed">
               Apakah Anda yakin seluruh data sudah benar?
@@ -956,12 +1296,18 @@ export default function KelengkapanBerkasTab() {
                 onClick={async () => {
                   try {
                     setLoading(true);
-                    const res = await fetch("/api/pendaftar/konfirmasi-data", { method: "POST" });
+                    const res = await fetch("/api/pendaftar/konfirmasi-data", {
+                      method: "POST",
+                    });
                     const result = await res.json();
                     if (result.success) {
                       router.push("/dashboard/pendaftar/upload-berkas");
                     } else {
-                      Swal.fire("Gagal!", result.error || "Gagal melakukan konfirmasi", "error");
+                      Swal.fire(
+                        "Gagal!",
+                        result.error || "Gagal melakukan konfirmasi",
+                        "error",
+                      );
                       setLoading(false);
                       setShowConfirmModal(false);
                     }
@@ -974,21 +1320,32 @@ export default function KelengkapanBerkasTab() {
                 disabled={loading}
                 className="flex-1 py-3.5 px-4 rounded-xl bg-linear-to-r from-brand-yellow-400 to-brand-yellow-500 text-brand-blue-950 font-black hover:shadow-lg hover:shadow-brand-yellow-400/30 transition-all active:scale-95 flex items-center justify-center gap-2 disabled:opacity-70 disabled:active:scale-100"
               >
-                {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Ya, Lanjut"}
+                {loading ? (
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                ) : (
+                  "Ya, Lanjut"
+                )}
               </button>
             </div>
           </div>
         </div>
       )}
-
     </div>
   );
 }
 
-function SummaryItem({ label, value }: { label: string; value: string | number }) {
+function SummaryItem({
+  label,
+  value,
+}: {
+  label: string;
+  value: string | number;
+}) {
   return (
     <div>
-      <p className="text-[10px] font-black text-ink-600 uppercase tracking-[0.15em] mb-1">{label}</p>
+      <p className="text-[10px] font-black text-ink-600 uppercase tracking-[0.15em] mb-1">
+        {label}
+      </p>
       <p className="text-sm font-bold text-ink-800 break-words">{value}</p>
     </div>
   );

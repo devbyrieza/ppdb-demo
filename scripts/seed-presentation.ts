@@ -68,17 +68,17 @@ async function main() {
         },
         {
             email: 'calsan@ppdb-demo.com',
-            full_name: 'Pewawancara Calsan Demo',
+            full_name: 'Pewawancara Santri Demo',
             role: 'pewawancara_calsan',
             secondary_roles: [],
-            password: 'Calsan26!'
+            password: 'Santri26!'
         },
         {
             email: 'cawalsan@ppdb-demo.com',
-            full_name: 'Pewawancara Cawalsan Demo',
+            full_name: 'Pewawancara Orang Tua Demo',
             role: 'pewawancara_cawalsan',
             secondary_roles: [],
-            password: 'Cawalsan26!'
+            password: 'Orang Tua26!'
         }
     ];
 

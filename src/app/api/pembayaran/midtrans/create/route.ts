@@ -14,8 +14,11 @@ export async function POST(request: NextRequest) {
 
     if (!sessionCookie) {
       return NextResponse.json(
-        { success: false, error: "Sesi tidak ditemukan. Silakan login kembali." },
-        { status: 401 }
+        {
+          success: false,
+          error: "Sesi tidak ditemukan. Silakan login kembali.",
+        },
+        { status: 401 },
       );
     }
 
@@ -25,14 +28,14 @@ export async function POST(request: NextRequest) {
     } catch {
       return NextResponse.json(
         { success: false, error: "Sesi tidak valid" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
     if (session.role !== "pendaftar") {
       return NextResponse.json(
         { success: false, error: "Akses tidak diizinkan" },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -43,8 +46,12 @@ export async function POST(request: NextRequest) {
     if (!serverKey) {
       console.error("MIDTRANS_SERVER_KEY not configured");
       return NextResponse.json(
-        { success: false, error: "Pembayaran online belum dikonfigurasi. Silakan gunakan transfer manual." },
-        { status: 500 }
+        {
+          success: false,
+          error:
+            "Pembayaran online belum dikonfigurasi. Silakan gunakan transfer manual.",
+        },
+        { status: 500 },
       );
     }
 
@@ -59,7 +66,7 @@ export async function POST(request: NextRequest) {
     if (!pendaftar) {
       return NextResponse.json(
         { success: false, error: "Data pendaftar tidak ditemukan" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -68,20 +75,25 @@ export async function POST(request: NextRequest) {
     const now = new Date();
     // Gunakan tanggal tutup pendaftaran sebagai deadline, atau default 7 hari jika tidak ada
     const deadlineStr = tahunAjaran.tanggal_tutup_pendaftaran;
-    const deadline = deadlineStr ? new Date(deadlineStr) : new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+    const deadline = deadlineStr
+      ? new Date(deadlineStr)
+      : new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
 
     // 5. Cek apakah sudah ada pembayaran yang verified
     const existingPayment = await prisma.pembayaran.findFirst({
       where: {
         pendaftar_id: session.id,
         status_pembayaran: "verified",
-      }
+      },
     });
 
     if (existingPayment) {
       return NextResponse.json(
-        { success: false, error: "Pembayaran Anda sudah terverifikasi sebelumnya" },
-        { status: 400 }
+        {
+          success: false,
+          error: "Pembayaran Anda sudah terverifikasi sebelumnya",
+        },
+        { status: 400 },
       );
     }
 
@@ -116,7 +128,12 @@ export async function POST(request: NextRequest) {
       },
       expiry: {
         unit: "days",
-        duration: Math.max(1, Math.ceil((deadline.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))),
+        duration: Math.max(
+          1,
+          Math.ceil(
+            (deadline.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
+          ),
+        ),
       },
     };
 
@@ -141,8 +158,11 @@ export async function POST(request: NextRequest) {
     if (!midtransResponse.ok || !midtransData.token) {
       console.error("Midtrans error:", midtransData);
       return NextResponse.json(
-        { success: false, error: "Gagal membuat transaksi pembayaran. Silakan coba lagi." },
-        { status: 500 }
+        {
+          success: false,
+          error: "Gagal membuat transaksi pembayaran. Silakan coba lagi.",
+        },
+        { status: 500 },
       );
     }
 
@@ -156,7 +176,9 @@ export async function POST(request: NextRequest) {
         midtrans_order_id: orderId,
         midtrans_response_json: midtransData,
         status_pembayaran: "pending",
-        expired_at: new Date(now.getTime() + transactionData.expiry.duration * 24 * 60 * 60 * 1000),
+        expired_at: new Date(
+          now.getTime() + transactionData.expiry.duration * 24 * 60 * 60 * 1000,
+        ),
       },
     });
 
@@ -175,8 +197,11 @@ export async function POST(request: NextRequest) {
   } catch (error: any) {
     console.error("Error in POST /api/pembayaran/midtrans/create:", error);
     return NextResponse.json(
-      { success: false, error: "Terjadi kesalahan saat membuat transaksi pembayaran" },
-      { status: 500 }
+      {
+        success: false,
+        error: "Terjadi kesalahan saat membuat transaksi pembayaran",
+      },
+      { status: 500 },
     );
   }
 }

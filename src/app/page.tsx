@@ -132,7 +132,8 @@ export default function HomePage() {
               transition={{ type: "spring", stiffness: 400, damping: 20 }}
               className="group flex items-center gap-3 px-6 py-4 rounded-full font-black text-sm uppercase tracking-widest border-2 border-white"
               style={{
-                background: "linear-gradient(135deg, var(--color-sand-300) 0%, var(--color-sand-500) 100%)",
+                background:
+                  "linear-gradient(135deg, var(--color-sand-300) 0%, var(--color-sand-500) 100%)",
                 color: "var(--color-teal-900)",
                 boxShadow: "var(--shadow-sand), 0 0 0 1px rgba(0,0,0,0.04)",
               }}

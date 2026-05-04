@@ -26,13 +26,18 @@ export async function GET(request: NextRequest) {
         data: {
           id: pengumuman.id,
           // Handle various status mappings to ensure frontend compatibility
-          status_kelulusan: 
-            pengumuman.status_kelulusan === "Lulus" ? "diterima" : 
-            pengumuman.status_kelulusan === "Tidak Lulus" ? "tidak lulus" :
-            pengumuman.status_kelulusan === "Cadangan" ? "cadangan" :
-            pengumuman.status_kelulusan.toLowerCase(),
+          status_kelulusan:
+            pengumuman.status_kelulusan === "Lulus"
+              ? "diterima"
+              : pengumuman.status_kelulusan === "Tidak Lulus"
+                ? "tidak lulus"
+                : pengumuman.status_kelulusan === "Cadangan"
+                  ? "cadangan"
+                  : pengumuman.status_kelulusan.toLowerCase(),
           catatan: pengumuman.catatan,
-          tanggal_pengumuman: pengumuman.published_at?.toISOString() || pengumuman.created_at.toISOString(),
+          tanggal_pengumuman:
+            pengumuman.published_at?.toISOString() ||
+            pengumuman.created_at.toISOString(),
         },
       });
     }
@@ -40,7 +45,7 @@ export async function GET(request: NextRequest) {
     // FALLBACK: If missing from Pengumuman table but Pendaftar status is accepted/rejected/cadangan
     const pendaftar = await prisma.pendaftar.findUnique({
       where: { id: pendaftarId },
-      select: { status_pendaftaran: true, updated_at: true }
+      select: { status_pendaftaran: true, updated_at: true },
     });
 
     const announcedStatuses = ["accepted", "rejected", "cadangan"];
@@ -58,10 +63,13 @@ export async function GET(request: NextRequest) {
         },
       });
     }
-    
+
     return NextResponse.json({ data: null });
   } catch (error) {
     console.error("GET /api/pendaftar/pengumuman error:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 },
+    );
   }
 }

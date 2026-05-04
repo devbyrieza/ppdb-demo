@@ -25,10 +25,10 @@ export const PPDB_CONFIG = {
       300: "#e0a868",
       400: "#c07840",
       500: "#9b5e28",
-      600: "#7c3a1e",  // Warna tombol & aksi utama
-      700: "#6b1c1c",  // Warna teks penting
+      600: "#7c3a1e", // Warna tombol & aksi utama
+      700: "#6b1c1c", // Warna teks penting
       800: "#521414",
-      900: "#3d0d0d",  // Warna teks gelap
+      900: "#3d0d0d", // Warna teks gelap
     },
 
     // Secondary Colors (Kuning / Amber)
@@ -42,10 +42,10 @@ export const PPDB_CONFIG = {
 
     // Accent Colors (Warna Aksen)
     accent: {
-      gold: "#fbbf24",     // Untuk highlight & achievement
-      teal: "#14b8a6",     // Untuk success & info
-      red: "#ef4444",      // Untuk error & warning
-    }
+      gold: "#fbbf24", // Untuk highlight & achievement
+      teal: "#14b8a6", // Untuk success & info
+      red: "#ef4444", // Untuk error & warning
+    },
   },
 
   // 📱 PROGRAM PENDIDIKAN (SESUAIKAN!)
@@ -54,18 +54,20 @@ export const PPDB_CONFIG = {
       id: "mts",
       name: "MTs",
       fullName: "Madrasah Tsanawiyah",
-      description: "Program pendidikan formal setara SMP dengan kurikulum integrasi pesantren.",
+      description:
+        "Program pendidikan formal setara SMP dengan kurikulum integrasi pesantren.",
       image: "/images/mts.webp",
-      theme: "brown"
+      theme: "brown",
     },
     {
       id: "il",
       name: "I'dad Lughowi",
       fullName: "Program Persiapan Bahasa Arab",
-      description: "Program intensif persiapan bahasa Arab untuk jenjang lebih tinggi.",
+      description:
+        "Program intensif persiapan bahasa Arab untuk jenjang lebih tinggi.",
       image: "/images/il.webp",
-      theme: "gold"
-    }
+      theme: "gold",
+    },
   ],
 
   // 💰 BIAYA PENDAFTARAN (GANTI SESUAI)
@@ -73,23 +75,23 @@ export const PPDB_CONFIG = {
     {
       label: "Uang Pendaftaran",
       amount: "Rp 250.000",
-      note: "Tidak dapat dikembalikan"
+      note: "Tidak dapat dikembalikan",
     },
     {
       label: "Uang Pangkal",
       amount: "Rp 9.800.000",
-      note: "Pembayaran dapat dicicil"
+      note: "Pembayaran dapat dicicil",
     },
     {
       label: "Iuran Taawun/Tahun",
       amount: "Rp 13.200.000",
-      note: "All in (SPP + Makan + Asrama)"
+      note: "All in (SPP + Makan + Asrama)",
     },
     {
       label: "Cicilan per Bulan",
       amount: "Rp 1.100.000",
-      note: "Jika memilih sistem cicilan"
-    }
+      note: "Jika memilih sistem cicilan",
+    },
   ],
 
   // 📋 PERSYARATAN BERKAS (SESUAIKAN!)
@@ -97,7 +99,7 @@ export const PPDB_CONFIG = {
     "Fotocopy Kartu Keluarga (1 lembar)",
     "Fotocopy Akta Kelahiran (1 lembar)",
     "Fotocopy Rapor (2 semester terakhir)",
-    "Pas Foto 3x4 (4 lembar)"
+    "Pas Foto 3x4 (4 lembar)",
   ],
 
   // 🔗 KONTAK & SOSMED (GANTI SESUAI!)
@@ -105,7 +107,7 @@ export const PPDB_CONFIG = {
     whatsapp: "+6288809934970",
     instagram: "@pesantrenalimam",
     facebook: "Pesantren Al Andalus Al Imam (Official Fanpage)",
-    youtube: "Al Andalus Al Imam"
+    youtube: "Al Andalus Al Imam",
   },
 
   // ⚙️ SETTING TEKNIS (UMUMNYA TIDAK PERLU DIUBAH)
@@ -113,8 +115,8 @@ export const PPDB_CONFIG = {
     appName: "PPDB Demo Al Andalus",
     appDescription: "Sistem Demo Penerimaan Peserta Didik Baru",
     version: "2.1.0",
-    author: "Rieza Eka Tomara"
-  }
+    author: "Rieza Eka Tomara",
+  },
 };
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -135,6 +137,6 @@ export const generateCSSVariables = () => {
   return {
     primary: colors.primary,
     secondary: colors.secondary,
-    accent: colors.accent
+    accent: colors.accent,
   };
 };

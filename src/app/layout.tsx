@@ -38,8 +38,7 @@ export const metadata: Metadata = {
     default: `${BRANDING.schoolName} | PPDB 2026/2027`,
     template: `%s | ${BRANDING.schoolName}`,
   },
-  description:
-    `Pendaftaran Santri Baru ${BRANDING.schoolName}. Pendidikan berbasis Al-Qur'an dan As-Sunnah sesuai pemahaman salafush shalih.`,
+  description: `Pendaftaran Santri Baru ${BRANDING.schoolName}. Pendidikan berbasis Al-Qur'an dan As-Sunnah sesuai pemahaman salafush shalih.`,
   keywords: [
     BRANDING.schoolName,
     "pesantren sukabumi",
@@ -133,18 +132,25 @@ export default function RootLayout({
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content={BRANDING.primaryColor} />
-        <meta name="msapplication-navbutton-color" content={BRANDING.primaryColor} />
+        <meta
+          name="msapplication-navbutton-color"
+          content={BRANDING.primaryColor}
+        />
         <meta
           name="apple-mobile-web-app-status-bar-style"
           content="black-translucent"
         />
         <meta name="color-scheme" content="light only" />
-        <style dangerouslySetInnerHTML={{ __html: `
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
           :root {
             --brand-primary: ${BRANDING.primaryColor};
             --brand-secondary: ${BRANDING.secondaryColor};
           }
-        `}} />
+        `,
+          }}
+        />
       </head>
       <body
         className={`${plusJakarta.variable} ${inter.variable} font-sans antialiased bg-white text-ink-900 overflow-x-hidden transition-colors duration-500`}
@@ -157,9 +163,7 @@ export default function RootLayout({
             enableSystem={false}
             disableTransitionOnChange
           >
-            <LayoutWrapper>
-              {children}
-            </LayoutWrapper>
+            <LayoutWrapper>{children}</LayoutWrapper>
           </ThemeProvider>
         </SmoothScrollProvider>
       </body>

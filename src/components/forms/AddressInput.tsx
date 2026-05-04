@@ -78,7 +78,9 @@ export default function AddressInput({
     const fetchKabupaten = async () => {
       setLoadingKabupaten(true);
       try {
-        const res = await fetch(`/api/wilayah/kabupaten?provinsi_id=${selectedProvinsiId}`);
+        const res = await fetch(
+          `/api/wilayah/kabupaten?provinsi_id=${selectedProvinsiId}`,
+        );
         const result = await res.json();
         if (result.success) {
           setKabupatenList(result.data);
@@ -102,7 +104,9 @@ export default function AddressInput({
     const fetchKecamatan = async () => {
       setLoadingKecamatan(true);
       try {
-        const res = await fetch(`/api/wilayah/kecamatan?kabupaten_id=${selectedKabupatenId}`);
+        const res = await fetch(
+          `/api/wilayah/kecamatan?kabupaten_id=${selectedKabupatenId}`,
+        );
         const result = await res.json();
         if (result.success) {
           setKecamatanList(result.data);
@@ -126,7 +130,9 @@ export default function AddressInput({
     const fetchKelurahan = async () => {
       setLoadingKelurahan(true);
       try {
-        const res = await fetch(`/api/wilayah/kelurahan?kecamatan_id=${selectedKecamatanId}`);
+        const res = await fetch(
+          `/api/wilayah/kelurahan?kecamatan_id=${selectedKecamatanId}`,
+        );
         const result = await res.json();
         if (result.success) {
           setKelurahanList(result.data);
@@ -144,7 +150,7 @@ export default function AddressInput({
     (field: keyof AddressData, fieldValue: string) => {
       onChange({ ...value, [field]: fieldValue });
     },
-    [onChange, value]
+    [onChange, value],
   );
 
   const handleProvinsiChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -228,7 +234,9 @@ export default function AddressInput({
       {/* RT & RW */}
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-stone-700 mb-1">RT</label>
+          <label className="block text-sm font-medium text-stone-700 mb-1">
+            RT
+          </label>
           <input
             type="text"
             value={value.rt}
@@ -240,7 +248,9 @@ export default function AddressInput({
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-stone-700 mb-1">RW</label>
+          <label className="block text-sm font-medium text-stone-700 mb-1">
+            RW
+          </label>
           <input
             type="text"
             value={value.rw}
@@ -298,8 +308,8 @@ export default function AddressInput({
               {loadingKabupaten
                 ? "Memuat..."
                 : !selectedProvinsiId
-                ? "Pilih provinsi terlebih dahulu"
-                : "Pilih Kabupaten/Kota"}
+                  ? "Pilih provinsi terlebih dahulu"
+                  : "Pilih Kabupaten/Kota"}
             </option>
             {kabupatenList.map((k) => (
               <option key={k.id} value={k.id}>
@@ -330,8 +340,8 @@ export default function AddressInput({
               {loadingKecamatan
                 ? "Memuat..."
                 : !selectedKabupatenId
-                ? "Pilih kabupaten/kota terlebih dahulu"
-                : "Pilih Kecamatan"}
+                  ? "Pilih kabupaten/kota terlebih dahulu"
+                  : "Pilih Kecamatan"}
             </option>
             {kecamatanList.map((k) => (
               <option key={k.id} value={k.id}>
@@ -353,7 +363,9 @@ export default function AddressInput({
         </label>
         <div className="relative">
           <select
-            value={kelurahanList.find((k) => k.name === value.kelurahan)?.id || ""}
+            value={
+              kelurahanList.find((k) => k.name === value.kelurahan)?.id || ""
+            }
             onChange={handleKelurahanChange}
             disabled={disabled || !selectedKecamatanId || loadingKelurahan}
             className={selectClass}
@@ -362,8 +374,8 @@ export default function AddressInput({
               {loadingKelurahan
                 ? "Memuat..."
                 : !selectedKecamatanId
-                ? "Pilih kecamatan terlebih dahulu"
-                : "Pilih Kelurahan/Desa"}
+                  ? "Pilih kecamatan terlebih dahulu"
+                  : "Pilih Kelurahan/Desa"}
             </option>
             {kelurahanList.map((k) => (
               <option key={k.id} value={k.id}>
@@ -379,7 +391,9 @@ export default function AddressInput({
 
       {/* Kode Pos */}
       <div>
-        <label className="block text-sm font-medium text-stone-700 mb-1">Kode Pos</label>
+        <label className="block text-sm font-medium text-stone-700 mb-1">
+          Kode Pos
+        </label>
         <input
           type="text"
           value={value.kode_pos}

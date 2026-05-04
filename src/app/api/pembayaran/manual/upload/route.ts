@@ -8,12 +8,12 @@ const UPLOAD_CONFIG = {
   maxSize: 5 * 1024 * 1024, // 5MB
   allowedTypes: [
     "image/jpeg",
-    "image/jpg",       // WhatsApp photos often use this variant
+    "image/jpg", // WhatsApp photos often use this variant
     "image/png",
-    "image/webp",      // Modern photo formats
-    "image/heic",      // iPhone photos
+    "image/webp", // Modern photo formats
+    "image/heic", // iPhone photos
     "image/heif",
-    "application/pdf"
+    "application/pdf",
   ],
 };
 
@@ -32,8 +32,11 @@ export async function POST(request: NextRequest) {
 
     if (!sessionCookie) {
       return NextResponse.json(
-        { success: false, error: "Sesi tidak ditemukan. Silakan login kembali." },
-        { status: 401 }
+        {
+          success: false,
+          error: "Sesi tidak ditemukan. Silakan login kembali.",
+        },
+        { status: 401 },
       );
     }
 
@@ -43,14 +46,14 @@ export async function POST(request: NextRequest) {
     } catch {
       return NextResponse.json(
         { success: false, error: "Sesi tidak valid" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
     if (session.role !== "pendaftar") {
       return NextResponse.json(
         { success: false, error: "Akses tidak diizinkan" },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -61,7 +64,7 @@ export async function POST(request: NextRequest) {
     if (!file) {
       return NextResponse.json(
         { success: false, error: "File bukti transfer wajib diupload" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -72,20 +75,22 @@ export async function POST(request: NextRequest) {
           success: false,
           error: `Ukuran file terlalu besar! Maksimal ${formatFileSize(UPLOAD_CONFIG.maxSize)}`,
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // 4. Validasi tipe file — accept explicit list OR any image/* for mobile compatibility
-    const safeFileType = file.type || '';
-    const isAllowedType = UPLOAD_CONFIG.allowedTypes.includes(safeFileType) || safeFileType.startsWith("image/");
+    const safeFileType = file.type || "";
+    const isAllowedType =
+      UPLOAD_CONFIG.allowedTypes.includes(safeFileType) ||
+      safeFileType.startsWith("image/");
     if (!isAllowedType) {
       return NextResponse.json(
         {
           success: false,
-          error: `Format file tidak didukung! Gunakan JPG, PNG, PDF, atau WebP. (File Anda: ${safeFileType || 'tidak dikenali'})`,
+          error: `Format file tidak didukung! Gunakan JPG, PNG, PDF, atau WebP. (File Anda: ${safeFileType || "tidak dikenali"})`,
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -100,12 +105,13 @@ export async function POST(request: NextRequest) {
     if (!pendaftar) {
       return NextResponse.json(
         { success: false, error: "Data pendaftar tidak ditemukan" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
     // Parse Jenis Pembayaran
-    const jenisPembayaran = (formData.get("jenis_pembayaran") as string) || "PENDAFTARAN";
+    const jenisPembayaran =
+      (formData.get("jenis_pembayaran") as string) || "PENDAFTARAN";
     let biaya = 0;
     let tipeCicilan = "LUNAS";
 
@@ -113,20 +119,35 @@ export async function POST(request: NextRequest) {
     if (jenisPembayaran === "DAFTAR_ULANG") {
       // Cek kelulusan berdasarkan status_pendaftaran (bukan nilai_ujian)
       // Status yang berhak melakukan daftar ulang: accepted, enrolled, atau Sudah Daftar Ulang
-      const ELIGIBLE_STATUSES = ["accepted", "enrolled", "sudah_daftar_ulang", "Sudah Daftar Ulang"];
-      const statusOk = ELIGIBLE_STATUSES.includes(pendaftar.status_pendaftaran ?? "");
+      const ELIGIBLE_STATUSES = [
+        "accepted",
+        "enrolled",
+        "sudah_daftar_ulang",
+        "Sudah Daftar Ulang",
+      ];
+      const statusOk = ELIGIBLE_STATUSES.includes(
+        pendaftar.status_pendaftaran ?? "",
+      );
       if (!statusOk) {
         return NextResponse.json(
-          { success: false, error: "Anda belum dinyatakan DITERIMA, tidak bisa melakukan daftar ulang." },
-          { status: 400 }
+          {
+            success: false,
+            error:
+              "Anda belum dinyatakan DITERIMA, tidak bisa melakukan daftar ulang.",
+          },
+          { status: 400 },
         );
       }
 
       const inputJumlah = Number(formData.get("jumlah"));
-      if (!inputJumlah || inputJumlah < 1000000) { // Minimal 1jt
+      if (!inputJumlah || inputJumlah < 1000000) {
+        // Minimal 1jt
         return NextResponse.json(
-          { success: false, error: "Nominal pembayaran tidak valid (Minimal Rp 1.000.000)" },
-          { status: 400 }
+          {
+            success: false,
+            error: "Nominal pembayaran tidak valid (Minimal Rp 1.000.000)",
+          },
+          { status: 400 },
         );
       }
 
@@ -140,7 +161,6 @@ export async function POST(request: NextRequest) {
       } else {
         tipeCicilan = "CICIL_DIBAWAH_50";
       }
-
     } else {
       // Default PENDAFTARAN
       biaya = Number(pendaftar.tahun_ajaran.biaya_pendaftaran);
@@ -166,8 +186,11 @@ export async function POST(request: NextRequest) {
       // If existing verified daftar ulang, maybe block or allow topup?
       // Let's block for now to keep it simple, or user can contact admin.
       return NextResponse.json(
-        { success: false, error: "Pembayaran Anda sudah terverifikasi sebelumnya" },
-        { status: 400 }
+        {
+          success: false,
+          error: "Pembayaran Anda sudah terverifikasi sebelumnya",
+        },
+        { status: 400 },
       );
     }
 
@@ -183,28 +206,34 @@ export async function POST(request: NextRequest) {
 
     // 8. Detect Real Mime Type via Magic Bytes
     const buffer = Buffer.from(await file.arrayBuffer());
-    const hex = buffer.slice(0, 4).toString('hex').toUpperCase();
+    const hex = buffer.slice(0, 4).toString("hex").toUpperCase();
     let detectedType = file.type;
-    
-    if (hex.startsWith('FFD8FF')) detectedType = 'image/jpeg';
-    else if (hex === '89504E47') detectedType = 'image/png';
-    else if (hex === '25504446') detectedType = 'application/pdf';
+
+    if (hex.startsWith("FFD8FF")) detectedType = "image/jpeg";
+    else if (hex === "89504E47") detectedType = "image/png";
+    else if (hex === "25504446") detectedType = "application/pdf";
 
     // 9. Generate nama file & Save Local
     const timestamp = Date.now();
     const safeFileName = file.name || "bukti_tanpa_nama.bin";
-    const originalExtension = safeFileName.split(".").pop()?.toLowerCase() || "bin";
-    
+    const originalExtension =
+      safeFileName.split(".").pop()?.toLowerCase() || "bin";
+
     // Correct extension based on detected type
     let fileExtension = originalExtension;
-    if (detectedType === 'image/jpeg') fileExtension = 'jpg';
-    else if (detectedType === 'image/png') fileExtension = 'png';
-    else if (detectedType === 'application/pdf') fileExtension = 'pdf';
+    if (detectedType === "image/jpeg") fileExtension = "jpg";
+    else if (detectedType === "image/png") fileExtension = "png";
+    else if (detectedType === "application/pdf") fileExtension = "pdf";
 
     const fileName = `bukti-${jenisPembayaran.toLowerCase()}-${timestamp}.${fileExtension}`;
 
     // Save to storage_data/bukti-pembayaran/{pendaftar_id}/...
-    const filePath = await saveFileLocal(file, 'bukti-pembayaran', session.id, fileName);
+    const filePath = await saveFileLocal(
+      file,
+      "bukti-pembayaran",
+      session.id,
+      fileName,
+    );
 
     // 12. Simpan atau update record pembayaran
     let pembayaranResult;
@@ -219,7 +248,7 @@ export async function POST(request: NextRequest) {
           status_pembayaran: "pending",
           catatan_verifikasi: null,
           updated_at: new Date(),
-        }
+        },
       });
     } else {
       pembayaranResult = await prisma.pembayaran.create({
@@ -234,28 +263,34 @@ export async function POST(request: NextRequest) {
           bukti_transfer_path: filePath,
           bukti_transfer_filename: safeFileName,
           status_pembayaran: "pending",
-        }
+        },
       });
     }
 
     // 13. Update status pendaftar (HANYA UNTUK PENDAFTARAN AWAL)
     // Untuk Daftar Ulang, status pendaftaran utama tidak berubah (tetap Lulus/Completed).
     if (jenisPembayaran === "PENDAFTARAN") {
-      const allowedStatusForUpload = ["draft", "waiting_payment", "rejected", "payment_rejected"];
+      const allowedStatusForUpload = [
+        "draft",
+        "waiting_payment",
+        "rejected",
+        "payment_rejected",
+      ];
       if (allowedStatusForUpload.includes(pendaftar.status_pendaftaran)) {
         await prisma.pendaftar.update({
           where: { id: session.id },
           data: {
             status_pendaftaran: "payment_verification",
             updated_at: new Date(),
-          }
+          },
         });
       }
     }
 
     return NextResponse.json({
       success: true,
-      message: "Bukti pembayaran berhasil diupload! Tim kami akan memverifikasi dalam 1x24 jam.",
+      message:
+        "Bukti pembayaran berhasil diupload! Tim kami akan memverifikasi dalam 1x24 jam.",
       data: {
         pembayaran_id: pembayaranResult.id,
         file_path: filePath,
@@ -264,12 +299,14 @@ export async function POST(request: NextRequest) {
         status: "pending",
       },
     });
-
   } catch (error: any) {
     console.error("Error in POST /api/pembayaran/manual/upload:", error);
     return NextResponse.json(
-      { success: false, error: "Terjadi kesalahan sistem saat mengupload bukti pembayaran" },
-      { status: 500 }
+      {
+        success: false,
+        error: "Terjadi kesalahan sistem saat mengupload bukti pembayaran",
+      },
+      { status: 500 },
     );
   }
 }

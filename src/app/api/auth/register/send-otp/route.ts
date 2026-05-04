@@ -45,7 +45,10 @@ export async function POST(request: NextRequest) {
 
     if (!["whatsapp", "sms"].includes(otp_channel)) {
       return NextResponse.json(
-        { success: false, error: "Channel OTP tidak valid. Pilih: whatsapp atau sms" },
+        {
+          success: false,
+          error: "Channel OTP tidak valid. Pilih: whatsapp atau sms",
+        },
         { status: 400 },
       );
     }
@@ -65,7 +68,10 @@ export async function POST(request: NextRequest) {
 
     if (recentOtps >= 3) {
       return NextResponse.json(
-        { success: false, error: "Terlalu banyak permintaan OTP. Coba lagi dalam 1 jam." },
+        {
+          success: false,
+          error: "Terlalu banyak permintaan OTP. Coba lagi dalam 1 jam.",
+        },
         { status: 429 },
       );
     }
@@ -128,7 +134,7 @@ export async function POST(request: NextRequest) {
       message: error.message,
       stack: error.stack,
       cause: error.cause,
-      code: error.code
+      code: error.code,
     });
     return NextResponse.json(
       { success: false, error: error.message || "Terjadi kesalahan server" },

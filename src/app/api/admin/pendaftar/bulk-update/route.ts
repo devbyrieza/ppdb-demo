@@ -20,7 +20,12 @@ export async function POST(req: NextRequest) {
     }
 
     // Check custom role
-    const allowedRoles = ["admin", "admin_super", "admin_berkas", "admin_keuangan"];
+    const allowedRoles = [
+      "admin",
+      "admin_super",
+      "admin_berkas",
+      "admin_keuangan",
+    ];
     if (!allowedRoles.includes(session.role)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
@@ -31,14 +36,14 @@ export async function POST(req: NextRequest) {
     if (!ids || !Array.isArray(ids) || ids.length === 0) {
       return NextResponse.json(
         { error: "IDs array is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (!status_proses) {
       return NextResponse.json(
         { error: "status_proses is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -58,13 +63,13 @@ export async function POST(req: NextRequest) {
       "enrolled",
       // Add simplified statuses if needed
       "verified",
-      "payment_verification"
+      "payment_verification",
     ];
 
     if (!validStatuses.includes(status_proses)) {
       return NextResponse.json(
         { error: "Invalid status_proses" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -95,7 +100,7 @@ export async function POST(req: NextRequest) {
     console.error("Bulk update error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

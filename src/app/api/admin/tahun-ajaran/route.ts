@@ -20,7 +20,7 @@ export async function GET() {
     console.error("Tahun ajaran API error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -60,10 +60,16 @@ export async function POST(request: NextRequest) {
     } = body;
 
     // Validate required fields
-    if (!tahun_mulai || !tahun_selesai || !nama || !tanggal_buka_pendaftaran || !tanggal_tutup_pendaftaran) {
+    if (
+      !tahun_mulai ||
+      !tahun_selesai ||
+      !nama ||
+      !tanggal_buka_pendaftaran ||
+      !tanggal_tutup_pendaftaran
+    ) {
       return NextResponse.json(
         { error: "Missing required fields" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -78,7 +84,7 @@ export async function POST(request: NextRequest) {
     if (existing) {
       return NextResponse.json(
         { error: "Tahun ajaran already exists", data: existing },
-        { status: 409 }
+        { status: 409 },
       );
     }
 
@@ -111,7 +117,7 @@ export async function POST(request: NextRequest) {
     console.error("Tahun ajaran POST error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

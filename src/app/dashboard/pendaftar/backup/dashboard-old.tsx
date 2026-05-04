@@ -31,7 +31,9 @@ export default function DashboardPendaftarPage() {
               <h1 className="text-2xl font-black text-stone-900">
                 Dashboard Pendaftar
               </h1>
-              <p className="text-sm text-stone-600">Ponpes Sistem PPDB Modern</p>
+              <p className="text-sm text-stone-600">
+                Ponpes Sistem PPDB Modern
+              </p>
             </div>
             <button
               onClick={handleLogout}
@@ -85,11 +87,11 @@ export default function DashboardPendaftarPage() {
             <p className="text-xs text-stone-500 mt-1">Belum upload</p>
           </div>
 
-          {/* Jadwal Ujian */}
+          {/* Jadwal Seleksi */}
           <div className="bg-white rounded-xl p-6 border-2 border-stone-200 shadow-lg">
             <div className="flex items-center gap-3 mb-2">
               <Calendar className="w-6 h-6 text-amber-500" />
-              <h3 className="font-bold text-stone-900">Jadwal Ujian</h3>
+              <h3 className="font-bold text-stone-900">Jadwal Seleksi</h3>
             </div>
             <p className="text-2xl font-black text-stone-900">-</p>
             <p className="text-xs text-stone-500 mt-1">Belum dijadwalkan</p>
@@ -129,7 +131,7 @@ export default function DashboardPendaftarPage() {
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4" />
-                  <span>Lihat jadwal ujian</span>
+                  <span>Lihat jadwal seleksi</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4" />

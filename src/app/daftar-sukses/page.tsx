@@ -127,8 +127,13 @@ function DaftarSuksesContent() {
         <div className="mt-4 py-2">
           <p className="text-xs text-ink-600 flex items-center justify-center gap-1.5 text-center font-medium">
             <AlertCircle className="w-3.5 h-3.5 shrink-0 text-teal-700" />
-            Gunakan <strong className="text-ink-950 font-black">NIK</strong> dan{" "}
-            <strong className="text-ink-950 font-black">Nomor Pendaftaran</strong> untuk masuk.
+            Gunakan <strong className="text-ink-950 font-black">
+              NIK
+            </strong> dan{" "}
+            <strong className="text-ink-950 font-black">
+              Nomor Pendaftaran
+            </strong>{" "}
+            untuk masuk.
           </p>
         </div>
       </div>
@@ -157,13 +162,12 @@ function DaftarSuksesContent() {
           <li className="flex items-start gap-2">
             <Check className="w-4 h-4 text-teal-700 shrink-0" />
             <span>
-              Setelah login, lakukan <strong>pembayaran pendaftaran</strong> lalu lengkapi data & upload berkas.
+              Setelah login, lakukan <strong>pembayaran pendaftaran</strong>{" "}
+              lalu lengkapi data & upload berkas.
             </span>
           </li>
         </ul>
       </div>
-
-
 
       <div className="relative z-10 w-full mb-6">
         <button
@@ -177,7 +181,9 @@ function DaftarSuksesContent() {
 
       {/* Help Info */}
       <div className="text-center relative z-10">
-        <p className="text-[10px] uppercase tracking-widest font-bold text-ink-500 mb-1.5">Butuh Bantuan Login?</p>
+        <p className="text-[10px] uppercase tracking-widest font-bold text-ink-500 mb-1.5">
+          Butuh Bantuan Login?
+        </p>
         <a
           href="https://wa.me/622667345601"
           target="_blank"

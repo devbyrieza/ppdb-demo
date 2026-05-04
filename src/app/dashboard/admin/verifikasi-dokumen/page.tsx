@@ -14,7 +14,7 @@ import {
   FileText,
   CheckCircle,
   Clock,
-  AlertCircle
+  AlertCircle,
 } from "lucide-react";
 import { exportToExcel, exportToPDF } from "@/lib/utils/export";
 import Link from "next/link";
@@ -90,7 +90,7 @@ function VerifikasiDokumenContent() {
         setRefreshing(true);
       }
       const response = await fetch(
-        `/api/admin/verifikasi/dokumen?status=${statusFilter}`
+        `/api/admin/verifikasi/dokumen?status=${statusFilter}`,
       );
       if (!response.ok) throw new Error("Failed to fetch");
 
@@ -140,21 +140,35 @@ function VerifikasiDokumenContent() {
 
       const result = await response.json();
 
-      const data = result.data.map((item: { 
-        pendaftar?: { nama_lengkap: string; nomor_pendaftaran: string; jenjang: string };
-        jenis_dokumen: string;
-        is_verified: boolean;
-        catatan: string | null;
-        created_at: string;
-      }) => ({
-        "Nama Pendaftar": item.pendaftar?.nama_lengkap ? toTitleCase(item.pendaftar.nama_lengkap) : "-",
-        "No Pendaftaran": item.pendaftar?.nomor_pendaftaran || "-",
-        "Jenjang": item.pendaftar?.jenjang || "-",
-        "Jenis Dokumen": item.jenis_dokumen || "-",
-        "Status": item.is_verified ? "Terverifikasi" : (item.catatan ? "Ditolak" : "Belum Verifikasi"),
-        "Catatan": item.catatan || "-",
-        "Tanggal Unggah": new Date(item.created_at).toLocaleDateString("id-ID")
-      }));
+      const data = result.data.map(
+        (item: {
+          pendaftar?: {
+            nama_lengkap: string;
+            nomor_pendaftaran: string;
+            jenjang: string;
+          };
+          jenis_dokumen: string;
+          is_verified: boolean;
+          catatan: string | null;
+          created_at: string;
+        }) => ({
+          "Nama Pendaftar": item.pendaftar?.nama_lengkap
+            ? toTitleCase(item.pendaftar.nama_lengkap)
+            : "-",
+          "No Pendaftaran": item.pendaftar?.nomor_pendaftaran || "-",
+          Jenjang: item.pendaftar?.jenjang || "-",
+          "Jenis Dokumen": item.jenis_dokumen || "-",
+          Status: item.is_verified
+            ? "Terverifikasi"
+            : item.catatan
+              ? "Ditolak"
+              : "Belum Verifikasi",
+          Catatan: item.catatan || "-",
+          "Tanggal Unggah": new Date(item.created_at).toLocaleDateString(
+            "id-ID",
+          ),
+        }),
+      );
 
       const filename = `data-dokumen-${new Date().toISOString().split("T")[0]}`;
 
@@ -163,7 +177,13 @@ function VerifikasiDokumenContent() {
       } else {
         const headers = Object.keys(data[0] || {});
         const rows = data.map((item: any) => Object.values(item));
-        exportToPDF("Laporan Verifikasi Dokumen", headers, rows, filename, "landscape");
+        exportToPDF(
+          "Laporan Verifikasi Dokumen",
+          headers,
+          rows,
+          filename,
+          "landscape",
+        );
       }
     } catch (error) {
       console.error("Error exporting:", error);
@@ -173,14 +193,18 @@ function VerifikasiDokumenContent() {
     }
   };
 
-  const filteredList = pendaftarList.filter(p =>
-    p.nama_lengkap.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    p.nomor_pendaftaran.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredList = pendaftarList.filter(
+    (p) =>
+      p.nama_lengkap.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      p.nomor_pendaftaran.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const toTitleCase = (str: string) => {
     if (!str) return "";
-    return str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+    return str.replace(
+      /\w\S*/g,
+      (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(),
+    );
   };
 
   return (
@@ -192,8 +216,12 @@ function VerifikasiDokumenContent() {
               <FileCheck className="w-6 h-6 md:w-8 md:h-8 text-sand-100" />
             </div>
             <div>
-              <h1 className="text-lg md:text-3xl font-black text-ink-950 tracking-tight leading-none mb-1">Verifikasi Dokumen</h1>
-              <p className="text-sm text-ink-400 font-bold tracking-wide">Kelola dan verifikasi berkas pendaftaran santri</p>
+              <h1 className="text-lg md:text-3xl font-black text-ink-950 tracking-tight leading-none mb-1">
+                Verifikasi Dokumen
+              </h1>
+              <p className="text-sm text-ink-400 font-bold tracking-wide">
+                Kelola dan verifikasi berkas pendaftaran santri
+              </p>
             </div>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
@@ -219,7 +247,9 @@ function VerifikasiDokumenContent() {
               className="p-2 bg-teal-50 text-teal-600 hover:bg-teal-600 hover:text-white rounded-xl transition-all disabled:opacity-50"
               title="Muat Ulang Data"
             >
-              <RefreshCw className={`w-5 h-5 ${refreshing ? "animate-spin" : ""}`} />
+              <RefreshCw
+                className={`w-5 h-5 ${refreshing ? "animate-spin" : ""}`}
+              />
             </button>
           </div>
         </div>
@@ -242,15 +272,16 @@ function VerifikasiDokumenContent() {
             {[
               { id: "pending", label: "Menunggu" },
               { id: "verified", label: "Diterima" },
-              { id: "rejected", label: "Ditolak" }
+              { id: "rejected", label: "Ditolak" },
             ].map((s) => (
               <button
                 key={s.id}
                 onClick={() => updateFilters(s.id)}
-                className={`px-4 md:px-8 py-3 rounded-2xl font-black transition-all text-sm md:text-base whitespace-nowrap active:scale-95 ${statusFilter === s.id
-                  ? "bg-teal-700 text-white shadow-lg shadow-teal-700/30 ring-2 ring-teal-500/20"
-                  : "bg-white border border-sand-200 text-ink-400 hover:bg-sand-50 hover:text-teal-700"
-                  }`}
+                className={`px-4 md:px-8 py-3 rounded-2xl font-black transition-all text-sm md:text-base whitespace-nowrap active:scale-95 ${
+                  statusFilter === s.id
+                    ? "bg-teal-700 text-white shadow-lg shadow-teal-700/30 ring-2 ring-teal-500/20"
+                    : "bg-white border border-sand-200 text-ink-400 hover:bg-sand-50 hover:text-teal-700"
+                }`}
               >
                 {s.label}
               </button>
@@ -273,7 +304,9 @@ function VerifikasiDokumenContent() {
       {loading && pendaftarList.length === 0 ? (
         <div className="flex flex-col items-center justify-center p-20 bg-white rounded-3xl border border-sand-100">
           <Loader2 className="w-12 h-12 animate-spin text-teal-600 mb-4" />
-          <p className="text-ink-400 font-bold tracking-wide">Mengambil data pendaftar...</p>
+          <p className="text-ink-400 font-bold tracking-wide">
+            Mengambil data pendaftar...
+          </p>
         </div>
       ) : (
         <>
@@ -282,15 +315,23 @@ function VerifikasiDokumenContent() {
               <div className="w-20 h-20 bg-sand-50 rounded-full flex items-center justify-center mb-6">
                 <FileCheck className="w-10 h-10 text-sand-300" />
               </div>
-              <h3 className="text-xl font-bold text-ink-950 mb-2">Tidak Ada Pendaftar</h3>
-              <p className="text-ink-600">Belum ada dokumen yang perlu diverifikasi pada kategori ini.</p>
+              <h3 className="text-xl font-bold text-ink-950 mb-2">
+                Tidak Ada Pendaftar
+              </h3>
+              <p className="text-ink-600">
+                Belum ada dokumen yang perlu diverifikasi pada kategori ini.
+              </p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredList.map((pendaftar) => {
-                const verifiedCount = pendaftar.dokumen.filter(d => d.is_verified).length;
+                const verifiedCount = pendaftar.dokumen.filter(
+                  (d) => d.is_verified,
+                ).length;
                 const totalCount = pendaftar.dokumen.length;
-                const percentage = Math.round((verifiedCount / totalCount) * 100);
+                const percentage = Math.round(
+                  (verifiedCount / totalCount) * 100,
+                );
 
                 return (
                   <Link
@@ -322,7 +363,9 @@ function VerifikasiDokumenContent() {
 
                       <div className="space-y-3 mb-6">
                         <div className="flex items-center justify-between text-xs font-black uppercase tracking-widest leading-none">
-                          <span className="text-ink-300">Penyelesaian Verifikasi</span>
+                          <span className="text-ink-300">
+                            Penyelesaian Verifikasi
+                          </span>
                           <span className="text-teal-700">{percentage}%</span>
                         </div>
                         <div className="h-2.5 bg-sand-100/50 rounded-full overflow-hidden shadow-inner border border-sand-50">
@@ -334,11 +377,15 @@ function VerifikasiDokumenContent() {
                         <div className="flex items-center gap-4">
                           <div className="flex items-center gap-1.5">
                             <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-sm shadow-emerald-500/50" />
-                            <span className="text-xs font-bold text-ink-600">{verifiedCount} Terverifikasi</span>
+                            <span className="text-xs font-bold text-ink-600">
+                              {verifiedCount} Terverifikasi
+                            </span>
                           </div>
                           <div className="flex items-center gap-1.5">
                             <div className="w-2 h-2 rounded-full bg-amber-400 shadow-sm shadow-amber-400/50" />
-                            <span className="text-xs font-bold text-ink-600">{totalCount - verifiedCount} Menunggu</span>
+                            <span className="text-xs font-bold text-ink-600">
+                              {totalCount - verifiedCount} Menunggu
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -372,7 +419,9 @@ export default function VerifikasiDokumenPage() {
       fallback={
         <div className="flex flex-col items-center justify-center p-20 bg-white rounded-3xl border border-sand-100">
           <Loader2 className="w-12 h-12 animate-spin text-teal-600 mb-4" />
-          <p className="text-ink-400 font-bold tracking-wide">Memuat halaman...</p>
+          <p className="text-ink-400 font-bold tracking-wide">
+            Memuat halaman...
+          </p>
         </div>
       }
     >

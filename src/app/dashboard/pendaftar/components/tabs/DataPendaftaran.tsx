@@ -110,7 +110,13 @@ export default function DataPendaftaranTab() {
           </div>
           <div className="mt-4 md:mt-0">
             <button
-              onClick={() => Swal.fire("Info", "Fitur lengkapi data akan tersedia segera!", "info")}
+              onClick={() =>
+                Swal.fire(
+                  "Info",
+                  "Fitur lengkapi data akan tersedia segera!",
+                  "info",
+                )
+              }
               className="inline-flex items-center gap-2 px-5 py-3 bg-white text-maroon-800 font-bold rounded-xl hover:bg-maroon-50 transition-all"
             >
               <Edit className="w-4 h-4" />
@@ -286,7 +292,9 @@ export default function DataPendaftaranTab() {
             </div>
             <div className="flex items-center justify-between">
               <div className="flex-1">
-                <h3 className="font-bold text-stone-900 mb-1">Isi Data Lengkap</h3>
+                <h3 className="font-bold text-stone-900 mb-1">
+                  Isi Data Lengkap
+                </h3>
                 <p className="text-sm text-stone-600">
                   Lengkapi data diri calon santri
                 </p>
@@ -312,7 +320,9 @@ export default function DataPendaftaranTab() {
             </div>
             <div className="flex items-center justify-between">
               <div className="flex-1">
-                <h3 className="font-bold text-stone-900 mb-1">Upload Dokumen</h3>
+                <h3 className="font-bold text-stone-900 mb-1">
+                  Upload Dokumen
+                </h3>
                 <p className="text-sm text-stone-600">
                   Upload dokumen persyaratan PPDB
                 </p>
@@ -331,7 +341,11 @@ export default function DataPendaftaranTab() {
         <div className="space-y-4">
           {[
             { label: "1. Pembayaran", progress: 0, color: "bg-amber-500" },
-            { label: "2. Isi Data Lengkap", progress: 60, color: "bg-maroon-500" },
+            {
+              label: "2. Isi Data Lengkap",
+              progress: 60,
+              color: "bg-maroon-500",
+            },
             { label: "3. Upload Dokumen", progress: 0, color: "bg-green-500" },
             { label: "4. Verifikasi", progress: 0, color: "bg-purple-500" },
           ].map((item, index) => (

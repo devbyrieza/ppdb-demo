@@ -20,8 +20,8 @@ export async function GET(request: NextRequest) {
       select: {
         id: true,
         nomor_pendaftaran: true,
-        status_pendaftaran: true // Remapped from status_proses
-      }
+        status_pendaftaran: true, // Remapped from status_proses
+      },
     });
 
     if (!data) {

@@ -6,13 +6,37 @@ import { prisma } from "@/lib/prisma";
 const JENIS_DOKUMEN = [
   { key: "kartu_keluarga", label: "Scan Kartu Keluarga", required: true },
   { key: "akta_kelahiran", label: "Scan Akte Kelahiran", required: true },
-  { key: "rapor_sem1", label: "Scan Rapor Semester 1 Terakhir", required: true },
-  { key: "rapor_sem2", label: "Scan Rapor Semester 2 Terakhir", required: true },
-  { key: "nisn", label: "Scan NISN (Nomor Induk Siswa Nasional)", required: true },
+  {
+    key: "rapor_sem1",
+    label: "Scan Rapor Semester 1 Terakhir",
+    required: true,
+  },
+  {
+    key: "rapor_sem2",
+    label: "Scan Rapor Semester 2 Terakhir",
+    required: true,
+  },
+  {
+    key: "nisn",
+    label: "Scan NISN (Nomor Induk Siswa Nasional)",
+    required: true,
+  },
   { key: "foto_setengah_badan", label: "Foto Setengah Badan", required: true },
-  { key: "surat_kesehatan", label: "Surat Keterangan Sehat (Download format)", required: true },
-  { key: "pakta_integritas", label: "Scan Pakta Integritas (Download format)", required: true },
-  { key: "pernyataan_bebas_negatif", label: "Scan Pernyataan Bebas Perilaku Negatif (Download format)", required: true },
+  {
+    key: "surat_kesehatan",
+    label: "Surat Keterangan Sehat (Download format)",
+    required: true,
+  },
+  {
+    key: "pakta_integritas",
+    label: "Scan Pakta Integritas (Download format)",
+    required: true,
+  },
+  {
+    key: "pernyataan_bebas_negatif",
+    label: "Scan Pernyataan Bebas Perilaku Negatif (Download format)",
+    required: true,
+  },
 ];
 
 export async function GET(request: NextRequest) {
@@ -24,7 +48,7 @@ export async function GET(request: NextRequest) {
     if (!sessionCookie) {
       return NextResponse.json(
         { success: false, error: "Sesi tidak ditemukan" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -34,14 +58,14 @@ export async function GET(request: NextRequest) {
     } catch {
       return NextResponse.json(
         { success: false, error: "Sesi tidak valid" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
     if (session.role !== "pendaftar") {
       return NextResponse.json(
         { success: false, error: "Akses tidak diizinkan" },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -84,16 +108,16 @@ export async function GET(request: NextRequest) {
     // 4. Hitung progress
     const totalRequired = JENIS_DOKUMEN.filter((d) => d.required).length;
     const uploadedRequired = dokumenStatus.filter(
-      (d) => d.required && d.status !== "pending"
+      (d) => d.required && d.status !== "pending",
     ).length;
     const verifiedCount = dokumenStatus.filter(
-      (d) => d.status === "verified"
+      (d) => d.status === "verified",
     ).length;
 
     // 5. Get Pendaftar Status
     const pendaftar = await prisma.pendaftar.findUnique({
       where: { id: session.id },
-      select: { status_pendaftaran: true }
+      select: { status_pendaftaran: true },
     });
 
     // 6. Return data
@@ -101,7 +125,7 @@ export async function GET(request: NextRequest) {
       success: true,
       data: {
         dokumen: dokumenStatus,
-        pendaftar_status: pendaftar?.status_pendaftaran || 'draft',
+        pendaftar_status: pendaftar?.status_pendaftaran || "draft",
         summary: {
           total: JENIS_DOKUMEN.length,
           uploaded: dokumenList.length || 0,
@@ -116,7 +140,9 @@ export async function GET(request: NextRequest) {
             all: {
               total: JENIS_DOKUMEN.length,
               uploaded: dokumenList.length || 0,
-              percentage: Math.round(((dokumenList.length || 0) / JENIS_DOKUMEN.length) * 100),
+              percentage: Math.round(
+                ((dokumenList.length || 0) / JENIS_DOKUMEN.length) * 100,
+              ),
             },
           },
         },
@@ -126,7 +152,7 @@ export async function GET(request: NextRequest) {
     console.error("Error in dokumen status API:", error);
     return NextResponse.json(
       { success: false, error: "Terjadi kesalahan server" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

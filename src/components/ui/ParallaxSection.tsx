@@ -53,7 +53,7 @@ export default function ParallaxSection({
         const elementCenter = rect.top + rect.height / 2;
         const viewportCenter = windowHeight / 2;
         const distanceFromCenter = elementCenter - viewportCenter;
-        
+
         // Apply parallax effect
         const parallaxOffset = distanceFromCenter * speed;
         setOffset(direction === "up" ? -parallaxOffset : parallaxOffset);
@@ -73,9 +73,10 @@ export default function ParallaxSection({
     };
   }, [speed, direction]);
 
-  const opacityStyle = opacity && isVisible
-    ? { opacity: Math.min(1, Math.max(0, 1 - Math.abs(offset) / 300)) }
-    : {};
+  const opacityStyle =
+    opacity && isVisible
+      ? { opacity: Math.min(1, Math.max(0, 1 - Math.abs(offset) / 300)) }
+      : {};
 
   return (
     <div

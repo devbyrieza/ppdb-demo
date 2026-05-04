@@ -15,7 +15,10 @@ export async function GET() {
     }
 
     const session = JSON.parse(sessionCookie.value);
-    const pendaftarId = session.role === "pendaftar" ? session.id : (session.pendaftar_id || session.user_id);
+    const pendaftarId =
+      session.role === "pendaftar"
+        ? session.id
+        : session.pendaftar_id || session.user_id;
 
     if (!pendaftarId) {
       return NextResponse.json(

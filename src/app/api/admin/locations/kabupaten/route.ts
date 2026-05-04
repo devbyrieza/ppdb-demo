@@ -3,16 +3,20 @@ import { NextResponse } from "next/server";
 // Cache for provinces (to get ID from name)
 let provincesCache: { data: any[]; timestamp: number } | null = null;
 // Cache for kabupaten per province ID
-const kabupatenCache: Map<string, { data: string[]; timestamp: number }> = new Map();
+const kabupatenCache: Map<string, { data: string[]; timestamp: number }> =
+  new Map();
 const CACHE_DURATION = 60 * 60 * 1000; // 1 hour
 
 async function getProvinces() {
-  if (provincesCache && Date.now() - provincesCache.timestamp < CACHE_DURATION) {
+  if (
+    provincesCache &&
+    Date.now() - provincesCache.timestamp < CACHE_DURATION
+  ) {
     return provincesCache.data;
   }
 
   const response = await fetch(
-    "https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json"
+    "https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json",
   );
   if (!response.ok) throw new Error("Failed to fetch provinces");
 
@@ -34,7 +38,7 @@ export async function GET(request: Request) {
     const provinces = await getProvinces();
     const province = provinces.find(
       (p: { id: string; name: string }) =>
-        p.name.toUpperCase() === provinsiName.toUpperCase()
+        p.name.toUpperCase() === provinsiName.toUpperCase(),
     );
 
     if (!province) {
@@ -50,7 +54,7 @@ export async function GET(request: Request) {
 
     // Fetch kabupaten from external API
     const response = await fetch(
-      `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${province.id}.json`
+      `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${province.id}.json`,
     );
 
     if (!response.ok) {
@@ -65,7 +69,10 @@ export async function GET(request: Request) {
       .sort((a: string, b: string) => a.localeCompare(b));
 
     // Cache
-    kabupatenCache.set(province.id, { data: kabupatenNames, timestamp: Date.now() });
+    kabupatenCache.set(province.id, {
+      data: kabupatenNames,
+      timestamp: Date.now(),
+    });
 
     return NextResponse.json({ data: kabupatenNames });
   } catch (error) {

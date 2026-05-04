@@ -14,8 +14,11 @@ export async function GET(request: NextRequest) {
 
     if (!sessionCookie) {
       return NextResponse.json(
-        { success: false, error: "Sesi tidak ditemukan. Silakan login kembali." },
-        { status: 401 }
+        {
+          success: false,
+          error: "Sesi tidak ditemukan. Silakan login kembali.",
+        },
+        { status: 401 },
       );
     }
 
@@ -25,14 +28,14 @@ export async function GET(request: NextRequest) {
     } catch {
       return NextResponse.json(
         { success: false, error: "Sesi tidak valid" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
     if (session.role !== "pendaftar") {
       return NextResponse.json(
         { success: false, error: "Akses tidak diizinkan" },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -49,7 +52,7 @@ export async function GET(request: NextRequest) {
     if (!pendaftar) {
       return NextResponse.json(
         { success: false, error: "Data pendaftar tidak ditemukan" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -64,13 +67,19 @@ export async function GET(request: NextRequest) {
       id: pendaftar.tahun_ajaran.id,
       nama: pendaftar.tahun_ajaran.nama,
       biaya_pendaftaran: Number(pendaftar.tahun_ajaran.biaya_pendaftaran),
-      tanggal_tutup_pendaftaran: pendaftar.tahun_ajaran.tanggal_tutup_pendaftaran,
+      tanggal_tutup_pendaftaran:
+        pendaftar.tahun_ajaran.tanggal_tutup_pendaftaran,
     };
 
     const isExpired = false;
 
     // 5. Tentukan status pembayaran
-    let paymentStatus: "unpaid" | "pending" | "verified" | "rejected" | "expired" = "unpaid";
+    let paymentStatus:
+      | "unpaid"
+      | "pending"
+      | "verified"
+      | "rejected"
+      | "expired" = "unpaid";
 
     if (pembayaran) {
       if (pembayaran.status_pembayaran === "verified") {
@@ -99,20 +108,22 @@ export async function GET(request: NextRequest) {
           biaya_pendaftaran: tahunAjaran.biaya_pendaftaran,
           tanggal_tutup_pendaftaran: tahunAjaran.tanggal_tutup_pendaftaran,
         },
-        pembayaran: pembayaran ? {
-          id: pembayaran.id,
-          metode_pembayaran: pembayaran.metode_pembayaran,
-          jumlah: Number(pembayaran.jumlah),
-          status_pembayaran: pembayaran.status_pembayaran,
-          bukti_transfer_path: pembayaran.bukti_transfer_path,
-          bukti_transfer_filename: pembayaran.bukti_transfer_filename,
-          midtrans_order_id: pembayaran.midtrans_order_id,
-          midtrans_payment_type: pembayaran.midtrans_payment_type,
-          verified_at: pembayaran.verified_at,
-          catatan_verifikasi: pembayaran.catatan_verifikasi,
-          created_at: pembayaran.created_at,
-          updated_at: pembayaran.updated_at,
-        } : null,
+        pembayaran: pembayaran
+          ? {
+              id: pembayaran.id,
+              metode_pembayaran: pembayaran.metode_pembayaran,
+              jumlah: Number(pembayaran.jumlah),
+              status_pembayaran: pembayaran.status_pembayaran,
+              bukti_transfer_path: pembayaran.bukti_transfer_path,
+              bukti_transfer_filename: pembayaran.bukti_transfer_filename,
+              midtrans_order_id: pembayaran.midtrans_order_id,
+              midtrans_payment_type: pembayaran.midtrans_payment_type,
+              verified_at: pembayaran.verified_at,
+              catatan_verifikasi: pembayaran.catatan_verifikasi,
+              created_at: pembayaran.created_at,
+              updated_at: pembayaran.updated_at,
+            }
+          : null,
         status: paymentStatus,
         deadline: tahunAjaran.tanggal_tutup_pendaftaran,
         is_deadline_passed: isExpired,
@@ -121,8 +132,11 @@ export async function GET(request: NextRequest) {
   } catch (error: any) {
     console.error("Error in GET /api/pembayaran/status:", error);
     return NextResponse.json(
-      { success: false, error: "Terjadi kesalahan saat mengambil status pembayaran" },
-      { status: 500 }
+      {
+        success: false,
+        error: "Terjadi kesalahan saat mengambil status pembayaran",
+      },
+      { status: 500 },
     );
   }
 }

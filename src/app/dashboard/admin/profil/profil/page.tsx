@@ -3,12 +3,12 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export default async function AdminProfilPage() {
-    const cookieStore = await cookies();
-    const sessionCookie = cookieStore.get("app_session");
+  const cookieStore = await cookies();
+  const sessionCookie = cookieStore.get("app_session");
 
-    if (!sessionCookie) redirect("/login");
+  if (!sessionCookie) redirect("/login");
 
-    const session = JSON.parse(sessionCookie.value);
+  const session = JSON.parse(sessionCookie.value);
 
-    return <ProfileSettings user={session} />;
+  return <ProfileSettings user={session} />;
 }

@@ -1,6 +1,6 @@
 # Assessment Forms Requirements
 
-## 1. Tes Akademik MTs (Online/Tulis)
+## 1. Seleksi Akademik MTs (Online/Tulis)
 **Source**: Google Form Copy-Paste
 **Status**: Received (Missing Keys & Images)
 *(Content preserved from previous step)*
@@ -66,7 +66,7 @@
 
 ---
 
-## 2. Tes Akademik I'dad Lughowiy (Online/Tulis)
+## 2. Seleksi Akademik I'dad Lughowiy (Online/Tulis)
 **Source**: Google Form Copy-Paste
 **Status**: Received (Missing Keys & Images)
 *(Content preserved from previous step)*
@@ -133,7 +133,7 @@
 
 ---
 
-## 3. Tes Akademik MA (Setara SMA)
+## 3. Seleksi Akademik MA (Setara SMA)
 **Source**: Google Form Copy-Paste
 **Status**: Received (Missing Keys & Images)
 *(Content preserved from previous step)*
@@ -163,7 +163,7 @@
 
 ---
 
-## 4. Tes Kepribadian Calon Santri/Wati
+## 4. Seleksi Kepribadian Calon Santri/Wati
 **Source**: Google Form Copy-Paste
 **Status**: Received (Missing Scoring Logic)
 **Questions**: 100 Items (A/B Choices)
@@ -171,7 +171,7 @@
 
 ---
 
-## 5. Tes Kesiapan Calon Santri/Wati
+## 5. Seleksi Kesiapan Calon Santri/Wati
 **Source**: Google Form Copy-Paste
 **Status**: Received (Missing Scoring/Weighting)
 **Format**: Likert Scale (1-5)
@@ -179,14 +179,14 @@
 
 ---
 
-## 6. Hasil Tes Al-Quran (Diisi Penguji)
+## 6. hasil seleksi Al-Quran (Diisi Penguji)
 **Source**: Google Form Copy-Paste
 **Status**: Received (Missing Score Range/Logic)
 *(Content preserved from previous step)*
 
 ---
 
-## 7. Wawancara Calon Santri (Diisi Pewawancara)
+## 7. Seleksi Wawancara Santri (Diisi Pewawancara)
 **Source**: Google Form Copy-Paste
 **Status**: Received (Missing Weighting Logic)
 **Format**: Rating Scale 1-5 with Descriptors

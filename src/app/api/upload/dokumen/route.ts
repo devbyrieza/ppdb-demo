@@ -4,21 +4,131 @@ import { prisma } from "@/lib/prisma";
 import { saveFileLocal } from "@/lib/storage/local";
 
 // Konfigurasi dokumen
-const DOKUMEN_CONFIG: Record<string, {
-  label: string;
-  maxSize: number;
-  allowedTypes: string[];
-  required: boolean;
-}> = {
-  kartu_keluarga: { label: "Scan Kartu Keluarga", maxSize: 2 * 1024 * 1024, allowedTypes: ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/heic", "application/pdf"], required: true },
-  akta_kelahiran: { label: "Scan Akte Kelahiran", maxSize: 2 * 1024 * 1024, allowedTypes: ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/heic", "application/pdf"], required: true },
-  rapor_sem1: { label: "Scan Rapor 2 Semester Terakhir (1)", maxSize: 2 * 1024 * 1024, allowedTypes: ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/heic", "application/pdf"], required: true },
-  rapor_sem2: { label: "Scan Rapor 2 Semester Terakhir (2)", maxSize: 2 * 1024 * 1024, allowedTypes: ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/heic", "application/pdf"], required: true },
-  nisn: { label: "Scan NISN", maxSize: 2 * 1024 * 1024, allowedTypes: ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/heic", "application/pdf"], required: true },
-  foto_setengah_badan: { label: "Foto Setengah Badan", maxSize: 2 * 1024 * 1024, allowedTypes: ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/heic"], required: true },
-  surat_kesehatan: { label: "Surat Keterangan Sehat", maxSize: 2 * 1024 * 1024, allowedTypes: ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/heic", "application/pdf"], required: true },
-  pakta_integritas: { label: "Scan Pakta Integritas", maxSize: 2 * 1024 * 1024, allowedTypes: ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/heic", "application/pdf"], required: true },
-  pernyataan_bebas_negatif: { label: "Scan Pernyataan Bebas Perilaku Negatif", maxSize: 2 * 1024 * 1024, allowedTypes: ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/heic", "application/pdf"], required: true },
+const DOKUMEN_CONFIG: Record<
+  string,
+  {
+    label: string;
+    maxSize: number;
+    allowedTypes: string[];
+    required: boolean;
+  }
+> = {
+  kartu_keluarga: {
+    label: "Scan Kartu Keluarga",
+    maxSize: 2 * 1024 * 1024,
+    allowedTypes: [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "image/webp",
+      "image/heic",
+      "application/pdf",
+    ],
+    required: true,
+  },
+  akta_kelahiran: {
+    label: "Scan Akte Kelahiran",
+    maxSize: 2 * 1024 * 1024,
+    allowedTypes: [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "image/webp",
+      "image/heic",
+      "application/pdf",
+    ],
+    required: true,
+  },
+  rapor_sem1: {
+    label: "Scan Rapor 2 Semester Terakhir (1)",
+    maxSize: 2 * 1024 * 1024,
+    allowedTypes: [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "image/webp",
+      "image/heic",
+      "application/pdf",
+    ],
+    required: true,
+  },
+  rapor_sem2: {
+    label: "Scan Rapor 2 Semester Terakhir (2)",
+    maxSize: 2 * 1024 * 1024,
+    allowedTypes: [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "image/webp",
+      "image/heic",
+      "application/pdf",
+    ],
+    required: true,
+  },
+  nisn: {
+    label: "Scan NISN",
+    maxSize: 2 * 1024 * 1024,
+    allowedTypes: [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "image/webp",
+      "image/heic",
+      "application/pdf",
+    ],
+    required: true,
+  },
+  foto_setengah_badan: {
+    label: "Foto Setengah Badan",
+    maxSize: 2 * 1024 * 1024,
+    allowedTypes: [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "image/webp",
+      "image/heic",
+    ],
+    required: true,
+  },
+  surat_kesehatan: {
+    label: "Surat Keterangan Sehat",
+    maxSize: 2 * 1024 * 1024,
+    allowedTypes: [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "image/webp",
+      "image/heic",
+      "application/pdf",
+    ],
+    required: true,
+  },
+  pakta_integritas: {
+    label: "Scan Pakta Integritas",
+    maxSize: 2 * 1024 * 1024,
+    allowedTypes: [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "image/webp",
+      "image/heic",
+      "application/pdf",
+    ],
+    required: true,
+  },
+  pernyataan_bebas_negatif: {
+    label: "Scan Pernyataan Bebas Perilaku Negatif",
+    maxSize: 2 * 1024 * 1024,
+    allowedTypes: [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "image/webp",
+      "image/heic",
+      "application/pdf",
+    ],
+    required: true,
+  },
 };
 
 function formatFileSize(bytes: number): string {
@@ -36,7 +146,7 @@ export async function POST(request: NextRequest) {
     if (!sessionCookie) {
       return NextResponse.json(
         { success: false, error: "Sesi tidak ditemukan" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -46,14 +156,14 @@ export async function POST(request: NextRequest) {
     } catch {
       return NextResponse.json(
         { success: false, error: "Sesi tidak valid" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
     if (session.role !== "pendaftar") {
       return NextResponse.json(
         { success: false, error: "Akses tidak diizinkan" },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -65,7 +175,7 @@ export async function POST(request: NextRequest) {
     if (!file || !jenisDokumen) {
       return NextResponse.json(
         { success: false, error: "File dan jenis dokumen wajib diisi" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -74,36 +184,44 @@ export async function POST(request: NextRequest) {
     if (!config) {
       return NextResponse.json(
         { success: false, error: "Jenis dokumen tidak valid" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // 4. Validasi ukuran & tipe
     if (file.size > config.maxSize) {
       return NextResponse.json(
-        { success: false, error: `Ukuran file terlalu besar! Maksimal ${formatFileSize(config.maxSize)}` },
-        { status: 400 }
+        {
+          success: false,
+          error: `Ukuran file terlalu besar! Maksimal ${formatFileSize(config.maxSize)}`,
+        },
+        { status: 400 },
       );
     }
     const isImageAllowed = config.allowedTypes.includes("image/jpeg");
-    const safeFileType = file.type || '';
-    const isAllowedType = config.allowedTypes.includes(safeFileType) || (isImageAllowed && safeFileType.startsWith("image/"));
-    
+    const safeFileType = file.type || "";
+    const isAllowedType =
+      config.allowedTypes.includes(safeFileType) ||
+      (isImageAllowed && safeFileType.startsWith("image/"));
+
     if (!isAllowedType) {
       return NextResponse.json(
-        { success: false, error: `Format file tidak didukung. File Anda: ${file.type || 'tidak dikenali'}` },
-        { status: 400 }
+        {
+          success: false,
+          error: `Format file tidak didukung. File Anda: ${file.type || "tidak dikenali"}`,
+        },
+        { status: 400 },
       );
     }
 
     // 5. Detect Real Mime Type via Magic Bytes
     const buffer = Buffer.from(await file.arrayBuffer());
-    const hex = buffer.slice(0, 4).toString('hex').toUpperCase();
+    const hex = buffer.slice(0, 4).toString("hex").toUpperCase();
     let detectedType = file.type;
-    
-    if (hex.startsWith('FFD8FF')) detectedType = 'image/jpeg';
-    else if (hex === '89504E47') detectedType = 'image/png';
-    else if (hex === '25504446') detectedType = 'application/pdf';
+
+    if (hex.startsWith("FFD8FF")) detectedType = "image/jpeg";
+    else if (hex === "89504E47") detectedType = "image/png";
+    else if (hex === "25504446") detectedType = "application/pdf";
 
     // 6. Ambil data pendaftar (Check existence)
     const pendaftar = await prisma.pendaftar.findUnique({
@@ -114,31 +232,37 @@ export async function POST(request: NextRequest) {
     if (!pendaftar) {
       return NextResponse.json(
         { success: false, error: "Pendaftar tidak ditemukan" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
     const timestamp = Date.now();
     const safeFileName = file.name || "berkas_tanpa_nama.bin";
-    const originalExtension = safeFileName.split(".").pop()?.toLowerCase() || "bin";
-    
+    const originalExtension =
+      safeFileName.split(".").pop()?.toLowerCase() || "bin";
+
     // Correct extension based on detected type
     let fileExtension = originalExtension;
-    if (detectedType === 'image/jpeg') fileExtension = 'jpg';
-    else if (detectedType === 'image/png') fileExtension = 'png';
-    else if (detectedType === 'application/pdf') fileExtension = 'pdf';
+    if (detectedType === "image/jpeg") fileExtension = "jpg";
+    else if (detectedType === "image/png") fileExtension = "png";
+    else if (detectedType === "application/pdf") fileExtension = "pdf";
 
     const fileName = `${jenisDokumen}-${pendaftar.nomor_pendaftaran}-${timestamp}.${fileExtension}`;
 
     // Save to storage_data/dokumen-pendaftaran/{pendaftar_id}/...
-    const filePath = await saveFileLocal(file, 'dokumen-pendaftaran', session.id, fileName);
+    const filePath = await saveFileLocal(
+      file,
+      "dokumen-pendaftaran",
+      session.id,
+      fileName,
+    );
 
     // 10. Check Existing
     const existingDokumen = await prisma.dokumen.findFirst({
       where: {
         pendaftar_id: session.id,
         jenis_dokumen: jenisDokumen,
-      }
+      },
     });
 
     if (existingDokumen) {
@@ -154,7 +278,7 @@ export async function POST(request: NextRequest) {
           verified_at: null,
           catatan: null,
           updated_at: new Date(),
-        }
+        },
       });
     } else {
       await prisma.dokumen.create({
@@ -166,7 +290,7 @@ export async function POST(request: NextRequest) {
           file_size: file.size,
           file_type: detectedType, // Use detected type
           is_verified: false,
-        }
+        },
       });
     }
 
@@ -196,12 +320,11 @@ export async function POST(request: NextRequest) {
         file_type: file.type,
       },
     });
-
   } catch (error: any) {
     console.error("Upload error:", error);
     return NextResponse.json(
       { success: false, error: "Terjadi kesalahan saat mengupload file" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -67,51 +67,53 @@ ATURAN MENJAWAB:
 `;
 
 export async function POST(req: Request) {
-    try {
-        if (!process.env.GEMINI_API_KEY) {
-            return NextResponse.json(
-                { reply: "Konfigurasi sistem belum lengkap. Hubungi CS." },
-                { status: 500 }
-            );
-        }
-
-        const body = await req.json();
-        const { history, message } = body;
-
-        if (!message) {
-            return NextResponse.json({ error: "Message is required" }, { status: 400 });
-        }
-
-        const model = genAI.getGenerativeModel({
-            model: "gemini-1.5-flash",
-            systemInstruction: SYSTEM_PROMPT
-        });
-
-        // Initialize chat session with history
-        const chat = model.startChat({
-            history: history || [],
-        });
-
-        // Send new message
-        const result = await chat.sendMessage(message);
-        const response = result.response;
-        const text = response.text();
-
-        return NextResponse.json({ reply: text });
-
-    } catch (error: any) {
-        const errMsg = error?.message || String(error);
-        console.error("Gemini API Error:", errMsg);
-
-        // Handle rate limit (429) gracefully
-        const isRateLimit = errMsg.includes("429") || errMsg.includes("RESOURCE_EXHAUSTED") || errMsg.includes("retryDelay");
-        const reply = isRateLimit
-            ? "Asisten AI sedang ramai sebentar. Silakan coba lagi dalam beberapa detik, atau klik 'Live Chat CS' untuk langsung bicara dengan panitia kami ya. 😊"
-            : "Maaf, terjadi kesalahan. Silakan coba lagi atau hubungi Live Chat CS kami.";
-
-        return NextResponse.json(
-            { error: "server_error", reply },
-            { status: 500 }
-        );
+  try {
+    if (!process.env.GEMINI_API_KEY) {
+      return NextResponse.json(
+        { reply: "Konfigurasi sistem belum lengkap. Hubungi CS." },
+        { status: 500 },
+      );
     }
+
+    const body = await req.json();
+    const { history, message } = body;
+
+    if (!message) {
+      return NextResponse.json(
+        { error: "Message is required" },
+        { status: 400 },
+      );
+    }
+
+    const model = genAI.getGenerativeModel({
+      model: "gemini-1.5-flash",
+      systemInstruction: SYSTEM_PROMPT,
+    });
+
+    // Initialize chat session with history
+    const chat = model.startChat({
+      history: history || [],
+    });
+
+    // Send new message
+    const result = await chat.sendMessage(message);
+    const response = result.response;
+    const text = response.text();
+
+    return NextResponse.json({ reply: text });
+  } catch (error: any) {
+    const errMsg = error?.message || String(error);
+    console.error("Gemini API Error:", errMsg);
+
+    // Handle rate limit (429) gracefully
+    const isRateLimit =
+      errMsg.includes("429") ||
+      errMsg.includes("RESOURCE_EXHAUSTED") ||
+      errMsg.includes("retryDelay");
+    const reply = isRateLimit
+      ? "Asisten AI sedang ramai sebentar. Silakan coba lagi dalam beberapa detik, atau klik 'Live Chat CS' untuk langsung bicara dengan panitia kami ya. 😊"
+      : "Maaf, terjadi kesalahan. Silakan coba lagi atau hubungi Live Chat CS kami.";
+
+    return NextResponse.json({ error: "server_error", reply }, { status: 500 });
+  }
 }

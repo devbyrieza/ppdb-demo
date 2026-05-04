@@ -38,7 +38,12 @@ export default async function AdminDashboardLayout({
   }
 
   return (
-    <AdminSidebar userRole={userRole} adminName={adminName} userId={userId} availableRoles={availableRoles}>
+    <AdminSidebar
+      userRole={userRole}
+      adminName={adminName}
+      userId={userId}
+      availableRoles={availableRoles}
+    >
       {children}
     </AdminSidebar>
   );

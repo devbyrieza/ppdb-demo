@@ -9,7 +9,7 @@ Urutan menu sidebar telah diubah menjadi:
 1. 📋 **Data Pendaftaran** → `/dashboard/pendaftar`
 2. 💰 **Pembayaran Pendaftaran** → `/dashboard/pendaftar/pembayaran-pendaftaran`
 3. 📄 **Kelengkapan Berkas** → `/dashboard/pendaftar/kelengkapan-berkas`
-4. 📅 **Undangan Seleksi** → `/dashboard/pendaftar/undangan-seleksi`
+4. 📅 **Jadwal Seleksi** → `/dashboard/pendaftar/undangan-seleksi`
 5. 🏆 **Pengumuman** → `/dashboard/pendaftar/pengumuman`
 6. ✅ **Daftar Ulang** → `/dashboard/pendaftar/daftar-ulang`
 7. 👤 **Profil** → `/dashboard/pendaftar/profil`
@@ -24,7 +24,7 @@ Urutan menu sidebar telah diubah menjadi:
 - Data Pendaftaran: `ClipboardList` (lebih relevan dari User)
 - Pembayaran: `CreditCard` (tetap sama)
 - Kelengkapan Berkas: `FileCheck` (lebih relevan dari CheckSquare)
-- Undangan Seleksi: `Calendar`
+- Jadwal Seleksi: `Calendar`
 - Pengumuman: `Trophy` (lebih relevan dari Award)
 - Daftar Ulang: `CheckCircle` (baru)
 - Profil: `Settings`
@@ -95,7 +95,7 @@ Tab "Kelengkapan Berkas" sekarang terintegrasi dengan 3 fitur dalam satu halaman
 | Data Pendaftaran | `/dashboard/pendaftar` | ✅ Valid |
 | Pembayaran Pendaftaran | `/dashboard/pendaftar/pembayaran-pendaftaran` | ✅ Valid (renamed) |
 | Kelengkapan Berkas | `/dashboard/pendaftar/kelengkapan-berkas` | ✅ Valid (updated) |
-| Undangan Seleksi | `/dashboard/pendaftar/undangan-seleksi` | ✅ Valid |
+| Jadwal Seleksi | `/dashboard/pendaftar/undangan-seleksi` | ✅ Valid |
 | Pengumuman | `/dashboard/pendaftar/pengumuman` | ✅ Valid |
 | Daftar Ulang | `/dashboard/pendaftar/daftar-ulang` | ✅ Valid (new) |
 | Profil | `/dashboard/pendaftar/profil` | ✅ Valid |

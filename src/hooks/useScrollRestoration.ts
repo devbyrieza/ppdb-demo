@@ -8,8 +8,8 @@ export function useScrollRestoration() {
   const isPopState = useRef(false);
 
   useEffect(() => {
-    if ('scrollRestoration' in window.history) {
-      window.history.scrollRestoration = 'manual';
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
     }
 
     const handlePopState = () => {
@@ -36,12 +36,19 @@ export function useScrollRestoration() {
 
     const lenis = (window as any).lenis;
     if (lenis) {
-      lenis.on('scroll', handleScroll);
+      lenis.on("scroll", handleScroll);
     } else {
       // Fallback
-      window.addEventListener("scroll", () => {
-         sessionStorage.setItem(`scroll-pos-${pathname}`, window.scrollY.toString());
-      }, { passive: true });
+      window.addEventListener(
+        "scroll",
+        () => {
+          sessionStorage.setItem(
+            `scroll-pos-${pathname}`,
+            window.scrollY.toString(),
+          );
+        },
+        { passive: true },
+      );
     }
 
     if (isPopState.current) {
@@ -50,23 +57,27 @@ export function useScrollRestoration() {
         const restoreScroll = () => {
           const lenisInstance = (window as any).lenis;
           const pos = parseInt(savedScroll, 10);
-          
+
           if (lenisInstance) {
             lenisInstance.start();
-            lenisInstance.scrollTo(pos, { immediate: true, force: true, lock: true });
+            lenisInstance.scrollTo(pos, {
+              immediate: true,
+              force: true,
+              lock: true,
+            });
           } else {
             window.scrollTo({
               top: pos,
-              behavior: "instant"
+              behavior: "instant",
             });
           }
         };
-        
+
         // Delay minimum 100ms menggunakan requestAnimationFrame persis sesuai instruksi
         setTimeout(() => {
           requestAnimationFrame(restoreScroll);
         }, 100);
-        
+
         // Safety net untuk DOM yang butuh waktu lebih lama merender images/assets
         setTimeout(restoreScroll, 250);
         setTimeout(restoreScroll, 500);
@@ -76,11 +87,14 @@ export function useScrollRestoration() {
 
     return () => {
       if (lenis) {
-        lenis.off('scroll', handleScroll);
+        lenis.off("scroll", handleScroll);
       } else {
-         window.removeEventListener("scroll", () => {
-            sessionStorage.setItem(`scroll-pos-${pathname}`, window.scrollY.toString());
-         });
+        window.removeEventListener("scroll", () => {
+          sessionStorage.setItem(
+            `scroll-pos-${pathname}`,
+            window.scrollY.toString(),
+          );
+        });
       }
     };
   }, [pathname]);

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
-import ExcelJS from 'exceljs';
+import ExcelJS from "exceljs";
 import { Prisma } from "@prisma/client";
 
 export async function GET(request: NextRequest) {
@@ -21,7 +21,13 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Invalid session" }, { status: 401 });
     }
     // Check custom role
-    const allowedRoles = ["admin", "admin_super", "admin_berkas", "admin_keuangan", "penguji"];
+    const allowedRoles = [
+      "admin",
+      "admin_super",
+      "admin_berkas",
+      "admin_keuangan",
+      "penguji",
+    ];
     if (!allowedRoles.includes(session.role)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
@@ -58,7 +64,7 @@ export async function GET(request: NextRequest) {
           // Take the latest payment if multiple exists (though usually one related to registration)
           orderBy: { created_at: "desc" },
           take: 1,
-        }
+        },
       },
       orderBy: { created_at: "desc" },
     });
@@ -93,39 +99,41 @@ export async function GET(request: NextRequest) {
     // Filter by type
     let filteredData = processedData;
     if (type === "lunas") {
-      filteredData = processedData.filter((p) => p.status_pembayaran === "verified");
+      filteredData = processedData.filter(
+        (p) => p.status_pembayaran === "verified",
+      );
     } else if (type === "pending") {
       filteredData = processedData.filter(
         (p) =>
           p.status_pembayaran === "pending" ||
           p.status_pembayaran === "belum_bayar" ||
-          p.status_pembayaran === "payment_verification"
+          p.status_pembayaran === "payment_verification",
       );
     }
 
     // Generate Excel
-    if (format === 'excel' || format === 'xlsx') {
+    if (format === "excel" || format === "xlsx") {
       const workbook = new ExcelJS.Workbook();
-      const worksheet = workbook.addWorksheet('Data Pembayaran');
+      const worksheet = workbook.addWorksheet("Data Pembayaran");
 
       // Define columns
       worksheet.columns = [
-        { header: 'No. Pendaftaran', key: 'nomor_pendaftaran', width: 20 },
-        { header: 'Nama Lengkap', key: 'nama_lengkap', width: 30 },
-        { header: 'NIK', key: 'nik', width: 20 },
-        { header: 'Jenis Kelamin', key: 'jenis_kelamin', width: 15 },
-        { header: 'Jenjang', key: 'jenjang', width: 10 },
-        { header: 'No. HP', key: 'no_hp', width: 15 },
-        { header: 'Email', key: 'email', width: 25 },
-        { header: 'Provinsi', key: 'provinsi', width: 20 },
-        { header: 'Kabupaten', key: 'kabupaten', width: 20 },
-        { header: 'Status Pendaftaran', key: 'status_pendaftaran', width: 20 },
-        { header: 'Tanggal Daftar', key: 'tanggal_daftar', width: 15 },
-        { header: 'Jumlah Pembayaran', key: 'jumlah_pembayaran', width: 20 },
-        { header: 'Metode Pembayaran', key: 'metode_pembayaran', width: 20 },
-        { header: 'Status Pembayaran', key: 'status_pembayaran', width: 20 },
-        { header: 'Tanggal Pembayaran', key: 'tanggal_pembayaran', width: 15 },
-        { header: 'Tanggal Verifikasi', key: 'tanggal_verifikasi', width: 20 },
+        { header: "No. Pendaftaran", key: "nomor_pendaftaran", width: 20 },
+        { header: "Nama Lengkap", key: "nama_lengkap", width: 30 },
+        { header: "NIK", key: "nik", width: 20 },
+        { header: "Jenis Kelamin", key: "jenis_kelamin", width: 15 },
+        { header: "Jenjang", key: "jenjang", width: 10 },
+        { header: "No. HP", key: "no_hp", width: 15 },
+        { header: "Email", key: "email", width: 25 },
+        { header: "Provinsi", key: "provinsi", width: 20 },
+        { header: "Kabupaten", key: "kabupaten", width: 20 },
+        { header: "Status Pendaftaran", key: "status_pendaftaran", width: 20 },
+        { header: "Tanggal Daftar", key: "tanggal_daftar", width: 15 },
+        { header: "Jumlah Pembayaran", key: "jumlah_pembayaran", width: 20 },
+        { header: "Metode Pembayaran", key: "metode_pembayaran", width: 20 },
+        { header: "Status Pembayaran", key: "status_pembayaran", width: 20 },
+        { header: "Tanggal Pembayaran", key: "tanggal_pembayaran", width: 15 },
+        { header: "Tanggal Verifikasi", key: "tanggal_verifikasi", width: 20 },
       ];
 
       // Add rows
@@ -142,9 +150,10 @@ export async function GET(request: NextRequest) {
       return new NextResponse(buffer as any, {
         status: 200,
         headers: {
-          'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-          'Content-Disposition': `attachment; filename="${filename}"`
-        }
+          "Content-Type":
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "Content-Disposition": `attachment; filename="${filename}"`,
+        },
       });
     }
 
@@ -191,7 +200,7 @@ export async function GET(request: NextRequest) {
     const csvContent = [
       headers.join(","),
       ...rows.map((row) =>
-        row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(",")
+        row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(","),
       ),
     ].join("\n");
 
@@ -211,6 +220,9 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error("Export error:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 },
+    );
   }
 }

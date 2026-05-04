@@ -2,15 +2,22 @@ import { NextResponse } from "next/server";
 
 // Cache
 let provincesCache: { data: any[]; timestamp: number } | null = null;
-const regenciesCache: Map<string, { data: any[]; timestamp: number }> = new Map();
-const kecamatanCache: Map<string, { data: string[]; timestamp: number }> = new Map();
+const regenciesCache: Map<string, { data: any[]; timestamp: number }> =
+  new Map();
+const kecamatanCache: Map<string, { data: string[]; timestamp: number }> =
+  new Map();
 const CACHE_DURATION = 60 * 60 * 1000; // 1 hour
 
 async function getProvinces() {
-  if (provincesCache && Date.now() - provincesCache.timestamp < CACHE_DURATION) {
+  if (
+    provincesCache &&
+    Date.now() - provincesCache.timestamp < CACHE_DURATION
+  ) {
     return provincesCache.data;
   }
-  const response = await fetch("https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json");
+  const response = await fetch(
+    "https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json",
+  );
   if (!response.ok) throw new Error("Failed to fetch provinces");
   const data = await response.json();
   provincesCache = { data, timestamp: Date.now() };
@@ -22,7 +29,9 @@ async function getRegencies(provinceId: string) {
   if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
     return cached.data;
   }
-  const response = await fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${provinceId}.json`);
+  const response = await fetch(
+    `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${provinceId}.json`,
+  );
   if (!response.ok) throw new Error("Failed to fetch regencies");
   const data = await response.json();
   regenciesCache.set(provinceId, { data, timestamp: Date.now() });
@@ -42,14 +51,16 @@ export async function GET(request: Request) {
     // Get province ID
     const provinces = await getProvinces();
     const province = provinces.find(
-      (p: { id: string; name: string }) => p.name.toUpperCase() === provinsiName.toUpperCase()
+      (p: { id: string; name: string }) =>
+        p.name.toUpperCase() === provinsiName.toUpperCase(),
     );
     if (!province) return NextResponse.json({ data: [] });
 
     // Get kabupaten ID
     const regencies = await getRegencies(province.id);
     const regency = regencies.find(
-      (r: { id: string; name: string }) => r.name.toUpperCase() === kabupatenName.toUpperCase()
+      (r: { id: string; name: string }) =>
+        r.name.toUpperCase() === kabupatenName.toUpperCase(),
     );
     if (!regency) return NextResponse.json({ data: [] });
 
@@ -62,7 +73,7 @@ export async function GET(request: Request) {
 
     // Fetch kecamatan
     const response = await fetch(
-      `https://www.emsifa.com/api-wilayah-indonesia/api/districts/${regency.id}.json`
+      `https://www.emsifa.com/api-wilayah-indonesia/api/districts/${regency.id}.json`,
     );
     if (!response.ok) throw new Error("Failed to fetch kecamatan");
 
@@ -71,7 +82,10 @@ export async function GET(request: Request) {
       .map((k: { id: string; name: string }) => k.name)
       .sort((a: string, b: string) => a.localeCompare(b));
 
-    kecamatanCache.set(cacheKey, { data: kecamatanNames, timestamp: Date.now() });
+    kecamatanCache.set(cacheKey, {
+      data: kecamatanNames,
+      timestamp: Date.now(),
+    });
 
     return NextResponse.json({ data: kecamatanNames });
   } catch (error) {

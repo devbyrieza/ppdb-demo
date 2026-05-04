@@ -33,7 +33,18 @@ export async function GET() {
   try {
     const profiles = await prisma.profile.findMany({
       where: {
-        role: { in: ["admin_berkas", "admin_keuangan", "penguji", "admin_super", "admin", "penguji_calsan", "pewawancara_calsan", "pewawancara_cawalsan"] },
+        role: {
+          in: [
+            "admin_berkas",
+            "admin_keuangan",
+            "penguji",
+            "admin_super",
+            "admin",
+            "penguji_calsan",
+            "pewawancara_calsan",
+            "pewawancara_cawalsan",
+          ],
+        },
       },
       orderBy: { created_at: "desc" },
     });
@@ -56,7 +67,10 @@ export async function POST(request: Request) {
     const { email, password, full_name, role, secondary_roles, phone } = body;
 
     if (!email || !password || !full_name || !role) {
-      return NextResponse.json({ error: "Data tidak lengkap" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Data tidak lengkap" },
+        { status: 400 },
+      );
     }
 
     // Check if email already exists
@@ -65,7 +79,10 @@ export async function POST(request: Request) {
     });
 
     if (existing) {
-      return NextResponse.json({ error: "User dengan email ini sudah terdaftar." }, { status: 400 });
+      return NextResponse.json(
+        { error: "User dengan email ini sudah terdaftar." },
+        { status: 400 },
+      );
     }
 
     const password_hash = await hashPassword(password);
@@ -85,9 +102,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true, user: profile });
   } catch (error: any) {
     console.error("POST /api/admin/users ERROR:", error);
-    return NextResponse.json({
-      error: error.message || "Database error",
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        error: error.message || "Database error",
+      },
+      { status: 500 },
+    );
   }
 }
 
@@ -99,10 +119,14 @@ export async function PUT(request: Request) {
   }
 
   try {
-    const { id, password, role, full_name, email, secondary_roles, phone } = await request.json();
+    const { id, password, role, full_name, email, secondary_roles, phone } =
+      await request.json();
 
     if (!id) {
-      return NextResponse.json({ error: "ID User diperlukan" }, { status: 400 });
+      return NextResponse.json(
+        { error: "ID User diperlukan" },
+        { status: 400 },
+      );
     }
 
     const data: any = { updated_at: new Date() };
@@ -117,12 +141,15 @@ export async function PUT(request: Request) {
       const existing = await prisma.profile.findFirst({
         where: {
           email: email,
-          NOT: { id: id }
-        }
+          NOT: { id: id },
+        },
       });
 
       if (existing) {
-        return NextResponse.json({ error: "Email sudah digunakan oleh user lain" }, { status: 400 });
+        return NextResponse.json(
+          { error: "Email sudah digunakan oleh user lain" },
+          { status: 400 },
+        );
       }
 
       data.email = email;
@@ -151,7 +178,10 @@ export async function DELETE(request: Request) {
     const id = searchParams.get("id");
 
     if (!id) {
-      return NextResponse.json({ error: "ID User diperlukan" }, { status: 400 });
+      return NextResponse.json(
+        { error: "ID User diperlukan" },
+        { status: 400 },
+      );
     }
 
     await prisma.profile.delete({ where: { id } });

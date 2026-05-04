@@ -54,46 +54,55 @@ export default function JadwalUjianPage() {
     end_time: "",
     quota: 10,
     location: "Pesantren Al Andalus Al Imam",
-    notes: ""
+    notes: "",
   });
 
   const [search, setSearch] = useState("");
-  const [selectedPendaftarId, setSelectedPendaftarId] = useState<string | null>(null);
+  const [selectedPendaftarId, setSelectedPendaftarId] = useState<string | null>(
+    null,
+  );
 
   // Automatic End Time Calculation Logic
   useEffect(() => {
     if (newSession.start_time) {
       const start = new Date(newSession.start_time);
       const titleLower = newSession.title.toLowerCase();
-      
+
       let durationMinutes = 60; // Default 1 hour
       if (titleLower.includes("quran") || titleLower.includes("qur'an")) {
         durationMinutes = 30;
-      } else if (titleLower.includes("calsan") || titleLower.includes("cawalsan") || titleLower.includes("wawancara")) {
+      } else if (
+        titleLower.includes("calsan") ||
+        titleLower.includes("cawalsan") ||
+        titleLower.includes("wawancara")
+      ) {
         durationMinutes = 60;
       }
 
       const end = new Date(start.getTime() + durationMinutes * 60000);
-      
+
       // Format to YYYY-MM-DDTHH:mm
       const year = end.getFullYear();
-      const month = String(end.getMonth() + 1).padStart(2, '0');
-      const day = String(end.getDate()).padStart(2, '0');
-      const hours = String(end.getHours()).padStart(2, '0');
-      const mins = String(end.getMinutes()).padStart(2, '0');
-      
+      const month = String(end.getMonth() + 1).padStart(2, "0");
+      const day = String(end.getDate()).padStart(2, "0");
+      const hours = String(end.getHours()).padStart(2, "0");
+      const mins = String(end.getMinutes()).padStart(2, "0");
+
       const formattedEndTime = `${year}-${month}-${day}T${hours}:${mins}`;
-      
+
       // Only update if different to avoid infinite loop
       if (newSession.end_time !== formattedEndTime) {
-        setNewSession(prev => ({ ...prev, end_time: formattedEndTime }));
+        setNewSession((prev) => ({ ...prev, end_time: formattedEndTime }));
       }
     }
   }, [newSession.start_time, newSession.title]);
   const [assigning, setAssigning] = useState(false);
   const [showBroadcastModal, setShowBroadcastModal] = useState(false);
   const [resetFlags, setResetFlags] = useState(false);
-  const [availStats, setAvailStats] = useState({ eligibleCount: 0, totalAvailableSlots: 0 });
+  const [availStats, setAvailStats] = useState({
+    eligibleCount: 0,
+    totalAvailableSlots: 0,
+  });
   const [broadcasting, setBroadcasting] = useState(false);
   const [sendingProgress, setSendingProgress] = useState<{
     active: boolean;
@@ -104,7 +113,7 @@ export default function JadwalUjianPage() {
     active: false,
     curr: 0,
     total: 0,
-    logs: []
+    logs: [],
   });
 
   useEffect(() => {
@@ -114,7 +123,9 @@ export default function JadwalUjianPage() {
 
   const fetchAvailStats = async () => {
     try {
-      const res = await fetch("/api/admin/notifications/broadcast-availability");
+      const res = await fetch(
+        "/api/admin/notifications/broadcast-availability",
+      );
       if (res.ok) {
         const data = await res.json();
         setAvailStats(data.data);
@@ -129,7 +140,7 @@ export default function JadwalUjianPage() {
       setLoading(true);
       const [sessionsRes, pendaftarRes] = await Promise.all([
         fetch("/api/admin/exam-sessions"),
-        fetch("/api/admin/pendaftar/list?status=paid,docs_verified&limit=100")
+        fetch("/api/admin/pendaftar/list?status=paid,docs_verified&limit=100"),
       ]);
 
       if (sessionsRes.ok) {
@@ -167,7 +178,7 @@ export default function JadwalUjianPage() {
   const handleAssign = async (sessionId: string) => {
     if (!selectedPendaftarId) return;
 
-    const p = pendaftar.find(p => p.id === selectedPendaftarId);
+    const p = pendaftar.find((p) => p.id === selectedPendaftarId);
 
     try {
       setAssigning(true);
@@ -190,7 +201,11 @@ export default function JadwalUjianPage() {
       }
     } catch (e) {
       console.error(e);
-      Swal.fire("Error", "Terjadi kesalahan sistem saat menetapkan jadwal", "error");
+      Swal.fire(
+        "Error",
+        "Terjadi kesalahan sistem saat menetapkan jadwal",
+        "error",
+      );
     } finally {
       setAssigning(false);
     }
@@ -206,7 +221,7 @@ export default function JadwalUjianPage() {
       cancelButtonColor: "#57534e", // Stone 600
       confirmButtonText: "Ya, Mulai Broadcast",
       cancelButtonText: "Batal",
-      reverseButtons: true
+      reverseButtons: true,
     });
 
     if (!result.isConfirmed) return;
@@ -222,15 +237,20 @@ export default function JadwalUjianPage() {
       if (res.ok) {
         if (data.queue && data.queue.length > 0) {
           // Start batch sending
-          setSendingProgress({ active: true, curr: 0, total: data.queue.length, logs: ["Mulai antrian pengiriman..."] });
+          setSendingProgress({
+            active: true,
+            curr: 0,
+            total: data.queue.length,
+            logs: ["Mulai antrian pengiriman..."],
+          });
 
           let success = 0;
           for (let i = 0; i < data.queue.length; i++) {
             const item = data.queue[i];
-            setSendingProgress(prev => ({
+            setSendingProgress((prev) => ({
               ...prev,
               curr: i + 1,
-              logs: [`Mengirim ke ${item.nama}...`, ...prev.logs.slice(0, 3)]
+              logs: [`Mengirim ke ${item.nama}...`, ...prev.logs.slice(0, 3)],
             }));
 
             try {
@@ -239,8 +259,8 @@ export default function JadwalUjianPage() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                   type: "schedule",
-                  ...item
-                })
+                  ...item,
+                }),
               });
               success++;
             } catch (err) {
@@ -249,14 +269,22 @@ export default function JadwalUjianPage() {
 
             // Delay 4 detik untuk mencegah ban
             if (i < data.queue.length - 1) {
-              await new Promise(r => setTimeout(r, 4000));
+              await new Promise((r) => setTimeout(r, 4000));
             }
           }
 
-          Swal.fire("Selesai!", `${success} notifikasi berhasil dimasukkan ke antrean pengiriman.`, "success");
+          Swal.fire(
+            "Selesai!",
+            `${success} notifikasi berhasil dimasukkan ke antrean pengiriman.`,
+            "success",
+          );
           setSendingProgress({ active: false, curr: 0, total: 0, logs: [] });
         } else {
-          Swal.fire("Info", data.message || "Tidak ada pendaftar baru yang butuh jadwal.", "info");
+          Swal.fire(
+            "Info",
+            data.message || "Tidak ada pendaftar baru yang butuh jadwal.",
+            "info",
+          );
         }
         fetchData();
       } else {
@@ -273,14 +301,21 @@ export default function JadwalUjianPage() {
   const handleBroadcastAvailability = async () => {
     try {
       setBroadcasting(true);
-      const res = await fetch("/api/admin/notifications/broadcast-availability", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ reset_flags: resetFlags }),
-      });
+      const res = await fetch(
+        "/api/admin/notifications/broadcast-availability",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ reset_flags: resetFlags }),
+        },
+      );
       const data = await res.json();
       if (res.ok) {
-        Swal.fire("Sukses", data.message || "Broadcast availability berhasil dijalankan", "success");
+        Swal.fire(
+          "Sukses",
+          data.message || "Broadcast availability berhasil dijalankan",
+          "success",
+        );
         setShowBroadcastModal(false);
         fetchAvailStats();
       } else {
@@ -296,18 +331,22 @@ export default function JadwalUjianPage() {
 
   const toTitleCase = (str: string) => {
     if (!str) return "";
-    return str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+    return str.replace(
+      /\w\S*/g,
+      (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(),
+    );
   };
 
   const formatTimeRange = (start: string, end: string) => {
     const s = new Date(start);
     const e = new Date(end);
-    return `${s.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'short' })} • ${s.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })} - ${e.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}`;
+    return `${s.toLocaleDateString("id-ID", { weekday: "long", day: "numeric", month: "short" })} • ${s.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" })} - ${e.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" })}`;
   };
 
-  const filteredPendaftar = pendaftar.filter(p =>
-    p.nama_lengkap.toLowerCase().includes(search.toLowerCase()) ||
-    p.nomor_pendaftaran.toLowerCase().includes(search.toLowerCase())
+  const filteredPendaftar = pendaftar.filter(
+    (p) =>
+      p.nama_lengkap.toLowerCase().includes(search.toLowerCase()) ||
+      p.nomor_pendaftaran.toLowerCase().includes(search.toLowerCase()),
   );
 
   return (
@@ -321,8 +360,13 @@ export default function JadwalUjianPage() {
               <Calendar className="w-8 h-8 text-white" />
             </div>
             <div>
-              <h1 className="text-3xl font-black text-ink-900 tracking-tight">Manajemen <span className="text-purple-600">Jadwal Ujian</span></h1>
-              <p className="text-emerald-900/60 font-medium">Panel Pengaturan Jadwal Seleksi PPDB Al Imam</p>
+              <h1 className="text-3xl font-black text-ink-900 tracking-tight">
+                Manajemen{" "}
+                <span className="text-purple-600">Jadwal Seleksi</span>
+              </h1>
+              <p className="text-emerald-900/60 font-medium">
+                Panel Pengaturan Jadwal Seleksi PPDB Al Imam
+              </p>
             </div>
           </div>
           <div className="flex flex-col md:flex-row gap-3">
@@ -353,9 +397,16 @@ export default function JadwalUjianPage() {
               <Users className="w-8 h-8" />
             </div>
             <div>
-              <p className="text-sm font-bold opacity-80 uppercase tracking-widest">Pendaftar Butuh Jadwal</p>
-              <h3 className="text-4xl font-black leading-none mt-1">{availStats.eligibleCount} <span className="text-lg opacity-60">Orang</span></h3>
-              <p className="text-xs mt-2 opacity-70 font-medium">Belum memiliki jadwal & belum mendapat notifikasi terbaru</p>
+              <p className="text-sm font-bold opacity-80 uppercase tracking-widest">
+                Pendaftar Butuh Jadwal
+              </p>
+              <h3 className="text-4xl font-black leading-none mt-1">
+                {availStats.eligibleCount}{" "}
+                <span className="text-lg opacity-60">Orang</span>
+              </h3>
+              <p className="text-xs mt-2 opacity-70 font-medium">
+                Belum memiliki jadwal & belum mendapat notifikasi terbaru
+              </p>
             </div>
           </div>
         </div>
@@ -364,8 +415,13 @@ export default function JadwalUjianPage() {
             <Calendar className="w-8 h-8 text-emerald-600" />
           </div>
           <div>
-            <p className="text-sm font-bold text-ink-400 uppercase tracking-widest">Total Slot Tersedia</p>
-            <h3 className="text-4xl font-black text-ink-950 leading-none mt-1">{availStats.totalAvailableSlots} <span className="text-lg text-ink-400">Sesi</span></h3>
+            <p className="text-sm font-bold text-ink-400 uppercase tracking-widest">
+              Total Slot Tersedia
+            </p>
+            <h3 className="text-4xl font-black text-ink-950 leading-none mt-1">
+              {availStats.totalAvailableSlots}{" "}
+              <span className="text-lg text-ink-400">Sesi</span>
+            </h3>
             <p className="text-xs mt-2 text-emerald-600 font-bold flex items-center gap-1">
               <CheckCircle2 className="w-3 h-3" /> Siap untuk diumumkan
             </p>
@@ -389,18 +445,27 @@ export default function JadwalUjianPage() {
             ) : sessions.length === 0 ? (
               <div className="bg-white rounded-2xl p-12 text-center border-2 border-dashed border-ink-100">
                 <Calendar className="w-12 h-12 text-ink-200 mx-auto mb-4" />
-                <p className="font-bold text-ink-400">Belum ada sesi ujian yang dibuat.</p>
+                <p className="font-bold text-ink-400">
+                  Belum ada sesi ujian yang dibuat.
+                </p>
               </div>
             ) : (
               sessions.map((s) => (
-                <div key={s.id} className={`group bg-white rounded-2xl shadow-clay-md border border-white/40 p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 transition-all ${selectedPendaftarId ? "ring-2 ring-purple-100 hover:ring-purple-200" : ""}`}>
+                <div
+                  key={s.id}
+                  className={`group bg-white rounded-2xl shadow-clay-md border border-white/40 p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 transition-all ${selectedPendaftarId ? "ring-2 ring-purple-100 hover:ring-purple-200" : ""}`}
+                >
                   <div className="flex items-start gap-5">
                     <div className="w-14 h-14 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-600 shadow-inner">
                       <Clock className="w-7 h-7" />
                     </div>
                     <div>
-                      <h3 className="font-black text-ink-900 text-lg">{s.title || "Sesi Ujian"}</h3>
-                      <p className="text-sm font-bold text-ink-500">{formatTimeRange(s.start_time, s.end_time)}</p>
+                      <h3 className="font-black text-ink-900 text-lg">
+                        {s.title || "Sesi Ujian"}
+                      </h3>
+                      <p className="text-sm font-bold text-ink-500">
+                        {formatTimeRange(s.start_time, s.end_time)}
+                      </p>
                       <div className="flex items-center gap-4 mt-2">
                         <span className="flex items-center gap-1.5 text-xs font-bold text-ink-400 uppercase tracking-wider">
                           <MapPin className="w-3.5 h-3.5" />
@@ -421,7 +486,9 @@ export default function JadwalUjianPage() {
                         disabled={assigning || s.booked_count >= s.quota}
                         className="w-full md:w-auto px-6 py-3 bg-gradient-to-br from-maroon-600 to-emerald-600 text-white rounded-xl font-black shadow-lg shadow-maroon-600/20 hover:scale-105 transition-all flex items-center justify-center gap-2 "
                       >
-                        {assigning ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+                        {assigning ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : null}
                         Terapkan ke Sesi Ini
                       </button>
                     ) : (
@@ -429,11 +496,15 @@ export default function JadwalUjianPage() {
                         <div className="w-full bg-cream-100 h-2.5 rounded-full overflow-hidden border border-white">
                           <div
                             className="h-full bg-gradient-to-r from-purple-500 to-indigo-600"
-                            style={{ width: `${(s.booked_count / s.quota) * 100}%` }}
+                            style={{
+                              width: `${(s.booked_count / s.quota) * 100}%`,
+                            }}
                           ></div>
                         </div>
                         <button
-                          onClick={() => handleBulkAssign(s.id, s.title || "Sesi Ini")}
+                          onClick={() =>
+                            handleBulkAssign(s.id, s.title || "Sesi Ini")
+                          }
                           disabled={assigning}
                           className="text-xs font-bold text-purple-600 hover:text-purple-800 hover:bg-purple-50 px-3 py-1.5 rounded-lg transition-all flex items-center gap-2"
                         >
@@ -473,21 +544,32 @@ export default function JadwalUjianPage() {
             <div className="flex-1 overflow-y-auto p-4 space-y-2">
               {filteredPendaftar.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-ink-400 opacity-50">
-                  <span className="text-xs font-bold uppercase">Tidak ada data</span>
+                  <span className="text-xs font-bold uppercase">
+                    Tidak ada data
+                  </span>
                 </div>
               ) : (
                 filteredPendaftar.map((p) => (
                   <div
                     key={p.id}
-                    onClick={() => setSelectedPendaftarId(selectedPendaftarId === p.id ? null : p.id)}
-                    className={`p-4 rounded-xl border transition-all cursor-pointer flex items-center justify-between group ${selectedPendaftarId === p.id
-                      ? "bg-indigo-50 border-indigo-200 shadow-inner"
-                      : "bg-white border-transparent hover:bg-cream-50"
-                      }`}
+                    onClick={() =>
+                      setSelectedPendaftarId(
+                        selectedPendaftarId === p.id ? null : p.id,
+                      )
+                    }
+                    className={`p-4 rounded-xl border transition-all cursor-pointer flex items-center justify-between group ${
+                      selectedPendaftarId === p.id
+                        ? "bg-indigo-50 border-indigo-200 shadow-inner"
+                        : "bg-white border-transparent hover:bg-cream-50"
+                    }`}
                   >
                     <div className="min-w-0">
-                      <p className="font-bold text-ink-900 truncate text-sm leading-tight">{toTitleCase(p.nama_lengkap)}</p>
-                      <p className="text-[10px] font-mono text-ink-400 mt-1">{p.nomor_pendaftaran}</p>
+                      <p className="font-bold text-ink-900 truncate text-sm leading-tight">
+                        {toTitleCase(p.nama_lengkap)}
+                      </p>
+                      <p className="text-[10px] font-mono text-ink-400 mt-1">
+                        {p.nomor_pendaftaran}
+                      </p>
                     </div>
                     {selectedPendaftarId === p.id ? (
                       <CheckCircle2 className="w-5 h-5 text-indigo-600" />
@@ -500,9 +582,13 @@ export default function JadwalUjianPage() {
             </div>
 
             <div className="p-4 bg-indigo-600 text-white">
-              <p className="text-[10px] font-black uppercase tracking-widest opacity-80 mb-1">Status Pemilihan</p>
+              <p className="text-[10px] font-black uppercase tracking-widest opacity-80 mb-1">
+                Status Pemilihan
+              </p>
               <p className="text-xs font-bold font-mono">
-                {selectedPendaftarId ? "Pilih sesi ujian di sebelah kiri" : "Pilih pendaftar untuk dijadwalkan"}
+                {selectedPendaftarId
+                  ? "Pilih sesi ujian di sebelah kiri"
+                  : "Pilih pendaftar untuk dijadwalkan"}
               </p>
             </div>
           </div>
@@ -516,19 +602,29 @@ export default function JadwalUjianPage() {
             <form onSubmit={handleCreateSession}>
               <div className="p-8 space-y-6">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-2xl font-black text-ink-900">Buat Sesi <span className="text-purple-600">Baru</span></h2>
-                  <button type="button" onClick={() => setShowAddSession(false)} className="p-2 hover:bg-cream-100 rounded-lg transition-colors">
+                  <h2 className="text-2xl font-black text-ink-900">
+                    Buat Sesi <span className="text-purple-600">Baru</span>
+                  </h2>
+                  <button
+                    type="button"
+                    onClick={() => setShowAddSession(false)}
+                    className="p-2 hover:bg-cream-100 rounded-lg transition-colors"
+                  >
                     <AlertCircle className="w-5 h-5 text-ink-400 rotate-45" />
                   </button>
                 </div>
 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-xs font-bold text-ink-400 uppercase tracking-widest mb-2">Nama Sesi (Opsional)</label>
+                    <label className="block text-xs font-bold text-ink-400 uppercase tracking-widest mb-2">
+                      Nama Sesi (Opsional)
+                    </label>
                     <input
                       type="text"
                       value={newSession.title}
-                      onChange={(e) => setNewSession({ ...newSession, title: e.target.value })}
+                      onChange={(e) =>
+                        setNewSession({ ...newSession, title: e.target.value })
+                      }
                       placeholder="Contoh: Gelombang 1 - Sesi Pagi"
                       className="w-full bg-cream-50 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-purple-500/10 outline-none font-bold"
                     />
@@ -536,22 +632,36 @@ export default function JadwalUjianPage() {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-bold text-ink-400 uppercase tracking-widest mb-2">Mulai</label>
+                      <label className="block text-xs font-bold text-ink-400 uppercase tracking-widest mb-2">
+                        Mulai
+                      </label>
                       <input
                         type="datetime-local"
                         required
                         value={newSession.start_time}
-                        onChange={(e) => setNewSession({ ...newSession, start_time: e.target.value })}
+                        onChange={(e) =>
+                          setNewSession({
+                            ...newSession,
+                            start_time: e.target.value,
+                          })
+                        }
                         className="w-full bg-cream-50 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-purple-500/10 outline-none font-bold"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-bold text-ink-400 uppercase tracking-widest mb-2">Selesai</label>
+                      <label className="block text-xs font-bold text-ink-400 uppercase tracking-widest mb-2">
+                        Selesai
+                      </label>
                       <input
                         type="datetime-local"
                         required
                         value={newSession.end_time}
-                        onChange={(e) => setNewSession({ ...newSession, end_time: e.target.value })}
+                        onChange={(e) =>
+                          setNewSession({
+                            ...newSession,
+                            end_time: e.target.value,
+                          })
+                        }
                         className="w-full bg-cream-50 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-purple-500/10 outline-none font-bold"
                       />
                     </div>
@@ -559,21 +669,35 @@ export default function JadwalUjianPage() {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-bold text-ink-400 uppercase tracking-widest mb-2">Kuota</label>
+                      <label className="block text-xs font-bold text-ink-400 uppercase tracking-widest mb-2">
+                        Kuota
+                      </label>
                       <input
                         type="number"
                         required
                         value={newSession.quota}
-                        onChange={(e) => setNewSession({ ...newSession, quota: parseInt(e.target.value) })}
+                        onChange={(e) =>
+                          setNewSession({
+                            ...newSession,
+                            quota: parseInt(e.target.value),
+                          })
+                        }
                         className="w-full bg-cream-50 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-purple-500/10 outline-none font-bold"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-bold text-ink-400 uppercase tracking-widest mb-2">Lokasi / Ruangan</label>
+                      <label className="block text-xs font-bold text-ink-400 uppercase tracking-widest mb-2">
+                        Lokasi / Ruangan
+                      </label>
                       <input
                         type="text"
                         value={newSession.location}
-                        onChange={(e) => setNewSession({ ...newSession, location: e.target.value })}
+                        onChange={(e) =>
+                          setNewSession({
+                            ...newSession,
+                            location: e.target.value,
+                          })
+                        }
                         placeholder="Contoh: Ruang CBT atau Online"
                         className="w-full bg-cream-50 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-purple-500/10 outline-none font-bold"
                       />
@@ -583,10 +707,14 @@ export default function JadwalUjianPage() {
                   <div className="bg-purple-50 rounded-xl p-4 border border-purple-100 flex items-start gap-3">
                     <AlertCircle className="w-5 h-5 text-purple-600 shrink-0 mt-0.5" />
                     <div>
-                      <p className="text-xs font-bold text-purple-900 uppercase tracking-wider mb-1">Informasi Otomatis</p>
+                      <p className="text-xs font-bold text-purple-900 uppercase tracking-wider mb-1">
+                        Informasi Otomatis
+                      </p>
                       <p className="text-[11px] text-purple-700 leading-relaxed">
-                        Sistem akan otomatis menyertakan <b>Link Google Meet</b> dari profil Anda (pembuat sesi) 
-                        saat mengirim notifikasi ke pendaftar. Pastikan profil Anda sudah memiliki data link Meet yang benar.
+                        Sistem akan otomatis menyertakan <b>Link Google Meet</b>{" "}
+                        dari profil Anda (pembuat sesi) saat mengirim notifikasi
+                        ke pendaftar. Pastikan profil Anda sudah memiliki data
+                        link Meet yang benar.
                       </p>
                     </div>
                   </div>
@@ -617,21 +745,34 @@ export default function JadwalUjianPage() {
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-ink-900/80 backdrop-blur-sm">
           <div className="bg-white rounded-3xl w-full max-w-md shadow-2xl border border-white p-8 text-center animate-pulse">
             <Loader2 className="w-12 h-12 text-purple-600 animate-spin mx-auto mb-4" />
-            <h2 className="text-2xl font-black text-ink-900 mb-2">Mengirim Notifikasi...</h2>
-            <p className="font-bold text-red-500 mb-6 uppercase tracking-widest text-xs">JANGAN TUTUP HALAMAN INI!</p>
+            <h2 className="text-2xl font-black text-ink-900 mb-2">
+              Mengirim Notifikasi...
+            </h2>
+            <p className="font-bold text-red-500 mb-6 uppercase tracking-widest text-xs">
+              JANGAN TUTUP HALAMAN INI!
+            </p>
 
             <div className="w-full bg-cream-100 h-4 rounded-full overflow-hidden mb-4 border border-ink-100">
               <div
                 className="h-full bg-gradient-to-r from-purple-500 to-indigo-600 transition-all duration-500 ease-out"
-                style={{ width: `${(sendingProgress.curr / sendingProgress.total) * 100}%` }}
+                style={{
+                  width: `${(sendingProgress.curr / sendingProgress.total) * 100}%`,
+                }}
               ></div>
             </div>
 
-            <p className="font-mono font-bold text-ink-500 mb-4">{sendingProgress.curr} / {sendingProgress.total}</p>
+            <p className="font-mono font-bold text-ink-500 mb-4">
+              {sendingProgress.curr} / {sendingProgress.total}
+            </p>
 
             <div className="bg-cream-50 rounded-xl p-4 text-left h-32 overflow-hidden flex flex-col-reverse gap-1 border border-ink-100">
               {sendingProgress.logs.map((log, idx) => (
-                <p key={idx} className="text-xs font-mono text-ink-400 truncate">{log}</p>
+                <p
+                  key={idx}
+                  className="text-xs font-mono text-ink-400 truncate"
+                >
+                  {log}
+                </p>
               ))}
             </div>
           </div>
@@ -644,39 +785,60 @@ export default function JadwalUjianPage() {
           <div className="bg-white rounded-3xl w-full max-w-md shadow-clay-lg border border-white overflow-hidden animate-in zoom-in-95 duration-300">
             <div className="p-8 space-y-6">
               <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-black text-ink-900">Pulse <span className="text-indigo-600">Notifikasi</span></h2>
-                <button onClick={() => setShowBroadcastModal(false)} className="p-2 hover:bg-cream-100 rounded-lg">
+                <h2 className="text-2xl font-black text-ink-900">
+                  Pulse <span className="text-indigo-600">Notifikasi</span>
+                </h2>
+                <button
+                  onClick={() => setShowBroadcastModal(false)}
+                  className="p-2 hover:bg-cream-100 rounded-lg"
+                >
                   <AlertCircle className="w-5 h-5 text-ink-400 rotate-45" />
                 </button>
               </div>
 
               <div className="space-y-4">
                 <div className="p-4 bg-indigo-50 rounded-2xl border border-indigo-100">
-                  <p className="text-sm font-bold text-indigo-900 mb-1">Target Pengiriman</p>
+                  <p className="text-sm font-bold text-indigo-900 mb-1">
+                    Target Pengiriman
+                  </p>
                   <p className="text-2xl font-black text-indigo-600">
-                    {resetFlags ? "Semua yang belum jadwal" : `${availStats.eligibleCount} Pendaftar`}
+                    {resetFlags
+                      ? "Semua yang belum jadwal"
+                      : `${availStats.eligibleCount} Pendaftar`}
                   </p>
                   <p className="text-[11px] text-indigo-700/70 mt-1">
-                    {resetFlags 
+                    {resetFlags
                       ? "Menghapus status 'pernah dikabari' dan mengirim ulang ke semua pendaftar tanpa jadwal."
                       : "Hanya mengirim ke pendaftar yang belum pernah mendapatkan notifikasi jadwal tersedia."}
                   </p>
                 </div>
 
-                <div className="flex items-center gap-3 p-4 bg-cream-50 rounded-2xl cursor-pointer" onClick={() => setResetFlags(!resetFlags)}>
-                  <div className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all ${resetFlags ? "bg-indigo-600 border-indigo-600" : "bg-white border-ink-100"}`}>
-                    {resetFlags && <CheckSquare className="w-4 h-4 text-white" />}
+                <div
+                  className="flex items-center gap-3 p-4 bg-cream-50 rounded-2xl cursor-pointer"
+                  onClick={() => setResetFlags(!resetFlags)}
+                >
+                  <div
+                    className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all ${resetFlags ? "bg-indigo-600 border-indigo-600" : "bg-white border-ink-100"}`}
+                  >
+                    {resetFlags && (
+                      <CheckSquare className="w-4 h-4 text-white" />
+                    )}
                   </div>
                   <div>
-                    <p className="text-xs font-black text-ink-900 uppercase">Reset Status & Broadcast Ulang</p>
-                    <p className="text-[10px] text-ink-400 font-bold">Gunakan jika Anda menambah banyak slot baru.</p>
+                    <p className="text-xs font-black text-ink-900 uppercase">
+                      Reset Status & Broadcast Ulang
+                    </p>
+                    <p className="text-[10px] text-ink-400 font-bold">
+                      Gunakan jika Anda menambah banyak slot baru.
+                    </p>
                   </div>
                 </div>
 
                 <div className="bg-amber-50 rounded-xl p-4 border border-amber-100 flex items-start gap-3">
                   <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
                   <p className="text-[11px] text-amber-800 leading-relaxed font-bold">
-                    Pesan akan masuk antrean (Queue) untuk mencegah BAN. Pengiriman dilakukan secara perlahan oleh sistem.
+                    Pesan akan masuk antrean (Queue) untuk mencegah BAN.
+                    Pengiriman dilakukan secara perlahan oleh sistem.
                   </p>
                 </div>
               </div>
@@ -690,7 +852,10 @@ export default function JadwalUjianPage() {
                 </button>
                 <button
                   onClick={handleBroadcastAvailability}
-                  disabled={broadcasting || (availStats.eligibleCount === 0 && !resetFlags)}
+                  disabled={
+                    broadcasting ||
+                    (availStats.eligibleCount === 0 && !resetFlags)
+                  }
                   className="flex-[2] py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-black shadow-lg shadow-indigo-600/20 transition-all flex items-center justify-center gap-2"
                 >
                   {broadcasting && <Loader2 className="w-4 h-4 animate-spin" />}
@@ -704,4 +869,3 @@ export default function JadwalUjianPage() {
     </div>
   );
 }
-

@@ -33,7 +33,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { UserRole } from "@/lib/access-control";
-import { exportToExcel, exportToPDF } from "@/lib/utils/export";
+import { exportToExcelProfessional, exportToPDF } from "@/lib/utils/export";
 import Swal from "sweetalert2";
 
 // Filter labels for dashboard categories
@@ -122,19 +122,34 @@ function AdminPendaftarContent() {
       } catch (e) {
         console.error("Failed to fetch session", e);
       }
-    }
+    };
     fetchSession();
   }, []);
 
   // Role helpers
   // const userRole = session?.user?.role; -- Handled by state above
-  const canViewKeuangan = userRole === "admin_super" || userRole === "admin_keuangan" || userRole === "admin";
-  const canViewBerkas = userRole === "admin_super" || userRole === "admin_berkas" || userRole === "admin";
-  const canViewSeleksi = userRole === "admin_super" || userRole === "penguji_calsan" || userRole === "pewawancara_calsan" || userRole === "pewawancara_cawalsan" || userRole === "admin";
+  const canViewKeuangan =
+    userRole === "admin_super" ||
+    userRole === "admin_keuangan" ||
+    userRole === "admin";
+  const canViewBerkas =
+    userRole === "admin_super" ||
+    userRole === "admin_berkas" ||
+    userRole === "admin";
+  const canViewSeleksi =
+    userRole === "admin_super" ||
+    userRole === "penguji_calsan" ||
+    userRole === "pewawancara_calsan" ||
+    userRole === "pewawancara_cawalsan" ||
+    userRole === "admin";
 
   const isKeuangan = userRole === "admin_keuangan";
   const isBerkas = userRole === "admin_berkas";
-  const isPenguji = userRole === "penguji_calsan" || userRole === "pewawancara_calsan" || userRole === "pewawancara_cawalsan";
+  const isPenguji =
+    userRole === "penguji_calsan" ||
+    userRole === "pewawancara_calsan" ||
+    userRole === "pewawancara_cawalsan";
+  const isAdminSuper = userRole === "admin_super";
   const [search, setSearch] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const [statusFilter, setStatusFilter] = useState(urlFilter);
@@ -204,23 +219,30 @@ function AdminPendaftarContent() {
 
   // Announcement State
   const [isAnnouncementModalOpen, setIsAnnouncementModalOpen] = useState(false);
-  const [selectedPendaftar, setSelectedPendaftar] = useState<Pendaftar | null>(null);
+  const [selectedPendaftar, setSelectedPendaftar] = useState<Pendaftar | null>(
+    null,
+  );
   const [announcementForm, setAnnouncementForm] = useState({
     status_kelulusan: "Lulus",
     catatan: "",
-    surat_keputusan_url: ""
+    surat_keputusan_url: "",
   });
-  const [isSubmittingAnnouncement, setIsSubmittingAnnouncement] = useState(false);
+  const [isSubmittingAnnouncement, setIsSubmittingAnnouncement] =
+    useState(false);
 
   // Soft Delete State
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [deletingPendaftar, setDeletingPendaftar] = useState<Pendaftar | null>(null);
+  const [deletingPendaftar, setDeletingPendaftar] = useState<Pendaftar | null>(
+    null,
+  );
   const [deleteConfirmName, setDeleteConfirmName] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [trashCount, setTrashCount] = useState(0);
   const [uploadingDoc, setUploadingDoc] = useState<string | null>(null);
   const [uploadingPay, setUploadingPay] = useState<string | null>(null);
-  const [selectedPendaftarId, setSelectedPendaftarId] = useState<string | null>(null);
+  const [selectedPendaftarId, setSelectedPendaftarId] = useState<string | null>(
+    null,
+  );
   const [selectedDocType, setSelectedDocType] = useState<string | null>(null);
   const [selectedPayId, setSelectedPayId] = useState<string | null>(null);
   const docInputRef = useRef<HTMLInputElement>(null);
@@ -231,7 +253,7 @@ function AdminPendaftarContent() {
     setAnnouncementForm({
       status_kelulusan: pendaftar.pengumuman?.status_kelulusan || "Lulus",
       catatan: "", // Reset notes for new input or fetch if needed
-      surat_keputusan_url: "" // Reset URL
+      surat_keputusan_url: "", // Reset URL
     });
     setIsAnnouncementModalOpen(true);
   };
@@ -262,8 +284,15 @@ function AdminPendaftarContent() {
 
   const handleSoftDelete = async () => {
     if (!deletingPendaftar) return;
-    if (deleteConfirmName.trim().toLowerCase() !== deletingPendaftar.nama_lengkap.trim().toLowerCase()) {
-      Swal.fire("Gagal!", "Nama tidak cocok. Silakan ketik nama lengkap pendaftar dengan benar.", "error");
+    if (
+      deleteConfirmName.trim().toLowerCase() !==
+      deletingPendaftar.nama_lengkap.trim().toLowerCase()
+    ) {
+      Swal.fire(
+        "Gagal!",
+        "Nama tidak cocok. Silakan ketik nama lengkap pendaftar dengan benar.",
+        "error",
+      );
       return;
     }
 
@@ -279,7 +308,11 @@ function AdminPendaftarContent() {
         throw new Error(result.error || "Gagal menghapus data");
       }
 
-      Swal.fire("Selesai!", result.message || "Data berhasil dihapus", "success");
+      Swal.fire(
+        "Selesai!",
+        result.message || "Data berhasil dihapus",
+        "success",
+      );
       setIsDeleteModalOpen(false);
       setDeletingPendaftar(null);
       setDeleteConfirmName("");
@@ -304,8 +337,8 @@ function AdminPendaftarContent() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           pendaftar_id: selectedPendaftar.id,
-          ...announcementForm
-        })
+          ...announcementForm,
+        }),
       });
 
       if (!response.ok) {
@@ -324,7 +357,9 @@ function AdminPendaftarContent() {
     }
   };
 
-  const handleQuickDocUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleQuickDocUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = e.target.files?.[0];
     if (!file || !selectedDocType || !selectedPendaftarId) return;
 
@@ -342,7 +377,15 @@ function AdminPendaftarContent() {
 
       const data = await response.json();
       if (data.success) {
-        Swal.fire({ title: "Berhasil", text: data.message, icon: "success", toast: true, position: 'top-end', timer: 3000, showConfirmButton: false });
+        Swal.fire({
+          title: "Berhasil",
+          text: data.message,
+          icon: "success",
+          toast: true,
+          position: "top-end",
+          timer: 3000,
+          showConfirmButton: false,
+        });
         fetchPendaftar();
       } else {
         Swal.fire("Gagal", data.error, "error");
@@ -358,7 +401,9 @@ function AdminPendaftarContent() {
     }
   };
 
-  const handleQuickPayUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleQuickPayUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = e.target.files?.[0];
     if (!file || !selectedPayId) return;
 
@@ -375,7 +420,15 @@ function AdminPendaftarContent() {
 
       const data = await response.json();
       if (data.success) {
-        Swal.fire({ title: "Berhasil", text: data.message, icon: "success", toast: true, position: 'top-end', timer: 3000, showConfirmButton: false });
+        Swal.fire({
+          title: "Berhasil",
+          text: data.message,
+          icon: "success",
+          toast: true,
+          position: "top-end",
+          timer: 3000,
+          showConfirmButton: false,
+        });
         fetchPendaftar();
       } else {
         Swal.fire("Gagal", data.error, "error");
@@ -412,7 +465,8 @@ function AdminPendaftarContent() {
       if (search) params.append("search", search);
       if (statusFilter) params.append("status", statusFilter);
       if (jenjangFilter) params.append("jenjang", jenjangFilter);
-      if (jenisKelaminFilter) params.append("jenis_kelamin", jenisKelaminFilter);
+      if (jenisKelaminFilter)
+        params.append("jenis_kelamin", jenisKelaminFilter);
       if (tahunAjaranFilter) params.append("tahun_ajaran", tahunAjaranFilter);
       if (provinsiFilter) params.append("provinsi", provinsiFilter);
       if (kabupatenFilter) params.append("kabupaten", kabupatenFilter);
@@ -519,7 +573,7 @@ function AdminPendaftarContent() {
       try {
         setKabupatenLoading(true);
         const response = await fetch(
-          `/api/admin/locations/kabupaten?provinsi=${encodeURIComponent(provinsiFilter)}`
+          `/api/admin/locations/kabupaten?provinsi=${encodeURIComponent(provinsiFilter)}`,
         );
         if (response.ok) {
           const result = await response.json();
@@ -551,7 +605,9 @@ function AdminPendaftarContent() {
           provinsi: provinsiFilter,
           kabupaten: kabupatenFilter,
         });
-        const response = await fetch(`/api/admin/locations/kecamatan?${params}`);
+        const response = await fetch(
+          `/api/admin/locations/kecamatan?${params}`,
+        );
         if (response.ok) {
           const result = await response.json();
           setKecamatanList(result.data || []);
@@ -581,7 +637,9 @@ function AdminPendaftarContent() {
           kabupaten: kabupatenFilter,
           kecamatan: kecamatanFilter,
         });
-        const response = await fetch(`/api/admin/locations/kelurahan?${params}`);
+        const response = await fetch(
+          `/api/admin/locations/kelurahan?${params}`,
+        );
         if (response.ok) {
           const result = await response.json();
           setKelurahanList(result.data || []);
@@ -616,7 +674,7 @@ function AdminPendaftarContent() {
 
   const handleSelectOne = (id: string) => {
     setSelectedIds((prev) =>
-      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id],
     );
   };
 
@@ -635,7 +693,7 @@ function AdminPendaftarContent() {
       cancelButtonColor: "#57534e", // Stone 600
       confirmButtonText: "Ya, Update Semua",
       cancelButtonText: "Batal",
-      reverseButtons: true
+      reverseButtons: true,
     });
 
     if (!result.isConfirmed) return;
@@ -645,7 +703,10 @@ function AdminPendaftarContent() {
       const response = await fetch("/api/admin/pendaftar/bulk-update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ids: selectedIds, status_pendaftaran: bulkStatus }),
+        body: JSON.stringify({
+          ids: selectedIds,
+          status_pendaftaran: bulkStatus,
+        }),
       });
 
       if (!response.ok) throw new Error("Failed to update");
@@ -669,7 +730,8 @@ function AdminPendaftarContent() {
       if (search) params.append("search", search);
       if (statusFilter) params.append("status", statusFilter);
       if (jenjangFilter) params.append("jenjang", jenjangFilter);
-      if (jenisKelaminFilter) params.append("jenis_kelamin", jenisKelaminFilter);
+      if (jenisKelaminFilter)
+        params.append("jenis_kelamin", jenisKelaminFilter);
       if (tahunAjaranFilter) params.append("tahun_ajaran", tahunAjaranFilter);
       if (provinsiFilter) params.append("provinsi", provinsiFilter);
       if (kabupatenFilter) params.append("kabupaten", kabupatenFilter);
@@ -680,16 +742,57 @@ function AdminPendaftarContent() {
       if (!response.ok) throw new Error("Failed to export");
 
       const result = await response.json();
-      const data = result.data;
-      const filename = `data-pendaftar-${new Date().toISOString().split("T")[0]}`;
+      const data: any[] = result.data;
+      const filename = `Data_Pendaftar_${new Date().toISOString().split("T")[0]}`;
 
       if (type === "excel") {
-        exportToExcel(data, filename, "Data Pendaftar");
+        const header = Object.keys(data[0] || {});
+
+        // Grouping by Jenjang
+        const jenjangGroups: Record<string, any[]> = {};
+        data.forEach((item) => {
+          const j = item["Jenjang"] || "LAINNYA";
+          if (!jenjangGroups[j]) jenjangGroups[j] = [];
+          jenjangGroups[j].push(item);
+        });
+
+        const sheets = [
+          {
+            name: "SEMUA PENDAFTAR",
+            title: "DATA PENDAFTAR SANTRI BARU (TOTAL)",
+            subTitle: `Tanggal Ekspor: ${new Date().toLocaleDateString("id-ID")}`,
+            header,
+            data: data.map((item) => Object.values(item)),
+          },
+        ];
+
+        Object.keys(jenjangGroups)
+          .sort()
+          .forEach((j) => {
+            sheets.push({
+              name: j.substring(0, 31),
+              title: `DATA PENDAFTAR - ${j}`,
+              subTitle: `Jenjang: ${j} | Tanggal Ekspor: ${new Date().toLocaleDateString("id-ID")}`,
+              header,
+              data: jenjangGroups[j].map((item) => Object.values(item)),
+            });
+          });
+
+        await exportToExcelProfessional({
+          fileName: filename,
+          sheets,
+        });
       } else {
         // Transform for PDF
         const headers = Object.keys(data[0] || {});
         const rows = data.map((item: any) => Object.values(item));
-        exportToPDF("Data Pendaftar Santri Baru", headers, rows, filename, "landscape");
+        exportToPDF(
+          "Data Pendaftar Santri Baru",
+          headers,
+          rows,
+          filename,
+          "landscape",
+        );
       }
     } catch (error) {
       console.error("Error exporting:", error);
@@ -705,33 +808,89 @@ function AdminPendaftarContent() {
 
   const toTitleCase = (str: string) => {
     if (!str) return "";
-    return str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+    return str.replace(
+      /\w\S*/g,
+      (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(),
+    );
   };
 
   const formatStatus = (status: string) => {
     const statusMap: Record<string, { label: string; color: string }> = {
       draft: { label: "Draft", color: "bg-stone-100 text-stone-700" },
-      awaiting_payment: { label: "Draft", color: "bg-stone-100 text-stone-700" },
-      payment_verification: { label: "Verifikasi Bayar", color: "bg-brand-blue-50 text-brand-blue-700 border border-brand-blue-100" },
-      paid: { label: "Terdaftar", color: "bg-brand-blue-100 text-brand-blue-800" },
-      verified: { label: "Terdaftar", color: "bg-brand-blue-100 text-brand-blue-800" },
-      data_completed: { label: "Data Lengkap", color: "bg-brand-yellow-50 text-brand-yellow-800 border border-brand-yellow-100" },
-      docs_uploaded: { label: "Data Lengkap", color: "bg-brand-yellow-50 text-brand-yellow-800 border border-brand-yellow-100" },
-      docs_verified: { label: "Berkas Lengkap", color: "bg-emerald-50 text-emerald-800 border border-emerald-100" },
-      scheduled: { label: "Berkas Lengkap", color: "bg-emerald-50 text-emerald-800 border border-emerald-100" },
-      testing: { label: "Sedang Ujian", color: "bg-violet-100 text-violet-700 border border-violet-200 shadow-sm" },
-      tested: { label: "Sudah Ujian", color: "bg-brand-blue-600 text-white shadow-sm" },
-      exam_completed: { label: "Sudah Ujian", color: "bg-brand-blue-600 text-white shadow-sm" },
-      announced: { label: "Cadangan", color: "bg-brand-yellow-100 text-brand-yellow-800 border border-brand-yellow-200" },
-      cadangan: { label: "Cadangan", color: "bg-brand-yellow-100 text-brand-yellow-800 border border-brand-yellow-200" },
+      awaiting_payment: {
+        label: "Draft",
+        color: "bg-stone-100 text-stone-700",
+      },
+      payment_verification: {
+        label: "Verifikasi Bayar",
+        color:
+          "bg-brand-blue-50 text-brand-blue-700 border border-brand-blue-100",
+      },
+      paid: {
+        label: "Terdaftar",
+        color: "bg-brand-blue-100 text-brand-blue-800",
+      },
+      verified: {
+        label: "Terdaftar",
+        color: "bg-brand-blue-100 text-brand-blue-800",
+      },
+      data_completed: {
+        label: "Data Lengkap",
+        color:
+          "bg-brand-yellow-50 text-brand-yellow-800 border border-brand-yellow-100",
+      },
+      docs_uploaded: {
+        label: "Data Lengkap",
+        color:
+          "bg-brand-yellow-50 text-brand-yellow-800 border border-brand-yellow-100",
+      },
+      docs_verified: {
+        label: "Berkas Lengkap",
+        color: "bg-emerald-50 text-emerald-800 border border-emerald-100",
+      },
+      scheduled: {
+        label: "Berkas Lengkap",
+        color: "bg-emerald-50 text-emerald-800 border border-emerald-100",
+      },
+      testing: {
+        label: "Sedang Ujian",
+        color:
+          "bg-violet-100 text-violet-700 border border-violet-200 shadow-sm",
+      },
+      tested: {
+        label: "Sudah Ujian",
+        color: "bg-brand-blue-600 text-white shadow-sm",
+      },
+      exam_completed: {
+        label: "Sudah Ujian",
+        color: "bg-brand-blue-600 text-white shadow-sm",
+      },
+      announced: {
+        label: "Cadangan",
+        color:
+          "bg-brand-yellow-100 text-brand-yellow-800 border border-brand-yellow-200",
+      },
+      cadangan: {
+        label: "Cadangan",
+        color:
+          "bg-brand-yellow-100 text-brand-yellow-800 border border-brand-yellow-200",
+      },
       accepted: { label: "Diterima", color: "bg-emerald-600 text-white" },
       rejected: { label: "Ditolak", color: "bg-rose-600 text-white" },
-      enrolled: { label: "Sudah Daftar Ulang", color: "bg-emerald-100 text-emerald-800" },
+      enrolled: {
+        label: "Sudah Daftar Ulang",
+        color: "bg-emerald-100 text-emerald-800",
+      },
     };
 
-    const statusInfo = statusMap[status] || { label: status, color: "bg-stone-100 text-stone-700" };
+    const statusInfo = statusMap[status] || {
+      label: status,
+      color: "bg-stone-100 text-stone-700",
+    };
     return (
-      <span className={`px-3 py-1 rounded-full text-xs font-bold ${statusInfo.color}`}>
+      <span
+        className={`px-3 py-1 rounded-full text-xs font-bold ${statusInfo.color}`}
+      >
         {statusInfo.label}
       </span>
     );
@@ -805,21 +964,22 @@ function AdminPendaftarContent() {
             </div>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
-            {userRole && ['admin_super', 'admin', 'penguji'].includes(userRole) && (
-              <Link
-                href="/dashboard/admin/pendaftar/trash"
-                className="flex items-center gap-2 px-3 md:px-4 py-2 bg-stone-600 hover:bg-stone-700 text-white rounded-lg transition-colors text-sm"
-                title="Lihat data terhapus"
-              >
-                <Trash2 className="w-4 h-4" />
-                <span className="hidden sm:inline">Sampah</span>
-                {trashCount > 0 && (
-                  <span className="bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
-                    {trashCount}
-                  </span>
-                )}
-              </Link>
-            )}
+            {userRole &&
+              ["admin_super", "admin", "penguji"].includes(userRole) && (
+                <Link
+                  href="/dashboard/admin/pendaftar/trash"
+                  className="flex items-center gap-2 px-3 md:px-4 py-2 bg-stone-600 hover:bg-stone-700 text-white rounded-lg transition-colors text-sm"
+                  title="Lihat data terhapus"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  <span className="hidden sm:inline">Sampah</span>
+                  {trashCount > 0 && (
+                    <span className="bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
+                      {trashCount}
+                    </span>
+                  )}
+                </Link>
+              )}
             <button
               onClick={() => handleExport("excel")}
               disabled={exporting}
@@ -852,13 +1012,14 @@ function AdminPendaftarContent() {
               className="flex items-center gap-2 px-3 md:px-6 py-2.5 bg-white hover:bg-stone-50 border border-stone-200 text-stone-700 rounded-xl font-bold transition-all shadow-sm hover:shadow-md text-sm disabled:opacity-50"
               title="Muat Ulang"
             >
-              <RefreshCw className={`w-4 h-4 ${refreshing ? "animate-spin" : ""}`} />
+              <RefreshCw
+                className={`w-4 h-4 ${refreshing ? "animate-spin" : ""}`}
+              />
               <span className="hidden sm:inline">Refresh</span>
             </button>
           </div>
         </div>
       </div>
-
 
       {/* Filters */}
       <div className="bg-white rounded-2xl shadow-sm p-6 border border-brand-yellow-100">
@@ -903,7 +1064,9 @@ function AdminPendaftarContent() {
               {canViewKeuangan && (
                 <optgroup label="--- Pembayaran ---">
                   <option value="belum_bayar">Belum Bayar (Draft)</option>
-                  <option value="menunggu_verifikasi_pembayaran">Menunggu Verifikasi Bayar</option>
+                  <option value="menunggu_verifikasi_pembayaran">
+                    Menunggu Verifikasi Bayar
+                  </option>
                   <option value="sudah_bayar">Terdaftar (Sudah Bayar)</option>
                   <option value="pembayaran_ditolak">Pembayaran Ditolak</option>
                 </optgroup>
@@ -912,15 +1075,26 @@ function AdminPendaftarContent() {
               {canViewBerkas && (
                 <>
                   <optgroup label="--- Data Lengkap ---">
-                    <option value="belum_isi_data">Belum Isi Data Lengkap</option>
-                    <option value="sudah_isi_data">Sudah Isi Data Lengkap</option>
+                    <option value="belum_isi_data">
+                      Belum Isi Data Lengkap
+                    </option>
+                    <option value="sudah_isi_data">
+                      Sudah Isi Data Lengkap
+                    </option>
                   </optgroup>
                   <optgroup label="--- Dokumen ---">
-                    <option value="belum_upload_dokumen">Belum Upload Dokumen</option>
-                    <option value="menunggu_verifikasi_dokumen" className="font-bold bg-yellow-50">
+                    <option value="belum_upload_dokumen">
+                      Belum Upload Dokumen
+                    </option>
+                    <option
+                      value="menunggu_verifikasi_dokumen"
+                      className="font-bold bg-yellow-50"
+                    >
                       Menunggu Verifikasi Dokumen (Data Lengkap)
                     </option>
-                    <option value="dokumen_terverifikasi">Berkas Lengkap (Siap Ujian)</option>
+                    <option value="dokumen_terverifikasi">
+                      Berkas Lengkap (Siap Ujian)
+                    </option>
                     <option value="dokumen_ditolak">Dokumen Ditolak</option>
                   </optgroup>
                 </>
@@ -929,7 +1103,10 @@ function AdminPendaftarContent() {
               {canViewSeleksi && (
                 <>
                   <optgroup label="--- Ujian & Wawancara ---">
-                    <option value="terjadwal_ujian" className={isPenguji ? "font-bold bg-purple-50" : ""}>
+                    <option
+                      value="terjadwal_ujian"
+                      className={isPenguji ? "font-bold bg-purple-50" : ""}
+                    >
                       Terjadwal Ujian {isPenguji ? "(PRIORITAS)" : ""}
                     </option>
                     <option value="belum_ujian">Belum Ujian</option>
@@ -938,8 +1115,12 @@ function AdminPendaftarContent() {
                   </optgroup>
                   <optgroup label="--- Penerimaan ---">
                     <option value="diterima">Diterima</option>
-                    <option value="belum_daftar_ulang">Belum Daftar Ulang</option>
-                    <option value="sudah_daftar_ulang">Sudah Daftar Ulang</option>
+                    <option value="belum_daftar_ulang">
+                      Belum Daftar Ulang
+                    </option>
+                    <option value="sudah_daftar_ulang">
+                      Sudah Daftar Ulang
+                    </option>
                   </optgroup>
                 </>
               )}
@@ -948,7 +1129,9 @@ function AdminPendaftarContent() {
                 <option value="draft">Draft</option>
                 {canViewKeuangan && (
                   <>
-                    <option value="payment_verification">Verifikasi Pembayaran</option>
+                    <option value="payment_verification">
+                      Verifikasi Pembayaran
+                    </option>
                     <option value="paid">Terdaftar (paid)</option>
                   </>
                 )}
@@ -1027,7 +1210,11 @@ function AdminPendaftarContent() {
           </div>
 
           {/* Clear Filters */}
-          {(search || statusFilter || jenjangFilter || tahunAjaranFilter || jenisKelaminFilter) && (
+          {(search ||
+            statusFilter ||
+            jenjangFilter ||
+            tahunAjaranFilter ||
+            jenisKelaminFilter) && (
             <div className="flex items-end">
               <button
                 onClick={() => {
@@ -1056,7 +1243,12 @@ function AdminPendaftarContent() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4">
           <div>
             <label className="block text-[10px] font-black text-brand-blue-900 mb-2 leading-none uppercase tracking-widest">
-              Provinsi {provinsiLoading && <span className="inline-block ml-2 text-[8px] text-stone-500 italic">Memuat...</span>}
+              Provinsi{" "}
+              {provinsiLoading && (
+                <span className="inline-block ml-2 text-[8px] text-stone-500 italic">
+                  Memuat...
+                </span>
+              )}
             </label>
             <select
               value={provinsiFilter}
@@ -1067,14 +1259,21 @@ function AdminPendaftarContent() {
             >
               <option value="">Semua Provinsi</option>
               {provinsiList.map((p) => (
-                <option key={p} value={p}>{p}</option>
+                <option key={p} value={p}>
+                  {p}
+                </option>
               ))}
             </select>
           </div>
 
           <div>
             <label className="block text-[10px] font-black text-brand-blue-900 mb-2 leading-none uppercase tracking-widest">
-              Kabupaten / Kota {kabupatenLoading && <span className="inline-block ml-2 text-[8px] text-stone-500 italic">Memuat...</span>}
+              Kabupaten / Kota{" "}
+              {kabupatenLoading && (
+                <span className="inline-block ml-2 text-[8px] text-stone-500 italic">
+                  Memuat...
+                </span>
+              )}
             </label>
             <select
               value={kabupatenFilter}
@@ -1086,14 +1285,21 @@ function AdminPendaftarContent() {
             >
               <option value="">Semua Kabupaten / Kota</option>
               {kabupatenList.map((k) => (
-                <option key={k} value={k}>{k}</option>
+                <option key={k} value={k}>
+                  {k}
+                </option>
               ))}
             </select>
           </div>
 
           <div>
             <label className="block text-[10px] font-black text-brand-blue-900 mb-2 leading-none uppercase tracking-widest">
-              Kecamatan {kecamatanLoading && <span className="inline-block ml-2 text-[8px] text-stone-500 italic">Memuat...</span>}
+              Kecamatan{" "}
+              {kecamatanLoading && (
+                <span className="inline-block ml-2 text-[8px] text-stone-500 italic">
+                  Memuat...
+                </span>
+              )}
             </label>
             <select
               value={kecamatanFilter}
@@ -1105,14 +1311,21 @@ function AdminPendaftarContent() {
             >
               <option value="">Semua Kecamatan</option>
               {kecamatanList.map((c) => (
-                <option key={c} value={c}>{c}</option>
+                <option key={c} value={c}>
+                  {c}
+                </option>
               ))}
             </select>
           </div>
 
           <div>
             <label className="block text-[10px] font-black text-brand-blue-900 mb-2 leading-none uppercase tracking-widest">
-              Kelurahan {kelurahanLoading && <span className="inline-block ml-2 text-[8px] text-stone-500 italic">Memuat...</span>}
+              Kelurahan{" "}
+              {kelurahanLoading && (
+                <span className="inline-block ml-2 text-[8px] text-stone-500 italic">
+                  Memuat...
+                </span>
+              )}
             </label>
             <select
               value={kelurahanFilter}
@@ -1124,7 +1337,9 @@ function AdminPendaftarContent() {
             >
               <option value="">Semua Kelurahan</option>
               {kelurahanList.map((k) => (
-                <option key={k} value={k}>{k}</option>
+                <option key={k} value={k}>
+                  {k}
+                </option>
               ))}
             </select>
           </div>
@@ -1132,69 +1347,69 @@ function AdminPendaftarContent() {
       </div>
 
       {/* Bulk Actions */}
-      {
-        selectedIds.length > 0 && (
-          <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl shadow-lg p-4 border-2 border-purple-200">
-            <div className="flex items-center justify-between flex-wrap gap-4">
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <CheckSquare className="w-5 h-5 text-purple-600" />
-                  <span className="font-bold text-purple-900">
-                    {selectedIds.length} item terpilih
-                  </span>
-                </div>
-                <button
-                  onClick={() => setSelectedIds([])}
-                  className="text-sm text-purple-600 hover:text-purple-800 underline"
-                >
-                  Batalkan pilihan
-                </button>
+      {selectedIds.length > 0 && (
+        <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl shadow-lg p-4 border-2 border-purple-200">
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <CheckSquare className="w-5 h-5 text-purple-600" />
+                <span className="font-bold text-purple-900">
+                  {selectedIds.length} item terpilih
+                </span>
               </div>
+              <button
+                onClick={() => setSelectedIds([])}
+                className="text-sm text-purple-600 hover:text-purple-800 underline"
+              >
+                Batalkan pilihan
+              </button>
+            </div>
 
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
-                <select
-                  value={bulkStatus}
-                  onChange={(e) => setBulkStatus(e.target.value)}
-                  className="w-full sm:w-64 px-4 py-2.5 bg-white border-2 border-purple-200 rounded-xl focus:border-purple-500 focus:outline-none font-bold text-purple-900"
-                >
-                  <option value="" disabled={bulkStatus !== ""}>Pilih status baru...</option>
-                  <option value="draft">Draft</option>
-                  <option value="awaiting_payment">Menunggu Pembayaran</option>
-                  <option value="paid">Sudah Bayar</option>
-                  <option value="data_completed">Data Lengkap</option>
-                  <option value="docs_uploaded">Dokumen Terupload</option>
-                  <option value="docs_verified">Dokumen Terverifikasi</option>
-                  <option value="scheduled">Terjadwal Ujian</option>
-                  <option value="testing">Sedang Ujian</option>
-                  <option value="tested">Sudah Ujian</option>
-                  <option value="announced">Diumumkan</option>
-                  <option value="accepted">Diterima</option>
-                  <option value="rejected">Ditolak</option>
-                  <option value="enrolled">Terdaftar</option>
-                </select>
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
+              <select
+                value={bulkStatus}
+                onChange={(e) => setBulkStatus(e.target.value)}
+                className="w-full sm:w-64 px-4 py-2.5 bg-white border-2 border-purple-200 rounded-xl focus:border-purple-500 focus:outline-none font-bold text-purple-900"
+              >
+                <option value="" disabled={bulkStatus !== ""}>
+                  Pilih status baru...
+                </option>
+                <option value="draft">Draft</option>
+                <option value="awaiting_payment">Menunggu Pembayaran</option>
+                <option value="paid">Sudah Bayar</option>
+                <option value="data_completed">Data Lengkap</option>
+                <option value="docs_uploaded">Dokumen Terupload</option>
+                <option value="docs_verified">Dokumen Terverifikasi</option>
+                <option value="scheduled">Terjadwal Ujian</option>
+                <option value="testing">Sedang Ujian</option>
+                <option value="tested">Sudah Ujian</option>
+                <option value="announced">Diumumkan</option>
+                <option value="accepted">Diterima</option>
+                <option value="rejected">Ditolak</option>
+                <option value="enrolled">Terdaftar</option>
+              </select>
 
-                <button
-                  onClick={handleBulkUpdate}
-                  disabled={!bulkStatus || bulkUpdating}
-                  className="flex items-center justify-center gap-2 px-8 py-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-black transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-purple-600/20 active:scale-95 text-sm"
-                >
-                  {bulkUpdating ? (
-                    <>
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                      Updating...
-                    </>
-                  ) : (
-                    <>
-                      <Edit className="w-4 h-4" />
-                      Update Status
-                    </>
-                  )}
-                </button>
-              </div>
+              <button
+                onClick={handleBulkUpdate}
+                disabled={!bulkStatus || bulkUpdating}
+                className="flex items-center justify-center gap-2 px-8 py-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-black transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-purple-600/20 active:scale-95 text-sm"
+              >
+                {bulkUpdating ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Updating...
+                  </>
+                ) : (
+                  <>
+                    <Edit className="w-4 h-4" />
+                    Update Status
+                  </>
+                )}
+              </button>
             </div>
           </div>
-        )
-      }
+        </div>
+      )}
 
       {/* Table */}
       <div className="bg-white rounded-3xl shadow-sm border border-brand-yellow-100 overflow-hidden">
@@ -1220,10 +1435,20 @@ function AdminPendaftarContent() {
             {/* Mobile Card View — hanya tampil di layar kecil */}
             <div className="md:hidden divide-y divide-brand-yellow-50">
               {pendaftar.map((item) => (
-                <div key={item.id} className={`p-5 ${selectedIds.includes(item.id) ? 'bg-purple-50' : 'bg-white'}`}>
+                <div
+                  key={item.id}
+                  className={`p-5 ${selectedIds.includes(item.id) ? "bg-purple-50" : "bg-white"}`}
+                >
                   <div className="flex items-start gap-3">
-                    <button onClick={() => handleSelectOne(item.id)} className="mt-1 shrink-0 text-purple-600">
-                      {selectedIds.includes(item.id) ? <CheckSquare className="w-5 h-5" /> : <Square className="w-5 h-5 text-stone-400" />}
+                    <button
+                      onClick={() => handleSelectOne(item.id)}
+                      className="mt-1 shrink-0 text-purple-600"
+                    >
+                      {selectedIds.includes(item.id) ? (
+                        <CheckSquare className="w-5 h-5" />
+                      ) : (
+                        <Square className="w-5 h-5 text-stone-400" />
+                      )}
                     </button>
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-wrap items-center gap-2 mb-1">
@@ -1234,47 +1459,70 @@ function AdminPendaftarContent() {
                           {item.jenjang}
                         </span>
                       </div>
-                      <p className="font-black text-brand-blue-950 leading-tight text-sm">{toTitleCase(item.nama_lengkap)}</p>
+                      <p className="font-black text-brand-blue-950 leading-tight text-sm">
+                        {toTitleCase(item.nama_lengkap)}
+                      </p>
                       <p className="text-xs text-stone-500 mt-0.5">
-                        {["L", "Laki-laki"].includes(item.jenis_kelamin) ? "Laki-laki" : "Perempuan"}
+                        {["L", "Laki-laki"].includes(item.jenis_kelamin)
+                          ? "Laki-laki"
+                          : "Perempuan"}
                         {item.no_hp && <> &bull; {item.no_hp}</>}
                       </p>
                       <div className="flex flex-wrap items-center gap-2 mt-2">
                         {formatStatus(item.status_pendaftaran)}
-                        <span className="text-[10px] text-stone-500">{formatDate(item.created_at)}</span>
+                        <span className="text-[10px] text-stone-500">
+                          {formatDate(item.created_at)}
+                        </span>
                       </div>
                       <div className="flex flex-wrap gap-1.5 mt-2">
-                         <button
-                           onClick={() => {
-                             setSelectedPendaftarId(item.id);
-                             setSelectedDocType('kartu_keluarga');
-                             setTimeout(() => docInputRef.current?.click(), 100);
-                           }}
-                           className="px-2 py-1 bg-brand-blue-50 text-brand-blue-700 rounded-lg text-[9px] font-black uppercase flex items-center gap-1 border border-brand-blue-100"
-                         >
-                           <UploadCloud className="w-3 h-3" /> KK
-                         </button>
-                         <button
-                           onClick={() => {
-                             setSelectedPendaftarId(item.id);
-                             setSelectedDocType('akta_kelahiran');
-                             setTimeout(() => docInputRef.current?.click(), 100);
-                           }}
-                           className="px-2 py-1 bg-brand-blue-50 text-brand-blue-700 rounded-lg text-[9px] font-black uppercase flex items-center gap-1 border border-brand-blue-100"
-                         >
-                           <UploadCloud className="w-3 h-3" /> Akta
-                         </button>
-                         {item.pembayaran && item.pembayaran.length > 0 && (
-                           <button
-                             onClick={() => {
-                               setSelectedPayId(item.pembayaran![0].id);
-                               setTimeout(() => payInputRef.current?.click(), 100);
-                             }}
-                             className="px-2 py-1 bg-brand-yellow-50 text-brand-yellow-700 rounded-lg text-[9px] font-black uppercase flex items-center gap-1 border border-brand-yellow-100"
-                           >
-                             <CreditCard className="w-3 h-3" /> Bayar
-                           </button>
-                         )}
+                        {/* Quick Upload Buttons (Berkas) */}
+                        {(isAdminSuper || isBerkas) && (
+                          <>
+                            <button
+                              onClick={() => {
+                                setSelectedPendaftarId(item.id);
+                                setSelectedDocType("kartu_keluarga");
+                                setTimeout(
+                                  () => docInputRef.current?.click(),
+                                  100,
+                                );
+                              }}
+                              className="px-2 py-1 bg-blue-50 text-blue-700 rounded-lg text-[9px] font-black uppercase flex items-center gap-1 border border-blue-100"
+                            >
+                              <UploadCloud className="w-3 h-3" /> KK
+                            </button>
+                            <button
+                              onClick={() => {
+                                setSelectedPendaftarId(item.id);
+                                setSelectedDocType("akta_kelahiran");
+                                setTimeout(
+                                  () => docInputRef.current?.click(),
+                                  100,
+                                );
+                              }}
+                              className="px-2 py-1 bg-blue-50 text-blue-700 rounded-lg text-[9px] font-black uppercase flex items-center gap-1 border border-blue-100"
+                            >
+                              <UploadCloud className="w-3 h-3" /> Akta
+                            </button>
+                          </>
+                        )}
+                        {/* Quick Payment (Keuangan) */}
+                        {(isAdminSuper || isKeuangan) &&
+                          item.pembayaran &&
+                          item.pembayaran.length > 0 && (
+                            <button
+                              onClick={() => {
+                                setSelectedPayId(item.pembayaran![0].id);
+                                setTimeout(
+                                  () => payInputRef.current?.click(),
+                                  100,
+                                );
+                              }}
+                              className="px-2 py-1 bg-amber-50 text-amber-700 rounded-lg text-[9px] font-black uppercase flex items-center gap-1 border border-amber-100"
+                            >
+                              <CreditCard className="w-3 h-3" /> Pay
+                            </button>
+                          )}
                       </div>
                       <div className="flex gap-2 mt-3">
                         <Link
@@ -1283,24 +1531,27 @@ function AdminPendaftarContent() {
                         >
                           <Eye className="w-3.5 h-3.5" /> Buka Detail
                         </Link>
-                        {userRole && ['admin_super', 'admin', 'penguji'].includes(userRole) && (
-                          <>
-                            <button
-                              onClick={() => handleOpenAnnouncement(item)}
-                              className="px-3 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black transition-all active:scale-95"
-                              title="Input Hasil Seleksi"
-                            >
-                              <FileCheck className="w-4 h-4" />
-                            </button>
-                            <button
-                              onClick={() => handleOpenDelete(item)}
-                              className="px-3 py-2.5 bg-red-100 hover:bg-red-600 text-red-600 hover:text-white rounded-xl text-xs font-black transition-all active:scale-95"
-                              title="Hapus"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
-                          </>
-                        )}
+                        {userRole &&
+                          ["admin_super", "admin", "penguji"].includes(
+                            userRole,
+                          ) && (
+                            <>
+                              <button
+                                onClick={() => handleOpenAnnouncement(item)}
+                                className="px-3 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black transition-all active:scale-95"
+                                title="Input Hasil Seleksi"
+                              >
+                                <FileCheck className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={() => handleOpenDelete(item)}
+                                className="px-3 py-2.5 bg-red-100 hover:bg-red-600 text-red-600 hover:text-white rounded-xl text-xs font-black transition-all active:scale-95"
+                                title="Hapus"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </>
+                          )}
                       </div>
                     </div>
                   </div>
@@ -1312,92 +1563,100 @@ function AdminPendaftarContent() {
             <div className="hidden md:block overflow-x-auto">
               <table className="w-full">
                 <thead className="bg-linear-to-r from-brand-blue-50 to-brand-yellow-50 border-b border-brand-yellow-100">
-                    <tr>
-                      <th className="px-4 py-4 text-center">
+                  <tr>
+                    <th className="px-4 py-4 text-center">
+                      <button
+                        onClick={handleSelectAll}
+                        className="text-brand-blue-600 hover:text-brand-blue-800"
+                      >
+                        {selectedIds.length === pendaftar.length ? (
+                          <CheckSquare className="w-5 h-5" />
+                        ) : (
+                          <Square className="w-5 h-5" />
+                        )}
+                      </button>
+                    </th>
+                    <th className="px-4 py-4 text-left text-[10px] font-black text-brand-blue-900 uppercase tracking-widest">
+                      No. Pendaftaran
+                    </th>
+                    <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
+                      Full Name
+                    </th>
+                    <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
+                      NIK
+                    </th>
+                    {(isAdminSuper || isBerkas) && (
+                      <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
+                        Contact
+                      </th>
+                    )}
+                    <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
+                      Jenjang
+                    </th>
+                    {(isAdminSuper || isBerkas) && (
+                      <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
+                        Docs Status
+                      </th>
+                    )}
+                    <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
+                      Reg. Status
+                    </th>
+                    {(isAdminSuper || isKeuangan) && (
+                      <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
+                        Payment
+                      </th>
+                    )}
+                    <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-stone-200">
+                  {pendaftar.map((item) => (
+                    <tr
+                      key={item.id}
+                      className={`hover:bg-blue-50 transition-colors ${
+                        selectedIds.includes(item.id) ? "bg-purple-50" : ""
+                      }`}
+                    >
+                      <td className="px-4 py-3 text-center">
                         <button
-                          onClick={handleSelectAll}
-                          className="text-brand-blue-600 hover:text-brand-blue-800"
+                          onClick={() => handleSelectOne(item.id)}
+                          className="text-purple-600 hover:text-purple-800"
                         >
-                          {selectedIds.length === pendaftar.length ? (
+                          {selectedIds.includes(item.id) ? (
                             <CheckSquare className="w-5 h-5" />
                           ) : (
                             <Square className="w-5 h-5" />
                           )}
                         </button>
-                      </th>
-                      <th className="px-4 py-4 text-left text-[10px] font-black text-brand-blue-900 uppercase tracking-widest">
-                        No. Pendaftaran
-                      </th>
-                      <th className="px-4 py-4 text-left text-[10px] font-black text-brand-blue-900 uppercase tracking-widest">
-                        Nama Lengkap
-                      </th>
-                      <th className="px-4 py-4 text-left text-[10px] font-black text-brand-blue-900 uppercase tracking-widest">
-                        NIK
-                      </th>
-                      <th className="px-4 py-4 text-left text-[10px] font-black text-brand-blue-900 uppercase tracking-widest">
-                        Kontak
-                      </th>
-                      <th className="px-4 py-4 text-left text-[10px] font-black text-brand-blue-900 uppercase tracking-widest">
-                        Jenjang
-                      </th>
-                      <th className="px-4 py-4 text-left text-[10px] font-black text-brand-blue-900 uppercase tracking-widest">
-                        Status Berkas
-                      </th>
-                      <th className="px-4 py-4 text-left text-[10px] font-black text-brand-blue-900 uppercase tracking-widest">
-                        Status Pendaftaran
-                      </th>
-                      {canViewKeuangan && (
-                        <th className="px-4 py-4 text-left text-[10px] font-black text-brand-blue-900 uppercase tracking-widest">
-                          Bayar
-                        </th>
-                      )}
-                      <th className="px-4 py-4 text-left text-[10px] font-black text-brand-blue-900 uppercase tracking-widest">
-                        Aksi
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-stone-200">
-                    {pendaftar.map((item) => (
-                      <tr
-                        key={item.id}
-                        className={`hover:bg-blue-50 transition-colors ${selectedIds.includes(item.id) ? "bg-purple-50" : ""
-                          }`}
-                      >
-                        <td className="px-4 py-3 text-center">
-                          <button
-                            onClick={() => handleSelectOne(item.id)}
-                            className="text-purple-600 hover:text-purple-800"
-                          >
-                            {selectedIds.includes(item.id) ? (
-                              <CheckSquare className="w-5 h-5" />
-                            ) : (
-                              <Square className="w-5 h-5" />
-                            )}
-                          </button>
-                        </td>
-                        <td className="px-4 py-3 whitespace-nowrap">
-                          <div className="flex items-center gap-2">
-                            <Hash className="w-4 h-4 text-blue-600" />
-                            <span className="font-mono text-sm font-bold text-blue-700">
-                              {item.nomor_pendaftaran}
-                            </span>
-                          </div>
-                        </td>
-                        <td className="px-4 py-3">
-                          <div>
-                            <div className="font-bold text-stone-900">
-                              {toTitleCase(item.nama_lengkap)}
-                            </div>
-                            <div className="text-xs text-stone-600 font-medium">
-                              {["L", "Laki-laki"].includes(item.jenis_kelamin) ? "Laki-laki" : "Perempuan"}
-                            </div>
-                          </div>
-                        </td>
-                        <td className="px-4 py-3">
-                          <span className="font-mono text-sm text-stone-700">
-                            {item.nik}
+                      </td>
+                      <td className="px-4 py-3 whitespace-nowrap">
+                        <div className="flex items-center gap-2">
+                          <Hash className="w-4 h-4 text-blue-600" />
+                          <span className="font-mono text-sm font-bold text-blue-700">
+                            {item.nomor_pendaftaran}
                           </span>
-                        </td>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3">
+                        <div>
+                          <div className="font-bold text-stone-900">
+                            {toTitleCase(item.nama_lengkap)}
+                          </div>
+                          <div className="text-xs text-stone-600 font-medium">
+                            {["L", "Laki-laki"].includes(item.jenis_kelamin)
+                              ? "Laki-laki"
+                              : "Perempuan"}
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className="font-mono text-sm text-stone-700">
+                          {item.nik}
+                        </span>
+                      </td>
+                      {(isAdminSuper || isBerkas) && (
                         <td className="px-4 py-3">
                           <div className="text-sm space-y-1">
                             {item.no_hp && (
@@ -1416,120 +1675,150 @@ function AdminPendaftarContent() {
                             )}
                           </div>
                         </td>
+                      )}
+                      <td className="px-4 py-3">
+                        <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-bold">
+                          {item.jenjang}
+                        </span>
+                      </td>
+                      {(isAdminSuper || isBerkas) && (
                         <td className="px-4 py-3">
-                          <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-bold">
-                            {item.jenjang}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3">
-                          <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${item.dokumen && item.dokumen.every((d: any) => d.status_verifikasi === 'verified') && item.dokumen.length > 0
-                            ? "bg-green-100 text-green-800"
-                            : item.dokumen && item.dokumen.some((d: any) => d.status_verifikasi === 'rejected')
-                              ? "bg-red-100 text-red-800"
-                              : "bg-yellow-100 text-yellow-800"
-                            }`}>
-                            {item.dokumen && item.dokumen.every((d: any) => d.status_verifikasi === 'verified') && item.dokumen.length > 0
-                              ? "Lengkap"
+                          <span
+                            className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                              item.dokumen &&
+                              item.dokumen.every(
+                                (d: any) => d.status_verifikasi === "verified",
+                              ) &&
+                              item.dokumen.length > 0
+                                ? "bg-green-100 text-green-800"
+                                : item.dokumen &&
+                                    item.dokumen.some(
+                                      (d: any) =>
+                                        d.status_verifikasi === "rejected",
+                                    )
+                                  ? "bg-red-100 text-red-800"
+                                  : "bg-yellow-100 text-yellow-800"
+                            }`}
+                          >
+                            {item.dokumen &&
+                            item.dokumen.every(
+                              (d: any) => d.status_verifikasi === "verified",
+                            ) &&
+                            item.dokumen.length > 0
+                              ? "Verified"
                               : item.dokumen && item.dokumen.length > 0
-                                ? "Perlu Cek"
-                                : "Belum Upload"}
+                                ? "Check"
+                                : "Empty"}
                           </span>
                           <div className="text-xs text-stone-600 font-medium mt-1">
-                            {item.dokumen?.length || 0} Dokumen
+                            {item.dokumen?.length || 0} Docs
                           </div>
                         </td>
+                      )}
+                      <td className="px-4 py-3">
+                        {formatStatus(item.status_pendaftaran)}
+                      </td>
+                      {(isAdminSuper || isKeuangan) && (
                         <td className="px-4 py-3">
-                          {formatStatus(item.status_pendaftaran)}
-                        </td>
-                        {canViewKeuangan && (
-                          <td className="px-4 py-3">
-                            {item.pembayaran && item.pembayaran.length > 0 ? (
-                              <div className="flex flex-col gap-1.5">
-                                <span className={`px-2 py-0.5 rounded text-[10px] font-black uppercase text-center w-full ${
-                                  item.pembayaran[0].status_pembayaran === 'verified' ? 'bg-green-100 text-green-700' :
-                                    item.pembayaran[0].status_pembayaran === 'pending' ? 'bg-amber-100 text-amber-700' :
-                                      'bg-stone-100 text-stone-700'
-                                  }`}>
-                                  {item.pembayaran[0].status_pembayaran === 'verified' ? 'Lunas' :
-                                    item.pembayaran[0].status_pembayaran === 'pending' ? 'Cek' : 'Belum'}
-                                </span>
-                                {item.pembayaran && item.pembayaran.length > 0 && (
+                          {item.pembayaran && item.pembayaran.length > 0 ? (
+                            <div className="flex flex-col gap-1.5">
+                              <span
+                                className={`px-2 py-0.5 rounded text-[10px] font-black uppercase text-center w-full ${
+                                  item.pembayaran[0].status_pembayaran ===
+                                  "verified"
+                                    ? "bg-green-100 text-green-700"
+                                    : item.pembayaran[0].status_pembayaran ===
+                                        "pending"
+                                      ? "bg-amber-100 text-amber-700"
+                                      : "bg-stone-100 text-stone-700"
+                                }`}
+                              >
+                                {item.pembayaran[0].status_pembayaran ===
+                                "verified"
+                                  ? "Paid"
+                                  : item.pembayaran[0].status_pembayaran ===
+                                      "pending"
+                                    ? "Check"
+                                    : "Unpaid"}
+                              </span>
+                              {item.pembayaran &&
+                                item.pembayaran.length > 0 && (
                                   <button
-                                   onClick={() => {
-                                     setSelectedPayId(item.pembayaran![0].id);
-                                     setTimeout(() => payInputRef.current?.click(), 100);
-                                   }}
-                                   className="px-2 py-1 bg-brand-yellow-50 text-brand-yellow-700 hover:bg-brand-yellow-100 rounded-lg text-[9px] font-black uppercase flex items-center justify-center gap-1 border border-brand-yellow-100 transition-colors"
-                                   title="Upload Bukti Bayar"
-                                 >
-                                   <CreditCard className="w-3 h-3" /> Upload
-                                 </button>
+                                    onClick={() => {
+                                      setSelectedPayId(item.pembayaran![0].id);
+                                      setTimeout(
+                                        () => payInputRef.current?.click(),
+                                        100,
+                                      );
+                                    }}
+                                    className="px-2 py-1 bg-stone-50 text-stone-700 hover:bg-stone-100 rounded-lg text-[9px] font-black uppercase flex items-center justify-center gap-1 border border-stone-100 transition-colors"
+                                    title="Upload Payment Proof"
+                                  >
+                                    <CreditCard className="w-3 h-3" /> Upload
+                                  </button>
                                 )}
-                              </div>
-                            ) : (
-                              <span className="text-stone-500 text-xs">-</span>
-                            )}
-                          </td>
-                        )}
-                        <td className="px-4 py-3">
-                          <div className="flex flex-wrap gap-1">
-                            <button
-                               onClick={() => {
-                                 setSelectedPendaftarId(item.id);
-                                 setSelectedDocType('kartu_keluarga');
-                                 setTimeout(() => docInputRef.current?.click(), 100);
-                               }}
-                               className="px-2 py-1 bg-brand-blue-50 text-brand-blue-700 hover:bg-brand-blue-100 rounded-lg text-[9px] font-black uppercase flex items-center gap-1 border border-brand-blue-100 transition-colors"
-                               title="Upload KK"
-                             >
-                               <UploadCloud className="w-3 h-3" /> KK
-                             </button>
-                             <button
-                               onClick={() => {
-                                 setSelectedPendaftarId(item.id);
-                                 setSelectedDocType('akta_kelahiran');
-                                 setTimeout(() => docInputRef.current?.click(), 100);
-                               }}
-                               className="px-2 py-1 bg-brand-blue-50 text-brand-blue-700 hover:bg-brand-blue-100 rounded-lg text-[9px] font-black uppercase flex items-center gap-1 border border-brand-blue-100 transition-colors"
-                               title="Upload Akta"
-                             >
-                               <UploadCloud className="w-3 h-3" /> Akta
-                             </button>
-                          </div>
+                            </div>
+                          ) : (
+                            <span className="text-stone-500 text-xs">-</span>
+                          )}
                         </td>
-                        <td className="px-4 py-3 whitespace-nowrap">
-                          <div className="flex items-center gap-2">
+                      )}
+                      <td className="px-4 py-3 whitespace-nowrap">
+                        <div className="flex items-center gap-2">
+                          <Link
+                            href={`/dashboard/admin/pendaftar/${item.id}`}
+                            className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-[10px] font-black uppercase transition-all shadow-lg shadow-blue-700/20 active:scale-95"
+                            title="Open Detail"
+                          >
+                            <Eye className="w-3.5 h-3.5" />
+                            <span className="hidden lg:inline">Detail</span>
+                          </Link>
+
+                          {/* Role-Specific Secondary Actions */}
+                          {isBerkas && (
                             <Link
-                              href={`/dashboard/admin/pendaftar/${item.id}`}
-                              className="inline-flex items-center gap-2 px-3 py-1.5 bg-brand-blue-700 hover:bg-brand-blue-800 text-white rounded-xl text-[10px] font-black uppercase transition-all shadow-lg shadow-brand-blue-700/20 active:scale-95"
+                              href={`/dashboard/admin/verifikasi-dokumen`}
+                              className="p-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-all"
+                              title="Verify Documents"
                             >
-                              <Eye className="w-3.5 h-3.5" />
-                              <span>Detail</span>
+                              <FileCheck className="w-4 h-4" />
                             </Link>
-                            {/* Super Admin Action: Input Hasil Seleksi */}
-                            {userRole === 'admin_super' && (
+                          )}
+
+                          {isKeuangan && (
+                            <Link
+                              href={`/dashboard/admin/verifikasi-pembayaran`}
+                              className="p-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg transition-all"
+                              title="Verify Payment"
+                            >
+                              <CreditCard className="w-4 h-4" />
+                            </Link>
+                          )}
+
+                          {/* Super Admin Actions */}
+                          {isAdminSuper && (
+                            <>
                               <button
                                 onClick={() => handleOpenAnnouncement(item)}
                                 className="p-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-all shadow-sm hover:shadow-md"
-                                title="Hasil Seleksi"
+                                title="Input Result"
                               >
                                 <FileCheck className="w-4 h-4" />
                               </button>
-                            )}
-                            {userRole === 'admin_super' && (
                               <button
                                 onClick={() => handleOpenDelete(item)}
                                 className="p-1.5 bg-red-100 hover:bg-red-600 text-red-700 hover:text-white rounded-lg transition-all"
-                                title="Hapus"
+                                title="Delete"
                               >
                                 <Trash2 className="w-4 h-4" />
                               </button>
-                            )}
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
+                            </>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
               </table>
             </div>
 
@@ -1545,7 +1834,7 @@ function AdminPendaftarContent() {
                   <span className="font-bold text-stone-900">
                     {Math.min(
                       pagination.page * pagination.limit,
-                      pagination.total
+                      pagination.total,
                     )}
                   </span>{" "}
                   dari{" "}
@@ -1565,7 +1854,10 @@ function AdminPendaftarContent() {
                   </button>
 
                   <div className="flex items-center gap-1 md:gap-2 overflow-x-auto max-w-[200px] md:max-w-none px-1 hide-scrollbar">
-                    {Array.from({ length: pagination.totalPages }, (_, i) => i + 1)
+                    {Array.from(
+                      { length: pagination.totalPages },
+                      (_, i) => i + 1,
+                    )
                       .filter((page) => {
                         // Show first, last, current, and adjacent pages
                         return (
@@ -1575,16 +1867,20 @@ function AdminPendaftarContent() {
                         );
                       })
                       .map((page, idx, arr) => (
-                        <div key={page} className="flex items-center gap-2 shrink-0">
+                        <div
+                          key={page}
+                          className="flex items-center gap-2 shrink-0"
+                        >
                           {idx > 0 && arr[idx - 1] !== page - 1 && (
                             <span className="text-stone-500">...</span>
                           )}
                           <button
                             onClick={() => handlePageChange(page)}
-                            className={`w-8 h-8 md:w-10 md:h-10 rounded-lg font-medium transition-colors text-sm md:text-base ${page === pagination.page
-                              ? "bg-blue-600 text-white"
-                              : "bg-white border-2 border-stone-200 hover:bg-blue-50 hover:border-blue-300"
-                              }`}
+                            className={`w-8 h-8 md:w-10 md:h-10 rounded-lg font-medium transition-colors text-sm md:text-base ${
+                              page === pagination.page
+                                ? "bg-blue-600 text-white"
+                                : "bg-white border-2 border-stone-200 hover:bg-blue-50 hover:border-blue-300"
+                            }`}
                           >
                             {page}
                           </button>
@@ -1611,8 +1907,12 @@ function AdminPendaftarContent() {
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg border-2 border-stone-100 animate-in fade-in zoom-in duration-200">
             <div className="flex justify-between items-center p-6 border-b border-stone-100">
               <div>
-                <h3 className="text-xl font-bold text-stone-900">Input Hasil Seleksi</h3>
-                <p className="text-sm text-stone-500 mt-1">{toTitleCase(selectedPendaftar.nama_lengkap)}</p>
+                <h3 className="text-xl font-bold text-stone-900">
+                  Input Hasil Seleksi
+                </h3>
+                <p className="text-sm text-stone-500 mt-1">
+                  {toTitleCase(selectedPendaftar.nama_lengkap)}
+                </p>
               </div>
               <button
                 onClick={() => setIsAnnouncementModalOpen(false)}
@@ -1625,21 +1925,29 @@ function AdminPendaftarContent() {
             <form onSubmit={handleSubmitAnnouncement} className="p-6 space-y-4">
               {/* Status Kelulusan */}
               <div>
-                <label className="block text-sm font-bold text-stone-700 mb-2">Status Kelulusan</label>
+                <label className="block text-sm font-bold text-stone-700 mb-2">
+                  Status Kelulusan
+                </label>
                 <div className="grid grid-cols-3 gap-3">
                   {["Lulus", "Cadangan", "Tidak Lulus"].map((status) => (
                     <button
                       key={status}
                       type="button"
-                      onClick={() => setAnnouncementForm({ ...announcementForm, status_kelulusan: status })}
-                      className={`py-3 px-4 rounded-xl border-2 font-bold transition-all ${announcementForm.status_kelulusan === status
-                        ? status === "Lulus"
-                          ? "border-green-500 bg-green-50 text-green-700"
-                          : status === "Cadangan"
-                            ? "border-yellow-500 bg-yellow-50 text-yellow-700"
-                            : "border-red-500 bg-red-50 text-red-700"
-                        : "border-stone-200 bg-white text-stone-500 hover:border-stone-300"
-                        }`}
+                      onClick={() =>
+                        setAnnouncementForm({
+                          ...announcementForm,
+                          status_kelulusan: status,
+                        })
+                      }
+                      className={`py-3 px-4 rounded-xl border-2 font-bold transition-all ${
+                        announcementForm.status_kelulusan === status
+                          ? status === "Lulus"
+                            ? "border-green-500 bg-green-50 text-green-700"
+                            : status === "Cadangan"
+                              ? "border-yellow-500 bg-yellow-50 text-yellow-700"
+                              : "border-red-500 bg-red-50 text-red-700"
+                          : "border-stone-200 bg-white text-stone-500 hover:border-stone-300"
+                      }`}
                     >
                       {status}
                     </button>
@@ -1649,11 +1957,18 @@ function AdminPendaftarContent() {
 
               {/* Catatan (Opsional) */}
               <div>
-                <label className="block text-sm font-bold text-stone-700 mb-2">Catatan (Opsional)</label>
+                <label className="block text-sm font-bold text-stone-700 mb-2">
+                  Catatan (Opsional)
+                </label>
                 <textarea
                   rows={3}
                   value={announcementForm.catatan}
-                  onChange={(e) => setAnnouncementForm({ ...announcementForm, catatan: e.target.value })}
+                  onChange={(e) =>
+                    setAnnouncementForm({
+                      ...announcementForm,
+                      catatan: e.target.value,
+                    })
+                  }
                   placeholder="Tambahkan catatan khusus jika ada..."
                   className="w-full px-4 py-3 border-2 border-stone-200 rounded-xl focus:border-blue-500 focus:outline-none transition-colors"
                 />
@@ -1661,19 +1976,27 @@ function AdminPendaftarContent() {
 
               {/* Link SK (Surat Keputusan) */}
               <div>
-                <label className="block text-sm font-bold text-stone-700 mb-2">Link SK (Google Drive / PDF)</label>
+                <label className="block text-sm font-bold text-stone-700 mb-2">
+                  Link SK (Google Drive / PDF)
+                </label>
                 <div className="relative">
                   <FileText className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-stone-400" />
                   <input
                     type="url"
                     value={announcementForm.surat_keputusan_url}
-                    onChange={(e) => setAnnouncementForm({ ...announcementForm, surat_keputusan_url: e.target.value })}
+                    onChange={(e) =>
+                      setAnnouncementForm({
+                        ...announcementForm,
+                        surat_keputusan_url: e.target.value,
+                      })
+                    }
                     placeholder="https://docs.google.com/..."
                     className="w-full pl-12 pr-4 py-3 border-2 border-stone-200 rounded-xl focus:border-blue-500 focus:outline-none transition-colors"
                   />
                 </div>
                 <p className="text-xs text-stone-500 mt-2">
-                  Masukkan link file Surat Keputusan (SK) atau Surat Pengumuman yang bisa diunduh oleh pendaftar.
+                  Masukkan link file Surat Keputusan (SK) atau Surat Pengumuman
+                  yang bisa diunduh oleh pendaftar.
                 </p>
               </div>
 
@@ -1720,8 +2043,12 @@ function AdminPendaftarContent() {
                   <Trash2 className="w-6 h-6 text-red-600" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-stone-900">Hapus Data Pendaftar</h3>
-                  <p className="text-sm text-stone-500">Data akan dipindahkan ke Sampah</p>
+                  <h3 className="text-lg font-bold text-stone-900">
+                    Hapus Data Pendaftar
+                  </h3>
+                  <p className="text-sm text-stone-500">
+                    Data akan dipindahkan ke Sampah
+                  </p>
                 </div>
               </div>
               <button
@@ -1735,14 +2062,20 @@ function AdminPendaftarContent() {
             <div className="p-6 space-y-4">
               <div className="bg-amber-50 border-2 border-amber-200 rounded-xl p-4">
                 <p className="text-sm text-amber-800 font-medium">
-                  ⚠️ Anda akan menghapus data <strong>{toTitleCase(deletingPendaftar.nama_lengkap)}</strong> ({deletingPendaftar.nomor_pendaftaran}).
-                  Data akan dipindahkan ke Sampah dan bisa di-restore kapan saja.
+                  ⚠️ Anda akan menghapus data{" "}
+                  <strong>{toTitleCase(deletingPendaftar.nama_lengkap)}</strong>{" "}
+                  ({deletingPendaftar.nomor_pendaftaran}). Data akan dipindahkan
+                  ke Sampah dan bisa di-restore kapan saja.
                 </p>
               </div>
 
               <div>
                 <label className="block text-sm font-bold text-stone-700 mb-2">
-                  Ketik <span className="text-red-600">{toTitleCase(deletingPendaftar.nama_lengkap)}</span> untuk konfirmasi:
+                  Ketik{" "}
+                  <span className="text-red-600">
+                    {toTitleCase(deletingPendaftar.nama_lengkap)}
+                  </span>{" "}
+                  untuk konfirmasi:
                 </label>
                 <input
                   type="text"
@@ -1765,7 +2098,11 @@ function AdminPendaftarContent() {
                 </button>
                 <button
                   onClick={handleSoftDelete}
-                  disabled={isDeleting || deleteConfirmName.trim().toLowerCase() !== deletingPendaftar.nama_lengkap.trim().toLowerCase()}
+                  disabled={
+                    isDeleting ||
+                    deleteConfirmName.trim().toLowerCase() !==
+                      deletingPendaftar.nama_lengkap.trim().toLowerCase()
+                  }
                   className="flex items-center gap-2 px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-lg shadow-red-200 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isDeleting ? (
@@ -1785,20 +2122,22 @@ function AdminPendaftarContent() {
           </div>
         </div>
       )}
-    </div >
+    </div>
   );
 }
 
 export default function AdminPendaftarPage() {
   return (
-    <Suspense fallback={
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-center">
-          <Loader2 className="w-12 h-12 animate-spin text-blue-600 mx-auto mb-4" />
-          <p className="text-stone-600 font-medium">Memuat halaman...</p>
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <Loader2 className="w-12 h-12 animate-spin text-blue-600 mx-auto mb-4" />
+            <p className="text-stone-600 font-medium">Memuat halaman...</p>
+          </div>
         </div>
-      </div>
-    }>
+      }
+    >
       <AdminPendaftarContent />
     </Suspense>
   );

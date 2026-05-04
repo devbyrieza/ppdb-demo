@@ -81,26 +81,34 @@ interface ExamSession {
 
 // Map session role to which jenis_tugas types are visible
 const ROLE_TO_JADWAL_TYPES: Record<string, string[]> = {
-  penguji_calsan: ["Tes Al-Qur'an"],
-  pewawancara_calsan: ["Wawancara Calon Santri"],
-  pewawancara_cawalsan: ["Wawancara Calon Orangtua/Wali Santri"],
+  penguji_calsan: ["Seleksi Al Qur'an"],
+  pewawancara_calsan: ["Seleksi Wawancara Santri"],
+  pewawancara_cawalsan: ["Seleksi Wawancara Orang Tua/Wali"],
   // Admin roles see all
-  admin: ["Tes Al-Qur'an", "Wawancara Calon Santri", "Wawancara Calon Orangtua/Wali Santri"],
-  admin_super: ["Tes Al-Qur'an", "Wawancara Calon Santri", "Wawancara Calon Orangtua/Wali Santri"],
+  admin: [
+    "Seleksi Al Qur'an",
+    "Seleksi Wawancara Santri",
+    "Seleksi Wawancara Orang Tua/Wali",
+  ],
+  admin_super: [
+    "Seleksi Al Qur'an",
+    "Seleksi Wawancara Santri",
+    "Seleksi Wawancara Orang Tua/Wali",
+  ],
 };
 
 // Auto-map role to session title (for specific examiner roles)
 const ROLE_TO_SESSION_TITLE: Record<string, string> = {
   penguji_calsan: "Tes Al-Quran",
-  pewawancara_calsan: "Wawancara Calon Santri",
-  pewawancara_cawalsan: "Wawancara Calon Orangtua/Wali Santri",
+  pewawancara_calsan: "Seleksi Wawancara Santri",
+  pewawancara_cawalsan: "Seleksi Wawancara Orang Tua/Wali",
 };
 
 // Roles that can choose any session type (need dropdown)
 const ADMIN_ROLES = ["admin", "admin_super"];
 
 export default function JadwalPengujiPage() {
-  const [activeTab, setActiveTab] = useState<'assigned' | 'slots'>('assigned');
+  const [activeTab, setActiveTab] = useState<"assigned" | "slots">("assigned");
   const [userId, setUserId] = useState<string | null>(null);
   const [activeRole, setActiveRole] = useState<string>("");
 
@@ -115,11 +123,16 @@ export default function JadwalPengujiPage() {
   const [isSlotModalOpen, setIsSlotModalOpen] = useState(false);
 
   // Detail Modal State
-  const [selectedPendaftar, setSelectedPendaftar] = useState<JadwalAssignment['pendaftar'] | null>(null);
+  const [selectedPendaftar, setSelectedPendaftar] = useState<
+    JadwalAssignment["pendaftar"] | null
+  >(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
   // Common State
-  const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [message, setMessage] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
 
   // Form State for Slot
   const [slotForm, setSlotForm] = useState({
@@ -136,15 +149,33 @@ export default function JadwalPengujiPage() {
   // Edit Modal State
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingSlot, setEditingSlot] = useState<ExamSession | null>(null);
-  const [editForm, setEditForm] = useState({ date: "", start_time: "08:00", end_time: "09:00", location: "", notes: "" });
+  const [editForm, setEditForm] = useState({
+    date: "",
+    start_time: "08:00",
+    end_time: "09:00",
+    location: "",
+    notes: "",
+  });
   const [submittingEdit, setSubmittingEdit] = useState(false);
 
   // Multi-Select / Bulk Edit State
   const [isSelectMode, setIsSelectMode] = useState(false);
-  const [bulkActionType, setBulkActionType] = useState<'edit' | 'delete' | null>(null);
-  const [selectedSlotIds, setSelectedSlotIds] = useState<Set<string>>(new Set());
+  const [bulkActionType, setBulkActionType] = useState<
+    "edit" | "delete" | null
+  >(null);
+  const [selectedSlotIds, setSelectedSlotIds] = useState<Set<string>>(
+    new Set(),
+  );
   const [isBulkEditModalOpen, setIsBulkEditModalOpen] = useState(false);
-  const [bulkEditForm, setBulkEditForm] = useState({ start_time: "", end_time: "", location: "", notes: "", changeTime: false, changeLocation: false, changeNotes: false });
+  const [bulkEditForm, setBulkEditForm] = useState({
+    start_time: "",
+    end_time: "",
+    location: "",
+    notes: "",
+    changeTime: false,
+    changeLocation: false,
+    changeNotes: false,
+  });
   const [submittingBulkEdit, setSubmittingBulkEdit] = useState(false);
 
   // Bulk Create Modal State
@@ -153,11 +184,11 @@ export default function JadwalPengujiPage() {
   const [activeDay, setActiveDay] = useState<number>(new Date().getDay());
   const [bulkForm, setBulkForm] = useState({
     title: "",
-    startDate: new Date().toISOString().split('T')[0],
-    endDate: "", 
+    startDate: new Date().toISOString().split("T")[0],
+    endDate: "",
     selectedDays: [] as number[], // 0=Sun, 1=Mon, etc.
-    daySlots: {} as Record<number, { start: string, end: string }[]>,
-    notes: ""
+    daySlots: {} as Record<number, { start: string; end: string }[]>,
+    notes: "",
   });
 
   // --- Fetchers ---
@@ -180,7 +211,9 @@ export default function JadwalPengujiPage() {
   const fetchSlots = async () => {
     try {
       setLoadingSlots(true);
-      const response = await fetch("/api/exam-sessions?creator_id=me&is_active=true");
+      const response = await fetch(
+        "/api/exam-sessions?creator_id=me&is_active=true",
+      );
       if (response.ok) {
         const result = await response.json();
         setSlots(result.data || []);
@@ -211,16 +244,16 @@ export default function JadwalPengujiPage() {
     };
     fetchSession();
 
-    if (activeTab === 'assigned') fetchAssignments();
-    if (activeTab === 'slots') fetchSlots();
+    if (activeTab === "assigned") fetchAssignments();
+    if (activeTab === "slots") fetchSlots();
   }, [activeTab]);
 
   // Auto-set session title from role when role is known
   useEffect(() => {
     const autoTitle = ROLE_TO_SESSION_TITLE[activeRole];
     if (autoTitle) {
-      setSlotForm(prev => ({ ...prev, title: autoTitle }));
-      setBulkForm(prev => ({ ...prev, title: autoTitle }));
+      setSlotForm((prev) => ({ ...prev, title: autoTitle }));
+      setBulkForm((prev) => ({ ...prev, title: autoTitle }));
     }
   }, [activeRole]);
 
@@ -228,12 +261,12 @@ export default function JadwalPengujiPage() {
   useEffect(() => {
     if (isBulkModalOpen) {
       if (!bulkForm.daySlots[activeDay]) {
-        setBulkForm(prev => ({
+        setBulkForm((prev) => ({
           ...prev,
           daySlots: {
             ...prev.daySlots,
-            [activeDay]: [{ start: "08:00", end: "09:00" }]
-          }
+            [activeDay]: [{ start: "08:00", end: "09:00" }],
+          },
         }));
       }
     }
@@ -248,18 +281,27 @@ export default function JadwalPengujiPage() {
 
     try {
       // Combine date and time
-      const startDateTime = new Date(`${slotForm.date}T${slotForm.start_time}:00`);
+      const startDateTime = new Date(
+        `${slotForm.date}T${slotForm.start_time}:00`,
+      );
       const endDateTime = new Date(`${slotForm.date}T${slotForm.end_time}:00`);
 
       // Validate end time
-      const diffMinutes = (endDateTime.getTime() - startDateTime.getTime()) / (1000 * 60);
+      const diffMinutes =
+        (endDateTime.getTime() - startDateTime.getTime()) / (1000 * 60);
       if (diffMinutes <= 0) {
-        setMessage({ type: "error", text: "Jam selesai harus lebih besar dari jam mulai." });
+        setMessage({
+          type: "error",
+          text: "Jam selesai harus lebih besar dari jam mulai.",
+        });
         setSubmittingSlot(false);
         return;
       }
       if (diffMinutes > 60) {
-        setMessage({ type: "error", text: "Durasi maksimal 1 jam (60 menit)." });
+        setMessage({
+          type: "error",
+          text: "Durasi maksimal 1 jam (60 menit).",
+        });
         setSubmittingSlot(false);
         return;
       }
@@ -286,7 +328,7 @@ export default function JadwalPengujiPage() {
         setIsSlotModalOpen(false);
         fetchSlots();
         // Reset form partial
-        setSlotForm(prev => ({ ...prev, title: "", notes: "" }));
+        setSlotForm((prev) => ({ ...prev, title: "", notes: "" }));
       } else {
         throw new Error(result.error || "Gagal membuat sesi");
       }
@@ -310,7 +352,7 @@ export default function JadwalPengujiPage() {
 
     // Filter daySlots to only include selectedDays
     const daySlotsToSend: Record<number, any[]> = {};
-    bulkForm.selectedDays.forEach(day => {
+    bulkForm.selectedDays.forEach((day) => {
       daySlotsToSend[day] = bulkForm.daySlots[day] || [];
     });
 
@@ -321,20 +363,20 @@ export default function JadwalPengujiPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...bulkForm,
-          daySlots: daySlotsToSend
+          daySlots: daySlotsToSend,
         }),
       });
       const result = await res.json();
       if (res.ok) {
-        Swal.fire('Berhasil!', result.message, 'success');
+        Swal.fire("Berhasil!", result.message, "success");
         setIsBulkModalOpen(false);
         fetchSlots();
       } else {
-        Swal.fire('Gagal!', result.error, 'error');
+        Swal.fire("Gagal!", result.error, "error");
       }
     } catch (e) {
       console.error(e);
-      Swal.fire('Error!', "Terjadi kesalahan sistem", 'error');
+      Swal.fire("Error!", "Terjadi kesalahan sistem", "error");
     } finally {
       setSubmittingBulk(false);
     }
@@ -346,8 +388,8 @@ export default function JadwalPengujiPage() {
       ...bulkForm,
       daySlots: {
         ...bulkForm.daySlots,
-        [activeDay]: [...currentSlots, { start: "16:00", end: "17:00" }]
-      }
+        [activeDay]: [...currentSlots, { start: "16:00", end: "17:00" }],
+      },
     });
   };
 
@@ -360,30 +402,32 @@ export default function JadwalPengujiPage() {
       ...bulkForm,
       daySlots: {
         ...bulkForm.daySlots,
-        [activeDay]: newSlots
-      }
+        [activeDay]: newSlots,
+      },
     });
   };
 
   const toggleDay = (day: number) => {
     const current = [...bulkForm.selectedDays];
-    
+
     // Case 1: Day is not selected -> Select it and make it active
     if (!current.includes(day)) {
       const newSelected = [...current, day];
-      
+
       // Initialize slots for this day if they don't exist
       if (!bulkForm.daySlots[day]) {
-        setBulkForm(prev => ({
+        setBulkForm((prev) => ({
           ...prev,
           selectedDays: newSelected,
           daySlots: {
             ...prev.daySlots,
-            [day]: prev.daySlots[activeDay] ? JSON.parse(JSON.stringify(prev.daySlots[activeDay])) : [{ start: "08:00", end: "09:00" }]
-          }
+            [day]: prev.daySlots[activeDay]
+              ? JSON.parse(JSON.stringify(prev.daySlots[activeDay]))
+              : [{ start: "08:00", end: "09:00" }],
+          },
         }));
       } else {
-        setBulkForm(prev => ({ ...prev, selectedDays: newSelected }));
+        setBulkForm((prev) => ({ ...prev, selectedDays: newSelected }));
       }
       setActiveDay(day);
       return;
@@ -396,9 +440,9 @@ export default function JadwalPengujiPage() {
     }
 
     // Case 3: Day is selected AND active -> Deselect it
-    const newSelected = current.filter(d => d !== day);
-    setBulkForm(prev => ({ ...prev, selectedDays: newSelected }));
-    
+    const newSelected = current.filter((d) => d !== day);
+    setBulkForm((prev) => ({ ...prev, selectedDays: newSelected }));
+
     // If we have other days selected, pick one to be the new active day
     if (newSelected.length > 0) {
       setActiveDay(newSelected[0]);
@@ -408,17 +452,17 @@ export default function JadwalPengujiPage() {
   const copySlotsToAll = () => {
     const currentSlots = bulkForm.daySlots[activeDay] || [];
     const newDaySlots = { ...bulkForm.daySlots };
-    bulkForm.selectedDays.forEach(day => {
+    bulkForm.selectedDays.forEach((day) => {
       newDaySlots[day] = JSON.parse(JSON.stringify(currentSlots));
     });
     setBulkForm({ ...bulkForm, daySlots: newDaySlots });
     Swal.fire({
       toast: true,
-      position: 'top-end',
-      icon: 'success',
-      title: 'Disalin ke semua hari terpilih',
+      position: "top-end",
+      icon: "success",
+      title: "Disalin ke semua hari terpilih",
       showConfirmButton: false,
-      timer: 1500
+      timer: 1500,
     });
   };
 
@@ -427,12 +471,12 @@ export default function JadwalPengujiPage() {
     const end = new Date(slot.end_time);
     const toLocalDate = (d: Date) => {
       const y = d.getFullYear();
-      const m = String(d.getMonth() + 1).padStart(2, '0');
-      const day = String(d.getDate()).padStart(2, '0');
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
       return `${y}-${m}-${day}`;
     };
     const toLocalTime = (d: Date) =>
-      `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+      `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
     setEditingSlot(slot);
     setEditForm({
       date: toLocalDate(start),
@@ -449,11 +493,17 @@ export default function JadwalPengujiPage() {
     if (!editingSlot) return;
     setSubmittingEdit(true);
     try {
-      const startDateTime = new Date(`${editForm.date}T${editForm.start_time}:00`);
+      const startDateTime = new Date(
+        `${editForm.date}T${editForm.start_time}:00`,
+      );
       const endDateTime = new Date(`${editForm.date}T${editForm.end_time}:00`);
-      const diffMinutes = (endDateTime.getTime() - startDateTime.getTime()) / (1000 * 60);
+      const diffMinutes =
+        (endDateTime.getTime() - startDateTime.getTime()) / (1000 * 60);
       if (diffMinutes <= 0) {
-        setMessage({ type: "error", text: "Jam selesai harus lebih besar dari jam mulai." });
+        setMessage({
+          type: "error",
+          text: "Jam selesai harus lebih besar dari jam mulai.",
+        });
         setSubmittingEdit(false);
         return;
       }
@@ -485,9 +535,10 @@ export default function JadwalPengujiPage() {
   };
 
   const toggleSelectSlot = (id: string) => {
-    setSelectedSlotIds(prev => {
+    setSelectedSlotIds((prev) => {
       const next = new Set(prev);
-      if (next.has(id)) next.delete(id); else next.add(id);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
       return next;
     });
   };
@@ -496,7 +547,7 @@ export default function JadwalPengujiPage() {
     if (selectedSlotIds.size === slots.length) {
       setSelectedSlotIds(new Set());
     } else {
-      setSelectedSlotIds(new Set(slots.map(s => s.id)));
+      setSelectedSlotIds(new Set(slots.map((s) => s.id)));
     }
   };
 
@@ -508,33 +559,36 @@ export default function JadwalPengujiPage() {
 
   // Quick-select: pilih semua slot dengan jam mulai yang sama
   const selectByTime = (startHHMM: string) => {
-    const matching = slots.filter(s => {
+    const matching = slots.filter((s) => {
       const d = new Date(s.start_time);
-      const hhmm = `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+      const hhmm = `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
       return hhmm === startHHMM;
     });
-    const matchingIds = new Set(matching.map(s => s.id));
+    const matchingIds = new Set(matching.map((s) => s.id));
     // Kalau semua sudah terpilih → deselect, kalau belum → select semua
-    const allSelected = matching.every(s => selectedSlotIds.has(s.id));
-    setSelectedSlotIds(prev => {
+    const allSelected = matching.every((s) => selectedSlotIds.has(s.id));
+    setSelectedSlotIds((prev) => {
       const next = new Set(prev);
-      matching.forEach(s => allSelected ? next.delete(s.id) : next.add(s.id));
+      matching.forEach((s) =>
+        allSelected ? next.delete(s.id) : next.add(s.id),
+      );
       return next;
     });
   };
 
   // Dapatkan daftar jam unik dari slots untuk quick-select chips
   const uniqueTimesForChips = Array.from(
-    slots.reduce((map, slot) => {
-      const start = new Date(slot.start_time);
-      const end = new Date(slot.end_time);
-      const hhmm = `${String(start.getHours()).padStart(2,'0')}:${String(start.getMinutes()).padStart(2,'0')}`;
-      const label = `${String(start.getHours()).padStart(2,'0')}.${String(start.getMinutes()).padStart(2,'0')} – ${String(end.getHours()).padStart(2,'0')}.${String(end.getMinutes()).padStart(2,'0')}`;
-      if (!map.has(hhmm)) map.set(hhmm, { hhmm, label, count: 0 });
-      map.get(hhmm)!.count++;
-      return map;
-    }, new Map<string, { hhmm: string; label: string; count: number }>())
-    .values()
+    slots
+      .reduce((map, slot) => {
+        const start = new Date(slot.start_time);
+        const end = new Date(slot.end_time);
+        const hhmm = `${String(start.getHours()).padStart(2, "0")}:${String(start.getMinutes()).padStart(2, "0")}`;
+        const label = `${String(start.getHours()).padStart(2, "0")}.${String(start.getMinutes()).padStart(2, "0")} – ${String(end.getHours()).padStart(2, "0")}.${String(end.getMinutes()).padStart(2, "0")}`;
+        if (!map.has(hhmm)) map.set(hhmm, { hhmm, label, count: 0 });
+        map.get(hhmm)!.count++;
+        return map;
+      }, new Map<string, { hhmm: string; label: string; count: number }>())
+      .values(),
   ).sort((a, b) => a.hhmm.localeCompare(b.hhmm));
 
   const handleBulkEdit = async (e: React.FormEvent) => {
@@ -548,7 +602,7 @@ export default function JadwalPengujiPage() {
 
     for (const slotId of idsToUpdate) {
       // Build patch payload from selected slot + form overrides
-      const slot = slots.find(s => s.id === slotId);
+      const slot = slots.find((s) => s.id === slotId);
       if (!slot) continue;
 
       const start = new Date(slot.start_time);
@@ -557,8 +611,12 @@ export default function JadwalPengujiPage() {
       // If changing time, build new datetimes on same date
       let newStart = start;
       let newEnd = end;
-      if (bulkEditForm.changeTime && bulkEditForm.start_time && bulkEditForm.end_time) {
-        const dateStr = start.toISOString().split('T')[0];
+      if (
+        bulkEditForm.changeTime &&
+        bulkEditForm.start_time &&
+        bulkEditForm.end_time
+      ) {
+        const dateStr = start.toISOString().split("T")[0];
         newStart = new Date(`${dateStr}T${bulkEditForm.start_time}:00`);
         newEnd = new Date(`${dateStr}T${bulkEditForm.end_time}:00`);
       }
@@ -568,17 +626,21 @@ export default function JadwalPengujiPage() {
         start_time: newStart.toISOString(),
         end_time: newEnd.toISOString(),
       };
-      if (bulkEditForm.changeLocation) payload.location = bulkEditForm.location || 'Online';
+      if (bulkEditForm.changeLocation)
+        payload.location = bulkEditForm.location || "Online";
       if (bulkEditForm.changeNotes) payload.notes = bulkEditForm.notes;
 
       try {
         const res = await fetch(`/api/exam-sessions?id=${slotId}`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
-        if (res.ok) successCount++; else errorCount++;
-      } catch { errorCount++; }
+        if (res.ok) successCount++;
+        else errorCount++;
+      } catch {
+        errorCount++;
+      }
     }
 
     setSubmittingBulkEdit(false);
@@ -587,9 +649,20 @@ export default function JadwalPengujiPage() {
     fetchSlots();
 
     if (errorCount === 0) {
-      Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: `${successCount} sesi berhasil diperbarui!`, showConfirmButton: false, timer: 2500 });
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "success",
+        title: `${successCount} sesi berhasil diperbarui!`,
+        showConfirmButton: false,
+        timer: 2500,
+      });
     } else {
-      Swal.fire('Selesai', `${successCount} berhasil, ${errorCount} gagal.`, 'warning');
+      Swal.fire(
+        "Selesai",
+        `${successCount} berhasil, ${errorCount} gagal.`,
+        "warning",
+      );
     }
   };
 
@@ -597,12 +670,18 @@ export default function JadwalPengujiPage() {
     if (selectedSlotIds.size === 0) return;
 
     const idsToDelete = Array.from(selectedSlotIds);
-    const slotsToDelete = slots.filter(s => idsToDelete.includes(s.id));
-    const emptySlots = slotsToDelete.filter(s => (s._count?.bookings || 0) === 0);
+    const slotsToDelete = slots.filter((s) => idsToDelete.includes(s.id));
+    const emptySlots = slotsToDelete.filter(
+      (s) => (s._count?.bookings || 0) === 0,
+    );
     const bookedSlots = slotsToDelete.length - emptySlots.length;
 
     if (emptySlots.length === 0) {
-      Swal.fire('Gagal!', 'Semua sesi yang dipilih sudah ada pendaftar dan tidak dapat dihapus.', 'error');
+      Swal.fire(
+        "Gagal!",
+        "Semua sesi yang dipilih sudah ada pendaftar dan tidak dapat dihapus.",
+        "error",
+      );
       return;
     }
 
@@ -612,28 +691,35 @@ export default function JadwalPengujiPage() {
     }
 
     const { isConfirmed } = await Swal.fire({
-      title: 'Hapus Sesi Terpilih?',
+      title: "Hapus Sesi Terpilih?",
       text: textMsg,
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Ya, Hapus!',
-      cancelButtonText: 'Batal'
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Ya, Hapus!",
+      cancelButtonText: "Batal",
     });
 
     if (!isConfirmed) return;
 
     // Use a custom state if you want a loading spinner, or just rely on SweetAlert
-    Swal.fire({ title: 'Menghapus...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+    Swal.fire({
+      title: "Menghapus...",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
 
     let successCount = 0;
     let errorCount = 0;
 
     for (const slot of emptySlots) {
       try {
-        const res = await fetch(`/api/exam-sessions?id=${slot.id}`, { method: "DELETE" });
-        if (res.ok) successCount++; else errorCount++;
+        const res = await fetch(`/api/exam-sessions?id=${slot.id}`, {
+          method: "DELETE",
+        });
+        if (res.ok) successCount++;
+        else errorCount++;
       } catch {
         errorCount++;
       }
@@ -643,33 +729,47 @@ export default function JadwalPengujiPage() {
     fetchSlots();
 
     if (errorCount === 0) {
-      Swal.fire('Terhapus!', `${successCount} sesi berhasil dihapus.`, 'success');
+      Swal.fire(
+        "Terhapus!",
+        `${successCount} sesi berhasil dihapus.`,
+        "success",
+      );
     } else {
-      Swal.fire('Selesai', `${successCount} berhasil dihapus, ${errorCount} gagal.`, 'warning');
+      Swal.fire(
+        "Selesai",
+        `${successCount} berhasil dihapus, ${errorCount} gagal.`,
+        "warning",
+      );
     }
   };
 
   const handleDeleteSlot = async (id: string, count: number) => {
     if (count > 0) {
-      Swal.fire('Gagal!', 'Tidak dapat menghapus sesi yang sudah ada pendaftar!', 'error');
+      Swal.fire(
+        "Gagal!",
+        "Tidak dapat menghapus sesi yang sudah ada pendaftar!",
+        "error",
+      );
       return;
     }
-    
+
     const { isConfirmed } = await Swal.fire({
-      title: 'Hapus Sesi?',
+      title: "Hapus Sesi?",
       text: "Apakah Anda yakin ingin menghapus sesi waktu ini?",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Ya, Hapus!',
-      cancelButtonText: 'Batal'
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Ya, Hapus!",
+      cancelButtonText: "Batal",
     });
 
     if (!isConfirmed) return;
 
     try {
-      const response = await fetch(`/api/exam-sessions?id=${id}`, { method: "DELETE" });
+      const response = await fetch(`/api/exam-sessions?id=${id}`, {
+        method: "DELETE",
+      });
       if (response.ok) {
         setMessage({ type: "success", text: "Sesi berhasil dihapus" });
         fetchSlots();
@@ -677,20 +777,19 @@ export default function JadwalPengujiPage() {
         const res = await response.json();
         throw new Error(res.error || "Gagal menghapus");
       }
-    } catch (error: any) {
-    }
+    } catch (error: any) {}
   };
 
   const handleCompleteExam = async (jadwalId: string) => {
     const { isConfirmed } = await Swal.fire({
-      title: 'Tandai Selesai?',
+      title: "Tandai Selesai?",
       text: "Apakah Anda yakin ingin menandai ujian ini selesai? Status akan diperbarui.",
-      icon: 'question',
+      icon: "question",
       showCancelButton: true,
-      confirmButtonColor: '#059669', // green-600
-      cancelButtonColor: '#94a3b8',
-      confirmButtonText: 'Ya, Tandai Selesai!',
-      cancelButtonText: 'Batal'
+      confirmButtonColor: "#059669", // green-600
+      cancelButtonColor: "#94a3b8",
+      confirmButtonText: "Ya, Tandai Selesai!",
+      cancelButtonText: "Batal",
     });
 
     if (!isConfirmed) return;
@@ -707,9 +806,9 @@ export default function JadwalPengujiPage() {
         setMessage({ type: "success", text: result.message });
         if (result.isAllDone) {
           Swal.fire({
-            title: 'Selesai!',
-            text: 'Semua rangkaian ujian santri ini telah SELESAI! Notifikasi telah dikirim.',
-            icon: 'success'
+            title: "Selesai!",
+            text: "Semua rangkaian ujian santri ini telah SELESAI! Notifikasi telah dikirim.",
+            icon: "success",
           });
         }
         fetchAssignments(); // Refresh data
@@ -720,20 +819,23 @@ export default function JadwalPengujiPage() {
       setMessage({ type: "error", text: error.message });
     }
   };
-  
-  const handleCancelAssignment = async (jadwalId: string, pendaftarNama: string) => {
+
+  const handleCancelAssignment = async (
+    jadwalId: string,
+    pendaftarNama: string,
+  ) => {
     const { value: reason } = await Swal.fire({
-      title: 'Batalkan Jadwal?',
+      title: "Batalkan Jadwal?",
       text: `Apakah Anda yakin ingin membatalkan jadwal ${pendaftarNama}? Santri akan mendapatkan notifikasi untuk memilih jadwal ulang dan slot waktu Anda akan dihapus.`,
-      icon: 'warning',
-      input: 'text',
-      inputLabel: 'Alasan Pembatalan (Opsional)',
-      inputPlaceholder: 'Ustadz Berhalangan Hadir',
+      icon: "warning",
+      input: "text",
+      inputLabel: "Alasan Pembatalan (Opsional)",
+      inputPlaceholder: "Ustadz Berhalangan Hadir",
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Ya, Batalkan!',
-      cancelButtonText: 'Kembali'
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Ya, Batalkan!",
+      cancelButtonText: "Kembali",
     });
 
     if (reason === undefined) return; // User cancelled the modal
@@ -743,21 +845,21 @@ export default function JadwalPengujiPage() {
       const response = await fetch("/api/penguji/jadwal/cancel", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           jadwal_id: jadwalId,
-          alasan: reason || "Ustadz Berhalangan Hadir"
+          alasan: reason || "Ustadz Berhalangan Hadir",
         }),
       });
 
       const result = await response.json();
       if (response.ok) {
-        Swal.fire('Terhapus!', result.message, 'success');
+        Swal.fire("Terhapus!", result.message, "success");
         fetchAssignments();
       } else {
         throw new Error(result.error || "Gagal membatalkan jadwal");
       }
     } catch (error: any) {
-      Swal.fire('Gagal!', error.message, 'error');
+      Swal.fire("Gagal!", error.message, "error");
     } finally {
       setLoadingAssignments(false);
     }
@@ -766,16 +868,21 @@ export default function JadwalPengujiPage() {
   // --- Helpers ---
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("id-ID", {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    }).replace("Minggu", "Ahad");
+    return new Date(dateString)
+      .toLocaleDateString("id-ID", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
+      .replace("Minggu", "Ahad");
   };
 
   const formatTime = (dateString: string) => {
-    return new Date(dateString).toLocaleTimeString("id-ID", { hour: '2-digit', minute: '2-digit' });
+    return new Date(dateString).toLocaleTimeString("id-ID", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   };
 
   const isToday = (dateString: string) => {
@@ -791,7 +898,7 @@ export default function JadwalPengujiPage() {
       {/* Header Section */}
       <div className="bg-white rounded-[2rem] p-6 md:p-10 border border-brand-yellow-100 shadow-sm app-card overflow-hidden relative">
         <div className="absolute top-0 right-0 w-64 h-64 bg-brand-blue-600/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-        
+
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 relative z-10">
           <div className="flex items-center gap-5">
             <div className="w-16 h-16 bg-brand-blue-50 rounded-2xl flex items-center justify-center border border-brand-blue-100 shrink-0 shadow-sm">
@@ -809,14 +916,14 @@ export default function JadwalPengujiPage() {
 
           <div className="flex bg-ink-50/50 p-1.5 rounded-2xl border border-ink-100 w-full md:w-auto min-w-[320px]">
             <button
-              onClick={() => setActiveTab('assigned')}
-              className={`flex-1 py-3 px-6 rounded-xl font-black text-xs transition-all text-center uppercase tracking-wider ${activeTab === 'assigned' ? 'bg-white shadow-md text-brand-blue-700 border border-ink-100 scale-[1.02]' : 'text-ink-400 hover:text-ink-600'}`}
+              onClick={() => setActiveTab("assigned")}
+              className={`flex-1 py-3 px-6 rounded-xl font-black text-xs transition-all text-center uppercase tracking-wider ${activeTab === "assigned" ? "bg-white shadow-md text-brand-blue-700 border border-ink-100 scale-[1.02]" : "text-ink-400 hover:text-ink-600"}`}
             >
               Jadwal Saya
             </button>
             <button
-              onClick={() => setActiveTab('slots')}
-              className={`flex-1 py-3 px-6 rounded-xl font-black text-xs transition-all text-center uppercase tracking-wider ${activeTab === 'slots' ? 'bg-white shadow-md text-brand-blue-700 border border-ink-100 scale-[1.02]' : 'text-ink-400 hover:text-ink-600'}`}
+              onClick={() => setActiveTab("slots")}
+              className={`flex-1 py-3 px-6 rounded-xl font-black text-xs transition-all text-center uppercase tracking-wider ${activeTab === "slots" ? "bg-white shadow-md text-brand-blue-700 border border-ink-100 scale-[1.02]" : "text-ink-400 hover:text-ink-600"}`}
             >
               Sesi Ketersediaan
             </button>
@@ -826,187 +933,271 @@ export default function JadwalPengujiPage() {
 
       {/* Message */}
       {message && (
-        <div className={`p-4 rounded-xl border-2 flex items-center justify-between ${message.type === "success" ? "bg-green-50 border-green-200 text-green-800" : "bg-red-50 border-red-200 text-red-800"}`}>
+        <div
+          className={`p-4 rounded-xl border-2 flex items-center justify-between ${message.type === "success" ? "bg-green-50 border-green-200 text-green-800" : "bg-red-50 border-red-200 text-red-800"}`}
+        >
           <div className="flex items-center gap-2">
-            {message.type === "success" ? <CheckCircle className="w-5 h-5" /> : <XCircle className="w-5 h-5" />}
+            {message.type === "success" ? (
+              <CheckCircle className="w-5 h-5" />
+            ) : (
+              <XCircle className="w-5 h-5" />
+            )}
             <span className="font-medium">{message.text}</span>
           </div>
-          <button onClick={() => setMessage(null)}><XCircle className="w-4 h-4 opacity-50 hover:opacity-100" /></button>
+          <button onClick={() => setMessage(null)}>
+            <XCircle className="w-4 h-4 opacity-50 hover:opacity-100" />
+          </button>
         </div>
       )}
 
       {/* TAB CONTENT: ASSIGNED */}
-      {activeTab === 'assigned' && (
+      {activeTab === "assigned" && (
         <>
           {loadingAssignments ? (
-            <div className="text-center py-12"><Loader2 className="w-8 h-8 animate-spin mx-auto text-maroon-500" /></div>
+            <div className="text-center py-12">
+              <Loader2 className="w-8 h-8 animate-spin mx-auto text-maroon-500" />
+            </div>
           ) : assignments.length === 0 ? (
             <div className="bg-white rounded-xl p-12 border-2 border-cream-200 text-center">
               <div className="w-16 h-16 bg-cream-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Calendar className="w-8 h-8 text-ink-400" />
               </div>
               <h3 className="font-bold text-ink-950">Belum Ada Jadwal</h3>
-              <p className="text-cream-500">Anda belum memiliki jadwal ujian yang ditugaskan.</p>
+              <p className="text-cream-500">
+                Anda belum memiliki jadwal seleksi yang ditugaskan.
+              </p>
             </div>
-          ) : (() => {
-            // Filter assignments based on active role
-            const visibleTypes = ROLE_TO_JADWAL_TYPES[activeRole] || ["Tes Al-Qur'an", "Wawancara Calsan", "Wawancara Cawalsan"];
-            const filteredAssignments = assignments.filter(item => {
-              // Check if any of the item's jenis_tugas matches the visible types
-              return visibleTypes.some(type => item.jenis_tugas.includes(type));
-            });
+          ) : (
+            (() => {
+              // Filter assignments based on active role
+              const visibleTypes = ROLE_TO_JADWAL_TYPES[activeRole] || [
+                "Seleksi Al Qur'an",
+                "Seleksi Wawancara Santri",
+                "Seleksi Wawancara Orang Tua",
+              ];
+              const filteredAssignments = assignments.filter((item) => {
+                // Check if any of the item's jenis_tugas matches the visible types
+                return visibleTypes.some((type) =>
+                  item.jenis_tugas.includes(type),
+                );
+              });
 
-            if (filteredAssignments.length === 0) {
-              return (
-                <div className="bg-white rounded-xl p-12 border-2 border-cream-200 text-center">
-                  <div className="w-16 h-16 bg-cream-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Calendar className="w-8 h-8 text-ink-400" />
+              if (filteredAssignments.length === 0) {
+                return (
+                  <div className="bg-white rounded-xl p-12 border-2 border-cream-200 text-center">
+                    <div className="w-16 h-16 bg-cream-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Calendar className="w-8 h-8 text-ink-400" />
+                    </div>
+                    <h3 className="font-bold text-ink-950">Belum Ada Jadwal</h3>
+                    <p className="text-cream-500">
+                      Tidak ada jadwal seleksi untuk role yang dipilih saat ini.
+                    </p>
                   </div>
-                  <h3 className="font-bold text-ink-950">Belum Ada Jadwal</h3>
-                  <p className="text-cream-500">Tidak ada jadwal ujian untuk role yang dipilih saat ini.</p>
-                </div>
-              );
-            }
+                );
+              }
 
-            return (
-              <div className="grid gap-4">
-                {filteredAssignments.map(item => (
-                  <div key={item.id} className={`bg-white rounded-3xl p-5 md:p-8 border transition-all app-card ${isToday(item.tanggal_ujian) ? "border-emerald-200 shadow-md ring-4 ring-emerald-50" : "border-cream-200 shadow-sm hover:border-maroon-200 hover:shadow-md"}`}>
-                    {/* Top section: Date badge + Name */}
-                    <div className="flex items-start gap-5 mb-6">
-                      <div className={`p-4 rounded-[1.5rem] font-bold text-center min-w-[85px] shrink-0 border flex flex-col justify-center shadow-sm ${isToday(item.tanggal_ujian) ? 'bg-brand-blue-600 text-white border-brand-blue-500' : 'bg-brand-blue-50 border-brand-blue-100 text-brand-blue-900'}`}>
-                        <div className="text-[10px] uppercase tracking-[0.2em] font-black opacity-80 mb-1">
-                          {new Date(item.tanggal_ujian).toLocaleDateString('id-ID', { weekday: 'short' }).replace('Min', 'Ahd')}
-                        </div>
-                        <div className="text-3xl font-black font-display leading-none">{new Date(item.tanggal_ujian).getDate()}</div>
-                        <div className="text-[10px] uppercase tracking-widest font-black mt-1 opacity-80">
-                          {new Date(item.tanggal_ujian).toLocaleDateString('id-ID', { month: 'short' })}
-                        </div>
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex flex-wrap items-center gap-2 mb-3">
-                          <span className="px-3 py-1 bg-brand-blue-50 text-brand-blue-700 border border-brand-blue-100 rounded-lg text-[9px] font-black uppercase tracking-[0.15em]">{item.pendaftar.jenjang}</span>
-                          <span className="px-3 py-1 bg-brand-yellow-400 text-brand-blue-950 rounded-lg text-[9px] font-black uppercase tracking-[0.15em] flex items-center gap-1.5"><Hash className="w-3.5 h-3.5" /> {item.pendaftar.nomor_pendaftaran}</span>
-                        </div>
-                        <h3 className="text-lg md:text-2xl font-black text-brand-blue-950 font-display leading-tight mb-2">{item.pendaftar.nama_lengkap}</h3>
-                        <div className="flex items-center gap-2 text-xs text-ink-500 font-bold">
-                          <div className="w-2 h-2 rounded-full bg-brand-blue-600 animate-pulse" />
-                          <span className="text-brand-blue-700 uppercase tracking-widest font-black">{item.jenis_tugas}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Time & Location Row */}
-                    <div className="grid grid-cols-2 gap-4 mb-6 px-4 py-4 bg-brand-blue-50/30 rounded-2xl border border-brand-blue-100/50">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-xl bg-white flex items-center justify-center shadow-sm">
-                          <Clock className="w-4 h-4 text-brand-blue-600" />
-                        </div>
-                        <div className="flex flex-col">
-                          <span className="text-[10px] text-ink-400 font-black uppercase tracking-widest">Waktu</span>
-                          <span className="text-sm text-brand-blue-950 font-black">{formatTime(item.waktu_mulai)} WIB</span>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-xl bg-white flex items-center justify-center shadow-sm">
-                          <MapPin className="w-4 h-4 text-brand-blue-600" />
-                        </div>
-                        <div className="flex flex-col">
-                          <span className="text-[10px] text-ink-400 font-black uppercase tracking-widest">Lokasi</span>
-                          <span className="text-sm text-brand-blue-950 font-black truncate">{item.lokasi || "Online"}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Action Buttons: Status Completion */}
-                    {(() => {
-                      const isSantri = item.penguji_santri_id === userId;
-                      const isQuran = item.penguji_quran_id === userId;
-                      const isOrtu = item.penguji_ortu_id === userId;
-                      const isCreator = item.session_created_by === userId;
-
-                      let showSantri = isSantri;
-                      let showQuran = isQuran;
-                      let showOrtu = isOrtu;
-                      if (!isSantri && !isQuran && !isOrtu && isCreator) {
-                        const tugas = (item.jenis_tugas || "").toLowerCase();
-                        if (tugas.includes("calsan") || tugas.includes("santri")) showSantri = true;
-                        if (tugas.includes("qur")) showQuran = true;
-                        if (tugas.includes("cawalsan") || tugas.includes("ortu")) showOrtu = true;
-                      }
-
-                      return (
-                        <div className="flex flex-col gap-2">
-                          {userId && showSantri && (
-                            item.status_santri === 'completed' ? (
-                              <div className="flex items-center gap-2 px-4 py-3 bg-green-50 text-green-700 rounded-2xl text-sm font-bold border border-green-100">
-                                <CheckCircle className="w-4 h-4" /> Wawancara Calsan Selesai
-                              </div>
-                            ) : (
-                              <button onClick={() => handleCompleteExam(item.id)} className="w-full py-4 bg-brand-blue-600 hover:bg-brand-blue-700 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl transition-all active:scale-95 shadow-lg shadow-brand-blue-600/20">
-                                ✓ Tandai Wawancara Selesai
-                              </button>
-                            )
-                          )}
-                          {userId && showQuran && (
-                            item.status_quran === 'completed' ? (
-                              <div className="flex items-center gap-2 px-4 py-3 bg-green-50 text-green-700 rounded-2xl text-sm font-bold border border-green-100">
-                                <CheckCircle className="w-4 h-4" /> Tes Al-Qur'an Selesai
-                              </div>
-                            ) : (
-                              <button onClick={() => handleCompleteExam(item.id)} className="w-full py-4 bg-brand-blue-600 hover:bg-brand-blue-700 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl transition-all active:scale-95 shadow-lg shadow-brand-blue-600/20">
-                                ✓ Tandai Tes Al-Qur'an Selesai
-                              </button>
-                            )
-                          )}
-                          {userId && showOrtu && (
-                            item.status_ortu === 'completed' ? (
-                              <div className="flex items-center gap-2 px-4 py-3 bg-green-50 text-green-700 rounded-2xl text-sm font-bold border border-green-100">
-                                <CheckCircle className="w-4 h-4" /> Wawancara Cawalsan Selesai
-                              </div>
-                            ) : (
-                              <button onClick={() => handleCompleteExam(item.id)} className="w-full py-4 bg-brand-blue-600 hover:bg-brand-blue-700 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl transition-all active:scale-95 shadow-lg shadow-brand-blue-600/20">
-                                ✓ Tandai Wawancara Cawalsan Selesai
-                              </button>
-                            )
-                          )}
-                          {/* Bottom row: Lihat Data + Batalkan */}
-                          <div className="flex gap-3 mt-2">
-                            <button
-                              onClick={() => { setSelectedPendaftar(item.pendaftar); setIsDetailModalOpen(true); }}
-                              className="flex-1 py-4 bg-white border border-brand-blue-100 text-brand-blue-700 hover:bg-brand-blue-50 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2 active:scale-95 shadow-sm"
-                            >
-                              <FileText className="w-4 h-4" /> Lihat Data
-                            </button>
-                            <button
-                              onClick={() => handleCancelAssignment(item.id, item.pendaftar.nama_lengkap)}
-                              className="px-4 py-4 border border-red-100 text-red-500 hover:bg-red-50 rounded-2xl transition-all flex items-center justify-center active:scale-95 shadow-sm"
-                              title="Batalkan Jadwal"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
+              return (
+                <div className="grid gap-4">
+                  {filteredAssignments.map((item) => (
+                    <div
+                      key={item.id}
+                      className={`bg-white rounded-3xl p-5 md:p-8 border transition-all app-card ${isToday(item.tanggal_ujian) ? "border-emerald-200 shadow-md ring-4 ring-emerald-50" : "border-cream-200 shadow-sm hover:border-maroon-200 hover:shadow-md"}`}
+                    >
+                      {/* Top section: Date badge + Name */}
+                      <div className="flex items-start gap-5 mb-6">
+                        <div
+                          className={`p-4 rounded-[1.5rem] font-bold text-center min-w-[85px] shrink-0 border flex flex-col justify-center shadow-sm ${isToday(item.tanggal_ujian) ? "bg-brand-blue-600 text-white border-brand-blue-500" : "bg-brand-blue-50 border-brand-blue-100 text-brand-blue-900"}`}
+                        >
+                          <div className="text-[10px] uppercase tracking-[0.2em] font-black opacity-80 mb-1">
+                            {new Date(item.tanggal_ujian)
+                              .toLocaleDateString("id-ID", { weekday: "short" })
+                              .replace("Min", "Ahd")}
+                          </div>
+                          <div className="text-3xl font-black font-display leading-none">
+                            {new Date(item.tanggal_ujian).getDate()}
+                          </div>
+                          <div className="text-[10px] uppercase tracking-widest font-black mt-1 opacity-80">
+                            {new Date(item.tanggal_ujian).toLocaleDateString(
+                              "id-ID",
+                              { month: "short" },
+                            )}
                           </div>
                         </div>
-                      );
-                    })()}
-                  </div>
-                ))}
-              </div>
-            );
-          })()}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex flex-wrap items-center gap-2 mb-3">
+                            <span className="px-3 py-1 bg-brand-blue-50 text-brand-blue-700 border border-brand-blue-100 rounded-lg text-[9px] font-black uppercase tracking-[0.15em]">
+                              {item.pendaftar.jenjang}
+                            </span>
+                            <span className="px-3 py-1 bg-brand-yellow-400 text-brand-blue-950 rounded-lg text-[9px] font-black uppercase tracking-[0.15em] flex items-center gap-1.5">
+                              <Hash className="w-3.5 h-3.5" />{" "}
+                              {item.pendaftar.nomor_pendaftaran}
+                            </span>
+                          </div>
+                          <h3 className="text-lg md:text-2xl font-black text-brand-blue-950 font-display leading-tight mb-2">
+                            {item.pendaftar.nama_lengkap}
+                          </h3>
+                          <div className="flex items-center gap-2 text-xs text-ink-500 font-bold">
+                            <div className="w-2 h-2 rounded-full bg-brand-blue-600 animate-pulse" />
+                            <span className="text-brand-blue-700 uppercase tracking-widest font-black">
+                              {item.jenis_tugas}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Time & Location Row */}
+                      <div className="grid grid-cols-2 gap-4 mb-6 px-4 py-4 bg-brand-blue-50/30 rounded-2xl border border-brand-blue-100/50">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-xl bg-white flex items-center justify-center shadow-sm">
+                            <Clock className="w-4 h-4 text-brand-blue-600" />
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="text-[10px] text-ink-400 font-black uppercase tracking-widest">
+                              Waktu
+                            </span>
+                            <span className="text-sm text-brand-blue-950 font-black">
+                              {formatTime(item.waktu_mulai)} WIB
+                            </span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-xl bg-white flex items-center justify-center shadow-sm">
+                            <MapPin className="w-4 h-4 text-brand-blue-600" />
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="text-[10px] text-ink-400 font-black uppercase tracking-widest">
+                              Lokasi
+                            </span>
+                            <span className="text-sm text-brand-blue-950 font-black truncate">
+                              {item.lokasi || "Online"}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Action Buttons: Status Completion */}
+                      {(() => {
+                        const isSantri = item.penguji_santri_id === userId;
+                        const isQuran = item.penguji_quran_id === userId;
+                        const isOrtu = item.penguji_ortu_id === userId;
+                        const isCreator = item.session_created_by === userId;
+
+                        let showSantri = isSantri;
+                        let showQuran = isQuran;
+                        let showOrtu = isOrtu;
+                        if (!isSantri && !isQuran && !isOrtu && isCreator) {
+                          const tugas = (item.jenis_tugas || "").toLowerCase();
+                          if (
+                            tugas.includes("calsan") ||
+                            tugas.includes("santri")
+                          )
+                            showSantri = true;
+                          if (tugas.includes("qur")) showQuran = true;
+                          if (
+                            tugas.includes("cawalsan") ||
+                            tugas.includes("ortu")
+                          )
+                            showOrtu = true;
+                        }
+
+                        return (
+                          <div className="flex flex-col gap-2">
+                            {userId &&
+                              showSantri &&
+                              (item.status_santri === "completed" ? (
+                                <div className="flex items-center gap-2 px-4 py-3 bg-green-50 text-green-700 rounded-2xl text-sm font-bold border border-green-100">
+                                  <CheckCircle className="w-4 h-4" /> Seleksi
+                                  Wawancara Santri Selesai
+                                </div>
+                              ) : (
+                                <button
+                                  onClick={() => handleCompleteExam(item.id)}
+                                  className="w-full py-4 bg-brand-blue-600 hover:bg-brand-blue-700 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl transition-all active:scale-95 shadow-lg shadow-brand-blue-600/20"
+                                >
+                                  ✓ Tandai Wawancara Selesai
+                                </button>
+                              ))}
+                            {userId &&
+                              showQuran &&
+                              (item.status_quran === "completed" ? (
+                                <div className="flex items-center gap-2 px-4 py-3 bg-green-50 text-green-700 rounded-2xl text-sm font-bold border border-green-100">
+                                  <CheckCircle className="w-4 h-4" /> Seleksi Al
+                                  Qur'an Selesai
+                                </div>
+                              ) : (
+                                <button
+                                  onClick={() => handleCompleteExam(item.id)}
+                                  className="w-full py-4 bg-brand-blue-600 hover:bg-brand-blue-700 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl transition-all active:scale-95 shadow-lg shadow-brand-blue-600/20"
+                                >
+                                  ✓ Tandai Seleksi Al Qur'an Selesai
+                                </button>
+                              ))}
+                            {userId &&
+                              showOrtu &&
+                              (item.status_ortu === "completed" ? (
+                                <div className="flex items-center gap-2 px-4 py-3 bg-green-50 text-green-700 rounded-2xl text-sm font-bold border border-green-100">
+                                  <CheckCircle className="w-4 h-4" /> Seleksi
+                                  Wawancara Orang Tua Selesai
+                                </div>
+                              ) : (
+                                <button
+                                  onClick={() => handleCompleteExam(item.id)}
+                                  className="w-full py-4 bg-brand-blue-600 hover:bg-brand-blue-700 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl transition-all active:scale-95 shadow-lg shadow-brand-blue-600/20"
+                                >
+                                  ✓ Tandai Seleksi Wawancara Orang Tua Selesai
+                                </button>
+                              ))}
+                            {/* Bottom row: Lihat Data + Batalkan */}
+                            <div className="flex gap-3 mt-2">
+                              <button
+                                onClick={() => {
+                                  setSelectedPendaftar(item.pendaftar);
+                                  setIsDetailModalOpen(true);
+                                }}
+                                className="flex-1 py-4 bg-white border border-brand-blue-100 text-brand-blue-700 hover:bg-brand-blue-50 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2 active:scale-95 shadow-sm"
+                              >
+                                <FileText className="w-4 h-4" /> Lihat Data
+                              </button>
+                              <button
+                                onClick={() =>
+                                  handleCancelAssignment(
+                                    item.id,
+                                    item.pendaftar.nama_lengkap,
+                                  )
+                                }
+                                className="px-4 py-4 border border-red-100 text-red-500 hover:bg-red-50 rounded-2xl transition-all flex items-center justify-center active:scale-95 shadow-sm"
+                                title="Batalkan Jadwal"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })()}
+                    </div>
+                  ))}
+                </div>
+              );
+            })()
+          )}
         </>
       )}
 
       {/* TAB CONTENT: SLOTS */}
-      {activeTab === 'slots' && (
+      {activeTab === "slots" && (
         <>
           <div className="bg-white p-6 md:p-8 rounded-[2rem] border border-brand-yellow-100 shadow-sm app-card relative overflow-hidden">
             <div className="absolute top-0 left-0 w-32 h-32 bg-brand-blue-600/5 rounded-full blur-2xl -translate-x-1/2 -translate-y-1/2" />
-            
+
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
               <div className="max-w-md">
-                <h3 className="text-xl font-black text-brand-blue-950 font-display tracking-tight mb-2">Kelola Sesi Ketersediaan</h3>
-                <p className="text-xs font-bold text-ink-500 leading-relaxed uppercase tracking-widest opacity-60">Pilih waktu dimana Anda bersedia menguji calon santri atau orang tua.</p>
+                <h3 className="text-xl font-black text-brand-blue-950 font-display tracking-tight mb-2">
+                  Kelola Sesi Ketersediaan
+                </h3>
+                <p className="text-xs font-bold text-ink-500 leading-relaxed uppercase tracking-widest opacity-60">
+                  Pilih waktu dimana Anda bersedia menguji calon santri atau
+                  orang tua.
+                </p>
               </div>
               <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
                 {!isSelectMode ? (
@@ -1014,13 +1205,19 @@ export default function JadwalPengujiPage() {
                     {slots.length > 0 && (
                       <>
                         <button
-                          onClick={() => { setIsSelectMode(true); setBulkActionType('edit'); }}
+                          onClick={() => {
+                            setIsSelectMode(true);
+                            setBulkActionType("edit");
+                          }}
                           className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-4 bg-stone-50 hover:bg-stone-100 text-stone-600 rounded-2xl font-black border border-stone-200 transition-all text-xs uppercase tracking-widest active:scale-95"
                         >
                           <Layers className="w-4 h-4" /> Edit Massal
                         </button>
                         <button
-                          onClick={() => { setIsSelectMode(true); setBulkActionType('delete'); }}
+                          onClick={() => {
+                            setIsSelectMode(true);
+                            setBulkActionType("delete");
+                          }}
                           className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-4 bg-red-50 hover:bg-red-100 text-red-600 rounded-2xl font-black border border-red-200 transition-all text-xs uppercase tracking-widest active:scale-95"
                         >
                           <Trash2 className="w-4 h-4" /> Hapus Massal
@@ -1042,11 +1239,23 @@ export default function JadwalPengujiPage() {
                   </>
                 ) : (
                   <div className="flex items-center gap-3">
-                    <button onClick={toggleSelectAll} className="flex items-center gap-2 px-4 py-3 bg-brand-blue-50 text-brand-blue-700 rounded-xl font-black text-xs border border-brand-blue-100 hover:bg-brand-blue-100 transition-all">
-                      {selectedSlotIds.size === slots.length ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4" />}
-                      {selectedSlotIds.size === slots.length ? 'Batal Semua' : 'Pilih Semua'}
+                    <button
+                      onClick={toggleSelectAll}
+                      className="flex items-center gap-2 px-4 py-3 bg-brand-blue-50 text-brand-blue-700 rounded-xl font-black text-xs border border-brand-blue-100 hover:bg-brand-blue-100 transition-all"
+                    >
+                      {selectedSlotIds.size === slots.length ? (
+                        <CheckSquare className="w-4 h-4" />
+                      ) : (
+                        <Square className="w-4 h-4" />
+                      )}
+                      {selectedSlotIds.size === slots.length
+                        ? "Batal Semua"
+                        : "Pilih Semua"}
                     </button>
-                    <button onClick={exitSelectMode} className="px-4 py-3 border border-stone-200 text-stone-500 rounded-xl font-black text-xs hover:bg-stone-50 transition-all">
+                    <button
+                      onClick={exitSelectMode}
+                      className="px-4 py-3 border border-stone-200 text-stone-500 rounded-xl font-black text-xs hover:bg-stone-50 transition-all"
+                    >
                       Batal
                     </button>
                   </div>
@@ -1058,58 +1267,95 @@ export default function JadwalPengujiPage() {
           {/* PILIH CEPAT - muncul saat select mode aktif */}
           {isSelectMode && uniqueTimesForChips.length > 1 && (
             <div className="bg-white rounded-2xl border border-brand-blue-100 px-5 py-4 flex flex-wrap items-center gap-2">
-              <span className="text-[10px] font-black text-ink-400 uppercase tracking-widest shrink-0 mr-1">Pilih Cepat:</span>
+              <span className="text-[10px] font-black text-ink-400 uppercase tracking-widest shrink-0 mr-1">
+                Pilih Cepat:
+              </span>
               {uniqueTimesForChips.map(({ hhmm, label, count }) => {
-                const matchingIds = slots.filter(s => {
-                  const d = new Date(s.start_time);
-                  return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}` === hhmm;
-                }).map(s => s.id);
-                const allSelected = matchingIds.every(id => selectedSlotIds.has(id));
+                const matchingIds = slots
+                  .filter((s) => {
+                    const d = new Date(s.start_time);
+                    return (
+                      `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}` ===
+                      hhmm
+                    );
+                  })
+                  .map((s) => s.id);
+                const allSelected = matchingIds.every((id) =>
+                  selectedSlotIds.has(id),
+                );
                 return (
                   <button
                     key={hhmm}
                     onClick={() => selectByTime(hhmm)}
                     className={`flex items-center gap-2 px-3 py-2 rounded-xl font-black text-xs border transition-all active:scale-95 ${
                       allSelected
-                        ? 'bg-brand-blue-600 text-white border-brand-blue-600 shadow-sm'
-                        : 'bg-brand-blue-50 text-brand-blue-700 border-brand-blue-100 hover:bg-brand-blue-100'
+                        ? "bg-brand-blue-600 text-white border-brand-blue-600 shadow-sm"
+                        : "bg-brand-blue-50 text-brand-blue-700 border-brand-blue-100 hover:bg-brand-blue-100"
                     }`}
                   >
-                    {allSelected ? <CheckSquare className="w-3.5 h-3.5" /> : <Square className="w-3.5 h-3.5" />}
+                    {allSelected ? (
+                      <CheckSquare className="w-3.5 h-3.5" />
+                    ) : (
+                      <Square className="w-3.5 h-3.5" />
+                    )}
                     {label}
-                    <span className={`px-1.5 py-0.5 rounded-md text-[9px] font-black ${
-                      allSelected ? 'bg-white/20 text-white' : 'bg-brand-blue-100 text-brand-blue-700'
-                    }`}>{count}</span>
+                    <span
+                      className={`px-1.5 py-0.5 rounded-md text-[9px] font-black ${
+                        allSelected
+                          ? "bg-white/20 text-white"
+                          : "bg-brand-blue-100 text-brand-blue-700"
+                      }`}
+                    >
+                      {count}
+                    </span>
                   </button>
                 );
               })}
-              <div className="ml-auto text-[10px] text-ink-300 font-bold">{selectedSlotIds.size} / {slots.length} dipilih</div>
+              <div className="ml-auto text-[10px] text-ink-300 font-bold">
+                {selectedSlotIds.size} / {slots.length} dipilih
+              </div>
             </div>
           )}
 
           {loadingSlots ? (
-            <div className="text-center py-12"><Loader2 className="w-8 h-8 animate-spin mx-auto text-maroon-500" /></div>
+            <div className="text-center py-12">
+              <Loader2 className="w-8 h-8 animate-spin mx-auto text-maroon-500" />
+            </div>
           ) : slots.length === 0 ? (
             <div className="text-center py-12 text-cream-500">
               <p>Belum ada sesi waktu yang dibuat.</p>
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {slots.map(slot => (
-                <div key={slot.id} onClick={isSelectMode ? () => toggleSelectSlot(slot.id) : undefined} className={`bg-white rounded-[2rem] p-6 border shadow-sm transition-all group relative app-card ${
-                  isSelectMode ? 'cursor-pointer hover:border-brand-blue-300' : 'hover:shadow-xl hover:shadow-brand-blue-600/5'
-                } ${
-                  selectedSlotIds.has(slot.id) ? 'border-brand-blue-400 ring-2 ring-brand-blue-200 shadow-brand-blue-100' : 'border-brand-yellow-100'
-                }`}>
+              {slots.map((slot) => (
+                <div
+                  key={slot.id}
+                  onClick={
+                    isSelectMode ? () => toggleSelectSlot(slot.id) : undefined
+                  }
+                  className={`bg-white rounded-[2rem] p-6 border shadow-sm transition-all group relative app-card ${
+                    isSelectMode
+                      ? "cursor-pointer hover:border-brand-blue-300"
+                      : "hover:shadow-xl hover:shadow-brand-blue-600/5"
+                  } ${
+                    selectedSlotIds.has(slot.id)
+                      ? "border-brand-blue-400 ring-2 ring-brand-blue-200 shadow-brand-blue-100"
+                      : "border-brand-yellow-100"
+                  }`}
+                >
                   {/* Checkbox overlay in select mode */}
                   {isSelectMode && (
                     <div className="absolute top-5 left-5 z-10">
-                      {selectedSlotIds.has(slot.id)
-                        ? <CheckSquare className="w-6 h-6 text-brand-blue-600" />
-                        : <Square className="w-6 h-6 text-ink-300" />}
+                      {selectedSlotIds.has(slot.id) ? (
+                        <CheckSquare className="w-6 h-6 text-brand-blue-600" />
+                      ) : (
+                        <Square className="w-6 h-6 text-ink-300" />
+                      )}
                     </div>
                   )}
-                  <div className={`absolute top-6 right-6 flex items-center gap-1 ${isSelectMode ? 'hidden' : ''}`}>
+                  <div
+                    className={`absolute top-6 right-6 flex items-center gap-1 ${isSelectMode ? "hidden" : ""}`}
+                  >
                     <button
                       onClick={() => handleOpenEdit(slot)}
                       className="p-2.5 text-ink-300 hover:text-brand-blue-600 hover:bg-brand-blue-50 rounded-full transition-all active:scale-90"
@@ -1118,23 +1364,31 @@ export default function JadwalPengujiPage() {
                       <Edit2 className="w-4 h-4" />
                     </button>
                     <button
-                      onClick={() => handleDeleteSlot(slot.id, slot._count?.bookings || 0)}
+                      onClick={() =>
+                        handleDeleteSlot(slot.id, slot._count?.bookings || 0)
+                      }
                       className="p-2.5 text-ink-300 hover:text-red-600 hover:bg-red-50 rounded-full transition-all active:scale-90"
                       title="Hapus Sesi"
                     >
                       <Trash2 className="w-5 h-5" />
                     </button>
                   </div>
-                  
+
                   <div className="flex items-center gap-4 mb-6">
                     <div className="w-14 h-14 bg-brand-blue-50 rounded-2xl flex items-center justify-center border border-brand-blue-100 text-brand-blue-700 font-black text-xl shadow-sm">
                       {slot.title?.charAt(0) || "S"}
                     </div>
                     <div>
-                      <h4 className="font-black text-lg text-brand-blue-950 font-display leading-tight">{slot.title || "Sesi Seleksi"}</h4>
+                      <h4 className="font-black text-lg text-brand-blue-950 font-display leading-tight">
+                        {slot.title || "Sesi Seleksi"}
+                      </h4>
                       <div className="flex items-center gap-1.5 mt-1">
-                        <div className={`w-2 h-2 rounded-full ${slot._count?.bookings ? 'bg-amber-500 animate-pulse' : 'bg-green-500'}`} />
-                        <span className="text-[10px] font-black text-ink-400 uppercase tracking-widest">{slot._count?.bookings ? 'Terisi' : 'Tersedia'}</span>
+                        <div
+                          className={`w-2 h-2 rounded-full ${slot._count?.bookings ? "bg-amber-500 animate-pulse" : "bg-green-500"}`}
+                        />
+                        <span className="text-[10px] font-black text-ink-400 uppercase tracking-widest">
+                          {slot._count?.bookings ? "Terisi" : "Tersedia"}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -1146,11 +1400,17 @@ export default function JadwalPengujiPage() {
                     </div>
                     <div className="flex items-center gap-3 text-brand-blue-900 bg-brand-blue-50/50 p-3 rounded-2xl border border-brand-blue-100/30 font-bold text-xs">
                       <Clock className="w-4 h-4 text-brand-blue-600 shrink-0" />
-                      {formatTime(slot.start_time)}{slot.end_time ? ` – ${formatTime(slot.end_time)}` : ''} WIB
+                      {formatTime(slot.start_time)}
+                      {slot.end_time
+                        ? ` – ${formatTime(slot.end_time)}`
+                        : ""}{" "}
+                      WIB
                     </div>
                     <div className="flex items-center gap-3 text-brand-blue-900 bg-brand-blue-50/50 p-3 rounded-2xl border border-brand-blue-100/30 font-bold text-xs">
                       <MapPin className="w-4 h-4 text-brand-blue-600 shrink-0" />
-                      <span className="truncate">{slot.location || "Online / Zoom"}</span>
+                      <span className="truncate">
+                        {slot.location || "Online / Zoom"}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -1166,13 +1426,23 @@ export default function JadwalPengujiPage() {
           <div className="flex items-center gap-4 bg-brand-blue-950 text-white px-6 py-4 rounded-[2rem] shadow-2xl shadow-brand-blue-950/40">
             <div className="flex items-center gap-2">
               <CheckSquare className="w-5 h-5 text-brand-yellow-400" />
-              <span className="font-black text-sm">{selectedSlotIds.size} sesi dipilih</span>
+              <span className="font-black text-sm">
+                {selectedSlotIds.size} sesi dipilih
+              </span>
             </div>
             <div className="w-px h-6 bg-white/20" />
-            {bulkActionType === 'edit' && (
+            {bulkActionType === "edit" && (
               <button
                 onClick={() => {
-                  setBulkEditForm({ start_time: "08:00", end_time: "09:00", location: "", notes: "", changeTime: false, changeLocation: false, changeNotes: false });
+                  setBulkEditForm({
+                    start_time: "08:00",
+                    end_time: "09:00",
+                    location: "",
+                    notes: "",
+                    changeTime: false,
+                    changeLocation: false,
+                    changeNotes: false,
+                  });
                   setIsBulkEditModalOpen(true);
                 }}
                 className="flex items-center gap-2 px-5 py-2.5 bg-brand-yellow-400 text-brand-blue-950 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-brand-yellow-300 transition-all active:scale-95"
@@ -1180,7 +1450,7 @@ export default function JadwalPengujiPage() {
                 <Edit2 className="w-4 h-4" /> Edit Terpilih
               </button>
             )}
-            {bulkActionType === 'delete' && (
+            {bulkActionType === "delete" && (
               <button
                 onClick={handleBulkDelete}
                 className="flex items-center gap-2 px-5 py-2.5 bg-red-500 text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-red-600 transition-all active:scale-95"
@@ -1204,65 +1474,186 @@ export default function JadwalPengujiPage() {
           <div className="bg-white rounded-[32px] shadow-2xl w-full max-w-md overflow-hidden border border-white/20 animate-in zoom-in-95 duration-300">
             <div className="p-6 border-b border-stone-100 flex justify-between items-center bg-stone-50/50">
               <div>
-                <h3 className="text-xl font-black text-brand-blue-950 tracking-tight leading-none">Edit Massal</h3>
-                <p className="text-[10px] text-ink-300 font-bold uppercase tracking-widest mt-1.5">{selectedSlotIds.size} sesi dipilih — centang yang ingin diubah</p>
+                <h3 className="text-xl font-black text-brand-blue-950 tracking-tight leading-none">
+                  Edit Massal
+                </h3>
+                <p className="text-[10px] text-ink-300 font-bold uppercase tracking-widest mt-1.5">
+                  {selectedSlotIds.size} sesi dipilih — centang yang ingin
+                  diubah
+                </p>
               </div>
-              <button onClick={() => setIsBulkEditModalOpen(false)} className="p-2 hover:bg-stone-200 rounded-full transition-colors text-stone-400">
+              <button
+                onClick={() => setIsBulkEditModalOpen(false)}
+                className="p-2 hover:bg-stone-200 rounded-full transition-colors text-stone-400"
+              >
                 <XCircle className="w-6 h-6" />
               </button>
             </div>
 
             <form onSubmit={handleBulkEdit} className="p-8 space-y-5">
               {/* Waktu */}
-              <div className={`p-4 rounded-2xl border-2 transition-all ${bulkEditForm.changeTime ? 'border-brand-blue-300 bg-brand-blue-50/30' : 'border-stone-100 bg-stone-50/50'}`}>
+              <div
+                className={`p-4 rounded-2xl border-2 transition-all ${bulkEditForm.changeTime ? "border-brand-blue-300 bg-brand-blue-50/30" : "border-stone-100 bg-stone-50/50"}`}
+              >
                 <label className="flex items-center gap-3 cursor-pointer mb-3">
-                  <input type="checkbox" checked={bulkEditForm.changeTime} onChange={e => setBulkEditForm({...bulkEditForm, changeTime: e.target.checked})} className="w-4 h-4 accent-brand-blue-600" />
-                  <span className="text-xs font-black text-ink-400 uppercase tracking-widest">Ubah Jam</span>
+                  <input
+                    type="checkbox"
+                    checked={bulkEditForm.changeTime}
+                    onChange={(e) =>
+                      setBulkEditForm({
+                        ...bulkEditForm,
+                        changeTime: e.target.checked,
+                      })
+                    }
+                    className="w-4 h-4 accent-brand-blue-600"
+                  />
+                  <span className="text-xs font-black text-ink-400 uppercase tracking-widest">
+                    Ubah Jam
+                  </span>
                 </label>
                 {bulkEditForm.changeTime && (
                   <div className="grid grid-cols-2 gap-3 mt-2">
                     <div>
-                      <label className="block text-[10px] font-black text-ink-400 uppercase tracking-widest mb-1.5">Mulai</label>
-                      <input type="time" required className="w-full px-3 py-2.5 bg-white border border-stone-200 rounded-xl font-bold text-brand-blue-950 text-sm focus:ring-2 focus:ring-brand-blue-400 outline-none" value={bulkEditForm.start_time} onChange={e => setBulkEditForm({...bulkEditForm, start_time: e.target.value})} />
+                      <label className="block text-[10px] font-black text-ink-400 uppercase tracking-widest mb-1.5">
+                        Mulai
+                      </label>
+                      <input
+                        type="time"
+                        required
+                        className="w-full px-3 py-2.5 bg-white border border-stone-200 rounded-xl font-bold text-brand-blue-950 text-sm focus:ring-2 focus:ring-brand-blue-400 outline-none"
+                        value={bulkEditForm.start_time}
+                        onChange={(e) =>
+                          setBulkEditForm({
+                            ...bulkEditForm,
+                            start_time: e.target.value,
+                          })
+                        }
+                      />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-black text-ink-400 uppercase tracking-widest mb-1.5">Selesai</label>
-                      <input type="time" required className="w-full px-3 py-2.5 bg-white border border-stone-200 rounded-xl font-bold text-brand-blue-950 text-sm focus:ring-2 focus:ring-brand-blue-400 outline-none" value={bulkEditForm.end_time} onChange={e => setBulkEditForm({...bulkEditForm, end_time: e.target.value})} />
+                      <label className="block text-[10px] font-black text-ink-400 uppercase tracking-widest mb-1.5">
+                        Selesai
+                      </label>
+                      <input
+                        type="time"
+                        required
+                        className="w-full px-3 py-2.5 bg-white border border-stone-200 rounded-xl font-bold text-brand-blue-950 text-sm focus:ring-2 focus:ring-brand-blue-400 outline-none"
+                        value={bulkEditForm.end_time}
+                        onChange={(e) =>
+                          setBulkEditForm({
+                            ...bulkEditForm,
+                            end_time: e.target.value,
+                          })
+                        }
+                      />
                     </div>
                   </div>
                 )}
               </div>
 
               {/* Lokasi */}
-              <div className={`p-4 rounded-2xl border-2 transition-all ${bulkEditForm.changeLocation ? 'border-brand-blue-300 bg-brand-blue-50/30' : 'border-stone-100 bg-stone-50/50'}`}>
+              <div
+                className={`p-4 rounded-2xl border-2 transition-all ${bulkEditForm.changeLocation ? "border-brand-blue-300 bg-brand-blue-50/30" : "border-stone-100 bg-stone-50/50"}`}
+              >
                 <label className="flex items-center gap-3 cursor-pointer mb-3">
-                  <input type="checkbox" checked={bulkEditForm.changeLocation} onChange={e => setBulkEditForm({...bulkEditForm, changeLocation: e.target.checked})} className="w-4 h-4 accent-brand-blue-600" />
-                  <span className="text-xs font-black text-ink-400 uppercase tracking-widest">Ubah Lokasi</span>
+                  <input
+                    type="checkbox"
+                    checked={bulkEditForm.changeLocation}
+                    onChange={(e) =>
+                      setBulkEditForm({
+                        ...bulkEditForm,
+                        changeLocation: e.target.checked,
+                      })
+                    }
+                    className="w-4 h-4 accent-brand-blue-600"
+                  />
+                  <span className="text-xs font-black text-ink-400 uppercase tracking-widest">
+                    Ubah Lokasi
+                  </span>
                 </label>
                 {bulkEditForm.changeLocation && (
-                  <input type="text" placeholder="Online / Zoom / Pesantren" className="w-full px-3 py-2.5 bg-white border border-stone-200 rounded-xl font-bold text-brand-blue-950 text-sm focus:ring-2 focus:ring-brand-blue-400 outline-none mt-2" value={bulkEditForm.location} onChange={e => setBulkEditForm({...bulkEditForm, location: e.target.value})} />
+                  <input
+                    type="text"
+                    placeholder="Online / Zoom / Pesantren"
+                    className="w-full px-3 py-2.5 bg-white border border-stone-200 rounded-xl font-bold text-brand-blue-950 text-sm focus:ring-2 focus:ring-brand-blue-400 outline-none mt-2"
+                    value={bulkEditForm.location}
+                    onChange={(e) =>
+                      setBulkEditForm({
+                        ...bulkEditForm,
+                        location: e.target.value,
+                      })
+                    }
+                  />
                 )}
               </div>
 
               {/* Catatan */}
-              <div className={`p-4 rounded-2xl border-2 transition-all ${bulkEditForm.changeNotes ? 'border-brand-blue-300 bg-brand-blue-50/30' : 'border-stone-100 bg-stone-50/50'}`}>
+              <div
+                className={`p-4 rounded-2xl border-2 transition-all ${bulkEditForm.changeNotes ? "border-brand-blue-300 bg-brand-blue-50/30" : "border-stone-100 bg-stone-50/50"}`}
+              >
                 <label className="flex items-center gap-3 cursor-pointer mb-3">
-                  <input type="checkbox" checked={bulkEditForm.changeNotes} onChange={e => setBulkEditForm({...bulkEditForm, changeNotes: e.target.checked})} className="w-4 h-4 accent-brand-blue-600" />
-                  <span className="text-xs font-black text-ink-400 uppercase tracking-widest">Ubah Catatan</span>
+                  <input
+                    type="checkbox"
+                    checked={bulkEditForm.changeNotes}
+                    onChange={(e) =>
+                      setBulkEditForm({
+                        ...bulkEditForm,
+                        changeNotes: e.target.checked,
+                      })
+                    }
+                    className="w-4 h-4 accent-brand-blue-600"
+                  />
+                  <span className="text-xs font-black text-ink-400 uppercase tracking-widest">
+                    Ubah Catatan
+                  </span>
                 </label>
                 {bulkEditForm.changeNotes && (
-                  <textarea rows={2} placeholder="Catatan untuk semua sesi..." className="w-full px-3 py-2.5 bg-white border border-stone-200 rounded-xl font-bold text-brand-blue-950 text-sm focus:ring-2 focus:ring-brand-blue-400 outline-none resize-none mt-2" value={bulkEditForm.notes} onChange={e => setBulkEditForm({...bulkEditForm, notes: e.target.value})} />
+                  <textarea
+                    rows={2}
+                    placeholder="Catatan untuk semua sesi..."
+                    className="w-full px-3 py-2.5 bg-white border border-stone-200 rounded-xl font-bold text-brand-blue-950 text-sm focus:ring-2 focus:ring-brand-blue-400 outline-none resize-none mt-2"
+                    value={bulkEditForm.notes}
+                    onChange={(e) =>
+                      setBulkEditForm({
+                        ...bulkEditForm,
+                        notes: e.target.value,
+                      })
+                    }
+                  />
                 )}
               </div>
 
-              {!bulkEditForm.changeTime && !bulkEditForm.changeLocation && !bulkEditForm.changeNotes && (
-                <p className="text-xs text-amber-600 font-bold text-center">Centang minimal satu perubahan di atas.</p>
-              )}
+              {!bulkEditForm.changeTime &&
+                !bulkEditForm.changeLocation &&
+                !bulkEditForm.changeNotes && (
+                  <p className="text-xs text-amber-600 font-bold text-center">
+                    Centang minimal satu perubahan di atas.
+                  </p>
+                )}
 
               <div className="flex gap-3 pt-2">
-                <button type="button" onClick={() => setIsBulkEditModalOpen(false)} className="flex-1 py-3.5 border border-stone-200 text-stone-600 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-stone-50 transition-all">Batal</button>
-                <button type="submit" disabled={submittingBulkEdit || (!bulkEditForm.changeTime && !bulkEditForm.changeLocation && !bulkEditForm.changeNotes)} className="flex-1 py-3.5 bg-brand-blue-600 hover:bg-brand-blue-700 disabled:opacity-40 text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-lg shadow-brand-blue-600/20">
-                  {submittingBulkEdit ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                <button
+                  type="button"
+                  onClick={() => setIsBulkEditModalOpen(false)}
+                  className="flex-1 py-3.5 border border-stone-200 text-stone-600 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-stone-50 transition-all"
+                >
+                  Batal
+                </button>
+                <button
+                  type="submit"
+                  disabled={
+                    submittingBulkEdit ||
+                    (!bulkEditForm.changeTime &&
+                      !bulkEditForm.changeLocation &&
+                      !bulkEditForm.changeNotes)
+                  }
+                  className="flex-1 py-3.5 bg-brand-blue-600 hover:bg-brand-blue-700 disabled:opacity-40 text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-lg shadow-brand-blue-600/20"
+                >
+                  {submittingBulkEdit ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Save className="w-4 h-4" />
+                  )}
                   Simpan {selectedSlotIds.size} Sesi
                 </button>
               </div>
@@ -1277,11 +1668,18 @@ export default function JadwalPengujiPage() {
           <div className="bg-white rounded-[32px] shadow-2xl w-full max-w-md overflow-hidden border border-white/20 animate-in zoom-in-95 duration-300">
             <div className="p-6 border-b border-stone-100 flex justify-between items-center bg-stone-50/50">
               <div>
-                <h3 className="text-xl font-black text-brand-blue-950 tracking-tight leading-none">Edit Sesi</h3>
-                <p className="text-[10px] text-ink-300 font-bold uppercase tracking-widest mt-1.5">{editingSlot.title || "Sesi Seleksi"}</p>
+                <h3 className="text-xl font-black text-brand-blue-950 tracking-tight leading-none">
+                  Edit Sesi
+                </h3>
+                <p className="text-[10px] text-ink-300 font-bold uppercase tracking-widest mt-1.5">
+                  {editingSlot.title || "Sesi Seleksi"}
+                </p>
               </div>
               <button
-                onClick={() => { setIsEditModalOpen(false); setEditingSlot(null); }}
+                onClick={() => {
+                  setIsEditModalOpen(false);
+                  setEditingSlot(null);
+                }}
                 className="p-2 hover:bg-stone-200 rounded-full transition-colors text-stone-400"
               >
                 <XCircle className="w-6 h-6" />
@@ -1291,61 +1689,81 @@ export default function JadwalPengujiPage() {
             <form onSubmit={handleEditSlot} className="p-8 space-y-5">
               {/* Tanggal */}
               <div>
-                <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2">Tanggal</label>
+                <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2">
+                  Tanggal
+                </label>
                 <input
                   type="date"
                   required
                   className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-brand-blue-500 outline-none font-bold text-brand-blue-950 transition-all"
                   value={editForm.date}
-                  onChange={e => setEditForm({ ...editForm, date: e.target.value })}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, date: e.target.value })
+                  }
                 />
               </div>
 
               {/* Waktu */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2">Mulai</label>
+                  <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2">
+                    Mulai
+                  </label>
                   <input
                     type="time"
                     required
                     className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-brand-blue-500 outline-none font-bold text-brand-blue-950"
                     value={editForm.start_time}
-                    onChange={e => setEditForm({ ...editForm, start_time: e.target.value })}
+                    onChange={(e) =>
+                      setEditForm({ ...editForm, start_time: e.target.value })
+                    }
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2">Selesai</label>
+                  <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2">
+                    Selesai
+                  </label>
                   <input
                     type="time"
                     required
                     className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-brand-blue-500 outline-none font-bold text-brand-blue-950"
                     value={editForm.end_time}
-                    onChange={e => setEditForm({ ...editForm, end_time: e.target.value })}
+                    onChange={(e) =>
+                      setEditForm({ ...editForm, end_time: e.target.value })
+                    }
                   />
                 </div>
               </div>
 
               {/* Lokasi */}
               <div>
-                <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2">Lokasi</label>
+                <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2">
+                  Lokasi
+                </label>
                 <input
                   type="text"
                   placeholder="Online / Zoom / Pesantren"
                   className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-brand-blue-500 outline-none font-bold text-brand-blue-950"
                   value={editForm.location}
-                  onChange={e => setEditForm({ ...editForm, location: e.target.value })}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, location: e.target.value })
+                  }
                 />
               </div>
 
               {/* Catatan */}
               <div>
-                <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2">Catatan (Opsional)</label>
+                <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2">
+                  Catatan (Opsional)
+                </label>
                 <textarea
                   rows={2}
                   placeholder="Catatan tambahan..."
                   className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-brand-blue-500 outline-none font-bold text-brand-blue-950 resize-none"
                   value={editForm.notes}
-                  onChange={e => setEditForm({ ...editForm, notes: e.target.value })}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, notes: e.target.value })
+                  }
                 />
               </div>
 
@@ -1353,7 +1771,10 @@ export default function JadwalPengujiPage() {
               <div className="flex gap-3 pt-2">
                 <button
                   type="button"
-                  onClick={() => { setIsEditModalOpen(false); setEditingSlot(null); }}
+                  onClick={() => {
+                    setIsEditModalOpen(false);
+                    setEditingSlot(null);
+                  }}
                   className="flex-1 py-3.5 border border-stone-200 text-stone-600 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-stone-50 transition-all"
                 >
                   Batal
@@ -1363,7 +1784,11 @@ export default function JadwalPengujiPage() {
                   disabled={submittingEdit}
                   className="flex-1 py-3.5 bg-brand-blue-600 hover:bg-brand-blue-700 disabled:opacity-50 text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-lg shadow-brand-blue-600/20"
                 >
-                  {submittingEdit ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                  {submittingEdit ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Save className="w-4 h-4" />
+                  )}
                   Simpan Perubahan
                 </button>
               </div>
@@ -1379,10 +1804,14 @@ export default function JadwalPengujiPage() {
             {/* Header */}
             <div className="p-6 border-b border-stone-100 flex justify-between items-center bg-stone-50/50">
               <div>
-                <h3 className="text-xl font-black text-brand-blue-950 tracking-tight leading-none">Buat Sesi Baru</h3>
-                <p className="text-[10px] text-ink-300 font-bold uppercase tracking-widest mt-1.5">Single Availability Slot</p>
+                <h3 className="text-xl font-black text-brand-blue-950 tracking-tight leading-none">
+                  Buat Sesi Baru
+                </h3>
+                <p className="text-[10px] text-ink-300 font-bold uppercase tracking-widest mt-1.5">
+                  Single Availability Slot
+                </p>
               </div>
-              <button 
+              <button
                 onClick={() => setIsSlotModalOpen(false)}
                 className="p-2 hover:bg-stone-200 rounded-full transition-colors text-stone-400"
               >
@@ -1394,79 +1823,113 @@ export default function JadwalPengujiPage() {
               {/* Jenis Ujian */}
               {ADMIN_ROLES.includes(activeRole) ? (
                 <div>
-                  <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2">Jenis Ujian</label>
+                  <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2">
+                    Jenis Ujian
+                  </label>
                   <select
                     required
                     className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-brand-blue-500 outline-none font-bold text-brand-blue-950 transition-all"
                     value={slotForm.title}
-                    onChange={e => setSlotForm({ ...slotForm, title: e.target.value })}
+                    onChange={(e) =>
+                      setSlotForm({ ...slotForm, title: e.target.value })
+                    }
                   >
-                    <option value="" disabled>Pilih Jenis Ujian</option>
+                    <option value="" disabled>
+                      Pilih Jenis Ujian
+                    </option>
                     <option value="Tes Al-Quran">Tes Al-Quran</option>
-                    <option value="Wawancara Calsan">Wawancara Calsan</option>
-                    <option value="Wawancara Cawalsan">Wawancara Cawalsan</option>
+                    <option value="Seleksi Wawancara Santri">
+                      Seleksi Wawancara Santri
+                    </option>
+                    <option value="Seleksi Wawancara Orang Tua">
+                      Seleksi Wawancara Orang Tua
+                    </option>
                   </select>
                 </div>
               ) : (
                 <div>
-                  <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2">Jenis Ujian</label>
+                  <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2">
+                    Jenis Ujian
+                  </label>
                   <div className="w-full px-4 py-3 bg-brand-blue-50/50 border border-brand-blue-100 rounded-xl text-brand-blue-900 font-black flex items-center gap-2 shadow-inner">
                     <div className="w-2 h-2 rounded-full bg-brand-blue-500 animate-pulse"></div>
                     {slotForm.title || "—"}
                   </div>
-                  <p className="text-[10px] text-ink-300 italic mt-2">*Jenis ujian otomatis sesuai role akun Anda.</p>
+                  <p className="text-[10px] text-ink-300 italic mt-2">
+                    *Jenis ujian otomatis sesuai role akun Anda.
+                  </p>
                 </div>
               )}
 
               {/* Tanggal */}
               <div>
-                <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2">Tanggal</label>
+                <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2">
+                  Tanggal
+                </label>
                 <input
                   type="date"
                   required
                   className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-brand-blue-500 outline-none font-bold text-brand-blue-950 transition-all"
                   value={slotForm.date}
-                  onChange={e => setSlotForm({ ...slotForm, date: e.target.value })}
+                  onChange={(e) =>
+                    setSlotForm({ ...slotForm, date: e.target.value })
+                  }
                 />
               </div>
 
               {/* Waktu */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2">Mulai</label>
+                  <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2">
+                    Mulai
+                  </label>
                   <input
                     type="time"
                     required
                     className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-brand-blue-500 outline-none font-bold text-brand-blue-950"
                     value={slotForm.start_time}
-                    onChange={e => {
+                    onChange={(e) => {
                       const newStart = e.target.value;
                       let newEnd = slotForm.end_time;
-                      
+
                       if (newStart) {
-                        const [hours, minutes] = newStart.split(':').map(Number);
+                        const [hours, minutes] = newStart
+                          .split(":")
+                          .map(Number);
                         const date = new Date();
                         date.setHours(hours + 1, minutes);
-                        newEnd = date.getHours().toString().padStart(2, '0') + ':' + 
-                                 date.getMinutes().toString().padStart(2, '0');
+                        newEnd =
+                          date.getHours().toString().padStart(2, "0") +
+                          ":" +
+                          date.getMinutes().toString().padStart(2, "0");
                       }
-                      
-                      setSlotForm({ ...slotForm, start_time: newStart, end_time: newEnd });
+
+                      setSlotForm({
+                        ...slotForm,
+                        start_time: newStart,
+                        end_time: newEnd,
+                      });
                     }}
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2">Selesai</label>
+                  <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2">
+                    Selesai
+                  </label>
                   <input
                     type="time"
                     required
                     className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-brand-blue-500 outline-none font-bold text-brand-blue-950"
                     value={slotForm.end_time}
-                    onChange={e => setSlotForm({ ...slotForm, end_time: e.target.value })}
+                    onChange={(e) =>
+                      setSlotForm({ ...slotForm, end_time: e.target.value })
+                    }
                   />
                 </div>
               </div>
-              <p className="text-[10px] text-ink-300 italic -mt-4">⏱ Durasi maksimal per sesi adalah 60 menit.</p>
+              <p className="text-[10px] text-ink-300 italic -mt-4">
+                ⏱ Durasi maksimal per sesi adalah 60 menit.
+              </p>
 
               {/* Alerts */}
               <div className="space-y-3">
@@ -1476,9 +1939,13 @@ export default function JadwalPengujiPage() {
                     <span className="text-sm">✨</span>
                   </div>
                   <div>
-                    <p className="text-[10px] text-brand-blue-100 font-black uppercase tracking-widest mb-0.5">Informasi Otomatis</p>
+                    <p className="text-[10px] text-brand-blue-100 font-black uppercase tracking-widest mb-0.5">
+                      Informasi Otomatis
+                    </p>
                     <p className="text-[11px] leading-relaxed font-bold">
-                      Sesi ini diatur sebagai <span className="text-brand-yellow-300">Full Online</span>. Link Meet akan otomatis diambil dari profil Anda.
+                      Sesi ini diatur sebagai{" "}
+                      <span className="text-brand-yellow-300">Full Online</span>
+                      . Link Meet akan otomatis diambil dari profil Anda.
                     </p>
                   </div>
                 </div>
@@ -1488,9 +1955,12 @@ export default function JadwalPengujiPage() {
                     <Users className="w-4 h-4" />
                   </div>
                   <div>
-                    <p className="text-[10px] text-emerald-800 font-black uppercase tracking-widest mb-0.5">Kapasitas</p>
+                    <p className="text-[10px] text-emerald-800 font-black uppercase tracking-widest mb-0.5">
+                      Kapasitas
+                    </p>
                     <p className="text-[11px] text-emerald-700 leading-relaxed font-medium">
-                      Setiap sesi memiliki <b>Kuota 1 Santri</b> (Private / 1-on-1).
+                      Setiap sesi memiliki <b>Kuota 1 Santri</b> (Private /
+                      1-on-1).
                     </p>
                   </div>
                 </div>
@@ -1501,7 +1971,11 @@ export default function JadwalPengujiPage() {
                 disabled={submittingSlot}
                 className="w-full py-4 bg-brand-blue-600 hover:bg-brand-blue-700 text-white font-black rounded-2xl transition-all shadow-xl shadow-brand-blue-900/20 flex items-center justify-center gap-2 active:scale-95 disabled:opacity-50"
               >
-                {submittingSlot ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
+                {submittingSlot ? (
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                ) : (
+                  <Save className="w-5 h-5" />
+                )}
                 SIMPAN SESI KETERSEDIAAN
               </button>
             </form>
@@ -1515,50 +1989,89 @@ export default function JadwalPengujiPage() {
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg max-h-[90vh] flex flex-col">
             <div className="p-4 border-b border-cream-100 flex justify-between items-center bg-cream-50 rounded-t-2xl shrink-0">
               <h3 className="font-bold text-ink-950">Data Pendaftar</h3>
-              <button onClick={() => setIsDetailModalOpen(false)}><XCircle className="w-6 h-6 text-ink-400 hover:text-ink-600" /></button>
+              <button onClick={() => setIsDetailModalOpen(false)}>
+                <XCircle className="w-6 h-6 text-ink-400 hover:text-ink-600" />
+              </button>
             </div>
             <div className="p-6 space-y-6 overflow-y-auto">
               {/* Data Diri */}
               <div>
-                <h4 className="text-sm font-bold text-ink-400 uppercase tracking-wider mb-3">Identitas Santri</h4>
+                <h4 className="text-sm font-bold text-ink-400 uppercase tracking-wider mb-3">
+                  Identitas Santri
+                </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                   <div>
-                    <label className="block text-cream-500 text-xs">Nama Lengkap</label>
-                    <p className="font-bold text-ink-950">{selectedPendaftar.nama_lengkap}</p>
-                  </div>
-                  <div>
-                    <label className="block text-cream-500 text-xs">Nomor Pendaftaran</label>
-                    <p className="font-mono font-bold text-ink-950">{selectedPendaftar.nomor_pendaftaran}</p>
-                  </div>
-                  <div>
-                    <label className="block text-cream-500 text-xs">NIK</label>
-                    <p className="font-mono text-ink-700">{selectedPendaftar.nik || "-"}</p>
-                  </div>
-                  <div>
-                    <label className="block text-cream-500 text-xs">Jenis Kelamin</label>
-                    <p className="text-ink-700">{selectedPendaftar.jenis_kelamin}</p>
-                  </div>
-                  <div>
-                    <label className="block text-cream-500 text-xs">Tempat, Tanggal Lahir</label>
-                    <p className="text-ink-700">
-                      {selectedPendaftar.tempat_lahir}, {selectedPendaftar.tanggal_lahir ? new Date(selectedPendaftar.tanggal_lahir).toLocaleDateString('id-ID') : '-'}
+                    <label className="block text-cream-500 text-xs">
+                      Nama Lengkap
+                    </label>
+                    <p className="font-bold text-ink-950">
+                      {selectedPendaftar.nama_lengkap}
                     </p>
                   </div>
                   <div>
-                    <label className="block text-cream-500 text-xs">Jenjang</label>
+                    <label className="block text-cream-500 text-xs">
+                      Nomor Pendaftaran
+                    </label>
+                    <p className="font-mono font-bold text-ink-950">
+                      {selectedPendaftar.nomor_pendaftaran}
+                    </p>
+                  </div>
+                  <div>
+                    <label className="block text-cream-500 text-xs">NIK</label>
+                    <p className="font-mono text-ink-700">
+                      {selectedPendaftar.nik || "-"}
+                    </p>
+                  </div>
+                  <div>
+                    <label className="block text-cream-500 text-xs">
+                      Jenis Kelamin
+                    </label>
+                    <p className="text-ink-700">
+                      {selectedPendaftar.jenis_kelamin}
+                    </p>
+                  </div>
+                  <div>
+                    <label className="block text-cream-500 text-xs">
+                      Tempat, Tanggal Lahir
+                    </label>
+                    <p className="text-ink-700">
+                      {selectedPendaftar.tempat_lahir},{" "}
+                      {selectedPendaftar.tanggal_lahir
+                        ? new Date(
+                            selectedPendaftar.tanggal_lahir,
+                          ).toLocaleDateString("id-ID")
+                        : "-"}
+                    </p>
+                  </div>
+                  <div>
+                    <label className="block text-cream-500 text-xs">
+                      Jenjang
+                    </label>
                     <p className="text-ink-700">{selectedPendaftar.jenjang}</p>
                   </div>
                   <div className="col-span-1 sm:col-span-2">
-                    <label className="block text-cream-500 text-xs">No. WA / HP (Wali/Utama)</label>
-                    <p className="font-mono font-bold text-green-700">{selectedPendaftar.no_hp || "-"}</p>
+                    <label className="block text-cream-500 text-xs">
+                      No. WA / HP (Wali/Utama)
+                    </label>
+                    <p className="font-mono font-bold text-green-700">
+                      {selectedPendaftar.no_hp || "-"}
+                    </p>
                   </div>
                   <div className="col-span-2">
-                    <label className="block text-cream-500 text-xs">Alamat</label>
-                    <p className="text-ink-700">{selectedPendaftar.alamat || "-"}</p>
+                    <label className="block text-cream-500 text-xs">
+                      Alamat
+                    </label>
+                    <p className="text-ink-700">
+                      {selectedPendaftar.alamat || "-"}
+                    </p>
                   </div>
                   <div className="col-span-2">
-                    <label className="block text-cream-500 text-xs">Asal Sekolah</label>
-                    <p className="text-ink-700 font-medium">{selectedPendaftar.asal_sekolah || "-"}</p>
+                    <label className="block text-cream-500 text-xs">
+                      Asal Sekolah
+                    </label>
+                    <p className="text-ink-700 font-medium">
+                      {selectedPendaftar.asal_sekolah || "-"}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -1567,30 +2080,50 @@ export default function JadwalPengujiPage() {
 
               {/* Data Orang Tua */}
               <div>
-                <h4 className="text-sm font-bold text-ink-400 uppercase tracking-wider mb-3">Data Orang Tua</h4>
+                <h4 className="text-sm font-bold text-ink-400 uppercase tracking-wider mb-3">
+                  Data Orang Tua
+                </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                   <div>
-                    <label className="block text-cream-500 text-xs">Nama Ayah</label>
-                    <p className="font-bold text-ink-950">{selectedPendaftar.orang_tua?.nama_ayah || "-"}</p>
+                    <label className="block text-cream-500 text-xs">
+                      Nama Ayah
+                    </label>
+                    <p className="font-bold text-ink-950">
+                      {selectedPendaftar.orang_tua?.nama_ayah || "-"}
+                    </p>
                   </div>
                   <div>
-                    <label className="block text-cream-500 text-xs">No. HP Ayah</label>
-                    <p className="font-mono text-ink-700">{selectedPendaftar.orang_tua?.no_hp_ayah || "-"}</p>
+                    <label className="block text-cream-500 text-xs">
+                      No. HP Ayah
+                    </label>
+                    <p className="font-mono text-ink-700">
+                      {selectedPendaftar.orang_tua?.no_hp_ayah || "-"}
+                    </p>
                   </div>
                   <div>
-                    <label className="block text-cream-500 text-xs">Pekerjaan Ayah</label>
-                    <p className="text-ink-700">{selectedPendaftar.orang_tua?.pekerjaan_ayah || "-"}</p>
+                    <label className="block text-cream-500 text-xs">
+                      Pekerjaan Ayah
+                    </label>
+                    <p className="text-ink-700">
+                      {selectedPendaftar.orang_tua?.pekerjaan_ayah || "-"}
+                    </p>
+                  </div>
+                  <div>{/* Empty spacer or Mother info */}</div>
+                  <div>
+                    <label className="block text-cream-500 text-xs">
+                      Nama Ibu
+                    </label>
+                    <p className="font-bold text-ink-950">
+                      {selectedPendaftar.orang_tua?.nama_ibu || "-"}
+                    </p>
                   </div>
                   <div>
-                    {/* Empty spacer or Mother info */}
-                  </div>
-                  <div>
-                    <label className="block text-cream-500 text-xs">Nama Ibu</label>
-                    <p className="font-bold text-ink-950">{selectedPendaftar.orang_tua?.nama_ibu || "-"}</p>
-                  </div>
-                  <div>
-                    <label className="block text-cream-500 text-xs">No. HP Ibu</label>
-                    <p className="font-mono text-ink-700">{selectedPendaftar.orang_tua?.no_hp_ibu || "-"}</p>
+                    <label className="block text-cream-500 text-xs">
+                      No. HP Ibu
+                    </label>
+                    <p className="font-mono text-ink-700">
+                      {selectedPendaftar.orang_tua?.no_hp_ibu || "-"}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -1614,33 +2147,46 @@ export default function JadwalPengujiPage() {
             {/* Header */}
             <div className="p-8 border-b border-stone-100 flex justify-between items-center bg-stone-50/50 rounded-t-[40px] shrink-0">
               <div>
-                <h3 className="text-2xl font-black text-brand-blue-950 tracking-tight leading-tight">Buat Jadwal Massal</h3>
-                <p className="text-xs text-ink-300 font-bold uppercase tracking-widest mt-2">Bulk Availability Scheduler</p>
+                <h3 className="text-2xl font-black text-brand-blue-950 tracking-tight leading-tight">
+                  Buat Jadwal Massal
+                </h3>
+                <p className="text-xs text-ink-300 font-bold uppercase tracking-widest mt-2">
+                  Bulk Availability Scheduler
+                </p>
               </div>
-              <button 
-                onClick={() => setIsBulkModalOpen(false)} 
+              <button
+                onClick={() => setIsBulkModalOpen(false)}
                 className="p-3 hover:bg-stone-200 rounded-full transition-colors text-stone-400"
               >
                 <XCircle className="w-8 h-8" />
               </button>
             </div>
-            
-            <form onSubmit={handleCreateBulk} className="p-10 space-y-8 overflow-y-auto overscroll-contain custom-scrollbar flex-1">
+
+            <form
+              onSubmit={handleCreateBulk}
+              className="p-10 space-y-8 overflow-y-auto overscroll-contain custom-scrollbar flex-1"
+            >
               {/* Jenis Ujian Info */}
               <div className="bg-brand-blue-600 rounded-3xl p-6 shadow-xl shadow-brand-blue-950/20 text-white relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
-                <p className="text-[10px] text-brand-blue-100 font-black uppercase tracking-widest mb-1.5 leading-none">Mata Ujian Terpilih</p>
+                <p className="text-[10px] text-brand-blue-100 font-black uppercase tracking-widest mb-1.5 leading-none">
+                  Mata Ujian Terpilih
+                </p>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center text-xl shadow-inner">
                     <Trophy className="w-5 h-5 text-brand-yellow-300" />
                   </div>
-                  <p className="text-2xl font-black tracking-tight text-white">{bulkForm.title || "—"}</p>
+                  <p className="text-2xl font-black tracking-tight text-white">
+                    {bulkForm.title || "—"}
+                  </p>
                 </div>
               </div>
 
               {/* Day Selection */}
               <div>
-                <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-4">Pilih Hari Rutin Seminggu</label>
+                <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-4">
+                  Pilih Hari Rutin Seminggu
+                </label>
                 <div className="flex flex-wrap gap-3">
                   {[
                     { id: 1, label: "Senin" },
@@ -1658,11 +2204,13 @@ export default function JadwalPengujiPage() {
                         key={day.id}
                         type="button"
                         onClick={() => toggleDay(day.id)}
-                        className={`px-4 py-2.5 rounded-2xl text-xs font-black transition-all border relative flex flex-col items-center min-w-[70px] ${isSelected 
-                          ? (isActive 
-                              ? "bg-brand-blue-700 text-white border-brand-blue-800 shadow-lg scale-105 z-10" 
-                              : "bg-brand-blue-50 text-brand-blue-700 border-brand-blue-100 hover:bg-brand-blue-100")
-                          : "bg-stone-50 text-stone-400 border-stone-200 hover:bg-stone-100"}`}
+                        className={`px-4 py-2.5 rounded-2xl text-xs font-black transition-all border relative flex flex-col items-center min-w-[70px] ${
+                          isSelected
+                            ? isActive
+                              ? "bg-brand-blue-700 text-white border-brand-blue-800 shadow-lg scale-105 z-10"
+                              : "bg-brand-blue-50 text-brand-blue-700 border-brand-blue-100 hover:bg-brand-blue-100"
+                            : "bg-stone-50 text-stone-400 border-stone-200 hover:bg-stone-100"
+                        }`}
                       >
                         {day.label}
                         {isSelected && !isActive && (
@@ -1677,30 +2225,39 @@ export default function JadwalPengujiPage() {
                 </div>
                 <p className="text-[10px] text-ink-300 italic mt-3 flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-brand-blue-400"></span>
-                  Klik untuk aktifkan hari, klik lagi untuk atur jam spesifik hari tersebut.
+                  Klik untuk aktifkan hari, klik lagi untuk atur jam spesifik
+                  hari tersebut.
                 </p>
               </div>
 
               {/* Date Range */}
               <div className="grid grid-cols-2 gap-6 p-6 bg-stone-50 rounded-3xl border border-stone-100 shadow-inner">
                 <div>
-                  <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2.5">Mulai Tanggal</label>
+                  <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2.5">
+                    Mulai Tanggal
+                  </label>
                   <input
                     type="date"
                     required
                     className="w-full px-4 py-3 bg-white border border-stone-200 rounded-2xl focus:ring-2 focus:ring-brand-blue-500 outline-none font-black text-brand-blue-950 shadow-sm"
                     value={bulkForm.startDate}
-                    onChange={e => setBulkForm({ ...bulkForm, startDate: e.target.value })}
+                    onChange={(e) =>
+                      setBulkForm({ ...bulkForm, startDate: e.target.value })
+                    }
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2.5">Hingga Tanggal</label>
+                  <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2.5">
+                    Hingga Tanggal
+                  </label>
                   <input
                     type="date"
                     required
                     className="w-full px-4 py-3 bg-white border border-stone-200 rounded-2xl focus:ring-2 focus:ring-brand-blue-500 outline-none font-black text-brand-blue-950 shadow-sm"
                     value={bulkForm.endDate}
-                    onChange={e => setBulkForm({ ...bulkForm, endDate: e.target.value })}
+                    onChange={(e) =>
+                      setBulkForm({ ...bulkForm, endDate: e.target.value })
+                    }
                   />
                 </div>
               </div>
@@ -1709,14 +2266,26 @@ export default function JadwalPengujiPage() {
               <div className="bg-stone-50 rounded-[32px] p-8 border border-stone-100">
                 <div className="flex items-center justify-between mb-6 border-b border-stone-200 pb-4">
                   <div>
-                    <label className="block text-[10px] text-ink-300 font-black uppercase tracking-[0.2em] mb-1">Pengaturan Sesi:</label>
-                    <span className="text-xl font-black text-brand-blue-800">{
-                      ["Ahad", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"][activeDay]
-                    }</span>
+                    <label className="block text-[10px] text-ink-300 font-black uppercase tracking-[0.2em] mb-1">
+                      Pengaturan Sesi:
+                    </label>
+                    <span className="text-xl font-black text-brand-blue-800">
+                      {
+                        [
+                          "Ahad",
+                          "Senin",
+                          "Selasa",
+                          "Rabu",
+                          "Kamis",
+                          "Jumat",
+                          "Sabtu",
+                        ][activeDay]
+                      }
+                    </span>
                   </div>
                   {bulkForm.selectedDays.length > 1 && (
-                    <button 
-                      type="button" 
+                    <button
+                      type="button"
                       onClick={copySlotsToAll}
                       className="text-[10px] bg-brand-blue-600 text-white px-3 py-2 rounded-xl font-black hover:bg-brand-blue-700 transition-all shadow-md active:scale-95 flex items-center gap-2"
                     >
@@ -1724,10 +2293,13 @@ export default function JadwalPengujiPage() {
                     </button>
                   )}
                 </div>
-                
+
                 <div className="space-y-4">
                   {(bulkForm.daySlots[activeDay] || []).map((slot, index) => (
-                    <div key={index} className="flex items-center gap-4 bg-white p-4 rounded-3xl border border-stone-200 shadow-sm hover:shadow-md transition-shadow group">
+                    <div
+                      key={index}
+                      className="flex items-center gap-4 bg-white p-4 rounded-3xl border border-stone-200 shadow-sm hover:shadow-md transition-shadow group"
+                    >
                       <div className="flex-1 grid grid-cols-2 gap-4">
                         <div className="relative">
                           <input
@@ -1735,20 +2307,32 @@ export default function JadwalPengujiPage() {
                             required
                             className="w-full bg-stone-50 border border-stone-100 rounded-2xl px-4 py-3 text-sm font-black text-brand-blue-950 focus:ring-2 focus:ring-brand-blue-500 outline-none"
                             value={slot.start}
-                            onChange={e => {
+                            onChange={(e) => {
                               const newStart = e.target.value;
-                              const newSlots = [...(bulkForm.daySlots[activeDay] || [])];
+                              const newSlots = [
+                                ...(bulkForm.daySlots[activeDay] || []),
+                              ];
                               newSlots[index].start = newStart;
-                              
+
                               if (newStart) {
-                                const [hours, minutes] = newStart.split(':').map(Number);
+                                const [hours, minutes] = newStart
+                                  .split(":")
+                                  .map(Number);
                                 const date = new Date();
                                 date.setHours(hours + 1, minutes);
-                                newSlots[index].end = date.getHours().toString().padStart(2, '0') + ':' + 
-                                                     date.getMinutes().toString().padStart(2, '0');
+                                newSlots[index].end =
+                                  date.getHours().toString().padStart(2, "0") +
+                                  ":" +
+                                  date.getMinutes().toString().padStart(2, "0");
                               }
-                              
-                              setBulkForm({ ...bulkForm, daySlots: { ...bulkForm.daySlots, [activeDay]: newSlots } });
+
+                              setBulkForm({
+                                ...bulkForm,
+                                daySlots: {
+                                  ...bulkForm.daySlots,
+                                  [activeDay]: newSlots,
+                                },
+                              });
                             }}
                           />
                           <Clock className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-300" />
@@ -1759,10 +2343,18 @@ export default function JadwalPengujiPage() {
                             required
                             className="w-full bg-stone-50 border border-stone-100 rounded-2xl px-4 py-3 text-sm font-black text-brand-blue-950 focus:ring-2 focus:ring-brand-blue-500 outline-none"
                             value={slot.end}
-                            onChange={e => {
-                              const newSlots = [...(bulkForm.daySlots[activeDay] || [])];
+                            onChange={(e) => {
+                              const newSlots = [
+                                ...(bulkForm.daySlots[activeDay] || []),
+                              ];
                               newSlots[index].end = e.target.value;
-                              setBulkForm({ ...bulkForm, daySlots: { ...bulkForm.daySlots, [activeDay]: newSlots } });
+                              setBulkForm({
+                                ...bulkForm,
+                                daySlots: {
+                                  ...bulkForm.daySlots,
+                                  [activeDay]: newSlots,
+                                },
+                              });
                             }}
                           />
                           <Clock className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-300" />
@@ -1793,9 +2385,14 @@ export default function JadwalPengujiPage() {
                   <AlertCircle className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-xs font-black text-brand-yellow-800 uppercase tracking-widest mb-1">Informasi Otomatis</p>
+                  <p className="text-xs font-black text-brand-yellow-800 uppercase tracking-widest mb-1">
+                    Informasi Otomatis
+                  </p>
                   <p className="text-[11px] text-brand-blue-900 leading-relaxed font-bold">
-                    Semua sesi yang dibuat massal akan otomatis diset sebagai <span className="text-brand-blue-600">Online</span> dan memiliki <span className="text-emerald-600">Kuota 1 Santri</span>.
+                    Semua sesi yang dibuat massal akan otomatis diset sebagai{" "}
+                    <span className="text-brand-blue-600">Online</span> dan
+                    memiliki{" "}
+                    <span className="text-emerald-600">Kuota 1 Santri</span>.
                   </p>
                 </div>
               </div>
@@ -1805,7 +2402,11 @@ export default function JadwalPengujiPage() {
                 disabled={submittingBulk}
                 className="w-full py-5 bg-brand-blue-600 hover:bg-brand-blue-700 text-white font-black rounded-[32px] transition-all shadow-2xl shadow-brand-blue-900/40 flex items-center justify-center gap-3 active:scale-95 disabled:opacity-50 text-lg tracking-tight"
               >
-                {submittingBulk ? <Loader2 className="w-6 h-6 animate-spin" /> : <Save className="w-6 h-6" />}
+                {submittingBulk ? (
+                  <Loader2 className="w-6 h-6 animate-spin" />
+                ) : (
+                  <Save className="w-6 h-6" />
+                )}
                 BUAT JADWAL RUTIN SEKARANG
               </button>
             </form>
@@ -1815,4 +2416,3 @@ export default function JadwalPengujiPage() {
     </div>
   );
 }
-

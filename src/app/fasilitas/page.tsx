@@ -31,7 +31,7 @@ import {
   Star,
   TrendingUp,
   ArrowRight,
-  Camera
+  Camera,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { Container } from "@/components/layout/Container";
@@ -40,7 +40,17 @@ import { Container } from "@/components/layout/Container";
 // REUSABLE COMPONENTS
 // ========================================
 
-const HeroStat = ({ icon: Icon, value, label, delay = 0 }: { icon: any, value: string, label: string, delay?: number }) => (
+const HeroStat = ({
+  icon: Icon,
+  value,
+  label,
+  delay = 0,
+}: {
+  icon: any;
+  value: string;
+  label: string;
+  delay?: number;
+}) => (
   <motion.div
     initial={{ opacity: 0, scale: 0.9 }}
     animate={{ opacity: 1, scale: 1 }}
@@ -50,8 +60,12 @@ const HeroStat = ({ icon: Icon, value, label, delay = 0 }: { icon: any, value: s
     <div className="w-12 h-12 rounded-xl bg-brand-blue-50 flex items-center justify-center text-brand-blue-600 mb-3 border border-brand-blue-100 shadow-sm">
       <Icon className="w-6 h-6" />
     </div>
-    <p className="text-2xl font-black text-brand-blue-950 leading-none mb-1">{value}</p>
-    <p className="text-[10px] text-brand-blue-500/70 font-extrabold uppercase tracking-widest">{label}</p>
+    <p className="text-2xl font-black text-brand-blue-950 leading-none mb-1">
+      {value}
+    </p>
+    <p className="text-[10px] text-brand-blue-500/70 font-extrabold uppercase tracking-widest">
+      {label}
+    </p>
   </motion.div>
 );
 
@@ -91,13 +105,29 @@ export default function FasilitasPage() {
                 transition={{ delay: 0.2 }}
                 className="text-lg md:text-xl text-ink-600 max-w-xl mx-auto lg:mx-0 leading-relaxed font-medium mb-12"
               >
-                Kami menyediakan lingkungan belajar yang kondusif, nyaman, dan modern untuk mendukung tumbuh kembang santri secara optimal.
+                Kami menyediakan lingkungan belajar yang kondusif, nyaman, dan
+                modern untuk mendukung tumbuh kembang santri secara optimal.
               </motion.p>
 
               <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-                <HeroStat icon={Home} value="15+" label="Kamar Asrama" delay={0.3} />
-                <HeroStat icon={School} value="12+" label="Ruang Kelas" delay={0.4} />
-                <HeroStat icon={BookOpen} value="1K+" label="Koleksi Buku" delay={0.5} />
+                <HeroStat
+                  icon={Home}
+                  value="15+"
+                  label="Kamar Asrama"
+                  delay={0.3}
+                />
+                <HeroStat
+                  icon={School}
+                  value="12+"
+                  label="Ruang Kelas"
+                  delay={0.4}
+                />
+                <HeroStat
+                  icon={BookOpen}
+                  value="1K+"
+                  label="Koleksi Buku"
+                  delay={0.5}
+                />
               </div>
             </div>
 
@@ -110,37 +140,69 @@ export default function FasilitasPage() {
             >
               <div className="space-y-6 pt-12">
                 <div className="aspect-4/5 rounded-[3rem] overflow-hidden shadow-lg relative group border border-brand-blue-100">
-                  <Image src="https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=2000&auto=format&fit=crop" alt="Masjid" fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                  <Image
+                    src="https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=2000&auto=format&fit=crop"
+                    alt="Masjid"
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-700"
+                  />
                   <div className="absolute inset-0 bg-linear-to-t from-brand-blue-950/70 to-transparent flex items-end p-8">
-                    <span className="text-white font-bold text-xl drop-shadow-md">Masjid Jami'</span>
+                    <span className="text-white font-bold text-xl drop-shadow-md">
+                      Masjid Jami'
+                    </span>
                   </div>
                 </div>
                 <div className="aspect-square rounded-[3rem] overflow-hidden shadow-lg relative group border border-brand-blue-100">
-                  <Image src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=2186&auto=format&fit=crop" alt="Lapangan" fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                  <Image
+                    src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=2186&auto=format&fit=crop"
+                    alt="Lapangan"
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-700"
+                  />
                   <div className="absolute inset-0 bg-linear-to-t from-brand-blue-950/70 to-transparent flex items-end p-8">
-                    <span className="text-white font-bold text-lg drop-shadow-md">Area Olahraga</span>
+                    <span className="text-white font-bold text-lg drop-shadow-md">
+                      Area Olahraga
+                    </span>
                   </div>
                 </div>
               </div>
               <div className="space-y-6">
                 <div className="aspect-square rounded-[3rem] overflow-hidden shadow-lg relative group border border-brand-blue-100">
-                  <Image src="https://images.unsplash.com/photo-1555854817-2b22603c7a52?q=80&w=2070&auto=format&fit=crop" alt="Asrama" fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                  <Image
+                    src="https://images.unsplash.com/photo-1555854817-2b22603c7a52?q=80&w=2070&auto=format&fit=crop"
+                    alt="Asrama"
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-700"
+                  />
                   <div className="absolute inset-0 bg-linear-to-t from-brand-blue-950/70 to-transparent flex items-end p-8">
-                    <span className="text-white font-bold text-lg drop-shadow-md">Asrama Nyaman</span>
+                    <span className="text-white font-bold text-lg drop-shadow-md">
+                      Asrama Nyaman
+                    </span>
                   </div>
                 </div>
                 <div className="aspect-4/5 rounded-[3rem] overflow-hidden shadow-lg relative group border border-brand-blue-100">
-                  <Image src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=2073&auto=format&fit=crop" alt="Kelas" fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                  <Image
+                    src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=2073&auto=format&fit=crop"
+                    alt="Kelas"
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-700"
+                  />
                   <div className="absolute inset-0 bg-linear-to-t from-brand-blue-950/70 to-transparent flex items-end p-8">
-                    <span className="text-white font-bold text-xl drop-shadow-md">Kelas Modern</span>
+                    <span className="text-white font-bold text-xl drop-shadow-md">
+                      Kelas Modern
+                    </span>
                   </div>
                 </div>
               </div>
               {/* Floating Badge */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-5 rounded-[2rem] shadow-xl border border-brand-blue-100 flex flex-col items-center gap-1 z-20">
                 <Camera className="w-8 h-8 text-brand-blue-600 mb-1" />
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-blue-500">Sneak Peek</span>
-                <span className="text-sm font-black text-brand-blue-900">Campus Tour</span>
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-blue-500">
+                  Sneak Peek
+                </span>
+                <span className="text-sm font-black text-brand-blue-900">
+                  Campus Tour
+                </span>
               </div>
             </motion.div>
           </div>
@@ -174,7 +236,9 @@ export default function FasilitasPage() {
               transition={{ delay: 0.1 }}
               className="section-subtitle"
             >
-              Sarana vital yang menjadi jantung aktivitas harian di <br className="hidden md:block" /> Pesantren Sistem PPDB Modern untuk kenyamanan dan kekhusyukan.
+              Sarana vital yang menjadi jantung aktivitas harian di{" "}
+              <br className="hidden md:block" /> Pesantren Sistem PPDB Modern
+              untuk kenyamanan dan kekhusyukan.
             </motion.p>
           </div>
 
@@ -196,9 +260,13 @@ export default function FasilitasPage() {
                     <Home className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
-                  <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-brand-blue-950 mb-6 leading-[1.1]">Masjid Jami' <br className="hidden sm:block" /> PPDB</h3>
+                  <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-brand-blue-950 mb-6 leading-[1.1]">
+                    Masjid Jami' <br className="hidden sm:block" /> PPDB
+                  </h3>
                   <p className="text-base sm:text-lg lg:text-xl text-brand-blue-950/70 mb-8 sm:mb-10 leading-relaxed font-medium">
-                    Pusat peribadatan santri yang mampu menampung 1000 jamaah. Dilengkapi pendingin ruangan, karpet premium, dan sistem audio berkualitas tinggi.
+                    Pusat peribadatan santri yang mampu menampung 1000 jamaah.
+                    Dilengkapi pendingin ruangan, karpet premium, dan sistem
+                    audio berkualitas tinggi.
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
@@ -207,8 +275,12 @@ export default function FasilitasPage() {
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
-                        <h4 className="font-black text-brand-blue-950 text-[15px] sm:text-lg uppercase tracking-tight">Kapasitas Luas</h4>
-                        <p className="text-xs sm:text-sm text-brand-blue-500 font-medium">2 Lantai utama luas</p>
+                        <h4 className="font-black text-brand-blue-950 text-[15px] sm:text-lg uppercase tracking-tight">
+                          Kapasitas Luas
+                        </h4>
+                        <p className="text-xs sm:text-sm text-brand-blue-500 font-medium">
+                          2 Lantai utama luas
+                        </p>
                       </div>
                     </div>
                     <div className="flex items-start gap-4 group/item">
@@ -216,8 +288,12 @@ export default function FasilitasPage() {
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
-                        <h4 className="font-black text-brand-blue-950 text-[15px] sm:text-lg uppercase tracking-tight">Kenyamanan</h4>
-                        <p className="text-xs sm:text-sm text-brand-blue-500 font-medium">Full AC & Karpet Empuk</p>
+                        <h4 className="font-black text-brand-blue-950 text-[15px] sm:text-lg uppercase tracking-tight">
+                          Kenyamanan
+                        </h4>
+                        <p className="text-xs sm:text-sm text-brand-blue-500 font-medium">
+                          Full AC & Karpet Empuk
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -278,9 +354,13 @@ export default function FasilitasPage() {
                     <Building className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
-                  <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-brand-blue-950 mb-6 leading-[1.1]">Asrama <br className="hidden sm:block" /> Berkualitas</h3>
+                  <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-brand-blue-950 mb-6 leading-[1.1]">
+                    Asrama <br className="hidden sm:block" /> Berkualitas
+                  </h3>
                   <p className="text-base sm:text-lg lg:text-xl text-brand-blue-950/70 mb-8 sm:mb-10 leading-relaxed font-medium">
-                    Hunian nyaman dengan sirkulasi udara optimal. Setiap kamar didesain dengan konsep kekeluargaan dan dilengkapi fasilitas penyimpanan pribadi.
+                    Hunian nyaman dengan sirkulasi udara optimal. Setiap kamar
+                    didesain dengan konsep kekeluargaan dan dilengkapi fasilitas
+                    penyimpanan pribadi.
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
@@ -289,8 +369,12 @@ export default function FasilitasPage() {
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
-                        <h4 className="font-black text-brand-blue-950 text-[15px] sm:text-lg uppercase tracking-tight">Kekeluargaan</h4>
-                        <p className="text-xs sm:text-sm text-brand-blue-500 font-medium">Musyrif Pembimbing 24 jam</p>
+                        <h4 className="font-black text-brand-blue-950 text-[15px] sm:text-lg uppercase tracking-tight">
+                          Kekeluargaan
+                        </h4>
+                        <p className="text-xs sm:text-sm text-brand-blue-500 font-medium">
+                          Musyrif Pembimbing 24 jam
+                        </p>
                       </div>
                     </div>
                     <div className="flex items-start gap-4 group/item">
@@ -298,8 +382,12 @@ export default function FasilitasPage() {
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
-                        <h4 className="font-black text-brand-blue-950 text-[15px] sm:text-lg uppercase tracking-tight">Higienitas</h4>
-                        <p className="text-xs sm:text-sm text-brand-blue-500 font-medium">Standar kebersihan tinggi</p>
+                        <h4 className="font-black text-brand-blue-950 text-[15px] sm:text-lg uppercase tracking-tight">
+                          Higienitas
+                        </h4>
+                        <p className="text-xs sm:text-sm text-brand-blue-500 font-medium">
+                          Standar kebersihan tinggi
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -323,9 +411,13 @@ export default function FasilitasPage() {
                     <School className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
-                  <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-ink-950 mb-6 leading-[1.1]">Ruang Kelas <br className="hidden sm:block" /> Modern</h3>
+                  <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-ink-950 mb-6 leading-[1.1]">
+                    Ruang Kelas <br className="hidden sm:block" /> Modern
+                  </h3>
                   <p className="text-base sm:text-lg lg:text-xl text-ink-600 mb-8 sm:mb-10 leading-relaxed font-medium">
-                    Ruang kelas yang didesain ergonomis dan modern untuk konsentrasi belajar maksimal. Setiap kelas dilengkapi alat peraga edukatif dan sirkulasi udara yang baik.
+                    Ruang kelas yang didesain ergonomis dan modern untuk
+                    konsentrasi belajar maksimal. Setiap kelas dilengkapi alat
+                    peraga edukatif dan sirkulasi udara yang baik.
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
@@ -334,8 +426,12 @@ export default function FasilitasPage() {
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
-                        <h4 className="font-black text-ink-950 text-[15px] sm:text-lg uppercase tracking-tight">Ergonomis</h4>
-                        <p className="text-xs sm:text-sm text-ink-500 font-medium">Meja Kursi Nyaman</p>
+                        <h4 className="font-black text-ink-950 text-[15px] sm:text-lg uppercase tracking-tight">
+                          Ergonomis
+                        </h4>
+                        <p className="text-xs sm:text-sm text-ink-500 font-medium">
+                          Meja Kursi Nyaman
+                        </p>
                       </div>
                     </div>
                     <div className="flex items-start gap-4 group/item">
@@ -343,8 +439,12 @@ export default function FasilitasPage() {
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
-                        <h4 className="font-black text-ink-950 text-[15px] sm:text-lg uppercase tracking-tight">Interaktif</h4>
-                        <p className="text-xs sm:text-sm text-ink-500 font-medium">Fasilitas Multimedia</p>
+                        <h4 className="font-black text-ink-950 text-[15px] sm:text-lg uppercase tracking-tight">
+                          Interaktif
+                        </h4>
+                        <p className="text-xs sm:text-sm text-ink-500 font-medium">
+                          Fasilitas Multimedia
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -405,9 +505,13 @@ export default function FasilitasPage() {
                     <Trophy className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
-                  <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-ink-950 mb-6 leading-[1.1]">Lapangan <br className="hidden sm:block" /> Minisoccer</h3>
+                  <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-ink-950 mb-6 leading-[1.1]">
+                    Lapangan <br className="hidden sm:block" /> Minisoccer
+                  </h3>
                   <p className="text-base sm:text-lg lg:text-xl text-ink-600 mb-8 sm:mb-10 leading-relaxed font-medium">
-                    Sarana olahraga outdoor berkualitas untuk mendukung kesehatan fisik dan bakat atletik santri. Lapangan rumput sintetis standar yang aman dan nyaman.
+                    Sarana olahraga outdoor berkualitas untuk mendukung
+                    kesehatan fisik dan bakat atletik santri. Lapangan rumput
+                    sintetis standar yang aman dan nyaman.
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
@@ -416,8 +520,12 @@ export default function FasilitasPage() {
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
-                        <h4 className="font-black text-ink-950 text-[15px] sm:text-lg uppercase tracking-tight">Kualitas</h4>
-                        <p className="text-xs sm:text-sm text-ink-500 font-medium">Rumput Sintetis Premium</p>
+                        <h4 className="font-black text-ink-950 text-[15px] sm:text-lg uppercase tracking-tight">
+                          Kualitas
+                        </h4>
+                        <p className="text-xs sm:text-sm text-ink-500 font-medium">
+                          Rumput Sintetis Premium
+                        </p>
                       </div>
                     </div>
                     <div className="flex items-start gap-4 group/item">
@@ -425,8 +533,12 @@ export default function FasilitasPage() {
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
-                        <h4 className="font-black text-ink-950 text-[15px] sm:text-lg uppercase tracking-tight">Sejarah</h4>
-                        <p className="text-xs sm:text-sm text-ink-500 font-medium">Area Luas & Bersih</p>
+                        <h4 className="font-black text-ink-950 text-[15px] sm:text-lg uppercase tracking-tight">
+                          Sejarah
+                        </h4>
+                        <p className="text-xs sm:text-sm text-ink-500 font-medium">
+                          Area Luas & Bersih
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -469,9 +581,13 @@ export default function FasilitasPage() {
                     <Building className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
-                  <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-ink-950 mb-6 leading-[1.1]">Kantor PPDB <br className="hidden sm:block" /> & Tamu</h3>
+                  <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-ink-950 mb-6 leading-[1.1]">
+                    Kantor PPDB <br className="hidden sm:block" /> & Tamu
+                  </h3>
                   <p className="text-base sm:text-lg lg:text-xl text-ink-600 mb-8 sm:mb-10 leading-relaxed font-medium">
-                    Pusat informasi dan pendaftaran santri baru. Dilengkapi dengan ruang tunggu yang nyaman dan staf yang siap membantu proses pendaftaran.
+                    Pusat informasi dan pendaftaran santri baru. Dilengkapi
+                    dengan ruang tunggu yang nyaman dan staf yang siap membantu
+                    proses pendaftaran.
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
@@ -480,8 +596,12 @@ export default function FasilitasPage() {
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
-                        <h4 className="font-black text-ink-950 text-[15px] sm:text-lg uppercase tracking-tight">Informasi</h4>
-                        <p className="text-xs sm:text-sm text-ink-500 font-medium">Layanan 24 Jam</p>
+                        <h4 className="font-black text-ink-950 text-[15px] sm:text-lg uppercase tracking-tight">
+                          Informasi
+                        </h4>
+                        <p className="text-xs sm:text-sm text-ink-500 font-medium">
+                          Layanan 24 Jam
+                        </p>
                       </div>
                     </div>
                     <div className="flex items-start gap-4 group/item">
@@ -489,8 +609,12 @@ export default function FasilitasPage() {
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
-                        <h4 className="font-black text-ink-950 text-[15px] sm:text-lg uppercase tracking-tight">Kenyamanan</h4>
-                        <p className="text-xs sm:text-sm text-ink-500 font-medium">Ruang Tunggu AC</p>
+                        <h4 className="font-black text-ink-950 text-[15px] sm:text-lg uppercase tracking-tight">
+                          Kenyamanan
+                        </h4>
+                        <p className="text-xs sm:text-sm text-ink-500 font-medium">
+                          Ruang Tunggu AC
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -519,7 +643,9 @@ export default function FasilitasPage() {
               viewport={{ once: true }}
               className="text-base md:text-lg text-brand-blue-950/70 font-medium leading-relaxed"
             >
-              Lengkap dengan sarana pendukung untuk mengembangkan <br className="hidden md:block" /> minat, bakat, dan kesehatan santri.
+              Lengkap dengan sarana pendukung untuk mengembangkan{" "}
+              <br className="hidden md:block" /> minat, bakat, dan kesehatan
+              santri.
             </motion.p>
           </div>
 
@@ -536,10 +662,16 @@ export default function FasilitasPage() {
               <div className="w-12 h-12 bg-brand-blue-50 rounded-xl flex items-center justify-center text-brand-blue-700 mb-5 group-hover:scale-110 transition-transform border border-brand-blue-100 shadow-sm">
                 <BookOpen className="w-6 h-6" />
               </div>
-              <h3 className="font-black text-lg text-brand-blue-950 mb-2">Perpustakaan</h3>
-              <p className="text-sm text-brand-blue-950/60 font-medium">Ribuan koleksi kitab & buku</p>
+              <h3 className="font-black text-lg text-brand-blue-950 mb-2">
+                Perpustakaan
+              </h3>
+              <p className="text-sm text-brand-blue-950/60 font-medium">
+                Ribuan koleksi kitab & buku
+              </p>
               <div className="mt-4 pt-4 border-t border-brand-blue-50 w-full">
-                <span className="text-xs text-brand-blue-600 font-bold uppercase tracking-widest">📚 Akademik</span>
+                <span className="text-xs text-brand-blue-600 font-bold uppercase tracking-widest">
+                  📚 Akademik
+                </span>
               </div>
             </motion.div>
 
@@ -553,10 +685,16 @@ export default function FasilitasPage() {
               <div className="w-12 h-12 bg-brand-blue-50 rounded-xl flex items-center justify-center text-brand-blue-700 mb-5 group-hover:scale-110 transition-transform border border-brand-blue-100 shadow-sm">
                 <FlaskConical className="w-6 h-6" />
               </div>
-              <h3 className="font-black text-lg text-brand-blue-950 mb-2">Laboratorium</h3>
-              <p className="text-sm text-brand-blue-950/60 font-medium">Sains & Komputer</p>
+              <h3 className="font-black text-lg text-brand-blue-950 mb-2">
+                Laboratorium
+              </h3>
+              <p className="text-sm text-brand-blue-950/60 font-medium">
+                Sains & Komputer
+              </p>
               <div className="mt-4 pt-4 border-t border-brand-blue-50 w-full">
-                <span className="text-xs text-brand-blue-600 font-bold uppercase tracking-widest">🔬 Praktikum</span>
+                <span className="text-xs text-brand-blue-600 font-bold uppercase tracking-widest">
+                  🔬 Praktikum
+                </span>
               </div>
             </motion.div>
 
@@ -570,10 +708,16 @@ export default function FasilitasPage() {
               <div className="w-12 h-12 bg-brand-blue-50 rounded-xl flex items-center justify-center text-brand-blue-700 mb-5 group-hover:scale-110 transition-transform border border-brand-blue-100 shadow-sm">
                 <Utensils className="w-6 h-6" />
               </div>
-              <h3 className="font-black text-lg text-brand-blue-950 mb-2">Dapur Sehat</h3>
-              <p className="text-sm text-brand-blue-950/60 font-medium">Menu bergizi 3x sehari</p>
+              <h3 className="font-black text-lg text-brand-blue-950 mb-2">
+                Dapur Sehat
+              </h3>
+              <p className="text-sm text-brand-blue-950/60 font-medium">
+                Menu bergizi 3x sehari
+              </p>
               <div className="mt-4 pt-4 border-t border-brand-blue-50 w-full">
-                <span className="text-xs text-brand-blue-600 font-bold uppercase tracking-widest">🍽️ Nutrisi</span>
+                <span className="text-xs text-brand-blue-600 font-bold uppercase tracking-widest">
+                  🍽️ Nutrisi
+                </span>
               </div>
             </motion.div>
 
@@ -588,10 +732,16 @@ export default function FasilitasPage() {
               <div className="w-12 h-12 bg-brand-blue-50 rounded-xl flex items-center justify-center text-brand-blue-700 mb-5 group-hover:scale-110 transition-transform border border-brand-blue-100 shadow-sm">
                 <Droplet className="w-6 h-6" />
               </div>
-              <h3 className="font-black text-lg text-brand-blue-950 mb-2">Depot Air</h3>
-              <p className="text-sm text-brand-blue-950/60 font-medium">Air minum higienis gratis</p>
+              <h3 className="font-black text-lg text-brand-blue-950 mb-2">
+                Depot Air
+              </h3>
+              <p className="text-sm text-brand-blue-950/60 font-medium">
+                Air minum higienis gratis
+              </p>
               <div className="mt-4 pt-4 border-t border-brand-blue-50 w-full">
-                <span className="text-xs text-brand-blue-600 font-bold uppercase tracking-widest">💧 Minuman</span>
+                <span className="text-xs text-brand-blue-600 font-bold uppercase tracking-widest">
+                  💧 Minuman
+                </span>
               </div>
             </motion.div>
 
@@ -606,10 +756,16 @@ export default function FasilitasPage() {
               <div className="w-12 h-12 bg-brand-blue-50 rounded-xl flex items-center justify-center text-brand-blue-700 mb-5 group-hover:scale-110 transition-transform border border-brand-blue-100 shadow-sm">
                 <Heart className="w-6 h-6" />
               </div>
-              <h3 className="font-black text-lg text-brand-blue-950 mb-2">Klinik Santri</h3>
-              <p className="text-sm text-brand-blue-950/60 font-medium">Layanan medis internal</p>
+              <h3 className="font-black text-lg text-brand-blue-950 mb-2">
+                Klinik Santri
+              </h3>
+              <p className="text-sm text-brand-blue-950/60 font-medium">
+                Layanan medis internal
+              </p>
               <div className="mt-4 pt-4 border-t border-brand-blue-50 w-full">
-                <span className="text-xs text-brand-blue-600 font-bold uppercase tracking-widest">🏥 Kesehatan</span>
+                <span className="text-xs text-brand-blue-600 font-bold uppercase tracking-widest">
+                  🏥 Kesehatan
+                </span>
               </div>
             </motion.div>
 
@@ -623,10 +779,16 @@ export default function FasilitasPage() {
               <div className="w-12 h-12 bg-brand-blue-50 rounded-xl flex items-center justify-center text-brand-blue-700 mb-5 group-hover:scale-110 transition-transform border border-brand-blue-100 shadow-sm">
                 <Shield className="w-6 h-6" />
               </div>
-              <h3 className="font-black text-lg text-brand-blue-950 mb-2">Security</h3>
-              <p className="text-sm text-brand-blue-950/60 font-medium">Keamanan CCTV 24 Jam</p>
+              <h3 className="font-black text-lg text-brand-blue-950 mb-2">
+                Security
+              </h3>
+              <p className="text-sm text-brand-blue-950/60 font-medium">
+                Keamanan CCTV 24 Jam
+              </p>
               <div className="mt-4 pt-4 border-t border-brand-blue-50 w-full">
-                <span className="text-xs text-brand-blue-600 font-bold uppercase tracking-widest">🛡️ Keamanan</span>
+                <span className="text-xs text-brand-blue-600 font-bold uppercase tracking-widest">
+                  🛡️ Keamanan
+                </span>
               </div>
             </motion.div>
 
@@ -640,10 +802,16 @@ export default function FasilitasPage() {
               <div className="w-12 h-12 bg-brand-blue-50 rounded-xl flex items-center justify-center text-brand-blue-700 mb-5 group-hover:scale-110 transition-transform border border-brand-blue-100 shadow-sm">
                 <Building2 className="w-6 h-6" />
               </div>
-              <h3 className="font-black text-lg text-brand-blue-950 mb-2">Aula Besar</h3>
-              <p className="text-sm text-brand-blue-950/60 font-medium">Kapasitas 500 orang</p>
+              <h3 className="font-black text-lg text-brand-blue-950 mb-2">
+                Aula Besar
+              </h3>
+              <p className="text-sm text-brand-blue-950/60 font-medium">
+                Kapasitas 500 orang
+              </p>
               <div className="mt-4 pt-4 border-t border-brand-blue-50 w-full">
-                <span className="text-xs text-brand-blue-600 font-bold uppercase tracking-widest">🏛️ Event</span>
+                <span className="text-xs text-brand-blue-600 font-bold uppercase tracking-widest">
+                  🏛️ Event
+                </span>
               </div>
             </motion.div>
 
@@ -658,10 +826,16 @@ export default function FasilitasPage() {
               <div className="w-12 h-12 bg-brand-blue-50 rounded-xl flex items-center justify-center text-brand-blue-700 mb-5 group-hover:scale-110 transition-transform border border-brand-blue-100 shadow-sm">
                 <Wifi className="w-6 h-6" />
               </div>
-              <h3 className="font-black text-lg text-brand-blue-950 mb-2">Internet</h3>
-              <p className="text-sm text-brand-blue-950/60 font-medium">Akses WiFi Terfilter</p>
+              <h3 className="font-black text-lg text-brand-blue-950 mb-2">
+                Internet
+              </h3>
+              <p className="text-sm text-brand-blue-950/60 font-medium">
+                Akses WiFi Terfilter
+              </p>
               <div className="mt-4 pt-4 border-t border-brand-blue-50 w-full">
-                <span className="text-xs text-brand-blue-600 font-bold uppercase tracking-widest">📶 Teknologi</span>
+                <span className="text-xs text-brand-blue-600 font-bold uppercase tracking-widest">
+                  📶 Teknologi
+                </span>
               </div>
             </motion.div>
 
@@ -675,10 +849,16 @@ export default function FasilitasPage() {
               <div className="w-12 h-12 bg-brand-blue-50 rounded-xl flex items-center justify-center text-brand-blue-700 mb-5 group-hover:scale-110 transition-transform border border-brand-blue-100 shadow-sm">
                 <Trophy className="w-6 h-6" />
               </div>
-              <h3 className="font-black text-lg text-brand-blue-950 mb-2">Lapangan Basket</h3>
-              <p className="text-sm text-brand-blue-950/60 font-medium">Lapangan olahraga standar</p>
+              <h3 className="font-black text-lg text-brand-blue-950 mb-2">
+                Lapangan Basket
+              </h3>
+              <p className="text-sm text-brand-blue-950/60 font-medium">
+                Lapangan olahraga standar
+              </p>
               <div className="mt-4 pt-4 border-t border-brand-blue-50 w-full">
-                <span className="text-xs text-brand-blue-600 font-bold uppercase tracking-widest">🏀 Olahraga</span>
+                <span className="text-xs text-brand-blue-600 font-bold uppercase tracking-widest">
+                  🏀 Olahraga
+                </span>
               </div>
             </motion.div>
           </div>
@@ -686,7 +866,10 @@ export default function FasilitasPage() {
       </section>
 
       {/* 4. Photo Gallery - Enhanced Layout */}
-      <section id="gallery" className="py-24 md:py-32 section-alt border-y border-brand-blue-100">
+      <section
+        id="gallery"
+        className="py-24 md:py-32 section-alt border-y border-brand-blue-100"
+      >
         <Container>
           <div className="text-center md:text-left max-w-3xl mb-12 sm:mb-16">
             <motion.div
@@ -712,7 +895,8 @@ export default function FasilitasPage() {
               viewport={{ once: true }}
               className="section-subtitle lg:ml-0"
             >
-              Lihat langsung suasana dan lingkungan Pesantren Sistem PPDB Modern dari berbagai sudut.
+              Lihat langsung suasana dan lingkungan Pesantren Sistem PPDB Modern
+              dari berbagai sudut.
             </motion.p>
           </div>
 
@@ -736,8 +920,12 @@ export default function FasilitasPage() {
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
                 <div className="absolute bottom-6 md:bottom-8 left-6 md:left-8 right-6 md:right-8">
-                  <span className="text-white font-black text-2xl md:text-3xl drop-shadow-md">Masjid Jami' PPDB</span>
-                  <p className="text-brand-blue-50/90 text-sm md:text-lg mt-1 md:mt-2 font-medium">Pusat peribadatan</p>
+                  <span className="text-white font-black text-2xl md:text-3xl drop-shadow-md">
+                    Masjid Jami' PPDB
+                  </span>
+                  <p className="text-brand-blue-50/90 text-sm md:text-lg mt-1 md:mt-2 font-medium">
+                    Pusat peribadatan
+                  </p>
                 </div>
               </motion.div>
 
@@ -757,8 +945,12 @@ export default function FasilitasPage() {
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
                 <div className="absolute bottom-6 md:bottom-8 left-6 md:left-8 right-6 md:right-8">
-                  <span className="text-white font-black text-xl md:text-2xl drop-shadow-md leading-tight">Ruang Kelas</span>
-                  <p className="text-brand-blue-50/90 text-xs md:text-sm mt-1 md:mt-2 font-medium">Fasilitas pembelajaran modern</p>
+                  <span className="text-white font-black text-xl md:text-2xl drop-shadow-md leading-tight">
+                    Ruang Kelas
+                  </span>
+                  <p className="text-brand-blue-50/90 text-xs md:text-sm mt-1 md:mt-2 font-medium">
+                    Fasilitas pembelajaran modern
+                  </p>
                 </div>
               </motion.div>
             </div>
@@ -780,7 +972,9 @@ export default function FasilitasPage() {
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
                 <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6">
-                  <span className="text-white font-black text-[15px] sm:text-lg">Gedung Kelas</span>
+                  <span className="text-white font-black text-[15px] sm:text-lg">
+                    Gedung Kelas
+                  </span>
                 </div>
               </motion.div>
               <motion.div
@@ -798,7 +992,9 @@ export default function FasilitasPage() {
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
                 <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6">
-                  <span className="text-white font-black text-[15px] sm:text-lg">Asrama</span>
+                  <span className="text-white font-black text-[15px] sm:text-lg">
+                    Asrama
+                  </span>
                 </div>
               </motion.div>
               <motion.div
@@ -816,30 +1012,37 @@ export default function FasilitasPage() {
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
                 <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6">
-                  <span className="text-white font-black text-[15px] sm:text-xl">Lapangan Minisoccer</span>
-                  <p className="text-brand-blue-50/90 text-xs sm:text-sm mt-1 font-medium hidden sm:block">Sarana olahraga berkualitas</p>
+                  <span className="text-white font-black text-[15px] sm:text-xl">
+                    Lapangan Minisoccer
+                  </span>
+                  <p className="text-brand-blue-50/90 text-xs sm:text-sm mt-1 font-medium hidden sm:block">
+                    Sarana olahraga berkualitas
+                  </p>
                 </div>
               </motion.div>
             </div>
-            
-             {/* Note Info Component using App Card Style */}
-             <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.6 }}
-                 className="mt-8 app-card bg-brand-blue-50 p-6 flex items-start gap-4 border border-brand-blue-100 max-w-2xl mx-auto"
-            >
-                <div className="w-10 h-10 rounded-full bg-brand-blue-100 text-brand-blue-700 flex items-center justify-center shrink-0">
-                   <Info className="w-5 h-5" />
-                </div>
-                 <p className="text-sm font-medium text-ink-700">Masih banyak fasilitas pendukung lainnya di dalam Pesantren Sistem PPDB Modern. Silakan jadwalkan kunjungan untuk melihat langsung.</p>
-             </motion.div>
 
+            {/* Note Info Component using App Card Style */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.6 }}
+              className="mt-8 app-card bg-brand-blue-50 p-6 flex items-start gap-4 border border-brand-blue-100 max-w-2xl mx-auto"
+            >
+              <div className="w-10 h-10 rounded-full bg-brand-blue-100 text-brand-blue-700 flex items-center justify-center shrink-0">
+                <Info className="w-5 h-5" />
+              </div>
+              <p className="text-sm font-medium text-ink-700">
+                Masih banyak fasilitas pendukung lainnya di dalam Pesantren
+                Sistem PPDB Modern. Silakan jadwalkan kunjungan untuk melihat
+                langsung.
+              </p>
+            </motion.div>
           </div>
         </Container>
       </section>
-    </main >
+    </main>
   );
 }
 

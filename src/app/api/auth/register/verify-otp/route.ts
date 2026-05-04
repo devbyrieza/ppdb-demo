@@ -49,7 +49,10 @@ export async function POST(request: NextRequest) {
 
     if (!otpRecord) {
       return NextResponse.json(
-        { success: false, error: "Kode OTP tidak ditemukan. Silakan kirim ulang." },
+        {
+          success: false,
+          error: "Kode OTP tidak ditemukan. Silakan kirim ulang.",
+        },
         { status: 404 },
       );
     }
@@ -57,14 +60,21 @@ export async function POST(request: NextRequest) {
     const now = new Date();
     if (now > otpRecord.expires_at) {
       return NextResponse.json(
-        { success: false, error: "Kode OTP sudah kadaluarsa. Silakan kirim ulang." },
+        {
+          success: false,
+          error: "Kode OTP sudah kadaluarsa. Silakan kirim ulang.",
+        },
         { status: 410 },
       );
     }
 
     if (otpRecord.attempts >= 3) {
       return NextResponse.json(
-        { success: false, error: "Terlalu banyak percobaan gagal. Silakan kirim ulang kode OTP." },
+        {
+          success: false,
+          error:
+            "Terlalu banyak percobaan gagal. Silakan kirim ulang kode OTP.",
+        },
         { status: 429 },
       );
     }
@@ -77,7 +87,10 @@ export async function POST(request: NextRequest) {
 
       const remainingAttempts = 3 - (otpRecord.attempts + 1);
       return NextResponse.json(
-        { success: false, error: `Kode OTP salah. Sisa percobaan: ${remainingAttempts}` },
+        {
+          success: false,
+          error: `Kode OTP salah. Sisa percobaan: ${remainingAttempts}`,
+        },
         { status: 400 },
       );
     }

@@ -340,7 +340,7 @@ const buttonVariants = cva(
       variant: "primary",
       size: "md",
     },
-  }
+  },
 );
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -374,8 +374,9 @@ const Spinner = () => (
    TYPES
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-  VariantProps<typeof buttonVariants> {
+  extends
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
   /** Render sebagai child element (mis. Link dari Next.js) */
   asChild?: boolean;
   /** Tampilkan spinner + disable pointer events */
@@ -407,12 +408,18 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       disabled,
       ...props
     },
-    ref
+    ref,
   ) => {
     const isDisabled = disabled || isLoading;
 
     const computedClass = cn(
-      buttonVariants({ variant, size, fullWidth, loading: isLoading, className })
+      buttonVariants({
+        variant,
+        size,
+        fullWidth,
+        loading: isLoading,
+        className,
+      }),
     );
 
     const content = (
@@ -444,7 +451,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     if (asChild && React.isValidElement(children)) {
       return React.cloneElement(
         children as React.ReactElement<Record<string, unknown>>,
-        { className: computedClass, ref, ...props }
+        { className: computedClass, ref, ...props },
       );
     }
 
@@ -460,7 +467,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {content}
       </button>
     );
-  }
+  },
 );
 
 Button.displayName = "Button";

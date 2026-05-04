@@ -14,7 +14,10 @@ export async function sendSms(
     const result = await sendMessage({ phone, message });
 
     if (result.status) {
-      return { success: true, messageId: result.data?.id || `sms_${Date.now()}` };
+      return {
+        success: true,
+        messageId: result.data?.id || `sms_${Date.now()}`,
+      };
     }
 
     // Fallback untuk development

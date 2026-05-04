@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { generateNomorPendaftaran } from "@/lib/utils/nomor-pendaftaran";
-import { enqueueWhatsapp, buildMessageRegistrationSuccess } from "@/lib/whatsapp-queue";
+import {
+  enqueueWhatsapp,
+  buildMessageRegistrationSuccess,
+} from "@/lib/whatsapp-queue";
 
 export async function POST(request: NextRequest) {
   try {
@@ -46,29 +49,42 @@ export async function POST(request: NextRequest) {
 
     if (existing) {
       return NextResponse.json(
-        { success: false, error: `NIK sudah terdaftar dengan nomor ${existing.nomor_pendaftaran}` },
+        {
+          success: false,
+          error: `NIK sudah terdaftar dengan nomor ${existing.nomor_pendaftaran}`,
+        },
         { status: 409 },
       );
     }
 
     // Get active tahun ajaran (Robust logic)
-    const tahunAjaran = await prisma.tahunAjaran.findFirst({
-      where: { is_active: true },
-      select: { id: true },
-    }) || await prisma.tahunAjaran.findFirst({
-      orderBy: { created_at: "desc" },
-      select: { id: true },
-    });
+    const tahunAjaran =
+      (await prisma.tahunAjaran.findFirst({
+        where: { is_active: true },
+        select: { id: true },
+      })) ||
+      (await prisma.tahunAjaran.findFirst({
+        orderBy: { created_at: "desc" },
+        select: { id: true },
+      }));
 
     if (!tahunAjaran) {
-      console.error("❌ Registration error: No academic year found in database.");
+      console.error(
+        "❌ Registration error: No academic year found in database.",
+      );
       return NextResponse.json(
-        { success: false, error: "Tahun ajaran tidak ditemukan. Hubungi admin." },
+        {
+          success: false,
+          error: "Tahun ajaran tidak ditemukan. Hubungi admin.",
+        },
         { status: 500 },
       );
     }
 
-    const nomorPendaftaran = await generateNomorPendaftaran(jenjang, jenis_kelamin);
+    const nomorPendaftaran = await generateNomorPendaftaran(
+      jenjang,
+      jenis_kelamin,
+    );
 
     await prisma.pendaftar.create({
       data: {
@@ -92,7 +108,7 @@ export async function POST(request: NextRequest) {
         // Find pendaftar id since we didn't capture it from the create call
         const pendaftar = await prisma.pendaftar.findUnique({
           where: { nomor_pendaftaran: nomorPendaftaran },
-          select: { id: true }
+          select: { id: true },
         });
 
         if (pendaftar) {
@@ -103,7 +119,7 @@ export async function POST(request: NextRequest) {
             messageContent: buildMessageRegistrationSuccess(
               nama_lengkap,
               nomorPendaftaran,
-              jenjang
+              jenjang,
             ),
           });
         }

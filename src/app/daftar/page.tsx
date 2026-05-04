@@ -37,14 +37,16 @@ interface FormData {
 const InputField = ({
   label,
   error,
-  children
+  children,
 }: {
-  label: string,
-  error?: string,
-  children: React.ReactNode
+  label: string;
+  error?: string;
+  children: React.ReactNode;
 }) => (
   <div className="space-y-3">
-    <label className="text-xs font-black text-ink-600 uppercase tracking-widest ml-1">{label}</label>
+    <label className="text-xs font-black text-ink-600 uppercase tracking-widest ml-1">
+      {label}
+    </label>
     {children}
     {error && (
       <motion.p
@@ -67,9 +69,9 @@ export default function DaftarPage() {
   const [jenjangFromUrl, setJenjangFromUrl] = useState<"MTs" | "IL" | "">("");
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
-      const jenjang = params.get('jenjang') as "MTs" | "IL" | null;
+      const jenjang = params.get("jenjang") as "MTs" | "IL" | null;
       if (jenjang) {
         setJenjangFromUrl(jenjang);
       }
@@ -95,18 +97,18 @@ export default function DaftarPage() {
       if (savedData) {
         try {
           const parsed = JSON.parse(savedData);
-          setFormData(prev => ({
+          setFormData((prev) => ({
             ...prev,
             ...parsed,
-            jenjang: jenjangFromUrl || parsed.jenjang || ""
+            jenjang: jenjangFromUrl || parsed.jenjang || "",
           }));
         } catch (error) {
           console.error("Error parsing saved data:", error);
         }
       } else if (jenjangFromUrl) {
-        setFormData(prev => ({
+        setFormData((prev) => ({
           ...prev,
-          jenjang: jenjangFromUrl
+          jenjang: jenjangFromUrl,
         }));
       }
     }
@@ -223,7 +225,11 @@ export default function DaftarPage() {
 
       router.push(`/verifikasi-otp?${params.toString()}`);
     } catch (error: any) {
-      Swal.fire("Gagal!", error.message || "Terjadi kesalahan saat mengirim OTP", "error");
+      Swal.fire(
+        "Gagal!",
+        error.message || "Terjadi kesalahan saat mengirim OTP",
+        "error",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -252,7 +258,8 @@ export default function DaftarPage() {
             transition={{ delay: 0.1 }}
             className="text-4xl md:text-5xl lg:text-6xl font-display font-black text-ink-950 mb-3 tracking-tight"
           >
-            Mulai Pendaftaran <span className="text-gradient-teal">Terpadu</span>
+            Mulai Pendaftaran{" "}
+            <span className="text-gradient-teal">Terpadu</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 10 }}
@@ -291,7 +298,8 @@ export default function DaftarPage() {
                       Melanjutkan Draft Pendaftaran
                     </p>
                     <p className="text-sm text-teal-600 font-medium">
-                      Data yang anda masukkan sebelumnya telah tersimpan otomatis dalam sesi ini.
+                      Data yang anda masukkan sebelumnya telah tersimpan
+                      otomatis dalam sesi ini.
                     </p>
                     <button
                       type="button"
@@ -303,7 +311,7 @@ export default function DaftarPage() {
                           showCancelButton: true,
                           confirmButtonColor: "#3a5029",
                           confirmButtonText: "Ya, Hapus",
-                          cancelButtonText: "Batal"
+                          cancelButtonText: "Batal",
                         });
 
                         if (result.isConfirmed) {
@@ -329,7 +337,6 @@ export default function DaftarPage() {
             </AnimatePresence>
 
             <form onSubmit={handleSubmit} className="space-y-12 relative z-10">
-
               {/* Section: Jenjang */}
               <motion.section
                 initial={{ opacity: 0, y: 20 }}
@@ -340,19 +347,32 @@ export default function DaftarPage() {
                   <div className="w-10 h-10 rounded-xl bg-sand-50 flex items-center justify-center text-teal-600 shadow-sm border border-sand-200">
                     <GraduationCap className="w-6 h-6" />
                   </div>
-                  <h3 className="text-2xl font-display font-black text-ink-950">Pilih Jenjang</h3>
+                  <h3 className="text-2xl font-display font-black text-ink-950">
+                    Pilih Jenjang
+                  </h3>
                 </div>
 
-                <div data-error={!!fieldErrors.jenjang} className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div
+                  data-error={!!fieldErrors.jenjang}
+                  className="grid grid-cols-1 sm:grid-cols-2 gap-6"
+                >
                   {[
-                    { value: "MTs", title: "Madrasah Tsanawiyah", subtitle: "Lulusan SD/Sederajat" },
-                    { value: "IL", title: "I'dad Lughowi", subtitle: "Lulusan SMP/Sederajat" },
+                    {
+                      value: "MTs",
+                      title: "Madrasah Tsanawiyah",
+                      subtitle: "Lulusan SD/Sederajat",
+                    },
+                    {
+                      value: "IL",
+                      title: "I'dad Lughowi",
+                      subtitle: "Lulusan SMP/Sederajat",
+                    },
                   ].map((option) => {
                     const isPutra = formData.jenis_kelamin === "L";
                     const isPutri = formData.jenis_kelamin === "P";
                     // Untuk Template Demo, kita buka semua untuk demo.
                     const isClosed = false;
-                    
+
                     return (
                       <motion.div
                         key={option.value}
@@ -360,10 +380,13 @@ export default function DaftarPage() {
                         whileTap={isClosed ? {} : { scale: 0.98 }}
                         onClick={() => {
                           if (isClosed) return;
-                          setFormData((prev) => ({ ...prev, jenjang: option.value as any }));
+                          setFormData((prev) => ({
+                            ...prev,
+                            jenjang: option.value as any,
+                          }));
                         }}
                         className={`relative cursor-pointer rounded-[2rem] p-6 border-2 transition-all duration-300 app-card ${
-                          isClosed 
+                          isClosed
                             ? "opacity-50 grayscale cursor-not-allowed border-sand-200 bg-stone-50"
                             : formData.jenjang === option.value
                               ? "border-teal-600 bg-sand-50 shadow-md"
@@ -375,27 +398,39 @@ export default function DaftarPage() {
                             Kuota Penuh / Tutup
                           </div>
                         )}
-                        
+
                         <div className="flex items-center gap-4 relative z-0">
-                          <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
-                            formData.jenjang === option.value ? "border-teal-600" : "border-sand-200"
-                          }`}>
-                            {formData.jenjang === option.value && <motion.div layoutId="jk-dot-jenjang" className="w-3 h-3 rounded-full bg-teal-600" />}
+                          <div
+                            className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
+                              formData.jenjang === option.value
+                                ? "border-teal-600"
+                                : "border-sand-200"
+                            }`}
+                          >
+                            {formData.jenjang === option.value && (
+                              <motion.div
+                                layoutId="jk-dot-jenjang"
+                                className="w-3 h-3 rounded-full bg-teal-600"
+                              />
+                            )}
                           </div>
                           <div>
-                            <p className="font-display font-black text-xl text-ink-950 leading-none mb-1">{option.title}</p>
-                            <p className="text-xs text-ink-600 font-black uppercase tracking-widest">{option.subtitle}</p>
+                            <p className="font-display font-black text-xl text-ink-950 leading-none mb-1">
+                              {option.title}
+                            </p>
+                            <p className="text-xs text-ink-600 font-black uppercase tracking-widest">
+                              {option.subtitle}
+                            </p>
                           </div>
                         </div>
-
-
                       </motion.div>
                     );
                   })}
                 </div>
                 {fieldErrors.jenjang && (
                   <p className="text-xs text-red-600 mt-4 font-bold flex items-center gap-1 ml-1">
-                    <AlertCircle className="w-3.5 h-3.5" /> {fieldErrors.jenjang}
+                    <AlertCircle className="w-3.5 h-3.5" />{" "}
+                    {fieldErrors.jenjang}
                   </p>
                 )}
               </motion.section>
@@ -411,16 +446,26 @@ export default function DaftarPage() {
                   <div className="w-10 h-10 rounded-xl bg-sand-50 flex items-center justify-center text-teal-600 shadow-sm border border-sand-200">
                     <User className="w-6 h-6" />
                   </div>
-                  <h3 className="text-2xl font-display font-black text-ink-950">Data Calon Santri</h3>
+                  <h3 className="text-2xl font-display font-black text-ink-950">
+                    Data Calon Santri
+                  </h3>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-8">
                   <div className="md:col-span-2">
-                    <InputField label="Nama Lengkap" error={fieldErrors.nama_lengkap}>
+                    <InputField
+                      label="Nama Lengkap"
+                      error={fieldErrors.nama_lengkap}
+                    >
                       <input
                         type="text"
                         value={formData.nama_lengkap}
-                        onChange={(e) => setFormData((prev) => ({ ...prev, nama_lengkap: e.target.value }))}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            nama_lengkap: e.target.value,
+                          }))
+                        }
                         placeholder="Sesuai Akta Kelahiran santri"
                         className="w-full px-5 py-3 md:px-8 md:py-5 rounded-xl md:rounded-2xl bg-sand-50 border border-transparent focus:bg-white focus:border-teal-200 focus:ring-4 focus:ring-sand-50 transition-all font-bold  placeholder:text-ink-500 text-sm md:text-base text-ink-950"
                       />
@@ -433,38 +478,64 @@ export default function DaftarPage() {
                       inputMode="numeric"
                       maxLength={16}
                       value={formData.nik}
-                      onChange={(e) => setFormData((prev) => ({ ...prev, nik: e.target.value.replace(/\D/g, "") }))}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          nik: e.target.value.replace(/\D/g, ""),
+                        }))
+                      }
                       placeholder="16 Digit NIK"
                       className="w-full px-5 py-3 md:px-8 md:py-5 rounded-xl md:rounded-2xl bg-sand-50 border border-transparent focus:bg-white focus:border-teal-200 focus:ring-4 focus:ring-sand-50 transition-all font-bold  placeholder:text-ink-500 text-sm md:text-base text-ink-950"
                     />
                   </InputField>
 
-                  <InputField label="Tanggal Lahir" error={fieldErrors.tanggal_lahir}>
+                  <InputField
+                    label="Tanggal Lahir"
+                    error={fieldErrors.tanggal_lahir}
+                  >
                     <input
                       type="date"
                       value={formData.tanggal_lahir}
-                      onChange={(e) => setFormData((prev) => ({ ...prev, tanggal_lahir: e.target.value }))}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          tanggal_lahir: e.target.value,
+                        }))
+                      }
                       className="w-full px-5 py-3 md:px-8 md:py-5 rounded-xl md:rounded-2xl bg-sand-50 border border-transparent focus:bg-white focus:border-teal-200 focus:ring-4 focus:ring-sand-50 transition-all font-bold  text-sm md:text-base text-ink-950"
                     />
                   </InputField>
 
                   <div className="md:col-span-2">
-                    <InputField label="Jenis Kelamin" error={fieldErrors.jenis_kelamin}>
+                    <InputField
+                      label="Jenis Kelamin"
+                      error={fieldErrors.jenis_kelamin}
+                    >
                       <div className="flex gap-4">
-                        {[{ val: 'L', label: 'Santri Putra' }, { val: 'P', label: 'Santri Putri' }].map((jk) => (
+                        {[
+                          { val: "L", label: "Santri Putra" },
+                          { val: "P", label: "Santri Putri" },
+                        ].map((jk) => (
                           <motion.label
                             key={jk.val}
                             whileTap={{ scale: 0.98 }}
-                            className={`flex-1 flex items-center justify-center px-4 md:px-6 py-3 md:py-4 rounded-[1.5rem] md:rounded-[2rem] border-2 cursor-pointer transition-all duration-300 text-sm md:text-base ${formData.jenis_kelamin === jk.val
-                              ? "bg-teal-700 border-teal-700 text-white font-black shadow-md"
-                              : "bg-sand-50 border-sand-200 text-ink-800 hover:border-teal-200 hover:bg-white font-bold"
-                              }`}>
+                            className={`flex-1 flex items-center justify-center px-4 md:px-6 py-3 md:py-4 rounded-[1.5rem] md:rounded-[2rem] border-2 cursor-pointer transition-all duration-300 text-sm md:text-base ${
+                              formData.jenis_kelamin === jk.val
+                                ? "bg-teal-700 border-teal-700 text-white font-black shadow-md"
+                                : "bg-sand-50 border-sand-200 text-ink-800 hover:border-teal-200 hover:bg-white font-bold"
+                            }`}
+                          >
                             <input
                               type="radio"
                               name="jk"
                               value={jk.val}
                               checked={formData.jenis_kelamin === jk.val}
-                              onChange={() => setFormData(p => ({ ...p, jenis_kelamin: jk.val as any }))}
+                              onChange={() =>
+                                setFormData((p) => ({
+                                  ...p,
+                                  jenis_kelamin: jk.val as any,
+                                }))
+                              }
                               className="hidden"
                             />
                             {jk.label}
@@ -487,10 +558,15 @@ export default function DaftarPage() {
                   <div className="w-10 h-10 rounded-xl bg-sand-50 flex items-center justify-center text-teal-600 shadow-sm border border-sand-200">
                     <Phone className="w-6 h-6" />
                   </div>
-                  <h3 className="text-2xl font-display font-black text-ink-950">Kontak Verifikasi</h3>
+                  <h3 className="text-2xl font-display font-black text-ink-950">
+                    Kontak Verifikasi
+                  </h3>
                 </div>
 
-                <InputField label="Nomor WhatsApp Orang Tua" error={fieldErrors.no_hp}>
+                <InputField
+                  label="Nomor WhatsApp Orang Tua"
+                  error={fieldErrors.no_hp}
+                >
                   <div className="relative flex shadow-sm border border-transparent focus-within:border-teal-200 focus-within:ring-4 focus-within:ring-sand-50 rounded-xl md:rounded-2xl overflow-hidden bg-sand-50 transition-all">
                     <div className="relative">
                       <select
@@ -512,14 +588,19 @@ export default function DaftarPage() {
                       value={formData.no_hp}
                       onChange={(e) => {
                         const val = e.target.value.replace(/\D/g, "");
-                        setFormData((prev) => ({ ...prev, no_hp: val }))
+                        setFormData((prev) => ({ ...prev, no_hp: val }));
                       }}
-                      placeholder={countryCode === "+62" ? "812 3456 7890" : "Nomor Telepon"}
+                      placeholder={
+                        countryCode === "+62"
+                          ? "812 3456 7890"
+                          : "Nomor Telepon"
+                      }
                       className="flex-1 px-4 py-3 md:px-8 md:py-5 bg-transparent border-none focus:outline-none focus:ring-0 font-bold text-ink-950 placeholder:text-ink-400 min-w-0 text-sm md:text-base"
                     />
                   </div>
                   <p className="text-xs text-ink-600 font-bold uppercase tracking-widest mt-3 ml-1">
-                    Kami akan mengirimkan kode OTP via WhatsApp ke nomor tersebut.
+                    Kami akan mengirimkan kode OTP via WhatsApp ke nomor
+                    tersebut.
                   </p>
                 </InputField>
               </motion.section>
@@ -548,10 +629,15 @@ export default function DaftarPage() {
                 </motion.button>
 
                 <p className="text-center text-sm text-ink-600 font-bold uppercase tracking-widest mt-8">
-                  Punya Akun? <Link href="/login" className="text-teal-700 hover:text-teal-800 hover:bg-sand-50 px-3 py-1 rounded-full transition-colors ml-1 border border-transparent hover:border-sand-200">Masuk di sini</Link>
+                  Punya Akun?{" "}
+                  <Link
+                    href="/login"
+                    className="text-teal-700 hover:text-teal-800 hover:bg-sand-50 px-3 py-1 rounded-full transition-colors ml-1 border border-transparent hover:border-sand-200"
+                  >
+                    Masuk di sini
+                  </Link>
                 </p>
               </motion.div>
-
             </form>
           </motion.div>
         </div>
@@ -563,7 +649,10 @@ export default function DaftarPage() {
           transition={{ delay: 0.8 }}
           className="mt-12 text-center"
         >
-          <Link href="/" className="inline-flex items-center gap-2 text-ink-600 hover:text-teal-700 text-xs font-black uppercase tracking-widest transition-colors">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-ink-600 hover:text-teal-700 text-xs font-black uppercase tracking-widest transition-colors"
+          >
             <RefreshCw className="w-3.5 h-3.5" /> Kembali Ke Beranda
           </Link>
         </motion.div>

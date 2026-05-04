@@ -44,9 +44,10 @@ export function CTAInfoPPDB({
         size="lg"
         className={`
           group shadow-lg hover:shadow-xl font-bold transition-all duration-300 hover:-translate-y-1
-          ${variant === "primary"
-            ? "bg-gradient-to-r from-[var(--color-brown-700)] to-[var(--color-brown-900)] hover:from-[var(--color-brown-800)] hover:to-[var(--color-brown-950)] text-white"
-            : "border-2 border-[var(--color-brown-700)] text-[var(--color-brown-700)] hover:bg-[var(--color-brown-50)]"
+          ${
+            variant === "primary"
+              ? "bg-gradient-to-r from-[var(--color-brown-700)] to-[var(--color-brown-900)] hover:from-[var(--color-brown-800)] hover:to-[var(--color-brown-950)] text-white"
+              : "border-2 border-[var(--color-brown-700)] text-[var(--color-brown-700)] hover:bg-[var(--color-brown-50)]"
           }
           ${sizeClasses[size]}
           ${className}
@@ -133,9 +134,10 @@ export function CTAKonsultasi({
       variant={variant === "outline" ? "outline" : undefined}
       className={`
         group font-semibold transition-all duration-300 hover:-translate-y-1
-        ${variant === "outline"
-          ? "border-2 border-[var(--color-teal-600)] text-[var(--color-teal-700)] hover:bg-[var(--color-teal-50)] shadow-md hover:shadow-lg"
-          : "bg-[var(--color-teal-50)] text-[var(--color-teal-700)] hover:bg-[var(--color-teal-100)] shadow-sm hover:shadow-md"
+        ${
+          variant === "outline"
+            ? "border-2 border-[var(--color-teal-600)] text-[var(--color-teal-700)] hover:bg-[var(--color-teal-50)] shadow-md hover:shadow-lg"
+            : "bg-[var(--color-teal-50)] text-[var(--color-teal-700)] hover:bg-[var(--color-teal-100)] shadow-sm hover:shadow-md"
         }
         ${size === "sm" ? "px-6 py-2.5 text-sm" : "px-8 py-4 text-base"}
         ${className}
