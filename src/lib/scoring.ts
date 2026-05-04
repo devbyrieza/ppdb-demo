@@ -132,12 +132,18 @@ export async function recalculateNilaiUjian(pendaftarId: string) {
     if (allGraded) {
         // Convert raw numeric scores to A/B/C Grades
         const grades = {
-            quran: evaluateQuranGrade(quran || 0),
+            quran: master.detail_quran?.rekomendasi
+                ? evaluateStatusGrade(master.detail_quran.rekomendasi)
+                : evaluateQuranGrade(quran || 0),
             akademik: evaluateAkademikGrade(ak || 0),
             kepribadian: evaluateKepribadianGrade(kp || 0),
             kesiapan: evaluateKesiapanGrade(ks || 0),
-            wawancaraCalsan: evaluateWawancaraGrade(ws || 0),
-            wawancaraCawalsan: evaluateWawancaraGrade(wo || 0)
+            wawancaraCalsan: master.detail_wawancara?.rekomendasi
+                ? evaluateStatusGrade(master.detail_wawancara.rekomendasi)
+                : evaluateWawancaraGrade(ws || 0),
+            wawancaraCawalsan: master.detail_cawalsan?.rekomendasi
+                ? evaluateStatusGrade(master.detail_cawalsan.rekomendasi)
+                : evaluateWawancaraGrade(wo || 0)
         };
         
         // Determine status based on Grade distribution
