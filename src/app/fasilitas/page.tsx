@@ -110,13 +110,13 @@ export default function FasilitasPage() {
             >
               <div className="space-y-6 pt-12">
                 <div className="aspect-4/5 rounded-[3rem] overflow-hidden shadow-lg relative group border border-brand-blue-100">
-                  <Image src="/images/masjid.webp" alt="Masjid" fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                  <Image src="https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=2000&auto=format&fit=crop" alt="Masjid" fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
                   <div className="absolute inset-0 bg-linear-to-t from-brand-blue-950/70 to-transparent flex items-end p-8">
                     <span className="text-white font-bold text-xl drop-shadow-md">Masjid Jami'</span>
                   </div>
                 </div>
                 <div className="aspect-square rounded-[3rem] overflow-hidden shadow-lg relative group border border-brand-blue-100">
-                  <Image src="/images/lapangan-minisoccer.webp" alt="Lapangan" fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                  <Image src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=2186&auto=format&fit=crop" alt="Lapangan" fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
                   <div className="absolute inset-0 bg-linear-to-t from-brand-blue-950/70 to-transparent flex items-end p-8">
                     <span className="text-white font-bold text-lg drop-shadow-md">Area Olahraga</span>
                   </div>
@@ -124,13 +124,13 @@ export default function FasilitasPage() {
               </div>
               <div className="space-y-6">
                 <div className="aspect-square rounded-[3rem] overflow-hidden shadow-lg relative group border border-brand-blue-100">
-                  <Image src="/images/asrama.webp" alt="Asrama" fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                  <Image src="https://images.unsplash.com/photo-1555854817-2b22603c7a52?q=80&w=2070&auto=format&fit=crop" alt="Asrama" fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
                   <div className="absolute inset-0 bg-linear-to-t from-brand-blue-950/70 to-transparent flex items-end p-8">
                     <span className="text-white font-bold text-lg drop-shadow-md">Asrama Nyaman</span>
                   </div>
                 </div>
                 <div className="aspect-4/5 rounded-[3rem] overflow-hidden shadow-lg relative group border border-brand-blue-100">
-                  <Image src="/images/kelas-dari-dalam.webp" alt="Kelas" fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                  <Image src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=2073&auto=format&fit=crop" alt="Kelas" fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
                   <div className="absolute inset-0 bg-linear-to-t from-brand-blue-950/70 to-transparent flex items-end p-8">
                     <span className="text-white font-bold text-xl drop-shadow-md">Kelas Modern</span>
                   </div>
@@ -445,7 +445,7 @@ export default function FasilitasPage() {
                 <div className="aspect-square rounded-[3rem] sm:rounded-[4rem] bg-white p-3 sm:p-4 shadow-xl relative -rotate-2 hover:rotate-0 transition-transform duration-700 border border-brand-blue-100">
                   <div className="relative w-full h-full rounded-[2.5rem] sm:rounded-[3.2rem] overflow-hidden">
                     <Image
-                      src="/images/kantor-ppdb-tamu.webp"
+                      src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop"
                       alt="Kantor PPDB PPDB"
                       fill
                       className="object-cover transition-transform duration-700 hover:scale-110"
@@ -773,7 +773,7 @@ export default function FasilitasPage() {
                 className="relative rounded-2xl sm:rounded-[2rem] overflow-hidden group aspect-square shadow-sm hover:shadow-md transition-all duration-500 border border-brand-blue-100"
               >
                 <Image
-                  src="/images/gedung-kelas.webp"
+                  src="https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=1986&auto=format&fit=crop"
                   alt="Gedung Kelas"
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"

@@ -157,7 +157,7 @@ export default function HeroSection() {
               style={{ borderRadius: "2rem", border: "10px solid var(--color-white)", boxShadow: "var(--shadow-premium-2xl), 0 0 0 1px var(--color-teal-100)", overflow: "hidden" }}
             >
               <Image
-                src="/images/hero.webp"
+                src="https://images.unsplash.com/photo-1541829070764-84a7d30dee73?q=80&w=2070&auto=format&fit=crop"
                 alt={`${BRANDING.schoolName} — Sistem PPDB Modern`}
                 width={800} height={600}
                 className="w-full h-auto object-cover aspect-[4/3]"

@@ -19,25 +19,25 @@ import { Container } from "@/components/layout/Container";
 
 const GALLERY_ITEMS = [
   {
-    image: "/images/pembelajaran-kitab-turotz.webp",
+    image: "https://images.unsplash.com/photo-1544648397-72285879f282?q=80&w=2070&auto=format&fit=crop",
     title: "Kajian Kitab Turots",
     description: "Mengkaji Kitab Turots & Ulama Salaf",
     icon: BookOpen,
   },
   {
-    image: "/images/tahfidz.webp",
+    image: "https://images.unsplash.com/photo-1590073844006-3a445796944b?q=80&w=2070&auto=format&fit=crop",
     title: "Halaqoh Tahfidz",
     description: "Setoran Hafalan & Muroja'ah",
     icon: BookMarked,
   },
   {
-    image: "/images/extra-karate.webp",
+    image: "https://images.unsplash.com/photo-1552072805-2a9039d00e57?q=80&w=2070&auto=format&fit=crop",
     title: "Ekstrakurikuler",
     description: "Bela Diri, Panahan & Lifeskill",
     icon: Target,
   },
   {
-    image: "/images/masjid.webp",
+    image: "https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=2000&auto=format&fit=crop",
     title: "Masjid Jami'",
     description: "Pusat Ibadah & Tarbiyah Santri",
     icon: School,
