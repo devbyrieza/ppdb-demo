@@ -73,12 +73,12 @@ export default function HeroSection() {
             <motion.div variants={fadeUp} initial="hidden" animate={animate} transition={{ delay: 0.2 }} className="space-y-3">
               <h1
                 className="leading-[1.06] tracking-[-0.03em] mx-auto lg:mx-0 max-w-2xl lg:max-w-none font-black text-balance"
-                style={{ color: "var(--color-teal-950)", fontSize: "clamp(2rem, 5vw + 0.75rem, 5rem)" }}
+                style={{ color: "var(--color-teal-700)", fontSize: "clamp(2rem, 5vw + 0.75rem, 5rem)" }}
               >
                 <span className="block">Mencetak Generasi</span>
                 <span
                   className="block mt-1"
-                  style={{ background: "linear-gradient(135deg, var(--color-teal-800) 0%, var(--color-sand-500) 50%, var(--color-teal-950) 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent", paddingBottom: "0.15em" }}
+                  style={{ background: "linear-gradient(135deg, var(--color-teal-500) 0%, var(--color-teal-300) 50%, var(--color-teal-600) 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent", paddingBottom: "0.15em" }}
                 >
                   Unggul, Cerdas,{" "}
                   <br className="hidden xl:block" />
