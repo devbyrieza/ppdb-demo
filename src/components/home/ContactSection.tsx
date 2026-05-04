@@ -80,7 +80,7 @@ export default function ContactSection() {
                 <div key={idx} className={`app-card p-6 md:p-8 flex flex-col items-start group ${idx === 0 ? 'sm:col-span-2' : ''}`}>
                   <div className={`w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center mb-5 md:mb-6 transition-colors shadow-sm group-hover:scale-110 duration-500 shrink-0 ${
                       item.color === 'teal' ? 'bg-teal-50 text-teal-600' :
-                      item.color === 'teal' ? 'bg-teal-50 text-teal-600' :
+                      item.color === 'sand' ? 'bg-sand-100 text-teal-700' :
                       'bg-sand-100 text-teal-800'
                     }`}>
                     <item.icon className="w-6 h-6 md:w-7 md:h-7" />
