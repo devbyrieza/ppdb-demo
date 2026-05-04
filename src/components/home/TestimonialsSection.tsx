@@ -5,179 +5,179 @@ import { Container } from "@/components/layout/Container";
 import { motion } from "framer-motion";
 
 const TESTIMONIALS = [
-  {
-    no: "001",
-    name: "Bpk. Surwanto",
-    role: "Wali Santri PPDB Modern Pusat",
-    city: "Sukoharjo, Jawa Tengah",
-    initial: "S",
-    date: "Oktober 2024",
-    quote:
-      "Tujuan kami menyekolahkan anak ke PPDB Modern Pusat adalah agar mereka benar-benar paham agama. Alhamdulillah, sistem PPDB Modern memberikan perubahan nyata pada anak kami — cara bicara, sikap, dan keseriusannya dalam ibadah.",
-    color: "teal"
-  },
-  {
-    no: "002",
-    name: "Ibu Endah Wulandari",
-    role: "Wali Santri PPDB Modern Pusat",
-    city: "Kebumen, Jawa Tengah",
-    initial: "E",
-    date: "Januari 2025",
-    quote:
-      "Awalnya saya khawatir dengan sistem boarding, namun kurikulum tahfidz di PPDB Modern Jonggol sangat sistematis. Dalam 6 bulan, anak saya sudah mampu memimpin shalat berjamaah di rumah dengan makhraj yang benar.",
-    color: "sand"
-  },
-  {
-    no: "003",
-    name: "Muhammad Razan",
-    role: "Alumni PPDB Modern Jonggol",
-    city: "Purwokerto, Jawa Tengah",
-    initial: "R",
-    date: "Maret 2025",
-    quote:
-      "Disiplin bahasa Arab dan hafalan Al-Qur'an di PPDB Modern sangat membantu saat saya melanjutkan pendidikan tinggi. Saat teman-teman lain masih belajar dasar nahwu, saya sudah bisa langsung membaca kitab.",
-    color: "gold"
-  },
-  {
-    no: "004",
-    name: "Faisal Ahmad",
-    role: "Alumni PPDB Modern Jonggol",
-    city: "Cilacap, Jawa Tengah",
-    initial: "A",
-    date: "Agustus 2024",
-    quote:
-      "Berkat bimbingan intensif para asatidz di Pesantren PPDB Modern Pusat, saya berhasil lulus seleksi masuk universitas di Timur Tengah. Fondasi bahasa Arab aktif yang ditanamkan benar-benar menjadi kunci.",
-    color: "teal"
-  },
+    {
+        no: "001",
+        name: "Bpk. Surwanto",
+        role: "Wali Santri PPDB Modern Pusat",
+        city: "Sukoharjo, Jawa Tengah",
+        initial: "S",
+        date: "Oktober 2024",
+        quote:
+            "Tujuan kami menyekolahkan anak ke Pesantren adalah agar mereka benar-benar paham agama. Alhamdulillah, sistemnya memberikan perubahan nyata pada anak kami — cara bicara, sikap, dan keseriusannya dalam ibadah.",
+    },
+    {
+        no: "002",
+        name: "Ibu Endah Wulandari",
+        role: "Wali Santri PPDB Modern Pusat",
+        city: "Kebumen, Jawa Tengah",
+        initial: "E",
+        date: "Januari 2025",
+        quote:
+            "Awalnya saya khawatir dengan sistem boarding, namun kurikulum tahfidz sangat sistematis. Dalam 6 bulan, anak saya sudah mampu memimpin shalat berjamaah di rumah dengan makhraj yang benar.",
+    },
+    {
+        no: "003",
+        name: "Muhammad Razan",
+        role: "Alumni Pesantren PPDB Modern",
+        city: "Purwokerto, Jawa Tengah",
+        initial: "R",
+        date: "Maret 2025",
+        quote:
+            "Disiplin bahasa Arab dan hafalan Al-Qur'an di pesantren sangat membantu saat melanjutkan pendidikan tinggi. Saat teman-teman lain masih belajar dasar nahwu, saya sudah bisa langsung membaca kitab.",
+    },
+    {
+        no: "004",
+        name: "Faisal Ahmad",
+        role: "Alumni Pesantren PPDB Modern",
+        city: "Cilacap, Jawa Tengah",
+        initial: "A",
+        date: "Agustus 2024",
+        quote:
+            "Berkat bimbingan intensif para asatidz, saya berhasil lulus seleksi masuk universitas di Timur Tengah. Fondasi bahasa Arab aktif yang ditanamkan benar-benar menjadi kunci keberhasilan saya.",
+    },
 ] as const;
 
-function TestimonialCard({
-  no,
-  name,
-  role,
-  city,
-  initial,
-  date,
-  quote,
-  color,
-  idx
-}: (typeof TESTIMONIALS)[number] & { idx: number }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: idx * 0.1 }}
-      whileHover={{ y: -5 }}
-      className="bg-white p-8 rounded-[2.5rem] h-full flex flex-col relative group transition-all duration-500 border border-sand-200/60 hover:border-teal-200 hover:shadow-premium-xl overflow-hidden"
-    >
-      {/* Decorative Gradient Background on Hover */}
-      <div className="absolute inset-0 bg-linear-to-br from-transparent to-teal-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+const EASE = [0.16, 1, 0.3, 1] as const;
 
-      {/* Number badge */}
-      <div className="absolute top-8 left-8 w-10 h-10 rounded-[14px] bg-sand-50 border border-sand-200 flex items-center justify-center shadow-premium-xs group-hover:scale-110 transition-transform duration-500 z-10">
-        <span className="text-[10px] font-black text-teal-700 tracking-wider">#{no}</span>
-      </div>
+function TestimonialCard({ no, name, role, city, initial, date, quote, idx }: (typeof TESTIMONIALS)[number] & { idx: number }) {
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 24, scale: 0.97 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: "-32px" }}
+            transition={{ delay: idx * 0.08, duration: 0.6, ease: EASE }}
+            whileHover={{ y: -4 }}
+            className="group relative bg-white flex flex-col h-full rounded-2xl border border-surface-200 shadow-premium-sm hover:shadow-premium-md hover:border-teal-200 overflow-hidden transition-all duration-400"
+        >
+            <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-teal-50/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-      <Quote className="absolute top-8 right-8 w-12 h-12 text-sand-50 group-hover:text-sand-100 transition-colors duration-500 -rotate-12" />
+            <div className="relative z-10 flex flex-col h-full p-6 md:p-7">
+                <div className="flex items-center justify-between mb-5">
+                    <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-sand-50 border border-sand-200 text-[0.6rem] font-black text-teal-700 tracking-wide shadow-xs group-hover:bg-teal-50 group-hover:border-teal-100 transition-all duration-300">
+                        #{no}
+                    </span>
+                    <Quote className="w-8 h-8 text-sand-100 -rotate-12 transition-colors duration-400 group-hover:text-sand-200" aria-hidden />
+                </div>
 
-      {/* Stars with premium glow */}
-      <div className="flex gap-1.5 mb-6 mt-14 relative z-10">
-        {[...Array(5)].map((_, i) => (
-          <Star key={i} className="w-4 h-4 text-sand-500 fill-sand-500 drop-shadow-[0_0_8px_rgba(234,179,8,0.3)]" />
-        ))}
-      </div>
+                <div className="flex gap-1 mb-4">
+                    {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-3.5 h-3.5 text-sand-500 fill-sand-500" aria-hidden />
+                    ))}
+                </div>
 
-      <p className="text-ink-800 leading-relaxed mb-8 grow font-medium relative z-10 text-[15px] italic">
-        "{quote}"
-      </p>
+                <p className="text-[0.8125rem] md:text-[0.875rem] text-ink-700 leading-relaxed font-[450] italic grow mb-6">
+                    &ldquo;{quote}&rdquo;
+                </p>
 
-      <div className="flex flex-col gap-5 mt-auto pt-6 border-t border-sand-100 relative z-10">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-teal-700 to-teal-900 flex items-center justify-center text-white font-display font-black shadow-premium-sm group-hover:shadow-premium-md group-hover:rotate-6 transition-all duration-500">
-            {initial}
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-[15px] font-bold text-ink-950 leading-tight mb-1 truncate">{name}</p>
-            <p className="text-[10px] text-teal-800 font-bold uppercase tracking-widest truncate">{role}</p>
-          </div>
-        </div>
-        <div className="flex items-center justify-between">
-          <p className="text-[10px] text-ink-500 font-semibold tracking-wide">{city}</p>
-          <span className="text-[9px] text-teal-700 font-black uppercase tracking-widest bg-teal-50 px-2.5 py-1 rounded-full border border-teal-100/50 shadow-premium-xs">{date}</span>
-        </div>
-      </div>
-    </motion.div>
-  );
+                <div className="border-t border-sand-100 pt-5">
+                    <div className="flex items-center gap-3.5">
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-600 to-teal-800 flex items-center justify-center shrink-0 text-white font-black text-sm shadow-xs group-hover:-rotate-3 transition-all duration-400">
+                            {initial}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                            <p className="text-[0.8125rem] font-bold text-ink-900 leading-tight truncate">{name}</p>
+                            <p className="text-[0.6rem] font-bold text-teal-600 uppercase tracking-[0.1em] truncate mt-0.5">{role}</p>
+                        </div>
+                        <span className="text-[0.575rem] font-black text-teal-600 uppercase tracking-widest bg-teal-50 px-2 py-1 rounded-full border border-teal-100 shadow-xs whitespace-nowrap">
+                            {date}
+                        </span>
+                    </div>
+                    <p className="text-[0.6rem] text-ink-400 font-medium mt-3 tracking-wide">{city}</p>
+                </div>
+            </div>
+        </motion.div>
+    );
 }
 
 export default function TestimonialsSection() {
-  return (
-    <section id="testimonials" className="section-alt border-y border-sand-200">
-      <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.02] pointer-events-none" />
-      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-sand-100/60 rounded-full blur-[100px] -translate-y-1/2 -translate-x-1/2 opacity-50" />
+    return (
+        <section id="testimonials" className="section-alt relative border-y border-sand-200 overflow-hidden">
 
-      <Container className="relative z-10">
-        {/* Section Header */}
-        <div className="text-center mb-16 lg:mb-20 max-w-2xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-white border border-sand-200 text-teal-700 text-xs font-bold uppercase tracking-widest mb-6 shadow-sm"
-          >
-            <MessageCircle className="w-3.5 h-3.5" />
-            <span>Reputasi PPDB Modern Pusat (Jonggol)</span>
-          </motion.div>
+            <div
+                className="absolute inset-0 pointer-events-none opacity-[0.018]"
+                style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230D6E6E' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+                }}
+            />
+            <div
+                className="absolute -top-48 -left-48 w-[500px] h-[500px] pointer-events-none"
+                style={{ background: "radial-gradient(circle, rgba(176,220,220,0.4) 0%, transparent 65%)" }}
+            />
 
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="section-title mb-6"
-          >
-            Cerita Keberhasilan <span className="text-gradient-teal">Keluarga PPDB Modern</span>
-          </motion.h2>
+            <Container className="relative z-10">
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="section-subtitle mb-6"
-          >
-            PPDB menerapkan standar keunggulan dan sistem yang sama dengan Pesantren PPDB Modern Pusat (Jonggol) International Islamic Boarding School.
-          </motion.p>
+                <div className="text-center mb-14 md:mb-16 max-w-2xl mx-auto">
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, ease: EASE }}
+                        className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-sand-200 text-teal-700 text-[0.65rem] font-bold uppercase tracking-[0.12em] mb-5 shadow-xs"
+                    >
+                        <MessageCircle className="w-3 h-3 shrink-0" strokeWidth={2} />
+                        <span>Reputasi Pesantren Kami</span>
+                    </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-            className="inline-flex items-center gap-2 bg-teal-50 text-teal-800 px-4 py-2 rounded-xl border border-teal-100 font-bold text-sm shadow-sm"
-          >
-            <span className="text-teal-600">✦</span> Reputasi Global yang Teruji
-          </motion.div>
-        </div>
+                    <motion.h2
+                        initial={{ opacity: 0, y: 16 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.08, duration: 0.6, ease: EASE }}
+                        className="section-title mb-4"
+                    >
+                        Cerita Keberhasilan{" "}
+                        <span className="text-gradient-teal">Keluarga Kami</span>
+                    </motion.h2>
 
-        {/* Testimonials Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-12">
-          {TESTIMONIALS.map((testimonial, idx) => (
-            <TestimonialCard key={idx} {...testimonial} idx={idx} />
-          ))}
-        </div>
+                    <motion.p
+                        initial={{ opacity: 0, y: 14 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.15, duration: 0.6, ease: EASE }}
+                        className="section-subtitle max-w-xl mx-auto mb-6"
+                    >
+                        Menerapkan standar keunggulan dengan sistem terintegrasi bertaraf Internasional
+                        yang terbukti mencetak generasi Islami berprestasi.
+                    </motion.p>
 
-        {/* Bottom note */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-center text-[10px] text-ink-500 font-bold uppercase tracking-widest"
-        >
-          Testimoni asli dari wali santri & alumni · Nama ditampilkan dengan persetujuan
-        </motion.p>
-      </Container>
-    </section>
-  );
+                    <motion.div
+                        initial={{ opacity: 0, y: 12 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.22, duration: 0.5, ease: EASE }}
+                        className="inline-flex items-center gap-2 bg-teal-50 text-teal-800 px-4 py-2 rounded-xl border border-teal-100 font-bold text-[0.8125rem] shadow-xs"
+                    >
+                        <span className="text-sand-500">✦</span> Reputasi Global yang Teruji
+                    </motion.div>
+                </div>
+
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 mb-12">
+                    {TESTIMONIALS.map((testimonial, idx) => (
+                        <TestimonialCard key={idx} {...testimonial} idx={idx} />
+                    ))}
+                </div>
+
+                <motion.p
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5 }}
+                    className="text-center text-[0.6rem] text-ink-400 font-semibold uppercase tracking-[0.12em]"
+                >
+                    Testimoni asli dari wali santri &amp; alumni · Nama ditampilkan dengan persetujuan
+                </motion.p>
+
+            </Container>
+        </section>
+    );
 }
