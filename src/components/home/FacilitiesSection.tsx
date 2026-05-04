@@ -8,8 +8,8 @@ import { motion } from "framer-motion";
 import { navigateToDetail } from "@/lib/navigation-scroll";
 
 const FACILITIES = [
-    { name: "Masjid Kapasitas 1000 Jamaah", icon: Home, color: "maroon" },
-    { name: "Gedung Sekolah Terpadu", icon: School, color: "cream" },
+    { name: "Masjid Kapasitas 1000 Jamaah", icon: Home, color: "army" },
+    { name: "Gedung Sekolah Terpadu", icon: School, color: "khaki" },
     { name: "Asrama Representatif", icon: Building2, color: "ink" },
     { name: "Fasilitas Olahraga", icon: Dumbbell, color: "gold" },
     { name: "Laboratorium IPA", icon: Beaker, color: "teal" },
@@ -19,7 +19,7 @@ const FACILITIES = [
     { name: "Ruang Makan Bersama", icon: UtensilsCrossed, color: "amber" },
     { name: "Perpustakaan Digital", icon: Library, color: "emerald" },
     { name: "Area Kemandirian", icon: Waves, color: "cyan" },
-    { name: "Kantin Sehat", icon: Coffee, color: "maroon" },
+    { name: "Kantin Sehat", icon: Coffee, color: "army" },
 ] as const;
 
 const FACILITY_IMAGES = [
@@ -34,7 +34,7 @@ export default function FacilitiesSection() {
     return (
         <section id="fasilitas" className="section-std">
             {/* Background decorative element */}
-            <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-brand-yellow-100 rounded-full blur-[100px] translate-y-1/2 translate-x-1/2 opacity-50" />
+            <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-khaki-100 rounded-full blur-[100px] translate-y-1/2 translate-x-1/2 opacity-50" />
 
             <Container className="relative z-10">
                 <div className="text-center mb-16 max-w-3xl mx-auto">
@@ -42,7 +42,7 @@ export default function FacilitiesSection() {
                         initial={{ opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-cream-50 border border-cream-200 text-brand-blue-700 text-xs font-bold uppercase tracking-widest mb-6 shadow-sm"
+                        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-white border border-khaki-200 text-army-700 text-xs font-bold uppercase tracking-widest mb-6 shadow-sm"
                     >
                         <MapPin className="w-3.5 h-3.5" />
                         <span>Lingkungan Pesantren</span>
@@ -55,7 +55,7 @@ export default function FacilitiesSection() {
                         transition={{ delay: 0.1 }}
                         className="section-title mb-6"
                     >
-                        Fasilitas <span className="text-gradient-maroon">Terpadu & Lengkap</span>
+                        Fasilitas <span className="text-gradient-army">Terpadu & Lengkap</span>
                     </motion.h2>
 
                     <motion.p
@@ -77,13 +77,13 @@ export default function FacilitiesSection() {
                     className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-16"
                 >
                     {FACILITY_IMAGES.map((img, idx) => (
-                        <div key={idx} className={`${img.span} relative rounded-3xl overflow-hidden group aspect-4/3 shadow-md border-4 border-white ring-1 ring-cream-200`}>
+                        <div key={idx} className={`${img.span} relative rounded-3xl overflow-hidden group aspect-4/3 shadow-md border-4 border-white ring-1 ring-khaki-200`}>
                             <Image
                                 src={img.src}
                                 alt={img.label}
                                 fill
                                 priority={idx < 2} // Preload top 2 images 
-                                className="object-cover transition-transform duration-700 group-hover:scale-110 bg-brand-yellow-100 animate-pulse"
+                                className="object-cover transition-transform duration-700 group-hover:scale-110 bg-khaki-50 animate-pulse"
                                 onLoad={(e) => e.currentTarget.classList.remove('animate-pulse')}
                             />
                             <div className="absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-transparent" />
@@ -103,11 +103,11 @@ export default function FacilitiesSection() {
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
                             transition={{ delay: idx * 0.05 }}
-                            className="flex items-center gap-4 p-4 rounded-2xl bg-white border border-cream-200 group hover:bg-cream-50 hover:border-maroon-200 hover:shadow-md transition-all duration-300"
+                            className="flex items-center gap-4 p-4 rounded-2xl bg-white border border-khaki-200 group hover:bg-khaki-50 hover:border-army-200 hover:shadow-md transition-all duration-300"
                         >
                             <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shrink-0 shadow-sm transition-transform duration-500 group-hover:scale-110 ${
-                                facility.color === 'maroon' ? 'bg-maroon-50 text-brand-blue-600' :
-                                facility.color === 'cream' ? 'bg-brand-yellow-100 text-maroon-800' :
+                                facility.color === 'army' ? 'bg-army-50 text-army-600' :
+                                facility.color === 'khaki' ? 'bg-khaki-100 text-khaki-800' :
                                 facility.color === 'gold' ? 'bg-yellow-50 text-yellow-600' :
                                 facility.color === 'teal' ? 'bg-teal-50 text-teal-600' :
                                 facility.color === 'red' ? 'bg-red-50 text-red-600' :
@@ -120,7 +120,7 @@ export default function FacilitiesSection() {
                                 }`}>
                                 <facility.icon className="w-5 h-5" />
                             </div>
-                            <span className="font-bold text-ink-950 text-sm leading-tight group-hover:text-maroon-800 transition-colors">{facility.name}</span>
+                            <span className="font-bold text-ink-950 text-sm leading-tight group-hover:text-army-800 transition-colors">{facility.name}</span>
                         </motion.div>
                     ))}
                 </div>

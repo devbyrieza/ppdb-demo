@@ -19,7 +19,7 @@ const CONTACT_INFO = [
     title: "Lokasi Pesantren",
     content: "Jl. Pelabuhan Ratu II KM 18",
     detail: "Cikembar, Sukabumi",
-    color: "maroon",
+    color: "army",
   },
   {
     icon: Phone,
@@ -33,19 +33,19 @@ const CONTACT_INFO = [
     title: "Email Resmi",
     content: "alandalusululalbaab2@gmail.com",
     detail: "Kirim pertanyaan kapan saja",
-    color: "gold",
+    color: "khaki",
   },
 ] as const;
 
 export default function ContactSection() {
   return (
-    <section id="kontak" className="py-20 md:py-28 bg-white border-b border-cream-200 relative overflow-hidden">
+    <section id="kontak" className="py-20 md:py-28 bg-white border-b border-khaki-200 relative overflow-hidden">
       <Container>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="bg-cream-50 rounded-[2.5rem] lg:rounded-[3rem] p-8 md:p-12 lg:p-16 border border-cream-200 relative overflow-hidden shadow-sm"
+          className="bg-khaki-50 rounded-[2.5rem] lg:rounded-[3rem] p-8 md:p-12 lg:p-16 border border-khaki-200 relative overflow-hidden shadow-sm"
         >
           {/* Background Map Decoration (Abstract) */}
           <div className="absolute inset-0 opacity-[0.03] bg-[url('/grid-pattern.svg')] pointer-events-none" />
@@ -54,13 +54,13 @@ export default function ContactSection() {
 
             {/* Text Content */}
             <div className="lg:w-1/2 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-white border border-cream-200 text-maroon-700 text-xs font-bold uppercase tracking-widest mb-6 shadow-sm">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-white border border-khaki-200 text-army-700 text-xs font-bold uppercase tracking-widest mb-6 shadow-sm">
                 <MessageCircle className="w-3.5 h-3.5" />
                 <span>Pusat Bantuan</span>
               </div>
               <h2 className="section-title mb-6">
                 Ada Pertanyaan? <br />
-                <span className="text-gradient-maroon">Kami Siap Membantu</span>
+                <span className="text-gradient-army">Kami Siap Membantu</span>
               </h2>
               <p className="section-subtitle lg:ml-0 text-center lg:text-left mb-8 md:mb-10 max-w-lg mx-auto lg:mx-0">
                 Jangan ragu untuk menghubungi kami. Tim administrasi kami siap melayani pertanyaan seputar pendaftaran, kurikulum, dan informasi pesantren.
@@ -79,9 +79,9 @@ export default function ContactSection() {
               {CONTACT_INFO.map((item, idx) => (
                 <div key={idx} className={`app-card p-6 md:p-8 flex flex-col items-start group ${idx === 0 ? 'sm:col-span-2' : ''}`}>
                   <div className={`w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center mb-5 md:mb-6 transition-colors shadow-sm group-hover:scale-110 duration-500 shrink-0 ${
-                      item.color === 'maroon' ? 'bg-maroon-50 text-maroon-600' :
+                      item.color === 'army' ? 'bg-army-50 text-army-600' :
                       item.color === 'teal' ? 'bg-teal-50 text-teal-600' :
-                      'bg-yellow-50 text-yellow-600'
+                      'bg-khaki-100 text-army-800'
                     }`}>
                     <item.icon className="w-6 h-6 md:w-7 md:h-7" />
                   </div>

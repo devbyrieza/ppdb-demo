@@ -1767,6 +1767,13 @@
     -webkit-text-fill-color: transparent;
   }
 
+  .text-gradient-army {
+    background: linear-gradient(135deg, var(--color-army-600) 0%, var(--color-army-900) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
   .text-gradient-maroon {
     background: linear-gradient(135deg, var(--color-maroon-600) 0%, var(--color-maroon-950) 100%);
     -webkit-background-clip: text;

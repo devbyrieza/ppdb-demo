@@ -266,17 +266,17 @@ export default function DashboardLayout({
     return (
     <>
       <IdleTimeoutTracker />
-      <div className="min-h-screen bg-surface-50 font-sans selection:bg-brand-blue-100 selection:text-brand-blue-900">
+      <div className="min-h-screen bg-surface-50 font-sans selection:bg-army-100 selection:text-army-900">
 
         {/* Mobile Header (Fintech Style) */}
-        <div className="lg:hidden bg-white/90 backdrop-blur-xl sticky top-0 z-40 px-4 sm:px-5 py-3 sm:py-4 flex items-center justify-between border-b border-brand-yellow-200 shadow-sm">
+        <div className="lg:hidden bg-white/90 backdrop-blur-xl sticky top-0 z-40 px-4 sm:px-5 py-3 sm:py-4 flex items-center justify-between border-b border-khaki-200 shadow-sm">
           <div className="flex items-center gap-2 sm:gap-3">
-            <button onClick={() => setSidebarOpen(true)} className="p-2 -ml-2 text-brand-blue-950 hover:bg-brand-yellow-50 rounded-xl transition-colors">
+            <button onClick={() => setSidebarOpen(true)} className="p-2 -ml-2 text-army-950 hover:bg-khaki-50 rounded-xl transition-colors">
               <Menu className="w-6 h-6" />
             </button>
             <div className="flex flex-col">
               <span className="text-[9px] sm:text-[10px] uppercase font-black tracking-widest text-ink-400 mb-0.5" style={{ display: 'none' }}>PPDB {BRANDING.schoolName}</span>
-              <span className="text-sm sm:text-base font-black text-brand-blue-950 leading-none">Portal Santri</span>
+              <span className="text-sm sm:text-base font-black text-army-950 leading-none">Portal Santri</span>
             </div>
           </div>
 
@@ -284,7 +284,7 @@ export default function DashboardLayout({
             <div className={`hidden sm:block px-2.5 py-1 rounded-full text-[10px] uppercase tracking-wider font-black border bg-opacity-10 ${statusInfo.color.replace('text-', 'border-')} ${statusInfo.color}`}>
               {statusInfo.label}
             </div>
-            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-linear-to-br from-brand-blue-700 to-brand-blue-900 flex items-center justify-center text-white text-sm font-black shadow-md border border-brand-yellow-100">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-linear-to-br from-army-700 to-army-900 flex items-center justify-center text-white text-sm font-black shadow-md border border-khaki-100">
               {namaLengkap.charAt(0)}
             </div>
           </div>
@@ -295,27 +295,27 @@ export default function DashboardLayout({
           <aside className="hidden lg:flex lg:w-72 lg:flex-col lg:fixed lg:top-0 lg:left-0 lg:h-screen z-50">
             <div className="flex flex-col h-full bg-white/70 backdrop-blur-xl border-r border-white/50 shadow-clay-lg">
               {/* Brand */}
-              <div className="px-6 pt-8 pb-6 border-b border-brand-yellow-100/50 mb-2">
+              <div className="px-6 pt-8 pb-6 border-b border-khaki-100/50 mb-2">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 rounded-2xl bg-white flex items-center justify-center shadow-md ring-4 ring-brand-yellow-50 overflow-hidden">
+                  <div className="w-10 h-10 rounded-2xl bg-white flex items-center justify-center shadow-md ring-4 ring-khaki-50/50 overflow-hidden">
                     <img src={BRANDING.logoPath} alt="Logo" className="w-full h-full object-contain p-1" />
                   </div>
                   <div>
-                    <h1 className="font-black text-xl text-brand-blue-950 leading-none tracking-tight">PPDB <span className="text-brand-blue-700">{BRANDING.schoolName}</span></h1>
+                    <h1 className="font-black text-xl text-army-950 leading-none tracking-tight">PPDB <span className="text-army-700">{BRANDING.schoolName}</span></h1>
                     <p className="text-[10px] text-ink-500 font-bold mt-1 uppercase tracking-widest">Tahun 2026/2027</p>
                   </div>
                 </div>
 
                 {/* User Card */}
-                <div className="p-4 rounded-[1.5rem] bg-brand-yellow-50/50 border border-brand-yellow-100 relative overflow-hidden group app-card">
+                <div className="p-4 rounded-[1.5rem] bg-khaki-50/50 border border-khaki-100 relative overflow-hidden group app-card">
                   <div className="absolute top-0 right-0 p-2 opacity-5 group-hover:opacity-10 transition-opacity">
-                    <User className="w-20 h-20 text-brand-blue-900 translate-x-4 -translate-y-4" />
+                    <User className="w-20 h-20 text-army-900 translate-x-4 -translate-y-4" />
                   </div>
                   <p className="text-[10px] uppercase tracking-widest font-black text-ink-400 mb-1">Pendaftar</p>
                   <p className="font-black text-ink-950 text-base truncate mb-3">{namaDepan}</p>
-                  <div className="text-[10px] text-ink-500 bg-white px-2.5 py-1.5 rounded-xl inline-flex shadow-sm border border-brand-yellow-100 items-center justify-between w-full">
+                  <div className="text-[10px] text-ink-500 bg-white px-2.5 py-1.5 rounded-xl inline-flex shadow-sm border border-khaki-100 items-center justify-between w-full">
                     <span className="font-bold uppercase">No. Registrasi</span>
-                    <span className="font-mono text-brand-blue-700 font-black">{nomorPendaftaran}</span>
+                    <span className="font-mono text-army-700 font-black">{nomorPendaftaran}</span>
                   </div>
                 </div>
               </div>
@@ -357,17 +357,17 @@ export default function DashboardLayout({
                     <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm overflow-hidden">
                       <img src={BRANDING.logoPath} alt="Logo" className="w-full h-full object-contain p-1" />
                     </div>
-                    <span className="font-black text-lg text-brand-blue-950 tracking-tight">PPDB {BRANDING.schoolName}</span>
+                    <span className="font-black text-lg text-army-950 tracking-tight">PPDB {BRANDING.schoolName}</span>
                   </div>
-                  <button onClick={() => setSidebarOpen(false)} className="p-2 text-ink-400 hover:text-brand-blue-700 bg-brand-yellow-50 rounded-full">
+                  <button onClick={() => setSidebarOpen(false)} className="p-2 text-ink-400 hover:text-army-700 bg-khaki-50 rounded-full">
                     <X className="w-5 h-5" />
                   </button>
                 </div>
 
-                <div className="p-5 bg-brand-yellow-50 border-b border-brand-yellow-100">
+                <div className="p-5 bg-khaki-50 border-b border-khaki-100">
                   <p className="text-[10px] font-black text-ink-400 mb-1 uppercase tracking-widest">Akun Pendaftar</p>
                   <p className="font-black text-ink-950 text-lg mb-1">{namaDepan}</p>
-                  <p className="font-mono text-xs font-bold text-brand-blue-700 bg-white px-2 py-1 rounded-lg inline-block border border-brand-yellow-100">{nomorPendaftaran}</p>
+                  <p className="font-mono text-xs font-bold text-army-700 bg-white px-2 py-1 rounded-lg inline-block border border-khaki-100">{nomorPendaftaran}</p>
                 </div>
 
                 <nav className="flex-1 overflow-y-auto p-4 space-y-1">
@@ -393,18 +393,18 @@ export default function DashboardLayout({
           {/* Main Content Area */}
           <main className="flex-1 lg:pl-72 w-full transition-all duration-300 flex flex-col min-h-screen relative pb-24 lg:pb-0">
             {/* Desktop Topbar - Glass Effect */}
-            <header className="hidden lg:flex sticky top-4 z-30 mx-8 mt-4 rounded-[1.5rem] bg-white/70 backdrop-blur-xl px-6 py-4 items-center justify-between shadow-sm border border-brand-yellow-100">
+            <header className="hidden lg:flex sticky top-4 z-30 mx-8 mt-4 rounded-[1.5rem] bg-white/70 backdrop-blur-xl px-6 py-4 items-center justify-between shadow-sm border border-khaki-100">
               <div>
-                <h2 className="text-xl font-black text-brand-blue-950 tracking-tight">Dashboard Pendaftar</h2>
+                <h2 className="text-xl font-black text-army-950 tracking-tight">Dashboard Pendaftar</h2>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-ink-600">Panel Utama Pendaftaran Khusus Pendaftar Baru</p>
               </div>
 
               <div className="flex items-center gap-4">
-                <Link href="/" className="p-2 text-ink-400 hover:text-brand-blue-700 bg-brand-yellow-50 hover:bg-brand-yellow-100 rounded-full transition-colors" title="Ke Beranda Website">
+                <Link href="/" className="p-2 text-ink-400 hover:text-army-700 bg-khaki-50 hover:bg-khaki-100 rounded-full transition-colors" title="Ke Beranda Website">
                   <Home className="w-5 h-5" />
                 </Link>
 
-                <div className="h-8 w-px bg-brand-yellow-200" />
+                <div className="h-8 w-px bg-khaki-200" />
 
                 {/* Status Badge */}
                 <div className={`flex items-center gap-2.5 px-4 py-2 rounded-full border bg-white shadow-sm ${statusInfo.color.replace('text-', 'border-')}`}>
@@ -424,32 +424,32 @@ export default function DashboardLayout({
             
             {/* Mobile Bottom Navigation (Fintech Style) */}
             {!pathname.includes('/ujian/') && (
-              <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-brand-yellow-200 pb-safe z-40 shadow-[0_-10px_40px_-10px_rgba(0,0,0,0.1)] rounded-t-[1.5rem]">
+              <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-khaki-200 pb-safe z-40 shadow-[0_-10px_40px_-10px_rgba(0,0,0,0.1)] rounded-t-[1.5rem]">
                 <div className="flex justify-around items-center px-4 py-3">
                   <Link href="/dashboard/pendaftar" className="flex flex-col items-center p-2 group w-16">
-                    <div className={`w-10 h-8 rounded-full flex items-center justify-center mb-1 transition-colors ${pathname === '/dashboard/pendaftar' ? 'bg-brand-yellow-100' : 'bg-transparent group-hover:bg-brand-yellow-50'}`}>
-                      <Home className={`w-5 h-5 transition-colors ${pathname === '/dashboard/pendaftar' ? 'text-brand-blue-700' : 'text-ink-400 group-hover:text-brand-blue-600'}`} />
+                    <div className={`w-10 h-8 rounded-full flex items-center justify-center mb-1 transition-colors ${pathname === '/dashboard/pendaftar' ? 'bg-khaki-100' : 'bg-transparent group-hover:bg-khaki-50'}`}>
+                      <Home className={`w-5 h-5 transition-colors ${pathname === '/dashboard/pendaftar' ? 'text-army-700' : 'text-ink-400 group-hover:text-army-600'}`} />
                     </div>
-                    <span className={`text-[10px] font-bold text-center ${pathname === '/dashboard/pendaftar' ? 'text-brand-blue-800' : 'text-ink-400'}`}>Beranda</span>
+                    <span className={`text-[10px] font-bold text-center ${pathname === '/dashboard/pendaftar' ? 'text-army-800' : 'text-ink-400'}`}>Beranda</span>
                   </Link>
                   
                   <Link href="/dashboard/pendaftar/pembayaran-pendaftaran" className="flex flex-col items-center p-2 group w-16">
-                    <div className={`w-10 h-8 rounded-full flex items-center justify-center mb-1 transition-colors ${pathname.includes('pembayaran') ? 'bg-brand-yellow-100' : 'bg-transparent group-hover:bg-brand-yellow-50'}`}>
-                      <CreditCard className={`w-5 h-5 transition-colors ${pathname.includes('pembayaran') ? 'text-brand-blue-700' : 'text-ink-400 group-hover:text-brand-blue-600'}`} />
+                    <div className={`w-10 h-8 rounded-full flex items-center justify-center mb-1 transition-colors ${pathname.includes('pembayaran') ? 'bg-khaki-100' : 'bg-transparent group-hover:bg-khaki-50'}`}>
+                      <CreditCard className={`w-5 h-5 transition-colors ${pathname.includes('pembayaran') ? 'text-army-700' : 'text-ink-400 group-hover:text-army-600'}`} />
                     </div>
-                    <span className={`text-[10px] font-bold text-center ${pathname.includes('pembayaran') ? 'text-brand-blue-800' : 'text-ink-400'}`}>Bayar</span>
+                    <span className={`text-[10px] font-bold text-center ${pathname.includes('pembayaran') ? 'text-army-800' : 'text-ink-400'}`}>Bayar</span>
                   </Link>
 
                   <Link href="/dashboard/pendaftar/isi-data-lengkap" className="flex flex-col items-center p-2 group w-16">
-                    <div className={`w-10 h-8 rounded-full flex items-center justify-center mb-1 transition-colors ${pathname.includes('isi-data-lengkap') || pathname.includes('upload-berkas') ? 'bg-brand-yellow-100' : 'bg-transparent group-hover:bg-brand-yellow-50'}`}>
-                      <ClipboardList className={`w-5 h-5 transition-colors ${pathname.includes('isi-data-lengkap') || pathname.includes('upload-berkas') ? 'text-brand-blue-700' : 'text-ink-400 group-hover:text-brand-blue-600'}`} />
+                    <div className={`w-10 h-8 rounded-full flex items-center justify-center mb-1 transition-colors ${pathname.includes('isi-data-lengkap') || pathname.includes('upload-berkas') ? 'bg-khaki-100' : 'bg-transparent group-hover:bg-khaki-50'}`}>
+                      <ClipboardList className={`w-5 h-5 transition-colors ${pathname.includes('isi-data-lengkap') || pathname.includes('upload-berkas') ? 'text-army-700' : 'text-ink-400 group-hover:text-army-600'}`} />
                     </div>
-                    <span className={`text-[10px] font-bold text-center ${pathname.includes('isi-data-lengkap') || pathname.includes('upload-berkas') ? 'text-brand-blue-800' : 'text-ink-400'}`}>Data</span>
+                    <span className={`text-[10px] font-bold text-center ${pathname.includes('isi-data-lengkap') || pathname.includes('upload-berkas') ? 'text-army-800' : 'text-ink-400'}`}>Data</span>
                   </Link>
 
                   <button onClick={() => setSidebarOpen(true)} className="flex flex-col items-center p-2 group w-16">
-                    <div className="w-10 h-8 rounded-full flex items-center justify-center mb-1 bg-transparent group-hover:bg-brand-yellow-50 transition-colors">
-                      <Menu className="w-5 h-5 text-ink-400 group-hover:text-brand-blue-600 transition-colors" />
+                    <div className="w-10 h-8 rounded-full flex items-center justify-center mb-1 bg-transparent group-hover:bg-khaki-50 transition-colors">
+                      <Menu className="w-5 h-5 text-ink-400 group-hover:text-army-600 transition-colors" />
                     </div>
                     <span className="text-[10px] font-bold text-ink-600 text-center">Menu</span>
                   </button>

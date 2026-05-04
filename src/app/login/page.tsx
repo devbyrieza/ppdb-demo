@@ -59,7 +59,7 @@ const AuthInput = ({
   <div className="space-y-3">
     <label className="text-[10px] font-black text-ink-600 uppercase tracking-[0.2em] ml-1">{label}</label>
     <div className="relative group">
-      <div className="absolute left-5 md:left-6 top-0 bottom-0 flex items-center text-ink-500 group-focus-within:text-brand-blue-600 transition-colors duration-300 pointer-events-none">
+      <div className="absolute left-5 md:left-6 top-0 bottom-0 flex items-center text-ink-500 group-focus-within:text-army-600 transition-colors duration-300 pointer-events-none">
         <Icon className="w-5 h-5" />
       </div>
       {children}
@@ -236,8 +236,8 @@ export default function LoginPage() {
   return (
     <main className="min-h-screen bg-white flex items-center justify-center p-6 relative overflow-hidden">
       {/* Background Decor */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-cream-100/40 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-maroon-100/20 rounded-full blur-[100px] -translate-x-1/2 translate-y-1/2 pointer-events-none" />
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-khaki-100/40 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-army-100/20 rounded-full blur-[100px] -translate-x-1/2 translate-y-1/2 pointer-events-none" />
       <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.02] pointer-events-none" />
 
       <Container className="relative z-10 flex flex-col items-center">
@@ -248,12 +248,12 @@ export default function LoginPage() {
           className="text-center mb-12"
         >
           <Link href="/">
-            <div className="app-card inline-flex items-center justify-center w-20 h-20 bg-white rounded-3xl shadow-sm border border-brand-blue-100 mb-8 hover:scale-110 transition-transform group overflow-hidden">
+            <div className="app-card inline-flex items-center justify-center w-20 h-20 bg-white rounded-3xl shadow-sm border border-khaki-100 mb-8 hover:scale-110 transition-transform group overflow-hidden">
               <img src={BRANDING.logoPath} alt={"Logo " + BRANDING.schoolName} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
             </div>
           </Link>
           <h1 className="text-4xl md:text-5xl font-display font-black text-ink-950 mb-3 tracking-tight">
-            Portal <span className="text-gradient-maroon font-black">{BRANDING.schoolShortName}</span>
+            Portal <span className="text-gradient-army font-black">{BRANDING.schoolShortName}</span>
           </h1>
           <p className="text-lg text-ink-700 font-medium">
             Masuk ke Sistem Administrasi & Pendaftaran
@@ -265,10 +265,10 @@ export default function LoginPage() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.1 }}
-          className="app-card w-full max-w-[480px] bg-white rounded-[2.5rem] md:rounded-[4rem] shadow-lg border border-brand-blue-100 p-6 md:p-14 relative overflow-hidden"
+          className="app-card w-full max-w-[480px] bg-white rounded-[2.5rem] md:rounded-[4rem] shadow-lg border border-khaki-100 p-6 md:p-14 relative overflow-hidden"
         >
           {/* Subtle inside gradient */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-brand-blue-50/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+          <div className="absolute top-0 right-0 w-64 h-64 bg-khaki-50/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
 
           {/* Tab Switcher - Premium "Pill" style */}
           {!roleSelectionData && (
@@ -283,13 +283,13 @@ export default function LoginPage() {
 
               <button
                 onClick={() => { setActiveTab("pendaftar"); setError(""); }}
-                className={`flex-1 relative z-10 py-3.5 text-xs font-black uppercase tracking-widest text-center rounded-2xl transition-colors duration-300 ${activeTab === "pendaftar" ? "text-maroon-700" : "text-ink-600 hover:text-ink-800"}`}
+                className={`flex-1 relative z-10 py-3.5 text-xs font-black uppercase tracking-widest text-center rounded-2xl transition-colors duration-300 ${activeTab === "pendaftar" ? "text-army-700" : "text-ink-600 hover:text-ink-800"}`}
               >
                 Pendaftar
               </button>
               <button
                 onClick={() => { setActiveTab("admin"); setError(""); }}
-                className={`flex-1 relative z-10 py-3.5 text-xs font-black uppercase tracking-widest text-center rounded-2xl transition-colors duration-300 ${activeTab === "admin" ? "text-maroon-700" : "text-ink-600 hover:text-ink-800"}`}
+                className={`flex-1 relative z-10 py-3.5 text-xs font-black uppercase tracking-widest text-center rounded-2xl transition-colors duration-300 ${activeTab === "admin" ? "text-army-700" : "text-ink-600 hover:text-ink-800"}`}
               >
                 Portal Staf
               </button>
@@ -326,8 +326,8 @@ export default function LoginPage() {
                   className="space-y-5"
                 >
                   <div className="text-center mb-6">
-                    <div className="w-14 h-14 bg-brand-yellow-100 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-brand-yellow-200">
-                      <Layers className="w-7 h-7 text-brand-blue-700" />
+                    <div className="w-14 h-14 bg-khaki-100 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-khaki-200">
+                      <Layers className="w-7 h-7 text-army-700" />
                     </div>
                     <h2 className="text-xl font-black text-ink-950">Selamat datang, {roleSelectionData.full_name.split(' ')[0]}!</h2>
                     <p className="text-sm text-ink-600 font-medium mt-1">Pilih dashboard yang ingin diakses</p>
@@ -382,7 +382,7 @@ export default function LoginPage() {
                       value={nomorPendaftaran}
                       onChange={(e) => setNomorPendaftaran(e.target.value.toUpperCase())}
                       placeholder="Contoh: MTI2600001"
-                      className="w-full px-5 py-3 md:px-8 md:py-5 pl-14 md:pl-16 rounded-xl md:rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-maroon-300 focus:ring-4 focus:ring-maroon-50 transition-all font-bold text-ink-950 uppercase placeholder:normal-case placeholder:font-medium placeholder:text-ink-400 text-sm md:text-base shadow-inner"
+                      className="w-full px-5 py-3 md:px-8 md:py-5 pl-14 md:pl-16 rounded-xl md:rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-army-300 focus:ring-4 focus:ring-army-50 transition-all font-bold text-ink-950 uppercase placeholder:normal-case placeholder:font-medium placeholder:text-ink-400 text-sm md:text-base shadow-inner"
                       disabled={isLoading}
                     />
                   </AuthInput>
@@ -395,7 +395,7 @@ export default function LoginPage() {
                       value={nikPendaftar}
                       onChange={(e) => setNikPendaftar(e.target.value.replace(/\D/g, ""))}
                       placeholder="16 Digit NIK Sesuai KK"
-                      className="w-full px-5 py-3 md:px-8 md:py-5 pl-14 md:pl-16 rounded-xl md:rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-maroon-300 focus:ring-4 focus:ring-maroon-50 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-400 text-sm md:text-base shadow-inner"
+                      className="w-full px-5 py-3 md:px-8 md:py-5 pl-14 md:pl-16 rounded-xl md:rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-army-300 focus:ring-4 focus:ring-army-50 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-400 text-sm md:text-base shadow-inner"
                       disabled={isLoading}
                     />
                   </AuthInput>
@@ -405,7 +405,7 @@ export default function LoginPage() {
                     whileTap={{ scale: 0.98 }}
                     type="submit"
                     disabled={isLoading}
-                    className="w-full py-4 md:py-6 rounded-pill bg-maroon-700 text-white font-black text-lg md:text-xl hover:bg-maroon-800 shadow-xl shadow-maroon-100 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                    className="w-full py-4 md:py-6 rounded-pill bg-army-700 text-white font-black text-lg md:text-xl hover:bg-army-800 shadow-xl shadow-army-100 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
                   >
                     {isLoading ? (
                       <Loader2 className="w-6 h-6 animate-spin" />
@@ -421,7 +421,7 @@ export default function LoginPage() {
                     <p className="text-sm text-ink-600 font-bold uppercase tracking-widest mb-4">Belum Punya Akun?</p>
                     <Link
                       href="/daftar"
-                      className="inline-flex items-center gap-2 px-10 py-3 rounded-pill bg-cream-50 text-maroon-700 font-black text-sm border border-cream-200 hover:bg-white hover:shadow-sm transition-all"
+                      className="inline-flex items-center gap-2 px-10 py-3 rounded-pill bg-khaki-50 text-army-700 font-black text-sm border border-khaki-200 hover:bg-white hover:shadow-sm transition-all"
                     >
                       Daftar Baru Di Sini
                     </Link>
@@ -442,7 +442,7 @@ export default function LoginPage() {
                       value={emailAdmin}
                       onChange={(e) => setEmailAdmin(e.target.value)}
                       placeholder="admin@andalus.sch.id"
-                      className="w-full px-5 py-3 md:px-8 md:py-5 pl-14 md:pl-16 rounded-xl md:rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-maroon-300 focus:ring-4 focus:ring-maroon-50 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-400 text-sm md:text-base shadow-inner"
+                      className="w-full px-5 py-3 md:px-8 md:py-5 pl-14 md:pl-16 rounded-xl md:rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-army-300 focus:ring-4 focus:ring-army-50 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-400 text-sm md:text-base shadow-inner"
                       disabled={isLoading}
                     />
                   </AuthInput>
@@ -465,7 +465,7 @@ export default function LoginPage() {
                       value={passwordAdmin}
                       onChange={(e) => setPasswordAdmin(e.target.value)}
                       placeholder="••••••••"
-                      className="w-full px-5 py-3 md:px-8 md:py-5 pl-14 md:pl-16 pr-12 md:pr-16 rounded-xl md:rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-maroon-300 focus:ring-4 focus:ring-maroon-50 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-400 text-sm md:text-base shadow-inner"
+                      className="w-full px-5 py-3 md:px-8 md:py-5 pl-14 md:pl-16 pr-12 md:pr-16 rounded-xl md:rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-army-300 focus:ring-4 focus:ring-army-50 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-400 text-sm md:text-base shadow-inner"
                       disabled={isLoading}
                     />
                   </AuthInput>
@@ -475,7 +475,7 @@ export default function LoginPage() {
                     whileTap={{ scale: 0.98 }}
                     type="submit"
                     disabled={isLoading}
-                    className="w-full py-4 md:py-6 rounded-pill bg-brand-yellow-400 text-brand-blue-900 font-black text-lg md:text-xl hover:bg-brand-yellow-500 shadow-xl shadow-brand-yellow-100 border border-brand-yellow-300 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                    className="w-full py-4 md:py-6 rounded-pill bg-army-700 text-white font-black text-lg md:text-xl hover:bg-army-800 shadow-xl shadow-army-100 border border-army-600 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
                   >
                     {isLoading ? (
                       <Loader2 className="w-6 h-6 animate-spin" />
@@ -487,8 +487,8 @@ export default function LoginPage() {
                     )}
                   </motion.button>
 
-                  <div className="p-6 bg-cream-50/50 rounded-3xl border border-brand-yellow-100 flex items-start gap-4">
-                    <div className="w-8 h-8 rounded-xl bg-brand-yellow-100 flex items-center justify-center text-brand-blue-700 shrink-0">
+                  <div className="p-6 bg-khaki-50/50 rounded-3xl border border-khaki-100 flex items-start gap-4">
+                    <div className="w-8 h-8 rounded-xl bg-khaki-100 flex items-center justify-center text-army-700 shrink-0">
                       <Sparkles className="w-4 h-4" />
                     </div>
                     <p className="text-xs text-ink-600 font-bold leading-relaxed">
@@ -525,9 +525,9 @@ export default function LoginPage() {
         >
           <Link
             href="/"
-            className="group flex items-center gap-3 text-ink-600 hover:text-brand-blue-700 font-black uppercase tracking-[0.2em] text-[10px] transition-all"
+            className="group flex items-center gap-3 text-ink-600 hover:text-army-700 font-black uppercase tracking-[0.2em] text-[10px] transition-all"
           >
-            <div className="w-8 h-8 rounded-full bg-brand-blue-50 border border-brand-blue-100 flex items-center justify-center group-hover:scale-110 transition-transform">
+            <div className="w-8 h-8 rounded-full bg-khaki-50 border border-khaki-100 flex items-center justify-center group-hover:scale-110 transition-transform">
               <ArrowLeft className="w-4 h-4" />
             </div>
             Kembali ke Beranda

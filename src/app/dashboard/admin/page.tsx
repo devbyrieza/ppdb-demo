@@ -94,7 +94,7 @@ export default function AdminDashboardPage() {
       },
       showCancelButton: true,
       confirmButtonText: "Upload & Sync",
-      confirmButtonColor: "#0284c7",
+      confirmButtonColor: "#3a5029",
     });
 
     if (file) {
@@ -324,7 +324,7 @@ export default function AdminDashboardPage() {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
         {[
-          { label: "Total Pendaftar", val: stats.total_pendaftar, icon: Users, color: "blue" },
+          { label: "Total Pendaftar", val: stats.total_pendaftar, icon: Users, color: "army" },
           { label: "Diterima", val: stats.diterima, icon: GraduationCap, color: "emerald" },
           { label: "Cadangan", val: stats.cadangan, icon: Loader2, color: "yellow" },
           { label: "Sudah Daftar Ulang", val: stats.daftar_ulang, icon: Wallet, color: "indigo" },
@@ -335,7 +335,7 @@ export default function AdminDashboardPage() {
               className="bg-white rounded-4xl p-6 md:p-8 border border-khaki-100 shadow-sm app-card group"
             >
               <div
-                className={`w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center mb-6 shadow-clay-sm transition-transform group-hover:scale-110 ${item.color === "blue"
+                className={`w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center mb-6 shadow-clay-sm transition-transform group-hover:scale-110 ${item.color === "army"
                     ? "bg-army-50 text-army-600"
                     : item.color === "yellow"
                       ? "bg-khaki-50 text-khaki-600"
@@ -378,7 +378,7 @@ export default function AdminDashboardPage() {
                 <tr className="border-b border-khaki-50">
                   <th rowSpan={2} className="px-6 py-4 border-r border-khaki-50">Jenjang</th>
                   <th colSpan={3} className="px-4 py-3 text-center border-r border-khaki-50 bg-slate-100/50">Kuota</th>
-                  <th colSpan={3} className="px-4 py-3 text-center border-r border-khaki-50 bg-blue-50">Pendaftar</th>
+                  <th colSpan={3} className="px-4 py-3 text-center border-r border-khaki-50 bg-army-50">Pendaftar</th>
                   <th colSpan={3} className="px-4 py-3 text-center border-r border-khaki-50 bg-amber-50">Sudah Bayar Pendaftaran</th>
                   <th colSpan={3} className="px-4 py-3 text-center border-r border-khaki-50 bg-emerald-50">Diterima</th>
                   <th colSpan={3} className="px-4 py-3 text-center bg-purple-50">Sudah Daftar Ulang</th>
@@ -389,9 +389,9 @@ export default function AdminDashboardPage() {
                   <th className="px-2 py-2 text-center border-r border-khaki-50">P</th>
                   <th className="px-2 py-2 text-center border-r border-khaki-50 font-black text-slate-800">T</th>
                   {/* Pendaftar */}
-                  <th className="px-2 py-2 text-center border-r border-khaki-50 text-blue-600">L</th>
+                  <th className="px-2 py-2 text-center border-r border-khaki-50 text-army-600">L</th>
                   <th className="px-2 py-2 text-center border-r border-khaki-50 text-pink-600">P</th>
-                  <th className="px-2 py-2 text-center border-r border-khaki-50 font-black text-blue-800">T</th>
+                  <th className="px-2 py-2 text-center border-r border-khaki-50 font-black text-army-800">T</th>
                   {/* Sudah Bayar Pendaftaran */}
                   <th className="px-2 py-2 text-center border-r border-khaki-50 text-amber-600">L</th>
                   <th className="px-2 py-2 text-center border-r border-khaki-50 text-pink-600">P</th>
@@ -435,9 +435,9 @@ export default function AdminDashboardPage() {
                       <td className="px-2 py-4 text-center border-r border-khaki-50 font-bold text-slate-400">{item.kuota_putri || "-"}</td>
                       <td className="px-2 py-4 text-center border-r border-khaki-50 font-black text-slate-600 bg-slate-50/30">{item.kuota_total || "-"}</td>
                       {/* Pendaftar */}
-                      <td className="px-2 py-4 text-center border-r border-khaki-50 font-black text-blue-600 bg-blue-50/10">{item.pendaftar_putra}</td>
-                      <td className="px-2 py-4 text-center border-r border-khaki-50 font-black text-pink-600 bg-blue-50/10">{item.pendaftar_putri}</td>
-                      <td className="px-2 py-4 text-center border-r border-khaki-50 font-black text-blue-900 bg-blue-50/30">{item.pendaftar}</td>
+                      <td className="px-2 py-4 text-center border-r border-khaki-50 font-black text-army-600 bg-army-50/10">{item.pendaftar_putra}</td>
+                      <td className="px-2 py-4 text-center border-r border-khaki-50 font-black text-pink-600 bg-army-50/10">{item.pendaftar_putri}</td>
+                      <td className="px-2 py-4 text-center border-r border-khaki-50 font-black text-army-900 bg-army-50/30">{item.pendaftar}</td>
                       {/* Sudah Bayar Pendaftaran */}
                       <td className="px-2 py-4 text-center border-r border-khaki-50 font-black text-amber-600 bg-amber-50/10">{item.bayar_putra || 0}</td>
                       <td className="px-2 py-4 text-center border-r border-khaki-50 font-black text-pink-600 bg-amber-50/10">{item.bayar_putri || 0}</td>
