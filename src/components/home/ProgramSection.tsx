@@ -134,7 +134,7 @@ export default function ProgramSection() {
                         className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-sand-200 text-teal-700 text-[0.65rem] font-bold uppercase tracking-[0.12em] shadow-xs mb-5"
                     >
                         <GraduationCap className="w-3 h-3" strokeWidth={2} />
-                        <span>Jenjang Pendidikan</span>
+                        <span>Jenjang Pendidikan 📚</span>
                     </motion.div>
 
                     <motion.h2
@@ -144,7 +144,7 @@ export default function ProgramSection() {
                         transition={{ duration: 0.55, ease: EASE, delay: 0.08 }}
                         className="section-title mb-4"
                     >
-                        Program Studi <span className="text-gradient-teal">Unggulan</span>
+                        Program Studi <span className="text-gradient-teal">Unggulan ✨</span>
                     </motion.h2>
 
                     <motion.p
@@ -227,7 +227,7 @@ export default function ProgramSection() {
 
                                         <Link href="/program" className="block mt-auto">
                                             <button className={`w-full py-3 px-6 rounded-[12px] font-bold text-[0.8125rem] flex items-center justify-center gap-2 border transition-all duration-300 group/btn ${tokens.ctaBtn}`}>
-                                                Jelajahi Kurikulum Selengkapnya
+                                                Jelajahi Kurikulum Selengkapnya 🚀
                                                 <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
                                             </button>
                                         </Link>

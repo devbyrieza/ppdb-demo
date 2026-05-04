@@ -10,11 +10,24 @@ import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// FONT CONFIGURATIONS - Using system fonts for reliability
-// Using local font display via CSS (see globals.css)
+// FONT CONFIGURATIONS - Harisenin & Watzap Style
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
+import { Plus_Jakarta_Sans, Inter } from "next/font/google";
 import { BRANDING } from "@/config/branding";
+
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-plus-jakarta",
+  weight: ["400", "500", "600", "700", "800"],
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+  weight: ["400", "500", "600"],
+});
 
 // METADATA CONFIGURATION
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -134,7 +147,7 @@ export default function RootLayout({
         `}} />
       </head>
       <body
-        className="font-sans antialiased bg-white text-ink-900 overflow-x-hidden transition-colors duration-500"
+        className={`${plusJakarta.variable} ${inter.variable} font-sans antialiased bg-white text-ink-900 overflow-x-hidden transition-colors duration-500`}
         suppressHydrationWarning
       >
         <SmoothScrollProvider>

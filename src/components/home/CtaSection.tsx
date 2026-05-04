@@ -26,11 +26,11 @@ export default function CtaSection() {
 
                     <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center">
                         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-white text-[0.65rem] font-bold uppercase tracking-[0.12em] mb-6 shadow-xs">
-                            <span className="text-sand-300">✦</span> Pendaftaran Dibuka
+                            <span className="text-sand-300">✦</span> Pendaftaran Dibuka 🎉
                         </div>
 
                         <h3 className="text-[2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] font-display font-black text-white mb-5 tracking-tight leading-[1.1]">
-                            Mulai Langkah Pertama <br /> Menuju Generasi Rabbani
+                            Mulai Langkah Pertama <br /> Menuju Generasi Unggul 🚀
                         </h3>
                         
                         <p className="text-[0.9375rem] md:text-[1.0625rem] text-sand-50/90 mb-10 leading-relaxed font-[450] text-center max-w-2xl mx-auto">
@@ -40,7 +40,7 @@ export default function CtaSection() {
                         <div className="flex flex-col sm:flex-row gap-3.5 justify-center px-4 max-w-xl mx-auto w-full">
                             <Link href="/ppdb" className="w-full sm:w-auto flex-1">
                                 <button className="w-full px-8 py-3.5 rounded-full bg-white text-teal-900 font-bold hover:bg-sand-50 transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 text-[0.9375rem] flex items-center justify-center gap-2">
-                                    Daftar Sekarang
+                                    Daftar Sekarang 🚀
                                 </button>
                             </Link>
                             <Link href="/kontak" className="w-full sm:w-auto flex-1">
