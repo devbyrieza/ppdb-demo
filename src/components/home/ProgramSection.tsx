@@ -12,9 +12,8 @@ import {
 } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { motion, Variants } from "framer-motion";
-import { navigateToDetail } from "@/lib/navigation-scroll";
 
-const SPRING: [number, number, number, number] = [0.16, 1, 0.3, 1];
+const EASE = [0.16, 1, 0.3, 1] as const;
 
 type ProgramVariant = "teal" | "sand";
 
@@ -64,16 +63,17 @@ const PROGRAMS: ProgramItem[] = [
 const containerVariants: Variants = {
     hidden: {},
     visible: {
-        transition: { staggerChildren: 0.12 },
+        transition: { staggerChildren: 0.1 },
     },
 };
 
 const cardVariants: Variants = {
-    hidden: { opacity: 0, y: 32 },
+    hidden: { opacity: 0, y: 24, scale: 0.98 },
     visible: {
         opacity: 1,
         y: 0,
-        transition: { type: "tween", duration: 0.65, ease: SPRING },
+        scale: 1,
+        transition: { duration: 0.6, ease: EASE },
     },
 };
 
@@ -82,7 +82,7 @@ const featureVariants: Variants = {
     visible: {
         opacity: 1,
         x: 0,
-        transition: { type: "tween", duration: 0.4, ease: SPRING },
+        transition: { duration: 0.4, ease: EASE },
     },
 };
 
@@ -90,217 +90,134 @@ function getTokens(variant: ProgramVariant) {
     switch (variant) {
         case "teal":
             return {
-                accentBar:
-                    "bg-gradient-to-r from-teal-700 via-teal-500 to-teal-300",
+                accentBar: "bg-gradient-to-r from-teal-700 via-teal-500 to-teal-300",
                 corner: "bg-teal-50",
-                icon: "bg-teal-700 text-sand-100",
+                icon: "bg-teal-700 text-white ring-1 ring-teal-200",
                 subtitleText: "text-teal-600",
                 dividerLine: "bg-teal-300",
                 checkBg: "bg-teal-50 border-teal-200",
-                checkHover:
-                    "group-hover/item:bg-teal-600 group-hover/item:border-teal-600",
-                checkIcon:
-                    "text-teal-600 group-hover/item:text-white",
-                ctaBtn:
-                    "bg-white border-teal-200 text-teal-800 hover:bg-teal-700 hover:border-teal-700 hover:text-sand-100",
-                cardBorder: "border-teal-100 group-hover:border-teal-200",
-                hoverTitle: "group-hover:text-teal-800",
+                checkHover: "group-hover/item:bg-teal-600 group-hover/item:border-teal-600",
+                checkIcon: "text-teal-600 group-hover/item:text-white",
+                ctaBtn: "bg-white border-teal-200 text-teal-800 hover:bg-teal-700 hover:border-teal-700 hover:text-white shadow-sm hover:shadow-md",
             };
         case "sand":
             return {
-                accentBar:
-                    "bg-gradient-to-r from-sand-600 via-sand-400 to-sand-200",
-                corner: "bg-sand-50",
-                icon: "bg-sand-400 text-teal-900",
+                accentBar: "bg-gradient-to-r from-sand-500 via-sand-400 to-sand-200",
+                corner: "bg-sand-100",
+                icon: "bg-sand-200 text-teal-950 ring-1 ring-sand-300",
                 subtitleText: "text-sand-600",
                 dividerLine: "bg-sand-300",
                 checkBg: "bg-sand-50 border-sand-200",
-                checkHover:
-                    "group-hover/item:bg-sand-500 group-hover/item:border-sand-500",
-                checkIcon:
-                    "text-sand-600 group-hover/item:text-teal-950",
-                ctaBtn:
-                    "bg-white border-sand-300 text-teal-800 hover:bg-sand-500 hover:border-sand-500 hover:text-teal-950",
-                cardBorder: "border-sand-100 group-hover:border-sand-300",
-                hoverTitle: "group-hover:text-teal-700",
+                checkHover: "group-hover/item:bg-sand-500 group-hover/item:border-sand-500",
+                checkIcon: "text-sand-600 group-hover/item:text-teal-950",
+                ctaBtn: "bg-white border-sand-300 text-teal-800 hover:bg-sand-400 hover:border-sand-400 hover:text-teal-950 shadow-sm hover:shadow-md",
             };
     }
 }
 
 export default function ProgramSection() {
     return (
-        <section id="program" className="section-std relative overflow-hidden">
-            {/* Ambient blobs — teal & sand */}
-            <div
-                aria-hidden
-                className="pointer-events-none absolute inset-0 overflow-hidden"
-            >
-                <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-teal-50/70 blur-3xl" />
-                <div className="absolute -bottom-32 -left-32 w-[400px] h-[400px] rounded-full bg-sand-100/50 blur-3xl" />
+        <section id="program" className="section-alt relative overflow-hidden border-y border-sand-200">
+            <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.02] pointer-events-none" />
+            <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+                <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-sand-200/70 blur-[100px]" />
+                <div className="absolute -bottom-32 -left-32 w-[400px] h-[400px] rounded-full bg-teal-50/60 blur-[80px]" />
             </div>
 
             <Container className="relative z-10">
-
-                {/* ── Header ────────────────────────────── */}
-                <div className="max-w-2xl mx-auto text-center mb-16 lg:mb-20">
+                <div className="max-w-2xl mx-auto text-center mb-14 md:mb-16">
                     <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ type: "tween", duration: 0.5, ease: SPRING }}
-                        className="inline-flex mb-6"
+                        viewport={{ once: true, margin: "-40px" }}
+                        transition={{ duration: 0.5, ease: EASE }}
+                        className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-sand-200 text-teal-700 text-[0.65rem] font-bold uppercase tracking-[0.12em] shadow-xs mb-5"
                     >
-                        <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-teal-700 text-[11px] font-bold uppercase tracking-[0.12em] shadow-xs">
-                            <GraduationCap className="w-3 h-3" />
-                            Jenjang Pendidikan
-                        </span>
+                        <GraduationCap className="w-3 h-3" strokeWidth={2} />
+                        <span>Jenjang Pendidikan</span>
                     </motion.div>
 
                     <motion.h2
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: 16 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{
-                            type: "tween",
-                            duration: 0.55,
-                            ease: SPRING,
-                            delay: 0.08,
-                        }}
-                        className="section-title mb-5 text-balance"
+                        viewport={{ once: true, margin: "-40px" }}
+                        transition={{ duration: 0.55, ease: EASE, delay: 0.08 }}
+                        className="section-title mb-4"
                     >
-                        Program Studi{" "}
-                        <span className="text-gradient-teal">Unggulan</span>
+                        Program Studi <span className="text-gradient-teal">Unggulan</span>
                     </motion.h2>
 
                     <motion.p
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: 14 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{
-                            type: "tween",
-                            duration: 0.55,
-                            ease: SPRING,
-                            delay: 0.14,
-                        }}
-                        className="section-subtitle"
+                        viewport={{ once: true, margin: "-40px" }}
+                        transition={{ duration: 0.55, ease: EASE, delay: 0.14 }}
+                        className="section-subtitle mx-auto"
                     >
-                        Pendidikan berkualitas tinggi yang menggabungkan keunggulan
-                        spiritual, intelektual, dan karakter dalam satu sistem terpadu.
+                        Pendidikan berkualitas tinggi yang menggabungkan keunggulan spiritual, intelektual, dan karakter dalam satu sistem terpadu.
                     </motion.p>
                 </div>
 
-                {/* ── Cards Grid ─────────────────────────── */}
                 <motion.div
-                    className="grid md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto"
+                    className="grid md:grid-cols-2 gap-5 lg:gap-8 max-w-4xl mx-auto"
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, margin: "-60px" }}
                     variants={containerVariants}
                 >
-                    {PROGRAMS.map((program, idx) => {
+                    {PROGRAMS.map((program: ProgramItem, idx: number) => {
                         const tokens = getTokens(program.variant);
                         return (
                             <motion.div
                                 key={idx}
                                 variants={cardVariants}
-                                whileHover={{
-                                    y: -6,
-                                    transition: {
-                                        type: "tween",
-                                        duration: 0.3,
-                                        ease: SPRING,
-                                    },
-                                }}
-                                className="group h-full"
+                                whileHover={{ y: -4, transition: { duration: 0.3, ease: EASE } }}
+                                className={`group h-full`}
                             >
-                                <div
-                                    className={`relative h-full flex flex-col bg-white rounded-2xl border overflow-hidden shadow-premium-sm group-hover:shadow-premium-lg transition-all duration-500 ${tokens.cardBorder}`}
-                                >
-                                    {/* Top accent bar */}
-                                    <div
-                                        className={`absolute top-0 left-0 right-0 h-[3px] rounded-t-2xl ${tokens.accentBar}`}
-                                    />
+                                <div className="relative h-full flex flex-col bg-white rounded-[1.5rem] border border-sand-200 overflow-hidden shadow-premium-sm group-hover:shadow-premium-md group-hover:border-teal-200 transition-all duration-400">
+                                    <div className={`absolute top-0 left-0 right-0 h-[3px] ${tokens.accentBar}`} />
+                                    <div className={`absolute top-0 right-0 w-32 h-32 rounded-bl-[4rem] opacity-50 ${tokens.corner}`} />
 
-                                    {/* Decorative corner */}
-                                    <div
-                                        className={`absolute top-0 right-0 w-28 h-28 rounded-bl-[3rem] opacity-40 ${tokens.corner}`}
-                                    />
-
-                                    <div className="relative z-10 flex flex-col h-full p-8 md:p-10">
-
-                                        {/* ── Card Header ── */}
+                                    <div className="relative z-10 flex flex-col h-full p-8 lg:p-9">
                                         <div className="flex items-start justify-between mb-8">
-                                            {/* Icon */}
-                                            <div
-                                                className={`w-[52px] h-[52px] rounded-xl flex items-center justify-center shadow-sm transition-all duration-500 group-hover:scale-105 group-hover:-rotate-2 ${tokens.icon}`}
-                                            >
-                                                <program.icon
-                                                    className="w-6 h-6"
-                                                    strokeWidth={1.75}
-                                                />
+                                            <div className={`w-12 h-12 rounded-[14px] flex items-center justify-center shadow-xs transition-transform duration-400 group-hover:scale-105 group-hover:-rotate-3 ${tokens.icon}`}>
+                                                <program.icon className="w-5 h-5" strokeWidth={2} />
                                             </div>
 
-                                            {/* Quota badge */}
                                             <div className="flex flex-col items-end gap-1">
-                                                <span className="text-[10px] font-bold text-ink-400 uppercase tracking-[0.15em]">
-                                                    Kapasitas
-                                                </span>
-                                                <div className="flex items-center gap-1.5 bg-ink-950 text-white px-3 py-1.5 rounded-lg shadow-md">
+                                                <span className="text-[0.6rem] font-bold text-ink-400 uppercase tracking-[0.15em]">Kapasitas</span>
+                                                <div className="flex items-center gap-1.5 bg-ink-950 text-white px-2.5 py-1 rounded-[8px] shadow-sm">
                                                     <Users className="w-3 h-3 opacity-70" />
-                                                    <span className="text-xs font-black">
-                                                        {program.quota}
-                                                    </span>
+                                                    <span className="text-[0.65rem] font-black">{program.quota}</span>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        {/* ── Title Block ── */}
                                         <div className="mb-7">
-                                            <h3
-                                                className={`font-display font-black text-2xl md:text-[1.75rem] text-ink-950 tracking-tight leading-tight mb-2 transition-colors duration-300 ${tokens.hoverTitle}`}
-                                            >
+                                            <h3 className="font-display font-black text-[1.35rem] text-ink-950 tracking-tight leading-[1.1] mb-2 group-hover:text-teal-800 transition-colors duration-300">
                                                 {program.title}
                                             </h3>
-                                            <p
-                                                className={`text-[11px] font-bold uppercase tracking-[0.15em] mb-5 ${tokens.subtitleText}`}
-                                            >
+                                            <p className={`text-[0.65rem] font-bold uppercase tracking-[0.15em] mb-4 ${tokens.subtitleText}`}>
                                                 {program.subtitle}
                                             </p>
-                                            <p className="text-[14.5px] text-ink-600 leading-relaxed font-[450] text-justify md:text-left">
+                                            <p className="text-[0.875rem] text-ink-600 leading-relaxed font-[450]">
                                                 {program.desc}
                                             </p>
                                         </div>
 
-                                        {/* ── Feature List ── */}
                                         <div className="mb-8 grow">
                                             <div className="flex items-center gap-2.5 mb-5">
-                                                <div
-                                                    className={`h-px w-6 ${tokens.dividerLine}`}
-                                                />
-                                                <span className="text-[10px] font-black text-ink-400 uppercase tracking-[0.15em]">
-                                                    Target &amp; Kurikulum
-                                                </span>
+                                                <div className={`h-px w-6 ${tokens.dividerLine}`} />
+                                                <span className="text-[0.6rem] font-black text-ink-400 uppercase tracking-[0.15em]">Target & Kurikulum</span>
                                             </div>
 
-                                            <motion.ul
-                                                className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3"
-                                                variants={containerVariants}
-                                            >
-                                                {program.features.map((feature, fIdx) => (
-                                                    <motion.li
-                                                        key={fIdx}
-                                                        variants={featureVariants}
-                                                        className="flex items-start gap-2.5 group/item"
-                                                    >
-                                                        <div
-                                                            className={`mt-0.5 w-5 h-5 rounded-full flex items-center justify-center shrink-0 border transition-all duration-200 ${tokens.checkBg} ${tokens.checkHover}`}
-                                                        >
-                                                            <CheckCircle
-                                                                className={`w-3 h-3 transition-colors duration-200 ${tokens.checkIcon}`}
-                                                                strokeWidth={2.5}
-                                                            />
+                                            <motion.ul className="grid grid-cols-1 gap-y-3" variants={containerVariants}>
+                                                {program.features.map((feature: string, fIdx: number) => (
+                                                    <motion.li key={fIdx} variants={featureVariants} className="flex items-start gap-3 group/item">
+                                                        <div className={`mt-0.5 w-[18px] h-[18px] rounded-full flex items-center justify-center shrink-0 border transition-all duration-300 ${tokens.checkBg} ${tokens.checkHover}`}>
+                                                            <CheckCircle className={`w-2.5 h-2.5 transition-colors duration-300 ${tokens.checkIcon}`} strokeWidth={3} />
                                                         </div>
-                                                        <span className="text-[13px] font-semibold text-ink-700 leading-snug group-hover/item:text-ink-950 transition-colors duration-200">
+                                                        <span className="text-[0.8125rem] font-semibold text-ink-700 leading-snug group-hover/item:text-ink-950 transition-colors duration-300">
                                                             {feature}
                                                         </span>
                                                     </motion.li>
@@ -308,29 +225,18 @@ export default function ProgramSection() {
                                             </motion.ul>
                                         </div>
 
-                                        {/* ── CTA Button ── */}
-                                        <Link
-                                            href="/program"
-                                            onClick={() =>
-                                                navigateToDetail("/program", "#program")
-                                            }
-                                            className="block"
-                                        >
-                                            <button
-                                                className={`w-full py-3.5 px-6 rounded-xl font-bold text-[13.5px] flex items-center justify-center gap-2.5 border transition-all duration-300 group/btn ${tokens.ctaBtn}`}
-                                            >
+                                        <Link href="/program" className="block mt-auto">
+                                            <button className={`w-full py-3 px-6 rounded-[12px] font-bold text-[0.8125rem] flex items-center justify-center gap-2 border transition-all duration-300 group/btn ${tokens.ctaBtn}`}>
                                                 Jelajahi Kurikulum Selengkapnya
                                                 <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
                                             </button>
                                         </Link>
-
                                     </div>
                                 </div>
                             </motion.div>
                         );
                     })}
                 </motion.div>
-
             </Container>
         </section>
     );
