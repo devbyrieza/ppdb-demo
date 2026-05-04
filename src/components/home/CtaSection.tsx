@@ -21,16 +21,16 @@ export default function CtaSection() {
 
                     <div className="relative z-10 max-w-3xl mx-auto">
                         <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 md:mb-8 tracking-tight leading-[1.1]">
-                            Pesantren Anda Layak <br /> Punya Sistem PPDB Terbaik
+                            Mulai Langkah Pertama <br /> Menuju Generasi Rabbani
                         </h3>
                         <p className="text-base md:text-lg lg:text-xl text-sand-100/90 mb-8 md:mb-12 leading-relaxed font-medium text-center max-w-2xl mx-auto">
-                            Tingkatkan citra dan efisiensi penerimaan santri baru dengan website PPDB profesional — desain premium, fitur lengkap, harga terjangkau.
+                            Pendaftaran Santri Baru (PPDB) Tahun Ajaran 2026/2027 telah dibuka. Kuota sangat terbatas — pastikan putra Anda mendaftar lebih awal.
                         </p>
                         
                         <div className="flex flex-col sm:flex-row gap-4 justify-center px-4 max-w-xl mx-auto">
                             <Link href="/ppdb" className="w-full sm:w-auto flex-1">
                                 <button className="w-full px-8 py-4 rounded-pill bg-white text-teal-900 font-bold hover:bg-sand-50 transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-1 text-base md:text-lg flex items-center justify-center gap-2">
-                                    Pesan Website Sekarang
+                                    Daftar Sekarang
                                 </button>
                             </Link>
                             <Link href="/kontak" className="w-full sm:w-auto flex-1">
@@ -44,7 +44,7 @@ export default function CtaSection() {
                         {/* Trust microcopy */}
                         <div className="mt-8 mb-4">
                             <span className="inline-block px-4 py-1.5 rounded-pill bg-white/10 backdrop-blur-sm border border-white/10 text-[10px] sm:text-xs text-sand-50 font-bold uppercase tracking-widest">
-                                ✦ Konsultasi Gratis • Setup Cepat • Harga Transparan
+                                ✦ Pendaftaran Gratis • Proses Mudah • Konfirmasi Cepat
                             </span>
                         </div>
 
@@ -52,15 +52,15 @@ export default function CtaSection() {
                         <div className="mt-10 pt-8 border-t border-white/10 flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
                             <div className="flex items-center gap-2 text-sand-100/70">
                                 <ShieldCheck className="w-4 h-4 text-green-400" />
-                                <span className="text-[10px] font-bold uppercase tracking-widest">Data Aman & Terenkripsi</span>
+                                <span className="text-[10px] font-bold uppercase tracking-widest">Terakreditasi BAN-PDM</span>
                             </div>
                             <div className="flex items-center gap-2 text-sand-100/70">
                                 <BookOpen className="w-4 h-4 text-yellow-400" />
-                                <span className="text-[10px] font-bold uppercase tracking-widest">Fitur Lengkap & Mudah</span>
+                                <span className="text-[10px] font-bold uppercase tracking-widest">Kurikulum Terpadu</span>
                             </div>
                             <div className="flex items-center gap-2 text-sand-100/70">
                                 <Award className="w-4 h-4 text-blue-400" />
-                                <span className="text-[10px] font-bold uppercase tracking-widest">Support Resmi Al-Andalus</span>
+                                <span className="text-[10px] font-bold uppercase tracking-widest">Jaringan Al-Andalus</span>
                             </div>
                         </div>
                     </div>

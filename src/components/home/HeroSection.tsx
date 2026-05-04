@@ -65,7 +65,7 @@ export default function HeroSection() {
                 style={{ background: "var(--color-white)", border: "1px solid var(--color-teal-200)", color: "var(--color-teal-700)", boxShadow: "var(--shadow-sm), inset 0 1px 0 rgba(255,255,255,0.8)" }}
               >
                 <Sparkles className="w-3.5 h-3.5 flex-shrink-0" style={{ color: "var(--color-sand-500)" }} aria-hidden="true" />
-                <span>Sistem PPDB Digital • Khusus untuk Pesantren</span>
+                <span>Terakreditasi BAN-PDM • Managed by Al-Andalus IIBS</span>
               </span>
             </motion.div>
 
@@ -75,14 +75,14 @@ export default function HeroSection() {
                 className="leading-[1.06] tracking-[-0.03em] mx-auto lg:mx-0 max-w-2xl lg:max-w-none font-black text-balance"
                 style={{ color: "var(--color-teal-700)", fontSize: "clamp(2rem, 5vw + 0.75rem, 5rem)" }}
               >
-                <span className="block">Solusi PPDB Digital</span>
+                <span className="block">Mencetak Generasi</span>
                 <span
                   className="block mt-1"
                   style={{ background: "linear-gradient(135deg, var(--color-teal-600) 0%, var(--color-sand-400) 50%, var(--color-teal-700) 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent", paddingBottom: "0.15em" }}
                 >
-                  Modern, Mudah,{" "}
+                  Unggul, Cerdas,{" "}
                   <br className="hidden xl:block" />
-                  dan Terpercaya
+                  dan Berintegritas
                 </span>
               </h1>
             </motion.div>
@@ -93,16 +93,16 @@ export default function HeroSection() {
               className="text-base lg:text-[1.075rem] leading-[1.85] max-w-[38rem] mx-auto lg:mx-0 text-center lg:text-left text-pretty"
               style={{ color: "var(--color-ink-600)", fontWeight: 450 }}
             >
-              Wujudkan pengalaman penerimaan santri baru yang profesional — berbasis{" "}
-              <strong className="font-bold" style={{ color: "var(--color-teal-700)" }}>pendaftaran online, admin dashboard canggih, dan manajemen dokumen otomatis</strong>{" "}
-              — siap pakai dalam hitungan hari.
+              Bukan sekadar tempat belajar — sebuah sistem pembentukan karakter yang memadukan{" "}
+              <strong className="font-bold" style={{ color: "var(--color-teal-700)" }}>Intensitas Tahfidz Al-Qur'an, Ilmu Syar'i, dan Kepemimpinan</strong>{" "}
+              dalam satu lingkungan pesantren modern.
             </motion.p>
 
             {/* Tagline Divider */}
             <motion.div variants={fadeUp} initial="hidden" animate={animate} transition={{ delay: 0.38 }} className="flex items-center gap-3 justify-center lg:justify-start">
               <div className="h-px flex-1 max-w-[3rem]" style={{ background: "var(--color-teal-200)" }} />
               <p className="text-sm font-semibold italic" style={{ color: "var(--color-teal-700)" }}>
-                "Website PPDB Profesional untuk Pesantren Anda"
+                "Pendidikan Berkualitas, Diperkuat Sistem Al-Andalus"
               </p>
               <div className="h-px flex-1 max-w-[3rem]" style={{ background: "var(--color-teal-200)" }} />
             </motion.div>
@@ -112,13 +112,13 @@ export default function HeroSection() {
               <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
                 <Link href="/ppdb" className="w-full sm:w-auto">
                   <button className="btn-primary w-full sm:w-auto px-8 lg:px-10 py-4 lg:py-[1.125rem] min-h-[56px] text-[0.9375rem]" style={{ boxShadow: "var(--shadow-teal-lg)" }}>
-                    Coba Demo Gratis
+                    Daftar PPDB Sekarang
                     <ArrowRight className="w-4 h-4 ml-0.5" aria-hidden="true" />
                   </button>
                 </Link>
-                <Link href="/kontak" className="w-full sm:w-auto">
+                <Link href="/program" className="w-full sm:w-auto">
                   <button className="btn-secondary w-full sm:w-auto px-8 lg:px-10 py-4 lg:py-[1.125rem] min-h-[56px] text-[0.9375rem]">
-                    Konsultasi Gratis
+                    Lihat Program Kami
                   </button>
                 </Link>
               </div>
@@ -130,13 +130,13 @@ export default function HeroSection() {
                   ))}
                 </div>
                 <p className="text-[11px] font-semibold leading-tight" style={{ color: "var(--color-ink-500)" }}>
-                  <span className="font-bold uppercase tracking-wide" style={{ color: "var(--color-teal-700)" }}>+10 Pesantren</span>
-                  {" "}sudah menggunakan sistem ini
+                  <span className="font-bold uppercase tracking-wide" style={{ color: "var(--color-teal-700)" }}>Angkatan Pertama</span>
+                  {" • "}Managed by Al-Andalus IIBS
                 </p>
               </div>
 
               <div className="flex flex-wrap gap-x-5 gap-y-2 justify-center lg:justify-start mt-1">
-                {["Setup dalam 3 hari", "Tanpa biaya berulang", "Support 24/7"].map((point) => (
+                {["MTs & MA tersedia", "Proses cepat & transparan", "Jaringan Al-Andalus"].map((point) => (
                   <span key={point} className="flex items-center gap-1.5 text-[11px] font-semibold" style={{ color: "var(--color-ink-500)" }}>
                     <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" style={{ color: "var(--color-teal-500)" }} aria-hidden="true" />
                     {point}
