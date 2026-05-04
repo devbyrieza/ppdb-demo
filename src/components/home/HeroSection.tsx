@@ -65,7 +65,7 @@ export default function HeroSection() {
                 style={{ background: "var(--color-white)", border: "1px solid var(--color-teal-200)", color: "var(--color-teal-700)", boxShadow: "var(--shadow-sm), inset 0 1px 0 rgba(255,255,255,0.8)" }}
               >
                 <Sparkles className="w-3.5 h-3.5 flex-shrink-0" style={{ color: "var(--color-sand-500)" }} aria-hidden="true" />
-                <span>Premium Quality • Managed by Andalus Demo System</span>
+                <span>Sistem PPDB Digital • Khusus untuk Pesantren</span>
               </span>
             </motion.div>
 
@@ -75,14 +75,14 @@ export default function HeroSection() {
                 className="leading-[1.06] tracking-[-0.03em] mx-auto lg:mx-0 max-w-2xl lg:max-w-none font-black text-balance"
                 style={{ color: "var(--color-teal-700)", fontSize: "clamp(2rem, 5vw + 0.75rem, 5rem)" }}
               >
-                <span className="block">Mencetak Generasi</span>
+                <span className="block">Solusi PPDB Digital</span>
                 <span
                   className="block mt-1"
                   style={{ background: "linear-gradient(135deg, var(--color-teal-600) 0%, var(--color-sand-400) 50%, var(--color-teal-700) 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent", paddingBottom: "0.15em" }}
                 >
-                  Unggul, Cerdas,{" "}
+                  Modern, Mudah,{" "}
                   <br className="hidden xl:block" />
-                  dan Berintegritas
+                  dan Terpercaya
                 </span>
               </h1>
             </motion.div>
@@ -93,17 +93,16 @@ export default function HeroSection() {
               className="text-base lg:text-[1.075rem] leading-[1.85] max-w-[38rem] mx-auto lg:mx-0 text-center lg:text-left text-pretty"
               style={{ color: "var(--color-ink-600)", fontWeight: 450 }}
             >
-              Bukan sekadar sistem pendaftaran — sebuah pengalaman digital berbasis{" "}
-              <strong className="font-bold" style={{ color: "var(--color-teal-800)" }}>Kecepatan, Kemudahan, Keamanan, dan Estetika</strong>{" "}
-              untuk institusi pendidikan modern.
+              Wujudkan pengalaman penerimaan santri baru yang profesional — berbasis{" "}
+              <strong className="font-bold" style={{ color: "var(--color-teal-700)" }}>pendaftaran online, admin dashboard canggih, dan manajemen dokumen otomatis</strong>{" "}
+              — siap pakai dalam hitungan hari.
             </motion.p>
 
             {/* Tagline Divider */}
             <motion.div variants={fadeUp} initial="hidden" animate={animate} transition={{ delay: 0.38 }} className="flex items-center gap-3 justify-center lg:justify-start">
               <div className="h-px flex-1 max-w-[3rem]" style={{ background: "var(--color-teal-200)" }} />
               <p className="text-sm font-semibold italic" style={{ color: "var(--color-teal-700)" }}>
-                "Pendidikan Berkualitas, Diperkuat Sistem{" "}
-                {BRANDING.schoolName.toLowerCase().includes("ppdb modern") ? "PPDB Modern" : BRANDING.schoolShortName}"
+                "Website PPDB Profesional untuk Pesantren Anda"
               </p>
               <div className="h-px flex-1 max-w-[3rem]" style={{ background: "var(--color-teal-200)" }} />
             </motion.div>
@@ -113,31 +112,31 @@ export default function HeroSection() {
               <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
                 <Link href="/ppdb" className="w-full sm:w-auto">
                   <button className="btn-primary w-full sm:w-auto px-8 lg:px-10 py-4 lg:py-[1.125rem] min-h-[56px] text-[0.9375rem]" style={{ boxShadow: "var(--shadow-teal-lg)" }}>
-                    Daftar PPDB Sekarang
+                    Coba Demo Gratis
                     <ArrowRight className="w-4 h-4 ml-0.5" aria-hidden="true" />
                   </button>
                 </Link>
-                <Link href="/program" className="w-full sm:w-auto">
+                <Link href="/kontak" className="w-full sm:w-auto">
                   <button className="btn-secondary w-full sm:w-auto px-8 lg:px-10 py-4 lg:py-[1.125rem] min-h-[56px] text-[0.9375rem]">
-                    Lihat Program Studi
+                    Konsultasi Gratis
                   </button>
                 </Link>
               </div>
 
-              <div className="flex items-center gap-3 mt-1">
+                <div className="flex items-center gap-3 mt-1">
                 <div className="flex -space-x-2.5">
                   {[{ bg: "var(--color-teal-200)" }, { bg: "var(--color-sand-300)" }, { bg: "var(--color-teal-300)" }, { bg: "var(--color-sand-200)" }].map((item, i) => (
                     <div key={i} className="w-7 h-7 rounded-full border-2 flex-shrink-0" style={{ background: item.bg, borderColor: "var(--color-white)", boxShadow: "var(--shadow-xs)" }} aria-hidden="true" />
                   ))}
                 </div>
                 <p className="text-[11px] font-semibold leading-tight" style={{ color: "var(--color-ink-500)" }}>
-                  <span className="font-bold uppercase tracking-wide" style={{ color: "var(--color-teal-700)" }}>Angkatan Pertama</span>
-                  {" • "}Managed by PPDB Modern IIBS
+                  <span className="font-bold uppercase tracking-wide" style={{ color: "var(--color-teal-700)" }}>+10 Pesantren</span>
+                  {" "}sudah menggunakan sistem ini
                 </p>
               </div>
 
               <div className="flex flex-wrap gap-x-5 gap-y-2 justify-center lg:justify-start mt-1">
-                {["MTs & SMA tersedia", "Proses cepat & transparan", "Jaringan Al-Andalus"].map((point) => (
+                {["Setup dalam 3 hari", "Tanpa biaya berulang", "Support 24/7"].map((point) => (
                   <span key={point} className="flex items-center gap-1.5 text-[11px] font-semibold" style={{ color: "var(--color-ink-500)" }}>
                     <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" style={{ color: "var(--color-teal-500)" }} aria-hidden="true" />
                     {point}

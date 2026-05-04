@@ -7,10 +7,10 @@ import { Container } from "@/components/layout/Container";
 import { Calendar, Users, GraduationCap, Award, TrendingUp, BookOpen } from 'lucide-react';
 
 const STATS = [
-  { id: 'batch', label: 'Angkatan Ke-1', value: 1, icon: Calendar, color: 'emerald' as const, suffix: '', sublabel: 'Andalus Modern Academy' },
-  { id: 'quality', label: 'Standar Global', value: 100, icon: Award, color: 'gold' as const, suffix: '%', sublabel: 'Kurikulum Internasional' },
-  { id: 'levels', label: 'Jenjang Elit', value: 2, icon: GraduationCap, color: 'emerald' as const, suffix: '', sublabel: 'MTs · SMA' },
-  { id: 'quota', label: 'Kuota Terbatas', value: 30, icon: Users, color: 'gold' as const, suffix: '', sublabel: 'Per Jenjang (Eksklusif)' },
+  { id: 'pesantren', label: 'Pesantren Aktif', value: 10, icon: GraduationCap, color: 'emerald' as const, suffix: '+', sublabel: 'Sudah Menggunakan Sistem Ini' },
+  { id: 'satisfaction', label: 'Kepuasan Klien', value: 98, icon: Award, color: 'gold' as const, suffix: '%', sublabel: 'Rating dari Pesantren Pengguna' },
+  { id: 'setup', label: 'Hari Setup', value: 3, icon: Calendar, color: 'emerald' as const, suffix: '', sublabel: 'Dari Order hingga Langsung Tayang' },
+  { id: 'pendaftar', label: 'Pendaftar Online', value: 1200, icon: Users, color: 'gold' as const, suffix: '+', sublabel: 'Sudah Diproses Melalui Sistem' },
 ] as const;
 
 export default function StatsSection() {
@@ -110,15 +110,15 @@ export default function StatsSection() {
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-teal-50/50 rounded-pill border border-teal-100">
               <div className="w-2 h-2 rounded-full bg-teal-500 animate-pulse" />
-              <span className="text-[10px] font-bold text-ink-700 uppercase tracking-widest">Pendaftaran Dibuka</span>
+              <span className="text-[10px] font-bold text-ink-700 uppercase tracking-widest">Sistem Aktif 24/7</span>
             </div>
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-sand-50/50 rounded-pill border border-sand-100">
               <Award className="w-3.5 h-3.5 text-sand-600" />
-              <span className="text-[10px] font-bold text-ink-700 uppercase tracking-widest">Resmi Andalus Academy</span>
+              <span className="text-[10px] font-bold text-ink-700 uppercase tracking-widest">Support Penuh Al-Andalus</span>
             </div>
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-teal-50/50 rounded-pill border border-teal-100">
               <TrendingUp className="w-3.5 h-3.5 text-teal-600" />
-              <span className="text-[10px] font-bold text-ink-700 uppercase tracking-widest">Digital-First System</span>
+              <span className="text-[10px] font-bold text-ink-700 uppercase tracking-widest">Terus Berkembang</span>
             </div>
           </motion.div>
         </div>
