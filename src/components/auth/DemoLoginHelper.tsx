@@ -49,14 +49,14 @@ export default function DemoLoginHelper({ onSelect }: DemoLoginHelperProps) {
       color: "bg-teal-100 text-teal-700 border-teal-200",
     },
     {
-      role: "Pewawancara Calsan",
+      role: "Pewawancara Calon Santri",
       email: "calsan@ppdb-demo.com",
       pass: "Calsan26!",
       icon: Mic2,
       color: "bg-rose-100 text-rose-700 border-rose-200",
     },
     {
-      role: "Pewawancara Cawalsan",
+      role: "Pewawancara Calon Orangtua/Wali Santri",
       email: "cawalsan@ppdb-demo.com",
       pass: "Cawalsan26!",
       icon: UserCheck,

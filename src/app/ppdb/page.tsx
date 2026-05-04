@@ -124,7 +124,7 @@ function PPDBContent() {
     {
       phase: "Ujian Seleksi",
       date: "Jadwal Dipilih",
-      desc: "Tes Lisan (Tahfidz/Bacaan Al-Qur'an), Tes Tertulis (Pengetahuan Dasar Agama & Akademik), serta Wawancara Calsan & Orang Tua.",
+      desc: "Tes Lisan (Tahfidz/Bacaan Al-Qur'an), Tes Tertulis (Pengetahuan Dasar Agama & Akademik), serta Wawancara Calon Santri & Orang Tua.",
       status: "upcoming",
     },
     {

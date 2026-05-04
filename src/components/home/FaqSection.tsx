@@ -25,7 +25,7 @@ const FAQS = [
     },
     {
         question: "Bagaimana sistem seleksi yang diterapkan?",
-        answer: "Sistem seleksi meliputi tes lisan (tahfidz/bacaan Al-Qur'an), tes tertulis (pengetahuan dasar agama dan akademik), serta Wawancara Calsan dan orang tua.",
+        answer: "Sistem seleksi meliputi tes lisan (tahfidz/bacaan Al-Qur'an), tes tertulis (pengetahuan dasar agama dan akademik), serta Wawancara Calon Santri dan orang tua.",
     },
     {
         question: "Apakah tersedia program beasiswa?",

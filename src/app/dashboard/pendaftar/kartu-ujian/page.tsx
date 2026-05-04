@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Loader2, Printer } from 'lucide-react';
 import { PDF_BRANDING } from '@/config/pdf-branding';
+import { expandExamTitle } from "@/lib/utils";
 
 interface StudentData {
     id: string;
@@ -163,7 +164,7 @@ export default function ExamCardPage() {
                                     {data.jadwal && data.jadwal.length > 0 ? (
                                         data.jadwal.map((j, idx) => (
                                             <tr key={idx}>
-                                                <td className="border border-black p-2 font-medium">{j.jenis_ujian}</td>
+                                                <td className="border border-black p-2 font-medium">{expandExamTitle(j.jenis_ujian)}</td>
                                                 <td className="border border-black p-2">{j.tanggal_ujian}</td>
                                                 <td className="border border-black p-2">{j.waktu} WIB</td>
                                                 <td className="border border-black p-2">{j.lokasi}</td>

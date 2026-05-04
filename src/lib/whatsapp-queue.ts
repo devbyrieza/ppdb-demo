@@ -713,7 +713,7 @@ export function buildMessageJadwalBelum(nama: string): string {
 
 Terima kasih telah mendaftar di ${BRANDING.schoolName}.
 
-Saat ini jadwal tes lanjutan (Tes Al-Qur'an, Wawancara Calsan, dan Wawancara Cawalsan Santri) belum tersedia. Mohon bersabar, kami akan menginformasikan kembali begitu jadwal sudah siap.
+Saat ini jadwal tes lanjutan (Tes Al-Qur'an, Wawancara Calon Santri, dan Wawancara Calon Orangtua/Wali Santri) belum tersedia. Mohon bersabar, kami akan menginformasikan kembali begitu jadwal sudah siap.
 
 Untuk sementara, Anda sudah bisa mengerjakan tes online yang tersedia di dashboard:
 - Kemampuan Dasar Akademik
@@ -733,8 +733,8 @@ Alhamdulillah, jadwal tes lanjutan sudah tersedia!
 
 Silakan login ke dashboard and pilih jadwal yang sesuai untuk:
 - Tes Al-Qur'an
-- Wawancara Calsan
-- Wawancara Cawalsan
+- Wawancara Calon Santri
+- Wawancara Calon Orangtua/Wali Santri
 
 Segera pilih jadwal sebelum kuota penuh.
 
@@ -753,8 +753,8 @@ Saat ini **jadwal tes lanjutan sudah tersedia dan bisa langsung Anda pilih**.
 
 Silakan login ke dashboard dan pilih sesi jadwal untuk:
 - Tes Al-Qur'an
-- Wawancara Calsan
-- Wawancara Cawalsan
+- Wawancara Calon Santri
+- Wawancara Calon Orangtua/Wali Santri
 
 Harap segera memilih jadwal sebelum rentang waktu habis atau kuota penuh. Jangan lupa juga untuk menyelesaikan Tes Online (Akademik & Kepribadian).
 

@@ -19,3 +19,24 @@ export function formatCurrency(amount: number | string) {
     maximumFractionDigits: 0,
   }).format(num || 0);
 }
+
+/**
+ * Expands technical abbreviations like Calsan and Cawalsan into full professional terms.
+ * Used for user-facing displays (Dashboard Pendaftar, Kartu Ujian, etc.)
+ */
+export function expandExamTitle(title: string | null): string {
+  if (!title) return "Tes Seleksi";
+  
+  let expanded = title;
+  
+  // Expand Calsan
+  expanded = expanded.replace(/calsan/gi, "Calon Santri");
+  
+  // Expand Cawalsan
+  expanded = expanded.replace(/cawalsan/gi, "Calon Orangtua/Wali Santri");
+  
+  // Clean up potential double "Calon" or other artifacts
+  expanded = expanded.replace(/Calon Santri Santri/gi, "Calon Santri");
+  
+  return expanded;
+}

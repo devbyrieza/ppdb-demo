@@ -18,6 +18,7 @@ import {
   Info,
 } from "lucide-react";
 import Swal from "sweetalert2";
+import { expandExamTitle } from "@/lib/utils";
 import Link from "next/link";
 
 // ============================================================================
@@ -403,7 +404,7 @@ export default function UndanganSeleksiTab() {
               Tes Terjadwal
             </h2>
             <p className="text-sm text-stone-500">
-              Tes Al-Qur'an, Wawancara Calsan, Wawancara Cawalsan
+              Tes Al-Qur'an, Wawancara Calon Santri, Wawancara Calon Orangtua/Wali Santri
             </p>
           </div>
         </div>
@@ -438,7 +439,7 @@ export default function UndanganSeleksiTab() {
                     <div className="flex items-center gap-2 mb-3">
                       <Icon className="w-4 h-4 text-brand-blue-600" />
                       <h3 className="text-sm font-black text-ink-900">
-                        {item.jenis_ujian}
+                        {expandExamTitle(item.jenis_ujian)}
                       </h3>
                     </div>
 
