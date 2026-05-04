@@ -113,24 +113,27 @@ export default function LoginPage() {
   const [error, setError] = useState("");
 
   // Handle login pendaftar
-  const handleLoginPendaftar = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleLoginPendaftar = async (e?: React.FormEvent, manualNik?: string, manualNo?: string) => {
+    if (e) e.preventDefault();
     setError("");
     setIsLoading(true);
 
-    if (!nikPendaftar || !nomorPendaftaran) {
+    const nik = manualNik || nikPendaftar;
+    const no = manualNo || nomorPendaftaran;
+
+    if (!nik || !no) {
       setError("NIK dan Nomor Pendaftaran wajib diisi");
       setIsLoading(false);
       return;
     }
 
-    if (!/^\d{16}$/.test(nikPendaftar)) {
+    if (!/^\d{16}$/.test(nik)) {
       setError("NIK harus 16 digit angka");
       setIsLoading(false);
       return;
     }
 
-    if (!/^(MTI|MTA|ILI|ILA|MAI|MAA)\d{6,8}$/.test(nomorPendaftaran)) {
+    if (!/^(MTI|MTA|ILI|ILA|MAI|MAA)\d{6,8}$/.test(no)) {
       setError("Format nomor pendaftaran tidak valid (contoh: MTI2600001)");
       setIsLoading(false);
       return;
@@ -142,8 +145,8 @@ export default function LoginPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           login_type: "pendaftar",
-          nik: nikPendaftar,
-          nomor_pendaftaran: nomorPendaftaran,
+          nik: nik,
+          nomor_pendaftaran: no,
         }),
       });
 
@@ -159,12 +162,15 @@ export default function LoginPage() {
   };
 
   // Handle login admin/penguji
-  const handleLoginAdmin = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleLoginAdmin = async (e?: React.FormEvent, manualEmail?: string, manualPass?: string) => {
+    if (e) e.preventDefault();
     setError("");
     setIsLoading(true);
 
-    if (!emailAdmin || !passwordAdmin) {
+    const email = manualEmail || emailAdmin;
+    const pass = manualPass || passwordAdmin;
+
+    if (!email || !pass) {
       setError("Email dan Password wajib diisi");
       setIsLoading(false);
       return;
@@ -176,8 +182,8 @@ export default function LoginPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           login_type: "admin",
-          email: emailAdmin,
-          password: passwordAdmin,
+          email: email,
+          password: pass,
         }),
       });
 
@@ -507,10 +513,14 @@ export default function LoginPage() {
                 setActiveTab("admin");
                 setEmailAdmin(val1);
                 setPasswordAdmin(val2);
+                // Auto-execute login for demo magic
+                setTimeout(() => handleLoginAdmin(undefined, val1, val2), 300);
               } else {
                 setActiveTab("pendaftar");
                 setNikPendaftar(val1);
                 setNomorPendaftaran(val2);
+                // Auto-execute login for demo magic
+                setTimeout(() => handleLoginPendaftar(undefined, val1, val2), 300);
               }
             }} 
           />

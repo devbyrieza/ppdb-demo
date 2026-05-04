@@ -8,43 +8,97 @@ const prisma = new PrismaClient();
 async function main() {
     console.log('Starting Specific User Seeding for Presentation...');
 
+    // 1. Emails to DELETE (Old Demo Accounts)
+    const emailsToDelete = [
+        'quran@demo.com',
+        'calsan@demo.com',
+        'cawalsan@demo.com'
+    ];
+
+    console.log('Cleaning up old demo accounts...');
+    for (const email of emailsToDelete) {
+        await prisma.profile.deleteMany({
+            where: { email }
+        });
+    }
+
+    // 2. Users to UPSERT (Create or Update)
     const users = [
         {
-            email: 'rieza@demo.com',
+            email: 'rieza@ppdb-demo.com',
             full_name: 'Rieza Eka Tomara',
             role: 'head_of_it',
             secondary_roles: ['admin_super', 'admin_berkas', 'admin_keuangan'],
             password: 'Rieza26!'
         },
         {
-            email: 'wahab@demo.com',
+            email: 'wahab@ppdb-demo.com',
             full_name: 'Wahab Rajasam',
             role: 'admin_super',
             secondary_roles: ['head_of_it', 'admin_berkas', 'admin_keuangan'],
             password: 'Wahab26!'
         },
         {
-            email: 'quran@demo.com',
-            full_name: 'Penguji Al-Qur\'an',
+            email: 'admin@ppdb-demo.com',
+            full_name: 'Admin Super Demo',
+            role: 'admin_super',
+            secondary_roles: ['admin_berkas', 'admin_keuangan'],
+            password: 'Admin26!'
+        },
+        {
+            email: 'keuangan@ppdb-demo.com',
+            full_name: 'Admin Keuangan Demo',
+            role: 'admin_keuangan',
+            secondary_roles: [],
+            password: 'Keuangan26!'
+        },
+        {
+            email: 'berkas@ppdb-demo.com',
+            full_name: 'Admin Berkas Demo',
+            role: 'admin_berkas',
+            secondary_roles: [],
+            password: 'Berkas26!'
+        },
+        {
+            email: 'quran@ppdb-demo.com',
+            full_name: 'Penguji Al-Qur\'an Demo',
             role: 'penguji_quran',
             secondary_roles: [],
             password: 'Quran26!'
         },
         {
-            email: 'calsan@demo.com',
-            full_name: 'Pewawancara Calsan',
+            email: 'calsan@ppdb-demo.com',
+            full_name: 'Pewawancara Calsan Demo',
             role: 'pewawancara_calsan',
             secondary_roles: [],
             password: 'Calsan26!'
         },
         {
-            email: 'cawalsan@demo.com',
-            full_name: 'Pewawancara Cawalsan',
+            email: 'cawalsan@ppdb-demo.com',
+            full_name: 'Pewawancara Cawalsan Demo',
             role: 'pewawancara_cawalsan',
             secondary_roles: [],
             password: 'Cawalsan26!'
         }
     ];
+
+    // Handle Rename from old @demo.com if exists
+    console.log('Checking for Wahab/Rieza renames...');
+    const renames = [
+        { old: 'wahab@demo.com', new: 'wahab@ppdb-demo.com' },
+        { old: 'rieza@demo.com', new: 'rieza@ppdb-demo.com' }
+    ];
+
+    for (const r of renames) {
+        const oldUser = await prisma.profile.findFirst({ where: { email: r.old } });
+        if (oldUser) {
+            await prisma.profile.update({
+                where: { id: oldUser.id },
+                data: { email: r.new }
+            });
+            console.log(`Renamed ${r.old} to ${r.new}`);
+        }
+    }
 
     for (const u of users) {
         const hashedPassword = await bcrypt.hash(u.password, 10);
