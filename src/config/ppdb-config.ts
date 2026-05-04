@@ -6,13 +6,13 @@
 export const PPDB_CONFIG = {
   // 🏫 INFO PESANTREN (GANTI INI DULU!)
   pesantren: {
-    nama: "Pesantren Al-Andalus Al-Imam",
-    singkatan: "Al-Andalus Al-Imam",
-    alamat: "Jl. KH Mama Oyon, Cihaur, Kec. Cicantayan, Kabupaten Sukabumi, Jawa Barat 43155",
-    telepon: "+62 888-0993-4970",
-    email: "alandalus.alimam@gmail.com",
-    emailPpdb: "alandalus.alimam@gmail.com",
-    website: "https://www.pesantren-alimam.com",
+    nama: "Pesantren Al-Andalus (Demo)",
+    singkatan: "PPDB Demo",
+    alamat: "Jl. Pesantren No. 1, Bogor, Jawa Barat",
+    telepon: "+62 812-3456-7890",
+    email: "demo@pesantren-alandalus.com",
+    emailPpdb: "demo@pesantren-alandalus.com",
+    website: "https://ppdb-demo.vercel.app",
   },
 
   // 🎨 BRAND COLORS (GANTI SESUAI LOGO)
@@ -110,9 +110,9 @@ export const PPDB_CONFIG = {
 
   // ⚙️ SETTING TEKNIS (UMUMNYA TIDAK PERLU DIUBAH)
   technical: {
-    appName: "PPDB Al-Andalus Al-Imam",
-    appDescription: "Sistem Penerimaan Peserta Didik Baru",
-    version: "2.0.0",
+    appName: "PPDB Demo Al-Andalus",
+    appDescription: "Sistem Demo Penerimaan Peserta Didik Baru",
+    version: "2.1.0",
     author: "Rieza Eka Tomara"
   }
 };
