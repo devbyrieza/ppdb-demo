@@ -8,6 +8,7 @@ import { Menu, X, ArrowRight, GraduationCap } from "lucide-react";
 import { scrollToSection, scrollToTop, navigateToDetail } from "@/lib/navigation-scroll";
 import Image from "next/image";
 import { BRANDING } from "@/config/branding";
+import LanguageSwitcher from "@/components/common/LanguageSwitcher";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -152,6 +153,8 @@ export default function Navbar() {
 
             {/* ── CTA Buttons (lg+) ── */}
             <div className="hidden lg:flex items-center gap-3">
+              <LanguageSwitcher />
+              <div className="w-px h-6 bg-slate-200 mx-1" />
               <Link
                 href="/login"
                 className="text-sm font-bold text-[var(--color-ink-600)] hover:text-[var(--color-teal-800)] transition-colors duration-200 px-4 py-2 min-h-[40px] flex items-center rounded-full hover:bg-[var(--color-teal-50)]"

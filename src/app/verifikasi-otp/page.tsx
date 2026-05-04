@@ -33,7 +33,16 @@ function VerifikasiOTPContent() {
   // Simulation Code Check
   const sim_code = searchParams.get("sim_code");
 
-  // sim_code is displayed in the banner above for manual entry
+  // Auto-fill if sim_code exists (for seamless demo)
+  useEffect(() => {
+    if (sim_code && sim_code.length === 6) {
+      // Small delay for "theatrical" effect (showing the page for a brief moment)
+      const timer = setTimeout(() => {
+        setOtpCode(sim_code.split(""));
+      }, 800);
+      return () => clearTimeout(timer);
+    }
+  }, [sim_code]);
 
   // ... rest of state
   const [countdown, setCountdown] = useState(300); // 5 menit
