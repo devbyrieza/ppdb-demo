@@ -180,7 +180,7 @@ export function getNextStep(currentStatus: StatusProses): {
     'data_completed': { status: 'docs_uploaded', action: 'Upload dokumen persyaratan', href: '/dashboard/pendaftar/upload-berkas' },
     'docs_uploaded': { status: 'docs_verified', action: 'Tunggu verifikasi dokumen', href: '/dashboard/pendaftar/upload-berkas' },
     'docs_verified': { status: 'scheduled', action: 'Pilih Jadwal Seleksi', href: '/dashboard/pendaftar/undangan-seleksi' },
-    'scheduled': { status: 'tested', action: 'Ikuti ujian seleksi', href: '/dashboard/pendaftar/pengumuman' },
+    'scheduled': { status: 'tested', action: 'Ikuti ujian seleksi', href: '/dashboard/pendaftar/ujian' },
     'tested': { status: 'announced', action: 'Tunggu pengumuman hasil', href: '/dashboard/pendaftar/pengumuman' },
     'announced': { status: 'accepted', action: 'Lihat hasil seleksi', href: '/dashboard/pendaftar/pengumuman' },
     'accepted': { status: 'enrolled', action: 'Lakukan daftar ulang', href: '/dashboard/pendaftar/daftar-ulang' },
