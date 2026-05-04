@@ -157,14 +157,15 @@ export default function HeroSection() {
               style={{ borderRadius: "2rem", border: "10px solid var(--color-white)", boxShadow: "var(--shadow-premium-2xl), 0 0 0 1px var(--color-teal-100)", overflow: "hidden" }}
             >
               <Image
-                src="https://images.unsplash.com/photo-1541829070764-84a7d30dee73?q=80&w=2070&auto=format&fit=crop"
+                src="https://images.unsplash.com/photo-1541829070764-84a7d30dee73?q=80&w=1400&auto=format&fit=crop"
                 alt={`${BRANDING.schoolName} — Sistem PPDB Modern`}
                 width={800} height={600}
+                priority
+                sizes="(max-width: 768px) 100vw, 800px"
                 className="w-full h-auto object-cover aspect-[4/3]"
                 style={{ transition: "transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)" }}
                 onMouseEnter={(e) => { if (!shouldReduceMotion) e.currentTarget.style.transform = "scale(1.04)"; }}
                 onMouseLeave={(e) => { e.currentTarget.style.transform = "scale(1)"; }}
-                priority
               />
               <div className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(to top, rgba(10, 22, 16, 0.50) 0%, transparent 55%)" }} aria-hidden="true" />
             </div>

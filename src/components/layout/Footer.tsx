@@ -113,7 +113,7 @@ export default function Footer() {
                   className="text-[10px] font-bold uppercase tracking-widest mt-1.5"
                   style={{ color: "rgba(255,255,255,0.35)" }}
                 >
-                  Islamic Boarding School
+                  Pesantren Modern International
                 </p>
               </div>
             </Link>
