@@ -141,10 +141,8 @@ export async function POST(request: NextRequest) {
       response.phone = normalizedPhone;
     }
 
-    // Temporary: return OTP for self-verification when WhatsApp not available
-    if (process.env.SKIP_WHATSAPP_OTP === "true") {
-      response.simulation_code = otp;
-    }
+    // Always return simulation code in template-demo for 100% smooth presentations
+    response.simulation_code = otp;
 
     return NextResponse.json(response);
   } catch (error: any) {
