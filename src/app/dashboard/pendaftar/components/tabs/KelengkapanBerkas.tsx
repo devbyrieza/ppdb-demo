@@ -29,6 +29,7 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import DataLengkapForm from "./DataLengkapForm";
+import Swal from "sweetalert2";
 
 // ============================================
 // TYPES
