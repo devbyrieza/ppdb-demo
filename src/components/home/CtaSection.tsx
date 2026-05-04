@@ -1,69 +1,72 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Send, ShieldCheck, Award, BookOpen } from "lucide-react";
+import { Send, ShieldCheck, Award, BookOpen } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { motion } from "framer-motion";
 import { BRANDING } from "@/config/branding";
 
+const EASE = [0.16, 1, 0.3, 1] as const;
+
 export default function CtaSection() {
     return (
-        <section className="py-16 md:py-24 lg:py-32 bg-white relative overflow-hidden border-y border-teal-100">
+        <section className="py-16 md:py-24 lg:py-28 bg-white relative overflow-hidden border-t border-sand-200">
             <Container>
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    className="bg-teal-900 bg-linear-to-br from-teal-800 to-teal-950 rounded-[2.5rem] md:rounded-[3rem] lg:rounded-[4rem] p-8 sm:p-12 md:p-16 lg:p-24 relative overflow-hidden text-center shadow-lg border border-teal-700"
+                    initial={{ opacity: 0, scale: 0.97, y: 20 }}
+                    whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-40px" }}
+                    transition={{ duration: 0.7, ease: EASE }}
+                    className="bg-teal-900 rounded-[2rem] md:rounded-[2.5rem] lg:rounded-[3rem] p-8 sm:p-12 md:p-16 lg:p-20 relative overflow-hidden text-center shadow-premium-lg border border-teal-800"
                 >
-                    <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.05] mix-blend-overlay" />
-                    <div className="hidden sm:block absolute -top-32 -right-32 w-64 h-64 sm:w-80 sm:h-80 md:w-[400px] md:h-[400px] bg-sand-100/10 rounded-full blur-[80px] md:blur-[100px]" />
-                    <div className="hidden sm:block absolute -bottom-32 -left-32 w-64 h-64 sm:w-80 sm:h-80 md:w-[400px] md:h-[400px] bg-teal-500/20 rounded-full blur-[80px] md:blur-[100px]" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-teal-800 to-teal-950 opacity-90" />
+                    <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.05] mix-blend-overlay pointer-events-none" />
+                    <div className="hidden sm:block absolute -top-32 -right-32 w-[400px] h-[400px] bg-sand-400/10 rounded-full blur-[80px] pointer-events-none" />
+                    <div className="hidden sm:block absolute -bottom-32 -left-32 w-[400px] h-[400px] bg-teal-500/30 rounded-full blur-[80px] pointer-events-none" />
 
-                    <div className="relative z-10 max-w-3xl mx-auto">
-                        <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 md:mb-8 tracking-tight leading-[1.1]">
+                    <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center">
+                        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-white text-[0.65rem] font-bold uppercase tracking-[0.12em] mb-6 shadow-xs">
+                            <span className="text-sand-300">✦</span> Pendaftaran Dibuka
+                        </div>
+
+                        <h3 className="text-[2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] font-display font-black text-white mb-5 tracking-tight leading-[1.1]">
                             Mulai Langkah Pertama <br /> Menuju Generasi Rabbani
                         </h3>
-                        <p className="text-base md:text-lg lg:text-xl text-sand-100/90 mb-8 md:mb-12 leading-relaxed font-medium text-center max-w-2xl mx-auto">
-                            Pendaftaran Santri Baru (PPDB) Tahun Ajaran 2026/2027 telah dibuka. Kuota sangat terbatas — pastikan putra Anda mendaftar lebih awal.
+                        
+                        <p className="text-[0.9375rem] md:text-[1.0625rem] text-sand-50/90 mb-10 leading-relaxed font-[450] text-center max-w-2xl mx-auto">
+                            Telah dibuka Pendaftaran Santri Baru (PPDB) Tahun Ajaran 2026/2027. Kuota sangat terbatas untuk menjaga kualitas pendidikan secara optimal.
                         </p>
                         
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center px-4 max-w-xl mx-auto">
+                        <div className="flex flex-col sm:flex-row gap-3.5 justify-center px-4 max-w-xl mx-auto w-full">
                             <Link href="/ppdb" className="w-full sm:w-auto flex-1">
-                                <button className="w-full px-8 py-4 rounded-pill bg-white text-teal-900 font-bold hover:bg-sand-50 transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-1 text-base md:text-lg flex items-center justify-center gap-2">
+                                <button className="w-full px-8 py-3.5 rounded-full bg-white text-teal-900 font-bold hover:bg-sand-50 transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 text-[0.9375rem] flex items-center justify-center gap-2">
                                     Daftar Sekarang
                                 </button>
                             </Link>
                             <Link href="/kontak" className="w-full sm:w-auto flex-1">
-                                <button className="w-full px-8 py-4 rounded-pill text-white font-bold border-2 border-white/20 hover:bg-white/10 transition-all duration-300 text-base md:text-lg flex items-center justify-center gap-2">
+                                <button className="w-full px-8 py-3.5 rounded-full text-white font-bold border border-white/20 hover:bg-white/10 transition-all duration-300 text-[0.9375rem] flex items-center justify-center gap-2 backdrop-blur-sm group/btn">
                                     Konsultasi WhatsApp
-                                    <Send className="w-4 h-4 ml-1" />
+                                    <Send className="w-4 h-4 ml-1 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
                                 </button>
                             </Link>
                         </div>
 
-                        {/* Trust microcopy */}
-                        <div className="mt-8 mb-4">
-                            <span className="inline-block px-4 py-1.5 rounded-pill bg-white/10 backdrop-blur-sm border border-white/10 text-[10px] sm:text-xs text-sand-50 font-bold uppercase tracking-widest">
-                                ✦ Pendaftaran Gratis • Proses Mudah • Konfirmasi Cepat
-                            </span>
+                        {/* ── Legalitas Badges ── */}
+                        <div className="mt-12 pt-8 border-t border-white/10 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 w-full max-w-2xl">
+                            <div className="flex items-center gap-2 text-sand-50/70">
+                                <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                                <span className="text-[0.6rem] font-bold uppercase tracking-[0.1em]">Terakreditasi BAN-PDM</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-sand-50/70">
+                                <BookOpen className="w-4 h-4 text-sand-400" />
+                                <span className="text-[0.6rem] font-bold uppercase tracking-[0.1em]">Kurikulum Terpadu</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-sand-50/70">
+                                <Award className="w-4 h-4 text-teal-300" />
+                                <span className="text-[0.6rem] font-bold uppercase tracking-[0.1em]">{BRANDING.schoolNetwork}</span>
+                            </div>
                         </div>
 
-                        {/* Legalitas badges */}
-                        <div className="mt-10 pt-8 border-t border-white/10 flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
-                            <div className="flex items-center gap-2 text-sand-100/70">
-                                <ShieldCheck className="w-4 h-4 text-green-400" />
-                                <span className="text-[10px] font-bold uppercase tracking-widest">Terakreditasi BAN-PDM</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-sand-100/70">
-                                <BookOpen className="w-4 h-4 text-yellow-400" />
-                                <span className="text-[10px] font-bold uppercase tracking-widest">Kurikulum Terpadu</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-sand-100/70">
-                                <Award className="w-4 h-4 text-blue-400" />
-                                <span className="text-[10px] font-bold uppercase tracking-widest">{BRANDING.schoolNetwork}</span>
-                            </div>
-                        </div>
                     </div>
                 </motion.div>
             </Container>
