@@ -78,7 +78,7 @@ export default function HeroSection() {
                 <span className="block">Mencetak Generasi</span>
                 <span
                   className="block mt-1"
-                  style={{ background: "linear-gradient(135deg, var(--color-teal-500) 0%, var(--color-teal-300) 50%, var(--color-teal-600) 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent", paddingBottom: "0.15em" }}
+                  style={{ background: "linear-gradient(135deg, var(--color-teal-600) 0%, var(--color-sand-400) 50%, var(--color-teal-700) 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent", paddingBottom: "0.15em" }}
                 >
                   Unggul, Cerdas,{" "}
                   <br className="hidden xl:block" />
