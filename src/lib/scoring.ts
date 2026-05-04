@@ -6,6 +6,7 @@ import {
     evaluateQuranGrade,
     evaluateWawancaraGrade,
     evaluateKesiapanGrade,
+    evaluateStatusGrade,
     determineFinalDecision
 } from './grading';
 
