@@ -65,7 +65,7 @@ export default function HeroSection() {
                 style={{ background: "var(--color-white)", border: "1px solid var(--color-teal-200)", color: "var(--color-teal-700)", boxShadow: "var(--shadow-sm), inset 0 1px 0 rgba(255,255,255,0.8)" }}
               >
                 <Sparkles className="w-3.5 h-3.5 flex-shrink-0" style={{ color: "var(--color-sand-500)" }} aria-hidden="true" />
-                <span>Terakreditasi BAN-PDM • Managed by Al-Andalus IIBS</span>
+                <span>Terakreditasi BAN-PDM • Managed by {BRANDING.schoolShortName}</span>
               </span>
             </motion.div>
 
@@ -102,7 +102,7 @@ export default function HeroSection() {
             <motion.div variants={fadeUp} initial="hidden" animate={animate} transition={{ delay: 0.38 }} className="flex items-center gap-3 justify-center lg:justify-start">
               <div className="h-px flex-1 max-w-[3rem]" style={{ background: "var(--color-teal-200)" }} />
               <p className="text-sm font-semibold italic" style={{ color: "var(--color-teal-700)" }}>
-                "Pendidikan Berkualitas, Diperkuat Sistem Al-Andalus"
+                "{BRANDING.schoolTagline}"
               </p>
               <div className="h-px flex-1 max-w-[3rem]" style={{ background: "var(--color-teal-200)" }} />
             </motion.div>
@@ -131,12 +131,12 @@ export default function HeroSection() {
                 </div>
                 <p className="text-[11px] font-semibold leading-tight" style={{ color: "var(--color-ink-500)" }}>
                   <span className="font-bold uppercase tracking-wide" style={{ color: "var(--color-teal-700)" }}>Angkatan Pertama</span>
-                  {" • "}Managed by Al-Andalus IIBS
+                  {" • "}Managed by {BRANDING.schoolShortName}
                 </p>
               </div>
 
               <div className="flex flex-wrap gap-x-5 gap-y-2 justify-center lg:justify-start mt-1">
-                {["MTs & MA tersedia", "Proses cepat & transparan", "Jaringan Al-Andalus"].map((point) => (
+                {["MTs & MA tersedia", "Proses cepat & transparan", BRANDING.schoolNetwork].map((point) => (
                   <span key={point} className="flex items-center gap-1.5 text-[11px] font-semibold" style={{ color: "var(--color-ink-500)" }}>
                     <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" style={{ color: "var(--color-teal-500)" }} aria-hidden="true" />
                     {point}
@@ -203,7 +203,7 @@ export default function HeroSection() {
                 </div>
                 <div>
                   <p className="text-sm font-black leading-tight" style={{ color: "var(--color-teal-900)" }}>Jaringan Elit</p>
-                  <p className="text-[10px] font-semibold mt-0.5" style={{ color: "var(--color-ink-500)" }}>Andalus Demo</p>
+                  <p className="text-[10px] font-semibold mt-0.5" style={{ color: "var(--color-ink-500)" }}>{BRANDING.schoolShortName}</p>
                 </div>
               </div>
             </motion.div>

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowRight, Send, ShieldCheck, Award, BookOpen } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { motion } from "framer-motion";
+import { BRANDING } from "@/config/branding";
 
 export default function CtaSection() {
     return (
@@ -60,7 +61,7 @@ export default function CtaSection() {
                             </div>
                             <div className="flex items-center gap-2 text-sand-100/70">
                                 <Award className="w-4 h-4 text-blue-400" />
-                                <span className="text-[10px] font-bold uppercase tracking-widest">Jaringan Al-Andalus</span>
+                                <span className="text-[10px] font-bold uppercase tracking-widest">{BRANDING.schoolNetwork}</span>
                             </div>
                         </div>
                     </div>

@@ -5,6 +5,7 @@ import { useInView } from "react-intersection-observer";
 import { useEffect, useState } from "react";
 import { Container } from "@/components/layout/Container";
 import { Calendar, Users, GraduationCap, Award, TrendingUp, BookOpen } from 'lucide-react';
+import { BRANDING } from "@/config/branding";
 
 const STATS = [
   { id: 'batch', label: 'Angkatan Pertama', value: 1, icon: Calendar, color: 'emerald' as const, suffix: '', sublabel: 'Tahun Ajaran 2026/2027' },
@@ -118,7 +119,7 @@ export default function StatsSection() {
             </div>
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-teal-50/50 rounded-pill border border-teal-100">
               <TrendingUp className="w-3.5 h-3.5 text-teal-600" />
-              <span className="text-[10px] font-bold text-ink-700 uppercase tracking-widest">Jaringan Al-Andalus</span>
+              <span className="text-[10px] font-bold text-ink-700 uppercase tracking-widest">{BRANDING.schoolNetwork}</span>
             </div>
           </motion.div>
         </div>
