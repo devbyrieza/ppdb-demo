@@ -227,7 +227,7 @@ export default function HeroSection() {
                 style={{ color: "var(--color-army-700)" }}
               >
                 "Pendidikan Berkualitas, Diperkuat Sistem{" "}
-                {BRANDING.schoolName.includes("PPDB Modern")
+                {BRANDING.schoolName.toLowerCase().includes("ppdb modern")
                   ? "PPDB Modern"
                   : BRANDING.schoolShortName}
                 "

@@ -133,9 +133,10 @@ export default function ActivitiesSection() {
                                 className="bg-white p-5 md:p-6 rounded-2xl border border-khaki-200 flex flex-col items-center justify-center text-center group hover:bg-khaki-50 hover:border-army-200 hover:shadow-md transition-all duration-500 cursor-default"
                             >
                                 <div className={`w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center mb-3 md:mb-4 shadow-sm group-hover:scale-110 transition-transform duration-500 ${
-                                    item.color === 'maroon' ? 'bg-army-50 text-army-600' :
-                                    item.color === 'cream' ? 'bg-khaki-100 text-army-700' :
-                                    'bg-khaki-50 text-khaki-600'
+                                    // FIX: Gunakan tipe yang sesuai dengan definisi EXTRA_ACTIVITIES ("army" | "khaki" | "gold")
+                                    item.color === 'army' ? 'bg-army-50 text-army-600' :
+                                        item.color === 'khaki' ? 'bg-khaki-100 text-army-700' :
+                                            'bg-khaki-50 text-khaki-600'
                                     }`}>
                                     <item.icon className="w-6 h-6 md:w-7 md:h-7" />
                                 </div>

@@ -188,17 +188,20 @@ export default function AdminDashboardPage() {
     }
   }, [selectedTahunAjaranId]);
 
+  // FIX: Tambahkan kondisi `if (loading)` agar tidak menjadi early return tanpa syarat
+  if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[50vh]">
         <Loader2 className="w-8 h-8 animate-spin text-army-600" />
       </div>
     );
+  }
 
   const daysLeft = getPPDBCountdown();
   const isAdminSuper = role === "admin_super";
   const isKeuangan = role === "admin_keuangan";
   const isBerkas = role === "admin_berkas";
-  
+
   const canViewKeuangan = isAdminSuper || isKeuangan || role === "admin";
   const canViewBerkas = isAdminSuper || isBerkas || role === "admin";
 
@@ -206,11 +209,10 @@ export default function AdminDashboardPage() {
     <div className="space-y-8 pb-12">
       {daysLeft !== null && (
         <div
-          className={`rounded-3xl border-2 px-8 py-5 flex items-center justify-between shadow-clay-sm animate-in slide-in-from-top duration-500 ${
-            daysLeft <= 7
+          className={`rounded-3xl border-2 px-8 py-5 flex items-center justify-between shadow-clay-sm animate-in slide-in-from-top duration-500 ${daysLeft <= 7
               ? "bg-red-50 border-red-200 text-red-900"
               : "bg-khaki-50 border-khaki-200 text-army-950"
-          }`}
+            }`}
         >
           <div className="flex items-center gap-4">
             <Timer className="w-6 h-6" />
@@ -222,9 +224,8 @@ export default function AdminDashboardPage() {
             </div>
           </div>
           <div
-            className={`px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
-              daysLeft <= 7 ? "bg-red-600 text-white" : "bg-army-900 text-white"
-            }`}
+            className={`px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${daysLeft <= 7 ? "bg-red-600 text-white" : "bg-army-900 text-white"
+              }`}
           >
             {daysLeft <= 7 ? "Mendesak" : "Berjalan"}
           </div>
@@ -334,15 +335,14 @@ export default function AdminDashboardPage() {
               className="bg-white rounded-4xl p-6 md:p-8 border border-khaki-100 shadow-sm app-card group"
             >
               <div
-                className={`w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center mb-6 shadow-clay-sm transition-transform group-hover:scale-110 ${
-                  item.color === "blue"
+                className={`w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center mb-6 shadow-clay-sm transition-transform group-hover:scale-110 ${item.color === "blue"
                     ? "bg-army-50 text-army-600"
                     : item.color === "yellow"
-                    ? "bg-khaki-50 text-khaki-600"
-                    : item.color === "indigo"
-                    ? "bg-indigo-50 text-indigo-600"
-                    : "bg-emerald-50 text-emerald-600"
-                }`}
+                      ? "bg-khaki-50 text-khaki-600"
+                      : item.color === "indigo"
+                        ? "bg-indigo-50 text-indigo-600"
+                        : "bg-emerald-50 text-emerald-600"
+                  }`}
               >
                 <item.icon className={`w-6 h-6 md:w-7 md:h-7 ${item.label === "Cadangan" ? "animate-spin-slow" : ""}`} />
               </div>
@@ -418,13 +418,12 @@ export default function AdminDashboardPage() {
                       <td className="px-6 py-4 border-r border-khaki-50">
                         <div className="flex items-center gap-3">
                           <div
-                            className={`w-8 h-8 rounded-lg flex items-center justify-center text-white font-black text-[10px] ${
-                              item.jenjang === "MTS"
+                            className={`w-8 h-8 rounded-lg flex items-center justify-center text-white font-black text-[10px] ${item.jenjang === "MTS"
                                 ? "bg-army-600"
                                 : item.jenjang === "SMA"
-                                ? "bg-army-900"
-                                : "bg-khaki-500"
-                            }`}
+                                  ? "bg-army-900"
+                                  : "bg-khaki-500"
+                              }`}
                           >
                             {item.jenjang.substring(0, 2)}
                           </div>
@@ -466,13 +465,13 @@ export default function AdminDashboardPage() {
               Unduh data pendaftaran terbaru untuk keperluan rapat panitia.
             </p>
             <div className="flex flex-col gap-4">
-              <button 
+              <button
                 onClick={handleExportDatabase}
                 className="w-full bg-white text-army-900 py-5 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-khaki-300 transition-all shadow-xl"
               >
                 Export Database
               </button>
-              <button 
+              <button
                 onClick={handleSyncMaster}
                 className="w-full bg-khaki-400 text-army-900 py-5 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-white transition-all shadow-xl flex items-center justify-center gap-2"
               >
