@@ -44,22 +44,22 @@ function DaftarSuksesContent() {
   };
 
   return (
-    <div className="app-card max-w-lg w-full bg-white rounded-[2.5rem] shadow-lg border border-khaki-200 p-8 relative overflow-hidden">
+    <div className="app-card max-w-lg w-full bg-white rounded-[2.5rem] shadow-lg border border-sand-200 p-8 relative overflow-hidden">
       {/* Background Blurs */}
-      <div className="absolute -top-32 -right-32 w-64 h-64 bg-khaki-50 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -top-32 -right-32 w-64 h-64 bg-sand-50 rounded-full blur-3xl pointer-events-none" />
 
       {/* Success Icon */}
       <div className="text-center relative z-10 mb-6 mt-4">
-        <div className="relative inline-flex items-center justify-center w-24 h-24 bg-khaki-50 rounded-3xl border border-khaki-200">
-          <CheckCircle2 className="w-14 h-14 text-army-700 animate-bounce" />
-          <Sparkles className="w-8 h-8 text-khaki-300 absolute -top-3 -right-3 animate-pulse" />
+        <div className="relative inline-flex items-center justify-center w-24 h-24 bg-sand-50 rounded-3xl border border-sand-200">
+          <CheckCircle2 className="w-14 h-14 text-teal-700 animate-bounce" />
+          <Sparkles className="w-8 h-8 text-sand-300 absolute -top-3 -right-3 animate-pulse" />
         </div>
       </div>
 
       {/* Success Message */}
       <div className="text-center relative z-10 mb-8">
         <h1 className="text-3xl font-display font-black text-ink-950 mb-2 flex items-center justify-center gap-2">
-          <PartyPopper className="w-6 h-6 text-army-700" />
+          <PartyPopper className="w-6 h-6 text-teal-700" />
           Alhamdulillah!
         </h1>
         <p className="text-xl font-bold text-ink-800 mb-2">
@@ -71,29 +71,29 @@ function DaftarSuksesContent() {
       </div>
 
       {/* Credentials Box */}
-      <div className="bg-khaki-50 border border-khaki-200 rounded-[1.5rem] p-6 mb-6 relative z-10">
-        <p className="text-[10px] font-black tracking-widest uppercase text-army-700 mb-4 text-center flex items-center justify-center gap-2">
+      <div className="bg-sand-50 border border-sand-200 rounded-[1.5rem] p-6 mb-6 relative z-10">
+        <p className="text-[10px] font-black tracking-widest uppercase text-teal-700 mb-4 text-center flex items-center justify-center gap-2">
           <CreditCard className="w-3.5 h-3.5" />
           DATA LOGIN ANDA
         </p>
 
         {/* Nomor Pendaftaran */}
-        <div className="bg-white rounded-xl border border-khaki-200 p-4 mb-3 shadow-sm app-card">
+        <div className="bg-white rounded-xl border border-sand-200 p-4 mb-3 shadow-sm app-card">
           <p className="text-xs font-bold text-ink-500 mb-2 flex items-center gap-1.5 uppercase tracking-wider">
-            <CreditCard className="w-3.5 h-3.5 text-army-700" />
+            <CreditCard className="w-3.5 h-3.5 text-teal-700" />
             Nomor Pendaftaran
           </p>
           <div className="flex items-center justify-between gap-3">
-            <p className="text-2xl font-black text-army-900 break-all bg-khaki-50/50 px-2 py-1 rounded-lg">
+            <p className="text-2xl font-black text-teal-900 break-all bg-sand-50/50 px-2 py-1 rounded-lg">
               {nomor_pendaftaran}
             </p>
             <button
               onClick={() => handleCopy(nomor_pendaftaran, "nomor")}
-              className="p-2.5 bg-khaki-50 hover:bg-khaki-200 border border-khaki-300 rounded-xl transition-colors shrink-0 app-card hover:scale-105 active:scale-95"
+              className="p-2.5 bg-sand-50 hover:bg-sand-200 border border-sand-300 rounded-xl transition-colors shrink-0 app-card hover:scale-105 active:scale-95"
               title="Salin nomor pendaftaran"
             >
               {copiedField === "nomor" ? (
-                <Check className="w-5 h-5 text-army-700" />
+                <Check className="w-5 h-5 text-teal-700" />
               ) : (
                 <Copy className="w-5 h-5 text-ink-600" />
               )}
@@ -102,20 +102,20 @@ function DaftarSuksesContent() {
         </div>
 
         {/* NIK Santri */}
-        <div className="bg-white rounded-xl border border-khaki-200 p-4 mb-3 shadow-sm app-card">
+        <div className="bg-white rounded-xl border border-sand-200 p-4 mb-3 shadow-sm app-card">
           <p className="text-xs font-bold text-ink-500 mb-2 flex items-center gap-1.5 uppercase tracking-wider">
-            <IdCard className="w-3.5 h-3.5 text-army-700" />
+            <IdCard className="w-3.5 h-3.5 text-teal-700" />
             NIK Santri (Password)
           </p>
           <div className="flex items-center justify-between gap-3">
             <p className="text-lg font-black text-ink-900 break-all">{nik}</p>
             <button
               onClick={() => handleCopy(nik, "nik")}
-              className="p-2.5 bg-khaki-50 hover:bg-khaki-200 border border-khaki-300 rounded-xl transition-colors shrink-0 app-card hover:scale-105 active:scale-95"
+              className="p-2.5 bg-sand-50 hover:bg-sand-200 border border-sand-300 rounded-xl transition-colors shrink-0 app-card hover:scale-105 active:scale-95"
               title="Salin NIK"
             >
               {copiedField === "nik" ? (
-                <Check className="w-5 h-5 text-army-700" />
+                <Check className="w-5 h-5 text-teal-700" />
               ) : (
                 <Copy className="w-5 h-5 text-ink-600" />
               )}
@@ -126,7 +126,7 @@ function DaftarSuksesContent() {
         {/* Login Info */}
         <div className="mt-4 py-2">
           <p className="text-xs text-ink-600 flex items-center justify-center gap-1.5 text-center font-medium">
-            <AlertCircle className="w-3.5 h-3.5 shrink-0 text-army-700" />
+            <AlertCircle className="w-3.5 h-3.5 shrink-0 text-teal-700" />
             Gunakan <strong className="text-ink-950 font-black">NIK</strong> dan{" "}
             <strong className="text-ink-950 font-black">Nomor Pendaftaran</strong> untuk masuk.
           </p>
@@ -134,28 +134,28 @@ function DaftarSuksesContent() {
       </div>
 
       {/* Important Notes */}
-      <div className="bg-white border-2 border-khaki-200 rounded-[1.5rem] p-5 mb-8 relative z-10 shadow-sm">
+      <div className="bg-white border-2 border-sand-200 rounded-[1.5rem] p-5 mb-8 relative z-10 shadow-sm">
         <p className="text-sm text-ink-950 font-black mb-3 flex items-center gap-2">
-          <AlertTriangle className="w-4 h-4 text-khaki-500" />
+          <AlertTriangle className="w-4 h-4 text-sand-500" />
           PENTING - Simpan Data Ini!
         </p>
         <ul className="text-xs text-ink-700 space-y-2.5 font-medium">
           <li className="flex items-start gap-2">
-            <Check className="w-4 h-4 text-army-700 shrink-0" />
+            <Check className="w-4 h-4 text-teal-700 shrink-0" />
             <span>
               Screenshot atau catat <strong>Nomor Pendaftaran</strong> dan{" "}
               <strong>NIK Santri</strong>
             </span>
           </li>
           <li className="flex items-start gap-2">
-            <Check className="w-4 h-4 text-army-700 shrink-0" />
+            <Check className="w-4 h-4 text-teal-700 shrink-0" />
             <span>
               <strong>TIDAK perlu password lain</strong> - cukup NIK + Nomor
               Pendaftaran
             </span>
           </li>
           <li className="flex items-start gap-2">
-            <Check className="w-4 h-4 text-army-700 shrink-0" />
+            <Check className="w-4 h-4 text-teal-700 shrink-0" />
             <span>
               Setelah login, lakukan <strong>pembayaran pendaftaran</strong> lalu lengkapi data & upload berkas.
             </span>
@@ -168,7 +168,7 @@ function DaftarSuksesContent() {
       <div className="relative z-10 w-full mb-6">
         <button
           onClick={() => router.push("/login")}
-          className="w-full py-4 md:py-5 rounded-pill bg-army-700 text-white font-black text-lg hover:bg-army-800 shadow-xl shadow-khaki-100 transition-all flex items-center justify-center gap-2.5 active:scale-95"
+          className="w-full py-4 md:py-5 rounded-pill bg-teal-700 text-white font-black text-lg hover:bg-teal-800 shadow-xl shadow-sand-100 transition-all flex items-center justify-center gap-2.5 active:scale-95"
         >
           Lanjut ke Halaman Login
           <ArrowRight className="w-5 h-5" />
@@ -182,7 +182,7 @@ function DaftarSuksesContent() {
           href="https://wa.me/622667345601"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-xs bg-khaki-50 text-army-700 px-4 py-1.5 rounded-full font-black border border-khaki-200 hover:bg-khaki-200 transition-colors inline-block"
+          className="text-xs bg-sand-50 text-teal-700 px-4 py-1.5 rounded-full font-black border border-sand-200 hover:bg-sand-200 transition-colors inline-block"
         >
           Hubungi Admin WhatsApp
         </a>
@@ -194,9 +194,9 @@ function DaftarSuksesContent() {
 // Loading fallback
 function LoadingFallback() {
   return (
-    <div className="app-card max-w-lg w-full bg-white rounded-[2.5rem] shadow-lg border border-khaki-200 p-8">
+    <div className="app-card max-w-lg w-full bg-white rounded-[2.5rem] shadow-lg border border-sand-200 p-8">
       <div className="flex flex-col items-center justify-center py-12">
-        <Loader2 className="w-12 h-12 text-army-600 animate-spin mb-4" />
+        <Loader2 className="w-12 h-12 text-teal-600 animate-spin mb-4" />
         <p className="text-ink-600 font-medium">Memuat halaman...</p>
       </div>
     </div>
@@ -207,8 +207,8 @@ export default function DaftarSuksesPage() {
   return (
     <main className="min-h-screen bg-white flex items-center justify-center p-6 relative overflow-hidden">
       {/* Background Decor */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-khaki-100/40 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-khaki-200/20 rounded-full blur-[100px] -translate-x-1/2 translate-y-1/2 pointer-events-none" />
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-sand-100/40 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-sand-200/20 rounded-full blur-[100px] -translate-x-1/2 translate-y-1/2 pointer-events-none" />
       <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.02] pointer-events-none" />
 
       <Suspense fallback={<LoadingFallback />}>

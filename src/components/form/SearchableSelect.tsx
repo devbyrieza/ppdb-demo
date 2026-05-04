@@ -143,7 +143,7 @@ export default function SearchableSelect({
                 {label}
                 {required && (
                     <span
-                        className="text-[var(--color-army-600)] font-bold"
+                        className="text-[var(--color-teal-600)] font-bold"
                         aria-hidden="true"
                     >
                         *
@@ -170,10 +170,10 @@ export default function SearchableSelect({
                         disabled
                             ? "bg-[var(--color-surface-100)] border-[var(--color-ink-100)] text-[var(--color-ink-300)] cursor-not-allowed"
                             : isOpen
-                                ? "bg-[var(--color-white)] border-[var(--color-army-600)] shadow-[0_0_0_3px_rgba(74,102,57,0.10),var(--shadow-xs)] text-[var(--color-ink-900)]"
+                                ? "bg-[var(--color-white)] border-[var(--color-teal-600)] shadow-[0_0_0_3px_rgba(74,102,57,0.10),var(--shadow-xs)] text-[var(--color-ink-900)]"
                                 : value
-                                    ? "bg-[var(--color-white)] border-[var(--color-army-200)] hover:border-[var(--color-army-400)] shadow-[var(--shadow-xs)] text-[var(--color-ink-900)]"
-                                    : "bg-[var(--color-white)] border-[var(--color-army-100)] hover:border-[var(--color-army-300)] shadow-[var(--shadow-xs)] text-[var(--color-ink-400)]",
+                                    ? "bg-[var(--color-white)] border-[var(--color-teal-200)] hover:border-[var(--color-teal-400)] shadow-[var(--shadow-xs)] text-[var(--color-ink-900)]"
+                                    : "bg-[var(--color-white)] border-[var(--color-teal-100)] hover:border-[var(--color-teal-300)] shadow-[var(--shadow-xs)] text-[var(--color-ink-400)]",
                     ].join(" ")}
                 >
                     {/* Selected value or placeholder */}
@@ -185,7 +185,7 @@ export default function SearchableSelect({
                     <span className="shrink-0 flex items-center">
                         {loading ? (
                             <Loader2
-                                className="w-4 h-4 animate-spin text-[var(--color-army-600)]"
+                                className="w-4 h-4 animate-spin text-[var(--color-teal-600)]"
                                 aria-label="Memuat pilihan..."
                             />
                         ) : (
@@ -196,7 +196,7 @@ export default function SearchableSelect({
                             >
                                 <ChevronDown
                                     className={`w-4 h-4 transition-colors duration-150 ${isOpen
-                                            ? "text-[var(--color-army-600)]"
+                                            ? "text-[var(--color-teal-600)]"
                                             : "text-[var(--color-ink-300)]"
                                         }`}
                                 />
@@ -219,7 +219,7 @@ export default function SearchableSelect({
                             style={{
                                 background: "var(--color-white)",
                                 borderRadius: "var(--radius-xl)",
-                                border: "1.5px solid var(--color-army-100)",
+                                border: "1.5px solid var(--color-teal-100)",
                                 boxShadow: "var(--shadow-premium-md)",
                             }}
                         >
@@ -229,7 +229,7 @@ export default function SearchableSelect({
                                 style={{
                                     background:
                                         "linear-gradient(180deg, var(--color-warm-50) 0%, var(--color-white) 100%)",
-                                    borderBottom: "1px solid var(--color-army-100)",
+                                    borderBottom: "1px solid var(--color-teal-100)",
                                 }}
                             >
                                 <div className="relative">
@@ -248,18 +248,18 @@ export default function SearchableSelect({
                                         className="w-full pl-9 pr-9 py-2.5 text-sm font-medium outline-none rounded-[var(--radius-md)] transition-all duration-150"
                                         style={{
                                             background: "var(--color-white)",
-                                            border: "1.5px solid var(--color-army-100)",
+                                            border: "1.5px solid var(--color-teal-100)",
                                             color: "var(--color-ink-900)",
                                         }}
                                         onFocus={(e) => {
                                             e.currentTarget.style.borderColor =
-                                                "var(--color-army-500)";
+                                                "var(--color-teal-500)";
                                             e.currentTarget.style.boxShadow =
                                                 "0 0 0 3px rgba(74,102,57,0.08)";
                                         }}
                                         onBlur={(e) => {
                                             e.currentTarget.style.borderColor =
-                                                "var(--color-army-100)";
+                                                "var(--color-teal-100)";
                                             e.currentTarget.style.boxShadow = "none";
                                         }}
                                     />
@@ -285,8 +285,8 @@ export default function SearchableSelect({
                                                 }}
                                                 onMouseEnter={(e) => {
                                                     const el = e.currentTarget as HTMLElement;
-                                                    el.style.background = "var(--color-army-100)";
-                                                    el.style.color = "var(--color-army-700)";
+                                                    el.style.background = "var(--color-teal-100)";
+                                                    el.style.color = "var(--color-teal-700)";
                                                 }}
                                                 onMouseLeave={(e) => {
                                                     const el = e.currentTarget as HTMLElement;
@@ -336,8 +336,8 @@ export default function SearchableSelect({
                                                     "transition-all duration-[var(--duration-fast)]",
                                                     "[transition-timing-function:var(--ease-smooth)]",
                                                     isSelected
-                                                        ? "bg-[var(--color-army-50)] text-[var(--color-army-800)]"
-                                                        : "text-[var(--color-ink-700)] hover:bg-[var(--color-warm-50)] hover:text-[var(--color-army-700)]",
+                                                        ? "bg-[var(--color-teal-50)] text-[var(--color-teal-800)]"
+                                                        : "text-[var(--color-ink-700)] hover:bg-[var(--color-warm-50)] hover:text-[var(--color-teal-700)]",
                                                 ].join(" ")}
                                             >
                                                 <span className="truncate flex-1">{opt}</span>
@@ -354,8 +354,8 @@ export default function SearchableSelect({
                                                             }}
                                                             className="shrink-0 w-5 h-5 rounded-full flex items-center justify-center"
                                                             style={{
-                                                                background: "var(--color-army-100)",
-                                                                color: "var(--color-army-700)",
+                                                                background: "var(--color-teal-100)",
+                                                                color: "var(--color-teal-700)",
                                                             }}
                                                         >
                                                             <Check
@@ -374,8 +374,8 @@ export default function SearchableSelect({
                                         <div
                                             className="w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-3"
                                             style={{
-                                                background: "var(--color-army-50)",
-                                                color: "var(--color-army-300)",
+                                                background: "var(--color-teal-50)",
+                                                color: "var(--color-teal-300)",
                                             }}
                                         >
                                             <Search className="w-4 h-4" />
@@ -395,7 +395,7 @@ export default function SearchableSelect({
                                                 <span
                                                     className="font-semibold"
                                                     style={{
-                                                        color: "var(--color-army-600)",
+                                                        color: "var(--color-teal-600)",
                                                     }}
                                                 >
                                                     &ldquo;{search}&rdquo;
@@ -411,7 +411,7 @@ export default function SearchableSelect({
                                 <div
                                     className="px-4 py-2.5 text-center"
                                     style={{
-                                        borderTop: "1px solid var(--color-army-50)",
+                                        borderTop: "1px solid var(--color-teal-50)",
                                         background: "var(--color-warm-50)",
                                     }}
                                 >

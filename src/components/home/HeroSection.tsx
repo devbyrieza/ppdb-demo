@@ -41,14 +41,14 @@ export default function HeroSection() {
       ref={ref}
       aria-label="Hero — Beranda PPDB Modern"
       className="relative min-h-[96vh] flex items-center pt-24 pb-20 md:pt-28 lg:pt-32 lg:pb-28 overflow-hidden"
-      style={{ background: "linear-gradient(160deg, var(--color-surface-50) 0%, var(--color-white) 55%, var(--color-army-50) 100%)" }}
+      style={{ background: "linear-gradient(160deg, var(--color-surface-50) 0%, var(--color-white) 55%, var(--color-teal-50) 100%)" }}
     >
       {/* Atmospheric Background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-        <div className="absolute -top-[20%] -left-[10%] w-[55%] h-[65%] rounded-full opacity-30" style={{ background: "radial-gradient(ellipse, var(--color-army-300) 0%, transparent 70%)", filter: "blur(90px)" }} />
-        <div className="absolute top-[10%] -right-[8%] w-[40%] h-[50%] rounded-full opacity-25" style={{ background: "radial-gradient(ellipse, var(--color-khaki-300) 0%, transparent 70%)", filter: "blur(100px)" }} />
-        <div className="absolute bottom-[-5%] left-[20%] w-[45%] h-[40%] rounded-full opacity-[0.18]" style={{ background: "radial-gradient(ellipse, var(--color-army-200) 0%, transparent 70%)", filter: "blur(80px)" }} />
-        <div className="absolute inset-0 opacity-[0.020]" style={{ backgroundImage: `linear-gradient(var(--color-army-500) 1px, transparent 1px), linear-gradient(90deg, var(--color-army-500) 1px, transparent 1px)`, backgroundSize: "64px 64px" }} />
+        <div className="absolute -top-[20%] -left-[10%] w-[55%] h-[65%] rounded-full opacity-30" style={{ background: "radial-gradient(ellipse, var(--color-teal-300) 0%, transparent 70%)", filter: "blur(90px)" }} />
+        <div className="absolute top-[10%] -right-[8%] w-[40%] h-[50%] rounded-full opacity-25" style={{ background: "radial-gradient(ellipse, var(--color-sand-300) 0%, transparent 70%)", filter: "blur(100px)" }} />
+        <div className="absolute bottom-[-5%] left-[20%] w-[45%] h-[40%] rounded-full opacity-[0.18]" style={{ background: "radial-gradient(ellipse, var(--color-teal-200) 0%, transparent 70%)", filter: "blur(80px)" }} />
+        <div className="absolute inset-0 opacity-[0.020]" style={{ backgroundImage: `linear-gradient(var(--color-teal-500) 1px, transparent 1px), linear-gradient(90deg, var(--color-teal-500) 1px, transparent 1px)`, backgroundSize: "64px 64px" }} />
         <div className="absolute inset-0 opacity-[0.018]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")` }} />
       </div>
 
@@ -62,9 +62,9 @@ export default function HeroSection() {
             <motion.div variants={fadeUp} initial="hidden" animate={animate} transition={{ delay: 0.1 }} className="flex justify-center lg:justify-start">
               <span
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] lg:text-[11px] font-bold uppercase tracking-[0.08em]"
-                style={{ background: "var(--color-white)", border: "1px solid var(--color-army-200)", color: "var(--color-army-700)", boxShadow: "var(--shadow-sm), inset 0 1px 0 rgba(255,255,255,0.8)" }}
+                style={{ background: "var(--color-white)", border: "1px solid var(--color-teal-200)", color: "var(--color-teal-700)", boxShadow: "var(--shadow-sm), inset 0 1px 0 rgba(255,255,255,0.8)" }}
               >
-                <Sparkles className="w-3.5 h-3.5 flex-shrink-0" style={{ color: "var(--color-khaki-500)" }} aria-hidden="true" />
+                <Sparkles className="w-3.5 h-3.5 flex-shrink-0" style={{ color: "var(--color-sand-500)" }} aria-hidden="true" />
                 <span>Premium Quality • Managed by Andalus Demo System</span>
               </span>
             </motion.div>
@@ -73,12 +73,12 @@ export default function HeroSection() {
             <motion.div variants={fadeUp} initial="hidden" animate={animate} transition={{ delay: 0.2 }} className="space-y-3">
               <h1
                 className="leading-[1.06] tracking-[-0.03em] mx-auto lg:mx-0 max-w-2xl lg:max-w-none font-black text-balance"
-                style={{ color: "var(--color-army-950)", fontSize: "clamp(2rem, 5vw + 0.75rem, 5rem)" }}
+                style={{ color: "var(--color-teal-950)", fontSize: "clamp(2rem, 5vw + 0.75rem, 5rem)" }}
               >
                 <span className="block">Mencetak Generasi</span>
                 <span
                   className="block mt-1"
-                  style={{ background: "linear-gradient(135deg, var(--color-army-800) 0%, var(--color-khaki-500) 50%, var(--color-army-950) 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent", paddingBottom: "0.15em" }}
+                  style={{ background: "linear-gradient(135deg, var(--color-teal-800) 0%, var(--color-sand-500) 50%, var(--color-teal-950) 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent", paddingBottom: "0.15em" }}
                 >
                   Unggul, Cerdas,{" "}
                   <br className="hidden xl:block" />
@@ -94,25 +94,25 @@ export default function HeroSection() {
               style={{ color: "var(--color-ink-600)", fontWeight: 450 }}
             >
               Bukan sekadar sistem pendaftaran — sebuah pengalaman digital berbasis{" "}
-              <strong className="font-bold" style={{ color: "var(--color-army-800)" }}>Kecepatan, Kemudahan, Keamanan, dan Estetika</strong>{" "}
+              <strong className="font-bold" style={{ color: "var(--color-teal-800)" }}>Kecepatan, Kemudahan, Keamanan, dan Estetika</strong>{" "}
               untuk institusi pendidikan modern.
             </motion.p>
 
             {/* Tagline Divider */}
             <motion.div variants={fadeUp} initial="hidden" animate={animate} transition={{ delay: 0.38 }} className="flex items-center gap-3 justify-center lg:justify-start">
-              <div className="h-px flex-1 max-w-[3rem]" style={{ background: "var(--color-army-200)" }} />
-              <p className="text-sm font-semibold italic" style={{ color: "var(--color-army-700)" }}>
+              <div className="h-px flex-1 max-w-[3rem]" style={{ background: "var(--color-teal-200)" }} />
+              <p className="text-sm font-semibold italic" style={{ color: "var(--color-teal-700)" }}>
                 "Pendidikan Berkualitas, Diperkuat Sistem{" "}
                 {BRANDING.schoolName.toLowerCase().includes("ppdb modern") ? "PPDB Modern" : BRANDING.schoolShortName}"
               </p>
-              <div className="h-px flex-1 max-w-[3rem]" style={{ background: "var(--color-army-200)" }} />
+              <div className="h-px flex-1 max-w-[3rem]" style={{ background: "var(--color-teal-200)" }} />
             </motion.div>
 
             {/* CTA Group */}
             <motion.div variants={fadeUp} initial="hidden" animate={animate} transition={{ delay: 0.45 }} className="flex flex-col gap-4 items-center lg:items-start">
               <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
                 <Link href="/ppdb" className="w-full sm:w-auto">
-                  <button className="btn-primary w-full sm:w-auto px-8 lg:px-10 py-4 lg:py-[1.125rem] min-h-[56px] text-[0.9375rem]" style={{ boxShadow: "var(--shadow-army-lg)" }}>
+                  <button className="btn-primary w-full sm:w-auto px-8 lg:px-10 py-4 lg:py-[1.125rem] min-h-[56px] text-[0.9375rem]" style={{ boxShadow: "var(--shadow-teal-lg)" }}>
                     Daftar PPDB Sekarang
                     <ArrowRight className="w-4 h-4 ml-0.5" aria-hidden="true" />
                   </button>
@@ -126,12 +126,12 @@ export default function HeroSection() {
 
               <div className="flex items-center gap-3 mt-1">
                 <div className="flex -space-x-2.5">
-                  {[{ bg: "var(--color-army-200)" }, { bg: "var(--color-khaki-300)" }, { bg: "var(--color-army-300)" }, { bg: "var(--color-khaki-200)" }].map((item, i) => (
+                  {[{ bg: "var(--color-teal-200)" }, { bg: "var(--color-sand-300)" }, { bg: "var(--color-teal-300)" }, { bg: "var(--color-sand-200)" }].map((item, i) => (
                     <div key={i} className="w-7 h-7 rounded-full border-2 flex-shrink-0" style={{ background: item.bg, borderColor: "var(--color-white)", boxShadow: "var(--shadow-xs)" }} aria-hidden="true" />
                   ))}
                 </div>
                 <p className="text-[11px] font-semibold leading-tight" style={{ color: "var(--color-ink-500)" }}>
-                  <span className="font-bold uppercase tracking-wide" style={{ color: "var(--color-army-700)" }}>Angkatan Pertama</span>
+                  <span className="font-bold uppercase tracking-wide" style={{ color: "var(--color-teal-700)" }}>Angkatan Pertama</span>
                   {" • "}Managed by PPDB Modern IIBS
                 </p>
               </div>
@@ -139,7 +139,7 @@ export default function HeroSection() {
               <div className="flex flex-wrap gap-x-5 gap-y-2 justify-center lg:justify-start mt-1">
                 {["MTs & SMA tersedia", "Proses cepat & transparan", "Jaringan Al-Andalus"].map((point) => (
                   <span key={point} className="flex items-center gap-1.5 text-[11px] font-semibold" style={{ color: "var(--color-ink-500)" }}>
-                    <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" style={{ color: "var(--color-army-500)" }} aria-hidden="true" />
+                    <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" style={{ color: "var(--color-teal-500)" }} aria-hidden="true" />
                     {point}
                   </span>
                 ))}
@@ -157,7 +157,7 @@ export default function HeroSection() {
             {/* Main Image */}
             <div
               className="relative z-10"
-              style={{ borderRadius: "2rem", border: "10px solid var(--color-white)", boxShadow: "var(--shadow-premium-2xl), 0 0 0 1px var(--color-army-100)", overflow: "hidden" }}
+              style={{ borderRadius: "2rem", border: "10px solid var(--color-white)", boxShadow: "var(--shadow-premium-2xl), 0 0 0 1px var(--color-teal-100)", overflow: "hidden" }}
             >
               <Image
                 src="/images/hero.webp"
@@ -180,12 +180,12 @@ export default function HeroSection() {
               style={{ transformOrigin: "right center" }}
             >
               <div className="flex items-center gap-3 px-4 py-3 rounded-2xl" style={{ background: "rgba(255,255,255,0.95)", backdropFilter: "blur(20px) saturate(1.8)", WebkitBackdropFilter: "blur(20px) saturate(1.8)", border: "1px solid rgba(255,255,255,0.7)", boxShadow: "var(--shadow-premium-md)" }}>
-                <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: "var(--color-army-50)" }}>
-                  <GraduationCap className="w-5 h-5" style={{ color: "var(--color-army-600)" }} aria-hidden="true" />
+                <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: "var(--color-teal-50)" }}>
+                  <GraduationCap className="w-5 h-5" style={{ color: "var(--color-teal-600)" }} aria-hidden="true" />
                 </div>
                 <div>
                   <p className="text-[9px] font-bold uppercase tracking-[0.08em] leading-none mb-1" style={{ color: "var(--color-ink-400)" }}>Tersedia</p>
-                  <p className="text-sm font-black leading-tight" style={{ color: "var(--color-army-900)" }}>MTs &amp; SMA</p>
+                  <p className="text-sm font-black leading-tight" style={{ color: "var(--color-teal-900)" }}>MTs &amp; SMA</p>
                   <p className="text-[10px] font-semibold mt-0.5" style={{ color: "var(--color-ink-500)" }}>Kuota terbatas</p>
                 </div>
               </div>
@@ -199,11 +199,11 @@ export default function HeroSection() {
               style={{ transformOrigin: "left center" }}
             >
               <div className="flex items-center gap-3 px-4 py-3 rounded-2xl" style={{ background: "rgba(255,255,255,0.95)", backdropFilter: "blur(20px) saturate(1.8)", WebkitBackdropFilter: "blur(20px) saturate(1.8)", border: "1px solid rgba(255,255,255,0.7)", boxShadow: "var(--shadow-premium-md)" }}>
-                <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: "var(--color-army-50)" }}>
-                  <Globe className="w-5 h-5" style={{ color: "var(--color-army-600)" }} aria-hidden="true" />
+                <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: "var(--color-teal-50)" }}>
+                  <Globe className="w-5 h-5" style={{ color: "var(--color-teal-600)" }} aria-hidden="true" />
                 </div>
                 <div>
-                  <p className="text-sm font-black leading-tight" style={{ color: "var(--color-army-900)" }}>Jaringan Elit</p>
+                  <p className="text-sm font-black leading-tight" style={{ color: "var(--color-teal-900)" }}>Jaringan Elit</p>
                   <p className="text-[10px] font-semibold mt-0.5" style={{ color: "var(--color-ink-500)" }}>Andalus Demo</p>
                 </div>
               </div>
@@ -216,20 +216,20 @@ export default function HeroSection() {
               transition={{ duration: shouldReduceMotion ? 0.01 : 0.85, delay: shouldReduceMotion ? 0 : 0.9, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
               whileHover={shouldReduceMotion ? {} : { rotate: 0, scale: 1.05 }}
               className="absolute -bottom-3 -right-3 md:bottom-6 md:-right-6 lg:bottom-10 lg:-right-10 z-30 cursor-default"
-              style={{ background: "linear-gradient(135deg, var(--color-khaki-300) 0%, var(--color-khaki-500) 100%)", padding: "1rem 1.125rem", borderRadius: "1.5rem", border: "4px solid var(--color-white)", boxShadow: "var(--shadow-premium-lg)", transition: "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)" }}
+              style={{ background: "linear-gradient(135deg, var(--color-sand-300) 0%, var(--color-sand-500) 100%)", padding: "1rem 1.125rem", borderRadius: "1.5rem", border: "4px solid var(--color-white)", boxShadow: "var(--shadow-premium-lg)", transition: "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)" }}
             >
               <div className="text-center min-w-[80px]">
-                <p className="text-[9px] font-black uppercase tracking-[0.1em] leading-none mb-1.5" style={{ color: "var(--color-army-950)" }}>Info Penting</p>
-                <p className="text-base font-black leading-tight" style={{ color: "var(--color-army-900)" }}>Pendaftaran<br />Dibuka</p>
+                <p className="text-[9px] font-black uppercase tracking-[0.1em] leading-none mb-1.5" style={{ color: "var(--color-teal-950)" }}>Info Penting</p>
+                <p className="text-base font-black leading-tight" style={{ color: "var(--color-teal-900)" }}>Pendaftaran<br />Dibuka</p>
                 <div className="mt-2 py-1 px-2.5 rounded-full" style={{ background: "rgba(10, 22, 16, 0.12)" }}>
-                  <p className="text-[9px] font-bold" style={{ color: "var(--color-army-900)" }}>Kuota Terbatas</p>
+                  <p className="text-[9px] font-bold" style={{ color: "var(--color-teal-900)" }}>Kuota Terbatas</p>
                 </div>
               </div>
             </motion.div>
 
             {/* Decorative blobs */}
-            <div className="absolute -z-10 -bottom-14 -right-14 w-64 h-64 rounded-full pointer-events-none" style={{ background: "radial-gradient(ellipse, var(--color-army-400) 0%, transparent 70%)", filter: "blur(40px)", opacity: 0.15 }} aria-hidden="true" />
-            <div className="absolute -z-10 -top-10 -left-10 w-48 h-48 rounded-full pointer-events-none" style={{ background: "radial-gradient(ellipse, var(--color-khaki-400) 0%, transparent 70%)", filter: "blur(36px)", opacity: 0.20 }} aria-hidden="true" />
+            <div className="absolute -z-10 -bottom-14 -right-14 w-64 h-64 rounded-full pointer-events-none" style={{ background: "radial-gradient(ellipse, var(--color-teal-400) 0%, transparent 70%)", filter: "blur(40px)", opacity: 0.15 }} aria-hidden="true" />
+            <div className="absolute -z-10 -top-10 -left-10 w-48 h-48 rounded-full pointer-events-none" style={{ background: "radial-gradient(ellipse, var(--color-sand-400) 0%, transparent 70%)", filter: "blur(36px)", opacity: 0.20 }} aria-hidden="true" />
           </motion.div>
 
         </div>

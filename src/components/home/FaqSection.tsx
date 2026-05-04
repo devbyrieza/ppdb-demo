@@ -35,15 +35,15 @@ const FAQS = [
 
 function FaqItem({ question, answer, isOpen, toggle }: { question: string, answer: string, isOpen: boolean, toggle: () => void }) {
     return (
-        <div className={`rounded-[24px] border transition-all duration-300 overflow-hidden ${isOpen ? 'bg-white border-khaki-200 shadow-md ring-1 ring-khaki-100' : 'bg-white border-khaki-200 hover:border-army-200 hover:bg-khaki-50/50'}`}>
+        <div className={`rounded-[24px] border transition-all duration-300 overflow-hidden ${isOpen ? 'bg-white border-sand-200 shadow-md ring-1 ring-sand-100' : 'bg-white border-sand-200 hover:border-teal-200 hover:bg-sand-50/50'}`}>
             <button
                 onClick={toggle}
-                className="w-full px-6 py-5 md:px-8 md:py-6 text-left flex items-center justify-between gap-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-army-500 rounded-[24px]"
+                className="w-full px-6 py-5 md:px-8 md:py-6 text-left flex items-center justify-between gap-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 rounded-[24px]"
             >
-                <span className={`font-bold text-base md:text-lg tracking-tight transition-colors pr-4 ${isOpen ? 'text-army-700' : 'text-ink-950'}`}>
+                <span className={`font-bold text-base md:text-lg tracking-tight transition-colors pr-4 ${isOpen ? 'text-teal-700' : 'text-ink-950'}`}>
                     {question}
                 </span>
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${isOpen ? 'bg-army-600 text-white rotate-180 shadow-md' : 'bg-khaki-100 text-army-600 group-hover:bg-khaki-200'}`}>
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${isOpen ? 'bg-teal-600 text-white rotate-180 shadow-md' : 'bg-sand-100 text-teal-600 group-hover:bg-sand-200'}`}>
                     <ChevronDown className="w-5 h-5" />
                 </div>
             </button>
@@ -56,7 +56,7 @@ function FaqItem({ question, answer, isOpen, toggle }: { question: string, answe
                         transition={{ duration: 0.3, ease: "easeInOut" }}
                     >
                         <div className="px-6 pb-6 md:px-8 md:pb-8 pt-0">
-                            <div className="h-px bg-khaki-200 w-12 mb-6" />
+                            <div className="h-px bg-sand-200 w-12 mb-6" />
                             <p className="text-ink-600 leading-relaxed font-medium text-[15px] sm:text-base text-left">
                                 {answer}
                             </p>
@@ -74,7 +74,7 @@ export default function FaqSection() {
     return (
         <section id="faq" className="section-std relative">
             {/* Decorative Blur */}
-            <div className="absolute top-1/2 left-0 -translate-y-1/2 w-64 h-64 bg-khaki-100 rounded-full blur-[100px] opacity-60 pointer-events-none" />
+            <div className="absolute top-1/2 left-0 -translate-y-1/2 w-64 h-64 bg-sand-100 rounded-full blur-[100px] opacity-60 pointer-events-none" />
 
             <Container className="relative z-10">
                 <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
@@ -82,7 +82,7 @@ export default function FaqSection() {
                         initial={{ opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-khaki-50 border border-khaki-200 text-army-700 text-xs font-bold uppercase tracking-widest mb-6 shadow-sm"
+                        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-sand-50 border border-sand-200 text-teal-700 text-xs font-bold uppercase tracking-widest mb-6 shadow-sm"
                     >
                         <HelpCircle className="w-3.5 h-3.5" />
                         <span>Tanya Jawab</span>
@@ -94,7 +94,7 @@ export default function FaqSection() {
                         viewport={{ once: true }}
                         className="section-title mb-6"
                     >
-                        Sering <span className="text-gradient-army">Ditanyakan</span>
+                        Sering <span className="text-gradient-teal">Ditanyakan</span>
                     </motion.h2>
 
                     <motion.p
@@ -109,7 +109,7 @@ export default function FaqSection() {
 
                 <div className="max-w-4xl mx-auto space-y-4 relative">
                     {/* Decorative element behind FAQs */}
-                    <div className="absolute top-10 -right-20 w-40 h-40 bg-khaki-100/50 rounded-full blur-[60px] -z-10 pointer-events-none" />
+                    <div className="absolute top-10 -right-20 w-40 h-40 bg-sand-100/50 rounded-full blur-[60px] -z-10 pointer-events-none" />
                     
                     {FAQS.map((faq, idx) => (
                         <motion.div
@@ -136,8 +136,8 @@ export default function FaqSection() {
                     viewport={{ once: true }}
                     className="mt-16 sm:mt-20 text-center max-w-md mx-auto"
                 >
-                    <div className="bg-khaki-50 rounded-3xl p-8 border border-khaki-200 text-center shadow-sm relative overflow-hidden group">
-                        <div className="absolute inset-0 bg-gradient-to-r from-khaki-100/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <div className="bg-sand-50 rounded-3xl p-8 border border-sand-200 text-center shadow-sm relative overflow-hidden group">
+                        <div className="absolute inset-0 bg-gradient-to-r from-sand-100/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                         <p className="text-ink-600 font-bold mb-5 relative z-10 text-sm tracking-wide uppercase">Punya pertanyaan lain?</p>
                         <a
                             href="https://wa.me/6288809934970"

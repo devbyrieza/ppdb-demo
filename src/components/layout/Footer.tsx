@@ -45,12 +45,12 @@ export default function Footer() {
       className="relative overflow-hidden pt-20 pb-28 md:pb-14"
       style={{
         background:
-          "linear-gradient(160deg, var(--color-army-900) 0%, var(--color-army-950) 55%, #0D110A 100%)",
+          "linear-gradient(160deg, var(--color-teal-900) 0%, var(--color-teal-950) 55%, #0D110A 100%)",
         borderTop: "1px solid rgba(255,255,255,0.05)",
       }}
     >
-      {/* ── Decorative orbs — army-tinted ── */}
-      {/* Orb utama: army warm kanan-atas */}
+      {/* ── Decorative orbs — teal-tinted ── */}
+      {/* Orb utama: teal warm kanan-atas */}
       <div
         className="absolute top-0 right-0 w-[520px] h-[520px] rounded-full pointer-events-none -translate-y-1/2 translate-x-1/3"
         style={{
@@ -74,7 +74,7 @@ export default function Footer() {
             "radial-gradient(circle, rgba(58,80,41,0.20) 0%, transparent 70%)",
         }}
       />
-      {/* Topline shimmer — army-gold */}
+      {/* Topline shimmer — teal-gold */}
       <div
         className="absolute top-0 left-0 right-0 h-px pointer-events-none"
         style={{
@@ -93,7 +93,7 @@ export default function Footer() {
                 className="w-12 h-12 rounded-2xl flex items-center justify-center overflow-hidden flex-shrink-0 transition-all duration-500 group-hover:scale-105 group-hover:-rotate-3"
                 style={{
                   background:
-                    "linear-gradient(135deg, var(--color-army-800) 0%, var(--color-army-700) 100%)",
+                    "linear-gradient(135deg, var(--color-teal-800) 0%, var(--color-teal-700) 100%)",
                   boxShadow: "0 4px 16px rgba(0,0,0,0.30), 0 0 0 1px rgba(92,125,74,0.35)",
                 }}
               >
@@ -334,7 +334,7 @@ export default function Footer() {
               </Link>
             ))}
 
-            {/* Language toggle — army glass */}
+            {/* Language toggle — teal glass */}
             <div
               className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold"
               style={{

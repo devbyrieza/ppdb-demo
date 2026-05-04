@@ -16,7 +16,7 @@ import { navigateToDetail } from "@/lib/navigation-scroll";
 
 const SPRING: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
-type ProgramVariant = "army" | "khaki";
+type ProgramVariant = "teal" | "sand";
 
 interface ProgramItem {
     title: string;
@@ -42,7 +42,7 @@ const PROGRAMS: ProgramItem[] = [
         ],
         quota: "25 Kursi",
         icon: School,
-        variant: "army",
+        variant: "teal",
     },
     {
         title: "I'dad Lughowi",
@@ -57,7 +57,7 @@ const PROGRAMS: ProgramItem[] = [
         ],
         quota: "25 Kursi",
         icon: BookOpen,
-        variant: "khaki",
+        variant: "sand",
     },
 ];
 
@@ -88,41 +88,41 @@ const featureVariants: Variants = {
 
 function getTokens(variant: ProgramVariant) {
     switch (variant) {
-        case "army":
+        case "teal":
             return {
                 accentBar:
-                    "bg-gradient-to-r from-army-700 via-army-500 to-army-300",
-                corner: "bg-army-50",
-                icon: "bg-army-700 text-khaki-100",
-                subtitleText: "text-army-600",
-                dividerLine: "bg-army-300",
-                checkBg: "bg-army-50 border-army-200",
+                    "bg-gradient-to-r from-teal-700 via-teal-500 to-teal-300",
+                corner: "bg-teal-50",
+                icon: "bg-teal-700 text-sand-100",
+                subtitleText: "text-teal-600",
+                dividerLine: "bg-teal-300",
+                checkBg: "bg-teal-50 border-teal-200",
                 checkHover:
-                    "group-hover/item:bg-army-600 group-hover/item:border-army-600",
+                    "group-hover/item:bg-teal-600 group-hover/item:border-teal-600",
                 checkIcon:
-                    "text-army-600 group-hover/item:text-white",
+                    "text-teal-600 group-hover/item:text-white",
                 ctaBtn:
-                    "bg-white border-army-200 text-army-800 hover:bg-army-700 hover:border-army-700 hover:text-khaki-100",
-                cardBorder: "border-army-100 group-hover:border-army-200",
-                hoverTitle: "group-hover:text-army-800",
+                    "bg-white border-teal-200 text-teal-800 hover:bg-teal-700 hover:border-teal-700 hover:text-sand-100",
+                cardBorder: "border-teal-100 group-hover:border-teal-200",
+                hoverTitle: "group-hover:text-teal-800",
             };
-        case "khaki":
+        case "sand":
             return {
                 accentBar:
-                    "bg-gradient-to-r from-khaki-600 via-khaki-400 to-khaki-200",
-                corner: "bg-khaki-50",
-                icon: "bg-khaki-400 text-army-900",
-                subtitleText: "text-khaki-600",
-                dividerLine: "bg-khaki-300",
-                checkBg: "bg-khaki-50 border-khaki-200",
+                    "bg-gradient-to-r from-sand-600 via-sand-400 to-sand-200",
+                corner: "bg-sand-50",
+                icon: "bg-sand-400 text-teal-900",
+                subtitleText: "text-sand-600",
+                dividerLine: "bg-sand-300",
+                checkBg: "bg-sand-50 border-sand-200",
                 checkHover:
-                    "group-hover/item:bg-khaki-500 group-hover/item:border-khaki-500",
+                    "group-hover/item:bg-sand-500 group-hover/item:border-sand-500",
                 checkIcon:
-                    "text-khaki-600 group-hover/item:text-army-950",
+                    "text-sand-600 group-hover/item:text-teal-950",
                 ctaBtn:
-                    "bg-white border-khaki-300 text-army-800 hover:bg-khaki-500 hover:border-khaki-500 hover:text-army-950",
-                cardBorder: "border-khaki-100 group-hover:border-khaki-300",
-                hoverTitle: "group-hover:text-army-700",
+                    "bg-white border-sand-300 text-teal-800 hover:bg-sand-500 hover:border-sand-500 hover:text-teal-950",
+                cardBorder: "border-sand-100 group-hover:border-sand-300",
+                hoverTitle: "group-hover:text-teal-700",
             };
     }
 }
@@ -130,13 +130,13 @@ function getTokens(variant: ProgramVariant) {
 export default function ProgramSection() {
     return (
         <section id="program" className="section-std relative overflow-hidden">
-            {/* Ambient blobs — army & khaki */}
+            {/* Ambient blobs — teal & sand */}
             <div
                 aria-hidden
                 className="pointer-events-none absolute inset-0 overflow-hidden"
             >
-                <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-army-50/70 blur-3xl" />
-                <div className="absolute -bottom-32 -left-32 w-[400px] h-[400px] rounded-full bg-khaki-100/50 blur-3xl" />
+                <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-teal-50/70 blur-3xl" />
+                <div className="absolute -bottom-32 -left-32 w-[400px] h-[400px] rounded-full bg-sand-100/50 blur-3xl" />
             </div>
 
             <Container className="relative z-10">
@@ -150,7 +150,7 @@ export default function ProgramSection() {
                         transition={{ type: "tween", duration: 0.5, ease: SPRING }}
                         className="inline-flex mb-6"
                     >
-                        <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-army-50 border border-army-100 text-army-700 text-[11px] font-bold uppercase tracking-[0.12em] shadow-xs">
+                        <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-teal-700 text-[11px] font-bold uppercase tracking-[0.12em] shadow-xs">
                             <GraduationCap className="w-3 h-3" />
                             Jenjang Pendidikan
                         </span>
@@ -169,7 +169,7 @@ export default function ProgramSection() {
                         className="section-title mb-5 text-balance"
                     >
                         Program Studi{" "}
-                        <span className="text-gradient-army">Unggulan</span>
+                        <span className="text-gradient-teal">Unggulan</span>
                     </motion.h2>
 
                     <motion.p

@@ -58,7 +58,7 @@ function GalleryCard({
           fill
           className="object-cover transition-transform duration-700 group-hover:scale-111"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-army-950/80 via-army-900/20 to-transparent opacity-90 transition-opacity duration-300" />
+        <div className="absolute inset-0 bg-gradient-to-t from-teal-950/80 via-teal-900/20 to-transparent opacity-90 transition-opacity duration-300" />
       </div>
 
       {/* Floating Icon */}
@@ -69,7 +69,7 @@ function GalleryCard({
       {/* Content Overlay */}
       <div className="absolute bottom-0 left-0 right-0 p-6">
         <h3 className="text-white font-bold text-lg mb-1 translate-y-2 group-hover:translate-y-0 transition-transform duration-300">{title}</h3>
-        <p className="text-khaki-50/80 text-sm translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300 delay-[50ms]">{description}</p>
+        <p className="text-sand-50/80 text-sm translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300 delay-[50ms]">{description}</p>
       </div>
     </div>
   );
@@ -82,12 +82,12 @@ export default function GallerySection() {
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 lg:mb-16">
           <div className="max-w-xl">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-khaki-50 border border-khaki-200 text-army-700 text-xs font-bold uppercase tracking-widest mb-4 shadow-sm">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-sand-50 border border-sand-200 text-teal-700 text-xs font-bold uppercase tracking-widest mb-4 shadow-sm">
               <Images className="w-3.5 h-3.5" />
               <span>Dokumentasi</span>
             </div>
             <h2 className="section-title mb-0">
-              Galeri <span className="text-gradient-army">Aktivitas</span>
+              Galeri <span className="text-gradient-teal">Aktivitas</span>
             </h2>
             <p className="section-subtitle lg:ml-0 text-left mt-4 text-justify">
               Intip kegiatan sehari-hari para santri dalam menuntut ilmu dan beribadah.
@@ -111,12 +111,12 @@ export default function GallerySection() {
         </div>
 
         {/* Daily Schedule Preview */}
-        <div className="bg-gradient-to-br from-khaki-100 to-white p-8 md:p-12 relative overflow-hidden rounded-t-[3rem] border border-khaki-200 border-b-0 shadow-[0_-15px_40px_-15px_rgba(0,0,0,0.05)]">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-army-50/50 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
+        <div className="bg-gradient-to-br from-sand-100 to-white p-8 md:p-12 relative overflow-hidden rounded-t-[3rem] border border-sand-200 border-b-0 shadow-[0_-15px_40px_-15px_rgba(0,0,0,0.05)]">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-teal-50/50 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
 
           <div className="relative z-10 grid lg:grid-cols-2 gap-10 items-center max-w-6xl mx-auto">
             <div>
-              <h3 className="text-3xl font-black text-army-900 mb-4 tracking-tight">Jadwal Harian Berkah</h3>
+              <h3 className="text-3xl font-black text-teal-900 mb-4 tracking-tight">Jadwal Harian Berkah</h3>
               <p className="text-ink-600 font-medium mb-8 max-w-md leading-relaxed text-justify">
                 Setiap detik sangat berharga. Kami mengatur jadwal santri agar seimbang antara ibadah, belajar, istirahat, dan bersosialisasi.
               </p>
@@ -138,7 +138,7 @@ export default function GallerySection() {
                 </div>
               </div>
               <div className="app-card p-4 sm:p-5 flex items-center gap-4">
-                <div className="w-12 h-12 rounded-[14px] bg-army-50 flex items-center justify-center text-army-600 shadow-sm shrink-0">
+                <div className="w-12 h-12 rounded-[14px] bg-teal-50 flex items-center justify-center text-teal-600 shadow-sm shrink-0">
                   <BookOpen className="w-6 h-6" />
                 </div>
                 <div>

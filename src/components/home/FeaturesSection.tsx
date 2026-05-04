@@ -53,18 +53,18 @@ export default function FeaturesSection() {
               className="space-y-8"
             >
               <div>
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-khaki-50 border border-khaki-200 text-army-700 text-xs font-bold uppercase tracking-widest mb-6 shadow-sm">
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-sand-50 border border-sand-200 text-teal-700 text-xs font-bold uppercase tracking-widest mb-6 shadow-sm">
                   <Award className="w-3.5 h-3.5" />
                   <span>Keunggulan Utama</span>
                 </div>
                 <h2 className="section-title mb-3">
                   Kenapa Harus PPDB
                 </h2>
-                <p className="text-xs font-bold text-army-600 uppercase tracking-widest mb-6">
+                <p className="text-xs font-bold text-teal-600 uppercase tracking-widest mb-6">
                   Managed by PPDB Modern
                 </p>
                 <p className="text-lg text-ink-600 leading-relaxed font-medium text-justify lg:text-left">
-                  Sistem pembentukan karakter berbasis <strong className="text-army-700">Lingkungan, Kebiasaan, Komunitas, dan Spiritualitas</strong> — bukan sekadar tempat belajar agama.
+                  Sistem pembentukan karakter berbasis <strong className="text-teal-700">Lingkungan, Kebiasaan, Komunitas, dan Spiritualitas</strong> — bukan sekadar tempat belajar agama.
                 </p>
               </div>
 
@@ -76,13 +76,13 @@ export default function FeaturesSection() {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: idx * 0.1 }}
-                    className="bg-white p-6 rounded-[2rem] flex gap-6 group items-start border border-khaki-200/60 hover:border-army-300 hover:shadow-premium-xl transition-all duration-500 cursor-default"
+                    className="bg-white p-6 rounded-[2rem] flex gap-6 group items-start border border-sand-200/60 hover:border-teal-300 hover:shadow-premium-xl transition-all duration-500 cursor-default"
                   >
-                    <div className="w-16 h-16 rounded-[1.25rem] bg-linear-to-br from-khaki-50 to-khaki-100 flex items-center justify-center shrink-0 shadow-premium-xs group-hover:bg-army-700 group-hover:rotate-6 transition-all duration-500">
-                      <feature.icon className="w-8 h-8 text-army-800 group-hover:text-white transition-colors" />
+                    <div className="w-16 h-16 rounded-[1.25rem] bg-linear-to-br from-sand-50 to-sand-100 flex items-center justify-center shrink-0 shadow-premium-xs group-hover:bg-teal-700 group-hover:rotate-6 transition-all duration-500">
+                      <feature.icon className="w-8 h-8 text-teal-800 group-hover:text-white transition-colors" />
                     </div>
                     <div>
-                      <h4 className="font-black text-ink-950 text-lg mb-2 group-hover:text-army-800 transition-colors tracking-tight">{feature.title}</h4>
+                      <h4 className="font-black text-ink-950 text-lg mb-2 group-hover:text-teal-800 transition-colors tracking-tight">{feature.title}</h4>
                       <p className="text-[14px] text-ink-600 leading-relaxed font-medium">{feature.description}</p>
                     </div>
                   </motion.div>
@@ -110,41 +110,41 @@ export default function FeaturesSection() {
             >
               <div className="space-y-4 lg:space-y-6 mt-12">
                 <div className="app-card p-6 sm:p-8 min-h-56 md:h-64 flex flex-col justify-end items-start group">
-                  <p className="text-4xl lg:text-5xl font-black text-army-900 mb-2 tracking-tighter uppercase">TA 26/27</p>
+                  <p className="text-4xl lg:text-5xl font-black text-teal-900 mb-2 tracking-tighter uppercase">TA 26/27</p>
                   <div className="space-y-1">
                     <p className="text-sm font-bold text-ink-700 uppercase tracking-wider">Angkatan Pertama</p>
                     <p className="text-xs leading-tight text-ink-500 font-medium">
                       Dimulainya Sejarah Baru <br />
-                      <span className="text-army-700 font-bold block mt-1">Managed by PPDB Modern</span>
+                      <span className="text-teal-700 font-bold block mt-1">Managed by PPDB Modern</span>
                     </p>
                   </div>
                 </div>
 
-                <div className="bg-linear-to-br from-army-600 via-army-700 to-army-900 border border-white/10 p-6 sm:p-8 rounded-[2rem] shadow-xl min-h-64 md:h-72 flex flex-col justify-center items-center text-center relative overflow-hidden group hover:shadow-2xl hover:-translate-y-1 transition-all duration-500">
+                <div className="bg-linear-to-br from-teal-600 via-teal-700 to-teal-900 border border-white/10 p-6 sm:p-8 rounded-[2rem] shadow-xl min-h-64 md:h-72 flex flex-col justify-center items-center text-center relative overflow-hidden group hover:shadow-2xl hover:-translate-y-1 transition-all duration-500">
                   <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-10 mix-blend-overlay" />
                   {/* Decorative glow */}
-                  <div className="absolute -top-24 -right-24 w-48 h-48 bg-khaki-400/20 blur-[60px] rounded-full pointer-events-none group-hover:bg-khaki-400/30 transition-colors" />
+                  <div className="absolute -top-24 -right-24 w-48 h-48 bg-sand-400/20 blur-[60px] rounded-full pointer-events-none group-hover:bg-sand-400/30 transition-colors" />
                   
                   <div className="w-20 h-20 rounded-2xl bg-white/10 flex items-center justify-center mb-6 backdrop-blur-md group-hover:scale-110 transition-transform duration-500 border border-white/20 shadow-inner">
-                    <BookOpenCheck className="w-10 h-10 text-khaki-300" />
+                    <BookOpenCheck className="w-10 h-10 text-sand-300" />
                   </div>
-                  <h3 className="font-black text-2xl text-white tracking-tight leading-tight group-hover:text-khaki-100 transition-colors">
+                  <h3 className="font-black text-2xl text-white tracking-tight leading-tight group-hover:text-sand-100 transition-colors">
                     Tahfidz<br />Intensif
                   </h3>
-                  <div className="mt-4 w-12 h-1 bg-khaki-400/30 rounded-full group-hover:w-16 group-hover:bg-khaki-400 transition-all duration-500" />
+                  <div className="mt-4 w-12 h-1 bg-sand-400/30 rounded-full group-hover:w-16 group-hover:bg-sand-400 transition-all duration-500" />
                 </div>
               </div>
 
               <div className="space-y-4 lg:space-y-6">
                 <div className="app-card p-6 sm:p-8 min-h-64 md:h-72 flex flex-col justify-center items-center text-center group">
-                  <div className="w-20 h-20 bg-khaki-100 rounded-xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform duration-500">
-                    <ShieldCheck className="w-10 h-10 text-army-600" />
+                  <div className="w-20 h-20 bg-sand-100 rounded-xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform duration-500">
+                    <ShieldCheck className="w-10 h-10 text-teal-600" />
                   </div>
-                  <p className="font-black text-2xl text-army-900">Lingkungan<br />Islami</p>
+                  <p className="font-black text-2xl text-teal-900">Lingkungan<br />Islami</p>
                 </div>
 
-                <div className="bg-khaki-50/80 backdrop-blur-lg border border-khaki-200 p-6 sm:p-8 rounded-[2rem] shadow-sm min-h-56 md:h-64 flex flex-col justify-end items-start hover:shadow-md transition-all duration-300">
-                  <p className="text-4xl font-black mb-1 text-army-800 tracking-tighter">RESMI</p>
+                <div className="bg-sand-50/80 backdrop-blur-lg border border-sand-200 p-6 sm:p-8 rounded-[2rem] shadow-sm min-h-56 md:h-64 flex flex-col justify-end items-start hover:shadow-md transition-all duration-300">
+                  <p className="text-4xl font-black mb-1 text-teal-800 tracking-tighter">RESMI</p>
                   <div className="space-y-1 mt-2">
                     <p className="text-sm font-bold text-ink-800">Ijazah Diakui Negara</p>
                     <p className="text-xs text-ink-500 font-medium leading-tight">
@@ -156,7 +156,7 @@ export default function FeaturesSection() {
             </motion.div>
 
             {/* Subtle glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-khaki-200/40 rounded-full blur-[100px] z-0" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-sand-200/40 rounded-full blur-[100px] z-0" />
           </div>
 
         </div>

@@ -6,12 +6,12 @@ import { cn } from "@/lib/utils";
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    BUTTON — Al-Andalus Template (Master)
-   Primary: Hijau Army  |  Accent: Gold + Warm
+   Primary: Hijau teal  |  Accent: Gold + Warm
    Token dari globals.css al-andalus:
 
-   ARMY  (Template default — primary identity)
-   · --shadow-army, --shadow-army-lg
-   · --color-army-*, --color-warm-*
+   teal  (Template default — primary identity)
+   · --shadow-teal, --shadow-teal-lg
+   · --color-teal-*, --color-warm-*
 
    GOLD / WARM (Accent premium)
    · --shadow-gold, --shadow-gold-lg, --shadow-warm
@@ -38,10 +38,10 @@ const buttonVariants = cva(
     "transition-all",
     "duration-[var(--duration-base)]",
     "[transition-timing-function:var(--ease-spring)]",
-    /* Focus ring — army sebagai default template */
+    /* Focus ring — teal sebagai default template */
     "focus-visible:outline-none",
     "focus-visible:ring-2",
-    "focus-visible:ring-[var(--color-army-600)]",
+    "focus-visible:ring-[var(--color-teal-600)]",
     "focus-visible:ring-offset-2",
     "focus-visible:ring-offset-[var(--color-surface-50)]",
     /* Disabled */
@@ -53,47 +53,47 @@ const buttonVariants = cva(
     variants: {
       variant: {
         /* ════════════════════════════════════
-           ARMY GROUP — Template Default
+           teal GROUP — Template Default
            (Al-Andalus primary identity)
            ════════════════════════════════════ */
 
-        /* ─── PRIMARY ARMY ─── */
+        /* ─── PRIMARY teal ─── */
         primary: [
           "relative overflow-hidden",
-          "bg-gradient-to-br from-[var(--color-army-600)] to-[var(--color-army-900)]",
+          "bg-gradient-to-br from-[var(--color-teal-600)] to-[var(--color-teal-900)]",
           "text-[var(--color-warm-100)]",
-          "[box-shadow:var(--shadow-army)]",
+          "[box-shadow:var(--shadow-teal)]",
           "before:absolute before:inset-0 before:rounded-[inherit]",
           "before:bg-gradient-to-br before:from-white/[0.10] before:to-transparent",
           "before:pointer-events-none",
           "hover:-translate-y-[2px]",
-          "hover:[box-shadow:var(--shadow-army-lg)]",
+          "hover:[box-shadow:var(--shadow-teal-lg)]",
           "hover:brightness-[1.08]",
           "active:translate-y-0",
         ].join(" "),
 
-        /* ─── SECONDARY ARMY ─── */
+        /* ─── SECONDARY teal ─── */
         secondary: [
           "bg-[var(--color-white)]",
-          "text-[var(--color-army-700)]",
-          "border border-[var(--color-army-200)]",
+          "text-[var(--color-teal-700)]",
+          "border border-[var(--color-teal-200)]",
           "[box-shadow:var(--shadow-xs)]",
-          "hover:bg-[var(--color-army-50)]",
-          "hover:border-[var(--color-army-400)]",
+          "hover:bg-[var(--color-teal-50)]",
+          "hover:border-[var(--color-teal-400)]",
           "hover:[box-shadow:var(--shadow-sm)]",
           "hover:-translate-y-[1px]",
           "active:translate-y-0",
         ].join(" "),
 
-        /* ─── OUTLINE ARMY ─── */
+        /* ─── OUTLINE teal ─── */
         outline: [
           "bg-transparent",
-          "text-[var(--color-army-700)]",
-          "border-[1.5px] border-[var(--color-army-300)]",
-          "hover:bg-[var(--color-army-900)]",
+          "text-[var(--color-teal-700)]",
+          "border-[1.5px] border-[var(--color-teal-300)]",
+          "hover:bg-[var(--color-teal-900)]",
           "hover:text-[var(--color-warm-100)]",
-          "hover:border-[var(--color-army-900)]",
-          "hover:[box-shadow:var(--shadow-army)]",
+          "hover:border-[var(--color-teal-900)]",
+          "hover:[box-shadow:var(--shadow-teal)]",
           "hover:-translate-y-[1px]",
           "active:translate-y-0",
         ].join(" "),
@@ -197,7 +197,7 @@ const buttonVariants = cva(
         gold: [
           "relative overflow-hidden",
           "bg-gradient-to-br from-[var(--color-gold-300)] to-[var(--color-gold-500)]",
-          "text-[var(--color-army-950)]",
+          "text-[var(--color-teal-950)]",
           "[box-shadow:var(--shadow-gold)]",
           "before:absolute before:inset-0 before:rounded-[inherit]",
           "before:bg-gradient-to-br before:from-white/20 before:to-transparent",
@@ -212,7 +212,7 @@ const buttonVariants = cva(
         warm: [
           "relative overflow-hidden",
           "bg-gradient-to-br from-[var(--color-warm-200)] to-[var(--color-warm-400)]",
-          "text-[var(--color-army-900)]",
+          "text-[var(--color-teal-900)]",
           "border border-[var(--color-warm-400)]",
           "[box-shadow:var(--shadow-warm)]",
           "before:absolute before:inset-0 before:rounded-[inherit]",
@@ -264,9 +264,9 @@ const buttonVariants = cva(
           "bg-transparent",
           "text-[var(--color-ink-600)]",
           "border border-transparent",
-          "hover:bg-[var(--color-army-50)]",
-          "hover:text-[var(--color-army-800)]",
-          "hover:border-[var(--color-army-100)]",
+          "hover:bg-[var(--color-teal-50)]",
+          "hover:text-[var(--color-teal-800)]",
+          "hover:border-[var(--color-teal-100)]",
           "[transition-timing-function:var(--ease-smooth)]",
           "duration-[var(--duration-fast)]",
         ].join(" "),
@@ -282,12 +282,12 @@ const buttonVariants = cva(
           "active:translate-y-0",
         ].join(" "),
 
-        /* ─── LINK — Inline text, army default ─── */
+        /* ─── LINK — Inline text, teal default ─── */
         link: [
           "bg-transparent p-0 h-auto",
-          "text-[var(--color-army-700)]",
+          "text-[var(--color-teal-700)]",
           "font-medium underline-offset-4",
-          "hover:underline hover:text-[var(--color-army-900)]",
+          "hover:underline hover:text-[var(--color-teal-900)]",
           "[transition-timing-function:var(--ease-smooth)]",
           "duration-[var(--duration-fast)]",
           "active:scale-100",

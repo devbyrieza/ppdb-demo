@@ -192,7 +192,7 @@ export default function AdminDashboardPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[50vh]">
-        <Loader2 className="w-8 h-8 animate-spin text-army-600" />
+        <Loader2 className="w-8 h-8 animate-spin text-teal-600" />
       </div>
     );
   }
@@ -211,7 +211,7 @@ export default function AdminDashboardPage() {
         <div
           className={`rounded-3xl border-2 px-8 py-5 flex items-center justify-between shadow-clay-sm animate-in slide-in-from-top duration-500 ${daysLeft <= 7
               ? "bg-red-50 border-red-200 text-red-900"
-              : "bg-khaki-50 border-khaki-200 text-army-950"
+              : "bg-sand-50 border-sand-200 text-teal-950"
             }`}
         >
           <div className="flex items-center gap-4">
@@ -224,7 +224,7 @@ export default function AdminDashboardPage() {
             </div>
           </div>
           <div
-            className={`px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${daysLeft <= 7 ? "bg-red-600 text-white" : "bg-army-900 text-white"
+            className={`px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${daysLeft <= 7 ? "bg-red-600 text-white" : "bg-teal-900 text-white"
               }`}
           >
             {daysLeft <= 7 ? "Mendesak" : "Berjalan"}
@@ -232,8 +232,8 @@ export default function AdminDashboardPage() {
         </div>
       )}
 
-      <div className="relative overflow-hidden rounded-4xl bg-linear-to-br from-army-700 to-army-900 p-10 md:p-16 text-white shadow-2xl app-card border border-army-600">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-khaki-400/10 rounded-full blur-3xl" />
+      <div className="relative overflow-hidden rounded-4xl bg-linear-to-br from-teal-700 to-teal-900 p-10 md:p-16 text-white shadow-2xl app-card border border-teal-600">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-sand-400/10 rounded-full blur-3xl" />
         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10">
           <div>
             <div className="flex flex-col sm:flex-row items-center gap-3 mb-4">
@@ -244,10 +244,10 @@ export default function AdminDashboardPage() {
                 <select
                   value={selectedTahunAjaranId}
                   onChange={(e) => setSelectedTahunAjaranId(e.target.value)}
-                  className="bg-army-800/50 text-white text-[10px] font-black uppercase tracking-widest border border-white/20 rounded-full px-3 py-1 focus:outline-none focus:ring-1 focus:ring-khaki-400 cursor-pointer hover:bg-army-800 transition-colors"
+                  className="bg-teal-800/50 text-white text-[10px] font-black uppercase tracking-widest border border-white/20 rounded-full px-3 py-1 focus:outline-none focus:ring-1 focus:ring-sand-400 cursor-pointer hover:bg-teal-800 transition-colors"
                 >
                   {tahunAjaranList.map((ta: any) => (
-                    <option key={ta.id} value={ta.id} className="bg-army-900 text-white">
+                    <option key={ta.id} value={ta.id} className="bg-teal-900 text-white">
                       TA {ta.nama}
                     </option>
                   ))}
@@ -257,14 +257,14 @@ export default function AdminDashboardPage() {
             <h1 className="text-4xl md:text-6xl font-black font-display tracking-tight leading-none mb-4 text-white">
               Monitor <br /> Pendaftaran
             </h1>
-            <p className="text-army-100 font-bold opacity-90 text-sm md:text-lg max-w-md italic">
+            <p className="text-teal-100 font-bold opacity-90 text-sm md:text-lg max-w-md italic">
               Ikhtisar real-time calon santri Tahun Ajaran{" "}
               {tahunAjaranList.find((t) => t.id === selectedTahunAjaranId)?.nama || "..."}.
             </p>
           </div>
           <Link
             href="/dashboard/admin/pendaftar"
-            className="bg-khaki-400 hover:bg-khaki-300 text-army-950 px-10 py-5 rounded-3xl font-black uppercase text-xs shadow-xl transition-all flex items-center gap-3"
+            className="bg-sand-400 hover:bg-sand-300 text-teal-950 px-10 py-5 rounded-3xl font-black uppercase text-xs shadow-xl transition-all flex items-center gap-3"
           >
             <Users className="w-6 h-6" /> Data Pendaftar
           </Link>
@@ -300,21 +300,21 @@ export default function AdminDashboardPage() {
           {isBerkas && stats.waiting_docs > 0 && (
             <Link
               href="/dashboard/admin/verifikasi-dokumen"
-              className="group relative overflow-hidden rounded-3xl bg-army-50 border border-army-100 p-6 shadow-sm hover:shadow-md transition-all active:scale-[0.98]"
+              className="group relative overflow-hidden rounded-3xl bg-teal-50 border border-teal-100 p-6 shadow-sm hover:shadow-md transition-all active:scale-[0.98]"
             >
               <div className="flex items-center gap-5">
-                <div className="w-12 h-12 rounded-2xl bg-army-600 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                <div className="w-12 h-12 rounded-2xl bg-teal-600 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                   <ClipboardCheck className="w-6 h-6" />
                 </div>
                 <div>
-                  <p className="text-[10px] font-black text-army-600 uppercase tracking-widest mb-1">Perlu Tindakan</p>
-                  <h3 className="text-lg font-black text-army-950 leading-none">
+                  <p className="text-[10px] font-black text-teal-600 uppercase tracking-widest mb-1">Perlu Tindakan</p>
+                  <h3 className="text-lg font-black text-teal-950 leading-none">
                     {stats.waiting_docs} Berkas Pendaftar
                   </h3>
-                  <p className="text-xs text-army-800 font-medium mt-1">Siap untuk diverifikasi kelengkapannya</p>
+                  <p className="text-xs text-teal-800 font-medium mt-1">Siap untuk diverifikasi kelengkapannya</p>
                 </div>
-                <div className="ml-auto bg-army-200/50 p-2 rounded-xl group-hover:bg-army-200 transition-colors">
-                  <ArrowUpRight className="w-5 h-5 text-army-700" />
+                <div className="ml-auto bg-teal-200/50 p-2 rounded-xl group-hover:bg-teal-200 transition-colors">
+                  <ArrowUpRight className="w-5 h-5 text-teal-700" />
                 </div>
               </div>
             </Link>
@@ -324,7 +324,7 @@ export default function AdminDashboardPage() {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
         {[
-          { label: "Total Pendaftar", val: stats.total_pendaftar, icon: Users, color: "army" },
+          { label: "Total Pendaftar", val: stats.total_pendaftar, icon: Users, color: "teal" },
           { label: "Diterima", val: stats.diterima, icon: GraduationCap, color: "emerald" },
           { label: "Cadangan", val: stats.cadangan, icon: Loader2, color: "yellow" },
           { label: "Sudah Daftar Ulang", val: stats.daftar_ulang, icon: Wallet, color: "indigo" },
@@ -332,13 +332,13 @@ export default function AdminDashboardPage() {
           .map((item, id) => (
             <div
               key={id}
-              className="bg-white rounded-4xl p-6 md:p-8 border border-khaki-100 shadow-sm app-card group"
+              className="bg-white rounded-4xl p-6 md:p-8 border border-sand-100 shadow-sm app-card group"
             >
               <div
-                className={`w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center mb-6 shadow-clay-sm transition-transform group-hover:scale-110 ${item.color === "army"
-                    ? "bg-army-50 text-army-600"
+                className={`w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center mb-6 shadow-clay-sm transition-transform group-hover:scale-110 ${item.color === "teal"
+                    ? "bg-teal-50 text-teal-600"
                     : item.color === "yellow"
-                      ? "bg-khaki-50 text-khaki-600"
+                      ? "bg-sand-50 text-sand-600"
                       : item.color === "indigo"
                         ? "bg-indigo-50 text-indigo-600"
                         : "bg-emerald-50 text-emerald-600"
@@ -347,7 +347,7 @@ export default function AdminDashboardPage() {
                 <item.icon className={`w-6 h-6 md:w-7 md:h-7 ${item.label === "Cadangan" ? "animate-spin-slow" : ""}`} />
               </div>
               <p className="text-[10px] font-black text-ink-300 uppercase tracking-widest mb-1">{item.label}</p>
-              <p className="text-2xl md:text-5xl font-black text-army-950 font-display tracking-tight leading-none">
+              <p className="text-2xl md:text-5xl font-black text-teal-950 font-display tracking-tight leading-none">
                 {item.val}
               </p>
             </div>
@@ -366,47 +366,47 @@ export default function AdminDashboardPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         <div className="lg:col-span-4 space-y-8">
-          <div className="bg-white rounded-4xl border border-khaki-100 shadow-sm overflow-x-auto app-card">
-            <div className="p-6 md:p-8 border-b border-khaki-50 bg-khaki-50/20">
-              <h3 className="text-lg md:text-xl font-black text-army-950 uppercase tracking-tight">
+          <div className="bg-white rounded-4xl border border-sand-100 shadow-sm overflow-x-auto app-card">
+            <div className="p-6 md:p-8 border-b border-sand-50 bg-sand-50/20">
+              <h3 className="text-lg md:text-xl font-black text-teal-950 uppercase tracking-tight">
                 Performa Jenjang
               </h3>
             </div>
 
             <table className="w-full text-left border-collapse min-w-[1000px]">
               <thead className="bg-stone-50 text-[9px] font-black uppercase tracking-widest text-ink-400">
-                <tr className="border-b border-khaki-50">
-                  <th rowSpan={2} className="px-6 py-4 border-r border-khaki-50">Jenjang</th>
-                  <th colSpan={3} className="px-4 py-3 text-center border-r border-khaki-50 bg-slate-100/50">Kuota</th>
-                  <th colSpan={3} className="px-4 py-3 text-center border-r border-khaki-50 bg-army-50">Pendaftar</th>
-                  <th colSpan={3} className="px-4 py-3 text-center border-r border-khaki-50 bg-amber-50">Sudah Bayar Pendaftaran</th>
-                  <th colSpan={3} className="px-4 py-3 text-center border-r border-khaki-50 bg-emerald-50">Diterima</th>
+                <tr className="border-b border-sand-50">
+                  <th rowSpan={2} className="px-6 py-4 border-r border-sand-50">Jenjang</th>
+                  <th colSpan={3} className="px-4 py-3 text-center border-r border-sand-50 bg-slate-100/50">Kuota</th>
+                  <th colSpan={3} className="px-4 py-3 text-center border-r border-sand-50 bg-teal-50">Pendaftar</th>
+                  <th colSpan={3} className="px-4 py-3 text-center border-r border-sand-50 bg-amber-50">Sudah Bayar Pendaftaran</th>
+                  <th colSpan={3} className="px-4 py-3 text-center border-r border-sand-50 bg-emerald-50">Diterima</th>
                   <th colSpan={3} className="px-4 py-3 text-center bg-purple-50">Sudah Daftar Ulang</th>
                 </tr>
-                <tr className="border-b border-khaki-100">
+                <tr className="border-b border-sand-100">
                   {/* Kuota */}
-                  <th className="px-2 py-2 text-center border-r border-khaki-50">L</th>
-                  <th className="px-2 py-2 text-center border-r border-khaki-50">P</th>
-                  <th className="px-2 py-2 text-center border-r border-khaki-50 font-black text-slate-800">T</th>
+                  <th className="px-2 py-2 text-center border-r border-sand-50">L</th>
+                  <th className="px-2 py-2 text-center border-r border-sand-50">P</th>
+                  <th className="px-2 py-2 text-center border-r border-sand-50 font-black text-slate-800">T</th>
                   {/* Pendaftar */}
-                  <th className="px-2 py-2 text-center border-r border-khaki-50 text-army-600">L</th>
-                  <th className="px-2 py-2 text-center border-r border-khaki-50 text-pink-600">P</th>
-                  <th className="px-2 py-2 text-center border-r border-khaki-50 font-black text-army-800">T</th>
+                  <th className="px-2 py-2 text-center border-r border-sand-50 text-teal-600">L</th>
+                  <th className="px-2 py-2 text-center border-r border-sand-50 text-pink-600">P</th>
+                  <th className="px-2 py-2 text-center border-r border-sand-50 font-black text-teal-800">T</th>
                   {/* Sudah Bayar Pendaftaran */}
-                  <th className="px-2 py-2 text-center border-r border-khaki-50 text-amber-600">L</th>
-                  <th className="px-2 py-2 text-center border-r border-khaki-50 text-pink-600">P</th>
-                  <th className="px-2 py-2 text-center border-r border-khaki-50 font-black text-amber-800">T</th>
+                  <th className="px-2 py-2 text-center border-r border-sand-50 text-amber-600">L</th>
+                  <th className="px-2 py-2 text-center border-r border-sand-50 text-pink-600">P</th>
+                  <th className="px-2 py-2 text-center border-r border-sand-50 font-black text-amber-800">T</th>
                   {/* Diterima */}
-                  <th className="px-2 py-2 text-center border-r border-khaki-50 text-emerald-600">L</th>
-                  <th className="px-2 py-2 text-center border-r border-khaki-50 text-pink-600">P</th>
-                  <th className="px-2 py-2 text-center border-r border-khaki-50 font-black text-emerald-800">T</th>
+                  <th className="px-2 py-2 text-center border-r border-sand-50 text-emerald-600">L</th>
+                  <th className="px-2 py-2 text-center border-r border-sand-50 text-pink-600">P</th>
+                  <th className="px-2 py-2 text-center border-r border-sand-50 font-black text-emerald-800">T</th>
                   {/* Daftar Ulang */}
-                  <th className="px-2 py-2 text-center border-r border-khaki-50 text-purple-600">L</th>
-                  <th className="px-2 py-2 text-center border-r border-khaki-50 text-pink-600">P</th>
+                  <th className="px-2 py-2 text-center border-r border-sand-50 text-purple-600">L</th>
+                  <th className="px-2 py-2 text-center border-r border-sand-50 text-pink-600">P</th>
                   <th className="px-2 py-2 text-center font-black text-purple-800">T</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-khaki-50 text-xs">
+              <tbody className="divide-y divide-sand-50 text-xs">
                 {[...(stats.stats_per_jenjang || [])]
                   .filter((item: any) => item.pendaftar > 0 || item.kuota_total > 0)
                   .sort((a: any, b: any) => {
@@ -414,15 +414,15 @@ export default function AdminDashboardPage() {
                     return (order[a.jenjang] || 99) - (order[b.jenjang] || 99);
                   })
                   .map((item: any, idx: number) => (
-                    <tr key={idx} className="hover:bg-khaki-50/20 transition-colors">
-                      <td className="px-6 py-4 border-r border-khaki-50">
+                    <tr key={idx} className="hover:bg-sand-50/20 transition-colors">
+                      <td className="px-6 py-4 border-r border-sand-50">
                         <div className="flex items-center gap-3">
                           <div
                             className={`w-8 h-8 rounded-lg flex items-center justify-center text-white font-black text-[10px] ${item.jenjang === "MTS"
-                                ? "bg-army-600"
+                                ? "bg-teal-600"
                                 : item.jenjang === "SMA"
-                                  ? "bg-army-900"
-                                  : "bg-khaki-500"
+                                  ? "bg-teal-900"
+                                  : "bg-sand-500"
                               }`}
                           >
                             {item.jenjang.substring(0, 2)}
@@ -431,24 +431,24 @@ export default function AdminDashboardPage() {
                         </div>
                       </td>
                       {/* Kuota */}
-                      <td className="px-2 py-4 text-center border-r border-khaki-50 font-bold text-slate-400">{item.kuota_putra || "-"}</td>
-                      <td className="px-2 py-4 text-center border-r border-khaki-50 font-bold text-slate-400">{item.kuota_putri || "-"}</td>
-                      <td className="px-2 py-4 text-center border-r border-khaki-50 font-black text-slate-600 bg-slate-50/30">{item.kuota_total || "-"}</td>
+                      <td className="px-2 py-4 text-center border-r border-sand-50 font-bold text-slate-400">{item.kuota_putra || "-"}</td>
+                      <td className="px-2 py-4 text-center border-r border-sand-50 font-bold text-slate-400">{item.kuota_putri || "-"}</td>
+                      <td className="px-2 py-4 text-center border-r border-sand-50 font-black text-slate-600 bg-slate-50/30">{item.kuota_total || "-"}</td>
                       {/* Pendaftar */}
-                      <td className="px-2 py-4 text-center border-r border-khaki-50 font-black text-army-600 bg-army-50/10">{item.pendaftar_putra}</td>
-                      <td className="px-2 py-4 text-center border-r border-khaki-50 font-black text-pink-600 bg-army-50/10">{item.pendaftar_putri}</td>
-                      <td className="px-2 py-4 text-center border-r border-khaki-50 font-black text-army-900 bg-army-50/30">{item.pendaftar}</td>
+                      <td className="px-2 py-4 text-center border-r border-sand-50 font-black text-teal-600 bg-teal-50/10">{item.pendaftar_putra}</td>
+                      <td className="px-2 py-4 text-center border-r border-sand-50 font-black text-pink-600 bg-teal-50/10">{item.pendaftar_putri}</td>
+                      <td className="px-2 py-4 text-center border-r border-sand-50 font-black text-teal-900 bg-teal-50/30">{item.pendaftar}</td>
                       {/* Sudah Bayar Pendaftaran */}
-                      <td className="px-2 py-4 text-center border-r border-khaki-50 font-black text-amber-600 bg-amber-50/10">{item.bayar_putra || 0}</td>
-                      <td className="px-2 py-4 text-center border-r border-khaki-50 font-black text-pink-600 bg-amber-50/10">{item.bayar_putri || 0}</td>
-                      <td className="px-2 py-4 text-center border-r border-khaki-50 font-black text-amber-900 bg-amber-50/30">{item.bayar_total || 0}</td>
+                      <td className="px-2 py-4 text-center border-r border-sand-50 font-black text-amber-600 bg-amber-50/10">{item.bayar_putra || 0}</td>
+                      <td className="px-2 py-4 text-center border-r border-sand-50 font-black text-pink-600 bg-amber-50/10">{item.bayar_putri || 0}</td>
+                      <td className="px-2 py-4 text-center border-r border-sand-50 font-black text-amber-900 bg-amber-50/30">{item.bayar_total || 0}</td>
                       {/* Diterima */}
-                      <td className="px-2 py-4 text-center border-r border-khaki-50 font-black text-emerald-600 bg-emerald-50/10">{item.diterima_putra}</td>
-                      <td className="px-2 py-4 text-center border-r border-khaki-50 font-black text-pink-600 bg-emerald-50/10">{item.diterima_putri}</td>
-                      <td className="px-2 py-4 text-center border-r border-khaki-50 font-black text-emerald-900 bg-emerald-50/30">{item.diterima}</td>
+                      <td className="px-2 py-4 text-center border-r border-sand-50 font-black text-emerald-600 bg-emerald-50/10">{item.diterima_putra}</td>
+                      <td className="px-2 py-4 text-center border-r border-sand-50 font-black text-pink-600 bg-emerald-50/10">{item.diterima_putri}</td>
+                      <td className="px-2 py-4 text-center border-r border-sand-50 font-black text-emerald-900 bg-emerald-50/30">{item.diterima}</td>
                       {/* Daftar Ulang */}
-                      <td className="px-2 py-4 text-center border-r border-khaki-50 font-black text-purple-600 bg-purple-50/10">{item.ulang_putra}</td>
-                      <td className="px-2 py-4 text-center border-r border-khaki-50 font-black text-pink-600 bg-purple-50/10">{item.ulang_putri}</td>
+                      <td className="px-2 py-4 text-center border-r border-sand-50 font-black text-purple-600 bg-purple-50/10">{item.ulang_putra}</td>
+                      <td className="px-2 py-4 text-center border-r border-sand-50 font-black text-pink-600 bg-purple-50/10">{item.ulang_putri}</td>
                       <td className="px-2 py-4 text-center font-black text-purple-900 bg-purple-50/30">{item.daftar_ulang}</td>
                     </tr>
                   ))}
@@ -458,22 +458,22 @@ export default function AdminDashboardPage() {
         </div>
 
         <div className="lg:col-span-2">
-          <div className="bg-army-900 rounded-4xl p-10 text-white relative overflow-hidden app-card shadow-2xl">
-            <BarChart3 className="w-12 h-12 text-khaki-400 mb-8" />
+          <div className="bg-teal-900 rounded-4xl p-10 text-white relative overflow-hidden app-card shadow-2xl">
+            <BarChart3 className="w-12 h-12 text-sand-400 mb-8" />
             <h4 className="text-2xl font-black mb-4 font-display leading-tight text-white">Laporan Excel</h4>
-            <p className="text-army-100 font-bold mb-8 opacity-100">
+            <p className="text-teal-100 font-bold mb-8 opacity-100">
               Unduh data pendaftaran terbaru untuk keperluan rapat panitia.
             </p>
             <div className="flex flex-col gap-4">
               <button
                 onClick={handleExportDatabase}
-                className="w-full bg-white text-army-900 py-5 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-khaki-300 transition-all shadow-xl"
+                className="w-full bg-white text-teal-900 py-5 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-sand-300 transition-all shadow-xl"
               >
                 Export Database
               </button>
               <button
                 onClick={handleSyncMaster}
-                className="w-full bg-khaki-400 text-army-900 py-5 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-white transition-all shadow-xl flex items-center justify-center gap-2"
+                className="w-full bg-sand-400 text-teal-900 py-5 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-white transition-all shadow-xl flex items-center justify-center gap-2"
               >
                 <FileCheck className="w-4 h-4" /> Sync Master Data
               </button>
@@ -481,15 +481,15 @@ export default function AdminDashboardPage() {
           </div>
         </div>
         <div className="lg:col-span-2">
-          <div className="bg-white rounded-4xl border border-khaki-100 shadow-sm p-8 app-card h-full">
+          <div className="bg-white rounded-4xl border border-sand-100 shadow-sm p-8 app-card h-full">
             <h3 className="text-[10px] font-black text-ink-300 uppercase tracking-widest mb-6">Navigasi Cepat</h3>
             <div className="space-y-4">
               <Link
                 href="/dashboard/admin/perubahan-data"
-                className="flex items-center justify-between p-4 bg-khaki-50/50 hover:bg-khaki-100 rounded-2xl transition-all group border border-khaki-100"
+                className="flex items-center justify-between p-4 bg-sand-50/50 hover:bg-sand-100 rounded-2xl transition-all group border border-sand-100"
               >
                 <span className="font-black text-ink-900 text-sm">Permintaan Edit</span>
-                <ArrowUpRight className="w-4 h-4 text-ink-300 group-hover:text-khaki-600" />
+                <ArrowUpRight className="w-4 h-4 text-ink-300 group-hover:text-sand-600" />
               </Link>
             </div>
           </div>
