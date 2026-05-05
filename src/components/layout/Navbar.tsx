@@ -125,6 +125,7 @@ export default function Navbar() {
                     height={44}
                     className="w-full h-full object-contain p-0.5"
                     priority
+                    sizes="44px"
                   />
                 </div>
                 {/* Status dot — teal green */}

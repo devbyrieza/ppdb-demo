@@ -196,6 +196,7 @@ export default function ProgramPage() {
                         alt={program.fullName}
                         fill
                         priority={idx === 0}
+                        sizes="(max-width: 768px) 100vw, 50vw"
                         className="object-cover transition-transform duration-700 hover:scale-110 bg-surface-200 animate-pulse"
                         onLoad={(e) =>
                           e.currentTarget.classList.remove("animate-pulse")

@@ -113,7 +113,9 @@ function ActivityCard({ activity }: { activity: (typeof ACTIVITIES)[0] }) {
           src={activity.image}
           alt={activity.title}
           fill
-          className="object-cover transition-transform duration-1000 group-hover:scale-105"
+          priority={index < 2}
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+          className="object-cover transition-transform duration-700 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-ink-950/60 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
         <div className="absolute top-5 left-5">
@@ -201,8 +203,8 @@ export default function ActivitiesSection() {
 
           {/* Grid Kegiatan Utama */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            {ACTIVITIES.map((activity) => (
-              <ActivityCard key={activity.id} activity={activity} />
+            {ACTIVITIES.map((activity, index) => (
+              <ActivityCard key={activity.id} activity={activity} index={index} />
             ))}
           </div>
 
