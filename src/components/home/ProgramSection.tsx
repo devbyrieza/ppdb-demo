@@ -34,7 +34,7 @@ const PROGRAMS: ProgramItem[] = [
     desc: "Pendidikan 3 tahun yang mencakup Tahfidz, Dasar Ilmu Syar'i, dan Akademik Nasional, serta pembentukan Adab sebagai fondasi utama.",
     features: [
       "Target Hafalan 12 Juz",
-      "Sinergi Kurikulum Nasional & PPDB Modern",
+      "Sinergi Kurikulum Nasional & Al-Fath",
       "Bahasa Arab & Kitab Turots",
       "Sanad Al-Qur'an & Hadith",
       "Program TICE & Global",
@@ -45,7 +45,7 @@ const PROGRAMS: ProgramItem[] = [
   },
   {
     title: "I'dad Lughowi",
-    subtitle: "Persiapan & Menengah Atas · Setara SMA",
+    subtitle: "Persiapan & Menengah Atas · Setara IL",
     desc: "Program intensif Bahasa dan Syari'at untuk mencetak kader ulama masa depan. Persiapan matang studi ke Universitas Timur Tengah maupun Perguruan Tinggi Favorit Dalam Negeri.",
     features: [
       "Target Hafalan 16 Juz",

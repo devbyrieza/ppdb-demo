@@ -29,7 +29,7 @@ const PROGRAMS = [
     buttonLabel: "Daftar MTs",
     fullName: "Program Madrasah Tsanawiyah (SMP)",
     description:
-      "Kami menerapkan Kurikulum Terpadu yang menggabungkan kurikulum Nasional dengan kurikulum khas PPDB Modern yang berfokus pada penguasaan Bahasa Arab, Tahfidz Al-Qur'an, dan Kitab Turots secara komprehensif.",
+      "Kami menerapkan Kurikulum Terpadu yang menggabungkan kurikulum Nasional dengan kurikulum khas Al-Fath yang berfokus pada penguasaan Bahasa Arab, Tahfidz Al-Qur'an, dan Kitab Turots secara komprehensif.",
     stats: [
       { label: "Durasi", value: "3 Tahun", icon: Clock },
       { label: "Target", value: "12 Juz", icon: Trophy },
@@ -51,9 +51,9 @@ const PROGRAMS = [
     id: "il",
     name: "I'dad Lughowi",
     buttonLabel: "Daftar IL",
-    fullName: "Program I'dad Lughowi (SMA)",
+    fullName: "Program I'dad Lughowi (IL)",
     description:
-      "Program intensif yang menggunakan Kurikulum Terpadu (Nasional & khas PPDB Modern), berfokus pada pemantapan Bahasa Arab & Tahfidz di tahun I'dad, dilanjutkan jenjang Madrasah Aliyah yang resmi.",
+      "Program intensif yang menggunakan Kurikulum Terpadu (Nasional & khas Al-Fath), berfokus pada pemantapan Bahasa Arab & Tahfidz di tahun I'dad, dilanjutkan jenjang Madrasah Aliyah yang resmi.",
     stats: [
       {
         label: "Durasi",

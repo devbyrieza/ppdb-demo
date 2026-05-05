@@ -267,7 +267,7 @@ export default function HeroSection() {
 
               <div className="flex flex-wrap gap-x-5 gap-y-2 justify-center lg:justify-start mt-1">
                 {[
-                  "MTs & MA tersedia",
+                  "MTs & IL tersedia",
                   "Proses cepat & transparan",
                   BRANDING.schoolNetwork,
                 ].map((point) => (
@@ -375,7 +375,7 @@ export default function HeroSection() {
                     className="text-sm font-black leading-tight"
                     style={{ color: "var(--color-teal-900)" }}
                   >
-                    MTs &amp; SMA
+                    MTs &amp; IL
                   </p>
                   <p
                     className="text-[10px] font-semibold mt-0.5"
