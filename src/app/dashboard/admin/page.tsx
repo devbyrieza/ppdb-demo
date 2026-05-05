@@ -142,11 +142,11 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* HERO SECTION */}
-      <div className="bg-slate-900 rounded-[3rem] p-12 text-white relative overflow-hidden shadow-2xl">
+      <div className="bg-slate-900 rounded-[3rem] p-12 text-white relative overflow-hidden shadow-2xl border border-white/5">
         <div className="absolute top-0 right-0 w-96 h-96 bg-army-500/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
         <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-12">
           <div className="max-w-xl">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-[10px] font-black uppercase tracking-widest mb-8 border border-white/5">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-[10px] font-black uppercase tracking-widest mb-8 border border-white/10">
               <Activity className="w-4 h-4 text-army-400" />
               <span>Sistem Siap Saji: Live Demo</span>
             </div>
@@ -165,14 +165,14 @@ export default function AdminDashboardPage() {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4 w-full lg:w-auto">
-             <div className="bg-white/5 backdrop-blur-md p-6 rounded-[2rem] border border-white/5">
-                <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-4">Lulus</p>
-                <p className="text-3xl font-black text-emerald-400 italic">{stats.diterima}</p>
+          <div className="grid grid-cols-2 gap-6 w-full lg:w-auto">
+             <div className="bg-white/5 backdrop-blur-md p-8 rounded-[2.5rem] border border-white/10 flex flex-col items-center">
+                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">Lulus</p>
+                <p className="text-4xl font-black text-emerald-400 italic">{stats.diterima}</p>
              </div>
-             <div className="bg-white/5 backdrop-blur-md p-6 rounded-[2rem] border border-white/5">
-                <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-4">Ulang</p>
-                <p className="text-3xl font-black text-army-400 italic">{stats.daftar_ulang}</p>
+             <div className="bg-white/5 backdrop-blur-md p-8 rounded-[2.5rem] border border-white/10 flex flex-col items-center">
+                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">Ulang</p>
+                <p className="text-4xl font-black text-army-400 italic">{stats.daftar_ulang}</p>
              </div>
           </div>
         </div>
