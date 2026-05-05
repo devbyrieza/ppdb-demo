@@ -85,7 +85,8 @@ export async function POST(request: NextRequest) {
     // LOGIN ADMIN/PENGUJI (Email + Password)
     // ═══════════════════════════════════════════
     else if (login_type === "admin") {
-      const { email, password } = body;
+      const { email: rawEmail, password } = body;
+      const email = rawEmail?.trim().toLowerCase();
 
       if (!email || !password) {
         return NextResponse.json(

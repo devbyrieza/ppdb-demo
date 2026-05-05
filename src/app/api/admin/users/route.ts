@@ -64,7 +64,8 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
-    const { email, password, full_name, role, secondary_roles, phone } = body;
+    const { email: rawEmail, password, full_name, role, secondary_roles, phone } = body;
+    const email = rawEmail?.trim().toLowerCase();
 
     if (!email || !password || !full_name || !role) {
       return NextResponse.json(
@@ -79,10 +80,44 @@ export async function POST(request: Request) {
     });
 
     if (existing) {
-      return NextResponse.json(
-        { error: "User dengan email ini sudah terdaftar." },
-        { status: 400 },
-      );
+      const adminRoles = [
+        "admin_berkas",
+        "admin_keuangan",
+        "penguji",
+        "admin_super",
+        "admin",
+        "penguji_calsan",
+        "pewawancara_calsan",
+        "pewawancara_cawalsan",
+      ];
+      
+      // If it's already an admin, don't allow duplicate
+      if (adminRoles.includes(existing.role)) {
+        return NextResponse.json(
+          { error: "User dengan email ini sudah terdaftar sebagai admin/staf." },
+          { status: 400 },
+        );
+      }
+
+      // If it's a pendaftar, we "promote" it to admin
+      const password_hash = await hashPassword(password);
+      const updatedProfile = await prisma.profile.update({
+        where: { id: existing.id },
+        data: {
+          full_name,
+          role,
+          secondary_roles: Array.isArray(secondary_roles) ? secondary_roles : [],
+          phone: phone || existing.phone || "-",
+          password_hash,
+          updated_at: new Date(),
+        },
+      });
+
+      return NextResponse.json({ 
+        success: true, 
+        message: "Akun pendaftar berhasil ditingkatkan menjadi admin.",
+        user: updatedProfile 
+      });
     }
 
     const password_hash = await hashPassword(password);
@@ -138,9 +173,10 @@ export async function PUT(request: Request) {
 
     // Email update logic
     if (email) {
+      const cleanEmail = email.trim().toLowerCase();
       const existing = await prisma.profile.findFirst({
         where: {
-          email: email,
+          email: cleanEmail,
           NOT: { id: id },
         },
       });
@@ -152,7 +188,7 @@ export async function PUT(request: Request) {
         );
       }
 
-      data.email = email;
+      data.email = cleanEmail;
     }
 
     await prisma.profile.update({
