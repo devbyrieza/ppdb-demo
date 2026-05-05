@@ -576,12 +576,35 @@ export default function UndanganSeleksiTab() {
               );
 
               if (filteredSlots.length === 0) {
+                const totalRequired = 3;
+                const isAllBooked = data.grupB.booked.length >= totalRequired;
+
                 return (
-                  <div className="text-center py-8 bg-white rounded-xl border border-stone-200">
-                    <CheckCircle className="w-10 h-10 text-emerald-400 mx-auto mb-3" />
-                    <p className="text-stone-600 text-sm font-medium">
-                      Anda sudah memilih semua jadwal yang tersedia.
-                    </p>
+                  <div className="text-center py-12 bg-white rounded-2xl border-2 border-dashed border-stone-200">
+                    {isAllBooked ? (
+                      <>
+                        <CheckCircle className="w-12 h-12 text-emerald-500 mx-auto mb-4" />
+                        <h3 className="font-black text-ink-950 mb-2">
+                          Semua Jadwal Terpilih
+                        </h3>
+                        <p className="text-stone-600 text-sm font-medium">
+                          Anda sudah memilih semua jadwal seleksi yang tersedia.
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                          <Info className="w-8 h-8 text-amber-600" />
+                        </div>
+                        <h3 className="font-black text-amber-900 mb-2">
+                          Jadwal Belum Tersedia
+                        </h3>
+                        <p className="text-amber-800 text-sm font-medium max-w-sm mx-auto">
+                          Jadwal untuk tahap seleksi selanjutnya sedang dalam
+                          proses pengaturan. Mohon cek kembali secara berkala.
+                        </p>
+                      </>
+                    )}
                   </div>
                 );
               }

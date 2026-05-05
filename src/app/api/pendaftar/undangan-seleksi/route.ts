@@ -200,7 +200,6 @@ export async function GET() {
 
     // 7. Build response
     const openSlots = availableSessions
-      .filter((s) => s._count.bookings < s.quota)
       .map((s) => ({
         id: s.id,
         title: sanitizeTitle(s.title || "Seleksi Santri Baru"),
