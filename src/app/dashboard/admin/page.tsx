@@ -133,8 +133,8 @@ export default function AdminDashboardPage() {
       {/* HEADER */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-black text-slate-900 tracking-tight italic">Global Admin Dashboard</h1>
-          <p className="text-sm text-slate-500 font-medium mt-1">Sistem informasi pendaftaran demo - Real-time statistics.</p>
+          <h1 className="text-3xl font-black text-slate-900 tracking-tight italic">Dashboard Utama Admin</h1>
+          <p className="text-sm text-slate-500 font-medium mt-1">Sistem informasi pendaftaran demo - Statistik real-time.</p>
         </div>
         <button onClick={fetchStats} className="p-3 bg-white border border-slate-200 rounded-2xl text-slate-500 hover:text-army-600 transition-all shadow-premium-sm">
           <RefreshCw className={`w-5 h-5 ${loading ? "animate-spin" : ""}`} />
@@ -151,7 +151,7 @@ export default function AdminDashboardPage() {
               <span>Sistem Siap Saji: Live Demo</span>
             </div>
             <h2 className="text-6xl font-black mb-6 tracking-tighter leading-tight italic text-white">
-              Executive <span className="text-white opacity-70">Insight</span>
+              Analisis <span className="text-white opacity-70">Eksekutif</span>
             </h2>
             <div className="flex items-center gap-12 mt-12">
               <div>
@@ -182,7 +182,7 @@ export default function AdminDashboardPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {isAdminSuper && (
           <>
-            <StatWidget label="Total Pendaftar" value={stats.total_pendaftar} icon={Users} color="blue" trend="+5% week" breakdown={getBreakdown("total")} />
+            <StatWidget label="Total Pendaftar" value={stats.total_pendaftar} icon={Users} color="blue" trend="+5% minggu ini" breakdown={getBreakdown("total")} />
             <StatWidget label="Lulus Seleksi" value={stats.diterima} icon={CheckCircle2} color="emerald" breakdown={getBreakdown("lulus")} />
             <StatWidget label="Sudah Daftar Ulang" value={stats.daftar_ulang} icon={ClipboardCheck} color="amber" breakdown={getBreakdown("ulang")} />
           </>
@@ -214,7 +214,7 @@ export default function AdminDashboardPage() {
           <div className="relative z-10">
             <h3 className="text-2xl font-black mb-8 tracking-tight flex items-center gap-3 italic text-white">
               <div className="w-2 h-8 bg-emerald-500 rounded-full" />
-              Insight Pendaftaran
+              Statistik Pendaftaran
             </h3>
             <div className="grid grid-cols-2 gap-8">
               <div className="space-y-8">
@@ -247,7 +247,7 @@ export default function AdminDashboardPage() {
           <div className="relative z-10">
             <h3 className="text-2xl font-black text-slate-900 mb-8 tracking-tight flex items-center gap-3 italic">
               <div className="w-2 h-8 bg-slate-900 rounded-full" />
-              Quick Action
+              Aksi Cepat
             </h3>
             <div className="space-y-4">
               <div className="flex items-center justify-between p-6 bg-slate-50 rounded-3xl border border-slate-100 hover:border-army-200 transition-all cursor-default group/item">
