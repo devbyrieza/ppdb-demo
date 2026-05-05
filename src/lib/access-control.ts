@@ -152,6 +152,8 @@ export const ROLE_PERMISSIONS: Record<UserRole, string[]> = {
   admin_super: ["view_pendaftar_list", "view_dashboard_stats", "manage_users", "manage_settings"],
   admin: ["view_pendaftar_list", "verify_documents", "verify_payment"],
   penguji: ["view_exam_schedule", "input_exam_scores"],
+  pewawancara_calsan: ["view_exam_schedule", "input_exam_scores"],
+  pewawancara_cawalsan: ["view_exam_schedule", "input_exam_scores"],
 };
 
 export const DASHBOARD_ROUTES: Record<UserRole, string> = {
