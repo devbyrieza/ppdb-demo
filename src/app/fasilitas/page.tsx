@@ -141,7 +141,7 @@ export default function FasilitasPage() {
               <div className="space-y-6 pt-12">
                 <div className="aspect-4/5 rounded-[3rem] overflow-hidden shadow-lg relative group border border-teal-100">
                   <Image
-                    src="https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=2000&auto=format&fit=crop"
+                    src="/images/masjid.webp"
                     alt="Masjid"
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
@@ -154,7 +154,7 @@ export default function FasilitasPage() {
                 </div>
                 <div className="aspect-square rounded-[3rem] overflow-hidden shadow-lg relative group border border-teal-100">
                   <Image
-                    src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=2186&auto=format&fit=crop"
+                    src="/images/gedung-utama-dan-lapangan-basket.webp"
                     alt="Lapangan"
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
@@ -169,7 +169,7 @@ export default function FasilitasPage() {
               <div className="space-y-6">
                 <div className="aspect-square rounded-[3rem] overflow-hidden shadow-lg relative group border border-teal-100">
                   <Image
-                    src="https://images.unsplash.com/photo-1555854817-2b22603c7a52?q=80&w=2070&auto=format&fit=crop"
+                    src="/images/asrama.webp"
                     alt="Asrama"
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
@@ -182,7 +182,7 @@ export default function FasilitasPage() {
                 </div>
                 <div className="aspect-4/5 rounded-[3rem] overflow-hidden shadow-lg relative group border border-teal-100">
                   <Image
-                    src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=2073&auto=format&fit=crop"
+                    src="/images/gedung-kelas.webp"
                     alt="Kelas"
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
@@ -557,7 +557,7 @@ export default function FasilitasPage() {
                 <div className="aspect-square rounded-[3rem] sm:rounded-[4rem] bg-white p-3 sm:p-4 shadow-xl relative -rotate-2 hover:rotate-0 transition-transform duration-700 border border-teal-100">
                   <div className="relative w-full h-full rounded-[2.5rem] sm:rounded-[3.2rem] overflow-hidden">
                     <Image
-                      src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop"
+                      src="/images/kantor-ppdb-tamu.webp"
                       alt="Kantor PPDB PPDB"
                       fill
                       className="object-cover transition-transform duration-700 hover:scale-110"
@@ -965,7 +965,7 @@ export default function FasilitasPage() {
                 className="relative rounded-2xl sm:rounded-[2rem] overflow-hidden group aspect-square shadow-sm hover:shadow-md transition-all duration-500 border border-teal-100"
               >
                 <Image
-                  src="https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=1986&auto=format&fit=crop"
+                  src="/images/gedung-kelas.webp"
                   alt="Gedung Kelas"
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"

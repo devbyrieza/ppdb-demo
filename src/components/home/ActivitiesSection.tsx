@@ -30,8 +30,7 @@ const ACTIVITIES = [
     description:
       "Pendalaman literatur klasik Islam dengan bimbingan asatidzah berkompeten untuk membangun fondasi ilmu yang kokoh.",
     time: "Setiap Ba'da Subuh",
-    image:
-      "https://images.unsplash.com/photo-1544648397-72285879f282?q=80&w=1200&auto=format&fit=crop",
+    image: "/images/pembelajaran-kitab-turotz.webp",
     icon: BookOpen,
     color: "teal",
   },
@@ -42,8 +41,7 @@ const ACTIVITIES = [
     description:
       "Program intensif menghafal Al-Qur'an dengan metode talaqqi untuk memastikan kualitas bacaan dan kekuatan hafalan.",
     time: "Setiap Ba'da Ashar",
-    image:
-      "https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=1200&auto=format&fit=crop",
+    image: "/images/tahfidz.webp",
     icon: Target,
     color: "emerald",
   },
@@ -54,8 +52,7 @@ const ACTIVITIES = [
     description:
       "Melatih fokus, konsentrasi, dan kekuatan fisik melalui sunnah memanah dengan standar peralatan yang representatif.",
     time: "Sabtu & Ahad Pagi",
-    image:
-      "https://images.unsplash.com/photo-1511394576932-520f97914872?q=80&w=1200&auto=format&fit=crop",
+    image: "/images/gedung-utama-dan-lapangan-basket.webp",
     icon: Trophy,
     color: "sand",
   },

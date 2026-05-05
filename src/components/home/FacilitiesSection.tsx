@@ -39,35 +39,35 @@ const FACILITIES = [
 
 const FACILITY_IMAGES = [
   {
-    src: "https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=2000&auto=format&fit=crop",
+    src: "/images/masjid.webp",
     label: "Masjid Jami'",
     sub: "Kapasitas 1.000 Jamaah",
     span: "col-span-2 row-span-2",
     priority: true,
   },
   {
-    src: "https://images.unsplash.com/photo-1492538368677-f6e0afe31dcc?q=80&w=2070&auto=format&fit=crop",
+    src: "/images/gedung-utama-dan-lapangan-basket.webp",
     label: "Gedung Utama",
     sub: "& Lapangan Basket",
     span: "col-span-1 row-span-1",
     priority: true,
   },
   {
-    src: "https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=1986&auto=format&fit=crop",
+    src: "/images/gedung-kelas.webp",
     label: "Gedung Kelas",
     sub: "Modern & Representatif",
     span: "col-span-1 row-span-1",
     priority: false,
   },
   {
-    src: "https://images.unsplash.com/photo-1555854817-2b22603c7a52?q=80&w=2070&auto=format&fit=crop",
+    src: "/images/asrama.webp",
     label: "Asrama Santri",
     sub: "Nyaman & Teratur",
     span: "col-span-1 row-span-1",
     priority: false,
   },
   {
-    src: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=2073&auto=format&fit=crop",
+    src: "/images/kelas-dari-dalam.webp",
     label: "Ruang Kelas",
     sub: "Kondusif & Lengkap",
     span: "col-span-1 row-span-1",

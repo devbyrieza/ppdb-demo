@@ -94,7 +94,7 @@ export default function TentangPage() {
             className="relative aspect-video md:aspect-21/9 rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-lg border border-teal-100 group"
           >
             <Image
-              src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070&auto=format&fit=crop"
+              src="/images/welcome-selamat-datang.webp"
               alt="Selamat Datang di Sistem PPDB Modern"
               fill
               className="object-cover transition-transform duration-1000 group-hover:scale-105"
@@ -118,7 +118,7 @@ export default function TentangPage() {
               <div className="aspect-4/5 rounded-[2.5rem] md:rounded-[3rem] overflow-hidden shadow-xl relative z-10 bg-white p-3 border border-teal-100">
                 <div className="relative w-full h-full rounded-[2rem] md:rounded-[2.5rem] overflow-hidden">
                   <Image
-                    src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=2098&auto=format&fit=crop"
+                    src="/images/tentang.webp"
                     alt="Pesantren Sistem PPDB Modern"
                     fill
                     className="object-cover"
