@@ -34,8 +34,8 @@ const ROLE_OPTIONS = [
   { value: "admin_berkas", label: "Admin Berkas" },
   { value: "admin_keuangan", label: "Admin Keuangan" },
   { value: "penguji", label: "Penguji Al-Qur'an" },
-  { value: "pewawancara_calsan", label: "Pewawancara Santri" },
-  { value: "pewawancara_cawalsan", label: "Pewawancara Orang Tua" },
+  { value: "pewawancara_calsan", label: "Pewawancara Calsan" },
+  { value: "pewawancara_cawalsan", label: "Pewawancara Cawalsan" },
 ];
 
 export default function UserManagementPage() {
@@ -287,7 +287,8 @@ export default function UserManagementPage() {
                     <td className="p-8 text-center">
                       <div className="flex flex-wrap justify-center gap-2">
                         <span className="px-4 py-1.5 bg-teal-50 text-teal-700 text-[10px] font-black rounded-xl border border-teal-100 uppercase tracking-widest shadow-sm">
-                          {user.role}
+                          {ROLE_LABELS[user.role as UserRole] ||
+                            user.role.replace("_", " ")}
                         </span>
                         {user.secondary_roles &&
                           user.secondary_roles

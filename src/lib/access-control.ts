@@ -132,16 +132,16 @@ export function formatStatusDisplay(status: StatusProses) {
 
 // ─── 5. ROLE-BASED ACCESS CONTROL (RBAC) ───
 
-export type UserRole = "pendaftar" | "admin_berkas" | "admin_keuangan" | "penguji_calsan" | "pewawancara_calsan" | "pewawancara_cawalsan" | "admin_super" | "admin";
+export type UserRole = "pendaftar" | "admin_berkas" | "admin_keuangan" | "penguji" | "pewawancara_calsan" | "pewawancara_cawalsan" | "admin_super" | "admin";
 
 export const ROLE_LABELS: Record<UserRole, string> = {
-  pendaftar: "Applicant",
-  admin_berkas: "Docs Admin",
-  admin_keuangan: "Finance Admin",
-  penguji_calsan: "Quran Examiner",
-  pewawancara_calsan: "Interviewer",
-  pewawancara_cawalsan: "Parent Interviewer",
-  admin_super: "Super Admin",
+  pendaftar: "Pendaftar",
+  admin_berkas: "Admin Berkas",
+  admin_keuangan: "Admin Keuangan",
+  penguji: "Penguji Al-Qur'an",
+  pewawancara_calsan: "Pewawancara Calsan",
+  pewawancara_cawalsan: "Pewawancara Cawalsan",
+  admin_super: "Admin Super",
   admin: "Administrator",
 };
 
@@ -151,16 +151,14 @@ export const ROLE_PERMISSIONS: Record<UserRole, string[]> = {
   admin_keuangan: ["view_pendaftar_list", "verify_payment", "view_financial_reports"],
   admin_super: ["view_pendaftar_list", "view_dashboard_stats", "manage_users", "manage_settings"],
   admin: ["view_pendaftar_list", "verify_documents", "verify_payment"],
-  penguji_calsan: ["view_exam_schedule", "input_exam_scores"],
-  pewawancara_calsan: ["view_exam_schedule", "input_exam_scores"],
-  pewawancara_cawalsan: ["view_exam_schedule", "input_exam_scores"],
+  penguji: ["view_exam_schedule", "input_exam_scores"],
 };
 
 export const DASHBOARD_ROUTES: Record<UserRole, string> = {
   pendaftar: "/dashboard/pendaftar",
   admin_berkas: "/dashboard/admin",
   admin_keuangan: "/dashboard/admin",
-  penguji_calsan: "/dashboard/penguji",
+  penguji: "/dashboard/penguji",
   pewawancara_calsan: "/dashboard/penguji",
   pewawancara_cawalsan: "/dashboard/penguji",
   admin_super: "/dashboard/admin",
@@ -181,21 +179,27 @@ export function getMenuItemsForRole(role: UserRole) {
   const menus: Record<string, any[]> = {
     admin_berkas: [
       { name: "Dashboard", href: "/dashboard/admin", icon: "LayoutDashboard" },
-      { name: "Applicants", href: "/dashboard/admin/pendaftar", icon: "Users" },
-      { name: "Verify Documents", href: "/dashboard/admin/verifikasi-dokumen", icon: "FileCheck" },
+      { name: "Data Pendaftar", href: "/dashboard/admin/pendaftar", icon: "Users" },
+      { name: "Verifikasi Dokumen", href: "/dashboard/admin/verifikasi-dokumen", icon: "FileCheck" },
     ],
     admin_keuangan: [
       { name: "Dashboard", href: "/dashboard/admin", icon: "LayoutDashboard" },
-      { name: "Applicants", href: "/dashboard/admin/pendaftar", icon: "Users" },
-      { name: "Verify Payments", href: "/dashboard/admin/verifikasi-pembayaran", icon: "CreditCard" },
+      { name: "Data Pendaftar", href: "/dashboard/admin/pendaftar", icon: "Users" },
+      { name: "Verifikasi Pembayaran", href: "/dashboard/admin/verifikasi-pembayaran", icon: "CreditCard" },
+      { name: "Rekap Keuangan", href: "/dashboard/admin/keuangan", icon: "BarChart" },
+    ],
+    penguji: [
+      { name: "Dasbor", href: "/dashboard/penguji", icon: "LayoutDashboard" },
+      { name: "Jadwal Seleksi", href: "/dashboard/penguji/jadwal", icon: "Calendar" },
+      { name: "Input Nilai", href: "/dashboard/penguji/input-nilai", icon: "ClipboardEdit" },
     ],
     admin_super: [
       { name: "Dashboard", href: "/dashboard/admin", icon: "LayoutDashboard" },
-      { name: "Applicants", href: "/dashboard/admin/pendaftar", icon: "Users", group: "OPERATIONS" },
-      { name: "Selection", href: "/dashboard/admin/hasil-seleksi", icon: "Trophy", group: "RESULTS" },
-      { name: "Finance", href: "/dashboard/admin/keuangan", icon: "Landmark", group: "SYSTEM" },
-      { name: "Users", href: "/dashboard/admin/users", icon: "UserCog", group: "SYSTEM" },
-      { name: "Settings", href: "/dashboard/admin/pengaturan", icon: "Settings", group: "SYSTEM" },
+      { name: "Data Pendaftar", href: "/dashboard/admin/pendaftar", icon: "Users", group: "OPERASIONAL" },
+      { name: "Hasil Seleksi", href: "/dashboard/admin/hasil-seleksi", icon: "Trophy", group: "HASIL SELEKSI" },
+      { name: "Rekap Keuangan", href: "/dashboard/admin/keuangan", icon: "Landmark", group: "SISTEM" },
+      { name: "Manajemen User", href: "/dashboard/admin/users", icon: "UserCog", group: "SISTEM" },
+      { name: "Pengaturan", href: "/dashboard/admin/pengaturan", icon: "Settings", group: "SISTEM" },
     ],
   };
   return menus[role] || [];
