@@ -1,5 +1,5 @@
 # ========================================
-# DOCKERFILE PRODUCTION - ULUL ALBAAB
+# DOCKERFILE PRODUCTION - TEMPLATE DEMO
 # ========================================
 
 FROM node:20-slim AS base
@@ -9,9 +9,12 @@ RUN apt-get update && apt-get install -y openssl libssl-dev ca-certificates && r
 FROM base AS deps
 WORKDIR /app
 
+# Install pnpm
+RUN npm install -g pnpm
+
 # Install dependencies based on the preferred package manager
-COPY package.json package-lock.json* ./
-RUN npm ci
+COPY package.json pnpm-lock.yaml* ./
+RUN pnpm install --frozen-lockfile
 
 # 2. Rebuild the source code only when needed
 FROM base AS builder
@@ -33,7 +36,7 @@ ENV NEXTAUTH_SECRET=$NEXTAUTH_SECRET
 
 # Generate Prisma Client
 RUN npx prisma generate
-RUN npm run build
+RUN pnpm run build
 
 # 3. Production image, copy all the files and run next
 FROM base AS runner
