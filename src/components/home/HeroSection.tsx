@@ -157,7 +157,7 @@ export default function HeroSection() {
                     paddingBottom: "0.15em",
                   }}
                 >
-                  Unggul, Cerdas, <br className="hidden xl:block" />
+                  Unggul, Cerdas, <br className="hidden sm:block" />
                   dan Berintegritas 🌟
                 </span>
               </h1>
