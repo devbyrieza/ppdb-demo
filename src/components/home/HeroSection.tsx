@@ -315,7 +315,7 @@ export default function HeroSection() {
                 height={600}
                 priority
                 sizes="(max-width: 768px) 100vw, 800px"
-                className="w-full h-auto object-cover aspect-[4/3"
+                className="w-full h-auto object-cover aspect-[4/3]"
                 style={{
                   transition: "transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)",
                 }}
