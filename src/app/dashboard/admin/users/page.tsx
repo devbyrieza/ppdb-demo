@@ -13,6 +13,8 @@ import {
   Mail,
   SearchX,
   Key,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import Swal from "sweetalert2";
 import { ROLE_LABELS, UserRole } from "@/lib/access-control";
@@ -46,6 +48,7 @@ export default function UserManagementPage() {
     type: "success" | "error";
     text: string;
   } | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   const generateMagicLink = async (user: AdminUser) => {
     try {
@@ -123,15 +126,27 @@ export default function UserManagementPage() {
         body: JSON.stringify(formData),
       });
       if (response.ok) {
-        setMessage({ type: "success", text: "User saved successfully" });
+        Swal.fire({
+          title: "Berhasil!",
+          text: isEditing
+            ? "Data user berhasil diperbarui."
+            : "User baru berhasil didaftarkan.",
+          icon: "success",
+          confirmButtonColor: "#0d9488",
+        });
         setIsModalOpen(false);
         fetchUsers();
       } else {
         const res = await response.json();
-        setMessage({ type: "error", text: res.error || "Failed to save" });
+        Swal.fire({
+          title: "Gagal!",
+          text: res.error || "Gagal menyimpan data user.",
+          icon: "error",
+          confirmButtonColor: "#e11d48",
+        });
       }
     } catch (err) {
-      setMessage({ type: "error", text: "An error occurred" });
+      Swal.fire("Error", "Terjadi kesalahan pada sistem.", "error");
     }
   };
 
@@ -402,18 +417,31 @@ export default function UserManagementPage() {
                   <label className="block text-[10px] font-black uppercase text-stone-500 mb-3 tracking-widest">
                     Access Key (Password)
                   </label>
-                  <input
-                    required={!isEditing}
-                    type="password"
-                    value={formData.password}
-                    onChange={(e) =>
-                      setFormData({ ...formData, password: e.target.value })
-                    }
-                    className="w-full px-8 py-5 bg-stone-100/50 border-2 border-transparent focus:border-teal-600 focus:bg-white focus:outline-none font-bold rounded-2xl transition-all"
-                    placeholder={
-                      isEditing ? "(Kosongkan jika tidak ubah)" : "••••••••"
-                    }
-                  />
+                  <div className="relative">
+                    <input
+                      required={!isEditing}
+                      type={showPassword ? "text" : "password"}
+                      value={formData.password}
+                      onChange={(e) =>
+                        setFormData({ ...formData, password: e.target.value })
+                      }
+                      className="w-full px-8 py-5 bg-stone-100/50 border-2 border-transparent focus:border-teal-600 focus:bg-white focus:outline-none font-bold rounded-2xl transition-all"
+                      placeholder={
+                        isEditing ? "(Kosongkan jika tidak ubah)" : "••••••••"
+                      }
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-6 top-1/2 -translate-y-1/2 text-stone-400 hover:text-teal-600 transition-colors"
+                    >
+                      {showPassword ? (
+                        <EyeOff className="w-5 h-5" />
+                      ) : (
+                        <Eye className="w-5 h-5" />
+                      )}
+                    </button>
+                  </div>
                 </div>
                 <div className="col-span-2">
                   <label className="block text-[10px] font-black uppercase text-stone-500 mb-3 tracking-widest">
