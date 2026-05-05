@@ -4,13 +4,11 @@
 
 FROM node:20-slim AS base
 RUN apt-get update && apt-get install -y openssl libssl-dev ca-certificates && rm -rf /var/lib/apt/lists/*
+RUN npm install -g pnpm
 
 # 1. Install dependencies only when needed
 FROM base AS deps
 WORKDIR /app
-
-# Install pnpm
-RUN npm install -g pnpm
 
 # Install dependencies based on the preferred package manager
 COPY package.json pnpm-lock.yaml* ./
