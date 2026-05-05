@@ -150,8 +150,8 @@ export default function AdminDashboardPage() {
               <Activity className="w-4 h-4 text-army-400" />
               <span>Sistem Siap Saji: Live Demo</span>
             </div>
-            <h2 className="text-6xl font-black mb-6 tracking-tighter leading-tight italic">
-              Executive <span className="text-white opacity-90">Insight</span>
+            <h2 className="text-6xl font-black mb-6 tracking-tighter leading-tight italic text-white">
+              Executive <span className="text-white opacity-70">Insight</span>
             </h2>
             <div className="flex items-center gap-12 mt-12">
               <div>
