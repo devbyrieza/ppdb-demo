@@ -126,7 +126,7 @@ export default function HeroSection() {
                   boxShadow: "var(--shadow-sm)",
                 }}
               >
-                <span>✨ Selamat Datang di {BRANDING.schoolShortName} 👋</span>
+                <span>Selamat Datang di {BRANDING.schoolShortName}</span>
               </span>
             </motion.div>
 
@@ -145,7 +145,7 @@ export default function HeroSection() {
                   fontSize: "clamp(2rem, 5vw + 0.75rem, 5rem)",
                 }}
               >
-                <span className="block">Mencetak Generasi 🎓</span>
+                <span className="block">Mencetak Generasi</span>
                 <span
                   className="block mt-1"
                   style={{
@@ -158,7 +158,7 @@ export default function HeroSection() {
                   }}
                 >
                   Unggul, Cerdas, <br className="hidden sm:block" />
-                  dan Berintegritas 🌟
+                  dan Berintegritas
                 </span>
               </h1>
             </motion.div>
@@ -221,7 +221,7 @@ export default function HeroSection() {
                     className="btn-primary w-full sm:w-auto px-8 lg:px-10 py-4 lg:py-[1.125rem] min-h-[56px] text-[0.9375rem]"
                     style={{ boxShadow: "var(--shadow-teal-lg)" }}
                   >
-                    Daftar PPDB Sekarang 🚀
+                    Daftar PPDB Sekarang
                   </button>
                 </Link>
                 <Link href="/program" className="w-full sm:w-auto">
