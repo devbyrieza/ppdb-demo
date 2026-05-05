@@ -15,6 +15,7 @@ import {
   Play,
   Palette,
   Sparkles,
+  Cpu,
 } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { motion } from "framer-motion";
@@ -42,7 +43,7 @@ const EXTRA_ACTIVITIES: ExtraItem[] = [
   { name: "Bulutangkis", icon: Zap, accent: "sand" },
   { name: "Pertanian", icon: TreePine, accent: "sand" },
   { name: "Periklanan", icon: Waves, accent: "teal" },
-  { name: "Web Programming", icon: Rocket, accent: "sand" },
+  { name: "Robotik", icon: Cpu, accent: "sand" },
 ] as const;
 
 const EASE = [0.16, 1, 0.3, 1] as const;
