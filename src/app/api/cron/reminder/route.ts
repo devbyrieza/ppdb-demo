@@ -95,14 +95,14 @@ export async function GET(request: Request) {
                 : (jadwal.exam_session?.location || "Pesantren Sistem PPDB Modern");
 
             // 1. Enqueue for Santri / Parents
-            const isOrang Tua = jenisUjian.toLowerCase().includes("cawalsan") || (jadwal.exam_session?.title || "").toLowerCase().includes("cawalsan");
+            const isOrangTua = jenisUjian.toLowerCase().includes("cawalsan") || (jadwal.exam_session?.title || "").toLowerCase().includes("cawalsan");
             
-            if (isOrang Tua) {
+            if (isOrangTua) {
                 // Send to parents
                 const parentPhone = jadwal.pendaftar.orang_tua?.no_hp_ayah || jadwal.pendaftar.orang_tua?.no_hp_ibu || jadwal.pendaftar.no_hp;
                 if (parentPhone) {
-                    const { buildMessageReminderH1Orang Tua } = await import("@/lib/whatsapp-queue");
-                    const msgOrang Tua = buildMessageReminderH1Orang Tua(
+                    const { buildMessageReminderH1OrangTua } = await import("@/lib/whatsapp-queue");
+                    const msgOrangTua = buildMessageReminderH1OrangTua(
                         jadwal.pendaftar.nama_lengkap,
                         hari,
                         tanggalStr,
@@ -114,7 +114,7 @@ export async function GET(request: Request) {
                         pendaftarId: jadwal.pendaftar_id,
                         phone: parentPhone,
                         jenisNotif: "reminder_h1",
-                        messageContent: msgOrang Tua,
+                        messageContent: msgOrangTua,
                         scheduledAt: finalScheduledAt,
                     });
                     if (result.queued) enqueuedSantri++;

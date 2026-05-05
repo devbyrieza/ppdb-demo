@@ -126,7 +126,7 @@ export default function AkademikTestPage() {
   if (checking) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="w-10 h-10 animate-spin text-brand-blue-600" />
+        <Loader2 className="w-10 h-10 animate-spin text-teal-600" />
       </div>
     );
   }
@@ -144,7 +144,7 @@ export default function AkademikTestPage() {
             onClick={() =>
               router.push("/dashboard/pendaftar?tab=undangan-seleksi")
             }
-            className="px-6 py-3 bg-brand-blue-600 hover:bg-brand-blue-700 text-white font-bold rounded-xl transition-colors"
+            className="px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-xl transition-colors"
           >
             Kembali ke Jadwal Seleksi
           </button>
@@ -169,7 +169,7 @@ export default function AkademikTestPage() {
           </p>
           <button
             onClick={() => router.push("/dashboard/pendaftar")}
-            className="w-full px-6 py-4 bg-brand-blue-700 hover:bg-brand-blue-800 text-white font-black rounded-xl transition-all shadow-md uppercase tracking-widest text-sm"
+            className="w-full px-6 py-4 bg-teal-700 hover:bg-teal-800 text-white font-black rounded-xl transition-all shadow-md uppercase tracking-widest text-sm"
           >
             Kembali ke Dashboard
           </button>
@@ -188,7 +188,7 @@ export default function AkademikTestPage() {
           <ArrowLeft className="w-4 h-4" /> Kembali
         </button>
 
-        <div className="bg-gradient-to-r from-brand-blue-600 to-brand-blue-800 rounded-[2rem] p-8 mb-8 text-white relative overflow-hidden shadow-lg border border-brand-blue-500">
+        <div className="bg-gradient-to-r from-teal-600 to-teal-800 rounded-[2rem] p-8 mb-8 text-white relative overflow-hidden shadow-lg border border-teal-500">
           <div className="absolute top-0 right-0 p-8 opacity-10">
             <FileText className="w-32 h-32" />
           </div>
@@ -196,7 +196,7 @@ export default function AkademikTestPage() {
             <h1 className="text-2xl md:text-4xl font-black mb-2 tracking-tight">
               Seleksi Akademik & Potensi
             </h1>
-            <p className="text-brand-blue-100 font-medium text-sm md:text-base opacity-90 max-w-lg">
+            <p className="text-teal-100 font-medium text-sm md:text-base opacity-90 max-w-lg">
               Ujian Berbasis Komputer (CBT) untuk mengukur kemampuan dasar dan
               potensi akademik calon santri.
             </p>
@@ -232,20 +232,20 @@ export default function AkademikTestPage() {
                 <li>• Jawaban otomatis dikirim jika waktu habis</li>
               </ul>
             </div>
-            <div className="bg-brand-blue-50 border border-brand-blue-200 rounded-xl p-6">
+            <div className="bg-teal-50 border border-teal-200 rounded-xl p-6">
               <div className="flex gap-5">
-                <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center border border-brand-blue-100 flex-shrink-0 shadow-sm">
-                  <AlertCircle className="w-7 h-7 text-brand-blue-600" />
+                <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center border border-teal-100 flex-shrink-0 shadow-sm">
+                  <AlertCircle className="w-7 h-7 text-teal-600" />
                 </div>
                 <div>
-                  <h4 className="font-black text-brand-blue-900 mb-1.5 text-base">
+                  <h4 className="font-black text-teal-900 mb-1.5 text-base">
                     Pesan dari Mudir
                   </h4>
-                  <p className="text-sm text-brand-blue-800 leading-relaxed italic font-medium">
+                  <p className="text-sm text-teal-800 leading-relaxed italic font-medium">
                     "Bismillah, kerjakan dengan jujur dan penuh optimisme. Hasil
                     terbaik adalah buah dari kejujuran dan usaha yang ikhlas."
                   </p>
-                  <p className="text-xs text-brand-blue-600 leading-relaxed mt-2 font-bold uppercase tracking-widest">
+                  <p className="text-xs text-teal-600 leading-relaxed mt-2 font-bold uppercase tracking-widest">
                     - Ustadz Juju Junaedi, M.Pd.
                   </p>
                 </div>

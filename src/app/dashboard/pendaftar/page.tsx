@@ -105,15 +105,15 @@ export default function DashboardPendaftarPage() {
 
 function HeroBanner({ nama, nomorPendaftaran, lastUpdate }: any) {
   return (
-    <div className="relative overflow-hidden rounded-[2.5rem] md:rounded-[3.5rem] bg-linear-to-br from-blue-700 to-blue-900 text-white p-8 md:p-16 shadow-2xl border border-blue-600/50">
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-amber-400/10 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/2" />
+    <div className="relative overflow-hidden rounded-[2.5rem] md:rounded-[3.5rem] bg-linear-to-br from-teal-700 to-teal-900 text-white p-8 md:p-16 shadow-2xl border border-teal-600/50">
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-sand-400/10 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/2" />
       <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-10">
         <div className="flex-1 space-y-6">
           <div className="flex flex-wrap items-center gap-3">
-            <span className="px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-[10px] tracking-[0.2em] font-black uppercase border border-white/20 text-amber-200">
+            <span className="px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-[10px] tracking-[0.2em] font-black uppercase border border-white/20 text-sand-200">
               ACADEMIC EXCELLENCE
             </span>
-            <span className="flex items-center gap-2 text-xs font-bold text-blue-100/70">
+            <span className="flex items-center gap-2 text-xs font-bold text-teal-100/70">
               <Clock className="w-4 h-4" />
               Update:{" "}
               {new Date(lastUpdate).toLocaleDateString("id-ID", {
@@ -125,17 +125,17 @@ function HeroBanner({ nama, nomorPendaftaran, lastUpdate }: any) {
           </div>
           <h1 className="text-3xl md:text-6xl lg:text-7xl font-black leading-[1.1] font-display tracking-tight text-white italic">
             Welcome, <br />
-            <span className="text-amber-400 not-italic uppercase drop-shadow-lg">
+            <span className="text-sand-400 not-italic uppercase drop-shadow-lg">
               {nama}!
             </span>
           </h1>
-          <p className="text-blue-100 text-lg md:text-xl font-medium max-w-xl opacity-80 leading-relaxed italic border-l-4 border-amber-500/50 pl-6">
+          <p className="text-teal-100 text-lg md:text-xl font-medium max-w-xl opacity-80 leading-relaxed italic border-l-4 border-sand-500/50 pl-6">
             "Providing a world-class educational foundation for your child's
             future."
           </p>
         </div>
         <div className="flex-1 lg:flex-none bg-black/20 backdrop-blur-xl px-8 py-6 rounded-[2rem] border border-white/10 text-center">
-          <p className="text-[10px] font-black uppercase text-amber-200/60 mb-1 tracking-[0.2em]">
+          <p className="text-[10px] font-black uppercase text-sand-200/60 mb-1 tracking-[0.2em]">
             REGISTRATION ID
           </p>
           <p className="font-mono text-3xl md:text-4xl font-black text-white tracking-tighter">
@@ -149,9 +149,9 @@ function HeroBanner({ nama, nomorPendaftaran, lastUpdate }: any) {
 
 function GuidedActionCard({ nextStep }: any) {
   return (
-    <div className="bg-white rounded-[2.5rem] border-2 border-blue-100 shadow-xl shadow-blue-500/5 overflow-hidden group">
+    <div className="bg-white rounded-[2.5rem] border-2 border-teal-100 shadow-xl shadow-teal/5 overflow-hidden group">
       <div className="flex flex-col md:flex-row items-stretch">
-        <div className="bg-amber-400 p-8 md:p-12 flex flex-col items-center justify-center text-blue-950 min-w-[200px]">
+        <div className="bg-sand-400 p-8 md:p-12 flex flex-col items-center justify-center text-teal-950 min-w-[200px]">
           <div className="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
             <Target className="w-8 h-8" />
           </div>
@@ -162,12 +162,12 @@ function GuidedActionCard({ nextStep }: any) {
         </div>
         <div className="flex-1 p-8 md:p-12 space-y-6">
           <div>
-            <h2 className="text-2xl md:text-3xl font-black text-blue-950 mb-2">
+            <h2 className="text-2xl md:text-3xl font-black text-teal-950 mb-2">
               What should I do?
             </h2>
             <p className="text-ink-600 font-medium text-lg italic">
               "Please click the button to{" "}
-              <span className="text-blue-700 font-black not-italic">
+              <span className="text-teal-700 font-black not-italic">
                 {nextStep.action.toLowerCase()}
               </span>
               ."
@@ -176,7 +176,7 @@ function GuidedActionCard({ nextStep }: any) {
           <div className="flex flex-wrap gap-4">
             <Link
               href={nextStep.href}
-              className="px-10 py-5 bg-blue-700 hover:bg-blue-800 text-white rounded-2xl font-black uppercase text-sm shadow-2xl shadow-blue-200 transition-all hover:scale-105 active:scale-95 flex items-center gap-3 group/btn"
+              className="px-10 py-5 bg-teal-700 hover:bg-teal-800 text-white rounded-2xl font-black uppercase text-sm shadow-2xl shadow-teal/20 transition-all hover:scale-105 active:scale-95 flex items-center gap-3 group/btn"
             >
               Get Started Now{" "}
               <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-2 transition-transform" />
@@ -195,8 +195,8 @@ function StatusGrid({ status, statusLabel, pengumuman }: any) {
       val: statusLabel,
       desc: "Your current phase",
       icon: ShieldCheck,
-      color: "text-blue-600",
-      bg: "bg-blue-50",
+      color: "text-teal-600",
+      bg: "bg-teal-50",
     },
     {
       label: "Selection",
@@ -233,7 +233,7 @@ function StatusGrid({ status, statusLabel, pengumuman }: any) {
           <p className="text-[10px] font-black text-stone-400 uppercase tracking-widest mb-1">
             {item.label}
           </p>
-          <p className="text-2xl font-black text-blue-950 mb-2 leading-none">
+          <p className="text-2xl font-black text-teal-950 mb-2 leading-none">
             {item.val}
           </p>
           <p className="text-xs font-medium text-stone-400 italic">
@@ -247,21 +247,21 @@ function StatusGrid({ status, statusLabel, pengumuman }: any) {
 
 function SupportCenter() {
   return (
-    <div className="bg-blue-950 text-white rounded-[3rem] p-10 md:p-16 relative overflow-hidden group shadow-2xl">
-      <div className="absolute top-0 right-0 w-96 h-96 bg-blue-800 rounded-full blur-[100px] opacity-20 -translate-y-1/2 translate-x-1/2" />
+    <div className="bg-teal-950 text-white rounded-[3rem] p-10 md:p-16 relative overflow-hidden group shadow-2xl">
+      <div className="absolute top-0 right-0 w-96 h-96 bg-teal-800 rounded-full blur-[100px] opacity-20 -translate-y-1/2 translate-x-1/2" />
       <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-12 text-center lg:text-left">
         <div className="flex-1 space-y-4">
           <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/10 rounded-full border border-white/10">
-            <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-sand-400 animate-pulse" />
             <span className="text-[10px] font-black uppercase tracking-widest">
               PPDB SUPPORT CENTER
             </span>
           </div>
           <h3 className="font-black text-3xl md:text-4xl lg:text-5xl font-display leading-tight">
             Need Help? <br />
-            <span className="text-amber-400">Chat with Our Team!</span>
+            <span className="text-sand-400">Chat with Our Team!</span>
           </h3>
-          <p className="text-blue-200 text-lg md:text-xl font-medium opacity-80 max-w-2xl">
+          <p className="text-teal-200 text-lg md:text-xl font-medium opacity-80 max-w-2xl">
             Don't hesitate to ask. Our team is ready to help you complete the
             registration smoothly.
           </p>
@@ -269,7 +269,7 @@ function SupportCenter() {
         <a
           href="https://wa.me/6281285300800"
           target="_blank"
-          className="px-12 py-5 bg-amber-400 text-blue-950 font-black text-sm uppercase tracking-widest rounded-[1.5rem] hover:bg-amber-300 shadow-xl transition-all hover:scale-105 active:scale-95 text-center"
+          className="px-12 py-5 bg-sand-400 text-teal-950 font-black text-sm uppercase tracking-widest rounded-[1.5rem] hover:bg-sand-300 shadow-xl transition-all hover:scale-105 active:scale-95 text-center"
         >
           Chat on WhatsApp
         </a>
@@ -283,7 +283,7 @@ function SupportCenter() {
 function LoadingState() {
   return (
     <div className="flex items-center justify-center min-vh-50 p-20">
-      <Clock className="w-10 h-10 animate-spin text-blue-600" />
+      <Clock className="w-10 h-10 animate-spin text-teal-600" />
     </div>
   );
 }

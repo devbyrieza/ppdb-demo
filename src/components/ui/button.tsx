@@ -17,11 +17,11 @@ import { cn } from "@/lib/utils";
    · --shadow-gold, --shadow-gold-lg, --shadow-warm
    · --color-gold-*, --color-warm-*
 
-   MAROON / BLUE (backward compat aliases)
+   MAROON / SAND (backward compat aliases)
    · --shadow-maroon, --shadow-maroon-lg
-   · --shadow-blue, --shadow-blue-lg
+   · --shadow-sand, --shadow-sand-lg
    · --color-maroon-*, --color-cream-*
-   · --color-brand-blue-*, --color-brand-yellow-*
+   · --color-teal-*, --color-sand-*
 
    SHARED
    · --radius-full, --radius-md, --radius-lg
@@ -144,47 +144,47 @@ const buttonVariants = cva(
         ].join(" "),
 
         /* ════════════════════════════════════
-           BLUE GROUP — Ulul Albaab variant
+           teal GROUP — Al Andalus variant
            (backward compat)
            ════════════════════════════════════ */
 
-        /* ─── PRIMARY BLUE ─── */
+        /* ─── PRIMARY teal (alias) ─── */
         "primary-blue": [
           "relative overflow-hidden",
-          "bg-gradient-to-br from-[var(--color-brand-blue-500)] to-[var(--color-brand-blue-800)]",
+          "bg-gradient-to-br from-[var(--color-teal-500)] to-[var(--color-teal-800)]",
           "text-white",
-          "[box-shadow:var(--shadow-blue)]",
+          "[box-shadow:var(--shadow-teal)]",
           "before:absolute before:inset-0 before:rounded-[inherit]",
           "before:bg-gradient-to-br before:from-white/[0.12] before:to-transparent",
           "before:pointer-events-none",
           "hover:-translate-y-[2px]",
-          "hover:[box-shadow:var(--shadow-blue-lg)]",
+          "hover:[box-shadow:var(--shadow-teal-lg)]",
           "hover:brightness-[1.08]",
           "active:translate-y-0",
         ].join(" "),
 
-        /* ─── SECONDARY BLUE ─── */
+        /* ─── SECONDARY teal (alias) ─── */
         "secondary-blue": [
           "bg-[var(--color-white)]",
-          "text-[var(--color-brand-blue-700)]",
-          "border border-[var(--color-brand-blue-200)]",
+          "text-[var(--color-teal-700)]",
+          "border border-[var(--color-teal-200)]",
           "[box-shadow:var(--shadow-xs)]",
-          "hover:bg-[var(--color-brand-blue-50)]",
-          "hover:border-[var(--color-brand-blue-400)]",
+          "hover:bg-[var(--color-teal-50)]",
+          "hover:border-[var(--color-teal-400)]",
           "hover:[box-shadow:var(--shadow-sm)]",
           "hover:-translate-y-[1px]",
           "active:translate-y-0",
         ].join(" "),
 
-        /* ─── OUTLINE BLUE ─── */
+        /* ─── OUTLINE teal (alias) ─── */
         "outline-blue": [
           "bg-transparent",
-          "text-[var(--color-brand-blue-600)]",
-          "border-[1.5px] border-[var(--color-brand-blue-300)]",
-          "hover:bg-[var(--color-brand-blue-800)]",
+          "text-[var(--color-teal-600)]",
+          "border-[1.5px] border-[var(--color-teal-300)]",
+          "hover:bg-[var(--color-teal-800)]",
           "hover:text-white",
-          "hover:border-[var(--color-brand-blue-800)]",
-          "hover:[box-shadow:var(--shadow-blue)]",
+          "hover:border-[var(--color-teal-800)]",
+          "hover:[box-shadow:var(--shadow-teal)]",
           "hover:-translate-y-[1px]",
           "active:translate-y-0",
         ].join(" "),
@@ -224,18 +224,18 @@ const buttonVariants = cva(
           "active:translate-y-0",
         ].join(" "),
 
-        /* ─── YELLOW — Ulul Albaab accent (alias warm) ─── */
+        /* ─── SAND — Accent (alias warm) ─── */
         yellow: [
           "relative overflow-hidden",
-          "bg-gradient-to-br from-[var(--color-brand-yellow-300)] to-[var(--color-brand-yellow-500)]",
-          "text-[var(--color-brand-blue-900)]",
-          "[box-shadow:var(--shadow-yellow)]",
+          "bg-gradient-to-br from-[var(--color-sand-300)] to-[var(--color-sand-500)]",
+          "text-[var(--color-teal-900)]",
+          "[box-shadow:var(--shadow-sand)]",
           "before:absolute before:inset-0 before:rounded-[inherit]",
           "before:bg-gradient-to-br before:from-white/20 before:to-transparent",
           "before:pointer-events-none",
           "hover:-translate-y-[2px]",
           "hover:brightness-[1.06]",
-          "hover:[box-shadow:var(--shadow-yellow-lg)]",
+          "hover:[box-shadow:var(--shadow-sand-lg)]",
           "active:translate-y-0",
         ].join(" "),
 
@@ -304,12 +304,12 @@ const buttonVariants = cva(
           "active:scale-100",
         ].join(" "),
 
-        /* ─── LINK BLUE — Inline text, Ulul Albaab ─── */
+        /* ─── LINK teal — Inline text (alias) ─── */
         "link-blue": [
           "bg-transparent p-0 h-auto",
-          "text-[var(--color-brand-blue-600)]",
+          "text-[var(--color-teal-600)]",
           "font-medium underline-offset-4",
-          "hover:underline hover:text-[var(--color-brand-blue-900)]",
+          "hover:underline hover:text-[var(--color-teal-900)]",
           "[transition-timing-function:var(--ease-smooth)]",
           "duration-[var(--duration-fast)]",
           "active:scale-100",

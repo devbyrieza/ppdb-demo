@@ -107,7 +107,7 @@ export default function KepribadianTestPage() {
   if (checking) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="w-10 h-10 animate-spin text-brand-blue-600" />
+        <Loader2 className="w-10 h-10 animate-spin text-teal-600" />
       </div>
     );
   }
@@ -125,7 +125,7 @@ export default function KepribadianTestPage() {
             onClick={() =>
               router.push("/dashboard/pendaftar?tab=undangan-seleksi")
             }
-            className="px-6 py-3 bg-brand-blue-600 hover:bg-brand-blue-700 text-white font-bold rounded-xl transition-colors shadow-lg shadow-brand-blue-100"
+            className="px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-xl transition-colors shadow-lg shadow-teal-100"
           >
             Kembali ke Jadwal Seleksi
           </button>
@@ -150,7 +150,7 @@ export default function KepribadianTestPage() {
           </p>
           <button
             onClick={() => router.push("/dashboard/pendaftar")}
-            className="w-full px-6 py-4 bg-brand-blue-700 hover:bg-brand-blue-800 text-white font-black rounded-xl transition-all shadow-md uppercase tracking-widest text-sm"
+            className="w-full px-6 py-4 bg-teal-700 hover:bg-teal-800 text-white font-black rounded-xl transition-all shadow-md uppercase tracking-widest text-sm"
           >
             Kembali ke Dashboard
           </button>
@@ -169,29 +169,29 @@ export default function KepribadianTestPage() {
         <ArrowLeft className="w-4 h-4" /> Kembali
       </button>
 
-      <div className="bg-linear-to-r from-brand-blue-600 to-brand-blue-800 rounded-xl p-6 mb-6">
+      <div className="bg-linear-to-r from-teal-600 to-teal-800 rounded-xl p-6 mb-6">
         <h1 className="text-xl font-bold text-white">
           Seleksi Kepribadian Calon Santri/Wati
         </h1>
-        <p className="text-brand-blue-100 text-sm mt-1">
+        <p className="text-teal-100 text-sm mt-1">
           20 pernyataan • Skala 1-4 • Durasi 30 menit
         </p>
       </div>
 
-      <div className="bg-brand-blue-50 border border-brand-blue-200 rounded-xl p-4">
+      <div className="bg-teal-50 border border-teal-200 rounded-xl p-4">
         <div className="flex gap-4">
-          <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center border border-brand-blue-100 flex-shrink-0">
-            <AlertCircle className="w-6 h-6 text-brand-blue-600" />
+          <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center border border-teal-100 flex-shrink-0">
+            <AlertCircle className="w-6 h-6 text-teal-600" />
           </div>
           <div>
-            <h4 className="font-bold text-brand-blue-800 mb-1 text-sm">
+            <h4 className="font-bold text-teal-800 mb-1 text-sm">
               Pesan dari Mudir
             </h4>
-            <p className="text-sm text-brand-blue-700 leading-relaxed italic">
+            <p className="text-sm text-teal-700 leading-relaxed italic">
               "Bismillah, kerjakan dengan jujur dan penuh optimisme. Hasil
               terbaik adalah buah dari kejujuran dan usaha yang ikhlas."
             </p>
-            <p className="text-sm text-brand-blue-600 leading-relaxed mt-1">
+            <p className="text-sm text-teal-600 leading-relaxed mt-1">
               - Ustadz Juju Junaedi, M.Pd.
             </p>
           </div>
@@ -204,13 +204,13 @@ export default function KepribadianTestPage() {
           <span className="text-stone-600">
             Halaman {page + 1} dari {totalPages}
           </span>
-          <span className="font-bold text-brand-blue-600">
+          <span className="font-bold text-teal-600">
             {Object.keys(answers).length}/{KEPRIBADIAN_QUESTIONS.length} dijawab
           </span>
         </div>
         <div className="w-full h-2 bg-stone-100 rounded-full overflow-hidden">
           <div
-            className="h-full bg-linear-to-r from-brand-blue-500 to-brand-blue-700 rounded-full transition-all duration-500 shadow-sm shadow-brand-blue-200"
+            className="h-full bg-linear-to-r from-teal-500 to-teal-700 rounded-full transition-all duration-500 shadow-sm shadow-teal-200"
             style={{
               width: `${(Object.keys(answers).length / KEPRIBADIAN_QUESTIONS.length) * 100}%`,
             }}
@@ -225,10 +225,10 @@ export default function KepribadianTestPage() {
             <div className="grid grid-cols-1 gap-3">
               <div
                 onClick={() => setAnswers((p) => ({ ...p, [q.id]: "A" }))}
-                className={`cursor-pointer p-5 border-2 rounded-2xl transition-all duration-300 ${answers[q.id] === "A" ? "bg-brand-blue-50 border-brand-blue-500 text-brand-blue-950 shadow-md ring-4 ring-brand-blue-500/5" : "border-stone-100 hover:border-brand-blue-200 hover:bg-slate-50"}`}
+                className={`cursor-pointer p-5 border-2 rounded-2xl transition-all duration-300 ${answers[q.id] === "A" ? "bg-teal-50 border-teal-500 text-teal-950 shadow-md ring-4 ring-teal-500/5" : "border-stone-100 hover:border-teal-200 hover:bg-slate-50"}`}
               >
                 <span
-                  className={`font-black mr-3 border rounded-lg px-2.5 py-1 text-xs transition-colors ${answers[q.id] === "A" ? "bg-brand-blue-600 text-white border-brand-blue-600" : "bg-white text-stone-400 border-stone-200"}`}
+                  className={`font-black mr-3 border rounded-lg px-2.5 py-1 text-xs transition-colors ${answers[q.id] === "A" ? "bg-teal-600 text-white border-teal-600" : "bg-white text-stone-400 border-stone-200"}`}
                 >
                   A
                 </span>
@@ -238,10 +238,10 @@ export default function KepribadianTestPage() {
               </div>
               <div
                 onClick={() => setAnswers((p) => ({ ...p, [q.id]: "B" }))}
-                className={`cursor-pointer p-5 border-2 rounded-2xl transition-all duration-300 ${answers[q.id] === "B" ? "bg-brand-blue-50 border-brand-blue-500 text-brand-blue-950 shadow-md ring-4 ring-brand-blue-500/5" : "border-stone-100 hover:border-brand-blue-200 hover:bg-slate-50"}`}
+                className={`cursor-pointer p-5 border-2 rounded-2xl transition-all duration-300 ${answers[q.id] === "B" ? "bg-teal-50 border-teal-500 text-teal-950 shadow-md ring-4 ring-teal-500/5" : "border-stone-100 hover:border-teal-200 hover:bg-slate-50"}`}
               >
                 <span
-                  className={`font-black mr-3 border rounded-lg px-2.5 py-1 text-xs transition-colors ${answers[q.id] === "B" ? "bg-brand-blue-600 text-white border-brand-blue-600" : "bg-white text-stone-400 border-stone-200"}`}
+                  className={`font-black mr-3 border rounded-lg px-2.5 py-1 text-xs transition-colors ${answers[q.id] === "B" ? "bg-teal-600 text-white border-teal-600" : "bg-white text-stone-400 border-stone-200"}`}
                 >
                   B
                 </span>
@@ -267,7 +267,7 @@ export default function KepribadianTestPage() {
         {page < totalPages - 1 ? (
           <button
             onClick={handleNext}
-            className="flex-1 py-4 bg-brand-blue-600 hover:bg-brand-blue-700 text-white font-black uppercase tracking-widest text-sm rounded-2xl shadow-xl shadow-brand-blue-200 transition-all active:scale-95"
+            className="flex-1 py-4 bg-teal-600 hover:bg-teal-700 text-white font-black uppercase tracking-widest text-sm rounded-2xl shadow-xl shadow-teal-200 transition-all active:scale-95"
           >
             Lanjutkan
           </button>
@@ -275,7 +275,7 @@ export default function KepribadianTestPage() {
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className="flex-1 py-4 bg-brand-blue-600 hover:bg-brand-blue-700 disabled:bg-stone-300 text-white font-black uppercase tracking-widest text-sm rounded-2xl shadow-xl shadow-brand-blue-200 transition-all active:scale-95 flex items-center justify-center gap-2"
+            className="flex-1 py-4 bg-teal-600 hover:bg-teal-700 disabled:bg-stone-300 text-white font-black uppercase tracking-widest text-sm rounded-2xl shadow-xl shadow-teal-200 transition-all active:scale-95 flex items-center justify-center gap-2"
           >
             {loading ? (
               <>

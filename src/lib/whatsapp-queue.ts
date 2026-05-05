@@ -963,7 +963,7 @@ Jazakumullahu khairan.
 /**
  * Template: Pengingat H-1 untuk Orang Tua (Orang Tua)
  */
-export function buildMessageReminderH1Orang Tua(
+export function buildMessageReminderH1OrangTua(
     namaSantri: string,
     hari: string,
     tanggal: string,

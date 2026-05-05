@@ -52,7 +52,7 @@ const StatCard = ({
     className="bg-white p-6 sm:p-8 rounded-2xl sm:rounded-[2rem] border border-surface-100 shadow-premium-sm hover:shadow-premium-md transition-all text-center group"
   >
     <div className="w-14 h-14 mx-auto bg-surface-50 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform shadow-premium-xs">
-      <Icon className="w-7 h-7 text-brand-blue-600" />
+      <Icon className="w-7 h-7 text-teal-600" />
     </div>
     <div className="font-display font-black text-lg sm:text-2xl md:text-3xl text-ink-950 mb-1 leading-tight break-words">
       {value}
@@ -77,7 +77,7 @@ const TimelineItem = ({ item, index }: { item: any; index: number }) => (
     {/* Dot */}
     <div
       className={`absolute left-0 top-0 w-12 h-12 md:w-16 md:h-16 rounded-2xl md:rounded-3xl border-4 flex items-center justify-center bg-white z-10 shadow-premium-sm transition-all duration-500
-      ${item.status === "active" ? "border-brand-blue-600 text-brand-blue-600" : "border-surface-100 text-ink-300"}`}
+      ${item.status === "active" ? "border-teal-600 text-teal-600" : "border-surface-100 text-ink-300"}`}
     >
       <span className="text-xl md:text-2xl font-display font-black">
         {index + 1}
@@ -100,7 +100,7 @@ const TimelineItem = ({ item, index }: { item: any; index: number }) => (
         <span
           className={`px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
             item.status === "active"
-              ? "bg-brand-blue-50 text-brand-blue-700"
+              ? "bg-teal-50 text-teal-700"
               : "bg-surface-50 text-ink-400"
           }`}
         >
@@ -205,8 +205,8 @@ function PPDBContent() {
     <main className="bg-white min-h-screen">
       {/* 1. Hero Section - Airy & Impactful */}
       <section className="relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden bg-white">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-blue-50/50 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-brand-yellow-50/30 rounded-full blur-[100px] -translate-x-1/2 translate-y-1/2 pointer-events-none" />
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-teal-50/50 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-sand-50/30 rounded-full blur-[100px] -translate-x-1/2 translate-y-1/2 pointer-events-none" />
         <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.02] pointer-events-none" />
 
         <Container className="relative z-10">
@@ -214,7 +214,7 @@ function PPDBContent() {
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-surface-200 text-brand-blue-700 text-xs font-black uppercase tracking-widest mb-10 shadow-premium-sm"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-surface-200 text-teal-700 text-xs font-black uppercase tracking-widest mb-10 shadow-premium-sm"
             >
               <Sparkles className="w-3.5 h-3.5" />
               <span>Penerimaan Santri Baru T.A 2026/2027</span>
@@ -227,7 +227,7 @@ function PPDBContent() {
               className="text-4xl sm:text-6xl lg:text-8xl font-display font-black mb-8 md:mb-10 tracking-tight leading-[0.9] text-ink-950"
             >
               Siapkan Generasi <br />
-              <span className="text-brand-blue-600">Terbaik Kita</span>
+              <span className="text-teal-600">Terbaik Kita</span>
             </motion.h1>
 
             <motion.p
@@ -245,17 +245,17 @@ function PPDBContent() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.25 }}
-              className="max-w-4xl mx-auto bg-brand-blue-50 border border-brand-blue-100 rounded-3xl p-6 md:p-8 mb-12 flex flex-col md:flex-row items-center gap-6 text-left shadow-premium-sm"
+              className="max-w-4xl mx-auto bg-teal-50 border border-teal-100 rounded-3xl p-6 md:p-8 mb-12 flex flex-col md:flex-row items-center gap-6 text-left shadow-premium-sm"
             >
-              <div className="w-16 h-16 bg-brand-blue-600 rounded-2xl flex items-center justify-center text-white shrink-0 shadow-premium-md relative overflow-hidden">
+              <div className="w-16 h-16 bg-teal-600 rounded-2xl flex items-center justify-center text-white shrink-0 shadow-premium-md relative overflow-hidden">
                 <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-20" />
                 <Award className="w-8 h-8 relative z-10" />
               </div>
               <div>
-                <h3 className="text-xl md:text-2xl font-display font-black text-brand-blue-900 mb-2">
+                <h3 className="text-xl md:text-2xl font-display font-black text-teal-900 mb-2">
                   ✨ Kesempatan Emas: Angkatan Pertama Era Al Andalus
                 </h3>
-                <p className="text-brand-blue-800 font-medium leading-relaxed">
+                <p className="text-teal-800 font-medium leading-relaxed">
                   Menjadi bagian dari angkatan 2026/2027 adalah sebuah
                   keistimewaan. Ananda akan menjadi{" "}
                   <strong>pionir dan tonggak sejarah pertama</strong> yang
@@ -273,7 +273,7 @@ function PPDBContent() {
             >
               <Link
                 href={`/daftar${jenjang ? `?jenjang=${jenjang}` : ""}`}
-                className="inline-flex items-center justify-center gap-3 px-10 py-5 rounded-pill bg-brand-blue-900 text-white font-black text-xl hover:bg-brand-blue-800 shadow-premium-lg transition-all"
+                className="inline-flex items-center justify-center gap-3 px-10 py-5 rounded-pill bg-teal-900 text-white font-black text-xl hover:bg-teal-800 shadow-premium-lg transition-all"
               >
                 Daftar PPDB Baru
               </Link>
@@ -300,13 +300,13 @@ function PPDBContent() {
           <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
             {/* Sticky Content */}
             <div className="lg:w-2/5 lg:sticky lg:top-32 h-fit flex flex-col items-center text-center lg:items-start lg:text-left">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-surface-200 text-brand-blue-700 text-xs font-black uppercase tracking-widest mb-8 shadow-premium-sm">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-surface-200 text-teal-700 text-xs font-black uppercase tracking-widest mb-8 shadow-premium-sm">
                 <Clock className="w-3.5 h-3.5" />
                 <span>Tahapan Pendaftaran</span>
               </div>
               <h2 className="text-3xl md:text-5xl font-display font-black text-ink-950 mb-8 leading-tight">
                 Alur Seleksi <br />{" "}
-                <span className="text-brand-blue-600">
+                <span className="text-teal-600">
                   Lengkap & Transparan
                 </span>
               </h2>
@@ -351,7 +351,7 @@ function PPDBContent() {
           <div className="text-center mb-16 md:mb-24">
             <h2 className="text-3xl md:text-6xl font-display font-black text-ink-950 mb-6">
               Informasi Investasi <br />
-              <span className="text-brand-blue-600">Pendidikan</span>
+              <span className="text-teal-600">Pendidikan</span>
             </h2>
             <p className="text-xl text-ink-600 max-w-2xl mx-auto font-medium">
               Bentuk ikhtiar orang tua dalam memfasilitasi masa depan terbaik
@@ -369,9 +369,9 @@ function PPDBContent() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.1 }}
-                  className="bg-white p-8 sm:p-12 rounded-[2rem] md:rounded-[3.5rem] border border-surface-100 shadow-premium-lg flex flex-col items-center text-center group hover:bg-brand-blue-900 transition-all duration-500"
+                  className="bg-white p-8 sm:p-12 rounded-[2rem] md:rounded-[3.5rem] border border-surface-100 shadow-premium-lg flex flex-col items-center text-center group hover:bg-teal-900 transition-all duration-500"
                 >
-                  <div className="w-20 h-20 bg-surface-50 rounded-[2rem] flex items-center justify-center text-brand-blue-600 mb-8 group-hover:bg-white/10 group-hover:text-white transition-all shadow-premium-sm">
+                  <div className="w-20 h-20 bg-surface-50 rounded-[2rem] flex items-center justify-center text-teal-600 mb-8 group-hover:bg-white/10 group-hover:text-white transition-all shadow-premium-sm">
                     <Icon className="w-10 h-10" />
                   </div>
                   <h3 className="text-xl text-ink-400 font-black uppercase tracking-widest mb-3 group-hover:text-white/60 transition-colors">
@@ -389,13 +389,13 @@ function PPDBContent() {
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="mt-16 max-w-4xl mx-auto bg-brand-blue-50 border border-brand-blue-100 rounded-[2.5rem] p-8 md:p-10 flex flex-col md:flex-row items-center gap-8 text-center md:text-left"
+            className="mt-16 max-w-4xl mx-auto bg-teal-50 border border-teal-100 rounded-[2.5rem] p-8 md:p-10 flex flex-col md:flex-row items-center gap-8 text-center md:text-left"
           >
-            <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-brand-blue-600 shadow-premium-sm shrink-0">
+            <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-teal-600 shadow-premium-sm shrink-0">
               <HelpCircle className="w-8 h-8" />
             </div>
             <div>
-              <p className="text-lg text-brand-blue-900 font-bold leading-relaxed">
+              <p className="text-lg text-teal-900 font-bold leading-relaxed">
                 Catatan Penting: Biaya pendaftaran dan uang pangkal bersifat
                 non-refundable. Uang pangkal (daftar ulang) dapat dicicil
                 maksimal 3x pembayaran, dengan{" "}
@@ -415,7 +415,7 @@ function PPDBContent() {
             <div className="space-y-12">
               <h2 className="text-3xl md:text-4xl font-display font-black text-ink-950 text-center lg:text-left">
                 Persyaratan{" "}
-                <span className="text-brand-blue-600">Administrasi</span>
+                <span className="text-teal-600">Administrasi</span>
               </h2>
               <div className="space-y-6 md:space-y-8">
                 {requirements.map((req, idx) => {
@@ -429,7 +429,7 @@ function PPDBContent() {
                       className="bg-white p-6 sm:p-10 rounded-[2rem] md:rounded-[3rem] border border-surface-100 shadow-premium-md"
                     >
                       <div className="flex items-center gap-4 md:gap-5 mb-6 md:mb-8">
-                        <div className="w-12 h-12 md:w-14 md:h-14 bg-brand-blue-50 rounded-2xl flex items-center justify-center text-brand-blue-600 shadow-premium-sm shrink-0">
+                        <div className="w-12 h-12 md:w-14 md:h-14 bg-teal-50 rounded-2xl flex items-center justify-center text-teal-600 shadow-premium-sm shrink-0">
                           <ReqIcon className="w-6 h-6 md:w-7 md:h-7" />
                         </div>
                         <h3 className="text-xl md:text-2xl font-display font-black text-ink-950 leading-tight">
@@ -455,7 +455,7 @@ function PPDBContent() {
                             <span className="flex-1 font-bold text-ink-700 text-sm md:text-base leading-tight">
                               {item.name}
                             </span>
-                            <span className="text-[10px] font-black uppercase tracking-widest text-ink-300 group-hover:text-brand-blue-600 shrink-0">
+                            <span className="text-[10px] font-black uppercase tracking-widest text-ink-300 group-hover:text-teal-600 shrink-0">
                               {item.type}
                             </span>
                           </li>
@@ -480,7 +480,7 @@ function PPDBContent() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                className="bg-brand-blue-900 rounded-[2rem] md:rounded-[4rem] p-6 md:p-16 text-white relative overflow-hidden shadow-premium-2xl"
+                className="bg-teal-900 rounded-[2rem] md:rounded-[4rem] p-6 md:p-16 text-white relative overflow-hidden shadow-premium-2xl"
               >
                 <div className="absolute top-0 right-0 w-80 h-80 bg-white/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
                 <div className="relative z-10">
@@ -512,7 +512,7 @@ function PPDBContent() {
                           className="flex gap-4 md:gap-5 items-start bg-white/5 p-5 md:p-6 rounded-[1.5rem] md:rounded-[2rem] border border-white/5 backdrop-blur-sm group transition-all duration-300"
                         >
                           <div className="w-10 h-10 md:w-12 md:h-12 bg-white/10 rounded-2xl flex items-center justify-center shrink-0">
-                            <FeatIcon className="w-5 h-5 md:w-6 md:h-6 text-brand-yellow-400" />
+                            <FeatIcon className="w-5 h-5 md:w-6 md:h-6 text-sand-400" />
                           </div>
                           <div>
                             <h4 className="font-display font-black text-lg md:text-xl mb-1 text-white">
@@ -551,7 +551,7 @@ function PPDBContent() {
                     <motion.div key={i} className="group">
                       <details className="bg-white rounded-2xl border border-surface-100 shadow-premium-sm transition-all duration-300 open:shadow-premium-lg">
                         <summary className="p-5 md:p-6 flex items-center gap-4 md:gap-5 cursor-pointer list-none">
-                          <div className="w-8 h-8 md:w-10 md:h-10 bg-brand-blue-50 rounded-xl flex items-center justify-center text-brand-blue-600 group-hover:bg-brand-blue-600 group-hover:text-white transition-all shrink-0">
+                          <div className="w-8 h-8 md:w-10 md:h-10 bg-teal-50 rounded-xl flex items-center justify-center text-teal-600 group-hover:bg-teal-600 group-hover:text-white transition-all shrink-0">
                             <HelpCircle className="w-4 h-4 md:w-5 md:h-5" />
                           </div>
                           <span className="flex-1 font-black text-ink-950 tracking-tight text-sm md:text-base">
@@ -581,7 +581,7 @@ function PPDBContent() {
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="bg-brand-blue-900 bg-linear-to-br from-brand-blue-800 to-brand-blue-950 rounded-[2rem] md:rounded-[3rem] lg:rounded-[4rem] p-6 sm:p-8 md:p-16 lg:p-24 text-center text-white relative overflow-hidden shadow-premium-2xl"
+            className="bg-teal-900 bg-linear-to-br from-teal-800 to-teal-950 rounded-[2rem] md:rounded-[3rem] lg:rounded-[4rem] p-6 sm:p-8 md:p-16 lg:p-24 text-center text-white relative overflow-hidden shadow-premium-2xl"
           >
             <div className="absolute top-0 right-0 w-32 h-32 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-white/5 rounded-full blur-[60px] md:blur-[100px] -translate-y-1/2 translate-x-1/2" />
             <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-5" />
@@ -589,15 +589,15 @@ function PPDBContent() {
             <div className="relative z-10">
               <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-display font-black mb-4 sm:mb-6 md:mb-8 text-white leading-tight">
                 Mulai Perjalanan <br />{" "}
-                <span className="text-brand-yellow-400">Ananda Di Sini</span>
+                <span className="text-sand-400">Ananda Di Sini</span>
               </h2>
-              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-brand-blue-100 max-w-2xl mx-auto mb-6 sm:mb-8 md:mb-10 lg:mb-12 font-medium leading-relaxed px-2">
+              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-teal-100 max-w-2xl mx-auto mb-6 sm:mb-8 md:mb-10 lg:mb-12 font-medium leading-relaxed px-2">
                 Pendaftaran santri baru terbatas hanya untuk 50 santri pilihan.
                 Segera daftarkan ananda sebelum kuota terpenuhi.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 justify-center px-4">
                 <Link href="/daftar">
-                  <span className="w-full sm:w-auto inline-block px-6 sm:px-8 py-3.5 sm:py-4 md:py-5 rounded-pill bg-white text-brand-blue-900 font-black text-sm sm:text-base md:text-lg xl:text-xl hover:bg-brand-yellow-400 hover:text-white shadow-premium-xl transition-all cursor-pointer min-h-[48px] sm:min-h-[52px]">
+                  <span className="w-full sm:w-auto inline-block px-6 sm:px-8 py-3.5 sm:py-4 md:py-5 rounded-pill bg-white text-teal-900 font-black text-sm sm:text-base md:text-lg xl:text-xl hover:bg-sand-400 hover:text-white shadow-premium-xl transition-all cursor-pointer min-h-[48px] sm:min-h-[52px]">
                     Daftar Sekarang
                   </span>
                 </Link>
@@ -611,27 +611,27 @@ function PPDBContent() {
               </div>
 
               {/* Trust microcopy */}
-              <p className="mt-6 text-[11px] text-brand-blue-300 font-bold uppercase tracking-widest">
+              <p className="mt-6 text-[11px] text-teal-300 font-bold uppercase tracking-widest">
                 ✦ Pendaftaran Gratis&nbsp;&nbsp;•&nbsp;&nbsp;Proses
                 Mudah&nbsp;&nbsp;•&nbsp;&nbsp;Langsung Konfirmasi
               </p>
 
               {/* Legalitas badges */}
               <div className="mt-8 pt-8 border-t border-white/10 flex flex-wrap items-center justify-center gap-6">
-                <div className="flex items-center gap-2 text-brand-blue-100/70">
+                <div className="flex items-center gap-2 text-teal-100/70">
                   <Shield className="w-4 h-4 text-green-400" />
                   <span className="text-xs font-bold uppercase tracking-widest">
                     Terakreditasi BAN-PDM
                   </span>
                 </div>
-                <div className="flex items-center gap-2 text-brand-blue-100/70">
-                  <Award className="w-4 h-4 text-brand-yellow-400" />
+                <div className="flex items-center gap-2 text-teal-100/70">
+                  <Award className="w-4 h-4 text-sand-400" />
                   <span className="text-xs font-bold uppercase tracking-widest">
                     Sejak 1995 • 30 Tahun Melayani
                   </span>
                 </div>
-                <div className="flex items-center gap-2 text-brand-blue-100/70">
-                  <GraduationCap className="w-4 h-4 text-blue-400" />
+                <div className="flex items-center gap-2 text-teal-100/70">
+                  <GraduationCap className="w-4 h-4 text-teal-400" />
                   <span className="text-xs font-bold uppercase tracking-widest">
                     Resmi Kemendikdasmen
                   </span>
@@ -651,7 +651,7 @@ function LoadingFallback() {
       <motion.div
         animate={{ rotate: 360 }}
         transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-        className="w-12 h-12 text-brand-blue-600 mb-4"
+        className="w-12 h-12 text-teal-600 mb-4"
       >
         <Loader2 className="w-12 h-12" />
       </motion.div>

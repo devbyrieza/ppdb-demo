@@ -92,7 +92,7 @@ export default function ProgressStepper({
               {idx < STEPS.length - 1 && (
                 <div className="absolute top-5 left-[50%] right-[-50%] h-0.5 bg-stone-100 z-0">
                   <div
-                    className={`h-full bg-brand-blue-600 transition-all duration-700 ${idx < activeIndex ? "w-full" : "w-0"}`}
+                    className={`h-full bg-teal-600 transition-all duration-700 ${idx < activeIndex ? "w-full" : "w-0"}`}
                   />
                 </div>
               )}
@@ -101,9 +101,9 @@ export default function ProgressStepper({
               <div
                 className={`w-10 h-10 rounded-full flex items-center justify-center relative z-10 transition-all duration-500 border-2 ${
                   isCompleted
-                    ? "bg-brand-blue-600 border-brand-blue-600 text-white shadow-brand-blue-200 shadow-lg"
+                    ? "bg-teal-600 border-teal-600 text-white shadow-teal shadow-lg"
                     : isActive
-                      ? "bg-white border-brand-blue-600 text-brand-blue-600 shadow-brand-blue-100 shadow-lg scale-110 font-bold"
+                      ? "bg-white border-teal-600 text-teal-600 shadow-teal shadow-lg scale-110 font-bold"
                       : "bg-white border-stone-200 text-stone-300"
                 }`}
               >
@@ -118,7 +118,7 @@ export default function ProgressStepper({
               <span
                 className={`mt-3 text-[10px] sm:text-xs font-black uppercase tracking-wider transition-colors duration-500 ${
                   isActive
-                    ? "text-brand-blue-800"
+                    ? "text-teal-800"
                     : isCompleted
                       ? "text-stone-600"
                       : "text-stone-400"
@@ -129,7 +129,7 @@ export default function ProgressStepper({
 
               {/* Status Indicator Bar */}
               {isActive && (
-                <div className="mt-1 h-1 w-8 bg-brand-yellow-400 rounded-full animate-pulse" />
+                <div className="mt-1 h-1 w-8 bg-sand-400 rounded-full animate-pulse" />
               )}
             </div>
           );

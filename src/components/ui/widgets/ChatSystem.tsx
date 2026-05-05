@@ -132,13 +132,13 @@ export default function ChatSystem() {
                     setIsMenuOpen(false);
                     setIsAiOpen(true);
                   }}
-                  className="w-full flex items-center gap-3 p-3 hover:bg-brand-blue-50 rounded-xl transition-colors group text-left"
+                  className="w-full flex items-center gap-3 p-3 hover:bg-teal-50 rounded-xl transition-colors group text-left"
                 >
-                  <div className="w-10 h-10 rounded-full bg-brand-blue-100 flex items-center justify-center shrink-0 group-hover:bg-brand-blue-600 transition-colors">
-                    <Bot className="w-5 h-5 text-brand-blue-600 group-hover:text-white transition-colors" />
+                  <div className="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center shrink-0 group-hover:bg-teal-600 transition-colors">
+                    <Bot className="w-5 h-5 text-teal-600 group-hover:text-white transition-colors" />
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-bold text-ink-900 group-hover:text-brand-blue-800 text-sm mb-0.5">
+                    <h4 className="font-bold text-ink-900 group-hover:text-teal-800 text-sm mb-0.5">
                       💬 Tanya AI Assistant
                     </h4>
                     <p className="text-[11px] text-ink-500 font-medium">
@@ -225,15 +225,15 @@ export default function ChatSystem() {
                 animate={{ opacity: 1, scale: 1 }}
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-[60px] h-[60px] md:w-16 md:h-16 bg-brand-blue-700 text-white rounded-[1.2rem] md:rounded-[1.3rem] flex items-center justify-center shadow-[0_10px_30px_rgba(30,58,138,0.4)] relative transition-all duration-300"
+                className="w-[60px] h-[60px] md:w-16 md:h-16 bg-teal-700 text-white rounded-[1.2rem] md:rounded-[1.3rem] flex items-center justify-center shadow-[0_10px_30px_rgba(13,110,110,0.4)] relative transition-all duration-300"
               >
                 {/* Pulse Effect */}
                 <span
-                  className="absolute inset-0 rounded-[1.2rem] md:rounded-[1.3rem] bg-brand-blue-700/40 animate-ping"
+                  className="absolute inset-0 rounded-[1.2rem] md:rounded-[1.3rem] bg-teal-700/40 animate-ping"
                   style={{ animationDuration: "3s" }}
                 />
 
-                <div className="relative z-10 w-full h-full flex items-center justify-center bg-brand-blue-700 rounded-[1.2rem] md:rounded-[1.3rem] border-2 border-brand-blue-600/50">
+                <div className="relative z-10 w-full h-full flex items-center justify-center bg-teal-700 rounded-[1.2rem] md:rounded-[1.3rem] border-2 border-teal-600/50">
                   {isMenuOpen ? (
                     <X className="w-8 h-8 md:w-9 md:h-9" />
                   ) : (

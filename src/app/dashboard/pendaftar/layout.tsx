@@ -211,13 +211,13 @@ export default function DashboardLayout({
           {/* Tooltip for locked state */}
           <div className="absolute left-14 top-full z-50 w-64 p-3 mt-2 text-xs text-white bg-ink-900 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0 lg:left-full lg:top-0 lg:ml-2">
             <div className="font-bold mb-1 flex items-center gap-2">
-              <Lock className="w-3.5 h-3.5 text-brand-yellow-400" />
+              <Lock className="w-3.5 h-3.5 text-sand-400" />
               <span>Akses Terkunci</span>
             </div>
             <p className="text-ink-200 mb-2">{unlockMessage}</p>
             <div className="w-full h-1 bg-ink-700 rounded-full overflow-hidden">
               <div
-                className="h-full bg-brand-yellow-500 rounded-full"
+                className="h-full bg-sand-500 rounded-full"
                 style={{ width: `${progressToUnlock}%` }}
               />
             </div>
@@ -235,17 +235,17 @@ export default function DashboardLayout({
           href={item.href}
           className={`group flex items-center px-4 py-3.5 text-sm font-bold rounded-2xl transition-all duration-200 ${
             item.active
-              ? "bg-brand-blue-900 text-white shadow-md border border-brand-blue-800"
-              : "text-ink-600 hover:bg-brand-yellow-100 hover:text-brand-blue-900"
+              ? "bg-teal-900 text-white shadow-md border border-teal-800"
+              : "text-ink-600 hover:bg-sand-100 hover:text-teal-900"
           }`}
         >
           <item.icon
-            className={`w-5 h-5 mr-3 flex-shrink-0 transition-colors ${item.active ? "text-brand-yellow-200" : "text-ink-400 group-hover:text-brand-blue-700"}`}
+            className={`w-5 h-5 mr-3 flex-shrink-0 transition-colors ${item.active ? "text-sand-200" : "text-ink-400 group-hover:text-teal-700"}`}
           />
           <span className="flex-1 truncate">{item.name}</span>
 
           {item.active && (
-            <ChevronRight className="w-4 h-4 text-brand-yellow-200" />
+            <ChevronRight className="w-4 h-4 text-sand-200" />
           )}
         </Link>
       </div>
@@ -263,13 +263,13 @@ export default function DashboardLayout({
       <div className="min-h-screen bg-surface-50 flex items-center justify-center">
         <div className="bg-white p-8 rounded-3xl shadow-clay-lg text-center max-w-sm w-full mx-4">
           <div className="relative w-16 h-16 mx-auto mb-6">
-            <div className="absolute inset-0 border-4 border-brand-yellow-100 rounded-full" />
-            <div className="absolute inset-0 border-4 border-brand-blue-700 rounded-full border-t-transparent animate-spin" />
+            <div className="absolute inset-0 border-4 border-sand-100 rounded-full" />
+            <div className="absolute inset-0 border-4 border-teal-700 rounded-full border-t-transparent animate-spin" />
             <div className="absolute inset-0 flex items-center justify-center">
-              <User className="w-6 h-6 text-brand-blue-700" />
+              <User className="w-6 h-6 text-teal-700" />
             </div>
           </div>
-          <h1 className="text-3xl font-serif font-black uppercase text-brand-blue-950 mb-2">
+          <h1 className="text-3xl font-serif font-black uppercase text-teal-950 mb-2">
             Pondok Pesantren {BRANDING.schoolName}
           </h1>
           <p className="text-ink-500 text-sm">Mohon tunggu sebentar...</p>

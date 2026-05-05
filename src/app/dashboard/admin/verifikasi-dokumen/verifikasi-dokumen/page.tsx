@@ -152,14 +152,14 @@ export default function VerifikasiDokumenPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-white rounded-2xl shadow-sm p-4 md:p-8 border border-brand-yellow-100 mb-8">
+      <div className="bg-white rounded-2xl shadow-sm p-4 md:p-8 border border-sand-100 mb-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div className="flex items-center gap-3 md:gap-5">
-            <div className="p-2.5 md:p-4 bg-linear-to-br from-brand-blue-600 to-brand-blue-900 rounded-2xl shadow-xl shadow-brand-blue-900/20 flex-shrink-0">
-              <FileCheck className="w-6 h-6 md:w-8 md:h-8 text-brand-yellow-100" />
+            <div className="p-2.5 md:p-4 bg-linear-to-br from-teal-600 to-teal-900 rounded-2xl shadow-xl shadow-teal-900/20 flex-shrink-0">
+              <FileCheck className="w-6 h-6 md:w-8 md:h-8 text-sand-100" />
             </div>
             <div>
-              <h1 className="text-lg md:text-3xl font-black text-brand-blue-950 tracking-tight leading-none mb-1">
+              <h1 className="text-lg md:text-3xl font-black text-teal-950 tracking-tight leading-none mb-1">
                 Verifikasi Dokumen
               </h1>
               <p className="text-sm text-ink-400 font-bold tracking-wide">
@@ -195,15 +195,15 @@ export default function VerifikasiDokumenPage() {
         </div>
 
         {/* Global Filter Bar */}
-        <div className="flex flex-col gap-3 md:gap-6 pt-6 border-t border-brand-yellow-50">
+        <div className="flex flex-col gap-3 md:gap-6 pt-6 border-t border-sand-50">
           <div className="relative flex-1 group">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-ink-300 group-focus-within:text-brand-blue-600 transition-colors" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-ink-300 group-focus-within:text-teal-600 transition-colors" />
             <input
               type="text"
               placeholder="Cari nama atau nomor pendaftaran..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-4 py-4 bg-brand-yellow-50/50 border border-brand-yellow-100 rounded-2xl focus:border-brand-blue-500 focus:bg-white focus:outline-none transition-all text-sm md:text-base font-bold text-brand-blue-950 placeholder:text-ink-300"
+              className="w-full pl-12 pr-4 py-4 bg-sand-50/50 border border-sand-100 rounded-2xl focus:border-teal-500 focus:bg-white focus:outline-none transition-all text-sm md:text-base font-bold text-teal-950 placeholder:text-ink-300"
             />
           </div>
           <div className="flex flex-wrap gap-2">
@@ -217,8 +217,8 @@ export default function VerifikasiDokumenPage() {
                 onClick={() => setStatusFilter(s.id)}
                 className={`px-4 md:px-8 py-3 rounded-2xl font-black transition-all text-sm md:text-base whitespace-nowrap active:scale-95 ${
                   statusFilter === s.id
-                    ? "bg-brand-blue-700 text-white shadow-lg shadow-brand-blue-700/30 ring-2 ring-brand-blue-500/20"
-                    : "bg-white border border-brand-yellow-200 text-ink-400 hover:bg-brand-yellow-50 hover:text-brand-blue-700"
+                    ? "bg-teal-700 text-white shadow-lg shadow-teal-700/30 ring-2 ring-teal-500/20"
+                    : "bg-white border border-sand-200 text-ink-400 hover:bg-sand-50 hover:text-teal-700"
                 }`}
               >
                 {s.label}
@@ -229,8 +229,8 @@ export default function VerifikasiDokumenPage() {
       </div>
 
       {loading ? (
-        <div className="flex flex-col items-center justify-center p-20 bg-white rounded-3xl border border-brand-yellow-100">
-          <Loader2 className="w-12 h-12 animate-spin text-brand-blue-600 mb-4" />
+        <div className="flex flex-col items-center justify-center p-20 bg-white rounded-3xl border border-sand-100">
+          <Loader2 className="w-12 h-12 animate-spin text-teal-600 mb-4" />
           <p className="text-ink-400 font-bold tracking-wide">
             Mengambil data pendaftar...
           </p>
@@ -260,25 +260,25 @@ export default function VerifikasiDokumenPage() {
               <Link
                 key={pendaftar.id}
                 href={`/dashboard/admin/verifikasi-dokumen/${pendaftar.id}`}
-                className="group bg-white rounded-3xl border border-brand-yellow-100 hover:border-brand-blue-400 p-6 transition-all hover:shadow-xl hover:shadow-brand-blue-900/5 relative overflow-hidden"
+                className="group bg-white rounded-3xl border border-sand-100 hover:border-teal-400 p-6 transition-all hover:shadow-xl hover:shadow-teal-900/5 relative overflow-hidden"
               >
                 {/* Background Decor */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-br from-brand-blue-50 to-brand-yellow-50 -mr-16 -mt-16 rounded-full opacity-50 transition-transform group-hover:scale-110" />
+                <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-br from-teal-50 to-sand-50 -mr-16 -mt-16 rounded-full opacity-50 transition-transform group-hover:scale-110" />
 
                 <div className="relative">
                   <div className="flex items-center gap-4 mb-6">
-                    <div className="w-14 h-14 bg-brand-yellow-100 rounded-2xl flex items-center justify-center group-hover:from-brand-blue-600 group-hover:to-brand-blue-900 transition-all duration-500 shadow-inner border border-brand-yellow-200">
-                      <User className="w-6 h-6 text-brand-blue-400 group-hover:text-white transition-colors" />
+                    <div className="w-14 h-14 bg-sand-100 rounded-2xl flex items-center justify-center group-hover:from-teal-600 group-hover:to-teal-900 transition-all duration-500 shadow-inner border border-sand-200">
+                      <User className="w-6 h-6 text-teal-400 group-hover:text-white transition-colors" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-black text-brand-blue-950 truncate group-hover:text-brand-blue-700 transition-colors leading-tight mb-1">
+                      <h3 className="font-black text-teal-950 truncate group-hover:text-teal-700 transition-colors leading-tight mb-1">
                         {toTitleCase(pendaftar.nama_lengkap)}
                       </h3>
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-mono font-black text-brand-blue-400 bg-brand-blue-50 px-2 py-0.5 rounded">
+                        <span className="text-xs font-mono font-black text-teal-400 bg-teal-50 px-2 py-0.5 rounded">
                           {pendaftar.nomor_pendaftaran}
                         </span>
-                        <span className="text-[10px] font-black uppercase tracking-widest text-brand-blue-700 bg-brand-yellow-100 border border-brand-yellow-200 px-2 py-0.5 rounded shadow-xs">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-teal-700 bg-sand-100 border border-sand-200 px-2 py-0.5 rounded shadow-xs">
                           {pendaftar.jenjang}
                         </span>
                       </div>
@@ -291,11 +291,11 @@ export default function VerifikasiDokumenPage() {
                       <span className="text-ink-300">
                         Penyelesaian Verifikasi
                       </span>
-                      <span className="text-brand-blue-700">{percentage}%</span>
+                      <span className="text-teal-700">{percentage}%</span>
                     </div>
-                    <div className="h-2.5 bg-brand-yellow-100/50 rounded-full overflow-hidden shadow-inner border border-brand-yellow-50">
+                    <div className="h-2.5 bg-sand-100/50 rounded-full overflow-hidden shadow-inner border border-sand-50">
                       <div
-                        className="h-full bg-linear-to-r from-brand-blue-500 to-brand-blue-700 rounded-full transition-all duration-1000 ease-out"
+                        className="h-full bg-linear-to-r from-teal-500 to-teal-700 rounded-full transition-all duration-1000 ease-out"
                         style={{ width: `${percentage}%` }}
                       />
                     </div>
@@ -315,15 +315,15 @@ export default function VerifikasiDokumenPage() {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between pt-4 border-t border-brand-yellow-50 group-hover:border-brand-blue-100 transition-colors">
-                    <div className="flex items-center gap-2 text-ink-300 font-black text-[10px] uppercase tracking-widest group-hover:text-brand-blue-600 transition-colors">
+                  <div className="flex items-center justify-between pt-4 border-t border-sand-50 group-hover:border-teal-100 transition-colors">
+                    <div className="flex items-center gap-2 text-ink-300 font-black text-[10px] uppercase tracking-widest group-hover:text-teal-600 transition-colors">
                       Proses Verifikasi
                       <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                     </div>
                     {percentage === 100 ? (
                       <CheckCircle className="w-6 h-6 text-emerald-500" />
                     ) : (
-                      <Clock className="w-5 h-5 text-brand-blue-500 animate-pulse" />
+                      <Clock className="w-5 h-5 text-teal-500 animate-pulse" />
                     )}
                   </div>
                 </div>

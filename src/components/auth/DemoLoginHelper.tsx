@@ -81,7 +81,7 @@ export default function DemoLoginHelper({ onSelect }: DemoLoginHelperProps) {
   return (
     <div className="mt-8 pt-8 border-t border-slate-100">
       <div className="flex items-center gap-2 mb-6 justify-center">
-        <Zap className="w-4 h-4 text-brand-yellow-500 fill-brand-yellow-500" />
+        <Zap className="w-4 h-4 text-sand-500 fill-sand-500" />
         <h3 className="text-xs font-black text-ink-500 uppercase tracking-[0.2em]">
           Coba Demo Satu-Klik
         </h3>

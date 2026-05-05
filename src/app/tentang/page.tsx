@@ -427,7 +427,7 @@ export default function TentangPage() {
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-sand-100/70">
-                  <Award className="w-4 h-4 text-blue-400" />
+                  <Award className="w-4 h-4 text-teal-400" />
                   <span className="text-[10px] font-bold uppercase tracking-widest">
                     Resmi Kemendikdasmen
                   </span>

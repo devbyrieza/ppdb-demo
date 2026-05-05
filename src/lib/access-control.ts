@@ -200,3 +200,39 @@ export function getMenuItemsForRole(role: UserRole) {
   };
   return menus[role] || [];
 }
+
+// ─── 7. PROGRESS & MESSAGING UTILS ───
+
+/**
+ * calculateProgressToUnlock
+ * Menghitung persentase progres menuju terbukanya sebuah tab.
+ */
+export function calculateProgressToUnlock(
+  tabName: TabName,
+  currentStatus: StatusProses,
+): number {
+  const requirement = STEP_REQUIREMENTS[tabName];
+  if (!requirement || !requirement.minimumStatus) return 100;
+
+  if (hasReachedStatus(currentStatus, requirement.minimumStatus)) return 100;
+
+  const currentIndex = getStatusIndex(currentStatus);
+  const targetIndex = getStatusIndex(requirement.minimumStatus);
+
+  if (targetIndex === 0) return 100;
+
+  // Hitung persentase sederhana berdasarkan urutan status
+  const progress = Math.round((currentIndex / targetIndex) * 100);
+  return Math.min(Math.max(progress, 0), 99);
+}
+
+/**
+ * getUnlockMessage
+ * Mengambil pesan instruksi untuk membuka tab yang terkunci.
+ */
+export function getUnlockMessage(tabName: TabName): string {
+  return (
+    STEP_REQUIREMENTS[tabName]?.description ||
+    "Selesaikan tahap sebelumnya untuk membuka akses."
+  );
+}

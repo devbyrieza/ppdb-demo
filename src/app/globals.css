@@ -21,29 +21,29 @@
   /* ━━━ BRAND COLOR PALETTE — LENGKAP SEMUA PESANTREN ━━━ */
 
   /* ─── Biru Cerah (Ulul Albaab Primary) ─── */
-  --color-brand-blue-50: #f0f8ff;
-  --color-brand-blue-100: #dcedff;
-  --color-brand-blue-200: #b3d7ff;
-  --color-brand-blue-300: #7dbeff;
-  --color-brand-blue-400: #3d9ef8;
-  --color-brand-blue-500: #0e86e8;
-  --color-brand-blue-600: #0369c7;
-  --color-brand-blue-700: #0255a3;
-  --color-brand-blue-800: #024282;
-  --color-brand-blue-900: #013062;
-  --color-brand-blue-950: #011e42;
+  --color-blue-50: #f0f8ff;
+  --color-blue-100: #dcedff;
+  --color-blue-200: #b3d7ff;
+  --color-blue-300: #7dbeff;
+  --color-blue-400: #3d9ef8;
+  --color-blue-500: #0e86e8;
+  --color-blue-600: #0369c7;
+  --color-blue-700: #0255a3;
+  --color-blue-800: #024282;
+  --color-blue-900: #013062;
+  --color-blue-950: #011e42;
 
   /* ─── Kuning (Ulul Albaab Secondary) ─── */
-  --color-brand-yellow-50: #fffbeb;
-  --color-brand-yellow-100: #fef3c7;
-  --color-brand-yellow-200: #fde68a;
-  --color-brand-yellow-300: #fcd34d;
-  --color-brand-yellow-400: #fbbf24;
-  --color-brand-yellow-500: #f59e0b;
-  --color-brand-yellow-600: #d97706;
-  --color-brand-yellow-700: #b45309;
-  --color-brand-yellow-800: #92400e;
-  --color-brand-yellow-900: #713b12;
+  --color-amber-50: #fffbeb;
+  --color-amber-100: #fef3c7;
+  --color-amber-200: #fde68a;
+  --color-amber-300: #fcd34d;
+  --color-amber-400: #fbbf24;
+  --color-amber-500: #f59e0b;
+  --color-amber-600: #d97706;
+  --color-amber-700: #b45309;
+  --color-amber-800: #92400e;
+  --color-amber-900: #713b12;
 
   /* ─── Gold (Accent premium) ─── */
   --color-gold-50: #fffbeb;
@@ -138,7 +138,7 @@
   /* ━━━ TEMPLATE SEMANTIC TOKENS ━━━
      Override ini di masing-masing project untuk ganti branding.
      Default: Teal + Sand (Template-Demo)
-     Untuk Ulul Albaab: brand-blue + brand-yellow
+     Untuk Ulul Albaab: teal + sand
      Untuk Al Imam: maroon + cream
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
@@ -194,9 +194,9 @@
     0 4px 14px -2px rgba(190, 174, 119, 0.3), 0 2px 6px rgba(0, 0, 0, 0.05);
 
   /* Legacy aliases — backward compat */
-  --shadow-brand-blue:
+  --shadow-teal:
     0 4px 16px -2px rgba(3, 105, 199, 0.32), 0 2px 6px rgba(3, 105, 199, 0.16);
-  --shadow-brand-yellow:
+  --shadow-sand:
     0 4px 16px -4px rgba(245, 158, 11, 0.28), 0 2px 6px rgba(0, 0, 0, 0.04);
 
   /* Inner shadow */
@@ -491,8 +491,8 @@
     color: var(--color-white);
     background: linear-gradient(
       135deg,
-      var(--color-brand-blue-500) 0%,
-      var(--color-brand-blue-800) 100%
+      var(--color-teal-500) 0%,
+      var(--color-teal-800) 100%
     );
     box-shadow: var(--shadow-blue);
     transition: all var(--duration-base) var(--ease-spring);
@@ -635,16 +635,16 @@
     font-weight: 600;
     font-size: 0.9375rem;
     letter-spacing: -0.01em;
-    color: var(--color-brand-blue-700);
+    color: var(--color-teal-700);
     background: var(--color-white);
-    border: 1.5px solid var(--color-brand-blue-200);
+    border: 1.5px solid var(--color-teal-200);
     box-shadow: var(--shadow-xs);
     transition: all var(--duration-base) var(--ease-smooth);
     text-decoration: none;
 
     &:hover {
-      background: var(--color-brand-blue-50);
-      border-color: var(--color-brand-blue-400);
+      background: var(--color-teal-50);
+      border-color: var(--color-teal-400);
       box-shadow: var(--shadow-sm);
       transform: translateY(-1px);
     }
@@ -746,11 +746,11 @@
     font-weight: 700;
     font-size: 0.9375rem;
     letter-spacing: -0.01em;
-    color: var(--color-brand-blue-900);
+    color: var(--color-teal-900);
     background: linear-gradient(
       135deg,
-      var(--color-brand-yellow-300) 0%,
-      var(--color-brand-yellow-500) 100%
+      var(--color-sand-300) 0%,
+      var(--color-sand-500) 100%
     );
     box-shadow: var(--shadow-yellow);
     transition: all var(--duration-base) var(--ease-spring);
@@ -906,16 +906,16 @@
     border-radius: var(--radius-full);
     font-weight: 600;
     font-size: 0.9375rem;
-    color: var(--color-brand-blue-600);
+    color: var(--color-teal-600);
     background: transparent;
-    border: 1.5px solid var(--color-brand-blue-300);
+    border: 1.5px solid var(--color-teal-300);
     transition: all var(--duration-base) var(--ease-smooth);
     text-decoration: none;
 
     &:hover {
-      background: var(--color-brand-blue-800);
+      background: var(--color-teal-800);
       color: var(--color-white);
-      border-color: var(--color-brand-blue-800);
+      border-color: var(--color-teal-800);
       box-shadow: var(--shadow-blue);
       transform: translateY(-1px);
     }
@@ -1061,11 +1061,11 @@
   .card-blue {
     background: linear-gradient(
       145deg,
-      var(--color-brand-blue-50) 0%,
+      var(--color-teal-50) 0%,
       var(--color-white) 100%
     );
     border-radius: var(--radius-xl);
-    border: 1px solid var(--color-brand-blue-100);
+    border: 1px solid var(--color-teal-100);
     box-shadow: var(--shadow-premium-sm);
     transition: all var(--duration-slow) var(--ease-spring);
     overflow: hidden;
@@ -1073,7 +1073,7 @@
     &:hover {
       transform: translateY(-3px);
       box-shadow: var(--shadow-premium-md);
-      border-color: var(--color-brand-blue-200);
+      border-color: var(--color-teal-200);
     }
   }
 
@@ -1081,8 +1081,8 @@
   .card-dark-blue {
     background: linear-gradient(
       135deg,
-      var(--color-brand-blue-800) 0%,
-      var(--color-brand-blue-950) 100%
+      var(--color-teal-800) 0%,
+      var(--color-teal-950) 100%
     );
     border-radius: var(--radius-xl);
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -1297,17 +1297,17 @@
   }
 
   /* Blue brand (Ulul Albaab) */
-  .badge-brand-blue {
-    background: var(--color-brand-blue-100);
-    color: var(--color-brand-blue-700);
-    border: 1px solid var(--color-brand-blue-200);
+  .badge-teal {
+    background: var(--color-teal-100);
+    color: var(--color-teal-700);
+    border: 1px solid var(--color-teal-200);
   }
 
   /* Yellow brand (Ulul Albaab) */
-  .badge-brand-yellow {
-    background: var(--color-brand-yellow-100);
-    color: var(--color-brand-yellow-700);
-    border: 1px solid var(--color-brand-yellow-200);
+  .badge-sand {
+    background: var(--color-sand-100);
+    color: var(--color-sand-700);
+    border: 1px solid var(--color-sand-200);
   }
 
   /* Maroon (Al Imam) */
@@ -1695,7 +1695,7 @@
     padding-bottom: var(--space-section-y);
     background: linear-gradient(
       180deg,
-      var(--color-brand-blue-50) 0%,
+      var(--color-teal-50) 0%,
       var(--color-surface-50) 100%
     );
     position: relative;
@@ -1721,8 +1721,8 @@
     padding-bottom: var(--space-section-y);
     background: linear-gradient(
       135deg,
-      var(--color-brand-blue-800) 0%,
-      var(--color-brand-blue-950) 100%
+      var(--color-teal-800) 0%,
+      var(--color-teal-950) 100%
     );
     position: relative;
     overflow: hidden;
@@ -1815,13 +1815,13 @@
   }
 
   /* Blue sidebar (Ulul Albaab) */
-  .sidebar-brand-blue {
+  .sidebar-teal {
     background: linear-gradient(
       180deg,
-      var(--color-brand-blue-800) 0%,
-      var(--color-brand-blue-950) 100%
+      var(--color-teal-800) 0%,
+      var(--color-teal-950) 100%
     );
-    color: var(--color-brand-yellow-100);
+    color: var(--color-sand-100);
     height: 100%;
     overflow-y: auto;
   }
@@ -1881,8 +1881,8 @@
     color: var(--color-sand-300);
   }
 
-  .sidebar-brand-blue .sidebar-link.active {
-    color: var(--color-brand-yellow-300);
+  .sidebar-teal .sidebar-link.active {
+    color: var(--color-sand-300);
   }
 
   .sidebar-maroon .sidebar-link.active {
@@ -1929,7 +1929,7 @@
     background: linear-gradient(
       90deg,
       transparent,
-      var(--color-brand-blue-100),
+      var(--color-teal-100),
       transparent
     );
     border: none;
@@ -1980,8 +1980,8 @@
   .text-gradient-blue {
     background: linear-gradient(
       135deg,
-      var(--color-brand-blue-500) 0%,
-      var(--color-brand-blue-900) 100%
+      var(--color-teal-500) 0%,
+      var(--color-teal-900) 100%
     );
     -webkit-background-clip: text;
     background-clip: text;
@@ -2035,8 +2035,8 @@
   .text-gradient-sky {
     background: linear-gradient(
       135deg,
-      var(--color-brand-blue-300) 0%,
-      var(--color-brand-blue-600) 100%
+      var(--color-teal-300) 0%,
+      var(--color-teal-600) 100%
     );
     -webkit-background-clip: text;
     background-clip: text;
@@ -2073,15 +2073,15 @@
   .bg-blue-gradient {
     background: linear-gradient(
       135deg,
-      var(--color-brand-blue-700) 0%,
-      var(--color-brand-blue-950) 100%
+      var(--color-teal-700) 0%,
+      var(--color-teal-950) 100%
     );
   }
 
   .bg-blue-subtle {
     background: linear-gradient(
       160deg,
-      var(--color-brand-blue-50) 0%,
+      var(--color-teal-50) 0%,
       var(--color-white) 60%,
       var(--color-surface-100) 100%
     );
@@ -2090,9 +2090,9 @@
   .bg-yellow-gradient {
     background: linear-gradient(
       160deg,
-      var(--color-brand-yellow-50) 0%,
+      var(--color-sand-50) 0%,
       var(--color-white) 50%,
-      var(--color-brand-yellow-100) 100%
+      var(--color-sand-100) 100%
     );
   }
 
@@ -2123,11 +2123,11 @@
   }
 
   /* Legacy aliases */
-  .bg-brand-blue-gradient {
+  .bg-teal-gradient {
     @extend .bg-blue-gradient;
   }
 
-  .bg-brand-yellow-gradient {
+  .bg-sand-gradient {
     @extend .bg-yellow-gradient;
   }
 

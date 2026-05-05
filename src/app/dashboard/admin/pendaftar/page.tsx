@@ -824,25 +824,25 @@ function AdminPendaftarContent() {
       payment_verification: {
         label: "Verifikasi Bayar",
         color:
-          "bg-brand-blue-50 text-brand-blue-700 border border-brand-blue-100",
+          "bg-teal-50 text-teal-700 border border-teal-100",
       },
       paid: {
         label: "Terdaftar",
-        color: "bg-brand-blue-100 text-brand-blue-800",
+        color: "bg-teal-100 text-teal-800",
       },
       verified: {
         label: "Terdaftar",
-        color: "bg-brand-blue-100 text-brand-blue-800",
+        color: "bg-teal-100 text-teal-800",
       },
       data_completed: {
         label: "Data Lengkap",
         color:
-          "bg-brand-yellow-50 text-brand-yellow-800 border border-brand-yellow-100",
+          "bg-sand-50 text-sand-800 border border-sand-100",
       },
       docs_uploaded: {
         label: "Data Lengkap",
         color:
-          "bg-brand-yellow-50 text-brand-yellow-800 border border-brand-yellow-100",
+          "bg-sand-50 text-sand-800 border border-sand-100",
       },
       docs_verified: {
         label: "Berkas Lengkap",
@@ -859,21 +859,21 @@ function AdminPendaftarContent() {
       },
       tested: {
         label: "Sudah Ujian",
-        color: "bg-brand-blue-600 text-white shadow-sm",
+        color: "bg-teal-600 text-white shadow-sm",
       },
       exam_completed: {
         label: "Sudah Ujian",
-        color: "bg-brand-blue-600 text-white shadow-sm",
+        color: "bg-teal-600 text-white shadow-sm",
       },
       announced: {
         label: "Cadangan",
         color:
-          "bg-brand-yellow-100 text-brand-yellow-800 border border-brand-yellow-200",
+          "bg-sand-100 text-sand-800 border border-sand-200",
       },
       cadangan: {
         label: "Cadangan",
         color:
-          "bg-brand-yellow-100 text-brand-yellow-800 border border-brand-yellow-200",
+          "bg-sand-100 text-sand-800 border border-sand-200",
       },
       accepted: { label: "Diterima", color: "bg-emerald-600 text-white" },
       rejected: { label: "Ditolak", color: "bg-rose-600 text-white" },
@@ -914,7 +914,7 @@ function AdminPendaftarContent() {
       {refreshing && (
         <div className="fixed inset-0 bg-white/40 backdrop-blur-[1px] z-[100] flex items-center justify-center pointer-events-none">
           <div className="bg-white/80 px-6 py-3 rounded-2xl shadow-xl border border-stone-100 flex items-center gap-3 animate-in fade-in zoom-in duration-300">
-            <Loader2 className="w-5 h-5 animate-spin text-brand-blue-600" />
+            <Loader2 className="w-5 h-5 animate-spin text-teal-600" />
             <span className="text-sm font-bold text-stone-700 tracking-tight">
               Memperbarui data...
             </span>
@@ -939,7 +939,7 @@ function AdminPendaftarContent() {
       {urlFilter && (
         <Link
           href="/dashboard/admin"
-          className="inline-flex items-center gap-2 text-brand-blue-600 hover:text-brand-blue-800 font-bold"
+          className="inline-flex items-center gap-2 text-teal-600 hover:text-teal-800 font-bold"
         >
           <ArrowLeft className="w-4 h-4" />
           Kembali ke Dashboard
@@ -947,14 +947,14 @@ function AdminPendaftarContent() {
       )}
 
       {/* Header */}
-      <div className="bg-white rounded-3xl shadow-sm p-4 md:p-8 border border-brand-yellow-100">
+      <div className="bg-white rounded-3xl shadow-sm p-4 md:p-8 border border-sand-100">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3 md:gap-5 min-w-0">
-            <div className="p-2.5 md:p-4 bg-linear-to-br from-brand-blue-600 to-brand-blue-900 rounded-2xl shadow-xl shadow-brand-blue-900/20 flex-shrink-0">
-              <Users className="w-6 h-6 md:w-8 md:h-8 text-brand-yellow-300" />
+            <div className="p-2.5 md:p-4 bg-linear-to-br from-teal-600 to-teal-900 rounded-2xl shadow-xl shadow-teal-900/20 flex-shrink-0">
+              <Users className="w-6 h-6 md:w-8 md:h-8 text-sand-300" />
             </div>
             <div className="min-w-0">
-              <h2 className="text-lg md:text-3xl font-black text-brand-blue-950 tracking-tight leading-none truncate">
+              <h2 className="text-lg md:text-3xl font-black text-teal-950 tracking-tight leading-none truncate">
                 {activeFilterLabel || "Pendaftar"}
               </h2>
               <p className="text-sm text-stone-600">
@@ -1022,11 +1022,11 @@ function AdminPendaftarContent() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-2xl shadow-sm p-6 border border-brand-yellow-100">
+      <div className="bg-white rounded-2xl shadow-sm p-6 border border-sand-100">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Search */}
           <div className="md:col-span-2">
-            <label className="block text-sm font-bold text-brand-blue-900 mb-2 leading-none uppercase tracking-widest text-[10px]">
+            <label className="block text-sm font-bold text-teal-900 mb-2 leading-none uppercase tracking-widest text-[10px]">
               <Search className="w-3.5 h-3.5 inline mr-1" />
               Cari Pendaftar
             </label>
@@ -1037,11 +1037,11 @@ function AdminPendaftarContent() {
                 onChange={(e) => setSearchInput(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && handleSearch()}
                 placeholder="Cari nama, NIK, atau nomor pendaftaran..."
-                className="flex-1 w-full px-4 py-3 bg-brand-yellow-50/50 border border-brand-yellow-100 rounded-xl focus:border-brand-blue-500 focus:bg-white focus:outline-none text-sm md:text-base font-bold text-brand-blue-950 placeholder:text-ink-400"
+                className="flex-1 w-full px-4 py-3 bg-sand-50/50 border border-sand-100 rounded-xl focus:border-teal-500 focus:bg-white focus:outline-none text-sm md:text-base font-bold text-teal-950 placeholder:text-ink-400"
               />
               <button
                 onClick={handleSearch}
-                className="w-full sm:w-auto px-8 py-3 bg-brand-blue-700 hover:bg-brand-blue-800 text-white rounded-xl font-black transition-all flex-shrink-0 text-sm md:text-base shadow-lg shadow-brand-blue-700/20 active:scale-95"
+                className="w-full sm:w-auto px-8 py-3 bg-teal-700 hover:bg-teal-800 text-white rounded-xl font-black transition-all flex-shrink-0 text-sm md:text-base shadow-lg shadow-teal-700/20 active:scale-95"
               >
                 Cari
               </button>
@@ -1050,14 +1050,14 @@ function AdminPendaftarContent() {
 
           {/* Status Filter */}
           <div>
-            <label className="block text-sm font-bold text-brand-blue-900 mb-2 leading-none uppercase tracking-widest text-[10px]">
+            <label className="block text-sm font-bold text-teal-900 mb-2 leading-none uppercase tracking-widest text-[10px]">
               <Filter className="w-3.5 h-3.5 inline mr-1" />
               Filter Status
             </label>
             <select
               value={statusFilter}
               onChange={(e) => updateFilter(e.target.value)}
-              className="w-full px-4 py-3 bg-brand-yellow-50/50 border border-brand-yellow-100 rounded-xl focus:border-brand-blue-500 focus:bg-white focus:outline-none font-bold text-brand-blue-950"
+              className="w-full px-4 py-3 bg-sand-50/50 border border-sand-100 rounded-xl focus:border-teal-500 focus:bg-white focus:outline-none font-bold text-teal-950"
             >
               <option value="">Semua Status</option>
 
@@ -1151,7 +1151,7 @@ function AdminPendaftarContent() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4">
           {/* Gender Filter */}
           <div>
-            <label className="block text-[10px] font-black text-brand-blue-900 mb-2 leading-none uppercase tracking-widest">
+            <label className="block text-[10px] font-black text-teal-900 mb-2 leading-none uppercase tracking-widest">
               Filter Putra / Putri
             </label>
             <select
@@ -1160,7 +1160,7 @@ function AdminPendaftarContent() {
                 setJenisKelaminFilter(e.target.value);
                 setPagination((prev) => ({ ...prev, page: 1 }));
               }}
-              className="w-full px-4 py-3 bg-brand-yellow-50/50 border border-brand-yellow-100 rounded-xl focus:border-brand-blue-500 focus:bg-white focus:outline-none font-bold text-brand-blue-950"
+              className="w-full px-4 py-3 bg-sand-50/50 border border-sand-100 rounded-xl focus:border-teal-500 focus:bg-white focus:outline-none font-bold text-teal-950"
             >
               <option value="">Semua (Putra & Putri)</option>
               <option value="L">Putra (Laki-laki)</option>
@@ -1170,7 +1170,7 @@ function AdminPendaftarContent() {
 
           {/* Jenjang Filter */}
           <div>
-            <label className="block text-[10px] font-black text-brand-blue-900 mb-2 leading-none uppercase tracking-widest">
+            <label className="block text-[10px] font-black text-teal-900 mb-2 leading-none uppercase tracking-widest">
               Filter Jenjang Sekolah
             </label>
             <select
@@ -1179,7 +1179,7 @@ function AdminPendaftarContent() {
                 setJenjangFilter(e.target.value);
                 setPagination((prev) => ({ ...prev, page: 1 }));
               }}
-              className="w-full px-4 py-3 bg-brand-yellow-50/50 border border-brand-yellow-100 rounded-xl focus:border-brand-blue-500 focus:bg-white focus:outline-none font-bold text-brand-blue-950"
+              className="w-full px-4 py-3 bg-sand-50/50 border border-sand-100 rounded-xl focus:border-teal-500 focus:bg-white focus:outline-none font-bold text-teal-950"
             >
               <option value="">Semua Jenjang</option>
               <option value="MTs">MTs (Madrasah Tsanawiyah)</option>
@@ -1189,7 +1189,7 @@ function AdminPendaftarContent() {
 
           {/* Tahun Ajaran Filter */}
           <div>
-            <label className="block text-[10px] font-black text-brand-blue-900 mb-2 leading-none uppercase tracking-widest">
+            <label className="block text-[10px] font-black text-teal-900 mb-2 leading-none uppercase tracking-widest">
               Filter Tahun Ajaran
             </label>
             <select
@@ -1198,7 +1198,7 @@ function AdminPendaftarContent() {
                 setTahunAjaranFilter(e.target.value);
                 setPagination((prev) => ({ ...prev, page: 1 }));
               }}
-              className="w-full px-4 py-3 bg-brand-yellow-50/50 border border-brand-yellow-100 rounded-xl focus:border-brand-blue-500 focus:bg-white focus:outline-none font-bold text-brand-blue-950"
+              className="w-full px-4 py-3 bg-sand-50/50 border border-sand-100 rounded-xl focus:border-teal-500 focus:bg-white focus:outline-none font-bold text-teal-950"
             >
               <option value="">Semua Tahun Ajaran</option>
               {tahunAjaranList.map((ta) => (
@@ -1242,7 +1242,7 @@ function AdminPendaftarContent() {
         {/* Location cascading filters */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4">
           <div>
-            <label className="block text-[10px] font-black text-brand-blue-900 mb-2 leading-none uppercase tracking-widest">
+            <label className="block text-[10px] font-black text-teal-900 mb-2 leading-none uppercase tracking-widest">
               Provinsi{" "}
               {provinsiLoading && (
                 <span className="inline-block ml-2 text-[8px] text-stone-500 italic">
@@ -1255,7 +1255,7 @@ function AdminPendaftarContent() {
               onChange={(e) => setProvinsiFilter(e.target.value)}
               aria-label="Filter provinsi"
               aria-busy={provinsiLoading}
-              className="w-full px-4 py-3 bg-brand-yellow-50/50 border border-brand-yellow-100 rounded-xl focus:border-brand-blue-500 focus:bg-white focus:outline-none font-bold text-brand-blue-950"
+              className="w-full px-4 py-3 bg-sand-50/50 border border-sand-100 rounded-xl focus:border-teal-500 focus:bg-white focus:outline-none font-bold text-teal-950"
             >
               <option value="">Semua Provinsi</option>
               {provinsiList.map((p) => (
@@ -1267,7 +1267,7 @@ function AdminPendaftarContent() {
           </div>
 
           <div>
-            <label className="block text-[10px] font-black text-brand-blue-900 mb-2 leading-none uppercase tracking-widest">
+            <label className="block text-[10px] font-black text-teal-900 mb-2 leading-none uppercase tracking-widest">
               Kabupaten / Kota{" "}
               {kabupatenLoading && (
                 <span className="inline-block ml-2 text-[8px] text-stone-500 italic">
@@ -1281,7 +1281,7 @@ function AdminPendaftarContent() {
               disabled={kabupatenList.length === 0 || kabupatenLoading}
               aria-label="Filter kabupaten atau kota"
               aria-busy={kabupatenLoading}
-              className="w-full px-4 py-3 bg-brand-yellow-50/50 border border-brand-yellow-100 rounded-xl focus:border-brand-blue-500 focus:bg-white focus:outline-none font-bold text-brand-blue-950 disabled:opacity-50"
+              className="w-full px-4 py-3 bg-sand-50/50 border border-sand-100 rounded-xl focus:border-teal-500 focus:bg-white focus:outline-none font-bold text-teal-950 disabled:opacity-50"
             >
               <option value="">Semua Kabupaten / Kota</option>
               {kabupatenList.map((k) => (
@@ -1293,7 +1293,7 @@ function AdminPendaftarContent() {
           </div>
 
           <div>
-            <label className="block text-[10px] font-black text-brand-blue-900 mb-2 leading-none uppercase tracking-widest">
+            <label className="block text-[10px] font-black text-teal-900 mb-2 leading-none uppercase tracking-widest">
               Kecamatan{" "}
               {kecamatanLoading && (
                 <span className="inline-block ml-2 text-[8px] text-stone-500 italic">
@@ -1307,7 +1307,7 @@ function AdminPendaftarContent() {
               disabled={kecamatanList.length === 0 || kecamatanLoading}
               aria-label="Filter kecamatan"
               aria-busy={kecamatanLoading}
-              className="w-full px-4 py-3 bg-brand-yellow-50/50 border border-brand-yellow-100 rounded-xl focus:border-brand-blue-500 focus:bg-white focus:outline-none font-bold text-brand-blue-950 disabled:opacity-50"
+              className="w-full px-4 py-3 bg-sand-50/50 border border-sand-100 rounded-xl focus:border-teal-500 focus:bg-white focus:outline-none font-bold text-teal-950 disabled:opacity-50"
             >
               <option value="">Semua Kecamatan</option>
               {kecamatanList.map((c) => (
@@ -1319,7 +1319,7 @@ function AdminPendaftarContent() {
           </div>
 
           <div>
-            <label className="block text-[10px] font-black text-brand-blue-900 mb-2 leading-none uppercase tracking-widest">
+            <label className="block text-[10px] font-black text-teal-900 mb-2 leading-none uppercase tracking-widest">
               Kelurahan{" "}
               {kelurahanLoading && (
                 <span className="inline-block ml-2 text-[8px] text-stone-500 italic">
@@ -1333,7 +1333,7 @@ function AdminPendaftarContent() {
               disabled={kelurahanList.length === 0 || kelurahanLoading}
               aria-label="Filter kelurahan"
               aria-busy={kelurahanLoading}
-              className="w-full px-4 py-3 bg-brand-yellow-50/50 border border-brand-yellow-100 rounded-xl focus:border-brand-blue-500 focus:bg-white focus:outline-none font-bold text-brand-blue-950 disabled:opacity-50"
+              className="w-full px-4 py-3 bg-sand-50/50 border border-sand-100 rounded-xl focus:border-teal-500 focus:bg-white focus:outline-none font-bold text-teal-950 disabled:opacity-50"
             >
               <option value="">Semua Kelurahan</option>
               {kelurahanList.map((k) => (
@@ -1412,7 +1412,7 @@ function AdminPendaftarContent() {
       )}
 
       {/* Table */}
-      <div className="bg-white rounded-3xl shadow-sm border border-brand-yellow-100 overflow-hidden">
+      <div className="bg-white rounded-3xl shadow-sm border border-sand-100 overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center py-20">
             <div className="text-center">
@@ -1433,7 +1433,7 @@ function AdminPendaftarContent() {
         ) : (
           <>
             {/* Mobile Card View — hanya tampil di layar kecil */}
-            <div className="md:hidden divide-y divide-brand-yellow-50">
+            <div className="md:hidden divide-y divide-sand-50">
               {pendaftar.map((item) => (
                 <div
                   key={item.id}
@@ -1452,14 +1452,14 @@ function AdminPendaftarContent() {
                     </button>
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-wrap items-center gap-2 mb-1">
-                        <span className="font-mono text-xs font-bold text-brand-blue-700 bg-brand-blue-50 px-2 py-0.5 rounded">
+                        <span className="font-mono text-xs font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded">
                           {item.nomor_pendaftaran}
                         </span>
                         <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 bg-purple-100 text-purple-700 rounded-full">
                           {item.jenjang}
                         </span>
                       </div>
-                      <p className="font-black text-brand-blue-950 leading-tight text-sm">
+                      <p className="font-black text-teal-950 leading-tight text-sm">
                         {toTitleCase(item.nama_lengkap)}
                       </p>
                       <p className="text-xs text-stone-500 mt-0.5">
@@ -1527,7 +1527,7 @@ function AdminPendaftarContent() {
                       <div className="flex gap-2 mt-3">
                         <Link
                           href={`/dashboard/admin/pendaftar/${item.id}`}
-                          className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-brand-blue-700 hover:bg-brand-blue-800 text-white rounded-xl text-xs font-black transition-all active:scale-95"
+                          className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-teal-700 hover:bg-teal-800 text-white rounded-xl text-xs font-black transition-all active:scale-95"
                         >
                           <Eye className="w-3.5 h-3.5" /> Buka Detail
                         </Link>
@@ -1562,12 +1562,12 @@ function AdminPendaftarContent() {
             {/* Desktop Table View — disembunyikan di mobile */}
             <div className="hidden md:block overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-linear-to-r from-brand-blue-50 to-brand-yellow-50 border-b border-brand-yellow-100">
+                <thead className="bg-linear-to-r from-teal-50 to-sand-50 border-b border-sand-100">
                   <tr>
                     <th className="px-4 py-4 text-center">
                       <button
                         onClick={handleSelectAll}
-                        className="text-brand-blue-600 hover:text-brand-blue-800"
+                        className="text-teal-600 hover:text-teal-800"
                       >
                         {selectedIds.length === pendaftar.length ? (
                           <CheckSquare className="w-5 h-5" />
@@ -1576,7 +1576,7 @@ function AdminPendaftarContent() {
                         )}
                       </button>
                     </th>
-                    <th className="px-4 py-4 text-left text-[10px] font-black text-brand-blue-900 uppercase tracking-widest">
+                    <th className="px-4 py-4 text-left text-[10px] font-black text-teal-900 uppercase tracking-widest">
                       No. Pendaftaran
                     </th>
                     <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">

@@ -111,7 +111,7 @@ export default function DaftarUlangTab() {
   if (loading) {
     return (
       <div className="flex justify-center p-12">
-        <Loader2 className="w-8 h-8 animate-spin text-brand-blue-600" />
+        <Loader2 className="w-8 h-8 animate-spin text-teal-600" />
       </div>
     );
   }
@@ -126,7 +126,7 @@ export default function DaftarUlangTab() {
         <div className="bg-slate-100 rounded-full p-4 w-20 h-20 mx-auto mb-6 flex items-center justify-center">
           <Lock className="w-10 h-10 text-slate-400" />
         </div>
-        <h2 className="text-2xl font-black text-brand-blue-950 mb-2">
+        <h2 className="text-2xl font-black text-teal-950 mb-2">
           Belum Tersedia
         </h2>
         <p className="text-ink-500">
@@ -145,25 +145,25 @@ export default function DaftarUlangTab() {
   return (
     <div className="space-y-8 max-w-4xl mx-auto pb-12">
       {/* Header */}
-      <div className="bg-linear-to-br from-brand-blue-700 to-brand-blue-900 rounded-2xl p-8 text-white shadow-lg relative overflow-hidden">
+      <div className="bg-linear-to-br from-teal-700 to-teal-900 rounded-2xl p-8 text-white shadow-lg relative overflow-hidden">
         <div className="absolute top-0 right-0 p-4 opacity-10">
           <CheckCircle className="w-32 h-32" />
         </div>
         <h1 className="text-3xl font-black mb-2 relative z-10">
           Daftar Ulang Santri Baru
         </h1>
-        <p className="text-brand-yellow-100 relative z-10 text-lg font-medium">
+        <p className="text-sand-100 relative z-10 text-lg font-medium">
           Tahap akhir administrasi penerimaan santri baru
         </p>
       </div>
 
       {/* Info Tagihan */}
       <div className="grid md:grid-cols-2 gap-6">
-        <div className="bg-white p-6 rounded-xl border border-brand-blue-100 shadow-sm">
-          <h3 className="text-sm font-black text-brand-blue-900 uppercase tracking-wider mb-2">
+        <div className="bg-white p-6 rounded-xl border border-teal-100 shadow-sm">
+          <h3 className="text-sm font-black text-teal-900 uppercase tracking-wider mb-2">
             Total Biaya Masuk
           </h3>
-          <div className="text-3xl font-black text-brand-blue-600">
+          <div className="text-3xl font-black text-teal-600">
             Rp 9.800.000
           </div>
           <p className="text-xs text-ink-400 mt-1">
@@ -171,11 +171,11 @@ export default function DaftarUlangTab() {
           </p>
         </div>
 
-        <div className="bg-brand-blue-50 p-6 rounded-xl border border-brand-blue-100">
-          <h3 className="text-sm font-black text-brand-blue-800 mb-2 flex items-center gap-2">
+        <div className="bg-teal-50 p-6 rounded-xl border border-teal-100">
+          <h3 className="text-sm font-black text-teal-800 mb-2 flex items-center gap-2">
             <AlertCircle className="w-4 h-4" /> Info Pembayaran
           </h3>
-          <ul className="text-sm text-brand-blue-700 space-y-1 list-disc list-inside font-medium">
+          <ul className="text-sm text-teal-700 space-y-1 list-disc list-inside font-medium">
             <li>
               Transfer ke Rekening <strong>BSI 7171717171</strong>
             </li>
@@ -206,7 +206,7 @@ export default function DaftarUlangTab() {
       <div className="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
         <div className="p-6 border-b border-ink-100 bg-surface-50 flex justify-between items-center">
           <h3 className="font-black text-lg text-ink-900 flex items-center gap-2">
-            <FileText className="w-5 h-5 text-brand-blue-600" />
+            <FileText className="w-5 h-5 text-teal-600" />
             Form Pembayaran & Konfirmasi
           </h3>
           {/* Badge Status Pembayaran User bisa ditaruh sini jika fetch history */}
@@ -231,7 +231,7 @@ export default function DaftarUlangTab() {
                     new Intl.NumberFormat("id-ID").format(parseInt(val || "0")),
                   );
                 }}
-                className="w-full pl-12 pr-4 py-3 text-lg font-black text-ink-900 border border-ink-300 rounded-xl focus:ring-2 focus:ring-brand-blue-500 focus:border-brand-blue-500 transition-all shadow-inner"
+                className="w-full pl-12 pr-4 py-3 text-lg font-black text-ink-900 border border-ink-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all shadow-inner"
                 placeholder="0"
               />
             </div>
@@ -247,7 +247,7 @@ export default function DaftarUlangTab() {
                     tipeBayar === "LUNAS"
                       ? "bg-emerald-100 text-emerald-700 border-emerald-200"
                       : tipeBayar.includes("50% ATAU LEBIH")
-                        ? "bg-brand-blue-100 text-brand-blue-700 border-brand-blue-200"
+                        ? "bg-teal-100 text-teal-700 border-teal-200"
                         : "bg-amber-100 text-amber-700 border-amber-200"
                   }`}
                 >
@@ -272,8 +272,8 @@ export default function DaftarUlangTab() {
               <div className="flex flex-col items-center gap-2 pointer-events-none">
                 {file ? (
                   <>
-                    <FileText className="w-8 h-8 text-brand-blue-600" />
-                    <span className="font-black text-brand-blue-700">
+                    <FileText className="w-8 h-8 text-teal-600" />
+                    <span className="font-black text-teal-700">
                       {file.name}
                     </span>
                     <span className="text-xs text-ink-400">
@@ -303,7 +303,7 @@ export default function DaftarUlangTab() {
               type="checkbox"
               checked={pernyataan}
               onChange={(e) => setPernyataan(e.target.checked)}
-              className="mt-1 w-5 h-5 text-brand-blue-600 rounded border-ink-300 focus:ring-brand-blue-500"
+              className="mt-1 w-5 h-5 text-teal-600 rounded border-ink-300 focus:ring-teal-500"
             />
             <div className="text-sm text-slate-600">
               <span className="font-bold text-slate-800 block mb-1">
@@ -318,7 +318,7 @@ export default function DaftarUlangTab() {
           <button
             type="submit"
             disabled={submitting || !pernyataan || !file || !nominal}
-            className="w-full py-4 bg-brand-yellow-400 hover:bg-brand-yellow-300 text-brand-blue-950 font-black rounded-xl shadow-xl shadow-brand-yellow-400/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 border border-brand-yellow-500"
+            className="w-full py-4 bg-sand-400 hover:bg-sand-300 text-teal-950 font-black rounded-xl shadow-xl shadow-sand-400/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 border border-sand-500"
           >
             {submitting ? (
               <Loader2 className="animate-spin" />
