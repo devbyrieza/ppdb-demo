@@ -261,7 +261,7 @@ export default function HeroSection() {
                   >
                     Angkatan Pertama
                   </span>
-                  {" • "}Dikelola oleh {BRANDING.schoolShortName}
+                  {" • "}Sistem PPDB Terintegrasi
                 </p>
               </div>
 

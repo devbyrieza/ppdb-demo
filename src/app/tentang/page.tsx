@@ -33,7 +33,7 @@ export default function TentangPage() {
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-teal-50 border border-teal-100 text-teal-700 text-xs font-bold uppercase tracking-widest mb-8 shadow-sm"
           >
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Mengenal PPDB • Managed by PPDB Modern IIBS</span>
+            <span>Mengenal Al-Fath • Pendidikan Berstandar Internasional</span>
           </motion.div>
 
           <motion.h1
@@ -54,7 +54,7 @@ export default function TentangPage() {
             transition={{ delay: 0.2 }}
             className="text-base sm:text-lg md:text-xl text-ink-600 max-w-3xl mx-auto leading-relaxed font-medium mb-12 px-4"
           >
-            Menghadirkan standar keunggulan PPDB Modern International di
+            Menghadirkan standar keunggulan pendidikan modern di
             Sukabumi — sistem pembentukan karakter Angkatan Pertama yang
             mencetak generasi Unggul, Cerdas, dan Berintegritas.
           </motion.p>
@@ -147,7 +147,7 @@ export default function TentangPage() {
                       Era Baru
                     </p>
                     <div className="text-[9px] md:text-[10px] font-bold text-teal-900 bg-teal-50 px-2.5 py-1.5 rounded-lg border border-teal-100 leading-tight">
-                      Managed by PPDB Modern IIBS
+                      Sistem Terintegrasi
                     </div>
                   </div>
                 </div>
@@ -180,15 +180,12 @@ export default function TentangPage() {
               >
                 <p>
                   <span className="text-ink-950 font-black">
-                    Pesantren Sistem PPDB Modern
+                    Pesantren Al-Fath
                   </span>{" "}
                   hadir sebagai babak baru dalam dunia pendidikan Islam di
-                  Sukabumi. Sebagai cabang resmi dari{" "}
-                  <span className="text-teal-700 italic font-bold">
-                    Managed by PPDB Modern International Islamic Boarding School
-                  </span>
-                  , kami menerapkan standar operasional, kurikulum, dan
-                  pengasuhan yang identik dengan kampus pusat.
+                  Sukabumi. Sebagai bagian dari jaringan pesantren yang berkomitmen pada kualitas tinggi,
+                  kami menerapkan standar operasional, kurikulum, dan
+                  pengasuhan yang terbaik.
                 </p>
                 <p>
                   Kami berkomitmen mencetak kader ulama rabbani yang beraqidah

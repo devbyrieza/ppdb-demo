@@ -71,10 +71,7 @@ export default function FeaturesSection() {
                   <Award className="w-3.5 h-3.5" />
                   <span>Keunggulan Utama</span>
                 </div>
-                <h2 className="section-title mb-3">Kenapa Harus PPDB</h2>
-                <p className="text-xs font-bold text-teal-600 uppercase tracking-widest mb-6">
-                  Dikelola oleh Al Andalus IIBS
-                </p>
+                <h2 className="section-title mb-3">Kenapa Harus Al-Fath?</h2>
                 <p className="text-lg text-ink-600 leading-relaxed font-medium text-justify lg:text-left">
                   Sistem pembentukan karakter berbasis{" "}
                   <strong className="text-teal-700">
@@ -140,7 +137,7 @@ export default function FeaturesSection() {
                     <p className="text-xs leading-tight text-ink-500 font-medium">
                       Dimulainya Sejarah Baru <br />
                       <span className="text-teal-700 font-bold block mt-1">
-                        Dikelola oleh Al Andalus IIBS
+                        Sistem PPDB Modern
                       </span>
                     </p>
                   </div>

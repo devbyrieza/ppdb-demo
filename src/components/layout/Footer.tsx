@@ -123,7 +123,7 @@ export default function Footer() {
               style={{ color: "rgba(255,255,255,0.45)" }}
             >
               Membangun generasi Qur&apos;ani yang cerdas &amp; berakhlak mulia
-              melalui sistem terintegrasi PPDB Modern.
+              melalui sistem terintegrasi Al-Fath.
             </p>
 
             {/* Social Links */}
