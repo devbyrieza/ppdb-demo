@@ -247,7 +247,7 @@ export async function GET() {
       ) {
         return j.status_ortu === "completed";
       } else {
-        // Seleksi Wawancara Santri / Wawancara Santri
+        // Seleksi Wawancara Calon Santri / Wawancara Calon Santri
         return j.status_santri === "completed";
       }
     }).length;

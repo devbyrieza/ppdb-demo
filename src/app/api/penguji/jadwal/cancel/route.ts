@@ -76,7 +76,7 @@ export async function POST(request: Request) {
     if (jadwal.exam_session?.title) {
       jenisUjian = jadwal.exam_session.title;
     } else if (jadwal.penguji_santri_id === userId) {
-      jenisUjian = "Seleksi Wawancara Santri";
+      jenisUjian = "Seleksi Wawancara Calon Santri";
     } else if (jadwal.penguji_quran_id === userId) {
       jenisUjian = "Seleksi Al Qur'an";
     } else if (jadwal.penguji_ortu_id === userId) {

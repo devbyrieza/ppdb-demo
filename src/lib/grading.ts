@@ -252,14 +252,14 @@ export function determineFinalDecision(grades: {
   // Any D or E is an automatic rejection
   if (vals.includes("D") || vals.includes("E")) return "DITOLAK";
 
-  // Quran or Wawancara Santri getting C is also automatic rejection for many Jenjang
+  // Quran or Wawancara Calon Santri getting C is also automatic rejection for many Jenjang
   if (grades.quran === "C" || grades.wawancaraSantri === "C") return "DITOLAK";
 
   // 2. AUTOMATIC RESERVE (CADANGAN)
   // Rule: "Jika Quran dapet Cadangan (B), otomatis masuk Cadangan"
   if (grades.quran === "B") return "CADANGAN";
 
-  // Also if Wawancara Santri is B, it's very likely Cadangan unless everything else is A
+  // Also if Wawancara Calon Santri is B, it's very likely Cadangan unless everything else is A
   if (grades.wawancaraSantri === "B") {
     const countA = vals.filter((v) => v === "A").length;
     if (countA < 4) return "CADANGAN";

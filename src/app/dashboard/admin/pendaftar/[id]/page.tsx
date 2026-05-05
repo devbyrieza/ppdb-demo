@@ -160,7 +160,7 @@ export default function PendaftarDetailPage() {
   const isKeuangan = userRole === "admin_keuangan";
   const isBerkas = userRole === "admin_berkas";
   const isPenguji =
-    userRole === "penguji_calsan" ||
+    userRole === "penguji" ||
     userRole === "pewawancara_calsan" ||
     userRole === "pewawancara_cawalsan";
   const isAdminSuper = userRole === "admin_super";

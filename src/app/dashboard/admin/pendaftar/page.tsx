@@ -138,7 +138,7 @@ function AdminPendaftarContent() {
     userRole === "admin";
   const canViewSeleksi =
     userRole === "admin_super" ||
-    userRole === "penguji_calsan" ||
+    userRole === "penguji" ||
     userRole === "pewawancara_calsan" ||
     userRole === "pewawancara_cawalsan" ||
     userRole === "admin";
@@ -146,7 +146,7 @@ function AdminPendaftarContent() {
   const isKeuangan = userRole === "admin_keuangan";
   const isBerkas = userRole === "admin_berkas";
   const isPenguji =
-    userRole === "penguji_calsan" ||
+    userRole === "penguji" ||
     userRole === "pewawancara_calsan" ||
     userRole === "pewawancara_cawalsan";
   const isAdminSuper = userRole === "admin_super";

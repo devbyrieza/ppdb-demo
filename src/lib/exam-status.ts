@@ -37,7 +37,7 @@ export async function markExamComponentAsComplete({
   if (componentType) {
     if (componentType === "santri") {
       updates.status_santri = "completed";
-      updatedField = "Seleksi Wawancara Santri";
+      updatedField = "Seleksi Wawancara Calon Santri";
     } else if (componentType === "quran") {
       updates.status_quran = "completed";
       updatedField = "Seleksi Al Qur'an";
@@ -49,7 +49,7 @@ export async function markExamComponentAsComplete({
     // Fallback to manual check (logic from original /complete endpoint)
     if (jadwal.penguji_santri_id === userId) {
       updates.status_santri = "completed";
-      updatedField = "Seleksi Wawancara Santri";
+      updatedField = "Seleksi Wawancara Calon Santri";
     } else if (jadwal.penguji_quran_id === userId) {
       updates.status_quran = "completed";
       updatedField = "Seleksi Al Qur'an";
@@ -71,7 +71,7 @@ export async function markExamComponentAsComplete({
         } else if (title.includes("calsan") || title.includes("santri")) {
           updates.status_santri = "completed";
           updates.penguji_santri_id = userId;
-          updatedField = "Seleksi Wawancara Santri";
+          updatedField = "Seleksi Wawancara Calon Santri";
         } else if (
           title.includes("cawalsan") ||
           title.includes("ortu") ||

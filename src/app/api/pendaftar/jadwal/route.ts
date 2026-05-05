@@ -128,7 +128,7 @@ export async function POST(request: Request) {
         currentCategory === "QURAN"
           ? "Ujian Al-Quran"
           : currentCategory === "W_SANTRI"
-            ? "Seleksi Wawancara Santri"
+            ? "Seleksi Wawancara Calon Santri"
             : currentCategory === "W_ORTU"
               ? "Wawancara Orang Tua"
               : "Ujian ini";

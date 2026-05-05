@@ -40,7 +40,6 @@ export async function GET() {
             "penguji",
             "admin_super",
             "admin",
-            "penguji_calsan",
             "pewawancara_calsan",
             "pewawancara_cawalsan",
           ],
@@ -86,7 +85,6 @@ export async function POST(request: Request) {
         "penguji",
         "admin_super",
         "admin",
-        "penguji_calsan",
         "pewawancara_calsan",
         "pewawancara_cawalsan",
       ];

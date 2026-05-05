@@ -100,12 +100,12 @@ export async function GET() {
         // Admin can see all assignment types
         jenis_tugas.push(
           "Seleksi Al Qur'an",
-          "Seleksi Wawancara Santri",
+          "Seleksi Wawancara Calon Santri",
           "Seleksi Wawancara Orang Tua",
         );
       } else {
         if (item.penguji_santri_id === userId)
-          jenis_tugas.push("Seleksi Wawancara Santri");
+          jenis_tugas.push("Seleksi Wawancara Calon Santri");
         if (item.penguji_quran_id === userId)
           jenis_tugas.push("Seleksi Al Qur'an");
         if (item.penguji_ortu_id === userId)
@@ -120,7 +120,7 @@ export async function GET() {
           if (title.includes("qur") || title.includes("quran"))
             jenis_tugas.push("Seleksi Al Qur'an");
           else if (title.includes("calsan") || title.includes("santri"))
-            jenis_tugas.push("Seleksi Wawancara Santri");
+            jenis_tugas.push("Seleksi Wawancara Calon Santri");
           else if (
             title.includes("cawalsan") ||
             title.includes("ortu") ||

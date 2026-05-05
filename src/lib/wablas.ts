@@ -960,7 +960,7 @@ export async function notifyGoogleFormLink(data: {
 export async function notifyZoomMeeting(data: {
   phone: string | null;
   nama: string;
-  jenisUjian: string; // "Seleksi Al Qur'an", "Seleksi Wawancara Santri", "Seleksi Wawancara Orang Tua"
+  jenisUjian: string; // "Seleksi Al Qur'an", "Seleksi Wawancara Calon Santri", "Seleksi Wawancara Orang Tua"
   tanggal: string;
   waktu: string;
   zoomLink: string;

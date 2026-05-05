@@ -214,8 +214,8 @@ export default function PengujiDashboardLayout({
                       <p className="font-black text-ink-950 text-sm truncate">
                         {pengujiName}
                       </p>
-                      <span className="text-[10px] font-bold text-ink-400 capitalize">
-                        {userRole}
+                      <span className="text-[10px] font-bold text-ink-400 uppercase tracking-widest">
+                        {ROLE_LABELS[userRole as UserRole] || userRole}
                       </span>
                     </div>
                   </div>
@@ -309,8 +309,8 @@ export default function PengujiDashboardLayout({
                       <p className="font-black text-ink-950 text-sm truncate">
                         {pengujiName}
                       </p>
-                      <span className="text-[10px] font-bold text-ink-400 capitalize">
-                        {userRole}
+                      <span className="text-[10px] font-bold text-ink-400 uppercase tracking-widest">
+                        {ROLE_LABELS[userRole as UserRole] || userRole}
                       </span>
                     </div>
                   </div>
@@ -388,7 +388,7 @@ export default function PengujiDashboardLayout({
                         {pengujiName}
                       </p>
                       <p className="text-[10px] font-bold text-teal-600 uppercase tracking-widest mt-1">
-                        Penguji Al-Qur&apos;an
+                        {ROLE_LABELS[userRole as UserRole] || "Penguji"}
                       </p>
                     </div>
                     <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-teal-50 to-teal-100 flex items-center justify-center border border-teal-200 shadow-premium-sm text-teal-700 font-black">

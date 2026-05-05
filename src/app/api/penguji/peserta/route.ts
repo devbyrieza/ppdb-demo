@@ -41,7 +41,7 @@ export async function GET() {
     if (!isAdmin) {
       whereClause = {
         OR: [
-          { penguji_santri_id: userId }, // Seleksi Wawancara Santri (or general Interview)
+          { penguji_santri_id: userId }, // Seleksi Wawancara Calon Santri (or general Interview)
           { penguji_quran_id: userId }, // Tes Quran
           { penguji_ortu_id: userId }, // Seleksi Wawancara Orang Tua
           { exam_session: { created_by: userId } }, // Sessions created by this penguji

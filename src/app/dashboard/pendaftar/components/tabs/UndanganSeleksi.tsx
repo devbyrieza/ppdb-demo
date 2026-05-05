@@ -451,7 +451,7 @@ export default function UndanganSeleksiTab() {
               Seleksi Terjadwal
             </h2>
             <p className="text-sm text-stone-500">
-              Seleksi Al Qur'an, Seleksi Wawancara Santri, Seleksi Wawancara
+              Seleksi Al Qur'an, Seleksi Wawancara Calon Santri, Seleksi Wawancara
               Orang Tua/Wali
             </p>
           </div>
@@ -576,8 +576,11 @@ export default function UndanganSeleksiTab() {
               );
 
               if (filteredSlots.length === 0) {
-                const totalRequired = 3;
-                const isAllBooked = data.grupB.booked.length >= totalRequired;
+                const requiredCategories = ["QURAN", "W_SANTRI", "W_ORTU"];
+                const bookedCategories = data.grupB.booked.map((j) => j.category);
+                const isAllBooked = requiredCategories.every((cat) =>
+                  bookedCategories.includes(cat),
+                );
 
                 return (
                   <div className="text-center py-12 bg-white rounded-2xl border-2 border-dashed border-stone-200">

@@ -713,7 +713,7 @@ export function buildMessageJadwalBelum(nama: string): string {
 
 Terima kasih telah mendaftar di ${BRANDING.schoolName}.
 
-Saat ini jadwal tes lanjutan (Seleksi Al Qur'an, Seleksi Wawancara Santri, dan Seleksi Wawancara Orang Tua/Wali) belum tersedia. Mohon bersabar, kami akan menginformasikan kembali begitu jadwal sudah siap.
+Saat ini jadwal tes lanjutan (Seleksi Al Qur'an, Seleksi Wawancara Calon Santri, dan Seleksi Wawancara Orang Tua/Wali) belum tersedia. Mohon bersabar, kami akan menginformasikan kembali begitu jadwal sudah siap.
 
 Untuk sementara, Anda sudah bisa mengerjakan seleksi online yang tersedia di dashboard:
 - Kemampuan Dasar Akademik
@@ -733,7 +733,7 @@ Alhamdulillah, jadwal tes lanjutan sudah tersedia!
 
 Silakan login ke dashboard and pilih jadwal yang sesuai untuk:
 - Seleksi Al Qur'an
-- Seleksi Wawancara Santri
+- Seleksi Wawancara Calon Santri
 - Seleksi Wawancara Orang Tua/Wali
 
 Segera pilih jadwal sebelum kuota penuh.
@@ -753,7 +753,7 @@ Saat ini **jadwal tes lanjutan sudah tersedia dan bisa langsung Anda pilih**.
 
 Silakan login ke dashboard dan pilih sesi jadwal untuk:
 - Seleksi Al Qur'an
-- Seleksi Wawancara Santri
+- Seleksi Wawancara Calon Santri
 - Seleksi Wawancara Orang Tua/Wali
 
 Harap segera memilih jadwal sebelum rentang waktu habis atau kuota penuh. Jangan lupa juga untuk menyelesaikan Seleksi Online (Akademik & Kepribadian).
@@ -940,7 +940,7 @@ export function buildMessageReminderH1Santri(
 
     let agendaTitle = "";
     if (jenisUjian.toLowerCase().includes("quran")) agendaTitle = "Seleksi Al Qur'an";
-    else if (jenisUjian.toLowerCase().includes("calsan")) agendaTitle = "Seleksi Wawancara Santri";
+    else if (jenisUjian.toLowerCase().includes("calsan")) agendaTitle = "Seleksi Wawancara Calon Santri";
     else agendaTitle = jenisUjian;
 
     return `*PENGINGAT Seleksi*
@@ -1025,7 +1025,7 @@ export function buildMessageReminderH1Penguji(
     if (jenisUjian.toLowerCase().includes("quran")) {
         agendaText = "Seleksi Al Qur'an";
     } else if (jenisUjian.toLowerCase().includes("calsan")) {
-        agendaText = "Seleksi Wawancara Santri";
+        agendaText = "Seleksi Wawancara Calon Santri";
         agendaTitle = "*PENGINGAT JADWAL WAWANCARA*";
     } else if (jenisUjian.toLowerCase().includes("cawalsan")) {
         agendaText = "Seleksi Wawancara Orang Tua/Wali";

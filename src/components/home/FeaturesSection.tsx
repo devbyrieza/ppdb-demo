@@ -73,7 +73,7 @@ export default function FeaturesSection() {
                 </div>
                 <h2 className="section-title mb-3">Kenapa Harus PPDB</h2>
                 <p className="text-xs font-bold text-teal-600 uppercase tracking-widest mb-6">
-                  Managed by PPDB Modern
+                  Dikelola oleh Al Andalus IIBS
                 </p>
                 <p className="text-lg text-ink-600 leading-relaxed font-medium text-justify lg:text-left">
                   Sistem pembentukan karakter berbasis{" "}
@@ -140,7 +140,7 @@ export default function FeaturesSection() {
                     <p className="text-xs leading-tight text-ink-500 font-medium">
                       Dimulainya Sejarah Baru <br />
                       <span className="text-teal-700 font-bold block mt-1">
-                        Managed by PPDB Modern
+                        Dikelola oleh Al Andalus IIBS
                       </span>
                     </p>
                   </div>

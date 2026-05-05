@@ -39,11 +39,10 @@ export default function ProfileSettings({ user }: { user: UserSession }) {
       admin_super: "Admin Super",
       admin_keuangan: "Admin Keuangan",
       admin_berkas: "Admin Berkas",
-      penguji_calsan: "Penguji Al-Qur'an",
-      pewawancara_calsan: "Pewawancara Calon Santri",
-      pewawancara_cawalsan: "Pewawancara Calon Orangtua/Wali Santri",
-      admin: "Admin",
       penguji: "Penguji Al-Qur'an",
+      pewawancara_calsan: "Pewawancara Calsan",
+      pewawancara_cawalsan: "Pewawancara Cawalsan",
+      admin: "Admin",
     };
     return roleMap[role] || role.replace("_", " ").toUpperCase();
   };

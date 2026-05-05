@@ -315,7 +315,7 @@ export default function MonitoringJadwalPage() {
                                     <div className="grid grid-cols-1 gap-2 py-4 border-y border-slate-100/50">
                                         {[
                                             { label: 'Ujian Al-Qur&apos;an', status: s.status.quran, icon: getStatusIcon(s.status.quran), ustadz: s.ustadz.quran },
-                                            { label: 'Wawancara Santri', status: s.status.santri, icon: getStatusIcon(s.status.santri), ustadz: s.ustadz.santri },
+                                            { label: 'Wawancara Calon Santri', status: s.status.santri, icon: getStatusIcon(s.status.santri), ustadz: s.ustadz.santri },
                                             { label: 'Wawancara Wali/Ortu', status: s.status.ortu, icon: getStatusIcon(s.status.ortu), ustadz: s.ustadz.ortu }
                                         ].filter(stat => stat.ustadz && stat.ustadz !== '-').map((stat, i) => (
                                             <div key={i} className="flex items-center justify-between px-2">

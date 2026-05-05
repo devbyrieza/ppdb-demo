@@ -145,7 +145,7 @@ export async function GET(request: Request) {
 
             // 2. Enqueue for Examiners (if assigned)
             const examinersToNotify = [
-                { profile: jadwal.penguji_santri, type: "Seleksi Wawancara Santri (Santri)" },
+                { profile: jadwal.penguji_santri, type: "Seleksi Wawancara Calon Santri (Santri)" },
                 { profile: jadwal.penguji_quran, type: "Seleksi Al Qur'an" },
                 { profile: jadwal.penguji_ortu, type: "Seleksi Wawancara Orang Tua/Wali (Orang Tua/Ortu)" },
             ];

@@ -24,8 +24,8 @@ export async function GET() {
       if (session.title === "Tes Al-Quran" && !jadwal.penguji_quran_id) {
         updateData.penguji_quran_id = session.created_by;
       } else if (
-        (session.title === "Seleksi Wawancara Santri" ||
-          session.title === "Wawancara Santri") &&
+        (session.title === "Seleksi Wawancara Calon Santri" ||
+          session.title === "Wawancara Calon Santri") &&
         !jadwal.penguji_santri_id
       ) {
         updateData.penguji_santri_id = session.created_by;

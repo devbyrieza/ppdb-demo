@@ -24,7 +24,7 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
-    const { jadwal_id } = body;
+    const { jadwal_id, component_type } = body;
 
     if (!jadwal_id) {
       return NextResponse.json(
@@ -37,6 +37,7 @@ export async function POST(request: Request) {
     const result = await markExamComponentAsComplete({
       jadwalId: jadwal_id,
       userId,
+      componentType: component_type,
     });
 
     return NextResponse.json({

@@ -42,7 +42,7 @@ export async function POST(req: Request) {
     // RBAC Validation
     if (!isSuper) {
       if (type === "quran") {
-        if (userRole !== "penguji_calsan") {
+        if (userRole !== "penguji" && userRole !== "penguji_calsan") {
           return NextResponse.json(
             { error: "Forbidden: Role restricted to Penguji" },
             { status: 403 },
@@ -51,7 +51,7 @@ export async function POST(req: Request) {
       } else if (type === "wawancara_santri") {
         if (userRole !== "pewawancara_calsan") {
           return NextResponse.json(
-            { error: "Forbidden: Role restricted to Pewawancara Santri" },
+            { error: "Forbidden: Role restricted to PeWawancara Calon Santri" },
             { status: 403 },
           );
         }

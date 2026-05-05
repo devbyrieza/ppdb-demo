@@ -102,7 +102,7 @@ export default function RecapFeePage() {
       "Nama Petugas": item.name.toUpperCase(),
       Role: item.role.replace("_", " ").toUpperCase(),
       "Tes Quran": item.counts.quran,
-      "Wawancara Santri": item.counts.santri,
+      "Wawancara Calon Santri": item.counts.santri,
       "Wawancara Ortu": item.counts.ortu,
       "Total Sesi": item.counts.total,
       "Total Honor (IDR)": calculateTotalFee(item),
@@ -305,7 +305,7 @@ export default function RecapFeePage() {
                 { id: "quran", label: "Tarif Tes Quran", value: rates.quran },
                 {
                   id: "santri",
-                  label: "Wawancara Santri",
+                  label: "Wawancara Calon Santri",
                   value: rates.santri,
                 },
                 { id: "ortu", label: "Wawancara Wali/Ortu", value: rates.ortu },

@@ -70,7 +70,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/dashboard/pendaftar", request.url));
     } else if (["admin_berkas", "admin_keuangan", "admin_super", "admin"].includes(userRole)) {
       return NextResponse.redirect(new URL("/dashboard/admin", request.url));
-    } else if (["penguji", "penguji_calsan", "pewawancara_calsan", "pewawancara_cawalsan"].includes(userRole)) {
+    } else if (["penguji", "pewawancara_calsan", "pewawancara_cawalsan"].includes(userRole)) {
       return NextResponse.redirect(new URL("/dashboard/penguji", request.url));
     }
 
@@ -85,7 +85,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/dashboard/pendaftar", request.url));
     } else if (["admin_berkas", "admin_keuangan", "admin_super", "admin"].includes(userRole)) {
       return NextResponse.redirect(new URL("/dashboard/admin", request.url));
-    } else if (["penguji", "penguji_calsan", "pewawancara_calsan", "pewawancara_cawalsan"].includes(userRole)) {
+    } else if (["penguji", "pewawancara_calsan", "pewawancara_cawalsan"].includes(userRole)) {
       return NextResponse.redirect(new URL("/dashboard/penguji", request.url));
     }
   }
