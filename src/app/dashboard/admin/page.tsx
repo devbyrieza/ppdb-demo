@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Users, Wallet, Loader2, ArrowUpRight, Calendar as CalendarIcon, Download, RefreshCw, Clock } from "lucide-react";
+import { Users, Wallet, Loader2, ArrowUpRight, Calendar as CalendarIcon, Download, RefreshCw, Clock, FileCheck, CheckCircle2, ClipboardCheck } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
@@ -10,7 +10,12 @@ import { motion } from "framer-motion";
  */
 
 const StatWidget = ({ label, value, icon: Icon, color }: any) => {
-  const colors: any = { emerald: "text-emerald-600 bg-emerald-50", blue: "text-blue-600 bg-blue-50" };
+  const colors: any = { 
+    blue: "text-blue-600 bg-blue-50",
+    purple: "text-purple-600 bg-purple-50",
+    emerald: "text-emerald-600 bg-emerald-50",
+    amber: "text-amber-600 bg-amber-50" 
+  };
   return (
     <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
       <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-4 ${colors[color] || "bg-slate-50"}`}>
@@ -45,9 +50,11 @@ export default function AdminDashboardPage() {
         <button onClick={fetchStats} className="p-2 bg-white border border-slate-200 rounded-lg"><RefreshCw className="w-4 h-4" /></button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatWidget label="Applicants" value={stats.total_pendaftar} icon={Users} color="blue" />
-        <StatWidget label="Verified" value={stats.sudah_bayar} icon={Wallet} color="emerald" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <StatWidget label="Total Pendaftar" value={stats.total_pendaftar} icon={Users} color="blue" />
+        <StatWidget label="Lengkap Berkas" value={stats.sudah_isi_data} icon={FileCheck} color="purple" />
+        <StatWidget label="Lulus Seleksi" value={stats.diterima} icon={CheckCircle2} color="emerald" />
+        <StatWidget label="Sudah Daftar Ulang" value={stats.daftar_ulang} icon={ClipboardCheck} color="amber" />
       </div>
 
       <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden">
