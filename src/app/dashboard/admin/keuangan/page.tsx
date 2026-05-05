@@ -218,10 +218,11 @@ export default function KeuanganPage() {
           new Date(i.last_updated).toLocaleDateString("id-ID"),
         ];
 
-        const sheets = [
+        const sheets: any[] = [
           {
             name: "TOTAL PENDAFTARAN",
             title: "REKAPITULASI PEMBAYARAN PENDAFTARAN (TOTAL)",
+            subTitle: `Tanggal: ${new Date().toLocaleDateString("id-ID")}`,
             header,
             data: filteredPendaftaran.map(formatRow),
           },
@@ -301,7 +302,7 @@ export default function KeuanganPage() {
           new Date(i.last_updated).toLocaleDateString("id-ID"),
         ];
 
-        const sheets = [
+        const sheets: any[] = [
           {
             name: "REKAP TOTAL",
             title: "REKAPITULASI PEMBAYARAN DAFTAR ULANG (SEMUA)",
