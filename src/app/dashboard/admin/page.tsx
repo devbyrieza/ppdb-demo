@@ -1,64 +1,82 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Users, Wallet, Loader2, ArrowUpRight, Calendar as CalendarIcon, Download, RefreshCw, Clock, FileCheck, CheckCircle2, ClipboardCheck, TrendingUp } from "lucide-react";
+import { 
+  Users, Wallet, Loader2, ArrowUpRight, 
+  Calendar as CalendarIcon, Download, RefreshCw, 
+  Clock, FileCheck, CheckCircle2, ClipboardCheck, 
+  TrendingUp, ChevronRight, Activity, ArrowRight
+} from "lucide-react";
 import { UserRole } from "@/lib/access-control";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
 /**
- * ─── ADMIN DASHBOARD PAGE ───
+ * ─── ADMIN DASHBOARD PAGE (TEMPLATE DEMO) ───
  */
 
 const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown }: any) => {
-  const colors: any = { 
-    blue: "text-blue-600 bg-blue-50",
-    purple: "text-purple-600 bg-purple-50",
-    emerald: "text-emerald-600 bg-emerald-50",
-    amber: "text-amber-600 bg-amber-50" 
+  const colorMap: any = {
+    blue: "from-army-600 to-army-700 shadow-army-200",
+    emerald: "from-emerald-600 to-emerald-700 shadow-emerald-200",
+    amber: "from-amber-500 to-amber-600 shadow-amber-200",
+    purple: "from-purple-600 to-purple-700 shadow-purple-200",
   };
+
   return (
     <motion.div 
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all group"
+      className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-premium-sm hover:shadow-premium-lg transition-all group relative overflow-hidden"
     >
-      <div className="flex items-start justify-between mb-4">
-        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 ${colors[color] || "bg-slate-50"}`}>
-          <Icon className="w-6 h-6" />
+      <div className="absolute top-0 right-0 w-32 h-32 bg-slate-50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:bg-army-50 transition-colors duration-500" />
+      
+      <div className="relative z-10">
+        <div className="flex items-center justify-between mb-8">
+          <div className={`w-14 h-14 rounded-2xl bg-linear-to-br ${colorMap[color] || colorMap.blue} flex items-center justify-center text-white shadow-xl transition-transform group-hover:scale-110 group-hover:rotate-3 duration-500`}>
+            <Icon className="w-6 h-6" />
+          </div>
+          {trend && (
+            <div className="flex items-center gap-1.5 text-[10px] font-black text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-100">
+              <TrendingUp className="w-3.5 h-3.5" />
+              <span className="uppercase tracking-wider">{trend}</span>
+            </div>
+          )}
         </div>
-        {trend && (
-          <div className="flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">
-            <TrendingUp className="w-3 h-3" />
-            <span>{trend}</span>
+        
+        <div className="mb-8">
+          <p className="text-[11px] font-black text-slate-400 uppercase tracking-[0.25em] mb-2">{label}</p>
+          <div className="flex items-baseline gap-2">
+            <h3 className="text-5xl font-black text-slate-900 tracking-tighter italic">{value}</h3>
+            <span className="text-xs font-bold text-slate-400">Total</span>
+          </div>
+        </div>
+
+        {breakdown && (
+          <div className="grid grid-cols-2 gap-4 pt-6 border-t border-slate-50">
+            <div className="space-y-4">
+              <div className="flex flex-col">
+                <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">MTs Putra</span>
+                <span className="text-base font-black text-army-800 leading-none">{breakdown.mts_l || 0}</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">MTs Putri</span>
+                <span className="text-base font-black text-pink-500 leading-none">{breakdown.mts_p || 0}</span>
+              </div>
+            </div>
+            <div className="space-y-4 border-l border-slate-50 pl-4">
+              <div className="flex flex-col">
+                <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">IL Putra</span>
+                <span className="text-base font-black text-army-800 leading-none">{breakdown.il_l || 0}</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">IL Putri</span>
+                <span className="text-base font-black text-pink-500 leading-none">{breakdown.il_p || 0}</span>
+              </div>
+            </div>
           </div>
         )}
       </div>
-      <div className="mb-4">
-        <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1">{label}</p>
-        <h3 className="text-4xl font-black text-slate-900 tracking-tighter">{value}</h3>
-      </div>
-
-      {breakdown && (
-        <div className="grid grid-cols-2 gap-y-3 pt-4 border-t border-slate-50">
-          <div className="flex flex-col">
-            <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">MTs Putra</span>
-            <span className="text-sm font-black text-maroon-700 leading-none">{breakdown.mts_l || 0}</span>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">IL Putra</span>
-            <span className="text-sm font-black text-maroon-700 leading-none">{breakdown.il_l || 0}</span>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">MTs Putri</span>
-            <span className="text-sm font-black text-pink-600 leading-none">{breakdown.mts_p || 0}</span>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">IL Putri</span>
-            <span className="text-sm font-black text-pink-600 leading-none">{breakdown.il_p || 0}</span>
-          </div>
-        </div>
-      )}
     </motion.div>
   );
 };
@@ -66,7 +84,11 @@ const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown }: any) 
 export default function AdminDashboardPage() {
   const [loading, setLoading] = useState(true);
   const [role, setRole] = useState<UserRole | null>(null);
-  const [stats, setStats] = useState<any>({ total_pendaftar: 0, sudah_bayar: 0, diterima: 0, daftar_ulang: 0, sudah_isi_data: 0, waiting_payment: 0, waiting_docs: 0, stats_per_jenjang: [] });
+  const [stats, setStats] = useState<any>({ 
+    total_pendaftar: 0, sudah_bayar: 0, diterima: 0, 
+    daftar_ulang: 0, sudah_isi_data: 0, waiting_payment: 0, 
+    waiting_docs: 0, stats_per_jenjang: [] 
+  });
 
   const fetchStats = async () => {
     try {
@@ -99,18 +121,64 @@ export default function AdminDashboardPage() {
     return null;
   };
 
-  if (loading) return <div className="flex items-center justify-center min-h-[60vh] gap-4"><Loader2 className="animate-spin text-maroon-600" /><p className="text-sm font-bold text-slate-400 tracking-widest animate-pulse uppercase">Sinkronisasi Data...</p></div>;
+  if (loading && stats.total_pendaftar === 0) return (
+    <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
+      <Loader2 className="w-10 h-10 animate-spin text-army-600" />
+      <p className="text-sm font-bold text-slate-400 tracking-widest animate-pulse uppercase">Sinkronisasi Data...</p>
+    </div>
+  );
 
   return (
     <div className="max-w-[1400px] mx-auto space-y-8 pb-20">
+      {/* HEADER */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Admin Dashboard</h1>
-          <p className="text-sm text-slate-500 font-medium mt-1">Monitoring pendaftaran santri secara real-time.</p>
+          <h1 className="text-3xl font-black text-slate-900 tracking-tight italic">Global Admin Dashboard</h1>
+          <p className="text-sm text-slate-500 font-medium mt-1">Sistem informasi pendaftaran demo - Real-time statistics.</p>
         </div>
-        <button onClick={fetchStats} className="p-2.5 bg-white border border-slate-200 rounded-xl text-slate-500 hover:text-maroon-600 transition-all shadow-sm"><RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} /></button>
+        <button onClick={fetchStats} className="p-3 bg-white border border-slate-200 rounded-2xl text-slate-500 hover:text-army-600 transition-all shadow-premium-sm">
+          <RefreshCw className={`w-5 h-5 ${loading ? "animate-spin" : ""}`} />
+        </button>
       </div>
 
+      {/* HERO SECTION */}
+      <div className="bg-slate-900 rounded-[3rem] p-12 text-white relative overflow-hidden shadow-2xl">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-army-500/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
+        <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-12">
+          <div className="max-w-xl">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-[10px] font-black uppercase tracking-widest mb-8 border border-white/5">
+              <Activity className="w-4 h-4 text-army-400" />
+              <span>Sistem Siap Saji: Live Demo</span>
+            </div>
+            <h2 className="text-6xl font-black mb-6 tracking-tighter leading-tight italic">
+              Executive <span className="text-army-400">Insight</span>
+            </h2>
+            <div className="flex items-center gap-12 mt-12">
+              <div>
+                <span className="text-5xl font-black text-white italic">{stats.total_pendaftar}</span>
+                <p className="text-[11px] font-black text-slate-500 uppercase tracking-widest mt-2">Pendaftar</p>
+              </div>
+              <div className="w-px h-16 bg-slate-800" />
+              <div>
+                <span className="text-5xl font-black text-army-400 italic">{stats.sudah_bayar}</span>
+                <p className="text-[11px] font-black text-slate-500 uppercase tracking-widest mt-2">Tervalidasi</p>
+              </div>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4 w-full lg:w-auto">
+             <div className="bg-white/5 backdrop-blur-md p-6 rounded-[2rem] border border-white/5">
+                <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-4">Lulus</p>
+                <p className="text-3xl font-black text-emerald-400 italic">{stats.diterima}</p>
+             </div>
+             <div className="bg-white/5 backdrop-blur-md p-6 rounded-[2rem] border border-white/5">
+                <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-4">Ulang</p>
+                <p className="text-3xl font-black text-army-400 italic">{stats.daftar_ulang}</p>
+             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* STATS GRID */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {isAdminSuper && (
           <>
@@ -137,29 +205,85 @@ export default function AdminDashboardPage() {
         )}
       </div>
 
-      <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden">
-        <table className="w-full text-left">
-          <thead className="bg-slate-50 text-[10px] font-black uppercase text-slate-400">
-            <tr>
-              <th className="px-6 py-4">Level</th>
-              <th className="px-6 py-4 text-center">Applicants</th>
-              <th className="px-6 py-4 text-right">Progress</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-100">
-            {stats.stats_per_jenjang?.filter((j: any) => j.jenjang !== "SMA").map((item: any, i: number) => (
-              <tr key={i} className="hover:bg-slate-50/50 transition-colors">
-                <td className="px-6 py-5 font-bold text-slate-900">{item.jenjang === "MTS" ? "MTs" : item.jenjang}</td>
-                <td className="px-6 py-5 text-center font-bold text-slate-700">{item.pendaftar}</td>
-                <td className="px-6 py-5">
-                  <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                    <div style={{ width: `${Math.round((item.pendaftar / (item.kuota_total || 100)) * 100)}%` }} className="h-full bg-maroon-600" />
+      {/* SUMMARY INSIGHTS */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="bg-slate-900 rounded-[2.5rem] p-10 text-white relative overflow-hidden group">
+          <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:rotate-12 transition-transform duration-700">
+            <TrendingUp className="w-48 h-48" />
+          </div>
+          <div className="relative z-10">
+            <h3 className="text-2xl font-black mb-8 tracking-tight flex items-center gap-3 italic">
+              <div className="w-2 h-8 bg-army-500 rounded-full" />
+              Insight Pendaftaran
+            </h3>
+            <div className="grid grid-cols-2 gap-8">
+              <div className="space-y-8">
+                <div>
+                  <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Total Lunas</p>
+                  <p className="text-4xl font-black text-white italic">{stats.sudah_bayar}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Data Komplit</p>
+                  <p className="text-4xl font-black text-army-400 italic">{stats.sudah_isi_data}</p>
+                </div>
+              </div>
+              <div className="space-y-8 pl-10 border-l border-white/5">
+                <div>
+                  <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Antrean Aktif</p>
+                  <p className="text-4xl font-black text-white italic">{stats.waiting_payment + stats.waiting_docs}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Efisiensi Seleksi</p>
+                  <p className="text-4xl font-black text-emerald-400 italic">
+                    {stats.total_pendaftar > 0 ? Math.round((stats.diterima / stats.total_pendaftar) * 100) : 0}%
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-[2.5rem] border border-slate-100 p-10 shadow-premium-sm relative overflow-hidden group">
+          <div className="relative z-10">
+            <h3 className="text-2xl font-black text-slate-900 mb-8 tracking-tight flex items-center gap-3 italic">
+              <div className="w-2 h-8 bg-slate-900 rounded-full" />
+              Quick Action
+            </h3>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between p-6 bg-slate-50 rounded-3xl border border-slate-100 hover:border-army-200 transition-all cursor-default group/item">
+                <div className="flex items-center gap-5">
+                  <div className="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center text-army-600 transition-transform group-hover/item:scale-110">
+                    <Users className="w-6 h-6" />
                   </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                  <div>
+                    <p className="text-sm font-black text-slate-900 uppercase tracking-tighter leading-none mb-1">Audit Dokumen</p>
+                    <p className="text-[11px] text-slate-400 font-bold">Verifikasi berkas santri baru</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl font-black text-slate-900 italic">{stats.waiting_docs}</span>
+                  <ChevronRight className="w-5 h-5 text-slate-300" />
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between p-6 bg-slate-50 rounded-3xl border border-slate-100 hover:border-emerald-200 transition-all cursor-default group/item">
+                <div className="flex items-center gap-5">
+                  <div className="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center text-emerald-600 transition-transform group-hover/item:scale-110">
+                    <Wallet className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-black text-slate-900 uppercase tracking-tighter leading-none mb-1">Audit Keuangan</p>
+                    <p className="text-[11px] text-slate-400 font-bold">Konfirmasi bukti transfer</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl font-black text-slate-900 italic">{stats.waiting_payment}</span>
+                  <ChevronRight className="w-5 h-5 text-slate-300" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
