@@ -156,22 +156,22 @@ export default function AdminDashboardPage() {
             <div className="flex items-center gap-12 mt-12">
               <div>
                 <span className="text-5xl font-black text-white italic">{stats.total_pendaftar}</span>
-                <p className="text-[11px] font-black text-slate-500 uppercase tracking-widest mt-2">Pendaftar</p>
+                <p className="text-[11px] font-black text-slate-300 uppercase tracking-widest mt-2">Pendaftar</p>
               </div>
-              <div className="w-px h-16 bg-slate-800" />
+              <div className="w-px h-16 bg-slate-700" />
               <div>
                 <span className="text-5xl font-black text-army-400 italic">{stats.sudah_bayar}</span>
-                <p className="text-[11px] font-black text-slate-500 uppercase tracking-widest mt-2">Tervalidasi</p>
+                <p className="text-[11px] font-black text-slate-300 uppercase tracking-widest mt-2">Tervalidasi</p>
               </div>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-6 w-full lg:w-auto">
              <div className="bg-white/5 backdrop-blur-md p-8 rounded-[2.5rem] border border-white/10 flex flex-col items-center">
-                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">Lulus</p>
+                <p className="text-[10px] font-black text-white/70 uppercase tracking-widest mb-4">Lulus</p>
                 <p className="text-4xl font-black text-emerald-400 italic">{stats.diterima}</p>
              </div>
              <div className="bg-white/5 backdrop-blur-md p-8 rounded-[2.5rem] border border-white/10 flex flex-col items-center">
-                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">Ulang</p>
+                <p className="text-[10px] font-black text-white/70 uppercase tracking-widest mb-4">Ulang</p>
                 <p className="text-4xl font-black text-army-400 italic">{stats.daftar_ulang}</p>
              </div>
           </div>
@@ -219,21 +219,21 @@ export default function AdminDashboardPage() {
             <div className="grid grid-cols-2 gap-8">
               <div className="space-y-8">
                 <div>
-                  <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Total Lunas</p>
+                  <p className="text-[10px] font-black text-white/60 uppercase tracking-widest mb-2">Total Lunas</p>
                   <p className="text-4xl font-black text-white italic">{stats.sudah_bayar}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Data Komplit</p>
+                  <p className="text-[10px] font-black text-white/60 uppercase tracking-widest mb-2">Data Komplit</p>
                   <p className="text-4xl font-black text-army-400 italic">{stats.sudah_isi_data}</p>
                 </div>
               </div>
-              <div className="space-y-8 pl-10 border-l border-white/5">
+              <div className="space-y-8 pl-10 border-l border-white/10">
                 <div>
-                  <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Antrean Aktif</p>
+                  <p className="text-[10px] font-black text-white/60 uppercase tracking-widest mb-2">Antrean Aktif</p>
                   <p className="text-4xl font-black text-white italic">{stats.waiting_payment + stats.waiting_docs}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Efisiensi Seleksi</p>
+                  <p className="text-[10px] font-black text-white/60 uppercase tracking-widest mb-2">Efisiensi Seleksi</p>
                   <p className="text-4xl font-black text-emerald-400 italic">
                     {stats.total_pendaftar > 0 ? Math.round((stats.diterima / stats.total_pendaftar) * 100) : 0}%
                   </p>
