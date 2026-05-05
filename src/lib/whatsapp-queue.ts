@@ -931,11 +931,12 @@ export function buildMessageReminderH1Santri(
     cleanJam = cleanJam.replace(/\s+/g, " ");
     const finalJam = `${cleanJam} WIB`;
 
-    // Fix Duplicate Day & Change Minggu to Ahad
+    // Robust deduplication for Day & Date
     let cleanHari = (hari || "").replace(/Minggu/gi, "Ahad").split(",")[0].trim();
-    // Ensure tanggal doesn't start with day name if we already have it
-    let cleanTanggal = (tanggal || "").replace(new RegExp(`^${cleanHari},\\s*`, "i"), "");
-    
+    let cleanTanggal = (tanggal || "").trim();
+    if (cleanTanggal.toLowerCase().startsWith(cleanHari.toLowerCase())) {
+        cleanTanggal = cleanTanggal.split(",").slice(1).join(",").trim();
+    }
     const finalHariTanggal = `${cleanHari}, ${cleanTanggal}`;
 
     let agendaTitle = "";
@@ -953,11 +954,9 @@ Ini adalah pengingat bahwa Anda dijadwalkan mengikuti *${agendaTitle}* pada:
 ⏰ *Waktu:* ${finalJam}
 📍 *Lokasi/Link:* ${lokasi}
 
-Mohon persiapkan diri dengan baik dan pastikan koneksi internet stabil. Sampai jumpa!
-
-Jazakumullahu khairan.
+Mohon persiapkan diri dengan baik dan pastikan koneksi internet stabil. Sampai jumpa! Jazakumullahu khairan.
 ---
-*Panitia PPDB ${BRANDING.schoolName}*`;
+*Panitia PPDB ${BRANDING.schoolName.replace("Al-Andalus", "Al Andalus")}*`;
 }
 
 /**
@@ -1050,7 +1049,7 @@ Mengingatkan jadwal ${agendaText.includes("Wawancara") ? "wawancara" : "menguji"
 Mohon kehadirannya tepat waktu. Jazakumullahu khairan.
  
 ---
-*Sistem PPDB ${BRANDING.schoolName}*`;
+*Sistem PPDB ${BRANDING.schoolName.replace("Al-Andalus", "Al Andalus")}*`;
 }
  
 export function buildMessageCombinedFinal(

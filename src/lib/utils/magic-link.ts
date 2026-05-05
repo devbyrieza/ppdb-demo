@@ -116,16 +116,16 @@ export function getSlugByName(fullName: string): string | null {
 
 // Manual tinyurls for specific examiners/interviewers (pointing to correct production URLs)
 export const MANUAL_TINYURLS: Record<string, string> = {
-  "Agus Cahyono": "https://tinyurl.com/demo-ppdb-agus",
-  Jusman: "https://tinyurl.com/demo-ppdb-jusman",
-  "Fuad Khomsatun": "https://tinyurl.com/demo-ppdb-fuad",
-  "Andi Fatimah Azzahra Rahman": "https://tinyurl.com/demo-ppdb-fatimah",
-  "Muhammad Syauqi Al Faruq": "https://tinyurl.com/demo-ppdb-syauqi",
-  Muhajir: "https://tinyurl.com/demo-ppdb-muhajir",
-  "Rima Maryani Putri Utami": "https://tinyurl.com/demo-ppdb-rima",
-  "Halimah Fauziah": "https://tinyurl.com/demo-ppdb-halimah",
-  "Maulidin Bachtiar": "https://tinyurl.com/demo-ppdb-bachtiar",
-  "Muhammad Adib Achsan": "https://tinyurl.com/demo-ppdb-adib",
+  "Agus Cahyono": "https://tinyurl.com/alandalus-demo-agus",
+  Jusman: "https://tinyurl.com/alandalus-demo-jusman",
+  "Fuad Khomsatun": "https://tinyurl.com/alandalus-demo-fuad",
+  "Andi Fatimah Azzahra Rahman": "https://tinyurl.com/alandalus-demo-fatimah",
+  "Muhammad Syauqi Al Faruq": "https://tinyurl.com/alandalus-demo-syauqi",
+  Muhajir: "https://tinyurl.com/alandalus-demo-muhajir",
+  "Rima Maryani Putri Utami": "https://tinyurl.com/alandalus-demo-rima",
+  "Halimah Fauziah": "https://tinyurl.com/alandalus-demo-halimah",
+  "Maulidin Bachtiar": "https://tinyurl.com/alandalus-demo-bachtiar",
+  "Muhammad Adib Achsan": "https://tinyurl.com/alandalus-demo-adib",
 };
 
 /**
