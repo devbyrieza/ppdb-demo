@@ -101,7 +101,13 @@ const cardVariants: Variants = {
 };
 
 // ─── COMPONENT: ACTIVITY CARD ───
-function ActivityCard({ activity }: { activity: (typeof ACTIVITIES)[0] }) {
+function ActivityCard({
+  activity,
+  index,
+}: {
+  activity: (typeof ACTIVITIES)[0];
+  index: number;
+}) {
   const Icon = activity.icon;
   return (
     <motion.div
