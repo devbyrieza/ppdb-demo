@@ -151,7 +151,7 @@ export default function AdminDashboardPage() {
               <span>Sistem Siap Saji: Live Demo</span>
             </div>
             <h2 className="text-6xl font-black mb-6 tracking-tighter leading-tight italic">
-              Executive <span className="text-army-400">Insight</span>
+              Executive <span className="text-white opacity-90">Insight</span>
             </h2>
             <div className="flex items-center gap-12 mt-12">
               <div>
@@ -212,8 +212,8 @@ export default function AdminDashboardPage() {
             <TrendingUp className="w-48 h-48" />
           </div>
           <div className="relative z-10">
-            <h3 className="text-2xl font-black mb-8 tracking-tight flex items-center gap-3 italic">
-              <div className="w-2 h-8 bg-army-500 rounded-full" />
+            <h3 className="text-2xl font-black mb-8 tracking-tight flex items-center gap-3 italic text-white">
+              <div className="w-2 h-8 bg-emerald-500 rounded-full" />
               Insight Pendaftaran
             </h3>
             <div className="grid grid-cols-2 gap-8">
@@ -224,7 +224,7 @@ export default function AdminDashboardPage() {
                 </div>
                 <div>
                   <p className="text-[10px] font-black text-white/60 uppercase tracking-widest mb-2">Data Komplit</p>
-                  <p className="text-4xl font-black text-army-400 italic">{stats.sudah_isi_data}</p>
+                  <p className="text-4xl font-black text-white italic">{stats.sudah_isi_data}</p>
                 </div>
               </div>
               <div className="space-y-8 pl-10 border-l border-white/10">
