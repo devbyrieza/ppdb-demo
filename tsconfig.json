@@ -27,10 +27,7 @@
         "./src/*"
       ]
     },
-    "baseUrl": ".",
-    "types": [
-      "node"
-    ]
+    "baseUrl": "."
   },
   "include": [
     "next-env.d.ts",
