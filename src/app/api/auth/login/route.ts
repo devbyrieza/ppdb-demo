@@ -132,7 +132,9 @@ export async function POST(request: NextRequest) {
 
       // Check for multi-role: if secondary_roles exist, require role selection
       const secondaryRoles: string[] = profile.secondary_roles || [];
-      if (secondaryRoles.length > 0) {
+      const chosenRoleFromRequest = body.chosen_role;
+
+      if (secondaryRoles.length > 0 && !chosenRoleFromRequest) {
         // Return role selection prompt — no cookie yet
         return NextResponse.json({
           success: true,
@@ -142,6 +144,8 @@ export async function POST(request: NextRequest) {
           available_roles: [profile.role, ...secondaryRoles],
         });
       }
+
+      const finalRole = chosenRoleFromRequest || profile.role;
 
       // Single role — login normally
       const responseJson = NextResponse.json({
@@ -159,7 +163,7 @@ export async function POST(request: NextRequest) {
       responseJson.cookies.set(
         "app_session",
         JSON.stringify({
-          role: profile.role,
+          role: finalRole,
           id: profile.id,
           full_name: profile.full_name,
         }),

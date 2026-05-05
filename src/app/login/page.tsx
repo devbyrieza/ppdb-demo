@@ -210,6 +210,7 @@ export default function LoginPage() {
     e?: React.FormEvent,
     manualEmail?: string,
     manualPass?: string,
+    chosenRole?: string,
   ) => {
     if (e) e.preventDefault();
     setError("");
@@ -232,6 +233,7 @@ export default function LoginPage() {
           login_type: "admin",
           email: email,
           password: pass,
+          chosen_role: chosenRole,
         }),
       });
 
@@ -613,14 +615,14 @@ export default function LoginPage() {
           </div>
 
           <DemoLoginHelper
-            onSelect={(val1, val2, type) => {
+            onSelect={(val1, val2, type, val3) => {
               setError("");
               if (type === "admin") {
                 setActiveTab("admin");
                 setEmailAdmin(val1);
                 setPasswordAdmin(val2);
                 // Auto-execute login for demo magic
-                setTimeout(() => handleLoginAdmin(undefined, val1, val2), 300);
+                setTimeout(() => handleLoginAdmin(undefined, val1, val2, val3), 300);
               } else {
                 setActiveTab("pendaftar");
                 setNikPendaftar(val1);

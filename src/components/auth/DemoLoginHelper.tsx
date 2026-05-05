@@ -15,13 +15,14 @@ import {
 } from "lucide-react";
 
 interface DemoLoginHelperProps {
-  onSelect: (val1: string, val2: string, type: "pendaftar" | "admin") => void;
+  onSelect: (val1: string, val2: string, type: "pendaftar" | "admin", roleId?: string) => void;
 }
 
 export default function DemoLoginHelper({ onSelect }: DemoLoginHelperProps) {
   const demoAdmins = [
     {
       role: "Admin Super",
+      id: "admin_super",
       email: "admin@ppdb-demo.com",
       pass: "Admin26!",
       icon: ShieldCheck,
@@ -29,6 +30,7 @@ export default function DemoLoginHelper({ onSelect }: DemoLoginHelperProps) {
     },
     {
       role: "Admin Keuangan",
+      id: "admin_keuangan",
       email: "keuangan@ppdb-demo.com",
       pass: "Keuangan26!",
       icon: CreditCard,
@@ -36,6 +38,7 @@ export default function DemoLoginHelper({ onSelect }: DemoLoginHelperProps) {
     },
     {
       role: "Admin Berkas",
+      id: "admin_berkas",
       email: "berkas@ppdb-demo.com",
       pass: "Berkas26!",
       icon: FileSearch,
@@ -43,6 +46,7 @@ export default function DemoLoginHelper({ onSelect }: DemoLoginHelperProps) {
     },
     {
       role: "Penguji Al-Qur'an",
+      id: "penguji",
       email: "quran@ppdb-demo.com",
       pass: "Quran26!",
       icon: BookOpen,
@@ -50,6 +54,7 @@ export default function DemoLoginHelper({ onSelect }: DemoLoginHelperProps) {
     },
     {
       role: "Pewawancara Calon Santri",
+      id: "pewawancara_calsan",
       email: "calsan@ppdb-demo.com",
       pass: "Santri26!",
       icon: Mic2,
@@ -57,6 +62,7 @@ export default function DemoLoginHelper({ onSelect }: DemoLoginHelperProps) {
     },
     {
       role: "Pewawancara Calon Orangtua/Wali Santri",
+      id: "pewawancara_cawalsan",
       email: "cawalsan@ppdb-demo.com",
       pass: "Orang Tua26!",
       icon: UserCheck,
@@ -93,7 +99,7 @@ export default function DemoLoginHelper({ onSelect }: DemoLoginHelperProps) {
             key={i}
             whileHover={{ scale: 1.02, y: -2 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => onSelect(acc.email, acc.pass, "admin")}
+            onClick={() => onSelect(acc.email, acc.pass, "admin", acc.id)}
             className={`flex flex-col items-center justify-center p-4 rounded-2xl border ${acc.color} transition-all hover:shadow-md text-center group`}
           >
             <acc.icon className="w-5 h-5 mb-2 group-hover:scale-110 transition-transform" />
