@@ -26,7 +26,7 @@ const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown }: any) 
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white p-8 rounded-[2.5rem] border border-ink-100 shadow-premium-sm hover:shadow-premium-lg transition-all group relative overflow-hidden"
+      className="bg-white p-8 rounded-[2.5rem] border border-teal-100 shadow-premium-sm hover:shadow-premium-lg transition-all group relative overflow-hidden"
     >
       <div className="absolute top-0 right-0 w-32 h-32 bg-teal-50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:bg-sand-100 transition-colors duration-500" />
       
@@ -44,32 +44,32 @@ const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown }: any) 
         </div>
         
         <div className="mb-8">
-          <p className="text-[11px] font-black text-ink-400 uppercase tracking-[0.25em] mb-2">{label}</p>
+          <p className="text-[11px] font-black text-teal-500 uppercase tracking-[0.25em] mb-2">{label}</p>
           <div className="flex items-baseline gap-2">
-            <h3 className="text-5xl font-black text-ink-900 tracking-tighter italic">{value}</h3>
-            <span className="text-xs font-bold text-ink-400">Orang</span>
+            <h3 className="text-5xl font-black text-teal-950 tracking-tighter italic">{value}</h3>
+            <span className="text-xs font-bold text-teal-400">Orang</span>
           </div>
         </div>
 
         {breakdown && (
-          <div className="grid grid-cols-2 gap-4 pt-6 border-t border-sand-100">
+          <div className="grid grid-cols-2 gap-4 pt-6 border-t border-teal-100">
             <div className="space-y-4">
               <div className="flex flex-col">
-                <span className="text-[9px] font-black text-ink-400 uppercase tracking-widest mb-1">MTs Putra</span>
+                <span className="text-[9px] font-black text-teal-500 uppercase tracking-widest mb-1">MTs Putra</span>
                 <span className="text-base font-black text-teal-700 leading-none">{breakdown.mts_l || 0}</span>
               </div>
               <div className="flex flex-col">
-                <span className="text-[9px] font-black text-ink-400 uppercase tracking-widest mb-1">MTs Putri</span>
+                <span className="text-[9px] font-black text-teal-500 uppercase tracking-widest mb-1">MTs Putri</span>
                 <span className="text-base font-black text-pink-500 leading-none">{breakdown.mts_p || 0}</span>
               </div>
             </div>
-            <div className="space-y-4 border-l border-sand-100 pl-4">
+            <div className="space-y-4 border-l border-teal-100 pl-4">
               <div className="flex flex-col">
-                <span className="text-[9px] font-black text-ink-400 uppercase tracking-widest mb-1">IL Putra</span>
+                <span className="text-[9px] font-black text-teal-500 uppercase tracking-widest mb-1">IL Putra</span>
                 <span className="text-base font-black text-teal-700 leading-none">{breakdown.il_l || 0}</span>
               </div>
               <div className="flex flex-col">
-                <span className="text-[9px] font-black text-ink-400 uppercase tracking-widest mb-1">IL Putri</span>
+                <span className="text-[9px] font-black text-teal-500 uppercase tracking-widest mb-1">IL Putri</span>
                 <span className="text-base font-black text-pink-500 leading-none">{breakdown.il_p || 0}</span>
               </div>
             </div>
@@ -123,7 +123,7 @@ export default function AdminDashboardPage() {
   if (loading && stats.total_pendaftar === 0) return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
       <Loader2 className="w-10 h-10 animate-spin text-teal-600" />
-      <p className="text-sm font-bold text-ink-400 tracking-widest animate-pulse uppercase">Sinkronisasi Data...</p>
+      <p className="text-sm font-bold text-teal-400 tracking-widest animate-pulse uppercase">Sinkronisasi Data...</p>
     </div>
   );
 
@@ -132,10 +132,10 @@ export default function AdminDashboardPage() {
       {/* HEADER */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-black text-ink-900 tracking-tight italic">Dasbor Admin Al Fath</h1>
-          <p className="text-sm text-ink-500 font-medium mt-1">Pantau perkembangan pendaftaran santri secara langsung.</p>
+          <h1 className="text-3xl font-black text-teal-950 tracking-tight italic">Dasbor Admin Al Fath</h1>
+          <p className="text-sm text-teal-600 font-medium mt-1">Pantau perkembangan pendaftaran santri secara langsung.</p>
         </div>
-        <button onClick={fetchStats} className="p-3 bg-white border border-sand-200 rounded-2xl text-ink-500 hover:text-teal-600 transition-all shadow-premium-sm">
+        <button onClick={fetchStats} className="p-3 bg-white border border-teal-100 rounded-2xl text-teal-600 hover:text-teal-600 transition-all shadow-premium-sm">
           <RefreshCw className={`w-5 h-5 ${loading ? "animate-spin" : ""}`} />
         </button>
       </div>
