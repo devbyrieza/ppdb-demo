@@ -135,19 +135,30 @@ export default function AuditSeleksiPage() {
     }
   };
 
+  const toNum = (val: any) => {
+    if (val == null) return null;
+    if (typeof val === "object") {
+      if (typeof val.toFixed === "function") return Number(val.toFixed());
+      if (val.d && val.e) return Number(val.toString ? val.toString() : val);
+    }
+    const parsed = Number(val);
+    return isNaN(parsed) ? null : parsed;
+  };
+
   const getGrade = (score: number | undefined | null, type: string) => {
-    if (score == null) return { label: "-", color: "text-ink-300" };
+    const parsedScore = toNum(score);
+    if (parsedScore == null) return { label: "-", color: "text-ink-300" };
     let grade = "C";
     let color = "bg-amber-400";
 
     if (type === "quran") {
-      grade = score >= 80 ? "A" : score >= 65 ? "B" : "C";
+      grade = parsedScore >= 80 ? "A" : parsedScore >= 65 ? "B" : "C";
     } else if (type === "akademik") {
-      grade = score >= 75 ? "A" : score >= 60 ? "B" : "C";
+      grade = parsedScore >= 75 ? "A" : parsedScore >= 60 ? "B" : "C";
     } else if (type === "kepribadian") {
-      grade = score >= 70 ? "A" : score >= 50 ? "B" : "C";
+      grade = parsedScore >= 70 ? "A" : parsedScore >= 50 ? "B" : "C";
     } else {
-      grade = score >= 80 ? "A" : score >= 65 ? "B" : "C";
+      grade = parsedScore >= 80 ? "A" : parsedScore >= 65 ? "B" : "C";
     }
 
     if (grade === "A") color = "bg-emerald-500";
@@ -182,9 +193,9 @@ export default function AuditSeleksiPage() {
 
     const data = candidates.map((c) => {
       const nu = c.nilai_ujian;
-      const ws = nu?.nilai_wawancara_santri || 0;
-      const wo = nu?.nilai_wawancara_ortu || 0;
-      const avgW = ws > 0 && wo > 0 ? (ws + wo) / 2 : ws || wo;
+      const ws = toNum(nu?.nilai_wawancara_santri);
+      const wo = toNum(nu?.nilai_wawancara_ortu);
+      const avgW = (ws !== null && wo !== null) ? (ws + wo) / 2 : (ws !== null ? ws : (wo !== null ? wo : null));
 
       return [
         c.nomor_pendaftaran,
@@ -381,9 +392,9 @@ export default function AuditSeleksiPage() {
               ) : (
                 filteredCandidates.map((c) => {
                   const nu = c.nilai_ujian;
-                  const ws = nu?.nilai_wawancara_santri || 0;
-                  const wo = nu?.nilai_wawancara_ortu || 0;
-                  const avgW = ws > 0 && wo > 0 ? (ws + wo) / 2 : ws || wo;
+                  const ws = toNum(nu?.nilai_wawancara_santri);
+                  const wo = toNum(nu?.nilai_wawancara_ortu);
+                  const avgW = (ws !== null && wo !== null) ? (ws + wo) / 2 : (ws !== null ? ws : (wo !== null ? wo : null));
 
                   return (
                     <tr
