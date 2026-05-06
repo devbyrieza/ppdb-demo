@@ -477,32 +477,32 @@ export default function AuditSeleksiPage() {
       
       {/* Legend & Help */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-        <div className="bg-ink-900 rounded-3xl p-8 text-white relative overflow-hidden group">
+        <div className="bg-maroon-950 rounded-3xl p-8 text-white relative overflow-hidden group shadow-xl shadow-maroon-900/20">
           <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:rotate-12 transition-transform duration-700">
-            <Activity className="w-40 h-40" />
+            <Activity className="w-40 h-40 text-white" />
           </div>
           <div className="relative z-10">
-            <h3 className="text-xl font-black mb-4 flex items-center gap-3">
+            <h3 className="text-xl font-black mb-4 flex items-center gap-3 text-white">
               <AlertCircle className="text-amber-400" /> Matriks Keputusan Otomatis
             </h3>
-            <div className="space-y-3 text-sm font-medium opacity-80 leading-relaxed">
+            <div className="space-y-3 text-sm font-medium text-white/90 leading-relaxed">
               <p className="flex items-start gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5 shrink-0" />
-                <span><b className="text-white">LULUS:</b> Quran Grade A, maksimal satu Grade C di komponen pendukung.</span>
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5 shrink-0 shadow-sm shadow-emerald-900/50" />
+                <span><b className="text-white drop-shadow-sm">LULUS:</b> Quran Grade A, maksimal satu Grade C di komponen pendukung.</span>
               </p>
               <p className="flex items-start gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 shrink-0" />
-                <span><b className="text-white">CADANGAN:</b> Quran Grade B, atau Wawancara Santri Grade B.</span>
+                <div className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 shrink-0 shadow-sm shadow-amber-900/50" />
+                <span><b className="text-white drop-shadow-sm">CADANGAN:</b> Quran Grade B, atau Wawancara Santri Grade B.</span>
               </p>
               <p className="flex items-start gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-rose-400 mt-1.5 shrink-0" />
-                <span><b className="text-white">DITOLAK:</b> Terdapat Grade D/E, atau Quran/Wawancara Santri Grade C.</span>
+                <div className="w-1.5 h-1.5 rounded-full bg-rose-400 mt-1.5 shrink-0 shadow-sm shadow-rose-900/50" />
+                <span><b className="text-white drop-shadow-sm">DITOLAK:</b> Terdapat Grade D/E, atau Quran/Wawancara Santri Grade C.</span>
               </p>
             </div>
-            <div className="mt-8 flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.2em] text-ink-300">
-              <span className="px-3 py-1 border border-ink-700 rounded-lg">A: ≥ 80+</span>
-              <span className="px-3 py-1 border border-ink-700 rounded-lg">B: ≥ 65+</span>
-              <span className="px-3 py-1 border border-ink-700 rounded-lg">C: ≥ 50+</span>
+            <div className="mt-8 flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.2em] text-white/80">
+              <span className="px-3 py-1.5 border border-white/20 rounded-lg bg-white/5 backdrop-blur-sm">A: ≥ 80+</span>
+              <span className="px-3 py-1.5 border border-white/20 rounded-lg bg-white/5 backdrop-blur-sm">B: ≥ 65+</span>
+              <span className="px-3 py-1.5 border border-white/20 rounded-lg bg-white/5 backdrop-blur-sm">C: ≥ 50+</span>
             </div>
           </div>
         </div>
