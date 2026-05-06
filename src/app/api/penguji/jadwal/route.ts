@@ -89,6 +89,7 @@ export async function GET() {
             created_by: true,
           },
         },
+        nilai_ujian: true,
       },
       orderBy: { tanggal_ujian: "asc" },
     });
@@ -131,6 +132,19 @@ export async function GET() {
         }
       }
 
+      const hasScoreQuran = item.nilai_ujian?.some((n: any) => {
+        const q = n.detail_quran as any;
+        return n.nilai_tes_quran != null || !!(q && typeof q === "object" && (q.rekomendasi || q.nama_penguji));
+      });
+      const hasScoreSantri = item.nilai_ujian?.some((n: any) => {
+        const w = n.detail_wawancara as any;
+        return n.nilai_wawancara_santri != null || !!(w && typeof w === "object" && (w.rekomendasi || w.nama_penguji));
+      });
+      const hasScoreOrtu = item.nilai_ujian?.some((n: any) => {
+        const c = n.detail_cawalsan as any;
+        return n.nilai_wawancara_ortu != null || !!(c && typeof c === "object" && (c.rekomendasi || c.nama_penguji));
+      });
+
       return {
         id: item.id,
         pendaftar: item.pendaftar,
@@ -141,10 +155,10 @@ export async function GET() {
         jenis_tugas: jenis_tugas.join(", "),
         status: "scheduled",
         session_title: item.exam_session?.title,
-        // Granular Statuses
-        status_santri: item.status_santri,
-        status_quran: item.status_quran,
-        status_ortu: item.status_ortu,
+        // Granular Statuses with automatic grade completion detection
+        status_santri: hasScoreSantri ? "completed" : (item.status_santri || "scheduled"),
+        status_quran: hasScoreQuran ? "completed" : (item.status_quran || "scheduled"),
+        status_ortu: hasScoreOrtu ? "completed" : (item.status_ortu || "scheduled"),
         // Assignee IDs for frontend logic
         penguji_santri_id: item.penguji_santri_id,
         penguji_quran_id: item.penguji_quran_id,

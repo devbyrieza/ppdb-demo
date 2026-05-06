@@ -155,6 +155,7 @@ export async function GET() {
             notes: true,
           },
         },
+        nilai_ujian: true,
       },
       orderBy: { created_at: "desc" },
     });
@@ -217,6 +218,19 @@ export async function GET() {
     // Transform booked jadwal
     const booked = bookedJadwal.map((j) => {
       const rawTitle = j.exam_session?.title || "Seleksi Santri Baru";
+      const hasScoreQuran = j.nilai_ujian?.some((n: any) => {
+        const q = n.detail_quran as any;
+        return n.nilai_tes_quran != null || !!(q && typeof q === "object" && (q.rekomendasi || q.nama_penguji));
+      });
+      const hasScoreSantri = j.nilai_ujian?.some((n: any) => {
+        const w = n.detail_wawancara as any;
+        return n.nilai_wawancara_santri != null || !!(w && typeof w === "object" && (w.rekomendasi || w.nama_penguji));
+      });
+      const hasScoreOrtu = j.nilai_ujian?.some((n: any) => {
+        const c = n.detail_cawalsan as any;
+        return n.nilai_wawancara_ortu != null || !!(c && typeof c === "object" && (c.rekomendasi || c.nama_penguji));
+      });
+
       return {
         id: j.id,
         jenis_ujian: sanitizeTitle(rawTitle),
@@ -227,9 +241,9 @@ export async function GET() {
         lokasi: j.exam_session?.location || j.tempat_santri,
         keterangan: j.catatan || j.exam_session?.notes,
         online_test_link: j.online_test_link,
-        status_santri: j.status_santri,
-        status_quran: j.status_quran,
-        status_ortu: j.status_ortu,
+        status_santri: hasScoreSantri ? "completed" : j.status_santri,
+        status_quran: hasScoreQuran ? "completed" : j.status_quran,
+        status_ortu: hasScoreOrtu ? "completed" : j.status_ortu,
       };
     });
 
@@ -238,17 +252,30 @@ export async function GET() {
     const totalTests = 6; // 3 Grup A + 3 Grup B
     const grupBCompleted = bookedJadwal.filter((j) => {
       const title = j.exam_session?.title || "";
+      const hasScoreQuran = j.nilai_ujian?.some((n: any) => {
+        const q = n.detail_quran as any;
+        return n.nilai_tes_quran != null || !!(q && typeof q === "object" && (q.rekomendasi || q.nama_penguji));
+      });
+      const hasScoreSantri = j.nilai_ujian?.some((n: any) => {
+        const w = n.detail_wawancara as any;
+        return n.nilai_wawancara_santri != null || !!(w && typeof w === "object" && (w.rekomendasi || w.nama_penguji));
+      });
+      const hasScoreOrtu = j.nilai_ujian?.some((n: any) => {
+        const c = n.detail_cawalsan as any;
+        return n.nilai_wawancara_ortu != null || !!(c && typeof c === "object" && (c.rekomendasi || c.nama_penguji));
+      });
+
       if (title.includes("Qur'an") || title.includes("Quran")) {
-        return j.status_quran === "completed";
+        return hasScoreQuran || j.status_quran === "completed";
       } else if (
         title.includes("Orang Tua") ||
-        title.includes("Orang Tua") ||
-        title.includes("Ortu")
+        title.includes("Ortu") ||
+        title.includes("orang")
       ) {
-        return j.status_ortu === "completed";
+        return hasScoreOrtu || j.status_ortu === "completed";
       } else {
         // Seleksi Wawancara Calon Santri / Wawancara Calon Santri
-        return j.status_santri === "completed";
+        return hasScoreSantri || j.status_santri === "completed";
       }
     }).length;
     const completedTests =
