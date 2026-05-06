@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { generateNomorPendaftaran } from "@/lib/utils/nomor-pendaftaran";
 import { enqueueWhatsapp, buildMessageRegistrationSuccess } from "@/lib/whatsapp-queue";
+import { normalizePhoneNumber } from "@/lib/validations/registration";
 import crypto from "crypto";
 
 /**
@@ -14,9 +15,10 @@ export async function POST(request: NextRequest) {
   try {
     const { no_hp, otp_code } = await request.json();
     const hashedOTP = hashOTP(otp_code);
+    const normalizedPhone = normalizePhoneNumber(no_hp);
 
     const otpRecord = await prisma.otpVerification.findFirst({
-      where: { phone: no_hp, otp_hash: hashedOTP, expires_at: { gt: new Date() } },
+      where: { phone: normalizedPhone, otp_hash: hashedOTP, expires_at: { gt: new Date() } },
     });
 
     if (!otpRecord) return NextResponse.json({ success: false, error: "Invalid or expired OTP" }, { status: 400 });
