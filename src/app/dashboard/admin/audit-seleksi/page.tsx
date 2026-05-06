@@ -485,18 +485,18 @@ export default function AuditSeleksiPage() {
             <h3 className="text-xl font-black mb-4 flex items-center gap-3 text-white">
               <AlertCircle className="text-amber-400" /> Matriks Keputusan Otomatis
             </h3>
-            <div className="space-y-3 text-sm font-medium text-white/90 leading-relaxed">
-              <p className="flex items-start gap-2">
+            <div className="space-y-3 text-sm font-medium leading-relaxed">
+              <p className="flex items-start gap-2 !text-white">
                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5 shrink-0 shadow-sm shadow-emerald-900/50" />
-                <span><b className="text-white drop-shadow-sm">LULUS:</b> Quran Grade A, maksimal satu Grade C di komponen pendukung.</span>
+                <span><b className="font-extrabold text-emerald-400">LULUS:</b> Quran Grade A, maksimal satu Grade C di komponen pendukung.</span>
               </p>
-              <p className="flex items-start gap-2">
+              <p className="flex items-start gap-2 !text-white">
                 <div className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 shrink-0 shadow-sm shadow-amber-900/50" />
-                <span><b className="text-white drop-shadow-sm">CADANGAN:</b> Quran Grade B, atau Wawancara Santri Grade B.</span>
+                <span><b className="font-extrabold text-amber-400">CADANGAN:</b> Quran Grade B, atau Wawancara Santri Grade B.</span>
               </p>
-              <p className="flex items-start gap-2">
+              <p className="flex items-start gap-2 !text-white">
                 <div className="w-1.5 h-1.5 rounded-full bg-rose-400 mt-1.5 shrink-0 shadow-sm shadow-rose-900/50" />
-                <span><b className="text-white drop-shadow-sm">DITOLAK:</b> Terdapat Grade D/E, atau Quran/Wawancara Santri Grade C.</span>
+                <span><b className="font-extrabold text-rose-400">DITOLAK:</b> Terdapat Grade D/E, atau Quran/Wawancara Santri Grade C.</span>
               </p>
             </div>
             <div className="mt-8 flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.2em] text-white/80">
