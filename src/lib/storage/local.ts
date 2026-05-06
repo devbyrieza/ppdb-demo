@@ -1,12 +1,8 @@
 import fs from "fs";
 import path from "path";
 
-// Di container Docker/Linux (production), gunakan /tmp agar selalu writable.
-// Di development (Windows/Mac), gunakan storage_data/ di root project.
-const STORAGE_DIR =
-  process.platform === "linux"
-    ? "/tmp/storage_data"
-    : path.join(process.cwd(), "storage_data");
+// Gunakan direktori lokal yang akan di-mount sebagai persistent volume di Coolify
+const STORAGE_DIR = path.join(process.cwd(), "storage_data");
 
 /**
  * Save a file to the local filesystem
