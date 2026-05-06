@@ -157,10 +157,10 @@ export default function AuditSeleksiPage() {
   };
 
   const filteredCandidates = candidates.filter((c) => {
-    const query = searchQuery.toLowerCase();
+    if (!c) return false; const query = (searchQuery || "").toLowerCase();
     return (
-      c.nama_lengkap.toLowerCase().includes(query) ||
-      c.nomor_pendaftaran.toLowerCase().includes(query)
+      (c.nama_lengkap || "").toLowerCase().includes(query) ||
+      (c.nomor_pendaftaran || "").toLowerCase().includes(query)
     );
   });
 
@@ -450,7 +450,7 @@ export default function AuditSeleksiPage() {
 
                       <td className="px-6 py-4 text-center">
                         {(() => {
-                          const s = c.status_pendaftaran;
+                          const s = c.status_pendaftaran || "";
                           const labels: any = {
                             accepted: { l: "LULUS", c: "text-emerald-700 bg-emerald-100 border-emerald-200" },
                             announced: { l: "PUBLISHED", c: "text-sky-700 bg-sky-100 border-sky-200" },
@@ -458,7 +458,7 @@ export default function AuditSeleksiPage() {
                             cadangan: { l: "CADANGAN", c: "text-amber-700 bg-amber-100 border-amber-200" },
                             tested: { l: "SIAP AUDIT", c: "text-ink-600 bg-ink-100 border-ink-200" },
                           };
-                          const meta = labels[s] || { l: s.toUpperCase(), c: "text-ink-400 bg-ink-50 border-ink-100" };
+                          const meta = labels[s] || { l: s.toUpperCase() || "UNKNOWN", c: "text-ink-400 bg-ink-50 border-ink-100" };
                           return (
                             <span className={`px-3 py-1 rounded-full text-[9px] font-black border uppercase shadow-sm ${meta.c}`}>
                               {meta.l}
