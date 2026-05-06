@@ -1,8 +1,12 @@
 import fs from "fs";
 import path from "path";
 
-// Define storage directory outside of public to prevent direct access
-const STORAGE_DIR = path.join(process.cwd(), "storage_data");
+// Di container Docker/Linux (production), gunakan /tmp agar selalu writable.
+// Di development (Windows/Mac), gunakan storage_data/ di root project.
+const STORAGE_DIR =
+  process.platform === "linux"
+    ? "/tmp/storage_data"
+    : path.join(process.cwd(), "storage_data");
 
 /**
  * Save a file to the local filesystem
