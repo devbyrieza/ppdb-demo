@@ -124,7 +124,7 @@ export async function POST(request: NextRequest) {
       const fileName = `admin-upload-${pembayaran.pendaftar.nomor_pendaftaran}-${timestamp}.${fileExtension}`;
 
       filePath = await saveFileLocal(
-        file,
+        buffer,
         "bukti-pembayaran",
         pembayaran.pendaftar.id,
         fileName,

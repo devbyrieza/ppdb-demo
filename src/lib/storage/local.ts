@@ -17,7 +17,7 @@ const STORAGE_DIR =
  * @returns The relative path to the saved file
  */
 export async function saveFileLocal(
-  file: File,
+  fileOrBuffer: File | Buffer,
   category: string,
   subfolder: string,
   filename: string,
@@ -28,9 +28,14 @@ export async function saveFileLocal(
     fs.mkdirSync(targetDir, { recursive: true });
   }
 
-  // Convert file to buffer
-  const bytes = await file.arrayBuffer();
-  const buffer = Buffer.from(bytes);
+  // Convert file to buffer if it's a File
+  let buffer: Buffer;
+  if (Buffer.isBuffer(fileOrBuffer)) {
+    buffer = fileOrBuffer;
+  } else {
+    const bytes = await fileOrBuffer.arrayBuffer();
+    buffer = Buffer.from(bytes);
+  }
 
   // Define full path
   const filePath = path.join(targetDir, filename);

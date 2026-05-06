@@ -251,7 +251,7 @@ export async function POST(request: NextRequest) {
 
     // Save to storage_data/dokumen-pendaftaran/{pendaftar_id}/...
     const filePath = await saveFileLocal(
-      file,
+      buffer,
       "dokumen-pendaftaran",
       session.id,
       fileName,
