@@ -141,7 +141,7 @@ export async function POST(request: NextRequest) {
           requires_role_selection: true,
           profile_id: profile.id,
           full_name: profile.full_name,
-          available_roles: [profile.role, ...secondaryRoles],
+          available_roles: [...new Set([profile.role, ...secondaryRoles])],
         });
       }
 

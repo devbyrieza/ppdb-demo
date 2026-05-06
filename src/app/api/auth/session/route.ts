@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
           select: { role: true, secondary_roles: true },
         });
         if (profile) {
-          availableRoles = [profile.role, ...(profile.secondary_roles || [])];
+          availableRoles = [...new Set([profile.role, ...(profile.secondary_roles || [])])];
         }
       }
 
