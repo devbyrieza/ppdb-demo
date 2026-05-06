@@ -27,9 +27,9 @@ const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown }: any) 
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-premium-sm hover:shadow-premium-lg transition-all group relative overflow-hidden"
+      className="bg-white p-8 rounded-[2.5rem] border border-ink-100 shadow-premium-sm hover:shadow-premium-lg transition-all group relative overflow-hidden"
     >
-      <div className="absolute top-0 right-0 w-32 h-32 bg-slate-50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:bg-army-50 transition-colors duration-500" />
+      <div className="absolute top-0 right-0 w-32 h-32 bg-khaki-50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:bg-army-50 transition-colors duration-500" />
       
       <div className="relative z-10">
         <div className="flex items-center justify-between mb-8">
@@ -45,32 +45,32 @@ const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown }: any) 
         </div>
         
         <div className="mb-8">
-          <p className="text-[11px] font-black text-slate-400 uppercase tracking-[0.25em] mb-2">{label}</p>
+          <p className="text-[11px] font-black text-ink-400 uppercase tracking-[0.25em] mb-2">{label}</p>
           <div className="flex items-baseline gap-2">
-            <h3 className="text-5xl font-black text-slate-900 tracking-tighter italic">{value}</h3>
-            <span className="text-xs font-bold text-slate-400">Total</span>
+            <h3 className="text-5xl font-black text-ink-900 tracking-tighter italic">{value}</h3>
+            <span className="text-xs font-bold text-ink-400">Orang</span>
           </div>
         </div>
 
         {breakdown && (
-          <div className="grid grid-cols-2 gap-4 pt-6 border-t border-slate-50">
+          <div className="grid grid-cols-2 gap-4 pt-6 border-t border-khaki-100">
             <div className="space-y-4">
               <div className="flex flex-col">
-                <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">MTs Putra</span>
+                <span className="text-[9px] font-black text-ink-400 uppercase tracking-widest mb-1">MTs Putra</span>
                 <span className="text-base font-black text-army-800 leading-none">{breakdown.mts_l || 0}</span>
               </div>
               <div className="flex flex-col">
-                <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">MTs Putri</span>
+                <span className="text-[9px] font-black text-ink-400 uppercase tracking-widest mb-1">MTs Putri</span>
                 <span className="text-base font-black text-pink-500 leading-none">{breakdown.mts_p || 0}</span>
               </div>
             </div>
-            <div className="space-y-4 border-l border-slate-50 pl-4">
+            <div className="space-y-4 border-l border-khaki-100 pl-4">
               <div className="flex flex-col">
-                <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">IL Putra</span>
+                <span className="text-[9px] font-black text-ink-400 uppercase tracking-widest mb-1">IL Putra</span>
                 <span className="text-base font-black text-army-800 leading-none">{breakdown.il_l || 0}</span>
               </div>
               <div className="flex flex-col">
-                <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">IL Putri</span>
+                <span className="text-[9px] font-black text-ink-400 uppercase tracking-widest mb-1">IL Putri</span>
                 <span className="text-base font-black text-pink-500 leading-none">{breakdown.il_p || 0}</span>
               </div>
             </div>
@@ -124,7 +124,7 @@ export default function AdminDashboardPage() {
   if (loading && stats.total_pendaftar === 0) return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
       <Loader2 className="w-10 h-10 animate-spin text-army-600" />
-      <p className="text-sm font-bold text-slate-400 tracking-widest animate-pulse uppercase">Sinkronisasi Data...</p>
+      <p className="text-sm font-bold text-ink-400 tracking-widest animate-pulse uppercase">Sinkronisasi Data...</p>
     </div>
   );
 
@@ -133,10 +133,10 @@ export default function AdminDashboardPage() {
       {/* HEADER */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-black text-slate-900 tracking-tight italic">Dashboard Utama Admin</h1>
-          <p className="text-sm text-slate-500 font-medium mt-1">Sistem informasi pendaftaran demo - Statistik real-time.</p>
+          <h1 className="text-3xl font-black text-ink-900 tracking-tight italic">Dasbor Admin Al Fath</h1>
+          <p className="text-sm text-ink-500 font-medium mt-1">Pantau perkembangan pendaftaran santri secara langsung.</p>
         </div>
-        <button onClick={fetchStats} className="p-3 bg-white border border-slate-200 rounded-2xl text-slate-500 hover:text-army-600 transition-all shadow-premium-sm">
+        <button onClick={fetchStats} className="p-3 bg-white border border-khaki-200 rounded-2xl text-ink-500 hover:text-army-600 transition-all shadow-premium-sm">
           <RefreshCw className={`w-5 h-5 ${loading ? "animate-spin" : ""}`} />
         </button>
       </div>
@@ -207,7 +207,7 @@ export default function AdminDashboardPage() {
 
       {/* SUMMARY INSIGHTS */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="bg-slate-900 rounded-[2.5rem] p-10 text-white relative overflow-hidden group">
+        <div className="bg-army-950 rounded-[2.5rem] p-10 text-white relative overflow-hidden group">
           <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:rotate-12 transition-transform duration-700">
             <TrendingUp className="w-48 h-48" />
           </div>
@@ -243,42 +243,42 @@ export default function AdminDashboardPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-[2.5rem] border border-slate-100 p-10 shadow-premium-sm relative overflow-hidden group">
+        <div className="bg-white rounded-[2.5rem] border border-khaki-100 p-10 shadow-premium-sm relative overflow-hidden group">
           <div className="relative z-10">
-            <h3 className="text-2xl font-black text-slate-900 mb-8 tracking-tight flex items-center gap-3 italic">
-              <div className="w-2 h-8 bg-slate-900 rounded-full" />
+            <h3 className="text-2xl font-black text-ink-900 mb-8 tracking-tight flex items-center gap-3 italic">
+              <div className="w-2 h-8 bg-army-600 rounded-full" />
               Aksi Cepat
             </h3>
             <div className="space-y-4">
-              <div className="flex items-center justify-between p-6 bg-slate-50 rounded-3xl border border-slate-100 hover:border-army-200 transition-all cursor-default group/item">
+              <div className="flex items-center justify-between p-6 bg-khaki-50 rounded-3xl border border-khaki-100 hover:border-army-200 transition-all cursor-default group/item">
                 <div className="flex items-center gap-5">
                   <div className="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center text-army-600 transition-transform group-hover/item:scale-110">
                     <Users className="w-6 h-6" />
                   </div>
                   <div>
-                    <p className="text-sm font-black text-slate-900 uppercase tracking-tighter leading-none mb-1">Audit Dokumen</p>
-                    <p className="text-[11px] text-slate-400 font-bold">Verifikasi berkas santri baru</p>
+                    <p className="text-sm font-black text-ink-900 uppercase tracking-tighter leading-none mb-1">Audit Dokumen</p>
+                    <p className="text-[11px] text-ink-400 font-bold">Verifikasi berkas santri baru</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-2xl font-black text-slate-900 italic">{stats.waiting_docs}</span>
-                  <ChevronRight className="w-5 h-5 text-slate-300" />
+                  <span className="text-2xl font-black text-ink-900 italic">{stats.waiting_docs}</span>
+                  <ChevronRight className="w-5 h-5 text-ink-300" />
                 </div>
               </div>
 
-              <div className="flex items-center justify-between p-6 bg-slate-50 rounded-3xl border border-slate-100 hover:border-emerald-200 transition-all cursor-default group/item">
+              <div className="flex items-center justify-between p-6 bg-khaki-50 rounded-3xl border border-khaki-100 hover:border-emerald-200 transition-all cursor-default group/item">
                 <div className="flex items-center gap-5">
                   <div className="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center text-emerald-600 transition-transform group-hover/item:scale-110">
                     <Wallet className="w-6 h-6" />
                   </div>
                   <div>
-                    <p className="text-sm font-black text-slate-900 uppercase tracking-tighter leading-none mb-1">Audit Keuangan</p>
-                    <p className="text-[11px] text-slate-400 font-bold">Konfirmasi bukti transfer</p>
+                    <p className="text-sm font-black text-ink-900 uppercase tracking-tighter leading-none mb-1">Audit Keuangan</p>
+                    <p className="text-[11px] text-ink-400 font-bold">Konfirmasi bukti transfer</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-2xl font-black text-slate-900 italic">{stats.waiting_payment}</span>
-                  <ChevronRight className="w-5 h-5 text-slate-300" />
+                  <span className="text-2xl font-black text-ink-900 italic">{stats.waiting_payment}</span>
+                  <ChevronRight className="w-5 h-5 text-ink-300" />
                 </div>
               </div>
             </div>

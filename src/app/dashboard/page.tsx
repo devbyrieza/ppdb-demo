@@ -363,7 +363,7 @@ export default function DashboardPage() {
                 </div>
                 <div className="h-0.5 w-12 bg-teal-100 rounded-full" />
                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-teal-600">
-                  Santri Portal
+                  Portal Santri
                 </span>
               </motion.div>
 
@@ -402,7 +402,7 @@ export default function DashboardPage() {
                 className="group flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-4 sm:py-5 bg-white border border-ink-100 rounded-[2rem] font-black text-[10px] sm:text-xs uppercase tracking-widest text-ink-500 hover:bg-red-50 hover:text-red-700 hover:border-red-100 transition-all shadow-xl shadow-ink-900/5 active:scale-95 disabled:opacity-50"
               >
                 <LogOut className="w-5 h-5 transition-transform group-hover:rotate-12" />
-                <span>{isLoggingOut ? "Keluar..." : "Logout"}</span>
+                <span>{isLoggingOut ? "Keluar..." : "Keluar"}</span>
               </button>
             </motion.div>
           </div>
@@ -480,7 +480,7 @@ export default function DashboardPage() {
                   icon={CreditCard}
                   title="Biaya Pendaftaran"
                   description="Selesaikan pembayaran administrasi sebesar Rp 200.000 untuk mengaktifkan formulir."
-                  step="Step 01"
+                  step="01"
                   color="teal"
                   disabled={false}
                   delay={0.5}
@@ -490,7 +490,7 @@ export default function DashboardPage() {
                   icon={User}
                   title="Lengkapi Biodata"
                   description="Isi formulir lengkap mulai dari data diri, keluarga, hingga riwayat kesehatan santri."
-                  step="Step 02"
+                  step="02"
                   color="teal"
                   disabled={
                     !hasReachedStatus(pendaftar.status_pendaftaran, "verified")
@@ -502,7 +502,7 @@ export default function DashboardPage() {
                   icon={FileText}
                   title="Upload Dokumen"
                   description="Unggah dokumen persyaratan (Akte, KK, KTP) untuk diverifikasi oleh tim panitia."
-                  step="Step 03"
+                  step="03"
                   color="teal"
                   disabled={
                     !hasReachedStatus(
@@ -517,7 +517,7 @@ export default function DashboardPage() {
                   icon={ClipboardList}
                   title="Jadwal Seleksi"
                   description="Lihat jadwal seleksi Al-Qur'an dan wawancara setelah berkasmu dinyatakan lengkap."
-                  step="Step 04"
+                  step="04"
                   color="teal"
                   disabled={
                     !hasReachedStatus(
@@ -532,7 +532,7 @@ export default function DashboardPage() {
                   icon={Trophy}
                   title="Hasil Kelulusan"
                   description="Pengumuman hasil akhir seleksi penerimaan santri baru T.A 2026/2027."
-                  step="Step 05"
+                  step="05"
                   color="teal"
                   disabled={
                     !hasReachedStatus(pendaftar.status_pendaftaran, "tested")
@@ -544,7 +544,7 @@ export default function DashboardPage() {
                   icon={UserCheck}
                   title="Daftar Ulang"
                   description="Konfirmasi kedatangan dan penyelesaian administrasi bagi santri yang dinyatakan lulus."
-                  step="Step 06"
+                  step="06"
                   color="teal"
                   disabled={
                     !hasReachedStatus(pendaftar.status_pendaftaran, "accepted")
