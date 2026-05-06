@@ -49,7 +49,15 @@ export async function POST(request: NextRequest) {
       messageContent: buildMessageRegistrationSuccess(regData.nama_lengkap, nomorPendaftaran, regData.jenjang),
     }).catch(() => {});
 
-    return NextResponse.json({ success: true, data: { nomor_pendaftaran: nomorPendaftaran } });
+    return NextResponse.json({
+      success: true,
+      data: {
+        nomor_pendaftaran: nomorPendaftaran,
+        nama_lengkap: regData.nama_lengkap,
+        nik: regData.nik,
+        jenjang: regData.jenjang,
+      }
+    });
   } catch (error: any) {
     return NextResponse.json({ success: false, error: "Verification failed" }, { status: 500 });
   }
