@@ -309,7 +309,7 @@ export default function HeroSection() {
               }}
             >
               <Image
-                src="/images/hero.png"
+                src="/images/hero.jpg"
                 alt={`${BRANDING.schoolName} — Sistem PPDB Modern`}
                 width={800}
                 height={600}
