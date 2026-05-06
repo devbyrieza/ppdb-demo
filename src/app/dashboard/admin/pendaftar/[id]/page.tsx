@@ -843,17 +843,18 @@ export default function PendaftarDetailPage() {
                       </span>
                     ) : pendaftar.nilai_ujian?.nilai_wawancara_ortu ||
                       (pendaftar.nilai_ujian as any)?.detail_cawalsan ? (
-                      <div className="flex flex-col mt-2">
+                      <div className="flex flex-col mt-2 space-y-1">
                         <span className="text-lg font-black text-rose-900 border border-rose-200 bg-white px-3 py-1 rounded-lg inline-block w-max">
-                          {(pendaftar.nilai_ujian as any)?.detail_cawalsan
-                            ?.rekomendasi ||
-                            (pendaftar.nilai_ujian?.nilai_wawancara_ortu !=
-                              null &&
-                            Number(pendaftar.nilai_ujian.nilai_wawancara_ortu) >
-                              0
-                              ? `${Number(pendaftar.nilai_ujian.nilai_wawancara_ortu).toFixed(1)} / 100`
-                              : "Belum Dinilai")}
+                          {pendaftar.nilai_ujian?.nilai_wawancara_ortu != null &&
+                          Number(pendaftar.nilai_ujian.nilai_wawancara_ortu) > 1
+                            ? `${Number(pendaftar.nilai_ujian.nilai_wawancara_ortu).toFixed(1)} / 100`
+                            : "Sudah Dinilai"}
                         </span>
+                        {(pendaftar.nilai_ujian as any)?.detail_cawalsan?.rekomendasi && (
+                          <span className="text-xs font-bold text-rose-600 uppercase tracking-wider">
+                            {(pendaftar.nilai_ujian as any).detail_cawalsan.rekomendasi}
+                          </span>
+                        )}
                       </div>
                     ) : (
                       <span className="text-sm font-bold text-stone-400 italic inline-block mt-2 px-3 py-1 bg-stone-100 rounded">

@@ -249,15 +249,34 @@ export function determineFinalDecision(grades: {
   const vals = Object.values(grades);
 
   // 1. CRITICAL REJECTION (DITOLAK)
-  // Any D or E is an automatic rejection
-  if (vals.includes("D") || vals.includes("E")) return "DITOLAK";
+  // Any E is an automatic rejection
+  if (vals.includes("E")) return "DITOLAK";
 
-  // Quran or Wawancara Calon Santri getting C is also automatic rejection for many Jenjang
-  if (grades.quran === "C" || grades.wawancaraSantri === "C") return "DITOLAK";
+  // Critical Components (Quran or Wawancara Calon Santri) getting C or D is an automatic rejection
+  if (
+    grades.quran === "D" ||
+    grades.wawancaraSantri === "D" ||
+    grades.quran === "C" ||
+    grades.wawancaraSantri === "C"
+  ) {
+    return "DITOLAK";
+  }
+
+  // If there are multiple Ds in secondary components, it's a rejection
+  const secondaryDs = [
+    grades.akademik,
+    grades.kepribadian,
+    grades.kesiapan,
+    grades.wawancaraOrangTua,
+  ].filter((v) => v === "D").length;
+  if (secondaryDs > 1) return "DITOLAK";
 
   // 2. AUTOMATIC RESERVE (CADANGAN)
   // Rule: "Jika Quran dapet Cadangan (B), otomatis masuk Cadangan"
   if (grades.quran === "B") return "CADANGAN";
+
+  // If there is exactly one D in secondary components, it becomes CADANGAN
+  if (secondaryDs === 1) return "CADANGAN";
 
   // Also if Wawancara Calon Santri is B, it's very likely Cadangan unless everything else is A
   if (grades.wawancaraSantri === "B") {
