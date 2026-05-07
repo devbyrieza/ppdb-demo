@@ -302,6 +302,28 @@ export async function PATCH(
       },
     });
 
+    // SYNC TO PENGUMUMAN: If status is final, ensure student dashboard matches
+    const finalStatuses = ["accepted", "rejected", "announced", "cadangan"];
+    if (finalStatuses.includes(status_proses)) {
+      const displayLabel = status_proses === "accepted" ? "Lulus" : (status_proses === "rejected" ? "Tidak Lulus" : "Cadangan");
+      
+      await prisma.pengumuman.upsert({
+        where: { pendaftar_id: params.id },
+        update: { 
+          status_kelulusan: displayLabel, 
+          is_published: true, 
+          published_at: new Date() 
+        },
+        create: { 
+          pendaftar_id: params.id, 
+          status_kelulusan: displayLabel, 
+          is_published: true, 
+          published_at: new Date(),
+          tahun_ajaran_id: data.tahun_ajaran_id
+        },
+      });
+    }
+
     // Logging audit action
     logAdminAction({
       action:

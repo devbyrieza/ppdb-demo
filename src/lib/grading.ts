@@ -175,10 +175,10 @@ export function scoreToGrade(score: number): string {
 export function evaluateKepribadianGrade(
   score: number,
 ): "A" | "B" | "C" | "D" | "E" {
-  if (score >= 85) return "A";
-  if (score >= 70) return "B";
-  if (score >= 55) return "C";
-  if (score >= 40) return "D";
+  if (score >= 80) return "A";
+  if (score >= 50) return "B";
+  if (score >= 35) return "C";
+  if (score >= 20) return "D";
   return "E";
 }
 
