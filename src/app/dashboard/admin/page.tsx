@@ -17,9 +17,11 @@ import { motion } from "framer-motion";
 const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown }: any) => {
   const colorMap: any = {
     blue:    "from-teal-600 to-teal-800 shadow-teal",
-    emerald: "from-emerald-600 to-emerald-700 shadow-emerald-200",
-    amber:   "from-amber-500 to-amber-600 shadow-amber-200",
-    purple:  "from-purple-600 to-purple-700 shadow-purple-200",
+    emerald: "from-emerald-600 to-emerald-700",
+    amber: "from-amber-500 to-amber-600",
+    purple: "from-purple-600 to-purple-700",
+    rose: "from-rose-600 to-rose-700",
+    slate: "from-slate-600 to-slate-700",
   };
 
   return (
@@ -86,7 +88,7 @@ export default function AdminDashboardPage() {
   const [stats, setStats] = useState<any>({ 
     total_pendaftar: 0, sudah_bayar: 0, diterima: 0, 
     daftar_ulang: 0, sudah_isi_data: 0, waiting_payment: 0, 
-    waiting_docs: 0, stats_per_jenjang: [] 
+    waiting_docs: 0, stats_per_jenjang: [], berkas_lengkap: 0, cadangan: 0, ditolak: 0
   });
 
   const fetchStats = async () => {
@@ -110,13 +112,16 @@ export default function AdminDashboardPage() {
   const isAdminKeuangan = role === "admin_keuangan";
   const isAdminBerkas = role === "admin_berkas";
 
-  const getBreakdown = (type: "total" | "lulus" | "ulang") => {
+  const getBreakdown = (type: "total" | "lulus" | "ulang" | "cadangan" | "ditolak" | "berkas") => {
     const mts = stats.stats_per_jenjang.find((j: any) => j.jenjang === "MTS") || {};
     const il = stats.stats_per_jenjang.find((j: any) => j.jenjang === "IL") || {};
 
     if (type === "total") return { mts_l: mts.pendaftar_putra || 0, mts_p: mts.pendaftar_putri || 0, il_l: il.pendaftar_putra || 0, il_p: il.pendaftar_putri || 0 };
     if (type === "lulus") return { mts_l: mts.diterima_putra || 0, mts_p: mts.diterima_putri || 0, il_l: il.diterima_putra || 0, il_p: il.diterima_putri || 0 };
     if (type === "ulang") return { mts_l: mts.ulang_putra || 0, mts_p: mts.ulang_putri || 0, il_l: il.ulang_putra || 0, il_p: il.ulang_putri || 0 };
+    if (type === "cadangan") return { mts_l: mts.cadangan_putra || 0, mts_p: mts.cadangan_putri || 0, il_l: il.cadangan_putra || 0, il_p: il.cadangan_putri || 0 };
+    if (type === "ditolak") return { mts_l: mts.ditolak_putra || 0, mts_p: mts.ditolak_putri || 0, il_l: il.ditolak_putra || 0, il_p: il.ditolak_putri || 0 };
+    if (type === "berkas") return { mts_l: mts.berkas_putra || 0, mts_p: mts.berkas_putri || 0, il_l: il.berkas_putra || 0, il_p: il.berkas_putri || 0 };
     return null;
   };
 
@@ -179,13 +184,14 @@ export default function AdminDashboardPage() {
 
       {/* STATS GRID */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {isAdminSuper && (
-          <>
-            <StatWidget label="Total Pendaftar" value={stats.total_pendaftar} icon={Users} color="blue" trend="+5% minggu ini" breakdown={getBreakdown("total")} />
-            <StatWidget label="Lulus Seleksi" value={stats.diterima} icon={CheckCircle2} color="emerald" breakdown={getBreakdown("lulus")} />
-            <StatWidget label="Sudah Daftar Ulang" value={stats.daftar_ulang} icon={ClipboardCheck} color="amber" breakdown={getBreakdown("ulang")} />
-          </>
-        )}
+        {isAdminSuper && (<>
+          <StatWidget label="Total Pendaftar" value={stats.total_pendaftar} icon={Users} color="blue" trend="+5% minggu ini" breakdown={getBreakdown("total")} />
+          <StatWidget label="Berkas Lengkap" value={stats.berkas_lengkap} icon={ClipboardCheck} color="purple" breakdown={getBreakdown("berkas")} />
+          <StatWidget label="Lulus Seleksi" value={stats.diterima} icon={CheckCircle2} color="emerald" breakdown={getBreakdown("lulus")} />
+          <StatWidget label="Sudah Daftar Ulang" value={stats.daftar_ulang} icon={Wallet} color="amber" breakdown={getBreakdown("ulang")} />
+          <StatWidget label="Status Cadangan" value={stats.cadangan} icon={Clock} color="slate" breakdown={getBreakdown("cadangan")} />
+          <StatWidget label="Ditolak / Gugur" value={stats.ditolak} icon={Activity} color="rose" breakdown={getBreakdown("ditolak")} />
+        </>)}
 
         {isAdminBerkas && (
           <>
