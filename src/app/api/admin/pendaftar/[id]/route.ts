@@ -46,7 +46,9 @@ export async function GET(
         dokumen: true,
         pembayaran: true,
         jadwal_ujian: true,
-        nilai_ujian: true,
+        nilai_ujian: {
+          orderBy: { updated_at: "desc" },
+        },
         pengumuman: true,
         rapor: true,
         prestasi: true,
@@ -71,12 +73,37 @@ export async function GET(
     const ibu = dataLengkap.ibu || {};
     const wali = dataLengkap.wali || {};
 
+    const isEmpty = (v: any) => {
+      if (v == null || v === "") return true;
+      if (typeof v === "object") {
+        if (Array.isArray(v)) return v.length === 0;
+        const keys = Object.keys(v);
+        if (keys.length === 0) return true;
+        return keys.every((key) => v[key] == null || v[key] === "");
+      }
+      return false;
+    };
+
+    // Merge multiple NilaiUjian records if exists
+    const scores = (pendaftar.nilai_ujian as any[]) || [];
+    let mergedNilai = null;
+
+    if (scores.length > 0) {
+      const master: any = {};
+      scores.forEach((s) => {
+        Object.entries(s).forEach(([k, v]) => {
+          if (!isEmpty(v) && isEmpty(master[k])) {
+            master[k] = v;
+          }
+        });
+      });
+      mergedNilai = master;
+    }
+
     const mergedPendaftar = {
       ...pendaftar,
-      nilai_ujian:
-        pendaftar.nilai_ujian && pendaftar.nilai_ujian.length > 0
-          ? pendaftar.nilai_ujian[0]
-          : null,
+      nilai_ujian: mergedNilai,
+      status_proses: pendaftar.status_pendaftaran,
       // Identity
       tempat_lahir: pendaftar.tempat_lahir || santri.tempat_lahir || null,
       tanggal_lahir:

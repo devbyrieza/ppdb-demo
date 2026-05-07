@@ -46,7 +46,7 @@ export default function HasilSeleksiPage() {
         // If 'semua_hasil', filter manually for post-announcement statuses
         if (filter.status === "semua_hasil") {
           theData = theData.filter((c: any) =>
-            ["accepted", "rejected", "cadangan", "enrolled"].includes(
+            ["accepted", "rejected", "cadangan", "announced", "enrolled"].includes(
               c.status_pendaftaran,
             ),
           );
@@ -64,7 +64,7 @@ export default function HasilSeleksiPage() {
           (c: any) => c.status_pendaftaran === "rejected",
         ).length;
         const cadangan = theData.filter(
-          (c: any) => c.status_pendaftaran === "cadangan",
+          (c: any) => c.status_pendaftaran === "cadangan" || c.status_pendaftaran === "announced",
         ).length;
         setStats({
           total_lulus: lulus,
@@ -280,7 +280,7 @@ export default function HasilSeleksiPage() {
                       <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-green-100 text-green-700 text-[10px] font-black uppercase border border-green-200">
                         <CheckCircle2 className="w-3 h-3" /> LULUS
                       </span>
-                    ) : c.status_pendaftaran === "cadangan" ? (
+                    ) : c.status_pendaftaran === "cadangan" || c.status_pendaftaran === "announced" ? (
                       <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-100 text-amber-700 text-[10px] font-black uppercase border border-amber-200">
                         CADANGAN
                       </span>
@@ -432,7 +432,7 @@ export default function HasilSeleksiPage() {
                           <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-green-100 text-green-700 text-xs font-bold border border-green-200">
                             <CheckCircle2 className="w-3.5 h-3.5" /> LULUS
                           </span>
-                        ) : c.status_pendaftaran === "cadangan" ? (
+                        ) : c.status_pendaftaran === "cadangan" || c.status_pendaftaran === "announced" ? (
                           <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-100 text-amber-700 text-xs font-bold border border-amber-200">
                             CADANGAN
                           </span>
