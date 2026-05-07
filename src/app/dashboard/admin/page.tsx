@@ -28,7 +28,7 @@ const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown }: any) 
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white p-8 rounded-[2.5rem] border border-teal-100 shadow-premium-sm hover:shadow-premium-lg transition-all group relative overflow-hidden"
+      className="bg-white p-5 sm:p-6 lg:p-8 rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border border-teal-100 shadow-premium-sm hover:shadow-premium-lg transition-all group relative overflow-hidden"
     >
       <div className="absolute top-0 right-0 w-32 h-32 bg-teal-50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:bg-sand-100 transition-colors duration-500" />
       
@@ -45,10 +45,10 @@ const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown }: any) 
           )}
         </div>
         
-        <div className="mb-8">
-          <p className="text-[11px] font-black text-teal-500 uppercase tracking-[0.25em] mb-2">{label}</p>
+        <div className="mb-6 lg:mb-8">
+          <p className="text-[10px] sm:text-[11px] font-black text-teal-500 uppercase tracking-[0.25em] mb-2">{label}</p>
           <div className="flex items-baseline gap-2">
-            <h3 className="text-5xl font-black text-teal-950 tracking-tighter italic">{value}</h3>
+            <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-teal-950 tracking-tighter italic">{value}</h3>
             <span className="text-xs font-bold text-teal-400">Orang</span>
           </div>
         </div>
@@ -133,57 +133,57 @@ export default function AdminDashboardPage() {
   );
 
   return (
-    <div className="max-w-[1400px] mx-auto space-y-8 pb-20">
+    <div className="max-w-[1400px] mx-auto space-y-6 sm:space-y-8 pb-20 px-1">
       {/* HEADER */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-teal-950 tracking-tight italic">Dasbor Admin Al Fath</h1>
-          <p className="text-sm text-teal-600 font-medium mt-1">Pantau perkembangan pendaftaran santri secara langsung.</p>
+          <h1 className="text-2xl sm:text-3xl font-black text-teal-950 tracking-tight italic">Dasbor Admin Al Fath</h1>
+          <p className="text-xs sm:text-sm text-teal-600 font-medium mt-1">Pantau perkembangan pendaftaran santri secara langsung.</p>
         </div>
-        <button onClick={fetchStats} className="p-3 bg-white border border-teal-100 rounded-2xl text-teal-600 hover:text-teal-600 transition-all shadow-premium-sm">
+        <button onClick={fetchStats} className="p-3 bg-white border border-teal-100 rounded-2xl text-teal-600 hover:text-teal-600 transition-all shadow-premium-sm self-start sm:self-auto">
           <RefreshCw className={`w-5 h-5 ${loading ? "animate-spin" : ""}`} />
         </button>
       </div>
 
       {/* HERO SECTION */}
-      <div className="bg-teal-900 rounded-[3rem] p-12 text-white relative overflow-hidden shadow-2xl border border-white/5">
+      <div className="bg-teal-900 rounded-[2rem] sm:rounded-[2.5rem] lg:rounded-[3rem] p-6 sm:p-8 lg:p-12 text-white relative overflow-hidden shadow-2xl border border-white/5">
         <div className="absolute top-0 right-0 w-96 h-96 bg-teal-500/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
-        <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-12">
-          <div className="max-w-xl">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-[10px] font-black uppercase tracking-widest mb-8 border border-white/10">
+        <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
+          <div className="max-w-xl w-full">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-[10px] font-black uppercase tracking-widest mb-6 lg:mb-8 border border-white/10">
               <Activity className="w-4 h-4 text-teal-300" />
               <span>Sistem Siap Saji: Live Demo</span>
             </div>
-            <h2 className="text-6xl font-black mb-6 tracking-tighter leading-tight italic text-white">
+            <h2 className="text-3xl sm:text-4xl lg:text-6xl font-black mb-4 sm:mb-6 tracking-tighter leading-tight italic text-white">
               Pantau <span className="text-teal-300">Pendaftaran</span>
             </h2>
-            <div className="flex items-center gap-12 mt-12">
+            <div className="flex items-center gap-8 sm:gap-12 mt-8 lg:mt-12">
               <div>
-                <span className="text-5xl font-black text-white italic">{stats.total_pendaftar}</span>
-                <p className="text-[11px] font-black text-teal-200 uppercase tracking-widest mt-2">Pendaftar</p>
+                <span className="text-3xl sm:text-5xl font-black text-white italic">{stats.total_pendaftar}</span>
+                <p className="text-[10px] sm:text-[11px] font-black text-teal-200 uppercase tracking-widest mt-2">Pendaftar</p>
               </div>
-              <div className="w-px h-16 bg-white/20" />
+              <div className="w-px h-12 sm:h-16 bg-white/20" />
               <div>
-                <span className="text-5xl font-black text-teal-300 italic">{stats.sudah_bayar}</span>
-                <p className="text-[11px] font-black text-teal-200 uppercase tracking-widest mt-2">Tervalidasi</p>
+                <span className="text-3xl sm:text-5xl font-black text-teal-300 italic">{stats.sudah_bayar}</span>
+                <p className="text-[10px] sm:text-[11px] font-black text-teal-200 uppercase tracking-widest mt-2">Tervalidasi</p>
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-6 w-full lg:w-auto">
-             <div className="bg-white/5 backdrop-blur-md p-8 rounded-[2.5rem] border border-white/10 flex flex-col items-center">
-                <p className="text-[10px] font-black text-teal-200 uppercase tracking-widest mb-4">Lulus Seleksi</p>
-                <p className="text-4xl font-black text-emerald-400 italic">{stats.diterima}</p>
+          <div className="grid grid-cols-2 gap-4 sm:gap-6 w-full lg:w-auto">
+             <div className="bg-white/5 backdrop-blur-md p-4 sm:p-6 lg:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-white/10 flex flex-col items-center">
+                <p className="text-[9px] sm:text-[10px] font-black text-teal-200 uppercase tracking-widest mb-2 sm:mb-4 text-center">Lulus Seleksi</p>
+                <p className="text-2xl sm:text-4xl font-black text-emerald-400 italic">{stats.diterima}</p>
              </div>
-             <div className="bg-white/5 backdrop-blur-md p-8 rounded-[2.5rem] border border-white/10 flex flex-col items-center">
-                <p className="text-[10px] font-black text-teal-200 uppercase tracking-widest mb-4">Daftar Ulang</p>
-                <p className="text-4xl font-black text-sand-300 italic">{stats.daftar_ulang}</p>
+             <div className="bg-white/5 backdrop-blur-md p-4 sm:p-6 lg:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-white/10 flex flex-col items-center">
+                <p className="text-[9px] sm:text-[10px] font-black text-teal-200 uppercase tracking-widest mb-2 sm:mb-4 text-center">Daftar Ulang</p>
+                <p className="text-2xl sm:text-4xl font-black text-sand-300 italic">{stats.daftar_ulang}</p>
              </div>
           </div>
         </div>
       </div>
 
       {/* STATS GRID */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
         {isAdminSuper && (<>
           <StatWidget label="Total Pendaftar" value={stats.total_pendaftar} icon={Users} color="blue" trend="+5% minggu ini" breakdown={getBreakdown("total")} />
           <StatWidget label="Berkas Lengkap" value={stats.berkas_lengkap} icon={ClipboardCheck} color="purple" breakdown={getBreakdown("berkas")} />
@@ -212,36 +212,36 @@ export default function AdminDashboardPage() {
 
       {/* SUMMARY INSIGHTS - Hanya untuk Admin Operasional */}
       {!isAdminSuper && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
           {/* Statistik card — bg teal-800 (valid & dark enough for white text) */}
-        <div className="bg-teal-800 rounded-[2.5rem] p-10 text-white relative overflow-hidden group">
+        <div className="bg-teal-800 rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] p-5 sm:p-8 lg:p-10 text-white relative overflow-hidden group">
           <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:rotate-12 transition-transform duration-700">
             <TrendingUp className="w-48 h-48" />
           </div>
           <div className="relative z-10">
-            <h3 className="text-2xl font-black mb-8 tracking-tight flex items-center gap-3 italic text-white">
+            <h3 className="text-xl sm:text-2xl font-black mb-6 sm:mb-8 tracking-tight flex items-center gap-3 italic text-white">
               <div className="w-2 h-8 bg-emerald-400 rounded-full" />
               Statistik Pendaftaran
             </h3>
-            <div className="grid grid-cols-2 gap-8">
-              <div className="space-y-8">
+            <div className="grid grid-cols-2 gap-4 sm:gap-8">
+              <div className="space-y-6 sm:space-y-8">
                 <div>
                   <p className="text-[10px] font-black text-teal-200 uppercase tracking-widest mb-2">Total Lunas</p>
-                  <p className="text-4xl font-black text-white italic">{stats.sudah_bayar}</p>
+                  <p className="text-2xl sm:text-4xl font-black text-white italic">{stats.sudah_bayar}</p>
                 </div>
                 <div>
                   <p className="text-[10px] font-black text-teal-200 uppercase tracking-widest mb-2">Data Komplit</p>
-                  <p className="text-4xl font-black text-sand-300 italic">{stats.sudah_isi_data}</p>
+                  <p className="text-2xl sm:text-4xl font-black text-sand-300 italic">{stats.sudah_isi_data}</p>
                 </div>
               </div>
-              <div className="space-y-8 pl-10 border-l border-white/20">
+              <div className="space-y-6 sm:space-y-8 pl-4 sm:pl-10 border-l border-white/20">
                 <div>
                   <p className="text-[10px] font-black text-teal-200 uppercase tracking-widest mb-2">Antrean Aktif</p>
-                  <p className="text-4xl font-black text-amber-300 italic">{stats.waiting_payment + stats.waiting_docs}</p>
+                  <p className="text-2xl sm:text-4xl font-black text-amber-300 italic">{stats.waiting_payment + stats.waiting_docs}</p>
                 </div>
                 <div>
                   <p className="text-[10px] font-black text-teal-200 uppercase tracking-widest mb-2">Tingkat Kelulusan</p>
-                  <p className="text-4xl font-black text-emerald-400 italic">
+                  <p className="text-2xl sm:text-4xl font-black text-emerald-400 italic">
                     {stats.total_pendaftar > 0 ? Math.round((stats.diterima / stats.total_pendaftar) * 100) : 0}%
                   </p>
                 </div>
@@ -249,17 +249,17 @@ export default function AdminDashboardPage() {
             </div>
           </div>
         </div>
-
-        <div className="bg-white rounded-[2.5rem] border border-sand-100 p-10 shadow-premium-sm relative overflow-hidden group">
+ 
+        <div className="bg-white rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border border-sand-100 p-5 sm:p-8 lg:p-10 shadow-premium-sm relative overflow-hidden group">
           <div className="relative z-10">
-            <h3 className="text-2xl font-black text-ink-900 mb-8 tracking-tight flex items-center gap-3 italic">
+            <h3 className="text-xl sm:text-2xl font-black text-ink-900 mb-6 sm:mb-8 tracking-tight flex items-center gap-3 italic">
               <div className="w-2 h-8 bg-teal-600 rounded-full" />
               Aksi Cepat
             </h3>
             <div className="space-y-4">
-              <div className="flex items-center justify-between p-6 bg-sand-50 rounded-3xl border border-sand-100 hover:border-teal-200 transition-all cursor-default group/item">
-                <div className="flex items-center gap-5">
-                  <div className="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center text-teal-600 transition-transform group-hover/item:scale-110">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-6 bg-sand-50 rounded-2xl sm:rounded-3xl border border-sand-100 hover:border-teal-200 transition-all cursor-default group/item gap-4">
+                <div className="flex items-center gap-4 sm:gap-5">
+                  <div className="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center text-teal-600 transition-transform group-hover/item:scale-110 shrink-0">
                     <Users className="w-6 h-6" />
                   </div>
                   <div>
@@ -267,15 +267,15 @@ export default function AdminDashboardPage() {
                     <p className="text-[11px] text-ink-400 font-bold">Verifikasi berkas santri baru</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl font-black text-ink-900 italic">{stats.waiting_docs}</span>
-                  <ChevronRight className="w-5 h-5 text-ink-300" />
+                <div className="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto border-t sm:border-0 pt-3 sm:pt-0 border-sand-200/60">
+                  <span className="text-xl sm:text-2xl font-black text-ink-900 italic">{stats.waiting_docs}</span>
+                  <ChevronRight className="w-5 h-5 text-ink-300 hidden sm:block" />
                 </div>
               </div>
-
-              <div className="flex items-center justify-between p-6 bg-sand-50 rounded-3xl border border-sand-100 hover:border-emerald-200 transition-all cursor-default group/item">
-                <div className="flex items-center gap-5">
-                  <div className="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center text-emerald-600 transition-transform group-hover/item:scale-110">
+ 
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-6 bg-sand-50 rounded-2xl sm:rounded-3xl border border-sand-100 hover:border-emerald-200 transition-all cursor-default group/item gap-4">
+                <div className="flex items-center gap-4 sm:gap-5">
+                  <div className="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center text-emerald-600 transition-transform group-hover/item:scale-110 shrink-0">
                     <Wallet className="w-6 h-6" />
                   </div>
                   <div>
@@ -283,15 +283,15 @@ export default function AdminDashboardPage() {
                     <p className="text-[11px] text-ink-400 font-bold">Konfirmasi bukti transfer</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl font-black text-ink-900 italic">{stats.waiting_payment}</span>
-                  <ChevronRight className="w-5 h-5 text-ink-300" />
+                <div className="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto border-t sm:border-0 pt-3 sm:pt-0 border-sand-200/60">
+                  <span className="text-xl sm:text-2xl font-black text-ink-900 italic">{stats.waiting_payment}</span>
+                  <ChevronRight className="w-5 h-5 text-ink-300 hidden sm:block" />
                 </div>
               </div>
             </div>
           </div>
         </div>
-        </div>
+      </div>
       )}
     </div>
   );

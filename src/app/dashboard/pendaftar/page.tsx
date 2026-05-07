@@ -105,12 +105,12 @@ export default function DashboardPendaftarPage() {
 
 function HeroBanner({ nama, nomorPendaftaran, lastUpdate }: any) {
   return (
-    <div className="relative overflow-hidden rounded-[2.5rem] md:rounded-[3.5rem] bg-linear-to-br from-teal-700 to-teal-900 text-white p-8 md:p-16 shadow-2xl border border-teal-600/50">
+    <div className="relative overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] md:rounded-[3.5rem] bg-linear-to-br from-teal-700 to-teal-900 text-white p-6 sm:p-8 md:p-16 shadow-2xl border border-teal-600/50">
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-sand-400/10 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/2" />
-      <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-10">
-        <div className="flex-1 space-y-6">
+      <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 lg:gap-10">
+        <div className="flex-1 space-y-4 sm:space-y-6">
           <div className="flex flex-wrap items-center gap-3">
-            <span className="px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-[10px] tracking-[0.2em] font-black uppercase border border-white/20 text-sand-200">
+            <span className="px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-[9px] sm:text-[10px] tracking-[0.2em] font-black uppercase border border-white/20 text-sand-200">
               ACADEMIC EXCELLENCE
             </span>
             <span className="flex items-center gap-2 text-xs font-bold text-teal-100/70">
@@ -123,22 +123,22 @@ function HeroBanner({ nama, nomorPendaftaran, lastUpdate }: any) {
               })}
             </span>
           </div>
-          <h1 className="text-3xl md:text-6xl lg:text-7xl font-black leading-[1.1] font-display tracking-tight text-white italic">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-[1.1] font-display tracking-tight text-white italic">
             Welcome, <br />
             <span className="text-sand-400 not-italic uppercase drop-shadow-lg">
               {nama}!
             </span>
           </h1>
-          <p className="text-teal-100 text-lg md:text-xl font-medium max-w-xl opacity-80 leading-relaxed italic border-l-4 border-sand-500/50 pl-6">
+          <p className="text-teal-100 text-base md:text-xl font-medium max-w-xl opacity-80 leading-relaxed italic border-l-4 border-sand-500/50 pl-4 sm:pl-6">
             "Providing a world-class educational foundation for your child's
             future."
           </p>
         </div>
-        <div className="flex-1 lg:flex-none bg-black/20 backdrop-blur-xl px-8 py-6 rounded-[2rem] border border-white/10 text-center">
+        <div className="flex-1 lg:flex-none w-full sm:w-auto bg-black/20 backdrop-blur-xl px-6 sm:px-8 py-5 sm:py-6 rounded-[1.5rem] sm:rounded-[2rem] border border-white/10 text-center">
           <p className="text-[10px] font-black uppercase text-sand-200/60 mb-1 tracking-[0.2em]">
             REGISTRATION ID
           </p>
-          <p className="font-mono text-3xl md:text-4xl font-black text-white tracking-tighter">
+          <p className="font-mono text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tighter">
             {nomorPendaftaran}
           </p>
         </div>
@@ -149,23 +149,23 @@ function HeroBanner({ nama, nomorPendaftaran, lastUpdate }: any) {
 
 function GuidedActionCard({ nextStep }: any) {
   return (
-    <div className="bg-white rounded-[2.5rem] border-2 border-teal-100 shadow-xl shadow-teal/5 overflow-hidden group">
+    <div className="bg-white rounded-[1.5rem] sm:rounded-[2rem] md:rounded-[2.5rem] border-2 border-teal-100 shadow-xl shadow-teal/5 overflow-hidden group">
       <div className="flex flex-col md:flex-row items-stretch">
-        <div className="bg-sand-400 p-8 md:p-12 flex flex-col items-center justify-center text-teal-950 min-w-[200px]">
-          <div className="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-            <Target className="w-8 h-8" />
+        <div className="bg-sand-400 p-6 sm:p-8 md:p-12 flex flex-col items-center justify-center text-teal-950 min-w-[200px]">
+          <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-white/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <Target className="w-6 h-6 sm:w-8 sm:h-8" />
           </div>
           <p className="text-[10px] font-black uppercase tracking-widest opacity-70">
             Step
           </p>
-          <p className="text-3xl font-black">NEXT</p>
+          <p className="text-2xl sm:text-3xl font-black">NEXT</p>
         </div>
-        <div className="flex-1 p-8 md:p-12 space-y-6">
+        <div className="flex-1 p-6 sm:p-8 md:p-12 space-y-4 sm:space-y-6">
           <div>
-            <h2 className="text-2xl md:text-3xl font-black text-teal-950 mb-2">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-teal-950 mb-2">
               What should I do?
             </h2>
-            <p className="text-ink-600 font-medium text-lg italic">
+            <p className="text-base sm:text-lg text-ink-600 font-medium italic">
               "Please click the button to{" "}
               <span className="text-teal-700 font-black not-italic">
                 {nextStep.action.toLowerCase()}
@@ -176,10 +176,10 @@ function GuidedActionCard({ nextStep }: any) {
           <div className="flex flex-wrap gap-4">
             <Link
               href={nextStep.href}
-              className="px-10 py-5 bg-teal-700 hover:bg-teal-800 text-white rounded-2xl font-black uppercase text-sm shadow-2xl shadow-teal/20 transition-all hover:scale-105 active:scale-95 flex items-center gap-3 group/btn"
+              className="px-6 sm:px-10 py-4 sm:py-5 bg-teal-700 hover:bg-teal-800 text-white rounded-2xl font-black uppercase text-xs sm:text-sm shadow-2xl shadow-teal/20 transition-all hover:scale-105 active:scale-95 flex items-center gap-3 group/btn w-full sm:w-auto justify-center"
             >
               Get Started Now{" "}
-              <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-2 transition-transform" />
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover/btn:translate-x-2 transition-transform" />
             </Link>
           </div>
         </div>
@@ -219,21 +219,21 @@ function StatusGrid({ status, statusLabel, pengumuman }: any) {
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
       {items.map((item, id) => (
         <div
           key={id}
-          className="bg-white p-8 rounded-[2rem] border border-stone-100 shadow-sm hover:shadow-xl transition-all duration-500 group"
+          className="bg-white p-6 sm:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-stone-100 shadow-sm hover:shadow-xl transition-all duration-500 group"
         >
           <div
-            className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 ${item.bg} group-hover:scale-110 transition-transform shadow-inner`}
+            className={`w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center mb-4 sm:mb-6 ${item.bg} group-hover:scale-110 transition-transform shadow-inner`}
           >
-            <item.icon className={`w-7 h-7 ${item.color}`} />
+            <item.icon className={`w-6 h-6 sm:w-7 sm:h-7 ${item.color}`} />
           </div>
           <p className="text-[10px] font-black text-stone-400 uppercase tracking-widest mb-1">
             {item.label}
           </p>
-          <p className="text-2xl font-black text-teal-950 mb-2 leading-none">
+          <p className="text-xl sm:text-2xl font-black text-teal-950 mb-2 leading-none">
             {item.val}
           </p>
           <p className="text-xs font-medium text-stone-400 italic">
@@ -247,9 +247,9 @@ function StatusGrid({ status, statusLabel, pengumuman }: any) {
 
 function SupportCenter() {
   return (
-    <div className="bg-teal-950 text-white rounded-[3rem] p-10 md:p-16 relative overflow-hidden group shadow-2xl">
+    <div className="bg-teal-950 text-white rounded-[2rem] sm:rounded-[2.5rem] md:rounded-[3rem] p-6 sm:p-10 md:p-16 relative overflow-hidden group shadow-2xl">
       <div className="absolute top-0 right-0 w-96 h-96 bg-teal-800 rounded-full blur-[100px] opacity-20 -translate-y-1/2 translate-x-1/2" />
-      <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-12 text-center lg:text-left">
+      <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 text-center lg:text-left">
         <div className="flex-1 space-y-4">
           <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/10 rounded-full border border-white/10">
             <span className="w-2 h-2 rounded-full bg-sand-400 animate-pulse" />
@@ -257,11 +257,11 @@ function SupportCenter() {
               PPDB SUPPORT CENTER
             </span>
           </div>
-          <h3 className="font-black text-3xl md:text-4xl lg:text-5xl font-display leading-tight">
+          <h3 className="font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display leading-tight">
             Need Help? <br />
             <span className="text-sand-400">Chat with Our Team!</span>
           </h3>
-          <p className="text-teal-200 text-lg md:text-xl font-medium opacity-80 max-w-2xl">
+          <p className="text-teal-200 text-base sm:text-lg md:text-xl font-medium opacity-80 max-w-2xl">
             Don't hesitate to ask. Our team is ready to help you complete the
             registration smoothly.
           </p>
@@ -269,7 +269,7 @@ function SupportCenter() {
         <a
           href="https://wa.me/6281285300800"
           target="_blank"
-          className="px-12 py-5 bg-sand-400 text-teal-950 font-black text-sm uppercase tracking-widest rounded-[1.5rem] hover:bg-sand-300 shadow-xl transition-all hover:scale-105 active:scale-95 text-center"
+          className="px-8 sm:px-12 py-4 sm:py-5 bg-sand-400 text-teal-950 font-black text-xs sm:text-sm uppercase tracking-widest rounded-[1.25rem] sm:rounded-[1.5rem] hover:bg-sand-300 shadow-xl transition-all hover:scale-105 active:scale-95 text-center w-full sm:w-auto"
         >
           Chat on WhatsApp
         </a>
