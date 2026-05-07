@@ -38,10 +38,9 @@ const buttonVariants = cva(
     "transition-all",
     "duration-[var(--duration-base)]",
     "[transition-timing-function:var(--ease-spring)]",
-    /* Focus ring — teal sebagai default template */
     "focus-visible:outline-none",
     "focus-visible:ring-2",
-    "focus-visible:ring-[var(--color-teal-600)]",
+    "focus-visible:ring-[var(--color-primary)]",
     "focus-visible:ring-offset-2",
     "focus-visible:ring-offset-[var(--color-surface-50)]",
     /* Disabled */
@@ -57,11 +56,11 @@ const buttonVariants = cva(
            (Al Andalus primary identity)
            ════════════════════════════════════ */
 
-        /* ─── PRIMARY teal ─── */
+        /* ─── PRIMARY Hijau Islami ─── */
         primary: [
           "relative overflow-hidden",
-          "bg-gradient-to-br from-[var(--color-teal-600)] to-[var(--color-teal-900)]",
-          "text-[var(--color-warm-100)]",
+          "bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-teal-900)]",
+          "text-[var(--color-primary-light)]",
           "[box-shadow:var(--shadow-teal)]",
           "before:absolute before:inset-0 before:rounded-[inherit]",
           "before:bg-gradient-to-br before:from-white/[0.10] before:to-transparent",
@@ -72,27 +71,27 @@ const buttonVariants = cva(
           "active:translate-y-0",
         ].join(" "),
 
-        /* ─── SECONDARY teal ─── */
+        /* ─── SECONDARY Hijau Islami ─── */
         secondary: [
-          "bg-[var(--color-white)]",
+          "bg-[var(--color-background)]",
           "text-[var(--color-teal-700)]",
           "border border-[var(--color-teal-200)]",
           "[box-shadow:var(--shadow-xs)]",
-          "hover:bg-[var(--color-teal-50)]",
+          "hover:bg-[var(--color-primary-light)]",
           "hover:border-[var(--color-teal-400)]",
           "hover:[box-shadow:var(--shadow-sm)]",
           "hover:-translate-y-[1px]",
           "active:translate-y-0",
         ].join(" "),
 
-        /* ─── OUTLINE teal ─── */
+        /* ─── OUTLINE Hijau Islami ─── */
         outline: [
           "bg-transparent",
           "text-[var(--color-teal-700)]",
           "border-[1.5px] border-[var(--color-teal-300)]",
-          "hover:bg-[var(--color-teal-900)]",
-          "hover:text-[var(--color-warm-100)]",
-          "hover:border-[var(--color-teal-900)]",
+          "hover:bg-[var(--color-primary)]",
+          "hover:text-[var(--color-primary-light)]",
+          "hover:border-[var(--color-primary)]",
           "hover:[box-shadow:var(--shadow-teal)]",
           "hover:-translate-y-[1px]",
           "active:translate-y-0",
