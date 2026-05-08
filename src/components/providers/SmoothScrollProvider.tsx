@@ -2,6 +2,7 @@
 
 import { ReactNode, useEffect, useRef } from "react";
 import Lenis from "lenis";
+import { usePathname } from "next/navigation";
 
 interface SmoothScrollProviderProps {
   children: ReactNode;
@@ -11,6 +12,7 @@ export default function SmoothScrollProvider({
   children,
 }: SmoothScrollProviderProps) {
   const lenisRef = useRef<Lenis | null>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     // Initialize Lenis with smooth, inertia-based scrolling
@@ -45,13 +47,39 @@ export default function SmoothScrollProvider({
     };
     window.addEventListener("resize", handleResize);
 
+    // Bulletproof Auto-Resize: Listen to document height changes (dynamic loads, images, hydration)
+    const resizeObserver = new ResizeObserver(() => {
+      lenis.resize();
+    });
+    if (document.body) {
+      resizeObserver.observe(document.body);
+    }
+
+    // Delayed initial resize to ensure hydration layout is complete
+    const initialResizeTimeout = setTimeout(() => {
+      lenis.resize();
+    }, 150);
+
     // Cleanup
     return () => {
       cancelAnimationFrame(rafId);
       window.removeEventListener("resize", handleResize);
+      resizeObserver.disconnect();
+      clearTimeout(initialResizeTimeout);
       lenis.destroy();
     };
   }, []);
+
+  // Force recalculation when navigating between pages (route transitions)
+  useEffect(() => {
+    const lenis = lenisRef.current;
+    if (lenis) {
+      const navigationTimeout = setTimeout(() => {
+        lenis.resize();
+      }, 100);
+      return () => clearTimeout(navigationTimeout);
+    }
+  }, [pathname]);
 
   return (
     <>
