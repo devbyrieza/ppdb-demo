@@ -28,7 +28,30 @@ function getExamCategory(title: string): string {
 
 function sanitizeTitle(title: string): string {
   // Remove anything in parentheses (e.g. examiner names)
-  return title.replace(/\s*\(.*?\)\s*/g, "").trim();
+  let clean = title.replace(/\s*\(.*?\)\s*/g, "").trim();
+  
+  // Expand Pewawancara/Penguji Calsan/Cawalsan
+  clean = clean.replace(/Pewawancara Calsan/gi, "Pewawancara Calon Santri");
+  clean = clean.replace(/Pewawancara Cawalsan/gi, "Pewawancara Calon Orangtua/Wali Santri");
+  clean = clean.replace(/Penguji Calsan/gi, "Penguji Calon Santri");
+  clean = clean.replace(/Penguji Cawalsan/gi, "Penguji Calon Orangtua/Wali Santri");
+
+  // Expand generic Wawancara Santri / Ortu / Orang Tua
+  clean = clean.replace(/Wawancara Santri/gi, "Wawancara Calon Santri");
+  clean = clean.replace(/Wawancara Ortu/gi, "Wawancara Calon Orangtua/Wali Santri");
+  clean = clean.replace(/Wawancara Orang Tua/gi, "Wawancara Calon Orangtua/Wali Santri");
+
+  // Expand Calsan
+  clean = clean.replace(/calsan/gi, "Calon Santri");
+
+  // Expand Cawalsan
+  clean = clean.replace(/cawalsan/gi, "Calon Orangtua/Wali Santri");
+
+  // Clean up potential double "Calon" or other artifacts
+  clean = clean.replace(/Calon Santri Santri/gi, "Calon Santri");
+  clean = clean.replace(/Calon Calon/gi, "Calon");
+  
+  return clean;
 }
 
 async function getSession() {
