@@ -1580,14 +1580,14 @@ function AdminPendaftarContent() {
                       No. Pendaftaran
                     </th>
                     <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
-                      Full Name
+                      Nama Lengkap
                     </th>
                     <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
                       NIK
                     </th>
                     {(isAdminSuper || isBerkas) && (
                       <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
-                        Contact
+                        Kontak
                       </th>
                     )}
                     <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
@@ -1595,19 +1595,19 @@ function AdminPendaftarContent() {
                     </th>
                     {(isAdminSuper || isBerkas) && (
                       <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
-                        Docs Status
+                        Status Berkas
                       </th>
                     )}
                     <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
-                      Reg. Status
+                      Status Pendaftaran
                     </th>
                     {(isAdminSuper || isKeuangan) && (
                       <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
-                        Payment
+                        Pembayaran
                       </th>
                     )}
                     <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
-                      Actions
+                      Aksi
                     </th>
                   </tr>
                 </thead>
@@ -1705,13 +1705,13 @@ function AdminPendaftarContent() {
                               (d: any) => d.status_verifikasi === "verified",
                             ) &&
                             item.dokumen.length > 0
-                              ? "Verified"
+                              ? "Terverifikasi"
                               : item.dokumen && item.dokumen.length > 0
-                                ? "Check"
-                                : "Empty"}
+                                ? "Perlu Cek"
+                                : "Belum Upload"}
                           </span>
                           <div className="text-xs text-stone-600 font-medium mt-1">
-                            {item.dokumen?.length || 0} Docs
+                            {item.dokumen?.length || 0} Dokumen
                           </div>
                         </td>
                       )}
@@ -1735,11 +1735,11 @@ function AdminPendaftarContent() {
                               >
                                 {item.pembayaran[0].status_pembayaran ===
                                 "verified"
-                                  ? "Paid"
+                                  ? "Lunas"
                                   : item.pembayaran[0].status_pembayaran ===
                                       "pending"
-                                    ? "Check"
-                                    : "Unpaid"}
+                                    ? "Cek"
+                                    : "Belum Bayar"}
                               </span>
                               {item.pembayaran &&
                                 item.pembayaran.length > 0 && (
@@ -1752,9 +1752,9 @@ function AdminPendaftarContent() {
                                       );
                                     }}
                                     className="px-2 py-1 bg-stone-50 text-stone-700 hover:bg-stone-100 rounded-lg text-[9px] font-black uppercase flex items-center justify-center gap-1 border border-stone-100 transition-colors"
-                                    title="Upload Payment Proof"
+                                    title="Unggah Bukti Bayar"
                                   >
-                                    <CreditCard className="w-3 h-3" /> Upload
+                                    <CreditCard className="w-3 h-3" /> Unggah
                                   </button>
                                 )}
                             </div>
@@ -1768,7 +1768,7 @@ function AdminPendaftarContent() {
                           <Link
                             href={`/dashboard/admin/pendaftar/${item.id}`}
                             className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-[10px] font-black uppercase transition-all shadow-lg shadow-blue-700/20 active:scale-95"
-                            title="Open Detail"
+                            title="Buka Detail"
                           >
                             <Eye className="w-3.5 h-3.5" />
                             <span className="hidden lg:inline">Detail</span>
@@ -1779,7 +1779,7 @@ function AdminPendaftarContent() {
                             <Link
                               href={`/dashboard/admin/verifikasi-dokumen`}
                               className="p-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-all"
-                              title="Verify Documents"
+                              title="Verifikasi Dokumen"
                             >
                               <FileCheck className="w-4 h-4" />
                             </Link>
@@ -1789,7 +1789,7 @@ function AdminPendaftarContent() {
                             <Link
                               href={`/dashboard/admin/verifikasi-pembayaran`}
                               className="p-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg transition-all"
-                              title="Verify Payment"
+                              title="Verifikasi Pembayaran"
                             >
                               <CreditCard className="w-4 h-4" />
                             </Link>
@@ -1801,14 +1801,14 @@ function AdminPendaftarContent() {
                               <button
                                 onClick={() => handleOpenAnnouncement(item)}
                                 className="p-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-all shadow-sm hover:shadow-md"
-                                title="Input Result"
+                                title="Hasil Seleksi"
                               >
                                 <FileCheck className="w-4 h-4" />
                               </button>
                               <button
                                 onClick={() => handleOpenDelete(item)}
                                 className="p-1.5 bg-red-100 hover:bg-red-600 text-red-700 hover:text-white rounded-lg transition-all"
-                                title="Delete"
+                                title="Hapus"
                               >
                                 <Trash2 className="w-4 h-4" />
                               </button>
