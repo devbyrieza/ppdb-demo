@@ -171,7 +171,7 @@ function VerifikasiPembayaranContent() {
           ? parseInt(item.jumlah).toLocaleString("id-ID")
           : "0",
         "Metode Pembayaran": item.metode_pembayaran || "-",
-        Status: item.status_pembayaran || "-",
+        Status: (item.status_pembayaran === "verified" || item.status_pembayaran === "VERIFIED") ? "Terverifikasi" : ((item.status_pembayaran === "rejected" || item.status_pembayaran === "REJECTED") ? "Ditolak" : "Pending"),
         "Tanggal Bayar": item.tanggal_pembayaran
           ? new Date(item.tanggal_pembayaran).toLocaleDateString("id-ID")
           : "-",

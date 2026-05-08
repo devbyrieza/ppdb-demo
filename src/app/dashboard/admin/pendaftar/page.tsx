@@ -783,9 +783,45 @@ function AdminPendaftarContent() {
           sheets,
         });
       } else {
-        // Transform for PDF
-        const headers = Object.keys(data[0] || {});
-        const rows = data.map((item: any) => Object.values(item));
+        // Transform for PDF - Premium 8-column layout
+        const headers = [
+          "No. Pendaftaran",
+          "Nama Lengkap",
+          "JK",
+          "Jenjang",
+          "Asal Sekolah",
+          "No. HP",
+          "Email",
+          "Status"
+        ];
+        
+        const translateStatus = (status: string) => {
+          if (!status) return "-";
+          const s = status.toLowerCase();
+          if (s.includes("enrolled") || s.includes("daftar ulang") || s.includes("ulang")) return "Daftar Ulang";
+          if (s.includes("accepted") || s.includes("diterima") || s.includes("lulus")) return "Diterima";
+          if (s.includes("rejected") || s.includes("ditolak") || s.includes("perbaikan")) return "Ditolak";
+          if (s.includes("cadangan") || s.includes("reserve")) return "Cadangan";
+          if (s.includes("docs_verified") || s.includes("berkas lengkap") || s.includes("verifikasi berkas")) return "Berkas Lengkap";
+          if (s.includes("verified") || s.includes("terverifikasi")) return "Terverifikasi";
+          if (s.includes("data_completed") || s.includes("data lengkap")) return "Data Lengkap";
+          if (s.includes("payment_verification") || s.includes("verifikasi pembayaran")) return "Verifikasi Pembayaran";
+          if (s.includes("waiting_payment") || s.includes("bayar pendaftaran")) return "Bayar Pendaftaran";
+          if (s.includes("draft") || s.includes("belum lengkap")) return "Belum Lengkap";
+          return status;
+        };
+
+        const rows = data.map((item: any) => [
+          item["Nomor Pendaftaran"] || item["No. Daftar"] || item["No. Pendaftaran"] || "-",
+          item["Nama Lengkap"] || "-",
+          (item["Jenis Kelamin"] || "-") === "Laki-laki" || (item["Jenis Kelamin"] || "-") === "L" ? "L" : ((item["Jenis Kelamin"] || "-") === "Perempuan" || (item["Jenis Kelamin"] || "-") === "P" ? "P" : "-"),
+          item["Jenjang"] || "-",
+          item["Asal Sekolah"] || "-",
+          String(item["No HP"] || item["No. HP"] || item["Telepon"] || "-").replace(/^'/, ""),
+          item["Email"] || "-",
+          translateStatus(item["Status"] || item["Status Pendaftaran"] || "-")
+        ]);
+        
         exportToPDF(
           "Data Pendaftar Santri Baru",
           headers,
