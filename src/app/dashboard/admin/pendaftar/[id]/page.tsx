@@ -125,7 +125,7 @@ interface PendaftarDetail {
 /* import { useSession } from "next-auth/react"; -- Removed */
 
 export default function PendaftarDetailPage() {
-  const getDocLabel = (key: string) => {
+      const getDocLabel = (key: string) => {
     const labels: Record<string, string> = {
       kartu_keluarga: "Scan Kartu Keluarga",
       akta_kelahiran: "Scan Akte Kelahiran",
@@ -138,6 +138,17 @@ export default function PendaftarDetailPage() {
       pakta_integritas_ortu: "Scan Pakta Integritas Calon Orangtua/Wali Santri",
       pernyataan_bebas_negatif: "Scan Pernyataan Bebas Perilaku Negatif",
       pakta_integritas: "Scan Pakta Integritas",
+      scan_kartu_keluarga: "Scan Kartu Keluarga",
+      scan_akta_kelahiran: "Scan Akte Kelahiran",
+      scan_rapor_sem1: "Scan Rapor Semester Ganjil Terakhir",
+      scan_rapor_sem2: "Scan Rapor Semester Genap Terakhir",
+      scan_nisn: "Scan NISN",
+      scan_foto_setengah_badan: "Foto Setengah Badan",
+      scan_surat_kesehatan: "Surat Keterangan Sehat",
+      scan_pakta_integritas_santri: "Scan Pakta Integritas Calon Santri",
+      scan_pakta_integritas_ortu: "Scan Pakta Integritas Calon Orangtua/Wali Santri",
+      scan_pernyataan_bebas_negatif: "Scan Pernyataan Bebas Perilaku Negatif",
+      scan_pakta_integritas: "Scan Pakta Integritas",
     };
     return labels[key] || key.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
   };
