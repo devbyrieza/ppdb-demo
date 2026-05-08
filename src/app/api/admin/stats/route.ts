@@ -116,7 +116,9 @@ export async function GET(request: Request) {
           cadangan_putri: 0,
           ditolak: 0,
           ditolak_putra: 0,
-          ditolak_putri: 0,
+          data_total: 0,
+          data_putra: 0,
+          data_putri: 0,
           berkas_total: 0,
           berkas_putra: 0,
           berkas_putri: 0,
@@ -186,6 +188,14 @@ export async function GET(request: Request) {
         j.ditolak++;
         if (isL) j.ditolak_putra++;
         if (isP) j.ditolak_putri++;
+      }
+
+      // Data Lengkap Logic: payment_verification or higher
+      const dataVerifiedIndex = 2; // 'payment_verification' index
+      if (currentIndex >= dataVerifiedIndex && status !== "rejected") {
+        j.data_total++;
+        if (isL) j.data_putra++;
+        if (isP) j.data_putri++;
       }
 
       // Berkas Lengkap Logic: docs_verified or higher
@@ -259,6 +269,9 @@ export async function GET(request: Request) {
           ulang_total: 0,
           ulang_putra: 0,
           ulang_putri: 0,
+          data_total: 0,
+          data_putra: 0,
+          data_putri: 0,
         };
         const q = QUOTAS[jenjang];
         return {
@@ -272,6 +285,9 @@ export async function GET(request: Request) {
           bayar_total: data.bayar_total,
           bayar_putra: data.bayar_putra,
           bayar_putri: data.bayar_putri,
+          data_total: data.data_total || 0,
+          data_putra: data.data_putra || 0,
+          data_putri: data.data_putri || 0,
           diterima: data.accepted,
           diterima_putra: data.accepted_putra,
           diterima_putri: data.accepted_putri,
