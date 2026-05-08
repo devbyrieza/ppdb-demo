@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import {
@@ -119,6 +119,10 @@ const TimelineItem = ({ item, index }: { item: any; index: number }) => (
 // ========================================
 
 function PPDBContent() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const searchParams = useSearchParams();
   const jenjang = searchParams.get("jenjang");
 
