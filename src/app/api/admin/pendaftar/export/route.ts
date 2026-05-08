@@ -159,21 +159,58 @@ export async function GET(req: NextRequest) {
 }
 
 function query_status(status: string, where: any) {
-  // Reuse status mapping logic from pendaftar list if needed,
-  // or just direct match if status is simple.
-  // Assuming simple status match for export unless complex filtering is needed.
-  // If complex:
   const filterMapping: Record<string, string[]> = {
-    // Pembayaran
-    belum_bayar: ["draft"],
+    belum_bayar: ["draft", "waiting_payment", "awaiting_payment"],
     menunggu_verifikasi_pembayaran: ["payment_verification"],
-    sudah_bayar: ["verified", "scheduled", "accepted"],
-    pembayaran_ditolak: ["rejected"],
-    // ... (can include others if needed)
+    sudah_bayar: [
+      "paid",
+      "verified",
+      "data_completed",
+      "docs_uploaded",
+      "docs_verified",
+      "scheduled",
+      "tested",
+      "announced",
+      "accepted",
+      "enrolled",
+    ],
+    pembayaran_ditolak: ["rejected", "payment_rejected"],
+    belum_isi_data: ["verified", "paid"],
+    sudah_isi_data: [
+      "data_completed",
+      "docs_uploaded",
+      "docs_verified",
+      "scheduled",
+      "tested",
+      "announced",
+      "accepted",
+      "enrolled",
+    ],
+    belum_upload_dokumen: ["data_completed"],
+    menunggu_verifikasi_dokumen: ["docs_uploaded"],
+    dokumen_terverifikasi: [
+      "docs_verified",
+      "scheduled",
+      "tested",
+      "passed",
+      "announced",
+      "accepted",
+      "enrolled",
+    ],
+    dokumen_ditolak: ["docs_rejected"],
+    terjadwal_ujian: ["scheduled"],
+    belum_ujian: ["scheduled"],
+    tested: ["tested", "passed", "announced", "accepted", "enrolled"],
+    sudah_ujian: ["tested", "passed", "announced", "accepted", "enrolled"],
+    hasil_ujian: ["passed", "announced", "accepted", "enrolled"],
+    diterima: ["accepted", "passed"],
+    belum_daftar_ulang: ["accepted"],
+    sudah_daftar_ulang: ["enrolled"],
   };
 
-  if (filterMapping[status]) {
-    where.status_pendaftaran = { in: filterMapping[status] };
+  const statusValues = filterMapping[status];
+  if (statusValues && statusValues.length > 0) {
+    where.status_pendaftaran = { in: statusValues };
   } else {
     where.status_pendaftaran = status;
   }
