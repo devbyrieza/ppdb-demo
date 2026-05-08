@@ -1640,7 +1640,7 @@ function AdminPendaftarContent() {
                         Pembayaran
                       </th>
                     )}
-                    <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
+                    <th colSpan={2} className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
                       Aksi
                     </th>
                   </tr>
@@ -1739,7 +1739,7 @@ function AdminPendaftarContent() {
                               (d: any) => d.status_verifikasi === "verified",
                             ) &&
                             item.dokumen.length > 0
-                              ? "Terverifikasi"
+                              ? "Lengkap"
                               : item.dokumen && item.dokumen.length > 0
                                 ? "Perlu Cek"
                                 : "Belum Upload"}
@@ -1785,10 +1785,10 @@ function AdminPendaftarContent() {
                                         100,
                                       );
                                     }}
-                                    className="px-2 py-1 bg-stone-50 text-stone-700 hover:bg-stone-100 rounded-lg text-[9px] font-black uppercase flex items-center justify-center gap-1 border border-stone-100 transition-colors"
-                                    title="Unggah Bukti Bayar"
+                                    className="px-2 py-1 bg-sand-50 text-sand-700 hover:bg-sand-100 rounded-lg text-[9px] font-black uppercase flex items-center justify-center gap-1 border border-sand-100 transition-colors"
+                                    title="Upload Bukti Bayar"
                                   >
-                                    <CreditCard className="w-3 h-3" /> Unggah
+                                    <CreditCard className="w-3 h-3" /> UPLOAD
                                   </button>
                                 )}
                             </div>
@@ -1797,11 +1797,43 @@ function AdminPendaftarContent() {
                           )}
                         </td>
                       )}
+                      <td className="px-4 py-3">
+                        <div className="flex flex-wrap gap-1">
+                          <button
+                            onClick={() => {
+                              setSelectedPendaftarId(item.id);
+                              setSelectedDocType("kartu_keluarga");
+                              setTimeout(
+                                () => docInputRef.current?.click(),
+                                100,
+                              );
+                            }}
+                            className="px-2 py-1 bg-teal-50 text-teal-700 hover:bg-teal-100 rounded-lg text-[9px] font-black uppercase flex items-center gap-1 border border-teal-100 transition-colors"
+                            title="Upload KK"
+                          >
+                            <UploadCloud className="w-3 h-3" /> KK
+                          </button>
+                          <button
+                            onClick={() => {
+                              setSelectedPendaftarId(item.id);
+                              setSelectedDocType("akta_kelahiran");
+                              setTimeout(
+                                () => docInputRef.current?.click(),
+                                100,
+                              );
+                            }}
+                            className="px-2 py-1 bg-teal-50 text-teal-700 hover:bg-teal-100 rounded-lg text-[9px] font-black uppercase flex items-center gap-1 border border-teal-100 transition-colors"
+                            title="Upload Akta"
+                          >
+                            <UploadCloud className="w-3 h-3" /> Akta
+                          </button>
+                        </div>
+                      </td>
                       <td className="px-4 py-3 whitespace-nowrap">
                         <div className="flex items-center gap-2">
                           <Link
                             href={`/dashboard/admin/pendaftar/${item.id}`}
-                            className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-[10px] font-black uppercase transition-all shadow-lg shadow-blue-700/20 active:scale-95"
+                            className="inline-flex items-center gap-2 px-3 py-1.5 bg-teal-950 hover:bg-teal-800 text-white rounded-xl text-[10px] font-black uppercase transition-all shadow-lg shadow-teal-950/20 active:scale-95"
                             title="Buka Detail"
                           >
                             <Eye className="w-3.5 h-3.5" />
@@ -1912,7 +1944,7 @@ function AdminPendaftarContent() {
                             onClick={() => handlePageChange(page)}
                             className={`w-8 h-8 md:w-10 md:h-10 rounded-lg font-medium transition-colors text-sm md:text-base ${
                               page === pagination.page
-                                ? "bg-blue-600 text-white"
+                                ? "bg-teal-700 text-white"
                                 : "bg-white border-2 border-stone-200 hover:bg-blue-50 hover:border-blue-300"
                             }`}
                           >
@@ -2047,7 +2079,7 @@ function AdminPendaftarContent() {
                 <button
                   type="submit"
                   disabled={isSubmittingAnnouncement}
-                  className="flex items-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-200 hover:shadow-blue-300 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex items-center gap-2 px-6 py-2.5 bg-teal-700 hover:bg-teal-800 text-white font-bold rounded-xl shadow-lg shadow-teal-200 hover:shadow-teal-300 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmittingAnnouncement ? (
                     <>
