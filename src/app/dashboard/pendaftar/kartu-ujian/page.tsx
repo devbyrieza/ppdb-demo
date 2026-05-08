@@ -63,7 +63,7 @@ export default function ExamCardPage() {
                 "id-ID",
               ),
               waktu: j.waktu_mulai.substring(0, 5),
-              lokasi: j.lokasi || "Pesantren Al Andalus Ulul Albaab",
+              lokasi: j.lokasi || "Pondok Pesantren Al-Fath",
             })) || [],
         };
 
@@ -260,7 +260,7 @@ export default function ExamCardPage() {
                   })}
                 </p>
                 <p className="font-bold underline uppercase">
-                  Panitia PPDB Ulul Albaab
+                  Panitia PPDB Al-Fath
                 </p>
               </div>
             </div>

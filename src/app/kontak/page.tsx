@@ -142,24 +142,24 @@ export default function ContactPage() {
   const SOCIAL_MEDIA = [
     {
       name: "Instagram",
-      username: "@alandalusululalbaab",
-      url: "https://www.instagram.com/alandalusululalbaab/",
+      username: "@pesantren_alfath",
+      url: "#",
       icon: Instagram,
       textColor: "text-pink-600",
       bgLight: "bg-pink-50",
     },
     {
       name: "Facebook",
-      username: "Pesantren Al Andalus Ulul Albaab",
-      url: "https://www.facebook.com/alandalus.ululalbaab/",
+      username: "Pondok Pesantren Al-Fath Sukabumi",
+      url: "#",
       icon: Facebook,
       textColor: "text-blue-600",
       bgLight: "bg-blue-50",
     },
     {
       name: "Youtube",
-      username: "Al Andalus Ulul Albaab",
-      url: "https://www.youtube.com/@AlAndalusUlulAlbaab",
+      username: "Pondok Pesantren Al-Fath",
+      url: "#",
       icon: Youtube,
       textColor: "text-red-600",
       bgLight: "bg-red-50",
@@ -229,8 +229,8 @@ export default function ContactPage() {
             <ContactInfoCard
               icon={Mail}
               title="Email Resmi"
-              content="alandalusululalbaab2@gmail.com"
-              href="mailto:alandalusululalbaab2@gmail.com"
+              content="info@pesantren-alfath.or.id"
+              href="mailto:info@pesantren-alfath.or.id"
               subContent="Surat Menyurat & Kerjasama"
               delay={0.3}
             />
@@ -398,7 +398,7 @@ export default function ContactPage() {
                     allowFullScreen
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
-                    title="Lokasi Pesantren Sistem PPDB Modern"
+                    title="Lokasi Pondok Pesantren Al-Fath"
                     className="grayscale hover:grayscale-0 transition-all duration-700"
                   />
                   <div className="absolute bottom-3 left-3 md:bottom-6 md:left-6 bg-white/90 backdrop-blur-sm px-3 py-1.5 md:px-6 md:py-3 rounded-lg md:rounded-2xl shadow-md border border-teal-100 flex items-center gap-1.5 md:gap-3 z-10">

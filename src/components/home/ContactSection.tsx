@@ -23,7 +23,7 @@ const CONTACT_INFO = [
   {
     icon: Mail,
     title: "Email Resmi",
-    content: "alandalusululalbaab2@gmail.com",
+    content: "info@pesantren-alfath.or.id",
     detail: "Kirim pertanyaan kapan saja",
     accent: "teal" as const,
   },

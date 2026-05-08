@@ -6,12 +6,12 @@
 export const PPDB_CONFIG = {
   // 🏫 INFO PESANTREN (GANTI INI DULU!)
   pesantren: {
-    nama: "Pesantren Al Andalus (Demo)",
-    singkatan: "PPDB Demo",
-    alamat: "Jl. Pesantren No. 1, Bogor, Jawa Barat",
-    telepon: "+62 812-3456-7890",
-    email: "demo@pesantren-alandalus.com",
-    emailPpdb: "demo@pesantren-alandalus.com",
+    nama: "Pondok Pesantren Al-Fath",
+    singkatan: "PPDB Al-Fath",
+    alamat: "Jl. KH Mama Oyon, Cihaur, Kec. Cicantayan, Kabupaten Sukabumi, Jawa Barat 43155",
+    telepon: "+62 812-8530-0800",
+    email: "info@pesantren-alfath.or.id",
+    emailPpdb: "ppdb@pesantren-alfath.or.id",
     website: "https://ppdb-demo.vercel.app",
   },
 
@@ -104,16 +104,16 @@ export const PPDB_CONFIG = {
 
   // 🔗 KONTAK & SOSMED (GANTI SESUAI!)
   contact: {
-    whatsapp: "+6288809934970",
-    instagram: "@pesantrenalimam",
-    facebook: "Pesantren Al Andalus Al Imam (Official Fanpage)",
-    youtube: "Al Andalus Al Imam",
+    whatsapp: "+6281285300800",
+    instagram: "@pesantren_alfath",
+    facebook: "Pondok Pesantren Al-Fath (Official Fanpage)",
+    youtube: "Pondok Pesantren Al-Fath",
   },
 
   // ⚙️ SETTING TEKNIS (UMUMNYA TIDAK PERLU DIUBAH)
   technical: {
-    appName: "PPDB Demo Al Andalus",
-    appDescription: "Sistem Demo Penerimaan Peserta Didik Baru",
+    appName: "PPDB Al-Fath",
+    appDescription: "Sistem Penerimaan Peserta Didik Baru Pondok Pesantren Al-Fath",
     version: "2.1.0",
     author: "Rieza Eka Tomara",
   },

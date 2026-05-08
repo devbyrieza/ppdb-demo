@@ -1,4 +1,4 @@
-// src/components/home/HeroSection.tsx — alandalus-template-demo
+// src/components/home/HeroSection.tsx — alfath-template-demo
 // FIXED: reduced motion badge, tablet breakpoint, touch hover, explicit font sizing
 "use client";
 

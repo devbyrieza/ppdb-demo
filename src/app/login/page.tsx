@@ -550,7 +550,7 @@ export default function LoginPage() {
                       type="email"
                       value={emailAdmin}
                       onChange={(e) => setEmailAdmin(e.target.value)}
-                      placeholder="admin@andalus.sch.id"
+                      placeholder="admin@pesantren-alfath.or.id"
                       className="w-full px-5 py-3 md:px-8 md:py-5 pl-14 md:pl-16 rounded-xl md:rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-teal-300 focus:ring-4 focus:ring-teal-50 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-400 text-sm md:text-base shadow-inner"
                       disabled={isLoading}
                     />

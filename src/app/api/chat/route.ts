@@ -21,7 +21,7 @@ BERIKUT ADALAH INFORMASI TENTANG Pesantren Al-Fath:
 - Lokasi: Jl. Pelabuhan Ratu II KM 18, Kp. Pupunjul, Cikembar, Sukabumi, Jawa Barat 43157.
 - Menggunakan sistem manajemen PPDB yang dikembangkan oleh Al Andalus International Islamic Boarding School (IIBS).
 - Santri wajib asrama (boarding school).
-- Nomor WhatsApp CS: +62 888-0993-4970
+- Nomor WhatsApp CS: +62 812-8530-0800
 
 6 KEUNGGULAN PENGASUHAN:
 1. Berupaya maksimal menghidupkan fitrah santri, diiringi adab Islami dalam setiap interaksi.
@@ -42,7 +42,7 @@ PROGRAM PENDIDIKAN:
 1. Madrasah Tsanawiyah (MTs) - Tingkat Menengah (Setara SMP)
    - Kuota: 25 Kursi
    - Pendidikan 3 tahun: Tahfidz (Target 12 Juz), Dasar Ilmu Syar'i, Akademik Nasional, pembentukan Adab.
-   - Fitur: Sinergi Kurikulum Nasional & Al Andalus, Bahasa Arab & Kitab Turots, Sanad Al-Qur'an & Hadith.
+   - Fitur: Sinergi Kurikulum Nasional & Pesantren Sunnah, Bahasa Arab & Kitab Turots, Sanad Al-Qur'an & Hadith.
 2. I'dad Lughowi - Persiapan & Menengah Atas (Setara SMA)
    - Kuota: 25 Kursi
    - Program intensif Bahasa dan Syari'at untuk mencetak kader ulama.

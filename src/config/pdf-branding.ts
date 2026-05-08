@@ -6,14 +6,14 @@
 export const PDF_BRANDING = {
   // Institution Labels
   institution: {
-    name: "ANDALUS MODERN ACADEMY",
-    subtitle: "Standardized PPDB Template for Modern Institutions",
+    name: "PONDOK PESANTREN AL-FATH",
+    subtitle: "Sistem Penerimaan Santri Baru Modern",
     committee: "PANITIA PENERIMAAN SANTRI BARU",
     academic_year: "2026-2027",
-    address: "Jl. Al Andalus Raya No. 1, Kota Madani",
+    address: "Jl. KH Mama Oyon, Cihaur, Kec. Cicantayan, Kabupaten Sukabumi, Jawa Barat 43155",
     contact:
-      "Website: https://ppdb-demo.vercel.app | Email: demo@alandalus.com",
-    phones: "WhatsApp: 0800-0000-0000", // Base phone
+      "Website: https://ppdb-demo.vercel.app | Email: info@pesantren-alfath.or.id",
+    phones: "WhatsApp: 0812-8530-0800", // Base phone
   },
 
   // Resource Paths
@@ -46,8 +46,8 @@ export const PDF_BRANDING = {
 
   // Official Mudir / Authority
   authority: {
-    name: "Dr. Al Andalus",
+    name: "Ust. Muhammad Al-Fath, Lc.",
     role: "Mudir",
-    city: "Kota Madani",
+    city: "Sukabumi",
   },
 };

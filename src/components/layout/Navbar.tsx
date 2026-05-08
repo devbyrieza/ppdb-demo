@@ -143,7 +143,7 @@ export default function Navbar() {
                   {BRANDING.schoolShortName}
                 </h1>
                 <p className="text-[9px] sm:text-[10px] font-bold text-[var(--color-ink-400)] uppercase tracking-widest mt-0.5 leading-tight">
-                  Dikelola oleh Al Andalus IIBS
+                  Pondok Pesantren Sunnah
                 </p>
               </div>
             </Link>
@@ -289,7 +289,7 @@ export default function Navbar() {
                     {BRANDING.schoolShortName}
                   </p>
                   <p className="text-[10px] text-[var(--color-ink-400)] font-semibold mt-0.5 uppercase tracking-wider">
-                    Dikelola oleh Al Andalus IIBS
+                    Pondok Pesantren Sunnah
                   </p>
                 </div>
                 {/* Template label */}
