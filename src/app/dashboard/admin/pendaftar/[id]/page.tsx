@@ -671,12 +671,12 @@ export default function PendaftarDetailPage() {
                       Belum Ujian
                     </span>
                   ) : (
-                    <div className="flex items-baseline gap-1">
+                    <div className="flex items-baseline gap-2">
                       <span className="text-4xl font-black text-teal-950">
                         {pendaftar.nilai_ujian?.score_akademik != null ? Number(pendaftar.nilai_ujian.score_akademik).toFixed(1).replace(".0", "") : "-"}
                       </span>
-                      <span className="text-xs text-teal-300 font-black uppercase">
-                        pts
+                      <span className="text-sm text-teal-400 font-medium">
+                        / 100
                       </span>
                     </div>
                   )}
@@ -734,9 +734,11 @@ export default function PendaftarDetailPage() {
                     ) : (
                       <div className="flex items-baseline gap-2">
                         <span className="text-3xl font-black text-emerald-900">
-                          {pendaftar.nilai_ujian?.score_quran ??
-                            pendaftar.nilai_ujian?.nilai_tes_quran ??
-                            "-"}
+                          {pendaftar.nilai_ujian?.score_quran != null
+                            ? Number(pendaftar.nilai_ujian.score_quran).toFixed(1).replace(".0", "")
+                            : pendaftar.nilai_ujian?.nilai_tes_quran != null
+                              ? Number(pendaftar.nilai_ujian.nilai_tes_quran).toFixed(1).replace(".0", "")
+                              : "-"}
                         </span>
                         <span className="text-sm text-emerald-400 font-medium">
                           / 100
@@ -745,8 +747,8 @@ export default function PendaftarDetailPage() {
                     )}
                   </div>
                   {pendaftar.nilai_ujian?.catatan_quran && (
-                    <div className="mt-2 text-xs text-stone-600 line-clamp-2 italic border-t border-emerald-200/50 pt-2">
-                      "{pendaftar.nilai_ujian.catatan_quran}"
+                    <div className="mt-2 text-xs text-stone-600 italic border-t border-emerald-200/50 pt-2">
+                      &ldquo;{pendaftar.nilai_ujian.catatan_quran}&rdquo;
                     </div>
                   )}
                 </div>
@@ -764,14 +766,9 @@ export default function PendaftarDetailPage() {
                       <div className="flex items-baseline gap-2">
                         <span className="text-3xl font-black text-amber-900">
                           {pendaftar.nilai_ujian?.score_wawancara != null
-                            ? Number(
-                                pendaftar.nilai_ujian.score_wawancara,
-                              ).toFixed(1)
-                            : pendaftar.nilai_ujian?.nilai_wawancara_santri !=
-                                null
-                              ? Number(
-                                  pendaftar.nilai_ujian.nilai_wawancara_santri,
-                                ).toFixed(1)
+                            ? Number(pendaftar.nilai_ujian.score_wawancara).toFixed(1).replace(".0", "")
+                            : pendaftar.nilai_ujian?.nilai_wawancara_santri != null
+                              ? Number(pendaftar.nilai_ujian.nilai_wawancara_santri).toFixed(1).replace(".0", "")
                               : "-"}
                         </span>
                         <span className="text-sm text-amber-400 font-medium">
@@ -781,8 +778,8 @@ export default function PendaftarDetailPage() {
                     )}
                   </div>
                   {pendaftar.nilai_ujian?.catatan_santri && (
-                    <div className="mt-2 text-xs text-stone-600 line-clamp-2 italic border-t border-amber-200/50 pt-2">
-                      "{pendaftar.nilai_ujian.catatan_santri}"
+                    <div className="mt-2 text-xs text-stone-600 italic border-t border-amber-200/50 pt-2">
+                      &ldquo;{pendaftar.nilai_ujian.catatan_santri}&rdquo;
                     </div>
                   )}
                 </div>
@@ -798,15 +795,18 @@ export default function PendaftarDetailPage() {
                       </span>
                     ) : pendaftar.nilai_ujian?.nilai_wawancara_ortu ||
                       (pendaftar.nilai_ujian as any)?.detail_cawalsan ? (
-                      <div className="flex flex-col mt-2 space-y-1">
-                        <span className="text-lg font-black text-rose-900 border border-rose-200 bg-white px-3 py-1 rounded-lg inline-block w-max">
-                          {pendaftar.nilai_ujian?.nilai_wawancara_ortu != null &&
-                          Number(pendaftar.nilai_ujian.nilai_wawancara_ortu) > 1
-                            ? `${Number(pendaftar.nilai_ujian.nilai_wawancara_ortu).toFixed(1)} / 100`
-                            : "Sudah Dinilai"}
-                        </span>
+                      <div className="flex flex-col mt-1 gap-1.5">
+                        <div className="flex items-baseline gap-2">
+                          <span className="text-3xl font-black text-rose-900">
+                            {pendaftar.nilai_ujian?.nilai_wawancara_ortu != null &&
+                            Number(pendaftar.nilai_ujian.nilai_wawancara_ortu) > 1
+                              ? Number(pendaftar.nilai_ujian.nilai_wawancara_ortu).toFixed(1).replace(".0", "")
+                              : "-"}
+                          </span>
+                          <span className="text-sm text-rose-400 font-medium">/ 100</span>
+                        </div>
                         {(pendaftar.nilai_ujian as any)?.detail_cawalsan?.rekomendasi && (
-                          <span className="text-xs font-bold text-rose-600 uppercase tracking-wider">
+                          <span className="text-xs font-black text-rose-700 bg-rose-100 border border-rose-200 px-2 py-0.5 rounded uppercase tracking-widest w-max">
                             {(pendaftar.nilai_ujian as any).detail_cawalsan.rekomendasi}
                           </span>
                         )}
@@ -818,23 +818,28 @@ export default function PendaftarDetailPage() {
                     )}
                   </div>
                   {pendaftar.nilai_ujian?.catatan_ortu && (
-                    <div className="mt-2 text-xs text-stone-600 line-clamp-2 italic border-t border-rose-200/50 pt-2">
-                      "{pendaftar.nilai_ujian.catatan_ortu}"
+                    <div className="mt-2 text-xs text-stone-600 italic border-t border-rose-200/50 pt-2">
+                      &ldquo;{pendaftar.nilai_ujian.catatan_ortu}&rdquo;
+                    </div>
+                  )}
+                  {(pendaftar.nilai_ujian as any)?.detail_cawalsan?.catatan && (
+                    <div className="mt-2 text-xs text-stone-600 italic border-t border-rose-200/50 pt-2">
+                      &ldquo;{(pendaftar.nilai_ujian as any).detail_cawalsan.catatan}&rdquo;
                     </div>
                   )}
                 </div>
               </div>
 
-              <div className="bg-stone-50 p-4 rounded-lg border border-stone-200 mt-4">
-                <span className="block text-sm text-stone-500 font-medium mb-1">
-                  Catatan Total (Admin/Penguji Al-Qur'an Akhir)
-                </span>
-                <p className="text-stone-800 italic">
-                  {pendaftar.nilai_ujian?.catatan_umum ||
-                    pendaftar.nilai_ujian?.catatan ||
-                    "Belum ada catatan umum/akhir."}
-                </p>
-              </div>
+              {(pendaftar.nilai_ujian?.catatan_umum || pendaftar.nilai_ujian?.catatan) && (
+                <div className="bg-stone-50 p-4 rounded-lg border border-stone-200 mt-4">
+                  <span className="block text-sm text-stone-500 font-medium mb-1">
+                    Catatan Umum Penguji
+                  </span>
+                  <p className="text-stone-800 italic">
+                    &ldquo;{pendaftar.nilai_ujian?.catatan_umum || pendaftar.nilai_ujian?.catatan}&rdquo;
+                  </p>
+                </div>
+              )}
 
               {isPenguji && (
                 <div className="mt-4 flex justify-end">
