@@ -1621,6 +1621,11 @@ function AdminPendaftarContent() {
                     <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
                       Jenjang
                     </th>
+                    {(isAdminSuper || isKeuangan) && (
+                      <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
+                        Bayar Pendaftaran
+                      </th>
+                    )}
                     {(isAdminSuper || isBerkas) && (
                       <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
                         Status Berkas
@@ -1629,11 +1634,6 @@ function AdminPendaftarContent() {
                     <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
                       Status Pendaftaran
                     </th>
-                    {(isAdminSuper || isKeuangan) && (
-                      <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
-                        Bayar Pendaftaran
-                      </th>
-                    )}
                     <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
                       Aksi
                     </th>
@@ -1709,43 +1709,6 @@ function AdminPendaftarContent() {
                           {item.jenjang}
                         </span>
                       </td>
-                      {(isAdminSuper || isBerkas) && (
-                        <td className="px-4 py-3">
-                          <span
-                            className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                              item.dokumen &&
-                              item.dokumen.every(
-                                (d: any) => d.status_verifikasi === "verified",
-                              ) &&
-                              item.dokumen.length > 0
-                                ? "bg-green-100 text-green-800"
-                                : item.dokumen &&
-                                    item.dokumen.some(
-                                      (d: any) =>
-                                        d.status_verifikasi === "rejected",
-                                    )
-                                  ? "bg-red-100 text-red-800"
-                                  : "bg-yellow-100 text-yellow-800"
-                            }`}
-                          >
-                            {item.dokumen &&
-                            item.dokumen.every(
-                              (d: any) => d.status_verifikasi === "verified",
-                            ) &&
-                            item.dokumen.length > 0
-                              ? "Lengkap"
-                              : item.dokumen && item.dokumen.length > 0
-                                ? "Perlu Cek"
-                                : "Belum Upload"}
-                          </span>
-                          <div className="text-xs text-stone-600 font-medium mt-1">
-                            {item.dokumen?.length || 0} Dokumen
-                          </div>
-                        </td>
-                      )}
-                      <td className="px-4 py-3">
-                        {formatStatus(item.status_pendaftaran)}
-                      </td>
                       {(isAdminSuper || isKeuangan) && (
                         <td className="px-4 py-3">
                           {item.pembayaran && item.pembayaran.length > 0 ? (
@@ -1792,6 +1755,43 @@ function AdminPendaftarContent() {
                           )}
                         </td>
                       )}
+                      {(isAdminSuper || isBerkas) && (
+                        <td className="px-4 py-3">
+                          <span
+                            className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                              item.dokumen &&
+                              item.dokumen.every(
+                                (d: any) => d.status_verifikasi === "verified",
+                              ) &&
+                              item.dokumen.length > 0
+                                ? "bg-green-100 text-green-800"
+                                : item.dokumen &&
+                                    item.dokumen.some(
+                                      (d: any) =>
+                                        d.status_verifikasi === "rejected",
+                                    )
+                                  ? "bg-red-100 text-red-800"
+                                  : "bg-yellow-100 text-yellow-800"
+                            }`}
+                          >
+                            {item.dokumen &&
+                            item.dokumen.every(
+                              (d: any) => d.status_verifikasi === "verified",
+                            ) &&
+                            item.dokumen.length > 0
+                              ? "Lengkap"
+                              : item.dokumen && item.dokumen.length > 0
+                                ? "Perlu Cek"
+                                : "Belum Upload"}
+                          </span>
+                          <div className="text-xs text-stone-600 font-medium mt-1">
+                            {item.dokumen?.length || 0} Dokumen
+                          </div>
+                        </td>
+                      )}
+                      <td className="px-4 py-3">
+                        {formatStatus(item.status_pendaftaran)}
+                      </td>
                       
                       <td className="px-4 py-3 whitespace-nowrap">
                         <div className="flex items-center gap-2">
