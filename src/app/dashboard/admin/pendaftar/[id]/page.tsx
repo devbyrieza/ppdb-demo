@@ -433,7 +433,7 @@ export default function PendaftarDetailPage() {
           <div className="flex flex-wrap gap-4">
             <div className="bg-white/10 backdrop-blur-md rounded-2xl px-5 py-4 min-w-[120px] border border-white/10">
               <p className="text-[10px] text-teal-100 font-black uppercase tracking-widest mb-1">
-                Pembayaran
+                Bayar Pendaftaran
               </p>
               <p className="font-black text-xl flex items-center gap-1.5 text-white">
                 {hasPaid ? (
