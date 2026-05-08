@@ -28,8 +28,13 @@ const JENIS_DOKUMEN = [
     required: true,
   },
   {
-    key: "pakta_integritas",
-    label: "Scan Pakta Integritas (Download format)",
+    key: "pakta_integritas_santri",
+    label: "Scan Pakta Integritas Calon Santri (Download format)",
+    required: true,
+  },
+  {
+    key: "pakta_integritas_ortu",
+    label: "Scan Pakta Integritas Calon Orangtua/Wali Santri (Download format)",
     required: true,
   },
   {

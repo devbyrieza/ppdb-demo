@@ -48,7 +48,12 @@ const DOKUMEN_CONFIG: Record<
     maxSize: 5 * 1024 * 1024,
     allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
   },
-  pakta_integritas: {
+  pakta_integritas_santri: {
+    label: "Scan Pakta Integritas",
+    maxSize: 5 * 1024 * 1024,
+    allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
+  },
+  pakta_integritas_ortu: {
     label: "Scan Pakta Integritas",
     maxSize: 5 * 1024 * 1024,
     allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
@@ -229,7 +234,8 @@ export async function POST(request: NextRequest) {
       "nisn",
       "foto_setengah_badan",
       "surat_kesehatan",
-      "pakta_integritas",
+      "pakta_integritas_santri",
+  "pakta_integritas_ortu",
       "pernyataan_bebas_negatif",
     ];
 

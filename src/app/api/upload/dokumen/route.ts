@@ -103,7 +103,20 @@ const DOKUMEN_CONFIG: Record<
     ],
     required: true,
   },
-  pakta_integritas: {
+  pakta_integritas_santri: {
+    label: "Scan Pakta Integritas",
+    maxSize: 2 * 1024 * 1024,
+    allowedTypes: [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "image/webp",
+      "image/heic",
+      "application/pdf",
+    ],
+    required: true,
+  },
+  pakta_integritas_ortu: {
     label: "Scan Pakta Integritas",
     maxSize: 2 * 1024 * 1024,
     allowedTypes: [

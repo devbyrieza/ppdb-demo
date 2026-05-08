@@ -19,7 +19,8 @@ const REQUIRED_DOC_TYPES = [
   "nisn",
   "foto_setengah_badan",
   "surat_kesehatan",
-  "pakta_integritas",
+  "pakta_integritas_santri",
+  "pakta_integritas_ortu",
   "pernyataan_bebas_negatif",
 ];
 

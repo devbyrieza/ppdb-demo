@@ -142,7 +142,8 @@ export default function VerifikasiDokumenDetailPage() {
             case "surat_kesehatan":
               label = "Surat Keterangan Sehat";
               break;
-            case "pakta_integritas":
+            case "pakta_integritas_santri":
+            case "pakta_integritas_ortu":
               label = "Scan Pakta Integritas";
               break;
             case "pernyataan_bebas_negatif":
@@ -180,7 +181,8 @@ export default function VerifikasiDokumenDetailPage() {
           "rapor_sem2",
           "nisn",
           "surat_kesehatan",
-          "pakta_integritas",
+          "pakta_integritas_santri",
+  "pakta_integritas_ortu",
           "pernyataan_bebas_negatif",
         ];
 
@@ -209,7 +211,8 @@ export default function VerifikasiDokumenDetailPage() {
               case "surat_kesehatan":
                 label = "Surat Keterangan Sehat";
                 break;
-              case "pakta_integritas":
+              case "pakta_integritas_santri":
+            case "pakta_integritas_ortu":
                 label = "Scan Pakta Integritas";
                 break;
               case "pernyataan_bebas_negatif":
