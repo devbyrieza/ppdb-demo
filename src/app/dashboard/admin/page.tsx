@@ -226,8 +226,26 @@ export default function AdminDashboardPage() {
           sheets,
         });
       } else {
-        const headers = Object.keys(data[0] || {});
-        const rows = data.map((item: any) => Object.values(item));
+        const headers = [
+          "No. Pendaftaran",
+          "Nama Lengkap",
+          "JK",
+          "Jenjang",
+          "Asal Sekolah",
+          "No. HP",
+          "Email",
+          "Status"
+        ];
+        const rows = data.map((item: any) => [
+          item["Nomor Pendaftaran"] || "-",
+          item["Nama Lengkap"] || "-",
+          (item["Jenis Kelamin"] || "-") === "Laki-laki" ? "L" : "P",
+          item["Jenjang"] || "-",
+          item["Asal Sekolah"] || "-",
+          String(item["No HP"] || "-").replace(/^'/, ""),
+          item["Email"] || "-",
+          item["Status"] || "-"
+        ]);
         exportToPDF(
           `Data ${cardLabel}`,
           headers,
