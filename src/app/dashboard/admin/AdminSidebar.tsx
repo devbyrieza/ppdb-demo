@@ -427,14 +427,14 @@ export default function AdminSidebar({
                 Admin Portal
               </Link>
               <ChevronRight className="w-3.5 h-3.5 text-ink-300" />
-              <span className="text-teal-950 italic">Overview</span>
+              <span className="text-teal-950 italic">Ikhtisar</span>
             </div>
             <div className="h-6 w-px bg-ink-100" />
             <div className="relative group">
               <Search className="absolute left-4 top-1/2 -tranink-y-1/2 w-4 h-4 text-ink-300 group-focus-within:text-teal-600 transition-colors" />
               <input
                 type="text"
-                placeholder="Search system data..."
+                placeholder="Cari data sistem..."
                 className="bg-ink-50 border-ink-100 rounded-[1.25rem] pl-11 pr-6 py-3 text-[13px] w-80 focus:w-[450px] focus:bg-white focus:ring-4 focus:ring-teal-500/5 focus:border-teal-100 transition-all duration-500 placeholder:text-ink-300 font-medium"
               />
             </div>
@@ -450,7 +450,7 @@ export default function AdminSidebar({
               href="/"
               className="px-8 py-3.5 bg-teal-950 text-white text-[11px] font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-teal-800 transition-all shadow-xl shadow-teal-950/20 active:scale-95"
             >
-              Visit Site
+              Kunjungi Situs
             </Link>
           </div>
         </header>
