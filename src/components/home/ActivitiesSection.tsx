@@ -191,10 +191,9 @@ export default function ActivitiesSection() {
 
             <motion.h2
               variants={fadeUpVariants}
-              className="text-4xl md:text-5xl font-black text-ink-950 mb-6 tracking-tight leading-[1.1]"
+              className="section-title mb-6"
             >
-              Kegiatan <span className="text-teal-600">Terbaik</span> untuk
-              Bekal Masa Depan
+              Kegiatan <span className="text-gradient-teal">Terbaik</span> untuk Bekal Masa Depan
             </motion.h2>
 
             <motion.p
