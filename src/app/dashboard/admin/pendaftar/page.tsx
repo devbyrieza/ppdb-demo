@@ -798,16 +798,14 @@ function AdminPendaftarContent() {
         const translateStatus = (status: string) => {
           if (!status) return "-";
           const s = status.toLowerCase();
+          if (s.includes("draft") || s === "draf") return "Draf";
+          if (s.includes("bayar") || s.includes("waiting_payment") || s.includes("payment_verification")) return "Bayar Pendaftaran";
+          if (s.includes("data_completed") || s.includes("data") || s.includes("sudah_isi_data")) return "Data Lengkap";
+          if (s.includes("docs_verified") || s.includes("berkas") || s.includes("verified")) return "Berkas Lengkap";
+          if (s.includes("accepted") || s.includes("diterima")) return "Diterima";
+          if (s.includes("announced") || s.includes("cadangan")) return "Cadangan";
+          if (s.includes("rejected") || s.includes("ditolak")) return "Ditolak";
           if (s.includes("enrolled") || s.includes("daftar ulang") || s.includes("ulang")) return "Daftar Ulang";
-          if (s.includes("accepted") || s.includes("diterima") || s.includes("lulus")) return "Diterima";
-          if (s.includes("rejected") || s.includes("ditolak") || s.includes("perbaikan")) return "Ditolak";
-          if (s.includes("cadangan") || s.includes("reserve")) return "Cadangan";
-          if (s.includes("docs_verified") || s.includes("berkas lengkap") || s.includes("verifikasi berkas")) return "Berkas Lengkap";
-          if (s.includes("verified") || s.includes("terverifikasi")) return "Terverifikasi";
-          if (s.includes("data_completed") || s.includes("data lengkap")) return "Data Lengkap";
-          if (s.includes("payment_verification") || s.includes("verifikasi pembayaran")) return "Verifikasi Pembayaran";
-          if (s.includes("waiting_payment") || s.includes("bayar pendaftaran")) return "Bayar Pendaftaran";
-          if (s.includes("draft") || s.includes("belum lengkap")) return "Belum Lengkap";
           return status;
         };
 
