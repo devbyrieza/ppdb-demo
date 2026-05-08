@@ -63,6 +63,7 @@ export async function GET(request: Request) {
         jenjang: true,
         provinsi: true,
         jenis_kelamin: true,
+        created_at: true,
       },
     });
 
@@ -235,8 +236,35 @@ export async function GET(request: Request) {
       SMA: { putra: 0, putri: 0, total: 0 },
     };
 
+    // Calculate weekly growth rate in-memory
+    const now = new Date();
+    const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const twoWeeksAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
+
+    let countThisWeek = 0;
+    let countLastWeek = 0;
+
+    pendaftarData.forEach((p: any) => {
+      const createdAt = new Date(p.created_at || p.createdAt || now);
+      if (createdAt >= oneWeekAgo && createdAt <= now) {
+        countThisWeek++;
+      } else if (createdAt >= twoWeeksAgo && createdAt < oneWeekAgo) {
+        countLastWeek++;
+      }
+    });
+
+    let growthPercent = 0;
+    if (countLastWeek > 0) {
+      growthPercent = Math.round(((countThisWeek - countLastWeek) / countLastWeek) * 100);
+    } else if (countThisWeek > 0) {
+      growthPercent = 100;
+    }
+
+    const growthText = growthPercent >= 0 ? `+${growthPercent}% pekan ini` : `${growthPercent}% pekan ini`;
+
     const stats = {
       total_pendaftar,
+      growth_text: growthText,
       diterima: (statusCounts.accepted || 0) + (statusCounts.enrolled || 0),
       cadangan: statusCounts.announced || 0,
       ditolak: statusCounts.rejected || 0,
