@@ -272,11 +272,8 @@ export async function GET(request: Request) {
       daftar_ulang: statusCounts.enrolled || 0,
 
       // Secondary metrics
-      sudah_bayar: total_pendaftar - (statusCounts.draft || 0),
-      sudah_isi_data:
-        total_pendaftar -
-        (statusCounts.draft || 0) -
-        (statusCounts.waiting_payment || 0),
+      sudah_bayar: ["paid", "verified", "data_completed", "docs_uploaded", "docs_verified", "scheduled", "tested", "announced", "accepted", "enrolled"].reduce((acc, s) => acc + (statusCounts[s] || 0), 0),
+      sudah_isi_data: ["data_completed", "docs_uploaded", "docs_verified", "scheduled", "tested", "announced", "accepted", "enrolled"].reduce((acc, s) => acc + (statusCounts[s] || 0), 0),
       waiting_payment: statusCounts.waiting_payment || 0,
       waiting_docs: statusCounts.data_completed || 0,
 
