@@ -183,7 +183,7 @@ export default function Navbar() {
                 Masuk
               </Link>
               <Link
-                href="/daftar"
+                href="/ppdb"
                 className="btn-primary flex items-center gap-2 group text-sm px-5 py-2.5"
               >
                 Daftar PPDB
@@ -348,7 +348,7 @@ export default function Navbar() {
                     Masuk ke Dashboard
                   </Link>
                   <Link
-                    href="/daftar"
+                    href="/ppdb"
                     onClick={() => setIsMenuOpen(false)}
                     className="btn-primary w-full justify-center gap-2 min-h-[52px]"
                   >
