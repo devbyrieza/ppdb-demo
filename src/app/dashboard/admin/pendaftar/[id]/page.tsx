@@ -473,65 +473,11 @@ export default function PendaftarDetailPage() {
         <div className="mt-6 pt-6 border-t border-white/20 flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <span className="text-blue-100">Status:</span>
-            {editingStatus ? (
-              <div className="flex items-center gap-2">
-                <select
-                  value={newStatus}
-                  onChange={(e) => setNewStatus(e.target.value)}
-                  className="px-3 py-1.5 bg-white text-teal-950 rounded-lg text-sm font-bold focus:outline-none focus:ring-2 focus:ring-sand-400"
-                  disabled={savingStatus}
-                >
-                  <option value="draft">Draft</option>
-                  <option value="awaiting_payment">Menunggu Pembayaran</option>
-                  <option value="paid">Sudah Bayar</option>
-                  <option value="paid">Terdaftar</option>
-                  <option value="data_completed">Data Lengkap</option>
-                  <option value="docs_verified">Berkas Lengkap</option>
-                  <option value="testing">Sedang Ujian</option>
-                  <option value="tested">Sudah Ujian</option>
-                  <option value="accepted">Diterima</option>
-                  <option value="announced">Cadangan</option>
-                  <option value="rejected">Ditolak</option>
-                  <option value="enrolled">Sudah Daftar Ulang</option>
-                </select>
-                <button
-                  onClick={handleUpdateStatus}
-                  disabled={savingStatus}
-                  className="px-3 py-1.5 bg-green-500 hover:bg-green-600 rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
-                >
-                  {savingStatus ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                  ) : (
-                    "Simpan"
-                  )}
-                </button>
-                <button
-                  onClick={() => {
-                    setEditingStatus(false);
-                    setNewStatus(pendaftar.status_proses);
-                  }}
-                  disabled={savingStatus}
-                  className="px-3 py-1.5 bg-white/20 hover:bg-white/30 rounded-lg text-sm font-medium transition-colors"
-                >
-                  Batal
-                </button>
-              </div>
-            ) : (
-              <div className="flex items-center gap-2">
-                <span
-                  className={`px-3 py-1 rounded-lg text-sm font-bold ${statusInfo.color}`}
-                >
-                  {statusInfo.label}
-                </span>
-                <button
-                  onClick={() => setEditingStatus(true)}
-                  className="px-3 py-1.5 bg-white/20 hover:bg-white/30 rounded-lg text-sm font-medium transition-colors flex items-center gap-1"
-                >
-                  <Edit className="w-3 h-3" />
-                  Ubah
-                </button>
-              </div>
-            )}
+            <span
+              className={`px-3 py-1 rounded-lg text-sm font-bold ${statusInfo.color}`}
+            >
+              {statusInfo.label}
+            </span>
           </div>
 
           <div className="flex items-center gap-2">
