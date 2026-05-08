@@ -1,5 +1,5 @@
-import { useEffect } from "react";
 "use client";
+import { useEffect } from "react";
 
 import { Container } from "@/components/layout/Container";
 import { Calendar, Construction } from "lucide-react";

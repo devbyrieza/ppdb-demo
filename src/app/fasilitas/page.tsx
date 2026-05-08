@@ -1,5 +1,5 @@
-import { useEffect } from "react";
 "use client";
+import { useEffect } from "react";
 
 import Link from "next/link";
 import Image from "next/image";
