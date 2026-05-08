@@ -224,14 +224,14 @@ export default function AdminDashboardPage() {
       {/* STATS GRID */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
         {isAdminSuper && (<>
-          <StatWidget label="Total Pendaftar" value={stats.total_pendaftar} icon={Users} color="blue" trend="+5% minggu ini" breakdown={getBreakdown("total")} highlighted={true} />
+          <StatWidget label="Total Pendaftar" value={stats.total_pendaftar} icon={Users} color="blue" trend="+5% minggu ini" breakdown={getBreakdown("total")} highlighted={false} />
           <StatWidget label="Sudah Bayar Pendaftaran" value={stats.sudah_bayar} icon={Wallet} color="emerald" breakdown={getBreakdown("bayar")} highlighted={false} />
           <StatWidget label="Data Lengkap" value={stats.sudah_isi_data} icon={FileCheck} color="purple" highlighted={false} />
           <StatWidget label="Berkas Lengkap" value={stats.berkas_lengkap} icon={ClipboardCheck} color="purple" breakdown={getBreakdown("berkas")} highlighted={false} />
-          <StatWidget label="Diterima" value={stats.diterima} icon={CheckCircle2} color="emerald" breakdown={getBreakdown("lulus")} highlighted={true} />
-          <StatWidget label="Cadangan" value={stats.cadangan} icon={Clock} color="slate" breakdown={getBreakdown("cadangan")} highlighted={true} />
+          <StatWidget label="Diterima" value={stats.diterima} icon={CheckCircle2} color="emerald" breakdown={getBreakdown("lulus")} highlighted={false} />
+          <StatWidget label="Cadangan" value={stats.cadangan} icon={Clock} color="slate" breakdown={getBreakdown("cadangan")} highlighted={false} />
           <StatWidget label="Ditolak" value={stats.ditolak} icon={Activity} color="rose" breakdown={getBreakdown("ditolak")} highlighted={false} />
-          <StatWidget label="Sudah Daftar Ulang" value={stats.daftar_ulang} icon={Wallet} color="amber" breakdown={getBreakdown("ulang")} highlighted={true} />
+          <StatWidget label="Sudah Daftar Ulang" value={stats.daftar_ulang} icon={Wallet} color="amber" breakdown={getBreakdown("ulang")} highlighted={false} />
         </>)}
 
         {isAdminBerkas && (
