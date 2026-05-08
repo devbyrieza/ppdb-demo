@@ -15,10 +15,10 @@ const FAQS = [
   {
     question: "Apakah santri diwajibkan untuk tinggal di asrama?",
     answer:
-      "Ya, seluruh santri di Pesantren Al-Fath wajib tinggal di asrama untuk mengikuti seluruh rangkaian kegiatan tarbiyah, halaqah tahfidz, dan pembelajaran kitab turots secara maksimal.",
+      "Ya, seluruh santri di Pesantren Al Fath wajib tinggal di asrama untuk mengikuti seluruh rangkaian kegiatan tarbiyah, halaqah tahfidz, dan pembelajaran kitab turots secara maksimal.",
   },
   {
-    question: "Kurikulum apa yang diterapkan di Pesantren Al-Fath?",
+    question: "Kurikulum apa yang diterapkan di Pesantren Al Fath?",
     answer:
       "Kami menerapkan Kurikulum Terpadu yang menggabungkan kurikulum Nasional dengan kurikulum khas Pesantren yang berfokus pada penguasaan Bahasa Arab, Tahfidz Al-Qur'an, dan Kitab Turots.",
   },

@@ -46,7 +46,7 @@ export const PDF_BRANDING = {
 
   // Official Mudir / Authority
   authority: {
-    name: "Ust. Muhammad Al-Fath, Lc.",
+    name: "Ust. Muhammad Al Fath, Lc.",
     role: "Mudir",
     city: "Sukabumi",
   },

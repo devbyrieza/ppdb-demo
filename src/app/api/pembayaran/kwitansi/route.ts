@@ -255,7 +255,7 @@ export async function GET(request: NextRequest) {
 <body>
   <div class="container">
     <div class="header">
-      <h1>Pondok Pesantren Al-Fath</h1>
+      <h1>Pondok Pesantren Al Fath</h1>
       <p>Jl. KH Mama Oyon, Cihaur, Kec. Cicantayan, Kabupaten Sukabumi, Jawa Barat 43155</p>
       <p>Telp: +62 812-8530-0800 | Email: info@pesantren-alfath.or.id</p>
     </div>

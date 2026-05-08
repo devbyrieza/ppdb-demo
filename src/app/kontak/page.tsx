@@ -150,7 +150,7 @@ export default function ContactPage() {
     },
     {
       name: "Facebook",
-      username: "Pondok Pesantren Al-Fath Sukabumi",
+      username: "Pondok Pesantren Al Fath Sukabumi",
       url: "#",
       icon: Facebook,
       textColor: "text-blue-600",
@@ -158,7 +158,7 @@ export default function ContactPage() {
     },
     {
       name: "Youtube",
-      username: "Pondok Pesantren Al-Fath",
+      username: "Pondok Pesantren Al Fath",
       url: "#",
       icon: Youtube,
       textColor: "text-red-600",
@@ -398,7 +398,7 @@ export default function ContactPage() {
                     allowFullScreen
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
-                    title="Lokasi Pondok Pesantren Al-Fath"
+                    title="Lokasi Pondok Pesantren Al Fath"
                     className="grayscale hover:grayscale-0 transition-all duration-700"
                   />
                   <div className="absolute bottom-3 left-3 md:bottom-6 md:left-6 bg-white/90 backdrop-blur-sm px-3 py-1.5 md:px-6 md:py-3 rounded-lg md:rounded-2xl shadow-md border border-teal-100 flex items-center gap-1.5 md:gap-3 z-10">

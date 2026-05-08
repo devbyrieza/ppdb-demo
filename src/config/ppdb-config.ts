@@ -6,8 +6,8 @@
 export const PPDB_CONFIG = {
   // 🏫 INFO PESANTREN (GANTI INI DULU!)
   pesantren: {
-    nama: "Pondok Pesantren Al-Fath",
-    singkatan: "PPDB Al-Fath",
+    nama: "Pondok Pesantren Al Fath",
+    singkatan: "PPDB Al Fath",
     alamat: "Jl. KH Mama Oyon, Cihaur, Kec. Cicantayan, Kabupaten Sukabumi, Jawa Barat 43155",
     telepon: "+62 812-8530-0800",
     email: "info@pesantren-alfath.or.id",
@@ -106,14 +106,14 @@ export const PPDB_CONFIG = {
   contact: {
     whatsapp: "+6281285300800",
     instagram: "@pesantren_alfath",
-    facebook: "Pondok Pesantren Al-Fath (Official Fanpage)",
-    youtube: "Pondok Pesantren Al-Fath",
+    facebook: "Pondok Pesantren Al Fath (Official Fanpage)",
+    youtube: "Pondok Pesantren Al Fath",
   },
 
   // ⚙️ SETTING TEKNIS (UMUMNYA TIDAK PERLU DIUBAH)
   technical: {
-    appName: "PPDB Al-Fath",
-    appDescription: "Sistem Penerimaan Peserta Didik Baru Pondok Pesantren Al-Fath",
+    appName: "PPDB Al Fath",
+    appDescription: "Sistem Penerimaan Peserta Didik Baru Pondok Pesantren Al Fath",
     version: "2.1.0",
     author: "Rieza Eka Tomara",
   },

@@ -28,7 +28,7 @@ async function main() {
 
     // 2. Create Users (Admin & Pendaftar)
     const usersToCreate = [
-        { email: 'mudir@ululalbaab.com', password: 'password123', role: 'admin_super', name: 'Mudir Al-Andalus', phone: '081111111111', label: 'MUDIR' },
+        { email: 'mudir@ululalbaab.com', password: 'password123', role: 'admin_super', name: 'Mudir Al Andalus', phone: '081111111111', label: 'MUDIR' },
         { email: 'keuangan@ululalbaab.com', password: 'password123', role: 'admin_keuangan', name: 'Bendahara PPDB', phone: '082222222222', label: 'FINANCE' },
         
         ...Array.from({ length: 20 }).map((_, i) => ({

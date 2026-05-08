@@ -32,7 +32,7 @@ export default function AiChatWidget({
       id: "welcome",
       role: "ai",
       content:
-        "👋 Assalamu'alaikum! Saya asisten virtual Al-Fath. Ada yang bisa saya bantu terkait informasi pendaftaran, program unggulan, atau jadwal tes?",
+        "👋 Assalamu'alaikum! Saya asisten virtual Al Fath. Ada yang bisa saya bantu terkait informasi pendaftaran, program unggulan, atau jadwal tes?",
     },
   ]);
   const [input, setInput] = useState("");
@@ -147,7 +147,7 @@ export default function AiChatWidget({
           </div>
           <div>
             <h3 className="font-bold text-[15px] leading-tight flex items-center gap-2">
-              Al-Fath Assistant
+              Al Fath Assistant
               <span className="flex w-2 h-2 rounded-full bg-green-400"></span>
             </h3>
             <p className="text-[11px] text-teal-200 mt-0.5 font-medium">

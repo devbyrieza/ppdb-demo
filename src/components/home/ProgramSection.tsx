@@ -34,7 +34,7 @@ const PROGRAMS: ProgramItem[] = [
     desc: "Pendidikan 3 tahun yang mencakup Tahfidz, Dasar Ilmu Syar'i, dan Akademik Nasional, serta pembentukan Adab sebagai fondasi utama.",
     features: [
       "Target Hafalan 12 Juz",
-      "Sinergi Kurikulum Nasional & Al-Fath",
+      "Sinergi Kurikulum Nasional & Al Fath",
       "Bahasa Arab & Kitab Turots",
       "Sanad Al-Qur'an & Hadith",
       "Program TICE & Global",

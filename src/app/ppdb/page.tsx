@@ -253,7 +253,7 @@ function PPDBContent() {
               </div>
               <div>
                 <h3 className="text-xl md:text-2xl font-display font-black text-teal-900 mb-2">
-                  Kesempatan Emas: Angkatan Pelopor Era Al-Fath
+                  Kesempatan Emas: Angkatan Pelopor Era Al Fath
                 </h3>
                 <p className="text-teal-800 font-medium leading-relaxed">
                   Menjadi bagian dari angkatan pelopor 2026/2027 adalah sebuah

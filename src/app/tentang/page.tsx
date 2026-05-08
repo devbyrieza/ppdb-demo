@@ -33,7 +33,7 @@ export default function TentangPage() {
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-teal-50 border border-teal-100 text-teal-700 text-xs font-bold uppercase tracking-widest mb-8 shadow-sm"
           >
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Mengenal Al-Fath • Pendidikan Berstandar Internasional</span>
+            <span>Mengenal Al Fath • Pendidikan Berstandar Internasional</span>
           </motion.div>
 
           <motion.h1
@@ -184,7 +184,7 @@ export default function TentangPage() {
               >
                 <p>
                   <span className="text-ink-950 font-black">
-                    Pesantren Al-Fath
+                    Pesantren Al Fath
                   </span>{" "}
                   hadir sebagai babak baru dalam dunia pendidikan Islam di
                   Sukabumi. Sebagai bagian dari jaringan pesantren yang berkomitmen pada kualitas tinggi,

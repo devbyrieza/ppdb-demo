@@ -956,7 +956,7 @@ Ini adalah pengingat bahwa Anda dijadwalkan mengikuti *${agendaTitle}* pada:
 
 Mohon persiapkan diri dengan baik dan pastikan koneksi internet stabil. Sampai jumpa! Jazakumullahu khairan.
 ---
-*Panitia PPDB ${BRANDING.schoolName.replace("Al-Andalus", "Al Andalus")}*`;
+*Panitia PPDB ${BRANDING.schoolName.replace("Al Andalus", "Al Andalus")}*`;
 }
 
 /**
@@ -1049,7 +1049,7 @@ Mengingatkan jadwal ${agendaText.includes("Wawancara") ? "wawancara" : "menguji"
 Mohon kehadirannya tepat waktu. Jazakumullahu khairan.
  
 ---
-*Sistem PPDB ${BRANDING.schoolName.replace("Al-Andalus", "Al Andalus")}*`;
+*Sistem PPDB ${BRANDING.schoolName.replace("Al Andalus", "Al Andalus")}*`;
 }
  
 export function buildMessageCombinedFinal(

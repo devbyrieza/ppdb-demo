@@ -144,7 +144,7 @@ export async function GET(request: Request) {
         genderCounts["Belum Diisi"]++;
       }
 
-      // Sudah Bayar Pendaftaran Logic: verified or higher
+      // Bayar Pendaftaran Logic: verified or higher
       const verifiedIndex = 3; // 'verified' index in status list below
       const statusList = [
         "draft",

@@ -71,7 +71,7 @@ export default function FeaturesSection() {
                   <Award className="w-3.5 h-3.5" />
                   <span>Keunggulan Utama</span>
                 </div>
-                <h2 className="section-title mb-3">Kenapa Harus Al-Fath?</h2>
+                <h2 className="section-title mb-3">Kenapa Harus Al Fath?</h2>
                 <p className="text-lg text-ink-600 leading-relaxed font-medium text-justify lg:text-left">
                   Sistem pembentukan karakter berbasis{" "}
                   <strong className="text-teal-700">
