@@ -205,7 +205,8 @@ export default function AdminDashboardPage() {
         return map[st] || st;
       };
 
-      const data = rawData.map((item) => ({
+      const data = rawData.map((item, idx) => ({
+        "No.": idx + 1,
         ...item,
         Status: translateStatus(item.Status || "")
       }));
@@ -233,12 +234,16 @@ export default function AdminDashboardPage() {
         Object.keys(jenjangGroups)
           .sort()
           .forEach((j) => {
+            const sheetData = jenjangGroups[j].map((item, idx) => ({
+              ...item,
+              "No.": idx + 1
+            }));
             sheets.push({
               name: j.substring(0, 31),
               title: `DATA ${cardLabel.toUpperCase()} - ${j}`,
               subTitle: `Jenjang: ${j} | Tanggal Ekspor: ${new Date().toLocaleDateString("id-ID")}`,
               header,
-              data: jenjangGroups[j].map((item) => Object.values(item)),
+              data: sheetData.map((item) => Object.values(item)),
             });
           });
 
@@ -248,6 +253,7 @@ export default function AdminDashboardPage() {
         });
       } else {
         const headers = [
+          "No.",
           "No. Pendaftaran",
           "Nama Lengkap",
           "JK",
@@ -257,7 +263,8 @@ export default function AdminDashboardPage() {
           "Email",
           "Status"
         ];
-        const rows = data.map((item: any) => [
+        const rows = data.map((item: any, idx: number) => [
+          idx + 1,
           item["Nomor Pendaftaran"] || "-",
           item["Nama Lengkap"] || "-",
           (item["Jenis Kelamin"] || "-") === "Laki-laki" ? "L" : "P",
