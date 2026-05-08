@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 "use client";
 
 import Link from "next/link";
@@ -70,6 +71,10 @@ const HeroStat = ({
 );
 
 export default function FasilitasPage() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <main className="bg-white min-h-screen">
       {/* 1. Hero Section - Airy & Clean */}

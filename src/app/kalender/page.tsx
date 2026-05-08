@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 "use client";
 
 import { Container } from "@/components/layout/Container";
@@ -5,6 +6,10 @@ import { Calendar, Construction } from "lucide-react";
 import Link from "next/link";
 
 export default function CalendarPage() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <main className="bg-surface-50 min-h-screen flex items-center justify-center">
       <Container>

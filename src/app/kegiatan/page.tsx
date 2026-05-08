@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -349,6 +349,10 @@ const EkskulCard = ({
 // ========================================
 
 export default function KegiatanPage() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const kegiatanUtama: KegiatanUtama[] = [
     {
       image: "/images/pembelajaran-kitab-turotz.webp",

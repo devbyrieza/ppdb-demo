@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 "use client";
 
 import Image from "next/image";
@@ -17,6 +18,10 @@ import {
 import { motion } from "framer-motion";
 
 export default function TentangPage() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <main className="bg-white min-h-screen">
       {/* 1. Hero Section - Professional Airy Design */}

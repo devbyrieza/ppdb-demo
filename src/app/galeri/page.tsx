@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 "use client";
 
 import Image from "next/image";
@@ -52,6 +53,10 @@ const GALLERY_CATEGORIES = [
 ];
 
 export default function GaleriPage() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <main className="bg-white min-h-screen">
       {/* Hero */}

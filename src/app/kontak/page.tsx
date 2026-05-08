@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Container } from "@/components/layout/Container";
@@ -110,6 +110,10 @@ const SocialCard = ({ social, delay = 0 }: { social: any; delay?: number }) => (
 // ========================================
 
 export default function ContactPage() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const [formData, setFormData] = useState({
     nama: "",
     email: "",

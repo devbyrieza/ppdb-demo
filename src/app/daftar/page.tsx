@@ -65,6 +65,10 @@ const InputField = ({
 // ========================================
 
 export default function DaftarPage() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const router = useRouter();
   const [jenjangFromUrl, setJenjangFromUrl] = useState<"MTs" | "IL" | "">("");
 
