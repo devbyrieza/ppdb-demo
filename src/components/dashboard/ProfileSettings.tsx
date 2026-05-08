@@ -230,7 +230,7 @@ export default function ProfileSettings({ user }: { user: UserSession }) {
               <button
                 type="submit"
                 disabled={profileLoading}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 hover:bg-black text-white rounded-xl font-bold text-sm shadow-sm transition-all"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-teal-700 text-white rounded-xl font-bold text-sm shadow-sm transition-all"
               >
                 {profileLoading ? (
                   <Loader2 className="w-4 h-4 animate-spin" />

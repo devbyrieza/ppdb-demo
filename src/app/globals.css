@@ -104,17 +104,17 @@
 
   /* ─── Surface / White ─── */
   --color-white: #ffffff;
-  --color-surface-50: #f9fafb;
-  --color-surface-100: #f3f4f6;
+  --color-surface-50: #F8FAFC;
+  --color-surface-100: #F1F5F9;
   --color-surface-200: #e5e7eb;
 
   /* ─── Ink (Text — neutral gray, fresh & clean) ─── */
-  --color-ink-950: #111111;
-  --color-ink-900: #1c1c1c;
-  --color-ink-800: #2d2d2d;
-  --color-ink-700: #444444;
-  --color-ink-600: #666666;
-  --color-ink-500: #888888;
+  --color-ink-950: #111827;
+  --color-ink-900: #374151;
+  --color-ink-800: #374151;
+  --color-ink-700: #374151;
+  --color-ink-600: #4B5563;
+  --color-ink-500: #6B7280;
   --color-ink-400: #aaaaaa;
   --color-ink-300: #cccccc;
   --color-ink-200: #e4e4e4;
@@ -147,7 +147,7 @@
   --color-primary-light: #ECFDF5; /* Hijau muda / background aksen */
   --color-secondary: #D4AF37;     /* Gold Islami */
   --color-background: #FFFFFF;    /* Background utama */
-  --color-text: #1F2937;          /* Teks utama */
+  --color-text: #374151;          /* Teks utama (bukan hitam pekat) */
 
   /* ─── Shadows — neutral, tidak condong ke brand mana pun ─── */
   --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
@@ -430,7 +430,7 @@
      Template-Demo default: teal/sand
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
-  /* ─── Primary teal (Template-Demo default) ─── */
+  /* ─── Primary gold (Template-Demo default) ─── */
   .btn-primary {
     display: inline-flex;
     align-items: center;
@@ -441,13 +441,13 @@
     font-weight: 700;
     font-size: 0.9375rem;
     letter-spacing: -0.01em;
-    color: var(--color-primary-light);
+    color: #155230;
     background: linear-gradient(
       135deg,
-      var(--color-primary) 0%,
-      var(--color-teal-900) 100%
+      var(--color-secondary) 0%,
+      #b8922a 100%
     );
-    box-shadow: var(--shadow-teal);
+    box-shadow: var(--shadow-gold);
     transition: all var(--duration-base) var(--ease-spring);
     border: none;
     text-decoration: none;
@@ -460,7 +460,7 @@
       inset: 0;
       background: linear-gradient(
         135deg,
-        rgba(255, 255, 255, 0.1) 0%,
+        rgba(255, 255, 255, 0.2) 0%,
         rgba(255, 255, 255, 0) 60%
       );
       border-radius: inherit;
@@ -469,13 +469,13 @@
 
     &:hover {
       transform: translateY(-2px);
-      box-shadow: var(--shadow-teal-lg);
-      filter: brightness(1.1);
+      box-shadow: var(--shadow-gold-lg);
+      filter: brightness(1.08);
     }
 
     &:active {
       transform: translateY(0) scale(0.98);
-      box-shadow: var(--shadow-teal);
+      box-shadow: var(--shadow-gold);
     }
 
     &:disabled {
@@ -1789,7 +1789,7 @@
     font-family: var(--font-display);
     font-size: clamp(1.75rem, 3.5vw, 3rem);
     font-weight: 800;
-    color: var(--color-ink-900);
+    color: var(--color-teal-800);
     letter-spacing: -0.025em;
     line-height: 1.15;
   }
