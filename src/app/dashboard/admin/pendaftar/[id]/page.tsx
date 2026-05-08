@@ -368,9 +368,13 @@ export default function PendaftarDetailPage() {
   const statusInfo = formatStatus(pendaftar.status_proses);
 
   const totalDocs = pendaftar.dokumen.length;
-  const verifiedDocs = pendaftar.dokumen.filter((d) => d.is_verified).length;
-  const hasPaid = pendaftar.pembayaran.some(
+    const verifiedDocs = pendaftar.dokumen.filter((d) => d.is_verified).length;
+  const isEnrolled = pendaftar.status_proses === "enrolled";
+  const hasPaidRegistration = pendaftar.pembayaran.some(
     (p) => p.status_pembayaran === "verified",
+  );
+  const hasPendingPayment = pendaftar.pembayaran.some(
+    (p) => p.status_pembayaran === "pending",
   );
 
   const InfoItem = ({
@@ -433,17 +437,22 @@ export default function PendaftarDetailPage() {
           <div className="flex flex-wrap gap-4">
             <div className="bg-white/10 backdrop-blur-md rounded-2xl px-5 py-4 min-w-[120px] border border-white/10">
               <p className="text-[10px] text-teal-100 font-black uppercase tracking-widest mb-1">
-                Bayar Pendaftaran
+                {isEnrolled ? "Daftar Ulang" : "Bayar Pendaftaran"}
               </p>
               <p className="font-black text-xl flex items-center gap-1.5 text-white">
-                {hasPaid ? (
+                {isEnrolled || hasPaidRegistration ? (
                   <>
                     <CheckCircle className="w-5 h-5 text-emerald-400" /> Lunas
                   </>
-                ) : (
+                ) : hasPendingPayment ? (
                   <>
                     <AlertCircle className="w-5 h-5 text-sand-400" />{" "}
                     Pending
+                  </>
+                ) : (
+                  <>
+                    <AlertCircle className="w-5 h-5 text-white/40" />{" "}
+                    Belum Bayar
                   </>
                 )}
               </p>
