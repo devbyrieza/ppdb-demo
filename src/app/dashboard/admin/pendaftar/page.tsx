@@ -54,7 +54,7 @@ const FILTER_LABELS: Record<string, string> = {
   hasil_ujian: "Hasil Ujian & Wawancara",
   diterima: "Diterima",
   belum_daftar_ulang: "Belum Daftar Ulang",
-  sudah_daftar_ulang: "Sudah Daftar Ulang",
+  sudah_daftar_ulang: "Daftar Ulang",
 };
 
 interface Pendaftar {
@@ -912,7 +912,7 @@ function AdminPendaftarContent() {
       accepted: { label: "Diterima", color: "bg-emerald-600 text-white" },
       rejected: { label: "Ditolak", color: "bg-rose-600 text-white" },
       enrolled: {
-        label: "Sudah Daftar Ulang",
+        label: "Daftar Ulang",
         color: "bg-emerald-100 text-emerald-800",
       },
     };
@@ -923,7 +923,7 @@ function AdminPendaftarContent() {
     };
     return (
       <span
-        className={`px-3 py-1 rounded-full text-xs font-bold ${statusInfo.color}`}
+        className={`px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap ${statusInfo.color}`}
       >
         {statusInfo.label}
       </span>
@@ -1153,7 +1153,7 @@ function AdminPendaftarContent() {
                       Belum Daftar Ulang
                     </option>
                     <option value="sudah_daftar_ulang">
-                      Sudah Daftar Ulang
+                      Daftar Ulang
                     </option>
                   </optgroup>
                 </>
@@ -1176,7 +1176,7 @@ function AdminPendaftarContent() {
                 <option value="cadangan">Cadangan</option>
                 <option value="accepted">Diterima</option>
                 <option value="rejected">Ditolak</option>
-                <option value="enrolled">Sudah Daftar Ulang</option>
+                <option value="enrolled">Daftar Ulang</option>
               </optgroup>
             </select>
           </div>
@@ -1570,13 +1570,7 @@ function AdminPendaftarContent() {
                             userRole,
                           ) && (
                             <>
-                              <button
-                                onClick={() => handleOpenAnnouncement(item)}
-                                className="px-3 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black transition-all active:scale-95"
-                                title="Input Hasil Seleksi"
-                              >
-                                <FileCheck className="w-4 h-4" />
-                              </button>
+                              
                               <button
                                 onClick={() => handleOpenDelete(item)}
                                 className="px-3 py-2.5 bg-red-100 hover:bg-red-600 text-red-600 hover:text-white rounded-xl text-xs font-black transition-all active:scale-95"
@@ -1637,10 +1631,10 @@ function AdminPendaftarContent() {
                     </th>
                     {(isAdminSuper || isKeuangan) && (
                       <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
-                        Pembayaran
+                        Bayar Pendaftaran
                       </th>
                     )}
-                    <th colSpan={2} className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
+                    <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
                       Aksi
                     </th>
                   </tr>
@@ -1702,7 +1696,7 @@ function AdminPendaftarContent() {
                             {item.email && (
                               <div className="flex items-center gap-1 text-stone-600">
                                 <Mail className="w-3 h-3" />
-                                <span className="text-xs truncate max-w-[150px]">
+                                <span className="text-xs break-all">
                                   {item.email}
                                 </span>
                               </div>
@@ -1776,7 +1770,8 @@ function AdminPendaftarContent() {
                                     : "Belum Bayar"}
                               </span>
                               {item.pembayaran &&
-                                item.pembayaran.length > 0 && (
+                                item.pembayaran.length > 0 &&
+                                item.pembayaran[0].status_pembayaran !== "verified" && (
                                   <button
                                     onClick={() => {
                                       setSelectedPayId(item.pembayaran![0].id);
@@ -1797,38 +1792,7 @@ function AdminPendaftarContent() {
                           )}
                         </td>
                       )}
-                      <td className="px-4 py-3">
-                        <div className="flex flex-wrap gap-1">
-                          <button
-                            onClick={() => {
-                              setSelectedPendaftarId(item.id);
-                              setSelectedDocType("kartu_keluarga");
-                              setTimeout(
-                                () => docInputRef.current?.click(),
-                                100,
-                              );
-                            }}
-                            className="px-2 py-1 bg-teal-50 text-teal-700 hover:bg-teal-100 rounded-lg text-[9px] font-black uppercase flex items-center gap-1 border border-teal-100 transition-colors"
-                            title="Upload KK"
-                          >
-                            <UploadCloud className="w-3 h-3" /> KK
-                          </button>
-                          <button
-                            onClick={() => {
-                              setSelectedPendaftarId(item.id);
-                              setSelectedDocType("akta_kelahiran");
-                              setTimeout(
-                                () => docInputRef.current?.click(),
-                                100,
-                              );
-                            }}
-                            className="px-2 py-1 bg-teal-50 text-teal-700 hover:bg-teal-100 rounded-lg text-[9px] font-black uppercase flex items-center gap-1 border border-teal-100 transition-colors"
-                            title="Upload Akta"
-                          >
-                            <UploadCloud className="w-3 h-3" /> Akta
-                          </button>
-                        </div>
-                      </td>
+                      
                       <td className="px-4 py-3 whitespace-nowrap">
                         <div className="flex items-center gap-2">
                           <Link
@@ -1864,13 +1828,7 @@ function AdminPendaftarContent() {
                           {/* Super Admin Actions */}
                           {isAdminSuper && (
                             <>
-                              <button
-                                onClick={() => handleOpenAnnouncement(item)}
-                                className="p-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-all shadow-sm hover:shadow-md"
-                                title="Hasil Seleksi"
-                              >
-                                <FileCheck className="w-4 h-4" />
-                              </button>
+                              
                               <button
                                 onClick={() => handleOpenDelete(item)}
                                 className="p-1.5 bg-red-100 hover:bg-red-600 text-red-700 hover:text-white rounded-lg transition-all"
