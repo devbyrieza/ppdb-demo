@@ -181,13 +181,33 @@ export default function AdminDashboardPage() {
       if (!response.ok) throw new Error("Failed to export");
 
       const result = await response.json();
-      const data: any[] = result.data;
+      const rawData: any[] = result.data;
       const filename = `Data_${cardLabel.replace(/\s+/g, "_")}_${new Date().toISOString().split("T")[0]}`;
 
-      if (data.length === 0) {
+      if (rawData.length === 0) {
         alert("Tidak ada data untuk diunduh");
         return;
       }
+
+      const translateStatus = (st: string) => {
+        const map: Record<string, string> = {
+          draft: "Draf",
+          sudah_bayar: "Bayar Pendaftaran",
+          sudah_isi_data: "Data Lengkap",
+          docs_verified: "Berkas Lengkap",
+          accepted: "Diterima",
+          announced: "Cadangan",
+          rejected: "Ditolak",
+          enrolled: "Daftar Ulang",
+          sudah_daftar_ulang: "Daftar Ulang"
+        };
+        return map[st] || st;
+      };
+
+      const data = rawData.map((item) => ({
+        ...item,
+        Status: translateStatus(item.Status || "")
+      }));
 
       if (type === "excel") {
         const header = Object.keys(data[0] || {});
