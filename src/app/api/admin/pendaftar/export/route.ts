@@ -203,7 +203,7 @@ function query_status(status: string, where: any) {
     tested: ["tested", "passed", "announced", "accepted", "enrolled"],
     sudah_ujian: ["tested", "passed", "announced", "accepted", "enrolled"],
     hasil_ujian: ["passed", "announced", "accepted", "enrolled"],
-    diterima: ["accepted", "passed"],
+    diterima: ["accepted", "passed", "enrolled"],
     belum_daftar_ulang: ["accepted"],
     sudah_daftar_ulang: ["enrolled"],
   };
