@@ -124,12 +124,13 @@ interface PendaftarDetail {
 
 /* import { useSession } from "next-auth/react"; -- Removed */
 
-export default function PendaftarDetailPage() {\r\n  const getDocLabel = (key: string) => {
+export default function PendaftarDetailPage() {
+  const getDocLabel = (key: string) => {
     const labels: Record<string, string> = {
       kartu_keluarga: "Scan Kartu Keluarga",
       akta_kelahiran: "Scan Akte Kelahiran",
-      rapor_sem1: "Scan Rapor Semester 1 Terakhir",
-      rapor_sem2: "Scan Rapor Semester 2 Terakhir",
+      rapor_sem1: "Scan Rapor Semester Ganjil Terakhir",
+      rapor_sem2: "Scan Rapor Semester Genap Terakhir",
       nisn: "Scan NISN",
       foto_setengah_badan: "Foto Setengah Badan",
       surat_kesehatan: "Surat Keterangan Sehat",

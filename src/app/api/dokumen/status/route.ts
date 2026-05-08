@@ -8,12 +8,12 @@ const JENIS_DOKUMEN = [
   { key: "akta_kelahiran", label: "Scan Akte Kelahiran", required: true },
   {
     key: "rapor_sem1",
-    label: "Scan Rapor Semester 1 Terakhir",
+    label: "Scan Rapor Semester Ganjil Terakhir",
     required: true,
   },
   {
     key: "rapor_sem2",
-    label: "Scan Rapor Semester 2 Terakhir",
+    label: "Scan Rapor Semester Genap Terakhir",
     required: true,
   },
   {
