@@ -124,7 +124,22 @@ interface PendaftarDetail {
 
 /* import { useSession } from "next-auth/react"; -- Removed */
 
-export default function PendaftarDetailPage() {
+export default function PendaftarDetailPage() {\r\n  const getDocLabel = (key: string) => {
+    const labels: Record<string, string> = {
+      kartu_keluarga: "Scan Kartu Keluarga",
+      akta_kelahiran: "Scan Akte Kelahiran",
+      rapor_sem1: "Scan Rapor Semester 1 Terakhir",
+      rapor_sem2: "Scan Rapor Semester 2 Terakhir",
+      nisn: "Scan NISN",
+      foto_setengah_badan: "Foto Setengah Badan",
+      surat_kesehatan: "Surat Keterangan Sehat",
+      pakta_integritas_santri: "Scan Pakta Integritas Calon Santri",
+      pakta_integritas_ortu: "Scan Pakta Integritas Calon Orangtua/Wali Santri",
+      pernyataan_bebas_negatif: "Scan Pernyataan Bebas Perilaku Negatif",
+      pakta_integritas: "Scan Pakta Integritas",
+    };
+    return labels[key] || key.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
+  };
   const params = useParams();
   const router = useRouter();
   const [userRole, setUserRole] = useState<string | null>(null);
@@ -598,7 +613,7 @@ export default function PendaftarDetailPage() {
                           <FileText className="w-5 h-5 text-stone-400" />
                           <div>
                             <span className="block font-medium text-stone-900">
-                              {doc.jenis_dokumen}
+                              {getDocLabel(doc.jenis_dokumen)}
                             </span>
                             {((doc as any).file_url ||
                               (doc as any).file_path) && (
@@ -1321,7 +1336,7 @@ export default function PendaftarDetailPage() {
                         className="flex items-center justify-between p-3 bg-stone-50 rounded-lg"
                       >
                         <span className="text-sm font-medium text-stone-700">
-                          {doc.jenis_dokumen}
+                          {getDocLabel(doc.jenis_dokumen)}
                         </span>
                         <span
                           className={`px-2 py-1 rounded text-xs font-bold ${
