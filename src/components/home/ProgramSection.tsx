@@ -272,7 +272,7 @@ export default function ProgramSection() {
                       <button
                         className={`w-full py-3 px-6 rounded-[12px] font-bold text-[0.8125rem] flex items-center justify-center gap-2 border transition-all duration-300 group/btn ${tokens.ctaBtn}`}
                       >
-                        Jelajahi Kurikulum Selengkapnya 🚀
+                        Jelajahi Kurikulum Selengkapnya
                         <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
                       </button>
                     </Link>
