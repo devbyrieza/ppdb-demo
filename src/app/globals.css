@@ -77,20 +77,20 @@
   --color-cream-500: #e4c16f;
   --color-cream-600: #c9a84c;
 
-  /* ─── Hijau Islami (Template-Demo Primary) ─── */
-  --color-teal-50: #ECFDF5;
-  --color-teal-100: #d1fae5;
-  --color-teal-200: #a7f3d0;
-  --color-teal-300: #6ee7b7;
-  --color-teal-400: #34d399;
-  --color-teal-500: #2d9a6b;
+  /* ─── Hijau Islami (Template-Demo Primary — Premium Emerald-Teal) ─── */
+  --color-teal-50: #f0fdfa;
+  --color-teal-100: #ccfbf1;
+  --color-teal-200: #99f6e4;
+  --color-teal-300: #5eead4;
+  --color-teal-400: #2dd4bf;
+  --color-teal-500: #14b8a6;
   /* Hijau Islami Medium */
-  --color-teal-600: #1B6B3A;
+  --color-teal-600: #0d9488;
   /* Hijau Islami Primary */
-  --color-teal-700: #155230;
-  --color-teal-800: #0f3d24;
-  --color-teal-900: #082918;
-  --color-teal-950: #041408;
+  --color-teal-700: #0f766e;
+  --color-teal-800: #115e59;
+  --color-teal-900: #134e4a;
+  --color-teal-950: #042f2e;
 
   /* ─── Gold Islami (Template-Demo Secondary) ─── */
   --color-sand-50: #fffdf0;
@@ -146,9 +146,9 @@
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
   /* ─── Islamic Color Palette — Semantic Tokens ─── */
-  --color-primary: #1B6B3A;
+  --color-primary: var(--color-teal-600);
   /* Hijau Islami utama */
-  --color-primary-light: #ECFDF5;
+  --color-primary-light: var(--color-teal-50);
   /* Hijau muda / background aksen */
   --color-secondary: #D4AF37;
   /* Gold Islami */
