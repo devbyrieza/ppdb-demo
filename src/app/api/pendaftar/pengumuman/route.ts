@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
       const statusMapped = pendaftar.status_pendaftaran === "accepted" || pendaftar.status_pendaftaran === "enrolled"
         ? "diterima"
         : pendaftar.status_pendaftaran === "rejected"
-          ? "tidak lulus"
+          ? "ditolak"
           : "cadangan";
 
       return NextResponse.json({
@@ -55,8 +55,8 @@ export async function GET(request: NextRequest) {
           status_kelulusan:
             pengumuman.status_kelulusan === "Lulus"
               ? "diterima"
-              : pengumuman.status_kelulusan === "Tidak Lulus"
-                ? "tidak lulus"
+              : (pengumuman.status_kelulusan === "Tidak Lulus" || pengumuman.status_kelulusan === "Ditolak")
+                ? "ditolak"
                 : "cadangan",
           catatan: pengumuman.catatan,
           tanggal_pengumuman: pengumuman.published_at?.toISOString() || pengumuman.created_at.toISOString(),

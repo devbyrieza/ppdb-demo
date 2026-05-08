@@ -96,7 +96,7 @@ export async function POST(request: Request) {
     // 3. Update Pendaftar Status based on Status Kelulusan
     let newStatus = "announced";
     if (status_kelulusan === "Lulus") newStatus = "accepted";
-    else if (status_kelulusan === "Tidak Lulus") newStatus = "rejected";
+    else if ((status_kelulusan === "Tidak Lulus" || status_kelulusan === "Ditolak")) newStatus = "rejected";
     // "Cadangan" remains "announced" or use a specific status if available.
 
     await prisma.pendaftar.update({

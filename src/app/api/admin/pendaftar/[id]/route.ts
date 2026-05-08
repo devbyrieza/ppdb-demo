@@ -305,7 +305,7 @@ export async function PATCH(
     // SYNC TO PENGUMUMAN: If status is final, ensure student dashboard matches
     const finalStatuses = ["accepted", "rejected", "announced", "cadangan"];
     if (finalStatuses.includes(status_proses)) {
-      const displayLabel = status_proses === "accepted" ? "Lulus" : (status_proses === "rejected" ? "Tidak Lulus" : "Cadangan");
+      const displayLabel = status_proses === "accepted" ? "Diterima" : (status_proses === "rejected" ? "Ditolak" : "Cadangan");
       
       await prisma.pengumuman.upsert({
         where: { pendaftar_id: params.id },

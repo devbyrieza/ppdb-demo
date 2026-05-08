@@ -223,7 +223,7 @@ function AdminPendaftarContent() {
     null,
   );
   const [announcementForm, setAnnouncementForm] = useState({
-    status_kelulusan: "Lulus",
+    status_kelulusan: "Diterima",
     catatan: "",
     surat_keputusan_url: "",
   });
@@ -251,7 +251,7 @@ function AdminPendaftarContent() {
   const handleOpenAnnouncement = (pendaftar: Pendaftar) => {
     setSelectedPendaftar(pendaftar);
     setAnnouncementForm({
-      status_kelulusan: pendaftar.pengumuman?.status_kelulusan || "Lulus",
+      status_kelulusan: pendaftar.pengumuman?.status_kelulusan || "Diterima",
       catatan: "", // Reset notes for new input or fetch if needed
       surat_keputusan_url: "", // Reset URL
     });
@@ -1929,7 +1929,7 @@ function AdminPendaftarContent() {
                   Status Kelulusan
                 </label>
                 <div className="grid grid-cols-3 gap-3">
-                  {["Lulus", "Cadangan", "Tidak Lulus"].map((status) => (
+                  {["Diterima", "Cadangan", "Ditolak"].map((status) => (
                     <button
                       key={status}
                       type="button"
@@ -1941,7 +1941,7 @@ function AdminPendaftarContent() {
                       }
                       className={`py-3 px-4 rounded-xl border-2 font-bold transition-all ${
                         announcementForm.status_kelulusan === status
-                          ? status === "Lulus"
+                          ? status === "Diterima"
                             ? "border-green-500 bg-green-50 text-green-700"
                             : status === "Cadangan"
                               ? "border-yellow-500 bg-yellow-50 text-yellow-700"

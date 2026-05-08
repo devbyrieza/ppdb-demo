@@ -122,7 +122,7 @@ const STATUS_LABELS: Record<
     message: "Selamat! Anda lulus tes tertulis. Lanjutkan ke tahap berikutnya!",
   },
   tidak_lulus_tes_tertulis: {
-    label: "Tidak Lulus",
+    label: "Ditolak",
     color: "red",
     bg: "bg-red-50",
     border: "border-red-200",

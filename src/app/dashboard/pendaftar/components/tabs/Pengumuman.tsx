@@ -184,13 +184,13 @@ export default function PengumumanTab() {
                     Alhamdulillah
                   </p>
                   <h2 className="text-3xl md:text-4xl font-black font-display tracking-tight text-white">
-                    LULUS SELEKSI
+                    DITERIMA
                   </h2>
                 </div>
               </div>
               <p className="text-emerald-50/90 mb-10 max-w-xl text-lg leading-relaxed">
                 Berdasarkan hasil seleksi, Anda dinyatakan{" "}
-                <strong>LULUS DITERIMA</strong> sebagai santri baru PP Sistem
+                <strong>DITERIMA</strong> sebagai santri baru PP Sistem
                 PPDB Modern.
               </p>
 

@@ -583,7 +583,7 @@ export default function KeuanganPage() {
         <div className="space-y-5">
           <div className="bg-amber-50 border border-amber-200 rounded-xl px-5 py-3 text-sm text-amber-800 font-medium flex items-center gap-2">
             <CreditCard className="w-4 h-4 shrink-0" />
-            Menampilkan rekap santri yang <strong>lulus seleksi</strong> dan
+            Menampilkan rekap santri yang <strong>diterima</strong> dan
             status pembayaran daftar ulang mereka.
           </div>
 

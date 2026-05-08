@@ -127,7 +127,7 @@ export async function recalculateNilaiUjian(pendaftarId: string) {
 
     if (pendaftar && !["enrolled", "re_registered"].includes(pendaftar.status_pendaftaran)) {
       let nextStatus = status === "DITERIMA" ? "accepted" : (status === "DITOLAK" ? "rejected" : "announced");
-      let displayLabel = status === "DITERIMA" ? "Lulus" : (status === "DITOLAK" ? "Tidak Lulus" : "Cadangan");
+      let displayLabel = status === "DITERIMA" ? "Diterima" : (status === "DITOLAK" ? "Ditolak" : "Cadangan");
 
       await prisma.pendaftar.update({ where: { id: pendaftarId }, data: { status_pendaftaran: nextStatus }});
       await prisma.pengumuman.upsert({

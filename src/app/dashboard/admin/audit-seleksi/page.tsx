@@ -93,8 +93,8 @@ export default function AuditSeleksiPage() {
     if (selectedIds.length === 0) return;
 
     const labels: Record<string, string> = {
-      accepted: "LULUS",
-      rejected: "TIDAK LULUS",
+      accepted: "DITERIMA",
+      rejected: "DITOLAK",
       cadangan: "CADANGAN",
     };
 
@@ -105,7 +105,7 @@ export default function AuditSeleksiPage() {
       showCancelButton: true,
       confirmButtonText: "Ya, Terbitkan!",
       cancelButtonText: "Batal",
-      confirmButtonColor: decision === "accepted" ? "#4d7c0f" : decision === "rejected" ? "#dc2626" : "#d97706",
+      confirmButtonColor: decision === "accepted" ? "#15803d" : decision === "rejected" ? "#b91c1c" : "#b45309",
     });
 
     if (!result.isConfirmed) return;
@@ -282,7 +282,7 @@ export default function AuditSeleksiPage() {
             >
               <option value="tested">Siap Audit (Sudah Ujian)</option>
               <option value="announced">Sudah Dipublish</option>
-              <option value="accepted">Sudah Lulus</option>
+              <option value="accepted">Sudah Diterima</option>
               <option value="all">Semua Data</option>
             </select>
           </div>
@@ -310,7 +310,7 @@ export default function AuditSeleksiPage() {
             disabled={selectedIds.length === 0 || isPublishing}
             className="flex-1 lg:flex-none bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-black text-[11px] px-6 py-2.5 shadow-lg shadow-emerald-200 transition-all active:scale-95"
           >
-            LULUS ({selectedIds.length})
+            DITERIMA ({selectedIds.length})
           </Button>
           <Button
             onClick={() => handleBatchPublish("cadangan")}
@@ -463,7 +463,7 @@ export default function AuditSeleksiPage() {
                         {(() => {
                           const s = c.status_pendaftaran || "";
                           const labels: any = {
-                            accepted: { l: "LULUS", c: "text-emerald-700 bg-emerald-100 border-emerald-200" },
+                            accepted: { l: "DITERIMA", c: "text-emerald-700 bg-emerald-100 border-emerald-200" },
                             announced: { l: "PUBLISHED", c: "text-sky-700 bg-sky-100 border-sky-200" },
                             rejected: { l: "DITOLAK", c: "text-rose-700 bg-rose-100 border-rose-200" },
                             cadangan: { l: "CADANGAN", c: "text-amber-700 bg-amber-100 border-amber-200" },
@@ -499,7 +499,7 @@ export default function AuditSeleksiPage() {
             <div className="space-y-3 text-sm font-medium leading-relaxed">
               <p className="flex items-start gap-2 !text-white">
                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5 shrink-0 shadow-sm shadow-emerald-900/50" />
-                <span><b className="font-extrabold text-emerald-400">LULUS:</b> Quran Grade A, maksimal satu Grade C di komponen pendukung.</span>
+                <span><b className="font-extrabold text-emerald-400">DITERIMA:</b> Quran Grade A, maksimal satu Grade C di komponen pendukung.</span>
               </p>
               <p className="flex items-start gap-2 !text-white">
                 <div className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 shrink-0 shadow-sm shadow-amber-900/50" />

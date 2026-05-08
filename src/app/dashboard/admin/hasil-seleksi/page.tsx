@@ -145,7 +145,7 @@ export default function HasilSeleksiPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="bg-green-50 p-6 rounded-xl shadow-sm border border-green-100 relative overflow-hidden">
           <p className="text-green-600 text-sm font-bold tracking-wider uppercase mb-1">
-            Total Lulus
+            Total Diterima
           </p>
           <div className="flex items-end gap-2">
             <h3 className="text-4xl font-black text-green-700">
@@ -173,7 +173,7 @@ export default function HasilSeleksiPage() {
         </div>
         <div className="bg-rose-50 p-6 rounded-xl shadow-sm border border-rose-100 relative overflow-hidden">
           <p className="text-rose-600 text-sm font-bold tracking-wider uppercase mb-1">
-            Tidak Lulus
+            Ditolak
           </p>
           <div className="flex items-end gap-2">
             <h3 className="text-4xl font-black text-rose-700">
@@ -215,7 +215,7 @@ export default function HasilSeleksiPage() {
               <option value="semua_hasil">Semua Hasil</option>
               <option value="accepted">Diterima</option>
               <option value="cadangan">Cadangan</option>
-              <option value="rejected">Tidak Lulus</option>
+              <option value="rejected">Ditolak</option>
             </select>
           </div>
         </div>
@@ -278,7 +278,7 @@ export default function HasilSeleksiPage() {
                     {c.status_pendaftaran === "accepted" ||
                     c.status_pendaftaran === "enrolled" ? (
                       <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-green-100 text-green-700 text-[10px] font-black uppercase border border-green-200">
-                        <CheckCircle2 className="w-3 h-3" /> LULUS
+                        <CheckCircle2 className="w-3 h-3" /> DITERIMA
                       </span>
                     ) : c.status_pendaftaran === "cadangan" || c.status_pendaftaran === "announced" ? (
                       <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-100 text-amber-700 text-[10px] font-black uppercase border border-amber-200">
@@ -286,7 +286,7 @@ export default function HasilSeleksiPage() {
                       </span>
                     ) : (
                       <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-rose-100 text-rose-700 text-[10px] font-black uppercase border border-rose-200">
-                        TIDAK LULUS
+                        DITOLAK
                       </span>
                     )}
                   </div>
@@ -430,7 +430,7 @@ export default function HasilSeleksiPage() {
                         {c.status_pendaftaran === "accepted" ||
                         c.status_pendaftaran === "enrolled" ? (
                           <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-green-100 text-green-700 text-xs font-bold border border-green-200">
-                            <CheckCircle2 className="w-3.5 h-3.5" /> LULUS
+                            <CheckCircle2 className="w-3.5 h-3.5" /> DITERIMA
                           </span>
                         ) : c.status_pendaftaran === "cadangan" || c.status_pendaftaran === "announced" ? (
                           <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-100 text-amber-700 text-xs font-bold border border-amber-200">
@@ -438,7 +438,7 @@ export default function HasilSeleksiPage() {
                           </span>
                         ) : (
                           <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-rose-100 text-rose-700 text-xs font-bold border border-rose-200">
-                            TIDAK LULUS
+                            DITOLAK
                           </span>
                         )}
                       </td>

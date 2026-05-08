@@ -40,8 +40,8 @@ export async function POST(request: NextRequest) {
 
     // 4. Bulk Update Status & Sync with Pengumuman table
     const statusMap: Record<string, string> = {
-      accepted: "Lulus",
-      rejected: "Tidak Lulus",
+      accepted: "Diterima",
+      rejected: "Ditolak",
       cadangan: "Cadangan",
     };
     const displayStatus = statusMap[new_status] || new_status;
