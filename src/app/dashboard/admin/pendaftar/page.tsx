@@ -1621,16 +1621,6 @@ function AdminPendaftarContent() {
                     <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
                       Jenjang
                     </th>
-                    {(isAdminSuper || isKeuangan) && (
-                      <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
-                        Bayar Pendaftaran
-                      </th>
-                    )}
-                    {(isAdminSuper || isBerkas) && (
-                      <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
-                        Status Berkas
-                      </th>
-                    )}
                     <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
                       Status Pendaftaran
                     </th>
@@ -1709,86 +1699,6 @@ function AdminPendaftarContent() {
                           {item.jenjang}
                         </span>
                       </td>
-                      {(isAdminSuper || isKeuangan) && (
-                        <td className="px-4 py-3">
-                          {item.pembayaran && item.pembayaran.length > 0 ? (
-                            <div className="flex flex-col gap-1.5">
-                              <span
-                                className={`px-2 py-0.5 rounded text-[10px] font-black uppercase text-center w-full ${
-                                  item.pembayaran[0].status_pembayaran ===
-                                  "verified"
-                                    ? "bg-green-100 text-green-700"
-                                    : item.pembayaran[0].status_pembayaran ===
-                                        "pending"
-                                      ? "bg-amber-100 text-amber-700"
-                                      : "bg-stone-100 text-stone-700"
-                                }`}
-                              >
-                                {item.pembayaran[0].status_pembayaran ===
-                                "verified"
-                                  ? "Lunas"
-                                  : item.pembayaran[0].status_pembayaran ===
-                                      "pending"
-                                    ? "Cek"
-                                    : "Belum Bayar"}
-                              </span>
-                              {item.pembayaran &&
-                                item.pembayaran.length > 0 &&
-                                item.pembayaran[0].status_pembayaran !== "verified" && (
-                                  <button
-                                    onClick={() => {
-                                      setSelectedPayId(item.pembayaran![0].id);
-                                      setTimeout(
-                                        () => payInputRef.current?.click(),
-                                        100,
-                                      );
-                                    }}
-                                    className="px-2 py-1 bg-sand-50 text-sand-700 hover:bg-sand-100 rounded-lg text-[9px] font-black uppercase flex items-center justify-center gap-1 border border-sand-100 transition-colors"
-                                    title="Upload Bukti Bayar"
-                                  >
-                                    <CreditCard className="w-3 h-3" /> UPLOAD
-                                  </button>
-                                )}
-                            </div>
-                          ) : (
-                            <span className="text-stone-500 text-xs">-</span>
-                          )}
-                        </td>
-                      )}
-                      {(isAdminSuper || isBerkas) && (
-                        <td className="px-4 py-3">
-                          <span
-                            className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                              item.dokumen &&
-                              item.dokumen.every(
-                                (d: any) => d.status_verifikasi === "verified",
-                              ) &&
-                              item.dokumen.length > 0
-                                ? "bg-green-100 text-green-800"
-                                : item.dokumen &&
-                                    item.dokumen.some(
-                                      (d: any) =>
-                                        d.status_verifikasi === "rejected",
-                                    )
-                                  ? "bg-red-100 text-red-800"
-                                  : "bg-yellow-100 text-yellow-800"
-                            }`}
-                          >
-                            {item.dokumen &&
-                            item.dokumen.every(
-                              (d: any) => d.status_verifikasi === "verified",
-                            ) &&
-                            item.dokumen.length > 0
-                              ? "Lengkap"
-                              : item.dokumen && item.dokumen.length > 0
-                                ? "Perlu Cek"
-                                : "Belum Upload"}
-                          </span>
-                          <div className="text-xs text-stone-600 font-medium mt-1">
-                            {item.dokumen?.length || 0} Dokumen
-                          </div>
-                        </td>
-                      )}
                       <td className="px-4 py-3">
                         {formatStatus(item.status_pendaftaran)}
                       </td>
