@@ -14,7 +14,7 @@ import { motion } from "framer-motion";
  * ─── ADMIN DASHBOARD PAGE (TEMPLATE DEMO) ───
  */
 
-const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown }: any) => {
+const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown, highlighted }: any) => {
   const colorMap: any = {
     blue:    "from-teal-600 to-teal-800 shadow-teal",
     emerald: "from-emerald-600 to-emerald-700",
@@ -28,9 +28,17 @@ const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown }: any) 
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white p-5 sm:p-6 lg:p-8 rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border border-teal-100 shadow-premium-sm hover:shadow-premium-lg transition-all group relative overflow-hidden"
+      className={`p-5 sm:p-6 lg:p-8 rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border transition-all group relative overflow-hidden duration-300 ${
+        highlighted 
+          ? "bg-linear-to-br from-teal-900 via-teal-950 to-teal-900 text-white border-teal-850 shadow-premium-lg hover:shadow-premium-xl hover:scale-102" 
+          : "bg-white text-teal-950 border-teal-100 shadow-premium-sm hover:shadow-premium-lg hover:scale-101"
+      }`}
     >
-      <div className="absolute top-0 right-0 w-32 h-32 bg-teal-50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:bg-sand-100 transition-colors duration-500" />
+      <div className={`absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 transition-colors duration-500 ${
+        highlighted 
+          ? "bg-white/10 group-hover:bg-teal-500/10" 
+          : "bg-teal-50 group-hover:bg-sand-100"
+      }`} />
       
       <div className="relative z-10">
         <div className="flex items-center justify-between mb-8">
@@ -38,7 +46,11 @@ const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown }: any) 
             <Icon className="w-6 h-6" />
           </div>
           {trend && (
-            <div className="flex items-center gap-1.5 text-[10px] font-black text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-100">
+            <div className={`flex items-center gap-1.5 text-[10px] font-black px-3 py-1.5 rounded-full border ${
+              highlighted
+                ? "text-emerald-400 bg-white/5 border-white/10"
+                : "text-emerald-600 bg-emerald-50 border-emerald-100"
+            }`}>
               <TrendingUp className="w-3.5 h-3.5" />
               <span className="uppercase tracking-wider">{trend}</span>
             </div>
@@ -46,33 +58,59 @@ const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown }: any) 
         </div>
         
         <div className="mb-6 lg:mb-8">
-          <p className="text-[10px] sm:text-[11px] font-black text-teal-500 uppercase tracking-[0.25em] mb-2">{label}</p>
+          <p className={`text-[10px] sm:text-[11px] font-black uppercase tracking-[0.25em] mb-2 ${
+            highlighted ? "text-teal-300" : "text-teal-500"
+          }`}>{label}</p>
           <div className="flex items-baseline gap-2">
-            <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-teal-950 tracking-tighter italic">{value}</h3>
-            <span className="text-xs font-bold text-teal-400">Orang</span>
+            <h3 className={`text-3xl sm:text-4xl lg:text-5xl font-black tracking-tighter italic ${
+              highlighted ? "text-white" : "text-teal-950"
+            }`}>{value}</h3>
+            <span className={`text-xs font-bold ${
+              highlighted ? "text-teal-300" : "text-teal-400"
+            }`}>Orang</span>
           </div>
         </div>
 
         {breakdown && (
-          <div className="grid grid-cols-2 gap-4 pt-6 border-t border-teal-100">
+          <div className={`grid grid-cols-2 gap-4 pt-6 border-t ${
+            highlighted ? "border-white/10" : "border-teal-100"
+          }`}>
             <div className="space-y-4">
               <div className="flex flex-col">
-                <span className="text-[9px] font-black text-teal-500 uppercase tracking-widest mb-1">MTs Putra</span>
-                <span className="text-base font-black text-teal-700 leading-none">{breakdown.mts_l || 0}</span>
+                <span className={`text-[9px] font-black uppercase tracking-widest mb-1 ${
+                  highlighted ? "text-teal-300" : "text-teal-500"
+                }`}>MTs Putra</span>
+                <span className={`text-base font-black leading-none ${
+                  highlighted ? "text-white" : "text-teal-700"
+                }`}>{breakdown.mts_l || 0}</span>
               </div>
               <div className="flex flex-col">
-                <span className="text-[9px] font-black text-teal-500 uppercase tracking-widest mb-1">MTs Putri</span>
-                <span className="text-base font-black text-pink-500 leading-none">{breakdown.mts_p || 0}</span>
+                <span className={`text-[9px] font-black uppercase tracking-widest mb-1 ${
+                  highlighted ? "text-teal-300" : "text-teal-500"
+                }`}>MTs Putri</span>
+                <span className={`text-base font-black leading-none ${
+                  highlighted ? "text-pink-300" : "text-pink-500"
+                }`}>{breakdown.mts_p || 0}</span>
               </div>
             </div>
-            <div className="space-y-4 border-l border-teal-100 pl-4">
+            <div className={`space-y-4 border-l pl-4 ${
+              highlighted ? "border-white/10" : "border-teal-100"
+            }`}>
               <div className="flex flex-col">
-                <span className="text-[9px] font-black text-teal-500 uppercase tracking-widest mb-1">IL Putra</span>
-                <span className="text-base font-black text-teal-700 leading-none">{breakdown.il_l || 0}</span>
+                <span className={`text-[9px] font-black uppercase tracking-widest mb-1 ${
+                  highlighted ? "text-teal-300" : "text-teal-500"
+                }`}>IL Putra</span>
+                <span className={`text-base font-black leading-none ${
+                  highlighted ? "text-white" : "text-teal-700"
+                }`}>{breakdown.il_l || 0}</span>
               </div>
               <div className="flex flex-col">
-                <span className="text-[9px] font-black text-teal-500 uppercase tracking-widest mb-1">IL Putri</span>
-                <span className="text-base font-black text-pink-500 leading-none">{breakdown.il_p || 0}</span>
+                <span className={`text-[9px] font-black uppercase tracking-widest mb-1 ${
+                  highlighted ? "text-teal-300" : "text-teal-500"
+                }`}>IL Putri</span>
+                <span className={`text-base font-black leading-none ${
+                  highlighted ? "text-pink-300" : "text-pink-500"
+                }`}>{breakdown.il_p || 0}</span>
               </div>
             </div>
           </div>
@@ -112,7 +150,7 @@ export default function AdminDashboardPage() {
   const isAdminKeuangan = role === "admin_keuangan";
   const isAdminBerkas = role === "admin_berkas";
 
-  const getBreakdown = (type: "total" | "lulus" | "ulang" | "cadangan" | "ditolak" | "berkas") => {
+  const getBreakdown = (type: "total" | "lulus" | "ulang" | "cadangan" | "ditolak" | "berkas" | "bayar" | "data") => {
     const mts = stats.stats_per_jenjang.find((j: any) => j.jenjang === "MTS") || {};
     const il = stats.stats_per_jenjang.find((j: any) => j.jenjang === "IL") || {};
 
@@ -122,6 +160,7 @@ export default function AdminDashboardPage() {
     if (type === "cadangan") return { mts_l: mts.cadangan_putra || 0, mts_p: mts.cadangan_putri || 0, il_l: il.cadangan_putra || 0, il_p: il.cadangan_putri || 0 };
     if (type === "ditolak") return { mts_l: mts.ditolak_putra || 0, mts_p: mts.ditolak_putri || 0, il_l: il.ditolak_putra || 0, il_p: il.ditolak_putri || 0 };
     if (type === "berkas") return { mts_l: mts.berkas_putra || 0, mts_p: mts.berkas_putri || 0, il_l: il.berkas_putra || 0, il_p: il.berkas_putri || 0 };
+    if (type === "bayar") return { mts_l: mts.bayar_putra || 0, mts_p: mts.bayar_putri || 0, il_l: il.bayar_putra || 0, il_p: il.bayar_putri || 0 };
     return null;
   };
 
@@ -183,14 +222,16 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* STATS GRID */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
         {isAdminSuper && (<>
-          <StatWidget label="Total Pendaftar" value={stats.total_pendaftar} icon={Users} color="blue" trend="+5% minggu ini" breakdown={getBreakdown("total")} />
-          <StatWidget label="Berkas Lengkap" value={stats.berkas_lengkap} icon={ClipboardCheck} color="purple" breakdown={getBreakdown("berkas")} />
-          <StatWidget label="Lulus Seleksi" value={stats.diterima} icon={CheckCircle2} color="emerald" breakdown={getBreakdown("lulus")} />
-          <StatWidget label="Sudah Daftar Ulang" value={stats.daftar_ulang} icon={Wallet} color="amber" breakdown={getBreakdown("ulang")} />
-          <StatWidget label="Status Cadangan" value={stats.cadangan} icon={Clock} color="slate" breakdown={getBreakdown("cadangan")} />
-          <StatWidget label="Ditolak / Gugur" value={stats.ditolak} icon={Activity} color="rose" breakdown={getBreakdown("ditolak")} />
+          <StatWidget label="Total Pendaftar" value={stats.total_pendaftar} icon={Users} color="blue" trend="+5% minggu ini" breakdown={getBreakdown("total")} highlighted={true} />
+          <StatWidget label="Sudah Bayar Pendaftaran" value={stats.sudah_bayar} icon={Wallet} color="emerald" breakdown={getBreakdown("bayar")} highlighted={false} />
+          <StatWidget label="Data Lengkap" value={stats.sudah_isi_data} icon={FileCheck} color="purple" highlighted={false} />
+          <StatWidget label="Berkas Lengkap" value={stats.berkas_lengkap} icon={ClipboardCheck} color="purple" breakdown={getBreakdown("berkas")} highlighted={false} />
+          <StatWidget label="Diterima" value={stats.diterima} icon={CheckCircle2} color="emerald" breakdown={getBreakdown("lulus")} highlighted={true} />
+          <StatWidget label="Cadangan" value={stats.cadangan} icon={Clock} color="slate" breakdown={getBreakdown("cadangan")} highlighted={true} />
+          <StatWidget label="Ditolak" value={stats.ditolak} icon={Activity} color="rose" breakdown={getBreakdown("ditolak")} highlighted={false} />
+          <StatWidget label="Sudah Daftar Ulang" value={stats.daftar_ulang} icon={Wallet} color="amber" breakdown={getBreakdown("ulang")} highlighted={true} />
         </>)}
 
         {isAdminBerkas && (
