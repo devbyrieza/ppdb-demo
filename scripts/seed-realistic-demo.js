@@ -143,13 +143,30 @@ async function main() {
             const nik = generateNIK();
 
             // Determine status
-            let status = 'verified';
-            if (!draftCreated && cat.jenjang === 'MTS' && cat.jk === 'L') {
-                status = 'draft';
-                draftCreated = true;
-            } else if (!acceptedCreated && cat.jenjang === 'IL' && cat.jk === 'P') {
-                status = 'accepted';
-                acceptedCreated = true;
+            let status = 'docs_verified';
+            if (cat.jenjang === 'MTS' && cat.jk === 'L') {
+                if (i === 1) status = 'draft';
+                else if (i >= 2 && i <= 3) status = 'announced'; // Cadangan
+                else if (i >= 4 && i <= 9) status = 'accepted';  // Diterima
+                else if (i >= 10 && i <= 13) status = 'enrolled'; // Sudah Daftar Ulang
+                else status = 'docs_verified'; // Berkas Lengkap
+            } else if (cat.jenjang === 'MTS' && cat.jk === 'P') {
+                if (i === 1) status = 'rejected';
+                else if (i === 2) status = 'announced'; // Cadangan
+                else if (i >= 3 && i <= 9) status = 'accepted'; // Diterima
+                else if (i >= 10 && i <= 13) status = 'enrolled'; // Sudah Daftar Ulang
+                else status = 'docs_verified'; // Berkas Lengkap
+            } else if (cat.jenjang === 'IL' && cat.jk === 'L') {
+                if (i === 1) status = 'rejected';
+                else if (i === 2) status = 'announced'; // Cadangan
+                else if (i >= 3 && i <= 8) status = 'accepted'; // Diterima
+                else if (i >= 9 && i <= 12) status = 'enrolled'; // Sudah Daftar Ulang
+                else status = 'docs_verified'; // Berkas Lengkap
+            } else if (cat.jenjang === 'IL' && cat.jk === 'P') {
+                if (i === 1) status = 'announced'; // Cadangan
+                else if (i >= 2 && i <= 7) status = 'accepted'; // Diterima
+                else if (i >= 8 && i <= 10) status = 'enrolled'; // Sudah Daftar Ulang
+                else status = 'docs_verified'; // Berkas Lengkap
             }
 
             // Create Profile for Registrant
@@ -235,8 +252,8 @@ async function main() {
                 }
             }
 
-            // If accepted, seed exams and scores
-            if (status === 'accepted') {
+            // If accepted, enrolled, announced, or rejected, seed exams and scores
+            if (['accepted', 'enrolled', 'announced', 'rejected'].includes(status)) {
                 // Create exam schedule
                 const examId = crypto.randomUUID();
                 await prisma.jadwalUjian.create({
@@ -247,7 +264,7 @@ async function main() {
                         tanggal_ujian: new Date(),
                         waktu_mulai_santri: new Date(),
                         waktu_selesai_santri: new Date(),
-                        tempat_santri: 'Gedung Ujian Al-Fath',
+                        tempat_santri: cat.jenjang === 'MTS' ? 'Gedung Seleksi Al-Fath' : 'Gedung Seleksi Ulul Albaab',
                         waktu_mulai_ortu: new Date(),
                         waktu_selesai_ortu: new Date(),
                         tempat_ortu: 'Ruang Wawancara Ortu',
@@ -256,17 +273,28 @@ async function main() {
                     }
                 });
 
+                // Determine score and result based on status
+                let statusKelulusan = 'DITERIMA';
+                let nilaiTotal = 85 + Math.random() * 10; // 85 to 95
+                if (status === 'announced') {
+                    statusKelulusan = 'CADANGAN';
+                    nilaiTotal = 75 + Math.random() * 5; // 75 to 80
+                } else if (status === 'rejected') {
+                    statusKelulusan = 'DITOLAK';
+                    nilaiTotal = 50 + Math.random() * 10; // 50 to 60
+                }
+
                 // Create exam scores
                 await prisma.nilaiUjian.create({
                     data: {
                         id: crypto.randomUUID(),
                         jadwal_ujian_id: examId,
                         pendaftar_id: pendaftarId,
-                        nilai_wawancara_santri: 88,
-                        nilai_tes_quran: 85,
-                        nilai_wawancara_ortu: 90,
-                        nilai_total: 87.5,
-                        status_kelulusan: 'DITERIMA'
+                        nilai_wawancara_santri: Math.round(nilaiTotal),
+                        nilai_tes_quran: Math.round(nilaiTotal - 2),
+                        nilai_wawancara_ortu: Math.round(nilaiTotal + 1),
+                        nilai_total: Math.round(nilaiTotal * 10) / 10,
+                        status_kelulusan: statusKelulusan
                     }
                 });
 
@@ -276,8 +304,8 @@ async function main() {
                         id: crypto.randomUUID(),
                         pendaftar_id: pendaftarId,
                         tahun_ajaran_id: tahunAjaran.id,
-                        status_seleksi: 'DITERIMA',
-                        nilai_akhir: 87.5,
+                        status_seleksi: statusKelulusan,
+                        nilai_akhir: Math.round(nilaiTotal * 10) / 10,
                         ditentukan_oleh: verifierId,
                         ditentukan_pada: new Date()
                     }
@@ -294,8 +322,11 @@ async function main() {
     console.log(`- IL Putra: 16`);
     console.log(`- IL Putri: 16`);
     console.log(`- Draft: 1`);
-    console.log(`- Verified (KK, Akta & Payment complete): 66`);
-    console.log(`- Accepted (Scores & Selection complete): 1`);
+    console.log(`- Berkas Lengkap: 20`);
+    console.log(`- Diterima (Belum Daftar Ulang): 25`);
+    console.log(`- Sudah Daftar Ulang: 15`);
+    console.log(`- Cadangan: 5`);
+    console.log(`- Ditolak: 2`);
 }
 
 main()
