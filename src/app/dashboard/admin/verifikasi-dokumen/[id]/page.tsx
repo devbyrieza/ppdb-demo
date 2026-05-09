@@ -52,11 +52,12 @@ const JENIS_DOKUMEN_ORDER = [
   "Foto Setengah Badan",
   "Scan Kartu Keluarga",
   "Scan Akte Kelahiran",
-  "Scan Rapor 2 Semester Terakhir (1)",
-  "Scan Rapor 2 Semester Terakhir (2)",
+  "Scan Rapor Semester Ganjil Terakhir",
+  "Scan Rapor Semester Genap Terakhir",
   "Scan NISN",
   "Surat Keterangan Sehat",
-  "Scan Pakta Integritas",
+  "Scan Pakta Integritas Calon Santri",
+  "Scan Pakta Integritas Calon Orangtua/Wali Santri",
   "Scan Pernyataan Bebas Perilaku Negatif",
 ];
 
@@ -131,10 +132,10 @@ export default function VerifikasiDokumenDetailPage() {
               label = "Scan Akte Kelahiran";
               break;
             case "rapor_sem1":
-              label = "Scan Rapor 2 Semester Terakhir (1)";
+              label = "Scan Rapor Semester Ganjil Terakhir";
               break;
             case "rapor_sem2":
-              label = "Scan Rapor 2 Semester Terakhir (2)";
+              label = "Scan Rapor Semester Genap Terakhir";
               break;
             case "nisn":
               label = "Scan NISN";
@@ -142,9 +143,12 @@ export default function VerifikasiDokumenDetailPage() {
             case "surat_kesehatan":
               label = "Surat Keterangan Sehat";
               break;
+            case "pakta_integritas":
             case "pakta_integritas_santri":
+              label = "Scan Pakta Integritas Calon Santri";
+              break;
             case "pakta_integritas_ortu":
-              label = "Scan Pakta Integritas";
+              label = "Scan Pakta Integritas Calon Orangtua/Wali Santri";
               break;
             case "pernyataan_bebas_negatif":
               label = "Scan Pernyataan Bebas Perilaku Negatif";
@@ -200,10 +204,10 @@ export default function VerifikasiDokumenDetailPage() {
                 label = "Scan Akte Kelahiran";
                 break;
               case "rapor_sem1":
-                label = "Scan Rapor 2 Semester Terakhir (1)";
+                label = "Scan Rapor Semester Ganjil Terakhir";
                 break;
               case "rapor_sem2":
-                label = "Scan Rapor 2 Semester Terakhir (2)";
+                label = "Scan Rapor Semester Genap Terakhir";
                 break;
               case "nisn":
                 label = "Scan NISN";
@@ -211,9 +215,12 @@ export default function VerifikasiDokumenDetailPage() {
               case "surat_kesehatan":
                 label = "Surat Keterangan Sehat";
                 break;
+              case "pakta_integritas":
               case "pakta_integritas_santri":
-            case "pakta_integritas_ortu":
-                label = "Scan Pakta Integritas";
+                label = "Scan Pakta Integritas Calon Santri";
+                break;
+              case "pakta_integritas_ortu":
+                label = "Scan Pakta Integritas Calon Orangtua/Wali Santri";
                 break;
               case "pernyataan_bebas_negatif":
                 label = "Scan Pernyataan Bebas Perilaku Negatif";

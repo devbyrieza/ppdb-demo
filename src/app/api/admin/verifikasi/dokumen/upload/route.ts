@@ -24,12 +24,12 @@ const DOKUMEN_CONFIG: Record<
     allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
   },
   rapor_sem1: {
-    label: "Scan Rapor 2 Semester Terakhir (1)",
+    label: "Scan Rapor Semester Ganjil Terakhir",
     maxSize: 5 * 1024 * 1024,
     allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
   },
   rapor_sem2: {
-    label: "Scan Rapor 2 Semester Terakhir (2)",
+    label: "Scan Rapor Semester Genap Terakhir",
     maxSize: 5 * 1024 * 1024,
     allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
   },
@@ -49,12 +49,12 @@ const DOKUMEN_CONFIG: Record<
     allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
   },
   pakta_integritas_santri: {
-    label: "Scan Pakta Integritas",
+    label: "Scan Pakta Integritas Calon Santri",
     maxSize: 5 * 1024 * 1024,
     allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
   },
   pakta_integritas_ortu: {
-    label: "Scan Pakta Integritas",
+    label: "Scan Pakta Integritas Calon Orangtua/Wali Santri",
     maxSize: 5 * 1024 * 1024,
     allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
   },
