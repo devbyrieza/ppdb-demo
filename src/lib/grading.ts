@@ -224,13 +224,20 @@ export function evaluateStatusGrade(
   status: string | null | undefined,
 ): "A" | "B" | "C" | "D" | "E" {
   const s = status?.toLowerCase() || "";
+  if (
+    s.includes("cadangan") ||
+    s.includes("catatan") ||
+    s.includes("pembinaan") ||
+    s.includes("bimbingan")
+  ) {
+    return "B";
+  }
   if (s.includes("sangat layak") || s === "siap" || s.includes("diterima"))
     return "A";
   if (
     s.includes("layak") ||
     s.includes("cukup") ||
-    s === "cukup siap" ||
-    s.includes("cadangan")
+    s === "cukup siap"
   )
     return "B";
   if (s.includes("tidak layak") || s.includes("ditolak") || s.includes("gagal"))
