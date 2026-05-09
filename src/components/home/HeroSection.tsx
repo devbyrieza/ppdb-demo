@@ -261,7 +261,7 @@ export default function HeroSection() {
                   >
                     Angkatan Pertama
                   </span>
-                  {" • "}Sistem PPDB Terintegrasi
+                  {" • "}Pesantren Al Fath
                 </p>
               </div>
 
