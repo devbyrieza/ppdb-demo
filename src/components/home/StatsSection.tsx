@@ -210,10 +210,13 @@ function StatCard({
           {stat.description}
         </p>
 
+        {/* Spacer to push accent line to bottom */}
+        <div className="flex-grow" />
+
         {/* Bottom accent line */}
         <div
           className={[
-            "mt-auto pt-5 h-[2px] w-6 rounded-full transition-all duration-500 group-hover:w-10",
+            "mt-5 h-[2px] w-6 rounded-full transition-all duration-500 group-hover:w-10",
             isTeal ? "bg-teal-100 group-hover:bg-teal-500" : "",
             isSand ? "bg-sand-200 group-hover:bg-sand-500" : "",
           ].join(" ")}
