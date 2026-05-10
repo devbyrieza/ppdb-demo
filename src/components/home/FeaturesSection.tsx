@@ -91,7 +91,7 @@ export default function FeaturesSection() {
                     transition={{ delay: idx * 0.1 }}
                     className="bg-white p-6 rounded-[2rem] flex gap-6 group items-start border border-sand-200/60 hover:border-teal-300 hover:shadow-premium-xl transition-all duration-500 cursor-default"
                   >
-                    <div className="w-16 h-16 rounded-[1.25rem] bg-linear-to-br from-sand-50 to-sand-100 flex items-center justify-center shrink-0 shadow-premium-xs group-hover:bg-teal-700 group-hover:rotate-6 transition-all duration-500">
+                    <div className="w-16 h-16 rounded-[1.25rem] bg-linear-to-br from-sand-50 to-sand-100 flex items-center justify-center shrink-0 shadow-premium-xs group-hover:from-teal-700 group-hover:to-teal-700 group-hover:rotate-6 transition-all duration-500">
                       <feature.icon className="w-8 h-8 text-teal-800 group-hover:text-white transition-colors" />
                     </div>
                     <div>
