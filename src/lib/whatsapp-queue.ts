@@ -34,6 +34,7 @@ export type NotifType =
     | "document_rejected"
     | "payment_verified"
     | "payment_rejected"
+    | "daftar_ulang_verified"
     | "broadcast"
     | "pembatalan_jadwal";
 
@@ -680,6 +681,26 @@ Silakan login ke dashboard untuk melengkapi Data Santri & Upload Berkas.
 Setelah data dan berkas lengkap, Anda bisa memilih jadwal tes.
 
 Dashboard: ${BRANDING.websiteUrl}/dashboard/pendaftar/isi-data-lengkap
+
+Jazakumullahu khairan
+---
+*Panitia PPDB ${BRANDING.schoolName}*`;
+}
+
+export function buildMessageDaftarUlangVerified(nama: string, jumlah: string, tanggal: string): string {
+    return `✅ *Pembayaran Daftar Ulang Diterima*
+
+Assalamu'alaikum *${nama}*,
+
+Alhamdulillah, pembayaran Daftar Ulang Anda telah kami terima dan verifikasi.
+
+💰 *Detail Pembayaran:*
+* Jumlah: ${jumlah}
+* Status: Terkonfirmasi
+* Tanggal: ${tanggal}
+
+📝 *Informasi Selanjutnya:*
+Status Anda kini tercatat sebagai calon santri yang telah melakukan Daftar Ulang. Mohon nantikan informasi selanjutnya terkait persiapan masuk pesantren melalui dashboard atau grup resmi.
 
 Jazakumullahu khairan
 ---

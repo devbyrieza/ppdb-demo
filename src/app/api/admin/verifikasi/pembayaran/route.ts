@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import {
   enqueueWhatsapp,
   buildMessagePaymentVerified,
+  buildMessageDaftarUlangVerified,
   buildMessagePaymentRejected,
 } from "@/lib/whatsapp-queue";
 import { getServerSession } from "@/lib/session";
@@ -219,14 +220,22 @@ export async function PATCH(request: NextRequest) {
     try {
       if (pembayaran.pendaftar?.no_hp && status_pembayaran !== "pending") {
         const isVerifiedPayment = status_pembayaran === "verified";
+        const isDaftarUlang = pembayaran.jenis_pembayaran === "DAFTAR_ULANG";
 
-        // Prevent duplicate 'payment_verified' notifications
+        // Determine appropriate notification type code
+        const activeJenisNotif = isVerifiedPayment
+          ? isDaftarUlang
+            ? "daftar_ulang_verified"
+            : "payment_verified"
+          : "payment_rejected";
+
+        // Prevent duplicate confirmation notifications
         let shouldSendNotif = true;
         if (isVerifiedPayment) {
           const existingVerifiedNotif = await prisma.whatsappLog.findFirst({
             where: {
               pendaftar_id: pembayaran.pendaftar_id,
-              jenis_notif: "payment_verified",
+              jenis_notif: activeJenisNotif,
             },
           });
           if (existingVerifiedNotif) {
@@ -240,23 +249,35 @@ export async function PATCH(request: NextRequest) {
             pembayaran.created_at,
           ).toLocaleDateString("id-ID");
 
+          // Choose correct message builder based on scenario
+          let finalMessage = "";
+          if (isVerifiedPayment) {
+            if (isDaftarUlang) {
+              finalMessage = buildMessageDaftarUlangVerified(
+                pembayaran.pendaftar.nama_lengkap,
+                formattedAmount,
+                paymentDate,
+              );
+            } else {
+              finalMessage = buildMessagePaymentVerified(
+                pembayaran.pendaftar.nama_lengkap,
+                formattedAmount,
+                pembayaran.metode_pembayaran,
+                paymentDate,
+              );
+            }
+          } else {
+            finalMessage = buildMessagePaymentRejected(
+              pembayaran.pendaftar.nama_lengkap,
+              catatan || "",
+            );
+          }
+
           await enqueueWhatsapp({
             pendaftarId: pembayaran.pendaftar_id,
             phone: pembayaran.pendaftar.no_hp,
-            jenisNotif: isVerifiedPayment
-              ? "payment_verified"
-              : "payment_rejected",
-            messageContent: isVerifiedPayment
-              ? buildMessagePaymentVerified(
-                  pembayaran.pendaftar.nama_lengkap,
-                  formattedAmount,
-                  pembayaran.metode_pembayaran,
-                  paymentDate,
-                )
-              : buildMessagePaymentRejected(
-                  pembayaran.pendaftar.nama_lengkap,
-                  catatan || "",
-                ),
+            jenisNotif: activeJenisNotif as any,
+            messageContent: finalMessage,
           });
         }
       }
