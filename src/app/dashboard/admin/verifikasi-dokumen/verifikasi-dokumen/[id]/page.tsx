@@ -191,7 +191,13 @@ export default function VerifikasiDokumenDetailPage() {
         ];
 
         REQUIRED_RAW_TYPES.forEach((rawType) => {
-          if (!uploadedTypes.has(rawType)) {
+          // Handle backwards compatibility for old 'pakta_integritas' key
+          let isUploaded = uploadedTypes.has(rawType);
+          if (rawType === "pakta_integritas_santri" && uploadedTypes.has("pakta_integritas")) {
+            isUploaded = true;
+          }
+
+          if (!isUploaded) {
             let label = rawType;
             switch (rawType) {
               case "foto_setengah_badan":
