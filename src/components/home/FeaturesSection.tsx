@@ -137,7 +137,7 @@ export default function FeaturesSection() {
                     <p className="text-xs leading-tight text-ink-500 font-medium">
                       Dimulainya Sejarah Baru <br />
                       <span className="text-teal-700 font-bold block mt-1">
-                        Sistem PPDB Modern
+                        Pesantren Al Fath
                       </span>
                     </p>
                   </div>
