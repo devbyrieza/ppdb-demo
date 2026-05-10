@@ -957,52 +957,6 @@ export default function FasilitasPage() {
               </div>
             </motion.div>
 
-            {/* Row 3 - Modern Facilities */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.8 }}
-              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform border border-teal-50 shadow-sm"
-            >
-              <div className="w-12 h-12 bg-teal-50 rounded-xl flex items-center justify-center text-teal-700 mb-5 group-hover:scale-110 transition-transform border border-teal-100 shadow-sm">
-                <Wifi className="w-6 h-6" />
-              </div>
-              <h3 className="font-black text-lg text-teal-950 mb-2">
-                Internet
-              </h3>
-              <p className="text-sm text-teal-950/60 font-medium">
-                Akses WiFi Terfilter
-              </p>
-              <div className="mt-4 pt-4 border-t border-teal-50 w-full">
-                <span className="text-xs text-teal-600 font-bold uppercase tracking-widest">
-                  📶 Teknologi
-                </span>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.9 }}
-              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform border border-teal-50 shadow-sm"
-            >
-              <div className="w-12 h-12 bg-teal-50 rounded-xl flex items-center justify-center text-teal-700 mb-5 group-hover:scale-110 transition-transform border border-teal-100 shadow-sm">
-                <Trophy className="w-6 h-6" />
-              </div>
-              <h3 className="font-black text-lg text-teal-950 mb-2">
-                Lapangan Basket
-              </h3>
-              <p className="text-sm text-teal-950/60 font-medium">
-                Lapangan olahraga standar
-              </p>
-              <div className="mt-4 pt-4 border-t border-teal-50 w-full">
-                <span className="text-xs text-teal-600 font-bold uppercase tracking-widest">
-                  🏀 Olahraga
-                </span>
-              </div>
-            </motion.div>
           </div>
         </Container>
       </section>
