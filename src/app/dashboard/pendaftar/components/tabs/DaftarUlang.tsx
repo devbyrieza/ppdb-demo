@@ -194,6 +194,31 @@ export default function DaftarUlangTab() {
               Tersedia kebijakan <strong>Keringanan Khusus</strong> bagi wali santri yang membutuhkan.
             </li>
           </ul>
+          <div className="pt-3 mt-3 border-t border-teal-200/50">
+            <span className="text-xs text-teal-800 block mb-2 leading-tight font-medium">
+              Butuh bantuan, keringanan, atau konfirmasi biaya?
+            </span>
+            <div className="grid grid-cols-2 gap-2">
+              <a
+                href="https://wa.me/6285111524441?text=Assalamualaikum%20Admin%20Finance%2C%20saya%20wali%20dari%20calon%20santri%20ingin%20berkonsultasi%2Fmengajukan%20keringanan%20terkait%20biaya%20Daftar%20Ulang."
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center gap-1.5 py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-[11px] sm:text-xs transition-all shadow-md hover:shadow-lg active:scale-95 group"
+              >
+                <MessageCircle className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                <span>Finance</span>
+              </a>
+              <a
+                href="https://wa.me/6281285300800?text=Assalamualaikum%20Admin%20CS%2C%20saya%20wali%20dari%20calon%20santri%20ingin%20bertanya%20terkait%20biaya%20Daftar%20Ulang."
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center gap-1.5 py-2.5 px-3 bg-cyan-600 hover:bg-cyan-700 text-white rounded-xl font-bold text-[11px] sm:text-xs transition-all shadow-md hover:shadow-lg active:scale-95 group"
+              >
+                <MessageCircle className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                <span>Admin CS</span>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
 
