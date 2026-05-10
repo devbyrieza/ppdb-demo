@@ -14,12 +14,7 @@ export function useScrollRestoration() {
 
     const handlePopState = () => {
       isPopState.current = true;
-      const lenis = (window as any).lenis;
-      if (lenis) {
-        // Langsung panggil stop dan kunci secara presisi di titik 0
-        lenis.stop();
-        lenis.scrollTo(0, { immediate: true, force: true, lock: true });
-      }
+      // Keep flag active but don't force scroll here, let the effect hook restore position.
     };
 
     window.addEventListener("popstate", handlePopState);
@@ -73,14 +68,10 @@ export function useScrollRestoration() {
           }
         };
 
-        // Delay minimum 100ms menggunakan requestAnimationFrame persis sesuai instruksi
-        setTimeout(() => {
-          requestAnimationFrame(restoreScroll);
-        }, 100);
-
-        // Safety net untuk DOM yang butuh waktu lebih lama merender images/assets
-        setTimeout(restoreScroll, 250);
-        setTimeout(restoreScroll, 500);
+        // Smart firing tailored to PageTransition duration
+        setTimeout(restoreScroll, 50);  // Ultra fast attempt
+        setTimeout(restoreScroll, 450); // Post-transition arrival
+        setTimeout(restoreScroll, 850); // Solid final fallback catch
       }
       isPopState.current = false;
     }
