@@ -162,7 +162,7 @@ export default function TestimonialsSection() {
             className="section-title mb-4"
           >
             Cerita Keberhasilan{" "}
-            <span className="text-gradient-teal">Keluarga Kami</span>
+            <span className="text-gradient-teal">Alumni & Wali Santri</span>
           </motion.h2>
 
           <motion.p
