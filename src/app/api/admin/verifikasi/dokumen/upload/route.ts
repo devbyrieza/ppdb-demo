@@ -104,8 +104,13 @@ export async function POST(request: NextRequest) {
 
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
-    const jenisDokumen = formData.get("jenis_dokumen") as string | null;
+    let jenisDokumen = formData.get("jenis_dokumen") as string | null;
     const pendaftarId = formData.get("pendaftar_id") as string | null;
+
+    // Normalisasi legacy key agar kompatibel dengan DOKUMEN_CONFIG modern
+    if (jenisDokumen === "pakta_integritas") {
+      jenisDokumen = "pakta_integritas_santri";
+    }
 
     if (!file || !jenisDokumen || !pendaftarId) {
       return NextResponse.json(

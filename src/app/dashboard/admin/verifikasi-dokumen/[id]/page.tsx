@@ -115,11 +115,35 @@ export default function VerifikasiDokumenDetailPage() {
 
         // Process uploaded documents
         const docsData = result.data || [];
-        const uploadedTypes = new Set(
-          docsData.map((d: any) => d.jenis_dokumen),
+
+        // 1. Sort by date descending to prefer newest files if duplicates exist
+        const sortedDocs = [...docsData].sort(
+          (a: any, b: any) =>
+            new Date(b.updated_at || b.created_at).getTime() -
+            new Date(a.updated_at || a.created_at).getTime(),
         );
 
-        const processedDocs = docsData.map((d: any) => {
+        // 2. Deduplicate and prepare sets
+        const uploadedTypes = new Set<string>();
+        const uniqueDocs: any[] = [];
+        const seenTypes = new Set<string>();
+
+        sortedDocs.forEach((d: any) => {
+          // Map legacy key for logical comparisons and uniqueness tracking
+          let canonicalKey = d.jenis_dokumen;
+          if (canonicalKey === "pakta_integritas") {
+            canonicalKey = "pakta_integritas_santri";
+          }
+          
+          uploadedTypes.add(canonicalKey);
+
+          if (!seenTypes.has(canonicalKey)) {
+            seenTypes.add(canonicalKey);
+            uniqueDocs.push(d);
+          }
+        });
+
+        const processedDocs = uniqueDocs.map((d: any) => {
           let label = d.jenis_dokumen;
           switch (d.jenis_dokumen) {
             case "foto_setengah_badan":
@@ -160,7 +184,7 @@ export default function VerifikasiDokumenDetailPage() {
           return {
             id: d.id,
             jenis_dokumen: label,
-            raw_jenis: d.jenis_dokumen,
+            raw_jenis: d.jenis_dokumen === "pakta_integritas" ? "pakta_integritas_santri" : d.jenis_dokumen,
             status_verifikasi: d.is_verified
               ? "verified"
               : d.catatan
