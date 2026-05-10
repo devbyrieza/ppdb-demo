@@ -239,8 +239,74 @@ export default function DaftarUlangTab() {
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
-          {/* Input Nominal */}
+          {/* Opsi Pembayaran Langsung */}
           <div>
+            <label className="block text-sm font-bold text-slate-700 mb-3">
+              Metode Pelunasan Daftar Ulang
+            </label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() =>
+                  setNominal(new Intl.NumberFormat("id-ID").format(9800000))
+                }
+                className={`p-4 rounded-xl border-2 transition-all text-left flex flex-col ${
+                  numericNominal === 9800000
+                    ? "border-teal-500 bg-teal-50/50 ring-2 ring-teal-500/20 shadow-md"
+                    : "border-slate-200 bg-white hover:bg-slate-50"
+                }`}
+              >
+                <div className="flex items-center justify-between w-full mb-1">
+                  <span className="font-black text-slate-900">
+                    Bayar Lunas
+                  </span>
+                  {numericNominal === 9800000 ? (
+                    <CheckCircle className="w-5 h-5 text-teal-600" />
+                  ) : (
+                    <div className="w-5 h-5 rounded-full border-2 border-slate-300" />
+                  )}
+                </div>
+                <span className="text-[11px] text-slate-500 leading-tight">
+                  Pelunasan sekaligus seluruh biaya administrasi.
+                </span>
+                <span className="text-sm font-black text-teal-600 mt-2">
+                  Rp 9.800.000
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() =>
+                  setNominal(new Intl.NumberFormat("id-ID").format(4900000))
+                }
+                className={`p-4 rounded-xl border-2 transition-all text-left flex flex-col ${
+                  numericNominal >= 4900000 && numericNominal < 9800000
+                    ? "border-teal-500 bg-teal-50/50 ring-2 ring-teal-500/20 shadow-md"
+                    : "border-slate-200 bg-white hover:bg-slate-50"
+                }`}
+              >
+                <div className="flex items-center justify-between w-full mb-1">
+                  <span className="font-black text-slate-900">
+                    Bayar Dicicil
+                  </span>
+                  {numericNominal >= 4900000 && numericNominal < 9800000 ? (
+                    <CheckCircle className="w-5 h-5 text-teal-600" />
+                  ) : (
+                    <div className="w-5 h-5 rounded-full border-2 border-slate-300" />
+                  )}
+                </div>
+                <span className="text-[11px] text-slate-500 leading-tight">
+                  Pembayaran bertahap minimal 50% di awal.
+                </span>
+                <span className="text-sm font-black text-teal-600 mt-2">
+                  Min. Rp 4.900.000
+                </span>
+              </button>
+            </div>
+          </div>
+
+          {/* Input Nominal */}
+          <div className="pt-2 border-t border-slate-100">
             <label className="block text-sm font-bold text-slate-700 mb-2">
               Nominal yang Dibayarkan (Rp)
             </label>
