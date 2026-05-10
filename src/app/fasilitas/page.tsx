@@ -151,10 +151,12 @@ export default function FasilitasPage() {
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-linear-to-t from-teal-950/70 to-transparent flex items-end p-8">
-                    <span className="text-white font-bold text-xl drop-shadow-md">
-                      Masjid Jami'
-                    </span>
+                  <div className="absolute bottom-5 left-5 z-10">
+                    <div className="bg-white/95 backdrop-blur-sm px-4 py-1.5 rounded-xl shadow-lg border border-white/40 transition-transform duration-300 group-hover:translate-y-[-4px]">
+                      <span className="text-ink-950 font-black text-sm md:text-[15px] tracking-tight">
+                        Masjid Jami'
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <div className="aspect-square rounded-[3rem] overflow-hidden shadow-lg relative group border border-teal-100">
@@ -164,10 +166,12 @@ export default function FasilitasPage() {
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-linear-to-t from-teal-950/70 to-transparent flex items-end p-8">
-                    <span className="text-white font-bold text-lg drop-shadow-md">
-                      Area Olahraga
-                    </span>
+                  <div className="absolute bottom-5 left-5 z-10">
+                    <div className="bg-white/95 backdrop-blur-sm px-4 py-1.5 rounded-xl shadow-lg border border-white/40 transition-transform duration-300 group-hover:translate-y-[-4px]">
+                      <span className="text-ink-950 font-black text-sm md:text-[15px] tracking-tight">
+                        Area Olahraga
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -179,10 +183,12 @@ export default function FasilitasPage() {
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-linear-to-t from-teal-950/70 to-transparent flex items-end p-8">
-                    <span className="text-white font-bold text-lg drop-shadow-md">
-                      Asrama Nyaman
-                    </span>
+                  <div className="absolute bottom-5 left-5 z-10">
+                    <div className="bg-white/95 backdrop-blur-sm px-4 py-1.5 rounded-xl shadow-lg border border-white/40 transition-transform duration-300 group-hover:translate-y-[-4px]">
+                      <span className="text-ink-950 font-black text-sm md:text-[15px] tracking-tight">
+                        Asrama Nyaman
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <div className="aspect-4/5 rounded-[3rem] overflow-hidden shadow-lg relative group border border-teal-100">
@@ -192,10 +198,12 @@ export default function FasilitasPage() {
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-linear-to-t from-teal-950/70 to-transparent flex items-end p-8">
-                    <span className="text-white font-bold text-xl drop-shadow-md">
-                      Kelas Modern
-                    </span>
+                  <div className="absolute bottom-5 left-5 z-10">
+                    <div className="bg-white/95 backdrop-blur-sm px-4 py-1.5 rounded-xl shadow-lg border border-white/40 transition-transform duration-300 group-hover:translate-y-[-4px]">
+                      <span className="text-ink-950 font-black text-sm md:text-[15px] tracking-tight">
+                        Kelas Modern
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
