@@ -202,7 +202,7 @@ export default function TentangPage() {
                   serta barisan asatidzah yang kompeten di bidangnya.
                 </p>
                 <p>
-                  Mulai tahun 2026, PPDB bertransformasi total untuk memberikan
+                  Mulai tahun 2026, Al Fath bertransformasi total untuk memberikan
                   layanan pendidikan terbaik, mencakup hirarki kepengurusan yang
                   profesional, sistem pendidikan tahfidz intensif, dan
                   pengasuhan berbasis adab.
@@ -391,7 +391,7 @@ export default function TentangPage() {
             <div className="relative z-10 max-w-3xl mx-auto">
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-6 md:mb-8 text-white tracking-tight leading-[1.1]">
                 Mari Menjadi Bagian <br />
-                Keluarga <span className="text-sand-300">PPDB</span>
+                Keluarga <span className="text-sand-300">Al Fath</span>
               </h2>
               <p className="text-base md:text-lg lg:text-xl text-white/90 mb-8 md:mb-10 lg:mb-12 max-w-2xl mx-auto leading-relaxed font-medium px-2">
                 Daftarkan putra Anda sekarang dan persiapkan masa depan gemilang
