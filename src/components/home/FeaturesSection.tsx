@@ -181,7 +181,7 @@ export default function FeaturesSection() {
                       Ijazah Diakui Negara
                     </p>
                     <p className="text-xs text-ink-500 font-medium leading-tight">
-                      Kemendikdasmen RI
+                      Kemendikdasmen RI (A)
                     </p>
                   </div>
                 </div>
