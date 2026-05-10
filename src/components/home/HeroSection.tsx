@@ -387,7 +387,7 @@ export default function HeroSection() {
               </div>
             </motion.div>
 
-            {/* Floating Card: Jaringan Elit — FIX #2 md breakpoint */}
+            {/* Floating Card: Jaringan Global — FIX #2 md breakpoint */}
             <motion.div
               animate={shouldReduceMotion ? {} : { y: [0, 10, 0] }}
               transition={{
@@ -424,7 +424,7 @@ export default function HeroSection() {
                     className="text-sm font-black leading-tight"
                     style={{ color: "var(--color-teal-900)" }}
                   >
-                    Jaringan Elit
+                    Jaringan Global
                   </p>
                   <p
                     className="text-[10px] font-semibold mt-0.5"
