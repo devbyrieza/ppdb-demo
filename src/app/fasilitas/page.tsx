@@ -76,6 +76,38 @@ const HeroStat = ({
 
 export default function FasilitasPage() {
   const [formStatus, setFormStatus] = useState<"idle" | "success">("idle");
+  
+  const [visitForm, setVisitForm] = useState({
+    nama: "",
+    wa: "",
+    tanggal: "",
+    jam: "",
+    jumlah: "",
+  });
+
+  const handleVisitSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    const message = `Assalamu'alaikum Warahmatullahi Wabarakatuh.
+
+Saya ingin mengajukan Jadwal Kunjungan ke Pesantren Al Fath.
+
+*Rincian Rencana Kunjungan:*
+• Nama: ${visitForm.nama}
+• WhatsApp: ${visitForm.wa}
+• Tanggal: ${visitForm.tanggal}
+• Waktu: ${visitForm.jam} WIB
+• Jumlah Pengunjung: ${visitForm.jumlah} orang
+
+Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
+
+    const encodedText = encodeURIComponent(message);
+    // template-demo CS number
+    const waNumber = "6281285300800"; 
+    
+    window.open(`https://wa.me/${waNumber}?text=${encodedText}`, '_blank');
+    setFormStatus('success');
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -1079,19 +1111,33 @@ export default function FasilitasPage() {
                       </button>
                     </motion.div>
                   ) : (
-                    <form onSubmit={(e) => { e.preventDefault(); setFormStatus('success'); }} className="space-y-6">
+                    <form onSubmit={handleVisitSubmit} className="space-y-6">
                       <div className="grid sm:grid-cols-2 gap-6">
                         <div className="space-y-2">
                           <label className="text-sm font-black text-ink-950 flex items-center gap-2">
                             <User className="w-4 h-4 text-teal-600" /> Nama Lengkap
                           </label>
-                          <input required type="text" placeholder="Contoh: Bapak Ahmad" className="w-full px-4 py-3.5 rounded-xl border border-ink-100 bg-surface-50 focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 outline-hidden transition-all font-medium text-ink-900 placeholder:text-ink-300" />
+                          <input 
+                            required 
+                            type="text" 
+                            placeholder="Contoh: Bapak Ahmad" 
+                            className="w-full px-4 py-3.5 rounded-xl border border-ink-100 bg-surface-50 focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 outline-hidden transition-all font-medium text-ink-900 placeholder:text-ink-300" 
+                            value={visitForm.nama}
+                            onChange={(e) => setVisitForm({ ...visitForm, nama: e.target.value })}
+                          />
                         </div>
                         <div className="space-y-2">
                           <label className="text-sm font-black text-ink-950 flex items-center gap-2">
                             <Smartphone className="w-4 h-4 text-teal-600" /> Nomor WhatsApp
                           </label>
-                          <input required type="tel" placeholder="Contoh: 0812..." className="w-full px-4 py-3.5 rounded-xl border border-ink-100 bg-surface-50 focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 outline-hidden transition-all font-medium text-ink-900 placeholder:text-ink-300" />
+                          <input 
+                            required 
+                            type="tel" 
+                            placeholder="Contoh: 0812..." 
+                            className="w-full px-4 py-3.5 rounded-xl border border-ink-100 bg-surface-50 focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 outline-hidden transition-all font-medium text-ink-900 placeholder:text-ink-300" 
+                            value={visitForm.wa}
+                            onChange={(e) => setVisitForm({ ...visitForm, wa: e.target.value })}
+                          />
                         </div>
                       </div>
 
@@ -1100,13 +1146,24 @@ export default function FasilitasPage() {
                           <label className="text-sm font-black text-ink-950 flex items-center gap-2">
                             <Calendar className="w-4 h-4 text-teal-600" /> Rencana Tanggal
                           </label>
-                          <input required type="date" className="w-full px-4 py-3.5 rounded-xl border border-ink-100 bg-surface-50 focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 outline-hidden transition-all font-medium text-ink-900" />
+                          <input 
+                            required 
+                            type="date" 
+                            className="w-full px-4 py-3.5 rounded-xl border border-ink-100 bg-surface-50 focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 outline-hidden transition-all font-medium text-ink-900" 
+                            value={visitForm.tanggal}
+                            onChange={(e) => setVisitForm({ ...visitForm, tanggal: e.target.value })}
+                          />
                         </div>
                         <div className="space-y-2">
                           <label className="text-sm font-black text-ink-950 flex items-center gap-2">
                             <Clock className="w-4 h-4 text-teal-600" /> Rencana Jam
                           </label>
-                          <select required className="w-full px-4 py-3.5 rounded-xl border border-ink-100 bg-surface-50 focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 outline-hidden transition-all font-medium text-ink-900 cursor-pointer">
+                          <select 
+                            required 
+                            className="w-full px-4 py-3.5 rounded-xl border border-ink-100 bg-surface-50 focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 outline-hidden transition-all font-medium text-ink-900 cursor-pointer"
+                            value={visitForm.jam}
+                            onChange={(e) => setVisitForm({ ...visitForm, jam: e.target.value })}
+                          >
                             <option value="">Pilih Waktu</option>
                             <option value="08:00">08:00 WIB</option>
                             <option value="10:00">10:00 WIB</option>
@@ -1120,7 +1177,15 @@ export default function FasilitasPage() {
                         <label className="text-sm font-black text-ink-950 flex items-center gap-2">
                           <Users className="w-4 h-4 text-teal-600" /> Jumlah Orang yang Datang
                         </label>
-                        <input required type="number" min="1" placeholder="Contoh: 3" className="w-full px-4 py-3.5 rounded-xl border border-ink-100 bg-surface-50 focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 outline-hidden transition-all font-medium text-ink-900 placeholder:text-ink-300" />
+                        <input 
+                          required 
+                          type="number" 
+                          min="1" 
+                          placeholder="Contoh: 3" 
+                          className="w-full px-4 py-3.5 rounded-xl border border-ink-100 bg-surface-50 focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 outline-hidden transition-all font-medium text-ink-900 placeholder:text-ink-300" 
+                          value={visitForm.jumlah}
+                          onChange={(e) => setVisitForm({ ...visitForm, jumlah: e.target.value })}
+                        />
                       </div>
 
                       <button type="submit" className="w-full py-4 rounded-xl bg-teal-600 text-white font-black text-lg shadow-lg shadow-teal-600/20 hover:bg-teal-700 hover:-translate-y-0.5 hover:shadow-xl transition-all flex items-center justify-center gap-2 mt-2">
