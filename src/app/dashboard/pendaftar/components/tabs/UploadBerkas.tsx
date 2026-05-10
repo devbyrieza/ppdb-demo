@@ -21,6 +21,7 @@ import {
   Send,
   Lock,
   ShieldCheck,
+  MessageCircle,
 } from "lucide-react";
 
 // ============================================
@@ -1098,6 +1099,29 @@ export default function UploadBerkasTab() {
                   <span className="text-amber-800 font-bold text-sm">
                     Sedang Diverifikasi Admin
                   </span>
+                </div>
+
+                <div className="mt-4 p-4 bg-emerald-50 border border-emerald-200 rounded-xl flex flex-col sm:flex-row items-center sm:items-start gap-3 text-left">
+                  <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                    <MessageCircle className="w-5 h-5 text-emerald-600" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-emerald-900 text-sm">
+                      Ingin Verifikasi Lebih Cepat?
+                    </p>
+                    <p className="text-emerald-700 text-xs mt-0.5 font-medium">
+                      Anda bisa menghubungi CS di nomor{" "}
+                      <a
+                        href="https://wa.me/6285111524441"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-black underline hover:text-emerald-900"
+                      >
+                        0851-1152-4441
+                      </a>{" "}
+                      jika ingin cepat diverifikasi.
+                    </p>
+                  </div>
                 </div>
               </>
             )

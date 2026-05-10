@@ -887,6 +887,30 @@ export default function PembayaranPendaftaranTab({
               )}
             </div>
             <PaymentTimeline paymentStatus={data.status} />
+            {isPaymentPending && (
+              <div className="mt-8 p-5 bg-emerald-50 border border-emerald-200 rounded-2xl flex flex-col sm:flex-row items-center sm:items-start gap-4">
+                <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center shrink-0">
+                  <MessageCircle className="w-6 h-6 text-emerald-600" />
+                </div>
+                <div className="text-center sm:text-left flex-1">
+                  <h4 className="font-black text-emerald-900 mb-1 text-base">
+                    Ingin Verifikasi Lebih Cepat?
+                  </h4>
+                  <p className="text-emerald-700 text-sm leading-relaxed">
+                    Anda bisa menghubungi CS di nomor{" "}
+                    <a
+                      href="https://wa.me/6285111524441"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-black underline hover:text-emerald-900 transition-colors"
+                    >
+                      0851-1152-4441
+                    </a>{" "}
+                    jika ingin cepat diverifikasi oleh tim panitia.
+                  </p>
+                </div>
+              </div>
+            )}
             {isPaymentRejected && data.pembayaran?.catatan_verifikasi && (
               <div className="mt-8 p-4 bg-red-50 border border-red-200 rounded-2xl flex gap-4">
                 <AlertCircle className="w-6 h-6 text-red-600 shrink-0 mt-1" />

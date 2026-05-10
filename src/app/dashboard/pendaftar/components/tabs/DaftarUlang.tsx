@@ -9,6 +9,7 @@ import {
   Loader2,
   Lock,
   History,
+  MessageCircle,
 } from "lucide-react";
 import { Alert } from "@/components/ui";
 import { formatCurrency } from "@/lib/utils"; // Ensure this utils exists or use Intl locally
@@ -200,6 +201,31 @@ export default function DaftarUlangTab() {
         >
           {message.text}
         </Alert>
+      )}
+
+      {message && message.type === "success" && (
+        <div className="p-5 bg-emerald-50 border border-emerald-200 rounded-xl flex flex-col sm:flex-row items-center sm:items-start gap-4 shadow-sm">
+          <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+            <MessageCircle className="w-6 h-6 text-emerald-600" />
+          </div>
+          <div className="text-center sm:text-left flex-1">
+            <h4 className="font-black text-emerald-900 mb-1 text-base">
+              Ingin Verifikasi Lebih Cepat?
+            </h4>
+            <p className="text-emerald-700 text-sm leading-relaxed">
+              Anda bisa menghubungi CS di nomor{" "}
+              <a
+                href="https://wa.me/6285111524441"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-black underline hover:text-emerald-900 transition-colors"
+              >
+                0851-1152-4441
+              </a>{" "}
+              jika ingin cepat diverifikasi.
+            </p>
+          </div>
+        </div>
       )}
 
       {/* Form Upload */}
