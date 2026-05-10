@@ -723,13 +723,7 @@ export default function KegiatanPage() {
                 perkembangan nyata baik dari sisi hafidz, pemahaman kitab,
                 hingga mentalitas juara.
               </p>
-              <div className="flex justify-center">
-                <Link href="/kontak">
-                  <button className="px-12 py-3 md:px-14 md:py-4 rounded-pill bg-teal-900 text-white font-black text-base md:text-lg hover:bg-sand-500 shadow-premium-lg transition-all flex items-center gap-3">
-                    Lihat Portofolio Santri
-                  </button>
-                </Link>
-              </div>
+
             </div>
 
             <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 w-full">
