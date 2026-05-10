@@ -8,7 +8,7 @@ const TESTIMONIALS = [
   {
     no: "001",
     name: "Bpk. Surwanto",
-    role: "Wali Santri Al Fath Pusat",
+    role: "Wali Santri Pesantren Al Fath",
     city: "Sukoharjo, Jawa Tengah",
     initial: "S",
     date: "Oktober 2024",
@@ -18,7 +18,7 @@ const TESTIMONIALS = [
   {
     no: "002",
     name: "Ibu Endah Wulandari",
-    role: "Wali Santri Al Fath Pusat",
+    role: "Wali Santri Pesantren Al Fath",
     city: "Kebumen, Jawa Tengah",
     initial: "E",
     date: "Januari 2025",
