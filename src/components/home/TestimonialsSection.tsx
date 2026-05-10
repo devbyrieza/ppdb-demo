@@ -8,7 +8,7 @@ const TESTIMONIALS = [
   {
     no: "001",
     name: "Bpk. Surwanto",
-    role: "Wali Santri PPDB Modern Pusat",
+    role: "Wali Santri Al Fath Pusat",
     city: "Sukoharjo, Jawa Tengah",
     initial: "S",
     date: "Oktober 2024",
@@ -18,7 +18,7 @@ const TESTIMONIALS = [
   {
     no: "002",
     name: "Ibu Endah Wulandari",
-    role: "Wali Santri PPDB Modern Pusat",
+    role: "Wali Santri Al Fath Pusat",
     city: "Kebumen, Jawa Tengah",
     initial: "E",
     date: "Januari 2025",
@@ -28,7 +28,7 @@ const TESTIMONIALS = [
   {
     no: "003",
     name: "Muhammad Razan",
-    role: "Alumni Pesantren PPDB Modern",
+    role: "Alumni Pesantren Al Fath",
     city: "Purwokerto, Jawa Tengah",
     initial: "R",
     date: "Maret 2025",
@@ -38,7 +38,7 @@ const TESTIMONIALS = [
   {
     no: "004",
     name: "Faisal Ahmad",
-    role: "Alumni Pesantren PPDB Modern",
+    role: "Alumni Pesantren Al Fath",
     city: "Cilacap, Jawa Tengah",
     initial: "A",
     date: "Agustus 2024",
