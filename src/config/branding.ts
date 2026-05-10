@@ -7,7 +7,7 @@ export const BRANDING = {
     process.env.NEXT_PUBLIC_SCHOOL_TAGLINE ||
     "Mencetak Generasi Rabbani, Unggul, dan Berintegritas",
   schoolNetwork:
-    process.env.NEXT_PUBLIC_SCHOOL_NETWORK || "Jaringan Pesantren Modern",
+    process.env.NEXT_PUBLIC_SCHOOL_NETWORK || "Jaringan Global",
   primaryColor: process.env.NEXT_PUBLIC_PRIMARY_COLOR || "#0D6E6E", // Teal Emerald
   secondaryColor: process.env.NEXT_PUBLIC_SECONDARY_COLOR || "#A6945E", // Warm Sand
   logoPath: process.env.NEXT_PUBLIC_LOGO_PATH || "/images/logo.jpg",
