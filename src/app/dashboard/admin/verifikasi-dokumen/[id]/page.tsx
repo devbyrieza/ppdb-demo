@@ -532,30 +532,16 @@ export default function VerifikasiDokumenDetailPage() {
                     }
                   />
                 ) : (
-                  <div className="absolute inset-0 flex flex-col items-center justify-center text-stone-400">
-                    <FileText className="w-16 h-16 mb-2" />
-                    <span className="text-sm font-medium">Dokumen PDF</span>
-                    <div className="flex gap-2 mt-4">
-                      <button
-                        onClick={() =>
-                          openPreview(
-                            dok.file_url!,
-                            dok.file_type,
-                            dok.jenis_dokumen,
-                          )
-                        }
-                        className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold transition-all"
-                      >
-                        Pratinjau
-                      </button>
-                      <a
-                        href={dok.file_url}
-                        target="_blank"
-                        className="px-4 py-2 bg-stone-200 hover:bg-stone-300 text-stone-700 rounded-lg text-xs font-bold transition-all"
-                      >
-                        Tab Baru
-                      </a>
-                    </div>
+                  <div 
+                    className="absolute inset-0 w-full h-full overflow-hidden cursor-pointer group bg-white"
+                    onClick={() => openPreview(dok.file_url!, dok.file_type, dok.jenis_dokumen)}
+                  >
+                    <iframe
+                      src={`${dok.file_url}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
+                      className="absolute inset-0 w-full h-full border-0 pointer-events-none"
+                      title={`PDF Preview - ${dok.jenis_dokumen}`}
+                    />
+                    <div className="absolute inset-0 z-10 opacity-0 group-hover:bg-black/5 transition-all"></div>
                   </div>
                 )
               ) : (
