@@ -57,7 +57,7 @@ const STATS: Stat[] = [
     icon: GraduationCap,
     color: "teal",
     suffix: "",
-    sublabel: "MTs · MA",
+    sublabel: "MTs · IL",
     description: "Pendidikan menengah lengkap",
   },
   {
