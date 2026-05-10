@@ -140,6 +140,50 @@ export default function DaftarUlangTab() {
     );
   }
 
+  // ENROLLED STATE
+  const isEnrolled = dataUser?.status_pendaftaran === "enrolled";
+  if (isEnrolled) {
+    return (
+      <div className="max-w-3xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 py-12">
+        <div className="bg-linear-to-br from-emerald-600 to-emerald-800 rounded-[2rem] p-10 text-white shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-8 opacity-10">
+            <CheckCircle className="w-48 h-48" />
+          </div>
+          <div className="relative z-10 flex flex-col items-center text-center">
+            <div className="w-20 h-20 bg-white/20 backdrop-blur-md rounded-3xl flex items-center justify-center mb-6 border border-white/30">
+              <CheckCircle className="w-10 h-10 text-white" />
+            </div>
+            <h2 className="text-3xl font-black mb-4 uppercase tracking-wide text-white">
+              PEMBAYARAN DIVERIFIKASI
+            </h2>
+            <p className="text-emerald-50 text-lg max-w-lg leading-relaxed font-medium">
+              Alhamdulillah! Proses Daftar Ulang Anda telah selesai diverifikasi oleh Panitia Keuangan.
+            </p>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-[2rem] p-10 shadow-xl border border-emerald-100 flex items-start gap-6">
+          <div className="p-4 bg-emerald-50 rounded-2xl">
+            <History className="w-8 h-8 text-emerald-600" />
+          </div>
+          <div>
+            <h3 className="text-xl font-black text-slate-900 mb-3">
+              Langkah Selanjutnya
+            </h3>
+            <p className="text-slate-600 leading-relaxed mb-6">
+              Selamat! Anda kini resmi tercatat sebagai Santri Baru. Silakan pantau grup WhatsApp resmi atau dashboard untuk informasi jadwal kedatangan santri.
+            </p>
+            <div className="flex gap-4">
+              <div className="px-5 py-2.5 bg-emerald-600 text-white rounded-full text-xs font-black shadow-md">
+                STATUS: ENROLLED
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const numericNominal = parseInt(nominal.replace(/\D/g, "") || "0");
   const tipeBayar = calculateTipe(numericNominal);
 

@@ -181,7 +181,10 @@ export async function PATCH(request: NextRequest) {
     let newPendaftarStatus = pembayaran.pendaftar.status_pendaftaran;
 
     if (status_pembayaran === "verified") {
-      if (
+      // Automatically promote to enrolled if they verified their Re-Registration
+      if (pembayaran.jenis_pembayaran === "DAFTAR_ULANG") {
+        newPendaftarStatus = "enrolled";
+      } else if (
         getStatusIndex(newPendaftarStatus as any) <
         getStatusIndex("verified" as any)
       ) {
