@@ -646,10 +646,10 @@ export default function KegiatanPage() {
       benefit: "Jiwa Entrepreneur",
     },
     {
-      name: "Coding",
+      name: "Coding & AI",
       icon: Zap,
-      desc: "Dasar-dasar pengembangan website (Coming Soon).",
-      benefit: "Skill Masa Depan",
+      desc: "Belajar membangun website, aplikasi modern, serta implementasi & integrasi Artificial Intelligence (AI).",
+      benefit: "Inovator Digital",
     },
   ];
 
