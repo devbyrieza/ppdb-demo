@@ -102,7 +102,7 @@ export default function UrgencyBar() {
             className="inline-flex items-center gap-1 sm:gap-1.5 px-3 py-1 rounded-full bg-sand-400 text-teal-950 text-[10px] sm:text-[11px] font-black uppercase tracking-widest hover:bg-white transition-colors whitespace-nowrap shrink-0 shadow-sm"
           >
             <Zap className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-            Sekarang
+            Daftar Sekarang
           </Link>
 
           {/* Dismiss button - mobile friendly, inline */}
