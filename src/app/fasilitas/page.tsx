@@ -154,7 +154,7 @@ export default function FasilitasPage() {
                   <div className="absolute bottom-5 left-5 z-10">
                     <div className="bg-white/95 backdrop-blur-sm px-4 py-1.5 rounded-xl shadow-lg border border-white/40 transition-transform duration-300 group-hover:translate-y-[-4px]">
                       <span className="text-ink-950 font-black text-sm md:text-[15px] tracking-tight">
-                        Masjid Jami'
+                        Masjid Jami' Al Fath
                       </span>
                     </div>
                   </div>
@@ -193,7 +193,7 @@ export default function FasilitasPage() {
                 </div>
                 <div className="aspect-4/5 rounded-[3rem] overflow-hidden shadow-lg relative group border border-teal-100">
                   <Image
-                    src="/images/gedung-kelas.webp"
+                    src="/images/kelas-dari-dalam.webp"
                     alt="Kelas"
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-700"

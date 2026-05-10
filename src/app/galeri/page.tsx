@@ -11,7 +11,7 @@ const GALLERY_CATEGORIES = [
   {
     title: "Fasilitas Pesantren",
     items: [
-      { src: "/images/masjid.webp", label: "Masjid Jami' PPDB" },
+      { src: "/images/masjid.webp", label: "Masjid Jami' Al Fath" },
       { src: "/images/asrama.webp", label: "Asrama Santri" },
       { src: "/images/tentang.webp", label: "Gedung Utama" },
       {
@@ -20,7 +20,7 @@ const GALLERY_CATEGORIES = [
       },
       { src: "/images/gedung-kelas.webp", label: "Gedung Kelas" },
       { src: "/images/kelas-dari-dalam.webp", label: "Ruang Kelas dari Dalam" },
-      { src: "/images/luar-kelas.webp", label: "Area Luar Kelas" },
+      { src: "/images/luar-kelas.webp", label: "Koridor Kelas" },
       {
         src: "/images/lapangan-minisoccer.webp",
         label: "Lapangan Mini Soccer",
@@ -45,7 +45,7 @@ const GALLERY_CATEGORIES = [
     items: [
       {
         src: "/images/welcome-selamat-datang.webp",
-        label: "Selamat Datang di PPDB",
+        label: "Selamat Datang di Al Fath",
       },
       { src: "/images/halaman-dekat-masjid.webp", label: "Halaman Pesantren" },
     ],
@@ -81,7 +81,7 @@ export default function GaleriPage() {
             className="text-5xl md:text-7xl lg:text-8xl font-display font-black mb-10 tracking-tight leading-[0.9] text-ink-950"
           >
             Galeri <br />
-            <span className="text-gradient-teal">PPDB</span>
+            <span className="text-gradient-teal">Al Fath</span>
           </motion.h1>
 
           <motion.p
@@ -91,7 +91,7 @@ export default function GaleriPage() {
             className="text-xl md:text-2xl text-ink-600 max-w-3xl mx-auto leading-relaxed font-medium"
           >
             Koleksi foto suasana, fasilitas, dan kegiatan santri di Pesantren
-            Pesantren Al Fath.
+            Al Fath.
           </motion.p>
         </Container>
       </section>
