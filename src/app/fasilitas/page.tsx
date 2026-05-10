@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -33,6 +33,10 @@ import {
   TrendingUp,
   ArrowRight,
   Camera,
+  Calendar,
+  Clock,
+  Smartphone,
+  User,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { Container } from "@/components/layout/Container";
@@ -71,6 +75,8 @@ const HeroStat = ({
 );
 
 export default function FasilitasPage() {
+  const [formStatus, setFormStatus] = useState<"idle" | "success">("idle");
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -961,180 +967,176 @@ export default function FasilitasPage() {
         </Container>
       </section>
 
-      {/* 4. Photo Gallery - Enhanced Layout */}
+      {/* 4. Jadwalkan Kunjungan - Replaces Gallery */}
       <section
-        id="gallery"
-        className="py-24 md:py-32 section-alt border-y border-teal-100"
+        id="visit"
+        className="py-24 md:py-32 section-alt border-y border-teal-100 relative overflow-hidden"
       >
-        <Container>
-          <div className="text-center md:text-left max-w-3xl mb-12 sm:mb-16">
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-white border border-teal-100 text-teal-700 text-xs font-bold uppercase tracking-widest mb-6 shadow-sm"
-            >
-              <Camera className="w-3.5 h-3.5" />
-              <span>Dokumentasi</span>
-            </motion.div>
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="section-title mb-6 md:mb-4 lg:mb-6 text-center md:text-left lg:ml-0"
-            >
-              Galeri <span className="text-gradient-teal">Fasilitas</span>
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="section-subtitle lg:ml-0"
-            >
-              Lihat langsung suasana dan lingkungan Pesantren Al Fath
-              dari berbagai sudut.
-            </motion.p>
-          </div>
-
-          {/* Enhanced Gallery Grid with Better Layout */}
-          <div className="max-w-7xl mx-auto">
-            {/* Hero Row - Large Featured Images - REARRANGED: Masjid + Ruang Kelas Raksasa */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 mb-4 lg:mb-6">
-              {/* Masjid - Large Featured */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
-                className="lg:col-span-2 row-span-2 relative rounded-[2rem] md:rounded-[2.5rem] overflow-hidden group aspect-4/3 shadow-md hover:shadow-xl transition-all duration-500 border border-teal-100"
-              >
-                <Image
-                  src="/images/masjid.webp"
-                  alt="Masjid Jami' Al Fath"
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
-                <div className="absolute bottom-6 md:bottom-8 left-6 md:left-8 right-6 md:right-8">
-                  <span className="text-white font-black text-2xl md:text-3xl drop-shadow-md">
-                    Masjid Jami' Al Fath
-                  </span>
-                  <p className="text-teal-50/90 text-sm md:text-lg mt-1 md:mt-2 font-medium">
-                    Pusat peribadatan
+        {/* Background decoration */}
+        <div className="absolute top-0 left-0 w-64 h-64 bg-teal-50 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2 opacity-60" />
+        
+        <Container className="relative z-10">
+          <div className="max-w-5xl mx-auto">
+            <div className="grid lg:grid-cols-12 gap-12 items-center">
+              
+              {/* Left Content - Info */}
+              <div className="lg:col-span-5">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                >
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-white border border-teal-100 text-teal-700 text-xs font-bold uppercase tracking-widest mb-6 shadow-sm">
+                    <Calendar className="w-3.5 h-3.5" />
+                    <span>Survey Pesantren</span>
+                  </div>
+                  <h2 className="text-4xl md:text-5xl font-display font-black text-ink-950 mb-6 leading-tight">
+                    Kunjungi <span className="text-gradient-teal">Kami</span>
+                  </h2>
+                  <p className="text-lg text-ink-600 mb-8 leading-relaxed font-medium">
+                    Masih banyak fasilitas pendukung lainnya di dalam Pesantren Al Fath.
+                    Ingin melihat langsung? Jadwalkan kunjungan Anda melalui formulir ini.
                   </p>
-                </div>
-              </motion.div>
+                  
+                  <div className="space-y-6">
+                    <div className="flex gap-4">
+                      <div className="w-12 h-12 rounded-2xl bg-teal-50 flex items-center justify-center text-teal-600 shrink-0 border border-teal-100">
+                        <CheckCircle2 className="w-6 h-6" />
+                      </div>
+                      <div>
+                        <h4 className="font-black text-ink-950 text-lg mb-1">Konfirmasi Cepat</h4>
+                        <p className="text-sm text-ink-600 font-medium">Tim kami akan segera menghubungi via WhatsApp.</p>
+                      </div>
+                    </div>
+                    <div className="flex gap-4">
+                      <div className="w-12 h-12 rounded-2xl bg-teal-50 flex items-center justify-center text-teal-600 shrink-0 border border-teal-100">
+                        <MapPin className="w-6 h-6" />
+                      </div>
+                      <div>
+                        <h4 className="font-black text-ink-950 text-lg mb-1">Tour Terpadu</h4>
+                        <p className="text-sm text-ink-600 font-medium">Dipandu langsung untuk melihat seluruh area.</p>
+                      </div>
+                    </div>
+                  </div>
 
-              {/* RUANG KELAS - SMALLER VIEW */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-                className="lg:col-span-1 row-span-2 relative rounded-[2rem] md:rounded-[2.5rem] overflow-hidden group aspect-4/3 lg:aspect-2/3 shadow-md hover:shadow-xl transition-all duration-500 border border-teal-100"
-              >
-                <Image
-                  src="/images/kelas-dari-dalam.webp"
-                  alt="Ruang Kelas dari Dalam - View Lengkap"
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
-                <div className="absolute bottom-6 md:bottom-8 left-6 md:left-8 right-6 md:right-8">
-                  <span className="text-white font-black text-xl md:text-2xl drop-shadow-md leading-tight">
-                    Ruang Kelas
-                  </span>
-                  <p className="text-teal-50/90 text-xs md:text-sm mt-1 md:mt-2 font-medium">
-                    Fasilitas pembelajaran modern
-                  </p>
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Second Row - Academic & Residential */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-4 lg:mb-6">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.3 }}
-                className="relative rounded-2xl sm:rounded-[2rem] overflow-hidden group aspect-square shadow-sm hover:shadow-md transition-all duration-500 border border-teal-100"
-              >
-                <Image
-                  src="/images/gedung-kelas.webp"
-                  alt="Gedung Kelas"
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
-                <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6">
-                  <span className="text-white font-black text-[15px] sm:text-lg">
-                    Gedung Kelas
-                  </span>
-                </div>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.4 }}
-                className="relative rounded-2xl sm:rounded-[2rem] overflow-hidden group aspect-square shadow-sm hover:shadow-md transition-all duration-500 border border-teal-100"
-              >
-                <Image
-                  src="/images/asrama.webp"
-                  alt="Asrama"
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
-                <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6">
-                  <span className="text-white font-black text-[15px] sm:text-lg">
-                    Asrama
-                  </span>
-                </div>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.5 }}
-                className="lg:col-span-2 col-span-2 relative rounded-2xl sm:rounded-[2rem] overflow-hidden group aspect-2/1 shadow-sm hover:shadow-md transition-all duration-500 border border-teal-100"
-              >
-                <Image
-                  src="/images/lapangan-minisoccer.webp"
-                  alt="Lapangan Olahraga"
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
-                <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6">
-                  <span className="text-white font-black text-[15px] sm:text-xl">
-                    Lapangan Minisoccer
-                  </span>
-                  <p className="text-teal-50/90 text-xs sm:text-sm mt-1 font-medium hidden sm:block">
-                    Sarana olahraga berkualitas
-                  </p>
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Note Info Component using App Card Style */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.6 }}
-              className="mt-8 app-card bg-teal-50 p-6 flex items-start gap-4 border border-teal-100 max-w-2xl mx-auto"
-            >
-              <div className="w-10 h-10 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center shrink-0">
-                <Info className="w-5 h-5" />
+                  {/* Peta Lokasi Terintegrasi */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.2 }}
+                    className="mt-10 bg-white p-2.5 rounded-[2rem] border border-teal-100 shadow-lg shadow-teal-900/5 overflow-hidden relative group"
+                  >
+                    <div className="rounded-[1.5rem] overflow-hidden h-[200px] relative bg-teal-50">
+                      <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15842.170258079815!2d106.84883492584104!3d-6.9457494681995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68370000000001%3A0x6737000000000000!2sPesantren%20Al Fath!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid"
+                        width="100%"
+                        height="100%"
+                        style={{ border: 0 }}
+                        allowFullScreen
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        title="Lokasi Pesantren Al Fath"
+                        className="grayscale group-hover:grayscale-0 transition-all duration-700 opacity-80 group-hover:opacity-100"
+                      />
+                      <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-xl shadow-sm border border-teal-100 flex items-center gap-2 z-10 pointer-events-none">
+                        <MapPin className="w-4 h-4 text-teal-600" />
+                        <span className="text-[10px] font-black text-ink-950 uppercase tracking-widest">
+                          Lokasi Pesantren
+                        </span>
+                      </div>
+                    </div>
+                  </motion.div>
+                </motion.div>
               </div>
-              <p className="text-sm font-medium text-ink-700">
-                Masih banyak fasilitas pendukung lainnya di dalam Pesantren
-                Al Fath. Silakan jadwalkan kunjungan untuk melihat
-                langsung.
-              </p>
-            </motion.div>
+
+              {/* Right Content - The Form */}
+              <div className="lg:col-span-7">
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className="app-card bg-white p-6 sm:p-10 border border-teal-50 shadow-2xl relative overflow-hidden"
+                >
+                  {formStatus === 'success' ? (
+                    <motion.div 
+                      initial={{ scale: 0.9, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="py-12 flex flex-col items-center text-center"
+                    >
+                      <div className="w-20 h-20 rounded-full bg-green-50 text-green-600 flex items-center justify-center mb-6 border border-green-100 shadow-sm">
+                        <Check className="w-10 h-10" strokeWidth={3} />
+                      </div>
+                      <h3 className="text-2xl font-black text-ink-950 mb-3">Permintaan Terkirim!</h3>
+                      <p className="text-ink-600 font-medium max-w-sm mx-auto mb-8">
+                        Terima kasih. Formulir kunjungan Anda telah kami terima. Tim kami akan menghubungi Anda sebentar lagi via WhatsApp.
+                      </p>
+                      <button 
+                        onClick={() => setFormStatus('idle')}
+                        className="px-6 py-3 rounded-xl bg-teal-50 text-teal-700 font-bold hover:bg-teal-100 transition-colors"
+                      >
+                        Isi Form Kembali
+                      </button>
+                    </motion.div>
+                  ) : (
+                    <form onSubmit={(e) => { e.preventDefault(); setFormStatus('success'); }} className="space-y-6">
+                      <div className="grid sm:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                          <label className="text-sm font-black text-ink-950 flex items-center gap-2">
+                            <User className="w-4 h-4 text-teal-600" /> Nama Lengkap
+                          </label>
+                          <input required type="text" placeholder="Contoh: Bapak Ahmad" className="w-full px-4 py-3.5 rounded-xl border border-ink-100 bg-surface-50 focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 outline-hidden transition-all font-medium text-ink-900 placeholder:text-ink-300" />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-sm font-black text-ink-950 flex items-center gap-2">
+                            <Smartphone className="w-4 h-4 text-teal-600" /> Nomor WhatsApp
+                          </label>
+                          <input required type="tel" placeholder="Contoh: 0812..." className="w-full px-4 py-3.5 rounded-xl border border-ink-100 bg-surface-50 focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 outline-hidden transition-all font-medium text-ink-900 placeholder:text-ink-300" />
+                        </div>
+                      </div>
+
+                      <div className="grid sm:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                          <label className="text-sm font-black text-ink-950 flex items-center gap-2">
+                            <Calendar className="w-4 h-4 text-teal-600" /> Rencana Tanggal
+                          </label>
+                          <input required type="date" className="w-full px-4 py-3.5 rounded-xl border border-ink-100 bg-surface-50 focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 outline-hidden transition-all font-medium text-ink-900" />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-sm font-black text-ink-950 flex items-center gap-2">
+                            <Clock className="w-4 h-4 text-teal-600" /> Rencana Jam
+                          </label>
+                          <select required className="w-full px-4 py-3.5 rounded-xl border border-ink-100 bg-surface-50 focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 outline-hidden transition-all font-medium text-ink-900 cursor-pointer">
+                            <option value="">Pilih Waktu</option>
+                            <option value="08:00">08:00 WIB</option>
+                            <option value="10:00">10:00 WIB</option>
+                            <option value="13:00">13:00 WIB</option>
+                            <option value="15:00">15:00 WIB</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="text-sm font-black text-ink-950 flex items-center gap-2">
+                          <Users className="w-4 h-4 text-teal-600" /> Jumlah Orang yang Datang
+                        </label>
+                        <input required type="number" min="1" placeholder="Contoh: 3" className="w-full px-4 py-3.5 rounded-xl border border-ink-100 bg-surface-50 focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 outline-hidden transition-all font-medium text-ink-900 placeholder:text-ink-300" />
+                      </div>
+
+                      <button type="submit" className="w-full py-4 rounded-xl bg-teal-600 text-white font-black text-lg shadow-lg shadow-teal-600/20 hover:bg-teal-700 hover:-translate-y-0.5 hover:shadow-xl transition-all flex items-center justify-center gap-2 mt-2">
+                        <span>Ajukan Jadwal Kunjungan</span>
+                        <ArrowRight className="w-5 h-5" />
+                      </button>
+                      
+                      <p className="text-xs text-center text-ink-400 font-medium mt-4">
+                        🔒 Data Anda aman dan hanya digunakan untuk keperluan jadwal kunjungan.
+                      </p>
+                    </form>
+                  )}
+                </motion.div>
+              </div>
+
+            </div>
           </div>
         </Container>
       </section>
