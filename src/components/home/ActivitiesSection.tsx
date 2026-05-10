@@ -63,10 +63,10 @@ const ACTIVITIES: Activity[] = [
     image: "/images/extra-karate.webp",
   },
   {
-    name: "Kemandirian & Skill",
+    name: "Kemandirian, Skill & Leadership",
     badge: "Life Skills",
     description:
-      "Program pelatihan entrepreneurship dan keterampilan hidup mandiri guna mencetak santri yang siap berdikari di masa depan.",
+      "Program pelatihan entrepreneurship, leadership, dan keterampilan hidup mandiri guna mencetak santri yang siap berdikari di masa depan.",
     image: "/images/luar-kelas.webp",
   },
 ];
