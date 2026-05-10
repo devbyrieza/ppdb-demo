@@ -256,7 +256,7 @@ export default function FasilitasPage() {
           </div>
 
           <div className="space-y-24 lg:space-y-32">
-            {/* Masjid */}
+            {/* 1. Masjid */}
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
               <motion.div
                 initial={{ opacity: 0, x: -40 }}
@@ -332,7 +332,7 @@ export default function FasilitasPage() {
               </motion.div>
             </div>
 
-            {/* Asrama */}
+            {/* 2. Ruang Kelas */}
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
               <motion.div
                 initial={{ opacity: 0, x: -40 }}
@@ -343,8 +343,8 @@ export default function FasilitasPage() {
                 <div className="aspect-square rounded-[3rem] sm:rounded-[4rem] bg-white p-3 sm:p-4 shadow-xl relative -rotate-2 hover:rotate-0 transition-transform duration-700 border border-teal-100">
                   <div className="relative w-full h-full rounded-[2.5rem] sm:rounded-[3.2rem] overflow-hidden">
                     <Image
-                      src="/images/asrama.webp"
-                      alt="Asrama Santri"
+                      src="/images/kelas-dari-dalam.webp"
+                      alt="Ruang Kelas Modern"
                       fill
                       className="object-cover transition-transform duration-700 hover:scale-110"
                     />
@@ -360,63 +360,6 @@ export default function FasilitasPage() {
               >
                 <div className="app-card bg-white p-8 sm:p-12 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
                   <div className="absolute top-0 right-0 p-12 opacity-5 rotate-12 transition-transform group-hover:rotate-0 duration-700">
-                    <Building className="w-48 h-48" />
-                  </div>
-
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-teal-50 rounded-2xl flex items-center justify-center text-teal-700 mb-8 sm:mb-10 shadow-sm transition-transform group-hover:scale-110 border border-teal-100">
-                    <Building className="w-8 h-8 sm:w-10 sm:h-10" />
-                  </div>
-
-                  <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-teal-950 mb-6 leading-[1.1]">
-                    Asrama <br className="hidden sm:block" /> Berkualitas
-                  </h3>
-                  <p className="text-base sm:text-lg lg:text-xl text-teal-950/70 mb-8 sm:mb-10 leading-relaxed font-medium">
-                    Hunian nyaman dengan sirkulasi udara optimal. Setiap kamar
-                    didesain dengan konsep kekeluargaan dan dilengkapi fasilitas
-                    penyimpanan pribadi.
-                  </p>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
-                    <div className="flex items-start gap-4 group/item">
-                      <div className="w-8 h-8 rounded-full bg-teal-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
-                        <CheckCircle2 className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="font-black text-teal-950 text-[15px] sm:text-lg uppercase tracking-tight">
-                          Kekeluargaan
-                        </h4>
-                        <p className="text-xs sm:text-sm text-teal-500 font-medium">
-                          Musyrif Pembimbing 24 jam
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-4 group/item">
-                      <div className="w-8 h-8 rounded-full bg-teal-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
-                        <CheckCircle2 className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="font-black text-teal-950 text-[15px] sm:text-lg uppercase tracking-tight">
-                          Higienitas
-                        </h4>
-                        <p className="text-xs sm:text-sm text-teal-500 font-medium">
-                          Standar kebersihan tinggi
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </div>
-            {/* Ruang Kelas */}
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
-              <motion.div
-                initial={{ opacity: 0, x: -40 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                className="order-2 lg:order-1"
-              >
-                <div className="app-card bg-white p-8 sm:p-12 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
-                  <div className="absolute top-0 right-0 p-12 opacity-5 -rotate-12 transition-transform group-hover:rotate-0 duration-700">
                     <School className="w-48 h-48" />
                   </div>
 
@@ -463,6 +406,64 @@ export default function FasilitasPage() {
                   </div>
                 </div>
               </motion.div>
+            </div>
+
+            {/* 3. Asrama */}
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+              <motion.div
+                initial={{ opacity: 0, x: -40 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="order-2 lg:order-1"
+              >
+                <div className="app-card bg-white p-8 sm:p-12 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
+                  <div className="absolute top-0 right-0 p-12 opacity-5 -rotate-12 transition-transform group-hover:rotate-0 duration-700">
+                    <Building className="w-48 h-48" />
+                  </div>
+
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-teal-50 rounded-2xl flex items-center justify-center text-teal-700 mb-8 sm:mb-10 shadow-sm transition-transform group-hover:scale-110 border border-teal-100">
+                    <Building className="w-8 h-8 sm:w-10 sm:h-10" />
+                  </div>
+
+                  <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-teal-950 mb-6 leading-[1.1]">
+                    Asrama <br className="hidden sm:block" /> Berkualitas
+                  </h3>
+                  <p className="text-base sm:text-lg lg:text-xl text-teal-950/70 mb-8 sm:mb-10 leading-relaxed font-medium">
+                    Hunian nyaman dengan sirkulasi udara optimal. Setiap kamar
+                    didesain dengan konsep kekeluargaan dan dilengkapi fasilitas
+                    penyimpanan pribadi.
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+                    <div className="flex items-start gap-4 group/item">
+                      <div className="w-8 h-8 rounded-full bg-teal-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                        <CheckCircle2 className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className="font-black text-teal-950 text-[15px] sm:text-lg uppercase tracking-tight">
+                          Kekeluargaan
+                        </h4>
+                        <p className="text-xs sm:text-sm text-teal-500 font-medium">
+                          Musyrif Pembimbing 24 jam
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-4 group/item">
+                      <div className="w-8 h-8 rounded-full bg-teal-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                        <CheckCircle2 className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className="font-black text-teal-950 text-[15px] sm:text-lg uppercase tracking-tight">
+                          Higienitas
+                        </h4>
+                        <p className="text-xs sm:text-sm text-teal-500 font-medium">
+                          Standar kebersihan tinggi
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
 
               <motion.div
                 initial={{ opacity: 0, x: 40 }}
@@ -473,8 +474,8 @@ export default function FasilitasPage() {
                 <div className="aspect-square rounded-[3rem] sm:rounded-[4rem] bg-white p-3 sm:p-4 shadow-xl relative rotate-2 hover:rotate-0 transition-transform duration-700 border border-teal-100">
                   <div className="relative w-full h-full rounded-[2.5rem] sm:rounded-[3.2rem] overflow-hidden">
                     <Image
-                      src="/images/kelas-dari-dalam.webp"
-                      alt="Ruang Kelas Modern"
+                      src="/images/asrama.webp"
+                      alt="Asrama Santri"
                       fill
                       className="object-cover transition-transform duration-700 hover:scale-110"
                     />
@@ -483,7 +484,7 @@ export default function FasilitasPage() {
               </motion.div>
             </div>
 
-            {/* Lapangan Minisoccer */}
+            {/* 4. Lapangan Minisoccer */}
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
               <motion.div
                 initial={{ opacity: 0, x: -40 }}
@@ -547,10 +548,10 @@ export default function FasilitasPage() {
                       </div>
                       <div>
                         <h4 className="font-black text-ink-950 text-[15px] sm:text-lg uppercase tracking-tight">
-                          Sejarah
+                          Kebersihan
                         </h4>
                         <p className="text-xs sm:text-sm text-ink-500 font-medium">
-                          Area Luas & Bersih
+                          Area Luas & Terawat
                         </p>
                       </div>
                     </div>
@@ -559,7 +560,83 @@ export default function FasilitasPage() {
               </motion.div>
             </div>
 
-            {/* Kantor PPDB & Tamu */}
+            {/* 5. Lapangan Basket */}
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+              <motion.div
+                initial={{ opacity: 0, x: -40 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="order-2 lg:order-1"
+              >
+                <div className="app-card bg-white p-8 sm:p-12 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
+                  <div className="absolute top-0 right-0 p-12 opacity-5 -rotate-12 transition-transform group-hover:rotate-0 duration-700">
+                    <Award className="w-48 h-48" />
+                  </div>
+
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-teal-50 rounded-2xl flex items-center justify-center text-teal-700 mb-8 sm:mb-10 shadow-sm transition-transform group-hover:scale-110 border border-teal-100">
+                    <Award className="w-8 h-8 sm:w-10 sm:h-10" />
+                  </div>
+
+                  <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-teal-950 mb-6 leading-[1.1]">
+                    Lapangan <br className="hidden sm:block" /> Basket
+                  </h3>
+                  <p className="text-base sm:text-lg lg:text-xl text-teal-950/70 mb-8 sm:mb-10 leading-relaxed font-medium">
+                    Fasilitas olahraga terpadu dengan standar yang memadai untuk
+                    melatih kebugaran, kerjasama tim, dan sportivitas santri dalam
+                    berbagai aktivitas fisik harian.
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+                    <div className="flex items-start gap-4 group/item">
+                      <div className="w-8 h-8 rounded-full bg-teal-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                        <CheckCircle2 className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className="font-black text-teal-950 text-[15px] sm:text-lg uppercase tracking-tight">
+                          Terbuka
+                        </h4>
+                        <p className="text-xs sm:text-sm text-teal-500 font-medium">
+                          Sirkulasi Udara Baik
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-4 group/item">
+                      <div className="w-8 h-8 rounded-full bg-teal-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                        <CheckCircle2 className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className="font-black text-teal-950 text-[15px] sm:text-lg uppercase tracking-tight">
+                          Multifungsi
+                        </h4>
+                        <p className="text-xs sm:text-sm text-teal-500 font-medium">
+                          Basket & Senam Pagi
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 40 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="order-1 lg:order-2"
+              >
+                <div className="aspect-square rounded-[3rem] sm:rounded-[4rem] bg-white p-3 sm:p-4 shadow-xl relative rotate-2 hover:rotate-0 transition-transform duration-700 border border-teal-100">
+                  <div className="relative w-full h-full rounded-[2.5rem] sm:rounded-[3.2rem] overflow-hidden">
+                    <Image
+                      src="/images/gedung-utama-dan-lapangan-basket.webp"
+                      alt="Lapangan Basket"
+                      fill
+                      className="object-cover transition-transform duration-700 hover:scale-110"
+                    />
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* 6. Depot Galon Gratis */}
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
               <motion.div
                 initial={{ opacity: 0, x: -40 }}
@@ -570,8 +647,8 @@ export default function FasilitasPage() {
                 <div className="aspect-square rounded-[3rem] sm:rounded-[4rem] bg-white p-3 sm:p-4 shadow-xl relative -rotate-2 hover:rotate-0 transition-transform duration-700 border border-teal-100">
                   <div className="relative w-full h-full rounded-[2.5rem] sm:rounded-[3.2rem] overflow-hidden">
                     <Image
-                      src="/images/kantor-ppdb-tamu.webp"
-                      alt="Kantor PPDB Al Fath"
+                      src="/images/depot-galon-gratis.webp"
+                      alt="Depot Galon Gratis"
                       fill
                       className="object-cover transition-transform duration-700 hover:scale-110"
                     />
@@ -587,11 +664,69 @@ export default function FasilitasPage() {
               >
                 <div className="app-card bg-white p-8 sm:p-12 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
                   <div className="absolute top-0 right-0 p-12 opacity-5 rotate-12 transition-transform group-hover:rotate-0 duration-700">
-                    <Building className="w-48 h-48" />
+                    <Droplets className="w-48 h-48" />
                   </div>
 
                   <div className="w-16 h-16 sm:w-20 sm:h-20 bg-teal-50 rounded-2xl flex items-center justify-center text-teal-700 mb-8 sm:mb-10 shadow-sm transition-transform group-hover:scale-110 border border-teal-100">
-                    <Building className="w-8 h-8 sm:w-10 sm:h-10" />
+                    <Droplets className="w-8 h-8 sm:w-10 sm:h-10" />
+                  </div>
+
+                  <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-ink-950 mb-6 leading-[1.1]">
+                    Depot <br className="hidden sm:block" /> Galon Gratis
+                  </h3>
+                  <p className="text-base sm:text-lg lg:text-xl text-ink-600 mb-8 sm:mb-10 leading-relaxed font-medium">
+                    Akses air minum higienis yang tersedia cuma-cuma untuk menjamin 
+                    kebutuhan hidrasi sehat harian seluruh santri dengan sistem
+                    penyaringan modern yang terjaga kualitasnya.
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+                    <div className="flex items-start gap-4 group/item">
+                      <div className="w-8 h-8 rounded-full bg-teal-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                        <CheckCircle2 className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className="font-black text-ink-950 text-[15px] sm:text-lg uppercase tracking-tight">
+                          Higienis
+                        </h4>
+                        <p className="text-xs sm:text-sm text-ink-500 font-medium">
+                          Penyaringan Modern
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-4 group/item">
+                      <div className="w-8 h-8 rounded-full bg-teal-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                        <CheckCircle2 className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className="font-black text-ink-950 text-[15px] sm:text-lg uppercase tracking-tight">
+                          24 Jam
+                        </h4>
+                        <p className="text-xs sm:text-sm text-ink-500 font-medium">
+                          Akses Bebas Kapan Saja
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* 7. Kantor PPDB & Tamu */}
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+              <motion.div
+                initial={{ opacity: 0, x: -40 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="order-2 lg:order-1"
+              >
+                <div className="app-card bg-white p-8 sm:p-12 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
+                  <div className="absolute top-0 right-0 p-12 opacity-5 -rotate-12 transition-transform group-hover:rotate-0 duration-700">
+                    <Building2 className="w-48 h-48" />
+                  </div>
+
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-teal-50 rounded-2xl flex items-center justify-center text-teal-700 mb-8 sm:mb-10 shadow-sm transition-transform group-hover:scale-110 border border-teal-100">
+                    <Building2 className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
                   <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-ink-950 mb-6 leading-[1.1]">
@@ -613,7 +748,7 @@ export default function FasilitasPage() {
                           Informasi
                         </h4>
                         <p className="text-xs sm:text-sm text-ink-500 font-medium">
-                          Layanan 24 Jam
+                          Layanan Cepat Tanggap
                         </p>
                       </div>
                     </div>
@@ -626,10 +761,28 @@ export default function FasilitasPage() {
                           Kenyamanan
                         </h4>
                         <p className="text-xs sm:text-sm text-ink-500 font-medium">
-                          Ruang Tunggu AC
+                          Ruang Tunggu Sejuk
                         </p>
                       </div>
                     </div>
+                  </div>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 40 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="order-1 lg:order-2"
+              >
+                <div className="aspect-square rounded-[3rem] sm:rounded-[4rem] bg-white p-3 sm:p-4 shadow-xl relative rotate-2 hover:rotate-0 transition-transform duration-700 border border-teal-100">
+                  <div className="relative w-full h-full rounded-[2.5rem] sm:rounded-[3.2rem] overflow-hidden">
+                    <Image
+                      src="/images/kantor-ppdb-tamu.webp"
+                      alt="Kantor PPDB Al Fath"
+                      fill
+                      className="object-cover transition-transform duration-700 hover:scale-110"
+                    />
                   </div>
                 </div>
               </motion.div>
@@ -730,30 +883,6 @@ export default function FasilitasPage() {
               <div className="mt-4 pt-4 border-t border-teal-50 w-full">
                 <span className="text-xs text-teal-600 font-bold uppercase tracking-widest">
                   🍽️ Nutrisi
-                </span>
-              </div>
-            </motion.div>
-
-            {/* 4. Depot Galon Gratis */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.4 }}
-              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform border border-teal-50 shadow-sm"
-            >
-              <div className="w-12 h-12 bg-teal-50 rounded-xl flex items-center justify-center text-teal-700 mb-5 group-hover:scale-110 transition-transform border border-teal-100 shadow-sm">
-                <Droplet className="w-6 h-6" />
-              </div>
-              <h3 className="font-black text-lg text-teal-950 mb-2">
-                Depot Air
-              </h3>
-              <p className="text-sm text-teal-950/60 font-medium">
-                Air minum higienis gratis
-              </p>
-              <div className="mt-4 pt-4 border-t border-teal-50 w-full">
-                <span className="text-xs text-teal-600 font-bold uppercase tracking-widest">
-                  💧 Minuman
                 </span>
               </div>
             </motion.div>
