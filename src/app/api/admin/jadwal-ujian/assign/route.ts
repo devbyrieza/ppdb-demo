@@ -43,10 +43,10 @@ export async function POST(req: NextRequest) {
           tanggal_ujian: examSession.start_time,
           waktu_mulai_santri: examSession.start_time,
           waktu_selesai_santri: examSession.end_time,
-          tempat_santri: examSession.location || "Pesantren Sistem PPDB Modern",
+          tempat_santri: examSession.location || "Pesantren Al Fath",
           waktu_mulai_ortu: examSession.start_time,
           waktu_selesai_ortu: examSession.end_time,
-          tempat_ortu: examSession.location || "Pesantren Sistem PPDB Modern",
+          tempat_ortu: examSession.location || "Pesantren Al Fath",
         },
         create: {
           pendaftar_id,
@@ -55,10 +55,10 @@ export async function POST(req: NextRequest) {
           tanggal_ujian: examSession.start_time,
           waktu_mulai_santri: examSession.start_time,
           waktu_selesai_santri: examSession.end_time,
-          tempat_santri: examSession.location || "Pesantren Sistem PPDB Modern",
+          tempat_santri: examSession.location || "Pesantren Al Fath",
           waktu_mulai_ortu: examSession.start_time,
           waktu_selesai_ortu: examSession.end_time,
-          tempat_ortu: examSession.location || "Pesantren Sistem PPDB Modern",
+          tempat_ortu: examSession.location || "Pesantren Al Fath",
         },
       }),
       prisma.examSession.update({
@@ -103,7 +103,7 @@ export async function POST(req: NextRequest) {
             },
           ),
           waktu: `${new Date(examSession.start_time).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" })} - ${new Date(examSession.end_time).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" })}`,
-          tempat: examSession.location || "Pesantren Sistem PPDB Modern",
+          tempat: examSession.location || "Pesantren Al Fath",
         });
       }
     } catch (waError) {

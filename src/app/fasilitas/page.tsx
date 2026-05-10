@@ -242,7 +242,7 @@ export default function FasilitasPage() {
               className="section-subtitle"
             >
               Sarana vital yang menjadi jantung aktivitas harian di{" "}
-              <br className="hidden md:block" /> Pesantren Sistem PPDB Modern
+              <br className="hidden md:block" /> Pesantren Al Fath
               untuk kenyamanan dan kekhusyukan.
             </motion.p>
           </div>
@@ -900,7 +900,7 @@ export default function FasilitasPage() {
               viewport={{ once: true }}
               className="section-subtitle lg:ml-0"
             >
-              Lihat langsung suasana dan lingkungan Pesantren Sistem PPDB Modern
+              Lihat langsung suasana dan lingkungan Pesantren Al Fath
               dari berbagai sudut.
             </motion.p>
           </div>
@@ -1040,7 +1040,7 @@ export default function FasilitasPage() {
               </div>
               <p className="text-sm font-medium text-ink-700">
                 Masih banyak fasilitas pendukung lainnya di dalam Pesantren
-                Sistem PPDB Modern. Silakan jadwalkan kunjungan untuk melihat
+                Pesantren Al Fath. Silakan jadwalkan kunjungan untuk melihat
                 langsung.
               </p>
             </motion.div>

@@ -35,7 +35,7 @@ const FAQS = [
   {
     question: "Apakah tersedia program beasiswa?",
     answer:
-      "Ya, Sistem PPDB Modern menyediakan program beasiswa bagi santri berprestasi (tahfidz 30 juz) dan santri dari keluarga yatim/piatu/dhuafa dengan syarat dan ketentuan yang berlaku.",
+      "Ya, Pesantren Al Fath menyediakan program beasiswa bagi santri berprestasi (tahfidz 30 juz) dan santri dari keluarga yatim/piatu/dhuafa dengan syarat dan ketentuan yang berlaku.",
   },
 ] as const;
 

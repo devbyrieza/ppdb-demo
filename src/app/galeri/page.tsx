@@ -91,7 +91,7 @@ export default function GaleriPage() {
             className="text-xl md:text-2xl text-ink-600 max-w-3xl mx-auto leading-relaxed font-medium"
           >
             Koleksi foto suasana, fasilitas, dan kegiatan santri di Pesantren
-            Sistem PPDB Modern.
+            Pesantren Al Fath.
           </motion.p>
         </Container>
       </section>

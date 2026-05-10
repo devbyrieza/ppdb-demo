@@ -181,7 +181,7 @@ export default function DaftarUlangTab() {
               Transfer ke Rekening <strong>BSI 7171717171</strong>
             </li>
             <li>
-              a.n <strong>PP Sistem PPDB Modern</strong>
+              a.n <strong>PP Pesantren Al Fath</strong>
             </li>
             <li>
               Wajib bayar cicilan pertama min.{" "}

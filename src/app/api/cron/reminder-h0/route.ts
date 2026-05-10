@@ -87,7 +87,7 @@ export async function GET(request: Request) {
       );
 
       const lokasi =
-        jadwal.exam_session.location || "Pesantren Sistem PPDB Modern";
+        jadwal.exam_session.location || "Pesantren Al Fath";
       const jenisUjian = jadwal.exam_session.title || "Seleksi Santri Baru";
 
       const message = buildMessageReminderH0(

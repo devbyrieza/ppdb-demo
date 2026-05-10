@@ -192,7 +192,7 @@ function VerifyPinContent() {
 
             <div className="mt-10 pt-8 border-t border-stone-50">
               <p className="text-[10px] text-stone-300 font-medium uppercase tracking-widest">
-                Pesantren Sistem PPDB Modern
+                Pesantren Al Fath
               </p>
             </div>
           </div>

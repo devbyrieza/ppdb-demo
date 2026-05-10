@@ -92,7 +92,7 @@ export async function GET(request: Request) {
 
             const lokasi = googleMeetLink 
                 ? (googleMeetLink.startsWith("http") ? googleMeetLink : `${jadwal.exam_session?.location || "Online"} (${googleMeetLink})`)
-                : (jadwal.exam_session?.location || "Pesantren Sistem PPDB Modern");
+                : (jadwal.exam_session?.location || "Pesantren Al Fath");
 
             // 1. Enqueue for Santri / Parents
             const isOrangTua = 

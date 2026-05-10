@@ -100,7 +100,7 @@ export default function TentangPage() {
           >
             <Image
               src="/images/welcome-selamat-datang.webp"
-              alt="Selamat Datang di Sistem PPDB Modern"
+              alt="Selamat Datang di Pesantren Al Fath"
               fill
               priority
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
@@ -126,7 +126,7 @@ export default function TentangPage() {
                 <div className="relative w-full h-full rounded-[2rem] md:rounded-[2.5rem] overflow-hidden">
                   <Image
                     src="/images/tentang.webp"
-                    alt="Pesantren Sistem PPDB Modern"
+                    alt="Pesantren Al Fath"
                     fill
                     priority
                     sizes="(max-width: 768px) 100vw, 50vw"
@@ -238,7 +238,7 @@ export default function TentangPage() {
                     STABIL
                   </h4>
                   <p className="text-[9px] md:text-[10px] font-bold text-ink-500 uppercase tracking-widest">
-                    Jaringan PPDB Modern
+                    Jaringan Al Fath
                   </p>
                 </div>
               </motion.div>
@@ -429,7 +429,7 @@ export default function TentangPage() {
                 <div className="flex items-center gap-2 text-sand-100/70">
                   <BookOpen className="w-4 h-4 text-yellow-400" />
                   <span className="text-[10px] font-bold uppercase tracking-widest">
-                    Kurikulum PPDB Modern
+                    Kurikulum Al Fath
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-sand-100/70">

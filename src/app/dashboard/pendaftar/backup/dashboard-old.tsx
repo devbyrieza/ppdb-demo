@@ -32,7 +32,7 @@ export default function DashboardPendaftarPage() {
                 Dashboard Pendaftar
               </h1>
               <p className="text-sm text-stone-600">
-                Ponpes Sistem PPDB Modern
+                Pesantren Al Fath
               </p>
             </div>
             <button

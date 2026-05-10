@@ -47,7 +47,7 @@ export const KESIAPAN_QUESTIONS: KesiapanSection[] = [
       },
       {
         id: 7,
-        text: "Saya merasa Pesantren Sistem PPDB Modern adalah tempat belajar yang sesuai dengan harapan saya.",
+        text: "Saya merasa Pesantren Al Fath adalah tempat belajar yang sesuai dengan harapan saya.",
         labelMin: "Sangat tidak sesuai",
         labelMax: "Sangat sesuai",
       },

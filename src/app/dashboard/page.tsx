@@ -157,7 +157,7 @@ const STATUS_LABELS: Record<
     text: "text-emerald-700",
     icon: Trophy,
     message:
-      "Alhamdulillah! Selamat, putra/putri Anda diterima di Pesantren Sistem PPDB Modern!",
+      "Alhamdulillah! Selamat, putra/putri Anda diterima di Pesantren Al Fath!",
   },
   payment_rejected: {
     label: "Pembayaran Bermasalah",

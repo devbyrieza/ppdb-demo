@@ -191,7 +191,7 @@ export default function PengumumanTab() {
               <p className="text-emerald-50/90 mb-10 max-w-xl text-lg leading-relaxed">
                 Berdasarkan hasil seleksi, Anda dinyatakan{" "}
                 <strong>DITERIMA</strong> sebagai santri baru PP Sistem
-                PPDB Modern.
+                Al Fath.
               </p>
 
               <button

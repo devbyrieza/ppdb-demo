@@ -54,7 +54,7 @@ export default function HeroSection() {
   return (
     <section
       ref={ref}
-      aria-label="Hero — Beranda PPDB Modern"
+      aria-label="Hero — Beranda Al Fath"
       className="relative min-h-[96vh] flex items-center pt-24 pb-20 md:pt-28 lg:pt-32 lg:pb-28 overflow-hidden"
       style={{
         background:
@@ -310,7 +310,7 @@ export default function HeroSection() {
             >
               <Image
                 src="/images/hero.jpg"
-                alt={`${BRANDING.schoolName} — Sistem PPDB Modern`}
+                alt={`${BRANDING.schoolName} — Pesantren Al Fath`}
                 width={800}
                 height={600}
                 priority

@@ -6,7 +6,7 @@ import { MessageCircle, X } from "lucide-react";
 
 const WA_NUMBER = "6288809934970";
 const WA_MESSAGE =
-  "Assalamu'alaikum, saya ingin bertanya tentang PPDB Sistem PPDB Modern Tahun Ajaran 2026/2027.";
+  "Assalamu'alaikum, saya ingin bertanya tentang PPDB Pesantren Al Fath Tahun Ajaran 2026/2027.";
 
 export default function FloatingWhatsApp() {
   const [showTooltip, setShowTooltip] = useState(false);
