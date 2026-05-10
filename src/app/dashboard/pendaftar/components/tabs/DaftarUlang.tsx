@@ -190,6 +190,9 @@ export default function DaftarUlangTab() {
             <li>
               Pelunasan maksimal bulan <strong>Juli 2026</strong> (3x Cicilan)
             </li>
+            <li className="text-emerald-700 font-bold">
+              Tersedia kebijakan <strong>Keringanan Khusus</strong> bagi wali santri yang membutuhkan.
+            </li>
           </ul>
         </div>
       </div>
