@@ -86,7 +86,7 @@ const EXTRA_ACTIVITIES: ExtraActivity[] = [
   { name: "Bulutangkis", icon: Zap, color: "emerald" },
   { name: "Pertanian", icon: TreePine, color: "sand" },
   { name: "Periklanan", icon: Waves, color: "teal" },
-  { name: "Web Programming", icon: Sparkles, color: "emerald" },
+  { name: "Coding", icon: Sparkles, color: "emerald" },
 ];
 
 // ─── Activity Card ────────────────────────────────────

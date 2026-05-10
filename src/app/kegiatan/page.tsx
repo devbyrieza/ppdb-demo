@@ -646,7 +646,7 @@ export default function KegiatanPage() {
       benefit: "Jiwa Entrepreneur",
     },
     {
-      name: "Web Programming",
+      name: "Coding",
       icon: Zap,
       desc: "Dasar-dasar pengembangan website (Coming Soon).",
       benefit: "Skill Masa Depan",
