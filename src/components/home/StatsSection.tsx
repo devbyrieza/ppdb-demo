@@ -129,9 +129,9 @@ function StatCard({
         duration: 0.6,
         ease: [0.16, 1, 0.3, 1],
       }}
-      className="group relative"
+      className="group relative h-full"
     >
-      <div className="relative flex flex-col items-center text-center px-6 py-8 md:px-8 md:py-10 bg-white rounded-2xl border border-surface-200 shadow-premium-sm transition-all duration-500 ease-spring hover:-translate-y-1.5 hover:shadow-premium-md hover:border-ink-200 overflow-hidden">
+      <div className="relative flex flex-col items-center text-center px-6 py-8 md:px-8 md:py-10 bg-white rounded-2xl border border-surface-200 shadow-premium-sm transition-all duration-500 ease-spring hover:-translate-y-1.5 hover:shadow-premium-md hover:border-ink-200 overflow-hidden h-full">
         {/* Hover radial bg */}
         <div
           className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
@@ -213,7 +213,7 @@ function StatCard({
         {/* Bottom accent line */}
         <div
           className={[
-            "mt-5 h-[2px] w-6 rounded-full transition-all duration-500 group-hover:w-10",
+            "mt-auto pt-5 h-[2px] w-6 rounded-full transition-all duration-500 group-hover:w-10",
             isTeal ? "bg-teal-100 group-hover:bg-teal-500" : "",
             isSand ? "bg-sand-200 group-hover:bg-sand-500" : "",
           ].join(" ")}
