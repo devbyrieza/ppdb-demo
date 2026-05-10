@@ -63,7 +63,7 @@ const STATS: Stat[] = [
   {
     id: "quota",
     label: "Kuota Terbatas",
-    value: 30,
+    value: 25,
     icon: Users,
     color: "sand",
     suffix: "",
