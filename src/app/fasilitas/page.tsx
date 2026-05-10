@@ -266,7 +266,7 @@ export default function FasilitasPage() {
                   </div>
 
                   <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-teal-950 mb-6 leading-[1.1]">
-                    Masjid Jami' <br className="hidden sm:block" /> PPDB
+                    Masjid Jami' <br className="hidden sm:block" /> Al Fath
                   </h3>
                   <p className="text-base sm:text-lg lg:text-xl text-teal-950/70 mb-8 sm:mb-10 leading-relaxed font-medium">
                     Pusat peribadatan santri yang mampu menampung 1000 jamaah.
@@ -315,7 +315,7 @@ export default function FasilitasPage() {
                   <div className="relative w-full h-full rounded-[2.5rem] sm:rounded-[3.2rem] overflow-hidden">
                     <Image
                       src="/images/masjid.webp"
-                      alt="Masjid Jami' PPDB"
+                      alt="Masjid Jami' Al Fath"
                       fill
                       className="object-cover transition-transform duration-700 hover:scale-110"
                     />
@@ -563,7 +563,7 @@ export default function FasilitasPage() {
                   <div className="relative w-full h-full rounded-[2.5rem] sm:rounded-[3.2rem] overflow-hidden">
                     <Image
                       src="/images/kantor-ppdb-tamu.webp"
-                      alt="Kantor PPDB PPDB"
+                      alt="Kantor PPDB Al Fath"
                       fill
                       className="object-cover transition-transform duration-700 hover:scale-110"
                     />
@@ -919,14 +919,14 @@ export default function FasilitasPage() {
               >
                 <Image
                   src="/images/masjid.webp"
-                  alt="Masjid Jami' PPDB"
+                  alt="Masjid Jami' Al Fath"
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
                 <div className="absolute bottom-6 md:bottom-8 left-6 md:left-8 right-6 md:right-8">
                   <span className="text-white font-black text-2xl md:text-3xl drop-shadow-md">
-                    Masjid Jami' PPDB
+                    Masjid Jami' Al Fath
                   </span>
                   <p className="text-teal-50/90 text-sm md:text-lg mt-1 md:mt-2 font-medium">
                     Pusat peribadatan
@@ -1040,7 +1040,7 @@ export default function FasilitasPage() {
               </div>
               <p className="text-sm font-medium text-ink-700">
                 Masih banyak fasilitas pendukung lainnya di dalam Pesantren
-                Pesantren Al Fath. Silakan jadwalkan kunjungan untuk melihat
+                Al Fath. Silakan jadwalkan kunjungan untuk melihat
                 langsung.
               </p>
             </motion.div>
