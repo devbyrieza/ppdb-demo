@@ -455,43 +455,63 @@ export default function KegiatanPage() {
   const jadwalHarian: JadwalHarian[] = [
     {
       icon: Sun,
-      time: "04:30 - 07:00",
-      activity: "Subuh Berjamaah & Tahfidz",
+      time: "04:30 - 06:30",
+      activity: "Subuh & Halaqoh Tahfidz",
       detail:
-        "Mulai hari dengan spiritualitas tinggi dan setoran hafalan segar di waktu terbaik.",
-      benefit: "Membangun disiplin bangun pagi seumur hidup.",
+        "Halaqoh tahfidz Al-Qur'an intensif dimulai langsung setelah shalat subuh berjamaah di masjid saat kondisi pikiran paling segar.",
+      benefit: "Optimasi daya ingat & keberkahan pagi.",
       bgColor: "bg-sand-50/50",
       iconColor: "text-sand-600",
     },
     {
-      icon: Book,
-      time: "07:30 - 14:00",
-      activity: "KBM & Kajian Kitab",
+      icon: Heart,
+      time: "06:30 - 07:00",
+      activity: "Sarapan & Mandi",
       detail:
-        "Sekolah formal (MTs/IL) dipadu dengan pembelajaran kitab turots intensif.",
-      benefit: "Akademik unggul & ilmu agama mendalam.",
+        "Penyelesaian hajat mandiri, makan pagi sehat, dan mandi untuk persiapan menyambut hari dengan kebugaran fisik prima.",
+      benefit: "Kesehatan tubuh & kesiapan mental.",
+      bgColor: "bg-emerald-50/50",
+      iconColor: "text-emerald-600",
+    },
+    {
+      icon: BookOpen,
+      time: "07:00 - 12:00",
+      activity: "KBM Syar'i, Umum & Leadership",
+      detail:
+        "Belajar aktif di kelas: Mengkaji Kitab Turots, Ilmu Syar'i, Mapel Umum (IPA, MTK, dan lain lain), Entrepreneurship, serta Leadership.",
+      benefit: "Integrasi Imtak, Iptek & Entrepreneurship.",
       bgColor: "bg-teal-50",
       iconColor: "text-teal-700",
     },
     {
-      icon: Target,
-      time: "15:30 - 17:00",
-      activity: "Minat & Bakat",
+      icon: Home,
+      time: "12:30 - 15:00",
+      activity: "Makan & Tidur Siang",
       detail:
-        "Waktu khusus untuk eksplorasi bakat seni, olahraga, dan organisasi santri.",
-      benefit: "Menjadi santri multitalenta & adaptif.",
+        "Setelah ba'diyah dzuhur dilanjutkan makan siang dan tidur siang tertib. Seluruh santri wajib bangun sebelum adzan ashar.",
+      benefit: "Pemulihan stamina & qailulah sunnah.",
       bgColor: "bg-teal-50/50",
       iconColor: "text-teal-600",
     },
     {
-      icon: Moon,
-      time: "19:30 - 21:00",
-      activity: "Muhadharah & Kajian",
+      icon: Dribbble,
+      time: "15:30 - 17:30",
+      activity: "Tahfidz Ashar & Olahraga",
       detail:
-        "Latihan public speaking dan pendalaman etika serta kajian keislaman malam.",
-      benefit: "Mental pemimpin & komunikator handal.",
-      bgColor: "bg-white",
-      iconColor: "text-ink-600",
+        "Halaqoh tahfidz singkat pasca ashar, lalu dilanjutkan waktu istirahat, bermain, atau olahraga (Minisoccer, Basket, dll).",
+      benefit: "Keseimbangan kognitif & kinestetik.",
+      bgColor: "bg-orange-50/50",
+      iconColor: "text-orange-600",
+    },
+    {
+      icon: BookMarked,
+      time: "18:00 - 21:00",
+      activity: "Tahfidz Maghrib & Nasehat",
+      detail:
+        "Makan malam sebelum maghrib, halaqoh tahfidz sampai isya, ditutup kajian nasehat asatidzah ba'da isya sebelum jam istirahat.",
+      benefit: "Penutup hari penuh adab & muhasabah.",
+      bgColor: "bg-teal-100/20",
+      iconColor: "text-teal-800",
     },
   ];
 
@@ -824,8 +844,9 @@ export default function KegiatanPage() {
               Minat & Bakat
             </h2>
             <p className="text-xl text-ink-600 font-medium leading-relaxed">
-              Wadah eksplorasi potensi santri di luar disiplin ilmu syar'i agar
-              menjadi individu yang seimbang dan tangguh.
+              Dilaksanakan setiap hari Ahad (Hari Libur) sesuai ekstrakurikuler
+              masing-masing yang dipilih santri, dengan tetap menjaga adab
+              istirahat & tidur siang.
             </p>
           </div>
 
