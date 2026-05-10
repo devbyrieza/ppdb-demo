@@ -467,7 +467,7 @@ export default function ContactPage() {
                 <div className="flex items-center gap-2 text-teal-100/70">
                   <ShieldCheck className="w-4 h-4 text-green-400" />
                   <span className="text-xs font-bold uppercase tracking-widest">
-                    Terakreditasi BAN-PDM
+                    Terakreditasi A — BAN-PDM
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-teal-100/70">

@@ -286,7 +286,7 @@ export default function StatsSection() {
                 strokeWidth={2}
               />
               <span className="text-[0.6rem] md:text-[0.65rem] font-bold text-ink-700 uppercase tracking-[0.1em] whitespace-nowrap">
-                Terakreditasi BAN-PDM
+                Terakreditasi A — BAN-PDM
               </span>
             </div>
 
