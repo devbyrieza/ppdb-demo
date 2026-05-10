@@ -238,7 +238,7 @@ export default function TentangPage() {
                     STABIL
                   </h4>
                   <p className="text-[9px] md:text-[10px] font-bold text-ink-500 uppercase tracking-widest">
-                    Jaringan Al Fath
+                    Jaringan Global
                   </p>
                 </div>
               </motion.div>
