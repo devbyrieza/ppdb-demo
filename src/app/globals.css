@@ -6,6 +6,14 @@
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
 @import "tailwindcss";
+@layer base {
+  /* Hide browser's default password reveal/clear buttons */
+  input::-ms-reveal,
+  input::-ms-clear {
+    display: none;
+  }
+}
+
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    1. CUSTOM THEME CONFIGURATION (@theme)
