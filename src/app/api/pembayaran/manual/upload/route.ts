@@ -110,6 +110,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse Jenis Pembayaran
+    const keringananReason = formData.get("keringanan_reason") as string | null;
     const jenisPembayaran =
       (formData.get("jenis_pembayaran") as string) || "PENDAFTARAN";
     let biaya = 0;
@@ -243,12 +244,13 @@ export async function POST(request: NextRequest) {
         data: {
           jumlah: biaya,
           tipe_cicilan: tipeCicilan as any,
+          keringanan_reason: keringananReason as any,
           bukti_transfer_path: filePath,
           bukti_transfer_filename: safeFileName,
           status_pembayaran: "pending",
           catatan_verifikasi: null,
           updated_at: new Date(),
-        },
+        } as any,
       });
     } else {
       pembayaranResult = await prisma.pembayaran.create({
@@ -258,12 +260,13 @@ export async function POST(request: NextRequest) {
           metode_pembayaran: "manual",
           jenis_pembayaran: jenisPembayaran as any,
           tipe_cicilan: tipeCicilan as any,
+          keringanan_reason: keringananReason as any,
           jumlah: biaya,
           total_tagihan: jenisPembayaran === "DAFTAR_ULANG" ? 8500000 : biaya,
           bukti_transfer_path: filePath,
           bukti_transfer_filename: safeFileName,
           status_pembayaran: "pending",
-        },
+        } as any,
       });
     }
 

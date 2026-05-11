@@ -26,6 +26,7 @@ interface RekapDaftarUlang {
   status_kelulusan: string;
   total_bayar: number;
   tipe_cicilan: string;
+  keringanan_reason: string | null;
   sisa_tagihan: number;
   last_updated: string;
 }
@@ -279,6 +280,7 @@ export default function KeuanganPage() {
           "Status Lulus",
           "Total Bayar",
           "Status Bayar",
+          "Alasan Keringanan",
           "Sisa Tagihan",
           "Update",
         ];
@@ -298,6 +300,7 @@ export default function KeuanganPage() {
           i.status_kelulusan,
           i.total_bayar,
           i.tipe_cicilan.replace(/_/g, " "),
+          i.keringanan_reason || "-",
           i.sisa_tagihan,
           new Date(i.last_updated).toLocaleDateString("id-ID"),
         ];
@@ -335,6 +338,7 @@ export default function KeuanganPage() {
           "Status Kelulusan": i.status_kelulusan,
           "Total Bayar (Rp)": i.total_bayar,
           "Status Bayar": i.tipe_cicilan === "LUNAS" ? "Lunas" : (i.tipe_cicilan === "BELUM_BAYAR" ? "Belum Bayar" : "Cicilan"),
+          "Alasan Keringanan": i.keringanan_reason || "-",
           "Sisa Tagihan (Rp)": i.sisa_tagihan,
           "Terakhir Update": new Date(i.last_updated).toLocaleDateString(
             "id-ID",
@@ -657,6 +661,15 @@ export default function KeuanganPage() {
                             >
                               {row.tipe_cicilan.replace(/_/g, " ")}
                             </span>
+                            {row.keringanan_reason && (
+                              <div 
+                                className="mt-1 flex items-center gap-1 text-[9px] text-amber-700 font-black bg-amber-50 px-1.5 py-0.5 rounded border border-amber-100 uppercase tracking-tighter cursor-help"
+                                title={row.keringanan_reason}
+                              >
+                                <AlertCircle className="w-2.5 h-2.5" />
+                                Keringanan
+                              </div>
+                            )}
                           </td>
                           <td className="px-6 py-3 font-mono text-slate-500">
                             {formatCurrency(row.sisa_tagihan)}

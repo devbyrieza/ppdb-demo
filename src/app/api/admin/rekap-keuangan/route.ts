@@ -49,6 +49,7 @@ export async function GET(request: NextRequest) {
           },
           select: {
             jumlah: true,
+            keringanan_reason: true,
             updated_at: true,
           },
         },
@@ -81,6 +82,12 @@ export async function GET(request: NextRequest) {
         ? lastPayment.updated_at
         : student.updated_at;
 
+      // Collect reasons
+      const reasons = student.pembayaran
+        .map((p: any) => p.keringanan_reason)
+        .filter((r: any) => !!r);
+      const keringanan_reason = reasons.length > 0 ? reasons.join(" | ") : null;
+
       return {
         no: index + 1,
         id: student.id,
@@ -90,6 +97,7 @@ export async function GET(request: NextRequest) {
         status_kelulusan: student.nilai_ujian[0]?.status_kelulusan || "LULUS",
         total_bayar: totalBayar,
         tipe_cicilan: statusBayar,
+        keringanan_reason,
         sisa_tagihan: Math.max(0, 8500000 - totalBayar),
         last_updated: lastUpdate,
       };

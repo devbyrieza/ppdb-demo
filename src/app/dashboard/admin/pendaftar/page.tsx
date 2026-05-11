@@ -802,6 +802,7 @@ function AdminPendaftarContent() {
           if (s.includes("bayar") || s.includes("waiting_payment") || s.includes("payment_verification")) return "Bayar Pendaftaran";
           if (s.includes("data_completed") || s.includes("data") || s.includes("sudah_isi_data")) return "Data Lengkap";
           if (s.includes("docs_verified") || s.includes("berkas") || s.includes("verified")) return "Berkas Lengkap";
+          if (s.includes("selection") || s.includes("scheduled") || s.includes("tes")) return "Sedang Seleksi";
           if (s.includes("accepted") || s.includes("diterima")) return "Diterima";
           if (s.includes("announced") || s.includes("cadangan")) return "Cadangan";
           if (s.includes("rejected") || s.includes("ditolak")) return "Ditolak";
@@ -882,14 +883,17 @@ function AdminPendaftarContent() {
         label: "Berkas Lengkap",
         color: "bg-emerald-50 text-emerald-800 border border-emerald-100",
       },
+      selection: {
+        label: "Sedang Seleksi",
+        color: "bg-purple-50 text-purple-800 border border-purple-100",
+      },
       scheduled: {
-        label: "Berkas Lengkap",
-        color: "bg-emerald-50 text-emerald-800 border border-emerald-100",
+        label: "Sedang Seleksi",
+        color: "bg-purple-50 text-purple-800 border border-purple-100",
       },
       testing: {
-        label: "Sedang Ujian",
-        color:
-          "bg-violet-100 text-violet-700 border border-violet-200 shadow-sm",
+        label: "Sedang Seleksi",
+        color: "bg-purple-50 text-purple-800 border border-purple-100",
       },
       tested: {
         label: "Sudah Ujian",
@@ -1143,6 +1147,7 @@ function AdminPendaftarContent() {
                     >
                       Terjadwal Ujian {isPenguji ? "(PRIORITAS)" : ""}
                     </option>
+                    <option value="sedang_seleksi">Sedang Seleksi</option>
                     <option value="belum_ujian">Belum Ujian</option>
                     <option value="sudah_ujian">Sudah Ujian</option>
                     <option value="hasil_ujian">Hasil Ujian</option>
@@ -1172,7 +1177,8 @@ function AdminPendaftarContent() {
                 <option value="data_completed">Data Lengkap</option>
                 <option value="docs_uploaded">Data Lengkap (docs)</option>
                 <option value="docs_verified">Berkas Lengkap</option>
-                <option value="scheduled">Berkas Lengkap (scheduled)</option>
+                <option value="selection">Sedang Seleksi</option>
+                <option value="scheduled">Sedang Seleksi (scheduled)</option>
                 <option value="cadangan">Cadangan</option>
                 <option value="accepted">Diterima</option>
                 <option value="rejected">Ditolak</option>

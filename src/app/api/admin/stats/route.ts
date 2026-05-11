@@ -156,7 +156,9 @@ export async function GET(request: Request) {
         "data_completed",
         "docs_uploaded",
         "docs_verified",
+        "selection",
         "scheduled",
+        "testing",
         "tested",
         "announced",
         "accepted",
@@ -201,7 +203,7 @@ export async function GET(request: Request) {
 
       // Berkas Lengkap Logic: docs_verified or higher
       const docsVerifiedIndex = 8; // 'docs_verified' index
-      if (currentIndex >= docsVerifiedIndex && status !== "rejected") {
+      if (currentIndex >= docsVerifiedIndex && status !== "rejected" && status !== "selection") {
         j.berkas_total++;
         if (isL) j.berkas_putra++;
         if (isP) j.berkas_putri++;
@@ -268,12 +270,12 @@ export async function GET(request: Request) {
       diterima: (statusCounts.accepted || 0) + (statusCounts.enrolled || 0),
       cadangan: statusCounts.announced || 0,
       ditolak: statusCounts.rejected || 0,
-      berkas_lengkap: ["docs_verified", "scheduled", "tested", "announced", "accepted", "enrolled"].reduce((acc, s) => acc + (statusCounts[s] || 0), 0),
+      berkas_lengkap: ["docs_verified", "selection", "scheduled", "testing", "tested", "announced", "accepted", "enrolled"].reduce((acc, s) => acc + (statusCounts[s] || 0), 0),
       daftar_ulang: statusCounts.enrolled || 0,
 
       // Secondary metrics
-      sudah_bayar: ["paid", "verified", "data_completed", "docs_uploaded", "docs_verified", "scheduled", "tested", "announced", "accepted", "enrolled"].reduce((acc, s) => acc + (statusCounts[s] || 0), 0),
-      sudah_isi_data: ["data_completed", "docs_uploaded", "docs_verified", "scheduled", "tested", "announced", "accepted", "enrolled"].reduce((acc, s) => acc + (statusCounts[s] || 0), 0),
+      sudah_bayar: ["paid", "verified", "data_completed", "docs_uploaded", "docs_verified", "selection", "scheduled", "testing", "tested", "announced", "accepted", "enrolled"].reduce((acc, s) => acc + (statusCounts[s] || 0), 0),
+      sudah_isi_data: ["data_completed", "docs_uploaded", "docs_verified", "selection", "scheduled", "testing", "tested", "announced", "accepted", "enrolled"].reduce((acc, s) => acc + (statusCounts[s] || 0), 0),
       waiting_payment: statusCounts.waiting_payment || 0,
       waiting_docs: statusCounts.data_completed || 0,
 
@@ -340,7 +342,9 @@ export async function GET(request: Request) {
         cadangan: statusCounts.announced || 0,
         menunggu:
           (statusCounts.tested || 0) +
+          (statusCounts.testing || 0) +
           (statusCounts.scheduled || 0) +
+          (statusCounts.selection || 0) +
           (statusCounts.docs_verified || 0),
         proses:
           (statusCounts.draft || 0) +

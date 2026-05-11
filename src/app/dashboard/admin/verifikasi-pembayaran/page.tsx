@@ -29,6 +29,7 @@ interface Pembayaran {
   metode_pembayaran: string;
   status_pembayaran: string;
   catatan: string | null;
+  keringanan_reason: string | null;
   bukti_transfer_url: string | null;
   tanggal_pembayaran: string | null;
   created_at: string;
@@ -601,6 +602,14 @@ function VerifikasiPembayaranContent() {
                           </p>
                         </div>
                       )}
+                      {pay.keringanan_reason && (
+                        <div className="col-span-1 sm:col-span-2 pt-2 border-t border-amber-200/50 mt-1">
+                          <p className="text-xs text-amber-700 bg-amber-50 p-2 rounded-lg border border-amber-100 font-medium">
+                            <strong className="text-amber-900 block mb-0.5 uppercase text-[9px] tracking-widest">Alasan Keringanan:</strong>
+                            "{pay.keringanan_reason}"
+                          </p>
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -731,6 +740,23 @@ function VerifikasiPembayaranContent() {
                       </div>
                     </div>
                   )}
+                </div>
+              )}
+
+              {selectedPembayaran.keringanan_reason && (
+                <div className="p-5 bg-amber-50 border-2 border-amber-100 rounded-2xl space-y-3 shadow-sm">
+                  <div className="flex items-center gap-2 text-amber-800">
+                    <AlertCircle className="w-5 h-5" />
+                    <span className="font-black text-xs uppercase tracking-widest">
+                      Permohonan Keringanan Khusus
+                    </span>
+                  </div>
+                  <p className="text-sm text-amber-900 leading-relaxed font-bold italic bg-white/50 p-4 rounded-xl border border-amber-200/50">
+                    "{selectedPembayaran.keringanan_reason}"
+                  </p>
+                  <p className="text-[11px] text-amber-700 font-medium px-1">
+                    * Mohon pertimbangkan alasan di atas sebelum melakukan verifikasi atau penolakan.
+                  </p>
                 </div>
               )}
 

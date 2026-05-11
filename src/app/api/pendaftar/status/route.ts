@@ -112,6 +112,36 @@ export async function GET(request: NextRequest) {
 
     const nilai = dataWithNilai?.nilai_ujian[0];
 
+    // 1. Check if they have done any online test (Grup A)
+    const hasOnlineTest = dataWithNilai?.nilai_ujian?.some(
+      (n) =>
+        n.score_akademik != null ||
+        n.score_kepribadian != null ||
+        n.score_kesiapan != null ||
+        n.detail_akademik != null ||
+        n.detail_kepribadian != null ||
+        n.detail_kesiapan != null,
+    );
+
+    // 2. Check if they have booked any schedule (Grup B)
+    const hasBooking = await prisma.jadwalUjian.count({
+      where: { pendaftar_id: pendaftarId },
+    });
+
+    if (
+      currentStatus === "docs_verified" &&
+      (hasOnlineTest || hasBooking > 0)
+    ) {
+      console.log(
+        `[AutoFix] Upgrading ${data.nomor_pendaftaran} status to selection (tests/booking found)`,
+      );
+      await prisma.pendaftar.update({
+        where: { id: pendaftarId },
+        data: { status_pendaftaran: "selection" },
+      });
+      currentStatus = "selection";
+    }
+
     // status_proses = status_pendaftaran (kompatibel dengan access-control)
     return NextResponse.json({
       id: data.id,

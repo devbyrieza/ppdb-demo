@@ -105,8 +105,9 @@ export async function GET(request: NextRequest) {
           "enrolled",
         ],
         dokumen_ditolak: ["docs_rejected"],
-        terjadwal_ujian: ["scheduled"],
-        belum_ujian: ["scheduled"],
+        terjadwal_ujian: ["scheduled", "selection"],
+        sedang_seleksi: ["selection", "scheduled", "testing"],
+        belum_ujian: ["scheduled", "selection"],
         tested: ["tested", "passed", "announced", "accepted", "enrolled"], // Matches UI filter
         sudah_ujian: ["tested", "passed", "announced", "accepted", "enrolled"],
         hasil_ujian: ["passed", "announced", "accepted", "enrolled"],

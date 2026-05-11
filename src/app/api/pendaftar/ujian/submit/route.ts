@@ -119,6 +119,14 @@ export async function POST(req: Request) {
     // 4. Trigger recalculation so total_score and status_kelulusan update
     await recalculateNilaiUjian(pendaftar_id);
 
+    // 5. Update pendaftar status to 'selection' if currently 'docs_verified'
+    if (pendaftar.status_pendaftaran === "docs_verified") {
+      await prisma.pendaftar.update({
+        where: { id: pendaftar_id },
+        data: { status_pendaftaran: "selection" },
+      });
+    }
+
     return NextResponse.json({ success: true, score, type });
   } catch (error) {
     console.error("Submit API Error:", error);

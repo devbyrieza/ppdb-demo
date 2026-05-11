@@ -98,6 +98,7 @@ export async function GET() {
     // --- ACCESS GUARD: Only allow if docs are verified ---
     const ALLOWED_STATUSES = [
       "docs_verified",
+      "selection",
       "scheduled",
       "tested",
       "announced",
