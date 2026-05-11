@@ -126,6 +126,9 @@ export async function GET(request: Request) {
           ulang_total: 0,
           ulang_putra: 0,
           ulang_putri: 0,
+          seleksi_total: 0,
+          seleksi_putra: 0,
+          seleksi_putri: 0,
         };
       }
 
@@ -216,6 +219,13 @@ export async function GET(request: Request) {
         if (isP) j.ulang_putri++;
       }
 
+      // Sedang Seleksi Logic
+      if (["selection", "scheduled", "testing", "tested"].includes(status)) {
+        j.seleksi_total++;
+        if (isL) j.seleksi_putra++;
+        if (isP) j.seleksi_putri++;
+      }
+
       // Normalize Provinsi
       let provinsi = p.provinsi || "Belum Diisi";
       if (provinsi && provinsi !== "Belum Diisi") {
@@ -271,6 +281,7 @@ export async function GET(request: Request) {
       cadangan: statusCounts.announced || 0,
       ditolak: statusCounts.rejected || 0,
       berkas_lengkap: ["docs_verified", "selection", "scheduled", "testing", "tested", "announced", "accepted", "enrolled"].reduce((acc, s) => acc + (statusCounts[s] || 0), 0),
+      sedang_seleksi: ["selection", "scheduled", "testing", "tested"].reduce((acc, s) => acc + (statusCounts[s] || 0), 0),
       daftar_ulang: statusCounts.enrolled || 0,
 
       // Secondary metrics
@@ -296,6 +307,9 @@ export async function GET(request: Request) {
           ulang_total: 0,
           ulang_putra: 0,
           ulang_putri: 0,
+          seleksi_total: 0,
+          seleksi_putra: 0,
+          seleksi_putri: 0,
           data_total: 0,
           data_putra: 0,
           data_putri: 0,
@@ -327,6 +341,9 @@ export async function GET(request: Request) {
           berkas_lengkap: data.berkas_total,
           berkas_putra: data.berkas_putra,
           berkas_putri: data.berkas_putri,
+          sedang_seleksi: data.seleksi_total,
+          seleksi_putra: data.seleksi_putra,
+          seleksi_putri: data.seleksi_putri,
           daftar_ulang: data.ulang_total,
           ulang_putra: data.ulang_putra,
           ulang_putri: data.ulang_putri,

@@ -174,6 +174,7 @@ function query_status(status: string, where: any) {
       "accepted",
       "enrolled",
     ],
+    selection: ["selection", "scheduled", "testing", "tested"],
     pembayaran_ditolak: ["rejected", "payment_rejected"],
     belum_isi_data: ["verified", "paid"],
     sudah_isi_data: [

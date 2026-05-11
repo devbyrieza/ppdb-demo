@@ -165,7 +165,7 @@ export default function AdminDashboardPage() {
   const [loading, setLoading] = useState(true);
   const [role, setRole] = useState<UserRole | null>(null);
   const [stats, setStats] = useState<any>({ 
-    total_pendaftar: 0, sudah_bayar: 0, diterima: 0, 
+    total_pendaftar: 0, sudah_bayar: 0, sedang_seleksi: 0, diterima: 0, 
     daftar_ulang: 0, sudah_isi_data: 0, waiting_payment: 0, 
     waiting_docs: 0, stats_per_jenjang: [], berkas_lengkap: 0, cadangan: 0, ditolak: 0,
     growth_text: "+0% pekan ini"
@@ -196,6 +196,7 @@ export default function AdminDashboardPage() {
           sudah_bayar: "Bayar Pendaftaran",
           sudah_isi_data: "Data Lengkap",
           docs_verified: "Berkas Lengkap",
+          selection: "Sedang Seleksi",
           accepted: "Diterima",
           announced: "Cadangan",
           rejected: "Ditolak",
@@ -310,7 +311,7 @@ export default function AdminDashboardPage() {
   const isAdminKeuangan = role === "admin_keuangan";
   const isAdminBerkas = role === "admin_berkas";
 
-  const getBreakdown = (type: "total" | "lulus" | "ulang" | "cadangan" | "ditolak" | "berkas" | "bayar" | "data") => {
+  const getBreakdown = (type: "total" | "lulus" | "ulang" | "cadangan" | "ditolak" | "berkas" | "bayar" | "data" | "seleksi") => {
     const mts = stats.stats_per_jenjang.find((j: any) => j.jenjang === "MTS") || {};
     const il = stats.stats_per_jenjang.find((j: any) => j.jenjang === "IL") || {};
 
@@ -320,6 +321,7 @@ export default function AdminDashboardPage() {
     if (type === "cadangan") return { mts_l: mts.cadangan_putra || 0, mts_p: mts.cadangan_putri || 0, il_l: il.cadangan_putra || 0, il_p: il.cadangan_putri || 0 };
     if (type === "ditolak") return { mts_l: mts.ditolak_putra || 0, mts_p: mts.ditolak_putri || 0, il_l: il.ditolak_putra || 0, il_p: il.ditolak_putri || 0 };
     if (type === "berkas") return { mts_l: mts.berkas_putra || 0, mts_p: mts.berkas_putri || 0, il_l: il.berkas_putra || 0, il_p: il.berkas_putri || 0 };
+    if (type === "seleksi") return { mts_l: mts.seleksi_putra || 0, mts_p: mts.seleksi_putri || 0, il_l: il.seleksi_putra || 0, il_p: il.seleksi_putri || 0 };
     if (type === "bayar") return { mts_l: mts.bayar_putra || 0, mts_p: mts.bayar_putri || 0, il_l: il.bayar_putra || 0, il_p: il.bayar_putri || 0 };
     if (type === "data") return { mts_l: mts.data_putra || 0, mts_p: mts.data_putri || 0, il_l: il.data_putra || 0, il_p: il.data_putri || 0 };
     return null;
@@ -383,12 +385,13 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* STATS GRID */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
         {isAdminSuper && (<>
           <StatWidget label="Total Pendaftar" value={stats.total_pendaftar} icon={Users} color="blue" trend={stats.growth_text || "+0% pekan ini"} breakdown={getBreakdown("total")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("", "Total Pendaftar", type)} isDownloading={downloadingKey?.startsWith("_") ? downloadingKey.split("_")[1] : null} />
           <StatWidget label="Bayar Pendaftaran" value={stats.sudah_bayar} icon={Wallet} color="emerald" breakdown={getBreakdown("bayar")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("sudah_bayar", "Bayar Pendaftaran", type)} isDownloading={downloadingKey?.startsWith("sudah_bayar_") ? downloadingKey.split("_")[2] : null} />
           <StatWidget label="Data Lengkap" value={stats.sudah_isi_data} icon={FileCheck} color="purple" breakdown={getBreakdown("data")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("sudah_isi_data", "Data Lengkap", type)} isDownloading={downloadingKey?.startsWith("sudah_isi_data_") ? downloadingKey.split("_")[3] : null} />
           <StatWidget label="Berkas Lengkap" value={stats.berkas_lengkap} icon={ClipboardCheck} color="purple" breakdown={getBreakdown("berkas")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("dokumen_terverifikasi", "Berkas Lengkap", type)} isDownloading={downloadingKey?.startsWith("dokumen_terverifikasi_") ? downloadingKey.split("_")[2] : null} />
+          <StatWidget label="Sedang Seleksi" value={stats.sedang_seleksi} icon={Loader2} color="blue" breakdown={getBreakdown("seleksi")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("selection", "Sedang Seleksi", type)} isDownloading={downloadingKey?.startsWith("selection_") ? downloadingKey.split("_")[1] : null} />
           <StatWidget label="Diterima" value={stats.diterima} icon={CheckCircle2} color="emerald" breakdown={getBreakdown("lulus")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("diterima", "Diterima", type)} isDownloading={downloadingKey?.startsWith("diterima_") ? downloadingKey.split("_")[1] : null} />
           <StatWidget label="Cadangan" value={stats.cadangan} icon={Clock} color="slate" breakdown={getBreakdown("cadangan")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("announced", "Cadangan", type)} isDownloading={downloadingKey?.startsWith("announced_") ? downloadingKey.split("_")[1] : null} />
           <StatWidget label="Ditolak" value={stats.ditolak} icon={Activity} color="rose" breakdown={getBreakdown("ditolak")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("pembayaran_ditolak", "Ditolak", type)} isDownloading={downloadingKey?.startsWith("pembayaran_ditolak_") ? downloadingKey.split("_")[2] : null} />
