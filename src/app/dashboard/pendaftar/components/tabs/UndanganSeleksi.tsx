@@ -473,11 +473,16 @@ export default function UndanganSeleksiTab() {
             </div>
 
             <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-              {data.grupB.booked.map((item) => {
-                const Icon = GRUP_B_ICONS[item.category] || Calendar;
-                return (
-                  <div
-                    key={item.id}
+              {data.grupB.booked
+                .filter((item) => {
+                  if (!item.waktu_selesai) return true;
+                  return new Date(item.waktu_selesai) > new Date();
+                })
+                .map((item) => {
+                  const Icon = GRUP_B_ICONS[item.category] || Calendar;
+                  return (
+                    <div
+                      key={item.id}
                     className="bg-white rounded-xl shadow-sm p-5 border-2 border-teal-100 relative overflow-hidden"
                   >
                     <div className="absolute top-0 right-0 p-2 bg-teal-50 rounded-bl-xl">
