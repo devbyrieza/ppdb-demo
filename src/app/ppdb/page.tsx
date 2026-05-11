@@ -190,7 +190,8 @@ function PPDBContent() {
       note: "Ketiga format dokumen di atas dapat di-unduh melalui akun Dashboard pendaftar saat Anda sudah berada di tahap upload berkas.",
       items: [
         { name: "Surat Keterangan Sehat (Format Panitia)", type: "Wajib" },
-        { name: "Scan Pakta Integritas (Format Panitia)", type: "Wajib" },
+        { name: "Scan Pakta Integritas Calon Santri (Format Panitia)", type: "Wajib" },
+        { name: "Scan Pakta Integritas Calon Orangtua/Wali Santri (Format Panitia)", type: "Wajib" },
         {
           name: "Scan Pernyataan Bebas Perilaku Negatif (Format Panitia)",
           type: "Wajib",
