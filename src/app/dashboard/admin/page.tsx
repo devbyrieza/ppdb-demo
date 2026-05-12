@@ -166,7 +166,7 @@ export default function AdminDashboardPage() {
   const [role, setRole] = useState<UserRole | null>(null);
   const [stats, setStats] = useState<any>({ 
     total_pendaftar: 0, sudah_bayar: 0, sedang_seleksi: 0, diterima: 0, 
-    daftar_ulang: 0, sudah_isi_data: 0, waiting_payment: 0, 
+    daftar_ulang: 0, daftar_ulang_sedang: 0, daftar_ulang_selesai: 0, sudah_isi_data: 0, waiting_payment: 0, 
     waiting_docs: 0, stats_per_jenjang: [], berkas_lengkap: 0, cadangan: 0, ditolak: 0,
     growth_text: "+0% pekan ini"
   });
@@ -312,7 +312,7 @@ export default function AdminDashboardPage() {
   const isAdminKeuangan = role === "admin_keuangan";
   const isAdminBerkas = role === "admin_berkas";
 
-  const getBreakdown = (type: "total" | "lulus" | "ulang" | "cadangan" | "ditolak" | "berkas" | "bayar" | "data" | "seleksi") => {
+  const getBreakdown = (type: "total" | "lulus" | "ulang" | "ulang_sedang" | "ulang_selesai" | "cadangan" | "ditolak" | "berkas" | "bayar" | "data" | "seleksi") => {
     const mts = stats.stats_per_jenjang.find((j: any) => j.jenjang === "MTS") || {};
     const il = stats.stats_per_jenjang.find((j: any) => j.jenjang === "IL") || {};
 
@@ -423,8 +423,8 @@ export default function AdminDashboardPage() {
         )}
       </div>
 
-      {/* SUMMARY INSIGHTS - Hanya untuk Admin Operasional */}
-      {!isAdminSuper && (
+      {/* SUMMARY INSIGHTS - Terbuka untuk semua Admin */}
+      {(isAdminSuper || isAdminBerkas || isAdminKeuangan) && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
           {/* Statistik card — bg teal-800 (valid & dark enough for white text) */}
         <div className="bg-teal-800 rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] p-5 sm:p-8 lg:p-10 text-white relative overflow-hidden group">
@@ -446,6 +446,10 @@ export default function AdminDashboardPage() {
                   <p className="text-[10px] font-black text-teal-200 uppercase tracking-widest mb-2">Data Komplit</p>
                   <p className="text-2xl sm:text-4xl font-black text-sand-300 italic">{stats.sudah_isi_data}</p>
                 </div>
+                <div>
+                  <p className="text-[10px] font-black text-teal-200 uppercase tracking-widest mb-2">Sedang Daftar Ulang</p>
+                  <p className="text-2xl sm:text-4xl font-black text-gold-400 italic">{stats.daftar_ulang_sedang}</p>
+                </div>
               </div>
               <div className="space-y-6 sm:space-y-8 pl-4 sm:pl-10 border-l border-white/20">
                 <div>
@@ -457,6 +461,10 @@ export default function AdminDashboardPage() {
                   <p className="text-2xl sm:text-4xl font-black text-emerald-400 italic">
                     {stats.total_pendaftar > 0 ? Math.round((stats.diterima / stats.total_pendaftar) * 100) : 0}%
                   </p>
+                </div>
+                <div>
+                  <p className="text-[10px] font-black text-teal-200 uppercase tracking-widest mb-2">Selesai</p>
+                  <p className="text-2xl sm:text-4xl font-black text-emerald-400 italic">{stats.daftar_ulang_selesai}</p>
                 </div>
               </div>
             </div>
