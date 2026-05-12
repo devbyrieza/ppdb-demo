@@ -141,7 +141,7 @@ export async function PATCH(request: NextRequest) {
 
     // Get request body
     const body = await request.json();
-    const { pembayaran_id, status_pembayaran, catatan, jumlah, tipe_cicilan } =
+    const { pembayaran_id, status_pembayaran, catatan, jumlah, tipe_cicilan, cicilan_ke } =
       body;
 
     if (!pembayaran_id || !status_pembayaran) {
@@ -166,6 +166,7 @@ export async function PATCH(request: NextRequest) {
         catatan_verifikasi: catatan,
         jumlah: jumlah ? Number(jumlah) : undefined,
         tipe_cicilan: tipe_cicilan || undefined,
+        cicilan_ke: cicilan_ke !== undefined ? Number(cicilan_ke) : undefined,
       },
       include: {
         pendaftar: {
@@ -267,7 +268,6 @@ export async function PATCH(request: NextRequest) {
               finalMessage = buildMessagePaymentVerified(
                 pembayaran.pendaftar.nama_lengkap,
                 formattedAmount,
-                pembayaran.metode_pembayaran,
                 paymentDate,
               );
             }

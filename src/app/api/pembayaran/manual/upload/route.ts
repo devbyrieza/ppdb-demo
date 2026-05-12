@@ -111,6 +111,7 @@ export async function POST(request: NextRequest) {
 
     // Parse Jenis Pembayaran
     const keringananReason = formData.get("keringanan_reason") as string | null;
+    const cicilanKe = formData.get("cicilan_ke") ? parseInt(formData.get("cicilan_ke") as string) : null;
     const jenisPembayaran =
       (formData.get("jenis_pembayaran") as string) || "PENDAFTARAN";
     let biaya = 0;
@@ -155,9 +156,9 @@ export async function POST(request: NextRequest) {
       biaya = inputJumlah;
 
       // Tentukan Tipe Cicilan
-      if (biaya >= 8500000) {
+      if (biaya >= 9800000) {
         tipeCicilan = "LUNAS";
-      } else if (biaya >= 4250000) {
+      } else if (biaya >= 4900000) {
         tipeCicilan = "CICIL_50_LEBIH";
       } else {
         tipeCicilan = "CICIL_DIBAWAH_50";
@@ -245,6 +246,7 @@ export async function POST(request: NextRequest) {
           jumlah: biaya,
           tipe_cicilan: tipeCicilan as any,
           keringanan_reason: keringananReason as any,
+          cicilan_ke: cicilanKe,
           bukti_transfer_path: filePath,
           bukti_transfer_filename: safeFileName,
           status_pembayaran: "pending",
@@ -254,15 +256,16 @@ export async function POST(request: NextRequest) {
       });
     } else {
       pembayaranResult = await prisma.pembayaran.create({
-        data: {
+          data: {
           pendaftar_id: session.id,
           tahun_ajaran_id: pendaftar.tahun_ajaran_id,
           metode_pembayaran: "manual",
           jenis_pembayaran: jenisPembayaran as any,
           tipe_cicilan: tipeCicilan as any,
+          cicilan_ke: cicilanKe,
           keringanan_reason: keringananReason as any,
           jumlah: biaya,
-          total_tagihan: jenisPembayaran === "DAFTAR_ULANG" ? 8500000 : biaya,
+          total_tagihan: jenisPembayaran === "DAFTAR_ULANG" ? 9800000 : biaya,
           bukti_transfer_path: filePath,
           bukti_transfer_filename: safeFileName,
           status_pembayaran: "pending",

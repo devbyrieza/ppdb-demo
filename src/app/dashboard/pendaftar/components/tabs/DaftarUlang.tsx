@@ -29,6 +29,9 @@ export default function DaftarUlangTab() {
     type: "success" | "error";
     text: string;
   } | null>(null);
+  const [cicilanKe, setCicilanKe] = useState("1");
+  const [totalPaid, setTotalPaid] = useState(0);
+  const [paymentHistory, setPaymentHistory] = useState<any[]>([]);
 
   useEffect(() => {
     fetchData();
@@ -48,11 +51,14 @@ export default function DaftarUlangTab() {
       setDataUser(statusData);
 
       // 2. Get Payment History (Daftar Ulang only)
-      // Assuming a generic history endpoint exists or we filter client side
-      // Currently allow multiple uploads? API blocks verified but allows pending updates.
-      // Let's create a visual for "Sudah Lunas" or "Masih Cicilan".
-      // Since API only handles creation, we assume dashboard handles history view?
-      // For now, check if "Verified" payment exists.
+      const historyRes = await fetch(`/api/pembayaran/history?jenis=DAFTAR_ULANG`);
+      if (historyRes.ok) {
+        const historyData = await historyRes.json();
+        const verifiedPayments = historyData.data.filter((p: any) => p.status_pembayaran === "verified");
+        const total = verifiedPayments.reduce((acc: number, p: any) => acc + Number(p.jumlah), 0);
+        setTotalPaid(total);
+        setPaymentHistory(historyData.data);
+      }
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -87,6 +93,7 @@ export default function DaftarUlangTab() {
     formData.append("jumlah", amount.toString());
     formData.append("file", file);
     if (keringananReason) formData.append("keringanan_reason", keringananReason);
+    if (numericNominal < 9800000) formData.append("cicilan_ke", cicilanKe);
 
     try {
       const res = await fetch("/api/pembayaran/manual/upload", {
@@ -104,6 +111,7 @@ export default function DaftarUlangTab() {
       setFile(null);
       setNominal("");
       setPernyataan(false);
+      fetchData(); // Refresh history
     } catch (error: any) {
       setMessage({ type: "error", text: error.message });
     } finally {
@@ -142,9 +150,10 @@ export default function DaftarUlangTab() {
     );
   }
 
-  // ENROLLED STATE
-  const isEnrolled = dataUser?.status_pendaftaran === "enrolled";
-  if (isEnrolled) {
+  // ENROLLED STATE (Already Paid Full 9.8M)
+  const isLunas = totalPaid >= 9800000;
+
+  if (isLunas) {
     return (
       <div className="max-w-3xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 py-12">
         <div className="bg-linear-to-br from-emerald-600 to-emerald-800 rounded-[2rem] p-10 text-white shadow-2xl relative overflow-hidden">
@@ -156,29 +165,55 @@ export default function DaftarUlangTab() {
               <CheckCircle className="w-10 h-10 text-white" />
             </div>
             <h2 className="text-3xl font-black mb-4 uppercase tracking-wide text-white">
-              PEMBAYARAN DIVERIFIKASI
+              ADMINISTRASI LUNAS
             </h2>
             <p className="text-emerald-50 text-lg max-w-lg leading-relaxed font-medium">
-              Alhamdulillah! Proses Daftar Ulang Anda telah selesai diverifikasi oleh Panitia Keuangan.
+              Alhamdulillah! Seluruh biaya Daftar Ulang Ananda telah <strong>Lunas</strong> dan diverifikasi.
             </p>
           </div>
         </div>
 
-        <div className="bg-white rounded-[2rem] p-10 shadow-xl border border-emerald-100 flex items-start gap-6">
-          <div className="p-4 bg-emerald-50 rounded-2xl">
-            <History className="w-8 h-8 text-emerald-600" />
-          </div>
-          <div>
-            <h3 className="text-xl font-black text-slate-900 mb-3">
-              Langkah Selanjutnya
-            </h3>
-            <p className="text-slate-600 leading-relaxed mb-6">
-              Selamat! Anda kini resmi tercatat sebagai Santri Baru. Silakan pantau grup WhatsApp resmi atau dashboard untuk informasi jadwal kedatangan santri.
-            </p>
-            <div className="flex gap-4">
-              <div className="px-5 py-2.5 bg-emerald-600 text-white rounded-full text-xs font-black shadow-md">
-                STATUS: ENROLLED
+        <div className="bg-white rounded-[2rem] p-10 shadow-xl border border-emerald-100">
+           <div className="flex items-start gap-6 mb-8">
+            <div className="p-4 bg-emerald-50 rounded-2xl">
+              <History className="w-8 h-8 text-emerald-600" />
+            </div>
+            <div>
+              <h3 className="text-xl font-black text-slate-900 mb-3">
+                Langkah Selanjutnya
+              </h3>
+              <p className="text-slate-600 leading-relaxed mb-6">
+                Selamat! Anda kini resmi tercatat sebagai Santri Baru. Silakan pantau grup WhatsApp resmi atau dashboard untuk informasi jadwal kedatangan santri.
+              </p>
+              <div className="flex gap-4">
+                <div className="px-5 py-2.5 bg-emerald-600 text-white rounded-full text-xs font-black shadow-md uppercase tracking-wider">
+                  STATUS: LUNAS & ENROLLED
+                </div>
               </div>
+            </div>
+          </div>
+
+          <div className="pt-8 border-t border-slate-100">
+            <h4 className="font-black text-slate-900 mb-4 flex items-center gap-2">
+              <History className="w-4 h-4 text-slate-400" /> Riwayat Pembayaran Daftar Ulang
+            </h4>
+            <div className="space-y-3">
+              {paymentHistory.filter(p => p.status_pembayaran === 'verified').map((p, i) => (
+                <div key={i} className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-100">
+                  <div>
+                    <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">
+                      {p.tipe_cicilan === 'LUNAS' ? 'Pelunasan' : `Cicilan ke-${p.cicilan_ke || '?'}`}
+                    </p>
+                    <p className="font-black text-slate-900">{formatCurrency(Number(p.jumlah))}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-[10px] text-slate-400 font-medium">
+                      {new Date(p.verified_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                    </p>
+                    <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">✓ Verified</span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -378,6 +413,25 @@ export default function DaftarUlangTab() {
               </button>
             </div>
           </div>
+
+          {/* Input Cicilan Ke (Hanya jika dicicil) */}
+          {numericNominal > 0 && numericNominal < 9800000 && (
+            <div className="pt-2 border-t border-slate-100 animate-in fade-in slide-in-from-top-1">
+              <label className="block text-sm font-bold text-slate-700 mb-2">
+                Ini adalah Pembayaran Cicilan ke-
+              </label>
+              <div className="relative w-32">
+                <input
+                  type="number"
+                  min="1"
+                  max="12"
+                  value={cicilanKe}
+                  onChange={(e) => setCicilanKe(e.target.value)}
+                  className="w-full px-4 py-3 text-lg font-black text-ink-900 border border-ink-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all shadow-inner"
+                />
+              </div>
+            </div>
+          )}
 
           {/* Input Nominal */}
           <div className="pt-2 border-t border-slate-100">
