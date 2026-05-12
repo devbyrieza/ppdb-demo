@@ -24,11 +24,13 @@ export type NotifType =
     | "jadwal_tersedia"
     | "jadwal_langsung_tersedia"
     | "konfirmasi_jadwal"
+    | "konfirmasi_jadwal_pendaftar"
     | "konfirmasi_jadwal_interviewer"
     | "reminder_h1"
     | "reminder_h1_penguji"
     | "reminder_h0"
     | "hasil_tes"
+    | "hasil_seleksi"
     | "registration_success"
     | "document_verified"
     | "document_rejected"
@@ -568,9 +570,9 @@ function pickOpening(): string {
 export function buildMessageOTP(nama: string, otp: string): string {
     return `🔐 *Kode Verifikasi PPDB ${BRANDING.schoolName}*
 
-Assalamu'alaikum *${nama}*,
+Assalamu'alaikum Abu/Ummu,
 
-Kode OTP Anda adalah:
+Kode OTP pendaftaran ananda adalah:
 
 *${otp}*
 
@@ -581,6 +583,7 @@ Kode ini berlaku selama *5 menit*.
 • Tim ${BRANDING.schoolName} tidak akan pernah meminta kode OTP Anda
 
 Jazakumullahu khairan
+
 ---
 *Panitia PPDB ${BRANDING.schoolName}*`;
 }
@@ -592,14 +595,14 @@ export function buildMessageRegistrationSuccess(
 ): string {
     let jenjangStr = jenjang;
     if (jenjang === 'MTs') jenjangStr = 'Madrasah Tsanawiyah (MTs)';
-    else if (jenjang === 'IL') jenjangStr = "I'dad Lughowi [IL]";
+    else if (jenjang === 'IL') jenjangStr = "I'dad Lughowi (IL)";
     else if (jenjang === 'MA') jenjangStr = 'Madrasah Aliyah (MA)';
 
     return `🎉 *Pendaftaran Berhasil!*
 
-Assalamu'alaikum *${nama}*,
+Assalamu'alaikum Abu/Ummu,
 
-Alhamdulillah, pendaftaran Anda di ${BRANDING.schoolName} telah berhasil!
+Alhamdulillah, pendaftaran Ananda *${nama}* di ${BRANDING.schoolName} telah berhasil!
 
 📋 *Detail Pendaftaran:*
 • Nomor Pendaftaran: ${nomor_pendaftaran}
@@ -615,6 +618,7 @@ Alhamdulillah, pendaftaran Anda di ${BRANDING.schoolName} telah berhasil!
 Hubungi kami di ${BRANDING.phone}
 
 Jazakumullahu khairan
+
 ---
 *Panitia PPDB ${BRANDING.schoolName}*`;
 }
@@ -622,19 +626,20 @@ Jazakumullahu khairan
 export function buildMessageDocumentVerified(nama: string, dokumenList: string): string {
     return `✅ *Dokumen Telah Diverifikasi*
 
-Assalamu'alaikum *${nama}*,
+Assalamu'alaikum Abu/Ummu,
 
-Alhamdulillah, dokumen Anda telah diverifikasi dan *DITERIMA*.
+Alhamdulillah, dokumen Ananda *${nama}* telah diverifikasi dan *DITERIMA*.
 
 📄 *Dokumen yang Diverifikasi:*
 Semua Dokumen Lengkap
 
 📝 *Langkah Selanjutnya:*
-Silakan pilih jadwal seleksi masuk melalui dashboard Anda (Menu Jadwal Seleksi).
+Silakan pilih jadwal tes masuk melalui dashboard (Menu Jadwal Ujian).
 
 Dashboard: ${BRANDING.websiteUrl}/dashboard/pendaftar/undangan-seleksi
 
 Jazakumullahu khairan
+
 ---
 *Panitia PPDB ${BRANDING.schoolName}*`;
 }
@@ -642,9 +647,9 @@ Jazakumullahu khairan
 export function buildMessageDocumentRejected(nama: string, dokumenList: string, catatan: string): string {
     return `❌ *Dokumen Perlu Diperbaiki*
 
-Assalamu'alaikum ${nama},
+Assalamu'alaikum Abu/Ummu,
 
-Mohon maaf, dokumen Anda perlu diperbaiki.
+Mohon maaf, dokumen Ananda *${nama}* perlu diperbaiki.
 
 📄 *Dokumen yang Ditolak:*
 ${dokumenList}
@@ -653,36 +658,38 @@ ${dokumenList}
 ${catatan}
 
 🔄 *Langkah Selanjutnya:*
-1. Login ke dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/upload-berkas
+1. Login ke dashboard: ${BRANDING.websiteUrl}/dashboard/pendaftar/upload-berkas
 2. Upload ulang dokumen yang ditolak
 3. Pastikan dokumen jelas dan sesuai ketentuan
 
 💡 *Butuh Bantuan?*
 Hubungi kami di ${BRANDING.phone}
 
-Jazakumullahu khairan,
-Panitia PPDB ${BRANDING.schoolName}`;
+Jazakumullahu khairan
+
+---
+*Panitia PPDB ${BRANDING.schoolName}*`;
 }
 
-export function buildMessagePaymentVerified(nama: string, jumlah: string, metode: string, tanggal: string): string {
+export function buildMessagePaymentVerified(nama: string, jumlah: string, tanggal: string): string {
     return `✅ *Pembayaran Pendaftaran Diterima*
 
-Assalamu'alaikum *${nama}*,
+Assalamu'alaikum Abu/Ummu,
 
-Alhamdulillah, pembayaran pendaftaran Anda telah kami terima dan verifikasi.
+Alhamdulillah, pembayaran pendaftaran Ananda *${nama}* telah kami terima dan verifikasi.
 
 💰 *Detail Pembayaran:*
-* Jumlah: ${jumlah}
-* Metode: ${metode}
-* Tanggal: ${tanggal}
+• Jumlah: ${jumlah}
+• Tanggal: ${tanggal}
 
 📝 *Langkah Selanjutnya:*
-Silakan login ke dashboard untuk melengkapi Data Santri & Upload Berkas.
-Setelah data dan berkas lengkap, Anda bisa memilih jadwal tes.
+Silakan login ke dashboard untuk melengkapi Data Calon Santri & Upload Berkas.
+Setelah data dan berkas lengkap, Abu/Ummu bisa memilih jadwal tes.
 
 Dashboard: ${BRANDING.websiteUrl}/dashboard/pendaftar/isi-data-lengkap
 
 Jazakumullahu khairan
+
 ---
 *Panitia PPDB ${BRANDING.schoolName}*`;
 }
@@ -690,19 +697,20 @@ Jazakumullahu khairan
 export function buildMessageDaftarUlangVerified(nama: string, jumlah: string, tanggal: string): string {
     return `✅ *Pembayaran Daftar Ulang Diterima*
 
-Assalamu'alaikum *${nama}*,
+Assalamu'alaikum Abu/Ummu,
 
-Alhamdulillah, pembayaran Daftar Ulang Anda telah kami terima dan verifikasi.
+Alhamdulillah, pembayaran Daftar Ulang Ananda *${nama}* telah kami terima dan verifikasi.
 
 💰 *Detail Pembayaran:*
-* Jumlah: ${jumlah}
-* Status: Terkonfirmasi
-* Tanggal: ${tanggal}
+• Jumlah: ${jumlah}
+• Status: Terkonfirmasi
+• Tanggal: ${tanggal}
 
 📝 *Informasi Selanjutnya:*
-Status Anda kini tercatat sebagai calon santri yang telah melakukan Daftar Ulang. Mohon nantikan informasi selanjutnya terkait persiapan masuk pesantren melalui dashboard atau grup resmi.
+Ananda kini tercatat sebagai calon santri yang telah melakukan Daftar Ulang. Mohon nantikan informasi selanjutnya terkait persiapan masuk pesantren melalui dashboard atau grup resmi.
 
 Jazakumullahu khairan
+
 ---
 *Panitia PPDB ${BRANDING.schoolName}*`;
 }
@@ -710,79 +718,87 @@ Jazakumullahu khairan
 export function buildMessagePaymentRejected(nama: string, catatan: string): string {
     return `❌ *Pembayaran Perlu Diperbaiki*
 
-Assalamu'alaikum ${nama},
+Assalamu'alaikum Abu/Ummu,
 
-Mohon maaf, bukti pembayaran Anda perlu diperbaiki.
+Mohon maaf, bukti pembayaran Ananda *${nama}* perlu diperbaiki.
 
 📝 *Catatan:*
 ${catatan}
 
 🔄 *Langkah Selanjutnya:*
-1. Login ke dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/pembayaran-pendaftaran
+1. Login ke dashboard: ${BRANDING.websiteUrl}/dashboard/pendaftar/pembayaran-pendaftaran
 2. Upload ulang bukti pembayaran yang jelas
 3. Pastikan nominal dan rekening tujuan sesuai
 
 💡 *Butuh Bantuan?*
 Hubungi kami di ${BRANDING.phone}
 
-Jazakumullahu khairan,
-Panitia PPDB ${BRANDING.schoolName}`;
+Jazakumullahu khairan
+
+---
+*Panitia PPDB ${BRANDING.schoolName}*`;
 }
 
 export function buildMessageJadwalBelum(nama: string): string {
-    return `${pickOpening()} ${nama},
+    return `${pickOpening()} Abu/Ummu dari Ananda ${nama},
 
 Terima kasih telah mendaftar di ${BRANDING.schoolName}.
 
-Saat ini jadwal tes lanjutan (Seleksi Al Qur'an, Seleksi Wawancara Calon Santri, dan Seleksi Wawancara Orang Tua/Wali) belum tersedia. Mohon bersabar, kami akan menginformasikan kembali begitu jadwal sudah siap.
+Saat ini jadwal tes lanjutan (Tes Al-Qur'an, Wawancara Calon Santri, dan Wawancara Calon Orangtua/Wali Santri) belum tersedia. Mohon bersabar, kami akan menginformasikan kembali begitu jadwal sudah siap.
 
-Untuk sementara, Anda sudah bisa mengerjakan seleksi online yang tersedia di dashboard:
+Untuk sementara, Ananda sudah bisa mengerjakan seleksi online yang tersedia di dashboard:
 - Kemampuan Dasar Akademik
 - Identifikasi Kepribadian
 - Seleksi Kesiapan
 
-Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/undangan-seleksi
+Dashboard: ${BRANDING.websiteUrl}/dashboard/pendaftar/undangan-seleksi
 
-Jazakumullahu khairan,
-Panitia PPDB ${BRANDING.schoolName}`;
+Jazakumullahu khairan
+
+---
+*Panitia PPDB ${BRANDING.schoolName}*`;
 }
 
 export function buildMessageJadwalTersedia(nama: string): string {
-    return `${pickOpening()} ${nama},
+    return `${pickOpening()} Abu/Ummu dari Ananda ${nama},
 
 Alhamdulillah, jadwal tes lanjutan sudah tersedia!
 
-Silakan login ke dashboard and pilih jadwal yang sesuai untuk:
-- Seleksi Al Qur'an
-- Seleksi Wawancara Calon Santri
-- Seleksi Wawancara Orang Tua/Wali
+Silakan login ke dashboard dan pilih jadwal yang sesuai untuk:
+- Tes Al-Qur'an
+- Wawancara Calon Santri
+- Wawancara Calon Orangtua/Wali Santri
 
 Segera pilih jadwal sebelum kuota penuh.
 
-Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/undangan-seleksi
+Dashboard: ${BRANDING.websiteUrl}/dashboard/pendaftar/undangan-seleksi
 
-Jazakumullahu khairan,
-Panitia PPDB ${BRANDING.schoolName}`;
+Jazakumullahu khairan
+
+---
+*Panitia PPDB ${BRANDING.schoolName}*`;
 }
 
 export function buildMessageJadwalLangsungTersedia(nama: string): string {
-    return `${pickOpening()} ${nama},
+    return `${pickOpening()} Abu/Ummu dari Ananda ${nama},
 
 Terima kasih telah mencapai tahap Seleksi ${BRANDING.schoolName}.
 
-Saat ini **jadwal tes lanjutan sudah tersedia dan bisa langsung Anda pilih**.
+Saat ini *jadwal tes lanjutan sudah tersedia dan bisa langsung dipilih*.
 
 Silakan login ke dashboard dan pilih sesi jadwal untuk:
-- Seleksi Al Qur'an
-- Seleksi Wawancara Calon Santri
-- Seleksi Wawancara Orang Tua/Wali
+- Tes Al-Qur'an
+- Wawancara Calon Santri
+- Wawancara Calon Orangtua/Wali Santri
 
-Harap segera memilih jadwal sebelum rentang waktu habis atau kuota penuh. Jangan lupa juga untuk menyelesaikan Seleksi Online (Akademik & Kepribadian).
+Harap segera memilih jadwal sebelum kuota penuh. Jangan lupa juga untuk menyelesaikan Seleksi Online (Akademik & Kepribadian).
 
-Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/undangan-seleksi
+Dashboard: ${BRANDING.websiteUrl}/dashboard/pendaftar/undangan-seleksi
 
-Jazakumullahu khairan,
-Panitia PPDB ${BRANDING.schoolName}`;
+Jazakumullahu khairan
+
+---
+*Panitia PPDB ${BRANDING.schoolName}*`;
 }
 
 export function buildMessageKonfirmasiJadwal(
@@ -792,23 +808,52 @@ export function buildMessageKonfirmasiJadwal(
     lokasi: string,
     jenisUjian: string
 ): string {
-    return `${pickOpening()} ${nama},
+    return `${pickOpening()} Abu/Ummu dari Ananda ${nama},
 
-Jadwal ${jenisUjian} Anda telah terkonfirmasi:
+Jadwal *${jenisUjian}* Ananda telah terkonfirmasi:
 
-Tanggal: ${tanggal}
-Waktu: ${waktu} WIB
-Tempat: ${lokasi}
+📅 *Hari/Tanggal:* ${tanggal}
+⏰ *Waktu:* ${waktu} WIB
+📍 *Link Meet:* ${lokasi}
 
-Persiapan:
-- Hadir 30 menit sebelum waktu tes
-- Berpakaian sopan dan rapi
-- Bawa alat tulis
+Kami akan mengirimkan pengingat kembali beberapa saat sebelum jadwal tiba.
 
-Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/undangan-seleksi
+Dashboard: ${BRANDING.websiteUrl}/dashboard/pendaftar/undangan-seleksi
 
-Jazakumullahu khairan,
-Panitia PPDB ${BRANDING.schoolName}`;
+Jazakumullahu khairan
+
+---
+*Panitia PPDB ${BRANDING.schoolName}*`;
+}
+
+/**
+ * Notifikasi SEGERA ke pendaftar setelah berhasil memilih jadwal
+ */
+export function buildMessageKonfirmasiJadwalPendaftar(
+    namaSantri: string,
+    jenisUjian: string,
+    tanggal: string,
+    waktu: string,
+    lokasi: string
+): string {
+    return `📅 *Jadwal Seleksi Terkonfirmasi*
+
+Assalamu'alaikum Abu/Ummu,
+
+Alhamdulillah, jadwal *${jenisUjian}* Ananda *${namaSantri}* telah berhasil dipilih.
+
+📅 *Hari/Tanggal:* ${tanggal}
+⏰ *Waktu:* ${waktu} WIB
+📍 *Link Meet:* ${lokasi}
+
+Kami akan mengirimkan pengingat kembali beberapa saat sebelum jadwal tiba.
+
+Dashboard: ${BRANDING.websiteUrl}/dashboard/pendaftar/undangan-seleksi
+
+Jazakumullahu khairan
+
+---
+*Panitia PPDB ${BRANDING.schoolName}*`;
 }
 
 export function buildMessageReminderH1(
@@ -818,21 +863,22 @@ export function buildMessageReminderH1(
     lokasi: string,
     jenisUjian: string
 ): string {
-    return `${pickOpening()} ${nama},
+    return `*PENGINGAT TES SELEKSI*
 
-Pengingat jadwal ${jenisUjian} Anda:
+Assalamu'alaikum Abu/Ummu,
 
-📋 *${jenisUjian}*
-📅 Tanggal: ${tanggal}
-⏰ Waktu: ${waktu} WIB
-📍 Tempat/Link: ${lokasi}
+Ini adalah pengingat bahwa Ananda *${nama}* dijadwalkan mengikuti *${jenisUjian}* pada:
 
-Mohon hadir tepat waktu dan persiapkan diri dengan baik. Semoga dimudahkan dan diberkahi.
+📅 *Hari/Tanggal:* ${tanggal}
+⏰ *Waktu:* ${waktu} WIB
+📍 *Link Meet:* ${lokasi}
 
-Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/undangan-seleksi
+Mohon persiapkan diri dengan baik dan pastikan koneksi internet stabil. Sampai jumpa!
 
-Jazakumullahu khairan,
-Panitia PPDB ${BRANDING.schoolName}`;
+Jazakumullahu khairan
+
+---
+*Panitia PPDB ${BRANDING.schoolName}*`;
 }
 
 export function buildMessageReminderH0(
@@ -841,40 +887,48 @@ export function buildMessageReminderH0(
     lokasi: string,
     jenisUjian: string
 ): string {
-    return `${pickOpening()} ${nama},
+    return `⏰ *PENGINGAT: ${jenisUjian} dimulai 1 jam lagi!*
 
-⏰ *PENGINGAT: ${jenisUjian} dimulai 1 jam lagi!*
+Assalamu'alaikum Abu/Ummu,
 
-🕐 Waktu: ${waktu} WIB
-📍 Tempat/Link: ${lokasi}
+🕐 *Waktu:* ${waktu} WIB
+📍 *Link Meet:* ${lokasi}
 
-Mohon segera bersiap. Pastikan koneksi internet stabil jika ujian dilakukan secara online.
+Mohon segera bersiap. Pastikan koneksi internet stabil.
 
 Semoga dimudahkan dan diberkahi.
 
-Jazakumullahu khairan,
-Panitia PPDB ${BRANDING.schoolName}`;
+Jazakumullahu khairan
+
+---
+*Panitia PPDB ${BRANDING.schoolName}*`;
 }
 
 export function buildMessageHasilTes(nama: string): string {
-    return `${pickOpening()}, *${nama}*.
- 
- Alhamdulillah, hasil seleksi seleksi Ananda sudah tersedia.
- 
- Silakan login ke dashboard untuk melihat hasil lengkap dan mengunduh *Surat Keterangan Lulus (SKL)* dalam format PDF.
- 
- 🔗 *Dashboard & Unduh Surat:*
- ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/pengumuman
- 
- *Informasi Daftar Ulang:*
- Pembayaran minimal 50% paling lambat sepekan setelah pengumuman. Keringanan hubungi Finance: ${BRANDING.phone}.
- 
- Jazakumullahu khairan.
- Panitia PPDB ${BRANDING.schoolName}`;
+    return `📢 *Pengumuman Hasil Seleksi*
+
+Assalamu'alaikum Abu/Ummu,
+
+Alhamdulillah, hasil seleksi Ananda *${nama}* sudah tersedia dan dapat dilihat di dashboard PPDB.
+
+🔗 *Lihat Hasil Seleksi:*
+${BRANDING.websiteUrl}/dashboard/pendaftar/pengumuman
+
+*Panduan Daftar Ulang (bagi yang Diterima):*
+Silakan lakukan pembayaran Daftar Ulang minimal 50% paling lambat 7 hari setelah pengumuman ini.
+Untuk informasi lebih lanjut, hubungi kami di ${BRANDING.phone}.
+
+Jazakumullahu khairan
+
+---
+*Panitia PPDB ${BRANDING.schoolName}*`;
 }
 
+/** Alias baru — sama dengan buildMessageHasilTes */
+export const buildMessageHasilSeleksi = buildMessageHasilTes;
+
 /**
- * Build Message for Interviewer/Penguji
+ * Build Message for Interviewer/Penguji — Notifikasi Jadwal Baru
  */
 export function buildMessageKonfirmasiJadwalInterviewer(
     namaInterviewer: string,
@@ -885,24 +939,46 @@ export function buildMessageKonfirmasiJadwalInterviewer(
     jenisUjian: string,
     inputNilaiLink?: string
 ): string {
-    const title = (namaInterviewer || "").toLowerCase().includes("ustadzah") ? "Ustadzah" : "Ustadz";
+    const gender = (namaInterviewer || "").toLowerCase().includes("ustadzah") ? "P" : "L";
+    const title = gender === "P" ? "Ustadzah" : "Ustadz";
     const opening = pickOpening();
-    let msg = `${opening} ${title} ${namaInterviewer},
- 
- Informasikan jadwal ${jenisUjian} baru untuk santri berikut:
- 
- Nama Santri: ${namaSantri}
- Tanggal: ${tanggal}
- Waktu: ${waktu} WIB
- Tempat: ${lokasi}`;
 
-    if (inputNilaiLink) {
-        msg += `\n\n🔗 *Input Hasil:* ${inputNilaiLink}\n(PIN: 4 digit terakhir No. HP Anda)`;
+    const jenisLower = jenisUjian.toLowerCase();
+    let agendaText = jenisUjian;
+    let agendaTitle = "*INFORMASI JADWAL SELEKSI BARU*";
+    if (jenisLower.includes("quran")) {
+        agendaText = "Tes Al-Qur'an";
+        agendaTitle = "*INFORMASI JADWAL SELEKSI BARU*";
+    } else if (jenisLower.includes("calsan") || jenisLower.includes("santri")) {
+        agendaText = "Wawancara Calon Santri";
+        agendaTitle = "*INFORMASI JADWAL WAWANCARA BARU*";
+    } else if (jenisLower.includes("cawalsan") || jenisLower.includes("ortu") || jenisLower.includes("orang tua")) {
+        agendaText = "Wawancara Calon Orangtua/Wali Santri";
+        agendaTitle = "*INFORMASI JADWAL WAWANCARA BARU*";
     }
 
-    msg += `\n\nMohon untuk bersiap di ruangan virtual/fisik tepat waktu. Syukran.
- 
- Panitia PPDB ${BRANDING.schoolName}`;
+    let msg = `${agendaTitle}
+
+${opening} ${title} *${namaInterviewer}*,
+
+Terdapat jadwal *${agendaText}* baru yang telah dipilih oleh santri berikut:
+
+📝 *Agenda:* ${agendaText}
+👤 *Nama Santri:* *${namaSantri}*
+📅 *Hari/Tanggal:* ${tanggal}
+⏰ *Waktu:* ${waktu} WIB
+📍 *Link Meet:* ${lokasi}`;
+
+    if (inputNilaiLink) {
+        msg += `\n🔗 *Input Hasil:* ${inputNilaiLink}\n(PIN: 4 digit terakhir No. HP Ustadz/Ustadzah)`;
+    }
+
+    msg += `
+
+Mohon untuk bersiap di ruangan virtual tepat waktu. Jazakumullahu khairan.
+
+---
+*Sistem PPDB ${BRANDING.schoolName}*`;
     return msg;
 }
 
@@ -937,7 +1013,7 @@ export async function getQueueStats() {
 }
 
 /**
- * Template: Pengingat H-1 untuk Santri
+ * Template: Pengingat 4 Jam Sebelum Ujian untuk Santri
  */
 export function buildMessageReminderH1Santri(
     nama: string,
@@ -947,12 +1023,10 @@ export function buildMessageReminderH1Santri(
     lokasi: string,
     jenisUjian: string
 ): string {
-    // Robust deduplication for Time
     let cleanJam = (jam || "").replace(/\s*WIB\s*/gi, " ").trim();
     cleanJam = cleanJam.replace(/\s+/g, " ");
     const finalJam = `${cleanJam} WIB`;
 
-    // Robust deduplication for Day & Date
     let cleanHari = (hari || "").replace(/Minggu/gi, "Ahad").split(",")[0].trim();
     let cleanTanggal = (tanggal || "").trim();
     if (cleanTanggal.toLowerCase().startsWith(cleanHari.toLowerCase())) {
@@ -960,28 +1034,30 @@ export function buildMessageReminderH1Santri(
     }
     const finalHariTanggal = `${cleanHari}, ${cleanTanggal}`;
 
-    let agendaTitle = "";
-    if (jenisUjian.toLowerCase().includes("quran")) agendaTitle = "Seleksi Al Qur'an";
-    else if (jenisUjian.toLowerCase().includes("calsan")) agendaTitle = "Seleksi Wawancara Calon Santri";
-    else agendaTitle = jenisUjian;
+    let agendaTitle = jenisUjian;
+    if (jenisUjian.toLowerCase().includes("quran")) agendaTitle = "Tes Al-Qur'an";
+    else if (jenisUjian.toLowerCase().includes("calsan")) agendaTitle = "Wawancara Calon Santri";
 
-    return `*PENGINGAT Seleksi*
+    return `*PENGINGAT TES SELEKSI*
 
-Assalamu'alaikum *${nama}*,
+Assalamu'alaikum Abu/Ummu,
 
-Ini adalah pengingat bahwa Anda dijadwalkan mengikuti *${agendaTitle}* pada:
+Ini adalah pengingat bahwa Ananda *${nama}* dijadwalkan mengikuti *${agendaTitle}* pada:
 
 📅 *Hari/Tanggal:* ${finalHariTanggal}
 ⏰ *Waktu:* ${finalJam}
-📍 *Lokasi/Link:* ${lokasi}
+📍 *Link Meet:* ${lokasi}
 
-Mohon persiapkan diri dengan baik dan pastikan koneksi internet stabil. Sampai jumpa! Jazakumullahu khairan.
+Mohon persiapkan diri dengan baik dan pastikan koneksi internet stabil. Sampai jumpa!
+
+Jazakumullahu khairan
+
 ---
-*Panitia PPDB ${BRANDING.schoolName.replace("Al Andalus", "Al Andalus")}*`;
+*Panitia PPDB ${BRANDING.schoolName}*`;
 }
 
 /**
- * Template: Pengingat H-1 untuk Orang Tua (Orang Tua)
+ * Template: Pengingat 4 Jam Sebelum Ujian untuk Calon Orang Tua/Wali
  */
 export function buildMessageReminderH1OrangTua(
     namaSantri: string,
@@ -993,30 +1069,31 @@ export function buildMessageReminderH1OrangTua(
     let cleanJam = (jam || "").replace(/\s*WIB\s*/gi, " ").trim();
     cleanJam = cleanJam.replace(/\s+/g, " ");
     const finalJam = `${cleanJam} WIB`;
-    
+
     let cleanHari = (hari || "").replace(/Minggu/gi, "Ahad").split(",")[0].trim();
     let cleanTanggal = (tanggal || "").replace(new RegExp(`^${cleanHari},\\s*`, "i"), "");
     const finalHariTanggal = `${cleanHari}, ${cleanTanggal}`;
 
-    return `*PENGINGAT Seleksi*
+    return `*PENGINGAT TES SELEKSI*
 
-Assalamu'alaikum Abi/Ummi dari Ananda *${namaSantri}*,
+Assalamu'alaikum Abu/Ummu dari Ananda *${namaSantri}*,
 
-Ini adalah pengingat bahwa Anda dijadwalkan mengikuti *Seleksi Wawancara Orang Tua/Wali* pada:
+Ini adalah pengingat bahwa Abu/Ummu dijadwalkan mengikuti *Wawancara Calon Orangtua/Wali Santri* pada:
 
 📅 *Hari/Tanggal:* ${finalHariTanggal}
 ⏰ *Waktu:* ${finalJam}
-📍 *Lokasi/Link:* ${lokasi}
+📍 *Link Meet:* ${lokasi}
 
 Mohon persiapkan diri dengan baik dan pastikan koneksi internet stabil. Sampai jumpa!
 
-Jazakumullahu khairan.
+Jazakumullahu khairan
+
 ---
 *Panitia PPDB ${BRANDING.schoolName}*`;
 }
 
 /**
- * Template: Pengingat H-1 untuk Penguji
+ * Template: Pengingat 4 Jam Sebelum Ujian untuk Penguji/Pewawancara
  */
 export function buildMessageReminderH1Penguji(
     namaPenguji: string,
@@ -1030,7 +1107,7 @@ export function buildMessageReminderH1Penguji(
     inputNilaiLink?: string
 ): string {
     const title = gender === "P" ? "Ustadzah" : "Ustadz";
-    
+
     let cleanJam = (jam || "").replace(/\s*WIB\s*/gi, " ").trim();
     cleanJam = cleanJam.replace(/\s+/g, " ");
     const finalJam = `${cleanJam} WIB`;
@@ -1039,26 +1116,26 @@ export function buildMessageReminderH1Penguji(
     let cleanTanggal = (tanggal || "").replace(new RegExp(`^${cleanHari},\\s*`, "i"), "");
     const finalHariTanggal = `${cleanHari}, ${cleanTanggal}`;
 
-    let agendaText = "";
+    const jenisLower = jenisUjian.toLowerCase();
+    let agendaText = jenisUjian;
     let agendaTitle = "*PENGINGAT JADWAL MENGUJI*";
-    
-    if (jenisUjian.toLowerCase().includes("quran")) {
-        agendaText = "Seleksi Al Qur'an";
-    } else if (jenisUjian.toLowerCase().includes("calsan")) {
-        agendaText = "Seleksi Wawancara Calon Santri";
+
+    if (jenisLower.includes("quran")) {
+        agendaText = "Tes Al-Qur'an";
+        agendaTitle = "*PENGINGAT JADWAL MENGUJI*";
+    } else if (jenisLower.includes("calsan") || jenisLower.includes("santri")) {
+        agendaText = "Wawancara Calon Santri";
         agendaTitle = "*PENGINGAT JADWAL WAWANCARA*";
-    } else if (jenisUjian.toLowerCase().includes("cawalsan")) {
-        agendaText = "Seleksi Wawancara Orang Tua/Wali";
+    } else if (jenisLower.includes("cawalsan") || jenisLower.includes("ortu") || jenisLower.includes("orang tua")) {
+        agendaText = "Wawancara Calon Orangtua/Wali Santri";
         agendaTitle = "*PENGINGAT JADWAL WAWANCARA*";
-    } else {
-        agendaText = jenisUjian;
     }
 
     return `${agendaTitle}
 
 Assalamu'alaikum ${title} *${namaPenguji}*,
 
-Mengingatkan jadwal ${agendaText.includes("Wawancara") ? "wawancara" : "menguji"} Anda:
+Mengingatkan jadwal ${agendaText.includes("Wawancara") ? "wawancara" : "menguji"} Ustadz/Ustadzah:
 
 📝 *Agenda:* ${agendaText}
 👤 *Nama Santri:* *${namaSantri}*
@@ -1068,66 +1145,65 @@ Mengingatkan jadwal ${agendaText.includes("Wawancara") ? "wawancara" : "menguji"
 🔗 *Input Hasil:* ${inputNilaiLink || "-"}
 
 Mohon kehadirannya tepat waktu. Jazakumullahu khairan.
- 
+
 ---
-*Sistem PPDB ${BRANDING.schoolName.replace("Al Andalus", "Al Andalus")}*`;
+*Sistem PPDB ${BRANDING.schoolName}*`;
 }
- 
+
 export function buildMessageCombinedFinal(
     nama: string,
     status: 'DITERIMA' | 'CADANGAN' | 'DITOLAK',
     jenjang: string
 ): string {
     let msg = `✅ *Hasil Seleksi PPDB ${BRANDING.schoolName}*
- 
- Assalamu'alaikum *${nama}*,
- 
- Alhamdulillah, rangkaian Seleksi Anda telah selesai dan hasil evaluasi telah diputuskan.
- 
- 📢 *HASIL SELEKSI:*
- Status: *${status}*
- Jenjang: ${jenjang}
- 
- `;
- 
+
+Assalamu'alaikum Abu/Ummu,
+
+Alhamdulillah, rangkaian Seleksi Ananda *${nama}* telah selesai dan hasil evaluasi telah diputuskan.
+
+📢 *HASIL SELEKSI:*
+Status: *${status}*
+Jenjang: ${jenjang}
+
+`;
+
     if (status === 'DITERIMA') {
         msg += `📝 *Langkah Selanjutnya:*
- Silakan login ke dashboard untuk melakukan *Daftar Ulang* dan melengkapi administrasi.
- Batas waktu daftar ulang adalah 7 hari setelah pengumuman ini.
- 
- Dashboard: ${BRANDING.websiteUrl}/dashboard/pendaftar/daftar-ulang`;
+Silakan login ke dashboard untuk melakukan *Daftar Ulang* dan melengkapi administrasi.
+Batas waktu daftar ulang adalah 7 hari setelah pengumuman ini.
+
+Dashboard: ${BRANDING.websiteUrl}/dashboard/pendaftar/daftar-ulang`;
     } else if (status === 'CADANGAN') {
         msg += `📝 *Informasi:*
- Anda berada dalam daftar cadangan. Kami akan menghubungi Anda jika ada kuota yang tersedia di kemudian hari. Terus pantau dashboard Anda.
- 
- Dashboard: ${BRANDING.websiteUrl}/dashboard/pendaftar/pengumuman`;
+Ananda berada dalam daftar cadangan. Kami akan menghubungi Abu/Ummu jika ada kuota yang tersedia di kemudian hari. Terus pantau dashboard.
+
+Dashboard: ${BRANDING.websiteUrl}/dashboard/pendaftar/pengumuman`;
     } else {
-        msg += `Kami mengapresiasi semangat dan usaha Anda. Semoga dimudahkan jalannya untuk menuntut ilmu di manapun berada.
- 
- Jazakumullahu khairan.`;
+        msg += `Kami mengapresiasi semangat dan usaha Ananda. Semoga dimudahkan jalannya untuk menuntut ilmu di manapun berada.`;
     }
- 
+
     msg += `
- 
- Jazakumullahu khairan
- ---
- *Panitia PPDB ${BRANDING.schoolName}*`;
- 
+
+Jazakumullahu khairan
+
+---
+*Panitia PPDB ${BRANDING.schoolName}*`;
+
     return msg;
 }
- 
+
 export function buildMessagePembatalanJadwal(
     namaSantri: string,
     jenisUjian: string,
     tanggal: string,
     jam: string,
-    alasan: string = "Ustadz Berhalangan Hadir"
+    alasan: string = "Ustadz/Ustadzah Berhalangan Hadir"
 ): string {
-    return `*PEMBATALAN JADWAL UJIAN*
+    return `*PEMBATALAN JADWAL SELEKSI*
 
-Assalamu'alaikum *${namaSantri}*,
+Assalamu'alaikum Abu/Ummu dari Ananda *${namaSantri}*,
 
-Kami menginformasikan bahwa jadwal *${jenisUjian}* Anda pada:
+Kami menginformasikan bahwa jadwal *${jenisUjian}* pada:
 
 📅 *Tanggal:* ${tanggal}
 ⏰ *Waktu:* ${jam} WIB
@@ -1136,8 +1212,9 @@ Telah *DIBATALKAN* oleh Penguji karena alasan: *${alasan}*.
 
 Mohon segera login ke Dashboard PPDB untuk memilih kembali jadwal pengganti yang tersedia di menu Jadwal Seleksi.
 
-Dashboard: ${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/undangan-seleksi
+Dashboard: ${BRANDING.websiteUrl}/dashboard/pendaftar/undangan-seleksi
 
 ---
 *Panitia PPDB ${BRANDING.schoolName}*`;
 }
+

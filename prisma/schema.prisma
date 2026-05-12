@@ -630,6 +630,7 @@ enum TipeCicilan {
   LUNAS
   CICIL_50_LEBIH
   CICIL_DIBAWAH_50
+  CICILAN
 }
 
 enum TipeSPP {

@@ -21,7 +21,6 @@ export type StatusProses =
   | "docs_uploaded"
   | "docs_verified"
   | "selection"
-  | "scheduled"
   | "tested"
   | "announced"
   | "enrolled";
