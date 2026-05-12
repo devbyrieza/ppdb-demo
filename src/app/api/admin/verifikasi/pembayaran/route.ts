@@ -198,7 +198,23 @@ export async function PATCH(request: NextRequest) {
     if (status_pembayaran === "verified") {
       // Automatically promote to enrolled if they verified their Re-Registration
       if (pembayaran.jenis_pembayaran === "DAFTAR_ULANG") {
-        newPendaftarStatus = "enrolled";
+        const allVerified = await prisma.pembayaran.findMany({
+          where: {
+            pendaftar_id: pembayaran.pendaftar_id,
+            jenis_pembayaran: "DAFTAR_ULANG",
+            status_pembayaran: "verified",
+          },
+        });
+        const totalPaid = allVerified.reduce(
+          (acc, p) => acc + Number(p.jumlah),
+          0,
+        );
+        const threshold = 9800000;
+        if (totalPaid >= threshold) {
+          newPendaftarStatus = "enrolled_full";
+        } else {
+          newPendaftarStatus = "enrolled";
+        }
       } else if (
         getStatusIndex(newPendaftarStatus as any) <
         getStatusIndex("verified" as any)

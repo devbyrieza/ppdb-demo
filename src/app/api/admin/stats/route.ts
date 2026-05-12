@@ -126,6 +126,12 @@ export async function GET(request: Request) {
           ulang_total: 0,
           ulang_putra: 0,
           ulang_putri: 0,
+          ulang_sedang_total: 0,
+          ulang_sedang_putra: 0,
+          ulang_sedang_putri: 0,
+          ulang_selesai_total: 0,
+          ulang_selesai_putra: 0,
+          ulang_selesai_putri: 0,
           seleksi_total: 0,
           seleksi_putra: 0,
           seleksi_putri: 0,
@@ -166,6 +172,7 @@ export async function GET(request: Request) {
         "announced",
         "accepted",
         "enrolled",
+        "enrolled_full",
       ];
       const currentIndex = statusList.indexOf(status);
 
@@ -175,8 +182,8 @@ export async function GET(request: Request) {
         if (isP) j.bayar_putri++;
       }
 
-      // Diterima Logic: accepted or enrolled only (announced is for Cadangan)
-      if (status === "accepted" || status === "enrolled") {
+      // Diterima Logic: accepted, enrolled, or enrolled_full
+      if (status === "accepted" || status === "enrolled" || status === "enrolled_full") {
         j.accepted++;
         if (isL) j.accepted_putra++;
         if (isP) j.accepted_putri++;
@@ -212,11 +219,21 @@ export async function GET(request: Request) {
         if (isP) j.berkas_putri++;
       }
 
-      // Daftar Ulang Logic: enrolled only
-      if (status === "enrolled") {
+      // Daftar Ulang Logic: enrolled or enrolled_full
+      if (status === "enrolled" || status === "enrolled_full") {
         j.ulang_total++;
         if (isL) j.ulang_putra++;
         if (isP) j.ulang_putri++;
+
+        if (status === "enrolled") {
+          j.ulang_sedang_total++;
+          if (isL) j.ulang_sedang_putra++;
+          if (isP) j.ulang_sedang_putri++;
+        } else {
+          j.ulang_selesai_total++;
+          if (isL) j.ulang_selesai_putra++;
+          if (isP) j.ulang_selesai_putri++;
+        }
       }
 
       // Sedang Seleksi Logic
@@ -277,16 +294,18 @@ export async function GET(request: Request) {
     const stats = {
       total_pendaftar,
       growth_text: growthText,
-      diterima: (statusCounts.accepted || 0) + (statusCounts.enrolled || 0),
+      diterima: (statusCounts.accepted || 0) + (statusCounts.enrolled || 0) + (statusCounts.enrolled_full || 0),
       cadangan: statusCounts.announced || 0,
       ditolak: statusCounts.rejected || 0,
-      berkas_lengkap: ["docs_verified", "selection", "scheduled", "testing", "tested", "announced", "accepted", "enrolled"].reduce((acc, s) => acc + (statusCounts[s] || 0), 0),
+      berkas_lengkap: ["docs_verified", "selection", "scheduled", "testing", "tested", "announced", "accepted", "enrolled", "enrolled_full"].reduce((acc, s) => acc + (statusCounts[s] || 0), 0),
       sedang_seleksi: ["selection", "scheduled", "testing", "tested"].reduce((acc, s) => acc + (statusCounts[s] || 0), 0),
-      daftar_ulang: statusCounts.enrolled || 0,
+      daftar_ulang: (statusCounts.enrolled || 0) + (statusCounts.enrolled_full || 0),
+      daftar_ulang_sedang: statusCounts.enrolled || 0,
+      daftar_ulang_selesai: statusCounts.enrolled_full || 0,
 
       // Secondary metrics
-      sudah_bayar: ["paid", "verified", "data_completed", "docs_uploaded", "docs_verified", "selection", "scheduled", "testing", "tested", "announced", "accepted", "enrolled"].reduce((acc, s) => acc + (statusCounts[s] || 0), 0),
-      sudah_isi_data: ["data_completed", "docs_uploaded", "docs_verified", "selection", "scheduled", "testing", "tested", "announced", "accepted", "enrolled"].reduce((acc, s) => acc + (statusCounts[s] || 0), 0),
+      sudah_bayar: ["paid", "verified", "data_completed", "docs_uploaded", "docs_verified", "selection", "scheduled", "testing", "tested", "announced", "accepted", "enrolled", "enrolled_full"].reduce((acc, s) => acc + (statusCounts[s] || 0), 0),
+      sudah_isi_data: ["data_completed", "docs_uploaded", "docs_verified", "selection", "scheduled", "testing", "tested", "announced", "accepted", "enrolled", "enrolled_full"].reduce((acc, s) => acc + (statusCounts[s] || 0), 0),
       waiting_payment: statusCounts.waiting_payment || 0,
       waiting_docs: statusCounts.data_completed || 0,
 
@@ -347,6 +366,10 @@ export async function GET(request: Request) {
           daftar_ulang: data.ulang_total,
           ulang_putra: data.ulang_putra,
           ulang_putri: data.ulang_putri,
+          ulang_sedang_putra: data.ulang_sedang_putra,
+          ulang_sedang_putri: data.ulang_sedang_putri,
+          ulang_selesai_putra: data.ulang_selesai_putra,
+          ulang_selesai_putri: data.ulang_selesai_putri,
         };
       }),
 
@@ -355,7 +378,7 @@ export async function GET(request: Request) {
         .map(([provinsi, jumlah]) => ({ provinsi, jumlah })),
       stats_gender: genderCounts,
       pie_chart_status: {
-        diterima: (statusCounts.accepted || 0) + (statusCounts.enrolled || 0),
+        diterima: (statusCounts.accepted || 0) + (statusCounts.enrolled || 0) + (statusCounts.enrolled_full || 0),
         cadangan: statusCounts.announced || 0,
         menunggu:
           (statusCounts.tested || 0) +

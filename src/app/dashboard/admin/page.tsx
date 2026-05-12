@@ -200,7 +200,8 @@ export default function AdminDashboardPage() {
           accepted: "Diterima",
           announced: "Cadangan",
           rejected: "Ditolak",
-          enrolled: "Daftar Ulang",
+          enrolled: "Sedang Daftar Ulang",
+          enrolled_full: "Selesai",
           sudah_daftar_ulang: "Daftar Ulang"
         };
         return map[st] || st;
@@ -318,6 +319,8 @@ export default function AdminDashboardPage() {
     if (type === "total") return { mts_l: mts.pendaftar_putra || 0, mts_p: mts.pendaftar_putri || 0, il_l: il.pendaftar_putra || 0, il_p: il.pendaftar_putri || 0 };
     if (type === "lulus") return { mts_l: mts.diterima_putra || 0, mts_p: mts.diterima_putri || 0, il_l: il.diterima_putra || 0, il_p: il.diterima_putri || 0 };
     if (type === "ulang") return { mts_l: mts.ulang_putra || 0, mts_p: mts.ulang_putri || 0, il_l: il.ulang_putra || 0, il_p: il.ulang_putri || 0 };
+    if (type === "ulang_sedang") return { mts_l: mts.ulang_sedang_putra || 0, mts_p: mts.ulang_sedang_putri || 0, il_l: il.ulang_sedang_putra || 0, il_p: il.ulang_sedang_putri || 0 };
+    if (type === "ulang_selesai") return { mts_l: mts.ulang_selesai_putra || 0, mts_p: mts.ulang_selesai_putri || 0, il_l: il.ulang_selesai_putra || 0, il_p: il.ulang_selesai_putri || 0 };
     if (type === "cadangan") return { mts_l: mts.cadangan_putra || 0, mts_p: mts.cadangan_putri || 0, il_l: il.cadangan_putra || 0, il_p: il.cadangan_putri || 0 };
     if (type === "ditolak") return { mts_l: mts.ditolak_putra || 0, mts_p: mts.ditolak_putri || 0, il_l: il.ditolak_putra || 0, il_p: il.ditolak_putri || 0 };
     if (type === "berkas") return { mts_l: mts.berkas_putra || 0, mts_p: mts.berkas_putri || 0, il_l: il.berkas_putra || 0, il_p: il.berkas_putri || 0 };
@@ -377,8 +380,12 @@ export default function AdminDashboardPage() {
                 <p className="text-2xl sm:text-4xl font-black text-emerald-400 italic">{stats.diterima}</p>
              </div>
              <div className="bg-white/5 backdrop-blur-md p-4 sm:p-6 lg:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-white/10 flex flex-col items-center">
-                <p className="text-[9px] sm:text-[10px] font-black text-teal-200 uppercase tracking-widest mb-2 sm:mb-4 text-center">Daftar Ulang</p>
-                <p className="text-2xl sm:text-4xl font-black text-sand-300 italic">{stats.daftar_ulang}</p>
+                <p className="text-[9px] sm:text-[10px] font-black text-teal-200 uppercase tracking-widest mb-2 sm:mb-4 text-center">Sedang Daftar Ulang</p>
+                <p className="text-2xl sm:text-4xl font-black text-sand-300 italic">{stats.daftar_ulang_sedang}</p>
+             </div>
+             <div className="bg-white/5 backdrop-blur-md p-4 sm:p-6 lg:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-white/10 flex flex-col items-center">
+                <p className="text-[9px] sm:text-[10px] font-black text-teal-200 uppercase tracking-widest mb-2 sm:mb-4 text-center">Selesai</p>
+                <p className="text-2xl sm:text-4xl font-black text-emerald-400 italic">{stats.daftar_ulang_selesai}</p>
              </div>
           </div>
         </div>
@@ -395,7 +402,8 @@ export default function AdminDashboardPage() {
           <StatWidget label="Diterima" value={stats.diterima} icon={CheckCircle2} color="emerald" breakdown={getBreakdown("lulus")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("diterima", "Diterima", type)} isDownloading={downloadingKey?.startsWith("diterima_") ? downloadingKey.split("_")[1] : null} />
           <StatWidget label="Cadangan" value={stats.cadangan} icon={Clock} color="slate" breakdown={getBreakdown("cadangan")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("announced", "Cadangan", type)} isDownloading={downloadingKey?.startsWith("announced_") ? downloadingKey.split("_")[1] : null} />
           <StatWidget label="Ditolak" value={stats.ditolak} icon={Activity} color="rose" breakdown={getBreakdown("ditolak")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("pembayaran_ditolak", "Ditolak", type)} isDownloading={downloadingKey?.startsWith("pembayaran_ditolak_") ? downloadingKey.split("_")[2] : null} />
-          <StatWidget label="Daftar Ulang" value={stats.daftar_ulang} icon={Wallet} color="amber" breakdown={getBreakdown("ulang")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("sudah_daftar_ulang", "Daftar Ulang", type)} isDownloading={downloadingKey?.startsWith("sudah_daftar_ulang_") ? downloadingKey.split("_")[3] : null} />
+          <StatWidget label="Sedang Daftar Ulang" value={stats.daftar_ulang_sedang} icon={Wallet} color="amber" breakdown={getBreakdown("ulang_sedang")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("enrolled", "Sedang Daftar Ulang", type)} isDownloading={downloadingKey?.startsWith("enrolled_") ? downloadingKey.split("_")[1] : null} />
+          <StatWidget label="Selesai" value={stats.daftar_ulang_selesai} icon={CheckCircle2} color="emerald" breakdown={getBreakdown("ulang_selesai")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("enrolled_full", "Selesai Daftar Ulang", type)} isDownloading={downloadingKey?.startsWith("enrolled_full_") ? downloadingKey.split("_")[1] : null} />
         </>)}
 
         {isAdminBerkas && (

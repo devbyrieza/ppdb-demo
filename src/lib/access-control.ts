@@ -23,7 +23,8 @@ export type StatusProses =
   | "selection"
   | "tested"
   | "announced"
-  | "enrolled";
+  | "enrolled"
+  | "enrolled_full";
 
 export const STATUS_ORDER: StatusProses[] = [
   "draft",
@@ -41,6 +42,7 @@ export const STATUS_ORDER: StatusProses[] = [
   "announced",
   "accepted",
   "enrolled",
+  "enrolled_full",
 ];
 
 export function getStatusIndex(status: StatusProses | string): number {
@@ -129,7 +131,8 @@ export function formatStatusDisplay(status: StatusProses) {
     tested: { label: "Seleksi Selesai", color: "bg-violet-100 text-violet-700" },
     announced: { label: "Hasil Pengumuman", color: "bg-cyan-100 text-cyan-700" },
     accepted: { label: "Diterima", color: "bg-green-100 text-green-700" },
-    enrolled: { label: "Daftar Ulang", color: "bg-emerald-100 text-emerald-700" },
+    enrolled: { label: "Sedang Daftar Ulang", color: "bg-emerald-100 text-emerald-700" },
+    enrolled_full: { label: "Selesai", color: "bg-teal-100 text-teal-700" },
   };
   return statusMap[status] || { label: status, color: "bg-stone-100 text-stone-700" };
 }
