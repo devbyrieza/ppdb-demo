@@ -198,17 +198,17 @@ export function getMenuItemsForRole(role: UserRole) {
       { name: "Rekap Keuangan", href: "/dashboard/admin/keuangan", icon: "BarChart" },
     ],
     penguji: [
-      { name: "Dasbor", href: "/dashboard/penguji", icon: "LayoutDashboard" },
+      { name: "Dashboard", href: "/dashboard/penguji", icon: "LayoutDashboard" },
       { name: "Jadwal Seleksi", href: "/dashboard/penguji/jadwal", icon: "Calendar" },
       { name: "Input Nilai", href: "/dashboard/penguji/input-nilai", icon: "ClipboardEdit" },
     ],
     pewawancara_calsan: [
-      { name: "Dasbor", href: "/dashboard/penguji", icon: "LayoutDashboard" },
+      { name: "Dashboard", href: "/dashboard/penguji", icon: "LayoutDashboard" },
       { name: "Jadwal Seleksi", href: "/dashboard/penguji/jadwal", icon: "Calendar" },
       { name: "Input Nilai", href: "/dashboard/penguji/input-nilai", icon: "ClipboardEdit" },
     ],
     pewawancara_cawalsan: [
-      { name: "Dasbor", href: "/dashboard/penguji", icon: "LayoutDashboard" },
+      { name: "Dashboard", href: "/dashboard/penguji", icon: "LayoutDashboard" },
       { name: "Jadwal Seleksi", href: "/dashboard/penguji/jadwal", icon: "Calendar" },
       { name: "Input Nilai", href: "/dashboard/penguji/input-nilai", icon: "ClipboardEdit" },
     ],

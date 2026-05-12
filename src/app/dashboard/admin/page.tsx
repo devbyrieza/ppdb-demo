@@ -342,7 +342,7 @@ export default function AdminDashboardPage() {
       {/* HEADER */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-teal-950 tracking-tight italic">Dasbor Admin Al Fath</h1>
+          <h1 className="text-2xl sm:text-3xl font-black text-teal-950 tracking-tight italic">Dashboard Admin Al Fath</h1>
           <p className="text-xs sm:text-sm text-teal-600 font-medium mt-1">Pantau perkembangan pendaftaran santri secara langsung.</p>
         </div>
         <button onClick={fetchStats} className="p-3 bg-white border border-teal-100 rounded-2xl text-teal-600 hover:text-teal-600 transition-all shadow-premium-sm self-start sm:self-auto">
