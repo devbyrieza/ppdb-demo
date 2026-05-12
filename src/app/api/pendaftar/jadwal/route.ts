@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import {
   enqueueWhatsapp,
-  buildMessageKonfirmasiJadwal,
+  buildMessageKonfirmasiJadwalPendaftar,
   buildMessageKonfirmasiJadwalInterviewer,
   buildMessageReminderH1Santri,
   buildMessageReminderH1Penguji,
@@ -270,25 +270,22 @@ export async function POST(request: Request) {
         examSession.title || "Seleksi Santri Baru",
       );
 
-      /* 
-            const message = buildMessageKonfirmasiJadwal(
-                pendaftarInfo.nama_lengkap,
-                dateStr,
-                timeStr,
-                lokasi,
-                jenisUjian
-            );
+      // 1. Notify Pendaftar — SEGERA setelah booking jadwal
+      const konfirmasiMsg = buildMessageKonfirmasiJadwalPendaftar(
+        pendaftarInfo.nama_lengkap,
+        jenisUjian,
+        dateStr,
+        timeStr,
+        examSession.location || lokasi,
+      );
+      enqueueWhatsapp({
+        pendaftarId: session.id,
+        phone: pendaftarInfo.no_hp,
+        jenisNotif: "konfirmasi_jadwal_pendaftar",
+        messageContent: konfirmasiMsg,
+      }).catch((err: any) => console.error("Failed to enqueue jadwal confirmation to pendaftar:", err));
 
-            // Enqueue via WhatsApp queue (all 6 layers applied)
-            enqueueWhatsapp({
-                pendaftarId: session.id,
-                phone: pendaftarInfo.no_hp,
-                jenisNotif: "konfirmasi_jadwal",
-                messageContent: message,
-            }).catch((err: any) => console.error("Failed to enqueue jadwal confirmation:", err));
-            */
-
-      // 2. Notify Interviewer (Layer 2.1: Delayed notification for staff)
+      // 2. Notify Interviewer — SEGERA setelah booking (delay 1 menit Anti-BAN)
       const finalId =
         pengujiFields.penguji_quran_id ||
         pengujiFields.penguji_santri_id ||
@@ -301,40 +298,40 @@ export async function POST(request: Request) {
         });
 
         if (interviewer && interviewer.phone) {
-          // Generate Magic Link for this interviewer
-          const redirectPathPath = `/dashboard/penguji/input-nilai?search=${encodeURIComponent(pendaftarInfo.nama_lengkap)}`; // Fallback search by name if nomor_pendaftaran is not easily accessible here
+          const redirectPathPath = `/dashboard/penguji/input-nilai?search=${encodeURIComponent(pendaftarInfo.nama_lengkap)}`;
           const token = generateMagicToken(
             finalId,
             "penguji",
             interviewer.full_name,
-            72, // 3 days expiry for confirmation
+            72,
             redirectPathPath,
           );
-          const magicLink = `${process.env.NEXT_PUBLIC_APP_URL || "https://demo-ppdb.vercel.app"}/api/auth/magic?token=${token}`;
+          const magicLink = `${process.env.NEXT_PUBLIC_APP_URL || "https://ppdb-demo.vercel.app"}/api/auth/magic?token=${token}`;
 
-          /* 
-                    const intMessage = buildMessageKonfirmasiJadwalInterviewer(
-                        interviewer.full_name,
-                        pendaftarInfo.nama_lengkap,
-                        dateStr,
-                        timeStr,
-                        interviewer.google_meet_link || lokasi,
-                        jenisUjian,
-                        magicLink
-                    );
+          const { getManualTinyUrl, generateTinyUrl } = await import("@/lib/utils/magic-link");
+          const manualTinyUrl = getManualTinyUrl(interviewer.full_name);
+          const shortUrlKonfirmasi = manualTinyUrl || (await generateTinyUrl(magicLink));
 
-                    // Stall interviewer notification by 1 minute to avoid consecutive message bursts (Anti-BAN)
-                    const scheduledAt = new Date();
-                    scheduledAt.setMinutes(scheduledAt.getMinutes() + 1);
+          const intMessage = buildMessageKonfirmasiJadwalInterviewer(
+            interviewer.full_name,
+            pendaftarInfo.nama_lengkap,
+            dateStr,
+            timeStr,
+            interviewer.google_meet_link || lokasi,
+            jenisUjian,
+            shortUrlKonfirmasi,
+          );
 
-                    enqueueWhatsapp({
-                        pendaftarId: session.id,
-                        phone: interviewer.phone,
-                        jenisNotif: "konfirmasi_jadwal_interviewer",
-                        messageContent: intMessage,
-                        scheduledAt: scheduledAt,
-                    }).catch((err: any) => console.error("Failed to enqueue interviewer notification:", err));
-                    */
+          const scheduledAtInt = new Date();
+          scheduledAtInt.setMinutes(scheduledAtInt.getMinutes() + 1);
+
+          enqueueWhatsapp({
+            pendaftarId: session.id,
+            phone: interviewer.phone,
+            jenisNotif: "konfirmasi_jadwal_interviewer",
+            messageContent: intMessage,
+            scheduledAt: scheduledAtInt,
+          }).catch((err: any) => console.error("Failed to enqueue interviewer notification:", err));
         }
       }
 
