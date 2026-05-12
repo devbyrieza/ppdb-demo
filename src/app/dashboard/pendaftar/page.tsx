@@ -111,11 +111,11 @@ function HeroBanner({ nama, nomorPendaftaran, lastUpdate }: any) {
         <div className="flex-1 space-y-4 sm:space-y-6">
           <div className="flex flex-wrap items-center gap-3">
             <span className="px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-[9px] sm:text-[10px] tracking-[0.2em] font-black uppercase border border-white/20 text-sand-200">
-              ACADEMIC EXCELLENCE
+              PENDIDIKAN INTERNASIONAL
             </span>
             <span className="flex items-center gap-2 text-xs font-bold text-teal-100/70">
               <Clock className="w-4 h-4" />
-              Update:{" "}
+              Pembaruan:{" "}
               {new Date(lastUpdate).toLocaleDateString("id-ID", {
                 day: "numeric",
                 month: "long",
@@ -124,19 +124,18 @@ function HeroBanner({ nama, nomorPendaftaran, lastUpdate }: any) {
             </span>
           </div>
           <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-[1.1] font-display tracking-tight text-white italic">
-            Welcome, <br />
+            Selamat Datang, <br />
             <span className="text-sand-400 not-italic uppercase drop-shadow-lg">
               {nama}!
             </span>
           </h1>
           <p className="text-teal-100 text-base md:text-xl font-medium max-w-xl opacity-80 leading-relaxed italic border-l-4 border-sand-500/50 pl-4 sm:pl-6">
-            "Providing a world-class educational foundation for your child's
-            future."
+            "Memberdayakan generasi pemimpin Islam global berikutnya."
           </p>
         </div>
         <div className="flex-1 lg:flex-none w-full sm:w-auto bg-black/20 backdrop-blur-xl px-6 sm:px-8 py-5 sm:py-6 rounded-[1.5rem] sm:rounded-[2rem] border border-white/10 text-center">
           <p className="text-[10px] font-black uppercase text-sand-200/60 mb-1 tracking-[0.2em]">
-            REGISTRATION ID
+            ID PENDAFTARAN
           </p>
           <p className="font-mono text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tighter">
             {nomorPendaftaran}
@@ -156,17 +155,17 @@ function GuidedActionCard({ nextStep }: any) {
             <Target className="w-6 h-6 sm:w-8 sm:h-8" />
           </div>
           <p className="text-[10px] font-black uppercase tracking-widest opacity-70">
-            Step
+            Langkah
           </p>
-          <p className="text-2xl sm:text-3xl font-black">NEXT</p>
+          <p className="text-2xl sm:text-3xl font-black">BERIKUTNYA</p>
         </div>
         <div className="flex-1 p-6 sm:p-8 md:p-12 space-y-4 sm:space-y-6">
           <div>
             <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-teal-950 mb-2">
-              What should I do?
+              Apa yang harus saya lakukan sekarang?
             </h2>
             <p className="text-base sm:text-lg text-ink-600 font-medium italic">
-              "Please click the button to{" "}
+              "Silakan klik tombol untuk{" "}
               <span className="text-teal-700 font-black not-italic">
                 {nextStep.action.toLowerCase()}
               </span>
@@ -178,7 +177,7 @@ function GuidedActionCard({ nextStep }: any) {
               href={nextStep.href}
               className="px-6 sm:px-10 py-4 sm:py-5 bg-teal-700 hover:bg-teal-800 text-white rounded-2xl font-black uppercase text-xs sm:text-sm shadow-2xl shadow-teal/20 transition-all hover:scale-105 active:scale-95 flex items-center gap-3 group/btn w-full sm:w-auto justify-center"
             >
-              Get Started Now{" "}
+              Mulai Sekarang{" "}
               <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover/btn:translate-x-2 transition-transform" />
             </Link>
           </div>
@@ -191,27 +190,27 @@ function GuidedActionCard({ nextStep }: any) {
 function StatusGrid({ status, statusLabel, pengumuman }: any) {
   const items = [
     {
-      label: "Status",
+      label: "Status Saat Ini",
       val: statusLabel,
-      desc: "Your current phase",
+      desc: "Tahap pendaftaran Anda saat ini",
       icon: ShieldCheck,
       color: "text-teal-600",
       bg: "bg-teal-50",
     },
     {
-      label: "Selection",
+      label: "Ujian Seleksi",
       val: ["tested", "announced", "accepted", "enrolled"].includes(status)
-        ? "Completed"
-        : "Waiting",
-      desc: "Test results",
+        ? "Selesai"
+        : "Menunggu",
+      desc: "Hasil seleksi pendaftaran",
       icon: Target,
       color: "text-purple-600",
       bg: "bg-purple-50",
     },
     {
-      label: "Result",
-      val: pengumuman ? pengumuman.status_kelulusan : "Pending",
-      desc: "Final admission result",
+      label: "Hasil Akhir",
+      val: pengumuman ? pengumuman.status_kelulusan : "Belum Rilis",
+      desc: "Hasil penerimaan santri",
       icon: CheckCircle,
       color: "text-emerald-600",
       bg: "bg-emerald-50",
@@ -254,16 +253,16 @@ function SupportCenter() {
           <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/10 rounded-full border border-white/10">
             <span className="w-2 h-2 rounded-full bg-sand-400 animate-pulse" />
             <span className="text-[10px] font-black uppercase tracking-widest">
-              PPDB SUPPORT CENTER
+              PUSAT BANTUAN PPDB
             </span>
           </div>
           <h3 className="font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display leading-tight">
-            Need Help? <br />
-            <span className="text-sand-400">Chat with Our Team!</span>
+            Butuh Bantuan? <br />
+            <span className="text-sand-400">Hubungi Tim Kami!</span>
           </h3>
           <p className="text-teal-200 text-base sm:text-lg md:text-xl font-medium opacity-80 max-w-2xl">
-            Don't hesitate to ask. Our team is ready to help you complete the
-            registration smoothly.
+            Jangan ragu untuk bertanya. Tim kami siap membantu Anda menyelesaikan
+            pendaftaran dengan lancar.
           </p>
         </div>
         <a
@@ -271,7 +270,7 @@ function SupportCenter() {
           target="_blank"
           className="px-8 sm:px-12 py-4 sm:py-5 bg-sand-400 text-teal-950 font-black text-xs sm:text-sm uppercase tracking-widest rounded-[1.25rem] sm:rounded-[1.5rem] hover:bg-sand-300 shadow-xl transition-all hover:scale-105 active:scale-95 text-center w-full sm:w-auto"
         >
-          Chat on WhatsApp
+          Chat di WhatsApp
         </a>
       </div>
     </div>

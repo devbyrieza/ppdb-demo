@@ -98,8 +98,8 @@ export default function AdminSidebar({
   const rawMenuItems = userRole ? getMenuItemsForRole(userRole) : [];
   const menuItems = rawMenuItems.map((item) => {
     let badgeCount = 0;
-    if (item.name.includes("Payment")) badgeCount = 2;
-    if (item.name.includes("Review")) badgeCount = 5;
+    if (item.name.includes("Pembayaran")) badgeCount = 2;
+    if (item.name.includes("Verifikasi")) badgeCount = 5;
 
     return {
       ...item,
@@ -111,14 +111,14 @@ export default function AdminSidebar({
 
   const handleLogout = async () => {
     const result = await Swal.fire({
-      title: "Sign Out?",
-      text: "You will be redirected to the login page.",
+      title: "Keluar Sekarang?",
+      text: "Anda akan dialihkan ke halaman login.",
       icon: "question",
       showCancelButton: true,
       confirmButtonColor: "#0d6e6e", // Blue 700
       cancelButtonColor: "#94a3b8", // Slate 400
-      confirmButtonText: "Yes, Sign Out",
-      cancelButtonText: "Stay Here",
+      confirmButtonText: "Ya, Keluar",
+      cancelButtonText: "Tetap di Sini",
       background: "#ffffff",
       customClass: {
         title: "font-black text-teal-950",
@@ -168,7 +168,7 @@ export default function AdminSidebar({
             {BRANDING.schoolShortName}
           </span>
           <span className="text-[10px] font-bold text-teal-600/50 uppercase tracking-[0.2em] -mt-1">
-            Control Panel
+            Panel Kontrol
           </span>
         </div>
         <div className="w-10 h-10 rounded-2xl bg-linear-to-br from-teal-700 to-teal-900 flex items-center justify-center text-white text-sm font-black shadow-lg shadow-teal-200">
@@ -204,7 +204,7 @@ export default function AdminSidebar({
                     />
                   </div>
                   <span className="font-black text-teal-950 uppercase text-sm tracking-widest italic">
-                    Navigation
+                    Navigasi
                   </span>
                 </div>
                 <button
@@ -245,7 +245,7 @@ export default function AdminSidebar({
                   onClick={handleLogout}
                   className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-red-50 text-red-600 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-red-100 transition-all active:scale-95"
                 >
-                  <LogOut className="w-4 h-4" /> Sign Out
+                  <LogOut className="w-4 h-4" /> Keluar
                 </button>
               </div>
             </motion.aside>
@@ -278,9 +278,9 @@ export default function AdminSidebar({
                 <span className="font-black text-teal-950 text-lg uppercase tracking-tighter italic">
                   {BRANDING.schoolShortName}
                 </span>
-                <span className="block text-[10px] text-teal-600/40 font-black uppercase tracking-[0.2em] -mt-1">
-                  ADMIN PORTAL
-                </span>
+              <span className="text-[10px] text-teal-600/40 font-black uppercase tracking-[0.2em] -mt-1">
+                PORTAL ADMIN
+              </span>
               </motion.div>
             )}
           </Link>
@@ -380,9 +380,9 @@ export default function AdminSidebar({
               className={`w-5 h-5 shrink-0 transition-transform duration-700 ${collapsed ? "rotate-180" : ""}`}
             />
             {!collapsed && (
-              <span className="text-xs font-black uppercase tracking-widest">
-                Collapse Menu
-              </span>
+                <span className="text-xs font-black uppercase tracking-widest">
+                  Kecilkan Menu
+                </span>
             )}
           </button>
           <div
