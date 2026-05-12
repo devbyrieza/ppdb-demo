@@ -45,6 +45,7 @@ interface Pembayaran {
   tipe_cicilan: string;
   jumlah_cicilan: number;
   cicilan_ke: number;
+  verified_count?: number;
 }
 
 function VerifikasiPembayaranContent() {
@@ -308,7 +309,19 @@ function VerifikasiPembayaranContent() {
     setCatatan(pay.catatan || "");
     setEditJumlah(pay.jumlah);
     setEditTipeCicilan(pay.tipe_cicilan || "LUNAS");
-    setEditCicilanKe(pay.cicilan_ke || 1);
+    
+    // Automatic installment suggest for Admin
+    if (activeTab === "DAFTAR_ULANG") {
+      if (pay.cicilan_ke) {
+        setEditCicilanKe(pay.cicilan_ke);
+      } else {
+        // If not set by pendaftar, suggest next sequence
+        setEditCicilanKe((pay.verified_count || 0) + 1);
+      }
+    } else {
+      setEditCicilanKe(pay.cicilan_ke || 1);
+    }
+    
     setShowModal(true);
   };
 
@@ -735,6 +748,9 @@ function VerifikasiPembayaranContent() {
                           className="w-full px-4 py-2 bg-white border border-violet-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 font-black text-violet-900"
                         />
                       </div>
+                      <p className="text-[9px] text-violet-500 mt-1 font-bold italic">
+                        * Disarankan: {(selectedPembayaran.verified_count || 0) + 1}
+                      </p>
                     </div>
                   )}
                 </div>

@@ -77,6 +77,13 @@ export async function GET(request: NextRequest) {
             nama_lengkap: true,
             jenjang: true,
             no_hp: true,
+            pembayaran: {
+              where: {
+                status_pembayaran: "verified",
+                jenis_pembayaran: "DAFTAR_ULANG",
+              },
+              select: { id: true },
+            },
           },
         },
       },
@@ -84,11 +91,9 @@ export async function GET(request: NextRequest) {
     });
 
     // Generate URLs (Mock for now as we removed Supabase Storage)
-    // TODO: Implement proper storage URL generation for local files or S3
     const dataWithUrls = data.map((pembayaran) => {
       let bukti_transfer_url: string | null = null;
       if (pembayaran.bukti_transfer_path) {
-        // Construct URL for the /api/files/[...path] route
         bukti_transfer_url = `/api/files/${pembayaran.bukti_transfer_path}`;
       }
 
@@ -103,10 +108,17 @@ export async function GET(request: NextRequest) {
         tanggal_pembayaran: pembayaran.created_at,
         created_at: pembayaran.created_at,
         updated_at: pembayaran.updated_at,
-        pendaftar: pembayaran.pendaftar,
+        pendaftar: {
+          id: pembayaran.pendaftar?.id,
+          nomor_pendaftaran: pembayaran.pendaftar?.nomor_pendaftaran,
+          nama_lengkap: pembayaran.pendaftar?.nama_lengkap,
+          jenjang: pembayaran.pendaftar?.jenjang,
+          no_hp: pembayaran.pendaftar?.no_hp,
+        },
         tipe_cicilan: pembayaran.tipe_cicilan,
         cicilan_ke: pembayaran.cicilan_ke,
         total_tagihan: pembayaran.total_tagihan,
+        verified_count: pembayaran.pendaftar?.pembayaran.length || 0,
       };
     });
 
