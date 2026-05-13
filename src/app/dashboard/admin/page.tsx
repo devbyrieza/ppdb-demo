@@ -6,17 +6,18 @@ import {
   RefreshCw, 
   Clock, FileCheck, CheckCircle2, ClipboardCheck, 
   TrendingUp, ChevronRight, Activity,
-  FileSpreadsheet, FileText
+  FileSpreadsheet, FileText, CheckSquare
 } from "lucide-react";
 import { UserRole } from "@/lib/access-control";
 import { motion } from "framer-motion";
 import { exportToExcelProfessional, exportToPDF } from "@/lib/utils/export";
+import Swal from "sweetalert2";
 
 /**
  * ─── ADMIN DASHBOARD PAGE (TEMPLATE DEMO) ───
  */
 
-const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown, highlighted, onDownload, isDownloading }: any) => {
+const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown, highlighted, onDownload, isDownloading, onPromote, isPromoting }: any) => {
   const colorMap: any = {
     blue:    "from-teal-600 to-teal-800 shadow-teal",
     emerald: "from-emerald-600 to-emerald-700",
@@ -112,6 +113,29 @@ const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown, highlig
           </div>
         </div>
 
+        {/* Tombol Promosikan Semua — hanya muncul jika ada onPromote & value > 0 */}
+        {onPromote && value > 0 && (
+          <div className="mb-4">
+            <button
+              onClick={(e) => { e.stopPropagation(); onPromote(); }}
+              disabled={isPromoting}
+              className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-black text-xs uppercase tracking-widest transition-all shadow-lg shadow-emerald-600/20 hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isPromoting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Memproses...
+                </>
+              ) : (
+                <>
+                  <CheckSquare className="w-4 h-4" />
+                  Promosikan Semua → Diterima
+                </>
+              )}
+            </button>
+          </div>
+        )}
+
         {breakdown && (
           <div className={`grid grid-cols-2 gap-4 pt-6 border-t ${
             highlighted ? "border-white/10" : "border-teal-100"
@@ -171,6 +195,7 @@ export default function AdminDashboardPage() {
     growth_text: "+0% pekan ini"
   });
   const [downloadingKey, setDownloadingKey] = useState<string | null>(null);
+  const [isPromotingCadangan, setIsPromotingCadangan] = useState(false);
 
   const handleSingleCardExport = async (statusKey: string, cardLabel: string, type: "excel" | "pdf") => {
     try {
@@ -312,6 +337,46 @@ export default function AdminDashboardPage() {
   const isAdminKeuangan = role === "admin_keuangan";
   const isAdminBerkas = role === "admin_berkas";
 
+  const handlePromoteAllCadangan = async () => {
+    const result = await Swal.fire({
+      title: "Promosikan Semua Cadangan",
+      html: `<p>Yakin ingin memindahkan <b>semua ${stats.cadangan} Pendaftar Cadangan</b> ke status <b>Diterima</b>?</p><p class="mt-3 text-sm text-stone-500">Tindakan ini akan mengubah status seluruh Pendaftar Cadangan sekaligus dan tidak dapat diurungkan secara massal.</p>`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#059669",
+      cancelButtonColor: "#94a3b8",
+      confirmButtonText: `Ya, Promosikan Semua ${stats.cadangan}!`,
+      cancelButtonText: "Batal",
+      reverseButtons: true,
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      setIsPromotingCadangan(true);
+      const response = await fetch("/api/admin/pendaftar/promote-cadangan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({}),
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Gagal");
+
+      Swal.fire({
+        title: "Berhasil!",
+        text: data.message || `${data.updated_count} Pendaftar berhasil dipindahkan ke Diterima.`,
+        icon: "success",
+        confirmButtonColor: "#059669",
+      });
+      fetchStats();
+    } catch (error: any) {
+      Swal.fire("Gagal!", error.message || "Terjadi kesalahan.", "error");
+    } finally {
+      setIsPromotingCadangan(false);
+    }
+  };
+
   const getBreakdown = (type: "total" | "lulus" | "ulang" | "ulang_sedang" | "ulang_selesai" | "cadangan" | "ditolak" | "berkas" | "bayar" | "data" | "seleksi") => {
     const mts = stats.stats_per_jenjang.find((j: any) => j.jenjang === "MTS") || {};
     const il = stats.stats_per_jenjang.find((j: any) => j.jenjang === "IL") || {};
@@ -400,7 +465,7 @@ export default function AdminDashboardPage() {
           <StatWidget label="Berkas Lengkap" value={stats.berkas_lengkap} icon={ClipboardCheck} color="purple" breakdown={getBreakdown("berkas")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("dokumen_terverifikasi", "Berkas Lengkap", type)} isDownloading={downloadingKey?.startsWith("dokumen_terverifikasi_") ? downloadingKey.split("_")[2] : null} />
           <StatWidget label="Sedang Seleksi" value={stats.sedang_seleksi} icon={Loader2} color="blue" breakdown={getBreakdown("seleksi")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("selection", "Sedang Seleksi", type)} isDownloading={downloadingKey?.startsWith("selection_") ? downloadingKey.split("_")[1] : null} />
           <StatWidget label="Diterima" value={stats.diterima} icon={CheckCircle2} color="emerald" breakdown={getBreakdown("lulus")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("diterima", "Diterima", type)} isDownloading={downloadingKey?.startsWith("diterima_") ? downloadingKey.split("_")[1] : null} />
-          <StatWidget label="Cadangan" value={stats.cadangan} icon={Clock} color="slate" breakdown={getBreakdown("cadangan")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("announced", "Cadangan", type)} isDownloading={downloadingKey?.startsWith("announced_") ? downloadingKey.split("_")[1] : null} />
+          <StatWidget label="Cadangan" value={stats.cadangan} icon={Clock} color="slate" breakdown={getBreakdown("cadangan")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("announced", "Cadangan", type)} isDownloading={downloadingKey?.startsWith("announced_") ? downloadingKey.split("_")[1] : null} onPromote={handlePromoteAllCadangan} isPromoting={isPromotingCadangan} />
           <StatWidget label="Ditolak" value={stats.ditolak} icon={Activity} color="rose" breakdown={getBreakdown("ditolak")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("pembayaran_ditolak", "Ditolak", type)} isDownloading={downloadingKey?.startsWith("pembayaran_ditolak_") ? downloadingKey.split("_")[2] : null} />
           <StatWidget label="Sedang Daftar Ulang" value={stats.daftar_ulang_sedang} icon={Wallet} color="amber" breakdown={getBreakdown("ulang_sedang")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("enrolled", "Sedang Daftar Ulang", type)} isDownloading={downloadingKey?.startsWith("enrolled_") ? downloadingKey.split("_")[1] : null} />
           <StatWidget label="Selesai" value={stats.daftar_ulang_selesai} icon={CheckCircle2} color="emerald" breakdown={getBreakdown("ulang_selesai")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("enrolled_full", "Selesai Daftar Ulang", type)} isDownloading={downloadingKey?.startsWith("enrolled_full_") ? downloadingKey.split("_")[1] : null} />

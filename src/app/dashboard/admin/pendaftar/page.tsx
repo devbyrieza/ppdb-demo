@@ -213,6 +213,7 @@ function AdminPendaftarContent() {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [bulkStatus, setBulkStatus] = useState("");
   const [bulkUpdating, setBulkUpdating] = useState(false);
+  const [isPromotingCadangan, setIsPromotingCadangan] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [role, setRole] = useState<UserRole | null>(null);
   const [isRoleLoading, setIsRoleLoading] = useState(true);
@@ -723,6 +724,53 @@ function AdminPendaftarContent() {
     }
   };
 
+  const handlePromoteCadangan = async (ids?: string[]) => {
+    const isAll = !ids || ids.length === 0;
+    const confirmText = isAll
+      ? `Yakin ingin memindahkan SEMUA Pendaftar Cadangan (${pagination.total} orang pada halaman ini dan seluruh halaman) ke status Diterima?`
+      : `Yakin ingin memindahkan ${ids.length} Pendaftar Cadangan terpilih ke status Diterima?`;
+
+    const result = await Swal.fire({
+      title: isAll ? "Promosikan Semua Cadangan" : `Promosikan ${ids?.length} Terpilih`,
+      html: `<p>${confirmText}</p><p class="mt-3 text-sm text-stone-500">Status akan berubah dari <b>Cadangan</b> → <b>Diterima</b>. Tindakan ini tidak dapat diurungkan secara massal.</p>`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#059669",
+      cancelButtonColor: "#94a3b8",
+      confirmButtonText: isAll ? "Ya, Promosikan Semua!" : `Ya, Promosikan ${ids?.length}!`,
+      cancelButtonText: "Batal",
+      reverseButtons: true,
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      setIsPromotingCadangan(true);
+      const response = await fetch("/api/admin/pendaftar/promote-cadangan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(isAll ? {} : { ids }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) throw new Error(data.error || "Gagal mempromosikan");
+
+      Swal.fire({
+        title: "Berhasil!",
+        text: data.message || `${data.updated_count} Pendaftar berhasil dipindahkan ke Diterima.`,
+        icon: "success",
+        confirmButtonColor: "#059669",
+      });
+      setSelectedIds([]);
+      fetchPendaftar();
+    } catch (error: any) {
+      Swal.fire("Gagal!", error.message || "Terjadi kesalahan.", "error");
+    } finally {
+      setIsPromotingCadangan(false);
+    }
+  };
+
   const handleExport = async (type: "excel" | "pdf") => {
     try {
       setExporting(true);
@@ -1001,7 +1049,28 @@ function AdminPendaftarContent() {
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2 flex-shrink-0">
+          <div className="flex items-center gap-2 flex-shrink-0 flex-wrap">
+            {/* Tombol Promosi Cadangan — muncul saat filter cadangan/announced aktif & admin super */}
+            {isAdminSuper &&
+              (statusFilter === "cadangan" ||
+                statusFilter === "announced" ||
+                statusFilter === "") &&
+              pagination.total > 0 && (
+                <button
+                  onClick={() => handlePromoteCadangan()}
+                  disabled={isPromotingCadangan}
+                  className="flex items-center gap-2 px-3 md:px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-all disabled:opacity-50 text-sm font-black shadow-lg shadow-emerald-600/20 active:scale-95"
+                  title="Promosikan Semua Cadangan ke Diterima"
+                >
+                  {isPromotingCadangan ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <CheckSquare className="w-4 h-4" />
+                  )}
+                  <span className="hidden sm:inline">Promosikan Semua Cadangan</span>
+                  <span className="sm:hidden">Promosi Semua</span>
+                </button>
+              )}
             {userRole &&
               ["admin_super", "admin", "penguji"].includes(userRole) && (
                 <Link
@@ -1388,7 +1457,7 @@ function AdminPendaftarContent() {
 
       {/* Bulk Actions */}
       {selectedIds.length > 0 && (
-        <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl shadow-lg p-4 border-2 border-purple-200">
+        <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl shadow-lg p-4 border-2 border-purple-200 animate-in slide-in-from-bottom-2 duration-300">
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
@@ -1406,6 +1475,31 @@ function AdminPendaftarContent() {
             </div>
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
+              {/* Tombol Cepat: Promosikan Terpilih ke Diterima */}
+              {isAdminSuper &&
+                selectedIds.every((id) => {
+                  const p = pendaftar.find((x) => x.id === id);
+                  return p?.status_pendaftaran === "announced" || p?.status_pendaftaran === "cadangan";
+                }) && (
+                  <button
+                    onClick={() => handlePromoteCadangan(selectedIds)}
+                    disabled={isPromotingCadangan}
+                    className="flex items-center justify-center gap-2 px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-black transition-all disabled:opacity-50 shadow-lg shadow-emerald-600/20 active:scale-95 text-sm"
+                  >
+                    {isPromotingCadangan ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Memproses...
+                      </>
+                    ) : (
+                      <>
+                        <CheckSquare className="w-4 h-4" />
+                        Promosikan {selectedIds.length} Cadangan → Diterima
+                      </>
+                    )}
+                  </button>
+                )}
+
               <select
                 value={bulkStatus}
                 onChange={(e) => setBulkStatus(e.target.value)}
@@ -1744,7 +1838,19 @@ function AdminPendaftarContent() {
                           {/* Super Admin Actions */}
                           {isAdminSuper && (
                             <>
-                              
+                              {/* Tombol Promosi per-baris (hanya untuk status Cadangan) */}
+                              {(item.status_pendaftaran === "announced" ||
+                                item.status_pendaftaran === "cadangan") && (
+                                <button
+                                  onClick={() => handlePromoteCadangan([item.id])}
+                                  disabled={isPromotingCadangan}
+                                  className="flex items-center gap-1 px-2 py-1.5 bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white rounded-lg transition-all text-[10px] font-black uppercase border border-emerald-200 hover:border-emerald-600 disabled:opacity-50"
+                                  title="Promosikan ke Diterima"
+                                >
+                                  <CheckSquare className="w-3.5 h-3.5" />
+                                  <span className="hidden xl:inline">Diterima</span>
+                                </button>
+                              )}
                               <button
                                 onClick={() => handleOpenDelete(item)}
                                 className="p-1.5 bg-red-100 hover:bg-red-600 text-red-700 hover:text-white rounded-lg transition-all"

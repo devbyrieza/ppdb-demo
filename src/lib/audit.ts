@@ -15,7 +15,8 @@ type AuditAction =
   | "BROADCAST_WA"
   | "SOFT_DELETE_PENDAFTAR"
   | "RESTORE_PENDAFTAR"
-  | "UPDATE_PHONE_NUMBER";
+  | "UPDATE_PHONE_NUMBER"
+  | "PROMOTE_CADANGAN_TO_DITERIMA";
 
 interface AuditLogParams {
   action: AuditAction;

@@ -49,6 +49,8 @@ export async function POST(req: Request) {
 
     const ALLOWED_STATUSES = [
       "docs_verified",
+      "selection",
+      "testing",
       "scheduled",
       "tested",
       "announced",
