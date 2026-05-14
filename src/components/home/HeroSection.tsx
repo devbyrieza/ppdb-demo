@@ -2,6 +2,8 @@
 // FIXED: reduced motion badge, tablet breakpoint, touch hover, explicit font sizing
 "use client";
 
+import { useState, useEffect } from "react";
+
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -42,6 +44,25 @@ const fadeIn = {
 };
 
 export default function HeroSection() {
+  const [session, setSession] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchSession = async () => {
+      try {
+        const res = await fetch("/api/auth/session");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.session) {
+            setSession(data.session);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch session:", error);
+      }
+    };
+    fetchSession();
+  }, []);
+
   const shouldReduceMotion = useReducedMotion();
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.08 });
   const animate = inView ? "visible" : "hidden";
@@ -175,19 +196,37 @@ export default function HeroSection() {
               className="flex flex-col gap-4 items-center lg:items-start"
             >
               <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-                <Link href="/ppdb" className="w-full sm:w-auto">
-                  <button
-                    className="btn-primary w-full sm:w-auto px-8 lg:px-10 py-4 lg:py-[1.125rem] min-h-[56px] text-[0.9375rem]"
-                    style={{ boxShadow: "var(--shadow-primary-lg)" }}
-                  >
-                    Daftar PPDB Sekarang
-                  </button>
-                </Link>
-                <Link href="/program" className="w-full sm:w-auto">
-                  <button className="btn-secondary w-full sm:w-auto px-8 lg:px-10 py-4 lg:py-[1.125rem] min-h-[56px] text-[0.9375rem]">
-                    Lihat Program Kami
-                  </button>
-                </Link>
+                {session ? (
+                  <Link href="/dashboard" className="w-full sm:w-auto">
+                    <button
+                      className="btn-primary w-full sm:w-auto px-10 lg:px-12 py-4 lg:py-[1.125rem] min-h-[56px] text-[0.9375rem] flex items-center justify-center gap-3 hover:scale-[1.02] active:scale-98 transition-all relative overflow-hidden group font-bold"
+                      style={{ boxShadow: "var(--shadow-primary-lg)" }}
+                    >
+                      <span className="flex h-2.5 w-2.5 relative">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-300 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-400"></span>
+                      </span>
+                      <span>Lanjutkan Ke Dashboard</span>
+                      <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    </button>
+                  </Link>
+                ) : (
+                  <>
+                    <Link href="/ppdb" className="w-full sm:w-auto">
+                      <button
+                        className="btn-primary w-full sm:w-auto px-8 lg:px-10 py-4 lg:py-[1.125rem] min-h-[56px] text-[0.9375rem]"
+                        style={{ boxShadow: "var(--shadow-primary-lg)" }}
+                      >
+                        Daftar PPDB Sekarang
+                      </button>
+                    </Link>
+                    <Link href="/program" className="w-full sm:w-auto">
+                      <button className="btn-secondary w-full sm:w-auto px-8 lg:px-10 py-4 lg:py-[1.125rem] min-h-[56px] text-[0.9375rem]">
+                        Lihat Program Kami
+                      </button>
+                    </Link>
+                  </>
+                )}
               </div>
 
               <div className="flex items-center gap-3 mt-1">

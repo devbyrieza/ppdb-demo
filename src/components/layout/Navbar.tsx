@@ -19,9 +19,28 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
 
+  const [session, setSession] = useState<any>(null);
+
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll, { passive: true });
+    
+    // Fetch active session dynamically
+    const fetchSession = async () => {
+      try {
+        const res = await fetch("/api/auth/session");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.session) {
+            setSession(data.session);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch session:", error);
+      }
+    };
+    fetchSession();
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -175,20 +194,35 @@ export default function Navbar() {
             {/* ── CTA Buttons (lg+) ── */}
             <div className="hidden lg:flex items-center gap-3">
               <LanguageSwitcher />
-              <div className="w-px h-6 bg-slate-200 mx-1" />
-              <Link
-                href="/login"
-                className="text-sm font-bold text-[var(--color-ink-600)] hover:text-[var(--color-primary-800)] transition-colors duration-200 px-4 py-2 min-h-[40px] flex items-center rounded-full hover:bg-[var(--color-primary-50)]"
-              >
-                Masuk
-              </Link>
-              <Link
-                href="/ppdb"
-                className="btn-primary flex items-center gap-2 group text-sm px-5 py-2.5 glow-ring-primary"
-              >
-                Daftar PPDB
-                <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </Link>
+              {session ? (
+                <Link
+                  href="/dashboard"
+                  className="btn-primary flex items-center gap-2 group text-sm px-6 py-2.5 glow-ring-primary scale-[1.02] transition-all active:scale-100 font-black"
+                >
+                  <span className="relative flex h-2 w-2 mr-1">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                  </span>
+                  Dashboard
+                  <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                </Link>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    className="text-sm font-bold text-[var(--color-ink-600)] hover:text-[var(--color-primary-800)] transition-colors duration-200 px-4 py-2 min-h-[40px] flex items-center rounded-full hover:bg-[var(--color-primary-50)]"
+                  >
+                    Masuk
+                  </Link>
+                  <Link
+                    href="/ppdb"
+                    className="btn-primary flex items-center gap-2 group text-sm px-5 py-2.5 glow-ring-primary"
+                  >
+                    Daftar PPDB
+                    <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </Link>
+                </>
+              )}
             </div>
 
             {/* ── Hamburger (below lg) ── */}
@@ -338,23 +372,39 @@ export default function Navbar() {
                 {/* Divider */}
                 <div className="h-px bg-gradient-to-r from-transparent via-[var(--color-primary-100)] to-transparent my-5" />
 
-                {/* Action Buttons */}
                 <div className="flex flex-col gap-3">
-                  <Link
-                    href="/login"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="w-full py-4 text-sm font-bold rounded-xl border border-[var(--color-primary-100)] text-[var(--color-primary-700)] bg-[var(--color-primary-50)] hover:bg-[var(--color-primary-100)] text-center transition-all min-h-[52px] flex items-center justify-center gap-2"
-                  >
-                    Masuk ke Dashboard
-                  </Link>
-                  <Link
-                    href="/ppdb"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="btn-primary w-full justify-center gap-2 min-h-[52px]"
-                  >
-                    <GraduationCap className="w-4 h-4" />
-                    Daftar PPDB Online
-                  </Link>
+                  {session ? (
+                    <Link
+                      href="/dashboard"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="btn-primary w-full justify-center gap-3 min-h-[56px] relative overflow-hidden shadow-md active:scale-98 transition-all"
+                    >
+                      <span className="flex h-2 w-2 relative">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-300 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400"></span>
+                      </span>
+                      <span>Buka Dashboard Anda</span>
+                      <ArrowRight className="w-4 h-4 ml-1" />
+                    </Link>
+                  ) : (
+                    <>
+                      <Link
+                        href="/login"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="w-full py-4 text-sm font-bold rounded-xl border border-[var(--color-primary-100)] text-[var(--color-primary-700)] bg-[var(--color-primary-50)] hover:bg-[var(--color-primary-100)] text-center transition-all min-h-[52px] flex items-center justify-center gap-2"
+                      >
+                        Masuk ke Dashboard
+                      </Link>
+                      <Link
+                        href="/ppdb"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="btn-primary w-full justify-center gap-2 min-h-[52px]"
+                      >
+                        <GraduationCap className="w-4 h-4" />
+                        Daftar PPDB Online
+                      </Link>
+                    </>
+                  )}
                 </div>
 
                 <div className="h-6" />

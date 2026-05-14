@@ -97,7 +97,27 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/dashboard/pendaftar", request.url));
   }
 
-  return NextResponse.next();
+  const response = NextResponse.next();
+
+  // ═══════════════════════════════════════════
+  // ROLLING SESSION: Automatically renew session cookie duration
+  // ═══════════════════════════════════════════
+  const rawSessionCookie = request.cookies.get("app_session");
+  if (rawSessionCookie && userRole) {
+    const maxAge = userRole === "pendaftar"
+      ? 60 * 60 * 24 * 30  // 30 Days
+      : 60 * 60 * 24 * 90; // 90 Days
+      
+    response.cookies.set("app_session", rawSessionCookie.value, {
+      path: "/",
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge,
+    });
+  }
+
+  return response;
 }
 
 export const config = {
