@@ -84,9 +84,16 @@ export async function recalculateNilaiUjian(pendaftarId: string) {
   const kp = master.score_kepribadian != null ? Number(master.score_kepribadian) : null;
   const ks = master.score_kesiapan != null ? Number(master.score_kesiapan) : null;
 
-  let ws = (master.score_wawancara != null && master.nilai_wawancara_santri == null) 
-    ? Number(master.score_wawancara) 
-    : (master.nilai_wawancara_santri != null ? Number(master.nilai_wawancara_santri) : null);
+  let ws = master.nilai_wawancara_santri != null ? Number(master.nilai_wawancara_santri) : null;
+  
+  // Hanya gunakan score_wawancara sebagai nilai wawancara santri JIKA data ini adalah data lama
+  // (di mana nilai_wawancara_santri dan nilai_wawancara_ortu sama-sama kosong)
+  // JANGAN ambil dari score_wawancara jika nilai_wawancara_ortu sudah terisi,
+  // karena score_wawancara mungkin sudah ditimpa oleh rata-rata (wawancaraTotal)
+  const isLegacyData = master.score_wawancara != null && master.nilai_wawancara_santri == null && master.nilai_wawancara_ortu == null && master.detail_cawalsan == null;
+  if (isLegacyData && ws == null) {
+    ws = Number(master.score_wawancara);
+  }
   
   if (ws != null && ws <= 10 && ws > 0) ws = normalizeSantriScore(ws);
 
