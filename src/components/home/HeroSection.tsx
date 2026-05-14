@@ -304,7 +304,7 @@ export default function HeroSection() {
               style={{ transformOrigin: "right center" }}
             >
               <div className="glass-panel flex items-center gap-3 px-4 py-3 rounded-2xl">
-                <div className="icon-box icon-box-teal w-11 h-11 rounded-xl">
+                <div className="icon-box icon-box-primary w-11 h-11 rounded-xl">
                   <GraduationCap className="w-5 h-5" />
                 </div>
                 <div>
@@ -332,7 +332,7 @@ export default function HeroSection() {
               style={{ transformOrigin: "left center" }}
             >
               <div className="glass-panel flex items-center gap-3 px-4 py-3 rounded-2xl">
-                <div className="icon-box icon-box-teal w-11 h-11 rounded-xl">
+                <div className="icon-box icon-box-primary w-11 h-11 rounded-xl">
                   <Globe className="w-5 h-5" />
                 </div>
                 <div>

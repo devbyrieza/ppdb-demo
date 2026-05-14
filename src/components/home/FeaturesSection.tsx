@@ -97,7 +97,7 @@ export default function FeaturesSection() {
                     className="bg-white/90 backdrop-blur-sm p-6 rounded-2xl flex gap-5 group items-start border border-secondary-100 hover:border-primary-200 hover:shadow-premium-md transition-all duration-400 cursor-default hover:-translate-y-1"
                   >
                     {/* CiroAI Icon Box */}
-                    <div className="icon-box icon-box-teal w-14 h-14 rounded-xl shrink-0">
+                    <div className="icon-box icon-box-primary w-14 h-14 rounded-xl shrink-0">
                       <feature.icon className="w-7 h-7" />
                     </div>
                     <div>
@@ -154,7 +154,7 @@ export default function FeaturesSection() {
                   <div className="absolute -top-16 -right-16 w-40 h-40 bg-secondary-400/25 blur-[60px] rounded-full pointer-events-none group-hover:bg-secondary-400/40 transition-colors duration-700" />
                   <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-primary-300/10 blur-[50px] rounded-full pointer-events-none" />
 
-                  <div className="icon-box icon-box-gold w-20 h-20 rounded-2xl mb-6 group-hover:scale-110 transition-transform duration-500">
+                  <div className="icon-box icon-box-secondary w-20 h-20 rounded-2xl mb-6 group-hover:scale-110 transition-transform duration-500">
                     <BookOpenCheck className="w-10 h-10" />
                   </div>
                   <h3 className="font-black text-2xl text-white tracking-tight leading-tight group-hover:text-secondary-100 transition-colors">
