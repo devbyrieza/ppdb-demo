@@ -2402,4 +2402,374 @@
     border-radius: inherit;
     z-index: 1;
   }
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     CIROAI PREMIUM ENTERPRISE AESTHETIC
+     Terinspirasi dari UI www.ciroai.us
+     Brand-agnostic — Dipakai semua project
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+  /* ── Section Label Badge (CiroAI "ENTERPRISE DATA INTELLIGENCE" pill) ──
+     Gunakan di atas heading section sebagai label kecil uppercase
+     Contoh: <span class="section-label section-label-teal">Fitur Unggulan</span>
+  */
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.9rem;
+    border-radius: var(--radius-full);
+    font-size: 0.6875rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    line-height: 1;
+    border: 1px solid;
+    transition: all var(--duration-base) var(--ease-smooth);
+
+    /* Dot indicator sebelum label */
+    &::before {
+      content: "";
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+      flex-shrink: 0;
+    }
+  }
+
+  /* Teal variant (Template-Demo) */
+  .section-label-teal {
+    background: rgba(13, 148, 136, 0.08);
+    color: var(--color-teal-700);
+    border-color: rgba(13, 148, 136, 0.18);
+  }
+
+  /* Blue variant (Ulul Albaab) */
+  .section-label-blue {
+    background: rgba(3, 105, 199, 0.08);
+    color: var(--color-blue-700);
+    border-color: rgba(3, 105, 199, 0.18);
+  }
+
+  /* Maroon variant (Al Imam) */
+  .section-label-maroon {
+    background: rgba(128, 0, 0, 0.08);
+    color: var(--color-maroon-700);
+    border-color: rgba(128, 0, 0, 0.18);
+  }
+
+  /* White variant (untuk section gelap) */
+  .section-label-white {
+    background: rgba(255, 255, 255, 0.10);
+    color: rgba(255, 255, 255, 0.85);
+    border-color: rgba(255, 255, 255, 0.20);
+  }
+
+  /* ── Glassmorphism Panels (CiroAI floating card effect) ──
+     Gunakan untuk floating cards, navbar, atau stat widget overlay
+  */
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(28px) saturate(1.9);
+    -webkit-backdrop-filter: blur(28px) saturate(1.9);
+    border: 1px solid rgba(255, 255, 255, 0.60);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07), 0 1px 4px rgba(0, 0, 0, 0.04);
+    transition: all var(--duration-slow) var(--ease-spring);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 8px 36px rgba(0, 0, 0, 0.10), 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+  }
+
+  /* Dark glass (untuk section gelap) */
+  .glass-panel-dark {
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(28px) saturate(1.6);
+    -webkit-backdrop-filter: blur(28px) saturate(1.6);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transition: all var(--duration-slow) var(--ease-spring);
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.32);
+      border-color: rgba(255, 255, 255, 0.16);
+    }
+  }
+
+  /* Teal glass (Template-Demo hero stat cards) */
+  .glass-panel-teal {
+    background: rgba(13, 148, 136, 0.08);
+    backdrop-filter: blur(20px) saturate(1.5);
+    -webkit-backdrop-filter: blur(20px) saturate(1.5);
+    border: 1px solid rgba(13, 148, 136, 0.15);
+    box-shadow: 0 2px 16px rgba(13, 148, 136, 0.08);
+  }
+
+  /* Blue glass (Ulul Albaab) */
+  .glass-panel-blue {
+    background: rgba(3, 105, 199, 0.07);
+    backdrop-filter: blur(20px) saturate(1.5);
+    -webkit-backdrop-filter: blur(20px) saturate(1.5);
+    border: 1px solid rgba(3, 105, 199, 0.14);
+    box-shadow: 0 2px 16px rgba(3, 105, 199, 0.08);
+  }
+
+  /* Maroon glass (Al Imam) */
+  .glass-panel-maroon {
+    background: rgba(128, 0, 0, 0.07);
+    backdrop-filter: blur(20px) saturate(1.5);
+    -webkit-backdrop-filter: blur(20px) saturate(1.5);
+    border: 1px solid rgba(128, 0, 0, 0.14);
+    box-shadow: 0 2px 16px rgba(128, 0, 0, 0.08);
+  }
+
+  /* ── Ambient Glow Blobs (CiroAI background orbs) ──
+     Gunakan sebagai elemen dekoratif absolut di dalam section/hero
+     Tidak memerlukan tailwind khusus, cukup pakai class ini
+  */
+  .glow-blob {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(80px);
+    opacity: 0.18;
+  }
+
+  .glow-blob-teal {
+    background: radial-gradient(ellipse, var(--color-teal-400) 0%, transparent 70%);
+  }
+
+  .glow-blob-blue {
+    background: radial-gradient(ellipse, var(--color-blue-400) 0%, transparent 70%);
+  }
+
+  .glow-blob-maroon {
+    background: radial-gradient(ellipse, var(--color-maroon-500) 0%, transparent 70%);
+  }
+
+  .glow-blob-gold {
+    background: radial-gradient(ellipse, var(--color-gold-400) 0%, transparent 70%);
+  }
+
+  .glow-blob-amber {
+    background: radial-gradient(ellipse, var(--color-amber-400) 0%, transparent 70%);
+  }
+
+  /* ── Gradient Text (CiroAI "Platform." styling) ──
+     Gunakan pada h1/h2 keyword penting agar lebih dramatis & premium
+     Contoh: <span class="gradient-text-teal">Penerimaan Santri</span>
+  */
+  .gradient-text-teal {
+    background: linear-gradient(135deg, var(--color-teal-500) 0%, var(--color-sand-400) 55%, var(--color-teal-700) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline;
+  }
+
+  .gradient-text-blue {
+    background: linear-gradient(135deg, var(--color-blue-500) 0%, var(--color-amber-400) 55%, var(--color-blue-700) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline;
+  }
+
+  .gradient-text-maroon {
+    background: linear-gradient(135deg, var(--color-maroon-600) 0%, var(--color-cream-400) 55%, var(--color-maroon-800) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline;
+  }
+
+  /* White gradient (untuk section gelap) */
+  .gradient-text-white {
+    background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.65) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline;
+  }
+
+  /* ── Neon Accent Border (CiroAI blue button glow) ──
+     Menambah glow effect pada elemen dengan brand color
+  */
+  .glow-ring-teal {
+    box-shadow: 0 0 0 1px rgba(13, 148, 136, 0.3), 0 0 20px rgba(13, 148, 136, 0.15);
+    transition: box-shadow var(--duration-base) var(--ease-smooth);
+
+    &:hover {
+      box-shadow: 0 0 0 1px rgba(13, 148, 136, 0.5), 0 0 30px rgba(13, 148, 136, 0.22);
+    }
+  }
+
+  .glow-ring-blue {
+    box-shadow: 0 0 0 1px rgba(3, 105, 199, 0.3), 0 0 20px rgba(3, 105, 199, 0.15);
+    transition: box-shadow var(--duration-base) var(--ease-smooth);
+
+    &:hover {
+      box-shadow: 0 0 0 1px rgba(3, 105, 199, 0.5), 0 0 30px rgba(3, 105, 199, 0.22);
+    }
+  }
+
+  .glow-ring-maroon {
+    box-shadow: 0 0 0 1px rgba(128, 0, 0, 0.3), 0 0 20px rgba(128, 0, 0, 0.15);
+    transition: box-shadow var(--duration-base) var(--ease-smooth);
+
+    &:hover {
+      box-shadow: 0 0 0 1px rgba(128, 0, 0, 0.5), 0 0 30px rgba(128, 0, 0, 0.22);
+    }
+  }
+
+  /* ── Shimmer Loading Effect (CiroAI sophistication) ── */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      var(--color-surface-100) 25%,
+      var(--color-surface-200) 50%,
+      var(--color-surface-100) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.8s ease-in-out infinite;
+    border-radius: var(--radius-sm);
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  /* ── Top Shine Line (CiroAI card top highlight) ──
+     Tambahkan class ini pada card dark untuk efek "sheen" di bagian atas
+     Requires: position:relative; overflow:hidden
+  */
+  .shine-top::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.20), transparent);
+    pointer-events: none;
+  }
+
+  /* ── Stat Number Style (CiroAI "20+ / Multi-LLM" stat blocks) ── */
+  .stat-label {
+    font-size: 0.625rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-ink-400);
+    line-height: 1;
+  }
+
+  .stat-value {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 3vw, 2.75rem);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--color-ink-900);
+  }
+
+  /* ── Divider Line (CiroAI subtle separator) ── */
+  .divider-gradient {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-ink-200) 30%, var(--color-ink-200) 70%, transparent);
+    border: none;
+    margin: 0;
+  }
+
+  .divider-gradient-brand-teal {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-teal-200) 30%, var(--color-teal-200) 70%, transparent);
+    border: none;
+  }
+
+  .divider-gradient-brand-blue {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-blue-200) 30%, var(--color-blue-200) 70%, transparent);
+    border: none;
+  }
+
+  .divider-gradient-brand-maroon {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-maroon-200) 30%, var(--color-maroon-200) 70%, transparent);
+    border: none;
+  }
+
+  /* ── Icon Box (CiroAI feature icon container) ── */
+  .icon-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    transition: all var(--duration-base) var(--ease-spring);
+    flex-shrink: 0;
+
+    &:hover, .group:hover & {
+      transform: scale(1.10) rotate(3deg);
+    }
+  }
+
+  .icon-box-teal {
+    background: linear-gradient(135deg, var(--color-teal-500), var(--color-teal-800));
+    color: var(--color-white);
+    box-shadow: 0 4px 14px rgba(13, 148, 136, 0.35);
+  }
+
+  .icon-box-blue {
+    background: linear-gradient(135deg, var(--color-blue-500), var(--color-blue-800));
+    color: var(--color-white);
+    box-shadow: 0 4px 14px rgba(3, 105, 199, 0.35);
+  }
+
+  .icon-box-maroon {
+    background: linear-gradient(135deg, var(--color-maroon-700), var(--color-maroon-950));
+    color: var(--color-cream-100);
+    box-shadow: 0 4px 14px rgba(128, 0, 0, 0.35);
+  }
+
+  .icon-box-gold {
+    background: linear-gradient(135deg, var(--color-gold-400), var(--color-gold-600));
+    color: var(--color-ink-900);
+    box-shadow: 0 4px 14px rgba(212, 175, 55, 0.35);
+  }
+
+  .icon-box-amber {
+    background: linear-gradient(135deg, var(--color-amber-400), var(--color-amber-600));
+    color: var(--color-ink-900);
+    box-shadow: 0 4px 14px rgba(245, 158, 11, 0.30);
+  }
+
+  /* ── Hover Lift (standard micro-interaction) ── */
+  .hover-lift {
+    transition: transform var(--duration-base) var(--ease-spring), box-shadow var(--duration-base) var(--ease-spring);
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-premium-lg);
+    }
+
+    &:active {
+      transform: translateY(-1px) scale(0.99);
+    }
+  }
+
+  .hover-lift-sm {
+    transition: transform var(--duration-fast) var(--ease-spring), box-shadow var(--duration-fast) var(--ease-spring);
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-premium-md);
+    }
+
+    &:active {
+      transform: translateY(0) scale(0.99);
+    }
+  }
 }

@@ -55,8 +55,11 @@ const FEATURES = [
 
 export default function FeaturesSection() {
   return (
-    <section id="keunggulan" className="section-std">
-      <Container>
+    <section id="keunggulan" className="section-std relative overflow-hidden">
+      {/* CiroAI-style ambient glow blobs */}
+      <div className="glow-blob glow-blob-teal w-[500px] h-[500px] -top-[15%] -right-[10%] opacity-[0.12]" aria-hidden="true" />
+      <div className="glow-blob glow-blob-gold w-[400px] h-[400px] bottom-[5%] left-[5%] opacity-[0.10]" aria-hidden="true" />
+      <Container className="relative z-10">
         <div className="flex flex-col lg:flex-row items-start gap-16 lg:gap-24">
           {/* TEXT SIDE */}
           <div className="lg:w-1/2 lg:sticky lg:top-32">
@@ -67,9 +70,11 @@ export default function FeaturesSection() {
               className="space-y-8"
             >
               <div>
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-sand-50 border border-sand-200 text-teal-700 text-xs font-bold uppercase tracking-widest mb-6 shadow-sm">
-                  <Award className="w-3.5 h-3.5" />
-                  <span>Keunggulan Utama</span>
+                {/* CiroAI Section Label Badge */}
+                <div className="mb-6">
+                  <span className="section-label section-label-teal">
+                    Keunggulan Utama
+                  </span>
                 </div>
                 <h2 className="section-title mb-3">Kenapa Harus Al Fath?</h2>
                 <p className="text-lg text-ink-600 leading-relaxed font-medium text-justify lg:text-left">
@@ -89,16 +94,17 @@ export default function FeaturesSection() {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: idx * 0.1 }}
-                    className="bg-white p-6 rounded-[2rem] flex gap-6 group items-start border border-sand-200/60 hover:border-teal-300 hover:shadow-premium-xl transition-all duration-500 cursor-default"
+                    className="bg-white/90 backdrop-blur-sm p-6 rounded-2xl flex gap-5 group items-start border border-sand-100 hover:border-teal-200 hover:shadow-premium-md transition-all duration-400 cursor-default hover:-translate-y-1"
                   >
-                    <div className="w-16 h-16 rounded-[1.25rem] bg-linear-to-br from-sand-50 to-sand-100 flex items-center justify-center shrink-0 shadow-premium-xs group-hover:from-teal-700 group-hover:to-teal-700 group-hover:rotate-6 transition-all duration-500">
-                      <feature.icon className="w-8 h-8 text-teal-800 group-hover:text-white transition-colors" />
+                    {/* CiroAI Icon Box */}
+                    <div className="icon-box icon-box-teal w-14 h-14 rounded-xl shrink-0">
+                      <feature.icon className="w-7 h-7" />
                     </div>
                     <div>
-                      <h4 className="font-black text-ink-950 text-lg mb-2 group-hover:text-teal-800 transition-colors tracking-tight">
+                      <h4 className="font-black text-ink-950 text-base mb-1.5 group-hover:text-teal-800 transition-colors tracking-tight">
                         {feature.title}
                       </h4>
-                      <p className="text-[14px] text-ink-600 leading-relaxed font-medium">
+                      <p className="text-[13px] text-ink-500 leading-relaxed font-medium">
                         {feature.description}
                       </p>
                     </div>
@@ -143,20 +149,20 @@ export default function FeaturesSection() {
                   </div>
                 </div>
 
-                <div className="bg-linear-to-br from-teal-600 via-teal-700 to-teal-900 border border-white/10 p-6 sm:p-8 rounded-[2rem] shadow-xl min-h-64 md:h-72 flex flex-col justify-center items-center text-center relative overflow-hidden group hover:shadow-2xl hover:-translate-y-1 transition-all duration-500">
-                  <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-10 mix-blend-overlay" />
-                  {/* Decorative glow */}
-                  <div className="absolute -top-24 -right-24 w-48 h-48 bg-sand-400/20 blur-[60px] rounded-full pointer-events-none group-hover:bg-sand-400/30 transition-colors" />
+                <div className="bg-linear-to-br from-teal-600 via-teal-700 to-teal-900 shine-top border border-white/10 p-6 sm:p-8 rounded-2xl shadow-xl min-h-64 md:h-72 flex flex-col justify-center items-center text-center relative overflow-hidden group hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
+                  {/* CiroAI-style ambient glow inside dark card */}
+                  <div className="absolute -top-16 -right-16 w-40 h-40 bg-sand-400/25 blur-[60px] rounded-full pointer-events-none group-hover:bg-sand-400/40 transition-colors duration-700" />
+                  <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-teal-300/10 blur-[50px] rounded-full pointer-events-none" />
 
-                  <div className="w-20 h-20 rounded-2xl bg-white/10 flex items-center justify-center mb-6 backdrop-blur-md group-hover:scale-110 transition-transform duration-500 border border-white/20 shadow-inner">
-                    <BookOpenCheck className="w-10 h-10 text-sand-300" />
+                  <div className="icon-box icon-box-gold w-20 h-20 rounded-2xl mb-6 group-hover:scale-110 transition-transform duration-500">
+                    <BookOpenCheck className="w-10 h-10" />
                   </div>
                   <h3 className="font-black text-2xl text-white tracking-tight leading-tight group-hover:text-sand-100 transition-colors">
                     Tahfidz
                     <br />
                     Intensif
                   </h3>
-                  <div className="mt-4 w-12 h-1 bg-sand-400/30 rounded-full group-hover:w-16 group-hover:bg-sand-400 transition-all duration-500" />
+                  <div className="mt-4 w-12 h-0.5 bg-sand-400/40 rounded-full group-hover:w-16 group-hover:bg-sand-300 transition-all duration-500" />
                 </div>
               </div>
 
@@ -188,8 +194,8 @@ export default function FeaturesSection() {
               </div>
             </motion.div>
 
-            {/* Subtle glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-sand-200/40 rounded-full blur-[100px] z-0" />
+            {/* CiroAI-style center ambient glow */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] rounded-full blur-[120px] z-0 pointer-events-none" style={{ background: "radial-gradient(ellipse, rgba(13,148,136,0.07) 0%, rgba(212,175,55,0.06) 50%, transparent 70%)" }} aria-hidden="true" />
           </div>
         </div>
       </Container>

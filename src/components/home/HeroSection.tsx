@@ -61,44 +61,21 @@ export default function HeroSection() {
           "linear-gradient(160deg, var(--color-surface-50) 0%, var(--color-white) 55%, var(--color-teal-50) 100%)",
       }}
     >
-      {/* Atmospheric Background */}
-      <div
-        className="absolute inset-0 pointer-events-none overflow-hidden"
-        aria-hidden="true"
-      >
+      {/* CiroAI Atmospheric Background Blobs */}
+      <div className="glow-blob glow-blob-teal w-[60%] h-[70%] -top-[20%] -left-[10%] opacity-20" aria-hidden="true" />
+      <div className="glow-blob glow-blob-gold w-[50%] h-[60%] top-[10%] -right-[10%] opacity-15" aria-hidden="true" />
+      <div className="glow-blob glow-blob-teal w-[40%] h-[40%] bottom-[-10%] left-[20%] opacity-10" aria-hidden="true" />
+      
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
         <div
-          className="absolute -top-[20%] -left-[10%] w-[55%] h-[65%] rounded-full opacity-30"
-          style={{
-            background:
-              "radial-gradient(ellipse, var(--color-teal-300) 0%, transparent 70%)",
-            filter: "blur(90px)",
-          }}
-        />
-        <div
-          className="absolute top-[10%] -right-[8%] w-[40%] h-[50%] rounded-full opacity-25"
-          style={{
-            background:
-              "radial-gradient(ellipse, var(--color-sand-300) 0%, transparent 70%)",
-            filter: "blur(100px)",
-          }}
-        />
-        <div
-          className="absolute bottom-[-5%] left-[20%] w-[45%] h-[40%] rounded-full opacity-[0.18]"
-          style={{
-            background:
-              "radial-gradient(ellipse, var(--color-teal-200) 0%, transparent 70%)",
-            filter: "blur(80px)",
-          }}
-        />
-        <div
-          className="absolute inset-0 opacity-[0.020]"
+          className="absolute inset-0 opacity-[0.015]"
           style={{
             backgroundImage: `linear-gradient(var(--color-teal-500) 1px, transparent 1px), linear-gradient(90deg, var(--color-teal-500) 1px, transparent 1px)`,
             backgroundSize: "64px 64px",
           }}
         />
         <div
-          className="absolute inset-0 opacity-[0.018]"
+          className="absolute inset-0 opacity-[0.012]"
           style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
           }}
@@ -117,16 +94,8 @@ export default function HeroSection() {
               transition={{ delay: 0.1 }}
               className="flex justify-center lg:justify-start"
             >
-              <span
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[11px] lg:text-[12px] font-bold tracking-[0.05em]"
-                style={{
-                  background: "var(--color-surface-50)",
-                  border: "1px solid var(--color-teal-200)",
-                  color: "var(--color-teal-800)",
-                  boxShadow: "var(--shadow-sm)",
-                }}
-              >
-                <span>Selamat Datang di {BRANDING.schoolShortName}</span>
+              <span className="section-label section-label-teal">
+                Selamat Datang di {BRANDING.schoolShortName}
               </span>
             </motion.div>
 
@@ -146,17 +115,7 @@ export default function HeroSection() {
                 }}
               >
                 <span className="block">Mencetak Generasi</span>
-                <span
-                  className="block mt-1"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, var(--color-teal-600) 0%, var(--color-sand-400) 50%, var(--color-teal-700) 100%)",
-                    WebkitBackgroundClip: "text",
-                    backgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    paddingBottom: "0.15em",
-                  }}
-                >
+                <span className="gradient-text-teal block mt-1">
                   Unggul, Cerdas, <br className="hidden sm:block" />
                   dan Berintegritas
                 </span>
@@ -344,43 +303,16 @@ export default function HeroSection() {
               className="absolute -top-4 md:-top-5 lg:-top-6 -right-2 md:-right-4 lg:-right-6 z-20"
               style={{ transformOrigin: "right center" }}
             >
-              <div
-                className="flex items-center gap-3 px-4 py-3 rounded-2xl"
-                style={{
-                  background: "rgba(255,255,255,0.95)",
-                  backdropFilter: "blur(20px) saturate(1.8)",
-                  WebkitBackdropFilter: "blur(20px) saturate(1.8)",
-                  border: "1px solid rgba(255,255,255,0.7)",
-                  boxShadow: "var(--shadow-premium-md)",
-                }}
-              >
-                <div
-                  className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ background: "var(--color-teal-50)" }}
-                >
-                  <GraduationCap
-                    className="w-5 h-5"
-                    style={{ color: "var(--color-teal-600)" }}
-                    aria-hidden="true"
-                  />
+              <div className="glass-panel flex items-center gap-3 px-4 py-3 rounded-2xl">
+                <div className="icon-box icon-box-teal w-11 h-11 rounded-xl">
+                  <GraduationCap className="w-5 h-5" />
                 </div>
                 <div>
-                  <p
-                    className="text-[9px] font-bold uppercase tracking-[0.08em] leading-none mb-1"
-                    style={{ color: "var(--color-ink-400)" }}
-                  >
-                    Tersedia
-                  </p>
-                  <p
-                    className="text-sm font-black leading-tight"
-                    style={{ color: "var(--color-teal-900)" }}
-                  >
+                  <p className="stat-label mb-1">Tersedia</p>
+                  <p className="text-sm font-black leading-tight text-[var(--color-teal-900)]">
                     MTs &amp; IL
                   </p>
-                  <p
-                    className="text-[10px] font-semibold mt-0.5"
-                    style={{ color: "var(--color-ink-500)" }}
-                  >
+                  <p className="text-[10px] font-semibold mt-0.5 text-[var(--color-ink-500)]">
                     Kuota terbatas
                   </p>
                 </div>
@@ -399,37 +331,15 @@ export default function HeroSection() {
               className="absolute -bottom-5 md:-bottom-6 lg:-bottom-8 -left-2 md:-left-4 lg:-left-6 z-20"
               style={{ transformOrigin: "left center" }}
             >
-              <div
-                className="flex items-center gap-3 px-4 py-3 rounded-2xl"
-                style={{
-                  background: "rgba(255,255,255,0.95)",
-                  backdropFilter: "blur(20px) saturate(1.8)",
-                  WebkitBackdropFilter: "blur(20px) saturate(1.8)",
-                  border: "1px solid rgba(255,255,255,0.7)",
-                  boxShadow: "var(--shadow-premium-md)",
-                }}
-              >
-                <div
-                  className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ background: "var(--color-teal-50)" }}
-                >
-                  <Globe
-                    className="w-5 h-5"
-                    style={{ color: "var(--color-teal-600)" }}
-                    aria-hidden="true"
-                  />
+              <div className="glass-panel flex items-center gap-3 px-4 py-3 rounded-2xl">
+                <div className="icon-box icon-box-teal w-11 h-11 rounded-xl">
+                  <Globe className="w-5 h-5" />
                 </div>
                 <div>
-                  <p
-                    className="text-sm font-black leading-tight"
-                    style={{ color: "var(--color-teal-900)" }}
-                  >
+                  <p className="text-sm font-black leading-tight text-[var(--color-teal-900)]">
                     Jaringan Global
                   </p>
-                  <p
-                    className="text-[10px] font-semibold mt-0.5"
-                    style={{ color: "var(--color-ink-500)" }}
-                  >
+                  <p className="text-[10px] font-semibold mt-0.5 text-[var(--color-ink-500)]">
                     {BRANDING.schoolShortName}
                   </p>
                 </div>
@@ -490,27 +400,9 @@ export default function HeroSection() {
               </div>
             </motion.div>
 
-            {/* Decorative blobs */}
-            <div
-              className="absolute -z-10 -bottom-14 -right-14 w-64 h-64 rounded-full pointer-events-none"
-              style={{
-                background:
-                  "radial-gradient(ellipse, var(--color-teal-400) 0%, transparent 70%)",
-                filter: "blur(40px)",
-                opacity: 0.15,
-              }}
-              aria-hidden="true"
-            />
-            <div
-              className="absolute -z-10 -top-10 -left-10 w-48 h-48 rounded-full pointer-events-none"
-              style={{
-                background:
-                  "radial-gradient(ellipse, var(--color-sand-400) 0%, transparent 70%)",
-                filter: "blur(36px)",
-                opacity: 0.2,
-              }}
-              aria-hidden="true"
-            />
+            {/* Decorative glows */}
+            <div className="glow-blob glow-blob-teal w-64 h-64 -bottom-14 -right-14 opacity-15" aria-hidden="true" />
+            <div className="glow-blob glow-blob-gold w-48 h-48 -top-10 -left-10 opacity-20" aria-hidden="true" />
           </motion.div>
         </div>
       </Container>

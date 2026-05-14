@@ -129,9 +129,9 @@ function StatCard({
         duration: 0.6,
         ease: [0.16, 1, 0.3, 1],
       }}
-      className="group relative h-full"
+      className="group relative h-full hover-lift-sm"
     >
-      <div className="relative flex flex-col items-center text-center px-6 py-8 md:px-8 md:py-10 bg-white rounded-2xl border border-surface-200 shadow-premium-sm transition-all duration-500 ease-spring hover:-translate-y-1.5 hover:shadow-premium-md hover:border-ink-200 overflow-hidden h-full">
+      <div className="glass-panel relative flex flex-col items-center text-center px-6 py-8 md:px-8 md:py-10 rounded-2xl overflow-hidden h-full">
         {/* Hover radial bg */}
         <div
           className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
@@ -235,21 +235,9 @@ export default function StatsSection() {
       ref={ref}
       className="relative py-16 md:py-24 bg-white border-b border-surface-200 overflow-hidden"
     >
-      {/* Background glows — teal kanan atas, sand kiri bawah */}
-      <div
-        className="absolute -top-1/4 right-0 w-[600px] h-[600px] translate-x-1/2 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(176,220,220,0.4) 0%, transparent 65%)",
-        }}
-      />
-      <div
-        className="absolute -bottom-1/4 left-0 w-[500px] h-[500px] -translate-x-1/2 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(229,224,211,0.5) 0%, transparent 65%)",
-        }}
-      />
+      {/* CiroAI Background glows */}
+      <div className="glow-blob glow-blob-teal w-[600px] h-[600px] -top-[25%] right-0 translate-x-[20%]" aria-hidden="true" />
+      <div className="glow-blob glow-blob-gold w-[500px] h-[500px] -bottom-[25%] left-0 -translate-x-[20%]" aria-hidden="true" />
 
       <Container className="relative z-10">
         <div className="max-w-5xl mx-auto space-y-12 md:space-y-14">
@@ -268,37 +256,26 @@ export default function StatsSection() {
             transition={{ delay: 0.55, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-wrap justify-center items-center gap-2.5 md:gap-3"
           >
+            {/* CiroAI-style badges */}
             {/* Badge 1 — Pulse */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-2 bg-teal-50 rounded-full border border-teal-100 hover:border-teal-300 hover:bg-teal-100 transition-all duration-300 cursor-default">
+            <div className="section-label section-label-teal hover:bg-teal-50/50 cursor-default">
               <span className="relative flex h-2 w-2 shrink-0">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-500" />
               </span>
-              <span className="text-[0.6rem] md:text-[0.65rem] font-bold text-ink-700 uppercase tracking-[0.1em] whitespace-nowrap">
-                Pendaftaran Dibuka
-              </span>
+              <span>Pendaftaran Dibuka</span>
             </div>
 
             {/* Badge 2 — Akreditasi */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-2 bg-sand-50 rounded-full border border-sand-200 hover:border-sand-400 hover:bg-sand-100 transition-all duration-300 cursor-default">
-              <ShieldCheck
-                className="w-3 h-3 shrink-0 text-sand-600"
-                strokeWidth={2}
-              />
-              <span className="text-[0.6rem] md:text-[0.65rem] font-bold text-ink-700 uppercase tracking-[0.1em] whitespace-nowrap">
-                Terakreditasi A — BAN-PDM
-              </span>
+            <div className="section-label section-label-white border-sand-200 text-ink-700 bg-sand-50/50 hover:bg-sand-100/50 cursor-default">
+              <ShieldCheck className="w-3 h-3 shrink-0 text-sand-600" strokeWidth={2} />
+              <span>Terakreditasi A — BAN-PDM</span>
             </div>
 
-            {/* Badge 3 — School Network dari BRANDING config */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-2 bg-teal-50 rounded-full border border-teal-100 hover:border-teal-300 hover:bg-teal-100 transition-all duration-300 cursor-default">
-              <TrendingUp
-                className="w-3 h-3 shrink-0 text-teal-600"
-                strokeWidth={2}
-              />
-              <span className="text-[0.6rem] md:text-[0.65rem] font-bold text-ink-700 uppercase tracking-[0.1em] whitespace-nowrap">
-                {BRANDING.schoolNetwork}
-              </span>
+            {/* Badge 3 — School Network */}
+            <div className="section-label section-label-teal hover:bg-teal-50/50 cursor-default">
+              <TrendingUp className="w-3 h-3 shrink-0 text-teal-600" strokeWidth={2} />
+              <span>{BRANDING.schoolNetwork}</span>
             </div>
           </motion.div>
         </div>

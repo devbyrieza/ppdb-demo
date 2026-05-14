@@ -98,7 +98,7 @@ export default function Navbar() {
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled
-            ? "bg-[rgba(248,249,246,0.95)] backdrop-blur-[24px] saturate-[1.8] border-b border-[var(--color-teal-100)] py-2 shadow-[0_2px_20px_rgba(58,80,41,0.09)]"
+            ? "glass-panel border-b border-[var(--color-teal-100)] py-2"
             : "bg-transparent py-4 lg:py-5"
         }`}
       >
@@ -152,7 +152,7 @@ export default function Navbar() {
             <nav
               className={`hidden lg:flex items-center gap-0.5 p-1.5 rounded-full border transition-all duration-300 ${
                 isScrolled
-                  ? "bg-white border-[var(--color-teal-100)] shadow-[var(--shadow-xs)]"
+                  ? "bg-white/80 border-[var(--color-teal-100)] shadow-sm"
                   : "bg-white/70 backdrop-blur-md border-white/65 shadow-[0_2px_16px_rgba(58,80,41,0.10)]"
               }`}
             >
@@ -184,7 +184,7 @@ export default function Navbar() {
               </Link>
               <Link
                 href="/ppdb"
-                className="btn-primary flex items-center gap-2 group text-sm px-5 py-2.5"
+                className="btn-primary flex items-center gap-2 group text-sm px-5 py-2.5 glow-ring-teal"
               >
                 Daftar PPDB
                 <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
