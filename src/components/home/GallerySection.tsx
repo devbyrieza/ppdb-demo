@@ -54,15 +54,15 @@ const SCHEDULE_ITEMS = [
     time: "Pagi",
     label: "Tahfidz & Muroja'ah",
     icon: Sun,
-    iconBg: "bg-sand-100",
-    iconColor: "text-sand-700",
+    iconBg: "bg-secondary-100",
+    iconColor: "text-secondary-700",
   },
   {
     time: "Siang",
     label: "Sekolah Formal",
     icon: BookOpen,
-    iconBg: "bg-teal-50",
-    iconColor: "text-teal-700",
+    iconBg: "bg-primary-50",
+    iconColor: "text-primary-700",
   },
   {
     time: "Sore",
@@ -133,9 +133,9 @@ function GalleryCard({
       whileInView="visible"
       viewport={{ once: true, margin: "-40px" }}
       whileHover={{ y: -4, transition: { duration: 0.3, ease: EASE } }}
-      className="group relative rounded-2xl overflow-hidden cursor-pointer shadow-premium-sm border border-sand-200"
+      className="group relative rounded-2xl overflow-hidden cursor-pointer shadow-premium-sm border border-secondary-200"
     >
-      <div className="relative aspect-[4/3] overflow-hidden bg-sand-50">
+      <div className="relative aspect-[4/3] overflow-hidden bg-secondary-50">
         <Image
           src={image}
           alt={title}
@@ -144,10 +144,10 @@ function GalleryCard({
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
         />
 
-        <div className="absolute inset-0 bg-gradient-to-t from-teal-950/80 via-teal-900/20 to-transparent transition-opacity duration-500 opacity-80 group-hover:opacity-100" />
+        <div className="absolute inset-0 bg-gradient-to-t from-primary-950/80 via-primary-900/20 to-transparent transition-opacity duration-500 opacity-80 group-hover:opacity-100" />
       </div>
 
-      <div className="absolute top-3.5 right-3.5 w-8 h-8 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:bg-sand-400 group-hover:border-sand-300 group-hover:text-teal-900 shadow-sm">
+      <div className="absolute top-3.5 right-3.5 w-8 h-8 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:bg-secondary-400 group-hover:border-secondary-300 group-hover:text-primary-900 shadow-sm">
         <Icon className="w-4 h-4" />
       </div>
 
@@ -155,12 +155,12 @@ function GalleryCard({
         <h3 className="text-white font-bold text-[0.9375rem] tracking-tight leading-snug translate-y-1.5 group-hover:translate-y-0 transition-transform duration-300 drop-shadow-sm">
           {title}
         </h3>
-        <p className="text-sand-100/90 text-[0.65rem] mt-1 font-semibold uppercase tracking-[0.1em] opacity-0 translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 delay-75">
+        <p className="text-secondary-100/90 text-[0.65rem] mt-1 font-semibold uppercase tracking-[0.1em] opacity-0 translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 delay-75">
           {description}
         </p>
       </div>
 
-      <div className="absolute bottom-0 left-0 w-0 h-[3px] bg-gradient-to-r from-sand-400 to-sand-300 group-hover:w-full transition-all duration-500 ease-out" />
+      <div className="absolute bottom-0 left-0 w-0 h-[3px] bg-gradient-to-r from-secondary-400 to-secondary-300 group-hover:w-full transition-all duration-500 ease-out" />
     </motion.div>
   );
 }
@@ -177,7 +177,7 @@ function ScheduleCard({
     <motion.div
       custom={index}
       variants={scheduleVariants}
-      className="flex items-center gap-3.5 p-3.5 rounded-[1.25rem] bg-white border border-sand-200 transition-all duration-300 hover:border-teal-200 shadow-premium-sm hover:shadow-premium-md"
+      className="flex items-center gap-3.5 p-3.5 rounded-[1.25rem] bg-white border border-secondary-200 transition-all duration-300 hover:border-primary-200 shadow-premium-sm hover:shadow-premium-md"
     >
       <div
         className={`w-10 h-10 rounded-[10px] ${iconBg} flex items-center justify-center ${iconColor} shrink-0 ring-1 ring-black/5`}
@@ -224,14 +224,14 @@ export default function GallerySection() {
         >
           <div className="max-w-xl">
             <motion.div variants={fadeUpVariants}>
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-sand-200 text-teal-700 text-[0.65rem] font-bold uppercase tracking-[0.12em] mb-4 shadow-xs">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-secondary-200 text-primary-700 text-[0.65rem] font-bold uppercase tracking-[0.12em] mb-4 shadow-xs">
                 <Images className="w-3 h-3" strokeWidth={2} />
                 <span>Dokumentasi</span>
               </div>
             </motion.div>
 
             <motion.h2 variants={fadeUpVariants} className="section-title mb-0">
-              Galeri <span className="text-gradient-teal">Aktivitas</span>
+              Galeri <span className="text-gradient-primary">Aktivitas</span>
             </motion.h2>
 
             <motion.p
@@ -245,7 +245,7 @@ export default function GallerySection() {
 
           <motion.div variants={fadeUpVariants} className="shrink-0">
             <Link href="/kegiatan">
-              <button className="btn-secondary group inline-flex items-center gap-2 px-6 py-2.5 bg-white border border-sand-200 hover:border-teal-200">
+              <button className="btn-secondary group inline-flex items-center gap-2 px-6 py-2.5 bg-white border border-secondary-200 hover:border-primary-200">
                 <span className="font-bold text-[0.875rem]">Lihat Semua</span>
                 <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
               </button>
@@ -264,9 +264,9 @@ export default function GallerySection() {
           initial={{ opacity: 0, y: 40 }}
           animate={scheduleInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, ease: EASE }}
-          className="relative rounded-t-[2.5rem] overflow-hidden border border-b-0 border-sand-200 bg-gradient-to-br from-sand-50/50 to-white shadow-[0_-12px_40px_-12px_rgba(0,0,0,0.05)]"
+          className="relative rounded-t-[2.5rem] overflow-hidden border border-b-0 border-secondary-200 bg-gradient-to-br from-secondary-50/50 to-white shadow-[0_-12px_40px_-12px_rgba(0,0,0,0.05)]"
         >
-          <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-teal-300 via-sand-300 to-transparent" />
+          <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-primary-300 via-secondary-300 to-transparent" />
 
           <div className="relative z-10 grid lg:grid-cols-[1fr_1.1fr] gap-10 lg:gap-14 items-center p-8 md:p-12 lg:p-14 max-w-6xl mx-auto">
             <motion.div
@@ -275,7 +275,7 @@ export default function GallerySection() {
               animate={scheduleInView ? "visible" : "hidden"}
             >
               <motion.div variants={fadeUpVariants}>
-                <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-sand-100 border border-sand-200 text-teal-700 text-[0.65rem] font-bold uppercase tracking-[0.12em] mb-5 shadow-xs">
+                <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-secondary-100 border border-secondary-200 text-primary-700 text-[0.65rem] font-bold uppercase tracking-[0.12em] mb-5 shadow-xs">
                   <Star className="w-3 h-3 fill-current" />
                   <span>Jadwal Harian</span>
                 </div>

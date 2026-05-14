@@ -26,7 +26,7 @@ export default function DemoLoginHelper({ onSelect }: DemoLoginHelperProps) {
       email: "admin@ppdb-demo.com",
       pass: "Admin26!",
       icon: ShieldCheck,
-      color: "bg-amber-100 text-amber-700 border-amber-200",
+      color: "bg-secondary-100 text-secondary-700 border-secondary-200",
     },
     {
       role: "Admin Keuangan",
@@ -42,7 +42,7 @@ export default function DemoLoginHelper({ onSelect }: DemoLoginHelperProps) {
       email: "berkas@ppdb-demo.com",
       pass: "Berkas26!",
       icon: FileSearch,
-      color: "bg-blue-100 text-blue-700 border-blue-200",
+      color: "bg-primary-100 text-primary-700 border-primary-200",
     },
     {
       role: "Penguji Al-Qur'an",
@@ -50,7 +50,7 @@ export default function DemoLoginHelper({ onSelect }: DemoLoginHelperProps) {
       email: "quran@ppdb-demo.com",
       pass: "Quran26!",
       icon: BookOpen,
-      color: "bg-teal-100 text-teal-700 border-teal-200",
+      color: "bg-primary-100 text-primary-700 border-primary-200",
     },
     {
       role: "Pewawancara Calon Santri",
@@ -87,7 +87,7 @@ export default function DemoLoginHelper({ onSelect }: DemoLoginHelperProps) {
   return (
     <div className="mt-8 pt-8 border-t border-slate-100">
       <div className="flex items-center gap-2 mb-6 justify-center">
-        <Zap className="w-4 h-4 text-sand-500 fill-sand-500" />
+        <Zap className="w-4 h-4 text-secondary-500 fill-secondary-500" />
         <h3 className="text-xs font-black text-ink-500 uppercase tracking-[0.2em]">
           Coba Demo Satu-Klik
         </h3>

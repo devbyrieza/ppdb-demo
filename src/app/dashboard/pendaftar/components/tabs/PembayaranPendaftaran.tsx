@@ -95,17 +95,17 @@ const STATUS_CONFIG: Record<
 > = {
   unpaid: {
     label: "Menunggu Pembayaran",
-    color: "text-amber-700",
-    bgColor: "bg-amber-50",
-    borderColor: "border-amber-200",
+    color: "text-secondary-700",
+    bgColor: "bg-secondary-50",
+    borderColor: "border-secondary-200",
     icon: Clock,
     description: "Silakan lakukan pembayaran untuk melanjutkan pendaftaran",
   },
   pending: {
     label: "Menunggu Verifikasi",
-    color: "text-blue-700",
-    bgColor: "bg-blue-50",
-    borderColor: "border-blue-200",
+    color: "text-primary-700",
+    bgColor: "bg-primary-50",
+    borderColor: "border-primary-200",
     icon: Clock,
     description: "Pembayaran sedang diverifikasi oleh tim kami (1x24 jam)",
   },
@@ -271,7 +271,7 @@ function PaymentTimeline({ paymentStatus }: { paymentStatus: PaymentStatus }) {
               "bg-emerald-500 border-emerald-500 text-white shadow-emerald-500/30";
           if (step.status === "current")
             statusColor =
-              "bg-white border-maroon-600 text-maroon-700 shadow-lg shadow-maroon-600/20";
+              "bg-white border-primary-600 text-primary-700 shadow-lg shadow-primary-600/20";
 
           return (
             <div key={step.id} className="flex flex-col items-center">
@@ -394,20 +394,20 @@ function UploadArea({
     <div className="space-y-6">
       {/* Current file info (Always show existing file if available and NOT currently selecting a NEW file) */}
       {currentFile && !selectedFile && !isRejected && (
-        <div className="p-4 bg-cream-50 border border-cream-100 rounded-2xl flex items-center gap-4">
-          <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center border border-cream-100 shadow-sm transition-transform hover:scale-110">
-            <FileText className="w-6 h-6 text-cream-500" />
+        <div className="p-4 bg-secondary-50 border border-secondary-100 rounded-2xl flex items-center gap-4">
+          <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center border border-secondary-100 shadow-sm transition-transform hover:scale-110">
+            <FileText className="w-6 h-6 text-secondary-500" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-bold text-blue-500 uppercase tracking-wide mb-0.5">
+            <p className="text-xs font-bold text-primary-500 uppercase tracking-wide mb-0.5">
               File Terupload
             </p>
             <p className="font-bold text-ink-900 truncate">
               {currentFile.name}
             </p>
           </div>
-          <div className="w-8 h-8 rounded-full bg-cream-100 flex items-center justify-center">
-            <Check className="w-4 h-4 text-maroon-600" />
+          <div className="w-8 h-8 rounded-full bg-secondary-100 flex items-center justify-center">
+            <Check className="w-4 h-4 text-primary-600" />
           </div>
         </div>
       )}
@@ -416,12 +416,12 @@ function UploadArea({
       <div
         className={`relative overflow-hidden group border-2 border-dashed rounded-[2rem] transition-all ${
           isDragging
-            ? "border-maroon-600 bg-cream-50/50 scale-[1.01]"
+            ? "border-primary-600 bg-secondary-50/50 scale-[1.01]"
             : isRejected && !selectedFile
               ? "border-red-300 bg-red-50 hover:border-red-400"
               : selectedFile
-                ? "border-maroon-600 bg-white" // Solid border when file selected
-                : "border-ink-200 hover:border-maroon-400 hover:bg-surface-50 cursor-pointer"
+                ? "border-primary-600 bg-white" // Solid border when file selected
+                : "border-ink-200 hover:border-primary-400 hover:bg-surface-50 cursor-pointer"
         } ${isUploading ? "pointer-events-none opacity-80" : ""}`}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
@@ -488,7 +488,7 @@ function UploadArea({
                 <button
                   onClick={handleUploadClick}
                   disabled={isUploading}
-                  className="flex-1 sm:flex-none px-8 py-3 bg-cream-400 text-maroon-950 font-black rounded-xl hover:bg-cream-300 transition-colors shadow-lg shadow-cream-400/30 flex items-center justify-center gap-2"
+                  className="flex-1 sm:flex-none px-8 py-3 bg-secondary-400 text-primary-950 font-black rounded-xl hover:bg-secondary-300 transition-colors shadow-lg shadow-secondary-400/30 flex items-center justify-center gap-2"
                 >
                   {isUploading ? (
                     <Loader2 className="w-5 h-5 animate-spin" />
@@ -517,7 +517,7 @@ function UploadArea({
                         strokeWidth="4"
                       />
                       <path
-                        className="text-cream-500 transition-all duration-300 ease-out"
+                        className="text-secondary-500 transition-all duration-300 ease-out"
                         strokeDasharray={`${uploadProgress}, 100`}
                         d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                         fill="none"
@@ -525,11 +525,11 @@ function UploadArea({
                         strokeWidth="4"
                       />
                     </svg>
-                    <div className="absolute inset-0 flex items-center justify-center font-bold text-maroon-800 text-sm">
+                    <div className="absolute inset-0 flex items-center justify-center font-bold text-primary-800 text-sm">
                       {uploadProgress}%
                     </div>
                   </div>
-                  <p className="font-bold text-maroon-900">Mengupload...</p>
+                  <p className="font-bold text-primary-900">Mengupload...</p>
                 </div>
               </div>
             )}
@@ -541,7 +541,7 @@ function UploadArea({
               className={`w-20 h-20 rounded-3xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-sm ${
                 isRejected && !currentFile
                   ? "bg-red-100 text-red-600"
-                  : "bg-cream-50 text-maroon-700"
+                  : "bg-secondary-50 text-primary-700"
               }`}
             >
               <Upload className="w-10 h-10" />
@@ -729,7 +729,7 @@ export default function PembayaranPendaftaranTab({
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px]">
-        <Loader2 className="w-10 h-10 text-cream-500 animate-spin mb-4" />
+        <Loader2 className="w-10 h-10 text-secondary-500 animate-spin mb-4" />
         <p className="text-ink-500 font-medium">Memuat data pembayaran...</p>
       </div>
     );
@@ -784,7 +784,7 @@ export default function PembayaranPendaftaranTab({
               ? "bg-emerald-500"
               : toast.type === "error"
                 ? "bg-red-500"
-                : "bg-blue-500"
+                : "bg-primary-500"
           } text-white shadow-lg`}
         >
           <CheckCircle className="w-5 h-5" />
@@ -801,15 +801,15 @@ export default function PembayaranPendaftaranTab({
       )}
 
       {/* Header Banner */}
-      <div className="relative overflow-hidden rounded-[2rem] bg-linear-to-br from-maroon-700 to-maroon-900 border border-maroon-600 p-8 md:p-10 text-white shadow-lg app-card">
-        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-cream-50/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+      <div className="relative overflow-hidden rounded-[2rem] bg-linear-to-br from-primary-700 to-primary-900 border border-primary-600 p-8 md:p-10 text-white shadow-lg app-card">
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-secondary-50/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-start gap-5">
             <div className="w-16 h-16 rounded-[1.5rem] bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-sm shrink-0">
               {isStatusOnly ? (
-                <Shield className="w-8 h-8 text-cream-100" />
+                <Shield className="w-8 h-8 text-secondary-100" />
               ) : (
-                <CreditCard className="w-8 h-8 text-cream-100" />
+                <CreditCard className="w-8 h-8 text-secondary-100" />
               )}
             </div>
             <div>
@@ -837,7 +837,7 @@ export default function PembayaranPendaftaranTab({
         {/* Main Content Column */}
         <div className="lg:col-span-2 space-y-8">
           {/* Status Card */}
-          <div className="glass-panel p-8 rounded-[2rem] shadow-sm border border-cream-200 app-card relative overflow-hidden">
+          <div className="glass-panel p-8 rounded-[2rem] shadow-sm border border-secondary-200 app-card relative overflow-hidden">
             <div
               className={`absolute top-0 left-0 w-2 h-full ${statusConfig.bgColor}`}
             />{" "}
@@ -860,26 +860,26 @@ export default function PembayaranPendaftaranTab({
               {!data.is_deadline_passed &&
                 daysRemaining > 0 &&
                 !isPaymentCompleted && (
-                  <div className="bg-amber-50 border border-amber-200 px-4 py-2 rounded-xl flex items-center gap-3">
-                    <Clock className="w-5 h-5 text-amber-600" />
+                  <div className="bg-secondary-50 border border-secondary-200 px-4 py-2 rounded-xl flex items-center gap-3">
+                    <Clock className="w-5 h-5 text-secondary-600" />
                     <div>
-                      <p className="text-[10px] font-bold text-amber-500 uppercase">
+                      <p className="text-[10px] font-bold text-secondary-500 uppercase">
                         Sisa Waktu
                       </p>
-                      <p className="text-amber-800 font-bold">
+                      <p className="text-secondary-800 font-bold">
                         {daysRemaining} Hari Lagi
                       </p>
                     </div>
                   </div>
                 )}
               {data.is_deadline_passed && !isPaymentCompleted && (
-                <div className="bg-amber-50 border border-amber-200 px-4 py-2 rounded-xl flex items-center gap-3">
-                  <AlertCircle className="w-5 h-5 text-amber-600" />
+                <div className="bg-secondary-50 border border-secondary-200 px-4 py-2 rounded-xl flex items-center gap-3">
+                  <AlertCircle className="w-5 h-5 text-secondary-600" />
                   <div>
-                    <p className="text-[10px] font-bold text-amber-500 uppercase">
+                    <p className="text-[10px] font-bold text-secondary-500 uppercase">
                       Masa Pembayaran Terlewati
                     </p>
-                    <p className="text-amber-800 font-bold">
+                    <p className="text-secondary-800 font-bold">
                       Silakan selesaikan pembayaran secepatnya.
                     </p>
                   </div>
@@ -978,11 +978,11 @@ export default function PembayaranPendaftaranTab({
                 {/* CARD 1: MIDTRANS (DEV) */}
                 <div className="relative group bg-white rounded-[2.5rem] p-8 border border-ink-100 shadow-sm transition-all hover:shadow-lg hover:-translate-y-1 overflow-hidden opacity-80 hover:opacity-100 grayscale-[0.5] hover:grayscale-0">
                   {/* Background Decor */}
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-amber-50 rounded-bl-[4rem] -z-0" />
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-secondary-50 rounded-bl-[4rem] -z-0" />
 
                   <div className="relative z-10 flex flex-col h-full">
                     <div className="mb-6">
-                      <div className="w-16 h-16 bg-amber-100 rounded-2xl flex items-center justify-center mb-6 shadow-alert-100/50 text-amber-600">
+                      <div className="w-16 h-16 bg-secondary-100 rounded-2xl flex items-center justify-center mb-6 shadow-alert-100/50 text-secondary-600">
                         <CreditCard className="w-8 h-8" />
                       </div>
                       <h4 className="font-bold text-ink-500 uppercase tracking-widest text-xs mb-2">
@@ -992,7 +992,7 @@ export default function PembayaranPendaftaranTab({
                         Virtual Account
                       </h3>
 
-                      <div className="inline-block bg-amber-100 text-amber-700 text-xs font-bold px-3 py-1 rounded-full mb-6">
+                      <div className="inline-block bg-secondary-100 text-secondary-700 text-xs font-bold px-3 py-1 rounded-full mb-6">
                         Otomatis
                       </div>
 
@@ -1031,37 +1031,37 @@ export default function PembayaranPendaftaranTab({
                   onClick={() => setActivePaymentMethod("manual")}
                   className={`relative group bg-white rounded-[2.5rem] p-8 border-2 transition-all cursor-pointer shadow-lg hover:-translate-y-1 hover:shadow-xl ${
                     activePaymentMethod === "manual"
-                      ? "border-maroon-600 ring-4 ring-maroon-600/10 shadow-maroon-600/10"
-                      : "border-white hover:border-maroon-300"
+                      ? "border-primary-600 ring-4 ring-primary-600/10 shadow-primary-600/10"
+                      : "border-white hover:border-primary-300"
                   }`}
                 >
                   {activePaymentMethod === "manual" && (
                     <div className="absolute top-6 right-6 lg:right-8">
-                      <div className="w-8 h-8 bg-maroon-600 rounded-full flex items-center justify-center animate-in zoom-in">
+                      <div className="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center animate-in zoom-in">
                         <Check className="w-5 h-5 text-white" />
                       </div>
                     </div>
                   )}
 
                   {/* Recommendation Badge */}
-                  <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-maroon-600 to-cream-500 text-white text-sm font-bold px-6 py-2 rounded-full shadow-lg shadow-maroon-600/30 z-20 flex items-center gap-2">
+                  <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-primary-600 to-secondary-500 text-white text-sm font-bold px-6 py-2 rounded-full shadow-lg shadow-primary-600/30 z-20 flex items-center gap-2">
                     <StarIcon className="w-4 h-4 fill-white" />
                     Rekomendasi
                   </div>
 
                   <div className="relative z-10 flex flex-col h-full pt-4">
                     <div className="mb-6">
-                      <div className="w-16 h-16 bg-cream-50 rounded-2xl flex items-center justify-center mb-6 shadow-sm text-maroon-700">
+                      <div className="w-16 h-16 bg-secondary-50 rounded-2xl flex items-center justify-center mb-6 shadow-sm text-primary-700">
                         <Building2 className="w-8 h-8" />
                       </div>
-                      <h4 className="font-bold text-maroon-700 uppercase tracking-widest text-xs mb-2">
+                      <h4 className="font-bold text-primary-700 uppercase tracking-widest text-xs mb-2">
                         Transfer Manual
                       </h4>
                       <h3 className="font-black text-2xl text-ink-900 mb-2">
                         Bank BSI
                       </h3>
 
-                      <div className="inline-block bg-cream-100 text-maroon-900 text-xs font-bold px-3 py-1 rounded-full mb-6">
+                      <div className="inline-block bg-secondary-100 text-primary-900 text-xs font-bold px-3 py-1 rounded-full mb-6">
                         Manual Check
                       </div>
 
@@ -1076,8 +1076,8 @@ export default function PembayaranPendaftaranTab({
                             key={idx}
                             className="flex items-start gap-3 text-ink-600 text-sm font-medium"
                           >
-                            <div className="w-5 h-5 rounded-full bg-cream-100 flex items-center justify-center shrink-0 mt-0.5">
-                              <Check className="w-3 h-3 text-maroon-700" />
+                            <div className="w-5 h-5 rounded-full bg-secondary-100 flex items-center justify-center shrink-0 mt-0.5">
+                              <Check className="w-3 h-3 text-primary-700" />
                             </div>
                             {item}
                           </li>
@@ -1089,8 +1089,8 @@ export default function PembayaranPendaftaranTab({
                       <button
                         className={`w-full py-4 rounded-xl font-black transition-all flex items-center justify-center gap-2 ${
                           activePaymentMethod === "manual"
-                            ? "bg-cream-400 text-maroon-950 hover:bg-cream-300 shadow-lg shadow-cream-400/20 border border-cream-500"
-                            : "bg-cream-50 text-maroon-800 hover:bg-cream-100"
+                            ? "bg-secondary-400 text-primary-950 hover:bg-secondary-300 shadow-lg shadow-secondary-400/20 border border-secondary-500"
+                            : "bg-secondary-50 text-primary-800 hover:bg-secondary-100"
                         }`}
                       >
                         {activePaymentMethod === "manual" ? (
@@ -1126,17 +1126,17 @@ export default function PembayaranPendaftaranTab({
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-stretch">
                       {/* LEFT COLUMN: BANK INFO */}
-                      <div className="bg-gradient-to-br from-cream-50 to-white border border-cream-100 rounded-[2.5rem] p-8 shadow-sm relative overflow-hidden flex flex-col justify-between">
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-cream-100/50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+                      <div className="bg-gradient-to-br from-secondary-50 to-white border border-secondary-100 rounded-[2.5rem] p-8 shadow-sm relative overflow-hidden flex flex-col justify-between">
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-secondary-100/50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
 
                         <div className="relative z-10">
                           <div className="flex justify-between items-start mb-8">
                             <div>
-                              <p className="text-xs font-bold text-maroon-700 uppercase tracking-widest mb-2">
+                              <p className="text-xs font-bold text-primary-700 uppercase tracking-widest mb-2">
                                 Bank Syariah Indonesia (BSI)
                               </p>
                             </div>
-                            <div className="bg-white p-3 rounded-2xl shadow-sm border border-cream-100 flex items-center justify-center text-maroon-700">
+                            <div className="bg-white p-3 rounded-2xl shadow-sm border border-secondary-100 flex items-center justify-center text-primary-700">
                               <Building2 className="w-8 h-8" />
                             </div>
                           </div>
@@ -1158,9 +1158,9 @@ export default function PembayaranPendaftaranTab({
                         </div>
 
                         <div className="mt-auto relative z-10">
-                          <div className="flex items-start gap-4 bg-white/80 p-5 rounded-2xl border border-cream-100 backdrop-blur-sm shadow-sm">
-                            <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center shrink-0">
-                              <AlertCircle className="w-5 h-5 text-amber-600" />
+                          <div className="flex items-start gap-4 bg-white/80 p-5 rounded-2xl border border-secondary-100 backdrop-blur-sm shadow-sm">
+                            <div className="w-10 h-10 rounded-full bg-secondary-100 flex items-center justify-center shrink-0">
+                              <AlertCircle className="w-5 h-5 text-secondary-600" />
                             </div>
                             <p className="text-sm text-ink-600 leading-relaxed font-medium text-left w-full">
                               <strong>Penting:</strong> Pastikan nominal
@@ -1173,10 +1173,10 @@ export default function PembayaranPendaftaranTab({
                       </div>
 
                       {/* RIGHT COLUMN: UPLOAD AREA */}
-                      <div className="bg-white rounded-[2.5rem] border-2 border-dashed border-ink-200 p-8 flex flex-col justify-center relative group hover:border-maroon-300 transition-colors">
+                      <div className="bg-white rounded-[2.5rem] border-2 border-dashed border-ink-200 p-8 flex flex-col justify-center relative group hover:border-primary-300 transition-colors">
                         <div className="text-center mb-8">
                           <h5 className="font-bold text-ink-900 text-lg flex items-center justify-center gap-2 mb-2">
-                            <Upload className="w-5 h-5 text-maroon-700" />
+                            <Upload className="w-5 h-5 text-primary-700" />
                             Upload Bukti Transfer
                           </h5>
                           <p className="text-sm text-ink-400">
@@ -1245,7 +1245,7 @@ export default function PembayaranPendaftaranTab({
               </div>
               <a
                 href="/dashboard/pendaftar/pembayaran-pendaftaran"
-                className="px-6 py-3 bg-cream-400 hover:bg-cream-300 text-maroon-950 rounded-xl font-black shadow-lg shadow-cream-400/20 transition-all hover:scale-105 flex items-center gap-2 border border-cream-500"
+                className="px-6 py-3 bg-secondary-400 hover:bg-secondary-300 text-primary-950 rounded-xl font-black shadow-lg shadow-secondary-400/20 transition-all hover:scale-105 flex items-center gap-2 border border-secondary-500"
               >
                 <span>Ke Halaman Pembayaran</span>
               </a>
@@ -1255,9 +1255,9 @@ export default function PembayaranPendaftaranTab({
 
         {/* Sidebar Column */}
         <div className="space-y-6">
-          <div className="glass-panel p-6 rounded-[2rem] shadow-sm border border-cream-200 app-card border border-white/50">
+          <div className="glass-panel p-6 rounded-[2rem] shadow-sm border border-secondary-200 app-card border border-white/50">
             <h3 className="text-lg font-bold text-ink-900 mb-4 flex items-center gap-2">
-              <Info className="w-5 h-5 text-maroon-700" />
+              <Info className="w-5 h-5 text-primary-700" />
               Rincian Biaya
             </h3>
             <div className="space-y-3">
@@ -1276,7 +1276,7 @@ export default function PembayaranPendaftaranTab({
               <div className="h-px bg-ink-100 my-2" />
               <div className="flex justify-between items-center">
                 <span className="text-ink-900 font-bold">Total Pembayaran</span>
-                <span className="text-xl font-black text-maroon-700">
+                <span className="text-xl font-black text-primary-700">
                   {formatRupiah(biayaPendaftaran)}
                 </span>
               </div>
@@ -1296,7 +1296,7 @@ export default function PembayaranPendaftaranTab({
               href="https://wa.me/6281285300800"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 p-3 bg-white rounded-xl border border-ink-100 hover:border-cream-200 transition-colors group"
+              className="flex items-center gap-3 p-3 bg-white rounded-xl border border-ink-100 hover:border-secondary-200 transition-colors group"
             >
               <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center">
                 <MessageCircle className="w-5 h-5 text-green-600 group-hover:scale-110 transition-transform" />

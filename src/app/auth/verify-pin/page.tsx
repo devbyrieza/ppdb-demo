@@ -176,7 +176,7 @@ function VerifyPinContent() {
             {!loading && !success && (
               <button
                 onClick={handleSubmit}
-                className="group flex items-center justify-center gap-2 w-full py-4 bg-primary hover:bg-teal-700 text-white rounded-2xl font-bold transition-all shadow-lg hover:shadow-teal-100 uppercase tracking-widest text-xs"
+                className="group flex items-center justify-center gap-2 w-full py-4 bg-primary hover:bg-primary-700 text-white rounded-2xl font-bold transition-all shadow-lg hover:shadow-primary-100 uppercase tracking-widest text-xs"
               >
                 Konfirmasi PIN
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

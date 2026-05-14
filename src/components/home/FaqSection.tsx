@@ -67,19 +67,19 @@ function FaqItem({
         className={[
           "rounded-2xl border bg-white overflow-hidden transition-all duration-300",
           isOpen
-            ? "border-teal-200 shadow-premium-sm ring-1 ring-teal-100/60"
-            : "border-surface-200 hover:border-teal-100 hover:shadow-xs",
+            ? "border-primary-200 shadow-premium-sm ring-1 ring-primary-100/60"
+            : "border-surface-200 hover:border-primary-100 hover:shadow-xs",
         ].join(" ")}
       >
         <button
           onClick={toggle}
-          className="w-full text-left flex items-center justify-between gap-4 px-6 py-5 md:px-7 md:py-6 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 rounded-2xl"
+          className="w-full text-left flex items-center justify-between gap-4 px-6 py-5 md:px-7 md:py-6 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-2xl"
           aria-expanded={isOpen}
         >
           <span
             className={[
               "font-bold text-[0.9375rem] md:text-base leading-snug tracking-tight transition-colors duration-200 pr-3",
-              isOpen ? "text-teal-700" : "text-ink-900",
+              isOpen ? "text-primary-700" : "text-ink-900",
             ].join(" ")}
           >
             {question}
@@ -89,8 +89,8 @@ function FaqItem({
             className={[
               "w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-300",
               isOpen
-                ? "bg-teal-600 text-white rotate-180"
-                : "bg-sand-100 text-teal-500 hover:bg-teal-50",
+                ? "bg-primary-600 text-white rotate-180"
+                : "bg-secondary-100 text-primary-500 hover:bg-primary-50",
             ].join(" ")}
           >
             <ChevronDown className="w-4 h-4" strokeWidth={2.5} />
@@ -107,7 +107,7 @@ function FaqItem({
               transition={{ duration: 0.28, ease: [0.4, 0, 0.2, 1] }}
             >
               <div className="px-6 pb-6 md:px-7 md:pb-7">
-                <div className="h-px w-12 bg-sand-200 mb-5" />
+                <div className="h-px w-12 bg-secondary-200 mb-5" />
                 <p className="text-[0.875rem] md:text-[0.9375rem] text-ink-600 font-[450] leading-relaxed">
                   {answer}
                 </p>
@@ -148,7 +148,7 @@ export default function FaqSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, ease: EASE }}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sand-50 border border-sand-200 text-teal-700 text-[0.65rem] font-bold uppercase tracking-[0.12em] mb-5 shadow-xs"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-secondary-50 border border-secondary-200 text-primary-700 text-[0.65rem] font-bold uppercase tracking-[0.12em] mb-5 shadow-xs"
           >
             <HelpCircle className="w-3 h-3 shrink-0" strokeWidth={2} />
             <span>Tanya Jawab</span>
@@ -161,7 +161,7 @@ export default function FaqSection() {
             transition={{ delay: 0.08, duration: 0.6, ease: EASE }}
             className="section-title mb-4"
           >
-            Sering <span className="text-gradient-teal">Ditanyakan</span>
+            Sering <span className="text-gradient-primary">Ditanyakan</span>
           </motion.h2>
 
           <motion.p
@@ -196,12 +196,12 @@ export default function FaqSection() {
           transition={{ delay: 0.2, duration: 0.6, ease: EASE }}
           className="mt-14 md:mt-16 max-w-sm mx-auto"
         >
-          <div className="group relative flex flex-col items-center gap-5 bg-sand-50 rounded-2xl p-7 border border-sand-200 text-center overflow-hidden transition-all duration-400 hover:border-teal-200 hover:shadow-premium-sm">
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-teal-50/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+          <div className="group relative flex flex-col items-center gap-5 bg-secondary-50 rounded-2xl p-7 border border-secondary-200 text-center overflow-hidden transition-all duration-400 hover:border-primary-200 hover:shadow-premium-sm">
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-primary-50/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-            <div className="relative z-10 w-12 h-12 rounded-xl bg-white flex items-center justify-center shadow-xs border border-sand-200 group-hover:border-teal-100 transition-colors duration-300">
+            <div className="relative z-10 w-12 h-12 rounded-xl bg-white flex items-center justify-center shadow-xs border border-secondary-200 group-hover:border-primary-100 transition-colors duration-300">
               <MessageCircleMore
-                className="w-5 h-5 text-teal-500"
+                className="w-5 h-5 text-primary-500"
                 strokeWidth={1.75}
               />
             </div>

@@ -62,7 +62,7 @@ type ActiveTab = "pendaftaran" | "daftar-ulang";
 function StatusBadge({ status, color }: { status: string; color: string }) {
   const colorMap: Record<string, string> = {
     green: "bg-emerald-100 text-emerald-700 border-emerald-200",
-    orange: "bg-amber-100 text-amber-700 border-amber-200",
+    orange: "bg-secondary-100 text-secondary-700 border-secondary-200",
     red: "bg-red-100 text-red-600 border-red-200",
     gray: "bg-slate-100 text-slate-500 border-slate-200",
   };
@@ -409,7 +409,7 @@ export default function KeuanganPage() {
           }}
           className={`px-5 py-2 rounded-lg text-sm font-bold transition-all ${
             activeTab === "pendaftaran"
-              ? "bg-white text-maroon-800 shadow-sm"
+              ? "bg-white text-primary-800 shadow-sm"
               : "text-slate-500 hover:text-slate-700"
           }`}
         >
@@ -422,7 +422,7 @@ export default function KeuanganPage() {
           }}
           className={`px-5 py-2 rounded-lg text-sm font-bold transition-all ${
             activeTab === "daftar-ulang"
-              ? "bg-white text-maroon-800 shadow-sm"
+              ? "bg-white text-primary-800 shadow-sm"
               : "text-slate-500 hover:text-slate-700"
           }`}
         >
@@ -457,12 +457,12 @@ export default function KeuanganPage() {
                   {pendaftaranSummary.terverifikasi}
                 </p>
               </div>
-              <div className="bg-amber-50 rounded-xl p-4 border border-amber-100 shadow-sm">
+              <div className="bg-secondary-50 rounded-xl p-4 border border-secondary-100 shadow-sm">
                 <div className="flex items-center gap-1.5 mb-1">
-                  <Clock className="w-3.5 h-3.5 text-amber-600" />
-                  <p className="text-xs text-amber-700 font-medium">Menunggu</p>
+                  <Clock className="w-3.5 h-3.5 text-secondary-600" />
+                  <p className="text-xs text-secondary-700 font-medium">Menunggu</p>
                 </div>
-                <p className="text-2xl font-black text-amber-700">
+                <p className="text-2xl font-black text-secondary-700">
                   {pendaftaranSummary.menunggu}
                 </p>
               </div>
@@ -477,14 +477,14 @@ export default function KeuanganPage() {
                   {pendaftaranSummary.belum_upload}
                 </p>
               </div>
-              <div className="bg-white rounded-xl p-4 border border-maroon-100 shadow-sm col-span-2 md:col-span-1 lg:col-span-1">
+              <div className="bg-white rounded-xl p-4 border border-primary-100 shadow-sm col-span-2 md:col-span-1 lg:col-span-1">
                 <div className="flex items-center gap-1.5 mb-1">
-                  <TrendingUp className="w-3.5 h-3.5 text-maroon-700" />
-                  <p className="text-xs text-maroon-800 font-medium">
+                  <TrendingUp className="w-3.5 h-3.5 text-primary-700" />
+                  <p className="text-xs text-primary-800 font-medium">
                     Total Terkumpul
                   </p>
                 </div>
-                <p className="text-lg font-black text-maroon-800">
+                <p className="text-lg font-black text-primary-800">
                   {formatCurrency(pendaftaranSummary.total_terkumpul)}
                 </p>
                 <p className="text-[10px] text-slate-400 mt-0.5">
@@ -503,7 +503,7 @@ export default function KeuanganPage() {
                 placeholder="Cari nama santri atau nomor pendaftaran..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-maroon-600"
+                className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary-600"
               />
             </div>
           </div>
@@ -585,7 +585,7 @@ export default function KeuanganPage() {
       {/* ── Daftar Ulang Tab ── */}
       {activeTab === "daftar-ulang" && (
         <div className="space-y-5">
-          <div className="bg-amber-50 border border-amber-200 rounded-xl px-5 py-3 text-sm text-amber-800 font-medium flex items-center gap-2">
+          <div className="bg-secondary-50 border border-secondary-200 rounded-xl px-5 py-3 text-sm text-secondary-800 font-medium flex items-center gap-2">
             <CreditCard className="w-4 h-4 shrink-0" />
             Menampilkan rekap santri yang <strong>diterima</strong> dan
             status pembayaran daftar ulang mereka.
@@ -600,7 +600,7 @@ export default function KeuanganPage() {
                 placeholder="Cari nama santri atau nomor pendaftaran..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-maroon-600"
+                className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary-600"
               />
             </div>
           </div>
@@ -656,14 +656,14 @@ export default function KeuanganPage() {
                                   ? "bg-emerald-100 text-emerald-700 border-emerald-200"
                                   : row.tipe_cicilan === "BELUM_BAYAR"
                                     ? "bg-red-50 text-red-600 border-red-100"
-                                    : "bg-blue-50 text-blue-600 border-blue-100"
+                                    : "bg-primary-50 text-primary-600 border-primary-100"
                               }`}
                             >
                               {row.tipe_cicilan.replace(/_/g, " ")}
                             </span>
                             {row.keringanan_reason && (
                               <div 
-                                className="mt-1 flex items-center gap-1 text-[9px] text-amber-700 font-black bg-amber-50 px-1.5 py-0.5 rounded border border-amber-100 uppercase tracking-tighter cursor-help"
+                                className="mt-1 flex items-center gap-1 text-[9px] text-secondary-700 font-black bg-secondary-50 px-1.5 py-0.5 rounded border border-secondary-100 uppercase tracking-tighter cursor-help"
                                 title={row.keringanan_reason}
                               >
                                 <AlertCircle className="w-2.5 h-2.5" />

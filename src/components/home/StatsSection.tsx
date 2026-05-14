@@ -147,16 +147,16 @@ function StatCard({
           className={[
             "relative mb-6 w-13 h-13 md:w-14 md:h-14 flex items-center justify-center rounded-xl shadow-xs",
             "transition-all duration-500 group-hover:scale-110",
-            isTeal ? "bg-teal-50 text-teal-700 group-hover:bg-teal-100" : "",
-            isSand ? "bg-sand-100 text-sand-700 group-hover:bg-sand-200" : "",
+            isTeal ? "bg-primary-50 text-primary-700 group-hover:bg-primary-100" : "",
+            isSand ? "bg-secondary-100 text-secondary-700 group-hover:bg-secondary-200" : "",
           ].join(" ")}
         >
           <Icon className="w-5 h-5 md:w-6 md:h-6" strokeWidth={1.75} />
           <div
             className={[
               "absolute inset-0 rounded-xl ring-0 transition-all duration-500",
-              isTeal ? "group-hover:ring-2 group-hover:ring-teal-200" : "",
-              isSand ? "group-hover:ring-2 group-hover:ring-sand-300" : "",
+              isTeal ? "group-hover:ring-2 group-hover:ring-primary-200" : "",
+              isSand ? "group-hover:ring-2 group-hover:ring-secondary-300" : "",
             ].join(" ")}
           />
         </div>
@@ -166,8 +166,8 @@ function StatCard({
           <span
             className={[
               "text-[2.625rem] md:text-[3.25rem] font-black leading-none tracking-[-0.04em]",
-              isTeal ? "text-teal-700" : "",
-              isSand ? "text-sand-700" : "",
+              isTeal ? "text-primary-700" : "",
+              isSand ? "text-secondary-700" : "",
             ].join(" ")}
           >
             <AnimatedCounter
@@ -180,8 +180,8 @@ function StatCard({
             <span
               className={[
                 "text-2xl md:text-3xl font-black leading-none tracking-[-0.03em]",
-                isTeal ? "text-teal-500" : "",
-                isSand ? "text-sand-500" : "",
+                isTeal ? "text-primary-500" : "",
+                isSand ? "text-secondary-500" : "",
               ].join(" ")}
             >
               {stat.suffix}
@@ -198,8 +198,8 @@ function StatCard({
         <p
           className={[
             "text-[0.6rem] md:text-[0.65rem] font-semibold tracking-wide mt-0.5",
-            isTeal ? "text-teal-500" : "",
-            isSand ? "text-sand-500" : "",
+            isTeal ? "text-primary-500" : "",
+            isSand ? "text-secondary-500" : "",
           ].join(" ")}
         >
           {stat.sublabel}
@@ -217,8 +217,8 @@ function StatCard({
         <div
           className={[
             "mt-5 h-[2px] w-6 rounded-full transition-all duration-500 group-hover:w-10",
-            isTeal ? "bg-teal-100 group-hover:bg-teal-500" : "",
-            isSand ? "bg-sand-200 group-hover:bg-sand-500" : "",
+            isTeal ? "bg-primary-100 group-hover:bg-primary-500" : "",
+            isSand ? "bg-secondary-200 group-hover:bg-secondary-500" : "",
           ].join(" ")}
         />
       </div>
@@ -236,7 +236,7 @@ export default function StatsSection() {
       className="relative py-16 md:py-24 bg-white border-b border-surface-200 overflow-hidden"
     >
       {/* CiroAI Background glows */}
-      <div className="glow-blob glow-blob-teal w-[600px] h-[600px] -top-[25%] right-0 translate-x-[20%]" aria-hidden="true" />
+      <div className="glow-blob glow-blob-primary w-[600px] h-[600px] -top-[25%] right-0 translate-x-[20%]" aria-hidden="true" />
       <div className="glow-blob glow-blob-gold w-[500px] h-[500px] -bottom-[25%] left-0 -translate-x-[20%]" aria-hidden="true" />
 
       <Container className="relative z-10">
@@ -258,23 +258,23 @@ export default function StatsSection() {
           >
             {/* CiroAI-style badges */}
             {/* Badge 1 — Pulse */}
-            <div className="section-label section-label-teal hover:bg-teal-50/50 cursor-default">
+            <div className="section-label section-label-primary hover:bg-primary-50/50 cursor-default">
               <span className="relative flex h-2 w-2 shrink-0">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-500" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary-500" />
               </span>
               <span>Pendaftaran Dibuka</span>
             </div>
 
             {/* Badge 2 — Akreditasi */}
-            <div className="section-label section-label-white border-sand-200 text-ink-700 bg-sand-50/50 hover:bg-sand-100/50 cursor-default">
-              <ShieldCheck className="w-3 h-3 shrink-0 text-sand-600" strokeWidth={2} />
+            <div className="section-label section-label-white border-secondary-200 text-ink-700 bg-secondary-50/50 hover:bg-secondary-100/50 cursor-default">
+              <ShieldCheck className="w-3 h-3 shrink-0 text-secondary-600" strokeWidth={2} />
               <span>Terakreditasi A — BAN-PDM</span>
             </div>
 
             {/* Badge 3 — School Network */}
-            <div className="section-label section-label-teal hover:bg-teal-50/50 cursor-default">
-              <TrendingUp className="w-3 h-3 shrink-0 text-teal-600" strokeWidth={2} />
+            <div className="section-label section-label-primary hover:bg-primary-50/50 cursor-default">
+              <TrendingUp className="w-3 h-3 shrink-0 text-primary-600" strokeWidth={2} />
               <span>{BRANDING.schoolNetwork}</span>
             </div>
           </motion.div>

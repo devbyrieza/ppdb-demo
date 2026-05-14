@@ -484,7 +484,7 @@ export default function JadwalUjianPage() {
                       <button
                         onClick={() => handleAssign(s.id)}
                         disabled={assigning || s.booked_count >= s.quota}
-                        className="w-full md:w-auto px-6 py-3 bg-gradient-to-br from-maroon-600 to-emerald-600 text-white rounded-xl font-black shadow-lg shadow-maroon-600/20 hover:scale-105 transition-all flex items-center justify-center gap-2 "
+                        className="w-full md:w-auto px-6 py-3 bg-gradient-to-br from-primary-600 to-emerald-600 text-white rounded-xl font-black shadow-lg shadow-primary-600/20 hover:scale-105 transition-all flex items-center justify-center gap-2 "
                       >
                         {assigning ? (
                           <Loader2 className="w-4 h-4 animate-spin" />
@@ -493,7 +493,7 @@ export default function JadwalUjianPage() {
                       </button>
                     ) : (
                       <div className="flex flex-col gap-3 w-full md:w-64 items-end">
-                        <div className="w-full bg-cream-100 h-2.5 rounded-full overflow-hidden border border-white">
+                        <div className="w-full bg-secondary-100 h-2.5 rounded-full overflow-hidden border border-white">
                           <div
                             className="h-full bg-gradient-to-r from-purple-500 to-indigo-600"
                             style={{
@@ -528,7 +528,7 @@ export default function JadwalUjianPage() {
           </h2>
 
           <div className="bg-white rounded-2xl shadow-clay-md border border-white/40 overflow-hidden flex flex-col h-[600px] sticky top-28">
-            <div className="p-4 border-b border-ink-100 bg-cream-50/50">
+            <div className="p-4 border-b border-ink-100 bg-secondary-50/50">
               <div className="relative">
                 <Search className="absolute left-3 top-2.5 w-4 h-4 text-ink-400" />
                 <input
@@ -560,7 +560,7 @@ export default function JadwalUjianPage() {
                     className={`p-4 rounded-xl border transition-all cursor-pointer flex items-center justify-between group ${
                       selectedPendaftarId === p.id
                         ? "bg-indigo-50 border-indigo-200 shadow-inner"
-                        : "bg-white border-transparent hover:bg-cream-50"
+                        : "bg-white border-transparent hover:bg-secondary-50"
                     }`}
                   >
                     <div className="min-w-0">
@@ -608,7 +608,7 @@ export default function JadwalUjianPage() {
                   <button
                     type="button"
                     onClick={() => setShowAddSession(false)}
-                    className="p-2 hover:bg-cream-100 rounded-lg transition-colors"
+                    className="p-2 hover:bg-secondary-100 rounded-lg transition-colors"
                   >
                     <AlertCircle className="w-5 h-5 text-ink-400 rotate-45" />
                   </button>
@@ -626,7 +626,7 @@ export default function JadwalUjianPage() {
                         setNewSession({ ...newSession, title: e.target.value })
                       }
                       placeholder="Contoh: Gelombang 1 - Sesi Pagi"
-                      className="w-full bg-cream-50 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-purple-500/10 outline-none font-bold"
+                      className="w-full bg-secondary-50 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-purple-500/10 outline-none font-bold"
                     />
                   </div>
 
@@ -645,7 +645,7 @@ export default function JadwalUjianPage() {
                             start_time: e.target.value,
                           })
                         }
-                        className="w-full bg-cream-50 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-purple-500/10 outline-none font-bold"
+                        className="w-full bg-secondary-50 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-purple-500/10 outline-none font-bold"
                       />
                     </div>
                     <div>
@@ -662,7 +662,7 @@ export default function JadwalUjianPage() {
                             end_time: e.target.value,
                           })
                         }
-                        className="w-full bg-cream-50 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-purple-500/10 outline-none font-bold"
+                        className="w-full bg-secondary-50 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-purple-500/10 outline-none font-bold"
                       />
                     </div>
                   </div>
@@ -682,7 +682,7 @@ export default function JadwalUjianPage() {
                             quota: parseInt(e.target.value),
                           })
                         }
-                        className="w-full bg-cream-50 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-purple-500/10 outline-none font-bold"
+                        className="w-full bg-secondary-50 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-purple-500/10 outline-none font-bold"
                       />
                     </div>
                     <div>
@@ -699,7 +699,7 @@ export default function JadwalUjianPage() {
                           })
                         }
                         placeholder="Contoh: Ruang CBT atau Online"
-                        className="w-full bg-cream-50 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-purple-500/10 outline-none font-bold"
+                        className="w-full bg-secondary-50 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-purple-500/10 outline-none font-bold"
                       />
                     </div>
                   </div>
@@ -724,7 +724,7 @@ export default function JadwalUjianPage() {
                 <button
                   type="button"
                   onClick={() => setShowAddSession(false)}
-                  className="flex-1 py-4 bg-cream-100 hover:bg-cream-200 text-ink-600 rounded-2xl font-black transition-all"
+                  className="flex-1 py-4 bg-secondary-100 hover:bg-secondary-200 text-ink-600 rounded-2xl font-black transition-all"
                 >
                   Batal
                 </button>
@@ -752,7 +752,7 @@ export default function JadwalUjianPage() {
               JANGAN TUTUP HALAMAN INI!
             </p>
 
-            <div className="w-full bg-cream-100 h-4 rounded-full overflow-hidden mb-4 border border-ink-100">
+            <div className="w-full bg-secondary-100 h-4 rounded-full overflow-hidden mb-4 border border-ink-100">
               <div
                 className="h-full bg-gradient-to-r from-purple-500 to-indigo-600 transition-all duration-500 ease-out"
                 style={{
@@ -765,7 +765,7 @@ export default function JadwalUjianPage() {
               {sendingProgress.curr} / {sendingProgress.total}
             </p>
 
-            <div className="bg-cream-50 rounded-xl p-4 text-left h-32 overflow-hidden flex flex-col-reverse gap-1 border border-ink-100">
+            <div className="bg-secondary-50 rounded-xl p-4 text-left h-32 overflow-hidden flex flex-col-reverse gap-1 border border-ink-100">
               {sendingProgress.logs.map((log, idx) => (
                 <p
                   key={idx}
@@ -790,7 +790,7 @@ export default function JadwalUjianPage() {
                 </h2>
                 <button
                   onClick={() => setShowBroadcastModal(false)}
-                  className="p-2 hover:bg-cream-100 rounded-lg"
+                  className="p-2 hover:bg-secondary-100 rounded-lg"
                 >
                   <AlertCircle className="w-5 h-5 text-ink-400 rotate-45" />
                 </button>
@@ -814,7 +814,7 @@ export default function JadwalUjianPage() {
                 </div>
 
                 <div
-                  className="flex items-center gap-3 p-4 bg-cream-50 rounded-2xl cursor-pointer"
+                  className="flex items-center gap-3 p-4 bg-secondary-50 rounded-2xl cursor-pointer"
                   onClick={() => setResetFlags(!resetFlags)}
                 >
                   <div
@@ -834,9 +834,9 @@ export default function JadwalUjianPage() {
                   </div>
                 </div>
 
-                <div className="bg-amber-50 rounded-xl p-4 border border-amber-100 flex items-start gap-3">
-                  <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-                  <p className="text-[11px] text-amber-800 leading-relaxed font-bold">
+                <div className="bg-secondary-50 rounded-xl p-4 border border-secondary-100 flex items-start gap-3">
+                  <AlertCircle className="w-5 h-5 text-secondary-600 shrink-0 mt-0.5" />
+                  <p className="text-[11px] text-secondary-800 leading-relaxed font-bold">
                     Pesan akan masuk antrean (Queue) untuk mencegah BAN.
                     Pengiriman dilakukan secara perlahan oleh sistem.
                   </p>
@@ -846,7 +846,7 @@ export default function JadwalUjianPage() {
               <div className="flex gap-3">
                 <button
                   onClick={() => setShowBroadcastModal(false)}
-                  className="flex-1 py-4 bg-cream-100 hover:bg-cream-200 text-ink-600 rounded-2xl font-black transition-all"
+                  className="flex-1 py-4 bg-secondary-100 hover:bg-secondary-200 text-ink-600 rounded-2xl font-black transition-all"
                 >
                   Batal
                 </button>

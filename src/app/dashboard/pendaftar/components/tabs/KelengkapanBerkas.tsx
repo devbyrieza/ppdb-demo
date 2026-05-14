@@ -94,7 +94,7 @@ function getStatusColor(status: DokumenStatus) {
     case "verified":
       return "text-emerald-600 bg-emerald-50";
     case "uploaded":
-      return "text-blue-600 bg-blue-50";
+      return "text-primary-600 bg-primary-50";
     case "rejected":
       return "text-red-600 bg-red-50";
     default:
@@ -212,14 +212,14 @@ function DokumenCard({
     <div
       className={`card-glass transition-all duration-300 overflow-hidden ${
         isDragging
-          ? "border-teal-600 bg-teal-50/50 scale-[1.02]"
+          ? "border-primary-600 bg-primary-50/50 scale-[1.02]"
           : dokumen.status === "verified"
             ? "border-emerald-200"
             : dokumen.status === "rejected"
               ? "border-red-200"
               : dokumen.status === "uploaded"
-                ? "border-teal-200"
-                : "border-white/40 hover:border-teal-300"
+                ? "border-primary-200"
+                : "border-white/40 hover:border-primary-300"
       }`}
     >
       <div
@@ -239,7 +239,7 @@ function DokumenCard({
               <div className="flex items-center gap-2 mb-1">
                 <h4 className="font-bold text-ink-900">{dokumen.label}</h4>
                 {dokumen.required ? (
-                  <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-700 rounded-lg">
+                  <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-secondary-100 text-secondary-700 rounded-lg">
                     Wajib
                   </span>
                 ) : (
@@ -260,7 +260,7 @@ function DokumenCard({
                   e.stopPropagation();
                   onPreview();
                 }}
-                className="p-2 text-ink-600 hover:text-teal-700 hover:bg-teal-50 rounded-xl transition-colors"
+                className="p-2 text-ink-600 hover:text-primary-700 hover:bg-primary-50 rounded-xl transition-colors"
                 title="Lihat Dokumen"
               >
                 <Eye className="w-5 h-5" />
@@ -277,14 +277,14 @@ function DokumenCard({
         {isUploading && (
           <div className="mt-4">
             <div className="flex items-center justify-between text-xs font-bold mb-2">
-              <span className="text-teal-700 uppercase tracking-widest">
+              <span className="text-primary-700 uppercase tracking-widest">
                 MENGUPLOAD...
               </span>
               <span className="text-ink-600">{uploadProgress}%</span>
             </div>
             <div className="h-2 bg-surface-200 rounded-full overflow-hidden">
               <div
-                className="h-full bg-linear-to-r from-teal-500 to-teal-700 rounded-full transition-all duration-300"
+                className="h-full bg-linear-to-r from-primary-500 to-primary-700 rounded-full transition-all duration-300"
                 style={{ width: `${uploadProgress}%` }}
               />
             </div>
@@ -351,8 +351,8 @@ function DokumenCard({
           <div
             className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-all cursor-pointer group ${
               isDragging
-                ? "border-teal-600 bg-teal-50"
-                : "border-ink-200 hover:border-teal-400 hover:bg-surface-50"
+                ? "border-primary-600 bg-primary-50"
+                : "border-ink-200 hover:border-primary-400 hover:bg-surface-50"
             } ${isUploading ? "pointer-events-none opacity-50" : ""}`}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
@@ -368,10 +368,10 @@ function DokumenCard({
             />
             <div className="flex flex-col items-center gap-4">
               {isUploading ? (
-                <Loader2 className="w-10 h-10 text-teal-500 animate-spin" />
+                <Loader2 className="w-10 h-10 text-primary-500 animate-spin" />
               ) : (
-                <div className="w-14 h-14 bg-teal-50 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                  <Upload className="w-7 h-7 text-teal-700" />
+                <div className="w-14 h-14 bg-primary-50 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <Upload className="w-7 h-7 text-primary-700" />
                 </div>
               )}
               <div>
@@ -684,7 +684,7 @@ export default function KelengkapanBerkasTab() {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <Loader2 className="w-10 h-10 text-teal-500 animate-spin mx-auto mb-4" />
+          <Loader2 className="w-10 h-10 text-primary-500 animate-spin mx-auto mb-4" />
           <p className="text-ink-600 font-medium">Memuat data dokumen...</p>
         </div>
       </div>
@@ -743,24 +743,24 @@ export default function KelengkapanBerkasTab() {
         </div>
       )}
       {/* Header Banner */}
-      <div className="relative overflow-hidden rounded-[2rem] bg-linear-to-br from-teal-700 to-teal-900 border border-teal-600 p-8 md:p-10 text-white shadow-lg app-card">
-        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-sand-50/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+      <div className="relative overflow-hidden rounded-[2rem] bg-linear-to-br from-primary-700 to-primary-900 border border-primary-600 p-8 md:p-10 text-white shadow-lg app-card">
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-secondary-50/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         <div className="relative z-10 flex items-start md:items-center gap-6">
           <div className="w-16 h-16 rounded-[1.5rem] bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-sm shrink-0">
-            <ClipboardList className="w-8 h-8 text-sand-100" />
+            <ClipboardList className="w-8 h-8 text-secondary-100" />
           </div>
           <div>
             <h1 className="text-2xl md:text-3xl font-black mb-2 tracking-tight text-white font-display">
               Kelengkapan Data
             </h1>
-            <p className="text-sand-100/90 font-medium max-w-xl text-sm md:text-base">
+            <p className="text-secondary-100/90 font-medium max-w-xl text-sm md:text-base">
               Lengkapi biodata diri santri dan orang tua untuk melanjutkan
               proses pendaftaran.
             </p>
           </div>
         </div>
       </div>
-      <div className="bg-sand-50 border border-sand-200 p-2 rounded-full flex flex-wrap gap-1 shadow-sm mx-auto max-w-xl">
+      <div className="bg-secondary-50 border border-secondary-200 p-2 rounded-full flex flex-wrap gap-1 shadow-sm mx-auto max-w-xl">
         {[
           { id: "isi-data", label: "Isi Data Lengkap", icon: User },
           { id: "data", label: "Lihat Data", icon: Eye },
@@ -773,12 +773,12 @@ export default function KelengkapanBerkasTab() {
               onClick={() => setActiveTab(tab.id as TabType)}
               className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-pill text-sm font-black transition-all duration-300 group ${
                 isActive
-                  ? "bg-teal-700 text-white shadow-md"
-                  : "text-ink-600 hover:bg-sand-100 hover:text-teal-800"
+                  ? "bg-primary-700 text-white shadow-md"
+                  : "text-ink-600 hover:bg-secondary-100 hover:text-primary-800"
               }`}
             >
               <Icon
-                className={`w-5 h-5 transition-colors ${isActive ? "text-sand-200" : "text-ink-600 group-hover:text-teal-800"}`}
+                className={`w-5 h-5 transition-colors ${isActive ? "text-secondary-200" : "text-ink-600 group-hover:text-primary-800"}`}
               />
               <span className="whitespace-nowrap">{tab.label}</span>
             </button>
@@ -802,12 +802,12 @@ export default function KelengkapanBerkasTab() {
 
       {/* Tab: Lihat Data */}
       {activeTab === "data" && (
-        <div className="glass-panel p-8 rounded-[2rem] shadow-sm border border-sand-200 app-card">
+        <div className="glass-panel p-8 rounded-[2rem] shadow-sm border border-secondary-200 app-card">
           {dataPendaftaran ? (
             <div className="space-y-8">
               <div className="flex items-center gap-4 mb-2">
-                <div className="w-12 h-12 bg-sand-100 rounded-2xl flex items-center justify-center">
-                  <FileText className="w-6 h-6 text-teal-700" />
+                <div className="w-12 h-12 bg-secondary-100 rounded-2xl flex items-center justify-center">
+                  <FileText className="w-6 h-6 text-primary-700" />
                 </div>
                 <div>
                   <h2 className="text-xl font-bold text-ink-900">
@@ -824,7 +824,7 @@ export default function KelengkapanBerkasTab() {
                   <p className="text-[10px] font-black text-ink-600 uppercase tracking-[0.2em] mb-1">
                     Nomor Pendaftaran
                   </p>
-                  <p className="text-xl font-black text-teal-700 font-mono">
+                  <p className="text-xl font-black text-primary-700 font-mono">
                     {dataPendaftaran.nomor_pendaftaran}
                   </p>
                 </div>
@@ -853,7 +853,7 @@ export default function KelengkapanBerkasTab() {
                 {/* 1. Identitas Lengkap */}
                 <div className="bg-white border border-ink-100 rounded-[2rem] overflow-hidden shadow-sm">
                   <div className="bg-surface-50 px-6 py-4 border-b border-ink-100 flex items-center gap-3">
-                    <User className="w-5 h-5 text-teal-700" />
+                    <User className="w-5 h-5 text-primary-700" />
                     <h3 className="font-bold text-ink-900 text-sm uppercase tracking-wider">
                       Identitas & Fisik
                     </h3>
@@ -918,7 +918,7 @@ export default function KelengkapanBerkasTab() {
                 {/* 2. Sekolah Asal */}
                 <div className="bg-white border border-ink-100 rounded-[2rem] overflow-hidden shadow-sm">
                   <div className="bg-surface-50 px-6 py-4 border-b border-ink-100 flex items-center gap-3">
-                    <School className="w-5 h-5 text-teal-700" />
+                    <School className="w-5 h-5 text-primary-700" />
                     <h3 className="font-bold text-ink-900 text-sm uppercase tracking-wider">
                       Sekolah Asal
                     </h3>
@@ -956,7 +956,7 @@ export default function KelengkapanBerkasTab() {
                 {/* 3. Orang Tua / Wali */}
                 <div className="bg-white border border-ink-100 rounded-[2rem] overflow-hidden shadow-sm">
                   <div className="bg-surface-50 px-6 py-4 border-b border-ink-100 flex items-center gap-3">
-                    <Users className="w-5 h-5 text-teal-700" />
+                    <Users className="w-5 h-5 text-primary-700" />
                     <h3 className="font-bold text-ink-900 text-sm uppercase tracking-wider">
                       Orang Tua / Wali
                     </h3>
@@ -1188,13 +1188,13 @@ export default function KelengkapanBerkasTab() {
               </div>
 
               {!isDataComplete ? (
-                <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl flex gap-3">
-                  <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                <div className="p-4 bg-secondary-50 border border-secondary-200 rounded-xl flex gap-3">
+                  <AlertCircle className="w-5 h-5 text-secondary-600 shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-sm font-bold text-amber-800">
+                    <p className="text-sm font-bold text-secondary-800">
                       Data Belum Lengkap
                     </p>
-                    <p className="text-sm text-amber-700 mt-1">
+                    <p className="text-sm text-secondary-700 mt-1">
                       Anda belum mengisi seluruh data yang wajib diisi pada tab{" "}
                       <strong>Isi Data Lengkap</strong>. Bagian yang belum
                       lengkap:{" "}
@@ -1235,7 +1235,7 @@ export default function KelengkapanBerkasTab() {
                     setActiveTab("isi-data");
                     window.scrollTo({ top: 0, behavior: "smooth" });
                   }}
-                  className="w-full sm:w-auto py-3 px-8 rounded-xl text-lg font-bold border-2 border-teal-600 text-teal-700 hover:bg-teal-50 transition-all"
+                  className="w-full sm:w-auto py-3 px-8 rounded-xl text-lg font-bold border-2 border-primary-600 text-primary-700 hover:bg-primary-50 transition-all"
                 >
                   Kembali Edit Data
                 </button>
@@ -1245,7 +1245,7 @@ export default function KelengkapanBerkasTab() {
                   onClick={() => setShowConfirmModal(true)}
                   className={`w-full sm:w-auto py-3 px-10 rounded-xl text-lg font-black shadow-lg transition-all flex items-center justify-center gap-2 ${
                     isDataComplete
-                      ? "bg-sand-400 hover:bg-sand-300 text-teal-950 shadow-sand-400/20 border border-sand-500"
+                      ? "bg-secondary-400 hover:bg-secondary-300 text-primary-950 shadow-secondary-400/20 border border-secondary-500"
                       : "bg-stone-200 text-stone-600 cursor-not-allowed shadow-none"
                   }`}
                 >
@@ -1270,8 +1270,8 @@ export default function KelengkapanBerkasTab() {
       {showConfirmModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-ink-900/60 backdrop-blur-sm animate-in fade-in duration-200">
           <div className="bg-white rounded-[2rem] shadow-2xl max-w-md w-full overflow-hidden animate-in zoom-in-95 duration-200 p-8 text-center relative">
-            <div className="w-20 h-20 bg-amber-50 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-inner border border-amber-100 rotate-3">
-              <AlertTriangle className="w-10 h-10 text-amber-500" />
+            <div className="w-20 h-20 bg-secondary-50 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-inner border border-secondary-100 rotate-3">
+              <AlertTriangle className="w-10 h-10 text-secondary-500" />
             </div>
 
             <h3 className="text-2xl font-black text-ink-900 mb-3 tracking-tight">
@@ -1280,7 +1280,7 @@ export default function KelengkapanBerkasTab() {
 
             <p className="text-ink-600 mb-8 leading-relaxed">
               Apakah Anda yakin seluruh data sudah benar?
-              <span className="block mt-2 p-3 bg-amber-50 rounded-xl text-amber-700 text-sm font-bold border border-amber-100">
+              <span className="block mt-2 p-3 bg-secondary-50 rounded-xl text-secondary-700 text-sm font-bold border border-secondary-100">
                 ⚠️ Data yang sudah dikonfirmasi tidak dapat diubah kembali.
               </span>
             </p>
@@ -1318,7 +1318,7 @@ export default function KelengkapanBerkasTab() {
                   }
                 }}
                 disabled={loading}
-                className="flex-1 py-3.5 px-4 rounded-xl bg-linear-to-r from-sand-400 to-sand-500 text-teal-950 font-black hover:shadow-lg hover:shadow-sand-400/30 transition-all active:scale-95 flex items-center justify-center gap-2 disabled:opacity-70 disabled:active:scale-100"
+                className="flex-1 py-3.5 px-4 rounded-xl bg-linear-to-r from-secondary-400 to-secondary-500 text-primary-950 font-black hover:shadow-lg hover:shadow-secondary-400/30 transition-all active:scale-95 flex items-center justify-center gap-2 disabled:opacity-70 disabled:active:scale-100"
               >
                 {loading ? (
                   <Loader2 className="w-5 h-5 animate-spin" />

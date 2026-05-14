@@ -80,21 +80,21 @@ export default function ProgressTracker({
     <div className="bg-white rounded-[2.5rem] p-8 md:p-12 border border-stone-100 shadow-2xl shadow-stone-200/50 overflow-hidden relative group text-left">
       {/* Decorative Background Icons */}
       <div className="absolute -top-10 -right-10 opacity-[0.03] rotate-12 pointer-events-none">
-        <GraduationCap size={300} className="text-teal-900" />
+        <GraduationCap size={300} className="text-primary-900" />
       </div>
 
       <div className="relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-teal-50 rounded-full border border-teal-100 mb-2">
-              <span className="w-2 h-2 rounded-full bg-teal-600 animate-pulse" />
-              <span className="text-[10px] font-black uppercase tracking-widest text-teal-700">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary-50 rounded-full border border-primary-100 mb-2">
+              <span className="w-2 h-2 rounded-full bg-primary-600 animate-pulse" />
+              <span className="text-[10px] font-black uppercase tracking-widest text-primary-700">
                 Roadmap Pendaftaran
               </span>
             </div>
-            <h3 className="text-3xl md:text-4xl font-black text-teal-950 tracking-tight leading-none italic">
+            <h3 className="text-3xl md:text-4xl font-black text-primary-950 tracking-tight leading-none italic">
               Pantau{" "}
-              <span className="text-teal-700 not-italic">Progres Anda.</span>
+              <span className="text-primary-700 not-italic">Progres Anda.</span>
             </h3>
             <p className="text-stone-400 font-medium text-sm italic italic">
               "Ikuti setiap langkahnya hingga Ananda resmi menjadi bagian dari kami."
@@ -104,7 +104,7 @@ export default function ProgressTracker({
             <p className="text-[9px] font-black uppercase text-stone-400 tracking-widest mb-1">
               POSISI SEKARANG
             </p>
-            <p className="font-black text-teal-900 flex items-center gap-2 justify-end">
+            <p className="font-black text-primary-900 flex items-center gap-2 justify-end">
               <span className="w-2 h-2 rounded-full bg-emerald-500" />
               {statusInfo.label}
             </p>
@@ -116,7 +116,7 @@ export default function ProgressTracker({
           {/* Main Connector Line (Desktop) */}
           <div className="absolute top-10 left-0 w-full h-1 bg-stone-100 rounded-full hidden md:block overflow-hidden">
             <motion.div
-              className="h-full bg-linear-to-r from-teal-600 to-teal-800"
+              className="h-full bg-linear-to-r from-primary-600 to-primary-800"
               initial={{ width: 0 }}
               animate={{ width: `${progressPercentage}%` }}
               transition={{ duration: 1.5, ease: "easeOut" }}
@@ -142,9 +142,9 @@ export default function ProgressTracker({
                       whileHover={{ scale: 1.1 }}
                       className={`w-14 h-14 md:w-20 md:h-20 rounded-[1.5rem] md:rounded-[2rem] flex items-center justify-center relative z-10 transition-all duration-500 border-4 ${
                         isCompleted
-                          ? "bg-teal-700 border-white text-white shadow-xl shadow-teal/20"
+                          ? "bg-primary-700 border-white text-white shadow-xl shadow-primary/20"
                           : isCurrent
-                            ? "bg-white border-teal-700 text-teal-700 shadow-2xl shadow-teal/10 scale-110"
+                            ? "bg-white border-primary-700 text-primary-700 shadow-2xl shadow-primary/10 scale-110"
                             : "bg-white border-stone-100 text-stone-200"
                       }`}
                     >
@@ -162,7 +162,7 @@ export default function ProgressTracker({
                           isCompleted
                             ? "bg-emerald-500 border-white text-white"
                             : isCurrent
-                              ? "bg-teal-700 border-white text-white"
+                              ? "bg-primary-700 border-white text-white"
                               : "bg-stone-200 border-white text-stone-500"
                         }`}
                       >
@@ -175,9 +175,9 @@ export default function ProgressTracker({
                       <h4
                         className={`text-sm md:text-lg font-black tracking-tight leading-none mb-1 transition-colors ${
                           isCompleted
-                            ? "text-teal-900"
+                            ? "text-primary-900"
                             : isCurrent
-                              ? "text-teal-800"
+                              ? "text-primary-800"
                               : "text-stone-300"
                         }`}
                       >
@@ -186,7 +186,7 @@ export default function ProgressTracker({
                       <p
                         className={`text-[10px] md:text-xs font-bold transition-all ${
                           isCompleted || isCurrent
-                            ? "text-teal-700/60"
+                            ? "text-primary-700/60"
                             : "text-stone-300"
                         }`}
                       >

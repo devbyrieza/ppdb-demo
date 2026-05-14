@@ -75,7 +75,7 @@ export default function DataPendaftaranTab() {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center h-64 space-y-4">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-maroon-700"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-700"></div>
         <p className="text-stone-600">Memuat data pendaftaran...</p>
       </div>
     );
@@ -85,11 +85,11 @@ export default function DataPendaftaranTab() {
     <div className="space-y-6">
       {/* Notifikasi jika pakai dummy data */}
       {isDummyData && (
-        <div className="bg-amber-50 border-2 border-amber-200 rounded-xl p-4">
+        <div className="bg-secondary-50 border-2 border-secondary-200 rounded-xl p-4">
           <div className="flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+            <AlertCircle className="w-5 h-5 text-secondary-600 flex-shrink-0 mt-0.5" />
             <div>
-              <p className="text-sm text-amber-800">
+              <p className="text-sm text-secondary-800">
                 <span className="font-bold">Info:</span> Menampilkan data
                 contoh. Untuk data real, pastikan API endpoint terhubung dengan
                 database.
@@ -100,11 +100,11 @@ export default function DataPendaftaranTab() {
       )}
 
       {/* Header */}
-      <div className="bg-gradient-to-r from-maroon-600 to-maroon-700 rounded-2xl p-6 text-white">
+      <div className="bg-gradient-to-r from-primary-600 to-primary-700 rounded-2xl p-6 text-white">
         <div className="flex flex-col md:flex-row md:items-center justify-between">
           <div>
             <h1 className="text-2xl font-black">Data Pendaftaran</h1>
-            <p className="text-cream-100">
+            <p className="text-secondary-100">
               Kelola data dan dokumen pendaftaran Anda
             </p>
           </div>
@@ -117,7 +117,7 @@ export default function DataPendaftaranTab() {
                   "info",
                 )
               }
-              className="inline-flex items-center gap-2 px-5 py-3 bg-white text-maroon-800 font-bold rounded-xl hover:bg-maroon-50 transition-all"
+              className="inline-flex items-center gap-2 px-5 py-3 bg-white text-primary-800 font-bold rounded-xl hover:bg-primary-50 transition-all"
             >
               <Edit className="w-4 h-4" />
               Lengkapi Data
@@ -146,8 +146,8 @@ export default function DataPendaftaranTab() {
 
         <div className="bg-white rounded-xl p-4 border-2 border-stone-200 shadow-sm">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-              <FileText className="w-6 h-6 text-blue-600" />
+            <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center">
+              <FileText className="w-6 h-6 text-primary-600" />
             </div>
             <div>
               <p className="text-sm text-stone-600">Dokumen</p>
@@ -158,8 +158,8 @@ export default function DataPendaftaranTab() {
 
         <div className="bg-white rounded-xl p-4 border-2 border-stone-200 shadow-sm">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
-              <CreditCard className="w-6 h-6 text-amber-600" />
+            <div className="w-12 h-12 bg-secondary-100 rounded-xl flex items-center justify-center">
+              <CreditCard className="w-6 h-6 text-secondary-600" />
             </div>
             <div>
               <p className="text-sm text-stone-600">Pembayaran</p>
@@ -185,7 +185,7 @@ export default function DataPendaftaranTab() {
       <div className="bg-white rounded-xl p-6 border-2 border-stone-200 shadow-sm">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-bold text-stone-900">📋 Data Pribadi</h2>
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-cream-100 text-maroon-900">
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-secondary-100 text-primary-900">
             <Clock className="w-3 h-3 mr-1" />
             Perlu dilengkapi
           </span>
@@ -224,7 +224,7 @@ export default function DataPendaftaranTab() {
               <label className="block text-sm font-medium text-stone-600 mb-1">
                 Jenjang
               </label>
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-amber-100 text-amber-800">
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-secondary-100 text-secondary-800">
                 {pendaftarData?.jenjang || "MTs"}
               </span>
             </div>
@@ -232,7 +232,7 @@ export default function DataPendaftaranTab() {
               <label className="block text-sm font-medium text-stone-600 mb-1">
                 Nomor Pendaftaran
               </label>
-              <p className="text-stone-900 font-medium font-mono text-xl text-maroon-700">
+              <p className="text-stone-900 font-medium font-mono text-xl text-primary-700">
                 {pendaftarData?.nomor_pendaftaran}
               </p>
             </div>
@@ -253,14 +253,14 @@ export default function DataPendaftaranTab() {
         {/* Step 1: Pembayaran */}
         <Link
           href="/dashboard/pendaftar/pembayaran-pendaftaran"
-          className="group bg-white rounded-xl p-6 border-2 border-stone-200 hover:border-amber-300 hover:shadow-lg transition-all duration-300"
+          className="group bg-white rounded-xl p-6 border-2 border-stone-200 hover:border-secondary-300 hover:shadow-lg transition-all duration-300"
         >
           <div className="flex flex-col gap-3">
             <div className="flex items-center justify-between">
-              <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center group-hover:bg-amber-200 transition-colors">
-                <CreditCard className="w-6 h-6 text-amber-600" />
+              <div className="w-12 h-12 bg-secondary-100 rounded-xl flex items-center justify-center group-hover:bg-secondary-200 transition-colors">
+                <CreditCard className="w-6 h-6 text-secondary-600" />
               </div>
-              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700">
+              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-secondary-100 text-secondary-700">
                 Tahap 1 - Wajib
               </span>
             </div>
@@ -271,7 +271,7 @@ export default function DataPendaftaranTab() {
                   Bayar biaya pendaftaran Rp 200.000
                 </p>
               </div>
-              <ChevronRight className="w-5 h-5 text-stone-400 group-hover:text-amber-500" />
+              <ChevronRight className="w-5 h-5 text-stone-400 group-hover:text-secondary-500" />
             </div>
           </div>
         </Link>
@@ -279,14 +279,14 @@ export default function DataPendaftaranTab() {
         {/* Step 2: Isi Data Lengkap */}
         <Link
           href="/dashboard/pendaftar/kelengkapan-berkas"
-          className="group bg-white rounded-xl p-6 border-2 border-stone-200 hover:border-maroon-300 hover:shadow-lg transition-all duration-300"
+          className="group bg-white rounded-xl p-6 border-2 border-stone-200 hover:border-primary-300 hover:shadow-lg transition-all duration-300"
         >
           <div className="flex flex-col gap-3">
             <div className="flex items-center justify-between">
-              <div className="w-12 h-12 bg-cream-100 rounded-xl flex items-center justify-center group-hover:bg-cream-200 transition-colors">
-                <User className="w-6 h-6 text-maroon-700" />
+              <div className="w-12 h-12 bg-secondary-100 rounded-xl flex items-center justify-center group-hover:bg-secondary-200 transition-colors">
+                <User className="w-6 h-6 text-primary-700" />
               </div>
-              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-cream-100 text-maroon-800">
+              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-secondary-100 text-primary-800">
                 Tahap 2
               </span>
             </div>
@@ -299,7 +299,7 @@ export default function DataPendaftaranTab() {
                   Lengkapi data diri calon santri
                 </p>
               </div>
-              <ChevronRight className="w-5 h-5 text-stone-400 group-hover:text-maroon-500" />
+              <ChevronRight className="w-5 h-5 text-stone-400 group-hover:text-primary-500" />
             </div>
           </div>
         </Link>
@@ -340,11 +340,11 @@ export default function DataPendaftaranTab() {
         </h2>
         <div className="space-y-4">
           {[
-            { label: "1. Pembayaran", progress: 0, color: "bg-amber-500" },
+            { label: "1. Pembayaran", progress: 0, color: "bg-secondary-500" },
             {
               label: "2. Isi Data Lengkap",
               progress: 60,
-              color: "bg-maroon-500",
+              color: "bg-primary-500",
             },
             { label: "3. Upload Dokumen", progress: 0, color: "bg-green-500" },
             { label: "4. Verifikasi", progress: 0, color: "bg-purple-500" },

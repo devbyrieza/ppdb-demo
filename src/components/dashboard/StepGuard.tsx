@@ -81,7 +81,7 @@ export default function StepGuard({
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 animate-spin text-teal-600 mx-auto mb-4" />
+          <Loader2 className="w-12 h-12 animate-spin text-primary-600 mx-auto mb-4" />
           <p className="text-stone-600">Memeriksa akses...</p>
         </div>
       </div>
@@ -97,8 +97,8 @@ export default function StepGuard({
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="max-w-md w-full mx-auto text-center px-4">
           {/* Lock Icon */}
-          <div className="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <Lock className="w-10 h-10 text-amber-600" />
+          <div className="w-20 h-20 bg-secondary-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <Lock className="w-10 h-10 text-secondary-600" />
           </div>
 
           {/* Title */}
@@ -110,7 +110,7 @@ export default function StepGuard({
           <p className="text-stone-600 mb-6">{unlockMessage}</p>
 
           {/* Current Status */}
-          <div className="bg-white rounded-xl p-4 border-2 border-amber-200 mb-6">
+          <div className="bg-white rounded-xl p-4 border-2 border-secondary-200 mb-6">
             <p className="text-sm text-stone-500 mb-2">Status Anda saat ini:</p>
             <span
               className={`inline-block px-4 py-2 rounded-lg text-sm font-bold ${statusInfo.color}`}
@@ -121,14 +121,14 @@ export default function StepGuard({
 
           {/* Next Step */}
           {nextStep && (
-            <div className="bg-teal-50 rounded-xl p-4 border-2 border-teal-200 mb-6">
+            <div className="bg-primary-50 rounded-xl p-4 border-2 border-primary-200 mb-6">
               <div className="flex items-start gap-3">
-                <AlertCircle className="w-5 h-5 text-teal-600 flex-shrink-0 mt-0.5" />
+                <AlertCircle className="w-5 h-5 text-primary-600 flex-shrink-0 mt-0.5" />
                 <div className="text-left">
-                  <p className="text-sm font-bold text-teal-900">
+                  <p className="text-sm font-bold text-primary-900">
                     Langkah selanjutnya:
                   </p>
-                  <p className="text-sm text-teal-700">{nextStep.action}</p>
+                  <p className="text-sm text-primary-700">{nextStep.action}</p>
                 </div>
               </div>
             </div>
@@ -137,7 +137,7 @@ export default function StepGuard({
           {/* Back Button */}
           <Link
             href={redirectOnFail}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-xl transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
             Kembali ke Beranda

@@ -133,7 +133,7 @@ export default function VerifikasiManualPage() {
             </div>
             <button
               onClick={fetchPending}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
+              className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 flex items-center gap-2"
             >
               <RefreshCw
                 className={`w-4 h-4 ${refreshing ? "animate-spin" : ""}`}
@@ -159,7 +159,7 @@ export default function VerifikasiManualPage() {
                   {/* Info Pendaftar */}
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+                      <span className="px-3 py-1 bg-primary-100 text-primary-800 rounded-full text-sm">
                         {item.tahun_ajaran.nama}
                       </span>
                       <span className="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm">
@@ -179,8 +179,8 @@ export default function VerifikasiManualPage() {
                   </div>
 
                   {/* Kode OTP */}
-                  <div className="bg-blue-50 rounded-lg p-4 min-w-[200px]">
-                    <div className="text-sm text-blue-800 mb-1">
+                  <div className="bg-primary-50 rounded-lg p-4 min-w-[200px]">
+                    <div className="text-sm text-primary-800 mb-1">
                       KODE VERIFIKASI
                     </div>
                     <div className="flex items-center justify-between">
@@ -213,7 +213,7 @@ export default function VerifikasiManualPage() {
                       </button>
                       <button
                         onClick={() => markAsSent(item.id)}
-                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
+                        className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 flex items-center gap-2"
                       >
                         <CheckCircle className="w-4 h-4" />
                         Tandai Sudah Dikirim

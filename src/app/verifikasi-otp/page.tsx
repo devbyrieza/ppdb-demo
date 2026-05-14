@@ -207,17 +207,17 @@ function VerifikasiOTPContent() {
   }, [otpCode]);
 
   return (
-    <div className="app-card max-w-md w-full bg-white rounded-[2.5rem] shadow-lg border border-sand-200 p-8 relative z-10">
+    <div className="app-card max-w-md w-full bg-white rounded-[2.5rem] shadow-lg border border-secondary-200 p-8 relative z-10">
       {/* Decorative Blur Inside Card */}
-      <div className="absolute top-0 right-0 w-64 h-64 bg-sand-50/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+      <div className="absolute top-0 right-0 w-64 h-64 bg-secondary-50/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
 
       {/* Header */}
       <div className="text-center mb-6 relative z-10">
         <div
-          className={`w-20 h-20 bg-sand-50 border border-sand-200 rounded-full flex items-center justify-center mx-auto mb-4 relative shadow-sm`}
+          className={`w-20 h-20 bg-secondary-50 border border-secondary-200 rounded-full flex items-center justify-center mx-auto mb-4 relative shadow-sm`}
         >
           {/* Icon WhatsApp only */}
-          <div className="p-3 bg-teal-700 rounded-2xl shadow-sm app-card">
+          <div className="p-3 bg-primary-700 rounded-2xl shadow-sm app-card">
             <Smartphone className="w-10 h-10 text-white" />
           </div>
         </div>
@@ -231,22 +231,22 @@ function VerifikasiOTPContent() {
             : "Kami telah mengirim kode 6 digit ke:"}
         </p>
         {!sim_code && (
-          <p className="text-lg font-black text-teal-700">{no_hp}</p>
+          <p className="text-lg font-black text-primary-700">{no_hp}</p>
         )}
 
         {/* OTP Display Banner (when WhatsApp not available) */}
         {sim_code && (
-          <div className="mt-4 p-3 bg-sand-50 border border-sand-200 rounded-xl app-card shadow-sm">
-            <p className="text-xs font-black uppercase tracking-widest text-teal-800 mb-1">
+          <div className="mt-4 p-3 bg-secondary-50 border border-secondary-200 rounded-xl app-card shadow-sm">
+            <p className="text-xs font-black uppercase tracking-widest text-primary-800 mb-1">
               Kode Verifikasi Anda
             </p>
-            <p className="text-sm text-teal-950 font-medium">
+            <p className="text-sm text-primary-950 font-medium">
               Masukkan kode berikut:{" "}
-              <span className="font-mono text-xl font-black bg-white px-2 py-0.5 rounded-lg border border-sand-100 shadow-sm ml-2">
+              <span className="font-mono text-xl font-black bg-white px-2 py-0.5 rounded-lg border border-secondary-100 shadow-sm ml-2">
                 {sim_code}
               </span>
             </p>
-            <p className="text-[10px] text-teal-600 mt-2 font-bold bg-teal-50 inline-block px-2 py-1 rounded-md">
+            <p className="text-[10px] text-primary-600 mt-2 font-bold bg-primary-50 inline-block px-2 py-1 rounded-md">
               Layanan WhatsApp sedang dalam proses aktivasi
             </p>
           </div>
@@ -272,8 +272,8 @@ function VerifikasiOTPContent() {
               otpError
                 ? "border-red-500 bg-red-50 focus:ring-red-100 text-red-700"
                 : digit
-                  ? "border-teal-600 bg-teal-50 text-teal-900"
-                  : "border-sand-200 bg-white focus:ring-teal-50 focus:border-teal-300 text-ink-900"
+                  ? "border-primary-600 bg-primary-50 text-primary-900"
+                  : "border-secondary-200 bg-white focus:ring-primary-50 focus:border-primary-300 text-ink-900"
             }`}
             disabled={isVerifying}
             autoFocus={index === 0}
@@ -294,8 +294,8 @@ function VerifikasiOTPContent() {
 
         {/* Loading State */}
         {isVerifying && (
-          <div className="mb-4 p-3 bg-teal-50 border border-teal-200 rounded-xl app-card shadow-sm">
-            <p className="text-sm text-teal-700 font-bold flex items-center justify-center gap-2">
+          <div className="mb-4 p-3 bg-primary-50 border border-primary-200 rounded-xl app-card shadow-sm">
+            <p className="text-sm text-primary-700 font-bold flex items-center justify-center gap-2">
               <Loader2 className="w-5 h-5 animate-spin" />
               <span>Memverifikasi kode...</span>
             </p>
@@ -309,7 +309,7 @@ function VerifikasiOTPContent() {
           <p className="text-sm text-ink-600 font-medium flex items-center justify-center gap-2">
             <Clock className="w-4 h-4" />
             Kode berlaku selama{" "}
-            <strong className="text-teal-700 font-black">
+            <strong className="text-primary-700 font-black">
               {formatTime(countdown)}
             </strong>
           </p>
@@ -328,7 +328,7 @@ function VerifikasiOTPContent() {
           <button
             onClick={handleVerifyOTP}
             disabled={isVerifying || otpCode.join("").length !== 6}
-            className="w-full py-4 px-6 font-black text-lg md:text-xl rounded-pill transition-all duration-300 disabled:opacity-50 flex items-center justify-center gap-3 shadow-md border border-transparent hover:bg-sand-100 hover:text-teal-900 bg-teal-900 text-white hover:border-teal-900 active:scale-95 app-card tracking-wide"
+            className="w-full py-4 px-6 font-black text-lg md:text-xl rounded-pill transition-all duration-300 disabled:opacity-50 flex items-center justify-center gap-3 shadow-md border border-transparent hover:bg-secondary-100 hover:text-primary-900 bg-primary-900 text-white hover:border-primary-900 active:scale-95 app-card tracking-wide"
           >
             <CheckCircle2 className="w-6 h-6" />
             Verifikasi Kode
@@ -339,7 +339,7 @@ function VerifikasiOTPContent() {
         <button
           onClick={handleResendOTP}
           disabled={!canResend || isVerifying}
-          className="w-full py-4 px-6 border-2 font-bold rounded-pill app-card transition-all duration-300 disabled:opacity-50 flex items-center justify-center gap-2 border-teal-200 text-teal-700 bg-white hover:bg-teal-50 active:scale-95"
+          className="w-full py-4 px-6 border-2 font-bold rounded-pill app-card transition-all duration-300 disabled:opacity-50 flex items-center justify-center gap-2 border-primary-200 text-primary-700 bg-white hover:bg-primary-50 active:scale-95"
         >
           <RefreshCw
             className={`w-5 h-5 ${isVerifying ? "animate-spin" : ""}`}
@@ -356,7 +356,7 @@ function VerifikasiOTPContent() {
             router.push(`/daftar`);
           }}
           disabled={isVerifying}
-          className="w-full py-3 px-6 text-ink-500 text-sm font-black uppercase tracking-widest hover:text-teal-700 flex items-center justify-center gap-2 disabled:opacity-50 transition-colors"
+          className="w-full py-3 px-6 text-ink-500 text-sm font-black uppercase tracking-widest hover:text-primary-700 flex items-center justify-center gap-2 disabled:opacity-50 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           Ubah Data Pendaftaran
@@ -364,21 +364,21 @@ function VerifikasiOTPContent() {
       </div>
 
       {/* Help Info */}
-      <div className="mt-6 p-4 bg-teal-50 border border-teal-100 rounded-[1.5rem] relative z-10 app-card shadow-sm">
+      <div className="mt-6 p-4 bg-primary-50 border border-primary-100 rounded-[1.5rem] relative z-10 app-card shadow-sm">
         <p className="text-xs uppercase tracking-widest text-ink-950 font-black mb-2 pl-1">
           Tips Verifikasi
         </p>
         <ul className="text-xs text-ink-600 space-y-1.5 font-medium pl-1">
           <li className="flex gap-2">
-            <span className="text-teal-500 opacity-50">•</span> Pastikan nomor
+            <span className="text-primary-500 opacity-50">•</span> Pastikan nomor
             HP Anda aktif dan terdaftar di WhatsApp
           </li>
           <li className="flex gap-2">
-            <span className="text-teal-500 opacity-50">•</span> Kode otomatis
+            <span className="text-primary-500 opacity-50">•</span> Kode otomatis
             terverifikasi setelah 6 digit terisi
           </li>
           <li className="flex gap-2">
-            <span className="text-teal-500 opacity-50">•</span> Jika tidak
+            <span className="text-primary-500 opacity-50">•</span> Jika tidak
             menerima kode, tunggu countdown habis
           </li>
         </ul>
@@ -393,7 +393,7 @@ function VerifikasiOTPContent() {
           href="https://wa.me/622667345601"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-xs bg-sand-50 text-teal-700 px-4 py-1.5 rounded-full font-black border border-sand-200 hover:bg-sand-100 transition-colors inline-block"
+          className="text-xs bg-secondary-50 text-primary-700 px-4 py-1.5 rounded-full font-black border border-secondary-200 hover:bg-secondary-100 transition-colors inline-block"
         >
           Hubungi Admin WhatsApp
         </a>
@@ -405,9 +405,9 @@ function VerifikasiOTPContent() {
 // Loading fallback
 function LoadingFallback() {
   return (
-    <div className="app-card max-w-md w-full bg-white rounded-[2.5rem] shadow-lg border border-sand-200 p-8">
+    <div className="app-card max-w-md w-full bg-white rounded-[2.5rem] shadow-lg border border-secondary-200 p-8">
       <div className="flex flex-col items-center justify-center py-12">
-        <Loader2 className="w-12 h-12 text-teal-600 animate-spin mb-4" />
+        <Loader2 className="w-12 h-12 text-primary-600 animate-spin mb-4" />
         <p className="text-ink-600 font-medium">Memuat halaman...</p>
       </div>
     </div>
@@ -418,8 +418,8 @@ export default function VerifikasiOTPPage() {
   return (
     <main className="min-h-screen bg-white flex items-center justify-center p-6 relative overflow-hidden">
       {/* Background Decor */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-sand-50/50 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-teal-50/30 rounded-full blur-[100px] -translate-x-1/2 translate-y-1/2 pointer-events-none" />
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-secondary-50/50 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-primary-50/30 rounded-full blur-[100px] -translate-x-1/2 translate-y-1/2 pointer-events-none" />
       <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.02] pointer-events-none" />
 
       <Suspense fallback={<LoadingFallback />}>

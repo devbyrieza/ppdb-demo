@@ -14,13 +14,13 @@ export default function CalendarPage() {
     <main className="bg-surface-50 min-h-screen flex items-center justify-center">
       <Container>
         <div className="max-w-2xl mx-auto text-center">
-          <div className="w-24 h-24 bg-teal-50 rounded-full flex items-center justify-center mx-auto mb-8 animate-pulse border border-teal-100 shadow-sm">
-            <Construction className="w-12 h-12 text-teal-700" />
+          <div className="w-24 h-24 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-8 animate-pulse border border-primary-100 shadow-sm">
+            <Construction className="w-12 h-12 text-primary-700" />
           </div>
 
           <h1 className="text-4xl md:text-5xl font-display font-black text-ink-950 mb-4 tracking-tight">
             Sedang Dalam <br />
-            <span className="text-gradient-teal">Pengembangan</span>
+            <span className="text-gradient-primary">Pengembangan</span>
           </h1>
 
           <p className="text-lg text-ink-600 mb-10 leading-relaxed font-medium">
@@ -32,7 +32,7 @@ export default function CalendarPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/"
-              className="inline-flex items-center justify-center px-10 py-4 rounded-pill bg-teal-900 text-white font-black text-lg hover:bg-teal-800 shadow-premium-lg transition-all"
+              className="inline-flex items-center justify-center px-10 py-4 rounded-pill bg-primary-900 text-white font-black text-lg hover:bg-primary-800 shadow-premium-lg transition-all"
             >
               Kembali ke Beranda
             </Link>

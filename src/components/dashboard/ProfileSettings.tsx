@@ -151,7 +151,7 @@ export default function ProfileSettings({ user }: { user: UserSession }) {
       <div className="bg-white border border-gray-100 rounded-2xl shadow-xs overflow-hidden">
         <div className="p-6 md:p-8 border-b border-gray-100">
           <div className="flex items-center gap-4 mb-4">
-            <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+            <div className="w-16 h-16 rounded-full bg-primary-100 flex items-center justify-center text-primary-600">
               <User className="w-8 h-8" />
             </div>
             <div>
@@ -178,7 +178,7 @@ export default function ProfileSettings({ user }: { user: UserSession }) {
                   type="text"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
+                  className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none"
                 />
               </div>
               <div>
@@ -190,13 +190,13 @@ export default function ProfileSettings({ user }: { user: UserSession }) {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="Contoh: 08123456789"
-                  className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
+                  className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none"
                 />
                 <div className="mt-1.5 flex flex-col gap-1">
                   <p className="text-[10px] text-gray-400 ml-1 leading-relaxed">
                     Digunakan untuk mengirim pengingat jadwal otomatis H-1.
                   </p>
-                  <p className="text-[10px] text-blue-500 font-bold ml-1 flex items-center gap-1 uppercase tracking-wider">
+                  <p className="text-[10px] text-primary-500 font-bold ml-1 flex items-center gap-1 uppercase tracking-wider">
                     <Lock className="w-2.5 h-2.5" /> PIN Login: 4 Digit Terakhir
                     Nomor Ini
                   </p>
@@ -230,7 +230,7 @@ export default function ProfileSettings({ user }: { user: UserSession }) {
               <button
                 type="submit"
                 disabled={profileLoading}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-teal-700 text-white rounded-xl font-bold text-sm shadow-sm transition-all"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary-700 text-white rounded-xl font-bold text-sm shadow-sm transition-all"
               >
                 {profileLoading ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
@@ -283,7 +283,7 @@ export default function ProfileSettings({ user }: { user: UserSession }) {
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
+                  className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none"
                 />
               </div>
               <div>
@@ -295,7 +295,7 @@ export default function ProfileSettings({ user }: { user: UserSession }) {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
+                  className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none"
                 />
               </div>
             </div>
@@ -304,13 +304,13 @@ export default function ProfileSettings({ user }: { user: UserSession }) {
               <button
                 type="submit"
                 disabled={loading || !newPassword || !confirmPassword}
-                className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm text-white shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+                className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm text-white shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500
                                     ${
                                       loading ||
                                       !newPassword ||
                                       !confirmPassword
                                         ? "bg-gray-300 cursor-not-allowed"
-                                        : "bg-blue-600 hover:bg-blue-700 hover:shadow"
+                                        : "bg-primary-600 hover:bg-primary-700 hover:shadow"
                                     }`}
               >
                 {loading ? (

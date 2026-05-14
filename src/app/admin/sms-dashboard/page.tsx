@@ -57,7 +57,7 @@ export default function AdminSMSDashboard() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <RefreshCw className="w-8 h-8 animate-spin mx-auto text-blue-600" />
+          <RefreshCw className="w-8 h-8 animate-spin mx-auto text-primary-600" />
           <p className="mt-4 text-gray-600">Memuat data SMS...</p>
         </div>
       </div>
@@ -77,9 +77,9 @@ export default function AdminSMSDashboard() {
             Kirim SMS manual ke user berikut:
           </p>
 
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-            <h3 className="font-bold text-blue-800 mb-2">📋 Instruksi:</h3>
-            <ol className="list-decimal list-inside text-blue-700 space-y-1">
+          <div className="bg-primary-50 border border-primary-200 rounded-lg p-4 mb-6">
+            <h3 className="font-bold text-primary-800 mb-2">📋 Instruksi:</h3>
+            <ol className="list-decimal list-inside text-primary-700 space-y-1">
               <li>Salin nomor HP dan OTP di bawah</li>
               <li>Kirim SMS dari HP Admin ke nomor tersebut</li>
               <li>Pesan: "PPDB AL-IMAM: Kode OTP: [OTP] untuk [NAMA]"</li>
@@ -93,7 +93,7 @@ export default function AdminSMSDashboard() {
             </h2>
             <button
               onClick={fetchPendingSMS}
-              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
             >
               <RefreshCw className="w-4 h-4" />
               Refresh
@@ -115,12 +115,12 @@ export default function AdminSMSDashboard() {
               {pendingSMS.map((item) => (
                 <div
                   key={item.id}
-                  className="border-2 border-amber-200 bg-amber-50 rounded-xl p-5"
+                  className="border-2 border-secondary-200 bg-secondary-50 rounded-xl p-5"
                 >
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                     <div className="flex items-center gap-3">
-                      <div className="p-2 bg-blue-100 rounded-lg">
-                        <Smartphone className="w-5 h-5 text-blue-600" />
+                      <div className="p-2 bg-primary-100 rounded-lg">
+                        <Smartphone className="w-5 h-5 text-primary-600" />
                       </div>
                       <div>
                         <p className="text-sm text-gray-500">Nomor HP</p>
@@ -175,7 +175,7 @@ Hubungi 0812-8530-0800 jika ada masalah.`}
 
                     <a
                       href={`sms:${item.phone}&body=PPDB AL-IMAM: Kode OTP: ${item.otp} untuk ${item.nama}`}
-                      className="px-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700"
+                      className="px-6 py-3 bg-primary-600 text-white font-bold rounded-lg hover:bg-primary-700"
                     >
                       📱 Buka Aplikasi SMS
                     </a>
@@ -189,8 +189,8 @@ Hubungi 0812-8530-0800 jika ada masalah.`}
         <div className="bg-white rounded-xl shadow-lg p-6">
           <h3 className="font-bold text-gray-900 mb-4">📊 Status Sistem:</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-blue-50 p-4 rounded-lg">
-              <p className="text-sm text-blue-600">SMS Service</p>
+            <div className="bg-primary-50 p-4 rounded-lg">
+              <p className="text-sm text-primary-600">SMS Service</p>
               <p className="text-2xl font-bold">🔄 Simulation</p>
             </div>
             <div className="bg-green-50 p-4 rounded-lg">
@@ -201,8 +201,8 @@ Hubungi 0812-8530-0800 jika ada masalah.`}
               <p className="text-sm text-purple-600">Email</p>
               <p className="text-2xl font-bold">✅ Ready</p>
             </div>
-            <div className="bg-amber-50 p-4 rounded-lg">
-              <p className="text-sm text-amber-600">Launch Date</p>
+            <div className="bg-secondary-50 p-4 rounded-lg">
+              <p className="text-sm text-secondary-600">Launch Date</p>
               <p className="text-2xl font-bold">📅 22 Jan</p>
             </div>
           </div>

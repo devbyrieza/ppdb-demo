@@ -121,8 +121,8 @@ export default function AdminSidebar({
       cancelButtonText: "Tetap di Sini",
       background: "#ffffff",
       customClass: {
-        title: "font-black text-teal-950",
-        popup: "rounded-[2rem] border-4 border-teal-50",
+        title: "font-black text-primary-950",
+        popup: "rounded-[2rem] border-4 border-primary-50",
       },
     });
 
@@ -154,7 +154,7 @@ export default function AdminSidebar({
   };
 
   return (
-    <div className="min-h-screen bg-[#f0f9f9] font-sans selection:bg-teal-100 selection:text-teal-900">
+    <div className="min-h-screen bg-[#f0f9f9] font-sans selection:bg-primary-100 selection:text-primary-900">
       {/* MOBILE HEADER */}
       <div className="lg:hidden fixed top-0 left-0 right-0 z-[60] bg-white/90 backdrop-blur-2xl border-b border-ink-200/60 px-6 py-4 flex items-center justify-between shadow-sm">
         <button
@@ -164,14 +164,14 @@ export default function AdminSidebar({
           <Menu className="w-6 h-6" />
         </button>
         <div className="flex flex-col items-center">
-          <span className="font-black text-teal-950 tracking-tighter text-lg italic uppercase">
+          <span className="font-black text-primary-950 tracking-tighter text-lg italic uppercase">
             {BRANDING.schoolShortName}
           </span>
-          <span className="text-[10px] font-bold text-teal-600/50 uppercase tracking-[0.2em] -mt-1">
+          <span className="text-[10px] font-bold text-primary-600/50 uppercase tracking-[0.2em] -mt-1">
             Panel Kontrol
           </span>
         </div>
-        <div className="w-10 h-10 rounded-2xl bg-linear-to-br from-teal-700 to-teal-900 flex items-center justify-center text-white text-sm font-black shadow-lg shadow-teal-200">
+        <div className="w-10 h-10 rounded-2xl bg-linear-to-br from-primary-700 to-primary-900 flex items-center justify-center text-white text-sm font-black shadow-lg shadow-primary-200">
           {adminName.charAt(0)}
         </div>
       </div>
@@ -185,7 +185,7 @@ export default function AdminSidebar({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSidebarOpen(false)}
-              className="fixed inset-0 z-[70] bg-teal-950/40 backdrop-blur-md lg:hidden"
+              className="fixed inset-0 z-[70] bg-primary-950/40 backdrop-blur-md lg:hidden"
             />
             <motion.aside
               initial={{ x: "-100%" }}
@@ -203,7 +203,7 @@ export default function AdminSidebar({
                       className="w-6 h-6 object-contain"
                     />
                   </div>
-                  <span className="font-black text-teal-950 uppercase text-sm tracking-widest italic">
+                  <span className="font-black text-primary-950 uppercase text-sm tracking-widest italic">
                     Navigasi
                   </span>
                 </div>
@@ -220,7 +220,7 @@ export default function AdminSidebar({
                     key={item.name}
                     href={item.href}
                     onClick={() => setSidebarOpen(false)}
-                    className={`flex items-center justify-between px-4 py-4 rounded-2xl transition-all ${item.isActive ? "bg-teal-700 text-white shadow-xl shadow-teal-200 font-bold" : "text-ink-500 hover:bg-ink-50 hover:text-teal-900"}`}
+                    className={`flex items-center justify-between px-4 py-4 rounded-2xl transition-all ${item.isActive ? "bg-primary-700 text-white shadow-xl shadow-primary-200 font-bold" : "text-ink-500 hover:bg-ink-50 hover:text-primary-900"}`}
                   >
                     <div className="flex items-center gap-4">
                       <item.icon
@@ -232,7 +232,7 @@ export default function AdminSidebar({
                     </div>
                     {item.badge > 0 && (
                       <span
-                        className={`px-2 py-0.5 rounded-full text-[10px] font-black ${item.isActive ? "bg-white text-teal-700" : "bg-red-500 text-white"}`}
+                        className={`px-2 py-0.5 rounded-full text-[10px] font-black ${item.isActive ? "bg-white text-primary-700" : "bg-red-500 text-white"}`}
                       >
                         {item.badge}
                       </span>
@@ -275,10 +275,10 @@ export default function AdminSidebar({
                 animate={{ opacity: 1, x: 0 }}
                 className="whitespace-nowrap"
               >
-                <span className="font-black text-teal-950 text-lg uppercase tracking-tighter italic">
+                <span className="font-black text-primary-950 text-lg uppercase tracking-tighter italic">
                   {BRANDING.schoolShortName}
                 </span>
-              <span className="text-[10px] text-teal-600/40 font-black uppercase tracking-[0.2em] -mt-1">
+              <span className="text-[10px] text-primary-600/40 font-black uppercase tracking-[0.2em] -mt-1">
                 PORTAL ADMIN
               </span>
               </motion.div>
@@ -291,12 +291,12 @@ export default function AdminSidebar({
             <div className="px-2 mb-2">
               <div className="relative group">
                 <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                  <UserCircle className="w-3.5 h-3.5 text-teal-600" />
+                  <UserCircle className="w-3.5 h-3.5 text-primary-600" />
                 </div>
                 <select
                   value={userRole || ""}
                   onChange={handleRoleSwitch}
-                  className="w-full appearance-none bg-ink-50 border border-ink-100 text-[10px] font-black text-teal-900 uppercase tracking-widest pl-10 pr-8 py-3 rounded-xl cursor-pointer focus:outline-none focus:ring-4 focus:ring-teal-500/5 transition-all group-hover:bg-ink-100"
+                  className="w-full appearance-none bg-ink-50 border border-ink-100 text-[10px] font-black text-primary-900 uppercase tracking-widest pl-10 pr-8 py-3 rounded-xl cursor-pointer focus:outline-none focus:ring-4 focus:ring-primary-500/5 transition-all group-hover:bg-ink-100"
                 >
                   {availableRoles.map((role) => (
                     <option key={role} value={role}>
@@ -304,7 +304,7 @@ export default function AdminSidebar({
                     </option>
                   ))}
                 </select>
-                <ChevronRight className="absolute right-3 top-1/2 -tranink-y-1/2 w-3.5 h-3.5 text-teal-400 pointer-events-none group-hover:text-teal-900 transition-colors" />
+                <ChevronRight className="absolute right-3 top-1/2 -tranink-y-1/2 w-3.5 h-3.5 text-primary-400 pointer-events-none group-hover:text-primary-900 transition-colors" />
               </div>
             </div>
           )}
@@ -325,12 +325,12 @@ export default function AdminSidebar({
                   )}
                   <Link
                     href={item.href}
-                    className={`relative group flex items-center justify-between px-4 py-3.5 rounded-2xl transition-all duration-300 ${item.isActive ? "text-teal-950 font-black" : "text-ink-500 hover:text-teal-900 hover:bg-ink-50"}`}
+                    className={`relative group flex items-center justify-between px-4 py-3.5 rounded-2xl transition-all duration-300 ${item.isActive ? "text-primary-950 font-black" : "text-ink-500 hover:text-primary-900 hover:bg-ink-50"}`}
                   >
                     {item.isActive && (
                       <motion.div
                         layoutId="sidebar-active"
-                        className="absolute inset-0 bg-teal-50 rounded-2xl -z-10 border border-teal-100 shadow-sm"
+                        className="absolute inset-0 bg-primary-50 rounded-2xl -z-10 border border-primary-100 shadow-sm"
                         transition={{
                           type: "spring",
                           bounce: 0.2,
@@ -340,7 +340,7 @@ export default function AdminSidebar({
                     )}
                     <div className="flex items-center gap-4">
                       <item.icon
-                        className={`w-5 h-5 shrink-0 transition-all duration-300 ${item.isActive ? "text-teal-700 scale-110" : "text-ink-400 group-hover:text-teal-600"}`}
+                        className={`w-5 h-5 shrink-0 transition-all duration-300 ${item.isActive ? "text-primary-700 scale-110" : "text-ink-400 group-hover:text-primary-600"}`}
                       />
                       {!collapsed && (
                         <span className="text-[14px] tracking-tight">
@@ -353,14 +353,14 @@ export default function AdminSidebar({
                         className={`${collapsed ? "absolute -top-1 -right-1" : "relative"}`}
                       >
                         <span
-                          className={`flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full text-[10px] font-black shadow-sm ${item.isActive ? "bg-teal-700 text-white" : "bg-red-500 text-white animate-pulse"}`}
+                          className={`flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full text-[10px] font-black shadow-sm ${item.isActive ? "bg-primary-700 text-white" : "bg-red-500 text-white animate-pulse"}`}
                         >
                           {item.badge}
                         </span>
                       </div>
                     )}
                     {collapsed && (
-                      <div className="absolute left-full ml-6 px-4 py-2 bg-teal-950 text-white text-[11px] font-black rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-[100] shadow-2xl border border-white/10 uppercase tracking-widest">
+                      <div className="absolute left-full ml-6 px-4 py-2 bg-primary-950 text-white text-[11px] font-black rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-[100] shadow-2xl border border-white/10 uppercase tracking-widest">
                         {item.name}
                       </div>
                     )}
@@ -374,7 +374,7 @@ export default function AdminSidebar({
         <div className="p-6 border-t border-ink-50 bg-ink-50/30">
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className={`w-full flex items-center justify-center p-3 rounded-xl text-ink-400 hover:text-teal-950 hover:bg-white hover:shadow-sm mb-4 transition-all duration-300 active:scale-95 ${collapsed ? "" : "gap-3"}`}
+            className={`w-full flex items-center justify-center p-3 rounded-xl text-ink-400 hover:text-primary-950 hover:bg-white hover:shadow-sm mb-4 transition-all duration-300 active:scale-95 ${collapsed ? "" : "gap-3"}`}
           >
             <PanelLeft
               className={`w-5 h-5 shrink-0 transition-transform duration-700 ${collapsed ? "rotate-180" : ""}`}
@@ -388,15 +388,15 @@ export default function AdminSidebar({
           <div
             className={`flex items-center gap-4 p-3 rounded-2xl transition-all group relative ${collapsed ? "justify-center" : "bg-white shadow-sm border border-ink-100"}`}
           >
-            <div className="shrink-0 w-10 h-10 rounded-2xl bg-linear-to-br from-teal-700 to-teal-900 flex items-center justify-center text-white font-black text-sm shadow-xl shadow-teal-100 ring-4 ring-white border border-teal-500/20">
+            <div className="shrink-0 w-10 h-10 rounded-2xl bg-linear-to-br from-primary-700 to-primary-900 flex items-center justify-center text-white font-black text-sm shadow-xl shadow-primary-100 ring-4 ring-white border border-primary-500/20">
               {adminName.charAt(0)}
             </div>
             {!collapsed && (
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-black text-teal-950 truncate leading-none mb-1 uppercase tracking-tighter italic">
+                <p className="text-sm font-black text-primary-950 truncate leading-none mb-1 uppercase tracking-tighter italic">
                   {adminName}
                 </p>
-                <p className="text-[9px] text-teal-600/40 font-black truncate uppercase tracking-[0.15em]">
+                <p className="text-[9px] text-primary-600/40 font-black truncate uppercase tracking-[0.15em]">
                   {userRole ? ROLE_LABELS[userRole] : "Admin"}
                 </p>
               </div>
@@ -422,33 +422,33 @@ export default function AdminSidebar({
             <div className="flex items-center gap-3 text-[11px] font-black text-ink-400 uppercase tracking-widest">
               <Link
                 href="/dashboard/admin"
-                className="hover:text-teal-700 transition-colors"
+                className="hover:text-primary-700 transition-colors"
               >
                 Admin Portal
               </Link>
               <ChevronRight className="w-3.5 h-3.5 text-ink-300" />
-              <span className="text-teal-950 italic">Ikhtisar</span>
+              <span className="text-primary-950 italic">Ikhtisar</span>
             </div>
             <div className="h-6 w-px bg-ink-100" />
             <div className="relative group">
-              <Search className="absolute left-4 top-1/2 -tranink-y-1/2 w-4 h-4 text-ink-300 group-focus-within:text-teal-600 transition-colors" />
+              <Search className="absolute left-4 top-1/2 -tranink-y-1/2 w-4 h-4 text-ink-300 group-focus-within:text-primary-600 transition-colors" />
               <input
                 type="text"
                 placeholder="Cari data sistem..."
-                className="bg-ink-50 border-ink-100 rounded-[1.25rem] pl-11 pr-6 py-3 text-[13px] w-80 focus:w-[450px] focus:bg-white focus:ring-4 focus:ring-teal-500/5 focus:border-teal-100 transition-all duration-500 placeholder:text-ink-300 font-medium"
+                className="bg-ink-50 border-ink-100 rounded-[1.25rem] pl-11 pr-6 py-3 text-[13px] w-80 focus:w-[450px] focus:bg-white focus:ring-4 focus:ring-primary-500/5 focus:border-primary-100 transition-all duration-500 placeholder:text-ink-300 font-medium"
               />
             </div>
           </div>
           <div className="flex items-center gap-6">
             <LanguageSwitcher />
             <div className="h-6 w-px bg-ink-100" />
-            <button className="relative p-3 text-ink-400 hover:text-teal-700 hover:bg-teal-50 rounded-2xl transition-all active:scale-95">
+            <button className="relative p-3 text-ink-400 hover:text-primary-700 hover:bg-primary-50 rounded-2xl transition-all active:scale-95">
               <Bell className="w-5 h-5" />
               <span className="absolute top-3 right-3 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white shadow-sm animate-pulse" />
             </button>
             <Link
               href="/"
-              className="px-8 py-3.5 bg-teal-950 text-white text-[11px] font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-teal-800 transition-all shadow-xl shadow-teal-950/20 active:scale-95"
+              className="px-8 py-3.5 bg-primary-950 text-white text-[11px] font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-primary-800 transition-all shadow-xl shadow-primary-950/20 active:scale-95"
             >
               Kunjungi Situs
             </Link>

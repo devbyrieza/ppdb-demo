@@ -251,8 +251,8 @@ export default function PengaturanPage() {
                   </button>
                 </div>
               ) : (
-                <div className="bg-amber-50 border-2 border-amber-200 rounded-xl p-4">
-                  <p className="text-amber-800 font-medium">
+                <div className="bg-secondary-50 border-2 border-secondary-200 rounded-xl p-4">
+                  <p className="text-secondary-800 font-medium">
                     Tidak ada tahun ajaran yang aktif
                   </p>
                 </div>

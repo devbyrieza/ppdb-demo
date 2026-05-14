@@ -144,7 +144,7 @@ export default function TrashPage() {
       {/* Back link */}
       <Link
         href="/dashboard/admin/pendaftar"
-        className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium"
+        className="inline-flex items-center gap-2 text-primary-600 hover:text-primary-800 font-medium"
       >
         <ArrowLeft className="w-4 h-4" />
         Kembali ke Data Pendaftar

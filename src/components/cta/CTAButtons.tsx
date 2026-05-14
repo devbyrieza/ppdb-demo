@@ -89,8 +89,8 @@ export function CTASyaratJadwal({
         size="lg"
         className={`
           group shadow-lg hover:shadow-xl font-bold transition-all duration-300 hover:-translate-y-1
-          bg-gradient-to-r from-[var(--color-teal-600)] to-[var(--color-teal-700)] 
-          hover:from-[var(--color-teal-700)] hover:to-[var(--color-teal-800)] text-white
+          bg-gradient-to-r from-[var(--color-primary-600)] to-[var(--color-primary-700)] 
+          hover:from-[var(--color-primary-700)] hover:to-[var(--color-primary-800)] text-white
           ${size === "sm" ? "px-6 py-2.5 text-sm" : "px-8 py-4 text-base"}
           ${className}
         `}
@@ -136,8 +136,8 @@ export function CTAKonsultasi({
         group font-semibold transition-all duration-300 hover:-translate-y-1
         ${
           variant === "outline"
-            ? "border-2 border-[var(--color-teal-600)] text-[var(--color-teal-700)] hover:bg-[var(--color-teal-50)] shadow-md hover:shadow-lg"
-            : "bg-[var(--color-teal-50)] text-[var(--color-teal-700)] hover:bg-[var(--color-teal-100)] shadow-sm hover:shadow-md"
+            ? "border-2 border-[var(--color-primary-600)] text-[var(--color-primary-700)] hover:bg-[var(--color-primary-50)] shadow-md hover:shadow-lg"
+            : "bg-[var(--color-primary-50)] text-[var(--color-primary-700)] hover:bg-[var(--color-primary-100)] shadow-sm hover:shadow-md"
         }
         ${size === "sm" ? "px-6 py-2.5 text-sm" : "px-8 py-4 text-base"}
         ${className}
@@ -225,7 +225,7 @@ export function CTADaftarSekarang({
  */
 export function CTAStickyDaftar() {
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-lg border-t border-[var(--color-cream-200)] shadow-2xl p-4 animate-fadeInUp">
+    <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-lg border-t border-[var(--color-secondary-200)] shadow-2xl p-4 animate-fadeInUp">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
         <div className="flex-1">
           <p className="text-sm font-bold text-[var(--color-text-900)] mb-1">

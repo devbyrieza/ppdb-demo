@@ -145,14 +145,14 @@ export default function BroadcastPage() {
     <div className="space-y-6 max-w-7xl mx-auto">
       {/* Header */}
       <div className="bg-white rounded-2xl shadow-clay-lg p-8 border border-white/40 overflow-hidden relative">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-maroon-600/5 rounded-full -mr-16 -mt-16 blur-3xl"></div>
+        <div className="absolute top-0 right-0 w-32 h-32 bg-primary-600/5 rounded-full -mr-16 -mt-16 blur-3xl"></div>
         <div className="relative flex items-center gap-6">
-          <div className="p-4 bg-gradient-to-br from-maroon-600 to-emerald-600 rounded-2xl shadow-lg shadow-maroon-600/20">
+          <div className="p-4 bg-gradient-to-br from-primary-600 to-emerald-600 rounded-2xl shadow-lg shadow-primary-600/20">
             <Bell className="w-8 h-8 text-white" />
           </div>
           <div>
             <h1 className="text-3xl font-black text-ink-900 tracking-tight">
-              Broadcast <span className="text-maroon-700">WhatsApp</span>
+              Broadcast <span className="text-primary-700">WhatsApp</span>
             </h1>
             <p className="text-ink-500 font-medium">
               Kirim pesan massal ke pendaftar dengan mudah.
@@ -165,9 +165,9 @@ export default function BroadcastPage() {
         {/* Left Column: Recipient Selection */}
         <div className="lg:col-span-7 space-y-6">
           <div className="bg-white rounded-2xl shadow-clay-md border border-white/40 overflow-hidden flex flex-col h-[700px]">
-            <div className="p-6 border-b border-ink-100 flex items-center justify-between bg-cream-50/50">
+            <div className="p-6 border-b border-ink-100 flex items-center justify-between bg-secondary-50/50">
               <h2 className="font-bold text-ink-900 flex items-center gap-2">
-                <Users className="w-5 h-5 text-maroon-700" />
+                <Users className="w-5 h-5 text-primary-700" />
                 Pilih Penerima ({selectedIds.length})
               </h2>
               <div className="relative w-64">
@@ -177,7 +177,7 @@ export default function BroadcastPage() {
                   placeholder="Cari pendaftar..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="w-full bg-white border border-ink-100 rounded-xl pl-9 pr-4 py-2 text-sm focus:ring-2 focus:ring-maroon-600/10 outline-none"
+                  className="w-full bg-white border border-ink-100 rounded-xl pl-9 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary-600/10 outline-none"
                 />
               </div>
             </div>
@@ -201,15 +201,15 @@ export default function BroadcastPage() {
                     key={p.id}
                     className={`flex items-center gap-4 p-4 rounded-2xl border transition-all cursor-pointer group ${
                       selectedIds.includes(p.id)
-                        ? "bg-maroon-50 border-maroon-200"
-                        : "bg-white border-transparent hover:bg-cream-50"
+                        ? "bg-primary-50 border-primary-200"
+                        : "bg-white border-transparent hover:bg-secondary-50"
                     }`}
                   >
                     <input
                       type="checkbox"
                       checked={selectedIds.includes(p.id)}
                       onChange={() => handleSelectOne(p.id)}
-                      className="w-5 h-5 rounded-lg border-2 border-ink-200 text-maroon-700 focus:ring-maroon-600/20"
+                      className="w-5 h-5 rounded-lg border-2 border-ink-200 text-primary-700 focus:ring-primary-600/20"
                     />
                     <div className="flex-1 min-w-0">
                       <p className="font-bold text-ink-900 truncate">
@@ -220,7 +220,7 @@ export default function BroadcastPage() {
                         <span>•</span>
                         <span>{p.no_hp || "Tanpa No. HP"}</span>
                         <span>•</span>
-                        <span className="px-2 py-0.5 bg-cream-200 rounded-full">
+                        <span className="px-2 py-0.5 bg-secondary-200 rounded-full">
                           {p.status_pendaftaran}
                         </span>
                       </div>
@@ -230,10 +230,10 @@ export default function BroadcastPage() {
               )}
             </div>
 
-            <div className="p-4 bg-cream-50 border-t border-ink-100 flex items-center justify-between">
+            <div className="p-4 bg-secondary-50 border-t border-ink-100 flex items-center justify-between">
               <button
                 onClick={handleSelectAll}
-                className="text-sm font-bold text-maroon-700 hover:text-maroon-800 transition-colors"
+                className="text-sm font-bold text-primary-700 hover:text-primary-800 transition-colors"
               >
                 {selectedIds.length === filteredPendaftar.length
                   ? "Batalkan Semua"
@@ -250,7 +250,7 @@ export default function BroadcastPage() {
         <div className="lg:col-span-5 space-y-6">
           <div className="bg-white rounded-2xl shadow-clay-md border border-white/40 p-6 space-y-6 sticky top-28">
             <h2 className="font-bold text-ink-900 flex items-center gap-2">
-              <Send className="w-5 h-5 text-maroon-700" />
+              <Send className="w-5 h-5 text-primary-700" />
               Tulis Pesan
             </h2>
 
@@ -264,7 +264,7 @@ export default function BroadcastPage() {
                   value={header}
                   onChange={(e) => setHeader(e.target.value)}
                   placeholder="Contoh: Assalamu'alaikum"
-                  className="w-full bg-cream-50 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-maroon-600/10 outline-none font-medium"
+                  className="w-full bg-secondary-50 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600/10 outline-none font-medium"
                 />
               </div>
 
@@ -274,7 +274,7 @@ export default function BroadcastPage() {
                   id="includeName"
                   checked={includeName}
                   onChange={(e) => setIncludeName(e.target.checked)}
-                  className="w-5 h-5 rounded-lg border-2 border-ink-200 text-maroon-700 focus:ring-maroon-600/20"
+                  className="w-5 h-5 rounded-lg border-2 border-ink-200 text-primary-700 focus:ring-primary-600/20"
                 />
                 <label
                   htmlFor="includeName"
@@ -293,7 +293,7 @@ export default function BroadcastPage() {
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder="Tulis pesan Anda di sini..."
-                  className="w-full bg-cream-50 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-maroon-600/10 outline-none font-medium"
+                  className="w-full bg-secondary-50 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600/10 outline-none font-medium"
                 />
               </div>
 
@@ -306,13 +306,13 @@ export default function BroadcastPage() {
                   value={footer}
                   onChange={(e) => setFooter(e.target.value)}
                   placeholder="Contoh: Tim PSB Al Imam"
-                  className="w-full bg-cream-50 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-maroon-600/10 outline-none font-medium"
+                  className="w-full bg-secondary-50 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600/10 outline-none font-medium"
                 />
               </div>
             </div>
 
             {/* Preview Card */}
-            <div className="bg-cream-50 rounded-2xl p-4 border border-ink-100">
+            <div className="bg-secondary-50 rounded-2xl p-4 border border-ink-100">
               <span className="text-[10px] font-black uppercase text-ink-400 tracking-widest block mb-3">
                 Pratinjau Pesan (Contoh)
               </span>
@@ -324,7 +324,7 @@ export default function BroadcastPage() {
             <button
               onClick={handleSendBroadcast}
               disabled={sending || selectedIds.length === 0 || !message}
-              className="w-full py-4 bg-gradient-to-br from-maroon-600 to-emerald-600 text-white rounded-2xl font-black shadow-lg shadow-maroon-600/20 hover:shadow-maroon-600/30 transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:shadow-none"
+              className="w-full py-4 bg-gradient-to-br from-primary-600 to-emerald-600 text-white rounded-2xl font-black shadow-lg shadow-primary-600/20 hover:shadow-primary-600/30 transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:shadow-none"
             >
               {sending ? (
                 <>

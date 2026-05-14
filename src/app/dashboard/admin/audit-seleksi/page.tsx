@@ -149,7 +149,7 @@ export default function AuditSeleksiPage() {
     const parsedScore = toNum(score);
     if (parsedScore == null) return { label: "-", color: "text-ink-300" };
     let grade = "C";
-    let color = "bg-amber-400";
+    let color = "bg-secondary-400";
 
     if (type === "quran") {
       grade = parsedScore >= 80 ? "A" : parsedScore >= 65 ? "B" : "C";
@@ -315,7 +315,7 @@ export default function AuditSeleksiPage() {
           <Button
             onClick={() => handleBatchPublish("cadangan")}
             disabled={selectedIds.length === 0 || isPublishing}
-            className="flex-1 lg:flex-none bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-black text-[11px] px-6 py-2.5 shadow-lg shadow-amber-200 transition-all active:scale-95"
+            className="flex-1 lg:flex-none bg-secondary-500 hover:bg-secondary-600 text-white rounded-xl font-black text-[11px] px-6 py-2.5 shadow-lg shadow-secondary-200 transition-all active:scale-95"
           >
             CADANGAN
           </Button>
@@ -466,7 +466,7 @@ export default function AuditSeleksiPage() {
                             accepted: { l: "DITERIMA", c: "text-emerald-700 bg-emerald-100 border-emerald-200" },
                             announced: { l: "PUBLISHED", c: "text-sky-700 bg-sky-100 border-sky-200" },
                             rejected: { l: "DITOLAK", c: "text-rose-700 bg-rose-100 border-rose-200" },
-                            cadangan: { l: "CADANGAN", c: "text-amber-700 bg-amber-100 border-amber-200" },
+                            cadangan: { l: "CADANGAN", c: "text-secondary-700 bg-secondary-100 border-secondary-200" },
                             tested: { l: "SIAP AUDIT", c: "text-ink-600 bg-ink-100 border-ink-200" },
                           };
                           const meta = labels[s] || { l: s.toUpperCase() || "UNKNOWN", c: "text-ink-400 bg-ink-50 border-ink-100" };
@@ -488,13 +488,13 @@ export default function AuditSeleksiPage() {
       
       {/* Legend & Help */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-        <div className="bg-maroon-950 rounded-3xl p-8 text-white relative overflow-hidden group shadow-xl shadow-maroon-900/20">
+        <div className="bg-primary-950 rounded-3xl p-8 text-white relative overflow-hidden group shadow-xl shadow-primary-900/20">
           <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:rotate-12 transition-transform duration-700">
             <Activity className="w-40 h-40 text-white" />
           </div>
           <div className="relative z-10">
             <h3 className="text-xl font-black mb-4 flex items-center gap-3 text-white">
-              <AlertCircle className="text-amber-400" /> Matriks Keputusan Otomatis
+              <AlertCircle className="text-secondary-400" /> Matriks Keputusan Otomatis
             </h3>
             <div className="space-y-3 text-sm font-medium leading-relaxed">
               <p className="flex items-start gap-2 !text-white">
@@ -502,8 +502,8 @@ export default function AuditSeleksiPage() {
                 <span><b className="font-extrabold text-emerald-400">DITERIMA:</b> Quran Grade A, maksimal satu Grade C di komponen pendukung.</span>
               </p>
               <p className="flex items-start gap-2 !text-white">
-                <div className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 shrink-0 shadow-sm shadow-amber-900/50" />
-                <span><b className="font-extrabold text-amber-400">CADANGAN:</b> Quran Grade B, atau Wawancara Santri Grade B.</span>
+                <div className="w-1.5 h-1.5 rounded-full bg-secondary-400 mt-1.5 shrink-0 shadow-sm shadow-secondary-900/50" />
+                <span><b className="font-extrabold text-secondary-400">CADANGAN:</b> Quran Grade B, atau Wawancara Santri Grade B.</span>
               </p>
               <p className="flex items-start gap-2 !text-white">
                 <div className="w-1.5 h-1.5 rounded-full bg-rose-400 mt-1.5 shrink-0 shadow-sm shadow-rose-900/50" />

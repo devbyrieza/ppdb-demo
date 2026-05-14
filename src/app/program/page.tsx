@@ -44,8 +44,8 @@ const PROGRAMS = [
     ],
     image: "/images/mts.webp",
     theme: "teal",
-    accent: "text-teal-600",
-    bg: "bg-teal-50",
+    accent: "text-primary-600",
+    bg: "bg-primary-50",
   },
   {
     id: "il",
@@ -72,8 +72,8 @@ const PROGRAMS = [
     ],
     image: "/images/il.webp",
     theme: "sand",
-    accent: "text-sand-600",
-    bg: "bg-sand-50",
+    accent: "text-secondary-600",
+    bg: "bg-secondary-50",
   },
 ];
 
@@ -111,14 +111,14 @@ export default function ProgramPage() {
     <main className="bg-white min-h-screen">
       {/* 1. Hero Section - Airy & Clean */}
       <section className="relative py-24 md:py-32 overflow-hidden bg-white">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-sand-50/50 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-secondary-50/50 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.02] pointer-events-none" />
 
         <Container className="relative z-10 text-center">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-teal-50 border border-teal-100 text-teal-700 text-xs font-bold uppercase tracking-widest mb-8 shadow-sm"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-primary-50 border border-primary-100 text-primary-700 text-xs font-bold uppercase tracking-widest mb-8 shadow-sm"
           >
             <GraduationCap className="w-3.5 h-3.5" />
             <span>Jenjang Pendidikan</span>
@@ -131,7 +131,7 @@ export default function ProgramPage() {
             className="text-5xl md:text-7xl lg:text-8xl font-display font-black mb-10 tracking-tight leading-[0.9] text-ink-950"
           >
             Program <br />
-            <span className="text-gradient-teal">Terbaik Kita</span>
+            <span className="text-gradient-primary">Terbaik Kita</span>
           </motion.h1>
 
           <motion.p
@@ -162,9 +162,9 @@ export default function ProgramPage() {
                                 ${
                                   activeSection === program.id
                                     ? program.theme === "teal"
-                                      ? "bg-teal-600 text-white border-teal-600"
-                                      : "bg-sand-500 text-white border-sand-500"
-                                    : "bg-white text-ink-500 border-teal-100 hover:border-teal-300 hover:text-teal-700"
+                                      ? "bg-primary-600 text-white border-primary-600"
+                                      : "bg-secondary-500 text-white border-secondary-500"
+                                    : "bg-white text-ink-500 border-primary-100 hover:border-primary-300 hover:text-primary-700"
                                 }`}
               >
                 {program.name}
@@ -193,7 +193,7 @@ export default function ProgramPage() {
                   viewport={{ once: true }}
                   className={`relative ${idx % 2 === 1 ? "lg:col-start-2" : ""}`}
                 >
-                  <div className="aspect-4/5 rounded-[3.5rem] overflow-hidden shadow-lg relative z-10 p-3 bg-white border border-teal-100">
+                  <div className="aspect-4/5 rounded-[3.5rem] overflow-hidden shadow-lg relative z-10 p-3 bg-white border border-primary-100">
                     <div className="relative w-full h-full rounded-[2.8rem] overflow-hidden">
                       <Image
                         src={program.image}
@@ -210,7 +210,7 @@ export default function ProgramPage() {
 
                       <div className="absolute bottom-10 left-10 right-10 z-20">
                         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-white/20 backdrop-blur-md border border-white/30 text-white text-[10px] font-black uppercase tracking-widest mb-3">
-                          <Star className="w-3.5 h-3.5 fill-sand-400 text-sand-400" />
+                          <Star className="w-3.5 h-3.5 fill-secondary-400 text-secondary-400" />
                           <span>Program Unggulan</span>
                         </div>
                         <h3 className="text-3 font-display font-black text-white text-4xl leading-none">
@@ -223,7 +223,7 @@ export default function ProgramPage() {
                   {/* Decorative Blob */}
                   <div
                     className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] rounded-full blur-[120px] -z-10 opacity-30
-                                        ${program.theme === "teal" ? "bg-teal-200" : "bg-sand-200"}
+                                        ${program.theme === "teal" ? "bg-primary-200" : "bg-secondary-200"}
                                     `}
                   />
                 </motion.div>
@@ -249,11 +249,11 @@ export default function ProgramPage() {
                     {program.stats.map((stat, sIdx) => (
                       <div
                         key={sIdx}
-                        className={`app-card bg-white p-5 rounded-[2rem] border border-teal-50 shadow-sm hover:shadow-md transition-all text-center group`}
+                        className={`app-card bg-white p-5 rounded-[2rem] border border-primary-50 shadow-sm hover:shadow-md transition-all text-center group`}
                       >
                         <div
-                          className={`w-10 h-10 rounded-xl mx-auto mb-3 flex items-center justify-center transition-transform group-hover:scale-110 border border-teal-100
-                                                    ${program.theme === "teal" ? "bg-teal-50 text-teal-600" : "bg-sand-50 text-sand-700"}
+                          className={`w-10 h-10 rounded-xl mx-auto mb-3 flex items-center justify-center transition-transform group-hover:scale-110 border border-primary-100
+                                                    ${program.theme === "teal" ? "bg-primary-50 text-primary-600" : "bg-secondary-50 text-secondary-700"}
                                                 `}
                         >
                           <stat.icon className="w-5 h-5" />
@@ -275,15 +275,15 @@ export default function ProgramPage() {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className={`app-card rounded-[3rem] p-10 mb-10 border ${program.bg} border-teal-100 shadow-sm relative overflow-hidden`}
+                    className={`app-card rounded-[3rem] p-10 mb-10 border ${program.bg} border-primary-100 shadow-sm relative overflow-hidden`}
                   >
                     <div className="absolute top-0 right-0 p-8 opacity-5">
-                      <BookOpen className="w-32 h-32 text-teal-900" />
+                      <BookOpen className="w-32 h-32 text-primary-900" />
                     </div>
 
                     <h3 className="text-2xl font-black text-ink-950 mb-8 flex items-center gap-3">
                       <div
-                        className={`w-3 h-10 rounded-full ${program.theme === "teal" ? "bg-teal-600" : "bg-sand-500"}`}
+                        className={`w-3 h-10 rounded-full ${program.theme === "teal" ? "bg-primary-600" : "bg-secondary-500"}`}
                       />
                       Kurikulum & Fokus
                     </h3>
@@ -296,7 +296,7 @@ export default function ProgramPage() {
                         >
                           <div
                             className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5 shadow-sm
-                                                        ${program.theme === "teal" ? "bg-teal-600 text-white" : "bg-sand-500 text-white"}
+                                                        ${program.theme === "teal" ? "bg-primary-600 text-white" : "bg-secondary-500 text-white"}
                                                     `}
                           >
                             <CheckCircle2 className="w-4 h-4" />
@@ -317,7 +317,7 @@ export default function ProgramPage() {
                     <Link href={`/daftar?program=${program.id}`}>
                       <button
                         className={`w-full sm:w-auto px-14 py-5 rounded-pill font-black text-white text-lg shadow-md transition-all hover:-translate-y-1
-                                                ${program.theme === "teal" ? "bg-teal-700 hover:bg-teal-800" : "bg-sand-600 hover:bg-sand-700"}
+                                                ${program.theme === "teal" ? "bg-primary-700 hover:bg-primary-800" : "bg-secondary-600 hover:bg-secondary-700"}
                                             `}
                       >
                         Daftarkan Sekarang
@@ -338,7 +338,7 @@ export default function ProgramPage() {
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="bg-teal-900 bg-linear-to-br from-teal-800 to-teal-950 rounded-[2rem] md:rounded-[3rem] lg:rounded-[4rem] p-6 sm:p-8 md:p-16 lg:p-24 text-center text-white relative overflow-hidden"
+            className="bg-primary-900 bg-linear-to-br from-primary-800 to-primary-950 rounded-[2rem] md:rounded-[3rem] lg:rounded-[4rem] p-6 sm:p-8 md:p-16 lg:p-24 text-center text-white relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 w-32 h-32 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-white/5 rounded-full blur-[60px] md:blur-[100px] -translate-y-1/2 translate-x-1/2" />
             <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-5" />
@@ -346,15 +346,15 @@ export default function ProgramPage() {
             <div className="relative z-10">
               <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-display font-black mb-4 sm:mb-6 md:mb-8 text-white leading-tight">
                 Mulai Perjalanan <br />{" "}
-                <span className="text-sand-400">Terbaik</span> Mereka
+                <span className="text-secondary-400">Terbaik</span> Mereka
               </h2>
-              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-teal-50 max-w-2xl mx-auto mb-6 sm:mb-8 md:mb-10 lg:mb-12 font-medium px-2">
+              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-primary-50 max-w-2xl mx-auto mb-6 sm:mb-8 md:mb-10 lg:mb-12 font-medium px-2">
                 Konsultasikan rencana pendidikan putra-putri Anda dengan tim
                 kami untuk mendapatkan pilihan program yang paling tepat.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 justify-center px-4">
                 <Link href="/daftar">
-                  <button className="w-full sm:w-auto px-6 sm:px-10 py-3.5 sm:py-4 md:py-5 rounded-pill bg-white text-teal-900 font-black text-sm sm:text-base md:text-lg hover:bg-teal-50 shadow-md transition-all min-h-[48px] sm:min-h-[52px]">
+                  <button className="w-full sm:w-auto px-6 sm:px-10 py-3.5 sm:py-4 md:py-5 rounded-pill bg-white text-primary-900 font-black text-sm sm:text-base md:text-lg hover:bg-primary-50 shadow-md transition-all min-h-[48px] sm:min-h-[52px]">
                     Pendaftaran Online
                   </button>
                 </Link>

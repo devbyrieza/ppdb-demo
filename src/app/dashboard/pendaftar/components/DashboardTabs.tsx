@@ -82,7 +82,7 @@ export default function DashboardTabs({ statusProses }: DashboardTabsProps) {
   ];
 
   return (
-    <div className="w-full bg-white/80 backdrop-blur-md sticky top-0 z-30 border-b border-sand-100 shadow-sm overflow-hidden rounded-b-[2rem]">
+    <div className="w-full bg-white/80 backdrop-blur-md sticky top-0 z-30 border-b border-secondary-100 shadow-sm overflow-hidden rounded-b-[2rem]">
       <div className="max-w-7xl mx-auto flex items-center overflow-x-auto scrollbar-hide px-4 py-2 gap-2 sm:gap-4 no-scrollbar">
         {tabs.map((tab) => {
           const isActive =
@@ -118,12 +118,12 @@ export default function DashboardTabs({ statusProses }: DashboardTabsProps) {
               href={tab.href}
               className={`flex-shrink-0 flex items-center gap-2 px-4 py-3 rounded-2xl transition-all duration-300 relative group ${
                 isActive
-                  ? "bg-teal-900 text-white shadow-teal-200 shadow-lg scale-105"
-                  : "text-ink-600 hover:bg-sand-50 hover:text-teal-900"
+                  ? "bg-primary-900 text-white shadow-primary-200 shadow-lg scale-105"
+                  : "text-ink-600 hover:bg-secondary-50 hover:text-primary-900"
               }`}
             >
               <Icon
-                className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:scale-110 ${isActive ? "text-sand-300" : ""}`}
+                className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:scale-110 ${isActive ? "text-secondary-300" : ""}`}
               />
               <span
                 className={`text-[10px] sm:text-xs font-black uppercase tracking-widest ${isActive ? "block" : "hidden md:block"}`}
@@ -132,7 +132,7 @@ export default function DashboardTabs({ statusProses }: DashboardTabsProps) {
               </span>
 
               {isActive && (
-                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-sand-400 rounded-full" />
+                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-secondary-400 rounded-full" />
               )}
             </Link>
           );

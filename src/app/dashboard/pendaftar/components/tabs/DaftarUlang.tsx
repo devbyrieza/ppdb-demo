@@ -136,7 +136,7 @@ export default function DaftarUlangTab() {
   if (loading) {
     return (
       <div className="flex justify-center p-12">
-        <Loader2 className="w-8 h-8 animate-spin text-teal-600" />
+        <Loader2 className="w-8 h-8 animate-spin text-primary-600" />
       </div>
     );
   }
@@ -151,7 +151,7 @@ export default function DaftarUlangTab() {
         <div className="bg-slate-100 rounded-full p-4 w-20 h-20 mx-auto mb-6 flex items-center justify-center">
           <Lock className="w-10 h-10 text-slate-400" />
         </div>
-        <h2 className="text-2xl font-black text-teal-950 mb-2">
+        <h2 className="text-2xl font-black text-primary-950 mb-2">
           Belum Tersedia
         </h2>
         <p className="text-ink-500">
@@ -241,25 +241,25 @@ export default function DaftarUlangTab() {
   return (
     <div className="space-y-8 max-w-4xl mx-auto pb-12">
       {/* Header */}
-      <div className="bg-linear-to-br from-teal-700 to-teal-900 rounded-2xl p-8 text-white shadow-lg relative overflow-hidden">
+      <div className="bg-linear-to-br from-primary-700 to-primary-900 rounded-2xl p-8 text-white shadow-lg relative overflow-hidden">
         <div className="absolute top-0 right-0 p-4 opacity-10">
           <CheckCircle className="w-32 h-32" />
         </div>
         <h1 className="text-3xl font-black mb-2 relative z-10">
           Daftar Ulang Santri Baru
         </h1>
-        <p className="text-sand-100 relative z-10 text-lg font-medium">
+        <p className="text-secondary-100 relative z-10 text-lg font-medium">
           Tahap akhir administrasi penerimaan santri baru
         </p>
       </div>
 
       {/* Info Tagihan */}
       <div className="grid md:grid-cols-2 gap-6">
-        <div className="bg-white p-6 rounded-xl border border-teal-100 shadow-sm">
-          <h3 className="text-sm font-black text-teal-900 uppercase tracking-wider mb-2">
+        <div className="bg-white p-6 rounded-xl border border-primary-100 shadow-sm">
+          <h3 className="text-sm font-black text-primary-900 uppercase tracking-wider mb-2">
             Total Biaya Masuk
           </h3>
-          <div className="text-3xl font-black text-teal-600">
+          <div className="text-3xl font-black text-primary-600">
             Rp 9.800.000
           </div>
           <p className="text-xs text-ink-400 mt-1">
@@ -267,11 +267,11 @@ export default function DaftarUlangTab() {
           </p>
         </div>
 
-        <div className="bg-teal-50 p-6 rounded-xl border border-teal-100">
-          <h3 className="text-sm font-black text-teal-800 mb-2 flex items-center gap-2">
+        <div className="bg-primary-50 p-6 rounded-xl border border-primary-100">
+          <h3 className="text-sm font-black text-primary-800 mb-2 flex items-center gap-2">
             <AlertCircle className="w-4 h-4" /> Info Pembayaran
           </h3>
-          <ul className="text-sm text-teal-700 space-y-1 list-disc list-inside font-medium">
+          <ul className="text-sm text-primary-700 space-y-1 list-disc list-inside font-medium">
             <li>
               Transfer ke Rekening <strong>BSI 7171717171</strong>
             </li>
@@ -289,8 +289,8 @@ export default function DaftarUlangTab() {
               Tersedia kebijakan <strong>Keringanan Khusus</strong> bagi wali santri yang membutuhkan.
             </li>
           </ul>
-          <div className="pt-3 mt-3 border-t border-teal-200/50">
-            <span className="text-xs text-teal-800 block mb-2 leading-tight font-medium">
+          <div className="pt-3 mt-3 border-t border-primary-200/50">
+            <span className="text-xs text-primary-800 block mb-2 leading-tight font-medium">
               Butuh bantuan, keringanan, atau konfirmasi biaya?
             </span>
             <div className="grid grid-cols-2 gap-2">
@@ -355,7 +355,7 @@ export default function DaftarUlangTab() {
       <div className="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
         <div className="p-6 border-b border-ink-100 bg-surface-50 flex justify-between items-center">
           <h3 className="font-black text-lg text-ink-900 flex items-center gap-2">
-            <FileText className="w-5 h-5 text-teal-600" />
+            <FileText className="w-5 h-5 text-primary-600" />
             Form Pembayaran & Konfirmasi
           </h3>
           {/* Badge Status Pembayaran User bisa ditaruh sini jika fetch history */}
@@ -375,7 +375,7 @@ export default function DaftarUlangTab() {
                 }
                 className={`p-4 rounded-xl border-2 transition-all text-left flex flex-col ${
                   numericNominal === 9800000
-                    ? "border-teal-500 bg-teal-50/50 ring-2 ring-teal-500/20 shadow-md"
+                    ? "border-primary-500 bg-primary-50/50 ring-2 ring-primary-500/20 shadow-md"
                     : "border-slate-200 bg-white hover:bg-slate-50"
                 }`}
               >
@@ -384,7 +384,7 @@ export default function DaftarUlangTab() {
                     Bayar Lunas
                   </span>
                   {numericNominal === 9800000 ? (
-                    <CheckCircle className="w-5 h-5 text-teal-600" />
+                    <CheckCircle className="w-5 h-5 text-primary-600" />
                   ) : (
                     <div className="w-5 h-5 rounded-full border-2 border-slate-300" />
                   )}
@@ -392,7 +392,7 @@ export default function DaftarUlangTab() {
                 <span className="text-[11px] text-slate-500 leading-tight">
                   Pelunasan sekaligus seluruh biaya administrasi.
                 </span>
-                <span className="text-sm font-black text-teal-600 mt-2">
+                <span className="text-sm font-black text-primary-600 mt-2">
                   Rp 9.800.000
                 </span>
               </button>
@@ -404,7 +404,7 @@ export default function DaftarUlangTab() {
                 }
                 className={`p-4 rounded-xl border-2 transition-all text-left flex flex-col ${
                   numericNominal >= 4900000 && numericNominal < 9800000
-                    ? "border-teal-500 bg-teal-50/50 ring-2 ring-teal-500/20 shadow-md"
+                    ? "border-primary-500 bg-primary-50/50 ring-2 ring-primary-500/20 shadow-md"
                     : "border-slate-200 bg-white hover:bg-slate-50"
                 }`}
               >
@@ -413,7 +413,7 @@ export default function DaftarUlangTab() {
                     Bayar Dicicil
                   </span>
                   {numericNominal >= 4900000 && numericNominal < 9800000 ? (
-                    <CheckCircle className="w-5 h-5 text-teal-600" />
+                    <CheckCircle className="w-5 h-5 text-primary-600" />
                   ) : (
                     <div className="w-5 h-5 rounded-full border-2 border-slate-300" />
                   )}
@@ -421,7 +421,7 @@ export default function DaftarUlangTab() {
                 <span className="text-[11px] text-slate-500 leading-tight">
                   Pembayaran bertahap minimal 50% di awal.
                 </span>
-                <span className="text-sm font-black text-teal-600 mt-2">
+                <span className="text-sm font-black text-primary-600 mt-2">
                   Min. Rp 4.900.000
                 </span>
               </button>
@@ -439,7 +439,7 @@ export default function DaftarUlangTab() {
                   type="text"
                   readOnly
                   value={cicilanKe}
-                  className="w-full px-4 py-3 text-lg font-black text-teal-700 border border-teal-200 bg-teal-50 rounded-xl focus:outline-none transition-all shadow-inner text-center"
+                  className="w-full px-4 py-3 text-lg font-black text-primary-700 border border-primary-200 bg-primary-50 rounded-xl focus:outline-none transition-all shadow-inner text-center"
                 />
                 <p className="text-[10px] text-slate-500 mt-1 font-medium italic">
                   * Otomatis dihitung sistem
@@ -466,7 +466,7 @@ export default function DaftarUlangTab() {
                     new Intl.NumberFormat("id-ID").format(parseInt(val || "0")),
                   );
                 }}
-                className="w-full pl-12 pr-4 py-3 text-lg font-black text-ink-900 border border-ink-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all shadow-inner"
+                className="w-full pl-12 pr-4 py-3 text-lg font-black text-ink-900 border border-ink-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all shadow-inner"
                 placeholder="0"
               />
             </div>
@@ -482,8 +482,8 @@ export default function DaftarUlangTab() {
                     tipeBayar === "LUNAS"
                       ? "bg-emerald-100 text-emerald-700 border-emerald-200"
                       : tipeBayar.includes("50% ATAU LEBIH")
-                        ? "bg-teal-100 text-teal-700 border-teal-200"
-                        : "bg-amber-100 text-amber-700 border-amber-200"
+                        ? "bg-primary-100 text-primary-700 border-primary-200"
+                        : "bg-secondary-100 text-secondary-700 border-secondary-200"
                   }`}
                 >
                   {tipeBayar}
@@ -496,21 +496,21 @@ export default function DaftarUlangTab() {
              tipeBayar === "CICILAN DIBAWAH 50%" && 
              !hasExistingVerifiedPayment && 
              totalPaid < 4900000 && (
-              <div className="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-xl space-y-3 animate-in fade-in slide-in-from-top-1">
-                <div className="flex items-center gap-2 text-amber-800">
+              <div className="mt-4 p-4 bg-secondary-50 border border-secondary-200 rounded-xl space-y-3 animate-in fade-in slide-in-from-top-1">
+                <div className="flex items-center gap-2 text-secondary-800">
                   <AlertCircle className="w-4 h-4" />
                   <span className="font-black text-xs uppercase tracking-wider">
                     Permohonan Keringanan Khusus
                   </span>
                 </div>
-                <p className="text-[11px] text-amber-700 leading-relaxed font-medium">
+                <p className="text-[11px] text-secondary-700 leading-relaxed font-medium">
                   Pembayaran di bawah 50% hanya diizinkan bagi wali santri yang memiliki kendala finansial mendesak. Silakan tuliskan alasan singkat Anda di bawah ini agar dapat dipertimbangkan oleh tim Finance.
                 </p>
                 <textarea
                   value={keringananReason}
                   onChange={(e) => setKeringananReason(e.target.value)}
                   placeholder="Contoh: Sedang ada musibah keluarga, mohon keringanan cicilan pertama 1jt dulu..."
-                  className="w-full p-3 text-xs border border-amber-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all bg-white font-medium min-h-[80px]"
+                  className="w-full p-3 text-xs border border-secondary-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all bg-white font-medium min-h-[80px]"
                   required
                 />
               </div>
@@ -532,8 +532,8 @@ export default function DaftarUlangTab() {
               <div className="flex flex-col items-center gap-2 pointer-events-none">
                 {file ? (
                   <>
-                    <FileText className="w-8 h-8 text-teal-600" />
-                    <span className="font-black text-teal-700">
+                    <FileText className="w-8 h-8 text-primary-600" />
+                    <span className="font-black text-primary-700">
                       {file.name}
                     </span>
                     <span className="text-xs text-ink-400">
@@ -563,7 +563,7 @@ export default function DaftarUlangTab() {
               type="checkbox"
               checked={pernyataan}
               onChange={(e) => setPernyataan(e.target.checked)}
-              className="mt-1 w-5 h-5 text-teal-600 rounded border-ink-300 focus:ring-teal-500"
+              className="mt-1 w-5 h-5 text-primary-600 rounded border-ink-300 focus:ring-primary-500"
             />
             <div className="text-sm text-slate-600">
               <span className="font-bold text-slate-800 block mb-1">
@@ -578,7 +578,7 @@ export default function DaftarUlangTab() {
           <button
             type="submit"
             disabled={submitting || !pernyataan || !file || !nominal}
-            className="w-full py-4 bg-sand-400 hover:bg-sand-300 text-teal-950 font-black rounded-xl shadow-xl shadow-sand-400/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 border border-sand-500"
+            className="w-full py-4 bg-secondary-400 hover:bg-secondary-300 text-primary-950 font-black rounded-xl shadow-xl shadow-secondary-400/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 border border-secondary-500"
           >
             {submitting ? (
               <Loader2 className="animate-spin" />

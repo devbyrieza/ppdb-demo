@@ -81,9 +81,9 @@ export default function LanguageSwitcher() {
       {/* Custom Premium UI */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-slate-200 bg-white hover:border-teal-300 hover:bg-teal-50/30 transition-all duration-300 group"
+        className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-slate-200 bg-white hover:border-primary-300 hover:bg-primary-50/30 transition-all duration-300 group"
       >
-        <Globe className="w-4 h-4 text-slate-400 group-hover:text-teal-600 transition-colors" />
+        <Globe className="w-4 h-4 text-slate-400 group-hover:text-primary-600 transition-colors" />
         <span className="text-[11px] font-black text-slate-600 uppercase tracking-wider hidden sm:block">
           {LANGUAGES.find((l) => l.code === currentLang)?.code}
         </span>
@@ -117,7 +117,7 @@ export default function LanguageSwitcher() {
                     onClick={() => changeLanguage(lang.code)}
                     className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm transition-all ${
                       currentLang === lang.code
-                        ? "bg-teal-50 text-teal-700 font-bold"
+                        ? "bg-primary-50 text-primary-700 font-bold"
                         : "text-slate-600 hover:bg-slate-50"
                     }`}
                   >
@@ -138,7 +138,7 @@ export default function LanguageSwitcher() {
                     if (el) el.click();
                     setIsOpen(false);
                   }}
-                  className="w-full text-center py-2 text-[10px] font-bold text-slate-400 hover:text-teal-600 transition-colors uppercase tracking-widest"
+                  className="w-full text-center py-2 text-[10px] font-bold text-slate-400 hover:text-primary-600 transition-colors uppercase tracking-widest"
                 >
                   Bahasa Lainnya...
                 </button>

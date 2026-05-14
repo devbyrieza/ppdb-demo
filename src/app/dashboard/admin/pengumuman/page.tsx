@@ -140,11 +140,11 @@ export default function PengumumanPage() {
           <p className="text-stone-500 text-sm font-medium">Kandidat Tampil</p>
           <h3 className="text-2xl font-bold text-stone-800">{stats.total}</h3>
         </div>
-        <div className="bg-blue-50 p-6 rounded-xl shadow-sm border border-blue-100">
-          <p className="text-blue-600 text-sm font-medium">
+        <div className="bg-primary-50 p-6 rounded-xl shadow-sm border border-primary-100">
+          <p className="text-primary-600 text-sm font-medium">
             Siap Diumumkan (Sudah Ujian)
           </p>
-          <h3 className="text-2xl font-bold text-blue-700">{stats.ready}</h3>
+          <h3 className="text-2xl font-bold text-primary-700">{stats.ready}</h3>
         </div>
         <div className="bg-green-50 p-6 rounded-xl shadow-sm border border-green-100">
           <p className="text-green-600 text-sm font-medium">Sudah Lulus</p>
@@ -232,7 +232,7 @@ export default function PengumumanPage() {
                     ? "bg-green-500"
                     : grade === "B"
                       ? "bg-sky-400"
-                      : "bg-amber-400";
+                      : "bg-secondary-400";
                 return (
                   <span
                     key={type}
@@ -308,7 +308,7 @@ export default function PengumumanPage() {
                             <CheckCircle2 className="w-3 h-3" /> Lulus
                           </span>
                         ) : c.status_pendaftaran === "scheduled" ? (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 text-[10px] font-black uppercase">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary-100 text-primary-700 text-[10px] font-black uppercase">
                             Siap
                           </span>
                         ) : (
@@ -387,7 +387,7 @@ export default function PengumumanPage() {
                         ? "bg-green-500"
                         : grade === "B"
                           ? "bg-sky-400"
-                          : "bg-amber-400";
+                          : "bg-secondary-400";
                     return (
                       <span
                         key={type}
@@ -458,7 +458,7 @@ export default function PengumumanPage() {
                             <CheckCircle2 className="w-3 h-3" /> Lulus
                           </span>
                         ) : c.status_pendaftaran === "scheduled" ? (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-bold">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary-100 text-primary-700 text-xs font-bold">
                             Siap Diumumkan
                           </span>
                         ) : (

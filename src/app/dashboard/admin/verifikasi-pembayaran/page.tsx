@@ -349,7 +349,7 @@ function VerifikasiPembayaranContent() {
       {isRefreshing && (
         <div className="fixed inset-0 bg-white/40 backdrop-blur-[1px] z-[100] flex items-center justify-center pointer-events-none">
           <div className="bg-white/80 px-6 py-3 rounded-2xl shadow-xl border border-stone-100 flex items-center gap-3 animate-in fade-in zoom-in duration-300">
-            <Loader2 className="w-5 h-5 animate-spin text-teal-600" />
+            <Loader2 className="w-5 h-5 animate-spin text-primary-600" />
             <span className="text-sm font-bold text-stone-700 tracking-tight">
               Memperbarui data...
             </span>
@@ -367,11 +367,11 @@ function VerifikasiPembayaranContent() {
       <div className="bg-white rounded-[2rem] shadow-sm p-5 md:p-8 border border-stone-100">
         <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:justify-between">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 md:w-16 md:h-16 bg-teal-50 rounded-2xl flex items-center justify-center border border-teal-100 shrink-0">
-              <CreditCard className="w-6 h-6 md:w-8 md:h-8 text-teal-700" />
+            <div className="w-12 h-12 md:w-16 md:h-16 bg-primary-50 rounded-2xl flex items-center justify-center border border-primary-100 shrink-0">
+              <CreditCard className="w-6 h-6 md:w-8 md:h-8 text-primary-700" />
             </div>
             <div>
-              <h2 className="text-xl md:text-3xl font-black text-teal-950 tracking-tight mb-0.5">
+              <h2 className="text-xl md:text-3xl font-black text-primary-950 tracking-tight mb-0.5">
                 Verifikasi Pembayaran
               </h2>
               <p className="text-stone-500 font-medium text-sm">
@@ -385,7 +385,7 @@ function VerifikasiPembayaranContent() {
               onClick={() => updateFilters(undefined, "PENDAFTARAN")}
               className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${
                 activeTab === "PENDAFTARAN"
-                  ? "bg-white text-teal-700 shadow-clay-sm ring-1 ring-stone-100"
+                  ? "bg-white text-primary-700 shadow-clay-sm ring-1 ring-stone-100"
                   : "text-stone-400 hover:text-stone-600 hover:bg-stone-50"
               }`}
             >
@@ -395,7 +395,7 @@ function VerifikasiPembayaranContent() {
               onClick={() => updateFilters(undefined, "DAFTAR_ULANG")}
               className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${
                 activeTab === "DAFTAR_ULANG"
-                  ? "bg-white text-teal-700 shadow-clay-sm ring-1 ring-stone-100"
+                  ? "bg-white text-primary-700 shadow-clay-sm ring-1 ring-stone-100"
                   : "text-stone-400 hover:text-stone-600 hover:bg-stone-50"
               }`}
             >
@@ -441,13 +441,13 @@ function VerifikasiPembayaranContent() {
         </div>
 
         <div className="mt-5 relative group">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-stone-400 group-focus-within:text-teal-600 transition-colors" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-stone-400 group-focus-within:text-primary-600 transition-colors" />
           <input
             type="text"
             placeholder="Cari nama atau nomor pendaftaran..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-12 pr-4 py-4 bg-white border border-stone-200 rounded-2xl focus:border-teal-500 focus:ring-4 focus:ring-teal-500/5 focus:outline-none transition-all text-sm md:text-base font-bold text-stone-800 placeholder:text-stone-400 shadow-sm"
+            className="w-full pl-12 pr-4 py-4 bg-white border border-stone-200 rounded-2xl focus:border-primary-500 focus:ring-4 focus:ring-primary-500/5 focus:outline-none transition-all text-sm md:text-base font-bold text-stone-800 placeholder:text-stone-400 shadow-sm"
           />
         </div>
 
@@ -463,7 +463,7 @@ function VerifikasiPembayaranContent() {
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={() => updateFilters("pending")}
-                className={`px-3 md:px-4 py-2 rounded-lg text-sm font-bold transition-all ${statusFilter === "pending" ? "bg-amber-100 text-amber-700 ring-2 ring-amber-500/20" : "hover:bg-stone-50 text-stone-500"}`}
+                className={`px-3 md:px-4 py-2 rounded-lg text-sm font-bold transition-all ${statusFilter === "pending" ? "bg-secondary-100 text-secondary-700 ring-2 ring-secondary-500/20" : "hover:bg-stone-50 text-stone-500"}`}
               >
                 Pending
               </button>
@@ -496,7 +496,7 @@ function VerifikasiPembayaranContent() {
                       onClick={() => setTipeCicilanFilter(tipe as any)}
                       className={`px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-wider transition-all ${
                         tipeCicilanFilter === tipe
-                          ? "bg-teal-700 text-white shadow-sm shadow-teal-700/20"
+                          ? "bg-primary-700 text-white shadow-sm shadow-primary-700/20"
                           : "bg-white text-stone-500 border border-stone-200 hover:bg-stone-50"
                       }`}
                     >
@@ -514,7 +514,7 @@ function VerifikasiPembayaranContent() {
         {loading ? (
           <div className="flex items-center justify-center h-[400px]">
             <div className="text-center">
-              <Loader2 className="w-10 h-10 animate-spin text-teal-700 mx-auto mb-4" />
+              <Loader2 className="w-10 h-10 animate-spin text-primary-700 mx-auto mb-4" />
               <p className="text-stone-500 font-medium">
                 Memuat data pembayaran...
               </p>
@@ -544,13 +544,13 @@ function VerifikasiPembayaranContent() {
                 <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-6">
                   <div className="flex-1">
                     <div className="flex items-start gap-4 mb-3">
-                      <div className="w-12 h-12 rounded-xl bg-teal-50 flex items-center justify-center text-teal-800 font-black text-lg shrink-0 border border-teal-100">
+                      <div className="w-12 h-12 rounded-xl bg-primary-50 flex items-center justify-center text-primary-800 font-black text-lg shrink-0 border border-primary-100">
                         {pay.pendaftar?.nama_lengkap
                           ? pay.pendaftar.nama_lengkap.charAt(0).toUpperCase()
                           : "?"}
                       </div>
                       <div>
-                        <h3 className="text-lg font-black text-stone-900 group-hover:text-teal-700 transition-colors">
+                        <h3 className="text-lg font-black text-stone-900 group-hover:text-primary-700 transition-colors">
                           {pay.pendaftar?.nama_lengkap
                             ? toTitleCase(pay.pendaftar.nama_lengkap || "")
                             : "Tanpa Nama"}
@@ -616,9 +616,9 @@ function VerifikasiPembayaranContent() {
                         </div>
                       )}
                       {pay.keringanan_reason && (
-                        <div className="col-span-1 sm:col-span-2 pt-2 border-t border-amber-200/50 mt-1">
-                          <p className="text-xs text-amber-700 bg-amber-50 p-2 rounded-lg border border-amber-100 font-medium">
-                            <strong className="text-amber-900 block mb-0.5 uppercase text-[9px] tracking-widest">Alasan Keringanan:</strong>
+                        <div className="col-span-1 sm:col-span-2 pt-2 border-t border-secondary-200/50 mt-1">
+                          <p className="text-xs text-secondary-700 bg-secondary-50 p-2 rounded-lg border border-secondary-100 font-medium">
+                            <strong className="text-secondary-900 block mb-0.5 uppercase text-[9px] tracking-widest">Alasan Keringanan:</strong>
                             "{pay.keringanan_reason}"
                           </p>
                         </div>
@@ -632,7 +632,7 @@ function VerifikasiPembayaranContent() {
                         href={pay.bukti_transfer_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 bg-white border-2 border-dashed border-stone-300 hover:border-teal-500 hover:bg-teal-50 text-stone-600 hover:text-teal-800 rounded-xl text-sm font-bold transition-all"
+                        className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 bg-white border-2 border-dashed border-stone-300 hover:border-primary-500 hover:bg-primary-50 text-stone-600 hover:text-primary-800 rounded-xl text-sm font-bold transition-all"
                       >
                         <Eye className="w-4 h-4" />
                         Lihat Bukti
@@ -643,7 +643,7 @@ function VerifikasiPembayaranContent() {
                         onClick={() => openModal(pay)}
                         className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-bold shadow-lg transition-all hover:-translate-y-0.5 ${
                           statusFilter === "pending"
-                            ? "bg-teal-700 hover:bg-teal-800 text-white shadow-teal-700/20"
+                            ? "bg-primary-700 hover:bg-primary-800 text-white shadow-primary-700/20"
                             : statusFilter === "verified"
                               ? "bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-100"
                               : "bg-red-50 hover:bg-red-100 text-red-700 border border-red-100"
@@ -688,23 +688,23 @@ function VerifikasiPembayaranContent() {
             </div>
 
             <div className="flex-1 overflow-y-auto p-6 space-y-6">
-              <div className="flex gap-4 p-4 bg-teal-50 rounded-2xl border border-teal-100">
+              <div className="flex gap-4 p-4 bg-primary-50 rounded-2xl border border-primary-100">
                 <div className="p-3 bg-white rounded-xl shadow-sm h-fit">
-                  <DollarSign className="w-6 h-6 text-teal-700" />
+                  <DollarSign className="w-6 h-6 text-primary-700" />
                 </div>
                 <div>
-                  <p className="text-xs font-black text-teal-700 uppercase tracking-widest mb-1 shadow-xs">
+                  <p className="text-xs font-black text-primary-700 uppercase tracking-widest mb-1 shadow-xs">
                     Konfirmasi/Ubah Nominal
                   </p>
                   <div className="flex items-center gap-2">
-                    <span className="text-2xl font-black text-teal-950">
+                    <span className="text-2xl font-black text-primary-950">
                       Rp
                     </span>
                     <input
                       type="number"
                       value={editJumlah}
                       onChange={(e) => setEditJumlah(e.target.value)}
-                      className="text-2xl font-black text-teal-950 bg-transparent border-b-2 border-teal-200 focus:border-teal-500 outline-none w-full max-w-[200px]"
+                      className="text-2xl font-black text-primary-950 bg-transparent border-b-2 border-primary-200 focus:border-primary-500 outline-none w-full max-w-[200px]"
                     />
                   </div>
                 </div>
@@ -757,17 +757,17 @@ function VerifikasiPembayaranContent() {
               )}
 
               {selectedPembayaran.keringanan_reason && (
-                <div className="p-5 bg-amber-50 border-2 border-amber-100 rounded-2xl space-y-3 shadow-sm">
-                  <div className="flex items-center gap-2 text-amber-800">
+                <div className="p-5 bg-secondary-50 border-2 border-secondary-100 rounded-2xl space-y-3 shadow-sm">
+                  <div className="flex items-center gap-2 text-secondary-800">
                     <AlertCircle className="w-5 h-5" />
                     <span className="font-black text-xs uppercase tracking-widest">
                       Permohonan Keringanan Khusus
                     </span>
                   </div>
-                  <p className="text-sm text-amber-900 leading-relaxed font-bold italic bg-white/50 p-4 rounded-xl border border-amber-200/50">
+                  <p className="text-sm text-secondary-900 leading-relaxed font-bold italic bg-white/50 p-4 rounded-xl border border-secondary-200/50">
                     "{selectedPembayaran.keringanan_reason}"
                   </p>
-                  <p className="text-[11px] text-amber-700 font-medium px-1">
+                  <p className="text-[11px] text-secondary-700 font-medium px-1">
                     * Mohon pertimbangkan alasan di atas sebelum melakukan verifikasi atau penolakan.
                   </p>
                 </div>
@@ -782,7 +782,7 @@ function VerifikasiPembayaranContent() {
                     <button
                       onClick={handleUploadClick}
                       disabled={uploadingProof === selectedPembayaran.id}
-                      className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg text-xs font-bold transition-colors disabled:opacity-50"
+                      className="flex items-center gap-1.5 px-3 py-1.5 bg-primary-50 text-primary-600 hover:bg-primary-100 rounded-lg text-xs font-bold transition-colors disabled:opacity-50"
                     >
                       {uploadingProof === selectedPembayaran.id ? (
                         <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -818,7 +818,7 @@ function VerifikasiPembayaranContent() {
                   <button
                     onClick={handleUploadClick}
                     disabled={uploadingProof === selectedPembayaran.id}
-                    className="mx-auto flex items-center justify-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-xl text-sm font-bold transition-colors disabled:opacity-50"
+                    className="mx-auto flex items-center justify-center gap-2 px-4 py-2 bg-primary-50 text-primary-600 hover:bg-primary-100 rounded-xl text-sm font-bold transition-colors disabled:opacity-50"
                   >
                     {uploadingProof === selectedPembayaran.id ? (
                       <Loader2 className="w-4 h-4 animate-spin" />
@@ -838,7 +838,7 @@ function VerifikasiPembayaranContent() {
                   value={catatan}
                   onChange={(e) => setCatatan(e.target.value)}
                   placeholder="Contoh: Bukti transfer buram, mohon upload ulang..."
-                  className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20 focus:outline-none resize-none transition-all font-bold text-stone-800"
+                  className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:border-primary-600 focus:ring-2 focus:ring-primary-600/20 focus:outline-none resize-none transition-all font-bold text-stone-800"
                   rows={3}
                 />
               </div>
@@ -901,7 +901,7 @@ export default function VerifikasiPembayaranPage() {
     <Suspense
       fallback={
         <div className="flex items-center justify-center min-h-screen">
-          <Loader2 className="w-10 h-10 animate-spin text-teal-600" />
+          <Loader2 className="w-10 h-10 animate-spin text-primary-600" />
         </div>
       }
     >

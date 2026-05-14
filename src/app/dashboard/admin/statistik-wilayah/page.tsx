@@ -151,8 +151,8 @@ export default function StatistikWilayahPage() {
     : [];
 
   const tabs = [
-    { id: "santri", label: "Santri", icon: Users, color: "text-blue-600" },
-    { id: "ayah", label: "Ayah", icon: User, color: "text-amber-600" },
+    { id: "santri", label: "Santri", icon: Users, color: "text-primary-600" },
+    { id: "ayah", label: "Ayah", icon: User, color: "text-secondary-600" },
     { id: "ibu", label: "Ibu", icon: Heart, color: "text-rose-500" },
     { id: "wali", label: "Wali", icon: UserCheck, color: "text-emerald-600" },
     { id: "keluarga", label: "Keluarga", icon: Home, color: "text-violet-600" },

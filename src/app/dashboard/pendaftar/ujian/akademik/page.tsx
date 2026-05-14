@@ -126,7 +126,7 @@ export default function AkademikTestPage() {
   if (checking) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="w-10 h-10 animate-spin text-teal-600" />
+        <Loader2 className="w-10 h-10 animate-spin text-primary-600" />
       </div>
     );
   }
@@ -144,7 +144,7 @@ export default function AkademikTestPage() {
             onClick={() =>
               router.push("/dashboard/pendaftar?tab=undangan-seleksi")
             }
-            className="px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-xl transition-colors"
+            className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl transition-colors"
           >
             Kembali ke Jadwal Seleksi
           </button>
@@ -157,8 +157,8 @@ export default function AkademikTestPage() {
     return (
       <div className="max-w-lg mx-auto p-8 text-center mt-10">
         <div className="bg-white rounded-[2rem] shadow-xl border p-10">
-          <div className="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <AlertCircle className="w-10 h-10 text-amber-600" />
+          <div className="w-20 h-20 bg-secondary-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <AlertCircle className="w-10 h-10 text-secondary-600" />
           </div>
           <h2 className="text-2xl font-black mb-4 uppercase tracking-tight text-ink-950">
             Akses Terkunci
@@ -169,7 +169,7 @@ export default function AkademikTestPage() {
           </p>
           <button
             onClick={() => router.push("/dashboard/pendaftar")}
-            className="w-full px-6 py-4 bg-teal-700 hover:bg-teal-800 text-white font-black rounded-xl transition-all shadow-md uppercase tracking-widest text-sm"
+            className="w-full px-6 py-4 bg-primary-700 hover:bg-primary-800 text-white font-black rounded-xl transition-all shadow-md uppercase tracking-widest text-sm"
           >
             Kembali ke Dashboard
           </button>
@@ -188,7 +188,7 @@ export default function AkademikTestPage() {
           <ArrowLeft className="w-4 h-4" /> Kembali
         </button>
 
-        <div className="bg-gradient-to-r from-teal-600 to-teal-800 rounded-[2rem] p-8 mb-8 text-white relative overflow-hidden shadow-lg border border-teal-500">
+        <div className="bg-gradient-to-r from-primary-600 to-primary-800 rounded-[2rem] p-8 mb-8 text-white relative overflow-hidden shadow-lg border border-primary-500">
           <div className="absolute top-0 right-0 p-8 opacity-10">
             <FileText className="w-32 h-32" />
           </div>
@@ -196,7 +196,7 @@ export default function AkademikTestPage() {
             <h1 className="text-2xl md:text-4xl font-black mb-2 tracking-tight">
               Seleksi Akademik & Potensi
             </h1>
-            <p className="text-teal-100 font-medium text-sm md:text-base opacity-90 max-w-lg">
+            <p className="text-primary-100 font-medium text-sm md:text-base opacity-90 max-w-lg">
               Ujian Berbasis Komputer (CBT) untuk mengukur kemampuan dasar dan
               potensi akademik calon santri.
             </p>
@@ -223,29 +223,29 @@ export default function AkademikTestPage() {
                 <strong>PAI, B.Indo, IPA, Mat</strong>
               </div>
             </div>
-            <div className="bg-amber-50 p-4 rounded-xl border border-amber-200">
-              <h4 className="font-bold text-amber-800 mb-2">Perhatian</h4>
-              <ul className="text-sm text-amber-700 space-y-1">
+            <div className="bg-secondary-50 p-4 rounded-xl border border-secondary-200">
+              <h4 className="font-bold text-secondary-800 mb-2">Perhatian</h4>
+              <ul className="text-sm text-secondary-700 space-y-1">
                 <li>• Pastikan koneksi internet stabil</li>
                 <li>• Jangan refresh halaman saat mengerjakan</li>
                 <li>• Timer akan berjalan otomatis setelah menekan "Mulai"</li>
                 <li>• Jawaban otomatis dikirim jika waktu habis</li>
               </ul>
             </div>
-            <div className="bg-teal-50 border border-teal-200 rounded-xl p-6">
+            <div className="bg-primary-50 border border-primary-200 rounded-xl p-6">
               <div className="flex gap-5">
-                <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center border border-teal-100 flex-shrink-0 shadow-sm">
-                  <AlertCircle className="w-7 h-7 text-teal-600" />
+                <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center border border-primary-100 flex-shrink-0 shadow-sm">
+                  <AlertCircle className="w-7 h-7 text-primary-600" />
                 </div>
                 <div>
-                  <h4 className="font-black text-teal-900 mb-1.5 text-base">
+                  <h4 className="font-black text-primary-900 mb-1.5 text-base">
                     Pesan dari Mudir
                   </h4>
-                  <p className="text-sm text-teal-800 leading-relaxed italic font-medium">
+                  <p className="text-sm text-primary-800 leading-relaxed italic font-medium">
                     "Bismillah, kerjakan dengan jujur dan penuh optimisme. Hasil
                     terbaik adalah buah dari kejujuran dan usaha yang ikhlas."
                   </p>
-                  <p className="text-xs text-teal-600 leading-relaxed mt-2 font-bold uppercase tracking-widest">
+                  <p className="text-xs text-primary-600 leading-relaxed mt-2 font-bold uppercase tracking-widest">
                     - Ustadz Juju Junaedi, M.Pd.
                   </p>
                 </div>
@@ -273,7 +273,7 @@ export default function AkademikTestPage() {
       </div>
 
       <div className="mt-2 space-y-6">
-        <div className="bg-gradient-to-r from-indigo-600 to-blue-700 rounded-xl p-6">
+        <div className="bg-gradient-to-r from-indigo-600 to-primary-700 rounded-xl p-6">
           <h2 className="text-xl font-bold text-white">
             Seleksi Akademik — {jenjang}
           </h2>

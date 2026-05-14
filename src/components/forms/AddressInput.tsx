@@ -208,10 +208,10 @@ export default function AddressInput({
   };
 
   const inputClass =
-    "w-full px-4 py-2.5 border-2 border-stone-200 rounded-lg focus:border-teal-500 focus:outline-none transition-colors disabled:bg-stone-100 disabled:text-stone-500";
+    "w-full px-4 py-2.5 border-2 border-stone-200 rounded-lg focus:border-primary-500 focus:outline-none transition-colors disabled:bg-stone-100 disabled:text-stone-500";
 
   const selectClass =
-    "w-full px-4 py-2.5 border-2 border-stone-200 rounded-lg focus:border-teal-500 focus:outline-none transition-colors disabled:bg-stone-100 disabled:text-stone-500";
+    "w-full px-4 py-2.5 border-2 border-stone-200 rounded-lg focus:border-primary-500 focus:outline-none transition-colors disabled:bg-stone-100 disabled:text-stone-500";
 
   return (
     <div className="space-y-4">
@@ -286,7 +286,7 @@ export default function AddressInput({
             ))}
           </select>
           {loadingProvinsi && (
-            <Loader2 className="absolute right-10 top-1/2 -translate-y-1/2 w-4 h-4 animate-spin text-teal-600" />
+            <Loader2 className="absolute right-10 top-1/2 -translate-y-1/2 w-4 h-4 animate-spin text-primary-600" />
           )}
         </div>
       </div>
@@ -318,7 +318,7 @@ export default function AddressInput({
             ))}
           </select>
           {loadingKabupaten && (
-            <Loader2 className="absolute right-10 top-1/2 -translate-y-1/2 w-4 h-4 animate-spin text-teal-600" />
+            <Loader2 className="absolute right-10 top-1/2 -translate-y-1/2 w-4 h-4 animate-spin text-primary-600" />
           )}
         </div>
       </div>
@@ -350,7 +350,7 @@ export default function AddressInput({
             ))}
           </select>
           {loadingKecamatan && (
-            <Loader2 className="absolute right-10 top-1/2 -translate-y-1/2 w-4 h-4 animate-spin text-teal-600" />
+            <Loader2 className="absolute right-10 top-1/2 -translate-y-1/2 w-4 h-4 animate-spin text-primary-600" />
           )}
         </div>
       </div>
@@ -384,7 +384,7 @@ export default function AddressInput({
             ))}
           </select>
           {loadingKelurahan && (
-            <Loader2 className="absolute right-10 top-1/2 -translate-y-1/2 w-4 h-4 animate-spin text-teal-600" />
+            <Loader2 className="absolute right-10 top-1/2 -translate-y-1/2 w-4 h-4 animate-spin text-primary-600" />
           )}
         </div>
       </div>

@@ -35,19 +35,19 @@ const ROLE_INFO: Record<
     label: "Admin Super",
     icon: "👑",
     desc: "Akses penuh semua fitur",
-    color: "from-amber-50 to-yellow-50 border-amber-200",
+    color: "from-secondary-50 to-yellow-50 border-secondary-200",
   },
   admin_berkas: {
     label: "Admin Berkas",
     icon: "📂",
     desc: "Verifikasi dokumen pendaftar",
-    color: "from-blue-50 to-indigo-50 border-blue-200",
+    color: "from-primary-50 to-indigo-50 border-primary-200",
   },
   admin_keuangan: {
     label: "Admin Keuangan",
     icon: "💰",
     desc: "Verifikasi pembayaran",
-    color: "from-emerald-50 to-teal-50 border-emerald-200",
+    color: "from-emerald-50 to-primary-50 border-emerald-200",
   },
   pewawancara_cawalsan: {
     label: "Pewawancara Cawalsan",
@@ -71,7 +71,7 @@ const ROLE_INFO: Record<
     label: "Admin",
     icon: "⚙️",
     desc: "Panel administrasi",
-    color: "from-orange-50 to-amber-50 border-orange-200",
+    color: "from-orange-50 to-secondary-50 border-orange-200",
   },
 };
 
@@ -97,7 +97,7 @@ const AuthInput = ({
       {label}
     </label>
     <div className="relative group">
-      <div className="absolute left-5 md:left-6 top-0 bottom-0 flex items-center text-ink-500 group-focus-within:text-teal-600 transition-colors duration-300 pointer-events-none">
+      <div className="absolute left-5 md:left-6 top-0 bottom-0 flex items-center text-ink-500 group-focus-within:text-primary-600 transition-colors duration-300 pointer-events-none">
         <Icon className="w-5 h-5" />
       </div>
       {children}
@@ -302,8 +302,8 @@ export default function LoginPage() {
   return (
     <main className="min-h-screen bg-white flex items-center justify-center p-6 relative overflow-hidden">
       {/* Background Decor */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-sand-100/40 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-teal-100/20 rounded-full blur-[100px] -translate-x-1/2 translate-y-1/2 pointer-events-none" />
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-secondary-100/40 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-primary-100/20 rounded-full blur-[100px] -translate-x-1/2 translate-y-1/2 pointer-events-none" />
       <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.02] pointer-events-none" />
 
       <Container className="relative z-10 flex flex-col items-center">
@@ -314,7 +314,7 @@ export default function LoginPage() {
           className="text-center mb-12"
         >
           <Link href="/">
-            <div className="app-card inline-flex items-center justify-center w-20 h-20 bg-white rounded-3xl shadow-sm border border-sand-100 mb-8 hover:scale-110 transition-transform group overflow-hidden">
+            <div className="app-card inline-flex items-center justify-center w-20 h-20 bg-white rounded-3xl shadow-sm border border-secondary-100 mb-8 hover:scale-110 transition-transform group overflow-hidden">
               <img
                 src={BRANDING.logoPath}
                 alt={"Logo " + BRANDING.schoolName}
@@ -324,7 +324,7 @@ export default function LoginPage() {
           </Link>
           <h1 className="text-4xl md:text-5xl font-display font-black text-ink-950 mb-3 tracking-tight">
             Portal{" "}
-            <span className="text-gradient-teal font-black">
+            <span className="text-gradient-primary font-black">
               {BRANDING.schoolShortName}
             </span>
           </h1>
@@ -338,10 +338,10 @@ export default function LoginPage() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.1 }}
-          className="app-card w-full max-w-[480px] bg-white rounded-[2.5rem] md:rounded-[4rem] shadow-lg border border-sand-100 p-6 md:p-14 relative overflow-hidden"
+          className="app-card w-full max-w-[480px] bg-white rounded-[2.5rem] md:rounded-[4rem] shadow-lg border border-secondary-100 p-6 md:p-14 relative overflow-hidden"
         >
           {/* Subtle inside gradient */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-sand-50/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+          <div className="absolute top-0 right-0 w-64 h-64 bg-secondary-50/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
 
           {/* Tab Switcher - Premium "Pill" style */}
           {!roleSelectionData && (
@@ -362,7 +362,7 @@ export default function LoginPage() {
                   setActiveTab("pendaftar");
                   setError("");
                 }}
-                className={`flex-1 relative z-10 py-3.5 text-xs font-black uppercase tracking-widest text-center rounded-2xl transition-colors duration-300 ${activeTab === "pendaftar" ? "text-teal-700" : "text-ink-600 hover:text-ink-800"}`}
+                className={`flex-1 relative z-10 py-3.5 text-xs font-black uppercase tracking-widest text-center rounded-2xl transition-colors duration-300 ${activeTab === "pendaftar" ? "text-primary-700" : "text-ink-600 hover:text-ink-800"}`}
               >
                 Pendaftar
               </button>
@@ -371,7 +371,7 @@ export default function LoginPage() {
                   setActiveTab("admin");
                   setError("");
                 }}
-                className={`flex-1 relative z-10 py-3.5 text-xs font-black uppercase tracking-widest text-center rounded-2xl transition-colors duration-300 ${activeTab === "admin" ? "text-teal-700" : "text-ink-600 hover:text-ink-800"}`}
+                className={`flex-1 relative z-10 py-3.5 text-xs font-black uppercase tracking-widest text-center rounded-2xl transition-colors duration-300 ${activeTab === "admin" ? "text-primary-700" : "text-ink-600 hover:text-ink-800"}`}
               >
                 Portal Staf
               </button>
@@ -410,8 +410,8 @@ export default function LoginPage() {
                   className="space-y-5"
                 >
                   <div className="text-center mb-6">
-                    <div className="w-14 h-14 bg-sand-100 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-sand-200">
-                      <Layers className="w-7 h-7 text-teal-700" />
+                    <div className="w-14 h-14 bg-secondary-100 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-secondary-200">
+                      <Layers className="w-7 h-7 text-primary-700" />
                     </div>
                     <h2 className="text-xl font-black text-ink-950">
                       Selamat datang,{" "}
@@ -487,7 +487,7 @@ export default function LoginPage() {
                         setNomorPendaftaran(e.target.value.toUpperCase())
                       }
                       placeholder="Contoh: MTI2600001"
-                      className="w-full px-5 py-3 md:px-8 md:py-5 pl-14 md:pl-16 rounded-xl md:rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-teal-300 focus:ring-4 focus:ring-teal-50 transition-all font-bold text-ink-950 uppercase placeholder:normal-case placeholder:font-medium placeholder:text-ink-400 text-sm md:text-base shadow-inner"
+                      className="w-full px-5 py-3 md:px-8 md:py-5 pl-14 md:pl-16 rounded-xl md:rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-primary-300 focus:ring-4 focus:ring-primary-50 transition-all font-bold text-ink-950 uppercase placeholder:normal-case placeholder:font-medium placeholder:text-ink-400 text-sm md:text-base shadow-inner"
                       disabled={isLoading}
                     />
                   </AuthInput>
@@ -502,7 +502,7 @@ export default function LoginPage() {
                         setNikPendaftar(e.target.value.replace(/\D/g, ""))
                       }
                       placeholder="16 Digit NIK Sesuai KK"
-                      className="w-full px-5 py-3 md:px-8 md:py-5 pl-14 md:pl-16 rounded-xl md:rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-teal-300 focus:ring-4 focus:ring-teal-50 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-400 text-sm md:text-base shadow-inner"
+                      className="w-full px-5 py-3 md:px-8 md:py-5 pl-14 md:pl-16 rounded-xl md:rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-primary-300 focus:ring-4 focus:ring-primary-50 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-400 text-sm md:text-base shadow-inner"
                       disabled={isLoading}
                     />
                   </AuthInput>
@@ -512,7 +512,7 @@ export default function LoginPage() {
                     whileTap={{ scale: 0.98 }}
                     type="submit"
                     disabled={isLoading}
-                    className="w-full py-4 md:py-6 rounded-pill bg-teal-700 text-white font-black text-lg md:text-xl hover:bg-teal-800 shadow-xl shadow-teal-100 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                    className="w-full py-4 md:py-6 rounded-pill bg-primary-700 text-white font-black text-lg md:text-xl hover:bg-primary-800 shadow-xl shadow-primary-100 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
                   >
                     {isLoading ? (
                       <Loader2 className="w-6 h-6 animate-spin" />
@@ -530,7 +530,7 @@ export default function LoginPage() {
                     </p>
                     <Link
                       href="/daftar"
-                      className="inline-flex items-center gap-2 px-10 py-3 rounded-pill bg-sand-50 text-teal-700 font-black text-sm border border-sand-200 hover:bg-white hover:shadow-sm transition-all"
+                      className="inline-flex items-center gap-2 px-10 py-3 rounded-pill bg-secondary-50 text-primary-700 font-black text-sm border border-secondary-200 hover:bg-white hover:shadow-sm transition-all"
                     >
                       Daftar Baru Di Sini
                     </Link>
@@ -551,7 +551,7 @@ export default function LoginPage() {
                       value={emailAdmin}
                       onChange={(e) => setEmailAdmin(e.target.value)}
                       placeholder="admin@pesantren-alfath.or.id"
-                      className="w-full px-5 py-3 md:px-8 md:py-5 pl-14 md:pl-16 rounded-xl md:rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-teal-300 focus:ring-4 focus:ring-teal-50 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-400 text-sm md:text-base shadow-inner"
+                      className="w-full px-5 py-3 md:px-8 md:py-5 pl-14 md:pl-16 rounded-xl md:rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-primary-300 focus:ring-4 focus:ring-primary-50 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-400 text-sm md:text-base shadow-inner"
                       disabled={isLoading}
                     />
                   </AuthInput>
@@ -578,7 +578,7 @@ export default function LoginPage() {
                       value={passwordAdmin}
                       onChange={(e) => setPasswordAdmin(e.target.value)}
                       placeholder="••••••••"
-                      className="w-full px-5 py-3 md:px-8 md:py-5 pl-14 md:pl-16 pr-12 md:pr-16 rounded-xl md:rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-teal-300 focus:ring-4 focus:ring-teal-50 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-400 text-sm md:text-base shadow-inner"
+                      className="w-full px-5 py-3 md:px-8 md:py-5 pl-14 md:pl-16 pr-12 md:pr-16 rounded-xl md:rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-primary-300 focus:ring-4 focus:ring-primary-50 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-400 text-sm md:text-base shadow-inner"
                       disabled={isLoading}
                     />
                   </AuthInput>
@@ -588,7 +588,7 @@ export default function LoginPage() {
                     whileTap={{ scale: 0.98 }}
                     type="submit"
                     disabled={isLoading}
-                    className="w-full py-4 md:py-6 rounded-pill bg-teal-700 text-white font-black text-lg md:text-xl hover:bg-teal-800 shadow-xl shadow-teal-100 border border-teal-600 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                    className="w-full py-4 md:py-6 rounded-pill bg-primary-700 text-white font-black text-lg md:text-xl hover:bg-primary-800 shadow-xl shadow-primary-100 border border-primary-600 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
                   >
                     {isLoading ? (
                       <Loader2 className="w-6 h-6 animate-spin" />
@@ -600,8 +600,8 @@ export default function LoginPage() {
                     )}
                   </motion.button>
 
-                  <div className="p-6 bg-sand-50/50 rounded-3xl border border-sand-100 flex items-start gap-4">
-                    <div className="w-8 h-8 rounded-xl bg-sand-100 flex items-center justify-center text-teal-700 shrink-0">
+                  <div className="p-6 bg-secondary-50/50 rounded-3xl border border-secondary-100 flex items-start gap-4">
+                    <div className="w-8 h-8 rounded-xl bg-secondary-100 flex items-center justify-center text-primary-700 shrink-0">
                       <Sparkles className="w-4 h-4" />
                     </div>
                     <p className="text-xs text-ink-600 font-bold leading-relaxed">
@@ -646,9 +646,9 @@ export default function LoginPage() {
         >
           <Link
             href="/"
-            className="group flex items-center gap-3 text-ink-600 hover:text-teal-700 font-black uppercase tracking-[0.2em] text-[10px] transition-all"
+            className="group flex items-center gap-3 text-ink-600 hover:text-primary-700 font-black uppercase tracking-[0.2em] text-[10px] transition-all"
           >
-            <div className="w-8 h-8 rounded-full bg-sand-50 border border-sand-100 flex items-center justify-center group-hover:scale-110 transition-transform">
+            <div className="w-8 h-8 rounded-full bg-secondary-50 border border-secondary-100 flex items-center justify-center group-hover:scale-110 transition-transform">
               <ArrowLeft className="w-4 h-4" />
             </div>
             Kembali ke Beranda

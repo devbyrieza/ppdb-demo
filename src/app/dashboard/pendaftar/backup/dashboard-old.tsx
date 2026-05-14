@@ -22,9 +22,9 @@ export default function DashboardPendaftarPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-teal-50">
+    <main className="min-h-screen bg-gradient-to-br from-secondary-50 via-white to-primary-50">
       {/* Header */}
-      <header className="bg-white border-b-2 border-teal-200 shadow-lg">
+      <header className="bg-white border-b-2 border-primary-200 shadow-lg">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
@@ -49,14 +49,14 @@ export default function DashboardPendaftarPage() {
       {/* Content */}
       <div className="max-w-7xl mx-auto px-6 py-12">
         {/* Welcome Card */}
-        <div className="bg-gradient-to-r from-teal-500 to-teal-600 rounded-2xl p-8 mb-8 text-white shadow-2xl">
+        <div className="bg-gradient-to-r from-primary-500 to-primary-600 rounded-2xl p-8 mb-8 text-white shadow-2xl">
           <div className="flex items-center gap-4 mb-4">
             <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
-              <User className="w-8 h-8 text-teal-600" />
+              <User className="w-8 h-8 text-primary-600" />
             </div>
             <div>
               <h2 className="text-3xl font-black">Assalamu'alaikum!</h2>
-              <p className="text-teal-100">Selamat datang di dashboard Anda</p>
+              <p className="text-primary-100">Selamat datang di dashboard Anda</p>
             </div>
           </div>
           <div className="bg-white/20 rounded-xl p-4 backdrop-blur-sm">
@@ -80,7 +80,7 @@ export default function DashboardPendaftarPage() {
           {/* Dokumen */}
           <div className="bg-white rounded-xl p-6 border-2 border-stone-200 shadow-lg">
             <div className="flex items-center gap-3 mb-2">
-              <FileText className="w-6 h-6 text-blue-500" />
+              <FileText className="w-6 h-6 text-primary-500" />
               <h3 className="font-bold text-stone-900">Dokumen</h3>
             </div>
             <p className="text-2xl font-black text-stone-900">0/5</p>
@@ -90,7 +90,7 @@ export default function DashboardPendaftarPage() {
           {/* Jadwal Seleksi */}
           <div className="bg-white rounded-xl p-6 border-2 border-stone-200 shadow-lg">
             <div className="flex items-center gap-3 mb-2">
-              <Calendar className="w-6 h-6 text-amber-500" />
+              <Calendar className="w-6 h-6 text-secondary-500" />
               <h3 className="font-bold text-stone-900">Jadwal Seleksi</h3>
             </div>
             <p className="text-2xl font-black text-stone-900">-</p>
@@ -109,18 +109,18 @@ export default function DashboardPendaftarPage() {
         </div>
 
         {/* Info Box */}
-        <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl p-6">
+        <div className="bg-primary-50 border-2 border-primary-200 rounded-2xl p-6">
           <div className="flex items-start gap-4">
-            <AlertCircle className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
+            <AlertCircle className="w-6 h-6 text-primary-600 flex-shrink-0 mt-1" />
             <div>
-              <h3 className="text-lg font-black text-blue-900 mb-2">
+              <h3 className="text-lg font-black text-primary-900 mb-2">
                 🎉 Dashboard Sedang Dikembangkan
               </h3>
-              <p className="text-sm text-blue-800 mb-4">
+              <p className="text-sm text-primary-800 mb-4">
                 Halaman dashboard pendaftar lengkap sedang dalam proses
                 development. Fitur yang akan tersedia:
               </p>
-              <ul className="text-sm text-blue-800 space-y-2">
+              <ul className="text-sm text-primary-800 space-y-2">
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4" />
                   <span>Lengkapi data pribadi & orang tua</span>

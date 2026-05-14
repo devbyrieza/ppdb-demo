@@ -67,9 +67,9 @@ export default function AboutSection() {
         aria-hidden
         className="pointer-events-none absolute inset-0 overflow-hidden"
       >
-        <div className="absolute -top-32 -left-32 w-[480px] h-[480px] rounded-full bg-teal-100/20 blur-3xl" />
-        <div className="absolute -bottom-24 -right-24 w-[360px] h-[360px] rounded-full bg-sand-100/25 blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full bg-teal-50/30 blur-3xl" />
+        <div className="absolute -top-32 -left-32 w-[480px] h-[480px] rounded-full bg-primary-100/20 blur-3xl" />
+        <div className="absolute -bottom-24 -right-24 w-[360px] h-[360px] rounded-full bg-secondary-100/25 blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full bg-primary-50/30 blur-3xl" />
       </div>
 
       <Container className="relative z-10">
@@ -83,7 +83,7 @@ export default function AboutSection() {
             variants={containerVariants}
           >
             <motion.div variants={itemVariants} className="inline-flex mb-6">
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-teal-100 text-teal-700 text-[11px] font-bold uppercase tracking-[0.12em] shadow-xs">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-primary-100 text-primary-700 text-[11px] font-bold uppercase tracking-[0.12em] shadow-xs">
                 <Sparkles className="w-3 h-3" />
                 Profil Pesantren
               </span>
@@ -94,7 +94,7 @@ export default function AboutSection() {
               className="section-title mb-5 text-balance"
             >
               Mengedepankan{" "}
-              <span className="text-gradient-teal">
+              <span className="text-gradient-primary">
                 Bimbingan &amp; Pengawasan Melekat
               </span>
             </motion.h2>
@@ -103,7 +103,7 @@ export default function AboutSection() {
               variants={itemVariants}
               className="section-subtitle text-justify md:text-center"
             >
-              <span className="font-semibold text-teal-800">
+              <span className="font-semibold text-primary-800">
                 Bukan sekadar tempat belajar agama.
               </span>{" "}
               Sistem pembentukan karakter berbasis Lingkungan, Kebiasaan,
@@ -121,34 +121,34 @@ export default function AboutSection() {
               viewport={{ once: true, margin: "-40px" }}
               transition={{ type: "tween", duration: 0.6, ease: SPRING }}
             >
-              <div className="relative overflow-hidden rounded-2xl border border-teal-100 bg-white shadow-premium-sm group">
+              <div className="relative overflow-hidden rounded-2xl border border-primary-100 bg-white shadow-premium-sm group">
                 {/* Card top accent bar — teal ke sand */}
-                <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-teal-700 via-teal-500 to-sand-400 rounded-t-2xl" />
+                <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-primary-700 via-primary-500 to-secondary-400 rounded-t-2xl" />
 
                 <div className="flex flex-col items-center text-center px-8 py-12 md:px-16 md:py-16">
                   {/* Icon */}
-                  <div className="mb-7 w-14 h-14 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center shadow-xs group-hover:shadow-sm transition-shadow duration-300">
+                  <div className="mb-7 w-14 h-14 rounded-xl bg-primary-50 border border-primary-100 flex items-center justify-center shadow-xs group-hover:shadow-sm transition-shadow duration-300">
                     <Target
-                      className="w-6 h-6 text-teal-700"
+                      className="w-6 h-6 text-primary-700"
                       strokeWidth={1.75}
                     />
                   </div>
 
-                  <span className="badge badge-teal mb-5 text-[11px] tracking-wider uppercase">
+                  <span className="badge badge-primary mb-5 text-[11px] tracking-wider uppercase">
                     Visi Utama
                   </span>
 
                   <blockquote className="max-w-2xl mx-auto">
-                    <p className="font-display font-black text-2xl md:text-[2.15rem] leading-[1.2] tracking-tight text-teal-900 italic">
+                    <p className="font-display font-black text-2xl md:text-[2.15rem] leading-[1.2] tracking-tight text-primary-900 italic">
                       &ldquo;Mencetak Generasi yang Memiliki Pribadi Unggul,
                       Cerdas, dan Berintegritas.&rdquo;
                     </p>
                   </blockquote>
 
                   <div className="mt-8 flex items-center gap-3">
-                    <div className="h-px w-10 bg-gradient-to-r from-transparent to-teal-200" />
-                    <div className="w-1.5 h-1.5 rounded-full bg-sand-400" />
-                    <div className="h-px w-10 bg-gradient-to-l from-transparent to-teal-200" />
+                    <div className="h-px w-10 bg-gradient-to-r from-transparent to-primary-200" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-secondary-400" />
+                    <div className="h-px w-10 bg-gradient-to-l from-transparent to-primary-200" />
                   </div>
                 </div>
               </div>
@@ -166,17 +166,17 @@ export default function AboutSection() {
                 delay: 0.08,
               }}
             >
-              <div className="rounded-2xl border border-teal-100 bg-white shadow-premium-sm overflow-hidden">
+              <div className="rounded-2xl border border-primary-100 bg-white shadow-premium-sm overflow-hidden">
                 {/* Header */}
-                <div className="flex items-center gap-4 px-8 py-7 md:px-10 border-b border-teal-50">
-                  <div className="w-11 h-11 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center shrink-0">
+                <div className="flex items-center gap-4 px-8 py-7 md:px-10 border-b border-primary-50">
+                  <div className="w-11 h-11 rounded-xl bg-primary-50 border border-primary-100 flex items-center justify-center shrink-0">
                     <Rocket
-                      className="w-5 h-5 text-teal-600"
+                      className="w-5 h-5 text-primary-600"
                       strokeWidth={1.75}
                     />
                   </div>
                   <div>
-                    <h3 className="font-display font-bold text-xl text-teal-900 tracking-tight leading-tight">
+                    <h3 className="font-display font-bold text-xl text-primary-900 tracking-tight leading-tight">
                       Misi Kami
                     </h3>
                     <p className="text-[13px] text-ink-400 mt-0.5">
@@ -184,7 +184,7 @@ export default function AboutSection() {
                     </p>
                   </div>
                   <div className="ml-auto hidden sm:block">
-                    <span className="badge badge-sand text-[11px] tracking-wider uppercase">
+                    <span className="badge badge-secondary text-[11px] tracking-wider uppercase">
                       Langkah Strategis
                     </span>
                   </div>
@@ -192,7 +192,7 @@ export default function AboutSection() {
 
                 {/* Misi list */}
                 <motion.ul
-                  className="grid md:grid-cols-2 divide-y divide-teal-50 md:divide-y-0 md:divide-x md:divide-teal-50"
+                  className="grid md:grid-cols-2 divide-y divide-primary-50 md:divide-y-0 md:divide-x md:divide-primary-50"
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true, margin: "-40px" }}
@@ -202,18 +202,18 @@ export default function AboutSection() {
                     <motion.li
                       key={i}
                       variants={itemVariants}
-                      className="flex gap-4 items-start p-6 md:p-8 group/item hover:bg-teal-50/40 transition-colors duration-200"
+                      className="flex gap-4 items-start p-6 md:p-8 group/item hover:bg-primary-50/40 transition-colors duration-200"
                     >
                       <div className="mt-0.5 shrink-0">
-                        <div className="w-7 h-7 rounded-full bg-teal-50 border border-teal-100 flex items-center justify-center group-hover/item:bg-teal-100 transition-colors duration-200">
+                        <div className="w-7 h-7 rounded-full bg-primary-50 border border-primary-100 flex items-center justify-center group-hover/item:bg-primary-100 transition-colors duration-200">
                           <CheckCircle
-                            className="w-3.5 h-3.5 text-teal-600"
+                            className="w-3.5 h-3.5 text-primary-600"
                             strokeWidth={2.25}
                           />
                         </div>
                       </div>
                       <div>
-                        <span className="block text-[11px] font-bold uppercase tracking-[0.1em] text-teal-500 mb-1.5">
+                        <span className="block text-[11px] font-bold uppercase tracking-[0.1em] text-primary-500 mb-1.5">
                           {item.label}
                         </span>
                         <p className="text-[14.5px] text-ink-600 leading-relaxed font-[450]">

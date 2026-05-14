@@ -140,17 +140,17 @@ export default function AiChatWidget({
       }}
     >
       {/* Header */}
-      <div className="bg-teal-800 text-white p-4 md:p-5 flex items-center justify-between shrink-0 shadow-sm relative z-10">
+      <div className="bg-primary-800 text-white p-4 md:p-5 flex items-center justify-between shrink-0 shadow-sm relative z-10">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center shrink-0 border border-white/20">
-            <Bot className="w-6 h-6 text-sand-400" />
+            <Bot className="w-6 h-6 text-secondary-400" />
           </div>
           <div>
             <h3 className="font-bold text-[15px] leading-tight flex items-center gap-2">
               Al Fath Assistant
               <span className="flex w-2 h-2 rounded-full bg-green-400"></span>
             </h3>
-            <p className="text-[11px] text-teal-200 mt-0.5 font-medium">
+            <p className="text-[11px] text-primary-200 mt-0.5 font-medium">
               Online • Bertenaga AI
             </p>
           </div>
@@ -176,8 +176,8 @@ export default function AiChatWidget({
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 mb-1 ${
                 msg.role === "user"
-                  ? "bg-teal-100 text-teal-700"
-                  : "bg-teal-600 text-white shadow-premium-xs"
+                  ? "bg-primary-100 text-primary-700"
+                  : "bg-primary-600 text-white shadow-premium-xs"
               }`}
             >
               {msg.role === "user" ? (
@@ -189,7 +189,7 @@ export default function AiChatWidget({
             <div
               className={`max-w-[75%] p-3.5 rounded-2xl ${
                 msg.role === "user"
-                  ? "bg-teal-700 text-white rounded-br-none shadow-sm"
+                  ? "bg-primary-700 text-white rounded-br-none shadow-sm"
                   : "bg-white text-ink-900 border border-surface-100 rounded-bl-none shadow-premium-xs"
               }`}
             >
@@ -206,24 +206,24 @@ export default function AiChatWidget({
             animate={{ opacity: 1 }}
             className="flex gap-3 items-end"
           >
-            <div className="w-8 h-8 rounded-full bg-teal-600 text-white flex items-center justify-center shrink-0 mb-1 shadow-premium-xs">
+            <div className="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center shrink-0 mb-1 shadow-premium-xs">
               <Bot className="w-5 h-5" />
             </div>
             <div className="bg-white p-4 rounded-2xl rounded-bl-none border border-surface-100 shadow-premium-xs flex gap-1 items-center h-12">
               <motion.div
                 animate={{ y: [0, -5, 0] }}
                 transition={{ repeat: Infinity, duration: 0.6, delay: 0 }}
-                className="w-1.5 h-1.5 bg-teal-400 rounded-full"
+                className="w-1.5 h-1.5 bg-primary-400 rounded-full"
               />
               <motion.div
                 animate={{ y: [0, -5, 0] }}
                 transition={{ repeat: Infinity, duration: 0.6, delay: 0.2 }}
-                className="w-1.5 h-1.5 bg-teal-400 rounded-full"
+                className="w-1.5 h-1.5 bg-primary-400 rounded-full"
               />
               <motion.div
                 animate={{ y: [0, -5, 0] }}
                 transition={{ repeat: Infinity, duration: 0.6, delay: 0.4 }}
-                className="w-1.5 h-1.5 bg-teal-400 rounded-full"
+                className="w-1.5 h-1.5 bg-primary-400 rounded-full"
               />
             </div>
           </motion.div>
@@ -245,7 +245,7 @@ export default function AiChatWidget({
                 onEscalate();
                 onClose();
               }}
-              className="w-full bg-white border border-sand-200 text-sand-700 hover:bg-sand-50 hover:border-sand-300 py-3 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-premium-xs"
+              className="w-full bg-white border border-secondary-200 text-secondary-700 hover:bg-secondary-50 hover:border-secondary-300 py-3 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-premium-xs"
             >
               <Headphones className="w-4 h-4" />
               Chat Langsung dengan CS
@@ -263,13 +263,13 @@ export default function AiChatWidget({
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Ketik pesan Anda..."
-            className="flex-1 bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 text-[14px] text-ink-900 focus:outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-50 transition-all placeholder:text-ink-400"
+            className="flex-1 bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 text-[14px] text-ink-900 focus:outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-50 transition-all placeholder:text-ink-400"
             disabled={isLoading}
           />
           <button
             onClick={handleSend}
             disabled={isLoading || !input.trim()}
-            className="w-12 h-[46px] bg-teal-700 text-white rounded-xl flex items-center justify-center hover:bg-teal-800 disabled:opacity-50 disabled:hover:bg-teal-700 transition-colors shrink-0 shadow-sm"
+            className="w-12 h-[46px] bg-primary-700 text-white rounded-xl flex items-center justify-center hover:bg-primary-800 disabled:opacity-50 disabled:hover:bg-primary-700 transition-colors shrink-0 shadow-sm"
           >
             {isLoading ? (
               <Loader2 className="w-5 h-5 animate-spin" />

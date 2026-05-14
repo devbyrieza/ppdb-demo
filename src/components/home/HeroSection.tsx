@@ -58,19 +58,19 @@ export default function HeroSection() {
       className="relative min-h-[96vh] flex items-center pt-24 pb-20 md:pt-28 lg:pt-32 lg:pb-28 overflow-hidden"
       style={{
         background:
-          "linear-gradient(160deg, var(--color-surface-50) 0%, var(--color-white) 55%, var(--color-teal-50) 100%)",
+          "linear-gradient(160deg, var(--color-surface-50) 0%, var(--color-white) 55%, var(--color-primary-50) 100%)",
       }}
     >
       {/* CiroAI Atmospheric Background Blobs */}
-      <div className="glow-blob glow-blob-teal w-[60%] h-[70%] -top-[20%] -left-[10%] opacity-20" aria-hidden="true" />
+      <div className="glow-blob glow-blob-primary w-[60%] h-[70%] -top-[20%] -left-[10%] opacity-20" aria-hidden="true" />
       <div className="glow-blob glow-blob-gold w-[50%] h-[60%] top-[10%] -right-[10%] opacity-15" aria-hidden="true" />
-      <div className="glow-blob glow-blob-teal w-[40%] h-[40%] bottom-[-10%] left-[20%] opacity-10" aria-hidden="true" />
+      <div className="glow-blob glow-blob-primary w-[40%] h-[40%] bottom-[-10%] left-[20%] opacity-10" aria-hidden="true" />
       
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
         <div
           className="absolute inset-0 opacity-[0.015]"
           style={{
-            backgroundImage: `linear-gradient(var(--color-teal-500) 1px, transparent 1px), linear-gradient(90deg, var(--color-teal-500) 1px, transparent 1px)`,
+            backgroundImage: `linear-gradient(var(--color-primary-500) 1px, transparent 1px), linear-gradient(90deg, var(--color-primary-500) 1px, transparent 1px)`,
             backgroundSize: "64px 64px",
           }}
         />
@@ -94,7 +94,7 @@ export default function HeroSection() {
               transition={{ delay: 0.1 }}
               className="flex justify-center lg:justify-start"
             >
-              <span className="section-label section-label-teal">
+              <span className="section-label section-label-primary">
                 Selamat Datang di {BRANDING.schoolShortName}
               </span>
             </motion.div>
@@ -110,7 +110,7 @@ export default function HeroSection() {
               <h1
                 className="leading-[1.06] tracking-[-0.03em] mx-auto lg:mx-0 max-w-2xl lg:max-w-none font-black text-balance"
                 style={{
-                  color: "var(--color-teal-700)",
+                  color: "var(--color-primary-700)",
                   fontSize: "clamp(2rem, 5vw + 0.75rem, 5rem)",
                 }}
               >
@@ -135,7 +135,7 @@ export default function HeroSection() {
               yang memadukan{" "}
               <strong
                 className="font-bold"
-                style={{ color: "var(--color-teal-700)" }}
+                style={{ color: "var(--color-primary-700)" }}
               >
                 Intensitas Tahfidz Al-Qur'an, Ilmu Syar'i, dan Kepemimpinan
               </strong>{" "}
@@ -152,17 +152,17 @@ export default function HeroSection() {
             >
               <div
                 className="h-px flex-1 max-w-[3rem]"
-                style={{ background: "var(--color-teal-200)" }}
+                style={{ background: "var(--color-primary-200)" }}
               />
               <p
                 className="text-sm font-semibold italic"
-                style={{ color: "var(--color-teal-700)" }}
+                style={{ color: "var(--color-primary-700)" }}
               >
                 "{BRANDING.schoolTagline}"
               </p>
               <div
                 className="h-px flex-1 max-w-[3rem]"
-                style={{ background: "var(--color-teal-200)" }}
+                style={{ background: "var(--color-primary-200)" }}
               />
             </motion.div>
 
@@ -178,7 +178,7 @@ export default function HeroSection() {
                 <Link href="/ppdb" className="w-full sm:w-auto">
                   <button
                     className="btn-primary w-full sm:w-auto px-8 lg:px-10 py-4 lg:py-[1.125rem] min-h-[56px] text-[0.9375rem]"
-                    style={{ boxShadow: "var(--shadow-teal-lg)" }}
+                    style={{ boxShadow: "var(--shadow-primary-lg)" }}
                   >
                     Daftar PPDB Sekarang
                   </button>
@@ -193,10 +193,10 @@ export default function HeroSection() {
               <div className="flex items-center gap-3 mt-1">
                 <div className="flex -space-x-2.5">
                   {[
-                    { bg: "var(--color-teal-200)" },
-                    { bg: "var(--color-sand-300)" },
-                    { bg: "var(--color-teal-300)" },
-                    { bg: "var(--color-sand-200)" },
+                    { bg: "var(--color-primary-200)" },
+                    { bg: "var(--color-secondary-300)" },
+                    { bg: "var(--color-primary-300)" },
+                    { bg: "var(--color-secondary-200)" },
                   ].map((item, i) => (
                     <div
                       key={i}
@@ -216,7 +216,7 @@ export default function HeroSection() {
                 >
                   <span
                     className="font-bold uppercase tracking-wide"
-                    style={{ color: "var(--color-teal-700)" }}
+                    style={{ color: "var(--color-primary-700)" }}
                   >
                     Angkatan Pertama
                   </span>
@@ -237,7 +237,7 @@ export default function HeroSection() {
                   >
                     <CheckCircle2
                       className="w-3.5 h-3.5 flex-shrink-0"
-                      style={{ color: "var(--color-teal-500)" }}
+                      style={{ color: "var(--color-primary-500)" }}
                       aria-hidden="true"
                     />
                     {point}
@@ -263,7 +263,7 @@ export default function HeroSection() {
                 borderRadius: "2rem",
                 border: "10px solid var(--color-white)",
                 boxShadow:
-                  "var(--shadow-premium-2xl), 0 0 0 1px var(--color-teal-100)",
+                  "var(--shadow-premium-2xl), 0 0 0 1px var(--color-primary-100)",
                 overflow: "hidden",
               }}
             >
@@ -309,7 +309,7 @@ export default function HeroSection() {
                 </div>
                 <div>
                   <p className="stat-label mb-1">Tersedia</p>
-                  <p className="text-sm font-black leading-tight text-[var(--color-teal-900)]">
+                  <p className="text-sm font-black leading-tight text-[var(--color-primary-900)]">
                     MTs &amp; IL
                   </p>
                   <p className="text-[10px] font-semibold mt-0.5 text-[var(--color-ink-500)]">
@@ -336,7 +336,7 @@ export default function HeroSection() {
                   <Globe className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-sm font-black leading-tight text-[var(--color-teal-900)]">
+                  <p className="text-sm font-black leading-tight text-[var(--color-primary-900)]">
                     Jaringan Global
                   </p>
                   <p className="text-[10px] font-semibold mt-0.5 text-[var(--color-ink-500)]">
@@ -363,7 +363,7 @@ export default function HeroSection() {
               className="absolute -bottom-3 -right-3 md:bottom-6 md:-right-6 lg:bottom-10 lg:-right-10 z-30 cursor-default"
               style={{
                 background:
-                  "linear-gradient(135deg, var(--color-sand-300) 0%, var(--color-sand-500) 100%)",
+                  "linear-gradient(135deg, var(--color-secondary-300) 0%, var(--color-secondary-500) 100%)",
                 padding: "1rem 1.125rem",
                 borderRadius: "1.5rem",
                 border: "4px solid var(--color-white)",
@@ -374,13 +374,13 @@ export default function HeroSection() {
               <div className="text-center min-w-[80px]">
                 <p
                   className="text-[9px] font-black uppercase tracking-[0.1em] leading-none mb-1.5"
-                  style={{ color: "var(--color-teal-950)" }}
+                  style={{ color: "var(--color-primary-950)" }}
                 >
                   Info Penting
                 </p>
                 <p
                   className="text-base font-black leading-tight"
-                  style={{ color: "var(--color-teal-900)" }}
+                  style={{ color: "var(--color-primary-900)" }}
                 >
                   Pendaftaran
                   <br />
@@ -392,7 +392,7 @@ export default function HeroSection() {
                 >
                   <p
                     className="text-[9px] font-bold"
-                    style={{ color: "var(--color-teal-900)" }}
+                    style={{ color: "var(--color-primary-900)" }}
                   >
                     Kuota Terbatas
                   </p>
@@ -401,7 +401,7 @@ export default function HeroSection() {
             </motion.div>
 
             {/* Decorative glows */}
-            <div className="glow-blob glow-blob-teal w-64 h-64 -bottom-14 -right-14 opacity-15" aria-hidden="true" />
+            <div className="glow-blob glow-blob-primary w-64 h-64 -bottom-14 -right-14 opacity-15" aria-hidden="true" />
             <div className="glow-blob glow-blob-gold w-48 h-48 -top-10 -left-10 opacity-20" aria-hidden="true" />
           </motion.div>
         </div>

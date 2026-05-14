@@ -98,7 +98,7 @@ export default function Navbar() {
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled
-            ? "glass-panel border-b border-[var(--color-teal-100)] py-2"
+            ? "glass-panel border-b border-[var(--color-primary-100)] py-2"
             : "bg-transparent py-4 lg:py-5"
         }`}
       >
@@ -114,7 +114,7 @@ export default function Navbar() {
                 <div
                   className={`w-10 h-10 sm:w-11 sm:h-11 rounded-[14px] flex items-center justify-center border overflow-hidden transition-all duration-500 group-hover:scale-105 group-hover:-rotate-3 ${
                     isScrolled
-                      ? "bg-white border-[var(--color-teal-100)] shadow-[var(--shadow-premium-sm)]"
+                      ? "bg-white border-[var(--color-primary-100)] shadow-[var(--shadow-premium-sm)]"
                       : "bg-white/90 border-white/70 shadow-[0_2px_12px_rgba(58,80,41,0.12)]"
                   }`}
                 >
@@ -129,7 +129,7 @@ export default function Navbar() {
                   />
                 </div>
                 {/* Status dot — teal green */}
-                <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-[var(--color-teal-600)] border-2 border-white rounded-full z-10 shadow-sm" />
+                <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-[var(--color-primary-600)] border-2 border-white rounded-full z-10 shadow-sm" />
               </div>
 
               <div className="block">
@@ -152,7 +152,7 @@ export default function Navbar() {
             <nav
               className={`hidden lg:flex items-center gap-0.5 p-1.5 rounded-full border transition-all duration-300 ${
                 isScrolled
-                  ? "bg-white/80 border-[var(--color-teal-100)] shadow-sm"
+                  ? "bg-white/80 border-[var(--color-primary-100)] shadow-sm"
                   : "bg-white/70 backdrop-blur-md border-white/65 shadow-[0_2px_16px_rgba(58,80,41,0.10)]"
               }`}
             >
@@ -163,8 +163,8 @@ export default function Navbar() {
                   onClick={(e) => handleNavClick(e, link.href)}
                   className={`px-4 py-2 text-sm font-bold rounded-full transition-all duration-300 min-h-[40px] flex items-center ${
                     isActive(link.href)
-                      ? "bg-[var(--color-teal-800)] text-[var(--color-sand-100)] shadow-[var(--shadow-teal)]"
-                      : "text-[var(--color-ink-600)] hover:text-[var(--color-teal-800)] hover:bg-[var(--color-teal-50)]"
+                      ? "bg-[var(--color-primary-800)] text-[var(--color-secondary-100)] shadow-[var(--shadow-primary)]"
+                      : "text-[var(--color-ink-600)] hover:text-[var(--color-primary-800)] hover:bg-[var(--color-primary-50)]"
                   }`}
                 >
                   {link.label}
@@ -178,13 +178,13 @@ export default function Navbar() {
               <div className="w-px h-6 bg-slate-200 mx-1" />
               <Link
                 href="/login"
-                className="text-sm font-bold text-[var(--color-ink-600)] hover:text-[var(--color-teal-800)] transition-colors duration-200 px-4 py-2 min-h-[40px] flex items-center rounded-full hover:bg-[var(--color-teal-50)]"
+                className="text-sm font-bold text-[var(--color-ink-600)] hover:text-[var(--color-primary-800)] transition-colors duration-200 px-4 py-2 min-h-[40px] flex items-center rounded-full hover:bg-[var(--color-primary-50)]"
               >
                 Masuk
               </Link>
               <Link
                 href="/ppdb"
-                className="btn-primary flex items-center gap-2 group text-sm px-5 py-2.5 glow-ring-teal"
+                className="btn-primary flex items-center gap-2 group text-sm px-5 py-2.5 glow-ring-primary"
               >
                 Daftar PPDB
                 <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -196,7 +196,7 @@ export default function Navbar() {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className={`lg:hidden p-3 rounded-2xl transition-all duration-300 min-h-[48px] min-w-[48px] flex items-center justify-center border ${
                 isScrolled
-                  ? "bg-white border-[var(--color-teal-100)] text-[var(--color-teal-700)] hover:bg-[var(--color-teal-50)] shadow-[var(--shadow-xs)]"
+                  ? "bg-white border-[var(--color-primary-100)] text-[var(--color-primary-700)] hover:bg-[var(--color-primary-50)] shadow-[var(--shadow-xs)]"
                   : "bg-white/85 backdrop-blur-sm border-white/70 text-[var(--color-ink-800)] hover:bg-white/95 shadow-[0_2px_12px_rgba(58,80,41,0.10)]"
               }`}
               aria-label={isMenuOpen ? "Tutup menu" : "Buka menu"}
@@ -247,7 +247,7 @@ export default function Navbar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-[var(--color-teal-950)]/40 backdrop-blur-sm"
+              className="absolute inset-0 bg-[var(--color-primary-950)]/40 backdrop-blur-sm"
               onClick={() => setIsMenuOpen(false)}
             />
 
@@ -261,7 +261,7 @@ export default function Navbar() {
               style={{
                 background:
                   "linear-gradient(180deg, var(--color-surface-50) 0%, #fff 100%)",
-                borderTop: "1px solid var(--color-teal-100)",
+                borderTop: "1px solid var(--color-primary-100)",
                 boxShadow: "0 -8px 40px rgba(58,80,41,0.12)",
               }}
             >
@@ -270,12 +270,12 @@ export default function Navbar() {
                 className="w-full flex justify-center pt-4 pb-2 cursor-pointer flex-shrink-0"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <div className="w-10 h-1 bg-[var(--color-teal-200)] rounded-full" />
+                <div className="w-10 h-1 bg-[var(--color-primary-200)] rounded-full" />
               </div>
 
               {/* School identity strip */}
-              <div className="flex items-center gap-3 px-6 py-3 border-b border-[var(--color-teal-50)] flex-shrink-0">
-                <div className="w-9 h-9 rounded-xl bg-[var(--color-teal-50)] border border-[var(--color-teal-100)] flex items-center justify-center overflow-hidden">
+              <div className="flex items-center gap-3 px-6 py-3 border-b border-[var(--color-primary-50)] flex-shrink-0">
+                <div className="w-9 h-9 rounded-xl bg-[var(--color-primary-50)] border border-[var(--color-primary-100)] flex items-center justify-center overflow-hidden">
                   <Image
                     src={BRANDING.logoPath}
                     alt=""
@@ -294,7 +294,7 @@ export default function Navbar() {
                 </div>
                 {/* Template label */}
                 <div className="ml-auto">
-                  <span className="text-[10px] font-black px-2.5 py-1 rounded-full bg-[var(--color-teal-50)] text-[var(--color-teal-600)] border border-[var(--color-teal-100)] uppercase tracking-wider">
+                  <span className="text-[10px] font-black px-2.5 py-1 rounded-full bg-[var(--color-primary-50)] text-[var(--color-primary-600)] border border-[var(--color-primary-100)] uppercase tracking-wider">
                     Template
                   </span>
                 </div>
@@ -322,13 +322,13 @@ export default function Navbar() {
                         }}
                         className={`px-4 py-4 rounded-xl text-base font-bold transition-all min-h-[56px] flex items-center justify-between group ${
                           isActive(link.href)
-                            ? "bg-[var(--color-teal-800)] text-[var(--color-sand-100)] shadow-[var(--shadow-teal)]"
-                            : "text-[var(--color-ink-800)] hover:bg-[var(--color-teal-50)] hover:text-[var(--color-teal-800)]"
+                            ? "bg-[var(--color-primary-800)] text-[var(--color-secondary-100)] shadow-[var(--shadow-primary)]"
+                            : "text-[var(--color-ink-800)] hover:bg-[var(--color-primary-50)] hover:text-[var(--color-primary-800)]"
                         }`}
                       >
                         <span>{link.label}</span>
                         {isActive(link.href) && (
-                          <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-sand-300)]/70" />
+                          <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-secondary-300)]/70" />
                         )}
                       </Link>
                     </motion.div>
@@ -336,14 +336,14 @@ export default function Navbar() {
                 </div>
 
                 {/* Divider */}
-                <div className="h-px bg-gradient-to-r from-transparent via-[var(--color-teal-100)] to-transparent my-5" />
+                <div className="h-px bg-gradient-to-r from-transparent via-[var(--color-primary-100)] to-transparent my-5" />
 
                 {/* Action Buttons */}
                 <div className="flex flex-col gap-3">
                   <Link
                     href="/login"
                     onClick={() => setIsMenuOpen(false)}
-                    className="w-full py-4 text-sm font-bold rounded-xl border border-[var(--color-teal-100)] text-[var(--color-teal-700)] bg-[var(--color-teal-50)] hover:bg-[var(--color-teal-100)] text-center transition-all min-h-[52px] flex items-center justify-center gap-2"
+                    className="w-full py-4 text-sm font-bold rounded-xl border border-[var(--color-primary-100)] text-[var(--color-primary-700)] bg-[var(--color-primary-50)] hover:bg-[var(--color-primary-100)] text-center transition-all min-h-[52px] flex items-center justify-center gap-2"
                   >
                     Masuk ke Dashboard
                   </Link>

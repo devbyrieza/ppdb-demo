@@ -91,31 +91,31 @@ function getTokens(variant: ProgramVariant) {
   switch (variant) {
     case "teal":
       return {
-        accentBar: "bg-gradient-to-r from-teal-700 via-teal-500 to-teal-300",
-        corner: "bg-teal-50",
-        icon: "bg-teal-700 text-white ring-1 ring-teal-200",
-        subtitleText: "text-teal-600",
-        dividerLine: "bg-teal-300",
-        checkBg: "bg-teal-50 border-teal-200",
+        accentBar: "bg-gradient-to-r from-primary-700 via-primary-500 to-primary-300",
+        corner: "bg-primary-50",
+        icon: "bg-primary-700 text-white ring-1 ring-primary-200",
+        subtitleText: "text-primary-600",
+        dividerLine: "bg-primary-300",
+        checkBg: "bg-primary-50 border-primary-200",
         checkHover:
-          "group-hover/item:bg-teal-600 group-hover/item:border-teal-600",
-        checkIcon: "text-teal-600 group-hover/item:text-white",
+          "group-hover/item:bg-primary-600 group-hover/item:border-primary-600",
+        checkIcon: "text-primary-600 group-hover/item:text-white",
         ctaBtn:
-          "bg-white border-teal-200 text-teal-800 hover:bg-teal-700 hover:border-teal-700 hover:text-white shadow-sm hover:shadow-md",
+          "bg-white border-primary-200 text-primary-800 hover:bg-primary-700 hover:border-primary-700 hover:text-white shadow-sm hover:shadow-md",
       };
     case "sand":
       return {
-        accentBar: "bg-gradient-to-r from-sand-500 via-sand-400 to-sand-200",
-        corner: "bg-sand-100",
-        icon: "bg-sand-200 text-teal-950 ring-1 ring-sand-300",
-        subtitleText: "text-sand-600",
-        dividerLine: "bg-sand-300",
-        checkBg: "bg-sand-50 border-sand-200",
+        accentBar: "bg-gradient-to-r from-secondary-500 via-secondary-400 to-secondary-200",
+        corner: "bg-secondary-100",
+        icon: "bg-secondary-200 text-primary-950 ring-1 ring-secondary-300",
+        subtitleText: "text-secondary-600",
+        dividerLine: "bg-secondary-300",
+        checkBg: "bg-secondary-50 border-secondary-200",
         checkHover:
-          "group-hover/item:bg-sand-500 group-hover/item:border-sand-500",
-        checkIcon: "text-sand-600 group-hover/item:text-teal-950",
+          "group-hover/item:bg-secondary-500 group-hover/item:border-secondary-500",
+        checkIcon: "text-secondary-600 group-hover/item:text-primary-950",
         ctaBtn:
-          "bg-white border-sand-300 text-teal-800 hover:bg-sand-400 hover:border-sand-400 hover:text-teal-950 shadow-sm hover:shadow-md",
+          "bg-white border-secondary-300 text-primary-800 hover:bg-secondary-400 hover:border-secondary-400 hover:text-primary-950 shadow-sm hover:shadow-md",
       };
   }
 }
@@ -124,15 +124,15 @@ export default function ProgramSection() {
   return (
     <section
       id="program"
-      className="section-alt relative overflow-hidden border-y border-sand-200"
+      className="section-alt relative overflow-hidden border-y border-secondary-200"
     >
       <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.02] pointer-events-none" />
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 overflow-hidden"
       >
-        <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-sand-200/70 blur-[100px]" />
-        <div className="absolute -bottom-32 -left-32 w-[400px] h-[400px] rounded-full bg-teal-50/60 blur-[80px]" />
+        <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-secondary-200/70 blur-[100px]" />
+        <div className="absolute -bottom-32 -left-32 w-[400px] h-[400px] rounded-full bg-primary-50/60 blur-[80px]" />
       </div>
 
       <Container className="relative z-10">
@@ -142,7 +142,7 @@ export default function ProgramSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.5, ease: EASE }}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-sand-200 text-teal-700 text-[0.65rem] font-bold uppercase tracking-[0.12em] shadow-xs mb-5"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-secondary-200 text-primary-700 text-[0.65rem] font-bold uppercase tracking-[0.12em] shadow-xs mb-5"
           >
             <GraduationCap className="w-3 h-3" strokeWidth={2} />
             <span>Jenjang Pendidikan</span>
@@ -156,7 +156,7 @@ export default function ProgramSection() {
             className="section-title mb-4"
           >
             Program Studi{" "}
-            <span className="text-gradient-teal">Unggulan</span>
+            <span className="text-gradient-primary">Unggulan</span>
           </motion.h2>
 
           <motion.p
@@ -190,7 +190,7 @@ export default function ProgramSection() {
                 }}
                 className={`group h-full`}
               >
-                <div className="relative h-full flex flex-col bg-white rounded-[1.5rem] border border-sand-200 overflow-hidden shadow-premium-sm group-hover:shadow-premium-md group-hover:border-teal-200 transition-all duration-400">
+                <div className="relative h-full flex flex-col bg-white rounded-[1.5rem] border border-secondary-200 overflow-hidden shadow-premium-sm group-hover:shadow-premium-md group-hover:border-primary-200 transition-all duration-400">
                   <div
                     className={`absolute top-0 left-0 right-0 h-[3px] ${tokens.accentBar}`}
                   />
@@ -220,7 +220,7 @@ export default function ProgramSection() {
                     </div>
 
                     <div className="mb-7">
-                      <h3 className="font-display font-black text-[1.35rem] text-ink-950 tracking-tight leading-[1.1] mb-2 group-hover:text-teal-800 transition-colors duration-300">
+                      <h3 className="font-display font-black text-[1.35rem] text-ink-950 tracking-tight leading-[1.1] mb-2 group-hover:text-primary-800 transition-colors duration-300">
                         {program.title}
                       </h3>
                       <p

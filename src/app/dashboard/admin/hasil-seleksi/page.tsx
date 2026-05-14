@@ -157,19 +157,19 @@ export default function HasilSeleksiPage() {
           </div>
           <div className="absolute -right-4 -bottom-4 bg-green-200/50 w-24 h-24 rounded-full blur-xl"></div>
         </div>
-        <div className="bg-amber-50 p-6 rounded-xl shadow-sm border border-amber-100 relative overflow-hidden">
-          <p className="text-amber-600 text-sm font-bold tracking-wider uppercase mb-1">
+        <div className="bg-secondary-50 p-6 rounded-xl shadow-sm border border-secondary-100 relative overflow-hidden">
+          <p className="text-secondary-600 text-sm font-bold tracking-wider uppercase mb-1">
             Cadangan
           </p>
           <div className="flex items-end gap-2">
-            <h3 className="text-4xl font-black text-amber-700">
+            <h3 className="text-4xl font-black text-secondary-700">
               {stats.total_cadangan}
             </h3>
-            <span className="text-amber-600/70 font-medium mb-1 pl-1">
+            <span className="text-secondary-600/70 font-medium mb-1 pl-1">
               Santri
             </span>
           </div>
-          <div className="absolute -right-4 -bottom-4 bg-amber-200/50 w-24 h-24 rounded-full blur-xl"></div>
+          <div className="absolute -right-4 -bottom-4 bg-secondary-200/50 w-24 h-24 rounded-full blur-xl"></div>
         </div>
         <div className="bg-rose-50 p-6 rounded-xl shadow-sm border border-rose-100 relative overflow-hidden">
           <p className="text-rose-600 text-sm font-bold tracking-wider uppercase mb-1">
@@ -281,7 +281,7 @@ export default function HasilSeleksiPage() {
                         <CheckCircle2 className="w-3 h-3" /> DITERIMA
                       </span>
                     ) : c.status_pendaftaran === "cadangan" || c.status_pendaftaran === "announced" ? (
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-100 text-amber-700 text-[10px] font-black uppercase border border-amber-200">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary-100 text-secondary-700 text-[10px] font-black uppercase border border-secondary-200">
                         CADANGAN
                       </span>
                     ) : (
@@ -360,7 +360,7 @@ export default function HasilSeleksiPage() {
                         ? "bg-green-500"
                         : grade === "B"
                           ? "bg-sky-400"
-                          : "bg-amber-400";
+                          : "bg-secondary-400";
                     return (
                       <span
                         title={type}
@@ -433,7 +433,7 @@ export default function HasilSeleksiPage() {
                             <CheckCircle2 className="w-3.5 h-3.5" /> DITERIMA
                           </span>
                         ) : c.status_pendaftaran === "cadangan" || c.status_pendaftaran === "announced" ? (
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-100 text-amber-700 text-xs font-bold border border-amber-200">
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary-100 text-secondary-700 text-xs font-bold border border-secondary-200">
                             CADANGAN
                           </span>
                         ) : (

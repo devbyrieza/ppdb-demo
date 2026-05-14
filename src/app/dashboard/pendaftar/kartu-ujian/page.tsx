@@ -105,7 +105,7 @@ export default function ExamCardPage() {
         <h1 className="text-xl font-bold">Pratinjau Jadwal</h1>
         <button
           onClick={() => window.print()}
-          className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700 transition"
+          className="flex items-center gap-2 bg-primary-600 text-white px-4 py-2 rounded shadow hover:bg-primary-700 transition"
         >
           <Printer className="w-4 h-4" /> Cetak Jadwal
         </button>
@@ -134,7 +134,7 @@ export default function ExamCardPage() {
                 <p className="text-[11px] font-sans font-medium text-stone-500 uppercase tracking-widest leading-tight">
                   {PDF_BRANDING.institution.subtitle}
                 </p>
-                <h1 className="text-2xl font-serif font-black uppercase text-teal-900 mb-1 leading-tight tracking-tight">
+                <h1 className="text-2xl font-serif font-black uppercase text-primary-900 mb-1 leading-tight tracking-tight">
                   {PDF_BRANDING.institution.committee}
                 </h1>
                 <p className="text-sm font-serif font-bold text-gray-800 mb-1">

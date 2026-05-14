@@ -133,14 +133,14 @@ export default function HomePage() {
               className="group flex items-center gap-3 px-6 py-4 rounded-full font-black text-sm uppercase tracking-widest border-2 border-white"
               style={{
                 background:
-                  "linear-gradient(135deg, var(--color-sand-300) 0%, var(--color-sand-500) 100%)",
-                color: "var(--color-teal-900)",
-                boxShadow: "var(--shadow-sand), 0 0 0 1px rgba(0,0,0,0.04)",
+                  "linear-gradient(135deg, var(--color-secondary-300) 0%, var(--color-secondary-500) 100%)",
+                color: "var(--color-primary-900)",
+                boxShadow: "var(--shadow-secondary), 0 0 0 1px rgba(0,0,0,0.04)",
               }}
             >
               <Zap
                 className="w-5 h-5 transition-transform duration-200 group-hover:rotate-12"
-                style={{ fill: "var(--color-teal-900)" }}
+                style={{ fill: "var(--color-primary-900)" }}
                 aria-hidden="true"
               />
               <span>Coba Demo</span>

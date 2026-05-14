@@ -301,8 +301,8 @@ function SectionHeader({
         disabled
           ? "bg-slate-50 border-slate-200 opacity-60 cursor-not-allowed"
           : isOpen
-            ? "bg-white border-cream-200 shadow-sm border border-cream-200 app-card"
-            : "bg-surface-50 border-white/50 hover:bg-white hover:border-cream-100"
+            ? "bg-white border-secondary-200 shadow-sm border border-secondary-200 app-card"
+            : "bg-surface-50 border-white/50 hover:bg-white hover:border-secondary-100"
       }`}
     >
       <div className="flex items-center gap-4">
@@ -311,7 +311,7 @@ function SectionHeader({
             isCompleted
               ? "bg-emerald-100 text-emerald-600"
               : isOpen
-                ? "bg-cream-100 text-maroon-700"
+                ? "bg-secondary-100 text-primary-700"
                 : "bg-surface-200 text-ink-600"
           }`}
         >
@@ -378,7 +378,7 @@ function InputField({
   inputFilter,
 }: InputFieldProps) {
   const baseInputClass =
-    "w-full px-4 py-3 bg-white border border-ink-200 rounded-xl text-ink-900 placeholder:text-stone-600 focus:border-maroon-600 focus:ring-4 focus:ring-maroon-600/10 transition-all outline-none disabled:bg-surface-100 disabled:text-ink-600 font-medium";
+    "w-full px-4 py-3 bg-white border border-ink-200 rounded-xl text-ink-900 placeholder:text-stone-600 focus:border-primary-600 focus:ring-4 focus:ring-primary-600/10 transition-all outline-none disabled:bg-surface-100 disabled:text-ink-600 font-medium";
 
   // Filter function for input validation
   const handleFilteredChange = (rawValue: string) => {
@@ -842,7 +842,7 @@ export default function DataLengkapForm({
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center h-64 space-y-4">
-        <Loader2 className="w-10 h-10 text-maroon-700 animate-spin" />
+        <Loader2 className="w-10 h-10 text-primary-700 animate-spin" />
         <p className="text-ink-500 font-medium">Memuat data...</p>
       </div>
     );
@@ -892,16 +892,16 @@ export default function DataLengkapForm({
           </div>
         </div>
       ) : isLocked ? (
-        <div className="bg-blue-50 border border-blue-200 rounded-2xl p-5 shadow-sm">
+        <div className="bg-primary-50 border border-primary-200 rounded-2xl p-5 shadow-sm">
           <div className="flex items-start gap-4">
-            <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center shrink-0">
-              <Info className="w-6 h-6 text-blue-600" />
+            <div className="w-10 h-10 bg-primary-100 rounded-xl flex items-center justify-center shrink-0">
+              <Info className="w-6 h-6 text-primary-600" />
             </div>
             <div className="flex-1">
-              <p className="text-sm text-blue-800 font-bold mb-1">
+              <p className="text-sm text-primary-800 font-bold mb-1">
                 Data Terkunci
               </p>
-              <p className="text-sm text-blue-700 leading-relaxed">
+              <p className="text-sm text-primary-700 leading-relaxed">
                 Data Anda sudah dikonfirmasi dan tidak dapat diubah lagi secara
                 mandiri. Jika terdapat kesalahan data yang krusial, silakan
                 hubungi <strong>Admin Support</strong> kami melalui WhatsApp:
@@ -930,15 +930,15 @@ export default function DataLengkapForm({
           </div>
         </div>
       ) : (
-        <div className="bg-amber-50 border border-amber-100 rounded-2xl p-5 flex gap-4">
-          <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center shrink-0">
-            <Info className="w-6 h-6 text-amber-600" />
+        <div className="bg-secondary-50 border border-secondary-100 rounded-2xl p-5 flex gap-4">
+          <div className="w-10 h-10 bg-secondary-100 rounded-xl flex items-center justify-center shrink-0">
+            <Info className="w-6 h-6 text-secondary-600" />
           </div>
           <div>
-            <p className="text-sm text-amber-900 font-bold mb-1">
+            <p className="text-sm text-secondary-900 font-bold mb-1">
               Petunjuk Pengisian Data
             </p>
-            <ul className="text-sm text-amber-800 space-y-1 font-medium opacity-80 list-disc list-inside">
+            <ul className="text-sm text-secondary-800 space-y-1 font-medium opacity-80 list-disc list-inside">
               <li>Isi data dengan lengkap dan benar sesuai dokumen resmi</li>
               <li>Data yang bertanda (*) wajib diisi</li>
               <li>Klik tombol "Simpan Data" setelah selesai mengisi</li>
@@ -965,7 +965,7 @@ export default function DataLengkapForm({
               {/* Identitas */}
               <div>
                 <h4 className="flex items-center gap-2 text-lg font-bold text-ink-900 mb-6 pb-2 border-b border-ink-100">
-                  <span className="w-8 h-8 rounded-lg bg-cream-100 text-maroon-700 flex items-center justify-center text-sm">
+                  <span className="w-8 h-8 rounded-lg bg-secondary-100 text-primary-700 flex items-center justify-center text-sm">
                     1
                   </span>
                   Identitas Utama
@@ -1080,7 +1080,7 @@ export default function DataLengkapForm({
               {/* Fisik */}
               <div>
                 <h4 className="flex items-center gap-2 text-lg font-bold text-ink-900 mb-6 pb-2 border-b border-ink-100">
-                  <span className="w-8 h-8 rounded-lg bg-cream-100 text-maroon-700 flex items-center justify-center text-sm">
+                  <span className="w-8 h-8 rounded-lg bg-secondary-100 text-primary-700 flex items-center justify-center text-sm">
                     2
                   </span>
                   Fisik & Kesehatan
@@ -1132,7 +1132,7 @@ export default function DataLengkapForm({
               {/* Alamat */}
               <div>
                 <h4 className="flex items-center gap-2 text-lg font-bold text-ink-900 mb-6 pb-2 border-b border-ink-100">
-                  <span className="w-8 h-8 rounded-lg bg-cream-100 text-maroon-700 flex items-center justify-center text-sm">
+                  <span className="w-8 h-8 rounded-lg bg-secondary-100 text-primary-700 flex items-center justify-center text-sm">
                     3
                   </span>
                   Alamat Tempat Tinggal
@@ -1189,7 +1189,7 @@ export default function DataLengkapForm({
               {/* Sekolah Asal */}
               <div>
                 <h4 className="flex items-center gap-2 text-lg font-bold text-ink-900 mb-6 pb-2 border-b border-ink-100">
-                  <span className="w-8 h-8 rounded-lg bg-cream-100 text-maroon-700 flex items-center justify-center text-sm">
+                  <span className="w-8 h-8 rounded-lg bg-secondary-100 text-primary-700 flex items-center justify-center text-sm">
                     4
                   </span>
                   Sekolah Asal
@@ -1846,7 +1846,7 @@ export default function DataLengkapForm({
           <button
             type="submit"
             disabled={saving}
-            className="flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-maroon-600 to-maroon-700 text-white font-bold text-lg shadow-lg shadow-maroon-600/30 hover:shadow-maroon-600/40 hover:-translate-y-1 transition-all disabled:opacity-50 disabled:transform-none"
+            className="flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-primary-600 to-primary-700 text-white font-bold text-lg shadow-lg shadow-primary-600/30 hover:shadow-primary-600/40 hover:-translate-y-1 transition-all disabled:opacity-50 disabled:transform-none"
           >
             {saving ? (
               <Loader2 className="w-6 h-6 animate-spin" />

@@ -114,7 +114,7 @@ export default function DownloadBerkasTab() {
               {doc.status === "available" ? (
                 <CheckCircle className="w-5 h-5 text-green-600" />
               ) : (
-                <AlertCircle className="w-5 h-5 text-amber-600" />
+                <AlertCircle className="w-5 h-5 text-secondary-600" />
               )}
             </div>
 
@@ -140,16 +140,16 @@ export default function DownloadBerkasTab() {
       </div>
 
       {/* Info Box */}
-      <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-6">
+      <div className="bg-primary-50 border-2 border-primary-200 rounded-xl p-6">
         <div className="flex gap-4">
           <div className="flex-shrink-0">
-            <div className="p-2 bg-blue-200 rounded-lg">
-              <AlertCircle className="w-6 h-6 text-blue-700" />
+            <div className="p-2 bg-primary-200 rounded-lg">
+              <AlertCircle className="w-6 h-6 text-primary-700" />
             </div>
           </div>
           <div>
-            <h4 className="font-bold text-blue-900 mb-2">Informasi</h4>
-            <ul className="text-sm text-blue-800 space-y-1">
+            <h4 className="font-bold text-primary-900 mb-2">Informasi</h4>
+            <ul className="text-sm text-primary-800 space-y-1">
               <li>
                 • Bukti pendaftaran tersedia setelah data diri santri
                 dilengkapi.

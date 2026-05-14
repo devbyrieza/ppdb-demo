@@ -19,13 +19,13 @@ import { BRANDING } from "@/config/branding";
  */
 
 const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown, highlighted, onDownload, isDownloading, onPromote, isPromoting }: any) => {
-  const colorMap: any = {
-    blue:    "from-teal-600 to-teal-800 shadow-teal",
-    emerald: "from-emerald-600 to-emerald-700",
-    amber: "from-amber-500 to-amber-600",
-    purple: "from-purple-600 to-purple-700",
-    rose: "from-rose-600 to-rose-700",
-    slate: "from-slate-600 to-slate-700",
+    const colorMap: any = {
+    blue: "from-primary-600 to-primary-800",
+    emerald: "from-emerald-500 to-emerald-600",
+    amber: "from-secondary-500 to-secondary-700",
+    purple: "from-primary-500 to-primary-700",
+    rose: "from-rose-500 to-rose-600",
+    slate: "from-secondary-600 to-secondary-800",
   };
 
   return (
@@ -34,12 +34,12 @@ const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown, highlig
       animate={{ opacity: 1, y: 0 }}
       className={`glass-panel p-5 sm:p-6 lg:p-8 rounded-[2rem] border transition-all group relative overflow-hidden duration-300 hover-lift ${
         highlighted 
-          ? "glass-panel-dark text-white border-teal-800 shadow-premium-lg" 
-          : "text-teal-950 border-teal-100 shadow-premium-sm"
+          ? "glass-panel-dark text-white border-primary-800 shadow-premium-lg" 
+          : "text-primary-950 border-primary-100 shadow-premium-sm"
       }`}
     >
       <div className={`glow-blob w-32 h-32 opacity-10 transition-colors duration-500 -top-10 -right-10 ${
-        highlighted ? "glow-blob-teal" : "glow-blob-gold"
+        highlighted ? "glow-blob-primary" : "glow-blob-gold"
       }`} aria-hidden="true" />
       
       <div className="relative z-10">
@@ -61,15 +61,15 @@ const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown, highlig
         
         <div className="mb-6 lg:mb-8">
           <p className={`stat-label uppercase tracking-[0.25em] mb-2 ${
-            highlighted ? "text-teal-300" : "text-teal-500"
+            highlighted ? "text-primary-300" : "text-primary-500"
           }`}>{label}</p>
           <div className="flex items-baseline justify-between gap-2">
             <div className="flex items-baseline gap-2">
               <h3 className={`text-3xl sm:text-4xl lg:text-5xl font-black tracking-tighter italic ${
-                highlighted ? "text-white" : "text-teal-950"
+                highlighted ? "text-white" : "text-primary-950"
               }`}>{value}</h3>
               <span className={`text-xs font-bold ${
-                highlighted ? "text-teal-300" : "text-teal-400"
+                highlighted ? "text-primary-300" : "text-primary-400"
               }`}>Orang</span>
             </div>
 
@@ -137,20 +137,20 @@ const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown, highlig
 
         {breakdown && (
           <div className={`grid grid-cols-2 gap-4 pt-6 border-t ${
-            highlighted ? "border-white/10" : "border-teal-100"
+            highlighted ? "border-white/10" : "border-primary-100"
           }`}>
             <div className="space-y-4">
               <div className="flex flex-col">
                 <span className={`text-[9px] font-black uppercase tracking-widest mb-1 ${
-                  highlighted ? "text-teal-300" : "text-teal-500"
+                  highlighted ? "text-primary-300" : "text-primary-500"
                 }`}>MTs Putra</span>
                 <span className={`text-base font-black leading-none ${
-                  highlighted ? "text-white" : "text-teal-700"
+                  highlighted ? "text-white" : "text-primary-700"
                 }`}>{breakdown.mts_l || 0}</span>
               </div>
               <div className="flex flex-col">
                 <span className={`text-[9px] font-black uppercase tracking-widest mb-1 ${
-                  highlighted ? "text-teal-300" : "text-teal-500"
+                  highlighted ? "text-primary-300" : "text-primary-500"
                 }`}>MTs Putri</span>
                 <span className={`text-base font-black leading-none ${
                   highlighted ? "text-pink-300" : "text-pink-500"
@@ -158,19 +158,19 @@ const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown, highlig
               </div>
             </div>
             <div className={`space-y-4 border-l pl-4 ${
-              highlighted ? "border-white/10" : "border-teal-100"
+              highlighted ? "border-white/10" : "border-primary-100"
             }`}>
               <div className="flex flex-col">
                 <span className={`text-[9px] font-black uppercase tracking-widest mb-1 ${
-                  highlighted ? "text-teal-300" : "text-teal-500"
+                  highlighted ? "text-primary-300" : "text-primary-500"
                 }`}>IL Putra</span>
                 <span className={`text-base font-black leading-none ${
-                  highlighted ? "text-white" : "text-teal-700"
+                  highlighted ? "text-white" : "text-primary-700"
                 }`}>{breakdown.il_l || 0}</span>
               </div>
               <div className="flex flex-col">
                 <span className={`text-[9px] font-black uppercase tracking-widest mb-1 ${
-                  highlighted ? "text-teal-300" : "text-teal-500"
+                  highlighted ? "text-primary-300" : "text-primary-500"
                 }`}>IL Putri</span>
                 <span className={`text-base font-black leading-none ${
                   highlighted ? "text-pink-300" : "text-pink-500"
@@ -396,15 +396,15 @@ export default function AdminDashboardPage() {
 
   if (loading && stats.total_pendaftar === 0) return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-      <Loader2 className="w-10 h-10 animate-spin text-teal-600" />
-      <p className="text-sm font-bold text-teal-400 tracking-widest animate-pulse uppercase">Sinkronisasi Data...</p>
+      <Loader2 className="w-10 h-10 animate-spin text-primary-600" />
+      <p className="text-sm font-bold text-primary-400 tracking-widest animate-pulse uppercase">Sinkronisasi Data...</p>
     </div>
   );
 
   return (
     <div className="relative max-w-[1400px] mx-auto space-y-6 sm:space-y-8 pb-20 px-1">
       {/* Background Ambience */}
-      <div className="glow-blob glow-blob-teal w-[50%] h-[40%] -top-[10%] -left-[10%] opacity-[0.03] fixed" aria-hidden="true" />
+      <div className="glow-blob glow-blob-primary w-[50%] h-[40%] -top-[10%] -left-[10%] opacity-[0.03] fixed" aria-hidden="true" />
       <div className="glow-blob glow-blob-gold w-[40%] h-[50%] top-[20%] -right-[10%] opacity-[0.02] fixed" aria-hidden="true" />
 
       <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -412,48 +412,48 @@ export default function AdminDashboardPage() {
           <h1 className="text-2xl sm:text-3xl font-black tracking-tight italic">
             <span className="gradient-text-teal">Dashboard Admin {BRANDING.schoolShortName}</span>
           </h1>
-          <p className="text-xs sm:text-sm text-teal-600 font-medium mt-1">Sistem Informasi Pendaftaran Santri Baru.</p>
+          <p className="text-xs sm:text-sm text-primary-600 font-medium mt-1">Sistem Informasi Pendaftaran Santri Baru.</p>
         </div>
-        <button onClick={fetchStats} className="p-3 bg-white border border-teal-100 rounded-2xl text-teal-400 hover:text-teal-600 transition-all shadow-premium-sm self-start sm:self-auto hover-lift">
+        <button onClick={fetchStats} className="p-3 bg-white border border-primary-100 rounded-2xl text-primary-400 hover:text-primary-600 transition-all shadow-premium-sm self-start sm:self-auto hover-lift">
           <RefreshCw className={`w-5 h-5 ${loading ? "animate-spin" : ""}`} />
         </button>
       </div>
 
       {/* HERO SECTION */}
-      <div className="glass-panel glass-panel-dark rounded-[2.5rem] lg:rounded-[3rem] p-6 sm:p-8 lg:p-12 text-white relative overflow-hidden shadow-2xl border border-teal-800/50">
-        <div className="glow-blob glow-blob-teal w-96 h-96 opacity-20 -top-20 -right-20" aria-hidden="true" />
+      <div className="glass-panel glass-panel-dark rounded-[2.5rem] lg:rounded-[3rem] p-6 sm:p-8 lg:p-12 text-white relative overflow-hidden shadow-2xl border border-primary-800/50">
+        <div className="glow-blob glow-blob-primary w-96 h-96 opacity-20 -top-20 -right-20" aria-hidden="true" />
         <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
           <div className="max-w-xl w-full">
-            <div className="section-label section-label-teal mb-6 lg:mb-8">
+            <div className="section-label section-label-primary mb-6 lg:mb-8">
               <Activity className="w-4 h-4" />
               <span>Sistem Siap Saji: Live Demo</span>
             </div>
             <h2 className="text-3xl sm:text-4xl lg:text-6xl font-black mb-4 sm:mb-6 tracking-tighter leading-tight italic text-white">
-              Pantau <span className="text-teal-300">Pendaftaran</span>
+              Pantau <span className="text-primary-300">Pendaftaran</span>
             </h2>
             <div className="flex items-center gap-8 sm:gap-12 mt-8 lg:mt-12">
               <div>
                 <span className="text-3xl sm:text-5xl font-black text-white italic">{stats.total_pendaftar}</span>
-                <p className="text-[10px] sm:text-[11px] font-black text-teal-200 uppercase tracking-widest mt-2">Pendaftar</p>
+                <p className="text-[10px] sm:text-[11px] font-black text-primary-200 uppercase tracking-widest mt-2">Pendaftar</p>
               </div>
               <div className="w-px h-12 sm:h-16 bg-white/20" />
               <div>
-                <span className="text-3xl sm:text-5xl font-black text-teal-300 italic">{stats.sudah_bayar}</span>
-                <p className="text-[10px] sm:text-[11px] font-black text-teal-200 uppercase tracking-widest mt-2">Bayar Pendaftaran</p>
+                <span className="text-3xl sm:text-5xl font-black text-primary-300 italic">{stats.sudah_bayar}</span>
+                <p className="text-[10px] sm:text-[11px] font-black text-primary-200 uppercase tracking-widest mt-2">Bayar Pendaftaran</p>
               </div>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4 sm:gap-6 w-full lg:w-auto">
              <div className="bg-white/5 backdrop-blur-md p-4 sm:p-6 lg:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-white/10 flex flex-col items-center">
-                <p className="text-[9px] sm:text-[10px] font-black text-teal-200 uppercase tracking-widest mb-2 sm:mb-4 text-center">Diterima</p>
+                <p className="text-[9px] sm:text-[10px] font-black text-primary-200 uppercase tracking-widest mb-2 sm:mb-4 text-center">Diterima</p>
                 <p className="text-2xl sm:text-4xl font-black text-emerald-400 italic">{stats.diterima}</p>
              </div>
              <div className="bg-white/5 backdrop-blur-md p-4 sm:p-6 lg:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-white/10 flex flex-col items-center">
-                <p className="text-[9px] sm:text-[10px] font-black text-teal-200 uppercase tracking-widest mb-2 sm:mb-4 text-center">Sedang Daftar Ulang</p>
-                <p className="text-2xl sm:text-4xl font-black text-sand-300 italic">{stats.daftar_ulang_sedang}</p>
+                <p className="text-[9px] sm:text-[10px] font-black text-primary-200 uppercase tracking-widest mb-2 sm:mb-4 text-center">Sedang Daftar Ulang</p>
+                <p className="text-2xl sm:text-4xl font-black text-secondary-300 italic">{stats.daftar_ulang_sedang}</p>
              </div>
              <div className="bg-white/5 backdrop-blur-md p-4 sm:p-6 lg:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-white/10 flex flex-col items-center">
-                <p className="text-[9px] sm:text-[10px] font-black text-teal-200 uppercase tracking-widest mb-2 sm:mb-4 text-center">Selesai</p>
+                <p className="text-[9px] sm:text-[10px] font-black text-primary-200 uppercase tracking-widest mb-2 sm:mb-4 text-center">Selesai</p>
                 <p className="text-2xl sm:text-4xl font-black text-emerald-400 italic">{stats.daftar_ulang_selesai}</p>
              </div>
           </div>
@@ -495,8 +495,8 @@ export default function AdminDashboardPage() {
       {/* SUMMARY INSIGHTS - Terbuka untuk semua Admin */}
       {(isAdminSuper || isAdminBerkas || isAdminKeuangan) && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
-          {/* Statistik card — bg teal-800 (valid & dark enough for white text) */}
-        <div className="bg-teal-800 rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] p-5 sm:p-8 lg:p-10 text-white relative overflow-hidden group">
+          {/* Statistik card — bg primary-800 (valid & dark enough for white text) */}
+        <div className="bg-primary-800 rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] p-5 sm:p-8 lg:p-10 text-white relative overflow-hidden group">
           <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:rotate-12 transition-transform duration-700">
             <TrendingUp className="w-48 h-48" />
           </div>
@@ -508,31 +508,31 @@ export default function AdminDashboardPage() {
             <div className="grid grid-cols-2 gap-4 sm:gap-8">
               <div className="space-y-6 sm:space-y-8">
                 <div>
-                  <p className="text-[10px] font-black text-teal-200 uppercase tracking-widest mb-2">Total Lunas</p>
+                  <p className="text-[10px] font-black text-primary-200 uppercase tracking-widest mb-2">Total Lunas</p>
                   <p className="text-2xl sm:text-4xl font-black text-white italic">{stats.sudah_bayar}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] font-black text-teal-200 uppercase tracking-widest mb-2">Data Komplit</p>
-                  <p className="text-2xl sm:text-4xl font-black text-sand-300 italic">{stats.sudah_isi_data}</p>
+                  <p className="text-[10px] font-black text-primary-200 uppercase tracking-widest mb-2">Data Komplit</p>
+                  <p className="text-2xl sm:text-4xl font-black text-secondary-300 italic">{stats.sudah_isi_data}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] font-black text-teal-200 uppercase tracking-widest mb-2">Sedang Daftar Ulang</p>
+                  <p className="text-[10px] font-black text-primary-200 uppercase tracking-widest mb-2">Sedang Daftar Ulang</p>
                   <p className="text-2xl sm:text-4xl font-black text-gold-400 italic">{stats.daftar_ulang_sedang}</p>
                 </div>
               </div>
               <div className="space-y-6 sm:space-y-8 pl-4 sm:pl-10 border-l border-white/20">
                 <div>
-                  <p className="text-[10px] font-black text-teal-200 uppercase tracking-widest mb-2">Antrean Aktif</p>
-                  <p className="text-2xl sm:text-4xl font-black text-amber-300 italic">{stats.waiting_payment + stats.waiting_docs}</p>
+                  <p className="text-[10px] font-black text-primary-200 uppercase tracking-widest mb-2">Antrean Aktif</p>
+                  <p className="text-2xl sm:text-4xl font-black text-secondary-300 italic">{stats.waiting_payment + stats.waiting_docs}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] font-black text-teal-200 uppercase tracking-widest mb-2">Tingkat Kelulusan</p>
+                  <p className="text-[10px] font-black text-primary-200 uppercase tracking-widest mb-2">Tingkat Kelulusan</p>
                   <p className="text-2xl sm:text-4xl font-black text-emerald-400 italic">
                     {stats.total_pendaftar > 0 ? Math.round((stats.diterima / stats.total_pendaftar) * 100) : 0}%
                   </p>
                 </div>
                 <div>
-                  <p className="text-[10px] font-black text-teal-200 uppercase tracking-widest mb-2">Selesai</p>
+                  <p className="text-[10px] font-black text-primary-200 uppercase tracking-widest mb-2">Selesai</p>
                   <p className="text-2xl sm:text-4xl font-black text-emerald-400 italic">{stats.daftar_ulang_selesai}</p>
                 </div>
               </div>
@@ -540,16 +540,16 @@ export default function AdminDashboardPage() {
           </div>
         </div>
  
-        <div className="bg-white rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border border-sand-100 p-5 sm:p-8 lg:p-10 shadow-premium-sm relative overflow-hidden group">
+        <div className="bg-white rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border border-secondary-100 p-5 sm:p-8 lg:p-10 shadow-premium-sm relative overflow-hidden group">
           <div className="relative z-10">
             <h3 className="text-xl sm:text-2xl font-black text-ink-900 mb-6 sm:mb-8 tracking-tight flex items-center gap-3 italic">
-              <div className="w-2 h-8 bg-teal-600 rounded-full" />
+              <div className="w-2 h-8 bg-primary-600 rounded-full" />
               Aksi Cepat
             </h3>
             <div className="space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-6 bg-sand-50 rounded-2xl sm:rounded-3xl border border-sand-100 hover:border-teal-200 transition-all cursor-default group/item gap-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-6 bg-secondary-50 rounded-2xl sm:rounded-3xl border border-secondary-100 hover:border-primary-200 transition-all cursor-default group/item gap-4">
                 <div className="flex items-center gap-4 sm:gap-5">
-                  <div className="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center text-teal-600 transition-transform group-hover/item:scale-110 shrink-0">
+                  <div className="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center text-primary-600 transition-transform group-hover/item:scale-110 shrink-0">
                     <Users className="w-6 h-6" />
                   </div>
                   <div>
@@ -557,13 +557,13 @@ export default function AdminDashboardPage() {
                     <p className="text-[11px] text-ink-400 font-bold">Verifikasi berkas santri baru</p>
                   </div>
                 </div>
-                <div className="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto border-t sm:border-0 pt-3 sm:pt-0 border-sand-200/60">
+                <div className="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto border-t sm:border-0 pt-3 sm:pt-0 border-secondary-200/60">
                   <span className="text-xl sm:text-2xl font-black text-ink-900 italic">{stats.waiting_docs}</span>
                   <ChevronRight className="w-5 h-5 text-ink-300 hidden sm:block" />
                 </div>
               </div>
  
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-6 bg-sand-50 rounded-2xl sm:rounded-3xl border border-sand-100 hover:border-emerald-200 transition-all cursor-default group/item gap-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-6 bg-secondary-50 rounded-2xl sm:rounded-3xl border border-secondary-100 hover:border-emerald-200 transition-all cursor-default group/item gap-4">
                 <div className="flex items-center gap-4 sm:gap-5">
                   <div className="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center text-emerald-600 transition-transform group-hover/item:scale-110 shrink-0">
                     <Wallet className="w-6 h-6" />
@@ -573,7 +573,7 @@ export default function AdminDashboardPage() {
                     <p className="text-[11px] text-ink-400 font-bold">Konfirmasi bukti transfer</p>
                   </div>
                 </div>
-                <div className="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto border-t sm:border-0 pt-3 sm:pt-0 border-sand-200/60">
+                <div className="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto border-t sm:border-0 pt-3 sm:pt-0 border-secondary-200/60">
                   <span className="text-xl sm:text-2xl font-black text-ink-900 italic">{stats.waiting_payment}</span>
                   <ChevronRight className="w-5 h-5 text-ink-300 hidden sm:block" />
                 </div>

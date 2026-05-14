@@ -45,7 +45,7 @@ export default function Footer() {
       className="relative overflow-hidden pt-20 pb-28 md:pb-14"
       style={{
         background:
-          "linear-gradient(160deg, var(--color-teal-900) 0%, var(--color-teal-950) 55%, #0D110A 100%)",
+          "linear-gradient(160deg, var(--color-primary-900) 0%, var(--color-primary-950) 55%, #0D110A 100%)",
         borderTop: "1px solid rgba(255,255,255,0.05)",
       }}
     >
@@ -92,7 +92,7 @@ export default function Footer() {
                 className="w-12 h-12 rounded-2xl flex items-center justify-center overflow-hidden flex-shrink-0 transition-all duration-500 group-hover:scale-105 group-hover:-rotate-3"
                 style={{
                   background:
-                    "linear-gradient(135deg, var(--color-teal-800) 0%, var(--color-teal-700) 100%)",
+                    "linear-gradient(135deg, var(--color-primary-800) 0%, var(--color-primary-700) 100%)",
                   boxShadow:
                     "0 4px 16px rgba(0,0,0,0.30), 0 0 0 1px rgba(92,125,74,0.35)",
                 }}
@@ -164,7 +164,7 @@ export default function Footer() {
           <div className="space-y-6">
             <h4
               className="text-xs font-black uppercase tracking-[0.12em]"
-              style={{ color: "var(--color-sand-400)" }}
+              style={{ color: "var(--color-secondary-400)" }}
             >
               Lembaga
             </h4>
@@ -198,7 +198,7 @@ export default function Footer() {
           <div className="space-y-6">
             <h4
               className="text-xs font-black uppercase tracking-[0.12em]"
-              style={{ color: "var(--color-sand-400)" }}
+              style={{ color: "var(--color-secondary-400)" }}
             >
               Informasi
             </h4>
@@ -228,7 +228,7 @@ export default function Footer() {
           <div className="space-y-6">
             <h4
               className="text-xs font-black uppercase tracking-[0.12em]"
-              style={{ color: "var(--color-sand-400)" }}
+              style={{ color: "var(--color-secondary-400)" }}
             >
               Kontak Kami
             </h4>

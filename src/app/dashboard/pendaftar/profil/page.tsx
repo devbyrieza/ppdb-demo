@@ -150,11 +150,11 @@ export default function ProfilPage() {
           <div
             className={`px-5 py-4 rounded-2xl flex items-center gap-4 transition-all hover:scale-[1.02] shadow-sm ${
               requestStatus.status === "pending"
-                ? "bg-amber-50 border border-amber-200 text-amber-800"
+                ? "bg-secondary-50 border border-secondary-200 text-secondary-800"
                 : requestStatus.status === "approved_to_edit"
                   ? "bg-gradient-to-r from-emerald-50 to-pine-50 border border-pine-200 text-pine-800"
                   : requestStatus.status === "submitted"
-                    ? "bg-blue-50 border border-blue-200 text-blue-800"
+                    ? "bg-primary-50 border border-primary-200 text-primary-800"
                     : requestStatus.status === "rejected"
                       ? "bg-red-50 border border-red-200 text-red-800"
                       : "bg-surface-100 border border-ink-200 text-ink-800"
@@ -163,11 +163,11 @@ export default function ProfilPage() {
             <div
               className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
                 requestStatus.status === "pending"
-                  ? "bg-amber-100 text-amber-600"
+                  ? "bg-secondary-100 text-secondary-600"
                   : requestStatus.status === "approved_to_edit"
                     ? "bg-pine-100 text-pine-600"
                     : requestStatus.status === "submitted"
-                      ? "bg-blue-100 text-blue-600"
+                      ? "bg-primary-100 text-primary-600"
                       : requestStatus.status === "rejected"
                         ? "bg-red-100 text-red-600"
                         : "bg-surface-200"
@@ -284,7 +284,7 @@ export default function ProfilPage() {
           {/* Address Card */}
           <div className="glass-panel p-6 md:p-8 rounded-[2rem] shadow-clay-md">
             <div className="flex items-center gap-4 mb-6">
-              <div className="w-12 h-12 rounded-2xl bg-blue-100 flex items-center justify-center text-blue-600 shadow-sm">
+              <div className="w-12 h-12 rounded-2xl bg-primary-100 flex items-center justify-center text-primary-600 shadow-sm">
                 <MapPin className="w-6 h-6" />
               </div>
               <div>
@@ -346,7 +346,7 @@ export default function ProfilPage() {
           {/* School Card */}
           <div className="glass-panel p-6 md:p-8 rounded-[2rem] shadow-clay-md">
             <div className="flex items-center gap-4 mb-6">
-              <div className="w-12 h-12 rounded-2xl bg-amber-100 flex items-center justify-center text-amber-600 shadow-sm">
+              <div className="w-12 h-12 rounded-2xl bg-secondary-100 flex items-center justify-center text-secondary-600 shadow-sm">
                 <School className="w-6 h-6" />
               </div>
               <div>
@@ -402,7 +402,7 @@ export default function ProfilPage() {
                 !isRequesting ? (
                   <button
                     onClick={() => setIsRequesting(true)}
-                    className="w-full py-4 bg-white border border-ink-200 text-ink-700 font-bold rounded-2xl hover:bg-surface-50 hover:border-teal-300 hover:text-teal-700 transition-all shadow-sm hover:shadow-md"
+                    className="w-full py-4 bg-white border border-ink-200 text-ink-700 font-bold rounded-2xl hover:bg-surface-50 hover:border-primary-300 hover:text-primary-700 transition-all shadow-sm hover:shadow-md"
                   >
                     Ajukan Perubahan
                   </button>

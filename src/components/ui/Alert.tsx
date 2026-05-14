@@ -78,20 +78,20 @@ const variantConfig = {
   },
   // info → teal-tinted, konsisten dengan branding hijau teal template-demo
   info: {
-    container: "bg-[var(--color-teal-50)] border-[var(--color-teal-100)]",
-    containerFilled: "bg-[var(--color-teal-700)] border-transparent text-white",
-    accent: "border-l-[var(--color-teal-600)]",
-    iconWrapper: "bg-[var(--color-teal-100)]",
+    container: "bg-[var(--color-primary-50)] border-[var(--color-primary-100)]",
+    containerFilled: "bg-[var(--color-primary-700)] border-transparent text-white",
+    accent: "border-l-[var(--color-primary-600)]",
+    iconWrapper: "bg-[var(--color-primary-100)]",
     iconWrapperFilled: "bg-white/20",
     icon: Info,
-    iconColor: "text-[var(--color-teal-700)]",
+    iconColor: "text-[var(--color-primary-700)]",
     iconColorFilled: "text-white",
-    titleColor: "text-[var(--color-teal-800)]",
+    titleColor: "text-[var(--color-primary-800)]",
     titleColorFilled: "text-white",
-    bodyColor: "text-[var(--color-teal-700)]/80",
+    bodyColor: "text-[var(--color-primary-700)]/80",
     bodyColorFilled: "text-white/90",
     dismissColor:
-      "text-[var(--color-teal-600)]/50 hover:text-[var(--color-teal-700)] hover:bg-[var(--color-teal-100)]",
+      "text-[var(--color-primary-600)]/50 hover:text-[var(--color-primary-700)] hover:bg-[var(--color-primary-100)]",
     dismissColorFilled: "text-white/60 hover:text-white hover:bg-white/20",
   },
 } as const;
