@@ -266,7 +266,7 @@ export default function GallerySection() {
           transition={{ duration: 0.7, ease: EASE }}
           className="relative rounded-t-[2.5rem] overflow-hidden border border-b-0 border-secondary-200 bg-gradient-to-br from-secondary-50/50 to-white shadow-[0_-12px_40px_-12px_rgba(0,0,0,0.05)]"
         >
-          <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-primary-300 via-secondary-300 to-transparent" />
+          <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-primary-300 via-primary-200 to-transparent" />
 
           <div className="relative z-10 grid lg:grid-cols-[1fr_1.1fr] gap-10 lg:gap-14 items-center p-8 md:p-12 lg:p-14 max-w-6xl mx-auto">
             <motion.div

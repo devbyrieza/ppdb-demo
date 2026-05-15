@@ -2599,7 +2599,7 @@
      Contoh: <span class="gradient-text-teal">Penerimaan Santri</span>
   */
   .gradient-text-teal {
-    background: linear-gradient(135deg, var(--color-teal-500) 0%, var(--color-sand-400) 55%, var(--color-teal-700) 100%);
+    background: linear-gradient(135deg, var(--color-teal-600) 0%, var(--color-teal-900) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -2607,7 +2607,7 @@
   }
 
   .gradient-text-blue {
-    background: linear-gradient(135deg, var(--color-blue-500) 0%, var(--color-amber-400) 55%, var(--color-blue-700) 100%);
+    background: linear-gradient(135deg, var(--color-blue-600) 0%, var(--color-blue-900) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -2615,7 +2615,7 @@
   }
 
   .gradient-text-maroon {
-    background: linear-gradient(135deg, var(--color-maroon-600) 0%, var(--color-cream-400) 55%, var(--color-maroon-800) 100%);
+    background: linear-gradient(135deg, var(--color-maroon-600) 0%, var(--color-maroon-900) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;

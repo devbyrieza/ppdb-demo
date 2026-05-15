@@ -123,7 +123,7 @@ export default function AboutSection() {
             >
               <div className="relative overflow-hidden rounded-2xl border border-primary-100 bg-white shadow-premium-sm group">
                 {/* Card top accent bar — teal ke sand */}
-                <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-primary-700 via-primary-500 to-secondary-400 rounded-t-2xl" />
+                <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-primary-700 via-primary-500 to-primary-900 rounded-t-2xl" />
 
                 <div className="flex flex-col items-center text-center px-8 py-12 md:px-16 md:py-16">
                   {/* Icon */}
