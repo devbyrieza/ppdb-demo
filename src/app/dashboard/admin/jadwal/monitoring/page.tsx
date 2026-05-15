@@ -152,6 +152,7 @@ export default function MonitoringJadwalPage() {
 
     // Calculate Unique Stats
     const totalTerjadwal = new Set(filteredSchedules.map(s => s.pendaftar.nomor)).size;
+    const totalSesi = filteredSchedules.length;
     const selesaiQuran = new Set(filteredSchedules.filter(s => s.status.quran === 'completed').map(s => s.pendaftar.nomor)).size;
     const selesaiWSantri = new Set(filteredSchedules.filter(s => s.status.santri === 'completed').map(s => s.pendaftar.nomor)).size;
     const selesaiWOrangTua = new Set(filteredSchedules.filter(s => s.status.ortu === 'completed').map(s => s.pendaftar.nomor)).size;
@@ -178,7 +179,11 @@ export default function MonitoringJadwalPage() {
                 <div className="bg-white rounded-2xl p-4 md:p-6 border border-slate-100 shadow-clay-sm relative overflow-hidden group">
                     <div className="absolute top-0 right-0 w-12 h-12 bg-primary-500/5 rounded-full -mr-6 -mt-6 transition-transform group-hover:scale-150"></div>
                     <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1 relative z-10">Total Terjadwal</p>
-                    <p className="text-2xl md:text-3xl font-black text-slate-800 relative z-10">{totalTerjadwal} <span className="text-xs text-slate-400 font-bold uppercase">Peserta</span></p>
+                    <p className="text-2xl md:text-3xl font-black text-slate-800 relative z-10">
+                        {totalTerjadwal} <span className="text-[10px] text-slate-400 font-bold uppercase mr-2">Peserta</span>
+                        <span className="text-slate-200 font-light mx-1">|</span>
+                        <span className="ml-2">{totalSesi}</span> <span className="text-[10px] text-slate-400 font-bold uppercase">Jadwal</span>
+                    </p>
                 </div>
                 <div className="bg-white rounded-2xl p-4 md:p-6 border border-slate-100 shadow-clay-sm relative overflow-hidden group">
                     <div className="absolute top-0 right-0 w-12 h-12 bg-green-500/5 rounded-full -mr-6 -mt-6 transition-transform group-hover:scale-150"></div>
