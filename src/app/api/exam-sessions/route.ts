@@ -79,6 +79,14 @@ export async function GET(request: Request) {
       orderBy: { start_time: "asc" },
     });
 
+    if (isPendaftar) {
+      // Filter out sessions that are already full
+      const availableSessions = sessions.filter(
+        (s) => (s._count?.bookings || 0) < s.quota,
+      );
+      return NextResponse.json({ data: availableSessions });
+    }
+
     return NextResponse.json({ data: sessions });
   } catch (error: any) {
     console.error("GET exam-sessions error:", error);
