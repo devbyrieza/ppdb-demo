@@ -257,7 +257,7 @@ export async function GET(request: NextRequest) {
       let examStatus = sp;
       if (examProgressStatuses.includes(sp)) {
         if (examScoreCount === 6 || sp === "passed") {
-          examStatus = "tested"; // Sudah Ujian / Passed by skip-ujian
+          examStatus = "tested"; // Sedang Seleksi / Passed by skip-ujian
         } else if (examScoreCount > 0) {
           examStatus = "testing"; // Sedang Ujian
         } else {

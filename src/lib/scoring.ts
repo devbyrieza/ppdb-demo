@@ -180,7 +180,7 @@ export async function recalculateNilaiUjian(pendaftarId: string) {
       }
     }
   } else {
-    // If not all graded, but some are, update status to 'tested' (Sedang Ujian) 
+    // If not all graded, but some are, update status to 'tested' (Sedang Seleksi) 
     // to ensure they appear in the right lists
     const someGraded = ak != null || quran != null || kp != null || ks != null || ws != null || wo != null;
     if (someGraded) {

@@ -280,7 +280,7 @@ export default function AuditSeleksiPage() {
               onChange={(e) => setFilterStatus(e.target.value)}
               className="bg-transparent text-xs font-bold text-ink-700 outline-none"
             >
-              <option value="tested">Siap Audit (Sudah Ujian)</option>
+              <option value="tested">Siap Audit (Sedang Seleksi)</option>
               <option value="announced">Sudah Dipublish</option>
               <option value="accepted">Sudah Diterima</option>
               <option value="all">Semua Data</option>

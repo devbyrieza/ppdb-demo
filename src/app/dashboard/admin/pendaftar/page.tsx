@@ -50,7 +50,7 @@ const FILTER_LABELS: Record<string, string> = {
   dokumen_ditolak: "Dokumen Ditolak",
   terjadwal_ujian: "Terjadwal Ujian & Wawancara",
   belum_ujian: "Belum Ujian & Wawancara",
-  sudah_ujian: "Sudah Ujian & Wawancara",
+  sudah_ujian: "Sedang Seleksi",
   hasil_ujian: "Hasil Ujian & Wawancara",
   diterima: "Diterima",
   belum_daftar_ulang: "Belum Daftar Ulang",
@@ -944,12 +944,12 @@ function AdminPendaftarContent() {
         color: "bg-purple-50 text-purple-800 border border-purple-100",
       },
       tested: {
-        label: "Sudah Ujian",
-        color: "bg-primary-600 text-white shadow-sm",
+        label: "Sedang Seleksi",
+        color: "bg-purple-100 text-purple-800 border border-purple-200 shadow-sm",
       },
       exam_completed: {
-        label: "Sudah Ujian",
-        color: "bg-primary-600 text-white shadow-sm",
+        label: "Sedang Seleksi",
+        color: "bg-purple-100 text-purple-800 border border-purple-200 shadow-sm",
       },
       announced: {
         label: "Cadangan",
@@ -1218,7 +1218,7 @@ function AdminPendaftarContent() {
                     </option>
                     <option value="sedang_seleksi">Sedang Seleksi</option>
                     <option value="belum_ujian">Belum Ujian</option>
-                    <option value="sudah_ujian">Sudah Ujian</option>
+                    <option value="sudah_ujian">Sedang Seleksi (sudah ujian)</option>
                     <option value="hasil_ujian">Hasil Ujian</option>
                   </optgroup>
                   <optgroup label="--- Penerimaan ---">
@@ -1516,7 +1516,7 @@ function AdminPendaftarContent() {
                 <option value="docs_verified">Dokumen Terverifikasi</option>
                 <option value="scheduled">Terjadwal Ujian</option>
                 <option value="testing">Sedang Ujian</option>
-                <option value="tested">Sudah Ujian</option>
+                <option value="tested">Sedang Seleksi (sudah ujian)</option>
                 <option value="announced">Diumumkan</option>
                 <option value="accepted">Diterima</option>
                 <option value="rejected">Ditolak</option>

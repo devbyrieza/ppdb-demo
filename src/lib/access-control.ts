@@ -128,7 +128,7 @@ export function formatStatusDisplay(status: StatusProses) {
     docs_verified: { label: "Berkas Lengkap", color: "bg-green-100 text-green-700" },
     selection: { label: "Sedang Seleksi", color: "bg-purple-100 text-purple-700" },
     scheduled: { label: "Sedang Seleksi", color: "bg-purple-100 text-purple-700" },
-    tested: { label: "Seleksi Selesai", color: "bg-violet-100 text-violet-700" },
+    tested: { label: "Sedang Seleksi", color: "bg-violet-100 text-violet-700" },
     announced: { label: "Hasil Pengumuman", color: "bg-cyan-100 text-cyan-700" },
     accepted: { label: "Diterima", color: "bg-green-100 text-green-700" },
     enrolled: { label: "Sedang Daftar Ulang", color: "bg-emerald-100 text-emerald-700" },

@@ -306,11 +306,11 @@ export default function PendaftarDetailPage() {
         color: "bg-violet-100 text-violet-700 border border-violet-200",
       },
       tested: {
-        label: "Sudah Ujian",
+        label: "Sedang Seleksi",
         color: "bg-primary-600 text-white shadow-sm",
       },
       exam_completed: {
-        label: "Sudah Ujian",
+        label: "Sedang Seleksi",
         color: "bg-primary-600 text-white shadow-sm",
       },
       announced: {
