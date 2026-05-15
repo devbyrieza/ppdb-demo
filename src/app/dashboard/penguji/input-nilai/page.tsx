@@ -47,6 +47,7 @@ interface Peserta {
   input_at_quran: string | null;
   input_at_santri: string | null;
   input_at_ortu: string | null;
+  created_at: string | null;
 }
 
 // ============================================================================
@@ -518,11 +519,17 @@ function InputNilaiContent() {
     const formsNeeded = ROLE_TO_FORM_TYPES[activeRole] || [];
     if (formsNeeded.length === 0) return false;
     
-    // Check if ALL roles the current user is responsible for have been filled
+    // Robust check: use input_at_* OR fallback to score/detail data presence
     return formsNeeded.every(type => {
-      if (type === 'quran') return !!p.input_at_quran;
-      if (type === 'wawancara') return !!p.input_at_santri;
-      if (type === 'ortu') return !!p.input_at_ortu;
+      if (type === 'quran') {
+        return !!p.input_at_quran || p.nilai_tes_quran != null || p.score_quran != null;
+      }
+      if (type === 'wawancara') {
+        return !!p.input_at_santri || p.nilai_wawancara_santri != null || !!(p.detail_wawancara?.rekomendasi);
+      }
+      if (type === 'ortu') {
+        return !!p.input_at_ortu || p.nilai_wawancara_ortu != null || !!(p.detail_cawalsan?.q1);
+      }
       return true;
     });
   };
