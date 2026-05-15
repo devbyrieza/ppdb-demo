@@ -341,7 +341,7 @@ export default function HeroSection() {
             <motion.div
               animate={shouldReduceMotion ? {} : { y: [0, -12, 0] }}
               transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-              className="absolute top-1/4 -left-4 md:-left-8 lg:-left-12 z-20"
+              className="absolute top-[8%] -left-12 md:-left-20 lg:-left-28 z-20"
               style={{ transformOrigin: "left center" }}
             >
               <div className="glass-panel flex items-center gap-3 px-4 py-3 rounded-2xl shadow-premium-lg border-amber-100">
