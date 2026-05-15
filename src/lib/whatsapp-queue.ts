@@ -834,25 +834,20 @@ export function buildMessageKonfirmasiJadwalPendaftar(
     jenisUjian: string,
     tanggal: string,
     waktu: string,
-    lokasi: string
+    lokasi: string // Parameter kept for signature compatibility
 ): string {
-    return `📅 *Jadwal Seleksi Terkonfirmasi*
+    return `📅 *Konfirmasi Pemilihan Jadwal*
 
 Assalamu'alaikum Abu/Ummu,
 
-Alhamdulillah, jadwal *${jenisUjian}* Ananda *${namaSantri}* telah berhasil dipilih.
+Jadwal *${jenisUjian}* untuk Ananda *${namaSantri}* telah berhasil disimpan ke dalam sistem:
 
-📅 *Hari/Tanggal:* ${tanggal}
+📅 *Tanggal:* ${tanggal}
 ⏰ *Waktu:* ${waktu} WIB
-📍 *Link Meet:* ${lokasi}
 
-Kami akan mengirimkan pengingat kembali beberapa saat sebelum jadwal tiba.
+Link ujian dan pesan pengingat akan dikirimkan menyusul mendekati waktu pelaksanaan.
 
-Dashboard: ${BRANDING.websiteUrl}/dashboard/pendaftar/undangan-seleksi
-
-Jazakumullahu khairan
-
----
+Jazakumullahu khairan.
 *Panitia PPDB ${BRANDING.schoolName}*`;
 }
 
@@ -935,9 +930,9 @@ export function buildMessageKonfirmasiJadwalInterviewer(
     namaSantri: string,
     tanggal: string,
     waktu: string,
-    lokasi: string,
+    lokasi: string, // Kept for signature compatibility
     jenisUjian: string,
-    inputNilaiLink?: string
+    inputNilaiLink?: string // Kept for signature compatibility
 ): string {
     const gender = (namaInterviewer || "").toLowerCase().includes("ustadzah") ? "P" : "L";
     const title = gender === "P" ? "Ustadzah" : "Ustadz";
@@ -945,39 +940,27 @@ export function buildMessageKonfirmasiJadwalInterviewer(
 
     const jenisLower = jenisUjian.toLowerCase();
     let agendaText = jenisUjian;
-    let agendaTitle = "*INFORMASI JADWAL SELEKSI BARU*";
+    let agendaTitle = "*JADWAL SELEKSI BARU MASUK*";
     if (jenisLower.includes("quran")) {
         agendaText = "Tes Al-Qur'an";
-        agendaTitle = "*INFORMASI JADWAL SELEKSI BARU*";
     } else if (jenisLower.includes("calsan") || jenisLower.includes("santri")) {
         agendaText = "Wawancara Calon Santri";
-        agendaTitle = "*INFORMASI JADWAL WAWANCARA BARU*";
     } else if (jenisLower.includes("cawalsan") || jenisLower.includes("ortu") || jenisLower.includes("orang tua")) {
         agendaText = "Wawancara Calon Orangtua/Wali Santri";
-        agendaTitle = "*INFORMASI JADWAL WAWANCARA BARU*";
     }
 
     let msg = `${agendaTitle}
 
 ${opening} ${title} *${namaInterviewer}*,
 
-Terdapat jadwal *${agendaText}* baru yang telah dipilih oleh santri berikut:
+Santri atas nama *${namaSantri}* baru saja memilih jadwal *${agendaText}* pada:
 
-📝 *Agenda:* ${agendaText}
-👤 *Nama Santri:* *${namaSantri}*
-📅 *Hari/Tanggal:* ${tanggal}
+📅 *Tanggal:* ${tanggal}
 ⏰ *Waktu:* ${waktu} WIB
-📍 *Link Meet:* ${lokasi}`;
 
-    if (inputNilaiLink) {
-        msg += `\n🔗 *Input Hasil:* ${inputNilaiLink}\n(PIN: 4 digit terakhir No. HP Ustadz/Ustadzah)`;
-    }
+Pesan pengingat beserta link meeting dan link input nilai akan dikirimkan otomatis menyusul mendekati waktu pelaksanaan.
 
-    msg += `
-
-Mohon untuk bersiap di ruangan virtual tepat waktu. Jazakumullahu khairan.
-
----
+Jazakumullahu khairan.
 *Sistem PPDB ${BRANDING.schoolName}*`;
     return msg;
 }
