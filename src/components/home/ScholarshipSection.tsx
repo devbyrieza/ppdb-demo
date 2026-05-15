@@ -33,7 +33,7 @@ export default function ScholarshipSection({ variant = "maroon" }: ScholarshipSe
     iconBg: isMaroon ? "bg-maroon-600" : "bg-teal-600",
   };
 
-  const EASE = [0.16, 1, 0.3, 1];
+  const EASE = [0.16, 1, 0.3, 1] as const;
 
   return (
     <section id="beasiswa" className="relative py-24 lg:py-32 overflow-hidden bg-white">
