@@ -131,12 +131,13 @@ export default function HeroSection() {
               <h1
                 className="leading-[1.06] tracking-[-0.03em] mx-auto lg:mx-0 max-w-2xl lg:max-w-none font-black text-balance"
                 style={{
-                  color: "var(--color-primary-700)",
                   fontSize: "clamp(2rem, 5vw + 0.75rem, 5rem)",
                 }}
               >
-                <span className="block">Mencetak Generasi</span>
-                <span className="gradient-text-teal block mt-1">
+                <span className="block" style={{ color: "var(--color-teal-700)" }}>
+                  Mencetak Generasi
+                </span>
+                <span className="block mt-1" style={{ color: "var(--color-sand-500)" }}>
                   Unggul, Cerdas, <br className="hidden sm:block" />
                   dan Berintegritas
                 </span>
