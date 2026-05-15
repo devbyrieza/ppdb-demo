@@ -59,6 +59,7 @@ export async function GET() {
             nomor_pendaftaran: true,
             jenjang: true,
             nilai_ujian: true, // Fetch scores directly from pendaftar
+            created_at: true,
           },
         },
         exam_session: { select: { title: true, created_by: true } },
@@ -228,6 +229,7 @@ export async function GET() {
           input_at_quran: scoreData.input_at_quran,
           input_at_santri: scoreData.input_at_santri,
           input_at_ortu: scoreData.input_at_ortu,
+          created_at: item.pendaftar.created_at,
         });
       }
     }

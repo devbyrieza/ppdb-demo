@@ -345,7 +345,9 @@ function InputNilaiContent() {
       if (response.ok) {
         const result = await response.json();
         const sortedData = (result.data || []).sort((a: any, b: any) => {
-          return (b.nomor_pendaftaran || "").localeCompare(a.nomor_pendaftaran || "");
+          const dateA = new Date(a.created_at || 0).getTime();
+          const dateB = new Date(b.created_at || 0).getTime();
+          return dateB - dateA;
         });
         setPeserta(sortedData);
       }
