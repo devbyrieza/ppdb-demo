@@ -514,6 +514,31 @@ function InputNilaiContent() {
     }
   };
 
+  const isParticipantFinished = (p: Peserta) => {
+    const formsNeeded = ROLE_TO_FORM_TYPES[activeRole] || [];
+    if (formsNeeded.length === 0) return false;
+    
+    // Check if ALL roles the current user is responsible for have been filled
+    return formsNeeded.every(type => {
+      if (type === 'quran') return !!p.input_at_quran;
+      if (type === 'wawancara') return !!p.input_at_santri;
+      if (type === 'ortu') return !!p.input_at_ortu;
+      return true;
+    });
+  };
+
+  const pendingPeserta = peserta.filter(p => !isParticipantFinished(p)).filter(
+    (p) =>
+      (p.nama_lengkap || "").toLowerCase().includes(search.toLowerCase()) ||
+      (p.nomor_pendaftaran || "").toLowerCase().includes(search.toLowerCase())
+  );
+  
+  const finishedPeserta = peserta.filter(p => isParticipantFinished(p)).filter(
+    (p) =>
+      (p.nama_lengkap || "").toLowerCase().includes(search.toLowerCase()) ||
+      (p.nomor_pendaftaran || "").toLowerCase().includes(search.toLowerCase())
+  );
+
   const filteredPeserta = peserta.filter(
     (p) =>
       (p.nama_lengkap || "").toLowerCase().includes(search.toLowerCase()) ||
@@ -523,6 +548,43 @@ function InputNilaiContent() {
   // ============================================================================
   // RENDER: Seleksi Al Qur'an Form
   // ============================================================================
+  const renderPesertaCard = (p: Peserta) => (
+    <div key={p.id} className="bg-white rounded-3xl sm:rounded-4xl p-5 sm:p-10 border border-secondary-100 shadow-sm shadow-primary-900/5 app-card">
+      {/* Peserta Header */}
+      <div className="flex items-center justify-between mb-6 sm:mb-8 pb-6 sm:pb-8 border-b border-ink-100/50">
+        <div className="flex items-center gap-4 sm:gap-6">
+          <div className="w-14 h-14 sm:w-20 sm:h-20 bg-ink-50 rounded-2xl sm:rounded-3xl flex items-center justify-center border border-ink-100 shrink-0 shadow-inner">
+            <User className="w-7 h-7 sm:w-10 sm:h-10 text-primary-300" />
+          </div>
+          <div>
+            <h2 className="text-lg sm:text-2xl font-black text-primary-950 font-display tracking-tight leading-tight">{toTitleCase(p.nama_lengkap)}</h2>
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-2 sm:mt-3">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl bg-primary-50 text-primary-700 text-[9px] sm:text-[10px] font-black uppercase tracking-widest border border-primary-100 shadow-xs">
+                <Hash className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> {p.nomor_pendaftaran}
+              </span>
+              <span className="inline-flex items-center px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl bg-secondary-400 text-primary-950 text-[9px] sm:text-[10px] font-black uppercase tracking-widest shadow-sm">
+                {p.jenjang}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {isParticipantFinished(p) && (
+          <div className="hidden sm:flex items-center gap-2 bg-emerald-50 text-emerald-700 px-4 py-2 rounded-xl border border-emerald-100 text-[10px] font-black uppercase tracking-widest">
+            <CheckCircle className="w-4 h-4" /> Dinilai
+          </div>
+        )}
+      </div>
+
+      {/* Forms based on roles AND active session role */}
+      <div className="space-y-4">
+        {p.roles.includes("quran") && visibleFormTypes.includes("quran") && renderQuranForm(p)}
+        {p.roles.includes("wawancara") && visibleFormTypes.includes("wawancara") && renderSantriForm(p)}
+        {p.roles.includes("ortu") && visibleFormTypes.includes("ortu") && renderOrangTuaForm(p)}
+      </div>
+    </div>
+  );
+
   const renderQuranForm = (p: Peserta) => {
     const isSaved = !!(p.detail_quran?.rekomendasi || p.nilai_tes_quran != null || p.score_quran != null);
     const isEditing = editingId === p.id + "quran";
@@ -988,35 +1050,38 @@ function InputNilaiContent() {
           <p className="text-sm font-bold text-ink-600 mt-2">Coba gunakan kata kunci pencarian yang lain.</p>
         </div>
       ) : (
-        <div className="space-y-8">
-          {filteredPeserta.map((p) => (
-            <div key={p.id} className="bg-white rounded-3xl sm:rounded-4xl p-5 sm:p-10 border border-secondary-100 shadow-sm shadow-primary-900/5 app-card">
-              {/* Peserta Header */}
-              <div className="flex items-center gap-4 sm:gap-6 mb-6 sm:mb-8 pb-6 sm:pb-8 border-b border-ink-100/50">
-                <div className="w-14 h-14 sm:w-20 sm:h-20 bg-ink-50 rounded-2xl sm:rounded-3xl flex items-center justify-center border border-ink-100 shrink-0 shadow-inner">
-                  <User className="w-7 h-7 sm:w-10 sm:h-10 text-primary-300" />
-                </div>
-                <div>
-                  <h2 className="text-lg sm:text-2xl font-black text-primary-950 font-display tracking-tight leading-tight">{toTitleCase(p.nama_lengkap)}</h2>
-                  <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-2 sm:mt-3">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl bg-primary-50 text-primary-700 text-[9px] sm:text-[10px] font-black uppercase tracking-widest border border-primary-100 shadow-xs">
-                      <Hash className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> {p.nomor_pendaftaran}
-                    </span>
-                    <span className="inline-flex items-center px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl bg-secondary-400 text-primary-950 text-[9px] sm:text-[10px] font-black uppercase tracking-widest shadow-sm">
-                      {p.jenjang}
-                    </span>
-                  </div>
-                </div>
+        <div className="space-y-12">
+          {/* Section: Pending */}
+          {pendingPeserta.length > 0 && (
+            <div className="space-y-6">
+              <div className="flex items-center gap-4 px-2">
+                <div className="h-px flex-1 bg-linear-to-r from-transparent via-secondary-200 to-transparent" />
+                <h2 className="text-[10px] font-black text-secondary-600 uppercase tracking-[0.3em] whitespace-nowrap bg-surface-50 px-4">
+                  Belum Dinilai ({pendingPeserta.length})
+                </h2>
+                <div className="h-px flex-1 bg-linear-to-r from-transparent via-secondary-200 to-transparent" />
               </div>
-
-              {/* Forms based on roles AND active session role */}
-              <div className="space-y-4">
-                {p.roles.includes("quran") && visibleFormTypes.includes("quran") && renderQuranForm(p)}
-                {p.roles.includes("wawancara") && visibleFormTypes.includes("wawancara") && renderSantriForm(p)}
-                {p.roles.includes("ortu") && visibleFormTypes.includes("ortu") && renderOrangTuaForm(p)}
+              <div className="grid grid-cols-1 gap-8">
+                {pendingPeserta.map(renderPesertaCard)}
               </div>
             </div>
-          ))}
+          )}
+
+          {/* Section: Finished */}
+          {finishedPeserta.length > 0 && (
+            <div className="space-y-6">
+              <div className="flex items-center gap-4 px-2 opacity-50">
+                <div className="h-px flex-1 bg-linear-to-r from-transparent via-ink-200 to-transparent" />
+                <h2 className="text-[10px] font-black text-ink-400 uppercase tracking-[0.3em] whitespace-nowrap bg-surface-50 px-4">
+                  Sudah Dinilai ({finishedPeserta.length})
+                </h2>
+                <div className="h-px flex-1 bg-linear-to-r from-transparent via-ink-200 to-transparent" />
+              </div>
+              <div className="grid grid-cols-1 gap-8 opacity-90">
+                {finishedPeserta.map(renderPesertaCard)}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
