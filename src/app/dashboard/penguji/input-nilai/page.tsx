@@ -344,7 +344,10 @@ function InputNilaiContent() {
       });
       if (response.ok) {
         const result = await response.json();
-        setPeserta(result.data || []);
+        const sortedData = (result.data || []).sort((a: any, b: any) => {
+          return (b.nomor_pendaftaran || "").localeCompare(a.nomor_pendaftaran || "");
+        });
+        setPeserta(sortedData);
       }
     } catch (error) {
       console.error("Error fetching peserta:", error);

@@ -362,14 +362,7 @@ export default function PengujiDashboardLayout({
             {/* Topbar Desktop */}
             <header className="hidden lg:flex items-center justify-between h-24 px-10 sticky top-0 bg-surface-50/80 backdrop-blur-md z-30 shrink-0">
               <div className="flex-1 max-w-xl">
-                <div className="relative group">
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-300 group-focus-within:text-primary-600 transition-colors" />
-                  <input
-                    type="text"
-                    placeholder="Cari data pendaftar..."
-                    className="w-full bg-white border border-surface-200 focus:border-primary-300 focus:ring-4 focus:ring-primary-500/5 rounded-[1.25rem] py-3 pl-11 pr-4 text-sm font-medium outline-none transition-all shadow-premium-sm"
-                  />
-                </div>
+                {/* Search bar removed as requested to avoid double search UI */}
               </div>
 
               <div className="flex items-center gap-6">
