@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { getAdminWhereClause } from "@/lib/utils/admin";
+import { getCache, setCache } from "@/lib/redis";
 
 async function checkAdmin() {
   const cookieStore = await cookies();
@@ -53,6 +54,15 @@ export async function GET(request: Request) {
     console.log(
       `[API] Admin Stats: ActiveTA=${where.tahun_ajaran_id || "None"}, Role=${session.role}, Where=${JSON.stringify(where)}`,
     );
+
+    // === REDIS CACHE CHECK ===
+    const cacheKey = `admin_stats_${where.tahun_ajaran_id || "all"}`;
+    const cachedStats = await getCache<any>(cacheKey);
+    if (cachedStats) {
+      console.log("⚡ [API Stats] Mengembalikan data dari Redis Cache!");
+      return NextResponse.json(cachedStats);
+    }
+    // =========================
 
     // Fetch pendaftar data with status, jenjang, and location
     const pendaftarData = await prisma.pendaftar.findMany({
@@ -393,6 +403,9 @@ export async function GET(request: Request) {
         ditolak: statusCounts.rejected || 0,
       },
     };
+
+    // Simpan ke Redis selama 60 detik (1 menit)
+    await setCache(cacheKey, stats, 60);
 
     return NextResponse.json(stats);
   } catch (error) {

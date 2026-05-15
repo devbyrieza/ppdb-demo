@@ -4,6 +4,7 @@ import type { OTPChannel } from "@/lib/notifications/multi-channel";
 import { normalizePhoneNumber } from "@/lib/validations/registration";
 import { prisma } from "@/lib/prisma";
 import crypto from "crypto";
+import { redis } from "@/lib/redis";
 
 function generateOTP(): string {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -30,6 +31,28 @@ function updateRateLimit(phone: string): void {
 
 export async function POST(request: NextRequest) {
   try {
+    // === REDIS IP RATE LIMITING (Anti-DDoS) ===
+    const ip = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "unknown_ip";
+    const rateLimitKey = `rate_limit_otp_${ip}`;
+    
+    const currentRequests = await redis.incr(rateLimitKey);
+    if (currentRequests === 1) {
+      await redis.expire(rateLimitKey, 3600); // Reset dalam 1 jam
+    }
+    
+    // LIMIT: 20 request per IP per Jam
+    if (currentRequests > 20) {
+      console.log(`🛡️ [Security] Blocked IP ${ip} dari pengiriman OTP (Rate Limit Exceeded: ${currentRequests}/20)`);
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Terlalu banyak percobaan pendaftaran dari jaringan Anda. Harap tunggu 1 jam.",
+        },
+        { status: 429 },
+      );
+    }
+    // ==========================================
+
     const body = await request.json();
     const {
       nik,

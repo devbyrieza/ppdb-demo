@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { getCache, setCache } from "@/lib/redis";
 
 export async function GET(request: NextRequest) {
   try {
@@ -14,6 +15,15 @@ export async function GET(request: NextRequest) {
     if (!pendaftarId) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
+
+    // === REDIS CACHE CHECK ===
+    const cacheKey = `pengumuman_${pendaftarId}`;
+    const cachedData = await getCache<any>(cacheKey);
+    if (cachedData) {
+      console.log(`⚡ [API Pengumuman] Mengembalikan data dari Redis Cache untuk ${pendaftarId}`);
+      return NextResponse.json(cachedData);
+    }
+    // =========================
 
     // Attempt to fetch from Pengumuman table
     const pengumuman = await prisma.pengumuman.findUnique({
@@ -37,19 +47,22 @@ export async function GET(request: NextRequest) {
           ? "ditolak"
           : "cadangan";
 
-      return NextResponse.json({
+      const responseData = {
         data: {
           id: pengumuman?.id || pendaftarId,
           status_kelulusan: statusMapped,
           catatan: pengumuman?.catatan || "Hasil seleksi telah diumumkan. Silakan cek detail di atas.",
           tanggal_pengumuman: pengumuman?.published_at?.toISOString() || pendaftar.updated_at.toISOString(),
         },
-      });
+      };
+      
+      await setCache(cacheKey, responseData, 300); // Cache 5 menit
+      return NextResponse.json(responseData);
     }
 
     // Fallback to Pengumuman table if exists and published (for those not in final statuses yet)
     if (pengumuman && pengumuman.is_published) {
-      return NextResponse.json({
+      const responseData = {
         data: {
           id: pengumuman.id,
           status_kelulusan:
@@ -61,9 +74,13 @@ export async function GET(request: NextRequest) {
           catatan: pengumuman.catatan,
           tanggal_pengumuman: pengumuman.published_at?.toISOString() || pengumuman.created_at.toISOString(),
         },
-      });
+      };
+
+      await setCache(cacheKey, responseData, 300); // Cache 5 menit
+      return NextResponse.json(responseData);
     }
 
+    await setCache(cacheKey, { data: null }, 300); // Cache response kosong
     return NextResponse.json({ data: null });
   } catch (error) {
     console.error("GET /api/pendaftar/pengumuman error:", error);

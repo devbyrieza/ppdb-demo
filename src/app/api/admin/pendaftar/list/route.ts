@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 import { getAdminWhereClause } from "@/lib/utils/admin";
+import { getCache, setCache } from "@/lib/redis";
 
 export async function GET(request: NextRequest) {
   try {
@@ -112,6 +113,8 @@ export async function GET(request: NextRequest) {
         sudah_ujian: ["tested", "passed", "announced", "accepted", "enrolled"],
         hasil_ujian: ["passed", "announced", "accepted", "enrolled"],
         diterima: ["accepted", "passed"],
+        cadangan: ["cadangan"],
+        ditolak: ["rejected", "docs_rejected"],
         belum_daftar_ulang: ["accepted"],
         sudah_daftar_ulang: ["enrolled"],
       };
@@ -138,61 +141,73 @@ export async function GET(request: NextRequest) {
     if (kelurahan) where.kelurahan = kelurahan;
 
     // Execute query with transaction for count and data
-    const [total, data] = await prisma.$transaction([
-      prisma.pendaftar.count({ where }),
-      prisma.pendaftar.findMany({
-        where,
-        select: {
-          id: true,
-          nomor_pendaftaran: true,
-          nik: true,
-          nama_lengkap: true,
-          jenis_kelamin: true,
-          jenjang: true,
-          tanggal_lahir: true,
-          no_hp: true,
-          email: true,
-          status_pendaftaran: true,
-          created_at: true,
-          tahun_ajaran: {
-            select: { nama: true },
-          },
-          pembayaran: {
-            select: { status_pembayaran: true },
-          },
-          dokumen: {
-            select: { jenis_dokumen: true, is_verified: true, catatan: true },
-          },
-          nilai_ujian: {
-            select: {
-              id: true,
-              nilai_total: true,
-              score_akademik: true,
-              score_kepribadian: true,
-              score_kesiapan: true,
-              score_quran: true,
-              score_wawancara: true,
-              nilai_wawancara_santri: true,
-              nilai_wawancara_ortu: true,
-              status_kelulusan: true,
-              catatan_kelulusan: true,
-              updated_at: true,
-            },
-          },
-          pengumuman: {
-            select: { status_kelulusan: true },
-          },
-          whatsapp_logs: {
-            orderBy: { created_at: "desc" },
-            take: 1,
-            select: { status: true, updated_at: true, error_message: true },
+    // Execute query with transaction for count and data
+
+    // === REDIS CACHE CHECK ===
+    const cacheKey = `admin_pendaftar_list_${tahunAjaran}_${page}_${limit}_${search}_${status}_${jenjang}_${jenisKelamin}_${provinsi}_${kabupaten}_${kecamatan}_${kelurahan}`;
+    const cachedData = await getCache<any>(cacheKey);
+    if (cachedData) {
+      console.log(`⚡ [API Pendaftar List] Mengembalikan data dari Redis Cache!`);
+      return NextResponse.json(cachedData);
+    }
+    // =========================
+
+    const total = await prisma.pendaftar.count({ where });
+
+    const data = await prisma.pendaftar.findMany({
+      where,
+      select: {
+        id: true,
+        nomor_pendaftaran: true,
+        nik: true,
+        nama_lengkap: true,
+        jenis_kelamin: true,
+        jenjang: true,
+        tanggal_lahir: true,
+        no_hp: true,
+        email: true,
+        status_pendaftaran: true,
+        created_at: true,
+        tahun_ajaran: {
+          select: {
+            nama: true,
           },
         },
-        orderBy: { created_at: "desc" },
-        skip,
-        take: limit,
-      }),
-    ]);
+        pembayaran: {
+          select: { status_pembayaran: true },
+        },
+        dokumen: {
+          select: { jenis_dokumen: true, is_verified: true, catatan: true },
+        },
+        nilai_ujian: {
+          select: {
+            id: true,
+            nilai_total: true,
+            score_akademik: true,
+            score_kepribadian: true,
+            score_kesiapan: true,
+            score_quran: true,
+            score_wawancara: true,
+            nilai_wawancara_santri: true,
+            nilai_wawancara_ortu: true,
+            status_kelulusan: true,
+            catatan_kelulusan: true,
+            updated_at: true,
+          },
+        },
+        pengumuman: {
+          select: { status_kelulusan: true },
+        },
+        whatsapp_logs: {
+          orderBy: { created_at: "desc" },
+          take: 1,
+          select: { status: true, updated_at: true, error_message: true },
+        },
+      },
+      orderBy: { created_at: "desc" },
+      skip,
+      take: limit,
+    });
 
     // Transform data: Master Merge for NilaiUjian and document status
     const isEmpty = (v: any) => {
@@ -282,11 +297,9 @@ export async function GET(request: NextRequest) {
       };
     });
 
-    console.log(
-      `[API] Pendaftar List: Role=${session.role}, Count=${total}, Limit=${limit}, Where=${JSON.stringify(where)}`,
-    );
+    // Hapus console.log verbose di sini
 
-    return NextResponse.json({
+    const responseData = {
       data: transformedData || [],
       pagination: {
         page,
@@ -294,7 +307,12 @@ export async function GET(request: NextRequest) {
         total,
         totalPages: Math.ceil(total / limit),
       },
-    });
+    };
+
+    // Simpan ke Redis selama 60 detik
+    await setCache(cacheKey, responseData, 60);
+
+    return NextResponse.json(responseData);
   } catch (error) {
     console.error("Error in admin pendaftar list API:", error);
     return NextResponse.json(
