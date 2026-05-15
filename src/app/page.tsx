@@ -13,6 +13,7 @@ import HeroSection from "@/components/home/HeroSection";
 import StatsSection from "@/components/home/StatsSection";
 import AboutSection from "@/components/home/AboutSection";
 import ProgramSection from "@/components/home/ProgramSection";
+import ScholarshipSection from "@/components/home/ScholarshipSection";
 import FeaturesSection from "@/components/home/FeaturesSection";
 import TeachersSection from "@/components/home/TeachersSection";
 import BoardSection from "@/components/home/BoardSection";
@@ -55,6 +56,12 @@ export default function HomePage() {
         <section id="program" aria-label="Program Unggulan">
           <ScrollAnimation delay={0.12} direction="up" duration={0.7}>
             <ProgramSection />
+          </ScrollAnimation>
+        </section>
+
+        <section id="beasiswa" aria-label="Program Beasiswa">
+          <ScrollAnimation delay={0.1} direction="none" duration={0.8}>
+            <ScholarshipSection variant="teal" />
           </ScrollAnimation>
         </section>
 
