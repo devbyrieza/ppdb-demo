@@ -65,15 +65,37 @@ export async function recalculateNilaiUjian(pendaftarId: string) {
 
   if (allNilai.length === 0) return null;
 
-  const isEmpty = (v: any) => (v == null || v === "" || (typeof v === "object" && Object.keys(v).length === 0));
+  const isEffectivelyEmpty = (v: any) => {
+    if (v == null || v === "") return true;
+    if (typeof v === "object") {
+      if (Array.isArray(v)) return v.length === 0;
+      const keys = Object.keys(v);
+      if (keys.length === 0) return true;
+      // Check if all values inside are also null/empty
+      return keys.every((key) => v[key] == null || v[key] === "");
+    }
+    return false;
+  };
 
   // 2. MASTER MERGE: Gabungkan semua field dari catatan lama ke yang baru jika ada yang kosong
   const master: any = {};
   allNilai.forEach((record) => {
     Object.entries(record).forEach(([key, val]) => {
-      if (["id", "created_at", "updated_at", "pendaftar_id"].includes(key)) return;
-      if (!isEmpty(val) && isEmpty(master[key])) {
-        master[key] = val;
+      if (["id", "created_at", "updated_at", "pendaftar_id"].includes(key))
+        return;
+
+      if (!isEffectivelyEmpty(val)) {
+        if (typeof val === "object" && val !== null && !Array.isArray(val)) {
+          // DEEP MERGE for JSON fields
+          if (!master[key]) master[key] = {};
+          Object.entries(val).forEach(([subK, subV]) => {
+            if (subV != null && subV !== "" && (master[key][subK] == null || master[key][subK] === "")) {
+              master[key][subK] = subV;
+            }
+          });
+        } else if (isEffectivelyEmpty(master[key])) {
+          master[key] = val;
+        }
       }
     });
   });
@@ -98,7 +120,7 @@ export async function recalculateNilaiUjian(pendaftarId: string) {
   if (ws != null && ws <= 10 && ws > 0) ws = normalizeSantriScore(ws);
 
   let wo = null;
-  const calculatedWo = master.detail_cawalsan && !isEmpty(master.detail_cawalsan) ? calculateOrangTuaScore(master.detail_cawalsan) : 0;
+  const calculatedWo = master.detail_cawalsan && !isEffectivelyEmpty(master.detail_cawalsan) ? calculateOrangTuaScore(master.detail_cawalsan) : 0;
   const manualWo = master.nilai_wawancara_ortu != null ? Number(master.nilai_wawancara_ortu) : null;
   
   // Prefer calculated if it's > 0, otherwise fallback to manual

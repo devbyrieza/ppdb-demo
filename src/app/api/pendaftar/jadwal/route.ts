@@ -239,6 +239,10 @@ export async function POST(request: Request) {
         },
       });
 
+      // 3. Trigger immediate merge/recalculation to absorb any existing scores
+      const { recalculateNilaiUjian } = await import("@/lib/scoring");
+      await recalculateNilaiUjian(session.id);
+
       return { jadwal, pengujiFields };
     });
 
