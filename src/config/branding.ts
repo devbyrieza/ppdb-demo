@@ -5,7 +5,7 @@ export const BRANDING = {
     process.env.NEXT_PUBLIC_SCHOOL_SHORT_NAME || "Al Fath",
   schoolTagline:
     process.env.NEXT_PUBLIC_SCHOOL_TAGLINE ||
-    "Mencetak Generasi Rabbani, Unggul, dan Berintegritas",
+    "Mencetak Generasi Unggul, Cerdas, dan Berintegritas",
   schoolNetwork:
     process.env.NEXT_PUBLIC_SCHOOL_NETWORK || "Perpaduan Kurikulum Nasional dan Khas Al-Fath",
   primaryColor: process.env.NEXT_PUBLIC_PRIMARY_COLOR || "#0D6E6E", // Teal Emerald
