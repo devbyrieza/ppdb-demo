@@ -128,6 +128,21 @@ export default function JadwalPengujiPage() {
   >(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
+  const getDurationFromTitle = (title: string) => {
+    const t = (title || "").toLowerCase();
+    if (t.includes("quran") || t.includes("qur'an")) return 30;
+    return 60;
+  };
+
+  const calculateEndTime = (startTime: string, title: string) => {
+    if (!startTime) return "";
+    const duration = getDurationFromTitle(title);
+    const [h, m] = startTime.split(":").map(Number);
+    const date = new Date();
+    date.setHours(h, m + duration, 0, 0);
+    return `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+  };
+
   // Common State
   const [message, setMessage] = useState<{
     type: "success" | "error";
@@ -277,14 +292,44 @@ export default function JadwalPengujiPage() {
     if (activeTab === "slots") fetchSlots();
   }, [activeTab]);
 
-  // Auto-set session title from role when role is known
+  // Auto-set session title and duration from role when role is known
   useEffect(() => {
     const autoTitle = ROLE_TO_SESSION_TITLE[activeRole];
     if (autoTitle) {
-      setSlotForm((prev) => ({ ...prev, title: autoTitle }));
+      setSlotForm((prev) => ({
+        ...prev,
+        title: autoTitle,
+        end_time: calculateEndTime(prev.start_time, autoTitle),
+      }));
       setBulkForm((prev) => ({ ...prev, title: autoTitle }));
     }
   }, [activeRole]);
+
+  // Update end_time when title changes (for admins or manual selection)
+  useEffect(() => {
+    if (slotForm.title) {
+      setSlotForm((prev) => ({
+        ...prev,
+        end_time: calculateEndTime(prev.start_time, prev.title),
+      }));
+    }
+  }, [slotForm.title]);
+
+  useEffect(() => {
+    if (bulkForm.title && isBulkModalOpen) {
+      setBulkForm((prev) => {
+        const newDaySlots = { ...prev.daySlots };
+        Object.keys(newDaySlots).forEach((day) => {
+          const dayId = Number(day);
+          newDaySlots[dayId] = newDaySlots[dayId].map((slot) => ({
+            ...slot,
+            end: calculateEndTime(slot.start, prev.title),
+          }));
+        });
+        return { ...prev, daySlots: newDaySlots };
+      });
+    }
+  }, [bulkForm.title, isBulkModalOpen]);
 
   // Initialize active day's slots if empty when modal opens or activeDay changes
   useEffect(() => {
@@ -294,12 +339,17 @@ export default function JadwalPengujiPage() {
           ...prev,
           daySlots: {
             ...prev.daySlots,
-            [activeDay]: [{ start: "08:00", end: "09:00" }],
+            [activeDay]: [
+              {
+                start: "08:00",
+                end: calculateEndTime("08:00", prev.title),
+              },
+            ],
           },
         }));
       }
     }
-  }, [isBulkModalOpen, activeDay]);
+  }, [isBulkModalOpen, activeDay, activeRole]);
 
   // --- Handlers ---
 
@@ -417,7 +467,13 @@ export default function JadwalPengujiPage() {
       ...bulkForm,
       daySlots: {
         ...bulkForm.daySlots,
-        [activeDay]: [...currentSlots, { start: "16:00", end: "17:00" }],
+        [activeDay]: [
+          ...currentSlots,
+          {
+            start: "16:00",
+            end: calculateEndTime("16:00", bulkForm.title),
+          },
+        ],
       },
     });
   };
@@ -452,7 +508,12 @@ export default function JadwalPengujiPage() {
             ...prev.daySlots,
             [day]: prev.daySlots[activeDay]
               ? JSON.parse(JSON.stringify(prev.daySlots[activeDay]))
-              : [{ start: "08:00", end: "09:00" }],
+              : [
+                  {
+                    start: "08:00",
+                    end: calculateEndTime("08:00", prev.title),
+                  },
+                ],
           },
         }));
       } else {
@@ -1761,9 +1822,17 @@ export default function JadwalPengujiPage() {
                     required
                     className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none font-bold text-primary-950"
                     value={editForm.start_time}
-                    onChange={(e) =>
-                      setEditForm({ ...editForm, start_time: e.target.value })
-                    }
+                    onChange={(e) => {
+                      const newStart = e.target.value;
+                      setEditForm({
+                        ...editForm,
+                        start_time: newStart,
+                        end_time: calculateEndTime(
+                          newStart,
+                          editingSlot?.title || "",
+                        ),
+                      });
+                    }}
                   />
                 </div>
                 <div>
@@ -1937,24 +2006,10 @@ export default function JadwalPengujiPage() {
                     value={slotForm.start_time}
                     onChange={(e) => {
                       const newStart = e.target.value;
-                      let newEnd = slotForm.end_time;
-
-                      if (newStart) {
-                        const [hours, minutes] = newStart
-                          .split(":")
-                          .map(Number);
-                        const date = new Date();
-                        date.setHours(hours + 1, minutes);
-                        newEnd =
-                          date.getHours().toString().padStart(2, "0") +
-                          ":" +
-                          date.getMinutes().toString().padStart(2, "0");
-                      }
-
                       setSlotForm({
                         ...slotForm,
                         start_time: newStart,
-                        end_time: newEnd,
+                        end_time: calculateEndTime(newStart, slotForm.title),
                       });
                     }}
                   />
@@ -1975,7 +2030,7 @@ export default function JadwalPengujiPage() {
                 </div>
               </div>
               <p className="text-[10px] text-ink-300 italic -mt-4">
-                ⏱ Durasi maksimal per sesi adalah 60 menit.
+                ⏱ Durasi sesi: {getDurationFromTitle(slotForm.title)} menit.
               </p>
 
               {/* Alerts */}
@@ -2360,18 +2415,10 @@ export default function JadwalPengujiPage() {
                                 ...(bulkForm.daySlots[activeDay] || []),
                               ];
                               newSlots[index].start = newStart;
-
-                              if (newStart) {
-                                const [hours, minutes] = newStart
-                                  .split(":")
-                                  .map(Number);
-                                const date = new Date();
-                                date.setHours(hours + 1, minutes);
-                                newSlots[index].end =
-                                  date.getHours().toString().padStart(2, "0") +
-                                  ":" +
-                                  date.getMinutes().toString().padStart(2, "0");
-                              }
+                              newSlots[index].end = calculateEndTime(
+                                newStart,
+                                bulkForm.title,
+                              );
 
                               setBulkForm({
                                 ...bulkForm,
