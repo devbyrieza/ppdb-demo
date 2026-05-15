@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   Calendar,
   Clock,
@@ -190,6 +190,35 @@ export default function JadwalPengujiPage() {
     daySlots: {} as Record<number, { start: string; end: string }[]>,
     notes: "",
   });
+
+  // Grouping Logic
+  const displaySlots = useMemo(() => {
+    const groups: Record<string, any> = {};
+
+    slots.forEach((slot) => {
+      const key = `${slot.title}|${slot.start_time}|${slot.end_time}|${slot.location}`;
+      if (!groups[key]) {
+        groups[key] = {
+          ...slot,
+          ids: [slot.id],
+          totalBookings: slot._count?.bookings || 0,
+          totalQuota: slot.quota,
+        };
+      } else {
+        groups[key].ids.push(slot.id);
+        groups[key].totalBookings += slot._count?.bookings || 0;
+        groups[key].totalQuota += slot.quota;
+      }
+    });
+
+    // Only show slots that have at least one available space
+    return Object.values(groups)
+      .filter((g: any) => g.totalBookings < g.totalQuota)
+      .sort(
+        (a: any, b: any) =>
+          new Date(a.start_time).getTime() - new Date(b.start_time).getTime(),
+      );
+  }, [slots]);
 
   // --- Fetchers ---
 
@@ -534,21 +563,25 @@ export default function JadwalPengujiPage() {
     }
   };
 
-  const toggleSelectSlot = (id: string) => {
+  const toggleSelectSlot = (ids: string[]) => {
     setSelectedSlotIds((prev) => {
       const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
+      const allSelected = ids.every((id) => next.has(id));
+      if (allSelected) {
+        ids.forEach((id) => next.delete(id));
+      } else {
+        ids.forEach((id) => next.add(id));
+      }
       return next;
     });
   };
 
   const toggleSelectAll = () => {
-    const availableSlots = slots.filter((s) => (s._count?.bookings || 0) === 0);
-    if (selectedSlotIds.size === availableSlots.length) {
+    if (selectedSlotIds.size === displaySlots.reduce((acc, s: any) => acc + s.ids.length, 0)) {
       setSelectedSlotIds(new Set());
     } else {
-      setSelectedSlotIds(new Set(availableSlots.map((s) => s.id)));
+      const allIds = displaySlots.flatMap((s: any) => s.ids);
+      setSelectedSlotIds(new Set(allIds));
     }
   };
 
@@ -560,18 +593,19 @@ export default function JadwalPengujiPage() {
 
   // Quick-select: pilih semua slot dengan jam mulai yang sama
   const selectByTime = (startHHMM: string) => {
-    const matching = slots.filter((s) => {
+    const matchingGroups = displaySlots.filter((s: any) => {
       const d = new Date(s.start_time);
       const hhmm = `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
       return hhmm === startHHMM;
     });
-    const matchingIds = new Set(matching.map((s) => s.id));
-    // Kalau semua sudah terpilih → deselect, kalau belum → select semua
-    const allSelected = matching.every((s) => selectedSlotIds.has(s.id));
+    
+    const allIds = matchingGroups.flatMap((g: any) => g.ids);
+    const allSelected = allIds.every((id) => selectedSlotIds.has(id));
+
     setSelectedSlotIds((prev) => {
       const next = new Set(prev);
-      matching.forEach((s) =>
-        allSelected ? next.delete(s.id) : next.add(s.id),
+      allIds.forEach((id) =>
+        allSelected ? next.delete(id) : next.add(id),
       );
       return next;
     });
@@ -745,19 +779,19 @@ export default function JadwalPengujiPage() {
     }
   };
 
-  const handleDeleteSlot = async (id: string, count: number) => {
+  const handleDeleteGroup = async (ids: string[], count: number) => {
     if (count > 0) {
       Swal.fire(
         "Gagal!",
-        "Tidak dapat menghapus sesi yang sudah ada pendaftar!",
+        "Terdapat sesi dalam grup ini yang sudah ada pendaftar!",
         "error",
       );
       return;
     }
 
     const { isConfirmed } = await Swal.fire({
-      title: "Hapus Sesi?",
-      text: "Apakah Anda yakin ingin menghapus sesi waktu ini?",
+      title: "Hapus Grup Sesi?",
+      text: `Apakah Anda yakin ingin menghapus ${ids.length} sesi waktu dalam grup ini?`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
@@ -768,18 +802,27 @@ export default function JadwalPengujiPage() {
 
     if (!isConfirmed) return;
 
-    try {
-      const response = await fetch(`/api/exam-sessions?id=${id}`, {
-        method: "DELETE",
-      });
-      if (response.ok) {
-        setMessage({ type: "success", text: "Sesi berhasil dihapus" });
-        fetchSlots();
-      } else {
-        const res = await response.json();
-        throw new Error(res.error || "Gagal menghapus");
-      }
-    } catch (error: any) {}
+    Swal.fire({
+      title: "Menghapus...",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    let successCount = 0;
+    for (const id of ids) {
+      try {
+        const response = await fetch(`/api/exam-sessions?id=${id}`, {
+          method: "DELETE",
+        });
+        if (response.ok) successCount++;
+      } catch (error: any) {}
+    }
+
+    Swal.close();
+    if (successCount > 0) {
+      setMessage({ type: "success", text: `${successCount} sesi berhasil dihapus` });
+      fetchSlots();
+    }
   };
 
   const handleCompleteExam = async (jadwalId: string) => {
@@ -1324,24 +1367,24 @@ export default function JadwalPengujiPage() {
             <div className="text-center py-12">
               <Loader2 className="w-8 h-8 animate-spin mx-auto text-primary-500" />
             </div>
-          ) : slots.filter(s => (s._count?.bookings || 0) === 0).length === 0 ? (
+          ) : displaySlots.length === 0 ? (
             <div className="text-center py-12 text-secondary-500">
               <p>Belum ada sesi waktu tersedia yang dibuat.</p>
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {slots.filter(s => (s._count?.bookings || 0) === 0).map((slot) => (
+              {displaySlots.map((slot: any) => (
                 <div
-                  key={slot.id}
+                  key={slot.ids.join(",")}
                   onClick={
-                    isSelectMode ? () => toggleSelectSlot(slot.id) : undefined
+                    isSelectMode ? () => toggleSelectSlot(slot.ids) : undefined
                   }
                   className={`bg-white rounded-[2rem] p-6 border shadow-sm transition-all group relative app-card ${
                     isSelectMode
                       ? "cursor-pointer hover:border-primary-300"
                       : "hover:shadow-xl hover:shadow-primary-600/5"
                   } ${
-                    selectedSlotIds.has(slot.id)
+                    slot.ids.every((id: string) => selectedSlotIds.has(id))
                       ? "border-primary-400 ring-2 ring-primary-200 shadow-primary-100"
                       : "border-secondary-100"
                   }`}
@@ -1349,7 +1392,7 @@ export default function JadwalPengujiPage() {
                   {/* Checkbox overlay in select mode */}
                   {isSelectMode && (
                     <div className="absolute top-5 left-5 z-10">
-                      {selectedSlotIds.has(slot.id) ? (
+                      {slot.ids.every((id: string) => selectedSlotIds.has(id)) ? (
                         <CheckSquare className="w-6 h-6 text-primary-600" />
                       ) : (
                         <Square className="w-6 h-6 text-ink-300" />
@@ -1368,7 +1411,7 @@ export default function JadwalPengujiPage() {
                     </button>
                     <button
                       onClick={() =>
-                        handleDeleteSlot(slot.id, slot._count?.bookings || 0)
+                        handleDeleteGroup(slot.ids, slot.totalBookings)
                       }
                       className="p-2.5 text-ink-300 hover:text-red-600 hover:bg-red-50 rounded-full transition-all active:scale-90"
                       title="Hapus Sesi"
@@ -1387,10 +1430,11 @@ export default function JadwalPengujiPage() {
                       </h4>
                       <div className="flex items-center gap-1.5 mt-1">
                         <div
-                          className={`w-2 h-2 rounded-full ${slot._count?.bookings ? "bg-secondary-500 animate-pulse" : "bg-green-500"}`}
+                          className={`w-2 h-2 rounded-full ${slot.totalBookings >= slot.totalQuota ? "bg-secondary-500 animate-pulse" : "bg-green-500"}`}
                         />
                         <span className="text-[10px] font-black text-ink-400 uppercase tracking-widest">
-                          {slot._count?.bookings ? "Terisi" : "Tersedia"}
+                          {slot.totalBookings >= slot.totalQuota ? "Terisi" : "Tersedia"}
+                          {slot.totalQuota > 1 && ` (${slot.totalQuota - slot.totalBookings}/${slot.totalQuota})`}
                         </span>
                       </div>
                     </div>
