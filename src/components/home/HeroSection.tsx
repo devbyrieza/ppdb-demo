@@ -12,6 +12,7 @@ import {
   Sparkles,
   Globe,
   CheckCircle2,
+  Gift,
 } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { motion, useReducedMotion } from "framer-motion";
@@ -335,6 +336,29 @@ export default function HeroSection() {
                 aria-hidden="true"
               />
             </div>
+
+            {/* Floating Card: Beasiswa — NEW highlight */}
+            <motion.div
+              animate={shouldReduceMotion ? {} : { y: [0, -12, 0] }}
+              transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+              className="absolute top-1/4 -left-4 md:-left-8 lg:-left-12 z-20"
+              style={{ transformOrigin: "left center" }}
+            >
+              <div className="glass-panel flex items-center gap-3 px-4 py-3 rounded-2xl shadow-premium-lg border-amber-100">
+                <div className="icon-box w-11 h-11 rounded-xl bg-amber-500 text-white flex items-center justify-center">
+                  <Gift className="w-5 h-5" />
+                </div>
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-wider mb-0.5 text-amber-600">Beasiswa</p>
+                  <p className="text-sm font-black leading-tight text-[var(--color-primary-900)]">
+                    Dhuafa Berprestasi
+                  </p>
+                  <p className="text-[10px] font-semibold mt-0.5 text-[var(--color-ink-500)]">
+                    Tersedia 10 Kuota
+                  </p>
+                </div>
+              </div>
+            </motion.div>
 
             {/* Floating Card: Tersedia — FIX #2 md breakpoint */}
             <motion.div
