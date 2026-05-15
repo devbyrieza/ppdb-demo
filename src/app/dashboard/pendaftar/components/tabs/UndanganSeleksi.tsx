@@ -577,7 +577,7 @@ export default function UndanganSeleksiTab() {
               // Filter out slots for categories already booked
               const bookedCategories = data.grupB.booked.map((j) => j.category);
               const filteredSlots = data.grupB.availableSlots.filter(
-                (slot) => !bookedCategories.includes(slot.category),
+                (slot) => !bookedCategories.includes(slot.category) && !slot.isFull,
               );
 
               if (filteredSlots.length === 0) {

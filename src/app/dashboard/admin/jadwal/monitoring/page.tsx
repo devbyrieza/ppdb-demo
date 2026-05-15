@@ -46,10 +46,53 @@ export default function MonitoringJadwalPage() {
     const [filterJenjang, setFilterJenjang] = useState("ALL");
     const [viewMode, setViewMode] = useState<"flat" | "grouped" | "santri">("flat");
     const [showPast, setShowPast] = useState(false);
+    const [conflicts, setConflicts] = useState<any[]>([]);
 
     useEffect(() => {
         fetchMonitoringData();
     }, []);
+
+    const findConflicts = (data: Schedule[]) => {
+        const examinerTimeMap: Record<string, { student: string; pendaftarId: string; scheduleId: string }[]> = {};
+        const newConflicts: any[] = [];
+
+        data.forEach(s => {
+            const timeKey = new Date(s.sesi.start).getTime().toString();
+            
+            const roles = [
+                { type: 'quran', name: s.ustadz.quran, label: 'Al-Qur\'an' },
+                { type: 'santri', name: s.ustadz.santri, label: 'W. Santri' },
+                { type: 'ortu', name: s.ustadz.ortu, label: 'W. Ortu' }
+            ];
+
+            roles.forEach(role => {
+                if (role.name && role.name !== "-") {
+                    const key = `${role.name}_${timeKey}`;
+                    if (!examinerTimeMap[key]) {
+                        examinerTimeMap[key] = [];
+                    }
+                    examinerTimeMap[key].push({
+                        student: s.pendaftar.nama,
+                        pendaftarId: s.pendaftar.nomor,
+                        scheduleId: s.id
+                    });
+                }
+            });
+        });
+
+        Object.entries(examinerTimeMap).forEach(([key, items]) => {
+            if (items.length > 1) {
+                const [name, time] = key.split('_');
+                newConflicts.push({
+                    name,
+                    time: parseInt(time),
+                    items
+                });
+            }
+        });
+
+        setConflicts(newConflicts);
+    };
 
     const fetchMonitoringData = async () => {
         try {
@@ -57,7 +100,9 @@ export default function MonitoringJadwalPage() {
             const res = await fetch("/api/admin/jadwal/monitoring");
             if (res.ok) {
                 const json = await res.json();
-                setSchedules(json.data || []);
+                const data = json.data || [];
+                setSchedules(data);
+                findConflicts(data);
             }
         } catch (error) {
             console.error("Failed to fetch monitoring data", error);
@@ -173,6 +218,42 @@ export default function MonitoringJadwalPage() {
                     </div>
                 </div>
             </div>
+
+            {/* Conflict Warning */}
+            {conflicts.length > 0 && (
+                <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-6 md:p-8 animate-pulse shadow-lg shadow-red-500/10">
+                    <div className="flex items-start gap-5">
+                        <div className="w-14 h-14 bg-red-100 rounded-2xl flex items-center justify-center text-red-600 shrink-0 border border-red-200">
+                            <XCircle className="w-8 h-8" />
+                        </div>
+                        <div className="flex-1">
+                            <h2 className="text-xl font-black text-red-900 mb-2 uppercase tracking-tight">Terdeteksi Konflik Penjadwalan!</h2>
+                            <p className="text-red-700 font-bold text-sm leading-relaxed mb-4">Ditemukan {conflicts.length} penguji yang memiliki lebih dari satu jadwal di waktu yang sama.</p>
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                                {conflicts.slice(0, 6).map((c, i) => (
+                                    <div key={i} className="bg-white/80 backdrop-blur-sm border border-red-200 rounded-xl p-4 shadow-sm">
+                                        <p className="font-black text-red-800 text-xs uppercase mb-2 border-b border-red-100 pb-2">{c.name}</p>
+                                        <div className="space-y-1.5">
+                                            {c.items.map((it: any, idx: number) => (
+                                                <div key={idx} className="flex items-center gap-2 text-[10px] font-bold text-slate-600">
+                                                    <div className="w-1.5 h-1.5 rounded-full bg-red-400" />
+                                                    {it.student} ({it.pendaftarId})
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <p className="text-[10px] font-mono font-black text-red-400 mt-3 flex items-center gap-1">
+                                            <Clock className="w-3 h-3" />
+                                            {new Date(c.time).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })} WIB
+                                        </p>
+                                    </div>
+                                ))}
+                            </div>
+                            {conflicts.length > 6 && <p className="text-red-400 text-[10px] font-black mt-4 uppercase tracking-widest">+ {conflicts.length - 6} Konflik Lainnya</p>}
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Top Statistics - Split Wawancara */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
