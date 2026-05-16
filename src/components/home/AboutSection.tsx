@@ -29,7 +29,7 @@ const misi = [
   },
   {
     label: "Dakwah",
-    text: "Menanamkan jiwa dakwah melalui Bimbingan & Pengawasan Melekat tanpa kekerasan dan luka pengasuhan.",
+    text: "Menanamkan jiwa dakwah melalui keteladanan para pendidik serta bimbingan tanpa kekerasan dan luka pengasuhan.",
   },
 ];
 
@@ -106,8 +106,7 @@ export default function AboutSection() {
               <span className="font-semibold text-primary-800">
                 Bukan sekadar tempat belajar agama.
               </span>{" "}
-              Sistem pembentukan karakter berbasis Lingkungan, Kebiasaan,
-              Komunitas, dan Spiritualitas — untuk mencetak generasi yang
+              Sistem pembentukan karakter yang mengedepankan keteladanan para pendidik serta mendidik tanpa kekerasan dan luka pengasuhan — untuk mencetak generasi yang
               memiliki pribadi Unggul, Cerdas, dan Berintegritas.
             </motion.p>
           </motion.div>

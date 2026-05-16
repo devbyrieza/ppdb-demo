@@ -151,18 +151,17 @@ export default function HeroSection() {
               initial="hidden"
               animate={animate}
               transition={{ delay: 0.3 }}
-              className="text-base lg:text-[1.075rem] leading-[1.85] max-w-[38rem] mx-auto lg:mx-0 text-center lg:text-left text-pretty"
+              className="text-base lg:text-[1.075rem] leading-[1.85] max-w-[42rem] mx-auto lg:mx-0 text-center lg:text-left text-pretty"
               style={{ color: "var(--color-ink-600)", fontWeight: 450 }}
             >
               Bukan sekadar tempat belajar — sebuah sistem pembentukan karakter
-              yang memadukan{" "}
+              yang{" "}
               <strong
                 className="font-bold"
                 style={{ color: "var(--color-primary-700)" }}
               >
-                Intensitas Tahfidz Al-Qur'an, Ilmu Syar'i, dan Kepemimpinan
-              </strong>{" "}
-              dalam satu lingkungan pesantren modern.
+                mengedepankan keteladanan para pendidik serta mendidik tanpa kekerasan dan luka pengasuhan
+              </strong>, memadukan Intensitas Tahfidz Al-Qur'an, Ilmu Syar'i, dan Kepemimpinan.
             </motion.p>
 
             {/* Tagline Divider */}
