@@ -876,7 +876,7 @@ function InputNilaiContent() {
               </div>
               <div>
                 <label className="block text-[10px] sm:text-xs font-black text-ink-800 uppercase tracking-widest mb-2 sm:mb-3">Asal Daerah *</label>
-                <input type="text" value={cawalsanForm.asal || ""} onChange={(e) => setOrangTuaForm({ ...cawalsanForm, asal: e.target.value })} className="w-full px-4 sm:px-5 py-3.5 sm:py-4 bg-ink-50/30 border-2 border-ink-100 rounded-xl sm:rounded-2xl focus:border-secondary-500 outline-none font-black text-primary-950 transition-all placeholder:text-ink-400" placeholder="Contoh: Sukabumi, Jakarta" />
+                <input type="text" value={cawalsanForm.asal || ""} onChange={(e) => setOrangTuaForm({ ...cawalsanForm, asal: e.target.value })} className="w-full px-4 sm:px-5 py-3.5 sm:py-4 bg-ink-50/30 border-2 border-ink-100 rounded-xl sm:rounded-2xl focus:border-secondary-500 outline-none font-black text-primary-950 transition-all placeholder:text-ink-400" placeholder="Contoh: Sukabumi, Jawa Barat" />
               </div>
             </div>
 
