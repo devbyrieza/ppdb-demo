@@ -401,10 +401,10 @@ export default function HeroSection() {
                 </div>
                 <div>
                   <p className="text-sm font-black leading-tight text-[var(--color-primary-900)]">
-                    Jaringan Global
+                    Bekerjasama dengan
                   </p>
                   <p className="text-[10px] font-semibold mt-0.5 text-[var(--color-ink-500)]">
-                    {BRANDING.schoolShortName}
+                    Universitas Islam Terkemuka di 3 Benua
                   </p>
                 </div>
               </div>
