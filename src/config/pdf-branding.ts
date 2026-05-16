@@ -7,7 +7,7 @@ export const PDF_BRANDING = {
   // Institution Labels
   institution: {
     name: "PONDOK PESANTREN AL-FATH",
-    subtitle: "Sistem Penerimaan Santri Baru Modern",
+    subtitle: "Islamic Boarding School Managed by Al Andalus IIBS",
     committee: "PANITIA PENERIMAAN SANTRI BARU",
     academic_year: "2026-2027",
     address: "Jl. KH Mama Oyon, Cihaur, Kec. Cicantayan, Kabupaten Sukabumi, Jawa Barat 43155",
