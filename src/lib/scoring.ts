@@ -79,14 +79,16 @@ export async function recalculateNilaiUjian(pendaftarId: string) {
 
   // 2. MASTER MERGE: Gabungkan semua field dari catatan lama ke yang baru jika ada yang kosong
   const master: any = {};
+  const jsonFields = ["nilai_tes_tertulis", "detail_akademik", "detail_kepribadian", "detail_kesiapan", "detail_quran", "detail_wawancara", "detail_cawalsan"];
+
   allNilai.forEach((record) => {
     Object.entries(record).forEach(([key, val]) => {
       if (["id", "created_at", "updated_at", "pendaftar_id"].includes(key))
         return;
 
       if (!isEffectivelyEmpty(val)) {
-        if (typeof val === "object" && val !== null && !Array.isArray(val)) {
-          // DEEP MERGE for JSON fields
+        if (jsonFields.includes(key) && typeof val === "object" && val !== null && !Array.isArray(val)) {
+          // DEEP MERGE only for known JSON fields to avoid breaking Decimal objects
           if (!master[key]) master[key] = {};
           Object.entries(val).forEach(([subK, subV]) => {
             if (subV != null && subV !== "" && (master[key][subK] == null || master[key][subK] === "")) {
@@ -199,9 +201,19 @@ export async function recalculateNilaiUjian(pendaftarId: string) {
     where: { id: allNilai[0].id },
     data: {
       ...master,
-      score_akademik: ak, score_quran: quran, score_kepribadian: kp, score_kesiapan: ks,
-      nilai_wawancara_santri: ws, nilai_wawancara_ortu: wo, score_wawancara: wawancaraTotal,
-      total_score: totalScore, nilai_total: totalScore, status_kelulusan: status, updated_at: new Date(),
+      score_akademik: ak, 
+      nilai_tes_tertulis_total: ak, // Override Decimal field
+      score_quran: quran, 
+      nilai_tes_quran: quran, // Override Decimal field
+      score_kepribadian: kp, 
+      score_kesiapan: ks,
+      nilai_wawancara_santri: ws, // Override Decimal field
+      nilai_wawancara_ortu: wo, // Override Decimal field
+      score_wawancara: wawancaraTotal,
+      total_score: totalScore, 
+      nilai_total: totalScore, // Override Decimal field
+      status_kelulusan: status, 
+      updated_at: new Date(),
     },
   });
 
