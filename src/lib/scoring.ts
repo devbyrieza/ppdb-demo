@@ -154,7 +154,7 @@ export async function recalculateNilaiUjian(pendaftarId: string) {
       include: { orang_tua: true },
     });
 
-    if (pendaftar && !["enrolled", "re_registered"].includes(pendaftar.status_pendaftaran)) {
+    if (pendaftar && !["enrolled", "re_registered", "accepted"].includes(pendaftar.status_pendaftaran)) {
       let nextStatus = status === "DITERIMA" ? "accepted" : (status === "DITOLAK" ? "rejected" : "announced");
       let displayLabel = status === "DITERIMA" ? "Diterima" : (status === "DITOLAK" ? "Ditolak" : "Cadangan");
 
