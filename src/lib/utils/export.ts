@@ -15,6 +15,21 @@ export const exportToExcel = (
   sheetName: string = "Data",
 ) => {
   const worksheet = XLSX.utils.json_to_sheet(data);
+
+  // Set professional auto-fit column widths to prevent truncation
+  if (data && data.length > 0) {
+    const keys = Object.keys(data[0]);
+    const wscols = keys.map((key) => {
+      const maxLength = data.reduce((max, row) => {
+        const val = row[key] !== undefined && row[key] !== null ? row[key].toString() : "";
+        return Math.max(max, val.length);
+      }, key.length);
+      // Extra safety margin of 4 characters and minimum width of 12
+      return { wch: Math.max(maxLength + 4, 12) };
+    });
+    worksheet["!cols"] = wscols;
+  }
+
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
   XLSX.writeFile(workbook, `${fileName}.xlsx`);
