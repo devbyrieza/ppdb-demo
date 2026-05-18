@@ -15,6 +15,7 @@ import {
   ChevronUp,
   ExternalLink,
   FileText,
+  Users,
 } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 import Alert from "@/components/ui/Alert";
@@ -34,6 +35,18 @@ interface RekapDaftarUlang {
   sisa_tagihan: number;
   last_updated: string;
   pembayaran_list?: any[];
+  no_hp?: string;
+  email?: string;
+  ortu?: {
+    nama_ayah: string;
+    pekerjaan_ayah: string;
+    penghasilan_ayah: string;
+    no_hp_ayah: string;
+    nama_ibu: string;
+    pekerjaan_ibu: string;
+    penghasilan_ibu: string;
+    no_hp_ibu: string;
+  } | null;
 }
 
 interface RekapPendaftaran {
@@ -283,6 +296,16 @@ export default function KeuanganPage() {
           "Nama Santri",
           "Nomor Pendaftaran",
           "Jenjang",
+          "No. HP Santri",
+          "Email Santri",
+          "Nama Ayah",
+          "Pekerjaan Ayah",
+          "Penghasilan Ayah",
+          "No. HP Ayah",
+          "Nama Ibu",
+          "Pekerjaan Ibu",
+          "Penghasilan Ibu",
+          "No. HP Ibu",
           "Status Lulus",
           "Total Bayar",
           "Status Bayar",
@@ -303,6 +326,16 @@ export default function KeuanganPage() {
           i.nama.toUpperCase(),
           i.nomor_pendaftaran,
           (i as any).jenjang || "-",
+          i.no_hp || "-",
+          i.email || "-",
+          i.ortu?.nama_ayah || "-",
+          i.ortu?.pekerjaan_ayah || "-",
+          i.ortu?.penghasilan_ayah || "-",
+          i.ortu?.no_hp_ayah || "-",
+          i.ortu?.nama_ibu || "-",
+          i.ortu?.pekerjaan_ibu || "-",
+          i.ortu?.penghasilan_ibu || "-",
+          i.ortu?.no_hp_ibu || "-",
           i.status_kelulusan,
           i.total_bayar,
           i.tipe_cicilan.replace(/_/g, " "),
@@ -339,16 +372,25 @@ export default function KeuanganPage() {
       } else {
         const data = filteredDaftarUlang.map((i) => ({
           No: i.no,
-          "Nama Santri": i.nama,
-          "Nomor Pendaftaran": i.nomor_pendaftaran,
-          "Status Kelulusan": i.status_kelulusan,
+          "Nama Santri": i.nama.toUpperCase(),
+          "No. Pendaftaran": i.nomor_pendaftaran,
+          "Jenjang": (i as any).jenjang || "-",
+          "No. HP Santri": i.no_hp || "-",
+          "Email Santri": i.email || "-",
+          "Nama Ayah": i.ortu?.nama_ayah || "-",
+          "Pekerjaan Ayah": i.ortu?.pekerjaan_ayah || "-",
+          "Penghasilan Ayah": i.ortu?.penghasilan_ayah || "-",
+          "No. HP Ayah": i.ortu?.no_hp_ayah || "-",
+          "Nama Ibu": i.ortu?.nama_ibu || "-",
+          "Pekerjaan Ibu": i.ortu?.pekerjaan_ibu || "-",
+          "Penghasilan Ibu": i.ortu?.penghasilan_ibu || "-",
+          "No. HP Ibu": i.ortu?.no_hp_ibu || "-",
+          "Status Seleksi": i.status_kelulusan,
           "Total Bayar (Rp)": i.total_bayar,
           "Status Bayar": i.tipe_cicilan === "LUNAS" ? "Lunas" : (i.tipe_cicilan === "BELUM_BAYAR" ? "Belum Bayar" : "Cicilan"),
           "Alasan Keringanan": i.keringanan_reason || "-",
           "Sisa Tagihan (Rp)": i.sisa_tagihan,
-          "Terakhir Update": new Date(i.last_updated).toLocaleDateString(
-            "id-ID",
-          ),
+          "Tgl Update": new Date(i.last_updated).toLocaleDateString("id-ID"),
         }));
         const headers = Object.keys(data[0]);
         const rows = data.map((item) => Object.values(item));
@@ -706,118 +748,183 @@ export default function KeuanganPage() {
                           {expandedStudentId === row.id && (
                             <tr className="bg-slate-50/50">
                               <td colSpan={8} className="px-6 py-4 border-t border-slate-100">
-                                <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden p-4 space-y-4">
-                                  <div className="flex justify-between items-center border-b border-slate-100 pb-3">
-                                    <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
-                                      <FileText className="w-4 h-4 text-primary-600" />
-                                      Riwayat Pembayaran Daftar Ulang - {row.nama}
-                                    </h3>
-                                    <span className="text-xs text-slate-500">
-                                      Nomor Pendaftaran: <strong>{row.nomor_pendaftaran}</strong>
-                                    </span>
+                                <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden p-5">
+                                  
+                                  {/* Data Orang Tua / Keluarga */}
+                                  <div className="xl:col-span-1 space-y-4 border-r border-slate-100 pr-0 xl:pr-6">
+                                    <div className="border-b border-slate-100 pb-2 flex items-center justify-between">
+                                      <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
+                                        <Users className="w-4 h-4 text-primary-600" />
+                                        Data Keluarga / Orang Tua
+                                      </h3>
+                                    </div>
+                                    
+                                    {row.ortu ? (
+                                      <div className="space-y-3.5 text-xs">
+                                        {/* Data Ayah */}
+                                        <div className="bg-slate-50/70 p-3 rounded-lg border border-slate-100">
+                                          <h4 className="font-bold text-slate-700 border-b border-slate-200/60 pb-1 mb-2 flex justify-between items-center">
+                                            <span>Data Ayah</span>
+                                            <span className="text-[9px] bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded font-black uppercase tracking-tight">Wali Utama</span>
+                                          </h4>
+                                          <div className="space-y-1.5">
+                                            <div className="flex justify-between"><span className="text-slate-400">Nama:</span> <strong className="text-slate-800 text-right">{row.ortu.nama_ayah || "-"}</strong></div>
+                                            <div className="flex justify-between"><span className="text-slate-400">Pekerjaan:</span> <strong className="text-slate-700 text-right">{row.ortu.pekerjaan_ayah || "-"}</strong></div>
+                                            <div className="flex justify-between"><span className="text-slate-400">Penghasilan:</span> <strong className="text-emerald-700 text-right">{row.ortu.penghasilan_ayah || "-"}</strong></div>
+                                            <div className="flex justify-between items-center"><span className="text-slate-400">No. HP Ayah:</span>{" "}
+                                              {row.ortu.no_hp_ayah && row.ortu.no_hp_ayah !== "-" ? (
+                                                <a href={`https://wa.me/${row.ortu.no_hp_ayah.replace(/[^0-9]/g, "")}`} target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:text-primary-700 hover:underline font-bold inline-flex items-center gap-1">
+                                                  {row.ortu.no_hp_ayah}
+                                                  <ExternalLink className="w-3 h-3" />
+                                                </a>
+                                              ) : <strong className="text-slate-700">-</strong>}
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                        {/* Data Ibu */}
+                                        <div className="bg-slate-50/70 p-3 rounded-lg border border-slate-100">
+                                          <h4 className="font-bold text-slate-700 border-b border-slate-200/60 pb-1 mb-2">Data Ibu</h4>
+                                          <div className="space-y-1.5">
+                                            <div className="flex justify-between"><span className="text-slate-400">Nama:</span> <strong className="text-slate-800 text-right">{row.ortu.nama_ibu || "-"}</strong></div>
+                                            <div className="flex justify-between"><span className="text-slate-400">Pekerjaan:</span> <strong className="text-slate-700 text-right">{row.ortu.pekerjaan_ibu || "-"}</strong></div>
+                                            <div className="flex justify-between"><span className="text-slate-400">Penghasilan:</span> <strong className="text-emerald-700 text-right">{row.ortu.penghasilan_ibu || "-"}</strong></div>
+                                            <div className="flex justify-between items-center"><span className="text-slate-400">No. HP Ibu:</span>{" "}
+                                              {row.ortu.no_hp_ibu && row.ortu.no_hp_ibu !== "-" ? (
+                                                <a href={`https://wa.me/${row.ortu.no_hp_ibu.replace(/[^0-9]/g, "")}`} target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:text-primary-700 hover:underline font-bold inline-flex items-center gap-1">
+                                                  {row.ortu.no_hp_ibu}
+                                                  <ExternalLink className="w-3 h-3" />
+                                                </a>
+                                              ) : <strong className="text-slate-700">-</strong>}
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                        {/* Kontak Santri */}
+                                        <div className="text-[11px] text-slate-500 bg-slate-50/50 p-2.5 rounded-lg border border-slate-100 space-y-1">
+                                          <div className="flex justify-between"><span className="text-slate-400">No. HP Santri:</span> <strong className="text-slate-700">{row.no_hp || "-"}</strong></div>
+                                          <div className="flex justify-between"><span className="text-slate-400">Email Santri:</span> <strong className="text-slate-700 break-all text-right">{row.email || "-"}</strong></div>
+                                        </div>
+                                      </div>
+                                    ) : (
+                                      <div className="text-center py-6 text-slate-400 italic bg-slate-50 rounded-lg text-xs">
+                                        Data orang tua belum diisi.
+                                      </div>
+                                    )}
                                   </div>
 
-                                  {row.pembayaran_list && row.pembayaran_list.length > 0 ? (
-                                    <div className="overflow-x-auto">
-                                      <table className="w-full text-xs text-left">
-                                        <thead className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
-                                          <tr>
-                                            <th className="px-4 py-2">Cicilan Ke</th>
-                                            <th className="px-4 py-2">Jumlah</th>
-                                            <th className="px-4 py-2">Tanggal Upload</th>
-                                            <th className="px-4 py-2">Metode</th>
-                                            <th className="px-4 py-2">Bukti Transfer</th>
-                                            <th className="px-4 py-2">Status</th>
-                                            <th className="px-4 py-2">Catatan / Keringanan</th>
-                                          </tr>
-                                        </thead>
-                                        <tbody className="divide-y divide-slate-100">
-                                          {row.pembayaran_list
-                                            .sort((a: any, b: any) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
-                                            .map((pay: any, payIndex: number) => (
-                                              <tr key={pay.id || payIndex} className="hover:bg-slate-50/50">
-                                                <td className="px-4 py-2.5 font-bold text-slate-700">
-                                                  {pay.cicilan_ke ? `Cicilan Ke-${pay.cicilan_ke}` : "Daftar Ulang"}
-                                                </td>
-                                                <td className="px-4 py-2.5 font-mono font-medium text-slate-800">
-                                                  {formatCurrency(Number(pay.jumlah))}
-                                                </td>
-                                                <td className="px-4 py-2.5 text-slate-500">
-                                                  {new Date(pay.created_at).toLocaleDateString("id-ID", {
-                                                    day: "2-digit",
-                                                    month: "long",
-                                                    year: "numeric",
-                                                    hour: "2-digit",
-                                                    minute: "2-digit"
-                                                  })}
-                                                </td>
-                                                <td className="px-4 py-2.5 text-slate-600 capitalize font-medium">
-                                                  {pay.metode_pembayaran}
-                                                </td>
-                                                <td className="px-4 py-2.5">
-                                                  {pay.bukti_transfer_path ? (
-                                                    <a
-                                                      href={`/api/files/${pay.bukti_transfer_path}`}
-                                                      target="_blank"
-                                                      rel="noopener noreferrer"
-                                                      className="inline-flex items-center gap-1 text-primary-600 hover:text-primary-700 font-bold hover:underline"
-                                                      onClick={(e) => e.stopPropagation()}
+                                  {/* Riwayat Pembayaran */}
+                                  <div className="xl:col-span-2 space-y-4">
+                                    <div className="flex justify-between items-center border-b border-slate-100 pb-2">
+                                      <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
+                                        <FileText className="w-4 h-4 text-primary-600" />
+                                        Riwayat Pembayaran Daftar Ulang - {row.nama}
+                                      </h3>
+                                      <span className="text-[11px] text-slate-500">
+                                        No. Pendaftaran: <strong>{row.nomor_pendaftaran}</strong>
+                                      </span>
+                                    </div>
+
+                                    {row.pembayaran_list && row.pembayaran_list.length > 0 ? (
+                                      <div className="overflow-x-auto">
+                                        <table className="w-full text-xs text-left">
+                                          <thead className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
+                                            <tr>
+                                              <th className="px-3 py-2">Cicilan Ke</th>
+                                              <th className="px-3 py-2">Jumlah</th>
+                                              <th className="px-3 py-2">Tanggal Upload</th>
+                                              <th className="px-3 py-2">Metode</th>
+                                              <th className="px-3 py-2">Bukti</th>
+                                              <th className="px-3 py-2">Status</th>
+                                              <th className="px-3 py-2">Catatan / Keringanan</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody className="divide-y divide-slate-100">
+                                            {row.pembayaran_list
+                                              .sort((a: any, b: any) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
+                                              .map((pay: any, payIndex: number) => (
+                                                <tr key={pay.id || payIndex} className="hover:bg-slate-50/50">
+                                                  <td className="px-3 py-2.5 font-bold text-slate-700">
+                                                    {pay.cicilan_ke ? `Cicilan Ke-${pay.cicilan_ke}` : "Daftar Ulang"}
+                                                  </td>
+                                                  <td className="px-3 py-2.5 font-mono font-medium text-slate-800">
+                                                    {formatCurrency(Number(pay.jumlah))}
+                                                  </td>
+                                                  <td className="px-3 py-2.5 text-slate-500">
+                                                    {new Date(pay.created_at).toLocaleDateString("id-ID", {
+                                                      day: "2-digit",
+                                                      month: "short",
+                                                      year: "numeric"
+                                                    })}
+                                                  </td>
+                                                  <td className="px-3 py-2.5 text-slate-600 capitalize font-medium">
+                                                    {pay.metode_pembayaran}
+                                                  </td>
+                                                  <td className="px-3 py-2.5">
+                                                    {pay.bukti_transfer_path ? (
+                                                      <a
+                                                        href={`/api/files/${pay.bukti_transfer_path}`}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="inline-flex items-center gap-0.5 text-primary-600 hover:text-primary-700 font-bold hover:underline"
+                                                        onClick={(e) => e.stopPropagation()}
+                                                      >
+                                                        <ExternalLink className="w-3 h-3" />
+                                                        Lihat
+                                                      </a>
+                                                    ) : (
+                                                      <span className="text-slate-400 italic">Belum</span>
+                                                    )}
+                                                  </td>
+                                                  <td className="px-3 py-2.5">
+                                                    <span
+                                                      className={`px-1.5 py-0.5 rounded-full text-[9px] font-bold border ${
+                                                        pay.status_pembayaran === "verified"
+                                                          ? "bg-emerald-50 text-emerald-700 border-emerald-100"
+                                                          : pay.status_pembayaran === "rejected"
+                                                            ? "bg-red-50 text-red-600 border-red-100"
+                                                            : "bg-amber-50 text-amber-700 border-amber-100"
+                                                      }`}
                                                     >
-                                                      <ExternalLink className="w-3.5 h-3.5" />
-                                                      Lihat Bukti
-                                                    </a>
-                                                  ) : (
-                                                    <span className="text-slate-400 italic">Belum upload</span>
-                                                  )}
-                                                </td>
-                                                <td className="px-4 py-2.5">
-                                                  <span
-                                                    className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${
-                                                      pay.status_pembayaran === "verified"
-                                                        ? "bg-emerald-50 text-emerald-700 border-emerald-100"
+                                                      {pay.status_pembayaran === "verified"
+                                                        ? "Verified"
                                                         : pay.status_pembayaran === "rejected"
-                                                          ? "bg-red-50 text-red-600 border-red-100"
-                                                          : "bg-amber-50 text-amber-700 border-amber-100"
-                                                    }`}
-                                                  >
-                                                    {pay.status_pembayaran === "verified"
-                                                      ? "Terverifikasi"
-                                                      : pay.status_pembayaran === "rejected"
-                                                        ? "Ditolak"
-                                                        : "Pending / Menunggu"}
-                                                  </span>
-                                                </td>
-                                                <td className="px-4 py-2.5 space-y-1">
-                                                  {pay.keringanan_reason && (
-                                                    <div className="text-[10px] text-slate-600 bg-secondary-50/50 p-1.5 rounded border border-secondary-100">
-                                                      <span className="font-bold text-secondary-800 uppercase tracking-tighter">Keringanan:</span>{" "}
-                                                      {pay.keringanan_reason}
-                                                    </div>
-                                                  )}
-                                                  {pay.catatan_verifikasi && (
-                                                    <div className={`text-[10px] p-1.5 rounded border ${
-                                                      pay.status_pembayaran === "rejected"
-                                                        ? "bg-red-50/50 text-red-700 border-red-100"
-                                                        : "bg-slate-50 text-slate-600 border-slate-100"
-                                                    }`}>
-                                                      <span className="font-bold uppercase tracking-tighter">Catatan Verifikasi:</span>{" "}
-                                                      {pay.catatan_verifikasi}
-                                                    </div>
-                                                  )}
-                                                  {!pay.keringanan_reason && !pay.catatan_verifikasi && (
-                                                    <span className="text-slate-400 italic">-</span>
-                                                  )}
-                                                </td>
-                                              </tr>
-                                            ))}
-                                        </tbody>
-                                      </table>
-                                    </div>
-                                  ) : (
-                                    <div className="text-center py-6 text-slate-400 italic bg-slate-50 rounded-lg">
-                                      Belum ada data pembayaran daftar ulang yang diupload.
-                                    </div>
-                                  )}
+                                                          ? "Ditolak"
+                                                          : "Pending"}
+                                                    </span>
+                                                  </td>
+                                                  <td className="px-3 py-2.5 space-y-1 max-w-[200px]">
+                                                    {pay.keringanan_reason && (
+                                                      <div className="text-[9px] text-slate-600 bg-secondary-50/50 p-1 rounded border border-secondary-100">
+                                                        <span className="font-bold text-secondary-800 uppercase tracking-tighter">Keringanan:</span>{" "}
+                                                        {pay.keringanan_reason}
+                                                      </div>
+                                                    )}
+                                                    {pay.catatan_verifikasi && (
+                                                      <div className={`text-[9px] p-1 rounded border ${
+                                                        pay.status_pembayaran === "rejected"
+                                                          ? "bg-red-50/50 text-red-700 border-red-100"
+                                                          : "bg-slate-50 text-slate-600 border-slate-100"
+                                                      }`}>
+                                                        <span className="font-bold uppercase tracking-tighter">Catatan:</span>{" "}
+                                                        {pay.catatan_verifikasi}
+                                                      </div>
+                                                    )}
+                                                    {!pay.keringanan_reason && !pay.catatan_verifikasi && (
+                                                      <span className="text-slate-400 italic">-</span>
+                                                    )}
+                                                  </td>
+                                                </tr>
+                                              ))}
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    ) : (
+                                      <div className="text-center py-8 text-slate-400 italic bg-slate-50 rounded-lg text-xs">
+                                        Belum ada data pembayaran daftar ulang yang diupload.
+                                      </div>
+                                    )}
+                                  </div>
                                 </div>
                               </td>
                             </tr>

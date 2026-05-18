@@ -37,10 +37,25 @@ export async function GET(request: NextRequest) {
       select: {
         id: true,
         nomor_pendaftaran: true,
+        nama_lengkap: true,
         jenjang: true,
+        no_hp: true,
+        email: true,
         updated_at: true,
         nilai_ujian: {
           select: { status_kelulusan: true },
+        },
+        orang_tua: {
+          select: {
+            nama_ayah: true,
+            pekerjaan_ayah: true,
+            penghasilan_ayah: true,
+            no_hp_ayah: true,
+            nama_ibu: true,
+            pekerjaan_ibu: true,
+            penghasilan_ibu: true,
+            no_hp_ibu: true,
+          },
         },
         pembayaran: {
           where: {
@@ -89,8 +104,8 @@ export async function GET(request: NextRequest) {
           new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime(),
       )[0];
       const lastUpdate = lastPayment
-        ? lastPayment.updated_at
-        : student.updated_at;
+          ? lastPayment.updated_at
+          : student.updated_at;
 
       // Collect reasons
       const reasons = verifiedPayments
@@ -111,6 +126,18 @@ export async function GET(request: NextRequest) {
         sisa_tagihan: Math.max(0, 8500000 - totalBayar),
         last_updated: lastUpdate,
         pembayaran_list: student.pembayaran, // Pass all payments to the frontend
+        no_hp: student.no_hp || "-",
+        email: student.email || "-",
+        ortu: student.orang_tua ? {
+          nama_ayah: student.orang_tua.nama_ayah || "-",
+          pekerjaan_ayah: student.orang_tua.pekerjaan_ayah || "-",
+          penghasilan_ayah: student.orang_tua.penghasilan_ayah || "-",
+          no_hp_ayah: student.orang_tua.no_hp_ayah || "-",
+          nama_ibu: student.orang_tua.nama_ibu || "-",
+          pekerjaan_ibu: student.orang_tua.pekerjaan_ibu || "-",
+          penghasilan_ibu: student.orang_tua.penghasilan_ibu || "-",
+          no_hp_ibu: student.orang_tua.no_hp_ibu || "-",
+        } : null,
       };
     });
 
