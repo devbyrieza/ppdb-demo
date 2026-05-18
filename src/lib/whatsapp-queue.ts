@@ -287,6 +287,36 @@ async function isNumberBlocked(phone: string): Promise<boolean> {
 // MAIN: Enqueue WhatsApp Message
 // ============================================================================
 
+let isFlushing = false;
+
+export async function autoFlushWhatsappQueue(): Promise<void> {
+    if (isFlushing) {
+        console.log("🔄 [Queue] autoFlush already running, skipping parallel execution");
+        return;
+    }
+
+    isFlushing = true;
+    try {
+        let count = 0;
+        while (count < 50) {
+            const result = await processWhatsappQueue();
+            if (!result.processed) {
+                break;
+            }
+            if (result.status === "blocked" || result.reason?.includes("Limit") || result.reason?.includes("Cooldown")) {
+                break;
+            }
+            count++;
+            await new Promise((resolve) => setTimeout(resolve, 500));
+        }
+        console.log(`✅ [Queue] autoFlush finished. Processed ${count} messages.`);
+    } catch (err) {
+        console.error("❌ [Queue] autoFlush error:", err);
+    } finally {
+        isFlushing = false;
+    }
+}
+
 /**
  * Enqueue a WhatsApp notification with all Layer 1 checks.
  * Does NOT send immediately — the cron worker will process the queue.
@@ -326,6 +356,11 @@ export async function enqueueWhatsapp(
 
     console.log(
         `📥 [Enqueue] ${jenisNotif} for ${pendaftarId} queued as ${log.id}`
+    );
+
+    // Trigger auto-flush in the background
+    autoFlushWhatsappQueue().catch((err) =>
+        console.error("Failed to run autoFlushWhatsappQueue asynchronously:", err)
     );
 
     return { queued: true, logId: log.id };
