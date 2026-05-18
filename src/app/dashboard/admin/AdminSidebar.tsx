@@ -78,6 +78,9 @@ interface AdminSidebarProps {
   adminName: string;
   userId?: string;
   availableRoles?: string[];
+  unverifiedPaymentsCount?: number;
+  unverifiedDocsCount?: number;
+  pendingDataRequestsCount?: number;
 }
 
 /**
@@ -90,6 +93,9 @@ export default function AdminSidebar({
   adminName,
   userId,
   availableRoles,
+  unverifiedPaymentsCount = 0,
+  unverifiedDocsCount = 0,
+  pendingDataRequestsCount = 0,
 }: AdminSidebarProps) {
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -97,9 +103,15 @@ export default function AdminSidebar({
 
   const rawMenuItems = userRole ? getMenuItemsForRole(userRole) : [];
   const menuItems = rawMenuItems.map((item) => {
+    // Dynamic counts fetched in Server-Side Layout.tsx and passed here
     let badgeCount = 0;
-    if (item.name.includes("Pembayaran")) badgeCount = 2;
-    if (item.name.includes("Verifikasi")) badgeCount = 5;
+    if (item.name === "Verifikasi Pembayaran") {
+      badgeCount = unverifiedPaymentsCount;
+    } else if (item.name === "Verifikasi Dokumen") {
+      badgeCount = unverifiedDocsCount;
+    } else if (item.name === "Perubahan Data" || item.name.includes("Perubahan") || item.name.includes("Edit")) {
+      badgeCount = pendingDataRequestsCount;
+    }
 
     return {
       ...item,
