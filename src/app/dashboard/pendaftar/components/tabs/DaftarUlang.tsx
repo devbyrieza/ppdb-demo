@@ -245,13 +245,123 @@ export default function DaftarUlangTab() {
         <div className="absolute top-0 right-0 p-4 opacity-10">
           <CheckCircle className="w-32 h-32" />
         </div>
-        <h1 className="text-3xl font-black mb-2 relative z-10">
+        <h1 className="text-3xl font-black mb-2 relative z-10 text-white">
           Daftar Ulang Santri Baru
         </h1>
         <p className="text-secondary-100 relative z-10 text-lg font-medium">
           Tahap akhir administrasi penerimaan santri baru
         </p>
       </div>
+
+      {/* Dashboard Status Daftar Ulang */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {/* Card 1: Status */}
+        <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between">
+          <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">
+            Status Administrasi
+          </span>
+          <div className="flex items-center gap-2 mt-2">
+            <span
+              className={`px-3 py-1.5 rounded-full text-xs font-black border ${
+                totalPaid === 0
+                  ? "bg-slate-100 text-slate-700 border-slate-200"
+                  : "bg-primary-100 text-primary-700 border-primary-200"
+              }`}
+            >
+              {totalPaid === 0 ? "BELUM BAYAR" : "CICILAN AKTIF"}
+            </span>
+          </div>
+          <p className="text-[10px] text-slate-400 mt-3 italic">
+            * Silakan ikuti instruksi pembayaran di bawah
+          </p>
+        </div>
+
+        {/* Card 2: Sudah Dibayar */}
+        <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between">
+          <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">
+            Sudah Dibayarkan
+          </span>
+          <span className="text-2xl font-black text-emerald-600 mt-2">
+            {formatCurrency(totalPaid)}
+          </span>
+          <p className="text-[10px] text-slate-400 mt-3 font-medium">
+            Biaya Masuk: Rp 9.800.000
+          </p>
+        </div>
+
+        {/* Card 3: Sisa Tagihan */}
+        <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between">
+          <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">
+            Sisa Tagihan
+          </span>
+          <span className="text-2xl font-black text-rose-600 mt-2">
+            {formatCurrency(9800000 - totalPaid)}
+          </span>
+          <p className="text-[10px] text-slate-400 mt-3 font-medium">
+            Wajib lunas sebelum Juli 2026
+          </p>
+        </div>
+      </div>
+
+      {/* Riwayat Pembayaran */}
+      {paymentHistory.length > 0 && (
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+          <h3 className="font-black text-slate-900 mb-4 flex items-center gap-2 text-base">
+            <History className="w-5 h-5 text-slate-400" /> Riwayat Pembayaran Daftar Ulang Anda
+          </h3>
+          <div className="space-y-3">
+            {paymentHistory.map((p, i) => (
+              <div
+                key={i}
+                className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-100 gap-3"
+              >
+                <div>
+                  <div className="flex items-center gap-2">
+                    <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">
+                      {p.jumlah >= 9800000 ? 'Pelunasan' : `Cicilan ke-${p.cicilan_ke || '?'}`}
+                    </p>
+                    {p.keringanan_reason && (
+                      <span className="text-[9px] bg-secondary-100 text-secondary-700 border border-secondary-200 px-1.5 py-0.5 rounded-full font-black">
+                        Keringanan
+                      </span>
+                    )}
+                  </div>
+                  <p className="font-black text-slate-900 text-lg mt-0.5">{formatCurrency(Number(p.jumlah))}</p>
+                  {p.catatan && p.status_pembayaran === "rejected" && (
+                    <p className="text-xs text-rose-600 mt-1 font-semibold bg-rose-50 p-2 rounded-lg border border-rose-100">
+                      Alasan Ditolak: {p.catatan}
+                    </p>
+                  )}
+                </div>
+                <div className="sm:text-right flex sm:flex-col justify-between items-center sm:items-end gap-1">
+                  <p className="text-[10px] text-slate-400 font-medium">
+                    {new Date(p.created_at).toLocaleDateString('id-ID', {
+                      day: 'numeric',
+                      month: 'long',
+                      year: 'numeric',
+                    })}
+                  </p>
+                  <span
+                    className={`text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border ${
+                      p.status_pembayaran === "verified"
+                        ? "bg-emerald-100 text-emerald-700 border-emerald-200"
+                        : p.status_pembayaran === "rejected"
+                        ? "bg-rose-100 text-rose-700 border-rose-200"
+                        : "bg-amber-100 text-amber-700 border-amber-200 animate-pulse"
+                    }`}
+                  >
+                    {p.status_pembayaran === "verified"
+                      ? "✓ Verified"
+                      : p.status_pembayaran === "rejected"
+                      ? "✗ Ditolak"
+                      : "⏰ Pending"}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Info Tagihan */}
       <div className="grid md:grid-cols-2 gap-6">
