@@ -45,11 +45,18 @@ export async function GET(request: NextRequest) {
         pembayaran: {
           where: {
             jenis_pembayaran: "DAFTAR_ULANG",
-            status_pembayaran: "verified", // Only count verified payments
           },
           select: {
+            id: true,
             jumlah: true,
+            status_pembayaran: true,
+            metode_pembayaran: true,
+            bukti_transfer_path: true,
+            bukti_transfer_filename: true,
+            catatan_verifikasi: true,
             keringanan_reason: true,
+            cicilan_ke: true,
+            created_at: true,
             updated_at: true,
           },
         },
@@ -59,8 +66,11 @@ export async function GET(request: NextRequest) {
 
     // 3. Transform Data
     const rekapData = students.map((student: any, index: number) => {
-      // Calculate Total Paid for Daftar Ulang
-      const totalBayar = student.pembayaran.reduce(
+      // Calculate Total Paid for Daftar Ulang (only verified payments)
+      const verifiedPayments = student.pembayaran.filter(
+        (p: any) => p.status_pembayaran === "verified",
+      );
+      const totalBayar = verifiedPayments.reduce(
         (sum: number, p: any) => sum + Number(p.jumlah),
         0,
       );
@@ -83,7 +93,7 @@ export async function GET(request: NextRequest) {
         : student.updated_at;
 
       // Collect reasons
-      const reasons = student.pembayaran
+      const reasons = verifiedPayments
         .map((p: any) => p.keringanan_reason)
         .filter((r: any) => !!r);
       const keringanan_reason = reasons.length > 0 ? reasons.join(" | ") : null;
@@ -100,6 +110,7 @@ export async function GET(request: NextRequest) {
         keringanan_reason,
         sisa_tagihan: Math.max(0, 8500000 - totalBayar),
         last_updated: lastUpdate,
+        pembayaran_list: student.pembayaran, // Pass all payments to the frontend
       };
     });
 
