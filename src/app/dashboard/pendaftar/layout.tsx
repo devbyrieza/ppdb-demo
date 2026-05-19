@@ -49,6 +49,7 @@ export default function DashboardLayout({
   const [statusProses, setStatusProses] = useState<StatusProses>("draft");
   const [nomorPendaftaran, setNomorPendaftaran] = useState("");
   const [namaLengkap, setNamaLengkap] = useState("");
+  const [tipePendaftaran, setTipePendaftaran] = useState("");
   const [loading, setLoading] = useState(true);
 
   // Extract first name for greeting
@@ -56,7 +57,7 @@ export default function DashboardLayout({
 
   // Get formatted status
   const statusInfo = formatStatusDisplay(statusProses);
-  const nextStep = getNextStep(statusProses);
+  const nextStep = getNextStep(statusProses, tipePendaftaran);
 
   // Fetch user status dari database
   useEffect(() => {
@@ -109,6 +110,7 @@ export default function DashboardLayout({
         setStatusProses(currentStatus);
         setNomorPendaftaran(userData.nomor_pendaftaran || "-");
         setNamaLengkap(userData.nama_lengkap || fallbackName);
+        setTipePendaftaran(userData.tipe_pendaftaran || "");
       } catch (error: any) {
         console.error(
           "Error in Layout fetchUserData:",

@@ -78,6 +78,7 @@ interface Pendaftar {
     status_kelulusan: string;
   };
   pembayaran?: Array<{ id: string; status_pembayaran: string }>;
+  tipe_pendaftaran?: string;
 }
 
 interface PaginationInfo {
@@ -967,6 +968,10 @@ function AdminPendaftarContent() {
         label: "Daftar Ulang",
         color: "bg-emerald-100 text-emerald-800",
       },
+      pindah_keluar: {
+        label: "Pindah Keluar",
+        color: "bg-slate-100 text-slate-600 border border-slate-200",
+      },
     };
 
     const statusInfo = statusMap[status] || {
@@ -1593,8 +1598,13 @@ function AdminPendaftarContent() {
                           {item.jenjang}
                         </span>
                       </div>
-                      <p className="font-black text-primary-950 leading-tight text-sm">
-                        {toTitleCase(item.nama_lengkap)}
+                      <p className="font-black text-primary-950 leading-tight text-sm flex items-center gap-1.5 flex-wrap">
+                        <span>{toTitleCase(item.nama_lengkap)}</span>
+                        {item.tipe_pendaftaran === "PINDAHAN" && (
+                          <span className="px-1.5 py-0.5 bg-violet-100 text-violet-700 rounded-md text-[9px] font-black uppercase tracking-wider">
+                            PINDAHAN
+                          </span>
+                        )}
                       </p>
                       <p className="text-xs text-stone-500 mt-0.5">
                         {["L", "Laki-laki"].includes(item.jenis_kelamin)
@@ -1759,8 +1769,13 @@ function AdminPendaftarContent() {
                       </td>
                       <td className="px-4 py-3">
                         <div>
-                          <div className="font-bold text-stone-900">
-                            {toTitleCase(item.nama_lengkap)}
+                          <div className="font-bold text-stone-900 flex items-center gap-1.5 flex-wrap">
+                            <span>{toTitleCase(item.nama_lengkap)}</span>
+                            {item.tipe_pendaftaran === "PINDAHAN" && (
+                              <span className="px-1.5 py-0.5 bg-violet-100 text-violet-700 rounded-md text-[9px] font-black uppercase tracking-wider">
+                                PINDAHAN
+                              </span>
+                            )}
                           </div>
                           <div className="text-xs text-stone-600 font-medium">
                             {["L", "Laki-laki"].includes(item.jenis_kelamin)

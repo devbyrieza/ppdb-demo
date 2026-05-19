@@ -46,6 +46,7 @@ export async function GET(request: NextRequest) {
         nama_lengkap: true,
         nomor_pendaftaran: true,
         status_pendaftaran: true,
+        tipe_pendaftaran: true,
         updated_at: true,
         pembayaran: {
           where: { status_pembayaran: "verified" },
@@ -148,6 +149,7 @@ export async function GET(request: NextRequest) {
       nama_lengkap: data.nama_lengkap,
       nomor_pendaftaran: data.nomor_pendaftaran,
       status_proses: currentStatus,
+      tipe_pendaftaran: data.tipe_pendaftaran,
       updated_at: data.updated_at,
       schedules_available: schedules_available,
       hasil_kelulusan: {

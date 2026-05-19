@@ -95,6 +95,11 @@ model Pendaftar {
   cita_cita                      String?
   sumber_informasi               String?
   jumlah_hafalan                 String?
+  tipe_pendaftaran               String                 @default("BARU")
+  kelas_masuk                    Int?
+  asal_institusi                 String?
+  nomor_induk_lama               String?
+  catatan_pindahan               String?
   status_pendaftaran             String                 @default("draft")
   data_lengkap                   Json?
   created_at                     DateTime               @default(now()) @db.Timestamptz(6)

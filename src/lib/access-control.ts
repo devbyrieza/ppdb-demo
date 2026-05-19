@@ -24,7 +24,8 @@ export type StatusProses =
   | "tested"
   | "announced"
   | "enrolled"
-  | "enrolled_full";
+  | "enrolled_full"
+  | "pindah_keluar";
 
 export const STATUS_ORDER: StatusProses[] = [
   "draft",
@@ -45,6 +46,7 @@ export const STATUS_ORDER: StatusProses[] = [
   "accepted",
   "enrolled",
   "enrolled_full",
+  "pindah_keluar",
 ];
 
 export function getStatusIndex(status: StatusProses | string): number {
@@ -93,7 +95,30 @@ export function canAccessTab(tabName: TabName, statusProses: StatusProses): bool
 
 // ─── 3. GUIDED ACTION LOGIC ───
 
-export function getNextStep(currentStatus: StatusProses) {
+export function getNextStep(
+  currentStatus: StatusProses,
+  tipePendaftaran?: string,
+) {
+  if (tipePendaftaran === "PINDAHAN") {
+    const nextStepsPindahan: Record<string, { status: StatusProses; action: string; href: string }> = {
+      draft: { status: "payment_verification", action: "Bayar Sekarang", href: "/dashboard/pendaftar/pembayaran-pendaftaran" },
+      registered: { status: "payment_verification", action: "Bayar Sekarang", href: "/dashboard/pendaftar/pembayaran-pendaftaran" },
+      awaiting_payment: { status: "payment_verification", action: "Unggah Bukti", href: "/dashboard/pendaftar/pembayaran-pendaftaran" },
+      payment_verification: { status: "verified", action: "Menunggu Verifikasi", href: "/dashboard/pendaftar/pembayaran-pendaftaran" },
+      verified: { status: "data_completed", action: "Isi Data Pendaftaran", href: "/dashboard/pendaftar/isi-data-lengkap" },
+      paid: { status: "data_completed", action: "Isi Data Pendaftaran", href: "/dashboard/pendaftar/isi-data-lengkap" },
+      data_completed: { status: "docs_uploaded", action: "Unggah Berkas", href: "/dashboard/pendaftar/upload-berkas" },
+      docs_uploaded: { status: "docs_verified", action: "Menunggu Review Admin", href: "/dashboard/pendaftar/upload-berkas" },
+      docs_verified: { status: "announced", action: "Tunggu Pengumuman Kelulusan", href: "/dashboard/pendaftar/pengumuman" },
+      selection: { status: "announced", action: "Tunggu Pengumuman Kelulusan", href: "/dashboard/pendaftar/pengumuman" },
+      scheduled: { status: "announced", action: "Tunggu Pengumuman Kelulusan", href: "/dashboard/pendaftar/pengumuman" },
+      tested: { status: "announced", action: "Tunggu Pengumuman Kelulusan", href: "/dashboard/pendaftar/pengumuman" },
+      announced: { status: "accepted", action: "Cek Hasil", href: "/dashboard/pendaftar/pengumuman" },
+      accepted: { status: "enrolled", action: "Daftar Ulang Sekarang", href: "/dashboard/pendaftar/daftar-ulang" },
+    };
+    return nextStepsPindahan[currentStatus] || null;
+  }
+
   const nextSteps: Record<string, { status: StatusProses; action: string; href: string }> = {
     draft: { status: "payment_verification", action: "Bayar Sekarang", href: "/dashboard/pendaftar/pembayaran-pendaftaran" },
     registered: { status: "payment_verification", action: "Bayar Sekarang", href: "/dashboard/pendaftar/pembayaran-pendaftaran" },
@@ -135,6 +160,7 @@ export function formatStatusDisplay(status: StatusProses) {
     accepted: { label: "Diterima", color: "bg-green-100 text-green-700" },
     enrolled: { label: "Sedang Daftar Ulang", color: "bg-emerald-100 text-emerald-700" },
     enrolled_full: { label: "Selesai", color: "bg-primary-100 text-primary-700" },
+    pindah_keluar: { label: "Pindah Keluar", color: "bg-slate-100 text-slate-600" },
   };
   return statusMap[status] || { label: status, color: "bg-stone-100 text-stone-700" };
 }
@@ -192,12 +218,14 @@ export function getMenuItemsForRole(role: UserRole) {
       { name: "Dashboard", href: "/dashboard/admin", icon: "LayoutDashboard" },
       { name: "Data Pendaftar", href: "/dashboard/admin/pendaftar", icon: "Users" },
       { name: "Verifikasi Dokumen", href: "/dashboard/admin/verifikasi-dokumen", icon: "FileCheck" },
+      { name: "Siswa Pindahan", href: "/dashboard/admin/pindahan", icon: "Shuffle" },
     ],
     admin_keuangan: [
       { name: "Dashboard", href: "/dashboard/admin", icon: "LayoutDashboard" },
       { name: "Data Pendaftar", href: "/dashboard/admin/pendaftar", icon: "Users" },
       { name: "Verifikasi Pembayaran", href: "/dashboard/admin/verifikasi-pembayaran", icon: "CreditCard" },
       { name: "Rekap Keuangan", href: "/dashboard/admin/keuangan", icon: "BarChart" },
+      { name: "Siswa Pindahan", href: "/dashboard/admin/pindahan", icon: "Shuffle" },
     ],
     penguji: [
       { name: "Dashboard", href: "/dashboard/penguji", icon: "LayoutDashboard" },
@@ -217,6 +245,7 @@ export function getMenuItemsForRole(role: UserRole) {
     admin_super: [
       { name: "Dashboard", href: "/dashboard/admin", icon: "LayoutDashboard" },
       { name: "Data Pendaftar", href: "/dashboard/admin/pendaftar", icon: "Users", group: "OPERASIONAL" },
+      { name: "Siswa Pindahan", href: "/dashboard/admin/pindahan", icon: "Shuffle", group: "OPERASIONAL" },
       { name: "Rekap Keuangan", href: "/dashboard/admin/keuangan", icon: "Landmark", group: "OPERASIONAL" },
       { name: "Monitoring Jadwal", href: "/dashboard/admin/jadwal/monitoring", icon: "Calendar", group: "OPERASIONAL" },
       { name: "Rekap Nilai & Kelulusan", href: "/dashboard/admin/audit-seleksi", icon: "Activity", group: "HASIL SELEKSI" },
