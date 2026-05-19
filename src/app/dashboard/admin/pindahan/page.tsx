@@ -329,7 +329,7 @@ function PindahanContent() {
                   <label className="block text-xs font-black text-stone-600 uppercase tracking-widest mb-1.5">Status Awal</label>
                   <select value={form.status_pendaftaran} onChange={e => setForm(f => ({...f, status_pendaftaran: e.target.value}))}
                     className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 outline-none font-semibold text-stone-800 bg-white">
-                    <option value="submitted">Terdaftar (Menunggu Bayar)</option>
+                    <option value="draft">Terdaftar (Menunggu Bayar)</option>
                     <option value="verified">Langsung Terverifikasi</option>
                     <option value="enrolled">Langsung Daftar Ulang</option>
                   </select>
