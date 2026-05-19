@@ -41,6 +41,7 @@ interface Pembayaran {
     nama_lengkap: string;
     jenjang: string;
     no_hp: string | null;
+    jenis_kelamin?: string;
   } | null;
   tipe_cicilan: string;
   jumlah_cicilan: number;
@@ -164,21 +165,85 @@ function VerifikasiPembayaranContent() {
       const result = await response.json();
       const rawData = result.data;
 
-      const data = rawData.map((item: Pembayaran) => ({
-        "Nama Lengkap": item.pendaftar?.nama_lengkap
-          ? toTitleCase(item.pendaftar.nama_lengkap)
-          : "-",
-        "Nomor Pendaftaran": item.pendaftar?.nomor_pendaftaran || "-",
-        Jenjang: item.pendaftar?.jenjang || "-",
-        Nominal: item.jumlah
-          ? parseInt(item.jumlah).toLocaleString("id-ID")
-          : "0",
-        "Metode Pembayaran": item.metode_pembayaran || "-",
-        Status: (item.status_pembayaran === "verified" || item.status_pembayaran === "VERIFIED") ? "Terverifikasi" : ((item.status_pembayaran === "rejected" || item.status_pembayaran === "REJECTED") ? "Ditolak" : "Pending"),
-        "Tanggal Bayar": item.tanggal_pembayaran
+      const getDetailedJenjang = (jenjang: string, gender?: string) => {
+        if (!jenjang) return "-";
+        const cleanJenjang = jenjang.trim().toUpperCase();
+        if (!gender) return cleanJenjang;
+        const genderLabel = (gender === "L" || gender === "Laki-laki") 
+          ? "Putra" 
+          : ((gender === "P" || gender === "Perempuan") ? "Putri" : "");
+        return genderLabel ? `${cleanJenjang} ${genderLabel}` : cleanJenjang;
+      };
+
+      // Consolidate multiple payments (installments) by student to prevent double rows
+      const groups: Record<string, {
+        nama_lengkap: string;
+        nomor_pendaftaran: string;
+        jenjang: string;
+        total_nominal: number;
+        metode_pembayaran: string[];
+        status: string;
+        tanggal_bayar: string[];
+        catatan_details: string[];
+      }> = {};
+
+      rawData.forEach((item: Pembayaran) => {
+        const studentKey = item.pendaftar?.nomor_pendaftaran || item.pendaftar?.id || item.id;
+        const gender = item.pendaftar?.jenis_kelamin || "";
+        const detailedJenjang = getDetailedJenjang(item.pendaftar?.jenjang || "-", gender);
+        const nominalVal = item.jumlah ? parseInt(item.jumlah) : 0;
+        
+        let cleanMetode = item.metode_pembayaran || "-";
+        if (cleanMetode.toLowerCase() === "manual") {
+          cleanMetode = "Transfer Manual BSI";
+        }
+
+        const tglText = item.tanggal_pembayaran
           ? new Date(item.tanggal_pembayaran).toLocaleDateString("id-ID")
-          : "-",
-        Catatan: item.catatan || "-",
+          : new Date(item.created_at).toLocaleDateString("id-ID");
+
+        const statusText = (item.status_pembayaran === "verified" || item.status_pembayaran === "VERIFIED") 
+          ? "Terverifikasi" 
+          : ((item.status_pembayaran === "rejected" || item.status_pembayaran === "REJECTED") ? "Ditolak" : "Pending");
+
+        const paymentDetail = `Rp ${nominalVal.toLocaleString("id-ID")} (${tglText} - ${statusText}${item.catatan ? ': ' + item.catatan : ''})`;
+
+        if (!groups[studentKey]) {
+          groups[studentKey] = {
+            nama_lengkap: item.pendaftar?.nama_lengkap ? toTitleCase(item.pendaftar.nama_lengkap) : "-",
+            nomor_pendaftaran: item.pendaftar?.nomor_pendaftaran || "-",
+            jenjang: detailedJenjang,
+            total_nominal: nominalVal,
+            metode_pembayaran: [cleanMetode],
+            status: statusText,
+            tanggal_bayar: [tglText],
+            catatan_details: [paymentDetail],
+          };
+        } else {
+          groups[studentKey].total_nominal += nominalVal;
+          if (!groups[studentKey].metode_pembayaran.includes(cleanMetode)) {
+            groups[studentKey].metode_pembayaran.push(cleanMetode);
+          }
+          if (!groups[studentKey].tanggal_bayar.includes(tglText)) {
+            groups[studentKey].tanggal_bayar.push(tglText);
+          }
+          groups[studentKey].catatan_details.push(paymentDetail);
+          
+          if (statusText === "Pending" && groups[studentKey].status !== "Pending") {
+            groups[studentKey].status = "Pending";
+          }
+        }
+      });
+
+      const data = Object.values(groups).map((g) => ({
+        "Nama Lengkap": g.nama_lengkap,
+        "Nomor Pendaftaran": g.nomor_pendaftaran,
+        Jenjang: g.jenjang,
+        Nominal: g.total_nominal.toLocaleString("id-ID"),
+        "Metode Pembayaran": g.metode_pembayaran.join(", "),
+        Status: g.status,
+        "Tanggal Bayar": g.tanggal_bayar.join(", "),
+        Catatan: g.catatan_details.join("; "),
       }));
 
       const filename = `data-pembayaran-${activeTab.toLowerCase()}-${new Date().toISOString().split("T")[0]}`;
