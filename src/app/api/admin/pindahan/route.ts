@@ -93,10 +93,10 @@ export async function POST(request: NextRequest) {
     if (!session)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const allowedRoles = ["admin", "admin_super"];
+    const allowedRoles = ["admin_super"];
     if (!allowedRoles.includes(session.role)) {
       return NextResponse.json(
-        { error: "Forbidden: Only Admin or Admin Super can register transfer students" },
+        { error: "Forbidden: Only Admin Super can register transfer students" },
         { status: 403 }
       );
     }
@@ -116,7 +116,7 @@ export async function POST(request: NextRequest) {
       tempat_lahir,
       tanggal_lahir,
       tahun_ajaran_id,
-      status_pendaftaran = "submitted",
+      status_pendaftaran = "draft",
     } = body;
 
     // Validasi field wajib
@@ -229,7 +229,11 @@ export async function PATCH(request: NextRequest) {
       );
     }
 
-    const validStatuses = ["pindah_keluar", "enrolled", "enrolled_full", "submitted", "verified", "payment_verification"];
+    const validStatuses = [
+      "draft", "registered", "payment_verification", "verified", "data_completed", 
+      "docs_uploaded", "docs_verified", "selection", "announced", "accepted", 
+      "enrolled", "enrolled_full", "pindah_keluar"
+    ];
     if (!validStatuses.includes(status_pendaftaran)) {
       return NextResponse.json(
         { error: `Status tidak valid. Gunakan salah satu: ${validStatuses.join(", ")}` },
