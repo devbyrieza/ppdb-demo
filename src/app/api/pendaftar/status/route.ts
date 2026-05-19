@@ -152,6 +152,7 @@ export async function GET(request: NextRequest) {
       tipe_pendaftaran: data.tipe_pendaftaran,
       updated_at: data.updated_at,
       schedules_available: schedules_available,
+      pengumuman: data.pengumuman,
       hasil_kelulusan: {
         status: (nilai as any)?.status_kelulusan || null,
         catatan: (nilai as any)?.catatan_kelulusan || null,

@@ -291,6 +291,14 @@ function PindahanContent() {
                     className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 outline-none font-semibold text-stone-800" placeholder="08xxxxxxxxxx" />
                 </div>
                 <div>
+                  <label className="block text-xs font-black text-stone-600 uppercase tracking-widest mb-1.5">Jenis Kelamin <span className="text-red-500">*</span></label>
+                  <select required value={form.jenis_kelamin} onChange={e => setForm(f => ({...f, jenis_kelamin: e.target.value}))}
+                    className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 outline-none font-semibold text-stone-800 bg-white">
+                    <option value="L">Laki-laki</option>
+                    <option value="P">Perempuan</option>
+                  </select>
+                </div>
+                <div>
                   <label className="block text-xs font-black text-stone-600 uppercase tracking-widest mb-1.5">Jenjang <span className="text-red-500">*</span></label>
                   <select required value={form.jenjang} onChange={e => setForm(f => ({...f, jenjang: e.target.value}))}
                     className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 outline-none font-semibold text-stone-800 bg-white">
