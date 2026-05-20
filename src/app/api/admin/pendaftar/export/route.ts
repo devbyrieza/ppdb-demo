@@ -43,7 +43,9 @@ export async function GET(req: NextRequest) {
     const kelurahan = searchParams.get("kelurahan") || "";
 
     // Build query - fetch ALL records (no pagination for export)
-    const where: Prisma.PendaftarWhereInput = {};
+    const where: Prisma.PendaftarWhereInput = {
+      tipe_pendaftaran: { not: "PINDAHAN" },
+    };
 
     // Search filter
     if (search) {

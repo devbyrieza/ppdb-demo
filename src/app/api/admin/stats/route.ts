@@ -40,6 +40,7 @@ export async function GET(request: Request) {
 
     // Build where clause
     const where = getAdminWhereClause(tahunAjaranId || undefined) as any;
+    where.tipe_pendaftaran = { not: "PINDAHAN" };
 
     // If no year specified and no active year found by utility, find active manually for deeper payment stats
     if (!where.tahun_ajaran_id) {

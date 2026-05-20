@@ -54,6 +54,7 @@ export async function GET(request: NextRequest) {
     const baseWhere = getAdminWhereClause(tahunAjaran || undefined) as any;
     const where: Prisma.PendaftarWhereInput = {
       ...baseWhere,
+      tipe_pendaftaran: { not: "PINDAHAN" },
     };
 
     // Search filter
