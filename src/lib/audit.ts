@@ -19,7 +19,8 @@ type AuditAction =
   | "PROMOTE_CADANGAN_TO_DITERIMA"
   | "REGISTER_PINDAHAN"
   | "MARK_PINDAH_KELUAR"
-  | "UPDATE_PINDAHAN_STATUS";
+  | "UPDATE_PINDAHAN_STATUS"
+  | "EDIT_PENDAFTAR_FULL";
 
 interface AuditLogParams {
   action: AuditAction;
