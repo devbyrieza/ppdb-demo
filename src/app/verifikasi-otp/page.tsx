@@ -20,10 +20,17 @@ function VerifikasiOTPContent() {
   const no_hp = searchParams.get("no_hp") || "";
   const nik = searchParams.get("nik") || "";
   const nama_lengkap = searchParams.get("nama_lengkap") || "";
+  const tempat_lahir = searchParams.get("tempat_lahir") || "";
   const tanggal_lahir = searchParams.get("tanggal_lahir") || "";
   const jenis_kelamin = searchParams.get("jenis_kelamin") || "";
   const jenjang = searchParams.get("jenjang") || "";
   const channel = "whatsapp";
+
+  const tipe_pendaftaran = searchParams.get("tipe_pendaftaran") || "BARU";
+  const kelas_masuk = searchParams.get("kelas_masuk") || "";
+  const asal_institusi = searchParams.get("asal_institusi") || "";
+  const nomor_induk_lama = searchParams.get("nomor_induk_lama") || "";
+  const catatan_pindahan = searchParams.get("catatan_pindahan") || "";
 
   // OTP State
   const [otpCode, setOtpCode] = useState(["", "", "", "", "", ""]);
@@ -170,11 +177,17 @@ function VerifikasiOTPContent() {
         body: JSON.stringify({
           nik,
           nama_lengkap,
+          tempat_lahir,
           tanggal_lahir,
           no_hp,
           jenis_kelamin,
           jenjang,
           otp_channel: channel,
+          tipe_pendaftaran,
+          kelas_masuk,
+          asal_institusi,
+          nomor_induk_lama,
+          catatan_pindahan,
         }),
       });
 
@@ -353,7 +366,7 @@ function VerifikasiOTPContent() {
         <button
           onClick={() => {
             // Kembali ke form pendaftaran jika ingin ubah data
-            router.push(`/daftar`);
+            router.push(tipe_pendaftaran === "PINDAHAN" ? `/daftar-pindahan` : `/daftar`);
           }}
           disabled={isVerifying}
           className="w-full py-3 px-6 text-ink-500 text-sm font-black uppercase tracking-widest hover:text-primary-700 flex items-center justify-center gap-2 disabled:opacity-50 transition-colors"

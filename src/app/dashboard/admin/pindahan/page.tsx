@@ -102,7 +102,7 @@ function PindahanContent() {
   const handleMarkPindahKeluar = async (id: string, nama: string) => {
     const result = await Swal.fire({
       title: "Tandai Pindah Keluar?",
-      html: `<strong>${nama}</strong> akan ditandai sebagai siswa yang <b>pindah keluar</b> dari institusi ini.<br/><br/>Tindakan ini mencatat bahwa siswa tidak lagi aktif di sini.`,
+      html: `<strong>${nama}</strong> akan ditandai sebagai santri yang <b>pindah keluar</b> dari institusi ini.<br/><br/>Tindakan ini mencatat bahwa santri tidak lagi aktif di sini.`,
       icon: "warning", showCancelButton: true,
       confirmButtonText: "Ya, Tandai", cancelButtonText: "Batal",
       confirmButtonColor: "#64748b",
@@ -120,10 +120,10 @@ function PindahanContent() {
     } catch (e) { Swal.fire("Error", "Terjadi kesalahan", "error"); }
   };
 
-  const handleDeleteSiswa = async (id: string, nama: string) => {
+  const handleDeleteSantri = async (id: string, nama: string) => {
     const result = await Swal.fire({
-      title: "Hapus Siswa Pindahan?",
-      html: `Apakah Anda yakin ingin menghapus data siswa pindahan bernama <strong>${nama}</strong>?<br/><br/><small class="text-rose-500 font-bold">⚠️ Data akan di-soft delete dan dicadangkan secara otomatis.</small>`,
+      title: "Hapus Santri Pindahan?",
+      html: `Apakah Anda yakin ingin menghapus data santri pindahan bernama <strong>${nama}</strong>?<br/><br/><small class="text-rose-500 font-bold">⚠️ Data akan di-soft delete dan dicadangkan secara otomatis.</small>`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Ya, Hapus",
@@ -163,11 +163,11 @@ function PindahanContent() {
         "Catatan": p.catatan_pindahan || "-",
         "Tanggal Daftar": new Date(p.created_at).toLocaleDateString("id-ID"),
       }));
-      const filename = `siswa-pindahan-${new Date().toISOString().split("T")[0]}`;
+      const filename = `santri-pindahan-${new Date().toISOString().split("T")[0]}`;
       if (type === "excel") {
-        exportToExcel(rows, filename, "Data Siswa Pindahan");
+        exportToExcel(rows, filename, "Data Santri Pindahan");
       } else {
-        exportToPDF("Laporan Siswa Pindahan", Object.keys(rows[0] || {}), rows.map((r: any) => Object.values(r)), filename, "landscape");
+        exportToPDF("Laporan Santri Pindahan", Object.keys(rows[0] || {}), rows.map((r: any) => Object.values(r)), filename, "landscape");
       }
     } catch (e) { Swal.fire("Gagal", "Gagal export data", "error"); }
     finally { setExporting(false); }
@@ -185,8 +185,8 @@ function PindahanContent() {
               <Shuffle className="w-7 h-7 text-violet-700" />
             </div>
             <div>
-              <h2 className="text-2xl font-black text-stone-900 tracking-tight">Siswa Pindahan</h2>
-              <p className="text-stone-500 text-sm font-medium">Kelola pendaftaran siswa pindahan dari institusi lain</p>
+              <h2 className="text-2xl font-black text-stone-900 tracking-tight">Santri Pindahan</h2>
+              <p className="text-stone-500 text-sm font-medium">Kelola pendaftaran santri pindahan dari institusi lain</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -231,8 +231,8 @@ function PindahanContent() {
             <div className="w-16 h-16 bg-violet-50 rounded-full flex items-center justify-center mb-4">
               <Shuffle className="w-8 h-8 text-violet-300" />
             </div>
-            <h3 className="text-lg font-bold text-stone-800 mb-1">Belum ada siswa pindahan</h3>
-            <p className="text-stone-500 text-sm">Klik "Daftarkan Pindahan" untuk menambah siswa pindahan baru.</p>
+            <h3 className="text-lg font-bold text-stone-800 mb-1">Belum ada santri pindahan</h3>
+            <p className="text-stone-500 text-sm">Klik "Daftarkan Pindahan" untuk menambah santri pindahan baru.</p>
           </div>
         ) : (
           <div className="divide-y divide-stone-100">
@@ -276,7 +276,7 @@ function PindahanContent() {
                         <LogOut className="w-3.5 h-3.5" /> Pindah Keluar
                       </button>
                     )}
-                    <button onClick={() => handleDeleteSiswa(p.id, p.nama_lengkap)}
+                    <button onClick={() => handleDeleteSantri(p.id, p.nama_lengkap)}
                       className="flex items-center gap-1.5 px-3 py-2 bg-rose-50 border border-rose-200 text-rose-600 hover:bg-rose-100 rounded-xl text-xs font-bold transition-all">
                       <Trash2 className="w-3.5 h-3.5" /> Hapus
                     </button>
@@ -294,8 +294,8 @@ function PindahanContent() {
           <div className="bg-white rounded-[2rem] shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden">
             <div className="p-6 border-b border-stone-100 flex justify-between items-center bg-violet-50/50">
               <div>
-                <h3 className="text-xl font-black text-stone-900">Daftarkan Siswa Pindahan</h3>
-                <p className="text-sm text-stone-500 mt-0.5">Isi data siswa yang pindah ke institusi ini</p>
+                <h3 className="text-xl font-black text-stone-900">Daftarkan Santri Pindahan</h3>
+                <p className="text-sm text-stone-500 mt-0.5">Isi data santri yang pindah ke institusi ini</p>
               </div>
               <button onClick={() => setShowModal(false)} className="w-8 h-8 rounded-full bg-stone-200 hover:bg-stone-300 flex items-center justify-center">
                 <X className="w-4 h-4 text-stone-600" />
@@ -306,7 +306,7 @@ function PindahanContent() {
                 <div className="sm:col-span-2">
                   <label className="block text-xs font-black text-stone-600 uppercase tracking-widest mb-1.5">Nama Lengkap <span className="text-red-500">*</span></label>
                   <input required value={form.nama_lengkap} onChange={e => setForm(f => ({...f, nama_lengkap: e.target.value}))}
-                    className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 outline-none font-semibold text-stone-800" placeholder="Nama lengkap siswa" />
+                    className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 outline-none font-semibold text-stone-800" placeholder="Nama lengkap santri" />
                 </div>
                 <div>
                   <label className="block text-xs font-black text-stone-600 uppercase tracking-widest mb-1.5">NIK <span className="text-red-500">*</span></label>
@@ -388,6 +388,6 @@ function PindahanContent() {
   );
 }
 
-export default function SiswaPindahanPage() {
+export default function SantriPindahanPage() {
   return <Suspense fallback={<div className="flex items-center justify-center h-64"><Loader2 className="w-10 h-10 animate-spin text-violet-600" /></div>}><PindahanContent /></Suspense>;
 }
