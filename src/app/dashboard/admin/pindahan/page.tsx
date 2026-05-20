@@ -53,8 +53,8 @@ function PindahanContent() {
   const [form, setForm] = useState({
     nama_lengkap: "", nik: "", jenis_kelamin: "L", jenjang: "MTs",
     kelas_masuk: "8", asal_institusi: "", nomor_induk_lama: "",
-    catatan_pindahan: "", no_hp: "", email: "", tahun_ajaran_id: "",
-    status_pendaftaran: "submitted",
+    catatan_pindahan: "", no_hp: "", email: "", tempat_lahir: "",
+    tanggal_lahir: "", tahun_ajaran_id: "", status_pendaftaran: "submitted",
   });
 
   useEffect(() => { fetchData(); fetchTahunAjaran(); }, [statusFilter]);
@@ -93,7 +93,7 @@ function PindahanContent() {
       if (!res.ok) { Swal.fire("Gagal", json.error || "Terjadi kesalahan", "error"); return; }
       Swal.fire("Berhasil!", json.message, "success");
       setShowModal(false);
-      setForm({ nama_lengkap:"",nik:"",jenis_kelamin:"L",jenjang:"MTs",kelas_masuk:"8",asal_institusi:"",nomor_induk_lama:"",catatan_pindahan:"",no_hp:"",email:"",tahun_ajaran_id:"",status_pendaftaran:"submitted" });
+      setForm({ nama_lengkap:"",nik:"",jenis_kelamin:"L",jenjang:"MTs",kelas_masuk:"8",asal_institusi:"",nomor_induk_lama:"",catatan_pindahan:"",no_hp:"",email:"",tempat_lahir:"",tanggal_lahir:"",tahun_ajaran_id:"",status_pendaftaran:"submitted" });
       fetchData();
     } catch (e) { Swal.fire("Error", "Terjadi kesalahan", "error"); }
     finally { setSubmitting(false); }
@@ -317,6 +317,16 @@ function PindahanContent() {
                   <label className="block text-xs font-black text-stone-600 uppercase tracking-widest mb-1.5">No. HP</label>
                   <input value={form.no_hp} onChange={e => setForm(f => ({...f, no_hp: e.target.value}))}
                     className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 outline-none font-semibold text-stone-800" placeholder="08xxxxxxxxxx" />
+                </div>
+                <div>
+                  <label className="block text-xs font-black text-stone-600 uppercase tracking-widest mb-1.5">Tempat Lahir</label>
+                  <input value={form.tempat_lahir} onChange={e => setForm(f => ({...f, tempat_lahir: e.target.value}))}
+                    className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 outline-none font-semibold text-stone-800" placeholder="Kota Kelahiran" />
+                </div>
+                <div>
+                  <label className="block text-xs font-black text-stone-600 uppercase tracking-widest mb-1.5">Tanggal Lahir</label>
+                  <input type="date" value={form.tanggal_lahir} onChange={e => setForm(f => ({...f, tanggal_lahir: e.target.value}))}
+                    className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 outline-none font-semibold text-stone-800" />
                 </div>
                 <div>
                   <label className="block text-xs font-black text-stone-600 uppercase tracking-widest mb-1.5">Jenis Kelamin <span className="text-red-500">*</span></label>
