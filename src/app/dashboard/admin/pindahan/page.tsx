@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, Suspense } from "react";
 import { useRouter } from "next/navigation";
-import { Shuffle, Plus, RefreshCw, Loader2, FileSpreadsheet, FileText, X, CheckCircle, LogOut } from "lucide-react";
+import { Shuffle, Plus, RefreshCw, Loader2, FileSpreadsheet, FileText, X, CheckCircle, LogOut, Trash2 } from "lucide-react";
 import Swal from "sweetalert2";
 import { exportToExcel, exportToPDF } from "@/lib/utils/export";
 
@@ -118,6 +118,30 @@ function PindahanContent() {
       Swal.fire({ title: "Berhasil!", text: json.message, icon: "success", timer: 2000, showConfirmButton: false });
       fetchData();
     } catch (e) { Swal.fire("Error", "Terjadi kesalahan", "error"); }
+  };
+
+  const handleDeleteSiswa = async (id: string, nama: string) => {
+    const result = await Swal.fire({
+      title: "Hapus Siswa Pindahan?",
+      html: `Apakah Anda yakin ingin menghapus data siswa pindahan bernama <strong>${nama}</strong>?<br/><br/><small class="text-rose-500 font-bold">⚠️ Data akan di-soft delete dan dicadangkan secara otomatis.</small>`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Ya, Hapus",
+      cancelButtonText: "Batal",
+      confirmButtonColor: "#ef4444",
+      cancelButtonColor: "#94a3b8",
+      reverseButtons: true,
+    });
+    if (!result.isConfirmed) return;
+    try {
+      const res = await fetch(`/api/admin/pendaftar/${id}`, {
+        method: "DELETE",
+      });
+      const json = await res.json();
+      if (!res.ok) { Swal.fire("Gagal", json.error || "Gagal menghapus data", "error"); return; }
+      Swal.fire({ title: "Berhasil!", text: json.message || "Data berhasil dihapus.", icon: "success", timer: 2000, showConfirmButton: false });
+      fetchData();
+    } catch (e) { Swal.fire("Error", "Terjadi kesalahan saat menghapus data", "error"); }
   };
 
   const handleExport = async (type: "excel" | "pdf") => {
@@ -252,6 +276,10 @@ function PindahanContent() {
                         <LogOut className="w-3.5 h-3.5" /> Pindah Keluar
                       </button>
                     )}
+                    <button onClick={() => handleDeleteSiswa(p.id, p.nama_lengkap)}
+                      className="flex items-center gap-1.5 px-3 py-2 bg-rose-50 border border-rose-200 text-rose-600 hover:bg-rose-100 rounded-xl text-xs font-bold transition-all">
+                      <Trash2 className="w-3.5 h-3.5" /> Hapus
+                    </button>
                   </div>
                 </div>
               </div>
