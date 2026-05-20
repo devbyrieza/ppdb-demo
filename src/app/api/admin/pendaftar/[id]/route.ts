@@ -402,9 +402,7 @@ export async function PATCH(
       });
     }
 
-    // Get request body
-    const body_original = null; // unused placeholder
-    const { status_proses, no_hp } = body;
+
 
     // SCENARIO 1: Update Phone Number (Admin Super Only)
     if (no_hp) {
