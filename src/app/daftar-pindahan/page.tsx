@@ -27,7 +27,7 @@ interface FormData {
   tanggal_lahir: string;
   no_hp: string;
   jenis_kelamin: "L" | "P" | "";
-  jenjang: "MTs" | "IL" | "";
+  jenjang: "MTs" | "MA" | "";
   kelas_masuk: string;
   asal_institusi: string;
   nomor_induk_lama: string;
@@ -74,12 +74,12 @@ export default function DaftarPindahanPage() {
   }, []);
 
   const router = useRouter();
-  const [jenjangFromUrl, setJenjangFromUrl] = useState<"MTs" | "IL" | "">("");
+  const [jenjangFromUrl, setJenjangFromUrl] = useState<"MTs" | "MA" | "">("");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
-      const jenjang = params.get("jenjang") as "MTs" | "IL" | null;
+      const jenjang = params.get("jenjang") as "MTs" | "MA" | null;
       if (jenjang) {
         setJenjangFromUrl(jenjang);
       }
@@ -141,8 +141,8 @@ export default function DaftarPindahanPage() {
   useEffect(() => {
     if (formData.jenjang === "MTs") {
       setFormData((p) => ({ ...p, kelas_masuk: "8" }));
-    } else if (formData.jenjang === "IL") {
-      setFormData((p) => ({ ...p, kelas_masuk: "10" }));
+    } else if (formData.jenjang === "MA") {
+      setFormData((p) => ({ ...p, kelas_masuk: "11" }));
     } else {
       setFormData((p) => ({ ...p, kelas_masuk: "" }));
     }
@@ -163,9 +163,7 @@ export default function DaftarPindahanPage() {
       errors.nama_lengkap = "Nama minimal 3 karakter";
     }
 
-    if (!formData.tempat_lahir) {
-      errors.tempat_lahir = "Tempat lahir santri wajib diisi";
-    }
+    // tempat_lahir tidak lagi wajib diisi (tidak ditampilkan di form)
 
     if (!formData.tanggal_lahir) {
       errors.tanggal_lahir = "Tanggal lahir santri wajib diisi";
@@ -410,8 +408,8 @@ export default function DaftarPindahanPage() {
                       subtitle: "Pindahan tingkat SMP/MTs",
                     },
                     {
-                      value: "IL",
-                      title: "I'dad Lughowi",
+                      value: "MA",
+                      title: "Madrasah Aliyah",
                       subtitle: "Pindahan tingkat SMA/MA",
                     },
                   ].map((option) => {
@@ -526,36 +524,19 @@ export default function DaftarPindahanPage() {
                     />
                   </InputField>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <InputField label="Tempat Lahir" error={fieldErrors.tempat_lahir}>
-                      <input
-                        type="text"
-                        value={formData.tempat_lahir}
-                        onChange={(e) =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            tempat_lahir: e.target.value,
-                          }))
-                        }
-                        placeholder="Kota Lahir"
-                        className="w-full px-4 py-3 md:px-6 md:py-5 rounded-xl md:rounded-2xl bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold placeholder:text-ink-500 text-xs md:text-sm text-ink-950"
-                      />
-                    </InputField>
-
-                    <InputField label="Tanggal Lahir" error={fieldErrors.tanggal_lahir}>
-                      <input
-                        type="date"
-                        value={formData.tanggal_lahir}
-                        onChange={(e) =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            tanggal_lahir: e.target.value,
-                          }))
-                        }
-                        className="w-full px-4 py-3 md:px-6 md:py-5 rounded-xl md:rounded-2xl bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold text-xs md:text-sm text-ink-950"
-                      />
-                    </InputField>
-                  </div>
+                  <InputField label="Tanggal Lahir" error={fieldErrors.tanggal_lahir}>
+                    <input
+                      type="date"
+                      value={formData.tanggal_lahir}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          tanggal_lahir: e.target.value,
+                        }))
+                      }
+                      className="w-full px-5 py-3 md:px-8 md:py-5 rounded-xl md:rounded-2xl bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold text-sm md:text-base text-ink-950"
+                    />
+                  </InputField>
 
                   <div className="md:col-span-2">
                     <InputField
@@ -627,14 +608,12 @@ export default function DaftarPindahanPage() {
                         <option value="">Pilih Jenjang Terlebih Dahulu</option>
                         {formData.jenjang === "MTs" && (
                           <>
-                            <option value="7">Kelas 7 (Semester 2)</option>
                             <option value="8">Kelas 8</option>
                             <option value="9">Kelas 9</option>
                           </>
                         )}
-                        {formData.jenjang === "IL" && (
+                        {formData.jenjang === "MA" && (
                           <>
-                            <option value="10">Kelas 10</option>
                             <option value="11">Kelas 11</option>
                             <option value="12">Kelas 12</option>
                           </>
@@ -644,17 +623,18 @@ export default function DaftarPindahanPage() {
                     </div>
                   </InputField>
 
-                  <InputField label="Nomor Induk Siswa Asal (NIS)" error={fieldErrors.nomor_induk_lama}>
+                  <InputField label="NISN (Nomor Induk Siswa Nasional)" error={fieldErrors.nomor_induk_lama}>
                     <input
                       type="text"
+                      maxLength={10}
                       value={formData.nomor_induk_lama}
                       onChange={(e) =>
                         setFormData((prev) => ({
                           ...prev,
-                          nomor_induk_lama: e.target.value,
+                          nomor_induk_lama: e.target.value.replace(/\D/g, ""),
                         }))
                       }
-                      placeholder="NIS/Nomor Induk sekolah asal"
+                      placeholder="10 Digit NISN asal sekolah"
                       className="w-full px-5 py-3 md:px-8 md:py-5 rounded-xl md:rounded-2xl bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold placeholder:text-ink-500 text-sm md:text-base text-ink-950"
                     />
                   </InputField>
