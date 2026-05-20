@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import Swal from "sweetalert2";
+import EditPendaftarModal from "./EditPendaftarModal";
 
 interface PendaftarDetail {
   id: string;
@@ -56,6 +57,11 @@ interface PendaftarDetail {
   jumlah_saudara: number | null;
   hobi: string | null;
   cita_cita: string | null;
+  tipe_pendaftaran: string;
+  kelas_masuk: number | null;
+  asal_institusi: string | null;
+  nomor_induk_lama: string | null;
+  catatan_pindahan: string | null;
   status_proses: string;
   created_at: string;
   updated_at: string;
@@ -89,6 +95,11 @@ interface PendaftarDetail {
     no_hp_wali: string | null;
     pekerjaan_wali: string | null;
     alamat_wali: string | null;
+    nik_wali?: string | null;
+    tempat_lahir_wali?: string | null;
+    tanggal_lahir_wali?: string | null;
+    pendidikan_wali?: string | null;
+    penghasilan_wali?: string | null;
   } | null;
   dokumen: Array<{
     id: string;
@@ -164,6 +175,10 @@ export default function PendaftarDetailPage() {
   const [editingPhone, setEditingPhone] = useState(false);
   const [newPhone, setNewPhone] = useState("");
   const [savingPhone, setSavingPhone] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editTab, setEditTab] = useState("santri");
+  const [editFormData, setEditFormData] = useState<any>(null);
+  const [savingEdit, setSavingEdit] = useState(false);
 
   useEffect(() => {
     const fetchSession = async () => {
@@ -185,6 +200,77 @@ export default function PendaftarDetailPage() {
   }, []);
 
   const isKeuangan = userRole === "admin_keuangan";
+
+  const handleOpenEditModal = () => {
+    if (!pendaftar) return;
+    setEditFormData({
+      santri: {
+        nama_lengkap: pendaftar.nama_lengkap || "",
+        nik: pendaftar.nik || "",
+        tempat_lahir: pendaftar.tempat_lahir || "",
+        tanggal_lahir: pendaftar.tanggal_lahir ? new Date(pendaftar.tanggal_lahir).toISOString().split("T")[0] : "",
+        jenis_kelamin: pendaftar.jenis_kelamin || "L",
+        no_hp: pendaftar.no_hp || "",
+        email: pendaftar.email || "",
+        golongan_darah: pendaftar.golongan_darah || "",
+        anak_ke: pendaftar.anak_ke ?? "",
+        jumlah_saudara: pendaftar.jumlah_saudara ?? "",
+        hobi: pendaftar.hobi || "",
+        cita_cita: pendaftar.cita_cita || "",
+        alamat: pendaftar.alamat || "",
+        rt: pendaftar.rt || "",
+        rw: pendaftar.rw || "",
+        kelurahan: pendaftar.kelurahan || "",
+        kecamatan: pendaftar.kecamatan || "",
+        kabupaten: pendaftar.kabupaten || "",
+        provinsi: pendaftar.provinsi || "",
+        kode_pos: pendaftar.kode_pos || "",
+        asal_sekolah: pendaftar.asal_sekolah || "",
+        alamat_sekolah: pendaftar.alamat_sekolah || "",
+        tahun_lulus: pendaftar.tahun_lulus ?? "",
+        nisn: pendaftar.nisn || "",
+        tipe_pendaftaran: pendaftar.tipe_pendaftaran || "BARU",
+        kelas_masuk: pendaftar.kelas_masuk ?? "",
+        asal_institusi: pendaftar.asal_institusi || "",
+        nomor_induk_lama: pendaftar.nomor_induk_lama || "",
+        catatan_pindahan: pendaftar.catatan_pindahan || "",
+      },
+      orang_tua: {
+        nama_ayah: pendaftar.orang_tua?.nama_ayah || "",
+        nik_ayah: pendaftar.orang_tua?.nik_ayah || "",
+        tempat_lahir_ayah: pendaftar.orang_tua?.tempat_lahir_ayah || "",
+        tanggal_lahir_ayah: pendaftar.orang_tua?.tanggal_lahir_ayah ? new Date(pendaftar.orang_tua.tanggal_lahir_ayah).toISOString().split("T")[0] : "",
+        pendidikan_ayah: pendaftar.orang_tua?.pendidikan_ayah || "",
+        pekerjaan_ayah: pendaftar.orang_tua?.pekerjaan_ayah || "",
+        penghasilan_ayah: pendaftar.orang_tua?.penghasilan_ayah || "",
+        no_hp_ayah: pendaftar.orang_tua?.no_hp_ayah || "",
+        status_ayah: pendaftar.orang_tua?.status_ayah || "Masih Hidup",
+        alamat_ayah: pendaftar.orang_tua?.alamat_ayah || "",
+        nama_ibu: pendaftar.orang_tua?.nama_ibu || "",
+        nik_ibu: pendaftar.orang_tua?.nik_ibu || "",
+        tempat_lahir_ibu: pendaftar.orang_tua?.tempat_lahir_ibu || "",
+        tanggal_lahir_ibu: pendaftar.orang_tua?.tanggal_lahir_ibu ? new Date(pendaftar.orang_tua.tanggal_lahir_ibu).toISOString().split("T")[0] : "",
+        pendidikan_ibu: pendaftar.orang_tua?.pendidikan_ibu || "",
+        pekerjaan_ibu: pendaftar.orang_tua?.pekerjaan_ibu || "",
+        penghasilan_ibu: pendaftar.orang_tua?.penghasilan_ibu || "",
+        no_hp_ibu: pendaftar.orang_tua?.no_hp_ibu || "",
+        status_ibu: pendaftar.orang_tua?.status_ibu || "Masih Hidup",
+        alamat_ibu: pendaftar.orang_tua?.alamat_ibu || "",
+        nama_wali: pendaftar.orang_tua?.nama_wali || "",
+        nik_wali: pendaftar.orang_tua?.nik_wali || "",
+        tempat_lahir_wali: pendaftar.orang_tua?.tempat_lahir_wali || "",
+        tanggal_lahir_wali: pendaftar.orang_tua?.tanggal_lahir_wali ? new Date(pendaftar.orang_tua.tanggal_lahir_wali).toISOString().split("T")[0] : "",
+        pendidikan_wali: pendaftar.orang_tua?.pendidikan_wali || "",
+        pekerjaan_wali: pendaftar.orang_tua?.pekerjaan_wali || "",
+        penghasilan_wali: pendaftar.orang_tua?.penghasilan_wali || "",
+        no_hp_wali: pendaftar.orang_tua?.no_hp_wali || "",
+        alamat_wali: pendaftar.orang_tua?.alamat_wali || "",
+        hubungan_wali: pendaftar.orang_tua?.hubungan_wali || "",
+      },
+    });
+    setEditTab("santri");
+    setIsEditModalOpen(true);
+  };
   const isBerkas = userRole === "admin_berkas";
   const isPenguji =
     userRole === "penguji" ||
@@ -517,6 +603,15 @@ export default function PendaftarDetailPage() {
           </div>
 
           <div className="flex items-center gap-2">
+            {userRole === "admin_super" && (
+              <button
+                onClick={handleOpenEditModal}
+                className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-stone-900 border border-amber-400 rounded-xl text-xs font-black transition-all flex items-center gap-1 shadow-sm active:scale-95 animate-pulse mr-2"
+              >
+                <Edit className="w-3.5 h-3.5" />
+                Edit Biodata & Ortu
+              </button>
+            )}
             <button
               onClick={() => {
                 Swal.fire({
@@ -1448,6 +1543,19 @@ export default function PendaftarDetailPage() {
           </div>
         </div>
       </div>
+
+      {isEditModalOpen && pendaftar && (
+        <EditPendaftarModal
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+          pendaftar={pendaftar}
+          paramsId={params.id as string}
+          onSaveSuccess={async () => {
+            setIsEditModalOpen(false);
+            await fetchPendaftarDetail();
+          }}
+        />
+      )}
     </div>
   );
 }

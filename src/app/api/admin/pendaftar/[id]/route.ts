@@ -228,6 +228,182 @@ export async function PATCH(
 
     // Get request body
     const body = await request.json();
+    const { status_proses, no_hp, is_edit_full, santri, orang_tua } = body;
+
+    // SCENARIO 0: Full Profile Edit (Admin Super Only)
+    if (is_edit_full) {
+      if (session.role !== "admin_super") {
+        return NextResponse.json(
+          { error: "Hanya Admin Super yang dapat mengedit data lengkap pendaftar" },
+          { status: 403 },
+        );
+      }
+
+      await prisma.$transaction(async (tx) => {
+        // Sync to JSON data_lengkap for backward compatibility
+        const dataLengkapObj = {
+          santri: santri || {},
+          ayah: orang_tua ? {
+            nama_lengkap: orang_tua.nama_ayah,
+            nik: orang_tua.nik_ayah,
+            tempat_lahir: orang_tua.tempat_lahir_ayah,
+            tanggal_lahir: orang_tua.tanggal_lahir_ayah,
+            pendidikan_terakhir: orang_tua.pendidikan_ayah,
+            pekerjaan: orang_tua.pekerjaan_ayah,
+            penghasilan: orang_tua.penghasilan_ayah,
+            no_hp: orang_tua.no_hp_ayah,
+            status_hidup: orang_tua.status_ayah,
+            alamat: orang_tua.alamat_ayah,
+          } : {},
+          ibu: orang_tua ? {
+            nama_lengkap: orang_tua.nama_ibu,
+            nik: orang_tua.nik_ibu,
+            tempat_lahir: orang_tua.tempat_lahir_ibu,
+            tanggal_lahir: orang_tua.tanggal_lahir_ibu,
+            pendidikan_terakhir: orang_tua.pendidikan_ibu,
+            pekerjaan: orang_tua.pekerjaan_ibu,
+            penghasilan: orang_tua.penghasilan_ibu,
+            no_hp: orang_tua.no_hp_ibu,
+            status_hidup: orang_tua.status_ibu,
+            alamat: orang_tua.alamat_ibu,
+          } : {},
+          wali: orang_tua ? {
+            nama_lengkap: orang_tua.nama_wali,
+            nik: orang_tua.nik_wali,
+            tempat_lahir: orang_tua.tempat_lahir_wali,
+            tanggal_lahir: orang_tua.tanggal_lahir_wali,
+            pendidikan_terakhir: orang_tua.pendidikan_wali,
+            pekerjaan: orang_tua.pekerjaan_wali,
+            penghasilan: orang_tua.penghasilan_wali,
+            no_hp: orang_tua.no_hp_wali,
+            alamat: orang_tua.alamat_wali,
+            hubungan: orang_tua.hubungan_wali,
+          } : {},
+          wali_sama_dengan_ortu: orang_tua?.nama_wali ? false : true,
+        };
+
+        // Update Pendaftar Columns
+        await tx.pendaftar.update({
+          where: { id: params.id },
+          data: {
+            nama_lengkap: santri.nama_lengkap,
+            nik: santri.nik,
+            tempat_lahir: santri.tempat_lahir,
+            tanggal_lahir: santri.tanggal_lahir ? new Date(santri.tanggal_lahir) : null,
+            jenis_kelamin: santri.jenis_kelamin,
+            no_hp: santri.no_hp,
+            email: santri.email,
+            golongan_darah: santri.golongan_darah,
+            anak_ke: santri.anak_ke != null ? parseInt(santri.anak_ke.toString()) : null,
+            jumlah_saudara: santri.jumlah_saudara != null ? parseInt(santri.jumlah_saudara.toString()) : null,
+            hobi: santri.hobi,
+            cita_cita: santri.cita_cita,
+            alamat: santri.alamat,
+            rt: santri.rt,
+            rw: santri.rw,
+            kelurahan: santri.kelurahan,
+            kecamatan: santri.kecamatan,
+            kabupaten: santri.kabupaten,
+            provinsi: santri.provinsi,
+            kode_pos: santri.kode_pos,
+            asal_sekolah: santri.asal_sekolah,
+            alamat_sekolah: santri.alamat_sekolah,
+            tahun_lulus: santri.tahun_lulus != null ? parseInt(santri.tahun_lulus.toString()) : null,
+            nisn: santri.nisn,
+            // Pindahan fields
+            tipe_pendaftaran: santri.tipe_pendaftaran || "BARU",
+            kelas_masuk: santri.kelas_masuk != null ? parseInt(santri.kelas_masuk.toString()) : null,
+            asal_institusi: santri.asal_institusi,
+            nomor_induk_lama: santri.nomor_induk_lama,
+            catatan_pindahan: santri.catatan_pindahan,
+            data_lengkap: dataLengkapObj,
+            updated_at: new Date(),
+          },
+        });
+
+        // Update OrangTua Columns
+        if (orang_tua) {
+          const parentData = {
+            nama_ayah: orang_tua.nama_ayah,
+            nik_ayah: orang_tua.nik_ayah,
+            tempat_lahir_ayah: orang_tua.tempat_lahir_ayah,
+            tanggal_lahir_ayah: orang_tua.tanggal_lahir_ayah ? new Date(orang_tua.tanggal_lahir_ayah) : null,
+            pendidikan_ayah: orang_tua.pendidikan_ayah,
+            pekerjaan_ayah: orang_tua.pekerjaan_ayah,
+            penghasilan_ayah: orang_tua.penghasilan_ayah,
+            no_hp_ayah: orang_tua.no_hp_ayah,
+            status_ayah: orang_tua.status_ayah,
+            alamat_ayah: orang_tua.alamat_ayah,
+            nama_ibu: orang_tua.nama_ibu,
+            nik_ibu: orang_tua.nik_ibu,
+            tempat_lahir_ibu: orang_tua.tempat_lahir_ibu,
+            tanggal_lahir_ibu: orang_tua.tanggal_lahir_ibu ? new Date(orang_tua.tanggal_lahir_ibu) : null,
+            pendidikan_ibu: orang_tua.pendidikan_ibu,
+            pekerjaan_ibu: orang_tua.pekerjaan_ibu,
+            penghasilan_ibu: orang_tua.penghasilan_ibu,
+            no_hp_ibu: orang_tua.no_hp_ibu,
+            status_ibu: orang_tua.status_ibu,
+            alamat_ibu: orang_tua.alamat_ibu,
+            nama_wali: orang_tua.nama_wali,
+            nik_wali: orang_tua.nik_wali,
+            tempat_lahir_wali: orang_tua.tempat_lahir_wali,
+            tanggal_lahir_wali: orang_tua.tanggal_lahir_wali ? new Date(orang_tua.tanggal_lahir_wali) : null,
+            pendidikan_wali: orang_tua.pendidikan_wali,
+            pekerjaan_wali: orang_tua.pekerjaan_wali,
+            penghasilan_wali: orang_tua.penghasilan_wali,
+            no_hp_wali: orang_tua.no_hp_wali,
+            alamat_wali: orang_tua.alamat_wali,
+            hubungan_wali: orang_tua.hubungan_wali,
+            updated_at: new Date(),
+          };
+
+          await tx.orangTua.upsert({
+            where: { pendaftar_id: params.id },
+            create: {
+              pendaftar_id: params.id,
+              ...parentData,
+            },
+            update: parentData,
+          });
+        }
+
+        // Sync with related user profile
+        const pendaftarRecord = await tx.pendaftar.findUnique({
+          where: { id: params.id },
+          select: { user_id: true },
+        });
+
+        if (pendaftarRecord?.user_id) {
+          await tx.profile.update({
+            where: { id: pendaftarRecord.user_id },
+            data: {
+              full_name: santri.nama_lengkap,
+              phone: santri.no_hp,
+              email: santri.email,
+              updated_at: new Date(),
+            },
+          });
+        }
+      });
+
+      // Audit Log
+      logAdminAction({
+        action: "EDIT_PENDAFTAR_FULL",
+        adminId: session.id || "system",
+        adminName: session.full_name || session.name || "Admin",
+        targetId: params.id,
+        targetName: santri.nama_lengkap,
+        details: { nomor_pendaftaran: santri.nomor_pendaftaran },
+      });
+
+      return NextResponse.json({
+        success: true,
+        message: "Data pendaftar berhasil diperbarui secara lengkap",
+      });
+    }
+
+    // Get request body
+    const body_original = null; // unused placeholder
     const { status_proses, no_hp } = body;
 
     // SCENARIO 1: Update Phone Number (Admin Super Only)
