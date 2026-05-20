@@ -43,12 +43,35 @@ export async function POST(
       );
     }
 
+    // Prepare original unique fields
+    const originalNomor = pendaftar.nomor_pendaftaran.replace(/^DEL_\d+_/, "");
+    const originalNik = pendaftar.nik.replace(/^DEL_\d+_/, "");
+
+    // Check if original is taken
+    const conflict = await prisma.pendaftar.findFirst({
+      where: {
+        OR: [
+          { nomor_pendaftaran: originalNomor },
+        ],
+        deleted_at: null,
+      }
+    });
+
+    if (conflict) {
+       return NextResponse.json(
+         { error: "Gagal memulihkan: Nomor pendaftaran sudah digunakan oleh pendaftar lain." },
+         { status: 400 }
+       );
+    }
+
     // Restore and update backup record in a transaction
     await prisma.$transaction([
       // 1. Restore pendaftar
       prisma.pendaftar.update({
         where: { id: params.id },
         data: {
+          nomor_pendaftaran: originalNomor,
+          nik: originalNik,
           deleted_at: null,
           deleted_by: null,
           updated_at: new Date(),

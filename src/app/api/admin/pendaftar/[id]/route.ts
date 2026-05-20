@@ -595,6 +595,8 @@ export async function DELETE(
       prisma.pendaftar.update({
         where: { id: params.id },
         data: {
+          nomor_pendaftaran: `DEL_${Date.now()}_${pendaftar.nomor_pendaftaran}`,
+          nik: `DEL_${Date.now()}_${pendaftar.nik}`,
           deleted_at: new Date(),
           deleted_by: session.id,
           updated_at: new Date(),
