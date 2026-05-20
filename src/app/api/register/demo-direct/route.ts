@@ -52,11 +52,12 @@ export async function POST(request: NextRequest) {
 
     const tahun_ajaran_id = tahunAjaranData.id;
 
-    // 2. Cek apakah NIK sudah terdaftar di tahun ajaran ini
+    // 2. Cek apakah NIK sudah terdaftar di tahun ajaran ini (ignore soft-deleted)
     const existingPendaftar = await prisma.pendaftar.findFirst({
       where: {
         nik: nik,
         tahun_ajaran_id: tahun_ajaran_id,
+        deleted_at: null,
       },
       select: { nomor_pendaftaran: true },
     });

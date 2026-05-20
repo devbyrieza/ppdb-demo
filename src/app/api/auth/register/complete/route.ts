@@ -41,9 +41,9 @@ export async function POST(request: NextRequest) {
       telegram_username,
     } = registrationData;
 
-    // Check if NIK already registered
+    // Check if NIK already registered (ignore soft-deleted)
     const existing = await prisma.pendaftar.findFirst({
-      where: { nik },
+      where: { nik, deleted_at: null },
       select: { nomor_pendaftaran: true },
     });
 

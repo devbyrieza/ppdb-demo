@@ -27,6 +27,26 @@ export async function POST(request: NextRequest) {
     const activeTA = await prisma.tahunAjaran.findFirst({ where: { is_active: true } }) 
                   || await prisma.tahunAjaran.findFirst({ orderBy: { created_at: "desc" } });
 
+    if (!activeTA) {
+      return NextResponse.json({ success: false, error: "Tahun Ajaran aktif tidak ditemukan" }, { status: 500 });
+    }
+
+    // Cek duplikat NIK sebelum membuat akun (abaikan yang sudah dihapus/soft-delete)
+    const existingPendaftar = await prisma.pendaftar.findFirst({
+      where: { 
+        nik: regData.nik,
+        deleted_at: null 
+      },
+    });
+    if (existingPendaftar) {
+      // Hapus OTP agar tidak bisa coba lagi dengan data yang sama
+      await prisma.otpVerification.delete({ where: { id: otpRecord.id } }).catch(() => {});
+      return NextResponse.json({ 
+        success: false, 
+        error: "NIK ini sudah terdaftar. Gunakan NIK lain atau hubungi panitia jika ini adalah kesalahan." 
+      }, { status: 409 });
+    }
+
     const nomorPendaftaran = await generateNomorPendaftaran(regData.jenjang, regData.jenis_kelamin);
     const profileId = crypto.randomUUID();
     
