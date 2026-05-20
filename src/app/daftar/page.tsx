@@ -27,7 +27,7 @@ interface FormData {
   tanggal_lahir: string;
   no_hp: string;
   jenis_kelamin: "L" | "P" | "";
-  jenjang: "MTs" | "IL" | "";
+  jenjang: "MTs" | "IL" | "MA" | "";
 }
 
 // ========================================
@@ -70,12 +70,12 @@ export default function DaftarPage() {
   }, []);
 
   const router = useRouter();
-  const [jenjangFromUrl, setJenjangFromUrl] = useState<"MTs" | "IL" | "">("");
+  const [jenjangFromUrl, setJenjangFromUrl] = useState<"MTs" | "IL" | "MA" | "">("");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
-      const jenjang = params.get("jenjang") as "MTs" | "IL" | null;
+      const jenjang = params.get("jenjang") as "MTs" | "IL" | "MA" | null;
       if (jenjang) {
         setJenjangFromUrl(jenjang);
       }
@@ -340,6 +340,32 @@ export default function DaftarPage() {
               )}
             </AnimatePresence>
 
+            {/* Santri Pindahan Highlight Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.35 }}
+              className="mb-10 bg-amber-50 border border-amber-200 rounded-3xl p-6 flex items-start gap-4 relative z-10 overflow-hidden shadow-premium-xs"
+            >
+              <div className="w-10 h-10 bg-amber-500 rounded-full flex items-center justify-center text-white shrink-0 shadow-premium-xs">
+                <AlertCircle className="w-6 h-6" />
+              </div>
+              <div className="flex-1">
+                <p className="text-lg font-display font-black text-amber-900 leading-none mb-1">
+                  Pendaftaran Santri Pindahan
+                </p>
+                <p className="text-sm text-amber-700 font-bold leading-relaxed mb-3">
+                  Khusus calon santri pindahan yang akan masuk ke kelas <strong>8 MTs, 9 MTs, 11 MA, atau 12 MA</strong>, mohon <strong>TIDAK</strong> mengisi formulir reguler ini agar penempatan tidak salah.
+                </p>
+                <Link
+                  href="/daftar-pindahan"
+                  className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-amber-800 hover:text-amber-950 transition-colors bg-amber-100 hover:bg-amber-200/80 px-4 py-2.5 rounded-full border border-amber-200/50"
+                >
+                  Daftar Lewat Jalur Pindahan <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            </motion.div>
+
             <form onSubmit={handleSubmit} className="space-y-12 relative z-10">
               {/* Section: Jenjang */}
               <motion.section
@@ -358,18 +384,26 @@ export default function DaftarPage() {
 
                 <div
                   data-error={!!fieldErrors.jenjang}
-                  className="grid grid-cols-1 sm:grid-cols-2 gap-6"
+                  className="grid grid-cols-1 md:grid-cols-3 gap-6"
                 >
                   {[
                     {
                       value: "MTs",
                       title: "Madrasah Tsanawiyah",
                       subtitle: "Lulusan SD/Sederajat",
+                      desc: "Jenjang pendidikan dasar setingkat SMP.",
                     },
                     {
                       value: "IL",
                       title: "I'dad Lughowi",
                       subtitle: "Lulusan SMP/Sederajat",
+                      desc: "Kelas persiapan bahasa Arab sebelum masuk MA.",
+                    },
+                    {
+                      value: "MA",
+                      title: "Madrasah Aliyah (MA) Langsung",
+                      subtitle: "Lulusan SMP/Sederajat",
+                      desc: "Jalur langsung tanpa IL. Khusus yang lancar berbahasa Arab & hafal minimal 5 juz mutqin.",
                     },
                   ].map((option) => {
                     const isPutra = formData.jenis_kelamin === "L";
@@ -389,7 +423,7 @@ export default function DaftarPage() {
                             jenjang: option.value as any,
                           }));
                         }}
-                        className={`relative cursor-pointer rounded-[2rem] p-6 border-2 transition-all duration-300 app-card ${
+                        className={`relative cursor-pointer rounded-[2rem] p-6 border-2 transition-all duration-300 app-card flex flex-col justify-between ${
                           isClosed
                             ? "opacity-50 grayscale cursor-not-allowed border-secondary-200 bg-stone-50"
                             : formData.jenjang === option.value
@@ -403,29 +437,34 @@ export default function DaftarPage() {
                           </div>
                         )}
 
-                        <div className="flex items-center gap-4 relative z-0">
-                          <div
-                            className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
-                              formData.jenjang === option.value
-                                ? "border-primary-600"
-                                : "border-secondary-200"
-                            }`}
-                          >
-                            {formData.jenjang === option.value && (
-                              <motion.div
-                                layoutId="jk-dot-jenjang"
-                                className="w-3 h-3 rounded-full bg-primary-600"
-                              />
-                            )}
+                        <div className="flex flex-col gap-4 h-full justify-between">
+                          <div className="flex items-center gap-3 relative z-0">
+                            <div
+                              className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors shrink-0 ${
+                                formData.jenjang === option.value
+                                  ? "border-primary-600"
+                                  : "border-secondary-200"
+                              }`}
+                            >
+                              {formData.jenjang === option.value && (
+                                <motion.div
+                                  layoutId="jk-dot-jenjang"
+                                  className="w-3 h-3 rounded-full bg-primary-600"
+                                />
+                              )}
+                            </div>
+                            <div>
+                              <p className="font-display font-black text-lg text-ink-950 leading-tight mb-0.5">
+                                {option.title}
+                              </p>
+                              <p className="text-[10px] text-ink-600 font-black uppercase tracking-wider">
+                                {option.subtitle}
+                              </p>
+                            </div>
                           </div>
-                          <div>
-                            <p className="font-display font-black text-xl text-ink-950 leading-none mb-1">
-                              {option.title}
-                            </p>
-                            <p className="text-xs text-ink-600 font-black uppercase tracking-widest">
-                              {option.subtitle}
-                            </p>
-                          </div>
+                          <p className="text-xs text-ink-500 font-bold leading-relaxed pt-2 border-t border-secondary-100/80">
+                            {option.desc}
+                          </p>
                         </div>
                       </motion.div>
                     );

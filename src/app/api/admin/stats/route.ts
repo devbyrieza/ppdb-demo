@@ -109,7 +109,7 @@ export async function GET(request: Request) {
       let jenjang = "MTS"; // Default fallback
       if (jRaw.includes("MTS")) jenjang = "MTS";
       else if (jRaw.includes("IL")) jenjang = "IL";
-      else if (jRaw.includes("SMA")) jenjang = "SMA";
+      else if (jRaw.includes("SMA") || jRaw === "MA" || jRaw.includes("MA")) jenjang = "SMA";
       else jenjang = "MTS";
 
       if (!jenjangCounts[jenjang]) {
