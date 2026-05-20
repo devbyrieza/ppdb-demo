@@ -19,7 +19,6 @@ export default async function AdminDashboardLayout({
   let unverifiedPaymentsCount = 0;
   let unverifiedDocsCount = 0;
   let pendingDataRequestsCount = 0;
-  let pindahanCount = 0;
 
   if (sessionCookie) {
     try {
@@ -65,14 +64,6 @@ export default async function AdminDashboardLayout({
           },
         });
 
-        // 4. Siswa pindahan yang belum selesai proses
-        pindahanCount = await prisma.pendaftar.count({
-          where: {
-            ...baseWhere,
-            tipe_pendaftaran: "PINDAHAN",
-            status_pendaftaran: { notIn: ["enrolled_full", "pindah_keluar"] },
-          },
-        });
       }
     } catch (error) {
       console.error("Failed to parse session cookie or query sidebar stats:", error);
@@ -88,7 +79,6 @@ export default async function AdminDashboardLayout({
       unverifiedPaymentsCount={unverifiedPaymentsCount}
       unverifiedDocsCount={unverifiedDocsCount}
       pendingDataRequestsCount={pendingDataRequestsCount}
-      pindahanCount={pindahanCount}
     >
       {children}
     </AdminSidebar>
