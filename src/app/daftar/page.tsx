@@ -340,31 +340,7 @@ export default function DaftarPage() {
               )}
             </AnimatePresence>
 
-            {/* Santri Pindahan Highlight Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.35 }}
-              className="mb-10 bg-amber-50 border border-amber-200 rounded-3xl p-6 flex items-start gap-4 relative z-10 overflow-hidden shadow-premium-xs"
-            >
-              <div className="w-10 h-10 bg-amber-500 rounded-full flex items-center justify-center text-white shrink-0 shadow-premium-xs">
-                <AlertCircle className="w-6 h-6" />
-              </div>
-              <div className="flex-1">
-                <p className="text-lg font-display font-black text-amber-900 leading-none mb-1">
-                  Pendaftaran Santri Pindahan
-                </p>
-                <p className="text-sm text-amber-700 font-bold leading-relaxed mb-3">
-                  Khusus calon santri pindahan yang akan masuk ke kelas <strong>8 MTs, 9 MTs, 11 MA, atau 12 MA</strong>, mohon <strong>TIDAK</strong> mengisi formulir reguler ini agar penempatan tidak salah.
-                </p>
-                <Link
-                  href="/daftar-pindahan"
-                  className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-amber-800 hover:text-amber-950 transition-colors bg-amber-100 hover:bg-amber-200/80 px-4 py-2.5 rounded-full border border-amber-200/50"
-                >
-                  Daftar Lewat Jalur Pindahan <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-              </div>
-            </motion.div>
+
 
             <form onSubmit={handleSubmit} className="space-y-12 relative z-10">
               {/* Section: Jenjang */}
@@ -470,6 +446,33 @@ export default function DaftarPage() {
                     );
                   })}
                 </div>
+
+                {/* Santri Pindahan Highlight Card */}
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.35 }}
+                  className="mt-8 bg-amber-50 border border-amber-200 rounded-3xl p-6 flex items-start gap-4 relative z-10 overflow-hidden shadow-premium-xs"
+                >
+                  <div className="w-10 h-10 bg-amber-500 rounded-full flex items-center justify-center text-white shrink-0 shadow-premium-xs">
+                    <AlertCircle className="w-6 h-6" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-lg font-display font-black text-amber-900 leading-none mb-1">
+                      Pendaftaran Santri Pindahan
+                    </p>
+                    <p className="text-sm text-amber-700 font-bold leading-relaxed mb-3">
+                      Khusus calon santri pindahan yang akan masuk ke kelas <strong>8 MTs, 9 MTs, 11 MA, atau 12 MA</strong>, mohon <strong>TIDAK</strong> mengisi formulir reguler ini agar penempatan tidak salah.
+                    </p>
+                    <Link
+                      href="/daftar-pindahan"
+                      className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-amber-800 hover:text-amber-950 transition-colors bg-amber-100 hover:bg-amber-200/80 px-4 py-2.5 rounded-full border border-amber-200/50"
+                    >
+                      Daftar Lewat Jalur Pindahan <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  </div>
+                </motion.div>
+
                 {fieldErrors.jenjang && (
                   <p className="text-xs text-red-600 mt-4 font-bold flex items-center gap-1 ml-1">
                     <AlertCircle className="w-3.5 h-3.5" />{" "}
