@@ -327,6 +327,16 @@ export async function enqueueWhatsapp(
     const { pendaftarId, phone, jenisNotif, messageContent, scheduledAt, force } =
         params;
 
+    // Verify that the pendaftar is active and not soft-deleted
+    const pendaftar = await prisma.pendaftar.findUnique({
+        where: { id: pendaftarId },
+        select: { deleted_at: true },
+    });
+    if (!pendaftar || pendaftar.deleted_at !== null) {
+        console.log(`🚫 [Enqueue] Blocked: pendaftar ${pendaftarId} is deleted or not found.`);
+        return { queued: false, reason: "Pendaftar telah dihapus (soft-deleted atau tidak ditemukan)" };
+    }
+
     // Layer 1: Duplicate check (skip if force is true)
     const duplicate = !force && await isDuplicate(pendaftarId, jenisNotif, phone);
     if (duplicate) {
@@ -403,6 +413,33 @@ export async function processWhatsappQueue(): Promise<{
 
     if (!pendingMessage) {
         return { processed: false, reason: "Tidak ada pesan dalam antrian" };
+    }
+
+    // Verify that the associated pendaftar is active and not soft-deleted
+    if (pendingMessage.pendaftar_id) {
+        const pendaftar = await prisma.pendaftar.findUnique({
+            where: { id: pendingMessage.pendaftar_id },
+            select: { deleted_at: true },
+        });
+
+        if (!pendaftar || pendaftar.deleted_at !== null) {
+            // Cancel this WhatsApp log
+            await prisma.whatsappLog.update({
+                where: { id: pendingMessage.id },
+                data: {
+                    status: "failed",
+                    error_message: "Pendaftar telah dihapus (soft-deleted atau tidak ditemukan)",
+                    updated_at: new Date(),
+                },
+            });
+            console.log(`🚫 [Queue] Skipped sending message ${pendingMessage.id}: pendaftar ${pendingMessage.pendaftar_id} is deleted or not found.`);
+            return {
+                processed: true,
+                logId: pendingMessage.id,
+                status: "failed",
+                reason: "Pendaftar telah dihapus",
+            };
+        }
     }
 
     // Check retry delay for previously failed messages

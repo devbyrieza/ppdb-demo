@@ -36,6 +36,9 @@ export async function GET(request: Request) {
             lte: windowEnd,
           },
         },
+        pendaftar: {
+          deleted_at: null,
+        },
       },
       include: {
         pendaftar: {

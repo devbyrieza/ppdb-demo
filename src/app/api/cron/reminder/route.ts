@@ -40,6 +40,9 @@ export async function GET(request: Request) {
                         lte: fourHoursPlus15Min,
                     },
                 },
+                pendaftar: {
+                    deleted_at: null,
+                },
             },
             include: {
                 pendaftar: {
