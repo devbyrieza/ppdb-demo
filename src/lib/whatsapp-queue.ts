@@ -421,6 +421,26 @@ export async function processWhatsappQueue(): Promise<{
         return { processed: false, reason: "Tidak ada pesan dalam antrian" };
     }
 
+    // Discard messages that have been stuck for > 24 hours to avoid blasting obsolete notifications
+    const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+    if (pendingMessage.created_at < twentyFourHoursAgo) {
+        await prisma.whatsappLog.update({
+            where: { id: pendingMessage.id },
+            data: {
+                status: "failed",
+                error_message: "Message expired (stuck in queue for > 24h)",
+                updated_at: now,
+            },
+        });
+        console.log(`🚫 [Queue] Discarded obsolete message ${pendingMessage.id} (created: ${pendingMessage.created_at})`);
+        return {
+            processed: true,
+            logId: pendingMessage.id,
+            status: "failed",
+            reason: "Message expired",
+        };
+    }
+
     // Verify that the associated pendaftar is active and not soft-deleted
     if (pendingMessage.pendaftar_id) {
         const pendaftar = await prisma.pendaftar.findUnique({
