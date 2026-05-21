@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
       jenis_kelamin,
     );
 
-    await prisma.pendaftar.create({
+    const newPendaftar = await prisma.pendaftar.create({
       data: {
         nomor_pendaftaran: nomorPendaftaran,
         tahun_ajaran_id: tahunAjaran.id,
@@ -105,24 +105,16 @@ export async function POST(request: NextRequest) {
     // Send WhatsApp notification via Queue
     try {
       if (no_hp) {
-        // Find pendaftar id since we didn't capture it from the create call
-        const pendaftar = await prisma.pendaftar.findUnique({
-          where: { nomor_pendaftaran: nomorPendaftaran },
-          select: { id: true },
+        await enqueueWhatsapp({
+          pendaftarId: newPendaftar.id,
+          phone: no_hp,
+          jenisNotif: "registration_success",
+          messageContent: buildMessageRegistrationSuccess(
+            nama_lengkap,
+            nomorPendaftaran,
+            jenjang,
+          ),
         });
-
-        if (pendaftar) {
-          await enqueueWhatsapp({
-            pendaftarId: pendaftar.id,
-            phone: no_hp,
-            jenisNotif: "registration_success",
-            messageContent: buildMessageRegistrationSuccess(
-              nama_lengkap,
-              nomorPendaftaran,
-              jenjang,
-            ),
-          });
-        }
       }
     } catch (error) {
       console.error("WhatsApp notification enqueue error:", error);

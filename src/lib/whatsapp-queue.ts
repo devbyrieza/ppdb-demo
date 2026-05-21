@@ -402,11 +402,17 @@ export async function processWhatsappQueue(): Promise<{
 
     // Layer 2: Pick ONE message, oldest first (sequential processing)
     const now = new Date();
+    const retryThreshold = new Date(now.getTime() - RETRY_DELAY_MINUTES * 60 * 1000);
+
     const pendingMessage = await prisma.whatsappLog.findFirst({
         where: {
             status: "pending",
             scheduled_at: { lte: now },
             attempt_count: { lt: MAX_RETRY_ATTEMPTS },
+            OR: [
+                { failed_at: null },
+                { failed_at: { lte: retryThreshold } }
+            ]
         },
         orderBy: { scheduled_at: "asc" },
     });
