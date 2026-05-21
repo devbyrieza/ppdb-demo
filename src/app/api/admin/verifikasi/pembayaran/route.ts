@@ -272,6 +272,7 @@ export async function PATCH(request: NextRequest) {
             where: {
               pendaftar_id: pembayaran.pendaftar_id,
               jenis_notif: activeJenisNotif,
+              status: { in: ["pending", "processing", "sent"] },
             },
           });
           if (existingVerifiedNotif) {
@@ -288,16 +289,20 @@ export async function PATCH(request: NextRequest) {
           // Choose correct message builder based on scenario
           let finalMessage = "";
           if (isVerifiedPayment) {
+            const metodePembayaran = pembayaran.metode_pembayaran || "Transfer";
+            
             if (isDaftarUlang) {
               finalMessage = buildMessageDaftarUlangVerified(
                 pembayaran.pendaftar.nama_lengkap,
                 formattedAmount,
+                metodePembayaran,
                 paymentDate,
               );
             } else {
               finalMessage = buildMessagePaymentVerified(
                 pembayaran.pendaftar.nama_lengkap,
                 formattedAmount,
+                metodePembayaran,
                 paymentDate,
               );
             }

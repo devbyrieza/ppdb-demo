@@ -769,22 +769,23 @@ Jazakumullahu khairan
 *Panitia PPDB ${BRANDING.schoolName}*`;
 }
 
-export function buildMessagePaymentVerified(nama: string, jumlah: string, tanggal: string): string {
-    return `✅ *Pembayaran Pendaftaran Diterima*
+export function buildMessagePaymentVerified(nama: string, jumlah: string, metode: string, tanggal: string): string {
+    return `✅ *Pembayaran Diterima*
 
 Assalamu'alaikum Abu/Ummu,
 
-Alhamdulillah, pembayaran pendaftaran Ananda *${nama}* telah kami terima dan verifikasi.
+Alhamdulillah, pembayaran Ananda *${nama}* telah kami terima dan verifikasi.
 
 💰 *Detail Pembayaran:*
-• Jumlah: ${jumlah}
-• Tanggal: ${tanggal}
+* Jumlah: ${jumlah}
+* Metode: ${metode}
+* Tanggal: ${tanggal}
 
 📝 *Langkah Selanjutnya:*
-Silakan login ke dashboard untuk melengkapi Data Calon Santri & Upload Berkas.
-Setelah data dan berkas lengkap, Abu/Ummu bisa memilih jadwal tes.
+Silakan login ke dashboard untuk melengkapi Data Santri & Upload Berkas.
+Setelah data lengkap, Anda bisa memilih jadwal tes.
 
-Dashboard: ${BRANDING.websiteUrl}/dashboard/pendaftar/isi-data-lengkap
+Dashboard: ${BRANDING.websiteUrl}/dashboard/pendaftar/kelengkapan-berkas
 
 Jazakumullahu khairan
 
@@ -792,7 +793,7 @@ Jazakumullahu khairan
 *Panitia PPDB ${BRANDING.schoolName}*`;
 }
 
-export function buildMessageDaftarUlangVerified(nama: string, jumlah: string, tanggal: string): string {
+export function buildMessageDaftarUlangVerified(nama: string, jumlah: string, metode: string, tanggal: string): string {
     return `✅ *Pembayaran Daftar Ulang Diterima*
 
 Assalamu'alaikum Abu/Ummu,
@@ -800,11 +801,12 @@ Assalamu'alaikum Abu/Ummu,
 Alhamdulillah, pembayaran Daftar Ulang Ananda *${nama}* telah kami terima dan verifikasi.
 
 💰 *Detail Pembayaran:*
-• Jumlah: ${jumlah}
-• Status: Terkonfirmasi
-• Tanggal: ${tanggal}
+* Jumlah: ${jumlah}
+* Metode: ${metode}
+* Status: Terkonfirmasi
+* Tanggal: ${tanggal}
 
-📝 *Informasi Selanjutnya:*
+💡 *Informasi Selanjutnya:*
 Ananda kini tercatat sebagai calon santri yang telah melakukan Daftar Ulang. Mohon nantikan informasi selanjutnya terkait persiapan masuk pesantren melalui dashboard atau grup resmi.
 
 Jazakumullahu khairan
