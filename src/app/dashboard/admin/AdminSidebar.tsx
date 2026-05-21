@@ -254,7 +254,26 @@ export default function AdminSidebar({
                   </Link>
                 ))}
               </nav>
-              <div className="p-8 border-t border-ink-50">
+              <div className="p-8 border-t border-ink-50 space-y-3">
+                {availableRoles && availableRoles.length > 1 && (
+                  <div className="relative group">
+                    <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                      <UserCircle className="w-3.5 h-3.5 text-primary-600" />
+                    </div>
+                    <select
+                      value={userRole || ""}
+                      onChange={handleRoleSwitch}
+                      className="w-full appearance-none bg-ink-50 border border-ink-100 text-[10px] font-black text-primary-900 uppercase tracking-widest pl-10 pr-8 py-3 rounded-xl cursor-pointer focus:outline-none focus:ring-4 focus:ring-primary-500/5 transition-all group-hover:bg-ink-100"
+                    >
+                      {availableRoles.map((role) => (
+                        <option key={role} value={role}>
+                          {ROLE_LABELS[role as UserRole] || role}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronRight className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary-400 pointer-events-none group-hover:text-primary-900 transition-colors" />
+                  </div>
+                )}
                 <button
                   onClick={handleLogout}
                   className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-red-50 text-red-600 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-red-100 transition-all active:scale-95"
@@ -318,7 +337,7 @@ export default function AdminSidebar({
                     </option>
                   ))}
                 </select>
-                <ChevronRight className="absolute right-3 top-1/2 -tranink-y-1/2 w-3.5 h-3.5 text-primary-400 pointer-events-none group-hover:text-primary-900 transition-colors" />
+                <ChevronRight className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-primary-400 pointer-events-none group-hover:text-primary-900 transition-colors" />
               </div>
             </div>
           )}
@@ -445,7 +464,7 @@ export default function AdminSidebar({
             </div>
             <div className="h-6 w-px bg-ink-100" />
             <div className="relative group">
-              <Search className="absolute left-4 top-1/2 -tranink-y-1/2 w-4 h-4 text-ink-300 group-focus-within:text-primary-600 transition-colors" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-300 group-focus-within:text-primary-600 transition-colors" />
               <input
                 type="text"
                 placeholder="Cari data sistem..."
