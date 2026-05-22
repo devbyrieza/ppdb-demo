@@ -9,7 +9,6 @@ import Image from "next/image";
 import {
   ArrowRight,
   GraduationCap,
-  Sparkles,
   Globe,
   CheckCircle2,
   Gift,
@@ -180,7 +179,7 @@ export default function HeroSection() {
                 className="text-sm font-semibold italic"
                 style={{ color: "var(--color-primary-700)" }}
               >
-                "{BRANDING.schoolTagline}"
+                &ldquo;{BRANDING.schoolTagline}&rdquo;
               </p>
               <div
                 className="h-px flex-1 max-w-[3rem]"

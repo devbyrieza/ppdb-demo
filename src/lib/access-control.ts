@@ -218,14 +218,12 @@ export function getMenuItemsForRole(role: UserRole) {
       { name: "Dashboard", href: "/dashboard/admin", icon: "LayoutDashboard" },
       { name: "Data Pendaftar", href: "/dashboard/admin/pendaftar", icon: "Users" },
       { name: "Verifikasi Dokumen", href: "/dashboard/admin/verifikasi-dokumen", icon: "FileCheck" },
-      { name: "Santri Pindahan", href: "/dashboard/admin/pindahan", icon: "Shuffle" },
     ],
     admin_keuangan: [
       { name: "Dashboard", href: "/dashboard/admin", icon: "LayoutDashboard" },
       { name: "Data Pendaftar", href: "/dashboard/admin/pendaftar", icon: "Users" },
       { name: "Verifikasi Pembayaran", href: "/dashboard/admin/verifikasi-pembayaran", icon: "CreditCard" },
       { name: "Rekap Keuangan", href: "/dashboard/admin/keuangan", icon: "BarChart" },
-      { name: "Santri Pindahan", href: "/dashboard/admin/pindahan", icon: "Shuffle" },
     ],
     penguji: [
       { name: "Dashboard", href: "/dashboard/penguji", icon: "LayoutDashboard" },
@@ -245,7 +243,6 @@ export function getMenuItemsForRole(role: UserRole) {
     admin_super: [
       { name: "Dashboard", href: "/dashboard/admin", icon: "LayoutDashboard" },
       { name: "Data Pendaftar", href: "/dashboard/admin/pendaftar", icon: "Users", group: "OPERASIONAL" },
-      { name: "Santri Pindahan", href: "/dashboard/admin/pindahan", icon: "Shuffle", group: "OPERASIONAL" },
       { name: "Rekap Keuangan", href: "/dashboard/admin/keuangan", icon: "Landmark", group: "OPERASIONAL" },
       { name: "Monitoring Jadwal", href: "/dashboard/admin/jadwal/monitoring", icon: "Calendar", group: "OPERASIONAL" },
       { name: "Rekap Nilai & Kelulusan", href: "/dashboard/admin/audit-seleksi", icon: "Activity", group: "HASIL SELEKSI" },

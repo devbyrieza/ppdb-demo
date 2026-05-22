@@ -1138,11 +1138,21 @@ function AdminPendaftarContent() {
                 href="/daftar"
                 target="_blank"
                 className="flex items-center gap-2 px-3 md:px-4 py-2.5 bg-violet-700 hover:bg-violet-800 text-white rounded-xl font-bold shadow-sm shadow-violet-700/20 transition-all text-sm ml-1"
-                title="Daftarkan Santri Baru"
+                title="Daftarkan Santri Reguler"
               >
                 <Plus className="w-4 h-4" />
-                <span className="hidden sm:inline">Daftar Baru</span>
+                <span className="hidden sm:inline">Daftar Reguler</span>
               </Link>
+              <Link
+                href="/daftar-pindahan"
+                target="_blank"
+                className="flex items-center gap-2 px-3 md:px-4 py-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-bold shadow-sm shadow-purple-600/20 transition-all text-sm"
+                title="Daftarkan Santri Pindahan"
+              >
+                <Shuffle className="w-4 h-4" />
+                <span className="hidden sm:inline">Daftar Pindahan</span>
+              </Link>
+            </>
             )}
           </div>
         </div>

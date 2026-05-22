@@ -126,19 +126,28 @@ export async function GET(request: NextRequest) {
       };
     });
 
-    // Fetch counts for pending status grouped by jenis
-    const pendingCounts = await prisma.pembayaran.groupBy({
-      by: ['jenis_pembayaran'],
+    // Fetch counts for pending status explicitly
+    const baseWhere = getAdminWhereClause() as any;
+    
+    const countPendaftaran = await prisma.pembayaran.count({
       where: {
         status_pembayaran: { notIn: ["verified", "rejected"] },
-        pendaftar: { is: getAdminWhereClause() }
-      },
-      _count: { _all: true }
+        jenis_pembayaran: "PENDAFTARAN",
+        pendaftar: baseWhere
+      }
+    });
+
+    const countDaftarUlang = await prisma.pembayaran.count({
+      where: {
+        status_pembayaran: { notIn: ["verified", "rejected"] },
+        jenis_pembayaran: "DAFTAR_ULANG",
+        pendaftar: baseWhere
+      }
     });
     
     const counts = {
-      PENDAFTARAN: pendingCounts.find(c => c.jenis_pembayaran === 'PENDAFTARAN')?._count._all || 0,
-      DAFTAR_ULANG: pendingCounts.find(c => c.jenis_pembayaran === 'DAFTAR_ULANG')?._count._all || 0,
+      PENDAFTARAN: countPendaftaran,
+      DAFTAR_ULANG: countDaftarUlang,
     };
 
     return NextResponse.json({ data: dataWithUrls, counts });

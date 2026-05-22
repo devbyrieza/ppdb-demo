@@ -326,12 +326,6 @@ export default function Navbar() {
                     Managed by Al-Hikmah IIBS
                   </p>
                 </div>
-                {/* Template label */}
-                <div className="ml-auto">
-                  <span className="text-[10px] font-black px-2.5 py-1 rounded-full bg-[var(--color-primary-50)] text-[var(--color-primary-600)] border border-[var(--color-primary-100)] uppercase tracking-wider">
-                    Template
-                  </span>
-                </div>
               </div>
 
               {/* Scrollable Nav */}
