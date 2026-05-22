@@ -47,6 +47,7 @@ export async function GET(request: NextRequest) {
     const kabupaten = searchParams.get("kabupaten") || "";
     const kecamatan = searchParams.get("kecamatan") || "";
     const kelurahan = searchParams.get("kelurahan") || "";
+    const tipePendaftaran = searchParams.get("tipe_pendaftaran") || "";
 
     const skip = (page - 1) * limit;
 
@@ -54,7 +55,6 @@ export async function GET(request: NextRequest) {
     const baseWhere = getAdminWhereClause(tahunAjaran || undefined) as any;
     const where: Prisma.PendaftarWhereInput = {
       ...baseWhere,
-      tipe_pendaftaran: { not: "PINDAHAN" },
     };
 
     // Search filter
@@ -140,12 +140,13 @@ export async function GET(request: NextRequest) {
     if (kabupaten) where.kabupaten = kabupaten;
     if (kecamatan) where.kecamatan = kecamatan;
     if (kelurahan) where.kelurahan = kelurahan;
+    if (tipePendaftaran) where.tipe_pendaftaran = tipePendaftaran;
 
     // Execute query with transaction for count and data
     // Execute query with transaction for count and data
 
     // === REDIS CACHE CHECK ===
-    const cacheKey = `admin_pendaftar_list_${tahunAjaran}_${page}_${limit}_${search}_${status}_${jenjang}_${jenisKelamin}_${provinsi}_${kabupaten}_${kecamatan}_${kelurahan}`;
+    const cacheKey = `admin_pendaftar_list_${tahunAjaran}_${page}_${limit}_${search}_${status}_${jenjang}_${jenisKelamin}_${tipePendaftaran}_${provinsi}_${kabupaten}_${kecamatan}_${kelurahan}`;
     const cachedData = await getCache<any>(cacheKey);
     if (cachedData) {
       console.log(`⚡ [API Pendaftar List] Mengembalikan data dari Redis Cache!`);
@@ -164,6 +165,7 @@ export async function GET(request: NextRequest) {
         nama_lengkap: true,
         jenis_kelamin: true,
         jenjang: true,
+        tipe_pendaftaran: true,
         tanggal_lahir: true,
         no_hp: true,
         email: true,

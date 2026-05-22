@@ -42,6 +42,7 @@ interface Pembayaran {
     jenjang: string;
     no_hp: string | null;
     jenis_kelamin?: string;
+    tipe_pendaftaran?: string;
   } | null;
   tipe_cicilan: string;
   jumlah_cicilan: number;
@@ -634,6 +635,11 @@ function VerifikasiPembayaranContent() {
                           {pay.pendaftar?.nama_lengkap
                             ? toTitleCase(pay.pendaftar.nama_lengkap || "")
                             : "Tanpa Nama"}
+                          {pay.pendaftar?.tipe_pendaftaran === "PINDAHAN" && (
+                            <span className="ml-2 px-2 py-0.5 bg-violet-100 text-violet-700 rounded-full text-[10px] font-black uppercase tracking-wider border border-violet-200">
+                              PINDAHAN
+                            </span>
+                          )}
                         </h3>
                         <div className="flex flex-wrap items-center gap-3 text-sm mt-1">
                           <span className="font-mono bg-stone-100 px-2 py-0.5 rounded text-stone-600 font-bold">

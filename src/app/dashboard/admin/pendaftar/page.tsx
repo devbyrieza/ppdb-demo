@@ -176,6 +176,7 @@ function AdminPendaftarContent() {
   const [jenjangFilter, setJenjangFilter] = useState("");
   const [jenisKelaminFilter, setJenisKelaminFilter] = useState("");
   const [tahunAjaranFilter, setTahunAjaranFilter] = useState("");
+  const [tipePendaftaranFilter, setTipePendaftaranFilter] = useState("");
   const [tahunAjaranList, setTahunAjaranList] = useState<TahunAjaran[]>([]);
   // Location filters
   const [provinsiFilter, setProvinsiFilter] = useState("");
@@ -470,6 +471,8 @@ function AdminPendaftarContent() {
       if (jenjangFilter) params.append("jenjang", jenjangFilter);
       if (jenisKelaminFilter)
         params.append("jenis_kelamin", jenisKelaminFilter);
+      if (tipePendaftaranFilter)
+        params.append("tipe_pendaftaran", tipePendaftaranFilter);
       if (tahunAjaranFilter) params.append("tahun_ajaran", tahunAjaranFilter);
       if (provinsiFilter) params.append("provinsi", provinsiFilter);
       if (kabupatenFilter) params.append("kabupaten", kabupatenFilter);
@@ -498,6 +501,7 @@ function AdminPendaftarContent() {
     statusFilter,
     jenjangFilter,
     jenisKelaminFilter,
+    tipePendaftaranFilter,
     tahunAjaranFilter,
     provinsiFilter,
     kabupatenFilter,
@@ -1334,10 +1338,30 @@ function AdminPendaftarContent() {
             </select>
           </div>
 
+          {/* Tipe Pendaftaran Filter */}
+          <div>
+            <label className="block text-[10px] font-black text-primary-900 mb-2 leading-none uppercase tracking-widest">
+              Filter Jalur Daftar
+            </label>
+            <select
+              value={tipePendaftaranFilter}
+              onChange={(e) => {
+                setTipePendaftaranFilter(e.target.value);
+                setPagination((prev) => ({ ...prev, page: 1 }));
+              }}
+              className="w-full px-4 py-3 bg-secondary-50/50 border border-secondary-100 rounded-xl focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950"
+            >
+              <option value="">Semua Jalur</option>
+              <option value="BARU">Reguler (Baru)</option>
+              <option value="PINDAHAN">Pindahan</option>
+            </select>
+          </div>
+
           {/* Clear Filters */}
           {(search ||
             statusFilter ||
             jenjangFilter ||
+            tipePendaftaranFilter ||
             tahunAjaranFilter ||
             jenisKelaminFilter) && (
             <div className="flex items-end">
@@ -1350,6 +1374,8 @@ function AdminPendaftarContent() {
                   setJenisKelaminFilter("");
                   setTahunAjaranFilter("");
                   // Clear location filters
+                  setTahunAjaranFilter("");
+                  setTipePendaftaranFilter("");
                   setProvinsiFilter("");
                   setKabupatenFilter("");
                   setKecamatanFilter("");

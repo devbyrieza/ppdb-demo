@@ -41,11 +41,10 @@ export async function GET(req: NextRequest) {
     const kabupaten = searchParams.get("kabupaten") || "";
     const kecamatan = searchParams.get("kecamatan") || "";
     const kelurahan = searchParams.get("kelurahan") || "";
+    const tipePendaftaran = searchParams.get("tipe_pendaftaran") || "";
 
     // Build query - fetch ALL records (no pagination for export)
-    const where: Prisma.PendaftarWhereInput = {
-      tipe_pendaftaran: { not: "PINDAHAN" },
-    };
+    const where: Prisma.PendaftarWhereInput = {};
 
     // Search filter
     if (search) {
@@ -68,6 +67,7 @@ export async function GET(req: NextRequest) {
     if (kabupaten) where.kabupaten = kabupaten;
     if (kecamatan) where.kecamatan = kecamatan;
     if (kelurahan) where.kelurahan = kelurahan;
+    if (tipePendaftaran) where.tipe_pendaftaran = tipePendaftaran;
 
     const pendaftarData = await prisma.pendaftar.findMany({
       where,
@@ -90,6 +90,7 @@ export async function GET(req: NextRequest) {
         no_hp: true,
         email: true,
         status_pendaftaran: true,
+        tipe_pendaftaran: true,
         created_at: true,
         tahun_ajaran: {
           select: { nama: true },
@@ -106,6 +107,7 @@ export async function GET(req: NextRequest) {
       "Jenis Kelamin",
       "Tempat Lahir",
       "Tanggal Lahir",
+      "Jalur",
       "Jenjang",
       "Asal Sekolah",
       "Alamat",
@@ -133,6 +135,7 @@ export async function GET(req: NextRequest) {
       "Tanggal Lahir": item.tanggal_lahir
         ? new Date(item.tanggal_lahir).toLocaleDateString("id-ID")
         : "-",
+      Jalur: item.tipe_pendaftaran === "PINDAHAN" ? "Pindahan" : "Reguler",
       Jenjang: item.jenjang || "-",
       "Asal Sekolah": item.asal_sekolah || "-",
       Alamat: item.alamat || "-",

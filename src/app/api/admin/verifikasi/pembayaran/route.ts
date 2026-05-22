@@ -78,6 +78,7 @@ export async function GET(request: NextRequest) {
             jenjang: true,
             no_hp: true,
             jenis_kelamin: true,
+            tipe_pendaftaran: true,
             pembayaran: {
               where: {
                 status_pembayaran: "verified",
@@ -116,6 +117,7 @@ export async function GET(request: NextRequest) {
           jenjang: pembayaran.pendaftar?.jenjang,
           no_hp: pembayaran.pendaftar?.no_hp,
           jenis_kelamin: pembayaran.pendaftar?.jenis_kelamin,
+          tipe_pendaftaran: pembayaran.pendaftar?.tipe_pendaftaran,
         },
         tipe_cicilan: pembayaran.tipe_cicilan,
         cicilan_ke: pembayaran.cicilan_ke,

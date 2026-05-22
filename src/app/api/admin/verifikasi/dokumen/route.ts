@@ -71,6 +71,7 @@ export async function GET(request: NextRequest) {
             nama_lengkap: true,
             jenjang: true,
             no_hp: true,
+            tipe_pendaftaran: true,
           },
         },
       },
