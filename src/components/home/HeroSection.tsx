@@ -267,7 +267,7 @@ export default function HeroSection() {
                 {[
                   "MTs & IL tersedia",
                   "Proses cepat & transparan",
-                  BRANDING.schoolNetwork,
+                  "Sistem Boarding (Asrama)",
                 ].map((point) => (
                   <span
                     key={point}
