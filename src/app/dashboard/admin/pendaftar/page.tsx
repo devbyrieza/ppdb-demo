@@ -30,6 +30,7 @@ import {
   UploadCloud,
   CreditCard,
   Trash2,
+  Plus,
 } from "lucide-react";
 import Link from "next/link";
 import { UserRole } from "@/lib/access-control";
@@ -1121,14 +1122,24 @@ function AdminPendaftarContent() {
             <button
               onClick={() => fetchPendaftar()}
               disabled={refreshing}
-              className="flex items-center gap-2 px-3 md:px-6 py-2.5 bg-white hover:bg-stone-50 border border-stone-200 text-stone-700 rounded-xl font-bold transition-all shadow-sm hover:shadow-md text-sm disabled:opacity-50"
+              className="flex items-center gap-2 px-3 md:px-4 py-2.5 bg-white hover:bg-stone-50 border border-stone-200 text-stone-700 rounded-xl font-bold transition-all shadow-sm hover:shadow-md text-sm disabled:opacity-50"
               title="Muat Ulang"
             >
               <RefreshCw
                 className={`w-4 h-4 ${refreshing ? "animate-spin" : ""}`}
               />
-              <span className="hidden sm:inline">Refresh</span>
             </button>
+            {userRole && ["admin_super", "admin"].includes(userRole) && (
+              <Link
+                href="/daftar"
+                target="_blank"
+                className="flex items-center gap-2 px-3 md:px-4 py-2.5 bg-violet-700 hover:bg-violet-800 text-white rounded-xl font-bold shadow-sm shadow-violet-700/20 transition-all text-sm ml-1"
+                title="Daftarkan Santri Baru"
+              >
+                <Plus className="w-4 h-4" />
+                <span className="hidden sm:inline">Daftar Baru</span>
+              </Link>
+            )}
           </div>
         </div>
       </div>
