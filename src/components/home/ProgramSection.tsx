@@ -39,7 +39,7 @@ const PROGRAMS: ProgramItem[] = [
       "Perpaduan Kurikulum Nasional & Kurikulum Khas Pesantren Al-Fath",
       "Islamic Entrepreneurship",
     ],
-    quota: "25 Kursi",
+    quota: "Putra 32 · Putri 32",
     icon: School,
     variant: "teal",
   },
@@ -55,7 +55,7 @@ const PROGRAMS: ProgramItem[] = [
       "Islamic Entrepreneurship",
       "Persiapan PTN & Universitas Timur Tengah",
     ],
-    quota: "25 Kursi",
+    quota: "Putra 32 · Putri 32",
     icon: BookOpen,
     variant: "sand",
   },
@@ -208,7 +208,7 @@ export default function ProgramSection() {
 
                       <div className="flex flex-col items-end gap-1">
                         <span className="text-[0.6rem] font-bold text-ink-400 uppercase tracking-[0.15em]">
-                          Kapasitas
+                          Kuota
                         </span>
                         <div className="flex items-center gap-1.5 bg-ink-950 text-white px-2.5 py-1 rounded-[8px] shadow-sm">
                           <Users className="w-3 h-3 opacity-70" />
