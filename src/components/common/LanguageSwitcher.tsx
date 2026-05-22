@@ -10,6 +10,10 @@ const LANGUAGES = [
   { code: "ar", name: "العربية", flag: "🇸🇦" },
   { code: "ms", name: "Melayu", flag: "🇲🇾" },
   { code: "zh-CN", name: "简体中文", flag: "🇨🇳" },
+  { code: "ja", name: "日本語", flag: "🇯🇵" },
+  { code: "ko", name: "한국어", flag: "🇰🇷" },
+  { code: "fr", name: "Français", flag: "🇫🇷" },
+  { code: "de", name: "Deutsch", flag: "🇩🇪" },
 ];
 
 export default function LanguageSwitcher() {
@@ -17,6 +21,21 @@ export default function LanguageSwitcher() {
   const [currentLang, setCurrentLang] = useState("id");
 
   useEffect(() => {
+    // ─── Initialize Active Language from Cookie ───
+    const getCookie = (name: string) => {
+      const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+      if (match) return match[2];
+      return null;
+    };
+
+    const cookieVal = getCookie("googtrans");
+    if (cookieVal) {
+      const lang = cookieVal.split("/").pop();
+      if (lang && LANGUAGES.some((l) => l.code === lang)) {
+        setCurrentLang(lang);
+      }
+    }
+
     // ─── Initialize Google Translate ───
     const addGoogleTranslateScript = () => {
       if (document.getElementById("google-translate-script")) return;
@@ -33,8 +52,6 @@ export default function LanguageSwitcher() {
           {
             pageLanguage: "id",
             includedLanguages: "en,ar,ms,zh-CN,id,fr,de,ja,ko",
-            layout:
-              window.google.translate.TranslateElement.InlineLayout.SIMPLE,
             autoDisplay: false,
           },
           "google_translate_element",
@@ -47,29 +64,70 @@ export default function LanguageSwitcher() {
     // ─── Hide Google Translate UI elements (CSS Hack) ───
     const style = document.createElement("style");
     style.innerHTML = `
-      .goog-te-banner-frame.skiptranslate, .goog-te-gadget-icon { display: none !important; }
-      body { top: 0px !important; }
-      .goog-te-gadget-simple { 
-        background-color: transparent !important; 
-        border: none !important;
-        font-size: 0 !important;
+      /* Hide top banner frame */
+      .goog-te-banner-frame, 
+      .goog-te-banner-frame.skiptranslate,
+      #goog-gt-tt, 
+      .goog-te-balloon-frame { 
+        display: none !important; 
       }
-      .goog-te-menu-value { display: none !important; }
-      #google_translate_element { display: none; }
-      .goog-te-menu-frame { box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important; border: none !important; border-radius: 12px !important; }
+      
+      /* Reset body position */
+      body { 
+        top: 0px !important; 
+      }
+      
+      /* Hide native Google Translate combo/widget */
+      #google_translate_element {
+        position: absolute !important;
+        top: -9999px !important;
+        left: -9999px !important;
+        width: 1px !important;
+        height: 1px !important;
+        overflow: hidden !important;
+        visibility: hidden !important;
+      }
+      
+      .goog-logo-link,
+      .goog-te-gadget span {
+        display: none !important;
+      }
+      
+      /* Hide translation suggestion text highlights */
+      .goog-text-highlight {
+        background-color: transparent !important;
+        box-shadow: none !important;
+        box-sizing: border-box !important;
+      }
+      
+      /* Hide dynamically injected google translation elements */
+      .skiptranslate iframe,
+      iframe[class*="goog-te-menu-frame"] {
+        display: none !important;
+      }
     `;
     document.head.appendChild(style);
   }, []);
 
   const changeLanguage = (langCode: string) => {
+    setCurrentLang(langCode);
+    setIsOpen(false);
+
+    // 1. Set standard cookie paths
+    const cookieDomain = window.location.hostname === "localhost" ? "" : `; domain=.${window.location.hostname.replace(/^www\./, "")}`;
+    document.cookie = `googtrans=/id/${langCode}; path=/${cookieDomain}`;
+    document.cookie = `googtrans=/id/${langCode}; path=/`;
+
+    // 2. Trigger native select event if element exists
     const select = document.querySelector(
       ".goog-te-combo",
     ) as HTMLSelectElement;
     if (select) {
       select.value = langCode;
       select.dispatchEvent(new Event("change"));
-      setCurrentLang(langCode);
-      setIsOpen(false);
+    } else {
+      // Fallback if not loaded yet
+      window.location.reload();
     }
   };
 
@@ -110,7 +168,7 @@ export default function LanguageSwitcher() {
                   Pilih Bahasa
                 </p>
               </div>
-              <div className="space-y-0.5">
+              <div className="space-y-0.5 max-h-[280px] overflow-y-auto pr-1">
                 {LANGUAGES.map((lang) => (
                   <button
                     key={lang.code}
@@ -128,20 +186,6 @@ export default function LanguageSwitcher() {
                     {currentLang === lang.code && <Check className="w-4 h-4" />}
                   </button>
                 ))}
-              </div>
-              <div className="mt-2 pt-2 border-t border-slate-50">
-                <button
-                  onClick={() => {
-                    const el = document.querySelector(
-                      ".goog-te-gadget-simple",
-                    ) as HTMLElement;
-                    if (el) el.click();
-                    setIsOpen(false);
-                  }}
-                  className="w-full text-center py-2 text-[10px] font-bold text-slate-400 hover:text-primary-600 transition-colors uppercase tracking-widest"
-                >
-                  Bahasa Lainnya...
-                </button>
               </div>
             </motion.div>
           </>
