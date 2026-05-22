@@ -421,7 +421,7 @@ export default function KegiatanPage() {
       results: [
         { icon: Trophy, text: "Juara Kompetisi Sains & Ketangkasan Fisik" },
         { icon: Award, text: "Pembicara Publik Handal dalam 3 Bahasa" },
-        { icon: Users, text: "Berjiwa Kepemimpinan & Mandiri" },
+        { icon: Users, text: "Berjiwa Leadership & Mandiri" },
       ],
       testimonial: {
         quote:
@@ -547,7 +547,7 @@ export default function KegiatanPage() {
       title: "Pramuka",
       desc: "Kepanduan",
       detail:
-        "Latihan kemandirian, kepemimpinan, dan keterampilan bertahan hidup.",
+        "Latihan kemandirian, leadership, dan keterampilan bertahan hidup.",
       benefit: "Jiwa Pemimpin",
       icon: Tent,
       color: "text-ink-600",
@@ -566,7 +566,7 @@ export default function KegiatanPage() {
     {
       name: "Pramuka",
       icon: Tent,
-      desc: "Pembentukan karakter, kepemimpinan & kemandirian.",
+      desc: "Pembentukan karakter, leadership & kemandirian.",
       benefit: "Jiwa Pemimpin",
     },
     {
