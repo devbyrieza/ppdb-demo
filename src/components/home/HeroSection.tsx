@@ -266,7 +266,7 @@ export default function HeroSection() {
               <div className="flex flex-wrap gap-x-5 gap-y-2 justify-center lg:justify-start mt-1">
                 {[
                   "MTs & IL tersedia",
-                  "Proses cepat & transparan",
+                  "Proses PPDB Cepat & Transparan",
                   "Sistem Boarding (Asrama)",
                 ].map((point) => (
                   <span
