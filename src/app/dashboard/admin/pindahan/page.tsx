@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, Suspense } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Shuffle, Plus, RefreshCw, Loader2, FileSpreadsheet, FileText, X, CheckCircle, LogOut, Trash2 } from "lucide-react";
 import Swal from "sweetalert2";
 import { exportToExcel, exportToPDF } from "@/lib/utils/export";
@@ -46,16 +47,8 @@ function PindahanContent() {
   const [data, setData] = useState<Pindahan[]>([]);
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
   const [statusFilter, setStatusFilter] = useState("all");
   const [tahunAjaranList, setTahunAjaranList] = useState<{id:string;nama:string}[]>([]);
-  const [form, setForm] = useState({
-    nama_lengkap: "", nik: "", jenis_kelamin: "L", jenjang: "MTs",
-    kelas_masuk: "8", asal_institusi: "", nomor_induk_lama: "",
-    catatan_pindahan: "", no_hp: "", email: "",
-    tanggal_lahir: "", tahun_ajaran_id: "", status_pendaftaran: "submitted",
-  });
 
   useEffect(() => { fetchData(); fetchTahunAjaran(); }, [statusFilter]);
 
@@ -78,26 +71,6 @@ function PindahanContent() {
     } catch (e) {}
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!form.nama_lengkap || !form.nik || !form.jenjang || !form.asal_institusi) {
-      Swal.fire("Error", "Mohon lengkapi field yang wajib", "error"); return;
-    }
-    setSubmitting(true);
-    try {
-      const res = await fetch("/api/admin/pindahan", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, kelas_masuk: parseInt(form.kelas_masuk) }),
-      });
-      const json = await res.json();
-      if (!res.ok) { Swal.fire("Gagal", json.error || "Terjadi kesalahan", "error"); return; }
-      Swal.fire("Berhasil!", json.message, "success");
-      setShowModal(false);
-      setForm({ nama_lengkap:"",nik:"",jenis_kelamin:"L",jenjang:"MTs",kelas_masuk:"8",asal_institusi:"",nomor_induk_lama:"",catatan_pindahan:"",no_hp:"",email:"",tanggal_lahir:"",tahun_ajaran_id:"",status_pendaftaran:"submitted" });
-      fetchData();
-    } catch (e) { Swal.fire("Error", "Terjadi kesalahan", "error"); }
-    finally { setSubmitting(false); }
-  };
 
   const handleMarkPindahKeluar = async (id: string, nama: string) => {
     const result = await Swal.fire({
@@ -201,10 +174,10 @@ function PindahanContent() {
             <button onClick={fetchData} className="flex items-center gap-2 px-4 py-2.5 bg-white border border-stone-200 text-stone-700 rounded-xl font-bold text-sm hover:bg-stone-50 transition-all">
               <RefreshCw className="w-4 h-4" />
             </button>
-            <button onClick={() => setShowModal(true)} className="flex items-center gap-2 px-5 py-2.5 bg-violet-700 hover:bg-violet-800 text-white rounded-xl font-bold text-sm shadow-lg shadow-violet-700/20 transition-all">
+            <Link href="/daftar-pindahan" target="_blank" className="flex items-center gap-2 px-5 py-2.5 bg-violet-700 hover:bg-violet-800 text-white rounded-xl font-bold text-sm shadow-lg shadow-violet-700/20 transition-all">
               <Plus className="w-4 h-4" />
               <span>Daftarkan Pindahan</span>
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -287,103 +260,6 @@ function PindahanContent() {
           </div>
         )}
       </div>
-
-      {/* Modal Form */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-[2rem] shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden">
-            <div className="p-6 border-b border-stone-100 flex justify-between items-center bg-violet-50/50">
-              <div>
-                <h3 className="text-xl font-black text-stone-900">Daftarkan Santri Pindahan</h3>
-                <p className="text-sm text-stone-500 mt-0.5">Isi data santri yang pindah ke institusi ini</p>
-              </div>
-              <button onClick={() => setShowModal(false)} className="w-8 h-8 rounded-full bg-stone-200 hover:bg-stone-300 flex items-center justify-center">
-                <X className="w-4 h-4 text-stone-600" />
-              </button>
-            </div>
-            <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-5">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="sm:col-span-2">
-                  <label className="block text-xs font-black text-stone-600 uppercase tracking-widest mb-1.5">Nama Lengkap <span className="text-red-500">*</span></label>
-                  <input required value={form.nama_lengkap} onChange={e => setForm(f => ({...f, nama_lengkap: e.target.value}))}
-                    className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 outline-none font-semibold text-stone-800" placeholder="Nama lengkap santri" />
-                </div>
-                <div>
-                  <label className="block text-xs font-black text-stone-600 uppercase tracking-widest mb-1.5">NIK <span className="text-red-500">*</span></label>
-                  <input required value={form.nik} onChange={e => setForm(f => ({...f, nik: e.target.value}))}
-                    className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 outline-none font-semibold text-stone-800" placeholder="16 digit NIK" maxLength={16} />
-                </div>
-                <div>
-                  <label className="block text-xs font-black text-stone-600 uppercase tracking-widest mb-1.5">No. HP</label>
-                  <input value={form.no_hp} onChange={e => setForm(f => ({...f, no_hp: e.target.value}))}
-                    className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 outline-none font-semibold text-stone-800" placeholder="08xxxxxxxxxx" />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-black text-stone-600 uppercase tracking-widest mb-1.5">Tanggal Lahir</label>
-                  <input type="date" value={form.tanggal_lahir} onChange={e => setForm(f => ({...f, tanggal_lahir: e.target.value}))}
-                    className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 outline-none font-semibold text-stone-800" />
-                </div>
-                <div>
-                  <label className="block text-xs font-black text-stone-600 uppercase tracking-widest mb-1.5">Jenis Kelamin <span className="text-red-500">*</span></label>
-                  <select required value={form.jenis_kelamin} onChange={e => setForm(f => ({...f, jenis_kelamin: e.target.value}))}
-                    className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 outline-none font-semibold text-stone-800 bg-white">
-                    <option value="L">Laki-laki</option>
-                    <option value="P">Perempuan</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-xs font-black text-stone-600 uppercase tracking-widest mb-1.5">Jenjang <span className="text-red-500">*</span></label>
-                  <select required value={form.jenjang} onChange={e => setForm(f => ({...f, jenjang: e.target.value}))}
-                    className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 outline-none font-semibold text-stone-800 bg-white">
-                    <option value="MTs">MTs</option>
-                    <option value="IL">I'dad Lughowi (IL)</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-xs font-black text-stone-600 uppercase tracking-widest mb-1.5">Kelas Masuk <span className="text-red-500">*</span></label>
-                  <select required value={form.kelas_masuk} onChange={e => setForm(f => ({...f, kelas_masuk: e.target.value}))}
-                    className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 outline-none font-semibold text-stone-800 bg-white">
-                    <option value="7">Kelas 7</option>
-                    <option value="8">Kelas 8</option>
-                    <option value="9">Kelas 9</option>
-                  </select>
-                </div>
-                <div className="sm:col-span-2">
-                  <label className="block text-xs font-black text-stone-600 uppercase tracking-widest mb-1.5">Asal Institusi/Sekolah <span className="text-red-500">*</span></label>
-                  <input required value={form.asal_institusi} onChange={e => setForm(f => ({...f, asal_institusi: e.target.value}))}
-                    className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 outline-none font-semibold text-stone-800" placeholder="Nama pesantren/sekolah asal" />
-                </div>
-                <div>
-                  <label className="block text-xs font-black text-stone-600 uppercase tracking-widest mb-1.5">Nomor Induk Lama (NIS)</label>
-                  <input value={form.nomor_induk_lama} onChange={e => setForm(f => ({...f, nomor_induk_lama: e.target.value}))}
-                    className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 outline-none font-semibold text-stone-800" placeholder="NIS di sekolah asal" />
-                </div>
-                <div>
-                  <label className="block text-xs font-black text-stone-600 uppercase tracking-widest mb-1.5">Status Awal</label>
-                  <select value={form.status_pendaftaran} onChange={e => setForm(f => ({...f, status_pendaftaran: e.target.value}))}
-                    className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 outline-none font-semibold text-stone-800 bg-white">
-                    <option value="draft">Terdaftar (Menunggu Bayar)</option>
-                    <option value="verified">Langsung Terverifikasi</option>
-                    <option value="enrolled">Langsung Daftar Ulang</option>
-                  </select>
-                </div>
-                <div className="sm:col-span-2">
-                  <label className="block text-xs font-black text-stone-600 uppercase tracking-widest mb-1.5">Catatan Pindahan</label>
-                  <textarea value={form.catatan_pindahan} onChange={e => setForm(f => ({...f, catatan_pindahan: e.target.value}))} rows={3}
-                    className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 outline-none font-semibold text-stone-800 resize-none" placeholder="Alasan pindah, catatan khusus, dll..." />
-                </div>
-              </div>
-            </form>
-            <div className="p-6 border-t border-stone-100 flex justify-end gap-3">
-              <button type="button" onClick={() => setShowModal(false)} className="px-6 py-2.5 bg-white border border-stone-200 text-stone-700 rounded-xl font-bold hover:bg-stone-50 transition-all">Batal</button>
-              <button onClick={handleSubmit} disabled={submitting} className="flex items-center gap-2 px-6 py-2.5 bg-violet-700 hover:bg-violet-800 text-white rounded-xl font-bold shadow-lg shadow-violet-700/20 transition-all disabled:opacity-50">
-                {submitting ? <><Loader2 className="w-4 h-4 animate-spin" /> Menyimpan...</> : <><Plus className="w-4 h-4" /> Daftarkan</>}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
