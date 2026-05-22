@@ -205,8 +205,8 @@ function StatCard({
           {stat.sublabel}
         </p>
 
-        {/* Description — hover reveal desktop */}
-        <p className="hidden md:block text-[0.7rem] text-ink-400 mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-400 leading-relaxed max-w-[140px]">
+        {/* Description — always visible on mobile, hover reveal on desktop */}
+        <p className="text-[0.65rem] md:text-[0.7rem] text-ink-400 mt-2.5 md:mt-3 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-400 leading-relaxed max-w-[140px]">
           {stat.description}
         </p>
 
