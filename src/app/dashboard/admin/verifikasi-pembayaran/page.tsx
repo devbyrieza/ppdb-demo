@@ -62,6 +62,8 @@ function VerifikasiPembayaranContent() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPembayaran, setSelectedPembayaran] =
     useState<Pembayaran | null>(null);
+  const [dataLoaded, setDataLoaded] = useState(false);
+  const [counts, setCounts] = useState({ PENDAFTARAN: 0, DAFTAR_ULANG: 0 });
   const [showModal, setShowModal] = useState(false);
   const [catatan, setCatatan] = useState("");
   const [editJumlah, setEditJumlah] = useState("");
@@ -136,6 +138,9 @@ function VerifikasiPembayaranContent() {
 
       const result = await response.json();
       setPembayaran(result.data);
+      if (result.counts) {
+        setCounts(result.counts);
+      }
     } catch (error) {
       console.error("Error fetching pembayaran:", error);
     } finally {
@@ -448,23 +453,33 @@ function VerifikasiPembayaranContent() {
           <div className="flex bg-stone-100 p-1.5 rounded-[1.25rem] w-fit shadow-inner ring-1 ring-stone-200/50">
             <button
               onClick={() => updateFilters(undefined, "PENDAFTARAN")}
-              className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${
+              className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${
                 activeTab === "PENDAFTARAN"
                   ? "bg-white text-primary-700 shadow-clay-sm ring-1 ring-stone-100"
                   : "text-stone-400 hover:text-stone-600 hover:bg-stone-50"
               }`}
             >
               Pendaftaran
+              {counts.PENDAFTARAN > 0 && (
+                <span className="bg-rose-500 text-white flex items-center justify-center w-5 h-5 text-[10px] rounded-full shrink-0 shadow-sm">
+                  {counts.PENDAFTARAN}
+                </span>
+              )}
             </button>
             <button
               onClick={() => updateFilters(undefined, "DAFTAR_ULANG")}
-              className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${
+              className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${
                 activeTab === "DAFTAR_ULANG"
                   ? "bg-white text-primary-700 shadow-clay-sm ring-1 ring-stone-100"
                   : "text-stone-400 hover:text-stone-600 hover:bg-stone-50"
               }`}
             >
               Daftar Ulang
+              {counts.DAFTAR_ULANG > 0 && (
+                <span className="bg-rose-500 text-white flex items-center justify-center w-5 h-5 text-[10px] rounded-full shrink-0 shadow-sm">
+                  {counts.DAFTAR_ULANG}
+                </span>
+              )}
             </button>
           </div>
 

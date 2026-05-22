@@ -124,7 +124,22 @@ export async function GET(request: NextRequest) {
       };
     });
 
-    return NextResponse.json({ data: dataWithUrls });
+    // Fetch counts for pending status grouped by jenis
+    const pendingCounts = await prisma.pembayaran.groupBy({
+      by: ['jenis_pembayaran'],
+      where: {
+        status_pembayaran: { notIn: ["verified", "rejected"] },
+        pendaftar: { is: getAdminWhereClause() }
+      },
+      _count: { _all: true }
+    });
+    
+    const counts = {
+      PENDAFTARAN: pendingCounts.find(c => c.jenis_pembayaran === 'PENDAFTARAN')?._count._all || 0,
+      DAFTAR_ULANG: pendingCounts.find(c => c.jenis_pembayaran === 'DAFTAR_ULANG')?._count._all || 0,
+    };
+
+    return NextResponse.json({ data: dataWithUrls, counts });
   } catch (error) {
     console.error("Error in pembayaran verification API:", error);
     return NextResponse.json(
