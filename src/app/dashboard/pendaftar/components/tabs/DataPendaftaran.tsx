@@ -268,7 +268,7 @@ export default function DataPendaftaranTab() {
               <div className="flex-1">
                 <h3 className="font-bold text-stone-900 mb-1">Pembayaran</h3>
                 <p className="text-sm text-stone-600">
-                  Bayar biaya pendaftaran Rp 200.000
+                  Bayar biaya pendaftaran Rp 150.000
                 </p>
               </div>
               <ChevronRight className="w-5 h-5 text-stone-400 group-hover:text-secondary-500" />

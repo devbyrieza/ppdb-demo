@@ -74,7 +74,7 @@ export const PPDB_CONFIG = {
   pricing: [
     {
       label: "Uang Pendaftaran",
-      amount: "Rp 250.000",
+      amount: "Rp 150.000",
       note: "Tidak dapat dikembalikan",
     },
     {

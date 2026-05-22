@@ -39,11 +39,11 @@ export async function POST() {
     });
 
     if (existing) {
-      // Force update price to 250000 and ensure it is active
+      // Force update price to 150000 and ensure it is active
       await prisma.$transaction(async (tx) => {
         await tx.tahunAjaran.update({
           where: { id: existing.id },
-          data: { biaya_pendaftaran: 250000, is_active: true },
+          data: { biaya_pendaftaran: 150000, is_active: true },
         });
 
         // Deactivate others
@@ -82,18 +82,18 @@ export async function POST() {
           data: { tahun_ajaran_id: existing.id },
         });
 
-        // NEW: Fix existing payments that are 200000 for PENDAFTARAN
+        // NEW: Fix existing payments that are 150000 for PENDAFTARAN
         console.log(
-          `[SEED] Updating existing PENDAFTARAN payments from 200000 to 250000`,
+          `[SEED] Updating existing PENDAFTARAN payments from 150000 to 150000`,
         );
         await tx.pembayaran.updateMany({
           where: {
             jenis_pembayaran: "PENDAFTARAN",
-            jumlah: 200000,
+            jumlah: 150000,
           },
           data: {
-            jumlah: 250000,
-            total_tagihan: 250000,
+            jumlah: 150000,
+            total_tagihan: 150000,
           },
         });
       });
@@ -122,7 +122,7 @@ export async function POST() {
           is_active: true,
           tanggal_buka_pendaftaran: new Date("2026-01-01"),
           tanggal_tutup_pendaftaran: new Date("2026-07-31"),
-          biaya_pendaftaran: 250000,
+          biaya_pendaftaran: 150000,
         },
       });
 
@@ -192,31 +192,31 @@ export async function GET(request: Request) {
     );
 
     // MIGRATION: Also perform migration on GET if admin (to make it easy to trigger)
-    if (active && Number(active.biaya_pendaftaran) !== 250000) {
+    if (active && Number(active.biaya_pendaftaran) !== 150000) {
       console.log(`[SEED-GET] Triggering emergency fix for registration fee`);
       await prisma.tahunAjaran.update({
         where: { id: active.id },
-        data: { biaya_pendaftaran: 250000 },
+        data: { biaya_pendaftaran: 150000 },
       });
     }
 
-    // Fix existing payments that are 200000 for PENDAFTARAN
+    // Fix existing payments that are 150000 for PENDAFTARAN
     console.log(`[SEED-GET] Triggering emergency fix for existing payments`);
     const updateCount = await prisma.pembayaran.updateMany({
       where: {
         jenis_pembayaran: "PENDAFTARAN",
-        jumlah: 200000,
+        jumlah: 150000,
       },
       data: {
-        jumlah: 250000,
-        total_tagihan: 250000,
+        jumlah: 150000,
+        total_tagihan: 150000,
       },
     });
 
     return NextResponse.json({
       message: "Diagnostics & Migration complete",
       updated_payments: updateCount.count,
-      active_ta_fee: 250000,
+      active_ta_fee: 150000,
       all: data,
       active,
       has2026_2027: !!has2026,

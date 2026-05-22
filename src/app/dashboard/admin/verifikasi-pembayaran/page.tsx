@@ -147,6 +147,7 @@ function VerifikasiPembayaranContent() {
     } finally {
       setLoading(false);
       setIsRefreshing(false);
+      router.refresh();
     }
   };
 
