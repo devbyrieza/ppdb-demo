@@ -22,10 +22,10 @@ const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown, highlig
     const colorMap: any = {
     blue: "from-primary-600 to-primary-800",
     emerald: "from-emerald-500 to-emerald-600",
-    amber: "from-secondary-500 to-secondary-700",
+    amber: "from-amber-500 to-amber-600",
     purple: "from-primary-500 to-primary-700",
     rose: "from-rose-500 to-rose-600",
-    slate: "from-secondary-600 to-secondary-800",
+    slate: "from-slate-500 to-slate-600",
   };
 
   return (
@@ -586,6 +586,7 @@ export default function AdminDashboardPage() {
     </div>
   );
 }
+
 
 
 
