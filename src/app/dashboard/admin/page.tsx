@@ -421,8 +421,7 @@ export default function AdminDashboardPage() {
 
       {/* HERO SECTION */}
       <div className="bg-primary-700 rounded-[2.5rem] lg:rounded-[3rem] p-6 sm:p-8 lg:p-12 text-white relative overflow-hidden shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] border border-white/10">
-        <div className="absolute inset-0 bg-linear-to-br from-primary-900/20 via-transparent to-transparent pointer-events-none" />
-        <div className="glow-blob glow-blob-primary w-96 h-96 opacity-20 -top-20 -right-20" aria-hidden="true" />
+        
         <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
           <div className="max-w-xl w-full">
             <div className="section-label section-label-primary mb-6 lg:mb-8">
@@ -587,5 +586,6 @@ export default function AdminDashboardPage() {
     </div>
   );
 }
+
 
 
