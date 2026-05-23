@@ -420,7 +420,7 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* HERO SECTION */}
-      <div className="glass-panel glass-panel-dark rounded-[2.5rem] lg:rounded-[3rem] p-6 sm:p-8 lg:p-12 text-white relative overflow-hidden shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] border border-white/10">
+      <div className="bg-primary-900 rounded-[2.5rem] lg:rounded-[3rem] p-6 sm:p-8 lg:p-12 text-white relative overflow-hidden shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] border border-white/10">
         <div className="absolute inset-0 bg-linear-to-br from-primary-900/20 via-transparent to-transparent pointer-events-none" />
         <div className="glow-blob glow-blob-primary w-96 h-96 opacity-20 -top-20 -right-20" aria-hidden="true" />
         <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
@@ -445,15 +445,15 @@ export default function AdminDashboardPage() {
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4 sm:gap-6 w-full lg:w-auto">
-             <div className="bg-white/10 backdrop-blur-md p-4 sm:p-6 lg:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-white/10 flex flex-col items-center transition-all hover:bg-white/15 hover:scale-[1.02] duration-300">
+             <div className="bg-primary-800 p-4 sm:p-6 lg:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-white/10 flex flex-col items-center">
                 <p className="text-[9px] sm:text-[10px] font-black text-white/60 uppercase tracking-widest mb-2 sm:mb-4 text-center">Diterima</p>
                 <p className="text-2xl sm:text-4xl font-black text-emerald-400 italic">{stats.diterima}</p>
              </div>
-             <div className="bg-white/10 backdrop-blur-md p-4 sm:p-6 lg:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-white/10 flex flex-col items-center transition-all hover:bg-white/15 hover:scale-[1.02] duration-300">
+             <div className="bg-primary-800 p-4 sm:p-6 lg:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-white/10 flex flex-col items-center">
                 <p className="text-[9px] sm:text-[10px] font-black text-white/60 uppercase tracking-widest mb-2 sm:mb-4 text-center">Sedang Daftar Ulang</p>
                 <p className="text-2xl sm:text-4xl font-black text-secondary-300 italic">{stats.daftar_ulang_sedang}</p>
              </div>
-             <div className="bg-white/10 backdrop-blur-md p-4 sm:p-6 lg:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-white/10 flex flex-col items-center transition-all hover:bg-white/15 hover:scale-[1.02] duration-300">
+             <div className="bg-primary-800 p-4 sm:p-6 lg:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-white/10 flex flex-col items-center">
                 <p className="text-[9px] sm:text-[10px] font-black text-white/60 uppercase tracking-widest mb-2 sm:mb-4 text-center">Selesai</p>
                 <p className="text-2xl sm:text-4xl font-black text-emerald-400 italic">{stats.daftar_ulang_selesai}</p>
              </div>
@@ -587,3 +587,4 @@ export default function AdminDashboardPage() {
     </div>
   );
 }
+
