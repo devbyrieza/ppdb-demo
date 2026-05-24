@@ -20,7 +20,7 @@ const FAQS = [
   {
     question: "Kurikulum apa yang diterapkan di Pesantren Al Fath?",
     answer:
-      "Kami menerapkan Kurikulum Terpadu yang menggabungkan kurikulum Nasional dengan kurikulum khas Pesantren yang berfokus pada penguasaan Bahasa Arab, Tahfidz Al-Qur'an, dan Kitab Turots.",
+      "Kami menerapkan Kurikulum Terpadu yang menggabungkan kurikulum Nasional dengan kurikulum khas Al-Fath yang berfokus pada penguasaan Bahasa Arab, Tahfidz Al-Qur'an, dan Kitab Turots.",
   },
   {
     question: "Apa saja berkas persyaratan yang harus disiapkan?",
