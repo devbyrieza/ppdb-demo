@@ -1,5 +1,5 @@
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// MIDDLEWARE: Role-Based Protection via app_session cookie
+// MIDDLEWARE: Role-Based Protection & Domain Routing
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 import { NextResponse, type NextRequest } from "next/server";
@@ -28,6 +28,42 @@ function getSessionFromCookie(request: NextRequest): {
 export async function middleware(request: NextRequest) {
   const { role: userRole } = getSessionFromCookie(request);
   const { pathname } = request.nextUrl;
+  const host = request.headers.get("host") || "";
+
+  // ═══════════════════════════════════════════
+  // DOMAIN ROUTING (Main Domain vs PPDB Subdomain)
+  // ═══════════════════════════════════════════
+  const isLocalhost = host.includes("localhost") || host.includes("127.0.0.1") || host.includes("192.168.");
+  
+  if (!isLocalhost) {
+    const isPpdbDomain = host.startsWith("ppdb.");
+    const ppdbPaths = [
+      "/ppdb", "/login", "/daftar", "/daftar-pindahan", "/daftar-sukses", 
+      "/dashboard", "/admin", "/auth", "/pilih-verifikasi", "/send-otp", "/verifikasi-otp"
+    ];
+    const isPpdbPath = ppdbPaths.some(p => pathname === p || pathname.startsWith(p + "/"));
+    
+    // Only redirect if not an API or internal Next.js path
+    const isStaticOrApi = pathname.startsWith("/_next") || pathname.startsWith("/api") || pathname.includes(".");
+    
+    if (!isStaticOrApi) {
+      if (isPpdbDomain && !isPpdbPath && pathname !== "/") {
+        // If on PPDB domain but trying to access non-PPDB path (like /tentang), redirect to main domain
+        const mainDomain = host.replace("ppdb.", "");
+        return NextResponse.redirect(new URL(pathname, `https://${mainDomain}`));
+      }
+      
+      if (!isPpdbDomain && isPpdbPath) {
+        // If on main domain but trying to access PPDB path, redirect to PPDB domain
+        return NextResponse.redirect(new URL(pathname, `https://ppdb.${host}`));
+      }
+      
+      if (isPpdbDomain && pathname === "/") {
+        // Rewrite root of PPDB domain to /ppdb
+        return NextResponse.rewrite(new URL("/ppdb", request.url));
+      }
+    }
+  }
 
   // ═══════════════════════════════════════════
   // PROTECT: /dashboard/pendaftar
@@ -121,5 +157,14 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/login"],
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     */
+    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+  ],
 };
