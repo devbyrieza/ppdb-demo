@@ -135,7 +135,7 @@ export default function HeroSection() {
                 }}
               >
                 <span className="block" style={{ color: "var(--color-teal-700)" }}>
-                  Mencetak Generasi
+                  Kaderisasi Ummat
                 </span>
                 <span className="block mt-1" style={{ color: "var(--color-sand-500)" }}>
                   Unggul, Cerdas, <br className="hidden sm:block" />

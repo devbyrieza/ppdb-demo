@@ -63,7 +63,7 @@ export default function ScholarshipSection({ variant = "maroon" }: ScholarshipSe
               </h2>
 
               <p className="text-lg text-gray-600 leading-relaxed mb-8 max-w-xl">
-                Wujud nyata kepedulian kami dalam mencetak generasi Qur'ani yang unggul tanpa terhalang kendala ekonomi. Program ini didedikasikan bagi putra-putri terbaik bangsa.
+                Wujud nyata kepedulian kami dalam Kaderisasi Ummat Qur'ani yang unggul tanpa terhalang kendala ekonomi. Program ini didedikasikan bagi putra-putri terbaik bangsa.
               </p>
 
               <div className="space-y-4 mb-10">

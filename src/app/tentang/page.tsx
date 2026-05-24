@@ -61,7 +61,7 @@ export default function TentangPage() {
           >
             Menghadirkan standar keunggulan pendidikan modern di
             Sukabumi — sistem pembentukan karakter Angkatan Pertama yang
-            mencetak generasi Unggul, Cerdas, dan Berintegritas.
+            Kaderisasi Ummat Unggul, Cerdas, dan Berintegritas.
           </motion.p>
         </Container>
       </section>
@@ -296,7 +296,7 @@ export default function TentangPage() {
                 Visi
               </h3>
               <p className="text-lg md:text-xl font-black text-primary-800 italic leading-[1.5] md:leading-[1.4] flex-1">
-                "Mencetak Generasi yang Memiliki Pribadi Unggul, Cerdas, dan
+                "Kaderisasi Ummat Unggul, Cerdas, dan
                 Berintegritas."
               </p>
             </motion.div>
