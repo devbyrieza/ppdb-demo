@@ -141,7 +141,7 @@ export default function ProgramPage() {
             className="text-lg md:text-xl text-ink-600 max-w-2xl mx-auto leading-relaxed font-medium"
           >
             Kurikulum terintegrasi komprehensif yang menyelaraskan standar
-            Nasional dengan kekhasan Pesantren.
+            Nasional dengan kekhasan Al-Fath.
           </motion.p>
         </Container>
       </section>
