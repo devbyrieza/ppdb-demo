@@ -144,7 +144,7 @@ function GalleryCard({
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
         />
 
-        <div className="absolute inset-0 bg-gradient-to-t from-primary-950/80 via-primary-900/20 to-transparent transition-opacity duration-500 opacity-80 group-hover:opacity-100" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent transition-opacity duration-500 opacity-80 group-hover:opacity-100" />
       </div>
 
       <div className="absolute top-3.5 right-3.5 w-8 h-8 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:bg-secondary-400 group-hover:border-secondary-300 group-hover:text-primary-900 shadow-sm">
