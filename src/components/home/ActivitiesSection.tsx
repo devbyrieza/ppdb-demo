@@ -43,9 +43,9 @@ interface ExtraActivity {
 const ACTIVITIES: Activity[] = [
   {
     name: "Pembelajaran Aktif",
-    badge: "Akademik",
+    badge: "Akademik & Syar'i",
     description:
-      "Metode interaktif yang memadukan teori dan praktik syar'i guna mengoptimalkan potensi akademik santri secara mendalam.",
+      "Metode pembelajaran interaktif yang memadukan keunggulan akademik umum dengan pendalaman bahasa Arab dan ilmu syar'i secara komprehensif.",
     image: "/images/pembelajaran-kitab-turotz.webp",
   },
   {
