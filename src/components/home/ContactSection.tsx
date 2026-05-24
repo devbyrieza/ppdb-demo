@@ -9,7 +9,7 @@ const CONTACT_INFO = [
   {
     icon: MapPin,
     title: "Lokasi Pesantren",
-    content: "Jl. Pelabuhan Ratu II KM 18",
+    content: "Jl. Pesantren Raya No. 1",
     detail: "Cikembar, Sukabumi",
     accent: "teal" as const,
   },

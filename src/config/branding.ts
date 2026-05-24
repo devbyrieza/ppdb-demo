@@ -16,7 +16,7 @@ export const BRANDING = {
     process.env.NEXT_PUBLIC_WEBSITE_URL || "https://ppdb-demo.vercel.app",
   dashboardTitle: process.env.NEXT_PUBLIC_DASHBOARD_TITLE || "Panel Admin PPDB",
   address:
-    process.env.NEXT_PUBLIC_ADDRESS || "Jl. Pesantren Raya No. 1, Kota Madani",
+    process.env.NEXT_PUBLIC_ADDRESS || "Jl. Pesantren Raya No. 1, Kec. Cikembar, Kabupaten Sukabumi, Jawa Barat 43157",
   phone: process.env.NEXT_PUBLIC_PHONE || "+62 800-0000-0000",
   email: process.env.NEXT_PUBLIC_EMAIL || "demo@ppdbmodern.com",
   igUrl: process.env.NEXT_PUBLIC_IG_URL || "#",

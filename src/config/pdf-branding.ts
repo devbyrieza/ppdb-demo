@@ -10,7 +10,7 @@ export const PDF_BRANDING = {
     subtitle: "Islamic Boarding School Managed by Al Andalus IIBS",
     committee: "PANITIA PENERIMAAN SANTRI BARU",
     academic_year: "2026-2027",
-    address: "Jl. KH Mama Oyon, Cihaur, Kec. Cicantayan, Kabupaten Sukabumi, Jawa Barat 43155",
+    address: "Jl. Pesantren Raya No. 1, Kec. Cikembar, Kabupaten Sukabumi, Jawa Barat 43157",
     contact:
       "Website: https://ppdb-demo.vercel.app | Email: info@pesantren-alfath.or.id",
     phones: "WhatsApp: 0812-8530-0800", // Base phone

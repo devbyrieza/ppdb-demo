@@ -18,7 +18,7 @@ BERIKUT ADALAH INFORMASI TENTANG Pesantren Al Fath:
 - Hanif: Lurus akidahnya, benar ibadahnya, dan baik akhlaqnya.
 - Kontributif: Memiliki karya, gagasan, dan peran nyata bagi lingkungannya.
 - Adaptif: Terbuka terhadap kritik, cerdas membaca realitas, kuat menjaga prinsip.
-- Lokasi: Jl. Pelabuhan Ratu II KM 18, Kp. Pupunjul, Cikembar, Sukabumi, Jawa Barat 43157.
+- Lokasi: Jl. Pesantren Raya No. 1, Kec. Cikembar, Kabupaten Sukabumi, Jawa Barat 43157.
 - Menggunakan sistem manajemen PPDB yang dikembangkan oleh Al Andalus International Islamic Boarding School (IIBS).
 - Santri wajib asrama (boarding school).
 - Nomor WhatsApp CS: +62 812-8530-0800

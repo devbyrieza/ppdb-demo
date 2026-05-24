@@ -8,7 +8,7 @@ export const PPDB_CONFIG = {
   pesantren: {
     nama: "Pondok Pesantren Al Fath",
     singkatan: "PPDB Al Fath",
-    alamat: "Jl. KH Mama Oyon, Cihaur, Kec. Cicantayan, Kabupaten Sukabumi, Jawa Barat 43155",
+    alamat: "Jl. Pesantren Raya No. 1, Kec. Cikembar, Kabupaten Sukabumi, Jawa Barat 43157",
     telepon: "+62 812-8530-0800",
     email: "info@pesantren-alfath.or.id",
     emailPpdb: "ppdb@pesantren-alfath.or.id",
