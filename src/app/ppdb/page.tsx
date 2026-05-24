@@ -136,7 +136,7 @@ function PPDBContent() {
   const timeline = [
     {
       phase: "Registrasi Online",
-      date: "10 Feb - 30 Mei 2026",
+      date: "10 Feb - 7 Juni 2026",
       desc: "Buat akun pendaftar dan isi formulir awal melalui website resmi.",
       status: "active",
     },
@@ -545,7 +545,7 @@ function PPDBContent() {
                     },
                     {
                       q: "Kapan batas akhir pendaftaran?",
-                      a: "Pendaftaran PPDB Tahun Ajaran 2026/2027 dibuka mulai tanggal 10 Februari sampai dengan 30 Mei 2026. Namun, pendaftaran dapat ditutup lebih awal jika kuota santri baru sudah terpenuhi.",
+                      a: "Pendaftaran PPDB Tahun Ajaran 2026/2027 dibuka mulai tanggal 10 Februari sampai dengan 7 Juni 2026. Namun, pendaftaran dapat ditutup lebih awal jika kuota santri baru sudah terpenuhi.",
                     },
                     {
                       q: "Bagaimana sistem kurikulumnya?",

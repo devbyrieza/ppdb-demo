@@ -49,7 +49,7 @@ PROGRAM PENDIDIKAN:
    - Target Hafalan 16 Juz, Penguasaan Kitab Turots, Bahasa Arab Aktif & Formal. Persiapan Universitas Timur Tengah & Dalam Negeri.
 
 INFORMASI PPDB T.A 2026/2027:
-- Pendaftaran: 10 Februari - 30 Mei 2026 (Online via website).
+- Pendaftaran: 10 Februari - 7 Juni 2026 (Online via website).
 - BIAYA PENDIDIKAN PENTING:
   - Biaya Pendaftaran: Rp 150.000 (Non-refundable)
   - Uang Pangkal: Rp 7.500.000 (Non-refundable, pendaftaran ulang)

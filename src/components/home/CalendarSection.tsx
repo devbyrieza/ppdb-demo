@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 // ─── Data ────────────────────────────────────────────
 const IMPORTANT_DATES = [
   {
-    date: "10 Feb - 30 Mei 2026",
+    date: "10 Feb - 7 Juni 2026",
     title: "Pendaftaran PPDB",
     description:
       "Pendaftaran santri baru dibuka secara online melalui website resmi.",

@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import { X, Clock, Zap } from "lucide-react";
 import Link from "next/link";
 
-// PPDB deadline: 30 Mei 2026
-const DEADLINE = new Date("2026-05-30T23:59:59+07:00");
+// PPDB deadline: 7 Juni 2026
+const DEADLINE = new Date("2026-06-07T23:59:59+07:00");
 
 function getCountdown() {
   const now = new Date();
