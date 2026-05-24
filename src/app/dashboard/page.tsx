@@ -410,16 +410,16 @@ export default function DashboardPage() {
       </section>
 
       {/* MAIN CONTENT */}
-      <Container className="pt-16 md:pt-24 relative z-10">
-        <div className="grid lg:grid-cols-12 gap-12 items-start">
+      <Container className="pt-12 md:pt-20 relative z-10">
+        <div className="grid md:grid-cols-12 lg:grid-cols-12 gap-8 md:gap-10 lg:gap-12 items-start">
           {/* LEFT SIDE: FLOW & ACTIONS */}
-          <div className="lg:col-span-8 space-y-16">
+          <div className="md:col-span-8 lg:col-span-8 space-y-12 md:space-y-16">
             {/* STATUS HIGHLIGHT (Portal Card) */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className={`p-6 sm:p-10 md:p-12 lg:p-16 rounded-[2.5rem] md:rounded-[4rem] border-2 shadow-2xl relative overflow-hidden bg-gradient-to-br from-white to-ink-50/30 ${statusInfo.border}`}
+              className={`p-6 sm:p-8 md:p-10 rounded-[2rem] md:rounded-[2.5rem] border-2 shadow-2xl relative overflow-hidden bg-gradient-to-br from-white to-ink-50/30 ${statusInfo.border}`}
             >
               <div className="absolute top-0 right-0 w-80 h-80 bg-primary-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
 
@@ -467,14 +467,14 @@ export default function DashboardPage() {
 
             {/* ACTION GRID */}
             <div>
-              <div className="flex items-center justify-between mb-10 px-4">
+              <div className="flex items-center justify-between mb-6 md:mb-10 px-2 sm:px-4">
                 <h3 className="text-3xl font-display font-black text-primary-950 tracking-tight">
                   Alur Pendaftaran
                 </h3>
                 <div className="h-0.5 flex-1 mx-10 bg-ink-50 rounded-full" />
               </div>
 
-              <div className="grid md:grid-cols-2 gap-10">
+              <div className="grid sm:grid-cols-2 md:grid-cols-2 gap-5 md:gap-8 lg:gap-10">
                 <ActionCard
                   href="/dashboard/pendaftar/pembayaran-pendaftaran"
                   icon={CreditCard}
@@ -556,13 +556,13 @@ export default function DashboardPage() {
           </div>
 
           {/* RIGHT SIDE: SIDEBAR */}
-          <aside className="lg:col-span-4 space-y-10">
+          <aside className="md:col-span-4 lg:col-span-4 space-y-8 md:space-y-10">
             {/* REG CARD */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.6 }}
-              className="bg-white p-12 rounded-[4rem] shadow-2xl shadow-primary-900/5 border border-ink-50 flex flex-col items-center text-center relative overflow-hidden group"
+              className="bg-white p-6 sm:p-8 md:p-10 rounded-[2.5rem] md:rounded-[4rem] shadow-2xl shadow-primary-900/5 border border-ink-50 flex flex-col items-center text-center relative overflow-hidden group"
             >
               <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary-600 to-secondary-500" />
               <div className="w-20 h-20 rounded-[2rem] bg-primary-50 flex items-center justify-center text-primary-600 mb-8 border border-primary-100 shadow-sm transition-transform group-hover:scale-110">
@@ -590,7 +590,7 @@ export default function DashboardPage() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.8 }}
-              className="bg-primary-950 p-12 rounded-[4rem] shadow-2xl relative overflow-hidden group"
+              className="bg-primary-950 p-6 sm:p-8 md:p-10 rounded-[2.5rem] md:rounded-[4rem] shadow-2xl relative overflow-hidden group"
             >
               <div className="absolute top-0 left-0 w-full h-1 bg-secondary-400" />
               <div className="absolute bottom-0 right-0 w-40 h-40 bg-primary-500/10 rounded-full blur-[60px] translate-y-1/2 translate-x-1/2 pointer-events-none" />

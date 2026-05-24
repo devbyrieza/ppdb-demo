@@ -242,17 +242,16 @@
     0 8px 28px -4px rgba(212, 175, 55, 0.45), 0 4px 10px rgba(212, 175, 55, 0.12);
   --shadow-cream:
     0 4px 14px -2px rgba(254, 252, 247, 0.32), 0 2px 6px rgba(0, 0, 0, 0.05);
+  /* Teal shadows — using correct teal-600 rgba(13,148,136) */
   --shadow-teal:
-    0 4px 16px -2px rgba(27, 107, 58, 0.32), 0 2px 6px rgba(27, 107, 58, 0.15);
+    0 4px 16px -2px rgba(13, 148, 136, 0.30), 0 2px 6px rgba(13, 148, 136, 0.14);
   --shadow-teal-lg:
-    0 8px 28px -4px rgba(27, 107, 58, 0.38),
-    0 4px 10px rgba(27, 107, 58, 0.18);
+    0 8px 28px -4px rgba(13, 148, 136, 0.38),
+    0 4px 10px rgba(13, 148, 136, 0.18);
   --shadow-sand:
     0 4px 14px -2px rgba(212, 175, 55, 0.3), 0 2px 6px rgba(0, 0, 0, 0.05);
 
   /* Legacy aliases — backward compat */
-  --shadow-teal:
-    0 4px 16px -2px rgba(27, 107, 58, 0.32), 0 2px 6px rgba(27, 107, 58, 0.15);
   --shadow-sand:
     0 4px 16px -4px rgba(212, 175, 55, 0.32), 0 2px 6px rgba(0, 0, 0, 0.04);
 
@@ -1217,7 +1216,7 @@
       background: var(--color-background);
       border-color: var(--color-primary);
       box-shadow:
-        0 0 0 3px rgba(27, 107, 58, 0.12),
+        0 0 0 3px rgba(13, 148, 136, 0.12),
         var(--shadow-xs);
     }
 
@@ -1252,7 +1251,7 @@
       background: var(--color-background);
       border-color: var(--color-primary);
       box-shadow:
-        0 0 0 3px rgba(27, 107, 58, 0.12),
+        0 0 0 3px rgba(13, 148, 136, 0.12),
         var(--shadow-xs);
     }
   }
@@ -1282,7 +1281,7 @@
       background: var(--color-background);
       border-color: var(--color-primary);
       box-shadow:
-        0 0 0 3px rgba(27, 107, 58, 0.12),
+        0 0 0 3px rgba(13, 148, 136, 0.12),
         var(--shadow-xs);
     }
   }
@@ -2082,11 +2081,12 @@
     border: 1px solid rgba(255, 255, 255, 0.55);
   }
 
+  /* Teal glass — using correct teal rgba */
   .glass-teal {
-    background: rgba(27, 107, 58, 0.82);
+    background: rgba(13, 148, 136, 0.80);
     backdrop-filter: blur(24px) saturate(1.5);
     -webkit-backdrop-filter: blur(24px) saturate(1.5);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.12);
   }
 
   .glass-blue {

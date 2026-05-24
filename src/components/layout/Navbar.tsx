@@ -134,7 +134,7 @@ export default function Navbar() {
                   className={`w-10 h-10 sm:w-11 sm:h-11 rounded-[14px] flex items-center justify-center border overflow-hidden transition-all duration-500 group-hover:scale-105 group-hover:-rotate-3 ${
                     isScrolled
                       ? "bg-white border-[var(--color-primary-100)] shadow-[var(--shadow-premium-sm)]"
-                      : "bg-white/90 border-white/70 shadow-[0_2px_12px_rgba(58,80,41,0.12)]"
+                      : "bg-white/90 border-white/70 shadow-[0_2px_12px_rgba(13,148,136,0.12)]"
                   }`}
                 >
                   <Image
@@ -172,7 +172,7 @@ export default function Navbar() {
               className={`hidden lg:flex items-center gap-0.5 p-1.5 rounded-full border transition-all duration-300 ${
                 isScrolled
                   ? "bg-white/80 border-[var(--color-primary-100)] shadow-sm"
-                  : "bg-white/70 backdrop-blur-md border-white/65 shadow-[0_2px_16px_rgba(58,80,41,0.10)]"
+                  : "bg-white/70 backdrop-blur-md border-white/65 shadow-[0_2px_16px_rgba(13,148,136,0.10)]"
               }`}
             >
               {navLinks.map((link) => (
@@ -231,7 +231,7 @@ export default function Navbar() {
               className={`lg:hidden p-3 rounded-2xl transition-all duration-300 min-h-[48px] min-w-[48px] flex items-center justify-center border ${
                 isScrolled
                   ? "bg-white border-[var(--color-primary-100)] text-[var(--color-primary-700)] hover:bg-[var(--color-primary-50)] shadow-[var(--shadow-xs)]"
-                  : "bg-white/85 backdrop-blur-sm border-white/70 text-[var(--color-ink-800)] hover:bg-white/95 shadow-[0_2px_12px_rgba(58,80,41,0.10)]"
+                  : "bg-white/85 backdrop-blur-sm border-white/70 text-[var(--color-ink-800)] hover:bg-white/95 shadow-[0_2px_12px_rgba(13,148,136,0.10)]"
               }`}
               aria-label={isMenuOpen ? "Tutup menu" : "Buka menu"}
             >
@@ -296,7 +296,7 @@ export default function Navbar() {
                 background:
                   "linear-gradient(180deg, var(--color-surface-50) 0%, #fff 100%)",
                 borderTop: "1px solid var(--color-primary-100)",
-                boxShadow: "0 -8px 40px rgba(58,80,41,0.12)",
+                boxShadow: "0 -8px 40px rgba(13, 148, 136, 0.10)",
               }}
             >
               {/* Drag Handle */}
