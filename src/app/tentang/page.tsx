@@ -106,7 +106,6 @@ export default function TentangPage() {
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
               className="object-cover transition-transform duration-1000 group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-linear-to-t from-primary-950/40 via-transparent to-transparent" />
           </motion.div>
         </Container>
       </section>
@@ -132,7 +131,6 @@ export default function TentangPage() {
                     sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-cover"
                   />
-                  <div className="absolute inset-0 bg-linear-to-t from-primary-950/50 via-transparent to-transparent" />
                 </div>
               </div>
 
