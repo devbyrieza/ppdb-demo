@@ -59,9 +59,11 @@ export default function TentangPage() {
             transition={{ delay: 0.2 }}
             className="text-base sm:text-lg md:text-xl text-ink-600 max-w-3xl mx-auto leading-relaxed font-medium mb-12 px-4"
           >
-            Menghadirkan standar keunggulan pendidikan modern di
-            Sukabumi — sistem pembentukan karakter Angkatan Pertama yang
-            Kaderisasi Ummat Unggul, Cerdas, dan Berintegritas.
+            Pondok Pesantren Al Fath Sukabumi, cabang resmi dari Al-Hikmah
+            International Islamic Boarding School (IIBS). Memadukan intensitas
+            Tahfidz Al-Qur'an dengan pengembangan jiwa Leadership untuk
+            Kaderisasi Ummat Unggul, Cerdas, dan Berintegritas. Tahun Ajaran 2026/2027
+            merupakan Angkatan Pertama.
           </motion.p>
         </Container>
       </section>
