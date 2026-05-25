@@ -119,8 +119,7 @@ function ActivityCard({
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
           className="object-cover transition-transform duration-700 group-hover:scale-105"
         />
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-primary-950/50 via-primary-950/10 to-transparent" />
+        {/* Gradient overlay removed for clear images */}
 
         {/* Badge */}
         <div className="absolute top-3 left-3">

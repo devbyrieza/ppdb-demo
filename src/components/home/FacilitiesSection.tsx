@@ -211,7 +211,7 @@ export default function FacilitiesSection() {
                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04] bg-secondary-100"
               />
 
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-400" />
+              {/* Overlay removed for clear images */}
 
               <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6 translate-y-2 group-hover:translate-y-0 transition-transform duration-400">
                 <p className="text-white font-bold text-[0.9375rem] md:text-[1.0625rem] leading-snug drop-shadow-sm mb-1 tracking-tight">
