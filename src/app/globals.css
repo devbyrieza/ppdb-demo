@@ -1949,6 +1949,13 @@
     -webkit-text-fill-color: transparent;
   }
 
+  .text-gradient-primary {
+    background: linear-gradient(135deg, var(--color-primary-600) 0%, var(--color-primary-900) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
   .text-gradient-blue {
     background: linear-gradient(135deg,
         var(--color-teal-500) 0%,

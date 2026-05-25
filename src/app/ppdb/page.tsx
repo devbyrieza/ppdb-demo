@@ -232,7 +232,7 @@ function PPDBContent() {
               className="text-4xl sm:text-6xl lg:text-8xl font-display font-black mb-8 md:mb-10 tracking-tight leading-[0.9] text-ink-950"
             >
               Siapkan Generasi <br />
-              <span className="text-primary-600">Terbaik Kita</span>
+              <span className="text-gradient-primary">Terbaik Kita</span>
             </motion.h1>
 
             <motion.p
