@@ -23,21 +23,21 @@ export default function Footer() {
     { Icon: Instagram, href: BRANDING.igUrl, label: "Instagram" },
     { Icon: Youtube, href: BRANDING.ytUrl, label: "YouTube" },
     { Icon: Facebook, href: BRANDING.fbUrl, label: "Facebook" },
-    { Icon: Twitter, href: "#", label: "Twitter / X" },
+    { Icon: Twitter, href: BRANDING.twitterUrl ?? "#", label: "Twitter / X" },
   ];
 
   const lembagaLinks = [
-    "Tentang Kami",
-    "Program Studi",
-    "Fasilitas",
-    "Kegiatan Santri",
+    { label: "Tentang Kami", href: "/tentang" },
+    { label: "Program Studi", href: "/program" },
+    { label: "Fasilitas", href: "/fasilitas" },
+    { label: "Kegiatan Santri", href: "/kegiatan" },
   ];
 
   const infoLinks = [
-    "Pendaftaran PPDB",
-    "Biaya Pendidikan",
-    "Beasiswa Tahfidz",
-    "Kalender Akademik",
+    { label: "Pendaftaran PPDB", href: "/ppdb" },
+    { label: "Biaya Pendidikan", href: "/ppdb#biaya" },
+    { label: "Beasiswa Tahfidz", href: "/ppdb#beasiswa" },
+    { label: "Kalender Akademik", href: "/kalender" },
   ];
 
   return (
@@ -123,7 +123,7 @@ export default function Footer() {
               style={{ color: "rgba(255,255,255,0.85)" }}
             >
               Membangun generasi Qur&apos;ani yang cerdas &amp; berakhlak mulia
-              melalui sistem terintegrasi Al Fath.
+              melalui sistem terintegrasi {BRANDING.schoolShortName}.
             </p>
 
             {/* Social Links */}
@@ -170,9 +170,9 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3.5">
               {lembagaLinks.map((item) => (
-                <li key={item}>
+                <li key={item.label}>
                   <Link
-                    href="#"
+                    href={item.href}
                     className="text-sm font-semibold flex items-center gap-1.5 group/link transition-colors duration-200"
                     style={{ color: "rgba(255,255,255,0.80)" }}
                     onMouseEnter={(e) => {
@@ -183,7 +183,7 @@ export default function Footer() {
                         "rgba(255,255,255,0.80)";
                     }}
                   >
-                    {item}
+                    {item.label}
                     <ArrowUpRight
                       className="w-3.5 h-3.5 opacity-0 -translate-y-0.5 translate-x-0.5 group-hover/link:opacity-100 group-hover/link:translate-y-0 group-hover/link:translate-x-0 transition-all duration-200 flex-shrink-0"
                       style={{ color: "rgba(92,125,74,0.80)" }}
@@ -204,9 +204,9 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3.5">
               {infoLinks.map((item) => (
-                <li key={item}>
+                <li key={item.label}>
                   <Link
-                    href="#"
+                    href={item.href}
                     className="text-sm font-semibold transition-colors duration-200"
                     style={{ color: "rgba(255,255,255,0.80)" }}
                     onMouseEnter={(e) => {
@@ -217,7 +217,7 @@ export default function Footer() {
                         "rgba(255,255,255,0.80)";
                     }}
                   >
-                    {item}
+                    {item.label}
                   </Link>
                 </li>
               ))}
