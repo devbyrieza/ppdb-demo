@@ -460,40 +460,46 @@ export default function UndanganSeleksiTab() {
         {/* Condition: Already booked schedules */}
         {data.grupB.booked.length > 0 && (
           <div className="space-y-3">
-            <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-xl flex items-center gap-3">
-              <CheckCircle className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-              <div>
-                <h3 className="font-bold text-emerald-900 text-sm">
-                  Jadwal Terkonfirmasi
-                </h3>
-                <p className="text-xs text-emerald-700">
-                  Berikut sesi ujian yang telah Anda pilih
-                </p>
+              <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-xl flex items-center gap-3">
+                <CheckCircle className="w-5 h-5 text-emerald-600 flex-shrink-0" />
+                <div>
+                  <h3 className="font-bold text-emerald-900 text-sm">
+                    Jadwal Terkonfirmasi & Riwayat Seleksi
+                  </h3>
+                  <p className="text-xs text-emerald-700">
+                    Berikut sesi ujian yang telah Anda pilih atau sudah dikerjakan
+                  </p>
+                </div>
               </div>
-            </div>
 
             <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-              {data.grupB.booked
-                .filter((item) => {
-                  if (!item.waktu_selesai) return true;
-                  return new Date(item.waktu_selesai) > new Date();
-                })
-                .map((item) => {
-                  const Icon = GRUP_B_ICONS[item.category] || Calendar;
-                  return (
-                    <div
-                      key={item.id}
-                    className="bg-white rounded-xl shadow-sm p-5 border-2 border-primary-100 relative overflow-hidden"
+              {data.grupB.booked.map((item) => {
+                const isSelesai = item.waktu_selesai ? new Date(item.waktu_selesai) <= new Date() : false;
+                const Icon = GRUP_B_ICONS[item.category] || Calendar;
+                
+                return (
+                  <div
+                    key={item.id}
+                    className={`rounded-xl shadow-sm p-5 border-2 relative overflow-hidden ${
+                      isSelesai ? "bg-stone-50 border-stone-200" : "bg-white border-primary-100"
+                    }`}
                   >
-                    <div className="absolute top-0 right-0 p-2 bg-primary-50 rounded-bl-xl">
-                      <CheckCircle className="w-4 h-4 text-primary-600" />
+                    <div className={`absolute top-0 right-0 p-2 rounded-bl-xl ${
+                      isSelesai ? "bg-stone-200" : "bg-primary-50"
+                    }`}>
+                      <CheckCircle className={`w-4 h-4 ${isSelesai ? "text-stone-500" : "text-primary-600"}`} />
                     </div>
 
                     <div className="flex items-center gap-2 mb-3">
-                      <Icon className="w-4 h-4 text-primary-600" />
-                      <h3 className="text-sm font-black text-ink-900">
+                      <Icon className={`w-4 h-4 flex-shrink-0 ${isSelesai ? "text-stone-500" : "text-primary-600"}`} />
+                      <h3 className={`text-sm font-black truncate ${isSelesai ? "text-stone-700" : "text-ink-900"}`}>
                         {expandExamTitle(item.jenis_ujian)}
                       </h3>
+                      {isSelesai && (
+                        <span className="ml-auto flex-shrink-0 text-[10px] font-bold text-stone-600 bg-stone-200 px-2 py-0.5 rounded-md">
+                          Selesai
+                        </span>
+                      )}
                     </div>
 
                     <div className="space-y-2 text-xs text-stone-600">
