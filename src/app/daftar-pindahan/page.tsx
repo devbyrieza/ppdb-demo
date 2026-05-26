@@ -635,7 +635,7 @@ export default function DaftarPindahanPage() {
                           nomor_induk_lama: e.target.value.replace(/\D/g, ""),
                         }))
                       }
-                      placeholder="10 Digit NISN asal sekolah"
+                      placeholder="10 Digit NISN (Nomor Induk Siswa Nasional)"
                       className="w-full px-5 py-3 md:px-8 md:py-5 rounded-xl md:rounded-2xl bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold placeholder:text-ink-500 text-sm md:text-base text-ink-950"
                     />
                   </InputField>
