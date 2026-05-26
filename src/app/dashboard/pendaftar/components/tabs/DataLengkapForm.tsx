@@ -60,6 +60,7 @@ interface DataDiriSantri {
   kode_pos: string;
   // Sekolah asal
   asal_sekolah: string;
+  npsn?: string;
   nisn: string;
   alamat_sekolah: string;
   tahun_lulus: string;
@@ -1205,17 +1206,31 @@ export default function DataLengkapForm({
                   />
                   <div className="space-y-1">
                     <InputField
-                      label="NPSN / NSM Sekolah"
+                      label="NPSN / NSM Sekolah (Opsional)"
+                      name="npsn"
+                      value={formData.santri.npsn || ""}
+                      onChange={(v) => updateSantri("npsn", v)}
+                      placeholder="8 digit NPSN atau 12 digit NSM"
+                      maxLength={12}
+                      inputFilter="numbers"
+                    />
+                    <p className="text-xs text-primary-600 font-medium italic ml-1 leading-relaxed">
+                      * Boleh dikosongkan jika tidak mengetahui NPSN/NSM sekolah asal.
+                    </p>
+                  </div>
+                  <div className="space-y-1">
+                    <InputField
+                      label="NISN (Nomor Induk Siswa Nasional)"
                       name="nisn"
                       value={formData.santri.nisn}
                       onChange={(v) => updateSantri("nisn", v)}
-                      placeholder="8 digit NPSN atau 12 digit NSM"
-                      maxLength={12}
+                      placeholder="10 digit NISN"
+                      maxLength={10}
                       required
                       inputFilter="numbers"
                     />
                     <p className="text-xs text-primary-600 font-medium italic ml-1 leading-relaxed">
-                      * Masukkan NPSN (8 angka) atau NSM (12 angka) milik sekolah asal.
+                      * Wajib diisi. Masukkan 10 digit NISN milik santri.
                     </p>
                   </div>
                   <InputField
