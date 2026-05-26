@@ -22,15 +22,32 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "20");
+    const search = searchParams.get("search") || "";
+    const jenjang = searchParams.get("jenjang") || "";
     const skip = (page - 1) * limit;
+
+    const whereClause: any = {
+      deleted_at: { not: null },
+    };
+
+    if (search) {
+      whereClause.OR = [
+        { nomor_pendaftaran: { contains: search } },
+        { nama_lengkap: { contains: search } },
+      ];
+    }
+    
+    if (jenjang && jenjang !== "all") {
+      whereClause.jenjang = jenjang;
+    }
 
     // Fetch soft-deleted pendaftar
     const [total, data] = await prisma.$transaction([
       prisma.pendaftar.count({
-        where: { deleted_at: { not: null } },
+        where: whereClause,
       }),
       prisma.pendaftar.findMany({
-        where: { deleted_at: { not: null } },
+        where: whereClause,
         select: {
           id: true,
           nomor_pendaftaran: true,

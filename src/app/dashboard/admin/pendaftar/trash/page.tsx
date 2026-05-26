@@ -13,6 +13,7 @@ import {
   Users,
   Hash,
   Calendar,
+  Search,
 } from "lucide-react";
 import Swal from "sweetalert2";
 
@@ -50,6 +51,10 @@ export default function TrashPage() {
     totalPages: 0,
   });
 
+  const [search, setSearch] = useState("");
+  const [searchInput, setSearchInput] = useState("");
+  const [jenjangFilter, setJenjangFilter] = useState("");
+
   // Restore state
   const [isRestoreModalOpen, setIsRestoreModalOpen] = useState(false);
   const [restoringItem, setRestoringItem] = useState<DeletedPendaftar | null>(
@@ -63,6 +68,8 @@ export default function TrashPage() {
       const params = new URLSearchParams({
         page: pagination.page.toString(),
         limit: pagination.limit.toString(),
+        search: search,
+        jenjang: jenjangFilter,
       });
 
       const res = await fetch(`/api/admin/pendaftar/trash?${params}`);
@@ -80,7 +87,12 @@ export default function TrashPage() {
 
   useEffect(() => {
     fetchTrash();
-  }, [pagination.page]);
+  }, [pagination.page, search, jenjangFilter]);
+
+  const handleSearch = () => {
+    setSearch(searchInput);
+    setPagination((prev) => ({ ...prev, page: 1 }));
+  };
 
   const handleRestore = async () => {
     if (!restoringItem) return;
@@ -152,17 +164,54 @@ export default function TrashPage() {
 
       {/* Header */}
       <div className="bg-white rounded-xl shadow-lg p-4 md:p-6 border-2 border-red-100">
-        <div className="flex items-center gap-3 md:gap-4">
-          <div className="p-2.5 md:p-3 bg-gradient-to-br from-red-500 to-rose-600 rounded-xl flex-shrink-0">
-            <Trash2 className="w-6 h-6 md:w-8 md:h-8 text-white" />
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex items-center gap-3 md:gap-4">
+            <div className="p-2.5 md:p-3 bg-gradient-to-br from-red-500 to-rose-600 rounded-xl flex-shrink-0">
+              <Trash2 className="w-6 h-6 md:w-8 md:h-8 text-white" />
+            </div>
+            <div>
+              <h2 className="text-lg md:text-2xl font-black text-stone-900">
+                Sampah
+              </h2>
+              <p className="text-sm text-stone-600">
+                {pagination.total} data terhapus — Data bisa di-restore kapan saja
+              </p>
+            </div>
           </div>
-          <div>
-            <h2 className="text-lg md:text-2xl font-black text-stone-900">
-              Sampah
-            </h2>
-            <p className="text-sm text-stone-600">
-              {pagination.total} data terhapus — Data bisa di-restore kapan saja
-            </p>
+
+          <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex gap-2">
+              <input
+                type="text"
+                placeholder="Cari nama/no pendaftaran..."
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+                className="px-4 py-2 border-2 border-stone-200 rounded-xl text-sm focus:border-red-500 focus:ring-4 focus:ring-red-500/10 outline-hidden min-w-[200px]"
+              />
+              <button
+                onClick={handleSearch}
+                className="bg-stone-100 p-2 rounded-xl border-2 border-stone-200 hover:border-red-500 hover:text-red-600 transition-colors"
+              >
+                <Search className="w-5 h-5" />
+              </button>
+            </div>
+            <select
+              value={jenjangFilter}
+              onChange={(e) => {
+                setJenjangFilter(e.target.value);
+                setPagination((prev) => ({ ...prev, page: 1 }));
+              }}
+              className="px-4 py-2 border-2 border-stone-200 rounded-xl text-sm focus:border-red-500 focus:ring-4 focus:ring-red-500/10 outline-hidden bg-white appearance-none pr-10"
+            >
+              <option value="">Semua Jenjang</option>
+              <option value="TK">TK</option>
+              <option value="SD">SD</option>
+              <option value="SMP">SMP</option>
+              <option value="SMA">SMA</option>
+              <option value="MTs">MTs</option>
+              <option value="IL">IL</option>
+            </select>
           </div>
         </div>
       </div>
