@@ -1203,16 +1203,21 @@ export default function DataLengkapForm({
                     placeholder="Nama Sekolah"
                     required
                   />
-                  <InputField
-                    label="NISN (Nomor Induk Siswa Nasional)"
-                    name="nisn"
-                    value={formData.santri.nisn}
-                    onChange={(v) => updateSantri("nisn", v)}
-                    placeholder="10 digit NISN"
-                    maxLength={10}
-                    required
-                    inputFilter="numbers"
-                  />
+                  <div className="space-y-1">
+                    <InputField
+                      label="NISN (Nomor Induk Siswa Nasional)"
+                      name="nisn"
+                      value={formData.santri.nisn}
+                      onChange={(v) => updateSantri("nisn", v)}
+                      placeholder="10 digit NISN"
+                      maxLength={10}
+                      required
+                      inputFilter="numbers"
+                    />
+                    <p className="text-xs text-primary-600 font-medium italic ml-1 leading-relaxed">
+                      * Masukkan 10 digit NISN milik santri, BUKAN NPSN/NSM milik sekolah.
+                    </p>
+                  </div>
                   <InputField
                     label="Tahun Lulus"
                     name="tahun_lulus"
