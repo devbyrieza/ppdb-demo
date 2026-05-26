@@ -932,7 +932,7 @@ export default function KelengkapanBerkasTab() {
                       }
                     />
                     <SummaryItem
-                      label="NISN (Nomor Induk Siswa Nasional)"
+                      label="NPSN / NSM Sekolah"
                       value={dataPendaftaran.data_lengkap?.santri?.nisn || "-"}
                     />
                     <SummaryItem

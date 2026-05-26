@@ -624,10 +624,10 @@ export default function DaftarPindahanPage() {
                     </div>
                   </InputField>
 
-                  <InputField label="NISN (Nomor Induk Siswa Nasional)" error={fieldErrors.nomor_induk_lama}>
+                  <InputField label="NPSN / NSM Sekolah" error={fieldErrors.nomor_induk_lama}>
                     <input
                       type="text"
-                      maxLength={10}
+                      maxLength={12}
                       value={formData.nomor_induk_lama}
                       onChange={(e) =>
                         setFormData((prev) => ({
@@ -635,11 +635,11 @@ export default function DaftarPindahanPage() {
                           nomor_induk_lama: e.target.value.replace(/\D/g, ""),
                         }))
                       }
-                      placeholder="10 Digit NISN (Nomor Induk Siswa Nasional)"
+                      placeholder="8 Digit NPSN atau 12 Digit NSM"
                       className="w-full px-5 py-3 md:px-8 md:py-5 rounded-xl md:rounded-2xl bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold placeholder:text-ink-500 text-sm md:text-base text-ink-950"
                     />
                     <p className="text-xs text-primary-600 font-medium italic ml-1 leading-relaxed">
-                      * Masukkan 10 digit NISN milik santri, BUKAN NPSN/NSM milik sekolah.
+                      * Masukkan NPSN (8 angka) atau NSM (12 angka) milik sekolah asal.
                     </p>
                   </InputField>
 
