@@ -22,4 +22,5 @@ export const BRANDING = {
   igUrl: process.env.NEXT_PUBLIC_IG_URL || "#",
   ytUrl: process.env.NEXT_PUBLIC_YT_URL || "#",
   fbUrl: process.env.NEXT_PUBLIC_FB_URL || "#",
+  twitterUrl: process.env.NEXT_PUBLIC_TWITTER_URL || "#",
 };
