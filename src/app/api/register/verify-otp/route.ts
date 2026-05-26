@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { generateNomorPendaftaran } from "@/lib/utils/nomor-pendaftaran";
 import { enqueueWhatsapp, buildMessageRegistrationSuccess } from "@/lib/whatsapp-queue";
-import { normalizePhoneNumber } from "@/lib/validations/registration";
+import { normalizePhoneNumber, formatNamaLengkap } from "@/lib/validations/registration";
 import crypto from "crypto";
 
 /**
@@ -51,11 +51,15 @@ export async function POST(request: NextRequest) {
     const profileId = crypto.randomUUID();
     
     await prisma.$transaction([
-      prisma.profile.create({ data: { id: profileId, full_name: regData.nama_lengkap, phone: no_hp, role: "pendaftar" } }),
+      // A. Buat Profile untuk Login
+      prisma.profile.create({
+        data: { id: profileId, full_name: formatNamaLengkap(regData.nama_lengkap), phone: no_hp, role: "pendaftar" },
+      }),
+      // B. Buat Data Pendaftaran Santri
       prisma.pendaftar.create({
         data: {
           nik: regData.nik,
-          nama_lengkap: regData.nama_lengkap,
+          nama_lengkap: formatNamaLengkap(regData.nama_lengkap),
           jenis_kelamin: regData.jenis_kelamin,
           jenjang: regData.jenjang,
           no_hp: no_hp,

@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { countries } from "@/lib/data/countries";
+import { formatNamaLengkap } from "@/lib/validations/registration";
 import { motion, AnimatePresence } from "framer-motion";
 import Swal from "sweetalert2";
 
@@ -509,7 +510,7 @@ export default function DaftarPage() {
                         onChange={(e) =>
                           setFormData((prev) => ({
                             ...prev,
-                            nama_lengkap: e.target.value,
+                            nama_lengkap: formatNamaLengkap(e.target.value),
                           }))
                         }
                         placeholder="Sesuai Akta Kelahiran santri"

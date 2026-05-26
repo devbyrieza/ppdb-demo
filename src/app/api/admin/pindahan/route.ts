@@ -4,6 +4,7 @@ import { getServerSession } from "@/lib/session";
 import { logAdminAction } from "@/lib/audit";
 import { getAdminWhereClause } from "@/lib/utils/admin";
 import { generateNomorPendaftaran } from "@/lib/utils/nomor-pendaftaran";
+import { formatNamaLengkap } from "@/lib/validations/registration";
 
 // GET: List semua siswa pindahan
 export async function GET(request: NextRequest) {
@@ -164,7 +165,7 @@ export async function POST(request: NextRequest) {
     // Buat record pendaftar pindahan
     const pendaftar = await prisma.pendaftar.create({
       data: {
-        nama_lengkap: nama_lengkap.trim(),
+        nama_lengkap: formatNamaLengkap(nama_lengkap.trim()),
         nik: nik.trim(),
         jenis_kelamin,
         jenjang,

@@ -15,7 +15,7 @@ export const registrationSchema = z.object({
     .string()
     .min(3, "Nama minimal 3 karakter")
     .max(100, "Nama maksimal 100 karakter")
-    .regex(/^[a-zA-Z\s'.,-]+$/, "Nama hanya boleh huruf dan karakter khusus"),
+    .regex(/^[a-zA-Z\s]+$/, "Nama hanya boleh berisi huruf dan spasi (tanpa titik, strip, atau simbol lainnya)"),
 
   tanggal_lahir: z
     .string()
@@ -69,6 +69,26 @@ export function validateNIKChecksum(nik: string): boolean {
   // Advanced: You can implement Luhn algorithm or other NIK validation
   // For now, just check format
   return true;
+}
+
+// ===================================
+// HELPER: Format Nama Lengkap
+// ===================================
+
+export function formatNamaLengkap(nama: string): string {
+  if (!nama) return "";
+  // 1. Hapus karakter selain huruf alfabet dan spasi (titik, strip, angka, simbol dihapus)
+  let cleaned = nama.replace(/[^a-zA-Z\s]/g, "");
+  
+  // 2. Hapus spasi berlebih
+  cleaned = cleaned.replace(/\s+/g, " ").trim();
+  
+  // 3. Title Case: huruf pertama setiap kata jadi kapital
+  const titleCased = cleaned.toLowerCase().split(" ").map(word => {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }).join(" ");
+  
+  return titleCased;
 }
 
 // ===================================
