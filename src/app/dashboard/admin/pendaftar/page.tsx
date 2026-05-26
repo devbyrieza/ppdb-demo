@@ -1142,8 +1142,7 @@ function AdminPendaftarContent() {
             {userRole && ["admin_super", "admin"].includes(userRole) && (
               <>
               <Link
-                href="/daftar"
-                target="_blank"
+                href="/dashboard/admin/pendaftar/tambah?type=BARU"
                 className="flex items-center gap-2 px-3 md:px-4 py-2.5 bg-violet-700 hover:bg-violet-800 text-white rounded-xl font-bold shadow-sm shadow-violet-700/20 transition-all text-sm ml-1"
                 title="Daftarkan Santri Reguler"
               >
@@ -1151,8 +1150,7 @@ function AdminPendaftarContent() {
                 <span className="hidden sm:inline">Daftar Reguler</span>
               </Link>
               <Link
-                href="/daftar-pindahan"
-                target="_blank"
+                href="/dashboard/admin/pendaftar/tambah?type=PINDAHAN"
                 className="flex items-center gap-2 px-3 md:px-4 py-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-bold shadow-sm shadow-purple-600/20 transition-all text-sm"
                 title="Daftarkan Santri Pindahan"
               >
