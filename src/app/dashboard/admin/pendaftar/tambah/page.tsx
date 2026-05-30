@@ -146,8 +146,8 @@ export default function AdminTambahPendaftar() {
                 <label className="text-sm font-bold text-stone-700">Jenis Kelamin <span className="text-red-500">*</span></label>
                 <select required name="jenis_kelamin" value={formData.jenis_kelamin} onChange={handleChange} className="w-full px-4 py-2.5 rounded-xl border-2 border-stone-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 outline-none transition-all appearance-none bg-white">
                   <option value="">Pilih Jenis Kelamin...</option>
-                  <option value="Laki-laki">Laki-laki (Putra)</option>
-                  <option value="Perempuan">Perempuan (Putri)</option>
+                  <option value="L">Laki-laki (Putra)</option>
+                  <option value="P">Perempuan (Putri)</option>
                 </select>
               </div>
               <div className="space-y-2">
