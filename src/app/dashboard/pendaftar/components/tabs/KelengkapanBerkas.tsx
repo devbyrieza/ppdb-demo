@@ -913,7 +913,7 @@ export default function KelengkapanBerkasTab() {
                     <div className="md:col-span-2">
                       <SummaryItem
                         label="Alamat Domisili"
-                        value={`${dataPendaftaran.data_lengkap?.santri?.alamat || "-"}, RT ${dataPendaftaran.data_lengkap?.santri?.rt || "00"}/RW ${dataPendaftaran.data_lengkap?.santri?.rw || "00"}, ${dataPendaftaran.data_lengkap?.santri?.kelurahan || "-"}, ${dataPendaftaran.data_lengkap?.santri?.kecamatan || "-"}, ${dataPendaftaran.data_lengkap?.santri?.kabupaten || "-"}, ${dataPendaftaran.data_lengkap?.santri?.provinsi || "-"}, Kode Pos ${dataPendaftaran.data_lengkap?.santri?.kode_pos || "-"}`}
+                        value={`${dataPendaftaran.data_lengkap?.santri?.alamat || "-"}, RT ${dataPendaftaran.data_lengkap?.santri?.rt || "-"}/RW ${dataPendaftaran.data_lengkap?.santri?.rw || "-"}, ${dataPendaftaran.data_lengkap?.santri?.kelurahan || "-"}, ${dataPendaftaran.data_lengkap?.santri?.kecamatan || "-"}, ${dataPendaftaran.data_lengkap?.santri?.kabupaten || "-"}, ${dataPendaftaran.data_lengkap?.santri?.provinsi || "-"}, Kode Pos ${dataPendaftaran.data_lengkap?.santri?.kode_pos || "-"}`}
                       />
                     </div>
                   </div>
