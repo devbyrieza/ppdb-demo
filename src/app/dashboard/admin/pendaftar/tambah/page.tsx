@@ -16,7 +16,6 @@ export default function AdminTambahPendaftar() {
     tipe_pendaftaran: initialType,
     nik: "",
     nama_lengkap: "",
-    tempat_lahir: "",
     tanggal_lahir: "",
     jenis_kelamin: "",
     jenjang: "",
@@ -160,11 +159,7 @@ export default function AdminTambahPendaftar() {
                   <option value="MA">Madrasah Aliyah (MA)</option>
                 </select>
               </div>
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-stone-700">Tempat Lahir</label>
-                <input type="text" name="tempat_lahir" value={formData.tempat_lahir} onChange={handleChange} placeholder="Kota/Kab..." className="w-full px-4 py-2.5 rounded-xl border-2 border-stone-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 outline-none transition-all" />
-              </div>
-              <div className="space-y-2">
+               <div className="space-y-2">
                 <label className="text-sm font-bold text-stone-700">Tanggal Lahir</label>
                 <input type="date" name="tanggal_lahir" value={formData.tanggal_lahir} onChange={handleChange} className="w-full px-4 py-2.5 rounded-xl border-2 border-stone-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 outline-none transition-all" />
               </div>
