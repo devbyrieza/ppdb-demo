@@ -462,11 +462,15 @@ export default function KelengkapanBerkasTab() {
         const s = d.santri || {};
         // NIK can come from pendaftar top level or JSON blob
         const santriNik = s.nik || pendaftar.nik;
+        const santriNamaLengkap = s.nama_lengkap || pendaftar.nama_lengkap;
+        const santriTempatLahir = s.tempat_lahir || pendaftar.tempat_lahir;
+        const santriTanggalLahir = s.tanggal_lahir || pendaftar.tanggal_lahir;
+
         const isSantriBasic =
-          s.nama_lengkap &&
+          santriNamaLengkap &&
           santriNik &&
-          s.tempat_lahir &&
-          s.tanggal_lahir &&
+          santriTempatLahir &&
+          santriTanggalLahir &&
           s.provinsi &&
           s.kabupaten &&
           s.kecamatan &&
@@ -909,7 +913,7 @@ export default function KelengkapanBerkasTab() {
                     <div className="md:col-span-2">
                       <SummaryItem
                         label="Alamat Domisili"
-                        value={`${dataPendaftaran.data_lengkap?.santri?.alamat || "-"}, RT ${dataPendaftaran.data_lengkap?.santri?.rt || "00"}/RW ${dataPendaftaran.data_lengkap?.santri?.rw || "00"}, ${dataPendaftaran.data_lengkap?.santri?.kelurahan || "-"}, ${dataPendaftaran.data_lengkap?.santri?.kecamatan || "-"}, ${dataPendaftaran.data_lengkap?.santri?.kabupaten || "-"}, ${dataPendaftaran.data_lengkap?.santri?.provinsi || "-"}`}
+                        value={`${dataPendaftaran.data_lengkap?.santri?.alamat || "-"}, RT ${dataPendaftaran.data_lengkap?.santri?.rt || "00"}/RW ${dataPendaftaran.data_lengkap?.santri?.rw || "00"}, ${dataPendaftaran.data_lengkap?.santri?.kelurahan || "-"}, ${dataPendaftaran.data_lengkap?.santri?.kecamatan || "-"}, ${dataPendaftaran.data_lengkap?.santri?.kabupaten || "-"}, ${dataPendaftaran.data_lengkap?.santri?.provinsi || "-"}, Kode Pos ${dataPendaftaran.data_lengkap?.santri?.kode_pos || "-"}`}
                       />
                     </div>
                   </div>
