@@ -108,6 +108,6 @@ export async function POST(request: NextRequest) {
 
   } catch (error: any) {
     console.error("ADMIN_TAMBAH_PENDAFTAR_ERROR:", error.message);
-    return NextResponse.json({ success: false, error: "Gagal memproses pendaftaran" }, { status: 500 });
+    return NextResponse.json({ success: false, error: error.message || "Gagal memproses pendaftaran" }, { status: 400 });
   }
 }
