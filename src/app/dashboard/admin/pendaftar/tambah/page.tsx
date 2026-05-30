@@ -155,12 +155,9 @@ export default function AdminTambahPendaftar() {
                 <label className="text-sm font-bold text-stone-700">Jenjang Tujuan <span className="text-red-500">*</span></label>
                 <select required name="jenjang" value={formData.jenjang} onChange={handleChange} className="w-full px-4 py-2.5 rounded-xl border-2 border-stone-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 outline-none transition-all appearance-none bg-white">
                   <option value="">Pilih Jenjang...</option>
-                  <option value="TK">TK</option>
-                  <option value="SD">SD</option>
-                  <option value="SMP">SMP</option>
-                  <option value="SMA">SMA</option>
-                  <option value="MTs">MTs</option>
-                  <option value="IL">I'dad Lughowi</option>
+                  <option value="MTs">MTs (Madrasah Tsanawiyah)</option>
+                  <option value="IL">I'dad Lughowi (IL)</option>
+                  <option value="MA">Madrasah Aliyah (MA)</option>
                 </select>
               </div>
               <div className="space-y-2">
