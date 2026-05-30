@@ -57,6 +57,7 @@ export async function POST(request: NextRequest) {
 
     // PEMBUATAN AKUN (Profile & Pendaftar)
     const profileId = crypto.randomUUID();
+    const pendaftarId = crypto.randomUUID();
     
     await prisma.$transaction([
       // A. Buat Profile untuk Login
@@ -66,6 +67,7 @@ export async function POST(request: NextRequest) {
       // B. Buat Data Pendaftaran Santri
       prisma.pendaftar.create({
         data: {
+          id: pendaftarId,
           nik: regData.nik,
           nama_lengkap: formatNamaLengkap(regData.nama_lengkap),
           tempat_lahir: regData.tempat_lahir || undefined,
@@ -89,7 +91,7 @@ export async function POST(request: NextRequest) {
 
     // Kirim Notifikasi Sukses via WhatsApp Queue
     await enqueueWhatsapp({
-      pendaftarId: profileId,
+      pendaftarId: pendaftarId,
       phone: normalizedPhone,
       jenisNotif: "registration_success",
       messageContent: buildMessageRegistrationSuccess(regData.nama_lengkap, nomorPendaftaran, regData.jenjang),
