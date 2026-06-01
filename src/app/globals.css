@@ -85,22 +85,22 @@
   --color-cream-500: #e4c16f;
   --color-cream-600: #c9a84c;
 
-  /* ─── Hijau Islami (Template-Demo Primary — Premium Emerald-Teal) ─── */
-  --color-teal-50: #f0fdfa;
-  --color-teal-100: #ccfbf1;
-  --color-teal-200: #99f6e4;
-  --color-teal-300: #5eead4;
-  --color-teal-400: #2dd4bf;
-  --color-teal-500: #14b8a6;
-  /* Hijau Islami Medium */
-  --color-teal-600: #0d9488;
-  /* Hijau Islami Primary */
-  --color-teal-700: #0f766e;
-  --color-teal-800: #115e59;
-  --color-teal-900: #134e4a;
-  --color-teal-950: #042f2e;
+  /* ─── Hijau Emerald (Template-Demo Primary — Premium Islamic Emerald) ─── */
+  --color-teal-50: #ecfdf5;
+  --color-teal-100: #d1fae5;
+  --color-teal-200: #a7f3d0;
+  --color-teal-300: #6ee7b7;
+  --color-teal-400: #34d399;
+  --color-teal-500: #10b981;
+  /* Hijau Emerald Medium */
+  --color-teal-600: #059669;
+  /* Hijau Emerald Primary */
+  --color-teal-700: #047857;
+  --color-teal-800: #065f46;
+  --color-teal-900: #064e3b;
+  --color-teal-950: #022c22;
 
-  /* ─── Gold Islami (Template-Demo Secondary) ─── */
+  /* ─── Gold Islami (Template-Demo Secondary — Warm Islamic Gold) ─── */
   --color-sand-50: #fffdf0;
   --color-sand-100: #fef9d9;
   --color-sand-200: #fdf0a8;
@@ -134,35 +134,35 @@
 
   
   /* ━━━ SEMANTIC THEME ━━━ */
-  --color-primary-50: var(--color-blue-50);
-  --color-primary-100: var(--color-blue-100);
-  --color-primary-200: var(--color-blue-200);
-  --color-primary-300: var(--color-blue-300);
-  --color-primary-400: var(--color-blue-400);
-  --color-primary-500: var(--color-blue-500);
-  --color-primary-600: var(--color-blue-600);
-  --color-primary-700: var(--color-blue-700);
-  --color-primary-800: var(--color-blue-800);
-  --color-primary-900: var(--color-blue-900);
-  --color-primary-950: var(--color-blue-950);
-  --color-primary: var(--color-blue-600);
-  --color-primary-light: var(--color-blue-50);
-  --color-primary-dark: var(--color-blue-800);
+  --color-primary-50: var(--color-teal-50);
+  --color-primary-100: var(--color-teal-100);
+  --color-primary-200: var(--color-teal-200);
+  --color-primary-300: var(--color-teal-300);
+  --color-primary-400: var(--color-teal-400);
+  --color-primary-500: var(--color-teal-500);
+  --color-primary-600: var(--color-teal-600);
+  --color-primary-700: var(--color-teal-700);
+  --color-primary-800: var(--color-teal-800);
+  --color-primary-900: var(--color-teal-900);
+  --color-primary-950: var(--color-teal-950);
+  --color-primary: var(--color-teal-600);
+  --color-primary-light: var(--color-teal-50);
+  --color-primary-dark: var(--color-teal-800);
 
-  --color-secondary-50: var(--color-amber-50);
-  --color-secondary-100: var(--color-amber-100);
-  --color-secondary-200: var(--color-amber-200);
-  --color-secondary-300: var(--color-amber-300);
-  --color-secondary-400: var(--color-amber-400);
-  --color-secondary-500: var(--color-amber-500);
-  --color-secondary-600: var(--color-amber-600);
-  --color-secondary-700: var(--color-amber-700);
-  --color-secondary-800: var(--color-amber-800);
-  --color-secondary-900: var(--color-amber-900);
-  --color-secondary-950: var(--color-amber-950);
-  --color-secondary: var(--color-amber-600);
-  --color-secondary-light: var(--color-amber-50);
-  --color-secondary-dark: var(--color-amber-800);
+  --color-secondary-50: var(--color-sand-50);
+  --color-secondary-100: var(--color-sand-100);
+  --color-secondary-200: var(--color-sand-200);
+  --color-secondary-300: var(--color-sand-300);
+  --color-secondary-400: var(--color-sand-400);
+  --color-secondary-500: var(--color-sand-500);
+  --color-secondary-600: var(--color-sand-600);
+  --color-secondary-700: var(--color-sand-700);
+  --color-secondary-800: var(--color-sand-800);
+  --color-secondary-900: var(--color-sand-900);
+  --color-secondary-950: var(--color-sand-950);
+  --color-secondary: var(--color-sand-500);
+  --color-secondary-light: var(--color-sand-50);
+  --color-secondary-dark: var(--color-sand-800);
 
   /* ─── Status Colors ─── */
   --color-success-500: #16a34a;
@@ -186,12 +186,12 @@
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
   /* ─── Islamic Color Palette — Semantic Tokens ─── */
-  --color-primary: var(--color-blue-600);
-  /* Blue utama */
-  --color-primary-light: var(--color-blue-50);
-  /* Blue muda / background aksen */
-  --color-secondary: var(--color-amber-400);
-  /* Amber Secondary */
+  --color-primary: var(--color-teal-600);
+  /* Hijau Emerald Islami utama */
+  --color-primary-light: var(--color-teal-50);
+  /* Hijau muda / background aksen */
+  --color-secondary: var(--color-sand-500);
+  /* Gold Islami — D4AF37 */
   --color-background: #FFFFFF;
   /* Background utama */
   --color-text: #374151;
