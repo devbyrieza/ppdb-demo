@@ -23,7 +23,7 @@ export async function PUT(req: Request) {
       return NextResponse.json({ message: "Pendaftar tidak ditemukan" }, { status: 404 });
     }
 
-    if (!["accepted", "re_registered", "enrolled"].includes(pendaftar.status_pendaftaran)) {
+    if (!["accepted", "re_registered", "enrolled", "enrolled_full"].includes(pendaftar.status_pendaftaran)) {
       return NextResponse.json({ message: "Akses ditolak. Anda belum sampai pada tahap ini." }, { status: 403 });
     }
 

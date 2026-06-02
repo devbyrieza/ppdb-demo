@@ -12,16 +12,6 @@ export const revalidate = 0;
 
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const pendaftarId = searchParams.get("pendaftar_id");
-
-    if (!pendaftarId) {
-      return NextResponse.json(
-        { error: "pendaftar_id is required" },
-        { status: 400 },
-      );
-    }
-
     // Auth Check
     const cookieStore = await cookies();
     const sessionCookie = cookieStore.get("app_session");
@@ -29,10 +19,23 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Optional: Validate that the session user owns this data if they are a pendaftar
-    // But this endpoint might be used by admins too?
-    // Assuming simple read is fine if authenticated
     const session = JSON.parse(sessionCookie.value);
+
+    const { searchParams } = new URL(request.url);
+    let pendaftarIdRaw = searchParams.get("pendaftar_id");
+
+    if (!pendaftarIdRaw) {
+      if (session.role === "pendaftar") {
+        pendaftarIdRaw = session.id;
+      } else {
+        return NextResponse.json(
+          { error: "pendaftar_id is required" },
+          { status: 400 },
+        );
+      }
+    }
+
+    const pendaftarId = pendaftarIdRaw as string;
 
     // If role is pendaftar, ensure they only access their own data
     if (session.role === "pendaftar" && session.id !== pendaftarId) {

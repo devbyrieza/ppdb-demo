@@ -5,9 +5,9 @@ import { createHmac } from "crypto";
 
 const MAGIC_LINK_SECRET = process.env.MAGIC_LINK_SECRET || "fallback-secret-for-dev";
 
-export async function GET(req: Request, { params }: { params: Promise<{ code: string }> }) {
+export async function GET(req: Request, { params }: { params: { code: string } }) {
   try {
-    const { code } = await params;
+    const { code } = params;
     
     if (!code || !code.includes("-")) {
       return NextResponse.redirect(new URL("/login?error=Link_tidak_valid", req.url));

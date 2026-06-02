@@ -19,7 +19,18 @@ export default function SeragamPage() {
 
   const fetchData = async () => {
     try {
-      const res = await fetch("/api/pendaftar/status?t=" + Date.now());
+      // 1. Get session first
+      const sessionRes = await fetch("/api/auth/session");
+      if (!sessionRes.ok) throw new Error("Failed to fetch session");
+      const sessionData = await sessionRes.json();
+      
+      const pendaftarId = sessionData.pendaftar_id || sessionData.session?.id;
+      if (!pendaftarId) throw new Error("Pendaftar ID not found in session");
+
+      // 2. Fetch status with pendaftar_id
+      const res = await fetch(
+        `/api/pendaftar/status?pendaftar_id=${pendaftarId}&t=${Date.now()}`
+      );
       if (res.ok) {
         const data = await res.json();
         setFormData({
