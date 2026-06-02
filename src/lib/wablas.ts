@@ -1015,3 +1015,67 @@ export async function notifyAllExamsComplete(data: {
     },
   });
 }
+
+/**
+ * Send welcome notification with magic login link and PIN to new/updated staff members
+ */
+export async function notifyNewStaffAccess(data: {
+  phone: string;
+  nama: string;
+  role: string;
+  profileId: string;
+}) {
+  if (!data.phone || data.phone === "-") {
+    return { status: false, message: "Phone number missing" };
+  }
+
+  const { generateMagicToken, generateTinyUrl } = await import("@/lib/utils/magic-link");
+  const { BRANDING } = await import("@/config/branding");
+
+  const isAlImam = BRANDING.schoolShortName.toLowerCase().includes("al imam");
+  const expiresInHours = isAlImam ? -1 : 48;
+
+  // Generate magic token redirecting to examiners input page
+  const redirectPath = "/dashboard/penguji/input-nilai";
+  const token = generateMagicToken(
+    data.profileId,
+    data.role,
+    data.nama,
+    expiresInHours,
+    redirectPath
+  );
+
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  const longUrl = `${baseUrl}/api/auth/magic?token=${token}`;
+  const shortUrl = await generateTinyUrl(longUrl);
+
+  const roleLabels: Record<string, string> = {
+    penguji: "Penguji Al-Qur'an",
+    pewawancara_calsan: "Pewawancara Calsan",
+    pewawancara_cawalsan: "Pewawancara Cawalsan",
+  };
+  const roleLabel = roleLabels[data.role] || data.role;
+
+  // Extract last 4 digits of phone number for PIN
+  const cleanPhone = data.phone.replace(/\D/g, "");
+  const pin = cleanPhone.slice(-4) || "1234";
+
+  const message = `🔑 *Akses Masuk Baru Staf PPDB ${BRANDING.schoolName}*
+
+Assalamu'alaikum *${data.nama}*,
+
+Selamat, Anda telah didaftarkan/diperbarui aksesnya sebagai *${roleLabel}* pada sistem PPDB ${BRANDING.schoolName}.
+
+Berikut adalah tautan masuk cepat Anda:
+🔗 ${shortUrl}
+
+⚠️ *PENGAMANAN PIN:*
+Demi keamanan, saat pertama kali mengakses link di atas atau saat berganti sesi, Anda akan diminta memasukkan *4-digit PIN keamanan*.
+PIN Keamanan Anda adalah: *${pin}* (4 digit terakhir nomor WhatsApp Anda).
+
+Jazakumullahu khairan.
+---
+*Panitia PPDB ${BRANDING.schoolName}*`;
+
+  return sendMessage({ phone: data.phone, message });
+}

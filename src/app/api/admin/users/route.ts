@@ -124,6 +124,20 @@ export async function POST(request: Request) {
         },
       });
 
+      if (isExaminerOrInterviewer && updatedProfile.phone && updatedProfile.phone !== "-") {
+        const { notifyNewStaffAccess } = await import("@/lib/wablas");
+        try {
+          await notifyNewStaffAccess({
+            phone: updatedProfile.phone,
+            nama: updatedProfile.full_name,
+            role: updatedProfile.role,
+            profileId: updatedProfile.id,
+          });
+        } catch (err) {
+          console.error("Wablas notifyNewStaffAccess error:", err);
+        }
+      }
+
       return NextResponse.json({ 
         success: true, 
         message: "Akun pendaftar berhasil ditingkatkan menjadi admin.",
@@ -144,6 +158,20 @@ export async function POST(request: Request) {
         password_hash,
       },
     });
+
+    if (isExaminerOrInterviewer && profile.phone && profile.phone !== "-") {
+      const { notifyNewStaffAccess } = await import("@/lib/wablas");
+      try {
+        await notifyNewStaffAccess({
+          phone: profile.phone,
+          nama: profile.full_name,
+          role: profile.role,
+          profileId: profile.id,
+        });
+      } catch (err) {
+        console.error("Wablas notifyNewStaffAccess error:", err);
+      }
+    }
 
     return NextResponse.json({ success: true, user: profile });
   } catch (error: any) {
@@ -230,10 +258,29 @@ export async function PUT(request: Request) {
       data.email = cleanEmail;
     }
 
-    await prisma.profile.update({
+    const roleChanged = role && role !== existingProfile.role;
+    const phoneChanged = phone !== undefined && phone !== existingProfile.phone;
+
+    const updatedProfile = await prisma.profile.update({
       where: { id },
       data,
     });
+
+    if (isExaminerOrInterviewer && (roleChanged || phoneChanged)) {
+      if (updatedProfile.phone && updatedProfile.phone !== "-") {
+        const { notifyNewStaffAccess } = await import("@/lib/wablas");
+        try {
+          await notifyNewStaffAccess({
+            phone: updatedProfile.phone,
+            nama: updatedProfile.full_name,
+            role: updatedProfile.role,
+            profileId: updatedProfile.id,
+          });
+        } catch (err) {
+          console.error("Wablas notifyNewStaffAccess error:", err);
+        }
+      }
+    }
 
     return NextResponse.json({ success: true });
   } catch (error: any) {

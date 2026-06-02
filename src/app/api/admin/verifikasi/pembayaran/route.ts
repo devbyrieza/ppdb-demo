@@ -9,6 +9,7 @@ import {
 import { getServerSession } from "@/lib/session";
 import { logAdminAction } from "@/lib/audit";
 import { getAdminWhereClause } from "@/lib/utils/admin";
+import { createHmac } from "crypto";
 
 // GET: List pembayaran yang perlu diverifikasi
 export async function GET(request: NextRequest) {
@@ -214,6 +215,7 @@ export async function PATCH(request: NextRequest) {
             nama_lengkap: true,
             no_hp: true,
             status_pendaftaran: true,
+            nomor_pendaftaran: true,
           },
         },
       },
@@ -318,11 +320,24 @@ export async function PATCH(request: NextRequest) {
             const metodePembayaran = pembayaran.metode_pembayaran || "Transfer";
             
             if (isDaftarUlang) {
+              const MAGIC_LINK_SECRET = process.env.MAGIC_LINK_SECRET || "fallback-secret-for-dev";
+              const nomorPendaftaran = pembayaran.pendaftar.nomor_pendaftaran || "";
+              const expectedHash = createHmac("sha256", MAGIC_LINK_SECRET)
+                .update(nomorPendaftaran)
+                .digest("hex")
+                .slice(0, 8);
+              const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+              const longUrl = `${baseUrl}/s/${nomorPendaftaran}-${expectedHash}?t=seragam`;
+              
+              const { generateTinyUrl } = await import("@/lib/utils/magic-link");
+              const shortUrl = await generateTinyUrl(longUrl);
+
               finalMessage = buildMessageDaftarUlangVerified(
                 pembayaran.pendaftar.nama_lengkap,
                 formattedAmount,
                 metodePembayaran,
                 paymentDate,
+                shortUrl,
               );
             } else {
               finalMessage = buildMessagePaymentVerified(

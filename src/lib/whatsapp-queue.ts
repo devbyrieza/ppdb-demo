@@ -793,7 +793,11 @@ Jazakumullahu khairan
 *Panitia PPDB ${BRANDING.schoolName}*`;
 }
 
-export function buildMessageDaftarUlangVerified(nama: string, jumlah: string, metode: string, tanggal: string): string {
+export function buildMessageDaftarUlangVerified(nama: string, jumlah: string, metode: string, tanggal: string, uniformLink?: string): string {
+    const uniformSection = uniformLink
+        ? `\n\n👕 *Pengisian Ukuran Seragam:*\nSilakan klik tautan berikut untuk mengisi ukuran seragam Ananda:\n${uniformLink}`
+        : "";
+
     return `✅ *Pembayaran Daftar Ulang Diterima*
 
 Assalamu'alaikum Abu/Ummu,
@@ -804,7 +808,7 @@ Alhamdulillah, pembayaran Daftar Ulang Ananda *${nama}* telah kami terima dan ve
 * Jumlah: ${jumlah}
 * Metode: ${metode}
 * Status: Terkonfirmasi
-* Tanggal: ${tanggal}
+* Tanggal: ${tanggal}${uniformSection}
 
 💡 *Informasi Selanjutnya:*
 Ananda kini tercatat sebagai calon santri yang telah melakukan Daftar Ulang. Mohon nantikan informasi selanjutnya terkait persiapan masuk pesantren melalui dashboard atau grup resmi.

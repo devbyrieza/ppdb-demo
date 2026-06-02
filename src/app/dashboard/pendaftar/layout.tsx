@@ -179,7 +179,7 @@ export default function DashboardLayout({
     {
       name: "Ukuran Seragam",
       href: "/dashboard/pendaftar/seragam",
-      tabName: "daftar-ulang" as TabName, // Menggunakan rules akses yang sama dengan daftar-ulang
+      tabName: "ukuran-seragam" as TabName, // Menggunakan rules akses ukuran-seragam
       icon: Shirt,
       active: pathname === "/dashboard/pendaftar/seragam",
     },
