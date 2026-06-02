@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Loader2, Search, Download, MessageSquare, Shirt, CheckCircle2, XCircle } from "lucide-react";
+import Swal from "sweetalert2";
 
 export default function RekapSeragamPage() {
   const [data, setData] = useState<any[]>([]);
@@ -58,12 +59,47 @@ export default function RekapSeragamPage() {
   const handleBroadcast = async () => {
     const belumIsi = filteredData.filter(d => !d.ukuran_seragam_baju || !d.ukuran_seragam_celana);
     if (belumIsi.length === 0) {
-      alert("Semua pendaftar di daftar ini sudah mengisi ukuran seragam.");
+      Swal.fire("Info", "Semua pendaftar di daftar ini sudah mengisi ukuran seragam.", "info");
       return;
     }
     
-    if (confirm(`Anda akan mengirim pesan WhatsApp pengingat pengisian seragam ke ${belumIsi.length} orang tua santri. Lanjutkan?`)) {
-      alert("Fitur broadcast WA sedang dalam pengembangan (tahap selanjutnya). Anda bisa men-download Excel terlebih dahulu untuk melihat nomor HP.");
+    const confirm = await Swal.fire({
+      title: "Kirim Pengingat WA?",
+      text: `Anda akan mengirim pesan WhatsApp pengingat pengisian seragam ke ${belumIsi.length} pendaftar/orang tua. Lanjutkan?`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Ya, Kirim",
+      cancelButtonText: "Batal"
+    });
+
+    if (confirm.isConfirmed) {
+      try {
+        Swal.fire({
+          title: "Memproses...",
+          text: "Mohon tunggu, sedang menjadwalkan pesan WhatsApp.",
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+
+        const pendaftarIds = belumIsi.map(d => d.id);
+        const res = await fetch("/api/admin/seragam/broadcast", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ pendaftarIds }),
+        });
+        
+        const json = await res.json();
+        
+        if (res.ok) {
+          Swal.fire("Sukses!", json.message, "success");
+        } else {
+          Swal.fire("Gagal", json.message || "Gagal mengirim pengingat", "error");
+        }
+      } catch (error: any) {
+        Swal.fire("Terjadi Kesalahan", error.message || "Gagal menghubungi server", "error");
+      }
     }
   };
 
