@@ -294,10 +294,16 @@ function SectionHeader({
   disabled,
 }: SectionHeaderProps) {
   return (
-    <button
-      type="button"
-      onClick={onToggle}
-      disabled={disabled}
+    <div
+      role="button"
+      tabIndex={disabled ? -1 : 0}
+      onClick={disabled ? undefined : onToggle}
+      onKeyDown={(e) => {
+        if (!disabled && (e.key === "Enter" || e.key === " ")) {
+          e.preventDefault();
+          onToggle();
+        }
+      }}
       className={`w-full flex items-center justify-between p-5 rounded-2xl transition-all duration-300 border ${
         disabled
           ? "bg-slate-50 border-slate-200 opacity-60 cursor-not-allowed"
@@ -347,7 +353,7 @@ function SectionHeader({
           />
         </div>
       </div>
-    </button>
+    </div>
   );
 }
 
