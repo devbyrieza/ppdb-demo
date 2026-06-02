@@ -29,6 +29,7 @@ export async function GET(req: Request) {
         status_pendaftaran: true,
         ukuran_seragam_baju: true,
         ukuran_seragam_celana: true,
+        ukuran_seragam_almamater: true,
         no_hp: true,
         orang_tua: {
           select: {

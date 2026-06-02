@@ -11,7 +11,7 @@ export async function PUT(req: Request) {
 
     const pendaftarId = session.pendaftar_id;
     const body = await req.json();
-    const { ukuran_seragam_baju, ukuran_seragam_celana } = body;
+    const { ukuran_seragam_baju, ukuran_seragam_celana, ukuran_seragam_almamater } = body;
 
     // Pastikan status_pendaftaran valid untuk mengisi seragam (minimal accepted/re_registered)
     const pendaftar = await prisma.pendaftar.findUnique({
@@ -33,6 +33,7 @@ export async function PUT(req: Request) {
       data: {
         ukuran_seragam_baju,
         ukuran_seragam_celana,
+        ukuran_seragam_almamater,
       },
     });
 

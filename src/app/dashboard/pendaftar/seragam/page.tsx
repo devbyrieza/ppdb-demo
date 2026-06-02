@@ -9,6 +9,7 @@ export default function SeragamPage() {
   const [formData, setFormData] = useState({
     ukuran_seragam_baju: "",
     ukuran_seragam_celana: "",
+    ukuran_seragam_almamater: "",
   });
   const [message, setMessage] = useState({ type: "", text: "" });
 
@@ -24,6 +25,7 @@ export default function SeragamPage() {
         setFormData({
           ukuran_seragam_baju: data.ukuran_seragam_baju || "",
           ukuran_seragam_celana: data.ukuran_seragam_celana || "",
+          ukuran_seragam_almamater: data.ukuran_seragam_almamater || "",
         });
       }
     } catch (error) {
@@ -127,6 +129,25 @@ export default function SeragamPage() {
                 required
               >
                 <option value="">-- Pilih Ukuran Celana --</option>
+                <option value="S">Ukuran S</option>
+                <option value="M">Ukuran M</option>
+                <option value="L">Ukuran L</option>
+                <option value="XL">Ukuran XL</option>
+                <option value="XXL">Ukuran XXL</option>
+              </select>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-xs font-black text-ink-500 uppercase tracking-widest">
+                Ukuran Almamater *
+              </label>
+              <select
+                value={formData.ukuran_seragam_almamater}
+                onChange={(e) => setFormData({ ...formData, ukuran_seragam_almamater: e.target.value })}
+                className="w-full bg-ink-50 border border-ink-200 px-4 py-3 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none font-bold"
+                required
+              >
+                <option value="">-- Pilih Ukuran Almamater --</option>
                 <option value="S">Ukuran S</option>
                 <option value="M">Ukuran M</option>
                 <option value="L">Ukuran L</option>

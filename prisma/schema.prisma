@@ -133,6 +133,7 @@ model Pendaftar {
   pengumuman                     Pengumuman?
   ukuran_seragam_baju            String?
   ukuran_seragam_celana          String?
+  ukuran_seragam_almamater       String?
   reservasi                      ReservasiPSB[]
   whatsapp_logs                  WhatsappLog[]
 

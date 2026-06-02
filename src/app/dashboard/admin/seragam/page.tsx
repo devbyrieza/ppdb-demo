@@ -34,14 +34,15 @@ export default function RekapSeragamPage() {
 
   const exportExcel = () => {
     const csvContent = [
-      ["No. Pendaftaran", "Nama Lengkap", "Jenjang", "L/P", "Ukuran Baju", "Ukuran Celana"],
+      ["No. Pendaftaran", "Nama Lengkap", "Jenjang", "L/P", "Ukuran Baju", "Ukuran Celana", "Ukuran Almamater"],
       ...filteredData.map(item => [
         item.nomor_pendaftaran,
         item.nama_lengkap,
         item.jenjang,
         item.jenis_kelamin,
         item.ukuran_seragam_baju || "Belum Isi",
-        item.ukuran_seragam_celana || "Belum Isi"
+        item.ukuran_seragam_celana || "Belum Isi",
+        item.ukuran_seragam_almamater || "Belum Isi"
       ])
     ].map(e => e.join(",")).join("\n");
 
@@ -57,7 +58,7 @@ export default function RekapSeragamPage() {
   };
 
   const handleBroadcast = async () => {
-    const belumIsi = filteredData.filter(d => !d.ukuran_seragam_baju || !d.ukuran_seragam_celana);
+    const belumIsi = filteredData.filter(d => !d.ukuran_seragam_baju || !d.ukuran_seragam_celana || !d.ukuran_seragam_almamater);
     if (belumIsi.length === 0) {
       Swal.fire("Info", "Semua pendaftar di daftar ini sudah mengisi ukuran seragam.", "info");
       return;
@@ -170,6 +171,7 @@ export default function RekapSeragamPage() {
                   <th className="px-6 py-4">Pendaftar</th>
                   <th className="px-6 py-4 text-center">Baju</th>
                   <th className="px-6 py-4 text-center">Celana/Rok</th>
+                  <th className="px-6 py-4 text-center">Almamater</th>
                   <th className="px-6 py-4 text-center">Status Form</th>
                 </tr>
               </thead>
@@ -182,7 +184,7 @@ export default function RekapSeragamPage() {
                   </tr>
                 ) : (
                   filteredData.map((item, idx) => {
-                    const sudahIsi = item.ukuran_seragam_baju && item.ukuran_seragam_celana;
+                    const sudahIsi = item.ukuran_seragam_baju && item.ukuran_seragam_celana && item.ukuran_seragam_almamater;
                     
                     return (
                       <tr key={item.id} className="hover:bg-ink-50/50 transition-colors">
@@ -207,6 +209,15 @@ export default function RekapSeragamPage() {
                           {item.ukuran_seragam_celana ? (
                             <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 font-black text-xs border border-emerald-100">
                               {item.ukuran_seragam_celana}
+                            </span>
+                          ) : (
+                            <span className="text-ink-300">-</span>
+                          )}
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          {item.ukuran_seragam_almamater ? (
+                            <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-purple-50 text-purple-700 font-black text-xs border border-purple-100">
+                              {item.ukuran_seragam_almamater}
                             </span>
                           ) : (
                             <span className="text-ink-300">-</span>
