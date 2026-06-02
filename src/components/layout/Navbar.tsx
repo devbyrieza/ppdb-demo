@@ -67,6 +67,10 @@ export default function Navbar() {
     e: React.MouseEvent<HTMLAnchorElement>,
     href: string,
   ) => {
+    if (href === "/") {
+      handleBerandaClick(e);
+      return;
+    }
     if (href.startsWith("#") && pathname === "/") {
       e.preventDefault();
       scrollToSection(href, 100);
@@ -134,7 +138,7 @@ export default function Navbar() {
                   className={`w-10 h-10 sm:w-11 sm:h-11 rounded-[14px] flex items-center justify-center border overflow-hidden transition-all duration-500 group-hover:scale-105 group-hover:-rotate-3 ${
                     isScrolled
                       ? "bg-white border-[var(--color-primary-100)] shadow-[var(--shadow-premium-sm)]"
-                      : "bg-white/90 border-white/70 shadow-[0_2px_12px_rgba(13,148,136,0.12)]"
+                      : "bg-white/90 border-white/70 shadow-[0_2px_12px_rgba(3,105,199,0.12)]"
                   }`}
                 >
                   <Image
@@ -147,7 +151,7 @@ export default function Navbar() {
                     sizes="44px"
                   />
                 </div>
-                {/* Status dot — teal green */}
+                {/* Status dot — blue green */}
                 <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-[var(--color-primary-600)] border-2 border-white rounded-full z-10 shadow-sm" />
               </div>
 
@@ -162,7 +166,7 @@ export default function Navbar() {
                   {BRANDING.schoolShortName}
                 </h1>
                 <p className="text-[9px] sm:text-[10px] font-bold text-[var(--color-ink-400)] uppercase tracking-widest mt-0.5 leading-tight">
-                  Managed by Al-Hikmah IIBS
+                  Managed by Al Andalus IIBS
                 </p>
               </div>
             </Link>
@@ -172,7 +176,7 @@ export default function Navbar() {
               className={`hidden lg:flex items-center gap-0.5 p-1.5 rounded-full border transition-all duration-300 ${
                 isScrolled
                   ? "bg-white/80 border-[var(--color-primary-100)] shadow-sm"
-                  : "bg-white/70 backdrop-blur-md border-white/65 shadow-[0_2px_16px_rgba(13,148,136,0.10)]"
+                  : "bg-white/70 backdrop-blur-md border-white/65 shadow-[0_2px_16px_rgba(3,105,199,0.10)]"
               }`}
             >
               {navLinks.map((link) => (
@@ -231,7 +235,7 @@ export default function Navbar() {
               className={`lg:hidden p-3 rounded-2xl transition-all duration-300 min-h-[48px] min-w-[48px] flex items-center justify-center border ${
                 isScrolled
                   ? "bg-white border-[var(--color-primary-100)] text-[var(--color-primary-700)] hover:bg-[var(--color-primary-50)] shadow-[var(--shadow-xs)]"
-                  : "bg-white/85 backdrop-blur-sm border-white/70 text-[var(--color-ink-800)] hover:bg-white/95 shadow-[0_2px_12px_rgba(13,148,136,0.10)]"
+                  : "bg-white/85 backdrop-blur-sm border-white/70 text-[var(--color-ink-800)] hover:bg-white/95 shadow-[0_2px_12px_rgba(3,105,199,0.10)]"
               }`}
               aria-label={isMenuOpen ? "Tutup menu" : "Buka menu"}
             >
@@ -296,7 +300,7 @@ export default function Navbar() {
                 background:
                   "linear-gradient(180deg, var(--color-surface-50) 0%, #fff 100%)",
                 borderTop: "1px solid var(--color-primary-100)",
-                boxShadow: "0 -8px 40px rgba(13, 148, 136, 0.10)",
+                boxShadow: "0 -8px 40px rgba(3,105,199,0.10)",
               }}
             >
               {/* Drag Handle */}
@@ -323,7 +327,7 @@ export default function Navbar() {
                     {BRANDING.schoolShortName}
                   </p>
                   <p className="text-[10px] text-[var(--color-ink-400)] font-semibold mt-0.5 uppercase tracking-wider">
-                    Managed by Al-Hikmah IIBS
+                    Managed by Al Andalus IIBS
                   </p>
                 </div>
               </div>
