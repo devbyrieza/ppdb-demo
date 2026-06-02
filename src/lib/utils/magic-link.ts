@@ -168,16 +168,37 @@ export function getPermanentAuthUrl(
  */
 export async function generateTinyUrl(longUrl: string): Promise<string> {
   try {
+    // 1. Try is.gd (very fast & clean redirects)
     const response = await fetch(
-      `https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`,
+      `https://is.gd/create.php?format=simple&url=${encodeURIComponent(longUrl)}`,
+      { signal: AbortSignal.timeout(3000) }
     );
     if (response.ok) {
       const shortUrl = await response.text();
-      return shortUrl;
+      if (shortUrl && shortUrl.startsWith("http")) {
+        return shortUrl.trim();
+      }
+    }
+  } catch (error) {
+    console.warn("Failed to generate is.gd short URL, trying TinyURL...", error);
+  }
+
+  try {
+    // 2. Try TinyURL as fallback
+    const response = await fetch(
+      `https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`,
+      { signal: AbortSignal.timeout(3000) }
+    );
+    if (response.ok) {
+      const shortUrl = await response.text();
+      if (shortUrl && shortUrl.startsWith("http")) {
+        return shortUrl.trim();
+      }
     }
   } catch (error) {
     console.error("Failed to generate TinyURL:", error);
   }
-  // Fallback to original URL if TinyURL generation fails
+
+  // Fallback to original URL if both fail
   return longUrl;
 }

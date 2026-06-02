@@ -73,6 +73,19 @@ export async function POST(request: Request) {
       );
     }
 
+    const isExaminerOrInterviewer = 
+      ["penguji", "pewawancara_calsan", "pewawancara_cawalsan"].includes(role) ||
+      (Array.isArray(secondary_roles) && secondary_roles.some((r: string) => 
+        ["penguji", "pewawancara_calsan", "pewawancara_cawalsan"].includes(r)
+      ));
+
+    if (isExaminerOrInterviewer && (!phone || phone === "-" || phone.trim().length < 6)) {
+      return NextResponse.json(
+        { error: "Penguji/Pewawancara wajib memiliki nomor WhatsApp aktif untuk verifikasi PIN 4 digit terakhir." },
+        { status: 400 },
+      );
+    }
+
     // Check if email already exists
     const existing = await prisma.profile.findFirst({
       where: { email },
@@ -158,6 +171,34 @@ export async function PUT(request: Request) {
     if (!id) {
       return NextResponse.json(
         { error: "ID User diperlukan" },
+        { status: 400 },
+      );
+    }
+
+    const existingProfile = await prisma.profile.findUnique({
+      where: { id },
+    });
+
+    if (!existingProfile) {
+      return NextResponse.json(
+        { error: "User tidak ditemukan" },
+        { status: 404 },
+      );
+    }
+
+    const finalRole = role || existingProfile.role;
+    const finalSecondaryRoles = Array.isArray(secondary_roles) ? secondary_roles : existingProfile.secondary_roles;
+    const finalPhone = phone !== undefined ? phone : existingProfile.phone;
+
+    const isExaminerOrInterviewer = 
+      ["penguji", "pewawancara_calsan", "pewawancara_cawalsan"].includes(finalRole) ||
+      (Array.isArray(finalSecondaryRoles) && finalSecondaryRoles.some((r: string) => 
+        ["penguji", "pewawancara_calsan", "pewawancara_cawalsan"].includes(r)
+      ));
+
+    if (isExaminerOrInterviewer && (!finalPhone || finalPhone === "-" || finalPhone.trim().length < 6)) {
+      return NextResponse.json(
+        { error: "Penguji/Pewawancara wajib memiliki nomor WhatsApp aktif untuk verifikasi PIN 4 digit terakhir." },
         { status: 400 },
       );
     }

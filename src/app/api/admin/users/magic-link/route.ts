@@ -46,13 +46,27 @@ export async function POST(request: NextRequest) {
 
     const user = await prisma.profile.findUnique({
       where: { id: finalUserId },
-      select: { id: true, role: true, full_name: true },
+      select: { id: true, role: true, full_name: true, phone: true, secondary_roles: true },
     });
 
     if (!user) {
       return NextResponse.json(
         { error: "User tidak ditemukan" },
         { status: 404 },
+      );
+    }
+
+    // Enforce phone number verification for examiners/interviewers
+    const isExaminerOrInterviewer = 
+      ["penguji", "pewawancara_calsan", "pewawancara_cawalsan"].includes(user.role) ||
+      (Array.isArray(user.secondary_roles) && user.secondary_roles.some((r: string) => 
+        ["penguji", "pewawancara_calsan", "pewawancara_cawalsan"].includes(r)
+      ));
+
+    if (isExaminerOrInterviewer && (!user.phone || user.phone === "-" || user.phone.trim().length < 6)) {
+      return NextResponse.json(
+        { error: "Penguji/Pewawancara wajib memiliki nomor WhatsApp aktif untuk verifikasi PIN 4 digit terakhir. Silakan edit user untuk menambahkan nomor WhatsApp." },
+        { status: 400 },
       );
     }
 

@@ -61,7 +61,27 @@ export default function UserManagementPage() {
       if (response.ok) {
         Swal.fire({
           title: "Magic Link Akses Cepat",
-          html: `<p class="text-sm text-stone-500 mb-4">Bagikan link ini ke penguji/admin terkait untuk login tanpa password (hanya butuh 4 digit terakhir nomor HP)</p><input type="text" value="${data.link}" class="w-full p-3 border-2 border-primary-100 rounded-xl bg-stone-50 font-bold focus:outline-none focus:border-primary-500" readonly onclick="this.select()" />`,
+          html: `
+            <div class="text-left font-sans">
+              <p class="text-sm text-stone-500 mb-6 leading-relaxed">
+                Bagikan link ini ke penguji/admin terkait untuk login tanpa password. <strong>PIN verifikasi (4 digit terakhir nomor WhatsApp)</strong> wajib dimasukkan saat link diakses.
+              </p>
+              
+              <div class="mb-4">
+                <label class="block text-[10px] font-black uppercase text-primary-600 mb-1.5 tracking-wider">
+                  Link Singkat (TinyURL)
+                </label>
+                <input type="text" value="${data.shortLink}" class="w-full p-3 border-2 border-primary-100 rounded-xl bg-stone-50 font-bold focus:outline-none focus:border-primary-500 text-sm" readonly onclick="this.select()" />
+              </div>
+
+              <div>
+                <label class="block text-[10px] font-black uppercase text-stone-400 mb-1.5 tracking-wider">
+                  Link Lengkap (Alternatif)
+                </label>
+                <input type="text" value="${data.link}" class="w-full p-3 border border-stone-200 rounded-xl bg-stone-50 focus:outline-none text-xs text-stone-400" readonly onclick="this.select()" />
+              </div>
+            </div>
+          `,
           icon: "success",
           confirmButtonText: "Tutup",
           confirmButtonColor: "#1e3a8a",
@@ -118,6 +138,22 @@ export default function UserManagementPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Client-side validation: enforce phone number for examiners and interviewers
+    const isExaminerOrInterviewer = 
+      ["penguji", "pewawancara_calsan", "pewawancara_cawalsan"].includes(formData.role) ||
+      formData.secondary_roles.some(role => ["penguji", "pewawancara_calsan", "pewawancara_cawalsan"].includes(role));
+
+    if (isExaminerOrInterviewer && (!formData.phone || formData.phone === "-" || formData.phone.trim().length < 6)) {
+      Swal.fire({
+        title: "Gagal!",
+        text: "Penguji/Pewawancara wajib memiliki nomor WhatsApp aktif untuk verifikasi PIN 4 digit terakhir.",
+        icon: "error",
+        confirmButtonColor: "#e11d48",
+      });
+      return;
+    }
+
     try {
       const method = isEditing ? "PUT" : "POST";
       const response = await fetch("/api/admin/users", {
