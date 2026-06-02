@@ -6,7 +6,7 @@ console.log('Running prisma db push with overridden DIRECT_URL...');
 process.env.DIRECT_URL = process.env.DATABASE_URL;
 
 try {
-  execSync('npx prisma db push --accept-data-loss', { stdio: 'inherit', env: process.env });
+  execSync('npx prisma db push --accept-data-loss --skip-generate', { stdio: 'inherit', env: process.env });
   console.log('Prisma db push successful.');
 } catch (error) {
   console.error('Prisma db push failed.');
