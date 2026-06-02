@@ -1,8 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { getAdminWhereClause } from "@/lib/utils/admin";
 import { Map, MapPin, Users, PieChart as PieChartIcon } from "lucide-react";
-import { cookies } from "next/headers";
-import { requireRole } from "@/lib/auth/require-role";
+import { getServerSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 
 export const metadata = {
@@ -10,8 +9,8 @@ export const metadata = {
 };
 
 export default async function StatistikWilayahPage() {
-  const session = await requireRole(["admin_super"]);
-  if (!session) {
+  const session = (await getServerSession()) as any;
+  if (!session || !["admin_super"].includes(session.role)) {
     redirect("/login");
   }
 
