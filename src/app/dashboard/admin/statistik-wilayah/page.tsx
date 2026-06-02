@@ -21,7 +21,7 @@ export default async function StatistikWilayahPage() {
       data_lengkap: true,
       jenjang: true,
       jenis_kelamin: true,
-      status_proses: true,
+      status_pendaftaran: true,
     },
   });
 
