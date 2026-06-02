@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "@/lib/session";
 import { enqueueWhatsapp } from "@/lib/whatsapp-queue";
-import { generateMagicToken } from "@/lib/utils/magic-link";
+import { generateMagicToken, generateTinyUrl } from "@/lib/utils/magic-link";
 
 export async function POST(req: Request) {
   try {
@@ -62,7 +62,8 @@ export async function POST(req: Request) {
         "/dashboard/pendaftar/seragam" 
       );
       
-      const magicLink = `${baseUrl}/api/auth/magic?token=${token}`;
+      const magicLinkRaw = `${baseUrl}/api/auth/magic?token=${token}`;
+      const magicLink = await generateTinyUrl(magicLinkRaw);
 
       // Construct WhatsApp message
       const message = `*PENGINGAT PENGISIAN UKURAN SERAGAM*
