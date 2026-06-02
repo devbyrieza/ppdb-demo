@@ -59,6 +59,8 @@ export async function GET(request: NextRequest) {
             surat_keputusan_url: true,
           },
         },
+        ukuran_seragam_baju: true,
+        ukuran_seragam_celana: true,
       },
     });
 
@@ -152,6 +154,8 @@ export async function GET(request: NextRequest) {
       tipe_pendaftaran: data.tipe_pendaftaran,
       updated_at: data.updated_at,
       schedules_available: schedules_available,
+      ukuran_seragam_baju: data.ukuran_seragam_baju,
+      ukuran_seragam_celana: data.ukuran_seragam_celana,
       pengumuman: data.pengumuman,
       hasil_kelulusan: {
         status: (nilai as any)?.status_kelulusan || null,

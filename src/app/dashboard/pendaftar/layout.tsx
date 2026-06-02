@@ -23,6 +23,7 @@ import {
   ShieldCheck,
   Bell,
   Search,
+  Shirt,
 } from "lucide-react";
 import { BRANDING } from "@/config/branding";
 import Link from "next/link";
@@ -176,6 +177,13 @@ export default function DashboardLayout({
       active: pathname === "/dashboard/pendaftar/daftar-ulang",
     },
     {
+      name: "Ukuran Seragam",
+      href: "/dashboard/pendaftar/seragam",
+      tabName: "daftar-ulang" as TabName, // Menggunakan rules akses yang sama dengan daftar-ulang
+      icon: Shirt,
+      active: pathname === "/dashboard/pendaftar/seragam",
+    },
+    {
       name: "Profil Akun",
       href: "/dashboard/pendaftar/profil",
       tabName: "profil" as TabName,
@@ -213,13 +221,13 @@ export default function DashboardLayout({
           {/* Tooltip for locked state */}
           <div className="absolute left-14 top-full z-50 w-64 p-3 mt-2 text-xs text-white bg-ink-900 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0 lg:left-full lg:top-0 lg:ml-2">
             <div className="font-bold mb-1 flex items-center gap-2">
-              <Lock className="w-3.5 h-3.5 text-secondary-400" />
+              <Lock className="w-3.5 h-3.5 text-gold-400" />
               <span>Akses Terkunci</span>
             </div>
             <p className="text-ink-200 mb-2">{unlockMessage}</p>
             <div className="w-full h-1 bg-ink-700 rounded-full overflow-hidden">
               <div
-                className="h-full bg-secondary-500 rounded-full"
+                className="h-full bg-gold-500 rounded-full"
                 style={{ width: `${progressToUnlock}%` }}
               />
             </div>
@@ -238,17 +246,15 @@ export default function DashboardLayout({
           className={`group flex items-center px-4 py-3.5 text-sm font-bold rounded-2xl transition-all duration-200 ${
             item.active
               ? "bg-primary-900 text-white shadow-md border border-primary-800"
-              : "text-ink-600 hover:bg-secondary-100 hover:text-primary-900"
+              : "text-ink-600 hover:bg-gold-100 hover:text-primary-900"
           }`}
         >
           <item.icon
-            className={`w-5 h-5 mr-3 flex-shrink-0 transition-colors ${item.active ? "text-secondary-200" : "text-ink-400 group-hover:text-primary-700"}`}
+            className={`w-5 h-5 mr-3 flex-shrink-0 transition-colors ${item.active ? "text-gold-200" : "text-ink-400 group-hover:text-primary-700"}`}
           />
           <span className="flex-1 truncate">{item.name}</span>
 
-          {item.active && (
-            <ChevronRight className="w-4 h-4 text-secondary-200" />
-          )}
+          {item.active && <ChevronRight className="w-4 h-4 text-gold-200" />}
         </Link>
       </div>
     );
@@ -265,7 +271,7 @@ export default function DashboardLayout({
       <div className="min-h-screen bg-surface-50 flex items-center justify-center">
         <div className="bg-white p-8 rounded-3xl shadow-clay-lg text-center max-w-sm w-full mx-4">
           <div className="relative w-16 h-16 mx-auto mb-6">
-            <div className="absolute inset-0 border-4 border-secondary-100 rounded-full" />
+            <div className="absolute inset-0 border-4 border-gold-100 rounded-full" />
             <div className="absolute inset-0 border-4 border-primary-700 rounded-full border-t-transparent animate-spin" />
             <div className="absolute inset-0 flex items-center justify-center">
               <User className="w-6 h-6 text-primary-700" />
@@ -285,11 +291,11 @@ export default function DashboardLayout({
       <IdleTimeoutTracker />
       <div className="min-h-screen bg-surface-50 font-sans selection:bg-primary-100 selection:text-primary-900">
         {/* Mobile Header (Fintech Style) */}
-        <div className="lg:hidden bg-white/90 backdrop-blur-xl sticky top-0 z-40 px-4 sm:px-5 py-3 sm:py-4 flex items-center justify-between border-b border-secondary-200 shadow-sm">
+        <div className="lg:hidden bg-white/90 backdrop-blur-xl sticky top-0 z-40 px-4 sm:px-5 py-3 sm:py-4 flex items-center justify-between border-b border-gold-200 shadow-sm">
           <div className="flex items-center gap-2 sm:gap-3">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="p-2 -ml-2 text-primary-950 hover:bg-secondary-50 rounded-xl transition-colors"
+              className="p-2 -ml-2 text-primary-950 hover:bg-gold-50 rounded-xl transition-colors"
             >
               <Menu className="w-6 h-6" />
             </button>
@@ -312,7 +318,7 @@ export default function DashboardLayout({
             >
               {statusInfo.label}
             </div>
-            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-linear-to-br from-primary-700 to-primary-900 flex items-center justify-center text-white text-sm font-black shadow-md border border-secondary-100">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-linear-to-br from-primary-700 to-primary-900 flex items-center justify-center text-white text-sm font-black shadow-md border border-gold-100">
               {namaLengkap.charAt(0)}
             </div>
           </div>
@@ -323,9 +329,9 @@ export default function DashboardLayout({
           <aside className="hidden lg:flex lg:w-72 lg:flex-col lg:fixed lg:top-0 lg:left-0 lg:h-screen z-50">
             <div className="flex flex-col h-full bg-white/70 backdrop-blur-xl border-r border-white/50 shadow-clay-lg">
               {/* Brand */}
-              <div className="px-6 pt-8 pb-6 border-b border-secondary-100/50 mb-2">
+              <div className="px-6 pt-8 pb-6 border-b border-gold-100/50 mb-2">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 rounded-2xl bg-white flex items-center justify-center shadow-md ring-4 ring-secondary-50/50 overflow-hidden">
+                  <div className="w-10 h-10 rounded-2xl bg-white flex items-center justify-center shadow-md ring-4 ring-gold-50 overflow-hidden">
                     <img
                       src={BRANDING.logoPath}
                       alt="Logo"
@@ -346,7 +352,7 @@ export default function DashboardLayout({
                 </div>
 
                 {/* User Card */}
-                <div className="p-4 rounded-[1.5rem] bg-secondary-50/50 border border-secondary-100 relative overflow-hidden group app-card">
+                <div className="p-4 rounded-[1.5rem] bg-gold-50/50 border border-gold-100 relative overflow-hidden group app-card">
                   <div className="absolute top-0 right-0 p-2 opacity-5 group-hover:opacity-10 transition-opacity">
                     <User className="w-20 h-20 text-primary-900 translate-x-4 -translate-y-4" />
                   </div>
@@ -356,7 +362,7 @@ export default function DashboardLayout({
                   <p className="font-black text-ink-950 text-base truncate mb-3">
                     {namaDepan}
                   </p>
-                  <div className="text-[10px] text-ink-500 bg-white px-2.5 py-1.5 rounded-xl inline-flex shadow-sm border border-secondary-100 items-center justify-between w-full">
+                  <div className="text-[10px] text-ink-500 bg-white px-2.5 py-1.5 rounded-xl inline-flex shadow-sm border border-gold-100 items-center justify-between w-full">
                     <span className="font-bold uppercase">No. Registrasi</span>
                     <span className="font-mono text-primary-700 font-black">
                       {nomorPendaftaran}
@@ -421,20 +427,20 @@ export default function DashboardLayout({
                   </div>
                   <button
                     onClick={() => setSidebarOpen(false)}
-                    className="p-2 text-ink-400 hover:text-primary-700 bg-secondary-50 rounded-full"
+                    className="p-2 text-ink-400 hover:text-primary-700 bg-gold-50 rounded-full"
                   >
                     <X className="w-5 h-5" />
                   </button>
                 </div>
 
-                <div className="p-5 bg-secondary-50 border-b border-secondary-100">
+                <div className="p-5 bg-gold-50 border-b border-gold-100">
                   <p className="text-[10px] font-black text-ink-400 mb-1 uppercase tracking-widest">
                     Akun Pendaftar
                   </p>
                   <p className="font-black text-ink-950 text-lg mb-1">
                     {namaDepan}
                   </p>
-                  <p className="font-mono text-xs font-bold text-primary-700 bg-white px-2 py-1 rounded-lg inline-block border border-secondary-100">
+                  <p className="font-mono text-xs font-bold text-primary-700 bg-white px-2 py-1 rounded-lg inline-block border border-gold-100">
                     {nomorPendaftaran}
                   </p>
                 </div>
@@ -467,7 +473,7 @@ export default function DashboardLayout({
           {/* Main Content Area */}
           <main className="flex-1 lg:pl-72 w-full transition-all duration-300 flex flex-col min-h-screen relative pb-24 lg:pb-0">
             {/* Desktop Topbar - Glass Effect */}
-            <header className="hidden lg:flex sticky top-4 z-30 mx-8 mt-4 rounded-[1.5rem] bg-white/70 backdrop-blur-xl px-6 py-4 items-center justify-between shadow-sm border border-secondary-100">
+            <header className="hidden lg:flex sticky top-4 z-30 mx-8 mt-4 rounded-[1.5rem] bg-white/70 backdrop-blur-xl px-6 py-4 items-center justify-between shadow-sm border border-gold-100">
               <div>
                 <h2 className="text-xl font-black text-primary-950 tracking-tight">
                   Dashboard Pendaftar
@@ -480,13 +486,13 @@ export default function DashboardLayout({
               <div className="flex items-center gap-4">
                 <Link
                   href="/"
-                  className="p-2 text-ink-400 hover:text-primary-700 bg-secondary-50 hover:bg-secondary-100 rounded-full transition-colors"
+                  className="p-2 text-ink-400 hover:text-primary-700 bg-gold-50 hover:bg-gold-100 rounded-full transition-colors"
                   title="Ke Beranda Website"
                 >
                   <Home className="w-5 h-5" />
                 </Link>
 
-                <div className="h-8 w-px bg-secondary-200" />
+                <div className="h-8 w-px bg-gold-200" />
 
                 {/* Status Badge */}
                 <div
@@ -510,14 +516,14 @@ export default function DashboardLayout({
 
             {/* Mobile Bottom Navigation (Fintech Style) */}
             {!pathname.includes("/ujian/") && (
-              <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-secondary-200 pb-safe z-40 shadow-[0_-10px_40px_-10px_rgba(0,0,0,0.1)] rounded-t-[1.5rem]">
+              <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gold-200 pb-safe z-40 shadow-[0_-10px_40px_-10px_rgba(0,0,0,0.1)] rounded-t-[1.5rem]">
                 <div className="flex justify-around items-center px-4 py-3">
                   <Link
                     href="/dashboard/pendaftar"
                     className="flex flex-col items-center p-2 group w-16"
                   >
                     <div
-                      className={`w-10 h-8 rounded-full flex items-center justify-center mb-1 transition-colors ${pathname === "/dashboard/pendaftar" ? "bg-secondary-100" : "bg-transparent group-hover:bg-secondary-50"}`}
+                      className={`w-10 h-8 rounded-full flex items-center justify-center mb-1 transition-colors ${pathname === "/dashboard/pendaftar" ? "bg-gold-100" : "bg-transparent group-hover:bg-gold-50"}`}
                     >
                       <Home
                         className={`w-5 h-5 transition-colors ${pathname === "/dashboard/pendaftar" ? "text-primary-700" : "text-ink-400 group-hover:text-primary-600"}`}
@@ -535,7 +541,7 @@ export default function DashboardLayout({
                     className="flex flex-col items-center p-2 group w-16"
                   >
                     <div
-                      className={`w-10 h-8 rounded-full flex items-center justify-center mb-1 transition-colors ${pathname.includes("pembayaran") ? "bg-secondary-100" : "bg-transparent group-hover:bg-secondary-50"}`}
+                      className={`w-10 h-8 rounded-full flex items-center justify-center mb-1 transition-colors ${pathname.includes("pembayaran") ? "bg-gold-100" : "bg-transparent group-hover:bg-gold-50"}`}
                     >
                       <CreditCard
                         className={`w-5 h-5 transition-colors ${pathname.includes("pembayaran") ? "text-primary-700" : "text-ink-400 group-hover:text-primary-600"}`}
@@ -580,7 +586,7 @@ export default function DashboardLayout({
                     onClick={() => setSidebarOpen(true)}
                     className="flex flex-col items-center p-2 group w-16"
                   >
-                    <div className="w-10 h-8 rounded-full flex items-center justify-center mb-1 bg-transparent group-hover:bg-secondary-50 transition-colors">
+                    <div className="w-10 h-8 rounded-full flex items-center justify-center mb-1 bg-transparent group-hover:bg-gold-50 transition-colors">
                       <Menu className="w-5 h-5 text-ink-400 group-hover:text-primary-600 transition-colors" />
                     </div>
                     <span className="text-[10px] font-bold text-ink-600 text-center">

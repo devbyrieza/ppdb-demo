@@ -240,10 +240,18 @@ export function getMenuItemsForRole(role: UserRole) {
       { name: "Jadwal Seleksi", href: "/dashboard/penguji/jadwal", icon: "Calendar" },
       { name: "Input Nilai", href: "/dashboard/penguji/input-nilai", icon: "ClipboardEdit" },
     ],
+    admin: [
+      { name: "Dashboard", href: "/dashboard/admin", icon: "LayoutDashboard" },
+      { name: "Data Pendaftar", href: "/dashboard/admin/pendaftar", icon: "Users" },
+      { name: "Verifikasi Dokumen", href: "/dashboard/admin/verifikasi-dokumen", icon: "FileCheck" },
+      { name: "Verifikasi Pembayaran", href: "/dashboard/admin/verifikasi-pembayaran", icon: "CreditCard" },
+      { name: "Rekap Seragam", href: "/dashboard/admin/seragam", icon: "Shirt" },
+    ],
     admin_super: [
       { name: "Dashboard", href: "/dashboard/admin", icon: "LayoutDashboard" },
       { name: "Data Pendaftar", href: "/dashboard/admin/pendaftar", icon: "Users", group: "OPERASIONAL" },
       { name: "Rekap Keuangan", href: "/dashboard/admin/keuangan", icon: "Landmark", group: "OPERASIONAL" },
+      { name: "Rekap Seragam", href: "/dashboard/admin/seragam", icon: "Shirt", group: "OPERASIONAL" },
       { name: "Monitoring Jadwal", href: "/dashboard/admin/jadwal/monitoring", icon: "Calendar", group: "OPERASIONAL" },
       { name: "Rekap Nilai & Kelulusan", href: "/dashboard/admin/audit-seleksi", icon: "Activity", group: "HASIL SELEKSI" },
       { name: "Broadcast WA", href: "/dashboard/admin/broadcast", icon: "Zap", group: "KOMUNIKASI" },

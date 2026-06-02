@@ -37,6 +37,7 @@ import {
   ChevronRight,
   Search,
   Shuffle,
+  Shirt,
 } from "lucide-react";
 
 // ─── CONFIG & UTILS ───
@@ -50,7 +51,8 @@ import LanguageSwitcher from "@/components/common/LanguageSwitcher";
 
 /**
  * ICON_MAP
- * Memetakan string icon ke komponen Lucide Icon.
+ * Memetakan string icon dari database/config ke komponen Lucide Icon yang sesungguhnya.
+ * Memudahkan penambahan menu baru secara dinamis.
  */
 const ICON_MAP: Record<string, any> = {
   LayoutDashboard,
@@ -72,6 +74,7 @@ const ICON_MAP: Record<string, any> = {
   Activity,
   PieChart,
   Shuffle,
+  Shirt,
 };
 
 interface AdminSidebarProps {
@@ -87,7 +90,8 @@ interface AdminSidebarProps {
 
 /**
  * AdminSidebar Component
- * Template Demo Version - Menggunakan skema warna brand-agnostic.
+ * Komponen utama navigasi untuk panel administrasi.
+ * Fitur: Responsif (Mobile/Desktop), Multi-role support, Dynamic Badges, & Premium UI.
  */
 export default function AdminSidebar({
   children,
@@ -100,9 +104,15 @@ export default function AdminSidebar({
   pendingDataRequestsCount = 0,
 }: AdminSidebarProps) {
   const pathname = usePathname();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [collapsed, setCollapsed] = useState(false);
 
+  // State Management: Mengontrol visibilitas sidebar di berbagai ukuran layar
+  const [sidebarOpen, setSidebarOpen] = useState(false); // Khusus Mobile (Drawer)
+  const [collapsed, setCollapsed] = useState(false); // Khusus Desktop (Slim Mode)
+
+  /**
+   * Logic: Mempersiapkan menu berdasarkan role user yang aktif.
+   * Menambahkan properti 'badge' secara dinamis untuk indikasi tugas tertunda.
+   */
   const rawMenuItems = userRole ? getMenuItemsForRole(userRole) : [];
   const menuItems = rawMenuItems.map((item) => {
     // Dynamic counts fetched in Server-Side Layout.tsx and passed here
@@ -123,16 +133,20 @@ export default function AdminSidebar({
     };
   });
 
+  /**
+   * handleLogout
+   * Menampilkan konfirmasi gaya premium sebelum menghapus sesi user.
+   */
   const handleLogout = async () => {
     const result = await Swal.fire({
       title: "Keluar Sekarang?",
-      text: "Anda akan dialihkan ke halaman login.",
+      text: "Anda akan diarahkan kembali ke halaman login.",
       icon: "question",
       showCancelButton: true,
-      confirmButtonColor: "#0d6e6e", // Blue 700
+      confirmButtonColor: "#7c2d12", // Maroon 900
       cancelButtonColor: "#94a3b8", // Slate 400
       confirmButtonText: "Ya, Keluar",
-      cancelButtonText: "Tetap di Sini",
+      cancelButtonText: "Batal",
       background: "#ffffff",
       customClass: {
         title: "font-black text-primary-950",
@@ -145,11 +159,15 @@ export default function AdminSidebar({
         await fetch("/api/auth/logout", { method: "POST" });
         window.location.href = "/login";
       } catch (error) {
-        console.error("Logout failed:", error);
+        console.error("Logout process failed:", error);
       }
     }
   };
 
+  /**
+   * handleRoleSwitch
+   * Memungkinkan admin dengan banyak role untuk berpindah akses tanpa login ulang.
+   */
   const handleRoleSwitch = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newRole = e.target.value;
     try {
@@ -163,13 +181,13 @@ export default function AdminSidebar({
         window.location.href = data.redirectTo;
       }
     } catch (error) {
-      console.error("Role switch failed:", error);
+      console.error("Role switching failed:", error);
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#f0f9f9] font-sans selection:bg-primary-100 selection:text-primary-900">
-      {/* MOBILE HEADER */}
+    <div className="min-h-screen bg-[#fafaf9] font-sans selection:bg-primary-100 selection:text-primary-900">
+      {/* ─── MOBILE HEADER (Hanya muncul di layar < 1024px) ─── */}
       <div className="lg:hidden fixed top-0 left-0 right-0 z-[60] bg-white/90 backdrop-blur-2xl border-b border-ink-200/60 px-6 py-4 flex items-center justify-between shadow-sm">
         <button
           onClick={() => setSidebarOpen(true)}
@@ -182,7 +200,7 @@ export default function AdminSidebar({
             {BRANDING.schoolShortName}
           </span>
           <span className="text-[10px] font-bold text-primary-600/50 uppercase tracking-[0.2em] -mt-1">
-            Panel Kontrol
+            Control Center
           </span>
         </div>
         <div className="w-10 h-10 rounded-2xl bg-linear-to-br from-primary-700 to-primary-900 flex items-center justify-center text-white text-sm font-black shadow-lg shadow-primary-200">
@@ -190,10 +208,11 @@ export default function AdminSidebar({
         </div>
       </div>
 
-      {/* MOBILE SIDEBAR */}
+      {/* ─── MOBILE SIDEBAR OVERLAY (Drawer Mode) ─── */}
       <AnimatePresence>
         {sidebarOpen && (
           <>
+            {/* Backdrop: Efek blur saat sidebar mobile terbuka */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -218,7 +237,7 @@ export default function AdminSidebar({
                     />
                   </div>
                   <span className="font-black text-primary-950 uppercase text-sm tracking-widest italic">
-                    Navigasi
+                    Navigation
                   </span>
                 </div>
                 <button
@@ -228,13 +247,18 @@ export default function AdminSidebar({
                   <X className="w-5 h-5" />
                 </button>
               </div>
+
               <nav className="flex-1 overflow-y-auto p-6 space-y-2 no-scrollbar">
                 {menuItems.map((item) => (
                   <Link
                     key={item.name}
                     href={item.href}
                     onClick={() => setSidebarOpen(false)}
-                    className={`flex items-center justify-between px-4 py-4 rounded-2xl transition-all ${item.isActive ? "bg-primary-700 text-white shadow-xl shadow-primary-200 font-bold" : "text-ink-500 hover:bg-ink-50 hover:text-primary-900"}`}
+                    className={`flex items-center justify-between px-4 py-4 rounded-2xl transition-all ${
+                      item.isActive
+                        ? "bg-primary-700 text-white shadow-xl shadow-primary-200 font-bold"
+                        : "text-ink-500 hover:bg-ink-50 hover:text-primary-900"
+                    }`}
                   >
                     <div className="flex items-center gap-4">
                       <item.icon
@@ -254,6 +278,7 @@ export default function AdminSidebar({
                   </Link>
                 ))}
               </nav>
+
               <div className="p-8 border-t border-ink-50 space-y-3">
                 {availableRoles && availableRoles.length > 1 && (
                   <div className="relative group">
@@ -278,7 +303,7 @@ export default function AdminSidebar({
                   onClick={handleLogout}
                   className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-red-50 text-red-600 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-red-100 transition-all active:scale-95"
                 >
-                  <LogOut className="w-4 h-4" /> Keluar
+                  <LogOut className="w-4 h-4" /> Keluar Sistem
                 </button>
               </div>
             </motion.aside>
@@ -286,10 +311,11 @@ export default function AdminSidebar({
         )}
       </AnimatePresence>
 
-      {/* DESKTOP SIDEBAR */}
+      {/* ─── DESKTOP SIDEBAR (Premium Slim Design) ─── */}
       <aside
         className={`hidden lg:flex fixed inset-y-0 left-0 z-50 flex-col bg-white border-r border-ink-100 transition-all duration-500 ease-in-out ${collapsed ? "w-24" : "w-72"}`}
       >
+        {/* Logo & Branding Area */}
         <div className="h-24 flex items-center px-8">
           <Link
             href="/dashboard/admin"
@@ -311,15 +337,17 @@ export default function AdminSidebar({
                 <span className="font-black text-primary-950 text-lg uppercase tracking-tighter italic">
                   {BRANDING.schoolShortName}
                 </span>
-              <span className="text-[10px] text-primary-600/40 font-black uppercase tracking-[0.2em] -mt-1">
-                PORTAL ADMIN
-              </span>
+                <span className="block text-[10px] text-primary-600/40 font-black uppercase tracking-[0.2em] -mt-1">
+                  ADMIN PORTAL
+                </span>
               </motion.div>
             )}
           </Link>
         </div>
 
+        {/* Navigation Links Area */}
         <div className="flex-1 overflow-y-auto py-4 px-4 space-y-8 no-scrollbar">
+          {/* Role Selector (Integrated inside sidebar) */}
           {!collapsed && availableRoles && availableRoles.length > 1 && (
             <div className="px-2 mb-2">
               <div className="relative group">
@@ -349,8 +377,10 @@ export default function AdminSidebar({
                 !collapsed &&
                 item.group &&
                 (!prevItem || prevItem.group !== item.group);
+
               return (
                 <div key={item.name} className="relative">
+                  {/* Group Header (Hanya muncul saat expanded) */}
                   {showGroupLabel && (
                     <p className="px-5 text-[9px] font-black text-ink-400 uppercase tracking-[0.2em] mt-8 mb-3 opacity-60">
                       {item.group}
@@ -358,8 +388,13 @@ export default function AdminSidebar({
                   )}
                   <Link
                     href={item.href}
-                    className={`relative group flex items-center justify-between px-4 py-3.5 rounded-2xl transition-all duration-300 ${item.isActive ? "text-primary-950 font-black" : "text-ink-500 hover:text-primary-900 hover:bg-ink-50"}`}
+                    className={`relative group flex items-center justify-between px-4 py-3.5 rounded-2xl transition-all duration-300 ${
+                      item.isActive
+                        ? "text-primary-950 font-black"
+                        : "text-ink-500 hover:text-primary-900 hover:bg-ink-50"
+                    }`}
                   >
+                    {/* Active Background Animation: Menggunakan LayoutId untuk transisi antar item yang halus */}
                     {item.isActive && (
                       <motion.div
                         layoutId="sidebar-active"
@@ -381,17 +416,25 @@ export default function AdminSidebar({
                         </span>
                       )}
                     </div>
+
+                    {/* Notification Badge: Dinamis & Animatif */}
                     {item.badge > 0 && (
                       <div
                         className={`${collapsed ? "absolute -top-1 -right-1" : "relative"}`}
                       >
                         <span
-                          className={`flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full text-[10px] font-black shadow-sm ${item.isActive ? "bg-primary-700 text-white" : "bg-red-500 text-white animate-pulse"}`}
+                          className={`flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full text-[10px] font-black shadow-sm ${
+                            item.isActive
+                              ? "bg-primary-700 text-white"
+                              : "bg-red-500 text-white animate-pulse"
+                          }`}
                         >
                           {item.badge}
                         </span>
                       </div>
                     )}
+
+                    {/* Tooltip: Hanya muncul saat sidebar dikempiskan (Collapsed Mode) */}
                     {collapsed && (
                       <div className="absolute left-full ml-6 px-4 py-2 bg-primary-950 text-white text-[11px] font-black rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-[100] shadow-2xl border border-white/10 uppercase tracking-widest">
                         {item.name}
@@ -404,7 +447,9 @@ export default function AdminSidebar({
           </nav>
         </div>
 
+        {/* Footer Section: Collapse Toggle & Profile */}
         <div className="p-6 border-t border-ink-50 bg-ink-50/30">
+          {/* Toggle Button */}
           <button
             onClick={() => setCollapsed(!collapsed)}
             className={`w-full flex items-center justify-center p-3 rounded-xl text-ink-400 hover:text-primary-950 hover:bg-white hover:shadow-sm mb-4 transition-all duration-300 active:scale-95 ${collapsed ? "" : "gap-3"}`}
@@ -413,11 +458,13 @@ export default function AdminSidebar({
               className={`w-5 h-5 shrink-0 transition-transform duration-700 ${collapsed ? "rotate-180" : ""}`}
             />
             {!collapsed && (
-                <span className="text-xs font-black uppercase tracking-widest">
-                  Kecilkan Menu
-                </span>
+              <span className="text-xs font-black uppercase tracking-widest">
+                Collapse Menu
+              </span>
             )}
           </button>
+
+          {/* Profile Card */}
           <div
             className={`flex items-center gap-4 p-3 rounded-2xl transition-all group relative ${collapsed ? "justify-center" : "bg-white shadow-sm border border-ink-100"}`}
           >
@@ -438,6 +485,7 @@ export default function AdminSidebar({
               <button
                 onClick={handleLogout}
                 className="p-2 text-ink-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all active:scale-90"
+                title="Logout"
               >
                 <LogOut className="w-4 h-4" />
               </button>
@@ -446,12 +494,14 @@ export default function AdminSidebar({
         </div>
       </aside>
 
-      {/* MAIN CONTENT */}
+      {/* ─── MAIN CONTENT AREA ─── */}
       <main
         className={`flex-1 min-w-0 transition-all duration-500 ${collapsed ? "lg:pl-24" : "lg:pl-72"}`}
       >
+        {/* Top Desktop Navigation (Floating Navbar) */}
         <header className="hidden lg:flex sticky top-0 z-40 bg-white/80 backdrop-blur-2xl border-b border-ink-100 h-24 items-center justify-between px-12">
           <div className="flex items-center gap-10">
+            {/* Breadcrumbs: Memandu user posisi saat ini */}
             <div className="flex items-center gap-3 text-[11px] font-black text-ink-400 uppercase tracking-widest">
               <Link
                 href="/dashboard/admin"
@@ -460,10 +510,10 @@ export default function AdminSidebar({
                 Admin Portal
               </Link>
               <ChevronRight className="w-3.5 h-3.5 text-ink-300" />
-              <span className="text-primary-950 italic">Ikhtisar</span>
+              <span className="text-primary-950 italic">Ikhtisar Dashboard</span>
             </div>
-            <div className="h-6 w-px bg-ink-100" />
           </div>
+
           <div className="flex items-center gap-6">
             <LanguageSwitcher />
             <div className="h-6 w-px bg-ink-100" />
@@ -479,6 +529,8 @@ export default function AdminSidebar({
             </Link>
           </div>
         </header>
+
+        {/* Main Page Content: Area di mana halaman Dashboard sebenarnya dirender */}
         <div className="p-6 md:p-8 pt-24 lg:pt-8 max-w-[1600px] mx-auto animate-in fade-in slide-in-from-bottom-2 duration-500">
           {children}
         </div>

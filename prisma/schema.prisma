@@ -10,7 +10,7 @@ datasource db {
 }
 
 model Profile {
-  id                    String                @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id                    String                @id @default(uuid()) @db.Uuid
   role                  String                @default("pendaftar")
   secondary_roles       String[]              @default([])
   full_name             String
@@ -40,7 +40,7 @@ model Profile {
 }
 
 model TahunAjaran {
-  id                        String         @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id                        String         @id @default(uuid()) @db.Uuid
   tahun_mulai               Int
   tahun_selesai             Int
   nama                      String
@@ -63,7 +63,7 @@ model TahunAjaran {
 }
 
 model Pendaftar {
-  id                             String                 @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id                             String                 @id @default(uuid()) @db.Uuid
   user_id                        String?                @db.Uuid
   tahun_ajaran_id                String                 @db.Uuid
   nomor_pendaftaran              String                 @unique
@@ -131,6 +131,8 @@ model Pendaftar {
   tahun_ajaran                   TahunAjaran            @relation(fields: [tahun_ajaran_id], references: [id])
   user                           Profile?               @relation(fields: [user_id], references: [id])
   pengumuman                     Pengumuman?
+  ukuran_seragam_baju            String?
+  ukuran_seragam_celana          String?
   reservasi                      ReservasiPSB[]
   whatsapp_logs                  WhatsappLog[]
 
@@ -138,7 +140,7 @@ model Pendaftar {
 }
 
 model OrangTua {
-  id                     String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id                     String    @id @default(uuid()) @db.Uuid
   pendaftar_id           String    @unique @db.Uuid
   nama_ayah              String?
   nik_ayah               String?
@@ -189,7 +191,7 @@ model OrangTua {
 }
 
 model Dokumen {
-  id            String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id            String    @id @default(uuid()) @db.Uuid
   pendaftar_id  String    @db.Uuid
   jenis_dokumen String
   file_name     String
@@ -209,7 +211,7 @@ model Dokumen {
 }
 
 model Pembayaran {
-  id                          String          @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id                          String          @id @default(uuid()) @db.Uuid
   pendaftar_id                String          @db.Uuid
   tahun_ajaran_id             String          @db.Uuid
   metode_pembayaran           String
@@ -242,53 +244,53 @@ model Pembayaran {
 }
 
 model JadwalUjian {
-  id                          String                @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  tahun_ajaran_id             String                @db.Uuid
-  pendaftar_id                String                @db.Uuid
-  tanggal_ujian               DateTime              @db.Date
-  metode_ujian                String                @default("offline")
-  google_meet_link            String?
-  google_meet_password        String?
-  waktu_mulai_santri          DateTime              @db.Time(6)
-  waktu_selesai_santri        DateTime              @db.Time(6)
-  tempat_santri               String
-  ruangan_santri              String?
-  penguji_santri_id           String?               @db.Uuid
-  status_santri               String?               @default("scheduled")
-  waktu_mulai_ortu            DateTime              @db.Time(6)
-  waktu_selesai_ortu          DateTime              @db.Time(6)
-  tempat_ortu                 String
-  ruangan_ortu                String?
-  penguji_ortu_id             String?               @db.Uuid
-  status_ortu                 String?               @default("scheduled")
-  catatan                     String?
-  created_at                  DateTime              @default(now()) @db.Timestamptz(6)
-  updated_at                  DateTime              @default(now()) @db.Timestamptz(6)
-  exam_session_id             String?               @db.Uuid
-  online_test_link            String?
-  penguji_quran_id            String?               @db.Uuid
-  status_online_test          String?               @default("pending")
-  status_quran                String?               @default("scheduled")
-  zoom_link_ortu              String?
-  zoom_link_quran             String?
-  zoom_link_santri            String?
-  notif_interviewer_terkirim  Boolean               @default(false)
-  notif_h1_pendaftar_terkirim Boolean               @default(false)
-  notif_h1_penguji_terkirim   Boolean               @default(false)
-  notif_reminders             JadwalNotifReminder[]
-  exam_session                ExamSession?          @relation(fields: [exam_session_id], references: [id])
-  pendaftar                   Pendaftar             @relation(fields: [pendaftar_id], references: [id], onDelete: Cascade)
-  penguji_ortu                Profile?              @relation("PengujiOrtu", fields: [penguji_ortu_id], references: [id])
-  penguji_quran               Profile?              @relation("PengujiQuran", fields: [penguji_quran_id], references: [id])
-  penguji_santri              Profile?              @relation("PengujiSantri", fields: [penguji_santri_id], references: [id])
-  tahun_ajaran                TahunAjaran           @relation(fields: [tahun_ajaran_id], references: [id])
-  nilai_ujian                 NilaiUjian[]
+  id                   String                @id @default(uuid()) @db.Uuid
+  tahun_ajaran_id      String                @db.Uuid
+  pendaftar_id         String                @db.Uuid
+  tanggal_ujian        DateTime              @db.Date
+  metode_ujian         String                @default("offline")
+  google_meet_link     String?
+  google_meet_password String?
+  waktu_mulai_santri   DateTime              @db.Time(6)
+  waktu_selesai_santri DateTime              @db.Time(6)
+  tempat_santri        String
+  ruangan_santri       String?
+  penguji_santri_id    String?               @db.Uuid
+  status_santri        String?               @default("scheduled")
+  waktu_mulai_ortu     DateTime              @db.Time(6)
+  waktu_selesai_ortu   DateTime              @db.Time(6)
+  tempat_ortu          String
+  ruangan_ortu         String?
+  penguji_ortu_id      String?               @db.Uuid
+  status_ortu          String?               @default("scheduled")
+  catatan              String?
+  created_at           DateTime              @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime              @default(now()) @db.Timestamptz(6)
+  exam_session_id      String?               @db.Uuid
+  online_test_link     String?
+  penguji_quran_id     String?               @db.Uuid
+  status_online_test   String?               @default("pending")
+  status_quran         String?               @default("scheduled")
+  zoom_link_ortu       String?
+  zoom_link_quran      String?
+  zoom_link_santri     String?
+  notif_interviewer_terkirim Boolean              @default(false)
+  notif_h1_pendaftar_terkirim Boolean              @default(false)
+  notif_h1_penguji_terkirim   Boolean              @default(false)
+  notif_reminders      JadwalNotifReminder[]
+  exam_session         ExamSession?          @relation(fields: [exam_session_id], references: [id])
+  pendaftar            Pendaftar             @relation(fields: [pendaftar_id], references: [id], onDelete: Cascade)
+  penguji_ortu         Profile?              @relation("PengujiOrtu", fields: [penguji_ortu_id], references: [id])
+  penguji_quran        Profile?              @relation("PengujiQuran", fields: [penguji_quran_id], references: [id])
+  penguji_santri       Profile?              @relation("PengujiSantri", fields: [penguji_santri_id], references: [id])
+  tahun_ajaran         TahunAjaran           @relation(fields: [tahun_ajaran_id], references: [id])
+  nilai_ujian          NilaiUjian[]
 
   @@map("jadwal_ujian")
 }
 
 model ExamSession {
-  id           String        @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id           String        @id @default(uuid()) @db.Uuid
   title        String?
   start_time   DateTime      @db.Timestamptz(6)
   end_time     DateTime      @db.Timestamptz(6)
@@ -307,7 +309,7 @@ model ExamSession {
 }
 
 model NilaiUjian {
-  id                       String       @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id                       String       @id @default(uuid()) @db.Uuid
   jadwal_ujian_id          String?      @db.Uuid
   pendaftar_id             String       @db.Uuid
   nilai_tes_tertulis       Json?
@@ -354,7 +356,7 @@ model NilaiUjian {
 }
 
 model Pengumuman {
-  id                    String      @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id                    String      @id @default(uuid()) @db.Uuid
   pendaftar_id          String      @unique @db.Uuid
   tahun_ajaran_id       String      @db.Uuid
   status_kelulusan      String
@@ -378,7 +380,7 @@ model Pengumuman {
 }
 
 model HasilSeleksi {
-  id                   String        @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id                   String        @id @default(uuid()) @db.Uuid
   pendaftar_id         String        @unique @db.Uuid
   tahun_ajaran_id      String        @db.Uuid
   status_seleksi       StatusSeleksi
@@ -398,7 +400,7 @@ model HasilSeleksi {
 }
 
 model KetersediaanPenguji {
-  id            String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id            String   @id @default(uuid()) @db.Uuid
   penguji_id    String   @db.Uuid
   tanggal       DateTime @db.Date
   waktu_mulai   DateTime @db.Time(6)
@@ -414,7 +416,7 @@ model KetersediaanPenguji {
 }
 
 model DataRapor {
-  id               String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id               String    @id @default(uuid()) @db.Uuid
   pendaftar_id     String    @db.Uuid
   semester         Int
   pai              Decimal?  @db.Decimal(5, 2)
@@ -438,7 +440,7 @@ model DataRapor {
 }
 
 model DataPrestasi {
-  id                   String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id                   String    @id @default(uuid()) @db.Uuid
   pendaftar_id         String    @db.Uuid
   jenis_prestasi       String
   tingkat              String
@@ -455,7 +457,7 @@ model DataPrestasi {
 }
 
 model DataKesehatan {
-  id               String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id               String    @id @default(uuid()) @db.Uuid
   pendaftar_id     String    @unique @db.Uuid
   tinggi_badan     Int?
   berat_badan      Decimal?  @db.Decimal(5, 2)
@@ -479,7 +481,7 @@ model DataKesehatan {
 }
 
 model DataAsrama {
-  id                       String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id                       String    @id @default(uuid()) @db.Uuid
   pendaftar_id             String    @unique @db.Uuid
   pilihan_asrama           Boolean   @default(true)
   bersedia_cabang          Boolean   @default(false)
@@ -493,7 +495,7 @@ model DataAsrama {
 }
 
 model ReservasiPSB {
-  id                 String      @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id                 String      @id @default(uuid()) @db.Uuid
   pendaftar_id       String      @db.Uuid
   tahun_ajaran_id    String      @db.Uuid
   tanggal_kedatangan DateTime    @db.Date
@@ -514,7 +516,7 @@ model ReservasiPSB {
 }
 
 model DataPerubahanRequest {
-  id           String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id           String    @id @default(uuid()) @db.Uuid
   pendaftar_id String    @db.Uuid
   status       String    @default("pending")
   reason       String?
@@ -548,7 +550,7 @@ model OtpVerification {
 }
 
 model PendingSms {
-  id         String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id         String   @id @default(uuid()) @db.Uuid
   phone      String
   otp        String
   nama       String?
@@ -560,7 +562,7 @@ model PendingSms {
 }
 
 model WhatsappLog {
-  id              String     @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id              String     @id @default(uuid()) @db.Uuid
   pendaftar_id    String?    @db.Uuid
   phone           String
   jenis_notif     String
@@ -596,7 +598,7 @@ model WhatsappCooldown {
 }
 
 model JadwalNotifReminder {
-  id              String      @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id              String      @id @default(uuid()) @db.Uuid
   jadwal_ujian_id String      @db.Uuid
   pendaftar_id    String      @db.Uuid
   reminder_sent   Boolean     @default(false)
@@ -610,7 +612,7 @@ model JadwalNotifReminder {
 }
 
 model PendaftarBackup {
-  id                String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id                String    @id @default(uuid()) @db.Uuid
   pendaftar_id      String    @db.Uuid
   nomor_pendaftaran String
   nama_lengkap      String
