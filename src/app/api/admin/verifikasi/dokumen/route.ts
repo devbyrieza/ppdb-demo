@@ -37,7 +37,13 @@ export async function GET(request: NextRequest) {
     const pendaftarId = searchParams.get("pendaftar_id");
 
     // Build filter
-    const where: any = {};
+    const { getAdminWhereClause } = await import("@/lib/utils/admin");
+    const where: any = {
+      pendaftar: {
+        is: getAdminWhereClause(),
+      },
+    };
+    
     if (pendaftarId) {
       where.pendaftar_id = pendaftarId;
     }
