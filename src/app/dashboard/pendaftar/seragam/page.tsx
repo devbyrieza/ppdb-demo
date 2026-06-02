@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Loader2, Shirt, Save, CheckCircle2, Ruler } from "lucide-react";
+import { Loader2, Shirt, Save, CheckCircle2, Ruler, Edit } from "lucide-react";
 
 export default function SeragamPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [isEditing, setIsEditing] = useState(true);
   const [formData, setFormData] = useState({
     ukuran_seragam_baju: "",
     ukuran_seragam_celana: "",
@@ -33,11 +34,17 @@ export default function SeragamPage() {
       );
       if (res.ok) {
         const data = await res.json();
+        const baju = data.ukuran_seragam_baju || "";
+        const celana = data.ukuran_seragam_celana || "";
+        const alma = data.ukuran_seragam_almamater || "";
         setFormData({
-          ukuran_seragam_baju: data.ukuran_seragam_baju || "",
-          ukuran_seragam_celana: data.ukuran_seragam_celana || "",
-          ukuran_seragam_almamater: data.ukuran_seragam_almamater || "",
+          ukuran_seragam_baju: baju,
+          ukuran_seragam_celana: celana,
+          ukuran_seragam_almamater: alma,
         });
+        if (baju && celana && alma) {
+          setIsEditing(false);
+        }
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -62,6 +69,7 @@ export default function SeragamPage() {
       if (!res.ok) throw new Error(data.message || "Gagal menyimpan data");
 
       setMessage({ type: "success", text: "Ukuran seragam berhasil disimpan!" });
+      setIsEditing(false);
     } catch (error: any) {
       setMessage({ type: "error", text: error.message });
     } finally {
@@ -102,83 +110,169 @@ export default function SeragamPage() {
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Kolom Kiri: Form Input */}
-        <div className="bg-white p-6 rounded-3xl shadow-sm border border-ink-100">
-          <h2 className="text-lg font-black text-ink-950 mb-6 flex items-center gap-2">
-            <Ruler className="w-5 h-5 text-ink-400" />
-            Form Pemilihan Ukuran
-          </h2>
-          
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="space-y-2">
-              <label className="text-xs font-black text-ink-500 uppercase tracking-widest">
-                Ukuran Baju *
-              </label>
-              <select
-                value={formData.ukuran_seragam_baju}
-                onChange={(e) => setFormData({ ...formData, ukuran_seragam_baju: e.target.value })}
-                className="w-full bg-ink-50 border border-ink-200 px-4 py-3 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none font-bold"
-                required
-              >
-                <option value="">-- Pilih Ukuran Baju --</option>
-                <option value="S">Ukuran S</option>
-                <option value="M">Ukuran M</option>
-                <option value="L">Ukuran L</option>
-                <option value="XL">Ukuran XL</option>
-                <option value="XXL">Ukuran XXL</option>
-              </select>
+        {/* Kolom Kiri: Form Input / Summary */}
+        {isEditing ? (
+          <div className="bg-white p-6 rounded-3xl shadow-sm border border-ink-100">
+            <h2 className="text-lg font-black text-ink-950 mb-6 flex items-center gap-2">
+              <Ruler className="w-5 h-5 text-ink-400" />
+              Form Pemilihan Ukuran
+            </h2>
+            
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="space-y-2">
+                <label className="text-xs font-black text-ink-500 uppercase tracking-widest">
+                  Ukuran Baju *
+                </label>
+                <select
+                  value={formData.ukuran_seragam_baju}
+                  onChange={(e) => setFormData({ ...formData, ukuran_seragam_baju: e.target.value })}
+                  className="w-full bg-ink-50 border border-ink-200 px-4 py-3 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none font-bold"
+                  required
+                >
+                  <option value="">-- Pilih Ukuran Baju --</option>
+                  <option value="S">Ukuran S</option>
+                  <option value="M">Ukuran M</option>
+                  <option value="L">Ukuran L</option>
+                  <option value="XL">Ukuran XL</option>
+                  <option value="XXL">Ukuran XXL</option>
+                </select>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-black text-ink-500 uppercase tracking-widest">
+                  Ukuran Celana / Rok *
+                </label>
+                <select
+                  value={formData.ukuran_seragam_celana}
+                  onChange={(e) => setFormData({ ...formData, ukuran_seragam_celana: e.target.value })}
+                  className="w-full bg-ink-50 border border-ink-200 px-4 py-3 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none font-bold"
+                  required
+                >
+                  <option value="">-- Pilih Ukuran Celana --</option>
+                  <option value="S">Ukuran S</option>
+                  <option value="M">Ukuran M</option>
+                  <option value="L">Ukuran L</option>
+                  <option value="XL">Ukuran XL</option>
+                  <option value="XXL">Ukuran XXL</option>
+                </select>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-black text-ink-500 uppercase tracking-widest">
+                  Ukuran Almamater *
+                </label>
+                <select
+                  value={formData.ukuran_seragam_almamater}
+                  onChange={(e) => setFormData({ ...formData, ukuran_seragam_almamater: e.target.value })}
+                  className="w-full bg-ink-50 border border-ink-200 px-4 py-3 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none font-bold"
+                  required
+                >
+                  <option value="">-- Pilih Ukuran Almamater --</option>
+                  <option value="S">Ukuran S</option>
+                  <option value="M">Ukuran M</option>
+                  <option value="L">Ukuran L</option>
+                  <option value="XL">Ukuran XL</option>
+                  <option value="XXL">Ukuran XXL</option>
+                </select>
+              </div>
+
+              <div className="pt-4">
+                <button
+                  type="submit"
+                  disabled={saving}
+                  className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-primary-700 text-white rounded-xl font-black text-sm shadow-lg shadow-primary-200 hover:bg-primary-800 disabled:opacity-50 transition-all cursor-pointer"
+                >
+                  {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
+                  {saving ? "Menyimpan..." : "Simpan Ukuran Seragam"}
+                </button>
+              </div>
+            </form>
+          </div>
+        ) : (
+          <div className="bg-white p-6 rounded-3xl shadow-sm border border-ink-100 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <span className="flex h-2.5 w-2.5 relative">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+                </span>
+                <span className="text-xs font-black text-green-600 uppercase tracking-wider">
+                  Data Sudah Disimpan
+                </span>
+              </div>
+              
+              <h2 className="text-lg font-black text-ink-950 mb-2">
+                Detail Ukuran Seragam
+              </h2>
+              <p className="text-sm font-medium text-ink-500 mb-6">
+                Ukuran berikut telah tersimpan di sistem kami. Anda masih dapat mengubahnya kembali bila diperlukan dengan mengklik tombol di bawah.
+              </p>
+
+              <div className="space-y-4">
+                {/* Item 1: Baju */}
+                <div className="flex items-center justify-between p-4 bg-ink-50 border border-ink-100 rounded-2xl">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-primary-50 text-primary-700 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <Shirt className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-black text-ink-400 uppercase tracking-wider">Ukuran Baju</p>
+                      <p className="text-sm font-bold text-ink-800">Santri / Siswa</p>
+                    </div>
+                  </div>
+                  <div className="px-4 py-2 bg-white border border-ink-200 text-ink-950 font-black text-lg rounded-xl min-w-16 text-center shadow-sm">
+                    {formData.ukuran_seragam_baju}
+                  </div>
+                </div>
+
+                {/* Item 2: Celana */}
+                <div className="flex items-center justify-between p-4 bg-ink-50 border border-ink-100 rounded-2xl">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-primary-50 text-primary-700 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <Ruler className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-black text-ink-400 uppercase tracking-wider">Ukuran Celana / Rok</p>
+                      <p className="text-sm font-bold text-ink-800">Santri / Siswa</p>
+                    </div>
+                  </div>
+                  <div className="px-4 py-2 bg-white border border-ink-200 text-ink-950 font-black text-lg rounded-xl min-w-16 text-center shadow-sm">
+                    {formData.ukuran_seragam_celana}
+                  </div>
+                </div>
+
+                {/* Item 3: Almamater */}
+                <div className="flex items-center justify-between p-4 bg-ink-50 border border-ink-100 rounded-2xl">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-primary-50 text-primary-700 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <Shirt className="w-5 h-5 animate-pulse" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-black text-ink-400 uppercase tracking-wider">Ukuran Almamater</p>
+                      <p className="text-sm font-bold text-ink-800">Santri / Siswa</p>
+                    </div>
+                  </div>
+                  <div className="px-4 py-2 bg-white border border-ink-200 text-ink-950 font-black text-lg rounded-xl min-w-16 text-center shadow-sm">
+                    {formData.ukuran_seragam_almamater}
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-xs font-black text-ink-500 uppercase tracking-widest">
-                Ukuran Celana / Rok *
-              </label>
-              <select
-                value={formData.ukuran_seragam_celana}
-                onChange={(e) => setFormData({ ...formData, ukuran_seragam_celana: e.target.value })}
-                className="w-full bg-ink-50 border border-ink-200 px-4 py-3 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none font-bold"
-                required
-              >
-                <option value="">-- Pilih Ukuran Celana --</option>
-                <option value="S">Ukuran S</option>
-                <option value="M">Ukuran M</option>
-                <option value="L">Ukuran L</option>
-                <option value="XL">Ukuran XL</option>
-                <option value="XXL">Ukuran XXL</option>
-              </select>
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-xs font-black text-ink-500 uppercase tracking-widest">
-                Ukuran Almamater *
-              </label>
-              <select
-                value={formData.ukuran_seragam_almamater}
-                onChange={(e) => setFormData({ ...formData, ukuran_seragam_almamater: e.target.value })}
-                className="w-full bg-ink-50 border border-ink-200 px-4 py-3 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none font-bold"
-                required
-              >
-                <option value="">-- Pilih Ukuran Almamater --</option>
-                <option value="S">Ukuran S</option>
-                <option value="M">Ukuran M</option>
-                <option value="L">Ukuran L</option>
-                <option value="XL">Ukuran XL</option>
-                <option value="XXL">Ukuran XXL</option>
-              </select>
-            </div>
-
-            <div className="pt-4">
+            <div className="pt-8">
               <button
-                type="submit"
-                disabled={saving}
-                className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-primary-700 text-white rounded-xl font-black text-sm shadow-lg shadow-primary-200 hover:bg-primary-800 disabled:opacity-50 transition-all"
+                onClick={() => {
+                  setIsEditing(true);
+                  setMessage({ type: "", text: "" });
+                }}
+                className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-white border border-primary-600 text-primary-700 rounded-xl font-black text-sm hover:bg-primary-50 active:scale-[0.98] transition-all shadow-sm cursor-pointer"
               >
-                {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
-                {saving ? "Menyimpan..." : "Simpan Ukuran Seragam"}
+                <Edit className="w-4 h-4" />
+                Ubah Pilihan Ukuran
               </button>
             </div>
-          </form>
-        </div>
+          </div>
+        )}
 
         {/* Kolom Kanan: Panduan Ukuran */}
         <div className="bg-ink-50 p-6 rounded-3xl border border-ink-200 space-y-6">
