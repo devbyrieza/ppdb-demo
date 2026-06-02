@@ -56,7 +56,7 @@ export function calculateOrangTuaScore(detail: any): number {
  * FUNGSI INTI: Menghitung total nilai akhir santri.
  * Menggabungkan semua data ujian (Al-Quran, Akademik, Wawancara) menjadi satu kesimpulan.
  */
-export async function recalculateNilaiUjian(pendaftarId: string) {
+export async function recalculateNilaiUjian(pendaftarId: string, overrideStatus?: string) {
   // 1. Ambil semua rekaman nilai untuk pendaftar ini (bisa lebih dari satu jika diinput bertahap)
   const allNilai = await prisma.nilaiUjian.findMany({
     where: { pendaftar_id: pendaftarId },
@@ -136,7 +136,7 @@ export async function recalculateNilaiUjian(pendaftarId: string) {
   const allGraded = ak != null && quran != null && kp != null && ks != null && ws != null && wo != null;
   let status: string = "BELUM LENGKAP";
 
-  if (allGraded) {
+  if (allGraded || overrideStatus) {
     const grades = {
       quran: master.detail_quran?.rekomendasi ? evaluateStatusGrade(master.detail_quran.rekomendasi) : evaluateQuranGrade(quran || 0),
       akademik: evaluateAkademikGrade(ak || 0),
@@ -146,7 +146,7 @@ export async function recalculateNilaiUjian(pendaftarId: string) {
       wawancaraOrangTua: evaluateWawancaraGrade(wo || 0),
     };
 
-    status = determineFinalDecision(grades);
+    status = overrideStatus || determineFinalDecision(grades);
 
     // 6. Sinkronisasi ke Tabel Pendaftar & Pengumuman
     const pendaftar = await prisma.pendaftar.findUnique({
@@ -168,16 +168,23 @@ export async function recalculateNilaiUjian(pendaftarId: string) {
       // 7. Kirim Notifikasi WhatsApp Otomatis
       try {
         const { notifyCombinedFinalResult } = await import("./wablas");
+        const { processWhatsappQueue } = await import("./whatsapp-queue");
         const phone = pendaftar.no_hp || pendaftar.orang_tua?.no_hp_ayah || pendaftar.orang_tua?.no_hp_ibu;
         if (phone) {
           await notifyCombinedFinalResult({
             pendaftarId, phone, nama: pendaftar.nama_lengkap,
             status: status as any, jenjang: pendaftar.jenjang
           });
+
+          // Jalankan proses antrean secara asinkron (fail-safe jika cron delay/mati)
+          processWhatsappQueue().catch((err) =>
+            console.error("Failed to run processWhatsappQueue asynchronously:", err)
+          );
         }
       } catch (err) {
         console.error("WhatsApp Notification Error:", err);
       }
+
     }
   } else {
     // If not all graded, but some are, update status to 'tested' (Sedang Seleksi) 

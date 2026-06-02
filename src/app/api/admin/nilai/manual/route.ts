@@ -20,6 +20,8 @@ export async function POST(req: Request) {
       score_wawancara_ortu,
       score_kepribadian,
       score_kesiapan,
+      override_status,
+      catatan_bypass,
     } = body;
 
     if (!pendaftar_id) {
@@ -58,7 +60,7 @@ export async function POST(req: Request) {
           input_by_santri: adminId,
           input_by_ortu: adminId,
           input_by_quran: adminId,
-          catatan_umum: "Input Manual oleh Admin Super",
+          catatan_umum: catatan_bypass ? `Bypass Admin Super: ${catatan_bypass}` : "Input Manual oleh Admin Super",
           updated_at: new Date(),
         },
       });
@@ -78,7 +80,7 @@ export async function POST(req: Request) {
           input_by_santri: adminId,
           input_by_ortu: adminId,
           input_by_quran: adminId,
-          catatan_umum: "Input Manual oleh Admin Super",
+          catatan_umum: catatan_bypass ? `Bypass Admin Super: ${catatan_bypass}` : "Input Manual oleh Admin Super",
         },
       });
       targetId = created.id;
@@ -91,7 +93,7 @@ export async function POST(req: Request) {
     });
 
     // Run recalculation to get total_score, status_kelulusan and update Pendaftar status
-    await recalculateNilaiUjian(pendaftar_id);
+    await recalculateNilaiUjian(pendaftar_id, override_status || undefined);
 
     return NextResponse.json({
       success: true,
