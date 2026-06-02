@@ -5,11 +5,11 @@ import { getServerSession } from "@/lib/session";
 export async function PUT(req: Request) {
   try {
     const session = (await getServerSession()) as any;
-    if (!session || !session.pendaftar_id) {
+    if (!session || !session.id) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const pendaftarId = session.pendaftar_id;
+    const pendaftarId = session.id;
     const body = await req.json();
     const { ukuran_seragam_baju, ukuran_seragam_celana, ukuran_seragam_almamater } = body;
 
