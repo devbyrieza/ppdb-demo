@@ -1,0 +1,107 @@
+import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+import { requireRole } from "@/lib/auth/require-role";
+import { recalculateNilaiUjian } from "@/lib/scoring";
+
+export async function POST(req: Request) {
+  try {
+    const session = await requireRole(["admin_super", "admin"]);
+    if (!session || !session.id) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
+    const adminId = session.id;
+    const body = await req.json();
+    const {
+      pendaftar_id,
+      score_akademik,
+      score_quran,
+      score_wawancara_santri,
+      score_wawancara_ortu,
+      score_kepribadian,
+      score_kesiapan,
+    } = body;
+
+    if (!pendaftar_id) {
+      return NextResponse.json({ message: "ID Pendaftar wajib diisi" }, { status: 400 });
+    }
+
+    // Parse the numbers safely
+    const akademik = score_akademik ? parseFloat(score_akademik) : null;
+    const quran = score_quran ? parseFloat(score_quran) : null;
+    const w_santri = score_wawancara_santri ? parseFloat(score_wawancara_santri) : null;
+    const w_ortu = score_wawancara_ortu ? parseFloat(score_wawancara_ortu) : null;
+    const kepribadian = score_kepribadian ? parseFloat(score_kepribadian) : null;
+    const kesiapan = score_kesiapan ? parseFloat(score_kesiapan) : null;
+
+    // Create or update existing NilaiUjian record with priority on the newest one
+    const existings = await prisma.nilaiUjian.findMany({
+      where: { pendaftar_id },
+      orderBy: { updated_at: "desc" },
+    });
+
+    let targetId = "";
+    if (existings.length > 0) {
+      targetId = existings[0].id;
+      // Update existing main record
+      await prisma.nilaiUjian.update({
+        where: { id: targetId },
+        data: {
+          score_akademik: akademik,
+          nilai_tes_tertulis_total: akademik, // Keep in sync for recalculate
+          score_quran: quran,
+          nilai_tes_quran: quran, // Keep in sync
+          nilai_wawancara_santri: w_santri,
+          nilai_wawancara_ortu: w_ortu,
+          score_kepribadian: kepribadian,
+          score_kesiapan: kesiapan,
+          input_by_santri: adminId,
+          input_by_ortu: adminId,
+          input_by_quran: adminId,
+          catatan_umum: "Input Manual oleh Admin Super",
+          updated_at: new Date(),
+        },
+      });
+    } else {
+      // Create new
+      const created = await prisma.nilaiUjian.create({
+        data: {
+          pendaftar_id,
+          score_akademik: akademik,
+          nilai_tes_tertulis_total: akademik,
+          score_quran: quran,
+          nilai_tes_quran: quran,
+          nilai_wawancara_santri: w_santri,
+          nilai_wawancara_ortu: w_ortu,
+          score_kepribadian: kepribadian,
+          score_kesiapan: kesiapan,
+          input_by_santri: adminId,
+          input_by_ortu: adminId,
+          input_by_quran: adminId,
+          catatan_umum: "Input Manual oleh Admin Super",
+        },
+      });
+      targetId = created.id;
+    }
+
+    // Clean up interviews if any (prevent them from showing up as pending)
+    await prisma.jadwalUjian.updateMany({
+      where: { pendaftar_id },
+      data: { status: "completed" },
+    });
+
+    // Run recalculation to get total_score, status_kelulusan and update Pendaftar status
+    await recalculateNilaiUjian(pendaftar_id);
+
+    return NextResponse.json({
+      success: true,
+      message: "Nilai berhasil disimpan dan dikalkulasi",
+    });
+  } catch (error: any) {
+    console.error("Error in POST /api/admin/nilai/manual:", error);
+    return NextResponse.json(
+      { message: error.message || "Internal server error" },
+      { status: 500 }
+    );
+  }
+}

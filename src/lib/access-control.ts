@@ -181,14 +181,14 @@ export const ROLE_LABELS: Record<UserRole, string> = {
 };
 
 export const ROLE_PERMISSIONS: Record<UserRole, string[]> = {
-  pendaftar: ["view_own_data", "edit_own_data", "upload_documents", "view_payment_status"],
+  pendaftar: ["view_own_data", "edit_own_data", "upload_documents", "view_payment_status", "view_announcement"],
   admin_berkas: ["view_pendaftar_list", "verify_documents", "export_pendaftar_data"],
   admin_keuangan: ["view_pendaftar_list", "verify_payment", "view_financial_reports"],
-  admin_super: ["view_pendaftar_list", "view_dashboard_stats", "manage_users", "manage_settings"],
-  admin: ["view_pendaftar_list", "verify_documents", "verify_payment"],
   penguji: ["view_exam_schedule", "input_exam_scores"],
   pewawancara_calsan: ["view_exam_schedule", "input_exam_scores"],
   pewawancara_cawalsan: ["view_exam_schedule", "input_exam_scores"],
+  admin_super: ["view_pendaftar_list", "view_dashboard_stats", "manage_users", "manage_settings"],
+  admin: ["view_pendaftar_list", "verify_documents", "verify_payment", "input_exam_scores"],
 };
 
 export const DASHBOARD_ROUTES: Record<UserRole, string> = {
@@ -248,6 +248,7 @@ export function getMenuItemsForRole(role: UserRole) {
       { name: "Rekap Nilai & Kelulusan", href: "/dashboard/admin/audit-seleksi", icon: "Activity", group: "HASIL SELEKSI" },
       { name: "Broadcast WA", href: "/dashboard/admin/broadcast", icon: "Zap", group: "KOMUNIKASI" },
       { name: "Manajemen User", href: "/dashboard/admin/users", icon: "UserCog", group: "SISTEM" },
+      { name: "Statistik Wilayah", href: "/dashboard/admin/statistik-wilayah", icon: "Map", group: "SISTEM" },
       { name: "Pengaturan", href: "/dashboard/admin/pengaturan", icon: "Settings", group: "SISTEM" },
     ],
   };
@@ -289,3 +290,4 @@ export function getUnlockMessage(tabName: TabName): string {
     "Selesaikan tahap sebelumnya untuk membuka akses."
   );
 }
+
