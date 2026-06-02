@@ -223,7 +223,7 @@ const CAWALSAN_QUESTIONS = [
   { key: "q6", label: "6. Menurut Bapak/Ibu, keberhasilan proses pendidikan anak merupakan tanggung jawab siapa?", options: ["A. Bersama", "Orang Tua", "Sekolah"] },
   { key: "q7", label: "7. Sejauh apa kesiapan  Abu/Ummu   memenuhi kewajiban SPP?", options: ["A. Yakin", "B. Ragu-ragu", "C. Tidak tahu"] },
   { key: "q8", label: "8. Bagaimana pandangan  Abu/Ummu   tentang pendidikan agama & tahfizh Al-Qur’an?", options: ["A. Sangat penting", "B. Cukup penting", "C. Penting"] },
-  { key: "q9", label: "9. Apa saja yang akan dilakukan oleh Bapak/Ibu untuk mendukung program pendidikan Pesantren?", options: ["A. Mendukung semua program dan memberikan masukan positif/ memantau perkembangan anak", "B. Menyerahkan semua urusan ke Pesan", "C. Tidak Tahu"] },
+  { key: "q9", label: "9. Apa saja yang akan dilakukan oleh Bapak/Ibu untuk mendukung program pendidikan Pesantren?", options: ["A. Mendukung semua program dan memberikan masukan positif/ memantau perkembangan anak", "B. Menyerahkan semua urusan ke Pesantren", "C. Tidak Tahu"] },
   { key: "q10", label: "10. Seberapa sering  Abu/Ummu   akan menjenguk ananda?", options: ["A. Berkala", "B. Tidak menjenguk karena jauh", "C. Sesempatnya saja"] },
   { key: "q11", label: "11. Jika ananda diganggu teman (iseng/jail/bully), apa langkah  Abu/Ummu?", options: ["A. Klarifikasi & beri semangat pada anak", "B. Serahkan ke pesantren", "C. Komplain ke pesantren"] },
   { key: "q12", label: "12. Jika ananda terkena sanksi, apa reaksi  Abu/Ummu?", options: ["A. Menerima sebagai konsekuensi (selama bimbingan sudah maksimal)", "B. Menasehati anak", "C. Tidak terima"] },
