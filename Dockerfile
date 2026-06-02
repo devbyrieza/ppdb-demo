@@ -42,6 +42,9 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
+# Install prisma CLI so we can run db push at runtime
+RUN npm install -g prisma
+
 RUN groupadd -g 1001 nodejs && useradd -u 1001 -g nodejs -s /bin/sh -m nextjs
 
 COPY --from=builder /app/public ./public
