@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "@/lib/session";
+import { createHmac } from "crypto";
 import { enqueueWhatsapp } from "@/lib/whatsapp-queue";
-import { generateMagicToken, generateTinyUrl } from "@/lib/utils/magic-link";
 
 export async function POST(req: Request) {
   try {
@@ -53,17 +53,14 @@ export async function POST(req: Request) {
         continue;
       }
 
-      // Generate magic link that redirects to dashboard pendaftar seragam
-      const token = generateMagicToken(
-        pendaftar.user_id,
-        "pendaftar", 
-        pendaftar.nama_lengkap,
-        48, // Valid for 48 hours
-        "/dashboard/pendaftar/seragam" 
-      );
+      // Generate internal short link using HMAC hash
+      const hash = createHmac("sha256", process.env.MAGIC_LINK_SECRET || "fallback-secret-for-dev")
+        .update(pendaftar.nomor_pendaftaran)
+        .digest("hex")
+        .slice(0, 8);
       
-      const magicLinkRaw = `${baseUrl}/api/auth/magic?token=${token}`;
-      const magicLink = await generateTinyUrl(magicLinkRaw);
+      const shortCode = `${pendaftar.nomor_pendaftaran}-${hash}`;
+      const magicLink = `${baseUrl}/s/${shortCode}?t=seragam`;
 
       // Construct WhatsApp message
       const message = `*PENGINGAT PENGISIAN UKURAN SERAGAM*
