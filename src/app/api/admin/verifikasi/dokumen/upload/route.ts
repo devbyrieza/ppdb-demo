@@ -265,8 +265,12 @@ export async function POST(request: NextRequest) {
         select: { status_pendaftaran: true, no_hp: true, nama_lengkap: true },
       });
 
-      // Update status only if still in docs_uploaded (advance)
-      if (currentPendaftar?.status_pendaftaran === "docs_uploaded") {
+      const { getStatusIndex } = await import("@/lib/access-control");
+      const currentStatusIndex = getStatusIndex(currentPendaftar?.status_pendaftaran || "draft");
+      const targetIndex = getStatusIndex("docs_verified");
+
+      // Update status only if it is before docs_verified (e.g., data_completed or docs_uploaded)
+      if (currentStatusIndex < targetIndex) {
         await prisma.pendaftar.update({
           where: { id: pendaftarId },
           data: { status_pendaftaran: "docs_verified" },
