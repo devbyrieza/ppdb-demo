@@ -85,9 +85,9 @@ Panitia PPDB.`;
       try {
         await enqueueWhatsapp({
           phone: phone,
-          message: message,
-          type: "reminder_seragam" as any,
-          reference_id: pendaftar.id
+          messageContent: message,
+          jenisNotif: "broadcast",
+          pendaftarId: pendaftar.id
         });
         successCount++;
       } catch (err) {
