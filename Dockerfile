@@ -57,9 +57,6 @@ COPY --from=builder /app/package.json ./package.json
 # Buat direktori penyimpanan lokal dan atur CHOWN agar user nextjs bisa menulis file
 RUN mkdir -p /app/storage_data && chown -R nextjs:nodejs /app/storage_data
 
-# Install prisma globally so it's available for runtime db push without npx prompts
-RUN npm install -g prisma@5.22.0
-
 USER nextjs
 
 EXPOSE 3000
@@ -67,4 +64,4 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-CMD prisma db push --accept-data-loss --skip-generate && node server.js
+CMD ["node", "server.js"]
