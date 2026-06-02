@@ -87,7 +87,7 @@ export async function POST(req: Request) {
     // Clean up interviews if any (prevent them from showing up as pending)
     await prisma.jadwalUjian.updateMany({
       where: { pendaftar_id },
-      data: { status: "completed" },
+      data: { status_santri: "completed", status_ortu: "completed" },
     });
 
     // Run recalculation to get total_score, status_kelulusan and update Pendaftar status
