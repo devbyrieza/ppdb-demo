@@ -1943,52 +1943,9 @@ function AdminPendaftarContent() {
                         </button>
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap">
-                        <div className="flex justify-end gap-2">
-
-                          <ActionDropdown 
-                            items={[
-                              {
-                                label: "Buka Detail",
-                                icon: <Eye className="w-4 h-4" />,
-                                onClick: () => router.push(`/dashboard/admin/pendaftar/${item.id}`),
-                              },
-                              {
-                                label: "Verifikasi Dokumen",
-                                icon: <FileCheck className="w-4 h-4" />,
-                                onClick: () => router.push(`/dashboard/admin/verifikasi-dokumen`),
-                                hidden: !isBerkas
-                              },
-                              {
-                                label: "Verifikasi Pembayaran",
-                                icon: <CreditCard className="w-4 h-4" />,
-                                onClick: () => router.push(`/dashboard/admin/verifikasi-pembayaran`),
-                                hidden: !isKeuangan
-                              },
-                              {
-                                label: "Diterima (Promosikan)",
-                                icon: <CheckSquare className="w-4 h-4" />,
-                                onClick: () => handlePromoteCadangan([item.id]),
-                                variant: "success",
-                                hidden: !isAdminSuper || (item.status_pendaftaran !== "announced" && item.status_pendaftaran !== "cadangan")
-                              },
-                              {
-                                label: "Mengundurkan Diri",
-                                icon: <LogOut className="w-4 h-4" />,
-                                onClick: () => handleSingleMengundurkanDiri(item.id),
-                                variant: "warning",
-                                hidden: !isAdminSuper
-                              },
-                              {
-                                label: "Hapus ke Sampah",
-                                icon: <Trash2 className="w-4 h-4" />,
-                                onClick: () => handleOpenDelete(item),
-                                variant: "danger",
-                                hidden: !isAdminSuper
-                              }
-                            ]} 
-                          />
-
-                        </div>
+                        <span className="font-mono text-sm font-bold text-primary-700 bg-primary-50 px-2 py-1 rounded">
+                          {item.nomor_pendaftaran}
+                        </span>
                       </td>
                       <td className="px-4 py-3">
                         <div>
@@ -2042,62 +1999,51 @@ function AdminPendaftarContent() {
                       </td>
                       
                       <td className="px-4 py-3 whitespace-nowrap">
-                        <div className="flex items-center gap-2">
-                          <Link
-                            href={`/dashboard/admin/pendaftar/${item.id}`}
-                            className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary-950 hover:bg-primary-800 text-white rounded-xl text-[10px] font-black uppercase transition-all shadow-lg shadow-primary-950/20 active:scale-95"
-                            title="Buka Detail"
-                          >
-                            <Eye className="w-3.5 h-3.5" />
-                            <span className="hidden lg:inline">Detail</span>
-                          </Link>
+                        <div className="flex justify-end gap-2">
 
-                          {/* Role-Specific Secondary Actions */}
-                          {isBerkas && (
-                            <Link
-                              href={`/dashboard/admin/verifikasi-dokumen`}
-                              className="p-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-all"
-                              title="Verifikasi Dokumen"
-                            >
-                              <FileCheck className="w-4 h-4" />
-                            </Link>
-                          )}
+                          <ActionDropdown 
+                            items={[
+                              {
+                                label: "Buka Detail",
+                                icon: <Eye className="w-4 h-4" />,
+                                onClick: () => router.push(`/dashboard/admin/pendaftar/${item.id}`),
+                              },
+                              {
+                                label: "Verifikasi Dokumen",
+                                icon: <FileCheck className="w-4 h-4" />,
+                                onClick: () => router.push(`/dashboard/admin/verifikasi-dokumen`),
+                                hidden: !isBerkas
+                              },
+                              {
+                                label: "Verifikasi Pembayaran",
+                                icon: <CreditCard className="w-4 h-4" />,
+                                onClick: () => router.push(`/dashboard/admin/verifikasi-pembayaran`),
+                                hidden: !isKeuangan
+                              },
+                              {
+                                label: "Diterima (Promosikan)",
+                                icon: <CheckSquare className="w-4 h-4" />,
+                                onClick: () => handlePromoteCadangan([item.id]),
+                                variant: "success",
+                                hidden: !isAdminSuper || (item.status_pendaftaran !== "announced" && item.status_pendaftaran !== "cadangan")
+                              },
+                              {
+                                label: "Mengundurkan Diri",
+                                icon: <LogOut className="w-4 h-4" />,
+                                onClick: () => handleSingleMengundurkanDiri(item.id),
+                                variant: "warning",
+                                hidden: !isAdminSuper
+                              },
+                              {
+                                label: "Hapus ke Sampah",
+                                icon: <Trash2 className="w-4 h-4" />,
+                                onClick: () => handleOpenDelete(item),
+                                variant: "danger",
+                                hidden: !isAdminSuper
+                              }
+                            ]} 
+                          />
 
-                          {isKeuangan && (
-                            <Link
-                              href={`/dashboard/admin/verifikasi-pembayaran`}
-                              className="p-1.5 bg-secondary-600 hover:bg-secondary-700 text-white rounded-lg transition-all"
-                              title="Verifikasi Pembayaran"
-                            >
-                              <CreditCard className="w-4 h-4" />
-                            </Link>
-                          )}
-
-                          {/* Super Admin Actions */}
-                          {isAdminSuper && (
-                            <>
-                              {/* Tombol Promosi per-baris (hanya untuk status Cadangan) */}
-                              {(item.status_pendaftaran === "announced" ||
-                                item.status_pendaftaran === "cadangan") && (
-                                <button
-                                  onClick={() => handlePromoteCadangan([item.id])}
-                                  disabled={isPromotingCadangan}
-                                  className="flex items-center gap-1 px-2 py-1.5 bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white rounded-lg transition-all text-[10px] font-black uppercase border border-emerald-200 hover:border-emerald-600 disabled:opacity-50"
-                                  title="Promosikan ke Diterima"
-                                >
-                                  <CheckSquare className="w-3.5 h-3.5" />
-                                  <span className="hidden xl:inline">Diterima</span>
-                                </button>
-                              )}
-                              <button
-                                onClick={() => handleOpenDelete(item)}
-                                className="p-1.5 bg-red-100 hover:bg-red-600 text-red-700 hover:text-white rounded-lg transition-all"
-                                title="Hapus"
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </button>
-                            </>
-                          )}
                         </div>
                       </td>
                     </tr>
