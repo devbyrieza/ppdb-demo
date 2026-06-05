@@ -1065,6 +1065,10 @@ function AdminPendaftarContent() {
         label: "Pindah Keluar",
         color: "bg-slate-100 text-slate-600 border border-slate-200",
       },
+      mengundurkan_diri: {
+        label: "Mengundurkan Diri",
+        color: "bg-stone-100 text-stone-500 border border-stone-200 line-through",
+      },
     };
 
     const statusInfo = statusMap[status] || {
