@@ -31,7 +31,8 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { ids, status_proses } = body;
+    const { ids, status_proses, status_pendaftaran, alasan } = body;
+    const newStatus = status_proses || status_pendaftaran;
 
     if (!ids || !Array.isArray(ids) || ids.length === 0) {
       return NextResponse.json(
@@ -40,9 +41,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (!status_proses) {
+    if (!newStatus) {
       return NextResponse.json(
-        { error: "status_proses is required" },
+        { error: "status is required" },
         { status: 400 },
       );
     }
@@ -63,41 +64,63 @@ export async function POST(req: NextRequest) {
       "accepted",
       "rejected",
       "enrolled",
-      // Add simplified statuses if needed
+      "enrolled_full",
       "verified",
       "payment_verification",
+      "mengundurkan_diri"
     ];
 
-    if (!validStatuses.includes(status_proses)) {
+    if (!validStatuses.includes(newStatus)) {
       return NextResponse.json(
-        { error: "Invalid status_proses" },
+        { error: "Invalid status" },
         { status: 400 },
       );
     }
 
-    // Bulk update
-    const result = await prisma.pendaftar.updateMany({
-      where: {
-        id: { in: ids },
-      },
-      data: {
-        status_pendaftaran: status_proses,
-        updated_at: new Date(),
-      },
-    });
+    if (alasan) {
+      const existing = await prisma.pendaftar.findMany({
+        where: { id: { in: ids } },
+        select: { id: true, data_lengkap: true }
+      });
+      
+      await prisma.$transaction(
+        existing.map((p) => {
+          const newDataLengkap = p.data_lengkap 
+            ? { ...(p.data_lengkap as any), alasan_mengundurkan_diri: alasan }
+            : { alasan_mengundurkan_diri: alasan };
+            
+          return prisma.pendaftar.update({
+            where: { id: p.id },
+            data: {
+              status_pendaftaran: newStatus,
+              data_lengkap: newDataLengkap,
+              updated_at: new Date(),
+            }
+          });
+        })
+      );
+      
+      return NextResponse.json({
+        success: true,
+        updated_count: ids.length,
+      });
+    } else {
+      // Bulk update
+      const result = await prisma.pendaftar.updateMany({
+        where: {
+          id: { in: ids },
+        },
+        data: {
+          status_pendaftaran: newStatus,
+          updated_at: new Date(),
+        },
+      });
 
-    // Fetch updated data to return (optional, simulating previous generic response)
-    const data = await prisma.pendaftar.findMany({
-      where: {
-        id: { in: ids },
-      },
-    });
-
-    return NextResponse.json({
-      success: true,
-      updated_count: result.count,
-      data,
-    });
+      return NextResponse.json({
+        success: true,
+        updated_count: result.count,
+      });
+    }
   } catch (error) {
     console.error("Bulk update error:", error);
     return NextResponse.json(

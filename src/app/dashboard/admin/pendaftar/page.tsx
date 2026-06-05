@@ -686,35 +686,61 @@ function AdminPendaftarContent() {
     );
   };
 
-  const handleBulkUpdate = async () => {
+    const handleBulkUpdate = async () => {
     if (!bulkStatus || selectedIds.length === 0) {
       Swal.fire("Perhatian", "Pilih status dan minimal 1 pendaftar", "warning");
       return;
     }
 
-    const result = await Swal.fire({
-      title: "Update Massal",
-      text: `Yakin ingin update status ${selectedIds.length} pendaftar menjadi "${bulkStatus}"?`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#2563eb", // Blue 600
-      cancelButtonColor: "#57534e", // Stone 600
-      confirmButtonText: "Ya, Update Semua",
-      cancelButtonText: "Batal",
-      reverseButtons: true,
-    });
+    let alasan = "";
 
-    if (!result.isConfirmed) return;
+    if (bulkStatus === "mengundurkan_diri") {
+      const result = await Swal.fire({
+        title: "Alasan Mengundurkan Diri",
+        text: `Masukkan alasan mundurnya ${selectedIds.length} pendaftar ini (Opsional. Kosongkan jika tidak ada)`,
+        input: "textarea",
+        inputPlaceholder: "Contoh: Diterima di sekolah negeri...",
+        showCancelButton: true,
+        confirmButtonColor: "#2563eb",
+        cancelButtonColor: "#57534e",
+        confirmButtonText: "Ya, Update Semua",
+        cancelButtonText: "Batal",
+        reverseButtons: true,
+      });
+
+      if (!result.isConfirmed) return;
+      alasan = result.value || "";
+    } else {
+      const result = await Swal.fire({
+        title: "Update Massal",
+        text: `Yakin ingin update status ${selectedIds.length} pendaftar menjadi "${bulkStatus}"?`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#2563eb",
+        cancelButtonColor: "#57534e",
+        confirmButtonText: "Ya, Update Semua",
+        cancelButtonText: "Batal",
+        reverseButtons: true,
+      });
+
+      if (!result.isConfirmed) return;
+    }
 
     try {
       setBulkUpdating(true);
+      
+      const payload: any = {
+        ids: selectedIds,
+        status_pendaftaran: bulkStatus,
+      };
+      if (alasan) {
+        payload.alasan = alasan;
+      }
+
       const response = await fetch("/api/admin/pendaftar/bulk-update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ids: selectedIds,
-          status_pendaftaran: bulkStatus,
-        }),
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) throw new Error("Failed to update");
@@ -728,53 +754,6 @@ function AdminPendaftarContent() {
       Swal.fire("Gagal", "Gagal update status", "error");
     } finally {
       setBulkUpdating(false);
-    }
-  };
-
-  const handlePromoteCadangan = async (ids?: string[]) => {
-    const isAll = !ids || ids.length === 0;
-    const confirmText = isAll
-      ? `Yakin ingin memindahkan SEMUA Pendaftar Cadangan (${pagination.total} orang pada halaman ini dan seluruh halaman) ke status Diterima?`
-      : `Yakin ingin memindahkan ${ids.length} Pendaftar Cadangan terpilih ke status Diterima?`;
-
-    const result = await Swal.fire({
-      title: isAll ? "Promosikan Semua Cadangan" : `Promosikan ${ids?.length} Terpilih`,
-      html: `<p>${confirmText}</p><p class="mt-3 text-sm text-stone-500">Status akan berubah dari <b>Cadangan</b> → <b>Diterima</b>. Tindakan ini tidak dapat diurungkan secara massal.</p>`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#059669",
-      cancelButtonColor: "#94a3b8",
-      confirmButtonText: isAll ? "Ya, Promosikan Semua!" : `Ya, Promosikan ${ids?.length}!`,
-      cancelButtonText: "Batal",
-      reverseButtons: true,
-    });
-
-    if (!result.isConfirmed) return;
-
-    try {
-      setIsPromotingCadangan(true);
-      const response = await fetch("/api/admin/pendaftar/promote-cadangan", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(isAll ? {} : { ids }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) throw new Error(data.error || "Gagal mempromosikan");
-
-      Swal.fire({
-        title: "Berhasil!",
-        text: data.message || `${data.updated_count} Pendaftar berhasil dipindahkan ke Diterima.`,
-        icon: "success",
-        confirmButtonColor: "#059669",
-      });
-      setSelectedIds([]);
-      fetchPendaftar();
-    } catch (error: any) {
-      Swal.fire("Gagal!", error.message || "Terjadi kesalahan.", "error");
-    } finally {
-      setIsPromotingCadangan(false);
     }
   };
 
