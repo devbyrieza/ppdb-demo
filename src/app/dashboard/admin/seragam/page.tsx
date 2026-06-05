@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Loader2, Search, Download, MessageSquare, Shirt, CheckCircle2, XCircle, Edit } from "lucide-react";
+import { Loader2, Search, Download, MessageSquare, Shirt, CheckCircle2, XCircle, Edit, FileText } from "lucide-react";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import Swal from "sweetalert2";
 
 export default function RekapSeragamPage() {
@@ -102,6 +104,41 @@ export default function RekapSeragamPage() {
     document.body.removeChild(link);
   };
 
+  const exportPDF = () => {
+    const doc = new jsPDF("p", "pt", "a4");
+    const tableColumn = ["No. Pendaftaran", "Nama Lengkap", "Jenjang", "L/P", "Baju", "Celana", "Almamater"];
+    const tableRows: any[] = [];
+
+    filteredData.forEach(item => {
+      const rowData = [
+        item.nomor_pendaftaran,
+        item.nama_lengkap,
+        item.jenjang,
+        item.jenis_kelamin,
+        item.ukuran_seragam_baju || "-",
+        item.ukuran_seragam_celana || "-",
+        item.ukuran_seragam_almamater || "-"
+      ];
+      tableRows.push(rowData);
+    });
+
+    doc.setFontSize(16);
+    doc.text("Laporan Rekapitulasi Ukuran Seragam", 40, 40);
+    doc.setFontSize(10);
+    doc.text(`Tanggal Cetak: ${new Date().toLocaleDateString("id-ID")}`, 40, 55);
+
+    autoTable(doc, {
+      head: [tableColumn],
+      body: tableRows,
+      startY: 70,
+      theme: 'grid',
+      styles: { fontSize: 8, cellPadding: 4 },
+      headStyles: { fillColor: [124, 45, 18], textColor: 255 } // Maroon
+    });
+
+    doc.save(`Rekap_Seragam_${new Date().toISOString().slice(0,10)}.pdf`);
+  };
+
   const handleBroadcast = async () => {
     const belumIsi = filteredData.filter(d => !d.ukuran_seragam_baju || !d.ukuran_seragam_celana || !d.ukuran_seragam_almamater);
     if (belumIsi.length === 0) {
@@ -192,6 +229,13 @@ export default function RekapSeragamPage() {
             >
               <Download className="w-4 h-4" />
               Download Excel
+            </button>
+            <button
+              onClick={exportPDF}
+              className="flex-1 md:flex-none flex items-center justify-center gap-2 px-5 py-3 bg-white border border-red-200 text-red-700 rounded-xl text-sm font-black hover:bg-red-50 shadow-sm transition-all"
+            >
+              <FileText className="w-4 h-4" />
+              Download PDF
             </button>
             <button
               onClick={handleBroadcast}
