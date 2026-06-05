@@ -411,6 +411,10 @@ export default function PendaftarDetailPage() {
       },
       accepted: { label: "Diterima", color: "bg-emerald-600 text-white" },
       rejected: { label: "Ditolak", color: "bg-rose-600 text-white" },
+      mengundurkan_diri: {
+        label: "Mengundurkan Diri",
+        color: "bg-stone-600 text-white",
+      },
       enrolled: {
         label: "Sudah Daftar Ulang",
         color: "bg-emerald-100 text-emerald-800",
