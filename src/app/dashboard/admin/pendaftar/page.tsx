@@ -697,75 +697,50 @@ function AdminPendaftarContent() {
     let alasan = "";
 
     if (bulkStatus === "mengundurkan_diri") {
-      const { value: selectedReason } = await Swal.fire({
+      const { value: finalAlasan } = await Swal.fire({
         title: "Alasan Mengundurkan Diri",
-        text: `Pilih alasan mundurnya ${selectedIds.length} pendaftar ini (Opsional):`,
-        input: "select",
-        inputOptions: {
-          "": "-- Tidak Diketahui / Kosongi --",
-          "Masalah/Kendala Biaya": "Masalah / Kendala Biaya",
-          "Sakit/Penyakit/Alergi": "Kesehatan (Sakit/Alergi)",
-          "Ingin Sekolah Umum": "Berubah pikiran ingin sekolah umum",
-          "Diterima di Sekolah/Pondok Lain": "Diterima di pondok/sekolah swasta lain",
-          "Kendala Jarak/Lokasi": "Kendala Jarak / Lokasi",
-          "Lainnya": "Lainnya (Ketik Manual)..."
-        },
+        html: `
+          <p class="text-sm text-stone-500 mb-4">Pilih alasan mundurnya ${selectedIds.length} pendaftar ini (Opsional):</p>
+          <select id="swal-reason-select" class="swal2-select" style="width: 100%; max-width: 100%; margin: 0 0 1rem 0; font-size: 14px;" onchange="
+            if(this.value === 'Lainnya') {
+              document.getElementById('swal-custom-reason').style.display = 'block';
+              document.getElementById('swal-custom-reason').focus();
+            } else {
+              document.getElementById('swal-custom-reason').style.display = 'none';
+            }
+          ">
+            <option value="">-- Tidak Diketahui / Kosongi --</option>
+            <option value="Masalah / Kendala Biaya">Masalah / Kendala Biaya</option>
+            <option value="Kesehatan (Sakit/Alergi)">Kesehatan (Sakit/Alergi)</option>
+            <option value="Berubah pikiran ingin sekolah umum">Berubah pikiran ingin sekolah umum</option>
+            <option value="Diterima di pondok/sekolah swasta lain">Diterima di pondok/sekolah swasta lain</option>
+            <option value="Kendala Jarak / Lokasi">Kendala Jarak / Lokasi</option>
+            <option value="Lainnya">Lainnya (Ketik Manual)...</option>
+          </select>
+          <input id="swal-custom-reason" class="swal2-input" placeholder="Ketik alasan pengunduran diri..." style="display: none; width: 100%; max-width: 100%; margin: 0; box-sizing: border-box; font-size: 14px;" />
+        `,
         showCancelButton: true,
         confirmButtonColor: "#2563eb",
         cancelButtonColor: "#57534e",
-        confirmButtonText: "Lanjut",
+        confirmButtonText: "Ya, Update Semua",
         cancelButtonText: "Batal",
         reverseButtons: true,
+        preConfirm: () => {
+          const selectEl = document.getElementById('swal-reason-select') as HTMLSelectElement;
+          const inputEl = document.getElementById('swal-custom-reason') as HTMLInputElement;
+          if (selectEl.value === 'Lainnya') {
+            if (!inputEl.value.trim()) {
+              Swal.showValidationMessage('Alasan lainnya wajib diisi');
+              return false;
+            }
+            return inputEl.value.trim();
+          }
+          return selectEl.value;
+        }
       });
 
-      if (selectedReason === undefined) return;
-
-      if (selectedReason === "Lainnya") {
-        const { value: customReason } = await Swal.fire({
-          title: "Alasan Lainnya",
-          input: "text",
-          inputPlaceholder: "Ketik alasan pengunduran diri secara spesifik...",
-          showCancelButton: true,
-          confirmButtonColor: "#2563eb",
-          cancelButtonColor: "#57534e",
-          confirmButtonText: "Ya, Update Semua",
-          cancelButtonText: "Batal",
-          reverseButtons: true,
-        });
-        if (customReason === undefined) return;
-        alasan = customReason;
-      } else {
-        alasan = selectedReason;
-        
-        // If not empty, confirm again just in case
-        if (alasan) {
-            const confirmResult = await Swal.fire({
-                title: "Konfirmasi Update",
-                text: `Yakin ingin update ${selectedIds.length} pendaftar dengan alasan "${alasan}"?`,
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#2563eb",
-                cancelButtonColor: "#57534e",
-                confirmButtonText: "Ya, Update Semua",
-                cancelButtonText: "Batal",
-                reverseButtons: true,
-            });
-            if (!confirmResult.isConfirmed) return;
-        } else {
-            const confirmResult = await Swal.fire({
-                title: "Konfirmasi Update",
-                text: `Yakin ingin update status ${selectedIds.length} pendaftar menjadi Mengundurkan Diri (Tanpa Alasan)?`,
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#2563eb",
-                cancelButtonColor: "#57534e",
-                confirmButtonText: "Ya, Update Semua",
-                cancelButtonText: "Batal",
-                reverseButtons: true,
-            });
-            if (!confirmResult.isConfirmed) return;
-        }
-      }
+      if (finalAlasan === undefined) return;
+      alasan = finalAlasan;
     } else {
       const result = await Swal.fire({
         title: "Update Massal",
@@ -815,42 +790,50 @@ function AdminPendaftarContent() {
 
   
   const handleSingleMengundurkanDiri = async (id: string) => {
-    const { value: selectedReason } = await Swal.fire({
+    const { value: finalAlasan } = await Swal.fire({
       title: "Alasan Mengundurkan Diri",
-      text: "Pilih alasan mundurnya pendaftar ini (Opsional):",
-      input: "select",
-      inputOptions: {
-        "": "-- Tidak Diketahui / Kosongi --",
-        "Masalah/Kendala Biaya": "Masalah / Kendala Biaya",
-        "Sakit/Penyakit/Alergi": "Kesehatan (Sakit/Alergi)",
-        "Ingin Sekolah Umum": "Berubah pikiran ingin sekolah umum",
-        "Diterima di sekolah/pesantren lain": "Diterima di sekolah/pesantren lain",
-        "Jarak terlalu jauh": "Jarak terlalu jauh",
-        "Tidak lolos seleksi berkas/ujian": "Tidak lolos seleksi berkas/ujian",
-        "Kondisi kesehatan/keluarga": "Kondisi kesehatan/keluarga",
-        Lainnya: "Alasan Lainnya (Ketik sendiri)",
-      },
-      inputPlaceholder: "Pilih alasan",
+      html: `
+        <p class="text-sm text-stone-500 mb-4">Pilih alasan mundurnya pendaftar ini (Opsional):</p>
+        <select id="swal-reason-select" class="swal2-select" style="width: 100%; max-width: 100%; margin: 0 0 1rem 0; font-size: 14px;" onchange="
+          if(this.value === 'Lainnya') {
+            document.getElementById('swal-custom-reason').style.display = 'block';
+            document.getElementById('swal-custom-reason').focus();
+          } else {
+            document.getElementById('swal-custom-reason').style.display = 'none';
+          }
+        ">
+          <option value="">-- Tidak Diketahui / Kosongi --</option>
+          <option value="Masalah / Kendala Biaya">Masalah / Kendala Biaya</option>
+          <option value="Kesehatan (Sakit/Alergi)">Kesehatan (Sakit/Alergi)</option>
+          <option value="Berubah pikiran ingin sekolah umum">Berubah pikiran ingin sekolah umum</option>
+          <option value="Diterima di sekolah/pesantren lain">Diterima di sekolah/pesantren lain</option>
+          <option value="Jarak terlalu jauh">Jarak terlalu jauh</option>
+          <option value="Tidak lolos seleksi berkas/ujian">Tidak lolos seleksi berkas/ujian</option>
+          <option value="Kondisi kesehatan/keluarga">Kondisi kesehatan/keluarga</option>
+          <option value="Lainnya">Alasan Lainnya (Ketik sendiri)</option>
+        </select>
+        <input id="swal-custom-reason" class="swal2-input" placeholder="Ketik alasan spesifik..." style="display: none; width: 100%; max-width: 100%; margin: 0; box-sizing: border-box; font-size: 14px;" />
+      `,
       showCancelButton: true,
       cancelButtonText: "Batal",
-      confirmButtonText: "Lanjut & Simpan",
+      confirmButtonText: "Simpan Data",
+      confirmButtonColor: "#dc2626",
+      cancelButtonColor: "#6b7280",
+      preConfirm: () => {
+        const selectEl = document.getElementById('swal-reason-select') as HTMLSelectElement;
+        const inputEl = document.getElementById('swal-custom-reason') as HTMLInputElement;
+        if (selectEl.value === 'Lainnya') {
+          if (!inputEl.value.trim()) {
+            Swal.showValidationMessage('Alasan lainnya wajib diisi');
+            return false;
+          }
+          return inputEl.value.trim();
+        }
+        return selectEl.value;
+      }
     });
 
-    if (selectedReason === undefined) return;
-    let finalAlasan = selectedReason;
-
-    if (selectedReason === "Lainnya") {
-      const { value: customReason } = await Swal.fire({
-        title: "Alasan Lainnya",
-        input: "textarea",
-        inputPlaceholder: "Ketikkan alasan...",
-        showCancelButton: true,
-        confirmButtonText: "Simpan",
-        cancelButtonText: "Batal",
-      });
-      if (!customReason) return;
-      finalAlasan = customReason;
-    }
+    if (finalAlasan === undefined) return;
 
     try {
       Swal.fire({
