@@ -1,5 +1,5 @@
-import { requireRole } from "@/lib/auth/server-auth";
-import prisma from "@/lib/prisma";
+import { requireRole } from "@/lib/check-permission";
+import { prisma } from "@/lib/prisma";
 import MonitoringClient, { ExaminerStat, PendingStudent } from "./MonitoringClient";
 
 export const dynamic = "force-dynamic";
