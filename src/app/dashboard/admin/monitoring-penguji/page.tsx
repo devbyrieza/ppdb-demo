@@ -23,8 +23,14 @@ export default async function MonitoringPengujiPage() {
   const jadwalList = await prisma.jadwalUjian.findMany({
     where: { tahun_ajaran_id: activeTahunAjaran.id },
     include: {
-      nilai_ujian: true,
-      pendaftar: { select: { id: true, nama_lengkap: true, nomor_pendaftaran: true } },
+      pendaftar: { 
+        select: { 
+          id: true, 
+          nama_lengkap: true, 
+          nomor_pendaftaran: true,
+          nilai_ujian: true
+        } 
+      },
       penguji_santri: { select: { id: true, full_name: true, phone: true } },
       penguji_ortu: { select: { id: true, full_name: true, phone: true } },
       penguji_quran: { select: { id: true, full_name: true, phone: true } },
@@ -56,7 +62,8 @@ export default async function MonitoringPengujiPage() {
   };
 
   jadwalList.forEach((jadwal) => {
-    const nilai = jadwal.nilai_ujian[0]; // Assuming 1 pendaftar = 1 nilai per jadwal
+    // Fetch from pendaftar to avoid detached jadwal_ujian_id bug
+    const nilai = jadwal.pendaftar.nilai_ujian?.[0]; 
     
     // Wawancara Santri
     if (jadwal.penguji_santri_id && jadwal.penguji_santri) {
