@@ -93,8 +93,8 @@ export default function KesiapanTestPage() {
 
   if (alreadyDone) {
     return (
-      <div className="max-w-lg mx-auto p-8 text-center mt-10">
-        <div className="bg-white rounded-2xl shadow-lg border p-10">
+      <div className="max-w-lg mx-auto p-5 md:p-8 text-center mt-10">
+        <div className="bg-white rounded-2xl shadow-lg border p-6 md:p-10">
           <CheckCircle className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
           <h2 className="text-xl font-bold mb-2">Tes Sudah Dikerjakan</h2>
           <p className="text-stone-600 mb-6">
@@ -115,8 +115,8 @@ export default function KesiapanTestPage() {
 
   if (isLocked) {
     return (
-      <div className="max-w-lg mx-auto p-8 text-center mt-10">
-        <div className="bg-white rounded-[2rem] shadow-xl border p-10">
+      <div className="max-w-lg mx-auto p-5 md:p-8 text-center mt-10">
+        <div className="bg-white rounded-[2rem] shadow-xl border p-6 md:p-10">
           <div className="w-20 h-20 bg-secondary-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <AlertCircle className="w-10 h-10 text-secondary-600" />
           </div>

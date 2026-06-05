@@ -78,7 +78,7 @@ export default function GaleriPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-5xl md:text-7xl lg:text-8xl font-display font-black mb-10 tracking-tight leading-[0.9] text-ink-950"
+            className="text-3xl md:text-5xl md:text-7xl lg:text-8xl font-display font-black mb-10 tracking-tight leading-[0.9] text-ink-950"
           >
             Galeri <br />
             <span className="text-gradient-primary">Al Fath</span>
@@ -120,7 +120,7 @@ export default function GaleriPage() {
               <div className="w-20 h-1.5 bg-secondary-400 rounded-pill" />
             </motion.div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
               {category.items.map((img, idx) => (
                 <motion.div
                   key={idx}
@@ -156,13 +156,13 @@ export default function GaleriPage() {
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="bg-primary-900 bg-linear-to-br from-primary-800 to-primary-950 rounded-[2rem] md:rounded-[3rem] lg:rounded-[4rem] p-6 sm:p-8 md:p-16 lg:p-24 text-center text-white relative overflow-hidden shadow-lg"
+            className="bg-primary-900 bg-linear-to-br from-primary-800 to-primary-950 rounded-[2rem] md:rounded-[3rem] lg:rounded-[4rem] p-6 sm:p-5 md:p-8 md:p-16 lg:p-24 text-center text-white relative overflow-hidden shadow-lg"
           >
             <div className="absolute top-0 right-0 w-32 h-32 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-white/5 rounded-full blur-[60px] md:blur-[100px] -translate-y-1/2 translate-x-1/2" />
             <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-5" />
 
             <div className="relative z-10">
-              <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-display font-black mb-4 sm:mb-6 md:mb-8 text-white leading-tight">
+              <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-3xl md:text-5xl xl:text-6xl font-display font-black mb-4 sm:mb-6 md:mb-8 text-white leading-tight">
                 Tertarik? <br />{" "}
                 <span className="text-secondary-400">
                   Kunjungi Langsung!
@@ -174,12 +174,12 @@ export default function GaleriPage() {
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 justify-center px-4">
                 <Link href="/kontak">
-                  <button className="w-full sm:w-auto px-6 sm:px-10 py-3.5 sm:py-4 md:py-5 rounded-pill bg-white text-primary-950 font-black text-sm sm:text-base md:text-lg hover:bg-primary-50 shadow-md transition-all min-h-[48px] sm:min-h-[52px]">
+                  <button className="w-full sm:w-auto px-6 sm:px-6 md:px-10 py-3.5 sm:py-4 md:py-5 rounded-pill bg-white text-primary-950 font-black text-sm sm:text-base md:text-lg hover:bg-primary-50 shadow-md transition-all min-h-[48px] sm:min-h-[52px]">
                     Jadwalkan Kunjungan
                   </button>
                 </Link>
                 <Link href="/ppdb">
-                  <button className="w-full sm:w-auto px-10 py-3.5 sm:py-4 md:py-5 rounded-pill bg-white/10 text-white font-bold border border-white/20 hover:bg-white/20 transition-all flex items-center justify-center gap-2 sm:gap-3 text-sm sm:text-base md:text-lg min-h-[48px] sm:min-h-[52px]">
+                  <button className="w-full sm:w-auto px-6 md:px-10 py-3.5 sm:py-4 md:py-5 rounded-pill bg-white/10 text-white font-bold border border-white/20 hover:bg-white/20 transition-all flex items-center justify-center gap-2 sm:gap-3 text-sm sm:text-base md:text-lg min-h-[48px] sm:min-h-[52px]">
                     Info PPDB
                   </button>
                 </Link>

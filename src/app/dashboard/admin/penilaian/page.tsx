@@ -834,7 +834,7 @@ export default function ExaminerDashboard() {
                     })()}
 
                     {/* 6 Nilai Grid — 3x2 */}
-                    <div className="grid grid-cols-3 gap-2">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
                       {[
                         {
                           label: "Akademik",
@@ -880,7 +880,7 @@ export default function ExaminerDashboard() {
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                       <button
                         onClick={() => handleOpenInput(s, "quran")}
                         className="flex items-center justify-center gap-2 bg-ink-900 text-white py-3 rounded-2xl text-[11px] font-black shadow-lg shadow-ink-900/10 active:scale-95 transition-all"
@@ -916,7 +916,7 @@ export default function ExaminerDashboard() {
           {/* Progress Monitor if Processing */}
           {isProcessingQueue && (
             <div className="bg-primary-600 rounded-3xl p-6 text-white shadow-xl shadow-primary-600/20 overflow-hidden relative">
-              <div className="absolute top-0 right-0 p-8 opacity-10">
+              <div className="absolute top-0 right-0 p-5 md:p-8 opacity-10">
                 <Send className="w-32 h-32 rotate-12" />
               </div>
               <div className="relative z-10">
@@ -982,7 +982,7 @@ export default function ExaminerDashboard() {
 
           {/* System Actions Area */}
           <div className="bg-white rounded-3xl shadow-clay-md border border-white/40 overflow-hidden">
-            <div className="p-8 space-y-8">
+            <div className="p-5 md:p-8 space-y-8">
               <div className="flex items-center gap-4">
                 <div className="p-3 bg-ink-50 rounded-2xl">
                   <LayoutDashboard className="w-6 h-6 text-ink-600" />
@@ -1085,14 +1085,14 @@ export default function ExaminerDashboard() {
       {/* Custom Modal for Input Nilai */}
       {selectedStudent && (
         <div
-          className="fixed inset-0 z-50 overflow-y-auto"
+          className="fixed inset-0 z-50 overflow-y-auto p-4"
           aria-labelledby="modal-title"
           role="dialog"
           aria-modal="true"
         >
           <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div
-              className="fixed inset-0 bg-ink-900/60 backdrop-blur-sm transition-opacity"
+              className="fixed inset-0 bg-ink-900/60 backdrop-blur-sm transition-opacity overflow-y-auto overflow-x-hidden p-4"
               aria-hidden="true"
               onClick={() => setSelectedStudent(null)}
             ></div>
@@ -1103,7 +1103,7 @@ export default function ExaminerDashboard() {
               &#8203;
             </span>
             <div className="inline-block align-bottom bg-white rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-white/20">
-              <div className="bg-white px-6 pt-8 pb-6 sm:p-8">
+              <div className="bg-white px-6 pt-8 pb-6 sm:p-5 md:p-8">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="p-3 bg-primary-50 text-primary-600 rounded-2xl">
                     <Zap className="w-5 h-5 font-black" />
@@ -1259,18 +1259,18 @@ export default function ExaminerDashboard() {
                   </div>
                 </div>
               </div>
-              <div className="bg-ink-50 px-6 py-6 sm:px-8 sm:flex sm:flex-row-reverse gap-3 border-t border-ink-100">
+              <div className="bg-ink-50 px-6 py-6 sm:px-5 md:px-8 sm:flex sm:flex-row-reverse gap-3 border-t border-ink-100">
                 <Button
                   onClick={handleSubmitScore}
                   disabled={isSubmitting}
-                  className="w-full sm:w-auto bg-primary-600 hover:bg-primary-700 text-white rounded-2xl px-8 py-3 font-black shadow-lg shadow-primary-600/20 disabled:opacity-50"
+                  className="w-full sm:w-auto bg-primary-600 hover:bg-primary-700 text-white rounded-2xl px-5 md:px-8 py-3 font-black shadow-lg shadow-primary-600/20 disabled:opacity-50"
                 >
                   {isSubmitting ? "Menyimpan..." : "Simpan Nilai"}
                 </Button>
                 <button
                   type="button"
                   onClick={() => setSelectedStudent(null)}
-                  className="mt-3 sm:mt-0 w-full sm:w-auto bg-white border border-ink-200 text-ink-600 hover:bg-ink-100 rounded-2xl px-8 py-3 font-black shadow-sm transition-all"
+                  className="mt-3 sm:mt-0 w-full sm:w-auto bg-white border border-ink-200 text-ink-600 hover:bg-ink-100 rounded-2xl px-5 md:px-8 py-3 font-black shadow-sm transition-all"
                 >
                   Batal
                 </button>

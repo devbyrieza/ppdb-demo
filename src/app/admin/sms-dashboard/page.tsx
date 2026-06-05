@@ -188,7 +188,7 @@ Hubungi 0812-8530-0800 jika ada masalah.`}
 
         <div className="bg-white rounded-xl shadow-lg p-6">
           <h3 className="font-bold text-gray-900 mb-4">📊 Status Sistem:</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 md:grid-cols-4 gap-4">
             <div className="bg-primary-50 p-4 rounded-lg">
               <p className="text-sm text-primary-600">SMS Service</p>
               <p className="text-2xl font-bold">🔄 Simulation</p>

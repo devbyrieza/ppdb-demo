@@ -98,7 +98,7 @@ export default function PengujiDashboardPage() {
   return (
     <div className="space-y-8">
       {/* Page Title / Header Banner */}
-      <div className="relative overflow-hidden rounded-4xl bg-linear-to-br from-primary-700 to-primary-900 border border-primary-600 p-8 md:p-14 text-white shadow-2xl shadow-primary-900/30 app-card">
+      <div className="relative overflow-hidden rounded-4xl bg-linear-to-br from-primary-700 to-primary-900 border border-primary-600 p-5 md:p-8 md:p-14 text-white shadow-2xl shadow-primary-900/30 app-card">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-secondary-400/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center gap-6">
@@ -119,7 +119,7 @@ export default function PengujiDashboardPage() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         {statCards.map((card, index) => (
           <div
             key={index}
@@ -143,7 +143,7 @@ export default function PengujiDashboardPage() {
       </div>
 
       {/* Quick Actions */}
-      <div className="bg-white rounded-4xl p-8 border border-secondary-100 shadow-sm app-card">
+      <div className="bg-white rounded-4xl p-5 md:p-8 border border-secondary-100 shadow-sm app-card">
         <div className="flex items-center justify-between mb-8">
           <h3 className="text-2xl font-black text-primary-950 tracking-tight font-display">
             Aksi Cepat
@@ -193,7 +193,7 @@ export default function PengujiDashboardPage() {
       </div>
 
       {/* Info Box */}
-      <div className="bg-secondary-50 border-2 border-secondary-100 rounded-3xl p-8 relative overflow-hidden">
+      <div className="bg-secondary-50 border-2 border-secondary-100 rounded-3xl p-5 md:p-8 relative overflow-hidden">
         <div className="absolute top-0 right-0 p-4 opacity-5">
           <Users className="w-32 h-32 text-secondary-900" />
         </div>

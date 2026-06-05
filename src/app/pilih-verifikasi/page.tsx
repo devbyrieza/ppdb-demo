@@ -103,7 +103,7 @@ function PilihVerifikasiContent() {
   };
 
   return (
-    <div className="max-w-lg w-full bg-white rounded-2xl shadow-2xl border-2 border-secondary-200 p-8">
+    <div className="max-w-lg w-full bg-white rounded-2xl shadow-2xl border-2 border-secondary-200 p-5 md:p-8">
       {/* Demo Mode Badge */}
       {DEMO_MODE && (
         <div className="mb-6 p-3 bg-primary-50 border-2 border-primary-100 rounded-xl app-card">
@@ -377,7 +377,7 @@ function PilihVerifikasiContent() {
 // Loading fallback
 function LoadingFallback() {
   return (
-    <div className="app-card max-w-lg w-full bg-white rounded-[2rem] shadow-lg border border-secondary-200 p-8 flex items-center justify-center">
+    <div className="app-card max-w-lg w-full bg-white rounded-[2rem] shadow-lg border border-secondary-200 p-5 md:p-8 flex items-center justify-center">
       <div className="flex flex-col items-center justify-center py-12">
         <Loader2 className="w-12 h-12 text-primary-600 animate-spin mb-4" />
         <p className="text-ink-600 font-medium">Memuat halaman...</p>

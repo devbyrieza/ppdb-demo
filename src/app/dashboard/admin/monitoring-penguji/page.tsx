@@ -13,7 +13,7 @@ export default async function MonitoringPengujiPage() {
 
   if (!activeTahunAjaran) {
     return (
-      <div className="p-8 text-center text-red-500 font-bold">
+      <div className="p-5 md:p-8 text-center text-red-500 font-bold">
         Tahun Ajaran aktif tidak ditemukan.
       </div>
     );

@@ -121,7 +121,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
         <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.02] pointer-events-none" />
 
         <Container className="relative z-10">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="grid lg:grid-cols-1 md:grid-cols-2 gap-16 items-center">
             <div className="text-center lg:text-left">
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
@@ -136,7 +136,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className="text-4xl sm:text-7xl lg:text-8xl font-black mb-6 md:mb-10 tracking-tight leading-[0.9] text-ink-950"
+                className="text-2xl md:text-4xl sm:text-7xl lg:text-8xl font-black mb-6 md:mb-10 tracking-tight leading-[0.9] text-ink-950"
               >
                 Fasilitas <br />
                 <span className="text-gradient-primary">Terbaik Kita</span>
@@ -179,7 +179,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.4, duration: 0.8 }}
-              className="relative hidden lg:grid grid-cols-2 gap-6 h-[600px]"
+              className="relative hidden lg:grid grid-cols-1 md:grid-cols-2 gap-6 h-[600px]"
             >
               <div className="space-y-6 pt-12">
                 <div className="aspect-4/5 rounded-[3rem] overflow-hidden shadow-lg relative group border border-primary-100">
@@ -295,15 +295,15 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
 
           <div className="space-y-24 lg:space-y-32">
             {/* 1. Masjid */}
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+            <div className="grid lg:grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 items-center">
               <motion.div
                 initial={{ opacity: 0, x: -40 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 className="order-2 lg:order-1"
               >
-                <div className="app-card bg-white p-8 sm:p-12 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
-                  <div className="absolute top-0 right-0 p-12 opacity-5 -rotate-12 transition-transform group-hover:rotate-0 duration-700">
+                <div className="app-card bg-white p-5 md:p-8 sm:p-6 md:p-12 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
+                  <div className="absolute top-0 right-0 p-6 md:p-12 opacity-5 -rotate-12 transition-transform group-hover:rotate-0 duration-700">
                     <Home className="w-48 h-48" />
                   </div>
 
@@ -311,7 +311,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                     <Home className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
-                  <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-primary-950 mb-6 leading-[1.1]">
+                  <h3 className="text-3xl sm:text-2xl md:text-4xl lg:text-3xl md:text-5xl font-black text-primary-950 mb-6 leading-[1.1]">
                     Masjid Jami' <br className="hidden sm:block" /> Al Fath
                   </h3>
                   <p className="text-base sm:text-lg lg:text-xl text-primary-950/70 mb-8 sm:mb-10 leading-relaxed font-medium">
@@ -371,7 +371,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
             </div>
 
             {/* 2. Ruang Kelas */}
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+            <div className="grid lg:grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 items-center">
               <motion.div
                 initial={{ opacity: 0, x: -40 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -396,8 +396,8 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                 viewport={{ once: true }}
                 className="order-2"
               >
-                <div className="app-card bg-white p-8 sm:p-12 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
-                  <div className="absolute top-0 right-0 p-12 opacity-5 rotate-12 transition-transform group-hover:rotate-0 duration-700">
+                <div className="app-card bg-white p-5 md:p-8 sm:p-6 md:p-12 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
+                  <div className="absolute top-0 right-0 p-6 md:p-12 opacity-5 rotate-12 transition-transform group-hover:rotate-0 duration-700">
                     <School className="w-48 h-48" />
                   </div>
 
@@ -405,7 +405,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                     <School className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
-                  <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-ink-950 mb-6 leading-[1.1]">
+                  <h3 className="text-3xl sm:text-2xl md:text-4xl lg:text-3xl md:text-5xl font-black text-ink-950 mb-6 leading-[1.1]">
                     Ruang Kelas <br className="hidden sm:block" /> Modern
                   </h3>
                   <p className="text-base sm:text-lg lg:text-xl text-ink-600 mb-8 sm:mb-10 leading-relaxed font-medium">
@@ -447,15 +447,15 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
             </div>
 
             {/* 3. Asrama */}
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+            <div className="grid lg:grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 items-center">
               <motion.div
                 initial={{ opacity: 0, x: -40 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 className="order-2 lg:order-1"
               >
-                <div className="app-card bg-white p-8 sm:p-12 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
-                  <div className="absolute top-0 right-0 p-12 opacity-5 -rotate-12 transition-transform group-hover:rotate-0 duration-700">
+                <div className="app-card bg-white p-5 md:p-8 sm:p-6 md:p-12 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
+                  <div className="absolute top-0 right-0 p-6 md:p-12 opacity-5 -rotate-12 transition-transform group-hover:rotate-0 duration-700">
                     <Building className="w-48 h-48" />
                   </div>
 
@@ -463,7 +463,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                     <Building className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
-                  <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-primary-950 mb-6 leading-[1.1]">
+                  <h3 className="text-3xl sm:text-2xl md:text-4xl lg:text-3xl md:text-5xl font-black text-primary-950 mb-6 leading-[1.1]">
                     Asrama <br className="hidden sm:block" /> Berkualitas
                   </h3>
                   <p className="text-base sm:text-lg lg:text-xl text-primary-950/70 mb-8 sm:mb-10 leading-relaxed font-medium">
@@ -523,7 +523,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
             </div>
 
             {/* 4. Lapangan Minisoccer */}
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+            <div className="grid lg:grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 items-center">
               <motion.div
                 initial={{ opacity: 0, x: -40 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -548,8 +548,8 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                 viewport={{ once: true }}
                 className="order-2"
               >
-                <div className="app-card bg-white p-8 sm:p-12 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
-                  <div className="absolute top-0 right-0 p-12 opacity-5 rotate-12 transition-transform group-hover:rotate-0 duration-700">
+                <div className="app-card bg-white p-5 md:p-8 sm:p-6 md:p-12 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
+                  <div className="absolute top-0 right-0 p-6 md:p-12 opacity-5 rotate-12 transition-transform group-hover:rotate-0 duration-700">
                     <Trophy className="w-48 h-48" />
                   </div>
 
@@ -557,7 +557,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                     <Trophy className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
-                  <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-ink-950 mb-6 leading-[1.1]">
+                  <h3 className="text-3xl sm:text-2xl md:text-4xl lg:text-3xl md:text-5xl font-black text-ink-950 mb-6 leading-[1.1]">
                     Lapangan <br className="hidden sm:block" /> Minisoccer
                   </h3>
                   <p className="text-base sm:text-lg lg:text-xl text-ink-600 mb-8 sm:mb-10 leading-relaxed font-medium">
@@ -599,15 +599,15 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
             </div>
 
             {/* 5. Lapangan Basket */}
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+            <div className="grid lg:grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 items-center">
               <motion.div
                 initial={{ opacity: 0, x: -40 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 className="order-2 lg:order-1"
               >
-                <div className="app-card bg-white p-8 sm:p-12 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
-                  <div className="absolute top-0 right-0 p-12 opacity-5 -rotate-12 transition-transform group-hover:rotate-0 duration-700">
+                <div className="app-card bg-white p-5 md:p-8 sm:p-6 md:p-12 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
+                  <div className="absolute top-0 right-0 p-6 md:p-12 opacity-5 -rotate-12 transition-transform group-hover:rotate-0 duration-700">
                     <Award className="w-48 h-48" />
                   </div>
 
@@ -615,7 +615,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                     <Award className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
-                  <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-primary-950 mb-6 leading-[1.1]">
+                  <h3 className="text-3xl sm:text-2xl md:text-4xl lg:text-3xl md:text-5xl font-black text-primary-950 mb-6 leading-[1.1]">
                     Lapangan <br className="hidden sm:block" /> Basket
                   </h3>
                   <p className="text-base sm:text-lg lg:text-xl text-primary-950/70 mb-8 sm:mb-10 leading-relaxed font-medium">
@@ -675,7 +675,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
             </div>
 
             {/* 6. Depot Galon Gratis */}
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+            <div className="grid lg:grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 items-center">
               <motion.div
                 initial={{ opacity: 0, x: -40 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -700,8 +700,8 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                 viewport={{ once: true }}
                 className="order-2"
               >
-                <div className="app-card bg-white p-8 sm:p-12 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
-                  <div className="absolute top-0 right-0 p-12 opacity-5 rotate-12 transition-transform group-hover:rotate-0 duration-700">
+                <div className="app-card bg-white p-5 md:p-8 sm:p-6 md:p-12 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
+                  <div className="absolute top-0 right-0 p-6 md:p-12 opacity-5 rotate-12 transition-transform group-hover:rotate-0 duration-700">
                     <Droplets className="w-48 h-48" />
                   </div>
 
@@ -709,7 +709,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                     <Droplets className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
-                  <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-ink-950 mb-6 leading-[1.1]">
+                  <h3 className="text-3xl sm:text-2xl md:text-4xl lg:text-3xl md:text-5xl font-black text-ink-950 mb-6 leading-[1.1]">
                     Depot <br className="hidden sm:block" /> Galon Gratis
                   </h3>
                   <p className="text-base sm:text-lg lg:text-xl text-ink-600 mb-8 sm:mb-10 leading-relaxed font-medium">
@@ -751,15 +751,15 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
             </div>
 
             {/* 7. Kantor PPDB & Tamu */}
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+            <div className="grid lg:grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 items-center">
               <motion.div
                 initial={{ opacity: 0, x: -40 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 className="order-2 lg:order-1"
               >
-                <div className="app-card bg-white p-8 sm:p-12 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
-                  <div className="absolute top-0 right-0 p-12 opacity-5 -rotate-12 transition-transform group-hover:rotate-0 duration-700">
+                <div className="app-card bg-white p-5 md:p-8 sm:p-6 md:p-12 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
+                  <div className="absolute top-0 right-0 p-6 md:p-12 opacity-5 -rotate-12 transition-transform group-hover:rotate-0 duration-700">
                     <Building2 className="w-48 h-48" />
                   </div>
 
@@ -767,7 +767,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                     <Building2 className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
-                  <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-ink-950 mb-6 leading-[1.1]">
+                  <h3 className="text-3xl sm:text-2xl md:text-4xl lg:text-3xl md:text-5xl font-black text-ink-950 mb-6 leading-[1.1]">
                     Kantor PPDB <br className="hidden sm:block" /> & Tamu
                   </h3>
                   <p className="text-base sm:text-lg lg:text-xl text-ink-600 mb-8 sm:mb-10 leading-relaxed font-medium">
@@ -1022,7 +1022,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                     <Calendar className="w-3.5 h-3.5" />
                     <span>Survey Pesantren</span>
                   </div>
-                  <h2 className="text-4xl md:text-5xl font-display font-black text-ink-950 mb-6 leading-tight">
+                  <h2 className="text-2xl md:text-4xl md:text-5xl font-display font-black text-ink-950 mb-6 leading-tight">
                     Kunjungi <span className="text-gradient-primary">Kami</span>
                   </h2>
                   <p className="text-lg text-ink-600 mb-8 leading-relaxed font-medium">
@@ -1088,7 +1088,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                   initial={{ opacity: 0, x: 20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  className="app-card bg-white p-6 sm:p-10 border border-primary-50 shadow-2xl relative overflow-hidden"
+                  className="app-card bg-white p-6 sm:p-6 md:p-10 border border-primary-50 shadow-2xl relative overflow-hidden"
                 >
                   {formStatus === 'success' ? (
                     <motion.div 

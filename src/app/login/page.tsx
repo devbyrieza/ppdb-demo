@@ -322,7 +322,7 @@ export default function LoginPage() {
               />
             </div>
           </Link>
-          <h1 className="text-4xl md:text-5xl font-display font-black text-ink-950 mb-3 tracking-tight">
+          <h1 className="text-2xl md:text-4xl md:text-5xl font-display font-black text-ink-950 mb-3 tracking-tight">
             Portal{" "}
             <span className="text-gradient-primary font-black">
               {BRANDING.schoolShortName}
@@ -530,7 +530,7 @@ export default function LoginPage() {
                     </p>
                     <Link
                       href="/daftar"
-                      className="inline-flex items-center gap-2 px-10 py-3 rounded-pill bg-secondary-50 text-primary-700 font-black text-sm border border-secondary-200 hover:bg-white hover:shadow-sm transition-all"
+                      className="inline-flex items-center gap-2 px-6 md:px-10 py-3 rounded-pill bg-secondary-50 text-primary-700 font-black text-sm border border-secondary-200 hover:bg-white hover:shadow-sm transition-all"
                     >
                       Daftar Baru Di Sini
                     </Link>

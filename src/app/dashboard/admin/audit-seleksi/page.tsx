@@ -488,8 +488,8 @@ export default function AuditSeleksiPage() {
       
       {/* Legend & Help */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-        <div className="bg-primary-950 rounded-3xl p-8 text-white relative overflow-hidden group shadow-xl shadow-primary-900/20">
-          <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:rotate-12 transition-transform duration-700">
+        <div className="bg-primary-950 rounded-3xl p-5 md:p-8 text-white relative overflow-hidden group shadow-xl shadow-primary-900/20">
+          <div className="absolute top-0 right-0 p-5 md:p-8 opacity-10 group-hover:rotate-12 transition-transform duration-700">
             <Activity className="w-40 h-40 text-white" />
           </div>
           <div className="relative z-10">
@@ -518,7 +518,7 @@ export default function AuditSeleksiPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-3xl p-8 border border-ink-100 shadow-premium-sm flex flex-col justify-between">
+        <div className="bg-white rounded-3xl p-5 md:p-8 border border-ink-100 shadow-premium-sm flex flex-col justify-between">
           <div>
             <h3 className="text-xl font-black text-ink-900 mb-2">Panduan Penerbitan</h3>
             <p className="text-ink-500 text-sm font-medium leading-relaxed">

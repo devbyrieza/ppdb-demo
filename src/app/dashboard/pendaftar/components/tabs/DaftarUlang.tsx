@@ -135,7 +135,7 @@ export default function DaftarUlangTab() {
 
   if (loading) {
     return (
-      <div className="flex justify-center p-12">
+      <div className="flex justify-center p-6 md:p-12">
         <Loader2 className="w-8 h-8 animate-spin text-primary-600" />
       </div>
     );
@@ -170,8 +170,8 @@ export default function DaftarUlangTab() {
   if (isLunas) {
     return (
       <div className="max-w-3xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 py-12">
-        <div className="bg-linear-to-br from-emerald-600 to-emerald-800 rounded-[2rem] p-10 text-white shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 p-8 opacity-10">
+        <div className="bg-linear-to-br from-emerald-600 to-emerald-800 rounded-[2rem] p-6 md:p-10 text-white shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-5 md:p-8 opacity-10">
             <CheckCircle className="w-48 h-48" />
           </div>
           <div className="relative z-10 flex flex-col items-center text-center">
@@ -187,7 +187,7 @@ export default function DaftarUlangTab() {
           </div>
         </div>
 
-        <div className="bg-white rounded-[2rem] p-10 shadow-xl border border-emerald-100">
+        <div className="bg-white rounded-[2rem] p-6 md:p-10 shadow-xl border border-emerald-100">
            <div className="flex items-start gap-6 mb-8">
             <div className="p-4 bg-emerald-50 rounded-2xl">
               <History className="w-8 h-8 text-emerald-600" />
@@ -241,7 +241,7 @@ export default function DaftarUlangTab() {
   return (
     <div className="space-y-8 max-w-4xl mx-auto pb-12">
       {/* Header */}
-      <div className="bg-linear-to-br from-primary-700 to-primary-900 rounded-2xl p-8 text-white shadow-lg relative overflow-hidden">
+      <div className="bg-linear-to-br from-primary-700 to-primary-900 rounded-2xl p-5 md:p-8 text-white shadow-lg relative overflow-hidden">
         <div className="absolute top-0 right-0 p-4 opacity-10">
           <CheckCircle className="w-32 h-32" />
         </div>
@@ -254,7 +254,7 @@ export default function DaftarUlangTab() {
       </div>
 
       {/* Dashboard Status Daftar Ulang */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {/* Card 1: Status */}
         <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between">
           <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">
@@ -403,7 +403,7 @@ export default function DaftarUlangTab() {
             <span className="text-xs text-primary-800 block mb-2 leading-tight font-medium">
               Butuh bantuan, keringanan, atau konfirmasi biaya?
             </span>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
               <a
                 href="https://wa.me/6285111524441?text=Assalamualaikum%20Admin%20Finance%2C%20saya%20wali%20dari%20calon%20santri%20ingin%20berkonsultasi%2Fmengajukan%20keringanan%20terkait%20biaya%20Daftar%20Ulang."
                 target="_blank"

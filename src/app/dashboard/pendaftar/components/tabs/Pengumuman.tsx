@@ -126,7 +126,7 @@ export default function PengumumanTab() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="relative overflow-hidden rounded-[2rem] bg-linear-to-br from-primary-700 to-primary-900 border border-primary-600 p-8 md:p-10 text-white shadow-lg app-card">
+      <div className="relative overflow-hidden rounded-[2rem] bg-linear-to-br from-primary-700 to-primary-900 border border-primary-600 p-5 md:p-8 md:p-10 text-white shadow-lg app-card">
         <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-secondary-50/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center gap-5">
@@ -146,7 +146,7 @@ export default function PengumumanTab() {
       </div>
 
       {!pengumuman ? (
-        <div className="bg-white rounded-[2rem] p-12 shadow-sm border border-primary-100 app-card">
+        <div className="bg-white rounded-[2rem] p-6 md:p-12 shadow-sm border border-primary-100 app-card">
           <div className="text-center">
             <div className="w-20 h-20 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
               <Trophy className="w-10 h-10 text-primary-700" />
@@ -170,8 +170,8 @@ export default function PengumumanTab() {
       ) : pengumuman.status_kelulusan === "diterima" ? (
         <div className="space-y-6">
           {/* Success Card */}
-          <div className="bg-linear-to-r from-emerald-500 to-emerald-700 rounded-[2rem] p-8 md:p-10 text-white shadow-xl shadow-emerald-500/20 relative overflow-hidden app-card">
-            <div className="absolute -top-10 -right-10 p-8 opacity-10 transform rotate-12">
+          <div className="bg-linear-to-r from-emerald-500 to-emerald-700 rounded-[2rem] p-5 md:p-8 md:p-10 text-white shadow-xl shadow-emerald-500/20 relative overflow-hidden app-card">
+            <div className="absolute -top-10 -right-10 p-5 md:p-8 opacity-10 transform rotate-12">
               <Trophy className="w-64 h-64" />
             </div>
             <div className="relative z-10">
@@ -197,7 +197,7 @@ export default function PengumumanTab() {
               <button
                 onClick={handleDownloadSurat}
                 disabled={isGenerating}
-                className="inline-flex items-center justify-center gap-3 px-8 py-3.5 bg-secondary-400 text-primary-950 rounded-full font-black hover:bg-secondary-300 transition-all shadow-lg shadow-secondary-400/20 active:scale-95 disabled:opacity-50 border border-secondary-500"
+                className="inline-flex items-center justify-center gap-3 px-5 md:px-8 py-3.5 bg-secondary-400 text-primary-950 rounded-full font-black hover:bg-secondary-300 transition-all shadow-lg shadow-secondary-400/20 active:scale-95 disabled:opacity-50 border border-secondary-500"
               >
                 {isGenerating ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
@@ -267,8 +267,8 @@ export default function PengumumanTab() {
       ) : (
         <div className="space-y-6">
           {/* Failed Card */}
-          <div className="bg-linear-to-r from-red-600 to-rose-700 rounded-[2rem] p-8 md:p-10 text-white shadow-xl shadow-red-600/20 app-card overflow-hidden relative">
-            <div className="absolute -top-10 -right-10 p-8 opacity-10 transform rotate-12">
+          <div className="bg-linear-to-r from-red-600 to-rose-700 rounded-[2rem] p-5 md:p-8 md:p-10 text-white shadow-xl shadow-red-600/20 app-card overflow-hidden relative">
+            <div className="absolute -top-10 -right-10 p-5 md:p-8 opacity-10 transform rotate-12">
               <XCircle className="w-64 h-64" />
             </div>
             <div className="flex items-center gap-5 mb-8 relative z-10">

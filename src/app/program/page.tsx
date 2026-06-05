@@ -128,7 +128,7 @@ export default function ProgramPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-5xl md:text-7xl lg:text-8xl font-display font-black mb-10 tracking-tight leading-[0.9] text-ink-950"
+            className="text-3xl md:text-5xl md:text-7xl lg:text-8xl font-display font-black mb-10 tracking-tight leading-[0.9] text-ink-950"
           >
             Program <br />
             <span className="text-gradient-primary">Terbaik Kita</span>
@@ -213,7 +213,7 @@ export default function ProgramPage() {
                           <Star className="w-3.5 h-3.5 fill-secondary-400 text-secondary-400" />
                           <span>Program Unggulan</span>
                         </div>
-                        <h3 className="text-3 font-display font-black text-white text-4xl leading-none">
+                        <h3 className="text-3 font-display font-black text-white text-2xl md:text-4xl leading-none">
                           Pengalaman Terbaik
                         </h3>
                       </div>
@@ -236,7 +236,7 @@ export default function ProgramPage() {
                     viewport={{ once: true }}
                     className="text-center lg:text-left"
                   >
-                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-black text-ink-950 leading-[0.95] mb-8">
+                    <h2 className="text-2xl md:text-4xl md:text-5xl lg:text-6xl font-display font-black text-ink-950 leading-[0.95] mb-8">
                       {program.fullName}
                     </h2>
                     <p className="text-xl text-ink-600 font-medium leading-relaxed mb-10 text-center lg:text-left">
@@ -245,7 +245,7 @@ export default function ProgramPage() {
                   </motion.div>
 
                   {/* Stats Grid - Modern Design */}
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
+                  <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
                     {program.stats.map((stat, sIdx) => (
                       <div
                         key={sIdx}
@@ -277,7 +277,7 @@ export default function ProgramPage() {
                     viewport={{ once: true }}
                     className={`app-card rounded-[3rem] p-10 mb-10 border ${program.bg} border-primary-100 shadow-sm relative overflow-hidden`}
                   >
-                    <div className="absolute top-0 right-0 p-8 opacity-5">
+                    <div className="absolute top-0 right-0 p-5 md:p-8 opacity-5">
                       <BookOpen className="w-32 h-32 text-primary-900" />
                     </div>
 
@@ -338,13 +338,13 @@ export default function ProgramPage() {
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="bg-primary-900 bg-linear-to-br from-primary-800 to-primary-950 rounded-[2rem] md:rounded-[3rem] lg:rounded-[4rem] p-6 sm:p-8 md:p-16 lg:p-24 text-center text-white relative overflow-hidden"
+            className="bg-primary-900 bg-linear-to-br from-primary-800 to-primary-950 rounded-[2rem] md:rounded-[3rem] lg:rounded-[4rem] p-6 sm:p-5 md:p-8 md:p-16 lg:p-24 text-center text-white relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 w-32 h-32 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-white/5 rounded-full blur-[60px] md:blur-[100px] -translate-y-1/2 translate-x-1/2" />
             <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-5" />
 
             <div className="relative z-10">
-              <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-display font-black mb-4 sm:mb-6 md:mb-8 text-white leading-tight">
+              <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-3xl md:text-5xl xl:text-6xl font-display font-black mb-4 sm:mb-6 md:mb-8 text-white leading-tight">
                 Mulai Perjalanan <br />{" "}
                 <span className="text-secondary-400">Terbaik</span> Mereka
               </h2>
@@ -354,12 +354,12 @@ export default function ProgramPage() {
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 justify-center px-4">
                 <Link href="/daftar">
-                  <button className="w-full sm:w-auto px-6 sm:px-10 py-3.5 sm:py-4 md:py-5 rounded-pill bg-white text-primary-900 font-black text-sm sm:text-base md:text-lg hover:bg-primary-50 shadow-md transition-all min-h-[48px] sm:min-h-[52px]">
+                  <button className="w-full sm:w-auto px-6 sm:px-6 md:px-10 py-3.5 sm:py-4 md:py-5 rounded-pill bg-white text-primary-900 font-black text-sm sm:text-base md:text-lg hover:bg-primary-50 shadow-md transition-all min-h-[48px] sm:min-h-[52px]">
                     Pendaftaran Online
                   </button>
                 </Link>
                 <Link href="/kontak">
-                  <button className="w-full sm:w-auto px-6 sm:px-10 py-3.5 sm:py-4 md:py-5 rounded-pill bg-white/10 text-white font-bold border border-white/20 hover:bg-white/20 transition-all text-sm sm:text-base md:text-lg min-h-[48px] sm:min-h-[52px]">
+                  <button className="w-full sm:w-auto px-6 sm:px-6 md:px-10 py-3.5 sm:py-4 md:py-5 rounded-pill bg-white/10 text-white font-bold border border-white/20 hover:bg-white/20 transition-all text-sm sm:text-base md:text-lg min-h-[48px] sm:min-h-[52px]">
                     Hubungi Admissions
                   </button>
                 </Link>

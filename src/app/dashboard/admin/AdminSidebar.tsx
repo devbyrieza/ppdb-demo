@@ -218,7 +218,7 @@ export default function AdminSidebar({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSidebarOpen(false)}
-              className="fixed inset-0 z-[70] bg-primary-950/40 backdrop-blur-md lg:hidden"
+              className="fixed inset-0 z-[70] bg-primary-950/40 backdrop-blur-md lg:hidden overflow-y-auto overflow-x-hidden p-4"
             />
             <motion.aside
               initial={{ x: "-100%" }}
@@ -227,7 +227,7 @@ export default function AdminSidebar({
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
               className="fixed top-0 left-0 bottom-0 z-[80] w-80 bg-white shadow-2xl lg:hidden flex flex-col rounded-r-[3rem] overflow-hidden"
             >
-              <div className="p-8 flex items-center justify-between border-b border-ink-50 bg-linear-to-b from-ink-50 to-white">
+              <div className="p-5 md:p-8 flex items-center justify-between border-b border-ink-50 bg-linear-to-b from-ink-50 to-white">
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 bg-white rounded-2xl flex items-center justify-center shadow-clay-sm border border-ink-100">
                     <img
@@ -279,7 +279,7 @@ export default function AdminSidebar({
                 ))}
               </nav>
 
-              <div className="p-8 border-t border-ink-50 space-y-3">
+              <div className="p-5 md:p-8 border-t border-ink-50 space-y-3">
                 {availableRoles && availableRoles.length > 1 && (
                   <div className="relative group">
                     <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
@@ -316,7 +316,7 @@ export default function AdminSidebar({
         className={`hidden lg:flex fixed inset-y-0 left-0 z-50 flex-col bg-white border-r border-ink-100 transition-all duration-500 ease-in-out ${collapsed ? "w-24" : "w-72"}`}
       >
         {/* Logo & Branding Area */}
-        <div className="h-24 flex items-center px-8">
+        <div className="h-24 flex items-center px-5 md:px-8">
           <Link
             href="/dashboard/admin"
             className="flex items-center gap-4 overflow-hidden group"
@@ -499,7 +499,7 @@ export default function AdminSidebar({
         className={`flex-1 min-w-0 transition-all duration-500 ${collapsed ? "lg:pl-24" : "lg:pl-72"}`}
       >
         {/* Top Desktop Navigation (Floating Navbar) */}
-        <header className="hidden lg:flex sticky top-0 z-40 bg-white/80 backdrop-blur-2xl border-b border-ink-100 h-24 items-center justify-between px-12">
+        <header className="hidden lg:flex sticky top-0 z-40 bg-white/80 backdrop-blur-2xl border-b border-ink-100 h-24 items-center justify-between px-6 md:px-12">
           <div className="flex items-center gap-10">
             {/* Breadcrumbs: Memandu user posisi saat ini */}
             <div className="flex items-center gap-3 text-[11px] font-black text-ink-400 uppercase tracking-widest">
@@ -523,7 +523,7 @@ export default function AdminSidebar({
             </button>
             <Link
               href="/"
-              className="px-8 py-3.5 bg-primary-950 text-white text-[11px] font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-primary-800 transition-all shadow-xl shadow-primary-950/20 active:scale-95"
+              className="px-5 md:px-8 py-3.5 bg-primary-950 text-white text-[11px] font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-primary-800 transition-all shadow-xl shadow-primary-950/20 active:scale-95"
             >
               Kunjungi Situs
             </Link>

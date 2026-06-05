@@ -49,7 +49,7 @@ export default function DashboardPendaftarPage() {
       {/* Content */}
       <div className="max-w-7xl mx-auto px-6 py-12">
         {/* Welcome Card */}
-        <div className="bg-gradient-to-r from-primary-500 to-primary-600 rounded-2xl p-8 mb-8 text-white shadow-2xl">
+        <div className="bg-gradient-to-r from-primary-500 to-primary-600 rounded-2xl p-5 md:p-8 mb-8 text-white shadow-2xl">
           <div className="flex items-center gap-4 mb-4">
             <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
               <User className="w-8 h-8 text-primary-600" />

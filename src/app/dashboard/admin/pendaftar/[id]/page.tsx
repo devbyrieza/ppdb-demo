@@ -524,7 +524,7 @@ export default function PendaftarDetailPage() {
         Kembali ke Daftar Pendaftar
       </Link>
 
-      <div className="bg-linear-to-br from-primary-600 to-primary-900 rounded-3xl shadow-xl shadow-primary-900/20 p-8 text-white relative overflow-hidden">
+      <div className="bg-linear-to-br from-primary-600 to-primary-900 rounded-3xl shadow-xl shadow-primary-900/20 p-5 md:p-8 text-white relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-secondary-400/10 rounded-full -mr-20 -mt-20 blur-3xl pointer-events-none"></div>
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 relative z-10">
           <div className="flex items-center gap-5">
@@ -798,7 +798,7 @@ export default function PendaftarDetailPage() {
                     </span>
                   ) : (
                     <div className="flex items-baseline gap-2">
-                      <span className="text-4xl font-black text-primary-950">
+                      <span className="text-2xl md:text-4xl font-black text-primary-950">
                         {pendaftar.nilai_ujian?.score_akademik != null ? Number(pendaftar.nilai_ujian.score_akademik).toFixed(1).replace(".0", "") : "-"}
                       </span>
                       <span className="text-sm text-primary-400 font-medium">
@@ -1022,7 +1022,7 @@ export default function PendaftarDetailPage() {
                               : "Pending"}
                         </span>
                       </div>
-                      <div className="grid grid-cols-2 gap-4 pt-2 border-t border-secondary-200/50">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2 border-t border-secondary-200/50">
                         <div>
                           <span className="block text-[10px] text-ink-200 font-black uppercase tracking-widest leading-none mb-1">
                             Metode

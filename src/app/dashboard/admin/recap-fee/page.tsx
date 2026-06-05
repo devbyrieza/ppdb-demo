@@ -243,7 +243,7 @@ export default function RecapFeePage() {
       {/* Rate Settings & Global Stats */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left: Global Stats */}
-        <div className="lg:col-span-8 grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+        <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
           <div className="bg-white rounded-[1.5rem] md:rounded-[2rem] p-5 md:p-6 shadow-clay-md border border-white/40 relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:scale-110 transition-transform">
               <ClipboardCheck className="w-16 h-16" />
@@ -534,7 +534,7 @@ export default function RecapFeePage() {
                 </div>
 
                 {/* Stats Grid — 3 columns */}
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
                   <div className="bg-ink-50 rounded-xl p-3 text-center">
                     <p className="text-lg font-black text-ink-900 leading-none">
                       {item.counts.quran}

@@ -216,7 +216,7 @@ export default function AdminTambahPendaftar() {
             <button
               type="submit"
               disabled={loading}
-              className="inline-flex items-center gap-2 px-8 py-3 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl font-bold transition-all shadow-md shadow-primary-600/20"
+              className="inline-flex items-center gap-2 px-5 md:px-8 py-3 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl font-bold transition-all shadow-md shadow-primary-600/20"
             >
               {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
               Daftarkan Santri

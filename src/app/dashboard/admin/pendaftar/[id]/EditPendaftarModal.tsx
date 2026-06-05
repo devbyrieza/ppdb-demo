@@ -147,7 +147,7 @@ export default function EditPendaftarModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center z-50 p-4 overflow-y-auto overflow-x-hidden">
       <div className="bg-white rounded-3xl shadow-2xl w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden border border-stone-200">
         {/* Modal Header */}
         <div className="bg-primary-950 p-6 text-white flex items-center justify-between border-b border-primary-900">
@@ -189,7 +189,7 @@ export default function EditPendaftarModal({
         </div>
 
         {/* Modal Body / Form */}
-        <form onSubmit={handleSaveEdit} className="flex-1 overflow-y-auto p-8 space-y-6">
+        <form onSubmit={handleSaveEdit} className="flex-1 overflow-y-auto p-5 md:p-8 space-y-6">
           {editTab === "santri" && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-1">
@@ -363,7 +363,7 @@ export default function EditPendaftarModal({
                   className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800 resize-none"
                 />
               </div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 md:grid-cols-4 gap-6">
                 <div className="space-y-1">
                   <label className="text-xs font-black uppercase text-stone-600">RT</label>
                   <input

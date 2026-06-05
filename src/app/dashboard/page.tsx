@@ -371,7 +371,7 @@ export default function DashboardPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-black text-primary-950 mb-6 leading-none tracking-tight"
+                className="text-3xl sm:text-2xl md:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-black text-primary-950 mb-6 leading-none tracking-tight"
               >
                 Ahlan wa Sahlan, <br />
                 <span className="text-primary-700 bg-primary-50 px-4 py-1 rounded-3xl inline-block mt-2">
@@ -399,7 +399,7 @@ export default function DashboardPage() {
               <button
                 onClick={handleLogout}
                 disabled={isLoggingOut}
-                className="group flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-4 sm:py-5 bg-white border border-ink-100 rounded-[2rem] font-black text-[10px] sm:text-xs uppercase tracking-widest text-ink-500 hover:bg-red-50 hover:text-red-700 hover:border-red-100 transition-all shadow-xl shadow-ink-900/5 active:scale-95 disabled:opacity-50"
+                className="group flex items-center gap-2 sm:gap-3 px-6 sm:px-6 md:px-10 py-4 sm:py-5 bg-white border border-ink-100 rounded-[2rem] font-black text-[10px] sm:text-xs uppercase tracking-widest text-ink-500 hover:bg-red-50 hover:text-red-700 hover:border-red-100 transition-all shadow-xl shadow-ink-900/5 active:scale-95 disabled:opacity-50"
               >
                 <LogOut className="w-5 h-5 transition-transform group-hover:rotate-12" />
                 <span>{isLoggingOut ? "Keluar..." : "Keluar"}</span>
@@ -451,10 +451,10 @@ export default function DashboardPage() {
                 </p>
 
                 <div className="mt-12 flex flex-wrap gap-4">
-                  <div className="px-8 py-3 rounded-2xl bg-primary-50 border border-primary-100 text-[10px] font-black uppercase tracking-[0.2em] text-primary-700 shadow-sm">
+                  <div className="px-5 md:px-8 py-3 rounded-2xl bg-primary-50 border border-primary-100 text-[10px] font-black uppercase tracking-[0.2em] text-primary-700 shadow-sm">
                     ID: {pendaftar.id.substring(0, 8).toUpperCase()}
                   </div>
-                  <div className="px-8 py-3 rounded-2xl bg-primary-50 border border-primary-100 text-[10px] font-black uppercase tracking-[0.2em] text-primary-700 shadow-sm">
+                  <div className="px-5 md:px-8 py-3 rounded-2xl bg-primary-50 border border-primary-100 text-[10px] font-black uppercase tracking-[0.2em] text-primary-700 shadow-sm">
                     Tgl:{" "}
                     {new Date(pendaftar.created_at).toLocaleDateString(
                       "id-ID",
@@ -562,7 +562,7 @@ export default function DashboardPage() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.6 }}
-              className="bg-white p-6 sm:p-8 md:p-10 rounded-[2.5rem] md:rounded-[4rem] shadow-2xl shadow-primary-900/5 border border-ink-50 flex flex-col items-center text-center relative overflow-hidden group"
+              className="bg-white p-6 sm:p-5 md:p-8 md:p-10 rounded-[2.5rem] md:rounded-[4rem] shadow-2xl shadow-primary-900/5 border border-ink-50 flex flex-col items-center text-center relative overflow-hidden group"
             >
               <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary-600 to-secondary-500" />
               <div className="w-20 h-20 rounded-[2rem] bg-primary-50 flex items-center justify-center text-primary-600 mb-8 border border-primary-100 shadow-sm transition-transform group-hover:scale-110">
@@ -571,7 +571,7 @@ export default function DashboardPage() {
               <p className="text-[10px] font-black uppercase tracking-[0.4em] text-ink-500 mb-2">
                 No. Registrasi
               </p>
-              <h4 className="text-4xl font-display font-black text-primary-950 mb-8 leading-none tracking-tight">
+              <h4 className="text-2xl md:text-4xl font-display font-black text-primary-950 mb-8 leading-none tracking-tight">
                 {pendaftar.nomor_pendaftaran}
               </h4>
               <div className="w-full h-px bg-ink-50 mb-8" />
@@ -590,7 +590,7 @@ export default function DashboardPage() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.8 }}
-              className="bg-primary-950 p-6 sm:p-8 md:p-10 rounded-[2.5rem] md:rounded-[4rem] shadow-2xl relative overflow-hidden group"
+              className="bg-primary-950 p-6 sm:p-5 md:p-8 md:p-10 rounded-[2.5rem] md:rounded-[4rem] shadow-2xl relative overflow-hidden group"
             >
               <div className="absolute top-0 left-0 w-full h-1 bg-secondary-400" />
               <div className="absolute bottom-0 right-0 w-40 h-40 bg-primary-500/10 rounded-full blur-[60px] translate-y-1/2 translate-x-1/2 pointer-events-none" />

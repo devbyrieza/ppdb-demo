@@ -828,7 +828,7 @@ export default function UploadBerkasTab() {
       )}
 
       {/* Header */}
-      <div className="relative overflow-hidden rounded-[2rem] bg-linear-to-br from-primary-700 to-primary-900 border border-primary-600 p-8 md:p-10 text-white shadow-lg app-card">
+      <div className="relative overflow-hidden rounded-[2rem] bg-linear-to-br from-primary-700 to-primary-900 border border-primary-600 p-5 md:p-8 md:p-10 text-white shadow-lg app-card">
         <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-secondary-50/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center gap-5">
@@ -978,7 +978,7 @@ export default function UploadBerkasTab() {
           </span>
           Dokumen Wajib
         </h2>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-2 gap-4">
           {dokumenList
             .filter((d) => d.required)
             .map((dokumen) => (
@@ -1006,7 +1006,7 @@ export default function UploadBerkasTab() {
           </span>
           Dokumen Opsional
         </h2>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-2 gap-4">
           {dokumenList
             .filter((d) => !d.required)
             .map((dokumen) => (
@@ -1025,7 +1025,7 @@ export default function UploadBerkasTab() {
       */}
 
       {/* Submit/Lock Section */}
-      <div className="bg-white border text-center border-ink-200 rounded-3xl p-8 shadow-sm">
+      <div className="bg-white border text-center border-ink-200 rounded-3xl p-5 md:p-8 shadow-sm">
         <div className="max-w-xl mx-auto space-y-6">
           {isLocked ? (
             dokumenList.some((d) => d.status === "rejected") ? (

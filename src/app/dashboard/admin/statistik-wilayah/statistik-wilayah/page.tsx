@@ -344,7 +344,7 @@ export default function StatistikWilayahPage() {
             {expandedProv === provName && (
               <div className="px-5 md:px-8 pb-8 animate-in fade-in slide-in-from-top-2 duration-300">
                 <div className="h-px bg-stone-100 mb-6"></div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
                   {provData.cities
                     .sort((a: any, b: any) => b.count - a.count)
                     .map((city: any) => (

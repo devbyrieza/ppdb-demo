@@ -146,7 +146,7 @@ export default function VerifikasiManualPage() {
         {/* Daftar Pending */}
         <div className="space-y-4">
           {pending.length === 0 ? (
-            <div className="bg-white rounded-xl shadow p-8 text-center">
+            <div className="bg-white rounded-xl shadow p-5 md:p-8 text-center">
               <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-4" />
               <h3 className="text-xl font-semibold">
                 Tidak ada verifikasi pending

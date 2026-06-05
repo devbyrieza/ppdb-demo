@@ -44,7 +44,7 @@ function DaftarSuksesContent() {
   };
 
   return (
-    <div className="app-card max-w-lg w-full bg-white rounded-[2.5rem] shadow-lg border border-secondary-200 p-8 relative overflow-hidden">
+    <div className="app-card max-w-lg w-full bg-white rounded-[2.5rem] shadow-lg border border-secondary-200 p-5 md:p-8 relative overflow-hidden">
       {/* Background Blurs */}
       <div className="absolute -top-32 -right-32 w-64 h-64 bg-secondary-50 rounded-full blur-3xl pointer-events-none" />
 
@@ -200,7 +200,7 @@ function DaftarSuksesContent() {
 // Loading fallback
 function LoadingFallback() {
   return (
-    <div className="app-card max-w-lg w-full bg-white rounded-[2.5rem] shadow-lg border border-secondary-200 p-8">
+    <div className="app-card max-w-lg w-full bg-white rounded-[2.5rem] shadow-lg border border-secondary-200 p-5 md:p-8">
       <div className="flex flex-col items-center justify-center py-12">
         <Loader2 className="w-12 h-12 text-primary-600 animate-spin mb-4" />
         <p className="text-ink-600 font-medium">Memuat halaman...</p>

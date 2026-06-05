@@ -335,7 +335,7 @@ export default function JadwalUjianPage() {
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="bg-white rounded-2xl shadow-clay-lg p-8 border border-white/40 overflow-hidden relative">
+      <div className="bg-white rounded-2xl shadow-clay-lg p-5 md:p-8 border border-white/40 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full -mr-16 -mt-16 blur-3xl"></div>
         <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center gap-6">
@@ -383,7 +383,7 @@ export default function JadwalUjianPage() {
               <p className="text-sm font-bold opacity-80 uppercase tracking-widest">
                 Pendaftar Butuh Jadwal
               </p>
-              <h3 className="text-4xl font-black leading-none mt-1">
+              <h3 className="text-2xl md:text-4xl font-black leading-none mt-1">
                 {availStats.eligibleCount}{" "}
                 <span className="text-lg opacity-60">Orang</span>
               </h3>
@@ -401,7 +401,7 @@ export default function JadwalUjianPage() {
             <p className="text-sm font-bold text-ink-400 uppercase tracking-widest">
               Total Slot Tersedia
             </p>
-            <h3 className="text-4xl font-black text-ink-950 leading-none mt-1">
+            <h3 className="text-2xl md:text-4xl font-black text-ink-950 leading-none mt-1">
               {availStats.totalAvailableSlots}{" "}
               <span className="text-lg text-ink-400">Sesi</span>
             </h3>
@@ -422,11 +422,11 @@ export default function JadwalUjianPage() {
 
           <div className="grid grid-cols-1 gap-4">
             {loading ? (
-              <div className="bg-white rounded-2xl p-12 text-center border border-white/40">
+              <div className="bg-white rounded-2xl p-6 md:p-12 text-center border border-white/40">
                 <Loader2 className="w-8 h-8 animate-spin text-purple-500 mx-auto" />
               </div>
             ) : sessions.length === 0 ? (
-              <div className="bg-white rounded-2xl p-12 text-center border-2 border-dashed border-ink-100">
+              <div className="bg-white rounded-2xl p-6 md:p-12 text-center border-2 border-dashed border-ink-100">
                 <Calendar className="w-12 h-12 text-ink-200 mx-auto mb-4" />
                 <p className="font-bold text-ink-400">
                   Belum ada sesi ujian yang dibuat.
@@ -580,10 +580,10 @@ export default function JadwalUjianPage() {
 
       {/* Add Session Modal */}
       {showAddSession && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink-900/60 backdrop-blur-md animate-in fade-in duration-300">
+        <div className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-4 bg-ink-900/60 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden">
           <div className="bg-white rounded-3xl w-full max-w-lg shadow-clay-lg border border-white overflow-hidden animate-in zoom-in-95 duration-300">
             <form onSubmit={handleCreateSession}>
-              <div className="p-8 space-y-6">
+              <div className="p-5 md:p-8 space-y-6">
                 <div className="flex items-center justify-between">
                   <h2 className="text-2xl font-black text-ink-900">
                     Buat Sesi <span className="text-purple-600">Baru</span>
@@ -613,7 +613,7 @@ export default function JadwalUjianPage() {
                     />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs font-bold text-ink-400 uppercase tracking-widest mb-2">
                         Mulai
@@ -650,7 +650,7 @@ export default function JadwalUjianPage() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs font-bold text-ink-400 uppercase tracking-widest mb-2">
                         Kuota
@@ -703,7 +703,7 @@ export default function JadwalUjianPage() {
                   </div>
                 </div>
               </div>
-              <div className="px-8 pb-8 flex gap-3">
+              <div className="px-5 md:px-8 pb-8 flex gap-3">
                 <button
                   type="button"
                   onClick={() => setShowAddSession(false)}
@@ -725,8 +725,8 @@ export default function JadwalUjianPage() {
 
       {/* Sending Progress Modal */}
       {sendingProgress.active && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-ink-900/80 backdrop-blur-sm">
-          <div className="bg-white rounded-3xl w-full max-w-md shadow-2xl border border-white p-8 text-center animate-pulse">
+        <div className="fixed inset-0 z-[60] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-4 bg-ink-900/80 backdrop-blur-sm overflow-y-auto overflow-x-hidden">
+          <div className="bg-white rounded-3xl w-full max-w-md shadow-2xl border border-white p-5 md:p-8 text-center animate-pulse">
             <Loader2 className="w-12 h-12 text-purple-600 animate-spin mx-auto mb-4" />
             <h2 className="text-2xl font-black text-ink-900 mb-2">
               Mengirim Notifikasi...
@@ -764,9 +764,9 @@ export default function JadwalUjianPage() {
 
       {/* Broadcast Pulse Modal */}
       {showBroadcastModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink-900/60 backdrop-blur-md animate-in fade-in duration-300">
+        <div className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-4 bg-ink-900/60 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden">
           <div className="bg-white rounded-3xl w-full max-w-md shadow-clay-lg border border-white overflow-hidden animate-in zoom-in-95 duration-300">
-            <div className="p-8 space-y-6">
+            <div className="p-5 md:p-8 space-y-6">
               <div className="flex items-center justify-between">
                 <h2 className="text-2xl font-black text-ink-900">
                   Pulse <span className="text-indigo-600">Notifikasi</span>

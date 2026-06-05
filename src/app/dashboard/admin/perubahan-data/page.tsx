@@ -111,7 +111,7 @@ export default function PerubahanDataPage() {
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
           <div className="flex items-center gap-3">
-            <h1 className="text-4xl font-black text-ink-900 tracking-tight">
+            <h1 className="text-2xl md:text-4xl font-black text-ink-900 tracking-tight">
               Permintaan Edit Data
             </h1>
             {refreshing && (

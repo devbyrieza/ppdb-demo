@@ -18,7 +18,7 @@ export default function CalendarPage() {
             <Construction className="w-12 h-12 text-primary-700" />
           </div>
 
-          <h1 className="text-4xl md:text-5xl font-display font-black text-ink-950 mb-4 tracking-tight">
+          <h1 className="text-2xl md:text-4xl md:text-5xl font-display font-black text-ink-950 mb-4 tracking-tight">
             Sedang Dalam <br />
             <span className="text-gradient-primary">Pengembangan</span>
           </h1>
@@ -32,13 +32,13 @@ export default function CalendarPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/"
-              className="inline-flex items-center justify-center px-10 py-4 rounded-pill bg-primary-900 text-white font-black text-lg hover:bg-primary-800 shadow-premium-lg transition-all"
+              className="inline-flex items-center justify-center px-6 md:px-10 py-4 rounded-pill bg-primary-900 text-white font-black text-lg hover:bg-primary-800 shadow-premium-lg transition-all"
             >
               Kembali ke Beranda
             </Link>
             <Link
               href="/kontak"
-              className="inline-flex items-center justify-center px-10 py-4 rounded-pill bg-white border border-surface-200 text-ink-950 font-black text-lg hover:bg-surface-50 transition-all shadow-premium-sm"
+              className="inline-flex items-center justify-center px-6 md:px-10 py-4 rounded-pill bg-white border border-surface-200 text-ink-950 font-black text-lg hover:bg-surface-50 transition-all shadow-premium-sm"
             >
               Hubungi Kami
             </Link>

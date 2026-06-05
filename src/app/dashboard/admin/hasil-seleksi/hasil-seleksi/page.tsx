@@ -148,7 +148,7 @@ export default function HasilSeleksiPage() {
             Total Diterima
           </p>
           <div className="flex items-end gap-2">
-            <h3 className="text-4xl font-black text-green-700">
+            <h3 className="text-2xl md:text-4xl font-black text-green-700">
               {stats.total_lulus}
             </h3>
             <span className="text-green-600/70 font-medium mb-1 pl-1">
@@ -162,7 +162,7 @@ export default function HasilSeleksiPage() {
             Cadangan
           </p>
           <div className="flex items-end gap-2">
-            <h3 className="text-4xl font-black text-secondary-700">
+            <h3 className="text-2xl md:text-4xl font-black text-secondary-700">
               {stats.total_cadangan}
             </h3>
             <span className="text-secondary-600/70 font-medium mb-1 pl-1">
@@ -176,7 +176,7 @@ export default function HasilSeleksiPage() {
             Ditolak
           </p>
           <div className="flex items-end gap-2">
-            <h3 className="text-4xl font-black text-rose-700">
+            <h3 className="text-2xl md:text-4xl font-black text-rose-700">
               {stats.total_gagal}
             </h3>
             <span className="text-rose-600/70 font-medium mb-1 pl-1">

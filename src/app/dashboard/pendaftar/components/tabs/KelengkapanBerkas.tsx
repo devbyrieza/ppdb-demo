@@ -698,7 +698,7 @@ export default function KelengkapanBerkasTab() {
   if (error && activeTab !== "data") {
     return (
       <div className="space-y-6">
-        <div className="bg-red-50 border border-red-200 rounded-3xl p-8 text-center shadow-sm">
+        <div className="bg-red-50 border border-red-200 rounded-3xl p-5 md:p-8 text-center shadow-sm">
           <div className="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
             <XCircle className="w-8 h-8 text-red-500" />
           </div>
@@ -747,7 +747,7 @@ export default function KelengkapanBerkasTab() {
         </div>
       )}
       {/* Header Banner */}
-      <div className="relative overflow-hidden rounded-[2rem] bg-linear-to-br from-primary-700 to-primary-900 border border-primary-600 p-8 md:p-10 text-white shadow-lg app-card">
+      <div className="relative overflow-hidden rounded-[2rem] bg-linear-to-br from-primary-700 to-primary-900 border border-primary-600 p-5 md:p-8 md:p-10 text-white shadow-lg app-card">
         <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-secondary-50/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         <div className="relative z-10 flex items-start md:items-center gap-6">
           <div className="w-16 h-16 rounded-[1.5rem] bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-sm shrink-0">
@@ -806,7 +806,7 @@ export default function KelengkapanBerkasTab() {
 
       {/* Tab: Lihat Data */}
       {activeTab === "data" && (
-        <div className="glass-panel p-8 rounded-[2rem] shadow-sm border border-secondary-200 app-card">
+        <div className="glass-panel p-5 md:p-8 rounded-[2rem] shadow-sm border border-secondary-200 app-card">
           {dataPendaftaran ? (
             <div className="space-y-8">
               <div className="flex items-center gap-4 mb-2">
@@ -970,7 +970,7 @@ export default function KelengkapanBerkasTab() {
                     </h3>
                   </div>
                   <div className="p-6 space-y-8">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <div className="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-2 gap-12">
                       {/* Ayah */}
                       <div className="space-y-4">
                         <div className="flex items-center justify-between border-b border-ink-50 pb-2">
@@ -1243,7 +1243,7 @@ export default function KelengkapanBerkasTab() {
                     setActiveTab("isi-data");
                     window.scrollTo({ top: 0, behavior: "smooth" });
                   }}
-                  className="w-full sm:w-auto py-3 px-8 rounded-xl text-lg font-bold border-2 border-primary-600 text-primary-700 hover:bg-primary-50 transition-all"
+                  className="w-full sm:w-auto py-3 px-5 md:px-8 rounded-xl text-lg font-bold border-2 border-primary-600 text-primary-700 hover:bg-primary-50 transition-all"
                 >
                   Kembali Edit Data
                 </button>
@@ -1276,8 +1276,8 @@ export default function KelengkapanBerkasTab() {
       )}
 
       {showConfirmModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-ink-900/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-white rounded-[2rem] shadow-2xl max-w-md w-full overflow-hidden animate-in zoom-in-95 duration-200 p-8 text-center relative">
+        <div className="fixed inset-0 z-[100] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-4 bg-ink-900/60 backdrop-blur-sm animate-in fade-in duration-200 overflow-y-auto overflow-x-hidden">
+          <div className="bg-white rounded-[2rem] shadow-2xl max-w-md w-full overflow-hidden animate-in zoom-in-95 duration-200 p-5 md:p-8 text-center relative">
             <div className="w-20 h-20 bg-secondary-50 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-inner border border-secondary-100 rotate-3">
               <AlertTriangle className="w-10 h-10 text-secondary-500" />
             </div>

@@ -382,7 +382,7 @@ export default function ProfilPage() {
         <div className="space-y-6">
           {/* Request Edit Box */}
           <div className="bg-gradient-mesh p-1 rounded-[2.5rem] shadow-clay-lg">
-            <div className="bg-white/80 backdrop-blur-xl rounded-[2.3rem] p-6 lg:p-8">
+            <div className="bg-white/80 backdrop-blur-xl rounded-[2.3rem] p-6 lg:p-5 md:p-8">
               <div className="flex items-center gap-3 mb-4 text-ink-900">
                 <div className="w-10 h-10 bg-surface-100 rounded-xl flex items-center justify-center">
                   <Edit className="w-5 h-5 text-ink-700" />
@@ -419,7 +419,7 @@ export default function ProfilPage() {
                         onChange={(e) => setReason(e.target.value)}
                       />
                     </div>
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       <button
                         onClick={() => setIsRequesting(false)}
                         className="py-3 text-sm font-bold text-ink-500 hover:bg-surface-100 rounded-xl transition-colors"

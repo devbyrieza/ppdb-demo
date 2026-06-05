@@ -1115,7 +1115,7 @@ function AdminPendaftarContent() {
     <div className="space-y-6">
       {/* Refreshing Overlay */}
       {refreshing && (
-        <div className="fixed inset-0 bg-white/40 backdrop-blur-[1px] z-[100] flex items-center justify-center pointer-events-none">
+        <div className="fixed inset-0 bg-white/40 backdrop-blur-[1px] z-[100] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center pointer-events-none overflow-y-auto overflow-x-hidden p-4">
           <div className="bg-white/80 px-6 py-3 rounded-2xl shadow-xl border border-stone-100 flex items-center gap-3 animate-in fade-in zoom-in duration-300">
             <Loader2 className="w-5 h-5 animate-spin text-primary-600" />
             <span className="text-sm font-bold text-stone-700 tracking-tight">
@@ -1284,7 +1284,7 @@ function AdminPendaftarContent() {
               />
               <button
                 onClick={handleSearch}
-                className="w-full sm:w-auto px-8 py-3 bg-primary-700 hover:bg-primary-800 text-white rounded-xl font-black transition-all flex-shrink-0 text-sm md:text-base shadow-lg shadow-primary-700/20 active:scale-95"
+                className="w-full sm:w-auto px-5 md:px-8 py-3 bg-primary-700 hover:bg-primary-800 text-white rounded-xl font-black transition-all flex-shrink-0 text-sm md:text-base shadow-lg shadow-primary-700/20 active:scale-95"
               >
                 Cari
               </button>
@@ -1686,7 +1686,7 @@ function AdminPendaftarContent() {
               <button
                 onClick={handleBulkUpdate}
                 disabled={!bulkStatus || bulkUpdating}
-                className="flex items-center justify-center gap-2 px-8 py-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-black transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-purple-600/20 active:scale-95 text-sm"
+                className="flex items-center justify-center gap-2 px-5 md:px-8 py-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-black transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-purple-600/20 active:scale-95 text-sm"
               >
                 {bulkUpdating ? (
                   <>
@@ -2187,7 +2187,7 @@ function AdminPendaftarContent() {
       </div>
       {/* Announcement Modal */}
       {isAnnouncementModalOpen && selectedPendaftar && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center bg-black/50 backdrop-blur-sm p-4 overflow-y-auto">
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg border-2 border-stone-100 animate-in fade-in zoom-in duration-200">
             <div className="flex justify-between items-center p-6 border-b border-stone-100">
               <div>
@@ -2212,7 +2212,7 @@ function AdminPendaftarContent() {
                 <label className="block text-sm font-bold text-stone-700 mb-2">
                   Status Kelulusan
                 </label>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                   {["Diterima", "Cadangan", "Ditolak"].map((status) => (
                     <button
                       key={status}
@@ -2319,7 +2319,7 @@ function AdminPendaftarContent() {
 
       {/* Delete Confirmation Modal */}
       {isDeleteModalOpen && deletingPendaftar && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+        <div className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center bg-black/50 backdrop-blur-sm p-4 overflow-y-auto overflow-x-hidden">
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-md border-2 border-red-100 animate-in fade-in zoom-in duration-200">
             <div className="flex justify-between items-center p-6 border-b border-red-100">
               <div className="flex items-center gap-3">

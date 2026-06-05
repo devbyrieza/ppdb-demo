@@ -59,7 +59,7 @@ export default async function StatistikWilayahPage() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="bg-linear-to-br from-primary-600 to-primary-900 rounded-3xl p-8 text-white relative overflow-hidden shadow-xl shadow-primary-900/20">
+      <div className="bg-linear-to-br from-primary-600 to-primary-900 rounded-3xl p-5 md:p-8 text-white relative overflow-hidden shadow-xl shadow-primary-900/20">
         <div className="absolute top-0 right-0 w-64 h-64 bg-secondary-400/10 rounded-full -mr-20 -mt-20 blur-3xl pointer-events-none"></div>
         <div className="flex items-center gap-6 relative z-10">
           <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-secondary-300 shadow-inner">
@@ -76,7 +76,7 @@ export default async function StatistikWilayahPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-2 gap-8">
         {/* Provinsi */}
         <div className="bg-white rounded-3xl p-6 shadow-sm border border-ink-100">
           <div className="flex items-center gap-3 mb-6">

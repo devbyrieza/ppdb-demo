@@ -184,7 +184,7 @@ export default function PengujiDashboardLayout({
           <aside className="hidden lg:flex lg:w-72 lg:flex-col lg:fixed lg:top-0 lg:left-0 lg:h-screen z-50 bg-white border-r border-surface-200 shadow-premium-sm transition-all duration-300">
             <div className="flex flex-col h-full">
               {/* Brand Header */}
-              <div className="px-8 pt-10 pb-8 border-b border-surface-100 mb-8">
+              <div className="px-5 md:px-8 pt-10 pb-8 border-b border-surface-100 mb-8">
                 <div className="flex items-center gap-4 mb-2">
                   <div className="w-10 h-10 rounded-xl bg-linear-to-br from-primary-600 to-primary-700 flex items-center justify-center text-white shadow-lg shadow-primary-200">
                     <ShieldCheck className="w-6 h-6" />
@@ -274,7 +274,7 @@ export default function PengujiDashboardLayout({
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   onClick={() => setSidebarOpen(false)}
-                  className="lg:hidden fixed inset-0 z-[60] bg-ink-950/20 backdrop-blur-md"
+                  className="lg:hidden fixed inset-0 z-[60] bg-ink-950/20 backdrop-blur-md overflow-y-auto overflow-x-hidden p-4"
                 />
                 <motion.aside
                   initial={{ x: -280 }}
@@ -360,7 +360,7 @@ export default function PengujiDashboardLayout({
           {/* Main Content Content */}
           <div className="flex-1 flex flex-col min-w-0 lg:ml-72 min-h-screen">
             {/* Topbar Desktop */}
-            <header className="hidden lg:flex items-center justify-between h-24 px-10 sticky top-0 bg-surface-50/80 backdrop-blur-md z-30 shrink-0">
+            <header className="hidden lg:flex items-center justify-between h-24 px-6 md:px-10 sticky top-0 bg-surface-50/80 backdrop-blur-md z-30 shrink-0">
               <div className="flex-1 max-w-xl">
                 {/* Search bar removed as requested to avoid double search UI */}
               </div>
@@ -393,7 +393,7 @@ export default function PengujiDashboardLayout({
             </header>
 
             {/* Content Area */}
-            <main className="flex-1 p-6 lg:p-10">
+            <main className="flex-1 p-6 lg:p-6 md:p-10">
               <div className="max-w-7xl mx-auto">
                 <AnimatePresence mode="wait">
                   <motion.div

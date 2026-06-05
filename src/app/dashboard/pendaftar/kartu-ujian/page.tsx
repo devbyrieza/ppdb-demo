@@ -92,14 +92,14 @@ export default function ExamCardPage() {
 
   if (loading)
     return (
-      <div className="flex justify-center p-12">
+      <div className="flex justify-center p-6 md:p-12">
         <Loader2 className="animate-spin" />
       </div>
     );
   if (!data) return <div>Data tidak ditemukan</div>;
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8 flex flex-col items-center">
+    <div className="min-h-screen bg-gray-100 p-5 md:p-8 flex flex-col items-center">
       {/* Toolbar */}
       <div className="w-full max-w-[21cm] mb-6 flex justify-between items-center no-print">
         <h1 className="text-xl font-bold">Pratinjau Jadwal</h1>

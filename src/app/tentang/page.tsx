@@ -45,7 +45,7 @@ export default function TentangPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-black mb-6 md:mb-10 tracking-tight leading-[0.95] md:leading-[0.9] text-ink-950"
+            className="text-2xl md:text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-black mb-6 md:mb-10 tracking-tight leading-[0.95] md:leading-[0.9] text-ink-950"
           >
             Babak Baru <br />
             <span className="text-gradient-primary pb-2 block sm:inline">
@@ -84,7 +84,7 @@ export default function TentangPage() {
               </span>
               <div className="w-8 h-0.5 bg-primary-600/30 rounded-full" />
             </motion.div>
-            <h2 className="section-title text-center text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.1] mb-0">
+            <h2 className="section-title text-center text-3xl sm:text-2xl md:text-4xl md:text-5xl lg:text-6xl leading-[1.1] mb-0">
               Masa Depan Qur'ani <br className="hidden md:block" />
               Dimulai dari{" "}
               <span className="text-primary-700 underline decoration-primary-500/30 underline-offset-4 md:underline-offset-8">
@@ -115,7 +115,7 @@ export default function TentangPage() {
       {/* 3. History & Profile - Enhanced Layout */}
       <section className="section-alt border-y border-primary-100">
         <Container>
-          <div className="grid lg:grid-cols-2 gap-12 sm:gap-16 lg:gap-24 items-center">
+          <div className="grid lg:grid-cols-1 md:grid-cols-2 gap-12 sm:gap-16 lg:gap-24 items-center">
             {/* Image Column */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -217,7 +217,7 @@ export default function TentangPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.2 }}
-                className="grid grid-cols-2 gap-4 md:gap-6 pt-4 md:pt-6"
+                className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 pt-4 md:pt-6"
               >
                 <div className="app-card bg-white p-5 md:p-6 flex flex-col items-start group">
                   <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-orange-50 flex items-center justify-center mb-4 text-orange-600 group-hover:scale-110 transition-transform shadow-sm">
@@ -287,7 +287,7 @@ export default function TentangPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="app-card bg-white p-8 md:p-10 flex flex-col group h-full hover:-translate-y-1 transition-transform duration-500"
+              className="app-card bg-white p-5 md:p-8 md:p-10 flex flex-col group h-full hover:-translate-y-1 transition-transform duration-500"
             >
               <div className="w-14 h-14 bg-primary-50 rounded-2xl flex items-center justify-center mb-6 text-primary-600 group-hover:scale-110 transition-transform duration-500 shadow-sm">
                 <Target className="w-7 h-7" />
@@ -307,7 +307,7 @@ export default function TentangPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="app-card bg-linear-to-br from-secondary-50 to-white p-8 md:p-10 flex flex-col group h-full hover:-translate-y-1 transition-transform duration-500"
+              className="app-card bg-linear-to-br from-secondary-50 to-white p-5 md:p-8 md:p-10 flex flex-col group h-full hover:-translate-y-1 transition-transform duration-500"
             >
               <div className="w-14 h-14 bg-secondary-50 rounded-2xl flex items-center justify-center mb-6 text-secondary-600 group-hover:scale-110 transition-transform duration-500 shadow-sm">
                 <Compass className="w-7 h-7" />
@@ -339,7 +339,7 @@ export default function TentangPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="md:col-span-2 app-card bg-secondary-100/50 p-8 md:p-10 lg:p-12 hover:-translate-y-1 transition-transform duration-500 group"
+              className="md:col-span-2 app-card bg-secondary-100/50 p-5 md:p-8 md:p-10 lg:p-6 md:p-12 hover:-translate-y-1 transition-transform duration-500 group"
             >
               <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 mb-8">
                 <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-primary-700 group-hover:scale-110 transition-transform duration-500 border border-primary-100 shadow-sm shrink-0">
@@ -382,14 +382,14 @@ export default function TentangPage() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-primary-900 bg-linear-to-br from-primary-800 to-primary-950 rounded-[2.5rem] md:rounded-[3rem] lg:rounded-[4rem] p-8 sm:p-12 md:p-16 lg:p-24 relative overflow-hidden text-center shadow-lg border border-primary-700"
+            className="bg-primary-900 bg-linear-to-br from-primary-800 to-primary-950 rounded-[2.5rem] md:rounded-[3rem] lg:rounded-[4rem] p-5 md:p-8 sm:p-6 md:p-12 md:p-16 lg:p-24 relative overflow-hidden text-center shadow-lg border border-primary-700"
           >
             {/* Decorative background */}
             <div className="hidden sm:block absolute top-0 right-0 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-primary-50/10 rounded-full blur-[80px] md:blur-[100px] -translate-y-1/2 translate-x-1/2" />
             <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.03] pointer-events-none" />
 
             <div className="relative z-10 max-w-3xl mx-auto">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-6 md:mb-8 text-white tracking-tight leading-[1.1]">
+              <h2 className="text-3xl sm:text-2xl md:text-4xl md:text-5xl lg:text-6xl font-black mb-6 md:mb-8 text-white tracking-tight leading-[1.1]">
                 Mari Menjadi Bagian <br />
                 Keluarga <span className="text-secondary-300">Al Fath</span>
               </h2>
@@ -399,12 +399,12 @@ export default function TentangPage() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center px-4">
                 <Link href="/ppdb" className="w-full sm:w-auto">
-                  <button className="w-full px-8 py-4 sm:py-4.5 rounded-pill bg-white text-primary-900 font-bold text-base md:text-lg shadow-md hover:bg-secondary-100 hover:shadow-lg transition-all duration-300 min-h-[52px]">
+                  <button className="w-full px-5 md:px-8 py-4 sm:py-4.5 rounded-pill bg-white text-primary-900 font-bold text-base md:text-lg shadow-md hover:bg-secondary-100 hover:shadow-lg transition-all duration-300 min-h-[52px]">
                     Daftar Sekarang
                   </button>
                 </Link>
                 <Link href="/kontak" className="w-full sm:w-auto">
-                  <button className="w-full flex items-center justify-center gap-2 px-8 py-4 sm:py-4.5 rounded-pill bg-white/10 text-white font-bold border-2 border-white/20 hover:bg-white/20 transition-all duration-300 min-h-[52px] text-base md:text-lg">
+                  <button className="w-full flex items-center justify-center gap-2 px-5 md:px-8 py-4 sm:py-4.5 rounded-pill bg-white/10 text-white font-bold border-2 border-white/20 hover:bg-white/20 transition-all duration-300 min-h-[52px] text-base md:text-lg">
                     Hubungi Kami
                     <Send className="w-4 h-4 ml-1" />
                   </button>

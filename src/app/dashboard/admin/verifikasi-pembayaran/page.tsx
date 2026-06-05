@@ -419,7 +419,7 @@ function VerifikasiPembayaranContent() {
   return (
     <div className="space-y-6 relative">
       {isRefreshing && (
-        <div className="fixed inset-0 bg-white/40 backdrop-blur-[1px] z-[100] flex items-center justify-center pointer-events-none">
+        <div className="fixed inset-0 bg-white/40 backdrop-blur-[1px] z-[100] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center pointer-events-none overflow-y-auto overflow-x-hidden p-4">
           <div className="bg-white/80 px-6 py-3 rounded-2xl shadow-xl border border-stone-100 flex items-center gap-3 animate-in fade-in zoom-in duration-300">
             <Loader2 className="w-5 h-5 animate-spin text-primary-600" />
             <span className="text-sm font-bold text-stone-700 tracking-tight">
@@ -603,7 +603,7 @@ function VerifikasiPembayaranContent() {
             </div>
           </div>
         ) : filteredPembayaran.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-[400px] text-center p-8">
+          <div className="flex flex-col items-center justify-center h-[400px] text-center p-5 md:p-8">
             <div className="w-20 h-20 bg-stone-50 rounded-full flex items-center justify-center mb-6">
               <CreditCard className="w-10 h-10 text-stone-300" />
             </div>
@@ -751,7 +751,7 @@ function VerifikasiPembayaranContent() {
       </div>
 
       {showModal && selectedPembayaran && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center z-50 p-4 animate-in fade-in duration-200 overflow-y-auto overflow-x-hidden">
           <div className="bg-white rounded-[2rem] shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
             <div className="p-6 border-b border-stone-100 bg-stone-50/50 flex justify-between items-center">
               <div>
@@ -798,7 +798,7 @@ function VerifikasiPembayaranContent() {
               </div>
 
               {activeTab === "DAFTAR_ULANG" && (
-                <div className="grid grid-cols-2 gap-4 p-4 bg-violet-50 rounded-2xl border border-violet-100">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-violet-50 rounded-2xl border border-violet-100">
                   <div>
                     <label className="block text-[10px] font-black text-violet-700 uppercase tracking-widest mb-2">
                       Tipe Pembayaran
@@ -898,7 +898,7 @@ function VerifikasiPembayaranContent() {
                   </div>
                 </div>
               ) : (
-                <div className="p-8 border-2 border-dashed border-stone-200 rounded-2xl text-center space-y-4">
+                <div className="p-5 md:p-8 border-2 border-dashed border-stone-200 rounded-2xl text-center space-y-4">
                   <p className="text-stone-500 font-medium">
                     Tidak ada bukti transfer yang diupload.
                   </p>

@@ -92,7 +92,7 @@ function VerifyPinContent() {
   if (!token) {
     return (
       <div className="min-h-screen bg-stone-50 flex items-center justify-center p-6 text-center">
-        <div className="max-w-md w-full bg-white p-10 rounded-3xl shadow-xl border border-stone-100">
+        <div className="max-w-md w-full bg-white p-6 md:p-10 rounded-3xl shadow-xl border border-stone-100">
           <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
           <h1 className="text-2xl font-bold text-stone-800 mb-2">
             Akses Ditolak
@@ -109,7 +109,7 @@ function VerifyPinContent() {
     <div className="min-h-screen bg-stone-50 flex items-center justify-center p-6 font-sans">
       <div className="max-w-md w-full animate-in fade-in zoom-in duration-500">
         <div className="bg-white rounded-[2.5rem] shadow-2xl shadow-indigo-100/50 border border-stone-100 overflow-hidden text-stone-900">
-          <div className="bg-primary p-8 sm:p-10 text-center relative overflow-hidden">
+          <div className="bg-primary p-5 md:p-8 sm:p-6 md:p-10 text-center relative overflow-hidden">
             {/* Decorative background circle */}
             <div className="absolute top-[-50px] right-[-50px] w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
             <div className="absolute bottom-[-30px] left-[-30px] w-24 h-24 bg-white/5 rounded-full blur-xl"></div>
@@ -125,7 +125,7 @@ function VerifyPinContent() {
             </p>
           </div>
 
-          <div className="p-7 sm:p-10 text-center">
+          <div className="p-7 sm:p-6 md:p-10 text-center">
             <p className="text-stone-900 text-sm sm:text-base mb-8 leading-relaxed font-medium">
               Masukkan{" "}
               <span className="font-black text-primary">
@@ -207,7 +207,7 @@ export default function VerifyPinPage() {
     <Suspense
       fallback={
         <div className="min-h-screen bg-stone-50 flex items-center justify-center p-6">
-          <div className="max-w-md w-full bg-white p-10 rounded-3xl shadow-xl flex flex-col items-center gap-4">
+          <div className="max-w-md w-full bg-white p-6 md:p-10 rounded-3xl shadow-xl flex flex-col items-center gap-4">
             <Loader2 className="w-12 h-12 text-indigo-600 animate-spin" />
             <p className="text-stone-500 font-medium">
               Menyiapkan halaman keamanan...

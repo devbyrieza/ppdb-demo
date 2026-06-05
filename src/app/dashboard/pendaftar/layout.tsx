@@ -269,7 +269,7 @@ export default function DashboardLayout({
   if (loading) {
     return (
       <div className="min-h-screen bg-surface-50 flex items-center justify-center">
-        <div className="bg-white p-8 rounded-3xl shadow-clay-lg text-center max-w-sm w-full mx-4">
+        <div className="bg-white p-5 md:p-8 rounded-3xl shadow-clay-lg text-center max-w-sm w-full mx-4">
           <div className="relative w-16 h-16 mx-auto mb-6">
             <div className="absolute inset-0 border-4 border-gold-100 rounded-full" />
             <div className="absolute inset-0 border-4 border-primary-700 rounded-full border-t-transparent animate-spin" />
@@ -511,7 +511,7 @@ export default function DashboardLayout({
             {/* Content Wrapper */}
             <div className="flex-1 pt-14 lg:pt-12 max-w-6xl w-full mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500 z-10">
               <DashboardTabs statusProses={statusProses} />
-              <div className="p-4 md:p-6 lg:p-8">{children}</div>
+              <div className="p-4 md:p-6 lg:p-5 md:p-8">{children}</div>
             </div>
 
             {/* Mobile Bottom Navigation (Fintech Style) */}

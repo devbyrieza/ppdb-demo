@@ -271,7 +271,7 @@ export default function UndanganSeleksiTab() {
           </div>
         </div>
 
-        <div className="bg-secondary-50 border-2 border-secondary-200 rounded-3xl p-8 md:p-12 text-center shadow-sm">
+        <div className="bg-secondary-50 border-2 border-secondary-200 rounded-3xl p-5 md:p-8 md:p-12 text-center shadow-sm">
           <div className="w-20 h-20 bg-secondary-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <Info className="w-10 h-10 text-secondary-600" />
           </div>
@@ -285,7 +285,7 @@ export default function UndanganSeleksiTab() {
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link
               href="/dashboard/pendaftar?tab=upload-berkas"
-              className="px-8 py-3 bg-primary-700 text-white font-black rounded-xl hover:bg-primary-800 transition-all shadow-md uppercase tracking-widest text-sm"
+              className="px-5 md:px-8 py-3 bg-primary-700 text-white font-black rounded-xl hover:bg-primary-800 transition-all shadow-md uppercase tracking-widest text-sm"
             >
               Cek Status Berkas
             </Link>
@@ -294,7 +294,7 @@ export default function UndanganSeleksiTab() {
 
         {/* Preview of what's coming (blurred/locked looks) */}
         <div className="opacity-40 pointer-events-none select-none filter blur-[1px]">
-          <div className="bg-white rounded-xl border border-stone-100 p-8 text-center">
+          <div className="bg-white rounded-xl border border-stone-100 p-5 md:p-8 text-center">
             <p className="text-stone-400 font-bold uppercase tracking-widest text-sm">
               Pratinjau Tahap Seleksi
             </p>

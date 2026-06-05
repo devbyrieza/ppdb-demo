@@ -77,7 +77,7 @@ export default function ProgressTracker({
   const progressPercentage = (completedPhases / totalPhases) * 100;
 
   return (
-    <div className="bg-white rounded-[2.5rem] p-8 md:p-12 border border-stone-100 shadow-2xl shadow-stone-200/50 overflow-hidden relative group text-left">
+    <div className="bg-white rounded-[2.5rem] p-5 md:p-8 md:p-12 border border-stone-100 shadow-2xl shadow-stone-200/50 overflow-hidden relative group text-left">
       {/* Decorative Background Icons */}
       <div className="absolute -top-10 -right-10 opacity-[0.03] rotate-12 pointer-events-none">
         <GraduationCap size={300} className="text-primary-900" />

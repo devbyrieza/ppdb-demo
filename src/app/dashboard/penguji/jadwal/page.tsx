@@ -1064,7 +1064,7 @@ export default function JadwalPengujiPage() {
               <Loader2 className="w-8 h-8 animate-spin mx-auto text-primary-500" />
             </div>
           ) : assignments.length === 0 ? (
-            <div className="bg-white rounded-xl p-12 border-2 border-secondary-200 text-center">
+            <div className="bg-white rounded-xl p-6 md:p-12 border-2 border-secondary-200 text-center">
               <div className="w-16 h-16 bg-secondary-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Calendar className="w-8 h-8 text-ink-400" />
               </div>
@@ -1090,7 +1090,7 @@ export default function JadwalPengujiPage() {
 
               if (filteredAssignments.length === 0) {
                 return (
-                  <div className="bg-white rounded-xl p-12 border-2 border-secondary-200 text-center">
+                  <div className="bg-white rounded-xl p-6 md:p-12 border-2 border-secondary-200 text-center">
                     <div className="w-16 h-16 bg-secondary-100 rounded-full flex items-center justify-center mx-auto mb-4">
                       <Calendar className="w-8 h-8 text-ink-400" />
                     </div>
@@ -1152,7 +1152,7 @@ export default function JadwalPengujiPage() {
                       </div>
 
                       {/* Time & Location Row */}
-                      <div className="grid grid-cols-2 gap-4 mb-6 px-4 py-4 bg-primary-50/30 rounded-2xl border border-primary-100/50">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 px-4 py-4 bg-primary-50/30 rounded-2xl border border-primary-100/50">
                         <div className="flex items-center gap-3">
                           <div className="w-8 h-8 rounded-xl bg-white flex items-center justify-center shadow-sm">
                             <Clock className="w-4 h-4 text-primary-600" />
@@ -1578,7 +1578,7 @@ export default function JadwalPengujiPage() {
 
       {/* MODAL BULK EDIT */}
       {isBulkEditModalOpen && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300">
+        <div className="fixed inset-0 z-[60] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-4 bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden">
           <div className="bg-white rounded-[32px] shadow-2xl w-full max-w-md overflow-hidden border border-white/20 animate-in zoom-in-95 duration-300">
             <div className="p-6 border-b border-stone-100 flex justify-between items-center bg-stone-50/50">
               <div>
@@ -1598,7 +1598,7 @@ export default function JadwalPengujiPage() {
               </button>
             </div>
 
-            <form onSubmit={handleBulkEdit} className="p-8 space-y-5">
+            <form onSubmit={handleBulkEdit} className="p-5 md:p-8 space-y-5">
               {/* Waktu */}
               <div
                 className={`p-4 rounded-2xl border-2 transition-all ${bulkEditForm.changeTime ? "border-primary-300 bg-primary-50/30" : "border-stone-100 bg-stone-50/50"}`}
@@ -1620,7 +1620,7 @@ export default function JadwalPengujiPage() {
                   </span>
                 </label>
                 {bulkEditForm.changeTime && (
-                  <div className="grid grid-cols-2 gap-3 mt-2">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
                     <div>
                       <label className="block text-[10px] font-black text-ink-400 uppercase tracking-widest mb-1.5">
                         Mulai
@@ -1772,7 +1772,7 @@ export default function JadwalPengujiPage() {
 
       {/* MODAL EDIT SLOT */}
       {isEditModalOpen && editingSlot && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300">
+        <div className="fixed inset-0 z-[60] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-4 bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden">
           <div className="bg-white rounded-[32px] shadow-2xl w-full max-w-md overflow-hidden border border-white/20 animate-in zoom-in-95 duration-300">
             <div className="p-6 border-b border-stone-100 flex justify-between items-center bg-stone-50/50">
               <div>
@@ -1794,7 +1794,7 @@ export default function JadwalPengujiPage() {
               </button>
             </div>
 
-            <form onSubmit={handleEditSlot} className="p-8 space-y-5">
+            <form onSubmit={handleEditSlot} className="p-5 md:p-8 space-y-5">
               {/* Tanggal */}
               <div>
                 <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2">
@@ -1812,7 +1812,7 @@ export default function JadwalPengujiPage() {
               </div>
 
               {/* Waktu */}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2">
                     Mulai
@@ -1915,7 +1915,7 @@ export default function JadwalPengujiPage() {
 
       {/* MODAL CREATE SLOT */}
       {isSlotModalOpen && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300">
+        <div className="fixed inset-0 z-[60] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-4 bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden">
           <div className="bg-white rounded-[32px] shadow-2xl w-full max-w-md overflow-hidden border border-white/20 animate-in zoom-in-95 duration-300">
             {/* Header */}
             <div className="p-6 border-b border-stone-100 flex justify-between items-center bg-stone-50/50">
@@ -1935,7 +1935,7 @@ export default function JadwalPengujiPage() {
               </button>
             </div>
 
-            <form onSubmit={handleCreateSlot} className="p-8 space-y-6">
+            <form onSubmit={handleCreateSlot} className="p-5 md:p-8 space-y-6">
               {/* Jenis Ujian */}
               {ADMIN_ROLES.includes(activeRole) ? (
                 <div>
@@ -1994,7 +1994,7 @@ export default function JadwalPengujiPage() {
               </div>
 
               {/* Waktu */}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2">
                     Mulai
@@ -2087,7 +2087,7 @@ export default function JadwalPengujiPage() {
 
       {/* MODAL DETAIL PENDAFTAR */}
       {isDetailModalOpen && selectedPendaftar && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm overflow-hidden">
+        <div className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-4 bg-black/50 backdrop-blur-sm overflow-hidden overflow-y-auto overflow-x-hidden">
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg max-h-[90vh] flex flex-col">
             <div className="p-4 border-b border-secondary-100 flex justify-between items-center bg-secondary-50 rounded-t-2xl shrink-0">
               <h3 className="font-bold text-ink-950">Data Pendaftar</h3>
@@ -2244,10 +2244,10 @@ export default function JadwalPengujiPage() {
 
       {/* MODAL BULK CREATE SLOT */}
       {isBulkModalOpen && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300">
+        <div className="fixed inset-0 z-[60] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-4 bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden">
           <div className="bg-white rounded-[40px] shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col animate-in zoom-in-95 duration-300 border border-white/20">
             {/* Header */}
-            <div className="p-8 border-b border-stone-100 flex justify-between items-center bg-stone-50/50 rounded-t-[40px] shrink-0">
+            <div className="p-5 md:p-8 border-b border-stone-100 flex justify-between items-center bg-stone-50/50 rounded-t-[40px] shrink-0">
               <div>
                 <h3 className="text-2xl font-black text-primary-950 tracking-tight leading-tight">
                   Buat Jadwal Massal
@@ -2266,7 +2266,7 @@ export default function JadwalPengujiPage() {
 
             <form
               onSubmit={handleCreateBulk}
-              className="p-10 space-y-8 overflow-y-auto overscroll-contain custom-scrollbar flex-1"
+              className="p-6 md:p-10 space-y-8 overflow-y-auto overscroll-contain custom-scrollbar flex-1"
             >
               {/* Jenis Ujian Info */}
               <div className="bg-primary-600 rounded-3xl p-6 shadow-xl shadow-primary-950/20 text-white relative overflow-hidden">
@@ -2333,7 +2333,7 @@ export default function JadwalPengujiPage() {
               </div>
 
               {/* Date Range */}
-              <div className="grid grid-cols-2 gap-6 p-6 bg-stone-50 rounded-3xl border border-stone-100 shadow-inner">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-stone-50 rounded-3xl border border-stone-100 shadow-inner">
                 <div>
                   <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2.5">
                     Mulai Tanggal
@@ -2365,7 +2365,7 @@ export default function JadwalPengujiPage() {
               </div>
 
               {/* Time Slots */}
-              <div className="bg-stone-50 rounded-[32px] p-8 border border-stone-100">
+              <div className="bg-stone-50 rounded-[32px] p-5 md:p-8 border border-stone-100">
                 <div className="flex items-center justify-between mb-6 border-b border-stone-200 pb-4">
                   <div>
                     <label className="block text-[10px] text-ink-300 font-black uppercase tracking-[0.2em] mb-1">
@@ -2402,7 +2402,7 @@ export default function JadwalPengujiPage() {
                       key={index}
                       className="flex items-center gap-4 bg-white p-4 rounded-3xl border border-stone-200 shadow-sm hover:shadow-md transition-shadow group"
                     >
-                      <div className="flex-1 grid grid-cols-2 gap-4">
+                      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="relative">
                           <input
                             type="time"

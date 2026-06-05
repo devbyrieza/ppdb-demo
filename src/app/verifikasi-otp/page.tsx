@@ -220,7 +220,7 @@ function VerifikasiOTPContent() {
   }, [otpCode]);
 
   return (
-    <div className="app-card max-w-md w-full bg-white rounded-[2.5rem] shadow-lg border border-secondary-200 p-8 relative z-10">
+    <div className="app-card max-w-md w-full bg-white rounded-[2.5rem] shadow-lg border border-secondary-200 p-5 md:p-8 relative z-10">
       {/* Decorative Blur Inside Card */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-secondary-50/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
 
@@ -418,7 +418,7 @@ function VerifikasiOTPContent() {
 // Loading fallback
 function LoadingFallback() {
   return (
-    <div className="app-card max-w-md w-full bg-white rounded-[2.5rem] shadow-lg border border-secondary-200 p-8">
+    <div className="app-card max-w-md w-full bg-white rounded-[2.5rem] shadow-lg border border-secondary-200 p-5 md:p-8">
       <div className="flex flex-col items-center justify-center py-12">
         <Loader2 className="w-12 h-12 text-primary-600 animate-spin mb-4" />
         <p className="text-ink-600 font-medium">Memuat halaman...</p>

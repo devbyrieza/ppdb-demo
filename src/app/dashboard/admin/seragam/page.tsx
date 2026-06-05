@@ -189,7 +189,7 @@ export default function RekapSeragamPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-linear-to-br from-primary-700 to-primary-900 rounded-3xl p-8 text-white relative overflow-hidden shadow-xl">
+      <div className="bg-linear-to-br from-primary-700 to-primary-900 rounded-3xl p-5 md:p-8 text-white relative overflow-hidden shadow-xl">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-20 -mt-20 blur-3xl pointer-events-none"></div>
         <div className="flex items-center gap-5 relative z-10">
           <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-primary-100 shadow-inner">
@@ -347,7 +347,7 @@ export default function RekapSeragamPage() {
 
       {/* Edit Modal */}
       {editModalOpen && editingItem && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink-950/50 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-4 bg-ink-950/50 backdrop-blur-sm overflow-y-auto overflow-x-hidden">
           <div className="bg-white rounded-3xl shadow-xl w-full max-w-md overflow-hidden">
             <div className="p-6 border-b border-ink-100 bg-ink-50/50">
               <h3 className="text-xl font-black text-ink-950">Ubah Ukuran Seragam</h3>

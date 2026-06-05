@@ -130,7 +130,7 @@ export default function MonitoringClient({ data }: { data: ExaminerStat[] }) {
       {/* Table / List */}
       <div className="bg-white border border-ink-100 rounded-3xl overflow-hidden shadow-sm">
         {filteredData.length === 0 ? (
-          <div className="p-12 text-center text-ink-400 font-bold">
+          <div className="p-6 md:p-12 text-center text-ink-400 font-bold">
             Tidak ada data penguji yang sesuai dengan filter.
           </div>
         ) : (

@@ -488,7 +488,7 @@ function UploadArea({
                 <button
                   onClick={handleUploadClick}
                   disabled={isUploading}
-                  className="flex-1 sm:flex-none px-8 py-3 bg-secondary-400 text-primary-950 font-black rounded-xl hover:bg-secondary-300 transition-colors shadow-lg shadow-secondary-400/30 flex items-center justify-center gap-2"
+                  className="flex-1 sm:flex-none px-5 md:px-8 py-3 bg-secondary-400 text-primary-950 font-black rounded-xl hover:bg-secondary-300 transition-colors shadow-lg shadow-secondary-400/30 flex items-center justify-center gap-2"
                 >
                   {isUploading ? (
                     <Loader2 className="w-5 h-5 animate-spin" />
@@ -536,7 +536,7 @@ function UploadArea({
           </div>
         ) : (
           // EMPTY STATE
-          <div className="p-10 flex flex-col items-center gap-5 relative z-10">
+          <div className="p-6 md:p-10 flex flex-col items-center gap-5 relative z-10">
             <div
               className={`w-20 h-20 rounded-3xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-sm ${
                 isRejected && !currentFile
@@ -737,7 +737,7 @@ export default function PembayaranPendaftaranTab({
 
   if (error) {
     return (
-      <div className="bg-red-50 border border-red-200 rounded-3xl p-8 text-center max-w-lg mx-auto">
+      <div className="bg-red-50 border border-red-200 rounded-3xl p-5 md:p-8 text-center max-w-lg mx-auto">
         <XCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
         <h3 className="text-lg font-bold text-red-900 mb-2">
           Gagal Memuat Data
@@ -801,7 +801,7 @@ export default function PembayaranPendaftaranTab({
       )}
 
       {/* Header Banner */}
-      <div className="relative overflow-hidden rounded-[2rem] bg-linear-to-br from-primary-700 to-primary-900 border border-primary-600 p-8 md:p-10 text-white shadow-lg app-card">
+      <div className="relative overflow-hidden rounded-[2rem] bg-linear-to-br from-primary-700 to-primary-900 border border-primary-600 p-5 md:p-8 md:p-10 text-white shadow-lg app-card">
         <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-secondary-50/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-start gap-5">
@@ -837,7 +837,7 @@ export default function PembayaranPendaftaranTab({
         {/* Main Content Column */}
         <div className="lg:col-span-2 space-y-8">
           {/* Status Card */}
-          <div className="glass-panel p-8 rounded-[2rem] shadow-sm border border-secondary-200 app-card relative overflow-hidden">
+          <div className="glass-panel p-5 md:p-8 rounded-[2rem] shadow-sm border border-secondary-200 app-card relative overflow-hidden">
             <div
               className={`absolute top-0 left-0 w-2 h-full ${statusConfig.bgColor}`}
             />{" "}
@@ -976,7 +976,7 @@ export default function PembayaranPendaftaranTab({
               {/* PAYMENT CARDS GRID */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {/* CARD 1: MIDTRANS (DEV) */}
-                <div className="relative group bg-white rounded-[2.5rem] p-8 border border-ink-100 shadow-sm transition-all hover:shadow-lg hover:-translate-y-1 overflow-hidden opacity-80 hover:opacity-100 grayscale-[0.5] hover:grayscale-0">
+                <div className="relative group bg-white rounded-[2.5rem] p-5 md:p-8 border border-ink-100 shadow-sm transition-all hover:shadow-lg hover:-translate-y-1 overflow-hidden opacity-80 hover:opacity-100 grayscale-[0.5] hover:grayscale-0">
                   {/* Background Decor */}
                   <div className="absolute top-0 right-0 w-32 h-32 bg-secondary-50 rounded-bl-[4rem] -z-0" />
 
@@ -1126,7 +1126,7 @@ export default function PembayaranPendaftaranTab({
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-stretch">
                       {/* LEFT COLUMN: BANK INFO */}
-                      <div className="bg-gradient-to-br from-secondary-50 to-white border border-secondary-100 rounded-[2.5rem] p-8 shadow-sm relative overflow-hidden flex flex-col justify-between">
+                      <div className="bg-gradient-to-br from-secondary-50 to-white border border-secondary-100 rounded-[2.5rem] p-5 md:p-8 shadow-sm relative overflow-hidden flex flex-col justify-between">
                         <div className="absolute top-0 right-0 w-64 h-64 bg-secondary-100/50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
 
                         <div className="relative z-10">
@@ -1143,7 +1143,7 @@ export default function PembayaranPendaftaranTab({
 
                           <div className="mb-8">
                             <div className="flex flex-wrap items-center gap-4 mb-2">
-                              <h4 className="font-black text-3xl sm:text-4xl md:text-5xl text-ink-900 tracking-tight break-all">
+                              <h4 className="font-black text-3xl sm:text-2xl md:text-4xl md:text-5xl text-ink-900 tracking-tight break-all">
                                 {BANK_INFO.nomor_rekening}
                               </h4>
                               <CopyButton
@@ -1173,7 +1173,7 @@ export default function PembayaranPendaftaranTab({
                       </div>
 
                       {/* RIGHT COLUMN: UPLOAD AREA */}
-                      <div className="bg-white rounded-[2.5rem] border-2 border-dashed border-ink-200 p-8 flex flex-col justify-center relative group hover:border-primary-300 transition-colors">
+                      <div className="bg-white rounded-[2.5rem] border-2 border-dashed border-ink-200 p-5 md:p-8 flex flex-col justify-center relative group hover:border-primary-300 transition-colors">
                         <div className="text-center mb-8">
                           <h5 className="font-bold text-ink-900 text-lg flex items-center justify-center gap-2 mb-2">
                             <Upload className="w-5 h-5 text-primary-700" />
@@ -1208,7 +1208,7 @@ export default function PembayaranPendaftaranTab({
 
           {/* Success View (hanya di halaman Pembayaran) */}
           {!isStatusOnly && isPaymentCompleted && (
-            <div className="bg-emerald-50 border border-emerald-200 rounded-[2rem] p-8 text-center">
+            <div className="bg-emerald-50 border border-emerald-200 rounded-[2rem] p-5 md:p-8 text-center">
               <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-in zoom-in duration-300">
                 <CheckCircle className="w-10 h-10 text-emerald-600" />
               </div>
@@ -1223,7 +1223,7 @@ export default function PembayaranPendaftaranTab({
               <div className="flex justify-center">
                 <a
                   href="/dashboard/pendaftar/isi-data-lengkap"
-                  className="px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold shadow-lg shadow-emerald-600/20 transition-all hover:scale-105 flex items-center gap-2"
+                  className="px-5 md:px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold shadow-lg shadow-emerald-600/20 transition-all hover:scale-105 flex items-center gap-2"
                 >
                   <span>Lanjut Isi Data Diri</span>
                 </a>

@@ -461,7 +461,7 @@ export default function VerifikasiDokumenDetailPage() {
 
   if (!pendaftar && !loading) {
     return (
-      <div className="bg-white rounded-3xl shadow-sm p-10 border border-secondary-200 text-center">
+      <div className="bg-white rounded-3xl shadow-sm p-6 md:p-10 border border-secondary-200 text-center">
         <AlertCircle className="w-16 h-16 text-primary-500 mx-auto mb-4" />
         <h2 className="text-2xl font-black text-primary-950 mb-2">
           Data Tidak Ditemukan
@@ -713,7 +713,7 @@ export default function VerifikasiDokumenDetailPage() {
       {/* Image/PDF Preview Modal */}
       {previewDoc && (
         <div
-          className="fixed inset-0 bg-stone-900/95 flex items-center justify-center z-[100] p-4 backdrop-blur-md"
+          className="fixed inset-0 bg-stone-900/95 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center z-[100] p-4 backdrop-blur-md overflow-y-auto overflow-x-hidden"
           onClick={() => setPreviewDoc(null)}
         >
           <div className="relative max-w-6xl max-h-[95vh] w-full h-full bg-white/5 overflow-hidden rounded-3xl flex flex-col shadow-2xl">
@@ -822,7 +822,7 @@ export default function VerifikasiDokumenDetailPage() {
       {/* Reject Modal */}
       {rejectModal.isOpen && (
         <div
-          className="fixed inset-0 bg-stone-900/50 flex items-center justify-center z-[110] px-4 backdrop-blur-sm"
+          className="fixed inset-0 bg-stone-900/50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center z-[110] px-4 backdrop-blur-sm overflow-y-auto overflow-x-hidden p-4"
           onClick={() => {
             if (!processingDocs.has(rejectModal.docId)) {
               setRejectModal({ ...rejectModal, isOpen: false });

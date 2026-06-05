@@ -485,7 +485,7 @@ export default function KeuanganPage() {
         <div className="space-y-5">
           {/* Summary Cards */}
           {pendaftaranSummary && (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
               <div className="bg-white rounded-xl p-4 border border-slate-100 shadow-sm">
                 <p className="text-xs text-slate-500 font-medium mb-1">
                   Total Pendaftar
@@ -748,7 +748,7 @@ export default function KeuanganPage() {
                           {expandedStudentId === row.id && (
                             <tr className="bg-slate-50/50">
                               <td colSpan={8} className="px-6 py-4 border-t border-slate-100">
-                                <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden p-5">
+                                <div className="grid grid-cols-1 xl:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden p-5">
                                   
                                   {/* Data Orang Tua / Keluarga */}
                                   <div className="xl:col-span-1 space-y-4 border-r border-slate-100 pr-0 xl:pr-6">

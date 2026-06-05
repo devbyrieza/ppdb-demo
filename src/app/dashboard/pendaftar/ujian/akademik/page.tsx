@@ -133,8 +133,8 @@ export default function AkademikTestPage() {
 
   if (alreadyDone) {
     return (
-      <div className="max-w-lg mx-auto p-8 text-center mt-10">
-        <div className="bg-white rounded-2xl shadow-lg border p-10">
+      <div className="max-w-lg mx-auto p-5 md:p-8 text-center mt-10">
+        <div className="bg-white rounded-2xl shadow-lg border p-6 md:p-10">
           <CheckCircle className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
           <h2 className="text-xl font-bold mb-2">Tes Sudah Dikerjakan</h2>
           <p className="text-stone-600 mb-6">
@@ -155,8 +155,8 @@ export default function AkademikTestPage() {
 
   if (isLocked) {
     return (
-      <div className="max-w-lg mx-auto p-8 text-center mt-10">
-        <div className="bg-white rounded-[2rem] shadow-xl border p-10">
+      <div className="max-w-lg mx-auto p-5 md:p-8 text-center mt-10">
+        <div className="bg-white rounded-[2rem] shadow-xl border p-6 md:p-10">
           <div className="w-20 h-20 bg-secondary-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <AlertCircle className="w-10 h-10 text-secondary-600" />
           </div>
@@ -188,8 +188,8 @@ export default function AkademikTestPage() {
           <ArrowLeft className="w-4 h-4" /> Kembali
         </button>
 
-        <div className="bg-gradient-to-r from-primary-600 to-primary-800 rounded-[2rem] p-8 mb-8 text-white relative overflow-hidden shadow-lg border border-primary-500">
-          <div className="absolute top-0 right-0 p-8 opacity-10">
+        <div className="bg-gradient-to-r from-primary-600 to-primary-800 rounded-[2rem] p-5 md:p-8 mb-8 text-white relative overflow-hidden shadow-lg border border-primary-500">
+          <div className="absolute top-0 right-0 p-5 md:p-8 opacity-10">
             <FileText className="w-32 h-32" />
           </div>
           <div className="relative z-10 text-center md:text-left">
@@ -203,9 +203,9 @@ export default function AkademikTestPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm border p-8">
+        <div className="bg-white rounded-2xl shadow-sm border p-5 md:p-8">
           <div className="space-y-4 text-stone-700">
-            <div className="grid grid-cols-2 gap-4 bg-stone-50 p-4 rounded-xl text-sm">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-stone-50 p-4 rounded-xl text-sm">
               <div>
                 <span className="text-stone-500">Jenjang:</span>{" "}
                 <strong>{jenjang}</strong>
@@ -316,7 +316,7 @@ export default function AkademikTestPage() {
           <button
             onClick={() => handleSubmit(false)}
             disabled={loading}
-            className="w-full sm:w-auto bg-red-600 hover:bg-red-700 disabled:bg-stone-300 text-white font-bold rounded-xl px-8 py-4 text-lg transition-colors flex items-center justify-center gap-2"
+            className="w-full sm:w-auto bg-red-600 hover:bg-red-700 disabled:bg-stone-300 text-white font-bold rounded-xl px-5 md:px-8 py-4 text-lg transition-colors flex items-center justify-center gap-2"
           >
             {loading ? (
               <>

@@ -107,7 +107,7 @@ export default function DashboardPendaftarPage() {
 
 function HeroBanner({ nama, nomorPendaftaran, lastUpdate }: any) {
   return (
-    <div className="relative overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] md:rounded-[3.5rem] bg-linear-to-br from-primary-700 to-primary-900 text-white p-6 sm:p-8 md:p-16 shadow-2xl border border-primary-600/50">
+    <div className="relative overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] md:rounded-[3.5rem] bg-linear-to-br from-primary-700 to-primary-900 text-white p-6 sm:p-5 md:p-8 md:p-16 shadow-2xl border border-primary-600/50">
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-secondary-400/10 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/2" />
       <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 lg:gap-10">
         <div className="flex-1 space-y-4 sm:space-y-6">
@@ -125,7 +125,7 @@ function HeroBanner({ nama, nomorPendaftaran, lastUpdate }: any) {
               })}
             </span>
           </div>
-          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-[1.1] font-display tracking-tight text-white italic">
+          <h1 className="text-3xl sm:text-3xl md:text-5xl md:text-6xl lg:text-7xl font-black leading-[1.1] font-display tracking-tight text-white italic">
             Selamat Datang, <br />
             <span className="text-secondary-400 not-italic uppercase drop-shadow-lg">
               {nama}!
@@ -135,7 +135,7 @@ function HeroBanner({ nama, nomorPendaftaran, lastUpdate }: any) {
             "Memberdayakan generasi pemimpin Islam global berikutnya."
           </p>
         </div>
-        <div className="flex-1 lg:flex-none w-full sm:w-auto bg-black/20 backdrop-blur-xl px-6 sm:px-8 py-5 sm:py-6 rounded-[1.5rem] sm:rounded-[2rem] border border-white/10 text-center">
+        <div className="flex-1 lg:flex-none w-full sm:w-auto bg-black/20 backdrop-blur-xl px-6 sm:px-5 md:px-8 py-5 sm:py-6 rounded-[1.5rem] sm:rounded-[2rem] border border-white/10 text-center">
           <p className="text-[10px] font-black uppercase text-secondary-200/60 mb-1 tracking-[0.2em]">
             ID PENDAFTARAN
           </p>
@@ -152,7 +152,7 @@ function GuidedActionCard({ nextStep }: any) {
   return (
     <div className="bg-white rounded-[1.5rem] sm:rounded-[2rem] md:rounded-[2.5rem] border-2 border-primary-100 shadow-xl shadow-primary/5 overflow-hidden group">
       <div className="flex flex-col md:flex-row items-stretch">
-        <div className="bg-secondary-400 p-6 sm:p-8 md:p-12 flex flex-col items-center justify-center text-primary-950 min-w-[200px]">
+        <div className="bg-secondary-400 p-6 sm:p-5 md:p-8 md:p-12 flex flex-col items-center justify-center text-primary-950 min-w-[200px]">
           <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-white/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
             <Target className="w-6 h-6 sm:w-8 sm:h-8" />
           </div>
@@ -161,7 +161,7 @@ function GuidedActionCard({ nextStep }: any) {
           </p>
           <p className="text-2xl sm:text-3xl font-black">BERIKUTNYA</p>
         </div>
-        <div className="flex-1 p-6 sm:p-8 md:p-12 space-y-4 sm:space-y-6">
+        <div className="flex-1 p-6 sm:p-5 md:p-8 md:p-12 space-y-4 sm:space-y-6">
           <div>
             <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-primary-950 mb-2">
               Apa yang harus saya lakukan sekarang?
@@ -177,7 +177,7 @@ function GuidedActionCard({ nextStep }: any) {
           <div className="flex flex-wrap gap-4">
             <Link
               href={nextStep.href}
-              className="px-6 sm:px-10 py-4 sm:py-5 bg-primary-700 hover:bg-primary-800 text-white rounded-2xl font-black uppercase text-xs sm:text-sm shadow-2xl shadow-primary/20 transition-all hover:scale-105 active:scale-95 flex items-center gap-3 group/btn w-full sm:w-auto justify-center"
+              className="px-6 sm:px-6 md:px-10 py-4 sm:py-5 bg-primary-700 hover:bg-primary-800 text-white rounded-2xl font-black uppercase text-xs sm:text-sm shadow-2xl shadow-primary/20 transition-all hover:scale-105 active:scale-95 flex items-center gap-3 group/btn w-full sm:w-auto justify-center"
             >
               Mulai Sekarang{" "}
               <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover/btn:translate-x-2 transition-transform" />
@@ -224,7 +224,7 @@ function StatusGrid({ status, statusLabel, pengumuman }: any) {
       {items.map((item, id) => (
         <div
           key={id}
-          className="bg-white p-6 sm:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-stone-100 shadow-sm hover:shadow-xl transition-all duration-500 group"
+          className="bg-white p-6 sm:p-5 md:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-stone-100 shadow-sm hover:shadow-xl transition-all duration-500 group"
         >
           <div
             className={`w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center mb-4 sm:mb-6 ${item.bg} group-hover:scale-110 transition-transform shadow-inner`}
@@ -248,7 +248,7 @@ function StatusGrid({ status, statusLabel, pengumuman }: any) {
 
 function SupportCenter() {
   return (
-    <div className="bg-primary-950 text-white rounded-[2rem] sm:rounded-[2.5rem] md:rounded-[3rem] p-6 sm:p-10 md:p-16 relative overflow-hidden group shadow-2xl">
+    <div className="bg-primary-950 text-white rounded-[2rem] sm:rounded-[2.5rem] md:rounded-[3rem] p-6 sm:p-6 md:p-10 md:p-16 relative overflow-hidden group shadow-2xl">
       <div className="absolute top-0 right-0 w-96 h-96 bg-primary-800 rounded-full blur-[100px] opacity-20 -translate-y-1/2 translate-x-1/2" />
       <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 text-center lg:text-left">
         <div className="flex-1 space-y-4">
@@ -258,7 +258,7 @@ function SupportCenter() {
               PUSAT BANTUAN PPDB
             </span>
           </div>
-          <h3 className="font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display leading-tight">
+          <h3 className="font-black text-2xl sm:text-3xl md:text-4xl lg:text-3xl md:text-5xl font-display leading-tight">
             Butuh Bantuan? <br />
             <span className="text-secondary-400">Hubungi Tim Kami!</span>
           </h3>
@@ -270,7 +270,7 @@ function SupportCenter() {
         <a
           href="https://wa.me/6281285300800"
           target="_blank"
-          className="px-8 sm:px-12 py-4 sm:py-5 bg-secondary-400 text-primary-950 font-black text-xs sm:text-sm uppercase tracking-widest rounded-[1.25rem] sm:rounded-[1.5rem] hover:bg-secondary-300 shadow-xl transition-all hover:scale-105 active:scale-95 text-center w-full sm:w-auto"
+          className="px-5 md:px-8 sm:px-6 md:px-12 py-4 sm:py-5 bg-secondary-400 text-primary-950 font-black text-xs sm:text-sm uppercase tracking-widest rounded-[1.25rem] sm:rounded-[1.5rem] hover:bg-secondary-300 shadow-xl transition-all hover:scale-105 active:scale-95 text-center w-full sm:w-auto"
         >
           Chat di WhatsApp
         </a>
