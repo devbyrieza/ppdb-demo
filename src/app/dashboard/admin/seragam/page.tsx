@@ -1,13 +1,58 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Loader2, Search, Download, MessageSquare, Shirt, CheckCircle2, XCircle } from "lucide-react";
+import { Loader2, Search, Download, MessageSquare, Shirt, CheckCircle2, XCircle, Edit } from "lucide-react";
 import Swal from "sweetalert2";
 
 export default function RekapSeragamPage() {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  
+  // Edit Modal State
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editingItem, setEditingItem] = useState<any>(null);
+  const [formSizes, setFormSizes] = useState({ baju: "", celana: "", almamater: "" });
+  const [savingEdit, setSavingEdit] = useState(false);
+
+  const handleEditClick = (item: any) => {
+    setEditingItem(item);
+    setFormSizes({
+      baju: item.ukuran_seragam_baju || "",
+      celana: item.ukuran_seragam_celana || "",
+      almamater: item.ukuran_seragam_almamater || ""
+    });
+    setEditModalOpen(true);
+  };
+
+  const handleSaveEdit = async () => {
+    if (!editingItem) return;
+    setSavingEdit(true);
+    try {
+      const res = await fetch("/api/admin/seragam", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: editingItem.id,
+          ukuran_seragam_baju: formSizes.baju,
+          ukuran_seragam_celana: formSizes.celana,
+          ukuran_seragam_almamater: formSizes.almamater
+        })
+      });
+      const json = await res.json();
+      if (res.ok) {
+        setEditModalOpen(false);
+        Swal.fire("Sukses!", "Ukuran seragam berhasil diupdate.", "success");
+        fetchData();
+      } else {
+        Swal.fire("Gagal", json.message || "Gagal update data", "error");
+      }
+    } catch (err: any) {
+      Swal.fire("Error", "Terjadi kesalahan koneksi", "error");
+    } finally {
+      setSavingEdit(false);
+    }
+  };
 
   useEffect(() => {
     fetchData();
@@ -173,6 +218,7 @@ export default function RekapSeragamPage() {
                   <th className="px-6 py-4 text-center">Celana/Rok</th>
                   <th className="px-6 py-4 text-center">Almamater</th>
                   <th className="px-6 py-4 text-center">Status Form</th>
+                  <th className="px-6 py-4 text-center">Aksi</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-ink-100 bg-white">
@@ -236,6 +282,15 @@ export default function RekapSeragamPage() {
                             </div>
                           )}
                         </td>
+                        <td className="px-6 py-4 text-center">
+                          <button
+                            onClick={() => handleEditClick(item)}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-primary-50 border border-ink-200 hover:border-primary-200 text-ink-700 hover:text-primary-700 rounded-lg text-xs font-black transition-all shadow-sm"
+                          >
+                            <Edit className="w-3.5 h-3.5" />
+                            Ubah
+                          </button>
+                        </td>
                       </tr>
                     );
                   })
@@ -245,6 +300,86 @@ export default function RekapSeragamPage() {
           )}
         </div>
       </div>
+
+      {/* Edit Modal */}
+      {editModalOpen && editingItem && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink-950/50 backdrop-blur-sm">
+          <div className="bg-white rounded-3xl shadow-xl w-full max-w-md overflow-hidden">
+            <div className="p-6 border-b border-ink-100 bg-ink-50/50">
+              <h3 className="text-xl font-black text-ink-950">Ubah Ukuran Seragam</h3>
+              <p className="text-sm font-medium text-ink-500 mt-1">{editingItem.nama_lengkap}</p>
+            </div>
+            
+            <div className="p-6 space-y-4">
+              <div className="space-y-2">
+                <label className="text-xs font-black text-ink-500 uppercase tracking-widest">Ukuran Baju</label>
+                <select
+                  value={formSizes.baju}
+                  onChange={(e) => setFormSizes({ ...formSizes, baju: e.target.value })}
+                  className="w-full bg-ink-50 border border-ink-200 px-4 py-3 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none font-bold"
+                >
+                  <option value="">-- Pilih --</option>
+                  <option value="S">S</option>
+                  <option value="M">M</option>
+                  <option value="L">L</option>
+                  <option value="XL">XL</option>
+                  <option value="XXL">XXL</option>
+                </select>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-black text-ink-500 uppercase tracking-widest">Ukuran Celana / Rok</label>
+                <select
+                  value={formSizes.celana}
+                  onChange={(e) => setFormSizes({ ...formSizes, celana: e.target.value })}
+                  className="w-full bg-ink-50 border border-ink-200 px-4 py-3 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none font-bold"
+                >
+                  <option value="">-- Pilih --</option>
+                  <option value="S">S</option>
+                  <option value="M">M</option>
+                  <option value="L">L</option>
+                  <option value="XL">XL</option>
+                  <option value="XXL">XXL</option>
+                </select>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-black text-ink-500 uppercase tracking-widest">Ukuran Almamater</label>
+                <select
+                  value={formSizes.almamater}
+                  onChange={(e) => setFormSizes({ ...formSizes, almamater: e.target.value })}
+                  className="w-full bg-ink-50 border border-ink-200 px-4 py-3 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none font-bold"
+                >
+                  <option value="">-- Pilih --</option>
+                  <option value="S">S</option>
+                  <option value="M">M</option>
+                  <option value="L">L</option>
+                  <option value="XL">XL</option>
+                  <option value="XXL">XXL</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="p-6 border-t border-ink-100 flex items-center justify-end gap-3 bg-ink-50/30">
+              <button
+                onClick={() => setEditModalOpen(false)}
+                disabled={savingEdit}
+                className="px-5 py-2.5 rounded-xl text-sm font-black text-ink-600 hover:bg-ink-100 transition-colors"
+              >
+                Batal
+              </button>
+              <button
+                onClick={handleSaveEdit}
+                disabled={savingEdit}
+                className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-black bg-primary-600 hover:bg-primary-700 text-white shadow-lg shadow-primary-200 transition-all disabled:opacity-50"
+              >
+                {savingEdit && <Loader2 className="w-4 h-4 animate-spin" />}
+                Simpan Perubahan
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -50,3 +50,36 @@ export async function GET(req: Request) {
     );
   }
 }
+
+export async function PUT(req: Request) {
+  try {
+    const session = (await getServerSession()) as any;
+    if (!session || !["admin_super", "admin"].includes(session.role)) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
+    const body = await req.json();
+    const { id, ukuran_seragam_baju, ukuran_seragam_celana, ukuran_seragam_almamater } = body;
+
+    if (!id) {
+      return NextResponse.json({ message: "ID Pendaftar dibutuhkan" }, { status: 400 });
+    }
+
+    const updated = await prisma.pendaftar.update({
+      where: { id },
+      data: {
+        ukuran_seragam_baju: ukuran_seragam_baju || null,
+        ukuran_seragam_celana: ukuran_seragam_celana || null,
+        ukuran_seragam_almamater: ukuran_seragam_almamater || null,
+      }
+    });
+
+    return NextResponse.json({ message: "Berhasil menyimpan ukuran seragam", data: updated });
+  } catch (error: any) {
+    console.error("Error updating seragam:", error);
+    return NextResponse.json(
+      { message: error.message || "Internal server error" },
+      { status: 500 }
+    );
+  }
+}
