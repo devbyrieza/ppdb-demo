@@ -30,6 +30,7 @@ import {
   UploadCloud,
   CreditCard,
   Trash2,
+  LogOut,
   Plus,
   Shuffle,
 } from "lucide-react";
@@ -37,6 +38,7 @@ import Link from "next/link";
 import { UserRole } from "@/lib/access-control";
 import { exportToExcelProfessional, exportToPDF } from "@/lib/utils/export";
 import Swal from "sweetalert2";
+import { ActionDropdown } from "@/components/ui/ActionDropdown";
 
 // Filter labels for dashboard categories
 const FILTER_LABELS: Record<string, string> = {
@@ -686,7 +688,7 @@ function AdminPendaftarContent() {
     );
   };
 
-    const handleBulkUpdate = async () => {
+      const handleBulkUpdate = async () => {
     if (!bulkStatus || selectedIds.length === 0) {
       Swal.fire("Perhatian", "Pilih status dan minimal 1 pendaftar", "warning");
       return;
@@ -695,21 +697,75 @@ function AdminPendaftarContent() {
     let alasan = "";
 
     if (bulkStatus === "mengundurkan_diri") {
-      const result = await Swal.fire({
+      const { value: selectedReason } = await Swal.fire({
         title: "Alasan Mengundurkan Diri",
-        text: `Masukkan alasan mundurnya ${selectedIds.length} pendaftar ini (Opsional. Kosongkan jika tidak ada)`,
-        input: "textarea",
-        inputPlaceholder: "Contoh: Diterima di sekolah negeri...",
+        text: `Pilih alasan mundurnya ${selectedIds.length} pendaftar ini (Opsional):`,
+        input: "select",
+        inputOptions: {
+          "": "-- Tidak Diketahui / Kosongi --",
+          "Masalah/Kendala Biaya": "Masalah / Kendala Biaya",
+          "Sakit/Penyakit/Alergi": "Kesehatan (Sakit/Alergi)",
+          "Ingin Sekolah Umum": "Berubah pikiran ingin sekolah umum",
+          "Diterima di Sekolah/Pondok Lain": "Diterima di pondok/sekolah swasta lain",
+          "Kendala Jarak/Lokasi": "Kendala Jarak / Lokasi",
+          "Lainnya": "Lainnya (Ketik Manual)..."
+        },
         showCancelButton: true,
         confirmButtonColor: "#2563eb",
         cancelButtonColor: "#57534e",
-        confirmButtonText: "Ya, Update Semua",
+        confirmButtonText: "Lanjut",
         cancelButtonText: "Batal",
         reverseButtons: true,
       });
 
-      if (!result.isConfirmed) return;
-      alasan = result.value || "";
+      if (selectedReason === undefined) return;
+
+      if (selectedReason === "Lainnya") {
+        const { value: customReason } = await Swal.fire({
+          title: "Alasan Lainnya",
+          input: "text",
+          inputPlaceholder: "Ketik alasan pengunduran diri secara spesifik...",
+          showCancelButton: true,
+          confirmButtonColor: "#2563eb",
+          cancelButtonColor: "#57534e",
+          confirmButtonText: "Ya, Update Semua",
+          cancelButtonText: "Batal",
+          reverseButtons: true,
+        });
+        if (customReason === undefined) return;
+        alasan = customReason;
+      } else {
+        alasan = selectedReason;
+        
+        // If not empty, confirm again just in case
+        if (alasan) {
+            const confirmResult = await Swal.fire({
+                title: "Konfirmasi Update",
+                text: `Yakin ingin update ${selectedIds.length} pendaftar dengan alasan "${alasan}"?`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#2563eb",
+                cancelButtonColor: "#57534e",
+                confirmButtonText: "Ya, Update Semua",
+                cancelButtonText: "Batal",
+                reverseButtons: true,
+            });
+            if (!confirmResult.isConfirmed) return;
+        } else {
+            const confirmResult = await Swal.fire({
+                title: "Konfirmasi Update",
+                text: `Yakin ingin update status ${selectedIds.length} pendaftar menjadi Mengundurkan Diri (Tanpa Alasan)?`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#2563eb",
+                cancelButtonColor: "#57534e",
+                confirmButtonText: "Ya, Update Semua",
+                cancelButtonText: "Batal",
+                reverseButtons: true,
+            });
+            if (!confirmResult.isConfirmed) return;
+        }
+      }
     } else {
       const result = await Swal.fire({
         title: "Update Massal",
@@ -754,6 +810,72 @@ function AdminPendaftarContent() {
       Swal.fire("Gagal", "Gagal update status", "error");
     } finally {
       setBulkUpdating(false);
+    }
+  };
+
+  
+  const handleSingleMengundurkanDiri = async (id: string) => {
+    const { value: selectedReason } = await Swal.fire({
+      title: "Alasan Mengundurkan Diri",
+      text: "Pilih alasan mundurnya pendaftar ini (Opsional):",
+      input: "select",
+      inputOptions: {
+        "": "-- Tidak Diketahui / Kosongi --",
+        "Masalah/Kendala Biaya": "Masalah / Kendala Biaya",
+        "Sakit/Penyakit/Alergi": "Kesehatan (Sakit/Alergi)",
+        "Ingin Sekolah Umum": "Berubah pikiran ingin sekolah umum",
+        "Diterima di sekolah/pesantren lain": "Diterima di sekolah/pesantren lain",
+        "Jarak terlalu jauh": "Jarak terlalu jauh",
+        "Tidak lolos seleksi berkas/ujian": "Tidak lolos seleksi berkas/ujian",
+        "Kondisi kesehatan/keluarga": "Kondisi kesehatan/keluarga",
+        Lainnya: "Alasan Lainnya (Ketik sendiri)",
+      },
+      inputPlaceholder: "Pilih alasan",
+      showCancelButton: true,
+      cancelButtonText: "Batal",
+      confirmButtonText: "Lanjut & Simpan",
+    });
+
+    if (selectedReason === undefined) return;
+    let finalAlasan = selectedReason;
+
+    if (selectedReason === "Lainnya") {
+      const { value: customReason } = await Swal.fire({
+        title: "Alasan Lainnya",
+        input: "textarea",
+        inputPlaceholder: "Ketikkan alasan...",
+        showCancelButton: true,
+        confirmButtonText: "Simpan",
+        cancelButtonText: "Batal",
+      });
+      if (!customReason) return;
+      finalAlasan = customReason;
+    }
+
+    try {
+      Swal.fire({
+        title: "Menyimpan...",
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading(),
+      });
+
+      const response = await fetch("/api/admin/pendaftar/bulk-update", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ids: [id],
+          status_pendaftaran: "mengundurkan_diri",
+          alasan: finalAlasan,
+        }),
+      });
+
+      if (!response.ok) throw new Error("Failed to update");
+
+      Swal.fire("Sukses", "Status berhasil diubah menjadi Mengundurkan Diri!", "success");
+      fetchPendaftar();
+    } catch (error) {
+      console.error("Error updating:", error);
+      Swal.fire("Gagal", "Gagal merubah status", "error");
     }
   };
 
@@ -1594,12 +1716,17 @@ function AdminPendaftarContent() {
           </div>
         ) : pendaftar.length === 0 ? (
           <div className="text-center py-20">
-            <Users className="w-16 h-16 text-stone-300 mx-auto mb-4" />
-            <p className="text-stone-600 text-lg font-medium">
-              Tidak ada pendaftar ditemukan
-            </p>
-            <p className="text-stone-500 text-sm mt-2">
-              Coba ubah filter atau kata kunci pencarian
+            <div className="relative inline-flex mb-6">
+              <div className="absolute inset-0 bg-primary-100 rounded-full blur-xl opacity-50"></div>
+              <div className="relative bg-white p-4 rounded-full shadow-sm border border-primary-50">
+                <Users className="w-12 h-12 text-primary-300" />
+              </div>
+            </div>
+            <h3 className="text-stone-900 text-xl font-black tracking-tight mb-2">
+              Tidak Ada Data Ditemukan
+            </h3>
+            <p className="text-stone-500 text-sm max-w-sm mx-auto">
+              Tidak ada data pendaftar yang cocok dengan filter atau kata kunci pencarian Anda saat ini.
             </p>
           </div>
         ) : (
@@ -1701,28 +1828,51 @@ function AdminPendaftarContent() {
                             </button>
                           )}
                       </div>
-                      <div className="flex gap-2 mt-3">
-                        <Link
-                          href={`/dashboard/admin/pendaftar/${item.id}`}
-                          className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-primary-700 hover:bg-primary-800 text-white rounded-xl text-xs font-black transition-all active:scale-95"
-                        >
-                          <Eye className="w-3.5 h-3.5" /> Buka Detail
-                        </Link>
-                        {userRole &&
-                          ["admin_super", "admin", "penguji"].includes(
-                            userRole,
-                          ) && (
-                            <>
-                              
-                              <button
-                                onClick={() => handleOpenDelete(item)}
-                                className="px-3 py-2.5 bg-red-100 hover:bg-red-600 text-red-600 hover:text-white rounded-xl text-xs font-black transition-all active:scale-95"
-                                title="Hapus"
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </button>
-                            </>
-                          )}
+                      <div className="flex justify-end mt-3 border-t border-gold-50 pt-3">
+
+                          <ActionDropdown 
+                            items={[
+                              {
+                                label: "Buka Detail",
+                                icon: <Eye className="w-4 h-4" />,
+                                onClick: () => router.push(`/dashboard/admin/pendaftar/${item.id}`),
+                              },
+                              {
+                                label: "Verifikasi Dokumen",
+                                icon: <FileCheck className="w-4 h-4" />,
+                                onClick: () => router.push(`/dashboard/admin/verifikasi-dokumen`),
+                                hidden: !isBerkas
+                              },
+                              {
+                                label: "Verifikasi Pembayaran",
+                                icon: <CreditCard className="w-4 h-4" />,
+                                onClick: () => router.push(`/dashboard/admin/verifikasi-pembayaran`),
+                                hidden: !isKeuangan
+                              },
+                              {
+                                label: "Diterima (Promosikan)",
+                                icon: <CheckSquare className="w-4 h-4" />,
+                                onClick: () => handlePromoteCadangan([item.id]),
+                                variant: "success",
+                                hidden: !isAdminSuper || (item.status_pendaftaran !== "announced" && item.status_pendaftaran !== "cadangan")
+                              },
+                              {
+                                label: "Mengundurkan Diri",
+                                icon: <LogOut className="w-4 h-4" />,
+                                onClick: () => handleSingleMengundurkanDiri(item.id),
+                                variant: "warning",
+                                hidden: !isAdminSuper
+                              },
+                              {
+                                label: "Hapus ke Sampah",
+                                icon: <Trash2 className="w-4 h-4" />,
+                                onClick: () => handleOpenDelete(item),
+                                variant: "danger",
+                                hidden: !isAdminSuper
+                              }
+                            ]} 
+                          />
+
                       </div>
                     </div>
                   </div>
@@ -1793,11 +1943,51 @@ function AdminPendaftarContent() {
                         </button>
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap">
-                        <div className="flex items-center gap-2">
-                          <Hash className="w-4 h-4 text-primary-600" />
-                          <span className="font-mono text-sm font-bold text-primary-700">
-                            {item.nomor_pendaftaran}
-                          </span>
+                        <div className="flex justify-end gap-2">
+
+                          <ActionDropdown 
+                            items={[
+                              {
+                                label: "Buka Detail",
+                                icon: <Eye className="w-4 h-4" />,
+                                onClick: () => router.push(`/dashboard/admin/pendaftar/${item.id}`),
+                              },
+                              {
+                                label: "Verifikasi Dokumen",
+                                icon: <FileCheck className="w-4 h-4" />,
+                                onClick: () => router.push(`/dashboard/admin/verifikasi-dokumen`),
+                                hidden: !isBerkas
+                              },
+                              {
+                                label: "Verifikasi Pembayaran",
+                                icon: <CreditCard className="w-4 h-4" />,
+                                onClick: () => router.push(`/dashboard/admin/verifikasi-pembayaran`),
+                                hidden: !isKeuangan
+                              },
+                              {
+                                label: "Diterima (Promosikan)",
+                                icon: <CheckSquare className="w-4 h-4" />,
+                                onClick: () => handlePromoteCadangan([item.id]),
+                                variant: "success",
+                                hidden: !isAdminSuper || (item.status_pendaftaran !== "announced" && item.status_pendaftaran !== "cadangan")
+                              },
+                              {
+                                label: "Mengundurkan Diri",
+                                icon: <LogOut className="w-4 h-4" />,
+                                onClick: () => handleSingleMengundurkanDiri(item.id),
+                                variant: "warning",
+                                hidden: !isAdminSuper
+                              },
+                              {
+                                label: "Hapus ke Sampah",
+                                icon: <Trash2 className="w-4 h-4" />,
+                                onClick: () => handleOpenDelete(item),
+                                variant: "danger",
+                                hidden: !isAdminSuper
+                              }
+                            ]} 
+                          />
+
                         </div>
                       </td>
                       <td className="px-4 py-3">
