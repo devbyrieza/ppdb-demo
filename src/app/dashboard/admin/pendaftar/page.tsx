@@ -806,11 +806,9 @@ function AdminPendaftarContent() {
           <option value="Masalah / Kendala Biaya">Masalah / Kendala Biaya</option>
           <option value="Kesehatan (Sakit/Alergi)">Kesehatan (Sakit/Alergi)</option>
           <option value="Berubah pikiran ingin sekolah umum">Berubah pikiran ingin sekolah umum</option>
-          <option value="Diterima di sekolah/pesantren lain">Diterima di sekolah/pesantren lain</option>
-          <option value="Jarak terlalu jauh">Jarak terlalu jauh</option>
-          <option value="Tidak lolos seleksi berkas/ujian">Tidak lolos seleksi berkas/ujian</option>
-          <option value="Kondisi kesehatan/keluarga">Kondisi kesehatan/keluarga</option>
-          <option value="Lainnya">Alasan Lainnya (Ketik sendiri)</option>
+          <option value="Diterima di pondok/sekolah swasta lain">Diterima di pondok/sekolah swasta lain</option>
+          <option value="Kendala Jarak / Lokasi">Kendala Jarak / Lokasi</option>
+          <option value="Lainnya">Lainnya (Ketik Manual)...</option>
         </select>
         <input id="swal-custom-reason" class="swal2-input" placeholder="Ketik alasan spesifik..." style="display: none; width: 100%; max-width: 100%; margin: 0; box-sizing: border-box; font-size: 14px;" />
       `,
