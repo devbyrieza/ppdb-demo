@@ -283,9 +283,20 @@ export default function PengaturanPage() {
                 Semua Tahun Ajaran
               </h4>
               {tahunAjaranList.length === 0 ? (
-                <p className="text-stone-500 text-center py-8">
-                  Belum ada data tahun ajaran
-                </p>
+                <div className="text-center py-10">
+                  <div className="relative inline-flex mb-4">
+                    <div className="absolute inset-0 bg-primary-100 rounded-full blur-xl opacity-50"></div>
+                    <div className="relative bg-white p-4 rounded-full shadow-sm border border-primary-50">
+                      <Calendar className="w-10 h-10 text-primary-300" />
+                    </div>
+                  </div>
+                  <h3 className="text-stone-900 text-lg font-black tracking-tight mb-1">
+                    Belum Ada Data Tahun Ajaran
+                  </h3>
+                  <p className="text-stone-500 text-sm max-w-sm mx-auto">
+                    Silakan tambahkan Tahun Ajaran baru untuk memulai operasional pendaftaran.
+                  </p>
+                </div>
               ) : (
                 <div className="space-y-3">
                   {tahunAjaranList.map((ta) => (

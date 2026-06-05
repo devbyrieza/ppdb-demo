@@ -17,6 +17,7 @@ import {
   EyeOff,
 } from "lucide-react";
 import Swal from "sweetalert2";
+import { ActionDropdown } from "@/components/ui/ActionDropdown";
 import { ROLE_LABELS, UserRole } from "@/lib/access-control";
 
 interface AdminUser {
@@ -349,38 +350,39 @@ export default function UserManagementPage() {
                       </div>
                     </td>
                     <td className="p-8 text-right">
-                      <div className="flex justify-end gap-3 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-4 group-hover:translate-x-0">
-                        <button
-                          onClick={() => generateMagicLink(user)}
-                          title="Buat Magic Link Login"
-                          className="p-4 bg-emerald-50 text-emerald-600 rounded-2xl hover:bg-emerald-600 hover:text-white transition-all shadow-sm"
-                        >
-                          <Key className="w-5 h-5" />
-                        </button>
-                        <button
-                          onClick={() => {
-                            setFormData({
-                              id: user.id,
-                              email: user.email,
-                              password: "",
-                              full_name: user.full_name,
-                              role: user.role,
-                              secondary_roles: user.secondary_roles || [],
-                              phone: user.phone || "",
-                            });
-                            setIsEditing(true);
-                            setIsModalOpen(true);
-                          }}
-                          className="p-4 bg-primary-50 text-primary-600 rounded-2xl hover:bg-primary-600 hover:text-white transition-all shadow-sm"
-                        >
-                          <Edit className="w-5 h-5" />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(user.id, user.full_name)}
-                          className="p-4 bg-rose-50 text-rose-600 rounded-2xl hover:bg-rose-600 hover:text-white transition-all shadow-sm"
-                        >
-                          <Trash2 className="w-5 h-5" />
-                        </button>
+                      <div className="flex justify-end gap-3 transition-all duration-300">
+                        <ActionDropdown 
+                          items={[
+                            {
+                              label: "Buat Magic Link Login",
+                              icon: <Key className="w-4 h-4" />,
+                              onClick: () => generateMagicLink(user),
+                            },
+                            {
+                              label: "Edit User",
+                              icon: <Edit className="w-4 h-4" />,
+                              onClick: () => {
+                                setFormData({
+                                  id: user.id,
+                                  email: user.email,
+                                  password: "",
+                                  full_name: user.full_name,
+                                  role: user.role,
+                                  secondary_roles: user.secondary_roles || [],
+                                  phone: user.phone || "",
+                                });
+                                setIsEditing(true);
+                                setIsModalOpen(true);
+                              },
+                            },
+                            {
+                              label: "Hapus Akses",
+                              icon: <Trash2 className="w-4 h-4" />,
+                              onClick: () => handleDelete(user.id, user.full_name),
+                              variant: "danger"
+                            }
+                          ]} 
+                        />
                       </div>
                     </td>
                   </tr>
