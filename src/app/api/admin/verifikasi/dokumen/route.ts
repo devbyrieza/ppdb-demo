@@ -95,7 +95,22 @@ export async function GET(request: NextRequest) {
       };
     });
 
-    return NextResponse.json({ data: transformedData || [] });
+    let pendaftarInfo = null;
+    if (pendaftarId) {
+      pendaftarInfo = await prisma.pendaftar.findUnique({
+        where: { id: pendaftarId },
+        select: {
+          id: true,
+          nomor_pendaftaran: true,
+          nama_lengkap: true,
+          jenjang: true,
+          no_hp: true,
+          tipe_pendaftaran: true,
+        }
+      });
+    }
+
+    return NextResponse.json({ data: transformedData || [], pendaftar: pendaftarInfo });
   } catch (error) {
     console.error("Error in dokumen verification API:", error);
     return NextResponse.json(

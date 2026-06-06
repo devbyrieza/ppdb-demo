@@ -20,7 +20,8 @@ type AuditAction =
   | "REGISTER_PINDAHAN"
   | "MARK_PINDAH_KELUAR"
   | "UPDATE_PINDAHAN_STATUS"
-  | "EDIT_PENDAFTAR_FULL";
+  | "EDIT_PENDAFTAR_FULL"
+  | "ADMIN_UPLOAD_PAYMENT_FOR_PENDAFTAR";
 
 interface AuditLogParams {
   action: AuditAction;

@@ -109,10 +109,14 @@ export default function VerifikasiDokumenDetailPage() {
 
       const result = await response.json();
 
-      if (result.data && result.data.length > 0) {
+      if (result.pendaftar) {
+        setPendaftar(result.pendaftar);
+      } else if (result.data && result.data.length > 0) {
         const firstDoc = result.data[0];
         setPendaftar(firstDoc.pendaftar);
+      }
 
+      if (result.data) {
         // Process uploaded documents
         const docsData = result.data || [];
 
@@ -461,7 +465,7 @@ export default function VerifikasiDokumenDetailPage() {
 
   if (!pendaftar && !loading) {
     return (
-      <div className="bg-white rounded-3xl shadow-sm p-6 md:p-10 border border-secondary-200 text-center">
+      <div className="bg-white rounded-3xl shadow-sm p-6 md:p-10 border border-gold-200 text-center">
         <AlertCircle className="w-16 h-16 text-primary-500 mx-auto mb-4" />
         <h2 className="text-2xl font-black text-primary-950 mb-2">
           Data Tidak Ditemukan
@@ -489,18 +493,18 @@ export default function VerifikasiDokumenDetailPage() {
         accept="image/jpeg, image/png, application/pdf"
       />
       {/* Header */}
-      <div className="bg-white rounded-3xl shadow-sm p-6 border border-secondary-100">
+      <div className="bg-white rounded-3xl shadow-sm p-6 border border-gold-100">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-4">
             <button
               onClick={() => router.back()}
-              className="p-2 hover:bg-secondary-50 rounded-lg text-ink-300 transition-colors"
+              className="p-2 hover:bg-gold-50 rounded-lg text-ink-300 transition-colors"
               title="Kembali"
             >
               <ChevronLeft className="w-6 h-6" />
             </button>
             <div className="p-4 bg-linear-to-br from-primary-600 to-primary-900 rounded-2xl shadow-xl shadow-primary-900/20">
-              <User className="w-8 h-8 text-secondary-300" />
+              <User className="w-8 h-8 text-gold-300" />
             </div>
             <div>
               <h2 className="text-3xl font-black text-primary-950 leading-none mb-1">
@@ -510,7 +514,7 @@ export default function VerifikasiDokumenDetailPage() {
                 <span className="font-mono bg-primary-50 px-2.5 py-1 rounded-lg text-sm font-black text-primary-600 border border-primary-100">
                   {pendaftar?.nomor_pendaftaran}
                 </span>
-                <span className="px-2.5 py-1 bg-secondary-400 text-primary-900 rounded-lg text-[10px] font-black uppercase shadow-xs">
+                <span className="px-2.5 py-1 bg-gold-400 text-primary-900 rounded-lg text-[10px] font-black uppercase shadow-xs">
                   {pendaftar?.jenjang}
                 </span>
               </div>
@@ -536,7 +540,7 @@ export default function VerifikasiDokumenDetailPage() {
                 ? "border-emerald-200"
                 : dok.status_verifikasi === "rejected"
                   ? "border-rose-200"
-                  : "border-secondary-200"
+                  : "border-gold-200"
             }`}
           >
             {/* Document Preview */}
@@ -609,7 +613,7 @@ export default function VerifikasiDokumenDetailPage() {
                     Belum Ada
                   </div>
                 ) : (
-                  <div className="flex items-center gap-1 text-secondary-700 bg-secondary-50 px-2 py-1 rounded-lg text-[10px] font-black uppercase border border-secondary-200">
+                  <div className="flex items-center gap-1 text-gold-700 bg-gold-50 px-2 py-1 rounded-lg text-[10px] font-black uppercase border border-gold-200">
                     <RefreshCw className="w-3 h-3" />
                     Menunggu
                   </div>
@@ -629,7 +633,9 @@ export default function VerifikasiDokumenDetailPage() {
                   ) : (
                     <UploadCloud className="w-3 h-3" />
                   )}
-                  Ubah Data
+                  {dok.status_verifikasi === "empty"
+                    ? "Upload Berkas"
+                    : "Ubah Data"}
                 </button>
               </div>
 
@@ -670,7 +676,7 @@ export default function VerifikasiDokumenDetailPage() {
                   className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-black transition-all active:scale-95 disabled:opacity-50 ${
                     dok.status_verifikasi === "rejected"
                       ? "bg-rose-100 text-rose-700 border border-rose-200"
-                      : "bg-white border-2 border-secondary-100 hover:border-rose-400 hover:text-rose-600 text-ink-300"
+                      : "bg-white border-2 border-gold-100 hover:border-rose-400 hover:text-rose-600 text-ink-300"
                   }`}
                 >
                   {processingDocs.has(dok.id) ? (
@@ -899,7 +905,7 @@ export default function VerifikasiDokumenDetailPage() {
                 onClick={async () => {
                   if (!rejectReason.trim()) {
                     Swal.fire(
-                      "Peringatan",
+                      "Perhatian",
                       "Mohon isi alasan penolakan",
                       "warning",
                     );
