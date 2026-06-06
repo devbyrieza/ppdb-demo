@@ -135,6 +135,7 @@ export default function SeragamPage() {
                   <option value="L">Ukuran L</option>
                   <option value="XL">Ukuran XL</option>
                   <option value="XXL">Ukuran XXL</option>
+                  <option value="3XL">Ukuran 3XL</option>
                 </select>
               </div>
 
@@ -154,6 +155,7 @@ export default function SeragamPage() {
                   <option value="L">Ukuran L</option>
                   <option value="XL">Ukuran XL</option>
                   <option value="XXL">Ukuran XXL</option>
+                  <option value="3XL">Ukuran 3XL</option>
                 </select>
               </div>
 
@@ -173,6 +175,7 @@ export default function SeragamPage() {
                   <option value="L">Ukuran L</option>
                   <option value="XL">Ukuran XL</option>
                   <option value="XXL">Ukuran XXL</option>
+                  <option value="3XL">Ukuran 3XL</option>
                 </select>
               </div>
 
@@ -411,6 +414,33 @@ export default function SeragamPage() {
                     <li>Pinggang: 46x2 cm</li>
                     <li>Lebar Paha: 36x2 cm</li>
                     <li>Lbr Bawah Celana: 24x2 cm (44 cm)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* 3XL */}
+            <div className="bg-white p-4 rounded-2xl shadow-sm">
+              <h3 className="font-black text-primary-700 mb-2">Ukuran 3XL</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div>
+                  <p className="font-bold mb-1 text-ink-900 border-b pb-1">Baju</p>
+                  <ul className="space-y-0.5 text-ink-600">
+                    <li>Tinggi Baju: 73 cm</li>
+                    <li>Pundak: 48 cm</li>
+                    <li>Pjg Tangan: 25 cm</li>
+                    <li>Lbr Ujung Tangan: 18.5 cm</li>
+                    <li>Lbr Badan: 60x2 cm</li>
+                    <li>Kerah: 48 cm</li>
+                  </ul>
+                </div>
+                <div>
+                  <p className="font-bold mb-1 text-ink-900 border-b pb-1">Celana</p>
+                  <ul className="space-y-0.5 text-ink-600">
+                    <li>Tinggi Celana: 100 cm</li>
+                    <li>Pinggang: 48x2 cm</li>
+                    <li>Lebar Paha: 38x2 cm</li>
+                    <li>Lbr Bawah Celana: 26x2 cm (46 cm)</li>
                   </ul>
                 </div>
               </div>

@@ -60,7 +60,8 @@ export async function GET(request: NextRequest) {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
-        maxAge: 60 * 60 * 24 * 30, // 30 Days Persistent Session
+        maxAge: 60 * 60 * 24 * 90,
+          expires: new Date(Date.now() + 60 * 60 * 24 * 90 * 1000), // 90 Days Persistent Session
       },
     );
 

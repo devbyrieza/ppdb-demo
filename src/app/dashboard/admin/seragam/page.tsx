@@ -368,6 +368,7 @@ export default function RekapSeragamPage() {
                   <option value="L">L</option>
                   <option value="XL">XL</option>
                   <option value="XXL">XXL</option>
+                  <option value="3XL">3XL</option>
                 </select>
               </div>
 
@@ -384,6 +385,7 @@ export default function RekapSeragamPage() {
                   <option value="L">L</option>
                   <option value="XL">XL</option>
                   <option value="XXL">XXL</option>
+                  <option value="3XL">3XL</option>
                 </select>
               </div>
 
@@ -400,6 +402,7 @@ export default function RekapSeragamPage() {
                   <option value="L">L</option>
                   <option value="XL">XL</option>
                   <option value="XXL">XXL</option>
+                  <option value="3XL">3XL</option>
                 </select>
               </div>
             </div>

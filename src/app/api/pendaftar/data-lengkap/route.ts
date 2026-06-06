@@ -253,6 +253,31 @@ export async function POST(request: NextRequest) {
       });
     }
 
+    // SYNC TO DATA_KESEHATAN TABLE
+    if (santri) {
+      const parseSafeFloat = (val: any) => {
+        if (val === undefined || val === null || val === "") return undefined;
+        const parsed = parseFloat(val.toString());
+        return isNaN(parsed) ? undefined : parsed;
+      };
+
+      const kesehatanData = {
+        golongan_darah: santri.golongan_darah || null,
+        tinggi_badan: santri.tinggi_badan ? parseInt(santri.tinggi_badan.toString()) : null,
+        berat_badan: parseSafeFloat(santri.berat_badan) || null,
+        riwayat_penyakit: santri.riwayat_penyakit || null,
+      };
+
+      await prisma.dataKesehatan.upsert({
+        where: { pendaftar_id: pendaftarId },
+        create: {
+          pendaftar_id: pendaftarId,
+          ...kesehatanData,
+        },
+        update: kesehatanData,
+      });
+    }
+
     return NextResponse.json({
       success: true,
       message: is_draft ? "Draft tersimpan" : "Data berhasil disimpan",

@@ -74,7 +74,8 @@ export async function POST(request: NextRequest) {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
           sameSite: "lax",
-          maxAge: 60 * 60 * 24 * 30, // 30 Days for Applicants
+          maxAge: 60 * 60 * 24 * 90,
+          expires: new Date(Date.now() + 60 * 60 * 24 * 90 * 1000), // 90 Days Persistent Session
         },
       );
 
@@ -172,7 +173,8 @@ export async function POST(request: NextRequest) {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
           sameSite: "lax",
-          maxAge: 60 * 60 * 24 * 90, // 90 Days for Staff
+          maxAge: 60 * 60 * 24 * 90,
+          expires: new Date(Date.now() + 60 * 60 * 24 * 90 * 1000), // 90 Days Persistent Session
         },
       );
 

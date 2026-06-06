@@ -46,6 +46,8 @@ interface DataDiriSantri {
   anak_ke: number;
   berapa_bersaudara: number;
   golongan_darah: string;
+    hobi: string;
+    cita_cita: string;
   tinggi_badan: number;
   berat_badan: number;
   riwayat_penyakit: string;
@@ -206,6 +208,8 @@ const INITIAL_SANTRI: DataDiriSantri = {
   anak_ke: 1,
   berapa_bersaudara: 1,
   golongan_darah: "",
+    hobi: "",
+    cita_cita: "",
   tinggi_badan: 0,
   berat_badan: 0,
   riwayat_penyakit: "",
@@ -1117,7 +1121,7 @@ export default function DataLengkapForm({
                     name="berat_badan"
                     value={formData.santri.berat_badan || ""}
                     onChange={(v) =>
-                      updateSantri("berat_badan", parseInt(v) || 0)
+                      updateSantri("berat_badan", parseFloat(v) || 0)
                     }
                     type="number"
                     placeholder="45"
@@ -1131,6 +1135,20 @@ export default function DataLengkapForm({
                       onChange={(v) => updateSantri("riwayat_penyakit", v)}
                       placeholder="Isi '-' jika tidak ada"
                       required
+                    />
+                    <InputField
+                      label="Hobi (Opsional)"
+                      name="hobi"
+                      value={formData.santri.hobi}
+                      onChange={(v) => updateSantri("hobi", v)}
+                      placeholder="Membaca, Olahraga, dll"
+                    />
+                    <InputField
+                      label="Cita-cita (Opsional)"
+                      name="cita_cita"
+                      value={formData.santri.cita_cita}
+                      onChange={(v) => updateSantri("cita_cita", v)}
+                      placeholder="Dokter, Guru, dll"
                     />
                   </div>
                 </div>
