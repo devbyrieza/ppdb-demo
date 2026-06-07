@@ -74,6 +74,16 @@ async function compressImage(file: File): Promise<File> {
   
   if (!isImageByType && !isImageByExt) return file;
 
+  // Skip compression for HEIC and WEBP to prevent hanging on unsupported browsers
+  if (
+    file.type.includes("heic") ||
+    file.type.includes("webp") ||
+    file.name.toLowerCase().endsWith(".heic") ||
+    file.name.toLowerCase().endsWith(".webp")
+  ) {
+    return file;
+  }
+
   return new Promise((resolve) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);

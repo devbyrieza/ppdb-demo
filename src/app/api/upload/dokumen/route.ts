@@ -15,7 +15,7 @@ const DOKUMEN_CONFIG: Record<
 > = {
   kartu_keluarga: {
     label: "Scan Kartu Keluarga",
-    maxSize: 2 * 1024 * 1024,
+    maxSize: 10 * 1024 * 1024,
     allowedTypes: [
       "image/jpeg",
       "image/jpg",
@@ -28,7 +28,7 @@ const DOKUMEN_CONFIG: Record<
   },
   akta_kelahiran: {
     label: "Scan Akte Kelahiran",
-    maxSize: 2 * 1024 * 1024,
+    maxSize: 10 * 1024 * 1024,
     allowedTypes: [
       "image/jpeg",
       "image/jpg",
@@ -41,7 +41,7 @@ const DOKUMEN_CONFIG: Record<
   },
   rapor_sem1: {
     label: "Scan Rapor Semester Ganjil Terakhir",
-    maxSize: 2 * 1024 * 1024,
+    maxSize: 10 * 1024 * 1024,
     allowedTypes: [
       "image/jpeg",
       "image/jpg",
@@ -54,7 +54,7 @@ const DOKUMEN_CONFIG: Record<
   },
   rapor_sem2: {
     label: "Scan Rapor Semester Genap Terakhir",
-    maxSize: 2 * 1024 * 1024,
+    maxSize: 10 * 1024 * 1024,
     allowedTypes: [
       "image/jpeg",
       "image/jpg",
@@ -67,7 +67,7 @@ const DOKUMEN_CONFIG: Record<
   },
   nisn: {
     label: "Scan NISN",
-    maxSize: 2 * 1024 * 1024,
+    maxSize: 10 * 1024 * 1024,
     allowedTypes: [
       "image/jpeg",
       "image/jpg",
@@ -80,7 +80,7 @@ const DOKUMEN_CONFIG: Record<
   },
   foto_setengah_badan: {
     label: "Foto Setengah Badan",
-    maxSize: 2 * 1024 * 1024,
+    maxSize: 10 * 1024 * 1024,
     allowedTypes: [
       "image/jpeg",
       "image/jpg",
@@ -92,7 +92,7 @@ const DOKUMEN_CONFIG: Record<
   },
   surat_kesehatan: {
     label: "Surat Keterangan Sehat",
-    maxSize: 2 * 1024 * 1024,
+    maxSize: 10 * 1024 * 1024,
     allowedTypes: [
       "image/jpeg",
       "image/jpg",
@@ -105,7 +105,7 @@ const DOKUMEN_CONFIG: Record<
   },
   pakta_integritas_santri: {
     label: "Scan Pakta Integritas Calon Santri",
-    maxSize: 2 * 1024 * 1024,
+    maxSize: 10 * 1024 * 1024,
     allowedTypes: [
       "image/jpeg",
       "image/jpg",
@@ -118,7 +118,7 @@ const DOKUMEN_CONFIG: Record<
   },
   pakta_integritas_ortu: {
     label: "Scan Pakta Integritas Calon Orangtua/Wali Santri",
-    maxSize: 2 * 1024 * 1024,
+    maxSize: 10 * 1024 * 1024,
     allowedTypes: [
       "image/jpeg",
       "image/jpg",
@@ -131,7 +131,7 @@ const DOKUMEN_CONFIG: Record<
   },
   pernyataan_bebas_negatif: {
     label: "Scan Pernyataan Bebas Perilaku Negatif",
-    maxSize: 2 * 1024 * 1024,
+    maxSize: 10 * 1024 * 1024,
     allowedTypes: [
       "image/jpeg",
       "image/jpg",
@@ -219,6 +219,8 @@ export async function POST(request: NextRequest) {
     if (hex.startsWith("FFD8FF")) detectedType = "image/jpeg";
     else if (hex === "89504E47") detectedType = "image/png";
     else if (hex === "25504446") detectedType = "application/pdf";
+    else if (hex === "52494646") detectedType = "image/webp"; // RIFF
+    else if (["00000018", "00000020", "0000001C"].includes(hex)) detectedType = "image/heic"; // ftyp
 
     const isImageAllowed = config.allowedTypes.includes("image/jpeg");
     const safeFileType = detectedType;
@@ -259,6 +261,8 @@ export async function POST(request: NextRequest) {
     if (detectedType === "image/jpeg") fileExtension = "jpg";
     else if (detectedType === "image/png") fileExtension = "png";
     else if (detectedType === "application/pdf") fileExtension = "pdf";
+    else if (detectedType === "image/heic") fileExtension = "heic";
+    else if (detectedType === "image/webp") fileExtension = "webp";
 
     const fileName = `${jenisDokumen}-${pendaftar.nomor_pendaftaran}-${timestamp}.${fileExtension}`;
 
