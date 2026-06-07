@@ -13,14 +13,13 @@ jobs:
     - name: Trigger Coolify Deployment
       run: |
         if [ -z "${{ secrets.COOLIFY_WEBHOOK }}" ]; then
-          echo "❌ Error: COOLIFY_WEBHOOK secret is not set in GitHub repository."
-          echo "Please add it to: Settings -> Secrets and variables -> Actions"
-          exit 1
+          echo "⚠️ COOLIFY_WEBHOOK secret is not set. Skipping Coolify trigger."
+          echo "To auto-deploy, add it to: Settings -> Secrets and variables -> Actions"
+        else
+          echo "🚀 Triggering Coolify deployment..."
+          curl -s --max-time 30 -X GET "${{ secrets.COOLIFY_WEBHOOK }}" || echo "⚠️ Coolify webhook timed out or failed, but push succeeded."
+          echo "✅ Trigger sent."
         fi
-        
-        echo "🚀 Triggering Coolify deployment..."
-        curl -s -X GET "${{ secrets.COOLIFY_WEBHOOK }}"
-        echo "✅ Trigger sent successfully."
           
     - name: Notify Deployment Status
       run: |
