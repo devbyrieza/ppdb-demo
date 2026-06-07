@@ -39,6 +39,7 @@ export async function GET(request: NextRequest) {
           select: {
             nama_lengkap: true,
             jenjang: true,
+            jenis_kelamin: true,
           },
         },
       },
@@ -80,9 +81,19 @@ export async function GET(request: NextRequest) {
 
           if (fs.existsSync(fullPath)) {
             const ext = path.extname(fullPath) || ".jpg";
+            
+            // Tentukan Putra/Putri
+            const jk = foto.pendaftar.jenis_kelamin?.toUpperCase() || "";
+            const isPutra = jk === "L" || jk === "LAKI-LAKI" || jk.includes("PUTRA");
+            const genderStr = isPutra ? "Putra" : "Putri";
+            
+            // Nama folder format: [JENJANG] [Putra/Putri]
+            const folderName = `${foto.pendaftar.jenjang} ${genderStr}`;
+            
             // Nama file format: [JENJANG] - Nama Lengkap.jpg
             const safeName = foto.pendaftar.nama_lengkap.replace(/[^a-zA-Z0-9 ]/g, "").trim();
-            const filenameInZip = `${foto.pendaftar.jenjang}/${foto.pendaftar.jenjang} - ${safeName}${ext}`;
+            const filenameInZip = `${folderName}/${foto.pendaftar.jenjang} - ${safeName}${ext}`;
+            
             archive.file(fullPath, { name: filenameInZip });
           }
         }
