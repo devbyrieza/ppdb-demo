@@ -21,6 +21,7 @@ import {
   Send,
   Lock,
   ShieldCheck,
+  Download,
   MessageCircle,
 } from "lucide-react";
 
@@ -67,8 +68,11 @@ function formatFileSize(bytes: number): string {
 }
 
 async function compressImage(file: File): Promise<File> {
-  // Hanya kompres jika file adalah gambar
-  if (!file.type.startsWith("image/")) return file;
+  // Pengecekan apakah file adalah gambar
+  const isImageByType = file.type.startsWith("image/");
+  const isImageByExt = /\\.(jpe?g|png|webp|heic)$/i.test(file.name);
+  
+  if (!isImageByType && !isImageByExt) return file;
 
   return new Promise((resolve) => {
     const reader = new FileReader();
@@ -331,6 +335,21 @@ function DokumenCard({
             </div>
           </div>
           <div className="flex items-center gap-2">
+            {[
+              "surat_kesehatan",
+              "pakta_integritas_santri",
+              "pakta_integritas_ortu",
+              "pernyataan_bebas_negatif",
+            ].includes(dokumen.key) && (
+              <button
+                disabled
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-primary-50 text-primary-400 rounded-lg text-[10px] font-black border border-primary-100 cursor-not-allowed opacity-70"
+                title="Format dokumen sedang disiapkan panitia"
+              >
+                <Download className="w-3.5 h-3.5" />
+                Format Belum Ready
+              </button>
+            )}
             {dokumen.status !== "pending" && (
               <button
                 onClick={(e) => {
@@ -1112,12 +1131,12 @@ export default function UploadBerkasTab() {
                     <p className="text-emerald-700 text-xs mt-0.5 font-medium">
                       Anda bisa menghubungi CS di nomor{" "}
                       <a
-                        href="https://wa.me/6285111524441"
+                        href="https://wa.me/6281285300800"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="font-black underline hover:text-emerald-900"
                       >
-                        0851-1152-4441
+                        0812-8530-0800
                       </a>{" "}
                       jika ingin cepat diverifikasi.
                     </p>

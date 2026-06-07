@@ -71,6 +71,14 @@ export default function Navbar() {
       handleBerandaClick(e);
       return;
     }
+
+    if (typeof window !== "undefined" && window.location.hostname.startsWith("ppdb.")) {
+      e.preventDefault();
+      const mainDomain = window.location.hostname.replace("ppdb.", "");
+      window.location.href = `https://${mainDomain}${href}`;
+      return;
+    }
+
     if (href.startsWith("#") && pathname === "/") {
       e.preventDefault();
       scrollToSection(href, 100);
@@ -107,6 +115,13 @@ export default function Navbar() {
 
   const handleBerandaClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
+
+    if (typeof window !== "undefined" && window.location.hostname.startsWith("ppdb.")) {
+      const mainDomain = window.location.hostname.replace("ppdb.", "");
+      window.location.href = `https://${mainDomain}/`;
+      return;
+    }
+
     if (pathname === "/") {
       scrollToTop();
     } else {

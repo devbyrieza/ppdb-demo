@@ -61,7 +61,7 @@ COPY --from=builder /app/scripts ./scripts
 # Buat direktori penyimpanan lokal dan atur CHOWN agar user nextjs bisa menulis file
 RUN mkdir -p /app/storage_data && chown -R nextjs:nodejs /app/storage_data
 
-USER nextjs
+# USER nextjs
 
 EXPOSE 3000
 

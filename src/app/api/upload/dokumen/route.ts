@@ -211,8 +211,17 @@ export async function POST(request: NextRequest) {
         { status: 400 },
       );
     }
+    // 5. Detect Real Mime Type via Magic Bytes
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const hex = buffer.slice(0, 4).toString("hex").toUpperCase();
+    let detectedType = file.type || "";
+
+    if (hex.startsWith("FFD8FF")) detectedType = "image/jpeg";
+    else if (hex === "89504E47") detectedType = "image/png";
+    else if (hex === "25504446") detectedType = "application/pdf";
+
     const isImageAllowed = config.allowedTypes.includes("image/jpeg");
-    const safeFileType = file.type || "";
+    const safeFileType = detectedType;
     const isAllowedType =
       config.allowedTypes.includes(safeFileType) ||
       (isImageAllowed && safeFileType.startsWith("image/"));
@@ -226,15 +235,6 @@ export async function POST(request: NextRequest) {
         { status: 400 },
       );
     }
-
-    // 5. Detect Real Mime Type via Magic Bytes
-    const buffer = Buffer.from(await file.arrayBuffer());
-    const hex = buffer.slice(0, 4).toString("hex").toUpperCase();
-    let detectedType = file.type;
-
-    if (hex.startsWith("FFD8FF")) detectedType = "image/jpeg";
-    else if (hex === "89504E47") detectedType = "image/png";
-    else if (hex === "25504446") detectedType = "application/pdf";
 
     // 6. Ambil data pendaftar (Check existence)
     const pendaftar = await prisma.pendaftar.findUnique({

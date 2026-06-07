@@ -37,13 +37,26 @@ export async function POST(req: NextRequest) {
 
     // Tentukan where clause
     const whereClause = promoteAll
-      ? { status_pendaftaran: "announced" }
-      : { id: { in: ids }, status_pendaftaran: "announced" };
+      ? { status_pendaftaran: { in: ["announced", "cadangan"] } }
+      : { id: { in: ids }, status_pendaftaran: { in: ["announced", "cadangan"] } };
 
-    // Ambil list pendaftar yang akan dipromosikan (untuk audit log & upsert pengumuman)
+    // Ambil list pendaftar yang akan dipromosikan (untuk audit log & upsert pengumuman & kirim notifikasi)
     const candidates = await prisma.pendaftar.findMany({
       where: whereClause,
-      select: { id: true, nama_lengkap: true, nomor_pendaftaran: true, tahun_ajaran_id: true },
+      select: {
+        id: true,
+        nama_lengkap: true,
+        nomor_pendaftaran: true,
+        tahun_ajaran_id: true,
+        no_hp: true,
+        jenjang: true,
+        orang_tua: {
+          select: {
+            no_hp_ayah: true,
+            no_hp_ibu: true,
+          },
+        },
+      },
     });
 
     if (candidates.length === 0) {
@@ -86,6 +99,36 @@ export async function POST(req: NextRequest) {
       }
     });
 
+    // 3. Kirim Notifikasi WhatsApp Otomatis (Antrean)
+    let notifiedCount = 0;
+    try {
+      const { notifyCombinedFinalResult } = await import("@/lib/wablas");
+      const { processWhatsappQueue } = await import("@/lib/whatsapp-queue");
+
+      for (const candidate of candidates) {
+        const phone = candidate.no_hp || candidate.orang_tua?.no_hp_ayah || candidate.orang_tua?.no_hp_ibu;
+        if (phone) {
+          await notifyCombinedFinalResult({
+            pendaftarId: candidate.id,
+            phone,
+            nama: candidate.nama_lengkap,
+            status: "DITERIMA",
+            jenjang: candidate.jenjang,
+          });
+          notifiedCount++;
+        }
+      }
+
+      // Jalankan proses antrean secara asinkron (fail-safe jika cron delay/mati)
+      if (notifiedCount > 0) {
+        processWhatsappQueue().catch((err) =>
+          console.error("Failed to run processWhatsappQueue asynchronously:", err)
+        );
+      }
+    } catch (notifErr) {
+      console.error("WhatsApp Promotion Notification Error:", notifErr);
+    }
+
     // Audit log
     logAdminAction({
       action: "PROMOTE_CADANGAN_TO_DITERIMA",
@@ -97,6 +140,7 @@ export async function POST(req: NextRequest) {
         : candidates.map((c) => c.nama_lengkap).join(", "),
       details: {
         promoted_count: candidates.length,
+        notified_count: notifiedCount,
         mode: promoteAll ? "all" : "selected",
         ids: candidateIds,
       },
@@ -105,7 +149,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       success: true,
       updated_count: candidates.length,
-      message: `${candidates.length} Pendaftar berhasil dipindahkan dari Cadangan ke Diterima.`,
+      notified_count: notifiedCount,
+      message: `${candidates.length} Pendaftar berhasil dipindahkan dari Cadangan ke Diterima. Notifikasi WhatsApp telah diantrekan.`,
     });
   } catch (error) {
     console.error("Promote cadangan error:", error);
@@ -115,3 +160,4 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
