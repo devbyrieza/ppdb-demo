@@ -11,6 +11,8 @@ import {
   buildMessageDocumentRejected,
 } from "@/lib/whatsapp-queue";
 
+export const dynamic = 'force-dynamic';
+
 const REQUIRED_DOC_TYPES = [
   "kartu_keluarga",
   "akta_kelahiran",
