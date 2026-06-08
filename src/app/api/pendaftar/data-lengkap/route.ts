@@ -121,6 +121,24 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { santri, ayah, ibu, wali, wali_sama_dengan_ortu, is_draft } = body;
 
+    const parseSafeInt = (val: any) => {
+      if (val === undefined || val === null || val === "") return undefined;
+      const parsed = parseInt(val.toString());
+      return isNaN(parsed) ? undefined : parsed;
+    };
+
+    const parseSafeFloat = (val: any) => {
+      if (val === undefined || val === null || val === "") return undefined;
+      const parsed = parseFloat(val.toString());
+      return isNaN(parsed) ? undefined : parsed;
+    };
+
+    const parseSafeDate = (val: any) => {
+      if (!val) return null;
+      const d = new Date(val);
+      return isNaN(d.getTime()) ? null : d;
+    };
+
     // Relaxation: If is_draft, we don't require anything.
     // If not draft (manual Save), we still keep some sanity checks but less strict.
     if (!is_draft) {
@@ -159,8 +177,10 @@ export async function POST(request: NextRequest) {
       // Identity Sync
       if (santri.nama_lengkap) updateData.nama_lengkap = santri.nama_lengkap;
       if (santri.nik) updateData.nik = santri.nik;
-      if (santri.tanggal_lahir)
-        updateData.tanggal_lahir = new Date(santri.tanggal_lahir);
+      if (santri.tanggal_lahir) {
+        const d = parseSafeDate(santri.tanggal_lahir);
+        if (d) updateData.tanggal_lahir = d;
+      }
       if (jenisKelaminDb) updateData.jenis_kelamin = jenisKelaminDb;
       if (santri.no_hp) updateData.no_hp = santri.no_hp;
 
@@ -175,12 +195,6 @@ export async function POST(request: NextRequest) {
       if (santri.kode_pos) updateData.kode_pos = santri.kode_pos;
 
       // Academic & Bio Sync (Safely handle 0 and NaN)
-      const parseSafeInt = (val: any) => {
-        if (val === undefined || val === null || val === "") return undefined;
-        const parsed = parseInt(val.toString());
-        return isNaN(parsed) ? undefined : parsed;
-      };
-
       if (santri.asal_sekolah) updateData.asal_sekolah = santri.asal_sekolah;
       if (santri.nisn) updateData.nisn = santri.nisn;
 
@@ -216,9 +230,7 @@ export async function POST(request: NextRequest) {
         nama_ayah: ayah?.nama_lengkap,
         nik_ayah: ayah?.nik,
         tempat_lahir_ayah: ayah?.tempat_lahir,
-        tanggal_lahir_ayah: ayah?.tanggal_lahir
-          ? new Date(ayah.tanggal_lahir)
-          : null,
+        tanggal_lahir_ayah: parseSafeDate(ayah?.tanggal_lahir),
         pendidikan_ayah: ayah?.pendidikan_terakhir,
         pekerjaan_ayah: ayah?.pekerjaan,
         penghasilan_ayah: ayah?.penghasilan,
@@ -228,9 +240,7 @@ export async function POST(request: NextRequest) {
         nama_ibu: ibu?.nama_lengkap,
         nik_ibu: ibu?.nik,
         tempat_lahir_ibu: ibu?.tempat_lahir,
-        tanggal_lahir_ibu: ibu?.tanggal_lahir
-          ? new Date(ibu.tanggal_lahir)
-          : null,
+        tanggal_lahir_ibu: parseSafeDate(ibu?.tanggal_lahir),
         pendidikan_ibu: ibu?.pendidikan_terakhir,
         pekerjaan_ibu: ibu?.pekerjaan,
         penghasilan_ibu: ibu?.penghasilan,
@@ -241,6 +251,7 @@ export async function POST(request: NextRequest) {
         no_hp_wali: wali?.no_hp,
         hubungan_wali: wali?.hubungan_status,
         alamat_wali: wali?.alamat,
+        tanggal_lahir_wali: parseSafeDate(wali?.tanggal_lahir),
       };
 
       await prisma.orangTua.upsert({
@@ -255,16 +266,10 @@ export async function POST(request: NextRequest) {
 
     // SYNC TO DATA_KESEHATAN TABLE
     if (santri) {
-      const parseSafeFloat = (val: any) => {
-        if (val === undefined || val === null || val === "") return undefined;
-        const parsed = parseFloat(val.toString());
-        return isNaN(parsed) ? undefined : parsed;
-      };
-
       const kesehatanData = {
         golongan_darah: santri.golongan_darah || null,
-        tinggi_badan: santri.tinggi_badan ? parseInt(santri.tinggi_badan.toString()) : null,
-        berat_badan: parseSafeFloat(santri.berat_badan) || null,
+        tinggi_badan: parseSafeInt(santri.tinggi_badan) ?? null,
+        berat_badan: parseSafeFloat(santri.berat_badan) ?? null,
         riwayat_penyakit: santri.riwayat_penyakit || null,
       };
 
