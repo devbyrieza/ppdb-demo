@@ -267,7 +267,6 @@ export async function POST(request: NextRequest) {
     // SYNC TO DATA_KESEHATAN TABLE
     if (santri) {
       const kesehatanData = {
-        golongan_darah: santri.golongan_darah || null,
         tinggi_badan: parseSafeInt(santri.tinggi_badan) ?? null,
         berat_badan: parseSafeFloat(santri.berat_badan) ?? null,
         riwayat_penyakit: santri.riwayat_penyakit || null,
