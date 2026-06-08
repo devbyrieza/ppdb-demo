@@ -41,6 +41,12 @@ export async function POST(request: NextRequest) {
       telegram_username,
     } = registrationData;
 
+    const parseSafeDate = (val: any) => {
+      if (!val) return undefined;
+      const d = new Date(val);
+      return isNaN(d.getTime()) ? undefined : d;
+    };
+
     // Check if NIK already registered (ignore soft-deleted)
     const existing = await prisma.pendaftar.findFirst({
       where: { nik, deleted_at: null },
@@ -92,7 +98,7 @@ export async function POST(request: NextRequest) {
         tahun_ajaran_id: tahunAjaran.id,
         nik,
         nama_lengkap,
-        tanggal_lahir: tanggal_lahir ? new Date(tanggal_lahir) : undefined,
+        tanggal_lahir: parseSafeDate(tanggal_lahir),
         jenis_kelamin,
         jenjang,
         no_hp,

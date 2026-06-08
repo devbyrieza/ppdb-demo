@@ -3,6 +3,18 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "@/lib/session";
 import { logAdminAction } from "@/lib/audit";
 
+const parseSafeInt = (val: any) => {
+  if (val === undefined || val === null || val === "") return null;
+  const parsed = parseInt(val.toString());
+  return isNaN(parsed) ? null : parsed;
+};
+
+const parseSafeDate = (val: any) => {
+  if (!val) return null;
+  const d = new Date(val);
+  return isNaN(d.getTime()) ? null : d;
+};
+
 export async function GET(
   request: NextRequest,
   props: { params: Promise<{ id: string }> },
@@ -107,8 +119,7 @@ export async function GET(
       // Identity
       tempat_lahir: pendaftar.tempat_lahir || santri.tempat_lahir || null,
       tanggal_lahir:
-        pendaftar.tanggal_lahir ||
-        (santri.tanggal_lahir ? new Date(santri.tanggal_lahir) : null),
+        pendaftar.tanggal_lahir || parseSafeDate(santri.tanggal_lahir),
       golongan_darah: pendaftar.golongan_darah || santri.golongan_darah || null,
       hobi: pendaftar.hobi || santri.hobi || null,
       cita_cita: pendaftar.cita_cita || santri.cita_cita || null,
@@ -127,14 +138,14 @@ export async function GET(
       asal_sekolah: pendaftar.asal_sekolah || santri.asal_sekolah || null,
       alamat_sekolah: pendaftar.alamat_sekolah || santri.alamat_sekolah || null,
       tahun_lulus:
-        pendaftar.tahun_lulus ||
-        (santri.tahun_lulus ? parseInt(santri.tahun_lulus) : null),
+        pendaftar.tahun_lulus || parseSafeInt(santri.tahun_lulus),
       nisn: pendaftar.nisn || santri.nisn || null,
-      anak_ke:
-        pendaftar.anak_ke || (santri.anak_ke ? parseInt(santri.anak_ke) : null),
+      anak_ke: pendaftar.anak_ke || parseSafeInt(santri.anak_ke),
       jumlah_saudara:
         pendaftar.jumlah_saudara ||
-        (santri.berapa_bersaudara ? parseInt(santri.berapa_bersaudara) : null),
+        parseSafeInt(santri.berapa_bersaudara) ||
+        parseSafeInt(santri.jumlah_saudara) ||
+        null,
 
       // Parents (Nested object override)
       orang_tua: pendaftar.orang_tua
@@ -150,7 +161,7 @@ export async function GET(
               null,
             tanggal_lahir_ayah:
               pendaftar.orang_tua.tanggal_lahir_ayah ||
-              (ayah.tanggal_lahir ? new Date(ayah.tanggal_lahir) : null),
+              parseSafeDate(ayah.tanggal_lahir),
             pekerjaan_ayah:
               pendaftar.orang_tua.pekerjaan_ayah || ayah.pekerjaan || null,
             pendidikan_ayah:
@@ -172,7 +183,7 @@ export async function GET(
               pendaftar.orang_tua.tempat_lahir_ibu || ibu.tempat_lahir || null,
             tanggal_lahir_ibu:
               pendaftar.orang_tua.tanggal_lahir_ibu ||
-              (ibu.tanggal_lahir ? new Date(ibu.tanggal_lahir) : null),
+              parseSafeDate(ibu.tanggal_lahir),
             pekerjaan_ibu:
               pendaftar.orang_tua.pekerjaan_ibu || ibu.pekerjaan || null,
             pendidikan_ibu:
@@ -289,13 +300,13 @@ export async function PATCH(
             nama_lengkap: santri.nama_lengkap,
             nik: santri.nik,
             tempat_lahir: santri.tempat_lahir,
-            tanggal_lahir: santri.tanggal_lahir ? new Date(santri.tanggal_lahir) : null,
+            tanggal_lahir: parseSafeDate(santri.tanggal_lahir),
             jenis_kelamin: santri.jenis_kelamin,
             no_hp: santri.no_hp,
             email: santri.email,
             golongan_darah: santri.golongan_darah,
-            anak_ke: santri.anak_ke != null ? parseInt(santri.anak_ke.toString()) : null,
-            jumlah_saudara: santri.jumlah_saudara != null ? parseInt(santri.jumlah_saudara.toString()) : null,
+            anak_ke: parseSafeInt(santri.anak_ke),
+            jumlah_saudara: parseSafeInt(santri.jumlah_saudara),
             hobi: santri.hobi,
             cita_cita: santri.cita_cita,
             alamat: santri.alamat,
@@ -308,11 +319,11 @@ export async function PATCH(
             kode_pos: santri.kode_pos,
             asal_sekolah: santri.asal_sekolah,
             alamat_sekolah: santri.alamat_sekolah,
-            tahun_lulus: santri.tahun_lulus != null ? parseInt(santri.tahun_lulus.toString()) : null,
+            tahun_lulus: parseSafeInt(santri.tahun_lulus),
             nisn: santri.nisn,
             // Pindahan fields
             tipe_pendaftaran: santri.tipe_pendaftaran || "BARU",
-            kelas_masuk: santri.kelas_masuk != null ? parseInt(santri.kelas_masuk.toString()) : null,
+            kelas_masuk: parseSafeInt(santri.kelas_masuk),
             asal_institusi: santri.asal_institusi,
             nomor_induk_lama: santri.nomor_induk_lama,
             catatan_pindahan: santri.catatan_pindahan,
@@ -327,7 +338,7 @@ export async function PATCH(
             nama_ayah: orang_tua.nama_ayah,
             nik_ayah: orang_tua.nik_ayah,
             tempat_lahir_ayah: orang_tua.tempat_lahir_ayah,
-            tanggal_lahir_ayah: orang_tua.tanggal_lahir_ayah ? new Date(orang_tua.tanggal_lahir_ayah) : null,
+            tanggal_lahir_ayah: parseSafeDate(orang_tua.tanggal_lahir_ayah),
             pendidikan_ayah: orang_tua.pendidikan_ayah,
             pekerjaan_ayah: orang_tua.pekerjaan_ayah,
             penghasilan_ayah: orang_tua.penghasilan_ayah,
@@ -337,7 +348,7 @@ export async function PATCH(
             nama_ibu: orang_tua.nama_ibu,
             nik_ibu: orang_tua.nik_ibu,
             tempat_lahir_ibu: orang_tua.tempat_lahir_ibu,
-            tanggal_lahir_ibu: orang_tua.tanggal_lahir_ibu ? new Date(orang_tua.tanggal_lahir_ibu) : null,
+            tanggal_lahir_ibu: parseSafeDate(orang_tua.tanggal_lahir_ibu),
             pendidikan_ibu: orang_tua.pendidikan_ibu,
             pekerjaan_ibu: orang_tua.pekerjaan_ibu,
             penghasilan_ibu: orang_tua.penghasilan_ibu,
@@ -347,7 +358,7 @@ export async function PATCH(
             nama_wali: orang_tua.nama_wali,
             nik_wali: orang_tua.nik_wali,
             tempat_lahir_wali: orang_tua.tempat_lahir_wali,
-            tanggal_lahir_wali: orang_tua.tanggal_lahir_wali ? new Date(orang_tua.tanggal_lahir_wali) : null,
+            tanggal_lahir_wali: parseSafeDate(orang_tua.tanggal_lahir_wali),
             pendidikan_wali: orang_tua.pendidikan_wali,
             pekerjaan_wali: orang_tua.pekerjaan_wali,
             penghasilan_wali: orang_tua.penghasilan_wali,

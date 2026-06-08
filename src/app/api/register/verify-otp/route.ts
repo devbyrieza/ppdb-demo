@@ -31,6 +31,18 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: "Tahun Ajaran aktif tidak ditemukan" }, { status: 500 });
     }
 
+    const parseSafeDate = (val: any) => {
+      if (!val) return undefined;
+      const d = new Date(val);
+      return isNaN(d.getTime()) ? undefined : d;
+    };
+
+    const parseSafeInt = (val: any) => {
+      if (val === undefined || val === null || val === "") return undefined;
+      const parsed = parseInt(val.toString());
+      return isNaN(parsed) ? undefined : parsed;
+    };
+
     // Cek duplikat NIK sebelum membuat akun (abaikan yang sudah dihapus/soft-delete)
     const existingPendaftar = await prisma.pendaftar.findFirst({
       where: { 
@@ -70,9 +82,9 @@ export async function POST(request: NextRequest) {
           tahun_ajaran_id: activeTA!.id,
           nomor_pendaftaran: nomorPendaftaran,
           tempat_lahir: regData.tempat_lahir || undefined,
-          tanggal_lahir: regData.tanggal_lahir ? new Date(regData.tanggal_lahir) : undefined,
+          tanggal_lahir: parseSafeDate(regData.tanggal_lahir),
           tipe_pendaftaran: regData.tipe_pendaftaran || "BARU",
-          kelas_masuk: regData.kelas_masuk ? parseInt(regData.kelas_masuk) : undefined,
+          kelas_masuk: parseSafeInt(regData.kelas_masuk),
           asal_institusi: regData.asal_institusi || undefined,
           nomor_induk_lama: regData.nomor_induk_lama || undefined,
           catatan_pindahan: regData.catatan_pindahan || undefined,

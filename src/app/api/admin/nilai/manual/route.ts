@@ -28,13 +28,19 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "ID Pendaftar wajib diisi" }, { status: 400 });
     }
 
+    const parseSafeFloat = (val: any) => {
+      if (val === undefined || val === null || val === "") return null;
+      const parsed = parseFloat(val.toString());
+      return isNaN(parsed) ? null : parsed;
+    };
+
     // Parse the numbers safely
-    const akademik = score_akademik ? parseFloat(score_akademik) : null;
-    const quran = score_quran ? parseFloat(score_quran) : null;
-    const w_santri = score_wawancara_santri ? parseFloat(score_wawancara_santri) : null;
-    const w_ortu = score_wawancara_ortu ? parseFloat(score_wawancara_ortu) : null;
-    const kepribadian = score_kepribadian ? parseFloat(score_kepribadian) : null;
-    const kesiapan = score_kesiapan ? parseFloat(score_kesiapan) : null;
+    const akademik = parseSafeFloat(score_akademik);
+    const quran = parseSafeFloat(score_quran);
+    const w_santri = parseSafeFloat(score_wawancara_santri);
+    const w_ortu = parseSafeFloat(score_wawancara_ortu);
+    const kepribadian = parseSafeFloat(score_kepribadian);
+    const kesiapan = parseSafeFloat(score_kesiapan);
 
     // Create or update existing NilaiUjian record with priority on the newest one
     const existings = await prisma.nilaiUjian.findMany({
