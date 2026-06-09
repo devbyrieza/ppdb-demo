@@ -1053,7 +1053,7 @@ export default function JadwalPengujiPage() {
               onClick={() => setActiveTab("assigned")}
               className={`flex-1 py-3 px-6 rounded-xl font-black text-xs transition-all text-center uppercase tracking-wider ${activeTab === "assigned" ? "bg-white shadow-md text-primary-700 border border-ink-100 scale-[1.02]" : "text-ink-400 hover:text-ink-600"}`}
             >
-              Jadwal Saya
+              {["admin_super", "admin"].includes(activeRole) ? "Semua Jadwal" : "Jadwal Saya"}
             </button>
             <button
               onClick={() => setActiveTab("slots")}
