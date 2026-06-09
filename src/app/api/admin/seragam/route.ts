@@ -15,8 +15,12 @@ export async function GET(req: Request) {
     const whereClause = getAdminWhereClause();
 
     const allowedStatuses = showAll 
-      ? ["verified", "selection", "scheduled", "cadangan", "accepted", "re_registered", "enrolled"]
-      : ["accepted", "re_registered", "enrolled"];
+      ? [
+          "verified", "paid", "data_completed", "docs_uploaded", "docs_verified",
+          "selection", "scheduled", "tested", "announced", "cadangan", "accepted",
+          "re_registered", "enrolled", "enrolled_full"
+        ]
+      : ["accepted", "re_registered", "enrolled", "enrolled_full"];
 
     // Ambil data santri yang status pendaftarannya DITERIMA (minimal accepted)
     // Jika showAll = 1, ambil semua yang sudah diverifikasi pembayarannya
