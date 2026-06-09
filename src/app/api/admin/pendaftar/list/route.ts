@@ -118,6 +118,7 @@ export async function GET(request: NextRequest) {
         ditolak: ["rejected", "docs_rejected"],
         belum_daftar_ulang: ["accepted"],
         sudah_daftar_ulang: ["enrolled"],
+        mengundurkan_diri: ["mengundurkan_diri"],
       };
 
       const statusValues = filterMapping[status];
@@ -126,6 +127,8 @@ export async function GET(request: NextRequest) {
       } else {
         where.status_pendaftaran = status;
       }
+    } else {
+      where.status_pendaftaran = { not: "mengundurkan_diri" };
     }
 
     // Other filters

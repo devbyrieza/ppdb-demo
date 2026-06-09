@@ -245,6 +245,7 @@ function AdminPendaftarContent() {
   const [deleteConfirmName, setDeleteConfirmName] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [trashCount, setTrashCount] = useState(0);
+  const [mengundurkanDiriCount, setMengundurkanDiriCount] = useState(0);
   const [uploadingDoc, setUploadingDoc] = useState<string | null>(null);
   const [uploadingPay, setUploadingPay] = useState<string | null>(null);
   const [selectedPendaftarId, setSelectedPendaftarId] = useState<string | null>(
@@ -265,7 +266,7 @@ function AdminPendaftarContent() {
     setIsAnnouncementModalOpen(true);
   };
 
-  // Fetch trash count
+  // Fetch counts
   useEffect(() => {
     if (userRole === "admin_super") {
       const fetchTrashCount = async () => {
@@ -280,6 +281,22 @@ function AdminPendaftarContent() {
         }
       };
       fetchTrashCount();
+    }
+    
+    // Fetch Mengundurkan Diri count for all admins
+    if (userRole && ["admin_super", "admin", "penguji"].includes(userRole)) {
+      const fetchMengundurkanDiriCount = async () => {
+        try {
+          const res = await fetch("/api/admin/stats");
+          if (res.ok) {
+            const data = await res.json();
+            setMengundurkanDiriCount(data.mengundurkan_diri || 0);
+          }
+        } catch (e) {
+          console.error("Error fetching mengundurkan diri count", e);
+        }
+      };
+      fetchMengundurkanDiriCount();
     }
   }, [userRole]);
 
@@ -1221,19 +1238,34 @@ function AdminPendaftarContent() {
               )}
             {userRole &&
               ["admin_super", "admin", "penguji"].includes(userRole) && (
-                <Link
-                  href="/dashboard/admin/pendaftar/trash"
-                  className="flex items-center gap-2 px-3 md:px-4 py-2 bg-stone-600 hover:bg-stone-700 text-white rounded-lg transition-colors text-sm"
-                  title="Lihat data terhapus"
-                >
-                  <Trash2 className="w-4 h-4" />
-                  <span className="hidden sm:inline">Sampah</span>
-                  {trashCount > 0 && (
-                    <span className="bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
-                      {trashCount}
-                    </span>
-                  )}
-                </Link>
+                <>
+                  <button
+                    onClick={() => updateFilter("mengundurkan_diri")}
+                    className="flex items-center gap-2 px-3 md:px-4 py-2 bg-slate-500 hover:bg-slate-600 text-white rounded-lg transition-colors text-sm"
+                    title="Lihat pendaftar yang mengundurkan diri"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    <span className="hidden sm:inline">Mengundurkan Diri</span>
+                    {mengundurkanDiriCount > 0 && (
+                      <span className="bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
+                        {mengundurkanDiriCount}
+                      </span>
+                    )}
+                  </button>
+                  <Link
+                    href="/dashboard/admin/pendaftar/trash"
+                    className="flex items-center gap-2 px-3 md:px-4 py-2 bg-stone-600 hover:bg-stone-700 text-white rounded-lg transition-colors text-sm"
+                    title="Lihat data terhapus"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                    <span className="hidden sm:inline">Sampah</span>
+                    {trashCount > 0 && (
+                      <span className="bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
+                        {trashCount}
+                      </span>
+                    )}
+                  </Link>
+                </>
               )}
             <button
               onClick={() => handleExport("excel")}

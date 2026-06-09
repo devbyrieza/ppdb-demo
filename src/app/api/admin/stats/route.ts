@@ -313,6 +313,7 @@ export async function GET(request: Request) {
       daftar_ulang: (statusCounts.enrolled || 0) + (statusCounts.enrolled_full || 0),
       daftar_ulang_sedang: statusCounts.enrolled || 0,
       daftar_ulang_selesai: statusCounts.enrolled_full || 0,
+      mengundurkan_diri: statusCounts.mengundurkan_diri || 0,
 
       // Secondary metrics
       sudah_bayar: ["paid", "verified", "data_completed", "docs_uploaded", "docs_verified", "selection", "scheduled", "testing", "tested", "announced", "accepted", "enrolled", "enrolled_full"].reduce((acc, s) => acc + (statusCounts[s] || 0), 0),
