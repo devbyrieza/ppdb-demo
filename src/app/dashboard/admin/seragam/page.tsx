@@ -285,7 +285,7 @@ export default function RekapSeragamPage() {
               <tbody className="divide-y divide-ink-100 bg-white">
                 {filteredData.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="px-6 py-12 text-center text-ink-400 font-bold">
+                    <td colSpan={6} className="px-6 py-12 text-center text-ink-400 font-bold">
                       Tidak ada data ditemukan
                     </td>
                   </tr>
@@ -360,6 +360,42 @@ export default function RekapSeragamPage() {
             </table>
           )}
         </div>
+
+        {/* Footer Stats */}
+        {!loading && filteredData.length > 0 && (
+          <div className="p-5 md:p-6 border-t border-ink-100 bg-ink-50/50 rounded-b-3xl flex flex-col md:flex-row gap-4 justify-between items-center text-sm">
+            <div className="font-bold text-ink-600">
+              Total: <span className="text-ink-900 font-black">{filteredData.length}</span> Pendaftar
+            </div>
+            <div className="flex items-center gap-6">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center">
+                  <CheckCircle2 className="w-4 h-4" />
+                </div>
+                <div>
+                  <div className="text-xs text-ink-500 font-bold uppercase tracking-wider">Lengkap</div>
+                  <div className="font-black text-ink-900 leading-none mt-0.5">
+                    {filteredData.filter(d => d.ukuran_seragam_baju && d.ukuran_seragam_celana && d.ukuran_seragam_almamater).length}
+                  </div>
+                </div>
+              </div>
+              
+              <div className="w-px h-8 bg-ink-200"></div>
+              
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-red-100 text-red-700 flex items-center justify-center">
+                  <XCircle className="w-4 h-4" />
+                </div>
+                <div>
+                  <div className="text-xs text-ink-500 font-bold uppercase tracking-wider">Belum</div>
+                  <div className="font-black text-ink-900 leading-none mt-0.5">
+                    {filteredData.filter(d => !d.ukuran_seragam_baju || !d.ukuran_seragam_celana || !d.ukuran_seragam_almamater).length}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Edit Modal */}
