@@ -252,13 +252,15 @@ export default function RekapSeragamPage() {
               <FileText className="w-4 h-4" />
               Download PDF
             </button>
-            <button
-              onClick={handleBroadcast}
-              className="flex-1 md:flex-none flex items-center justify-center gap-2 px-5 py-3 bg-primary-700 text-white rounded-xl text-sm font-black hover:bg-primary-800 shadow-lg shadow-primary-200 transition-all"
-            >
-              <MessageSquare className="w-4 h-4" />
-              Ingatkan (WA)
-            </button>
+            {!showAll && (
+              <button
+                onClick={handleBroadcast}
+                className="flex-1 md:flex-none flex items-center justify-center gap-2 px-5 py-3 bg-primary-700 text-white rounded-xl text-sm font-black hover:bg-primary-800 shadow-lg shadow-primary-200 transition-all"
+              >
+                <MessageSquare className="w-4 h-4" />
+                Ingatkan (WA)
+              </button>
+            )}
           </div>
         </div>
 
