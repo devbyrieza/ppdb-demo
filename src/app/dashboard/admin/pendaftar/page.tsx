@@ -688,6 +688,52 @@ function AdminPendaftarContent() {
     );
   };
 
+  const handlePromoteCadangan = async (ids?: string[]) => {
+    const isPromoteAll = !ids || ids.length === 0;
+
+    const result = await Swal.fire({
+      title: "Promosikan Cadangan",
+      text: isPromoteAll
+        ? "Yakin ingin memindahkan SEMUA pendaftar cadangan ke status Diterima?"
+        : `Yakin ingin memindahkan ${ids.length} pendaftar cadangan ke status Diterima?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#059669",
+      cancelButtonColor: "#94a3b8",
+      confirmButtonText: "Ya, Promosikan!",
+      cancelButtonText: "Batal",
+      reverseButtons: true,
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      setIsPromotingCadangan(true);
+      const response = await fetch("/api/admin/pendaftar/promote-cadangan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(isPromoteAll ? {} : { ids }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Gagal");
+
+      Swal.fire({
+        title: "Berhasil!",
+        text: data.message || `${data.updated_count} Pendaftar berhasil dipindahkan ke Diterima.`,
+        icon: "success",
+        confirmButtonColor: "#059669",
+      });
+      setSelectedIds([]);
+      fetchPendaftar();
+    } catch (error: any) {
+      console.error("Error promoting cadangan:", error);
+      Swal.fire("Gagal!", error.message || "Terjadi kesalahan.", "error");
+    } finally {
+      setIsPromotingCadangan(false);
+    }
+  };
+
       const handleBulkUpdate = async () => {
     if (!bulkStatus || selectedIds.length === 0) {
       Swal.fire("Perhatian", "Pilih status dan minimal 1 pendaftar", "warning");
