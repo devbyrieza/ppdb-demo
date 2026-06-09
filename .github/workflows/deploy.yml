@@ -12,13 +12,14 @@ jobs:
     steps:
     - name: Trigger Coolify Deployment
       run: |
-        if [ -z "${{ secrets.COOLIFY_WEBHOOK }}" ]; then
-          echo "⚠️ COOLIFY_WEBHOOK secret is not set. Skipping Coolify trigger."
-          echo "To auto-deploy, add it to: Settings -> Secrets and variables -> Actions"
-        else
+        if [ -n "${{ secrets.COOLIFY_WEBHOOK }}" ] && [ -n "${{ secrets.COOLIFY_TOKEN }}" ]; then
           echo "🚀 Triggering Coolify deployment..."
-          curl -s --max-time 30 -X GET "${{ secrets.COOLIFY_WEBHOOK }}" || echo "⚠️ Coolify webhook timed out or failed, but push succeeded."
-          echo "✅ Trigger sent."
+          curl -s -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" --max-time 30 -X GET "${{ secrets.COOLIFY_WEBHOOK }}" -H "Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}" || echo "⚠️ Coolify webhook timed out or failed, but build succeeded."
+        elif [ -n "${{ secrets.COOLIFY_WEBHOOK }}" ]; then
+          echo "🚀 Triggering Coolify deployment without token (fallback)..."
+          curl -s -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" --max-time 30 -X GET "${{ secrets.COOLIFY_WEBHOOK }}" || echo "⚠️ Coolify webhook timed out or failed, but build succeeded."
+        else
+          echo "⚠️ COOLIFY_WEBHOOK secret not found. To auto-deploy, add it to GitHub Secrets."
         fi
           
     - name: Notify Deployment Status
