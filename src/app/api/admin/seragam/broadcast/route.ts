@@ -48,7 +48,7 @@ export async function POST(req: Request) {
       // Determine the phone number to use
       const phone = pendaftar.no_hp || pendaftar.orang_tua?.no_hp_ayah || pendaftar.orang_tua?.no_hp_ibu;
       
-      if (!phone || !pendaftar.user_id) {
+      if (!phone) {
         failCount++;
         continue;
       }
@@ -81,7 +81,7 @@ ${magicLink}
 Jazakumullahu khairan.
 Panitia PPDB.`;
       } else {
-        magicLink = `${baseUrl}/s/${shortCode}?t=seragam`;
+        magicLink = pendaftar.user_id ? `${baseUrl}/s/${shortCode}?t=seragam` : `${baseUrl}/isi-seragam/${shortCode}`;
         message = `*PENGINGAT PENGISIAN UKURAN SERAGAM*
 
 Assalamualaikum Warahmatullahi Wabarakatuh,
