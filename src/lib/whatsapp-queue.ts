@@ -301,6 +301,10 @@ export async function autoFlushWhatsappQueue(): Promise<void> {
         while (count < 50) {
             const result = await processWhatsappQueue();
             if (!result.processed) {
+                if (result.waitMs && result.waitMs <= 5000) {
+                    await new Promise(resolve => setTimeout(resolve, result.waitMs));
+                    continue;
+                }
                 break;
             }
             if (result.status === "blocked" || result.reason?.includes("Limit") || result.reason?.includes("Cooldown")) {
@@ -390,6 +394,7 @@ export async function processWhatsappQueue(): Promise<{
     logId?: string;
     status?: string;
     reason?: string;
+    waitMs?: number;
 }> {
     // Layer 3+4: Check rate limits
     const rateLimitCheck = await checkRateLimits();
@@ -397,6 +402,7 @@ export async function processWhatsappQueue(): Promise<{
         return {
             processed: false,
             reason: rateLimitCheck.reason,
+            waitMs: rateLimitCheck.waitMs,
         };
     }
 
