@@ -52,12 +52,27 @@ export async function POST(request: Request) {
 
     const start = new Date(startDate);
     const end = new Date(endDate);
-    const creatorId = session.user_id || session.id;
+    const requestCreatorId = body.creator_id;
+    let creatorId = session.user_id || session.id;
+    let creatorRole = session.role;
+
+    // If admin_super provides a specific creator_id, impersonate them
+    if (requestCreatorId && ["admin_super", "admin"].includes(session.role)) {
+      creatorId = requestCreatorId;
+      // Fetch the role of the impersonated creator so we can assign the correct title
+      const creatorProfile = await prisma.profile.findUnique({
+        where: { id: creatorId },
+        select: { role: true }
+      });
+      if (creatorProfile) {
+        creatorRole = creatorProfile.role;
+      }
+    }
 
     // Determine default title based on role if not provided
     let finalTitle = title;
     if (!finalTitle || finalTitle === "Sesi Ujian") {
-      const role = session.role;
+      const role = creatorRole;
       if (role === "pewawancara_cawalsan") {
         finalTitle = "Seleksi Wawancara Orang Tua";
       } else if (role === "pewawancara_calsan") {

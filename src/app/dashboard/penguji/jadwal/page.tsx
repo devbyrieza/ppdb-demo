@@ -143,11 +143,14 @@ export default function JadwalPengujiPage() {
     return `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
   };
 
-  // Common State
   const [message, setMessage] = useState<{
     type: "success" | "error";
     text: string;
   } | null>(null);
+
+  // Impersonate state
+  const [pengujiList, setPengujiList] = useState<any[]>([]);
+  const [selectedCreatorId, setSelectedCreatorId] = useState<string>("");
 
   // Form State for Slot
   const [slotForm, setSlotForm] = useState({
@@ -291,6 +294,26 @@ export default function JadwalPengujiPage() {
     if (activeTab === "assigned") fetchAssignments();
     if (activeTab === "slots") fetchSlots();
   }, [activeTab]);
+
+  useEffect(() => {
+    if (["admin_super", "admin"].includes(activeRole)) {
+      const fetchPenguji = async () => {
+        try {
+          const res = await fetch("/api/admin/users");
+          if (res.ok) {
+            const data = await res.json();
+            const filtered = (data.data || []).filter((u: any) => 
+              ["penguji", "pewawancara_calsan", "pewawancara_cawalsan"].includes(u.role)
+            );
+            setPengujiList(filtered);
+          }
+        } catch (e) {
+          console.error("Error fetching penguji list", e);
+        }
+      };
+      fetchPenguji();
+    }
+  }, [activeRole]);
 
   // Auto-set session title and duration from role when role is known
   useEffect(() => {
@@ -443,6 +466,7 @@ export default function JadwalPengujiPage() {
         body: JSON.stringify({
           ...bulkForm,
           daySlots: daySlotsToSend,
+          creator_id: (["admin_super", "admin"].includes(activeRole) && selectedCreatorId) ? selectedCreatorId : undefined,
         }),
       });
       const result = await res.json();
@@ -2268,6 +2292,41 @@ export default function JadwalPengujiPage() {
               onSubmit={handleCreateBulk}
               className="p-6 md:p-10 space-y-8 overflow-y-auto overscroll-contain custom-scrollbar flex-1"
             >
+              {/* Select Penguji (Admin Super / Admin Only) */}
+              {["admin_super", "admin"].includes(activeRole) && (
+                <div className="space-y-3">
+                  <label className="block text-sm font-black text-primary-950 uppercase tracking-wider">
+                    Buat Atas Nama Penguji
+                  </label>
+                  <select
+                    className="w-full px-5 py-4 bg-stone-100/50 border border-stone-200 text-stone-900 font-bold rounded-2xl focus:ring-4 focus:ring-primary-500/20 focus:border-primary-500 transition-all appearance-none outline-none"
+                    value={selectedCreatorId}
+                    onChange={(e) => {
+                      setSelectedCreatorId(e.target.value);
+                      // Update title based on selected penguji role
+                      const selectedPenguji = pengujiList.find((p) => p.id === e.target.value);
+                      if (selectedPenguji) {
+                        const autoTitle = ROLE_TO_SESSION_TITLE[selectedPenguji.role] || "Sesi Ujian";
+                        setBulkForm((prev) => ({ ...prev, title: autoTitle }));
+                      } else {
+                        // Reset to admin's default if empty
+                        setBulkForm((prev) => ({ ...prev, title: ROLE_TO_SESSION_TITLE[activeRole] || "Sesi Ujian" }));
+                      }
+                    }}
+                  >
+                    <option value="">Pilih Penguji (Opsional)</option>
+                    {pengujiList.map((p) => (
+                      <option key={p.id} value={p.id}>
+                        {p.full_name} ({p.role.replace("_", " ").toUpperCase()})
+                      </option>
+                    ))}
+                  </select>
+                  <p className="text-xs text-stone-500">
+                    Jika dikosongkan, jadwal akan dibuat atas nama Anda sendiri.
+                  </p>
+                </div>
+              )}
+
               {/* Jenis Ujian Info */}
               <div className="bg-primary-600 rounded-3xl p-6 shadow-xl shadow-primary-950/20 text-white relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
