@@ -9,15 +9,22 @@ export async function GET(req: Request) {
     if (!session || !["admin_super", "admin"].includes(session.role)) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
+    const { searchParams } = new URL(req.url);
+    const showAll = searchParams.get("all") === "1";
 
     const whereClause = getAdminWhereClause();
 
+    const allowedStatuses = showAll 
+      ? ["verified", "selection", "scheduled", "cadangan", "accepted", "re_registered", "enrolled"]
+      : ["accepted", "re_registered", "enrolled"];
+
     // Ambil data santri yang status pendaftarannya DITERIMA (minimal accepted)
+    // Jika showAll = 1, ambil semua yang sudah diverifikasi pembayarannya
     const pendaftar = await prisma.pendaftar.findMany({
       where: {
         ...whereClause,
         status_pendaftaran: {
-          in: ["accepted", "re_registered", "enrolled"],
+          in: allowedStatuses,
         },
       },
       select: {

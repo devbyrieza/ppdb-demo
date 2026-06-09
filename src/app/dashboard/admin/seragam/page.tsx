@@ -10,6 +10,7 @@ export default function RekapSeragamPage() {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [showAll, setShowAll] = useState(false);
   
   // Edit Modal State
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -58,11 +59,12 @@ export default function RekapSeragamPage() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [showAll]);
 
   const fetchData = async () => {
     try {
-      const res = await fetch("/api/admin/seragam?t=" + Date.now());
+      const url = `/api/admin/seragam?t=${Date.now()}${showAll ? '&all=1' : ''}`;
+      const res = await fetch(url);
       if (res.ok) {
         const json = await res.json();
         setData(json);
@@ -222,7 +224,20 @@ export default function RekapSeragamPage() {
             />
           </div>
 
-          <div className="flex gap-3 w-full md:w-auto">
+          <div className="flex flex-wrap gap-3 w-full md:w-auto items-center">
+            <div className="flex items-center gap-2 px-4 py-3 bg-white rounded-xl border border-ink-200 shadow-sm md:mr-2">
+              <input 
+                type="checkbox" 
+                id="showAll" 
+                checked={showAll}
+                onChange={(e) => setShowAll(e.target.checked)}
+                className="w-4 h-4 text-primary-600 rounded border-ink-300 focus:ring-primary-500"
+              />
+              <label htmlFor="showAll" className="text-xs md:text-sm font-bold text-ink-700 cursor-pointer select-none">
+                Tampilkan Semua Pendaftar
+              </label>
+            </div>
+            
             <button
               onClick={exportExcel}
               className="flex-1 md:flex-none flex items-center justify-center gap-2 px-5 py-3 bg-white border border-ink-200 text-ink-700 rounded-xl text-sm font-black hover:bg-ink-50 shadow-sm transition-all"
