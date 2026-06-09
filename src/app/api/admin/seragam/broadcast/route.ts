@@ -69,11 +69,11 @@ export async function POST(req: Request) {
         message = `*PENDATAAN AWAL UKURAN SERAGAM*
 
 Assalamualaikum Warahmatullahi Wabarakatuh,
-Ayah/Bunda dari Ananda *${pendaftar.nama_lengkap}* (${pendaftar.nomor_pendaftaran}).
+Abu/Ummu dari Ananda *${pendaftar.nama_lengkap}* (${pendaftar.nomor_pendaftaran}).
 
-Sebagai persiapan awal, kami memohon kesediaan Ayah/Bunda untuk mengisikan data ukuran seragam santri meskipun saat ini belum/sedang dalam tahap daftar ulang.
+Sebagai persiapan awal, kami memohon kesediaan Abu/Ummu untuk mengisikan data ukuran seragam santri meskipun saat ini Ananda belum melakukan pembayaran Daftar Ulang.
 
-Mohon segera memilih ukuran seragam baju dan celana/rok melalui link khusus berikut:
+Mohon untuk mengisi ukuran seragam baju dan celana/rok melalui link khusus berikut:
 
 🔗 *Link Pengisian Khusus:*
 ${magicLink}
@@ -85,10 +85,10 @@ Panitia PPDB.`;
         message = `*PENGINGAT PENGISIAN UKURAN SERAGAM*
 
 Assalamualaikum Warahmatullahi Wabarakatuh,
-Ayah/Bunda dari Ananda *${pendaftar.nama_lengkap}* (${pendaftar.nomor_pendaftaran}).
+Abu/Ummu dari Ananda *${pendaftar.nama_lengkap}* (${pendaftar.nomor_pendaftaran}).
 
 Kami menginformasikan bahwa Ananda belum mengisi ukuran seragam.
-Mohon segera mengisi ukuran seragam baju dan celana/rok melalui link berikut:
+Mengingat Ananda telah melakukan pembayaran Daftar Ulang, mohon untuk segera mengisi ukuran seragam baju dan celana/rok melalui link berikut:
 
 🔗 *Link Pengisian (Otomatis Login):*
 ${magicLink}
