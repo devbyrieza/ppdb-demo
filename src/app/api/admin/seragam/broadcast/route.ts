@@ -11,7 +11,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const { pendaftarIds } = await req.json();
+    const { pendaftarIds, isSpecial } = await req.json();
 
     if (!Array.isArray(pendaftarIds) || pendaftarIds.length === 0) {
       return NextResponse.json(
@@ -60,10 +60,29 @@ export async function POST(req: Request) {
         .slice(0, 8);
       
       const shortCode = `${pendaftar.nomor_pendaftaran}-${hash}`;
-      const magicLink = `${baseUrl}/s/${shortCode}?t=seragam`;
+      
+      let magicLink = "";
+      let message = "";
 
-      // Construct WhatsApp message
-      const message = `*PENGINGAT PENGISIAN UKURAN SERAGAM*
+      if (isSpecial) {
+        magicLink = `${baseUrl}/isi-seragam/${shortCode}`;
+        message = `*PENDATAAN AWAL UKURAN SERAGAM*
+
+Assalamualaikum Warahmatullahi Wabarakatuh,
+Ayah/Bunda dari Ananda *${pendaftar.nama_lengkap}* (${pendaftar.nomor_pendaftaran}).
+
+Sebagai persiapan awal, kami memohon kesediaan Ayah/Bunda untuk mengisikan data ukuran seragam santri meskipun saat ini belum/sedang dalam tahap daftar ulang.
+
+Mohon segera memilih ukuran seragam baju dan celana/rok melalui link khusus berikut:
+
+🔗 *Link Pengisian Khusus:*
+${magicLink}
+
+Jazakumullahu khairan.
+Panitia PPDB.`;
+      } else {
+        magicLink = `${baseUrl}/s/${shortCode}?t=seragam`;
+        message = `*PENGINGAT PENGISIAN UKURAN SERAGAM*
 
 Assalamualaikum Warahmatullahi Wabarakatuh,
 Ayah/Bunda dari Ananda *${pendaftar.nama_lengkap}* (${pendaftar.nomor_pendaftaran}).
@@ -79,6 +98,7 @@ Pastikan untuk mengisinya secepatnya karena akan segera diproses.
 
 Jazakumullahu khairan.
 Panitia PPDB.`;
+      }
 
       try {
         await enqueueWhatsapp({

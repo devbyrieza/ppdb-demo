@@ -149,9 +149,11 @@ export default function RekapSeragamPage() {
     }
     
     const confirm = await Swal.fire({
-      title: "Kirim Pengingat WA?",
-      text: `Anda akan mengirim pesan WhatsApp pengingat pengisian seragam ke ${belumIsi.length} pendaftar/orang tua. Lanjutkan?`,
-      icon: "question",
+      title: showAll ? "Kirim Broadcast KHUSUS?" : "Kirim Pengingat WA?",
+      text: showAll 
+        ? `Anda sedang dalam mode Tampilkan Semua Pendaftar. Sistem akan mengirim pesan WA dengan link JALUR KHUSUS ke ${belumIsi.length} orang agar mereka bisa mengisi seragam lebih awal. Lanjutkan?`
+        : `Anda akan mengirim pesan WhatsApp pengingat pengisian seragam ke ${belumIsi.length} pendaftar/orang tua. Lanjutkan?`,
+      icon: showAll ? "warning" : "question",
       showCancelButton: true,
       confirmButtonText: "Ya, Kirim",
       cancelButtonText: "Batal"
@@ -172,7 +174,7 @@ export default function RekapSeragamPage() {
         const res = await fetch("/api/admin/seragam/broadcast", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ pendaftarIds }),
+          body: JSON.stringify({ pendaftarIds, isSpecial: showAll }),
         });
         
         const json = await res.json();
@@ -252,15 +254,13 @@ export default function RekapSeragamPage() {
               <FileText className="w-4 h-4" />
               Download PDF
             </button>
-            {!showAll && (
-              <button
-                onClick={handleBroadcast}
-                className="flex-1 md:flex-none flex items-center justify-center gap-2 px-5 py-3 bg-primary-700 text-white rounded-xl text-sm font-black hover:bg-primary-800 shadow-lg shadow-primary-200 transition-all"
-              >
-                <MessageSquare className="w-4 h-4" />
-                Ingatkan (WA)
-              </button>
-            )}
+            <button
+              onClick={handleBroadcast}
+              className="flex-1 md:flex-none flex items-center justify-center gap-2 px-5 py-3 bg-primary-700 text-white rounded-xl text-sm font-black hover:bg-primary-800 shadow-lg shadow-primary-200 transition-all"
+            >
+              <MessageSquare className="w-4 h-4" />
+              Ingatkan (WA)
+            </button>
           </div>
         </div>
 
