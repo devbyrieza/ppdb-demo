@@ -82,7 +82,16 @@ export default function RekapSeragamPage() {
   );
 
   const exportExcel = () => {
+    const belumIsi = filteredData.filter(d => !d.ukuran_seragam_baju || !d.ukuran_seragam_celana || !d.ukuran_seragam_almamater).length;
+    const sudahIsi = filteredData.length - belumIsi;
+
     const csvContent = [
+      ["Laporan Rekapitulasi Ukuran Seragam"],
+      [`Tanggal Cetak: ${new Date().toLocaleDateString("id-ID")}`],
+      [`Total Pendaftar: ${filteredData.length}`],
+      [`Lengkap: ${sudahIsi}`],
+      [`Belum: ${belumIsi}`],
+      [],
       ["No. Pendaftaran", "Nama Lengkap", "Jenjang", "L/P", "Ukuran Baju", "Ukuran Celana", "Ukuran Almamater"],
       ...filteredData.map(item => [
         item.nomor_pendaftaran,
@@ -107,6 +116,9 @@ export default function RekapSeragamPage() {
   };
 
   const exportPDF = () => {
+    const belumIsi = filteredData.filter(d => !d.ukuran_seragam_baju || !d.ukuran_seragam_celana || !d.ukuran_seragam_almamater).length;
+    const sudahIsi = filteredData.length - belumIsi;
+
     const doc = new jsPDF("p", "pt", "a4");
     const tableColumn = ["No. Pendaftaran", "Nama Lengkap", "Jenjang", "L/P", "Baju", "Celana", "Almamater"];
     const tableRows: any[] = [];
@@ -128,11 +140,13 @@ export default function RekapSeragamPage() {
     doc.text("Laporan Rekapitulasi Ukuran Seragam", 40, 40);
     doc.setFontSize(10);
     doc.text(`Tanggal Cetak: ${new Date().toLocaleDateString("id-ID")}`, 40, 55);
+    doc.text(`Total Pendaftar: ${filteredData.length}`, 40, 70);
+    doc.text(`Lengkap: ${sudahIsi} | Belum: ${belumIsi}`, 40, 85);
 
     autoTable(doc, {
       head: [tableColumn],
       body: tableRows,
-      startY: 70,
+      startY: 100,
       theme: 'grid',
       styles: { fontSize: 8, cellPadding: 4 },
       headStyles: { fillColor: [124, 45, 18], textColor: 255 } // Maroon
