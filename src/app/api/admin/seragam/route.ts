@@ -4,6 +4,11 @@ import { getServerSession } from "@/lib/session";
 import { getAdminWhereClause } from "@/lib/utils/admin";
 
 export async function GET(req: Request) {
+  const toTitleCase = (str: string) => {
+    if (!str) return str;
+    return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+  };
+
   try {
     const session = (await getServerSession()) as any;
     if (!session || !["admin_super", "admin"].includes(session.role)) {
@@ -52,7 +57,12 @@ export async function GET(req: Request) {
       orderBy: { nama_lengkap: "asc" }
     });
 
-    return NextResponse.json(pendaftar);
+    const normalizedData = pendaftar.map(p => ({
+      ...p,
+      nama_lengkap: toTitleCase(p.nama_lengkap)
+    }));
+
+    return NextResponse.json(normalizedData);
   } catch (error: any) {
     console.error("Error in GET /api/admin/seragam:", error);
     return NextResponse.json(
