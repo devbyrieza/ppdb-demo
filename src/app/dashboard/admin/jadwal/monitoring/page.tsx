@@ -203,7 +203,7 @@ export default function MonitoringJadwalPage() {
     const selesaiWOrangTua = new Set(filteredSchedules.filter(s => s.status.ortu === 'completed').map(s => s.pendaftar.nomor)).size;
 
     return (
-        <div className="space-y-6 max-w-7xl mx-auto">
+        <div className="space-y-6">
             {/* Simplified Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
