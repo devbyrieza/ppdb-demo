@@ -101,13 +101,20 @@ Panitia PPDB.`;
       }
 
       try {
-        await enqueueWhatsapp({
+        const result = await enqueueWhatsapp({
           phone: phone,
           messageContent: message,
           jenisNotif: "broadcast",
-          pendaftarId: pendaftar.id
+          pendaftarId: pendaftar.id,
+          force: true
         });
-        successCount++;
+        
+        if (result.queued) {
+          successCount++;
+        } else {
+          console.log(`Skipped/Failed to queue WA for ${pendaftar.id}: ${result.reason}`);
+          failCount++;
+        }
       } catch (err) {
         console.error("Failed to enqueue WA for", pendaftar.id, err);
         failCount++;
