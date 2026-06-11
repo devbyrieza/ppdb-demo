@@ -224,8 +224,8 @@ export default function DaftarPage() {
         channel: "whatsapp",
       });
 
-      if (data.simulation_code) {
-        params.append("sim_code", data.simulation_code);
+      if (data.simulation_code || data.otp) {
+        params.append("sim_code", data.simulation_code || data.otp);
       }
 
       router.push(`/verifikasi-otp?${params.toString()}`);
