@@ -2,7 +2,11 @@ import fs from "fs";
 import path from "path";
 
 // Gunakan direktori lokal yang akan di-mount sebagai persistent volume di Coolify
-const STORAGE_DIR = path.join(process.cwd(), "storage_data");
+// Gunakan /tmp jika di-deploy di Vercel (karena filesystem read-only)
+const isVercel = process.env.VERCEL === "1" || process.env.NEXT_PUBLIC_VERCEL_ENV !== undefined;
+const STORAGE_DIR = isVercel 
+  ? path.join("/tmp", "storage_data") 
+  : path.join(process.cwd(), "storage_data");
 
 /**
  * Save a file to the local filesystem
