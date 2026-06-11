@@ -59,9 +59,8 @@ export async function GET(
     console.log(`[File Serve] Requesting: ${relativePath}`);
     let fileData = getFileLocal(relativePath);
 
-    // Fallback: Check Database for Base64 image if on Vercel
-    const isVercel = process.env.VERCEL === "1" || process.env.NEXT_PUBLIC_VERCEL_ENV !== undefined;
-    if (!fileData && isVercel && pathSegments[0] === "bukti-pembayaran") {
+    // Fallback: Check Database for Base64 image
+    if (!fileData && pathSegments[0] === "bukti-pembayaran") {
       const { prisma } = await import("@/lib/prisma");
       const filename = pathSegments[pathSegments.length - 1];
       const pembayaran = await prisma.pembayaran.findFirst({

@@ -237,8 +237,7 @@ export async function POST(request: NextRequest) {
       fileName,
     );
 
-    const isVercel = process.env.VERCEL === "1" || process.env.NEXT_PUBLIC_VERCEL_ENV !== undefined;
-    const midtransJson = isVercel ? { base64_image: buffer.toString('base64'), mime_type: detectedType } : null;
+    const midtransJson = { base64_image: buffer.toString('base64'), mime_type: detectedType };
 
     // 12. Simpan atau update record pembayaran
     let pembayaranResult;
