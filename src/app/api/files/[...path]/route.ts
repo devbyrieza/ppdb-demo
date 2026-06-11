@@ -57,7 +57,31 @@ export async function GET(
 
     // 3. Get File
     console.log(`[File Serve] Requesting: ${relativePath}`);
-    const fileData = getFileLocal(relativePath);
+    let fileData = getFileLocal(relativePath);
+
+    // Fallback: Check Database for Base64 image if on Vercel
+    const isVercel = process.env.VERCEL === "1" || process.env.NEXT_PUBLIC_VERCEL_ENV !== undefined;
+    if (!fileData && isVercel && pathSegments[0] === "bukti-pembayaran") {
+      const { prisma } = await import("@/lib/prisma");
+      const filename = pathSegments[pathSegments.length - 1];
+      const pembayaran = await prisma.pembayaran.findFirst({
+        where: {
+          pendaftar_id: ownerId,
+          bukti_transfer_filename: filename,
+        },
+      });
+
+      if (pembayaran && pembayaran.midtrans_response_json) {
+        const json = pembayaran.midtrans_response_json as any;
+        if (json.base64_image) {
+          fileData = {
+            buffer: Buffer.from(json.base64_image, "base64"),
+            mimeType: json.mime_type || "image/jpeg",
+          };
+          console.log(`[File Serve] Found Base64 Image in Database for ${filename}`);
+        }
+      }
+    }
 
     if (!fileData) {
       console.error(`[File Serve] ❌ NOT FOUND: ${relativePath}`);
