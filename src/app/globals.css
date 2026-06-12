@@ -492,7 +492,7 @@
     font-size: 0.9375rem;
     letter-spacing: -0.01em;
     color: #0d5c3a;  /* Dark forest green untuk kontras dengan gold */
-    background: linear-gradient(135deg, var(--color-sand-400) 0%, var(--color-sand-600) 100%);
+    background: linear-gradient(135deg, var(--color-sand-300) 0%, var(--color-sand-500) 100%);
     box-shadow: var(--shadow-gold);
     transition: all var(--duration-base) var(--ease-spring);
     border: none;
@@ -505,7 +505,7 @@
       position: absolute;
       inset: 0;
       background: linear-gradient(135deg,
-          rgba(255, 255, 255, 0.2) 0%,
+          rgba(255, 255, 255, 0.25) 0%,
           rgba(255, 255, 255, 0) 60%);
       border-radius: inherit;
       pointer-events: none;
@@ -514,7 +514,7 @@
     &:hover {
       transform: translateY(-2px);
       box-shadow: var(--shadow-gold-lg);
-      filter: brightness(1.08);
+      filter: brightness(1.06);
     }
 
     &:active {
@@ -742,6 +742,7 @@
   }
 
   /* ─── sand accent (Template-Demo) ─── */
+  /* btn-sand = alias btn-primary gold, border subtle untuk konteks lebih halus */
   .btn-sand {
     display: inline-flex;
     align-items: center;
@@ -752,19 +753,32 @@
     font-weight: 700;
     font-size: 0.9375rem;
     letter-spacing: -0.01em;
-    color: var(--color-teal-900);
+    color: #0d5c3a;
     background: linear-gradient(135deg,
-        var(--color-sand-200) 0%,
-        var(--color-sand-400) 100%);
-    box-shadow: var(--shadow-sand);
+        var(--color-sand-300) 0%,
+        var(--color-sand-500) 100%);
+    box-shadow: var(--shadow-gold);
     transition: all var(--duration-base) var(--ease-spring);
     text-decoration: none;
-    border: 1px solid var(--color-sand-300);
+    border: 1px solid var(--color-sand-400);
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg,
+          rgba(255, 255, 255, 0.25) 0%,
+          rgba(255, 255, 255, 0) 60%);
+      border-radius: inherit;
+      pointer-events: none;
+    }
 
     &:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 24px -4px rgba(175, 165, 90, 0.4);
-      filter: brightness(1.05);
+      box-shadow: var(--shadow-gold-lg);
+      filter: brightness(1.06);
     }
 
     &:active {
