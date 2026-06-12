@@ -131,6 +131,7 @@ export default function JadwalPengujiPage() {
   const getDurationFromTitle = (title: string) => {
     const t = (title || "").toLowerCase();
     if (t.includes("quran") || t.includes("qur'an")) return 30;
+    if (t.includes("calon santri") || t.includes("calsan")) return 30;
     return 60;
   };
 
