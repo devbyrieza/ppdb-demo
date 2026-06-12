@@ -42,7 +42,7 @@ export default function CtaSection() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center px-4 max-w-xl mx-auto w-full">
               <Link href="/ppdb" className="w-full sm:w-auto flex-1 hover-lift">
-                <button className="w-full px-8 py-4 rounded-full bg-secondary-300 text-primary-950 font-bold hover:bg-secondary-400 transition-all duration-300 text-[0.9375rem] flex items-center justify-center gap-2 glow-ring-primary">
+                <button className="btn-primary w-full py-4 text-[0.9375rem] flex items-center justify-center gap-2 glow-ring-primary">
                   Daftar Sekarang
                 </button>
               </Link>
