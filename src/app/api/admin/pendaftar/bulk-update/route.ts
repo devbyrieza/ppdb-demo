@@ -86,15 +86,26 @@ export async function POST(req: NextRequest) {
       
       await prisma.$transaction(
         existing.map((p) => {
-          const newDataLengkap = p.data_lengkap 
-            ? { ...(p.data_lengkap as any), alasan_mengundurkan_diri: alasan }
-            : { alasan_mengundurkan_diri: alasan };
+          let parsedData = p.data_lengkap;
+          if (typeof parsedData === "string") {
+            try { parsedData = JSON.parse(parsedData); } catch(e) { parsedData = {}; }
+          }
+          if (typeof parsedData !== "object" || parsedData === null) {
+            parsedData = {};
+          }
+          
+          const newDataLengkap = {
+            ...(parsedData as any),
+            alasan_mengundurkan_diri: alasan
+          };
+          
+          const safeDataLengkap = JSON.parse(JSON.stringify(newDataLengkap));
             
           return prisma.pendaftar.update({
             where: { id: p.id },
             data: {
               status_pendaftaran: newStatus,
-              data_lengkap: newDataLengkap,
+              data_lengkap: safeDataLengkap,
               updated_at: new Date(),
             }
           });
