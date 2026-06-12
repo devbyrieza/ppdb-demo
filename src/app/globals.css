@@ -90,13 +90,13 @@
   --color-teal-100: #d1fae5;
   --color-teal-200: #a7f3d0;
   --color-teal-300: #6ee7b7;
-  --color-teal-400: #34d399;
-  --color-teal-500: #10b981;
+  --color-teal-400: #2dd4bf;   /* Teal vibrant dari pai-next */
+  --color-teal-500: #14b8a6;   /* Teal medium — identik pai-next primary */
   /* Hijau Emerald Medium */
-  --color-teal-600: #059669;
+  --color-teal-600: #0d9488;   /* Teal primary */
   /* Hijau Emerald Primary */
-  --color-teal-700: #047857;
-  --color-teal-800: #065f46;
+  --color-teal-700: #0f766e;   /* Teal dark */
+  --color-teal-800: #115e59;   /* Teal deeper */
   --color-teal-900: #064e3b;
   --color-teal-950: #022c22;
 
@@ -104,14 +104,15 @@
   --color-sand-50: #fffdf0;
   --color-sand-100: #fef9d9;
   --color-sand-200: #fdf0a8;
-  --color-sand-300: #f7df6e;
-  --color-sand-400: #eecb45;
-  --color-sand-500: #D4AF37;
+  --color-sand-300: #fcd34d;   /* Gold ceria */
+  --color-sand-400: #fbbf24;   /* Amber warm — sama pai-next */
+  --color-sand-500: #f59e0b;   /* Gold primary amber */
   /* Gold Islami Secondary */
-  --color-sand-600: #b8922a;
+  --color-sand-600: #d97706;   /* Gold rich */
   --color-sand-700: #9a7520;
   --color-sand-800: #7a5c18;
   --color-sand-900: #5c4410;
+  --color-gold-islami: #D4AF37;  /* Gold Islami klasik */
 
   /* ─── Surface / White ─── */
   --color-white: #ffffff;
@@ -160,7 +161,7 @@
   --color-secondary-800: var(--color-sand-800);
   --color-secondary-900: var(--color-sand-900);
   --color-secondary-950: var(--color-sand-950);
-  --color-secondary: var(--color-sand-500);
+  --color-secondary: var(--color-sand-400);    /* Amber/gold vibrant */
   --color-secondary-light: var(--color-sand-50);
   --color-secondary-dark: var(--color-sand-800);
 
@@ -186,13 +187,14 @@
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
   /* ─── Islamic Color Palette — Semantic Tokens ─── */
-  --color-primary: var(--color-teal-600);
+  --color-primary: var(--color-teal-600);      /* Tetap teal-600 */
   /* Hijau Emerald Islami utama */
   --color-primary-light: var(--color-teal-50);
   /* Hijau muda / background aksen */
-  --color-secondary: var(--color-sand-500);
-  /* Gold Islami — D4AF37 */
-  --color-background: #FFFFFF;
+  --color-primary-dark: var(--color-teal-800);
+  --color-secondary: var(--color-sand-400);    /* Amber/gold vibrant */
+  /* Gold Islami — pai-next style */
+  --color-background: #f8fffe;  /* Emerald-tinted warm white — sangat segar */
   /* Background utama */
   --color-text: #374151;
   /* Teks utama (bukan hitam pekat) */
@@ -244,10 +246,10 @@
     0 4px 14px -2px rgba(254, 252, 247, 0.32), 0 2px 6px rgba(0, 0, 0, 0.05);
   /* Teal shadows — using correct teal-600 rgba(13,148,136) */
   --shadow-teal:
-    0 4px 16px -2px rgba(13, 148, 136, 0.30), 0 2px 6px rgba(13, 148, 136, 0.14);
+    0 4px 16px -2px rgba(13, 148, 136, 0.35), 0 2px 6px rgba(13, 148, 136, 0.18);
   --shadow-teal-lg:
-    0 8px 28px -4px rgba(13, 148, 136, 0.38),
-    0 4px 10px rgba(13, 148, 136, 0.18);
+    0 8px 28px -4px rgba(13, 148, 136, 0.42),
+    0 4px 10px rgba(13, 148, 136, 0.22);
   --shadow-sand:
     0 4px 14px -2px rgba(212, 175, 55, 0.3), 0 2px 6px rgba(0, 0, 0, 0.05);
 
@@ -430,7 +432,7 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: var(--color-ink-300);
+    background: var(--color-teal-300);
     border-radius: 9999px;
     border: 1.5px solid var(--color-surface-100);
     background-clip: content-box;
@@ -489,10 +491,8 @@
     font-weight: 700;
     font-size: 0.9375rem;
     letter-spacing: -0.01em;
-    color: #155230;
-    background: linear-gradient(135deg,
-        var(--color-secondary) 0%,
-        #b8922a 100%);
+    color: #0d5c3a;  /* Dark forest green untuk kontras dengan gold */
+    background: linear-gradient(135deg, var(--color-sand-400) 0%, var(--color-sand-600) 100%);
     box-shadow: var(--shadow-gold);
     transition: all var(--duration-base) var(--ease-spring);
     border: none;
@@ -1639,7 +1639,7 @@
   .section-alt {
     padding-top: var(--space-section-y);
     padding-bottom: var(--space-section-y);
-    background: var(--color-surface-50);
+    background: linear-gradient(180deg, #f8fffe 0%, var(--color-teal-50) 100%);
     position: relative;
     overflow: hidden;
   }
@@ -1648,9 +1648,7 @@
   .section-teal {
     padding-top: var(--space-section-y);
     padding-bottom: var(--space-section-y);
-    background: linear-gradient(180deg,
-        var(--color-teal-50) 0%,
-        var(--color-surface-50) 100%);
+    background: linear-gradient(180deg, var(--color-teal-50) 0%, #f8fffe 100%);
     position: relative;
     overflow: hidden;
   }
@@ -2017,10 +2015,7 @@
   }
 
   .bg-teal-subtle {
-    background: linear-gradient(160deg,
-        var(--color-teal-50) 0%,
-        var(--color-white) 60%,
-        var(--color-sand-50) 100%);
+    background: linear-gradient(160deg, #f8fffe 0%, var(--color-teal-50) 60%, var(--color-white) 100%);
   }
 
   .bg-sand-gradient {
@@ -2478,9 +2473,16 @@
 
   /* Teal variant (Template-Demo) */
   .section-label-teal {
-    background: rgba(13, 148, 136, 0.08);
+    background: rgba(13, 148, 136, 0.10);
     color: var(--color-teal-700);
-    border-color: rgba(13, 148, 136, 0.18);
+    border-color: rgba(13, 148, 136, 0.22);
+  }
+
+  /* Primary alias (Template-Demo) */
+  .section-label-primary {
+    background: rgba(13, 148, 136, 0.10);
+    color: var(--color-teal-700);
+    border-color: rgba(13, 148, 136, 0.22);
   }
 
   /* Blue variant (Ulul Albaab) */
@@ -2576,8 +2578,18 @@
     position: absolute;
     border-radius: 50%;
     pointer-events: none;
-    filter: blur(80px);
-    opacity: 0.18;
+    filter: blur(55px);
+    opacity: 0.30;
+  }
+
+  /* Emerald primary blob */
+  .glow-blob-primary {
+    background: radial-gradient(ellipse, var(--color-teal-400) 0%, transparent 70%);
+  }
+
+  /* Gold secondary blob */
+  .glow-blob-secondary {
+    background: radial-gradient(ellipse, var(--color-sand-400) 0%, transparent 70%);
   }
 
   .glow-blob-teal {
@@ -2622,6 +2634,33 @@
 
   .gradient-text-maroon {
     background: linear-gradient(135deg, var(--color-maroon-600) 0%, var(--color-maroon-900) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline;
+  }
+
+  /* Teal-Gold gradient (pai-next signature style, versi template-demo) */
+  .gradient-text-teal-gold {
+    background: linear-gradient(135deg, var(--color-teal-600) 0%, var(--color-sand-400) 55%, var(--color-teal-500) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline;
+  }
+
+  /* Emerald fresh */
+  .gradient-text-emerald {
+    background: linear-gradient(135deg, var(--color-teal-500) 0%, var(--color-teal-700) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline;
+  }
+
+  /* Gold warm */
+  .gradient-text-gold-warm {
+    background: linear-gradient(135deg, var(--color-sand-300) 0%, var(--color-sand-500) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
