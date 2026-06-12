@@ -35,7 +35,7 @@ export default function BroadcastPage() {
 
   const [header, setHeader] = useState("Assalamu'alaikum");
   const [message, setMessage] = useState("");
-  const [footer, setFooter] = useState("Panitia PPDB Al Imam");
+  const [footer, setFooter] = useState("Panitia PPDB Al-Fath");
   const [includeName, setIncludeName] = useState(true);
 
   const [sending, setSending] = useState(false);
@@ -305,7 +305,7 @@ export default function BroadcastPage() {
                   type="text"
                   value={footer}
                   onChange={(e) => setFooter(e.target.value)}
-                  placeholder="Contoh: Tim PSB Al Imam"
+                  placeholder="Contoh: Tim PSB Al-Fath"
                   className="w-full bg-secondary-50 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600/10 outline-none font-medium"
                 />
               </div>

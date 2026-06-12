@@ -17,18 +17,18 @@ export const PPDB_CONFIG = {
 
   // 🎨 BRAND COLORS (GANTI SESUAI LOGO)
   colors: {
-    // Primary Colors (Maroon / Cream - Warna Khas Al Imam)
+    // Primary Colors (Emerald / Teal - Warna Khas Template)
     primary: {
-      50: "#fdf6e3",
-      100: "#f9e8c8",
-      200: "#f0cc99",
-      300: "#e0a868",
-      400: "#c07840",
-      500: "#9b5e28",
-      600: "#7c3a1e", // Warna tombol & aksi utama
-      700: "#6b1c1c", // Warna teks penting
-      800: "#521414",
-      900: "#3d0d0d", // Warna teks gelap
+      50: "#f0fdfa",
+      100: "#ccfbf1",
+      200: "#99f6e4",
+      300: "#5eead4",
+      400: "#2dd4bf",
+      500: "#14b8a6",
+      600: "#0d9488", // Warna tombol & aksi utama
+      700: "#0f766e", // Warna teks penting
+      800: "#115e59",
+      900: "#134e4a", // Warna teks gelap
     },
 
     // Secondary Colors (Kuning / Amber)

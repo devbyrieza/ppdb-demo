@@ -7,7 +7,7 @@ export const PDF_BRANDING = {
   // Institution Labels
   institution: {
     name: "PONDOK PESANTREN AL-FATH",
-    subtitle: "Islamic Boarding School Managed by Al Andalus IIBS",
+    subtitle: "Islamic Boarding School Managed by Yayasan Pendidikan Islam Al-Fath",
     committee: "PANITIA PENERIMAAN SANTRI BARU",
     academic_year: "2026-2027",
     address: "Jl. Pesantren Raya No. 1, Kec. Cikembar, Kabupaten Sukabumi, Jawa Barat 43157",

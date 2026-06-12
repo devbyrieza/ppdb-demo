@@ -244,7 +244,7 @@ export const generateKartuUjian = async (data: PendaftarPdfData) => {
     ["NIK", `: ${data.nik}`],
     ["Jenjang", `: ${data.jenjang}`],
     ["Jadwal Seleksi", `: ${data.jadwal_ujian || "Menunggu Konfirmasi"}`],
-    ["Lokasi", `: ${data.lokasi_ujian || "Kampus Al Imam"}`],
+    ["Lokasi", `: ${data.lokasi_ujian || "Kampus Utama"}`],
   ];
 
   autoTable(doc, {

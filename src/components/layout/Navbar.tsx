@@ -341,8 +341,8 @@ export default function Navbar() {
                   <p className="text-sm font-black text-[var(--color-ink-900)] leading-none">
                     {BRANDING.schoolShortName}
                   </p>
-                  <p className="text-[10px] text-[var(--color-ink-400)] font-semibold mt-0.5 uppercase tracking-wider">
-                    Managed by Al Andalus IIBS
+                  <p className="text-[10px] sm:text-xs text-black/50 truncate hidden sm:block">
+                    Managed by Yayasan Pendidikan Islam Al-Fath
                   </p>
                 </div>
               </div>
