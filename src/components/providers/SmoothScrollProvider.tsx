@@ -17,8 +17,8 @@ export default function SmoothScrollProvider({
   useEffect(() => {
     // Initialize Lenis with smooth, inertia-based scrolling
     const lenis = new Lenis({
-      // Core scrolling behavior - "smooth as butter"
-      duration: 1.2, // Longer duration = smoother, more inertia
+      // Core scrolling behavior - cukup smooth, tetap responsif
+      duration: 0.8, // Dikurangi dari 1.2 agar tidak terasa lambat
 
       // Smoothness settings
       smoothWheel: true,
