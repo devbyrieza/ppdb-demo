@@ -44,3 +44,14 @@ export async function getCache<T>(key: string): Promise<T | null> {
 }
 
 export default redis;
+
+export async function invalidateAdminPendaftarCache() {
+  try {
+    const keys = await redis.keys('admin_pendaftar_list_*');
+    if (keys.length > 0) {
+      await redis.del(...keys);
+    }
+  } catch (error) {
+    console.error('Redis Invalidate Error:', error);
+  }
+}

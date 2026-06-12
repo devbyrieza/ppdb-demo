@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "@/lib/session";
 import { logAdminAction } from "@/lib/audit";
+import { invalidateAdminPendaftarCache } from "@/lib/redis";
 
 const parseSafeInt = (val: any) => {
   if (val === undefined || val === null || val === "") return null;
@@ -407,6 +408,7 @@ export async function PATCH(
         details: { nomor_pendaftaran: santri.nomor_pendaftaran },
       });
 
+      await invalidateAdminPendaftarCache();
       return NextResponse.json({
         success: true,
         message: "Data pendaftar berhasil diperbarui secara lengkap",
@@ -464,6 +466,7 @@ export async function PATCH(
         details: { previous_phone: pendaftar.no_hp, new_phone: no_hp },
       });
 
+      await invalidateAdminPendaftarCache();
       return NextResponse.json({
         success: true,
         message: "Nomor HP berhasil diperbarui",
@@ -520,6 +523,7 @@ export async function PATCH(
       details: { previous_status: "unknown", new_status: status_proses },
     });
 
+    await invalidateAdminPendaftarCache();
     return NextResponse.json({
       success: true,
       data,
@@ -628,6 +632,7 @@ export async function DELETE(
       },
     });
 
+    await invalidateAdminPendaftarCache();
     return NextResponse.json({
       success: true,
       message: `Data ${pendaftar.nama_lengkap} berhasil dihapus (soft delete). Data cadangan telah disimpan dan bisa direstore kapan saja.`,

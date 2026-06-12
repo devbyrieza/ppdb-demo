@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
+import { invalidateAdminPendaftarCache } from "@/lib/redis";
 
 export async function POST(req: NextRequest) {
   try {
@@ -100,6 +101,7 @@ export async function POST(req: NextRequest) {
         })
       );
       
+      await invalidateAdminPendaftarCache();
       return NextResponse.json({
         success: true,
         updated_count: ids.length,
@@ -116,6 +118,7 @@ export async function POST(req: NextRequest) {
         },
       });
 
+      await invalidateAdminPendaftarCache();
       return NextResponse.json({
         success: true,
         updated_count: result.count,
