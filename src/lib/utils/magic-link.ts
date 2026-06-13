@@ -96,6 +96,8 @@ export const PERMANENT_SLUGS: Record<string, string> = {
   muhajir: "Muhajir",
   syauqi: "Muhammad Syauqi Al Faruq",
   teguh: "Teguh",
+  halimah: "Halimah Fauziah",
+  fatimah: "Andi Fatimah",
 };
 
 /**
@@ -116,16 +118,17 @@ export function getSlugByName(fullName: string): string | null {
 
 // Manual tinyurls for specific examiners/interviewers (pointing to correct production URLs)
 export const MANUAL_TINYURLS: Record<string, string> = {
-  "Agus Cahyono": "https://tinyurl.com/alandalus-demo-agus",
-  Jusman: "https://tinyurl.com/alandalus-demo-jusman",
-  "Fuad Khomsatun": "https://tinyurl.com/alandalus-demo-fuad",
-  "Andi Fatimah Azzahra Rahman": "https://tinyurl.com/alandalus-demo-fatimah",
-  "Muhammad Syauqi Al Faruq": "https://tinyurl.com/alandalus-demo-syauqi",
-  Muhajir: "https://tinyurl.com/alandalus-demo-muhajir",
-  "Rima Maryani Putri Utami": "https://tinyurl.com/alandalus-demo-rima",
-  "Halimah Fauziah": "https://tinyurl.com/alandalus-demo-halimah",
-  "Maulidin Bachtiar": "https://tinyurl.com/alandalus-demo-bachtiar",
-  "Muhammad Adib Achsan": "https://tinyurl.com/alandalus-demo-adib",
+  "Agus Cahyono": "https://tinyurl.com/alandalus-ululalbaab-agus",
+  Jusman: "https://tinyurl.com/alandalus-ululalbaab-jusman",
+  "Fuad Khomsatun": "https://tinyurl.com/alandalus-ululalbaab-fuad",
+  "Andi Fatimah Azzahra Rahman":
+    "https://tinyurl.com/alandalus-ululalbaab-fatimah",
+  "Muhammad Syauqi Al Faruq": "https://tinyurl.com/alandalus-ululalbaab-syauqi",
+  Muhajir: "https://tinyurl.com/alandalus-ululalbaab-muhajir",
+  "Rima Maryani Putri Utami": "https://tinyurl.com/alandalus-ululalbaab-rima",
+  "Halimah Fauziah": "https://tinyurl.com/alandalus-ululalbaab-halimah",
+  "Maulidin Bachtiar": "https://tinyurl.com/alandalus-ululalbaab-bachtiar",
+  "Muhammad Adib Achsan": "https://tinyurl.com/alandalus-ululalbaab-adib",
 };
 
 /**
@@ -154,7 +157,7 @@ export function getPermanentAuthUrl(
   pendaftarNomor?: string,
 ): string {
   const baseUrl =
-    process.env.NEXT_PUBLIC_APP_URL || "https://demo-ppdb.vercel.app";
+    process.env.NEXT_PUBLIC_APP_URL || "/daftar";
   let url = `${baseUrl}/api/auth/short/${slug}`;
   if (pendaftarNomor) {
     url += `?p=${encodeURIComponent(pendaftarNomor)}`;
@@ -163,12 +166,43 @@ export function getPermanentAuthUrl(
 }
 
 /**
- * Generate automatic TinyURL for any long URL
- * Uses TinyURL API for short link generation
+ * Generate automatic short URL for any long URL
+ * If it's an internal magic link, it converts it to /x/[id] locally.
+ * Otherwise, it tries is.gd/TinyURL as a fallback.
  */
 export async function generateTinyUrl(longUrl: string): Promise<string> {
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://pesantren-ululalbaab.com";
+
   try {
-    // 1. Try is.gd (very fast & clean redirects)
+    // 1. Check if it's an internal magic link
+    const urlObj = new URL(longUrl);
+    const token = urlObj.searchParams.get("token");
+    if (token) {
+      const verified = verifyMagicToken(token);
+      if (verified.valid && verified.data) {
+        const id = verified.data.id;
+        
+        let customUrl = `${baseUrl}/x/${id}`;
+        
+        // If there's a redirect that contains a search parameter (like pendaftarNomor)
+        if (verified.data.redirect) {
+          const redirectObj = new URL(verified.data.redirect, baseUrl);
+          const searchParam = redirectObj.searchParams.get("search");
+          if (searchParam) {
+            customUrl += `?p=${encodeURIComponent(searchParam)}`;
+          }
+        }
+        
+        // Return instantly, zero loading time!
+        return customUrl;
+      }
+    }
+  } catch (e) {
+    // Fall back if parsing fails
+  }
+
+  try {
+    // 2. Try is.gd (very fast & clean redirects) for non-magic links
     const response = await fetch(
       `https://is.gd/create.php?format=simple&url=${encodeURIComponent(longUrl)}`,
       { signal: AbortSignal.timeout(3000) }
@@ -184,7 +218,7 @@ export async function generateTinyUrl(longUrl: string): Promise<string> {
   }
 
   try {
-    // 2. Try TinyURL as fallback
+    // 3. Try TinyURL as fallback
     const response = await fetch(
       `https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`,
       { signal: AbortSignal.timeout(3000) }
@@ -199,6 +233,6 @@ export async function generateTinyUrl(longUrl: string): Promise<string> {
     console.error("Failed to generate TinyURL:", error);
   }
 
-  // Fallback to original URL if both fail
+  // Fallback to original URL if everything fails
   return longUrl;
 }
