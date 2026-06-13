@@ -173,3 +173,33 @@ export async function generateShortLink(longUrl: string): Promise<string> {
   // Fallback to original URL if everything fails
   return longUrl;
 }
+
+
+// ============================================================================
+// PERMANENT SHORT LINKS MAPPING (Slug -> Name query)
+// ============================================================================
+
+export const PERMANENT_SLUGS: Record<string, string> = {
+  abah: "Abah",
+  agus: "Agus Cahyono",
+  fuad: "Fuad Khomsatun",
+  jusman: "Jusman",
+  bachtiar: "Maulidin Bachtiar",
+  muhajir: "Muhajir",
+  syauqi: "Muhammad Syauqi Al Faruq",
+  teguh: "Teguh",
+  halimah: "Halimah Fauziah",
+  fatimah: "Andi Fatimah",
+};
+
+/**
+ * Get slug by full name matching
+ */
+export function getSlugByName(fullName: string): string | null {
+  if (!fullName) return null;
+  const normalized = fullName.trim().toLowerCase();
+  const entry = Object.entries(PERMANENT_SLUGS).find(
+    ([_, name]) => name.toLowerCase() === normalized,
+  );
+  return entry ? entry[0] : null;
+}

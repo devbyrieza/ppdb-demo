@@ -23,7 +23,7 @@ import { User,
   Bell,
   Search,
   Shirt,
-, HandCoins } from "lucide-react";
+  HandCoins } from "lucide-react";
 import { BRANDING } from "@/config/branding";
 import Link from "next/link";
 import IdleTimeoutTracker from "@/components/auth/IdleTimeoutTracker";
