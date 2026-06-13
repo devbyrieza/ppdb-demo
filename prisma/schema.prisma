@@ -27,10 +27,14 @@ model Profile {
   jadwal_penguji_ortu   JadwalUjian[]         @relation("PengujiOrtu")
   jadwal_penguji_quran  JadwalUjian[]         @relation("PengujiQuran")
   jadwal_penguji_santri JadwalUjian[]         @relation("PengujiSantri")
+  jadwal_penguji_hafalan JadwalUjian[]         @relation("PengujiHafalan")
+  jadwal_penguji_arab   JadwalUjian[]         @relation("PengujiArab")
   ketersediaan          KetersediaanPenguji[] @relation("KetersediaanPenguji")
   nilai_input_ortu      NilaiUjian[]          @relation("NilaiInputByOrtu")
   nilai_input_quran     NilaiUjian[]          @relation("NilaiInputByQuran")
   nilai_input_santri    NilaiUjian[]          @relation("NilaiInputBySantri")
+  nilai_input_hafalan   NilaiUjian[]          @relation("NilaiInputByHafalan")
+  nilai_input_arab      NilaiUjian[]          @relation("NilaiInputByArab")
   pembayaran_verified   Pembayaran[]          @relation("PembayaranVerifiedBy")
   pendaftar             Pendaftar[]
   pengumuman_published  Pengumuman[]          @relation("PengumumanPublishedBy")
@@ -284,6 +288,24 @@ model JadwalUjian {
   penguji_ortu         Profile?              @relation("PengujiOrtu", fields: [penguji_ortu_id], references: [id])
   penguji_quran        Profile?              @relation("PengujiQuran", fields: [penguji_quran_id], references: [id])
   penguji_santri       Profile?              @relation("PengujiSantri", fields: [penguji_santri_id], references: [id])
+  waktu_mulai_hafalan  DateTime?             @db.Time(6)
+  waktu_selesai_hafalan DateTime?            @db.Time(6)
+  tempat_hafalan       String?
+  ruangan_hafalan      String?
+  penguji_hafalan_id   String?               @db.Uuid
+  status_hafalan       String?               @default("scheduled")
+  zoom_link_hafalan    String?
+
+  waktu_mulai_arab     DateTime?             @db.Time(6)
+  waktu_selesai_arab   DateTime?             @db.Time(6)
+  tempat_arab          String?
+  ruangan_arab         String?
+  penguji_arab_id      String?               @db.Uuid
+  status_arab          String?               @default("scheduled")
+  zoom_link_arab       String?
+
+  penguji_hafalan      Profile?              @relation("PengujiHafalan", fields: [penguji_hafalan_id], references: [id])
+  penguji_arab         Profile?              @relation("PengujiArab", fields: [penguji_arab_id], references: [id])
   tahun_ajaran         TahunAjaran           @relation(fields: [tahun_ajaran_id], references: [id])
   nilai_ujian          NilaiUjian[]
 
@@ -350,6 +372,22 @@ model NilaiUjian {
   input_by_ortu_profile    Profile?     @relation("NilaiInputByOrtu", fields: [input_by_ortu], references: [id])
   input_by_quran_profile   Profile?     @relation("NilaiInputByQuran", fields: [input_by_quran], references: [id])
   input_by_santri_profile  Profile?     @relation("NilaiInputBySantri", fields: [input_by_santri], references: [id])
+  nilai_hafalan_total  Decimal?     @db.Decimal
+  catatan_hafalan      String?
+  detail_hafalan       Json?
+  input_by_hafalan     String?      @db.Uuid
+  input_at_hafalan     DateTime?    @db.Timestamptz(6)
+  score_hafalan        Float?
+
+  nilai_arab_total     Decimal?     @db.Decimal
+  catatan_arab         String?
+  detail_arab          Json?
+  input_by_arab        String?      @db.Uuid
+  input_at_arab        DateTime?    @db.Timestamptz(6)
+  score_arab           Float?
+
+  input_by_hafalan_profile Profile?     @relation("NilaiInputByHafalan", fields: [input_by_hafalan], references: [id])
+  input_by_arab_profile    Profile?     @relation("NilaiInputByArab", fields: [input_by_arab], references: [id])
   jadwal_ujian             JadwalUjian? @relation(fields: [jadwal_ujian_id], references: [id])
   pendaftar                Pendaftar    @relation(fields: [pendaftar_id], references: [id], onDelete: Cascade)
 
@@ -651,3 +689,4 @@ enum StatusSeleksi {
   CADANGAN
   DITOLAK
 }
+

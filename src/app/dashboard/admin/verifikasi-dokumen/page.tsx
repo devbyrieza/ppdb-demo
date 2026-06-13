@@ -140,6 +140,13 @@ function VerifikasiDokumenContent() {
   }, [statusFilter, pendaftarList.length]);
 
   useEffect(() => {
+    // FORCE CLEANUP: SweetAlert overlay bug fix
+    // Sometimes Swal leaves leftover containers after router.back()
+    const swalContainers = document.querySelectorAll('.swal2-container');
+    swalContainers.forEach(el => el.remove());
+    document.body.classList.remove('swal2-shown', 'swal2-height-auto');
+    document.body.style.paddingRight = '';
+    
     fetchData();
   }, [fetchData]);
 

@@ -34,15 +34,7 @@ export async function GET() {
     const profiles = await prisma.profile.findMany({
       where: {
         role: {
-          in: [
-            "admin_berkas",
-            "admin_keuangan",
-            "penguji",
-            "admin_super",
-            "admin",
-            "pewawancara_calsan",
-            "pewawancara_cawalsan",
-          ],
+          not: "pendaftar",
         },
       },
       orderBy: { created_at: "desc" },
@@ -74,9 +66,9 @@ export async function POST(request: Request) {
     }
 
     const isExaminerOrInterviewer = 
-      ["penguji", "pewawancara_calsan", "pewawancara_cawalsan"].includes(role) ||
+      ["penguji", "pewawancara_calsan", "pewawancara_cawalsan", "penguji_hafalan", "penguji_bahasa_arab"].includes(role) ||
       (Array.isArray(secondary_roles) && secondary_roles.some((r: string) => 
-        ["penguji", "pewawancara_calsan", "pewawancara_cawalsan"].includes(r)
+        ["penguji", "pewawancara_calsan", "pewawancara_cawalsan", "penguji_hafalan", "penguji_bahasa_arab"].includes(r)
       ));
 
     if (isExaminerOrInterviewer && (!phone || phone === "-" || phone.trim().length < 6)) {
@@ -100,6 +92,8 @@ export async function POST(request: Request) {
         "admin",
         "pewawancara_calsan",
         "pewawancara_cawalsan",
+        "penguji_hafalan",
+        "penguji_bahasa_arab",
       ];
       
       // If it's already an admin, don't allow duplicate
@@ -219,9 +213,9 @@ export async function PUT(request: Request) {
     const finalPhone = phone !== undefined ? phone : existingProfile.phone;
 
     const isExaminerOrInterviewer = 
-      ["penguji", "pewawancara_calsan", "pewawancara_cawalsan"].includes(finalRole) ||
+      ["penguji", "pewawancara_calsan", "pewawancara_cawalsan", "penguji_hafalan", "penguji_bahasa_arab"].includes(finalRole) ||
       (Array.isArray(finalSecondaryRoles) && finalSecondaryRoles.some((r: string) => 
-        ["penguji", "pewawancara_calsan", "pewawancara_cawalsan"].includes(r)
+        ["penguji", "pewawancara_calsan", "pewawancara_cawalsan", "penguji_hafalan", "penguji_bahasa_arab"].includes(r)
       ));
 
     if (isExaminerOrInterviewer && (!finalPhone || finalPhone === "-" || finalPhone.trim().length < 6)) {

@@ -219,9 +219,15 @@ export async function PATCH(request: NextRequest) {
       const rejectedDocs = allDocs.filter((d) => !d.is_verified && d.catatan);
       const isSomeRejected = rejectedDocs.length > 0;
 
-      const verifiedTypes = new Set(
-        allDocs.filter((d) => d.is_verified).map((d) => d.jenis_dokumen === "pakta_integritas" ? "pakta_integritas_santri" : d.jenis_dokumen),
-      );
+      const verifiedTypes = new Set<string>();
+      allDocs.filter((d) => d.is_verified).forEach((d) => {
+        if (d.jenis_dokumen === "pakta_integritas") {
+          verifiedTypes.add("pakta_integritas_santri");
+          verifiedTypes.add("pakta_integritas_ortu");
+        } else {
+          verifiedTypes.add(d.jenis_dokumen);
+        }
+      });
       const hasAllRequired = REQUIRED_DOC_TYPES.every((type) =>
         verifiedTypes.has(type),
       );
@@ -299,9 +305,15 @@ export async function PATCH(request: NextRequest) {
         });
 
         // 2. check if every required doc is present and verified
-        const verifiedTypes = new Set(
-          allDocs.filter((d) => d.is_verified).map((d) => d.jenis_dokumen === "pakta_integritas" ? "pakta_integritas_santri" : d.jenis_dokumen),
-        );
+        const verifiedTypes = new Set<string>();
+        allDocs.filter((d) => d.is_verified).forEach((d) => {
+          if (d.jenis_dokumen === "pakta_integritas") {
+            verifiedTypes.add("pakta_integritas_santri");
+            verifiedTypes.add("pakta_integritas_ortu");
+          } else {
+            verifiedTypes.add(d.jenis_dokumen);
+          }
+        });
         const allRequiredVerified = REQUIRED_DOC_TYPES.every((type) =>
           verifiedTypes.has(type),
         );

@@ -93,7 +93,7 @@ export default function AdminUploadPaymentModal({
 
       const data = await res.json();
       if (data.success) {
-        Swal.fire("Berhasil", data.message, "success");
+        await Swal.fire("Berhasil", data.message, "success");
         onSuccess();
         onClose();
       } else {

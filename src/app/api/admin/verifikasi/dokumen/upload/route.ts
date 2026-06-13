@@ -250,11 +250,17 @@ export async function POST(request: NextRequest) {
 
     // Use same logic as main route: filter to required types
     const allDocs = allDocsRaw.filter((d) =>
-      REQUIRED_DOCS.includes(d.jenis_dokumen),
+      REQUIRED_DOCS.includes(d.jenis_dokumen) || d.jenis_dokumen === "pakta_integritas"
     );
-    const verifiedTypes = new Set(
-      allDocs.filter((d) => d.is_verified).map((d) => d.jenis_dokumen),
-    );
+    const verifiedTypes = new Set<string>();
+    allDocs.filter((d) => d.is_verified).forEach((d) => {
+      if (d.jenis_dokumen === "pakta_integritas") {
+        verifiedTypes.add("pakta_integritas_santri");
+        verifiedTypes.add("pakta_integritas_ortu");
+      } else {
+        verifiedTypes.add(d.jenis_dokumen);
+      }
+    });
     const allRequiredVerified = REQUIRED_DOCS.every((type) =>
       verifiedTypes.has(type),
     );

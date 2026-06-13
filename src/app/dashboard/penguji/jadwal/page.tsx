@@ -81,14 +81,20 @@ interface ExamSession {
 
 const ROLE_TO_JADWAL_TYPES: Record<string, string[]> = {
   penguji: ["Seleksi Al Qur'an"],
+  penguji_hafalan: ["Seleksi Hafalan Al-Qur'an"],
+  penguji_bahasa_arab: ["Seleksi Lisan Bahasa Arab"],
   pewawancara_calsan: ["Seleksi Wawancara Calon Santri"],
   pewawancara_cawalsan: ["Seleksi Wawancara Orang Tua"],
   admin: [
+    "Seleksi Hafalan Al-Qur'an",
+    "Seleksi Lisan Bahasa Arab",
     "Seleksi Al Qur'an",
     "Seleksi Wawancara Calon Santri",
     "Seleksi Wawancara Orang Tua/Wali",
   ],
   admin_super: [
+    "Seleksi Hafalan Al-Qur'an",
+    "Seleksi Lisan Bahasa Arab",
     "Seleksi Al Qur'an",
     "Seleksi Wawancara Calon Santri",
     "Seleksi Wawancara Orang Tua/Wali",
@@ -98,6 +104,8 @@ const ROLE_TO_JADWAL_TYPES: Record<string, string[]> = {
 // Auto-map role to session title (for specific examiner roles)
 const ROLE_TO_SESSION_TITLE: Record<string, string> = {
   penguji: "Tes Al-Quran",
+  penguji_hafalan: "Tes Hafalan Al-Qur'an",
+  penguji_bahasa_arab: "Tes Lisan Bahasa Arab",
   pewawancara_calsan: "Seleksi Wawancara Calon Santri",
   pewawancara_cawalsan: "Seleksi Wawancara Orang Tua",
 };
@@ -302,8 +310,16 @@ export default function JadwalPengujiPage() {
           if (res.ok) {
             const data = await res.json();
             const filtered = (data.data || []).filter((u: any) => {
-              const roles = ["penguji", "pewawancara_calsan", "pewawancara_cawalsan"];
-              return roles.includes(u.role) || (Array.isArray(u.secondary_roles) && u.secondary_roles.some((r: string) => roles.includes(r)));
+              const roles = ["penguji", "pewawancara_calsan", "pewawancara_cawalsan", "penguji_hafalan", "penguji_bahasa_arab"];
+              
+              let secRoles: string[] = [];
+              if (Array.isArray(u.secondary_roles)) {
+                secRoles = u.secondary_roles;
+              } else if (typeof u.secondary_roles === 'string') {
+                try { secRoles = JSON.parse(u.secondary_roles); } catch (e) {}
+              }
+              
+              return roles.includes(u.role) || (Array.isArray(secRoles) && secRoles.some((r: string) => roles.includes(r)));
             });
             setPengujiList(filtered);
           }
@@ -2321,10 +2337,18 @@ export default function JadwalPengujiPage() {
                   >
                     <option value="">Pilih Penguji (Opsional)</option>
                     {pengujiList.map((p) => {
-                      const exRoles = ["penguji", "pewawancara_calsan", "pewawancara_cawalsan"];
+                      const exRoles = ["penguji", "pewawancara_calsan", "pewawancara_cawalsan", "penguji_hafalan", "penguji_bahasa_arab"];
                       let displayRole = p.role;
-                      if (!exRoles.includes(p.role) && Array.isArray(p.secondary_roles)) {
-                        const secRole = p.secondary_roles.find((r: string) => exRoles.includes(r));
+                      
+                      let secRoles: string[] = [];
+                      if (Array.isArray(p.secondary_roles)) {
+                        secRoles = p.secondary_roles;
+                      } else if (typeof p.secondary_roles === 'string') {
+                        try { secRoles = JSON.parse(p.secondary_roles); } catch (e) {}
+                      }
+
+                      if (!exRoles.includes(p.role) && Array.isArray(secRoles)) {
+                        const secRole = secRoles.find((r: string) => exRoles.includes(r));
                         if (secRole) displayRole = secRole;
                       }
                       return (
@@ -2581,3 +2605,4 @@ export default function JadwalPengujiPage() {
     </div>
   );
 }
+
