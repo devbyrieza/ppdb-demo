@@ -72,7 +72,7 @@ export default function UserManagementPage() {
               
               <div class="mb-4">
                 <label class="block text-[10px] font-black uppercase text-primary-600 mb-1.5 tracking-wider">
-                  Link Singkat (TinyURL)
+                  Link Singkat (Akses Cepat)
                 </label>
                 <input type="text" value="${data.shortLink}" class="w-full p-3 border-2 border-primary-100 rounded-xl bg-stone-50 font-bold focus:outline-none focus:border-primary-500 text-sm" readonly onclick="this.select()" />
               </div>

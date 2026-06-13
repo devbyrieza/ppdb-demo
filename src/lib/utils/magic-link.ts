@@ -171,7 +171,7 @@ export function getPermanentAuthUrl(
  * Otherwise, it tries is.gd/TinyURL as a fallback.
  */
 export async function generateTinyUrl(longUrl: string): Promise<string> {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://pesantren-ululalbaab.com";
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://ppdb-demo.vercel.app";
 
   try {
     // 1. Check if it's an internal magic link
