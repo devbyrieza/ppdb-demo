@@ -997,7 +997,7 @@ export default function PendaftarDetailPage() {
                 WhatsApp
               </a>
             )}
-            {userRole === "admin_super" && (
+            {(userRole === "admin_super" || userRole === "admin_keuangan" || userRole === "admin") && (
               <button
                 onClick={handleOpenEditModal}
                 className="px-4 py-2 bg-gold-400 hover:bg-yellow-500 text-primary-900 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 shadow-sm active:scale-95 border border-gold-300 mr-2"
@@ -1714,7 +1714,7 @@ export default function PendaftarDetailPage() {
                       value={pendaftar.no_hp}
                       icon={<Phone className="w-4 h-4" />}
                     />
-                    {userRole === "admin_super" && (
+                    {(userRole === "admin_super" || userRole === "admin_keuangan" || userRole === "admin") && (
                       <button
                         onClick={() => {
                           setNewPhone(pendaftar.no_hp || "");
@@ -2079,7 +2079,7 @@ export default function PendaftarDetailPage() {
           )}
 
           {/* Keringanan & Beasiswa */}
-          {userRole === "admin_super" && (
+          {(userRole === "admin_super" || userRole === "admin_keuangan" || userRole === "admin") && (
                           <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-gold-100">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="p-2 bg-gold-100 rounded-lg">
