@@ -79,21 +79,19 @@ interface ExamSession {
 
 // --- Component ---
 
-// Map session role to which jenis_tugas types are visible
 const ROLE_TO_JADWAL_TYPES: Record<string, string[]> = {
   penguji: ["Seleksi Al Qur'an"],
   pewawancara_calsan: ["Seleksi Wawancara Calon Santri"],
   pewawancara_cawalsan: ["Seleksi Wawancara Orang Tua"],
-  // Admin roles see all
   admin: [
     "Seleksi Al Qur'an",
     "Seleksi Wawancara Calon Santri",
-    "Seleksi Wawancara Orang Tua",
+    "Seleksi Wawancara Orang Tua/Wali",
   ],
   admin_super: [
     "Seleksi Al Qur'an",
     "Seleksi Wawancara Calon Santri",
-    "Seleksi Wawancara Orang Tua",
+    "Seleksi Wawancara Orang Tua/Wali",
   ],
 };
 
@@ -303,9 +301,10 @@ export default function JadwalPengujiPage() {
           const res = await fetch("/api/admin/users");
           if (res.ok) {
             const data = await res.json();
-            const filtered = (data.data || []).filter((u: any) => 
-              ["penguji", "pewawancara_calsan", "pewawancara_cawalsan"].includes(u.role)
-            );
+            const filtered = (data.data || []).filter((u: any) => {
+              const roles = ["penguji", "pewawancara_calsan", "pewawancara_cawalsan"];
+              return roles.includes(u.role) || (Array.isArray(u.secondary_roles) && u.secondary_roles.some((r: string) => roles.includes(r)));
+            });
             setPengujiList(filtered);
           }
         } catch (e) {
@@ -445,11 +444,11 @@ export default function JadwalPengujiPage() {
   const handleCreateBulk = async (e: React.FormEvent) => {
     e.preventDefault();
     if (bulkForm.selectedDays.length === 0) {
-      Swal.fire("Peringatan", "Pilih minimal satu hari!", "warning");
+      Swal.fire("Pilih Hari", "Pilih minimal satu hari!", "warning");
       return;
     }
     if (!bulkForm.endDate) {
-      Swal.fire("Peringatan", "Pilih tanggal berakhir!", "warning");
+      Swal.fire("Pilih Tanggal", "Pilih tanggal berakhir!", "warning");
       return;
     }
 
@@ -1031,7 +1030,7 @@ export default function JadwalPengujiPage() {
   return (
     <div className="space-y-6">
       {/* Header Section */}
-      <div className="bg-white rounded-[2rem] p-6 md:p-10 border border-secondary-100 shadow-sm app-card overflow-hidden relative">
+      <div className="bg-white rounded-[2rem] p-6 md:p-10 border border-gold-100 shadow-sm app-card overflow-hidden relative">
         <div className="absolute top-0 right-0 w-64 h-64 bg-primary-600/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
 
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 relative z-10">
@@ -1163,7 +1162,7 @@ export default function JadwalPengujiPage() {
                             <span className="px-3 py-1 bg-primary-50 text-primary-700 border border-primary-100 rounded-lg text-[9px] font-black uppercase tracking-[0.15em]">
                               {item.pendaftar.jenjang}
                             </span>
-                            <span className="px-3 py-1 bg-secondary-400 text-primary-950 rounded-lg text-[9px] font-black uppercase tracking-[0.15em] flex items-center gap-1.5">
+                            <span className="px-3 py-1 bg-gold-400 text-primary-950 rounded-lg text-[9px] font-black uppercase tracking-[0.15em] flex items-center gap-1.5">
                               <Hash className="w-3.5 h-3.5" />{" "}
                               {item.pendaftar.nomor_pendaftaran}
                             </span>
@@ -1321,7 +1320,7 @@ export default function JadwalPengujiPage() {
       {/* TAB CONTENT: SLOTS */}
       {activeTab === "slots" && (
         <>
-          <div className="bg-white p-6 md:p-8 rounded-[2rem] border border-secondary-100 shadow-sm app-card relative overflow-hidden">
+          <div className="bg-white p-6 md:p-8 rounded-[2rem] border border-gold-100 shadow-sm app-card relative overflow-hidden">
             <div className="absolute top-0 left-0 w-32 h-32 bg-primary-600/5 rounded-full blur-2xl -translate-x-1/2 -translate-y-1/2" />
 
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
@@ -1448,7 +1447,7 @@ export default function JadwalPengujiPage() {
                 );
               })}
               <div className="ml-auto text-[10px] text-ink-300 font-bold">
-                {selectedSlotIds.size} / {slots.filter(s => (s._count?.bookings || 0) === 0).length} dipilih
+                {selectedSlotIds.size} / {displaySlots.reduce((acc, s: any) => acc + s.ids.length, 0)} dipilih
               </div>
             </div>
           )}
@@ -1476,7 +1475,7 @@ export default function JadwalPengujiPage() {
                   } ${
                     slot.ids.every((id: string) => selectedSlotIds.has(id))
                       ? "border-primary-400 ring-2 ring-primary-200 shadow-primary-100"
-                      : "border-secondary-100"
+                      : "border-gold-100"
                   }`}
                 >
                   {/* Checkbox overlay in select mode */}
@@ -1562,7 +1561,7 @@ export default function JadwalPengujiPage() {
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[55] animate-in slide-in-from-bottom-4 duration-300">
           <div className="flex items-center gap-4 bg-primary-950 text-white px-6 py-4 rounded-[2rem] shadow-2xl shadow-primary-950/40">
             <div className="flex items-center gap-2">
-              <CheckSquare className="w-5 h-5 text-secondary-400" />
+              <CheckSquare className="w-5 h-5 text-gold-400" />
               <span className="font-black text-sm">
                 {selectedSlotIds.size} sesi dipilih
               </span>
@@ -1571,9 +1570,10 @@ export default function JadwalPengujiPage() {
             {bulkActionType === "edit" && (
               <button
                 onClick={() => {
+                  const title = slots.length > 0 ? slots[0].title || "" : "";
                   setBulkEditForm({
                     start_time: "08:00",
-                    end_time: "09:00",
+                    end_time: calculateEndTime("08:00", title),
                     location: "",
                     notes: "",
                     changeTime: false,
@@ -1582,7 +1582,7 @@ export default function JadwalPengujiPage() {
                   });
                   setIsBulkEditModalOpen(true);
                 }}
-                className="flex items-center gap-2 px-5 py-2.5 bg-secondary-400 text-primary-950 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-secondary-300 transition-all active:scale-95"
+                className="flex items-center gap-2 px-5 py-2.5 bg-gold-400 text-primary-950 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-gold-300 transition-all active:scale-95"
               >
                 <Edit2 className="w-4 h-4" /> Edit Terpilih
               </button>
@@ -2075,8 +2075,8 @@ export default function JadwalPengujiPage() {
                     </p>
                     <p className="text-[11px] leading-relaxed font-bold">
                       Sesi ini diatur sebagai{" "}
-                      <span className="text-secondary-300">Full Online</span>
-                      . Link Meet akan otomatis diambil dari profil Anda.
+                      <span className="text-gold-300">Full Online</span>. Link
+                      Meet akan otomatis diambil dari profil Anda.
                     </p>
                   </div>
                 </div>
@@ -2320,11 +2320,19 @@ export default function JadwalPengujiPage() {
                     }}
                   >
                     <option value="">Pilih Penguji (Opsional)</option>
-                    {pengujiList.map((p) => (
-                      <option key={p.id} value={p.id}>
-                        {p.full_name} ({p.role.replace("_", " ").toUpperCase()})
-                      </option>
-                    ))}
+                    {pengujiList.map((p) => {
+                      const exRoles = ["penguji", "pewawancara_calsan", "pewawancara_cawalsan"];
+                      let displayRole = p.role;
+                      if (!exRoles.includes(p.role) && Array.isArray(p.secondary_roles)) {
+                        const secRole = p.secondary_roles.find((r: string) => exRoles.includes(r));
+                        if (secRole) displayRole = secRole;
+                      }
+                      return (
+                        <option key={p.id} value={p.id}>
+                          {p.full_name} ({displayRole.replace(/_/g, " ").toUpperCase()})
+                        </option>
+                      );
+                    })}
                   </select>
                   <p className="text-xs text-stone-500">
                     Jika dikosongkan, jadwal akan dibuat atas nama Anda sendiri.
@@ -2340,7 +2348,7 @@ export default function JadwalPengujiPage() {
                 </p>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center text-xl shadow-inner">
-                    <Trophy className="w-5 h-5 text-secondary-300" />
+                    <Trophy className="w-5 h-5 text-gold-300" />
                   </div>
                   <p className="text-2xl font-black tracking-tight text-white">
                     {bulkForm.title || "—"}
@@ -2383,7 +2391,7 @@ export default function JadwalPengujiPage() {
                           <div className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white shadow-sm" />
                         )}
                         {isActive && (
-                          <div className="mt-1 w-5 h-1 bg-secondary-400 rounded-full"></div>
+                          <div className="mt-1 w-5 h-1 bg-gold-400 rounded-full"></div>
                         )}
                       </button>
                     );
@@ -2538,18 +2546,17 @@ export default function JadwalPengujiPage() {
               </div>
 
               {/* Informational Alert */}
-              <div className="bg-secondary-50 rounded-3xl p-6 border border-secondary-100 flex items-start gap-4">
-                <div className="w-10 h-10 bg-secondary-400 rounded-2xl flex items-center justify-center shrink-0 text-primary-950">
+              <div className="bg-gold-50 rounded-3xl p-6 border border-gold-100 flex items-start gap-4">
+                <div className="w-10 h-10 bg-gold-400 rounded-2xl flex items-center justify-center shrink-0 text-primary-950">
                   <AlertCircle className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-xs font-black text-secondary-800 uppercase tracking-widest mb-1">
+                  <p className="text-xs font-black text-gold-800 uppercase tracking-widest mb-1">
                     Informasi Otomatis
                   </p>
                   <p className="text-[11px] text-primary-900 leading-relaxed font-bold">
                     Semua sesi yang dibuat massal akan otomatis diset sebagai{" "}
-                    <span className="text-primary-600">Online</span> dan
-                    memiliki{" "}
+                    <span className="text-primary-600">Online</span> dan memiliki{" "}
                     <span className="text-emerald-600">Kuota 1 Santri</span>.
                   </p>
                 </div>
