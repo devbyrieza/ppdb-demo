@@ -403,7 +403,7 @@ export default function UserManagementPage() {
 
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-6 bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden">
-          <div className="bg-white rounded-[3rem] shadow-2xl w-full max-w-2xl overflow-hidden animate-in zoom-in duration-300 border border-white/20">
+          <div className="bg-white rounded-[3rem] shadow-2xl w-full max-w-3xl overflow-hidden animate-in zoom-in duration-300 border border-white/20">
             <div className="p-6 md:p-12 border-b flex justify-between items-center bg-stone-50/50">
               <div>
                 <h3 className="text-3xl font-black text-ink-950 font-display italic tracking-tight uppercase leading-none mb-1">
@@ -421,8 +421,8 @@ export default function UserManagementPage() {
               </button>
             </div>
             <form onSubmit={handleSubmit} className="p-6 md:p-12 space-y-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="col-span-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8">
+                <div className="col-span-1 md:col-span-2">
                   <label className="block text-[10px] font-black uppercase text-stone-500 mb-3 tracking-widest">
                     Nama Lengkap Personal
                   </label>
@@ -433,10 +433,10 @@ export default function UserManagementPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, full_name: e.target.value })
                     }
-                    className="w-full px-5 md:px-8 py-5 bg-stone-100/50 border-2 border-transparent focus:border-primary-600 focus:bg-white focus:outline-none font-bold rounded-2xl transition-all"
+                    className="w-full px-4 md:px-5 py-4 bg-stone-100/50 border-2 border-transparent focus:border-primary-600 focus:bg-white focus:outline-none font-bold rounded-2xl transition-all"
                   />
                 </div>
-                <div className="col-span-2">
+                <div className="col-span-1 md:col-span-2">
                   <label className="block text-[10px] font-black uppercase text-stone-500 mb-3 tracking-widest">
                     Database Identifier (Email)
                   </label>
@@ -447,7 +447,7 @@ export default function UserManagementPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, email: e.target.value })
                     }
-                    className="w-full px-5 md:px-8 py-5 bg-stone-100/50 border-2 border-transparent focus:border-primary-600 focus:bg-white focus:outline-none font-bold rounded-2xl transition-all"
+                    className="w-full px-4 md:px-5 py-4 bg-stone-100/50 border-2 border-transparent focus:border-primary-600 focus:bg-white focus:outline-none font-bold rounded-2xl transition-all"
                   />
                 </div>
                 <div>
@@ -459,7 +459,7 @@ export default function UserManagementPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, role: e.target.value })
                     }
-                    className="w-full px-5 md:px-8 py-5 bg-primary-50 border-2 border-primary-100 text-primary-900 rounded-2xl font-black text-xs uppercase tracking-widest cursor-pointer"
+                    className="w-full px-4 md:px-5 py-4 bg-primary-50 border-2 border-primary-100 text-primary-900 rounded-2xl font-black text-xs uppercase tracking-widest cursor-pointer"
                   >
                     {ROLE_OPTIONS.map((o) => (
                       <option key={o.value} value={o.value}>
@@ -480,9 +480,9 @@ export default function UserManagementPage() {
                       onChange={(e) =>
                         setFormData({ ...formData, password: e.target.value })
                       }
-                      className="w-full px-5 md:px-8 py-5 bg-stone-100/50 border-2 border-transparent focus:border-primary-600 focus:bg-white focus:outline-none font-bold rounded-2xl transition-all pr-16"
+                      className="w-full px-4 md:px-5 py-4 bg-stone-100/50 border-2 border-transparent focus:border-primary-600 focus:bg-white focus:outline-none font-bold rounded-2xl transition-all pr-16"
                       placeholder={
-                        isEditing ? "(Kosongkan jika tidak ubah)" : "••••••••"
+                        isEditing ? "(Abaikan jika sama)" : "••••••••"
                       }
                     />
                     <button
@@ -498,7 +498,7 @@ export default function UserManagementPage() {
                     </button>
                   </div>
                 </div>
-                <div className="col-span-2">
+                <div className="col-span-1 md:col-span-2">
                   <label className="block text-[10px] font-black uppercase text-stone-500 mb-3 tracking-widest">
                     Nomor WhatsApp (untuk Magic Link)
                   </label>
@@ -509,10 +509,10 @@ export default function UserManagementPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, phone: e.target.value })
                     }
-                    className="w-full px-5 md:px-8 py-5 bg-stone-100/50 border-2 border-transparent focus:border-primary-600 focus:bg-white focus:outline-none font-bold rounded-2xl transition-all"
+                    className="w-full px-4 md:px-5 py-4 bg-stone-100/50 border-2 border-transparent focus:border-primary-600 focus:bg-white focus:outline-none font-bold rounded-2xl transition-all"
                   />
                 </div>
-                <div className="col-span-2">
+                <div className="col-span-1 md:col-span-2">
                   <label className="block text-[10px] font-black uppercase text-stone-500 mb-3 tracking-widest">
                     Jenis Kelamin
                   </label>
@@ -521,14 +521,14 @@ export default function UserManagementPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, jenis_kelamin: e.target.value })
                     }
-                    className="w-full px-5 md:px-8 py-5 bg-stone-100/50 border-2 border-transparent focus:border-primary-600 focus:bg-white focus:outline-none font-bold rounded-2xl transition-all cursor-pointer"
+                    className="w-full px-4 md:px-5 py-4 bg-stone-100/50 border-2 border-transparent focus:border-primary-600 focus:bg-white focus:outline-none font-bold rounded-2xl transition-all cursor-pointer"
                   >
                     <option value="">Pilih Jenis Kelamin</option>
                     <option value="L">Laki-Laki (Ustadz)</option>
                     <option value="P">Perempuan (Ustadzah)</option>
                   </select>
                 </div>
-                <div className="col-span-2">
+                <div className="col-span-1 md:col-span-2">
                   <label className="block text-[10px] font-black uppercase text-stone-500 mb-3 tracking-widest">
                     Secondary Roles (Multi-Role)
                   </label>
@@ -582,7 +582,7 @@ export default function UserManagementPage() {
                             </svg>
                           )}
                         </div>
-                        <span className="font-bold text-xs">{o.label}</span>
+                        <span className="font-bold text-[11px]">{o.label}</span>
                       </label>
                     ))}
                   </div>
