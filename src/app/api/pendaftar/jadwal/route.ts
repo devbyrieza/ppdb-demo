@@ -312,9 +312,9 @@ export async function POST(request: Request) {
           );
           const magicLink = `${process.env.NEXT_PUBLIC_APP_URL || "https://ppdb-demo.vercel.app"}/api/auth/magic?token=${token}`;
 
-          const { getManualTinyUrl, generateTinyUrl } = await import("@/lib/utils/magic-link");
-          const manualTinyUrl = getManualTinyUrl(interviewer.full_name);
-          const shortUrlKonfirmasi = manualTinyUrl || (await generateTinyUrl(magicLink));
+          const { generateShortLink } = await import("@/lib/utils/magic-link");
+          
+          const shortUrlKonfirmasi = (await generateShortLink(magicLink));
 
           const intMessage = buildMessageKonfirmasiJadwalInterviewer(
             interviewer.full_name,
@@ -427,11 +427,11 @@ export async function POST(request: Request) {
             const magicLinkRem4h = `${process.env.NEXT_PUBLIC_APP_URL || "https://demo-ppdb.vercel.app"}/api/auth/magic?token=${tokenH1}`;
 
             // Use manual tinyurl if available for this user, otherwise generate automatic
-            const { getManualTinyUrl, generateTinyUrl } =
+            const { generateShortLink } =
               await import("@/lib/utils/magic-link");
-            const manualTinyUrl = getManualTinyUrl(interviewer.full_name);
+            
             const shortUrlRem4h =
-              manualTinyUrl || (await generateTinyUrl(magicLinkRem4h));
+              (await generateShortLink(magicLinkRem4h));
 
             const remIntMessage = buildMessageReminderH1Penguji(
               interviewer.full_name,

@@ -372,8 +372,8 @@ export async function POST(request: NextRequest) {
           const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
           const longUrl = `${baseUrl}/s/${nomorPendaftaran}-${expectedHash}?t=seragam`;
           
-          const { generateTinyUrl } = await import("@/lib/utils/magic-link");
-          const shortUrl = await generateTinyUrl(longUrl);
+          const { generateShortLink } = await import("@/lib/utils/magic-link");
+          const shortUrl = await generateShortLink(longUrl);
 
           const { buildMessageDaftarUlangVerified } = await import("@/lib/whatsapp-queue");
           finalMessage = buildMessageDaftarUlangVerified(

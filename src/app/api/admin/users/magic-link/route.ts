@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
-import { generateMagicToken, generateTinyUrl } from "@/lib/utils/magic-link";
+import { generateMagicToken, generateShortLink } from "@/lib/utils/magic-link";
 
 export async function POST(request: NextRequest) {
   try {
@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
     const magicLinkUrl = `${baseUrl}/api/auth/magic?token=${token}`;
 
     // Generate automatic tinyurl for the magic link
-    const shortLink = await generateTinyUrl(magicLinkUrl);
+    const shortLink = await generateShortLink(magicLinkUrl);
 
     return NextResponse.json({
       success: true,
@@ -158,7 +158,7 @@ export async function GET(request: NextRequest) {
         const magicLinkUrl = `${baseUrl}/api/auth/magic?token=${token}`;
 
         // Generate automatic tinyurl for the magic link
-        const shortLink = await generateTinyUrl(magicLinkUrl);
+        const shortLink = await generateShortLink(magicLinkUrl);
 
         return {
           id: user.id,

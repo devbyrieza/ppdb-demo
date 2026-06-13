@@ -1029,7 +1029,7 @@ export async function notifyNewStaffAccess(data: {
     return { status: false, message: "Phone number missing" };
   }
 
-  const { generateMagicToken, generateTinyUrl } = await import("@/lib/utils/magic-link");
+  const { generateMagicToken, generateShortLink } = await import("@/lib/utils/magic-link");
   const { BRANDING } = await import("@/config/branding");
 
   const isAlImam = BRANDING.schoolShortName.toLowerCase().includes("al imam");
@@ -1047,7 +1047,7 @@ export async function notifyNewStaffAccess(data: {
 
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
   const longUrl = `${baseUrl}/api/auth/magic?token=${token}`;
-  const shortUrl = await generateTinyUrl(longUrl);
+  const shortUrl = await generateShortLink(longUrl);
 
   const roleLabels: Record<string, string> = {
     penguji: "Penguji Al-Qur'an",

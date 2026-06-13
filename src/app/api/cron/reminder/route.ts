@@ -11,7 +11,7 @@ import {
     buildMessageReminderH1Santri,
     buildMessageReminderH1Penguji,
 } from "@/lib/whatsapp-queue";
-import { generateMagicToken, generateTinyUrl, getManualTinyUrl, getSlugByName, getPermanentAuthUrl } from "@/lib/utils/magic-link";
+import { generateMagicToken, generateShortLink, getSlugByName, getPermanentAuthUrl } from "@/lib/utils/magic-link";
 
 const CRON_SECRET = process.env.CRON_SECRET || "ppdb-alimam-cron-2026";
 
@@ -176,15 +176,15 @@ export async function GET(request: Request) {
                     // 2. Build the auth url with pendaftar number param
                     // 3. Shorten that URL with TinyURL
                     const slug = getSlugByName(profile.full_name);
-                    const manualTinyUrl = getManualTinyUrl(profile.full_name);
                     
-                    let shortUrl = manualTinyUrl || "";
+                    
+                    let shortUrl = "";
                     if (!shortUrl && slug) {
                         const dynamicAuthUrl = getPermanentAuthUrl(slug, jadwal.pendaftar.nomor_pendaftaran);
-                        shortUrl = await generateTinyUrl(dynamicAuthUrl);
+                        shortUrl = await generateShortLink(dynamicAuthUrl);
                     } else if (!shortUrl) {
                         // Fallback to old magic link if no slug/manual tinyurl exists
-                        shortUrl = await generateTinyUrl(magicLink);
+                        shortUrl = await generateShortLink(magicLink);
                     }
 
                     const gender = (profile.full_name.match(/halimah|maryani|fatimah|azzahra|putri|utami/i)) ? "P" : "L";
