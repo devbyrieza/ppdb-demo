@@ -48,6 +48,16 @@ interface Peserta {
   input_at_santri: string | null;
   input_at_ortu: string | null;
   created_at: string | null;
+    nilai_tes_hafalan?: number | null;
+    nilai_tes_lisan_arab?: number | null;
+    catatan_hafalan?: string | null;
+    catatan_lisan_arab?: string | null;
+    detail_hafalan?: any;
+    detail_lisan_arab?: any;
+    score_hafalan?: number | null;
+    score_lisan_arab?: number | null;
+    input_at_hafalan?: string | null;
+    input_at_lisan_arab?: string | null;
 }
 
 // ============================================================================
@@ -389,7 +399,7 @@ function InputNilaiContent() {
     setOrangTuaForm({});
   };
 
-  const saveForm = async (p: Peserta, formType: "quran" | "wawancara" | "ortu") => {
+  const saveForm = async (p: Peserta, formType: "quran" | "wawancara" | "ortu" | "hafalan" | "lisan_arab" | "hafalan" | "lisan_arab") => {
     setSaving(p.id + formType);
     setMessage(null);
 
@@ -613,7 +623,7 @@ function InputNilaiContent() {
         {p.roles.includes("wawancara") && visibleFormTypes.includes("wawancara") && renderSantriForm(p)}
         {p.roles.includes("ortu") && visibleFormTypes.includes("ortu") && renderOrangTuaForm(p)}
         {p.roles.includes("hafalan") && visibleFormTypes.includes("hafalan") && renderHafalanForm(p)}
-        {p.roles.includes("lisan_arab") && visibleFormTypes.includes("lisan_arab") && renderLisanArabForm(p)}
+        {p.roles.includes("lisan_arab") && visibleFormTypes.includes("lisan_arab") && renderArabForm(p)}
       </div>
     </div>
   );
@@ -663,9 +673,9 @@ function InputNilaiContent() {
             </div>
 
             <div className="flex flex-col-reverse sm:flex-row gap-3 pt-4 border-t border-teal-100/60">
-              <button onClick={cancelEditing} disabled={isSaving} className="px-6 py-4 rounded-xl sm:rounded-2xl font-black text-xs uppercase tracking-widest text-ink-500 hover:bg-ink-100 transition-all flex-1 text-center">Batal</button>
-              <button onClick={() => saveNilai(p, "hafalan", hafalanForm)} disabled={isSaving || !hafalanForm.score_override || !hafalanForm.rekomendasi} className="px-6 py-4 rounded-xl sm:rounded-2xl font-black text-xs uppercase tracking-widest bg-teal-600 text-white hover:bg-teal-700 transition-all shadow-lg shadow-teal-900/20 disabled:opacity-50 disabled:cursor-not-allowed flex-1 text-center flex justify-center items-center gap-2">
-                {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} {isSaving ? 'Menyimpan...' : 'Simpan Nilai Hafalan'}
+              <button onClick={cancelEditing} disabled={saving} className="px-6 py-4 rounded-xl sm:rounded-2xl font-black text-xs uppercase tracking-widest text-ink-500 hover:bg-ink-100 transition-all flex-1 text-center">Batal</button>
+              <button onClick={() => saveForm(p, "hafalan")} disabled={saving || !hafalanForm.score_override || !hafalanForm.rekomendasi} className="px-6 py-4 rounded-xl sm:rounded-2xl font-black text-xs uppercase tracking-widest bg-teal-600 text-white hover:bg-teal-700 transition-all shadow-lg shadow-teal-900/20 disabled:opacity-50 disabled:cursor-not-allowed flex-1 text-center flex justify-center items-center gap-2">
+                {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} {saving ? 'Menyimpan...' : 'Simpan Nilai Hafalan'}
               </button>
             </div>
           </div>
@@ -713,7 +723,7 @@ function InputNilaiContent() {
     );
   };
 
-  const renderLisanArabForm = (p: Peserta) => {
+  const renderArabForm = (p: Peserta) => {
     const isSaved = !!(p.detail_lisan_arab?.rekomendasi || p.nilai_tes_lisan_arab != null || p.score_lisan_arab != null);
     const isEditing = editingId === p.id + "lisan_arab";
 
@@ -758,9 +768,9 @@ function InputNilaiContent() {
             </div>
 
             <div className="flex flex-col-reverse sm:flex-row gap-3 pt-4 border-t border-sky-100/60">
-              <button onClick={cancelEditing} disabled={isSaving} className="px-6 py-4 rounded-xl sm:rounded-2xl font-black text-xs uppercase tracking-widest text-ink-500 hover:bg-ink-100 transition-all flex-1 text-center">Batal</button>
-              <button onClick={() => saveNilai(p, "lisan_arab", lisanArabForm)} disabled={isSaving || !lisanArabForm.score_override || !lisanArabForm.rekomendasi} className="px-6 py-4 rounded-xl sm:rounded-2xl font-black text-xs uppercase tracking-widest bg-sky-600 text-white hover:bg-sky-700 transition-all shadow-lg shadow-sky-900/20 disabled:opacity-50 disabled:cursor-not-allowed flex-1 text-center flex justify-center items-center gap-2">
-                {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} {isSaving ? 'Menyimpan...' : 'Simpan Nilai B. Arab'}
+              <button onClick={cancelEditing} disabled={saving} className="px-6 py-4 rounded-xl sm:rounded-2xl font-black text-xs uppercase tracking-widest text-ink-500 hover:bg-ink-100 transition-all flex-1 text-center">Batal</button>
+              <button onClick={() => saveForm(p, "lisan_arab")} disabled={saving || !lisanArabForm.score_override || !lisanArabForm.rekomendasi} className="px-6 py-4 rounded-xl sm:rounded-2xl font-black text-xs uppercase tracking-widest bg-sky-600 text-white hover:bg-sky-700 transition-all shadow-lg shadow-sky-900/20 disabled:opacity-50 disabled:cursor-not-allowed flex-1 text-center flex justify-center items-center gap-2">
+                {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} {saving ? 'Menyimpan...' : 'Simpan Nilai B. Arab'}
               </button>
             </div>
           </div>

@@ -53,7 +53,7 @@ export async function PATCH(
     const isQuran = assignment?.penguji_quran_id === userId;
     const isOrtu = assignment?.penguji_ortu_id === userId;
     const isHafalan = assignment?.penguji_hafalan_id === userId;
-    const isLisanArab = assignment?.penguji_lisan_arab_id === userId;
+    const isLisanArab = assignment?.penguji_arab_id === userId;
 
     // Fetch user profile to see if they're actually an admin who switched roles
     const userProfile = await prisma.profile.findUnique({
@@ -282,8 +282,8 @@ export async function PATCH(
 
     // 5. Lisan Arab Update
     if (canEditLisanArab && body.detail_lisan_arab !== undefined) {
-      if (existing?.input_at_lisan_arab && !isAdmin) {
-        const diff = now.getTime() - new Date(existing.input_at_lisan_arab).getTime();
+      if (existing?.input_at_arab && !isAdmin) {
+        const diff = now.getTime() - new Date(existing.input_at_arab).getTime();
         if (diff > LOCK_TIME) {
           return NextResponse.json(
             { error: "Masa edit (24 jam) untuk Tes Lisan Bahasa Arab sudah habis." },
@@ -298,8 +298,8 @@ export async function PATCH(
       if (body.score_lisan_arab !== undefined) updateData.score_lisan_arab = body.score_lisan_arab;
       updateData.input_by_lisan_arab = userId;
 
-      if (!existing?.input_at_lisan_arab) {
-        updateData.input_at_lisan_arab = now;
+      if (!existing?.input_at_arab) {
+        updateData.input_at_arab = now;
       }
     }
 
