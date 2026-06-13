@@ -253,8 +253,10 @@ const ROLE_TO_FORM_TYPES: Record<string, string[]> = {
   pewawancara_calsan: ['wawancara'],
   pewawancara_cawalsan: ['ortu'],
   // Admin roles see all forms
-  admin: ['quran', 'wawancara', 'ortu'],
-  admin_super: ['quran', 'wawancara', 'ortu'],
+  penguji_hafalan: ['hafalan'],
+    penguji_bahasa_arab: ['lisan_arab'],
+    admin: ['quran', 'wawancara', 'ortu', 'hafalan', 'lisan_arab'],
+  admin_super: ['quran', 'wawancara', 'ortu', 'hafalan', 'lisan_arab'],
 };
 
 export default function InputNilaiPage() {
@@ -287,6 +289,8 @@ function InputNilaiContent() {
   const [quranForm, setQuranForm] = useState<any>({});
   const [calsanForm, setSantriForm] = useState<any>({});
   const [cawalsanForm, setOrangTuaForm] = useState<any>({});
+  const [hafalanForm, setHafalanForm] = useState<any>({});
+  const [lisanArabForm, setLisanArabForm] = useState<any>({});
 
   // Determine which form types are visible based on the active session role
   const visibleFormTypes = ROLE_TO_FORM_TYPES[activeRole] || ['quran', 'wawancara', 'ortu'];
@@ -530,6 +534,26 @@ function InputNilaiContent() {
       if (type === 'ortu') {
         return !!p.input_at_ortu || p.nilai_wawancara_ortu != null || !!(p.detail_cawalsan?.q1);
       }
+    if (type === 'hafalan') {
+      setHafalanForm({
+        ...p.detail_hafalan,
+        catatan_tambahan: p.catatan_hafalan || "",
+        score_override: p.score_hafalan || 0,
+      });
+    }
+    if (type === 'lisan_arab') {
+      setLisanArabForm({
+        ...p.detail_lisan_arab,
+        catatan_tambahan: p.catatan_lisan_arab || "",
+        score_override: p.score_lisan_arab || 0,
+      });
+    }
+        if (type === 'hafalan') {
+          return !!(p.input_at_hafalan || p.score_hafalan || (p.detail_hafalan && Object.keys(p.detail_hafalan).length > 0));
+        }
+        if (type === 'lisan_arab') {
+          return !!(p.input_at_lisan_arab || p.score_lisan_arab || (p.detail_lisan_arab && Object.keys(p.detail_lisan_arab).length > 0));
+        }
       return true;
     });
   };
@@ -588,9 +612,201 @@ function InputNilaiContent() {
         {p.roles.includes("quran") && visibleFormTypes.includes("quran") && renderQuranForm(p)}
         {p.roles.includes("wawancara") && visibleFormTypes.includes("wawancara") && renderSantriForm(p)}
         {p.roles.includes("ortu") && visibleFormTypes.includes("ortu") && renderOrangTuaForm(p)}
+        {p.roles.includes("hafalan") && visibleFormTypes.includes("hafalan") && renderHafalanForm(p)}
+        {p.roles.includes("lisan_arab") && visibleFormTypes.includes("lisan_arab") && renderLisanArabForm(p)}
       </div>
     </div>
   );
+
+    const renderHafalanForm = (p: Peserta) => {
+    const isSaved = !!(p.detail_hafalan?.rekomendasi || p.nilai_tes_hafalan != null || p.score_hafalan != null);
+    const isEditing = editingId === p.id + "hafalan";
+
+    return (
+      <div className="bg-teal-50/50 border border-teal-100 rounded-2xl sm:rounded-3xl p-5 sm:p-5 md:p-8 space-y-5 sm:space-y-6 shadow-sm">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="p-2 sm:p-2.5 bg-teal-100 rounded-xl">
+            <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-teal-700" />
+          </div>
+          <h3 className="text-lg sm:text-xl font-black text-teal-900 tracking-tight">Tes Hafalan Al-Qur'an</h3>
+          {isSaved && !isEditing && (
+            <span className="ml-auto px-3 py-1 sm:px-4 sm:py-1.5 bg-teal-600 text-white text-[9px] sm:text-[10px] font-black uppercase tracking-widest rounded-lg sm:rounded-xl flex items-center gap-1.5 shadow-sm">
+              <CheckCircle className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> Dinilai
+            </span>
+          )}
+        </div>
+
+        {isEditing ? (
+          <div className="space-y-5 sm:space-y-6">
+            <div className="grid grid-cols-1 gap-5 sm:gap-6 text-sm">
+              <div>
+                <label className="block text-[10px] sm:text-xs font-black text-ink-700 uppercase tracking-widest mb-2 sm:mb-3">Nilai Hafalan (1-100) *</label>
+                <input type="number" min="1" max="100" value={hafalanForm.score_override || ""} onChange={(e) => setHafalanForm({ ...hafalanForm, score_override: e.target.value })} className="w-full px-4 sm:px-5 py-3.5 sm:py-4 bg-white border-2 border-teal-100 rounded-xl sm:rounded-2xl focus:border-teal-500 outline-none font-black text-teal-950 transition-all placeholder:text-ink-400" placeholder="0-100" />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-[10px] sm:text-xs font-black text-ink-700 uppercase tracking-widest mb-3 sm:mb-4">Rekomendasi Penguji *</label>
+              <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
+                {["Diterima", "Cadangan", "Ditolak"].map((opt) => (
+                  <label key={opt} className={`px-4 sm:px-5 py-3.5 sm:py-4 rounded-xl cursor-pointer border-2 transition-all text-xs sm:text-sm font-black text-center ${hafalanForm.rekomendasi === opt ? (opt === "Diterima" ? "border-teal-500 bg-teal-50 text-teal-700 shadow-sm" : opt === "Cadangan" ? "border-gold-500 bg-gold-50 text-gold-800 shadow-sm" : "border-red-500 bg-red-50 text-red-700 shadow-sm") : "border-teal-50 bg-white hover:border-teal-200"}`}>
+                    <input type="radio" name={`rekom-hafalan-${p.id}`} value={opt} checked={hafalanForm.rekomendasi === opt} onChange={() => setHafalanForm({ ...hafalanForm, rekomendasi: opt })} className="hidden" />
+                    {opt}
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-[10px] sm:text-xs font-black text-ink-700 uppercase tracking-widest mb-2 sm:mb-3">Catatan Penguji</label>
+              <textarea value={hafalanForm.catatan_tambahan || ""} onChange={(e) => setHafalanForm({ ...hafalanForm, catatan_tambahan: e.target.value })} className="w-full px-4 sm:px-5 py-4 bg-white border-2 border-teal-100 rounded-xl sm:rounded-2xl focus:border-teal-500 outline-none font-medium text-teal-950 min-h-[120px] transition-all resize-none" placeholder="Tuliskan catatan tambahan terkait hafalan santri..." />
+            </div>
+
+            <div className="flex flex-col-reverse sm:flex-row gap-3 pt-4 border-t border-teal-100/60">
+              <button onClick={cancelEditing} disabled={isSaving} className="px-6 py-4 rounded-xl sm:rounded-2xl font-black text-xs uppercase tracking-widest text-ink-500 hover:bg-ink-100 transition-all flex-1 text-center">Batal</button>
+              <button onClick={() => saveNilai(p, "hafalan", hafalanForm)} disabled={isSaving || !hafalanForm.score_override || !hafalanForm.rekomendasi} className="px-6 py-4 rounded-xl sm:rounded-2xl font-black text-xs uppercase tracking-widest bg-teal-600 text-white hover:bg-teal-700 transition-all shadow-lg shadow-teal-900/20 disabled:opacity-50 disabled:cursor-not-allowed flex-1 text-center flex justify-center items-center gap-2">
+                {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} {isSaving ? 'Menyimpan...' : 'Simpan Nilai Hafalan'}
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 bg-white p-5 sm:p-6 rounded-2xl border border-teal-100/50">
+            {isSaved ? (
+              <>
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-ink-400 mb-1.5">Nilai Hafalan</p>
+                  <p className="text-2xl font-black text-teal-950">{p.nilai_tes_hafalan || p.score_hafalan || "-"}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-ink-400 mb-1.5">Rekomendasi</p>
+                  <span className={`inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-wider ${p.detail_hafalan?.rekomendasi === "Diterima" ? "bg-teal-100 text-teal-800" : p.detail_hafalan?.rekomendasi === "Cadangan" ? "bg-gold-100 text-gold-800" : "bg-red-100 text-red-800"}`}>{p.detail_hafalan?.rekomendasi || "-"}</span>
+                </div>
+                {p.catatan_hafalan && (
+                  <div className="md:col-span-2 mt-2 pt-4 border-t border-teal-50">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-ink-400 mb-2">Catatan</p>
+                    <p className="text-sm font-medium text-ink-700 whitespace-pre-wrap">{p.catatan_hafalan}</p>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="col-span-full py-8 text-center text-ink-400">
+                <p className="font-bold text-sm">Belum ada nilai yang diinput</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {!isEditing && (
+          <div className="flex justify-end mt-4">
+            {(!isSaved || !getLockInfo(p.input_at_hafalan).isLocked) ? (
+              <button onClick={() => startEditing(p, "hafalan")} className="px-5 md:px-8 py-3.5 sm:py-4 bg-teal-600 text-white rounded-xl sm:rounded-2xl text-[10px] sm:text-xs font-black uppercase tracking-widest hover:bg-teal-700 transition-all shadow-lg shadow-teal-900/20 active:scale-95 leading-none">
+                {isSaved ? "Edit Nilai" : "Input Nilai Hafalan"}
+              </button>
+            ) : (
+              <div className="inline-flex items-center gap-2 px-6 py-3.5 bg-stone-100 text-stone-400 rounded-xl sm:rounded-2xl text-[10px] sm:text-xs font-black uppercase tracking-widest border border-stone-200">
+                <LockIcon className="w-3.5 h-3.5" /> Edit Terkunci
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const renderLisanArabForm = (p: Peserta) => {
+    const isSaved = !!(p.detail_lisan_arab?.rekomendasi || p.nilai_tes_lisan_arab != null || p.score_lisan_arab != null);
+    const isEditing = editingId === p.id + "lisan_arab";
+
+    return (
+      <div className="bg-sky-50/50 border border-sky-100 rounded-2xl sm:rounded-3xl p-5 sm:p-5 md:p-8 space-y-5 sm:space-y-6 shadow-sm">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="p-2 sm:p-2.5 bg-sky-100 rounded-xl">
+            <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-sky-700" />
+          </div>
+          <h3 className="text-lg sm:text-xl font-black text-sky-900 tracking-tight">Tes Lisan Bahasa Arab</h3>
+          {isSaved && !isEditing && (
+            <span className="ml-auto px-3 py-1 sm:px-4 sm:py-1.5 bg-sky-600 text-white text-[9px] sm:text-[10px] font-black uppercase tracking-widest rounded-lg sm:rounded-xl flex items-center gap-1.5 shadow-sm">
+              <CheckCircle className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> Dinilai
+            </span>
+          )}
+        </div>
+
+        {isEditing ? (
+          <div className="space-y-5 sm:space-y-6">
+            <div className="grid grid-cols-1 gap-5 sm:gap-6 text-sm">
+              <div>
+                <label className="block text-[10px] sm:text-xs font-black text-ink-700 uppercase tracking-widest mb-2 sm:mb-3">Nilai Bahasa Arab (1-100) *</label>
+                <input type="number" min="1" max="100" value={lisanArabForm.score_override || ""} onChange={(e) => setLisanArabForm({ ...lisanArabForm, score_override: e.target.value })} className="w-full px-4 sm:px-5 py-3.5 sm:py-4 bg-white border-2 border-sky-100 rounded-xl sm:rounded-2xl focus:border-sky-500 outline-none font-black text-sky-950 transition-all placeholder:text-ink-400" placeholder="0-100" />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-[10px] sm:text-xs font-black text-ink-700 uppercase tracking-widest mb-3 sm:mb-4">Rekomendasi Penguji *</label>
+              <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
+                {["Diterima", "Cadangan", "Ditolak"].map((opt) => (
+                  <label key={opt} className={`px-4 sm:px-5 py-3.5 sm:py-4 rounded-xl cursor-pointer border-2 transition-all text-xs sm:text-sm font-black text-center ${lisanArabForm.rekomendasi === opt ? (opt === "Diterima" ? "border-sky-500 bg-sky-50 text-sky-700 shadow-sm" : opt === "Cadangan" ? "border-gold-500 bg-gold-50 text-gold-800 shadow-sm" : "border-red-500 bg-red-50 text-red-700 shadow-sm") : "border-sky-50 bg-white hover:border-sky-200"}`}>
+                    <input type="radio" name={`rekom-lisan-arab-${p.id}`} value={opt} checked={lisanArabForm.rekomendasi === opt} onChange={() => setLisanArabForm({ ...lisanArabForm, rekomendasi: opt })} className="hidden" />
+                    {opt}
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-[10px] sm:text-xs font-black text-ink-700 uppercase tracking-widest mb-2 sm:mb-3">Catatan Penguji</label>
+              <textarea value={lisanArabForm.catatan_tambahan || ""} onChange={(e) => setLisanArabForm({ ...lisanArabForm, catatan_tambahan: e.target.value })} className="w-full px-4 sm:px-5 py-4 bg-white border-2 border-sky-100 rounded-xl sm:rounded-2xl focus:border-sky-500 outline-none font-medium text-sky-950 min-h-[120px] transition-all resize-none" placeholder="Tuliskan catatan tambahan terkait lisan arab santri..." />
+            </div>
+
+            <div className="flex flex-col-reverse sm:flex-row gap-3 pt-4 border-t border-sky-100/60">
+              <button onClick={cancelEditing} disabled={isSaving} className="px-6 py-4 rounded-xl sm:rounded-2xl font-black text-xs uppercase tracking-widest text-ink-500 hover:bg-ink-100 transition-all flex-1 text-center">Batal</button>
+              <button onClick={() => saveNilai(p, "lisan_arab", lisanArabForm)} disabled={isSaving || !lisanArabForm.score_override || !lisanArabForm.rekomendasi} className="px-6 py-4 rounded-xl sm:rounded-2xl font-black text-xs uppercase tracking-widest bg-sky-600 text-white hover:bg-sky-700 transition-all shadow-lg shadow-sky-900/20 disabled:opacity-50 disabled:cursor-not-allowed flex-1 text-center flex justify-center items-center gap-2">
+                {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} {isSaving ? 'Menyimpan...' : 'Simpan Nilai B. Arab'}
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 bg-white p-5 sm:p-6 rounded-2xl border border-sky-100/50">
+            {isSaved ? (
+              <>
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-ink-400 mb-1.5">Nilai Bahasa Arab</p>
+                  <p className="text-2xl font-black text-sky-950">{p.nilai_tes_lisan_arab || p.score_lisan_arab || "-"}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-ink-400 mb-1.5">Rekomendasi</p>
+                  <span className={`inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-wider ${p.detail_lisan_arab?.rekomendasi === "Diterima" ? "bg-sky-100 text-sky-800" : p.detail_lisan_arab?.rekomendasi === "Cadangan" ? "bg-gold-100 text-gold-800" : "bg-red-100 text-red-800"}`}>{p.detail_lisan_arab?.rekomendasi || "-"}</span>
+                </div>
+                {p.catatan_lisan_arab && (
+                  <div className="md:col-span-2 mt-2 pt-4 border-t border-sky-50">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-ink-400 mb-2">Catatan</p>
+                    <p className="text-sm font-medium text-ink-700 whitespace-pre-wrap">{p.catatan_lisan_arab}</p>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="col-span-full py-8 text-center text-ink-400">
+                <p className="font-bold text-sm">Belum ada nilai yang diinput</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {!isEditing && (
+          <div className="flex justify-end mt-4">
+            {(!isSaved || !getLockInfo(p.input_at_lisan_arab).isLocked) ? (
+              <button onClick={() => startEditing(p, "lisan_arab")} className="px-5 md:px-8 py-3.5 sm:py-4 bg-sky-600 text-white rounded-xl sm:rounded-2xl text-[10px] sm:text-xs font-black uppercase tracking-widest hover:bg-sky-700 transition-all shadow-lg shadow-sky-900/20 active:scale-95 leading-none">
+                {isSaved ? "Edit Nilai" : "Input Nilai B. Arab"}
+              </button>
+            ) : (
+              <div className="inline-flex items-center gap-2 px-6 py-3.5 bg-stone-100 text-stone-400 rounded-xl sm:rounded-2xl text-[10px] sm:text-xs font-black uppercase tracking-widest border border-stone-200">
+                <LockIcon className="w-3.5 h-3.5" /> Edit Terkunci
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  };
 
   const renderQuranForm = (p: Peserta) => {
     const isSaved = !!(p.detail_quran?.rekomendasi || p.nilai_tes_quran != null || p.score_quran != null);

@@ -44,6 +44,8 @@ export async function GET() {
           { penguji_santri_id: userId },
           { penguji_quran_id: userId },
           { penguji_ortu_id: userId },
+            { penguji_hafalan_id: userId },
+            { penguji_lisan_arab_id: userId },
           { exam_session: { created_by: userId } },
         ],
       };
@@ -108,7 +110,11 @@ export async function GET() {
         if (item.penguji_santri_id === userId)
           jenis_tugas.push("Seleksi Wawancara Calon Santri");
         if (item.penguji_quran_id === userId)
-          jenis_tugas.push("Seleksi Al Qur'an");
+            jenis_tugas.push("Seleksi Al Qur'an");
+          if (item.penguji_hafalan_id === userId)
+            jenis_tugas.push("Tes Hafalan Al-Qur'an");
+          if (item.penguji_lisan_arab_id === userId)
+            jenis_tugas.push("Tes Lisan Bahasa Arab");
         if (item.penguji_ortu_id === userId)
           jenis_tugas.push("Seleksi Wawancara Orang Tua");
 
@@ -118,8 +124,12 @@ export async function GET() {
           item.exam_session?.created_by === userId
         ) {
           const title = (item.exam_session?.title || "").toLowerCase();
-          if (title.includes("qur") || title.includes("quran"))
-            jenis_tugas.push("Seleksi Al Qur'an");
+          if (title.includes("hafalan"))
+              jenis_tugas.push("Tes Hafalan Al-Qur'an");
+            else if (title.includes("arab") || title.includes("lisan"))
+              jenis_tugas.push("Tes Lisan Bahasa Arab");
+            else if (title.includes("qur") || title.includes("quran"))
+              jenis_tugas.push("Seleksi Al Qur'an");
           else if (title.includes("calsan") || title.includes("santri"))
             jenis_tugas.push("Seleksi Wawancara Calon Santri");
           else if (
@@ -163,6 +173,12 @@ export async function GET() {
         penguji_santri_id: item.penguji_santri_id,
         penguji_quran_id: item.penguji_quran_id,
         penguji_ortu_id: item.penguji_ortu_id,
+          penguji_hafalan_id: item.penguji_hafalan_id,
+          penguji_lisan_arab_id: item.penguji_lisan_arab_id,
+          status_hafalan: item.status_hafalan || "scheduled",
+          status_lisan_arab: item.status_lisan_arab || "scheduled",
+          zoom_link_hafalan: item.zoom_link_hafalan,
+          zoom_link_lisan_arab: item.zoom_link_lisan_arab,
         // Also pass created_by so frontend can check
         session_created_by: item.exam_session?.created_by,
       };

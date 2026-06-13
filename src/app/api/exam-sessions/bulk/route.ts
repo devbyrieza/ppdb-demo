@@ -25,7 +25,9 @@ export async function POST(request: Request) {
     "penguji",
     "pewawancara_calsan",
     "pewawancara_cawalsan",
-  ];
+      "penguji_hafalan",
+      "penguji_bahasa_arab",
+    ];
   if (!allowedRoles.includes(session.role)) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
@@ -78,7 +80,11 @@ export async function POST(request: Request) {
       } else if (role === "pewawancara_calsan") {
         finalTitle = "Seleksi Wawancara Calon Santri";
       } else if (role === "penguji_quran" || role === "penguji") {
-        finalTitle = "Seleksi Al Qur'an";
+          finalTitle = "Seleksi Al Qur'an";
+        } else if (role === "penguji_hafalan") {
+          finalTitle = "Tes Hafalan Al-Qur'an";
+        } else if (role === "penguji_bahasa_arab") {
+          finalTitle = "Tes Lisan Bahasa Arab";
       } else {
         finalTitle = title || "Sesi Ujian";
       }

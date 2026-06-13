@@ -67,6 +67,18 @@ const ROLE_INFO: Record<
     desc: "Penguji tes Al-Qur'an",
     color: "from-green-50 to-lime-50 border-green-200",
   },
+  penguji_hafalan: {
+    label: "Penguji Hafalan",
+    icon: "📖",
+    desc: "Penguji tes Hafalan Al-Qur'an",
+    color: "from-teal-50 to-emerald-50 border-teal-200",
+  },
+  penguji_bahasa_arab: {
+    label: "Penguji Lisan B. Arab",
+    icon: "🗣",
+    desc: "Penguji tes Lisan Bahasa Arab",
+    color: "from-sky-50 to-blue-50 border-sky-200",
+  },
   admin: {
     label: "Admin",
     icon: "⚙️",

@@ -13,7 +13,9 @@ import { getLeastLoadedExaminerFromPool } from "@/lib/utils/assignment";
 
 function getExamCategory(title: string): string {
   const t = (title || "").toLowerCase();
-  if (t.includes("quran") || t.includes("qur'an")) return "QURAN";
+  if (t.includes("hafalan")) return "HAFALAN";
+    if (t.includes("arab") || t.includes("lisan")) return "LISAN_ARAB";
+    if (t.includes("quran") || t.includes("qur'an")) return "QURAN";
   if (t.includes("calsan") || t.includes("santri")) return "W_SANTRI";
   if (t.includes("cawalsan") || t.includes("ortu") || t.includes("orang tua"))
     return "W_ORTU";
@@ -125,7 +127,11 @@ export async function POST(request: Request) {
 
     if (duplicateCategory) {
       const categoryLabel =
-        currentCategory === "QURAN"
+        currentCategory === "HAFALAN"
+            ? "Tes Hafalan Al-Qur'an"
+          : currentCategory === "LISAN_ARAB"
+            ? "Tes Lisan Bahasa Arab"
+          : currentCategory === "QURAN"
           ? "Ujian Al-Quran"
           : currentCategory === "W_SANTRI"
             ? "Seleksi Wawancara Calon Santri"
@@ -187,7 +193,17 @@ export async function POST(request: Request) {
           select: { google_meet_link: true, full_name: true, phone: true },
         });
 
-        if (currentCategory === "QURAN") {
+        if (currentCategory === "HAFALAN") {
+            pengujiFields = {
+              penguji_hafalan_id: finalExaminerId,
+              zoom_link_hafalan: interviewer?.google_meet_link || null,
+            };
+          } else if (currentCategory === "LISAN_ARAB") {
+            pengujiFields = {
+              penguji_lisan_arab_id: finalExaminerId,
+              zoom_link_lisan_arab: interviewer?.google_meet_link || null,
+            };
+          } else if (currentCategory === "QURAN") {
           pengujiFields = {
             penguji_quran_id: finalExaminerId,
             google_meet_link: interviewer?.google_meet_link || null,

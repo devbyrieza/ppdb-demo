@@ -97,6 +97,8 @@ const GRUP_B_ICONS: Record<string, React.ElementType> = {
   QURAN: BookOpenCheck,
   W_SANTRI: Users,
   W_ORTU: UserCheck,
+  HAFALAN: BookOpen,
+  LISAN_ARAB: Brain,
 };
 
 // ============================================================================

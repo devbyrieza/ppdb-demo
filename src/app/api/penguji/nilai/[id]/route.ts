@@ -52,6 +52,8 @@ export async function PATCH(
     const isWawancara = assignment?.penguji_santri_id === userId;
     const isQuran = assignment?.penguji_quran_id === userId;
     const isOrtu = assignment?.penguji_ortu_id === userId;
+    const isHafalan = assignment?.penguji_hafalan_id === userId;
+    const isLisanArab = assignment?.penguji_lisan_arab_id === userId;
 
     // Fetch user profile to see if they're actually an admin who switched roles
     const userProfile = await prisma.profile.findUnique({
@@ -75,11 +77,13 @@ export async function PATCH(
     let isWawancaraFallback = false;
     let isQuranFallback = false;
     let isOrtuFallback = false;
+    let isHafalanFallback = false;
+    let isLisanArabFallback = false;
 
     if (
       !isWawancara &&
       !isQuran &&
-      !isOrtu &&
+      !isOrtu && !isHafalan && !isLisanArab &&
       assignment &&
       assignment.exam_session &&
       assignment.exam_session.created_by === userId
@@ -94,16 +98,22 @@ export async function PATCH(
         title.includes("cawalsan") ||
         title.includes("ortu") ||
         title.includes("orang");
+      const hasHafalanMatch = title.includes("hafalan");
+      const hasLisanArabMatch = title.includes("arab") || title.includes("lisan");
 
       // If the title is generic (e.g. "Tes PPDB 1"), grant access to all forms (matches frontend behavior roles: [])
-      if (!hasQuranMatch && !hasWawancaraMatch && !hasOrtuMatch) {
+      if (!hasQuranMatch && !hasWawancaraMatch && !hasOrtuMatch && !hasHafalanMatch && !hasLisanArabMatch) {
         isQuranFallback = true;
         isWawancaraFallback = true;
         isOrtuFallback = true;
+        isHafalanFallback = true;
+        isLisanArabFallback = true;
       } else {
         isQuranFallback = hasQuranMatch;
         isWawancaraFallback = hasWawancaraMatch;
         isOrtuFallback = hasOrtuMatch;
+        isHafalanFallback = hasHafalanMatch;
+        isLisanArabFallback = hasLisanArabMatch;
       }
     }
 
@@ -127,6 +137,18 @@ export async function PATCH(
       isOrtuFallback ||
       baseRole.includes("cawalsan") ||
       baseRole === "pewawancara_cawalsan";
+    const canEditHafalan =
+      isAdmin ||
+      isHafalan ||
+      isHafalanFallback ||
+      baseRole.includes("hafalan") ||
+      baseRole === "penguji_hafalan";
+    const canEditLisanArab =
+      isAdmin ||
+      isLisanArab ||
+      isLisanArabFallback ||
+      baseRole.includes("arab") ||
+      baseRole === "penguji_bahasa_arab";
 
     // 0. Pre-fetch existing record to check timestamps
     const existing = await prisma.nilaiUjian.findFirst({
@@ -234,7 +256,54 @@ export async function PATCH(
       }
     }
 
-    // 4. Upsert Score - Link to the schedule being graded
+    
+    // 4. Hafalan Update
+    if (canEditHafalan && body.detail_hafalan !== undefined) {
+      if (existing?.input_at_hafalan && !isAdmin) {
+        const diff = now.getTime() - new Date(existing.input_at_hafalan).getTime();
+        if (diff > LOCK_TIME) {
+          return NextResponse.json(
+            { error: "Masa edit (24 jam) untuk Tes Hafalan sudah habis." },
+            { status: 403 },
+          );
+        }
+      }
+
+      if (body.nilai_tes_hafalan !== undefined) updateData.nilai_tes_hafalan = body.nilai_tes_hafalan;
+      if (body.catatan_hafalan !== undefined) updateData.catatan_hafalan = body.catatan_hafalan;
+      if (body.detail_hafalan !== undefined) updateData.detail_hafalan = body.detail_hafalan;
+      if (body.score_hafalan !== undefined) updateData.score_hafalan = body.score_hafalan;
+      updateData.input_by_hafalan = userId;
+
+      if (!existing?.input_at_hafalan) {
+        updateData.input_at_hafalan = now;
+      }
+    }
+
+    // 5. Lisan Arab Update
+    if (canEditLisanArab && body.detail_lisan_arab !== undefined) {
+      if (existing?.input_at_lisan_arab && !isAdmin) {
+        const diff = now.getTime() - new Date(existing.input_at_lisan_arab).getTime();
+        if (diff > LOCK_TIME) {
+          return NextResponse.json(
+            { error: "Masa edit (24 jam) untuk Tes Lisan Bahasa Arab sudah habis." },
+            { status: 403 },
+          );
+        }
+      }
+
+      if (body.nilai_tes_lisan_arab !== undefined) updateData.nilai_tes_lisan_arab = body.nilai_tes_lisan_arab;
+      if (body.catatan_lisan_arab !== undefined) updateData.catatan_lisan_arab = body.catatan_lisan_arab;
+      if (body.detail_lisan_arab !== undefined) updateData.detail_lisan_arab = body.detail_lisan_arab;
+      if (body.score_lisan_arab !== undefined) updateData.score_lisan_arab = body.score_lisan_arab;
+      updateData.input_by_lisan_arab = userId;
+
+      if (!existing?.input_at_lisan_arab) {
+        updateData.input_at_lisan_arab = now;
+      }
+    }
+
+    // 6. Upsert Score - Link to the schedule being graded
     if (existing) {
       await prisma.nilaiUjian.update({
         where: { id: existing.id },
@@ -264,6 +333,8 @@ export async function PATCH(
         if (body.detail_quran) componentType = "quran";
         else if (body.detail_wawancara) componentType = "santri";
         else if (body.detail_cawalsan) componentType = "ortu";
+        else if (body.detail_hafalan) componentType = "hafalan" as any;
+        else if (body.detail_lisan_arab) componentType = "lisan_arab" as any;
 
         if (componentType) {
           await markExamComponentAsComplete({

@@ -126,6 +126,12 @@ interface PendaftarDetail {
     score_kepribadian?: number;
     score_kesiapan?: number;
     score_quran?: number;
+      score_hafalan?: number;
+      nilai_tes_hafalan?: number;
+      catatan_hafalan?: string;
+      score_lisan_arab?: number;
+      nilai_tes_lisan_arab?: number;
+      catatan_lisan_arab?: string;
     nilai_tes_quran?: number;
     catatan_quran?: string;
     score_wawancara?: number;
@@ -1261,7 +1267,94 @@ export default function PendaftarDetailPage() {
                   )}
                 </div>
 
-                {/* 5. Seleksi Wawancara Calon Santri (Offline) */}
+                
+                {pendaftar.jenjang?.toLowerCase().includes("ma") && (
+                  <div className="bg-teal-50/50 p-4 rounded-xl border border-teal-100 flex flex-col justify-between">
+                    <div>
+                      <span className="block text-xs text-teal-600 font-bold uppercase tracking-wide mb-1">
+                        Tes Hafalan
+                      </span>
+                      {!pendaftar.nilai_ujian ? (
+                        <span className="text-sm font-bold text-stone-400 italic inline-block mt-2 px-3 py-1 bg-stone-100 rounded">
+                          Belum Ada
+                        </span>
+                      ) : pendaftar.nilai_ujian?.nilai_tes_hafalan || (pendaftar.nilai_ujian as any)?.score_hafalan ? (
+                        <div className="flex flex-col mt-2 space-y-1">
+                          <div className="flex items-baseline gap-2">
+                            <span className="text-3xl font-black text-teal-900">
+                              {pendaftar.nilai_ujian?.score_hafalan != null
+                                ? Number(pendaftar.nilai_ujian.score_hafalan).toFixed(1).replace(".0", "")
+                                : pendaftar.nilai_ujian?.nilai_tes_hafalan != null
+                                  ? Number(pendaftar.nilai_ujian.nilai_tes_hafalan).toFixed(1).replace(".0", "")
+                                  : "-"}
+                            </span>
+                            <span className="text-sm text-teal-400 font-medium">/ 100</span>
+                          </div>
+                          {(pendaftar.nilai_ujian as any)?.detail_hafalan?.rekomendasi && (
+                            <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded w-max ${(pendaftar.nilai_ujian as any).detail_hafalan.rekomendasi === "Diterima" ? "bg-teal-100 text-teal-700" : "bg-red-100 text-red-700"}`}>
+                              {(pendaftar.nilai_ujian as any).detail_hafalan.rekomendasi}
+                            </span>
+                          )}
+                        </div>
+                      ) : (
+                        <span className="text-sm font-bold text-stone-400 italic inline-block mt-2 px-3 py-1 bg-stone-100 rounded">
+                          Belum Dinilai
+                        </span>
+                      )}
+                    </div>
+                    {pendaftar.nilai_ujian?.catatan_hafalan && (
+                      <div className="mt-3 text-[10px] text-stone-500 line-clamp-3 italic border-t border-teal-200/50 pt-2 leading-relaxed">
+                        "`${pendaftar.nilai_ujian.catatan_hafalan}`"
+                      </div>
+                    )}
+                  </div>
+                )}
+
+
+                {pendaftar.jenjang?.toLowerCase().includes("ma") && (
+                  <div className="bg-sky-50/50 p-4 rounded-xl border border-sky-100 flex flex-col justify-between">
+                    <div>
+                      <span className="block text-xs text-sky-600 font-bold uppercase tracking-wide mb-1">
+                        Lisan B. Arab
+                      </span>
+                      {!pendaftar.nilai_ujian ? (
+                        <span className="text-sm font-bold text-stone-400 italic inline-block mt-2 px-3 py-1 bg-stone-100 rounded">
+                          Belum Ada
+                        </span>
+                      ) : pendaftar.nilai_ujian?.nilai_tes_lisan_arab || (pendaftar.nilai_ujian as any)?.score_lisan_arab ? (
+                        <div className="flex flex-col mt-2 space-y-1">
+                          <div className="flex items-baseline gap-2">
+                            <span className="text-3xl font-black text-sky-900">
+                              {pendaftar.nilai_ujian?.score_lisan_arab != null
+                                ? Number(pendaftar.nilai_ujian.score_lisan_arab).toFixed(1).replace(".0", "")
+                                : pendaftar.nilai_ujian?.nilai_tes_lisan_arab != null
+                                  ? Number(pendaftar.nilai_ujian.nilai_tes_lisan_arab).toFixed(1).replace(".0", "")
+                                  : "-"}
+                            </span>
+                            <span className="text-sm text-sky-400 font-medium">/ 100</span>
+                          </div>
+                          {(pendaftar.nilai_ujian as any)?.detail_lisan_arab?.rekomendasi && (
+                            <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded w-max ${(pendaftar.nilai_ujian as any).detail_lisan_arab.rekomendasi === "Diterima" ? "bg-sky-100 text-sky-700" : "bg-red-100 text-red-700"}`}>
+                              {(pendaftar.nilai_ujian as any).detail_lisan_arab.rekomendasi}
+                            </span>
+                          )}
+                        </div>
+                      ) : (
+                        <span className="text-sm font-bold text-stone-400 italic inline-block mt-2 px-3 py-1 bg-stone-100 rounded">
+                          Belum Dinilai
+                        </span>
+                      )}
+                    </div>
+                    {pendaftar.nilai_ujian?.catatan_lisan_arab && (
+                      <div className="mt-3 text-[10px] text-stone-500 line-clamp-3 italic border-t border-sky-200/50 pt-2 leading-relaxed">
+                        "`${pendaftar.nilai_ujian.catatan_lisan_arab}`"
+                      </div>
+                    )}
+                  </div>
+                )}
+
+
+                  {/* 5. Seleksi Wawancara Calon Santri (Offline) */}
                 <div className="bg-secondary-50/50 p-4 rounded-xl border border-secondary-100 flex flex-col justify-between">
                   <div>
                     <span className="block text-xs text-secondary-600 font-bold uppercase tracking-wide mb-1">

@@ -1052,7 +1052,9 @@ export async function notifyNewStaffAccess(data: {
   const roleLabels: Record<string, string> = {
     penguji: "Penguji Al-Qur'an",
     pewawancara_calsan: "Pewawancara Calsan",
-    pewawancara_cawalsan: "Pewawancara Cawalsan",
+    pewawancara_cawalsan: 'Pewawancara Cawalsan',
+      penguji_hafalan: "Penguji Hafalan",
+      penguji_bahasa_arab: "Penguji Lisan B. Arab",
   };
   const roleLabel = roleLabels[data.role] || data.role;
 

@@ -110,7 +110,7 @@ export async function GET() {
       // Determine roles for this jadwal record
       const roles: string[] = [];
       if (isAdmin) {
-        roles.push("wawancara", "quran", "ortu");
+        roles.push("wawancara", "quran", "ortu", "hafalan", "lisan_arab");
       } else {
         if (item.penguji_santri_id === userId) roles.push("wawancara");
         if (item.penguji_quran_id === userId) roles.push("quran");
@@ -124,14 +124,15 @@ export async function GET() {
             title.includes("calsan") ||
             title.includes("santri") ||
             title.includes("wawancara");
-          const hasOrtuMatch =
-            title.includes("cawalsan") ||
-            title.includes("ortu") ||
-            title.includes("orang");
+          const hasOrtuMatch = title.includes("cawalsan") || title.includes("ortu") || title.includes("orang");
+            const hasHafalanMatch = title.includes("hafalan");
+            const hasLisanArabMatch = title.includes("arab") || title.includes("lisan");
 
           if (hasQuranMatch) roles.push("quran");
           if (hasWawancaraMatch) roles.push("wawancara");
           if (hasOrtuMatch) roles.push("ortu");
+          if (hasHafalanMatch) roles.push("hafalan");
+          if (hasLisanArabMatch) roles.push("lisan_arab");
         }
       }
 
@@ -219,6 +220,8 @@ export async function GET() {
           nilai_id: scoreData.id || null,
           nilai_wawancara_santri: scoreData.nilai_wawancara_santri,
           nilai_tes_quran: scoreData.nilai_tes_quran,
+            nilai_tes_hafalan: scoreData.nilai_tes_hafalan,
+            nilai_tes_lisan_arab: scoreData.nilai_tes_lisan_arab,
           nilai_wawancara_ortu: scoreData.nilai_wawancara_ortu,
           catatan_santri: scoreData.catatan_santri,
           catatan_quran: scoreData.catatan_quran,

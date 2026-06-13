@@ -36,6 +36,8 @@ export async function GET(request: Request) {
     "admin_berkas",
     "pewawancara_calsan",
     "pewawancara_cawalsan",
+    "penguji_hafalan",
+    "penguji_bahasa_arab",
   ];
   const isAdminOrExaminer = allowedRoles.includes(session.role);
   const isPendaftar = session.role === "pendaftar";
@@ -136,6 +138,10 @@ export async function POST(request: Request) {
         finalTitle = "Seleksi Wawancara Calon Santri";
       } else if (role === "penguji_quran" || role === "penguji") {
         finalTitle = "Seleksi Al Qur'an";
+      } else if (role === "penguji_hafalan") {
+        finalTitle = "Tes Hafalan Al-Qur'an";
+      } else if (role === "penguji_bahasa_arab") {
+        finalTitle = "Tes Lisan Bahasa Arab";
       } else {
         finalTitle = title || "Sesi Ujian";
       }

@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import {
-  User,
+import { User,
   CreditCard,
   FileCheck,
   Calendar,
@@ -24,7 +23,7 @@ import {
   Bell,
   Search,
   Shirt,
-} from "lucide-react";
+, HandCoins } from "lucide-react";
 import { BRANDING } from "@/config/branding";
 import Link from "next/link";
 import IdleTimeoutTracker from "@/components/auth/IdleTimeoutTracker";
@@ -163,7 +162,14 @@ export default function DashboardLayout({
       active: pathname === "/dashboard/pendaftar/undangan-seleksi",
     },
     {
-      name: "Pengumuman",
+        name: "Pengajuan Beasiswa",
+        href: "/dashboard/pendaftar/beasiswa",
+        tabName: "data-pribadi" as TabName,
+        icon: HandCoins,
+        active: pathname === "/dashboard/pendaftar/beasiswa",
+      },
+      {
+        name: "Pengumuman",
       href: "/dashboard/pendaftar/pengumuman",
       tabName: "pengumuman" as TabName,
       icon: Trophy,

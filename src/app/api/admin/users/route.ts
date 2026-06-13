@@ -55,7 +55,7 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
-    const { email: rawEmail, password, full_name, role, secondary_roles, phone } = body;
+    const { email: rawEmail, password, full_name, role, secondary_roles, phone, jenis_kelamin } = body;
     const email = rawEmail?.trim().toLowerCase();
 
     if (!email || !password || !full_name || !role) {
@@ -149,6 +149,7 @@ export async function POST(request: Request) {
         role,
         secondary_roles: Array.isArray(secondary_roles) ? secondary_roles : [],
         phone: phone || "-",
+        jenis_kelamin: jenis_kelamin || null,
         password_hash,
       },
     });
@@ -187,7 +188,7 @@ export async function PUT(request: Request) {
   }
 
   try {
-    const { id, password, role, full_name, email, secondary_roles, phone } =
+    const { id, password, role, full_name, email, secondary_roles, phone, jenis_kelamin } =
       await request.json();
 
     if (!id) {
@@ -231,6 +232,7 @@ export async function PUT(request: Request) {
     if (full_name) data.full_name = full_name;
     if (Array.isArray(secondary_roles)) data.secondary_roles = secondary_roles;
     if (phone !== undefined) data.phone = phone;
+    if (jenis_kelamin !== undefined) data.jenis_kelamin = jenis_kelamin;
 
     // Email update logic
     if (email) {
