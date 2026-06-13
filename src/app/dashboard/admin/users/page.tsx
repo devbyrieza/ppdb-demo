@@ -37,6 +37,8 @@ const ROLE_OPTIONS = [
   { value: "penguji", label: "Penguji Al-Qur'an" },
   { value: "pewawancara_calsan", label: "Pewawancara Calsan" },
   { value: "pewawancara_cawalsan", label: "Pewawancara Cawalsan" },
+  { value: "penguji_hafalan", label: "Penguji Hafalan Al-Qur'an" },
+  { value: "penguji_bahasa_arab", label: "Penguji Lisan B. Arab" },
 ];
 
 export default function UserManagementPage() {
@@ -164,12 +166,10 @@ export default function UserManagementPage() {
       });
       if (response.ok) {
         Swal.fire({
-          title: "Berhasil!",
-          text: isEditing
-            ? "Data user berhasil diperbarui."
-            : "User baru berhasil didaftarkan.",
           icon: "success",
-          confirmButtonColor: "#0d9488",
+          title: "Berhasil",
+          text: "Data user berhasil disimpan",
+          confirmButtonColor: "#1e3a8a",
         });
         setIsModalOpen(false);
         fetchUsers();
@@ -184,14 +184,18 @@ export default function UserManagementPage() {
           }
         }
         Swal.fire({
-          title: "Gagal!",
-          text: errorText,
           icon: "error",
+          title: "Gagal Menyimpan",
+          text: errorText,
           confirmButtonColor: "#e11d48",
         });
       }
-    } catch (err) {
-      Swal.fire("Error", "Terjadi kesalahan pada sistem.", "error");
+    } catch (err: any) {
+      Swal.fire(
+        "Error",
+        "Sistem sedang sibuk atau offline. Coba lagi nanti.",
+        "error",
+      );
     }
   };
 

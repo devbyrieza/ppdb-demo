@@ -169,7 +169,7 @@ export function formatStatusDisplay(status: StatusProses) {
 
 // ─── 5. ROLE-BASED ACCESS CONTROL (RBAC) ───
 
-export type UserRole = "pendaftar" | "admin_berkas" | "admin_keuangan" | "penguji" | "pewawancara_calsan" | "pewawancara_cawalsan" | "admin_super" | "admin";
+export type UserRole = "pendaftar" | "admin_berkas" | "admin_keuangan" | "penguji" | "pewawancara_calsan" | "pewawancara_cawalsan" | "admin_super" | "admin" | "penguji_hafalan" | "penguji_bahasa_arab";
 
 export const ROLE_LABELS: Record<UserRole, string> = {
   pendaftar: "Pendaftar",
@@ -178,6 +178,8 @@ export const ROLE_LABELS: Record<UserRole, string> = {
   penguji: "Penguji Al-Qur'an",
   pewawancara_calsan: "Pewawancara Calsan",
   pewawancara_cawalsan: "Pewawancara Cawalsan",
+  penguji_hafalan: "Penguji Hafalan",
+  penguji_bahasa_arab: "Penguji Lisan B. Arab",
   admin_super: "Admin Super",
   admin: "Administrator",
 };
@@ -189,6 +191,8 @@ export const ROLE_PERMISSIONS: Record<UserRole, string[]> = {
   penguji: ["view_exam_schedule", "input_exam_scores"],
   pewawancara_calsan: ["view_exam_schedule", "input_exam_scores"],
   pewawancara_cawalsan: ["view_exam_schedule", "input_exam_scores"],
+  penguji_hafalan: ["view_exam_schedule", "input_exam_scores"],
+  penguji_bahasa_arab: ["view_exam_schedule", "input_exam_scores"],
   admin_super: ["view_pendaftar_list", "view_dashboard_stats", "manage_users", "manage_settings"],
   admin: ["view_pendaftar_list", "verify_documents", "verify_payment", "input_exam_scores"],
 };
@@ -200,6 +204,8 @@ export const DASHBOARD_ROUTES: Record<UserRole, string> = {
   penguji: "/dashboard/penguji",
   pewawancara_calsan: "/dashboard/penguji",
   pewawancara_cawalsan: "/dashboard/penguji",
+  penguji_hafalan: "/dashboard/penguji",
+  penguji_bahasa_arab: "/dashboard/penguji",
   admin_super: "/dashboard/admin",
   admin: "/dashboard/admin",
 };
@@ -238,6 +244,16 @@ export function getMenuItemsForRole(role: UserRole) {
       { name: "Input Nilai", href: "/dashboard/penguji/input-nilai", icon: "ClipboardEdit" },
     ],
     pewawancara_cawalsan: [
+      { name: "Dashboard", href: "/dashboard/penguji", icon: "LayoutDashboard" },
+      { name: "Jadwal Seleksi", href: "/dashboard/penguji/jadwal", icon: "Calendar" },
+      { name: "Input Nilai", href: "/dashboard/penguji/input-nilai", icon: "ClipboardEdit" },
+    ],
+    penguji_hafalan: [
+      { name: "Dashboard", href: "/dashboard/penguji", icon: "LayoutDashboard" },
+      { name: "Jadwal Seleksi", href: "/dashboard/penguji/jadwal", icon: "Calendar" },
+      { name: "Input Nilai", href: "/dashboard/penguji/input-nilai", icon: "ClipboardEdit" },
+    ],
+    penguji_bahasa_arab: [
       { name: "Dashboard", href: "/dashboard/penguji", icon: "LayoutDashboard" },
       { name: "Jadwal Seleksi", href: "/dashboard/penguji/jadwal", icon: "Calendar" },
       { name: "Input Nilai", href: "/dashboard/penguji/input-nilai", icon: "ClipboardEdit" },
