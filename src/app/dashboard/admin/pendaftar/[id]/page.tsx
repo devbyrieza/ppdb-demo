@@ -508,8 +508,8 @@ export default function PendaftarDetailPage() {
       input: "select",
       inputOptions: {
         "none": "Tidak Ada / Hapus Keringanan",
-        "Beasiswa": "Beasiswa Prestasi / Tahfizh",
-        "Keringanan": "Keringanan Biaya Daftar Ulang",
+        "Beasiswa": "Beasiswa (Yatim/Dhuafa/Tahfizh/Prestasi)",
+        "Keringanan": "Keringanan Biaya Daftar Ulang (Sosial/Dhuafa)",
       },
       inputPlaceholder: "Pilih Jenis",
       showCancelButton: true,
