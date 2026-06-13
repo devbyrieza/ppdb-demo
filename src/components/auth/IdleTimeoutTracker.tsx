@@ -1,6 +1,6 @@
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // IDLE TIMEOUT TRACKER 🚨
-// Auto-logout setelah 30 menit tidak ada aktivitas
+// Auto-logout setelah 24 jam tidak ada aktivitas
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // Path: src/components/auth/IdleTimeoutTracker.tsx
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -15,8 +15,8 @@ import { AlertCircle, Clock } from "lucide-react";
 // ============================================
 // ⚙️ KONFIGURASI
 // ============================================
-const IDLE_TIMEOUT = 30 * 60 * 1000; // 30 menit dalam milliseconds
-const WARNING_TIME = 2 * 60 * 1000; // Warning 2 menit sebelum logout
+const IDLE_TIMEOUT = 24 * 60 * 60 * 1000; // 24 jam dalam milliseconds
+const WARNING_TIME = 5 * 60 * 1000; // Warning 5 menit sebelum logout
 const CHECK_INTERVAL = 1000; // Check setiap 1 detik
 
 // ============================================
@@ -67,7 +67,7 @@ export default function IdleTimeoutTracker() {
 
     // Redirect dengan message
     router.push(
-      "/login?timeout=true&message=Anda+telah+logout+otomatis+karena+tidak+ada+aktivitas+selama+30+menit",
+      "/login?timeout=true&message=Anda+telah+logout+otomatis+karena+tidak+ada+aktivitas+selama+24+jam",
     );
   };
 
@@ -199,8 +199,8 @@ export default function IdleTimeoutTracker() {
 //
 // 1. Track user activity (klik, scroll, keyboard)
 // 2. Reset timer setiap ada aktivitas
-// 3. Jika 28 menit tidak ada aktivitas:
+// 3. Jika hampir 24 jam tidak ada aktivitas:
 //    → Tampilkan warning modal dengan countdown
-// 4. Jika 30 menit tidak ada aktivitas:
+// 4. Jika 24 jam tidak ada aktivitas:
 //    → Auto logout + redirect ke login
 // 5. User bisa klik "Saya Masih Di Sini" untuk reset timer

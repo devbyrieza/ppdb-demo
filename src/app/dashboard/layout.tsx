@@ -13,7 +13,7 @@ export default function DashboardLayout({
 }) {
   return (
     <>
-      {/* 🚨 Idle Timeout Tracker - Auto logout setelah 30 menit */}
+      {/* 🚨 Idle Timeout Tracker - Auto logout setelah 24 jam */}
       <IdleTimeoutTracker />
 
       {/* Dashboard Content */}
@@ -27,9 +27,9 @@ export default function DashboardLayout({
 // ============================================
 //
 // 1. IdleTimeoutTracker akan otomatis track user activity
-// 2. Jika 30 menit tidak ada aktivitas:
-//    - Tampilkan warning modal (2 menit sebelum logout)
-//    - Auto logout setelah 30 menit
+// 2. Jika 24 jam tidak ada aktivitas:
+//    - Tampilkan warning modal (5 menit sebelum logout)
+//    - Auto logout setelah 24 jam
 // 3. User bisa klik "Saya Masih Di Sini" untuk reset timer
 //
 // ============================================
