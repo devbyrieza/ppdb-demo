@@ -204,6 +204,38 @@ export default function KeuanganPage() {
   );
 
   // Export handlers
+  const handleExportKeringanan = async () => {
+    try {
+      const res = await fetch("/api/admin/laporan/keringanan");
+      const json = await res.json();
+      if (!res.ok || !json.success) throw new Error(json.error || "Gagal mengambil data");
+      
+      const data = json.data;
+      if (!data || data.length === 0) {
+        alert("Tidak ada data keringanan/beasiswa untuk diexport.");
+        return;
+      }
+
+      const header = Object.keys(data[0]);
+      const sheets = [
+        {
+          name: "Laporan Keringanan",
+          title: "LAPORAN KERINGANAN & BEASISWA PENDAFTAR",
+          subTitle: `Tanggal Export: ${new Date().toLocaleDateString("id-ID")}`,
+          header,
+          data: data.map((d: any) => Object.values(d))
+        }
+      ];
+
+      await exportToExcelProfessional({
+        fileName: `Laporan_Keringanan_${new Date().toISOString().slice(0, 10)}`,
+        sheets,
+      });
+    } catch (e: any) {
+      alert(e.message);
+    }
+  };
+
   const handleExport = async (type: "excel" | "pdf") => {
     if (activeTab === "pendaftaran") {
       if (filteredPendaftaran.length === 0) return;
@@ -212,17 +244,18 @@ export default function KeuanganPage() {
         const header = [
           "No",
           "Nama Santri",
-          "Nomor Pendaftaran",
+          "No. Pendaftaran",
           "Jenjang",
           "Status Bayar",
           "Jumlah Bayar",
           "Metode",
-          "Update",
+          "Tgl Update",
         ];
 
+        // Grouping
         const jenjangGroups: Record<string, RekapPendaftaran[]> = {};
         filteredPendaftaran.forEach((i) => {
-          const j = (i as any).jenjang || "LAINNYA";
+          const j = (i as any).jenjang || "LAINNYA"; // Assuming jenjang might be available or fallback
           if (!jenjangGroups[j]) jenjangGroups[j] = [];
           jenjangGroups[j].push(i);
         });
@@ -232,9 +265,9 @@ export default function KeuanganPage() {
           i.nama.toUpperCase(),
           i.nomor_pendaftaran,
           (i as any).jenjang || "-",
-          i.status_pembayaran.replace(/_/g, " "),
+          i.status_pembayaran === "verified" ? "TERVERIFIKASI" : i.status_pembayaran === "payment_verification" ? "MENUNGGU" : "BELUM BAYAR",
           i.jumlah_pembayaran,
-          i.metode,
+          i.metode.toUpperCase(),
           new Date(i.last_updated).toLocaleDateString("id-ID"),
         ];
 
@@ -267,14 +300,12 @@ export default function KeuanganPage() {
       } else {
         const data = filteredPendaftaran.map((i) => ({
           No: i.no,
-          "Nama Santri": i.nama,
-          "Nomor Pendaftaran": i.nomor_pendaftaran,
-          "Status Bayar": i.status_pembayaran === "verified" ? "Terverifikasi" : (i.status_pembayaran === "rejected" ? "Ditolak" : "Pending"),
-          "Jumlah Bayar (Rp)": i.jumlah_pembayaran,
-          Metode: i.metode,
-          "Terakhir Update": new Date(i.last_updated).toLocaleDateString(
-            "id-ID",
-          ),
+          "Nama Santri": i.nama.toUpperCase(),
+          "No. Pendaftaran": i.nomor_pendaftaran,
+          "Status Bayar": i.status_pembayaran === "verified" ? "Terverifikasi" : "Pending",
+          "Jumlah (Rp)": i.jumlah_pembayaran,
+          Metode: i.metode.toUpperCase(),
+          "Tgl Update": new Date(i.last_updated).toLocaleDateString("id-ID"),
         }));
         const headers = Object.keys(data[0]);
         const rows = data.map((item) => Object.values(item));
@@ -432,18 +463,24 @@ export default function KeuanganPage() {
             Monitoring status pembayaran seluruh pendaftar
           </p>
         </div>
-        <div className="flex gap-2">
-          <button
-            onClick={() => handleExport("excel")}
+        <div className="flex items-center gap-2">
+                      <button
+              onClick={handleExportKeringanan}
+              className="bg-gold-600 hover:bg-gold-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-bold shadow-md transition-colors"
+            >
+              <Download className="w-4 h-4" /> Export Keringanan
+            </button>
+            <button
+              onClick={() => handleExport("excel")}
             className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-bold shadow-md transition-colors"
           >
-            <Download className="w-4 h-4" /> Excel
+            <Download className="w-4 h-4" /> Export Excel
           </button>
           <button
             onClick={() => handleExport("pdf")}
-            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-bold shadow-md transition-colors"
+            className="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-bold shadow-md transition-colors"
           >
-            <Download className="w-4 h-4" /> PDF
+            <Download className="w-4 h-4" /> Export PDF
           </button>
         </div>
       </div>
@@ -951,3 +988,4 @@ export default function KeuanganPage() {
     </div>
   );
 }
+

@@ -252,10 +252,33 @@ export async function POST(request: NextRequest) {
         } as any,
       });
     } else {
+      // Cek keringanan dari data_lengkap
+      let expectedTagihanDaftarUlang = 8500000;
+      let dataLengkap = pendaftar.data_lengkap as any || {};
+      if (typeof dataLengkap === "string") {
+        try { dataLengkap = JSON.parse(dataLengkap); } catch(e) {}
+      }
+      const keringanan = dataLengkap.keringanan_daftar_ulang;
+      if (keringanan && typeof keringanan.nominal_potongan === "number") {
+        expectedTagihanDaftarUlang -= keringanan.nominal_potongan;
+      }
+
+      // Tentukan tipe cicilan
+      let finalTipeCicilan = tipeCicilan;
+      if (jenisPembayaran === "DAFTAR_ULANG") {
+        if (jumlah >= expectedTagihanDaftarUlang) {
+          finalTipeCicilan = "LUNAS";
+        } else if (jumlah >= (expectedTagihanDaftarUlang / 2)) {
+          finalTipeCicilan = "CICIL_50_LEBIH";
+        } else {
+          finalTipeCicilan = "CICIL_DIBAWAH_50";
+        }
+      }
+      
       // Buat record baru
       const totalTagihan =
         jenisPembayaran === "DAFTAR_ULANG"
-          ? 8500000
+          ? expectedTagihanDaftarUlang
           : Number(pendaftar.tahun_ajaran?.biaya_pendaftaran || jumlah);
 
       pembayaranResult = await prisma.pembayaran.create({
@@ -264,7 +287,7 @@ export async function POST(request: NextRequest) {
           tahun_ajaran_id: pendaftar.tahun_ajaran_id,
           metode_pembayaran: "manual",
           jenis_pembayaran: jenisPembayaran as any,
-          tipe_cicilan: tipeCicilan as any,
+          tipe_cicilan: finalTipeCicilan as any,
           cicilan_ke: cicilanKe,
           jumlah: jumlah,
           total_tagihan: totalTagihan,
@@ -291,7 +314,18 @@ export async function POST(request: NextRequest) {
         },
       });
       const totalPaid = allVerified.reduce((acc, p) => acc + Number(p.jumlah), 0) + jumlah;
-      const threshold = 8500000;
+      
+      let expectedTagihanDaftarUlang = 8500000;
+      let dataLengkap = pendaftar.data_lengkap as any || {};
+      if (typeof dataLengkap === "string") {
+        try { dataLengkap = JSON.parse(dataLengkap); } catch(e) {}
+      }
+      const keringanan = dataLengkap.keringanan_daftar_ulang;
+      if (keringanan && typeof keringanan.nominal_potongan === "number") {
+        expectedTagihanDaftarUlang -= keringanan.nominal_potongan;
+      }
+      
+      const threshold = expectedTagihanDaftarUlang;
       if (totalPaid >= threshold) {
         newPendaftarStatus = "enrolled_full";
       } else {

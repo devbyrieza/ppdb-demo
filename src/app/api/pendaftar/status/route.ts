@@ -50,6 +50,7 @@ export async function GET(request: NextRequest) {
         nomor_pendaftaran: true,
         status_pendaftaran: true,
         tipe_pendaftaran: true,
+        data_lengkap: true,
         updated_at: true,
         pembayaran: {
           where: { status_pembayaran: "verified" },
@@ -161,6 +162,7 @@ export async function GET(request: NextRequest) {
       ukuran_seragam_baju: data.ukuran_seragam_baju,
       ukuran_seragam_celana: data.ukuran_seragam_celana,
       ukuran_seragam_almamater: data.ukuran_seragam_almamater,
+      data_lengkap: (data as any).data_lengkap,
       pengumuman: data.pengumuman,
       hasil_kelulusan: {
         status: (nilai as any)?.status_kelulusan || null,

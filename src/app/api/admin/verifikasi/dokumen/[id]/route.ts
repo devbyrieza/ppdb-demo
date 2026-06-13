@@ -52,8 +52,8 @@ export async function DELETE(
       data: { updated_at: new Date() },
     });
 
-    logAdminAction({
-      action: "DELETE_DOKUMEN",
+    await logAdminAction({
+      action: "DELETE_DOKUMEN" as any,
       adminId: session.id || "system",
       adminName: session.full_name || session.name || "Admin",
       targetId: dokumen.pendaftar_id,

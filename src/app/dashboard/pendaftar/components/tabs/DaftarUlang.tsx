@@ -9,6 +9,9 @@ import {
   Loader2,
   Lock,
   History,
+  Copy,
+  Building2,
+  CreditCard as CreditCardIcon,
   MessageCircle,
 } from "lucide-react";
 import { Alert } from "@/components/ui";
@@ -33,6 +36,16 @@ export default function DaftarUlangTab() {
   const [totalPaid, setTotalPaid] = useState(0);
   const [paymentHistory, setPaymentHistory] = useState<any[]>([]);
   const hasExistingVerifiedPayment = paymentHistory.some(p => p.status_pembayaran === "verified");
+  const [paymentMethod, setPaymentMethod] = useState<"transfer" | "va">(
+    "transfer",
+  );
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   useEffect(() => {
     fetchData();
@@ -62,8 +75,9 @@ export default function DaftarUlangTab() {
         setTotalPaid(total);
         setPaymentHistory(payments);
         
-        // Automatic installment numbering: count all attempts + 1
-        setCicilanKe((payments.length + 1).toString());
+        // Automatic installment numbering: count all non-rejected attempts + 1
+        const activePaymentsCount = payments.filter((p: any) => p.status_pembayaran !== "rejected").length;
+        setCicilanKe((activePaymentsCount + 1).toString());
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -72,9 +86,21 @@ export default function DaftarUlangTab() {
     }
   };
 
+  // Cek Keringanan
+  let expectedTagihan = 8500000;
+  let dataLengkap = dataUser?.data_lengkap;
+  if (typeof dataLengkap === 'string') {
+    try { dataLengkap = JSON.parse(dataLengkap); } catch(e) {}
+  }
+  const keringanan = dataLengkap?.keringanan_daftar_ulang;
+  if (keringanan && typeof keringanan.nominal_potongan === 'number') {
+    expectedTagihan -= keringanan.nominal_potongan;
+  }
+  const halfTagihan = expectedTagihan / 2;
+
   const calculateTipe = (amount: number) => {
-    if (amount >= 9800000) return "LUNAS";
-    if (amount >= 4900000) return "CICILAN 50% ATAU LEBIH";
+    if (amount >= expectedTagihan) return "LUNAS";
+    if (amount >= halfTagihan) return "CICILAN 50% ATAU LEBIH";
     return "CICILAN DIBAWAH 50%";
   };
 
@@ -87,7 +113,7 @@ export default function DaftarUlangTab() {
 
     // Execution 2: Flexible Amounts after first installment
     // If they have a verified payment, they don't need keringananReason for < 50%
-    if (amount < 4900000 && !keringananReason.trim() && !hasExistingVerifiedPayment && totalPaid < 4900000) {
+    if (amount < halfTagihan && !keringananReason.trim() && !hasExistingVerifiedPayment && totalPaid < halfTagihan) {
       setMessage({
         type: "error",
         text: "Untuk pembayaran cicilan pertama di bawah 50%, Anda wajib mengisi alasan/permohonan keringanan pada kolom yang tersedia.",
@@ -105,7 +131,7 @@ export default function DaftarUlangTab() {
     if (keringananReason) formData.append("keringanan_reason", keringananReason);
     
     const numericNominalValue = parseInt(nominal.replace(/\D/g, "") || "0");
-    if (numericNominalValue < 9800000) {
+    if (numericNominalValue < expectedTagihan) {
       formData.append("cicilan_ke", cicilanKe);
     }
 
@@ -141,11 +167,15 @@ export default function DaftarUlangTab() {
     );
   }
 
-  // Cek Status Kelulusan
-  const statusKelulusan = dataUser?.hasil_kelulusan?.status;
+  // Cek Status Kelulusan untuk Akses Daftar Ulang
+  const statusProses = dataUser?.status_proses;
   const isTestingAccount = dataUser?.nomor_pendaftaran === "ILI2600007";
+  const canAccess =
+    statusProses === "accepted" ||
+    statusProses === "enrolled" ||
+    isTestingAccount;
 
-  if (statusKelulusan !== "LULUS" && !isTestingAccount) {
+  if (!canAccess) {
     return (
       <div className="max-w-xl mx-auto text-center py-12 px-4">
         <div className="bg-slate-100 rounded-full p-4 w-20 h-20 mx-auto mb-6 flex items-center justify-center">
@@ -164,8 +194,8 @@ export default function DaftarUlangTab() {
     );
   }
 
-  // ENROLLED STATE (Already Paid Full 9.8M)
-  const isLunas = totalPaid >= 9800000;
+  // ENROLLED STATE (Already Paid Full)
+    const isLunas = totalPaid >= expectedTagihan;
 
   if (isLunas) {
     return (
@@ -248,7 +278,7 @@ export default function DaftarUlangTab() {
         <h1 className="text-3xl font-black mb-2 relative z-10 text-white">
           Daftar Ulang Santri Baru
         </h1>
-        <p className="text-secondary-100 relative z-10 text-lg font-medium">
+        <p className="text-gold-100 relative z-10 text-lg font-medium">
           Tahap akhir administrasi penerimaan santri baru
         </p>
       </div>
@@ -285,7 +315,7 @@ export default function DaftarUlangTab() {
             {formatCurrency(totalPaid)}
           </span>
           <p className="text-[10px] text-slate-400 mt-3 font-medium">
-            Biaya Masuk: Rp 9.800.000
+            Total Biaya Masuk: {formatCurrency(expectedTagihan)}
           </p>
         </div>
 
@@ -295,7 +325,7 @@ export default function DaftarUlangTab() {
             Sisa Tagihan
           </span>
           <span className="text-2xl font-black text-rose-600 mt-2">
-            {formatCurrency(9800000 - totalPaid)}
+            {formatCurrency(expectedTagihan - totalPaid)}
           </span>
           <p className="text-[10px] text-slate-400 mt-3 font-medium">
             Wajib lunas sebelum Juli 2026
@@ -318,7 +348,7 @@ export default function DaftarUlangTab() {
                 <div>
                   <div className="flex items-center gap-2">
                     <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">
-                      {p.jumlah >= 9800000 ? 'Pelunasan' : `Cicilan ke-${p.cicilan_ke || '?'}`}
+                      {p.jumlah >= expectedTagihan ? 'Pelunasan' : `Cicilan ke-${p.cicilan_ke || '?'}`}
                     </p>
                     {p.keringanan_reason && (
                       <span className="text-[9px] bg-secondary-100 text-secondary-700 border border-secondary-200 px-1.5 py-0.5 rounded-full font-black">
@@ -365,56 +395,134 @@ export default function DaftarUlangTab() {
 
       {/* Info Tagihan */}
       <div className="grid md:grid-cols-2 gap-6">
-        <div className="bg-white p-6 rounded-xl border border-primary-100 shadow-sm">
-          <h3 className="text-sm font-black text-primary-900 uppercase tracking-wider mb-2">
-            Total Biaya Masuk
-          </h3>
-          <div className="text-3xl font-black text-primary-600">
-            Rp 9.800.000
+        <div className="bg-white p-6 rounded-xl border border-primary-100 shadow-sm space-y-4">
+          <div>
+            <h3 className="text-sm font-black text-primary-900 uppercase tracking-wider mb-2">
+              Total Biaya Masuk
+            </h3>
+            <div className="text-3xl font-black text-primary-600">
+              {formatCurrency(expectedTagihan)}
+            </div>
           </div>
-          <p className="text-xs text-ink-400 mt-1">
-            Uang Pangkal Pesantren PPDB
-          </p>
+          <div className="space-y-1">
+            <div className="flex justify-between text-sm">
+              <span className="text-ink-500">Uang Pangkal:</span>
+              <span className="font-bold text-ink-800">Rp 7.500.000</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-ink-500">SPP Bulan Pertama:</span>
+              <span className="font-bold text-ink-800">Rp 1.000.000</span>
+            </div>
+          </div>
         </div>
 
-        <div className="bg-primary-50 p-6 rounded-xl border border-primary-100">
-          <h3 className="text-sm font-black text-primary-800 mb-2 flex items-center gap-2">
-            <AlertCircle className="w-4 h-4" /> Info Pembayaran
-          </h3>
-          <ul className="text-sm text-primary-700 space-y-1 list-disc list-inside font-medium">
-            <li>
-              Transfer ke Rekening <strong>BSI 7171717171</strong>
-            </li>
-            <li>
-              a.n <strong>PP Pesantren Al Fath</strong>
-            </li>
-            <li>
-              Wajib bayar cicilan pertama min.{" "}
-              <strong>Rp 4.900.000 (50%)</strong>
-            </li>
-            <li>
-              Pelunasan maksimal bulan <strong>Juli 2026</strong> (3x Cicilan)
-            </li>
-            <li className="text-emerald-700 font-bold">
-              Tersedia kebijakan <strong>Keringanan Khusus</strong> bagi wali santri yang membutuhkan.
-            </li>
-          </ul>
-          <div className="pt-3 mt-3 border-t border-primary-200/50">
-            <span className="text-xs text-primary-800 block mb-2 leading-tight font-medium">
+        <div className="bg-primary-50 p-6 rounded-xl border border-primary-100 flex flex-col justify-between">
+          <div>
+            <h3 className="text-sm font-black text-primary-800 mb-3 flex items-center gap-2">
+              <AlertCircle className="w-4 h-4" /> Info Pembayaran & Metode
+            </h3>
+
+            {/* Opsi Metode Pembayaran */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-4 bg-white p-1 rounded-xl shadow-sm border border-primary-100">
+              <button
+                onClick={() => setPaymentMethod("transfer")}
+                className={`py-2 px-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 ${
+                  paymentMethod === "transfer"
+                    ? "bg-primary-600 text-white shadow-md"
+                    : "text-slate-500 hover:bg-slate-50"
+                }`}
+              >
+                <Building2 className="w-4 h-4" /> Transfer Bank
+              </button>
+              <div className="py-2 px-2 rounded-lg text-xs font-bold transition-all flex flex-col items-center justify-center gap-0.5 bg-slate-50 border border-slate-100 text-slate-400 opacity-70 cursor-not-allowed relative overflow-hidden">
+                <div className="flex items-center gap-1.5">
+                  <CreditCardIcon className="w-4 h-4" /> Virtual Account
+                </div>
+                <span className="text-[9px] bg-secondary-100 text-secondary-700 px-1.5 py-0.5 rounded-full leading-none mt-0.5">
+                  Segera Hadir
+                </span>
+              </div>
+            </div>
+
+            {paymentMethod === "transfer" && (
+              <div className="mb-4 p-3 bg-white border border-primary-100 rounded-lg animate-in fade-in slide-in-from-top-1">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <p className="text-[10px] font-bold text-ink-400 uppercase tracking-widest mb-2 text-left">
+                      Rekening Tujuan
+                    </p>
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <div className="bg-[#009B9B] px-2 py-1 rounded text-[10px] text-white font-black leading-none flex items-center justify-center shadow-sm">
+                        BSI
+                      </div>
+                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tight">
+                        Bank Syariah Indonesia
+                      </span>
+                    </div>
+                    <p className="font-black text-primary-950 text-2xl tracking-tight leading-none mb-2">
+                      4222224441
+                    </p>
+                    <p className="text-xs font-bold text-primary-700/70 text-left italic">
+                      a.n PP Al Andalus Al Imam
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => handleCopy("4222224441")}
+                    className="p-2 hover:bg-primary-50 text-primary-600 rounded-lg transition-colors flex flex-col items-center gap-1 group"
+                  >
+                    {copied ? (
+                      <CheckCircle className="w-5 h-5 text-emerald-500" />
+                    ) : (
+                      <Copy className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                    )}
+                    <span className="text-[9px] font-bold">
+                      {copied ? "Tersalin!" : "Salin"}
+                    </span>
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <ul className="text-sm text-primary-700 space-y-1.5 list-disc list-inside font-medium mb-4">
+              <li>
+                Dapat dibayar <strong>Lunas</strong> atau{" "}
+                <strong>Dicicil</strong>.
+              </li>
+              <li>
+                Opsi cicil tahap pertama minimal{" "}
+                <strong>50% ({formatCurrency(halfTagihan)})</strong>.
+              </li>
+              <li>
+                Sisa cicilan bebas nominal dan bebas berapa kali namun wajib
+                lunas sebelum <strong>Juli 2026</strong>.
+              </li>
+              <li className="text-emerald-700 font-bold">
+                Tersedia kebijakan <strong>Keringanan Khusus</strong> bagi wali santri yang membutuhkan.
+              </li>
+            </ul>
+          </div>
+          <div className="pt-4 border-t border-primary-200">
+            <span className="text-xs text-primary-600 block mb-2 leading-tight">
               Butuh bantuan, keringanan, atau konfirmasi biaya?
             </span>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
               <a
-                href="https://wa.me/6285111524441?text=Assalamualaikum%20Admin%20Finance%2C%20saya%20wali%20dari%20calon%20santri%20ingin%20berkonsultasi%2Fmengajukan%20keringanan%20terkait%20biaya%20Daftar%20Ulang."
+                href="https://wa.me/6281220636945?text=Assalamualaikum%20Admin%20Finance%2C%20saya%20wali%20dari%20calon%20santri%20ingin%20berkonsultasi%2Fmengajukan%20keringanan%20terkait%20biaya%20Daftar%20Ulang."
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center justify-center gap-1.5 py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-[11px] sm:text-xs transition-all shadow-md hover:shadow-lg active:scale-95 group"
               >
-                <MessageCircle className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                <svg
+                  viewBox="0 0 24 24"
+                  className="w-4 h-4 fill-current group-hover:scale-110 transition-transform"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z" />
+                </svg>
                 <span>Finance</span>
               </a>
               <a
-                href="https://wa.me/6281285300800?text=Assalamualaikum%20Admin%20CS%2C%20saya%20wali%20dari%20calon%20santri%20ingin%20bertanya%20terkait%20biaya%20Daftar%20Ulang."
+                href="https://wa.me/6285111524441?text=Assalamualaikum%20Admin%20CS%2C%20saya%20wali%20dari%20calon%20santri%20ingin%20bertanya%20terkait%20biaya%20Daftar%20Ulang."
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center justify-center gap-1.5 py-2.5 px-3 bg-cyan-600 hover:bg-cyan-700 text-white rounded-xl font-bold text-[11px] sm:text-xs transition-all shadow-md hover:shadow-lg active:scale-95 group"
@@ -481,10 +589,10 @@ export default function DaftarUlangTab() {
               <button
                 type="button"
                 onClick={() =>
-                  setNominal(new Intl.NumberFormat("id-ID").format(9800000))
+                  setNominal(new Intl.NumberFormat("id-ID").format(expectedTagihan))
                 }
                 className={`p-4 rounded-xl border-2 transition-all text-left flex flex-col ${
-                  numericNominal === 9800000
+                  numericNominal === expectedTagihan
                     ? "border-primary-500 bg-primary-50/50 ring-2 ring-primary-500/20 shadow-md"
                     : "border-slate-200 bg-white hover:bg-slate-50"
                 }`}
@@ -493,7 +601,7 @@ export default function DaftarUlangTab() {
                   <span className="font-black text-slate-900">
                     Bayar Lunas
                   </span>
-                  {numericNominal === 9800000 ? (
+                  {numericNominal === expectedTagihan ? (
                     <CheckCircle className="w-5 h-5 text-primary-600" />
                   ) : (
                     <div className="w-5 h-5 rounded-full border-2 border-slate-300" />
@@ -503,17 +611,17 @@ export default function DaftarUlangTab() {
                   Pelunasan sekaligus seluruh biaya administrasi.
                 </span>
                 <span className="text-sm font-black text-primary-600 mt-2">
-                  Rp 9.800.000
+                  {formatCurrency(expectedTagihan)}
                 </span>
               </button>
 
               <button
                 type="button"
                 onClick={() =>
-                  setNominal(new Intl.NumberFormat("id-ID").format(4900000))
+                  setNominal(new Intl.NumberFormat("id-ID").format(halfTagihan))
                 }
                 className={`p-4 rounded-xl border-2 transition-all text-left flex flex-col ${
-                  numericNominal >= 4900000 && numericNominal < 9800000
+                  numericNominal >= halfTagihan && numericNominal < expectedTagihan
                     ? "border-primary-500 bg-primary-50/50 ring-2 ring-primary-500/20 shadow-md"
                     : "border-slate-200 bg-white hover:bg-slate-50"
                 }`}
@@ -522,7 +630,7 @@ export default function DaftarUlangTab() {
                   <span className="font-black text-slate-900">
                     Bayar Dicicil
                   </span>
-                  {numericNominal >= 4900000 && numericNominal < 9800000 ? (
+                  {numericNominal >= halfTagihan && numericNominal < expectedTagihan ? (
                     <CheckCircle className="w-5 h-5 text-primary-600" />
                   ) : (
                     <div className="w-5 h-5 rounded-full border-2 border-slate-300" />
@@ -532,14 +640,14 @@ export default function DaftarUlangTab() {
                   Pembayaran bertahap minimal 50% di awal.
                 </span>
                 <span className="text-sm font-black text-primary-600 mt-2">
-                  Min. Rp 4.900.000
+                  Min. {formatCurrency(halfTagihan)}
                 </span>
               </button>
             </div>
           </div>
 
           {/* Input Cicilan Ke (Hanya jika dicicil) */}
-          {numericNominal > 0 && numericNominal < 9800000 && (
+          {numericNominal > 0 && numericNominal < expectedTagihan && (
             <div className="pt-2 border-t border-slate-100 animate-in fade-in slide-in-from-top-1">
               <label className="block text-sm font-bold text-slate-700 mb-2">
                 Ini adalah Pembayaran Cicilan ke-
@@ -605,7 +713,7 @@ export default function DaftarUlangTab() {
             {numericNominal > 0 && 
              tipeBayar === "CICILAN DIBAWAH 50%" && 
              !hasExistingVerifiedPayment && 
-             totalPaid < 4900000 && (
+             totalPaid < halfTagihan && (
               <div className="mt-4 p-4 bg-secondary-50 border border-secondary-200 rounded-xl space-y-3 animate-in fade-in slide-in-from-top-1">
                 <div className="flex items-center gap-2 text-secondary-800">
                   <AlertCircle className="w-4 h-4" />
@@ -620,7 +728,7 @@ export default function DaftarUlangTab() {
                   value={keringananReason}
                   onChange={(e) => setKeringananReason(e.target.value)}
                   placeholder="Contoh: Sedang ada musibah keluarga, mohon keringanan cicilan pertama 1jt dulu..."
-                  className="w-full p-3 text-xs border border-secondary-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all bg-white font-medium min-h-[80px]"
+                  className="w-full p-3 text-xs border border-secondary-300 rounded-lg focus:ring-2 focus:ring-secondary-500 focus:border-secondary-500 transition-all bg-white font-medium min-h-[80px]"
                   required
                 />
               </div>
@@ -688,7 +796,7 @@ export default function DaftarUlangTab() {
           <button
             type="submit"
             disabled={submitting || !pernyataan || !file || !nominal}
-            className="w-full py-4 bg-secondary-400 hover:bg-secondary-300 text-primary-950 font-black rounded-xl shadow-xl shadow-secondary-400/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 border border-secondary-500"
+            className="w-full py-4 bg-gold-400 hover:bg-gold-300 text-primary-950 font-black rounded-xl shadow-xl shadow-gold-400/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 border border-gold-500"
           >
             {submitting ? (
               <Loader2 className="animate-spin" />
@@ -702,3 +810,6 @@ export default function DaftarUlangTab() {
     </div>
   );
 }
+
+
+

@@ -26,6 +26,7 @@ import {
   RefreshCw,
   LayoutDashboard,
   IdCard,
+  ShieldCheck,
 } from "lucide-react";
 import BackToHomeButton from "@/components/common/BackToHomeButton";
 import { logoutUser } from "@/lib/auth";
@@ -539,19 +540,31 @@ export default function DashboardPage() {
                   }
                   delay={0.9}
                 />
-                <ActionCard
-                  href="/dashboard/pendaftar/daftar-ulang"
-                  icon={UserCheck}
-                  title="Daftar Ulang"
-                  description="Konfirmasi kedatangan dan penyelesaian administrasi bagi santri yang dinyatakan lulus."
-                  step="06"
-                  color="teal"
-                  disabled={
-                    !hasReachedStatus(pendaftar.status_pendaftaran, "accepted")
-                  }
-                  delay={1.0}
-                />
-              </div>
+                                  <ActionCard
+                    href="/dashboard/pendaftar/daftar-ulang"
+                    icon={UserCheck}
+                    title="Daftar Ulang"
+                    description="Konfirmasi kedatangan dan penyelesaian administrasi bagi santri yang dinyatakan lulus."
+                    step="06"
+                    color="maroon"
+                    disabled={
+                      !hasReachedStatus(pendaftar.status_pendaftaran, "accepted")
+                    }
+                    delay={1.0}
+                  />
+                  <ActionCard
+                    href="/dashboard/pendaftar/pengajuan-keringanan"
+                    icon={ShieldCheck}
+                    title="Pengajuan Keringanan"
+                    description="Ajukan Beasiswa atau Keringanan (khusus Uang Pangkal) bagi yang memenuhi syarat."
+                    step="07"
+                    color="maroon"
+                    disabled={
+                      !hasReachedStatus(pendaftar.status_pendaftaran, "accepted")
+                    }
+                    delay={1.1}
+                  />
+                </div>
             </div>
           </div>
 
@@ -634,3 +647,5 @@ export default function DashboardPage() {
     </main>
   );
 }
+
+

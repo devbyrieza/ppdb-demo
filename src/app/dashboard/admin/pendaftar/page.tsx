@@ -708,6 +708,8 @@ function AdminPendaftarContent() {
   const handlePromoteCadangan = async (ids?: string[]) => {
     const isPromoteAll = !ids || ids.length === 0;
 
+    if (ids && ids.length === 0 && !isPromoteAll) return;
+
     const result = await Swal.fire({
       title: "Promosikan Cadangan",
       text: isPromoteAll
@@ -923,6 +925,41 @@ function AdminPendaftarContent() {
     }
   };
 
+  const handleExportKeringanan = async () => {
+    try {
+      setExporting(true);
+      const res = await fetch("/api/admin/laporan/keringanan");
+      const json = await res.json();
+      if (!res.ok || !json.success) throw new Error(json.error || "Gagal mengambil data");
+      
+      const data = json.data;
+      if (!data || data.length === 0) {
+        Swal.fire("Info", "Tidak ada data keringanan/beasiswa untuk diexport.", "info");
+        return;
+      }
+
+      const header = Object.keys(data[0]);
+      const sheets = [
+        {
+          name: "Laporan Keringanan",
+          title: "LAPORAN KERINGANAN & BEASISWA PENDAFTAR",
+          subTitle: `Tanggal Export: ${new Date().toLocaleDateString("id-ID")}`,
+          header,
+          data: data.map((d: any) => Object.values(d))
+        }
+      ];
+
+      await exportToExcelProfessional({
+        fileName: `Laporan_Keringanan_${new Date().toISOString().slice(0, 10)}`,
+        sheets,
+      });
+    } catch (e: any) {
+      Swal.fire("Gagal", e.message, "error");
+    } finally {
+      setExporting(false);
+    }
+  };
+
   const handleExport = async (type: "excel" | "pdf") => {
     try {
       setExporting(true);
@@ -1059,26 +1096,17 @@ function AdminPendaftarContent() {
       },
       payment_verification: {
         label: "Verifikasi Bayar",
-        color:
-          "bg-primary-50 text-primary-700 border border-primary-100",
+        color: "bg-primary-50 text-primary-700 border border-primary-100",
       },
-      paid: {
-        label: "Terdaftar",
-        color: "bg-primary-100 text-primary-800",
-      },
-      verified: {
-        label: "Terdaftar",
-        color: "bg-primary-100 text-primary-800",
-      },
+      paid: { label: "Terdaftar", color: "bg-primary-100 text-primary-800" },
+      verified: { label: "Terdaftar", color: "bg-primary-100 text-primary-800" },
       data_completed: {
         label: "Data Lengkap",
-        color:
-          "bg-secondary-50 text-secondary-800 border border-secondary-100",
+        color: "bg-gold-50 text-gold-800 border border-gold-100",
       },
       docs_uploaded: {
         label: "Data Lengkap",
-        color:
-          "bg-secondary-50 text-secondary-800 border border-secondary-100",
+        color: "bg-gold-50 text-gold-800 border border-gold-100",
       },
       docs_verified: {
         label: "Berkas Lengkap",
@@ -1106,13 +1134,11 @@ function AdminPendaftarContent() {
       },
       announced: {
         label: "Cadangan",
-        color:
-          "bg-secondary-100 text-secondary-800 border border-secondary-200",
+        color: "bg-gold-100 text-gold-800 border border-gold-200",
       },
       cadangan: {
         label: "Cadangan",
-        color:
-          "bg-secondary-100 text-secondary-800 border border-secondary-200",
+        color: "bg-gold-100 text-gold-800 border border-gold-200",
       },
       accepted: { label: "Diterima", color: "bg-emerald-600 text-white" },
       rejected: { label: "Ditolak", color: "bg-rose-600 text-white" },
@@ -1198,11 +1224,11 @@ function AdminPendaftarContent() {
       )}
 
       {/* Header */}
-      <div className="bg-white rounded-3xl shadow-sm p-4 md:p-8 border border-secondary-100">
+      <div className="bg-white rounded-3xl shadow-sm p-4 md:p-8 border border-gold-100">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3 md:gap-5 min-w-0">
             <div className="p-2.5 md:p-4 bg-linear-to-br from-primary-600 to-primary-900 rounded-2xl shadow-xl shadow-primary-900/20 flex-shrink-0">
-              <Users className="w-6 h-6 md:w-8 md:h-8 text-secondary-300" />
+              <Users className="w-6 h-6 md:w-8 md:h-8 text-gold-300" />
             </div>
             <div className="min-w-0">
               <h2 className="text-lg md:text-3xl font-black text-primary-950 tracking-tight leading-none truncate">
@@ -1214,28 +1240,7 @@ function AdminPendaftarContent() {
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2 flex-shrink-0 flex-wrap">
-            {/* Tombol Promosi Cadangan — muncul saat filter cadangan/announced aktif & admin super */}
-            {isAdminSuper &&
-              (statusFilter === "cadangan" ||
-                statusFilter === "announced" ||
-                statusFilter === "") &&
-              pagination.total > 0 && (
-                <button
-                  onClick={() => handlePromoteCadangan()}
-                  disabled={isPromotingCadangan}
-                  className="flex items-center gap-2 px-3 md:px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-all disabled:opacity-50 text-sm font-black shadow-lg shadow-emerald-600/20 active:scale-95"
-                  title="Promosikan Semua Cadangan ke Diterima"
-                >
-                  {isPromotingCadangan ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                  ) : (
-                    <CheckSquare className="w-4 h-4" />
-                  )}
-                  <span className="hidden sm:inline">Promosikan Semua Cadangan</span>
-                  <span className="sm:hidden">Promosi Semua</span>
-                </button>
-              )}
+          <div className="flex items-center gap-2 flex-shrink-0">
             {userRole &&
               ["admin_super", "admin", "penguji"].includes(userRole) && (
                 <>
@@ -1328,7 +1333,7 @@ function AdminPendaftarContent() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-2xl shadow-sm p-6 border border-secondary-100">
+      <div className="bg-white rounded-2xl shadow-sm p-6 border border-gold-100">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Search */}
           <div className="md:col-span-2">
@@ -1343,7 +1348,7 @@ function AdminPendaftarContent() {
                 onChange={(e) => setSearchInput(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && handleSearch()}
                 placeholder="Cari nama, NIK, atau nomor pendaftaran..."
-                className="flex-1 w-full px-4 py-3 bg-secondary-50/50 border border-secondary-100 rounded-xl focus:border-primary-500 focus:bg-white focus:outline-none text-sm md:text-base font-bold text-primary-950 placeholder:text-ink-400"
+                className="flex-1 w-full px-4 py-3 bg-gold-50/50 border border-gold-100 rounded-xl focus:border-primary-500 focus:bg-white focus:outline-none text-sm md:text-base font-bold text-primary-950 placeholder:text-ink-400"
               />
               <button
                 onClick={handleSearch}
@@ -1363,7 +1368,7 @@ function AdminPendaftarContent() {
             <select
               value={statusFilter}
               onChange={(e) => updateFilter(e.target.value)}
-              className="w-full px-4 py-3 bg-secondary-50/50 border border-secondary-100 rounded-xl focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950"
+              className="w-full px-4 py-3 bg-gold-50/50 border border-gold-100 rounded-xl focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950"
             >
               <option value="">Semua Status</option>
 
@@ -1469,7 +1474,7 @@ function AdminPendaftarContent() {
                 setJenisKelaminFilter(e.target.value);
                 setPagination((prev) => ({ ...prev, page: 1 }));
               }}
-              className="w-full px-4 py-3 bg-secondary-50/50 border border-secondary-100 rounded-xl focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950"
+              className="w-full px-4 py-3 bg-gold-50/50 border border-gold-100 rounded-xl focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950"
             >
               <option value="">Semua (Putra & Putri)</option>
               <option value="L">Putra (Laki-laki)</option>
@@ -1488,7 +1493,7 @@ function AdminPendaftarContent() {
                 setJenjangFilter(e.target.value);
                 setPagination((prev) => ({ ...prev, page: 1 }));
               }}
-              className="w-full px-4 py-3 bg-secondary-50/50 border border-secondary-100 rounded-xl focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950"
+              className="w-full px-4 py-3 bg-gold-50/50 border border-gold-100 rounded-xl focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950"
             >
               <option value="">Semua Jenjang</option>
               <option value="MTs">MTs (Madrasah Tsanawiyah)</option>
@@ -1507,7 +1512,7 @@ function AdminPendaftarContent() {
                 setTahunAjaranFilter(e.target.value);
                 setPagination((prev) => ({ ...prev, page: 1 }));
               }}
-              className="w-full px-4 py-3 bg-secondary-50/50 border border-secondary-100 rounded-xl focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950"
+              className="w-full px-4 py-3 bg-gold-50/50 border border-gold-100 rounded-xl focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950"
             >
               <option value="">Semua Tahun Ajaran</option>
               {tahunAjaranList.map((ta) => (
@@ -1553,9 +1558,8 @@ function AdminPendaftarContent() {
                   setJenjangFilter("");
                   setJenisKelaminFilter("");
                   setTahunAjaranFilter("");
-                  // Clear location filters
-                  setTahunAjaranFilter("");
                   setTipePendaftaranFilter("");
+                  // Clear location filters
                   setProvinsiFilter("");
                   setKabupatenFilter("");
                   setKecamatanFilter("");
@@ -1586,7 +1590,7 @@ function AdminPendaftarContent() {
               onChange={(e) => setProvinsiFilter(e.target.value)}
               aria-label="Filter provinsi"
               aria-busy={provinsiLoading}
-              className="w-full px-4 py-3 bg-secondary-50/50 border border-secondary-100 rounded-xl focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950"
+              className="w-full px-4 py-3 bg-gold-50/50 border border-gold-100 rounded-xl focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950"
             >
               <option value="">Semua Provinsi</option>
               {provinsiList.map((p) => (
@@ -1612,7 +1616,7 @@ function AdminPendaftarContent() {
               disabled={kabupatenList.length === 0 || kabupatenLoading}
               aria-label="Filter kabupaten atau kota"
               aria-busy={kabupatenLoading}
-              className="w-full px-4 py-3 bg-secondary-50/50 border border-secondary-100 rounded-xl focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950 disabled:opacity-50"
+              className="w-full px-4 py-3 bg-gold-50/50 border border-gold-100 rounded-xl focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950 disabled:opacity-50"
             >
               <option value="">Semua Kabupaten / Kota</option>
               {kabupatenList.map((k) => (
@@ -1638,7 +1642,7 @@ function AdminPendaftarContent() {
               disabled={kecamatanList.length === 0 || kecamatanLoading}
               aria-label="Filter kecamatan"
               aria-busy={kecamatanLoading}
-              className="w-full px-4 py-3 bg-secondary-50/50 border border-secondary-100 rounded-xl focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950 disabled:opacity-50"
+              className="w-full px-4 py-3 bg-gold-50/50 border border-gold-100 rounded-xl focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950 disabled:opacity-50"
             >
               <option value="">Semua Kecamatan</option>
               {kecamatanList.map((c) => (
@@ -1664,7 +1668,7 @@ function AdminPendaftarContent() {
               disabled={kelurahanList.length === 0 || kelurahanLoading}
               aria-label="Filter kelurahan"
               aria-busy={kelurahanLoading}
-              className="w-full px-4 py-3 bg-secondary-50/50 border border-secondary-100 rounded-xl focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950 disabled:opacity-50"
+              className="w-full px-4 py-3 bg-gold-50/50 border border-gold-100 rounded-xl focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950 disabled:opacity-50"
             >
               <option value="">Semua Kelurahan</option>
               {kelurahanList.map((k) => (
@@ -1679,7 +1683,7 @@ function AdminPendaftarContent() {
 
       {/* Bulk Actions */}
       {selectedIds.length > 0 && (
-        <div className="bg-gradient-to-r from-purple-50 to-primary-50 rounded-xl shadow-lg p-4 border-2 border-purple-200 animate-in slide-in-from-bottom-2 duration-300">
+        <div className="bg-gradient-to-r from-purple-50 to-primary-50 rounded-xl shadow-lg p-4 border-2 border-purple-200">
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
@@ -1697,31 +1701,6 @@ function AdminPendaftarContent() {
             </div>
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
-              {/* Tombol Cepat: Promosikan Terpilih ke Diterima */}
-              {isAdminSuper &&
-                selectedIds.every((id) => {
-                  const p = pendaftar.find((x) => x.id === id);
-                  return p?.status_pendaftaran === "announced" || p?.status_pendaftaran === "cadangan";
-                }) && (
-                  <button
-                    onClick={() => handlePromoteCadangan(selectedIds)}
-                    disabled={isPromotingCadangan}
-                    className="flex items-center justify-center gap-2 px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-black transition-all disabled:opacity-50 shadow-lg shadow-emerald-600/20 active:scale-95 text-sm"
-                  >
-                    {isPromotingCadangan ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        Memproses...
-                      </>
-                    ) : (
-                      <>
-                        <CheckSquare className="w-4 h-4" />
-                        Promosikan {selectedIds.length} Cadangan → Diterima
-                      </>
-                    )}
-                  </button>
-                )}
-
               <select
                 value={bulkStatus}
                 onChange={(e) => setBulkStatus(e.target.value)}
@@ -1744,6 +1723,7 @@ function AdminPendaftarContent() {
                 <option value="rejected">Ditolak</option>
                 <option value="enrolled">Sedang Daftar Ulang</option>
                 <option value="enrolled_full">Selesai</option>
+                <option value="mengundurkan_diri">Mengundurkan Diri</option>
               </select>
 
               <button
@@ -1763,13 +1743,38 @@ function AdminPendaftarContent() {
                   </>
                 )}
               </button>
+
+              {pendaftar
+                .filter((p) => selectedIds.includes(p.id))
+                .some((p) => p.status_pendaftaran === "announced" || p.status_pendaftaran === "cadangan") && (
+                <button
+                  onClick={() => handlePromoteCadangan(selectedIds.filter(id => {
+                    const p = pendaftar.find(item => item.id === id);
+                    return p && (p.status_pendaftaran === "announced" || p.status_pendaftaran === "cadangan");
+                  }))}
+                  disabled={isPromotingCadangan}
+                  className="flex items-center justify-center gap-2 px-5 md:px-8 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-black transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-emerald-600/20 active:scale-95 text-sm"
+                >
+                  {isPromotingCadangan ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Memproses...
+                    </>
+                  ) : (
+                    <>
+                      <CheckSquare className="w-4 h-4" />
+                      Promosikan Cadangan Terpilih → Diterima
+                    </>
+                  )}
+                </button>
+              )}
             </div>
           </div>
         </div>
       )}
 
       {/* Table */}
-      <div className="bg-white rounded-3xl shadow-sm border border-secondary-100 overflow-hidden">
+      <div className="bg-white rounded-3xl shadow-sm border border-gold-100 overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center py-20">
             <div className="text-center">
@@ -1795,7 +1800,7 @@ function AdminPendaftarContent() {
         ) : (
           <>
             {/* Mobile Card View — hanya tampil di layar kecil */}
-            <div className="md:hidden divide-y divide-secondary-50">
+            <div className="md:hidden divide-y divide-gold-50">
               {pendaftar.map((item) => (
                 <div
                   key={item.id}
@@ -1885,9 +1890,9 @@ function AdminPendaftarContent() {
                                   100,
                                 );
                               }}
-                              className="px-2 py-1 bg-secondary-50 text-secondary-700 rounded-lg text-[9px] font-black uppercase flex items-center gap-1 border border-secondary-100"
+                              className="px-2 py-1 bg-gold-50 text-gold-700 rounded-lg text-[9px] font-black uppercase flex items-center gap-1 border border-gold-100"
                             >
-                              <CreditCard className="w-3 h-3" /> Pay
+                              <CreditCard className="w-3 h-3" /> Bayar
                             </button>
                           )}
                       </div>
@@ -1946,7 +1951,7 @@ function AdminPendaftarContent() {
             {/* Desktop Table View — disembunyikan di mobile */}
             <div className="hidden md:block overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-linear-to-r from-primary-50 to-secondary-50 border-b border-secondary-100">
+                <thead className="bg-linear-to-r from-primary-50 to-primary-100 border-b border-primary-200">
                   <tr>
                     <th className="px-4 py-4 text-center">
                       <button
@@ -1963,24 +1968,24 @@ function AdminPendaftarContent() {
                     <th className="px-4 py-4 text-left text-[10px] font-black text-primary-900 uppercase tracking-widest">
                       No. Pendaftaran
                     </th>
-                    <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
+                    <th className="px-4 py-4 text-left text-[10px] font-black text-primary-900 uppercase tracking-widest">
                       Nama Lengkap
                     </th>
-                    <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
+                    <th className="px-4 py-4 text-left text-[10px] font-black text-primary-900 uppercase tracking-widest">
                       NIK
                     </th>
                     {(isAdminSuper || isBerkas) && (
-                      <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
+                      <th className="px-4 py-4 text-left text-[10px] font-black text-primary-900 uppercase tracking-widest">
                         Kontak
                       </th>
                     )}
-                    <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
+                    <th className="px-4 py-4 text-left text-[10px] font-black text-primary-900 uppercase tracking-widest">
                       Jenjang
                     </th>
-                    <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
+                    <th className="px-4 py-4 text-left text-[10px] font-black text-primary-900 uppercase tracking-widest">
                       Status Pendaftaran
                     </th>
-                    <th className="px-4 py-4 text-left text-[10px] font-black text-stone-900 uppercase tracking-widest">
+                    <th className="px-4 py-4 text-left text-[10px] font-black text-primary-900 uppercase tracking-widest">
                       Aksi
                     </th>
                   </tr>

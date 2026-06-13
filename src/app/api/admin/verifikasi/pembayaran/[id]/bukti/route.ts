@@ -58,8 +58,8 @@ export async function DELETE(
       data: { updated_at: new Date() },
     });
 
-    logAdminAction({
-      action: "DELETE_BUKTI_PEMBAYARAN",
+    await logAdminAction({
+      action: "DELETE_BUKTI_PEMBAYARAN" as any,
       adminId: session.id || "system",
       adminName: session.full_name || session.name || "Admin",
       targetId: pembayaran.pendaftar_id,

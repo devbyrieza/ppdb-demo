@@ -46,6 +46,7 @@ interface PendaftarDetail {
   kabupaten: string | null;
   provinsi: string | null;
   kode_pos: string | null;
+  data_lengkap: any | null;
   no_hp: string | null;
   email: string | null;
   asal_sekolah: string | null;
@@ -114,6 +115,8 @@ interface PendaftarDetail {
     metode_pembayaran: string;
     status_pembayaran: string;
     tanggal_pembayaran: string | null;
+    bukti_transfer_path: string | null;
+    jenis_pembayaran: string;
   }>;
   nilai_ujian: {
     nilai_total: number;
@@ -442,6 +445,132 @@ export default function PendaftarDetailPage() {
       } catch (error) {
         console.error("Delete document error:", error);
         Swal.fire("Error", "Terjadi kesalahan sistem", "error");
+      }
+    }
+  };
+
+  const handleReviewPengajuan = async (action: 'approved' | 'rejected') => {
+    let nominal = 0;
+    if (action === 'approved') {
+      const { value: inputNominal } = await Swal.fire({
+        title: "Setujui Keringanan",
+        input: "number",
+        inputLabel: "Masukkan nilai potongan (Rp) yang diberikan",
+        inputPlaceholder: "Contoh: 2500000",
+        showCancelButton: true,
+        confirmButtonText: "Simpan & Setujui",
+        inputValidator: (value) => {
+          if (!value || parseInt(value) <= 0) return "Nominal potongan tidak valid!";
+        }
+      });
+      if (!inputNominal) return;
+      nominal = parseInt(inputNominal);
+    } else {
+      const confirm = await Swal.fire({
+        title: "Tolak Pengajuan?",
+        text: "Pendaftar akan menerima notifikasi bahwa pengajuannya ditolak.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        confirmButtonText: "Ya, Tolak"
+      });
+      if (!confirm.isConfirmed) return;
+    }
+
+    Swal.fire({ title: "Memproses...", allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+    
+    try {
+      const res = await fetch("/api/admin/pendaftar/keringanan/review", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pendaftar_id: pendaftar?.id, action, nominal })
+      });
+      const data = await res.json();
+      if (data.success) {
+        Swal.fire("Berhasil", "Review pengajuan selesai disimpan.", "success").then(() => window.location.reload());
+      } else {
+        Swal.fire("Gagal", data.error || "Terjadi kesalahan", "error");
+      }
+    } catch (e) {
+      Swal.fire("Error", "Gagal menghubungi server", "error");
+    }
+  };
+
+  const handleSetKeringanan = async () => {
+    const { value: selectedKeringanan } = await Swal.fire({
+      title: "Atur Beasiswa/Keringanan",
+      input: "select",
+      inputOptions: {
+        "none": "Tidak Ada Keringanan",
+        "Beasiswa Full": "Beasiswa Full (Potong 100% Uang Pangkal)",
+        "Keringanan 20%": "Keringanan 20% (Potong 20% Uang Pangkal)",
+      },
+      inputPlaceholder: "Pilih Jenis Keringanan",
+      showCancelButton: true,
+      confirmButtonText: "Selanjutnya &rarr;",
+      cancelButtonText: "Batal",
+      inputValidator: (value) => {
+        if (!value) return "Anda harus memilih jenis keringanan!";
+      }
+    });
+
+    if (selectedKeringanan) {
+      let nominal = 0;
+      let finalJenis = selectedKeringanan;
+      
+      if (selectedKeringanan === "none") {
+        nominal = 0;
+        finalJenis = "";
+      } else if (selectedKeringanan === "Beasiswa Full") {
+        // Al Imam Uang Pangkal: 7.500.000
+        nominal = 7500000;
+      } else if (selectedKeringanan === "Keringanan 20%") {
+        nominal = 1500000;
+      }
+
+      let fixNominal = nominal;
+      let fixJenis = finalJenis;
+
+      const confirm = await Swal.fire({
+        title: "Konfirmasi",
+        html: `Anda akan menetapkan:<br/><br/><b>${selectedKeringanan === "none" ? "Penghapusan Keringanan" : finalJenis}</b><br/>Nominal Potongan: <b>Rp ${nominal.toLocaleString("id-ID")}</b><br/><br/>Apakah Anda yakin?`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Ya, Simpan!",
+        cancelButtonText: "Batal",
+      });
+
+      if (confirm.isConfirmed) {
+        Swal.fire({
+          title: "Menyimpan...",
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        try {
+          const res = await fetch("/api/admin/pendaftar/keringanan", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              pendaftar_id: pendaftar?.id,
+              jenis: fixJenis === "" ? null : fixJenis,
+              nominal_potongan: fixJenis === "" ? undefined : fixNominal
+            })
+          });
+
+          const data = await res.json();
+          if (data.success) {
+            Swal.fire("Berhasil!", "Data keringanan berhasil diperbarui.", "success").then(() => {
+              window.location.reload();
+            });
+          } else {
+            Swal.fire("Gagal", data.error || "Terjadi kesalahan", "error");
+          }
+        } catch (error) {
+          Swal.fire("Error", "Gagal menghubungi server", "error");
+        }
       }
     }
   };
@@ -1269,7 +1398,10 @@ export default function PendaftarDetailPage() {
                         >
                           {payment.status_pembayaran === "verified"
                             ? "Terverifikasi"
-</span>
+                            : payment.status_pembayaran === "rejected"
+                              ? "Ditolak"
+                              : "Pending"}
+                        </span>
                         <div className="flex flex-col items-end gap-2">
                           {payment.bukti_transfer_path && (
                             <div className="flex items-center gap-2">
@@ -1816,6 +1948,83 @@ export default function PendaftarDetailPage() {
                 </div>
               )}
             </div>
+          )}
+
+          {/* Keringanan & Beasiswa */}
+          {userRole === "admin_super" && (
+                          <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-gold-100">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2 bg-gold-100 rounded-lg">
+                    <CreditCard className="w-6 h-6 text-gold-700" />
+                  </div>
+                  <h3 className="text-lg font-bold text-stone-900">Keringanan/Beasiswa</h3>
+                </div>
+                
+                {(() => {
+                  let dataLengkap = pendaftar.data_lengkap as any || {};
+                  if (typeof dataLengkap === "string") {
+                    try { dataLengkap = JSON.parse(dataLengkap); } catch(e) {}
+                  }
+                  const keringanan = dataLengkap.keringanan_daftar_ulang;
+                  const pengajuan = dataLengkap.pengajuan_keringanan;
+                  
+                  return (
+                    <div className="space-y-4">
+                      {/* Tampilkan Status Aktif */}
+                      {keringanan && keringanan.jenis && (
+                        <div className="p-3 bg-emerald-50 border border-emerald-100 rounded-lg">
+                          <div className="text-xs text-emerald-800 font-bold uppercase mb-1">Keringanan Aktif: {keringanan.jenis}</div>
+                          <div className="text-sm font-black text-emerald-950">Potongan: Rp {keringanan.nominal_potongan.toLocaleString("id-ID")}</div>
+                        </div>
+                      )}
+
+                      {/* Tampilkan Pengajuan */}
+                      {pengajuan && (
+                        <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Pengajuan: {pengajuan.jenis}</span>
+                            <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase ${
+                              pengajuan.status === 'pending' ? 'bg-amber-100 text-amber-700' :
+                              pengajuan.status === 'approved' ? 'bg-emerald-100 text-emerald-700' :
+                              'bg-rose-100 text-rose-700'
+                            }`}>{pengajuan.status}</span>
+                          </div>
+                          
+                          {pengajuan.status === 'pending' && (
+                            <>
+                              <div className="text-xs text-slate-700">
+                                <strong>Kesanggupan Bayar:</strong> Rp {parseInt(pengajuan.kesanggupan_bayar || '0').toLocaleString('id-ID')}<br/>
+                                <strong>Alasan:</strong> {pengajuan.alasan}
+                              </div>
+                              <div className="flex flex-wrap gap-2 mt-2">
+                                {pengajuan.dokumen?.sktm && <a href={pengajuan.dokumen.sktm} target="_blank" rel="noreferrer" className="text-[10px] bg-slate-200 px-2 py-1 rounded font-bold text-slate-700 hover:bg-slate-300">📄 SKTM</a>}
+                                {pengajuan.dokumen?.slip_gaji && <a href={pengajuan.dokumen.slip_gaji} target="_blank" rel="noreferrer" className="text-[10px] bg-slate-200 px-2 py-1 rounded font-bold text-slate-700 hover:bg-slate-300">📄 Slip Gaji</a>}
+                                {pengajuan.dokumen?.ktp && <a href={pengajuan.dokumen.ktp} target="_blank" rel="noreferrer" className="text-[10px] bg-slate-200 px-2 py-1 rounded font-bold text-slate-700 hover:bg-slate-300">📄 KTP</a>}
+                                {pengajuan.dokumen?.prestasi && <a href={pengajuan.dokumen.prestasi} target="_blank" rel="noreferrer" className="text-[10px] bg-slate-200 px-2 py-1 rounded font-bold text-slate-700 hover:bg-slate-300">📄 Prestasi</a>}
+                              </div>
+                              <div className="flex gap-2 mt-3 pt-3 border-t border-slate-200">
+                                <button onClick={() => handleReviewPengajuan('approved')} className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-1.5 rounded text-xs font-bold transition-colors">Setujui</button>
+                                <button onClick={() => handleReviewPengajuan('rejected')} className="flex-1 bg-rose-500 hover:bg-rose-600 text-white py-1.5 rounded text-xs font-bold transition-colors">Tolak</button>
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      )}
+
+                      {(!keringanan || !keringanan.jenis) && !pengajuan && (
+                        <p className="text-sm text-stone-500">Tidak ada pengajuan atau keringanan aktif.</p>
+                      )}
+                    </div>
+                  );
+                })()}
+                
+                <button
+                  onClick={handleSetKeringanan}
+                  className="w-full py-2 mt-4 bg-gold-500 hover:bg-gold-600 text-white rounded-lg font-bold text-sm uppercase tracking-wider transition-colors"
+                >
+                  Input Manual Keringanan
+                </button>
+              </div>
           )}
 
           {/* Timestamps */}
@@ -2714,3 +2923,4 @@ function InfoItem({
     </div>
   );
 }
+
