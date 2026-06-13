@@ -27,6 +27,7 @@ interface AdminUser {
   role: string;
   secondary_roles?: string[];
   phone?: string;
+  jenis_kelamin?: string;
   created_at: string;
 }
 
@@ -105,6 +106,7 @@ export default function UserManagementPage() {
     role: "admin_berkas",
     secondary_roles: [] as string[],
     phone: "",
+    jenis_kelamin: "",
   });
 
   const fetchUsers = async () => {
@@ -135,6 +137,7 @@ export default function UserManagementPage() {
       role: "admin_berkas",
       secondary_roles: [],
       phone: "",
+      jenis_kelamin: "",
     });
     setIsEditing(false);
   };
@@ -374,6 +377,7 @@ export default function UserManagementPage() {
                                   role: user.role,
                                   secondary_roles: user.secondary_roles || [],
                                   phone: user.phone || "",
+                                  jenis_kelamin: user.jenis_kelamin || "",
                                 });
                                 setIsEditing(true);
                                 setIsModalOpen(true);
@@ -507,6 +511,22 @@ export default function UserManagementPage() {
                     }
                     className="w-full px-5 md:px-8 py-5 bg-stone-100/50 border-2 border-transparent focus:border-primary-600 focus:bg-white focus:outline-none font-bold rounded-2xl transition-all"
                   />
+                </div>
+                <div className="col-span-2">
+                  <label className="block text-[10px] font-black uppercase text-stone-500 mb-3 tracking-widest">
+                    Jenis Kelamin
+                  </label>
+                  <select
+                    value={formData.jenis_kelamin || ''}
+                    onChange={(e) =>
+                      setFormData({ ...formData, jenis_kelamin: e.target.value })
+                    }
+                    className="w-full px-5 md:px-8 py-5 bg-stone-100/50 border-2 border-transparent focus:border-primary-600 focus:bg-white focus:outline-none font-bold rounded-2xl transition-all cursor-pointer"
+                  >
+                    <option value="">Pilih Jenis Kelamin</option>
+                    <option value="L">Laki-Laki (Ustadz)</option>
+                    <option value="P">Perempuan (Ustadzah)</option>
+                  </select>
                 </div>
                 <div className="col-span-2">
                   <label className="block text-[10px] font-black uppercase text-stone-500 mb-3 tracking-widest">
