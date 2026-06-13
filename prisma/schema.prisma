@@ -14,6 +14,7 @@ model Profile {
   role                  String                @default("pendaftar")
   secondary_roles       String[]              @default([])
   full_name             String
+    jenis_kelamin         String?
   email                 String?
   phone                 String
   google_meet_link      String?
