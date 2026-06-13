@@ -120,8 +120,14 @@ export default function AdminUploadPaymentModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-stone-900/80 backdrop-blur-sm z-[100] flex justify-center items-start pt-10 md:pt-16 px-4 overflow-y-auto">
-      <div className="bg-white rounded-3xl w-full max-w-2xl shadow-2xl relative mb-20">
+    <div 
+      className="fixed inset-0 bg-stone-900/80 backdrop-blur-sm z-[100] flex justify-center items-start pt-10 md:pt-16 px-4 overflow-y-auto"
+      onClick={onClose}
+    >
+      <div 
+        className="bg-white rounded-3xl w-full max-w-2xl shadow-2xl relative mb-20"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="flex items-center justify-between p-6 border-b border-stone-100">
           <div>
             <h3 className="text-xl font-black text-primary-950">Upload Atas Nama Pendaftar</h3>

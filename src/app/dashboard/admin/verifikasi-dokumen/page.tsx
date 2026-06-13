@@ -237,9 +237,10 @@ function VerifikasiDokumenContent() {
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2 flex-shrink-0">
+          <div className="flex items-center gap-2 flex-shrink-0 relative z-20">
             {canVerify && (
               <button
+                type="button"
                 onClick={() => setShowSearchModal(true)}
                 className="flex items-center gap-2 px-3 md:px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-xl text-sm font-bold transition-all shadow-lg shadow-primary-600/20 whitespace-nowrap"
               >

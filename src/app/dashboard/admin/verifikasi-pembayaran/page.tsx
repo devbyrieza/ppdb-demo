@@ -204,7 +204,7 @@ function VerifikasiPembayaranContent() {
         
         let cleanMetode = item.metode_pembayaran || "-";
         if (cleanMetode.toLowerCase() === "manual") {
-          cleanMetode = "Transfer Manual BSI";
+          cleanMetode = "Transfer Manual BSI Al Imam";
         }
 
         const tglText = item.tanggal_pembayaran
@@ -448,13 +448,16 @@ function VerifikasiPembayaranContent() {
           </div>
           
           {canVerify && (
-            <button
-              onClick={() => setShowUploadAtasNamaModal(true)}
-              className="flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-xl text-sm font-bold transition-all shadow-lg shadow-primary-600/20 whitespace-nowrap"
-            >
-              <UploadCloud className="w-4 h-4" />
-              Upload Atas Nama
-            </button>
+            <div className="relative z-20 flex-shrink-0">
+              <button
+                type="button"
+                onClick={() => setShowUploadAtasNamaModal(true)}
+                className="flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-xl text-sm font-bold transition-all shadow-lg shadow-primary-600/20 whitespace-nowrap"
+              >
+                <UploadCloud className="w-4 h-4" />
+                Upload Atas Nama
+              </button>
+            </div>
           )}
 
           <div className="flex bg-stone-100 p-1.5 rounded-[1.25rem] w-fit shadow-inner ring-1 ring-stone-200/50">
