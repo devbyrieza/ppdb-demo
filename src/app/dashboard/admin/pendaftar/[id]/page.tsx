@@ -501,11 +501,11 @@ export default function PendaftarDetailPage() {
       title: "Atur Beasiswa/Keringanan",
       input: "select",
       inputOptions: {
-        "none": "Tidak Ada Keringanan",
-        "Beasiswa Full": "Beasiswa Full (Potong 100% Uang Pangkal)",
-        "Keringanan 20%": "Keringanan 20% (Potong 20% Uang Pangkal)",
+        "none": "Tidak Ada / Hapus Keringanan",
+        "Beasiswa": "Beasiswa Prestasi / Tahfizh",
+        "Keringanan": "Keringanan Biaya Daftar Ulang",
       },
-      inputPlaceholder: "Pilih Jenis Keringanan",
+      inputPlaceholder: "Pilih Jenis",
       showCancelButton: true,
       confirmButtonText: "Selanjutnya &rarr;",
       cancelButtonText: "Batal",
@@ -521,11 +521,46 @@ export default function PendaftarDetailPage() {
       if (selectedKeringanan === "none") {
         nominal = 0;
         finalJenis = "";
-      } else if (selectedKeringanan === "Beasiswa Full") {
-        // Al Imam Uang Pangkal: 7.500.000
-        nominal = 7500000;
-      } else if (selectedKeringanan === "Keringanan 20%") {
-        nominal = 1500000;
+      } else {
+        const { value: formValues } = await Swal.fire({
+          title: `Input ${selectedKeringanan}`,
+          html: `
+            <div class="text-left text-sm mb-4 text-stone-600 bg-amber-50 p-3 rounded-lg border border-amber-200">
+              Masukkan nominal <b>POTONGAN (Diskon)</b> (bukan sisa tagihan).<br/><br/>
+              Contoh: Jika Uang Pangkal normal Rp 7.500.000, dan wali santri hanya sanggup bayar Rp 6.000.000, berarti <b>potongannya adalah Rp 1.500.000</b>. <br/>Ketik: <b>1500000</b>.
+            </div>
+            <div class="mb-3 text-left w-full">
+              <label class="block text-xs font-bold mb-1 uppercase tracking-wider text-slate-500 ml-1">Keterangan Label</label>
+              <input id="swal-input-label" class="swal2-input !w-[95%] !mx-auto !mt-0 !h-12 !text-sm" placeholder="Misal: ${selectedKeringanan} Khusus" value="${selectedKeringanan}">
+            </div>
+            <div class="mb-3 text-left w-full">
+              <label class="block text-xs font-bold mb-1 uppercase tracking-wider text-slate-500 ml-1">Nominal Potongan (Rp)</label>
+              <input id="swal-input-nominal" type="number" class="swal2-input !w-[95%] !mx-auto !mt-0 !h-12 !font-black !text-lg" placeholder="Misal: 1500000">
+            </div>
+          `,
+          focusConfirm: false,
+          showCancelButton: true,
+          confirmButtonText: "Konfirmasi",
+          cancelButtonText: "Batal",
+          preConfirm: () => {
+            const label = document.getElementById('swal-input-label').value;
+            const nom = document.getElementById('swal-input-nominal').value;
+            if (!label || !nom) {
+              Swal.showValidationMessage('Label dan Nominal wajib diisi!');
+              return null;
+            }
+            if (parseInt(nom) <= 0) {
+              Swal.showValidationMessage('Nominal potongan harus lebih dari 0');
+              return null;
+            }
+            return { label, nominal: parseInt(nom) };
+          }
+        });
+
+        if (!formValues) return;
+
+        finalJenis = formValues.label;
+        nominal = formValues.nominal;
       }
 
       let fixNominal = nominal;
