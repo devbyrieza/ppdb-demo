@@ -162,13 +162,6 @@ export default function DashboardLayout({
       active: pathname === "/dashboard/pendaftar/undangan-seleksi",
     },
     {
-        name: "Pengajuan Beasiswa",
-        href: "/dashboard/pendaftar/beasiswa",
-        tabName: "data-pribadi" as TabName,
-        icon: HandCoins,
-        active: pathname === "/dashboard/pendaftar/beasiswa",
-      },
-      {
         name: "Pengumuman",
       href: "/dashboard/pendaftar/pengumuman",
       tabName: "pengumuman" as TabName,

@@ -42,10 +42,13 @@ export async function GET(request: NextRequest) {
       // tetapi status pengajuan tetap ditampilkan.
       const tipeKeringanan = aktif?.jenis || pengajuan?.jenis || "-";
       const nominalPotongan = aktif?.nominal_potongan || pengajuan?.nominal_disetujui || 0;
-      
-      // Default Base Tagihan tergantung institusi. 
-      // Karena ini laporan, kita akan biarkan Frontend / API yang mengatur. 
-      // Untuk amannya, di laporan excel kita hanya berikan data potongan dan sisa jika disetujui.
+
+      // Kesanggupan bayar: baca dari pengajuan (diajukan pendaftar) atau dari keringanan aktif jika ada
+      // Nilai 0 dianggap tidak ada karena form menggunakan parseInt dan default 0
+      const rawKesanggupan = pengajuan?.kesanggupan_bayar ?? aktif?.kesanggupan_bayar;
+      const kesanggupanBayar = (rawKesanggupan && Number(rawKesanggupan) > 0)
+        ? Number(rawKesanggupan)
+        : 0;
       
       return {
         "No. Registrasi": p.nomor_pendaftaran,
@@ -54,8 +57,8 @@ export async function GET(request: NextRequest) {
         "Tipe Keringanan": tipeKeringanan,
         "Nominal Potongan": nominalPotongan,
         "Status Pengajuan": pengajuan ? pengajuan.status.toUpperCase() : "AKTIF (MANUAL)",
-        "Kesanggupan Bayar (Pengajuan)": pengajuan?.kesanggupan_bayar || 0,
-        "Alasan/Ket": pengajuan?.alasan || "-",
+        "Kesanggupan Bayar (Pengajuan)": kesanggupanBayar,
+        "Alasan/Ket": pengajuan?.alasan || aktif?.alasan || "-",
       };
     }).filter(item => item !== null);
 

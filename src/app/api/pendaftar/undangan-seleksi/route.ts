@@ -82,6 +82,7 @@ export async function GET() {
         nama_lengkap: true,
         no_hp: true,
         status_pendaftaran: true,
+        jenis_kelamin: true,
         notif_belum_jadwal_terkirim: true,
         notif_jadwal_tersedia_terkirim: true,
         notif_hasil_tes_terkirim: true,

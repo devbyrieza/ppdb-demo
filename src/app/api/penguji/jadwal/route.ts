@@ -45,7 +45,7 @@ export async function GET() {
           { penguji_quran_id: userId },
           { penguji_ortu_id: userId },
             { penguji_hafalan_id: userId },
-            { penguji_lisan_arab_id: userId },
+            { penguji_arab_id: userId },
           { exam_session: { created_by: userId } },
         ],
       };
@@ -113,7 +113,7 @@ export async function GET() {
             jenis_tugas.push("Seleksi Al Qur'an");
           if (item.penguji_hafalan_id === userId)
             jenis_tugas.push("Tes Hafalan Al-Qur'an");
-          if (item.penguji_lisan_arab_id === userId)
+          if (item.penguji_arab_id === userId)
             jenis_tugas.push("Tes Lisan Bahasa Arab");
         if (item.penguji_ortu_id === userId)
           jenis_tugas.push("Seleksi Wawancara Orang Tua");
@@ -174,11 +174,11 @@ export async function GET() {
         penguji_quran_id: item.penguji_quran_id,
         penguji_ortu_id: item.penguji_ortu_id,
           penguji_hafalan_id: item.penguji_hafalan_id,
-          penguji_lisan_arab_id: item.penguji_lisan_arab_id,
+          penguji_arab_id: item.penguji_arab_id,
           status_hafalan: item.status_hafalan || "scheduled",
-          status_lisan_arab: item.status_lisan_arab || "scheduled",
+          status_arab: item.status_arab || "scheduled",
           zoom_link_hafalan: item.zoom_link_hafalan,
-          zoom_link_lisan_arab: item.zoom_link_lisan_arab,
+          zoom_link_arab: item.zoom_link_arab,
         // Also pass created_by so frontend can check
         session_created_by: item.exam_session?.created_by,
       };

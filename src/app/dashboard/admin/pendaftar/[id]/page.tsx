@@ -543,14 +543,19 @@ export default function PendaftarDetailPage() {
               <label class="block text-xs font-bold mb-1 uppercase tracking-wider text-slate-500 ml-1">Nominal Potongan (Rp)</label>
               <input id="swal-input-nominal" type="number" class="swal2-input !w-[95%] !mx-auto !mt-0 !h-12 !font-black !text-lg" placeholder="Misal: 1500000">
             </div>
+            <div class="mb-3 text-left w-full">
+              <label class="block text-xs font-bold mb-1 uppercase tracking-wider text-slate-500 ml-1">Kesanggupan Bayar Wali (Rp) <span style="color:#94a3b8;font-weight:normal">(Opsional)</span></label>
+              <input id="swal-input-kesanggupan" type="number" class="swal2-input !w-[95%] !mx-auto !mt-0 !h-12 !text-sm" placeholder="Misal: 6000000 (jika ada)">
+            </div>
           `,
           focusConfirm: false,
           showCancelButton: true,
           confirmButtonText: "Konfirmasi",
           cancelButtonText: "Batal",
           preConfirm: () => {
-            const label = document.getElementById('swal-input-label').value;
-            const nom = document.getElementById('swal-input-nominal').value;
+            const label = (document.getElementById('swal-input-label') as HTMLInputElement).value;
+            const nom = (document.getElementById('swal-input-nominal') as HTMLInputElement).value;
+            const kesanggupan = (document.getElementById('swal-input-kesanggupan') as HTMLInputElement).value;
             if (!label || !nom) {
               Swal.showValidationMessage('Label dan Nominal wajib diisi!');
               return null;
@@ -559,7 +564,7 @@ export default function PendaftarDetailPage() {
               Swal.showValidationMessage('Nominal potongan harus lebih dari 0');
               return null;
             }
-            return { label, nominal: parseInt(nom) };
+            return { label, nominal: parseInt(nom), kesanggupan: kesanggupan ? parseInt(kesanggupan) : 0 };
           }
         });
 
@@ -567,6 +572,7 @@ export default function PendaftarDetailPage() {
 
         finalJenis = formValues.label;
         nominal = formValues.nominal;
+        (window as any).__kesanggupanBayar = formValues.kesanggupan || 0;
       }
 
       let fixNominal = nominal;
@@ -597,7 +603,8 @@ export default function PendaftarDetailPage() {
             body: JSON.stringify({
               pendaftar_id: pendaftar?.id,
               jenis: fixJenis === "" ? null : fixJenis,
-              nominal_potongan: fixJenis === "" ? undefined : fixNominal
+              nominal_potongan: fixJenis === "" ? undefined : fixNominal,
+              kesanggupan_bayar: fixJenis === "" ? undefined : ((window as any).__kesanggupanBayar || 0)
             })
           });
 

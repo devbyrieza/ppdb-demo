@@ -181,6 +181,7 @@ export async function POST(request: Request) {
         examSession.start_time,
         currentCategory,
         pendaftar.tahun_ajaran_id,
+        pendaftar.jenis_kelamin,
       );
 
       const finalExaminerId =
@@ -200,8 +201,8 @@ export async function POST(request: Request) {
             };
           } else if (currentCategory === "LISAN_ARAB") {
             pengujiFields = {
-              penguji_lisan_arab_id: finalExaminerId,
-              zoom_link_lisan_arab: interviewer?.google_meet_link || null,
+              penguji_arab_id: finalExaminerId,
+              zoom_link_arab: interviewer?.google_meet_link || null,
             };
           } else if (currentCategory === "QURAN") {
           pengujiFields = {

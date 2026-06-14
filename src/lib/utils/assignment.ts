@@ -12,6 +12,7 @@ export async function getLeastLoadedExaminerFromPool(
   startTime: Date,
   category: string,
   tahunAjaranId: string,
+  pendaftarGender?: string | null,
 ) {
   // 1. Tentukan kata kunci pencarian berdasarkan kategori
   let searchKeyword = "";
@@ -31,15 +32,34 @@ export async function getLeastLoadedExaminerFromPool(
       created_by: true,
       booked_count: true,
       quota: true,
+      creator: {
+        select: {
+          jenis_kelamin: true,
+        },
+      },
     },
   });
 
   if (sessions.length === 0) return null;
 
-  // 3. Filter sesi yang masih memiliki kuota dan memiliki pencipta (penguji)
-  const availableSessions = sessions.filter(
-    (s) => s.booked_count < s.quota && s.created_by,
-  );
+  // 3. Filter sesi yang masih memiliki kuota, memiliki pencipta (penguji), dan mencocokkan jenis kelamin (jika disediakan)
+  const jk = pendaftarGender?.toUpperCase() || "";
+  const isPendaftarPutra = jk === "L" || jk === "LAKI-LAKI" || jk.includes("PUTRA");
+
+  const availableSessions = sessions.filter((s) => {
+    if (s.booked_count >= s.quota || !s.created_by) return false;
+    
+    // Jika gender pendaftar disediakan, filter berdasarkan gender penguji
+    if (pendaftarGender) {
+      const creatorJk = s.creator?.jenis_kelamin?.toUpperCase() || "";
+      // Jika pembuat sesi tidak memiliki jenis_kelamin yang di-set (misal admin umum), biarkan lolos
+      if (!creatorJk) return true;
+      
+      const isCreatorPutra = creatorJk === "L" || creatorJk === "LAKI-LAKI" || creatorJk.includes("PUTRA");
+      return isCreatorPutra === isPendaftarPutra;
+    }
+    return true;
+  });
   if (availableSessions.length === 0) return null;
 
   // 4. Ambil semua ID penguji unik dari pool sesi tersebut

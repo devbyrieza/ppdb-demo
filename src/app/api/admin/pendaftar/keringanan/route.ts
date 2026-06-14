@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { pendaftar_id, jenis, nominal_potongan } = body;
+    const { pendaftar_id, jenis, nominal_potongan, kesanggupan_bayar } = body;
 
     if (!pendaftar_id) {
       return NextResponse.json({ error: "Pendaftar ID is required" }, { status: 400 });
@@ -40,7 +40,8 @@ export async function POST(req: NextRequest) {
     if (jenis && nominal_potongan !== undefined) {
       dataLengkap.keringanan_daftar_ulang = {
         jenis,
-        nominal_potongan: Number(nominal_potongan)
+        nominal_potongan: Number(nominal_potongan),
+        ...(kesanggupan_bayar !== undefined && kesanggupan_bayar > 0 ? { kesanggupan_bayar: Number(kesanggupan_bayar) } : {})
       };
     } else {
       // Hapus keringanan

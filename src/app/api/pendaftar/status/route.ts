@@ -63,6 +63,7 @@ export async function GET(request: NextRequest) {
             surat_keputusan_url: true,
           },
         },
+        jenis_kelamin: true,
         ukuran_seragam_baju: true,
         ukuran_seragam_celana: true,
         ukuran_seragam_almamater: true,
@@ -95,9 +96,22 @@ export async function GET(request: NextRequest) {
     }
 
     // Check if slots are available and pendaftar hasn't booked yet
-    const sessions = await prisma.examSession.findMany({
+    const rawSessions = await prisma.examSession.findMany({
       where: { is_active: true, start_time: { gte: new Date() } },
-      include: { _count: { select: { bookings: true } } },
+      include: { 
+        creator: { select: { jenis_kelamin: true } },
+        _count: { select: { bookings: true } } 
+      },
+    });
+
+    const jkPendaftar = data.jenis_kelamin?.toUpperCase() || "";
+    const isPendaftarPutra = jkPendaftar === "L" || jkPendaftar === "LAKI-LAKI" || jkPendaftar.includes("PUTRA");
+
+    const sessions = rawSessions.filter(s => {
+      const creatorJk = s.creator?.jenis_kelamin?.toUpperCase() || "";
+      if (!creatorJk) return true;
+      const isCreatorPutra = creatorJk === "L" || creatorJk === "LAKI-LAKI" || creatorJk.includes("PUTRA");
+      return isCreatorPutra === isPendaftarPutra;
     });
     const totalAvailableSlots = sessions.reduce(
       (acc, s) => acc + Math.max(0, s.quota - s._count.bookings),

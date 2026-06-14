@@ -75,18 +75,36 @@ export async function GET(request: Request) {
     const sessions = await prisma.examSession.findMany({
       where: whereClause,
       include: {
-        creator: isPendaftar ? false : { select: { full_name: true } },
+        creator: isPendaftar ? { select: { jenis_kelamin: true } } : { select: { full_name: true, jenis_kelamin: true } },
         _count: { select: { bookings: true } },
       },
       orderBy: { start_time: "asc" },
     });
 
     if (isPendaftar) {
-      // Filter out sessions that are already full
-      const availableSessions = sessions.filter(
-        (s) => (s._count?.bookings || 0) < s.quota,
-      );
-      return NextResponse.json({ data: availableSessions });
+      const pendaftar = await prisma.pendaftar.findUnique({
+         where: { id: session.id },
+         select: { jenis_kelamin: true }
+      });
+      const jkPendaftar = pendaftar?.jenis_kelamin?.toUpperCase() || "";
+      const isPendaftarPutra = jkPendaftar === "L" || jkPendaftar === "LAKI-LAKI" || jkPendaftar.includes("PUTRA");
+
+      const availableSessions = sessions.filter((s) => {
+        const creatorJk = s.creator?.jenis_kelamin?.toUpperCase() || "";
+        let genderMatch = true;
+        if (creatorJk) {
+          const isCreatorPutra = creatorJk === "L" || creatorJk === "LAKI-LAKI" || creatorJk.includes("PUTRA");
+          genderMatch = isCreatorPutra === isPendaftarPutra;
+        }
+        return genderMatch && (s._count?.bookings || 0) < s.quota;
+      });
+
+      const cleanSessions = availableSessions.map(s => {
+         const { creator, ...rest } = s;
+         return rest;
+      });
+
+      return NextResponse.json({ data: cleanSessions });
     }
 
     return NextResponse.json({ data: sessions });
