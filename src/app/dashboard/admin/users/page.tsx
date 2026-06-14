@@ -402,7 +402,17 @@ export default function UserManagementPage() {
       </div>
 
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-6 bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden">
+        <div
+          onWheel={(e) => {
+            if (e.target === e.currentTarget) {
+              window.scrollBy({
+                top: e.deltaY,
+                behavior: "auto",
+              });
+            }
+          }}
+          className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-6 bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden"
+        >
           <div className="bg-white rounded-[3rem] shadow-2xl w-full max-w-3xl flex flex-col max-h-[90vh] animate-in zoom-in duration-300 border border-white/20">
             <div className="p-6 md:p-12 border-b flex justify-between items-center bg-stone-50/50 shrink-0">
               <div>
@@ -420,7 +430,7 @@ export default function UserManagementPage() {
                 <XCircle className="w-10 h-10" />
               </button>
             </div>
-            <form onSubmit={handleSubmit} className="p-6 md:p-12 space-y-8 overflow-y-auto custom-scrollbar">
+            <form onSubmit={handleSubmit} className="p-6 md:p-12 space-y-8 overflow-y-auto custom-scrollbar overscroll-contain">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8">
                 <div className="col-span-1 md:col-span-2">
                   <label className="block text-[10px] font-black uppercase text-stone-500 mb-3 tracking-widest">
