@@ -147,13 +147,28 @@ export async function POST(request: Request) {
       );
     }
 
-    // Transaction to book
-    // 1. Create Jadwal
-    // 2. No need to increment counter manually if using _count, but if we have booked_count field we should update it.
-    // My schema has `booked_count` int field. I should update it.
+    // Fetch pendaftar first (outside transaction to avoid deadlocks)
+    const pendaftar = await prisma.pendaftar.findUnique({
+      where: { id: session.id },
+    });
+    if (!pendaftar) {
+      return NextResponse.json(
+        { error: "Data pendaftar tidak ditemukan" },
+        { status: 404 },
+      );
+    }
 
+    // RUN LOAD BALANCING (outside transaction to avoid connection pool deadlock)
+    const balancedAssignment = await getLeastLoadedExaminerFromPool(
+      examSession.start_time,
+      currentCategory,
+      pendaftar.tahun_ajaran_id,
+      pendaftar.jenis_kelamin,
+    );
+
+    // Transaction to book (Write operations only)
     const result = await prisma.$transaction(async (tx) => {
-      // Increment count first to lock? Prisma doesn't lock automatically like that easily, but atomic increment works.
+      // Increment count first to lock
       const updatedSession = await tx.examSession.update({
         where: { id: exam_session_id },
         data: { booked_count: { increment: 1 } },
@@ -163,27 +178,7 @@ export async function POST(request: Request) {
         throw new Error("Kuota penuh (race condition)");
       }
 
-      // Create Jadwal
-      // Need `tahun_ajaran_id`. How to get?
-      // Usually Pendaftar is linked to TahunAjaran. I should fetch Pendaftar first.
-      const pendaftar = await tx.pendaftar.findUnique({
-        where: { id: session.id },
-      });
-      if (!pendaftar) throw new Error("Data pendaftar tidak ditemukan");
-
       let pengujiFields: Record<string, string | null> = {};
-      const sessionTitle = (examSession.title || "").toLowerCase();
-      const currentCategory = getExamCategory(examSession.title || "");
-
-      // IMPLEMENTASI LOAD BALANCING (PEMERATAAN PENGUJI)
-      // Cari penguji yang memiliki beban kerja paling sedikit di jam yang sama
-      const balancedAssignment = await getLeastLoadedExaminerFromPool(
-        examSession.start_time,
-        currentCategory,
-        pendaftar.tahun_ajaran_id,
-        pendaftar.jenis_kelamin,
-      );
-
       const finalExaminerId =
         balancedAssignment?.examiner_id || examSession.created_by;
       const finalSessionId = balancedAssignment?.session_id || exam_session_id;
