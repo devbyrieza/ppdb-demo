@@ -757,15 +757,22 @@ export default function KeuanganPage() {
                               >
                                 {row.tipe_cicilan.replace(/_/g, " ")}
                               </span>
-                              {row.keringanan_reason && (
-                                <div 
-                                  className="mt-1 flex items-center gap-1 text-[9px] text-secondary-700 font-black bg-secondary-50 px-1.5 py-0.5 rounded border border-secondary-100 uppercase tracking-tighter cursor-help"
-                                  title={row.keringanan_reason}
-                                >
-                                  <AlertCircle className="w-2.5 h-2.5" />
-                                  Keringanan
-                                </div>
-                              )}
+                              {row.keringanan_reason && (() => {
+                                const isBeasiswa = row.keringanan_reason.toLowerCase().includes("beasiswa");
+                                const label = isBeasiswa ? "Beasiswa" : "Keringanan";
+                                const badgeClass = isBeasiswa
+                                  ? "text-violet-700 bg-violet-50 border-violet-100"
+                                  : "text-secondary-700 bg-secondary-50 border-secondary-100";
+                                return (
+                                  <div 
+                                    className={`mt-1 flex items-center gap-1 text-[9px] font-black px-1.5 py-0.5 rounded border uppercase tracking-tighter cursor-help ${badgeClass}`}
+                                    title={row.keringanan_reason}
+                                  >
+                                    <AlertCircle className="w-2.5 h-2.5" />
+                                    {label}
+                                  </div>
+                                );
+                              })()}
                             </td>
                             <td className="px-6 py-3 font-mono text-slate-500">
                               {formatCurrency(row.sisa_tagihan)}
