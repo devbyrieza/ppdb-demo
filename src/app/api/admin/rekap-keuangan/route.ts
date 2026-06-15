@@ -28,6 +28,9 @@ export async function GET(request: NextRequest) {
     const students = await prisma.pendaftar.findMany({
       where: {
         ...baseWhere,
+        status_pendaftaran: {
+          not: "mengundurkan_diri",
+        },
         OR: [
           {
             nilai_ujian: {
@@ -47,7 +50,7 @@ export async function GET(request: NextRequest) {
             },
           },
           {
-            status_pendaftaran: { in: ["accepted", "announced", "cadangan"] },
+            status_pendaftaran: { in: ["accepted", "announced", "cadangan", "passed", "enrolled"] },
           },
         ],
       } as any,
@@ -138,7 +141,7 @@ export async function GET(request: NextRequest) {
         nama: student.nama_lengkap,
         nomor_pendaftaran: student.nomor_pendaftaran,
         jenjang: student.jenjang || "-",
-        status_kelulusan: student.status_pendaftaran === "accepted"
+        status_kelulusan: ["accepted", "passed", "enrolled"].includes(student.status_pendaftaran)
           ? "DITERIMA"
           : (student.nilai_ujian[0]?.status_kelulusan || "LULUS"),
         total_bayar: totalBayar,
