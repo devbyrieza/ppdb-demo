@@ -32,6 +32,7 @@ interface RekapDaftarUlang {
   total_bayar: number;
   tipe_cicilan: string;
   keringanan_reason: string | null;
+  diskon_label: string | null;
   sisa_tagihan: number;
   last_updated: string;
   pembayaran_list?: any[];
@@ -757,8 +758,8 @@ export default function KeuanganPage() {
                               >
                                 {row.tipe_cicilan.replace(/_/g, " ")}
                               </span>
-                              {row.keringanan_reason && (() => {
-                                const isBeasiswa = row.keringanan_reason.toLowerCase().includes("beasiswa");
+                              {row.diskon_label && (() => {
+                                const isBeasiswa = row.diskon_label.toLowerCase().includes("beasiswa");
                                 const label = isBeasiswa ? "Beasiswa" : "Keringanan";
                                 const badgeClass = isBeasiswa
                                   ? "text-violet-700 bg-violet-50 border-violet-100"
@@ -766,7 +767,7 @@ export default function KeuanganPage() {
                                 return (
                                   <div 
                                     className={`mt-1 flex items-center gap-1 text-[9px] font-black px-1.5 py-0.5 rounded border uppercase tracking-tighter cursor-help ${badgeClass}`}
-                                    title={row.keringanan_reason}
+                                    title={row.keringanan_reason || ""}
                                   >
                                     <AlertCircle className="w-2.5 h-2.5" />
                                     {label}

@@ -152,6 +152,7 @@ export async function GET(request: NextRequest) {
         .map((p: any) => p.keringanan_reason)
         .filter((r: any) => !!r);
 
+      let diskon_label: string | null = null;
       if (isApproved) {
         let beasiswaLabel = "Keringanan Biaya";
         if (keringananJson.jenis) {
@@ -170,6 +171,7 @@ export async function GET(request: NextRequest) {
               .join(" ");
           }
         }
+        diskon_label = beasiswaLabel;
         reasons.unshift(`${beasiswaLabel} (Potongan: Rp ${nominalPotongan.toLocaleString("id-ID")})`);
       }
       const keringanan_reason = reasons.length > 0 ? reasons.join(" | ") : null;
@@ -186,6 +188,7 @@ export async function GET(request: NextRequest) {
         total_bayar: totalBayar,
         tipe_cicilan: statusBayar,
         keringanan_reason,
+        diskon_label,
         sisa_tagihan: Math.max(0, requiredAmount - totalBayar),
         last_updated: lastUpdate,
         pembayaran_list: student.pembayaran, // Pass all payments to the frontend
