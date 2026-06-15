@@ -153,9 +153,23 @@ export async function GET(request: NextRequest) {
         .filter((r: any) => !!r);
 
       if (isApproved) {
-        const beasiswaLabel = student.pengajuan_beasiswa?.jenis_pengajuan === "BEASISWA_PRESTASI"
-          ? "Beasiswa Prestasi"
-          : "Keringanan Biaya";
+        let beasiswaLabel = "Keringanan Biaya";
+        if (keringananJson.jenis) {
+          beasiswaLabel = keringananJson.jenis;
+        } else if (student.pengajuan_beasiswa?.status === "DISETUJUI") {
+          const rawJenis = student.pengajuan_beasiswa.jenis_pengajuan || "";
+          if (rawJenis === "BEASISWA_PRESTASI") {
+            beasiswaLabel = "Beasiswa Prestasi";
+          } else if (rawJenis === "KERINGANAN_BIAYA") {
+            beasiswaLabel = "Keringanan Biaya";
+          } else if (rawJenis) {
+            beasiswaLabel = rawJenis
+              .toLowerCase()
+              .split("_")
+              .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(" ");
+          }
+        }
         reasons.unshift(`${beasiswaLabel} (Potongan: Rp ${nominalPotongan.toLocaleString("id-ID")})`);
       }
       const keringanan_reason = reasons.length > 0 ? reasons.join(" | ") : null;
