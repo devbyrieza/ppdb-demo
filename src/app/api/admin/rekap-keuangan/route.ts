@@ -28,11 +28,28 @@ export async function GET(request: NextRequest) {
     const students = await prisma.pendaftar.findMany({
       where: {
         ...baseWhere,
-        nilai_ujian: {
-          some: {
-            status_kelulusan: "LULUS",
+        OR: [
+          {
+            nilai_ujian: {
+              some: {
+                status_kelulusan: { in: ["LULUS", "DITERIMA"] },
+              },
+            },
           },
-        },
+          {
+            hasil_seleksi: {
+              status_seleksi: { in: ["DITERIMA", "CADANGAN"] },
+            },
+          },
+          {
+            pengumuman: {
+              status_kelulusan: { in: ["Lulus", "Diterima", "Cadangan"] },
+            },
+          },
+          {
+            status_pendaftaran: { in: ["accepted", "announced", "cadangan"] },
+          },
+        ],
       } as any,
       select: {
         id: true,

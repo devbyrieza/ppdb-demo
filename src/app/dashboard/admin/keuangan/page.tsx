@@ -351,6 +351,9 @@ export default function KeuanganPage() {
         const cicil = filteredDaftarUlang.filter(
           (i) => i.tipe_cicilan === "CICILAN",
         );
+        const belumBayar = filteredDaftarUlang.filter(
+          (i) => i.tipe_cicilan === "BELUM_BAYAR",
+        );
 
         const formatRow = (i: RekapDaftarUlang) => [
           i.no,
@@ -393,6 +396,12 @@ export default function KeuanganPage() {
             title: "DAFTAR ULANG - CICILAN",
             header,
             data: cicil.map(formatRow),
+          },
+          {
+            name: "BELUM DAFTAR ULANG",
+            title: "DAFTAR ULANG - BELUM MELAKUKAN DAFTAR ULANG (BELUM BAYAR)",
+            header,
+            data: belumBayar.map(formatRow),
           },
         ];
 

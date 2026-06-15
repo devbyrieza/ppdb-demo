@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
+import { getAdminWhereClause } from "@/lib/utils/admin";
 
 export async function GET(req: NextRequest) {
   try {
@@ -44,7 +45,10 @@ export async function GET(req: NextRequest) {
     const tipePendaftaran = searchParams.get("tipe_pendaftaran") || "";
 
     // Build query - fetch ALL records (no pagination for export)
-    const where: Prisma.PendaftarWhereInput = {};
+    const baseWhere = getAdminWhereClause(tahunAjaran || undefined) as any;
+    const where: Prisma.PendaftarWhereInput = {
+      ...baseWhere,
+    };
 
     // Search filter
     if (search) {

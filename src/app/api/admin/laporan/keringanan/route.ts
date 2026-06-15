@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
+import { getAdminWhereClause } from "@/lib/utils/admin";
 
 export const dynamic = "force-dynamic";
 
@@ -15,7 +16,9 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Forbidden: Akses ditolak" }, { status: 403 });
     }
 
+    const baseWhere = getAdminWhereClause() as any;
     const pendaftars = await prisma.pendaftar.findMany({
+      where: baseWhere,
       select: {
         id: true,
         nomor_pendaftaran: true,
