@@ -59,6 +59,7 @@ export async function GET(request: NextRequest) {
         no_hp: true,
         email: true,
         updated_at: true,
+        status_pendaftaran: true,
         nilai_ujian: {
           select: { status_kelulusan: true },
         },
@@ -136,7 +137,9 @@ export async function GET(request: NextRequest) {
         nama: student.nama_lengkap,
         nomor_pendaftaran: student.nomor_pendaftaran,
         jenjang: student.jenjang || "-",
-        status_kelulusan: student.nilai_ujian[0]?.status_kelulusan || "LULUS",
+        status_kelulusan: student.status_pendaftaran === "accepted"
+          ? "DITERIMA"
+          : (student.nilai_ujian[0]?.status_kelulusan || "LULUS"),
         total_bayar: totalBayar,
         tipe_cicilan: statusBayar,
         keringanan_reason,
