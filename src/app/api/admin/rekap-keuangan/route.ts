@@ -52,6 +52,9 @@ export async function GET(request: NextRequest) {
           {
             status_pendaftaran: { in: ["accepted", "announced", "cadangan", "passed", "enrolled"] },
           },
+          {
+            tipe_pendaftaran: "PINDAHAN",
+          },
         ],
       } as any,
       select: {
@@ -62,6 +65,7 @@ export async function GET(request: NextRequest) {
         no_hp: true,
         email: true,
         data_lengkap: true,
+        tipe_pendaftaran: true,
         updated_at: true,
         status_pendaftaran: true,
         nilai_ujian: {
@@ -166,7 +170,7 @@ export async function GET(request: NextRequest) {
         nama: student.nama_lengkap,
         nomor_pendaftaran: student.nomor_pendaftaran,
         jenjang: student.jenjang || "-",
-        status_kelulusan: ["accepted", "passed", "enrolled"].includes(student.status_pendaftaran)
+        status_kelulusan: (["accepted", "passed", "enrolled"].includes(student.status_pendaftaran) || student.tipe_pendaftaran === "PINDAHAN")
           ? "DITERIMA"
           : (student.nilai_ujian[0]?.status_kelulusan || "LULUS"),
         total_bayar: totalBayar,
