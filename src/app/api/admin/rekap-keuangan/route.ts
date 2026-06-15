@@ -79,6 +79,13 @@ export async function GET(request: NextRequest) {
             no_hp_ibu: true,
           },
         },
+        pengajuan_beasiswa: {
+          select: {
+            status: true,
+            jenis_pengajuan: true,
+            nominal_potongan: true,
+          },
+        },
         pembayaran: {
           where: {
             jenis_pembayaran: "DAFTAR_ULANG",
@@ -112,9 +119,20 @@ export async function GET(request: NextRequest) {
         0,
       );
 
+      // Fetch approved scholarship details from database or fallback from JSON
+      const dataLengkap = (student.data_lengkap as any) || {};
+      const keringananJson = dataLengkap.keringanan_daftar_ulang || {};
+      const isApproved = student.pengajuan_beasiswa?.status === "DISETUJUI" || !!keringananJson.nominal_potongan;
+      const nominalPotongan = Number(
+        (student.pengajuan_beasiswa?.status === "DISETUJUI" ? student.pengajuan_beasiswa?.nominal_potongan : null) ?? 
+        keringananJson.nominal_potongan ?? 
+        0
+      );
+      const requiredAmount = 8500000 - nominalPotongan;
+
       // Determine Status
       let statusBayar = "BELUM_BAYAR";
-      if (totalBayar >= 8500000) {
+      if (totalBayar >= requiredAmount) {
         statusBayar = "LUNAS";
       } else if (totalBayar > 0) {
         statusBayar = "CICILAN";
@@ -133,6 +151,13 @@ export async function GET(request: NextRequest) {
       const reasons = verifiedPayments
         .map((p: any) => p.keringanan_reason)
         .filter((r: any) => !!r);
+
+      if (isApproved) {
+        const beasiswaLabel = student.pengajuan_beasiswa?.jenis_pengajuan === "BEASISWA_PRESTASI"
+          ? "Beasiswa Prestasi"
+          : "Keringanan Biaya";
+        reasons.unshift(`${beasiswaLabel} (Potongan: Rp ${nominalPotongan.toLocaleString("id-ID")})`);
+      }
       const keringanan_reason = reasons.length > 0 ? reasons.join(" | ") : null;
 
       return {
@@ -147,7 +172,7 @@ export async function GET(request: NextRequest) {
         total_bayar: totalBayar,
         tipe_cicilan: statusBayar,
         keringanan_reason,
-        sisa_tagihan: Math.max(0, 8500000 - totalBayar),
+        sisa_tagihan: Math.max(0, requiredAmount - totalBayar),
         last_updated: lastUpdate,
         pembayaran_list: student.pembayaran, // Pass all payments to the frontend
         no_hp: student.no_hp || "-",
