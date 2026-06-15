@@ -58,6 +58,7 @@ export async function GET(request: NextRequest) {
         jenjang: true,
         no_hp: true,
         email: true,
+        data_lengkap: true,
         updated_at: true,
         status_pendaftaran: true,
         nilai_ujian: {
@@ -148,16 +149,28 @@ export async function GET(request: NextRequest) {
         pembayaran_list: student.pembayaran, // Pass all payments to the frontend
         no_hp: student.no_hp || "-",
         email: student.email || "-",
-        ortu: student.orang_tua ? {
-          nama_ayah: student.orang_tua.nama_ayah || "-",
-          pekerjaan_ayah: student.orang_tua.pekerjaan_ayah || "-",
-          penghasilan_ayah: student.orang_tua.penghasilan_ayah || "-",
-          no_hp_ayah: student.orang_tua.no_hp_ayah || "-",
-          nama_ibu: student.orang_tua.nama_ibu || "-",
-          pekerjaan_ibu: student.orang_tua.pekerjaan_ibu || "-",
-          penghasilan_ibu: student.orang_tua.penghasilan_ibu || "-",
-          no_hp_ibu: student.orang_tua.no_hp_ibu || "-",
-        } : null,
+        ortu: (() => {
+          const dataLengkap: any = student.data_lengkap || {};
+          const ayah = dataLengkap.ayah || {};
+          const ibu = dataLengkap.ibu || {};
+
+          const cleanVal = (val: any) => {
+            if (val === null || val === undefined) return null;
+            const str = val.toString().trim();
+            return str === "" || str === "-" ? null : str;
+          };
+
+          return {
+            nama_ayah: cleanVal(student.orang_tua?.nama_ayah) || cleanVal(ayah.nama_lengkap) || "-",
+            pekerjaan_ayah: cleanVal(student.orang_tua?.pekerjaan_ayah) || cleanVal(ayah.pekerjaan) || "-",
+            penghasilan_ayah: cleanVal(student.orang_tua?.penghasilan_ayah) || cleanVal(ayah.penghasilan) || "-",
+            no_hp_ayah: cleanVal(student.orang_tua?.no_hp_ayah) || cleanVal(ayah.no_hp) || "-",
+            nama_ibu: cleanVal(student.orang_tua?.nama_ibu) || cleanVal(ibu.nama_lengkap) || "-",
+            pekerjaan_ibu: cleanVal(student.orang_tua?.pekerjaan_ibu) || cleanVal(ibu.pekerjaan) || "-",
+            penghasilan_ibu: cleanVal(student.orang_tua?.penghasilan_ibu) || cleanVal(ibu.penghasilan) || "-",
+            no_hp_ibu: cleanVal(student.orang_tua?.no_hp_ibu) || cleanVal(ibu.no_hp) || "-",
+          };
+        })(),
       };
     });
 
