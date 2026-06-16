@@ -2506,7 +2506,7 @@ export default function JadwalPengujiPage() {
                       className="flex items-center gap-4 bg-white p-4 rounded-3xl border border-stone-200 shadow-sm hover:shadow-md transition-shadow group"
                     >
                       <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="relative flex items-center bg-stone-50 border border-stone-100 rounded-2xl px-3 py-2.5 text-sm font-black text-primary-950 focus-within:ring-2 focus-within:ring-primary-500">
+                        <div className="relative flex items-center justify-center bg-stone-50 border border-stone-100 rounded-2xl pl-4 pr-10 py-2.5 text-sm font-black text-primary-950 focus-within:ring-2 focus-within:ring-primary-500">
                           <select
                             className="bg-transparent outline-none appearance-none cursor-pointer w-12 text-center"
                             value={slot.start.split(":")[0]}
@@ -2536,7 +2536,7 @@ export default function JadwalPengujiPage() {
                           </select>
                           <Clock className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-300 pointer-events-none" />
                         </div>
-                        <div className="relative flex items-center bg-stone-50 border border-stone-100 rounded-2xl px-3 py-2.5 text-sm font-black text-primary-950 focus-within:ring-2 focus-within:ring-primary-500">
+                        <div className="relative flex items-center justify-center bg-stone-50 border border-stone-100 rounded-2xl pl-4 pr-10 py-2.5 text-sm font-black text-primary-950 focus-within:ring-2 focus-within:ring-primary-500">
                           <select
                             className="bg-transparent outline-none appearance-none cursor-pointer w-12 text-center"
                             value={slot.end.split(":")[0]}
