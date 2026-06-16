@@ -79,7 +79,7 @@ function VerifikasiPembayaranContent() {
   const [tipeCicilanFilter, setTipeCicilanFilter] = useState<
     "ALL" | "LUNAS" | "CICILAN"
   >("ALL");
-  const [editTipeCicilan, setEditTipeCicilan] = useState("LUNAS");
+  const [editTipeCicilan, setEditTipeCicilan] = useState("");
   const [editCicilanKe, setEditCicilanKe] = useState(1);
   const [uploadingProof, setUploadingProof] = useState<string | null>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
@@ -384,12 +384,18 @@ function VerifikasiPembayaranContent() {
     setSelectedPembayaran(pay);
     setCatatan(pay.catatan || "");
     setEditJumlah(pay.jumlah);
-    setEditTipeCicilan(pay.tipe_cicilan || "LUNAS");
+    
+    let suggestedTipe = "";
+    if (pay.tipe_cicilan) {
+      if (pay.tipe_cicilan === "LUNAS") suggestedTipe = "LUNAS";
+      else if (pay.tipe_cicilan.includes("CICIL")) suggestedTipe = "CICILAN";
+    }
+    setEditTipeCicilan(suggestedTipe);
     
     // Automatic installment suggest for Admin
     if (activeTab === "DAFTAR_ULANG") {
       // Suggest next sequence automatically for verification
-      setEditCicilanKe((pay.verified_count || 0) + 1);
+      setEditCicilanKe(pay.cicilan_ke || (pay.verified_count || 0) + 1);
     } else {
       setEditCicilanKe(pay.cicilan_ke || 1);
     }
@@ -1009,7 +1015,7 @@ function VerifikasiPembayaranContent() {
                   onClick={() =>
                     handleVerify(selectedPembayaran.id, "verified")
                   }
-                  disabled={processing}
+                  disabled={processing || (activeTab === "DAFTAR_ULANG" && !editTipeCicilan)}
                   className="flex-1 flex items-center justify-center gap-2 px-4 py-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-bold transition-all hover:shadow-lg hover:shadow-emerald-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {processing ? (
