@@ -73,6 +73,7 @@ export async function GET(request: Request) {
     // Send WhatsApp to admins (ensure unique phone numbers)
     const phoneSent = new Set<string>();
     const sendResults = [];
+    const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
     for (const admin of admins) {
       if (admin.phone && !phoneSent.has(admin.phone)) {
@@ -87,6 +88,9 @@ export async function GET(request: Request) {
             phone: admin.phone,
             success: res.status,
           });
+
+          // Beri jeda 3 detik antar pengiriman agar tidak terdeteksi spam/ban oleh Wablas
+          await delay(3000);
         } catch (err) {
           sendResults.push({
             name: admin.full_name,
