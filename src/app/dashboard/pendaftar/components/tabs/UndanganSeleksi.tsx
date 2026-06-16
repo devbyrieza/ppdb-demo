@@ -81,6 +81,7 @@ interface UndanganData {
   condition: "jadwal_tersedia" | "jadwal_belum";
   locked?: boolean;
   message?: string;
+  current_status?: string;
 }
 
 // ============================================================================

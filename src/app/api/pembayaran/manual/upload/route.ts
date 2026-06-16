@@ -166,6 +166,17 @@ export async function POST(request: NextRequest) {
       const totalPaid = existingPayments.reduce((acc, p) => acc + Number(p.jumlah), 0);
       const totalAccumulated = totalPaid + biaya;
 
+      let expectedTagihanDaftarUlang = 10900000;
+      let dataLengkap: any = {};
+      if (pendaftar.data_lengkap) {
+        try {
+          dataLengkap = typeof pendaftar.data_lengkap === "string" ? JSON.parse(pendaftar.data_lengkap) : pendaftar.data_lengkap;
+        } catch(e) {}
+      }
+      if (dataLengkap?.keringanan_daftar_ulang?.nominal_potongan) {
+        expectedTagihanDaftarUlang -= Number(dataLengkap.keringanan_daftar_ulang.nominal_potongan);
+      }
+
       // Tentukan Tipe Cicilan
       if (totalAccumulated >= expectedTagihanDaftarUlang) {
         tipeCicilan = "LUNAS";

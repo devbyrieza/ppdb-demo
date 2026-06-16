@@ -1,7 +1,5 @@
 {
-  "organizeImports": {
-    "enabled": true
-  },
+  "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "linter": {
     "enabled": true,
     "rules": {
@@ -30,13 +28,14 @@
     }
   },
   "files": {
-    "ignore": [
-      "node_modules",
-      ".next",
-      "dist",
-      "build",
-      ".vercel",
-      "*.config.js"
+    "includes": [
+      "**",
+      "!**/node_modules",
+      "!**/.next",
+      "!**/dist",
+      "!**/build",
+      "!**/.vercel",
+      "!**/*.config.js"
     ]
   }
 }

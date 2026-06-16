@@ -147,7 +147,7 @@ const FlexibleTimeInput = ({ value, onChange, type }: { value: string, onChange:
     }
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value.replace(/\D/g, "").slice(0, 2);
     setLocalValue(val);
     if (val.length === 2) {
@@ -167,7 +167,7 @@ const FlexibleTimeInput = ({ value, onChange, type }: { value: string, onChange:
       value={localValue}
       onChange={handleChange}
       onBlur={handleBlur}
-      onClick={(e) => e.target.select()}
+      onClick={(e) => (e.target as HTMLInputElement).select()}
       placeholder="00"
     />
   );
