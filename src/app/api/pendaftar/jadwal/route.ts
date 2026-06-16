@@ -364,21 +364,26 @@ export async function POST(request: Request) {
         const finalScheduledAt = reminderTime < now ? now : reminderTime;
 
         // Get interviewer info early for Google Meet link
+        // Get interviewer info early for Google Meet link
+        const finalIdForLink =
+            pengujiFields.penguji_quran_id ||
+            pengujiFields.penguji_santri_id ||
+            pengujiFields.penguji_ortu_id ||
+            examSession.created_by;
+
         let interviewerGoogleMeetLink = null;
-        if (examSession.created_by) {
-          const interviewer = await prisma.profile.findUnique({
-            where: { id: examSession.created_by },
+        if (finalIdForLink) {
+          const interviewerInfo = await prisma.profile.findUnique({
+            where: { id: finalIdForLink },
             select: { google_meet_link: true },
           });
-          interviewerGoogleMeetLink = interviewer?.google_meet_link;
+          interviewerGoogleMeetLink = interviewerInfo?.google_meet_link;
         }
 
-        // Build location with Google Meet link if available
+        const sessionLoc = lokasi || "Online";
         const lokasiWithMeet = interviewerGoogleMeetLink
-          ? interviewerGoogleMeetLink.startsWith("http")
-            ? interviewerGoogleMeetLink
-            : `Online (${interviewerGoogleMeetLink})`
-          : lokasi;
+          ? interviewerGoogleMeetLink
+          : (sessionLoc.toLowerCase() === "online" ? "-" : sessionLoc);
 
         // 3.1. Reminder for Santri
         const remSantriMsg = buildMessageReminderH1Santri(

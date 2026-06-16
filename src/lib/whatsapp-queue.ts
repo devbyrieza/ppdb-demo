@@ -924,7 +924,7 @@ Jadwal *${jenisUjian}* Ananda telah terkonfirmasi:
 
 📅 *Hari/Tanggal:* ${tanggal}
 ⏰ *Waktu:* ${waktu} WIB
-📍 *Link Meet:* ${lokasi}
+📍 *Lokasi/Link:* ${lokasi}
 
 Kami akan mengirimkan pengingat kembali beberapa saat sebelum jadwal tiba.
 
@@ -976,7 +976,7 @@ Ini adalah pengingat bahwa Ananda *${nama}* dijadwalkan mengikuti *${jenisUjian}
 
 📅 *Hari/Tanggal:* ${tanggal}
 ⏰ *Waktu:* ${waktu} WIB
-📍 *Link Meet:* ${lokasi}
+📍 *Lokasi/Link:* ${lokasi}
 
 Mohon persiapkan diri dengan baik dan pastikan koneksi internet stabil. Sampai jumpa!
 
@@ -997,7 +997,7 @@ export function buildMessageReminderH0(
 Assalamu'alaikum Abu/Ummu,
 
 🕐 *Waktu:* ${waktu} WIB
-📍 *Link Meet:* ${lokasi}
+📍 *Lokasi/Link:* ${lokasi}
 
 Mohon segera bersiap. Pastikan koneksi internet stabil.
 
@@ -1139,7 +1139,7 @@ Ini adalah pengingat bahwa Ananda *${nama}* dijadwalkan mengikuti *${agendaTitle
 
 📅 *Hari/Tanggal:* ${finalHariTanggal}
 ⏰ *Waktu:* ${finalJam}
-📍 *Link Meet:* ${lokasi}
+📍 *Lokasi/Link:* ${lokasi}
 
 Mohon persiapkan diri dengan baik dan pastikan koneksi internet stabil. Sampai jumpa!
 
@@ -1175,7 +1175,7 @@ Ini adalah pengingat bahwa Abu/Ummu dijadwalkan mengikuti *Wawancara Calon Orang
 
 📅 *Hari/Tanggal:* ${finalHariTanggal}
 ⏰ *Waktu:* ${finalJam}
-📍 *Link Meet:* ${lokasi}
+📍 *Lokasi/Link:* ${lokasi}
 
 Mohon persiapkan diri dengan baik dan pastikan koneksi internet stabil. Sampai jumpa!
 
@@ -1234,7 +1234,7 @@ Mengingatkan jadwal ${agendaText.includes("Wawancara") ? "wawancara" : "menguji"
 👤 *Nama Santri:* *${namaSantri}*
 📅 *Hari/Tanggal:* ${finalHariTanggal}
 ⏰ *Waktu:* ${finalJam}
-📍 *Link Meet:* ${lokasi}
+📍 *Lokasi/Link:* ${lokasi}
 🔗 *Input Hasil:* ${inputNilaiLink || "-"}
 
 Mohon kehadirannya tepat waktu. Jazakumullahu khairan.
