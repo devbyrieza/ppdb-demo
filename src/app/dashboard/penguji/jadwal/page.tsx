@@ -113,6 +113,78 @@ const ROLE_TO_SESSION_TITLE: Record<string, string> = {
 // Roles that can choose any session type (need dropdown)
 const ADMIN_ROLES = ["admin", "admin_super"];
 
+const TimeDataLists = () => (
+  <>
+    <datalist id="hour-options">
+      {Array.from({length: 24}, (_, i) => String(i).padStart(2, '0')).map(h => <option key={h} value={h} />)}
+    </datalist>
+    <datalist id="minute-options">
+      {Array.from({length: 12}, (_, i) => String(i * 5).padStart(2, '0')).map(m => <option key={m} value={m} />)}
+    </datalist>
+  </>
+);
+
+const FlexibleTimeInput = ({ value, onChange, type }: { value: string, onChange: (val: string) => void, type: "hour" | "minute" }) => {
+  const [localValue, setLocalValue] = require("react").useState(value);
+
+  require("react").useEffect(() => {
+    setLocalValue(value);
+  }, [value]);
+
+  const handleBlur = () => {
+    let formatted = localValue.replace(/\D/g, "");
+    if (!formatted) formatted = "00";
+    if (formatted.length === 1) formatted = formatted.padStart(2, '0');
+    
+    let num = parseInt(formatted);
+    if (type === "hour" && num > 23) num = 23;
+    if (type === "minute" && num > 59) num = 59;
+    
+    const final = String(num).padStart(2, '0');
+    setLocalValue(final);
+    if (final !== value) {
+      onChange(final);
+    }
+  };
+
+  const handleChange = (e) => {
+    const val = e.target.value.replace(/\D/g, "").slice(0, 2);
+    setLocalValue(val);
+    if (val.length === 2) {
+      let num = parseInt(val);
+      if (type === "hour" && num > 23) num = 23;
+      if (type === "minute" && num > 59) num = 59;
+      const final = String(num).padStart(2, '0');
+      onChange(final);
+    }
+  };
+
+  return (
+    <input
+      type="text"
+      list={`${type}-options`}
+      className="bg-transparent outline-none cursor-pointer w-12 text-center font-black"
+      value={localValue}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      onClick={(e) => e.target.select()}
+      placeholder="00"
+    />
+  );
+};
+
+const CustomTimePicker = ({ value, onChange }: { value: string, onChange: (val: string) => void }) => {
+  const [h, m] = (value || "00:00").split(":");
+  return (
+    <div className="relative flex items-center justify-center bg-white border border-stone-200 rounded-2xl pl-4 pr-10 py-2.5 text-sm font-black text-primary-950 focus-within:ring-2 focus-within:ring-primary-500 shadow-sm w-full">
+      <FlexibleTimeInput type="hour" value={h || "00"} onChange={(newH) => onChange(`${newH}:${m || "00"}`)} />
+      <span className="text-stone-400 font-bold mx-1">:</span>
+      <FlexibleTimeInput type="minute" value={m || "00"} onChange={(newM) => onChange(`${h || "00"}:${newM}`)} />
+      <Clock className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-300 pointer-events-none" />
+    </div>
+  );
+};
+
 export default function JadwalPengujiPage() {
   const [activeTab, setActiveTab] = useState<"assigned" | "slots">("assigned");
   const [userId, setUserId] = useState<string | null>(null);
@@ -1052,6 +1124,7 @@ export default function JadwalPengujiPage() {
 
   return (
     <div className="space-y-6">
+      <TimeDataLists />
       {/* Header Section */}
       <div className="bg-white rounded-[2rem] p-6 md:p-10 border border-gold-100 shadow-sm app-card overflow-hidden relative">
         <div className="absolute top-0 right-0 w-64 h-64 bg-primary-600/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
@@ -1677,35 +1750,13 @@ export default function JadwalPengujiPage() {
                       <label className="block text-[10px] font-black text-ink-400 uppercase tracking-widest mb-1.5">
                         Mulai
                       </label>
-                      <input
-                        type="time"
-                        required
-                        className="w-full px-3 py-2.5 bg-white border border-stone-200 rounded-xl font-bold text-primary-950 text-sm focus:ring-2 focus:ring-primary-400 outline-none"
-                        value={bulkEditForm.start_time}
-                        onChange={(e) =>
-                          setBulkEditForm({
-                            ...bulkEditForm,
-                            start_time: e.target.value,
-                          })
-                        }
-                      />
+                      <CustomTimePicker value={bulkEditForm.start_time} onChange={(val) => setBulkEditForm({ ...bulkEditForm, start_time: val })} />
                     </div>
                     <div>
                       <label className="block text-[10px] font-black text-ink-400 uppercase tracking-widest mb-1.5">
                         Selesai
                       </label>
-                      <input
-                        type="time"
-                        required
-                        className="w-full px-3 py-2.5 bg-white border border-stone-200 rounded-xl font-bold text-primary-950 text-sm focus:ring-2 focus:ring-primary-400 outline-none"
-                        value={bulkEditForm.end_time}
-                        onChange={(e) =>
-                          setBulkEditForm({
-                            ...bulkEditForm,
-                            end_time: e.target.value,
-                          })
-                        }
-                      />
+                      <CustomTimePicker value={bulkEditForm.end_time} onChange={(val) => setBulkEditForm({ ...bulkEditForm, end_time: val })} />
                     </div>
                   </div>
                 )}
@@ -2506,62 +2557,17 @@ export default function JadwalPengujiPage() {
                       className="flex items-center gap-4 bg-white p-4 rounded-3xl border border-stone-200 shadow-sm hover:shadow-md transition-shadow group"
                     >
                       <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="relative flex items-center justify-center bg-stone-50 border border-stone-100 rounded-2xl pl-4 pr-10 py-2.5 text-sm font-black text-primary-950 focus-within:ring-2 focus-within:ring-primary-500">
-                          <select
-                            className="bg-transparent outline-none appearance-none cursor-pointer w-12 text-center"
-                            value={slot.start.split(":")[0]}
-                            onChange={(e) => {
-                              const newStart = `${e.target.value}:${slot.start.split(":")[1]}`;
-                              const newSlots = [...(bulkForm.daySlots[activeDay] || [])];
-                              newSlots[index].start = newStart;
-                              newSlots[index].end = calculateEndTime(newStart, bulkForm.title);
-                              setBulkForm({ ...bulkForm, daySlots: { ...bulkForm.daySlots, [activeDay]: newSlots } });
-                            }}
-                          >
-                            {Array.from({length: 24}, (_, i) => String(i).padStart(2, '0')).map(h => <option key={h} value={h}>{h}</option>)}
-                          </select>
-                          <span className="text-stone-400 font-bold mx-1">:</span>
-                          <select
-                            className="bg-transparent outline-none appearance-none cursor-pointer w-12 text-center"
-                            value={slot.start.split(":")[1]}
-                            onChange={(e) => {
-                              const newStart = `${slot.start.split(":")[0]}:${e.target.value}`;
-                              const newSlots = [...(bulkForm.daySlots[activeDay] || [])];
-                              newSlots[index].start = newStart;
-                              newSlots[index].end = calculateEndTime(newStart, bulkForm.title);
-                              setBulkForm({ ...bulkForm, daySlots: { ...bulkForm.daySlots, [activeDay]: newSlots } });
-                            }}
-                          >
-                            {Array.from({length: 12}, (_, i) => String(i * 5).padStart(2, '0')).map(m => <option key={m} value={m}>{m}</option>)}
-                          </select>
-                          <Clock className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-300 pointer-events-none" />
-                        </div>
-                        <div className="relative flex items-center justify-center bg-stone-50 border border-stone-100 rounded-2xl pl-4 pr-10 py-2.5 text-sm font-black text-primary-950 focus-within:ring-2 focus-within:ring-primary-500">
-                          <select
-                            className="bg-transparent outline-none appearance-none cursor-pointer w-12 text-center"
-                            value={slot.end.split(":")[0]}
-                            onChange={(e) => {
-                              const newSlots = [...(bulkForm.daySlots[activeDay] || [])];
-                              newSlots[index].end = `${e.target.value}:${slot.end.split(":")[1]}`;
-                              setBulkForm({ ...bulkForm, daySlots: { ...bulkForm.daySlots, [activeDay]: newSlots } });
-                            }}
-                          >
-                            {Array.from({length: 24}, (_, i) => String(i).padStart(2, '0')).map(h => <option key={h} value={h}>{h}</option>)}
-                          </select>
-                          <span className="text-stone-400 font-bold mx-1">:</span>
-                          <select
-                            className="bg-transparent outline-none appearance-none cursor-pointer w-12 text-center"
-                            value={slot.end.split(":")[1]}
-                            onChange={(e) => {
-                              const newSlots = [...(bulkForm.daySlots[activeDay] || [])];
-                              newSlots[index].end = `${slot.end.split(":")[0]}:${e.target.value}`;
-                              setBulkForm({ ...bulkForm, daySlots: { ...bulkForm.daySlots, [activeDay]: newSlots } });
-                            }}
-                          >
-                            {Array.from({length: 12}, (_, i) => String(i * 5).padStart(2, '0')).map(m => <option key={m} value={m}>{m}</option>)}
-                          </select>
-                          <Clock className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-300 pointer-events-none" />
-                        </div>
+                        <CustomTimePicker value={slot.start} onChange={(val) => {
+                          const newSlots = [...(bulkForm.daySlots[activeDay] || [])];
+                          newSlots[index].start = val;
+                          newSlots[index].end = calculateEndTime(val, bulkForm.title);
+                          setBulkForm({ ...bulkForm, daySlots: { ...bulkForm.daySlots, [activeDay]: newSlots } });
+                        }} />
+                        <CustomTimePicker value={slot.end} onChange={(val) => {
+                          const newSlots = [...(bulkForm.daySlots[activeDay] || [])];
+                          newSlots[index].end = val;
+                          setBulkForm({ ...bulkForm, daySlots: { ...bulkForm.daySlots, [activeDay]: newSlots } });
+                        }} />
                       </div>
                       <button
                         type="button"
