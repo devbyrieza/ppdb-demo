@@ -273,16 +273,24 @@ export default function UndanganSeleksiTab() {
           </div>
         </div>
 
-        <div className="bg-secondary-50 border-2 border-secondary-200 rounded-3xl p-5 md:p-8 md:p-12 text-center shadow-sm">
-          <div className="w-20 h-20 bg-secondary-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <Info className="w-10 h-10 text-secondary-600" />
+        <div className={`border-2 rounded-3xl p-5 md:p-8 md:p-12 text-center shadow-sm ${data.current_status?.includes('reject') || data.current_status?.includes('incomplete') ? 'border-red-200 bg-red-50' : 'bg-secondary-50 border-secondary-200'}`}>
+          <div className={`w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 ${data.current_status?.includes('reject') || data.current_status?.includes('incomplete') ? 'bg-red-100' : 'bg-secondary-100'}`}>
+            {data.current_status?.includes('reject') || data.current_status?.includes('incomplete') ? (
+              <AlertCircle className="w-10 h-10 text-red-600" />
+            ) : (
+              <Info className="w-10 h-10 text-secondary-600" />
+            )}
           </div>
-          <h2 className="text-xl md:text-2xl font-black text-secondary-900 mb-4 uppercase tracking-tight">
-            Dokumen Sedang Diverifikasi
+          <h2 className={`text-xl md:text-2xl font-black mb-4 uppercase tracking-tight ${data.current_status?.includes('reject') || data.current_status?.includes('incomplete') ? 'text-red-900' : 'text-secondary-900'}`}>
+            {data.current_status === 'docs_rejected' ? 'BERKAS DITOLAK' : 
+             data.current_status === 'docs_incomplete' ? 'BERKAS BELUM LENGKAP' : 
+             data.current_status === 'payment_rejected' ? 'PEMBAYARAN DITOLAK' : 
+             'DOKUMEN SEDANG DIVERIFIKASI'}
           </h2>
-          <p className="text-secondary-800 text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-medium">
-            {data.message ||
-              "Panitia sedang meninjau kelengkapan dokumen pendaftaran Anda. Mohon cek berkala dashboard atau tunggu notifikasi WhatsApp selanjutnya."}
+          <p className={`text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-medium ${data.current_status?.includes('reject') || data.current_status?.includes('incomplete') ? 'text-red-800' : 'text-secondary-800'}`}>
+            {data.current_status === 'docs_rejected' || data.current_status === 'docs_incomplete' || data.current_status === 'payment_rejected'
+              ? 'Terdapat masalah pada dokumen atau pembayaran Anda. Silakan periksa kembali dan perbaiki melalui menu yang sesuai.'
+              : data.message || "Panitia sedang meninjau kelengkapan dokumen pendaftaran Anda. Mohon cek berkala dashboard atau tunggu notifikasi WhatsApp selanjutnya."}
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link
