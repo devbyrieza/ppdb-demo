@@ -110,11 +110,7 @@ export async function recalculateNilaiUjian(pendaftarId: string, overrideStatus?
 
   let ws = master.nilai_wawancara_santri != null ? Number(master.nilai_wawancara_santri) : null;
   
-  // Fallback ke score_wawancara jika nilai_wawancara_santri kosong
-  // (misal data lama, atau diinput via sistem lama yang menyimpan ke score_wawancara)
-  if (ws == null && master.score_wawancara != null) {
-    ws = Number(master.score_wawancara);
-  }
+  // Fallback dihapus untuk mencegah circular dependency antara ws dan score_wawancara
 
   
   if (ws != null && ws <= 10 && ws > 0) ws = normalizeSantriScore(ws);
