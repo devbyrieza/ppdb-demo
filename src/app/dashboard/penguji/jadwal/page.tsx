@@ -507,6 +507,13 @@ export default function JadwalPengujiPage() {
     if (currentSlots.length > 0) {
       newStart = currentSlots[currentSlots.length - 1].end;
     }
+
+    // Validasi Duplikat: Cegah jam yang sama
+    const isDuplicate = currentSlots.some((slot) => slot.start === newStart);
+    if (isDuplicate) {
+      Swal.fire("Gagal Menambahkan", `Jam mulai ${newStart} sudah ada di daftar. Silakan ubah jam terakhir secara manual atau hapus slot yang duplikat.`, "warning");
+      return;
+    }
     setBulkForm({
       ...bulkForm,
       daySlots: {
