@@ -1228,7 +1228,7 @@ export function buildMessageReminderH1Penguji(
 
 Assalamu'alaikum ${title} *${namaPenguji}*,
 
-Mengingatkan jadwal ${agendaText.includes("Wawancara") ? "wawancara" : "menguji"} Ustadz/Ustadzah:
+Mengingatkan jadwal ${agendaText.includes("Wawancara") ? "wawancara" : "menguji"} ${title}:
 
 📝 *Agenda:* ${agendaText}
 👤 *Nama Santri:* *${namaSantri}*

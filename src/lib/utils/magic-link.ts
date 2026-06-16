@@ -92,9 +92,9 @@ export function verifyMagicToken(token: string): {
 export function getPermanentAuthUrl(
   slug: string,
   pendaftarNomor?: string,
+  baseUrlOverride?: string,
 ): string {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_APP_URL || "/daftar";
+  const baseUrl = baseUrlOverride || process.env.NEXT_PUBLIC_APP_URL || "/daftar";
   let url = `${baseUrl}/api/auth/short/${slug}`;
   if (pendaftarNomor) {
     url += `?p=${encodeURIComponent(pendaftarNomor)}`;

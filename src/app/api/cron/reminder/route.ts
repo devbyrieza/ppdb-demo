@@ -27,6 +27,12 @@ export async function GET(request: Request) {
 
     try {
         // Calculate 4-hour window from now
+        const host = request.headers.get("host") || "pesantren-alimam.com";
+        const protocol = request.headers.get("x-forwarded-proto") || "https";
+        const reqBaseUrl = `${protocol}://${host}`;
+        const appUrlEnv = process.env.NEXT_PUBLIC_APP_URL || "";
+        const fullAppUrl = appUrlEnv.startsWith("http") ? appUrlEnv : `${reqBaseUrl}${appUrlEnv}`;
+
         const now = new Date();
         const fourHoursFromNow = new Date(now.getTime() + 4 * 60 * 60 * 1000);
         const fourHoursPlus15Min = new Date(now.getTime() + 4 * 60 * 60 * 1000 + 15 * 60 * 1000); // 15 min buffer
@@ -180,7 +186,7 @@ export async function GET(request: Request) {
                     
                     let shortUrl = "";
                     if (!shortUrl && slug) {
-                        const dynamicAuthUrl = getPermanentAuthUrl(slug, jadwal.pendaftar.nomor_pendaftaran);
+                        const dynamicAuthUrl = getPermanentAuthUrl(slug, jadwal.pendaftar.nomor_pendaftaran, fullAppUrl);
                         shortUrl = await generateShortLink(dynamicAuthUrl);
                     } else if (!shortUrl) {
                         // Fallback to old magic link if no slug/manual tinyurl exists
@@ -195,7 +201,7 @@ export async function GET(request: Request) {
                         hari,
                         tanggalStr,
                         jam,
-                        profile.google_meet_link || "Menyesuaikan",
+                        profile.google_meet_link || "-",
                         type,
                         gender,
                         shortUrl
