@@ -586,11 +586,15 @@ export default function DashboardLayout({
                     onClick={() => setSidebarOpen(true)}
                     className="flex flex-col items-center p-2 group w-16"
                   >
-                    <div className="w-10 h-8 rounded-full flex items-center justify-center mb-1 bg-transparent group-hover:bg-gold-50 transition-colors">
-                      <Menu className="w-5 h-5 text-ink-400 group-hover:text-primary-600 transition-colors" />
+                    <div className="w-10 h-8 rounded-full flex items-center justify-center mb-1 bg-primary-50 transition-colors relative">
+                      <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-3 w-3 bg-gold-500 shadow-sm border border-white"></span>
+                      </span>
+                      <Menu className="w-5 h-5 text-primary-700 transition-colors" />
                     </div>
-                    <span className="text-[10px] font-bold text-ink-600 text-center">
-                      Menu
+                    <span className="text-[10px] font-black text-primary-800 text-center leading-tight">
+                      Semua<br/>Menu
                     </span>
                   </button>
                 </div>
