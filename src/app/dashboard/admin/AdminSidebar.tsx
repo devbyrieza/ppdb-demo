@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
@@ -99,15 +99,40 @@ export default function AdminSidebar({
   adminName,
   userId,
   availableRoles,
-  unverifiedPaymentsCount = 0,
-  unverifiedDocsCount = 0,
-  pendingDataRequestsCount = 0,
+  unverifiedPaymentsCount: initialPaymentsCount = 0,
+  unverifiedDocsCount: initialDocsCount = 0,
+  pendingDataRequestsCount: initialRequestsCount = 0,
 }: AdminSidebarProps) {
   const pathname = usePathname();
 
   // State Management: Mengontrol visibilitas sidebar di berbagai ukuran layar
   const [sidebarOpen, setSidebarOpen] = useState(false); // Khusus Mobile (Drawer)
   const [collapsed, setCollapsed] = useState(false); // Khusus Desktop (Slim Mode)
+
+  // Local state for auto-refreshing badges
+  const [paymentsCount, setPaymentsCount] = useState(initialPaymentsCount);
+  const [docsCount, setDocsCount] = useState(initialDocsCount);
+  const [requestsCount, setRequestsCount] = useState(initialRequestsCount);
+
+  // Polling effect
+  useEffect(() => {
+    if (!userRole || userRole === "pendaftar") return;
+    const fetchCounts = async () => {
+      try {
+        const res = await fetch("/api/admin/sidebar-counts");
+        if (res.ok) {
+          const data = await res.json();
+          setPaymentsCount(data.unverifiedPaymentsCount || 0);
+          setDocsCount(data.unverifiedDocsCount || 0);
+          setRequestsCount(data.pendingDataRequestsCount || 0);
+        }
+      } catch (error) {
+        console.error("Failed to poll sidebar counts:", error);
+      }
+    };
+    const interval = setInterval(fetchCounts, 60000); // 1 minute
+    return () => clearInterval(interval);
+  }, [userRole]);
 
   /**
    * Logic: Mempersiapkan menu berdasarkan role user yang aktif.
@@ -118,11 +143,11 @@ export default function AdminSidebar({
     // Dynamic counts fetched in Server-Side Layout.tsx and passed here
     let badgeCount = 0;
     if (item.name === "Verifikasi Pembayaran") {
-      badgeCount = unverifiedPaymentsCount;
+      badgeCount = paymentsCount;
     } else if (item.name === "Verifikasi Dokumen") {
-      badgeCount = unverifiedDocsCount;
+      badgeCount = docsCount;
     } else if (item.name === "Perubahan Data" || item.name.includes("Perubahan") || item.name.includes("Edit")) {
-      badgeCount = pendingDataRequestsCount;
+      badgeCount = requestsCount;
     }
 
     return {
