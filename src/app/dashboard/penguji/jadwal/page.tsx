@@ -2506,55 +2506,61 @@ export default function JadwalPengujiPage() {
                       className="flex items-center gap-4 bg-white p-4 rounded-3xl border border-stone-200 shadow-sm hover:shadow-md transition-shadow group"
                     >
                       <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="relative">
-                          <input
-                            type="time"
-                            required
-                            className="w-full bg-stone-50 border border-stone-100 rounded-2xl px-4 py-3 text-sm font-black text-primary-950 focus:ring-2 focus:ring-primary-500 outline-none"
-                            value={slot.start}
+                        <div className="relative flex items-center bg-stone-50 border border-stone-100 rounded-2xl px-3 py-2.5 text-sm font-black text-primary-950 focus-within:ring-2 focus-within:ring-primary-500">
+                          <select
+                            className="bg-transparent outline-none appearance-none cursor-pointer w-12 text-center"
+                            value={slot.start.split(":")[0]}
                             onChange={(e) => {
-                              const newStart = e.target.value;
-                              const newSlots = [
-                                ...(bulkForm.daySlots[activeDay] || []),
-                              ];
+                              const newStart = `${e.target.value}:${slot.start.split(":")[1]}`;
+                              const newSlots = [...(bulkForm.daySlots[activeDay] || [])];
                               newSlots[index].start = newStart;
-                              newSlots[index].end = calculateEndTime(
-                                newStart,
-                                bulkForm.title,
-                              );
-
-                              setBulkForm({
-                                ...bulkForm,
-                                daySlots: {
-                                  ...bulkForm.daySlots,
-                                  [activeDay]: newSlots,
-                                },
-                              });
+                              newSlots[index].end = calculateEndTime(newStart, bulkForm.title);
+                              setBulkForm({ ...bulkForm, daySlots: { ...bulkForm.daySlots, [activeDay]: newSlots } });
                             }}
-                          />
-                          <Clock className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-300" />
-                        </div>
-                        <div className="relative">
-                          <input
-                            type="time"
-                            required
-                            className="w-full bg-stone-50 border border-stone-100 rounded-2xl px-4 py-3 text-sm font-black text-primary-950 focus:ring-2 focus:ring-primary-500 outline-none"
-                            value={slot.end}
+                          >
+                            {Array.from({length: 24}, (_, i) => String(i).padStart(2, '0')).map(h => <option key={h} value={h}>{h}</option>)}
+                          </select>
+                          <span className="text-stone-400 font-bold mx-1">:</span>
+                          <select
+                            className="bg-transparent outline-none appearance-none cursor-pointer w-12 text-center"
+                            value={slot.start.split(":")[1]}
                             onChange={(e) => {
-                              const newSlots = [
-                                ...(bulkForm.daySlots[activeDay] || []),
-                              ];
-                              newSlots[index].end = e.target.value;
-                              setBulkForm({
-                                ...bulkForm,
-                                daySlots: {
-                                  ...bulkForm.daySlots,
-                                  [activeDay]: newSlots,
-                                },
-                              });
+                              const newStart = `${slot.start.split(":")[0]}:${e.target.value}`;
+                              const newSlots = [...(bulkForm.daySlots[activeDay] || [])];
+                              newSlots[index].start = newStart;
+                              newSlots[index].end = calculateEndTime(newStart, bulkForm.title);
+                              setBulkForm({ ...bulkForm, daySlots: { ...bulkForm.daySlots, [activeDay]: newSlots } });
                             }}
-                          />
-                          <Clock className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-300" />
+                          >
+                            {Array.from({length: 12}, (_, i) => String(i * 5).padStart(2, '0')).map(m => <option key={m} value={m}>{m}</option>)}
+                          </select>
+                          <Clock className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-300 pointer-events-none" />
+                        </div>
+                        <div className="relative flex items-center bg-stone-50 border border-stone-100 rounded-2xl px-3 py-2.5 text-sm font-black text-primary-950 focus-within:ring-2 focus-within:ring-primary-500">
+                          <select
+                            className="bg-transparent outline-none appearance-none cursor-pointer w-12 text-center"
+                            value={slot.end.split(":")[0]}
+                            onChange={(e) => {
+                              const newSlots = [...(bulkForm.daySlots[activeDay] || [])];
+                              newSlots[index].end = `${e.target.value}:${slot.end.split(":")[1]}`;
+                              setBulkForm({ ...bulkForm, daySlots: { ...bulkForm.daySlots, [activeDay]: newSlots } });
+                            }}
+                          >
+                            {Array.from({length: 24}, (_, i) => String(i).padStart(2, '0')).map(h => <option key={h} value={h}>{h}</option>)}
+                          </select>
+                          <span className="text-stone-400 font-bold mx-1">:</span>
+                          <select
+                            className="bg-transparent outline-none appearance-none cursor-pointer w-12 text-center"
+                            value={slot.end.split(":")[1]}
+                            onChange={(e) => {
+                              const newSlots = [...(bulkForm.daySlots[activeDay] || [])];
+                              newSlots[index].end = `${slot.end.split(":")[0]}:${e.target.value}`;
+                              setBulkForm({ ...bulkForm, daySlots: { ...bulkForm.daySlots, [activeDay]: newSlots } });
+                            }}
+                          >
+                            {Array.from({length: 12}, (_, i) => String(i * 5).padStart(2, '0')).map(m => <option key={m} value={m}>{m}</option>)}
+                          </select>
+                          <Clock className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-300 pointer-events-none" />
                         </div>
                       </div>
                       <button
