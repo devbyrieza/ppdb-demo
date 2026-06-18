@@ -136,7 +136,7 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
-    const { title, start_time, end_time, quota, location, notes } = body;
+    const { title, start_time, end_time, quota, location, notes, creator_id } = body;
 
     // Basic validation
     if (!start_time || !end_time || !quota) {
@@ -146,10 +146,24 @@ export async function POST(request: Request) {
       );
     }
 
+    let finalCreatorId = session.user_id || session.id;
+    let creatorRole = session.role;
+
+    if (creator_id && ["admin_super", "admin"].includes(session.role)) {
+      finalCreatorId = creator_id;
+      const creatorProfile = await prisma.profile.findUnique({
+        where: { id: finalCreatorId },
+        select: { role: true }
+      });
+      if (creatorProfile) {
+        creatorRole = creatorProfile.role;
+      }
+    }
+
     // Determine default title based on role if not provided
     let finalTitle = title;
     if (!finalTitle || finalTitle === "Sesi Ujian") {
-      const role = session.role;
+      const role = creatorRole;
       if (role === "pewawancara_cawalsan") {
         finalTitle = "Seleksi Wawancara Orang Tua";
       } else if (role === "pewawancara_calsan" || role === "penguji_calsan") {
@@ -184,7 +198,7 @@ export async function POST(request: Request) {
         quota: parseInt(quota),
         location,
         notes,
-        created_by: session.user_id || session.id, // Ensure correct ID usage
+        created_by: finalCreatorId, // Ensure correct ID usage
       },
     });
 
