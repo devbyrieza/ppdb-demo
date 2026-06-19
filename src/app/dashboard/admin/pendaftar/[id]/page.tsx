@@ -703,7 +703,21 @@ export default function PendaftarDetailPage() {
     }
   };
 
-  const formatStatus = (status: string) => {
+  const formatStatus = (status: string, dataLengkap?: any) => {
+    const s = status.toLowerCase().trim();
+    if (s === "paid" || s === "verified") {
+      let isFilled = false;
+      if (dataLengkap) {
+        try {
+          const parsed = typeof dataLengkap === "string" ? JSON.parse(dataLengkap) : dataLengkap;
+          if (parsed && Object.keys(parsed).length > 0) isFilled = true;
+        } catch (e) {}
+      }
+      return {
+        label: isFilled ? "Terdaftar (Belum Upload Berkas)" : "Terdaftar (Belum Isi Data)",
+        color: "bg-primary-100 text-primary-800 border border-primary-200",
+      };
+    }
     const statusMap: Record<string, { label: string; color: string }> = {
       draft: { label: "Draft", color: "bg-stone-100 text-stone-700" },
       awaiting_payment: {
@@ -714,8 +728,6 @@ export default function PendaftarDetailPage() {
         label: "Verifikasi Bayar",
         color: "bg-primary-50 text-primary-700 border border-primary-100",
       },
-      paid: { label: "Terdaftar", color: "bg-primary-100 text-primary-800" },
-      verified: { label: "Terdaftar", color: "bg-primary-100 text-primary-800" },
       data_completed: {
         label: "Data Lengkap",
         color: "bg-gold-50 text-gold-800 border border-gold-100",
@@ -729,19 +741,19 @@ export default function PendaftarDetailPage() {
         color: "bg-emerald-50 text-emerald-800 border border-emerald-100",
       },
       scheduled: {
-        label: "Berkas Lengkap",
-        color: "bg-emerald-50 text-emerald-800 border border-emerald-100",
+        label: "Proses Seleksi",
+        color: "bg-purple-50 text-purple-800 border border-purple-100",
       },
       testing: {
-        label: "Sedang Ujian",
-        color: "bg-violet-100 text-violet-700 border border-violet-200",
+        label: "Proses Seleksi",
+        color: "bg-purple-50 text-purple-800 border border-purple-100",
       },
       tested: {
-        label: "Sedang Seleksi",
+        label: "Proses Seleksi",
         color: "bg-primary-600 text-white shadow-sm",
       },
       exam_completed: {
-        label: "Sedang Seleksi",
+        label: "Proses Seleksi",
         color: "bg-primary-600 text-white shadow-sm",
       },
       announced: {
@@ -759,12 +771,16 @@ export default function PendaftarDetailPage() {
         color: "bg-stone-600 text-white",
       },
       enrolled: {
-        label: "Sudah Daftar Ulang",
+        label: "Proses Daftar Ulang",
         color: "bg-emerald-100 text-emerald-800",
+      },
+      enrolled_full: {
+        label: "Lunas Daftar Ulang",
+        color: "bg-primary-100 text-primary-800 border border-primary-200",
       },
     };
     return (
-      statusMap[status] || {
+      statusMap[s] || {
         label: status,
         color: "bg-stone-100 text-stone-700",
       }
@@ -825,7 +841,7 @@ export default function PendaftarDetailPage() {
     );
   }
 
-  const statusInfo = formatStatus(pendaftar.status_proses);
+  const statusInfo = formatStatus(pendaftar.status_proses, pendaftar.data_lengkap);
 
   // Calculate document and payment progress
   const totalDocs = pendaftar.dokumen.length;

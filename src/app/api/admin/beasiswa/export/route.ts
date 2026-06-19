@@ -125,28 +125,36 @@ export async function GET(req: NextRequest) {
       };
     };
 
-    const translateStatus = (status: string) => {
+    const translateStatus = (status: string, dataLengkap?: any) => {
       if (!status) return "-";
       const s = status.toLowerCase().trim();
+      if (s === "paid" || s === "verified") {
+        let isFilled = false;
+        if (dataLengkap) {
+          try {
+            const parsed = typeof dataLengkap === "string" ? JSON.parse(dataLengkap) : dataLengkap;
+            if (parsed && Object.keys(parsed).length > 0) isFilled = true;
+          } catch (e) {}
+        }
+        return isFilled ? "Terdaftar (Belum Upload Berkas)" : "Terdaftar (Belum Isi Data)";
+      }
       const statusMap: Record<string, string> = {
         draft: "Draft",
         awaiting_payment: "Draft (Menunggu Pembayaran)",
         payment_verification: "Menunggu Verifikasi Bayar",
-        paid: "Terdaftar (Menunggu Berkas)",
-        verified: "Terdaftar (Menunggu Berkas)",
-        data_completed: "Data Lengkap (Menunggu Dokumen)",
-        docs_uploaded: "Dokumen Diunggah (Menunggu Verifikasi)",
-        docs_verified: "Berkas Terverifikasi",
-        scheduled: "Jadwal Ujian Ditentukan",
-        testing: "Sedang Ujian",
-        tested: "Selesai Ujian",
-        exam_completed: "Selesai Seleksi",
+        data_completed: "Data Lengkap",
+        docs_uploaded: "Data Lengkap",
+        docs_verified: "Berkas Lengkap",
+        scheduled: "Proses Seleksi",
+        testing: "Proses Seleksi",
+        tested: "Proses Seleksi",
+        exam_completed: "Proses Seleksi",
         announced: "Cadangan",
         cadangan: "Cadangan",
         accepted: "Diterima",
         rejected: "Ditolak",
         mengundurkan_diri: "Mengundurkan Diri",
-        enrolled: "Sudah Daftar Ulang",
+        enrolled: "Proses Daftar Ulang",
         enrolled_full: "Lunas Daftar Ulang",
       };
       return statusMap[s] || status.toUpperCase();
@@ -276,7 +284,7 @@ export async function GET(req: NextRequest) {
           sisaUP,
           sisaSPP,
           totalSisa,
-          translateStatus(info.status_kelulusan)
+          translateStatus(info.status_kelulusan, p?.data_lengkap)
         ];
 
         const r = sheet.addRow(rowValues);

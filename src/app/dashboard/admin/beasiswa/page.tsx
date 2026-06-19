@@ -37,6 +37,16 @@ interface KeringananJson {
 
 const fmt = (n: number) => (n > 0 ? `Rp ${n.toLocaleString("id-ID")}` : "Rp 0");
 
+const toTitleCase = (str: string) => {
+  if (!str) return "-";
+  return str
+    .toLowerCase()
+    .trim()
+    .split(/\s+/)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
+
 function getJenisBantuan(item: any): "BEASISWA" | "KERINGANAN" | null {
   // Check from data_lengkap.keringanan_daftar_ulang (new system)
   const dl = item.pendaftar?.data_lengkap;
@@ -280,8 +290,8 @@ export default function BantuanBiayaPage() {
                   <th className="px-6 py-4 font-bold">Pendaftar</th>
                   <th className="px-6 py-4 font-bold">Jenis Bantuan</th>
                   <th className="px-6 py-4 font-bold">Cakupan</th>
-                  <th className="px-6 py-4 font-bold">Potongan UP</th>
-                  <th className="px-6 py-4 font-bold">Potongan SPP</th>
+                  <th className="px-6 py-4 font-bold">Uang Pangkal</th>
+                  <th className="px-6 py-4 font-bold">SPP Bulan Pertama</th>
                   <th className="px-6 py-4 font-bold">Status</th>
                   <th className="px-6 py-4 font-bold">Aksi</th>
                 </tr>
@@ -299,7 +309,7 @@ export default function BantuanBiayaPage() {
                       {/* Pendaftar */}
                       <td className="px-6 py-4">
                         <div className="font-bold text-ink-900">
-                          {item.pendaftar?.nama_lengkap || "Tanpa Nama"}
+                          {item.pendaftar?.nama_lengkap ? toTitleCase(item.pendaftar.nama_lengkap) : "Tanpa Nama"}
                         </div>
                         <div className="text-stone-500 text-xs">
                           {item.pendaftar?.nomor_pendaftaran} · {item.pendaftar?.jenjang}

@@ -155,13 +155,13 @@ export function formatStatusDisplay(status: StatusProses) {
     data_completed: { label: "Tahap 2: Informasi Data", color: "bg-primary-100 text-primary-700" },
     docs_uploaded: { label: "Review Admin", color: "bg-indigo-100 text-indigo-700" },
     docs_verified: { label: "Berkas Lengkap", color: "bg-green-100 text-green-700" },
-    selection: { label: "Sedang Seleksi", color: "bg-purple-100 text-purple-700" },
-    scheduled: { label: "Sedang Seleksi", color: "bg-purple-100 text-purple-700" },
-    tested: { label: "Sedang Seleksi", color: "bg-violet-100 text-violet-700" },
+    selection: { label: "Proses Seleksi", color: "bg-purple-100 text-purple-700" },
+    scheduled: { label: "Proses Seleksi", color: "bg-purple-100 text-purple-700" },
+    tested: { label: "Proses Seleksi", color: "bg-violet-100 text-violet-700" },
     announced: { label: "Hasil Pengumuman", color: "bg-cyan-100 text-cyan-700" },
     accepted: { label: "Diterima", color: "bg-green-100 text-green-700" },
-    enrolled: { label: "Sedang Daftar Ulang", color: "bg-emerald-100 text-emerald-700" },
-    enrolled_full: { label: "Selesai", color: "bg-primary-100 text-primary-700" },
+    enrolled: { label: "Proses Daftar Ulang", color: "bg-emerald-100 text-emerald-700" },
+    enrolled_full: { label: "Lunas Daftar Ulang", color: "bg-primary-100 text-primary-700" },
     pindah_keluar: { label: "Pindah Keluar", color: "bg-slate-100 text-slate-600" },
   };
   return statusMap[status] || { label: status, color: "bg-stone-100 text-stone-700" };

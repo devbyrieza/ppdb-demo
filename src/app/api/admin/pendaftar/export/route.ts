@@ -14,28 +14,36 @@ const toTitleCase = (str: string) => {
     .join(" ");
 };
 
-const translateStatus = (status: string) => {
+const translateStatus = (status: string, dataLengkap?: any) => {
   if (!status) return "-";
   const s = status.toLowerCase().trim();
+  if (s === "paid" || s === "verified") {
+    let isFilled = false;
+    if (dataLengkap) {
+      try {
+        const parsed = typeof dataLengkap === "string" ? JSON.parse(dataLengkap) : dataLengkap;
+        if (parsed && Object.keys(parsed).length > 0) isFilled = true;
+      } catch (e) {}
+    }
+    return isFilled ? "Terdaftar (Belum Upload Berkas)" : "Terdaftar (Belum Isi Data)";
+  }
   const statusMap: Record<string, string> = {
     draft: "Draft",
     awaiting_payment: "Draft (Menunggu Pembayaran)",
     payment_verification: "Menunggu Verifikasi Bayar",
-    paid: "Terdaftar (Menunggu Berkas)",
-    verified: "Terdaftar (Menunggu Berkas)",
-    data_completed: "Data Lengkap (Menunggu Dokumen)",
-    docs_uploaded: "Dokumen Diunggah (Menunggu Verifikasi)",
-    docs_verified: "Berkas Terverifikasi",
-    scheduled: "Jadwal Ujian Ditentukan",
-    testing: "Sedang Ujian",
-    tested: "Selesai Ujian",
-    exam_completed: "Selesai Seleksi",
+    data_completed: "Data Lengkap",
+    docs_uploaded: "Data Lengkap",
+    docs_verified: "Berkas Lengkap",
+    scheduled: "Proses Seleksi",
+    testing: "Proses Seleksi",
+    tested: "Proses Seleksi",
+    exam_completed: "Proses Seleksi",
     announced: "Cadangan",
     cadangan: "Cadangan",
     accepted: "Diterima",
     rejected: "Ditolak",
     mengundurkan_diri: "Mengundurkan Diri",
-    enrolled: "Sudah Daftar Ulang",
+    enrolled: "Proses Daftar Ulang",
     enrolled_full: "Lunas Daftar Ulang",
   };
   return statusMap[s] || status.toUpperCase();
@@ -131,6 +139,7 @@ export async function GET(req: NextRequest) {
         no_hp: true,
         email: true,
         status_pendaftaran: true,
+        data_lengkap: true,
         tipe_pendaftaran: true,
         created_at: true,
         tahun_ajaran: {
@@ -187,7 +196,7 @@ export async function GET(req: NextRequest) {
       "Kode Pos": item.kode_pos || "-",
       "No HP": item.no_hp ? `'${item.no_hp}` : "-",
       Email: item.email || "-",
-      Status: translateStatus(item.status_pendaftaran),
+      Status: translateStatus(item.status_pendaftaran, item.data_lengkap),
       "Tahun Ajaran": item.tahun_ajaran?.nama || "-",
       "Tanggal Daftar": item.created_at
         ? new Date(item.created_at).toLocaleDateString("id-ID")

@@ -220,13 +220,13 @@ export default function AdminDashboardPage() {
           sudah_bayar: "Bayar Pendaftaran",
           sudah_isi_data: "Data Lengkap",
           docs_verified: "Berkas Lengkap",
-          selection: "Sedang Seleksi",
+          selection: "Proses Seleksi",
           accepted: "Diterima",
           announced: "Cadangan",
           rejected: "Ditolak",
-          enrolled: "Sedang Daftar Ulang",
-          enrolled_full: "Selesai",
-          sudah_daftar_ulang: "Daftar Ulang"
+          enrolled: "Proses Daftar Ulang",
+          enrolled_full: "Lunas Daftar Ulang",
+          sudah_daftar_ulang: "Proses Daftar Ulang"
         };
         return map[st] || st;
       };
@@ -449,11 +449,11 @@ export default function AdminDashboardPage() {
                 <p className="text-2xl sm:text-2xl md:text-4xl font-black text-emerald-400 italic">{stats.diterima}</p>
              </div>
              <div className="bg-primary-600 p-4 sm:p-6 lg:p-5 md:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-white/10 flex flex-col items-center">
-                <p className="text-[9px] sm:text-[10px] font-black text-white/60 uppercase tracking-widest mb-2 sm:mb-4 text-center">Sedang Daftar Ulang</p>
+                <p className="text-[9px] sm:text-[10px] font-black text-white/60 uppercase tracking-widest mb-2 sm:mb-4 text-center">Proses Daftar Ulang</p>
                 <p className="text-2xl sm:text-2xl md:text-4xl font-black text-secondary-300 italic">{stats.daftar_ulang_sedang}</p>
              </div>
              <div className="bg-primary-600 p-4 sm:p-6 lg:p-5 md:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-white/10 flex flex-col items-center">
-                <p className="text-[9px] sm:text-[10px] font-black text-white/60 uppercase tracking-widest mb-2 sm:mb-4 text-center">Selesai</p>
+                <p className="text-[9px] sm:text-[10px] font-black text-white/60 uppercase tracking-widest mb-2 sm:mb-4 text-center">Lunas Daftar Ulang</p>
                 <p className="text-2xl sm:text-2xl md:text-4xl font-black text-emerald-400 italic">{stats.daftar_ulang_selesai}</p>
              </div>
           </div>
@@ -467,12 +467,12 @@ export default function AdminDashboardPage() {
           <StatWidget label="Bayar Pendaftaran" value={stats.sudah_bayar} icon={Wallet} color="emerald" breakdown={getBreakdown("bayar")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("sudah_bayar", "Bayar Pendaftaran", type)} isDownloading={downloadingKey?.startsWith("sudah_bayar_") ? downloadingKey.split("_")[2] : null} />
           <StatWidget label="Data Lengkap" value={stats.sudah_isi_data} icon={FileCheck} color="purple" breakdown={getBreakdown("data")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("sudah_isi_data", "Data Lengkap", type)} isDownloading={downloadingKey?.startsWith("sudah_isi_data_") ? downloadingKey.split("_")[3] : null} />
           <StatWidget label="Berkas Lengkap" value={stats.berkas_lengkap} icon={ClipboardCheck} color="purple" breakdown={getBreakdown("berkas")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("dokumen_terverifikasi", "Berkas Lengkap", type)} isDownloading={downloadingKey?.startsWith("dokumen_terverifikasi_") ? downloadingKey.split("_")[2] : null} />
-          <StatWidget label="Sedang Seleksi" value={stats.sedang_seleksi} icon={Loader2} color="blue" breakdown={getBreakdown("seleksi")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("selection", "Sedang Seleksi", type)} isDownloading={downloadingKey?.startsWith("selection_") ? downloadingKey.split("_")[1] : null} />
+          <StatWidget label="Proses Seleksi" value={stats.sedang_seleksi} icon={Loader2} color="blue" breakdown={getBreakdown("seleksi")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("selection", "Proses Seleksi", type)} isDownloading={downloadingKey?.startsWith("selection_") ? downloadingKey.split("_")[1] : null} />
           <StatWidget label="Diterima" value={stats.diterima} icon={CheckCircle2} color="emerald" breakdown={getBreakdown("lulus")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("diterima", "Diterima", type)} isDownloading={downloadingKey?.startsWith("diterima_") ? downloadingKey.split("_")[1] : null} />
           <StatWidget label="Cadangan" value={stats.cadangan} icon={Clock} color="slate" breakdown={getBreakdown("cadangan")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("announced", "Cadangan", type)} isDownloading={downloadingKey?.startsWith("announced_") ? downloadingKey.split("_")[1] : null} onPromote={handlePromoteAllCadangan} isPromoting={isPromotingCadangan} />
           <StatWidget label="Ditolak" value={stats.ditolak} icon={Activity} color="rose" breakdown={getBreakdown("ditolak")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("pembayaran_ditolak", "Ditolak", type)} isDownloading={downloadingKey?.startsWith("pembayaran_ditolak_") ? downloadingKey.split("_")[2] : null} />
-          <StatWidget label="Sedang Daftar Ulang" value={stats.daftar_ulang_sedang} icon={Wallet} color="amber" breakdown={getBreakdown("ulang_sedang")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("enrolled", "Sedang Daftar Ulang", type)} isDownloading={downloadingKey?.startsWith("enrolled_") ? downloadingKey.split("_")[1] : null} />
-          <StatWidget label="Selesai" value={stats.daftar_ulang_selesai} icon={CheckCircle2} color="emerald" breakdown={getBreakdown("ulang_selesai")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("enrolled_full", "Selesai Daftar Ulang", type)} isDownloading={downloadingKey?.startsWith("enrolled_full_") ? downloadingKey.split("_")[1] : null} />
+          <StatWidget label="Proses Daftar Ulang" value={stats.daftar_ulang_sedang} icon={Wallet} color="amber" breakdown={getBreakdown("ulang_sedang")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("enrolled", "Proses Daftar Ulang", type)} isDownloading={downloadingKey?.startsWith("enrolled_") ? downloadingKey.split("_")[1] : null} />
+          <StatWidget label="Lunas Daftar Ulang" value={stats.daftar_ulang_selesai} icon={CheckCircle2} color="emerald" breakdown={getBreakdown("ulang_selesai")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("enrolled_full", "Lunas Daftar Ulang", type)} isDownloading={downloadingKey?.startsWith("enrolled_full_") ? downloadingKey.split("_")[1] : null} />
         </>)}
 
         {isAdminBerkas && (

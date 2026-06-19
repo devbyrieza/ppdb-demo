@@ -96,7 +96,7 @@ export default function ProfilTab() {
         label: "Sedang Ujian",
         color: "bg-violet-100 text-violet-800 border border-violet-200",
       },
-      tested: { label: "Sedang Seleksi", color: "bg-violet-100 text-violet-700" },
+      tested: { label: "Proses Seleksi", color: "bg-violet-100 text-violet-700" },
       announced: { label: "Diumumkan", color: "bg-cyan-100 text-cyan-700" },
       accepted: { label: "Diterima", color: "bg-green-100 text-green-700" },
       rejected: { label: "Ditolak", color: "bg-red-100 text-red-700" },

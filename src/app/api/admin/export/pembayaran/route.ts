@@ -3,28 +3,46 @@ import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import ExcelJS from "exceljs";
 
-const translateStatus = (status: string) => {
+const toTitleCase = (str: string) => {
+  if (!str) return "-";
+  return str
+    .toLowerCase()
+    .trim()
+    .split(/\s+/)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
+
+const translateStatus = (status: string, dataLengkap?: any) => {
   if (!status) return "-";
   const s = status.toLowerCase().trim();
+  if (s === "paid" || s === "verified") {
+    let isFilled = false;
+    if (dataLengkap) {
+      try {
+        const parsed = typeof dataLengkap === "string" ? JSON.parse(dataLengkap) : dataLengkap;
+        if (parsed && Object.keys(parsed).length > 0) isFilled = true;
+      } catch (e) {}
+    }
+    return isFilled ? "Terdaftar (Belum Upload Berkas)" : "Terdaftar (Belum Isi Data)";
+  }
   const statusMap: Record<string, string> = {
     draft: "Draft",
     awaiting_payment: "Draft (Menunggu Pembayaran)",
     payment_verification: "Menunggu Verifikasi Bayar",
-    paid: "Terdaftar (Menunggu Berkas)",
-    verified: "Terdaftar (Menunggu Berkas)",
-    data_completed: "Data Lengkap (Menunggu Dokumen)",
-    docs_uploaded: "Dokumen Diunggah (Menunggu Verifikasi)",
-    docs_verified: "Berkas Terverifikasi",
-    scheduled: "Jadwal Ujian Ditentukan",
-    testing: "Sedang Ujian",
-    tested: "Selesai Ujian",
-    exam_completed: "Selesai Seleksi",
+    data_completed: "Data Lengkap",
+    docs_uploaded: "Data Lengkap",
+    docs_verified: "Berkas Lengkap",
+    scheduled: "Proses Seleksi",
+    testing: "Proses Seleksi",
+    tested: "Proses Seleksi",
+    exam_completed: "Proses Seleksi",
     announced: "Cadangan",
     cadangan: "Cadangan",
     accepted: "Diterima",
     rejected: "Ditolak",
     mengundurkan_diri: "Mengundurkan Diri",
-    enrolled: "Sudah Daftar Ulang",
+    enrolled: "Proses Daftar Ulang",
     enrolled_full: "Lunas Daftar Ulang",
   };
   return statusMap[s] || status.toUpperCase();
@@ -89,6 +107,7 @@ export async function GET(request: NextRequest) {
         provinsi: true,
         kabupaten: true,
         status_pendaftaran: true,
+        data_lengkap: true,
         created_at: true,
         pembayaran: {
           select: {
@@ -111,7 +130,7 @@ export async function GET(request: NextRequest) {
       const pembayaran = p.pembayaran?.[0];
       return {
         nomor_pendaftaran: p.nomor_pendaftaran || "-",
-        nama_lengkap: p.nama_lengkap || "-",
+        nama_lengkap: p.nama_lengkap ? toTitleCase(p.nama_lengkap) : "-",
         nik: p.nik || "-",
         jenis_kelamin: ["L", "Laki-laki"].includes(p.jenis_kelamin || "") ? "Laki-laki" : "Perempuan",
         jenjang: p.jenjang || "-",
@@ -119,7 +138,7 @@ export async function GET(request: NextRequest) {
         email: p.email || "-",
         provinsi: p.provinsi || "-",
         kabupaten: p.kabupaten || "-",
-        status_pendaftaran: translateStatus(p.status_pendaftaran),
+        status_pendaftaran: translateStatus(p.status_pendaftaran, p.data_lengkap),
         tanggal_daftar: new Date(p.created_at).toLocaleDateString("id-ID"),
         jumlah_pembayaran: pembayaran?.jumlah ? Number(pembayaran.jumlah) : 0,
         metode_pembayaran: pembayaran?.metode_pembayaran || "-",

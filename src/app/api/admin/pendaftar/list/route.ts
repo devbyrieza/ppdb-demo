@@ -173,6 +173,7 @@ export async function GET(request: NextRequest) {
         no_hp: true,
         email: true,
         status_pendaftaran: true,
+        data_lengkap: true,
         created_at: true,
         tahun_ajaran: {
           select: {

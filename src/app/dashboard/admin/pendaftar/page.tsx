@@ -83,6 +83,7 @@ interface Pendaftar {
   };
   pembayaran?: Array<{ id: string; status_pembayaran: string }>;
   tipe_pendaftaran?: string;
+  data_lengkap?: any;
 }
 
 interface PaginationInfo {
@@ -1032,19 +1033,29 @@ function AdminPendaftarContent() {
           "Status"
         ];
         
-        const translateStatus = (status: string) => {
+        const translateStatus = (status: string, dataLengkap?: any) => {
           if (!status) return "-";
-          const s = status.toLowerCase();
+          const s = status.toLowerCase().trim();
+          if (s === "paid" || s === "verified") {
+            let isFilled = false;
+            if (dataLengkap) {
+              try {
+                const parsed = typeof dataLengkap === "string" ? JSON.parse(dataLengkap) : dataLengkap;
+                if (parsed && Object.keys(parsed).length > 0) isFilled = true;
+              } catch (e) {}
+            }
+            return isFilled ? "Terdaftar (Belum Upload Berkas)" : "Terdaftar (Belum Isi Data)";
+          }
           if (s.includes("draft") || s === "draf") return "Draf";
-          if (s.includes("bayar") || s.includes("waiting_payment") || s.includes("payment_verification")) return "Bayar Pendaftaran";
-          if (s.includes("data_completed") || s.includes("data") || s.includes("sudah_isi_data")) return "Data Lengkap";
-          if (s.includes("docs_verified") || s.includes("berkas") || s.includes("verified")) return "Berkas Lengkap";
-          if (s.includes("selection") || s.includes("scheduled") || s.includes("tes")) return "Sedang Seleksi";
+          if (s.includes("bayar") || s.includes("waiting_payment") || s.includes("payment_verification")) return "Menunggu Verifikasi Bayar";
+          if (s.includes("data_completed") || s.includes("data") || s.includes("sudah_isi_data") || s.includes("docs_uploaded")) return "Data Lengkap";
+          if (s.includes("docs_verified") || s.includes("berkas")) return "Berkas Lengkap";
+          if (s.includes("selection") || s.includes("scheduled") || s.includes("tes") || s.includes("testing") || s.includes("tested") || s.includes("exam")) return "Proses Seleksi";
           if (s.includes("accepted") || s.includes("diterima")) return "Diterima";
           if (s.includes("announced") || s.includes("cadangan")) return "Cadangan";
           if (s.includes("rejected") || s.includes("ditolak")) return "Ditolak";
-          if (s.includes("enrolled_full") || s.includes("selesai")) return "Selesai";
-          if (s.includes("enrolled") || s.includes("daftar ulang") || s.includes("ulang")) return "Sedang Daftar Ulang";
+          if (s.includes("enrolled_full") || s.includes("selesai")) return "Lunas Daftar Ulang";
+          if (s.includes("enrolled") || s.includes("daftar ulang") || s.includes("ulang")) return "Proses Daftar Ulang";
           return status;
         };
 
@@ -1056,7 +1067,7 @@ function AdminPendaftarContent() {
           item["Asal Sekolah"] || "-",
           String(item["No HP"] || item["No. HP"] || item["Telepon"] || "-").replace(/^'/, ""),
           item["Email"] || "-",
-          translateStatus(item["Status"] || item["Status Pendaftaran"] || "-")
+          translateStatus(item["Status"] || item["Status Pendaftaran"] || item.status_pendaftaran || "-", item.data_lengkap)
         ]);
         
         exportToPDF(
@@ -1087,88 +1098,105 @@ function AdminPendaftarContent() {
     );
   };
 
-  const formatStatus = (status: string) => {
-    const statusMap: Record<string, { label: string; color: string }> = {
-      draft: { label: "Draft", color: "bg-stone-100 text-stone-700" },
-      awaiting_payment: {
-        label: "Draft",
-        color: "bg-stone-100 text-stone-700",
-      },
-      payment_verification: {
-        label: "Verifikasi Bayar",
-        color: "bg-primary-50 text-primary-700 border border-primary-100",
-      },
-      paid: { label: "Terdaftar", color: "bg-primary-100 text-primary-800" },
-      verified: { label: "Terdaftar", color: "bg-primary-100 text-primary-800" },
-      data_completed: {
-        label: "Data Lengkap",
-        color: "bg-gold-50 text-gold-800 border border-gold-100",
-      },
-      docs_uploaded: {
-        label: "Data Lengkap",
-        color: "bg-gold-50 text-gold-800 border border-gold-100",
-      },
-      docs_verified: {
-        label: "Berkas Lengkap",
-        color: "bg-emerald-50 text-emerald-800 border border-emerald-100",
-      },
-      selection: {
-        label: "Sedang Seleksi",
-        color: "bg-purple-50 text-purple-800 border border-purple-100",
-      },
-      scheduled: {
-        label: "Sedang Seleksi",
-        color: "bg-purple-50 text-purple-800 border border-purple-100",
-      },
-      testing: {
-        label: "Sedang Seleksi",
-        color: "bg-purple-50 text-purple-800 border border-purple-100",
-      },
-      tested: {
-        label: "Sedang Seleksi",
-        color: "bg-purple-100 text-purple-800 border border-purple-200 shadow-sm",
-      },
-      exam_completed: {
-        label: "Sedang Seleksi",
-        color: "bg-purple-100 text-purple-800 border border-purple-200 shadow-sm",
-      },
-      announced: {
-        label: "Cadangan",
-        color: "bg-gold-100 text-gold-800 border border-gold-200",
-      },
-      cadangan: {
-        label: "Cadangan",
-        color: "bg-gold-100 text-gold-800 border border-gold-200",
-      },
-      accepted: { label: "Diterima", color: "bg-emerald-600 text-white" },
-      rejected: { label: "Ditolak", color: "bg-rose-600 text-white" },
-      enrolled: {
-        label: "Sedang Daftar Ulang",
-        color: "bg-emerald-100 text-emerald-800",
-      },
-      enrolled_full: {
-        label: "Selesai",
-        color: "bg-primary-100 text-primary-800 border border-primary-200",
-      },
-      pindah_keluar: {
-        label: "Pindah Keluar",
-        color: "bg-slate-100 text-slate-600 border border-slate-200",
-      },
-      mengundurkan_diri: {
-        label: "Mengundurkan Diri",
-        color: "bg-stone-100 text-stone-500 border border-stone-200 line-through",
-      },
-    };
+  const formatStatus = (status: string, dataLengkap?: any) => {
+    const s = status.toLowerCase().trim();
+    let label = status;
+    let color = "bg-stone-100 text-stone-700";
 
-    const statusInfo = statusMap[status] || {
-      label: status,
-      color: "bg-stone-100 text-stone-700",
-    };
+    if (s === "paid" || s === "verified") {
+      let isFilled = false;
+      if (dataLengkap) {
+        try {
+          const parsed = typeof dataLengkap === "string" ? JSON.parse(dataLengkap) : dataLengkap;
+          if (parsed && Object.keys(parsed).length > 0) isFilled = true;
+        } catch (e) {}
+      }
+      label = isFilled ? "Terdaftar (Belum Upload Berkas)" : "Terdaftar (Belum Isi Data)";
+      color = "bg-primary-100 text-primary-800 border border-primary-200";
+    } else {
+      const statusMap: Record<string, { label: string; color: string }> = {
+        draft: { label: "Draft", color: "bg-stone-100 text-stone-700 border border-stone-200" },
+        awaiting_payment: {
+          label: "Draft",
+          color: "bg-stone-100 text-stone-700 border border-stone-200",
+        },
+        payment_verification: {
+          label: "Verifikasi Bayar",
+          color: "bg-primary-50 text-primary-700 border border-primary-100",
+        },
+        data_completed: {
+          label: "Data Lengkap",
+          color: "bg-gold-50 text-gold-800 border border-gold-100",
+        },
+        docs_uploaded: {
+          label: "Data Lengkap",
+          color: "bg-gold-50 text-gold-800 border border-gold-100",
+        },
+        docs_verified: {
+          label: "Berkas Lengkap",
+          color: "bg-emerald-50 text-emerald-800 border border-emerald-100",
+        },
+        selection: {
+          label: "Proses Seleksi",
+          color: "bg-purple-50 text-purple-800 border border-purple-100",
+        },
+        scheduled: {
+          label: "Proses Seleksi",
+          color: "bg-purple-50 text-purple-800 border border-purple-100",
+        },
+        testing: {
+          label: "Proses Seleksi",
+          color: "bg-purple-50 text-purple-800 border border-purple-100",
+        },
+        tested: {
+          label: "Proses Seleksi",
+          color: "bg-purple-100 text-purple-800 border border-purple-200 shadow-sm",
+        },
+        exam_completed: {
+          label: "Proses Seleksi",
+          color: "bg-purple-100 text-purple-800 border border-purple-200 shadow-sm",
+        },
+        announced: {
+          label: "Cadangan",
+          color: "bg-gold-100 text-gold-800 border border-gold-200",
+        },
+        cadangan: {
+          label: "Cadangan",
+          color: "bg-gold-100 text-gold-800 border border-gold-200",
+        },
+        accepted: { label: "Diterima", color: "bg-emerald-600 text-white" },
+        rejected: { label: "Ditolak", color: "bg-rose-600 text-white" },
+        enrolled: {
+          label: "Proses Daftar Ulang",
+          color: "bg-emerald-100 text-emerald-800",
+        },
+        enrolled_full: {
+          label: "Lunas Daftar Ulang",
+          color: "bg-primary-100 text-primary-800 border border-primary-200",
+        },
+        pindah_keluar: {
+          label: "Pindah Keluar",
+          color: "bg-slate-100 text-slate-600 border border-slate-200",
+        },
+        mengundurkan_diri: {
+          label: "Mengundurkan Diri",
+          color: "bg-stone-100 text-stone-500 border border-stone-200 line-through",
+        },
+      };
+
+      const statusInfo = statusMap[s] || {
+        label: status,
+        color: "bg-stone-100 text-stone-700",
+      };
+      label = statusInfo.label;
+      color = statusInfo.color;
+    }
+
     return (
       <span
-        className={`px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap ${statusInfo.color}`}
+        className={`px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap ${color}`}
       >
-        {statusInfo.label}
+        {label}
       </span>
     );
   };
@@ -1841,7 +1869,7 @@ function AdminPendaftarContent() {
                         {item.no_hp && <> &bull; {item.no_hp}</>}
                       </p>
                       <div className="flex flex-wrap items-center gap-2 mt-2">
-                        {formatStatus(item.status_pendaftaran)}
+                        {formatStatus(item.status_pendaftaran, item.data_lengkap)}
                         <span className="text-[10px] text-stone-500">
                           {formatDate(item.created_at)}
                         </span>
@@ -2063,7 +2091,7 @@ function AdminPendaftarContent() {
                         </span>
                       </td>
                       <td className="px-4 py-3">
-                        {formatStatus(item.status_pendaftaran)}
+                        {formatStatus(item.status_pendaftaran, item.data_lengkap)}
                       </td>
                       
                       <td className="px-4 py-3 whitespace-nowrap">

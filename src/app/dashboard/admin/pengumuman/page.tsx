@@ -142,7 +142,7 @@ export default function PengumumanPage() {
         </div>
         <div className="bg-primary-50 p-6 rounded-xl shadow-sm border border-primary-100">
           <p className="text-primary-600 text-sm font-medium">
-            Sedang Seleksi (Belum Selesai)
+            Proses Seleksi (Belum Selesai)
           </p>
           <h3 className="text-2xl font-bold text-primary-700">{stats.ready}</h3>
         </div>
@@ -179,7 +179,7 @@ export default function PengumumanPage() {
               value={filter.status}
               onChange={(e) => setFilter({ ...filter, status: e.target.value })}
             >
-              <option value="tested">Sedang Seleksi (sudah ujian)</option>
+              <option value="tested">Proses Seleksi (sudah ujian)</option>
               <option value="accepted">Sudah Lulus/Diumumkan</option>
               <option value="scheduled">Terjadwal Ujian</option>
             </select>
