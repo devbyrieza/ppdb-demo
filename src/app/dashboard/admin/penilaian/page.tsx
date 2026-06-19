@@ -56,6 +56,9 @@ export default function ExaminerDashboard() {
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isAdminSuper, setIsAdminSuper] = useState(false);
+  const [usersList, setUsersList] = useState<any[]>([]);
+  const [selectedExaminerId, setSelectedExaminerId] = useState("");
+  const [currentUserId, setCurrentUserId] = useState("");
 
   // Form State for Modal
   const [inputType, setInputType] = useState<
@@ -106,12 +109,29 @@ export default function ExaminerDashboard() {
       const res = await fetch("/api/auth/session");
       if (res.ok) {
         const data = await res.json();
-        if (data?.session?.role === "admin_super") {
-          setIsAdminSuper(true);
+        if (data?.session) {
+          setCurrentUserId(data.session.id || "");
+          if (data.session.role === "admin_super") {
+            setIsAdminSuper(true);
+            fetchUsers();
+          }
         }
       }
     } catch (e) {
       console.error("Error checking session:", e);
+    }
+  };
+
+  const fetchUsers = async () => {
+    try {
+      const res = await fetch("/api/admin/users");
+      if (res.ok) {
+        const json = await res.json();
+        const staff = (json.data || []).filter((u: any) => u.role !== "pendaftar");
+        setUsersList(staff);
+      }
+    } catch (e) {
+      console.error("Error fetching users:", e);
     }
   };
 
@@ -171,10 +191,16 @@ export default function ExaminerDashboard() {
       q10: "",
     });
     setCatatan("");
+    setSelectedExaminerId("");
   };
 
   const handleSubmitScore = async () => {
     if (!selectedStudent) return;
+
+    if (isAdminSuper && !selectedExaminerId) {
+      Swal.fire("Peringatan", "Silakan pilih Penguji/Pewawancara terlebih dahulu", "warning");
+      return;
+    }
 
     setIsSubmitting(true);
     try {
@@ -211,7 +237,7 @@ export default function ExaminerDashboard() {
         type: inputType,
         score: finalScore,
         details: { catatan },
-        examiner_id: "mock-examiner-id",
+        examiner_id: isAdminSuper ? selectedExaminerId : (currentUserId || "mock-examiner-id"),
       };
 
       const res = await fetch("/api/penilaian/submit", {
@@ -1497,6 +1523,26 @@ export default function ExaminerDashboard() {
                           </select>
                         </div>
                       ))}
+                    </div>
+                  )}
+
+                  {isAdminSuper && (
+                    <div className="mb-4">
+                      <label className="block text-xs font-black text-ink-400 uppercase tracking-wider mb-2">
+                        Pilih Penguji / Pewawancara
+                      </label>
+                      <select
+                        value={selectedExaminerId}
+                        onChange={(e) => setSelectedExaminerId(e.target.value)}
+                        className="w-full bg-ink-50 border border-ink-100 rounded-xl px-4 py-3 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-primary-600/10 outline-none"
+                      >
+                        <option value="">-- Pilih Staff/Penguji --</option>
+                        {usersList.map((u) => (
+                          <option key={u.id} value={u.id}>
+                            {u.full_name} ({u.role.replace("_", " ").toUpperCase()})
+                          </option>
+                        ))}
+                      </select>
                     </div>
                   )}
 
