@@ -87,9 +87,31 @@ export async function POST(req: NextRequest) {
         // Jenis lama untuk kompatibilitas
         jenis: jenis_bantuan === "BEASISWA" ? "BEASISWA_FULL" : "KERINGANAN_BIAYA",
       };
+
+      await prisma.pengajuanBeasiswa.upsert({
+        where: { pendaftar_id },
+        update: {
+          jenis_pengajuan: jenis_bantuan === "BEASISWA" ? "BEASISWA_PRESTASI" : "KERINGANAN_BIAYA",
+          status: "DISETUJUI",
+          nominal_potongan: pUP + pSPP,
+          catatan_keputusan: catatan || null,
+          updated_at: new Date()
+        },
+        create: {
+          pendaftar_id,
+          tahun_ajaran_id: pendaftar.tahun_ajaran_id,
+          jenis_pengajuan: jenis_bantuan === "BEASISWA" ? "BEASISWA_PRESTASI" : "KERINGANAN_BIAYA",
+          status: "DISETUJUI",
+          nominal_potongan: pUP + pSPP,
+          catatan_keputusan: catatan || null
+        }
+      });
     } else if (isNewFormat && jenis_bantuan === null) {
       // HAPUS bantuan biaya
       delete dataLengkap.keringanan_daftar_ulang;
+      await prisma.pengajuanBeasiswa.deleteMany({
+        where: { pendaftar_id }
+      });
     } else if (isFormatLama) {
       // FORMAT LAMA (backward compat)
       if (jenis && nominal_potongan !== undefined) {
@@ -104,8 +126,28 @@ export async function POST(req: NextRequest) {
             ? { kesanggupan_bayar: Number(kesanggupan_bayar) }
             : {}),
         };
+
+        await prisma.pengajuanBeasiswa.upsert({
+          where: { pendaftar_id },
+          update: {
+            jenis_pengajuan: jenis,
+            status: "DISETUJUI",
+            nominal_potongan: Number(nominal_potongan),
+            updated_at: new Date()
+          },
+          create: {
+            pendaftar_id,
+            tahun_ajaran_id: pendaftar.tahun_ajaran_id,
+            jenis_pengajuan: jenis,
+            status: "DISETUJUI",
+            nominal_potongan: Number(nominal_potongan)
+          }
+        });
       } else {
         delete dataLengkap.keringanan_daftar_ulang;
+        await prisma.pengajuanBeasiswa.deleteMany({
+          where: { pendaftar_id }
+        });
       }
     }
 

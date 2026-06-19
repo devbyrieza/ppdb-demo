@@ -30,6 +30,7 @@ export async function GET(req: NextRequest) {
             nama_lengkap: true,
             nomor_pendaftaran: true,
             jenjang: true,
+            data_lengkap: true,
           }
         }
       },
