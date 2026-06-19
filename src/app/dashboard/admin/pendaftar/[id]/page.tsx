@@ -1462,7 +1462,51 @@ export default function PendaftarDetailPage() {
 
               {/* Tombol Hitung Ulang untuk Admin */}
               {(userRole === "admin_super" || userRole === "admin") && pendaftar.nilai_ujian && (
-                <div className="mt-4 flex justify-end">
+                <div className="mt-4 flex justify-end gap-2">
+                  {userRole === "admin_super" && (
+                    <button
+                      onClick={async () => {
+                        const { value: status } = await Swal.fire({
+                          title: "Ubah Status Kelulusan (Manual)",
+                          text: "Pilih status baru untuk menimpa hasil perhitungan sistem:",
+                          input: "select",
+                          inputOptions: {
+                            DITERIMA: "DITERIMA",
+                            CADANGAN: "CADANGAN",
+                            DITOLAK: "DITOLAK",
+                          },
+                          inputPlaceholder: "Pilih status...",
+                          showCancelButton: true,
+                          confirmButtonText: "Simpan Perubahan",
+                          cancelButtonText: "Batal",
+                          confirmButtonColor: "#800000",
+                          inputValidator: (value) => {
+                            if (!value) return "Pilih status terlebih dahulu!";
+                          }
+                        });
+
+                        if (!status) return;
+
+                        try {
+                          const res = await fetch(`/api/penilaian/recalculate/${params.id}`, { 
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ overrideStatus: status })
+                          });
+                          const data = await res.json();
+                          if (!res.ok) throw new Error(data.error || "Gagal mengubah status");
+                          Swal.fire("Berhasil!", `Status kelulusan berhasil diubah menjadi: ${data.status_kelulusan || "-"}`, "success");
+                          fetchPendaftarDetail();
+                        } catch (err: any) {
+                          Swal.fire("Error", err.message || "Terjadi kesalahan", "error");
+                        }
+                      }}
+                      className="flex items-center gap-2 px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors shadow hover:shadow-md font-bold text-sm"
+                    >
+                      <AlertCircle className="w-4 h-4" />
+                      Override Status
+                    </button>
+                  )}
                   <button
                     onClick={async () => {
                       const result = await Swal.fire({
