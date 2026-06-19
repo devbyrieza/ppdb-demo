@@ -118,14 +118,15 @@ export async function POST(request: NextRequest) {
     let tipeCicilan = "LUNAS";
 
     // Logic khusus Daftar Ulang
-    if (jenisPembayaran === "DAFTAR_ULANG") {
-      // Cek kelulusan berdasarkan status_pendaftaran (bukan nilai_ujian)
-      // Status yang berhak melakukan daftar ulang: accepted, enrolled, atau Sudah Daftar Ulang
+    // Logic khusus Daftar Ulang (Uang Pangkal & SPP)
+    if (jenisPembayaran === "DAFTAR_ULANG" || jenisPembayaran === "SPP") {
+      // Cek kelulusan berdasarkan status_pendaftaran
       const ELIGIBLE_STATUSES = [
         "accepted",
         "enrolled",
         "sudah_daftar_ulang",
         "Sudah Daftar Ulang",
+        "enrolled_full",
       ];
       const statusOk = ELIGIBLE_STATUSES.includes(
         pendaftar.status_pendaftaran ?? "",
@@ -142,12 +143,12 @@ export async function POST(request: NextRequest) {
       }
 
       const inputJumlah = Number(formData.get("jumlah"));
-      if (!inputJumlah || inputJumlah < 1000000) {
-        // Minimal 1jt
+      const minAmount = jenisPembayaran === "DAFTAR_ULANG" ? 500000 : 100000;
+      if (!inputJumlah || inputJumlah < minAmount) {
         return NextResponse.json(
           {
             success: false,
-            error: "Nominal pembayaran tidak valid (Minimal Rp 1.000.000)",
+            error: `Nominal pembayaran tidak valid (Minimal Rp ${minAmount.toLocaleString("id-ID")})`,
           },
           { status: 400 },
         );
@@ -155,35 +156,37 @@ export async function POST(request: NextRequest) {
 
       biaya = inputJumlah;
 
-      // Ambil total pembayaran daftar ulang yang sudah diverifikasi sebelumnya
+      // Ambil total pembayaran yang sudah diverifikasi sebelumnya untuk jenis ini
       const existingPayments = await prisma.pembayaran.findMany({
         where: {
           pendaftar_id: session.id,
-          jenis_pembayaran: "DAFTAR_ULANG",
+          jenis_pembayaran: jenisPembayaran as any,
           status_pembayaran: "verified"
         }
       });
       const totalPaid = existingPayments.reduce((acc, p) => acc + Number(p.jumlah), 0);
       const totalAccumulated = totalPaid + biaya;
 
-      let expectedTagihanDaftarUlang = 10900000;
+      let expectedTagihan = jenisPembayaran === "DAFTAR_ULANG" ? 7500000 : 1000000;
       let dataLengkap: any = {};
       if (pendaftar.data_lengkap) {
         try {
           dataLengkap = typeof pendaftar.data_lengkap === "string" ? JSON.parse(pendaftar.data_lengkap) : pendaftar.data_lengkap;
         } catch(e) {}
       }
-      if (dataLengkap?.keringanan_daftar_ulang?.nominal_potongan) {
-        expectedTagihanDaftarUlang -= Number(dataLengkap.keringanan_daftar_ulang.nominal_potongan);
+      if (jenisPembayaran === "DAFTAR_ULANG" && dataLengkap?.keringanan_daftar_ulang?.nominal_potongan) {
+        expectedTagihan -= Number(dataLengkap.keringanan_daftar_ulang.nominal_potongan);
       }
 
       // Tentukan Tipe Cicilan
-      if (totalAccumulated >= expectedTagihanDaftarUlang) {
+      if (totalAccumulated >= expectedTagihan) {
         tipeCicilan = "LUNAS";
-      } else if (biaya >= (expectedTagihanDaftarUlang / 2)) {
+      } else if (jenisPembayaran === "DAFTAR_ULANG" && biaya >= (expectedTagihan / 2)) {
         tipeCicilan = "CICIL_50_LEBIH";
-      } else {
+      } else if (jenisPembayaran === "DAFTAR_ULANG") {
         tipeCicilan = "CICIL_DIBAWAH_50";
+      } else {
+        tipeCicilan = "CICILAN";
       }
     } else {
       // Default PENDAFTARAN
@@ -290,7 +293,7 @@ export async function POST(request: NextRequest) {
           cicilan_ke: cicilanKe,
           keringanan_reason: keringananReason as any,
           jumlah: biaya,
-          total_tagihan: jenisPembayaran === "DAFTAR_ULANG" ? 9800000 : biaya,
+          total_tagihan: jenisPembayaran === "DAFTAR_ULANG" ? 7500000 : (jenisPembayaran === "SPP" ? 1000000 : biaya),
           bukti_transfer_path: filePath,
           bukti_transfer_filename: safeFileName,
           status_pembayaran: "pending",

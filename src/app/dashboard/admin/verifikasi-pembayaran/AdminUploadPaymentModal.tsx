@@ -6,7 +6,7 @@ interface AdminUploadPaymentModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
-  activeTab: "PENDAFTARAN" | "DAFTAR_ULANG";
+  activeTab: "PENDAFTARAN" | "DAFTAR_ULANG" | "SPP";
 }
 
 export default function AdminUploadPaymentModal({
@@ -131,7 +131,7 @@ export default function AdminUploadPaymentModal({
         <div className="flex items-center justify-between p-6 border-b border-stone-100">
           <div>
             <h3 className="text-xl font-black text-primary-950">Upload Atas Nama Pendaftar</h3>
-            <p className="text-sm text-stone-500 font-medium">Upload bukti {activeTab === "PENDAFTARAN" ? "pendaftaran" : "daftar ulang"} untuk pendaftar</p>
+            <p className="text-sm text-stone-500 font-medium">Upload bukti {activeTab === "PENDAFTARAN" ? "pendaftaran" : activeTab === "SPP" ? "SPP bulan pertama" : "uang pangkal (daftar ulang)"} untuk pendaftar</p>
           </div>
           <button onClick={onClose} className="p-2 hover:bg-stone-100 rounded-full transition-colors text-stone-500">
             <X className="w-5 h-5" />
@@ -244,7 +244,7 @@ export default function AdminUploadPaymentModal({
                 </div>
 
                 {/* Cicilan untuk DAFTAR_ULANG */}
-                {activeTab === "DAFTAR_ULANG" && (
+                {(activeTab === "DAFTAR_ULANG" || activeTab === "SPP") && (
                   <div className="col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-violet-50 border border-violet-100 rounded-xl">
                     <div className="space-y-1.5">
                       <label className="text-xs font-black text-violet-700 uppercase tracking-widest">Tipe Pembayaran</label>

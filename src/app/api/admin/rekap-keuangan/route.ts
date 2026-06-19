@@ -88,11 +88,12 @@ export async function GET(request: NextRequest) {
         },
         pembayaran: {
           where: {
-            jenis_pembayaran: "DAFTAR_ULANG",
+            jenis_pembayaran: { in: ["DAFTAR_ULANG", "SPP"] } as any,
           },
           select: {
             id: true,
             jumlah: true,
+            jenis_pembayaran: true,
             status_pembayaran: true,
             metode_pembayaran: true,
             bukti_transfer_path: true,
@@ -110,14 +111,23 @@ export async function GET(request: NextRequest) {
 
     // 3. Transform Data
     const rekapData = students.map((student: any, index: number) => {
-      // Calculate Total Paid for Daftar Ulang (only verified payments)
+      // Calculate Total Paid for Daftar Ulang + SPP (only verified payments)
+      const verifiedDUPayments = student.pembayaran.filter(
+        (p: any) => p.status_pembayaran === "verified" && p.jenis_pembayaran === "DAFTAR_ULANG",
+      );
+      const verifiedSPPPayments = student.pembayaran.filter(
+        (p: any) => p.status_pembayaran === "verified" && p.jenis_pembayaran === "SPP",
+      );
       const verifiedPayments = student.pembayaran.filter(
         (p: any) => p.status_pembayaran === "verified",
       );
-      const totalBayar = verifiedPayments.reduce(
-        (sum: number, p: any) => sum + Number(p.jumlah),
-        0,
+      const totalBayarDU = verifiedDUPayments.reduce(
+        (sum: number, p: any) => sum + Number(p.jumlah), 0,
       );
+      const totalBayarSPP = verifiedSPPPayments.reduce(
+        (sum: number, p: any) => sum + Number(p.jumlah), 0,
+      );
+      const totalBayar = totalBayarDU + totalBayarSPP;
 
       // Fetch approved scholarship details from database or fallback from JSON
       const dataLengkap = (student.data_lengkap as any) || {};
@@ -128,6 +138,7 @@ export async function GET(request: NextRequest) {
         keringananJson.nominal_potongan ?? 
         0
       );
+      // requiredAmount = uang pangkal (setelah potongan) + SPP = 8.500.000 - potongan
       const requiredAmount = 8500000 - nominalPotongan;
 
       // Determine Status

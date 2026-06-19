@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
     // Get query params
     const searchParams = request.nextUrl.searchParams;
     const status = searchParams.get("status") || "pending";
-    const jenis = searchParams.get("jenis"); // PENDAFTARAN or DAFTAR_ULANG
+    const jenis = searchParams.get("jenis"); // PENDAFTARAN, DAFTAR_ULANG, or SPP
 
     // Build filter
     const where: any = {
@@ -83,9 +83,9 @@ export async function GET(request: NextRequest) {
             pembayaran: {
               where: {
                 status_pembayaran: "verified",
-                jenis_pembayaran: "DAFTAR_ULANG",
+                jenis_pembayaran: { in: ["DAFTAR_ULANG", "SPP"] as any },
               },
-              select: { id: true },
+              select: { id: true, jenis_pembayaran: true },
             },
           },
         },
@@ -145,10 +145,19 @@ export async function GET(request: NextRequest) {
         pendaftar: baseWhere
       }
     });
+
+    const countSpp = await prisma.pembayaran.count({
+      where: {
+        status_pembayaran: { notIn: ["verified", "rejected"] },
+        jenis_pembayaran: "SPP" as any,
+        pendaftar: baseWhere
+      }
+    });
     
     const counts = {
       PENDAFTARAN: countPendaftaran,
       DAFTAR_ULANG: countDaftarUlang,
+      SPP: countSpp,
     };
 
     return NextResponse.json({ data: dataWithUrls, counts });
@@ -226,23 +235,51 @@ export async function PATCH(request: NextRequest) {
     let newPendaftarStatus = pembayaran.pendaftar.status_pendaftaran;
 
     if (status_pembayaran === "verified") {
-      // Automatically promote to enrolled if they verified their Re-Registration
-      if (pembayaran.jenis_pembayaran === "DAFTAR_ULANG") {
-        const allVerified = await prisma.pembayaran.findMany({
+      // Automatically promote status based on payment type
+      if (pembayaran.jenis_pembayaran === "DAFTAR_ULANG" || (pembayaran.jenis_pembayaran as any) === "SPP") {
+        // Fetch ALL verified daftar ulang payments
+        const allDaftarUlangVerified = await prisma.pembayaran.findMany({
           where: {
             pendaftar_id: pembayaran.pendaftar_id,
             jenis_pembayaran: "DAFTAR_ULANG",
             status_pembayaran: "verified",
           },
         });
-        const totalPaid = allVerified.reduce(
-          (acc, p) => acc + Number(p.jumlah),
-          0,
-        );
-        const threshold = 9800000;
-        if (totalPaid >= threshold) {
+        // Fetch ALL verified SPP payments
+        const allSppVerified = await prisma.pembayaran.findMany({
+          where: {
+            pendaftar_id: pembayaran.pendaftar_id,
+            jenis_pembayaran: "SPP" as any,
+            status_pembayaran: "verified",
+          },
+        });
+
+        // Fetch pendaftar data for keringanan info
+        const pendaftarData = await prisma.pendaftar.findUnique({
+          where: { id: pembayaran.pendaftar_id },
+          select: { data_lengkap: true },
+        });
+        let expectedDU = 7500000;
+        if (pendaftarData?.data_lengkap) {
+          try {
+            const dl = typeof pendaftarData.data_lengkap === "string"
+              ? JSON.parse(pendaftarData.data_lengkap as string)
+              : pendaftarData.data_lengkap as any;
+            if (dl?.keringanan_daftar_ulang?.nominal_potongan) {
+              expectedDU -= Number(dl.keringanan_daftar_ulang.nominal_potongan);
+            }
+          } catch(e) {}
+        }
+
+        const totalDUPaid = allDaftarUlangVerified.reduce((acc, p) => acc + Number(p.jumlah), 0);
+        const totalSPPPaid = allSppVerified.reduce((acc, p) => acc + Number(p.jumlah), 0);
+
+        const duLunas = totalDUPaid >= expectedDU;
+        const sppLunas = totalSPPPaid >= 1000000;
+
+        if (duLunas && sppLunas) {
           newPendaftarStatus = "enrolled_full";
-        } else {
+        } else if (totalDUPaid > 0 || totalSPPPaid > 0) {
           newPendaftarStatus = "enrolled";
         }
       } else if (

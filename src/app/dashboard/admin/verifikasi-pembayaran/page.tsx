@@ -65,7 +65,7 @@ function VerifikasiPembayaranContent() {
   const [selectedPembayaran, setSelectedPembayaran] =
     useState<Pembayaran | null>(null);
   const [dataLoaded, setDataLoaded] = useState(false);
-  const [counts, setCounts] = useState({ PENDAFTARAN: 0, DAFTAR_ULANG: 0 });
+  const [counts, setCounts] = useState({ PENDAFTARAN: 0, DAFTAR_ULANG: 0, SPP: 0 });
   const [showModal, setShowModal] = useState(false);
   const [showUploadAtasNamaModal, setShowUploadAtasNamaModal] = useState(false);
   const [catatan, setCatatan] = useState("");
@@ -73,7 +73,7 @@ function VerifikasiPembayaranContent() {
   const [processing, setProcessing] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [activeTab, setActiveTab] = useState<"PENDAFTARAN" | "DAFTAR_ULANG">(
+  const [activeTab, setActiveTab] = useState<"PENDAFTARAN" | "DAFTAR_ULANG" | "SPP">(
     urlJenis as any,
   );
   const [tipeCicilanFilter, setTipeCicilanFilter] = useState<
@@ -501,6 +501,21 @@ function VerifikasiPembayaranContent() {
               {counts.DAFTAR_ULANG > 0 && (
                 <span className="bg-rose-500 text-white flex items-center justify-center w-5 h-5 text-[10px] rounded-full shrink-0 shadow-sm">
                   {counts.DAFTAR_ULANG}
+                </span>
+              )}
+            </button>
+            <button
+              onClick={() => updateFilters(undefined, "SPP")}
+              className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${
+                activeTab === "SPP"
+                  ? "bg-white text-violet-700 shadow-clay-sm ring-1 ring-stone-100"
+                  : "text-stone-400 hover:text-stone-600 hover:bg-stone-50"
+              }`}
+            >
+              SPP
+              {counts.SPP > 0 && (
+                <span className="bg-rose-500 text-white flex items-center justify-center w-5 h-5 text-[10px] rounded-full shrink-0 shadow-sm">
+                  {counts.SPP}
                 </span>
               )}
             </button>
