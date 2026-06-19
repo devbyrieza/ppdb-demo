@@ -109,6 +109,33 @@ export async function GET(req: NextRequest) {
       };
     };
 
+    const translateStatus = (status: string) => {
+      if (!status) return "-";
+      const s = status.toLowerCase().trim();
+      const statusMap: Record<string, string> = {
+        draft: "Draft",
+        awaiting_payment: "Draft (Menunggu Pembayaran)",
+        payment_verification: "Menunggu Verifikasi Bayar",
+        paid: "Terdaftar (Menunggu Berkas)",
+        verified: "Terdaftar (Menunggu Berkas)",
+        data_completed: "Data Lengkap (Menunggu Dokumen)",
+        docs_uploaded: "Dokumen Diunggah (Menunggu Verifikasi)",
+        docs_verified: "Berkas Terverifikasi",
+        scheduled: "Jadwal Ujian Ditentukan",
+        testing: "Sedang Ujian",
+        tested: "Selesai Ujian",
+        exam_completed: "Selesai Seleksi",
+        announced: "Cadangan",
+        cadangan: "Cadangan",
+        accepted: "Diterima",
+        rejected: "Ditolak",
+        mengundurkan_diri: "Mengundurkan Diri",
+        enrolled: "Sudah Daftar Ulang",
+        enrolled_full: "Lunas Daftar Ulang",
+      };
+      return statusMap[s] || status.toUpperCase();
+    };
+
     const buildSheet = (sheetName: string, dataList: typeof listBeasiswa, discountValue: number) => {
       const sheet = workbook.addWorksheet(sheetName);
 
@@ -118,14 +145,14 @@ export async function GET(req: NextRequest) {
       const headerColor = "800000";
       const headerTextColor = "FFFFFF";
 
-      sheet.mergeCells("A1:O1");
+      sheet.mergeCells("A1:S1");
       const titleCell = sheet.getCell("A1");
       titleCell.value = `LAPORAN PENERIMA ${sheetName.toUpperCase()} - PESANTREN AL-ANDALUS`;
       titleCell.font = { name: "Arial", size: 16, bold: true, color: { argb: headerColor } };
       titleCell.alignment = { vertical: "middle", horizontal: "center" };
       sheet.getRow(1).height = 40;
 
-      sheet.mergeCells("A2:O2");
+      sheet.mergeCells("A2:S2");
       const subtitleCell = sheet.getCell("A2");
       subtitleCell.value = `Tahun Ajaran: 2026/2027 | Tanggal Ekspor: ${new Date().toLocaleDateString("id-ID")}`;
       subtitleCell.font = { name: "Arial", size: 11, italic: true };
@@ -138,7 +165,9 @@ export async function GET(req: NextRequest) {
         "No", "No. Pendaftaran", "NIK Santri", "Nama Santri", "Jenjang", "No. HP Santri",
         "Nama Ayah", "Pekerjaan Ayah", "No. HP Ayah",
         "Nama Ibu", "Pekerjaan Ibu", "No. HP Ibu",
-        "Nominal Potongan", "Sisa Tagihan", "Status"
+        "Potongan Uang Pangkal", "Potongan SPP", "Total Potongan",
+        "Sisa Uang Pangkal", "Sisa SPP", "Total Sisa Tagihan",
+        "Status"
       ];
 
       const headerRow = sheet.addRow(headers);
@@ -174,11 +203,38 @@ export async function GET(req: NextRequest) {
         }
         
         const keringananJson = dl.keringanan_daftar_ulang || {};
-        const potJson = keringananJson.potongan_uang_pangkal !== undefined || keringananJson.potongan_spp !== undefined 
-          ? Number(keringananJson.potongan_uang_pangkal || 0) + Number(keringananJson.potongan_spp || 0) 
-          : undefined;
-        const pot = Number(keringananJson.nominal_potongan ?? potJson ?? item.nominal_potongan ?? discountValue);
-        const sisa = normalTotal - pot;
+        
+        let potUP = 0;
+        let potSPP = 0;
+        let isParsed = false;
+        
+        if (keringananJson.jenis_bantuan) {
+          const cakupan = keringananJson.cakupan || "KEDUANYA";
+          if (keringananJson.jenis_bantuan === "BEASISWA") {
+            potUP = (cakupan === "UANG_PANGKAL" || cakupan === "KEDUANYA") ? 7500000 : 0;
+            potSPP = (cakupan === "SPP" || cakupan === "KEDUANYA") ? 1000000 : 0;
+          } else { // KERINGANAN
+            potUP = Number(keringananJson.potongan_uang_pangkal || 0);
+            potSPP = Number(keringananJson.potongan_spp || 0);
+          }
+          isParsed = true;
+        }
+        
+        if (!isParsed) {
+          if (item.jenis_pengajuan === "BEASISWA_PRESTASI") {
+            potUP = 7500000;
+            potSPP = 1000000;
+          } else {
+            const legacyNominal = Number(keringananJson.nominal_potongan ?? item.nominal_potongan ?? discountValue);
+            potUP = legacyNominal;
+            potSPP = 0;
+          }
+        }
+        
+        const totalPotongan = potUP + potSPP;
+        const sisaUP = Math.max(0, 7500000 - potUP);
+        const sisaSPP = Math.max(0, 1000000 - potSPP);
+        const totalSisa = sisaUP + sisaSPP;
 
         const rowValues = [
           index + 1,
@@ -193,9 +249,13 @@ export async function GET(req: NextRequest) {
           info.nama_ibu,
           info.pekerjaan_ibu,
           info.hp_ibu,
-          pot,
-          sisa,
-          info.status_kelulusan.replace("_", " ").toUpperCase()
+          potUP,
+          potSPP,
+          totalPotongan,
+          sisaUP,
+          sisaSPP,
+          totalSisa,
+          translateStatus(info.status_kelulusan)
         ];
 
         const r = sheet.addRow(rowValues);
@@ -210,9 +270,9 @@ export async function GET(req: NextRequest) {
             right: { style: "thin" }
           };
 
-          if (colIndex === 1 || colIndex === 2 || colIndex === 5 || colIndex === 15) {
+          if (colIndex === 1 || colIndex === 2 || colIndex === 5 || colIndex === 19) {
             cell.alignment = { vertical: "middle", horizontal: "center" };
-          } else if (colIndex === 13 || colIndex === 14) {
+          } else if (colIndex >= 13 && colIndex <= 18) {
             cell.alignment = { vertical: "middle", horizontal: "right" };
             cell.numFmt = "#,##0";
           } else {

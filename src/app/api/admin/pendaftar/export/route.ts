@@ -4,6 +4,33 @@ import { prisma } from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 import { getAdminWhereClause } from "@/lib/utils/admin";
 
+const translateStatus = (status: string) => {
+  if (!status) return "-";
+  const s = status.toLowerCase().trim();
+  const statusMap: Record<string, string> = {
+    draft: "Draft",
+    awaiting_payment: "Draft (Menunggu Pembayaran)",
+    payment_verification: "Menunggu Verifikasi Bayar",
+    paid: "Terdaftar (Menunggu Berkas)",
+    verified: "Terdaftar (Menunggu Berkas)",
+    data_completed: "Data Lengkap (Menunggu Dokumen)",
+    docs_uploaded: "Dokumen Diunggah (Menunggu Verifikasi)",
+    docs_verified: "Berkas Terverifikasi",
+    scheduled: "Jadwal Ujian Ditentukan",
+    testing: "Sedang Ujian",
+    tested: "Selesai Ujian",
+    exam_completed: "Selesai Seleksi",
+    announced: "Cadangan",
+    cadangan: "Cadangan",
+    accepted: "Diterima",
+    rejected: "Ditolak",
+    mengundurkan_diri: "Mengundurkan Diri",
+    enrolled: "Sudah Daftar Ulang",
+    enrolled_full: "Lunas Daftar Ulang",
+  };
+  return statusMap[s] || status.toUpperCase();
+};
+
 export async function GET(req: NextRequest) {
   try {
     // 1. Validasi session manual
@@ -150,7 +177,7 @@ export async function GET(req: NextRequest) {
       "Kode Pos": item.kode_pos || "-",
       "No HP": item.no_hp ? `'${item.no_hp}` : "-",
       Email: item.email || "-",
-      Status: item.status_pendaftaran || "-",
+      Status: translateStatus(item.status_pendaftaran),
       "Tahun Ajaran": item.tahun_ajaran?.nama || "-",
       "Tanggal Daftar": item.created_at
         ? new Date(item.created_at).toLocaleDateString("id-ID")
