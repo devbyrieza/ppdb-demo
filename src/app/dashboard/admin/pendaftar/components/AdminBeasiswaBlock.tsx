@@ -106,7 +106,7 @@ export default function AdminBeasiswaBlock({
   const fetchCurrent = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`/api/admin/pendaftar/detail?id=${pendaftarId}`);
+      const res = await fetch(`/api/admin/pendaftar/${pendaftarId}`);
       if (res.ok) {
         const json = await res.json();
         const dl = json?.data?.data_lengkap;
@@ -368,8 +368,8 @@ export default function AdminBeasiswaBlock({
         </div>
       )}
 
-      {/* --- ACTION BUTTONS (when no form is open) --- */}
-      {!activeSection && (
+      {/* --- ACTION BUTTONS (when no form is open and no active assistance) --- */}
+      {!current && !activeSection && (
         <div className="grid grid-cols-2 gap-3">
           {/* BEASISWA */}
           <button
