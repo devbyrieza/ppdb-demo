@@ -121,7 +121,7 @@ export async function POST(req: NextRequest) {
           potongan_uang_pangkal: Number(nominal_potongan),
           potongan_spp: 0,
           cakupan: "UANG_PANGKAL",
-          jenis_bantuan: "KERINGANAN",
+          jenis_bantuan: jenis && jenis.toLowerCase().includes("beasiswa") ? "BEASISWA" : "KERINGANAN",
           ...(kesanggupan_bayar !== undefined && kesanggupan_bayar > 0
             ? { kesanggupan_bayar: Number(kesanggupan_bayar) }
             : {}),
