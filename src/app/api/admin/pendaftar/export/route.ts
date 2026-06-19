@@ -4,6 +4,16 @@ import { prisma } from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 import { getAdminWhereClause } from "@/lib/utils/admin";
 
+const toTitleCase = (str: string) => {
+  if (!str) return "-";
+  return str
+    .toLowerCase()
+    .trim()
+    .split(/\s+/)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
+
 const translateStatus = (status: string) => {
   if (!status) return "-";
   const s = status.toLowerCase().trim();
@@ -158,7 +168,7 @@ export async function GET(req: NextRequest) {
     const exportData = pendaftarData.map((item) => ({
       "Nomor Pendaftaran": item.nomor_pendaftaran || "-",
       NIK: item.nik ? `'${item.nik}` : "-", // Text format for Excel
-      "Nama Lengkap": item.nama_lengkap || "-",
+      "Nama Lengkap": item.nama_lengkap ? toTitleCase(item.nama_lengkap) : "-",
       "Jenis Kelamin": ["L", "Laki-laki"].includes(item.jenis_kelamin || "")
         ? "Laki-laki"
         : "Perempuan",

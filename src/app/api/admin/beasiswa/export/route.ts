@@ -40,6 +40,16 @@ export async function GET(req: NextRequest) {
 
     const normalTotal = 8500000;
 
+    const toTitleCase = (str: string) => {
+      if (!str) return "-";
+      return str
+        .toLowerCase()
+        .trim()
+        .split(/\s+/)
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+    };
+
     const getParentInfo = (item: any) => {
       const p = item.pendaftar;
       const ot = p?.orang_tua || {};
@@ -83,6 +93,7 @@ export async function GET(req: NextRequest) {
       const isIbuMeninggal = isMeninggal(ibu.status_hidup) || isMeninggal(ot.status_ibu);
 
       let nama_ayah = cleanVal(ot.nama_ayah) || cleanVal(ayah.nama_lengkap) || "-";
+      if (nama_ayah !== "-") nama_ayah = toTitleCase(nama_ayah);
       if (isAyahMeninggal) {
         nama_ayah = nama_ayah !== "-" ? `${nama_ayah} (Sudah Meninggal)` : "Sudah Meninggal";
       }
@@ -91,6 +102,7 @@ export async function GET(req: NextRequest) {
       const penghasilan_ayah = isAyahMeninggal ? "Sudah Meninggal" : (cleanVal(ot.penghasilan_ayah) || cleanVal(ayah.penghasilan) || "-");
 
       let nama_ibu = cleanVal(ot.nama_ibu) || cleanVal(ibu.nama_lengkap) || "-";
+      if (nama_ibu !== "-") nama_ibu = toTitleCase(nama_ibu);
       if (isIbuMeninggal) {
         nama_ibu = nama_ibu !== "-" ? `${nama_ibu} (Sudah Meninggal)` : "Sudah Meninggal";
       }
@@ -247,7 +259,7 @@ export async function GET(req: NextRequest) {
           index + 1,
           p?.nomor_pendaftaran || "-",
           info.nik,
-          p?.nama_lengkap || "-",
+          p?.nama_lengkap ? toTitleCase(p.nama_lengkap) : "-",
           p?.jenjang || "-",
           info.phone_santri,
           info.nama_ayah,
