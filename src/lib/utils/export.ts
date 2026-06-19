@@ -9,31 +9,29 @@ import ExcelJS from "exceljs";
  * @param fileName Name of the file (without extension)
  * @param sheetName Name of the worksheet
  */
-export const exportToExcel = (
+export const exportToExcel = async (
   data: any[],
   fileName: string,
   sheetName: string = "Data",
 ) => {
-  const worksheet = XLSX.utils.json_to_sheet(data);
+  if (!data || data.length === 0) return;
+  const header = Object.keys(data[0] || {});
+  const rows = data.map((item) => Object.values(item));
 
-  // Set professional auto-fit column widths to prevent truncation
-  if (data && data.length > 0) {
-    const keys = Object.keys(data[0]);
-    const wscols = keys.map((key) => {
-      const maxLength = data.reduce((max, row) => {
-        const val = row[key] !== undefined && row[key] !== null ? row[key].toString() : "";
-        return Math.max(max, val.length);
-      }, key.length);
-      // Extra safety margin of 4 characters and minimum width of 12
-      return { wch: Math.max(maxLength + 4, 12) };
-    });
-    worksheet["!cols"] = wscols;
-  }
-
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
-  XLSX.writeFile(workbook, `${fileName}.xlsx`);
+  await exportToExcelProfessional({
+    fileName,
+    sheets: [
+      {
+        name: sheetName.substring(0, 31),
+        title: sheetName,
+        subTitle: `Tanggal Ekspor: ${new Date().toLocaleDateString("id-ID")}`,
+        header,
+        data: rows,
+      },
+    ],
+  });
 };
+
 
 /**
  * Professional Export to Excel using ExcelJS
@@ -59,39 +57,52 @@ export const exportToExcelProfessional = async ({
     const worksheet = workbook.addWorksheet(sheetInfo.name);
     let currentRow = 1;
 
+    const brandColor = "800000";
+
     // Title
     if (sheetInfo.title) {
       const titleRow = worksheet.getRow(currentRow);
-      titleRow.values = [sheetInfo.title];
-      titleRow.font = { size: 16, bold: true };
+      titleRow.height = 40;
       worksheet.mergeCells(currentRow, 1, currentRow, sheetInfo.header.length);
+      const titleCell = worksheet.getCell(currentRow, 1);
+      titleCell.value = sheetInfo.title.toUpperCase();
+      titleCell.font = { name: "Arial", size: 16, bold: true, color: { argb: brandColor } };
+      titleCell.alignment = { vertical: "middle", horizontal: "center" };
       currentRow += 1;
     }
 
     // SubTitle
     if (sheetInfo.subTitle) {
       const subTitleRow = worksheet.getRow(currentRow);
-      subTitleRow.values = [sheetInfo.subTitle];
-      subTitleRow.font = { size: 12, italic: true };
+      subTitleRow.height = 20;
       worksheet.mergeCells(currentRow, 1, currentRow, sheetInfo.header.length);
+      const subTitleCell = worksheet.getCell(currentRow, 1);
+      subTitleCell.value = sheetInfo.subTitle;
+      subTitleCell.font = { name: "Arial", size: 11, italic: true };
+      subTitleCell.alignment = { vertical: "middle", horizontal: "center" };
       currentRow += 2; // Extra gap
+    } else {
+      currentRow += 1;
     }
 
     // Header
     const headerRow = worksheet.getRow(currentRow);
+    headerRow.height = 30;
     headerRow.values = sheetInfo.header;
-    headerRow.font = { bold: true, color: { argb: "FFFFFFFF" } };
-    headerRow.fill = {
-      type: "pattern",
-      pattern: "solid",
-      fgColor: { argb: "FF16A34A" }, // Green-600
-    };
-    headerRow.alignment = { vertical: "middle", horizontal: "center" };
-
-    // Auto-width columns
-    sheetInfo.header.forEach((h, i) => {
-      const column = worksheet.getColumn(i + 1);
-      column.width = Math.max(h.length + 5, 15);
+    headerRow.eachCell((cell) => {
+      cell.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: brandColor }
+      };
+      cell.font = { name: "Arial", size: 10, bold: true, color: { argb: "FFFFFF" } };
+      cell.alignment = { vertical: "middle", horizontal: "center", wrapText: true };
+      cell.border = {
+        top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "medium" },
+        right: { style: "thin" }
+      };
     });
 
     currentRow += 1;
@@ -100,31 +111,68 @@ export const exportToExcelProfessional = async ({
     if (sheetInfo.subHeader) {
       const subHeaderRow = worksheet.getRow(currentRow);
       subHeaderRow.values = sheetInfo.subHeader;
-      subHeaderRow.font = { bold: true };
-      subHeaderRow.alignment = { horizontal: "center" };
+      subHeaderRow.font = { name: "Arial", bold: true };
+      subHeaderRow.alignment = { vertical: "middle", horizontal: "center" };
       currentRow += 1;
     }
 
     // Data
     worksheet.addRows(sheetInfo.data);
 
-    // Add Borders to all data cells
+    // Style data cells
     const lastRow = currentRow + sheetInfo.data.length - 1;
-    for (
-      let r = currentRow - (sheetInfo.subHeader ? 2 : 1);
-      r <= lastRow;
-      r++
-    ) {
+    for (let r = currentRow; r <= lastRow; r++) {
       const row = worksheet.getRow(r);
-      row.eachCell({ includeEmpty: true }, (cell) => {
+      row.height = 22;
+      row.eachCell({ includeEmpty: true }, (cell, colIndex) => {
+        cell.font = { name: "Arial", size: 9 };
         cell.border = {
           top: { style: "thin" },
           left: { style: "thin" },
           bottom: { style: "thin" },
-          right: { style: "thin" },
+          right: { style: "thin" }
         };
+
+        // Auto align values
+        const val = cell.value;
+        if (typeof val === "number") {
+          cell.alignment = { vertical: "middle", horizontal: "right" };
+          cell.numFmt = "#,##0";
+        } else if (
+          colIndex === 1 || // No
+          colIndex === 2 || // No. Pendaftaran
+          (val && typeof val === "string" && (
+            val.startsWith("MTA26") || 
+            val.startsWith("ILA26") ||
+            val.toLowerCase() === "laki-laki" || 
+            val.toLowerCase() === "perempuan" ||
+            val.toLowerCase() === "l" || 
+            val.toLowerCase() === "p"
+          ))
+        ) {
+          cell.alignment = { vertical: "middle", horizontal: "center" };
+        } else {
+          cell.alignment = { vertical: "middle", horizontal: "left" };
+        }
       });
     }
+
+    // Auto-width columns
+    sheetInfo.header.forEach((h, i) => {
+      const colIndex = i + 1;
+      let maxLen = h.length;
+      worksheet.eachRow((row, rowIndex) => {
+        if (rowIndex >= currentRow) {
+          const val = row.getCell(colIndex).value;
+          if (val) {
+            const len = val.toString().length;
+            if (len > maxLen) maxLen = len;
+          }
+        }
+      });
+      const column = worksheet.getColumn(colIndex);
+      column.width = Math.max(maxLen + 4, 12);
+    });
   }
 
   // Generate Buffer

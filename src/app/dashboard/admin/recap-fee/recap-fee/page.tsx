@@ -15,7 +15,7 @@ import {
   FileText,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { utils, writeFile } from "xlsx";
+import { exportToExcelProfessional } from "@/lib/utils/export";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import Swal from "sweetalert2";
@@ -95,39 +95,41 @@ export default function RecapFeePage() {
     ),
   };
 
-  const exportToExcel = () => {
+  const exportToExcel = async () => {
     if (!filteredRecap.length) return;
 
-    const data = filteredRecap.map((item) => ({
-      "Nama Petugas": item.name.toUpperCase(),
-      Role: item.role.replace("_", " ").toUpperCase(),
-      "Tes Quran": item.counts.quran,
-      "Wawancara Calon Santri": item.counts.santri,
-      "Wawancara Ortu": item.counts.ortu,
-      "Total Sesi": item.counts.total,
-      "Total Honor (IDR)": calculateTotalFee(item),
-    }));
+    const data = filteredRecap.map((item) => [
+      item.name.toUpperCase(),
+      item.role.replace("_", " ").toUpperCase(),
+      item.counts.quran,
+      item.counts.santri,
+      item.counts.ortu,
+      item.counts.total,
+      calculateTotalFee(item),
+    ]);
 
-    const worksheet = utils.json_to_sheet(data);
-    const workbook = utils.book_new();
-    utils.book_append_sheet(workbook, worksheet, "Rekap Honor");
-
-    // Adjust column widths
-    const wscols = [
-      { wch: 30 }, // Nama
-      { wch: 25 }, // Role
-      { wch: 12 }, // Quran
-      { wch: 15 }, // Santri
-      { wch: 15 }, // Ortu
-      { wch: 12 }, // Total
-      { wch: 20 }, // Honor
+    const headers = [
+      "Nama Petugas",
+      "Role",
+      "Tes Quran",
+      "Wawancara Calon Santri",
+      "Wawancara Ortu",
+      "Total Sesi",
+      "Total Honor (IDR)"
     ];
-    worksheet["!cols"] = wscols;
 
-    writeFile(
-      workbook,
-      `Rekap_Honor_Penguji_Al_Quran_${new Date().toISOString().split("T")[0]}.xlsx`,
-    );
+    await exportToExcelProfessional({
+      fileName: `Rekap_Honor_Penguji_Al_Quran_${new Date().toISOString().split("T")[0]}`,
+      sheets: [
+        {
+          name: "Rekap Honor",
+          title: "REKAP HONOR PENGUJI PPDB",
+          subTitle: `Tanggal Ekspor: ${new Date().toLocaleDateString("id-ID")}`,
+          header: headers,
+          data: data,
+        }
+      ]
+    });
   };
 
   const exportToPDF = () => {
