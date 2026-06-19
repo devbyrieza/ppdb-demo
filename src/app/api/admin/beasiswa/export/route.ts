@@ -57,15 +57,54 @@ export async function GET(req: NextRequest) {
       const ibu = dl.ibu || {};
       const santri = dl.santri || {};
 
+      const cleanVal = (val: any) => {
+        if (val === null || val === undefined) return "";
+        const str = String(val).trim();
+        return (str === "-" || str === "") ? "" : str;
+      };
+
+      const isMeninggal = (status: any) => {
+        if (!status) return false;
+        const s = String(status).toLowerCase();
+        return s.includes("meninggal") || s.includes("wafat") || s.includes("almarhum");
+      };
+
+      const getCleanPhone = (phones: any[]) => {
+        for (const ph of phones) {
+          const clean = cleanVal(ph);
+          if (clean && clean !== "0" && clean !== "+62" && clean !== "62") {
+            return clean;
+          }
+        }
+        return "";
+      };
+
+      const isAyahMeninggal = isMeninggal(ayah.status_hidup) || isMeninggal(ot.status_ayah);
+      const isIbuMeninggal = isMeninggal(ibu.status_hidup) || isMeninggal(ot.status_ibu);
+
+      let nama_ayah = cleanVal(ot.nama_ayah) || cleanVal(ayah.nama_lengkap) || "-";
+      if (isAyahMeninggal) {
+        nama_ayah = nama_ayah !== "-" ? `${nama_ayah} (Sudah Meninggal)` : "Sudah Meninggal";
+      }
+      const pekerjaan_ayah = isAyahMeninggal ? "Sudah Meninggal" : (cleanVal(ot.pekerjaan_ayah) || cleanVal(ayah.pekerjaan) || "-");
+      const hp_ayah = isAyahMeninggal ? "Sudah Meninggal" : (getCleanPhone([ot.no_hp_ayah, ayah.no_hp, ayah.no_wa]) || "-");
+
+      let nama_ibu = cleanVal(ot.nama_ibu) || cleanVal(ibu.nama_lengkap) || "-";
+      if (isIbuMeninggal) {
+        nama_ibu = nama_ibu !== "-" ? `${nama_ibu} (Sudah Meninggal)` : "Sudah Meninggal";
+      }
+      const pekerjaan_ibu = isIbuMeninggal ? "Sudah Meninggal" : (cleanVal(ot.pekerjaan_ibu) || cleanVal(ibu.pekerjaan) || "-");
+      const hp_ibu = isIbuMeninggal ? "Sudah Meninggal" : (getCleanPhone([ot.no_hp_ibu, ibu.no_hp, ibu.no_wa]) || "-");
+
       return {
-        nik: p?.nik || santri.nik || "-",
-        phone_santri: p?.no_hp || santri.no_hp || santri.phone || "-",
-        nama_ayah: ot.nama_ayah || ayah.nama_lengkap || "-",
-        pekerjaan_ayah: ot.pekerjaan_ayah || ayah.pekerjaan || "-",
-        hp_ayah: ot.no_hp_ayah || ayah.no_hp || ayah.no_wa || "-",
-        nama_ibu: ot.nama_ibu || ibu.nama_lengkap || "-",
-        pekerjaan_ibu: ot.pekerjaan_ibu || ibu.pekerjaan || "-",
-        hp_ibu: ot.no_hp_ibu || ibu.no_hp || ibu.no_wa || "-",
+        nik: cleanVal(p?.nik) || cleanVal(santri.nik) || "-",
+        phone_santri: getCleanPhone([p?.no_hp, santri.no_hp, santri.phone]) || "-",
+        nama_ayah,
+        pekerjaan_ayah,
+        hp_ayah,
+        nama_ibu,
+        pekerjaan_ibu,
+        hp_ibu,
         status_kelulusan: p?.hasil_seleksi?.status_seleksi || p?.status_pendaftaran || "DITERIMA"
       };
     };
@@ -124,7 +163,18 @@ export async function GET(req: NextRequest) {
       dataList.forEach((item, index) => {
         const p = item.pendaftar;
         const info = getParentInfo(item);
-        const pot = Number(item.nominal_potongan) || discountValue;
+        
+        let dl: any = {};
+        if (p?.data_lengkap) {
+          if (typeof p.data_lengkap === "string") {
+            try { dl = JSON.parse(p.data_lengkap); } catch (e) { dl = {}; }
+          } else {
+            dl = p.data_lengkap;
+          }
+        }
+        
+        const keringananJson = dl.keringanan_daftar_ulang || {};
+        const pot = Number(keringananJson.nominal_potongan ?? item.nominal_potongan ?? discountValue);
         const sisa = normalTotal - pot;
 
         const rowValues = [
