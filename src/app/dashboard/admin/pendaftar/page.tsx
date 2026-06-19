@@ -1046,8 +1046,30 @@ function AdminPendaftarContent() {
             }
             return isFilled ? "Terdaftar (Belum Upload Berkas)" : "Terdaftar (Belum Isi Data)";
           }
-          if (s.includes("draft") || s === "draf") return "Draf";
-          if (s.includes("bayar") || s.includes("waiting_payment") || s.includes("payment_verification")) return "Menunggu Verifikasi Bayar";
+          const statusMap: Record<string, string> = {
+            draft: "Draft",
+            awaiting_payment: "Draft",
+            payment_verification: "Verifikasi Bayar",
+            data_completed: "Data Lengkap",
+            docs_uploaded: "Data Lengkap",
+            docs_verified: "Berkas Lengkap",
+            scheduled: "Proses Seleksi",
+            testing: "Proses Seleksi",
+            tested: "Proses Seleksi",
+            exam_completed: "Proses Seleksi",
+            selection: "Proses Seleksi",
+            announced: "Cadangan",
+            cadangan: "Cadangan",
+            accepted: "Diterima",
+            rejected: "Ditolak",
+            mengundurkan_diri: "Mengundurkan Diri",
+            enrolled: "Proses Daftar Ulang",
+            enrolled_full: "Lunas Daftar Ulang",
+            pindah_keluar: "Pindah Keluar",
+          };
+          if (statusMap[s]) return statusMap[s];
+          if (s.includes("draft") || s === "draf") return "Draft";
+          if (s.includes("bayar") || s.includes("waiting_payment") || s.includes("payment_verification")) return "Verifikasi Bayar";
           if (s.includes("data_completed") || s.includes("data") || s.includes("sudah_isi_data") || s.includes("docs_uploaded")) return "Data Lengkap";
           if (s.includes("docs_verified") || s.includes("berkas")) return "Berkas Lengkap";
           if (s.includes("selection") || s.includes("scheduled") || s.includes("tes") || s.includes("testing") || s.includes("tested") || s.includes("exam")) return "Proses Seleksi";
@@ -1056,6 +1078,7 @@ function AdminPendaftarContent() {
           if (s.includes("rejected") || s.includes("ditolak")) return "Ditolak";
           if (s.includes("enrolled_full") || s.includes("selesai")) return "Lunas Daftar Ulang";
           if (s.includes("enrolled") || s.includes("daftar ulang") || s.includes("ulang")) return "Proses Daftar Ulang";
+          if (s.includes("pindah") || s.includes("keluar")) return "Pindah Keluar";
           return status;
         };
 

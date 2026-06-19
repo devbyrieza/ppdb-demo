@@ -216,7 +216,9 @@ export default function AdminDashboardPage() {
 
       const translateStatus = (st: string) => {
         const map: Record<string, string> = {
-          draft: "Draf",
+          draft: "Draft",
+          awaiting_payment: "Draft",
+          payment_verification: "Verifikasi Bayar",
           sudah_bayar: "Bayar Pendaftaran",
           sudah_isi_data: "Data Lengkap",
           docs_verified: "Berkas Lengkap",

@@ -140,8 +140,8 @@ export async function GET(req: NextRequest) {
       }
       const statusMap: Record<string, string> = {
         draft: "Draft",
-        awaiting_payment: "Draft (Menunggu Pembayaran)",
-        payment_verification: "Menunggu Verifikasi Bayar",
+        awaiting_payment: "Draft",
+        payment_verification: "Verifikasi Bayar",
         data_completed: "Data Lengkap",
         docs_uploaded: "Data Lengkap",
         docs_verified: "Berkas Lengkap",
@@ -156,6 +156,7 @@ export async function GET(req: NextRequest) {
         mengundurkan_diri: "Mengundurkan Diri",
         enrolled: "Proses Daftar Ulang",
         enrolled_full: "Lunas Daftar Ulang",
+        pindah_keluar: "Pindah Keluar",
       };
       return statusMap[s] || status.toUpperCase();
     };
