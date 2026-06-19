@@ -9,6 +9,35 @@ export default function AdminBeasiswaListPage() {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("ALL"); // ALL, PENDING, DISETUJUI, DITOLAK
+  const [exporting, setExporting] = useState(false);
+
+  const handleExportExcel = async () => {
+    setExporting(true);
+    try {
+      const response = await fetch("/api/admin/beasiswa/export");
+      if (!response.ok) throw new Error("Gagal mengunduh laporan");
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "Laporan_Beasiswa_dan_Keringanan_Lazsip.xlsx";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      Swal.fire({
+        title: "Berhasil!",
+        text: "Laporan beasiswa berhasil diunduh.",
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false
+      });
+    } catch (error: any) {
+      console.error(error);
+      Swal.fire("Error", "Gagal mengunduh laporan Excel beasiswa: " + error.message, "error");
+    } finally {
+      setExporting(false);
+    }
+  };
 
   useEffect(() => {
     fetchData();
@@ -38,9 +67,21 @@ export default function AdminBeasiswaListPage() {
             <HandCoins className="w-8 h-8 text-primary-600" />
             Review Keringanan & Beasiswa
           </h1>
-          <p className="text-stone-500 font-medium">Daftar pengajuan keringanan dan beasiswa dari Pendaftar</p>
         </div>
-        <div className="flex items-center gap-2 bg-white rounded-xl p-1 border border-stone-200 shadow-sm">
+        <div className="flex flex-wrap items-center gap-3">
+          <button
+            onClick={handleExportExcel}
+            disabled={exporting}
+            className="flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 disabled:bg-primary-400 text-white font-bold text-sm rounded-xl shadow-sm transition-all cursor-pointer"
+          >
+            {exporting ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <FileText className="w-4 h-4" />
+            )}
+            Ekspor Laporan Lazsip
+          </button>
+          <div className="flex items-center gap-2 bg-white rounded-xl p-1 border border-stone-200 shadow-sm">
           {["ALL", "PENDING", "DISETUJUI", "DITOLAK"].map(status => (
             <button
               key={status}
@@ -56,6 +97,7 @@ export default function AdminBeasiswaListPage() {
           ))}
         </div>
       </div>
+    </div>
 
       <div className="bg-white border border-stone-200 shadow-sm rounded-2xl overflow-hidden">
         {loading ? (
