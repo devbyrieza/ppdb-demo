@@ -88,6 +88,7 @@ export async function GET(req: NextRequest) {
       }
       const pekerjaan_ayah = isAyahMeninggal ? "Sudah Meninggal" : (cleanVal(ot.pekerjaan_ayah) || cleanVal(ayah.pekerjaan) || "-");
       const hp_ayah = isAyahMeninggal ? "Sudah Meninggal" : (getCleanPhone([ot.no_hp_ayah, ayah.no_hp, ayah.no_wa]) || "-");
+      const penghasilan_ayah = isAyahMeninggal ? "Sudah Meninggal" : (cleanVal(ot.penghasilan_ayah) || cleanVal(ayah.penghasilan) || "-");
 
       let nama_ibu = cleanVal(ot.nama_ibu) || cleanVal(ibu.nama_lengkap) || "-";
       if (isIbuMeninggal) {
@@ -95,6 +96,7 @@ export async function GET(req: NextRequest) {
       }
       const pekerjaan_ibu = isIbuMeninggal ? "Sudah Meninggal" : (cleanVal(ot.pekerjaan_ibu) || cleanVal(ibu.pekerjaan) || "-");
       const hp_ibu = isIbuMeninggal ? "Sudah Meninggal" : (getCleanPhone([ot.no_hp_ibu, ibu.no_hp, ibu.no_wa]) || "-");
+      const penghasilan_ibu = isIbuMeninggal ? "Sudah Meninggal" : (cleanVal(ot.penghasilan_ibu) || cleanVal(ibu.penghasilan) || "-");
 
       return {
         nik: cleanVal(p?.nik) || cleanVal(santri.nik) || "-",
@@ -102,9 +104,11 @@ export async function GET(req: NextRequest) {
         nama_ayah,
         pekerjaan_ayah,
         hp_ayah,
+        penghasilan_ayah,
         nama_ibu,
         pekerjaan_ibu,
         hp_ibu,
+        penghasilan_ibu,
         status_kelulusan: p?.hasil_seleksi?.status_seleksi || p?.status_pendaftaran || "DITERIMA"
       };
     };
@@ -145,14 +149,14 @@ export async function GET(req: NextRequest) {
       const headerColor = "800000";
       const headerTextColor = "FFFFFF";
 
-      sheet.mergeCells("A1:S1");
+      sheet.mergeCells("A1:U1");
       const titleCell = sheet.getCell("A1");
       titleCell.value = `LAPORAN PENERIMA ${sheetName.toUpperCase()} - PESANTREN AL-ANDALUS`;
       titleCell.font = { name: "Arial", size: 16, bold: true, color: { argb: headerColor } };
       titleCell.alignment = { vertical: "middle", horizontal: "center" };
       sheet.getRow(1).height = 40;
 
-      sheet.mergeCells("A2:S2");
+      sheet.mergeCells("A2:U2");
       const subtitleCell = sheet.getCell("A2");
       subtitleCell.value = `Tahun Ajaran: 2026/2027 | Tanggal Ekspor: ${new Date().toLocaleDateString("id-ID")}`;
       subtitleCell.font = { name: "Arial", size: 11, italic: true };
@@ -163,8 +167,8 @@ export async function GET(req: NextRequest) {
 
       const headers = [
         "No", "No. Pendaftaran", "NIK Santri", "Nama Santri", "Jenjang", "No. HP Santri",
-        "Nama Ayah", "Pekerjaan Ayah", "No. HP Ayah",
-        "Nama Ibu", "Pekerjaan Ibu", "No. HP Ibu",
+        "Nama Ayah", "Pekerjaan Ayah", "No. HP Ayah", "Penghasilan Ayah",
+        "Nama Ibu", "Pekerjaan Ibu", "No. HP Ibu", "Penghasilan Ibu",
         "Potongan Uang Pangkal", "Potongan SPP", "Total Potongan",
         "Sisa Uang Pangkal", "Sisa SPP", "Total Sisa Tagihan",
         "Status"
@@ -246,9 +250,11 @@ export async function GET(req: NextRequest) {
           info.nama_ayah,
           info.pekerjaan_ayah,
           info.hp_ayah,
+          info.penghasilan_ayah,
           info.nama_ibu,
           info.pekerjaan_ibu,
           info.hp_ibu,
+          info.penghasilan_ibu,
           potUP,
           potSPP,
           totalPotongan,
@@ -270,9 +276,9 @@ export async function GET(req: NextRequest) {
             right: { style: "thin" }
           };
 
-          if (colIndex === 1 || colIndex === 2 || colIndex === 5 || colIndex === 19) {
+          if (colIndex === 1 || colIndex === 2 || colIndex === 5 || colIndex === 21) {
             cell.alignment = { vertical: "middle", horizontal: "center" };
-          } else if (colIndex >= 13 && colIndex <= 18) {
+          } else if (colIndex >= 15 && colIndex <= 20) {
             cell.alignment = { vertical: "middle", horizontal: "right" };
             cell.numFmt = "#,##0";
           } else {
