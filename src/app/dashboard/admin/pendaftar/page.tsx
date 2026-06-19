@@ -1036,20 +1036,12 @@ function AdminPendaftarContent() {
         const translateStatus = (status: string, dataLengkap?: any) => {
           if (!status) return "-";
           const s = status.toLowerCase().trim();
-          if (s === "paid" || s === "verified") {
-            let isFilled = false;
-            if (dataLengkap) {
-              try {
-                const parsed = typeof dataLengkap === "string" ? JSON.parse(dataLengkap) : dataLengkap;
-                if (parsed && Object.keys(parsed).length > 0) isFilled = true;
-              } catch (e) {}
-            }
-            return isFilled ? "Terdaftar (Belum Upload Berkas)" : "Terdaftar (Belum Isi Data)";
-          }
           const statusMap: Record<string, string> = {
             draft: "Draft",
             awaiting_payment: "Draft",
             payment_verification: "Verifikasi Bayar",
+            paid: "Terdaftar",
+            verified: "Terdaftar",
             data_completed: "Data Lengkap",
             docs_uploaded: "Data Lengkap",
             docs_verified: "Berkas Lengkap",
@@ -1123,103 +1115,94 @@ function AdminPendaftarContent() {
 
   const formatStatus = (status: string, dataLengkap?: any) => {
     const s = status.toLowerCase().trim();
-    let label = status;
-    let color = "bg-stone-100 text-stone-700";
+    const statusMap: Record<string, { label: string; color: string }> = {
+      draft: { label: "Draft", color: "bg-stone-100 text-stone-700 border border-stone-200" },
+      awaiting_payment: {
+        label: "Draft",
+        color: "bg-stone-100 text-stone-700 border border-stone-200",
+      },
+      payment_verification: {
+        label: "Verifikasi Bayar",
+        color: "bg-primary-50 text-primary-700 border border-primary-100",
+      },
+      paid: {
+        label: "Terdaftar",
+        color: "bg-primary-100 text-primary-800 border border-primary-200",
+      },
+      verified: {
+        label: "Terdaftar",
+        color: "bg-primary-100 text-primary-800 border border-primary-200",
+      },
+      data_completed: {
+        label: "Data Lengkap",
+        color: "bg-gold-50 text-gold-800 border border-gold-100",
+      },
+      docs_uploaded: {
+        label: "Data Lengkap",
+        color: "bg-gold-50 text-gold-800 border border-gold-100",
+      },
+      docs_verified: {
+        label: "Berkas Lengkap",
+        color: "bg-emerald-50 text-emerald-800 border border-emerald-100",
+      },
+      selection: {
+        label: "Proses Seleksi",
+        color: "bg-purple-50 text-purple-800 border border-purple-100",
+      },
+      scheduled: {
+        label: "Proses Seleksi",
+        color: "bg-purple-50 text-purple-800 border border-purple-100",
+      },
+      testing: {
+        label: "Proses Seleksi",
+        color: "bg-purple-50 text-purple-800 border border-purple-100",
+      },
+      tested: {
+        label: "Proses Seleksi",
+        color: "bg-purple-100 text-purple-800 border border-purple-200 shadow-sm",
+      },
+      exam_completed: {
+        label: "Proses Seleksi",
+        color: "bg-purple-100 text-purple-800 border border-purple-200 shadow-sm",
+      },
+      announced: {
+        label: "Cadangan",
+        color: "bg-gold-100 text-gold-800 border border-gold-200",
+      },
+      cadangan: {
+        label: "Cadangan",
+        color: "bg-gold-100 text-gold-800 border border-gold-200",
+      },
+      accepted: { label: "Diterima", color: "bg-emerald-600 text-white" },
+      rejected: { label: "Ditolak", color: "bg-rose-600 text-white" },
+      enrolled: {
+        label: "Proses Daftar Ulang",
+        color: "bg-emerald-100 text-emerald-800",
+      },
+      enrolled_full: {
+        label: "Lunas Daftar Ulang",
+        color: "bg-primary-100 text-primary-800 border border-primary-200",
+      },
+      pindah_keluar: {
+        label: "Pindah Keluar",
+        color: "bg-slate-100 text-slate-600 border border-slate-200",
+      },
+      mengundurkan_diri: {
+        label: "Mengundurkan Diri",
+        color: "bg-stone-100 text-stone-500 border border-stone-200 line-through",
+      },
+    };
 
-    if (s === "paid" || s === "verified") {
-      let isFilled = false;
-      if (dataLengkap) {
-        try {
-          const parsed = typeof dataLengkap === "string" ? JSON.parse(dataLengkap) : dataLengkap;
-          if (parsed && Object.keys(parsed).length > 0) isFilled = true;
-        } catch (e) {}
-      }
-      label = isFilled ? "Terdaftar (Belum Upload Berkas)" : "Terdaftar (Belum Isi Data)";
-      color = "bg-primary-100 text-primary-800 border border-primary-200";
-    } else {
-      const statusMap: Record<string, { label: string; color: string }> = {
-        draft: { label: "Draft", color: "bg-stone-100 text-stone-700 border border-stone-200" },
-        awaiting_payment: {
-          label: "Draft",
-          color: "bg-stone-100 text-stone-700 border border-stone-200",
-        },
-        payment_verification: {
-          label: "Verifikasi Bayar",
-          color: "bg-primary-50 text-primary-700 border border-primary-100",
-        },
-        data_completed: {
-          label: "Data Lengkap",
-          color: "bg-gold-50 text-gold-800 border border-gold-100",
-        },
-        docs_uploaded: {
-          label: "Data Lengkap",
-          color: "bg-gold-50 text-gold-800 border border-gold-100",
-        },
-        docs_verified: {
-          label: "Berkas Lengkap",
-          color: "bg-emerald-50 text-emerald-800 border border-emerald-100",
-        },
-        selection: {
-          label: "Proses Seleksi",
-          color: "bg-purple-50 text-purple-800 border border-purple-100",
-        },
-        scheduled: {
-          label: "Proses Seleksi",
-          color: "bg-purple-50 text-purple-800 border border-purple-100",
-        },
-        testing: {
-          label: "Proses Seleksi",
-          color: "bg-purple-50 text-purple-800 border border-purple-100",
-        },
-        tested: {
-          label: "Proses Seleksi",
-          color: "bg-purple-100 text-purple-800 border border-purple-200 shadow-sm",
-        },
-        exam_completed: {
-          label: "Proses Seleksi",
-          color: "bg-purple-100 text-purple-800 border border-purple-200 shadow-sm",
-        },
-        announced: {
-          label: "Cadangan",
-          color: "bg-gold-100 text-gold-800 border border-gold-200",
-        },
-        cadangan: {
-          label: "Cadangan",
-          color: "bg-gold-100 text-gold-800 border border-gold-200",
-        },
-        accepted: { label: "Diterima", color: "bg-emerald-600 text-white" },
-        rejected: { label: "Ditolak", color: "bg-rose-600 text-white" },
-        enrolled: {
-          label: "Proses Daftar Ulang",
-          color: "bg-emerald-100 text-emerald-800",
-        },
-        enrolled_full: {
-          label: "Lunas Daftar Ulang",
-          color: "bg-primary-100 text-primary-800 border border-primary-200",
-        },
-        pindah_keluar: {
-          label: "Pindah Keluar",
-          color: "bg-slate-100 text-slate-600 border border-slate-200",
-        },
-        mengundurkan_diri: {
-          label: "Mengundurkan Diri",
-          color: "bg-stone-100 text-stone-500 border border-stone-200 line-through",
-        },
-      };
-
-      const statusInfo = statusMap[s] || {
-        label: status,
-        color: "bg-stone-100 text-stone-700",
-      };
-      label = statusInfo.label;
-      color = statusInfo.color;
-    }
+    const statusInfo = statusMap[s] || {
+      label: status,
+      color: "bg-stone-100 text-stone-700",
+    };
 
     return (
       <span
-        className={`px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap ${color}`}
+        className={`px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap ${statusInfo.color}`}
       >
-        {label}
+        {statusInfo.label}
       </span>
     );
   };

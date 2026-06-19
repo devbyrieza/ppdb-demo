@@ -17,20 +17,12 @@ const toTitleCase = (str: string) => {
 const translateStatus = (status: string, dataLengkap?: any) => {
   if (!status) return "-";
   const s = status.toLowerCase().trim();
-  if (s === "paid" || s === "verified") {
-    let isFilled = false;
-    if (dataLengkap) {
-      try {
-        const parsed = typeof dataLengkap === "string" ? JSON.parse(dataLengkap) : dataLengkap;
-        if (parsed && Object.keys(parsed).length > 0) isFilled = true;
-      } catch (e) {}
-    }
-    return isFilled ? "Terdaftar (Belum Upload Berkas)" : "Terdaftar (Belum Isi Data)";
-  }
   const statusMap: Record<string, string> = {
     draft: "Draft",
     awaiting_payment: "Draft",
     payment_verification: "Verifikasi Bayar",
+    paid: "Terdaftar",
+    verified: "Terdaftar",
     data_completed: "Data Lengkap",
     docs_uploaded: "Data Lengkap",
     docs_verified: "Berkas Lengkap",

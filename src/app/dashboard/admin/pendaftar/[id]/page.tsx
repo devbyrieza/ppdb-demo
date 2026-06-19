@@ -705,19 +705,6 @@ export default function PendaftarDetailPage() {
 
   const formatStatus = (status: string, dataLengkap?: any) => {
     const s = status.toLowerCase().trim();
-    if (s === "paid" || s === "verified") {
-      let isFilled = false;
-      if (dataLengkap) {
-        try {
-          const parsed = typeof dataLengkap === "string" ? JSON.parse(dataLengkap) : dataLengkap;
-          if (parsed && Object.keys(parsed).length > 0) isFilled = true;
-        } catch (e) {}
-      }
-      return {
-        label: isFilled ? "Terdaftar (Belum Upload Berkas)" : "Terdaftar (Belum Isi Data)",
-        color: "bg-primary-100 text-primary-800 border border-primary-200",
-      };
-    }
     const statusMap: Record<string, { label: string; color: string }> = {
       draft: { label: "Draft", color: "bg-stone-100 text-stone-700" },
       awaiting_payment: {
@@ -727,6 +714,14 @@ export default function PendaftarDetailPage() {
       payment_verification: {
         label: "Verifikasi Bayar",
         color: "bg-primary-50 text-primary-700 border border-primary-100",
+      },
+      paid: {
+        label: "Terdaftar",
+        color: "bg-primary-100 text-primary-800 border border-primary-200",
+      },
+      verified: {
+        label: "Terdaftar",
+        color: "bg-primary-100 text-primary-800 border border-primary-200",
       },
       data_completed: {
         label: "Data Lengkap",
@@ -745,6 +740,10 @@ export default function PendaftarDetailPage() {
         color: "bg-purple-50 text-purple-800 border border-purple-100",
       },
       testing: {
+        label: "Proses Seleksi",
+        color: "bg-purple-50 text-purple-800 border border-purple-100",
+      },
+      selection: {
         label: "Proses Seleksi",
         color: "bg-purple-50 text-purple-800 border border-purple-100",
       },
@@ -769,6 +768,10 @@ export default function PendaftarDetailPage() {
       mengundurkan_diri: {
         label: "Mengundurkan Diri",
         color: "bg-stone-600 text-white",
+      },
+      pindah_keluar: {
+        label: "Pindah Keluar",
+        color: "bg-slate-100 text-slate-600 border border-slate-200",
       },
       enrolled: {
         label: "Proses Daftar Ulang",
