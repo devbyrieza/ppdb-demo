@@ -165,11 +165,14 @@ export async function GET(req: NextRequest) {
 
       sheet.addRow([]);
 
+      const isBeasiswa = sheetName.toLowerCase().includes("beasiswa");
       const headers = [
         "No", "No. Pendaftaran", "NIK Santri", "Nama Santri", "Jenjang", "No. HP Santri",
         "Nama Ayah", "Pekerjaan Ayah", "No. HP Ayah", "Penghasilan Ayah",
         "Nama Ibu", "Pekerjaan Ibu", "No. HP Ibu", "Penghasilan Ibu",
-        "Potongan Uang Pangkal", "Potongan SPP", "Total Potongan",
+        isBeasiswa ? "Beasiswa Uang Pangkal" : "Potongan Uang Pangkal",
+        isBeasiswa ? "Beasiswa SPP" : "Potongan SPP",
+        isBeasiswa ? "Total Beasiswa" : "Total Potongan",
         "Sisa Uang Pangkal", "Sisa SPP", "Total Sisa Tagihan",
         "Status"
       ];
