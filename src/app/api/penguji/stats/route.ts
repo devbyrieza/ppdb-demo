@@ -108,6 +108,68 @@ export async function GET() {
       }
     }
 
+    // Fetch participants assigned via detail_akademik JSON mapping (bypass payment status)
+    const assignedByJSON = await prisma.nilaiUjian.findMany({
+      where: {
+        OR: [
+          {
+            detail_akademik: {
+              path: ["assigned_examiners", "quran"],
+              equals: userId,
+            },
+          },
+          {
+            detail_akademik: {
+              path: ["assigned_examiners", "wawancara_santri"],
+              equals: userId,
+            },
+          },
+          {
+            detail_akademik: {
+              path: ["assigned_examiners", "wawancara_ortu"],
+              equals: userId,
+            },
+          },
+        ],
+      },
+      include: {
+        pendaftar: {
+          include: {
+            nilai_ujian: true,
+          },
+        },
+      },
+    });
+
+    for (const item of assignedByJSON) {
+      if (!item.pendaftar) continue;
+      const pendaftarId = item.pendaftar.id;
+
+      const roles: string[] = [];
+      const detailAkademik = (item.detail_akademik as any) || {};
+      const assigned = detailAkademik.assigned_examiners || {};
+
+      if (assigned.quran === userId) roles.push("quran");
+      if (assigned.wawancara_santri === userId) roles.push("santri");
+      if (assigned.wawancara_ortu === userId) roles.push("ortu");
+
+      if (roles.length === 0) continue;
+
+      if (pesertaMap.has(pendaftarId)) {
+        const existing = pesertaMap.get(pendaftarId);
+        roles.forEach((r) => {
+          if (!existing.roles.includes(r)) existing.roles.push(r);
+        });
+      } else {
+        pesertaMap.set(pendaftarId, {
+          id: pendaftarId,
+          roles: roles,
+          isToday: false,
+          nilai_ujian: item.pendaftar.nilai_ujian || [],
+        });
+      }
+    }
+
     const uniquePeserta = Array.from(pesertaMap.values());
     const total_jadwal = uniquePeserta.length;
     const jadwal_hari_ini = uniquePeserta.filter((p) => p.isToday).length;

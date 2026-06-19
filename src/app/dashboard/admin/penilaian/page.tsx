@@ -59,6 +59,9 @@ export default function ExaminerDashboard() {
   const [usersList, setUsersList] = useState<any[]>([]);
   const [selectedExaminerId, setSelectedExaminerId] = useState("");
   const [currentUserId, setCurrentUserId] = useState("");
+  const [assignStudent, setAssignStudent] = useState<Student | null>(null);
+  const [assignType, setAssignType] = useState<"quran" | "wawancara_santri" | "wawancara_ortu">("quran");
+  const [assignExaminerId, setAssignExaminerId] = useState("");
 
   // Form State for Modal
   const [inputType, setInputType] = useState<
@@ -307,6 +310,64 @@ export default function ExaminerDashboard() {
     } finally {
       setIsProcessingQueue(false);
       setFlushProgress(0);
+    }
+  };
+
+  const handleOpenAssignDialog = (student: Student) => {
+    setAssignStudent(student);
+    setAssignType("quran");
+    try {
+      const da = student.nilai_ujian?.detail_akademik;
+      const parsedDa = typeof da === "string" ? JSON.parse(da) : da;
+      if (parsedDa?.assigned_examiners?.quran) {
+        setAssignExaminerId(parsedDa.assigned_examiners.quran);
+      } else {
+        setAssignExaminerId("");
+      }
+    } catch (e) {
+      setAssignExaminerId("");
+    }
+  };
+
+  const handleAssignTypeChange = (type: "quran" | "wawancara_santri" | "wawancara_ortu", student: Student) => {
+    setAssignType(type);
+    try {
+      const da = student.nilai_ujian?.detail_akademik;
+      const parsedDa = typeof da === "string" ? JSON.parse(da) : da;
+      if (parsedDa?.assigned_examiners?.[type]) {
+        setAssignExaminerId(parsedDa.assigned_examiners[type]);
+      } else {
+        setAssignExaminerId("");
+      }
+    } catch (e) {
+      setAssignExaminerId("");
+    }
+  };
+
+  const handleSaveAssignment = async () => {
+    if (!assignStudent) return;
+    try {
+      const res = await fetch("/api/penilaian/assign", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          pendaftar_id: assignStudent.id,
+          type: assignType,
+          examiner_id: assignExaminerId,
+        }),
+      });
+
+      if (res.ok) {
+        Swal.fire("Berhasil", "Penugasan penguji berhasil diperbarui", "success");
+        setAssignStudent(null);
+        fetchStudents();
+      } else {
+        const err = await res.json();
+        Swal.fire("Gagal", err.error || "Gagal memperbarui penugasan", "error");
+      }
+    } catch (e) {
+      console.error(e);
+      Swal.fire("Gagal", "Terjadi kesalahan sistem", "error");
     }
   };
 
@@ -970,12 +1031,20 @@ export default function ExaminerDashboard() {
                         <td className="px-6 py-4 whitespace-nowrap text-center">
                           <div className="flex justify-center items-center gap-1">
                             {isAdminSuper && (
-                              <button
-                                onClick={() => handleOpenSkipDialog(s)}
-                                className="flex items-center gap-1.5 bg-amber-500 text-white px-3 py-1.5 rounded-xl text-[10px] font-black hover:bg-amber-600 transition-all shadow-md group-hover:scale-105"
-                              >
-                                <Zap className="w-3 h-3" /> BYPASS
-                              </button>
+                              <>
+                                <button
+                                  onClick={() => handleOpenSkipDialog(s)}
+                                  className="flex items-center gap-1.5 bg-amber-500 text-white px-3 py-1.5 rounded-xl text-[10px] font-black hover:bg-amber-600 transition-all shadow-md group-hover:scale-105"
+                                >
+                                  <Zap className="w-3 h-3" /> BYPASS
+                                </button>
+                                <button
+                                  onClick={() => handleOpenAssignDialog(s)}
+                                  className="flex items-center gap-1.5 bg-blue-600 text-white px-3 py-1.5 rounded-xl text-[10px] font-black hover:bg-blue-700 transition-all shadow-md group-hover:scale-105"
+                                >
+                                  <Users className="w-3 h-3" /> PLOT
+                                </button>
+                              </>
                             )}
                             <button
                               onClick={() => handleOpenInput(s, "quran")}
@@ -1155,12 +1224,20 @@ export default function ExaminerDashboard() {
                     {/* Action Buttons */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                       {isAdminSuper && (
-                        <button
-                          onClick={() => handleOpenSkipDialog(s)}
-                          className="flex items-center justify-center gap-2 bg-amber-500 text-white py-3 rounded-2xl text-[11px] font-black shadow-lg shadow-amber-500/20 active:scale-95 transition-all col-span-full"
-                        >
-                          <Zap className="w-3.5 h-3.5" /> BYPASS / SKIP
-                        </button>
+                        <div className="grid grid-cols-2 gap-2 col-span-full">
+                          <button
+                            onClick={() => handleOpenSkipDialog(s)}
+                            className="flex items-center justify-center gap-2 bg-amber-500 text-white py-3 rounded-2xl text-[11px] font-black shadow-lg shadow-amber-500/20 active:scale-95 transition-all"
+                          >
+                            <Zap className="w-3.5 h-3.5" /> BYPASS
+                          </button>
+                          <button
+                            onClick={() => handleOpenAssignDialog(s)}
+                            className="flex items-center justify-center gap-2 bg-blue-600 text-white py-3 rounded-2xl text-[11px] font-black shadow-lg shadow-blue-500/20 active:scale-95 transition-all"
+                          >
+                            <Users className="w-3.5 h-3.5" /> PLOT
+                          </button>
+                        </div>
                       )}
                       <button
                         onClick={() => handleOpenInput(s, "quran")}
@@ -1357,6 +1434,113 @@ export default function ExaminerDashboard() {
                       : "Kirim Seluruh Antrean"}
                   </Button>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Custom Modal for Assign Examiner (PLOT) */}
+      {assignStudent && (
+        <div
+          className="fixed inset-0 z-50 overflow-y-auto p-4"
+          aria-labelledby="modal-title"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div
+              className="fixed inset-0 bg-ink-900/60 backdrop-blur-sm transition-opacity overflow-y-auto overflow-x-hidden p-4"
+              aria-hidden="true"
+              onClick={() => setAssignStudent(null)}
+            ></div>
+            <span
+              className="hidden sm:inline-block sm:align-middle sm:h-screen"
+              aria-hidden="true"
+            >
+              &#8203;
+            </span>
+            <div className="inline-block align-bottom bg-white rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-white/20">
+              <div className="bg-white px-6 pt-8 pb-6 sm:p-5 md:p-8">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="p-3 bg-primary-50 text-primary-600 rounded-2xl">
+                    <Users className="w-5 h-5 font-black" />
+                  </div>
+                  <h3
+                    className="text-xl leading-6 font-black text-ink-900"
+                    id="modal-title"
+                  >
+                    Plotting Penguji / Pewawancara
+                  </h3>
+                </div>
+
+                <div className="bg-ink-50 rounded-2xl p-4 mb-6 border border-ink-100">
+                  <p className="text-[10px] font-black text-ink-400 uppercase tracking-widest mb-1">
+                    Peserta
+                  </p>
+                  <p className="text-lg font-black text-ink-900">
+                    {(assignStudent.nama_lengkap || "").replace(
+                      /\w\S*/g,
+                      (txt) =>
+                        txt.charAt(0).toUpperCase() +
+                        txt.substr(1).toLowerCase(),
+                    )}
+                  </p>
+                  <p className="text-xs font-bold text-ink-500 font-mono mt-0.5">
+                    {assignStudent.nomor_pendaftaran || "-"} •{" "}
+                    {assignStudent.jenjang || "-"}
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-black text-ink-400 uppercase tracking-wider mb-2">
+                      Jenis Seleksi
+                    </label>
+                    <select
+                      value={assignType}
+                      onChange={(e) => handleAssignTypeChange(e.target.value as any, assignStudent)}
+                      className="w-full bg-ink-50 border border-ink-100 rounded-xl px-4 py-3 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-primary-600/10 outline-none"
+                    >
+                      <option value="quran">Tes Al-Qur&apos;an</option>
+                      <option value="wawancara_santri">Wawancara Calon Santri</option>
+                      <option value="wawancara_ortu">Wawancara Orang Tua/Wali</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-black text-ink-400 uppercase tracking-wider mb-2">
+                      Pilih Penguji / Pewawancara
+                    </label>
+                    <select
+                      value={assignExaminerId}
+                      onChange={(e) => setAssignExaminerId(e.target.value)}
+                      className="w-full bg-ink-50 border border-ink-100 rounded-xl px-4 py-3 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-primary-600/10 outline-none"
+                    >
+                      <option value="">-- Pilih Staff/Penguji (Kosongkan untuk Hapus) --</option>
+                      {usersList.map((u) => (
+                        <option key={u.id} value={u.id}>
+                          {u.full_name} ({u.role.replace("_", " ").toUpperCase()})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-ink-50 px-6 py-6 sm:px-5 md:px-8 sm:flex sm:flex-row-reverse gap-3 border-t border-ink-100">
+                <Button
+                  onClick={handleSaveAssignment}
+                  className="w-full sm:w-auto bg-primary-600 hover:bg-primary-700 text-white rounded-2xl px-5 md:px-8 py-3 font-black shadow-lg shadow-primary-600/20"
+                >
+                  Simpan Penugasan
+                </Button>
+                <button
+                  type="button"
+                  onClick={() => setAssignStudent(null)}
+                  className="mt-3 sm:mt-0 w-full sm:w-auto bg-white border border-ink-200 text-ink-600 hover:bg-ink-100 rounded-2xl px-5 md:px-8 py-3 font-black shadow-sm transition-all"
+                >
+                  Batal
+                </button>
               </div>
             </div>
           </div>

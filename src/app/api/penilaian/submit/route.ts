@@ -72,30 +72,48 @@ export async function POST(req: Request) {
     // --- ACCESS GUARD: Check pendaftar status ---
     // Super admin can bypass, but examiners/others must wait for verification
     if (!isSuper) {
-      const pendaftar = await prisma.pendaftar.findUnique({
-        where: { id: pendaftar_id },
-        select: { status_pendaftaran: true },
+      // Check if this examiner is explicitly assigned to this student for this exam type
+      const nilai = await prisma.nilaiUjian.findFirst({
+        where: { pendaftar_id },
+        select: { detail_akademik: true }
       });
+      
+      let isAssigned = false;
+      if (nilai && nilai.detail_akademik) {
+        const da = typeof nilai.detail_akademik === "string"
+          ? JSON.parse(nilai.detail_akademik)
+          : nilai.detail_akademik;
+        if (da.assigned_examiners && da.assigned_examiners[type] === (session.user_id || session.id)) {
+          isAssigned = true;
+        }
+      }
 
-      const ALLOWED_STATUSES = [
-        "docs_verified",
-        "scheduled",
-        "tested",
-        "announced",
-        "accepted",
-        "enrolled",
-      ];
-      if (
-        !pendaftar ||
-        !ALLOWED_STATUSES.includes(pendaftar.status_pendaftaran || "")
-      ) {
-        return NextResponse.json(
-          {
-            error:
-              'Forbidden: Input nilai ditolak karena pendaftar belum berstatus "Terverifikasi Berkas".',
-          },
-          { status: 403 },
-        );
+      if (!isAssigned) {
+        const pendaftar = await prisma.pendaftar.findUnique({
+          where: { id: pendaftar_id },
+          select: { status_pendaftaran: true },
+        });
+
+        const ALLOWED_STATUSES = [
+          "docs_verified",
+          "scheduled",
+          "tested",
+          "announced",
+          "accepted",
+          "enrolled",
+        ];
+        if (
+          !pendaftar ||
+          !ALLOWED_STATUSES.includes(pendaftar.status_pendaftaran || "")
+        ) {
+          return NextResponse.json(
+            {
+              error:
+                'Forbidden: Input nilai ditolak karena pendaftar belum berstatus "Terverifikasi Berkas".',
+            },
+            { status: 403 },
+          );
+        }
       }
     }
 

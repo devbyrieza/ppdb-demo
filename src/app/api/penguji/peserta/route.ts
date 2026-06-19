@@ -237,6 +237,113 @@ export async function GET() {
       }
     }
 
+    // Fetch participants assigned via detail_akademik JSON mapping (bypass payment status)
+    const assignedByJSON = await prisma.nilaiUjian.findMany({
+      where: {
+        OR: [
+          {
+            detail_akademik: {
+              path: ["assigned_examiners", "quran"],
+              equals: userId,
+            },
+          },
+          {
+            detail_akademik: {
+              path: ["assigned_examiners", "wawancara_santri"],
+              equals: userId,
+            },
+          },
+          {
+            detail_akademik: {
+              path: ["assigned_examiners", "wawancara_ortu"],
+              equals: userId,
+            },
+          },
+          {
+            detail_akademik: {
+              path: ["assigned_examiners", "hafalan"],
+              equals: userId,
+            },
+          },
+          {
+            detail_akademik: {
+              path: ["assigned_examiners", "lisan_arab"],
+              equals: userId,
+            },
+          },
+        ],
+      },
+      include: {
+        pendaftar: {
+          select: {
+            id: true,
+            nama_lengkap: true,
+            nomor_pendaftaran: true,
+            jenjang: true,
+            nilai_ujian: true,
+            created_at: true,
+          },
+        },
+      },
+    });
+
+    for (const item of assignedByJSON) {
+      if (!item.pendaftar) continue;
+      const pendaftarId = item.pendaftar.id;
+
+      const roles: string[] = [];
+      const detailAkademik = (item.detail_akademik as any) || {};
+      const assigned = detailAkademik.assigned_examiners || {};
+
+      if (assigned.quran === userId) roles.push("quran");
+      if (assigned.wawancara_santri === userId) roles.push("wawancara");
+      if (assigned.wawancara_ortu === userId) roles.push("ortu");
+      if (assigned.hafalan === userId) roles.push("hafalan");
+      if (assigned.lisan_arab === userId) roles.push("lisan_arab");
+
+      if (roles.length === 0) continue;
+
+      const scoreData: any = item || {};
+
+      if (pesertaMap.has(pendaftarId)) {
+        const existing = pesertaMap.get(pendaftarId);
+        for (const r of roles) {
+          if (!existing.roles.includes(r)) existing.roles.push(r);
+        }
+        // Merge scoreData fields
+        Object.entries(scoreData).forEach(([k, v]) => {
+          if (!isEmpty(v) && isEmpty(existing[k])) {
+            existing[k] = v;
+          }
+        });
+      } else {
+        pesertaMap.set(pendaftarId, {
+          id: pendaftarId,
+          nama_lengkap: item.pendaftar.nama_lengkap,
+          nomor_pendaftaran: item.pendaftar.nomor_pendaftaran,
+          jenjang: item.pendaftar.jenjang,
+          jadwal_id: item.jadwal_ujian_id || null,
+          roles: roles,
+          nilai_id: item.id || null,
+          nilai_wawancara_santri: scoreData.nilai_wawancara_santri,
+          nilai_tes_quran: scoreData.nilai_tes_quran,
+          nilai_tes_hafalan: scoreData.nilai_tes_hafalan,
+          nilai_tes_lisan_arab: scoreData.nilai_tes_lisan_arab,
+          nilai_wawancara_ortu: scoreData.nilai_wawancara_ortu,
+          catatan_santri: scoreData.catatan_santri,
+          catatan_quran: scoreData.catatan_quran,
+          catatan_ortu: scoreData.catatan_ortu,
+          detail_quran: scoreData.detail_quran,
+          detail_wawancara: scoreData.detail_wawancara,
+          detail_cawalsan: scoreData.detail_cawalsan,
+          input_at_quran: scoreData.input_at_quran,
+          input_at_santri: scoreData.input_at_santri,
+          input_at_ortu: scoreData.input_at_ortu,
+          created_at: item.pendaftar.created_at,
+        });
+      }
+    }
+
     const data = Array.from(pesertaMap.values());
 
     return NextResponse.json({ data });
