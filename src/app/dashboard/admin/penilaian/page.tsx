@@ -40,6 +40,7 @@ type Student = {
     score_kepribadian: number;
     score_kesiapan: number;
     nilai_wawancara_ortu: number;
+    detail_akademik?: any;
   };
   whatsapp_status?: {
     status: string;
@@ -54,6 +55,7 @@ export default function ExaminerDashboard() {
   const [loading, setLoading] = useState(true);
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isAdminSuper, setIsAdminSuper] = useState(false);
 
   // Form State for Modal
   const [inputType, setInputType] = useState<
@@ -96,7 +98,22 @@ export default function ExaminerDashboard() {
 
   useEffect(() => {
     fetchStudents();
+    checkUserRole();
   }, []);
+
+  const checkUserRole = async () => {
+    try {
+      const res = await fetch("/api/auth/session");
+      if (res.ok) {
+        const data = await res.json();
+        if (data?.session?.role === "admin_super") {
+          setIsAdminSuper(true);
+        }
+      }
+    } catch (e) {
+      console.error("Error checking session:", e);
+    }
+  };
 
   const fetchStudents = async () => {
     try {
@@ -264,6 +281,107 @@ export default function ExaminerDashboard() {
     } finally {
       setIsProcessingQueue(false);
       setFlushProgress(0);
+    }
+  };
+
+  const handleOpenSkipDialog = async (student: Student) => {
+    let currentSkipped: string[] = [];
+    try {
+      const da = student.nilai_ujian?.detail_akademik;
+      const parsedDa = typeof da === "string" ? JSON.parse(da) : da;
+      if (parsedDa && Array.isArray(parsedDa.skipped_stages)) {
+        currentSkipped = parsedDa.skipped_stages;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+
+    const stages = [
+      { id: "QURAN", label: "Al-Qur'an (Bobot 30%)" },
+      { id: "AKADEMIK", label: "Akademik (Bobot 30%)" },
+      { id: "WAWANCARA_SANTRI", label: "Wawancara Calon Santri (Bobot 10%)" },
+      { id: "WAWANCARA_ORTU", label: "Wawancara Orang Tua (Bobot 10%)" },
+      { id: "KEPRIBADIAN", label: "Kepribadian (Bobot 10%)" },
+      { id: "KESIAPAN", label: "Kesiapan (Bobot 10%)" },
+    ];
+
+    const checkboxesHtml = stages
+      .map(
+        (stg) => `
+        <div style="display: flex; align-items: center; margin-bottom: 12px; font-family: sans-serif; text-align: left;">
+          <input type="checkbox" id="skip_stage_${stg.id}" value="${stg.id}" ${
+          currentSkipped.includes(stg.id) ? "checked" : ""
+        } style="width: 18px; height: 18px; cursor: pointer; accent-color: #f59e0b; margin-right: 10px;" />
+          <label for="skip_stage_${stg.id}" style="font-size: 14px; font-weight: 600; cursor: pointer; color: #1f2937;">
+            ${stg.label}
+          </label>
+        </div>
+      `
+      )
+      .join("");
+
+    const result = await Swal.fire({
+      title: `<span style="font-family: sans-serif; font-size: 18px; font-weight: 800; color: #b45309;">BYPASS / SKIP SELEKSI</span>`,
+      html: `
+        <p style="font-family: sans-serif; font-size: 13px; color: #4b5563; margin-bottom: 20px; text-align: left; line-height: 1.5;">
+          Pilih tahapan seleksi yang ingin dilewati (bypass/skip) untuk <strong>${student.nama_lengkap.toUpperCase()}</strong>. Tahap yang di-skip akan otomatis lulus dengan grade A dan tidak dihitung dalam pembobotan nilai akhir.
+        </p>
+        <div style="background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px; margin-bottom: 8px;">
+          ${checkboxesHtml}
+        </div>
+      `,
+      showCancelButton: true,
+      confirmButtonColor: "#f59e0b",
+      confirmButtonText: "Simpan Konfigurasi",
+      cancelButtonText: "Batal",
+      preConfirm: () => {
+        const selected: string[] = [];
+        stages.forEach((stg) => {
+          const checkbox = document.getElementById(`skip_stage_${stg.id}`) as HTMLInputElement;
+          if (checkbox && checkbox.checked) {
+            selected.push(stg.id);
+          }
+        });
+        return selected;
+      },
+    });
+
+    if (result.isConfirmed) {
+      const skipped_stages = result.value || [];
+      try {
+        Swal.fire({
+          title: "Memproses...",
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        const res = await fetch("/api/penilaian/skip", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            pendaftar_id: student.id,
+            skipped_stages,
+          }),
+        });
+
+        if (!res.ok) {
+          const errorJson = await res.json();
+          throw new Error(errorJson.error || "Gagal menyimpan konfigurasi skip");
+        }
+
+        Swal.fire({
+          title: "Sukses!",
+          text: "Konfigurasi bypass berhasil disimpan dan nilai telah dikalkulasi ulang.",
+          icon: "success",
+        });
+
+        fetchStudents();
+      } catch (err: any) {
+        console.error(err);
+        Swal.fire("Error", err.message || "Gagal menyimpan konfigurasi skip", "error");
+      }
     }
   };
 
@@ -598,6 +716,23 @@ export default function ExaminerDashboard() {
                         {/* Kolom Nilai: Quran, Akad, Keprib, Sesuai, Siap */}
                         <td className="px-3 py-4 text-center whitespace-nowrap">
                           {(() => {
+                            let isSkipped = false;
+                            try {
+                              const da = s.nilai_ujian?.detail_akademik;
+                              const parsedDa = typeof da === "string" ? JSON.parse(da) : da;
+                              if (parsedDa && Array.isArray(parsedDa.skipped_stages)) {
+                                isSkipped = parsedDa.skipped_stages.includes("QURAN");
+                              }
+                            } catch (e) {}
+
+                            if (isSkipped) {
+                              return (
+                                <span className="bg-amber-100 text-amber-800 text-[10px] font-black px-2 py-1 rounded shadow-sm border border-amber-200">
+                                  SKIP
+                                </span>
+                              );
+                            }
+
                             const score = s.nilai_ujian?.score_quran;
                             if (score == null)
                               return <span className="text-ink-200">-</span>;
@@ -620,6 +755,23 @@ export default function ExaminerDashboard() {
                         </td>
                         <td className="px-3 py-4 text-center whitespace-nowrap">
                           {(() => {
+                            let isSkipped = false;
+                            try {
+                              const da = s.nilai_ujian?.detail_akademik;
+                              const parsedDa = typeof da === "string" ? JSON.parse(da) : da;
+                              if (parsedDa && Array.isArray(parsedDa.skipped_stages)) {
+                                isSkipped = parsedDa.skipped_stages.includes("AKADEMIK");
+                              }
+                            } catch (e) {}
+
+                            if (isSkipped) {
+                              return (
+                                <span className="bg-amber-100 text-amber-800 text-[10px] font-black px-2 py-1 rounded shadow-sm border border-amber-200">
+                                  SKIP
+                                </span>
+                              );
+                            }
+
                             const score = s.nilai_ujian?.score_akademik;
                             if (score == null)
                               return <span className="text-ink-200">-</span>;
@@ -642,6 +794,23 @@ export default function ExaminerDashboard() {
                         </td>
                         <td className="px-3 py-4 text-center whitespace-nowrap">
                           {(() => {
+                            let isSkipped = false;
+                            try {
+                              const da = s.nilai_ujian?.detail_akademik;
+                              const parsedDa = typeof da === "string" ? JSON.parse(da) : da;
+                              if (parsedDa && Array.isArray(parsedDa.skipped_stages)) {
+                                isSkipped = parsedDa.skipped_stages.includes("KEPRIBADIAN");
+                              }
+                            } catch (e) {}
+
+                            if (isSkipped) {
+                              return (
+                                <span className="bg-amber-100 text-amber-800 text-[10px] font-black px-2 py-1 rounded shadow-sm border border-amber-200">
+                                  SKIP
+                                </span>
+                              );
+                            }
+
                             const score = s.nilai_ujian?.score_kepribadian;
                             if (score == null)
                               return <span className="text-ink-200">-</span>;
@@ -664,11 +833,46 @@ export default function ExaminerDashboard() {
                         </td>
                         <td className="px-3 py-4 text-center whitespace-nowrap">
                           {(() => {
-                            const ws =
-                              s.nilai_ujian?.nilai_wawancara_santri || 0;
+                            let isWsSkipped = false;
+                            let isWoSkipped = false;
+                            try {
+                              const da = s.nilai_ujian?.detail_akademik;
+                              const parsedDa = typeof da === "string" ? JSON.parse(da) : da;
+                              if (parsedDa && Array.isArray(parsedDa.skipped_stages)) {
+                                isWsSkipped = parsedDa.skipped_stages.includes("WAWANCARA_SANTRI");
+                                isWoSkipped = parsedDa.skipped_stages.includes("WAWANCARA_ORTU");
+                              }
+                            } catch (e) {}
+
+                            if (isWsSkipped && isWoSkipped) {
+                              return (
+                                <span className="bg-amber-100 text-amber-800 text-[10px] font-black px-2 py-1 rounded shadow-sm border border-amber-200">
+                                  SKIP
+                                </span>
+                              );
+                            }
+
+                            const ws = s.nilai_ujian?.nilai_wawancara_santri || 0;
                             const wo = s.nilai_ujian?.nilai_wawancara_ortu || 0;
+
+                            if (isWsSkipped && wo === 0) {
+                              return (
+                                <span className="bg-amber-100 text-amber-800 text-[10px] font-black px-2 py-1 rounded shadow-sm border border-amber-200">
+                                  S: SKIP
+                                </span>
+                              );
+                            }
+                            if (isWoSkipped && ws === 0) {
+                              return (
+                                <span className="bg-amber-100 text-amber-800 text-[10px] font-black px-2 py-1 rounded shadow-sm border border-amber-200">
+                                  O: SKIP
+                                </span>
+                              );
+                            }
+
                             if (ws === 0 && wo === 0)
                               return <span className="text-ink-200">-</span>;
+
                             const score =
                               ws > 0 && wo > 0 ? (ws + wo) / 2 : ws || wo;
                             const grade =
@@ -683,13 +887,30 @@ export default function ExaminerDashboard() {
                               <span
                                 className={`${color} text-white text-[10px] font-black px-2 py-1 rounded shadow-sm`}
                               >
-                                {grade}
+                                {grade} {isWsSkipped ? "(S:SKIP)" : isWoSkipped ? "(O:SKIP)" : ""}
                               </span>
                             );
                           })()}
                         </td>
                         <td className="px-3 py-4 text-center whitespace-nowrap">
                           {(() => {
+                            let isSkipped = false;
+                            try {
+                              const da = s.nilai_ujian?.detail_akademik;
+                              const parsedDa = typeof da === "string" ? JSON.parse(da) : da;
+                              if (parsedDa && Array.isArray(parsedDa.skipped_stages)) {
+                                isSkipped = parsedDa.skipped_stages.includes("KESIAPAN");
+                              }
+                            } catch (e) {}
+
+                            if (isSkipped) {
+                              return (
+                                <span className="bg-amber-100 text-amber-800 text-[10px] font-black px-2 py-1 rounded shadow-sm border border-amber-200">
+                                  SKIP
+                                </span>
+                              );
+                            }
+
                             const score = s.nilai_ujian?.score_kesiapan;
                             if (score == null)
                               return <span className="text-ink-200">-</span>;
@@ -722,6 +943,14 @@ export default function ExaminerDashboard() {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-center">
                           <div className="flex justify-center items-center gap-1">
+                            {isAdminSuper && (
+                              <button
+                                onClick={() => handleOpenSkipDialog(s)}
+                                className="flex items-center gap-1.5 bg-amber-500 text-white px-3 py-1.5 rounded-xl text-[10px] font-black hover:bg-amber-600 transition-all shadow-md group-hover:scale-105"
+                              >
+                                <Zap className="w-3 h-3" /> BYPASS
+                              </button>
+                            )}
                             <button
                               onClick={() => handleOpenInput(s, "quran")}
                               className="flex items-center gap-1.5 bg-ink-900 text-white px-3 py-1.5 rounded-xl text-[10px] font-black hover:bg-primary-600 transition-all shadow-md group-hover:scale-105"
@@ -839,26 +1068,32 @@ export default function ExaminerDashboard() {
                         {
                           label: "Akademik",
                           value: s.nilai_ujian?.score_akademik,
+                          stageKey: "AKADEMIK",
                         },
                         {
                           label: "Kepribadian",
                           value: s.nilai_ujian?.score_kepribadian,
+                          stageKey: "KEPRIBADIAN",
                         },
                         {
                           label: "Kesiapan",
                           value: s.nilai_ujian?.score_kesiapan,
+                          stageKey: "KESIAPAN",
                         },
                         {
                           label: "Al-Qur'an",
                           value: s.nilai_ujian?.score_quran,
+                          stageKey: "QURAN",
                         },
                         {
                           label: "W. Santri",
                           value: s.nilai_ujian?.nilai_wawancara_santri,
+                          stageKey: "WAWANCARA_SANTRI",
                         },
                         {
                           label: "W. Orang Tua",
                           value: s.nilai_ujian?.nilai_wawancara_ortu,
+                          stageKey: "WAWANCARA_ORTU",
                         },
                       ].map((item) => (
                         <div
@@ -866,11 +1101,23 @@ export default function ExaminerDashboard() {
                           className="bg-ink-50 rounded-xl p-2.5 text-center"
                         >
                           <p className="text-sm font-black text-ink-900 leading-none">
-                            {item.value != null ? (
-                              Math.round(item.value)
-                            ) : (
-                              <span className="text-ink-300">-</span>
-                            )}
+                            {(() => {
+                              let isSkipped = false;
+                              try {
+                                const da = s.nilai_ujian?.detail_akademik;
+                                const parsedDa = typeof da === "string" ? JSON.parse(da) : da;
+                                if (parsedDa && Array.isArray(parsedDa.skipped_stages)) {
+                                  isSkipped = parsedDa.skipped_stages.includes(item.stageKey);
+                                }
+                              } catch (e) {}
+
+                              if (isSkipped) return <span className="text-amber-600 font-bold">SKIP</span>;
+                              return item.value != null ? (
+                                Math.round(item.value)
+                              ) : (
+                                <span className="text-ink-300">-</span>
+                              );
+                            })()}
                           </p>
                           <p className="text-[8px] font-bold text-ink-400 uppercase tracking-wide mt-1 leading-tight">
                             {item.label}
@@ -881,6 +1128,14 @@ export default function ExaminerDashboard() {
 
                     {/* Action Buttons */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                      {isAdminSuper && (
+                        <button
+                          onClick={() => handleOpenSkipDialog(s)}
+                          className="flex items-center justify-center gap-2 bg-amber-500 text-white py-3 rounded-2xl text-[11px] font-black shadow-lg shadow-amber-500/20 active:scale-95 transition-all col-span-full"
+                        >
+                          <Zap className="w-3.5 h-3.5" /> BYPASS / SKIP
+                        </button>
+                      )}
                       <button
                         onClick={() => handleOpenInput(s, "quran")}
                         className="flex items-center justify-center gap-2 bg-ink-900 text-white py-3 rounded-2xl text-[11px] font-black shadow-lg shadow-ink-900/10 active:scale-95 transition-all"

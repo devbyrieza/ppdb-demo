@@ -199,6 +199,7 @@ export async function GET(request: NextRequest) {
             status_kelulusan: true,
             catatan_kelulusan: true,
             updated_at: true,
+            detail_akademik: true,
           },
         },
         pengumuman: {

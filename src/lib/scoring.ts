@@ -125,21 +125,75 @@ export async function recalculateNilaiUjian(pendaftarId: string, overrideStatus?
   // Rata-rata Wawancara (Santri + Orang Tua)
   const wawancaraTotal = (ws != null && wo != null) ? (ws + wo) / 2 : (ws ?? wo ?? null);
 
-  // 4. Hitung Skor Akhir (Berdasarkan bobot di grading.ts)
-  const totalScore = calculateFinalScore(ak || 0, quran || 0, wawancaraTotal || 0, kp || 0, ks || 0);
+  // Ambil data skipped_stages jika ada di dalam detail_akademik
+  let skippedStages: string[] = [];
+  if (master.detail_akademik) {
+    let da = master.detail_akademik;
+    if (typeof da === "string") {
+      try { da = JSON.parse(da); } catch (e) {}
+    }
+    if (da && Array.isArray(da.skipped_stages)) {
+      skippedStages = da.skipped_stages;
+    }
+  }
+
+  // 4. Hitung Skor Akhir secara dinamis (Weighted Average) berdasarkan komponen yang aktif
+  let totalWeighted = 0;
+  let totalWeight = 0;
+
+  // Akademik (30%)
+  if (!skippedStages.includes("AKADEMIK")) {
+    totalWeighted += (ak || 0) * 0.3;
+    totalWeight += 0.3;
+  }
+  // Quran (30%)
+  if (!skippedStages.includes("QURAN")) {
+    totalWeighted += (quran || 0) * 0.3;
+    totalWeight += 0.3;
+  }
+  // Wawancara Santri (10%)
+  if (!skippedStages.includes("WAWANCARA_SANTRI")) {
+    totalWeighted += (ws || 0) * 0.1;
+    totalWeight += 0.1;
+  }
+  // Wawancara Ortu (10%)
+  if (!skippedStages.includes("WAWANCARA_ORTU")) {
+    totalWeighted += (wo || 0) * 0.1;
+    totalWeight += 0.1;
+  }
+  // Kepribadian (10%)
+  if (!skippedStages.includes("KEPRIBADIAN")) {
+    totalWeighted += (kp || 0) * 0.1;
+    totalWeight += 0.1;
+  }
+  // Kesiapan (10%)
+  if (!skippedStages.includes("KESIAPAN")) {
+    totalWeighted += (ks || 0) * 0.1;
+    totalWeight += 0.1;
+  }
+
+  const totalScore = totalWeight > 0 ? (totalWeighted / totalWeight) : 0;
 
   // 5. Tentukan Status Kelulusan (Matriks A/B/C)
-  const allGraded = ak != null && quran != null && kp != null && ks != null && ws != null && wo != null;
+  // Suatu tes dianggap "selesai" jika nilainya ada ATAU jika tes tersebut di-skip
+  const isAkGraded = ak != null || skippedStages.includes("AKADEMIK");
+  const isQuranGraded = quran != null || skippedStages.includes("QURAN");
+  const isKpGraded = kp != null || skippedStages.includes("KEPRIBADIAN");
+  const isKsGraded = ks != null || skippedStages.includes("KESIAPAN");
+  const isWsGraded = ws != null || skippedStages.includes("WAWANCARA_SANTRI");
+  const isWoGraded = wo != null || skippedStages.includes("WAWANCARA_ORTU");
+
+  const allGraded = isAkGraded && isQuranGraded && isKpGraded && isKsGraded && isWsGraded && isWoGraded;
   let status: string = "BELUM LENGKAP";
 
   if (allGraded || overrideStatus) {
     const grades = {
-      quran: master.detail_quran?.rekomendasi ? evaluateStatusGrade(master.detail_quran.rekomendasi) : evaluateQuranGrade(quran || 0),
-      akademik: evaluateAkademikGrade(ak || 0),
-      kepribadian: evaluateKepribadianGrade(kp || 0),
-      kesiapan: evaluateKesiapanGrade(ks || 0),
-      wawancaraSantri: evaluateWawancaraGrade(ws || 0),
-      wawancaraOrangTua: evaluateWawancaraGrade(wo || 0),
+      quran: skippedStages.includes("QURAN") ? "A" as const : (master.detail_quran?.rekomendasi ? evaluateStatusGrade(master.detail_quran.rekomendasi) : evaluateQuranGrade(quran || 0)),
+      akademik: skippedStages.includes("AKADEMIK") ? "A" as const : evaluateAkademikGrade(ak || 0),
+      kepribadian: skippedStages.includes("KEPRIBADIAN") ? "A" as const : evaluateKepribadianGrade(kp || 0),
+      kesiapan: skippedStages.includes("KESIAPAN") ? "A" as const : evaluateKesiapanGrade(ks || 0),
+      wawancaraSantri: skippedStages.includes("WAWANCARA_SANTRI") ? "A" as const : evaluateWawancaraGrade(ws || 0),
+      wawancaraOrangTua: skippedStages.includes("WAWANCARA_ORTU") ? "A" as const : evaluateWawancaraGrade(wo || 0),
     };
 
     status = overrideStatus || determineFinalDecision(grades);
