@@ -8,6 +8,7 @@ import Footer from "@/components/layout/Footer";
 import LayoutWrapper from "@/components/layout/LayoutWrapper";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
+import ProgressBarProvider from "@/components/providers/ProgressBarProvider";
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // FONT CONFIGURATIONS - Harisenin & Watzap Style
@@ -156,6 +157,7 @@ export default function RootLayout({
         className={`${plusJakarta.variable} ${inter.variable} font-sans antialiased bg-white text-ink-900 overflow-x-hidden transition-colors duration-500`}
         suppressHydrationWarning
       >
+        <ProgressBarProvider>
         <SmoothScrollProvider>
           <ThemeProvider
             attribute="class"
@@ -166,7 +168,9 @@ export default function RootLayout({
             <LayoutWrapper>{children}</LayoutWrapper>
           </ThemeProvider>
         </SmoothScrollProvider>
+        </ProgressBarProvider>
       </body>
     </html>
   );
 }
+

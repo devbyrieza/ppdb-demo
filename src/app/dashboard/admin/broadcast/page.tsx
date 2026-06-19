@@ -35,7 +35,7 @@ export default function BroadcastPage() {
 
   const [header, setHeader] = useState("Assalamu'alaikum");
   const [message, setMessage] = useState("");
-  const [footer, setFooter] = useState("Panitia PPDB PPDB");
+  const [footer, setFooter] = useState("Panitia PPDB Al-Fath");
   const [includeName, setIncludeName] = useState(true);
 
   const [sending, setSending] = useState(false);
@@ -83,18 +83,19 @@ export default function BroadcastPage() {
   const handleSendBroadcast = async () => {
     if (selectedIds.length === 0 || !message) return;
 
-    const { isConfirmed } = await Swal.fire({
+    const result = await Swal.fire({
       title: "Kirim Broadcast?",
       text: `Kirim pesan ke ${selectedIds.length} penerima?`,
       icon: "question",
       showCancelButton: true,
-      confirmButtonColor: "#7c2d12", // maroon
-      cancelButtonColor: "#94a3b8",
-      confirmButtonText: "Ya, Kirim!",
+      confirmButtonColor: "#b91c1c", // Maroon/Red 700
+      cancelButtonColor: "#57534e", // Stone 600
+      confirmButtonText: "Ya, Kirim Sekarang",
       cancelButtonText: "Batal",
+      reverseButtons: true,
     });
 
-    if (!isConfirmed) return;
+    if (!result.isConfirmed) return;
 
     try {
       setSending(true);
@@ -115,7 +116,11 @@ export default function BroadcastPage() {
       setResults(data);
     } catch (e) {
       console.error(e);
-      Swal.fire("Gagal!", "Gagal mengirim broadcast", "error");
+      Swal.fire(
+        "Error",
+        "Gagal mengirim broadcast. Silakan periksa koneksi atau logs.",
+        "error",
+      );
     } finally {
       setSending(false);
     }
@@ -300,7 +305,7 @@ export default function BroadcastPage() {
                   type="text"
                   value={footer}
                   onChange={(e) => setFooter(e.target.value)}
-                  placeholder="Contoh: Tim PSB PPDB"
+                  placeholder="Contoh: Tim PSB Al-Fath"
                   className="w-full bg-secondary-50 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary-600/10 outline-none font-medium"
                 />
               </div>

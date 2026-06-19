@@ -53,7 +53,7 @@ export default function JadwalUjianPage() {
     start_time: "",
     end_time: "",
     quota: 10,
-    location: "Pesantren Al Fath",
+    location: "Pondok Pesantren Al Fath",
     notes: "",
   });
 
@@ -197,29 +197,34 @@ export default function JadwalUjianPage() {
         fetchData();
       } else {
         const err = await res.json();
-        Swal.fire("Gagal!", err.error, "error");
+        Swal.fire("Gagal", err.error || "Gagal menetapkan jadwal", "error");
       }
     } catch (e) {
       console.error(e);
-      Swal.fire("Error!", "Gagal menetapkan jadwal", "error");
+      Swal.fire(
+        "Error",
+        "Terjadi kesalahan sistem saat menetapkan jadwal",
+        "error",
+      );
     } finally {
       setAssigning(false);
     }
   };
 
   const handleBulkAssign = async (sessionId: string, sessionTitle: string) => {
-    const { isConfirmed } = await Swal.fire({
+    const result = await Swal.fire({
       title: "Assign Massal?",
       text: `Yakin ingin Assign Massal ke sesi "${sessionTitle}"?\n\nLink ujian akan dikirim via WhatsApp ke semua pendaftar yang belum punya jadwal.`,
-      icon: "warning",
+      icon: "question",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Ya, Assign Massal!",
+      confirmButtonColor: "#7c3aed", // Violet 600
+      cancelButtonColor: "#57534e", // Stone 600
+      confirmButtonText: "Ya, Mulai Broadcast",
       cancelButtonText: "Batal",
+      reverseButtons: true,
     });
 
-    if (!isConfirmed) return;
+    if (!result.isConfirmed) return;
 
     try {
       setAssigning(true);
@@ -268,18 +273,26 @@ export default function JadwalUjianPage() {
             }
           }
 
-          Swal.fire("Selesai!", `${success} notifikasi terkirim.`, "success");
+          Swal.fire(
+            "Selesai!",
+            `${success} notifikasi berhasil dimasukkan ke antrean pengiriman.`,
+            "success",
+          );
           setSendingProgress({ active: false, curr: 0, total: 0, logs: [] });
         } else {
-          Swal.fire("Info", data.message, "info");
+          Swal.fire(
+            "Info",
+            data.message || "Tidak ada pendaftar baru yang butuh jadwal.",
+            "info",
+          );
         }
         fetchData();
       } else {
-        Swal.fire("Gagal!", data.error || "Gagal broadcast", "error");
+        Swal.fire("Gagal", data.error || "Gagal melakukan broadcast", "error");
       }
     } catch (e) {
       console.error(e);
-      Swal.fire("Error!", "Terjadi kesalahan sistem", "error");
+      Swal.fire("Error", "Terjadi kesalahan sistem", "error");
     } finally {
       setAssigning(false);
     }
@@ -298,15 +311,19 @@ export default function JadwalUjianPage() {
       );
       const data = await res.json();
       if (res.ok) {
-        Swal.fire("Berhasil!", data.message, "success");
+        Swal.fire(
+          "Sukses",
+          data.message || "Broadcast availability berhasil dijalankan",
+          "success",
+        );
         setShowBroadcastModal(false);
         fetchAvailStats();
       } else {
-        Swal.fire("Gagal!", data.error || "Gagal broadcast", "error");
+        Swal.fire("Gagal", data.error || "Gagal broadcast", "error");
       }
     } catch (e) {
       console.error(e);
-      Swal.fire("Error!", "Terjadi kesalahan sistem", "error");
+      Swal.fire("Error", "Terjadi kesalahan sistem", "error");
     } finally {
       setBroadcasting(false);
     }
@@ -348,7 +365,7 @@ export default function JadwalUjianPage() {
                 <span className="text-purple-600">Jadwal Seleksi</span>
               </h1>
               <p className="text-emerald-900/60 font-medium">
-                Panel Pengaturan Jadwal Seleksi PPDB PPDB
+                Panel Pengaturan Jadwal Seleksi PPDB Al Fath
               </p>
             </div>
           </div>
@@ -452,7 +469,7 @@ export default function JadwalUjianPage() {
                       <div className="flex items-center gap-4 mt-2">
                         <span className="flex items-center gap-1.5 text-xs font-bold text-ink-400 uppercase tracking-wider">
                           <MapPin className="w-3.5 h-3.5" />
-                          {s.location || "Pesantren Al Fath"}
+                          {s.location || "Pondok Pesantren Al Fath"}
                         </span>
                         <span className="flex items-center gap-1.5 text-xs font-bold text-purple-600 uppercase tracking-wider">
                           <Users className="w-3.5 h-3.5" />
