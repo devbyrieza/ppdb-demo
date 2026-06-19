@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import Swal from "sweetalert2";
+import AdminBeasiswaBlock from "../components/AdminBeasiswaBlock";
 
 interface PendaftarDetail {
   id: string;
@@ -2131,79 +2132,11 @@ export default function PendaftarDetailPage() {
 
           {/* Keringanan & Beasiswa */}
           {userRole === "admin_super" && (
-                          <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-gold-100">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2 bg-gold-100 rounded-lg">
-                    <CreditCard className="w-6 h-6 text-gold-700" />
-                  </div>
-                  <h3 className="text-lg font-bold text-stone-900">Keringanan/Beasiswa</h3>
-                </div>
-                
-                {(() => {
-                  let dataLengkap = pendaftar.data_lengkap as any || {};
-                  if (typeof dataLengkap === "string") {
-                    try { dataLengkap = JSON.parse(dataLengkap); } catch(e) {}
-                  }
-                  const keringanan = dataLengkap.keringanan_daftar_ulang;
-                  const pengajuan = dataLengkap.pengajuan_keringanan;
-                  
-                  return (
-                    <div className="space-y-4">
-                      {/* Tampilkan Status Aktif */}
-                      {keringanan && keringanan.jenis && (
-                        <div className="p-3 bg-emerald-50 border border-emerald-100 rounded-lg">
-                          <div className="text-xs text-emerald-800 font-bold uppercase mb-1">Keringanan Aktif: {keringanan.jenis}</div>
-                          <div className="text-sm font-black text-emerald-950">Potongan: Rp {keringanan.nominal_potongan.toLocaleString("id-ID")}</div>
-                        </div>
-                      )}
-
-                      {/* Tampilkan Pengajuan */}
-                      {pengajuan && (
-                        <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-2">
-                          <div className="flex items-center justify-between">
-                            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Pengajuan: {pengajuan.jenis}</span>
-                            <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase ${
-                              pengajuan.status === 'pending' ? 'bg-amber-100 text-amber-700' :
-                              pengajuan.status === 'approved' ? 'bg-emerald-100 text-emerald-700' :
-                              'bg-rose-100 text-rose-700'
-                            }`}>{pengajuan.status}</span>
-                          </div>
-                          
-                          {pengajuan.status === 'pending' && (
-                            <>
-                              <div className="text-xs text-slate-700">
-                                <strong>Kesanggupan Bayar:</strong> Rp {parseInt(pengajuan.kesanggupan_bayar || '0').toLocaleString('id-ID')}<br/>
-                                <strong>Alasan:</strong> {pengajuan.alasan}
-                              </div>
-                              <div className="flex flex-wrap gap-2 mt-2">
-                                {pengajuan.dokumen?.sktm && <a href={pengajuan.dokumen.sktm} target="_blank" rel="noreferrer" className="text-[10px] bg-slate-200 px-2 py-1 rounded font-bold text-slate-700 hover:bg-slate-300">📄 SKTM</a>}
-                                {pengajuan.dokumen?.slip_gaji && <a href={pengajuan.dokumen.slip_gaji} target="_blank" rel="noreferrer" className="text-[10px] bg-slate-200 px-2 py-1 rounded font-bold text-slate-700 hover:bg-slate-300">📄 Slip Gaji</a>}
-                                {pengajuan.dokumen?.ktp && <a href={pengajuan.dokumen.ktp} target="_blank" rel="noreferrer" className="text-[10px] bg-slate-200 px-2 py-1 rounded font-bold text-slate-700 hover:bg-slate-300">📄 KTP</a>}
-                                {pengajuan.dokumen?.prestasi && <a href={pengajuan.dokumen.prestasi} target="_blank" rel="noreferrer" className="text-[10px] bg-slate-200 px-2 py-1 rounded font-bold text-slate-700 hover:bg-slate-300">📄 Prestasi</a>}
-                              </div>
-                              <div className="flex gap-2 mt-3 pt-3 border-t border-slate-200">
-                                <button onClick={() => handleReviewPengajuan('approved')} className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-1.5 rounded text-xs font-bold transition-colors">Setujui</button>
-                                <button onClick={() => handleReviewPengajuan('rejected')} className="flex-1 bg-rose-500 hover:bg-rose-600 text-white py-1.5 rounded text-xs font-bold transition-colors">Tolak</button>
-                              </div>
-                            </>
-                          )}
-                        </div>
-                      )}
-
-                      {(!keringanan || !keringanan.jenis) && !pengajuan && (
-                        <p className="text-sm text-stone-500">Tidak ada pengajuan atau keringanan aktif.</p>
-                      )}
-                    </div>
-                  );
-                })()}
-                
-                <button
-                  onClick={handleSetKeringanan}
-                  className="w-full py-2 mt-4 bg-gold-500 hover:bg-gold-600 text-white rounded-lg font-bold text-sm uppercase tracking-wider transition-colors"
-                >
-                  Input Manual Keringanan
-                </button>
-              </div>
+            <AdminBeasiswaBlock
+              pendaftarId={pendaftar.id}
+              dataLengkap={pendaftar.data_lengkap}
+              onUpdate={fetchPendaftarDetail}
+            />
           )}
 
           {/* Timestamps */}
