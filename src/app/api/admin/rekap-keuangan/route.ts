@@ -132,11 +132,12 @@ export async function GET(request: NextRequest) {
       // Fetch approved scholarship details from database or fallback from JSON
       const dataLengkap = (student.data_lengkap as any) || {};
       const keringananJson = dataLengkap.keringanan_daftar_ulang || {};
-      const isApproved = student.pengajuan_beasiswa?.status === "DISETUJUI" || !!keringananJson.nominal_potongan;
+      const isApproved = student.pengajuan_beasiswa?.status === "DISETUJUI" || !!keringananJson.nominal_potongan || !!keringananJson.potongan_uang_pangkal || !!keringananJson.potongan_spp;
       const nominalPotongan = Number(
         (student.pengajuan_beasiswa?.status === "DISETUJUI" ? student.pengajuan_beasiswa?.nominal_potongan : null) ?? 
-        keringananJson.nominal_potongan ?? 
-        0
+        (keringananJson.nominal_potongan ?? 
+        ((Number(keringananJson.potongan_uang_pangkal || 0) + Number(keringananJson.potongan_spp || 0)) ||
+        0))
       );
       // requiredAmount = uang pangkal (setelah potongan) + SPP = 8.500.000 - potongan
       const requiredAmount = 8500000 - nominalPotongan;

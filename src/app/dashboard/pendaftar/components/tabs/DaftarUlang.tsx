@@ -119,13 +119,13 @@ export default function DaftarUlangTab() {
     } catch (e) {}
   }
   const keringanan = dataLengkap?.keringanan_daftar_ulang;
-  const potongan =
-    keringanan && typeof keringanan.nominal_potongan === "number"
-      ? keringanan.nominal_potongan
-      : 0;
+  const potonganUP =
+    keringanan?.potongan_uang_pangkal ?? keringanan?.nominal_potongan ?? 0;
+  const potonganSPP =
+    keringanan?.potongan_spp ?? 0;
 
-  const expectedUangPangkal = 7500000 - potongan;
-  const expectedSpp = 1000000;
+  const expectedUangPangkal = 7500000 - potonganUP;
+  const expectedSpp = 1000000 - potonganSPP;
   const expectedTagihan =
     subTab === "uang_pangkal" ? expectedUangPangkal : expectedSpp;
   const totalPaid =
@@ -270,9 +270,9 @@ export default function DaftarUlangTab() {
             >
               {formatCurrency(expectedUangPangkal)}
             </span>
-            {potongan > 0 && (
-              <span className="text-[9px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-black">
-                Potongan {formatCurrency(potongan)}
+            {potonganUP > 0 && (
+              <span className="text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-bold ml-2">
+                Potongan {formatCurrency(potonganUP)}
               </span>
             )}
           </button>
@@ -443,10 +443,10 @@ export default function DaftarUlangTab() {
               <span className="text-ink-500">Uang Pangkal Normal:</span>
               <span className="font-bold text-ink-800">Rp 7.500.000</span>
             </div>
-            {potongan > 0 && (
-              <div className="flex justify-between text-emerald-700">
+            {potonganUP > 0 && (
+              <div className="flex justify-between items-center text-sm text-emerald-600">
                 <span>Potongan Keringanan:</span>
-                <span className="font-bold">- {formatCurrency(potongan)}</span>
+                <span className="font-bold">- {formatCurrency(potonganUP)}</span>
               </div>
             )}
             <div className="flex justify-between border-t border-slate-100 pt-1 mt-1">

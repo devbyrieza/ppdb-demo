@@ -174,7 +174,10 @@ export async function GET(req: NextRequest) {
         }
         
         const keringananJson = dl.keringanan_daftar_ulang || {};
-        const pot = Number(keringananJson.nominal_potongan ?? item.nominal_potongan ?? discountValue);
+        const potJson = keringananJson.potongan_uang_pangkal !== undefined || keringananJson.potongan_spp !== undefined 
+          ? Number(keringananJson.potongan_uang_pangkal || 0) + Number(keringananJson.potongan_spp || 0) 
+          : undefined;
+        const pot = Number(keringananJson.nominal_potongan ?? potJson ?? item.nominal_potongan ?? discountValue);
         const sisa = normalTotal - pot;
 
         const rowValues = [
