@@ -38,6 +38,7 @@ import {
   Search,
   Shuffle,
   Shirt,
+  Wallet,
 } from "lucide-react";
 
 // ─── CONFIG & UTILS ───
@@ -75,6 +76,7 @@ const ICON_MAP: Record<string, any> = {
   PieChart,
   Shuffle,
   Shirt,
+  Wallet,
 };
 
 interface AdminSidebarProps {
