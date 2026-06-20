@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { exportToExcelProfessional } from "@/lib/utils/export";
+import { BRANDING } from "@/config/branding";
 
 interface FeeData {
   id: string;
@@ -80,7 +81,7 @@ export default function RekapFeePengujiPage() {
       sheets: [
         {
           name: "Fee Penguji",
-          title: "Laporan Rekapitulasi Fee Penguji & Pewawancara",
+          title: `Laporan Rekapitulasi Fee Penguji & Pewawancara - ${BRANDING.schoolShortName}`,
           subTitle: `Tanggal Ekspor: ${new Date().toLocaleDateString("id-ID")} | Fee Satuan: Rp 10.000 / Sesi | Total Fee Keseluruhan: Rp ${totalFeeSemua.toLocaleString("id-ID")}`,
           header: [
             "No",

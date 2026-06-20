@@ -2,6 +2,7 @@ import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import ExcelJS from "exceljs";
+import { BRANDING } from "@/config/branding";
 
 /**
  * Export data to Excel file
@@ -57,7 +58,7 @@ export const exportToExcelProfessional = async ({
     const worksheet = workbook.addWorksheet(sheetInfo.name);
     let currentRow = 1;
 
-    const brandColor = "800000";
+    const brandColor = BRANDING.primaryColor.replace("#", "");
 
     // Title
     if (sheetInfo.title) {
