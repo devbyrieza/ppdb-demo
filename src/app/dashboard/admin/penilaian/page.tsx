@@ -775,7 +775,14 @@ export default function ExaminerDashboard() {
                         </td>
                         <td className="px-4 py-4 whitespace-nowrap">
                           {(() => {
-                            const examStatus = s.nilai_ujian?.status_kelulusan;
+                            let examStatus = s.nilai_ujian?.status_kelulusan;
+                            
+                            // OVERRIDE: Jika status pendaftaran menandakan tahap lanjutan, override ke DITERIMA
+                            const pendaftaranStatus = (s.status_pendaftaran || "").toUpperCase();
+                            if (["ACCEPTED", "ENROLLED", "ENROLLED_FULL", "DITERIMA", "PROSES_DAFTAR_ULANG", "LUNAS_DAFTAR_ULANG"].includes(pendaftaranStatus)) {
+                              examStatus = "DITERIMA";
+                            }
+
                             const colors: any = {
                               LULUS:
                                 "bg-green-100 text-green-700 border-green-200",
