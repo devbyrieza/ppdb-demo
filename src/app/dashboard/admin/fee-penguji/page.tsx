@@ -81,7 +81,7 @@ export default function RekapFeePengujiPage() {
         {
           name: "Fee Penguji",
           title: "Laporan Rekapitulasi Fee Penguji & Pewawancara",
-          subTitle: `Tanggal Ekspor: ${new Date().toLocaleDateString("id-ID")} | Total Fee Keseluruhan: Rp ${totalFeeSemua.toLocaleString("id-ID")}`,
+          subTitle: `Tanggal Ekspor: ${new Date().toLocaleDateString("id-ID")} | Fee Satuan: Rp 10.000 / Sesi | Total Fee Keseluruhan: Rp ${totalFeeSemua.toLocaleString("id-ID")}`,
           header: [
             "No",
             "Nama Penguji",
