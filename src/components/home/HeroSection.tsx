@@ -134,10 +134,10 @@ export default function HeroSection() {
                   fontSize: "clamp(2rem, 5vw + 0.75rem, 5rem)",
                 }}
               >
-                <span className="block text-ink-950">
+                <span className="block" style={{ color: "var(--color-teal-700)" }}>
                   Kaderisasi Ummat
                 </span>
-                <span className="block mt-1 gradient-text-teal">
+                <span className="block mt-1" style={{ color: "var(--color-sand-500)" }}>
                   Unggul, Cerdas, <br className="hidden sm:block" />
                   dan Berintegritas
                 </span>
