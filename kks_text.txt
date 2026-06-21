@@ -4,7 +4,7 @@ KETENTUAN KERJA SAMA
 
 PEMBUATAN WEBSITE PPDB PESANTREN
 Nomor
-: ........../KKS/........../2025
+: ........../KKS/........../2026
 Tanggal
 : ................................................................
 
@@ -25,7 +25,7 @@ PASAL 1 — IDENTITAS PARA PIHAK
 Nama
 : Abu Aidil
 Profesi
-: Fullstack Web Developer
+: Pengembang Web & Sistem Digital
 Kontak
 : ................................................................
 
@@ -47,100 +47,48 @@ No. Telp / WhatsApp
 
 PASAL 2 — PAKET &amp; HARGA
 
+Komponen Biaya: Ketentuan Investasi
+1. Jasa Pembuatan &amp; Lisensi Website PPDB: Rp 6.000.000 (Sekali Bayar)
+   - Investasi satu kali (one-time fee) untuk pengembangan sistem, integrasi fitur, dan hak pakai.
+2. Biaya Pemeliharaan &amp; WhatsApp Gateway (Large Package): Rp 1.800.000 / tahun (Setara Rp 150.000 / bulan)
+   - Investasi tahunan mencakup hosting VPS KVM Jakarta, domain .com, SSL, sistem backup, WhatsApp API tanpa watermark, dan pemeliharaan teknis.
 
-Komponen Biaya
-Estimasi Biaya
-Jasa Pembuatan Website PPDB
-Rp 6.000.000
-Biaya Pihak Ketiga (Domain .com &amp; Notifikasi Wablas)
+TOTAL INVESTASI AWAL (TAHUN PERTAMA): Rp 7.800.000
+BIAYA PERPANJANGAN TAHUN BERIKUTNYA: Rp 1.800.000 / tahun
 
-
-± Rp 1.100.000 / tahun
-Biaya Sewa Cloud Hosting &amp; Maintenance Sistem
-Rp 1.000.000 / tahun (estimasi)
-TOTAL INVESTASI TAHUN PERTAMA
-± Rp 7.400.000 – Rp 8.400.000
-
-
-Catatan: Biaya Pihak Ketiga (domain, Wablas) dapat dibayarkan langsung ke penyedia atas nama klien. Biaya Cloud Hosting &amp; Maintenance dibayarkan kepada Pengembang sebagai biaya sewa ruang server dan pemeliharaan rutin. Tidak ada biaya tersembunyi. Mekanisme diatur di Pasal 3.3.
+Catatan: Biaya Pemeliharaan &amp; WhatsApp Gateway sebesar Rp 1.800.000/tahun dibayarkan langsung kepada Pengembang setiap tahun. Biaya ini sudah mencakup sewa server VPS KVM Jakarta, perpanjangan domain .com, lisensi paket Wablas Large, sertifikat keamanan SSL, backup otomatis, dan pemeliharaan sistem. Tidak ada biaya tersembunyi atau tagihan pihak ketiga lainnya. Mekanisme ini diatur selengkapnya pada Pasal 3.
 
 
 
-PASAL 3 — RINCIAN BIAYA INFRASTRUKTUR
+PASAL 3 — DETAIL PEMELIHARAAN &amp; WHATSAPP GATEWAY
 
 
 
-3.1  Tabel Komponen Infrastruktur
+3.1  Cakupan Layanan Tahunan
+
+No | Komponen | Biaya Masuk Paket | Spesifikasi &amp; Keterangan
+1 | Cloud Server (VPS KVM Jakarta) | SUDAH TERMASUK | Ditempatkan di VPS KVM berkecepatan tinggi dengan alokasi resource dedicated di Data Center Jakarta. Kebal terhadap lonjakan trafik tinggi saat puncak PPDB.
+2 | Domain (.com) | SUDAH TERMASUK | Pendaftaran dan perpanjangan domain .com resmi pesantren dikelola penuh oleh Pengembang. Hak kepemilikan tetap atas nama pesantren.
+3 | WhatsApp API Gateway (Wablas Large) | SUDAH TERMASUK | Koneksi API WhatsApp resmi (Wablas Large Dedicated) untuk pengiriman notifikasi instan tanpa batas (unlimited), tanpa watermark, serta mendukung pengiriman dokumen PDF/media.
+4 | Sertifikat Keamanan SSL/HTTPS | SUDAH TERMASUK (GRATIS) | Pemasangan protokol HTTPS terenkripsi untuk mengamankan data calon santri dan transaksi pendaftaran dari intersepsi pihak luar.
+5 | Backup Data &amp; Pemeliharaan Rutin | SUDAH TERMASUK | Backup database berkala secara otomatis, monitoring keaktifan server 24/7, serta perbaikan jika terjadi error sistem atau gangguan server.
 
 
 
-No
-Komponen
-Biaya
-Keterangan
-Keterangan
+3.2  Spesifikasi, Keamanan &amp; Isolasi Data
 
-1
-Cloud Hosting Berkinerja Tinggi (Hetzner Cloud)
-+- Rp 1.000.000 / tahun (estimasi)
-Dikelola penuh oleh Pengembang. Prosesor dedicated AMD, kebal down saat lonjakan traffic PPDB. Database setiap klien diisolasi 100% dengan Docker.
-Perpanjangan dapat dibantu melalui Pengembang setiap tahun atau secara mandiri dengan diberikan akses sepenuhnya.
+• Lokasi Server: Server ditempatkan pada infrastruktur VPS KVM Hostinger berkinerja tinggi yang berlokasi di Jakarta untuk kecepatan akses maksimal dari seluruh wilayah Indonesia.
 
-2
-Domain (.com)
-
-Hostinger
-1 tahun: Rp 170.066
-
-2 tahun: Rp 384.532
-
-3 tahun: Rp 484.668
-Perpanjangan langsung ke penyedia domain atas nama klien
-Pilih 2–3 tahun untuk efisiensi biaya
-
-3
-Wablas WhatsApp
-Rp 240.000 – Rp 912.000 / tahun (Rp 20.000 – Rp 76.000/bulan, tergantung level paket yang dipilih klien)
-Perpanjangan langsung ke Wablas atas nama klien
-Notifikasi otomatis ke pendaftar &amp; panitia
-
-4
-SSL / HTTPS
-
-GRATIS
-
-GRATIS
-Sudah termasuk dalam paket VPS
-
-5
-Email Custom Domain
-
-GRATIS
-
-GRATIS
-Dikonfigurasi oleh pengembang
+• Isolasi Sistem (Docker): Database dan file sistem setiap pesantren diisolasi secara mandiri menggunakan teknologi Docker Container. Data tidak akan saling bercampur atau dapat diakses oleh pihak luar, menjamin keamanan dan privasi 100%.
 
 
 
-3.2  Spesifikasi &amp; Keamanan Server
+3.3  Mekanisme Pembayaran Tahunan
 
-Setiap klien mendapatkan VPS pribadi (tidak sharing server) untuk menjamin keamanan data dan privasi penuh.
-
-• Server Hetzner Cloud dikelola terpusat oleh Pengembang menggunakan prosesor dedicated AMD berkinerja tinggi, kebal down saat lonjakan traffic PPDB.
-
-• Teknologi containerization (Docker) menjamin database dan file setiap pesantren diisolasi 100% — tidak akan bocor atau tercampur dengan data klien lain meskipun berbagi server fisik yang sama.
-
-
-
-3.3  Mekanisme Pembayaran Infrastruktur
-
-Pembayaran biaya infrastruktur dapat dilakukan melalui salah satu dari dua mekanisme berikut, sesuai kesepakatan bersama:
-
-• Domain &amp; Wablas — Klien dapat membayar langsung ke penyedia layanan (Niagahoster/Wablas), atau menitipkan dana kepada Pengembang untuk diproses. Bukti pembayaran dikirimkan kepada klien sebagai dokumentasi.
-
-• Cloud Hosting &amp; Maintenance — Pembayaran WAJIB dilakukan melalui Pengembang setiap tahun sebagai biaya perpanjangan ruang server dan pemeliharaan rutin sistem. Pengembang akan mengirimkan tagihan sebelum jatuh tempo perpanjangan.
-
-Domain dan Wablas sepenuhnya atas nama klien. Cloud Hosting dikelola Pengembang demi menjaga performa dan keamanan seluruh klien secara terpadu.
+Guna menjamin kemudahan administratif dan kelancaran operasional pesantren:
+• Klien tidak perlu melakukan pembayaran terpisah kepada berbagai vendor pihak ketiga.
+• Seluruh biaya pemeliharaan tahunan sebesar Rp 1.800.000 / tahun dibayarkan dalam satu pintu melalui Pengembang sebelum masa aktif habis setiap tahunnya.
+• Pengembang bertanggung jawab penuh melakukan perpanjangan domain, server hosting, dan WhatsApp Gateway secara tepat waktu demi mencegah matinya layanan PPDB.
 
 
 
@@ -204,7 +152,7 @@ Seluruh fitur canggih berikut sudah termasuk dalam biaya jasa pembuatan:
 
 4.6  Fitur Teknis, Keamanan &amp; Layanan Pendampingan
 
-• Hosting di Cloud Server Hetzner berkinerja tinggi — database diisolasi per-pesantren dengan teknologi Docker/Containerization
+• Hosting di Cloud Server VPS KVM berkinerja tinggi (Jakarta Data Center) — database diisolasi per-pesantren dengan teknologi Docker/Containerization
 
 • SSL/HTTPS aktif (koneksi aman terenkripsi) &amp; Domain custom (.com)
 
@@ -302,7 +250,7 @@ Rp 1.200.000
 Sebelum website Go-Live
 
 
-Catatan: Biaya infrastruktur (Cloud Hosting, domain, Wablas) dibayarkan terpisah dari biaya jasa, sesuai mekanisme yang disepakati di Pasal 3.3.
+Catatan: Biaya pemeliharaan &amp; WhatsApp Gateway tahunan sebesar Rp 1.800.000 dibayarkan terpisah dari biaya jasa, sesuai ketentuan yang disepakati di Pasal 3.
 
 
 
@@ -420,7 +368,7 @@ Pihak Pertama (Pengembang)
 
 Abu Aidil
 
-Fullstack Web Developer
+Pengembang Web &amp; Sistem Digital
 
 Tanggal: .......................
 

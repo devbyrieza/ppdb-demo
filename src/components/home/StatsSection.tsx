@@ -13,6 +13,8 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { BRANDING } from "@/config/branding";
+import InfiniteMarquee from "@/components/ui/InfiniteMarquee";
+
 
 // ─── Types ───────────────────────────────────────────
 type StatColor = "teal" | "sand";
@@ -277,6 +279,37 @@ export default function StatsSection() {
               <TrendingUp className="w-3 h-3 shrink-0 text-primary-600" strokeWidth={2} />
               <span>{BRANDING.schoolNetwork}</span>
             </div>
+          </motion.div>
+
+          {/* ── Jaringan Kemitraan Marquee (cekat.ai-inspired social proof strip) ── */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.7, duration: 0.6 }}
+            className="pt-4"
+          >
+            <div className="divider-editorial mb-5">
+              <span>Jaringan Kemitraan Global</span>
+            </div>
+            <InfiniteMarquee
+              items={[
+                { text: "IIBS Al-Andalus Indonesia" },
+                { text: "Al-Azhar University, Mesir" },
+                { text: "Universitas Islam Madinah" },
+                { text: "Kementerian Agama RI" },
+                { text: "LP Ma'arif NU" },
+                { text: "Universiti Islam Antarabangsa Malaysia" },
+                { text: "Islamic University of Medina" },
+                { text: "BAN-PDM — Akreditasi A" },
+                { text: "Rabithah Ma'ahid Islamiyah (RMI)" },
+                { text: "Jam'iyyah Tahfidz Al-Qur'an Indonesia" },
+              ]}
+              speed="normal"
+              variant="transparent"
+              separator="·"
+              itemClassName="text-ink-400 text-[0.75rem] font-semibold"
+            />
           </motion.div>
         </div>
       </Container>

@@ -11,6 +11,8 @@ import PageTransition from "@/components/ui/PageTransition";
 import UrgencyBar from "@/components/ui/UrgencyBar";
 import FloatingWhatsApp from "@/components/ui/FloatingWhatsApp";
 import LiveActivityToast from "@/components/ui/LiveActivityToast";
+import ScrollProgressBar from "@/components/ui/ScrollProgressBar";
+
 
 export default function LayoutWrapper({
   children,
@@ -28,6 +30,9 @@ export default function LayoutWrapper({
 
   return (
     <div className="relative min-h-screen flex flex-col font-sans">
+      {/* ✅ SCROLL PROGRESS BAR — fixed at very top, always visible */}
+      {!hideNavbarFooter && <ScrollProgressBar height={3} />}
+
       {/* ✅ NAVBAR - Hanya tampil di halaman utama (tidak di login/dashboard) */}
       {!hideNavbarFooter && <Navbar />}
 
@@ -47,6 +52,7 @@ export default function LayoutWrapper({
           {/* <TawkToScript /> */}
           <ChatSystem />
           <ScrollToTop />
+          <FloatingWhatsApp />
           <LiveActivityToast />
         </>
       )}
