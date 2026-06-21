@@ -294,16 +294,16 @@ export default function StatsSection() {
             </div>
             <InfiniteMarquee
               items={[
-                { text: "IIBS Al-Andalus Indonesia" },
-                { text: "Al-Azhar University, Mesir" },
-                { text: "Universitas Islam Madinah" },
-                { text: "Kementerian Agama RI" },
-                { text: "LP Ma'arif NU" },
-                { text: "Universiti Islam Antarabangsa Malaysia" },
-                { text: "Islamic University of Medina" },
-                { text: "BAN-PDM — Akreditasi A" },
-                { text: "Rabithah Ma'ahid Islamiyah (RMI)" },
-                { text: "Jam'iyyah Tahfidz Al-Qur'an Indonesia" },
+                { text: "Universitas Islam Madinah, Arab Saudi" },
+                { text: "Universitas Al-Azhar, Kairo" },
+                { text: "LIPIA Jakarta" },
+                { text: "Universitas Gadjah Mada (UGM)" },
+                { text: "Universitas Jordan, Yordania" },
+                { text: "Universitas Yarmouk, Yordania" },
+                { text: "Universitas Mu'tah, Yordania" },
+                { text: "Universitas Istanbul, Turki" },
+                { text: "LPMQ Kementerian Agama RI" },
+                { text: "Universitas Yalova, Turki" },
               ]}
               speed="normal"
               variant="transparent"
