@@ -80,8 +80,8 @@ export function formatNamaLengkap(nama: string): string {
   // 1. Hapus karakter selain huruf alfabet dan spasi (titik, strip, angka, simbol dihapus)
   let cleaned = nama.replace(/[^a-zA-Z\s]/g, "");
   
-  // 2. Hapus spasi berlebih
-  cleaned = cleaned.replace(/\s+/g, " ").trim();
+  // 2. Hapus spasi ganda dan spasi di awal (biarkan spasi di akhir agar bisa ngetik kata kedua)
+  cleaned = cleaned.replace(/\s{2,}/g, " ").replace(/^\s+/, "");
   
   // 3. Title Case: huruf pertama setiap kata jadi kapital
   const titleCased = cleaned.toLowerCase().split(" ").map(word => {
