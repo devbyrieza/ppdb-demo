@@ -129,8 +129,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html lang="id" translate="no" className="notranslate" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
+        <meta name="google" content="notranslate" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content={BRANDING.primaryColor} />
         <meta

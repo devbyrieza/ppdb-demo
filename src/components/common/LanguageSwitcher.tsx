@@ -28,12 +28,27 @@ export default function LanguageSwitcher() {
       return null;
     };
 
-    const cookieVal = getCookie("googtrans");
+        const cookieVal = getCookie("googtrans");
+    let initialLang = "id";
     if (cookieVal) {
       const lang = cookieVal.split("/").pop();
       if (lang && LANGUAGES.some((l) => l.code === lang)) {
+        initialLang = lang;
         setCurrentLang(lang);
       }
+    }
+
+    // ─── Prevent Native Auto-Translate but allow our widget ───
+    const allowTranslation = () => {
+      document.documentElement.removeAttribute("translate");
+      document.documentElement.classList.remove("notranslate");
+      document.body.classList.remove("notranslate");
+      const meta = document.querySelector('meta[name="google"][content="notranslate"]');
+      if (meta) meta.remove();
+    };
+
+    if (initialLang !== "id") {
+      allowTranslation();
     }
 
     // ─── Initialize Google Translate ───
@@ -112,6 +127,25 @@ export default function LanguageSwitcher() {
   const changeLanguage = (langCode: string) => {
     setCurrentLang(langCode);
     setIsOpen(false);
+
+    // Allow translation before triggering it
+    document.documentElement.removeAttribute("translate");
+    document.documentElement.classList.remove("notranslate");
+    document.body.classList.remove("notranslate");
+    const meta = document.querySelector('meta[name="google"][content="notranslate"]');
+    if (meta) meta.remove();
+
+    if (langCode === "id") {
+      // Re-add preventions if returning to default
+      document.documentElement.setAttribute("translate", "no");
+      document.documentElement.classList.add("notranslate");
+      if (!document.querySelector('meta[name="google"][content="notranslate"]')) {
+        const newMeta = document.createElement('meta');
+        newMeta.name = "google";
+        newMeta.content = "notranslate";
+        document.head.appendChild(newMeta);
+      }
+    }
 
     // 1. Set standard cookie paths
     const cookieDomain = window.location.hostname === "localhost" ? "" : `; domain=.${window.location.hostname.replace(/^www\./, "")}`;
