@@ -194,6 +194,7 @@ interface DokumenCardProps {
   uploadProgress: number;
   onUpload: (file: File) => void;
   onPreview: () => void;
+  onDownload: () => void;
   isLocked: boolean;
 }
 
@@ -204,6 +205,7 @@ function DokumenCard({
   uploadProgress,
   onUpload,
   onPreview,
+  onDownload,
   isLocked,
 }: DokumenCardProps) {
   const [isDragging, setIsDragging] = useState(false);
@@ -361,16 +363,28 @@ function DokumenCard({
               </button>
             )}
             {dokumen.status !== "pending" && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onPreview();
-                }}
-                className="w-10 h-10 flex items-center justify-center text-ink-400 hover:text-primary-700 hover:bg-white rounded-xl transition-all shadow-sm border border-transparent hover:border-ink-100"
-                title="Lihat Dokumen"
-              >
-                <Eye className="w-5 h-5" />
-              </button>
+              <>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onPreview();
+                  }}
+                  className="w-10 h-10 flex items-center justify-center text-ink-400 hover:text-primary-700 hover:bg-white rounded-xl transition-all shadow-sm border border-transparent hover:border-ink-100"
+                  title="Lihat Dokumen"
+                >
+                  <Eye className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDownload();
+                  }}
+                  className="w-10 h-10 flex items-center justify-center text-ink-400 hover:text-primary-700 hover:bg-white rounded-xl transition-all shadow-sm border border-transparent hover:border-ink-100"
+                  title="Download Dokumen"
+                >
+                  <Download className="w-5 h-5" />
+                </button>
+              </>
             )}
             <div
               className={`w-10 h-10 flex items-center justify-center rounded-xl transition-all ${isExpanded ? "bg-ink-900 text-white" : "bg-surface-100 text-ink-400 group-hover:bg-white group-hover:shadow-sm"}`}
@@ -798,6 +812,37 @@ export default function UploadBerkasTab() {
     }
   };
 
+  // Handle download of uploaded file
+  const handleDownload = async (dokumen: DokumenItem) => {
+    if (!dokumen.file_path) return;
+
+    try {
+      const response = await fetch(`/api/dokumen/preview?jenis=${dokumen.key}`);
+      const data = await response.json();
+
+      if (!data.success) {
+        throw new Error(data.error || "Gagal membuat link download");
+      }
+
+      // Fetch the file to trigger a native download prompt instead of just opening it
+      const fileResponse = await fetch(data.data.url);
+      const blob = await fileResponse.blob();
+      const url = window.URL.createObjectURL(blob);
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = dokumen.file_name || `${dokumen.label}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      
+    } catch (err: any) {
+      showToast("error", err.message || "Gagal mengunduh dokumen");
+    }
+  };
+
   // Loading state
   if (loading) {
     return (
@@ -1019,6 +1064,7 @@ export default function UploadBerkasTab() {
                 uploadProgress={uploadProgress[dokumen.key] || 0}
                 onUpload={(file) => handleUpload(dokumen.key, file)}
                 onPreview={() => handlePreview(dokumen)}
+                onDownload={() => handleDownload(dokumen)}
                 isLocked={isLocked && dokumen.status !== "rejected"}
               />
             ))}
