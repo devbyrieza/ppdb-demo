@@ -24,6 +24,8 @@ import TestimonialsSection from "@/components/home/TestimonialsSection";
 import FaqSection from "@/components/home/FaqSection";
 import ContactSection from "@/components/home/ContactSection";
 import CtaSection from "@/components/home/CtaSection";
+import StickyFeatureSection from "@/components/home/StickyFeatureSection";
+import BentoGridSection from "@/components/home/BentoGridSection";
 
 export default function HomePage() {
   useEffect(() => {
@@ -67,7 +69,7 @@ export default function HomePage() {
 
         <section id="keunggulan" aria-label="Keunggulan Pesantren">
           <ScrollAnimation delay={0.1} direction="none" duration={0.75}>
-            <FeaturesSection />
+            <StickyFeatureSection />
           </ScrollAnimation>
         </section>
 
@@ -91,7 +93,7 @@ export default function HomePage() {
 
         <section id="fasilitas" aria-label="Fasilitas Pesantren">
           <ScrollAnimation delay={0.1} direction="up" duration={0.7}>
-            <FacilitiesSection />
+            <BentoGridSection />
           </ScrollAnimation>
         </section>
 

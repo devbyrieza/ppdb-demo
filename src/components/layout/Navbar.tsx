@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ArrowRight, GraduationCap } from "lucide-react";
+import { Menu, X, ArrowRight, GraduationCap, ChevronDown, BookOpen, Users, Star } from "lucide-react";
 import {
   scrollToSection,
   scrollToTop,
@@ -18,6 +18,7 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
+  const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null);
 
   const [session, setSession] = useState<any>(null);
 
@@ -194,20 +195,83 @@ export default function Navbar() {
                   : "bg-white/70 backdrop-blur-md border-white/65 shadow-[0_2px_16px_rgba(3,105,199,0.10)]"
               }`}
             >
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={(e) => handleNavClick(e, link.href)}
-                  className={`px-4 py-2 text-sm font-bold rounded-full transition-all duration-300 min-h-[40px] flex items-center ${
-                    isActive(link.href)
-                      ? "bg-[var(--color-primary-800)] text-[var(--color-secondary-100)] shadow-[var(--shadow-primary)]"
-                      : "text-[var(--color-ink-600)] hover:text-[var(--color-primary-800)] hover:bg-[var(--color-primary-50)]"
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {navLinks.map((link) => {
+                if (link.label === "Program") {
+                  return (
+                    <div 
+                      key={link.href} 
+                      className="relative group"
+                      onMouseEnter={() => setActiveMegaMenu("Program")}
+                      onMouseLeave={() => setActiveMegaMenu(null)}
+                    >
+                      <Link
+                        href={link.href}
+                        onClick={(e) => handleNavClick(e, link.href)}
+                        className={`px-4 py-2 text-sm font-bold rounded-full transition-all duration-300 min-h-[40px] flex items-center gap-1.5 ${
+                          isActive(link.href)
+                            ? "bg-[var(--color-primary-800)] text-[var(--color-secondary-100)] shadow-[var(--shadow-primary)]"
+                            : "text-[var(--color-ink-600)] hover:text-[var(--color-primary-800)] hover:bg-[var(--color-primary-50)]"
+                        }`}
+                      >
+                        {link.label}
+                        <ChevronDown className="w-4 h-4 transition-transform duration-300 group-hover:rotate-180" />
+                      </Link>
+                      
+                      {/* Mega Menu Dropdown */}
+                      <AnimatePresence>
+                        {activeMegaMenu === "Program" && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                            transition={{ duration: 0.2 }}
+                            className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[600px] z-50"
+                          >
+                            <div className="mega-menu-content p-6 grid grid-cols-2 gap-6 relative">
+                              <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white rotate-45 border-l border-t border-surface-100" />
+                              
+                              <Link href="/program#mts" className="group/item p-4 rounded-2xl hover:bg-primary-50 transition-colors border border-transparent hover:border-primary-100">
+                                <div className="flex items-center gap-3 mb-2">
+                                  <div className="w-10 h-10 rounded-xl bg-primary-100 text-primary-700 flex items-center justify-center group-hover/item:scale-110 transition-transform">
+                                    <BookOpen className="w-5 h-5" />
+                                  </div>
+                                  <h4 className="font-bold text-ink-900 group-hover/item:text-primary-700">MTs (Setara SMP)</h4>
+                                </div>
+                                <p className="text-sm text-ink-500">Program menengah pertama berfokus pada tahfidz dan adab dasar.</p>
+                              </Link>
+                              
+                              <Link href="/program#il" className="group/item p-4 rounded-2xl hover:bg-primary-50 transition-colors border border-transparent hover:border-primary-100">
+                                <div className="flex items-center gap-3 mb-2">
+                                  <div className="w-10 h-10 rounded-xl bg-secondary-100 text-secondary-700 flex items-center justify-center group-hover/item:scale-110 transition-transform">
+                                    <Star className="w-5 h-5" />
+                                  </div>
+                                  <h4 className="font-bold text-ink-900 group-hover/item:text-primary-700">I'dad Lughowi (IL)</h4>
+                                </div>
+                                <p className="text-sm text-ink-500">Program pemantapan bahasa Arab sebelum jenjang Aliyah.</p>
+                              </Link>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                }
+                
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={(e) => handleNavClick(e, link.href)}
+                    className={`px-4 py-2 text-sm font-bold rounded-full transition-all duration-300 min-h-[40px] flex items-center ${
+                      isActive(link.href)
+                        ? "bg-[var(--color-primary-800)] text-[var(--color-secondary-100)] shadow-[var(--shadow-primary)]"
+                        : "text-[var(--color-ink-600)] hover:text-[var(--color-primary-800)] hover:bg-[var(--color-primary-50)]"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
             </nav>
 
             {/* ── CTA Buttons (lg+) ── */}

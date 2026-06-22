@@ -3061,3 +3061,37 @@
   0%, 100% { opacity: 1; }
   50% { opacity: 0.4; }
 }
+
+
+/* ━━━ QONTAK-INSPIRED UTILITIES ━━━ */
+@layer components {
+  .glass-panel-qontak {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+  }
+
+  .bento-card {
+    background: var(--color-white);
+    border-radius: var(--radius-2xl);
+    border: 1px solid var(--color-surface-200);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--duration-base) var(--ease-spring);
+    overflow: hidden;
+  }
+
+  .bento-card:hover {
+    box-shadow: var(--shadow-premium-lg);
+    transform: translateY(-4px);
+    border-color: var(--color-primary-200);
+  }
+
+  .mega-menu-content {
+    background: var(--color-white);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-premium-xl);
+    border: 1px solid var(--color-surface-100);
+  }
+}
