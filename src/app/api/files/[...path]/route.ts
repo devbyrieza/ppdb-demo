@@ -49,7 +49,39 @@ export async function GET(
       "admin_keuangan",
       "penguji",
     ].includes(session.role);
-    const isOwner = session.role === "pendaftar" && session.id === ownerId;
+    
+    let isOwner = session.role === "pendaftar" && session.id === ownerId;
+
+    // Fallback check for migrated files where path segments do not match ownerId directly
+    if (!isAdmin && !isOwner && session.role === "pendaftar") {
+      const filename = pathSegments[pathSegments.length - 1];
+      const { prisma } = await import("@/lib/prisma");
+
+      const doc = await prisma.dokumen.findFirst({
+        where: {
+          pendaftar_id: session.id,
+          file_path: {
+            contains: filename,
+          },
+        },
+      });
+
+      if (doc) {
+        isOwner = true;
+      } else {
+        const payment = await prisma.pembayaran.findFirst({
+          where: {
+            pendaftar_id: session.id,
+            bukti_transfer_path: {
+              contains: filename,
+            },
+          },
+        });
+        if (payment) {
+          isOwner = true;
+        }
+      }
+    }
 
     if (!isAdmin && !isOwner) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
