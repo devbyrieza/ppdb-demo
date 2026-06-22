@@ -260,7 +260,7 @@ function SupportCenter() {
               PUSAT BANTUAN PPDB
             </span>
           </div>
-          <h3 className="font-black text-2xl sm:text-3xl md:text-4xl lg:text-3xl md:text-5xl font-display leading-tight">
+          <h3 className="font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display leading-tight">
             Butuh Bantuan? <br />
             <span className="text-secondary-400">Hubungi Tim Kami!</span>
           </h3>

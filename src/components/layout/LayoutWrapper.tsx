@@ -40,7 +40,11 @@ export default function LayoutWrapper({
       <main className={hideNavbarFooter ? "flex-1" : "flex-1 pt-20 md:pt-24"}>
         {/* URGENCY BAR - Banner PPDB di bawah Navbar, scrolls naturally */}
         {!hideNavbarFooter && <UrgencyBar />}
-        <PageTransition>{children}</PageTransition>
+        {hideNavbarFooter ? (
+          children
+        ) : (
+          <PageTransition>{children}</PageTransition>
+        )}
       </main>
 
       {/* ✅ FOOTER - Hanya tampil di halaman utama (tidak di login/dashboard) */}

@@ -44,7 +44,7 @@ const InputField = ({
   error?: string;
   children: React.ReactNode;
 }) => (
-  <div className="space-y-3">
+  <div className="space-y-3" data-error={!!error}>
     <label className="text-xs font-black text-ink-600 uppercase tracking-widest ml-1">
       {label}
     </label>
@@ -520,20 +520,25 @@ export default function DaftarPage() {
                   </div>
 
                   <InputField label="NIK Santri" error={fieldErrors.nik}>
-                    <input
-                      type="text"
-                      inputMode="numeric"
-                      maxLength={16}
-                      value={formData.nik}
-                      onChange={(e) =>
-                        setFormData((prev) => ({
-                          ...prev,
-                          nik: e.target.value.replace(/\D/g, ""),
-                        }))
-                      }
-                      placeholder="16 Digit NIK"
-                      className="w-full px-5 py-3 md:px-8 md:py-5 rounded-xl md:rounded-2xl bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold  placeholder:text-ink-500 text-sm md:text-base text-ink-950"
-                    />
+                    <div className="space-y-1">
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        maxLength={16}
+                        value={formData.nik}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            nik: e.target.value.replace(/\D/g, ""),
+                          }))
+                        }
+                        placeholder="16 Digit NIK"
+                        className="w-full px-5 py-3 md:px-8 md:py-5 rounded-xl md:rounded-2xl bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold  placeholder:text-ink-500 text-sm md:text-base text-ink-950"
+                      />
+                      <p className="text-[10px] text-ink-500 mt-1.5 ml-1 font-bold">
+                        NIK (Nomor Induk Kependudukan) santri dapat dilihat pada lembar Kartu Keluarga (KK) di sebelah nama santri, atau pada KIA/KTP Anak.
+                      </p>
+                    </div>
                   </InputField>
 
                   <InputField
