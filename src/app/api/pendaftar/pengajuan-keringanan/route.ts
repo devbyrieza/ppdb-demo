@@ -28,12 +28,10 @@ export async function POST(request: NextRequest) {
     const alasan = formData.get("alasan") as string;
 
     const fileSktm = formData.get("file_sktm") as File | null;
-    const fileGaji = formData.get("file_gaji") as File | null;
-    const fileKtp = formData.get("file_ktp") as File | null;
-    const filePrestasi = formData.get("file_prestasi") as File | null;
+    const filePermohonan = formData.get("file_permohonan") as File | null;
 
-    if (!jenis || !alasan || !fileSktm || !fileGaji || !fileKtp) {
-      return NextResponse.json({ error: "Data atau file wajib tidak lengkap" }, { status: 400 });
+    if (!jenis || !alasan || !fileSktm || !filePermohonan) {
+      return NextResponse.json({ error: "SKTM dan Surat Permohonan Keringanan wajib dilampirkan" }, { status: 400 });
     }
 
     // Helper to upload file and create Dokumen record
@@ -63,12 +61,7 @@ export async function POST(request: NextRequest) {
 
     // Upload Files
     const sktmPath = await uploadAndCreateDokumen(fileSktm, "keringanan_sktm");
-    const gajiPath = await uploadAndCreateDokumen(fileGaji, "keringanan_slip_gaji");
-    const ktpPath = await uploadAndCreateDokumen(fileKtp, "keringanan_ktp");
-    let prestasiPath = null;
-    if (filePrestasi) {
-      prestasiPath = await uploadAndCreateDokumen(filePrestasi, "keringanan_prestasi");
-    }
+    const permohonanPath = await uploadAndCreateDokumen(filePermohonan, "keringanan_permohonan");
 
     // Update Pendaftar data_lengkap
     const pendaftar = await prisma.pendaftar.findUnique({
@@ -89,9 +82,7 @@ export async function POST(request: NextRequest) {
       nominal_disetujui: 0,
       dokumen: {
         sktm: sktmPath,
-        slip_gaji: gajiPath,
-        ktp: ktpPath,
-        prestasi: prestasiPath
+        permohonan: permohonanPath,
       },
       submitted_at: new Date().toISOString()
     };

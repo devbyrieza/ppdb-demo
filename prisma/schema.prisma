@@ -706,8 +706,10 @@ model PengajuanBeasiswa {
   
   file_sktm_path        String?
   file_slip_gaji_path   String?
-  file_ktp_path         String?
-  file_prestasi_path    String?
+  file_ktp_path         String?   // KTP Ayah (untuk Beasiswa)
+  file_ktp_ibu_path     String?   // KTP Ibu (untuk Beasiswa)
+  file_prestasi_path    String?   // Bukti prestasi (Beasiswa) / Surat Permohonan (Keringanan)
+  file_permohonan_path  String?   // Surat Permohonan Keringanan (field dedicated)
   diajukan_oleh_id      String?   @db.Uuid
   diajukan_oleh_role    String?
   

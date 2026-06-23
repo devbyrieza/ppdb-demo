@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   HandCoins,
   CheckCircle,
@@ -13,6 +13,13 @@ import {
   BookOpen,
   X,
   AlertCircle,
+  FileText,
+  UploadCloud,
+  Eye,
+  File,
+  RefreshCw,
+  FolderOpen,
+  AlertTriangle,
 } from "lucide-react";
 import Swal from "sweetalert2";
 
@@ -23,6 +30,22 @@ import Swal from "sweetalert2";
 type JenisBantuan = "BEASISWA" | "KERINGANAN";
 type CakupanBantuan = "UANG_PANGKAL" | "SPP" | "KEDUANYA";
 
+type BerkasFieldKey =
+  | "file_sktm_path"
+  | "file_slip_gaji_path"
+  | "file_ktp_path"
+  | "file_ktp_ibu_path"
+  | "file_prestasi_path"
+  | "file_permohonan_path";
+
+interface BerkasConfigItem {
+  fieldKey: BerkasFieldKey;
+  label: string;
+  desc: string;
+  requiredFor: "BEASISWA" | "KERINGANAN" | "BOTH";
+  required: boolean;
+}
+
 interface KeringananData {
   jenis_bantuan?: JenisBantuan;
   cakupan?: CakupanBantuan;
@@ -32,6 +55,66 @@ interface KeringananData {
   catatan?: string | null;
   jenis?: string; // legacy compat
 }
+
+interface PengajuanBerkas {
+  file_sktm_path?: string | null;
+  file_slip_gaji_path?: string | null;
+  file_ktp_path?: string | null;
+  file_ktp_ibu_path?: string | null;
+  file_prestasi_path?: string | null;
+  file_permohonan_path?: string | null;
+  jenis_pengajuan?: string | null;
+  status?: string | null;
+}
+
+// --------------------------------------------------------------------------
+// CONFIG BERKAS
+// --------------------------------------------------------------------------
+
+const BERKAS_CONFIG: BerkasConfigItem[] = [
+  {
+    fieldKey: "file_sktm_path",
+    label: "SKTM (Surat Keterangan Tidak Mampu)",
+    desc: "Dari RT/RW atau Kelurahan setempat.",
+    requiredFor: "BOTH",
+    required: true,
+  },
+  {
+    fieldKey: "file_slip_gaji_path",
+    label: "Surat Keterangan / Bukti Penghasilan",
+    desc: "Slip gaji atau surat keterangan penghasilan Orangtua (Ayah & Ibu).",
+    requiredFor: "BEASISWA",
+    required: true,
+  },
+  {
+    fieldKey: "file_ktp_path",
+    label: "KTP Orangtua Ayah",
+    desc: "Scan/foto KTP Ayah yang jelas.",
+    requiredFor: "BEASISWA",
+    required: true,
+  },
+  {
+    fieldKey: "file_ktp_ibu_path",
+    label: "KTP Orangtua Ibu",
+    desc: "Scan/foto KTP Ibu yang jelas.",
+    requiredFor: "BEASISWA",
+    required: true,
+  },
+  {
+    fieldKey: "file_permohonan_path",
+    label: "Surat Permohonan Keringanan Biaya",
+    desc: "Menyebutkan jenis biaya, jumlah sanggup bayar, dan/atau potongan yang diminta.",
+    requiredFor: "KERINGANAN",
+    required: true,
+  },
+  {
+    fieldKey: "file_prestasi_path",
+    label: "Bukti Memiliki Hafalan Al-Qur'an / Ranking 3 Besar",
+    desc: "Sertifikat hafalan Qur'an, piagam lomba, atau sertifikat tahfizh.",
+    requiredFor: "BEASISWA",
+    required: true,
+  },
+];
 
 // --------------------------------------------------------------------------
 // HELPERS
@@ -55,8 +138,274 @@ function parseKeringanan(raw: any): KeringananData | null {
   return raw as KeringananData;
 }
 
+function getBerkasForJenis(jenisPengajuan?: string | null): BerkasConfigItem[] {
+  if (!jenisPengajuan) return BERKAS_CONFIG;
+  const isBeasiswa = jenisPengajuan.startsWith("BEASISWA");
+  return BERKAS_CONFIG.filter(
+    (b) => b.requiredFor === "BOTH" || (isBeasiswa ? b.requiredFor === "BEASISWA" : b.requiredFor === "KERINGANAN")
+  );
+}
+
 // --------------------------------------------------------------------------
-// COMPONENT
+// BERKAS MANAGEMENT SUB-COMPONENT
+// --------------------------------------------------------------------------
+
+function AdminBerkasSection({
+  pendaftarId,
+  pengajuan,
+  onRefresh,
+}: {
+  pendaftarId: string;
+  pengajuan: PengajuanBerkas;
+  onRefresh: () => void;
+}) {
+  const [uploadingKey, setUploadingKey] = useState<BerkasFieldKey | null>(null);
+  const [deletingKey, setDeletingKey] = useState<BerkasFieldKey | null>(null);
+  const fileInputRefs = useRef<Partial<Record<BerkasFieldKey, HTMLInputElement | null>>>({});
+
+  const relevantBerkas = getBerkasForJenis(pengajuan.jenis_pengajuan);
+
+  const handleUpload = async (fieldKey: BerkasFieldKey, file: File) => {
+    if (file.size > 10 * 1024 * 1024) {
+      Swal.fire("Gagal", "Ukuran file maksimal 10MB", "error");
+      return;
+    }
+
+    const confirmed = await Swal.fire({
+      title: "Upload Berkas?",
+      text: `Upload "${file.name}" sebagai berkas ${BERKAS_CONFIG.find(b => b.fieldKey === fieldKey)?.label}?`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Ya, Upload",
+      cancelButtonText: "Batal",
+      confirmButtonColor: "#16a34a",
+    });
+
+    if (!confirmed.isConfirmed) return;
+
+    setUploadingKey(fieldKey);
+    try {
+      const formData = new FormData();
+      formData.append("pendaftar_id", pendaftarId);
+      formData.append("field_key", fieldKey);
+      formData.append("file", file);
+
+      const res = await fetch("/api/admin/beasiswa/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const result = await res.json();
+      if (!res.ok || !result.success) throw new Error(result.error || "Gagal upload");
+
+      Swal.fire({
+        title: "Berhasil!",
+        text: result.message,
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+      onRefresh();
+    } catch (err: any) {
+      Swal.fire("Gagal", err.message || "Terjadi kesalahan saat upload", "error");
+    } finally {
+      setUploadingKey(null);
+      // Reset file input
+      if (fileInputRefs.current[fieldKey]) {
+        fileInputRefs.current[fieldKey]!.value = "";
+      }
+    }
+  };
+
+  const handleDelete = async (fieldKey: BerkasFieldKey) => {
+    const label = BERKAS_CONFIG.find((b) => b.fieldKey === fieldKey)?.label;
+    const confirmed = await Swal.fire({
+      title: "Hapus Berkas?",
+      text: `Berkas "${label}" akan dihapus secara permanen.`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#ef4444",
+      cancelButtonText: "Batal",
+      confirmButtonText: "Ya, Hapus",
+    });
+
+    if (!confirmed.isConfirmed) return;
+
+    setDeletingKey(fieldKey);
+    try {
+      const res = await fetch("/api/admin/beasiswa/upload", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pendaftar_id: pendaftarId, field_key: fieldKey }),
+      });
+      const result = await res.json();
+      if (!res.ok || !result.success) throw new Error(result.error || "Gagal hapus");
+
+      Swal.fire({
+        title: "Berhasil Dihapus",
+        text: result.message,
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+      onRefresh();
+    } catch (err: any) {
+      Swal.fire("Gagal", err.message || "Terjadi kesalahan saat hapus", "error");
+    } finally {
+      setDeletingKey(null);
+    }
+  };
+
+  const countUploaded = relevantBerkas.filter(
+    (b) => !!(pengajuan as any)[b.fieldKey]
+  ).length;
+  const countRequired = relevantBerkas.filter((b) => b.required).length;
+  const countRequiredUploaded = relevantBerkas.filter(
+    (b) => b.required && !!(pengajuan as any)[b.fieldKey]
+  ).length;
+
+  return (
+    <div className="mt-4 space-y-3 border-t border-stone-200 pt-4">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <FolderOpen className="w-4 h-4 text-primary-600" />
+          <span className="text-sm font-black text-ink-900">Berkas Persyaratan</span>
+        </div>
+        <div className="flex items-center gap-2">
+          {countRequiredUploaded < countRequired ? (
+            <span className="text-xs font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full flex items-center gap-1">
+              <AlertTriangle className="w-3 h-3" />
+              {countRequiredUploaded}/{countRequired} wajib terisi
+            </span>
+          ) : (
+            <span className="text-xs font-bold text-green-700 bg-green-50 border border-green-200 px-2 py-0.5 rounded-full flex items-center gap-1">
+              <CheckCircle className="w-3 h-3" />
+              {countUploaded} berkas lengkap
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* Jenis Pengajuan indicator */}
+      {pengajuan.jenis_pengajuan && (
+        <div className="text-xs text-stone-500 bg-stone-50 border border-stone-200 rounded-lg px-3 py-1.5">
+          Berkas untuk:{" "}
+          <span className="font-bold text-ink-900">
+            {pengajuan.jenis_pengajuan === "BEASISWA_PRESTASI"
+              ? "Beasiswa Prestasi"
+              : "Keringanan Biaya"}
+          </span>
+        </div>
+      )}
+
+      {/* Berkas List */}
+      <div className="space-y-2">
+        {relevantBerkas.map((item) => {
+          const currentPath = (pengajuan as any)[item.fieldKey] as string | null;
+          const isUploading = uploadingKey === item.fieldKey;
+          const isDeleting = deletingKey === item.fieldKey;
+          const isLoading = isUploading || isDeleting;
+
+          return (
+            <div
+              key={item.fieldKey}
+              className={`rounded-xl border p-3 transition-colors ${
+                currentPath
+                  ? "bg-green-50 border-green-200"
+                  : item.required
+                  ? "bg-amber-50 border-amber-200"
+                  : "bg-stone-50 border-stone-200"
+              }`}
+            >
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex items-start gap-2 min-w-0">
+                  {currentPath ? (
+                    <CheckCircle className="w-4 h-4 text-green-500 shrink-0 mt-0.5" />
+                  ) : item.required ? (
+                    <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                  ) : (
+                    <File className="w-4 h-4 text-stone-400 shrink-0 mt-0.5" />
+                  )}
+                  <div className="min-w-0">
+                    <p className="text-xs font-bold text-ink-900 leading-tight">
+                      {item.label}
+                      {item.required && (
+                        <span className="text-rose-500 ml-0.5">*</span>
+                      )}
+                    </p>
+                    <p className="text-[10px] text-stone-500 mt-0.5">{item.desc}</p>
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="flex items-center gap-1 shrink-0">
+                  {currentPath && (
+                    <>
+                      <a
+                        href={`/api/files/${currentPath}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-1.5 text-primary-600 hover:bg-primary-100 rounded-lg transition-colors"
+                        title="Lihat berkas"
+                      >
+                        <Eye className="w-3.5 h-3.5" />
+                      </a>
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(item.fieldKey)}
+                        disabled={isLoading}
+                        className="p-1.5 text-rose-500 hover:bg-rose-100 rounded-lg transition-colors disabled:opacity-40"
+                        title="Hapus berkas"
+                      >
+                        {isDeleting ? (
+                          <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                        ) : (
+                          <Trash2 className="w-3.5 h-3.5" />
+                        )}
+                      </button>
+                    </>
+                  )}
+
+                  {/* Upload / Ganti button */}
+                  <label className={`flex items-center gap-1 px-2 py-1 rounded-lg cursor-pointer transition-colors text-xs font-bold ${
+                    currentPath
+                      ? "bg-white border border-stone-200 text-stone-600 hover:border-primary-300 hover:text-primary-700"
+                      : "bg-primary-600 text-white hover:bg-primary-700"
+                  } ${isLoading ? "opacity-40 pointer-events-none" : ""}`}>
+                    {isUploading ? (
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    ) : currentPath ? (
+                      <RefreshCw className="w-3.5 h-3.5" />
+                    ) : (
+                      <UploadCloud className="w-3.5 h-3.5" />
+                    )}
+                    {currentPath ? "Ganti" : "Upload"}
+                    <input
+                      type="file"
+                      className="hidden"
+                      accept=".pdf,.jpg,.jpeg,.png,.webp"
+                      disabled={isLoading}
+                      ref={(el) => {
+                        fileInputRefs.current[item.fieldKey] = el;
+                      }}
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) handleUpload(item.fieldKey, file);
+                      }}
+                    />
+                  </label>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// --------------------------------------------------------------------------
+// MAIN COMPONENT
 // --------------------------------------------------------------------------
 
 export default function AdminBeasiswaBlock({
@@ -71,8 +420,12 @@ export default function AdminBeasiswaBlock({
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  // Current active data
+  // Current active keringanan/beasiswa data (from data_lengkap)
   const [current, setCurrent] = useState<KeringananData | null>(null);
+
+  // Current pengajuan berkas data (from pengajuan_beasiswa table)
+  const [pengajuanBerkas, setPengajuanBerkas] = useState<PengajuanBerkas | null>(null);
+  const [loadingBerkas, setLoadingBerkas] = useState(false);
 
   // Section tab: null (idle) | "beasiswa" | "keringanan"
   const [activeSection, setActiveSection] = useState<null | "beasiswa" | "keringanan">(null);
@@ -103,6 +456,12 @@ export default function AdminBeasiswaBlock({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pendaftarId]);
 
+  // Always fetch berkas from pengajuan_beasiswa
+  useEffect(() => {
+    fetchBerkas();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pendaftarId]);
+
   const fetchCurrent = async () => {
     try {
       setLoading(true);
@@ -118,6 +477,30 @@ export default function AdminBeasiswaBlock({
     } finally {
       setLoading(false);
     }
+  };
+
+  const fetchBerkas = async () => {
+    try {
+      setLoadingBerkas(true);
+      const res = await fetch(`/api/admin/beasiswa?pendaftar_id=${pendaftarId}`);
+      if (res.ok) {
+        const json = await res.json();
+        // Find the one matching this pendaftar
+        const item = Array.isArray(json.data)
+          ? json.data.find((d: any) => d.pendaftar_id === pendaftarId)
+          : null;
+        setPengajuanBerkas(item || null);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoadingBerkas(false);
+    }
+  };
+
+  const handleRefresh = async () => {
+    await fetchBerkas();
+    if (onUpdate) onUpdate();
   };
 
   const openBeasiswa = () => {
@@ -622,6 +1005,30 @@ export default function AdminBeasiswaBlock({
               Simpan Keringanan
             </button>
           </div>
+        </div>
+      )}
+
+      {/* ========== BERKAS SECTION (always visible for admin_super) ========== */}
+      {loadingBerkas ? (
+        <div className="flex items-center gap-2 text-xs text-stone-400 py-2">
+          <Loader2 className="w-3.5 h-3.5 animate-spin" />
+          Memuat data berkas...
+        </div>
+      ) : pengajuanBerkas ? (
+        <AdminBerkasSection
+          pendaftarId={pendaftarId}
+          pengajuan={pengajuanBerkas}
+          onRefresh={handleRefresh}
+        />
+      ) : (
+        <div className="mt-4 border-t border-stone-200 pt-4">
+          <div className="flex items-center gap-2 text-xs text-stone-400">
+            <FileText className="w-3.5 h-3.5" />
+            <span>Belum ada pengajuan beasiswa/keringanan dari pendaftar ini.</span>
+          </div>
+          <p className="text-xs text-stone-500 mt-1">
+            Admin dapat membuat pengajuan melalui halaman detail pendaftar, tab &quot;Bantuan Biaya&quot;.
+          </p>
         </div>
       )}
     </div>
