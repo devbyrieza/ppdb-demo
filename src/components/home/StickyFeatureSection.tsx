@@ -18,7 +18,7 @@ const FEATURES = [
       "Matematika & Sains modern",
       "Program bahasa Arab & Inggris aktif"
     ],
-    image: "/images/hero.jpg",
+    image: "/images/pembelajaran-kitab-turotz.webp",
   },
   {
     id: "pengasuhan",
@@ -31,7 +31,7 @@ const FEATURES = [
       "Konseling psikologi berkala",
       "Pengembangan kecerdasan emosional"
     ],
-    image: "/images/hero.jpg",
+    image: "/images/tahfidz.webp",
   },
   {
     id: "fasilitas",
@@ -44,7 +44,7 @@ const FEATURES = [
       "Asrama bersih standar hotel",
       "Area olahraga lengkap"
     ],
-    image: "/images/hero.jpg",
+    image: "/images/gedung-utama-dan-lapangan-basket.webp",
   }
 ];
 
