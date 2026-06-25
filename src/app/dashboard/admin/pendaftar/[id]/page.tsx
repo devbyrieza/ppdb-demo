@@ -1716,8 +1716,16 @@ export default function PendaftarDetailPage() {
                     value={pendaftar.anak_ke?.toString()}
                   />
                   <InfoItem
-                    label="Jumlah Saudara"
+                    label="Berapa Bersaudara"
                     value={pendaftar.jumlah_saudara?.toString()}
+                  />
+                  <InfoItem
+                    label="Tinggi Badan"
+                    value={pendaftar.data_lengkap?.santri?.tinggi_badan ? `${pendaftar.data_lengkap.santri.tinggi_badan} cm` : "-"}
+                  />
+                  <InfoItem
+                    label="Berat Badan"
+                    value={pendaftar.data_lengkap?.santri?.berat_badan ? `${pendaftar.data_lengkap.santri.berat_badan} kg` : "-"}
                   />
                   <InfoItem label="Hobi" value={pendaftar.hobi} />
                   <InfoItem label="Cita-cita" value={pendaftar.cita_cita} />
@@ -2321,7 +2329,7 @@ export default function PendaftarDetailPage() {
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-xs font-black uppercase text-stone-600">Jumlah Bersaudara</label>
+                    <label className="text-xs font-black uppercase text-stone-600">Berapa Bersaudara</label>
                     <input
                       type="number"
                       value={editFormData.santri.jumlah_saudara}
