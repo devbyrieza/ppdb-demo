@@ -425,6 +425,21 @@ export async function PATCH(
         where: { pendaftar_id: params.id }
       });
 
+      const dQuran = (existingNilai?.detail_quran as any) || {};
+      if (body.scores?.rek_quran !== undefined) dQuran.rekomendasi = body.scores.rek_quran || null;
+
+      const dWawancara = (existingNilai?.detail_wawancara as any) || {};
+      if (body.scores?.rek_wawancara !== undefined) dWawancara.rekomendasi = body.scores.rek_wawancara || null;
+
+      const dCawalsan = (existingNilai?.detail_cawalsan as any) || {};
+      if (body.scores?.rek_cawalsan !== undefined) dCawalsan.rekomendasi = body.scores.rek_cawalsan || null;
+
+      const dHafalan = (existingNilai?.detail_hafalan as any) || {};
+      if (body.scores?.rek_hafalan !== undefined) dHafalan.rekomendasi = body.scores.rek_hafalan || null;
+
+      const dArab = (existingNilai?.detail_arab as any) || {};
+      if (body.scores?.rek_arab !== undefined) dArab.rekomendasi = body.scores.rek_arab || null;
+
       const parsedScores = {
         score_akademik: body.scores?.score_akademik !== "" && body.scores?.score_akademik != null ? parseFloat(body.scores?.score_akademik) : null,
         score_kepribadian: body.scores?.score_kepribadian !== "" && body.scores?.score_kepribadian != null ? parseFloat(body.scores?.score_kepribadian) : null,
@@ -434,6 +449,11 @@ export async function PATCH(
         nilai_wawancara_ortu: body.scores?.nilai_wawancara_ortu !== "" && body.scores?.nilai_wawancara_ortu != null ? parseFloat(body.scores?.nilai_wawancara_ortu) : null,
         score_hafalan: body.scores?.score_hafalan !== "" && body.scores?.score_hafalan != null ? parseFloat(body.scores?.score_hafalan) : null,
         score_arab: body.scores?.score_arab !== "" && body.scores?.score_arab != null ? parseFloat(body.scores?.score_arab) : null,
+        detail_quran: dQuran,
+        detail_wawancara: dWawancara,
+        detail_cawalsan: dCawalsan,
+        detail_hafalan: dHafalan,
+        detail_arab: dArab,
       };
 
       if (existingNilai) {

@@ -3159,65 +3159,146 @@ export default function PendaftarDetailPage() {
                   />
                 </div>
 
-                <div>
-                  <label className="text-xs font-black uppercase text-stone-600">Nilai Tes Al Quran</label>
-                  <input
-                    type="number"
-                    step="any"
-                    value={nilaiFormData.score_quran}
-                    onChange={(e) => setNilaiFormData({...nilaiFormData, score_quran: e.target.value})}
-                    className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
-                    placeholder="Contoh: 70"
-                  />
+                <div className="flex gap-4">
+                  <div className="flex-1">
+                    <label className="text-xs font-black uppercase text-stone-600">Nilai Tes Al Quran</label>
+                    <input
+                      type="number"
+                      step="any"
+                      value={nilaiFormData.score_quran}
+                      onChange={(e) => setNilaiFormData({...nilaiFormData, score_quran: e.target.value})}
+                      className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
+                      placeholder="Contoh: 70"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <label className="text-xs font-black uppercase text-stone-600">Rekomendasi</label>
+                    <select
+                      value={nilaiFormData.rek_quran}
+                      onChange={(e) => setNilaiFormData({...nilaiFormData, rek_quran: e.target.value})}
+                      className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
+                    >
+                      <option value="">(Kosong)</option>
+                      <option value="Diterima">Diterima</option>
+                      <option value="Cadangan">Cadangan</option>
+                      <option value="Ditolak">Ditolak</option>
+                    </select>
+                  </div>
                 </div>
 
-                <div>
-                  <label className="text-xs font-black uppercase text-stone-600">Nilai Wawancara Calon Santri</label>
-                  <input
-                    type="number"
-                    step="any"
-                    value={nilaiFormData.score_wawancara}
-                    onChange={(e) => setNilaiFormData({...nilaiFormData, score_wawancara: e.target.value})}
-                    className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
-                    placeholder="Contoh: 85"
-                  />
+                <div className="flex gap-4">
+                  <div className="flex-1">
+                    <label className="text-xs font-black uppercase text-stone-600">Wawancara Calon Santri</label>
+                    <input
+                      type="number"
+                      step="any"
+                      value={nilaiFormData.score_wawancara}
+                      onChange={(e) => setNilaiFormData({...nilaiFormData, score_wawancara: e.target.value})}
+                      className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
+                      placeholder="Contoh: 85"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <label className="text-xs font-black uppercase text-stone-600">Rekomendasi</label>
+                    <select
+                      value={nilaiFormData.rek_wawancara}
+                      onChange={(e) => setNilaiFormData({...nilaiFormData, rek_wawancara: e.target.value})}
+                      className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
+                    >
+                      <option value="">(Kosong)</option>
+                      <option value="Diterima">Diterima</option>
+                      <option value="Diterima dengan catatan">Dgn catatan</option>
+                      <option value="Ditolak">Ditolak</option>
+                    </select>
+                  </div>
                 </div>
 
-                <div>
-                  <label className="text-xs font-black uppercase text-stone-600">Nilai Wawancara Calon Wali Santri</label>
-                  <input
-                    type="number"
-                    step="any"
-                    value={nilaiFormData.nilai_wawancara_ortu}
-                    onChange={(e) => setNilaiFormData({...nilaiFormData, nilai_wawancara_ortu: e.target.value})}
-                    className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
-                    placeholder="Contoh: 90"
-                  />
+                <div className="flex gap-4">
+                  <div className="flex-1">
+                    <label className="text-xs font-black uppercase text-stone-600">Wawancara Wali Santri</label>
+                    <input
+                      type="number"
+                      step="any"
+                      value={nilaiFormData.nilai_wawancara_ortu}
+                      onChange={(e) => setNilaiFormData({...nilaiFormData, nilai_wawancara_ortu: e.target.value})}
+                      className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
+                      placeholder="Contoh: 90"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <label className="text-xs font-black uppercase text-stone-600">Rekomendasi</label>
+                    <select
+                      value={nilaiFormData.rek_cawalsan}
+                      onChange={(e) => setNilaiFormData({...nilaiFormData, rek_cawalsan: e.target.value})}
+                      className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1 text-xs truncate"
+                    >
+                      <option value="">(Kosong)</option>
+                      <option value="A. Sangat Layak diterima (potensi besar berkembang di pesantren).">A. Sangat Layak</option>
+                      <option value="B. Layak diterima dengan catatan pembinaan.">B. Layak dgn Catatan</option>
+                      <option value="C. Perlu Pertimbangan (butuh bimbingan khusus).">C. Perlu Pertimbangan</option>
+                      <option value="D. Tidak disarankan (risiko tinggi, banyak faktor negatif).">D. Tidak Disarankan</option>
+                      <option value="E. Tidak layak diterima saat ini.">E. Tidak Layak</option>
+                    </select>
+                  </div>
                 </div>
 
-                <div>
-                  <label className="text-xs font-black uppercase text-stone-600">Nilai Tes Hafalan Alquran (Khusus MA)</label>
-                  <input
-                    type="number"
-                    step="any"
-                    value={nilaiFormData.score_hafalan}
-                    onChange={(e) => setNilaiFormData({...nilaiFormData, score_hafalan: e.target.value})}
-                    className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
-                    placeholder="Contoh: 88"
-                  />
-                </div>
+                {pendaftar?.jenjang === "MA" && (
+                  <>
+                    <div className="flex gap-4">
+                      <div className="flex-1">
+                        <label className="text-xs font-black uppercase text-stone-600">Tes Hafalan Alquran</label>
+                        <input
+                          type="number"
+                          step="any"
+                          value={nilaiFormData.score_hafalan}
+                          onChange={(e) => setNilaiFormData({...nilaiFormData, score_hafalan: e.target.value})}
+                          className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
+                          placeholder="Contoh: 88"
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <label className="text-xs font-black uppercase text-stone-600">Rekomendasi</label>
+                        <select
+                          value={nilaiFormData.rek_hafalan}
+                          onChange={(e) => setNilaiFormData({...nilaiFormData, rek_hafalan: e.target.value})}
+                          className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
+                        >
+                          <option value="">(Kosong)</option>
+                          <option value="Diterima">Diterima</option>
+                          <option value="Diterima dengan catatan">Dgn catatan</option>
+                          <option value="Ditolak">Ditolak</option>
+                        </select>
+                      </div>
+                    </div>
 
-                <div>
-                  <label className="text-xs font-black uppercase text-stone-600">Nilai Tes Lisan B. Arab (Khusus MA)</label>
-                  <input
-                    type="number"
-                    step="any"
-                    value={nilaiFormData.score_arab}
-                    onChange={(e) => setNilaiFormData({...nilaiFormData, score_arab: e.target.value})}
-                    className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
-                    placeholder="Contoh: 75"
-                  />
-                </div>
+                    <div className="flex gap-4">
+                      <div className="flex-1">
+                        <label className="text-xs font-black uppercase text-stone-600">Tes Lisan B. Arab</label>
+                        <input
+                          type="number"
+                          step="any"
+                          value={nilaiFormData.score_arab}
+                          onChange={(e) => setNilaiFormData({...nilaiFormData, score_arab: e.target.value})}
+                          className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
+                          placeholder="Contoh: 75"
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <label className="text-xs font-black uppercase text-stone-600">Rekomendasi</label>
+                        <select
+                          value={nilaiFormData.rek_arab}
+                          onChange={(e) => setNilaiFormData({...nilaiFormData, rek_arab: e.target.value})}
+                          className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
+                        >
+                          <option value="">(Kosong)</option>
+                          <option value="Diterima">Diterima</option>
+                          <option value="Diterima dengan catatan">Dgn catatan</option>
+                          <option value="Ditolak">Ditolak</option>
+                        </select>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
 
               <div className="pt-6 mt-6 border-t border-surface-100 flex justify-end gap-3">
