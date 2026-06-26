@@ -174,8 +174,8 @@ export default function LoginPage() {
     setError("");
     setIsLoading(true);
 
-    const nik = manualNik || nikPendaftar;
-    const no = manualNo || nomorPendaftaran;
+    const nik = (manualNik || nikPendaftar || "").trim();
+    const no = (manualNo || nomorPendaftaran || "").trim().toUpperCase();
 
     if (!nik || !no) {
       setError("NIK dan Nomor Pendaftaran wajib diisi");
