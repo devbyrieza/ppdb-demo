@@ -1366,7 +1366,7 @@ export default function PendaftarDetailPage() {
                             <span className="text-sm text-teal-400 font-medium">/ 100</span>
                           </div>
                           {(pendaftar.nilai_ujian as any)?.detail_hafalan?.rekomendasi && (
-                            <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded w-max ${(pendaftar.nilai_ujian as any).detail_hafalan.rekomendasi === "Diterima" ? "bg-teal-100 text-teal-700" : "bg-red-100 text-red-700"}`}>
+                            <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded inline-block max-w-full break-words whitespace-normal ${(pendaftar.nilai_ujian as any).detail_hafalan.rekomendasi === "Diterima" ? "bg-teal-100 text-teal-700" : "bg-red-100 text-red-700"}`}>
                               {(pendaftar.nilai_ujian as any).detail_hafalan.rekomendasi}
                             </span>
                           )}
@@ -1409,7 +1409,7 @@ export default function PendaftarDetailPage() {
                             <span className="text-sm text-sky-400 font-medium">/ 100</span>
                           </div>
                           {(pendaftar.nilai_ujian as any)?.detail_lisan_arab?.rekomendasi && (
-                            <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded w-max ${(pendaftar.nilai_ujian as any).detail_lisan_arab.rekomendasi === "Diterima" ? "bg-sky-100 text-sky-700" : "bg-red-100 text-red-700"}`}>
+                            <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded inline-block max-w-full break-words whitespace-normal ${(pendaftar.nilai_ujian as any).detail_lisan_arab.rekomendasi === "Diterima" ? "bg-sky-100 text-sky-700" : "bg-red-100 text-red-700"}`}>
                               {(pendaftar.nilai_ujian as any).detail_lisan_arab.rekomendasi}
                             </span>
                           )}
@@ -1485,7 +1485,7 @@ export default function PendaftarDetailPage() {
                           <span className="text-sm text-rose-400 font-medium">/ 100</span>
                         </div>
                         {(pendaftar.nilai_ujian as any)?.detail_cawalsan?.rekomendasi && (
-                          <span className="text-xs font-black text-rose-700 bg-rose-100 border border-rose-200 px-2 py-0.5 rounded uppercase tracking-widest w-max">
+                          <span className="text-xs font-black text-rose-700 bg-rose-100 border border-rose-200 px-2 py-0.5 rounded uppercase tracking-widest inline-block max-w-full break-words whitespace-normal">
                             {(pendaftar.nilai_ujian as any).detail_cawalsan.rekomendasi}
                           </span>
                         )}
