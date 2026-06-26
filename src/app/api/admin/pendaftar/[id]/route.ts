@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "@/lib/session";
 import { logAdminAction } from "@/lib/audit";
 import { invalidateAdminPendaftarCache } from "@/lib/redis";
+import { recalculateNilaiUjian } from "@/lib/scoring";
 
 const parseSafeInt = (val: any) => {
   if (val === undefined || val === null || val === "") return null;
@@ -488,6 +489,9 @@ export async function PATCH(
         targetName: "Nilai Ujian",
         details: parsedScores,
       });
+
+      // Recalculate and update the status of the applicant
+      await recalculateNilaiUjian(params.id);
 
       await invalidateAdminPendaftarCache();
       return NextResponse.json({ success: true, message: "Nilai berhasil diupdate" });
