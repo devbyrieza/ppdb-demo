@@ -1515,7 +1515,7 @@ export default function PendaftarDetailPage() {
               )}
 
               {/* Tombol Hitung Ulang untuk Admin */}
-              {(userRole === "admin_super" || userRole === "admin") && pendaftar.nilai_ujian && (
+              {(userRole === "admin_super" || userRole === "admin") && (
                 <div className="mt-4 flex justify-end gap-2">
                   {userRole === "admin_super" && (
                     <button
