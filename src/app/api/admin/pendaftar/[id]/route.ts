@@ -415,7 +415,54 @@ export async function PATCH(
       });
     }
 
+    // SCENARIO 0.5: Update Nilai Manual (Admin Super Only)
+    if (body.action === "update_nilai_manual") {
+      if (session.role !== "admin_super") {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
 
+      const existingNilai = await prisma.nilaiUjian.findFirst({
+        where: { pendaftar_id: params.id }
+      });
+
+      const parsedScores = {
+        score_akademik: body.scores?.score_akademik !== "" && body.scores?.score_akademik != null ? parseFloat(body.scores?.score_akademik) : null,
+        score_kepribadian: body.scores?.score_kepribadian !== "" && body.scores?.score_kepribadian != null ? parseFloat(body.scores?.score_kepribadian) : null,
+        score_kesiapan: body.scores?.score_kesiapan !== "" && body.scores?.score_kesiapan != null ? parseFloat(body.scores?.score_kesiapan) : null,
+        score_quran: body.scores?.score_quran !== "" && body.scores?.score_quran != null ? parseFloat(body.scores?.score_quran) : null,
+      };
+
+      if (existingNilai) {
+        await prisma.nilaiUjian.update({
+          where: { id: existingNilai.id },
+          data: {
+            ...parsedScores,
+            updated_at: new Date()
+          }
+        });
+      } else {
+        await prisma.nilaiUjian.create({
+          data: {
+            pendaftar_id: params.id,
+            ...parsedScores,
+            created_at: new Date(),
+            updated_at: new Date()
+          }
+        });
+      }
+
+      logAdminAction({
+        action: "UPDATE_NILAI_MANUAL",
+        adminId: session.id || "system",
+        adminName: session.full_name || session.name || "Admin",
+        targetId: params.id,
+        targetName: "Nilai Ujian",
+        details: parsedScores,
+      });
+
+      await invalidateAdminPendaftarCache();
+      return NextResponse.json({ success: true, message: "Nilai berhasil diupdate" });
+    }
 
     // SCENARIO 1: Update Phone Number (Admin Super Only)
     if (no_hp) {

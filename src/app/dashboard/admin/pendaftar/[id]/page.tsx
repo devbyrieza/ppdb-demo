@@ -197,6 +197,15 @@ export default function PendaftarDetailPage() {
   const [editFormData, setEditFormData] = useState<any>(null);
   const [savingEdit, setSavingEdit] = useState(false);
 
+  const [isNilaiModalOpen, setIsNilaiModalOpen] = useState(false);
+  const [nilaiFormData, setNilaiFormData] = useState({
+    score_akademik: "",
+    score_kepribadian: "",
+    score_kesiapan: "",
+    score_quran: "",
+  });
+  const [savingNilai, setSavingNilai] = useState(false);
+
   useEffect(() => {
     const fetchSession = async () => {
       try {
@@ -288,6 +297,31 @@ export default function PendaftarDetailPage() {
     });
     setEditTab("santri");
     setIsEditModalOpen(true);
+  };
+
+  const handleSaveNilaiManual = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      setSavingNilai(true);
+      const res = await fetch(`/api/admin/pendaftar/${pendaftar?.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "update_nilai_manual",
+          scores: nilaiFormData
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Gagal menyimpan nilai");
+      
+      Swal.fire("Berhasil", "Nilai manual berhasil disimpan", "success");
+      setIsNilaiModalOpen(false);
+      fetchPendaftarDetail();
+    } catch (error: any) {
+      Swal.fire("Error", error.message, "error");
+    } finally {
+      setSavingNilai(false);
+    }
   };
 
   const handleSaveEdit = async (e: React.FormEvent) => {
@@ -1527,6 +1561,23 @@ export default function PendaftarDetailPage() {
                       Override Status
                     </button>
                   )}
+                  {userRole === "admin_super" && (
+                    <button
+                      onClick={() => {
+                        setNilaiFormData({
+                          score_akademik: pendaftar.nilai_ujian?.score_akademik?.toString() || "",
+                          score_kepribadian: pendaftar.nilai_ujian?.score_kepribadian?.toString() || "",
+                          score_kesiapan: pendaftar.nilai_ujian?.score_kesiapan?.toString() || "",
+                          score_quran: pendaftar.nilai_ujian?.score_quran?.toString() || "",
+                        });
+                        setIsNilaiModalOpen(true);
+                      }}
+                      className="flex items-center gap-2 px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors shadow hover:shadow-md font-bold text-sm"
+                    >
+                      <Edit className="w-4 h-4" />
+                      Input Nilai Khusus
+                    </button>
+                  )}
                   <button
                     onClick={async () => {
                       const result = await Swal.fire({
@@ -1852,6 +1903,11 @@ export default function PendaftarDetailPage() {
                   label="Tahun Lulus"
                   value={pendaftar.tahun_lulus?.toString()}
                 />
+                <InfoItem
+                  label="NPSN / NSM Sekolah"
+                  value={pendaftar.data_lengkap?.santri?.npsn || "-"}
+                />
+                <InfoItem label="NISN" value={pendaftar.nisn} />
                 <div className="md:col-span-2">
                   <InfoItem
                     label="Alamat Sekolah"
@@ -3028,6 +3084,100 @@ export default function PendaftarDetailPage() {
                   className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-black text-sm uppercase transition-all shadow-md flex items-center gap-2 disabled:opacity-50"
                 >
                   {savingEdit ? "Menyimpan..." : "Simpan Perubahan"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL INPUT NILAI MANUAL (ADMIN SUPER ONLY) */}
+      {isNilaiModalOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+          <div
+            className="absolute inset-0 bg-ink-950/60 backdrop-blur-sm"
+            onClick={() => setIsNilaiModalOpen(false)}
+          />
+          <div className="relative w-full max-w-md bg-white rounded-[2rem] shadow-2xl flex flex-col max-h-[90vh] overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            <div className="px-6 md:px-8 py-6 border-b border-surface-100 flex items-center justify-between shrink-0 bg-surface-50/50">
+              <h2 className="text-xl font-black tracking-tight">Input Nilai Khusus</h2>
+              <button
+                onClick={() => setIsNilaiModalOpen(false)}
+                className="p-2 hover:bg-surface-200 rounded-xl transition-colors text-ink-500"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            <form onSubmit={handleSaveNilaiManual} className="p-6 md:p-8 overflow-y-auto custom-scrollbar flex-1">
+              <div className="space-y-4">
+                <div className="bg-amber-50 text-amber-800 p-4 rounded-xl text-sm mb-4 border border-amber-200 font-medium">
+                  <strong>Peringatan:</strong> Fitur ini akan langsung menimpa data nilai secara spesifik (untuk pindahan/bypass).
+                </div>
+                
+                <div>
+                  <label className="text-xs font-black uppercase text-stone-600">Nilai CBT Akademik</label>
+                  <input
+                    type="number"
+                    step="any"
+                    value={nilaiFormData.score_akademik}
+                    onChange={(e) => setNilaiFormData({...nilaiFormData, score_akademik: e.target.value})}
+                    className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
+                    placeholder="Contoh: 95"
+                  />
+                </div>
+                
+                <div>
+                  <label className="text-xs font-black uppercase text-stone-600">Nilai CBT Kepribadian</label>
+                  <input
+                    type="number"
+                    step="any"
+                    value={nilaiFormData.score_kepribadian}
+                    onChange={(e) => setNilaiFormData({...nilaiFormData, score_kepribadian: e.target.value})}
+                    className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
+                    placeholder="Contoh: 52"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-xs font-black uppercase text-stone-600">Nilai CBT Kesiapan</label>
+                  <input
+                    type="number"
+                    step="any"
+                    value={nilaiFormData.score_kesiapan}
+                    onChange={(e) => setNilaiFormData({...nilaiFormData, score_kesiapan: e.target.value})}
+                    className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
+                    placeholder="Contoh: 65.3"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-xs font-black uppercase text-stone-600">Nilai Tes Al Quran</label>
+                  <input
+                    type="number"
+                    step="any"
+                    value={nilaiFormData.score_quran}
+                    onChange={(e) => setNilaiFormData({...nilaiFormData, score_quran: e.target.value})}
+                    className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
+                    placeholder="Contoh: 70"
+                  />
+                </div>
+              </div>
+
+              <div className="pt-6 mt-6 border-t border-surface-100 flex justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setIsNilaiModalOpen(false)}
+                  className="px-5 py-2.5 hover:bg-surface-100 text-ink-600 rounded-xl font-bold text-sm transition-colors"
+                >
+                  Batal
+                </button>
+                <button
+                  type="submit"
+                  disabled={savingNilai}
+                  className="px-6 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-black text-sm uppercase transition-all shadow-md disabled:opacity-50"
+                >
+                  {savingNilai ? "Menyimpan..." : "Simpan Nilai"}
                 </button>
               </div>
             </form>
