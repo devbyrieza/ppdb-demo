@@ -108,10 +108,7 @@ export async function recalculateNilaiUjian(pendaftarId: string, overrideStatus?
   const kp = master.score_kepribadian != null ? Number(master.score_kepribadian) : null;
   const ks = master.score_kesiapan != null ? Number(master.score_kesiapan) : null;
 
-  let ws = master.nilai_wawancara_santri != null ? Number(master.nilai_wawancara_santri) : null;
-  
-  // Fallback dihapus untuk mencegah circular dependency antara ws dan score_wawancara
-
+  let ws = master.score_wawancara != null ? Number(master.score_wawancara) : (master.nilai_wawancara_santri != null ? Number(master.nilai_wawancara_santri) : null);
   
   if (ws != null && ws <= 10 && ws > 0) ws = normalizeSantriScore(ws);
 
@@ -262,11 +259,11 @@ export async function recalculateNilaiUjian(pendaftarId: string, overrideStatus?
       nilai_tes_quran: quran, // Override Decimal field
       score_kepribadian: kp, 
       score_kesiapan: ks,
-      nilai_wawancara_santri: ws, // Override Decimal field
-      nilai_wawancara_ortu: wo, // Override Decimal field
-      score_wawancara: wawancaraTotal,
+      score_wawancara: ws, // Simpan Wawancara Santri (sebelumnya menyimpan wawancaraTotal yang merusak data manual Calsan)
+      nilai_wawancara_santri: ws, 
+      nilai_wawancara_ortu: wo, 
       total_score: totalScore, 
-      nilai_total: totalScore, // Override Decimal field
+      nilai_total: totalScore,
       status_kelulusan: status, 
       updated_at: new Date(),
     },
