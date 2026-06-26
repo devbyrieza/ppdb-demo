@@ -203,6 +203,10 @@ export default function PendaftarDetailPage() {
     score_kepribadian: "",
     score_kesiapan: "",
     score_quran: "",
+    score_wawancara: "",
+    nilai_wawancara_ortu: "",
+    score_hafalan: "",
+    score_arab: "",
   });
   const [savingNilai, setSavingNilai] = useState(false);
 
@@ -1568,7 +1572,11 @@ export default function PendaftarDetailPage() {
                           score_akademik: pendaftar.nilai_ujian?.score_akademik?.toString() || "",
                           score_kepribadian: pendaftar.nilai_ujian?.score_kepribadian?.toString() || "",
                           score_kesiapan: pendaftar.nilai_ujian?.score_kesiapan?.toString() || "",
-                          score_quran: pendaftar.nilai_ujian?.score_quran?.toString() || "",
+                          score_quran: pendaftar.nilai_ujian?.score_quran?.toString() || pendaftar.nilai_ujian?.nilai_tes_quran?.toString() || "",
+                          score_wawancara: pendaftar.nilai_ujian?.score_wawancara?.toString() || pendaftar.nilai_ujian?.nilai_wawancara_santri?.toString() || "",
+                          nilai_wawancara_ortu: pendaftar.nilai_ujian?.nilai_wawancara_ortu?.toString() || "",
+                          score_hafalan: pendaftar.nilai_ujian?.score_hafalan?.toString() || pendaftar.nilai_ujian?.nilai_tes_hafalan?.toString() || "",
+                          score_arab: (pendaftar.nilai_ujian as any)?.score_arab?.toString() || pendaftar.nilai_ujian?.score_lisan_arab?.toString() || pendaftar.nilai_ujian?.nilai_tes_lisan_arab?.toString() || "",
                         });
                         setIsNilaiModalOpen(true);
                       }}
@@ -3160,6 +3168,54 @@ export default function PendaftarDetailPage() {
                     onChange={(e) => setNilaiFormData({...nilaiFormData, score_quran: e.target.value})}
                     className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
                     placeholder="Contoh: 70"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-xs font-black uppercase text-stone-600">Nilai Wawancara Calon Santri</label>
+                  <input
+                    type="number"
+                    step="any"
+                    value={nilaiFormData.score_wawancara}
+                    onChange={(e) => setNilaiFormData({...nilaiFormData, score_wawancara: e.target.value})}
+                    className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
+                    placeholder="Contoh: 85"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-xs font-black uppercase text-stone-600">Nilai Wawancara Calon Wali Santri</label>
+                  <input
+                    type="number"
+                    step="any"
+                    value={nilaiFormData.nilai_wawancara_ortu}
+                    onChange={(e) => setNilaiFormData({...nilaiFormData, nilai_wawancara_ortu: e.target.value})}
+                    className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
+                    placeholder="Contoh: 90"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-xs font-black uppercase text-stone-600">Nilai Tes Hafalan Alquran (Khusus MA)</label>
+                  <input
+                    type="number"
+                    step="any"
+                    value={nilaiFormData.score_hafalan}
+                    onChange={(e) => setNilaiFormData({...nilaiFormData, score_hafalan: e.target.value})}
+                    className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
+                    placeholder="Contoh: 88"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-xs font-black uppercase text-stone-600">Nilai Tes Lisan B. Arab (Khusus MA)</label>
+                  <input
+                    type="number"
+                    step="any"
+                    value={nilaiFormData.score_arab}
+                    onChange={(e) => setNilaiFormData({...nilaiFormData, score_arab: e.target.value})}
+                    className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
+                    placeholder="Contoh: 75"
                   />
                 </div>
               </div>

@@ -430,6 +430,10 @@ export async function PATCH(
         score_kepribadian: body.scores?.score_kepribadian !== "" && body.scores?.score_kepribadian != null ? parseFloat(body.scores?.score_kepribadian) : null,
         score_kesiapan: body.scores?.score_kesiapan !== "" && body.scores?.score_kesiapan != null ? parseFloat(body.scores?.score_kesiapan) : null,
         score_quran: body.scores?.score_quran !== "" && body.scores?.score_quran != null ? parseFloat(body.scores?.score_quran) : null,
+        score_wawancara: body.scores?.score_wawancara !== "" && body.scores?.score_wawancara != null ? parseFloat(body.scores?.score_wawancara) : null,
+        nilai_wawancara_ortu: body.scores?.nilai_wawancara_ortu !== "" && body.scores?.nilai_wawancara_ortu != null ? parseFloat(body.scores?.nilai_wawancara_ortu) : null,
+        score_hafalan: body.scores?.score_hafalan !== "" && body.scores?.score_hafalan != null ? parseFloat(body.scores?.score_hafalan) : null,
+        score_arab: body.scores?.score_arab !== "" && body.scores?.score_arab != null ? parseFloat(body.scores?.score_arab) : null,
       };
 
       if (existingNilai) {
