@@ -656,6 +656,22 @@ function InputNilaiContent() {
 
         {isEditing ? (
           <div className="space-y-5 sm:space-y-6">
+            {(() => {
+              const isInputtedByAdmin = p.score_hafalan != null && !p.input_at_hafalan;
+              return (
+                <>
+                  {isInputtedByAdmin && (
+                    <div className="mb-4 sm:mb-6 p-4 sm:p-5 bg-amber-50 rounded-xl sm:rounded-2xl border-2 border-amber-200 flex items-start gap-3 sm:gap-4">
+                      <div className="p-2 sm:p-2.5 bg-amber-100 rounded-lg sm:rounded-xl">
+                        <LockIcon className="w-5 h-5 sm:w-6 sm:h-6 text-amber-700" />
+                      </div>
+                      <div>
+                        <h3 className="font-black text-amber-950 text-sm sm:text-base">Terkunci (Input Khusus Admin)</h3>
+                        <p className="text-amber-800 text-xs sm:text-sm mt-1 sm:mt-1.5 font-medium leading-relaxed">Nilai ini telah diinput secara khusus oleh Admin Super. Anda tidak dapat mengubahnya.</p>
+                      </div>
+                    </div>
+                  )}
+                  <div className={isInputtedByAdmin ? "opacity-60 pointer-events-none grayscale" : ""}>
             <div className="grid grid-cols-1 gap-5 sm:gap-6 text-sm">
               <div>
                 <label className="block text-[10px] sm:text-xs font-black text-ink-700 uppercase tracking-widest mb-2 sm:mb-3">Nilai Hafalan (1-100) *</label>
@@ -682,10 +698,14 @@ function InputNilaiContent() {
 
             <div className="flex flex-col-reverse sm:flex-row gap-3 pt-4 border-t border-teal-100/60">
               <button onClick={cancelEditing} disabled={!!saving} className="px-6 py-4 rounded-xl sm:rounded-2xl font-black text-xs uppercase tracking-widest text-ink-500 hover:bg-ink-100 transition-all flex-1 text-center">Batal</button>
-              <button onClick={() => saveForm(p, "hafalan")} disabled={!!saving || !hafalanForm.score_override || !hafalanForm.rekomendasi} className="px-6 py-4 rounded-xl sm:rounded-2xl font-black text-xs uppercase tracking-widest bg-teal-600 text-white hover:bg-teal-700 transition-all shadow-lg shadow-teal-900/20 disabled:opacity-50 disabled:cursor-not-allowed flex-1 text-center flex justify-center items-center gap-2">
+              <button onClick={() => saveForm(p, "hafalan")} disabled={isInputtedByAdmin || !!saving || !hafalanForm.score_override || !hafalanForm.rekomendasi} className="px-6 py-4 rounded-xl sm:rounded-2xl font-black text-xs uppercase tracking-widest bg-teal-600 text-white hover:bg-teal-700 transition-all shadow-lg shadow-teal-900/20 disabled:opacity-50 disabled:cursor-not-allowed flex-1 text-center flex justify-center items-center gap-2">
                 {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} {saving ? 'Menyimpan...' : 'Simpan Nilai Hafalan'}
               </button>
             </div>
+                  </div>
+                </>
+              );
+            })()}
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 bg-white p-5 sm:p-6 rounded-2xl border border-teal-100/50">
@@ -751,6 +771,22 @@ function InputNilaiContent() {
 
         {isEditing ? (
           <div className="space-y-5 sm:space-y-6">
+            {(() => {
+              const isInputtedByAdmin = p.score_lisan_arab != null && !p.input_at_lisan_arab;
+              return (
+                <>
+                  {isInputtedByAdmin && (
+                    <div className="mb-4 sm:mb-6 p-4 sm:p-5 bg-amber-50 rounded-xl sm:rounded-2xl border-2 border-amber-200 flex items-start gap-3 sm:gap-4">
+                      <div className="p-2 sm:p-2.5 bg-amber-100 rounded-lg sm:rounded-xl">
+                        <LockIcon className="w-5 h-5 sm:w-6 sm:h-6 text-amber-700" />
+                      </div>
+                      <div>
+                        <h3 className="font-black text-amber-950 text-sm sm:text-base">Terkunci (Input Khusus Admin)</h3>
+                        <p className="text-amber-800 text-xs sm:text-sm mt-1 sm:mt-1.5 font-medium leading-relaxed">Nilai ini telah diinput secara khusus oleh Admin Super. Anda tidak dapat mengubahnya.</p>
+                      </div>
+                    </div>
+                  )}
+                  <div className={isInputtedByAdmin ? "opacity-60 pointer-events-none grayscale" : ""}>
             <div className="grid grid-cols-1 gap-5 sm:gap-6 text-sm">
               <div>
                 <label className="block text-[10px] sm:text-xs font-black text-ink-700 uppercase tracking-widest mb-2 sm:mb-3">Nilai Bahasa Arab (1-100) *</label>
@@ -777,10 +813,14 @@ function InputNilaiContent() {
 
             <div className="flex flex-col-reverse sm:flex-row gap-3 pt-4 border-t border-sky-100/60">
               <button onClick={cancelEditing} disabled={!!saving} className="px-6 py-4 rounded-xl sm:rounded-2xl font-black text-xs uppercase tracking-widest text-ink-500 hover:bg-ink-100 transition-all flex-1 text-center">Batal</button>
-              <button onClick={() => saveForm(p, "lisan_arab")} disabled={!!saving || !lisanArabForm.score_override || !lisanArabForm.rekomendasi} className="px-6 py-4 rounded-xl sm:rounded-2xl font-black text-xs uppercase tracking-widest bg-sky-600 text-white hover:bg-sky-700 transition-all shadow-lg shadow-sky-900/20 disabled:opacity-50 disabled:cursor-not-allowed flex-1 text-center flex justify-center items-center gap-2">
+              <button onClick={() => saveForm(p, "lisan_arab")} disabled={isInputtedByAdmin || !!saving || !lisanArabForm.score_override || !lisanArabForm.rekomendasi} className="px-6 py-4 rounded-xl sm:rounded-2xl font-black text-xs uppercase tracking-widest bg-sky-600 text-white hover:bg-sky-700 transition-all shadow-lg shadow-sky-900/20 disabled:opacity-50 disabled:cursor-not-allowed flex-1 text-center flex justify-center items-center gap-2">
                 {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} {saving ? 'Menyimpan...' : 'Simpan Nilai B. Arab'}
               </button>
             </div>
+                  </div>
+                </>
+              );
+            })()}
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 bg-white p-5 sm:p-6 rounded-2xl border border-sky-100/50">
@@ -855,6 +895,22 @@ function InputNilaiContent() {
 
         {isEditing ? (
           <div className="space-y-5 sm:space-y-6">
+            {(() => {
+              const isInputtedByAdmin = p.score_quran != null && !p.input_at_quran;
+              return (
+                <>
+                  {isInputtedByAdmin && (
+                    <div className="mb-4 sm:mb-6 p-4 sm:p-5 bg-amber-50 rounded-xl sm:rounded-2xl border-2 border-amber-200 flex items-start gap-3 sm:gap-4">
+                      <div className="p-2 sm:p-2.5 bg-amber-100 rounded-lg sm:rounded-xl">
+                        <LockIcon className="w-5 h-5 sm:w-6 sm:h-6 text-amber-700" />
+                      </div>
+                      <div>
+                        <h3 className="font-black text-amber-950 text-sm sm:text-base">Terkunci (Input Khusus Admin)</h3>
+                        <p className="text-amber-800 text-xs sm:text-sm mt-1 sm:mt-1.5 font-medium leading-relaxed">Nilai ini telah diinput secara khusus oleh Admin Super. Anda tidak dapat mengubahnya.</p>
+                      </div>
+                    </div>
+                  )}
+                  <div className={isInputtedByAdmin ? "opacity-60 pointer-events-none grayscale" : ""}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 text-sm">
               <div>
                 <label className="block text-[10px] sm:text-xs font-black text-ink-700 uppercase tracking-widest mb-2 sm:mb-3">Nilai Tajwid (1-100) *</label>
@@ -890,10 +946,14 @@ function InputNilaiContent() {
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
               <button onClick={cancelEditing} className="w-full sm:w-auto px-5 md:px-8 py-4 bg-emerald-100 text-emerald-700 rounded-xl sm:rounded-2xl font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-emerald-200 transition-all active:scale-95">Batal</button>
-              <button onClick={() => saveForm(p, "quran")} disabled={!quranForm.tajwid || !quranForm.kelancaran || !quranForm.rekomendasi || !quranForm.nama_penguji || saving === p.id + "quran"} className="w-full sm:w-auto px-5 md:px-8 py-4 bg-emerald-600 text-white rounded-xl sm:rounded-2xl font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-emerald-700 transition-all shadow-xl shadow-emerald-900/20 disabled:opacity-50 flex items-center justify-center gap-2 active:scale-95">
+              <button onClick={() => saveForm(p, "quran")} disabled={isInputtedByAdmin || !quranForm.tajwid || !quranForm.kelancaran || !quranForm.rekomendasi || !quranForm.nama_penguji || saving === p.id + "quran"} className="w-full sm:w-auto px-5 md:px-8 py-4 bg-emerald-600 text-white rounded-xl sm:rounded-2xl font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-emerald-700 transition-all shadow-xl shadow-emerald-900/20 disabled:opacity-50 flex items-center justify-center gap-2 active:scale-95">
                 {saving === p.id + "quran" ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />} Simpan
               </button>
             </div>
+                  </div>
+                </>
+              );
+            })()}
           </div>
         ) : (
           <div>
@@ -981,6 +1041,22 @@ function InputNilaiContent() {
 
         {isEditing ? (
           <div className="space-y-5 sm:space-y-6">
+            {(() => {
+              const isInputtedByAdmin = p.score_wawancara != null && !p.input_at_santri;
+              return (
+                <>
+                  {isInputtedByAdmin && (
+                    <div className="mb-4 sm:mb-6 p-4 sm:p-5 bg-amber-50 rounded-xl sm:rounded-2xl border-2 border-amber-200 flex items-start gap-3 sm:gap-4">
+                      <div className="p-2 sm:p-2.5 bg-amber-100 rounded-lg sm:rounded-xl">
+                        <LockIcon className="w-5 h-5 sm:w-6 sm:h-6 text-amber-700" />
+                      </div>
+                      <div>
+                        <h3 className="font-black text-amber-950 text-sm sm:text-base">Terkunci (Input Khusus Admin)</h3>
+                        <p className="text-amber-800 text-xs sm:text-sm mt-1 sm:mt-1.5 font-medium leading-relaxed">Nilai ini telah diinput secara khusus oleh Admin Super. Anda tidak dapat mengubahnya.</p>
+                      </div>
+                    </div>
+                  )}
+                  <div className={isInputtedByAdmin ? "opacity-60 pointer-events-none grayscale" : ""}>
             {criteria.map((criterion) => (
               <div key={criterion.key} className="space-y-3 sm:space-y-4">
                 <label className="block text-xs sm:text-sm font-black text-primary-950 uppercase tracking-tight leading-none">{criterion.label}</label>
@@ -1029,10 +1105,14 @@ function InputNilaiContent() {
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
               <button onClick={cancelEditing} className="w-full sm:w-auto px-5 md:px-8 py-4 bg-ink-100 text-ink-800 rounded-xl sm:rounded-2xl font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-ink-200 transition-all active:scale-95">Batal</button>
-              <button onClick={() => saveForm(p, "wawancara")} disabled={!criteria.every((c) => calsanForm[c.key]) || !calsanForm.rekomendasi || !calsanForm.nama_pewawancara || saving === p.id + "wawancara"} className="w-full sm:w-auto px-5 md:px-8 py-4 bg-primary-700 text-white rounded-xl sm:rounded-2xl font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-primary-800 transition-all shadow-xl shadow-primary-900/20 disabled:opacity-50 flex items-center justify-center gap-2 active:scale-95">
+              <button onClick={() => saveForm(p, "wawancara")} disabled={isInputtedByAdmin || !criteria.every((c) => calsanForm[c.key]) || !calsanForm.rekomendasi || !calsanForm.nama_pewawancara || saving === p.id + "wawancara"} className="w-full sm:w-auto px-5 md:px-8 py-4 bg-primary-700 text-white rounded-xl sm:rounded-2xl font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-primary-800 transition-all shadow-xl shadow-primary-900/20 disabled:opacity-50 flex items-center justify-center gap-2 active:scale-95">
                 {saving === p.id + "wawancara" ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />} Simpan
               </button>
             </div>
+                  </div>
+                </>
+              );
+            })()}
           </div>
         ) : (
           <div>
@@ -1102,6 +1182,22 @@ function InputNilaiContent() {
 
         {isEditing ? (
           <div className="space-y-5 sm:space-y-6">
+            {(() => {
+              const isInputtedByAdmin = p.nilai_wawancara_ortu != null && !p.input_at_ortu;
+              return (
+                <>
+                  {isInputtedByAdmin && (
+                    <div className="mb-4 sm:mb-6 p-4 sm:p-5 bg-amber-50 rounded-xl sm:rounded-2xl border-2 border-amber-200 flex items-start gap-3 sm:gap-4">
+                      <div className="p-2 sm:p-2.5 bg-amber-100 rounded-lg sm:rounded-xl">
+                        <LockIcon className="w-5 h-5 sm:w-6 sm:h-6 text-amber-700" />
+                      </div>
+                      <div>
+                        <h3 className="font-black text-amber-950 text-sm sm:text-base">Terkunci (Input Khusus Admin)</h3>
+                        <p className="text-amber-800 text-xs sm:text-sm mt-1 sm:mt-1.5 font-medium leading-relaxed">Nilai ini telah diinput secara khusus oleh Admin Super. Anda tidak dapat mengubahnya.</p>
+                      </div>
+                    </div>
+                  )}
+                  <div className={isInputtedByAdmin ? "opacity-60 pointer-events-none grayscale" : ""}>
             {/* Dasar Informasi */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 bg-white rounded-xl sm:rounded-2xl p-5 sm:p-6 border border-secondary-100 shadow-xs">
               <div>
@@ -1198,10 +1294,14 @@ function InputNilaiContent() {
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
               <button onClick={cancelEditing} className="w-full sm:w-auto px-5 md:px-8 py-4 bg-secondary-100 text-secondary-900 rounded-xl sm:rounded-2xl font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-secondary-200 transition-all active:scale-95">Batal</button>
-              <button onClick={() => saveForm(p, "ortu")} disabled={!cawalsanForm.nama_orangtua || !cawalsanForm.asal || !cawalsanForm.kategori || !cawalsanForm.sumber_info || !cawalsanForm.karakter || !cawalsanForm.tahu_spp || !cawalsanForm.rekomendasi || !cawalsanForm.nama_pewawancara || !CAWALSAN_QUESTIONS.every((q) => cawalsanForm[q.key]) || saving === p.id + "ortu"} className="w-full sm:w-auto px-5 md:px-8 py-4 bg-secondary-400 text-primary-950 rounded-xl sm:rounded-2xl font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-secondary-500 transition-all shadow-xl shadow-secondary-400/20 disabled:opacity-50 flex items-center justify-center gap-2 active:scale-95">
+              <button onClick={() => saveForm(p, "ortu")} disabled={isInputtedByAdmin || !cawalsanForm.nama_orangtua || !cawalsanForm.asal || !cawalsanForm.kategori || !cawalsanForm.sumber_info || !cawalsanForm.karakter || !cawalsanForm.tahu_spp || !cawalsanForm.rekomendasi || !cawalsanForm.nama_pewawancara || !CAWALSAN_QUESTIONS.every((q) => cawalsanForm[q.key]) || saving === p.id + "ortu"} className="w-full sm:w-auto px-5 md:px-8 py-4 bg-secondary-400 text-primary-950 rounded-xl sm:rounded-2xl font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-secondary-500 transition-all shadow-xl shadow-secondary-400/20 disabled:opacity-50 flex items-center justify-center gap-2 active:scale-95">
                 {saving === p.id + "ortu" ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />} Simpan
               </button>
             </div>
+                  </div>
+                </>
+              );
+            })()}
           </div>
         ) : (
           <div>
