@@ -205,7 +205,14 @@ export async function recalculateNilaiUjian(pendaftarId: string, overrideStatus?
       let nextStatus = status === "DITERIMA" ? "accepted" : (status === "DITOLAK" ? "rejected" : "announced");
       let displayLabel = status === "DITERIMA" ? "Diterima" : (status === "DITOLAK" ? "Ditolak" : "Cadangan");
 
-      await prisma.pendaftar.update({ where: { id: pendaftarId }, data: { status_pendaftaran: nextStatus }});
+      // Atomic update to prevent race conditions causing duplicate notifications
+      const updateResult = await prisma.pendaftar.updateMany({
+        where: { id: pendaftarId, status_pendaftaran: { not: nextStatus } },
+        data: { status_pendaftaran: nextStatus }
+      });
+
+      const isStatusChanged = updateResult.count > 0;
+
       await prisma.pengumuman.upsert({
         where: { pendaftar_id: pendaftarId },
         update: { status_kelulusan: displayLabel, is_published: true, published_at: new Date() },
@@ -213,23 +220,25 @@ export async function recalculateNilaiUjian(pendaftarId: string, overrideStatus?
       });
 
       // 7. Kirim Notifikasi WhatsApp Otomatis
-      try {
-        const { notifyCombinedFinalResult } = await import("./wablas");
-        const { processWhatsappQueue } = await import("./whatsapp-queue");
-        const phone = pendaftar.no_hp || pendaftar.orang_tua?.no_hp_ayah || pendaftar.orang_tua?.no_hp_ibu;
-        if (phone) {
-          await notifyCombinedFinalResult({
-            pendaftarId, phone, nama: pendaftar.nama_lengkap,
-            status: status as any, jenjang: pendaftar.jenjang
-          });
+      if (isStatusChanged) {
+        try {
+          const { notifyCombinedFinalResult } = await import("./wablas");
+          const { processWhatsappQueue } = await import("./whatsapp-queue");
+          const phone = pendaftar.no_hp || pendaftar.orang_tua?.no_hp_ayah || pendaftar.orang_tua?.no_hp_ibu;
+          if (phone) {
+            await notifyCombinedFinalResult({
+              pendaftarId, phone, nama: pendaftar.nama_lengkap,
+              status: status as any, jenjang: pendaftar.jenjang
+            });
 
-          // Jalankan proses antrean secara asinkron (fail-safe jika cron delay/mati)
-          processWhatsappQueue().catch((err) =>
-            console.error("Failed to run processWhatsappQueue asynchronously:", err)
-          );
+            // Jalankan proses antrean secara asinkron (fail-safe jika cron delay/mati)
+            processWhatsappQueue().catch((err) =>
+              console.error("Failed to run processWhatsappQueue asynchronously:", err)
+            );
+          }
+        } catch (err) {
+          console.error("WhatsApp Notification Error:", err);
         }
-      } catch (err) {
-        console.error("WhatsApp Notification Error:", err);
       }
 
     }
