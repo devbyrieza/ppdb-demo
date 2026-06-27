@@ -51,6 +51,7 @@ export default function DashboardLayout({
   const [namaLengkap, setNamaLengkap] = useState("");
   const [tipePendaftaran, setTipePendaftaran] = useState("");
   const [loading, setLoading] = useState(true);
+  const [seragamLengkap, setSeragamLengkap] = useState(true); // true = sudah isi, false = belum
 
   // Extract first name for greeting
   const namaDepan = namaLengkap.split(" ")[0] || namaLengkap;
@@ -111,6 +112,9 @@ export default function DashboardLayout({
         setNomorPendaftaran(userData.nomor_pendaftaran || "-");
         setNamaLengkap(userData.nama_lengkap || fallbackName);
         setTipePendaftaran(userData.tipe_pendaftaran || "");
+        // Cek kelengkapan seragam
+        const sudahIsiSeragam = !!(userData.ukuran_seragam_baju && userData.ukuran_seragam_celana && userData.ukuran_seragam_almamater);
+        setSeragamLengkap(sudahIsiSeragam);
       } catch (error: any) {
         console.error(
           "Error in Layout fetchUserData:",
@@ -183,6 +187,13 @@ export default function DashboardLayout({
       active: pathname === "/dashboard/pendaftar/seragam",
     },
     {
+      name: "Keuangan (ZAD)",
+      href: "http://localhost:3001/wali-santri",
+      tabName: "kartu-jajan" as TabName, // still using the same access control rule internally
+      icon: HandCoins,
+      active: pathname === "/dashboard/pendaftar/keuangan",
+    },
+    {
       name: "Profil Akun",
       href: "/dashboard/pendaftar/profil",
       tabName: "profil" as TabName,
@@ -193,9 +204,8 @@ export default function DashboardLayout({
 
   // Function untuk cek apakah tab bisa diakses
   const isTabAccessible = (tabName: TabName) => {
-    // SPECIAL BYPASS: Akun testing/demo - semua tab terbuka
+    // SPECIAL BYPASS FOR TESTING ACCOUNT: RIEZA TES
     if (nomorPendaftaran === "ILI2600007") return true;
-    if (nomorPendaftaran === "MTA2500010") return true; // Hamzah - demo lengkap
 
     return canAccessTab(tabName, statusProses);
   };
@@ -239,6 +249,10 @@ export default function DashboardLayout({
       );
     }
 
+    // Cek apakah ini menu seragam yang perlu badge
+    const isSeragamMenu = item.tabName === "ukuran-seragam";
+    const showSeragamBadge = isSeragamMenu && !seragamLengkap && (statusProses === "accepted" || statusProses === "enrolled" || statusProses === "enrolled_full");
+
     return (
       <div className="px-3 py-1">
         <Link
@@ -246,14 +260,21 @@ export default function DashboardLayout({
           className={`group flex items-center px-4 py-3.5 text-sm font-bold rounded-2xl transition-all duration-200 ${
             item.active
               ? "bg-primary-900 text-white shadow-md border border-primary-800"
+              : showSeragamBadge
+              ? "text-orange-700 bg-orange-50 hover:bg-orange-100 border border-orange-200"
               : "text-ink-600 hover:bg-gold-100 hover:text-primary-900"
           }`}
         >
           <item.icon
-            className={`w-5 h-5 mr-3 flex-shrink-0 transition-colors ${item.active ? "text-gold-200" : "text-ink-400 group-hover:text-primary-700"}`}
+            className={`w-5 h-5 mr-3 flex-shrink-0 transition-colors ${item.active ? "text-gold-200" : showSeragamBadge ? "text-orange-500" : "text-ink-400 group-hover:text-primary-700"}`}
           />
           <span className="flex-1 truncate">{item.name}</span>
 
+          {showSeragamBadge && (
+            <span className="text-[9px] font-black bg-red-500 text-white px-1.5 py-0.5 rounded-full animate-pulse">
+              Isi!
+            </span>
+          )}
           {item.active && <ChevronRight className="w-4 h-4 text-gold-200" />}
         </Link>
       </div>
@@ -293,21 +314,27 @@ export default function DashboardLayout({
         {/* Mobile Header (Fintech Style) */}
         <div className="lg:hidden bg-white/90 backdrop-blur-xl sticky top-0 z-40 px-4 sm:px-5 py-3 sm:py-4 flex items-center justify-between border-b border-gold-200 shadow-sm">
           <div className="flex items-center gap-2 sm:gap-3">
+            {/* Tombol MENU yang jelas - bukan hanya ikon hamburger */}
             <button
               onClick={() => setSidebarOpen(true)}
-              className="p-2 -ml-2 text-primary-950 hover:bg-gold-50 rounded-xl transition-colors"
+              className="flex items-center gap-1.5 px-3 py-2 -ml-1 bg-primary-700 text-white hover:bg-primary-800 rounded-xl transition-colors shadow-sm relative"
             >
-              <Menu className="w-6 h-6" />
+              <Menu className="w-4 h-4" />
+              <span className="text-xs font-black tracking-wide">MENU</span>
+              {/* Badge merah jika seragam belum diisi */}
+              {!seragamLengkap && (statusProses === "accepted" || statusProses === "enrolled" || statusProses === "enrolled_full") && (
+                <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                </span>
+              )}
             </button>
             <div className="flex flex-col">
-              <span
-                className="text-[9px] sm:text-[10px] uppercase font-black tracking-widest text-ink-400 mb-0.5"
-                style={{ display: "none" }}
-              >
-                PPDB {BRANDING.schoolName}
-              </span>
               <span className="text-sm sm:text-base font-black text-primary-950 leading-none">
                 Portal Santri
+              </span>
+              <span className="text-[9px] text-ink-400 font-medium">
+                Ketuk MENU untuk navigasi
               </span>
             </div>
           </div>
@@ -511,22 +538,46 @@ export default function DashboardLayout({
             {/* Content Wrapper */}
             <div className="flex-1 pt-14 lg:pt-12 max-w-6xl w-full mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500 z-10">
               <DashboardTabs statusProses={statusProses} />
+
+              {/* Banner Pengingat Seragam - muncul otomatis jika belum diisi */}
+              {!seragamLengkap && (statusProses === "accepted" || statusProses === "enrolled" || statusProses === "enrolled_full") && pathname !== "/dashboard/pendaftar/seragam" && (
+                <div className="mx-4 md:mx-6 lg:mx-5 mt-4 mb-0">
+                  <div className="flex items-center gap-3 bg-orange-50 border border-orange-300 rounded-2xl px-4 py-3 shadow-sm">
+                    <div className="w-9 h-9 rounded-xl bg-orange-500 flex items-center justify-center flex-shrink-0 shadow-sm">
+                      <Shirt className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-black text-orange-900">⚠️ Data Ukuran Seragam Belum Diisi!</p>
+                      <p className="text-xs text-orange-700 leading-snug mt-0.5">Harap segera isi ukuran seragam ananda agar dapat diproses tepat waktu.</p>
+                    </div>
+                    <Link
+                      href="/dashboard/pendaftar/seragam"
+                      className="flex-shrink-0 flex items-center gap-1 bg-orange-500 hover:bg-orange-600 text-white text-xs font-black px-3 py-2 rounded-xl transition-colors shadow-sm"
+                    >
+                      <Shirt className="w-3.5 h-3.5" />
+                      <span>Isi Sekarang</span>
+                    </Link>
+                  </div>
+                </div>
+              )}
+
               <div className="p-4 md:p-6 lg:p-5 md:p-8">{children}</div>
             </div>
 
             {/* Mobile Bottom Navigation (Fintech Style) */}
             {!pathname.includes("/ujian/") && (
               <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gold-200 pb-safe z-40 shadow-[0_-10px_40px_-10px_rgba(0,0,0,0.1)] rounded-t-[1.5rem]">
-                <div className="flex justify-around items-center px-4 py-3">
+                <div className="flex justify-around items-center px-2 py-2">
+                  {/* Beranda */}
                   <Link
                     href="/dashboard/pendaftar"
-                    className="flex flex-col items-center p-2 group w-16"
+                    className="flex flex-col items-center p-2 group w-20"
                   >
                     <div
-                      className={`w-10 h-8 rounded-full flex items-center justify-center mb-1 transition-colors ${pathname === "/dashboard/pendaftar" ? "bg-gold-100" : "bg-transparent group-hover:bg-gold-50"}`}
+                      className={`w-11 h-9 rounded-xl flex items-center justify-center mb-1 transition-colors ${pathname === "/dashboard/pendaftar" ? "bg-primary-700" : "bg-surface-100 group-hover:bg-gold-50"}`}
                     >
                       <Home
-                        className={`w-5 h-5 transition-colors ${pathname === "/dashboard/pendaftar" ? "text-primary-700" : "text-ink-400 group-hover:text-primary-600"}`}
+                        className={`w-5 h-5 transition-colors ${pathname === "/dashboard/pendaftar" ? "text-white" : "text-ink-400 group-hover:text-primary-600"}`}
                       />
                     </div>
                     <span
@@ -536,24 +587,26 @@ export default function DashboardLayout({
                     </span>
                   </Link>
 
+                  {/* Pembayaran */}
                   <Link
                     href="/dashboard/pendaftar/pembayaran-pendaftaran"
-                    className="flex flex-col items-center p-2 group w-16"
+                    className="flex flex-col items-center p-2 group w-20"
                   >
                     <div
-                      className={`w-10 h-8 rounded-full flex items-center justify-center mb-1 transition-colors ${pathname.includes("pembayaran") ? "bg-gold-100" : "bg-transparent group-hover:bg-gold-50"}`}
+                      className={`w-11 h-9 rounded-xl flex items-center justify-center mb-1 transition-colors ${pathname.includes("pembayaran") ? "bg-primary-700" : "bg-surface-100 group-hover:bg-gold-50"}`}
                     >
                       <CreditCard
-                        className={`w-5 h-5 transition-colors ${pathname.includes("pembayaran") ? "text-primary-700" : "text-ink-400 group-hover:text-primary-600"}`}
+                        className={`w-5 h-5 transition-colors ${pathname.includes("pembayaran") ? "text-white" : "text-ink-400 group-hover:text-primary-600"}`}
                       />
                     </div>
                     <span
                       className={`text-[10px] font-bold text-center ${pathname.includes("pembayaran") ? "text-primary-800" : "text-ink-400"}`}
                     >
-                      Bayar
+                      Pembayaran
                     </span>
                   </Link>
 
+                  {/* Isi Data */}
                   <Link
                     href={canAccessTab("kelengkapan-berkas", statusProses) ? "/dashboard/pendaftar/isi-data-lengkap" : "#"}
                     onClick={(e) => {
@@ -562,39 +615,43 @@ export default function DashboardLayout({
                         alert(getUnlockMessage("kelengkapan-berkas"));
                       }
                     }}
-                    className={`flex flex-col items-center p-2 group w-16 ${!canAccessTab("kelengkapan-berkas", statusProses) ? "opacity-60" : ""}`}
+                    className={`flex flex-col items-center p-2 group w-20 ${!canAccessTab("kelengkapan-berkas", statusProses) ? "opacity-50" : ""}`}
                   >
                     <div
-                      className={`w-10 h-8 rounded-full flex items-center justify-center mb-1 transition-colors ${!canAccessTab("kelengkapan-berkas", statusProses) ? "bg-transparent" : pathname.includes("isi-data-lengkap") || pathname.includes("upload-berkas") ? "bg-gold-100" : "bg-transparent group-hover:bg-gold-50"}`}
+                      className={`w-11 h-9 rounded-xl flex items-center justify-center mb-1 transition-colors ${!canAccessTab("kelengkapan-berkas", statusProses) ? "bg-surface-100" : pathname.includes("isi-data-lengkap") || pathname.includes("upload-berkas") ? "bg-primary-700" : "bg-surface-100 group-hover:bg-gold-50"}`}
                     >
                       {!canAccessTab("kelengkapan-berkas", statusProses) ? (
-                        <Lock className="w-5 h-5 text-ink-400" />
+                        <Lock className="w-5 h-5 text-ink-300" />
                       ) : (
                         <ClipboardList
-                          className={`w-5 h-5 transition-colors ${pathname.includes("isi-data-lengkap") || pathname.includes("upload-berkas") ? "text-primary-700" : "text-ink-400 group-hover:text-primary-600"}`}
+                          className={`w-5 h-5 transition-colors ${pathname.includes("isi-data-lengkap") || pathname.includes("upload-berkas") ? "text-white" : "text-ink-400 group-hover:text-primary-600"}`}
                         />
                       )}
                     </div>
                     <span
                       className={`text-[10px] font-bold text-center ${pathname.includes("isi-data-lengkap") || pathname.includes("upload-berkas") ? "text-primary-800" : "text-ink-400"}`}
                     >
-                      Data
+                      Isi Data
                     </span>
                   </Link>
 
+                  {/* Tombol Semua Menu - lebih besar dan jelas */}
                   <button
                     onClick={() => setSidebarOpen(true)}
-                    className="flex flex-col items-center p-2 group w-16"
+                    className="flex flex-col items-center p-2 group w-20"
                   >
-                    <div className="w-10 h-8 rounded-full flex items-center justify-center mb-1 bg-primary-50 transition-colors relative">
-                      <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-3 w-3 bg-gold-500 shadow-sm border border-white"></span>
-                      </span>
-                      <Menu className="w-5 h-5 text-primary-700 transition-colors" />
+                    <div className="w-11 h-9 rounded-xl flex items-center justify-center mb-1 bg-primary-700 group-hover:bg-primary-800 transition-colors relative shadow-sm">
+                      {/* Badge notif jika seragam belum diisi */}
+                      {!seragamLengkap && (statusProses === "accepted" || statusProses === "enrolled" || statusProses === "enrolled_full") && (
+                        <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-4 w-4 bg-red-500 text-white text-[8px] font-black items-center justify-center">!</span>
+                        </span>
+                      )}
+                      <Menu className="w-5 h-5 text-white transition-colors" />
                     </div>
                     <span className="text-[10px] font-black text-primary-800 text-center leading-tight">
-                      Semua<br/>Menu
+                      Semua Menu
                     </span>
                   </button>
                 </div>
