@@ -7,6 +7,7 @@
 export function getAdminWhereClause(tahunAjaranId?: string): any {
   const where: any = {
     deleted_at: null,
+    status_pendaftaran: { not: "mengundurkan_diri" },
     NOT: [
       {
         AND: [
