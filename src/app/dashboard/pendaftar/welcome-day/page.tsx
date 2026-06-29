@@ -269,202 +269,6 @@ export default function WelcomeDayPage() {
         </div>
       )}
 
-      {/* ─── KETENTUAN PENTING ─── */}
-      <div className="bg-amber-50 border border-amber-200 p-5 rounded-2xl space-y-4">
-        <h3 className="font-black text-amber-900 flex items-center gap-2 text-base">
-          <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0" />
-          Ketentuan Penting Wali & Konsumsi
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <div className="bg-white rounded-xl p-4 border border-amber-100 flex gap-3">
-            <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
-              <Users className="w-5 h-5 text-amber-700" />
-            </div>
-            <div>
-              <p className="text-sm font-black text-amber-900">Batas Wali di Ruang Utama</p>
-              <p className="text-xs text-amber-700 mt-1">Kursi sarasehan & kupon makan disiapkan untuk <strong>MAKSIMAL 3 orang</strong>: 1 santri + 2 wali/pendamping terdekat.</p>
-            </div>
-          </div>
-          <div className="bg-white rounded-xl p-4 border border-amber-100 flex gap-3">
-            <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
-              <UtensilsCrossed className="w-5 h-5 text-amber-700" />
-            </div>
-            <div>
-              <p className="text-sm font-black text-amber-900">Pengantar Tambahan</p>
-              <p className="text-xs text-amber-700 mt-1">Keluarga lain boleh ikut ke area pesantren, namun <strong>tidak</strong> masuk ruang sarasehan dan <strong>tidak</strong> mendapat kupon makan.</p>
-            </div>
-          </div>
-          <div className="bg-white rounded-xl p-4 border border-amber-100 flex gap-3">
-            <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
-              <Bus className="w-5 h-5 text-amber-700" />
-            </div>
-            <div>
-              <p className="text-sm font-black text-amber-900">Rombongan Bus / Minibus</p>
-              <p className="text-xs text-amber-700 mt-1">Jika datang dengan bus/minibus, harap informasikan di kolom catatan form agar panitia dapat mengatur area parkir.</p>
-            </div>
-          </div>
-          <div className="bg-white rounded-xl p-4 border border-amber-100 flex gap-3">
-            <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
-              <Clock className="w-5 h-5 text-amber-700" />
-            </div>
-            <div>
-              <p className="text-sm font-black text-amber-900">Harap Datang Tepat Waktu</p>
-              <p className="text-xs text-amber-700 mt-1">Registrasi dimulai pukul 07.00 WIB. Acara dimulai tepat pukul 08.00 WIB. Keterlambatan dapat mengganggu kelancaran acara.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ─── JADWAL ACARA ─── */}
-      <div className="bg-white rounded-3xl border border-ink-100 shadow-sm overflow-hidden">
-        <div className="px-6 py-4 border-b border-ink-100 bg-primary-50 flex items-center gap-3">
-          <div className="w-9 h-9 bg-primary-100 rounded-xl flex items-center justify-center">
-            <Calendar className="w-5 h-5 text-primary-700" />
-          </div>
-          <div>
-            <h2 className="font-black text-primary-950 text-base">Jadwal Acara Welcome Day</h2>
-            <p className="text-xs text-primary-600 font-bold">Sabtu, 18 Juli 2026</p>
-          </div>
-        </div>
-        <div className="p-5">
-          <div className="space-y-2">
-            {JADWAL_ACARA.map((item, idx) => (
-              <div key={idx} className="flex gap-4 items-start group">
-                <div className="flex flex-col items-center flex-shrink-0">
-                  <div className="w-16 text-center">
-                    <span className="text-xs font-black text-primary-700 bg-primary-50 border border-primary-200 px-2 py-1 rounded-lg block">
-                      {item.jam}
-                    </span>
-                  </div>
-                  {idx < JADWAL_ACARA.length - 1 && (
-                    <div className="w-0.5 h-6 bg-ink-200 mt-1" />
-                  )}
-                </div>
-                <div className="flex-1 pb-4">
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-2xl bg-white border border-primary-100 flex items-center justify-center flex-shrink-0 shadow-sm text-primary-600">
-                      <item.icon className="w-5 h-5" />
-                    </div>
-                    <div className="mt-0.5">
-                      <p className="text-sm font-black text-ink-900">{item.label}</p>
-                      <p className="text-xs text-ink-500 font-medium mt-1 leading-relaxed">{item.desc}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-          <p className="text-xs text-ink-400 font-bold mt-4 pt-4 border-t border-ink-100 flex items-center gap-1">
-            <Info className="w-3 h-3" />
-            Jadwal dapat berubah. Panitia akan menginformasikan jika ada perubahan melalui pengumuman resmi.
-          </p>
-        </div>
-      </div>
-
-      {/* ─── CHECKLIST BARANG BAWAAN ─── */}
-      <div className="bg-white rounded-3xl border border-ink-100 shadow-sm overflow-hidden">
-        <div className="px-6 py-4 border-b border-ink-100 bg-emerald-50 flex items-center gap-3">
-          <div className="w-9 h-9 bg-emerald-100 rounded-xl flex items-center justify-center">
-            <Package className="w-5 h-5 text-emerald-700" />
-          </div>
-          <div>
-            <h2 className="font-black text-emerald-950 text-base">Checklist Barang Bawaan Santri</h2>
-            <p className="text-xs text-emerald-600 font-bold">Pastikan semua sudah disiapkan sebelum hari-H</p>
-          </div>
-        </div>
-        <div className="p-5">
-          <div className="space-y-2">
-            {CHECKLIST_BAWAAN.map((item, idx) => (
-              <div key={idx} className={`flex items-start gap-3 p-3 rounded-xl ${item.penting ? "bg-ink-50 border border-ink-100" : "bg-white"}`}>
-                <div className={`w-5 h-5 rounded flex-shrink-0 mt-0.5 flex items-center justify-center ${item.penting ? "text-primary-600" : "text-ink-300"}`}>
-                  {item.penting ? <CheckSquare className="w-5 h-5" /> : <Square className="w-5 h-5" />}
-                </div>
-                <p className="text-sm font-medium text-ink-800 flex-1">{item.item}</p>
-                {item.penting && (
-                  <span className="text-[9px] font-black bg-primary-100 text-primary-700 px-1.5 py-0.5 rounded-full flex-shrink-0">WAJIB</span>
-                )}
-              </div>
-            ))}
-          </div>
-          <p className="text-xs text-ink-400 font-bold mt-4 pt-4 border-t border-ink-100 flex items-center gap-1">
-            <Info className="w-3 h-3" />
-            Daftar ini bersifat umum. Mohon cek juga surat pemberitahuan resmi dari pesantren untuk rincian lengkap.
-          </p>
-        </div>
-      </div>
-
-      {/* ─── FAQ ─── */}
-      <div className="bg-white rounded-3xl border border-ink-100 shadow-sm overflow-hidden">
-        <div className="px-6 py-4 border-b border-ink-100 bg-blue-50 flex items-center gap-3">
-          <div className="w-9 h-9 bg-blue-100 rounded-xl flex items-center justify-center">
-            <MessageCircle className="w-5 h-5 text-blue-700" />
-          </div>
-          <div>
-            <h2 className="font-black text-blue-950 text-base">Pertanyaan Umum Orang Tua / Wali</h2>
-            <p className="text-xs text-blue-600 font-bold">Ketuk pertanyaan untuk melihat jawaban</p>
-          </div>
-        </div>
-        <div className="divide-y divide-ink-100">
-          {FAQ.map((faq, idx) => (
-            <div key={idx}>
-              <button
-                onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                className="w-full flex items-start gap-3 px-5 py-4 text-left hover:bg-ink-50 transition-colors"
-              >
-                <div className="w-7 h-7 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center flex-shrink-0 font-black text-xs mt-0.5">
-                  {idx + 1}
-                </div>
-                <p className="flex-1 text-sm font-bold text-ink-900 leading-snug">{faq.q}</p>
-                {openFaq === idx
-                  ? <ChevronUp className="w-4 h-4 text-ink-400 flex-shrink-0 mt-0.5" />
-                  : <ChevronDown className="w-4 h-4 text-ink-400 flex-shrink-0 mt-0.5" />
-                }
-              </button>
-              {openFaq === idx && (
-                <div className="px-5 pb-4 pl-14">
-                  <p className="text-sm text-ink-600 font-medium leading-relaxed bg-blue-50 rounded-xl px-4 py-3 border border-blue-100">
-                    {faq.a}
-                  </p>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* ─── KONTAK PANITIA ─── */}
-      <div className="bg-gradient-to-r from-primary-50 to-primary-100 border border-primary-200 rounded-2xl p-5">
-        <h3 className="font-black text-primary-900 text-sm mb-3 flex items-center gap-2">
-          <Phone className="w-4 h-4" />
-          Ada Pertanyaan? Hubungi Panitia
-        </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <a
-            href="https://wa.me/6281234567890"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-3 bg-white rounded-xl p-3 border border-primary-200 hover:shadow-md transition-shadow"
-          >
-            <div className="w-9 h-9 bg-green-500 rounded-xl flex items-center justify-center flex-shrink-0">
-              <Phone className="w-4 h-4 text-white" />
-            </div>
-            <div>
-              <p className="text-xs text-ink-400 font-bold">WhatsApp Panitia</p>
-              <p className="text-sm font-black text-ink-900">0812-3456-7890</p>
-            </div>
-          </a>
-          <div className="flex items-center gap-3 bg-white rounded-xl p-3 border border-primary-200">
-            <div className="w-9 h-9 bg-primary-600 rounded-xl flex items-center justify-center flex-shrink-0">
-              <BookOpen className="w-4 h-4 text-white" />
-            </div>
-            <div>
-              <p className="text-xs text-ink-400 font-bold">Jam Layanan</p>
-              <p className="text-sm font-black text-ink-900">Senin–Sabtu 08.00–16.00</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* ─── FORM KONFIRMASI ─── */}
       <div className="bg-white rounded-3xl border border-ink-100 shadow-sm overflow-hidden">
         <div className="px-6 py-4 border-b border-ink-100 bg-ink-50 flex items-center gap-3">
@@ -673,6 +477,203 @@ export default function WelcomeDayPage() {
             </div>
           </div>
         )}
+      </div>
+
+      
+      {/* ─── KETENTUAN PENTING ─── */}
+      <div className="bg-amber-50 border border-amber-200 p-5 rounded-2xl space-y-4">
+        <h3 className="font-black text-amber-900 flex items-center gap-2 text-base">
+          <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0" />
+          Ketentuan Penting Wali & Konsumsi
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="bg-white rounded-xl p-4 border border-amber-100 flex gap-3">
+            <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
+              <Users className="w-5 h-5 text-amber-700" />
+            </div>
+            <div>
+              <p className="text-sm font-black text-amber-900">Batas Wali di Ruang Utama</p>
+              <p className="text-xs text-amber-700 mt-1">Kursi sarasehan & kupon makan disiapkan untuk <strong>MAKSIMAL 3 orang</strong>: 1 santri + 2 wali/pendamping terdekat.</p>
+            </div>
+          </div>
+          <div className="bg-white rounded-xl p-4 border border-amber-100 flex gap-3">
+            <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
+              <UtensilsCrossed className="w-5 h-5 text-amber-700" />
+            </div>
+            <div>
+              <p className="text-sm font-black text-amber-900">Pengantar Tambahan</p>
+              <p className="text-xs text-amber-700 mt-1">Keluarga lain boleh ikut ke area pesantren, namun <strong>tidak</strong> masuk ruang sarasehan dan <strong>tidak</strong> mendapat kupon makan.</p>
+            </div>
+          </div>
+          <div className="bg-white rounded-xl p-4 border border-amber-100 flex gap-3">
+            <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
+              <Bus className="w-5 h-5 text-amber-700" />
+            </div>
+            <div>
+              <p className="text-sm font-black text-amber-900">Rombongan Bus / Minibus</p>
+              <p className="text-xs text-amber-700 mt-1">Jika datang dengan bus/minibus, harap informasikan di kolom catatan form agar panitia dapat mengatur area parkir.</p>
+            </div>
+          </div>
+          <div className="bg-white rounded-xl p-4 border border-amber-100 flex gap-3">
+            <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
+              <Clock className="w-5 h-5 text-amber-700" />
+            </div>
+            <div>
+              <p className="text-sm font-black text-amber-900">Harap Datang Tepat Waktu</p>
+              <p className="text-xs text-amber-700 mt-1">Registrasi dimulai pukul 07.00 WIB. Acara dimulai tepat pukul 08.00 WIB. Keterlambatan dapat mengganggu kelancaran acara.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ─── JADWAL ACARA ─── */}
+      <div className="bg-white rounded-3xl border border-ink-100 shadow-sm overflow-hidden">
+        <div className="px-6 py-4 border-b border-ink-100 bg-primary-50 flex items-center gap-3">
+          <div className="w-9 h-9 bg-primary-100 rounded-xl flex items-center justify-center">
+            <Calendar className="w-5 h-5 text-primary-700" />
+          </div>
+          <div>
+            <h2 className="font-black text-primary-950 text-base">Jadwal Acara Welcome Day</h2>
+            <p className="text-xs text-primary-600 font-bold">Sabtu, 18 Juli 2026</p>
+          </div>
+        </div>
+        <div className="p-5">
+          <div className="space-y-2">
+            {JADWAL_ACARA.map((item, idx) => (
+              <div key={idx} className="flex gap-4 items-start group">
+                <div className="flex flex-col items-center flex-shrink-0">
+                  <div className="w-16 text-center">
+                    <span className="text-xs font-black text-primary-700 bg-primary-50 border border-primary-200 px-2 py-1 rounded-lg block">
+                      {item.jam}
+                    </span>
+                  </div>
+                  {idx < JADWAL_ACARA.length - 1 && (
+                    <div className="w-0.5 h-6 bg-ink-200 mt-1" />
+                  )}
+                </div>
+                <div className="flex-1 pb-4">
+                  <div className="flex items-start gap-3">
+                    <div className="w-10 h-10 rounded-2xl bg-white border border-primary-100 flex items-center justify-center flex-shrink-0 shadow-sm text-primary-600">
+                      <item.icon className="w-5 h-5" />
+                    </div>
+                    <div className="mt-0.5">
+                      <p className="text-sm font-black text-ink-900">{item.label}</p>
+                      <p className="text-xs text-ink-500 font-medium mt-1 leading-relaxed">{item.desc}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-ink-400 font-bold mt-4 pt-4 border-t border-ink-100 flex items-center gap-1">
+            <Info className="w-3 h-3" />
+            Jadwal dapat berubah. Panitia akan menginformasikan jika ada perubahan melalui pengumuman resmi.
+          </p>
+        </div>
+      </div>
+
+      {/* ─── CHECKLIST BARANG BAWAAN ─── */}
+      <div className="bg-white rounded-3xl border border-ink-100 shadow-sm overflow-hidden">
+        <div className="px-6 py-4 border-b border-ink-100 bg-emerald-50 flex items-center gap-3">
+          <div className="w-9 h-9 bg-emerald-100 rounded-xl flex items-center justify-center">
+            <Package className="w-5 h-5 text-emerald-700" />
+          </div>
+          <div>
+            <h2 className="font-black text-emerald-950 text-base">Checklist Barang Bawaan Santri</h2>
+            <p className="text-xs text-emerald-600 font-bold">Pastikan semua sudah disiapkan sebelum hari-H</p>
+          </div>
+        </div>
+        <div className="p-5">
+          <div className="space-y-2">
+            {CHECKLIST_BAWAAN.map((item, idx) => (
+              <div key={idx} className={`flex items-start gap-3 p-3 rounded-xl ${item.penting ? "bg-ink-50 border border-ink-100" : "bg-white"}`}>
+                <div className={`w-5 h-5 rounded flex-shrink-0 mt-0.5 flex items-center justify-center ${item.penting ? "text-primary-600" : "text-ink-300"}`}>
+                  {item.penting ? <CheckSquare className="w-5 h-5" /> : <Square className="w-5 h-5" />}
+                </div>
+                <p className="text-sm font-medium text-ink-800 flex-1">{item.item}</p>
+                {item.penting && (
+                  <span className="text-[9px] font-black bg-primary-100 text-primary-700 px-1.5 py-0.5 rounded-full flex-shrink-0">WAJIB</span>
+                )}
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-ink-400 font-bold mt-4 pt-4 border-t border-ink-100 flex items-center gap-1">
+            <Info className="w-3 h-3" />
+            Daftar ini bersifat umum. Mohon cek juga surat pemberitahuan resmi dari pesantren untuk rincian lengkap.
+          </p>
+        </div>
+      </div>
+
+      {/* ─── FAQ ─── */}
+      <div className="bg-white rounded-3xl border border-ink-100 shadow-sm overflow-hidden">
+        <div className="px-6 py-4 border-b border-ink-100 bg-blue-50 flex items-center gap-3">
+          <div className="w-9 h-9 bg-blue-100 rounded-xl flex items-center justify-center">
+            <MessageCircle className="w-5 h-5 text-blue-700" />
+          </div>
+          <div>
+            <h2 className="font-black text-blue-950 text-base">Pertanyaan Umum Orang Tua / Wali</h2>
+            <p className="text-xs text-blue-600 font-bold">Ketuk pertanyaan untuk melihat jawaban</p>
+          </div>
+        </div>
+        <div className="divide-y divide-ink-100">
+          {FAQ.map((faq, idx) => (
+            <div key={idx}>
+              <button
+                onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                className="w-full flex items-start gap-3 px-5 py-4 text-left hover:bg-ink-50 transition-colors"
+              >
+                <div className="w-7 h-7 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center flex-shrink-0 font-black text-xs mt-0.5">
+                  {idx + 1}
+                </div>
+                <p className="flex-1 text-sm font-bold text-ink-900 leading-snug">{faq.q}</p>
+                {openFaq === idx
+                  ? <ChevronUp className="w-4 h-4 text-ink-400 flex-shrink-0 mt-0.5" />
+                  : <ChevronDown className="w-4 h-4 text-ink-400 flex-shrink-0 mt-0.5" />
+                }
+              </button>
+              {openFaq === idx && (
+                <div className="px-5 pb-4 pl-14">
+                  <p className="text-sm text-ink-600 font-medium leading-relaxed bg-blue-50 rounded-xl px-4 py-3 border border-blue-100">
+                    {faq.a}
+                  </p>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ─── KONTAK PANITIA ─── */}
+      <div className="bg-gradient-to-r from-primary-50 to-primary-100 border border-primary-200 rounded-2xl p-5">
+        <h3 className="font-black text-primary-900 text-sm mb-3 flex items-center gap-2">
+          <Phone className="w-4 h-4" />
+          Ada Pertanyaan? Hubungi Panitia
+        </h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <a
+            href="https://wa.me/6281234567890"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-3 bg-white rounded-xl p-3 border border-primary-200 hover:shadow-md transition-shadow"
+          >
+            <div className="w-9 h-9 bg-green-500 rounded-xl flex items-center justify-center flex-shrink-0">
+              <Phone className="w-4 h-4 text-white" />
+            </div>
+            <div>
+              <p className="text-xs text-ink-400 font-bold">WhatsApp Panitia</p>
+              <p className="text-sm font-black text-ink-900">0812-3456-7890</p>
+            </div>
+          </a>
+          <div className="flex items-center gap-3 bg-white rounded-xl p-3 border border-primary-200">
+            <div className="w-9 h-9 bg-primary-600 rounded-xl flex items-center justify-center flex-shrink-0">
+              <BookOpen className="w-4 h-4 text-white" />
+            </div>
+            <div>
+              <p className="text-xs text-ink-400 font-bold">Jam Layanan</p>
+              <p className="text-sm font-black text-ink-900">Senin–Sabtu 08.00–16.00</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* ─── FOOTER INFO ─── */}
