@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+
 import {
   Loader2,
   Calendar,
@@ -17,6 +18,7 @@ import {
   Shirt,
   ChevronDown,
   ChevronUp,
+  Star,
   Info,
   CheckSquare,
   Square,
@@ -25,29 +27,109 @@ import {
   UtensilsCrossed,
   BookOpen,
   Heart,
+  Home,
+  Tent,
+  Mic,
+  Presentation,
+  School,
+  Utensils,
+  Handshake,
+  HeartHandshake,
+  XCircle,
+  X,
+  FileCheck,
+  ChevronRight,
+  Download
 } from "lucide-react";
 import Link from "next/link";
 
 const JADWAL_ACARA = [
-  { jam: "07.00", label: "Peserta Mulai Tiba & Registrasi Ulang", desc: "Panitia akan menyambut kehadiran santri & wali di pintu masuk. Harap membawa kartu identitas dan nomor registrasi.", icon: Tent },
-  { jam: "08.00", label: "Pembukaan & Sambutan", desc: "Acara dibuka oleh Mudir/Pimpinan Pesantren. Semua wali & santri diharapkan sudah duduk di ruang sarasehan.", icon: Mic },
-  { jam: "09.00", label: "Sarasehan & Pengenalan Program", desc: "Penjelasan program, kurikulum, tata tertib pesantren, dan informasi penting bagi wali santri baru.", icon: Presentation },
-  { jam: "10.30", label: "Tur Fasilitas Pesantren", desc: "Santri & wali diajak berkeliling melihat fasilitas: asrama, masjid, kelas, dapur, klinik, dll.", icon: School },
-  { jam: "12.00", label: "Sholat Dzuhur Berjamaah & Makan Siang", desc: "Sholat berjamaah di masjid pesantren. Makan siang bersama (kupon konsumsi disiapkan sesuai jumlah pendamping).", icon: Utensils },
-  { jam: "13.30", label: "Serah Terima Resmi Santri", desc: "Prosesi serah terima santri dari orang tua kepada pihak pesantren. Penandatanganan dokumen jika diperlukan.", icon: Handshake },
-  { jam: "14.30", label: "Perpisahan & Santri Menetap", desc: "Wali/orang tua dipersilakan pamit. Santri mulai beradaptasi dengan kehidupan pesantren.", icon: HeartHandshake },
+  { jam: "06.30", label: "Kedatangan Santri & Wali", desc: "Seluruh berkas persyaratan (di dalam map) diserahkan ke bagian pendaftaran saat registrasi awal.", icon: Tent },
+  { jam: "07.00", label: "Registrasi Acara Utama", desc: "Melakukan registrasi sebelum memasuki area acara sarasehan.", icon: CheckCircle2 },
+  { jam: "08.00", label: "Sarasehan & Pengenalan Program", desc: "Setelah acara bersama tamu undangan, orang tua & santri mengikuti sarasehan (peraturan, mekanisme, & prosedur pesantren).", icon: Presentation },
+  { jam: "12.00", label: "Pembagian Makan Siang", desc: "Makan siang dibagikan di depan ruang acara dengan menukarkan kupon.", icon: Utensils },
+  { jam: "13.00", label: "Santri Memasuki Asrama", desc: "Setelah acara berakhir, santri memasuki asrama dan mengkondisikan barang bawaan dibantu oleh para ustadz.", icon: School },
+  { jam: "17.00", label: "Batas Waktu Kunjungan Wali", desc: "Orang tua/wali hanya diperkenankan membersamai santri hingga sore hari pukul 17.00 WIB.", icon: HeartHandshake },
 ];
 
-const CHECKLIST_BAWAAN = [
-  { item: "Pakaian harian sesuai ketentuan pesantren", penting: true },
-  { item: "Perlengkapan sholat (sajadah, Al-Qur'an, mukena/sarung)", penting: true },
-  { item: "Perlengkapan mandi (sabun, sampo, sikat gigi, odol, handuk)", penting: true },
-  { item: "Perlengkapan tidur (bantal, selimut — cek apakah disediakan)", penting: false },
-  { item: "Peralatan sekolah (buku tulis, alat tulis, tas sekolah)", penting: true },
-  { item: "Obat-obatan pribadi (jika ada kebutuhan khusus)", penting: false },
-  { item: "Uang saku (sesuai aturan pesantren)", penting: false },
-  { item: "Foto copy Kartu Keluarga & Akta Lahir (jika diminta)", penting: true },
-  { item: "Surat kesehatan dari dokter (jika diminta)", penting: false },
+const BERKAS_PERSYARATAN = [
+  { item: "Foto setengah badan (latar merah, 4x6 cm)", qty: "4 lembar" },
+  { item: "Fotokopi Kartu Keluarga (KK)", qty: "1 lembar" },
+  { item: "Fotokopi Akta Kelahiran", qty: "1 lembar" },
+  { item: "Fotokopi rapor semester ganjil terakhir (Dilegalisir)", qty: "1 lembar" },
+  { item: "Fotokopi rapor semester genap terakhir (Dilegalisir)", qty: "1 lembar" },
+  { item: "Print-out bukti NISN", qty: "1 lembar" },
+  { item: "Surat Keterangan Sehat (Format Panitia)", qty: "ASLI" },
+  { item: "Surat Pernyataan Bebas dari Perilaku Buruk", qty: "ASLI" },
+  { item: "Pakta Integritas Calon Santri", qty: "ASLI" },
+  { item: "Pakta Integritas Calon Orang Tua/Wali", qty: "ASLI" },
+];
+
+const DAFTAR_PERLENGKAPAN = [
+  {
+    kategori: "A. Pakaian Sehari-Hari",
+    items: [
+      { nama: "Kaos", qty: "7 pcs", note: "Termasuk 1 kaos olahraga. Diutamakan kaos polos." },
+      { nama: "Celana 3/4", qty: "5 pcs", note: "Panjang menutupi lutut hingga pertengahan betis." },
+      { nama: "Baju / Kemeja", qty: "3 pcs", note: "Lengan panjang/pendek (rapi)." },
+      { nama: "Celana Panjang", qty: "3 pcs", note: "Kain bahan (formal). Tidak isbal dan tidak ketat." },
+      { nama: "Sandal Jepit", qty: "1 psg", note: "Digunakan aktivitas harian asrama." },
+      { nama: "Jaket", qty: "2 pcs", note: "Tanpa gambar makhluk hidup." },
+      { nama: "Kaos Kaki", qty: "-", note: "Panjang minimal sampai atas betis." },
+      { nama: "Pakaian Dalam", qty: "-", note: "Secukupnya." },
+    ]
+  },
+  {
+    kategori: "B. Pakaian Shalat",
+    items: [
+      { nama: "Gamis", qty: "2 pcs", note: "Wajib berwarna putih bersih." },
+      { nama: "Baju Takwa/Koko", qty: "3 pcs", note: "Minimal 2 putih." },
+      { nama: "Sarung", qty: "2 pcs", note: "-" },
+      { nama: "Peci", qty: "3 pcs", note: "Minimal 1 putih." },
+      { nama: "Minyak Wangi", qty: "-", note: "Non-alkohol (sunnah)." },
+      { nama: "Sajadah", qty: "1 pcs", note: "Ketebalan standar, mudah dilipat." },
+    ]
+  },
+  {
+    kategori: "C. Penyimpanan & Mandi",
+    items: [
+      { nama: "Kontainer Box", qty: "1 pcs", note: "Tinggi 25-40 cm (maks 60 liter)." },
+      { nama: "Alat Mandi Lengkap", qty: "1 set", note: "Sabun cair (500ml), sikat/pasta gigi, sampo, keranjang." },
+      { nama: "Handuk", qty: "1 pcs", note: "Warna abu-abu polos." },
+      { nama: "Ember & Detergen", qty: "1 set", note: "Detergen secukupnya, ember 1 pcs, sikat baju." },
+    ]
+  },
+  {
+    kategori: "D. Perlengkapan Sekolah",
+    items: [
+      { nama: "Sepatu & Kaos Kaki", qty: "1 psg", note: "Sepatu wajib hitam, Kaos kaki 3 psg hitam." },
+      { nama: "Tas & Ikat Pinggang", qty: "1 pcs", note: "Ikat pinggang hitam polos." },
+      { nama: "Songkok", qty: "2 pcs", note: "Warna hitam nasional." },
+      { nama: "Mushaf Al-Qur'an", qty: "2 pcs", note: "A5. Diutamakan Rasm Utsmani Madinah." },
+      { nama: "Buku & Alat Tulis", qty: "1 set", note: "1 pack buku, alat tulis, penggaris, stabilo." },
+      { nama: "Kamus Bahasa Arab", qty: "1 pcs", note: "Mahmud Yunus." },
+    ]
+  },
+  {
+    kategori: "E. Tidur & Lainnya",
+    items: [
+      { nama: "Bantal, Guling, Sprei", qty: "1 set", note: "Sprei 200x80x15 (Biru Navy Polos). Sarung Hijau Stabilo/Biru Navy." },
+      { nama: "Selimut & Sapu Lidi", qty: "1 pcs", note: "Selimut polos." },
+      { nama: "Alat Makan & Minum", qty: "1 set", note: "Piring, gelas (melamin/aluminium), botol minum, sabun cuci piring." },
+      { nama: "Obat-obatan Pribadi", qty: "-", note: "Multivitamin, madu, obat bapil, keseleo (opsional)." },
+      { nama: "Payung Lipat & Senter", qty: "1 pcs", note: "Bukan senter listrik." },
+    ]
+  }
+];
+
+const BARANG_DILARANG = [
+  "HP, Laptop, Alat Elektronik Komunikasi",
+  "Senjata tajam, Senjata api, Rokok, Minuman keras, Narkotika",
+  "Pakaian ketat, Barang mewah (> Rp 500.000)",
+  "Bahan bacaan/novel/komik fiksi, Majalah non-Islami",
+  "Barang/Pakaian yang bergambar makhluk hidup",
+  "Alat musik & Perhiasan (selain jam tangan)",
+  "Penutup kepala gaul (selain songkok/peci)"
 ];
 
 const FAQ = [
@@ -90,6 +172,7 @@ export default function WelcomeDayPage() {
   });
   const [message, setMessage] = useState({ type: "", text: "" });
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [openKategori, setOpenKategori] = useState<number | null>(null);
 
   useEffect(() => {
     fetchData();
@@ -206,7 +289,7 @@ export default function WelcomeDayPage() {
               <Clock className="w-5 h-5 text-gold-300 flex-shrink-0" />
               <div>
                 <p className="text-[10px] text-white/60 uppercase tracking-wider font-bold">Jam Mulai</p>
-                <p className="text-sm font-black text-white">Pukul 07.00 WIB</p>
+                <p className="text-sm font-black text-white">Pukul 06.30 WIB</p>
               </div>
             </div>
             <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-2xl px-4 py-3 border border-white/10">
@@ -314,9 +397,9 @@ export default function WelcomeDayPage() {
                     }`}
                   >
                     <CheckCircle2 className={`w-8 h-8 ${formData.statusKehadiran === "HADIR" ? "text-green-400" : "text-ink-400"}`} />
-                    <div>
+                    <div className={`${formData.statusKehadiran === "HADIR" ? "text-white" : "text-ink-900"}`}>
                       <p className="font-black">Ya, Kami Akan Hadir</p>
-                      <p className={`text-xs font-medium mt-0.5 ${formData.statusKehadiran === "HADIR" ? "text-white/70" : "text-ink-400"}`}>Kami siap hadir pada 18 Juli 2026</p>
+                      <p className={`text-xs font-medium mt-0.5 ${formData.statusKehadiran === "HADIR" ? "text-white/80" : "text-ink-400"}`}>Kami siap hadir pada 18 Juli 2026</p>
                     </div>
                   </button>
                   <button
@@ -329,9 +412,9 @@ export default function WelcomeDayPage() {
                     }`}
                   >
                     <XCircle className={`w-8 h-8 ${formData.statusKehadiran === "TIDAK_HADIR" ? "text-red-400" : "text-ink-400"}`} />
-                    <div>
+                    <div className={`${formData.statusKehadiran === "TIDAK_HADIR" ? "text-white" : "text-ink-900"}`}>
                       <p className="font-black">Berhalangan Hadir</p>
-                      <p className={`text-xs font-medium mt-0.5 ${formData.statusKehadiran === "TIDAK_HADIR" ? "text-white/70" : "text-ink-400"}`}>Ada halangan & tidak bisa hadir</p>
+                      <p className={`text-xs font-medium mt-0.5 ${formData.statusKehadiran === "TIDAK_HADIR" ? "text-white/80" : "text-ink-400"}`}>Ada halangan & tidak bisa hadir</p>
                     </div>
                   </button>
                 </div>
@@ -484,34 +567,34 @@ export default function WelcomeDayPage() {
       <div className="bg-amber-50 border border-amber-200 p-5 rounded-2xl space-y-4">
         <h3 className="font-black text-amber-900 flex items-center gap-2 text-base">
           <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0" />
-          Ketentuan Penting Wali & Konsumsi
+          Ketentuan Penting Tata Cara & Alur
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="bg-white rounded-xl p-4 border border-amber-100 flex gap-3">
+            <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
+              <Shirt className="w-5 h-5 text-amber-700" />
+            </div>
+            <div>
+              <p className="text-sm font-black text-amber-900">Seragam Kedatangan</p>
+              <p className="text-xs text-amber-700 mt-1">Santri wajib memakai <strong>Baju Koko/Kemeja putih</strong>, <strong>celana kain hitam</strong>, dan <strong>songkok nasional hitam</strong>.</p>
+            </div>
+          </div>
           <div className="bg-white rounded-xl p-4 border border-amber-100 flex gap-3">
             <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
               <Users className="w-5 h-5 text-amber-700" />
             </div>
             <div>
               <p className="text-sm font-black text-amber-900">Batas Wali di Ruang Utama</p>
-              <p className="text-xs text-amber-700 mt-1">Kursi sarasehan & kupon makan disiapkan untuk <strong>MAKSIMAL 3 orang</strong>: 1 santri + 2 wali/pendamping terdekat.</p>
+              <p className="text-xs text-amber-700 mt-1">Kursi & kupon makan hanya untuk <strong>3 orang</strong> (1 santri + 2 pendamping). Pengantar lain <strong>tidak</strong> diperkenankan masuk ruang sarasehan.</p>
             </div>
           </div>
           <div className="bg-white rounded-xl p-4 border border-amber-100 flex gap-3">
             <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
-              <UtensilsCrossed className="w-5 h-5 text-amber-700" />
+              <Package className="w-5 h-5 text-amber-700" />
             </div>
             <div>
-              <p className="text-sm font-black text-amber-900">Pengantar Tambahan</p>
-              <p className="text-xs text-amber-700 mt-1">Keluarga lain boleh ikut ke area pesantren, namun <strong>tidak</strong> masuk ruang sarasehan dan <strong>tidak</strong> mendapat kupon makan.</p>
-            </div>
-          </div>
-          <div className="bg-white rounded-xl p-4 border border-amber-100 flex gap-3">
-            <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
-              <Bus className="w-5 h-5 text-amber-700" />
-            </div>
-            <div>
-              <p className="text-sm font-black text-amber-900">Rombongan Bus / Minibus</p>
-              <p className="text-xs text-amber-700 mt-1">Jika datang dengan bus/minibus, harap informasikan di kolom catatan form agar panitia dapat mengatur area parkir.</p>
+              <p className="text-sm font-black text-amber-900">Bongkar Muat Barang</p>
+              <p className="text-xs text-amber-700 mt-1">Santri berkendaraan pribadi <strong>dilarang</strong> menurunkan barang hingga acara selesai. Jika tanpa kendaraan, barang ditaruh di area masjid.</p>
             </div>
           </div>
           <div className="bg-white rounded-xl p-4 border border-amber-100 flex gap-3">
@@ -519,8 +602,8 @@ export default function WelcomeDayPage() {
               <Clock className="w-5 h-5 text-amber-700" />
             </div>
             <div>
-              <p className="text-sm font-black text-amber-900">Harap Datang Tepat Waktu</p>
-              <p className="text-xs text-amber-700 mt-1">Registrasi dimulai pukul 07.00 WIB. Acara dimulai tepat pukul 08.00 WIB. Keterlambatan dapat mengganggu kelancaran acara.</p>
+              <p className="text-sm font-black text-amber-900">Batas Waktu Mengantar</p>
+              <p className="text-xs text-amber-700 mt-1">Acara berakhir pukul 14.30. Orang tua hanya diperkenankan membersamai santri hingga sore hari maksimal pukul <strong>17.00 WIB</strong>.</p>
             </div>
           </div>
         </div>
@@ -572,35 +655,113 @@ export default function WelcomeDayPage() {
         </div>
       </div>
 
-      {/* ─── CHECKLIST BARANG BAWAAN ─── */}
-      <div className="bg-white rounded-3xl border border-ink-100 shadow-sm overflow-hidden">
-        <div className="px-6 py-4 border-b border-ink-100 bg-emerald-50 flex items-center gap-3">
-          <div className="w-9 h-9 bg-emerald-100 rounded-xl flex items-center justify-center">
-            <Package className="w-5 h-5 text-emerald-700" />
+      {/* ─── BERKAS PERSYARATAN ─── */}
+      <div className="bg-white rounded-3xl border border-ink-100 shadow-sm overflow-hidden mt-6">
+        <div className="px-6 py-4 border-b border-ink-100 bg-blue-50 flex items-center gap-3">
+          <div className="w-9 h-9 bg-blue-100 rounded-xl flex items-center justify-center">
+            <FileCheck className="w-5 h-5 text-blue-700" />
           </div>
           <div>
-            <h2 className="font-black text-emerald-950 text-base">Checklist Barang Bawaan Santri</h2>
-            <p className="text-xs text-emerald-600 font-bold">Pastikan semua sudah disiapkan sebelum hari-H</p>
+            <h2 className="font-black text-blue-950 text-base">Berkas Persyaratan (Wajib Dibawa)</h2>
+            <p className="text-xs text-blue-600 font-bold">Dimasukkan dalam 1 map saat registrasi</p>
           </div>
         </div>
         <div className="p-5">
-          <div className="space-y-2">
-            {CHECKLIST_BAWAAN.map((item, idx) => (
-              <div key={idx} className={`flex items-start gap-3 p-3 rounded-xl ${item.penting ? "bg-ink-50 border border-ink-100" : "bg-white"}`}>
-                <div className={`w-5 h-5 rounded flex-shrink-0 mt-0.5 flex items-center justify-center ${item.penting ? "text-primary-600" : "text-ink-300"}`}>
-                  {item.penting ? <CheckSquare className="w-5 h-5" /> : <Square className="w-5 h-5" />}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {BERKAS_PERSYARATAN.map((item, idx) => (
+              <div key={idx} className="flex items-start gap-3 p-3 rounded-xl bg-ink-50 border border-ink-100">
+                <div className="w-5 h-5 rounded flex-shrink-0 mt-0.5 flex items-center justify-center text-primary-600">
+                  <CheckSquare className="w-5 h-5" />
                 </div>
-                <p className="text-sm font-medium text-ink-800 flex-1">{item.item}</p>
-                {item.penting && (
-                  <span className="text-[9px] font-black bg-primary-100 text-primary-700 px-1.5 py-0.5 rounded-full flex-shrink-0">WAJIB</span>
-                )}
+                <div>
+                  <p className="text-sm font-bold text-ink-800">{item.item}</p>
+                  <p className="text-xs text-primary-700 font-black mt-0.5">{item.qty}</p>
+                </div>
               </div>
             ))}
           </div>
-          <p className="text-xs text-ink-400 font-bold mt-4 pt-4 border-t border-ink-100 flex items-center gap-1">
-            <Info className="w-3 h-3" />
-            Daftar ini bersifat umum. Mohon cek juga surat pemberitahuan resmi dari pesantren untuk rincian lengkap.
-          </p>
+        </div>
+      </div>
+
+      {/* ─── CHECKLIST BARANG BAWAAN ─── */}
+      <div className="bg-white rounded-3xl border border-ink-100 shadow-sm overflow-hidden mt-6">
+        <div className="px-6 py-5 border-b border-ink-100 bg-emerald-50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 bg-emerald-100 rounded-xl flex items-center justify-center">
+              <Package className="w-5 h-5 text-emerald-700" />
+            </div>
+            <div>
+              <h2 className="font-black text-emerald-950 text-base">Daftar Perlengkapan Santri</h2>
+              <p className="text-xs text-emerald-600 font-bold">Ketuk kategori untuk melihat rincian</p>
+            </div>
+          </div>
+          <a
+            href="https://ppdb.pesantren-alimam.com/berkas/Daftar%20Perlengkapan%20Santri%20Baru.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black px-4 py-2.5 rounded-xl transition-colors"
+          >
+            <Download className="w-4 h-4" />
+            Unduh PDF Resmi
+          </a>
+        </div>
+        
+        {/* Accordions */}
+        <div className="divide-y divide-ink-100">
+          {DAFTAR_PERLENGKAPAN.map((kategori, idx) => (
+            <div key={idx}>
+              <button
+                onClick={() => setOpenKategori(openKategori === idx ? null : idx)}
+                className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-ink-50 transition-colors"
+              >
+                <p className="font-black text-ink-900">{kategori.kategori}</p>
+                {openKategori === idx ? <ChevronUp className="w-5 h-5 text-ink-400" /> : <ChevronDown className="w-5 h-5 text-ink-400" />}
+              </button>
+              {openKategori === idx && (
+                <div className="px-6 pb-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {kategori.items.map((item, i) => (
+                      <div key={i} className="bg-ink-50 rounded-xl p-3 border border-ink-100">
+                        <div className="flex justify-between items-start gap-2">
+                          <p className="text-sm font-bold text-ink-900">{item.nama}</p>
+                          <span className="text-[10px] font-black bg-ink-200 text-ink-700 px-2 py-0.5 rounded-md whitespace-nowrap">{item.qty}</span>
+                        </div>
+                        {item.note !== "-" && (
+                          <p className="text-xs text-ink-500 mt-1 font-medium">{item.note}</p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+          
+          {/* Barang Dilarang */}
+          <div>
+            <button
+              onClick={() => setOpenKategori(99)}
+              className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-red-50 bg-red-50/50 transition-colors"
+            >
+              <div className="flex items-center gap-2">
+                <XCircle className="w-5 h-5 text-red-600" />
+                <p className="font-black text-red-900">Barang yang DILARANG KERAS Dibawa</p>
+              </div>
+              {openKategori === 99 ? <ChevronUp className="w-5 h-5 text-red-400" /> : <ChevronDown className="w-5 h-5 text-red-400" />}
+            </button>
+            {openKategori === 99 && (
+              <div className="px-6 pb-5 pt-2 bg-red-50/50">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {BARANG_DILARANG.map((item, i) => (
+                    <div key={i} className="flex items-start gap-2 bg-white rounded-xl p-3 border border-red-100">
+                      <X className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
+                      <p className="text-xs font-bold text-red-900">{item}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
