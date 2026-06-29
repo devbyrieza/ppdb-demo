@@ -397,8 +397,8 @@ export default function WelcomeDayPage() {
                     }`}
                   >
                     <CheckCircle2 className={`w-8 h-8 ${formData.statusKehadiran === "HADIR" ? "text-green-400" : "text-ink-400"}`} />
-                    <div className={`${formData.statusKehadiran === "HADIR" ? "text-white" : "text-ink-900"}`}>
-                      <p className="font-black">Ya, Kami Akan Hadir</p>
+                    <div>
+                      <p className={`font-black ${formData.statusKehadiran === "HADIR" ? "text-white" : "text-ink-900"}`}>Ya, Kami Akan Hadir</p>
                       <p className={`text-xs font-medium mt-0.5 ${formData.statusKehadiran === "HADIR" ? "text-white/80" : "text-ink-400"}`}>Kami siap hadir pada 18 Juli 2026</p>
                     </div>
                   </button>
@@ -412,8 +412,8 @@ export default function WelcomeDayPage() {
                     }`}
                   >
                     <XCircle className={`w-8 h-8 ${formData.statusKehadiran === "TIDAK_HADIR" ? "text-red-400" : "text-ink-400"}`} />
-                    <div className={`${formData.statusKehadiran === "TIDAK_HADIR" ? "text-white" : "text-ink-900"}`}>
-                      <p className="font-black">Berhalangan Hadir</p>
+                    <div>
+                      <p className={`font-black ${formData.statusKehadiran === "TIDAK_HADIR" ? "text-white" : "text-ink-900"}`}>Berhalangan Hadir</p>
                       <p className={`text-xs font-medium mt-0.5 ${formData.statusKehadiran === "TIDAK_HADIR" ? "text-white/80" : "text-ink-400"}`}>Ada halangan & tidak bisa hadir</p>
                     </div>
                   </button>
