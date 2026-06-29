@@ -23,7 +23,8 @@ import { User,
   Bell,
   Search,
   Shirt,
-  HandCoins } from "lucide-react";
+  HandCoins,
+  PartyPopper } from "lucide-react";
 import { BRANDING } from "@/config/branding";
 import Link from "next/link";
 import IdleTimeoutTracker from "@/components/auth/IdleTimeoutTracker";
@@ -52,6 +53,7 @@ export default function DashboardLayout({
   const [tipePendaftaran, setTipePendaftaran] = useState("");
   const [loading, setLoading] = useState(true);
   const [seragamLengkap, setSeragamLengkap] = useState(true); // true = sudah isi, false = belum
+  const [welcomeDayDone, setWelcomeDayDone] = useState(true); // true = sudah konfirmasi, false = belum
 
   // Extract first name for greeting
   const namaDepan = namaLengkap.split(" ")[0] || namaLengkap;
@@ -115,6 +117,16 @@ export default function DashboardLayout({
         // Cek kelengkapan seragam
         const sudahIsiSeragam = !!(userData.ukuran_seragam_baju && userData.ukuran_seragam_celana && userData.ukuran_seragam_almamater);
         setSeragamLengkap(sudahIsiSeragam);
+
+        // Cek konfirmasi welcome day
+        try {
+          const wdRes = await fetch(`/api/pendaftar/welcome-day?t=${Date.now()}`);
+          if (wdRes.ok) {
+            const wdData = await wdRes.json();
+            setWelcomeDayDone(!!(wdData.success && wdData.data && wdData.data.data_penginap));
+          }
+        } catch {}
+        // intentional: fire-and-forget welcome day status check
       } catch (error: any) {
         console.error(
           "Error in Layout fetchUserData:",
@@ -182,9 +194,16 @@ export default function DashboardLayout({
     {
       name: "Ukuran Seragam",
       href: "/dashboard/pendaftar/seragam",
-      tabName: "ukuran-seragam" as TabName, // Menggunakan rules akses ukuran-seragam
+      tabName: "ukuran-seragam" as TabName,
       icon: Shirt,
       active: pathname === "/dashboard/pendaftar/seragam",
+    },
+    {
+      name: "Welcome Day",
+      href: "/dashboard/pendaftar/welcome-day",
+      tabName: "welcome-day" as TabName,
+      icon: PartyPopper,
+      active: pathname === "/dashboard/pendaftar/welcome-day",
     },
     {
       name: "Keuangan (ZAD)",
@@ -253,6 +272,12 @@ export default function DashboardLayout({
     const isSeragamMenu = item.tabName === "ukuran-seragam";
     const showSeragamBadge = isSeragamMenu && !seragamLengkap && (statusProses === "accepted" || statusProses === "enrolled" || statusProses === "enrolled_full");
 
+    // Cek apakah ini menu welcome day yang perlu badge
+    const isWelcomeDayMenu = item.tabName === "welcome-day";
+    const showWelcomeDayBadge = isWelcomeDayMenu && !welcomeDayDone && (statusProses === "accepted" || statusProses === "enrolled" || statusProses === "enrolled_full");
+
+    const showAnyBadge = showSeragamBadge || showWelcomeDayBadge;
+
     return (
       <div className="px-3 py-1">
         <Link
@@ -260,17 +285,17 @@ export default function DashboardLayout({
           className={`group flex items-center px-4 py-3.5 text-sm font-bold rounded-2xl transition-all duration-200 ${
             item.active
               ? "bg-primary-900 text-white shadow-md border border-primary-800"
-              : showSeragamBadge
+              : showAnyBadge
               ? "text-orange-700 bg-orange-50 hover:bg-orange-100 border border-orange-200"
               : "text-ink-600 hover:bg-gold-100 hover:text-primary-900"
           }`}
         >
           <item.icon
-            className={`w-5 h-5 mr-3 flex-shrink-0 transition-colors ${item.active ? "text-gold-200" : showSeragamBadge ? "text-orange-500" : "text-ink-400 group-hover:text-primary-700"}`}
+            className={`w-5 h-5 mr-3 flex-shrink-0 transition-colors ${item.active ? "text-gold-200" : showAnyBadge ? "text-orange-500" : "text-ink-400 group-hover:text-primary-700"}`}
           />
           <span className="flex-1 truncate">{item.name}</span>
 
-          {showSeragamBadge && (
+          {showAnyBadge && (
             <span className="text-[9px] font-black bg-red-500 text-white px-1.5 py-0.5 rounded-full animate-pulse">
               Isi!
             </span>
@@ -556,6 +581,28 @@ export default function DashboardLayout({
                     >
                       <Shirt className="w-3.5 h-3.5" />
                       <span>Isi Sekarang</span>
+                    </Link>
+                  </div>
+                </div>
+              )}
+
+              {/* Banner Pengingat Welcome Day - muncul otomatis jika belum konfirmasi */}
+              {!welcomeDayDone && (statusProses === "accepted" || statusProses === "enrolled" || statusProses === "enrolled_full") && pathname !== "/dashboard/pendaftar/welcome-day" && (
+                <div className="mx-4 md:mx-6 lg:mx-5 mt-3 mb-0">
+                  <div className="flex items-center gap-3 bg-primary-50 border border-primary-200 rounded-2xl px-4 py-3 shadow-sm">
+                    <div className="w-9 h-9 rounded-xl bg-primary-600 flex items-center justify-center flex-shrink-0 shadow-sm">
+                      <Calendar className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-black text-primary-900">📅 Konfirmasi Welcome Day Belum Diisi!</p>
+                      <p className="text-xs text-primary-700 leading-snug mt-0.5">Harap konfirmasi kehadiran Welcome Day (18 Juli 2026) segera.</p>
+                    </div>
+                    <Link
+                      href="/dashboard/pendaftar/welcome-day"
+                      className="flex-shrink-0 flex items-center gap-1 bg-primary-600 hover:bg-primary-700 text-white text-xs font-black px-3 py-2 rounded-xl transition-colors shadow-sm"
+                    >
+                      <Calendar className="w-3.5 h-3.5" />
+                      <span>Konfirmasi</span>
                     </Link>
                   </div>
                 </div>
