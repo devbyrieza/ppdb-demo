@@ -29,13 +29,13 @@ import {
 import Link from "next/link";
 
 const JADWAL_ACARA = [
-  { jam: "07.00", label: "Peserta Mulai Tiba & Registrasi Ulang", desc: "Panitia akan menyambut kehadiran santri & wali di pintu masuk. Harap membawa kartu identitas dan nomor registrasi.", icon: "🎪" },
-  { jam: "08.00", label: "Pembukaan & Sambutan", desc: "Acara dibuka oleh Mudir/Pimpinan Pesantren. Semua wali & santri diharapkan sudah duduk di ruang sarasehan.", icon: "🎤" },
-  { jam: "09.00", label: "Sarasehan & Pengenalan Program", desc: "Penjelasan program, kurikulum, tata tertib pesantren, dan informasi penting bagi wali santri baru.", icon: "📚" },
-  { jam: "10.30", label: "Tur Fasilitas Pesantren", desc: "Santri & wali diajak berkeliling melihat fasilitas: asrama, masjid, kelas, dapur, klinik, dll.", icon: "🏫" },
-  { jam: "12.00", label: "Sholat Dzuhur Berjamaah & Makan Siang", desc: "Sholat berjamaah di masjid pesantren. Makan siang bersama (kupon konsumsi disiapkan sesuai jumlah pendamping).", icon: "🍽️" },
-  { jam: "13.30", label: "Serah Terima Resmi Santri", desc: "Prosesi serah terima santri dari orang tua kepada pihak pesantren. Penandatanganan dokumen jika diperlukan.", icon: "🤝" },
-  { jam: "14.30", label: "Perpisahan & Santri Menetap", desc: "Wali/orang tua dipersilakan pamit. Santri mulai beradaptasi dengan kehidupan pesantren.", icon: "💚" },
+  { jam: "07.00", label: "Peserta Mulai Tiba & Registrasi Ulang", desc: "Panitia akan menyambut kehadiran santri & wali di pintu masuk. Harap membawa kartu identitas dan nomor registrasi.", icon: Tent },
+  { jam: "08.00", label: "Pembukaan & Sambutan", desc: "Acara dibuka oleh Mudir/Pimpinan Pesantren. Semua wali & santri diharapkan sudah duduk di ruang sarasehan.", icon: Mic },
+  { jam: "09.00", label: "Sarasehan & Pengenalan Program", desc: "Penjelasan program, kurikulum, tata tertib pesantren, dan informasi penting bagi wali santri baru.", icon: Presentation },
+  { jam: "10.30", label: "Tur Fasilitas Pesantren", desc: "Santri & wali diajak berkeliling melihat fasilitas: asrama, masjid, kelas, dapur, klinik, dll.", icon: School },
+  { jam: "12.00", label: "Sholat Dzuhur Berjamaah & Makan Siang", desc: "Sholat berjamaah di masjid pesantren. Makan siang bersama (kupon konsumsi disiapkan sesuai jumlah pendamping).", icon: Utensils },
+  { jam: "13.30", label: "Serah Terima Resmi Santri", desc: "Prosesi serah terima santri dari orang tua kepada pihak pesantren. Penandatanganan dokumen jika diperlukan.", icon: Handshake },
+  { jam: "14.30", label: "Perpisahan & Santri Menetap", desc: "Wali/orang tua dipersilakan pamit. Santri mulai beradaptasi dengan kehidupan pesantren.", icon: HeartHandshake },
 ];
 
 const CHECKLIST_BAWAAN = [
@@ -186,9 +186,12 @@ export default function WelcomeDayPage() {
             INFORMASI RESMI PESANTREN
           </div>
 
-          <h1 className="text-2xl md:text-3xl font-black leading-tight mb-2">
-            🎉 Welcome Day & Serah Terima<br />
-            <span className="text-gold-300">Santri Baru 2026/2027</span>
+          <h1 className="text-2xl md:text-3xl font-black leading-tight mb-2 text-white drop-shadow-md">
+            <span className="flex items-center gap-3">
+              <PartyPopper className="w-8 h-8 md:w-10 md:h-10 text-gold-400 drop-shadow-sm" />
+              Welcome Day & Serah Terima
+            </span>
+            <span className="text-gold-300 block mt-2 text-xl md:text-2xl">Santri Baru 2026/2027</span>
           </h1>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6">
@@ -338,11 +341,13 @@ export default function WelcomeDayPage() {
                   )}
                 </div>
                 <div className="flex-1 pb-4">
-                  <div className="flex items-start gap-2">
-                    <span className="text-xl leading-none">{item.icon}</span>
-                    <div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-10 h-10 rounded-2xl bg-white border border-primary-100 flex items-center justify-center flex-shrink-0 shadow-sm text-primary-600">
+                      <item.icon className="w-5 h-5" />
+                    </div>
+                    <div className="mt-0.5">
                       <p className="text-sm font-black text-ink-900">{item.label}</p>
-                      <p className="text-xs text-ink-500 font-medium mt-0.5 leading-relaxed">{item.desc}</p>
+                      <p className="text-xs text-ink-500 font-medium mt-1 leading-relaxed">{item.desc}</p>
                     </div>
                   </div>
                 </div>
@@ -504,7 +509,7 @@ export default function WelcomeDayPage() {
                         : "bg-ink-50 border-ink-200 text-ink-700 hover:bg-ink-100"
                     }`}
                   >
-                    <span className="text-2xl">✅</span>
+                    <CheckCircle2 className={`w-8 h-8 ${formData.statusKehadiran === "HADIR" ? "text-green-400" : "text-ink-400"}`} />
                     <div>
                       <p className="font-black">Ya, Kami Akan Hadir</p>
                       <p className={`text-xs font-medium mt-0.5 ${formData.statusKehadiran === "HADIR" ? "text-white/70" : "text-ink-400"}`}>Kami siap hadir pada 18 Juli 2026</p>
@@ -519,7 +524,7 @@ export default function WelcomeDayPage() {
                         : "bg-ink-50 border-ink-200 text-ink-700 hover:bg-ink-100"
                     }`}
                   >
-                    <span className="text-2xl">❌</span>
+                    <XCircle className={`w-8 h-8 ${formData.statusKehadiran === "TIDAK_HADIR" ? "text-red-400" : "text-ink-400"}`} />
                     <div>
                       <p className="font-black">Berhalangan Hadir</p>
                       <p className={`text-xs font-medium mt-0.5 ${formData.statusKehadiran === "TIDAK_HADIR" ? "text-white/70" : "text-ink-400"}`}>Ada halangan & tidak bisa hadir</p>
@@ -629,7 +634,7 @@ export default function WelcomeDayPage() {
               <div className="p-4 bg-ink-50 rounded-2xl border border-ink-100">
                 <p className="text-[10px] uppercase tracking-widest font-black text-ink-400 mb-2">Status Kehadiran</p>
                 <div className={`flex items-center gap-2 ${formData.statusKehadiran === "HADIR" ? "text-green-700" : "text-red-700"}`}>
-                  <span className="text-2xl">{formData.statusKehadiran === "HADIR" ? "✅" : "❌"}</span>
+                  {formData.statusKehadiran === "HADIR" ? <CheckCircle2 className="w-6 h-6" /> : <XCircle className="w-6 h-6" />}
                   <p className="font-black text-sm">{formData.statusKehadiran === "HADIR" ? "YA, KAMI AKAN HADIR" : "BERHALANGAN HADIR"}</p>
                 </div>
               </div>
