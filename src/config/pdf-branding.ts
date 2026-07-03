@@ -1,9 +1,15 @@
 /**
  * Single Source of Truth for Institutional PDF Branding
- * "Locked" specifications for headers, lines, and signatures.
+ * "Locked" specifications for headers, backgrounds, and signatures.
+ *
+ * template: "full_image" → pakai gambar kop surat penuh sebagai background halaman
+ * template: "programmatic" → render kop surat secara programatik (jsPDF elements)
  */
 
 export const PDF_BRANDING = {
+  // Template Mode
+  template: "programmatic" as "full_image" | "programmatic",
+
   // Institution Labels
   institution: {
     name: "PONDOK PESANTREN AL-FATH",
@@ -13,17 +19,27 @@ export const PDF_BRANDING = {
     address: "Jl. Pesantren Raya No. 1, Kec. Cikembar, Kabupaten Sukabumi, Jawa Barat 43157",
     contact:
       "Website: https://ppdb-demo.vercel.app | Email: info@pesantren-alfath.or.id",
-    phones: "WhatsApp: 0812-8530-0800", // Base phone
+    phones: "WhatsApp: 0812-8530-0800",
   },
 
   // Resource Paths
   assets: {
     logo: "/images/logo.png",
+    kop_full: "", // Belum tersedia — gunakan programmatic template
     stamp: "/images/stempel-pesantren.jpg",
     signature: "/images/ttd-mudir.png",
   },
 
-  // Precise Coordinate Standards (jsPDF based)
+  // Content Area Coordinates (berlaku ketika template = "full_image")
+  content_area: {
+    y_start: 52,
+    y_end: 255,
+    x_left: 18,
+    x_right: 192,
+    width: 174,
+  },
+
+  // Precise Coordinate Standards (jsPDF based) — digunakan saat template = "programmatic"
   coords: {
     header: {
       logo: { x: 18, y: 11, w: 20, h: 28 },
@@ -47,7 +63,7 @@ export const PDF_BRANDING = {
   // Official Mudir / Authority
   authority: {
     name: "Ust. Muhammad Al Fath, Lc.",
-    role: "Mudir",
+    role: "Ketua Panitia",
     city: "Sukabumi",
   },
 };

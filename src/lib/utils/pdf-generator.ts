@@ -26,31 +26,114 @@ const toTitleCase = (str: string) => {
   );
 };
 
+// ============================================================
+// IMAGE CACHE SYSTEM
+// ============================================================
+const imageCache: Record<string, string | null> = {};
+
+const fetchImageAsBase64 = async (url: string): Promise<string | null> => {
+  if (!url) return null;
+  if (imageCache[url] !== undefined) {
+    return imageCache[url];
+  }
+
+  const base64 = await (async () => {
+    const isServer = typeof window === "undefined";
+    if (isServer) {
+      try {
+        if (url.startsWith("/")) {
+          const fs = await import("fs/promises");
+          const path = await import("path");
+          const filePath = path.join(process.cwd(), "public", url);
+          const data = await fs.readFile(filePath);
+          const ext = path.extname(url).slice(1) || "png";
+          return `data:image/${ext};base64,${data.toString("base64")}`;
+        } else {
+          const response = await fetch(url);
+          if (!response.ok) return null;
+          const buffer = Buffer.from(await response.arrayBuffer());
+          const contentType = response.headers.get("content-type") || "image/png";
+          return `data:${contentType};base64,${buffer.toString("base64")}`;
+        }
+      } catch (err) {
+        console.error(`Server error fetchImageAsBase64 (${url}):`, err);
+        return null;
+      }
+    }
+
+    try {
+      const response = await fetch(url);
+      if (!response.ok) return null;
+      const blob = await response.blob();
+      return new Promise<string | null>((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.onerror = () => resolve(null);
+        reader.readAsDataURL(blob);
+      });
+    } catch {
+      return null;
+    }
+  })();
+
+  imageCache[url] = base64;
+  return base64;
+};
+
+// ============================================================
+// TEMPLATE: FULL IMAGE (Kop Surat Resmi sebagai Background)
+// ============================================================
+
 /**
- * Standard Header for all Institutional Documents
+ * Menggambar kop surat penuh dari gambar letterhead resmi secara sinkron (memakai cache).
  */
-const drawHeader = async (doc: jsPDF) => {
+const drawFullImageBackgroundSync = (doc: jsPDF) => {
+  const { assets } = PDF_BRANDING;
+  if (!assets.kop_full) return;
+  const kopBase64 = imageCache[assets.kop_full];
+  if (kopBase64) {
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    doc.addImage(kopBase64, "JPEG", 0, 0, pageWidth, pageHeight);
+  }
+};
+
+const drawFullImageBackground = async (doc: jsPDF) => {
+  const { assets } = PDF_BRANDING;
+  if (!assets.kop_full) return;
+  try {
+    await fetchImageAsBase64(assets.kop_full);
+    drawFullImageBackgroundSync(doc);
+  } catch (e) {
+    console.warn("Kop surat full image tidak dapat dimuat:", e);
+  }
+};
+
+// ============================================================
+// TEMPLATE: PROGRAMMATIC (Kop Generik — jsPDF Elements)
+// ============================================================
+
+/**
+ * Menggambar kop surat secara programatik secara sinkron (memakai cache).
+ */
+const drawProgrammaticHeaderSync = (doc: jsPDF) => {
   const pageWidth = doc.internal.pageSize.getWidth();
   const { coords, assets, institution } = PDF_BRANDING;
 
   // 1. Logo
-  try {
-    const logoBase64 = await fetchImageAsBase64(assets.logo);
-    if (logoBase64) {
-      doc.addImage(
-        logoBase64,
-        "PNG",
-        coords.header.logo.x,
-        coords.header.logo.y,
-        coords.header.logo.w,
-        coords.header.logo.h,
-      );
-    }
-  } catch (e) {
-    console.warn("Logo not loaded in header:", e);
+  const logoBase64 = imageCache[assets.logo];
+  if (logoBase64) {
+    doc.addImage(
+      logoBase64,
+      "PNG",
+      coords.header.logo.x,
+      coords.header.logo.y,
+      coords.header.logo.w,
+      coords.header.logo.h,
+    );
   }
 
-  // 2. Vertical Separator Bar
+  // 2. Garis Vertikal Pemisah
   doc.setDrawColor(40, 40, 40);
   doc.setLineWidth(coords.header.vertical_bar.width);
   doc.line(
@@ -60,7 +143,7 @@ const drawHeader = async (doc: jsPDF) => {
     coords.header.vertical_bar.y2,
   );
 
-  // 3. Institution Info
+  // 3. Info Institusi
   const textX = coords.header.text_x;
   doc.setTextColor(40, 40, 40);
 
@@ -81,53 +164,110 @@ const drawHeader = async (doc: jsPDF) => {
   doc.text(institution.address, textX, 36);
   doc.text(`${institution.contact} | ${institution.phones}`, textX, 40);
 
-  // 4. Horizontal Separator
+  // 4. Garis Horizontal Pemisah (double line)
   doc.setDrawColor(0, 0, 0);
   doc.setLineWidth(coords.header.horizontal_sep.thickness_thick);
-  doc.line(
-    18,
-    coords.header.horizontal_sep.y_thick,
-    pageWidth - 18,
-    coords.header.horizontal_sep.y_thick,
-  );
+  doc.line(18, coords.header.horizontal_sep.y_thick, pageWidth - 18, coords.header.horizontal_sep.y_thick);
   doc.setLineWidth(coords.header.horizontal_sep.thickness_thin);
-  doc.line(
-    18,
-    coords.header.horizontal_sep.y_thin,
-    pageWidth - 18,
-    coords.header.horizontal_sep.y_thin,
-  );
+  doc.line(18, coords.header.horizontal_sep.y_thin, pageWidth - 18, coords.header.horizontal_sep.y_thin);
 
   doc.setTextColor(0, 0, 0);
 };
 
-/**
- * Standard Footer for all Institutional Documents
- */
-const drawFooter = (doc: jsPDF) => {
-  const pageWidth = doc.internal.pageSize.getWidth();
-  const pageHeight = doc.internal.pageSize.getHeight();
+const drawProgrammaticHeader = async (doc: jsPDF) => {
+  const { assets } = PDF_BRANDING;
+  try {
+    await fetchImageAsBase64(assets.logo);
+    drawProgrammaticHeaderSync(doc);
+  } catch (e) {
+    console.warn("Logo tidak dapat dimuat:", e);
+  }
+};
 
-  doc.setFontSize(8);
-  doc.setTextColor(150, 150, 150);
-  doc.text(
-    `Dicetak secara sistem melalui website PPDB Al Fath pada: ${new Date().toLocaleString("id-ID")}`,
-    pageWidth / 2,
-    pageHeight - 10,
-    { align: "center" },
-  );
+// ============================================================
+// UNIFIED HEADER / FOOTER / SIGNATURE — otomatis pilih template
+// ============================================================
+
+/**
+ * Menggambar header secara sinkron (memakai cache).
+ */
+const drawHeaderSync = (doc: jsPDF) => {
+  if (PDF_BRANDING.template === "full_image" && PDF_BRANDING.assets.kop_full) {
+    drawFullImageBackgroundSync(doc);
+  } else {
+    drawProgrammaticHeaderSync(doc);
+  }
 };
 
 /**
- * Standard Formal Signature Section (TTD + Stempel)
+ * Menggambar header sesuai konfigurasi template di PDF_BRANDING.
+ */
+const drawHeader = async (doc: jsPDF) => {
+  const { assets } = PDF_BRANDING;
+  if (PDF_BRANDING.template === "full_image" && assets.kop_full) {
+    await fetchImageAsBase64(assets.kop_full);
+    drawFullImageBackgroundSync(doc);
+  } else {
+    await fetchImageAsBase64(assets.logo);
+    drawProgrammaticHeaderSync(doc);
+  }
+};
+
+/**
+ * Footer: teks cetak otomatis (sinkron).
+ */
+const drawFooterSync = (doc: jsPDF, institutionName?: string) => {
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+  const name = institutionName || PDF_BRANDING.institution.name;
+
+  doc.setFontSize(7);
+  doc.setTextColor(160, 160, 160);
+
+  // Jika menggunakan full_image, naikkan sedikit Y agar tidak menabrak bar coklat footer di background
+  const yPos = (PDF_BRANDING.template === "full_image" && PDF_BRANDING.assets.kop_full) 
+    ? pageHeight - 14 
+    : pageHeight - 5;
+
+  doc.text(
+    `Dicetak secara sistem melalui website PPDB ${name} pada: ${new Date().toLocaleString("id-ID")}`,
+    pageWidth / 2,
+    yPos,
+    { align: "center" },
+  );
+  doc.setTextColor(0, 0, 0);
+};
+
+const drawFooter = (doc: jsPDF, institutionName?: string) => {
+  drawFooterSync(doc, institutionName);
+};
+
+/**
+ * Area konten yang tersedia (mulai Y, akhir Y).
+ * - full_image: menggunakan content_area dari PDF_BRANDING
+ * - programmatic: mulai dari y=50 (setelah kop programatik)
+ */
+const getContentStartY = () => {
+  if (PDF_BRANDING.template === "full_image" && PDF_BRANDING.assets.kop_full) {
+    return PDF_BRANDING.content_area.y_start;
+  }
+  return 50;
+};
+
+/**
+ * Menggambar blok TTD formal (Ketua Panitia) di sebelah kanan.
  */
 const drawFormalSignature = async (doc: jsPDF, y: number) => {
   const pageWidth = doc.internal.pageSize.getWidth();
   const { authority, assets, coords } = PDF_BRANDING;
-  const xBase = pageWidth - coords.signature.margin_right;
+  
+  // Reposisi tanda tangan: jika full_image (seperti Al-Imam), geser ke kiri agar tidak menabrak Kemenkumham.
+  // Jika programmatic (generik), tetap di kanan bawah seperti biasa.
+  const isFullImage = PDF_BRANDING.template === "full_image";
+  const xBase = isFullImage ? 28 : pageWidth - coords.signature.margin_right;
 
   doc.setFont("helvetica", "normal");
-  doc.setFontSize(11);
+  doc.setFontSize(10.5);
   doc.text(
     `${authority.city}, ${new Date().toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}`,
     xBase,
@@ -135,34 +275,33 @@ const drawFormalSignature = async (doc: jsPDF, y: number) => {
   );
   doc.text(authority.role + ",", xBase, y + 6);
 
-  // Load and add images
   const stempel = await fetchImageAsBase64(assets.stamp);
   const ttd = await fetchImageAsBase64(assets.signature);
 
-  if (stempel) {
-    doc.addImage(
-      stempel,
-      "PNG",
-      xBase - 20,
-      y + 10,
-      coords.signature.stamp.w,
-      coords.signature.stamp.h,
-    );
-  }
-  if (ttd) {
-    doc.addImage(
-      ttd,
-      "PNG",
-      xBase + 10,
-      y + 10,
-      coords.signature.ttd.w,
-      coords.signature.ttd.h,
-    );
+  if (isFullImage) {
+    if (stempel) {
+      doc.addImage(stempel, "JPEG", xBase - 10, y + 10, coords.signature.stamp.w, coords.signature.stamp.h);
+    }
+    if (ttd) {
+      doc.addImage(ttd, "PNG", xBase + 5, y + 10, coords.signature.ttd.w, coords.signature.ttd.h);
+    }
+  } else {
+    if (stempel) {
+      doc.addImage(stempel, "JPEG", xBase - 20, y + 10, coords.signature.stamp.w, coords.signature.stamp.h);
+    }
+    if (ttd) {
+      doc.addImage(ttd, "PNG", xBase + 10, y + 10, coords.signature.ttd.w, coords.signature.ttd.h);
+    }
   }
 
   doc.setFont("helvetica", "bold");
+  doc.setFontSize(10.5);
   doc.text(authority.name, xBase, y + 45);
 };
+
+// ============================================================
+// GENERATE BUKTI PENDAFTARAN
+// ============================================================
 
 /**
  * Generate Bukti Pendaftaran PDF
@@ -172,10 +311,11 @@ export const generateBuktiPendaftaran = async (data: PendaftarPdfData) => {
   await drawHeader(doc);
 
   const pageWidth = doc.internal.pageSize.getWidth();
+  const startY = getContentStartY();
 
   doc.setFontSize(16);
   doc.setFont("helvetica", "bold");
-  doc.text("BUKTI PENDAFTARAN", pageWidth / 2, 55, { align: "center" });
+  doc.text("BUKTI PENDAFTARAN", pageWidth / 2, startY + 5, { align: "center" });
 
   const tableData = [
     ["Nomor Pendaftaran", `: ${data.nomor_pendaftaran}`],
@@ -191,7 +331,7 @@ export const generateBuktiPendaftaran = async (data: PendaftarPdfData) => {
   ];
 
   autoTable(doc, {
-    startY: 65,
+    startY: startY + 15,
     body: tableData,
     theme: "plain",
     styles: { fontSize: 11, cellPadding: 3 },
@@ -211,32 +351,38 @@ export const generateBuktiPendaftaran = async (data: PendaftarPdfData) => {
     "3. Lengkapi seluruh biodata dan unggah berkas wajib di dashboard.",
     "4. Pantau dashboard secara berkala untuk ujian seleksi.",
   ];
-
   doc.text(instructions, 14, finalY + 8);
 
   drawFooter(doc);
-  doc.save(`PPDB_BuktiPendaftaran_${data.nomor_pendaftaran}.pdf`);
+  if (typeof window !== "undefined") {
+    doc.save(`PPDB_BuktiPendaftaran_${data.nomor_pendaftaran}.pdf`);
+  }
   return doc;
 };
 
+// ============================================================
+// GENERATE KARTU UJIAN
+// ============================================================
+
 /**
- * Generate kartu seleksi PDF
+ * Generate Kartu Peserta Ujian PDF
  */
 export const generateKartuUjian = async (data: PendaftarPdfData) => {
   const doc = new jsPDF();
   await drawHeader(doc);
 
   const pageWidth = doc.internal.pageSize.getWidth();
+  const startY = getContentStartY();
 
   doc.setFontSize(16);
   doc.setFont("helvetica", "bold");
-  doc.text("KARTU PESERTA UJIAN", pageWidth / 2, 55, { align: "center" });
+  doc.text("KARTU PESERTA UJIAN", pageWidth / 2, startY + 5, { align: "center" });
 
   // Photo Box
   doc.setDrawColor(200, 200, 200);
-  doc.rect(pageWidth - 54, 65, 40, 50);
+  doc.rect(pageWidth - 54, startY + 15, 40, 50);
   doc.setFontSize(8);
-  doc.text("FOTO 3x4", pageWidth - 34, 90, { align: "center" });
+  doc.text("FOTO 3x4", pageWidth - 34, startY + 40, { align: "center" });
 
   const tableData = [
     ["No. Peserta", `: ${data.nomor_pendaftaran}`],
@@ -244,11 +390,11 @@ export const generateKartuUjian = async (data: PendaftarPdfData) => {
     ["NIK", `: ${data.nik}`],
     ["Jenjang", `: ${data.jenjang}`],
     ["Jadwal Seleksi", `: ${data.jadwal_ujian || "Menunggu Konfirmasi"}`],
-    ["Lokasi", `: ${data.lokasi_ujian || "Kampus Utama"}`],
+    ["Lokasi", `: ${data.lokasi_ujian || "Pesantren Al Imam Al Islami"}`],
   ];
 
   autoTable(doc, {
-    startY: 65,
+    startY: startY + 15,
     body: tableData,
     theme: "plain",
     margin: { right: 65 },
@@ -257,81 +403,46 @@ export const generateKartuUjian = async (data: PendaftarPdfData) => {
   });
 
   const finalY = (doc as any).lastAutoTable.finalY + 20;
-
-  // Use official signature area
   await drawFormalSignature(doc, finalY);
 
   drawFooter(doc);
-  doc.save(`PPDB_KartuUjian_${data.nomor_pendaftaran}.pdf`);
+  if (typeof window !== "undefined") {
+    doc.save(`PPDB_KartuUjian_${data.nomor_pendaftaran}.pdf`);
+  }
   return doc;
 };
 
-const fetchImageAsBase64 = async (url: string): Promise<string | null> => {
-  const isServer = typeof window === "undefined";
-
-  if (isServer) {
-    try {
-      if (url.startsWith("/")) {
-        const fs = await import("fs/promises");
-        const path = await import("path");
-        const filePath = path.join(process.cwd(), "public", url);
-        const data = await fs.readFile(filePath);
-        const ext = path.extname(url).slice(1) || "png";
-        return `data:image/${ext};base64,${data.toString("base64")}`;
-      } else {
-        const response = await fetch(url);
-        if (!response.ok) return null;
-        const buffer = Buffer.from(await response.arrayBuffer());
-        const contentType = response.headers.get("content-type") || "image/png";
-        return `data:${contentType};base64,${buffer.toString("base64")}`;
-      }
-    } catch (err) {
-      console.error(`Server error fetchImageAsBase64 (${url}):`, err);
-      return null;
-    }
-  }
-
-  try {
-    const response = await fetch(url);
-    if (!response.ok) return null;
-    const blob = await response.blob();
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result as string);
-      reader.onerror = () => resolve(null);
-      reader.readAsDataURL(blob);
-    });
-  } catch {
-    return null;
-  }
-};
+// ============================================================
+// GENERATE SURAT KELULUSAN
+// ============================================================
 
 /**
- * Generate Surat Kelulusan
+ * Generate Surat Keterangan Hasil Seleksi
  */
 export const generateSuratKelulusan = async (data: PendaftarPdfData) => {
   const doc = new jsPDF();
   const pageWidth = doc.internal.pageSize.getWidth();
+  const startY = getContentStartY();
 
   await drawHeader(doc);
 
   doc.setFontSize(16);
   doc.setFont("helvetica", "bold");
-  doc.text("SURAT KETERANGAN HASIL SELEKSI", pageWidth / 2, 60, {
+  doc.text("SURAT KETERANGAN HASIL SELEKSI", pageWidth / 2, startY + 10, {
     align: "center",
   });
   doc.setFontSize(10);
   doc.text(
     `Nomor: ${data.nomor_pendaftaran}/SKL-PPDB/${new Date().getFullYear()}`,
     pageWidth / 2,
-    66,
+    startY + 17,
     { align: "center" },
   );
 
   doc.setFontSize(11);
   doc.setFont("helvetica", "normal");
   const content = `Berdasarkan hasil seleksi Penerimaan Santri Baru (PPDB) Tahun Ajaran ${data.tahun_ajaran}, dengan ini Panitia menyatakan bahwa:`;
-  doc.text(doc.splitTextToSize(content, pageWidth - 40), 20, 80);
+  doc.text(doc.splitTextToSize(content, pageWidth - 40), 20, startY + 30);
 
   const tableData = [
     ["Nomor Pendaftaran", `: ${data.nomor_pendaftaran}`],
@@ -341,7 +452,7 @@ export const generateSuratKelulusan = async (data: PendaftarPdfData) => {
   ];
 
   autoTable(doc, {
-    startY: 90,
+    startY: startY + 40,
     body: tableData,
     theme: "plain",
     margin: { left: 25 },
@@ -370,7 +481,7 @@ export const generateSuratKelulusan = async (data: PendaftarPdfData) => {
   doc.setFontSize(11);
 
   let closing =
-    "Selamat bergabung menjadi keluarga besar Pondok Pesantren Al Fath. Silakan segera melakukan proses daftar ulang sesuai jadwal yang ditentukan.";
+    "Selamat bergabung menjadi keluarga besar Pesantren Al Imam Al Islami. Silakan segera melakukan proses daftar ulang sesuai jadwal yang ditentukan.";
   if (statusText === "CADANGAN")
     closing =
       "Anda masuk dalam daftar cadangan. Panitia akan menghubungi Anda jika terdapat kuota yang kosong.";
@@ -380,7 +491,6 @@ export const generateSuratKelulusan = async (data: PendaftarPdfData) => {
 
   doc.text(doc.splitTextToSize(closing, pageWidth - 40), 20, finalY + 25);
 
-  // Add Enrollment Info for Accepted Candidates
   if (statusText === "LULUS / DITERIMA") {
     const daftarUlangInfo =
       "Pembayaran daftar ulang harus segera dibayarkan minimal 50% paling lambat sepekan setelah pengumuman hasil. Bagi yang membutuhkan keringanan, silakan menghubungi bagian Finance di 0812-2063-6945.";
@@ -393,21 +503,19 @@ export const generateSuratKelulusan = async (data: PendaftarPdfData) => {
     );
   }
 
-  // Signature Area
   await drawFormalSignature(doc, finalY + 65);
 
   drawFooter(doc);
-  doc.save(`PPDB_SuratHasilSeleksi_${data.nomor_pendaftaran}.pdf`);
+  if (typeof window !== "undefined") {
+    doc.save(`PPDB_SuratHasilSeleksi_${data.nomor_pendaftaran}.pdf`);
+  }
   return doc;
 };
 
 // ============================================================
-// DOKUMEN TEMPLATE UNTUK CALON SANTRI
+// HELPER: FORM ROW (label + garis isian)
 // ============================================================
 
-/**
- * Helper untuk menggambar tabel isian (formulir) dengan kolom label dan garis kosong
- */
 const drawFormRow = (
   doc: jsPDF,
   label: string,
@@ -419,14 +527,18 @@ const drawFormRow = (
   doc.setFontSize(10.5);
   doc.text(label, x, y);
   doc.text(":", x + 48, y);
-  // Draw dotted line for fill-in
   doc.setDrawColor(100, 100, 100);
   doc.setLineWidth(0.2);
   doc.line(x + 52, y + 1, x + 52 + lineWidth, y + 1);
 };
 
+// ============================================================
+// GENERATE SURAT KETERANGAN KESEHATAN
+// ============================================================
+
 /**
- * Generate Surat Pengantar Pemeriksaan Kesehatan (Template)
+ * Generate Surat Pengantar Pemeriksaan Kesehatan + Formulir (2 halaman)
+ * Mengacu pada dokumen: AIIS-Surat-Kesehatan-PSB-26-27-REVISED
  */
 export const generateSuratKesehatan = async (data: PendaftarPdfData) => {
   const doc = new jsPDF();
@@ -434,13 +546,13 @@ export const generateSuratKesehatan = async (data: PendaftarPdfData) => {
   const { institution, authority } = PDF_BRANDING;
   const margin = 18;
   const contentW = pageWidth - margin * 2;
+  const startY = getContentStartY();
 
   // === HALAMAN 1: SURAT PENGANTAR ===
   await drawHeader(doc);
 
-  // Reference info
-  let y = 56;
-  doc.setFontSize(10.5);
+  let y = startY + 2;
+  doc.setFontSize(9.5); // Diubah dari 10.5 ke 9.5 untuk menghemat ruang
   doc.setFont("helvetica", "normal");
   doc.setTextColor(50, 50, 50);
 
@@ -450,63 +562,49 @@ export const generateSuratKesehatan = async (data: PendaftarPdfData) => {
   doc.text("Lamp.", leftColX, y);
   doc.text(":", colonX, y);
   doc.text("1 Lembar", colonX + 4, y);
-  y += 6;
+  y += 5; // Diubah dari 6 ke 5
   doc.text("Hal", leftColX, y);
   doc.text(":", colonX, y);
   doc.setFont("helvetica", "bold");
-  const halText = `Pemeriksaan Kesehatan Calon Santri Baru\n${institution.name} ${authority.city}`;
+  doc.setTextColor(0, 0, 0);
+  const halText = `Pemeriksaan Kesehatan Calon Santri Baru\n${institution.name}`;
   doc.text(halText, colonX + 4, y);
   doc.setFont("helvetica", "normal");
 
-  y += 18;
+  y += 10; // Diubah dari 18 ke 10 untuk menghemat ruang vertikal
+  doc.setTextColor(50, 50, 50);
   doc.text("Kepada Yth.", leftColX, y);
-  y += 6;
+  y += 5; // Diubah dari 6 ke 5
   doc.text("Petugas Kesehatan Puskesmas/Rumah Sakit", leftColX, y);
-  y += 6;
+  y += 5;
   doc.text(".............................................", leftColX, y);
-  y += 6;
+  y += 5;
   doc.text("Di Tempat", leftColX, y);
 
-  y += 12;
+  y += 8; // Diubah dari 12 ke 8
+  doc.setTextColor(0, 0, 0);
   doc.setFont("helvetica", "italic");
   doc.text("Dengan hormat,", leftColX, y);
   doc.setFont("helvetica", "normal");
 
-  y += 8;
-  const intro = `Sehubungan dengan kegiatan penerimaan calon santri baru ${institution.name} ${authority.city} Tahun Pelajaran 2026/2027, kami selaku panitia membutuhkan pemeriksaan kesehatan bagi para calon santri sebagai salah satu bagian dari rangkaian proses seleksi.`;
+  y += 6; // Diubah dari 8 ke 6
+  const intro = `Sehubungan dengan kegiatan penerimaan calon santri baru ${institution.name} Tahun Pelajaran 2026/2027, kami selaku panitia membutuhkan pemeriksaan kesehatan bagi para calon santri sebagai salah satu bagian dari rangkaian proses seleksi.`;
   const introLines = doc.splitTextToSize(intro, contentW);
   doc.text(introLines, leftColX, y);
-  y += introLines.length * 5.5 + 4;
+  y += introLines.length * 5 + 3; // Diubah dari 5.5 + 4 ke 5 + 3
 
   const intro2 =
     "Untuk itu, kami mohon kesediaan Bapak/Ibu untuk melakukan pemeriksaan kesehatan bagi calon santri dengan identitas berikut:";
   const intro2Lines = doc.splitTextToSize(intro2, contentW);
   doc.text(intro2Lines, leftColX, y);
-  y += intro2Lines.length * 5.5 + 4;
+  y += intro2Lines.length * 5 + 3;
 
-  // Data calon santri
-  const fields1 = [
-    [
-      "Nama",
-      data.nama_lengkap
-        ? toTitleCase(data.nama_lengkap)
-        : "..................................................",
-    ],
-    [
-      "Nomor Pendaftaran",
-      data.nomor_pendaftaran ||
-        "..................................................",
-    ],
-    [
-      "Tempat, Tanggal Lahir",
-      data.tempat_lahir && data.tanggal_lahir
-        ? `${data.tempat_lahir}, ${data.tanggal_lahir}`
-        : "..................................................",
-    ],
-    [
-      "Alamat",
-      data.alamat || "..................................................",
-    ],
+  // Data calon santri (selalu kosongkan berupa titik-titik untuk diisi manual oleh orangtua/wali)
+  const fields1: [string, string][] = [
+    ["Nama", ".................................................................................."],
+    ["Nomor Pendaftaran", ".................................................................................."],
+    ["Tempat, Tanggal Lahir", ".................................................................................."],
+    ["Alamat", ".................................................................................."],
   ];
   for (const [label, value] of fields1) {
     doc.setFont("helvetica", "bold");
@@ -514,38 +612,41 @@ export const generateSuratKesehatan = async (data: PendaftarPdfData) => {
     doc.setFont("helvetica", "normal");
     doc.text(":", leftColX + 54, y);
     doc.text(value, leftColX + 57, y);
-    y += 6;
+    y += 5.2; // Diubah dari 6 ke 5.2
   }
 
-  y += 6;
+  y += 3; // Diubah dari 5 ke 3
   doc.text("Jenis pemeriksaan kesehatan yang dibutuhkan adalah:", leftColX, y);
-  y += 7;
+  y += 5; // Diubah dari 7 ke 5
   const checks = [
     "Riwayat Penyakit (Anamnesis)",
     "Pemeriksaan Fisik (Physical Test)",
     "Pemeriksaan Tajam Penglihatan (Visus) dan Buta Warna",
   ];
   for (const item of checks) {
-    doc.text(`${item}`, leftColX + 5, y);
-    y += 6;
+    doc.setFillColor(80, 80, 80);
+    // Menggambar bulatan bullet point kecil menggunakan metode lingkaran vector
+    doc.circle(leftColX + 7, y - 1.2, 0.7, "F"); // Bulatan sedikit lebih kecil
+    doc.text(item, leftColX + 11, y);
+    y += 5.2; // Diubah dari 6 ke 5.2
   }
 
-  y += 4;
+  y += 2; // Diubah dari 4 ke 2
   const note =
     "Catatan: Bila visus tidak normal, mohon dilengkapi dengan nilai negatif, positif, atau nilai silindrisnya (contoh: V.OD/V.OS: -1/-0,5).";
   const noteLines = doc.splitTextToSize(note, contentW - 5);
   doc.setFont("helvetica", "italic");
-  doc.setFontSize(9.5);
+  doc.setFontSize(8.5); // Ukuran catatan diperkecil sedikit
   doc.text(noteLines, leftColX + 5, y);
   doc.setFont("helvetica", "normal");
-  doc.setFontSize(10.5);
-  y += noteLines.length * 5 + 5;
+  doc.setFontSize(9.5); // Kembalikan ke 9.5
+  y += noteLines.length * 4.5 + 3;
 
   const closing1 =
     "Hasil pemeriksaan dapat diisikan pada formulir terlampir. Seluruh biaya pemeriksaan kesehatan dibebankan kepada calon santri yang bersangkutan, dengan mekanisme yang ditentukan oleh pihak Rumah Sakit/Puskesmas.";
   const closing1Lines = doc.splitTextToSize(closing1, contentW);
   doc.text(closing1Lines, leftColX, y);
-  y += closing1Lines.length * 5.5 + 6;
+  y += closing1Lines.length * 5 + 4;
 
   doc.setFont("helvetica", "italic");
   doc.text(
@@ -555,16 +656,14 @@ export const generateSuratKesehatan = async (data: PendaftarPdfData) => {
   );
   doc.setFont("helvetica", "normal");
 
-  // Signature kiri MUDIR (Ketua Panitia)
-  await drawFormalSignature(doc, y + 12);
-
+  await drawFormalSignature(doc, y + 8); // Diubah dari 12 ke 8 untuk memajukan TTD Mudir
   drawFooter(doc);
 
   // === HALAMAN 2: FORMULIR PEMERIKSAAN ===
   doc.addPage();
   await drawHeader(doc);
 
-  y = 56;
+  y = startY;
   doc.setFont("helvetica", "bold");
   doc.setFontSize(13);
   doc.text("FORMULIR HASIL PEMERIKSAAN KESEHATAN", pageWidth / 2, y, {
@@ -573,7 +672,7 @@ export const generateSuratKesehatan = async (data: PendaftarPdfData) => {
   y += 7;
   doc.setFontSize(11);
   doc.text(
-    `CALON SANTRI BARU ${institution.name} ${authority.city.toUpperCase()}`,
+    `CALON SANTRI BARU ${institution.name.toUpperCase()}`,
     pageWidth / 2,
     y,
     { align: "center" },
@@ -591,7 +690,6 @@ export const generateSuratKesehatan = async (data: PendaftarPdfData) => {
   );
   y += 8;
 
-  // Identitas
   for (const [label, value] of fields1) {
     doc.setFont("helvetica", "bold");
     doc.text(label, leftColX + 5, y);
@@ -614,33 +712,40 @@ export const generateSuratKesehatan = async (data: PendaftarPdfData) => {
       [
         "Apakah pernah menderita asma?",
         "Tidak / Ya",
-        "Ket: Ringan – Sedang – Berat",
+        "Ket: Ringan \u2013 Sedang \u2013 Berat",
       ],
       [
         "Apakah pernah menderita TBC?",
         "Tidak / Ya",
-        "Ket: Sembuh – Proses Pengobatan",
+        "Ket: Sembuh \u2013 Proses Pengobatan",
       ],
       [
         "Apakah pernah menderita hepatitis?",
         "Tidak / Ya",
-        "Ket: Sembuh – Proses Pengobatan",
+        "Ket: Sembuh \u2013 Proses Pengobatan",
       ],
       [
         "Apakah ada riwayat epilepsi?",
         "Tidak / Ya",
-        "Ket: Sembuh – Proses Pengobatan",
+        "Ket: Sembuh \u2013 Proses Pengobatan",
       ],
       ["Apakah cocok tinggal di daerah dingin?", "Tidak / Ya", ""],
     ],
-    styles: { fontSize: 9, cellPadding: 2.5 },
-    headStyles: { fillColor: [30, 60, 120], textColor: 255, fontStyle: "bold" },
+    styles: { fontSize: 9, cellPadding: 2.2 },
+    headStyles: { fillColor: [139, 0, 0], textColor: 255, fontStyle: "bold" },
     columnStyles: {
       0: { cellWidth: 80 },
       1: { cellWidth: 30 },
-      2: { cellWidth: 65 },
+      2: { cellWidth: 64 },
     },
-    margin: { left: margin, right: margin },
+    margin: { top: getContentStartY() + 5, bottom: 48, left: margin, right: margin },
+    didDrawPage: (data) => {
+      // Menggambar kop dan footer secara sinkron di halaman luapan (page break)
+      if (data.pageNumber > 1) {
+        drawHeaderSync(doc);
+        drawFooterSync(doc);
+      }
+    },
   });
 
   y = (doc as any).lastAutoTable.finalY + 6;
@@ -653,99 +758,47 @@ export const generateSuratKesehatan = async (data: PendaftarPdfData) => {
     startY: y,
     head: [["Pemeriksaan", "Hasil", "Ket.", "Pemeriksaan", "Hasil", "Ket."]],
     body: [
-      ["Keadaan Umum", "", "", "Leher", "", ""],
-      [
-        "Tinggi Badan",
-        "...... cm",
-        "",
-        "Kelenjar Gondok",
-        "Normal / Ada kelainan",
-        "",
-      ],
-      ["Berat Badan", "...... kg", "", "Dada", "", ""],
-      [
-        "Tekanan Darah",
-        "...... mmHg",
-        "",
-        "Jantung",
-        "Normal / Ada kelainan",
-        "",
-      ],
-      ["Kepala", "", "", "Paru-Paru", "Normal / Ada kelainan", ""],
-      [
-        "Mata / Visus Kanan",
-        ".......",
-        "",
-        "Perut / Hepar",
-        "Normal / Ada kelainan",
-        "",
-      ],
-      ["Visus Kiri", ".......", "", "Limpa", "Normal / Ada kelainan", ""],
-      [
-        "Pakai Kacamata",
-        "Ya / Tidak",
-        "",
-        "Hernia",
-        "Normal / Ada kelainan",
-        "",
-      ],
-      [
-        "Buta Warna",
-        "Ya / Tidak",
-        "",
-        "Anus & Rektum / Hemoroid",
-        "Ada / Tidak ada",
-        "",
-      ],
-      [
-        "Telinga / Membran Timpani",
-        "Normal / Ada kelainan",
-        "",
-        "Ekstremitas Atas",
-        "Normal / Ada kelainan",
-        "",
-      ],
-      [
-        "Serumen",
-        "Ada / Tidak ada",
-        "",
-        "Ekstremitas Bawah",
-        "Normal / Ada kelainan",
-        "",
-      ],
-      [
-        "Bekas Tindik",
-        "Normal / Ada kelainan",
-        "",
-        "Kulit / Penyakit Kulit",
-        "Ada / Tidak ada",
-        "",
-      ],
-      [
-        "Hidung / Polip",
-        "Normal / Ada kelainan",
-        "",
-        "Varises",
-        "Ada / Tidak ada",
-        "",
-      ],
-      ["Tenggorokan / Tonsil", "Normal / Ada kelainan", "", "", "", ""],
-      ["Faring", "Normal / Ada kelainan", "", "", "", ""],
+      ["1. Keadaan Umum", "", "", "3. Leher", "", ""],
+      ["   Tinggi Badan", "...... cm", "", "   - Kelenjar Gondok", "Normal / Ada kelainan", ""],
+      ["   Berat Badan", "...... kg", "", "4. Dada", "", ""],
+      ["   Tekanan Darah", "...... mmHg", "", "   - Jantung", "Normal / Ada kelainan", ""],
+      ["2. Kepala", "", "", "   - Paru-Paru", "Normal / Ada kelainan", ""],
+      ["   a. Mata", "", "", "5. Perut", "", ""],
+      ["      - Visus Kanan", ".......", "", "   - Hepar", "Normal / Ada kelainan", ""],
+      ["      - Visus Kiri", ".......", "", "   - Limpa", "Normal / Ada kelainan", ""],
+      ["      - Pakai Kacamata", "Ya / Tidak", "", "   - Hernia", "Normal / Ada kelainan", ""],
+      ["      - Buta Warna", "Ya / Tidak", "", "6. Anus & Rektum", "", ""],
+      ["   b. Telinga", "", "", "   - Hemoroid", "Ada / Tidak ada", ""],
+      ["      - Membran Timpani", "Normal / Ada kelainan", "", "7. Ekstremitas", "", ""],
+      ["      - Serumen", "Ada / Tidak ada", "", "   - Atas", "Normal / Ada kelainan", ""],
+      ["      - Bekas Tindik", "Normal / Ada kelainan", "", "   - Bawah", "Normal / Ada kelainan", ""],
+      ["   c. Hidung", "", "", "8. Kulit", "", ""],
+      ["      - Polip", "Normal / Ada kelainan", "", "   - Penyakit Kulit", "Ada / Tidak ada", ""],
+      ["   d. Tenggorokan", "", "", "   - Varises", "Ada / Tidak ada", ""],
+      ["      - Tonsil", "Normal / Ada kelainan", "", "", "", ""],
+      ["      - Faring", "Normal / Ada kelainan", "", "", "", ""],
     ],
-    styles: { fontSize: 8, cellPadding: 2 },
-    headStyles: { fillColor: [30, 60, 120], textColor: 255, fontStyle: "bold" },
+    styles: { fontSize: 8, cellPadding: 1.5 },
+    headStyles: { fillColor: [139, 0, 0], textColor: 255, fontStyle: "bold" },
     columnStyles: {
-      0: { cellWidth: 40 },
-      1: { cellWidth: 22 },
+      0: { cellWidth: 43 },
+      1: { cellWidth: 27 },
       2: { cellWidth: 10 },
-      3: { cellWidth: 40 },
-      4: { cellWidth: 38 },
+      3: { cellWidth: 43 },
+      4: { cellWidth: 41 },
       5: { cellWidth: 10 },
     },
-    margin: { left: margin, right: margin },
+    margin: { top: getContentStartY() + 5, bottom: 48, left: margin, right: margin },
+    didDrawPage: (data) => {
+      // Menggambar kop dan footer secara sinkron di halaman luapan (page break)
+      if (data.pageNumber > 1) {
+        drawHeaderSync(doc);
+        drawFooterSync(doc);
+      }
+    },
   });
 
-  const finalY2 = (doc as any).lastAutoTable.finalY + 8;
+  const finalY2 = (doc as any).lastAutoTable.finalY + 4; // Diubah dari 8 ke 4 agar lebih naik
   doc.setFont("helvetica", "normal");
   doc.setFontSize(10);
   doc.text(
@@ -753,31 +806,38 @@ export const generateSuratKesehatan = async (data: PendaftarPdfData) => {
     leftColX,
     finalY2,
   );
-
-  // TTD Dokter - di sebelah kiri bawah
-  const sigY = finalY2 + 10;
+ 
+  // TTD Dokter — diposisikan di kanan bawah (right-aligned block) dan digeser naik
+  const xRightSig = pageWidth - margin - 65; // Bergeser ke sisi kanan
+  const sigY = finalY2 + 6; // Diubah dari 10 ke 6 agar lebih rapat ke atas
   doc.setFontSize(10.5);
-  doc.text("................., ...................... 2026", leftColX, sigY);
-  doc.text("Dokter Pemeriksa,", leftColX, sigY + 6);
+  doc.text("................., ...................... 2026", xRightSig, sigY);
+  doc.text("Dokter Pemeriksa,", xRightSig, sigY + 5); // Diubah dari 6 ke 5
   doc.setDrawColor(150, 150, 150);
   doc.setLineWidth(0.3);
-  // Box TTD dokter
-  doc.rect(leftColX, sigY + 8, 60, 30);
+  doc.rect(xRightSig, sigY + 7, 60, 24); // Diubah dari tinggi 30 ke 24 untuk menghemat ruang
   doc.setFontSize(8);
   doc.setTextColor(150, 150, 150);
-  doc.text("(Tanda Tangan & Stempel)", leftColX + 7, sigY + 25);
+  doc.text("(Tanda Tangan & Stempel)", xRightSig + 7, sigY + 21); // Diubah dari 25 ke 21
   doc.setTextColor(0, 0, 0);
   doc.setFontSize(10.5);
-  doc.text("dr. .................................", leftColX, sigY + 44);
-  doc.text("NIP. ................................", leftColX, sigY + 50);
+  doc.text("dr. .................................", xRightSig, sigY + 37); // Diubah dari 44 ke 37
+  doc.text("NIP. ................................", xRightSig, sigY + 42); // Diubah dari 50 ke 42 untuk menghemat ruang
 
   drawFooter(doc);
-  doc.save(`AIIS_SuratKesehatan_${data.nomor_pendaftaran}.pdf`);
+  if (typeof window !== "undefined") {
+    doc.save(`AIIS_SuratKesehatan_${data.nomor_pendaftaran}.pdf`);
+  }
   return doc;
 };
 
+// ============================================================
+// GENERATE SURAT PERNYATAAN ORANGTUA/WALI
+// ============================================================
+
 /**
- * Generate Surat Pernyataan Orangtua/Wali (Template)
+ * Generate Surat Pernyataan Orangtua/Wali Santri (Template)
+ * Mengacu pada dokumen: Surat_Pernyataan_Orangtua_Wali
  */
 export const generateSuratPernyataan = async (data: PendaftarPdfData) => {
   const doc = new jsPDF();
@@ -785,10 +845,11 @@ export const generateSuratPernyataan = async (data: PendaftarPdfData) => {
   const { authority } = PDF_BRANDING;
   const margin = 20;
   const contentW = pageWidth - margin * 2;
+  const startY = getContentStartY();
 
   await drawHeader(doc);
 
-  let y = 56;
+  let y = startY + 2;
   doc.setFont("helvetica", "bold");
   doc.setFontSize(14);
   doc.text("SURAT PERNYATAAN ORANGTUA/WALI SANTRI", pageWidth / 2, y, {
@@ -801,13 +862,9 @@ export const generateSuratPernyataan = async (data: PendaftarPdfData) => {
   doc.text("Saya yang bertanda tangan di bawah ini:", margin, y);
   y += 8;
 
-  const parentFields = [
-    ["Nama", ""],
-    ["Pekerjaan", ""],
-    ["Alamat", ""],
-    ["No. HP", ""],
-  ];
-  for (const [label] of parentFields) {
+  // Data orangtua/wali
+  const parentFields = ["Nama", "Pekerjaan", "Alamat", "No. HP"];
+  for (const label of parentFields) {
     doc.setFont("helvetica", "bold");
     doc.text(label, margin + 5, y);
     doc.setFont("helvetica", "normal");
@@ -822,7 +879,8 @@ export const generateSuratPernyataan = async (data: PendaftarPdfData) => {
   doc.text("Sebagai orangtua/wali dari calon santri/santriwati:", margin, y);
   y += 8;
 
-  const santriFields = [
+  // Data santri
+  const santriFields: [string, string][] = [
     ["Nama", data.nama_lengkap ? toTitleCase(data.nama_lengkap) : ""],
     ["Jenjang", "MTs / I'dad Lughawiy / SMA  *) coret yang tidak perlu"],
   ];
@@ -883,13 +941,11 @@ export const generateSuratPernyataan = async (data: PendaftarPdfData) => {
   doc.text(healthNoteLines, margin, y);
   y += healthNoteLines.length * 5.5 + 8;
 
-  // TTD Orangtua (kiri) + TTD Mudir (kanan)
+  // TTD Orangtua (kiri) bermaterai
   const dateStr = `${authority.city}, ......................... 2026`;
-  // Orangtua (kiri)
   doc.setFontSize(10.5);
   doc.text(dateStr, margin, y);
   doc.text("Pembuat Pernyataan,", margin, y + 7);
-  // Materai box
   doc.setDrawColor(100, 100, 100);
   doc.setLineWidth(0.3);
   doc.rect(margin, y + 10, 35, 22);
@@ -898,30 +954,39 @@ export const generateSuratPernyataan = async (data: PendaftarPdfData) => {
   doc.text("Materai Rp10.000,-", margin + 2, y + 22);
   doc.setTextColor(0, 0, 0);
   doc.setFontSize(10.5);
-  // Name line
   doc.setLineWidth(0.2);
   doc.line(margin, y + 40, margin + 70, y + 40);
   doc.text("(Orangtua/Wali)", margin + 10, y + 46);
 
   drawFooter(doc);
-  doc.save(`AIIS_SuratPernyataan_${data.nomor_pendaftaran}.pdf`);
+  if (typeof window !== "undefined") {
+    doc.save(`AIIS_SuratPernyataan_${data.nomor_pendaftaran}.pdf`);
+  }
   return doc;
 };
 
+// ============================================================
+// GENERATE PAKTA INTEGRITAS (SANTRI + ORANGTUA, 2 Halaman)
+// ============================================================
+
 /**
- * Generate Pakta Integritas Santri dan Orangtua/Wali (Template, 2 Halaman)
+ * Generate Pakta Integritas Santri (Hal. 1) dan Orangtua/Wali (Hal. 2)
+ * Mengacu pada dokumen: Pakta_Integritas_Santri_dan_Orangtua
  */
 export const generatePaktaIntegritas = async (data: PendaftarPdfData) => {
   const doc = new jsPDF();
   const pageWidth = doc.internal.pageSize.getWidth();
-  const { authority } = PDF_BRANDING;
+  const { authority, institution } = PDF_BRANDING;
   const margin = 20;
   const contentW = pageWidth - margin * 2;
+  const startY = getContentStartY();
 
-  // === HALAMAN 1: PAKTA INTEGRITAS SANTRI ===
+  // ============================
+  // HALAMAN 1: PAKTA INTEGRITAS SANTRI
+  // ============================
   await drawHeader(doc);
 
-  let y = 56;
+  let y = startY + 2;
   doc.setFont("helvetica", "bold");
   doc.setFontSize(14);
   doc.text("PAKTA INTEGRITAS SANTRI", pageWidth / 2, y, { align: "center" });
@@ -932,7 +997,7 @@ export const generatePaktaIntegritas = async (data: PendaftarPdfData) => {
   doc.text("Saya yang bertanda tangan di bawah ini:", margin, y);
   y += 8;
 
-  const santriFields2 = [
+  const santriFields2: [string, string][] = [
     ["Nama Lengkap", data.nama_lengkap ? toTitleCase(data.nama_lengkap) : ""],
     ["Jenjang", "MTs / I'dad Lughawiy / SMA  *) coret yang tidak perlu"],
     ["Tahun Pelajaran", "2026/2027"],
@@ -955,7 +1020,7 @@ export const generatePaktaIntegritas = async (data: PendaftarPdfData) => {
 
   y += 5;
   const preamble1 =
-    "Dengan sungguh-sungguh dan penuh kesadaran, selama saya menjadi santri di Pondok Pesantren Al Fath, menyatakan bahwa saya akan:";
+    `Dengan sungguh-sungguh dan penuh kesadaran, selama saya menjadi santri di ${institution.name}, menyatakan bahwa saya akan:`;
   doc.text(doc.splitTextToSize(preamble1, contentW), margin, y);
   y += 13;
 
@@ -980,9 +1045,8 @@ export const generatePaktaIntegritas = async (data: PendaftarPdfData) => {
   doc.text(doc.splitTextToSize(closing2, contentW), margin, y);
   y += 12;
 
-  // TTD Santri (kiri) + TTD Mudir (kanan)
+  // TTD Santri (kiri) bermaterai
   const sigDateStr = `${authority.city}, ......................... 2026`;
-  // Santri (kiri)
   doc.setFontSize(10.5);
   doc.text(sigDateStr, margin, y);
   doc.text("Pembuat Pernyataan,", margin, y + 7);
@@ -1000,11 +1064,13 @@ export const generatePaktaIntegritas = async (data: PendaftarPdfData) => {
 
   drawFooter(doc);
 
-  // === HALAMAN 2: PAKTA INTEGRITAS ORANGTUA ===
+  // ============================
+  // HALAMAN 2: PAKTA INTEGRITAS ORANGTUA/WALI
+  // ============================
   doc.addPage();
   await drawHeader(doc);
 
-  y = 56;
+  y = startY + 2;
   doc.setFont("helvetica", "bold");
   doc.setFontSize(14);
   doc.text("PAKTA INTEGRITAS ORANGTUA/WALI SANTRI", pageWidth / 2, y, {
@@ -1018,12 +1084,12 @@ export const generatePaktaIntegritas = async (data: PendaftarPdfData) => {
   y += 8;
 
   const ortuFields = [
-    ["Nama Lengkap", ""],
-    ["Alamat Lengkap", ""],
-    ["No. HP / WhatsApp", ""],
-    ["Pekerjaan", ""],
+    "Nama Lengkap",
+    "Alamat Lengkap",
+    "No. HP / WhatsApp",
+    "Pekerjaan",
   ];
-  for (const [label] of ortuFields) {
+  for (const label of ortuFields) {
     doc.setFont("helvetica", "bold");
     doc.text(label, margin + 5, y);
     doc.setFont("helvetica", "normal");
@@ -1037,28 +1103,25 @@ export const generatePaktaIntegritas = async (data: PendaftarPdfData) => {
   y += 5;
   doc.text("Sebagai orangtua/wali dari santri/santriwati:", margin, y);
   y += 7;
-  doc.setFont("helvetica", "bold");
-  doc.text("Nama Santri", margin + 5, y);
-  doc.setFont("helvetica", "normal");
-  doc.text(":", margin + 50, y);
-  doc.text(
-    data.nama_lengkap
-      ? toTitleCase(data.nama_lengkap)
-      : ".................................",
-    margin + 53,
-    y,
-  );
-  y += 7;
-  doc.setFont("helvetica", "bold");
-  doc.text("Jenjang", margin + 5, y);
-  doc.setFont("helvetica", "normal");
-  doc.text(":", margin + 50, y);
-  doc.text(
-    "MTs / I'dad Lughawiy / SMA  *) coret yang tidak perlu",
-    margin + 53,
-    y,
-  );
-  y += 10;
+
+  const santriDataOrtu: [string, string][] = [
+    [
+      "Nama Santri",
+      data.nama_lengkap
+        ? toTitleCase(data.nama_lengkap)
+        : ".................................",
+    ],
+    ["Jenjang", "MTs / I'dad Lughawiy / SMA  *) coret yang tidak perlu"],
+  ];
+  for (const [label, value] of santriDataOrtu) {
+    doc.setFont("helvetica", "bold");
+    doc.text(label, margin + 5, y);
+    doc.setFont("helvetica", "normal");
+    doc.text(":", margin + 50, y);
+    doc.text(value, margin + 53, y);
+    y += 7;
+  }
+  y += 5;
 
   const preamble2 =
     "Dengan sungguh-sungguh dan penuh kesadaran, menyatakan bahwa kami akan:";
@@ -1069,7 +1132,7 @@ export const generatePaktaIntegritas = async (data: PendaftarPdfData) => {
     "Berupaya menjadi teladan yang baik sesuai ketentuan syariat Islam.",
     "Berperan aktif dalam membimbing dan mengawasi putra/putri kami agar menaati semua peraturan dan tata tertib Pesantren.",
     "Membiayai pendidikan putra/putri kami selama masa pendidikan dengan penuh rasa tanggung jawab.",
-    "Tidak mengajukan tuntutan hukum kepada pihak Pondok Pesantren Al Fath Sukabumi atau tenaga pendidik Pesantren terkait tindakan edukatif yang dilakukan kepada putra/putri kami, sebagaimana diatur dalam PP No. 74 Tahun 2008 sebagaimana telah diubah dengan PP No. 19 Tahun 2017 tentang Guru, serta Permendikbud No. 10 Tahun 2017 tentang Perlindungan Bagi Pendidik dan Tenaga Kependidikan.",
+    `Tidak mengajukan tuntutan hukum kepada pihak ${institution.name} atau tenaga pendidik Pesantren terkait tindakan edukatif yang dilakukan kepada putra/putri kami, sebagaimana diatur dalam PP No. 74 Tahun 2008 sebagaimana telah diubah dengan PP No. 19 Tahun 2017 tentang Guru, serta Permendikbud No. 10 Tahun 2017 tentang Perlindungan Bagi Pendidik dan Tenaga Kependidikan.`,
     "Bersedia mengikuti mekanisme dan aturan yang telah ditetapkan oleh Pesantren, baik dalam penyelenggaraan pendidikan di dalam kelas, pendidikan di luar kelas, maupun dalam hal-hal yang berkaitan dengan administrasi.",
     "Apabila kami dan putra/putri kami melanggar ketentuan yang telah ditetapkan oleh Pesantren, maka kami bersedia menerima sanksi yang berlaku, sesuai dengan Buku Pedoman Tata Tertib Santri.",
   ];
@@ -1104,6 +1167,8 @@ export const generatePaktaIntegritas = async (data: PendaftarPdfData) => {
   doc.text("(Orangtua/Wali)", margin + 12, y + 46);
 
   drawFooter(doc);
-  doc.save(`AIIS_PaktaIntegritas_${data.nomor_pendaftaran}.pdf`);
+  if (typeof window !== "undefined") {
+    doc.save(`AIIS_PaktaIntegritas_${data.nomor_pendaftaran}.pdf`);
+  }
   return doc;
 };
