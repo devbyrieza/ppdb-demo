@@ -39,6 +39,7 @@ import {
   X,
   FileCheck,
   ChevronRight,
+  ChevronDown,
   Download
 } from "lucide-react";
 import Link from "next/link";
@@ -408,57 +409,62 @@ export default function WelcomeDayPage() {
       )}
 
       {/* ─── FORM KONFIRMASI ─── */}
-      <div className="bg-white rounded-3xl border border-ink-100 shadow-sm overflow-hidden">
-        <div className="px-6 py-4 border-b border-ink-100 bg-ink-50 flex items-center gap-3">
-          <div className="w-9 h-9 bg-primary-100 rounded-xl flex items-center justify-center">
-            <Users className="w-5 h-5 text-primary-700" />
+      <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-ink-100/50 overflow-hidden relative">
+        {/* Dekorasi Background */}
+        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-primary-50 rounded-full blur-3xl opacity-50 pointer-events-none" />
+        
+        <div className="px-6 py-5 border-b border-ink-100/50 bg-gradient-to-r from-primary-50/50 to-transparent flex items-center gap-4 relative">
+          <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-primary-100">
+            <Users className="w-6 h-6 text-primary-600" />
           </div>
           <div>
-            <h2 className="font-black text-ink-950 text-base">Form Konfirmasi Kehadiran</h2>
-            <p className="text-xs text-ink-500 font-bold">Wajib diisi oleh setiap orang tua/wali santri</p>
+            <h2 className="font-black text-ink-950 text-lg">Form Konfirmasi Kehadiran</h2>
+            <p className="text-xs text-ink-500 font-bold mt-0.5">Wajib diisi oleh setiap orang tua/wali santri</p>
           </div>
 
           {/* Status badge jika sudah submit */}
           {!isEditing && (
-            <div className="ml-auto flex items-center gap-1.5 bg-green-100 text-green-700 text-xs font-black px-3 py-1.5 rounded-full border border-green-200">
-              <CheckCircle2 className="w-3.5 h-3.5" />
+            <div className="ml-auto hidden sm:flex items-center gap-2 bg-gradient-to-r from-emerald-50 to-emerald-100 text-emerald-700 text-xs font-black px-4 py-2 rounded-xl border border-emerald-200/50 shadow-sm">
+              <CheckCircle2 className="w-4 h-4" />
               Sudah Dikonfirmasi
             </div>
           )}
         </div>
 
         {isEditing ? (
-          <div className="p-6">
-            <div className="bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 mb-6 flex items-start gap-2">
-              <Info className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
-              <p className="text-xs text-blue-800 font-medium leading-relaxed">
-                <strong>Panduan Pengisian:</strong> Pilih status kehadiran Anda, kemudian isi jumlah wali yang akan masuk ke ruang sarasehan (maks. 2 orang selain santri), dan total seluruh rombongan yang ikut mengantar ke pesantren.
+          <div className="p-6 relative">
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200/60 rounded-2xl px-5 py-4 mb-8 flex items-start gap-3 shadow-sm">
+              <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                <Info className="w-4 h-4 text-blue-700" />
+              </div>
+              <p className="text-sm text-blue-900 font-medium leading-relaxed pt-1">
+                <strong>Panduan Pengisian:</strong> Pilih status kehadiran Anda, kemudian isi jumlah wali yang masuk ke ruang sarasehan (maks. 2 orang selain santri), dan total seluruh rombongan yang ikut mengantar.
               </p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Status Kehadiran */}
-              <div className="space-y-2">
-                <label className="text-xs font-black text-ink-500 uppercase tracking-widest block">
-                  1. Apakah Anda akan hadir pada Welcome Day? *
+              <div className="space-y-3">
+                <label className="text-xs font-black text-ink-500 uppercase tracking-widest block flex items-center gap-2">
+                  <span className="w-5 h-5 rounded-full bg-ink-100 text-ink-600 flex items-center justify-center text-[10px]">1</span>
+                  Apakah Anda akan hadir pada Welcome Day? *
                 </label>
-                <p className="text-xs text-ink-400 font-medium -mt-1 mb-2">
-                  Pilih salah satu tombol di bawah ini:
-                </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <button
                     type="button"
                     onClick={() => setFormData({ ...formData, statusKehadiran: "HADIR" })}
-                    className={`p-4 rounded-2xl border-2 font-bold text-sm text-left transition-all flex items-center gap-3 ${
+                    className={`p-5 rounded-2xl border-2 text-left transition-all duration-300 flex items-center gap-4 group ${
                       formData.statusKehadiran === "HADIR"
-                        ? "bg-primary-900 border-primary-900 text-white shadow-md"
-                        : "bg-ink-50 border-ink-200 text-ink-700 hover:bg-ink-100"
+                        ? "bg-gradient-to-br from-emerald-500 to-emerald-600 border-emerald-500 text-white shadow-lg shadow-emerald-500/25 scale-[1.02]"
+                        : "bg-white border-ink-200 hover:border-emerald-300 hover:shadow-md hover:bg-emerald-50/30"
                     }`}
                   >
-                    <CheckCircle2 className={`w-8 h-8 ${formData.statusKehadiran === "HADIR" ? "text-green-400" : "text-ink-400"}`} />
+                    <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors ${formData.statusKehadiran === "HADIR" ? "bg-white/20" : "bg-emerald-100 group-hover:bg-emerald-200"}`}>
+                      <CheckCircle2 className={`w-6 h-6 ${formData.statusKehadiran === "HADIR" ? "text-white" : "text-emerald-600"}`} />
+                    </div>
                     <div>
-                      <p className={`font-black ${formData.statusKehadiran === "HADIR" ? "text-white" : "text-ink-900"}`}>Ya, Kami Akan Hadir</p>
-                      <p className={`text-xs font-medium mt-0.5 ${formData.statusKehadiran === "HADIR" ? "text-white/80" : "text-ink-400"}`}>
+                      <p className={`font-black text-base ${formData.statusKehadiran === "HADIR" ? "text-white" : "text-ink-900"}`}>Ya, Kami Akan Hadir</p>
+                      <p className={`text-xs font-medium mt-1 ${formData.statusKehadiran === "HADIR" ? "text-emerald-50" : "text-ink-500"}`}>
                         Kami siap hadir pada 18 Juli 2026
                       </p>
                     </div>
@@ -466,16 +472,18 @@ export default function WelcomeDayPage() {
                   <button
                     type="button"
                     onClick={() => setFormData({ ...formData, statusKehadiran: "TIDAK_HADIR" })}
-                    className={`p-4 rounded-2xl border-2 font-bold text-sm text-left transition-all flex items-center gap-3 ${
+                    className={`p-5 rounded-2xl border-2 text-left transition-all duration-300 flex items-center gap-4 group ${
                       formData.statusKehadiran === "TIDAK_HADIR"
-                        ? "bg-red-950 border-red-900 text-white shadow-md"
-                        : "bg-ink-50 border-ink-200 text-ink-700 hover:bg-ink-100"
+                        ? "bg-gradient-to-br from-rose-500 to-rose-600 border-rose-500 text-white shadow-lg shadow-rose-500/25 scale-[1.02]"
+                        : "bg-white border-ink-200 hover:border-rose-300 hover:shadow-md hover:bg-rose-50/30"
                     }`}
                   >
-                    <XCircle className={`w-8 h-8 ${formData.statusKehadiran === "TIDAK_HADIR" ? "text-red-400" : "text-ink-400"}`} />
+                    <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors ${formData.statusKehadiran === "TIDAK_HADIR" ? "bg-white/20" : "bg-rose-100 group-hover:bg-rose-200"}`}>
+                      <XCircle className={`w-6 h-6 ${formData.statusKehadiran === "TIDAK_HADIR" ? "text-white" : "text-rose-600"}`} />
+                    </div>
                     <div>
-                      <p className={`font-black ${formData.statusKehadiran === "TIDAK_HADIR" ? "text-white" : "text-ink-900"}`}>Berhalangan Hadir</p>
-                      <p className={`text-xs font-medium mt-0.5 ${formData.statusKehadiran === "TIDAK_HADIR" ? "text-white/80" : "text-ink-400"}`}>
+                      <p className={`font-black text-base ${formData.statusKehadiran === "TIDAK_HADIR" ? "text-white" : "text-ink-900"}`}>Berhalangan Hadir</p>
+                      <p className={`text-xs font-medium mt-1 ${formData.statusKehadiran === "TIDAK_HADIR" ? "text-rose-50" : "text-ink-500"}`}>
                         Ada halangan & tidak bisa hadir
                       </p>
                     </div>
@@ -486,43 +494,49 @@ export default function WelcomeDayPage() {
               {formData.statusKehadiran === "HADIR" && (
                 <>
                   {/* Jumlah Pendamping di Acara Utama */}
-                  <div className="space-y-2">
-                    <label className="text-xs font-black text-ink-500 uppercase tracking-widest block">
-                      2. Berapa Wali yang Masuk ke Ruang Sarasehan & Menerima Kupon Makan? *
+                  <div className="space-y-3">
+                    <label className="text-xs font-black text-ink-500 uppercase tracking-widest block flex items-center gap-2">
+                      <span className="w-5 h-5 rounded-full bg-ink-100 text-ink-600 flex items-center justify-center text-[10px]">2</span>
+                      Wali Masuk Ruang Sarasehan & Kupon Makan *
                     </label>
-                    <p className="text-xs text-ink-400 font-medium -mt-1 mb-2">
-                      Pilih jumlah wali/pendamping yang akan duduk di ruang sarasehan (selain santri). Maksimal 2 orang.
-                    </p>
-                    <select
-                      value={formData.jumlahPendamping}
-                      onChange={(e) => setFormData({ ...formData, jumlahPendamping: Number(e.target.value) })}
-                      className="w-full bg-ink-50 border-2 border-ink-200 px-4 py-3.5 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-400 outline-none font-bold text-ink-900 text-sm"
-                      required
-                    >
-                      <option value={1}>1 Pendamping — Total 2 orang (santri + 1 wali)</option>
-                      <option value={2}>2 Pendamping — Total 3 orang (santri + 2 wali) ← MAKSIMAL</option>
-                    </select>
-                    <div className="flex items-start gap-2 mt-2 bg-ink-50 rounded-xl px-3 py-2 border border-ink-100">
-                      <Info className="w-3.5 h-3.5 text-ink-400 flex-shrink-0 mt-0.5" />
-                      <p className="text-xs text-ink-500 font-medium">
-                        Kursi sarasehan dan kupon makan siang/snack akan disiapkan sesuai pilihan ini. Harap diisi dengan benar.
+                    <div className="relative">
+                      <select
+                        value={formData.jumlahPendamping}
+                        onChange={(e) => setFormData({ ...formData, jumlahPendamping: Number(e.target.value) })}
+                        className="w-full bg-white border-2 border-ink-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-400 outline-none font-bold text-ink-900 text-sm appearance-none transition-all shadow-sm"
+                        required
+                      >
+                        <option value={1}>1 Pendamping — Total 2 orang (1 Santri + 1 Wali)</option>
+                        <option value={2}>2 Pendamping — Total 3 orang (1 Santri + 2 Wali) ← MAKSIMAL</option>
+                      </select>
+                      <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none bg-white pl-2">
+                        <div className="w-8 h-8 rounded-full bg-ink-50 flex items-center justify-center">
+                          <ChevronDown className="w-4 h-4 text-ink-500" />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-2 mt-2 bg-blue-50/50 rounded-xl px-4 py-2.5 border border-blue-100">
+                      <Info className="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5" />
+                      <p className="text-xs text-blue-800 font-medium">
+                        Kursi dan kupon makan akan disiapkan sesuai dengan pilihan Anda di atas.
                       </p>
                     </div>
                   </div>
 
                   {/* Total Pengantar ke Area Pesantren */}
-                  <div className="space-y-2">
-                    <label className="text-xs font-black text-ink-500 uppercase tracking-widest block">
-                      3. Total Seluruh Rombongan yang Ikut ke Pesantren? *
+                  <div className="space-y-3">
+                    <label className="text-xs font-black text-ink-500 uppercase tracking-widest block flex items-center gap-2">
+                      <span className="w-5 h-5 rounded-full bg-ink-100 text-ink-600 flex items-center justify-center text-[10px]">3</span>
+                      Total Seluruh Rombongan Ke Pesantren *
                     </label>
-                    <p className="text-xs text-ink-400 font-medium -mt-1 mb-2">
-                      Isi dengan jumlah total semua orang dalam rombongan keluarga (termasuk santri, wali, dan pengantar lain yang tidak masuk sarasehan).
+                    <p className="text-xs text-ink-500 font-medium -mt-2">
+                      Jumlah total semua orang (termasuk santri & seluruh pengantar).
                     </p>
                     <div className="flex items-center gap-3">
                       <button
                         type="button"
                         onClick={() => setFormData({ ...formData, totalPengantar: Math.max(formData.jumlahPendamping + 1, formData.totalPengantar - 1) })}
-                        className="w-12 h-12 rounded-xl bg-ink-100 hover:bg-ink-200 text-ink-700 font-black text-xl flex items-center justify-center transition-colors"
+                        className="w-14 h-14 rounded-2xl bg-white border-2 border-ink-200 hover:border-primary-300 hover:bg-primary-50 text-ink-700 font-black text-2xl flex items-center justify-center transition-all shadow-sm active:scale-95"
                       >
                         −
                       </button>
@@ -532,43 +546,39 @@ export default function WelcomeDayPage() {
                           min={formData.jumlahPendamping + 1}
                           value={formData.totalPengantar}
                           onChange={(e) => setFormData({ ...formData, totalPengantar: Math.max(formData.jumlahPendamping + 1, Number(e.target.value)) })}
-                          className="w-full bg-ink-50 border-2 border-ink-200 px-4 py-3.5 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-400 outline-none font-black text-center text-ink-900 text-xl"
+                          className="w-full bg-white border-2 border-ink-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-400 outline-none font-black text-center text-ink-900 text-xl shadow-sm transition-all"
                           required
                         />
-                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-ink-400 font-bold">orang</span>
+                        <span className="absolute right-5 top-1/2 -translate-y-1/2 text-sm text-ink-400 font-bold bg-white pl-2">Orang</span>
                       </div>
                       <button
                         type="button"
                         onClick={() => setFormData({ ...formData, totalPengantar: formData.totalPengantar + 1 })}
-                        className="w-12 h-12 rounded-xl bg-primary-100 hover:bg-primary-200 text-primary-700 font-black text-xl flex items-center justify-center transition-colors"
+                        className="w-14 h-14 rounded-2xl bg-white border-2 border-ink-200 hover:border-primary-300 hover:bg-primary-50 text-ink-700 font-black text-2xl flex items-center justify-center transition-all shadow-sm active:scale-95"
                       >
                         +
                       </button>
                     </div>
-                    <p className="text-xs text-ink-400 font-medium">
-                      Contoh: Jika datang bersama ayah, ibu, dan 2 adik → isi angka 5 (1 santri + 4 pengantar).
-                    </p>
                   </div>
+
                   {/* Kendaraan (Mobil & Motor) */}
-                  <div className="space-y-4 pt-2">
-                    <label className="text-xs font-black text-ink-500 uppercase tracking-widest block">
-                      4. Informasi Kendaraan (Untuk Manajemen Parkir) *
+                  <div className="space-y-3 pt-3">
+                    <label className="text-xs font-black text-ink-500 uppercase tracking-widest block flex items-center gap-2">
+                      <span className="w-5 h-5 rounded-full bg-ink-100 text-ink-600 flex items-center justify-center text-[10px]">4</span>
+                      Informasi Kendaraan (Manajemen Parkir) *
                     </label>
-                    <p className="text-xs text-ink-400 font-medium -mt-3 mb-2">
-                      Sebutkan jumlah kendaraan yang dibawa rombongan agar kami dapat mengatur area parkir.
-                    </p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       {/* Mobil */}
-                      <div className="bg-ink-50 border border-ink-200 rounded-xl p-4 relative flex items-center justify-between">
+                      <div className="bg-white border-2 border-ink-200 rounded-2xl p-5 relative flex items-center justify-between shadow-sm hover:border-primary-300 transition-colors">
                         <div>
-                          <p className="font-bold text-ink-900 text-sm">Jumlah Mobil</p>
-                          <p className="text-xs text-ink-500">Yang akan diparkir</p>
+                          <p className="font-black text-ink-900 text-base">Mobil</p>
+                          <p className="text-xs text-ink-500 font-medium">Yang akan diparkir</p>
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 bg-ink-50 rounded-xl p-1 border border-ink-100">
                           <button
                             type="button"
                             onClick={() => setFormData({ ...formData, jumlahMobil: Math.max(0, formData.jumlahMobil - 1) })}
-                            className="w-8 h-8 rounded-lg bg-ink-200 hover:bg-ink-300 text-ink-700 font-black flex items-center justify-center transition-colors"
+                            className="w-8 h-8 rounded-lg bg-white shadow-sm hover:bg-ink-100 text-ink-700 font-black flex items-center justify-center transition-all active:scale-95"
                           >
                             −
                           </button>
@@ -577,13 +587,13 @@ export default function WelcomeDayPage() {
                             min="0"
                             value={formData.jumlahMobil}
                             onChange={(e) => setFormData({ ...formData, jumlahMobil: Math.max(0, Number(e.target.value)) })}
-                            className="w-12 bg-transparent border-none text-center font-black text-ink-900 text-lg outline-none"
+                            className="w-10 bg-transparent border-none text-center font-black text-ink-900 text-lg outline-none"
                             required
                           />
                           <button
                             type="button"
                             onClick={() => setFormData({ ...formData, jumlahMobil: formData.jumlahMobil + 1 })}
-                            className="w-8 h-8 rounded-lg bg-ink-200 hover:bg-ink-300 text-ink-700 font-black flex items-center justify-center transition-colors"
+                            className="w-8 h-8 rounded-lg bg-white shadow-sm hover:bg-ink-100 text-ink-700 font-black flex items-center justify-center transition-all active:scale-95"
                           >
                             +
                           </button>
@@ -591,16 +601,16 @@ export default function WelcomeDayPage() {
                       </div>
                       
                       {/* Motor */}
-                      <div className="bg-ink-50 border border-ink-200 rounded-xl p-4 relative flex items-center justify-between">
+                      <div className="bg-white border-2 border-ink-200 rounded-2xl p-5 relative flex items-center justify-between shadow-sm hover:border-primary-300 transition-colors">
                         <div>
-                          <p className="font-bold text-ink-900 text-sm">Jumlah Motor</p>
-                          <p className="text-xs text-ink-500">Yang akan diparkir</p>
+                          <p className="font-black text-ink-900 text-base">Motor</p>
+                          <p className="text-xs text-ink-500 font-medium">Yang akan diparkir</p>
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 bg-ink-50 rounded-xl p-1 border border-ink-100">
                           <button
                             type="button"
                             onClick={() => setFormData({ ...formData, jumlahMotor: Math.max(0, formData.jumlahMotor - 1) })}
-                            className="w-8 h-8 rounded-lg bg-ink-200 hover:bg-ink-300 text-ink-700 font-black flex items-center justify-center transition-colors"
+                            className="w-8 h-8 rounded-lg bg-white shadow-sm hover:bg-ink-100 text-ink-700 font-black flex items-center justify-center transition-all active:scale-95"
                           >
                             −
                           </button>
@@ -609,13 +619,13 @@ export default function WelcomeDayPage() {
                             min="0"
                             value={formData.jumlahMotor}
                             onChange={(e) => setFormData({ ...formData, jumlahMotor: Math.max(0, Number(e.target.value)) })}
-                            className="w-12 bg-transparent border-none text-center font-black text-ink-900 text-lg outline-none"
+                            className="w-10 bg-transparent border-none text-center font-black text-ink-900 text-lg outline-none"
                             required
                           />
                           <button
                             type="button"
                             onClick={() => setFormData({ ...formData, jumlahMotor: formData.jumlahMotor + 1 })}
-                            className="w-8 h-8 rounded-lg bg-ink-200 hover:bg-ink-300 text-ink-700 font-black flex items-center justify-center transition-colors"
+                            className="w-8 h-8 rounded-lg bg-white shadow-sm hover:bg-ink-100 text-ink-700 font-black flex items-center justify-center transition-all active:scale-95"
                           >
                             +
                           </button>
@@ -627,27 +637,27 @@ export default function WelcomeDayPage() {
               )}
 
               {/* Catatan Tambahan */}
-              <div className="space-y-2">
-                <label className="text-xs font-black text-ink-500 uppercase tracking-widest block">
-                  {formData.statusKehadiran === "HADIR" ? "5." : "2."} Catatan Tambahan (Opsional)
+              <div className="space-y-3 pt-3">
+                <label className="text-xs font-black text-ink-500 uppercase tracking-widest block flex items-center gap-2">
+                  <span className="w-5 h-5 rounded-full bg-ink-100 text-ink-600 flex items-center justify-center text-[10px]">
+                    {formData.statusKehadiran === "HADIR" ? "5" : "2"}
+                  </span>
+                  Catatan Tambahan (Opsional)
                 </label>
-                <p className="text-xs text-ink-400 font-medium -mt-1 mb-2">
-                  Tuliskan informasi tambahan jika ada (misal: rombongan bus, rencana terlambat, kebutuhan khusus, dll.).
-                </p>
                 <textarea
                   value={formData.catatanTambahan}
                   onChange={(e) => setFormData({ ...formData, catatanTambahan: e.target.value })}
-                  placeholder="Contoh: Rombongan kami menggunakan 1 unit bus. Perkiraan tiba pukul 09.00 WIB."
-                  className="w-full bg-ink-50 border-2 border-ink-200 px-4 py-3 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-400 outline-none font-medium text-sm min-h-[100px] resize-none"
+                  placeholder="Misal: Rombongan kami menggunakan 1 unit bus..."
+                  className="w-full bg-white border-2 border-ink-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-primary-500/10 focus:border-primary-400 outline-none font-medium text-sm min-h-[120px] resize-none shadow-sm transition-all"
                 />
               </div>
 
               {/* Submit Button */}
-              <div className="pt-2">
+              <div className="pt-6">
                 <button
                   type="submit"
                   disabled={saving}
-                  className="w-full bg-primary-900 hover:bg-primary-950 text-white font-black px-6 py-4 rounded-xl transition-all shadow-lg shadow-primary-900/20 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 text-sm"
+                  className="w-full bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-black px-6 py-4 rounded-2xl transition-all shadow-[0_8px_20px_rgb(0,0,0,0.12)] shadow-primary-700/30 flex items-center justify-center gap-3 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed hover:-translate-y-0.5 text-sm"
                 >
                   {saving ? (
                     <>
@@ -661,8 +671,8 @@ export default function WelcomeDayPage() {
                     </>
                   )}
                 </button>
-                <p className="text-xs text-ink-400 font-medium text-center mt-2">
-                  Data Anda akan tersimpan dan dapat diubah kembali sebelum hari-H.
+                <p className="text-xs text-ink-400 font-bold text-center mt-4">
+                  Data Anda akan tersimpan secara aman dan dapat diubah kembali kapan saja sebelum hari-H.
                 </p>
               </div>
             </form>
@@ -729,25 +739,35 @@ export default function WelcomeDayPage() {
 
             {/* Warning Banner for Users who haven't updated vehicles */}
             {formData.statusKehadiran === "HADIR" && formData.jumlahMobil === 0 && formData.jumlahMotor === 0 && (
-              <div className="p-4 bg-orange-50 border border-orange-200 rounded-2xl flex items-start gap-3 mt-4">
-                <AlertCircle className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
-                <div>
-                  <p className="text-sm font-black text-orange-800">Mohon Update Jumlah Kendaraan Anda</p>
-                  <p className="text-xs text-orange-700 mt-1">
-                    Kami membutuhkan data jumlah mobil atau motor yang Anda bawa untuk keperluan manajemen area parkir. 
-                    Silakan klik tombol <strong>Ubah Konfirmasi</strong> di bawah ini untuk memperbarui data Anda.
-                  </p>
+              <div className="bg-gradient-to-br from-orange-500 to-amber-500 text-white p-5 rounded-2xl shadow-lg shadow-orange-500/25 flex flex-col md:flex-row items-center md:items-start justify-between gap-4 mt-6">
+                <div className="flex gap-3 items-start">
+                  <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0 backdrop-blur-sm">
+                    <AlertCircle className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-base font-black text-white">Mohon Update Jumlah Kendaraan Anda</p>
+                    <p className="text-sm text-white/90 mt-1 leading-relaxed">
+                      Kami membutuhkan data jumlah mobil atau motor yang Anda bawa untuk keperluan kelancaran manajemen area parkir pesantren.
+                    </p>
+                  </div>
                 </div>
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="flex-shrink-0 flex items-center justify-center gap-2 bg-white text-orange-600 hover:bg-orange-50 font-black px-5 py-3 rounded-xl transition-all shadow-sm w-full md:w-auto hover:scale-105 active:scale-95"
+                >
+                  <Edit className="w-4 h-4" />
+                  Ubah Sekarang
+                </button>
               </div>
             )}
 
-            <div className="flex justify-end pt-4">
+            <div className="flex justify-end pt-6">
               <button
                 onClick={() => setIsEditing(true)}
-                className="flex items-center gap-2 bg-white hover:bg-ink-50 text-ink-700 border border-ink-200 font-bold px-5 py-2.5 rounded-xl transition-all shadow-sm cursor-pointer text-sm"
+                className="flex items-center gap-2 bg-white hover:bg-primary-50 text-primary-700 border-2 border-primary-200 hover:border-primary-300 font-black px-6 py-3 rounded-xl transition-all shadow-sm cursor-pointer text-sm"
               >
                 <Edit className="w-4 h-4" />
-                Ubah Konfirmasi
+                Ubah Data Konfirmasi
               </button>
             </div>
           </div>
@@ -756,46 +776,53 @@ export default function WelcomeDayPage() {
 
       
       {/* ─── KETENTUAN PENTING ─── */}
-      <div className="bg-amber-50 border border-amber-200 p-5 rounded-2xl space-y-4">
-        <h3 className="font-black text-amber-900 flex items-center gap-2 text-base">
-          <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0" />
-          Ketentuan Penting Tata Cara & Alur
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <div className="bg-white rounded-xl p-4 border border-amber-100 flex gap-3">
-            <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
-              <Shirt className="w-5 h-5 text-amber-700" />
+      <div className="bg-gradient-to-br from-amber-50 to-orange-50 border border-orange-200/60 p-6 rounded-3xl shadow-sm relative overflow-hidden">
+        {/* Dekorasi */}
+        <div className="absolute -right-10 -top-10 w-40 h-40 bg-orange-200/30 rounded-full blur-2xl" />
+        
+        <div className="relative">
+          <h3 className="font-black text-amber-950 flex items-center gap-3 text-lg mb-6">
+            <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0 border border-amber-200 shadow-sm">
+              <AlertCircle className="w-5 h-5 text-amber-600" />
             </div>
-            <div>
-              <p className="text-sm font-black text-amber-900">Seragam Kedatangan</p>
-              <p className="text-xs text-amber-700 mt-1">Santri wajib memakai <strong>Baju Koko/Kemeja putih</strong>, <strong>celana kain hitam</strong>, dan <strong>songkok nasional hitam</strong>.</p>
+            Ketentuan Penting Tata Cara & Alur
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-5 border border-amber-100 hover:border-amber-300 hover:shadow-md transition-all duration-300 hover:-translate-y-1 flex gap-4 group">
+              <div className="w-12 h-12 bg-gradient-to-br from-amber-100 to-orange-100 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm group-hover:scale-110 transition-transform">
+                <Shirt className="w-6 h-6 text-amber-700" />
+              </div>
+              <div>
+                <p className="text-base font-black text-amber-950">Seragam Kedatangan</p>
+                <p className="text-sm text-amber-700/80 mt-1 leading-relaxed">Santri wajib memakai <strong>Baju Koko/Kemeja putih</strong>, <strong>celana kain hitam</strong>, dan <strong>songkok nasional hitam</strong>.</p>
+              </div>
             </div>
-          </div>
-          <div className="bg-white rounded-xl p-4 border border-amber-100 flex gap-3">
-            <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
-              <Users className="w-5 h-5 text-amber-700" />
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-5 border border-amber-100 hover:border-amber-300 hover:shadow-md transition-all duration-300 hover:-translate-y-1 flex gap-4 group">
+              <div className="w-12 h-12 bg-gradient-to-br from-amber-100 to-orange-100 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm group-hover:scale-110 transition-transform">
+                <Users className="w-6 h-6 text-amber-700" />
+              </div>
+              <div>
+                <p className="text-base font-black text-amber-950">Batas Wali di Ruang Utama</p>
+                <p className="text-sm text-amber-700/80 mt-1 leading-relaxed">Kursi & kupon makan hanya untuk <strong>3 orang</strong> (1 santri + 2 pendamping). Pengantar lain <strong>tidak</strong> diperkenankan masuk ruang sarasehan.</p>
+              </div>
             </div>
-            <div>
-              <p className="text-sm font-black text-amber-900">Batas Wali di Ruang Utama</p>
-              <p className="text-xs text-amber-700 mt-1">Kursi & kupon makan hanya untuk <strong>3 orang</strong> (1 santri + 2 pendamping). Pengantar lain <strong>tidak</strong> diperkenankan masuk ruang sarasehan.</p>
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-5 border border-amber-100 hover:border-amber-300 hover:shadow-md transition-all duration-300 hover:-translate-y-1 flex gap-4 group">
+              <div className="w-12 h-12 bg-gradient-to-br from-amber-100 to-orange-100 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm group-hover:scale-110 transition-transform">
+                <Package className="w-6 h-6 text-amber-700" />
+              </div>
+              <div>
+                <p className="text-base font-black text-amber-950">Bongkar Muat Barang</p>
+                <p className="text-sm text-amber-700/80 mt-1 leading-relaxed">Santri berkendaraan pribadi <strong>dilarang</strong> menurunkan barang hingga acara selesai. Jika tanpa kendaraan, barang ditaruh di area masjid.</p>
+              </div>
             </div>
-          </div>
-          <div className="bg-white rounded-xl p-4 border border-amber-100 flex gap-3">
-            <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
-              <Package className="w-5 h-5 text-amber-700" />
-            </div>
-            <div>
-              <p className="text-sm font-black text-amber-900">Bongkar Muat Barang</p>
-              <p className="text-xs text-amber-700 mt-1">Santri berkendaraan pribadi <strong>dilarang</strong> menurunkan barang hingga acara selesai. Jika tanpa kendaraan, barang ditaruh di area masjid.</p>
-            </div>
-          </div>
-          <div className="bg-white rounded-xl p-4 border border-amber-100 flex gap-3">
-            <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
-              <Clock className="w-5 h-5 text-amber-700" />
-            </div>
-            <div>
-              <p className="text-sm font-black text-amber-900">Batas Waktu Mengantar</p>
-              <p className="text-xs text-amber-700 mt-1">Acara berakhir pukul 14.30. Orang tua hanya diperkenankan membersamai santri hingga sore hari maksimal pukul <strong>17.00 WIB</strong>.</p>
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-5 border border-amber-100 hover:border-amber-300 hover:shadow-md transition-all duration-300 hover:-translate-y-1 flex gap-4 group">
+              <div className="w-12 h-12 bg-gradient-to-br from-amber-100 to-orange-100 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm group-hover:scale-110 transition-transform">
+                <Clock className="w-6 h-6 text-amber-700" />
+              </div>
+              <div>
+                <p className="text-base font-black text-amber-950">Batas Waktu Mengantar</p>
+                <p className="text-sm text-amber-700/80 mt-1 leading-relaxed">Acara berakhir pukul 14.30. Orang tua hanya diperkenankan membersamai santri hingga sore hari maksimal pukul <strong>17.00 WIB</strong>.</p>
+              </div>
             </div>
           </div>
         </div>
