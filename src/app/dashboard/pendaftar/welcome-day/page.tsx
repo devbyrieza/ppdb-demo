@@ -310,6 +310,30 @@ export default function WelcomeDayPage() {
         </div>
       </div>
 
+      {/* ─── INFO PENGINAPAN ─── */}
+      <div className="bg-blue-50 border border-blue-200 rounded-3xl p-5 md:p-6 shadow-sm">
+        <div className="flex flex-col sm:flex-row gap-4 sm:items-start">
+          <div className="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center flex-shrink-0 text-blue-600">
+            <Home className="w-6 h-6" />
+          </div>
+          <div>
+            <h3 className="text-lg font-black text-blue-950 flex items-center gap-2">
+              Informasi Penginapan
+              <span className="px-2.5 py-0.5 bg-blue-200 text-blue-800 text-[10px] uppercase tracking-widest rounded-lg">Rekomendasi</span>
+            </h3>
+            <p className="text-sm text-blue-800 mt-2 leading-relaxed">
+              Bagi Bapak/Ibu Wali Santri yang berasal dari luar daerah atau jaraknya jauh, acara dimulai <strong>Pukul 06.30 WIB</strong>. 
+              <br className="hidden sm:block" />
+              Terdapat penginapan rekomendasi terdekat yang berlokasi di <strong>seberang Masjid Jami Cikembar</strong>. 
+              Fasilitas kamar ber-AC dan bersih dengan tarif sekitar <strong>Rp 175.000 / malam</strong> (banyak pilihan kamar lain).
+            </p>
+            <p className="text-xs text-blue-600/80 mt-3 font-bold italic">
+              *Catatan: Insya Allah ke depannya pesantren akan membangun Guest House khusus untuk wali santri.
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* ─── DOKUMEN RESMI (DOWNLOAD) ─── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <a
