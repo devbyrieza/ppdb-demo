@@ -1,7 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
 import {
   Loader2,
   Calendar,
@@ -39,15 +37,17 @@ import {
   X,
   FileCheck,
   ChevronRight,
-  ChevronDown,
   Download
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
+import { useState } from "react";
 
 const JADWAL_ACARA = [
-  { jam: "06.30", label: "Kedatangan Santri & Wali", desc: "Seluruh berkas persyaratan (di dalam map) diserahkan ke bagian pendaftaran saat registrasi awal.", icon: Tent },
-  { jam: "07.00", label: "Registrasi Acara Utama", desc: "Melakukan registrasi sebelum memasuki area acara sarasehan.", icon: CheckCircle2 },
-  { jam: "08.00", label: "Sarasehan & Pengenalan Program", desc: "Setelah acara bersama tamu undangan, orang tua & santri mengikuti sarasehan (peraturan, mekanisme, & prosedur pesantren).", icon: Presentation },
+  { jam: "06.30", label: "Kedatangan Santri & Wali", desc: "Begitu tiba di pesantren, barang bawaan diturunkan dan mobil diarahkan to area parkir.", icon: Tent },
+  { jam: "07.00", label: "Registrasi & Pembukaan", desc: "Melakukan registrasi di meja panitia dan mengumpulkan berkas persyaratan.", icon: CheckCircle2 },
+  { jam: "07.20", label: "Welcome Day (Acara Utama)", desc: "Sambutan dari Mudir 'Am, Pembina Yayasan, Mudir Ma'had, Camat, serta Serah Terima Simbolis dan Ramah Tamah.", icon: Handshake },
+  { jam: "08.40", label: "Sarasehan & Pengenalan Program", desc: "Sosialisasi peraturan pesantren, mekanisme pengasuhan, kurikulum, dan administrasi keuangan.", icon: Presentation },
   { jam: "12.00", label: "Pembagian Makan Siang", desc: "Makan siang dibagikan di depan ruang acara dengan menukarkan kupon.", icon: Utensils },
   { jam: "13.00", label: "Santri Memasuki Asrama", desc: "Setelah acara berakhir, santri memasuki asrama dan mengkondisikan barang bawaan dibantu oleh para ustadz.", icon: School },
   { jam: "17.00", label: "Batas Waktu Kunjungan Wali", desc: "Orang tua/wali hanya diperkenankan membersamai santri hingga sore hari pukul 17.00 WIB.", icon: HeartHandshake },
@@ -161,6 +161,8 @@ const FAQ = [
 ];
 
 export default function WelcomeDayPage() {
+  const [lightbox, setLightbox] = useState<string | null>(null);
+
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [isEditing, setIsEditing] = useState(true);
@@ -338,7 +340,7 @@ export default function WelcomeDayPage() {
       {/* ─── DOKUMEN RESMI (DOWNLOAD) ─── */}
       <div className="grid grid-cols-1 gap-4">
         <a
-          href="/documents/Surat_Pemberitahuan_Kedatangan.pdf"
+          href="/documents/Surat Pemberitahuan Kedatangan Santri Baru 2026-2027.pdf"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-3 bg-white hover:bg-emerald-50 rounded-2xl p-4 border border-ink-100 hover:border-emerald-200 transition-all shadow-sm group"
@@ -776,58 +778,118 @@ export default function WelcomeDayPage() {
 
       
       {/* ─── KETENTUAN PENTING ─── */}
-      <div className="bg-gradient-to-br from-amber-50 to-orange-50 border border-orange-200/60 p-6 rounded-3xl shadow-sm relative overflow-hidden">
-        {/* Dekorasi */}
-        <div className="absolute -right-10 -top-10 w-40 h-40 bg-orange-200/30 rounded-full blur-2xl" />
-        
-        <div className="relative">
-          <h3 className="font-black text-amber-950 flex items-center gap-3 text-lg mb-6">
-            <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0 border border-amber-200 shadow-sm">
-              <AlertCircle className="w-5 h-5 text-amber-600" />
+      <div className="bg-amber-50 border border-amber-200 p-5 rounded-2xl space-y-4">
+        <h3 className="font-black text-amber-900 flex items-center gap-2 text-base">
+          <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0" />
+          Ketentuan Penting Tata Cara & Alur
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="bg-white rounded-xl p-4 border border-amber-100 flex gap-3">
+            <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
+              <Shirt className="w-5 h-5 text-amber-700" />
             </div>
-            Ketentuan Penting Tata Cara & Alur
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-5 border border-amber-100 hover:border-amber-300 hover:shadow-md transition-all duration-300 hover:-translate-y-1 flex gap-4 group">
-              <div className="w-12 h-12 bg-gradient-to-br from-amber-100 to-orange-100 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm group-hover:scale-110 transition-transform">
-                <Shirt className="w-6 h-6 text-amber-700" />
-              </div>
-              <div>
-                <p className="text-base font-black text-amber-950">Seragam Kedatangan</p>
-                <p className="text-sm text-amber-700/80 mt-1 leading-relaxed">Santri wajib memakai <strong>Baju Koko/Kemeja putih</strong>, <strong>celana kain hitam</strong>, dan <strong>songkok nasional hitam</strong>.</p>
-              </div>
+            <div>
+              <p className="text-sm font-black text-amber-900">Seragam Kedatangan</p>
+              <p className="text-xs text-amber-700 mt-1">Santri wajib memakai <strong>Baju Koko/Kemeja putih</strong>, <strong>celana kain hitam</strong>, and <strong>songkok nasional hitam</strong>.</p>
             </div>
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-5 border border-amber-100 hover:border-amber-300 hover:shadow-md transition-all duration-300 hover:-translate-y-1 flex gap-4 group">
-              <div className="w-12 h-12 bg-gradient-to-br from-amber-100 to-orange-100 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm group-hover:scale-110 transition-transform">
-                <Users className="w-6 h-6 text-amber-700" />
-              </div>
-              <div>
-                <p className="text-base font-black text-amber-950">Batas Wali di Ruang Utama</p>
-                <p className="text-sm text-amber-700/80 mt-1 leading-relaxed">Kursi & kupon makan hanya untuk <strong>3 orang</strong> (1 santri + 2 pendamping). Pengantar lain <strong>tidak</strong> diperkenankan masuk ruang sarasehan.</p>
-              </div>
+          </div>
+          <div className="bg-white rounded-xl p-4 border border-amber-100 flex gap-3">
+            <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
+              <Users className="w-5 h-5 text-amber-700" />
             </div>
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-5 border border-amber-100 hover:border-amber-300 hover:shadow-md transition-all duration-300 hover:-translate-y-1 flex gap-4 group">
-              <div className="w-12 h-12 bg-gradient-to-br from-amber-100 to-orange-100 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm group-hover:scale-110 transition-transform">
-                <Package className="w-6 h-6 text-amber-700" />
-              </div>
-              <div>
-                <p className="text-base font-black text-amber-950">Bongkar Muat Barang</p>
-                <p className="text-sm text-amber-700/80 mt-1 leading-relaxed">Santri berkendaraan pribadi <strong>dilarang</strong> menurunkan barang hingga acara selesai. Jika tanpa kendaraan, barang ditaruh di area masjid.</p>
-              </div>
+            <div>
+              <p className="text-sm font-black text-amber-900">Batas Wali di Ruang Utama</p>
+              <p className="text-xs text-amber-700 mt-1">Kursi & kupon makan hanya untuk <strong>3 orang</strong> (1 santri + 2 pendamping). Pengantar lain <strong>tidak</strong> diperkenankan masuk ruang sarasehan.</p>
             </div>
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-5 border border-amber-100 hover:border-amber-300 hover:shadow-md transition-all duration-300 hover:-translate-y-1 flex gap-4 group">
-              <div className="w-12 h-12 bg-gradient-to-br from-amber-100 to-orange-100 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm group-hover:scale-110 transition-transform">
-                <Clock className="w-6 h-6 text-amber-700" />
-              </div>
-              <div>
-                <p className="text-base font-black text-amber-950">Batas Waktu Mengantar</p>
-                <p className="text-sm text-amber-700/80 mt-1 leading-relaxed">Acara berakhir pukul 14.30. Orang tua hanya diperkenankan membersamai santri hingga sore hari maksimal pukul <strong>17.00 WIB</strong>.</p>
-              </div>
+          </div>
+          <div className="bg-white rounded-xl p-4 border border-amber-100 flex gap-3">
+            <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
+              <Package className="w-5 h-5 text-amber-700" />
+            </div>
+            <div>
+              <p className="text-sm font-black text-amber-900">Bongkar Muat Barang</p>
+              <p className="text-xs text-amber-700 mt-1">Begitu tiba di pesantren, santri dan wali santri <strong>langsung menurunkan barang bawaan</strong>, kemudian mobil diarahkan ke area parkir.</p>
+            </div>
+          </div>
+          <div className="bg-white rounded-xl p-4 border border-amber-100 flex gap-3">
+            <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
+              <Clock className="w-5 h-5 text-amber-700" />
+            </div>
+            <div>
+              <p className="text-sm font-black text-amber-900">Batas Waktu Mengantar</p>
+              <p className="text-xs text-amber-700 mt-1">Acara berakhir pukul 12.00 WIB. Orang tua hanya diperkenankan membersamai santri hingga sore hari maksimal pukul <strong>17.00 WIB</strong>.</p>
             </div>
           </div>
         </div>
       </div>
 
+      
+      {/* ─── INFOGRAFIS & PANDUAN VISUAL ─── */}
+      <div className="bg-white rounded-3xl border border-ink-100 shadow-sm overflow-hidden mb-6">
+        <div className="px-6 py-4 border-b border-emerald-100 bg-emerald-50 flex items-center gap-3">
+          <div className="w-9 h-9 bg-emerald-100 rounded-xl flex items-center justify-center">
+            <Calendar className="w-5 h-5 text-emerald-700" />
+          </div>
+          <div>
+            <h2 className="font-black text-emerald-950 text-base">Infografis & Panduan Visual</h2>
+            <p className="text-xs text-emerald-600 font-bold">Panduan lengkap pelaksanaan Welcome Day</p>
+          </div>
+        </div>
+        <div className="p-5 space-y-6">
+          {/* Rundown Acara */}
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-black text-xs shadow-sm">
+                1
+              </div>
+              <h3 className="font-black text-ink-900 text-sm">Rundown Acara</h3>
+            </div>
+            <div 
+              className="relative w-full aspect-[1/1.4] bg-ink-50 rounded-2xl border border-ink-100 overflow-hidden cursor-zoom-in group shadow-sm"
+              onClick={() => setLightbox('/images/welcome-day/rundown.png')}
+            >
+              <Image 
+                src="/images/welcome-day/rundown.png" 
+                alt="Rundown Acara" 
+                fill 
+                className="object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+              />
+            </div>
+          </div>
+          
+          {/* Alur Kedatangan */}
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-black text-xs shadow-sm">
+                2
+              </div>
+              <h3 className="font-black text-ink-900 text-sm">Alur Kedatangan</h3>
+            </div>
+            <div 
+              className="relative w-full aspect-[1/1.4] bg-ink-50 rounded-2xl border border-ink-100 overflow-hidden cursor-zoom-in group shadow-sm"
+              onClick={() => setLightbox('/images/welcome-day/alur_kedatangan.png')}
+            >
+              <Image 
+                src="/images/welcome-day/alur_kedatangan.png" 
+                alt="Alur Kedatangan" 
+                fill 
+                className="object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+              />
+            </div>
+            <div className="mt-4 flex justify-center">
+              <a 
+                href="/images/welcome-day/alur_kedatangan_banner.png" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                download
+                className="flex items-center gap-2 text-xs font-bold text-emerald-600 hover:text-emerald-700 hover:underline transition-colors"
+              >
+                <Download className="w-4 h-4" /> Lihat Resolusi Penuh (Banner)
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
       {/* ─── JADWAL ACARA ─── */}
       <div className="bg-white rounded-3xl border border-ink-100 shadow-sm overflow-hidden">
         <div className="px-6 py-4 border-b border-ink-100 bg-primary-50 flex items-center gap-3">
@@ -873,6 +935,34 @@ export default function WelcomeDayPage() {
             <Info className="w-3 h-3" />
             Jadwal dapat berubah. Panitia akan menginformasikan jika ada perubahan melalui pengumuman resmi.
           </p>
+        </div>
+      </div>
+
+      {/* ─── BERKAS PERSYARATAN ─── */}
+      <div className="bg-white rounded-3xl border border-ink-100 shadow-sm overflow-hidden mt-6">
+        <div className="px-6 py-4 border-b border-ink-100 bg-blue-50 flex items-center gap-3">
+          <div className="w-9 h-9 bg-blue-100 rounded-xl flex items-center justify-center">
+            <FileCheck className="w-5 h-5 text-blue-700" />
+          </div>
+          <div>
+            <h2 className="font-black text-blue-950 text-base">Berkas Persyaratan (Wajib Dibawa)</h2>
+            <p className="text-xs text-blue-600 font-bold">Dimasukkan dalam 1 map saat registrasi</p>
+          </div>
+        </div>
+        <div className="p-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {BERKAS_PERSYARATAN.map((item, idx) => (
+              <div key={idx} className="flex items-start gap-3 p-3 rounded-xl bg-ink-50 border border-ink-100">
+                <div className="w-5 h-5 rounded flex-shrink-0 mt-0.5 flex items-center justify-center text-primary-600">
+                  <CheckSquare className="w-5 h-5" />
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-ink-800">{item.item}</p>
+                  <p className="text-xs text-primary-700 font-black mt-0.5">{item.qty}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -986,61 +1076,6 @@ export default function WelcomeDayPage() {
         </div>
       </div>
 
-      {/* ─── VISUAL GALLERY & INFOGRAFIS ─── */}
-      <div className="bg-white rounded-3xl border border-ink-100 shadow-sm overflow-hidden">
-        <div className="px-6 py-4 border-b border-ink-100 bg-emerald-50 flex items-center gap-3">
-          <div className="w-9 h-9 bg-emerald-100 rounded-xl flex items-center justify-center">
-            <Calendar className="w-5 h-5 text-emerald-700" />
-          </div>
-          <div>
-            <h2 className="font-black text-emerald-950 text-base">Infografis & Panduan Visual</h2>
-            <p className="text-xs text-emerald-600 font-bold">Panduan lengkap pelaksanaan Welcome Day</p>
-          </div>
-        </div>
-        <div className="p-6 space-y-6">
-          <div className="space-y-3">
-            <h3 className="font-black text-ink-900 text-lg flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs">1</span>
-              Rundown Acara
-            </h3>
-            <div className="rounded-2xl overflow-hidden border-2 border-ink-100 shadow-sm relative w-full" style={{ aspectRatio: "16/9" }}>
-              <Image 
-                src="/images/welcome-day/rundown.png"
-                alt="Rundown Acara Welcome Day"
-                fill
-                className="object-contain bg-ink-50"
-              />
-            </div>
-          </div>
-          
-          <div className="space-y-3 pt-4 border-t border-ink-100">
-            <h3 className="font-black text-ink-900 text-lg flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs">2</span>
-              Alur Kedatangan
-            </h3>
-            <div className="rounded-2xl overflow-hidden border-2 border-ink-100 shadow-sm relative w-full" style={{ aspectRatio: "16/9" }}>
-              <Image 
-                src="/images/welcome-day/alur_kedatangan.png"
-                alt="Alur Kedatangan Welcome Day"
-                fill
-                className="object-contain bg-ink-50"
-              />
-            </div>
-            <div className="flex justify-center mt-3">
-              <a 
-                href="/images/welcome-day/alur_kedatangan_banner.png" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-xs font-bold text-emerald-600 hover:text-emerald-700 hover:underline"
-              >
-                <Download className="w-3.5 h-3.5" />
-                Lihat Resolusi Penuh (Banner)
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* ─── FAQ ─── */}
       <div className="bg-white rounded-3xl border border-ink-100 shadow-sm overflow-hidden">
         <div className="px-6 py-4 border-b border-ink-100 bg-blue-50 flex items-center gap-3">
@@ -1123,6 +1158,34 @@ export default function WelcomeDayPage() {
         </p>
       </div>
 
+
+      {/* Lightbox Modal */}
+      {lightbox && (
+        <div 
+          className="fixed inset-0 z-[100] bg-ink-950/95 flex flex-col items-center justify-center p-4 md:p-8 backdrop-blur-sm"
+          onClick={() => setLightbox(null)}
+        >
+          <button className="absolute top-4 right-4 md:top-6 md:right-6 text-white p-2 hover:bg-white/10 rounded-full transition-colors">
+            <X className="w-8 h-8" />
+          </button>
+          <div className="relative w-full max-w-5xl max-h-[85vh] flex-1">
+            <Image 
+              src={lightbox} 
+              alt="Preview" 
+              fill 
+              className="object-contain" 
+            />
+          </div>
+          <a 
+            href={lightbox} 
+            download 
+            onClick={(e) => e.stopPropagation()}
+            className="mt-6 flex items-center gap-2 bg-emerald-600 text-white px-6 py-3 rounded-full font-bold hover:bg-emerald-500 transition-colors shadow-lg active:scale-95"
+          >
+            <Download className="w-5 h-5" /> Download Gambar
+          </a>
+        </div>
+      )}
     </div>
   );
 }
