@@ -335,21 +335,7 @@ export default function WelcomeDayPage() {
       </div>
 
       {/* ─── DOKUMEN RESMI (DOWNLOAD) ─── */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <a
-          href="/documents/Surat_Undangan_Welcome_Day.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-3 bg-white hover:bg-primary-50 rounded-2xl p-4 border border-ink-100 hover:border-primary-200 transition-all shadow-sm group"
-        >
-          <div className="w-10 h-10 rounded-xl bg-primary-100 text-primary-600 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-            <Download className="w-5 h-5" />
-          </div>
-          <div>
-            <p className="font-black text-ink-900 text-sm group-hover:text-primary-800 transition-colors">Undangan Welcome Day</p>
-            <p className="text-xs text-ink-500 font-medium">Download surat undangan resmi</p>
-          </div>
-        </a>
+      <div className="grid grid-cols-1 gap-4">
         <a
           href="/documents/Surat_Pemberitahuan_Kedatangan.pdf"
           target="_blank"
