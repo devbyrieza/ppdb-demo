@@ -141,6 +141,11 @@ interface PendaftarDetail {
     nilai_wawancara_ortu?: number;
     catatan_ortu?: string;
   } | null;
+  reservasi?: Array<{
+    id: string;
+    status: string;
+    data_penginap: any;
+  }>;
 }
 
 /* import { useSession } from "next-auth/react"; -- Removed */
@@ -219,6 +224,18 @@ export default function PendaftarDetailPage() {
     catatan_arab: "",
   });
   const [savingNilai, setSavingNilai] = useState(false);
+
+  // Welcome Day Edit State
+  const [isWdModalOpen, setIsWdModalOpen] = useState(false);
+  const [wdFormData, setWdFormData] = useState({
+    statusKehadiran: "HADIR",
+    jumlahPendamping: 1,
+    totalPengantar: 3,
+    catatanTambahan: "",
+    jumlahMobil: 0,
+    jumlahMotor: 0,
+  });
+  const [savingWd, setSavingWd] = useState(false);
 
   useEffect(() => {
     const fetchSession = async () => {
@@ -853,6 +870,27 @@ export default function PendaftarDetailPage() {
       month: "long",
       year: "numeric",
     });
+  };
+
+  const handleSaveWd = async () => {
+    setSavingWd(true);
+    try {
+      const res = await fetch(`/api/admin/pendaftar/${params.id}/welcome-day`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(wdFormData),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Gagal menyimpan");
+      
+      Swal.fire("Berhasil", "Data Welcome Day berhasil diperbarui", "success");
+      setIsWdModalOpen(false);
+      fetchPendaftarDetail();
+    } catch (err: any) {
+      Swal.fire("Error", err.message || "Terjadi kesalahan", "error");
+    } finally {
+      setSavingWd(false);
+    }
   };
 
   const formatRupiah = (amount: string) => {
@@ -1633,6 +1671,104 @@ export default function PendaftarDetailPage() {
                     <Trophy className="w-4 h-4" />
                     Hitung Ulang Nilai
                   </button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Kehadiran Welcome Day (Tampil jika sudah accepted/enrolled) */}
+          {(userRole === "admin_super" || userRole === "admin") && 
+            (pendaftar.status_proses === "accepted" || pendaftar.status_proses === "enrolled" || pendaftar.status_proses === "enrolled_full") && (
+            <div className="bg-white rounded-3xl shadow-sm p-6 border border-emerald-100">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-3 bg-emerald-50 rounded-xl">
+                  <CheckCircle className="w-6 h-6 text-emerald-600" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-black text-emerald-950 tracking-tight leading-tight">
+                    Kehadiran Welcome Day
+                  </h3>
+                  <p className="text-sm text-ink-300 font-medium tracking-tight">
+                    Informasi kehadiran, jumlah rombongan, dan kendaraan.
+                  </p>
+                </div>
+              </div>
+
+              {!pendaftar.reservasi || pendaftar.reservasi.length === 0 ? (
+                <div className="p-4 bg-stone-50 border border-stone-200 rounded-2xl flex items-center justify-between">
+                  <span className="text-sm font-bold text-stone-500 italic">Belum mengisi form Welcome Day</span>
+                  <button
+                    onClick={() => {
+                      setWdFormData({
+                        statusKehadiran: "HADIR",
+                        jumlahPendamping: 1,
+                        totalPengantar: 3,
+                        catatanTambahan: "",
+                        jumlahMobil: 0,
+                        jumlahMotor: 0,
+                      });
+                      setIsWdModalOpen(true);
+                    }}
+                    className="px-4 py-2 bg-emerald-600 text-white rounded-xl text-xs font-black"
+                  >
+                    Input Data
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {pendaftar.reservasi.map((res: any) => {
+                    const data = res.data_penginap || {};
+                    return (
+                      <div key={res.id} className="p-5 bg-emerald-50/50 rounded-2xl border border-emerald-100 shadow-sm relative">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                          <div>
+                            <span className="block text-[10px] text-emerald-600 font-black uppercase tracking-widest mb-1">Status Kehadiran</span>
+                            <span className={`px-2.5 py-1 rounded-lg text-xs font-black ${data.statusKehadiran === 'HADIR' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}`}>
+                              {data.statusKehadiran === 'HADIR' ? 'Hadir' : 'Tidak Hadir'}
+                            </span>
+                          </div>
+                          {data.statusKehadiran === 'HADIR' && (
+                            <>
+                              <div>
+                                <span className="block text-[10px] text-emerald-600 font-black uppercase tracking-widest mb-1">Rombongan</span>
+                                <span className="text-sm font-black text-emerald-950">{data.totalPengantar || 0} Orang</span>
+                                <span className="block text-xs text-emerald-700">Ruang Utama: {(Number(data.jumlahPendamping) || 0) + 1} Org</span>
+                              </div>
+                              <div>
+                                <span className="block text-[10px] text-emerald-600 font-black uppercase tracking-widest mb-1">Kendaraan</span>
+                                <span className="text-sm font-black text-emerald-950">{data.jumlahMobil || 0} Mobil, {data.jumlahMotor || 0} Motor</span>
+                              </div>
+                            </>
+                          )}
+                          {data.catatanTambahan && (
+                            <div className="sm:col-span-2 md:col-span-3">
+                              <span className="block text-[10px] text-emerald-600 font-black uppercase tracking-widest mb-1">Catatan</span>
+                              <span className="text-xs text-emerald-950">{data.catatanTambahan}</span>
+                            </div>
+                          )}
+                        </div>
+                        <div className="mt-4 flex justify-end">
+                          <button
+                            onClick={() => {
+                              setWdFormData({
+                                statusKehadiran: data.statusKehadiran || "HADIR",
+                                jumlahPendamping: data.jumlahPendamping || 1,
+                                totalPengantar: data.totalPengantar || 3,
+                                catatanTambahan: data.catatanTambahan || "",
+                                jumlahMobil: data.jumlahMobil || 0,
+                                jumlahMotor: data.jumlahMotor || 0,
+                              });
+                              setIsWdModalOpen(true);
+                            }}
+                            className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-emerald-200 text-emerald-700 hover:bg-emerald-50 rounded-lg text-xs font-black transition-colors"
+                          >
+                            <Edit className="w-3.5 h-3.5" />
+                            Edit
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </div>
@@ -3386,6 +3522,155 @@ export default function PendaftarDetailPage() {
           </div>
         </div>
       )}
+
+      {/* Modal Welcome Day (Khusus Admin) */}
+      {isWdModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-primary-950/40 backdrop-blur-sm">
+          <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl flex flex-col max-h-[90vh]">
+            <div className="flex items-center justify-between p-6 border-b border-surface-100 bg-surface-50 rounded-t-3xl">
+              <h2 className="text-xl font-black text-primary-950 flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-emerald-500" />
+                Edit Kehadiran Welcome Day
+              </h2>
+              <button
+                onClick={() => setIsWdModalOpen(false)}
+                className="p-2 text-ink-300 hover:text-ink-600 hover:bg-surface-200 rounded-xl transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            <div className="p-6 overflow-y-auto space-y-5">
+              <div>
+                <label className="text-xs font-black uppercase tracking-wider text-ink-300 mb-2 block">
+                  Status Kehadiran
+                </label>
+                <div className="flex gap-4">
+                  <label className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-xl border-2 cursor-pointer transition-all ${
+                    wdFormData.statusKehadiran === "HADIR"
+                      ? "border-emerald-500 bg-emerald-50 text-emerald-700"
+                      : "border-surface-200 bg-white text-ink-400 hover:bg-surface-50"
+                  }`}>
+                    <input
+                      type="radio"
+                      className="sr-only"
+                      checked={wdFormData.statusKehadiran === "HADIR"}
+                      onChange={() => setWdFormData({ ...wdFormData, statusKehadiran: "HADIR" })}
+                    />
+                    <CheckCircle className="w-5 h-5" />
+                    <span className="font-bold">Hadir</span>
+                  </label>
+                  <label className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-xl border-2 cursor-pointer transition-all ${
+                    wdFormData.statusKehadiran === "TIDAK_HADIR"
+                      ? "border-rose-500 bg-rose-50 text-rose-700"
+                      : "border-surface-200 bg-white text-ink-400 hover:bg-surface-50"
+                  }`}>
+                    <input
+                      type="radio"
+                      className="sr-only"
+                      checked={wdFormData.statusKehadiran === "TIDAK_HADIR"}
+                      onChange={() => setWdFormData({ ...wdFormData, statusKehadiran: "TIDAK_HADIR" })}
+                    />
+                    <X className="w-5 h-5" />
+                    <span className="font-bold">Tidak Hadir</span>
+                  </label>
+                </div>
+              </div>
+
+              {wdFormData.statusKehadiran === "HADIR" && (
+                <>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-xs font-black uppercase tracking-wider text-ink-300 mb-2 block">
+                        Total Rombongan
+                      </label>
+                      <input
+                        type="number"
+                        min="1"
+                        value={wdFormData.totalPengantar}
+                        onChange={(e) => setWdFormData({ ...wdFormData, totalPengantar: parseInt(e.target.value) || 0 })}
+                        className="w-full p-3 rounded-xl border border-surface-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 outline-none transition-all font-medium text-ink-600 bg-white"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs font-black uppercase tracking-wider text-ink-300 mb-2 block">
+                        Pendamping (Ruang Utama)
+                      </label>
+                      <select
+                        value={wdFormData.jumlahPendamping}
+                        onChange={(e) => setWdFormData({ ...wdFormData, jumlahPendamping: parseInt(e.target.value) || 0 })}
+                        className="w-full p-3 rounded-xl border border-surface-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 outline-none transition-all font-medium text-ink-600 bg-white"
+                      >
+                        <option value={1}>1 Orang (Pendamping + Santri)</option>
+                        <option value={2}>2 Orang (Pendamping + Santri)</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-xs font-black uppercase tracking-wider text-ink-300 mb-2 block">
+                        Jumlah Mobil
+                      </label>
+                      <input
+                        type="number"
+                        min="0"
+                        value={wdFormData.jumlahMobil}
+                        onChange={(e) => setWdFormData({ ...wdFormData, jumlahMobil: parseInt(e.target.value) || 0 })}
+                        className="w-full p-3 rounded-xl border border-surface-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 outline-none transition-all font-medium text-ink-600 bg-white"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs font-black uppercase tracking-wider text-ink-300 mb-2 block">
+                        Jumlah Motor
+                      </label>
+                      <input
+                        type="number"
+                        min="0"
+                        value={wdFormData.jumlahMotor}
+                        onChange={(e) => setWdFormData({ ...wdFormData, jumlahMotor: parseInt(e.target.value) || 0 })}
+                        className="w-full p-3 rounded-xl border border-surface-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 outline-none transition-all font-medium text-ink-600 bg-white"
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
+
+              <div>
+                <label className="text-xs font-black uppercase tracking-wider text-ink-300 mb-2 block">
+                  Catatan Tambahan
+                </label>
+                <textarea
+                  value={wdFormData.catatanTambahan}
+                  onChange={(e) => setWdFormData({ ...wdFormData, catatanTambahan: e.target.value })}
+                  placeholder="Opsional..."
+                  rows={3}
+                  className="w-full p-3 rounded-xl border border-surface-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 outline-none transition-all font-medium text-ink-600 bg-white resize-none"
+                />
+              </div>
+            </div>
+
+            <div className="p-6 border-t border-surface-100 bg-surface-50 rounded-b-3xl flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setIsWdModalOpen(false)}
+                className="px-5 py-2.5 rounded-xl text-ink-600 font-bold hover:bg-surface-200 transition-colors"
+              >
+                Batal
+              </button>
+              <button
+                type="button"
+                disabled={savingWd}
+                onClick={handleSaveWd}
+                className="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black shadow-lg shadow-emerald-500/30 transition-all active:scale-95 disabled:opacity-50"
+              >
+                {savingWd ? "Menyimpan..." : "Simpan Perubahan"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

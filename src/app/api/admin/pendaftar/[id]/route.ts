@@ -68,6 +68,7 @@ export async function GET(
         prestasi: true,
         kesehatan: true,
         asrama: true,
+        reservasi: true,
       },
     });
 
