@@ -79,6 +79,7 @@ export async function POST(req: Request) {
           nama: tahun_ajaran
         },
         jenjang,
+        deleted_at: null,
         // Hanya ambil pendaftar yang statusnya minimal diterima
         status_pendaftaran: {
           in: [
