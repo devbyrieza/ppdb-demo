@@ -846,10 +846,10 @@ export default function WelcomeDayPage() {
             </div>
             <div 
               className="relative w-full aspect-[1/1.4] bg-ink-50 rounded-2xl border border-ink-100 overflow-hidden cursor-zoom-in group shadow-sm"
-              onClick={() => setLightbox('/images/welcome-day/rundown.png')}
+              onClick={() => setLightbox('/documents/roundown-ke-pendaftar.jpeg')}
             >
               <Image 
-                src="/images/welcome-day/rundown.png" 
+                src="/documents/roundown-ke-pendaftar.jpeg" 
                 alt="Rundown Acara" 
                 fill 
                 className="object-contain transition-transform duration-300 group-hover:scale-[1.02]"
@@ -867,10 +867,10 @@ export default function WelcomeDayPage() {
             </div>
             <div 
               className="relative w-full aspect-[1/1.4] bg-ink-50 rounded-2xl border border-ink-100 overflow-hidden cursor-zoom-in group shadow-sm"
-              onClick={() => setLightbox('/images/welcome-day/alur_kedatangan.png')}
+              onClick={() => setLightbox('/documents/alur.jpeg')}
             >
               <Image 
-                src="/images/welcome-day/alur_kedatangan.png" 
+                src="/documents/alur.jpeg" 
                 alt="Alur Kedatangan" 
                 fill 
                 className="object-contain transition-transform duration-300 group-hover:scale-[1.02]"
