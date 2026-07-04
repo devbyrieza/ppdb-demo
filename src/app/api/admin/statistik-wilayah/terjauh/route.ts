@@ -126,29 +126,50 @@ export async function POST(req: Request) {
       const query = `${kecamatan ? kecamatan + ", " : ""}${kabupaten}, ${provinsi}`;
 
       let lat, lon;
-      if (cache[query]) {
+      if (cache[query] && cache[query].lat !== null && cache[query].lon !== null) {
         lat = cache[query].lat;
         lon = cache[query].lon;
       } else {
         // Fetch from Nominatim (delay 1s to respect limits)
         await new Promise((r) => setTimeout(r, 1000));
-        const res = await fetch(
-          `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
-            query
-          )}&format=json&limit=1`,
-          {
-            headers: {
-              "User-Agent": "AlAndalusPesantrenApp/1.0",
-            },
+        
+        // Define fallback queries from most specific to least specific
+        const queriesToTry = [
+          query, // e.g. "Praya, Kabupaten Lombok Tengah, Nusa Tenggara Barat"
+          `${kabupaten}, ${provinsi}`, // e.g. "Kabupaten Lombok Tengah, Nusa Tenggara Barat"
+          `${kabupaten}, Indonesia`, // e.g. "Kabupaten Lombok Tengah, Indonesia"
+        ];
+        
+        let found = false;
+        for (const q of queriesToTry) {
+          try {
+            const res = await fetch(
+              `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
+                q
+              )}&format=json&limit=1`,
+              {
+                headers: {
+                  "User-Agent": "AlAndalusPesantrenApp/1.0",
+                },
+              }
+            );
+            const data = await res.json();
+            if (data && data.length > 0) {
+              lat = parseFloat(data[0].lat);
+              lon = parseFloat(data[0].lon);
+              cache[query] = { lat, lon }; // Save under original query key
+              hasNewCache = true;
+              found = true;
+              break;
+            }
+          } catch (e) {
+            console.error(`Error geocoding ${q}:`, e);
           }
-        );
-        const data = await res.json();
-        if (data && data.length > 0) {
-          lat = parseFloat(data[0].lat);
-          lon = parseFloat(data[0].lon);
-          cache[query] = { lat, lon };
-          hasNewCache = true;
-        } else {
+          // Delay before next fallback attempt
+          if (!found) await new Promise((r) => setTimeout(r, 1000));
+        }
+        
+        if (!found) {
           // Tandai kosong agar tidak dicari ulang terus menerus
           cache[query] = { lat: null, lon: null };
           hasNewCache = true;
