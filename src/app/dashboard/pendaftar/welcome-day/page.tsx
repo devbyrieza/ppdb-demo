@@ -41,7 +41,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const JADWAL_ACARA = [
   { jam: "06.30", label: "Kedatangan Santri & Wali", desc: "Begitu tiba di pesantren, barang bawaan diturunkan dan mobil diarahkan to area parkir.", icon: Tent },
