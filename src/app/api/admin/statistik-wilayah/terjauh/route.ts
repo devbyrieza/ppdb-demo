@@ -87,7 +87,8 @@ export async function POST(req: Request) {
           in: [
             "diterima",
             "accepted",
-            "enrolled"
+            "enrolled",
+            "re_registered"
           ],
         },
       },

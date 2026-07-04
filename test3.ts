@@ -1,0 +1,1 @@
+import { PrismaClient } from '@prisma/client'; const prisma = new PrismaClient(); async function main() { const p = await prisma.pendaftar.findMany({ where: { nama_lengkap: { contains: 'Rizky', mode: 'insensitive' } } }); console.log(JSON.stringify(p.map(x=>x.nama_lengkap), null, 2)); } main().finally(()=>prisma.$disconnect());
