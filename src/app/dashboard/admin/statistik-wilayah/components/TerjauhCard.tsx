@@ -1,0 +1,138 @@
+"use client";
+
+import { useState } from "react";
+import { Loader2, MapPin, Search, Navigation } from "lucide-react";
+
+export default function TerjauhCard({
+  tahunAjaranList,
+  jenjangList,
+}: {
+  tahunAjaranList: string[];
+  jenjangList: string[];
+}) {
+  const [tahunAjaran, setTahunAjaran] = useState(tahunAjaranList[0] || "");
+  const [jenjang, setJenjang] = useState(jenjangList[0] || "");
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSearch = async () => {
+    if (!tahunAjaran || !jenjang) {
+      setError("Pilih Tahun Ajaran dan Jenjang terlebih dahulu");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+    setResult(null);
+
+    try {
+      const res = await fetch("/api/admin/statistik-wilayah/terjauh", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tahun_ajaran: tahunAjaran, jenjang }),
+      });
+
+      const data = await res.json();
+      if (!data.success) {
+        throw new Error(data.error || "Gagal mengambil data pendaftar terjauh");
+      }
+
+      setResult(data.data);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="bg-white rounded-3xl p-6 shadow-sm border border-ink-100 mt-8">
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center">
+          <Navigation className="w-5 h-5" />
+        </div>
+        <div>
+          <h2 className="text-lg font-black text-primary-950">Pendaftar Terjauh</h2>
+          <p className="text-xs text-ink-500 font-medium">
+            Temukan santri dengan jarak terjauh dari lokasi pesantren
+          </p>
+        </div>
+      </div>
+
+      <div className="flex flex-col md:flex-row gap-4 mb-6">
+        <div className="flex-1">
+          <label className="block text-xs font-bold text-ink-500 mb-2 uppercase">Tahun Ajaran</label>
+          <select
+            value={tahunAjaran}
+            onChange={(e) => setTahunAjaran(e.target.value)}
+            className="w-full p-3 bg-surface-50 border border-ink-200 rounded-xl focus:outline-hidden focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20"
+          >
+            {tahunAjaranList.map((ta) => (
+              <option key={ta} value={ta}>
+                {ta}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="flex-1">
+          <label className="block text-xs font-bold text-ink-500 mb-2 uppercase">Jenjang</label>
+          <select
+            value={jenjang}
+            onChange={(e) => setJenjang(e.target.value)}
+            className="w-full p-3 bg-surface-50 border border-ink-200 rounded-xl focus:outline-hidden focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20"
+          >
+            {jenjangList.map((j) => (
+              <option key={j} value={j}>
+                {j}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="flex items-end">
+          <button
+            onClick={handleSearch}
+            disabled={loading}
+            className="w-full md:w-auto p-3 px-6 bg-primary-600 text-white rounded-xl font-bold hover:bg-primary-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-70"
+          >
+            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Search className="w-5 h-5" />}
+            {loading ? "Mencari..." : "Cari"}
+          </button>
+        </div>
+      </div>
+
+      {error && (
+        <div className="p-4 bg-red-50 text-red-600 rounded-xl text-sm font-medium border border-red-100">
+          {error}
+        </div>
+      )}
+
+      {result && (
+        <div className="p-6 bg-linear-to-br from-surface-50 to-white border border-ink-100 rounded-2xl shadow-inner">
+          <div className="flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
+            <div className="w-20 h-20 bg-primary-50 text-primary-600 rounded-full flex items-center justify-center shrink-0 shadow-sm border border-primary-100">
+              <MapPin className="w-10 h-10" />
+            </div>
+            <div className="flex-1">
+              <div className="inline-flex items-center gap-2 mb-2">
+                <span className="px-2 py-1 bg-primary-100 text-primary-700 text-[10px] font-black uppercase tracking-widest rounded-lg">
+                  Terjauh
+                </span>
+                <span className="text-xs font-bold text-ink-400 capitalize">
+                  Status: {result.status}
+                </span>
+              </div>
+              <h3 className="text-2xl font-black text-ink-900 mb-1">{result.nama}</h3>
+              <p className="text-ink-600 font-medium text-sm leading-relaxed mb-3">
+                {result.alamat_lengkap}
+              </p>
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-50 border border-orange-200 text-orange-700 font-black rounded-xl">
+                Jarak: {result.jarak_km.toLocaleString("id-ID")} KM
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

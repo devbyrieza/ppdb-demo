@@ -15,6 +15,7 @@ import {
   UserCheck,
   Home,
 } from "lucide-react";
+import TerjauhCard from "./components/TerjauhCard";
 
 // Type definitions for the statistics data
 interface CityData {
@@ -383,6 +384,11 @@ export default function StatistikWilayahPage() {
           </div>
         )}
       </div>
+
+      <TerjauhCard 
+        tahunAjaranList={tahunAjaranList.map((t: any) => t.nama)} 
+        jenjangList={["SMP", "SMA", "MTS", "MA", "SD", "TK"]} 
+      />
     </div>
   );
 }
