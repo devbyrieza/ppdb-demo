@@ -1209,34 +1209,31 @@ export const generatePaktaIntegritas = async (data: PendaftarPdfData) => {
 
   y += 2;
 
-  const pageHeight3 = doc.internal.pageSize.getHeight();
-  if (y + 60 > pageHeight3 - 40) { // Changed threshold from 70 to 60 because we compressed it and it safely fits
-    doc.addPage();
-    drawHeaderSync(doc);
-    y = getContentStartY();
-  }
+  // Hilangkan page break, gunakan side-by-side
+  y += 2;
+  const bottomY2 = y; // Simpan Y untuk side-by-side
 
+  // Kiri: Teks Penutup
   const closing3 =
     "Surat pernyataan ini kami buat dengan sebenar-benarnya dan tanpa ada paksaan dari pihak mana pun.";
-  doc.text(doc.splitTextToSize(closing3, contentW), margin, y);
-  y += 6;
+  doc.text(doc.splitTextToSize(closing3, contentW - 75), margin, bottomY2 + 5);
 
-  // TTD Orangtua (Kanan) bermaterai
+  // Kanan: TTD Orangtua (sejajar dengan Teks Penutup)
   doc.setFontSize(10.5);
   const sigX2 = pageWidth - margin - 70;
-  doc.text(sigDateStr, sigX2, y);
-  doc.text("Pembuat Pernyataan,", sigX2, y + 7);
+  doc.text(sigDateStr, sigX2, bottomY2);
+  doc.text("Pembuat Pernyataan,", sigX2, bottomY2 + 7);
   doc.setDrawColor(100, 100, 100);
   doc.setLineWidth(0.3);
-  doc.rect(sigX2, y + 10, 35, 22);
+  doc.rect(sigX2, bottomY2 + 10, 35, 22);
   doc.setFontSize(8);
   doc.setTextColor(100, 100, 100);
-  doc.text("Materai Rp10.000,-", sigX2 + 2, y + 22);
+  doc.text("Materai Rp10.000,-", sigX2 + 2, bottomY2 + 22);
   doc.setTextColor(0, 0, 0);
   doc.setFontSize(10.5);
   doc.setLineWidth(0.2);
-  doc.line(sigX2, y + 40, sigX2 + 70, y + 40);
-  doc.text("(Orangtua/Wali)", sigX2 + 15, y + 46);
+  doc.line(sigX2, bottomY2 + 40, sigX2 + 70, bottomY2 + 40);
+  doc.text("(Orangtua/Wali)", sigX2 + 15, bottomY2 + 46);
 
   drawFooter(doc);
   if (typeof window !== "undefined") {
