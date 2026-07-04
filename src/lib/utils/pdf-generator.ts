@@ -924,7 +924,7 @@ export const generateSuratPernyataan = async (data: PendaftarPdfData) => {
   doc.text("Jenjang", col2X, y);
   doc.setFont("helvetica", "normal");
   doc.text(":", col2Colon, y);
-  doc.text("MTs / I'dad Lughawiy / SMA", col2Line, y);
+  doc.text("MTs / I'dad Lughawiy / MA", col2Line, y);
   y += 4;
   doc.setFontSize(8);
   doc.text("*) coret yang tidak perlu", col2Line, y);
@@ -938,8 +938,8 @@ export const generateSuratPernyataan = async (data: PendaftarPdfData) => {
   y += 14;
 
   const violations = [
-    "LGBT atau hubungan sesama jenis",
     "Merokok",
+    "LGBT atau hubungan sesama jenis",
     "Mengonsumsi narkoba atau zat adiktif terlarang",
     "Pacaran yang menjurus pada perzinaan",
     "Menonton atau kecanduan pornografi",
@@ -962,11 +962,7 @@ export const generateSuratPernyataan = async (data: PendaftarPdfData) => {
   const consequenceLines = doc.splitTextToSize(consequence, contentW);
   doc.text(consequenceLines, margin, y);
   y += consequenceLines.length * 5.5 + 6;
-
-  // Memaksa pindah ke halaman kedua untuk Catatan Kesehatan dan Tanda Tangan
-  doc.addPage();
-  drawHeaderSync(doc);
-  y = getContentStartY();
+  y += 5;
 
   doc.setFont("helvetica", "bold");
   doc.text("Catatan mengenai kondisi kesehatan:", margin, y);
@@ -1037,7 +1033,7 @@ export const generatePaktaIntegritas = async (data: PendaftarPdfData) => {
 
   const santriFields2: [string, string][] = [
     ["Nama Lengkap", toTitleCase(data.nama_lengkap || "")],
-    ["Jenjang", "MTs / I'dad Lughawiy / SMA  *) coret yang tidak perlu"],
+    ["Jenjang", "MTs / I'dad Lughawiy / MA  *) coret yang tidak perlu"],
     ["Tahun Pelajaran", data.tahun_ajaran || "2026/2027"],
     ["Alamat Lengkap", data.alamat || ""],
   ];
@@ -1181,7 +1177,7 @@ export const generatePaktaIntegritas = async (data: PendaftarPdfData) => {
   doc.text("Jenjang", col2X, y);
   doc.setFont("helvetica", "normal");
   doc.text(":", col2Colon, y);
-  doc.text("MTs / I'dad Lughawiy / SMA", col2Line, y);
+  doc.text("MTs / I'dad Lughawiy / MA", col2Line, y);
   y += 4;
   doc.setFontSize(8);
   doc.text("*) coret yang tidak perlu", col2Line, y);
