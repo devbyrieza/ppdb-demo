@@ -89,6 +89,7 @@ export async function POST(req: Request) {
             "accepted",
             "enrolled",
             "re_registered",
+            "enrolled_full",
             "proses daftar ulang",
             "lunas daftar ulang",
             "proses_daftar_ulang",
