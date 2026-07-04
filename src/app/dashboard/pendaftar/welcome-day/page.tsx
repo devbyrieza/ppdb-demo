@@ -836,32 +836,11 @@ export default function WelcomeDayPage() {
           </div>
         </div>
         <div className="p-5 space-y-6">
-          {/* Rundown Acara */}
-          <div>
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-black text-xs shadow-sm">
-                1
-              </div>
-              <h3 className="font-black text-ink-900 text-sm">Rundown Acara</h3>
-            </div>
-            <div 
-              className="relative w-full aspect-[1/1.4] bg-ink-50 rounded-2xl border border-ink-100 overflow-hidden cursor-zoom-in group shadow-sm"
-              onClick={() => setLightbox('/documents/roundown-ke-pendaftar.jpeg')}
-            >
-              <Image 
-                src="/documents/roundown-ke-pendaftar.jpeg" 
-                alt="Rundown Acara" 
-                fill 
-                className="object-contain transition-transform duration-300 group-hover:scale-[1.02]"
-              />
-            </div>
-          </div>
-          
           {/* Alur Kedatangan */}
           <div>
             <div className="flex items-center gap-2 mb-3">
               <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-black text-xs shadow-sm">
-                2
+                1
               </div>
               <h3 className="font-black text-ink-900 text-sm">Alur Kedatangan</h3>
             </div>
@@ -886,6 +865,27 @@ export default function WelcomeDayPage() {
               >
                 <Download className="w-4 h-4" /> Lihat Resolusi Penuh (Banner)
               </a>
+            </div>
+          </div>
+
+          {/* Rundown Acara */}
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-black text-xs shadow-sm">
+                2
+              </div>
+              <h3 className="font-black text-ink-900 text-sm">Rundown Acara</h3>
+            </div>
+            <div 
+              className="relative w-full aspect-[1/1.4] bg-ink-50 rounded-2xl border border-ink-100 overflow-hidden cursor-zoom-in group shadow-sm"
+              onClick={() => setLightbox('/documents/roundown-ke-pendaftar.jpeg')}
+            >
+              <Image 
+                src="/documents/roundown-ke-pendaftar.jpeg" 
+                alt="Rundown Acara" 
+                fill 
+                className="object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+              />
             </div>
           </div>
         </div>
