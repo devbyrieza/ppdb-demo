@@ -81,8 +81,22 @@ export default function RekapSeragamPage() {
     item.nomor_pendaftaran.toLowerCase().includes(search.toLowerCase())
   );
 
+  const jenjangOrder: Record<string, number> = {
+    "TK": 1,
+    "SD": 2,
+    "MI": 2,
+    "SMP": 3,
+    "MTs": 3,
+    "IL": 4,
+    "SMA": 5,
+    "MA": 5
+  };
+
   const exportExcel = () => {
     const sortedDataForExport = [...filteredData].sort((a, b) => {
+      const rankA = jenjangOrder[a.jenjang || ""] || 99;
+      const rankB = jenjangOrder[b.jenjang || ""] || 99;
+      if (rankA !== rankB) return rankA - rankB;
       const jenjangCompare = String(a.jenjang || "").localeCompare(String(b.jenjang || ""));
       if (jenjangCompare !== 0) return jenjangCompare;
       return String(a.nama_lengkap || "").localeCompare(String(b.nama_lengkap || ""));
@@ -123,6 +137,9 @@ export default function RekapSeragamPage() {
 
   const exportPDF = () => {
     const sortedDataForExport = [...filteredData].sort((a, b) => {
+      const rankA = jenjangOrder[a.jenjang || ""] || 99;
+      const rankB = jenjangOrder[b.jenjang || ""] || 99;
+      if (rankA !== rankB) return rankA - rankB;
       const jenjangCompare = String(a.jenjang || "").localeCompare(String(b.jenjang || ""));
       if (jenjangCompare !== 0) return jenjangCompare;
       return String(a.nama_lengkap || "").localeCompare(String(b.nama_lengkap || ""));
