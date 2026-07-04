@@ -695,6 +695,10 @@ export default function UploadBerkasTab() {
     fetchDokumenStatus();
   }, [fetchDokumenStatus]);
 
+  const isAllRequiredUploaded = Boolean(
+    summary && summary.progress.required.total > 0 && summary.progress.required.uploaded === summary.progress.required.total
+  );
+
   const isLocked = [
     "docs_uploaded",
     "docs_verified",
@@ -703,7 +707,7 @@ export default function UploadBerkasTab() {
     "announced",
     "accepted",
     "enrolled",
-  ].includes(pendaftarStatus);
+  ].includes(pendaftarStatus) && (!["accepted", "enrolled"].includes(pendaftarStatus) || isAllRequiredUploaded);
   const isVerified = [
     "docs_verified",
     "scheduled",
