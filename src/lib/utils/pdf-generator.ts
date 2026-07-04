@@ -962,40 +962,40 @@ export const generateSuratPernyataan = async (data: PendaftarPdfData) => {
   const consequenceLines = doc.splitTextToSize(consequence, contentW);
   doc.text(consequenceLines, margin, y);
   y += consequenceLines.length * 4.5 + 4;
-  
-  // Tambahkan halaman baru karena font dibesarkan dan tidak cukup 1 halaman
-  doc.addPage();
-  drawHeaderSync(doc);
-  y = getContentStartY();
-  y += 5;
 
+  // Hapus page break agar tetap 1 halaman
+  y += 2;
+
+  const bottomY = y; // Simpan Y untuk menggambar catatan dan TTD secara bersebelahan
+
+  // Kiri: Catatan Kesehatan
   doc.setFont("helvetica", "bold");
   doc.text("Catatan mengenai kondisi kesehatan:", margin, y);
   doc.setFont("helvetica", "normal");
-  y += 5;
   const healthNote =
     "Apabila putra/putri kami diketahui menderita penyakit kronis (antara lain: jantung, ginjal, HIV/AIDS, TBC, infeksi selaput otak, difteri, kanker, diabetes, atau epilepsi), kami bersedia segera dihubungi oleh pihak Pesantren untuk bersama-sama menentukan langkah terbaik demi keselamatan dan kenyamanan putra/putri kami serta seluruh warga Pesantren.";
-  const healthNoteLines = doc.splitTextToSize(healthNote, contentW);
-  doc.text(healthNoteLines, margin, y);
-  y += healthNoteLines.length * 4.5 + 8;
+  // Batasi lebar teks agar tidak menabrak area tanda tangan (sisakan 75 unit untuk TTD di kanan)
+  const healthNoteLines = doc.splitTextToSize(healthNote, contentW - 75);
+  doc.text(healthNoteLines, margin, y + 5);
 
-  // TTD Orangtua (Kanan) bermaterai
+  // Kanan: TTD Orangtua bermaterai (sejajar dengan Catatan Kesehatan)
   const dateStr = `${authority.city}, ......................... 2026`;
   doc.setFontSize(10.5);
   const sigX = pageWidth - margin - 70;
-  doc.text(dateStr, sigX, y);
-  doc.text("Pembuat Pernyataan,", sigX, y + 7);
+  // Gunakan bottomY yang sama agar sejajar
+  doc.text(dateStr, sigX, bottomY);
+  doc.text("Pembuat Pernyataan,", sigX, bottomY + 7);
   doc.setDrawColor(100, 100, 100);
   doc.setLineWidth(0.3);
-  doc.rect(sigX, y + 10, 35, 22);
+  doc.rect(sigX, bottomY + 10, 35, 22);
   doc.setFontSize(8);
   doc.setTextColor(100, 100, 100);
-  doc.text("Materai Rp10.000,-", sigX + 2, y + 22);
+  doc.text("Materai Rp10.000,-", sigX + 2, bottomY + 22);
   doc.setTextColor(0, 0, 0);
   doc.setFontSize(10.5);
   doc.setLineWidth(0.2);
-  doc.line(sigX, y + 40, sigX + 70, y + 40);
-  doc.text("(Orangtua/Wali)", sigX + 15, y + 46);
+  doc.line(sigX, bottomY + 40, sigX + 70, bottomY + 40);
+  doc.text("(Orangtua/Wali)", sigX + 15, bottomY + 46);
 
   drawFooter(doc);
   if (typeof window !== "undefined") {
