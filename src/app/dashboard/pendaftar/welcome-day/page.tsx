@@ -1123,7 +1123,7 @@ export default function WelcomeDayPage() {
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <a
-            href="https://wa.me/6281234567890"
+            href="https://wa.me/6281251971250"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-3 bg-white rounded-xl p-3 border border-primary-200 hover:shadow-md transition-shadow"
@@ -1132,8 +1132,8 @@ export default function WelcomeDayPage() {
               <Phone className="w-4 h-4 text-white" />
             </div>
             <div>
-              <p className="text-xs text-ink-400 font-bold">WhatsApp Panitia</p>
-              <p className="text-sm font-black text-ink-900">0812-3456-7890</p>
+              <p className="text-xs text-ink-400 font-bold">Ketua Panitia Welcome Day</p>
+              <p className="text-sm font-black text-ink-900">0812-5197-1250 (Ustadz Agus Cahyono)</p>
             </div>
           </a>
           <div className="flex items-center gap-3 bg-white rounded-xl p-3 border border-primary-200">
