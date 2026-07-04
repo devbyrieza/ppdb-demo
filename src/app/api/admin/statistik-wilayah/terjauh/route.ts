@@ -75,7 +75,9 @@ export async function POST(req: Request) {
     // Ambil pendaftar
     const pendaftarList = await prisma.pendaftar.findMany({
       where: {
-        tahun_ajaran,
+        tahun_ajaran: {
+          nama: tahun_ajaran
+        },
         jenjang,
         // Hanya ambil pendaftar yang statusnya minimal diterima
         status_pendaftaran: {
