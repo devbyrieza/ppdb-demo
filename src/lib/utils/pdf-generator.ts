@@ -1152,7 +1152,7 @@ export const generatePaktaIntegritas = async (data: PendaftarPdfData) => {
   doc.setFont("helvetica", "normal");
   doc.text(":", col2Colon, y);
   doc.line(col2Line, y + 1, pageWidth - margin, y + 1);
-  y += 6;
+  y += 5;
 
   doc.setFont("helvetica", "bold");
   doc.text("Alamat Lengkap", col1X, y);
@@ -1165,29 +1165,26 @@ export const generatePaktaIntegritas = async (data: PendaftarPdfData) => {
   doc.setFont("helvetica", "normal");
   doc.text(":", col2Colon, y);
   doc.line(col2Line, y + 1, pageWidth - margin, y + 1);
-  y += 7;
-
-  doc.text("Sebagai orangtua/wali dari santri/santriwati:", margin, y);
   y += 6;
 
+  doc.text("Sebagai orangtua/wali dari santri/santriwati:", margin, y);
+  y += 4.5;
   doc.setFont("helvetica", "bold");
   doc.text("Nama Santri", col1X, y);
   doc.setFont("helvetica", "normal");
   doc.text(":", col1Colon, y);
-  doc.setFont("helvetica", "bold");
   doc.text(toTitleCase(data.nama_lengkap || ""), col1Line, y);
-  doc.setFont("helvetica", "normal");
 
   doc.setFont("helvetica", "bold");
   doc.text("Jenjang", col2X, y);
   doc.setFont("helvetica", "normal");
   doc.text(":", col2Colon, y);
   doc.text("MTs / I'dad Lughawiy / MA", col2Line, y);
-  y += 4;
+  y += 3.5;
   doc.setFontSize(8);
   doc.text("*) coret yang tidak perlu", col2Line, y);
   doc.setFontSize(10.5);
-  y += 5;
+  y += 4.5;
 
   const preamble2 =
     "Dengan sungguh-sungguh dan penuh kesadaran, menyatakan bahwa kami akan:";
@@ -1207,13 +1204,13 @@ export const generatePaktaIntegritas = async (data: PendaftarPdfData) => {
       .setFontSize(10.5)
       .splitTextToSize(`${i + 1}. ${ortuCommitments[i]}`, contentW - 8);
     doc.text(lines, margin + 5, y);
-    y += lines.length * 5;
+    y += lines.length * 4.6;
   }
 
-  y += 3;
+  y += 2;
 
   const pageHeight3 = doc.internal.pageSize.getHeight();
-  if (y + 70 > pageHeight3 - 40) { // Increased threshold slightly to account for the closing text
+  if (y + 60 > pageHeight3 - 40) { // Changed threshold from 70 to 60 because we compressed it and it safely fits
     doc.addPage();
     drawHeaderSync(doc);
     y = getContentStartY();
@@ -1222,7 +1219,7 @@ export const generatePaktaIntegritas = async (data: PendaftarPdfData) => {
   const closing3 =
     "Surat pernyataan ini kami buat dengan sebenar-benarnya dan tanpa ada paksaan dari pihak mana pun.";
   doc.text(doc.splitTextToSize(closing3, contentW), margin, y);
-  y += 8;
+  y += 6;
 
   // TTD Orangtua (Kanan) bermaterai
   doc.setFontSize(10.5);
