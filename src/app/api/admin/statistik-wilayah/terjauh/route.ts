@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "@/lib/session";
 import fs from "fs/promises";
 import path from "path";
+import { getAdminWhereClause } from "@/lib/utils/admin";
 
 const PESANTREN_COORD = {
   lat: -6.9749, // Koordinat aproksimasi Pesantren Al-Imam (Cikembar)
@@ -29,7 +30,7 @@ function calculateDistance(
   return R * c;
 }
 
-const CACHE_FILE = path.join(process.cwd(), "data", "geocode_cache.json");
+const CACHE_FILE = path.join(process.cwd(), ".terjauh-geocode-cache.json");
 
 async function getGeocodeCache() {
   try {
@@ -42,7 +43,6 @@ async function getGeocodeCache() {
 
 async function saveGeocodeCache(cache: any) {
   try {
-    await fs.mkdir(path.dirname(CACHE_FILE), { recursive: true });
     await fs.writeFile(CACHE_FILE, JSON.stringify(cache, null, 2));
   } catch (e) {
     // ignore
@@ -52,29 +52,28 @@ async function saveGeocodeCache(cache: any) {
 export async function POST(req: Request) {
   try {
     const session = await getServerSession();
-    if (
-      !session ||
-      !["admin_super", "admin_psb"].includes((session as any).role)
-    ) {
+    if (!session || !session.user || session.user.role !== "super_admin") {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
         { status: 401 }
       );
     }
 
-    const body = await req.json();
-    const { tahun_ajaran, jenjang } = body;
+    const { tahun_ajaran, jenjang } = await req.json();
 
     if (!tahun_ajaran || !jenjang) {
       return NextResponse.json({
         success: false,
-        error: "Tahun Ajaran dan Jenjang diperlukan",
+        error: "tahun_ajaran dan jenjang wajib diisi",
       });
     }
+
+    const baseWhere = getAdminWhereClause();
 
     // Ambil pendaftar
     const pendaftarList = await prisma.pendaftar.findMany({
       where: {
+        ...baseWhere,
         tahun_ajaran: {
           nama: tahun_ajaran
         },
