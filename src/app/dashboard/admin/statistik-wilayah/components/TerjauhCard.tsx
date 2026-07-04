@@ -107,30 +107,39 @@ export default function TerjauhCard({
         </div>
       )}
 
-      {result && (
-        <div className="p-6 bg-linear-to-br from-surface-50 to-white border border-ink-100 rounded-2xl shadow-inner">
-          <div className="flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
-            <div className="w-20 h-20 bg-primary-50 text-primary-600 rounded-full flex items-center justify-center shrink-0 shadow-sm border border-primary-100">
-              <MapPin className="w-10 h-10" />
-            </div>
-            <div className="flex-1">
-              <div className="inline-flex items-center gap-2 mb-2">
-                <span className="px-2 py-1 bg-primary-100 text-primary-700 text-[10px] font-black uppercase tracking-widest rounded-lg">
-                  Terjauh
-                </span>
-                <span className="text-xs font-bold text-ink-400 capitalize">
-                  Status: {result.status}
-                </span>
-              </div>
-              <h3 className="text-2xl font-black text-ink-900 mb-1">{result.nama}</h3>
-              <p className="text-ink-600 font-medium text-sm leading-relaxed mb-3">
-                {result.alamat_lengkap}
-              </p>
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-50 border border-orange-200 text-orange-700 font-black rounded-xl">
-                Jarak: {result.jarak_km.toLocaleString("id-ID")} KM
-              </div>
-            </div>
+      {result && Array.isArray(result) && result.length > 0 && (
+        <div className="space-y-4">
+          <div className="text-sm font-bold text-ink-500 mb-2 uppercase tracking-widest px-2 border-b border-ink-100 pb-2">
+            Top 5 Pendaftar Terjauh
           </div>
+          {result.map((item: any, index: number) => (
+            <div key={index} className={`p-5 md:p-6 bg-linear-to-br ${index === 0 ? 'from-orange-50 to-white border-orange-200 shadow-md' : 'from-surface-50 to-white border-ink-100 shadow-sm'} border rounded-2xl transition-all hover:shadow-md`}>
+              <div className="flex flex-col md:flex-row items-center gap-5 md:gap-6 text-center md:text-left">
+                <div className={`rounded-full flex items-center justify-center shrink-0 shadow-sm border ${index === 0 ? 'bg-orange-100 text-orange-600 border-orange-200 w-16 h-16 md:w-20 md:h-20' : 'bg-surface-100 text-ink-500 border-ink-200 w-12 h-12 md:w-14 md:h-14'}`}>
+                  {index === 0 ? <MapPin className="w-8 h-8 md:w-10 md:h-10" /> : <span className="text-lg md:text-xl font-black">#{index + 1}</span>}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="inline-flex items-center gap-2 mb-1.5 md:mb-2 flex-wrap justify-center md:justify-start">
+                    {index === 0 && (
+                      <span className="px-2 py-1 bg-orange-600 text-white text-[10px] font-black uppercase tracking-widest rounded-lg shadow-sm">
+                        Terjauh Utama
+                      </span>
+                    )}
+                    <span className="text-[10px] md:text-xs font-bold text-ink-400 capitalize px-2 py-1 bg-surface-100 rounded-lg">
+                      Status: {item.status}
+                    </span>
+                  </div>
+                  <h3 className={`${index === 0 ? 'text-xl md:text-2xl' : 'text-lg md:text-xl'} font-black text-ink-900 mb-1 truncate`}>{item.nama}</h3>
+                  <p className="text-ink-500 font-medium text-xs md:text-sm leading-relaxed mb-3 line-clamp-2 md:line-clamp-none">
+                    {item.alamat_lengkap}
+                  </p>
+                  <div className={`inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 ${index === 0 ? 'bg-orange-100 border border-orange-200 text-orange-800' : 'bg-surface-100 border border-ink-200 text-ink-700'} font-black rounded-xl text-xs md:text-sm shadow-sm`}>
+                    Jarak: {item.jarak_km.toLocaleString("id-ID")} KM
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       )}
     </div>

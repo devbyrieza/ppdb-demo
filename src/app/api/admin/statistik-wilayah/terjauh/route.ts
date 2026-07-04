@@ -105,8 +105,7 @@ export async function POST(req: Request) {
 
     const cache = await getGeocodeCache();
     let hasNewCache = false;
-    let furthest = null;
-    let maxDistance = -1;
+    const allCandidates: any[] = [];
 
     for (const p of pendaftarList) {
       const dataLengkap: any = p.data_lengkap;
@@ -164,18 +163,15 @@ export async function POST(req: Request) {
           lat,
           lon
         );
-        if (distance > maxDistance) {
-          maxDistance = distance;
-          furthest = {
-            nama: nama_lengkap,
-            alamat_lengkap: `${alamat || ""}, RT ${rt || "00"}/RW ${
-              rw || "00"
-            }, ${kelurahan || ""}, ${kecamatan || ""}, ${kabupaten}, ${provinsi}`,
-            jarak_km: Math.round(distance * 100) / 100,
-            status: p.status_pendaftaran,
-            koordinat: `${lat}, ${lon}`
-          };
-        }
+        allCandidates.push({
+          nama: nama_lengkap,
+          alamat_lengkap: `${alamat || ""}, RT ${rt || "00"}/RW ${
+            rw || "00"
+          }, ${kelurahan || ""}, ${kecamatan || ""}, ${kabupaten}, ${provinsi}`,
+          jarak_km: Math.round(distance * 100) / 100,
+          status: p.status_pendaftaran,
+          koordinat: `${lat}, ${lon}`
+        });
       }
     }
 
@@ -183,14 +179,16 @@ export async function POST(req: Request) {
       await saveGeocodeCache(cache);
     }
 
-    if (!furthest) {
+    if (allCandidates.length === 0) {
       return NextResponse.json({
         success: false,
         error: "Gagal menghitung jarak untuk seluruh pendaftar, data alamat mungkin tidak valid",
       });
     }
 
-    return NextResponse.json({ success: true, data: furthest });
+    const top5 = allCandidates.sort((a, b) => b.jarak_km - a.jarak_km).slice(0, 5);
+
+    return NextResponse.json({ success: true, data: top5 });
   } catch (error: any) {
     return NextResponse.json({ success: false, error: error.message });
   }
