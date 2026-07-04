@@ -8,35 +8,37 @@
 
 export const PDF_BRANDING = {
   // Template Mode
-  template: "programmatic" as "full_image" | "programmatic",
+  template: "full_image" as "full_image" | "programmatic",
 
   // Institution Labels
   institution: {
-    name: "PONDOK PESANTREN AL-FATH",
-    subtitle: "Islamic Boarding School Managed by Yayasan Pendidikan Islam Al-Fath",
+    name: "PESANTREN AL IMAM AL ISLAMI",
+    subtitle: "Islamic Boarding School Managed by Al Andalus IIBS",
     committee: "PANITIA PENERIMAAN SANTRI BARU",
     academic_year: "2026-2027",
-    address: "Jl. Pesantren Raya No. 1, Kec. Cikembar, Kabupaten Sukabumi, Jawa Barat 43157",
+    address:
+      "Jl. Pelabuhan II KM 18 Kampung Pupunjul, RT./RW/RW.01, 02, Cikembar, Kec. Cikembar, Kabupaten Sukabumi, Jawa Barat 43157",
     contact:
-      "Website: https://ppdb-demo.vercel.app | Email: info@pesantren-alfath.or.id",
-    phones: "WhatsApp: 0812-8530-0800",
+      "Website: https://pesantren-alimam.com | Email: alandalusalimam@gmail.com",
+    phones: "WhatsApp: 0851-1152-4441",
   },
 
   // Resource Paths
   assets: {
-    logo: "/images/logo.png",
-    kop_full: "", // Belum tersedia — gunakan programmatic template
-    stamp: "/images/stempel-pesantren.jpg",
+    logo: "/images/kop-surat.png",
+    kop_full: "/images/kop-surat-full.jpg", // Gambar kop surat penuh (full letterhead)
+    stamp: "/images/stempel-pesantren.jpg", // Dikembalikan ke stempel lama bawaan (stempel-pesantren.jpg)
     signature: "/images/ttd-mudir.png",
   },
 
   // Content Area Coordinates (berlaku ketika template = "full_image")
+  // Berdasarkan posisi area kosong di kop-surat-full.jpg
   content_area: {
-    y_start: 52,
-    y_end: 255,
-    x_left: 18,
-    x_right: 192,
-    width: 174,
+    y_start: 85,    // Diubah dari 65 ke 85 agar tidak menimpa elemen desain kop surat
+    y_end: 255,     // Y akhir konten (sebelum footer kop)
+    x_left: 18,     // Margin kiri
+    x_right: 192,   // Margin kanan (210 - 18)
+    width: 174,     // Lebar konten (x_right - x_left)
   },
 
   // Precise Coordinate Standards (jsPDF based) — digunakan saat template = "programmatic"
@@ -55,14 +57,14 @@ export const PDF_BRANDING = {
     signature: {
       stamp: { w: 35, h: 35 },
       ttd: { w: 35, h: 35 },
-      margin_right: 80,
+      margin_right: 95, // Diubah dari 80 ke 95 agar bergeser ke kiri dan tidak menimpa Kemenkumham stamp di background
       y_offset_ttd: 5,
     },
   },
 
   // Official Mudir / Authority
   authority: {
-    name: "Ust. Muhammad Al Fath, Lc.",
+    name: "Wahab Rajasam, M.Pd",
     role: "Ketua Panitia",
     city: "Sukabumi",
   },

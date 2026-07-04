@@ -11,6 +11,9 @@ import {
 import {
   generateBuktiPendaftaran,
   generateKartuUjian,
+  generateSuratKesehatan,
+  generatePaktaIntegritas,
+  generateSuratPernyataan,
 } from "@/lib/utils/pdf-generator";
 
 export default function DownloadBerkasTab() {
@@ -86,37 +89,19 @@ export default function DownloadBerkasTab() {
       name: "Template Surat Sehat",
       description: "Format kosong surat keterangan sehat",
       status: "available",
-      action: () => {
-        const link = document.createElement('a');
-        link.href = "/documents/Contoh_SuratKesehatan.pdf";
-        link.download = "Template_Surat_Sehat.pdf";
-        link.target = "_blank";
-        link.click();
-      },
+      action: async () => await generateSuratKesehatan(data),
     },
     {
       name: "Pakta Integritas",
       description: "Format kosong pakta integritas santri",
       status: "available",
-      action: () => {
-        const link = document.createElement('a');
-        link.href = "/documents/Contoh_PaktaIntegritas.pdf";
-        link.download = "Pakta_Integritas.pdf";
-        link.target = "_blank";
-        link.click();
-      },
+      action: async () => await generatePaktaIntegritas(data),
     },
     {
       name: "Surat Pernyataan",
       description: "Format kosong pernyataan bebas perilaku negatif",
       status: "available",
-      action: () => {
-        const link = document.createElement('a');
-        link.href = "/documents/Contoh_SuratPernyataan.pdf";
-        link.download = "Surat_Pernyataan.pdf";
-        link.target = "_blank";
-        link.click();
-      },
+      action: async () => await generateSuratPernyataan(data),
     },
   ];
 
