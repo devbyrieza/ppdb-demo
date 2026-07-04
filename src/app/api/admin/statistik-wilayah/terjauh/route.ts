@@ -52,7 +52,10 @@ async function saveGeocodeCache(cache: any) {
 export async function POST(req: Request) {
   try {
     const session = await getServerSession();
-    if (!session || !session.user || session.user.role !== "super_admin") {
+    if (
+      !session ||
+      !["admin_super", "admin_psb"].includes((session as any).role)
+    ) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
         { status: 401 }
