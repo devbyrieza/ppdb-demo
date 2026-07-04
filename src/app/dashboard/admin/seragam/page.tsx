@@ -82,18 +82,24 @@ export default function RekapSeragamPage() {
   );
 
   const exportExcel = () => {
-    const belumIsi = filteredData.filter(d => !d.ukuran_seragam_baju || !d.ukuran_seragam_celana || !d.ukuran_seragam_almamater).length;
-    const sudahIsi = filteredData.length - belumIsi;
+    const sortedDataForExport = [...filteredData].sort((a, b) => {
+      const jenjangCompare = String(a.jenjang || "").localeCompare(String(b.jenjang || ""));
+      if (jenjangCompare !== 0) return jenjangCompare;
+      return String(a.nama_lengkap || "").localeCompare(String(b.nama_lengkap || ""));
+    });
+
+    const belumIsi = sortedDataForExport.filter(d => !d.ukuran_seragam_baju || !d.ukuran_seragam_celana || !d.ukuran_seragam_almamater).length;
+    const sudahIsi = sortedDataForExport.length - belumIsi;
 
     const csvContent = [
       ["Laporan Rekapitulasi Ukuran Seragam"],
       [`Tanggal Cetak: ${new Date().toLocaleDateString("id-ID")}`],
-      [`Total Pendaftar: ${filteredData.length}`],
+      [`Total Pendaftar: ${sortedDataForExport.length}`],
       [`Lengkap: ${sudahIsi}`],
       [`Belum: ${belumIsi}`],
       [],
       ["No. Pendaftaran", "Nama Lengkap", "Jenjang", "L/P", "Ukuran Baju", "Ukuran Celana", "Ukuran Almamater"],
-      ...filteredData.map(item => [
+      ...sortedDataForExport.map(item => [
         item.nomor_pendaftaran,
         item.nama_lengkap,
         item.jenjang,
@@ -116,14 +122,20 @@ export default function RekapSeragamPage() {
   };
 
   const exportPDF = () => {
-    const belumIsi = filteredData.filter(d => !d.ukuran_seragam_baju || !d.ukuran_seragam_celana || !d.ukuran_seragam_almamater).length;
-    const sudahIsi = filteredData.length - belumIsi;
+    const sortedDataForExport = [...filteredData].sort((a, b) => {
+      const jenjangCompare = String(a.jenjang || "").localeCompare(String(b.jenjang || ""));
+      if (jenjangCompare !== 0) return jenjangCompare;
+      return String(a.nama_lengkap || "").localeCompare(String(b.nama_lengkap || ""));
+    });
+
+    const belumIsi = sortedDataForExport.filter(d => !d.ukuran_seragam_baju || !d.ukuran_seragam_celana || !d.ukuran_seragam_almamater).length;
+    const sudahIsi = sortedDataForExport.length - belumIsi;
 
     const doc = new jsPDF("p", "pt", "a4");
     const tableColumn = ["No. Pendaftaran", "Nama Lengkap", "Jenjang", "L/P", "Baju", "Celana", "Almamater"];
     const tableRows: any[] = [];
 
-    filteredData.forEach(item => {
+    sortedDataForExport.forEach(item => {
       const rowData = [
         item.nomor_pendaftaran,
         item.nama_lengkap,
