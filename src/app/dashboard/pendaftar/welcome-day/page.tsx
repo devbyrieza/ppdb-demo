@@ -1152,7 +1152,7 @@ export default function WelcomeDayPage() {
       <div className="bg-primary-50 border border-primary-100 rounded-2xl px-5 py-4 flex items-start gap-3">
         <Heart className="w-5 h-5 text-primary-500 flex-shrink-0 mt-0.5" />
         <p className="text-xs text-primary-700 font-medium leading-relaxed">
-          Kami sangat antusias menyambut kehadiran putra terbaik Anda di Pesantren kami. 
+          Kami sangat antusias menyambut kehadiran Ananda tercinta di Pesantren kami. 
           Semoga proses adaptasi berjalan lancar dan santri baru dapat segera nyaman di lingkungan pesantren. 
           Jika ada kendala atau pertanyaan, jangan ragu untuk menghubungi panitia kami.
         </p>
