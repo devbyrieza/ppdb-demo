@@ -84,21 +84,39 @@ export default function DownloadBerkasTab() {
     },
     {
       name: "Template Surat Sehat",
-      description: "Format kosong surat keterangan sehat (Belum Tersedia)",
-      status: "locked",
-      action: () => {},
+      description: "Format kosong surat keterangan sehat",
+      status: "available",
+      action: () => {
+        const link = document.createElement('a');
+        link.href = "/documents/Contoh_SuratKesehatan.pdf";
+        link.download = "Template_Surat_Sehat.pdf";
+        link.target = "_blank";
+        link.click();
+      },
     },
     {
       name: "Pakta Integritas",
-      description: "Format kosong pakta integritas santri (Belum Tersedia)",
-      status: "locked",
-      action: () => {},
+      description: "Format kosong pakta integritas santri",
+      status: "available",
+      action: () => {
+        const link = document.createElement('a');
+        link.href = "/documents/Contoh_PaktaIntegritas.pdf";
+        link.download = "Pakta_Integritas.pdf";
+        link.target = "_blank";
+        link.click();
+      },
     },
     {
       name: "Surat Pernyataan",
-      description: "Format kosong pernyataan bebas perilaku negatif (Belum Tersedia)",
-      status: "locked",
-      action: () => {},
+      description: "Format kosong pernyataan bebas perilaku negatif",
+      status: "available",
+      action: () => {
+        const link = document.createElement('a');
+        link.href = "/documents/Contoh_SuratPernyataan.pdf";
+        link.download = "Surat_Pernyataan.pdf";
+        link.target = "_blank";
+        link.click();
+      },
     },
   ];
 
