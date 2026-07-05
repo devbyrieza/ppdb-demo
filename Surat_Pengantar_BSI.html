@@ -12,21 +12,39 @@
         body {
             margin: 0;
             padding: 0;
+            background-color: #525659;
+            display: flex;
+            justify-content: center;
+        }
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            background-color: white;
+            background-image: url('public/images/kop-surat-full.jpg');
+            background-size: 210mm 297mm;
+            background-repeat: no-repeat;
+            background-position: center top;
+            box-sizing: border-box;
+            padding: 45mm 25mm 25mm 25mm;
             font-family: 'Times New Roman', Times, serif;
             font-size: 12pt;
             line-height: 1.5;
-            background-image: url('public/images/kop-surat-full.jpg');
-            background-size: 210mm 297mm; /* A4 size */
-            background-repeat: no-repeat;
-            background-position: center top;
-            width: 210mm;
-            min-height: 297mm;
-            box-sizing: border-box;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
+            position: relative;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            margin: 20px 0;
+        }
+        @media print {
+            body {
+                background-color: white;
+            }
+            .page {
+                box-shadow: none;
+                margin: 0;
+            }
         }
         .content {
-            padding: 45mm 25mm 25mm 25mm; /* Adjust top padding to clear the header (kop surat) */
             text-align: justify;
         }
         .header-info {
@@ -67,107 +85,109 @@
     </style>
 </head>
 <body>
-    <div class="content">
-        <div class="header-info">
-            <table>
+    <div class="page">
+        <div class="content">
+            <div class="header-info">
+                <table>
+                    <tr>
+                        <td style="width: 80px;">Nomor</td>
+                        <td style="width: 10px;">:</td>
+                        <td>001/KEU/AI/VII/2026</td>
+                    </tr>
+                    <tr>
+                        <td>Lampiran</td>
+                        <td>:</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Perihal</td>
+                        <td>:</td>
+                        <td><span class="subject">Permohonan Pembukaan Rekening Tambahan</span></td>
+                    </tr>
+                </table>
+            </div>
+
+            <p>Kepada Yth.,<br>
+            <strong>Pimpinan Bank Syariah Indonesia (BSI)</strong><br>
+            di tempat</p>
+
+            <p><em>Assalamu'alaikum Warahmatullahi Wabarakatuh,</em></p>
+
+            <p>Alhamdulillah. Shalawat dan salam semoga senantiasa tercurahkan kepada Nabi Muhammad ﷺ, keluarga, sahabat, serta orang-orang yang berpegang teguh dengan persaksiannya.</p>
+
+            <p>Dengan hormat, sehubungan dengan kebutuhan administrasi keuangan Pesantren Al Imam Al Islami (sebelumnya bernama Al Andalus Al Imam), kami yang bertanda tangan di bawah ini:</p>
+
+            <table style="width: 100%; margin-left: 20px; margin-bottom: 15px;">
                 <tr>
-                    <td style="width: 80px;">Nomor</td>
+                    <td style="width: 150px;">Nama</td>
                     <td style="width: 10px;">:</td>
-                    <td>001/KEU/AI/VII/2026</td>
+                    <td><strong>Ahmad Muhlis, S.Pd.I</strong></td>
                 </tr>
                 <tr>
-                    <td>Lampiran</td>
+                    <td>Jabatan</td>
                     <td>:</td>
-                    <td>-</td>
-                </tr>
-                <tr>
-                    <td>Perihal</td>
-                    <td>:</td>
-                    <td><span class="subject">Permohonan Pembukaan Rekening Tambahan</span></td>
+                    <td>Penanggung Jawab Keuangan Ulul Albaab / Pesantren</td>
                 </tr>
             </table>
+
+            <p>Bermaksud mengajukan permohonan pembukaan 3 (tiga) rekening tambahan di Bank Syariah Indonesia (BSI). Sebagai informasi, rekening utama pesantren kami yang telah terdaftar saat ini adalah:</p>
+            
+            <table style="width: 100%; margin-left: 20px; margin-bottom: 15px;">
+                <tr>
+                    <td style="width: 150px;">Nomor Rekening</td>
+                    <td style="width: 10px;">:</td>
+                    <td><strong>4222224441</strong></td>
+                </tr>
+                <tr>
+                    <td>Atas Nama</td>
+                    <td>:</td>
+                    <td><strong>Al Andalus Al Imam</strong></td>
+                </tr>
+            </table>
+
+            <p>Adapun ketiga rekening tambahan yang akan dibuka ditujukan untuk keperluan sebagai berikut:</p>
+            
+            <table class="accounts-table">
+                <thead>
+                    <tr>
+                        <th style="width: 30px; text-align: center;">No.</th>
+                        <th>Nama Rekening yang Diajukan</th>
+                        <th>Peruntukan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align: center;">1.</td>
+                        <td><strong>Al Imam Sodakoh</strong></td>
+                        <td>Penerimaan Dana Sedekah dan Infaq</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">2.</td>
+                        <td><strong>Al Imam Beasiswa</strong></td>
+                        <td>Penerimaan dan Penyaluran Dana Beasiswa</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">3.</td>
+                        <td><strong>Al Imam PPDB</strong></td>
+                        <td>Penerimaan Dana Pendaftaran Peserta Didik Baru</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>Demikian surat permohonan ini kami sampaikan. Besar harapan kami permohonan pembukaan ketiga rekening tambahan ini dapat segera diproses sesuai ketentuan yang berlaku di BSI.</p>
+
+            <p>Atas perhatian dan kerja sama Bapak/Ibu pimpinan BSI, kami ucapkan jazakumullahu khairan.</p>
+
+            <p><em>Wassalamu'alaikum Warahmatullahi Wabarakatuh.</em></p>
+
+            <div class="signature">
+                <p>Sukabumi, 05 Juli 2026<br>
+                Mudir Pesantren Al Imam Al Islami,</p>
+                <div class="signature-space"></div>
+                <p><strong><u>Ust. Wahab Rajasam, M.Pd.</u></strong></p>
+            </div>
+            <div class="clear"></div>
         </div>
-
-        <p>Kepada Yth.,<br>
-        <strong>Pimpinan Bank Syariah Indonesia (BSI)</strong><br>
-        di tempat</p>
-
-        <p><em>Assalamu'alaikum Warahmatullahi Wabarakatuh,</em></p>
-
-        <p>Alhamdulillah. Shalawat dan salam semoga senantiasa tercurahkan kepada Nabi Muhammad ﷺ, keluarga, sahabat, serta orang-orang yang berpegang teguh dengan persaksiannya.</p>
-
-        <p>Dengan hormat, sehubungan dengan kebutuhan administrasi keuangan Pesantren Al Imam Al Islami (sebelumnya bernama Al Andalus Al Imam), kami yang bertanda tangan di bawah ini:</p>
-
-        <table style="width: 100%; margin-left: 20px; margin-bottom: 15px;">
-            <tr>
-                <td style="width: 150px;">Nama</td>
-                <td style="width: 10px;">:</td>
-                <td><strong>Ahmad Muhlis, S.Pd.I</strong></td>
-            </tr>
-            <tr>
-                <td>Jabatan</td>
-                <td>:</td>
-                <td>Penanggung Jawab Keuangan Ulul Albaab / Pesantren</td>
-            </tr>
-        </table>
-
-        <p>Bermaksud mengajukan permohonan pembukaan 3 (tiga) rekening tambahan di Bank Syariah Indonesia (BSI). Sebagai informasi, rekening utama pesantren kami yang telah terdaftar saat ini adalah:</p>
-        
-        <table style="width: 100%; margin-left: 20px; margin-bottom: 15px;">
-            <tr>
-                <td style="width: 150px;">Nomor Rekening</td>
-                <td style="width: 10px;">:</td>
-                <td><strong>4222224441</strong></td>
-            </tr>
-            <tr>
-                <td>Atas Nama</td>
-                <td>:</td>
-                <td><strong>Al Andalus Al Imam</strong></td>
-            </tr>
-        </table>
-
-        <p>Adapun ketiga rekening tambahan yang akan dibuka ditujukan untuk keperluan sebagai berikut:</p>
-        
-        <table class="accounts-table">
-            <thead>
-                <tr>
-                    <th style="width: 30px; text-align: center;">No.</th>
-                    <th>Nama Rekening yang Diajukan</th>
-                    <th>Peruntukan</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="text-align: center;">1.</td>
-                    <td><strong>Al Imam Sodakoh</strong></td>
-                    <td>Penerimaan Dana Sedekah dan Infaq</td>
-                </tr>
-                <tr>
-                    <td style="text-align: center;">2.</td>
-                    <td><strong>Al Imam Beasiswa</strong></td>
-                    <td>Penerimaan dan Penyaluran Dana Beasiswa</td>
-                </tr>
-                <tr>
-                    <td style="text-align: center;">3.</td>
-                    <td><strong>Al Imam PPDB</strong></td>
-                    <td>Penerimaan Dana Pendaftaran Peserta Didik Baru</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <p>Demikian surat permohonan ini kami sampaikan. Besar harapan kami permohonan pembukaan ketiga rekening tambahan ini dapat segera diproses sesuai ketentuan yang berlaku di BSI.</p>
-
-        <p>Atas perhatian dan kerja sama Bapak/Ibu pimpinan BSI, kami ucapkan jazakumullahu khairan.</p>
-
-        <p><em>Wassalamu'alaikum Warahmatullahi Wabarakatuh.</em></p>
-
-        <div class="signature">
-            <p>Sukabumi, 05 Juli 2026<br>
-            Mudir Pesantren Al Imam Al Islami,</p>
-            <div class="signature-space"></div>
-            <p><strong><u>Ust. Wahab Rajasam, M.Pd.</u></strong></p>
-        </div>
-        <div class="clear"></div>
     </div>
 </body>
 </html>
