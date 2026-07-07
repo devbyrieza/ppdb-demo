@@ -861,7 +861,7 @@ export const generateSuratPernyataan = async (data: PendaftarPdfData) => {
   let y = startY + 2;
   doc.setFont("helvetica", "bold");
   doc.setFontSize(14);
-  doc.text("SURAT PERNYATAAN ORANGTUA/WALI SANTRI", pageWidth / 2, y, {
+  doc.text("SURAT PERNYATAAN ORANG TUA/WALI SANTRI", pageWidth / 2, y, {
     align: "center",
   });
   y += 8;
@@ -908,7 +908,7 @@ export const generateSuratPernyataan = async (data: PendaftarPdfData) => {
   doc.line(col2Line, y + 1, pageWidth - margin, y + 1);
   y += 8;
 
-  doc.text("Sebagai orangtua/wali dari calon santri/santriwati:", margin, y);
+  doc.text("Sebagai orang tua/wali dari calon santri/santriwati:", margin, y);
   y += 6;
 
   // Data santri
@@ -950,16 +950,16 @@ export const generateSuratPernyataan = async (data: PendaftarPdfData) => {
   ];
   for (let i = 0; i < violations.length; i++) {
     const lines = doc
-      .setFontSize(10.5)
-      .splitTextToSize(`${i + 1}. ${violations[i]}`, contentW - 8);
+      .setFontSize(10)
+      .splitTextToSize(`${i + 1}. ${violations[i]}`, contentW - 12);
     doc.text(lines, margin + 5, y);
-    y += lines.length * 4.5;
+    y += lines.length * 4.8;
   }
 
   y += 3;
   const consequence =
-    "Maka kami menyatakan bersedia dengan ikhlas apabila putra/putri kami dikembalikan kepada kami hingga benar-benar dinyatakan pulih dan layak untuk kembali tinggal di lingkungan Pesantren, yang dibuktikan dengan surat keterangan dari psikolog atau tenaga ahli yang berwenang.";
-  const consequenceLines = doc.splitTextToSize(consequence, contentW);
+    "Maka kami menyatakan bersedia menerima keputusan dan tindakan pembinaan yang ditetapkan oleh Pesantren sesuai dengan jenis dan tingkat pelanggaran yang dilakukan, termasuk apabila putra/putri kami harus dikembalikan sementara kepada orang tua/wali. Apabila berdasarkan pertimbangan Pesantren diperlukan pemeriksaan atau pendampingan oleh psikolog maupun tenaga ahli yang berwenang, kami bersedia mengikuti ketentuan tersebut sebagai salah satu bahan pertimbangan untuk menentukan kelayakan putra/putri kami kembali tinggal di lingkungan Pesantren.";
+  const consequenceLines = doc.splitTextToSize(consequence, contentW - 5);
   doc.text(consequenceLines, margin, y);
   y += consequenceLines.length * 4.5 + 4;
 
@@ -970,7 +970,7 @@ export const generateSuratPernyataan = async (data: PendaftarPdfData) => {
 
   // Kiri: Catatan Kesehatan
   doc.setFont("helvetica", "bold");
-  doc.text("Catatan mengenai kondisi kesehatan:", margin, y);
+  doc.text("Pernyataan mengenai kondisi kesehatan:", margin, y);
   doc.setFont("helvetica", "normal");
   const healthNote =
     "Apabila putra/putri kami diketahui menderita penyakit kronis (antara lain: jantung, ginjal, HIV/AIDS, TBC, infeksi selaput otak, difteri, kanker, diabetes, atau epilepsi), kami bersedia segera dihubungi oleh pihak Pesantren untuk bersama-sama menentukan langkah terbaik demi keselamatan dan kenyamanan putra/putri kami serta seluruh warga Pesantren.";
@@ -995,7 +995,7 @@ export const generateSuratPernyataan = async (data: PendaftarPdfData) => {
   doc.setFontSize(10.5);
   doc.setLineWidth(0.2);
   doc.line(sigX, bottomY + 40, sigX + 70, bottomY + 40);
-  doc.text("(Orangtua/Wali)", sigX + 15, bottomY + 46);
+  doc.text("(Orang Tua/Wali)", sigX + 15, bottomY + 46);
 
   drawFooter(doc);
   if (typeof window !== "undefined") {
@@ -1038,7 +1038,7 @@ export const generatePaktaIntegritas = async (data: PendaftarPdfData) => {
 
   const santriFields2: [string, string][] = [
     ["Nama Lengkap", toTitleCase(data.nama_lengkap || "")],
-    ["Jenjang", "MTs / I'dad Lughawiy / MA  *) coret yang tidak perlu"],
+    ["Jenjang", "MTs / I'dad Lughawiy / MA"],
     ["Tahun Pelajaran", data.tahun_ajaran || "2026/2027"],
     ["Alamat Lengkap", data.alamat || ""],
   ];
@@ -1049,6 +1049,12 @@ export const generatePaktaIntegritas = async (data: PendaftarPdfData) => {
     doc.text(":", margin + 50, y);
     if (value) {
       doc.text(value, margin + 53, y);
+      if (label === "Jenjang") {
+        y += 4;
+        doc.setFontSize(8);
+        doc.text("*) coret yang tidak perlu", margin + 53, y);
+        doc.setFontSize(10.5);
+      }
     } else {
       doc.setDrawColor(100, 100, 100);
       doc.setLineWidth(0.2);
@@ -1059,7 +1065,7 @@ export const generatePaktaIntegritas = async (data: PendaftarPdfData) => {
 
   y += 5;
   const preamble1 =
-    `Dengan sungguh-sungguh dan penuh kesadaran, selama saya menjadi santri di ${institution.name}, menyatakan bahwa saya akan:`;
+    `Dengan sungguh-sungguh dan penuh kesadaran, selama menjadi santri di ${institution.name}, saya menyatakan bahwa saya akan:`;
   doc.text(doc.splitTextToSize(preamble1, contentW), margin, y);
   y += 13;
 
@@ -1072,8 +1078,8 @@ export const generatePaktaIntegritas = async (data: PendaftarPdfData) => {
   ];
   for (let i = 0; i < santriCommitments.length; i++) {
     const lines = doc
-      .setFontSize(10.5)
-      .splitTextToSize(`${i + 1}. ${santriCommitments[i]}`, contentW - 8);
+      .setFontSize(10)
+      .splitTextToSize(`${i + 1}. ${santriCommitments[i]}`, contentW - 12);
     doc.text(lines, margin + 5, y);
     y += lines.length * 5.5 + 1;
   }
@@ -1081,7 +1087,7 @@ export const generatePaktaIntegritas = async (data: PendaftarPdfData) => {
   y += 5;
 
   const pageHeight2 = doc.internal.pageSize.getHeight();
-  if (y + 70 > pageHeight2 - 40) { // Increased threshold slightly to account for the closing text
+  if (y + 60 > pageHeight2 - 25) { 
     doc.addPage();
     drawHeaderSync(doc);
     y = getContentStartY();
@@ -1121,7 +1127,7 @@ export const generatePaktaIntegritas = async (data: PendaftarPdfData) => {
   y = startY + 2;
   doc.setFont("helvetica", "bold");
   doc.setFontSize(14);
-  doc.text("PAKTA INTEGRITAS ORANGTUA/WALI SANTRI", pageWidth / 2, y, {
+  doc.text("PAKTA INTEGRITAS ORANG TUA/WALI SANTRI", pageWidth / 2, y, {
     align: "center",
   });
   y += 12;
@@ -1167,7 +1173,7 @@ export const generatePaktaIntegritas = async (data: PendaftarPdfData) => {
   doc.line(col2Line, y + 1, pageWidth - margin, y + 1);
   y += 6;
 
-  doc.text("Sebagai orangtua/wali dari santri/santriwati:", margin, y);
+  doc.text("Sebagai orang tua/wali dari santri/santriwati:", margin, y);
   y += 4.5;
   doc.setFont("helvetica", "bold");
   doc.text("Nama Santri", col1X, y);
@@ -1201,10 +1207,10 @@ export const generatePaktaIntegritas = async (data: PendaftarPdfData) => {
   ];
   for (let i = 0; i < ortuCommitments.length; i++) {
     const lines = doc
-      .setFontSize(10.5)
-      .splitTextToSize(`${i + 1}. ${ortuCommitments[i]}`, contentW - 8);
+      .setFontSize(10)
+      .splitTextToSize(`${i + 1}. ${ortuCommitments[i]}`, contentW - 12);
     doc.text(lines, margin + 5, y);
-    y += lines.length * 4.6;
+    y += lines.length * 5;
   }
 
   y += 2;
@@ -1233,7 +1239,7 @@ export const generatePaktaIntegritas = async (data: PendaftarPdfData) => {
   doc.setFontSize(10.5);
   doc.setLineWidth(0.2);
   doc.line(sigX2, bottomY2 + 40, sigX2 + 70, bottomY2 + 40);
-  doc.text("(Orangtua/Wali)", sigX2 + 15, bottomY2 + 46);
+  doc.text("(Orang Tua/Wali)", sigX2 + 15, bottomY2 + 46);
 
   drawFooter(doc);
   if (typeof window !== "undefined") {
