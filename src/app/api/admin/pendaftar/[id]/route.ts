@@ -498,7 +498,83 @@ export async function PATCH(
       return NextResponse.json({ success: true, message: "Nilai berhasil diupdate" });
     }
 
-    // SCENARIO 1: Update Phone Number (Admin Super Only)
+    
+    // SCENARIO: Ubah Jenjang (Admin Super Only)
+    if (body.action === "ubah_jenjang" && body.jenjang) {
+      if (session.role !== "admin_super") {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
+
+      const pendaftar = await prisma.pendaftar.findUnique({
+        where: { id: params.id },
+        select: {
+          id: true,
+          jenis_kelamin: true,
+          jenjang: true,
+          nomor_pendaftaran: true,
+          tahun_ajaran_id: true,
+          nama_lengkap: true,
+          data_lengkap: true
+        }
+      });
+
+      if (!pendaftar) {
+        return NextResponse.json({ error: "Pendaftar not found" }, { status: 404 });
+      }
+
+      if (pendaftar.jenjang === body.jenjang) {
+        return NextResponse.json({ error: "Jenjang sudah sesuai" }, { status: 400 });
+      }
+
+      // Generate new nomor pendaftaran
+      const { generateNomorPendaftaran } = await import("@/lib/utils/nomor-pendaftaran");
+      let newNomorPendaftaran = pendaftar.nomor_pendaftaran;
+      try {
+        newNomorPendaftaran = await generateNomorPendaftaran(
+          body.jenjang,
+          pendaftar.jenis_kelamin,
+          pendaftar.tahun_ajaran_id
+        );
+      } catch (e) {
+        return NextResponse.json({ error: e.message || "Gagal membuat nomor pendaftaran baru" }, { status: 500 });
+      }
+
+      const dataLengkap = pendaftar.data_lengkap || {};
+      if (!dataLengkap.santri) dataLengkap.santri = {};
+      dataLengkap.santri.jenjang = body.jenjang;
+
+      await prisma.pendaftar.update({
+        where: { id: params.id },
+        data: {
+          jenjang: body.jenjang,
+          nomor_pendaftaran: newNomorPendaftaran,
+          data_lengkap: dataLengkap,
+          updated_at: new Date()
+        }
+      });
+
+      // Audit log
+      logAdminAction({
+        action: "UBAH_JENJANG_PENDAFTAR",
+        adminId: session.id || "system",
+        adminName: session.full_name || session.name || "Admin",
+        targetId: params.id,
+        targetName: pendaftar.nama_lengkap,
+        details: {
+          jenjang_lama: pendaftar.jenjang,
+          jenjang_baru: body.jenjang,
+          nomor_pendaftaran_lama: pendaftar.nomor_pendaftaran,
+          nomor_pendaftaran_baru: newNomorPendaftaran
+        },
+      });
+
+      await invalidateAdminPendaftarCache();
+      return NextResponse.json({
+        success: true,
+        message: "Jenjang berhasil diubah ke " + body.jenjang + ". Nomor pendaftaran baru: " + newNomorPendaftaran,
+      });
+    }
+\n    // SCENARIO 1: Update Phone Number (Admin Super Only)
     if (no_hp) {
       if (session.role !== "admin_super") {
         return NextResponse.json(

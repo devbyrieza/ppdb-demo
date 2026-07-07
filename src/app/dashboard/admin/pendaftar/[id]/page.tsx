@@ -259,7 +259,70 @@ export default function PendaftarDetailPage() {
   // Helper for role checks
   const isKeuangan = userRole === "admin_keuangan";
 
-  const handleOpenEditModal = () => {
+  
+  const handleUbahJenjang = async () => {
+    if (!pendaftar) return;
+
+    const { value: newJenjang } = await Swal.fire({
+      title: "Ubah Jenjang Pendaftar",
+      html: "<div class='text-left text-sm mb-4 text-stone-600 bg-amber-50 p-3 rounded-lg border border-amber-200'>" +
+            "<b>Peringatan:</b> Mengubah jenjang akan secara otomatis memberikan nomor pendaftaran baru yang sesuai dengan jenjang tujuan.<br/><br/>" +
+            "Nomor pendaftaran lama (<b>" + pendaftar.nomor_pendaftaran + "</b>) akan menjadi kosong dan bisa digunakan oleh pendaftar lain.</div>",
+      input: "select",
+      inputOptions: {
+        "MTs": "MTs",
+        "IL": "IL",
+        "MA": "MA",
+        "SD": "SD",
+        "SMP": "SMP",
+        "SMA": "SMA"
+      },
+      inputValue: pendaftar.jenjang,
+      inputPlaceholder: "Pilih Jenjang Baru",
+      showCancelButton: true,
+      confirmButtonText: "Simpan Perubahan",
+      cancelButtonText: "Batal",
+      inputValidator: (value) => {
+        if (!value) return "Anda harus memilih jenjang!";
+        if (value === pendaftar.jenjang) return "Jenjang baru tidak boleh sama dengan jenjang saat ini!";
+      }
+    });
+
+    if (newJenjang) {
+      Swal.fire({
+        title: "Memproses...",
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+      });
+
+      try {
+        const res = await fetch("/api/admin/pendaftar/" + pendaftar.id, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "ubah_jenjang",
+            jenjang: newJenjang
+          })
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          Swal.fire({
+            icon: "success",
+            title: "Berhasil!",
+            text: data.message,
+          }).then(() => {
+            window.location.reload();
+          });
+        } else {
+          Swal.fire("Gagal", data.error || "Terjadi kesalahan saat mengubah jenjang", "error");
+        }
+      } catch (error) {
+        Swal.fire("Error", "Gagal menghubungi server", "error");
+      }
+    }
+  };
+\n  const handleOpenEditModal = () => {
     if (!pendaftar) return;
     setEditFormData({
       santri: {
@@ -1111,13 +1174,22 @@ export default function PendaftarDetailPage() {
               </a>
             )}
             {userRole === "admin_super" && (
-              <button
-                onClick={handleOpenEditModal}
-                className="px-4 py-2 bg-gold-400 hover:bg-yellow-500 text-primary-900 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 shadow-sm active:scale-95 border border-gold-300 mr-2"
-              >
-                <Edit className="w-3.5 h-3.5" />
-                Edit Biodata & Ortu
-              </button>
+              <>
+                <button
+                  onClick={handleUbahJenjang}
+                  className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-black transition-all flex items-center gap-1.5 shadow-sm active:scale-95 border border-purple-500 mr-2"
+                >
+                  <School className="w-3.5 h-3.5" />
+                  Ubah Jenjang
+                </button>
+                <button
+                  onClick={handleOpenEditModal}
+                  className="px-4 py-2 bg-gold-400 hover:bg-yellow-500 text-primary-900 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 shadow-sm active:scale-95 border border-gold-300 mr-2"
+                >
+                  <Edit className="w-3.5 h-3.5" />
+                  Edit Biodata & Ortu
+                </button>
+              </>
             )}
             {pendaftar.email && (
               <a
