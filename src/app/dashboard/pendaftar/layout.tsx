@@ -54,6 +54,7 @@ export default function DashboardLayout({
   const [loading, setLoading] = useState(true);
   const [seragamLengkap, setSeragamLengkap] = useState(true); // true = sudah isi, false = belum
   const [welcomeDayDone, setWelcomeDayDone] = useState(true); // true = sudah konfirmasi, false = belum
+  const [pasFoto, setPasFoto] = useState("");
 
   // Extract first name for greeting
   const namaDepan = namaLengkap.split(" ")[0] || namaLengkap;
@@ -117,6 +118,10 @@ export default function DashboardLayout({
         // Cek kelengkapan seragam
         const sudahIsiSeragam = !!(userData.ukuran_seragam_baju && userData.ukuran_seragam_celana && userData.ukuran_seragam_almamater);
         setSeragamLengkap(sudahIsiSeragam);
+
+        if (userData.data_lengkap && userData.data_lengkap.pas_foto) {
+          setPasFoto(userData.data_lengkap.pas_foto);
+        }
 
         // Cek konfirmasi welcome day
         try {
@@ -405,13 +410,19 @@ export default function DashboardLayout({
 
                 {/* User Card */}
                 <div className="p-4 rounded-[1.5rem] bg-gold-50/50 border border-gold-100 relative overflow-hidden group app-card">
-                  <div className="absolute top-0 right-0 p-2 opacity-5 group-hover:opacity-10 transition-opacity">
-                    <User className="w-20 h-20 text-primary-900 translate-x-4 -translate-y-4" />
-                  </div>
+                  {pasFoto && STATUS_ORDER.indexOf(statusProses) >= STATUS_ORDER.indexOf("docs_verified") ? (
+                    <div className="absolute top-4 right-4 w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-md z-10 shrink-0 bg-surface-100">
+                      <img src={pasFoto} alt="Foto Pendaftar" className="w-full h-full object-cover" />
+                    </div>
+                  ) : (
+                    <div className="absolute top-0 right-0 p-2 opacity-5 group-hover:opacity-10 transition-opacity">
+                      <User className="w-20 h-20 text-primary-900 translate-x-4 -translate-y-4" />
+                    </div>
+                  )}
                   <p className="text-[10px] uppercase tracking-widest font-black text-ink-400 mb-1">
                     Pendaftar
                   </p>
-                  <p className="font-black text-ink-950 text-base truncate mb-3">
+                  <p className="font-black text-ink-950 text-base truncate mb-3 pr-14">
                     {namaDepan}
                   </p>
                   <div className="text-[10px] text-ink-500 bg-white px-2.5 py-1.5 rounded-xl inline-flex shadow-sm border border-gold-100 items-center justify-between w-full">
