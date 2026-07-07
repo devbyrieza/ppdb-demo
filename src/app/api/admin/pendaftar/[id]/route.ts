@@ -563,12 +563,23 @@ export async function PATCH(
     }
 
     // Update pendaftar status
+    const existingPendaftar = await prisma.pendaftar.findUnique({
+      where: { id: params.id },
+      select: { nomor_pendaftaran: true }
+    });
+
+    const updateData: any = {
+      status_pendaftaran: status_proses,
+      updated_at: new Date(),
+    };
+
+    if (status_proses === "mengundurkan_diri" && existingPendaftar && !existingPendaftar.nomor_pendaftaran.startsWith("WD_")) {
+      updateData.nomor_pendaftaran = `WD_${Date.now()}_${existingPendaftar.nomor_pendaftaran}`;
+    }
+
     const data = await prisma.pendaftar.update({
       where: { id: params.id },
-      data: {
-        status_pendaftaran: status_proses,
-        updated_at: new Date(),
-      },
+      data: updateData,
     });
 
     // SYNC TO PENGUMUMAN: If status is final, ensure student dashboard matches

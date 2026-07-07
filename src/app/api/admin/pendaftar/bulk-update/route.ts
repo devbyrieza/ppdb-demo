@@ -78,10 +78,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (alasan) {
+    if (alasan || newStatus === "mengundurkan_diri") {
       const existing = await prisma.pendaftar.findMany({
         where: { id: { in: ids } },
-        select: { id: true, data_lengkap: true }
+        select: { id: true, data_lengkap: true, nomor_pendaftaran: true }
       });
       
       await prisma.$transaction(
@@ -96,18 +96,27 @@ export async function POST(req: NextRequest) {
           
           const newDataLengkap = {
             ...(parsedData as any),
-            alasan_mengundurkan_diri: alasan
           };
+          if (alasan) {
+            newDataLengkap.alasan_mengundurkan_diri = alasan;
+          }
           
           const safeDataLengkap = JSON.parse(JSON.stringify(newDataLengkap));
             
+          const updateData: any = {
+            status_pendaftaran: newStatus,
+            data_lengkap: safeDataLengkap,
+            updated_at: new Date(),
+          };
+
+          // Rename nomor_pendaftaran to free it up for gap filling
+          if (newStatus === "mengundurkan_diri" && !p.nomor_pendaftaran.startsWith("WD_")) {
+            updateData.nomor_pendaftaran = `WD_${Date.now()}_${p.nomor_pendaftaran}`;
+          }
+
           return prisma.pendaftar.update({
             where: { id: p.id },
-            data: {
-              status_pendaftaran: newStatus,
-              data_lengkap: safeDataLengkap,
-              updated_at: new Date(),
-            }
+            data: updateData
           });
         })
       );

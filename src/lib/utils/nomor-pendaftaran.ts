@@ -61,31 +61,30 @@ export async function generateNomorPendaftaran(
   // Get year from tahun ajaran (last 2 digits)
   const tahun = String(tahunAjaranData.tahun_mulai).slice(-2);
 
-  // Get last nomor for this prefix + tahun ajaran
-  const lastPendaftar = await prisma.pendaftar.findFirst({
+  // Fetch all used valid sequences for this prefix + year
+  const existingPendaftars = await prisma.pendaftar.findMany({
     where: {
       tahun_ajaran_id: tahunAjaranData.id,
       nomor_pendaftaran: {
         startsWith: `${prefix}${tahun}`,
       },
     },
-    orderBy: {
-      nomor_pendaftaran: "desc",
-    },
-    select: {
-      nomor_pendaftaran: true,
-    },
+    select: { nomor_pendaftaran: true },
   });
 
-  let nextNumber = 1;
+  // Extract used sequences
+  const usedSequences = existingPendaftars
+    .map((p) => p.nomor_pendaftaran)
+    .filter((n) => n.length === 10) // Strict length to ignore renamed/deleted ones like WD_MTA...
+    .map((n) => parseInt(n.slice(5), 10))
+    .sort((a, b) => a - b);
 
-  if (lastPendaftar?.nomor_pendaftaran) {
-    // Extract number from last nomor
-    // Format: MTI2600001 -> extract 00001 -> increment
-    const match = lastPendaftar.nomor_pendaftaran.match(/\d{5}$/);
-    if (match) {
-      const lastNumber = parseInt(match[0], 10);
-      nextNumber = lastNumber + 1;
+  let nextNumber = 1;
+  for (const seq of usedSequences) {
+    if (seq === nextNumber) {
+      nextNumber++;
+    } else if (seq > nextNumber) {
+      break; // Gap found!
     }
   }
 
@@ -380,41 +379,48 @@ export function validatePhoneFormat(phone: string): boolean {
 // ===================================
 
 /**
- * Get next sequence number for a specific prefix and year
+ * Get next sequence numbers for a specific prefix and year
  *
  * @param prefix - Prefix (MTI, MTA, etc.)
  * @param tahun - 2-digit year
  * @param tahunAjaranId - Tahun ajaran ID
- * @returns Next sequence number
+ * @param count - Number of sequences to generate
+ * @returns Array of sequence numbers
  */
 export async function getNextSequence(
   prefix: string,
   tahun: string,
   tahunAjaranId: string,
-): Promise<number> {
-  const lastPendaftar = await prisma.pendaftar.findFirst({
+  count: number = 1
+): Promise<number[]> {
+  const existingPendaftars = await prisma.pendaftar.findMany({
     where: {
       tahun_ajaran_id: tahunAjaranId,
       nomor_pendaftaran: {
         startsWith: `${prefix}${tahun}`,
       },
     },
-    orderBy: {
-      nomor_pendaftaran: "desc",
-    },
-    select: {
-      nomor_pendaftaran: true,
-    },
+    select: { nomor_pendaftaran: true },
   });
 
-  if (lastPendaftar?.nomor_pendaftaran) {
-    const match = lastPendaftar.nomor_pendaftaran.match(/\d{5}$/);
-    if (match) {
-      return parseInt(match[0], 10) + 1;
+  const usedSequences = new Set(
+    existingPendaftars
+      .map((p) => p.nomor_pendaftaran)
+      .filter((n) => n.length === 10)
+      .map((n) => parseInt(n.slice(5), 10))
+  );
+
+  const availableSequences: number[] = [];
+  let currentSeq = 1;
+
+  while (availableSequences.length < count) {
+    if (!usedSequences.has(currentSeq)) {
+      availableSequences.push(currentSeq);
     }
+    currentSeq++;
   }
 
-  return 1;
+  return availableSequences;
 }
 
 /**
@@ -447,12 +453,11 @@ export async function generateBatchNomorPendaftaran(
   }
 
   const tahun = String(tahunAjaran.tahun_mulai).slice(-2);
-  const startSequence = await getNextSequence(prefix, tahun, tahunAjaran.id);
+  const sequences = await getNextSequence(prefix, tahun, tahunAjaran.id, count);
 
   const nomorList: string[] = [];
 
-  for (let i = 0; i < count; i++) {
-    const sequence = startSequence + i;
+  for (const sequence of sequences) {
     if (sequence > 99999) {
       throw new Error(
         `Nomor pendaftaran ${prefix} telah mencapai batas maksimum untuk tahun ini`,
