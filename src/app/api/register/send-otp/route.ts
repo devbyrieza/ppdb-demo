@@ -11,11 +11,8 @@ import crypto from "crypto";
 const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
 const hashOTP = (otp: string) => crypto.createHash("sha256").update(otp).digest("hex");
 
-/** Demo mode: aktif jika SKIP_WHATSAPP_OTP=true ATAU jika ini environment vercel.app */
 const isDemoMode = () => {
-  if (process.env.SKIP_WHATSAPP_OTP === "true") return true;
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL || "";
-  return appUrl.includes("vercel.app");
+  return process.env.SKIP_WHATSAPP_OTP === "true";
 };
 
 export async function POST(request: NextRequest) {
