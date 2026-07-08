@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
-import { saveFileLocal } from "@/lib/storage/local";
+import { saveFileLocal, isRunningOnVercel } from "@/lib/storage/local";
 
 // Konfigurasi dokumen
 const DOKUMEN_CONFIG: Record<
@@ -290,6 +290,7 @@ export async function POST(request: NextRequest) {
           file_path: filePath,
           file_size: file.size,
           file_type: detectedType, // Use detected type
+          file_data: isRunningOnVercel() ? buffer : null,
           is_verified: false,
           verified_by: null,
           verified_at: null,
@@ -306,6 +307,7 @@ export async function POST(request: NextRequest) {
           file_path: filePath,
           file_size: file.size,
           file_type: detectedType, // Use detected type
+          file_data: isRunningOnVercel() ? buffer : null,
           is_verified: false,
         },
       });

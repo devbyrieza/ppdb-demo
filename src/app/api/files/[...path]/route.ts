@@ -114,6 +114,26 @@ export async function GET(
       }
     }
 
+    // Fallback 2: Check Dokumen table for file_data (Vercel Support)
+    if (!fileData && pathSegments[0] === "dokumen-pendaftaran") {
+      const { prisma } = await import("@/lib/prisma");
+      const filename = pathSegments[pathSegments.length - 1];
+      const dokumen = await prisma.dokumen.findFirst({
+        where: {
+          pendaftar_id: ownerId,
+          file_name: filename,
+        },
+      });
+
+      if (dokumen && dokumen.file_data) {
+        fileData = {
+          buffer: dokumen.file_data,
+          mimeType: dokumen.file_type || "application/octet-stream",
+        };
+        console.log(`[File Serve] Found file_data in Database for ${filename}`);
+      }
+    }
+
     if (!fileData) {
       console.error(`[File Serve] ❌ NOT FOUND: ${relativePath}`);
       console.log(

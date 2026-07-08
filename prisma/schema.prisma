@@ -207,6 +207,7 @@ model Dokumen {
   file_path     String
   file_size     Int?
   file_type     String?
+  file_data     Bytes?    // Stores binary data for Vercel (ephemeral filesystem workaround)
   is_verified   Boolean   @default(false)
   verified_by   String?   @db.Uuid
   verified_at   DateTime? @db.Timestamptz(6)

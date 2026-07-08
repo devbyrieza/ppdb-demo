@@ -1,8 +1,8 @@
 import fs from "fs";
 import path from "path";
 
-// Gunakan direktori lokal yang akan di-mount sebagai persistent volume di Coolify
-// Gunakan /tmp jika di-deploy di Vercel (karena filesystem read-only)
+// Gunakan direktori lokal yang akan di-mount sebagai persistent volume di Coolify/VPS
+// Di Vercel, filesystem tidak persistent - gunakan database storage sebagai fallback
 const isVercel = process.env.VERCEL === "1" || process.env.NEXT_PUBLIC_VERCEL_ENV !== undefined;
 const STORAGE_DIR = isVercel 
   ? path.join("/tmp", "storage_data") 
@@ -124,4 +124,11 @@ export function deleteFileLocal(relativePath: string): boolean {
     return true;
   }
   return false;
+}
+
+/**
+ * Check if running on Vercel (ephemeral filesystem)
+ */
+export function isRunningOnVercel(): boolean {
+  return isVercel;
 }
