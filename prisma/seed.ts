@@ -54,12 +54,14 @@ async function main() {
 
     // 2. Create Users (Profiles) DIRECTLY in Database (No Supabase Auth)
     const usersToCreate = [
-        { email: 'admin@ppdb-demo.com', password: 'password123', role: 'admin_super', name: 'Super Admin', phone: '081234567890', label: 'ADMIN_SUPER' },
+        { email: 'admin@ppdb-demo.com', password: 'Admin26!', role: 'admin_super', name: 'Super Admin', phone: '081234567890', label: 'ADMIN_SUPER' },
 
         // Specific Role Admins
-        { email: 'admin.berkas@ppdb-demo.com', password: 'password123', role: 'admin_berkas', name: 'Admin Berkas', phone: '081234567801', label: 'ADMIN_BERKAS' },
-        { email: 'admin.keuangan@ppdb-demo.com', password: 'password123', role: 'admin_keuangan', name: 'Admin Keuangan', phone: '081234567802', label: 'ADMIN_KEUANGAN' },
-        { email: 'penguji@ppdb-demo.com', password: 'password123', role: 'penguji', name: 'Ustadz Penguji', phone: '081234567803', label: 'PENGUJI' },
+        { email: 'berkas@ppdb-demo.com', password: 'Berkas26!', role: 'admin_berkas', name: 'Admin Berkas', phone: '081234567801', label: 'ADMIN_BERKAS' },
+        { email: 'keuangan@ppdb-demo.com', password: 'Keuangan26!', role: 'admin_keuangan', name: 'Admin Keuangan', phone: '081234567802', label: 'ADMIN_KEUANGAN' },
+        { email: 'quran@ppdb-demo.com', password: 'Quran26!', role: 'penguji', name: 'Ustadz Penguji Al-Quran', phone: '081234567803', label: 'PENGUJI' },
+        { email: 'calsan@ppdb-demo.com', password: 'Santri26!', role: 'pewawancara_calsan', name: 'Ustadz Pewawancara Calsan', phone: '081234567804', label: 'PENGUJI' },
+        { email: 'cawalsan@ppdb-demo.com', password: 'Orang Tua26!', role: 'pewawancara_cawalsan', name: 'Ustadz Pewawancara Wali', phone: '081234567805', label: 'PENGUJI' },
 
         // Pendaftar Test Accounts
         { email: 'user.draft@example.com', password: 'password123', role: 'pendaftar', name: 'Ahmad Draft', phone: '081234567891', label: 'DRAFT' },
@@ -98,7 +100,7 @@ async function main() {
             });
             console.log(`Created new user: ${u.email}`);
         } else {
-            // Update existing profile (optional, to ensure password matches)
+            // Update profile
             const hashedPassword = await bcrypt.hash(u.password, 10);
             await prisma.profile.update({
                 where: { id: userId },
