@@ -574,7 +574,8 @@ export async function PATCH(
         message: "Jenjang berhasil diubah ke " + body.jenjang + ". Nomor pendaftaran baru: " + newNomorPendaftaran,
       });
     }
-\n    // SCENARIO 1: Update Phone Number (Admin Super Only)
+
+    // SCENARIO 1: Update Phone Number (Admin Super Only)
     if (no_hp) {
       if (session.role !== "admin_super") {
         return NextResponse.json(

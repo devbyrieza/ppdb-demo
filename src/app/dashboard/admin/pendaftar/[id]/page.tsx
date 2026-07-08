@@ -322,7 +322,8 @@ export default function PendaftarDetailPage() {
       }
     }
   };
-\n  const handleOpenEditModal = () => {
+
+  const handleOpenEditModal = () => {
     if (!pendaftar) return;
     setEditFormData({
       santri: {
