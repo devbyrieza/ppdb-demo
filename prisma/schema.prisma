@@ -233,6 +233,7 @@ model Pembayaran {
   midtrans_response_json      Json?
   bukti_transfer_path         String?
   bukti_transfer_filename     String?
+  file_data                   Bytes?    // Stores binary data for Vercel (ephemeral filesystem workaround)
   status_pembayaran           String          @default("pending")
   verified_by                 String?         @db.Uuid
   verified_at                 DateTime?       @db.Timestamptz(6)

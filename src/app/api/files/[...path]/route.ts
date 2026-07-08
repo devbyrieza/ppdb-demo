@@ -98,18 +98,35 @@ export async function GET(
       const pembayaran = await prisma.pembayaran.findFirst({
         where: {
           pendaftar_id: ownerId,
-          bukti_transfer_filename: filename,
+          bukti_transfer_path: {
+            contains: filename,
+          },
         },
       });
 
-      if (pembayaran && pembayaran.midtrans_response_json) {
-        const json = pembayaran.midtrans_response_json as any;
-        if (json.base64_image) {
+      if (pembayaran) {
+        if (pembayaran.file_data) {
+          const ext = filename.split(".").pop()?.toLowerCase();
+          let mime = "image/jpeg";
+          if (ext === "png") mime = "image/png";
+          else if (ext === "pdf") mime = "application/pdf";
+          else if (ext === "webp") mime = "image/webp";
+
           fileData = {
-            buffer: Buffer.from(json.base64_image, "base64"),
-            mimeType: json.mime_type || "image/jpeg",
+            buffer: pembayaran.file_data,
+            mimeType: mime,
           };
-          console.log(`[File Serve] Found Base64 Image in Database for ${filename}`);
+          console.log(`[File Serve] Found file_data in Database for ${filename}`);
+        } else if (pembayaran.midtrans_response_json) {
+          // Fallback to legacy base64 in midtrans_response_json
+          const json = pembayaran.midtrans_response_json as any;
+          if (json.base64_image) {
+            fileData = {
+              buffer: Buffer.from(json.base64_image, "base64"),
+              mimeType: json.mime_type || "image/jpeg",
+            };
+            console.log(`[File Serve] Found Base64 Image in midtrans_response_json for ${filename}`);
+          }
         }
       }
     }
