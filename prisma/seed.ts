@@ -64,20 +64,20 @@ async function main() {
 
     const dummyPendaftar = [
         // The 4 required by the UI for 1-click login:
-        { nik: '1234567890123451', no: 'MTA2600001', name: 'Muhammad Al-Fatih', gender: 'L', jenjang: 'MTs', status: 'draft', vStatus: 'pending', phone: '081234567891', email: 'fatih@example.com' },
-        { nik: '1234567890123452', no: 'MTI2600001', name: 'Aisyah Azzahra', gender: 'P', jenjang: 'MTs', status: 'payment_verification', vStatus: 'verified', phone: '081234567892', email: 'aisyah@example.com' },
-        { nik: '1234567890123453', no: 'ILA2600001', name: 'Umar Bin Khattab', gender: 'L', jenjang: 'MA', status: 'verified', vStatus: 'verified', phone: '081234567893', email: 'umar@example.com' },
-        { nik: '1234567890123454', no: 'ILI2600001', name: 'Khadijah Bint Khuwaylid', gender: 'P', jenjang: 'MA', status: 'accepted', vStatus: 'verified', phone: '081234567894', email: 'khadijah@example.com' },
+        { nik: '1234567890123451', no: 'MTA2600001', name: 'Muhammad Al-Fatih', gender: 'L', jenjang: 'MTs', status: 'draft', vStatus: 'pending', phone: '081234567891', email: 'fatih@example.com', prov: 'BANTEN', kab: 'KABUPATEN SERANG', hasExam: false },
+        { nik: '1234567890123452', no: 'MTI2600001', name: 'Aisyah Azzahra', gender: 'P', jenjang: 'MTs', status: 'payment_verification', vStatus: 'verified', phone: '081234567892', email: 'aisyah@example.com', prov: 'DKI JAKARTA', kab: 'JAKARTA SELATAN', hasExam: true, scores: { quran: 85, akademi: 90, keprib: 88, sesuai: 90 } },
+        { nik: '1234567890123453', no: 'ILA2600001', name: 'Umar Bin Khattab', gender: 'L', jenjang: 'MA', status: 'verified', vStatus: 'verified', phone: '081234567893', email: 'umar@example.com', prov: 'JAWA BARAT', kab: 'KOTA DEPOK', hasExam: true, scores: { quran: null, akademi: null, keprib: null, sesuai: null } },
+        { nik: '1234567890123454', no: 'ILI2600001', name: 'Khadijah Bint Khuwaylid', gender: 'P', jenjang: 'MA', status: 'accepted', vStatus: 'verified', phone: '081234567894', email: 'khadijah@example.com', prov: 'BANTEN', kab: 'KOTA SERANG', hasExam: true, scores: { quran: 95, akademi: 85, keprib: 92, sesuai: 95 } },
     
         // Additional realistic demo data
-        { nik: '3201000000000005', no: 'MTA2600002', name: 'Zaid Bin Tsabit', gender: 'L', jenjang: 'MTs', status: 'accepted', vStatus: 'verified', phone: '081234567895', email: 'zaid@example.com' },
-        { nik: '3201000000000006', no: 'MTI2600002', name: 'Fatimah Az-Zahra', gender: 'P', jenjang: 'MTs', status: 'verified', vStatus: 'verified', phone: '081234567896', email: 'fatimah@example.com' },
-        { nik: '3201000000000007', no: 'ILA2600002', name: 'Ali Bin Abi Thalib', gender: 'L', jenjang: 'MA', status: 'payment_verification', vStatus: 'pending', phone: '081234567897', email: 'ali@example.com' },
-        { nik: '3201000000000008', no: 'ILI2600002', name: 'Zainab Bint Ali', gender: 'P', jenjang: 'MA', status: 'draft', vStatus: 'pending', phone: '081234567898', email: 'zainab@example.com' },
-        { nik: '3201000000000009', no: 'MTA2600003', name: 'Khalid Bin Walid', gender: 'L', jenjang: 'MTs', status: 'verified', vStatus: 'verified', phone: '081234567899', email: 'khalid@example.com' },
-        { nik: '3201000000000010', no: 'MTI2600003', name: 'Ruqayyah Bint Muhammad', gender: 'P', jenjang: 'MTs', status: 'draft', vStatus: 'pending', phone: '081234567800', email: 'ruqayyah@example.com' },
-        { nik: '3201000000000011', no: 'ILA2600003', name: 'Hasan Bin Ali', gender: 'L', jenjang: 'MA', status: 'accepted', vStatus: 'verified', phone: '081234567811', email: 'hasan@example.com' },
-        { nik: '3201000000000012', no: 'ILI2600003', name: 'Asma Bint Abu Bakar', gender: 'P', jenjang: 'MA', status: 'payment_verification', vStatus: 'verified', phone: '081234567812', email: 'asma@example.com' },
+        { nik: '3201000000000005', no: 'MTA2600002', name: 'Zaid Bin Tsabit', gender: 'L', jenjang: 'MTs', status: 'accepted', vStatus: 'verified', phone: '081234567895', email: 'zaid@example.com', prov: 'JAWA TENGAH', kab: 'KOTA SEMARANG', hasExam: true, scores: { quran: 90, akademi: 88, keprib: 90, sesuai: 85 } },
+        { nik: '3201000000000006', no: 'MTI2600002', name: 'Fatimah Az-Zahra', gender: 'P', jenjang: 'MTs', status: 'verified', vStatus: 'verified', phone: '081234567896', email: 'fatimah@example.com', prov: 'JAWA TIMUR', kab: 'KOTA SURABAYA', hasExam: true, scores: { quran: 92, akademi: 95, keprib: 85, sesuai: 88 } },
+        { nik: '3201000000000007', no: 'ILA2600002', name: 'Ali Bin Abi Thalib', gender: 'L', jenjang: 'MA', status: 'payment_verification', vStatus: 'pending', phone: '081234567897', email: 'ali@example.com', prov: 'BANTEN', kab: 'KOTA TANGERANG', hasExam: false },
+        { nik: '3201000000000008', no: 'ILI2600002', name: 'Zainab Bint Ali', gender: 'P', jenjang: 'MA', status: 'draft', vStatus: 'pending', phone: '081234567898', email: 'zainab@example.com', prov: 'DKI JAKARTA', kab: 'JAKARTA TIMUR', hasExam: false },
+        { nik: '3201000000000009', no: 'MTA2600003', name: 'Khalid Bin Walid', gender: 'L', jenjang: 'MTs', status: 'verified', vStatus: 'verified', phone: '081234567899', email: 'khalid@example.com', prov: 'JAWA BARAT', kab: 'KOTA BANDUNG', hasExam: true, scores: { quran: 75, akademi: 80, keprib: 70, sesuai: 75 } },
+        { nik: '3201000000000010', no: 'MTI2600003', name: 'Ruqayyah Bint Muhammad', gender: 'P', jenjang: 'MTs', status: 'draft', vStatus: 'pending', phone: '081234567800', email: 'ruqayyah@example.com', prov: 'BANTEN', kab: 'KABUPATEN PANDEGLANG', hasExam: false },
+        { nik: '3201000000000011', no: 'ILA2600003', name: 'Hasan Bin Ali', gender: 'L', jenjang: 'MA', status: 'accepted', vStatus: 'verified', phone: '081234567811', email: 'hasan@example.com', prov: 'JAWA BARAT', kab: 'KABUPATEN BOGOR', hasExam: true, scores: { quran: 88, akademi: 92, keprib: 85, sesuai: 90 } },
+        { nik: '3201000000000012', no: 'ILI2600003', name: 'Asma Bint Abu Bakar', gender: 'P', jenjang: 'MA', status: 'payment_verification', vStatus: 'verified', phone: '081234567812', email: 'asma@example.com', prov: 'DKI JAKARTA', kab: 'JAKARTA BARAT', hasExam: true, scores: { quran: null, akademi: null, keprib: null, sesuai: null } },
     ];
 
     const allUsers = [...adminUsers, ...dummyPendaftar.map(d => ({
@@ -143,6 +143,14 @@ async function main() {
                 no_hp: d.phone,
                 status_pendaftaran: d.status,
                 verifikasi_status: d.vStatus,
+                provinsi: d.prov,
+                kabupaten: d.kab,
+                data_lengkap: JSON.stringify({
+                    provinsi: d.prov,
+                    kabupaten_kota: d.kab,
+                    kecamatan: "Contoh Kecamatan",
+                    kelurahan_desa: "Contoh Kelurahan"
+                })
             },
             create: {
                 user_id: userId,
@@ -155,9 +163,18 @@ async function main() {
                 tempat_lahir: 'Jakarta',
                 tanggal_lahir: new Date('2010-01-01'),
                 alamat: 'Jl. Contoh Data Demo No. 123',
+                provinsi: d.prov,
+                kabupaten: d.kab,
+                kode_pos: '12345',
                 no_hp: d.phone,
                 status_pendaftaran: d.status,
                 verifikasi_status: d.vStatus,
+                data_lengkap: JSON.stringify({
+                    provinsi: d.prov,
+                    kabupaten_kota: d.kab,
+                    kecamatan: "Contoh Kecamatan",
+                    kelurahan_desa: "Contoh Kelurahan"
+                })
             },
         });
 
@@ -168,13 +185,44 @@ async function main() {
             create: {
                 pendaftar_id: pendaftar.id,
                 nama_ayah: `Ayah dari ${d.name}`,
+                nik_ayah: `3201${d.nik.substring(4)}`,
+                pekerjaan_ayah: 'Pegawai Swasta',
                 no_hp_ayah: '08111111111',
+                nama_ibu: `Ibu dari ${d.name}`,
+                nik_ibu: `3202${d.nik.substring(4)}`,
+                pekerjaan_ibu: 'Ibu Rumah Tangga',
+                no_hp_ibu: '08222222222',
             }
         });
 
+        // Add Data Asrama
+        const asramaCount = await prisma.dataAsrama.count({ where: { pendaftar_id: pendaftar.id } });
+        if (asramaCount === 0) {
+            await prisma.dataAsrama.create({
+                data: {
+                    pendaftar_id: pendaftar.id,
+                    pilihan_asrama: true,
+                    bersedia_cabang: true
+                }
+            });
+        }
+
+        // Add Data Kesehatan
+        const kesehatanCount = await prisma.dataKesehatan.count({ where: { pendaftar_id: pendaftar.id } });
+        if (kesehatanCount === 0) {
+            await prisma.dataKesehatan.create({
+                data: {
+                    pendaftar_id: pendaftar.id,
+                    tinggi_badan: 160,
+                    berat_badan: 50,
+                    is_verified: d.vStatus === 'verified',
+                }
+            });
+        }
+
         // Add verified docs and payment if verified/accepted
         if (d.vStatus === 'verified') {
-            const doks = ['kartu_keluarga', 'akta_kelahiran'];
+            const doks = ['kartu_keluarga', 'akta_kelahiran', 'rapor_sem1', 'rapor_sem2'];
             for (const doc of doks) {
                 const count = await prisma.dokumen.count({ where: { pendaftar_id: pendaftar.id, jenis_dokumen: doc } });
                 if (count === 0) {
@@ -182,8 +230,9 @@ async function main() {
                         data: {
                             pendaftar_id: pendaftar.id,
                             jenis_dokumen: doc,
-                            file_name: `${doc}.pdf`,
-                            file_path: `uploads/${doc}.pdf`,
+                            file_name: `${doc}.jpg`,
+                            file_path: `uploads/${doc}.jpg`,
+                            file_data: Buffer.from('dummybase64'),
                             is_verified: true,
                             verified_by: createdUsers['ADMIN_BERKAS'],
                             verified_at: new Date(),
@@ -192,9 +241,8 @@ async function main() {
                 }
             }
 
-            // Only add verified payment if status > payment_verification
             if (d.status === 'verified' || d.status === 'accepted') {
-                const paymentCount = await prisma.pembayaran.count({ where: { pendaftar_id: pendaftar.id } });
+                const paymentCount = await prisma.pembayaran.count({ where: { pendaftar_id: pendaftar.id, jenis_pembayaran: 'PENDAFTARAN' } });
                 if (paymentCount === 0) {
                     await prisma.pembayaran.create({
                         data: {
@@ -205,9 +253,87 @@ async function main() {
                             status_pembayaran: 'verified',
                             verified_by: createdUsers['ADMIN_KEUANGAN'],
                             verified_at: new Date(),
+                            jenis_pembayaran: 'PENDAFTARAN'
                         }
                     });
                 }
+            }
+        }
+
+        // Add Exam data
+        if (d.hasExam) {
+            const jadwalCount = await prisma.jadwalUjian.count({ where: { pendaftar_id: pendaftar.id } });
+            let jadwalId;
+            if (jadwalCount === 0) {
+                const jadwal = await prisma.jadwalUjian.create({
+                    data: {
+                        pendaftar_id: pendaftar.id,
+                        tahun_ajaran_id: tahunAjaran.id,
+                        tanggal_ujian: new Date(),
+                        metode_ujian: 'offline',
+                        waktu_mulai_santri: new Date('2025-01-01T08:00:00Z'),
+                        waktu_selesai_santri: new Date('2025-01-01T10:00:00Z'),
+                        tempat_santri: 'Gedung A',
+                        waktu_mulai_ortu: new Date('2025-01-01T10:00:00Z'),
+                        waktu_selesai_ortu: new Date('2025-01-01T11:00:00Z'),
+                        tempat_ortu: 'Gedung B',
+                        status_santri: d.scores ? 'completed' : 'scheduled',
+                        status_ortu: d.scores ? 'completed' : 'scheduled',
+                        status_quran: d.scores ? 'completed' : 'scheduled',
+                    }
+                });
+                jadwalId = jadwal.id;
+            } else {
+                const existing = await prisma.jadwalUjian.findFirst({ where: { pendaftar_id: pendaftar.id } });
+                jadwalId = existing!.id;
+            }
+
+            if (d.scores) {
+                const nilaiCount = await prisma.nilaiUjian.count({ where: { pendaftar_id: pendaftar.id } });
+                if (nilaiCount === 0) {
+                    await prisma.nilaiUjian.create({
+                        data: {
+                            pendaftar_id: pendaftar.id,
+                            jadwal_ujian_id: jadwalId,
+                            nilai_tes_tertulis_total: d.scores.akademi,
+                            nilai_santri_total: d.scores.keprib,
+                            nilai_tes_quran: d.scores.quran,
+                            nilai_wawancara_ortu: d.scores.sesuai,
+                            nilai_total: (d.scores.akademi! + d.scores.keprib! + d.scores.quran! + d.scores.sesuai!) / 4,
+                            status_kelulusan: d.status === 'accepted' ? 'LULUS' : 'MENUNGGU',
+                        }
+                    });
+                }
+            }
+        }
+
+        // Add Hasil Seleksi and Pengumuman if accepted
+        if (d.status === 'accepted') {
+            const hasilCount = await prisma.hasilSeleksi.count({ where: { pendaftar_id: pendaftar.id } });
+            if (hasilCount === 0) {
+                await prisma.hasilSeleksi.create({
+                    data: {
+                        pendaftar_id: pendaftar.id,
+                        tahun_ajaran_id: tahunAjaran.id,
+                        status_seleksi: 'DITERIMA',
+                        nilai_akhir: 90,
+                        ditentukan_oleh: createdUsers['ADMIN_SUPER'],
+                        ditentukan_pada: new Date(),
+                    }
+                });
+            }
+            const pengumumanCount = await prisma.pengumuman.count({ where: { pendaftar_id: pendaftar.id } });
+            if (pengumumanCount === 0) {
+                await prisma.pengumuman.create({
+                    data: {
+                        pendaftar_id: pendaftar.id,
+                        tahun_ajaran_id: tahunAjaran.id,
+                        status_kelulusan: 'DITERIMA',
+                        is_published: true,
+                        published_at: new Date(),
+                        published_by: createdUsers['ADMIN_SUPER'],
+                    }
+                });
             }
         }
     }
