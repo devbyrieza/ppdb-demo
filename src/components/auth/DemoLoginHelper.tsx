@@ -70,12 +70,11 @@ export default function DemoLoginHelper({ onSelect }: DemoLoginHelperProps) {
     },
   ];
 
-  // Demo pendaftar accounts for random selection
+  // Demo pendaftar accounts for random selection (All fully completed/accepted)
   const pendaftarDemos = [
-    { nik: "1234567890123451", no: "MTA2600001" },
-    { nik: "1234567890123452", no: "MTI2600001" },
-    { nik: "1234567890123453", no: "ILA2600001" },
-    { nik: "1234567890123454", no: "ILI2600001" },
+    { nik: "3201010101010001", no: "MTA2500001" }, // Daud Jordan
+    { nik: "3201010101010003", no: "ILI2600001" }, // Khadijah Bint Khuwaylid
+    { nik: "3201010101010011", no: "MTA2500007" }, // Fatih Al-Ayyubi
   ];
 
   const handleRandomPendaftar = () => {

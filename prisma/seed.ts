@@ -117,6 +117,7 @@ async function main() {
                 kabupaten: d.kab,
                 ukuran_seragam_baju: d.status === 'accepted' ? 'M' : null,
                 ukuran_seragam_celana: d.status === 'accepted' ? 'M' : null,
+                ukuran_seragam_almamater: d.status === 'accepted' ? 'M' : null,
                 data_lengkap: JSON.stringify({
                     provinsi: d.prov,
                     kabupaten_kota: d.kab,
@@ -143,6 +144,7 @@ async function main() {
                 verifikasi_status: d.vStatus,
                 ukuran_seragam_baju: d.status === 'accepted' ? 'M' : null,
                 ukuran_seragam_celana: d.status === 'accepted' ? 'M' : null,
+                ukuran_seragam_almamater: d.status === 'accepted' ? 'M' : null,
                 data_lengkap: JSON.stringify({
                     provinsi: d.prov,
                     kabupaten_kota: d.kab,
@@ -356,6 +358,27 @@ async function main() {
                         verified_by: createdUsers['ADMIN_KEUANGAN'],
                         verified_at: new Date(),
                         jenis_pembayaran: 'DAFTAR_ULANG'
+                    }
+                });
+            }
+
+            const resCount = await prisma.reservasiPSB.count({ where: { pendaftar_id: pendaftar.id } });
+            if (resCount === 0) {
+                await prisma.reservasiPSB.create({
+                    data: {
+                        pendaftar_id: pendaftar.id,
+                        tahun_ajaran_id: tahunAjaran.id,
+                        tanggal_kedatangan: new Date('2026-07-18'),
+                        jumlah_penginap: 2,
+                        status: 'approved',
+                        data_penginap: {
+                            statusKehadiran: "HADIR",
+                            jumlahPendamping: 2,
+                            totalPengantar: 3,
+                            catatanTambahan: "Kami akan menggunakan 1 mobil",
+                            jumlahMobil: 1,
+                            jumlahMotor: 0
+                        }
                     }
                 });
             }
