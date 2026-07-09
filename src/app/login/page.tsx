@@ -264,10 +264,11 @@ export default function LoginPage() {
         return;
       }
 
+      const userRole = data.role.toLowerCase();
       // Single role: redirect
       if (
         ["admin", "admin_super", "admin_berkas", "admin_keuangan"].includes(
-          data.role,
+          userRole,
         )
       ) {
         window.location.href = "/dashboard/admin";
@@ -276,7 +277,10 @@ export default function LoginPage() {
           "penguji",
           "pewawancara_calsan",
           "pewawancara_cawalsan",
-        ].includes(data.role)
+          "penguji_quran",
+          "penguji_calsan",
+          "penguji_cawalsan"
+        ].includes(userRole)
       ) {
         window.location.href = "/dashboard/penguji";
       } else {
