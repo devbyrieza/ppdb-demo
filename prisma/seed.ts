@@ -110,6 +110,7 @@ async function main() {
             where: { nomor_pendaftaran: d.no },
             update: {
                 user_id: userId,
+                nik: d.nik,
                 nama_lengkap: d.name,
                 status_pendaftaran: d.status,
                 verifikasi_status: d.vStatus,
