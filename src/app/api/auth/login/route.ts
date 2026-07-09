@@ -115,8 +115,13 @@ export async function POST(request: NextRequest) {
         "admin_keuangan",
         "pewawancara_calsan",
         "pewawancara_cawalsan",
+        "penguji_quran",
+        "penguji_calsan",
+        "penguji_cawalsan"
       ];
-      if (!allowedRoles.includes(profile.role)) {
+      
+      const userRoleLower = profile.role.toLowerCase();
+      if (!allowedRoles.includes(userRoleLower)) {
         return NextResponse.json(
           { error: "Akun ini tidak memiliki akses admin/penguji" },
           { status: 403 },
