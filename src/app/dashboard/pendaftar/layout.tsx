@@ -35,9 +35,8 @@ import IdleTimeoutTracker from "@/components/auth/IdleTimeoutTracker";
   formatStatusDisplay,
   getNextStep,
   STATUS_ORDER,
-  type StatusProses,
-  type TabName,
 } from "@/lib/access-control";
+import type { StatusProses, TabName } from "@/lib/access-control";
 import DashboardTabs from "./components/DashboardTabs";
 
 export default function DashboardLayout({

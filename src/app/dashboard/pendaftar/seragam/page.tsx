@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { Loader2, Shirt, Save, CheckCircle2, Ruler, Edit, Lock } from "lucide-react";
-import { canAccessSeragam, type StatusProses } from "@/lib/access-control";
+import { canAccessSeragam } from "@/lib/access-control";
+import type { StatusProses } from "@/lib/access-control";
 
 export default function SeragamPage() {
   const [loading, setLoading] = useState(true);

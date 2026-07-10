@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "@/lib/session";
-import { canAccessSeragam, type StatusProses } from "@/lib/access-control";
+import { canAccessSeragam } from "@/lib/access-control";
+import type { StatusProses } from "@/lib/access-control";
 
 export async function PUT(req: Request) {
   try {
