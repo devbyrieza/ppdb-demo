@@ -28,8 +28,8 @@ import { User,
 import { BRANDING } from "@/config/branding";
 import Link from "next/link";
 import IdleTimeoutTracker from "@/components/auth/IdleTimeoutTracker";
-import {
   canAccessTab,
+  canAccessSeragam,
   calculateProgressToUnlock,
   getUnlockMessage,
   formatStatusDisplay,
@@ -199,7 +199,7 @@ export default function DashboardLayout({
     {
       name: "Ukuran Seragam",
       href: "/dashboard/pendaftar/seragam",
-      tabName: "ukuran-seragam" as TabName,
+      tabName: "ukuran-seragam" as TabName, // Menggunakan rules akses ukuran-seragam
       icon: Shirt,
       active: pathname === "/dashboard/pendaftar/seragam",
     },
@@ -228,9 +228,9 @@ export default function DashboardLayout({
 
   // Function untuk cek apakah tab bisa diakses
   const isTabAccessible = (tabName: TabName) => {
-    // SPECIAL BYPASS FOR TESTING ACCOUNT: RIEZA TES
-    if (nomorPendaftaran === "ILI2600007") return true;
-
+    if (tabName === "ukuran-seragam") {
+      return canAccessSeragam(statusProses, nomorPendaftaran);
+    }
     return canAccessTab(tabName, statusProses);
   };
 

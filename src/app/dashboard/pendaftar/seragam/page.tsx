@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Loader2, Shirt, Save, CheckCircle2, Ruler, Edit } from "lucide-react";
+import { Loader2, Shirt, Save, CheckCircle2, Ruler, Edit, Lock } from "lucide-react";
+import { canAccessSeragam, type StatusProses } from "@/lib/access-control";
 
 export default function SeragamPage() {
   const [loading, setLoading] = useState(true);
@@ -13,6 +14,7 @@ export default function SeragamPage() {
     ukuran_seragam_almamater: "",
   });
   const [message, setMessage] = useState({ type: "", text: "" });
+  const [isAuthorized, setIsAuthorized] = useState(true);
 
   useEffect(() => {
     fetchData();
@@ -34,16 +36,22 @@ export default function SeragamPage() {
       );
       if (res.ok) {
         const data = await res.json();
-        const baju = data.ukuran_seragam_baju || "";
-        const celana = data.ukuran_seragam_celana || "";
-        const alma = data.ukuran_seragam_almamater || "";
-        setFormData({
-          ukuran_seragam_baju: baju,
-          ukuran_seragam_celana: celana,
-          ukuran_seragam_almamater: alma,
-        });
-        if (baju && celana && alma) {
-          setIsEditing(false);
+        // Validate Authorization
+        const isUserAuthorized = canAccessSeragam(data.status_proses as StatusProses, data.nomor_pendaftaran);
+        setIsAuthorized(isUserAuthorized);
+
+        if (isUserAuthorized) {
+          const baju = data.ukuran_seragam_baju || "";
+          const celana = data.ukuran_seragam_celana || "";
+          const alma = data.ukuran_seragam_almamater || "";
+          setFormData({
+            ukuran_seragam_baju: baju,
+            ukuran_seragam_celana: celana,
+            ukuran_seragam_almamater: alma,
+          });
+          if (baju && celana && alma) {
+            setIsEditing(false);
+          }
         }
       }
     } catch (error) {
@@ -81,6 +89,20 @@ export default function SeragamPage() {
     return (
       <div className="flex items-center justify-center p-6 md:p-12">
         <Loader2 className="w-8 h-8 animate-spin text-primary-600" />
+      </div>
+    );
+  }
+
+  if (!isAuthorized) {
+    return (
+      <div className="max-w-3xl mx-auto mt-8 bg-white p-10 rounded-3xl shadow-sm border border-red-100 flex flex-col items-center justify-center text-center">
+        <div className="w-20 h-20 bg-red-50 text-red-500 rounded-full flex items-center justify-center mb-6">
+          <Lock className="w-10 h-10" />
+        </div>
+        <h2 className="text-2xl font-black text-ink-950 mb-3">Akses Terkunci</h2>
+        <p className="text-ink-600 max-w-md mx-auto">
+          Anda belum bisa mengakses halaman ini. Halaman pendataan ukuran seragam hanya terbuka bagi pendaftar yang telah dinyatakan <strong>Diterima</strong>.
+        </p>
       </div>
     );
   }

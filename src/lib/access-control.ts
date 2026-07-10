@@ -91,10 +91,34 @@ export const STEP_REQUIREMENTS: Record<TabName, { minimumStatus: StatusProses | 
   "welcome-day": { minimumStatus: "accepted", label: "Welcome Day", description: "Hanya tersedia bagi pendaftar yang diterima" },
 };
 
+// Daftar nomor pendaftaran santri yang mendapat akses khusus ke menu Ukuran Seragam
+// meskipun status mereka belum mencapai "Diterima"
+export const SERAGAM_BYPASS_LIST = [
+  "ILA2600019", // Abdurrahim Pati Raja
+  "ILA2600016", // Fanni Hariri Hamonangan
+  "ILA2600017", // Hibban Hibaturrahman
+  "MTA2600020", // M Fazril Alkais
+  "MTA2600022", // Muh Asrorin Da Silva
+  "MTA2600021", // Azka Panji Kusuma
+  "ILA2600014", // Muhammad Rizky
+];
+
 export function canAccessTab(tabName: TabName, statusProses: StatusProses): boolean {
   const requirement = STEP_REQUIREMENTS[tabName];
   if (!requirement || !requirement.minimumStatus) return true;
   return hasReachedStatus(statusProses, requirement.minimumStatus);
+}
+
+export function canAccessSeragam(statusProses: StatusProses, nomorPendaftaran?: string): boolean {
+  // SPECIAL BYPASS FOR TESTING ACCOUNT
+  if (nomorPendaftaran === "ILI2600007") return true;
+
+  // SPECIAL BYPASS
+  if (nomorPendaftaran && SERAGAM_BYPASS_LIST.includes(nomorPendaftaran)) {
+    return true;
+  }
+
+  return canAccessTab("ukuran-seragam", statusProses);
 }
 
 // ─── 3. GUIDED ACTION LOGIC ───

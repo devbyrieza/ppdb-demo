@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "@/lib/session";
+import { canAccessSeragam, type StatusProses } from "@/lib/access-control";
 
 export async function PUT(req: Request) {
   try {
@@ -13,17 +14,22 @@ export async function PUT(req: Request) {
     const body = await req.json();
     const { ukuran_seragam_baju, ukuran_seragam_celana, ukuran_seragam_almamater } = body;
 
-    // Pastikan status_pendaftaran valid untuk mengisi seragam (minimal accepted/re_registered)
+    // Pastikan status_pendaftaran valid untuk mengisi seragam (minimal accepted/re_registered atau bypass)
     const pendaftar = await prisma.pendaftar.findUnique({
       where: { id: pendaftarId },
-      select: { status_pendaftaran: true }
+      select: { status_pendaftaran: true, nomor_pendaftaran: true }
     });
 
     if (!pendaftar) {
       return NextResponse.json({ message: "Pendaftar tidak ditemukan" }, { status: 404 });
     }
 
-    if (!["accepted", "re_registered", "enrolled", "enrolled_full"].includes(pendaftar.status_pendaftaran)) {
+    const isAuthorized = canAccessSeragam(
+      (pendaftar.status_pendaftaran || "draft") as StatusProses,
+      pendaftar.nomor_pendaftaran
+    );
+
+    if (!isAuthorized) {
       return NextResponse.json({ message: "Akses ditolak. Anda belum sampai pada tahap ini." }, { status: 403 });
     }
 
