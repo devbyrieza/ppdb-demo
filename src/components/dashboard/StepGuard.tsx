@@ -9,8 +9,8 @@ import {
   getUnlockMessage,
   getNextStep,
   formatStatusDisplay,
-  type TabName,
-  type StatusProses,
+  TabName,
+  StatusProses,
 } from "@/lib/access-control";
 
 interface StepGuardProps {

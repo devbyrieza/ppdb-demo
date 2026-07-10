@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import {
   getStatusIndex,
-  type StatusProses,
+  StatusProses,
   formatStatusDisplay,
 } from "@/lib/access-control";
 import { motion } from "framer-motion";

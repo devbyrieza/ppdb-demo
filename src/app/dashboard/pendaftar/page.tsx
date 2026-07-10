@@ -21,7 +21,7 @@ import ProgressTracker from "./components/ProgressTracker";
 import {
   getNextStep,
   formatStatusDisplay,
-  type StatusProses,
+  StatusProses,
 } from "@/lib/access-control";
 
 /**

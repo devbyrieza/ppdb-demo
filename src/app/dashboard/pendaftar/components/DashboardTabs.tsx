@@ -19,8 +19,8 @@ import {
   canAccessTab,
   calculateProgressToUnlock,
   getUnlockMessage,
-  type TabName,
-  type StatusProses,
+  TabName,
+  StatusProses,
 } from "@/lib/access-control";
 
 interface DashboardTabsProps {
