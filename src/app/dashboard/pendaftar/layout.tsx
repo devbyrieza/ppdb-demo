@@ -28,6 +28,7 @@ import { User,
 import { BRANDING } from "@/config/branding";
 import Link from "next/link";
 import IdleTimeoutTracker from "@/components/auth/IdleTimeoutTracker";
+import {
   canAccessTab,
   canAccessSeragam,
   calculateProgressToUnlock,
