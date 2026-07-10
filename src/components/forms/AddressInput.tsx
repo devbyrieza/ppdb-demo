@@ -241,7 +241,7 @@ export default function AddressInput({
             type="text"
             value={value.rt}
             onChange={(e) => handleChange("rt", e.target.value)}
-            placeholder="001"
+            placeholder="Contoh: 001"
             disabled={disabled}
             maxLength={3}
             className={inputClass}
@@ -255,7 +255,7 @@ export default function AddressInput({
             type="text"
             value={value.rw}
             onChange={(e) => handleChange("rw", e.target.value)}
-            placeholder="002"
+            placeholder="Contoh: 002"
             disabled={disabled}
             maxLength={3}
             className={inputClass}

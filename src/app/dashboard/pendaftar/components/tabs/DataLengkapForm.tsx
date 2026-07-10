@@ -1181,7 +1181,7 @@ export default function DataLengkapForm({
                       name="rt"
                       value={formData.santri.rt}
                       onChange={(v) => updateSantri("rt", v)}
-                      placeholder="001"
+                      placeholder="Contoh: 001"
                       maxLength={3}
                       required
                       inputFilter="numbers"
@@ -1191,7 +1191,7 @@ export default function DataLengkapForm({
                       name="rw"
                       value={formData.santri.rw}
                       onChange={(v) => updateSantri("rw", v)}
-                      placeholder="002"
+                      placeholder="Contoh: 002"
                       maxLength={3}
                       required
                       inputFilter="numbers"
@@ -1439,7 +1439,7 @@ export default function DataLengkapForm({
                           name="rt_ayah"
                           value={formData.ayah.rt || ""}
                           onChange={(v) => updateAyah("rt", v)}
-                          placeholder="001"
+                          placeholder="Contoh: 001"
                           maxLength={3}
                           required
                           inputFilter="numbers"
@@ -1449,7 +1449,7 @@ export default function DataLengkapForm({
                           name="rw_ayah"
                           value={formData.ayah.rw || ""}
                           onChange={(v) => updateAyah("rw", v)}
-                          placeholder="002"
+                          placeholder="Contoh: 002"
                           maxLength={3}
                           required
                           inputFilter="numbers"
@@ -1644,7 +1644,7 @@ export default function DataLengkapForm({
                           name="rt_ibu"
                           value={formData.ibu.rt || ""}
                           onChange={(v) => updateIbu("rt", v)}
-                          placeholder="001"
+                          placeholder="Contoh: 001"
                           maxLength={3}
                           required
                           inputFilter="numbers"
@@ -1654,7 +1654,7 @@ export default function DataLengkapForm({
                           name="rw_ibu"
                           value={formData.ibu.rw || ""}
                           onChange={(v) => updateIbu("rw", v)}
-                          placeholder="002"
+                          placeholder="Contoh: 002"
                           maxLength={3}
                           required
                           inputFilter="numbers"
@@ -1841,7 +1841,7 @@ export default function DataLengkapForm({
                         name="rt_wali"
                         value={formData.wali.rt}
                         onChange={(v) => updateWali("rt", v)}
-                        placeholder="001"
+                        placeholder="Contoh: 001"
                         maxLength={3}
                         required={isWaliRequired}
                         inputFilter="numbers"
@@ -1851,7 +1851,7 @@ export default function DataLengkapForm({
                         name="rw_wali"
                         value={formData.wali.rw}
                         onChange={(v) => updateWali("rw", v)}
-                        placeholder="002"
+                        placeholder="Contoh: 002"
                         maxLength={3}
                         required={isWaliRequired}
                         inputFilter="numbers"
