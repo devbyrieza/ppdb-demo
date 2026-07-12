@@ -133,14 +133,14 @@ export async function GET(request: NextRequest) {
       const dataLengkap = (student.data_lengkap as any) || {};
       const keringananJson = dataLengkap.keringanan_daftar_ulang || {};
       const isApproved = student.pengajuan_beasiswa?.status === "DISETUJUI" || !!keringananJson.nominal_potongan || !!keringananJson.potongan_uang_pangkal || !!keringananJson.potongan_spp;
-      const nominalPotongan = Number(
-        (student.pengajuan_beasiswa?.status === "DISETUJUI" ? student.pengajuan_beasiswa?.nominal_potongan : null) ?? 
-        (keringananJson.nominal_potongan ?? 
-        ((Number(keringananJson.potongan_uang_pangkal || 0) + Number(keringananJson.potongan_spp || 0)) ||
-        0))
-      );
-      // requiredAmount = uang pangkal (setelah potongan) + SPP = 8.500.000 - potongan
-      const requiredAmount = 8500000 - nominalPotongan;
+      
+      const potonganUP = Number(keringananJson.potongan_uang_pangkal || 0) || Number(keringananJson.nominal_potongan || 0) || (student.pengajuan_beasiswa?.status === "DISETUJUI" ? Number(student.pengajuan_beasiswa?.nominal_potongan || 0) : 0);
+      const potonganSPP = Number(keringananJson.potongan_spp || 0);
+
+      const nominalPotongan = potonganUP + potonganSPP;
+      const expectedUP = 7500000 - potonganUP;
+      const expectedSPP = 1000000 - potonganSPP;
+      const requiredAmount = expectedUP + expectedSPP;
 
       // Determine Status
       let statusBayar = "BELUM_BAYAR";
@@ -148,6 +148,20 @@ export async function GET(request: NextRequest) {
         statusBayar = "LUNAS";
       } else if (totalBayar > 0) {
         statusBayar = "CICILAN";
+      }
+
+      let statusBayarUP = "BELUM_BAYAR";
+      if (totalBayarDU >= expectedUP) {
+        statusBayarUP = "LUNAS";
+      } else if (totalBayarDU > 0) {
+        statusBayarUP = "CICILAN";
+      }
+
+      let statusBayarSPP = "BELUM_BAYAR";
+      if (totalBayarSPP >= expectedSPP) {
+        statusBayarSPP = "LUNAS";
+      } else if (totalBayarSPP > 0) {
+        statusBayarSPP = "CICILAN";
       }
 
       // Determine Last Updated (payment or student)
@@ -198,10 +212,16 @@ export async function GET(request: NextRequest) {
           ? "DITERIMA"
           : (student.nilai_ujian[0]?.status_kelulusan || "LULUS"),
         total_bayar: totalBayar,
+        total_bayar_up: totalBayarDU,
+        total_bayar_spp: totalBayarSPP,
         tipe_cicilan: statusBayar,
+        tipe_cicilan_up: statusBayarUP,
+        tipe_cicilan_spp: statusBayarSPP,
         keringanan_reason,
         diskon_label,
         sisa_tagihan: Math.max(0, requiredAmount - totalBayar),
+        sisa_tagihan_up: Math.max(0, expectedUP - totalBayarDU),
+        sisa_tagihan_spp: Math.max(0, expectedSPP - totalBayarSPP),
         last_updated: lastUpdate,
         pembayaran_list: student.pembayaran, // Pass all payments to the frontend
         no_hp: student.no_hp || "-",

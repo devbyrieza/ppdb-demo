@@ -30,10 +30,16 @@ interface RekapDaftarUlang {
   nomor_pendaftaran: string;
   status_kelulusan: string;
   total_bayar: number;
+  total_bayar_up: number;
+  total_bayar_spp: number;
   tipe_cicilan: string;
+  tipe_cicilan_up: string;
+  tipe_cicilan_spp: string;
   keringanan_reason: string | null;
   diskon_label: string | null;
   sisa_tagihan: number;
+  sisa_tagihan_up: number;
+  sisa_tagihan_spp: number;
   last_updated: string;
   pembayaran_list?: any[];
   no_hp?: string;
@@ -74,7 +80,7 @@ interface PendaftaranSummary {
   total_terkumpul: number;
 }
 
-type ActiveTab = "pendaftaran" | "daftar-ulang";
+type ActiveTab = "pendaftaran" | "uang-pangkal" | "spp";
 
 // ─── Status Badge Color ───────────────────────────────────────────────────────
 
@@ -512,16 +518,29 @@ export default function KeuanganPage() {
         </button>
         <button
           onClick={() => {
-            setActiveTab("daftar-ulang");
+            setActiveTab("uang-pangkal");
             setSearch("");
           }}
           className={`px-5 py-2 rounded-lg text-sm font-bold transition-all ${
-            activeTab === "daftar-ulang"
+            activeTab === "uang-pangkal"
               ? "bg-white text-primary-800 shadow-sm"
               : "text-slate-500 hover:text-slate-700"
           }`}
         >
-          🎓 Daftar Ulang
+          🏢 Uang Pangkal
+        </button>
+        <button
+          onClick={() => {
+            setActiveTab("spp");
+            setSearch("");
+          }}
+          className={`px-5 py-2 rounded-lg text-sm font-bold transition-all ${
+            activeTab === "spp"
+              ? "bg-white text-primary-800 shadow-sm"
+              : "text-slate-500 hover:text-slate-700"
+          }`}
+        >
+          📖 SPP Bln Pertama
         </button>
       </div>
 
@@ -677,13 +696,13 @@ export default function KeuanganPage() {
         </div>
       )}
 
-      {/* ── Daftar Ulang Tab ── */}
-      {activeTab === "daftar-ulang" && (
+      {/* ── Uang Pangkal & SPP Tab ── */}
+      {(activeTab === "uang-pangkal" || activeTab === "spp") && (
         <div className="space-y-5">
           <div className="bg-secondary-50 border border-secondary-200 rounded-xl px-5 py-3 text-sm text-secondary-800 font-medium flex items-center gap-2">
             <CreditCard className="w-4 h-4 shrink-0" />
             Menampilkan rekap santri yang <strong>diterima</strong> dan
-            status pembayaran daftar ulang mereka.
+            status pembayaran {activeTab === "uang-pangkal" ? "uang pangkal" : "SPP bulan pertama"} mereka.
           </div>
 
           {/* Search */}
@@ -723,82 +742,88 @@ export default function KeuanganPage() {
                   </thead>
                   <tbody className="divide-y divide-slate-100">
                     {filteredDaftarUlang.length > 0 ? (
-                      filteredDaftarUlang.map((row) => (
-                        <React.Fragment key={row.id}>
-                          <tr
-                            className="hover:bg-slate-50 transition-colors cursor-pointer"
-                            onClick={() => setExpandedStudentId(expandedStudentId === row.id ? null : row.id)}
-                          >
-                            <td className="px-6 py-3 text-center text-slate-400">
-                              {row.no}
-                            </td>
-                            <td className="px-6 py-3 font-medium text-slate-900">
-                              {row.nama}
-                              <div className="text-xs text-slate-400 font-normal">
-                                {row.nomor_pendaftaran}
-                              </div>
-                            </td>
-                            <td className="px-6 py-3">
-                              <span className="px-2 py-1 rounded-md bg-green-100 text-green-700 text-xs font-bold">
-                                {row.status_kelulusan}
-                              </span>
-                            </td>
-                            <td className="px-6 py-3 font-mono text-slate-700">
-                              {formatCurrency(row.total_bayar)}
-                            </td>
-                            <td className="px-6 py-3">
-                              <span
-                                className={`px-2 py-1 rounded-md text-xs font-bold border ${
-                                  row.tipe_cicilan === "LUNAS"
-                                    ? "bg-emerald-100 text-emerald-700 border-emerald-200"
-                                    : row.tipe_cicilan === "BELUM_BAYAR"
-                                      ? "bg-red-50 text-red-600 border-red-100"
-                                      : "bg-primary-50 text-primary-600 border-primary-100"
-                                }`}
-                              >
-                                {row.tipe_cicilan.replace(/_/g, " ")}
-                              </span>
-                              {row.diskon_label && (() => {
-                                const isBeasiswa = row.diskon_label.toLowerCase().includes("beasiswa");
-                                const label = isBeasiswa ? "Beasiswa" : "Keringanan";
-                                const badgeClass = isBeasiswa
-                                  ? "text-violet-700 bg-violet-50 border-violet-100"
-                                  : "text-secondary-700 bg-secondary-50 border-secondary-100";
-                                return (
-                                  <div 
-                                    className={`mt-1 flex items-center gap-1 text-[9px] font-black px-1.5 py-0.5 rounded border uppercase tracking-tighter cursor-help ${badgeClass}`}
-                                    title={row.keringanan_reason || ""}
-                                  >
-                                    <AlertCircle className="w-2.5 h-2.5" />
-                                    {label}
-                                  </div>
-                                );
-                              })()}
-                            </td>
-                            <td className="px-6 py-3 font-mono text-slate-500">
-                              {formatCurrency(row.sisa_tagihan)}
-                            </td>
-                            <td className="px-6 py-3 text-xs text-slate-400">
-                              {new Date(row.last_updated).toLocaleDateString(
-                                "id-ID",
-                              )}
-                            </td>
-                            <td className="px-6 py-3 text-center">
-                              <button
-                                className="p-1.5 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setExpandedStudentId(expandedStudentId === row.id ? null : row.id);
-                                }}
-                              >
-                                {expandedStudentId === row.id ? (
-                                  <ChevronUp className="w-4 h-4" />
-                                ) : (
-                                  <ChevronDown className="w-4 h-4" />
+                      filteredDaftarUlang.map((row) => {
+                        const isUP = activeTab === "uang-pangkal";
+                        const totalBayar = isUP ? row.total_bayar_up : row.total_bayar_spp;
+                        const tipeCicilan = isUP ? row.tipe_cicilan_up : row.tipe_cicilan_spp;
+                        const sisaTagihan = isUP ? row.sisa_tagihan_up : row.sisa_tagihan_spp;
+                        
+                        return (
+                          <React.Fragment key={row.id}>
+                            <tr
+                              className="hover:bg-slate-50 transition-colors cursor-pointer"
+                              onClick={() => setExpandedStudentId(expandedStudentId === row.id ? null : row.id)}
+                            >
+                              <td className="px-6 py-3 text-center text-slate-400">
+                                {row.no}
+                              </td>
+                              <td className="px-6 py-3 font-medium text-slate-900">
+                                {row.nama}
+                                <div className="text-xs text-slate-400 font-normal">
+                                  {row.nomor_pendaftaran}
+                                </div>
+                              </td>
+                              <td className="px-6 py-3">
+                                <span className="px-2 py-1 rounded-md bg-green-100 text-green-700 text-xs font-bold">
+                                  {row.status_kelulusan}
+                                </span>
+                              </td>
+                              <td className="px-6 py-3 font-mono text-slate-700">
+                                {formatCurrency(totalBayar)}
+                              </td>
+                              <td className="px-6 py-3">
+                                <span
+                                  className={`px-2 py-1 rounded-md text-xs font-bold border ${
+                                    tipeCicilan === "LUNAS"
+                                      ? "bg-emerald-100 text-emerald-700 border-emerald-200"
+                                      : tipeCicilan === "BELUM_BAYAR"
+                                        ? "bg-red-50 text-red-600 border-red-100"
+                                        : "bg-primary-50 text-primary-600 border-primary-100"
+                                  }`}
+                                >
+                                  {tipeCicilan.replace(/_/g, " ")}
+                                </span>
+                                {row.diskon_label && isUP && (() => {
+                                  const isBeasiswa = row.diskon_label.toLowerCase().includes("beasiswa");
+                                  const label = isBeasiswa ? "Beasiswa" : "Keringanan";
+                                  const badgeClass = isBeasiswa
+                                    ? "text-violet-700 bg-violet-50 border-violet-100"
+                                    : "text-secondary-700 bg-secondary-50 border-secondary-100";
+                                  return (
+                                    <div 
+                                      className={`mt-1 flex items-center gap-1 text-[9px] font-black px-1.5 py-0.5 rounded border uppercase tracking-tighter cursor-help ${badgeClass}`}
+                                      title={row.keringanan_reason || ""}
+                                    >
+                                      <AlertCircle className="w-2.5 h-2.5" />
+                                      {label}
+                                    </div>
+                                  );
+                                })()}
+                              </td>
+                              <td className="px-6 py-3 font-mono text-slate-500">
+                                {formatCurrency(sisaTagihan)}
+                              </td>
+                              <td className="px-6 py-3 text-xs text-slate-400">
+                                {new Date(row.last_updated).toLocaleDateString(
+                                  "id-ID",
                                 )}
-                              </button>
-                            </td>
-                          </tr>
+                              </td>
+                              <td className="px-6 py-3 text-center">
+                                <button
+                                  className="p-1.5 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setExpandedStudentId(expandedStudentId === row.id ? null : row.id);
+                                  }}
+                                >
+                                  {expandedStudentId === row.id ? (
+                                    <ChevronUp className="w-4 h-4" />
+                                  ) : (
+                                    <ChevronDown className="w-4 h-4" />
+                                  )}
+                                </button>
+                              </td>
+                            </tr>
                           {expandedStudentId === row.id && (
                             <tr className="bg-slate-50/50">
                               <td colSpan={8} className="px-6 py-4 border-t border-slate-100">
@@ -872,112 +897,122 @@ export default function KeuanganPage() {
                                     <div className="flex justify-between items-center border-b border-slate-100 pb-2">
                                       <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
                                         <FileText className="w-4 h-4 text-primary-600" />
-                                        Riwayat Pembayaran Daftar Ulang - {row.nama}
+                                        Riwayat Pembayaran {activeTab === "uang-pangkal" ? "Uang Pangkal" : "SPP Bulan Pertama"} - {row.nama}
                                       </h3>
                                       <span className="text-[11px] text-slate-500">
                                         No. Pendaftaran: <strong>{row.nomor_pendaftaran}</strong>
                                       </span>
                                     </div>
 
-                                    {row.pembayaran_list && row.pembayaran_list.length > 0 ? (
-                                      <div className="overflow-x-auto">
-                                        <table className="w-full text-xs text-left">
-                                          <thead className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
-                                            <tr>
-                                              <th className="px-3 py-2">Cicilan Ke</th>
-                                              <th className="px-3 py-2">Jumlah</th>
-                                              <th className="px-3 py-2">Tanggal Upload</th>
-                                              <th className="px-3 py-2">Metode</th>
-                                              <th className="px-3 py-2">Bukti</th>
-                                              <th className="px-3 py-2">Status</th>
-                                              <th className="px-3 py-2">Catatan / Keringanan</th>
-                                            </tr>
-                                          </thead>
-                                          <tbody className="divide-y divide-slate-100">
-                                            {row.pembayaran_list
-                                              .sort((a: any, b: any) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
-                                              .map((pay: any, payIndex: number) => (
-                                                <tr key={pay.id || payIndex} className="hover:bg-slate-50/50">
-                                                  <td className="px-3 py-2.5 font-bold text-slate-700">
-                                                    {pay.cicilan_ke ? `Cicilan Ke-${pay.cicilan_ke}` : "Daftar Ulang"}
-                                                  </td>
-                                                  <td className="px-3 py-2.5 font-mono font-medium text-slate-800">
-                                                    {formatCurrency(Number(pay.jumlah))}
-                                                  </td>
-                                                  <td className="px-3 py-2.5 text-slate-500">
-                                                    {new Date(pay.created_at).toLocaleDateString("id-ID", {
-                                                      day: "2-digit",
-                                                      month: "short",
-                                                      year: "numeric"
-                                                    })}
-                                                  </td>
-                                                  <td className="px-3 py-2.5 text-slate-600 capitalize font-medium">
-                                                    {pay.metode_pembayaran}
-                                                  </td>
-                                                  <td className="px-3 py-2.5">
-                                                    {pay.bukti_transfer_path ? (
-                                                      <a
-                                                        href={`/api/files/${pay.bukti_transfer_path}`}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="inline-flex items-center gap-0.5 text-primary-600 hover:text-primary-700 font-bold hover:underline"
-                                                        onClick={(e) => e.stopPropagation()}
+                                    {(() => {
+                                      const filteredPayments = row.pembayaran_list?.filter((p: any) => 
+                                        activeTab === "uang-pangkal" ? p.jenis_pembayaran === "DAFTAR_ULANG" : p.jenis_pembayaran === "SPP"
+                                      ) || [];
+
+                                      if (filteredPayments.length === 0) {
+                                        return (
+                                          <div className="text-center py-6 text-slate-400 italic bg-slate-50 rounded-lg text-xs">
+                                            Belum ada riwayat pembayaran {activeTab === "uang-pangkal" ? "Uang Pangkal" : "SPP"}.
+                                          </div>
+                                        );
+                                      }
+
+                                      return (
+                                        <div className="overflow-x-auto">
+                                          <table className="w-full text-xs text-left">
+                                            <thead className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
+                                              <tr>
+                                                <th className="px-3 py-2">Cicilan Ke</th>
+                                                <th className="px-3 py-2">Jumlah</th>
+                                                <th className="px-3 py-2">Tanggal Upload</th>
+                                                <th className="px-3 py-2">Metode</th>
+                                                <th className="px-3 py-2">Bukti</th>
+                                                <th className="px-3 py-2">Status</th>
+                                                <th className="px-3 py-2">Catatan / Keringanan</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody className="divide-y divide-slate-100">
+                                              {filteredPayments
+                                                .sort((a: any, b: any) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
+                                                .map((pay: any, payIndex: number) => (
+                                                  <tr key={pay.id || payIndex} className="hover:bg-slate-50/50">
+                                                    <td className="px-3 py-2.5 font-bold text-slate-700">
+                                                      {pay.cicilan_ke ? `Cicilan Ke-${pay.cicilan_ke}` : (activeTab === "uang-pangkal" ? "Uang Pangkal" : "SPP")}
+                                                    </td>
+                                                    <td className="px-3 py-2.5 font-mono font-medium text-slate-800">
+                                                      {formatCurrency(Number(pay.jumlah))}
+                                                    </td>
+                                                    <td className="px-3 py-2.5 text-slate-500">
+                                                      {new Date(pay.created_at).toLocaleDateString("id-ID", {
+                                                        day: "2-digit",
+                                                        month: "short",
+                                                        year: "numeric"
+                                                      })}
+                                                    </td>
+                                                    <td className="px-3 py-2.5 text-slate-600 capitalize font-medium">
+                                                      {pay.metode_pembayaran}
+                                                    </td>
+                                                    <td className="px-3 py-2.5">
+                                                      {pay.bukti_transfer_path ? (
+                                                        <a
+                                                          href={`/api/files/${pay.bukti_transfer_path}`}
+                                                          target="_blank"
+                                                          rel="noopener noreferrer"
+                                                          className="inline-flex items-center gap-0.5 text-primary-600 hover:text-primary-700 font-bold hover:underline"
+                                                          onClick={(e) => e.stopPropagation()}
+                                                        >
+                                                          <ExternalLink className="w-3 h-3" />
+                                                          Lihat
+                                                        </a>
+                                                      ) : (
+                                                        <span className="text-slate-400 italic">Belum</span>
+                                                      )}
+                                                    </td>
+                                                    <td className="px-3 py-2.5">
+                                                      <span
+                                                        className={`px-1.5 py-0.5 rounded-full text-[9px] font-bold border ${
+                                                          pay.status_pembayaran === "verified"
+                                                            ? "bg-emerald-50 text-emerald-700 border-emerald-100"
+                                                            : pay.status_pembayaran === "rejected"
+                                                              ? "bg-red-50 text-red-600 border-red-100"
+                                                              : "bg-amber-50 text-amber-700 border-amber-100"
+                                                        }`}
                                                       >
-                                                        <ExternalLink className="w-3 h-3" />
-                                                        Lihat
-                                                      </a>
-                                                    ) : (
-                                                      <span className="text-slate-400 italic">Belum</span>
-                                                    )}
-                                                  </td>
-                                                  <td className="px-3 py-2.5">
-                                                    <span
-                                                      className={`px-1.5 py-0.5 rounded-full text-[9px] font-bold border ${
-                                                        pay.status_pembayaran === "verified"
-                                                          ? "bg-emerald-50 text-emerald-700 border-emerald-100"
+                                                        {pay.status_pembayaran === "verified"
+                                                          ? "Verified"
                                                           : pay.status_pembayaran === "rejected"
-                                                            ? "bg-red-50 text-red-600 border-red-100"
-                                                            : "bg-amber-50 text-amber-700 border-amber-100"
-                                                      }`}
-                                                    >
-                                                      {pay.status_pembayaran === "verified"
-                                                        ? "Verified"
-                                                        : pay.status_pembayaran === "rejected"
-                                                          ? "Ditolak"
-                                                          : "Pending"}
-                                                    </span>
-                                                  </td>
-                                                  <td className="px-3 py-2.5 space-y-1 max-w-[200px]">
-                                                    {pay.keringanan_reason && (
-                                                      <div className="text-[9px] text-slate-600 bg-secondary-50/50 p-1 rounded border border-secondary-100">
-                                                        <span className="font-bold text-secondary-800 uppercase tracking-tighter">Keringanan:</span>{" "}
-                                                        {pay.keringanan_reason}
-                                                      </div>
-                                                    )}
-                                                    {pay.catatan_verifikasi && (
-                                                      <div className={`text-[9px] p-1 rounded border ${
-                                                        pay.status_pembayaran === "rejected"
-                                                          ? "bg-red-50/50 text-red-700 border-red-100"
-                                                          : "bg-slate-50 text-slate-600 border-slate-100"
-                                                      }`}>
-                                                        <span className="font-bold uppercase tracking-tighter">Catatan:</span>{" "}
-                                                        {pay.catatan_verifikasi}
-                                                      </div>
-                                                    )}
-                                                    {!pay.keringanan_reason && !pay.catatan_verifikasi && (
-                                                      <span className="text-slate-400 italic">-</span>
-                                                    )}
-                                                  </td>
-                                                </tr>
-                                              ))}
-                                          </tbody>
-                                        </table>
-                                      </div>
-                                    ) : (
-                                      <div className="text-center py-8 text-slate-400 italic bg-slate-50 rounded-lg text-xs">
-                                        Belum ada data pembayaran daftar ulang yang diupload.
-                                      </div>
-                                    )}
+                                                            ? "Ditolak"
+                                                            : "Pending"}
+                                                      </span>
+                                                    </td>
+                                                    <td className="px-3 py-2.5 space-y-1 max-w-[200px]">
+                                                      {pay.keringanan_reason && (
+                                                        <div className="text-[9px] text-slate-600 bg-secondary-50/50 p-1 rounded border border-secondary-100">
+                                                          <span className="font-bold text-secondary-800 uppercase tracking-tighter">Keringanan:</span>{" "}
+                                                          {pay.keringanan_reason}
+                                                        </div>
+                                                      )}
+                                                      {pay.catatan_verifikasi && (
+                                                        <div className={`text-[9px] p-1 rounded border ${
+                                                          pay.status_pembayaran === "rejected"
+                                                            ? "bg-red-50/50 text-red-700 border-red-100"
+                                                            : "bg-slate-50 text-slate-600 border-slate-100"
+                                                        }`}>
+                                                          <span className="font-bold uppercase tracking-tighter">Catatan:</span>{" "}
+                                                          {pay.catatan_verifikasi}
+                                                        </div>
+                                                      )}
+                                                      {!pay.keringanan_reason && !pay.catatan_verifikasi && (
+                                                        <span className="text-slate-400 italic">-</span>
+                                                      )}
+                                                    </td>
+                                                  </tr>
+                                                ))}
+                                            </tbody>
+                                          </table>
+                                        </div>
+                                      );
+                                    })()}
                                   </div>
                                 </div>
                               </td>
