@@ -50,6 +50,7 @@ export const exportToExcelProfessional = async ({
     data: any[][];
     title?: string;
     subTitle?: string;
+    centeredColumns?: number[]; // Array of 1-based column indices to center align
   }[];
 }) => {
   const workbook = new ExcelJS.Workbook();
@@ -136,33 +137,35 @@ export const exportToExcelProfessional = async ({
 
         // Auto align values
         const val = cell.value;
-        if (typeof val === "number") {
+        if (sheetInfo.centeredColumns && sheetInfo.centeredColumns.includes(colIndex)) {
+          cell.alignment = { vertical: "middle", horizontal: "center" };
+        } else if (typeof val === "number") {
           cell.alignment = { vertical: "middle", horizontal: "right" };
           cell.numFmt = "#,##0";
         } else if (
           colIndex === 1 || // No
           colIndex === 2 || // No. Pendaftaran
           (val && typeof val === "string" && (
-            val.startsWith("MTA26") || 
-            val.startsWith("ILA26") ||
-            val.toLowerCase() === "laki-laki" || 
-            val.toLowerCase() === "perempuan" ||
-            val.toLowerCase() === "l" || 
-            val.toLowerCase() === "p" ||
-            val.toLowerCase() === "s" ||
-            val.toLowerCase() === "m" ||
-            val.toLowerCase() === "xl" ||
-            val.toLowerCase() === "xxl" ||
-            val.toLowerCase() === "3xl" ||
-            val.toLowerCase() === "tk" ||
-            val.toLowerCase() === "sd" ||
-            val.toLowerCase() === "mi" ||
-            val.toLowerCase() === "smp" ||
-            val.toLowerCase() === "mts" ||
-            val.toLowerCase() === "sma" ||
-            val.toLowerCase() === "ma" ||
-            val.toLowerCase() === "il" ||
-            val === "-"
+            val.trim().startsWith("MTA26") || 
+            val.trim().startsWith("ILA26") ||
+            val.trim().toLowerCase() === "laki-laki" || 
+            val.trim().toLowerCase() === "perempuan" ||
+            val.trim().toLowerCase() === "l" || 
+            val.trim().toLowerCase() === "p" ||
+            val.trim().toLowerCase() === "s" ||
+            val.trim().toLowerCase() === "m" ||
+            val.trim().toLowerCase() === "xl" ||
+            val.trim().toLowerCase() === "xxl" ||
+            val.trim().toLowerCase() === "3xl" ||
+            val.trim().toLowerCase() === "tk" ||
+            val.trim().toLowerCase() === "sd" ||
+            val.trim().toLowerCase() === "mi" ||
+            val.trim().toLowerCase() === "smp" ||
+            val.trim().toLowerCase() === "mts" ||
+            val.trim().toLowerCase() === "sma" ||
+            val.trim().toLowerCase() === "ma" ||
+            val.trim().toLowerCase() === "il" ||
+            val.trim() === "-"
           ))
         ) {
           cell.alignment = { vertical: "middle", horizontal: "center" };

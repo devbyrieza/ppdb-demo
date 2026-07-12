@@ -115,6 +115,7 @@ export default function RekapSeragamPage() {
             title: "Laporan Rekapitulasi Ukuran Seragam",
             subTitle: `Total Pendaftar: ${sortedDataForExport.length} | Lengkap: ${sudahIsi} | Belum: ${belumIsi}`,
             header: ["No", "No. Pendaftaran", "Nama Lengkap", "Jenjang", "L/P", "Baju", "Celana/Rok", "Almamater"],
+            centeredColumns: [1, 2, 4, 5, 6, 7, 8],
             data: sortedDataForExport.map((item, index) => [
               index + 1,
               item.nomor_pendaftaran,
