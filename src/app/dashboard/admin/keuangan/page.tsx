@@ -1019,7 +1019,8 @@ export default function KeuanganPage() {
                             </tr>
                           )}
                         </React.Fragment>
-                      ))
+                      );
+                    })
                     ) : (
                       <tr>
                         <td
