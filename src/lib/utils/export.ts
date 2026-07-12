@@ -148,7 +148,21 @@ export const exportToExcelProfessional = async ({
             val.toLowerCase() === "laki-laki" || 
             val.toLowerCase() === "perempuan" ||
             val.toLowerCase() === "l" || 
-            val.toLowerCase() === "p"
+            val.toLowerCase() === "p" ||
+            val.toLowerCase() === "s" ||
+            val.toLowerCase() === "m" ||
+            val.toLowerCase() === "xl" ||
+            val.toLowerCase() === "xxl" ||
+            val.toLowerCase() === "3xl" ||
+            val.toLowerCase() === "tk" ||
+            val.toLowerCase() === "sd" ||
+            val.toLowerCase() === "mi" ||
+            val.toLowerCase() === "smp" ||
+            val.toLowerCase() === "mts" ||
+            val.toLowerCase() === "sma" ||
+            val.toLowerCase() === "ma" ||
+            val.toLowerCase() === "il" ||
+            val === "-"
           ))
         ) {
           cell.alignment = { vertical: "middle", horizontal: "center" };
