@@ -5,6 +5,7 @@ import { Loader2, Search, Download, MessageSquare, Shirt, CheckCircle2, XCircle,
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import Swal from "sweetalert2";
+import { exportToExcelProfessional } from "@/lib/utils/export";
 
 export default function RekapSeragamPage() {
   const [data, setData] = useState<any[]>([]);
@@ -92,7 +93,7 @@ export default function RekapSeragamPage() {
     "MA": 5
   };
 
-  const exportExcel = () => {
+  const exportExcel = async () => {
     const sortedDataForExport = [...filteredData].sort((a, b) => {
       const rankA = jenjangOrder[a.jenjang || ""] || 99;
       const rankB = jenjangOrder[b.jenjang || ""] || 99;
@@ -105,34 +106,32 @@ export default function RekapSeragamPage() {
     const belumIsi = sortedDataForExport.filter(d => !d.ukuran_seragam_baju || !d.ukuran_seragam_celana || !d.ukuran_seragam_almamater).length;
     const sudahIsi = sortedDataForExport.length - belumIsi;
 
-    const csvContent = [
-      ["Laporan Rekapitulasi Ukuran Seragam"],
-      [`Tanggal Cetak: ${new Date().toLocaleDateString("id-ID")}`],
-      [`Total Pendaftar: ${sortedDataForExport.length}`],
-      [`Lengkap: ${sudahIsi}`],
-      [`Belum: ${belumIsi}`],
-      [],
-      ["No. Pendaftaran", "Nama Lengkap", "Jenjang", "L/P", "Ukuran Baju", "Ukuran Celana", "Ukuran Almamater"],
-      ...sortedDataForExport.map(item => [
-        item.nomor_pendaftaran,
-        item.nama_lengkap,
-        item.jenjang,
-        item.jenis_kelamin,
-        item.ukuran_seragam_baju || "Belum Isi",
-        item.ukuran_seragam_celana || "Belum Isi",
-        item.ukuran_seragam_almamater || "Belum Isi"
-      ])
-    ].map(e => e.join(",")).join("\n");
-
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement("a");
-    const url = URL.createObjectURL(blob);
-    link.setAttribute("href", url);
-    link.setAttribute("download", `Rekap_Seragam_${new Date().toISOString().slice(0,10)}.csv`);
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    try {
+      await exportToExcelProfessional({
+        fileName: `Rekap_Seragam_${new Date().toISOString().slice(0, 10)}`,
+        sheets: [
+          {
+            name: "Rekap Seragam",
+            title: "Laporan Rekapitulasi Ukuran Seragam",
+            subTitle: `Total Pendaftar: ${sortedDataForExport.length} | Lengkap: ${sudahIsi} | Belum: ${belumIsi}`,
+            header: ["No", "No. Pendaftaran", "Nama Lengkap", "Jenjang", "L/P", "Baju", "Celana/Rok", "Almamater"],
+            data: sortedDataForExport.map((item, index) => [
+              index + 1,
+              item.nomor_pendaftaran,
+              item.nama_lengkap,
+              item.jenjang,
+              item.jenis_kelamin,
+              item.ukuran_seragam_baju || "-",
+              item.ukuran_seragam_celana || "-",
+              item.ukuran_seragam_almamater || "-"
+            ])
+          }
+        ]
+      });
+    } catch (error) {
+      console.error("Error exporting to excel:", error);
+      Swal.fire("Gagal", "Terjadi kesalahan saat mengunduh Excel", "error");
+    }
   };
 
   const exportPDF = () => {
