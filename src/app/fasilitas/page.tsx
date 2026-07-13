@@ -121,7 +121,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
         <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.02] pointer-events-none" />
 
         <Container className="relative z-10">
-          <div className="grid lg:grid-cols-1 md:grid-cols-2 gap-16 items-center">
+          <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-16 items-center">
             <div className="text-center lg:text-left">
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
@@ -295,7 +295,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
 
           <div className="space-y-24 lg:space-y-32">
             {/* 1. Masjid */}
-            <div className="grid lg:grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 items-center">
+            <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
               <motion.div
                 initial={{ opacity: 0, x: -40 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -371,7 +371,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
             </div>
 
             {/* 2. Ruang Kelas */}
-            <div className="grid lg:grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 items-center">
+            <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
               <motion.div
                 initial={{ opacity: 0, x: -40 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -447,7 +447,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
             </div>
 
             {/* 3. Asrama */}
-            <div className="grid lg:grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 items-center">
+            <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
               <motion.div
                 initial={{ opacity: 0, x: -40 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -523,7 +523,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
             </div>
 
             {/* 4. Lapangan Minisoccer */}
-            <div className="grid lg:grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 items-center">
+            <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
               <motion.div
                 initial={{ opacity: 0, x: -40 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -599,7 +599,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
             </div>
 
             {/* 5. Lapangan Basket */}
-            <div className="grid lg:grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 items-center">
+            <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
               <motion.div
                 initial={{ opacity: 0, x: -40 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -675,7 +675,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
             </div>
 
             {/* 6. Depot Galon Gratis */}
-            <div className="grid lg:grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 items-center">
+            <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
               <motion.div
                 initial={{ opacity: 0, x: -40 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -751,7 +751,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
             </div>
 
             {/* 7. Kantor PPDB & Tamu */}
-            <div className="grid lg:grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 items-center">
+            <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
               <motion.div
                 initial={{ opacity: 0, x: -40 }}
                 whileInView={{ opacity: 1, x: 0 }}
