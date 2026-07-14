@@ -287,13 +287,13 @@ export default function BantuanBiayaPage() {
             <table className="w-full text-left text-sm">
               <thead className="bg-stone-50 text-stone-500 border-b border-stone-200">
                 <tr>
-                  <th className="px-6 py-4 font-bold whitespace-nowrap">Pendaftar</th>
-                  <th className="px-6 py-4 font-bold whitespace-nowrap">Jenis Bantuan</th>
-                  <th className="px-6 py-4 font-bold whitespace-nowrap">Cakupan</th>
-                  <th className="px-6 py-4 font-bold whitespace-nowrap">Uang Pangkal</th>
-                  <th className="px-6 py-4 font-bold whitespace-nowrap">SPP Bulan Pertama</th>
-                  <th className="px-6 py-4 font-bold whitespace-nowrap">Status</th>
-                  <th className="px-6 py-4 font-bold whitespace-nowrap">Aksi</th>
+                  <th className="px-6 py-4 font-bold">Pendaftar</th>
+                  <th className="px-6 py-4 font-bold">Jenis Bantuan</th>
+                  <th className="px-6 py-4 font-bold">Cakupan</th>
+                  <th className="px-6 py-4 font-bold">Uang Pangkal</th>
+                  <th className="px-6 py-4 font-bold">SPP Bulan Pertama</th>
+                  <th className="px-6 py-4 font-bold">Status</th>
+                  <th className="px-6 py-4 font-bold">Aksi</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-stone-100">

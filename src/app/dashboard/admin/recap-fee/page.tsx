@@ -362,19 +362,19 @@ export default function RecapFeePage() {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-ink-50/50">
-                <th className="px-6 py-5 text-[10px] font-black text-ink-400 uppercase tracking-widest whitespace-nowrap">
+                <th className="px-6 py-5 text-[10px] font-black text-ink-400 uppercase tracking-widest">
                   Petugas Seleksi
                 </th>
-                <th className="px-4 py-5 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest border-x border-white whitespace-nowrap">
+                <th className="px-4 py-5 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest border-x border-white">
                   Al-Quran
                 </th>
-                <th className="px-4 py-5 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest border-r border-white whitespace-nowrap">
+                <th className="px-4 py-5 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest border-r border-white">
                   W. Santri
                 </th>
-                <th className="px-4 py-5 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest border-r border-white whitespace-nowrap">
+                <th className="px-4 py-5 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest border-r border-white">
                   W. Wali/Ortu
                 </th>
-                <th className="px-6 py-5 text-right text-[10px] font-black text-ink-400 uppercase tracking-widest whitespace-nowrap">
+                <th className="px-6 py-5 text-right text-[10px] font-black text-ink-400 uppercase tracking-widest">
                   Estimasi Fee
                 </th>
               </tr>

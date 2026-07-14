@@ -174,28 +174,28 @@ export default function RekapFeePengujiPage() {
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-ink-50/50 border-b border-ink-100">
-                  <th className="px-6 py-4 text-xs font-black text-ink-500 uppercase tracking-wider whitespace-nowrap">
+                  <th className="px-6 py-4 text-xs font-black text-ink-500 uppercase tracking-wider">
                     Penguji
                   </th>
-                  <th className="px-6 py-4 text-xs font-black text-ink-500 uppercase tracking-wider text-center whitespace-nowrap">
+                  <th className="px-6 py-4 text-xs font-black text-ink-500 uppercase tracking-wider text-center">
                     Qur'an
                   </th>
-                  <th className="px-6 py-4 text-xs font-black text-ink-500 uppercase tracking-wider text-center whitespace-nowrap">
+                  <th className="px-6 py-4 text-xs font-black text-ink-500 uppercase tracking-wider text-center">
                     W. Santri
                   </th>
-                  <th className="px-6 py-4 text-xs font-black text-ink-500 uppercase tracking-wider text-center whitespace-nowrap">
+                  <th className="px-6 py-4 text-xs font-black text-ink-500 uppercase tracking-wider text-center">
                     W. Ortu
                   </th>
-                  <th className="px-6 py-4 text-xs font-black text-ink-500 uppercase tracking-wider text-center whitespace-nowrap">
+                  <th className="px-6 py-4 text-xs font-black text-ink-500 uppercase tracking-wider text-center">
                     Hafalan
                   </th>
-                  <th className="px-6 py-4 text-xs font-black text-ink-500 uppercase tracking-wider text-center whitespace-nowrap">
+                  <th className="px-6 py-4 text-xs font-black text-ink-500 uppercase tracking-wider text-center">
                     Arab
                   </th>
-                  <th className="px-6 py-4 text-xs font-black text-primary-600 uppercase tracking-wider text-center bg-primary-50/30 whitespace-nowrap">
+                  <th className="px-6 py-4 text-xs font-black text-primary-600 uppercase tracking-wider text-center bg-primary-50/30">
                     Total Sesi
                   </th>
-                  <th className="px-6 py-4 text-xs font-black text-emerald-600 uppercase tracking-wider text-right bg-emerald-50/30 whitespace-nowrap">
+                  <th className="px-6 py-4 text-xs font-black text-emerald-600 uppercase tracking-wider text-right bg-emerald-50/30">
                     Fee (Rp)
                   </th>
                 </tr>

@@ -1260,12 +1260,12 @@ function AdminPendaftarContent() {
       {/* Header */}
       <div className="bg-white rounded-3xl shadow-sm p-4 md:p-8 border border-gold-100">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-          <div className="flex items-center gap-3 md:gap-5 min-w-[200px]">
+          <div className="flex items-center gap-3 md:gap-5">
             <div className="p-2.5 md:p-4 bg-linear-to-br from-primary-600 to-primary-900 rounded-2xl shadow-xl shadow-primary-900/20 flex-shrink-0">
               <Users className="w-6 h-6 md:w-8 md:h-8 text-gold-300" />
             </div>
             <div className="min-w-0">
-              <h2 className="text-lg md:text-3xl font-black text-primary-950 tracking-tight leading-none truncate whitespace-nowrap">
+              <h2 className="text-lg md:text-3xl font-black text-primary-950 tracking-tight leading-none flex-shrink-0">
                 {activeFilterLabel || "Pendaftar"}
               </h2>
               <p className="text-sm text-stone-600 whitespace-nowrap">
@@ -1274,7 +1274,7 @@ function AdminPendaftarContent() {
               </p>
             </div>
           </div>
-          <div className="flex flex-wrap items-center gap-2 lg:justify-end">
+          <div className="flex flex-wrap items-center gap-2 xl:justify-end">
             {userRole &&
               ["admin_super", "admin", "penguji"].includes(userRole) && (
                 <>
@@ -1987,7 +1987,7 @@ function AdminPendaftarContent() {
               <table className="w-full">
                 <thead className="bg-linear-to-r from-primary-50 to-primary-100 border-b border-primary-200">
                   <tr>
-                    <th className="px-4 py-4 text-center whitespace-nowrap">
+                    <th className="px-4 py-4 text-center">
                       <button
                         onClick={handleSelectAll}
                         className="text-primary-600 hover:text-primary-800"
@@ -1999,27 +1999,27 @@ function AdminPendaftarContent() {
                         )}
                       </button>
                     </th>
-                    <th className="px-4 py-4 text-left text-[10px] font-black text-primary-900 uppercase tracking-widest whitespace-nowrap">
+                    <th className="px-4 py-4 text-left text-[10px] font-black text-primary-900 uppercase tracking-widest">
                       No. Pendaftaran
                     </th>
-                    <th className="px-4 py-4 text-left text-[10px] font-black text-primary-900 uppercase tracking-widest whitespace-nowrap">
+                    <th className="px-4 py-4 text-left text-[10px] font-black text-primary-900 uppercase tracking-widest">
                       Nama Lengkap
                     </th>
-                    <th className="px-4 py-4 text-left text-[10px] font-black text-primary-900 uppercase tracking-widest whitespace-nowrap">
+                    <th className="px-4 py-4 text-left text-[10px] font-black text-primary-900 uppercase tracking-widest">
                       NIK
                     </th>
                     {(isAdminSuper || isBerkas) && (
-                      <th className="px-4 py-4 text-left text-[10px] font-black text-primary-900 uppercase tracking-widest whitespace-nowrap">
+                      <th className="px-4 py-4 text-left text-[10px] font-black text-primary-900 uppercase tracking-widest">
                         Kontak
                       </th>
                     )}
-                    <th className="px-4 py-4 text-left text-[10px] font-black text-primary-900 uppercase tracking-widest whitespace-nowrap">
+                    <th className="px-4 py-4 text-left text-[10px] font-black text-primary-900 uppercase tracking-widest">
                       Jenjang
                     </th>
-                    <th className="px-4 py-4 text-left text-[10px] font-black text-primary-900 uppercase tracking-widest whitespace-nowrap">
+                    <th className="px-4 py-4 text-left text-[10px] font-black text-primary-900 uppercase tracking-widest">
                       Status Pendaftaran
                     </th>
-                    <th className="px-4 py-4 text-left text-[10px] font-black text-primary-900 uppercase tracking-widest whitespace-nowrap">
+                    <th className="px-4 py-4 text-left text-[10px] font-black text-primary-900 uppercase tracking-widest">
                       Aksi
                     </th>
                   </tr>

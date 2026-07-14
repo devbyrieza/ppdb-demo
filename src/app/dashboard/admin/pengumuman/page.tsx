@@ -341,16 +341,16 @@ export default function PengumumanPage() {
                     }
                   />
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-bold text-stone-500 uppercase whitespace-nowrap">
+                <th className="px-6 py-4 text-left text-xs font-bold text-stone-500 uppercase">
                   Nama & Komponen
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-bold text-stone-500 uppercase whitespace-nowrap">
+                <th className="px-6 py-4 text-left text-xs font-bold text-stone-500 uppercase">
                   Jenjang
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-bold text-stone-500 uppercase whitespace-nowrap">
+                <th className="px-6 py-4 text-left text-xs font-bold text-stone-500 uppercase">
                   Total / Grade
                 </th>
-                <th className="px-6 py-4 text-center text-xs font-bold text-stone-500 uppercase whitespace-nowrap">
+                <th className="px-6 py-4 text-center text-xs font-bold text-stone-500 uppercase">
                   Status
                 </th>
               </tr>

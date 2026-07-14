@@ -239,22 +239,22 @@ export default function TrashPage() {
               <table className="w-full">
                 <thead className="bg-gradient-to-r from-red-50 to-rose-50 border-b-2 border-red-200">
                   <tr>
-                    <th className="px-4 py-3 text-left text-xs font-bold text-red-900 uppercase tracking-wider whitespace-nowrap">
+                    <th className="px-4 py-3 text-left text-xs font-bold text-red-900 uppercase tracking-wider">
                       No. Pendaftaran
                     </th>
-                    <th className="px-4 py-3 text-left text-xs font-bold text-red-900 uppercase tracking-wider whitespace-nowrap">
+                    <th className="px-4 py-3 text-left text-xs font-bold text-red-900 uppercase tracking-wider">
                       Nama Lengkap
                     </th>
-                    <th className="px-4 py-3 text-left text-xs font-bold text-red-900 uppercase tracking-wider whitespace-nowrap">
+                    <th className="px-4 py-3 text-left text-xs font-bold text-red-900 uppercase tracking-wider">
                       Jenjang
                     </th>
-                    <th className="px-4 py-3 text-left text-xs font-bold text-red-900 uppercase tracking-wider whitespace-nowrap">
+                    <th className="px-4 py-3 text-left text-xs font-bold text-red-900 uppercase tracking-wider">
                       Dihapus Oleh
                     </th>
-                    <th className="px-4 py-3 text-left text-xs font-bold text-red-900 uppercase tracking-wider whitespace-nowrap">
+                    <th className="px-4 py-3 text-left text-xs font-bold text-red-900 uppercase tracking-wider">
                       Tanggal Hapus
                     </th>
-                    <th className="px-4 py-3 text-left text-xs font-bold text-red-900 uppercase tracking-wider whitespace-nowrap">
+                    <th className="px-4 py-3 text-left text-xs font-bold text-red-900 uppercase tracking-wider">
                       Aksi
                     </th>
                   </tr>

@@ -691,37 +691,37 @@ export default function ExaminerDashboard() {
               <table className="min-w-full divide-y divide-ink-100">
                 <thead className="bg-ink-50/50">
                   <tr>
-                    <th className="px-6 py-4 text-left text-[10px] font-black text-ink-400 uppercase tracking-widest whitespace-nowrap">
+                    <th className="px-6 py-4 text-left text-[10px] font-black text-ink-400 uppercase tracking-widest">
                       NP
                     </th>
-                    <th className="px-6 py-4 text-left text-[10px] font-black text-ink-400 uppercase tracking-widest whitespace-nowrap">
+                    <th className="px-6 py-4 text-left text-[10px] font-black text-ink-400 uppercase tracking-widest">
                       Nama Peserta
                     </th>
-                    <th className="px-4 py-4 text-left text-[10px] font-black text-ink-400 uppercase tracking-widest whitespace-nowrap">
+                    <th className="px-4 py-4 text-left text-[10px] font-black text-ink-400 uppercase tracking-widest">
                       Jenjang
                     </th>
-                    <th className="px-4 py-4 text-left text-[10px] font-black text-ink-400 uppercase tracking-widest whitespace-nowrap">
+                    <th className="px-4 py-4 text-left text-[10px] font-black text-ink-400 uppercase tracking-widest">
                       Status
                     </th>
-                    <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest whitespace-nowrap">
+                    <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">
                       Quran
                     </th>
-                    <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest whitespace-nowrap">
+                    <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">
                       Akademi
                     </th>
-                    <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest whitespace-nowrap">
+                    <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">
                       Keprib.
                     </th>
-                    <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest whitespace-nowrap">
+                    <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">
                       Sesuai
                     </th>
-                    <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest whitespace-nowrap">
+                    <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">
                       Siap
                     </th>
-                    <th className="px-3 py-4 text-center text-[10px] font-black text-primary-700 uppercase tracking-widest bg-primary-50/30 whitespace-nowrap">
+                    <th className="px-3 py-4 text-center text-[10px] font-black text-primary-700 uppercase tracking-widest bg-primary-50/30">
                       Total
                     </th>
-                    <th className="px-6 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest whitespace-nowrap">
+                    <th className="px-6 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">
                       Aksi Input
                     </th>
                   </tr>

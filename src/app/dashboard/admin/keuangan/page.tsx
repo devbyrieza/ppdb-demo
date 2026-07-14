@@ -634,11 +634,11 @@ export default function KeuanganPage() {
                   <thead className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
                     <tr>
                       <th className="px-6 py-3 w-12">No</th>
-                      <th className="px-6 py-3 whitespace-nowrap">Nama Santri</th>
-                      <th className="px-6 py-3 whitespace-nowrap">Status Bayar</th>
-                      <th className="px-6 py-3 whitespace-nowrap">Jumlah</th>
-                      <th className="px-6 py-3 whitespace-nowrap">Metode</th>
-                      <th className="px-6 py-3 whitespace-nowrap">Update</th>
+                      <th className="px-6 py-3">Nama Santri</th>
+                      <th className="px-6 py-3">Status Bayar</th>
+                      <th className="px-6 py-3">Jumlah</th>
+                      <th className="px-6 py-3">Metode</th>
+                      <th className="px-6 py-3">Update</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
@@ -731,12 +731,12 @@ export default function KeuanganPage() {
                   <thead className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
                     <tr>
                       <th className="px-6 py-3 w-12">No</th>
-                      <th className="px-6 py-3 whitespace-nowrap">Nama Santri</th>
-                      <th className="px-6 py-3 whitespace-nowrap">Status Kelulusan</th>
-                      <th className="px-6 py-3 whitespace-nowrap">Total Bayar</th>
-                      <th className="px-6 py-3 whitespace-nowrap">Status Bayar</th>
-                      <th className="px-6 py-3 whitespace-nowrap">Sisa Tagihan</th>
-                      <th className="px-6 py-3 whitespace-nowrap">Update</th>
+                      <th className="px-6 py-3">Nama Santri</th>
+                      <th className="px-6 py-3">Status Kelulusan</th>
+                      <th className="px-6 py-3">Total Bayar</th>
+                      <th className="px-6 py-3">Status Bayar</th>
+                      <th className="px-6 py-3">Sisa Tagihan</th>
+                      <th className="px-6 py-3">Update</th>
                       <th className="px-6 py-3 text-center w-24">Detail</th>
                     </tr>
                   </thead>
@@ -922,13 +922,13 @@ export default function KeuanganPage() {
                                           <table className="w-full text-xs text-left">
                                             <thead className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
                                               <tr>
-                                                <th className="px-3 py-2 whitespace-nowrap">Cicilan Ke</th>
-                                                <th className="px-3 py-2 whitespace-nowrap">Jumlah</th>
-                                                <th className="px-3 py-2 whitespace-nowrap">Tanggal Upload</th>
-                                                <th className="px-3 py-2 whitespace-nowrap">Metode</th>
-                                                <th className="px-3 py-2 whitespace-nowrap">Bukti</th>
-                                                <th className="px-3 py-2 whitespace-nowrap">Status</th>
-                                                <th className="px-3 py-2 whitespace-nowrap">Catatan / Keringanan</th>
+                                                <th className="px-3 py-2">Cicilan Ke</th>
+                                                <th className="px-3 py-2">Jumlah</th>
+                                                <th className="px-3 py-2">Tanggal Upload</th>
+                                                <th className="px-3 py-2">Metode</th>
+                                                <th className="px-3 py-2">Bukti</th>
+                                                <th className="px-3 py-2">Status</th>
+                                                <th className="px-3 py-2">Catatan / Keringanan</th>
                                               </tr>
                                             </thead>
                                             <tbody className="divide-y divide-slate-100">
