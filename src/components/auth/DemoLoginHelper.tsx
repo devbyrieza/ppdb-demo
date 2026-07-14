@@ -92,7 +92,7 @@ export default function DemoLoginHelper({ onSelect }: DemoLoginHelperProps) {
         </h3>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 mb-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
         {demoAdmins.map((acc, i) => (
           <motion.button
             key={i}

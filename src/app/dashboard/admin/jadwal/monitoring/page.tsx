@@ -443,11 +443,11 @@ export default function MonitoringJadwalPage() {
                                 <table className="w-full text-left border-collapse">
                                     <thead>
                                         <tr className="bg-slate-50/50">
-                                            <th className="px-6 py-5 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100">Peserta</th>
-                                            <th className="px-6 py-5 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100">Jadwal & Lokasi</th>
-                                            <th className="px-6 py-5 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100">Penguji Al-Qur'an</th>
-                                            <th className="px-6 py-5 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100">W. Santri</th>
-                                            <th className="px-6 py-5 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100">W. Ortu</th>
+                                            <th className="px-6 py-5 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 whitespace-nowrap">Peserta</th>
+                                            <th className="px-6 py-5 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 whitespace-nowrap">Jadwal & Lokasi</th>
+                                            <th className="px-6 py-5 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 whitespace-nowrap">Penguji Al-Qur'an</th>
+                                            <th className="px-6 py-5 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 whitespace-nowrap">W. Santri</th>
+                                            <th className="px-6 py-5 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 whitespace-nowrap">W. Ortu</th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-slate-100">
@@ -534,10 +534,10 @@ export default function MonitoringJadwalPage() {
                                     <table className="w-full text-left border-collapse">
                                         <thead>
                                             <tr className="bg-slate-50/20">
-                                                <th className="px-7 py-4 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100/50">Santri</th>
-                                                <th className="px-7 py-4 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100/50">Tugas</th>
-                                                <th className="px-7 py-4 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100/50">Waktu</th>
-                                                <th className="px-7 py-4 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100/50 text-center">Status</th>
+                                                <th className="px-7 py-4 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100/50 whitespace-nowrap">Santri</th>
+                                                <th className="px-7 py-4 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100/50 whitespace-nowrap">Tugas</th>
+                                                <th className="px-7 py-4 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100/50 whitespace-nowrap">Waktu</th>
+                                                <th className="px-7 py-4 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100/50 text-center whitespace-nowrap">Status</th>
                                             </tr>
                                         </thead>
                                         <tbody className="divide-y divide-slate-100 text-[13px]">

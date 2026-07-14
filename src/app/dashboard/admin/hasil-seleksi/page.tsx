@@ -246,7 +246,7 @@ export default function HasilSeleksiPage() {
           ) : (
             candidates.map((c) => (
               <div key={c.id} className="p-5 space-y-4">
-                <div className="flex justify-between items-start gap-4">
+                <div className="flex justify-between items-start gap-4 flex-wrap">
                   <div className="flex-1 min-w-0">
                     <h4 className="font-black text-stone-900 leading-tight uppercase text-sm truncate">
                       {c.nama_lengkap.replace(
@@ -301,16 +301,16 @@ export default function HasilSeleksiPage() {
           <table className="w-full">
             <thead className="bg-stone-100/50 border-b border-stone-200">
               <tr>
-                <th className="px-6 py-4 text-left text-xs font-black text-stone-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-xs font-black text-stone-500 uppercase tracking-wider whitespace-nowrap">
                   Nama & Detail Nilai
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-black text-stone-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-xs font-black text-stone-500 uppercase tracking-wider whitespace-nowrap">
                   Jenjang
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-black text-stone-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-xs font-black text-stone-500 uppercase tracking-wider whitespace-nowrap">
                   Skor Akhir
                 </th>
-                <th className="px-6 py-4 text-center text-xs font-black text-stone-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-center text-xs font-black text-stone-500 uppercase tracking-wider whitespace-nowrap">
                   Keputusan Akhir
                 </th>
               </tr>

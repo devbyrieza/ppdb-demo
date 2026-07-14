@@ -83,7 +83,7 @@ function DaftarSuksesContent() {
             <CreditCard className="w-3.5 h-3.5 text-primary-700" />
             Nomor Pendaftaran
           </p>
-          <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center justify-between gap-3 flex-wrap">
             <p className="text-2xl font-black text-primary-900 break-all bg-secondary-50/50 px-2 py-1 rounded-lg">
               {nomor_pendaftaran}
             </p>
@@ -107,7 +107,7 @@ function DaftarSuksesContent() {
             <IdCard className="w-3.5 h-3.5 text-primary-700" />
             NIK Santri (Password)
           </p>
-          <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center justify-between gap-3 flex-wrap">
             <p className="text-lg font-black text-ink-900 break-all">{nik}</p>
             <button
               onClick={() => handleCopy(nik, "nik")}

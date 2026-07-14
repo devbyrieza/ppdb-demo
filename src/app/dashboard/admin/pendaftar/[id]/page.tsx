@@ -3598,7 +3598,7 @@ export default function PendaftarDetailPage() {
 
       {/* Modal Welcome Day (Khusus Admin) */}
       {isWdModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-primary-950/40 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-primary-950/40 backdrop-blur-sm overflow-y-auto">
           <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl flex flex-col max-h-[90vh]">
             <div className="flex items-center justify-between p-6 border-b border-surface-100 bg-surface-50 rounded-t-3xl">
               <h2 className="text-xl font-black text-primary-950 flex items-center gap-2">
@@ -3652,7 +3652,7 @@ export default function PendaftarDetailPage() {
 
               {wdFormData.statusKehadiran === "HADIR" && (
                 <>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="text-xs font-black uppercase tracking-wider text-ink-300 mb-2 block">
                         Total Rombongan
@@ -3680,7 +3680,7 @@ export default function PendaftarDetailPage() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="text-xs font-black uppercase tracking-wider text-ink-300 mb-2 block">
                         Jumlah Mobil

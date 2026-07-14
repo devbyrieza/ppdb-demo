@@ -236,7 +236,7 @@ export default function DaftarUlangTab() {
         <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">
           Pilih Jenis Pembayaran Daftar Ulang
         </p>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {/* Tab: Uang Pangkal */}
           <button
             type="button"
@@ -463,7 +463,7 @@ export default function DaftarUlangTab() {
             </h3>
 
             {/* Opsi Metode Pembayaran */}
-            <div className="grid grid-cols-2 gap-2 mb-4 bg-white p-1 rounded-xl shadow-sm border border-primary-100">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4 bg-white p-1 rounded-xl shadow-sm border border-primary-100">
               <button
                 onClick={() => setPaymentMethod("transfer")}
                 className={`py-2 px-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 ${

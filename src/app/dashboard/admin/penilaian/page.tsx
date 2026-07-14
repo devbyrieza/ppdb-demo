@@ -691,37 +691,37 @@ export default function ExaminerDashboard() {
               <table className="min-w-full divide-y divide-ink-100">
                 <thead className="bg-ink-50/50">
                   <tr>
-                    <th className="px-6 py-4 text-left text-[10px] font-black text-ink-400 uppercase tracking-widest">
+                    <th className="px-6 py-4 text-left text-[10px] font-black text-ink-400 uppercase tracking-widest whitespace-nowrap">
                       NP
                     </th>
-                    <th className="px-6 py-4 text-left text-[10px] font-black text-ink-400 uppercase tracking-widest">
+                    <th className="px-6 py-4 text-left text-[10px] font-black text-ink-400 uppercase tracking-widest whitespace-nowrap">
                       Nama Peserta
                     </th>
-                    <th className="px-4 py-4 text-left text-[10px] font-black text-ink-400 uppercase tracking-widest">
+                    <th className="px-4 py-4 text-left text-[10px] font-black text-ink-400 uppercase tracking-widest whitespace-nowrap">
                       Jenjang
                     </th>
-                    <th className="px-4 py-4 text-left text-[10px] font-black text-ink-400 uppercase tracking-widest">
+                    <th className="px-4 py-4 text-left text-[10px] font-black text-ink-400 uppercase tracking-widest whitespace-nowrap">
                       Status
                     </th>
-                    <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">
+                    <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest whitespace-nowrap">
                       Quran
                     </th>
-                    <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">
+                    <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest whitespace-nowrap">
                       Akademi
                     </th>
-                    <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">
+                    <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest whitespace-nowrap">
                       Keprib.
                     </th>
-                    <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">
+                    <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest whitespace-nowrap">
                       Sesuai
                     </th>
-                    <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">
+                    <th className="px-3 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest whitespace-nowrap">
                       Siap
                     </th>
-                    <th className="px-3 py-4 text-center text-[10px] font-black text-primary-700 uppercase tracking-widest bg-primary-50/30">
+                    <th className="px-3 py-4 text-center text-[10px] font-black text-primary-700 uppercase tracking-widest bg-primary-50/30 whitespace-nowrap">
                       Total
                     </th>
-                    <th className="px-6 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">
+                    <th className="px-6 py-4 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest whitespace-nowrap">
                       Aksi Input
                     </th>
                   </tr>
@@ -1102,7 +1102,7 @@ export default function ExaminerDashboard() {
                     className="bg-white rounded-3xl p-5 shadow-clay-sm border border-ink-50 space-y-4"
                   >
                     {/* Header: No. Daftar + Nama + Jenjang */}
-                    <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-start justify-between gap-3 flex-wrap">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
                           <span className="text-[10px] font-mono font-bold text-ink-400 tracking-tight">
@@ -1232,7 +1232,7 @@ export default function ExaminerDashboard() {
                     {/* Action Buttons */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                       {isAdminSuper && (
-                        <div className="grid grid-cols-2 gap-2 col-span-full">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 col-span-full">
                           <button
                             onClick={() => handleOpenSkipDialog(s)}
                             className="flex items-center justify-center gap-2 bg-amber-500 text-white py-3 rounded-2xl text-[11px] font-black shadow-lg shadow-amber-500/20 active:scale-95 transition-all"

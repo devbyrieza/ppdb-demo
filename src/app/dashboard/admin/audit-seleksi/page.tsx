@@ -343,31 +343,31 @@ export default function AuditSeleksiPage() {
                     checked={candidates.length > 0 && selectedIds.length === candidates.length}
                   />
                 </th>
-                <th className="px-6 py-5 text-left text-[10px] font-black text-ink-400 uppercase tracking-widest">
+                <th className="px-6 py-5 text-left text-[10px] font-black text-ink-400 uppercase tracking-widest whitespace-nowrap">
                   Nama & No. Daftar
                 </th>
-                <th className="px-4 py-5 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">
+                <th className="px-4 py-5 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest whitespace-nowrap">
                   Jenjang
                 </th>
-                <th className="px-3 py-5 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">
+                <th className="px-3 py-5 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest whitespace-nowrap">
                   Quran
                 </th>
-                <th className="px-3 py-5 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">
+                <th className="px-3 py-5 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest whitespace-nowrap">
                   Akademi
                 </th>
-                <th className="px-3 py-5 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">
+                <th className="px-3 py-5 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest whitespace-nowrap">
                   Keprib.
                 </th>
-                <th className="px-3 py-5 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">
+                <th className="px-3 py-5 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest whitespace-nowrap">
                   Wawancara
                 </th>
-                <th className="px-3 py-5 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">
+                <th className="px-3 py-5 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest whitespace-nowrap">
                   Kesiapan
                 </th>
-                <th className="px-6 py-5 text-center text-[10px] font-black text-army-700 uppercase tracking-widest bg-army-50/30">
+                <th className="px-6 py-5 text-center text-[10px] font-black text-army-700 uppercase tracking-widest bg-army-50/30 whitespace-nowrap">
                   Total Skor
                 </th>
-                <th className="px-6 py-5 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest">
+                <th className="px-6 py-5 text-center text-[10px] font-black text-ink-400 uppercase tracking-widest whitespace-nowrap">
                   Status Saat Ini
                 </th>
               </tr>

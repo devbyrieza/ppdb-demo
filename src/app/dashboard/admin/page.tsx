@@ -63,7 +63,7 @@ const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown, highlig
           <p className={`stat-label uppercase tracking-[0.25em] mb-2 ${
             highlighted ? "text-primary-300" : "text-primary-500"
           }`}>{label}</p>
-          <div className="flex items-baseline justify-between gap-2">
+          <div className="flex items-baseline justify-between gap-2 flex-wrap">
             <div className="flex items-baseline gap-2">
               <h3 className={`text-3xl sm:text-4xl lg:text-5xl font-black tracking-tighter ${
                 highlighted ? "text-white" : "text-primary-950"
@@ -559,7 +559,7 @@ export default function AdminDashboardPage() {
                     <p className="text-[11px] text-ink-400 font-bold">Verifikasi berkas santri baru</p>
                   </div>
                 </div>
-                <div className="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto border-t sm:border-0 pt-3 sm:pt-0 border-secondary-200/60">
+                <div className="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto border-t sm:border-0 pt-3 sm:pt-0 border-secondary-200/60 flex-wrap">
                   <span className="text-xl sm:text-2xl font-black text-ink-900">{stats.waiting_docs}</span>
                   <ChevronRight className="w-5 h-5 text-ink-300 hidden sm:block" />
                 </div>
@@ -575,7 +575,7 @@ export default function AdminDashboardPage() {
                     <p className="text-[11px] text-ink-400 font-bold">Konfirmasi bukti transfer</p>
                   </div>
                 </div>
-                <div className="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto border-t sm:border-0 pt-3 sm:pt-0 border-secondary-200/60">
+                <div className="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto border-t sm:border-0 pt-3 sm:pt-0 border-secondary-200/60 flex-wrap">
                   <span className="text-xl sm:text-2xl font-black text-ink-900">{stats.waiting_payment}</span>
                   <ChevronRight className="w-5 h-5 text-ink-300 hidden sm:block" />
                 </div>

@@ -301,7 +301,7 @@ function DokumenCard({
         className="p-5 pl-7 cursor-pointer"
         onClick={() => setIsExpanded(!isExpanded)}
       >
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center justify-between gap-4 flex-wrap">
           <div className="flex items-center gap-4 flex-1">
             <div
               className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm transition-all ${

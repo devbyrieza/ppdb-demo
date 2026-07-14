@@ -317,12 +317,12 @@ export default function RekapSeragamPage() {
             <table className="w-full text-left text-sm whitespace-nowrap">
               <thead className="bg-ink-50/50 text-ink-500 text-xs uppercase font-black tracking-wider">
                 <tr>
-                  <th className="px-6 py-4">Pendaftar</th>
-                  <th className="px-6 py-4 text-center">Baju</th>
-                  <th className="px-6 py-4 text-center">Celana/Rok</th>
-                  <th className="px-6 py-4 text-center">Almamater</th>
-                  <th className="px-6 py-4 text-center">Status Form</th>
-                  <th className="px-6 py-4 text-center">Aksi</th>
+                  <th className="px-6 py-4 whitespace-nowrap">Pendaftar</th>
+                  <th className="px-6 py-4 text-center whitespace-nowrap">Baju</th>
+                  <th className="px-6 py-4 text-center whitespace-nowrap">Celana/Rok</th>
+                  <th className="px-6 py-4 text-center whitespace-nowrap">Almamater</th>
+                  <th className="px-6 py-4 text-center whitespace-nowrap">Status Form</th>
+                  <th className="px-6 py-4 text-center whitespace-nowrap">Aksi</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-ink-100 bg-white">

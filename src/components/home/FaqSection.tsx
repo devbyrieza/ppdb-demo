@@ -73,7 +73,7 @@ function FaqItem({
       >
         <button
           onClick={toggle}
-          className="w-full text-left flex items-center justify-between gap-4 px-6 py-5 md:px-7 md:py-6 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-2xl"
+          className="w-full text-left flex items-center justify-between gap-4 px-6 py-5 md:px-7 md:py-6 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-2xl flex-wrap"
           aria-expanded={isOpen}
         >
           <span

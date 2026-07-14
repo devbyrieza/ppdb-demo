@@ -478,7 +478,7 @@ export default function PengajuanBeasiswaTab() {
           <label className="block text-sm font-bold text-ink-900 mb-2">
             Jenis Pengajuan
           </label>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <label
               className={`cursor-pointer border-2 rounded-xl p-4 flex flex-col items-center text-center transition-all ${
                 jenisPengajuan === "KERINGANAN_BIAYA"

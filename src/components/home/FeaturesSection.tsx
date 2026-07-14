@@ -129,7 +129,7 @@ export default function FeaturesSection() {
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="relative z-10 grid grid-cols-2 gap-4 lg:gap-6"
+              className="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6"
             >
               <div className="space-y-4 lg:space-y-6 mt-12">
                 <div className="app-card p-6 sm:p-8 min-h-56 md:h-64 flex flex-col justify-end items-start group">

@@ -317,7 +317,7 @@ function AdminBerkasSection({
                   : "bg-stone-50 border-stone-200"
               }`}
             >
-              <div className="flex items-start justify-between gap-2">
+              <div className="flex items-start justify-between gap-2 flex-wrap">
                 <div className="flex items-start gap-2 min-w-0">
                   {currentPath ? (
                     <CheckCircle className="w-4 h-4 text-green-500 shrink-0 mt-0.5" />
@@ -685,7 +685,7 @@ export default function AdminBeasiswaBlock({
             Cakupan: {cakupanLabel(cakupanActive as CakupanBantuan)}
           </p>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {(cakupanActive === "UANG_PANGKAL" || cakupanActive === "KEDUANYA") && (
               <div className="bg-white rounded-lg p-3 border border-stone-100">
                 <div className="flex items-center gap-1.5 mb-1">
@@ -753,7 +753,7 @@ export default function AdminBeasiswaBlock({
 
       {/* --- ACTION BUTTONS (when no form is open and no active assistance) --- */}
       {!current && !activeSection && (
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {/* BEASISWA */}
           <button
             onClick={openBeasiswa}
@@ -794,7 +794,7 @@ export default function AdminBeasiswaBlock({
             <label className="block text-xs font-black text-stone-600 mb-2 uppercase tracking-widest">
               Cakupan Beasiswa
             </label>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
               {(["UANG_PANGKAL", "SPP", "KEDUANYA"] as CakupanBantuan[]).map((c) => (
                 <button
                   key={c}
@@ -889,7 +889,7 @@ export default function AdminBeasiswaBlock({
             <label className="block text-xs font-black text-stone-600 mb-2 uppercase tracking-widest">
               Cakupan Keringanan
             </label>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
               {(["UANG_PANGKAL", "SPP", "KEDUANYA"] as CakupanBantuan[]).map((c) => (
                 <button
                   key={c}

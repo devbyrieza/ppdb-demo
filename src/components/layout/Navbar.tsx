@@ -227,7 +227,7 @@ export default function Navbar() {
                             transition={{ duration: 0.2 }}
                             className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[600px] z-50"
                           >
-                            <div className="mega-menu-content p-6 grid grid-cols-2 gap-6 relative">
+                            <div className="mega-menu-content p-6 grid grid-cols-1 sm:grid-cols-2 gap-6 relative">
                               <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white rotate-45 border-l border-t border-surface-100" />
                               
                               <Link href="/program#mts" className="group/item p-4 rounded-2xl hover:bg-primary-50 transition-colors border border-transparent hover:border-primary-100">

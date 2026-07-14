@@ -1033,7 +1033,7 @@ export default function WelcomeDayPage() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {kategori.items.map((item, i) => (
                       <div key={i} className="bg-ink-50 rounded-xl p-3 border border-ink-100">
-                        <div className="flex justify-between items-start gap-2">
+                        <div className="flex justify-between items-start gap-2 flex-wrap">
                           <p className="text-sm font-bold text-ink-900">{item.nama}</p>
                           <span className="text-[10px] font-black bg-ink-200 text-ink-700 px-2 py-0.5 rounded-md whitespace-nowrap">{item.qty}</span>
                         </div>

@@ -262,7 +262,7 @@ export default function PengumumanPage() {
                     />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex justify-between items-start mb-1 gap-2">
+                    <div className="flex justify-between items-start mb-1 gap-2 flex-wrap">
                       <h4 className="font-black text-stone-900 leading-tight uppercase text-sm truncate">
                         {toTitleCase(c.nama_lengkap)}
                       </h4>
@@ -341,16 +341,16 @@ export default function PengumumanPage() {
                     }
                   />
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-bold text-stone-500 uppercase">
+                <th className="px-6 py-4 text-left text-xs font-bold text-stone-500 uppercase whitespace-nowrap">
                   Nama & Komponen
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-bold text-stone-500 uppercase">
+                <th className="px-6 py-4 text-left text-xs font-bold text-stone-500 uppercase whitespace-nowrap">
                   Jenjang
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-bold text-stone-500 uppercase">
+                <th className="px-6 py-4 text-left text-xs font-bold text-stone-500 uppercase whitespace-nowrap">
                   Total / Grade
                 </th>
-                <th className="px-6 py-4 text-center text-xs font-bold text-stone-500 uppercase">
+                <th className="px-6 py-4 text-center text-xs font-bold text-stone-500 uppercase whitespace-nowrap">
                   Status
                 </th>
               </tr>
