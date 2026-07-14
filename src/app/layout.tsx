@@ -1,8 +1,9 @@
+import { CheckCircle2 } from "lucide-react";
 import type { Metadata } from "next";
 import "./globals.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
-// ✅ IMPORT NAVBAR & FOOTER YANG SUDAH ADA
+// <CheckCircle2 size={20} className="inline-block mr-2" /> IMPORT NAVBAR & FOOTER YANG SUDAH ADA
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import LayoutWrapper from "@/components/layout/LayoutWrapper";
@@ -119,7 +120,7 @@ export const metadata: Metadata = {
 };
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// ROOT LAYOUT COMPONENT (✅ DENGAN NAVBAR & FOOTER)
+// ROOT LAYOUT COMPONENT (<CheckCircle2 size={20} className="inline-block mr-2" /> DENGAN NAVBAR & FOOTER)
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 export default function RootLayout({
   children,
