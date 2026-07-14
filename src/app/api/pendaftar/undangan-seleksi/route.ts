@@ -245,12 +245,12 @@ export async function GET() {
       if (!hasQuranBooking && checkScore((userNilai as any).nilai_tes_quran, (userNilai as any).detail_quran, 'rekomendasi')) {
         booked.push({
           id: "SYNTHETIC_QURAN",
-          jenis_ujian: "Ujian Tahfidz/Al Qur'an (Offline)",
+          jenis_ujian: "Ujian Tahfidz/Al Qur'an (Admin/Jalur Khusus)",
           tanggal_ujian: "Selesai",
           waktu_mulai: "00:00",
           waktu_selesai: "00:00", // Makes isSelesai = true in UI
-          lokasi: "Offline/Manual",
-          keterangan: "Nilai telah diinput oleh Admin",
+          lokasi: "-",
+          keterangan: "Nilai telah disesuaikan oleh sistem/admin",
           category: "QURAN",
         });
       }
@@ -259,12 +259,12 @@ export async function GET() {
       if (!hasWawancaraSantriBooking && checkScore((userNilai as any).nilai_wawancara_santri, (userNilai as any).detail_wawancara, 'rekomendasi')) {
         booked.push({
           id: "SYNTHETIC_W_SANTRI",
-          jenis_ujian: "Wawancara Calon Santri (Offline)",
+          jenis_ujian: "Wawancara Calon Santri (Admin/Jalur Khusus)",
           tanggal_ujian: "Selesai",
           waktu_mulai: "00:00",
           waktu_selesai: "00:00",
-          lokasi: "Offline/Manual",
-          keterangan: "Nilai telah diinput oleh Admin",
+          lokasi: "-",
+          keterangan: "Nilai telah disesuaikan oleh sistem/admin",
           category: "W_SANTRI",
         });
       }
@@ -273,12 +273,12 @@ export async function GET() {
       if (!hasWawancaraOrtuBooking && checkScore((userNilai as any).nilai_wawancara_ortu, (userNilai as any).detail_cawalsan, 'rekomendasi')) {
         booked.push({
           id: "SYNTHETIC_W_ORTU",
-          jenis_ujian: "Wawancara Calon Orangtua/Wali (Offline)",
+          jenis_ujian: "Wawancara Calon Orangtua/Wali (Admin/Jalur Khusus)",
           tanggal_ujian: "Selesai",
           waktu_mulai: "00:00",
           waktu_selesai: "00:00",
-          lokasi: "Offline/Manual",
-          keterangan: "Nilai telah diinput oleh Admin",
+          lokasi: "-",
+          keterangan: "Nilai telah disesuaikan oleh sistem/admin",
           category: "W_ORTU",
         });
       }
