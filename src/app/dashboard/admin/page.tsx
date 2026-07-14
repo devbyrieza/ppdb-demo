@@ -19,168 +19,74 @@ import { BRANDING } from "@/config/branding";
  */
 
 const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown, highlighted, onDownload, isDownloading, onPromote, isPromoting }: any) => {
-    const colorMap: any = {
-    blue: "from-primary-600 to-primary-800",
-    emerald: "from-emerald-500 to-emerald-600",
-    amber: "from-amber-500 to-amber-600",
-    purple: "from-primary-500 to-primary-700",
-    rose: "from-rose-500 to-rose-600",
-    slate: "from-slate-500 to-slate-600",
-  };
-
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className={`glass-panel p-5 sm:p-6 lg:p-8 rounded-[2rem] border transition-all group relative overflow-hidden duration-300 hover-lift ${
-        highlighted 
-          ? "glass-panel-dark text-white border-primary-800 shadow-premium-lg" 
-          : "text-primary-950 border-primary-100 shadow-premium-sm"
-      }`}
-    >
-      <div className={`glow-blob w-32 h-32 opacity-10 transition-colors duration-500 -top-10 -right-10 ${
-        highlighted ? "glow-blob-primary" : "glow-blob-gold"
-      }`} aria-hidden="true" />
-      
-      <div className="relative z-10">
-        <div className="flex items-center justify-between mb-8">
-          <div className={`icon-box w-14 h-14 rounded-2xl bg-linear-to-br ${colorMap[color] || colorMap.blue} text-white shadow-xl group-hover:scale-110 group-hover:rotate-3 duration-500`}>
-            <Icon className="w-6 h-6" />
-          </div>
-          {trend && (
-            <div className={`flex items-center gap-1.5 text-[10px] font-black px-3 py-1.5 rounded-full border ${
-              highlighted
-                ? "text-emerald-400 bg-white/5 border-white/10"
-                : "text-emerald-600 bg-emerald-50 border-emerald-100"
-            }`}>
-              <TrendingUp className="w-3.5 h-3.5" />
-              <span className="uppercase tracking-wider">{trend}</span>
-            </div>
-          )}
+    <div className="stat-card" style={{ flexDirection: "column", alignItems: "stretch", position: "relative" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "16px", width: "100%" }}>
+        <div className="stat-icon" style={{ backgroundColor: "var(--bg)", color: "var(--primary)" }}>
+          <Icon size={24} />
         </div>
-        
-        <div className="mb-6 lg:mb-8">
-          <p className={`stat-label uppercase tracking-[0.25em] mb-2 ${
-            highlighted ? "text-primary-300" : "text-primary-500"
-          }`}>{label}</p>
-          <div className="flex items-baseline justify-between gap-2">
-            <div className="flex items-baseline gap-2">
-              <h3 className={`text-3xl sm:text-4xl lg:text-5xl font-black tracking-tighter ${
-                highlighted ? "text-white" : "text-primary-950"
-              }`}>{value}</h3>
-              <span className={`text-xs font-bold ${
-                highlighted ? "text-primary-300" : "text-primary-400"
-              }`}>Orang</span>
-            </div>
-
-            {onDownload && (
-              <div className="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <button
-                  onClick={(e) => { e.stopPropagation(); onDownload("excel"); }}
-                  disabled={!!isDownloading}
-                  title="Unduh Excel"
-                  className={`p-2 rounded-xl border transition-all hover:scale-105 duration-300 ${
-                    highlighted 
-                      ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20" 
-                      : "bg-emerald-50 border-emerald-100 text-emerald-600 hover:bg-emerald-100"
-                  }`}
-                >
-                  {isDownloading === "excel" ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                  ) : (
-                    <FileSpreadsheet className="w-4 h-4" />
-                  )}
-                </button>
-                <button
-                  onClick={(e) => { e.stopPropagation(); onDownload("pdf"); }}
-                  disabled={!!isDownloading}
-                  title="Unduh PDF"
-                  className={`p-2 rounded-xl border transition-all hover:scale-105 duration-300 ${
-                    highlighted 
-                      ? "bg-rose-500/10 border-rose-500/20 text-rose-400 hover:bg-rose-500/20" 
-                      : "bg-rose-50 border-rose-100 text-rose-600 hover:bg-rose-100"
-                  }`}
-                >
-                  {isDownloading === "pdf" ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                  ) : (
-                    <FileText className="w-4 h-4" />
-                  )}
-                </button>
-              </div>
-            )}
-          </div>
+        <div style={{ flex: 1 }}>
+          <div className="stat-label">{label}</div>
+          <div className="stat-value">{value}</div>
+          {trend && <div style={{ fontSize: "11px", color: "var(--text-muted)", marginTop: "4px" }}>{trend}</div>}
         </div>
-
-        {/* Tombol Promosikan Semua — hanya muncul jika ada onPromote & value > 0 */}
-        {onPromote && value > 0 && (
-          <div className="mb-4">
+        {onDownload && (
+          <div style={{ display: "flex", gap: "8px" }}>
             <button
-              onClick={(e) => { e.stopPropagation(); onPromote(); }}
-              disabled={isPromoting}
-              className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-black text-xs uppercase tracking-widest transition-all shadow-lg shadow-emerald-600/20 hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={(e) => { e.stopPropagation(); onDownload("excel"); }}
+              disabled={!!isDownloading}
+              className="btn btn-ghost btn-sm"
             >
-              {isPromoting ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Memproses...
-                </>
-              ) : (
-                <>
-                  <CheckSquare className="w-4 h-4" />
-                  Promosikan Semua → Diterima
-                </>
-              )}
+              {isDownloading === "excel" ? <Loader2 className="animate-spin" size={14} /> : <FileSpreadsheet size={14} />}
+            </button>
+            <button
+              onClick={(e) => { e.stopPropagation(); onDownload("pdf"); }}
+              disabled={!!isDownloading}
+              className="btn btn-ghost btn-sm"
+            >
+              {isDownloading === "pdf" ? <Loader2 className="animate-spin" size={14} /> : <FileText size={14} />}
             </button>
           </div>
         )}
+      </div>
 
-        {breakdown && (
-          <div className={`grid grid-cols-2 gap-4 pt-6 border-t ${
-            highlighted ? "border-white/10" : "border-primary-100"
-          }`}>
-            <div className="space-y-4">
-              <div className="flex flex-col">
-                <span className={`text-[9px] font-black uppercase tracking-widest mb-1 ${
-                  highlighted ? "text-primary-300" : "text-primary-500"
-                }`}>MTs Putra</span>
-                <span className={`text-base font-black leading-none ${
-                  highlighted ? "text-white" : "text-primary-700"
-                }`}>{breakdown.mts_l || 0}</span>
-              </div>
-              <div className="flex flex-col">
-                <span className={`text-[9px] font-black uppercase tracking-widest mb-1 ${
-                  highlighted ? "text-primary-300" : "text-primary-500"
-                }`}>MTs Putri</span>
-                <span className={`text-base font-black leading-none ${
-                  highlighted ? "text-pink-300" : "text-pink-500"
-                }`}>{breakdown.mts_p || 0}</span>
-              </div>
+      {onPromote && value > 0 && (
+        <button
+          onClick={(e) => { e.stopPropagation(); onPromote(); }}
+          disabled={isPromoting}
+          className="btn btn-primary btn-sm"
+          style={{ width: "100%", justifyContent: "center", marginTop: "16px" }}
+        >
+          {isPromoting ? <Loader2 className="animate-spin" size={14} /> : <CheckSquare size={14} />}
+          Promosikan Semua → Diterima
+        </button>
+      )}
+
+      {breakdown && (
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginTop: "16px", paddingTop: "16px", borderTop: "1px solid var(--border)" }}>
+          <div>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
+              <span style={{ fontSize: "11px", color: "var(--text-muted)" }}>MTs Putra</span>
+              <span style={{ fontSize: "13px", fontWeight: "bold" }}>{breakdown.mts_l || 0}</span>
             </div>
-            <div className={`space-y-4 border-l pl-4 ${
-              highlighted ? "border-white/10" : "border-primary-100"
-            }`}>
-              <div className="flex flex-col">
-                <span className={`text-[9px] font-black uppercase tracking-widest mb-1 ${
-                  highlighted ? "text-primary-300" : "text-primary-500"
-                }`}>IL Putra</span>
-                <span className={`text-base font-black leading-none ${
-                  highlighted ? "text-white" : "text-primary-700"
-                }`}>{breakdown.il_l || 0}</span>
-              </div>
-              <div className="flex flex-col">
-                <span className={`text-[9px] font-black uppercase tracking-widest mb-1 ${
-                  highlighted ? "text-primary-300" : "text-primary-500"
-                }`}>IL Putri</span>
-                <span className={`text-base font-black leading-none ${
-                  highlighted ? "text-pink-300" : "text-pink-500"
-                }`}>{breakdown.il_p || 0}</span>
-              </div>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <span style={{ fontSize: "11px", color: "var(--text-muted)" }}>MTs Putri</span>
+              <span style={{ fontSize: "13px", fontWeight: "bold" }}>{breakdown.mts_p || 0}</span>
             </div>
           </div>
-        )}
-      </div>
-    </motion.div>
+          <div>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
+              <span style={{ fontSize: "11px", color: "var(--text-muted)" }}>IL Putra</span>
+              <span style={{ fontSize: "13px", fontWeight: "bold" }}>{breakdown.il_l || 0}</span>
+            </div>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <span style={{ fontSize: "11px", color: "var(--text-muted)" }}>IL Putri</span>
+              <span style={{ fontSize: "13px", fontWeight: "bold" }}>{breakdown.il_p || 0}</span>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

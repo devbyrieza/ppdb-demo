@@ -179,37 +179,6 @@ export async function PATCH(
 
       if (body.nilai_tes_quran !== undefined)
         updateData.nilai_tes_quran = body.nilai_tes_quran;
-      baseRole === "penguji_bahasa_arab";
-
-    // 0. Pre-fetch existing record to check timestamps
-    const existing = await prisma.nilaiUjian.findFirst({
-      where: { pendaftar_id: pendaftarId },
-      orderBy: { created_at: "desc" },
-    });
-
-    const updateData: any = {};
-    const now = new Date();
-    const LOCK_TIME = 24 * 60 * 60 * 1000; // 24 hours in ms
-
-    // 1. Quran Update
-    if (canEditQuran && body.detail_quran !== undefined) {
-      // Check Lock
-      if (existing?.input_at_quran && !isAdmin) {
-        const diff =
-          now.getTime() - new Date(existing.input_at_quran).getTime();
-        if (diff > LOCK_TIME) {
-          return NextResponse.json(
-            {
-              error:
-                "Masa edit (24 jam) untuk Tes Quran sudah habis. Silakan hubungi Admin Super.",
-            },
-            { status: 403 },
-          );
-        }
-      }
-
-      if (body.nilai_tes_quran !== undefined)
-        updateData.nilai_tes_quran = body.nilai_tes_quran;
       if (body.catatan_quran !== undefined)
         updateData.catatan_quran = body.catatan_quran;
       if (body.detail_quran !== undefined)
@@ -396,3 +365,4 @@ export async function PATCH(
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+

@@ -226,22 +226,16 @@ function StatusGrid({ status, statusLabel, pengumuman }: any) {
       {items.map((item, id) => (
         <div
           key={id}
-          className="bg-white p-6 sm:p-5 md:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-stone-100 shadow-sm hover:shadow-xl transition-all duration-500 group"
+          className="stat-card"
         >
-          <div
-            className={`w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center mb-4 sm:mb-6 ${item.bg} group-hover:scale-110 transition-transform shadow-inner`}
-          >
-            <item.icon className={`w-6 h-6 sm:w-7 sm:h-7 ${item.color}`} />
+          <div className="stat-icon" style={{ backgroundColor: "var(--bg)", color: "var(--primary)" }}>
+            <item.icon size={24} />
           </div>
-          <p className="text-[10px] font-black text-stone-400 uppercase tracking-widest mb-1">
-            {item.label}
-          </p>
-          <p className="text-xl sm:text-2xl font-black text-primary-950 mb-2 leading-none">
-            {item.val}
-          </p>
-          <p className="text-xs font-medium text-stone-400 italic">
-            {item.desc}
-          </p>
+          <div>
+            <div className="stat-label">{item.label}</div>
+            <div className="stat-value">{item.val}</div>
+            <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 4 }}>{item.desc}</div>
+          </div>
         </div>
       ))}
     </div>
