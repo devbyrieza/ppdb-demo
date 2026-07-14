@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "@/lib/session";
 import { logAdminAction } from "@/lib/audit";
+import { invalidateAdminPendaftarCache, redis } from "@/lib/redis";
 
 /**
  * POST /api/admin/pendaftar/promote-cadangan
@@ -96,6 +97,9 @@ export async function POST(req: NextRequest) {
             tahun_ajaran_id: candidate.tahun_ajaran_id,
           },
         });
+      
+        // Clear redis cache
+        await redis.del(`pengumuman_${candidate.id}`);
       }
     });
 

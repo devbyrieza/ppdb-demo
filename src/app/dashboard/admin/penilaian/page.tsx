@@ -142,7 +142,7 @@ export default function ExaminerDashboard() {
   const fetchStudents = async () => {
     try {
       setLoading(true);
-      const res = await fetch("/api/admin/pendaftar/list?limit=100");
+      const res = await fetch("/api/admin/pendaftar/list?limit=500");
       if (!res.ok) throw new Error("Failed to fetch");
       const json = await res.json();
       setStudents(json.data || []);
@@ -632,6 +632,41 @@ export default function ExaminerDashboard() {
       {activeTab === "data" ? (
         /* TAB 1: DATA PENILAIAN */
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
+          
+        {/* Header Stats (Rekap Kelulusan) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div className="bg-green-50 p-6 rounded-xl shadow-sm border border-green-100 relative overflow-hidden">
+            <p className="text-green-600 text-sm font-bold tracking-wider uppercase mb-1">Total Diterima</p>
+            <div className="flex items-end gap-2">
+              <h3 className="text-2xl md:text-4xl font-black text-green-700">
+                {students.filter(c => c.status_pendaftaran === "accepted" || c.status_pendaftaran === "enrolled").length}
+              </h3>
+              <span className="text-green-600/70 font-medium mb-1 pl-1">Santri</span>
+            </div>
+            <div className="absolute -right-4 -bottom-4 bg-green-200/50 w-24 h-24 rounded-full blur-xl"></div>
+          </div>
+          <div className="bg-secondary-50 p-6 rounded-xl shadow-sm border border-secondary-100 relative overflow-hidden">
+            <p className="text-secondary-600 text-sm font-bold tracking-wider uppercase mb-1">Cadangan</p>
+            <div className="flex items-end gap-2">
+              <h3 className="text-2xl md:text-4xl font-black text-secondary-700">
+                {students.filter(c => c.status_pendaftaran === "cadangan" || c.status_pendaftaran === "announced").length}
+              </h3>
+              <span className="text-secondary-600/70 font-medium mb-1 pl-1">Santri</span>
+            </div>
+            <div className="absolute -right-4 -bottom-4 bg-secondary-200/50 w-24 h-24 rounded-full blur-xl"></div>
+          </div>
+          <div className="bg-rose-50 p-6 rounded-xl shadow-sm border border-rose-100 relative overflow-hidden">
+            <p className="text-rose-600 text-sm font-bold tracking-wider uppercase mb-1">Ditolak</p>
+            <div className="flex items-end gap-2">
+              <h3 className="text-2xl md:text-4xl font-black text-rose-700">
+                {students.filter(c => c.status_pendaftaran === "rejected").length}
+              </h3>
+              <span className="text-rose-600/70 font-medium mb-1 pl-1">Santri</span>
+            </div>
+            <div className="absolute -right-4 -bottom-4 bg-rose-200/50 w-24 h-24 rounded-full blur-xl"></div>
+          </div>
+        </div>
+      
           <div className="bg-white rounded-3xl shadow-clay-md border border-white/40 overflow-hidden">
             <div className="p-6 border-b border-ink-50 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 bg-ink-50/30">
               <div className="relative w-full lg:w-96">
@@ -1347,6 +1382,41 @@ export default function ExaminerDashboard() {
           </div>
 
           {/* System Actions Area */}
+          
+        {/* Header Stats (Rekap Kelulusan) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div className="bg-green-50 p-6 rounded-xl shadow-sm border border-green-100 relative overflow-hidden">
+            <p className="text-green-600 text-sm font-bold tracking-wider uppercase mb-1">Total Diterima</p>
+            <div className="flex items-end gap-2">
+              <h3 className="text-2xl md:text-4xl font-black text-green-700">
+                {students.filter(c => c.status_pendaftaran === "accepted" || c.status_pendaftaran === "enrolled").length}
+              </h3>
+              <span className="text-green-600/70 font-medium mb-1 pl-1">Santri</span>
+            </div>
+            <div className="absolute -right-4 -bottom-4 bg-green-200/50 w-24 h-24 rounded-full blur-xl"></div>
+          </div>
+          <div className="bg-secondary-50 p-6 rounded-xl shadow-sm border border-secondary-100 relative overflow-hidden">
+            <p className="text-secondary-600 text-sm font-bold tracking-wider uppercase mb-1">Cadangan</p>
+            <div className="flex items-end gap-2">
+              <h3 className="text-2xl md:text-4xl font-black text-secondary-700">
+                {students.filter(c => c.status_pendaftaran === "cadangan" || c.status_pendaftaran === "announced").length}
+              </h3>
+              <span className="text-secondary-600/70 font-medium mb-1 pl-1">Santri</span>
+            </div>
+            <div className="absolute -right-4 -bottom-4 bg-secondary-200/50 w-24 h-24 rounded-full blur-xl"></div>
+          </div>
+          <div className="bg-rose-50 p-6 rounded-xl shadow-sm border border-rose-100 relative overflow-hidden">
+            <p className="text-rose-600 text-sm font-bold tracking-wider uppercase mb-1">Ditolak</p>
+            <div className="flex items-end gap-2">
+              <h3 className="text-2xl md:text-4xl font-black text-rose-700">
+                {students.filter(c => c.status_pendaftaran === "rejected").length}
+              </h3>
+              <span className="text-rose-600/70 font-medium mb-1 pl-1">Santri</span>
+            </div>
+            <div className="absolute -right-4 -bottom-4 bg-rose-200/50 w-24 h-24 rounded-full blur-xl"></div>
+          </div>
+        </div>
+      
           <div className="bg-white rounded-3xl shadow-clay-md border border-white/40 overflow-hidden">
             <div className="p-5 md:p-8 space-y-8">
               <div className="flex items-center gap-4">

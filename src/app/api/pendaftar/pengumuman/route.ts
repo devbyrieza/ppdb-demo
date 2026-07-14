@@ -37,11 +37,11 @@ export async function GET(request: NextRequest) {
       select: { status_pendaftaran: true, updated_at: true, tahun_ajaran_id: true },
     });
 
-    const announcedStatuses = ["accepted", "rejected", "cadangan", "announced", "enrolled"];
+    const announcedStatuses = ["accepted", "rejected", "cadangan", "announced", "enrolled", "enrolled_full"];
     
     // If Pendaftar status is already in a final state, PRIORITIZE it over Pengumuman table
     if (pendaftar && announcedStatuses.includes(pendaftar.status_pendaftaran)) {
-      const statusMapped = pendaftar.status_pendaftaran === "accepted" || pendaftar.status_pendaftaran === "enrolled"
+      const statusMapped = ["accepted", "enrolled", "enrolled_full"].includes(pendaftar.status_pendaftaran)
         ? "diterima"
         : pendaftar.status_pendaftaran === "rejected"
           ? "ditolak"

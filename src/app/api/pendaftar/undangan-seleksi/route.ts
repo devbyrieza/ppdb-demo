@@ -124,14 +124,7 @@ export async function GET() {
     // 2. Fetch Grup A — Online test completion status
     const nilaiUjian = await prisma.nilaiUjian.findMany({
       where: { pendaftar_id: pendaftarId },
-      select: {
-        score_akademik: true,
-        score_kepribadian: true,
-        score_kesiapan: true,
-        detail_akademik: true,
-        detail_kepribadian: true,
-        detail_kesiapan: true,
-      },
+      select: { score_akademik: true, score_kepribadian: true, score_kesiapan: true, detail_akademik: true, detail_kepribadian: true, detail_kesiapan: true, nilai_tes_quran: true, detail_quran: true, nilai_wawancara_santri: true, detail_wawancara: true, nilai_wawancara_ortu: true, detail_cawalsan: true },
     });
 
     // Combine to check completion
@@ -225,6 +218,73 @@ export async function GET() {
     }
 
     // 7. Build response
+    
+    // --- OFFLINE/MANUAL SCORE HANDLING ---
+    // Jika admin sudah menginput nilai secara manual (offline) tanpa melalui booking jadwal,
+    // kita perlu membuat entri "booked" sintetis agar UI pendaftar menunjukkan "Selesai".
+    
+    // Check if they have scores but NO booking
+    const hasQuranBooking = bookedJadwal.some(j => getExamCategory(j.exam_session?.title || "") === "QURAN");
+    const hasWawancaraSantriBooking = bookedJadwal.some(j => getExamCategory(j.exam_session?.title || "") === "W_SANTRI");
+    const hasWawancaraOrtuBooking = bookedJadwal.some(j => getExamCategory(j.exam_session?.title || "") === "W_ORTU");
+    
+    // Look at nilaiUjian from earlier
+    const userNilai = nilaiUjian.length > 0 ? nilaiUjian[0] : null;
+    
+    if (userNilai) {
+      // Helper function to check score existence robustly
+      const checkScore = (scoreField, detailField, rekomendasiField) => {
+        if (scoreField !== null) return true;
+        if (detailField && typeof detailField === 'object') {
+          return !!detailField[rekomendasiField] || !!detailField.nama_penguji;
+        }
+        return false;
+      };
+
+      // 1. Quran
+      if (!hasQuranBooking && checkScore((userNilai as any).nilai_tes_quran, (userNilai as any).detail_quran, 'rekomendasi')) {
+        booked.push({
+          id: "SYNTHETIC_QURAN",
+          jenis_ujian: "Ujian Tahfidz/Al Qur'an (Offline)",
+          tanggal_ujian: "Selesai",
+          waktu_mulai: "00:00",
+          waktu_selesai: "00:00", // Makes isSelesai = true in UI
+          lokasi: "Offline/Manual",
+          keterangan: "Nilai telah diinput oleh Admin",
+          category: "QURAN",
+        });
+      }
+
+      // 2. Wawancara Santri
+      if (!hasWawancaraSantriBooking && checkScore((userNilai as any).nilai_wawancara_santri, (userNilai as any).detail_wawancara, 'rekomendasi')) {
+        booked.push({
+          id: "SYNTHETIC_W_SANTRI",
+          jenis_ujian: "Wawancara Calon Santri (Offline)",
+          tanggal_ujian: "Selesai",
+          waktu_mulai: "00:00",
+          waktu_selesai: "00:00",
+          lokasi: "Offline/Manual",
+          keterangan: "Nilai telah diinput oleh Admin",
+          category: "W_SANTRI",
+        });
+      }
+
+      // 3. Wawancara Ortu
+      if (!hasWawancaraOrtuBooking && checkScore((userNilai as any).nilai_wawancara_ortu, (userNilai as any).detail_cawalsan, 'rekomendasi')) {
+        booked.push({
+          id: "SYNTHETIC_W_ORTU",
+          jenis_ujian: "Wawancara Calon Orangtua/Wali (Offline)",
+          tanggal_ujian: "Selesai",
+          waktu_mulai: "00:00",
+          waktu_selesai: "00:00",
+          lokasi: "Offline/Manual",
+          keterangan: "Nilai telah diinput oleh Admin",
+          category: "W_ORTU",
+        });
+      }
+    }
+    // -------------------------------------
+
     const openSlots = availableSessions
       .map((s) => ({
         id: s.id,
