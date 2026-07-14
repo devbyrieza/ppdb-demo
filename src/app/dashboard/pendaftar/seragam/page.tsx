@@ -68,6 +68,12 @@ export default function SeragamPage() {
     setMessage({ type: "", text: "" });
 
     try {
+      if (!formData.ukuran_seragam_baju || !formData.ukuran_seragam_celana || !formData.ukuran_seragam_almamater) {
+        setMessage({ type: "error", text: "Mohon lengkapi semua pilihan ukuran (Baju, Celana, dan Almamater) sebelum menyimpan." });
+        setSaving(false);
+        return;
+      }
+
       const res = await fetch("/api/pendaftar/seragam", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -150,7 +156,6 @@ export default function SeragamPage() {
                   value={formData.ukuran_seragam_baju}
                   onChange={(e) => setFormData({ ...formData, ukuran_seragam_baju: e.target.value })}
                   className="w-full bg-ink-50 border border-ink-200 px-4 py-3 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none font-bold"
-                  required
                 >
                   <option value="">-- Pilih Ukuran Baju --</option>
                   <option value="S">Ukuran S</option>
@@ -170,7 +175,6 @@ export default function SeragamPage() {
                   value={formData.ukuran_seragam_celana}
                   onChange={(e) => setFormData({ ...formData, ukuran_seragam_celana: e.target.value })}
                   className="w-full bg-ink-50 border border-ink-200 px-4 py-3 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none font-bold"
-                  required
                 >
                   <option value="">-- Pilih Ukuran Celana --</option>
                   <option value="S">Ukuran S</option>
@@ -190,7 +194,6 @@ export default function SeragamPage() {
                   value={formData.ukuran_seragam_almamater}
                   onChange={(e) => setFormData({ ...formData, ukuran_seragam_almamater: e.target.value })}
                   className="w-full bg-ink-50 border border-ink-200 px-4 py-3 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none font-bold"
-                  required
                 >
                   <option value="">-- Pilih Ukuran Almamater --</option>
                   <option value="S">Ukuran S</option>

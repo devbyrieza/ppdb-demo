@@ -76,6 +76,21 @@ export async function GET(req: Request) {
         input_by_ortu: true,
         input_by_hafalan: true,
         input_by_arab: true,
+        nilai_tes_quran: true,
+        nilai_wawancara_santri: true,
+        nilai_wawancara_ortu: true,
+        score_hafalan: true,
+        score_arab: true,
+        jadwal_ujian: {
+          select: {
+            penguji_quran_id: true,
+            penguji_santri_id: true,
+            penguji_ortu_id: true,
+            penguji_hafalan_id: true,
+            penguji_arab_id: true,
+          }
+        },
+        detail_akademik: true,
       },
     });
 
@@ -104,25 +119,44 @@ export async function GET(req: Request) {
     }
 
     for (const nilai of nilaiData) {
-      if (nilai.input_by_quran && tally[nilai.input_by_quran]) {
-        tally[nilai.input_by_quran].quran++;
-        tally[nilai.input_by_quran].total++;
+      const getAssignedFromJson = (key: string) => {
+        if (nilai.detail_akademik && typeof nilai.detail_akademik === 'object') {
+          const detail = nilai.detail_akademik as any;
+          if (detail.assigned_examiners && detail.assigned_examiners[key]) {
+            return detail.assigned_examiners[key];
+          }
+        }
+        return null;
+      };
+
+      let quran_ex = nilai.jadwal_ujian?.penguji_quran_id || getAssignedFromJson('quran') || nilai.input_by_quran;
+      if (quran_ex && tally[quran_ex] && nilai.nilai_tes_quran !== null) {
+        tally[quran_ex].quran++;
+        tally[quran_ex].total++;
       }
-      if (nilai.input_by_santri && tally[nilai.input_by_santri]) {
-        tally[nilai.input_by_santri].santri++;
-        tally[nilai.input_by_santri].total++;
+
+      let santri_ex = nilai.jadwal_ujian?.penguji_santri_id || getAssignedFromJson('wawancara_santri') || nilai.input_by_santri;
+      if (santri_ex && tally[santri_ex] && nilai.nilai_wawancara_santri !== null) {
+        tally[santri_ex].santri++;
+        tally[santri_ex].total++;
       }
-      if (nilai.input_by_ortu && tally[nilai.input_by_ortu]) {
-        tally[nilai.input_by_ortu].ortu++;
-        tally[nilai.input_by_ortu].total++;
+
+      let ortu_ex = nilai.jadwal_ujian?.penguji_ortu_id || getAssignedFromJson('wawancara_ortu') || nilai.input_by_ortu;
+      if (ortu_ex && tally[ortu_ex] && nilai.nilai_wawancara_ortu !== null) {
+        tally[ortu_ex].ortu++;
+        tally[ortu_ex].total++;
       }
-      if (nilai.input_by_hafalan && tally[nilai.input_by_hafalan]) {
-        tally[nilai.input_by_hafalan].hafalan++;
-        tally[nilai.input_by_hafalan].total++;
+
+      let hafalan_ex = nilai.jadwal_ujian?.penguji_hafalan_id || nilai.input_by_hafalan;
+      if (hafalan_ex && tally[hafalan_ex] && nilai.score_hafalan !== null) {
+        tally[hafalan_ex].hafalan++;
+        tally[hafalan_ex].total++;
       }
-      if (nilai.input_by_arab && tally[nilai.input_by_arab]) {
-        tally[nilai.input_by_arab].arab++;
-        tally[nilai.input_by_arab].total++;
+
+      let arab_ex = nilai.jadwal_ujian?.penguji_arab_id || nilai.input_by_arab;
+      if (arab_ex && tally[arab_ex] && nilai.score_arab !== null) {
+        tally[arab_ex].arab++;
+        tally[arab_ex].total++;
       }
     }
 

@@ -179,13 +179,46 @@ export async function PATCH(
 
       if (body.nilai_tes_quran !== undefined)
         updateData.nilai_tes_quran = body.nilai_tes_quran;
+      baseRole === "penguji_bahasa_arab";
+
+    // 0. Pre-fetch existing record to check timestamps
+    const existing = await prisma.nilaiUjian.findFirst({
+      where: { pendaftar_id: pendaftarId },
+      orderBy: { created_at: "desc" },
+    });
+
+    const updateData: any = {};
+    const now = new Date();
+    const LOCK_TIME = 24 * 60 * 60 * 1000; // 24 hours in ms
+
+    // 1. Quran Update
+    if (canEditQuran && body.detail_quran !== undefined) {
+      // Check Lock
+      if (existing?.input_at_quran && !isAdmin) {
+        const diff =
+          now.getTime() - new Date(existing.input_at_quran).getTime();
+        if (diff > LOCK_TIME) {
+          return NextResponse.json(
+            {
+              error:
+                "Masa edit (24 jam) untuk Tes Quran sudah habis. Silakan hubungi Admin Super.",
+            },
+            { status: 403 },
+          );
+        }
+      }
+
+      if (body.nilai_tes_quran !== undefined)
+        updateData.nilai_tes_quran = body.nilai_tes_quran;
       if (body.catatan_quran !== undefined)
         updateData.catatan_quran = body.catatan_quran;
       if (body.detail_quran !== undefined)
         updateData.detail_quran = body.detail_quran;
       if (body.score_quran !== undefined)
         updateData.score_quran = body.score_quran;
-      updateData.input_by_quran = userId;
+      if (!existing?.input_by_quran || !isAdmin) {
+        updateData.input_by_quran = userId;
+      }
 
       // Only set input_at if it's the first time
       if (!existing?.input_at_quran) {
@@ -218,7 +251,9 @@ export async function PATCH(
         updateData.detail_wawancara = body.detail_wawancara;
       if (body.score_wawancara !== undefined)
         updateData.score_wawancara = body.score_wawancara;
-      updateData.input_by_santri = userId;
+      if (!existing?.input_by_santri || !isAdmin) {
+        updateData.input_by_santri = userId;
+      }
 
       // Only set input_at if it's the first time
       if (!existing?.input_at_santri) {
@@ -248,7 +283,9 @@ export async function PATCH(
         updateData.catatan_ortu = body.catatan_ortu;
       if (body.detail_cawalsan !== undefined)
         updateData.detail_cawalsan = body.detail_cawalsan;
-      updateData.input_by_ortu = userId;
+      if (!existing?.input_by_ortu || !isAdmin) {
+        updateData.input_by_ortu = userId;
+      }
 
       // Only set input_at if it's the first time
       if (!existing?.input_at_ortu) {
@@ -273,7 +310,9 @@ export async function PATCH(
       if (body.catatan_hafalan !== undefined) updateData.catatan_hafalan = body.catatan_hafalan;
       if (body.detail_hafalan !== undefined) updateData.detail_hafalan = body.detail_hafalan;
       if (body.score_hafalan !== undefined) updateData.score_hafalan = body.score_hafalan;
-      updateData.input_by_hafalan = userId;
+      if (!existing?.input_by_hafalan || !isAdmin) {
+        updateData.input_by_hafalan = userId;
+      }
 
       if (!existing?.input_at_hafalan) {
         updateData.input_at_hafalan = now;
@@ -296,7 +335,9 @@ export async function PATCH(
       if (body.catatan_lisan_arab !== undefined) updateData.catatan_lisan_arab = body.catatan_lisan_arab;
       if (body.detail_lisan_arab !== undefined) updateData.detail_lisan_arab = body.detail_lisan_arab;
       if (body.score_lisan_arab !== undefined) updateData.score_lisan_arab = body.score_lisan_arab;
-      updateData.input_by_lisan_arab = userId;
+      if (!existing?.input_by_arab || !isAdmin) {
+        updateData.input_by_arab = userId;
+      }
 
       if (!existing?.input_at_arab) {
         updateData.input_at_arab = now;
