@@ -2019,7 +2019,7 @@ function AdminPendaftarContent() {
                     <th className="px-4 py-4 text-left text-[10px] font-black text-primary-900 uppercase tracking-widest">
                       Status Pendaftaran
                     </th>
-                    <th className="px-4 py-4 text-left text-[10px] font-black text-primary-900 uppercase tracking-widest">
+                    <th className="px-4 py-4 text-left text-[10px] font-black text-primary-900 uppercase tracking-widest sticky right-0 bg-white z-10 shadow-[-10px_0_15px_-3px_rgba(0,0,0,0.05)]">
                       Aksi
                     </th>
                   </tr>
@@ -2028,7 +2028,7 @@ function AdminPendaftarContent() {
                   {pendaftar.map((item) => (
                     <tr
                       key={item.id}
-                      className={`hover:bg-primary-50 transition-colors ${
+                      className={`group hover:bg-primary-50 transition-colors ${
                         selectedIds.includes(item.id) ? "bg-purple-50" : ""
                       }`}
                     >
@@ -2100,7 +2100,7 @@ function AdminPendaftarContent() {
                         {formatStatus(item.status_pendaftaran, item.data_lengkap)}
                       </td>
                       
-                      <td className="px-4 py-3 whitespace-nowrap">
+                      <td className="px-4 py-3 whitespace-nowrap sticky right-0 bg-white/95 backdrop-blur z-10 shadow-[-10px_0_15px_-3px_rgba(0,0,0,0.05)] group-hover:bg-primary-50 transition-colors">
                         <div className="flex justify-end gap-2">
 
                           <ActionDropdown 
