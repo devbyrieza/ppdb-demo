@@ -4,6 +4,8 @@
  */
 
 import { sendMessage } from "@/lib/wablas";
+import { BRANDING } from "@/config/branding";
+
 import { prisma } from "@/lib/prisma";
 
 export async function sendWhatsAppOTP(
@@ -13,7 +15,7 @@ export async function sendWhatsAppOTP(
 ): Promise<{ success: boolean; messageId?: string; error?: string }> {
   try {
     // OTP Message Template
-    const message = `🔐 *Kode Verifikasi PPDB Pesantren Al Fath*
+    const message = `🔐 *Kode Verifikasi PPDB ${BRANDING.schoolName}*
 
 Assalamu'alaikum ${nama},
 
@@ -25,10 +27,10 @@ Kode ini berlaku selama *5 menit*.
 
 ⚠️ *PENTING:*
 • Jangan berikan kode ini kepada siapapun
-• Tim Pesantren Al Fath tidak akan pernah meminta kode OTP Anda
+• Tim ${BRANDING.schoolName} tidak akan pernah meminta kode OTP Anda
 
 Jazakumullahu khairan,
-Panitia PPDB Pesantren Al Fath`;
+Panitia PPDB ${BRANDING.schoolName}`;
 
     const result = await sendMessage({ phone, message });
 
@@ -102,3 +104,4 @@ Panitia PPDB Pesantren Al Fath`;
     };
   }
 }
+
