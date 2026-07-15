@@ -72,30 +72,35 @@ export default function InfiniteMarquee({
       onMouseEnter={() => pauseOnHover && setIsHovered(true)}
       onMouseLeave={() => pauseOnHover && setIsHovered(false)}
     >
-      {/* Left fade */}
-      <div
-        className="absolute left-0 top-0 bottom-0 w-16 z-10 pointer-events-none"
-        style={{
-          background:
-            variant === "dark"
-              ? "linear-gradient(to right, var(--color-primary-950), transparent)"
-              : variant === "primary"
-                ? "linear-gradient(to right, var(--color-primary-50), transparent)"
-                : "linear-gradient(to right, var(--color-white, #fff), transparent)",
-        }}
-      />
-      {/* Right fade */}
-      <div
-        className="absolute right-0 top-0 bottom-0 w-16 z-10 pointer-events-none"
-        style={{
-          background:
-            variant === "dark"
-              ? "linear-gradient(to left, var(--color-primary-950), transparent)"
-              : variant === "primary"
-                ? "linear-gradient(to left, var(--color-primary-50), transparent)"
-                : "linear-gradient(to left, var(--color-white, #fff), transparent)",
-        }}
-      />
+      {/* Fade Masks */}
+      {variant !== "transparent" && (
+        <>
+          {/* Left fade */}
+          <div
+            className="absolute left-0 top-0 bottom-0 w-16 z-10 pointer-events-none"
+            style={{
+              background:
+                variant === "dark"
+                  ? "linear-gradient(to right, var(--color-primary-950), transparent)"
+                  : variant === "primary"
+                    ? "linear-gradient(to right, var(--color-primary-50), transparent)"
+                    : "linear-gradient(to right, var(--color-white, #fff), transparent)",
+            }}
+          />
+          {/* Right fade */}
+          <div
+            className="absolute right-0 top-0 bottom-0 w-16 z-10 pointer-events-none"
+            style={{
+              background:
+                variant === "dark"
+                  ? "linear-gradient(to left, var(--color-primary-950), transparent)"
+                  : variant === "primary"
+                    ? "linear-gradient(to left, var(--color-primary-50), transparent)"
+                    : "linear-gradient(to left, var(--color-white, #fff), transparent)",
+            }}
+          />
+        </>
+      )}
 
       {/* Marquee track */}
       <div
