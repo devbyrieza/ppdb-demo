@@ -129,7 +129,7 @@ export default function HomePage() {
 
         {/* ── Floating Demo Button — khusus template-demo, tidak ada di alimam/ululalbaab ── */}
         <m.div
-          className="fixed bottom-8 left-8 z-50"
+          className="fixed bottom-[100px] left-4 md:bottom-8 md:left-8 z-[60]"
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 1.2, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}

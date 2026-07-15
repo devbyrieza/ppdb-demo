@@ -134,12 +134,12 @@ export default function HeroSection() {
                   fontSize: "clamp(2rem, 5vw + 0.75rem, 5rem)",
                 }}
               >
-                <span className="block text-ink-950">
-                  Kaderisasi Ummat
+                <span className="block text-ink-950 text-[0.8em]">
+                  {BRANDING.schoolName}
                 </span>
                 <span className="block mt-1 bg-gradient-to-r from-[var(--color-primary-700)] to-[var(--color-secondary-600)] text-transparent bg-clip-text">
-                  Unggul, Cerdas, <br className="hidden sm:block" />
-                  dan Berintegritas
+                  Kaderisasi Ummat <br className="hidden sm:block" />
+                  yang Cerdas & Berintegritas
                 </span>
               </h1>
             </motion.div>
