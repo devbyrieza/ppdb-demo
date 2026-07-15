@@ -316,48 +316,48 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen bg-white flex items-center justify-center p-6 relative overflow-hidden">
-      {/* Background Decor */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-secondary-100/40 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-primary-100/20 rounded-full blur-[100px] -translate-x-1/2 translate-y-1/2 pointer-events-none" />
-      <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.02] pointer-events-none" />
+    <main className="min-h-screen bg-primary-950 bg-gradient-to-br from-primary-950 via-primary-900 to-primary-950 flex items-center justify-center p-6 relative overflow-hidden">
+      {/* Background Decor - Deep Blue & Gold Glows */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-secondary-500/20 rounded-full blur-[120px] -translate-y-1/3 translate-x-1/3 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[100px] -translate-x-1/3 translate-y-1/3 pointer-events-none" />
+      <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-10 mix-blend-overlay pointer-events-none" />
 
       <Container className="relative z-10 flex flex-col items-center">
         {/* Logo / Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
+          className="text-center mb-10"
         >
           <Link href="/">
-            <div className="app-card inline-flex items-center justify-center w-20 h-20 bg-white rounded-3xl shadow-sm border border-secondary-100 mb-8 hover:scale-110 transition-transform group overflow-hidden">
+            <div className="app-card inline-flex items-center justify-center w-24 h-24 bg-white/10 backdrop-blur-md rounded-[2rem] shadow-2xl border border-white/20 mb-6 hover:scale-110 hover:bg-white/20 transition-all duration-300 group overflow-hidden">
               <img
                 src={BRANDING.logoPath}
                 alt={"Logo " + BRANDING.schoolName}
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                className="w-[85%] h-[85%] object-contain group-hover:scale-110 transition-transform duration-500"
               />
             </div>
           </Link>
-          <h1 className="text-2xl md:text-4xl md:text-5xl font-display font-black text-ink-950 mb-3 tracking-tight">
+          <h1 className="text-3xl md:text-5xl font-display font-black text-white mb-2 tracking-tight drop-shadow-md">
             Portal{" "}
-            <span className="text-gradient-primary font-black">
+            <span className="text-secondary-400 font-black drop-shadow-md">
               {BRANDING.schoolShortName}
             </span>
           </h1>
-          <p className="text-lg text-ink-700 font-medium">
-            Masuk ke Sistem Administrasi & Pendaftaran
+          <p className="text-lg text-primary-100/80 font-medium">
+            Sistem Administrasi & Penerimaan Santri Baru
           </p>
         </motion.div>
 
-        {/* Main Card */}
+        {/* Main Card - Glassmorphism */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.1 }}
-          className="app-card w-full max-w-[480px] bg-white rounded-[2.5rem] md:rounded-[4rem] shadow-lg border border-secondary-100 p-6 md:p-14 relative overflow-hidden"
+          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.5, ease: "easeOut" }}
+          className="w-full max-w-[480px] bg-white/90 backdrop-blur-2xl rounded-[2.5rem] md:rounded-[3rem] shadow-premium-2xl border border-white p-6 md:p-12 relative overflow-hidden"
         >
-          {/* Subtle inside gradient */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-secondary-50/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+          {/* Subtle inside glow */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-secondary-300/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
 
           {/* Tab Switcher - Premium "Pill" style */}
           {!roleSelectionData && (
@@ -503,7 +503,7 @@ export default function LoginPage() {
                         setNomorPendaftaran(e.target.value.toUpperCase())
                       }
                       placeholder="Contoh: MTI2600001"
-                      className="w-full px-5 py-3 md:px-8 md:py-5 pl-14 md:pl-16 rounded-xl md:rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-primary-300 focus:ring-4 focus:ring-primary-50 transition-all font-bold text-ink-950 uppercase placeholder:normal-case placeholder:font-medium placeholder:text-ink-400 text-sm md:text-base shadow-inner"
+                      className="w-full px-5 py-3 md:px-8 md:py-5 pl-14 md:pl-16 rounded-xl md:rounded-2xl bg-white/50 backdrop-blur-sm border border-white/50 focus:bg-white/90 focus:border-secondary-400 focus:ring-4 focus:ring-secondary-100 transition-all font-bold text-ink-950 uppercase placeholder:normal-case placeholder:font-medium placeholder:text-ink-400 text-sm md:text-base shadow-inner"
                       disabled={isLoading}
                     />
                   </AuthInput>
@@ -518,17 +518,17 @@ export default function LoginPage() {
                         setNikPendaftar(e.target.value.replace(/\D/g, ""))
                       }
                       placeholder="16 Digit NIK Sesuai KK"
-                      className="w-full px-5 py-3 md:px-8 md:py-5 pl-14 md:pl-16 rounded-xl md:rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-primary-300 focus:ring-4 focus:ring-primary-50 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-400 text-sm md:text-base shadow-inner"
+                      className="w-full px-5 py-3 md:px-8 md:py-5 pl-14 md:pl-16 rounded-xl md:rounded-2xl bg-white/50 backdrop-blur-sm border border-white/50 focus:bg-white/90 focus:border-secondary-400 focus:ring-4 focus:ring-secondary-100 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-400 text-sm md:text-base shadow-inner"
                       disabled={isLoading}
                     />
                   </AuthInput>
 
                   <motion.button
-                    whileHover={{ scale: 1.02 }}
+                    whileHover={{ scale: 1.02, y: -2 }}
                     whileTap={{ scale: 0.98 }}
                     type="submit"
                     disabled={isLoading}
-                    className="w-full py-4 md:py-6 rounded-pill bg-primary-700 text-white font-black text-lg md:text-xl hover:bg-primary-800 shadow-xl shadow-primary-100 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                    className="w-full py-4 md:py-5 rounded-[1.5rem] bg-gradient-to-r from-secondary-400 to-secondary-600 text-primary-950 font-black text-lg md:text-xl shadow-xl shadow-secondary-400/20 border border-secondary-300 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
                   >
                     {isLoading ? (
                       <Loader2 className="w-6 h-6 animate-spin" />
@@ -541,12 +541,12 @@ export default function LoginPage() {
                   </motion.button>
 
                   <div className="text-center pt-4">
-                    <p className="text-sm text-ink-600 font-bold uppercase tracking-widest mb-4">
+                    <p className="text-sm text-ink-500 font-bold uppercase tracking-widest mb-4">
                       Belum Punya Akun?
                     </p>
                     <Link
                       href="/daftar"
-                      className="inline-flex items-center gap-2 px-6 md:px-10 py-3 rounded-pill bg-secondary-50 text-primary-700 font-black text-sm border border-secondary-200 hover:bg-white hover:shadow-sm transition-all"
+                      className="inline-flex items-center gap-2 px-6 md:px-10 py-3 rounded-xl bg-white/50 backdrop-blur-sm text-primary-800 font-black text-sm border border-primary-100 hover:bg-white hover:shadow-md hover:-translate-y-1 transition-all"
                     >
                       Daftar Baru Di Sini
                     </Link>
@@ -566,8 +566,8 @@ export default function LoginPage() {
                       type="email"
                       value={emailAdmin}
                       onChange={(e) => setEmailAdmin(e.target.value)}
-                      placeholder="admin@pesantren-alfath.or.id"
-                      className="w-full px-5 py-3 md:px-8 md:py-5 pl-14 md:pl-16 rounded-xl md:rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-primary-300 focus:ring-4 focus:ring-primary-50 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-400 text-sm md:text-base shadow-inner"
+                      placeholder="admin@pesantren-alandalus.com"
+                      className="w-full px-5 py-3 md:px-8 md:py-5 pl-14 md:pl-16 rounded-xl md:rounded-2xl bg-white/50 backdrop-blur-sm border border-white/50 focus:bg-white/90 focus:border-secondary-400 focus:ring-4 focus:ring-secondary-100 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-400 text-sm md:text-base shadow-inner"
                       disabled={isLoading}
                     />
                   </AuthInput>
@@ -594,17 +594,17 @@ export default function LoginPage() {
                       value={passwordAdmin}
                       onChange={(e) => setPasswordAdmin(e.target.value)}
                       placeholder="••••••••"
-                      className="w-full px-5 py-3 md:px-8 md:py-5 pl-14 md:pl-16 pr-12 md:pr-16 rounded-xl md:rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-primary-300 focus:ring-4 focus:ring-primary-50 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-400 text-sm md:text-base shadow-inner"
+                      className="w-full px-5 py-3 md:px-8 md:py-5 pl-14 md:pl-16 pr-12 md:pr-16 rounded-xl md:rounded-2xl bg-white/50 backdrop-blur-sm border border-white/50 focus:bg-white/90 focus:border-secondary-400 focus:ring-4 focus:ring-secondary-100 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-400 text-sm md:text-base shadow-inner"
                       disabled={isLoading}
                     />
                   </AuthInput>
 
                   <motion.button
-                    whileHover={{ scale: 1.02 }}
+                    whileHover={{ scale: 1.02, y: -2 }}
                     whileTap={{ scale: 0.98 }}
                     type="submit"
                     disabled={isLoading}
-                    className="w-full py-4 md:py-6 rounded-pill bg-primary-700 text-white font-black text-lg md:text-xl hover:bg-primary-800 shadow-xl shadow-primary-100 border border-primary-600 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                    className="w-full py-4 md:py-5 rounded-[1.5rem] bg-gradient-to-r from-primary-700 to-primary-900 text-white font-black text-lg md:text-xl shadow-xl shadow-primary-900/20 border border-primary-600 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
                   >
                     {isLoading ? (
                       <Loader2 className="w-6 h-6 animate-spin" />
@@ -616,13 +616,12 @@ export default function LoginPage() {
                     )}
                   </motion.button>
 
-                  <div className="p-6 bg-secondary-50/50 rounded-3xl border border-secondary-100 flex items-start gap-4">
+                  <div className="p-6 bg-secondary-50/50 rounded-2xl border border-secondary-100 flex items-start gap-4">
                     <div className="w-8 h-8 rounded-xl bg-secondary-100 flex items-center justify-center text-primary-700 shrink-0">
                       <Sparkles className="w-4 h-4" />
                     </div>
-                    <p className="text-xs text-ink-600 font-bold leading-relaxed">
-                      Lupa password? Silakan hubungi Admin Pusat untuk reset
-                      akses Anda.
+                    <p className="text-xs text-ink-600 font-bold leading-relaxed mt-0.5">
+                      Lupa password? Silakan hubungi Admin Pusat untuk reset akses.
                     </p>
                   </div>
                 </motion.form>

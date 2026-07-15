@@ -211,10 +211,10 @@ const ActionCard = ({
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.5 }}
       whileHover={!disabled ? { y: -8, scale: 1.02 } : {}}
-      className={`group h-full flex flex-col p-6 sm:p-8 rounded-[2.5rem] border-2 transition-all duration-300 ${
+      className={`group h-full flex flex-col p-6 sm:p-8 rounded-[2.5rem] border transition-all duration-300 ${
         disabled
           ? "bg-ink-50/50 border-ink-100 opacity-60 grayscale cursor-not-allowed"
-          : `bg-white border-ink-50 hover:border-primary-500 hover:shadow-2xl hover:shadow-primary-900/10`
+          : `bg-white/70 backdrop-blur-xl border-white hover:border-primary-200 hover:bg-white/90 hover:shadow-2xl hover:shadow-primary-900/10`
       }`}
     >
       <div className="flex items-start justify-between mb-8">
@@ -342,7 +342,7 @@ export default function DashboardPage() {
   const StatusIcon = statusInfo.icon;
 
   return (
-    <main className="min-h-screen bg-white relative overflow-hidden pb-24">
+    <main className="min-h-screen bg-slate-50 bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50 relative overflow-hidden pb-24">
       <BackToHomeButton position="top-left" />
 
       {/* Background Decor */}
@@ -420,7 +420,7 @@ export default function DashboardPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className={`p-6 sm:p-8 md:p-10 rounded-[2rem] md:rounded-[2.5rem] border-2 shadow-2xl relative overflow-hidden bg-gradient-to-br from-white to-ink-50/30 ${statusInfo.border}`}
+              className={`p-6 sm:p-8 md:p-10 rounded-[2rem] md:rounded-[2.5rem] border shadow-2xl relative overflow-hidden bg-white/70 backdrop-blur-2xl border-white ${statusInfo.border}`}
             >
               <div className="absolute top-0 right-0 w-80 h-80 bg-primary-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
 
@@ -575,7 +575,7 @@ export default function DashboardPage() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.6 }}
-              className="bg-white p-6 sm:p-5 md:p-8 md:p-10 rounded-[2.5rem] md:rounded-[4rem] shadow-2xl shadow-primary-900/5 border border-ink-50 flex flex-col items-center text-center relative overflow-hidden group"
+              className="bg-white/70 backdrop-blur-xl p-6 sm:p-5 md:p-8 md:p-10 rounded-[2.5rem] md:rounded-[4rem] shadow-2xl shadow-primary-900/5 border border-white flex flex-col items-center text-center relative overflow-hidden group"
             >
               <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary-600 to-secondary-500" />
               <div className="w-20 h-20 rounded-[2rem] bg-primary-50 flex items-center justify-center text-primary-600 mb-8 border border-primary-100 shadow-sm transition-transform group-hover:scale-110">
@@ -603,7 +603,7 @@ export default function DashboardPage() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.8 }}
-              className="bg-primary-950 p-6 sm:p-5 md:p-8 md:p-10 rounded-[2.5rem] md:rounded-[4rem] shadow-2xl relative overflow-hidden group"
+              className="bg-gradient-to-br from-primary-900 to-primary-950 p-6 sm:p-5 md:p-8 md:p-10 rounded-[2.5rem] md:rounded-[4rem] shadow-2xl relative overflow-hidden group"
             >
               <div className="absolute top-0 left-0 w-full h-1 bg-secondary-400" />
               <div className="absolute bottom-0 right-0 w-40 h-40 bg-primary-500/10 rounded-full blur-[60px] translate-y-1/2 translate-x-1/2 pointer-events-none" />

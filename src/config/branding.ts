@@ -1,26 +1,26 @@
 export const BRANDING = {
   schoolName:
-    process.env.NEXT_PUBLIC_SCHOOL_NAME || "Pondok Pesantren Al Fath",
+    process.env.NEXT_PUBLIC_SCHOOL_NAME || "Pesantren Islam Internasional Al-Andalus",
   schoolShortName:
-    process.env.NEXT_PUBLIC_SCHOOL_SHORT_NAME || "Al Fath",
+    process.env.NEXT_PUBLIC_SCHOOL_SHORT_NAME || "Al-Andalus",
   schoolTagline:
     process.env.NEXT_PUBLIC_SCHOOL_TAGLINE ||
-    "Kaderisasi Ummat Unggul, Cerdas, dan Berintegritas",
+    "Rabbani, Cendekia dan Mandiri",
   schoolNetwork:
-    process.env.NEXT_PUBLIC_SCHOOL_NETWORK || "Perpaduan Kurikulum Nasional dan Khas Al-Fath",
-  primaryColor: process.env.NEXT_PUBLIC_PRIMARY_COLOR || "#0D6E6E", // Teal Emerald
-  secondaryColor: process.env.NEXT_PUBLIC_SECONDARY_COLOR || "#A6945E", // Warm Sand
-  logoPath: process.env.NEXT_PUBLIC_LOGO_PATH || "/images/logo.jpg",
+    process.env.NEXT_PUBLIC_SCHOOL_NETWORK || "Kurikulum Nasional dan Internasional",
+  primaryColor: process.env.NEXT_PUBLIC_PRIMARY_COLOR || "#1E3A8A", // Navy Blue
+  secondaryColor: process.env.NEXT_PUBLIC_SECONDARY_COLOR || "#D4AF37", // Gold
+  logoPath: process.env.NEXT_PUBLIC_LOGO_PATH || "https://pesantren-alandalus.com/wp-content/uploads/2019/07/cropped-cropped-Andalus-logo-1.png",
   faviconPath: process.env.NEXT_PUBLIC_FAVICON_PATH || "/favicon.ico",
   websiteUrl:
     process.env.NEXT_PUBLIC_WEBSITE_URL || "https://ppdb-demo.vercel.app",
-  dashboardTitle: process.env.NEXT_PUBLIC_DASHBOARD_TITLE || "Panel Admin PPDB",
+  dashboardTitle: process.env.NEXT_PUBLIC_DASHBOARD_TITLE || "Portal PPDB Al-Andalus",
   address:
-    process.env.NEXT_PUBLIC_ADDRESS || "Jl. Pesantren Raya No. 1, Kec. Cikembar, Kabupaten Sukabumi, Jawa Barat 43157",
-  phone: process.env.NEXT_PUBLIC_PHONE || "+62 800-0000-0000",
-  email: process.env.NEXT_PUBLIC_EMAIL || "demo@ppdbmodern.com",
-  igUrl: process.env.NEXT_PUBLIC_IG_URL || "#",
-  ytUrl: process.env.NEXT_PUBLIC_YT_URL || "#",
-  fbUrl: process.env.NEXT_PUBLIC_FB_URL || "#",
+    process.env.NEXT_PUBLIC_ADDRESS || "Jl. Raya Jonggol - Cileungsi, Sukadamai, Kec. Sukamakmur, Kabupaten Bogor, Jawa Barat 16830",
+  phone: process.env.NEXT_PUBLIC_PHONE || "+62 838-1151-5951",
+  email: process.env.NEXT_PUBLIC_EMAIL || "info@pesantren-alandalus.com",
+  igUrl: process.env.NEXT_PUBLIC_IG_URL || "https://instagram.com/pesantrenalandalus",
+  ytUrl: process.env.NEXT_PUBLIC_YT_URL || "https://youtube.com/pesantrenalandalus",
+  fbUrl: process.env.NEXT_PUBLIC_FB_URL || "https://facebook.com/pesantrenalandalus",
   twitterUrl: process.env.NEXT_PUBLIC_TWITTER_URL || "#",
 };
