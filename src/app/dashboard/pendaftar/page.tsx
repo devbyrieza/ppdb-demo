@@ -226,16 +226,18 @@ function StatusGrid({ status, statusLabel, pengumuman }: any) {
       {items.map((item, id) => (
         <div
           key={id}
-          className="stat-card"
+          className="bg-white rounded-[1.5rem] border border-surface-200 p-6 flex flex-col gap-4 shadow-sm hover:shadow-md transition-shadow"
         >
-          <div className="stat-icon" style={{ backgroundColor: "var(--bg)", color: "var(--primary)" }}>
-            <item.icon size={24} />
+          <div className="flex items-center gap-4">
+            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${item.bg} ${item.color}`}>
+              <item.icon size={24} />
+            </div>
+            <div>
+              <div className="text-xs font-bold text-ink-500 uppercase tracking-wider">{item.label}</div>
+              <div className="text-xl font-black text-ink-950 mt-1">{item.val}</div>
+            </div>
           </div>
-          <div>
-            <div className="stat-label">{item.label}</div>
-            <div className="stat-value">{item.val}</div>
-            <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 4 }}>{item.desc}</div>
-          </div>
+          <div className="text-xs text-ink-500 border-t border-surface-100 pt-3">{item.desc}</div>
         </div>
       ))}
     </div>
@@ -244,32 +246,35 @@ function StatusGrid({ status, statusLabel, pengumuman }: any) {
 
 function SupportCenter() {
   return (
-    <div className="bg-primary-950 text-white rounded-[2rem] sm:rounded-[2.5rem] md:rounded-[3rem] p-6 sm:p-6 md:p-10 md:p-16 relative overflow-hidden group shadow-2xl">
-      <div className="absolute top-0 right-0 w-96 h-96 bg-primary-800 rounded-full blur-[100px] opacity-20 -translate-y-1/2 translate-x-1/2" />
-      <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 text-center lg:text-left">
-        <div className="flex-1 space-y-4">
-          <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/10 rounded-full border border-white/10">
+    <div className="bg-primary-950 text-white rounded-[1.5rem] sm:rounded-[2rem] p-6 sm:p-8 md:p-12 relative overflow-hidden group shadow-2xl">
+      <div className="absolute top-0 right-0 w-96 h-96 bg-secondary-400 rounded-full blur-[120px] opacity-20 -translate-y-1/2 translate-x-1/2" />
+      <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6 md:gap-10 text-center md:text-left">
+        <div className="flex-1 space-y-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 rounded-full border border-white/10">
             <span className="w-2 h-2 rounded-full bg-secondary-400 animate-pulse" />
-            <span className="text-[10px] font-black uppercase tracking-widest">
+            <span className="text-[10px] font-black uppercase tracking-widest text-secondary-200">
               PUSAT BANTUAN PPDB
             </span>
           </div>
-          <h3 className="font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display leading-tight">
+          <h3 className="font-black text-2xl sm:text-3xl md:text-4xl font-display leading-tight">
             Butuh Bantuan? <br />
             <span className="text-secondary-400">Hubungi Tim Kami!</span>
           </h3>
-          <p className="text-primary-200 text-base sm:text-lg md:text-xl font-medium opacity-80 max-w-2xl">
+          <p className="text-primary-100 text-sm sm:text-base font-medium opacity-80 max-w-xl">
             Jangan ragu untuk bertanya. Tim kami siap membantu Anda menyelesaikan
             pendaftaran dengan lancar.
           </p>
         </div>
-        <a
-          href="https://wa.me/6281285300800"
-          target="_blank"
-          className="px-5 md:px-8 sm:px-6 md:px-12 py-4 sm:py-5 bg-secondary-400 text-primary-950 font-black text-xs sm:text-sm uppercase tracking-widest rounded-[1.25rem] sm:rounded-[1.5rem] hover:bg-secondary-300 shadow-xl transition-all hover:scale-105 active:scale-95 text-center w-full sm:w-auto"
-        >
-          Chat di WhatsApp
-        </a>
+        <div className="w-full md:w-auto shrink-0 mt-4 md:mt-0">
+          <a
+            href="https://wa.me/6281285300800"
+            target="_blank"
+            className="flex items-center justify-center gap-3 px-6 py-4 bg-secondary-400 text-primary-950 font-black text-sm uppercase tracking-widest rounded-2xl hover:bg-secondary-300 shadow-xl transition-all hover:scale-105 active:scale-95 w-full"
+          >
+            Chat di WhatsApp
+            <ArrowRight className="w-4 h-4" />
+          </a>
+        </div>
       </div>
     </div>
   );
