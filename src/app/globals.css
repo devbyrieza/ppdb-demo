@@ -135,35 +135,35 @@
 
   
   /* ━━━ SEMANTIC THEME ━━━ */
-  --color-primary-50: var(--color-blue-50);
-  --color-primary-100: var(--color-blue-100);
-  --color-primary-200: var(--color-blue-200);
-  --color-primary-300: var(--color-blue-300);
-  --color-primary-400: var(--color-blue-400);
-  --color-primary-500: var(--color-blue-500);
-  --color-primary-600: var(--color-blue-600);
-  --color-primary-700: var(--color-blue-700);
-  --color-primary-800: var(--color-blue-800);
-  --color-primary-900: var(--color-blue-900);
-  --color-primary-950: var(--color-blue-950);
-  --color-primary: var(--color-blue-900);
-  --color-primary-light: var(--color-blue-50);
-  --color-primary-dark: var(--color-blue-950);
+  --color-primary-50: var(--color-teal-50);
+  --color-primary-100: var(--color-teal-100);
+  --color-primary-200: var(--color-teal-200);
+  --color-primary-300: var(--color-teal-300);
+  --color-primary-400: var(--color-teal-400);
+  --color-primary-500: var(--color-teal-500);
+  --color-primary-600: var(--color-teal-600);
+  --color-primary-700: var(--color-teal-700);
+  --color-primary-800: var(--color-teal-800);
+  --color-primary-900: var(--color-teal-900);
+  --color-primary-950: var(--color-teal-950);
+  --color-primary: var(--color-teal-700);
+  --color-primary-light: var(--color-teal-50);
+  --color-primary-dark: var(--color-teal-900);
 
-  --color-secondary-50: var(--color-gold-50);
-  --color-secondary-100: var(--color-gold-100);
-  --color-secondary-200: var(--color-gold-200);
-  --color-secondary-300: var(--color-gold-300);
-  --color-secondary-400: var(--color-gold-400);
-  --color-secondary-500: var(--color-gold-500);
-  --color-secondary-600: var(--color-gold-600);
-  --color-secondary-700: var(--color-gold-700);
-  --color-secondary-800: var(--color-gold-700);
-  --color-secondary-900: var(--color-gold-700);
-  --color-secondary-950: var(--color-gold-700);
-  --color-secondary: var(--color-gold-islami);    /* Amber/gold vibrant */
-  --color-secondary-light: var(--color-gold-50);
-  --color-secondary-dark: var(--color-gold-700);
+  --color-secondary-50: var(--color-sand-50);
+  --color-secondary-100: var(--color-sand-100);
+  --color-secondary-200: var(--color-sand-200);
+  --color-secondary-300: var(--color-sand-300);
+  --color-secondary-400: var(--color-sand-400);
+  --color-secondary-500: var(--color-sand-500);
+  --color-secondary-600: var(--color-sand-600);
+  --color-secondary-700: var(--color-sand-700);
+  --color-secondary-800: var(--color-sand-800);
+  --color-secondary-900: var(--color-sand-900);
+  --color-secondary-950: var(--color-sand-900);
+  --color-secondary: var(--color-sand-400);    /* Amber/gold vibrant */
+  --color-secondary-light: var(--color-sand-50);
+  --color-secondary-dark: var(--color-sand-600);
 
   /* ─── Status Colors ─── */
   --color-success-500: #16a34a;
@@ -187,13 +187,13 @@
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
   /* ─── Islamic Color Palette — Semantic Tokens ─── */
-  --color-primary: var(--color-blue-900);      /* Navy Blue */
-  /* Navy Blue utama */
-  --color-primary-light: var(--color-blue-50);
-  /* Navy muda / background aksen */
-  --color-primary-dark: var(--color-blue-950);
-  --color-secondary: var(--color-gold-islami);    /* Gold Al-Andalus */
-  /* Gold Islami — pai-next style */
+  --color-primary: var(--color-teal-700);      /* Emerald Green */
+  /* Emerald Green utama */
+  --color-primary-light: var(--color-teal-50);
+  /* Emerald muda / background aksen */
+  --color-primary-dark: var(--color-teal-900);
+  --color-secondary: var(--color-sand-400);    /* Yellow/Gold Al-Andalus */
+  /* Yellow/Gold Islami — pai-next style */
   --color-background: #f8fafc;  /* Clean Slate White */
   /* Background utama */
   --color-text: #0f172a;
@@ -292,12 +292,12 @@
 @layer base {
   :root {
   /* Dashboard Gold Standard Vars - Al-Andalus */
-  --primary:        #1e3a8a;
-  --primary-dark:   #172554;
-  --primary-light:  #3b82f6;
-  --secondary:          #d4af37;
-  --secondary-light: #fde68a;
-  --secondary-pale:     #fffbeb;
+  --primary:        #0f766e; /* teal-700 */
+  --primary-dark:   #064e3b; /* teal-900 */
+  --primary-light:  #14b8a6; /* teal-500 */
+  --secondary:          #fbbf24; /* sand-400 */
+  --secondary-light: #fef9d9; /* sand-100 */
+  --secondary-pale:     #fffdf0; /* sand-50 */
   --bg:            #f8fafc;
   --bg-card:       #ffffff;
   --text-main:     #0f172a;
