@@ -286,6 +286,22 @@ async function main() {
             const pengujiHafalan = pengujiIds[(i + 3) % 5];
             const pengujiArab = pengujiIds[(i + 4) % 5];
 
+            // Spread out schedule times to avoid conflicts!
+            const startTimeQuran = new Date(`2025-01-01T${(8 + (i % 6)).toString().padStart(2, '0')}:00:00Z`);
+            const endTimeQuran = new Date(`2025-01-01T${(9 + (i % 6)).toString().padStart(2, '0')}:00:00Z`);
+            
+            const startTimeSantri = new Date(`2025-01-01T${(9 + (i % 6)).toString().padStart(2, '0')}:00:00Z`);
+            const endTimeSantri = new Date(`2025-01-01T${(10 + (i % 6)).toString().padStart(2, '0')}:00:00Z`);
+            
+            const startTimeOrtu = new Date(`2025-01-01T${(10 + (i % 6)).toString().padStart(2, '0')}:00:00Z`);
+            const endTimeOrtu = new Date(`2025-01-01T${(11 + (i % 6)).toString().padStart(2, '0')}:00:00Z`);
+            
+            const startTimeHafalan = new Date(`2025-01-01T${(11 + (i % 6)).toString().padStart(2, '0')}:00:00Z`);
+            const endTimeHafalan = new Date(`2025-01-01T${(12 + (i % 6)).toString().padStart(2, '0')}:00:00Z`);
+            
+            const startTimeArab = new Date(`2025-01-01T${(12 + (i % 6)).toString().padStart(2, '0')}:00:00Z`);
+            const endTimeArab = new Date(`2025-01-01T${(13 + (i % 6)).toString().padStart(2, '0')}:00:00Z`);
+
             let jadwal = await prisma.jadwalUjian.findFirst({ where: { pendaftar_id: pendaftar.id } });
             if (!jadwal) {
                 jadwal = await prisma.jadwalUjian.create({
@@ -294,14 +310,14 @@ async function main() {
                         tahun_ajaran_id: tahunAjaran.id,
                         tanggal_ujian: new Date(),
                         metode_ujian: 'offline',
-                        waktu_mulai_santri: new Date('2025-01-01T08:00:00Z'),
-                        waktu_selesai_santri: new Date('2025-01-01T09:00:00Z'),
+                        waktu_mulai_santri: startTimeSantri,
+                        waktu_selesai_santri: endTimeSantri,
                         tempat_santri: 'Ruang A',
                         penguji_santri_id: pengujiSantri,
                         status_santri: d.skor ? 'completed' : 'scheduled',
 
-                        waktu_mulai_ortu: new Date('2025-01-01T09:00:00Z'),
-                        waktu_selesai_ortu: new Date('2025-01-01T10:00:00Z'),
+                        waktu_mulai_ortu: startTimeOrtu,
+                        waktu_selesai_ortu: endTimeOrtu,
                         tempat_ortu: 'Ruang B',
                         penguji_ortu_id: pengujiOrtu,
                         status_ortu: d.skor ? 'completed' : 'scheduled',
@@ -309,14 +325,14 @@ async function main() {
                         penguji_quran_id: pengujiQuran,
                         status_quran: d.skor ? 'completed' : 'scheduled',
 
-                        waktu_mulai_hafalan: new Date('2025-01-01T10:00:00Z'),
-                        waktu_selesai_hafalan: new Date('2025-01-01T11:00:00Z'),
+                        waktu_mulai_hafalan: startTimeHafalan,
+                        waktu_selesai_hafalan: endTimeHafalan,
                         tempat_hafalan: 'Ruang C',
                         penguji_hafalan_id: pengujiHafalan,
                         status_hafalan: d.skor ? 'completed' : 'scheduled',
 
-                        waktu_mulai_arab: new Date('2025-01-01T11:00:00Z'),
-                        waktu_selesai_arab: new Date('2025-01-01T12:00:00Z'),
+                        waktu_mulai_arab: startTimeArab,
+                        waktu_selesai_arab: endTimeArab,
                         tempat_arab: 'Ruang D',
                         penguji_arab_id: pengujiArab,
                         status_arab: d.skor ? 'completed' : 'scheduled',
@@ -356,6 +372,21 @@ async function main() {
                             input_at_ortu: new Date(),
                             input_at_hafalan: new Date(),
                             input_at_arab: new Date(),
+                            
+                            // To ensure Monitoring Dashboard detects completion:
+                            detail_quran: { rekomendasi: 'Disarankan', nama_penguji: 'Ustadz Penguji' },
+                            detail_wawancara: { rekomendasi: 'Disarankan', nama_penguji: 'Ustadz Penguji' },
+                            detail_cawalsan: { rekomendasi: 'Disarankan', nama_penguji: 'Ustadz Penguji' },
+                        }
+                    });
+                } else {
+                    const existingNilai = await prisma.nilaiUjian.findFirst({ where: { pendaftar_id: pendaftar.id } });
+                    await prisma.nilaiUjian.update({
+                        where: { id: existingNilai!.id },
+                        data: {
+                            detail_quran: { rekomendasi: 'Disarankan', nama_penguji: 'Ustadz Penguji' },
+                            detail_wawancara: { rekomendasi: 'Disarankan', nama_penguji: 'Ustadz Penguji' },
+                            detail_cawalsan: { rekomendasi: 'Disarankan', nama_penguji: 'Ustadz Penguji' },
                         }
                     });
                 }
