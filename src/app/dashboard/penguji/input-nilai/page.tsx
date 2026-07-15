@@ -259,13 +259,12 @@ const SUMBER_INFO_OPTIONS = ["Searching umum", "IG", "FB", "YouTube", "TikTok", 
 
 // Map session role to which form types are visible
 const ROLE_TO_FORM_TYPES: Record<string, string[]> = {
-  penguji: ['quran'],
+  penguji: ['quran', 'hafalan', 'lisan_arab'],
   pewawancara_calsan: ['wawancara'],
   pewawancara_cawalsan: ['ortu'],
-  // Admin roles see all forms
   penguji_hafalan: ['hafalan'],
-    penguji_bahasa_arab: ['lisan_arab'],
-    admin: ['quran', 'wawancara', 'ortu', 'hafalan', 'lisan_arab'],
+  penguji_bahasa_arab: ['lisan_arab'],
+  admin: ['quran', 'wawancara', 'ortu', 'hafalan', 'lisan_arab'],
   admin_super: ['quran', 'wawancara', 'ortu', 'hafalan', 'lisan_arab'],
 };
 
@@ -303,7 +302,9 @@ function InputNilaiContent() {
   const [lisanArabForm, setLisanArabForm] = useState<any>({});
 
   // Determine which form types are visible based on the active session role
-  const visibleFormTypes = ROLE_TO_FORM_TYPES[activeRole] || ['quran', 'wawancara', 'ortu'];
+  const visibleFormTypes = ["admin", "admin_super"].includes(activeRole) 
+    ? ['quran', 'wawancara', 'ortu', 'hafalan', 'lisan_arab'] 
+    : (ROLE_TO_FORM_TYPES[activeRole] || ['quran', 'wawancara', 'ortu', 'hafalan', 'lisan_arab']);
 
   const toTitleCase = (str: string) => {
     if (!str || typeof str !== 'string') return "";

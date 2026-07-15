@@ -44,6 +44,8 @@ export async function GET() {
           { penguji_santri_id: userId }, // Seleksi Wawancara Calon Santri (or general Interview)
           { penguji_quran_id: userId }, // Tes Quran
           { penguji_ortu_id: userId }, // Seleksi Wawancara Orang Tua
+          { penguji_hafalan_id: userId }, // Tes Hafalan (MA)
+          { penguji_arab_id: userId }, // Tes Bahasa Arab (MA)
           { exam_session: { created_by: userId } }, // Sessions created by this penguji
         ],
       };
@@ -113,26 +115,45 @@ export async function GET() {
         roles.push("wawancara", "quran", "ortu", "hafalan", "lisan_arab");
       } else {
         if (item.penguji_santri_id === userId) roles.push("wawancara");
-        if (item.penguji_quran_id === userId) roles.push("quran");
         if (item.penguji_ortu_id === userId) roles.push("ortu");
+        
+        // Handle MA specific logic where penguji_quran_id might be reused for hafalan & arab
+        if (item.penguji_quran_id === userId) {
+          const jenjang = (item.pendaftar.jenjang || "").toUpperCase();
+          if (jenjang.includes("MA")) {
+            roles.push("hafalan", "lisan_arab");
+          } else {
+            roles.push("quran");
+          }
+        }
+        
+        // Handle explicit hafalan & arab assignees (if used in future)
+        if ((item as any).penguji_hafalan_id === userId) roles.push("hafalan");
+        if ((item as any).penguji_arab_id === userId) roles.push("lisan_arab");
 
         if (roles.length === 0 && item.exam_session?.created_by === userId) {
           const title = (item.exam_session?.title || "").toLowerCase();
-          const hasQuranMatch =
-            title.includes("qur") || title.includes("quran");
-          const hasWawancaraMatch =
-            title.includes("calsan") ||
-            title.includes("santri") ||
-            title.includes("wawancara");
+          const hasQuranMatch = title.includes("qur") || title.includes("quran");
+          const hasWawancaraMatch = title.includes("calsan") || title.includes("santri") || title.includes("wawancara");
           const hasOrtuMatch = title.includes("cawalsan") || title.includes("ortu") || title.includes("orang");
-            const hasHafalanMatch = title.includes("hafalan");
-            const hasLisanArabMatch = title.includes("arab") || title.includes("lisan");
+          const hasHafalanMatch = title.includes("hafalan");
+          const hasLisanArabMatch = title.includes("arab") || title.includes("lisan");
 
           if (hasQuranMatch) roles.push("quran");
           if (hasWawancaraMatch) roles.push("wawancara");
           if (hasOrtuMatch) roles.push("ortu");
           if (hasHafalanMatch) roles.push("hafalan");
           if (hasLisanArabMatch) roles.push("lisan_arab");
+
+          // Fallback if title is generic like "Tes PPDB", just push based on jenjang so the card isn't blank
+          if (roles.length === 0) {
+            const jenjang = (item.pendaftar.jenjang || "").toUpperCase();
+            if (jenjang.includes("MA")) {
+              roles.push("hafalan", "lisan_arab");
+            } else {
+              roles.push("quran");
+            }
+          }
         }
       }
 

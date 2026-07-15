@@ -137,9 +137,14 @@ export default function HeroSection() {
                 <span className="block text-ink-950">
                   Kaderisasi Ummat
                 </span>
-                <span className="block mt-1 bg-gradient-to-r from-[var(--color-primary-700)] to-[var(--color-secondary-600)] text-transparent bg-clip-text">
-                  Unggul, Cerdas, <br className="hidden sm:block" />
-                  dan Berintegritas
+                <span className="block mt-1 text-[var(--color-primary-700)]">
+                  <span className="bg-gradient-to-r from-[var(--color-primary-700)] to-[var(--color-secondary-600)] text-transparent bg-clip-text">
+                    Unggul, Cerdas, 
+                  </span>
+                  <br className="hidden sm:block" />
+                  <span className="bg-gradient-to-r from-[var(--color-primary-700)] to-[var(--color-secondary-600)] text-transparent bg-clip-text">
+                    dan Berintegritas
+                  </span>
                 </span>
               </h1>
             </motion.div>
