@@ -329,6 +329,10 @@ export async function autoFlushWhatsappQueue(): Promise<void> {
 export async function enqueueWhatsapp(
     params: EnqueueParams
 ): Promise<{ queued: boolean; reason?: string; logId?: string }> {
+    // In Vercel serverless environment without active Cron, background queues get killed.
+    // We force sendNow to true by default to ensure ALL notifications actually send.
+    const sendNow = params.sendNow !== undefined ? params.sendNow : true;
+    
     const { pendaftarId, phone, jenisNotif, messageContent, scheduledAt, force } =
         params;
 
@@ -374,7 +378,7 @@ export async function enqueueWhatsapp(
     );
 
     // Trigger auto-flush in the background using Next.js after() to survive Vercel serverless freeze
-    if (params.sendNow) {
+    if (sendNow) {
         try {
             console.log(`🚀 [Enqueue] sendNow is true. Sending ${jenisNotif} immediately to ${phone}`);
             const sendResult = await sendMessage({ phone, message: messageContent });
