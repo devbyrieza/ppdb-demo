@@ -10,7 +10,7 @@ export const BRANDING = {
     process.env.NEXT_PUBLIC_SCHOOL_NETWORK || "Kurikulum Nasional dan Internasional",
   primaryColor: process.env.NEXT_PUBLIC_PRIMARY_COLOR || "#1E3A8A", // Navy Blue
   secondaryColor: process.env.NEXT_PUBLIC_SECONDARY_COLOR || "#D4AF37", // Gold
-  logoPath: process.env.NEXT_PUBLIC_LOGO_PATH || "/images/logo-andalus.webp",
+  logoPath: process.env.NEXT_PUBLIC_LOGO_PATH || "/images/kop-surat.png",
   faviconPath: process.env.NEXT_PUBLIC_FAVICON_PATH || "/favicon.ico",
   websiteUrl:
     process.env.NEXT_PUBLIC_WEBSITE_URL || "https://ppdb-demo.vercel.app",
