@@ -47,7 +47,7 @@ export default function DemoLoginHelper({ onSelect }: DemoLoginHelperProps) {
     {
       role: "Penguji Al-Qur'an",
       id: "penguji",
-      email: "quran@ppdb-demo.com",
+      email: "ust.abdullah@ppdb-demo.com",
       pass: "password123",
       icon: BookOpen,
       color: "bg-primary-100 text-primary-700 border-primary-200",
@@ -55,7 +55,7 @@ export default function DemoLoginHelper({ onSelect }: DemoLoginHelperProps) {
     {
       role: "Pewawancara Calon Santri",
       id: "pewawancara_calsan",
-      email: "calsan@ppdb-demo.com",
+      email: "ust.umar@ppdb-demo.com",
       pass: "password123",
       icon: Mic2,
       color: "bg-rose-100 text-rose-700 border-rose-200",
@@ -63,7 +63,7 @@ export default function DemoLoginHelper({ onSelect }: DemoLoginHelperProps) {
     {
       role: "Pewawancara Calon Orangtua/Wali Santri",
       id: "pewawancara_cawalsan",
-      email: "cawalsan@ppdb-demo.com",
+      email: "ust.ahmad@ppdb-demo.com",
       pass: "password123",
       icon: UserCheck,
       color: "bg-purple-100 text-purple-700 border-purple-200",
