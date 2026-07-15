@@ -68,15 +68,15 @@ const SCHEDULE_ITEMS = [
     time: "Sore",
     label: "Ekskul & Olahraga",
     icon: Target,
-    iconBg: "bg-emerald-50",
-    iconColor: "text-emerald-600",
+    iconBg: "bg-secondary-50",
+    iconColor: "text-secondary-600",
   },
   {
     time: "Malam",
     label: "Belajar Mandiri",
     icon: Moon,
-    iconBg: "bg-indigo-50",
-    iconColor: "text-indigo-600",
+    iconBg: "bg-primary-50",
+    iconColor: "text-primary-600",
   },
 ] as const;
 

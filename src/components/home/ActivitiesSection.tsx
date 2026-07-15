@@ -24,7 +24,7 @@ import { Container } from "@/components/layout/Container";
 import { motion } from "framer-motion";
 
 // ─── Types ───────────────────────────────────────────
-type ActivityColor = "teal" | "sand" | "emerald";
+
 
 interface Activity {
   name: string;
@@ -36,7 +36,6 @@ interface Activity {
 interface ExtraActivity {
   name: string;
   icon: React.ElementType;
-  color: ActivityColor;
 }
 
 // ─── Data ────────────────────────────────────────────
@@ -72,21 +71,21 @@ const ACTIVITIES: Activity[] = [
 ];
 
 const EXTRA_ACTIVITIES: ExtraActivity[] = [
-  { name: "Karate", icon: Trophy, color: "teal" },
-  { name: "Pramuka", icon: Shield, color: "sand" },
-  { name: "Panahan", icon: Target, color: "teal" },
-  { name: "Futsal", icon: Trophy, color: "emerald" },
-  { name: "Volly", icon: Trophy, color: "teal" },
-  { name: "Komputer", icon: Monitor, color: "sand" },
-  { name: "Design Grafis", icon: Palette, color: "teal" },
-  { name: "Kaligrafi", icon: PenTool, color: "emerald" },
-  { name: "Jurnalistik", icon: FileText, color: "teal" },
-  { name: "Konten Kreator", icon: Play, color: "sand" },
-  { name: "Basket", icon: Dumbbell, color: "teal" },
-  { name: "Bulutangkis", icon: Zap, color: "emerald" },
-  { name: "Pertanian", icon: TreePine, color: "sand" },
-  { name: "Periklanan", icon: Waves, color: "teal" },
-  { name: "Coding & AI", icon: Sparkles, color: "emerald" },
+  { name: "Karate", icon: Trophy },
+  { name: "Pramuka", icon: Shield },
+  { name: "Panahan", icon: Target },
+  { name: "Futsal", icon: Trophy },
+  { name: "Volly", icon: Trophy },
+  { name: "Komputer", icon: Monitor },
+  { name: "Design Grafis", icon: Palette },
+  { name: "Kaligrafi", icon: PenTool },
+  { name: "Jurnalistik", icon: FileText },
+  { name: "Konten Kreator", icon: Play },
+  { name: "Basket", icon: Dumbbell },
+  { name: "Bulutangkis", icon: Zap },
+  { name: "Pertanian", icon: TreePine },
+  { name: "Periklanan", icon: Waves },
+  { name: "Coding & AI", icon: Sparkles },
 ];
 
 // ─── Activity Card ────────────────────────────────────
@@ -150,45 +149,7 @@ function ActivityCard({
   );
 }
 
-// ─── Extra Activity Chip ──────────────────────────────
-function ExtraChip({ item, index }: { item: ExtraActivity; index: number }) {
-  const Icon = item.icon;
-  const colorMap = {
-    teal:
-      "bg-primary-50 text-primary-600 group-hover:bg-primary-100 ring-primary-200",
-    sand:
-      "bg-secondary-100 text-primary-700 group-hover:bg-secondary-200 ring-secondary-300",
-    emerald: "bg-emerald-50 text-emerald-600 group-hover:bg-emerald-100 ring-emerald-200",
-  };
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.88 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true, margin: "-20px" }}
-      transition={{
-        delay: index * 0.025,
-        duration: 0.4,
-        ease: [0.16, 1, 0.3, 1],
-      }}
-      className="group flex flex-col items-center justify-center gap-3 p-5 md:p-6 bg-white rounded-2xl border border-secondary-200 hover:border-primary-200 hover:shadow-premium-sm hover:bg-secondary-50/50 transition-all duration-400 cursor-default"
-    >
-      <div
-        className={[
-          "w-12 h-12 md:w-13 md:h-13 rounded-xl flex items-center justify-center shadow-xs",
-          "transition-all duration-400 group-hover:scale-110",
-          "ring-1 ring-transparent group-hover:ring-2",
-          colorMap[item.color],
-        ].join(" ")}
-      >
-        <Icon className="w-5 h-5 md:w-6 md:h-6" strokeWidth={1.75} />
-      </div>
-      <p className="text-[0.6rem] md:text-[0.65rem] font-bold text-ink-700 uppercase tracking-widest leading-tight text-center group-hover:text-primary-700 transition-colors duration-300">
-        {item.name}
-      </p>
-    </motion.div>
-  );
-}
 
 // ─── Main Component ──────────────────────────────────
 export default function ActivitiesSection() {

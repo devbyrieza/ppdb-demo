@@ -16,21 +16,21 @@ import { Container } from "@/components/layout/Container";
 import Link from "next/link";
 
 interface ScholarshipSectionProps {
-  variant?: "maroon" | "teal";
+  variant?: "primary" | "secondary";
 }
 
-export default function ScholarshipSection({ variant = "maroon" }: ScholarshipSectionProps) {
-  const isMaroon = variant === "maroon";
+export default function ScholarshipSection({ variant = "primary" }: ScholarshipSectionProps) {
+  const isPrimary = variant === "primary";
   
   const colors = {
-    primary: isMaroon ? "var(--color-maroon-700)" : "var(--color-teal-700)",
-    primaryLight: isMaroon ? "var(--color-maroon-50)" : "var(--color-teal-50)",
-    primaryDark: isMaroon ? "var(--color-maroon-900)" : "var(--color-teal-900)",
-    accent: isMaroon ? "var(--color-cream-400)" : "var(--color-sand-400)",
-    badgeBg: isMaroon ? "bg-maroon-50" : "bg-teal-50",
-    badgeText: isMaroon ? "text-maroon-700" : "text-teal-700",
-    cardBorder: isMaroon ? "border-maroon-100" : "border-teal-100",
-    iconBg: isMaroon ? "bg-maroon-600" : "bg-teal-600",
+    primary: isPrimary ? "var(--color-primary-700)" : "var(--color-secondary-700)",
+    primaryLight: isPrimary ? "var(--color-primary-50)" : "var(--color-secondary-50)",
+    primaryDark: isPrimary ? "var(--color-primary-900)" : "var(--color-secondary-900)",
+    accent: isPrimary ? "var(--color-secondary-400)" : "var(--color-primary-400)",
+    badgeBg: isPrimary ? "bg-primary-50" : "bg-secondary-50",
+    badgeText: isPrimary ? "text-primary-700" : "text-secondary-700",
+    cardBorder: isPrimary ? "border-primary-100" : "border-secondary-100",
+    iconBg: isPrimary ? "bg-primary-600" : "bg-secondary-600",
   };
 
   const EASE = [0.16, 1, 0.3, 1] as const;

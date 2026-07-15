@@ -63,7 +63,7 @@ export default function HomePage() {
 
         <section id="beasiswa" aria-label="Program Beasiswa">
           <ScrollAnimation delay={0.1} direction="none" duration={0.8}>
-            <ScholarshipSection variant="teal" />
+            <ScholarshipSection variant="primary" />
           </ScrollAnimation>
         </section>
 

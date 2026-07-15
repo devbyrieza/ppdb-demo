@@ -21,53 +21,53 @@ const STEPS = [
     title: "Buat Akun",
     description:
       "Daftarkan data diri awal dan buat akun pendaftaran santri baru.",
-    accent: "teal" as const,
+    accent: "primary" as const,
   },
   {
     icon: CreditCard,
     title: "Pembayaran",
     description:
       "Bayar biaya daftar & unggah bukti transfer ke dashboard online.",
-    accent: "sand" as const,
+    accent: "secondary" as const,
   },
   {
     icon: FileText,
     title: "Lengkapi Berkas",
     description:
       "Isi form biodata lengkap dan unggah dokumen persyaratan digital.",
-    accent: "teal" as const,
+    accent: "primary" as const,
   },
   {
     icon: ClipboardCheck,
     title: "Seleksi",
     description:
       "Hadiri dan ikuti ujian seleksi Al-Qur'an, wawancara, dan tes tulis.",
-    accent: "sand" as const,
+    accent: "secondary" as const,
   },
   {
     icon: BellRing,
     title: "Pengumuman",
     description: "Lihat hasil kelulusan seleksi melalui dashboard & WhatsApp.",
-    accent: "teal" as const,
+    accent: "primary" as const,
   },
   {
     icon: GraduationCap,
     title: "Daftar Ulang",
     description:
       "Lengkapi administrasi akhir setelah dinyatakan lolos seleksi.",
-    accent: "teal" as const,
+    accent: "primary" as const,
   },
 ] as const;
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 const ACCENT_MAP = {
-  teal: {
+  primary: {
     icon: "bg-primary-50 text-primary-600 border-primary-100 group-hover:bg-primary-100 group-hover:border-primary-200",
     badge: "bg-primary-600 text-white",
     title: "group-hover:text-primary-700",
   },
-  sand: {
+  secondary: {
     icon: "bg-secondary-50 text-secondary-700 border-secondary-100 group-hover:bg-secondary-100 group-hover:border-secondary-200",
     badge: "bg-secondary-600 text-white",
     title: "group-hover:text-secondary-700",

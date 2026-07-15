@@ -17,7 +17,7 @@ import InfiniteMarquee from "@/components/ui/InfiniteMarquee";
 
 
 // ─── Types ───────────────────────────────────────────
-type StatColor = "teal" | "sand";
+type StatColor = "primary" | "secondary";
 
 interface Stat {
   id: string;
@@ -37,7 +37,7 @@ const STATS: Stat[] = [
     label: "Angkatan Pertama",
     value: 1,
     icon: Calendar,
-    color: "teal",
+    color: "primary",
     suffix: "",
     sublabel: "Tahun Ajaran 2026/2027",
     description: "Momen bersejarah pembukaan",
@@ -47,7 +47,7 @@ const STATS: Stat[] = [
     label: "Kurikulum Terintegrasi",
     value: 100,
     icon: Award,
-    color: "sand",
+    color: "secondary",
     suffix: "%",
     sublabel: "Tahfidz, Syar'i, Akademik, Leadership & Entrepreneurship",
     description: "Lima pilar pendidikan utama",
@@ -57,7 +57,7 @@ const STATS: Stat[] = [
     label: "Jenjang Pendidikan",
     value: 2,
     icon: GraduationCap,
-    color: "teal",
+    color: "primary",
     suffix: "",
     sublabel: "MTs · IL",
     description: "Pendidikan menengah lengkap",
@@ -67,7 +67,7 @@ const STATS: Stat[] = [
     label: "Kuota Terbatas",
     value: 25,
     icon: Users,
-    color: "sand",
+    color: "secondary",
     suffix: "",
     sublabel: "Per Jenjang (Eksklusif)",
     description: "Seleksi ketat, kualitas terjaga",
@@ -118,8 +118,8 @@ function StatCard({
   trigger: boolean;
 }) {
   const Icon = stat.icon;
-  const isTeal = stat.color === "teal";
-  const isSand = stat.color === "sand";
+  const isPrimary = stat.color === "primary";
+  const isSecondary = stat.color === "secondary";
 
   return (
     <motion.div
@@ -138,7 +138,7 @@ function StatCard({
         <div
           className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
           style={{
-            background: isTeal
+            background: isPrimary
               ? "radial-gradient(ellipse 80% 60% at 50% 100%, rgba(13,110,110,0.04) 0%, transparent 70%)"
               : "radial-gradient(ellipse 80% 60% at 50% 100%, rgba(190,174,119,0.06) 0%, transparent 70%)",
           }}
@@ -149,16 +149,16 @@ function StatCard({
           className={[
             "relative mb-6 w-13 h-13 md:w-14 md:h-14 flex items-center justify-center rounded-xl shadow-xs",
             "transition-all duration-500 group-hover:scale-110",
-            isTeal ? "bg-primary-50 text-primary-700 group-hover:bg-primary-100" : "",
-            isSand ? "bg-secondary-100 text-secondary-700 group-hover:bg-secondary-200" : "",
+            isPrimary ? "bg-primary-50 text-primary-700 group-hover:bg-primary-100" : "",
+            isSecondary ? "bg-secondary-100 text-secondary-700 group-hover:bg-secondary-200" : "",
           ].join(" ")}
         >
           <Icon className="w-5 h-5 md:w-6 md:h-6" strokeWidth={1.75} />
           <div
             className={[
               "absolute inset-0 rounded-xl ring-0 transition-all duration-500",
-              isTeal ? "group-hover:ring-2 group-hover:ring-primary-200" : "",
-              isSand ? "group-hover:ring-2 group-hover:ring-secondary-300" : "",
+              isPrimary ? "group-hover:ring-2 group-hover:ring-primary-200" : "",
+              isSecondary ? "group-hover:ring-2 group-hover:ring-secondary-300" : "",
             ].join(" ")}
           />
         </div>
@@ -168,8 +168,8 @@ function StatCard({
           <span
             className={[
               "text-[2.625rem] md:text-[3.25rem] font-black leading-none tracking-[-0.04em]",
-              isTeal ? "text-primary-700" : "",
-              isSand ? "text-secondary-700" : "",
+              isPrimary ? "text-primary-700" : "",
+              isSecondary ? "text-secondary-700" : "",
             ].join(" ")}
           >
             <AnimatedCounter
@@ -182,8 +182,8 @@ function StatCard({
             <span
               className={[
                 "text-2xl md:text-3xl font-black leading-none tracking-[-0.03em]",
-                isTeal ? "text-primary-500" : "",
-                isSand ? "text-secondary-500" : "",
+                isPrimary ? "text-primary-500" : "",
+                isSecondary ? "text-secondary-500" : "",
               ].join(" ")}
             >
               {stat.suffix}
@@ -200,8 +200,8 @@ function StatCard({
         <p
           className={[
             "text-[0.6rem] md:text-[0.65rem] font-semibold tracking-wide mt-0.5",
-            isTeal ? "text-primary-500" : "",
-            isSand ? "text-secondary-500" : "",
+            isPrimary ? "text-primary-500" : "",
+            isSecondary ? "text-secondary-500" : "",
           ].join(" ")}
         >
           {stat.sublabel}
@@ -219,8 +219,8 @@ function StatCard({
         <div
           className={[
             "mt-5 h-[2px] w-6 rounded-full transition-all duration-500 group-hover:w-10",
-            isTeal ? "bg-primary-100 group-hover:bg-primary-500" : "",
-            isSand ? "bg-secondary-200 group-hover:bg-secondary-500" : "",
+            isPrimary ? "bg-primary-100 group-hover:bg-primary-500" : "",
+            isSecondary ? "bg-secondary-200 group-hover:bg-secondary-500" : "",
           ].join(" ")}
         />
       </div>
@@ -269,7 +269,7 @@ export default function StatsSection() {
             </div>
 
             {/* Badge 2 — Akreditasi */}
-            <div className="section-label section-label-teal border-secondary-200 text-ink-700 bg-secondary-50/50 hover:bg-secondary-100/50 cursor-default">
+            <div className="section-label section-label-primary border-secondary-200 text-ink-700 bg-secondary-50/50 hover:bg-secondary-100/50 cursor-default">
               <ShieldCheck className="w-3 h-3 shrink-0 text-secondary-600" strokeWidth={2} />
               <span>Terakreditasi A — BAN-PDM</span>
             </div>

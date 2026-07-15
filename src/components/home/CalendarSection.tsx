@@ -12,32 +12,32 @@ const IMPORTANT_DATES = [
     title: "Pendaftaran PPDB",
     description:
       "Pendaftaran santri baru dibuka secara online melalui website resmi.",
-    accent: "teal" as const,
+    accent: "primary" as const,
   },
   {
     date: "Sesuai Jadwal",
     title: "Seleksi",
     description:
       "Ujian lisan dan tertulis dilaksanakan setelah verifikasi berkas.",
-    accent: "sand" as const,
+    accent: "secondary" as const,
   },
   {
     date: "15 Juli 2026",
     title: "Hari Pertama KBM",
     description: "Khutbah Ta'aruf dan awal pengenalan lingkungan.",
-    accent: "teal" as const,
+    accent: "primary" as const,
   },
 ] as const;
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 const ACCENT_MAP = {
-  teal: {
+  primary: {
     number: "bg-primary-600 text-white",
     badge: "bg-primary-50 text-primary-700 border-primary-100",
     title: "group-hover:text-primary-700",
   },
-  sand: {
+  secondary: {
     number: "bg-secondary-100 text-secondary-800 border border-secondary-200",
     badge: "bg-secondary-50 text-secondary-700 border-secondary-200",
     title: "group-hover:text-secondary-700",

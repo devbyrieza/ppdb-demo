@@ -15,7 +15,7 @@ import { motion, Variants } from "framer-motion";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-type ProgramVariant = "teal" | "sand";
+type ProgramVariant = "primary" | "secondary";
 
 interface ProgramItem {
   title: string;
@@ -41,7 +41,7 @@ const PROGRAMS: ProgramItem[] = [
     ],
     quota: "Putra 32 · Putri 32",
     icon: School,
-    variant: "teal",
+    variant: "primary",
   },
   {
     title: "I'dad Lughowi (IL)",
@@ -57,7 +57,7 @@ const PROGRAMS: ProgramItem[] = [
     ],
     quota: "Putra 32 · Putri 32",
     icon: BookOpen,
-    variant: "sand",
+    variant: "secondary",
   },
 ];
 
@@ -89,7 +89,7 @@ const featureVariants: Variants = {
 
 function getTokens(variant: ProgramVariant) {
   switch (variant) {
-    case "teal":
+    case "primary":
       return {
         accentBar: "bg-gradient-to-r from-primary-700 via-primary-500 to-primary-300",
         corner: "bg-primary-50",
@@ -103,7 +103,7 @@ function getTokens(variant: ProgramVariant) {
         ctaBtn:
           "bg-white border-primary-200 text-primary-800 hover:bg-primary-700 hover:border-primary-700 hover:text-white shadow-sm hover:shadow-md",
       };
-    case "sand":
+    case "secondary":
       return {
         accentBar: "bg-gradient-to-r from-secondary-500 via-secondary-400 to-secondary-200",
         corner: "bg-secondary-100",

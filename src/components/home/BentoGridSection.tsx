@@ -11,7 +11,7 @@ export default function BentoGridSection() {
     <section className="relative py-24 bg-white overflow-hidden">
       <Container className="relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="section-label section-label-teal mb-4">Fasilitas Ekosistem</span>
+          <span className="section-label section-label-primary mb-4">Fasilitas Ekosistem</span>
           <h2 className="text-3xl md:text-5xl font-black mb-6">Lingkungan Belajar Ideal</h2>
           <p className="text-ink-600 text-lg">Semua fasilitas didesain khusus untuk mendukung perkembangan akademik, hafalan, dan karakter santri secara maksimal.</p>
         </div>

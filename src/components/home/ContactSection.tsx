@@ -11,21 +11,21 @@ const CONTACT_INFO = [
     title: "Lokasi Pesantren",
     content: "Jl. Pesantren Raya No. 1",
     detail: "Cikembar, Sukabumi",
-    accent: "teal" as const,
+    accent: "primary" as const,
   },
   {
     icon: Phone,
     title: "Layanan Telepon",
     content: "+62 812-8530-0800",
     detail: "Senin-Sabtu (08.00 - 16.00)",
-    accent: "sand" as const,
+    accent: "secondary" as const,
   },
   {
     icon: Mail,
     title: "Email Resmi",
     content: "info@pesantren-alfath.or.id",
     detail: "Kirim pertanyaan kapan saja",
-    accent: "teal" as const,
+    accent: "primary" as const,
   },
 ] as const;
 
@@ -83,9 +83,9 @@ export default function ContactSection() {
                 >
                   <div
                     className={`w-11 h-11 rounded-[12px] flex items-center justify-center mb-4 transition-transform shadow-xs group-hover:scale-105 duration-400 shrink-0 ${
-                      item.accent === "teal"
+                      item.accent === "primary"
                         ? "bg-primary-50 text-primary-600"
-                        : item.accent === "sand"
+                        : item.accent === "secondary"
                           ? "bg-secondary-100 text-primary-800"
                           : "bg-primary-50 text-primary-700"
                     }`}

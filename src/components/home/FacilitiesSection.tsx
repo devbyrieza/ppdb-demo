@@ -23,18 +23,18 @@ import { Container } from "@/components/layout/Container";
 import { motion, type Variants, type Transition } from "framer-motion";
 
 const FACILITIES = [
-  { name: "Masjid Kapasitas 1000 Jamaah", icon: Home, color: "teal" },
-  { name: "Gedung Sekolah Terpadu", icon: School, color: "sand" },
+  { name: "Masjid Kapasitas 1000 Jamaah", icon: Home, color: "primary" },
+  { name: "Gedung Sekolah Terpadu", icon: School, color: "secondary" },
   { name: "Asrama Representatif", icon: Building2, color: "ink" },
-  { name: "Fasilitas Olahraga", icon: Dumbbell, color: "gold" },
-  { name: "Laboratorium IPA", icon: Beaker, color: "teal" },
+  { name: "Fasilitas Olahraga", icon: Dumbbell, color: "primary" },
+  { name: "Laboratorium IPA", icon: Beaker, color: "secondary" },
   { name: "UKS (Unit Kesehatan Santri)", icon: HeartPulse, color: "red" },
-  { name: "Mini Market", icon: ShoppingCart, color: "orange" },
-  { name: "Lab. Komputer", icon: Monitor, color: "indigo" },
-  { name: "Ruang Makan Bersama", icon: UtensilsCrossed, color: "amber" },
-  { name: "Perpustakaan Digital", icon: Library, color: "emerald" },
-  { name: "Area Kemandirian", icon: Waves, color: "cyan" },
-  { name: "Kantin Sehat", icon: Coffee, color: "teal" },
+  { name: "Mini Market", icon: ShoppingCart, color: "primary" },
+  { name: "Lab. Komputer", icon: Monitor, color: "secondary" },
+  { name: "Ruang Makan Bersama", icon: UtensilsCrossed, color: "primary" },
+  { name: "Perpustakaan Digital", icon: Library, color: "secondary" },
+  { name: "Area Kemandirian", icon: Waves, color: "primary" },
+  { name: "Kantin Sehat", icon: Coffee, color: "secondary" },
 ] as const;
 
 const FACILITY_IMAGES = [
@@ -75,18 +75,12 @@ const FACILITY_IMAGES = [
   },
 ] as const;
 
-/* ── Icon colour mapping — teal/sand branding ── */
+/* ── Icon colour mapping — primary/secondary branding ── */
 const iconClasses: Record<string, string> = {
-  teal: "bg-primary-50 text-primary-600 ring-primary-100",
-  sand: "bg-secondary-100 text-secondary-800 ring-secondary-200",
-  gold: "bg-yellow-50 text-yellow-600 ring-yellow-100",
+  primary: "bg-primary-50 text-primary-600 ring-primary-100",
+  secondary: "bg-secondary-50 text-secondary-600 ring-secondary-100",
   red: "bg-red-50 text-red-600 ring-red-100",
-  orange: "bg-orange-50 text-orange-600 ring-orange-100",
-  indigo: "bg-indigo-50 text-indigo-600 ring-indigo-100",
-  amber: "bg-secondary-50 text-secondary-600 ring-secondary-100",
-  emerald: "bg-emerald-50 text-emerald-600 ring-emerald-100",
-  cyan: "bg-cyan-50 text-cyan-600 ring-cyan-100",
-  ink: "bg-secondary-50 text-ink-600 ring-secondary-100",
+  ink: "bg-ink-50 text-ink-600 ring-ink-100",
 };
 
 /* ── Easing & transition helpers ── */
