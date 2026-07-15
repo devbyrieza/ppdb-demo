@@ -47,6 +47,7 @@ export interface EnqueueParams {
     messageContent: string;
     scheduledAt?: Date;
     force?: boolean;
+    sendNow?: boolean;
 }
 
 // ============================================================================
@@ -373,18 +374,42 @@ export async function enqueueWhatsapp(
     );
 
     // Trigger auto-flush in the background using Next.js after() to survive Vercel serverless freeze
-    try {
-        const { after } = require("next/server");
-        after(() => {
+    if (params.sendNow) {
+        try {
+            console.log(`🚀 [Enqueue] sendNow is true. Sending ${jenisNotif} immediately to ${phone}`);
+            const sendResult = await sendMessage({ phone, message: messageContent });
+            
+            if (sendResult.status) {
+                await prisma.whatsappLog.update({
+                    where: { id: log.id },
+                    data: {
+                        status: "sent",
+                        sent_at: new Date(),
+                        response_data: JSON.stringify(sendResult)
+                    }
+                });
+                console.log(`✅ [Enqueue] sent successfully: ${log.id}`);
+            } else {
+                console.warn(`⚠️ [Enqueue] sendNow returned false status, leaving as pending. Result:`, sendResult);
+            }
+        } catch (err: any) {
+            console.error(`❌ [Enqueue] sendNow error:`, err);
+            // Will fallback to the queue naturally
+        }
+    } else {
+        try {
+            const { after } = require("next/server");
+            after(() => {
+                autoFlushWhatsappQueue().catch((err) =>
+                    console.error("Failed to run autoFlushWhatsappQueue asynchronously:", err)
+                );
+            });
+        } catch (e) {
+            // Fallback if after is not available
             autoFlushWhatsappQueue().catch((err) =>
                 console.error("Failed to run autoFlushWhatsappQueue asynchronously:", err)
             );
-        });
-    } catch (e) {
-        // Fallback if after is not available
-        autoFlushWhatsappQueue().catch((err) =>
-            console.error("Failed to run autoFlushWhatsappQueue asynchronously:", err)
-        );
+        }
     }
 
     return { queued: true, logId: log.id };

@@ -120,6 +120,7 @@ export async function POST(request: NextRequest) {
             nomorPendaftaran,
             jenjang,
           ),
+          sendNow: true, // IMPORTANT: Bypass background queue for immediate UX
         });
       }
     } catch (error) {
