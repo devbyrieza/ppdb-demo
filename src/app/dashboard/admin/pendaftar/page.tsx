@@ -1778,6 +1778,51 @@ function AdminPendaftarContent() {
                 )}
               </button>
 
+              {userRole === "admin_super" && (
+                <button
+                  onClick={async () => {
+                    if (selectedIds.length === 0) return;
+                    const result = await Swal.fire({
+                      title: "Pindahkan ke Sampah?",
+                      text: `Anda yakin ingin membuang ${selectedIds.length} pendaftar yang dipilih ke folder Sampah?`,
+                      icon: "warning",
+                      showCancelButton: true,
+                      confirmButtonColor: "#dc2626",
+                      cancelButtonColor: "#94a3b8",
+                      confirmButtonText: "Ya, Buang ke Sampah",
+                      cancelButtonText: "Batal",
+                      reverseButtons: true,
+                    });
+                    if (!result.isConfirmed) return;
+
+                    try {
+                      setBulkUpdating(true);
+                      const response = await fetch("/api/admin/pendaftar/bulk-delete", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ ids: selectedIds }),
+                      });
+                      const data = await response.json();
+                      if (!response.ok) throw new Error(data.error || "Gagal");
+                      
+                      Swal.fire("Berhasil", data.message, "success");
+                      setSelectedIds([]);
+                      setTrashCount(prev => prev + selectedIds.length);
+                      fetchPendaftar();
+                    } catch (error: any) {
+                      Swal.fire("Error", error.message, "error");
+                    } finally {
+                      setBulkUpdating(false);
+                    }
+                  }}
+                  disabled={bulkUpdating}
+                  className="flex items-center justify-center gap-2 px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-black transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-rose-600/20 active:scale-95 text-sm ml-auto"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  <span className="hidden lg:inline">Ke Sampah</span>
+                </button>
+              )}
+
               {pendaftar
                 .filter((p) => selectedIds.includes(p.id))
                 .some((p) => p.status_pendaftaran === "announced" || p.status_pendaftaran === "cadangan") && (
