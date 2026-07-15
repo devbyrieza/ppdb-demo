@@ -1259,8 +1259,8 @@ function AdminPendaftarContent() {
 
       {/* Header */}
       <div className="bg-white rounded-3xl shadow-sm p-4 md:p-8 border border-gold-100">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-          <div className="flex items-center gap-3 md:gap-5">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 flex-wrap">
+          <div className="flex flex-wrap items-center gap-3 md:gap-5">
             <div className="p-2.5 md:p-4 bg-linear-to-br from-primary-600 to-primary-900 rounded-2xl shadow-xl shadow-primary-900/20 flex-shrink-0">
               <Users className="w-6 h-6 md:w-8 md:h-8 text-gold-300" />
             </div>

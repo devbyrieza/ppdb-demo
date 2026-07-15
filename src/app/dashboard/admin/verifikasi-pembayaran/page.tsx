@@ -445,8 +445,8 @@ function VerifikasiPembayaranContent() {
       />
       {/* Header */}
       <div className="bg-white rounded-[2rem] shadow-sm p-5 md:p-8 border border-stone-100">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:justify-between">
-          <div className="flex items-center gap-4">
+        <div className="flex flex-col xl:flex-row xl:items-center gap-4 xl:justify-between flex-wrap">
+          <div className="flex flex-wrap sm:flex-nowrap items-center gap-4">
             <div className="w-12 h-12 md:w-16 md:h-16 bg-primary-50 rounded-2xl flex items-center justify-center border border-primary-100 shrink-0">
               <CreditCard className="w-6 h-6 md:w-8 md:h-8 text-primary-700" />
             </div>
@@ -473,7 +473,7 @@ function VerifikasiPembayaranContent() {
             </div>
           )}
 
-          <div className="flex bg-stone-100 p-1.5 rounded-[1.25rem] w-fit shadow-inner ring-1 ring-stone-200/50">
+          <div className="flex flex-wrap bg-stone-100 p-1.5 rounded-[1.25rem] w-full sm:w-fit shadow-inner ring-1 ring-stone-200/50 justify-center">
             <button
               onClick={() => updateFilters(undefined, "PENDAFTARAN")}
               className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${
@@ -521,7 +521,7 @@ function VerifikasiPembayaranContent() {
             </button>
           </div>
 
-          <div className="flex items-center gap-2 flex-shrink-0">
+          <div className="flex flex-wrap items-center gap-2 flex-shrink-0 mt-2 xl:mt-0">
             <button
               onClick={() => handleExport("excel")}
               disabled={exporting}

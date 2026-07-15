@@ -230,8 +230,8 @@ function VerifikasiDokumenContent() {
   return (
     <div className="space-y-6">
       <div className="bg-white rounded-2xl shadow-sm p-4 md:p-8 border border-primary-100 mb-8">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-          <div className="flex items-center gap-3 md:gap-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 flex-wrap">
+          <div className="flex flex-wrap items-center gap-3 md:gap-5">
             <div className="p-2.5 md:p-4 bg-linear-to-br from-primary-600 to-primary-900 rounded-2xl shadow-xl shadow-primary-900/20 flex-shrink-0">
               <FileCheck className="w-6 h-6 md:w-8 md:h-8 text-secondary-100" />
             </div>
@@ -244,7 +244,7 @@ function VerifikasiDokumenContent() {
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2 flex-shrink-0 relative z-20">
+          <div className="flex flex-wrap items-center gap-2 flex-shrink-0 relative z-20">
             {canVerify && (
               <button
                 type="button"
