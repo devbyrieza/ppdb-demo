@@ -372,10 +372,20 @@ export async function enqueueWhatsapp(
         `📥 [Enqueue] ${jenisNotif} for ${pendaftarId} queued as ${log.id}`
     );
 
-    // Trigger auto-flush in the background
-    autoFlushWhatsappQueue().catch((err) =>
-        console.error("Failed to run autoFlushWhatsappQueue asynchronously:", err)
-    );
+    // Trigger auto-flush in the background using Next.js after() to survive Vercel serverless freeze
+    try {
+        const { after } = require("next/server");
+        after(() => {
+            autoFlushWhatsappQueue().catch((err) =>
+                console.error("Failed to run autoFlushWhatsappQueue asynchronously:", err)
+            );
+        });
+    } catch (e) {
+        // Fallback if after is not available
+        autoFlushWhatsappQueue().catch((err) =>
+            console.error("Failed to run autoFlushWhatsappQueue asynchronously:", err)
+        );
+    }
 
     return { queued: true, logId: log.id };
 }
