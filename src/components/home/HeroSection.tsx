@@ -131,15 +131,15 @@ export default function HeroSection() {
               <h1
                 className="leading-[1.06] tracking-[-0.03em] mx-auto lg:mx-0 max-w-2xl lg:max-w-none font-black text-balance"
                 style={{
-                  fontSize: "clamp(2rem, 5vw + 0.75rem, 5rem)",
+                  fontSize: "clamp(2.5rem, 5vw + 1rem, 5rem)",
                 }}
               >
-                <span className="block text-ink-950 text-[0.8em]">
-                  {BRANDING.schoolName}
+                <span className="block text-ink-950">
+                  Kaderisasi Ummat
                 </span>
                 <span className="block mt-1 bg-gradient-to-r from-[var(--color-primary-700)] to-[var(--color-secondary-600)] text-transparent bg-clip-text">
-                  Kaderisasi Ummat <br className="hidden sm:block" />
-                  yang Cerdas & Berintegritas
+                  Unggul, Cerdas, <br className="hidden sm:block" />
+                  dan Berintegritas
                 </span>
               </h1>
             </motion.div>
