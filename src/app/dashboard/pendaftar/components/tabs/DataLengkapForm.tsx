@@ -687,6 +687,7 @@ export default function DataLengkapForm({
           body: JSON.stringify({ ...formData, is_draft: true }),
         });
         // Auto-save is silent, we don't show toast to user
+        localStorage.setItem("ppdb_datalengkap_draft", JSON.stringify(formData));
       } catch (err) {
         console.error("Background auto-save failed", err);
       }
