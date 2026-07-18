@@ -231,6 +231,14 @@
             </select>
         </div>
         
+        <div class="control-group">
+            <label>Teks Nama Pesantren</label>
+            <select id="tampilNama" onchange="updateSign()">
+                <option value="tampil">Tampilkan</option>
+                <option value="sembunyi">Sembunyikan</option>
+            </select>
+        </div>
+        
         <button class="print-btn" onclick="window.print()">Cetak (PDF) Sekarang</button>
         <p style="font-size:11px; margin-top:10px; color:#666;">Saat tekan cetak, pastikan Layout: Landscape dan "Background graphics" dicentang.</p>
     </div>
@@ -293,6 +301,14 @@
             const container = document.getElementById('signContainer');
             const arrow = document.getElementById('arrowIcon');
             const logo = document.getElementById('headerLogo');
+            
+            // Update Teks Nama
+            const tampilNama = document.getElementById('tampilNama').value;
+            if (tampilNama === 'sembunyi') {
+                logo.style.display = 'none';
+            } else {
+                logo.style.display = 'block';
+            }
             
             if (arah === 'kiri') {
                 container.classList.add('arrow-left-layout');
