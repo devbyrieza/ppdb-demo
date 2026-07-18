@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tanda Arah Toilet (Generator)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        @page {
+            size: A4 landscape;
+            margin: 0;
+        }
+        
+        * {
+            box-sizing: border-box;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #6e1c23; /* Maroon */
+            background-image: 
+                linear-gradient(45deg, rgba(181, 150, 85, 0.05) 25%, transparent 25%, transparent 75%, rgba(181, 150, 85, 0.05) 75%, rgba(181, 150, 85, 0.05)),
+                linear-gradient(45deg, rgba(181, 150, 85, 0.05) 25%, transparent 25%, transparent 75%, rgba(181, 150, 85, 0.05) 75%, rgba(181, 150, 85, 0.05));
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            color: #ffffff;
+            font-family: 'Outfit', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container {
+            width: 270mm;
+            height: 190mm;
+            border: 8px solid #b59655; /* Gold */
+            border-radius: 40px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #7a1f27 0%, #52141a 100%);
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .container.arrow-left-layout {
+            flex-direction: row-reverse;
+        }
+
+        .icon-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .toilet-icons {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+        }
+
+        .toilet-icons svg {
+            width: 180px;
+            height: 180px;
+            fill: #ffffff;
+            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.3));
+            display: none; /* hidden by default */
+        }
+        
+        .toilet-icons svg.active {
+            display: block;
+        }
+
+        .text-section {
+            text-align: center;
+        }
+
+        .text-section h1 {
+            font-size: 110px;
+            font-weight: 900;
+            margin: 0;
+            letter-spacing: 10px;
+            color: #ffffff;
+            text-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            text-transform: uppercase;
+            line-height: 1.1;
+        }
+        
+        .text-section h2 {
+            font-size: 80px;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 5px;
+            color: #b59655;
+            text-shadow: 0 5px 10px rgba(0,0,0,0.4);
+            text-transform: uppercase;
+        }
+
+        .arrow-section {
+            flex: 0.7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .arrow {
+            width: 250px;
+            height: 250px;
+            fill: #b59655; /* Gold */
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.4));
+            transition: transform 0.3s ease;
+        }
+
+        .header-logo {
+            position: absolute;
+            top: 40px;
+            font-size: 22px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 3px;
+        }
+        
+        .header-logo.pos-left { left: 50px; right: auto; }
+        .header-logo.pos-right { right: 50px; left: auto; }
+
+        /* Control Panel */
+        .controls {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            color: #333;
+            z-index: 1000;
+            font-family: sans-serif;
+            width: 300px;
+        }
+        
+        .controls h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 18px;
+            color: #6e1c23;
+            border-bottom: 2px solid #b59655;
+            padding-bottom: 5px;
+        }
+        
+        .control-group {
+            margin-bottom: 15px;
+        }
+        
+        .control-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .control-group select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        
+        .print-btn {
+            background: #b59655;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .print-btn:hover {
+            background: #967a42;
+        }
+
+        /* Hide controls when printing */
+        @media print {
+            .controls {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Control Panel -->
+    <div class="controls">
+        <h3>Pengaturan Tanda</h3>
+        
+        <div class="control-group">
+            <label>Jenis Toilet</label>
+            <select id="jenisToilet" onchange="updateSign()">
+                <option value="ikhwan">Ikhwan (Laki-laki)</option>
+                <option value="akhwat">Akhwat (Perempuan)</option>
+                <option value="umum">Umum (Ikhwan & Akhwat)</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label>Arah Panah</label>
+            <select id="arahPanah" onchange="updateSign()">
+                <option value="kanan">Ke Kanan</option>
+                <option value="kiri">Ke Kiri</option>
+                <option value="lurus">Lurus / Depan</option>
+                <option value="bawah">Ke Bawah</option>
+            </select>
+        </div>
+        
+        <button class="print-btn" onclick="window.print()">Cetak (PDF) Sekarang</button>
+        <p style="font-size:11px; margin-top:10px; color:#666;">Saat tekan cetak, pastikan Layout: Landscape dan "Background graphics" dicentang.</p>
+    </div>
+
+    <!-- Sign Container -->
+    <div class="container" id="signContainer">
+        <div class="header-logo" id="headerLogo">PESANTREN AL IMAM AL ISLAMI</div>
+
+        <div class="icon-section">
+            <div class="toilet-icons">
+                <!-- Man Icon -->
+                <svg id="iconMan" viewBox="0 0 24 24">
+                    <path d="M10,2H14A2,2 0 0,1 16,4V10A2,2 0 0,1 14,12H13V22H11V12H10A2,2 0 0,1 8,10V4A2,2 0 0,1 10,2M12,4A2,2 0 0,0 10,6A2,2 0 0,0 12,8A2,2 0 0,0 14,6A2,2 0 0,0 12,4Z"/>
+                </svg>
+                <!-- Woman Icon -->
+                <svg id="iconWoman" viewBox="0 0 24 24">
+                    <path d="M12,2A2,2 0 0,1 14,4A2,2 0 0,1 12,6A2,2 0 0,1 10,4A2,2 0 0,1 12,2M15.5,22H8.5L10,12H8L12,7L16,12H14L15.5,22Z"/>
+                </svg>
+            </div>
+            <div class="text-section">
+                <h1>TOILET</h1>
+                <h2 id="textJenis">IKHWAN</h2>
+            </div>
+        </div>
+
+        <div class="arrow-section">
+            <svg viewBox="0 0 24 24" class="arrow" id="arrowIcon">
+                <path d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z" />
+            </svg>
+        </div>
+    </div>
+
+    <script>
+        function updateSign() {
+            const jenis = document.getElementById('jenisToilet').value;
+            const arah = document.getElementById('arahPanah').value;
+            
+            const iconMan = document.getElementById('iconMan');
+            const iconWoman = document.getElementById('iconWoman');
+            const textJenis = document.getElementById('textJenis');
+            
+            // Update Jenis
+            if (jenis === 'ikhwan') {
+                iconMan.classList.add('active');
+                iconWoman.classList.remove('active');
+                textJenis.textContent = 'IKHWAN';
+                textJenis.style.display = 'block';
+            } else if (jenis === 'akhwat') {
+                iconMan.classList.remove('active');
+                iconWoman.classList.add('active');
+                textJenis.textContent = 'AKHWAT';
+                textJenis.style.display = 'block';
+            } else {
+                iconMan.classList.add('active');
+                iconWoman.classList.add('active');
+                textJenis.style.display = 'none'; // Sembunyikan tulisan jenis jika umum
+            }
+            
+            // Update Arah
+            const container = document.getElementById('signContainer');
+            const arrow = document.getElementById('arrowIcon');
+            const logo = document.getElementById('headerLogo');
+            
+            if (arah === 'kiri') {
+                container.classList.add('arrow-left-layout');
+                arrow.style.transform = 'rotate(180deg)';
+                logo.className = 'header-logo pos-right';
+            } else {
+                container.classList.remove('arrow-left-layout');
+                logo.className = 'header-logo pos-left';
+                
+                if (arah === 'kanan') {
+                    arrow.style.transform = 'rotate(0deg)';
+                } else if (arah === 'lurus') {
+                    arrow.style.transform = 'rotate(-90deg)';
+                } else if (arah === 'bawah') {
+                    arrow.style.transform = 'rotate(90deg)';
+                }
+            }
+        }
+        
+        // Initialize
+        updateSign();
+    </script>
+</body>
+</html>
