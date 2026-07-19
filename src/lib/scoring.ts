@@ -58,12 +58,20 @@ export function calculateOrangTuaScore(detail: any): number {
  */
 export async function recalculateNilaiUjian(pendaftarId: string, overrideStatus?: string) {
   // 1. Ambil semua rekaman nilai untuk pendaftar ini (bisa lebih dari satu jika diinput bertahap)
-  const allNilai = await prisma.nilaiUjian.findMany({
+  let allNilai = await prisma.nilaiUjian.findMany({
     where: { pendaftar_id: pendaftarId },
     orderBy: { updated_at: "desc" },
   });
 
-  if (allNilai.length === 0) return null;
+  if (allNilai.length === 0) {
+    if (!overrideStatus) return null;
+    
+    // Buat record kosong agar bisa menyimpan override status meskipun belum ada nilai sama sekali
+    const emptyRecord = await prisma.nilaiUjian.create({
+      data: { pendaftar_id: pendaftarId }
+    });
+    allNilai = [emptyRecord];
+  }
 
   const isEffectivelyEmpty = (v: any) => {
     if (v == null || v === "") return true;
