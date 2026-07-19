@@ -1,5 +1,6 @@
 import { prisma } from "./prisma";
 import {
+import { invalidateAdminPendaftarCache } from "./redis";
   calculateFinalScore,
   evaluateAkademikGrade,
   evaluateKepribadianGrade,
@@ -294,5 +295,6 @@ export async function recalculateNilaiUjian(pendaftarId: string, overrideStatus?
     });
   }
 
+  await invalidateAdminPendaftarCache();
   return mainRecord;
 }
