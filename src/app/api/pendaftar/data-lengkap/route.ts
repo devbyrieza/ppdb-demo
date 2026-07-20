@@ -235,6 +235,7 @@ export async function POST(request: NextRequest) {
         pekerjaan_ayah: ayah?.pekerjaan,
         penghasilan_ayah: ayah?.penghasilan,
         no_hp_ayah: ayah?.no_hp,
+        email_ayah: ayah?.email,
         alamat_ayah: ayah?.alamat,
         // Ibu
         nama_ibu: ibu?.nama_lengkap,
@@ -245,11 +246,12 @@ export async function POST(request: NextRequest) {
         pekerjaan_ibu: ibu?.pekerjaan,
         penghasilan_ibu: ibu?.penghasilan,
         no_hp_ibu: ibu?.no_hp,
+        email_ibu: ibu?.email,
         alamat_ibu: ibu?.alamat,
         // Wali
         nama_wali: wali?.nama_lengkap,
         no_hp_wali: wali?.no_hp,
-        hubungan_wali: wali?.hubungan_status,
+        hubungan_wali: wali?.hubungan,
         alamat_wali: wali?.alamat,
         tanggal_lahir_wali: parseSafeDate(wali?.tanggal_lahir),
       };
