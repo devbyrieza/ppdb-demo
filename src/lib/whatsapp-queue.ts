@@ -843,11 +843,11 @@ export function buildMessageDaftarUlangVerified(nama: string, jumlah: string, me
         ? `\n\n👕 *Pengisian Ukuran Seragam:*\nSilakan klik tautan berikut untuk mengisi ukuran seragam Ananda:\n${uniformLink}`
         : "";
 
-    return `✅ *Pembayaran Daftar Ulang Diterima*
+    return `✅ *Pembayaran Uang Pangkal Diterima*
 
 Assalamu'alaikum Abu/Ummu,
 
-Alhamdulillah, pembayaran Daftar Ulang Ananda *${nama}* telah kami terima dan verifikasi.
+Alhamdulillah, pembayaran Uang Pangkal Ananda *${nama}* telah kami terima dan verifikasi.
 
 💰 *Detail Pembayaran:*
 * Jumlah: ${jumlah}
@@ -856,7 +856,7 @@ Alhamdulillah, pembayaran Daftar Ulang Ananda *${nama}* telah kami terima dan ve
 * Tanggal: ${tanggal}${uniformSection}
 
 💡 *Informasi Selanjutnya:*
-Ananda kini tercatat sebagai calon santri yang telah melakukan Daftar Ulang. Mohon nantikan informasi selanjutnya terkait persiapan masuk pesantren melalui dashboard atau grup resmi.
+Ananda kini tercatat sebagai calon santri yang telah melakukan pembayaran Uang Pangkal. Mohon nantikan informasi selanjutnya terkait persiapan masuk pesantren melalui dashboard atau grup resmi.
 
 Jazakumullahu khairan
 
@@ -1350,3 +1350,22 @@ Dashboard: ${BRANDING.websiteUrl}/dashboard/pendaftar/undangan-seleksi
 *Panitia PPDB ${BRANDING.schoolName}*`;
 }
 
+
+export function buildMessageSPPVerified(nama: string, jumlah: string, metode: string, tanggal: string): string {
+    return `✅ *Pembayaran SPP Diterima*
+
+Assalamu'alaikum Abu/Ummu,
+
+Alhamdulillah, pembayaran SPP Ananda *${nama}* telah kami terima dan verifikasi.
+
+💰 *Detail Pembayaran:*
+* Jumlah: ${jumlah}
+* Metode: ${metode}
+* Status: Terkonfirmasi
+* Tanggal: ${tanggal}
+
+Jazakumullahu khairan
+
+---
+*Panitia PPDB ${BRANDING.schoolName}*`;
+}
