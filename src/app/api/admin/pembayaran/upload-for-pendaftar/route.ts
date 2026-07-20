@@ -291,6 +291,7 @@ export async function POST(request: NextRequest) {
           cicilan_ke: cicilanKe,
           jumlah: jumlah,
           total_tagihan: totalTagihan,
+          bukti_transfer_path: filePath,
           bukti_transfer_filename: safeFileName,
           status_pembayaran: "verified",
           catatan_verifikasi: catatan
