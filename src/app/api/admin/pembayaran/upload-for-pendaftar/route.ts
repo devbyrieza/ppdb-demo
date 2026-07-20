@@ -111,7 +111,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!["PENDAFTARAN", "DAFTAR_ULANG"].includes(jenisPembayaran)) {
+    if (!["PENDAFTARAN", "DAFTAR_ULANG", "SPP"].includes(jenisPembayaran)) {
       return NextResponse.json(
         { success: false, error: "Jenis pembayaran tidak valid" },
         { status: 400 },
