@@ -138,11 +138,11 @@ export default function HeroSection() {
                   Kaderisasi Ummat
                 </span>
                 <span className="block mt-1 text-[var(--color-primary-700)]">
-                  <span className="bg-gradient-to-r from-[var(--color-primary-700)] to-[var(--color-secondary-600)] text-transparent bg-clip-text">
+                  <span className="gradient-text-teal">
                     Unggul, Cerdas, 
                   </span>
                   <br className="hidden sm:block" />
-                  <span className="bg-gradient-to-r from-[var(--color-primary-700)] to-[var(--color-secondary-600)] text-transparent bg-clip-text">
+                  <span className="gradient-text-teal">
                     dan Berintegritas
                   </span>
                 </span>
