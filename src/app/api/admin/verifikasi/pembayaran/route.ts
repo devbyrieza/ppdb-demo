@@ -417,3 +417,37 @@ export async function PATCH(request: NextRequest) {
     );
   }
 }
+
+
+// DELETE: Hapus data pembayaran
+export async function DELETE(request: NextRequest) {
+  try {
+    const session = await getServerSession() as any;
+    if (!session)
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+    const allowedRoles = ["admin_super", "admin_keuangan", "admin"];
+    if (!allowedRoles.includes(session.role)) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+
+    const searchParams = request.nextUrl.searchParams;
+    const id = searchParams.get("id");
+
+    if (!id) {
+      return NextResponse.json({ error: "ID pembayaran diperlukan" }, { status: 400 });
+    }
+
+    await prisma.pembayaran.delete({
+      where: { id },
+    });
+
+    return NextResponse.json({ success: true, message: "Berhasil dihapus" });
+  } catch (error: any) {
+    console.error("Delete Error:", error);
+    return NextResponse.json(
+      { error: "Terjadi kesalahan internal" },
+      { status: 500 }
+    );
+  }
+}
