@@ -50,7 +50,7 @@ export async function GET(request: NextRequest) {
             },
           },
           {
-            status_pendaftaran: { in: ["accepted", "announced", "cadangan", "passed", "enrolled"] },
+            status_pendaftaran: { in: ["accepted", "announced", "cadangan", "passed", "enrolled", "enrolled_full"] },
           },
         ],
       } as any,
