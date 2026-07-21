@@ -325,8 +325,11 @@ export default function KeuanganPage() {
         );
       }
     } else {
-      // DAFTAR ULANG
       if (filteredDaftarUlang.length === 0) return;
+
+      const isUP = activeTab === "uang-pangkal";
+      const exportTitle = isUP ? "UANG PANGKAL" : "SPP";
+      const fileNameStr = isUP ? "Uang_Pangkal" : "SPP";
 
       if (type === "excel") {
         const header = [
@@ -353,13 +356,13 @@ export default function KeuanganPage() {
         ];
 
         const lunas = filteredDaftarUlang.filter(
-          (i) => i.tipe_cicilan === "LUNAS",
+          (i) => (isUP ? i.tipe_cicilan_up : i.tipe_cicilan_spp) === "LUNAS",
         );
         const cicil = filteredDaftarUlang.filter(
-          (i) => i.tipe_cicilan === "CICILAN",
+          (i) => (isUP ? i.tipe_cicilan_up : i.tipe_cicilan_spp) === "CICILAN",
         );
         const belumBayar = filteredDaftarUlang.filter(
-          (i) => i.tipe_cicilan === "BELUM_BAYAR",
+          (i) => (isUP ? i.tipe_cicilan_up : i.tipe_cicilan_spp) === "BELUM_BAYAR",
         );
 
         const formatRow = (i: RekapDaftarUlang) => [
@@ -378,42 +381,42 @@ export default function KeuanganPage() {
           i.ortu?.penghasilan_ibu || "-",
           i.ortu?.no_hp_ibu || "-",
           i.status_kelulusan,
-          i.total_bayar,
-          i.tipe_cicilan.replace(/_/g, " "),
+          isUP ? i.total_bayar_up : i.total_bayar_spp,
+          (isUP ? i.tipe_cicilan_up : i.tipe_cicilan_spp).replace(/_/g, " "),
           i.keringanan_reason || "-",
-          i.sisa_tagihan,
+          isUP ? i.sisa_tagihan_up : i.sisa_tagihan_spp,
           new Date(i.last_updated).toLocaleDateString("id-ID"),
         ];
 
         const sheets: any[] = [
           {
             name: "REKAP TOTAL",
-            title: "REKAPITULASI PEMBAYARAN DAFTAR ULANG (SEMUA)",
+            title: `REKAPITULASI PEMBAYARAN ${exportTitle} (SEMUA)`,
             header,
             data: filteredDaftarUlang.map(formatRow),
           },
           {
             name: "LUNAS",
-            title: "DAFTAR ULANG - LUNAS",
+            title: `${exportTitle} - LUNAS`,
             header,
             data: lunas.map(formatRow),
           },
           {
             name: "CICILAN",
-            title: "DAFTAR ULANG - CICILAN",
+            title: `${exportTitle} - CICILAN`,
             header,
             data: cicil.map(formatRow),
           },
           {
-            name: "BELUM DAFTAR ULANG",
-            title: "DAFTAR ULANG - BELUM MELAKUKAN DAFTAR ULANG (BELUM BAYAR)",
+            name: "BELUM BAYAR",
+            title: `${exportTitle} - BELUM BAYAR`,
             header,
             data: belumBayar.map(formatRow),
           },
         ];
 
         await exportToExcelProfessional({
-          fileName: `Rekap_Daftar_Ulang_${new Date().toISOString().slice(0, 10)}`,
+          fileName: `Rekap_${fileNameStr}_${new Date().toISOString().slice(0, 10)}`,
           sheets,
         });
       } else {
@@ -433,19 +436,19 @@ export default function KeuanganPage() {
           "Penghasilan Ibu": i.ortu?.penghasilan_ibu || "-",
           "No. HP Ibu": i.ortu?.no_hp_ibu || "-",
           "Status Seleksi": i.status_kelulusan,
-          "Total Bayar (Rp)": i.total_bayar,
-          "Status Bayar": i.tipe_cicilan === "LUNAS" ? "Lunas" : (i.tipe_cicilan === "BELUM_BAYAR" ? "Belum Bayar" : "Cicilan"),
+          "Total Bayar (Rp)": isUP ? i.total_bayar_up : i.total_bayar_spp,
+          "Status Bayar": (isUP ? i.tipe_cicilan_up : i.tipe_cicilan_spp) === "LUNAS" ? "Lunas" : ((isUP ? i.tipe_cicilan_up : i.tipe_cicilan_spp) === "BELUM_BAYAR" ? "Belum Bayar" : "Cicilan"),
           "Alasan Keringanan": i.keringanan_reason || "-",
-          "Sisa Tagihan (Rp)": i.sisa_tagihan,
+          "Sisa Tagihan (Rp)": isUP ? i.sisa_tagihan_up : i.sisa_tagihan_spp,
           "Tgl Update": new Date(i.last_updated).toLocaleDateString("id-ID"),
         }));
         const headers = Object.keys(data[0]);
         const rows = data.map((item) => Object.values(item));
         exportToPDF(
-          "Rekap Keuangan Daftar Ulang",
+          `Rekap Keuangan ${exportTitle}`,
           headers,
           rows,
-          `Rekap_Daftar_Ulang_${new Date().toISOString().slice(0, 10)}`,
+          `Rekap_${fileNameStr}_${new Date().toISOString().slice(0, 10)}`,
           "landscape",
         );
       }
