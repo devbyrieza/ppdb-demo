@@ -1037,28 +1037,28 @@ function AdminPendaftarContent() {
           if (!status) return "-";
           const s = status.toLowerCase().trim();
           const statusMap: Record<string, string> = {
-            draft: "Draft",
-            awaiting_payment: "Draft",
-            payment_verification: "Verifikasi Bayar",
-            paid: "Terdaftar",
-            verified: "Terdaftar",
-            data_completed: "Data Lengkap",
-            docs_uploaded: "Data Lengkap",
-            docs_verified: "Berkas Lengkap",
-            scheduled: "Proses Seleksi",
-            testing: "Proses Seleksi",
-            tested: "Proses Seleksi",
-            exam_completed: "Proses Seleksi",
-            selection: "Proses Seleksi",
-            announced: "Cadangan",
-            cadangan: "Cadangan",
-            accepted: "Diterima",
-            rejected: "Ditolak",
-            mengundurkan_diri: "Mengundurkan Diri",
-            enrolled: "Proses Daftar Ulang",
-            enrolled_full: "Lunas Daftar Ulang",
-            pindah_keluar: "Pindah Keluar",
-          };
+        draft: "Draft (Belum Selesai)",
+        awaiting_payment: "Belum Bayar",
+        payment_verification: "Verifikasi Bayar",
+        paid: "Terdaftar",
+        verified: "Terdaftar",
+        data_completed: "Data Lengkap",
+        docs_uploaded: "Data Lengkap",
+        docs_verified: "Berkas Lengkap",
+        scheduled: "Proses Seleksi",
+        testing: "Proses Seleksi",
+        tested: "Proses Seleksi",
+        exam_completed: "Proses Seleksi",
+        announced: "Cadangan",
+        cadangan: "Cadangan",
+        accepted: "Diterima",
+        rejected: "Ditolak",
+        mengundurkan_diri: "Mengundurkan Diri",
+        enrolled: "Proses Daftar Ulang",
+        enrolled_full: "Lunas Daftar Ulang",
+        pindah_keluar: "Pindah Keluar",
+        selection: "Proses Seleksi"
+      };
           if (statusMap[s]) return statusMap[s];
           if (s.includes("draft") || s === "draf") return "Draft";
           if (s.includes("bayar") || s.includes("waiting_payment") || s.includes("payment_verification")) return "Verifikasi Bayar";

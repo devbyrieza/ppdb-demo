@@ -25,8 +25,10 @@ import {
   DollarSign,
   Trophy,
   UploadCloud,
+  FileSpreadsheet,
 } from "lucide-react";
 import Link from "next/link";
+import { exportToExcelProfessional, exportToPDF } from "@/lib/utils/export";
 import Swal from "sweetalert2";
 import AdminBeasiswaBlock from "../components/AdminBeasiswaBlock";
 
@@ -201,6 +203,7 @@ export default function PendaftarDetailPage() {
   const [editTab, setEditTab] = useState("santri");
   const [editFormData, setEditFormData] = useState<any>(null);
   const [savingEdit, setSavingEdit] = useState(false);
+  const [exporting, setExporting] = useState(false);
 
   const [isNilaiModalOpen, setIsNilaiModalOpen] = useState(false);
   const [nilaiFormData, setNilaiFormData] = useState({
@@ -956,6 +959,106 @@ export default function PendaftarDetailPage() {
       setSavingWd(false);
     }
   };
+
+  
+  const handleExportSingle = async (type: "excel" | "pdf") => {
+    if (!pendaftar) return;
+    try {
+      setExporting(true);
+      const filename = `Data_Pendaftar_${pendaftar.nama_lengkap.replace(/\s+/g, "_")}`;
+      
+      const statusMap: Record<string, string> = {
+        draft: "Draft (Belum Selesai)",
+        awaiting_payment: "Belum Bayar",
+        payment_verification: "Verifikasi Bayar",
+        paid: "Terdaftar",
+        verified: "Terdaftar",
+        data_completed: "Data Lengkap",
+        docs_uploaded: "Data Lengkap",
+        docs_verified: "Berkas Lengkap",
+        scheduled: "Proses Seleksi",
+        testing: "Proses Seleksi",
+        tested: "Proses Seleksi",
+        exam_completed: "Proses Seleksi",
+        announced: "Cadangan",
+        cadangan: "Cadangan",
+        accepted: "Diterima",
+        rejected: "Ditolak",
+        mengundurkan_diri: "Mengundurkan Diri",
+        enrolled: "Proses Daftar Ulang",
+        enrolled_full: "Lunas Daftar Ulang",
+        pindah_keluar: "Pindah Keluar",
+        selection: "Proses Seleksi"
+      };
+      
+      const statusLabel = pendaftar.status_proses ? (statusMap[pendaftar.status_proses.toLowerCase().trim()] || pendaftar.status_proses) : "-";
+
+      const item = {
+        "Nomor Pendaftaran": pendaftar.nomor_pendaftaran || "-",
+        "NIK": pendaftar.nik ? `'${pendaftar.nik}` : "-",
+        "Nama Lengkap": pendaftar.nama_lengkap ? toTitleCase(pendaftar.nama_lengkap) : "-",
+        "Jenis Kelamin": ["L", "Laki-laki"].includes(pendaftar.jenis_kelamin || "") ? "Laki-laki" : "Perempuan",
+        "Tempat Lahir": pendaftar.tempat_lahir || "-",
+        "Tanggal Lahir": pendaftar.tanggal_lahir ? new Date(pendaftar.tanggal_lahir).toLocaleDateString("id-ID") : "-",
+        "Jalur": pendaftar.tipe_pendaftaran === "PINDAHAN" ? "Pindahan" : "Reguler",
+        "Jenjang": pendaftar.jenjang || "-",
+        "Asal Sekolah": pendaftar.asal_sekolah || "-",
+        "Alamat": pendaftar.alamat || "-",
+        "Kelurahan": pendaftar.kelurahan || "-",
+        "Kecamatan": pendaftar.kecamatan || "-",
+        "Kota/Kabupaten": pendaftar.kabupaten || "-",
+        "Provinsi": pendaftar.provinsi || "-",
+        "Kode Pos": pendaftar.kode_pos || "-",
+        "No HP": pendaftar.no_hp ? `'${pendaftar.no_hp}` : "-",
+        "Email": pendaftar.email || "-",
+        "Status": statusLabel,
+        "Tahun Ajaran": pendaftar.tahun_ajaran?.nama || "-",
+        "Tanggal Daftar": pendaftar.created_at ? new Date(pendaftar.created_at).toLocaleDateString("id-ID") : "-",
+      };
+
+      if (type === "excel") {
+        const header = Object.keys(item);
+        const sheets = [
+          {
+            name: "Data Santri",
+            title: `DATA PENDAFTAR - ${pendaftar.nama_lengkap.toUpperCase()}`,
+            subTitle: `Tanggal Ekspor: ${new Date().toLocaleDateString("id-ID")}`,
+            header,
+            data: [Object.values(item)],
+          },
+        ];
+        await exportToExcelProfessional({ fileName: filename, sheets });
+      } else {
+        const headers = [
+          "No. Pendaftaran",
+          "Nama Lengkap",
+          "JK",
+          "Jenjang",
+          "Asal Sekolah",
+          "No. HP",
+          "Email",
+          "Status"
+        ];
+        const rows = [[
+          item["Nomor Pendaftaran"],
+          item["Nama Lengkap"],
+          item["Jenis Kelamin"] === "Laki-laki" ? "L" : "P",
+          item["Jenjang"],
+          item["Asal Sekolah"],
+          String(item["No HP"]).replace(/^'/, ""),
+          item["Email"],
+          item["Status"]
+        ]];
+        exportToPDF("Data Pendaftar", headers, rows, filename, "landscape");
+      }
+    } catch (error) {
+      console.error("Export error:", error);
+      Swal.fire("Gagal", "Gagal export data", "error");
+    } finally {
+      setExporting(false);
+    }
+  };
+
 
   const formatRupiah = (amount: string) => {
     return new Intl.NumberFormat("id-ID", {
