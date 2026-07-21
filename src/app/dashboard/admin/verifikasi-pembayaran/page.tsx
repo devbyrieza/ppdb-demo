@@ -197,6 +197,8 @@ function VerifikasiPembayaranContent() {
         nomor_pendaftaran: string;
         jenjang: string;
         total_nominal: number;
+        total_verified: number;
+        beasiswa: number;
         metode_pembayaran: string[];
         status: string;
         tanggal_bayar: string[];
@@ -224,12 +226,23 @@ function VerifikasiPembayaranContent() {
 
         const paymentDetail = `Rp ${nominalVal.toLocaleString("id-ID")} (${tglText} - ${statusText}${item.catatan ? ': ' + item.catatan : ''})`;
 
+        let beasiswa = 0;
+        try {
+          const dl = (item.pendaftar as any)?.data_lengkap;
+          const parsedDl = typeof dl === "string" ? JSON.parse(dl) : (dl || {});
+          if (parsedDl?.keringanan_daftar_ulang?.nominal_potongan) {
+            beasiswa = Number(parsedDl.keringanan_daftar_ulang.nominal_potongan);
+          }
+        } catch(e) {}
+
         if (!groups[studentKey]) {
           groups[studentKey] = {
             nama_lengkap: item.pendaftar?.nama_lengkap ? toTitleCase(item.pendaftar.nama_lengkap) : "-",
             nomor_pendaftaran: item.pendaftar?.nomor_pendaftaran || "-",
             jenjang: detailedJenjang,
             total_nominal: nominalVal,
+            total_verified: statusText === "Terverifikasi" ? nominalVal : 0,
+            beasiswa: beasiswa,
             metode_pembayaran: [cleanMetode],
             status: statusText,
             tanggal_bayar: [tglText],
@@ -252,16 +265,39 @@ function VerifikasiPembayaranContent() {
         }
       });
 
-      const data = Object.values(groups).map((g) => ({
-        "Nama Lengkap": g.nama_lengkap,
-        "Nomor Pendaftaran": g.nomor_pendaftaran,
-        Jenjang: g.jenjang,
-        Nominal: g.total_nominal.toLocaleString("id-ID"),
-        "Metode Pembayaran": g.metode_pembayaran.join(", "),
-        Status: g.status,
-        "Tanggal Bayar": g.tanggal_bayar.join(", "),
-        Catatan: g.catatan_details.join("; "),
-      }));
+      const data = Object.values(groups).map((g) => {
+        let expectedTagihan = 0;
+        if (activeTab === "UANG_PANGKAL" || activeTab === "DAFTAR_ULANG") {
+          expectedTagihan = 7500000 - g.beasiswa;
+        } else if (activeTab === "SPP") {
+          expectedTagihan = 1000000;
+        } else if (activeTab === "PENDAFTARAN") {
+          expectedTagihan = 350000;
+        }
+
+        const sisa = expectedTagihan - g.total_verified;
+        const sisaText = sisa > 0 ? `Rp ${sisa.toLocaleString("id-ID")}` : (sisa === 0 ? "LUNAS" : `Lebih Rp ${Math.abs(sisa).toLocaleString("id-ID")}`);
+
+        const row: any = {
+          "Nama Lengkap": g.nama_lengkap,
+          "Nomor Pendaftaran": g.nomor_pendaftaran,
+          Jenjang: g.jenjang,
+          Nominal: g.total_nominal.toLocaleString("id-ID"),
+          "Metode Pembayaran": g.metode_pembayaran.join(", "),
+          Status: g.status,
+          "Tanggal Bayar": g.tanggal_bayar.join(", "),
+          Catatan: g.catatan_details.join("; "),
+        };
+
+        if (activeTab === "UANG_PANGKAL" || activeTab === "DAFTAR_ULANG") {
+          row["Beasiswa (Potongan)"] = g.beasiswa > 0 ? `Rp ${g.beasiswa.toLocaleString("id-ID")}` : "-";
+          row["Sisa Tagihan"] = sisaText;
+        } else if (activeTab === "SPP") {
+          row["Sisa Tagihan"] = sisaText;
+        }
+
+        return row;
+      });
 
       const filename = `data-pembayaran-${activeTab.toLowerCase()}-${
         new Date().toISOString().split("T")[0]
