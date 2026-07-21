@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import ExcelJS from "exceljs";
+import { getAdminWhereClause } from "@/lib/utils/admin";
 
 const toTitleCase = (str: string) => {
   if (!str) return "-";
@@ -88,6 +89,7 @@ export async function GET(request: NextRequest) {
 
     // Fetch data using Prisma
     const data = await prisma.pendaftar.findMany({
+      where: getAdminWhereClause(),
       select: {
         id: true,
         nomor_pendaftaran: true,
