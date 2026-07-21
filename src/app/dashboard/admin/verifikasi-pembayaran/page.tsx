@@ -237,6 +237,7 @@ function VerifikasiPembayaranContent() {
           };
         } else {
           groups[studentKey].total_nominal += nominalVal;
+          if (statusText === "Terverifikasi") groups[studentKey].total_verified += nominalVal;
           if (!groups[studentKey].metode_pembayaran.includes(cleanMetode)) {
             groups[studentKey].metode_pembayaran.push(cleanMetode);
           }
