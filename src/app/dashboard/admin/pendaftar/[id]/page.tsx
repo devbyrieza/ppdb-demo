@@ -1293,6 +1293,23 @@ export default function PendaftarDetailPage() {
                   <Edit className="w-3.5 h-3.5" />
                   Edit Biodata & Ortu
                 </button>
+                <button
+                  onClick={() => handleExportSingle('excel')}
+                  disabled={exporting}
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black transition-all flex items-center gap-1.5 shadow-sm active:scale-95 mr-2"
+                >
+                  {exporting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileSpreadsheet className="w-3.5 h-3.5" />}
+                  Excel
+                </button>
+                <button
+                  onClick={() => handleExportSingle('pdf')}
+                  disabled={exporting}
+                  className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-black transition-all flex items-center gap-1.5 shadow-sm active:scale-95 mr-2"
+                >
+                  {exporting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileText className="w-3.5 h-3.5" />}
+                  PDF
+                </button>
+
               </>
             )}
             {pendaftar.email && (
