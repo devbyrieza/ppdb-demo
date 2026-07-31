@@ -542,50 +542,79 @@ export default function AdminBeasiswaBlock({
   };
 
   const handleSaveBeasiswa = () => {
-    const pUP =
-      beasiswaCakupan === "UANG_PANGKAL" || beasiswaCakupan === "KEDUANYA"
-        ? MAX_UP
-        : 0;
-    const pSPP =
-      beasiswaCakupan === "SPP" || beasiswaCakupan === "KEDUANYA" ? MAX_SPP : 0;
+    let pUP = current?.potongan_uang_pangkal || 0;
+    let pSPP = current?.potongan_spp || 0;
+
+    if (beasiswaCakupan === "UANG_PANGKAL" || beasiswaCakupan === "KEDUANYA") {
+      pUP = MAX_UP;
+    }
+    if (beasiswaCakupan === "SPP" || beasiswaCakupan === "KEDUANYA") {
+      pSPP = MAX_SPP;
+    }
+
+    let jenisBantuan = "BEASISWA";
+    if ((pUP > 0 && pUP < MAX_UP) || (pSPP > 0 && pSPP < MAX_SPP)) {
+      jenisBantuan = "KEDUANYA";
+    }
+
+    let cakupan = "UANG_PANGKAL";
+    if (pUP > 0 && pSPP > 0) cakupan = "KEDUANYA";
+    else if (pSPP > 0) cakupan = "SPP";
+
+    const mergedCatatan = [current?.catatan, beasiswaCatatan].filter(Boolean).join(" | ");
 
     save({
-      jenis_bantuan: "BEASISWA",
-      cakupan: beasiswaCakupan,
+      jenis_bantuan: jenisBantuan,
+      cakupan,
       potongan_uang_pangkal: pUP,
       potongan_spp: pSPP,
-      catatan: beasiswaCatatan || null,
+      catatan: beasiswaCatatan ? mergedCatatan : (current?.catatan || null),
     });
   };
 
   const handleSaveKeringanan = () => {
-    const pUP =
-      keringananCakupan === "UANG_PANGKAL" || keringananCakupan === "KEDUANYA"
-        ? Number(potonganUP || 0)
-        : 0;
-    const pSPP =
-      keringananCakupan === "SPP" || keringananCakupan === "KEDUANYA"
-        ? Number(potonganSPP || 0)
-        : 0;
+    let pUP = current?.potongan_uang_pangkal || 0;
+    let pSPP = current?.potongan_spp || 0;
+
+    if (keringananCakupan === "UANG_PANGKAL" || keringananCakupan === "KEDUANYA") {
+      pUP = Number(potonganUP || 0);
+    }
+    if (keringananCakupan === "SPP" || keringananCakupan === "KEDUANYA") {
+      pSPP = Number(potonganSPP || 0);
+    }
 
     if (
       (keringananCakupan === "UANG_PANGKAL" || keringananCakupan === "KEDUANYA") &&
-      pUP <= 0
+      Number(potonganUP || 0) <= 0
     ) {
       Swal.fire("Peringatan", "Nominal potongan Uang Pangkal harus diisi", "warning");
       return;
     }
-    if ((keringananCakupan === "SPP" || keringananCakupan === "KEDUANYA") && pSPP <= 0) {
+    if ((keringananCakupan === "SPP" || keringananCakupan === "KEDUANYA") && Number(potonganSPP || 0) <= 0) {
       Swal.fire("Peringatan", "Nominal potongan SPP harus diisi", "warning");
       return;
     }
 
+    let jenisBantuan = "KERINGANAN";
+    if (pUP === MAX_UP || pSPP === MAX_SPP) {
+      jenisBantuan = "KEDUANYA";
+    }
+    if (pUP === MAX_UP && pSPP === MAX_SPP) {
+      jenisBantuan = "BEASISWA";
+    }
+
+    let cakupan = "UANG_PANGKAL";
+    if (pUP > 0 && pSPP > 0) cakupan = "KEDUANYA";
+    else if (pSPP > 0) cakupan = "SPP";
+
+    const mergedCatatan = [current?.catatan, keringananCatatan].filter(Boolean).join(" | ");
+
     save({
-      jenis_bantuan: "KERINGANAN",
-      cakupan: keringananCakupan,
+      jenis_bantuan: jenisBantuan,
+      cakupan,
       potongan_uang_pangkal: pUP,
       potongan_spp: pSPP,
-      catatan: keringananCatatan || null,
+      catatan: keringananCatatan ? mergedCatatan : (current?.catatan || null),
     });
   };
 
@@ -606,8 +635,17 @@ export default function AdminBeasiswaBlock({
   };
 
   // ---------- Derived display values for active bantuan ----------
-  const isBeasiswa = current?.jenis_bantuan === "BEASISWA";
-  const isKeringanan = current?.jenis_bantuan === "KERINGANAN";
+  
+  const isBeasiswaUP = pUPActive >= MAX_UP;
+  const isBeasiswaSPP = pSPPActive >= MAX_SPP;
+  const isKeringananUP = pUPActive > 0 && pUPActive < MAX_UP;
+  const isKeringananSPP = pSPPActive > 0 && pSPPActive < MAX_SPP;
+  
+  const hasBeasiswa = isBeasiswaUP || isBeasiswaSPP;
+  const hasKeringanan = isKeringananUP || isKeringananSPP;
+  const isBeasiswa = hasBeasiswa && !hasKeringanan;
+  const isKeringanan = hasKeringanan && !hasBeasiswa;
+  const isKeduanya = hasBeasiswa && hasKeringanan;
   const pUPActive = Number(current?.potongan_uang_pangkal ?? current?.nominal_potongan ?? 0);
   const pSPPActive = Number(current?.potongan_spp ?? 0);
   const cakupanActive = current?.cakupan;
@@ -657,29 +695,27 @@ export default function AdminBeasiswaBlock({
       {current ? (
         <div
           className={`rounded-xl p-4 border ${
-            isBeasiswa
-              ? "bg-emerald-50 border-emerald-200"
-              : "bg-amber-50 border-amber-200"
+            isKeduanya ? "bg-primary-50 border-primary-200" : hasBeasiswa ? "bg-emerald-50 border-emerald-200" : "bg-amber-50 border-amber-200"
           }`}
         >
           <div className="flex items-center gap-2 mb-3">
-            {isBeasiswa ? (
+            {isKeduanya ? (
+              <HandCoins className="w-5 h-5 text-primary-600" />
+            ) : hasBeasiswa ? (
               <GraduationCap className="w-5 h-5 text-emerald-600" />
             ) : (
               <Coins className="w-5 h-5 text-amber-600" />
             )}
             <span
-              className={`text-xs font-black uppercase tracking-widest ${
-                isBeasiswa ? "text-emerald-700" : "text-amber-700"
-              }`}
+              className={`text-xs font-black uppercase tracking-widest ${isKeduanya ? "text-primary-700" : hasBeasiswa ? "text-emerald-700" : "text-amber-700"}`}
             >
-              {isBeasiswa ? "✓ Beasiswa Aktif" : "✓ Keringanan Aktif"}
+              {isKeduanya ? "✓ BEASISWA & KERINGANAN AKTIF" : hasBeasiswa ? "✓ Beasiswa Aktif" : "✓ Keringanan Aktif"}
             </span>
           </div>
 
           <p
             className={`text-sm font-bold mb-3 ${
-              isBeasiswa ? "text-emerald-900" : "text-amber-900"
+              isKeduanya ? "text-primary-900" : hasBeasiswa ? "text-emerald-900" : "text-amber-900"
             }`}
           >
             Cakupan: {cakupanLabel(cakupanActive as CakupanBantuan)}
@@ -694,10 +730,10 @@ export default function AdminBeasiswaBlock({
                     Uang Pangkal
                   </span>
                 </div>
-                <p className={`font-black text-lg ${isBeasiswa ? "text-emerald-700" : "text-amber-700"}`}>
-                  {isBeasiswa ? "GRATIS" : `- ${formatCurrency(pUPActive)}`}
+                <p className={`font-black text-lg ${isBeasiswaUP ? "text-emerald-700" : "text-amber-700"}`}>
+                  {isBeasiswaUP ? "GRATIS" : `- ${formatCurrency(pUPActive)}`}
                 </p>
-                {isBeasiswa && (
+                {isBeasiswaUP && (
                   <p className="text-[10px] text-stone-400 font-medium">
                     Hemat {formatCurrency(MAX_UP)}
                   </p>
@@ -712,10 +748,10 @@ export default function AdminBeasiswaBlock({
                     SPP Bulan Pertama
                   </span>
                 </div>
-                <p className={`font-black text-lg ${isBeasiswa ? "text-emerald-700" : "text-amber-700"}`}>
-                  {isBeasiswa ? "GRATIS" : `- ${formatCurrency(pSPPActive)}`}
+                <p className={`font-black text-lg ${isBeasiswaSPP ? "text-emerald-700" : "text-amber-700"}`}>
+                  {isBeasiswaSPP ? "GRATIS" : `- ${formatCurrency(pSPPActive)}`}
                 </p>
-                {isBeasiswa && (
+                {isBeasiswaSPP && (
                   <p className="text-[10px] text-stone-400 font-medium">
                     Hemat {formatCurrency(MAX_SPP)}
                   </p>
@@ -732,15 +768,11 @@ export default function AdminBeasiswaBlock({
             <button
               onClick={openBeasiswa}
               className="flex-1 py-2 text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors"
-            >
-              Ubah ke Beasiswa
-            </button>
+            > Atur Beasiswa </button>
             <button
               onClick={openKeringanan}
               className="flex-1 py-2 text-xs font-bold bg-amber-500 hover:bg-amber-600 text-white rounded-lg transition-colors"
-            >
-              Ubah ke Keringanan
-            </button>
+            > Atur Keringanan </button>
           </div>
         </div>
       ) : (
