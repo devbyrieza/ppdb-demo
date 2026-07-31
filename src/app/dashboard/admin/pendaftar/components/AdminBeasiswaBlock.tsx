@@ -420,43 +420,40 @@ export default function AdminBeasiswaBlock({
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  // Current active keringanan/beasiswa data (from data_lengkap)
   const [current, setCurrent] = useState<KeringananData | null>(null);
-
-  // Current pengajuan berkas data (from pengajuan_beasiswa table)
   const [pengajuanBerkas, setPengajuanBerkas] = useState<PengajuanBerkas | null>(null);
   const [loadingBerkas, setLoadingBerkas] = useState(false);
 
-  // Section tab: null (idle) | "beasiswa" | "keringanan"
-  const [activeSection, setActiveSection] = useState<null | "beasiswa" | "keringanan">(null);
+  const [activeSection, setActiveSection] = useState<null | "form">(null);
 
-  // Form state — BEASISWA
-  const [beasiswaCakupan, setBeasiswaCakupan] = useState<CakupanBantuan>("UANG_PANGKAL");
-  const [beasiswaCatatan, setBeasiswaCatatan] = useState("");
-
-  // Form state — KERINGANAN
-  const [keringananCakupan, setKeringananCakupan] = useState<CakupanBantuan>("UANG_PANGKAL");
+  type BantuanType = "NONE" | "KERINGANAN" | "BEASISWA";
+  const [tipeUP, setTipeUP] = useState<BantuanType>("NONE");
+  const [tipeSPP, setTipeSPP] = useState<BantuanType>("NONE");
   const [potonganUP, setPotonganUP] = useState("");
   const [potonganSPP, setPotonganSPP] = useState("");
-  const [keringananCatatan, setKeringananCatatan] = useState("");
+  const [catatan, setCatatan] = useState("");
 
-  // Initialize from dataLengkap prop
   useEffect(() => {
     if (dataLengkap) {
-      const dl =
-        typeof dataLengkap === "string" ? JSON.parse(dataLengkap) : dataLengkap;
-      const k = parseKeringanan(dl?.keringanan_daftar_ulang);
-      setCurrent(k);
+      setCurrent(parseKeringanan(dataLengkap.keringanan_daftar_ulang));
     }
   }, [dataLengkap]);
 
-  // Fetch fresh from server if no prop given
-  useEffect(() => {
-    if (!dataLengkap) fetchCurrent();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pendaftarId]);
+  const fetchBerkas = async () => {
+    try {
+      setLoadingBerkas(true);
+      const res = await fetch(`/api/admin/pendaftar/pengajuan-keringanan?pendaftar_id=${pendaftarId}`);
+      const data = await res.json();
+      if (data.success) {
+        setPengajuanBerkas(data.data || null);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoadingBerkas(false);
+    }
+  };
 
-  // Always fetch berkas from pengajuan_beasiswa
   useEffect(() => {
     fetchBerkas();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -466,55 +463,44 @@ export default function AdminBeasiswaBlock({
     try {
       setLoading(true);
       const res = await fetch(`/api/admin/pendaftar/${pendaftarId}`);
-      if (res.ok) {
-        const json = await res.json();
-        const dl = json?.data?.data_lengkap;
-        const parsed = typeof dl === "string" ? JSON.parse(dl) : (dl as any);
-        setCurrent(parseKeringanan(parsed?.keringanan_daftar_ulang));
+      const data = await res.json();
+      if (data.success && data.data?.data_lengkap) {
+        setCurrent(parseKeringanan(data.data.data_lengkap.keringanan_daftar_ulang));
       }
-    } catch (e) {
-      console.error(e);
+    } catch (err) {
+      console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
-  const fetchBerkas = async () => {
-    try {
-      setLoadingBerkas(true);
-      const res = await fetch(`/api/admin/beasiswa?pendaftar_id=${pendaftarId}`);
-      if (res.ok) {
-        const json = await res.json();
-        // Find the one matching this pendaftar
-        const item = Array.isArray(json.data)
-          ? json.data.find((d: any) => d.pendaftar_id === pendaftarId)
-          : null;
-        setPengajuanBerkas(item || null);
-      }
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLoadingBerkas(false);
-    }
-  };
-
   const handleRefresh = async () => {
-    await fetchBerkas();
+    await Promise.all([fetchCurrent(), fetchBerkas()]);
     if (onUpdate) onUpdate();
   };
 
-  const openBeasiswa = () => {
-    setBeasiswaCakupan("UANG_PANGKAL");
-    setBeasiswaCatatan("");
-    setActiveSection("beasiswa");
-  };
+  const openForm = () => {
+    if (current) {
+      const pUP = Number(current.potongan_uang_pangkal ?? current.nominal_potongan ?? 0);
+      const pSPP = Number(current.potongan_spp ?? 0);
 
-  const openKeringanan = () => {
-    setKeringananCakupan("UANG_PANGKAL");
-    setPotonganUP("");
-    setPotonganSPP("");
-    setKeringananCatatan("");
-    setActiveSection("keringanan");
+      if (pUP >= MAX_UP) { setTipeUP("BEASISWA"); setPotonganUP(""); }
+      else if (pUP > 0) { setTipeUP("KERINGANAN"); setPotonganUP(String(pUP)); }
+      else { setTipeUP("NONE"); setPotonganUP(""); }
+
+      if (pSPP >= MAX_SPP) { setTipeSPP("BEASISWA"); setPotonganSPP(""); }
+      else if (pSPP > 0) { setTipeSPP("KERINGANAN"); setPotonganSPP(String(pSPP)); }
+      else { setTipeSPP("NONE"); setPotonganSPP(""); }
+
+      setCatatan(current.catatan || "");
+    } else {
+      setTipeUP("NONE");
+      setTipeSPP("NONE");
+      setPotonganUP("");
+      setPotonganSPP("");
+      setCatatan("");
+    }
+    setActiveSection("form");
   };
 
   const closeSection = () => setActiveSection(null);
@@ -531,7 +517,6 @@ export default function AdminBeasiswaBlock({
       if (!res.ok || !result.success) throw new Error(result.error || "Gagal menyimpan");
       Swal.fire("Berhasil!", "Bantuan biaya berhasil disimpan.", "success");
       setActiveSection(null);
-      // Refresh
       await fetchCurrent();
       if (onUpdate) onUpdate();
     } catch (err: any) {
@@ -541,15 +526,27 @@ export default function AdminBeasiswaBlock({
     }
   };
 
-  const handleSaveBeasiswa = () => {
-    let pUP = current?.potongan_uang_pangkal || 0;
-    let pSPP = current?.potongan_spp || 0;
+  const handleSave = () => {
+    let pUP = 0;
+    if (tipeUP === "BEASISWA") pUP = MAX_UP;
+    else if (tipeUP === "KERINGANAN") pUP = Number(potonganUP || 0);
 
-    if (beasiswaCakupan === "UANG_PANGKAL" || beasiswaCakupan === "KEDUANYA") {
-      pUP = MAX_UP;
+    let pSPP = 0;
+    if (tipeSPP === "BEASISWA") pSPP = MAX_SPP;
+    else if (tipeSPP === "KERINGANAN") pSPP = Number(potonganSPP || 0);
+
+    if (tipeUP === "KERINGANAN" && pUP <= 0) {
+      Swal.fire("Peringatan", "Nominal potongan Uang Pangkal harus diisi", "warning");
+      return;
     }
-    if (beasiswaCakupan === "SPP" || beasiswaCakupan === "KEDUANYA") {
-      pSPP = MAX_SPP;
+    if (tipeSPP === "KERINGANAN" && pSPP <= 0) {
+      Swal.fire("Peringatan", "Nominal potongan SPP harus diisi", "warning");
+      return;
+    }
+
+    if (pUP === 0 && pSPP === 0) {
+      Swal.fire("Peringatan", "Anda belum memberikan potongan apapun. Jika ingin menghapus bantuan, gunakan tombol Hapus Bantuan.", "warning");
+      return;
     }
 
     let jenisBantuan = "BEASISWA";
@@ -561,81 +558,47 @@ export default function AdminBeasiswaBlock({
     if (pUP > 0 && pSPP > 0) cakupan = "KEDUANYA";
     else if (pSPP > 0) cakupan = "SPP";
 
-    const mergedCatatan = [current?.catatan, beasiswaCatatan].filter(Boolean).join(" | ");
-
     save({
       jenis_bantuan: jenisBantuan,
       cakupan,
       potongan_uang_pangkal: pUP,
       potongan_spp: pSPP,
-      catatan: beasiswaCatatan ? mergedCatatan : (current?.catatan || null),
+      catatan: catatan || null,
     });
   };
 
-  const handleSaveKeringanan = () => {
-    let pUP = current?.potongan_uang_pangkal || 0;
-    let pSPP = current?.potongan_spp || 0;
-
-    if (keringananCakupan === "UANG_PANGKAL" || keringananCakupan === "KEDUANYA") {
-      pUP = Number(potonganUP || 0);
-    }
-    if (keringananCakupan === "SPP" || keringananCakupan === "KEDUANYA") {
-      pSPP = Number(potonganSPP || 0);
-    }
-
-    if (
-      (keringananCakupan === "UANG_PANGKAL" || keringananCakupan === "KEDUANYA") &&
-      Number(potonganUP || 0) <= 0
-    ) {
-      Swal.fire("Peringatan", "Nominal potongan Uang Pangkal harus diisi", "warning");
-      return;
-    }
-    if ((keringananCakupan === "SPP" || keringananCakupan === "KEDUANYA") && Number(potonganSPP || 0) <= 0) {
-      Swal.fire("Peringatan", "Nominal potongan SPP harus diisi", "warning");
-      return;
-    }
-
-    let jenisBantuan = "KERINGANAN";
-    if (pUP === MAX_UP || pSPP === MAX_SPP) {
-      jenisBantuan = "KEDUANYA";
-    }
-    if (pUP === MAX_UP && pSPP === MAX_SPP) {
-      jenisBantuan = "BEASISWA";
-    }
-
-    let cakupan = "UANG_PANGKAL";
-    if (pUP > 0 && pSPP > 0) cakupan = "KEDUANYA";
-    else if (pSPP > 0) cakupan = "SPP";
-
-    const mergedCatatan = [current?.catatan, keringananCatatan].filter(Boolean).join(" | ");
-
-    save({
-      jenis_bantuan: jenisBantuan,
-      cakupan,
-      potongan_uang_pangkal: pUP,
-      potongan_spp: pSPP,
-      catatan: keringananCatatan ? mergedCatatan : (current?.catatan || null),
-    });
-  };
-
-  const handleHapus = () => {
-    Swal.fire({
-      title: "Hapus Bantuan Biaya?",
-      text: "Bantuan beasiswa/keringanan yang aktif akan dihapus.",
+  const handleDelete = async () => {
+    const res = await Swal.fire({
+      title: "Hapus Bantuan?",
+      text: "Data keringanan/beasiswa santri ini akan dihapus permanen.",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#ef4444",
+      confirmButtonText: "Ya, Hapus!",
       cancelButtonText: "Batal",
-      confirmButtonText: "Ya, Hapus",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        save({ jenis_bantuan: null });
-      }
+      confirmButtonColor: "#dc2626",
     });
+    if (!res.isConfirmed) return;
+
+    setSubmitting(true);
+    try {
+      const resp = await fetch(`/api/admin/pendaftar/keringanan?pendaftar_id=${pendaftarId}`, {
+        method: "DELETE",
+      });
+      const data = await resp.json();
+      if (!resp.ok || !data.success) throw new Error(data.error || "Gagal menghapus data");
+
+      Swal.fire("Terhapus!", "Data bantuan biaya berhasil dihapus.", "success");
+      setCurrent(null);
+      setActiveSection(null);
+      await fetchCurrent();
+      if (onUpdate) onUpdate();
+    } catch (err: any) {
+      Swal.fire("Gagal", err.message || "Terjadi kesalahan", "error");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
-  // ---------- Derived display values for active bantuan ----------
-  
   const pUPActive = Number(current?.potongan_uang_pangkal ?? current?.nominal_potongan ?? 0);
   const pSPPActive = Number(current?.potongan_spp ?? 0);
   const isBeasiswaUP = pUPActive >= MAX_UP;
@@ -645,8 +608,6 @@ export default function AdminBeasiswaBlock({
   
   const hasBeasiswa = isBeasiswaUP || isBeasiswaSPP;
   const hasKeringanan = isKeringananUP || isKeringananSPP;
-  const isBeasiswa = hasBeasiswa && !hasKeringanan;
-  const isKeringanan = hasKeringanan && !hasBeasiswa;
   const isKeduanya = hasBeasiswa && hasKeringanan;
   const cakupanActive = current?.cakupan;
 
@@ -659,39 +620,14 @@ export default function AdminBeasiswaBlock({
 
   if (loading) {
     return (
-      <div className="p-4 text-center">
-        <Loader2 className="w-5 h-5 animate-spin mx-auto text-primary-500" />
+      <div className="flex items-center justify-center p-8 text-stone-400">
+        <Loader2 className="w-6 h-6 animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-2xl p-5 border border-stone-200 shadow-sm mt-6 space-y-5">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center">
-            <HandCoins className="w-5 h-5" />
-          </div>
-          <div>
-            <h3 className="font-bold text-ink-900">Bantuan Biaya</h3>
-            <p className="text-xs text-stone-500">
-              Beasiswa (gratis) atau Keringanan (potongan) per komponen
-            </p>
-          </div>
-        </div>
-        {current && (
-          <button
-            onClick={handleHapus}
-            className="flex items-center gap-1 text-xs font-bold text-rose-600 border border-rose-200 bg-rose-50 hover:bg-rose-100 px-3 py-1.5 rounded-lg transition-colors"
-          >
-            <Trash2 className="w-3.5 h-3.5" />
-            Hapus
-          </button>
-        )}
-      </div>
-
-      {/* Active Bantuan Card */}
+    <div className="space-y-4">
       {current ? (
         <div
           className={`rounded-xl p-4 border ${
@@ -766,281 +702,171 @@ export default function AdminBeasiswaBlock({
 
           <div className="flex gap-2 mt-4">
             <button
-              onClick={openBeasiswa}
-              className="flex-1 py-2 text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors"
-            > Atur Beasiswa </button>
-            <button
-              onClick={openKeringanan}
-              className="flex-1 py-2 text-xs font-bold bg-amber-500 hover:bg-amber-600 text-white rounded-lg transition-colors"
-            > Atur Keringanan </button>
+              onClick={openForm}
+              className="flex-1 py-2 text-xs font-bold bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors"
+            > Atur Bantuan Biaya </button>
           </div>
+          
+          <button
+            onClick={handleDelete}
+            className="w-full mt-2 bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 py-2.5 rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-2"
+          >
+            <Trash2 className="w-4 h-4" />
+            Hapus Bantuan
+          </button>
         </div>
       ) : (
-        /* No active bantuan */
         <div className="rounded-xl border-2 border-dashed border-stone-200 p-5 text-center text-stone-400">
           <HandCoins className="w-8 h-8 mx-auto mb-2 opacity-30" />
           <p className="text-sm font-medium">Belum ada bantuan biaya yang diberikan</p>
         </div>
       )}
 
-      {/* --- ACTION BUTTONS (when no form is open and no active assistance) --- */}
       {!current && !activeSection && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {/* BEASISWA */}
-          <button
-            onClick={openBeasiswa}
-            className="flex flex-col items-center gap-2 p-4 bg-emerald-50 hover:bg-emerald-100 border-2 border-emerald-200 rounded-xl transition-all group"
-          >
-            <GraduationCap className="w-7 h-7 text-emerald-600 group-hover:scale-110 transition-transform" />
-            <span className="font-black text-sm text-emerald-900">Berikan Beasiswa</span>
-            <span className="text-[10px] text-emerald-600 font-medium">Gratis sebagian/semua biaya</span>
-          </button>
-          {/* KERINGANAN */}
-          <button
-            onClick={openKeringanan}
-            className="flex flex-col items-center gap-2 p-4 bg-amber-50 hover:bg-amber-100 border-2 border-amber-200 rounded-xl transition-all group"
-          >
-            <Coins className="w-7 h-7 text-amber-500 group-hover:scale-110 transition-transform" />
-            <span className="font-black text-sm text-amber-900">Berikan Keringanan</span>
-            <span className="text-[10px] text-amber-600 font-medium">Potongan sebagian biaya</span>
-          </button>
-        </div>
+        <button
+          onClick={openForm}
+          className="w-full flex flex-col items-center justify-center gap-2 p-4 bg-primary-50 hover:bg-primary-100 border-2 border-primary-200 rounded-xl transition-all group"
+        >
+          <HandCoins className="w-7 h-7 text-primary-500 group-hover:scale-110 transition-transform" />
+          <span className="font-black text-sm text-primary-900">Atur Bantuan Biaya</span>
+          <span className="text-[10px] text-primary-600 font-medium">Berikan Beasiswa atau Keringanan SPP / Uang Pangkal</span>
+        </button>
       )}
 
-      {/* ========== FORM: BEASISWA ========== */}
-      {activeSection === "beasiswa" && (
-        <div className="rounded-xl border-2 border-emerald-200 bg-emerald-50/50 p-5 space-y-5">
-          <div className="flex items-center justify-between">
+      {activeSection === "form" && (
+        <div className="rounded-xl border-2 border-primary-200 bg-primary-50/30 p-4 sm:p-5 space-y-5">
+          <div className="flex items-center justify-between border-b border-primary-100 pb-3">
             <div className="flex items-center gap-2">
-              <GraduationCap className="w-5 h-5 text-emerald-600" />
-              <h4 className="font-black text-emerald-900">Form Beasiswa</h4>
-              <span className="text-[10px] bg-emerald-200 text-emerald-800 font-black px-2 py-0.5 rounded-full">GRATIS</span>
+              <HandCoins className="w-5 h-5 text-primary-600" />
+              <h4 className="font-black text-primary-900">Form Bantuan Biaya</h4>
             </div>
-            <button onClick={closeSection} className="p-1 hover:bg-emerald-100 rounded-lg transition-colors">
-              <X className="w-4 h-4 text-emerald-600" />
+            <button onClick={closeSection} className="p-1.5 hover:bg-primary-100 rounded-lg transition-colors">
+              <X className="w-4 h-4 text-primary-600" />
             </button>
           </div>
 
-          {/* Cakupan */}
-          <div>
-            <label className="block text-xs font-black text-stone-600 mb-2 uppercase tracking-widest">
-              Cakupan Beasiswa
-            </label>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-              {(["UANG_PANGKAL", "SPP", "KEDUANYA"] as CakupanBantuan[]).map((c) => (
-                <button
-                  key={c}
-                  type="button"
-                  onClick={() => setBeasiswaCakupan(c)}
-                  className={`flex flex-col items-center gap-1.5 p-3 rounded-xl border-2 transition-all text-center ${
-                    beasiswaCakupan === c
-                      ? "border-emerald-500 bg-emerald-100 shadow-sm"
-                      : "border-stone-200 bg-white hover:border-emerald-300"
-                  }`}
-                >
-                  {c === "UANG_PANGKAL" && <Building2 className={`w-5 h-5 ${beasiswaCakupan === c ? "text-emerald-600" : "text-stone-400"}`} />}
-                  {c === "SPP" && <BookOpen className={`w-5 h-5 ${beasiswaCakupan === c ? "text-emerald-600" : "text-stone-400"}`} />}
-                  {c === "KEDUANYA" && <CheckCircle className={`w-5 h-5 ${beasiswaCakupan === c ? "text-emerald-600" : "text-stone-400"}`} />}
-                  <span className={`text-[10px] font-black leading-tight ${beasiswaCakupan === c ? "text-emerald-900" : "text-stone-500"}`}>
-                    {c === "UANG_PANGKAL" ? "Uang Pangkal" : c === "SPP" ? "SPP Bulan Pertama" : "Uang Pangkal + SPP"}
-                  </span>
-                </button>
-              ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-white p-4 rounded-xl border border-stone-200 shadow-sm space-y-4">
+              <div className="flex items-center gap-2 border-b border-stone-100 pb-2">
+                <Building2 className="w-4 h-4 text-primary-600" />
+                <h5 className="font-black text-xs text-stone-700 uppercase tracking-widest">Uang Pangkal</h5>
+              </div>
+              
+              <div className="space-y-2">
+                <label className="flex items-center gap-2 p-2 rounded-lg border border-stone-100 cursor-pointer hover:bg-stone-50 transition-colors">
+                  <input type="radio" name="up_type" checked={tipeUP === "NONE"} onChange={() => { setTipeUP("NONE"); setPotonganUP(""); }} className="text-primary-600 focus:ring-primary-500" />
+                  <span className="text-xs font-bold text-stone-700">Tidak ada potongan</span>
+                </label>
+                <label className="flex items-center gap-2 p-2 rounded-lg border border-stone-100 cursor-pointer hover:bg-stone-50 transition-colors">
+                  <input type="radio" name="up_type" checked={tipeUP === "KERINGANAN"} onChange={() => setTipeUP("KERINGANAN")} className="text-primary-600 focus:ring-primary-500" />
+                  <span className="text-xs font-bold text-stone-700">Keringanan (Sebagian)</span>
+                </label>
+                <label className="flex items-center gap-2 p-2 rounded-lg border border-stone-100 cursor-pointer hover:bg-emerald-50 transition-colors">
+                  <input type="radio" name="up_type" checked={tipeUP === "BEASISWA"} onChange={() => { setTipeUP("BEASISWA"); setPotonganUP(""); }} className="text-emerald-600 focus:ring-emerald-500" />
+                  <span className="text-xs font-bold text-emerald-700">Beasiswa Penuh (Gratis)</span>
+                </label>
+              </div>
+
+              {tipeUP === "KERINGANAN" && (
+                <div className="pt-2">
+                  <p className="text-[10px] text-stone-400 mb-1.5 font-medium">
+                    Tagihan asli: {formatCurrency(MAX_UP)} — input nominal potongan
+                  </p>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 font-bold text-sm">Rp</span>
+                    <input
+                      type="number" min={0} max={MAX_UP}
+                      value={potonganUP}
+                      onChange={(e) => setPotonganUP(e.target.value)}
+                      placeholder="Contoh: 3500000"
+                      className="w-full pl-10 pr-3 py-2 border border-stone-200 rounded-lg text-sm font-bold text-stone-800 focus:border-primary-400 focus:ring-2 focus:ring-primary-400/20 outline-none"
+                    />
+                  </div>
+                  {potonganUP && Number(potonganUP) > 0 && (
+                    <p className="text-[10px] text-primary-600 mt-1.5 font-bold">
+                      → Tagihan menjadi: {formatCurrency(MAX_UP - Number(potonganUP))}
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
+
+            <div className="bg-white p-4 rounded-xl border border-stone-200 shadow-sm space-y-4">
+              <div className="flex items-center gap-2 border-b border-stone-100 pb-2">
+                <BookOpen className="w-4 h-4 text-violet-600" />
+                <h5 className="font-black text-xs text-stone-700 uppercase tracking-widest">SPP Bulan Pertama</h5>
+              </div>
+              
+              <div className="space-y-2">
+                <label className="flex items-center gap-2 p-2 rounded-lg border border-stone-100 cursor-pointer hover:bg-stone-50 transition-colors">
+                  <input type="radio" name="spp_type" checked={tipeSPP === "NONE"} onChange={() => { setTipeSPP("NONE"); setPotonganSPP(""); }} className="text-primary-600 focus:ring-primary-500" />
+                  <span className="text-xs font-bold text-stone-700">Tidak ada potongan</span>
+                </label>
+                <label className="flex items-center gap-2 p-2 rounded-lg border border-stone-100 cursor-pointer hover:bg-stone-50 transition-colors">
+                  <input type="radio" name="spp_type" checked={tipeSPP === "KERINGANAN"} onChange={() => setTipeSPP("KERINGANAN")} className="text-primary-600 focus:ring-primary-500" />
+                  <span className="text-xs font-bold text-stone-700">Keringanan (Sebagian)</span>
+                </label>
+                <label className="flex items-center gap-2 p-2 rounded-lg border border-stone-100 cursor-pointer hover:bg-emerald-50 transition-colors">
+                  <input type="radio" name="spp_type" checked={tipeSPP === "BEASISWA"} onChange={() => { setTipeSPP("BEASISWA"); setPotonganSPP(""); }} className="text-emerald-600 focus:ring-emerald-500" />
+                  <span className="text-xs font-bold text-emerald-700">Beasiswa Penuh (Gratis)</span>
+                </label>
+              </div>
+
+              {tipeSPP === "KERINGANAN" && (
+                <div className="pt-2">
+                  <p className="text-[10px] text-stone-400 mb-1.5 font-medium">
+                    Tagihan asli: {formatCurrency(MAX_SPP)} — input nominal potongan
+                  </p>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 font-bold text-sm">Rp</span>
+                    <input
+                      type="number" min={0} max={MAX_SPP}
+                      value={potonganSPP}
+                      onChange={(e) => setPotonganSPP(e.target.value)}
+                      placeholder="Contoh: 500000"
+                      className="w-full pl-10 pr-3 py-2 border border-stone-200 rounded-lg text-sm font-bold text-stone-800 focus:border-primary-400 focus:ring-2 focus:ring-primary-400/20 outline-none"
+                    />
+                  </div>
+                  {potonganSPP && Number(potonganSPP) > 0 && (
+                    <p className="text-[10px] text-primary-600 mt-1.5 font-bold">
+                      → Tagihan menjadi: {formatCurrency(MAX_SPP - Number(potonganSPP))}
+                    </p>
+                  )}
+                </div>
+              )}
             </div>
           </div>
 
-          {/* Preview potongan */}
-          <div className="bg-emerald-100 rounded-xl p-4 flex flex-wrap gap-4">
-            {(beasiswaCakupan === "UANG_PANGKAL" || beasiswaCakupan === "KEDUANYA") && (
-              <div className="flex items-center gap-2">
-                <Building2 className="w-4 h-4 text-emerald-600" />
-                <div>
-                  <p className="text-[10px] text-emerald-700 font-bold">Uang Pangkal</p>
-                  <p className="font-black text-emerald-800 text-sm">GRATIS (hemat {formatCurrency(MAX_UP)})</p>
-                </div>
-              </div>
-            )}
-            {(beasiswaCakupan === "SPP" || beasiswaCakupan === "KEDUANYA") && (
-              <div className="flex items-center gap-2">
-                <BookOpen className="w-4 h-4 text-emerald-600" />
-                <div>
-                  <p className="text-[10px] text-emerald-700 font-bold">SPP Bulan Pertama</p>
-                  <p className="font-black text-emerald-800 text-sm">GRATIS (hemat {formatCurrency(MAX_SPP)})</p>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Catatan */}
           <div>
-            <label className="block text-xs font-bold text-stone-600 mb-1">
-              Catatan / Dasar Pemberian (Opsional)
+            <label className="block text-xs font-bold text-stone-600 mb-1.5">
+              Catatan / Dasar Pemberian Bantuan (Opsional)
             </label>
             <input
               type="text"
-              value={beasiswaCatatan}
-              onChange={(e) => setBeasiswaCatatan(e.target.value)}
-              placeholder="Contoh: Beasiswa prestasi hafal 10 juz, atau anak yatim..."
-              className="w-full p-2.5 bg-white border border-stone-200 rounded-lg text-sm focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20 outline-none"
+              value={catatan}
+              onChange={(e) => setCatatan(e.target.value)}
+              placeholder="Contoh: Beasiswa yatim dan keringanan SKTM..."
+              className="w-full p-3 bg-white border border-stone-200 rounded-lg text-sm focus:border-primary-400 focus:ring-2 focus:ring-primary-400/20 outline-none"
             />
           </div>
 
-          <div className="flex gap-2 justify-end">
-            <button type="button" onClick={closeSection} className="px-4 py-2 text-sm font-bold text-stone-500 hover:bg-stone-100 rounded-lg">
+          <div className="flex gap-3 justify-end pt-2 border-t border-primary-100">
+            <button type="button" onClick={closeSection} className="px-5 py-2.5 text-sm font-bold text-stone-500 hover:bg-stone-100 rounded-lg transition-colors">
               Batal
             </button>
             <button
               type="button"
-              onClick={handleSaveBeasiswa}
-              disabled={submitting}
-              className="flex items-center gap-2 px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-lg transition-colors disabled:opacity-60"
+              onClick={handleSave}
+              disabled={submitting || (tipeUP === "NONE" && tipeSPP === "NONE")}
+              className="flex items-center gap-2 px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-bold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-              Simpan Beasiswa
+              Simpan Bantuan
             </button>
           </div>
         </div>
       )}
 
-      {/* ========== FORM: KERINGANAN ========== */}
-      {activeSection === "keringanan" && (
-        <div className="rounded-xl border-2 border-amber-200 bg-amber-50/50 p-5 space-y-5">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Coins className="w-5 h-5 text-amber-600" />
-              <h4 className="font-black text-amber-900">Form Keringanan</h4>
-              <span className="text-[10px] bg-amber-200 text-amber-800 font-black px-2 py-0.5 rounded-full">POTONGAN</span>
-            </div>
-            <button onClick={closeSection} className="p-1 hover:bg-amber-100 rounded-lg transition-colors">
-              <X className="w-4 h-4 text-amber-600" />
-            </button>
-          </div>
-
-          {/* Cakupan */}
-          <div>
-            <label className="block text-xs font-black text-stone-600 mb-2 uppercase tracking-widest">
-              Cakupan Keringanan
-            </label>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-              {(["UANG_PANGKAL", "SPP", "KEDUANYA"] as CakupanBantuan[]).map((c) => (
-                <button
-                  key={c}
-                  type="button"
-                  onClick={() => setKeringananCakupan(c)}
-                  className={`flex flex-col items-center gap-1.5 p-3 rounded-xl border-2 transition-all text-center ${
-                    keringananCakupan === c
-                      ? "border-amber-500 bg-amber-100 shadow-sm"
-                      : "border-stone-200 bg-white hover:border-amber-300"
-                  }`}
-                >
-                  {c === "UANG_PANGKAL" && <Building2 className={`w-5 h-5 ${keringananCakupan === c ? "text-amber-600" : "text-stone-400"}`} />}
-                  {c === "SPP" && <BookOpen className={`w-5 h-5 ${keringananCakupan === c ? "text-amber-600" : "text-stone-400"}`} />}
-                  {c === "KEDUANYA" && <AlertCircle className={`w-5 h-5 ${keringananCakupan === c ? "text-amber-600" : "text-stone-400"}`} />}
-                  <span className={`text-[10px] font-black leading-tight ${keringananCakupan === c ? "text-amber-900" : "text-stone-500"}`}>
-                    {c === "UANG_PANGKAL" ? "Uang Pangkal" : c === "SPP" ? "SPP Bulan Pertama" : "Uang Pangkal + SPP"}
-                  </span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Input nominal potongan */}
-          <div className="grid gap-4">
-            {(keringananCakupan === "UANG_PANGKAL" || keringananCakupan === "KEDUANYA") && (
-              <div className="bg-white p-4 rounded-xl border border-amber-200">
-                <div className="flex items-center gap-2 mb-2">
-                  <Building2 className="w-4 h-4 text-primary-500" />
-                  <label className="text-xs font-black text-stone-700 uppercase tracking-widest">
-                    Potongan Uang Pangkal
-                  </label>
-                </div>
-                <p className="text-[10px] text-stone-400 mb-2 font-medium">
-                  Tagihan asli: {formatCurrency(MAX_UP)} — input nominal potongan yang diberikan
-                </p>
-                <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 font-bold text-sm">Rp</span>
-                  <input
-                    type="number"
-                    min={0}
-                    max={MAX_UP}
-                    value={potonganUP}
-                    onChange={(e) => setPotonganUP(e.target.value)}
-                    placeholder="Contoh: 3500000"
-                    className="w-full pl-10 pr-4 py-2.5 border border-stone-200 rounded-lg text-sm font-bold text-stone-800 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 outline-none"
-                  />
-                </div>
-                {potonganUP && Number(potonganUP) > 0 && (
-                  <p className="text-[10px] text-amber-700 mt-1 font-medium">
-                    → Tagihan menjadi: {formatCurrency(MAX_UP - Number(potonganUP))}
-                  </p>
-                )}
-              </div>
-            )}
-
-            {(keringananCakupan === "SPP" || keringananCakupan === "KEDUANYA") && (
-              <div className="bg-white p-4 rounded-xl border border-amber-200">
-                <div className="flex items-center gap-2 mb-2">
-                  <BookOpen className="w-4 h-4 text-violet-500" />
-                  <label className="text-xs font-black text-stone-700 uppercase tracking-widest">
-                    Potongan SPP Bulan Pertama
-                  </label>
-                </div>
-                <p className="text-[10px] text-stone-400 mb-2 font-medium">
-                  Tagihan asli: {formatCurrency(MAX_SPP)} — input nominal potongan yang diberikan
-                </p>
-                <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 font-bold text-sm">Rp</span>
-                  <input
-                    type="number"
-                    min={0}
-                    max={MAX_SPP}
-                    value={potonganSPP}
-                    onChange={(e) => setPotonganSPP(e.target.value)}
-                    placeholder="Contoh: 500000"
-                    className="w-full pl-10 pr-4 py-2.5 border border-stone-200 rounded-lg text-sm font-bold text-stone-800 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 outline-none"
-                  />
-                </div>
-                {potonganSPP && Number(potonganSPP) > 0 && (
-                  <p className="text-[10px] text-amber-700 mt-1 font-medium">
-                    → Tagihan menjadi: {formatCurrency(MAX_SPP - Number(potonganSPP))}
-                  </p>
-                )}
-              </div>
-            )}
-          </div>
-
-          {/* Catatan */}
-          <div>
-            <label className="block text-xs font-bold text-stone-600 mb-1">
-              Catatan / Dasar Pemberian (Opsional)
-            </label>
-            <input
-              type="text"
-              value={keringananCatatan}
-              onChange={(e) => setKeringananCatatan(e.target.value)}
-              placeholder="Contoh: Keringanan SKTM, anak yatim, dsb..."
-              className="w-full p-2.5 bg-white border border-stone-200 rounded-lg text-sm focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 outline-none"
-            />
-          </div>
-
-          <div className="flex gap-2 justify-end">
-            <button type="button" onClick={closeSection} className="px-4 py-2 text-sm font-bold text-stone-500 hover:bg-stone-100 rounded-lg">
-              Batal
-            </button>
-            <button
-              type="button"
-              onClick={handleSaveKeringanan}
-              disabled={submitting}
-              className="flex items-center gap-2 px-5 py-2 bg-amber-500 hover:bg-amber-600 text-white text-sm font-bold rounded-lg transition-colors disabled:opacity-60"
-            >
-              {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-              Simpan Keringanan
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* ========== BERKAS SECTION (always visible for admin_super) ========== */}
       {loadingBerkas ? (
         <div className="flex items-center gap-2 text-xs text-stone-400 py-2">
           <Loader2 className="w-3.5 h-3.5 animate-spin" />
