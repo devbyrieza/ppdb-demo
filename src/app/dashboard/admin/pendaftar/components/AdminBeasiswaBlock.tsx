@@ -636,6 +636,8 @@ export default function AdminBeasiswaBlock({
 
   // ---------- Derived display values for active bantuan ----------
   
+  const pUPActive = Number(current?.potongan_uang_pangkal ?? current?.nominal_potongan ?? 0);
+  const pSPPActive = Number(current?.potongan_spp ?? 0);
   const isBeasiswaUP = pUPActive >= MAX_UP;
   const isBeasiswaSPP = pSPPActive >= MAX_SPP;
   const isKeringananUP = pUPActive > 0 && pUPActive < MAX_UP;
@@ -646,8 +648,6 @@ export default function AdminBeasiswaBlock({
   const isBeasiswa = hasBeasiswa && !hasKeringanan;
   const isKeringanan = hasKeringanan && !hasBeasiswa;
   const isKeduanya = hasBeasiswa && hasKeringanan;
-  const pUPActive = Number(current?.potongan_uang_pangkal ?? current?.nominal_potongan ?? 0);
-  const pSPPActive = Number(current?.potongan_spp ?? 0);
   const cakupanActive = current?.cakupan;
 
   const cakupanLabel = (c?: CakupanBantuan) => {
