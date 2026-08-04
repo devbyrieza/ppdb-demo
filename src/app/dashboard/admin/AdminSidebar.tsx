@@ -231,7 +231,7 @@ export default function AdminSidebar({
           </span>
         </div>
         <div className="w-10 h-10 rounded-2xl bg-linear-to-br from-primary-700 to-primary-900 flex items-center justify-center text-white text-sm font-black shadow-lg shadow-primary-200">
-          {adminName.charAt(0)}
+          {(adminName || "A").charAt(0)}
         </div>
       </div>
 
@@ -496,7 +496,7 @@ export default function AdminSidebar({
             className={`flex items-center gap-4 p-3 rounded-2xl transition-all group relative ${collapsed ? "justify-center" : "bg-white shadow-sm border border-ink-100"}`}
           >
             <div className="shrink-0 w-10 h-10 rounded-2xl bg-linear-to-br from-primary-700 to-primary-900 flex items-center justify-center text-white font-black text-sm shadow-xl shadow-primary-100 ring-4 ring-white border border-primary-500/20">
-              {adminName.charAt(0)}
+              {(adminName || "A").charAt(0)}
             </div>
             {!collapsed && (
               <div className="flex-1 min-w-0">
