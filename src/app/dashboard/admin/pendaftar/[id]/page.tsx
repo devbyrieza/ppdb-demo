@@ -1574,7 +1574,7 @@ export default function PendaftarDetailPage() {
                 </div>
 
                 
-                {pendaftar.jenjang?.toLowerCase().includes("ma") && (
+                {(pendaftar?.jenjang?.toLowerCase() || "").includes("ma") && (
                   <div className="bg-teal-50/50 p-4 rounded-xl border border-teal-100 flex flex-col justify-between">
                     <div>
                       <span className="block text-xs text-teal-600 font-bold uppercase tracking-wide mb-1">
@@ -1617,7 +1617,7 @@ export default function PendaftarDetailPage() {
                 )}
 
 
-                {pendaftar.jenjang?.toLowerCase().includes("ma") && (
+                {(pendaftar?.jenjang?.toLowerCase() || "").includes("ma") && (
                   <div className="bg-sky-50/50 p-4 rounded-xl border border-sky-100 flex flex-col justify-between">
                     <div>
                       <span className="block text-xs text-sky-600 font-bold uppercase tracking-wide mb-1">

@@ -439,7 +439,7 @@ function DokumenCard({
                   </p>
                   <div className="flex items-center gap-2 mt-1">
                     <span className="px-2 py-0.5 bg-surface-100 rounded text-[10px] font-bold text-ink-500 uppercase tracking-wide">
-                      {dokumen.file_type?.split("/")[1]?.toUpperCase() ||
+                      {dokumen?.file_type?.split("/")?.[1]?.toUpperCase() ||
                         "FILE"}
                     </span>
                     <span className="text-xs text-ink-400">

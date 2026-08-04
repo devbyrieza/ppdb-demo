@@ -163,8 +163,8 @@ function VerifikasiPembayaranContent() {
   const filteredPembayaran = pembayaran.filter((item) => {
     const searchLower = searchTerm.toLowerCase();
     const matchSearch =
-      item.pendaftar?.nama_lengkap?.toLowerCase().includes(searchLower) ||
-      item.pendaftar?.nomor_pendaftaran?.toLowerCase().includes(searchLower);
+      (item.pendaftar?.nama_lengkap?.toLowerCase() || "").includes(searchLower) ||
+      (item.pendaftar?.nomor_pendaftaran?.toLowerCase() || "").includes(searchLower);
     const matchTipe =
       tipeCicilanFilter === "ALL" || item.tipe_cicilan === tipeCicilanFilter;
     return matchSearch && matchTipe;

@@ -426,7 +426,7 @@ function InputNilaiContent() {
           catatan_quran: quranForm.catatan || "",
         };
       } else if (formType === "wawancara") {
-        const isPutriByJenjang = p.jenjang?.toLowerCase().includes('putri');
+        const isPutriByJenjang = (p?.jenjang?.toLowerCase() || "").includes('putri');
         const isPutriByPrefix = ['MTI', 'ILI', 'SMI'].some(prefix => p.nomor_pendaftaran?.startsWith(prefix));
         // Fallback: If examiner is Halimah or Rima, it's definitely a Putri session
         const isPutriByExaminer = ["Halimah Fauziah", "Rima Maryani Putri Utami"].some(name => 
@@ -872,7 +872,7 @@ function InputNilaiContent() {
     const isEditing = editingId === p.id + "quran";
 
     // Gender detection for selection list
-    const isPutriByJenjang = p.jenjang?.toLowerCase().includes('putri');
+    const isPutriByJenjang = (p?.jenjang?.toLowerCase() || "").includes('putri');
     const isPutriByPrefix = ['MTI', 'ILI', 'SMI'].some(prefix => p.nomor_pendaftaran?.startsWith(prefix));
     const isPutriByExaminer = ["Andi Fatimah Azzahra Rahman", "Halimah Fauziah", "Rima Maryani Putri Utami"].some(name => 
       quranForm.nama_penguji === name || p.detail_quran?.nama_penguji === name
@@ -1017,7 +1017,7 @@ function InputNilaiContent() {
     const isEditing = editingId === p.id + "wawancara";
 
     // Gender detection for selection list
-    const isPutriByJenjang = p.jenjang?.toLowerCase().includes('putri');
+    const isPutriByJenjang = (p?.jenjang?.toLowerCase() || "").includes('putri');
     const isPutriByPrefix = ['MTI', 'ILI', 'SMI'].some(prefix => p.nomor_pendaftaran?.startsWith(prefix));
     const isPutriByExaminer = ["Halimah Fauziah", "Rima Maryani Putri Utami"].some(name => 
       calsanForm.nama_pewawancara === name || p.detail_wawancara?.nama_pewawancara === name
@@ -1123,7 +1123,7 @@ function InputNilaiContent() {
                   <CheckCircle className="w-6 h-6 sm:w-7 sm:h-7 text-primary-600 shrink-0" />
                   <div>
                     <p className="text-primary-950 font-black text-sm leading-none">Hasil Wawancara Calon Santri sudah tersimpan.</p>
-                    <p className="text-primary-700/70 text-[10px] sm:text-xs font-black mt-2 uppercase tracking-widest">Rekomendasi: {p.detail_wawancara?.rekomendasi?.split('.')[0] || 'Tersimpan'}</p>
+                    <p className="text-primary-700/70 text-[10px] sm:text-xs font-black mt-2 uppercase tracking-widest">Rekomendasi: {p?.detail_wawancara?.rekomendasi?.split('.')?.[0] || 'Tersimpan'}</p>
                   </div>
                 </div>
                 {p.input_at_santri && (
@@ -1162,7 +1162,7 @@ function InputNilaiContent() {
     const isSaved = !!(p.detail_cawalsan?.rekomendasi || p.nilai_wawancara_ortu != null);
     const isEditing = editingId === p.id + "ortu";
 
-    const isPutriByJenjang = p.jenjang?.toLowerCase().includes('putri');
+    const isPutriByJenjang = (p?.jenjang?.toLowerCase() || "").includes('putri');
     const isPutriByPrefix = ['MTI', 'ILI', 'SMI'].some(prefix => p.nomor_pendaftaran?.startsWith(prefix));
     const isPutri = isPutriByJenjang || isPutriByPrefix;
     const interviewerList = isPutri ? PEWAWANCARA_CAWALSAN_LIST_PUTRI : PEWAWANCARA_CAWALSAN_LIST_PUTRA;

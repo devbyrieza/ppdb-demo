@@ -43,8 +43,8 @@ export default function AkademikTestPage() {
           const j = info.pendaftar.jenjang;
           if (
             j?.includes("IL") ||
-            j?.toLowerCase().includes("i'dad") ||
-            j?.toLowerCase().includes("idad")
+            (j?.toLowerCase() || "").includes("i'dad") ||
+            (j?.toLowerCase() || "").includes("idad")
           ) {
             setJenjang("IL");
             setQuestions(AKADEMIK_IL);

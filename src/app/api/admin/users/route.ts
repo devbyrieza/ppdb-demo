@@ -56,7 +56,7 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { email: rawEmail, password, full_name, role, secondary_roles, phone, jenis_kelamin } = body;
-    const email = rawEmail?.trim().toLowerCase();
+    const email = rawEmail?.trim()?.toLowerCase();
 
     if (!email || !password || !full_name || !role) {
       return NextResponse.json(
