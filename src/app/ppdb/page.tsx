@@ -614,10 +614,9 @@ function PPDBContent() {
                 </a>
               </div>
 
-              {/* Trust microcopy */}
-              <p className="mt-6 text-[11px] text-primary-300 font-bold uppercase tracking-widest">
-                ✦ Pendaftaran Gratis&nbsp;&nbsp;•&nbsp;&nbsp;Proses
-                Mudah&nbsp;&nbsp;•&nbsp;&nbsp;Langsung Konfirmasi
+              <p className="mt-6 text-[11px] text-primary-300 font-bold uppercase tracking-widest flex items-center justify-center gap-1">
+                <Sparkles className="w-3 h-3 text-secondary-300 shrink-0" />
+                <span>Pendaftaran Gratis&nbsp;&nbsp;•&nbsp;&nbsp;Proses Mudah&nbsp;&nbsp;•&nbsp;&nbsp;Langsung Konfirmasi</span>
               </p>
 
               {/* Legalitas badges */}

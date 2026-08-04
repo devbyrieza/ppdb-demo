@@ -107,7 +107,7 @@ export default function DaftarPindahanPage() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const savedData = sessionStorage.getItem("pendaftaran_pindahan_form");
+      const savedData = localStorage.getItem("template_demo_daftar_pindahan_draft") || sessionStorage.getItem("pendaftaran_pindahan_form");
       if (savedData) {
         try {
           const parsed = JSON.parse(savedData);
@@ -132,6 +132,7 @@ export default function DaftarPindahanPage() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const timeoutId = setTimeout(() => {
+        localStorage.setItem("template_demo_daftar_pindahan_draft", JSON.stringify(formData));
         sessionStorage.setItem("pendaftaran_pindahan_form", JSON.stringify(formData));
       }, 500);
       return () => clearTimeout(timeoutId);
@@ -266,6 +267,8 @@ export default function DaftarPindahanPage() {
         params.append("sim_code", data.simulation_code || data.otp);
       }
 
+      localStorage.removeItem("template_demo_daftar_pindahan_draft");
+      sessionStorage.removeItem("pendaftaran_pindahan_form");
       router.push(`/verifikasi-otp?${params.toString()}`);
     } catch (error: any) {
       Swal.fire(

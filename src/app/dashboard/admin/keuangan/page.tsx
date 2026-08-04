@@ -16,6 +16,8 @@ import {
   ExternalLink,
   FileText,
   Users,
+  Building,
+  BookOpen,
 } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 import Alert from "@/components/ui/Alert";
@@ -511,39 +513,39 @@ export default function KeuanganPage() {
             setActiveTab("pendaftaran");
             setSearch("");
           }}
-          className={`px-5 py-2 rounded-lg text-sm font-bold transition-all ${
+          className={`px-5 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 ${
             activeTab === "pendaftaran"
               ? "bg-white text-primary-800 shadow-sm"
               : "text-slate-500 hover:text-slate-700"
           }`}
         >
-          💳 Pembayaran Pendaftaran
+          <CreditCard className="w-4 h-4 text-primary-600" /> Pembayaran Pendaftaran
         </button>
         <button
           onClick={() => {
             setActiveTab("uang-pangkal");
             setSearch("");
           }}
-          className={`px-5 py-2 rounded-lg text-sm font-bold transition-all ${
+          className={`px-5 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 ${
             activeTab === "uang-pangkal"
               ? "bg-white text-primary-800 shadow-sm"
               : "text-slate-500 hover:text-slate-700"
           }`}
         >
-          🏢 Uang Pangkal
+          <Building className="w-4 h-4 text-primary-600" /> Uang Pangkal
         </button>
         <button
           onClick={() => {
             setActiveTab("spp");
             setSearch("");
           }}
-          className={`px-5 py-2 rounded-lg text-sm font-bold transition-all ${
+          className={`px-5 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 ${
             activeTab === "spp"
               ? "bg-white text-primary-800 shadow-sm"
               : "text-slate-500 hover:text-slate-700"
           }`}
         >
-          📖 SPP Bln Pertama
+          <BookOpen className="w-4 h-4 text-primary-600" /> SPP Bln Pertama
         </button>
       </div>
 

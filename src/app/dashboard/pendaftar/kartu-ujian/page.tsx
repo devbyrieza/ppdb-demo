@@ -101,11 +101,11 @@ export default function ExamCardPage() {
   return (
     <div className="min-h-screen bg-gray-100 p-5 md:p-8 flex flex-col items-center">
       {/* Toolbar */}
-      <div className="w-full max-w-[21cm] mb-6 flex justify-between items-center no-print">
-        <h1 className="text-xl font-bold">Pratinjau Jadwal</h1>
+      <div className="w-full max-w-[21cm] mb-6 flex justify-between items-center bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg border border-emerald-100 p-4 no-print">
+        <h1 className="text-xl font-bold text-stone-900">Pratinjau Jadwal</h1>
         <button
           onClick={() => window.print()}
-          className="flex items-center gap-2 bg-primary-600 text-white px-4 py-2 rounded shadow hover:bg-primary-700 transition"
+          className="flex items-center gap-2 bg-primary-600 text-white px-5 py-2.5 rounded-xl font-bold shadow-md hover:bg-primary-700 transition-colors"
         >
           <Printer className="w-4 h-4" /> Cetak Jadwal
         </button>

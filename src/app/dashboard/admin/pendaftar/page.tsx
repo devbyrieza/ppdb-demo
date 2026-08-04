@@ -33,6 +33,7 @@ import {
   LogOut,
   Plus,
   Shuffle,
+  AlertTriangle,
 } from "lucide-react";
 import Link from "next/link";
 import { UserRole } from "@/lib/access-control";
@@ -2438,11 +2439,14 @@ function AdminPendaftarContent() {
 
             <div className="p-6 space-y-4">
               <div className="bg-secondary-50 border-2 border-secondary-200 rounded-xl p-4">
-                <p className="text-sm text-secondary-800 font-medium">
-                  ⚠️ Anda akan menghapus data{" "}
-                  <strong>{toTitleCase(deletingPendaftar.nama_lengkap)}</strong>{" "}
-                  ({deletingPendaftar.nomor_pendaftaran}). Data akan dipindahkan
-                  ke Sampah dan bisa di-restore kapan saja.
+                <p className="text-sm text-secondary-800 font-medium flex items-start gap-1.5">
+                  <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                  <span>
+                    Anda akan menghapus data{" "}
+                    <strong>{toTitleCase(deletingPendaftar.nama_lengkap)}</strong>{" "}
+                    ({deletingPendaftar.nomor_pendaftaran}). Data akan dipindahkan
+                    ke Sampah dan bisa di-restore kapan saja.
+                  </span>
                 </p>
               </div>
 

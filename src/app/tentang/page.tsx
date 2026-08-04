@@ -411,10 +411,10 @@ export default function TentangPage() {
                 </Link>
               </div>
 
-              {/* Trust microcopy */}
               <div className="mt-8 mb-4">
-                <span className="inline-block px-4 py-1.5 rounded-pill bg-white/10 backdrop-blur-sm border border-white/10 text-[10px] sm:text-xs text-white/80 font-bold uppercase tracking-widest">
-                  ✦ Pendaftaran Gratis • Proses Mudah • Langsung Konfirmasi
+                <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-pill bg-white/10 backdrop-blur-sm border border-white/10 text-[10px] sm:text-xs text-white/80 font-bold uppercase tracking-widest">
+                  <Sparkles className="w-3 h-3 text-secondary-300 shrink-0" />
+                  <span>Pendaftaran Gratis • Proses Mudah • Langsung Konfirmasi</span>
                 </span>
               </div>
 

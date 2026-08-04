@@ -98,7 +98,7 @@ export default function DaftarPage() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const savedData = sessionStorage.getItem("pendaftaran_form");
+      const savedData = localStorage.getItem("template_demo_daftar_draft") || sessionStorage.getItem("pendaftaran_form");
       if (savedData) {
         try {
           const parsed = JSON.parse(savedData);
@@ -123,6 +123,7 @@ export default function DaftarPage() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const timeoutId = setTimeout(() => {
+        localStorage.setItem("template_demo_daftar_draft", JSON.stringify(formData));
         sessionStorage.setItem("pendaftaran_form", JSON.stringify(formData));
       }, 500);
       return () => clearTimeout(timeoutId);
@@ -228,6 +229,8 @@ export default function DaftarPage() {
         params.append("sim_code", data.simulation_code || data.otp);
       }
 
+      localStorage.removeItem("template_demo_daftar_draft");
+      sessionStorage.removeItem("pendaftaran_form");
       router.push(`/verifikasi-otp?${params.toString()}`);
     } catch (error: any) {
       Swal.fire(

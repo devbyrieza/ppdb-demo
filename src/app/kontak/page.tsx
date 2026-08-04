@@ -21,6 +21,7 @@ import {
   Award,
   ShieldCheck,
   GraduationCap,
+  Sparkles,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -123,6 +124,29 @@ export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("template_demo_kontak_draft");
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          setFormData((prev) => ({ ...prev, ...parsed }));
+        } catch (e) {
+          console.error("Failed to restore draft", e);
+        }
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const timer = setTimeout(() => {
+        localStorage.setItem("template_demo_kontak_draft", JSON.stringify(formData));
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [formData]);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
@@ -137,6 +161,7 @@ export default function ContactPage() {
     // Simulate API call
     setTimeout(() => {
       setShowSuccess(true);
+      localStorage.removeItem("template_demo_kontak_draft");
       setFormData({ nama: "", email: "", telepon: "", pesan: "" });
       setIsSubmitting(false);
       setTimeout(() => setShowSuccess(false), 5000);
@@ -456,10 +481,9 @@ export default function ContactPage() {
                 </a>
               </div>
 
-              {/* Trust microcopy */}
-              <p className="mt-6 text-[11px] text-primary-300 font-bold uppercase tracking-widest">
-                ✦ Pendaftaran Gratis&nbsp;&nbsp;•&nbsp;&nbsp;Proses
-                Mudah&nbsp;&nbsp;•&nbsp;&nbsp;Langsung Konfirmasi
+              <p className="mt-6 text-[11px] text-primary-300 font-bold uppercase tracking-widest flex items-center justify-center gap-1">
+                <Sparkles className="w-3 h-3 text-secondary-300 shrink-0" />
+                <span>Pendaftaran Gratis&nbsp;&nbsp;•&nbsp;&nbsp;Proses Mudah&nbsp;&nbsp;•&nbsp;&nbsp;Langsung Konfirmasi</span>
               </p>
 
               {/* Legalitas badges */}

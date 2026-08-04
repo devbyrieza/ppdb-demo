@@ -1,8 +1,8 @@
 // app/send-otp/page.tsx
 "use client";
 
-import { useState } from "react";
-import { Send, Mail, MessageSquare, Smartphone, ArrowLeft } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Send, Mail, MessageSquare, Smartphone, ArrowLeft, Check } from "lucide-react";
 import BackToHomeButton from "@/components/common/BackToHomeButton";
 
 interface ApiResponse {
@@ -22,6 +22,35 @@ export default function SendOtpPage() {
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("template_demo_send_otp_draft");
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (parsed.selectedChannel) setSelectedChannel(parsed.selectedChannel);
+          if (parsed.email) setEmail(parsed.email);
+          if (parsed.telegram) setTelegram(parsed.telegram);
+          if (parsed.phone) setPhone(parsed.phone);
+        } catch (e) {
+          console.error("Failed to restore draft", e);
+        }
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const timer = setTimeout(() => {
+        localStorage.setItem(
+          "template_demo_send_otp_draft",
+          JSON.stringify({ selectedChannel, email, telegram, phone })
+        );
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [selectedChannel, email, telegram, phone]);
 
   const handleSendOtp = async () => {
     // Reset messages
@@ -77,6 +106,7 @@ export default function SendOtpPage() {
       }
 
       setSuccessMessage(data.message);
+      localStorage.removeItem("template_demo_send_otp_draft");
 
       // Reset form after successful send (optional)
       if (selectedChannel === "telegram") {
@@ -244,8 +274,9 @@ export default function SendOtpPage() {
                   </p>
                   {selectedChannel === "email" && (
                     <div className="mt-2 p-2 bg-secondary-100 border border-secondary-200 rounded-lg">
-                      <p className="text-[11px] text-primary-800 font-bold">
-                        ✓ Akan dikirim ke: {email}
+                      <p className="text-[11px] text-primary-800 font-bold flex items-center gap-1">
+                        <Check className="w-3.5 h-3.5 text-primary-700" />
+                        <span>Akan dikirim ke: {email}</span>
                       </p>
                     </div>
                   )}
@@ -363,7 +394,7 @@ export default function SendOtpPage() {
             <div className="mb-4 p-4 bg-primary-50 border border-primary-200 text-primary-800 rounded-[1rem] shadow-sm">
               <div className="flex items-center">
                 <div className="w-5 h-5 rounded-full bg-primary-500 flex items-center justify-center mr-2">
-                  <span className="text-white text-xs">✓</span>
+                  <Check className="w-3.5 h-3.5 text-white" />
                 </div>
                 <span className="font-bold text-sm">{successMessage}</span>
               </div>

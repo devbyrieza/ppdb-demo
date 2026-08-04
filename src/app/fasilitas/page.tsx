@@ -15,6 +15,8 @@ import {
   Building,
   Building2,
   FlaskConical,
+  ShieldCheck,
+  GraduationCap,
   MonitorPlay,
   Cpu,
   Award,
@@ -873,8 +875,8 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                 Ribuan koleksi kitab & buku
               </p>
               <div className="mt-4 pt-4 border-t border-primary-50 w-full">
-                <span className="text-xs text-primary-600 font-bold uppercase tracking-widest">
-                  📚 Akademik
+                <span className="text-xs text-primary-600 font-bold uppercase tracking-widest flex items-center gap-1">
+                  <GraduationCap className="w-3.5 h-3.5" /> Akademik
                 </span>
               </div>
             </motion.div>
@@ -896,8 +898,8 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                 Sains & Komputer
               </p>
               <div className="mt-4 pt-4 border-t border-primary-50 w-full">
-                <span className="text-xs text-primary-600 font-bold uppercase tracking-widest">
-                  🔬 Praktikum
+                <span className="text-xs text-primary-600 font-bold uppercase tracking-widest flex items-center gap-1">
+                  <FlaskConical className="w-3.5 h-3.5" /> Praktikum
                 </span>
               </div>
             </motion.div>
@@ -919,8 +921,8 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                 Menu bergizi 3x sehari
               </p>
               <div className="mt-4 pt-4 border-t border-primary-50 w-full">
-                <span className="text-xs text-primary-600 font-bold uppercase tracking-widest">
-                  🍽️ Nutrisi
+                <span className="text-xs text-primary-600 font-bold uppercase tracking-widest flex items-center gap-1">
+                  <Utensils className="w-3.5 h-3.5" /> Nutrisi
                 </span>
               </div>
             </motion.div>
@@ -943,8 +945,8 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                 Layanan medis internal
               </p>
               <div className="mt-4 pt-4 border-t border-primary-50 w-full">
-                <span className="text-xs text-primary-600 font-bold uppercase tracking-widest">
-                  🏥 Kesehatan
+                <span className="text-xs text-primary-600 font-bold uppercase tracking-widest flex items-center gap-1">
+                  <Heart className="w-3.5 h-3.5" /> Kesehatan
                 </span>
               </div>
             </motion.div>
@@ -966,8 +968,8 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                 Keamanan CCTV 24 Jam
               </p>
               <div className="mt-4 pt-4 border-t border-primary-50 w-full">
-                <span className="text-xs text-primary-600 font-bold uppercase tracking-widest">
-                  🛡️ Keamanan
+                <span className="text-xs text-primary-600 font-bold uppercase tracking-widest flex items-center gap-1">
+                  <Shield className="w-3.5 h-3.5" /> Keamanan
                 </span>
               </div>
             </motion.div>
@@ -989,8 +991,8 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                 Kapasitas 500 orang
               </p>
               <div className="mt-4 pt-4 border-t border-primary-50 w-full">
-                <span className="text-xs text-primary-600 font-bold uppercase tracking-widest">
-                  🏛️ Event
+                <span className="text-xs text-primary-600 font-bold uppercase tracking-widest flex items-center gap-1">
+                  <Building2 className="w-3.5 h-3.5" /> Event
                 </span>
               </div>
             </motion.div>
@@ -1193,8 +1195,9 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                         <ArrowRight className="w-5 h-5" />
                       </button>
                       
-                      <p className="text-xs text-center text-ink-400 font-medium mt-4">
-                        🔒 Data Anda aman dan hanya digunakan untuk keperluan jadwal kunjungan.
+                      <p className="text-xs text-center text-ink-400 font-medium mt-4 flex items-center justify-center gap-1">
+                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 inline" />
+                        <span>Data Anda aman dan hanya digunakan untuk keperluan jadwal kunjungan.</span>
                       </p>
                     </form>
                   )}

@@ -143,7 +143,7 @@ export default function HasilSeleksiPage() {
 
       {/* Header Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-green-50 p-6 rounded-xl shadow-sm border border-green-100 relative overflow-hidden">
+        <div className="bg-green-50/80 backdrop-blur-xl p-6 rounded-3xl shadow-xl shadow-emerald-500/10 border border-green-100 relative overflow-hidden">
           <p className="text-green-600 text-sm font-bold tracking-wider uppercase mb-1">
             Total Diterima
           </p>
@@ -157,7 +157,7 @@ export default function HasilSeleksiPage() {
           </div>
           <div className="absolute -right-4 -bottom-4 bg-green-200/50 w-24 h-24 rounded-full blur-xl"></div>
         </div>
-        <div className="bg-secondary-50 p-6 rounded-xl shadow-sm border border-secondary-100 relative overflow-hidden">
+        <div className="bg-secondary-50/80 backdrop-blur-xl p-6 rounded-3xl shadow-xl shadow-emerald-500/10 border border-secondary-100 relative overflow-hidden">
           <p className="text-secondary-600 text-sm font-bold tracking-wider uppercase mb-1">
             Cadangan
           </p>
@@ -171,7 +171,7 @@ export default function HasilSeleksiPage() {
           </div>
           <div className="absolute -right-4 -bottom-4 bg-secondary-200/50 w-24 h-24 rounded-full blur-xl"></div>
         </div>
-        <div className="bg-rose-50 p-6 rounded-xl shadow-sm border border-rose-100 relative overflow-hidden">
+        <div className="bg-rose-50/80 backdrop-blur-xl p-6 rounded-3xl shadow-xl shadow-emerald-500/10 border border-rose-100 relative overflow-hidden">
           <p className="text-rose-600 text-sm font-bold tracking-wider uppercase mb-1">
             Ditolak
           </p>
@@ -188,9 +188,9 @@ export default function HasilSeleksiPage() {
       </div>
 
       {/* Filters & Actions */}
-      <div className="bg-white p-4 rounded-xl shadow-sm border border-stone-200 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div className="bg-white/80 backdrop-blur-xl p-6 rounded-3xl shadow-xl shadow-emerald-500/10 border border-emerald-100 flex flex-col md:flex-row justify-between items-center gap-4">
         <div className="flex items-center gap-4 w-full md:w-auto">
-          <div className="flex items-center gap-2 px-3 py-2 bg-stone-50 rounded-lg border border-stone-200">
+          <div className="flex items-center gap-2 px-4 py-2.5 bg-stone-50 rounded-2xl border border-stone-200">
             <Filter className="w-4 h-4 text-stone-500" />
             <select
               className="bg-transparent text-sm font-bold text-stone-700 focus:outline-none"
@@ -205,7 +205,7 @@ export default function HasilSeleksiPage() {
             </select>
           </div>
 
-          <div className="flex items-center gap-2 px-3 py-2 bg-stone-50 rounded-lg border border-stone-200">
+          <div className="flex items-center gap-2 px-4 py-2.5 bg-stone-50 rounded-2xl border border-stone-200">
             <Search className="w-4 h-4 text-stone-500" />
             <select
               className="bg-transparent text-sm font-bold text-stone-700 focus:outline-none"
@@ -223,7 +223,7 @@ export default function HasilSeleksiPage() {
         <button
           onClick={handleExportExcel}
           disabled={candidates.length === 0 || loading}
-          className="flex items-center justify-center gap-2 px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold transition-all shadow-lg shadow-green-200 disabled:shadow-none disabled:bg-stone-300 w-full md:w-auto"
+          className="flex items-center justify-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-green-200 disabled:shadow-none disabled:bg-stone-300 w-full md:w-auto"
         >
           <Download className="w-4 h-4" />
           Ekspor Excel
@@ -231,7 +231,7 @@ export default function HasilSeleksiPage() {
       </div>
 
       {/* Table & Mobile View */}
-      <div className="bg-white rounded-xl shadow-sm border border-stone-200 overflow-hidden">
+      <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl shadow-emerald-500/10 border border-emerald-100 overflow-hidden">
         {/* Mobile View: Cards */}
         <div className="md:hidden divide-y divide-stone-100">
           {loading ? (

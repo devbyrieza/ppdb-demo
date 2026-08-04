@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { RefreshCw, Check, Smartphone, User, Key } from "lucide-react";
+import { RefreshCw, Check, Smartphone, User, Key, FileText, Sparkles, Activity, CheckCircle, Calendar } from "lucide-react";
 
 interface PendingSMS {
   id: string;
@@ -33,7 +33,7 @@ export default function AdminSMSDashboard() {
   const markAsSent = async (id: string) => {
     try {
       const response = await fetch("/api/admin/pending-sms", {
-        method: "PATCH",
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, status: "sent" }),
       });
@@ -42,34 +42,29 @@ export default function AdminSMSDashboard() {
         fetchPendingSMS(); // Refresh list
       }
     } catch (error) {
-      console.error("Error marking as sent:", error);
+      console.error("Error updating status:", error);
     }
   };
 
   useEffect(() => {
     fetchPendingSMS();
-    // Refresh every 30 seconds
-    const interval = setInterval(fetchPendingSMS, 30000);
-    return () => clearInterval(interval);
   }, []);
 
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <RefreshCw className="w-8 h-8 animate-spin mx-auto text-primary-600" />
-          <p className="mt-4 text-gray-600">Memuat data SMS...</p>
-        </div>
+        <RefreshCw className="w-8 h-8 animate-spin text-primary-600" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-6xl mx-auto">
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
-            📱 Dashboard Admin - SMS Manual
+    <div className="min-h-screen bg-gray-50 p-6 md:p-10">
+      <div className="max-w-7xl mx-auto space-y-6">
+        <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl shadow-emerald-500/10 border border-emerald-100 p-6 md:p-8">
+          <h1 className="text-2xl font-bold text-gray-900 mb-2 flex items-center gap-2">
+            <Smartphone className="w-7 h-7 text-primary-600" />
+            Dashboard Admin - SMS Manual
           </h1>
           <p className="text-gray-600 mb-4">
             Sistem dalam{" "}
@@ -77,23 +72,27 @@ export default function AdminSMSDashboard() {
             Kirim SMS manual ke user berikut:
           </p>
 
-          <div className="bg-primary-50 border border-primary-200 rounded-lg p-4 mb-6">
-            <h3 className="font-bold text-primary-800 mb-2">📋 Instruksi:</h3>
+          <div className="bg-primary-50 border border-primary-200 rounded-2xl p-4 mb-6">
+            <h3 className="font-bold text-primary-800 mb-2 flex items-center gap-2">
+              <FileText className="w-5 h-5 text-primary-600" />
+              Instruksi:
+            </h3>
             <ol className="list-decimal list-inside text-primary-700 space-y-1">
               <li>Salin nomor HP dan OTP di bawah</li>
               <li>Kirim SMS dari HP Admin ke nomor tersebut</li>
               <li>Pesan: "PPDB AL-FATH: Kode OTP: [OTP] untuk [NAMA]"</li>
-              <li>Klik tombol "✓ Sudah Dikirim" setelah selesai</li>
+              <li>Klik tombol "Sudah Dikirim" setelah selesai</li>
             </ol>
           </div>
 
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-bold text-gray-800">
-              📋 Daftar SMS yang Perlu Dikirim: {pendingSMS.length}
+            <h2 className="text-lg font-bold text-gray-800 flex items-center gap-2">
+              <FileText className="w-5 h-5 text-primary-600" />
+              Daftar SMS yang Perlu Dikirim: {pendingSMS.length}
             </h2>
             <button
               onClick={fetchPendingSMS}
-              className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
+              className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-colors"
             >
               <RefreshCw className="w-4 h-4" />
               Refresh
@@ -102,9 +101,10 @@ export default function AdminSMSDashboard() {
 
           {pendingSMS.length === 0 ? (
             <div className="text-center py-10">
-              <Check className="w-12 h-12 text-green-500 mx-auto mb-4" />
-              <p className="text-gray-600">
-                🎉 Tidak ada SMS yang perlu dikirim!
+              <CheckCircle className="w-12 h-12 text-emerald-500 mx-auto mb-4" />
+              <p className="text-gray-600 font-bold flex items-center justify-center gap-2">
+                <Sparkles className="w-5 h-5 text-emerald-500" />
+                Tidak ada SMS yang perlu dikirim!
               </p>
               <p className="text-sm text-gray-500 mt-2">
                 Semua OTP sudah terkirim atau belum ada pendaftaran.
@@ -115,11 +115,11 @@ export default function AdminSMSDashboard() {
               {pendingSMS.map((item) => (
                 <div
                   key={item.id}
-                  className="border-2 border-secondary-200 bg-secondary-50 rounded-xl p-5"
+                  className="border-2 border-secondary-200 bg-secondary-50/50 rounded-2xl p-5"
                 >
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                     <div className="flex items-center gap-3">
-                      <div className="p-2 bg-primary-100 rounded-lg">
+                      <div className="p-2 bg-primary-100 rounded-xl">
                         <Smartphone className="w-5 h-5 text-primary-600" />
                       </div>
                       <div>
@@ -129,7 +129,7 @@ export default function AdminSMSDashboard() {
                     </div>
 
                     <div className="flex items-center gap-3">
-                      <div className="p-2 bg-green-100 rounded-lg">
+                      <div className="p-2 bg-green-100 rounded-xl">
                         <User className="w-5 h-5 text-green-600" />
                       </div>
                       <div>
@@ -139,7 +139,7 @@ export default function AdminSMSDashboard() {
                     </div>
 
                     <div className="flex items-center gap-3">
-                      <div className="p-2 bg-red-100 rounded-lg">
+                      <div className="p-2 bg-red-100 rounded-xl">
                         <Key className="w-5 h-5 text-red-600" />
                       </div>
                       <div>
@@ -151,11 +151,12 @@ export default function AdminSMSDashboard() {
                     </div>
                   </div>
 
-                  <div className="bg-white rounded-lg p-4 mb-4">
-                    <p className="text-sm text-gray-500 mb-2">
-                      📝 Pesan yang dikirim:
+                  <div className="bg-white rounded-xl p-4 mb-4">
+                    <p className="text-sm text-gray-500 mb-2 flex items-center gap-2">
+                      <FileText className="w-4 h-4 text-gray-500" />
+                      Pesan yang dikirim:
                     </p>
-                    <pre className="bg-gray-900 text-white p-4 rounded-lg text-sm">
+                    <pre className="bg-gray-900 text-white p-4 rounded-xl text-sm">
                       {`PPDB AL-FATH
 Kode OTP: ${item.otp}
 Untuk: ${item.nama}
@@ -168,16 +169,16 @@ Hubungi 0812-8530-0800 jika ada masalah.`}
                   <div className="flex gap-3">
                     <button
                       onClick={() => markAsSent(item.id)}
-                      className="flex-1 py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 flex items-center justify-center gap-2"
+                      className="flex-1 py-3 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 flex items-center justify-center gap-2 transition-colors"
                     >
-                      <Check className="w-5 h-5" />✓ Sudah Dikirim
+                      <Check className="w-5 h-5" /> Sudah Dikirim
                     </button>
 
                     <a
                       href={`sms:${item.phone}&body=PPDB AL-FATH: Kode OTP: ${item.otp} untuk ${item.nama}`}
-                      className="px-6 py-3 bg-primary-600 text-white font-bold rounded-lg hover:bg-primary-700"
+                      className="px-6 py-3 bg-primary-600 text-white font-bold rounded-xl hover:bg-primary-700 flex items-center gap-2 transition-colors"
                     >
-                      📱 Buka Aplikasi SMS
+                      <Smartphone className="w-4 h-4" /> Buka Aplikasi SMS
                     </a>
                   </div>
                 </div>
@@ -186,24 +187,35 @@ Hubungi 0812-8530-0800 jika ada masalah.`}
           )}
         </div>
 
-        <div className="bg-white rounded-xl shadow-lg p-6">
-          <h3 className="font-bold text-gray-900 mb-4">📊 Status Sistem:</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-primary-50 p-4 rounded-lg">
+        <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl shadow-emerald-500/10 border border-emerald-100 p-6 md:p-8">
+          <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <Activity className="w-5 h-5 text-primary-600" />
+            Status Sistem:
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="bg-primary-50/80 p-4 rounded-2xl border border-primary-100">
               <p className="text-sm text-primary-600">SMS Service</p>
-              <p className="text-2xl font-bold">🔄 Simulation</p>
+              <p className="text-2xl font-bold flex items-center gap-2">
+                <RefreshCw className="w-5 h-5 text-yellow-600 animate-spin" /> Simulation
+              </p>
             </div>
-            <div className="bg-green-50 p-4 rounded-lg">
+            <div className="bg-green-50/80 p-4 rounded-2xl border border-green-100">
               <p className="text-sm text-green-600">Telegram</p>
-              <p className="text-2xl font-bold">✅ Ready</p>
+              <p className="text-2xl font-bold flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-emerald-600" /> Ready
+              </p>
             </div>
-            <div className="bg-purple-50 p-4 rounded-lg">
+            <div className="bg-purple-50/80 p-4 rounded-2xl border border-purple-100">
               <p className="text-sm text-purple-600">Email</p>
-              <p className="text-2xl font-bold">✅ Ready</p>
+              <p className="text-2xl font-bold flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-emerald-600" /> Ready
+              </p>
             </div>
-            <div className="bg-secondary-50 p-4 rounded-lg">
+            <div className="bg-secondary-50/80 p-4 rounded-2xl border border-secondary-100">
               <p className="text-sm text-secondary-600">Launch Date</p>
-              <p className="text-2xl font-bold">📅 22 Jan</p>
+              <p className="text-2xl font-bold flex items-center gap-2">
+                <Calendar className="w-5 h-5 text-primary-600" /> 22 Jan
+              </p>
             </div>
           </div>
         </div>

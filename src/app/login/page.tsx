@@ -20,6 +20,16 @@ import {
   FileText,
   ChevronRight,
   Layers,
+  Crown,
+  FolderCheck,
+  Wallet,
+  Mic,
+  UserCheck,
+  BookOpen,
+  Award,
+  MessageSquare,
+  Settings,
+  Key,
 } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { motion, AnimatePresence } from "framer-motion";
@@ -29,59 +39,59 @@ import DemoLoginHelper from "@/components/auth/DemoLoginHelper";
 // Role label & icon map
 const ROLE_INFO: Record<
   string,
-  { label: string; icon: string; desc: string; color: string }
+  { label: string; icon: React.ElementType; desc: string; color: string }
 > = {
   admin_super: {
     label: "Admin Super",
-    icon: "👑",
+    icon: Crown,
     desc: "Akses penuh semua fitur",
     color: "from-secondary-50 to-yellow-50 border-secondary-200",
   },
   admin_berkas: {
     label: "Admin Berkas",
-    icon: "📂",
+    icon: FolderCheck,
     desc: "Verifikasi dokumen pendaftar",
     color: "from-primary-50 to-indigo-50 border-primary-200",
   },
   admin_keuangan: {
     label: "Admin Keuangan",
-    icon: "💰",
+    icon: Wallet,
     desc: "Verifikasi pembayaran",
     color: "from-emerald-50 to-primary-50 border-emerald-200",
   },
   pewawancara_cawalsan: {
     label: "Pewawancara Cawalsan",
-    icon: "🎙️",
+    icon: Mic,
     desc: "Wawancara calon orangtua/wali santri",
     color: "from-purple-50 to-violet-50 border-purple-200",
   },
   pewawancara_calsan: {
     label: "Pewawancara Calon Santri",
-    icon: "🎙️",
+    icon: UserCheck,
     desc: "Wawancara calon santri",
     color: "from-rose-50 to-pink-50 border-rose-200",
   },
   penguji: {
     label: "Penguji Al-Qur'an",
-    icon: "📖",
+    icon: BookOpen,
     desc: "Penguji tes Al-Qur'an",
     color: "from-green-50 to-lime-50 border-green-200",
   },
   penguji_hafalan: {
     label: "Penguji Hafalan",
-    icon: "📖",
+    icon: Award,
     desc: "Penguji tes Hafalan Al-Qur'an",
     color: "from-teal-50 to-emerald-50 border-teal-200",
   },
   penguji_bahasa_arab: {
     label: "Penguji Lisan B. Arab",
-    icon: "🗣",
+    icon: MessageSquare,
     desc: "Penguji tes Lisan Bahasa Arab",
     color: "from-sky-50 to-blue-50 border-sky-200",
   },
   admin: {
     label: "Admin",
-    icon: "⚙️",
+    icon: Settings,
     desc: "Panel administrasi",
     color: "from-orange-50 to-secondary-50 border-orange-200",
   },
@@ -442,10 +452,11 @@ export default function LoginPage() {
                     {roleSelectionData.available_roles.map((role) => {
                       const info = ROLE_INFO[role] || {
                         label: role,
-                        icon: "🔑",
+                        icon: Key,
                         desc: "",
                         color: "from-slate-50 to-gray-50 border-slate-200",
                       };
+                      const IconComponent = info.icon;
                       return (
                         <motion.button
                           key={role}
@@ -455,7 +466,9 @@ export default function LoginPage() {
                           disabled={selectingRole}
                           className={`w-full p-4 rounded-2xl bg-linear-to-r ${info.color} border text-left flex items-center gap-4 transition-all hover:shadow-md disabled:opacity-60`}
                         >
-                          <div className="text-3xl">{info.icon}</div>
+                          <div className="w-10 h-10 rounded-xl bg-white/80 flex items-center justify-center text-primary-700 shrink-0 border border-primary-100 shadow-xs">
+                            <IconComponent className="w-5 h-5 text-primary-600" />
+                          </div>
                           <div className="flex-1">
                             <p className="font-black text-ink-900 text-base">
                               {info.label}
