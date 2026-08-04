@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect, useRef } from "react";
 import { Search, Loader2, UploadCloud, X, Check, AlertCircle } from "lucide-react";
 import Swal from "sweetalert2";

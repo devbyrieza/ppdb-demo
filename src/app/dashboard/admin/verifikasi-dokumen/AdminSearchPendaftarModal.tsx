@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import { Search, Loader2, X, FileText } from "lucide-react";
 import { useRouter } from "next/navigation";
