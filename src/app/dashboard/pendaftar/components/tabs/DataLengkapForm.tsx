@@ -754,7 +754,7 @@ export default function DataLengkapForm({
   };
 
   const isSantriComplete = Boolean(
-    formData.santri.nama_lengkap &&
+    formData?.santri?.nama_lengkap &&
     formData.santri.nik &&
     formData.santri.tempat_lahir &&
     formData.santri.tanggal_lahir &&
@@ -1004,7 +1004,7 @@ export default function DataLengkapForm({
                   <InputField
                     label="Nama Lengkap"
                     name="nama_lengkap"
-                    value={formData.santri.nama_lengkap}
+                    value={formData?.santri?.nama_lengkap}
                     onChange={(v) => updateSantri("nama_lengkap", v)}
                     placeholder="Sesuai akta kelahiran"
                     required

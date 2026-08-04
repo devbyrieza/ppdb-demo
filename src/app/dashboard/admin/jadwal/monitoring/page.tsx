@@ -72,7 +72,7 @@ export default function MonitoringJadwalPage() {
                         examinerTimeMap[key] = [];
                     }
                     examinerTimeMap[key].push({
-                        student: s.pendaftar.nama,
+                        student: s?.pendaftar?.nama,
                         pendaftarId: s.pendaftar.nomor,
                         scheduleId: s.id
                     });
@@ -131,7 +131,7 @@ export default function MonitoringJadwalPage() {
 
     const filteredSchedules = schedules.filter(s => {
         const matchesSearch = 
-            s.pendaftar.nama.toLowerCase().includes(search.toLowerCase()) ||
+            s?.pendaftar?.nama.toLowerCase().includes(search.toLowerCase()) ||
             s.pendaftar.nomor.toLowerCase().includes(search.toLowerCase()) ||
             s.ustadz.quran.toLowerCase().includes(search.toLowerCase()) ||
             s.ustadz.santri.toLowerCase().includes(search.toLowerCase()) ||
@@ -181,7 +181,7 @@ export default function MonitoringJadwalPage() {
         const groups: Record<string, Schedule[]> = {};
 
         filteredSchedules.forEach(s => {
-            const key = `${s.pendaftar.nama} (${s.pendaftar.nomor})`;
+            const key = `${s?.pendaftar?.nama} (${s.pendaftar.nomor})`;
             if (!groups[key]) groups[key] = [];
             groups[key].push(s);
         });
@@ -370,7 +370,7 @@ export default function MonitoringJadwalPage() {
                                     <div className="flex items-start justify-between">
                                         <div>
                                             <h3 className="text-base font-extrabold text-slate-800 leading-tight">
-                                                {s.pendaftar.nama.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())}
+                                                {s?.pendaftar?.nama.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())}
                                             </h3>
                                             <div className="flex items-center gap-2 mt-1.5">
                                                 <span className="text-[10px] font-mono font-bold px-2 py-0.5 bg-slate-100 text-slate-500 rounded uppercase tracking-wider">
@@ -456,7 +456,7 @@ export default function MonitoringJadwalPage() {
                                                 <td className="px-6 py-6">
                                                     <div className="flex flex-col">
                                                         <span className="text-base font-extrabold text-slate-800 group-hover:text-primary-600 transition-colors leading-tight">
-                                                            {s.pendaftar.nama.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())}
+                                                            {s?.pendaftar?.nama.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())}
                                                         </span>
                                                         <div className="flex items-center gap-2 mt-1.5">
                                                             <span className="text-[10px] font-mono font-bold px-2 py-0.5 bg-slate-100 text-slate-500 rounded uppercase tracking-wider">
@@ -544,7 +544,7 @@ export default function MonitoringJadwalPage() {
                                             {group.items.map((item, idx) => (
                                                 <tr key={`${item.schedule.id}-${idx}`} className="hover:bg-primary-50/10 transition-colors">
                                                     <td className="px-7 py-4">
-                                                        <span className="font-extrabold text-slate-800">{item.schedule.pendaftar.nama}</span>
+                                                        <span className="font-extrabold text-slate-800">{item.schedule?.pendaftar?.nama}</span>
                                                     </td>
                                                     <td className="px-7 py-4">
                                                         <span className={`px-2.5 py-0.5 rounded-md font-bold text-[10px] uppercase tracking-wide ${

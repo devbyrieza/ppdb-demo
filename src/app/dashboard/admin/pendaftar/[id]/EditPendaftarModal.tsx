@@ -196,7 +196,7 @@ export default function EditPendaftarModal({
                 <label className="text-xs font-black uppercase text-stone-600">Nama Lengkap Santri</label>
                 <input
                   type="text"
-                  value={editFormData.santri.nama_lengkap}
+                  value={editFormData?.santri?.nama_lengkap}
                   onChange={(e) => setEditFormData({
                     ...editFormData,
                     santri: { ...editFormData.santri, nama_lengkap: e.target.value }

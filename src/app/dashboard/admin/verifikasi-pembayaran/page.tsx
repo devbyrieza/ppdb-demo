@@ -237,7 +237,7 @@ function VerifikasiPembayaranContent() {
 
         if (!groups[studentKey]) {
           groups[studentKey] = {
-            nama_lengkap: item.pendaftar?.nama_lengkap ? toTitleCase(item.pendaftar.nama_lengkap) : "-",
+            nama_lengkap: item.pendaftar?.nama_lengkap ? toTitleCase(item?.pendaftar?.nama_lengkap) : "-",
             nomor_pendaftaran: item.pendaftar?.nomor_pendaftaran || "-",
             jenjang: detailedJenjang,
             total_nominal: nominalVal,
@@ -716,13 +716,13 @@ function VerifikasiPembayaranContent() {
                     <div className="flex items-start gap-4 mb-3">
                       <div className="w-12 h-12 rounded-xl bg-primary-50 flex items-center justify-center text-primary-800 font-black text-lg shrink-0 border border-primary-100">
                         {pay.pendaftar?.nama_lengkap
-                          ? pay.pendaftar.nama_lengkap.charAt(0).toUpperCase()
+                          ? pay?.pendaftar?.nama_lengkap.charAt(0).toUpperCase()
                           : "?"}
                       </div>
                       <div>
                         <h3 className="text-lg font-black text-stone-900 group-hover:text-primary-700 transition-colors">
                           {pay.pendaftar?.nama_lengkap
-                            ? toTitleCase(pay.pendaftar.nama_lengkap || "")
+                            ? toTitleCase(pay?.pendaftar?.nama_lengkap || "")
                             : "Tanpa Nama"}
                           {pay.pendaftar?.tipe_pendaftaran === "PINDAHAN" && (
                             <span className="ml-2 px-2 py-0.5 bg-violet-100 text-violet-700 rounded-full text-[10px] font-black uppercase tracking-wider border border-violet-200">
@@ -861,7 +861,7 @@ function VerifikasiPembayaranContent() {
                 <p className="text-sm text-stone-500 font-medium">
                   {selectedPembayaran.pendaftar?.nama_lengkap
                     ? toTitleCase(
-                        selectedPembayaran.pendaftar.nama_lengkap || "",
+                        selectedPembayaran?.pendaftar?.nama_lengkap || "",
                       )
                     : ""}
                 </p>

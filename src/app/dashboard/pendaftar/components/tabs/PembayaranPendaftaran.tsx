@@ -936,7 +936,7 @@ export default function PembayaranPendaftaranTab({
                       {data.pendaftar.nomor_pendaftaran}
                     </p>
                     <p className="text-sm text-ink-500 mt-1">
-                      {data.pendaftar.nama_lengkap}
+                      {data?.pendaftar?.nama_lengkap}
                     </p>
                   </div>
                   <div className="text-right">

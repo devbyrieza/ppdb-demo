@@ -309,7 +309,7 @@ export default function BantuanBiayaPage() {
                       {/* Pendaftar */}
                       <td className="px-6 py-4">
                         <div className="font-bold text-ink-900">
-                          {item.pendaftar?.nama_lengkap ? toTitleCase(item.pendaftar.nama_lengkap) : "Tanpa Nama"}
+                          {item.pendaftar?.nama_lengkap ? toTitleCase(item?.pendaftar?.nama_lengkap) : "Tanpa Nama"}
                         </div>
                         <div className="text-stone-500 text-xs">
                           {item.pendaftar?.nomor_pendaftaran} · {item.pendaftar?.jenjang}

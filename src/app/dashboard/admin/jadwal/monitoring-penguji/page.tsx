@@ -75,7 +75,7 @@ export default async function MonitoringPengujiPage() {
         stat.totalPending++;
         stat.pendingStudents.push({
           jadwalId: jadwal.id,
-          name: jadwal.pendaftar.nama_lengkap,
+          name: jadwal?.pendaftar?.nama_lengkap,
           registrationNumber: jadwal.pendaftar.nomor_pendaftaran,
           date: jadwal.tanggal_ujian,
         });
@@ -92,7 +92,7 @@ export default async function MonitoringPengujiPage() {
         stat.totalPending++;
         stat.pendingStudents.push({
           jadwalId: jadwal.id,
-          name: jadwal.pendaftar.nama_lengkap,
+          name: jadwal?.pendaftar?.nama_lengkap,
           registrationNumber: jadwal.pendaftar.nomor_pendaftaran,
           date: jadwal.tanggal_ujian,
         });
@@ -109,7 +109,7 @@ export default async function MonitoringPengujiPage() {
         stat.totalPending++;
         stat.pendingStudents.push({
           jadwalId: jadwal.id,
-          name: jadwal.pendaftar.nama_lengkap,
+          name: jadwal?.pendaftar?.nama_lengkap,
           registrationNumber: jadwal.pendaftar.nomor_pendaftaran,
           date: jadwal.tanggal_ujian,
         });

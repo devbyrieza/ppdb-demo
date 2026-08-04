@@ -1269,7 +1269,7 @@ export default function JadwalPengujiPage() {
                             </span>
                           </div>
                           <h3 className="text-lg md:text-2xl font-black text-primary-950 font-display leading-tight mb-2">
-                            {item.pendaftar.nama_lengkap}
+                            {item?.pendaftar?.nama_lengkap}
                           </h3>
                           <div className="flex items-center gap-2 text-xs text-ink-500 font-bold">
                             <div className="w-2 h-2 rounded-full bg-primary-600 animate-pulse" />
@@ -1397,7 +1397,7 @@ export default function JadwalPengujiPage() {
                                 onClick={() =>
                                   handleCancelAssignment(
                                     item.id,
-                                    item.pendaftar.nama_lengkap,
+                                    item?.pendaftar?.nama_lengkap,
                                   )
                                 }
                                 className="px-4 py-4 border border-red-100 text-red-500 hover:bg-red-50 rounded-2xl transition-all flex items-center justify-center active:scale-95 shadow-sm"

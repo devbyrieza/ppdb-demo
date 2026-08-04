@@ -116,7 +116,7 @@ function VerifikasiDokumenContent() {
           grouped[pendaftarId] = {
             id: dok.pendaftar.id,
             nomor_pendaftaran: dok.pendaftar.nomor_pendaftaran,
-            nama_lengkap: dok.pendaftar.nama_lengkap,
+            nama_lengkap: dok?.pendaftar?.nama_lengkap,
             jenjang: dok.pendaftar.jenjang,
             no_hp: dok.pendaftar.no_hp,
             tipe_pendaftaran: dok.pendaftar.tipe_pendaftaran,
@@ -172,7 +172,7 @@ function VerifikasiDokumenContent() {
           created_at: string;
         }) => ({
           "Nama Pendaftar": item.pendaftar?.nama_lengkap
-            ? toTitleCase(item.pendaftar.nama_lengkap)
+            ? toTitleCase(item?.pendaftar?.nama_lengkap)
             : "-",
           "Jalur / Tipe": item.pendaftar?.tipe_pendaftaran === "PINDAHAN" ? "Pindahan" : "Reguler",
           "No Pendaftaran": item.pendaftar?.nomor_pendaftaran || "-",
