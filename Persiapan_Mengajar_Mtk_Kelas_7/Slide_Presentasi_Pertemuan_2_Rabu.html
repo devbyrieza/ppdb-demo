@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matematika Kelas 7 - Bab 1: Bilangan Bulat & Waktu Dunia</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800;900&family=Amiri:wght@700&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; font-family: 'Montserrat', sans-serif; overflow: hidden; background: #f0f2f5; color: #1a1a2e; }
+  .slide { display: none; height: 100vh; width: 100vw; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 2vh 2vw; box-sizing: border-box; overflow-y: auto; }
+  .slide.active { display: flex; animation: fadeIn 0.4s ease-out; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  
+  .card { background: #ffffff; border-radius: 2vh; padding: 4vh 4vw; box-shadow: 0 1vh 3vh rgba(0,0,0,0.1); border-top: 1.5vh solid #1d3557; max-width: 95%; width: 92%; max-height: 94vh; display: flex; flex-direction: column; justify-content: center; align-items: center; box-sizing: border-box; overflow-y: auto; }
+  
+  h1 { font-size: clamp(2.2rem, 5.5vh, 5.5rem); font-weight: 900; color: #1d3557; text-transform: uppercase; line-height: 1.15; margin-bottom: 2vh; margin-top: 0; }
+  h2 { font-size: clamp(1.8rem, 4vh, 4rem); font-weight: 800; color: #e63946; margin-bottom: 1.5vh; margin-top: 0.5vh; }
+  p { font-size: clamp(1.2rem, 2.8vh, 2.5rem); font-weight: 600; line-height: 1.4; margin: 1vh 0; color: #333333; }
+  
+  .badge { background: #1d3557; color: white; padding: 0.8vh 2vw; border-radius: 3vh; font-size: clamp(1rem, 2.2vh, 2rem); font-weight: 800; display: inline-block; margin-bottom: 1.5vh; text-transform: uppercase; letter-spacing: 0.1vw; }
+  .badge-red { background: #e63946; color: white; }
+  .badge-yellow { background: #ffd700; color: #856404; }
+  .badge-blue { background: #457b9d; color: white; }
+  
+  .highlight-red { color: #e63946; font-weight: 900; }
+  .highlight-blue { color: #1d3557; font-weight: 900; }
+  .highlight-green { color: #2a9d8f; font-weight: 900; }
+  
+  .box-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2vh; width: 100%; margin-top: 1.5vh; text-align: left; }
+  .info-box { background: #f8f9fa; padding: 2vh 2.5vw; border-radius: 1.5vh; border-left: 1vw solid #1d3557; box-sizing: border-box; box-shadow: 0 0.5vh 1vh rgba(0,0,0,0.04); }
+  
+  .formula-box { background: #e8f4f8; border: 3px dashed #1d3557; border-radius: 2vh; padding: 2vh 3vw; margin: 1.5vh 0; width: 100%; box-sizing: border-box; }
+  
+  .controls { position: fixed; bottom: 2vh; right: 2vw; opacity: 0.6; transition: all 0.3s ease; z-index: 100; }
+  .controls:hover { opacity: 1; }
+  button { font-size: clamp(0.9rem, 2vh, 1.4rem); font-family: 'Montserrat', sans-serif; padding: 1.2vh 2vw; margin: 0 0.4vw; cursor: pointer; border: none; border-radius: 1vh; background: #1d3557; color: white; font-weight: 800; box-shadow: 0 0.5vh 1vh rgba(0,0,0,0.2); }
+  button:hover { background: #e63946; }
+  
+  /* Number line display */
+  .number-line { display: flex; justify-content: space-between; align-items: center; width: 100%; background: #ffffff; padding: 2vh 1vw; border-radius: 1vh; border: 2px solid #1d3557; margin: 2vh 0; box-sizing: border-box; }
+  .nl-node { display: flex; flex-direction: column; align-items: center; font-weight: 800; font-size: clamp(1rem, 2.5vh, 2.2rem); }
+  .nl-point { width: 1.5vw; height: 1.5vw; min-width: 14px; min-height: 14px; background: #1d3557; border-radius: 50%; margin-bottom: 0.5vh; }
+  .nl-neg { color: #e63946; }
+  .nl-zero { color: #ffd700; font-size: 1.2em; font-weight: 900; }
+  .nl-pos { color: #2a9d8f; }
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1: JUDUL & PEMBUKA -->
+<div id="slide1" class="slide active">
+  <div class="card" style="border-top-color: #1d3557; padding: 6vh 4vw;">
+    <div class="badge badge-blue">Matematika Kelas 7 - Pertemuan 2</div>
+    <h1>BILANGAN BULAT &<br><span class="highlight-red">WAKTU DUNIA 🌍</span></h1>
+    <p style="font-size: clamp(1.4rem, 3.2vh, 2.8rem);">Membongkar Rahasia Operasi Angka & Menghitung Selisih Waktu Belahan Bumi</p>
+    <div class="badge badge-yellow" style="margin-top: 3vh;">⭐ BANYAK MAJU & AKTIF = BANYAK POIN! ⭐</div>
+  </div>
+</div>
+
+<!-- SLIDE 2: REVIEW 5 SOAL PR -->
+<div id="slide2" class="slide">
+  <div class="card" style="border-top-color: #e63946; padding: 3vh 3vw;">
+    <div class="badge badge-red">Review Cepat PR</div>
+    <h2 style="color: #1d3557;">KUNCI JAWABAN 5 SOAL PR 📝</h2>
+    <div class="box-container" style="grid-template-columns: repeat(2, 1fr);">
+      <div class="info-box" style="border-left-color: #2a9d8f;">
+        <p style="margin: 0; font-weight: 800; color: #1d3557;">1️⃣ &frac12; + &frac12; = <span class="highlight-green">1</span> (atau 2/2)</p>
+        <p style="margin: 0; font-size: 0.85em; color: #666;">Setengah roti + setengah roti = 1 roti utuh!</p>
+      </div>
+      <div class="info-box" style="border-left-color: #e63946;">
+        <p style="margin: 0; font-weight: 800; color: #1d3557;">2️⃣ Semangka dibagi 4, dimakan 1 = <span class="highlight-red">&frac14;</span></p>
+        <p style="margin: 0; font-size: 0.85em; color: #666;">1 dari 4 bagian sama besar = seperempat.</p>
+      </div>
+      <div class="info-box" style="border-left-color: #457b9d;">
+        <p style="margin: 0; font-weight: 800; color: #1d3557;">3️⃣ 2/3 + 1/3 = <span class="highlight-blue">3/3 = 1</span></p>
+        <p style="margin: 0; font-size: 0.85em; color: #666;">Penyebut sudah sama (3), atasnya 2 + 1 = 3.</p>
+      </div>
+      <div class="info-box" style="border-left-color: #ffd700;">
+        <p style="margin: 0; font-weight: 800; color: #856404;">4️⃣ 3/4 + 1/4 = <span class="highlight-yellow">4/4 = 1</span></p>
+        <p style="margin: 0; font-size: 0.85em; color: #666;">Penyebut sudah sama (4), atasnya 3 + 1 = 4.</p>
+      </div>
+    </div>
+    <div class="info-box" style="width: 100%; margin-top: 1.5vh; border-left-color: #e63946; background: #fff5f5;">
+      <p style="margin: 0; font-weight: 800; color: #1d3557;">5️⃣ (9/3) &times; (8/5) = <span class="highlight-red">3 &times; (8/5) = 24/5 = 4 ⅘ (4,8)</span></p>
+      <p style="margin: 0; font-size: 0.85em; color: #666;">💡 Trik Cerdas: 9/3 disederhanakan dulu jadi 3, baru kali 8 = 24/5!</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 3: MEMAHAMI BILANGAN BULAT & GARIS BILANGAN -->
+<div id="slide3" class="slide">
+  <div class="card" style="border-top-color: #457b9d;">
+    <div class="badge badge-blue">Fondasi Bab 1</div>
+    <h1>Garis Bilangan: Kanan vs Kiri</h1>
+    <div class="number-line">
+      <div class="nl-node nl-neg"><div class="nl-point" style="background:#e63946;"></div>-4</div>
+      <div class="nl-node nl-neg"><div class="nl-point" style="background:#e63946;"></div>-3</div>
+      <div class="nl-node nl-neg"><div class="nl-point" style="background:#e63946;"></div>-2</div>
+      <div class="nl-node nl-neg"><div class="nl-point" style="background:#e63946;"></div>-1</div>
+      <div class="nl-node nl-zero"><div class="nl-point" style="background:#ffd700;"></div>0</div>
+      <div class="nl-node nl-pos"><div class="nl-point" style="background:#2a9d8f;"></div>+1</div>
+      <div class="nl-node nl-pos"><div class="nl-point" style="background:#2a9d8f;"></div>+2</div>
+      <div class="nl-node nl-pos"><div class="nl-point" style="background:#2a9d8f;"></div>+3</div>
+      <div class="nl-node nl-pos"><div class="nl-point" style="background:#2a9d8f;"></div>+4</div>
+    </div>
+    <div class="box-container">
+      <div class="info-box" style="border-left-color: #2a9d8f;">
+        <h3 style="margin: 0; color: #2a9d8f;">👉 MAKIN KE KANAN = MAKIN BESAR</h3>
+        <p style="margin: 0.5vh 0;">Uang bertambah, naik lantai, suhu makin panas (+).</p>
+      </div>
+      <div class="info-box" style="border-left-color: #e63946;">
+        <h3 style="margin: 0; color: #e63946;">👈 MAKIN KE KIRI = MAKIN KECIL</h3>
+        <p style="margin: 0.5vh 0;">Hutang bertambah, kedalaman laut, suhu beku (-).</p>
+      </div>
+    </div>
+    <p style="margin-top: 2vh; font-weight: 800; color: #1d3557;">❓ Tebak Cepat: Mana yang lebih besar, <b>-10</b> atau <b>-2</b>? <span class="highlight-green">Jawab: -2!</span></p>
+  </div>
+</div>
+
+<!-- SLIDE 4: PENJUMLAHAN & PENGURANGAN (UANG VS HUTANG) -->
+<div id="slide4" class="slide">
+  <div class="card" style="border-top-color: #e63946;">
+    <div class="badge badge-red">Operasi 1</div>
+    <h1>Penjumlahan & Pengurangan</h1>
+    <h2>Gunakan Konsep "Uang (+)" vs "Hutang (-)"</h2>
+    <div class="box-container">
+      <div class="info-box" style="border-left-color: #2a9d8f;">
+        <p style="font-weight: 800; margin: 0; color: #1d3557;">Kasus 1: Bayar Hutang</p>
+        <p style="font-size: 1.3em; margin: 1vh 0; font-weight: 900; color: #2a9d8f;">5 + (-3) = 2</p>
+        <p style="margin: 0; font-size: 0.85em;">Punya uang 5, bayar hutang 3 ➔ Sisa uang 2.</p>
+      </div>
+      <div class="info-box" style="border-left-color: #e63946;">
+        <p style="font-weight: 800; margin: 0; color: #1d3557;">Kasus 2: Nambah Hutang</p>
+        <p style="font-size: 1.3em; margin: 1vh 0; font-weight: 900; color: #e63946;">(-4) + (-3) = -7</p>
+        <p style="margin: 0; font-size: 0.85em;">Hutang 4, hutang lagi 3 ➔ Total hutang 7.</p>
+      </div>
+    </div>
+    <div class="formula-box" style="background: #fffdf0; border-color: #ffd700; margin-top: 2vh;">
+      <h3 style="margin: 0; color: #856404; font-size: clamp(1.3rem, 3vh, 2.5rem);">⚡ RUMUS SAKTI: MINUS KETEMU MINUS = PLUS!</h3>
+      <p style="font-size: clamp(1.5rem, 3.5vh, 3rem); font-weight: 900; color: #e63946; margin: 1vh 0;">
+        a - (-b) = a + b &nbsp;&nbsp;➔&nbsp;&nbsp; 4 - (-3) = 4 + 3 = 7
+      </p>
+      <p style="margin: 0; font-size: 0.9em; color: #555;"><i>(Analogi: Surat hutangmu ditarik/dihapus, artinya kamu dapat untung!)</i></p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 5: PERKALIAN & PEMBAGIAN (ATURAN TANDA) -->
+<div id="slide5" class="slide">
+  <div class="card" style="border-top-color: #1d3557;">
+    <div class="badge badge-blue">Operasi 2</div>
+    <h1>Perkalian & Pembagian</h1>
+    <h2>Aturan Emas Tanda (+ / -)</h2>
+    <div class="box-container">
+      <div class="info-box" style="border-left-color: #2a9d8f; background: #f0fff4;">
+        <h3 style="margin: 0; color: #2a9d8f;">✅ TANDA SAMA = POSITIF (+)</h3>
+        <ul style="margin: 1vh 0; padding-left: 2vw; font-weight: 800; font-size: 1.1em;">
+          <li>(+) &times; (+) = <span class="highlight-green">(+)</span> &nbsp;&nbsp;➔&nbsp;&nbsp; 3 &times; 4 = 12</li>
+          <li>(-) &times; (-) = <span class="highlight-green">(+)</span> &nbsp;&nbsp;➔&nbsp;&nbsp; (-3) &times; (-4) = 12</li>
+        </ul>
+      </div>
+      <div class="info-box" style="border-left-color: #e63946; background: #fff5f5;">
+        <h3 style="margin: 0; color: #e63946;">❌ TANDA BEDA = NEGATIF (-)</h3>
+        <ul style="margin: 1vh 0; padding-left: 2vw; font-weight: 800; font-size: 1.1em;">
+          <li>(+) &times; (-) = <span class="highlight-red">(-)</span> &nbsp;&nbsp;➔&nbsp;&nbsp; 3 &times; (-4) = -12</li>
+          <li>(-) &times; (+) = <span class="highlight-red">(-)</span> &nbsp;&nbsp;➔&nbsp;&nbsp; (-3) &times; 4 = -12</li>
+        </ul>
+      </div>
+    </div>
+    <div class="formula-box" style="margin-top: 2vh;">
+      <p style="margin: 0; font-weight: 800; color: #1d3557;">💡 Jembatan Keledai Sahabat:</p>
+      <p style="margin: 0.5vh 0; font-size: 0.95em; color: #333;">
+        "Teman dari temanku = <b>Temanku</b> (+)" &nbsp;|&nbsp; "Musuh dari musuhku = <b>Temanku</b> (+)"<br>
+        "Musuh dari temanku = <b>Musuhku</b> (-)" &nbsp;|&nbsp; "Teman dari musuhku = <b>Musuhku</b> (-)"
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 6: KABATAKU DI BILANGAN BULAT -->
+<div id="slide6" class="slide">
+  <div class="card" style="border-top-color: #ffd700;">
+    <div class="badge badge-yellow">Fiqih Hitung: KABATAKU</div>
+    <h1>Urutan Operasi Hitung</h1>
+    <h2>🕌 Filosofi Imam & Makmum</h2>
+    <div class="box-container" style="grid-template-columns: 1fr 1fr; gap: 2vh;">
+      <div class="info-box" style="border-left-color: #e63946; background: #fff5f5;">
+        <h3 style="margin: 0; color: #e63946; font-size: 1.2em;">👳‍♂️ KALI (&times;) & BAGI (&divide;) = IMAM</h3>
+        <p style="margin: 0.5vh 0; font-weight: 700;">Wajib dikerjakan lebih dulu! Tidak boleh didahului.</p>
+      </div>
+      <div class="info-box" style="border-left-color: #2a9d8f; background: #f0fff4;">
+        <h3 style="margin: 0; color: #2a9d8f; font-size: 1.2em;">👥 TAMBAH (+) & KURANG (-) = MAKMUM</h3>
+        <p style="margin: 0.5vh 0; font-weight: 700;">Wajib sabar menunggu gerakan Imam selesai!</p>
+      </div>
+    </div>
+    <div class="formula-box" style="margin-top: 2vh; text-align: left; background: #fffdf0; border-color: #ffd700;">
+      <p style="margin: 0; font-weight: 900; font-size: 1.2em; color: #1d3557;">Contoh: 10 + (-2) &times; 6 = ...</p>
+      <p style="margin: 0.5vh 0; color: #333; font-weight: 700;">
+        1️⃣ Gerakan Imam dulu: (-2) &times; 6 = <span class="highlight-red">-12</span><br>
+        2️⃣ Makmum mengikuti: 10 + (-12) = <span class="highlight-green">-2</span> (✅ Benar! Jika mendahului Imam, jawaban BATAL!)
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7: APLIKASI NYATA: ZONA WAKTU DUNIA -->
+<div id="slide7" class="slide">
+  <div class="card" style="border-top-color: #2a9d8f;">
+    <div class="badge" style="background: #2a9d8f;">Aplikasi Dunia Nyata</div>
+    <h1>Mengapa Butuh Bilangan Bulat?</h1>
+    <h2>🌍 Misteri Zona Waktu Dunia (GMT)</h2>
+    <p style="font-size: clamp(1.3rem, 3vh, 2.5rem);">Bumi itu berputar! Saat di Indonesia siang hari, di belahan bumi lain sedang malam gulita.</p>
+    <div class="info-box" style="border-left-color: #2a9d8f; width: 100%; margin-top: 2vh; text-align: center;">
+      <p style="margin: 0; font-weight: 900; color: #1d3557; font-size: 1.2em;">
+        Patokan Nol Dunia: Kota Greenwich, London = <span class="highlight-red">GMT 0</span>
+      </p>
+      <p style="margin: 0.5vh 0; color: #555;">Ke arah Timur = Bernilai <b style="color:#2a9d8f;">POSITIF (+)</b> &nbsp;|&nbsp; Ke arah Barat = Bernilai <b style="color:#e63946;">NEGATIF (-)</b></p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 8: PETA ZONA WAKTU KOTA DUNIA -->
+<div id="slide8" class="slide">
+  <div class="card" style="border-top-color: #1d3557; padding: 3vh 3vw;">
+    <div class="badge badge-blue">Garis Waktu Dunia</div>
+    <h1 style="margin-bottom: 1vh;">Peta Angka Kota-Kota Dunia</h1>
+    <div class="box-container" style="grid-template-columns: repeat(3, 1fr);">
+      <div class="info-box" style="border-left-color: #e63946;">
+        <h3 style="margin: 0; color: #e63946;">🇺🇸 New York</h3>
+        <p style="font-size: 1.5em; font-weight: 900; color: #e63946; margin: 0.5vh 0;">GMT -5</p>
+        <p style="margin: 0; font-size: 0.8em;">(5 jam lebih lambat dari London)</p>
+      </div>
+      <div class="info-box" style="border-left-color: #ffd700;">
+        <h3 style="margin: 0; color: #856404;">🇬🇧 London</h3>
+        <p style="font-size: 1.5em; font-weight: 900; color: #856404; margin: 0.5vh 0;">GMT 0</p>
+        <p style="margin: 0; font-size: 0.8em;">(Pusat Patokan Nol Dunia)</p>
+      </div>
+      <div class="info-box" style="border-left-color: #2a9d8f;">
+        <h3 style="margin: 0; color: #2a9d8f;">🇸🇦 Mekkah</h3>
+        <p style="font-size: 1.5em; font-weight: 900; color: #2a9d8f; margin: 0.5vh 0;">GMT +3</p>
+        <p style="margin: 0; font-size: 0.8em;">(3 jam lebih cepat dari London)</p>
+      </div>
+      <div class="info-box" style="border-left-color: #1d3557;">
+        <h3 style="margin: 0; color: #1d3557;">🇮🇩 Jakarta (WIB)</h3>
+        <p style="font-size: 1.5em; font-weight: 900; color: #1d3557; margin: 0.5vh 0;">GMT +7</p>
+        <p style="margin: 0; font-size: 0.8em;">(7 jam lebih cepat dari London)</p>
+      </div>
+      <div class="info-box" style="border-left-color: #457b9d;">
+        <h3 style="margin: 0; color: #457b9d;">🇯🇵 Tokyo</h3>
+        <p style="font-size: 1.5em; font-weight: 900; color: #457b9d; margin: 0.5vh 0;">GMT +9</p>
+        <p style="margin: 0; font-size: 0.8em;">(9 jam lebih cepat dari London)</p>
+      </div>
+      <div class="info-box" style="border-left-color: #2a9d8f;">
+        <h3 style="margin: 0; color: #2a9d8f;">🇮🇩 Papua (WIT)</h3>
+        <p style="font-size: 1.5em; font-weight: 900; color: #2a9d8f; margin: 0.5vh 0;">GMT +9</p>
+        <p style="margin: 0; font-size: 0.8em;">(Sama waktunya dengan Tokyo!)</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 9: KEAJAIBAN RUMUS ZONA WAKTU -->
+<div id="slide9" class="slide">
+  <div class="card" style="border-top-color: #e63946;">
+    <div class="badge badge-red">Studi Kasus 1</div>
+    <h1 style="font-size: clamp(1.8rem, 4vh, 3.5rem);">Berapa Selisih Waktu Jakarta & New York?</h1>
+    <div class="formula-box" style="background: #fff5f5; border-color: #e63946;">
+      <p style="margin: 0; font-weight: 700; color: #555;">Jakarta = <span class="highlight-blue">+7</span> &nbsp;|&nbsp; New York = <span class="highlight-red">-5</span></p>
+      <p style="font-size: clamp(1.8rem, 4.5vh, 4rem); font-weight: 900; color: #e63946; margin: 1vh 0;">
+        Selisih = (+7) - (-5) = 7 + 5 = 12 Jam!
+      </p>
+      <p style="margin: 0; font-size: 0.85em; font-weight: 700; color: #1d3557;">
+        💡 <b>Kenapa DIKURANG bukan DITAMBAH?</b> Kata <i>"Selisih"</i> selalu Nilai Besar dikurangi Nilai Kecil.<br>
+        Jarak fisik rentang: 5 jam (NY ke London) + 7 jam (London ke Jkt) = <b>12 Jam</b>!
+      </p>
+    </div>
+    <p style="font-weight: 800; color: #1d3557; margin-top: 1vh; font-size: 0.95em;">
+      Jika di Jakarta jam <b>07.00 pagi</b>, maka di New York adalah jam <b>19.00 (7 malam kemarin)</b>!
+    </p>
+  </div>
+</div>
+
+<!-- SLIDE 10: MENGHITUNG JAM SHOLAT DI MEKKAH -->
+<div id="slide10" class="slide">
+  <div class="card" style="border-top-color: #2a9d8f;">
+    <div class="badge badge-yellow">Studi Kasus 2 (Islami)</div>
+    <h1 style="font-size: clamp(2rem, 4.5vh, 4rem);">Menghitung Jam Sholat di Mekkah 🕋</h1>
+    <div class="info-box" style="border-left-color: #2a9d8f; width: 100%;">
+      <p style="font-weight: 800; color: #1d3557; margin: 0;">
+        🕌 Waktu Subuh di Mekkah (GMT +3) adalah pukul <b>04.30 pagi</b>.<br>
+        Berapa jam di <b>Jakarta (GMT +7)</b> saat adzan Subuh berkumandang di Mekkah?
+      </p>
+    </div>
+    <div class="formula-box" style="background: #e8f4f8; border-color: #457b9d; margin-top: 2vh;">
+      <p style="font-size: clamp(1.2rem, 2.5vh, 2rem); margin: 0; font-weight: 700; color: #555;">
+        Selisih Jakarta - Mekkah = (+7) - (+3) = <span class="highlight-blue">+4 Jam</span>
+      </p>
+      <p style="font-size: clamp(1.8rem, 4.5vh, 3.5rem); font-weight: 900; color: #2a9d8f; margin: 1vh 0;">
+        Jam di Jakarta = 04.30 + 4 jam = 08.30 Pagi!
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 11: KOTAK CATATAN SAKTI SANTRI (WAKTU SALIN 3 MENIT) -->
+<div id="slide11" class="slide">
+  <div class="card" style="border-top-color: #ffd700; padding: 2.5vh 3vw;">
+    <div class="badge badge-yellow" style="font-size: 1.2em;">📝 CUKUP SALIN KOTAK INI DI BUKUMU (3 MENIT) 📝</div>
+    <h1 style="font-size: clamp(1.8rem, 4vh, 3.5rem); margin: 0.5vh 0 1.5vh 0;">KOTAK RANGKUMAN SAKTI BAB 1</h1>
+    <div class="box-container" style="grid-template-columns: repeat(2, 1fr); gap: 1.5vh; text-align: left;">
+      <div class="info-box" style="border-left-color: #2a9d8f; background: #f0fff4;">
+        <h3 style="margin: 0; color: #2a9d8f; font-size: 1.1em;">1️⃣ ATURAN TANDA (+ / -)</h3>
+        <p style="margin: 0.5vh 0; font-size: 0.9em; font-weight: 700;">
+          • Tanda Sama = <b>POSITIF (+)</b><br>
+          • Tanda Beda = <b>NEGATIF (-)</b><br>
+          • Minus Tabrakan: <b>a - (-b) = a + b</b>
+        </p>
+      </div>
+      <div class="info-box" style="border-left-color: #e63946; background: #fff5f5;">
+        <h3 style="margin: 0; color: #e63946; font-size: 1.1em;">2️⃣ FIQIH KABATAKU</h3>
+        <p style="margin: 0.5vh 0; font-size: 0.9em; font-weight: 700;">
+          • <b>KALI & BAGI = IMAM</b> (Wajib Duluan!)<br>
+          • <b>TAMBAH & KURANG = MAKMUM</b> (Menunggu!)<br>
+          • Mendahului Imam = BATAL!
+        </p>
+      </div>
+      <div class="info-box" style="border-left-color: #1d3557; background: #f8f9fa;">
+        <h3 style="margin: 0; color: #1d3557; font-size: 1.1em;">3️⃣ TITIK ZONA WAKTU (GMT)</h3>
+        <p style="margin: 0.5vh 0; font-size: 0.9em; font-weight: 700;">
+          • London: <b>0</b> &nbsp;|&nbsp; Mekkah: <b>+3</b><br>
+          • Jakarta (WIB): <b>+7</b> &nbsp;|&nbsp; Tokyo: <b>+9</b><br>
+          • New York: <b>-5</b>
+        </p>
+      </div>
+      <div class="info-box" style="border-left-color: #ffd700; background: #fffdf0;">
+        <h3 style="margin: 0; color: #856404; font-size: 1.1em;">4️⃣ CARA HITUNG JAM DUNIA</h3>
+        <p style="margin: 0.5vh 0; font-size: 0.9em; font-weight: 700;">
+          👉 Ke arah <b>TIMUR (Kanan)</b> ➔ Jam <b>DITAMBAH (+)</b><br>
+          👉 Ke arah <b>BARAT (Kiri)</b> ➔ Jam <b>DIKURANG (-)</b><br>
+          <i>Contoh: Jkt (+7) ke London (0) = Geser Kiri 7 Jam ➔ 12.00 - 7 = 05.00 Pagi!</i>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 12: DUEL PAPAN TULIS -->
+<div id="slide12" class="slide">
+  <div class="card" style="border-top-color: #e63946; background: #fffcfc;">
+    <div class="badge badge-red" style="font-size: 1.5em; padding: 1.5vh 3vw;">⚔️ DUEL PAPAN TULIS ⚔️</div>
+    <h1 style="color: #e63946; margin: 2vh 0;">TANTANGAN KILAT 2 SANTRI!</h1>
+    <div class="formula-box" style="background: #ffffff; border: 3px solid #e63946;">
+      <p style="font-size: clamp(1.4rem, 3.5vh, 3rem); font-weight: 800; color: #1d3557; margin: 0;">
+        "Saat ini di <b>Tokyo (GMT +9)</b> pukul <b>15.00 sore</b>.<br>
+        Pukul berapa waktu di <b>London (GMT 0)</b> dan di <b>Mekkah (GMT +3)</b>?"
+      </p>
+    </div>
+    <div class="badge badge-yellow" style="margin-top: 2vh;">⭐ Siapa cepat & benar langsung dapat 100 Poin! ⭐</div>
+  </div>
+</div>
+
+<!-- SLIDE 13: LATIHAN KILAT BUKU CATATAN -->
+<div id="slide13" class="slide">
+  <div class="card" style="border-top-color: #1d3557; padding: 3vh 3vw;">
+    <div class="badge badge-blue">Tantangan 4 Menit di Buku</div>
+    <h1 style="font-size: clamp(2rem, 4.5vh, 4rem); margin-bottom: 1vh;">Tulis di Buku Catatanmu! ✍️</h1>
+    <div class="box-container" style="grid-template-columns: 1fr; gap: 1.5vh;">
+      <div class="info-box" style="border-left-color: #e63946;">
+        <p style="margin: 0; font-weight: 800; color: #1d3557;">SOAL 1 (Operasi Campuran):</p>
+        <p style="margin: 0.5vh 0; font-size: 1.2em; font-weight: 900; color: #e63946;">-15 + (-5) &times; 4 = ...</p>
+      </div>
+      <div class="info-box" style="border-left-color: #2a9d8f;">
+        <p style="margin: 0; font-weight: 800; color: #1d3557;">SOAL 2 (Zona Waktu & Penerbangan):</p>
+        <p style="margin: 0.5vh 0; font-size: 1.1em; font-weight: 700; color: #1d3557;">
+          Pesawat jamaah umroh terbang dari <b>Jakarta (GMT +7)</b> pukul <b>08.00 pagi</b>.<br>
+          Lama penerbangan adalah <b>9 jam</b>. Pukul berapa pesawat mendarat di <b>Jeddah/Mekkah (GMT +3)</b> waktu setempat?
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 14: KUNCI JAWABAN LATIHAN -->
+<div id="slide14" class="slide">
+  <div class="card" style="border-top-color: #2a9d8f;">
+    <div class="badge badge-yellow">Pembahasan Jawaban</div>
+    <h1 style="font-size: clamp(2rem, 4.5vh, 4rem);">Kunci Jawaban Tantangan</h1>
+    <div class="box-container" style="grid-template-columns: 1fr;">
+      <div class="info-box" style="border-left-color: #e63946;">
+        <p style="margin: 0; font-weight: 800; color: #1d3557;">Jawaban Soal 1:</p>
+        <p style="margin: 0.5vh 0; font-size: 1.2em; font-weight: 900; color: #e63946;">
+          (-5) &times; 4 = -20 &nbsp;➔&nbsp; -15 + (-20) = <span class="highlight-red">-35</span>
+        </p>
+      </div>
+      <div class="info-box" style="border-left-color: #2a9d8f;">
+        <p style="margin: 0; font-weight: 800; color: #1d3557;">Jawaban Soal 2:</p>
+        <p style="margin: 0.5vh 0; font-size: 1.1em; font-weight: 700; color: #1d3557;">
+          Waktu tiba versi Jakarta = 08.00 + 9 jam = 17.00 WIB.<br>
+          Karena Mekkah lebih lambat 4 jam dari Jakarta ➔ 17.00 - 4 jam = <span class="highlight-green">13.00 (Jam 1 Siang Waktu Mekkah)</span>!
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 15: GOLDEN MOMENT - GAME TEMBAK ANGKA BERANTAI -->
+<div id="slide15" class="slide">
+  <div class="card" style="border-top-color: #e63946; background: #fffdfd;">
+    <div class="badge badge-red" style="font-size: 1.3em;">🌟 GOLDEN MOMENT (BONUS GAME)</div>
+    <h1 style="color: #e63946; margin: 1.5vh 0;">🔥 TEMBAK ANGKA BERANTAI!</h1>
+    <p style="font-weight: 800; font-size: 1.3em; color: #1d3557;">
+      Ustaz lempar soal kilat ➔ Santri jawab dalam 3 detik ➔ Hasilnya dioper ke teman sebelah!
+    </p>
+    <div class="formula-box" style="border-color: #e63946; background: white;">
+      <p style="margin: 0.5vh 0; font-weight: 800; color: #333;">
+        Santri A: <b>-5 + 8</b> = <span class="highlight-blue">3</span><br>
+        Santri B: <span class="highlight-blue">3</span> &times; (-4) = <span class="highlight-red">-12</span><br>
+        Santri C: <span class="highlight-red">-12</span> - 5 = <span class="highlight-red">-17</span><br>
+        Santri D: <span class="highlight-red">-17</span> - (-20) = <span class="highlight-green">3</span>
+      </p>
+    </div>
+    <div class="badge badge-yellow" style="margin-top: 1.5vh;">⚠️ Yang bengong > 3 detik wajib teriak: "KALI BAGI IMAM SAYA!" 😂</div>
+  </div>
+</div>
+
+<!-- SLIDE 16: GOLDEN MOMENT - TRIVIA BELAHAN BUMI -->
+<div id="slide16" class="slide">
+  <div class="card" style="border-top-color: #2a9d8f;">
+    <div class="badge badge-green" style="font-size: 1.3em;">🌍 TRIVIA PENJELAJAH WAKTU</div>
+    <h1 style="font-size: clamp(2rem, 4.5vh, 4rem); margin: 1.5vh 0;">Misteri Belahan Bumi</h1>
+    <div class="info-box" style="border-left-color: #2a9d8f; width: 100%; text-align: left;">
+      <p style="margin: 0; font-weight: 800; color: #1d3557; font-size: 1.2em;">
+        "Saat kita di Al-Imam sedang belajar jam <b>08.00 Pagi HARI RABU</b>...<br>
+        Di kota manakah yang saat ini masih jam <b>08.00 MALAM HARI SELASA KEMARIN</b>?"
+      </p>
+    </div>
+    <div class="formula-box" style="background: #e8f4f8; border-color: #1d3557; margin-top: 2vh;">
+      <p style="margin: 0; font-size: 1.3em; font-weight: 900; color: #e63946;">
+        Jawab: New York & Los Angeles (Amerika Serikat)!
+      </p>
+      <p style="margin: 0.5vh 0; color: #555; font-size: 0.9em;">
+        Karena selisih waktu -12 jam, mereka masih berada di malam hari kemarin!
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 17: PENUTUP & TEASER JUMAT -->
+<div id="slide17" class="slide">
+  <div class="card" style="border-top-color: #ffd700; padding: 6vh 4vw;">
+    <div class="badge badge-yellow" style="font-size: 1.3em;">Kerja Bagus Hari Ini! 👏</div>
+    <h1 style="margin: 2vh 0;">Kalian Luar Biasa!</h1>
+    <div class="info-box" style="border-left-color: #1d3557; text-align: center; width: 100%;">
+      <h2 style="color: #1d3557; margin: 0 0 1vh 0;">🔥 TEASER HARI JUMAT (2 JP / 80 Menit):</h2>
+      <p style="font-size: 1.2em; font-weight: 700; color: #e63946; margin: 0;">
+        "Turnamen Logika Kelompok & Membongkar Misteri Perkalian Pembagian Pecahan!"
+      </p>
+    </div>
+    <p style="margin-top: 3vh; font-weight: 800; color: #666;">Alhamdulillahirabbil 'alamin. Wassalamu'alaikum Warahmatullahi Wabarakatuh.</p>
+  </div>
+</div>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <button onclick="prevSlide()">❮ Mundur</button>
+  <button onclick="nextSlide()" style="background: #e63946;">Maju ❯</button>
+</div>
+
+<script>
+  let current = 1;
+  const total = 17;
+  
+  function showSlide(n) {
+    for(let i=1; i<=total; i++) {
+      const el = document.getElementById('slide'+i);
+      if(el) el.classList.remove('active');
+    }
+    const target = document.getElementById('slide'+n);
+    if(target) target.classList.add('active');
+  }
+  
+  function nextSlide() { 
+    if(current < total) { 
+      current++; 
+      showSlide(current); 
+    } 
+  }
+  
+  function prevSlide() { 
+    if(current > 1) { 
+      current--; 
+      showSlide(current); 
+    } 
+  }
+  
+  document.addEventListener('keydown', function(event) {
+    if(event.key === 'ArrowRight' || event.key === ' ' || event.key === 'Enter') {
+        nextSlide();
+    }
+    if(event.key === 'ArrowLeft') {
+        prevSlide();
+    }
+  });
+</script>
+
+</body>
+</html>

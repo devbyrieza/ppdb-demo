@@ -328,7 +328,7 @@ export async function PATCH(
             tipe_pendaftaran: santri.tipe_pendaftaran || "BARU",
             kelas_masuk: parseSafeInt(santri.kelas_masuk),
             asal_institusi: santri.asal_institusi,
-            nomor_induk_lama: santri.nomor_induk_lama,
+            npsn: santri.npsn,
             catatan_pindahan: santri.catatan_pindahan,
             data_lengkap: dataLengkapObj,
             updated_at: new Date(),

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buku Saku Guru - MTK Kelas 7</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background: #f4f6f8; color: #333; line-height: 1.5; padding-bottom: 80px; }
+  .header { background: #1d3557; color: white; padding: 16px 20px; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+  .header h1 { margin: 0; font-size: 1.2rem; font-weight: 900; letter-spacing: 0.5px; }
+  .header p { margin: 4px 0 0 0; font-size: 0.8rem; color: #ffd700; font-weight: 600; }
+  
+  .content { padding: 16px; }
+  .card { background: white; padding: 16px 18px; border-radius: 12px; box-shadow: 0 3px 6px rgba(0,0,0,0.04); margin-bottom: 16px; border-left: 5px solid #1d3557; }
+  .card-red { border-left-color: #e63946; }
+  .card-yellow { border-left-color: #ffd700; }
+  .card-green { border-left-color: #2a9d8f; }
+  
+  h2 { color: #1d3557; font-size: 1.1rem; font-weight: 800; margin-top: 0; border-bottom: 2px solid #f0f0f0; padding-bottom: 8px; }
+  h3 { color: #e63946; font-size: 0.95rem; font-weight: 800; margin: 10px 0 4px 0; }
+  
+  ul, ol { padding-left: 18px; margin: 6px 0; }
+  li { margin-bottom: 8px; font-size: 0.9rem; }
+  
+  .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 4px; font-weight: 700; color: #856404; font-size: 0.85rem; }
+  .kunci { font-weight: 900; color: #d90429; font-size: 1rem; background: #ffe6e6; padding: 2px 6px; border-radius: 4px; }
+  
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: fadeIn 0.25s ease-out; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+  .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; box-shadow: 0 -3px 12px rgba(0,0,0,0.08); z-index: 100; }
+  .nav-btn { flex: 1; padding: 12px 2px; border: none; background: none; font-size: 0.75rem; font-weight: 700; color: #6c757d; cursor: pointer; transition: 0.2s; border-top: 3px solid transparent; text-align: center; }
+  .nav-btn.active { color: #e63946; border-top: 3px solid #e63946; background: #fffbfb; font-weight: 800; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📱 BUKU SAKU GURU</h1>
+  <p>Matematika Kelas 7 - MTs/SMP Al-Imam</p>
+</div>
+
+<!-- TAB 1: PERTEMUAN 2 (RABU 40 MENIT) -->
+<div id="tab-p2" class="tab-content active content">
+  
+  <div class="card card-red">
+    <h2>⏰ 1. Menit 00-05: Review PR (Papan Tulis)</h2>
+    <ul>
+      <li>Bagi papan 5 kolom: <code>[1]</code> <code>[2]</code> <code>[3]</code> <code>[4]</code> <code>[5]</code></li>
+      <li>Suruh <b>5 anak maju barengan</b> (1 menit selesai!).</li>
+      <li>Kunci PR:
+        <br>1️⃣ <span class="kunci">1</span> &nbsp;|&nbsp; 2️⃣ <span class="kunci">&frac14;</span> &nbsp;|&nbsp; 3️⃣ <span class="kunci">1</span>
+        <br>4️⃣ <span class="kunci">1</span> &nbsp;|&nbsp; 5️⃣ <span class="kunci">24/5 = 4,8</span>
+      </li>
+      <li>Beri 20 poin untuk yang maju.</li>
+    </ul>
+  </div>
+
+  <div class="card card-yellow">
+    <h2>⏰ 2. Menit 05-17: Kunci Operasi 4 Macam (TV)</h2>
+    <ul>
+      <li><b>Penjumlahan & Pengurangan:</b> Uang (+) vs Hutang (-).</li>
+      <li><b>⚠️ Jebakan Anak: <code>-12 - 5</code> = <span class="kunci">-17</span> (Bukan +17!).</b>
+        <br><i>Analogi: Hutang 12 ribu ngutang lagi 5 ribu ➔ Hutang 17 ribu. Gak mungkin ngutang malah jadi kaya (+17)!</i>
+      </li>
+      <li><b>Minus Ketemu Minus Jadi Plus:</b> Hanya jika <b>tabrakan langsung</b>: <code>12 - (-5) = 17</code> atau <code>-12 x (-5) = 60</code>.</li>
+      <li><b>Aturan Tanda Perkalian:</b>
+        <br>• Tanda Sama = <span class="highlight">POSITIF (+)</span>
+        <br>• Tanda Beda = <span class="highlight" style="background:#ffe6e6; color:#e63946;">NEGATIF (-)</span>
+      </li>
+      <li><b>Jembatan Sahabat:</b> "Musuh dari musuhku = Temanku $(- \times - = +)$".</li>
+      <li><b>🕌 Fiqih KABATAKU:</b> 
+        <br>• <b>KALI & BAGI = IMAM</b> (Wajib ruku'/dikerjakan duluan!).
+        <br>• <b>TAMBAH & KURANG = MAKMUM</b> (Wajib sabar menunggu!).
+        <br>• <i>Mendahului Imam = BATAL / SALAH TOTAL!</i>
+      </li>
+    </ul>
+  </div>
+
+  <div class="card card-green">
+    <h2>⏰ 3. Menit 17-29: Zona Waktu GMT Dunia (TV + Papan)</h2>
+    <ul>
+      <li><b>Peta Nol:</b> London = <b>GMT 0</b></li>
+      <li>Mekkah = <b>+3</b> | Jakarta = <b>+7</b> | Tokyo = <b>+9</b> | New York = <b>-5</b></li>
+      <li><b>Coretan Papan Tulis 1 (Selisih NY - Jakarta):</b>
+        <br><code>(+7) - (-5) = 7 + 5 = 12 Jam!</code>
+        <br><span class="highlight">💡 Kenapa DIKURANG bukan DITAMBAH?</span>
+        <br>• Kata "Selisih" = Selalu Pengurangan (Besar - Kecil).
+        <br>• Jarak fisik: NY ke London (5 jam) + London ke Jkt (7 jam) = 12 jam.
+        <br>• Kalo ditambah: <code>7 + (-5) = 2 jam</code> (Salah! Jkt siang, NY malam, pasti beda 12 jam).
+      </li>
+      <li><b>Coretan Papan Tulis 2 (Jam Sholat Mekkah):</b>
+        <br>Subuh Mekkah 04.30 (+3) ➔ Jakarta (+7):
+        <br><code>04.30 + 4 jam = 08.30 Pagi WIB!</code>
+      </li>
+    </ul>
+  </div>
+
+  <div class="card card-red">
+    <h2>⏰ 4. Menit 29-37: Duel & Latihan Buku</h2>
+    <h3>⚔️ Duel Papan (2 Anak):</h3>
+    <p>Tokyo jam 15.00 (+9). Jam berapa di London & Mekkah?</p>
+    <ul>
+      <li>London: <span class="kunci">06.00 Pagi</span> (15 - 9)</li>
+      <li>Mekkah: <span class="kunci">09.00 Pagi</span> (15 - 6)</li>
+    </ul>
+    <h3>📝 Latihan Buku (4 Menit):</h3>
+    <ol>
+      <li><code>-15 + (-5) x 4 =</code> <span class="kunci">-35</span></li>
+      <li>Jakarta jam 08.00 pagi, terbang 9 jam. Tiba di Mekkah jam berapa? ➔ <span class="kunci">13.00 (Jam 1 Siang)</span></li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2>⏰ 5. Menit 37-40: Penutup & Teaser</h2>
+    <ul>
+      <li>Puji antusiasme santri.</li>
+      <li><b>Teaser Jumat (80m):</b> Turnamen Logika Kelompok & Bedah Pecahan!</li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- TAB 2: BANK SOAL & CONTEKAN -->
+<div id="tab-soal" class="tab-content content">
+  <div class="card">
+    <h2>🧮 Tanya Jawab Kilat (Lisan)</h2>
+    <p><i>Gunakan untuk memancing santri yang melamun/pasif:</i></p>
+    <ul>
+      <li><code>-7 x (-6) =</code> <span class="kunci">+42</span></li>
+      <li><code>30 : (-5) =</code> <span class="kunci">-6</span></li>
+      <li><code>-12 + (-8) =</code> <span class="kunci">-20</span></li>
+      <li><code>15 - (-5) =</code> <span class="kunci">20</span></li>
+      <li><code>-4 + 10 =</code> <span class="kunci">+6</span></li>
+      <li><code>-10 - 5 =</code> <span class="kunci">-15</span></li>
+    </ul>
+  </div>
+  <div class="card card-yellow">
+    <h2>🌍 Contekan Cepat Zona Waktu</h2>
+    <ul>
+      <li><b>London (0) ➔ Jakarta (+7):</b> Tambah 7 jam.</li>
+      <li><b>Jakarta (+7) ➔ London (0):</b> Kurang 7 jam.</li>
+      <li><b>Jakarta (+7) ➔ Mekkah (+3):</b> Kurang 4 jam.</li>
+      <li><b>Mekkah (+3) ➔ Jakarta (+7):</b> Tambah 4 jam.</li>
+      <li><b>Jakarta (+7) ➔ Tokyo (+9):</b> Tambah 2 jam.</li>
+      <li><b>Jakarta (+7) ➔ New York (-5):</b> Kurang 12 jam (atau beda 12 jam).</li>
+    </ul>
+  </div>
+</div>
+
+<!-- TAB 3: ARSIP PERTEMUAN 1 -->
+<div id="tab-p1" class="tab-content content">
+  <div class="card">
+    <h2>📜 Kontrak Belajar Pertemuan 1</h2>
+    <ol>
+      <li>Tidak Takut Salah (Maju/Jawab dulu!).</li>
+      <li>Dilarang Menertawakan Berlebihan.</li>
+      <li>Saling Menghargai & Peduli (Bantu teman).</li>
+    </ol>
+  </div>
+  <div class="card card-green">
+    <h2>🕌 Poin Nasihat Jumat Kemarin</h2>
+    <ul>
+      <li>Doa makan shahih: <i>Alhamdulillahilladzi ath'amani hadza...</i> (Kartu Spesial penghapus dosa).</li>
+      <li>Kisah mimbar Nabi ﷺ Aamiin 3x (Laknat bagi yang pelit shalawat).</li>
+      <li>Rakaat imam = dapat Ruku'.</li>
+      <li>Kebaikan menolong teman kembali ke diri & keluarga di rumah (QS. Al Isra: 7).</li>
+    </ul>
+  </div>
+</div>
+
+<!-- TAB 4: CADANGAN GAME -->
+<div id="tab-cadangan" class="tab-content content">
+  <div class="card card-red">
+    <h2>🔥 1. Tembak Angka Berantai (Hitung Cepat)</h2>
+    <p>Oper pertanyaan kilat dari santri ke santri:</p>
+    <ul>
+      <li>Santri A: <code>-5 + 8 =</code> (3)</li>
+      <li>Santri B: <code>3 x (-4) =</code> (-12)</li>
+      <li>Santri C: <code>-12 - 5 =</code> (-17)</li>
+      <li>Santri D: <code>-17 - (-20) =</code> (3)</li>
+    </ul>
+    <p class="highlight">Bengong > 3 detik = teriak "KALI BAGI IMAM SAYA!"</p>
+  </div>
+
+  <div class="card card-yellow">
+    <h2>🎯 2. Tebak Garis Bilangan (-20 s/d +20)</h2>
+    <ol>
+      <li>Ustaz simpan angka rahasia di saku (misal: -7).</li>
+      <li>Santri menebak, Ustaz respon: <b>"TERLALU KE KANAN"</b> atau <b>"TERLALU KE KIRI"</b>.</li>
+    </ol>
+  </div>
+
+  <div class="card card-green">
+    <h2>🌍 3. Trivia Zona Waktu</h2>
+    <p><i>"Kita jam 8 pagi Rabu, di mana yang masih jam 8 malam Selasa kemarin?"</i> ➔ <b>New York / Los Angeles (AS)</b>.</p>
+  </div>
+</div>
+
+<!-- BOTTOM NAVIGATION -->
+<div class="bottom-nav">
+  <button class="nav-btn active" onclick="openTab('tab-p2', this)">⚡ Rabu (40m)</button>
+  <button class="nav-btn" onclick="openTab('tab-soal', this)">🧮 Bank Soal</button>
+  <button class="nav-btn" onclick="openTab('tab-p1', this)">📜 Pertemuan 1</button>
+  <button class="nav-btn" onclick="openTab('tab-cadangan', this)">🎮 Cadangan</button>
+</div>
+
+<script>
+function openTab(tabId, btn) {
+  document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+
+</body>
+</html>

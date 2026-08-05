@@ -56,7 +56,7 @@ export default function EditPendaftarModal({
           tipe_pendaftaran: pendaftar.tipe_pendaftaran || "BARU",
           kelas_masuk: pendaftar.kelas_masuk ?? "",
           asal_institusi: pendaftar.asal_institusi || "",
-          nomor_induk_lama: pendaftar.nomor_induk_lama || "",
+          npsn: pendaftar.npsn || "",
           catatan_pindahan: pendaftar.catatan_pindahan || "",
         },
         orang_tua: {
@@ -471,8 +471,8 @@ export default function EditPendaftarModal({
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs font-black uppercase text-stone-600">NISN</label>
-                  <input
+                  <label className="text-xs font-black uppercase text-stone-600">NISN <span className="text-red-500">*</span></label>
+                  <input required
                     type="text"
                     value={editFormData.santri.nisn}
                     onChange={(e) => setEditFormData({
@@ -559,8 +559,8 @@ export default function EditPendaftarModal({
                         />
                       </div>
                       <div className="space-y-1">
-                        <label className="text-xs font-black uppercase text-stone-600">Nomor Induk Lama (NIS/NISP)</label>
-                        <input
+                        <label className="text-xs font-black uppercase text-stone-600">Nomor Induk Lama (NIS/NISP) <span className="text-red-500">*</span></label>
+                        <input required
                           type="text"
                           value={editFormData.santri.nomor_induk_lama}
                           onChange={(e) => setEditFormData({

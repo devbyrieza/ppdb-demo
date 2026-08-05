@@ -24,7 +24,8 @@ export default function AdminTambahPendaftar() {
     // Khusus pindahan
     kelas_masuk: "",
     asal_institusi: "",
-    nomor_induk_lama: "",
+    nisn: "",
+    npsn: "",
     catatan_pindahan: "",
   });
 
@@ -225,8 +226,12 @@ export default function AdminTambahPendaftar() {
                   <input required type="text" name="asal_institusi" value={formData.asal_institusi} onChange={handleChange} placeholder="Nama sekolah asal..." className="w-full px-4 py-2.5 rounded-xl border-2 border-purple-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 outline-none transition-all" />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-bold text-purple-900">NISN / NSM / NPSN Sekolah Asal</label>
-                  <input type="text" name="nomor_induk_lama" value={formData.nomor_induk_lama} onChange={handleChange} placeholder="Nomor statistik/induk..." className="w-full px-4 py-2.5 rounded-xl border-2 border-purple-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 outline-none transition-all" />
+                  <label className="text-sm font-bold text-purple-900">NISN (Nomor Induk Siswa Nasional) <span className="text-red-500">*</span></label>
+                  <input required type="text" name="nisn" value={formData.nisn} onChange={handleChange} placeholder="NISN santri..." className="w-full px-4 py-2.5 rounded-xl border-2 border-purple-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 outline-none transition-all" />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-bold text-purple-900">NPSN Sekolah Asal <span className="text-red-500">*</span></label>
+                  <input required type="text" name="npsn" value={formData.npsn} onChange={handleChange} placeholder="NPSN asal sekolah..." className="w-full px-4 py-2.5 rounded-xl border-2 border-purple-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 outline-none transition-all" />
                 </div>
                 <div className="space-y-2 md:col-span-2">
                   <label className="text-sm font-bold text-purple-900">Alasan Pindah (Opsional)</label>

@@ -97,7 +97,8 @@ export default function DaftarPindahanPage() {
     jenjang: jenjangFromUrl,
     kelas_masuk: "",
     asal_institusi: "",
-    nomor_induk_lama: "",
+    nisn: "",
+    npsn: "",
     catatan_pindahan: "",
   });
 
@@ -203,6 +204,14 @@ export default function DaftarPindahanPage() {
       errors.asal_institusi = "Asal pesantren/sekolah wajib diisi";
     }
 
+    if (!formData.nisn) {
+      errors.nisn = "NISN wajib diisi";
+    }
+
+    if (!formData.npsn) {
+      errors.npsn = "NPSN wajib diisi";
+    }
+
     setFieldErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -257,7 +266,8 @@ export default function DaftarPindahanPage() {
         jenjang: formData.jenjang,
         kelas_masuk: formData.kelas_masuk,
         asal_institusi: formData.asal_institusi,
-        nomor_induk_lama: formData.nomor_induk_lama,
+        nisn: formData.nisn,
+        npsn: formData.npsn,
         catatan_pindahan: formData.catatan_pindahan,
         tipe_pendaftaran: "PINDAHAN",
         channel: "whatsapp",
@@ -370,7 +380,8 @@ export default function DaftarPindahanPage() {
                             jenjang: "",
                             kelas_masuk: "",
                             asal_institusi: "",
-                            nomor_induk_lama: "",
+                            nisn: "",
+    npsn: "",
                             catatan_pindahan: "",
                           });
                           setFieldErrors({});
@@ -627,23 +638,37 @@ export default function DaftarPindahanPage() {
                     </div>
                   </InputField>
 
-                  <InputField label="NISN (Nomor Induk Siswa Nasional)" error={fieldErrors.nomor_induk_lama}>
+                  <InputField label="NISN (Nomor Induk Siswa Nasional) *" error={fieldErrors.nisn}>
                     <input
+                      required
                       type="text"
                       maxLength={10}
-                      value={formData.nomor_induk_lama}
+                      value={formData.nisn}
                       onChange={(e) =>
                         setFormData((prev) => ({
                           ...prev,
-                          nomor_induk_lama: e.target.value.replace(/\D/g, ""),
+                          nisn: e.target.value.replace(/\D/g, ""),
                         }))
                       }
-                      placeholder="10 Digit NISN (Nomor Induk Siswa Nasional)"
+                      placeholder="10 Digit NISN"
                       className="w-full px-5 py-3 md:px-8 md:py-5 rounded-xl md:rounded-2xl bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold placeholder:text-ink-500 text-sm md:text-base text-ink-950"
                     />
-                    <p className="text-xs text-primary-600 font-medium italic ml-1 leading-relaxed">
-                      * Wajib diisi. Masukkan 10 digit NISN milik santri.
-                    </p>
+                  </InputField>
+                  <InputField label="NPSN Sekolah Asal *" error={fieldErrors.npsn}>
+                    <input
+                      required
+                      type="text"
+                      maxLength={8}
+                      value={formData.npsn}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          npsn: e.target.value.replace(/\D/g, ""),
+                        }))
+                      }
+                      placeholder="8 Digit NPSN"
+                      className="w-full px-5 py-3 md:px-8 md:py-5 rounded-xl md:rounded-2xl bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold placeholder:text-ink-500 text-sm md:text-base text-ink-950"
+                    />
                   </InputField>
 
                   <div className="md:col-span-2">

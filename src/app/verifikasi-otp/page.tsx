@@ -29,7 +29,8 @@ function VerifikasiOTPContent() {
   const tipe_pendaftaran = searchParams.get("tipe_pendaftaran") || "BARU";
   const kelas_masuk = searchParams.get("kelas_masuk") || "";
   const asal_institusi = searchParams.get("asal_institusi") || "";
-  const nomor_induk_lama = searchParams.get("nomor_induk_lama") || "";
+  const nisn = searchParams.get("nisn") || "";
+    const npsn = searchParams.get("npsn") || "";
   const catatan_pindahan = searchParams.get("catatan_pindahan") || "";
 
   // OTP State
@@ -186,7 +187,8 @@ function VerifikasiOTPContent() {
           tipe_pendaftaran,
           kelas_masuk,
           asal_institusi,
-          nomor_induk_lama,
+          nisn,
+            npsn,
           catatan_pindahan,
         }),
       });
