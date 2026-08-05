@@ -41,8 +41,8 @@ export async function GET(request: NextRequest) {
         jenjang: true,
         kelas_masuk: true,
         asal_institusi: true,
-        nisn,
-        npsn,: true,
+        nisn: true,
+        npsn: true,
         catatan_pindahan: true,
         tipe_pendaftaran: true,
         no_hp: true,
@@ -74,6 +74,7 @@ export async function GET(request: NextRequest) {
             status_pembayaran: true,
             jenis_pembayaran: true,
             created_at: true,
+
           },
           orderBy: { created_at: "desc" },
         },
@@ -185,6 +186,7 @@ export async function POST(request: NextRequest) {
         nomor_pendaftaran,
         status_pendaftaran,
         tahun_ajaran_id: tahunAjaran.id,
+        // Pindahan tidak perlu asal_sekolah SD/MI, kosongkan
         asal_sekolah: asal_institusi.trim(),
       },
     });
@@ -235,8 +237,8 @@ export async function PATCH(request: NextRequest) {
     }
 
     const validStatuses = [
-      "draft", "registered", "payment_verification", "verified", "data_completed", 
-      "docs_uploaded", "docs_verified", "selection", "announced", "accepted", 
+      "draft", "registered", "payment_verification", "verified", "data_completed",
+      "docs_uploaded", "docs_verified", "selection", "announced", "accepted",
       "enrolled", "enrolled_full", "pindah_keluar"
     ];
     if (!validStatuses.includes(status_pendaftaran)) {
