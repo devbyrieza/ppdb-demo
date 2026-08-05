@@ -1,5 +1,5 @@
-/**
- * Jadwal Seleksi API — Main data endpoint for the dashboard.
+﻿/**
+ * Jadwal Seleksi API â€” Main data endpoint for the dashboard.
  *
  * Returns:
  * - Grup A test completion status (akademik, kepribadian, kesiapan)
@@ -65,15 +65,29 @@ async function getSession() {
   }
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   const session = await getSession();
-  if (!session || session.role !== "pendaftar") {
+  
+  const { searchParams } = new URL(request.url);
+  const targetPendaftarId = searchParams.get("pendaftarId");
+
+  let pendaftarId = "";
+  let isAdminBypass = false;
+
+  if (session?.role === "admin_super" || session?.role === "admin" || session?.role === "penguji") {
+    if (targetPendaftarId) {
+      pendaftarId = targetPendaftarId;
+      isAdminBypass = true;
+    } else {
+      return NextResponse.json({ error: "Unauthorized or missing pendaftarId" }, { status: 401 });
+    }
+  } else if (session?.role === "pendaftar") {
+    pendaftarId = session.id;
+  } else {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {
-    const pendaftarId = session.id;
-
     // 1. Fetch pendaftar with notification flags and status
     const pendaftar = await prisma.pendaftar.findUnique({
       where: { id: pendaftarId },
@@ -110,7 +124,7 @@ export async function GET() {
       pendaftar.status_pendaftaran || "",
     );
 
-    if (isLocked) {
+    if (isLocked && !isAdminBypass) {
       return NextResponse.json({
         data: {
           locked: true,
@@ -121,7 +135,26 @@ export async function GET() {
       });
     }
 
-    // 2. Fetch Grup A — Online test completion status
+    // â”€â”€ EARLY EXIT: Seleksi sudah selesai & pendaftar sudah accepted/enrolled â”€â”€
+    // Tampilkan halaman "Seleksi Selesai" daripada form jadwal
+    const SELEKSI_DONE_STATUSES = ["accepted", "enrolled"];
+    if (SELEKSI_DONE_STATUSES.includes(pendaftar.status_pendaftaran || "")) {
+      return NextResponse.json({
+        data: {
+          condition: "seleksi_selesai",
+          current_status: pendaftar.status_pendaftaran,
+          grupA: {
+            akademik: { completed: true, label: "Kemampuan Dasar Akademik" },
+            kepribadian: { completed: true, label: "Identifikasi Kepribadian" },
+            kesiapan: { completed: true, label: "Seleksi Kesiapan" },
+          },
+          grupB: { hasSchedules: false, availableSlots: [], booked: [] },
+          progress: { completed: 6, total: 6, percentage: 100 },
+        },
+      });
+    }
+
+    // 2. Fetch Grup A â€” Online test completion status
     const nilaiUjian = await prisma.nilaiUjian.findMany({
       where: { pendaftar_id: pendaftarId },
       select: { score_akademik: true, score_kepribadian: true, score_kesiapan: true, detail_akademik: true, detail_kepribadian: true, detail_kesiapan: true, nilai_tes_quran: true, detail_quran: true, nilai_wawancara_santri: true, detail_wawancara: true, nilai_wawancara_ortu: true, detail_cawalsan: true },
@@ -147,7 +180,7 @@ export async function GET() {
       kesiapan: { completed: hasKesiapan, label: "Seleksi Kesiapan" },
     };
 
-    // 3. Fetch Grup B — Available exam sessions (future, active)
+    // 3. Fetch Grup B â€” Available exam sessions (future, active)
     const availableSessions = await prisma.examSession.findMany({
       where: {
         is_active: true,
@@ -389,3 +422,4 @@ export async function GET() {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+

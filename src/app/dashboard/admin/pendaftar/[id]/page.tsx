@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -1477,6 +1477,37 @@ export default function PendaftarDetailPage() {
                   </p>
                 </div>
               </div>
+
+              {userRole === "admin_super" && (
+                <div className="mb-6 p-4 bg-blue-50 border border-blue-100 rounded-2xl flex flex-col sm:flex-row sm:items-center gap-3">
+                  <span className="text-xs font-black uppercase tracking-widest text-blue-800">
+                    Aksi Admin (Bypass):
+                  </span>
+                  <div className="flex flex-wrap gap-2">
+                    <a
+                      href={`/dashboard/pendaftar/ujian/akademik?pendaftarId=${pendaftar.id}`}
+                      target="_blank"
+                      className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-[11px] font-bold transition-colors shadow-sm"
+                    >
+                      Buka CBT Akademik
+                    </a>
+                    <a
+                      href={`/dashboard/pendaftar/ujian/kepribadian?pendaftarId=${pendaftar.id}`}
+                      target="_blank"
+                      className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-[11px] font-bold transition-colors shadow-sm"
+                    >
+                      Buka CBT Kepribadian
+                    </a>
+                    <a
+                      href={`/dashboard/pendaftar/ujian/kesiapan?pendaftarId=${pendaftar.id}`}
+                      target="_blank"
+                      className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-[11px] font-bold transition-colors shadow-sm"
+                    >
+                      Buka CBT Kesiapan
+                    </a>
+                  </div>
+                </div>
+              )}
 
               {/* Grid 6 Test Results */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -3892,4 +3923,5 @@ function InfoItem({
     </div>
   );
 }
+
 

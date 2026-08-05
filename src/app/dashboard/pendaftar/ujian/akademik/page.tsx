@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -22,6 +22,34 @@ export default function AkademikTestPage() {
   const [isLocked, setIsLocked] = useState(false);
   const [lockMessage, setLockMessage] = useState("");
   const [answers, setAnswers] = useState<Record<number, string>>({});
+  const [pendaftarId, setPendaftarId] = useState<string | null>(null);
+
+  // Autosave answers to localStorage
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = localStorage.getItem("template_demo_ujian_akademik_draft");
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed && typeof parsed === "object") {
+            setAnswers(parsed);
+          }
+        }
+      } catch (e) {
+        console.warn("Failed to load akademik test draft:", e);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && Object.keys(answers).length > 0) {
+      try {
+        localStorage.setItem("template_demo_ujian_akademik_draft", JSON.stringify(answers));
+      } catch (e) {
+        console.warn("Failed to save akademik test draft:", e);
+      }
+    }
+  }, [answers]);
   const [jenjang, setJenjang] = useState<"MTs" | "IL">("MTs");
   const [questions, setQuestions] = useState<Question[]>(AKADEMIK_MTS);
   const [timeLeft, setTimeLeft] = useState(3600); // 60 minutes
@@ -30,7 +58,15 @@ export default function AkademikTestPage() {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-    fetch("/api/pendaftar/undangan-seleksi")
+    const params = new URLSearchParams(window.location.search);
+    const pid = params.get("pendaftarId");
+    if (pid) setPendaftarId(pid);
+
+    const fetchUrl = pid 
+      ? `/api/pendaftar/undangan-seleksi?pendaftarId=${pid}`
+      : "/api/pendaftar/undangan-seleksi";
+
+    fetch(fetchUrl)
       .then((res) => res.json())
       .then((data) => {
         const info = data.data;
@@ -102,12 +138,19 @@ export default function AkademikTestPage() {
 
     try {
       setLoading(true);
+      const payload: any = { type: "akademik", answers, jenjang };
+      if (pendaftarId) payload.pendaftar_id = pendaftarId;
+      
       const res = await fetch("/api/pendaftar/ujian/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ type: "akademik", answers, jenjang }),
+        body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error("Gagal mengirim");
+
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("template_demo_ujian_akademik_draft");
+      }
 
       await Swal.fire({
         icon: "success",
@@ -181,6 +224,12 @@ export default function AkademikTestPage() {
   if (!started) {
     return (
       <div className="max-w-3xl mx-auto p-4 md:p-6">
+        {pendaftarId && (
+          <div className="mb-4 p-4 bg-amber-100 border border-amber-300 rounded-xl text-amber-900 flex items-center gap-3">
+            <AlertCircle className="w-5 h-5 flex-shrink-0" />
+            <p className="text-sm font-bold">MODE ADMIN: Anda sedang mengakses/mengisikan ujian atas nama santri lain.</p>
+          </div>
+        )}
         <button
           onClick={() => router.back()}
           className="flex items-center gap-2 text-stone-500 hover:text-stone-700 mb-4 text-sm font-medium"
@@ -226,10 +275,10 @@ export default function AkademikTestPage() {
             <div className="bg-secondary-50 p-4 rounded-xl border border-secondary-200">
               <h4 className="font-bold text-secondary-800 mb-2">Perhatian</h4>
               <ul className="text-sm text-secondary-700 space-y-1">
-                <li>• Pastikan koneksi internet stabil</li>
-                <li>• Jangan refresh halaman saat mengerjakan</li>
-                <li>• Timer akan berjalan otomatis setelah menekan "Mulai"</li>
-                <li>• Jawaban otomatis dikirim jika waktu habis</li>
+                <li>â€¢ Pastikan koneksi internet stabil</li>
+                <li>â€¢ Jangan refresh halaman saat mengerjakan</li>
+                <li>â€¢ Timer akan berjalan otomatis setelah menekan "Mulai"</li>
+                <li>â€¢ Jawaban otomatis dikirim jika waktu habis</li>
               </ul>
             </div>
             <div className="bg-primary-50 border border-primary-200 rounded-xl p-6">
@@ -275,7 +324,7 @@ export default function AkademikTestPage() {
       <div className="mt-2 space-y-6">
         <div className="bg-gradient-to-r from-indigo-600 to-primary-700 rounded-xl p-6">
           <h2 className="text-xl font-bold text-white">
-            Seleksi Akademik — {jenjang}
+            Seleksi Akademik â€” {jenjang}
           </h2>
           <p className="text-indigo-100 text-sm mt-1">
             {Object.keys(answers).length}/{questions.length} soal terjawab
@@ -331,3 +380,4 @@ export default function AkademikTestPage() {
     </div>
   );
 }
+

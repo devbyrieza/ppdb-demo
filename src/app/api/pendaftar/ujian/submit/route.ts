@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import {
@@ -57,9 +57,12 @@ export async function POST(req: Request) {
       "accepted",
       "enrolled",
     ];
+    
+    const isAdmin = ["admin", "admin_super", "penguji"].includes(session.role);
+
     if (
       !pendaftar ||
-      !ALLOWED_STATUSES.includes(pendaftar.status_pendaftaran || "")
+      (!isAdmin && !ALLOWED_STATUSES.includes(pendaftar.status_pendaftaran || ""))
     ) {
       return NextResponse.json(
         {
@@ -138,3 +141,4 @@ export async function POST(req: Request) {
     );
   }
 }
+
