@@ -194,7 +194,7 @@ INSERT INTO tahun_ajaran (
   gen_random_uuid(),
   2026,
   2027,
-  '2026/2027',
+  '2027-2028',
   true,
   '2026-01-01',
   '2026-06-30',

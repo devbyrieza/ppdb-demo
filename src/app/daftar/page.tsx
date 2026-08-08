@@ -275,7 +275,7 @@ export default function DaftarPage() {
             transition={{ delay: 0.2 }}
             className="text-lg md:text-xl text-ink-700 font-medium"
           >
-            Tahap Awal Penerimaan Santri Baru T.A 2026/2027
+            Tahap Awal Penerimaan Santri Baru T.A 2027-2028
           </motion.p>
         </motion.div>
 

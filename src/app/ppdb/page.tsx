@@ -222,7 +222,7 @@ function PPDBContent() {
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-surface-200 text-primary-700 text-xs font-black uppercase tracking-widest mb-10 shadow-premium-sm"
             >
               <Sparkles className="w-3.5 h-3.5" />
-              <span>Penerimaan Santri Baru T.A 2026/2027</span>
+              <span>Penerimaan Santri Baru T.A 2027-2028</span>
             </motion.div>
 
             <motion.h1
@@ -261,7 +261,7 @@ function PPDBContent() {
                   Kesempatan Emas: Angkatan Pelopor Era Al Fath
                 </h3>
                 <p className="text-primary-800 font-medium leading-relaxed">
-                  Menjadi bagian dari angkatan pelopor 2026/2027 adalah sebuah
+                  Menjadi bagian dari angkatan pelopor 2027-2028 adalah sebuah
                   keistimewaan. Ananda akan menjadi{" "}
                   <strong>pionir dan tonggak sejarah pertama</strong> yang
                   merasakan secara penuh perpaduan mantap antara sistem pendidikan berasrama modern, bimbingan intensif Manhaj Salaf, serta kurikulum kepengasuhan beradab.
@@ -545,7 +545,7 @@ function PPDBContent() {
                     },
                     {
                       q: "Kapan batas akhir pendaftaran?",
-                      a: "Pendaftaran PPDB Tahun Ajaran 2026/2027 dibuka mulai tanggal 10 Februari sampai dengan 7 Juni 2026. Namun, pendaftaran dapat ditutup lebih awal jika kuota santri baru sudah terpenuhi.",
+                      a: "Pendaftaran PPDB Tahun Ajaran 2027-2028 dibuka mulai tanggal 10 Februari sampai dengan 7 Juni 2026. Namun, pendaftaran dapat ditutup lebih awal jika kuota santri baru sudah terpenuhi.",
                     },
                     {
                       q: "Bagaimana sistem kurikulumnya?",

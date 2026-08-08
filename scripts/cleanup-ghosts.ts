@@ -56,7 +56,7 @@ async function main() {
   });
   console.log('✅ Tahun Ajaran 2025/2026 telah dinonaktifkan.');
 
-  console.log('\n✨ PEMBERSIHAN SELESAI! Database Ulul Albaab kini murni 2026/2027.');
+  console.log('\n✨ PEMBERSIHAN SELESAI! Database Ulul Albaab kini murni 2027-2028.');
 }
 
 main()

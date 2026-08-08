@@ -68,7 +68,7 @@ export async function GET(
         : "",
       alamat: pendaftar.alamat || "",
       no_hp: pendaftar.no_hp || "",
-      tahun_ajaran: pendaftar.tahun_ajaran?.nama || "2026/2027",
+      tahun_ajaran: pendaftar.tahun_ajaran?.nama || "2027-2028",
     };
 
     let pdfOutput: ArrayBuffer | null = null;

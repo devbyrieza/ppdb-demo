@@ -62,7 +62,7 @@ export default function TentangPage() {
             Pondok Pesantren Al Fath Sukabumi, cabang resmi dari Al-Hikmah
             International Islamic Boarding School (IIBS). Memadukan intensitas
             Tahfidz Al-Qur'an dengan pengembangan jiwa Leadership untuk
-            Kaderisasi Ummat Unggul, Cerdas, dan Berintegritas. Tahun Ajaran 2026/2027
+            Kaderisasi Ummat Unggul, Cerdas, dan Berintegritas. Tahun Ajaran 2027-2028
             merupakan Angkatan Pertama.
           </motion.p>
         </Container>

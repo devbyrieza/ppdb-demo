@@ -45,14 +45,14 @@ async function main() {
     console.log('❌ Raylan Akbar TIDAK ditemukan di database live.');
   }
 
-  // 3. Setup Tahun Ajaran 2026/2027
-  console.log('\n📅 Menyiapkan Tahun Ajaran 2026/2027...');
+  // 3. Setup Tahun Ajaran 2027-2028
+  console.log('\n📅 Menyiapkan Tahun Ajaran 2027-2028...');
   const year2026 = await prisma.tahunAjaran.upsert({
     where: { id: '88888888-8888-8888-8888-888888888888' },
     update: { is_active: true },
     create: {
       id: '88888888-8888-8888-8888-888888888888',
-      nama: '2026/2027',
+      nama: '2027-2028',
       tahun_mulai: 2026,
       tahun_selesai: 2027,
       is_active: true,
@@ -60,7 +60,7 @@ async function main() {
       tanggal_tutup_pendaftaran: new Date('2026-07-31'),
     }
   });
-  console.log(`✅ Tahun Ajaran 2026/2027 (Aktif): ${year2026.id}`);
+  console.log(`✅ Tahun Ajaran 2027-2028 (Aktif): ${year2026.id}`);
 
   console.log('\n✨ INVESTIGASI SELESAI!');
 }

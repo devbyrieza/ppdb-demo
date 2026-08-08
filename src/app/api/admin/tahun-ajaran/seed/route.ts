@@ -30,7 +30,7 @@ export async function POST() {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    // Check if 2026/2027 already exists
+    // Check if 2027-2028 already exists
     const existing = await prisma.tahunAjaran.findFirst({
       where: {
         tahun_mulai: 2026,
@@ -55,8 +55,8 @@ export async function POST() {
           data: { is_active: false },
         });
 
-        // MIGRASI DATA: Pindahkan semua data ke 2026/2027
-        console.log(`[SEED] Migrating data to ${existing.id} (2026/2027)`);
+        // MIGRASI DATA: Pindahkan semua data ke 2027-2028
+        console.log(`[SEED] Migrating data to ${existing.id} (2027-2028)`);
         await tx.pendaftar.updateMany({
           where: { tahun_ajaran_id: { not: existing.id } },
           data: { tahun_ajaran_id: existing.id },
@@ -100,12 +100,12 @@ export async function POST() {
 
       return NextResponse.json({
         success: true,
-        message: "Tahun Ajaran 2026/2027 diaktifkan & Data Berhasil Dimigrasi!",
+        message: "Tahun Ajaran 2027-2028 diaktifkan & Data Berhasil Dimigrasi!",
         data: { ...existing, is_active: true },
       });
     }
 
-    // Create 2026/2027 tahun ajaran
+    // Create 2027-2028 tahun ajaran
     const result = await prisma.$transaction(async (tx) => {
       // Deactivate all existing tahun ajaran
       await tx.tahunAjaran.updateMany({
@@ -113,12 +113,12 @@ export async function POST() {
         data: { is_active: false },
       });
 
-      // Create 2026/2027
+      // Create 2027-2028
       const newTA = await tx.tahunAjaran.create({
         data: {
           tahun_mulai: 2026,
           tahun_selesai: 2027,
-          nama: "2026/2027",
+          nama: "2027-2028",
           is_active: true,
           tanggal_buka_pendaftaran: new Date("2026-01-01"),
           tanggal_tutup_pendaftaran: new Date("2026-07-31"),
@@ -126,8 +126,8 @@ export async function POST() {
         },
       });
 
-      // MIGRASI DATA: Pindahkan semua data ke 2026/2027 baru
-      console.log(`[SEED] Migrating data to ${newTA.id} (New 2026/2027)`);
+      // MIGRASI DATA: Pindahkan semua data ke 2027-2028 baru
+      console.log(`[SEED] Migrating data to ${newTA.id} (New 2027-2028)`);
       await tx.pendaftar.updateMany({ data: { tahun_ajaran_id: newTA.id } });
       await tx.pembayaran.updateMany({ data: { tahun_ajaran_id: newTA.id } });
       await tx.jadwalUjian.updateMany({ data: { tahun_ajaran_id: newTA.id } });
@@ -140,7 +140,7 @@ export async function POST() {
 
     return NextResponse.json({
       success: true,
-      message: "Tahun Ajaran 2026/2027 berhasil dibuat dan diaktifkan",
+      message: "Tahun Ajaran 2027-2028 berhasil dibuat dan diaktifkan",
       data: result,
     });
   } catch (error) {

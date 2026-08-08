@@ -381,7 +381,7 @@ export default function DashboardLayout({
                       </span>
                     </h1>
                     <p className="text-[10px] text-ink-500 font-bold mt-1 uppercase tracking-widest">
-                      Tahun 2026/2027
+                      Tahun 2027-2028
                     </p>
                   </div>
                 </div>

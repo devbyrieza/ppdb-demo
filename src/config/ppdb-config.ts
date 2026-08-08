@@ -110,6 +110,9 @@ export const PPDB_CONFIG = {
     youtube: "Pondok Pesantren Al Fath",
   },
 
+  tahunAjaran: "2027-2028",
+  angkatan: "Angkatan IX",
+
   // ⚙️ SETTING TEKNIS (UMUMNYA TIDAK PERLU DIUBAH)
   technical: {
     appName: "PPDB Al Fath",

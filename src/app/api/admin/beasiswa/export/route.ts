@@ -171,7 +171,7 @@ export async function GET(req: NextRequest) {
 
       sheet.mergeCells("A2:U2");
       const subtitleCell = sheet.getCell("A2");
-      subtitleCell.value = `Tahun Ajaran: 2026/2027 | Tanggal Ekspor: ${new Date().toLocaleDateString("id-ID")}`;
+      subtitleCell.value = `Tahun Ajaran: 2027-2028 | Tanggal Ekspor: ${new Date().toLocaleDateString("id-ID")}`;
       subtitleCell.font = { name: "Arial", size: 11, italic: true };
       subtitleCell.alignment = { vertical: "middle", horizontal: "center" };
       sheet.getRow(2).height = 20;
