@@ -106,14 +106,14 @@ export default function HeroSection() {
       <Container className="relative z-10">
         <div className="grid lg:grid-cols-[1.1fr_0.9fr] xl:grid-cols-[1.2fr_0.8fr] gap-12 lg:gap-16 xl:gap-20 items-center">
           {/* CONTENT SIDE */}
-          <div className="flex flex-col gap-7 lg:gap-9 text-center lg:text-left">
+          <div className="flex flex-col gap-7 lg:gap-9 text-center lg:text-left items-center lg:items-start w-full">
             {/* Opening Badge */}
             <motion.div
               variants={fadeUp}
               initial="hidden"
               animate={animate}
               transition={{ delay: 0.1 }}
-              className="flex justify-center lg:justify-start"
+              className="flex justify-center lg:justify-start w-full"
             >
               <span className="section-label section-label-primary">
                 Selamat Datang di {BRANDING.schoolShortName}
@@ -129,7 +129,7 @@ export default function HeroSection() {
               className="space-y-3"
             >
               <h1
-                className="leading-[1.06] tracking-[-0.03em] mx-auto lg:mx-0 max-w-2xl lg:max-w-none font-black text-balance"
+                className="leading-[1.06] tracking-[-0.03em] mx-auto lg:mx-0 max-w-2xl lg:max-w-none font-black text-balance text-center lg:text-left"
                 style={{
                   fontSize: "clamp(2.5rem, 5vw + 1rem, 5rem)",
                 }}
