@@ -128,7 +128,7 @@ export default function ProgramPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-3xl md:text-5xl md:text-7xl lg:text-8xl font-display font-black mb-10 tracking-tight leading-[0.9] text-ink-950"
+            className="text-3xl md:text-5xl lg:text-8xl font-display font-black mb-10 tracking-tight leading-[0.9] text-ink-950"
           >
             Program <br />
             <span className="text-gradient-primary">Terbaik Kita</span>
@@ -213,7 +213,7 @@ export default function ProgramPage() {
                           <Star className="w-3.5 h-3.5 fill-secondary-400 text-secondary-400" />
                           <span>Program Unggulan</span>
                         </div>
-                        <h3 className="text-3 font-display font-black text-white text-2xl md:text-4xl leading-none">
+                        <h3 className="text-3 font-display font-black text-white md:text-4xl leading-none">
                           Pengalaman Terbaik
                         </h3>
                       </div>
@@ -236,7 +236,7 @@ export default function ProgramPage() {
                     viewport={{ once: true }}
                     className="text-center lg:text-left"
                   >
-                    <h2 className="text-2xl md:text-4xl md:text-5xl lg:text-6xl font-display font-black text-ink-950 leading-[0.95] mb-8">
+                    <h2 className="text-2xl md:text-4xl lg:text-6xl font-display font-black text-ink-950 leading-[0.95] mb-8">
                       {program.fullName}
                     </h2>
                     <p className="text-xl text-ink-600 font-medium leading-relaxed mb-10 text-center lg:text-left">
@@ -338,13 +338,13 @@ export default function ProgramPage() {
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="bg-primary-900 bg-linear-to-br from-primary-800 to-primary-950 rounded-[2rem] md:rounded-[3rem] lg:rounded-[4rem] p-6 sm:p-5 md:p-8 md:p-16 lg:p-24 text-center text-white relative overflow-hidden"
+            className="bg-primary-900 bg-linear-to-br from-primary-800 to-primary-950 rounded-[2rem] md:rounded-[3rem] lg:rounded-[4rem] p-6 sm:p-5 md:p-8 lg:p-24 text-center text-white relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 w-32 h-32 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-white/5 rounded-full blur-[60px] md:blur-[100px] -translate-y-1/2 translate-x-1/2" />
             <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-5" />
 
             <div className="relative z-10">
-              <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-3xl md:text-5xl xl:text-6xl font-display font-black mb-4 sm:mb-6 md:mb-8 text-white leading-tight">
+              <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-3xl xl:text-6xl font-display font-black mb-4 sm:mb-6 md:mb-8 text-white leading-tight">
                 Mulai Perjalanan <br />{" "}
                 <span className="text-secondary-400">Terbaik</span> Mereka
               </h2>

@@ -597,7 +597,7 @@ export default function DashboardLayout({
                 </div>
               )}
 
-              <div className="p-4 md:p-6 lg:p-5 md:p-8">{children}</div>
+              <div className="p-4 md:p-6 lg:p-5">{children}</div>
             </div>
 
             {/* Mobile Bottom Navigation (Fintech Style) */}

@@ -556,7 +556,7 @@ export default function KeuanganPage() {
         <div className="space-y-5">
           {/* Summary Cards */}
           {pendaftaranSummary && (
-            <div className="grid grid-cols-1 md:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
               <div className="bg-white rounded-xl p-4 border border-slate-100 shadow-sm">
                 <p className="text-xs text-slate-500 font-medium mb-1">
                   Total Pendaftar

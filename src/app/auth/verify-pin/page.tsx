@@ -109,7 +109,7 @@ function VerifyPinContent() {
     <div className="min-h-screen bg-stone-50 flex items-center justify-center p-6 font-sans">
       <div className="max-w-md w-full animate-in fade-in zoom-in duration-500">
         <div className="bg-white rounded-[2.5rem] shadow-2xl shadow-indigo-100/50 border border-stone-100 overflow-hidden text-stone-900">
-          <div className="bg-primary p-5 md:p-8 sm:p-6 md:p-10 text-center relative overflow-hidden">
+          <div className="bg-primary p-5 md:p-8 sm:p-6 text-center relative overflow-hidden">
             {/* Decorative background circle */}
             <div className="absolute top-[-50px] right-[-50px] w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
             <div className="absolute bottom-[-30px] left-[-30px] w-24 h-24 bg-white/5 rounded-full blur-xl"></div>

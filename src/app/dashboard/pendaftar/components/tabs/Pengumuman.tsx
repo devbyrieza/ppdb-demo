@@ -126,7 +126,7 @@ export default function PengumumanTab() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="relative overflow-hidden rounded-[2rem] bg-linear-to-br from-primary-700 to-primary-900 border border-primary-600 p-5 md:p-8 md:p-10 text-white shadow-lg app-card">
+      <div className="relative overflow-hidden rounded-[2rem] bg-linear-to-br from-primary-700 to-primary-900 border border-primary-600 p-5 md:p-8 text-white shadow-lg app-card">
         <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-secondary-50/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center gap-5">
@@ -170,7 +170,7 @@ export default function PengumumanTab() {
       ) : pengumuman.status_kelulusan === "diterima" ? (
         <div className="space-y-6">
           {/* Success Card */}
-          <div className="bg-linear-to-r from-emerald-500 to-emerald-700 rounded-[2rem] p-5 md:p-8 md:p-10 text-white shadow-xl shadow-emerald-500/20 relative overflow-hidden app-card">
+          <div className="bg-linear-to-r from-emerald-500 to-emerald-700 rounded-[2rem] p-5 md:p-8 text-white shadow-xl shadow-emerald-500/20 relative overflow-hidden app-card">
             <div className="absolute -top-10 -right-10 p-5 md:p-8 opacity-10 transform rotate-12">
               <Trophy className="w-64 h-64" />
             </div>
@@ -267,7 +267,7 @@ export default function PengumumanTab() {
       ) : (
         <div className="space-y-6">
           {/* Failed Card */}
-          <div className="bg-linear-to-r from-red-600 to-rose-700 rounded-[2rem] p-5 md:p-8 md:p-10 text-white shadow-xl shadow-red-600/20 app-card overflow-hidden relative">
+          <div className="bg-linear-to-r from-red-600 to-rose-700 rounded-[2rem] p-5 md:p-8 text-white shadow-xl shadow-red-600/20 app-card overflow-hidden relative">
             <div className="absolute -top-10 -right-10 p-5 md:p-8 opacity-10 transform rotate-12">
               <XCircle className="w-64 h-64" />
             </div>

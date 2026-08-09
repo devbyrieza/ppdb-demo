@@ -18,7 +18,7 @@ export default function CalendarPage() {
             <Construction className="w-12 h-12 text-primary-700" />
           </div>
 
-          <h1 className="text-2xl md:text-4xl md:text-5xl font-display font-black text-ink-950 mb-4 tracking-tight">
+          <h1 className="text-2xl md:text-4xl font-display font-black text-ink-950 mb-4 tracking-tight">
             Sedang Dalam <br />
             <span className="text-gradient-primary">Pengembangan</span>
           </h1>

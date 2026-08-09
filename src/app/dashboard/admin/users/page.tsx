@@ -252,7 +252,7 @@ export default function UserManagementPage() {
   return (
     <div className="space-y-10 pb-16 animate-in fade-in duration-700">
       {/* Admin Banner */}
-      <div className="relative overflow-hidden rounded-4xl bg-linear-to-br from-primary-700 to-primary-900 text-white p-6 md:p-10 md:p-14 shadow-2xl app-card border border-primary-600">
+      <div className="relative overflow-hidden rounded-4xl bg-linear-to-br from-primary-700 to-primary-900 text-white p-6 md:p-10 shadow-2xl app-card border border-primary-600">
         <div className="absolute top-0 right-0 w-96 h-96 bg-secondary-400/10 rounded-full blur-3xl pointer-events-none" />
         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10">
           <div className="flex items-center gap-6">

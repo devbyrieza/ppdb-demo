@@ -107,7 +107,7 @@ export default function DashboardPendaftarPage() {
 
 function HeroBanner({ nama, nomorPendaftaran, lastUpdate }: any) {
   return (
-    <div className="relative overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] md:rounded-[3.5rem] bg-linear-to-br from-primary-700 to-primary-900 text-white p-6 sm:p-5 md:p-8 md:p-16 shadow-2xl border border-primary-600/50">
+    <div className="relative overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] md:rounded-[3.5rem] bg-linear-to-br from-primary-700 to-primary-900 text-white p-6 sm:p-5 md:p-8 shadow-2xl border border-primary-600/50">
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-secondary-400/10 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/2" />
       <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 lg:gap-10">
         <div className="flex-1 space-y-4 sm:space-y-6">
@@ -125,7 +125,7 @@ function HeroBanner({ nama, nomorPendaftaran, lastUpdate }: any) {
               })}
             </span>
           </div>
-          <h1 className="text-3xl sm:text-3xl md:text-5xl md:text-6xl lg:text-7xl font-black leading-[1.1] font-display tracking-tight text-white italic">
+          <h1 className="text-3xl sm:text-3xl md:text-5xl lg:text-7xl font-black leading-[1.1] font-display tracking-tight text-white italic">
             Selamat Datang, <br />
             <span className="text-secondary-400 not-italic uppercase drop-shadow-lg">
               {nama}!
@@ -152,7 +152,7 @@ function GuidedActionCard({ nextStep }: any) {
   return (
     <div className="bg-white rounded-[1.5rem] sm:rounded-[2rem] md:rounded-[2.5rem] border-2 border-primary-100 shadow-xl shadow-primary/5 overflow-hidden group">
       <div className="flex flex-col md:flex-row items-stretch">
-        <div className="bg-secondary-400 p-6 sm:p-5 md:p-8 md:p-12 flex flex-col items-center justify-center text-primary-950 min-w-[200px]">
+        <div className="bg-secondary-400 p-6 sm:p-5 md:p-8 flex flex-col items-center justify-center text-primary-950 min-w-[200px]">
           <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-white/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
             <Target className="w-6 h-6 sm:w-8 sm:h-8" />
           </div>
@@ -161,7 +161,7 @@ function GuidedActionCard({ nextStep }: any) {
           </p>
           <p className="text-2xl sm:text-3xl font-black">BERIKUTNYA</p>
         </div>
-        <div className="flex-1 p-6 sm:p-5 md:p-8 md:p-12 space-y-4 sm:space-y-6">
+        <div className="flex-1 p-6 sm:p-5 md:p-8 space-y-4 sm:space-y-6">
           <div>
             <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-primary-950 mb-2">
               Apa yang harus saya lakukan sekarang?

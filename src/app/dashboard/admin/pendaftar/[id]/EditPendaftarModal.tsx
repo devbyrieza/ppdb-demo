@@ -363,7 +363,7 @@ export default function EditPendaftarModal({
                   className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800 resize-none"
                 />
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 md:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-1">
                   <label className="text-xs font-black uppercase text-stone-600">RT</label>
                   <input

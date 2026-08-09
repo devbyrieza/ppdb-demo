@@ -422,7 +422,7 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* HERO SECTION */}
-      <div className="bg-linear-to-br from-primary-800 via-primary-700 to-emerald-900 rounded-[2.5rem] lg:rounded-[3rem] p-6 sm:p-5 md:p-8 lg:p-6 md:p-12 text-white relative overflow-hidden shadow-[0_32px_64px_-16px_rgba(15,118,110,0.4)] border border-white/10">
+      <div className="bg-linear-to-br from-primary-800 via-primary-700 to-emerald-900 rounded-[2.5rem] lg:rounded-[3rem] p-6 sm:p-5 md:p-8 lg:p-6 text-white relative overflow-hidden shadow-[0_32px_64px_-16px_rgba(15,118,110,0.4)] border border-white/10">
         
         <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
           <div className="max-w-xl w-full">
@@ -498,7 +498,7 @@ export default function AdminDashboardPage() {
       {(isAdminSuper || isAdminBerkas || isAdminKeuangan) && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
           {/* Statistik card — bg primary-800 (valid & dark enough for white text) */}
-        <div className="bg-linear-to-br from-primary-800 to-primary-950 rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] p-5 sm:p-5 md:p-8 lg:p-6 md:p-10 text-white relative overflow-hidden group shadow-[0_16px_40px_-12px_rgba(15,118,110,0.4)] border border-white/5">
+        <div className="bg-linear-to-br from-primary-800 to-primary-950 rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] p-5 sm:p-5 md:p-8 lg:p-6 text-white relative overflow-hidden group shadow-[0_16px_40px_-12px_rgba(15,118,110,0.4)] border border-white/5">
           <div className="absolute top-0 right-0 p-5 md:p-8 opacity-5 group-hover:rotate-12 transition-transform duration-700">
             <TrendingUp className="w-48 h-48" />
           </div>
@@ -542,7 +542,7 @@ export default function AdminDashboardPage() {
           </div>
         </div>
  
-        <div className="bg-white rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border border-secondary-100 p-5 sm:p-5 md:p-8 lg:p-6 md:p-10 shadow-premium-sm relative overflow-hidden group">
+        <div className="bg-white rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border border-secondary-100 p-5 sm:p-5 md:p-8 lg:p-6 shadow-premium-sm relative overflow-hidden group">
           <div className="relative z-10">
             <h3 className="text-xl sm:text-2xl font-black text-ink-900 mb-6 sm:mb-8 tracking-tight flex items-center gap-3">
               <div className="w-2 h-8 bg-primary-600 rounded-full" />

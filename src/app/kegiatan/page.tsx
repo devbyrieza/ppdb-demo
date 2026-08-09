@@ -153,7 +153,7 @@ const FeatureCard = ({
         <item.icon className="w-8 h-8 text-white" />
       </div>
 
-      <h3 className="text-3xl md:text-4xl lg:text-3xl md:text-5xl font-display font-black text-ink-950 mb-4 md:mb-6 leading-tight">
+      <h3 className="text-3xl md:text-4xl lg:text-3xl font-display font-black text-ink-950 mb-4 md:mb-6 leading-tight">
         {item.title}
       </h3>
 
@@ -706,7 +706,7 @@ export default function KegiatanPage() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-white p-5 md:p-8 md:p-12 lg:p-20 rounded-[3rem] md:rounded-[4rem] shadow-premium-xl border border-surface-100 flex flex-col gap-12 items-center overflow-hidden relative text-center"
+            className="bg-white p-5 md:p-8 lg:p-20 rounded-[3rem] md:rounded-[4rem] shadow-premium-xl border border-surface-100 flex flex-col gap-12 items-center overflow-hidden relative text-center"
           >
             <div className="absolute top-0 right-0 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-secondary-50/50 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/3 pointer-events-none" />
 
@@ -844,7 +844,7 @@ export default function KegiatanPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6 lg:gap-8">
             {ekstrakurikuler.map((ekskul, idx) => (
               <EkskulCard key={idx} ekskul={ekskul} index={idx} />
             ))}
@@ -859,13 +859,13 @@ export default function KegiatanPage() {
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="bg-primary-900 bg-linear-to-br from-primary-800 to-primary-950 rounded-[2rem] md:rounded-[3rem] lg:rounded-[4rem] p-6 sm:p-5 md:p-8 md:p-16 lg:p-24 text-center text-white relative overflow-hidden shadow-lg"
+            className="bg-primary-900 bg-linear-to-br from-primary-800 to-primary-950 rounded-[2rem] md:rounded-[3rem] lg:rounded-[4rem] p-6 sm:p-5 md:p-8 lg:p-24 text-center text-white relative overflow-hidden shadow-lg"
           >
             <div className="absolute top-0 right-0 w-32 h-32 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-white/5 rounded-full blur-[60px] md:blur-[100px] -translate-y-1/2 translate-x-1/2" />
             <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-5" />
 
             <div className="relative z-10">
-              <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-3xl md:text-5xl xl:text-6xl font-display font-black mb-4 sm:mb-6 md:mb-8 text-white leading-tight">
+              <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-3xl xl:text-6xl font-display font-black mb-4 sm:mb-6 md:mb-8 text-white leading-tight">
                 Mulai Masa Depan <br />{" "}
                 <span className="text-secondary-100">Bersama Kami</span>
               </h2>

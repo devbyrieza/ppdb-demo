@@ -304,7 +304,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                 viewport={{ once: true }}
                 className="order-2 lg:order-1"
               >
-                <div className="app-card bg-white p-5 md:p-8 sm:p-6 md:p-12 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
+                <div className="app-card bg-white p-5 md:p-8 sm:p-6 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
                   <div className="absolute top-0 right-0 p-6 md:p-12 opacity-5 -rotate-12 transition-transform group-hover:rotate-0 duration-700">
                     <Home className="w-48 h-48" />
                   </div>
@@ -313,7 +313,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                     <Home className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
-                  <h3 className="text-3xl sm:text-2xl md:text-4xl lg:text-3xl md:text-5xl font-black text-primary-950 mb-6 leading-[1.1]">
+                  <h3 className="text-3xl sm:text-2xl md:text-4xl lg:text-3xl font-black text-primary-950 mb-6 leading-[1.1]">
                     Masjid Jami' <br className="hidden sm:block" /> Al Fath
                   </h3>
                   <p className="text-base sm:text-lg lg:text-xl text-primary-950/70 mb-8 sm:mb-10 leading-relaxed font-medium">
@@ -398,7 +398,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                 viewport={{ once: true }}
                 className="order-2"
               >
-                <div className="app-card bg-white p-5 md:p-8 sm:p-6 md:p-12 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
+                <div className="app-card bg-white p-5 md:p-8 sm:p-6 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
                   <div className="absolute top-0 right-0 p-6 md:p-12 opacity-5 rotate-12 transition-transform group-hover:rotate-0 duration-700">
                     <School className="w-48 h-48" />
                   </div>
@@ -407,7 +407,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                     <School className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
-                  <h3 className="text-3xl sm:text-2xl md:text-4xl lg:text-3xl md:text-5xl font-black text-ink-950 mb-6 leading-[1.1]">
+                  <h3 className="text-3xl sm:text-2xl md:text-4xl lg:text-3xl font-black text-ink-950 mb-6 leading-[1.1]">
                     Ruang Kelas <br className="hidden sm:block" /> Modern
                   </h3>
                   <p className="text-base sm:text-lg lg:text-xl text-ink-600 mb-8 sm:mb-10 leading-relaxed font-medium">
@@ -456,7 +456,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                 viewport={{ once: true }}
                 className="order-2 lg:order-1"
               >
-                <div className="app-card bg-white p-5 md:p-8 sm:p-6 md:p-12 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
+                <div className="app-card bg-white p-5 md:p-8 sm:p-6 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
                   <div className="absolute top-0 right-0 p-6 md:p-12 opacity-5 -rotate-12 transition-transform group-hover:rotate-0 duration-700">
                     <Building className="w-48 h-48" />
                   </div>
@@ -465,7 +465,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                     <Building className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
-                  <h3 className="text-3xl sm:text-2xl md:text-4xl lg:text-3xl md:text-5xl font-black text-primary-950 mb-6 leading-[1.1]">
+                  <h3 className="text-3xl sm:text-2xl md:text-4xl lg:text-3xl font-black text-primary-950 mb-6 leading-[1.1]">
                     Asrama <br className="hidden sm:block" /> Berkualitas
                   </h3>
                   <p className="text-base sm:text-lg lg:text-xl text-primary-950/70 mb-8 sm:mb-10 leading-relaxed font-medium">
@@ -550,7 +550,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                 viewport={{ once: true }}
                 className="order-2"
               >
-                <div className="app-card bg-white p-5 md:p-8 sm:p-6 md:p-12 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
+                <div className="app-card bg-white p-5 md:p-8 sm:p-6 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
                   <div className="absolute top-0 right-0 p-6 md:p-12 opacity-5 rotate-12 transition-transform group-hover:rotate-0 duration-700">
                     <Trophy className="w-48 h-48" />
                   </div>
@@ -559,7 +559,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                     <Trophy className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
-                  <h3 className="text-3xl sm:text-2xl md:text-4xl lg:text-3xl md:text-5xl font-black text-ink-950 mb-6 leading-[1.1]">
+                  <h3 className="text-3xl sm:text-2xl md:text-4xl lg:text-3xl font-black text-ink-950 mb-6 leading-[1.1]">
                     Lapangan <br className="hidden sm:block" /> Minisoccer
                   </h3>
                   <p className="text-base sm:text-lg lg:text-xl text-ink-600 mb-8 sm:mb-10 leading-relaxed font-medium">
@@ -608,7 +608,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                 viewport={{ once: true }}
                 className="order-2 lg:order-1"
               >
-                <div className="app-card bg-white p-5 md:p-8 sm:p-6 md:p-12 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
+                <div className="app-card bg-white p-5 md:p-8 sm:p-6 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
                   <div className="absolute top-0 right-0 p-6 md:p-12 opacity-5 -rotate-12 transition-transform group-hover:rotate-0 duration-700">
                     <Award className="w-48 h-48" />
                   </div>
@@ -617,7 +617,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                     <Award className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
-                  <h3 className="text-3xl sm:text-2xl md:text-4xl lg:text-3xl md:text-5xl font-black text-primary-950 mb-6 leading-[1.1]">
+                  <h3 className="text-3xl sm:text-2xl md:text-4xl lg:text-3xl font-black text-primary-950 mb-6 leading-[1.1]">
                     Lapangan <br className="hidden sm:block" /> Basket
                   </h3>
                   <p className="text-base sm:text-lg lg:text-xl text-primary-950/70 mb-8 sm:mb-10 leading-relaxed font-medium">
@@ -702,7 +702,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                 viewport={{ once: true }}
                 className="order-2"
               >
-                <div className="app-card bg-white p-5 md:p-8 sm:p-6 md:p-12 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
+                <div className="app-card bg-white p-5 md:p-8 sm:p-6 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
                   <div className="absolute top-0 right-0 p-6 md:p-12 opacity-5 rotate-12 transition-transform group-hover:rotate-0 duration-700">
                     <Droplets className="w-48 h-48" />
                   </div>
@@ -711,7 +711,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                     <Droplets className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
-                  <h3 className="text-3xl sm:text-2xl md:text-4xl lg:text-3xl md:text-5xl font-black text-ink-950 mb-6 leading-[1.1]">
+                  <h3 className="text-3xl sm:text-2xl md:text-4xl lg:text-3xl font-black text-ink-950 mb-6 leading-[1.1]">
                     Depot <br className="hidden sm:block" /> Galon Gratis
                   </h3>
                   <p className="text-base sm:text-lg lg:text-xl text-ink-600 mb-8 sm:mb-10 leading-relaxed font-medium">
@@ -760,7 +760,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                 viewport={{ once: true }}
                 className="order-2 lg:order-1"
               >
-                <div className="app-card bg-white p-5 md:p-8 sm:p-6 md:p-12 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
+                <div className="app-card bg-white p-5 md:p-8 sm:p-6 lg:p-16 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
                   <div className="absolute top-0 right-0 p-6 md:p-12 opacity-5 -rotate-12 transition-transform group-hover:rotate-0 duration-700">
                     <Building2 className="w-48 h-48" />
                   </div>
@@ -769,7 +769,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                     <Building2 className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
-                  <h3 className="text-3xl sm:text-2xl md:text-4xl lg:text-3xl md:text-5xl font-black text-ink-950 mb-6 leading-[1.1]">
+                  <h3 className="text-3xl sm:text-2xl md:text-4xl lg:text-3xl font-black text-ink-950 mb-6 leading-[1.1]">
                     Kantor PPDB <br className="hidden sm:block" /> & Tamu
                   </h3>
                   <p className="text-base sm:text-lg lg:text-xl text-ink-600 mb-8 sm:mb-10 leading-relaxed font-medium">
@@ -1024,7 +1024,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                     <Calendar className="w-3.5 h-3.5" />
                     <span>Survey Pesantren</span>
                   </div>
-                  <h2 className="text-2xl md:text-4xl md:text-5xl font-display font-black text-ink-950 mb-6 leading-tight">
+                  <h2 className="text-2xl md:text-4xl font-display font-black text-ink-950 mb-6 leading-tight">
                     Kunjungi <span className="text-gradient-primary">Kami</span>
                   </h2>
                   <p className="text-lg text-ink-600 mb-8 leading-relaxed font-medium">

@@ -98,7 +98,7 @@ export default function PengujiDashboardPage() {
   return (
     <div className="space-y-8">
       {/* Page Title / Header Banner */}
-      <div className="relative overflow-hidden rounded-4xl bg-linear-to-br from-primary-700 to-primary-900 border border-primary-600 p-5 md:p-8 md:p-14 text-white shadow-2xl shadow-primary-900/30 app-card">
+      <div className="relative overflow-hidden rounded-4xl bg-linear-to-br from-primary-700 to-primary-900 border border-primary-600 p-5 md:p-8 text-white shadow-2xl shadow-primary-900/30 app-card">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-secondary-400/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center gap-6">
