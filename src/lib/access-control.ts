@@ -293,6 +293,7 @@ export function getMenuItemsForRole(role: UserRole) {
       { name: "Bantuan Biaya", href: "/dashboard/admin/beasiswa", icon: "Trophy" },
       { name: "Rekap Seragam", href: "/dashboard/admin/seragam", icon: "Shirt" },
       { name: "Penilaian & Kelulusan", href: "/dashboard/admin/penilaian", icon: "ClipboardEdit", group: "HASIL SELEKSI" },
+        { name: "Statistik Wilayah", href: "/dashboard/admin/statistik-wilayah", icon: "Map", group: "HASIL SELEKSI" },
     ],
     admin_super: [
       { name: "Dashboard", href: "/dashboard/admin", icon: "LayoutDashboard" },
@@ -303,9 +304,9 @@ export function getMenuItemsForRole(role: UserRole) {
       { name: "Rekap Seragam", href: "/dashboard/admin/seragam", icon: "Shirt", group: "OPERASIONAL" },
       { name: "Fee Penguji", href: "/dashboard/admin/fee-penguji", icon: "Wallet", group: "OPERASIONAL" },
       { name: "Penilaian & Kelulusan", href: "/dashboard/admin/penilaian", icon: "ClipboardEdit", group: "HASIL SELEKSI" },
+        { name: "Statistik Wilayah", href: "/dashboard/admin/statistik-wilayah", icon: "Map", group: "HASIL SELEKSI" },
       { name: "Broadcast WA", href: "/dashboard/admin/broadcast", icon: "Zap", group: "KOMUNIKASI" },
       { name: "Manajemen User", href: "/dashboard/admin/users", icon: "UserCog", group: "SISTEM" },
-      { name: "Statistik Wilayah", href: "/dashboard/admin/statistik-wilayah", icon: "Map", group: "SISTEM" },
       { name: "Pengaturan", href: "/dashboard/admin/pengaturan", icon: "Settings", group: "SISTEM" },
     ],
   };
