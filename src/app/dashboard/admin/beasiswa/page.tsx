@@ -219,12 +219,12 @@ export default function BantuanBiayaPage() {
       {/* ── Filter Tabs: Beasiswa vs Keringanan ── */}
       <div className="flex flex-wrap items-center gap-3">
         {/* Jenis tab */}
-        <div className="flex items-center bg-white rounded-xl p-1 border border-stone-200 shadow-sm">
+        <div className="flex items-center bg-white rounded-xl p-1 border border-stone-200 shadow-sm overflow-x-auto max-w-full">
           {(["SEMUA", "BEASISWA", "KERINGANAN"] as FilterTab[]).map((t) => (
             <button
               key={t}
               onClick={() => setFilterTab(t)}
-              className={`flex items-center gap-1.5 px-4 py-2 text-sm font-bold rounded-lg transition-all ${
+              className={`flex items-center gap-1.5 px-4 py-2 text-sm font-bold rounded-lg transition-all whitespace-nowrap ${
                 filterTab === t
                   ? t === "BEASISWA"
                     ? "bg-emerald-100 text-emerald-800"
@@ -242,12 +242,12 @@ export default function BantuanBiayaPage() {
         </div>
 
         {/* Status filter */}
-        <div className="flex items-center bg-white rounded-xl p-1 border border-stone-200 shadow-sm">
+        <div className="flex items-center bg-white rounded-xl p-1 border border-stone-200 shadow-sm overflow-x-auto max-w-full">
           {(["ALL", "PENDING", "DISETUJUI", "DITOLAK"] as FilterStatus[]).map((s) => (
             <button
               key={s}
               onClick={() => setFilterStatus(s)}
-              className={`px-4 py-2 text-xs font-bold rounded-lg transition-all ${
+              className={`px-4 py-2 text-xs font-bold rounded-lg transition-all whitespace-nowrap ${
                 filterStatus === s
                   ? "bg-primary-50 text-primary-700 shadow-sm border border-primary-100"
                   : "text-stone-500 hover:bg-stone-50 border border-transparent"
