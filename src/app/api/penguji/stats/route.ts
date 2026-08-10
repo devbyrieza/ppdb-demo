@@ -28,6 +28,7 @@ export async function GET() {
   try {
     const assigned = await prisma.jadwalUjian.findMany({
       where: {
+        pendaftar: { deleted_at: null },
         OR: [
           { penguji_santri_id: userId },
           { penguji_quran_id: userId },
@@ -111,6 +112,7 @@ export async function GET() {
     // Fetch participants assigned via detail_akademik JSON mapping (bypass payment status)
     const assignedByJSON = await prisma.nilaiUjian.findMany({
       where: {
+        pendaftar: { deleted_at: null },
         OR: [
           {
             detail_akademik: {

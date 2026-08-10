@@ -37,9 +37,10 @@ export async function GET() {
       : [];
     const isAdmin = allRoles.some((r) => ["admin_super", "admin"].includes(r));
 
-    let whereClause: any = {};
+    let whereClause: any = { pendaftar: { deleted_at: null } };
     if (!isAdmin) {
       whereClause = {
+        pendaftar: { deleted_at: null },
         OR: [
           { penguji_santri_id: userId }, // Seleksi Wawancara Calon Santri (or general Interview)
           { penguji_quran_id: userId }, // Tes Quran

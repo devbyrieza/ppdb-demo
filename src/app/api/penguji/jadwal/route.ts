@@ -37,9 +37,10 @@ export async function GET() {
 
     // Determine which field to check based on role?
     // Actually, just check all fields since a person might have multiple roles or assignments
-    let whereClause: any = {};
+    let whereClause: any = { pendaftar: { deleted_at: null } };
     if (!isAdmin) {
       whereClause = {
+        pendaftar: { deleted_at: null },
         OR: [
           { penguji_santri_id: userId },
           { penguji_quran_id: userId },
