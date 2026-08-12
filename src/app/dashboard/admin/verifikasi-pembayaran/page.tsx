@@ -463,7 +463,7 @@ function VerifikasiPembayaranContent() {
     <div className="space-y-6">
       {/* Refreshing Overlay */}
       {isRefreshing && (
-        <div className="fixed inset-0 bg-white/40 backdrop-blur-[1px] z-[100] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center pointer-events-none overflow-y-auto overflow-x-hidden p-4">
+        <div className="fixed inset-0 bg-white/40 backdrop-blur-[1px] z-[100] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center pointer-events-none overflow-y-auto overflow-x-hidden p-4 overscroll-contain custom-scrollbar">
           <div className="bg-white/80 px-6 py-3 rounded-2xl shadow-xl border border-stone-100 flex items-center gap-3 animate-in fade-in zoom-in duration-300">
             <Loader2 className="w-5 h-5 animate-spin text-primary-600" />
             <span className="text-sm font-bold text-stone-700 tracking-tight">
@@ -850,7 +850,7 @@ function VerifikasiPembayaranContent() {
 
       {/* Modal */}
       {showModal && selectedPembayaran && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center z-50 p-4 animate-in fade-in duration-200 overflow-y-auto overflow-x-hidden">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center z-50 p-4 animate-in fade-in duration-200 overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
           <div className="bg-white rounded-[2rem] shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
             {/* Header - Fixed */}
             <div className="p-6 border-b border-stone-100 bg-stone-50/50 flex justify-between items-center">
@@ -875,7 +875,7 @@ function VerifikasiPembayaranContent() {
             </div>
 
             {/* Scrollable Content */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-6">
+            <div className="flex-1 overflow-y-auto p-6 space-y-6 overscroll-contain custom-scrollbar">
               <div className="flex gap-4 p-4 bg-primary-50 rounded-2xl border border-primary-100">
                 <div className="p-3 bg-white rounded-xl shadow-sm h-fit">
                   <DollarSign className="w-6 h-6 text-primary-700" />

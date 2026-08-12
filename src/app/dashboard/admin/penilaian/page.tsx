@@ -1521,7 +1521,7 @@ export default function ExaminerDashboard() {
       {/* Custom Modal for Assign Examiner (PLOT) */}
       {assignStudent && typeof document !== "undefined" && createPortal(
         <div
-          className="fixed inset-0 overflow-y-auto p-4"
+          className="fixed inset-0 overflow-y-auto p-4 overscroll-contain custom-scrollbar"
           style={{ zIndex: 99999 }}
           aria-labelledby="modal-title"
           role="dialog"
@@ -1529,7 +1529,7 @@ export default function ExaminerDashboard() {
         >
           <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div
-              className="fixed inset-0 bg-ink-900/60 backdrop-blur-sm transition-opacity overflow-y-auto overflow-x-hidden p-4"
+              className="fixed inset-0 bg-ink-900/60 backdrop-blur-sm transition-opacity overflow-y-auto overflow-x-hidden p-4 overscroll-contain custom-scrollbar"
               aria-hidden="true"
               onClick={() => setAssignStudent(null)}
             ></div>
@@ -1629,7 +1629,7 @@ export default function ExaminerDashboard() {
       {/* Custom Modal for Input Nilai */}
       {selectedStudent && typeof document !== "undefined" && createPortal(
         <div
-          className="fixed inset-0 overflow-y-auto p-4"
+          className="fixed inset-0 overflow-y-auto p-4 overscroll-contain custom-scrollbar"
           style={{ zIndex: 99999 }}
           aria-labelledby="modal-title"
           role="dialog"
@@ -1637,7 +1637,7 @@ export default function ExaminerDashboard() {
         >
           <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div
-              className="fixed inset-0 bg-ink-900/60 backdrop-blur-sm transition-opacity overflow-y-auto overflow-x-hidden p-4"
+              className="fixed inset-0 bg-ink-900/60 backdrop-blur-sm transition-opacity overflow-y-auto overflow-x-hidden p-4 overscroll-contain custom-scrollbar"
               aria-hidden="true"
               onClick={() => setSelectedStudent(null)}
             ></div>
@@ -1759,7 +1759,7 @@ export default function ExaminerDashboard() {
                   )}
 
                   {inputType === "wawancara_ortu" && (
-                    <div className="space-y-4 max-h-64 overflow-y-auto pr-2 custom-scrollbar">
+                    <div className="space-y-4 max-h-64 overflow-y-auto pr-2 custom-scrollbar overscroll-contain">
                       <p className="text-[10px] font-black text-ink-500 uppercase">
                         Pilih A/B/C untuk 10 Pertanyaan Standar Wawancara Wali
                       </p>

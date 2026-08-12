@@ -1708,7 +1708,7 @@ export default function JadwalPengujiPage() {
 
       {/* MODAL BULK EDIT */}
       {isBulkEditModalOpen && (
-        <div className="fixed inset-0 z-[60] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-4 bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden">
+        <div className="fixed inset-0 z-[60] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-4 bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
           <div className="bg-white rounded-[32px] shadow-2xl w-full max-w-md overflow-hidden border border-white/20 animate-in zoom-in-95 duration-300">
             <div className="p-6 border-b border-stone-100 flex justify-between items-center bg-stone-50/50">
               <div>
@@ -1880,7 +1880,7 @@ export default function JadwalPengujiPage() {
 
       {/* MODAL EDIT SLOT */}
       {isEditModalOpen && editingSlot && (
-        <div className="fixed inset-0 z-[60] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-4 bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden">
+        <div className="fixed inset-0 z-[60] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-4 bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
           <div className="bg-white rounded-[32px] shadow-2xl w-full max-w-md overflow-hidden border border-white/20 animate-in zoom-in-95 duration-300">
             <div className="p-6 border-b border-stone-100 flex justify-between items-center bg-stone-50/50">
               <div>
@@ -2023,7 +2023,7 @@ export default function JadwalPengujiPage() {
 
       {/* MODAL CREATE SLOT */}
       {isSlotModalOpen && (
-        <div className="fixed inset-0 z-[60] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-4 bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden">
+        <div className="fixed inset-0 z-[60] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-4 bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
           <div className="bg-white rounded-[32px] shadow-2xl w-full max-w-md overflow-hidden border border-white/20 animate-in zoom-in-95 duration-300">
             {/* Header */}
             <div className="p-6 border-b border-stone-100 flex justify-between items-center bg-stone-50/50">
@@ -2239,7 +2239,7 @@ export default function JadwalPengujiPage() {
 
       {/* MODAL DETAIL PENDAFTAR */}
       {isDetailModalOpen && selectedPendaftar && (
-        <div className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-4 bg-black/50 backdrop-blur-sm overflow-hidden overflow-y-auto overflow-x-hidden">
+        <div className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-4 bg-black/50 backdrop-blur-sm overflow-hidden overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg max-h-[90vh] flex flex-col">
             <div className="p-4 border-b border-secondary-100 flex justify-between items-center bg-secondary-50 rounded-t-2xl shrink-0">
               <h3 className="font-bold text-ink-950">Data Pendaftar</h3>
@@ -2247,7 +2247,7 @@ export default function JadwalPengujiPage() {
                 <XCircle className="w-6 h-6 text-ink-400 hover:text-ink-600" />
               </button>
             </div>
-            <div className="p-6 space-y-6 overflow-y-auto">
+            <div className="p-6 space-y-6 overflow-y-auto overscroll-contain custom-scrollbar">
               {/* Data Diri */}
               <div>
                 <h4 className="text-sm font-bold text-ink-400 uppercase tracking-wider mb-3">
@@ -2396,7 +2396,7 @@ export default function JadwalPengujiPage() {
 
       {/* MODAL BULK CREATE SLOT */}
       {isBulkModalOpen && (
-        <div className="fixed inset-0 z-[60] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-4 bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden">
+        <div className="fixed inset-0 z-[60] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-4 bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
           <div className="bg-white rounded-[40px] shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col animate-in zoom-in-95 duration-300 border border-white/20">
             {/* Header */}
             <div className="p-5 md:p-8 border-b border-stone-100 flex justify-between items-center bg-stone-50/50 rounded-t-[40px] shrink-0">

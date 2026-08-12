@@ -330,7 +330,7 @@ function VerifikasiDokumenContent() {
       </div>
 
       {refreshing && (
-        <div className="fixed inset-0 bg-white/40 backdrop-blur-[1px] z-[100] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center pointer-events-none overflow-y-auto overflow-x-hidden p-4">
+        <div className="fixed inset-0 bg-white/40 backdrop-blur-[1px] z-[100] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center pointer-events-none overflow-y-auto overflow-x-hidden p-4 overscroll-contain custom-scrollbar">
           <div className="bg-white/80 px-6 py-3 rounded-2xl shadow-xl border border-primary-100 flex items-center gap-3 animate-in fade-in zoom-in duration-300">
             <Loader2 className="w-5 h-5 animate-spin text-primary-600" />
             <span className="text-sm font-bold text-ink-700 tracking-tight">

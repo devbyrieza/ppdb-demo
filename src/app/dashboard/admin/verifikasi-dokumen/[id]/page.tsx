@@ -717,7 +717,7 @@ export default function VerifikasiDokumenDetailPage() {
       {/* Image/PDF Preview Modal */}
       {previewDoc && (
         <div
-          className="fixed inset-0 bg-stone-900/95 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center z-[100] p-4 backdrop-blur-md overflow-y-auto overflow-x-hidden"
+          className="fixed inset-0 bg-stone-900/95 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center z-[100] p-4 backdrop-blur-md overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar"
           onClick={() => setPreviewDoc(null)}
         >
           <div className="relative max-w-6xl max-h-[95vh] w-full h-full bg-white/5 overflow-hidden rounded-3xl flex flex-col shadow-2xl">
@@ -826,7 +826,7 @@ export default function VerifikasiDokumenDetailPage() {
       {/* Reject Modal */}
       {rejectModal.isOpen && (
         <div
-          className="fixed inset-0 bg-stone-900/50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center z-[110] px-4 backdrop-blur-sm overflow-y-auto overflow-x-hidden p-4"
+          className="fixed inset-0 bg-stone-900/50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center z-[110] px-4 backdrop-blur-sm overflow-y-auto overflow-x-hidden p-4 overscroll-contain custom-scrollbar"
           onClick={() => {
             if (!processingDocs.has(rejectModal.docId)) {
               setRejectModal({ ...rejectModal, isOpen: false });

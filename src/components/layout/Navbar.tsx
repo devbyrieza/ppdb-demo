@@ -412,7 +412,7 @@ export default function Navbar() {
               </div>
 
               {/* Scrollable Nav */}
-              <div className="overflow-y-auto flex-1 px-4 py-4 pb-safe">
+              <div className="overflow-y-auto flex-1 px-4 py-4 pb-safe overscroll-contain custom-scrollbar">
                 <p className="text-[10px] font-black text-[var(--color-ink-400)] uppercase tracking-[0.12em] px-3 mb-3">
                   Navigasi
                 </p>

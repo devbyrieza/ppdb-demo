@@ -202,7 +202,7 @@ export default function LanguageSwitcher() {
                   Pilih Bahasa
                 </p>
               </div>
-              <div className="space-y-0.5 max-h-[280px] overflow-y-auto pr-1">
+              <div className="space-y-0.5 max-h-[280px] overflow-y-auto pr-1 overscroll-contain custom-scrollbar">
                 {LANGUAGES.map((lang) => (
                   <button
                     key={lang.code}

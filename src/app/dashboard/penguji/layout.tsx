@@ -227,7 +227,7 @@ export default function PengujiDashboardLayout({
               </div>
 
               {/* Navigation Menu */}
-              <div className="flex-1 px-6 overflow-y-auto custom-scrollbar">
+              <div className="flex-1 px-6 overflow-y-auto custom-scrollbar overscroll-contain">
                 <p className="text-[10px] font-black text-ink-300 uppercase tracking-[0.2em] mb-4 pl-1">
                   Navigasi Utama
                 </p>
@@ -274,7 +274,7 @@ export default function PengujiDashboardLayout({
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   onClick={() => setSidebarOpen(false)}
-                  className="lg:hidden fixed inset-0 z-[60] bg-ink-950/20 backdrop-blur-md overflow-y-auto overflow-x-hidden p-4"
+                  className="lg:hidden fixed inset-0 z-[60] bg-ink-950/20 backdrop-blur-md overflow-y-auto overflow-x-hidden p-4 overscroll-contain custom-scrollbar"
                 />
                 <motion.aside
                   initial={{ x: -280 }}
@@ -315,7 +315,7 @@ export default function PengujiDashboardLayout({
                     </div>
                   </div>
 
-                  <div className="flex-1 overflow-y-auto">
+                  <div className="flex-1 overflow-y-auto overscroll-contain custom-scrollbar">
                     <SidebarNav />
                   </div>
 

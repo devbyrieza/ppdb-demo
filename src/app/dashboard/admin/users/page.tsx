@@ -411,7 +411,7 @@ export default function UserManagementPage() {
               });
             }
           }}
-          className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-6 bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden"
+          className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-6 bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar"
         >
           <div className="bg-white rounded-[3rem] shadow-2xl w-full max-w-3xl flex flex-col max-h-[90vh] animate-in zoom-in duration-300 border border-white/20">
             <div className="p-6 md:p-12 border-b flex justify-between items-center bg-stone-50/50 shrink-0">

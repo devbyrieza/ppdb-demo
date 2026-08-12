@@ -245,7 +245,7 @@ export default function AdminSidebar({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSidebarOpen(false)}
-              className="fixed inset-0 z-[70] bg-primary-950/40 backdrop-blur-md lg:hidden overflow-y-auto overflow-x-hidden p-4"
+              className="fixed inset-0 z-[70] bg-primary-950/40 backdrop-blur-md lg:hidden overflow-y-auto overflow-x-hidden p-4 overscroll-contain custom-scrollbar"
             />
             <motion.aside
               initial={{ x: "-100%" }}
@@ -275,7 +275,7 @@ export default function AdminSidebar({
                 </button>
               </div>
 
-              <nav className="flex-1 overflow-y-auto p-6 space-y-2 no-scrollbar">
+              <nav className="flex-1 overflow-y-auto p-6 space-y-2 custom-scrollbar overscroll-contain custom-scrollbar">
                 {menuItems.map((item) => (
                   <Link
                     key={item.name}
@@ -373,7 +373,7 @@ export default function AdminSidebar({
         </div>
 
         {/* Navigation Links Area */}
-        <div className="flex-1 overflow-y-auto py-4 px-4 space-y-8 no-scrollbar">
+        <div className="flex-1 overflow-y-auto py-4 px-4 space-y-8 custom-scrollbar overscroll-contain custom-scrollbar">
           {/* Role Selector (Integrated inside sidebar) */}
           {!collapsed && availableRoles && availableRoles.length > 1 && (
             <div className="px-2 mb-2">

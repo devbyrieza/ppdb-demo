@@ -541,7 +541,7 @@ export default function JadwalUjianPage() {
               </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-4 space-y-2">
+            <div className="flex-1 overflow-y-auto p-4 space-y-2 overscroll-contain custom-scrollbar">
               {filteredPendaftar.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full text-ink-400 opacity-50">
                   <span className="text-xs font-bold uppercase">
@@ -597,7 +597,7 @@ export default function JadwalUjianPage() {
 
       {/* Add Session Modal */}
       {showAddSession && (
-        <div className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-4 bg-ink-900/60 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden">
+        <div className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-4 bg-ink-900/60 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
           <div className="bg-white rounded-3xl w-full max-w-lg shadow-clay-lg border border-white overflow-hidden animate-in zoom-in-95 duration-300">
             <form onSubmit={handleCreateSession}>
               <div className="p-5 md:p-8 space-y-6">
@@ -742,7 +742,7 @@ export default function JadwalUjianPage() {
 
       {/* Sending Progress Modal */}
       {sendingProgress.active && (
-        <div className="fixed inset-0 z-[60] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-4 bg-ink-900/80 backdrop-blur-sm overflow-y-auto overflow-x-hidden">
+        <div className="fixed inset-0 z-[60] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-4 bg-ink-900/80 backdrop-blur-sm overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
           <div className="bg-white rounded-3xl w-full max-w-md shadow-2xl border border-white p-5 md:p-8 text-center animate-pulse">
             <Loader2 className="w-12 h-12 text-purple-600 animate-spin mx-auto mb-4" />
             <h2 className="text-2xl font-black text-ink-900 mb-2">
@@ -781,7 +781,7 @@ export default function JadwalUjianPage() {
 
       {/* Broadcast Pulse Modal */}
       {showBroadcastModal && (
-        <div className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-4 bg-ink-900/60 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden">
+        <div className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-4 bg-ink-900/60 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
           <div className="bg-white rounded-3xl w-full max-w-md shadow-clay-lg border border-white overflow-hidden animate-in zoom-in-95 duration-300">
             <div className="p-5 md:p-8 space-y-6">
               <div className="flex items-center justify-between">

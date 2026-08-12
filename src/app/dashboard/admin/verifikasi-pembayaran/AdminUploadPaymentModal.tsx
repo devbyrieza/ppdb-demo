@@ -123,7 +123,7 @@ export default function AdminUploadPaymentModal({
 
   return (
     <div 
-      className="fixed inset-0 bg-stone-900/80 backdrop-blur-sm z-[100] flex justify-center items-start pt-10 md:pt-16 px-4 overflow-y-auto"
+      className="fixed inset-0 bg-stone-900/80 backdrop-blur-sm z-[100] flex justify-center items-start pt-10 md:pt-16 px-4 overflow-y-auto overscroll-contain custom-scrollbar"
       onClick={onClose}
     >
       <div 
@@ -159,7 +159,7 @@ export default function AdminUploadPaymentModal({
               </div>
 
               {query.length >= 2 && (
-                <div className="border border-stone-200 rounded-xl overflow-hidden max-h-80 overflow-y-auto bg-white shadow-sm">
+                <div className="border border-stone-200 rounded-xl overflow-hidden max-h-80 overflow-y-auto bg-white shadow-sm overscroll-contain custom-scrollbar">
                   {results.length > 0 ? (
                     results.map((p) => (
                       <button
