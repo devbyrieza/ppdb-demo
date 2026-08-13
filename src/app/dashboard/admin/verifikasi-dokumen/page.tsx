@@ -229,10 +229,10 @@ function VerifikasiDokumenContent() {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white rounded-2xl shadow-sm p-4 md:p-8 border border-primary-100 mb-8">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 flex-wrap">
-          <div className="flex flex-wrap items-center gap-3 md:gap-5">
-            <div className="p-2.5 md:p-4 bg-linear-to-br from-primary-600 to-primary-900 rounded-2xl shadow-xl shadow-primary-900/20 flex-shrink-0">
+      <div className="bg-white rounded-[24px] shadow-sm p-[24px_28px] md:p-8 border border-primary-100 mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-[24px_28px] mb-6 flex-wrap">
+          <div className="flex flex-wrap items-center gap-3 md:gap-[24px_28px]">
+            <div className="p-2.5 md:p-[24px_28px] bg-linear-to-br from-primary-600 to-primary-900 rounded-[24px] shadow-xl shadow-primary-900/20 flex-shrink-0">
               <FileCheck className="w-6 h-6 md:w-8 md:h-8 text-secondary-100" />
             </div>
             <div>
@@ -249,7 +249,7 @@ function VerifikasiDokumenContent() {
               <button
                 type="button"
                 onClick={() => setShowSearchModal(true)}
-                className="flex items-center gap-2 px-3 md:px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-xl text-sm font-bold transition-all shadow-lg shadow-primary-600/20 whitespace-nowrap"
+                className="flex items-center gap-2 px-3 md:p-[16px_20px] bg-primary-600 hover:bg-primary-700 text-white rounded-[24px] text-sm font-bold transition-all shadow-lg shadow-primary-600/20 whitespace-nowrap"
               >
                 <UploadCloud className="w-4 h-4" />
                 <span className="hidden sm:inline">Upload Atas Nama</span>
@@ -258,7 +258,7 @@ function VerifikasiDokumenContent() {
             <button
               onClick={() => handleExport("excel")}
               disabled={exporting}
-              className="flex items-center gap-2 px-3 md:px-4 py-2 bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white rounded-xl font-bold transition-all disabled:opacity-50 text-sm"
+              className="flex items-center gap-2 px-3 md:p-[16px_20px] bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white rounded-[24px] font-bold transition-all disabled:opacity-50 text-sm"
             >
               <FileSpreadsheet className="w-4 h-4" />
               Excel
@@ -266,7 +266,7 @@ function VerifikasiDokumenContent() {
             <button
               onClick={() => handleExport("pdf")}
               disabled={exporting}
-              className="flex items-center gap-2 px-3 md:px-4 py-2 bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white rounded-xl font-bold transition-all disabled:opacity-50 text-sm"
+              className="flex items-center gap-2 px-3 md:p-[16px_20px] bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white rounded-[24px] font-bold transition-all disabled:opacity-50 text-sm"
             >
               <FileText className="w-4 h-4" />
               PDF
@@ -275,7 +275,7 @@ function VerifikasiDokumenContent() {
               href="/api/admin/export/foto"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-3 md:px-4 py-2 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white rounded-xl font-bold transition-all text-sm"
+              className="flex items-center gap-2 px-3 md:p-[16px_20px] bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white rounded-[24px] font-bold transition-all text-sm"
             >
               <Download className="w-4 h-4" />
               <span className="hidden sm:inline">Foto ZIP</span>
@@ -283,7 +283,7 @@ function VerifikasiDokumenContent() {
             <button
               onClick={fetchData}
               disabled={refreshing}
-              className="p-2 bg-primary-50 text-primary-600 hover:bg-primary-600 hover:text-white rounded-xl transition-all disabled:opacity-50"
+              className="p-2 bg-amber-50 text-amber-600 hover:bg-primary-600 hover:text-white rounded-[24px] transition-all disabled:opacity-50"
               title="Muat Ulang Data"
             >
               <RefreshCw
@@ -304,7 +304,7 @@ function VerifikasiDokumenContent() {
                 setSearchTerm(e.target.value);
                 updateFilters(undefined, e.target.value);
               }}
-              className="w-full pl-12 pr-4 py-4 bg-primary-50/50 border border-primary-100 rounded-2xl focus:border-primary-500 focus:bg-white focus:outline-none transition-all text-sm md:text-base font-bold text-primary-950 placeholder:text-ink-300"
+              className="w-full pl-12 pr-4 py-4 bg-primary-50/50 border border-primary-100 rounded-[24px] focus:border-primary-500 focus:bg-white focus:outline-none transition-all text-sm md:text-base font-bold text-primary-950 placeholder:text-ink-300"
             />
           </div>
           <div className="flex flex-wrap gap-2">
@@ -316,7 +316,7 @@ function VerifikasiDokumenContent() {
               <button
                 key={s.id}
                 onClick={() => updateFilters(s.id)}
-                className={`px-4 md:px-8 py-3 rounded-2xl font-black transition-all text-sm md:text-base whitespace-nowrap active:scale-95 ${
+                className={`px-4 md:px-8 py-3 rounded-[24px] font-black transition-all text-sm md:text-base whitespace-nowrap active:scale-95 ${
                   statusFilter === s.id
                     ? "bg-primary-700 text-white shadow-lg shadow-primary-700/30 ring-2 ring-primary-500/20"
                     : "bg-white border border-primary-100 text-ink-400 hover:bg-primary-50 hover:text-primary-700"
@@ -330,8 +330,8 @@ function VerifikasiDokumenContent() {
       </div>
 
       {refreshing && (
-        <div className="fixed inset-0 bg-white/40 backdrop-blur-[1px] z-[100] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center pointer-events-none overflow-y-auto overflow-x-hidden p-4 overscroll-contain custom-scrollbar">
-          <div className="bg-white/80 px-6 py-3 rounded-2xl shadow-xl border border-primary-100 flex items-center gap-3 animate-in fade-in zoom-in duration-300">
+        <div className="fixed inset-0 bg-white/40 backdrop-blur-[1px] z-[100] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center pointer-events-none overflow-y-auto overflow-x-hidden p-[24px_28px] overscroll-contain custom-scrollbar">
+          <div className="bg-white/80 p-[16px_20px] rounded-[24px] shadow-xl border border-primary-100 flex items-center gap-3 animate-in fade-in zoom-in duration-300">
             <Loader2 className="w-5 h-5 animate-spin text-primary-600" />
             <span className="text-sm font-bold text-ink-700 tracking-tight">
               Memperbarui data...
@@ -381,8 +381,8 @@ function VerifikasiDokumenContent() {
                     <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-br from-primary-50 to-secondary-50 -mr-16 -mt-16 rounded-full opacity-50 transition-transform group-hover:scale-110" />
 
                     <div className="relative">
-                      <div className="flex items-center gap-4 mb-6">
-                        <div className="w-14 h-14 bg-primary-50 rounded-2xl flex items-center justify-center group-hover:from-primary-600 group-hover:to-primary-900 transition-all duration-500 shadow-inner border border-primary-100">
+                      <div className="flex items-center gap-[24px_28px] mb-6">
+                        <div className="w-14 h-14 bg-primary-50 rounded-[24px] flex items-center justify-center group-hover:from-primary-600 group-hover:to-primary-900 transition-all duration-500 shadow-inner border border-primary-100">
                           <User className="w-6 h-6 text-primary-400 group-hover:text-white transition-colors" />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -420,7 +420,7 @@ function VerifikasiDokumenContent() {
                             style={{ width: `${percentage}%` }}
                           />
                         </div>
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-[24px_28px]">
                           <div className="flex items-center gap-1.5">
                             <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-sm shadow-emerald-500/50" />
                             <span className="text-xs font-bold text-ink-600">
@@ -444,7 +444,7 @@ function VerifikasiDokumenContent() {
                         {percentage === 100 ? (
                           <CheckCircle className="w-6 h-6 text-emerald-500" />
                         ) : (
-                          <Clock className="w-5 h-5 text-primary-500 animate-pulse" />
+                          <Clock className="w-5 h-5 text-slate-500 animate-pulse" />
                         )}
                       </div>
                     </div>

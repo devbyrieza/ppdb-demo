@@ -305,7 +305,7 @@ export default function DaftarPindahanPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-white rounded-2xl shadow-sm border border-secondary-200 mb-6 group hover:scale-110 transition-transform app-card">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-white rounded-[24px] shadow-sm border border-secondary-200 mb-6 group hover:scale-110 transition-transform app-card">
             <School className="w-8 h-8 text-primary-600" />
           </div>
           <motion.h1
@@ -343,7 +343,7 @@ export default function DaftarPindahanPage() {
                   initial={{ opacity: 0, height: 0, marginBottom: 0 }}
                   animate={{ opacity: 1, height: "auto", marginBottom: 40 }}
                   exit={{ opacity: 0, height: 0, marginBottom: 0 }}
-                  className="bg-primary-50 border border-primary-100/50 rounded-3xl p-6 flex items-start gap-4 relative z-10 overflow-hidden"
+                  className="bg-primary-50 border border-primary-100/50 rounded-3xl p-6 flex items-start gap-[24px_28px] relative z-10 overflow-hidden"
                 >
                   <div className="w-10 h-10 bg-primary-500 rounded-full flex items-center justify-center text-white shrink-0 shadow-premium-xs">
                     <CheckCircle className="w-6 h-6" />
@@ -404,7 +404,7 @@ export default function DaftarPindahanPage() {
                 transition={{ delay: 0.4 }}
               >
                 <div className="flex items-center gap-3 mb-8">
-                  <div className="w-10 h-10 rounded-xl bg-secondary-50 flex items-center justify-center text-primary-600 shadow-sm border border-secondary-200">
+                  <div className="w-10 h-10 rounded-[24px] bg-secondary-50 flex items-center justify-center text-primary-600 shadow-sm border border-secondary-200">
                     <GraduationCap className="w-6 h-6" />
                   </div>
                   <h3 className="text-2xl font-display font-black text-ink-950">
@@ -450,7 +450,7 @@ export default function DaftarPindahanPage() {
                               : "border-secondary-200 bg-white hover:border-primary-200 hover:shadow-sm"
                         }`}
                       >
-                        <div className="flex items-center gap-4 relative z-0">
+                        <div className="flex items-center gap-[24px_28px] relative z-0">
                           <div
                             className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
                               formData.jenjang === option.value
@@ -493,7 +493,7 @@ export default function DaftarPindahanPage() {
                 className="space-y-8"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-secondary-50 flex items-center justify-center text-primary-600 shadow-sm border border-secondary-200">
+                  <div className="w-10 h-10 rounded-[24px] bg-secondary-50 flex items-center justify-center text-primary-600 shadow-sm border border-secondary-200">
                     <User className="w-6 h-6" />
                   </div>
                   <h3 className="text-2xl font-display font-black text-ink-950">
@@ -517,7 +517,7 @@ export default function DaftarPindahanPage() {
                           }))
                         }
                         placeholder="Sesuai Akta Kelahiran santri"
-                        className="w-full px-5 py-3 md:px-8 md:py-5 rounded-xl md:rounded-2xl bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold placeholder:text-ink-500 text-sm md:text-base text-ink-950"
+                        className="w-full px-5 py-3 md:px-8 md:py-5 rounded-[24px] md:rounded-[24px] bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold placeholder:text-ink-500 text-sm md:text-base text-ink-950"
                       />
                     </InputField>
                   </div>
@@ -535,7 +535,7 @@ export default function DaftarPindahanPage() {
                         }))
                       }
                       placeholder="16 Digit NIK"
-                      className="w-full px-5 py-3 md:px-8 md:py-5 rounded-xl md:rounded-2xl bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold placeholder:text-ink-500 text-sm md:text-base text-ink-950"
+                      className="w-full px-5 py-3 md:px-8 md:py-5 rounded-[24px] md:rounded-[24px] bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold placeholder:text-ink-500 text-sm md:text-base text-ink-950"
                     />
                   </InputField>
 
@@ -549,7 +549,7 @@ export default function DaftarPindahanPage() {
                           tanggal_lahir: e.target.value,
                         }))
                       }
-                      className="w-full px-5 py-3 md:px-8 md:py-5 rounded-xl md:rounded-2xl bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold text-sm md:text-base text-ink-950"
+                      className="w-full px-5 py-3 md:px-8 md:py-5 rounded-[24px] md:rounded-[24px] bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold text-sm md:text-base text-ink-950"
                     />
                   </InputField>
 
@@ -558,7 +558,7 @@ export default function DaftarPindahanPage() {
                       label="Jenis Kelamin"
                       error={fieldErrors.jenis_kelamin}
                     >
-                      <div className="flex gap-4">
+                      <div className="flex gap-[24px_28px]">
                         {[
                           { val: "L", label: "Santri Putra" },
                           { val: "P", label: "Santri Putri" },
@@ -566,7 +566,7 @@ export default function DaftarPindahanPage() {
                           <motion.label
                             key={jk.val}
                             whileTap={{ scale: 0.98 }}
-                            className={`flex-1 flex items-center justify-center px-4 md:px-6 py-3 md:py-4 rounded-[1.5rem] md:rounded-[2rem] border-2 cursor-pointer transition-all duration-300 text-sm md:text-base ${
+                            className={`flex-1 flex items-center justify-center px-4 md:p-[16px_20px] md:py-4 rounded-[1.5rem] md:rounded-[2rem] border-2 cursor-pointer transition-all duration-300 text-sm md:text-base ${
                               formData.jenis_kelamin === jk.val
                                 ? "bg-primary-700 border-primary-700 text-white font-black shadow-md"
                                 : "bg-secondary-50 border-secondary-200 text-ink-800 hover:border-primary-200 hover:bg-white font-bold"
@@ -602,7 +602,7 @@ export default function DaftarPindahanPage() {
                 className="space-y-8"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-secondary-50 flex items-center justify-center text-primary-600 shadow-sm border border-secondary-200">
+                  <div className="w-10 h-10 rounded-[24px] bg-secondary-50 flex items-center justify-center text-primary-600 shadow-sm border border-secondary-200">
                     <BookOpen className="w-6 h-6" />
                   </div>
                   <h3 className="text-2xl font-display font-black text-ink-950">
@@ -618,7 +618,7 @@ export default function DaftarPindahanPage() {
                         onChange={(e) =>
                           setFormData((p) => ({ ...p, kelas_masuk: e.target.value }))
                         }
-                        className="w-full px-5 py-3 md:px-8 md:py-5 rounded-xl md:rounded-2xl bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold text-sm md:text-base text-ink-950 appearance-none cursor-pointer"
+                        className="w-full px-5 py-3 md:px-8 md:py-5 rounded-[24px] md:rounded-[24px] bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold text-sm md:text-base text-ink-950 appearance-none cursor-pointer"
                       >
                         <option value="">Pilih Jenjang Terlebih Dahulu</option>
                         {formData.jenjang === "MTs" && (
@@ -651,7 +651,7 @@ export default function DaftarPindahanPage() {
                         }))
                       }
                       placeholder="10 Digit NISN"
-                      className="w-full px-5 py-3 md:px-8 md:py-5 rounded-xl md:rounded-2xl bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold placeholder:text-ink-500 text-sm md:text-base text-ink-950"
+                      className="w-full px-5 py-3 md:px-8 md:py-5 rounded-[24px] md:rounded-[24px] bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold placeholder:text-ink-500 text-sm md:text-base text-ink-950"
                     />
                   </InputField>
                   <InputField label="NPSN Sekolah Asal *" error={fieldErrors.npsn}>
@@ -667,7 +667,7 @@ export default function DaftarPindahanPage() {
                         }))
                       }
                       placeholder="8 Digit NPSN"
-                      className="w-full px-5 py-3 md:px-8 md:py-5 rounded-xl md:rounded-2xl bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold placeholder:text-ink-500 text-sm md:text-base text-ink-950"
+                      className="w-full px-5 py-3 md:px-8 md:py-5 rounded-[24px] md:rounded-[24px] bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold placeholder:text-ink-500 text-sm md:text-base text-ink-950"
                     />
                   </InputField>
 
@@ -683,7 +683,7 @@ export default function DaftarPindahanPage() {
                           }))
                         }
                         placeholder="Nama Pondok Pesantren atau Sekolah asal"
-                        className="w-full px-5 py-3 md:px-8 md:py-5 rounded-xl md:rounded-2xl bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold placeholder:text-ink-500 text-sm md:text-base text-ink-950"
+                        className="w-full px-5 py-3 md:px-8 md:py-5 rounded-[24px] md:rounded-[24px] bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold placeholder:text-ink-500 text-sm md:text-base text-ink-950"
                       />
                     </InputField>
                   </div>
@@ -700,7 +700,7 @@ export default function DaftarPindahanPage() {
                         }
                         rows={3}
                         placeholder="Alasan pindah sekolah, riwayat hafalan Quran, atau catatan penting lainnya..."
-                        className="w-full px-5 py-4 md:px-8 md:py-6 rounded-xl md:rounded-2xl bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold placeholder:text-ink-500 text-sm md:text-base text-ink-950 resize-none"
+                        className="w-full px-5 py-4 md:px-8 md:py-6 rounded-[24px] md:rounded-[24px] bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold placeholder:text-ink-500 text-sm md:text-base text-ink-950 resize-none"
                       />
                     </InputField>
                   </div>
@@ -715,7 +715,7 @@ export default function DaftarPindahanPage() {
                 className="space-y-8"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-secondary-50 flex items-center justify-center text-primary-600 shadow-sm border border-secondary-200">
+                  <div className="w-10 h-10 rounded-[24px] bg-secondary-50 flex items-center justify-center text-primary-600 shadow-sm border border-secondary-200">
                     <Phone className="w-6 h-6" />
                   </div>
                   <h3 className="text-2xl font-display font-black text-ink-950">
@@ -727,7 +727,7 @@ export default function DaftarPindahanPage() {
                   label="Nomor WhatsApp Orang Tua"
                   error={fieldErrors.no_hp}
                 >
-                  <div className="relative flex shadow-sm border border-transparent focus-within:border-primary-200 focus-within:ring-4 focus-within:ring-secondary-50 rounded-xl md:rounded-2xl overflow-hidden bg-secondary-50 transition-all">
+                  <div className="relative flex shadow-sm border border-transparent focus-within:border-primary-200 focus-within:ring-4 focus-within:ring-secondary-50 rounded-[24px] md:rounded-[24px] overflow-hidden bg-secondary-50 transition-all">
                     <div className="relative">
                       <select
                         value={countryCode}

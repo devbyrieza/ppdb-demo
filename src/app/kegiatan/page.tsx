@@ -137,7 +137,7 @@ const FeatureCard = ({
       </div>
 
       {/* Program Badge */}
-      <div className="absolute -top-4 -right-4 bg-white px-6 py-3 rounded-pill shadow-md border border-primary-100 z-10 flex items-center gap-2">
+      <div className="absolute -top-[24px_28px] -right-4 bg-white p-[16px_20px] rounded-pill shadow-md border border-primary-100 z-10 flex items-center gap-2">
         <Trophy className="w-5 h-5 text-secondary-500" />
         <span className="text-xs font-black text-ink-950 uppercase tracking-widest">
           Unggulan
@@ -148,7 +148,7 @@ const FeatureCard = ({
     {/* Content Side */}
     <div className="flex flex-col justify-center">
       <div
-        className={`w-16 h-16 ${item.bgColor} rounded-2xl flex items-center justify-center shadow-sm mb-8 transition-transform hover:scale-110`}
+        className={`w-16 h-16 ${item.bgColor} rounded-[24px] flex items-center justify-center shadow-sm mb-8 transition-transform hover:scale-110`}
       >
         <item.icon className="w-8 h-8 text-white" />
       </div>
@@ -162,11 +162,11 @@ const FeatureCard = ({
       </p>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px_28px] mb-10">
         {item.stats.map((stat, statIdx) => (
           <div
             key={statIdx}
-            className="bg-primary-50 p-4 rounded-[1.5rem] border border-primary-100 text-center hover:bg-white hover:shadow-sm transition-all"
+            className="bg-primary-50 p-[24px_28px] rounded-[1.5rem] border border-primary-100 text-center hover:bg-white hover:shadow-sm transition-all"
           >
             <div className="text-2xl font-black text-primary-700 mb-1">
               {stat.value}
@@ -179,10 +179,10 @@ const FeatureCard = ({
       </div>
 
       {/* Results List */}
-      <div className="app-card bg-white p-5 md:p-8 rounded-[2.5rem] border border-primary-100 shadow-sm mb-8">
+      <div className="app-card bg-white p-[24px_28px] md:p-8 rounded-[2.5rem] border border-primary-100 shadow-sm mb-8">
         <div className="space-y-4">
           {item.results.map((result, idx) => (
-            <div key={idx} className="flex items-start gap-4">
+            <div key={idx} className="flex items-start gap-[24px_28px]">
               <result.icon className="w-5 h-5 text-primary-600 mt-0.5 shrink-0" />
               <span className="text-base text-ink-700 font-bold leading-tight">
                 {result.text}
@@ -211,9 +211,9 @@ const FeatureCard = ({
 const StatsCard = ({ icon: Icon, value, label, sublabel }: HeroStat) => (
   <motion.div
     whileHover={{ y: -5 }}
-    className="app-card bg-white p-4 md:p-6 rounded-[2rem] md:rounded-[2.5rem] border border-primary-100 shadow-sm text-center min-w-[140px] md:min-w-[160px] flex flex-col items-center"
+    className="app-card bg-white p-[24px_28px] md:p-6 rounded-[2rem] md:rounded-[2.5rem] border border-primary-100 shadow-sm text-center min-w-[140px] md:min-w-[160px] flex flex-col items-center"
   >
-    <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-primary-50 flex items-center justify-center text-primary-600 mb-3 md:mb-4 border border-primary-100">
+    <div className="w-10 h-10 md:w-12 md:h-12 rounded-[24px] md:rounded-[24px] bg-primary-50 flex items-center justify-center text-primary-600 mb-3 md:mb-4 border border-primary-100">
       <Icon className="w-5 h-5 md:w-6 md:h-6" />
     </div>
     <div className="text-2xl md:text-3xl font-black text-ink-950 mb-1">
@@ -244,7 +244,7 @@ const ScheduleCard = ({
   >
     <div className="flex flex-col h-full">
       <div className="flex items-center justify-between mb-8">
-        <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform border border-primary-100">
+        <div className="w-16 h-16 bg-white rounded-[24px] flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform border border-primary-100">
           <schedule.icon className={`${schedule.iconColor} w-8 h-8`} />
         </div>
         <div className="text-lg font-black text-primary-700 bg-white/50 px-4 py-1.5 rounded-pill border border-primary-100">
@@ -260,7 +260,7 @@ const ScheduleCard = ({
         {schedule.detail}
       </p>
 
-      <div className="mt-auto inline-flex items-center gap-3 bg-white/60 p-4 rounded-2xl border border-primary-100 shadow-sm">
+      <div className="mt-auto inline-flex items-center gap-3 bg-white/60 p-[24px_28px] rounded-[24px] border border-primary-100 shadow-sm">
         <Zap className="w-5 h-5 text-primary-600 flex-shrink-0" />
         <span className="text-sm font-black text-ink-950 uppercase tracking-tight">
           {schedule.benefit}
@@ -285,7 +285,7 @@ const WeeklyActivityCard = ({
     className={`app-card group p-8 rounded-[2.5rem] bg-white border border-primary-50 shadow-sm hover:shadow-md transition-all hover:-translate-y-2 text-center`}
   >
     <div
-      className={`w-14 h-14 ${activity.bg} rounded-2xl flex items-center justify-center ${activity.color} mx-auto mb-6 group-hover:scale-110 transition-transform border border-primary-100`}
+      className={`w-14 h-14 ${activity.bg} rounded-[24px] flex items-center justify-center ${activity.color} mx-auto mb-6 group-hover:scale-110 transition-transform border border-primary-100`}
     >
       <activity.icon className="w-8 h-8" />
     </div>
@@ -302,7 +302,7 @@ const WeeklyActivityCard = ({
       <p className="text-base text-ink-600 font-medium">{activity.detail}</p>
     </div>
 
-    <div className="bg-primary-50 rounded-xl px-4 py-3 border border-primary-100">
+    <div className="bg-primary-50 rounded-[24px] px-4 py-3 border border-primary-100">
       <p className="text-xs font-black text-primary-800 uppercase tracking-tight">
         {activity.benefit}
       </p>
@@ -322,9 +322,9 @@ const EkskulCard = ({
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ delay: index * 0.05 }}
-    className="app-card group p-4 md:p-8 rounded-[2rem] md:rounded-[2.5rem] bg-white border border-primary-50 shadow-sm hover:shadow-md hover:border-primary-200 transition-all hover:-translate-y-2 text-center h-full flex flex-col justify-between"
+    className="app-card group p-[24px_28px] md:p-8 rounded-[2rem] md:rounded-[2.5rem] bg-white border border-primary-50 shadow-sm hover:shadow-md hover:border-primary-200 transition-all hover:-translate-y-2 text-center h-full flex flex-col justify-between"
   >
-    <div className="w-12 h-12 md:w-16 md:h-16 bg-primary-50 rounded-xl md:rounded-2xl flex items-center justify-center text-primary-600 mx-auto mb-4 md:mb-6 group-hover:scale-110 transition-all duration-300 border border-primary-100">
+    <div className="w-12 h-12 md:w-16 md:h-16 bg-primary-50 rounded-[24px] md:rounded-[24px] flex items-center justify-center text-primary-600 mx-auto mb-4 md:mb-6 group-hover:scale-110 transition-all duration-300 border border-primary-100">
       <ekskul.icon className="w-6 h-6 md:w-8 md:h-8" />
     </div>
 
@@ -691,7 +691,7 @@ export default function KegiatanPage() {
             adaptif.
           </motion.p>
 
-          <div className="flex flex-wrap gap-4 sm:gap-6 justify-center">
+          <div className="flex flex-wrap gap-[24px_28px] sm:gap-6 justify-center">
             {heroStats.map((stat, idx) => (
               <StatsCard key={idx} {...stat} />
             ))}
@@ -706,7 +706,7 @@ export default function KegiatanPage() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-white p-5 md:p-8 lg:p-20 rounded-[3rem] md:rounded-[4rem] shadow-premium-xl border border-surface-100 flex flex-col gap-12 items-center overflow-hidden relative text-center"
+            className="bg-white p-[24px_28px] md:p-8 lg:p-20 rounded-[3rem] md:rounded-[4rem] shadow-premium-xl border border-surface-100 flex flex-col gap-12 items-center overflow-hidden relative text-center"
           >
             <div className="absolute top-0 right-0 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-secondary-50/50 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/3 pointer-events-none" />
 
@@ -726,7 +726,7 @@ export default function KegiatanPage() {
 
             </div>
 
-            <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 w-full">
+            <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-[24px_28px] md:gap-6 w-full">
               {[
                 {
                   text: "Bahasa Arab sebagai Bahasa Pengantar",
@@ -748,9 +748,9 @@ export default function KegiatanPage() {
                 <motion.div
                   key={idx}
                   whileHover={{ scale: 1.02 }}
-                  className="bg-white p-5 md:p-6 rounded-[2rem] flex items-center gap-4 border border-primary-100 group transition-all h-full text-left"
+                  className="bg-white p-[24px_28px] md:p-6 rounded-[2rem] flex items-center gap-[24px_28px] border border-primary-100 group transition-all h-full text-left"
                 >
-                  <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-primary-50 shadow-sm flex items-center justify-center text-primary-600 shrink-0 group-hover:bg-primary-600 group-hover:text-white transition-colors border border-primary-100">
+                  <div className="w-12 h-12 md:w-14 md:h-14 rounded-[24px] bg-primary-50 shadow-sm flex items-center justify-center text-primary-600 shrink-0 group-hover:bg-primary-600 group-hover:text-white transition-colors border border-primary-100">
                     <item.icon className="w-5 h-5 md:w-6 md:h-6" />
                   </div>
                   <span className="font-black text-ink-900 text-sm md:text-lg leading-tight">
@@ -844,7 +844,7 @@ export default function KegiatanPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-[24px_28px] md:gap-6 lg:gap-8">
             {ekstrakurikuler.map((ekskul, idx) => (
               <EkskulCard key={idx} ekskul={ekskul} index={idx} />
             ))}
@@ -859,7 +859,7 @@ export default function KegiatanPage() {
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="bg-primary-900 bg-linear-to-br from-primary-800 to-primary-950 rounded-[2rem] md:rounded-[3rem] lg:rounded-[4rem] p-6 sm:p-5 md:p-8 lg:p-24 text-center text-white relative overflow-hidden shadow-lg"
+            className="bg-primary-900 bg-linear-to-br from-primary-800 to-primary-950 rounded-[2rem] md:rounded-[3rem] lg:rounded-[4rem] p-6 sm:p-[24px_28px] md:p-8 lg:p-24 text-center text-white relative overflow-hidden shadow-lg"
           >
             <div className="absolute top-0 right-0 w-32 h-32 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-white/5 rounded-full blur-[60px] md:blur-[100px] -translate-y-1/2 translate-x-1/2" />
             <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-5" />
@@ -873,7 +873,7 @@ export default function KegiatanPage() {
                 Pendidikan adalah investasi terbaik. Masuklah ke lingkungan yang
                 menjaga iman, memacu ilmu, dan membangun karakter mereka.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 justify-center px-4">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-[24px_28px] md:gap-6 justify-center px-4">
                 <Link href="/ppdb">
                   <button className="w-full sm:w-auto px-6 md:px-10 py-3.5 sm:py-4 md:py-5 rounded-pill bg-white text-primary-900 font-black text-sm sm:text-base md:text-lg hover:bg-primary-50 shadow-md transition-all min-h-[48px] sm:min-h-[52px]">
                     Daftar Sekarang

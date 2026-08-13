@@ -86,7 +86,7 @@ export default function AdminTambahPendaftar() {
         title: "Pendaftaran Berhasil!",
         html: `
           <p>Santri berhasil didaftarkan ke sistem.</p>
-          <div class="bg-stone-100 p-4 rounded-xl text-left mt-4 border border-stone-200">
+          <div class="bg-stone-100 p-[24px_28px] rounded-[24px] text-left mt-4 border border-stone-200">
             <p class="text-sm text-stone-500 mb-1">Nomor Pendaftaran:</p>
             <p class="font-bold text-lg text-primary-700">${data.data.nomor_pendaftaran}</p>
             <p class="text-sm text-stone-500 mt-3 mb-1">Pendaftar dapat login menggunakan:</p>
@@ -107,7 +107,7 @@ export default function AdminTambahPendaftar() {
 
   return (
     <div className="space-y-6 pb-20">
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-[24px_28px]">
         <Link
           href="/dashboard/admin/pendaftar"
           className="p-2 hover:bg-stone-100 rounded-full transition-colors"
@@ -125,28 +125,28 @@ export default function AdminTambahPendaftar() {
         </div>
       </div>
 
-      <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-xl flex gap-3 text-blue-800 text-sm">
+      <div className="bg-blue-50 border-l-4 border-blue-500 p-[24px_28px] rounded-r-xl flex gap-3 text-blue-800 text-sm">
         <Info className="w-5 h-5 shrink-0 text-blue-600" />
         <p>
           Menggunakan form ini akan langsung membuatkan akun login pendaftar tanpa melewati verifikasi kode OTP via WhatsApp. Nomor HP yang dimasukkan otomatis menjadi nomor login pendaftar.
         </p>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm border border-stone-200 overflow-hidden">
+      <div className="bg-white rounded-[24px] shadow-sm border border-stone-200 overflow-hidden">
         <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-8">
           
           {/* Tipe Pendaftaran */}
           <div className="space-y-4">
             <h3 className="text-lg font-bold text-stone-900 border-b pb-2">Tipe Pendaftaran</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <label className={`relative flex cursor-pointer rounded-xl border-2 p-4 transition-all ${formData.tipe_pendaftaran === 'BARU' ? 'border-primary-500 bg-primary-50' : 'border-stone-200 hover:border-stone-300'}`}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-[24px_28px]">
+              <label className={`relative flex cursor-pointer rounded-[24px] border-2 p-[24px_28px] transition-all ${formData.tipe_pendaftaran === 'BARU' ? 'border-primary-500 bg-primary-50' : 'border-stone-200 hover:border-stone-300'}`}>
                 <input type="radio" name="tipe_pendaftaran" value="BARU" className="sr-only" checked={formData.tipe_pendaftaran === 'BARU'} onChange={handleChange} />
                 <div className="flex flex-col">
                   <span className="text-sm font-bold text-stone-900">Pendaftar Reguler (Baru)</span>
                   <span className="text-xs text-stone-500 mt-1">Untuk calon santri baru masuk di awal jenjang</span>
                 </div>
               </label>
-              <label className={`relative flex cursor-pointer rounded-xl border-2 p-4 transition-all ${formData.tipe_pendaftaran === 'PINDAHAN' ? 'border-purple-500 bg-purple-50' : 'border-stone-200 hover:border-stone-300'}`}>
+              <label className={`relative flex cursor-pointer rounded-[24px] border-2 p-[24px_28px] transition-all ${formData.tipe_pendaftaran === 'PINDAHAN' ? 'border-purple-500 bg-purple-50' : 'border-stone-200 hover:border-stone-300'}`}>
                 <input type="radio" name="tipe_pendaftaran" value="PINDAHAN" className="sr-only" checked={formData.tipe_pendaftaran === 'PINDAHAN'} onChange={handleChange} />
                 <div className="flex flex-col">
                   <span className="text-sm font-bold text-stone-900">Pendaftar Pindahan</span>
@@ -162,15 +162,15 @@ export default function AdminTambahPendaftar() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-sm font-bold text-stone-700">NIK (16 Digit) <span className="text-red-500">*</span></label>
-                <input required type="text" name="nik" value={formData.nik} onChange={handleChange} maxLength={16} placeholder="Contoh: 3201..." className="w-full px-4 py-2.5 rounded-xl border-2 border-stone-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 outline-none transition-all" />
+                <input required type="text" name="nik" value={formData.nik} onChange={handleChange} maxLength={16} placeholder="Contoh: 3201..." className="w-full p-[16px_20px].5 rounded-[24px] border-2 border-stone-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 outline-none transition-all" />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-bold text-stone-700">Nama Lengkap Sesuai KK <span className="text-red-500">*</span></label>
-                <input required type="text" name="nama_lengkap" value={formData.nama_lengkap} onChange={handleChange} placeholder="Nama lengkap..." className="w-full px-4 py-2.5 rounded-xl border-2 border-stone-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 outline-none transition-all" />
+                <input required type="text" name="nama_lengkap" value={formData.nama_lengkap} onChange={handleChange} placeholder="Nama lengkap..." className="w-full p-[16px_20px].5 rounded-[24px] border-2 border-stone-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 outline-none transition-all" />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-bold text-stone-700">Jenis Kelamin <span className="text-red-500">*</span></label>
-                <select required name="jenis_kelamin" value={formData.jenis_kelamin} onChange={handleChange} className="w-full px-4 py-2.5 rounded-xl border-2 border-stone-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 outline-none transition-all appearance-none bg-white">
+                <select required name="jenis_kelamin" value={formData.jenis_kelamin} onChange={handleChange} className="w-full p-[16px_20px].5 rounded-[24px] border-2 border-stone-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 outline-none transition-all appearance-none bg-white">
                   <option value="">Pilih Jenis Kelamin...</option>
                   <option value="L">Laki-laki (Putra)</option>
                   <option value="P">Perempuan (Putri)</option>
@@ -178,7 +178,7 @@ export default function AdminTambahPendaftar() {
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-bold text-stone-700">Jenjang Tujuan <span className="text-red-500">*</span></label>
-                <select required name="jenjang" value={formData.jenjang} onChange={handleChange} className="w-full px-4 py-2.5 rounded-xl border-2 border-stone-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 outline-none transition-all appearance-none bg-white">
+                <select required name="jenjang" value={formData.jenjang} onChange={handleChange} className="w-full p-[16px_20px].5 rounded-[24px] border-2 border-stone-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 outline-none transition-all appearance-none bg-white">
                   <option value="">Pilih Jenjang...</option>
                   <option value="MTs">MTs (Madrasah Tsanawiyah)</option>
                   <option value="IL">I'dad Lughowi (IL)</option>
@@ -187,7 +187,7 @@ export default function AdminTambahPendaftar() {
               </div>
                <div className="space-y-2">
                 <label className="text-sm font-bold text-stone-700">Tanggal Lahir</label>
-                <input type="date" name="tanggal_lahir" value={formData.tanggal_lahir} onChange={handleChange} className="w-full px-4 py-2.5 rounded-xl border-2 border-stone-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 outline-none transition-all" />
+                <input type="date" name="tanggal_lahir" value={formData.tanggal_lahir} onChange={handleChange} className="w-full p-[16px_20px].5 rounded-[24px] border-2 border-stone-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 outline-none transition-all" />
               </div>
             </div>
           </div>
@@ -198,23 +198,23 @@ export default function AdminTambahPendaftar() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-sm font-bold text-stone-700">Nomor WhatsApp <span className="text-red-500">*</span></label>
-                <input required type="tel" name="no_hp" value={formData.no_hp} onChange={handleChange} placeholder="Contoh: 081234567890" className="w-full px-4 py-2.5 rounded-xl border-2 border-stone-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 outline-none transition-all" />
+                <input required type="tel" name="no_hp" value={formData.no_hp} onChange={handleChange} placeholder="Contoh: 081234567890" className="w-full p-[16px_20px].5 rounded-[24px] border-2 border-stone-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 outline-none transition-all" />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-bold text-stone-700">Email (Opsional)</label>
-                <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="email@contoh.com" className="w-full px-4 py-2.5 rounded-xl border-2 border-stone-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 outline-none transition-all" />
+                <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="email@contoh.com" className="w-full p-[16px_20px].5 rounded-[24px] border-2 border-stone-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 outline-none transition-all" />
               </div>
             </div>
           </div>
 
           {/* Data Pindahan (Jika Memilih Pindahan) */}
           {formData.tipe_pendaftaran === "PINDAHAN" && (
-            <div className="space-y-4 bg-purple-50 p-6 rounded-xl border border-purple-100">
+            <div className="space-y-4 bg-purple-50 p-6 rounded-[24px] border border-purple-100">
               <h3 className="text-lg font-bold text-purple-900 border-b border-purple-200 pb-2">Informasi Santri Pindahan</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-sm font-bold text-purple-900">Kelas Tujuan Masuk <span className="text-red-500">*</span></label>
-                  <select required name="kelas_masuk" value={formData.kelas_masuk} onChange={handleChange} className="w-full px-4 py-2.5 rounded-xl border-2 border-purple-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 outline-none transition-all appearance-none bg-white">
+                  <select required name="kelas_masuk" value={formData.kelas_masuk} onChange={handleChange} className="w-full p-[16px_20px].5 rounded-[24px] border-2 border-purple-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 outline-none transition-all appearance-none bg-white">
                     <option value="">Pilih Kelas...</option>
                     {[1,2,3,4,5,6,7,8,9,10,11,12].map(kelas => (
                       <option key={kelas} value={kelas}>Kelas {kelas}</option>
@@ -223,19 +223,19 @@ export default function AdminTambahPendaftar() {
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-bold text-purple-900">Asal Institusi / Sekolah <span className="text-red-500">*</span></label>
-                  <input required type="text" name="asal_institusi" value={formData.asal_institusi} onChange={handleChange} placeholder="Nama sekolah asal..." className="w-full px-4 py-2.5 rounded-xl border-2 border-purple-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 outline-none transition-all" />
+                  <input required type="text" name="asal_institusi" value={formData.asal_institusi} onChange={handleChange} placeholder="Nama sekolah asal..." className="w-full p-[16px_20px].5 rounded-[24px] border-2 border-purple-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 outline-none transition-all" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-bold text-purple-900">NISN (Nomor Induk Siswa Nasional) <span className="text-red-500">*</span></label>
-                  <input required type="text" name="nisn" value={formData.nisn} onChange={handleChange} placeholder="NISN santri..." className="w-full px-4 py-2.5 rounded-xl border-2 border-purple-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 outline-none transition-all" />
+                  <input required type="text" name="nisn" value={formData.nisn} onChange={handleChange} placeholder="NISN santri..." className="w-full p-[16px_20px].5 rounded-[24px] border-2 border-purple-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 outline-none transition-all" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-bold text-purple-900">NPSN Sekolah Asal <span className="text-red-500">*</span></label>
-                  <input required type="text" name="npsn" value={formData.npsn} onChange={handleChange} placeholder="NPSN asal sekolah..." className="w-full px-4 py-2.5 rounded-xl border-2 border-purple-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 outline-none transition-all" />
+                  <input required type="text" name="npsn" value={formData.npsn} onChange={handleChange} placeholder="NPSN asal sekolah..." className="w-full p-[16px_20px].5 rounded-[24px] border-2 border-purple-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 outline-none transition-all" />
                 </div>
                 <div className="space-y-2 md:col-span-2">
                   <label className="text-sm font-bold text-purple-900">Alasan Pindah (Opsional)</label>
-                  <textarea name="catatan_pindahan" value={formData.catatan_pindahan} onChange={handleChange} rows={2} className="w-full px-4 py-2.5 rounded-xl border-2 border-purple-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 outline-none transition-all resize-none"></textarea>
+                  <textarea name="catatan_pindahan" value={formData.catatan_pindahan} onChange={handleChange} rows={2} className="w-full p-[16px_20px].5 rounded-[24px] border-2 border-purple-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 outline-none transition-all resize-none"></textarea>
                 </div>
               </div>
             </div>
@@ -246,7 +246,7 @@ export default function AdminTambahPendaftar() {
             <button
               type="submit"
               disabled={loading}
-              className="inline-flex items-center gap-2 px-5 md:px-8 py-3 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl font-bold transition-all shadow-md shadow-primary-600/20"
+              className="inline-flex items-center gap-2 px-5 md:px-8 py-3 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-[24px] font-bold transition-all shadow-md shadow-primary-600/20"
             >
               {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
               Daftarkan Santri

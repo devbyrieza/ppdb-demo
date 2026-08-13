@@ -191,7 +191,7 @@ export default function PengajuanKeringananPage() {
               "Mohon maaf, pengajuan Anda saat ini tidak dapat kami setujui setelah melalui proses pertimbangan."}
           </p>
 
-          <div className="w-full max-w-md bg-slate-50 border border-slate-100 rounded-2xl p-6 text-left space-y-4">
+          <div className="w-full max-w-md bg-slate-50 border border-slate-100 rounded-[24px] p-6 text-left space-y-4">
             <div className="flex justify-between items-center border-b border-slate-200 pb-3">
               <span className="text-sm font-bold text-slate-500 uppercase tracking-wider">
                 Status
@@ -242,8 +242,8 @@ export default function PengajuanKeringananPage() {
   return (
     <div className="space-y-8 max-w-4xl mx-auto pb-12">
       {/* Header */}
-      <div className="bg-linear-to-br from-primary-700 to-primary-900 rounded-2xl p-6 md:p-8 text-white shadow-lg relative overflow-hidden">
-        <div className="absolute top-0 right-0 p-4 opacity-10">
+      <div className="bg-linear-to-br from-primary-700 to-primary-900 rounded-[24px] p-6 md:p-8 text-white shadow-lg relative overflow-hidden">
+        <div className="absolute top-0 right-0 p-[24px_28px] opacity-10">
           <ShieldCheck className="w-32 h-32" />
         </div>
         <h1 className="text-3xl font-black mb-2 relative z-10">
@@ -265,7 +265,7 @@ export default function PengajuanKeringananPage() {
 
       <form
         onSubmit={handleSubmit}
-        className="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden"
+        className="bg-white rounded-[24px] shadow-xl border border-slate-100 overflow-hidden"
       >
         <div className="p-6 md:p-8 space-y-8">
           {/* Section 1: Rincian */}
@@ -287,7 +287,7 @@ export default function PengajuanKeringananPage() {
                   type="text"
                   value={kesanggupanBayar}
                   onChange={handleNominalChange}
-                  className="w-full pl-12 pr-4 py-3 text-lg font-black text-ink-900 border border-ink-300 rounded-xl focus:ring-2 focus:ring-primary-500"
+                  className="w-full pl-12 pr-4 py-3 text-lg font-black text-ink-900 border border-ink-300 rounded-[24px] focus:ring-2 focus:ring-primary-500"
                   placeholder="Contoh: 5.000.000"
                   required
                 />
@@ -305,7 +305,7 @@ export default function PengajuanKeringananPage() {
               <textarea
                 value={alasan}
                 onChange={(e) => setAlasan(e.target.value)}
-                className="w-full p-4 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary-500 min-h-[120px] bg-slate-50 text-sm"
+                className="w-full p-[24px_28px] border border-slate-300 rounded-[24px] focus:ring-2 focus:ring-primary-500 min-h-[120px] bg-slate-50 text-sm"
                 placeholder="Ceritakan dengan singkat dan jelas mengenai kondisi finansial keluarga..."
                 required
               />
@@ -321,7 +321,7 @@ export default function PengajuanKeringananPage() {
               </span>
             </h3>
 
-            <div className="bg-blue-50 border border-blue-100 rounded-xl p-3 text-xs text-blue-800 font-medium flex items-start gap-1.5">
+            <div className="bg-blue-50 border border-blue-100 rounded-[24px] p-3 text-xs text-blue-800 font-medium flex items-start gap-1.5">
               <File className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
               <span>
                 Keringanan memerlukan 2 dokumen wajib: <strong>SKTM</strong>{" "}
@@ -334,7 +334,7 @@ export default function PengajuanKeringananPage() {
 
             <div className="grid md:grid-cols-2 gap-6">
               {/* SKTM */}
-              <div className="border border-slate-200 rounded-xl p-4 bg-slate-50">
+              <div className="border border-slate-200 rounded-[24px] p-[24px_28px] bg-slate-50">
                 <label className="block text-sm font-bold text-slate-800 mb-1">
                   SKTM (Surat Keterangan Tidak Mampu){" "}
                   <span className="text-rose-500">*</span>
@@ -343,7 +343,7 @@ export default function PengajuanKeringananPage() {
                   Dari RT/RW atau Kelurahan setempat.
                 </p>
                 {fileSktm && (
-                  <div className="flex items-center gap-2 mb-2 text-xs text-primary-700 bg-primary-50 rounded-lg px-3 py-2">
+                  <div className="flex items-center gap-2 mb-2 text-xs text-primary-700 bg-primary-50 rounded-[24px] px-3 py-2">
                     <File className="w-3.5 h-3.5" />
                     <span className="font-bold truncate">{fileSktm.name}</span>
                   </div>
@@ -358,7 +358,7 @@ export default function PengajuanKeringananPage() {
               </div>
 
               {/* Surat Permohonan */}
-              <div className="border border-slate-200 rounded-xl p-4 bg-slate-50">
+              <div className="border border-slate-200 rounded-[24px] p-[24px_28px] bg-slate-50">
                 <label className="block text-sm font-bold text-slate-800 mb-1">
                   Surat Permohonan Keringanan Biaya{" "}
                   <span className="text-rose-500">*</span>
@@ -368,7 +368,7 @@ export default function PengajuanKeringananPage() {
                   potongan yang diminta.
                 </p>
                 {filePermohonan && (
-                  <div className="flex items-center gap-2 mb-2 text-xs text-primary-700 bg-primary-50 rounded-lg px-3 py-2">
+                  <div className="flex items-center gap-2 mb-2 text-xs text-primary-700 bg-primary-50 rounded-[24px] px-3 py-2">
                     <File className="w-3.5 h-3.5" />
                     <span className="font-bold truncate">
                       {filePermohonan.name}
@@ -387,7 +387,7 @@ export default function PengajuanKeringananPage() {
           </div>
 
           {/* Submit Info */}
-          <div className="bg-amber-50 p-4 rounded-xl border border-amber-200 flex items-start gap-3">
+          <div className="bg-amber-50 p-[24px_28px] rounded-[24px] border border-amber-200 flex items-start gap-3">
             <HelpCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
             <p className="text-xs text-amber-800 font-medium leading-relaxed">
               Dengan menekan tombol kirim, Anda menyatakan bahwa seluruh data
@@ -399,7 +399,7 @@ export default function PengajuanKeringananPage() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full py-4 bg-primary-600 hover:bg-primary-700 text-white font-black rounded-xl shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full py-4 bg-primary-600 hover:bg-primary-700 text-white font-black rounded-[24px] shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {submitting ? (
               <Loader2 className="w-5 h-5 animate-spin" />

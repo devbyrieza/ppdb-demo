@@ -209,7 +209,7 @@ export default function ProgramPage() {
                       <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
 
                       <div className="absolute bottom-10 left-10 right-10 z-20">
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-white/20 backdrop-blur-md border border-white/30 text-white text-[10px] font-black uppercase tracking-widest mb-3">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[24px] bg-white/20 backdrop-blur-md border border-white/30 text-white text-[10px] font-black uppercase tracking-widest mb-3">
                           <Star className="w-3.5 h-3.5 fill-secondary-400 text-secondary-400" />
                           <span>Program Unggulan</span>
                         </div>
@@ -245,15 +245,15 @@ export default function ProgramPage() {
                   </motion.div>
 
                   {/* Stats Grid - Modern Design */}
-                  <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+                  <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px_28px] mb-10">
                     {program.stats.map((stat, sIdx) => (
                       <div
                         key={sIdx}
-                        className={`app-card bg-white p-5 rounded-[2rem] border border-primary-50 shadow-sm hover:shadow-md transition-all text-center group`}
+                        className={`app-card bg-white p-[24px_28px] rounded-[2rem] border border-primary-50 shadow-sm hover:shadow-md transition-all text-center group`}
                       >
                         <div
-                          className={`w-10 h-10 rounded-xl mx-auto mb-3 flex items-center justify-center transition-transform group-hover:scale-110 border border-primary-100
-                                                    ${program.theme === "teal" ? "bg-primary-50 text-primary-600" : "bg-secondary-50 text-secondary-700"}
+                          className={`w-10 h-10 rounded-[24px] mx-auto mb-3 flex items-center justify-center transition-transform group-hover:scale-110 border border-primary-100
+                                                    ${program.theme === "teal" ? "bg-amber-50 text-amber-600" : "bg-secondary-50 text-secondary-700"}
                                                 `}
                         >
                           <stat.icon className="w-5 h-5" />
@@ -277,7 +277,7 @@ export default function ProgramPage() {
                     viewport={{ once: true }}
                     className={`app-card rounded-[3rem] p-10 mb-10 border ${program.bg} border-primary-100 shadow-sm relative overflow-hidden`}
                   >
-                    <div className="absolute top-0 right-0 p-5 md:p-8 opacity-5">
+                    <div className="absolute top-0 right-0 p-[24px_28px] md:p-8 opacity-5">
                       <BookOpen className="w-32 h-32 text-primary-900" />
                     </div>
 
@@ -292,7 +292,7 @@ export default function ProgramPage() {
                       {program.curriculum.map((item, cIdx) => (
                         <li
                           key={cIdx}
-                          className="flex items-start gap-4 group/item"
+                          className="flex items-start gap-[24px_28px] group/item"
                         >
                           <div
                             className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5 shadow-sm
@@ -338,7 +338,7 @@ export default function ProgramPage() {
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="bg-primary-900 bg-linear-to-br from-primary-800 to-primary-950 rounded-[2rem] md:rounded-[3rem] lg:rounded-[4rem] p-6 sm:p-5 md:p-8 lg:p-24 text-center text-white relative overflow-hidden"
+            className="bg-primary-900 bg-linear-to-br from-primary-800 to-primary-950 rounded-[2rem] md:rounded-[3rem] lg:rounded-[4rem] p-6 sm:p-[24px_28px] md:p-8 lg:p-24 text-center text-white relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 w-32 h-32 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-white/5 rounded-full blur-[60px] md:blur-[100px] -translate-y-1/2 translate-x-1/2" />
             <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-5" />
@@ -352,7 +352,7 @@ export default function ProgramPage() {
                 Konsultasikan rencana pendidikan putra-putri Anda dengan tim
                 kami untuk mendapatkan pilihan program yang paling tepat.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 justify-center px-4">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-[24px_28px] md:gap-6 justify-center px-4">
                 <Link href="/daftar">
                   <button className="w-full sm:w-auto px-6 sm:px-6 md:px-10 py-3.5 sm:py-4 md:py-5 rounded-pill bg-white text-primary-900 font-black text-sm sm:text-base md:text-lg hover:bg-primary-50 shadow-md transition-all min-h-[48px] sm:min-h-[52px]">
                     Pendaftaran Online

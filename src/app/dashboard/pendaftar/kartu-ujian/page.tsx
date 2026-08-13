@@ -99,13 +99,13 @@ export default function ExamCardPage() {
   if (!data) return <div>Data tidak ditemukan</div>;
 
   return (
-    <div className="min-h-screen bg-gray-100 p-5 md:p-8 flex flex-col items-center">
+    <div className="min-h-screen bg-gray-100 p-[24px_28px] md:p-8 flex flex-col items-center">
       {/* Toolbar */}
-      <div className="w-full max-w-[21cm] mb-6 flex justify-between items-center bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg border border-emerald-100 p-4 no-print">
+      <div className="w-full max-w-[21cm] mb-6 flex justify-between items-center bg-white/80 backdrop-blur-xl rounded-[24px] shadow-lg border border-emerald-100 p-[24px_28px] no-print">
         <h1 className="text-xl font-bold text-stone-900">Pratinjau Jadwal</h1>
         <button
           onClick={() => window.print()}
-          className="flex items-center gap-2 bg-primary-600 text-white px-5 py-2.5 rounded-xl font-bold shadow-md hover:bg-primary-700 transition-colors"
+          className="flex items-center gap-2 bg-primary-600 text-white px-5 py-2.5 rounded-[24px] font-bold shadow-md hover:bg-primary-700 transition-colors"
         >
           <Printer className="w-4 h-4" /> Cetak Jadwal
         </button>
@@ -157,7 +157,7 @@ export default function ExamCardPage() {
             </div>
 
             <div className="mb-8 font-serif">
-              <div className="bg-gray-50 p-4 border border-gray-200 rounded text-sm">
+              <div className="bg-gray-50 p-[24px_28px] border border-gray-200 rounded text-sm">
                 <div className="grid grid-cols-12 gap-2 mb-2">
                   <span className="col-span-3 font-bold">
                     Nomor Pendaftaran
@@ -184,7 +184,7 @@ export default function ExamCardPage() {
               </h3>
               <table className="w-full border-collapse border border-black text-sm">
                 <thead>
-                  <tr className="bg-gray-100">
+                  <tr className="even:bg-slate-50 bg-gray-100">
                     <th className="border border-black p-2 text-left">
                       Mata Ujian
                     </th>
@@ -217,7 +217,7 @@ export default function ExamCardPage() {
                     <tr>
                       <td
                         colSpan={4}
-                        className="border border-black p-4 text-center italic text-gray-500"
+                        className="border border-black p-[24px_28px] text-center italic text-gray-500"
                       >
                         Jadwal belum dipilih/ditentukan
                       </td>

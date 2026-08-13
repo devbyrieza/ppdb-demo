@@ -226,12 +226,12 @@ export default function AuditSeleksiPage() {
   };
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto pb-20">
+    <div className="space-y-6 max-w-[1200px] mx-auto pb-20">
       {/* Header Area */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-[24px_28px]">
         <div>
           <h1 className="text-3xl font-black text-ink-900 tracking-tight flex items-center gap-3">
-            <div className="p-2.5 bg-army-600 rounded-2xl shadow-lg shadow-army-600/20">
+            <div className="p-2.5 bg-army-600 rounded-[24px] shadow-lg shadow-army-600/20">
               <Activity className="w-6 h-6 text-white" />
             </div>
             Audit <span className="text-army-700">Hasil Seleksi</span>
@@ -245,14 +245,14 @@ export default function AuditSeleksiPage() {
           <Button
             onClick={handleExport}
             variant="outline"
-            className="rounded-2xl border-ink-200 font-bold bg-white"
+            className="rounded-[24px] border-ink-200 font-bold bg-white"
           >
             <Download className="w-4 h-4 mr-2" /> Export
           </Button>
           <Button
             onClick={fetchCandidates}
             variant="outline"
-            className="rounded-2xl border-ink-200 font-bold bg-white"
+            className="rounded-[24px] border-ink-200 font-bold bg-white"
           >
             <RefreshCcw className="w-4 h-4 mr-2" /> Refresh
           </Button>
@@ -260,7 +260,7 @@ export default function AuditSeleksiPage() {
       </div>
 
       {/* Control Bar */}
-      <div className="bg-white p-4 rounded-[2rem] shadow-clay-md border border-white/40 flex flex-col lg:flex-row justify-between items-center gap-4">
+      <div className="bg-white p-[24px_28px] rounded-[2rem] shadow-clay-md border border-white/40 flex flex-col lg:flex-row justify-between items-center gap-[24px_28px]">
         <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
           <div className="relative flex-1 lg:flex-none lg:w-64">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-400" />
@@ -269,11 +269,11 @@ export default function AuditSeleksiPage() {
               placeholder="Cari nama/NP..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-ink-50 border border-ink-100 rounded-xl pl-10 pr-4 py-2.5 text-sm font-medium outline-none focus:ring-4 focus:ring-army-500/5 transition-all"
+              className="w-full bg-ink-50 border border-ink-100 rounded-[24px] pl-10 pr-4 py-2.5 text-sm font-medium outline-none focus:ring-4 focus:ring-army-500/5 transition-all"
             />
           </div>
 
-          <div className="flex items-center gap-2 px-3 py-2 bg-ink-50 rounded-xl border border-ink-100">
+          <div className="flex items-center gap-2 px-3 py-2 bg-ink-50 rounded-[24px] border border-ink-100">
             <Filter className="w-3.5 h-3.5 text-ink-400" />
             <select
               value={filterStatus}
@@ -287,7 +287,7 @@ export default function AuditSeleksiPage() {
             </select>
           </div>
 
-          <div className="flex items-center gap-2 px-3 py-2 bg-ink-50 rounded-xl border border-ink-100">
+          <div className="flex items-center gap-2 px-3 py-2 bg-ink-50 rounded-[24px] border border-ink-100">
             <select
               value={filterJenjang}
               onChange={(e) => setFilterJenjang(e.target.value)}
@@ -308,21 +308,21 @@ export default function AuditSeleksiPage() {
           <Button
             onClick={() => handleBatchPublish("accepted")}
             disabled={selectedIds.length === 0 || isPublishing}
-            className="flex-1 lg:flex-none bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-black text-[11px] px-6 py-2.5 shadow-lg shadow-emerald-200 transition-all active:scale-95"
+            className="flex-1 lg:flex-none bg-emerald-600 hover:bg-emerald-700 text-white rounded-[24px] font-black text-[11px] px-6 py-2.5 shadow-lg shadow-emerald-200 transition-all active:scale-95"
           >
             DITERIMA ({selectedIds.length})
           </Button>
           <Button
             onClick={() => handleBatchPublish("cadangan")}
             disabled={selectedIds.length === 0 || isPublishing}
-            className="flex-1 lg:flex-none bg-secondary-500 hover:bg-secondary-600 text-white rounded-xl font-black text-[11px] px-6 py-2.5 shadow-lg shadow-secondary-200 transition-all active:scale-95"
+            className="flex-1 lg:flex-none bg-secondary-500 hover:bg-secondary-600 text-white rounded-[24px] font-black text-[11px] px-6 py-2.5 shadow-lg shadow-secondary-200 transition-all active:scale-95"
           >
             CADANGAN
           </Button>
           <Button
             onClick={() => handleBatchPublish("rejected")}
             disabled={selectedIds.length === 0 || isPublishing}
-            className="flex-1 lg:flex-none bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-black text-[11px] px-6 py-2.5 shadow-lg shadow-rose-200 transition-all active:scale-95"
+            className="flex-1 lg:flex-none bg-rose-600 hover:bg-rose-700 text-white rounded-[24px] font-black text-[11px] px-6 py-2.5 shadow-lg shadow-rose-200 transition-all active:scale-95"
           >
             TOLAK
           </Button>
@@ -334,11 +334,11 @@ export default function AuditSeleksiPage() {
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
-              <tr className="bg-ink-50/50 border-b border-ink-100">
+              <tr className="even:bg-slate-50 bg-ink-50/50 border-b border-ink-100">
                 <th className="px-6 py-5 text-center w-12">
                   <input
                     type="checkbox"
-                    className="w-5 h-5 rounded-lg border-ink-200 text-army-600 focus:ring-army-500"
+                    className="w-5 h-5 rounded-[24px] border-ink-200 text-army-600 focus:ring-army-500"
                     onChange={handleSelectAll}
                     checked={candidates.length > 0 && selectedIds.length === candidates.length}
                   />
@@ -404,7 +404,7 @@ export default function AuditSeleksiPage() {
                       <td className="px-6 py-4 text-center">
                         <input
                           type="checkbox"
-                          className="w-5 h-5 rounded-lg border-ink-200 text-army-600 focus:ring-army-500"
+                          className="w-5 h-5 rounded-[24px] border-ink-200 text-army-600 focus:ring-army-500"
                           checked={selectedIds.includes(c.id)}
                           onChange={() => handleSelectOne(c.id)}
                         />
@@ -420,7 +420,7 @@ export default function AuditSeleksiPage() {
                         </div>
                       </td>
                       <td className="px-4 py-4 text-center">
-                        <span className="px-2.5 py-1 bg-ink-100 text-ink-600 rounded-lg text-[10px] font-black uppercase">
+                        <span className="px-2.5 py-1 bg-ink-100 text-ink-600 rounded-[24px] text-[10px] font-black uppercase">
                           {c.jenjang}
                         </span>
                       </td>
@@ -437,7 +437,7 @@ export default function AuditSeleksiPage() {
                         return (
                           <td key={i} className="px-3 py-4 text-center">
                             <div className="flex flex-col items-center gap-1">
-                              <span className={`${g.color} text-white text-[10px] font-black w-6 h-6 flex items-center justify-center rounded-lg shadow-sm`}>
+                              <span className={`${g.color} text-white text-[10px] font-black w-6 h-6 flex items-center justify-center rounded-[24px] shadow-sm`}>
                                 {g.label}
                               </span>
                               <span className="text-[9px] font-bold text-ink-300">
@@ -488,8 +488,8 @@ export default function AuditSeleksiPage() {
       
       {/* Legend & Help */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-        <div className="bg-primary-950 rounded-3xl p-5 md:p-8 text-white relative overflow-hidden group shadow-xl shadow-primary-900/20">
-          <div className="absolute top-0 right-0 p-5 md:p-8 opacity-10 group-hover:rotate-12 transition-transform duration-700">
+        <div className="bg-primary-950 rounded-3xl p-[24px_28px] md:p-8 text-white relative overflow-hidden group shadow-xl shadow-primary-900/20">
+          <div className="absolute top-0 right-0 p-[24px_28px] md:p-8 opacity-10 group-hover:rotate-12 transition-transform duration-700">
             <Activity className="w-40 h-40 text-white" />
           </div>
           <div className="relative z-10">
@@ -510,15 +510,15 @@ export default function AuditSeleksiPage() {
                 <span><b className="font-extrabold text-rose-400">DITOLAK:</b> Terdapat Grade D/E, atau Quran/Wawancara Santri Grade C.</span>
               </p>
             </div>
-            <div className="mt-8 flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.2em] text-white/80">
-              <span className="px-3 py-1.5 border border-white/20 rounded-lg bg-white/5 backdrop-blur-sm">A: ≥ 80+</span>
-              <span className="px-3 py-1.5 border border-white/20 rounded-lg bg-white/5 backdrop-blur-sm">B: ≥ 65+</span>
-              <span className="px-3 py-1.5 border border-white/20 rounded-lg bg-white/5 backdrop-blur-sm">C: ≥ 50+</span>
+            <div className="mt-8 flex items-center gap-[24px_28px] text-[10px] font-black uppercase tracking-[0.2em] text-white/80">
+              <span className="px-3 py-1.5 border border-white/20 rounded-[24px] bg-white/5 backdrop-blur-sm">A: ≥ 80+</span>
+              <span className="px-3 py-1.5 border border-white/20 rounded-[24px] bg-white/5 backdrop-blur-sm">B: ≥ 65+</span>
+              <span className="px-3 py-1.5 border border-white/20 rounded-[24px] bg-white/5 backdrop-blur-sm">C: ≥ 50+</span>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-3xl p-5 md:p-8 border border-ink-100 shadow-premium-sm flex flex-col justify-between">
+        <div className="bg-white rounded-3xl p-[24px_28px] md:p-8 border border-ink-100 shadow-premium-sm flex flex-col justify-between">
           <div>
             <h3 className="text-xl font-black text-ink-900 mb-2">Panduan Penerbitan</h3>
             <p className="text-ink-500 text-sm font-medium leading-relaxed">
@@ -526,8 +526,8 @@ export default function AuditSeleksiPage() {
               Sistem akan secara otomatis memperbarui dashboard santri dan mengirimkan notifikasi resmi via WhatsApp.
             </p>
           </div>
-          <div className="mt-8 flex items-center gap-4 p-4 bg-army-50 rounded-2xl border border-army-100">
-             <div className="p-3 bg-white rounded-xl shadow-sm">
+          <div className="mt-8 flex items-center gap-[24px_28px] p-[24px_28px] bg-army-50 rounded-[24px] border border-army-100">
+             <div className="p-3 bg-white rounded-[24px] shadow-sm">
                 <RefreshCcw className="w-5 h-5 text-army-600" />
              </div>
              <p className="text-[11px] font-bold text-army-800 leading-snug">

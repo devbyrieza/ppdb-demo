@@ -268,7 +268,7 @@ export default function PendaftarDetailPage() {
 
     const { value: newJenjang } = await Swal.fire({
       title: "Ubah Jenjang Pendaftar",
-      html: "<div class='text-left text-sm mb-4 text-stone-600 bg-amber-50 p-3 rounded-lg border border-amber-200'>" +
+      html: "<div class='text-left text-sm mb-4 text-stone-600 bg-amber-50 p-3 rounded-[24px] border border-amber-200'>" +
             "<b>Peringatan:</b> Mengubah jenjang akan secara otomatis memberikan nomor pendaftaran baru yang sesuai dengan jenjang tujuan.<br/><br/>" +
             "Nomor pendaftaran lama (<b>" + pendaftar.nomor_pendaftaran + "</b>) akan menjadi kosong dan bisa digunakan oleh pendaftar lain.</div>",
       input: "select",
@@ -664,7 +664,7 @@ export default function PendaftarDetailPage() {
         const { value: formValues } = await Swal.fire({
           title: `Input ${selectedKeringanan}`,
           html: `
-            <div class="text-left text-sm mb-4 text-stone-600 bg-amber-50 p-3 rounded-lg border border-amber-200">
+            <div class="text-left text-sm mb-4 text-stone-600 bg-amber-50 p-3 rounded-[24px] border border-amber-200">
               Masukkan nominal <b>POTONGAN (Diskon)</b> (bukan sisa tagihan).<br/><br/>
               Contoh: Jika Uang Pangkal normal Rp 7.500.000, dan wali santri hanya sanggup bayar Rp 6.000.000, berarti <b>potongannya adalah Rp 1.500.000</b>. <br/>Ketik: <b>1500000</b>.
             </div>
@@ -1088,7 +1088,7 @@ export default function PendaftarDetailPage() {
         </p>
         <Link
           href="/dashboard/admin/pendaftar"
-          className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg"
+          className="mt-4 inline-flex items-center gap-2 p-[16px_20px] bg-primary-600 text-white rounded-[24px]"
         >
           <ArrowLeft className="w-4 h-4" />
           Kembali ke Daftar
@@ -1136,12 +1136,12 @@ export default function PendaftarDetailPage() {
       </Link>
 
       {/* Summary Card */}
-      <div className="bg-linear-to-br from-primary-600 to-primary-900 rounded-3xl shadow-xl shadow-primary-900/20 p-5 md:p-8 text-white relative overflow-hidden">
+      <div className="bg-linear-to-br from-primary-600 to-primary-900 rounded-3xl shadow-xl shadow-primary-900/20 p-[24px_28px] md:p-8 text-white relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-gold-400/10 rounded-full -mr-20 -mt-20 blur-3xl pointer-events-none"></div>
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 relative z-10">
           {/* Main Info */}
-          <div className="flex items-center gap-5">
-            <div className="w-20 h-20 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-gold-300 shadow-inner">
+          <div className="flex items-center gap-[24px_28px]">
+            <div className="w-20 h-20 bg-white/20 backdrop-blur-md rounded-[24px] flex items-center justify-center text-gold-300 shadow-inner">
               <User className="w-10 h-10" />
             </div>
             <div>
@@ -1149,10 +1149,10 @@ export default function PendaftarDetailPage() {
                 {toTitleCase(pendaftar.nama_lengkap)}
               </h1>
               <div className="flex flex-wrap items-center gap-3 mt-2">
-                <span className="font-mono bg-white/20 px-2.5 py-1 rounded-lg text-sm font-black text-white border border-white/20">
+                <span className="font-mono bg-white/20 px-2.5 py-1 rounded-[24px] text-sm font-black text-white border border-white/20">
                   {pendaftar.nomor_pendaftaran}
                 </span>
-                <span className="px-2.5 py-1 bg-gold-400 text-primary-900 rounded-lg text-xs font-black uppercase shadow-sm">
+                <span className="px-2.5 py-1 bg-gold-400 text-primary-900 rounded-[24px] text-xs font-black uppercase shadow-sm">
                   {pendaftar.jenjang}
                 </span>
                 <span className="text-primary-100 font-bold">
@@ -1165,8 +1165,8 @@ export default function PendaftarDetailPage() {
           </div>
 
           {/* Quick Stats */}
-          <div className="flex flex-wrap gap-4">
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl px-5 py-4 min-w-[120px] border border-white/10">
+          <div className="flex flex-wrap gap-[24px_28px]">
+            <div className="bg-white/10 backdrop-blur-md rounded-[24px] px-5 py-4 min-w-[120px] border border-white/10">
               <p className="text-[10px] text-primary-100 font-black uppercase tracking-widest mb-1">
                 {isEnrolled ? "Daftar Ulang" : "Bayar Pendaftaran"}
               </p>
@@ -1188,7 +1188,7 @@ export default function PendaftarDetailPage() {
                 )}
               </p>
             </div>
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl px-5 py-4 min-w-[120px] border border-white/10">
+            <div className="bg-white/10 backdrop-blur-md rounded-[24px] px-5 py-4 min-w-[120px] border border-white/10">
               <p className="text-[10px] text-primary-100 font-black uppercase tracking-widest mb-1">
                 Dokumen
               </p>
@@ -1199,7 +1199,7 @@ export default function PendaftarDetailPage() {
                 </span>
               </p>
             </div>
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl px-5 py-4 min-w-[120px] border border-white/10">
+            <div className="bg-white/10 backdrop-blur-md rounded-[24px] px-5 py-4 min-w-[120px] border border-white/10">
               <p className="text-[10px] text-primary-100 font-black uppercase tracking-widest mb-1">
                 Thn. Ajaran
               </p>
@@ -1211,11 +1211,11 @@ export default function PendaftarDetailPage() {
         </div>
 
         {/* Status & Actions Bar */}
-        <div className="mt-6 pt-6 border-t border-white/20 flex flex-wrap items-center justify-between gap-4">
+        <div className="mt-6 pt-6 border-t border-white/20 flex flex-wrap items-center justify-between gap-[24px_28px]">
           <div className="flex items-center gap-3">
             <span className="text-primary-100">Status:</span>
             <span
-              className={`px-3 py-1 rounded-lg text-sm font-bold ${statusInfo.color}`}
+              className={`px-3 py-1 rounded-[24px] text-sm font-bold ${statusInfo.color}`}
             >
               {statusInfo.label}
             </span>
@@ -1261,7 +1261,7 @@ export default function PendaftarDetailPage() {
                 });
               }}
               disabled={savingStatus || pendaftar.status_proses === "draft"}
-              className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-black transition-all flex items-center gap-1 disabled:opacity-50 shadow-sm active:scale-95"
+              className="p-[16px_20px] bg-rose-600 hover:bg-rose-700 text-white rounded-[24px] text-xs font-black transition-all flex items-center gap-1 disabled:opacity-50 shadow-sm active:scale-95"
             >
               <X className="w-3.5 h-3.5" />
               Buka Kunci
@@ -1271,7 +1271,7 @@ export default function PendaftarDetailPage() {
                 href={`https://wa.me/${pendaftar.no_hp.replace(/\D/g, "")}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black transition-all flex items-center gap-1 shadow-sm active:scale-95"
+                className="p-[16px_20px] bg-emerald-600 hover:bg-emerald-700 text-white rounded-[24px] text-xs font-black transition-all flex items-center gap-1 shadow-sm active:scale-95"
               >
                 <Phone className="w-3.5 h-3.5" />
                 WhatsApp
@@ -1281,14 +1281,14 @@ export default function PendaftarDetailPage() {
               <>
                 <button
                   onClick={handleUbahJenjang}
-                  className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-black transition-all flex items-center gap-1.5 shadow-sm active:scale-95 border border-purple-500 mr-2"
+                  className="p-[16px_20px] bg-purple-600 hover:bg-purple-700 text-white rounded-[24px] text-xs font-black transition-all flex items-center gap-1.5 shadow-sm active:scale-95 border border-purple-500 mr-2"
                 >
                   <School className="w-3.5 h-3.5" />
                   Ubah Jenjang
                 </button>
                 <button
                   onClick={handleOpenEditModal}
-                  className="px-4 py-2 bg-gold-400 hover:bg-yellow-500 text-primary-900 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 shadow-sm active:scale-95 border border-gold-300 mr-2"
+                  className="p-[16px_20px] bg-gold-400 hover:bg-yellow-500 text-primary-900 rounded-[24px] text-xs font-black transition-all flex items-center gap-1.5 shadow-sm active:scale-95 border border-gold-300 mr-2"
                 >
                   <Edit className="w-3.5 h-3.5" />
                   Edit Biodata & Ortu
@@ -1296,7 +1296,7 @@ export default function PendaftarDetailPage() {
                 <button
                   onClick={() => handleExportSingle('excel')}
                   disabled={exporting}
-                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black transition-all flex items-center gap-1.5 shadow-sm active:scale-95 mr-2"
+                  className="p-[16px_20px] bg-emerald-600 hover:bg-emerald-700 text-white rounded-[24px] text-xs font-black transition-all flex items-center gap-1.5 shadow-sm active:scale-95 mr-2"
                 >
                   {exporting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileSpreadsheet className="w-3.5 h-3.5" />}
                   Excel
@@ -1304,7 +1304,7 @@ export default function PendaftarDetailPage() {
                 <button
                   onClick={() => handleExportSingle('pdf')}
                   disabled={exporting}
-                  className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-black transition-all flex items-center gap-1.5 shadow-sm active:scale-95 mr-2"
+                  className="p-[16px_20px] bg-rose-600 hover:bg-rose-700 text-white rounded-[24px] text-xs font-black transition-all flex items-center gap-1.5 shadow-sm active:scale-95 mr-2"
                 >
                   {exporting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileText className="w-3.5 h-3.5" />}
                   PDF
@@ -1315,7 +1315,7 @@ export default function PendaftarDetailPage() {
             {pendaftar.email && (
               <a
                 href={`mailto:${pendaftar.email}`}
-                className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-xl text-xs font-black transition-all flex items-center gap-1 backdrop-blur-md active:scale-95"
+                className="p-[16px_20px] bg-white/20 hover:bg-white/30 rounded-[24px] text-xs font-black transition-all flex items-center gap-1 backdrop-blur-md active:scale-95"
               >
                 <Mail className="w-3.5 h-3.5" />
                 Email
@@ -1332,7 +1332,7 @@ export default function PendaftarDetailPage() {
           {isBerkas && (
             <div className="bg-white rounded-3xl shadow-sm p-6 border border-gold-100">
               <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 bg-primary-50 rounded-xl">
+                <div className="p-3 bg-primary-50 rounded-[24px]">
                   <FileText className="w-6 h-6 text-primary-700" />
                 </div>
                 <h3 className="text-xl font-black text-primary-950 tracking-tight">
@@ -1359,7 +1359,7 @@ export default function PendaftarDetailPage() {
                       setTimeout(() => docInputRef.current?.click(), 100);
                     }}
                     disabled={!!uploadingDoc}
-                    className="px-3 py-2 bg-primary-50 hover:bg-primary-100 text-primary-700 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 border border-primary-100 disabled:opacity-50"
+                    className="px-3 py-2 bg-primary-50 hover:bg-amber-100 text-amber-700 rounded-[24px] text-[10px] font-black uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 border border-primary-100 disabled:opacity-50"
                   >
                     {uploadingDoc === item.id ? (
                       <Loader2 className="w-3 h-3 animate-spin" />
@@ -1393,7 +1393,7 @@ export default function PendaftarDetailPage() {
                     return (
                       <div
                         key={doc.id}
-                        className="flex items-center justify-between p-4 bg-stone-50 rounded-lg border border-stone-200"
+                        className="flex items-center justify-between p-[24px_28px] bg-stone-50 rounded-[24px] border border-stone-200"
                       >
                         <div className="flex items-center gap-3">
                           <FileText className="w-5 h-5 text-stone-400" />
@@ -1464,7 +1464,7 @@ export default function PendaftarDetailPage() {
             userRole === "admin") && (
             <div className="bg-white rounded-3xl shadow-sm p-6 border border-gold-100">
               <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 bg-gold-50 rounded-xl">
+                <div className="p-3 bg-gold-50 rounded-[24px]">
                   <Trophy className="w-6 h-6 text-gold-600" />
                 </div>
                 <div>
@@ -1479,7 +1479,7 @@ export default function PendaftarDetailPage() {
               </div>
 
               {userRole === "admin_super" && (
-                <div className="mb-6 p-4 bg-blue-50 border border-blue-100 rounded-2xl flex flex-col sm:flex-row sm:items-center gap-3">
+                <div className="mb-6 p-[24px_28px] bg-blue-50 border border-blue-100 rounded-[24px] flex flex-col sm:flex-row sm:items-center gap-3">
                   <span className="text-xs font-black uppercase tracking-widest text-blue-800">
                     Aksi Admin (Bypass):
                   </span>
@@ -1487,21 +1487,21 @@ export default function PendaftarDetailPage() {
                     <a
                       href={`/dashboard/pendaftar/ujian/akademik?pendaftarId=${pendaftar.id}`}
                       target="_blank"
-                      className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-[11px] font-bold transition-colors shadow-sm"
+                      className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-[24px] text-[11px] font-bold transition-colors shadow-sm"
                     >
                       Buka CBT Akademik
                     </a>
                     <a
                       href={`/dashboard/pendaftar/ujian/kepribadian?pendaftarId=${pendaftar.id}`}
                       target="_blank"
-                      className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-[11px] font-bold transition-colors shadow-sm"
+                      className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-[24px] text-[11px] font-bold transition-colors shadow-sm"
                     >
                       Buka CBT Kepribadian
                     </a>
                     <a
                       href={`/dashboard/pendaftar/ujian/kesiapan?pendaftarId=${pendaftar.id}`}
                       target="_blank"
-                      className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-[11px] font-bold transition-colors shadow-sm"
+                      className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-[24px] text-[11px] font-bold transition-colors shadow-sm"
                     >
                       Buka CBT Kesiapan
                     </a>
@@ -1510,9 +1510,9 @@ export default function PendaftarDetailPage() {
               )}
 
               {/* Grid 6 Test Results */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px_28px]">
                 {/* 1. Tes Kemampuan Akademik (CBT) */}
-                <div className="bg-primary-50/50 p-4 rounded-2xl border border-primary-100 relative">
+                <div className="bg-primary-50/50 p-[24px_28px] rounded-[24px] border border-primary-100 relative">
                   <span className="block text-[10px] text-primary-600 font-black uppercase tracking-widest mb-1 leading-none">
                     CBT: Akademik
                   </span>
@@ -1531,7 +1531,7 @@ export default function PendaftarDetailPage() {
                 </div>
 
                 {/* 2. Tes Identifikasi Kepribadian (CBT) */}
-                <div className="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100">
+                <div className="bg-indigo-50/50 p-[24px_28px] rounded-[24px] border border-indigo-100">
                   <span className="block text-xs text-indigo-600 font-bold uppercase tracking-wide mb-1">
                     CBT: Kepribadian
                   </span>
@@ -1552,7 +1552,7 @@ export default function PendaftarDetailPage() {
                 </div>
 
                 {/* 3. Seleksi Kesiapan (CBT) */}
-                <div className="bg-violet-50/50 p-4 rounded-xl border border-violet-100">
+                <div className="bg-violet-50/50 p-[24px_28px] rounded-[24px] border border-violet-100">
                   <span className="block text-xs text-violet-600 font-bold uppercase tracking-wide mb-1">
                     CBT: Kesiapan
                   </span>
@@ -1573,7 +1573,7 @@ export default function PendaftarDetailPage() {
                 </div>
 
                 {/* 4. Seleksi Al Qur'an (Offline) */}
-                <div className="bg-emerald-50/50 p-4 rounded-xl border border-emerald-100 flex flex-col justify-between">
+                <div className="bg-emerald-50/50 p-[24px_28px] rounded-[24px] border border-emerald-100 flex flex-col justify-between">
                   <div>
                     <span className="block text-xs text-emerald-600 font-bold uppercase tracking-wide mb-1">
                       Tes Al-Qur&apos;an
@@ -1606,7 +1606,7 @@ export default function PendaftarDetailPage() {
 
                 
                 {(pendaftar?.jenjang?.toLowerCase() || "").includes("ma") && (
-                  <div className="bg-teal-50/50 p-4 rounded-xl border border-teal-100 flex flex-col justify-between">
+                  <div className="bg-teal-50/50 p-[24px_28px] rounded-[24px] border border-teal-100 flex flex-col justify-between">
                     <div>
                       <span className="block text-xs text-teal-600 font-bold uppercase tracking-wide mb-1">
                         Tes Hafalan
@@ -1649,7 +1649,7 @@ export default function PendaftarDetailPage() {
 
 
                 {(pendaftar?.jenjang?.toLowerCase() || "").includes("ma") && (
-                  <div className="bg-sky-50/50 p-4 rounded-xl border border-sky-100 flex flex-col justify-between">
+                  <div className="bg-sky-50/50 p-[24px_28px] rounded-[24px] border border-sky-100 flex flex-col justify-between">
                     <div>
                       <span className="block text-xs text-sky-600 font-bold uppercase tracking-wide mb-1">
                         Lisan B. Arab
@@ -1692,7 +1692,7 @@ export default function PendaftarDetailPage() {
 
 
                   {/* 5. Seleksi Wawancara Calon Santri (Offline) */}
-                <div className="bg-secondary-50/50 p-4 rounded-xl border border-secondary-100 flex flex-col justify-between">
+                <div className="bg-secondary-50/50 p-[24px_28px] rounded-[24px] border border-secondary-100 flex flex-col justify-between">
                   <div>
                     <span className="block text-xs text-secondary-600 font-bold uppercase tracking-wide mb-1">
                       Wawancara: Calon Santri
@@ -1725,7 +1725,7 @@ export default function PendaftarDetailPage() {
                 </div>
 
                 {/* 6. Seleksi Wawancara Orang Tua (Offline) */}
-                <div className="bg-rose-50/50 p-4 rounded-xl border border-rose-100 flex flex-col justify-between">
+                <div className="bg-rose-50/50 p-[24px_28px] rounded-[24px] border border-rose-100 flex flex-col justify-between">
                   <div>
                     <span className="block text-xs text-rose-600 font-bold uppercase tracking-wide mb-1">
                       Wawancara: Calon Orangtua/Wali Santri
@@ -1767,7 +1767,7 @@ export default function PendaftarDetailPage() {
               </div>
 
               {(pendaftar.nilai_ujian?.catatan_umum || pendaftar.nilai_ujian?.catatan) && (
-                <div className="bg-stone-50 p-4 rounded-lg border border-stone-200 mt-4">
+                <div className="bg-stone-50 p-[24px_28px] rounded-[24px] border border-stone-200 mt-4">
                   <span className="block text-sm text-stone-500 font-medium mb-1">
                     Catatan Umum Penguji
                   </span>
@@ -1782,7 +1782,7 @@ export default function PendaftarDetailPage() {
                 <div className="mt-4 flex justify-end">
                   <Link
                     href={`/dashboard/penguji/input-nilai?search=${pendaftar.nomor_pendaftaran}`}
-                    className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors shadow hover:shadow-md font-bold text-sm"
+                    className="flex items-center gap-2 p-[16px_20px] bg-purple-600 text-white rounded-[24px] hover:bg-purple-700 transition-colors shadow hover:shadow-md font-bold text-sm"
                   >
                     <Edit className="w-4 h-4" />
                     Input / Lengkapi Edit Nilai
@@ -1831,7 +1831,7 @@ export default function PendaftarDetailPage() {
                           Swal.fire("Error", err.message || "Terjadi kesalahan", "error");
                         }
                       }}
-                      className="flex items-center gap-2 px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors shadow hover:shadow-md font-bold text-sm"
+                      className="flex items-center gap-2 p-[16px_20px] bg-amber-500 text-white rounded-[24px] hover:bg-amber-600 transition-colors shadow hover:shadow-md font-bold text-sm"
                     >
                       <AlertCircle className="w-4 h-4" />
                       Override Status
@@ -1862,7 +1862,7 @@ export default function PendaftarDetailPage() {
                         });
                         setIsNilaiModalOpen(true);
                       }}
-                      className="flex items-center gap-2 px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors shadow hover:shadow-md font-bold text-sm"
+                      className="flex items-center gap-2 p-[16px_20px] bg-amber-500 text-white rounded-[24px] hover:bg-amber-600 transition-colors shadow hover:shadow-md font-bold text-sm"
                     >
                       <Edit className="w-4 h-4" />
                       Input Nilai Khusus
@@ -1890,7 +1890,7 @@ export default function PendaftarDetailPage() {
                         Swal.fire("Error", err.message || "Terjadi kesalahan", "error");
                       }
                     }}
-                    className="flex items-center gap-2 px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors shadow hover:shadow-md font-bold text-sm"
+                    className="flex items-center gap-2 p-[16px_20px] bg-violet-600 text-white rounded-[24px] hover:bg-violet-700 transition-colors shadow hover:shadow-md font-bold text-sm"
                   >
                     <Trophy className="w-4 h-4" />
                     Hitung Ulang Nilai
@@ -1905,7 +1905,7 @@ export default function PendaftarDetailPage() {
             (pendaftar.status_proses === "accepted" || pendaftar.status_proses === "enrolled" || pendaftar.status_proses === "enrolled_full") && (
             <div className="bg-white rounded-3xl shadow-sm p-6 border border-emerald-100">
               <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 bg-emerald-50 rounded-xl">
+                <div className="p-3 bg-emerald-50 rounded-[24px]">
                   <CheckCircle className="w-6 h-6 text-emerald-600" />
                 </div>
                 <div>
@@ -1919,7 +1919,7 @@ export default function PendaftarDetailPage() {
               </div>
 
               {!pendaftar.reservasi || pendaftar.reservasi.length === 0 ? (
-                <div className="p-4 bg-stone-50 border border-stone-200 rounded-2xl flex items-center justify-between">
+                <div className="p-[24px_28px] bg-stone-50 border border-stone-200 rounded-[24px] flex items-center justify-between">
                   <span className="text-sm font-bold text-stone-500 italic">Belum mengisi form Welcome Day</span>
                   <button
                     onClick={() => {
@@ -1933,7 +1933,7 @@ export default function PendaftarDetailPage() {
                       });
                       setIsWdModalOpen(true);
                     }}
-                    className="px-4 py-2 bg-emerald-600 text-white rounded-xl text-xs font-black"
+                    className="p-[16px_20px] bg-emerald-600 text-white rounded-[24px] text-xs font-black"
                   >
                     Input Data
                   </button>
@@ -1943,11 +1943,11 @@ export default function PendaftarDetailPage() {
                   {pendaftar.reservasi.map((res: any) => {
                     const data = res.data_penginap || {};
                     return (
-                      <div key={res.id} className="p-5 bg-emerald-50/50 rounded-2xl border border-emerald-100 shadow-sm relative">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                      <div key={res.id} className="p-[24px_28px] bg-emerald-50/50 rounded-[24px] border border-emerald-100 shadow-sm relative">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-[24px_28px]">
                           <div>
                             <span className="block text-[10px] text-emerald-600 font-black uppercase tracking-widest mb-1">Status Kehadiran</span>
-                            <span className={`px-2.5 py-1 rounded-lg text-xs font-black ${data.statusKehadiran === 'HADIR' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}`}>
+                            <span className={`px-2.5 py-1 rounded-[24px] text-xs font-black ${data.statusKehadiran === 'HADIR' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}`}>
                               {data.statusKehadiran === 'HADIR' ? 'Hadir' : 'Tidak Hadir'}
                             </span>
                           </div>
@@ -1984,7 +1984,7 @@ export default function PendaftarDetailPage() {
                               });
                               setIsWdModalOpen(true);
                             }}
-                            className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-emerald-200 text-emerald-700 hover:bg-emerald-50 rounded-lg text-xs font-black transition-colors"
+                            className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-emerald-200 text-emerald-700 hover:bg-emerald-50 rounded-[24px] text-xs font-black transition-colors"
                           >
                             <Edit className="w-3.5 h-3.5" />
                             Edit
@@ -2003,7 +2003,7 @@ export default function PendaftarDetailPage() {
           {isKeuangan && (
             <div className="bg-white rounded-3xl shadow-sm p-6 border border-gold-100">
               <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 bg-gold-100 rounded-xl shadow-sm">
+                <div className="p-3 bg-gold-100 rounded-[24px] shadow-sm">
                   <CreditCard className="w-6 h-6 text-gold-700" />
                 </div>
                 <h3 className="text-xl font-black text-primary-950 tracking-tight">
@@ -2019,14 +2019,14 @@ export default function PendaftarDetailPage() {
                   {pendaftar.pembayaran.map((payment) => (
                     <div
                       key={payment.id}
-                      className="p-4 bg-gold-50/50 rounded-2xl border border-gold-100 shadow-xs"
+                      className="p-[24px_28px] bg-gold-50/50 rounded-[24px] border border-gold-100 shadow-xs"
                     >
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-2xl font-black text-primary-950 tracking-tighter">
                           {formatRupiah(payment.jumlah)}
                         </span>
                         <span
-                          className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${
+                          className={`px-3 py-1 rounded-[24px] text-[10px] font-black uppercase tracking-widest ${
                             payment.status_pembayaran === "verified"
                               ? "bg-emerald-100 text-emerald-700 border border-emerald-200"
                               : payment.status_pembayaran === "rejected"
@@ -2071,7 +2071,7 @@ export default function PendaftarDetailPage() {
                                 setTimeout(() => payInputRef.current?.click(), 100);
                               }}
                               disabled={!!uploadingPayment}
-                              className="px-3 py-1 bg-white hover:bg-gold-100 text-gold-700 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all flex items-center gap-1.5 border border-gold-200 disabled:opacity-50"
+                              className="px-3 py-1 bg-white hover:bg-gold-100 text-gold-700 rounded-[24px] text-[10px] font-black uppercase tracking-wider transition-all flex items-center gap-1.5 border border-gold-200 disabled:opacity-50"
                             >
                               {uploadingPayment === payment.id ? (
                                 <Loader2 className="w-3 h-3 animate-spin" />
@@ -2083,7 +2083,7 @@ export default function PendaftarDetailPage() {
                           )}
                         </div>
                       </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2 border-t border-gold-200/50">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-[24px_28px] pt-2 border-t border-gold-200/50">
                         <div>
                           <span className="block text-[10px] text-ink-200 font-black uppercase tracking-widest leading-none mb-1">
                             Metode
@@ -2111,7 +2111,7 @@ export default function PendaftarDetailPage() {
           {/* Data Pribadi (Selalu tampil, tapi mungkin disederhanakan) */}
           <div className="bg-white rounded-3xl shadow-sm p-6 border border-gold-100">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-3 bg-primary-50 rounded-xl">
+              <div className="p-3 bg-primary-50 rounded-[24px]">
                 <User className="w-6 h-6 text-primary-600" />
               </div>
               <h3 className="text-xl font-black text-primary-950 tracking-tight">
@@ -2119,7 +2119,7 @@ export default function PendaftarDetailPage() {
               </h3>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-[24px_28px]">
               <InfoItem
                 label="Nama Lengkap"
                 value={toTitleCase(pendaftar.nama_lengkap)}
@@ -2176,7 +2176,7 @@ export default function PendaftarDetailPage() {
           {/* Kontak & Alamat (Penting untuk Penagihan) */}
           <div className="bg-white rounded-3xl shadow-sm p-6 border border-gold-100">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-3 bg-emerald-50 rounded-xl">
+              <div className="p-3 bg-emerald-50 rounded-[24px]">
                 <MapPin className="w-6 h-6 text-emerald-600" />
               </div>
               <h3 className="text-xl font-black text-primary-950 tracking-tight">
@@ -2184,7 +2184,7 @@ export default function PendaftarDetailPage() {
               </h3>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-[24px_28px]">
               <div className="relative group">
                 {editingPhone ? (
                   <div className="flex flex-col gap-1">
@@ -2196,14 +2196,14 @@ export default function PendaftarDetailPage() {
                         type="text"
                         value={newPhone}
                         onChange={(e) => setNewPhone(e.target.value)}
-                        className="flex-1 px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg text-sm font-bold text-primary-950 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        className="flex-1 px-3 py-2 bg-stone-50 border border-stone-200 rounded-[24px] text-sm font-bold text-primary-950 focus:outline-none focus:ring-2 focus:ring-primary-500"
                         placeholder="Contoh: 0812..."
                         disabled={savingPhone}
                       />
                       <button
                         onClick={handleUpdatePhone}
                         disabled={savingPhone}
-                        className="p-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors disabled:opacity-50"
+                        className="p-2 bg-emerald-600 text-white rounded-[24px] hover:bg-emerald-700 transition-colors disabled:opacity-50"
                         title="Simpan Nomor"
                       >
                         {savingPhone ? (
@@ -2215,7 +2215,7 @@ export default function PendaftarDetailPage() {
                       <button
                         onClick={() => setEditingPhone(false)}
                         disabled={savingPhone}
-                        className="p-2 bg-stone-200 text-stone-600 rounded-lg hover:bg-stone-300 transition-colors"
+                        className="p-2 bg-stone-200 text-stone-600 rounded-[24px] hover:bg-stone-300 transition-colors"
                         title="Batal"
                       >
                         <X className="w-4 h-4" />
@@ -2238,7 +2238,7 @@ export default function PendaftarDetailPage() {
                           setNewPhone(pendaftar.no_hp || "");
                           setEditingPhone(true);
                         }}
-                        className="p-1.5 text-primary-500 hover:text-primary-700 bg-primary-50 hover:bg-primary-100 rounded-lg transition-colors flex items-center gap-1"
+                        className="p-1.5 text-primary-500 hover:text-primary-700 bg-primary-50 hover:bg-primary-100 rounded-[24px] transition-colors flex items-center gap-1"
                         title="Edit Nomor HP"
                       >
                         <Edit className="w-3.5 h-3.5" />
@@ -2277,7 +2277,7 @@ export default function PendaftarDetailPage() {
           {!isKeuangan && (
             <div className="bg-white rounded-3xl shadow-sm p-6 border border-gold-100">
               <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 bg-gold-50 rounded-xl">
+                <div className="p-3 bg-gold-50 rounded-[24px]">
                   <School className="w-6 h-6 text-gold-600" />
                 </div>
                 <h3 className="text-xl font-black text-primary-950 tracking-tight">
@@ -2285,7 +2285,7 @@ export default function PendaftarDetailPage() {
                 </h3>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-[24px_28px]">
                 <InfoItem label="Nama Sekolah" value={pendaftar.asal_sekolah} />
                 <InfoItem
                   label="Tahun Lulus"
@@ -2310,7 +2310,7 @@ export default function PendaftarDetailPage() {
           {pendaftar.orang_tua && (
             <div className="bg-white rounded-3xl shadow-sm p-6 border border-gold-100">
               <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 bg-gold-100 rounded-xl">
+                <div className="p-3 bg-gold-100 rounded-[24px]">
                   <Users className="w-6 h-6 text-gold-700" />
                 </div>
                 <h3 className="text-xl font-black text-primary-950 tracking-tight">
@@ -2320,7 +2320,7 @@ export default function PendaftarDetailPage() {
 
               <div className="space-y-8">
                 {/* Data Ayah */}
-                <div className="p-4 bg-stone-50 rounded-xl border border-stone-100">
+                <div className="p-[24px_28px] bg-stone-50 rounded-[24px] border border-stone-100">
                   <h4 className="font-bold text-stone-900 mb-4 flex items-center justify-between border-b border-stone-200 pb-2">
                     <div className="flex items-center gap-2">
                       <User className="w-5 h-5 text-primary-600" />
@@ -2386,7 +2386,7 @@ export default function PendaftarDetailPage() {
                 </div>
 
                 {/* Data Ibu */}
-                <div className="p-4 bg-stone-50 rounded-xl border border-stone-100">
+                <div className="p-[24px_28px] bg-stone-50 rounded-[24px] border border-stone-100">
                   <h4 className="font-bold text-stone-900 mb-4 flex items-center justify-between border-b border-stone-200 pb-2">
                     <div className="flex items-center gap-2">
                       <User className="w-5 h-5 text-rose-600" />
@@ -2456,16 +2456,16 @@ export default function PendaftarDetailPage() {
 
           {/* Riwayat Penyakit (Sembunyikan untuk Keuangan) */}
           {!isKeuangan && (
-            <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-red-100">
+            <div className="bg-white rounded-[24px] shadow-lg p-6 border-2 border-red-100">
               <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-red-100 rounded-lg">
+                <div className="p-2 bg-red-100 rounded-[24px]">
                   <Heart className="w-6 h-6 text-red-600" />
                 </div>
                 <h3 className="text-lg font-bold text-stone-900">
                   Data Kesehatan & Catatan
                 </h3>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-[24px_28px]">
                 <InfoItem
                   label="Golongan Darah"
                   value={pendaftar.golongan_darah}
@@ -2474,7 +2474,7 @@ export default function PendaftarDetailPage() {
                   <p className="text-xs text-stone-500 mb-1">
                     Riwayat Penyakit
                   </p>
-                  <div className="p-3 bg-red-50 text-red-900 rounded-lg border border-red-100 min-h-[60px]">
+                  <div className="p-3 bg-red-50 text-red-900 rounded-[24px] border border-red-100 min-h-[60px]">
                     {pendaftar.hobi ||
                       "Tidak ada riwayat penyakit yang dilaporkan"}
                   </div>
@@ -2491,9 +2491,9 @@ export default function PendaftarDetailPage() {
 
           {/* Status Dokumen */}
           {!isKeuangan && (
-            <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-primary-100">
+            <div className="bg-white rounded-[24px] shadow-lg p-6 border-2 border-primary-100">
               <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-primary-100 rounded-lg">
+                <div className="p-2 bg-primary-100 rounded-[24px]">
                   <FileText className="w-6 h-6 text-primary-700" />
                 </div>
                 <h3 className="text-lg font-bold text-stone-900">Dokumen</h3>
@@ -2521,7 +2521,7 @@ export default function PendaftarDetailPage() {
                     return (
                       <div
                         key={doc.id}
-                        className="flex items-center justify-between p-3 bg-stone-50 rounded-lg"
+                        className="flex items-center justify-between p-3 bg-stone-50 rounded-[24px]"
                       >
                         <span className="text-sm font-medium text-stone-700">
                           {getDocLabel(doc.jenis_dokumen)}
@@ -2552,9 +2552,9 @@ export default function PendaftarDetailPage() {
           {/* Status Pembayaran (Sidebar View - Hide IF Keuangan because it's already on top, OR keep as consistent view) */}
           {/* Hide IF Berkas as well, unless we want them to see it. User request implies focus on relevant data. */}
           {!isKeuangan && !isBerkas && !isPenguji && (
-            <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-primary-100">
+            <div className="bg-white rounded-[24px] shadow-lg p-6 border-2 border-primary-100">
               <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-emerald-100 rounded-lg">
+                <div className="p-2 bg-emerald-100 rounded-[24px]">
                   <CreditCard className="w-6 h-6 text-emerald-600" />
                 </div>
                 <h3 className="text-lg font-bold text-stone-900">Pembayaran</h3>
@@ -2566,7 +2566,7 @@ export default function PendaftarDetailPage() {
                   {pendaftar.pembayaran.map((payment) => (
                     <div
                       key={payment.id}
-                      className="p-3 bg-stone-50 rounded-lg"
+                      className="p-3 bg-stone-50 rounded-[24px]"
                     >
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-sm font-bold text-stone-900">
@@ -2611,9 +2611,9 @@ export default function PendaftarDetailPage() {
           )}
 
           {/* Timestamps */}
-          <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-primary-100">
+          <div className="bg-white rounded-[24px] shadow-lg p-6 border-2 border-primary-100">
             <div className="flex items-center gap-3 mb-4">
-              <div className="p-2 bg-stone-100 rounded-lg">
+              <div className="p-2 bg-stone-100 rounded-[24px]">
                 <Calendar className="w-6 h-6 text-stone-600" />
               </div>
               <h3 className="text-lg font-bold text-stone-900">Timeline</h3>
@@ -2635,7 +2635,7 @@ export default function PendaftarDetailPage() {
       </div>
       {/* Edit Data Modal */}
       {isEditModalOpen && editFormData && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center z-50 p-4 overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center z-50 p-[24px_28px] overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
           <div className="bg-white rounded-3xl shadow-2xl w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden border border-stone-200">
             {/* Modal Header */}
             <div className="bg-primary-950 p-6 text-white flex items-center justify-between border-b border-primary-900">
@@ -2677,7 +2677,7 @@ export default function PendaftarDetailPage() {
             </div>
 
             {/* Modal Body / Form */}
-            <form onSubmit={handleSaveEdit} className="flex-1 overflow-y-auto p-5 md:p-8 space-y-6 overscroll-contain custom-scrollbar">
+            <form onSubmit={handleSaveEdit} className="flex-1 overflow-y-auto p-[24px_28px] md:p-8 space-y-6 overscroll-contain custom-scrollbar">
               {editTab === "santri" && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-1">
@@ -2689,7 +2689,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         santri: { ...editFormData.santri, nama_lengkap: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1">
@@ -2701,7 +2701,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         santri: { ...editFormData.santri, nik: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1">
@@ -2713,7 +2713,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         santri: { ...editFormData.santri, tempat_lahir: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1">
@@ -2725,7 +2725,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         santri: { ...editFormData.santri, tanggal_lahir: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1">
@@ -2736,7 +2736,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         santri: { ...editFormData.santri, jenis_kelamin: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     >
                       <option value="L">Laki-laki (L)</option>
                       <option value="P">Perempuan (P)</option>
@@ -2750,7 +2750,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         santri: { ...editFormData.santri, golongan_darah: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     >
                       <option value="">Pilih Golongan Darah</option>
                       <option value="A">A</option>
@@ -2769,7 +2769,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         santri: { ...editFormData.santri, anak_ke: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1">
@@ -2781,7 +2781,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         santri: { ...editFormData.santri, jumlah_saudara: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1">
@@ -2793,7 +2793,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         santri: { ...editFormData.santri, hobi: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1">
@@ -2805,7 +2805,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         santri: { ...editFormData.santri, cita_cita: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                 </div>
@@ -2823,7 +2823,7 @@ export default function PendaftarDetailPage() {
                           ...editFormData,
                           santri: { ...editFormData.santri, no_hp: e.target.value }
                         })}
-                        className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                        className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                       />
                     </div>
                     <div className="space-y-1">
@@ -2835,7 +2835,7 @@ export default function PendaftarDetailPage() {
                           ...editFormData,
                           santri: { ...editFormData.santri, email: e.target.value }
                         })}
-                        className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                        className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                       />
                     </div>
                   </div>
@@ -2848,7 +2848,7 @@ export default function PendaftarDetailPage() {
                         santri: { ...editFormData.santri, alamat: e.target.value }
                       })}
                       rows={3}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850 resize-none"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850 resize-none"
                     />
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -2861,7 +2861,7 @@ export default function PendaftarDetailPage() {
                           ...editFormData,
                           santri: { ...editFormData.santri, rt: e.target.value }
                         })}
-                        className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                        className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                       />
                     </div>
                     <div className="space-y-1">
@@ -2873,7 +2873,7 @@ export default function PendaftarDetailPage() {
                           ...editFormData,
                           santri: { ...editFormData.santri, rw: e.target.value }
                         })}
-                        className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                        className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                       />
                     </div>
                     <div className="space-y-1">
@@ -2885,7 +2885,7 @@ export default function PendaftarDetailPage() {
                           ...editFormData,
                           santri: { ...editFormData.santri, kelurahan: e.target.value }
                         })}
-                        className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                        className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                       />
                     </div>
                     <div className="space-y-1">
@@ -2897,7 +2897,7 @@ export default function PendaftarDetailPage() {
                           ...editFormData,
                           santri: { ...editFormData.santri, kecamatan: e.target.value }
                         })}
-                        className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                        className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                       />
                     </div>
                   </div>
@@ -2911,7 +2911,7 @@ export default function PendaftarDetailPage() {
                           ...editFormData,
                           santri: { ...editFormData.santri, kabupaten: e.target.value }
                         })}
-                        className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                        className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                       />
                     </div>
                     <div className="space-y-1">
@@ -2923,7 +2923,7 @@ export default function PendaftarDetailPage() {
                           ...editFormData,
                           santri: { ...editFormData.santri, provinsi: e.target.value }
                         })}
-                        className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                        className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                       />
                     </div>
                     <div className="space-y-1">
@@ -2935,7 +2935,7 @@ export default function PendaftarDetailPage() {
                           ...editFormData,
                           santri: { ...editFormData.santri, kode_pos: e.target.value }
                         })}
-                        className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                        className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                       />
                     </div>
                   </div>
@@ -2955,7 +2955,7 @@ export default function PendaftarDetailPage() {
                           ...editFormData,
                           santri: { ...editFormData.santri, asal_sekolah: e.target.value }
                         })}
-                        className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                        className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                       />
                     </div>
                     <div className="space-y-1">
@@ -2967,7 +2967,7 @@ export default function PendaftarDetailPage() {
                           ...editFormData,
                           santri: { ...editFormData.santri, nisn: e.target.value }
                         })}
-                        className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                        className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                       />
                     </div>
                     <div className="space-y-1">
@@ -2979,7 +2979,7 @@ export default function PendaftarDetailPage() {
                           ...editFormData,
                           santri: { ...editFormData.santri, alamat_sekolah: e.target.value }
                         })}
-                        className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                        className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                       />
                     </div>
                     <div className="space-y-1">
@@ -2991,7 +2991,7 @@ export default function PendaftarDetailPage() {
                           ...editFormData,
                           santri: { ...editFormData.santri, tahun_lulus: e.target.value }
                         })}
-                        className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                        className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                       />
                     </div>
                   </div>
@@ -3012,7 +3012,7 @@ export default function PendaftarDetailPage() {
                             ...editFormData,
                             santri: { ...editFormData.santri, tipe_pendaftaran: e.target.value }
                           })}
-                          className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                          className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                         >
                           <option value="BARU">BARU (Reguler)</option>
                           <option value="PINDAHAN">PINDAHAN</option>
@@ -3031,7 +3031,7 @@ export default function PendaftarDetailPage() {
                                 santri: { ...editFormData.santri, kelas_masuk: e.target.value }
                               })}
                               placeholder="Contoh: 8"
-                              className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                              className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                             />
                           </div>
                           <div className="space-y-1">
@@ -3043,7 +3043,7 @@ export default function PendaftarDetailPage() {
                                 ...editFormData,
                                 santri: { ...editFormData.santri, asal_institusi: e.target.value }
                               })}
-                              className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                              className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                             />
                           </div>
                           <div className="space-y-1">
@@ -3055,7 +3055,7 @@ export default function PendaftarDetailPage() {
                                 ...editFormData,
                                 santri: { ...editFormData.santri, nomor_induk_lama: e.target.value }
                               })}
-                              className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                              className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                             />
                           </div>
                           <div className="space-y-1 md:col-span-2">
@@ -3067,7 +3067,7 @@ export default function PendaftarDetailPage() {
                                 santri: { ...editFormData.santri, catatan_pindahan: e.target.value }
                               })}
                               rows={3}
-                              className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850 resize-none"
+                              className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850 resize-none"
                             />
                           </div>
                         </>
@@ -3088,7 +3088,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         orang_tua: { ...editFormData.orang_tua, nama_ayah: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1">
@@ -3100,7 +3100,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         orang_tua: { ...editFormData.orang_tua, nik_ayah: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1">
@@ -3112,7 +3112,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         orang_tua: { ...editFormData.orang_tua, tempat_lahir_ayah: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1">
@@ -3124,7 +3124,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         orang_tua: { ...editFormData.orang_tua, tanggal_lahir_ayah: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1">
@@ -3136,7 +3136,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         orang_tua: { ...editFormData.orang_tua, pendidikan_ayah: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1">
@@ -3148,7 +3148,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         orang_tua: { ...editFormData.orang_tua, pekerjaan_ayah: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1">
@@ -3160,7 +3160,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         orang_tua: { ...editFormData.orang_tua, penghasilan_ayah: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1">
@@ -3172,7 +3172,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         orang_tua: { ...editFormData.orang_tua, no_hp_ayah: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1">
@@ -3183,7 +3183,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         orang_tua: { ...editFormData.orang_tua, status_ayah: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     >
                       <option value="Masih Hidup">Masih Hidup</option>
                       <option value="Sudah Meninggal">Sudah Meninggal</option>
@@ -3198,7 +3198,7 @@ export default function PendaftarDetailPage() {
                         orang_tua: { ...editFormData.orang_tua, alamat_ayah: e.target.value }
                       })}
                       rows={2}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850 resize-none"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850 resize-none"
                     />
                   </div>
                 </div>
@@ -3215,7 +3215,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         orang_tua: { ...editFormData.orang_tua, nama_ibu: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1">
@@ -3227,7 +3227,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         orang_tua: { ...editFormData.orang_tua, nik_ibu: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1">
@@ -3239,7 +3239,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         orang_tua: { ...editFormData.orang_tua, tempat_lahir_ibu: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1">
@@ -3251,7 +3251,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         orang_tua: { ...editFormData.orang_tua, tanggal_lahir_ibu: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1">
@@ -3263,7 +3263,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         orang_tua: { ...editFormData.orang_tua, pendidikan_ibu: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1">
@@ -3275,7 +3275,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         orang_tua: { ...editFormData.orang_tua, pekerjaan_ibu: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1">
@@ -3287,7 +3287,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         orang_tua: { ...editFormData.orang_tua, penghasilan_ibu: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1">
@@ -3299,7 +3299,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         orang_tua: { ...editFormData.orang_tua, no_hp_ibu: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1">
@@ -3310,7 +3310,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         orang_tua: { ...editFormData.orang_tua, status_ibu: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     >
                       <option value="Masih Hidup">Masih Hidup</option>
                       <option value="Sudah Meninggal">Sudah Meninggal</option>
@@ -3325,7 +3325,7 @@ export default function PendaftarDetailPage() {
                         orang_tua: { ...editFormData.orang_tua, alamat_ibu: e.target.value }
                       })}
                       rows={2}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850 resize-none"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850 resize-none"
                     />
                   </div>
                 </div>
@@ -3343,7 +3343,7 @@ export default function PendaftarDetailPage() {
                         orang_tua: { ...editFormData.orang_tua, hubungan_wali: e.target.value }
                       })}
                       placeholder="Contoh: Paman, Kakek, Kakak, dll."
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1">
@@ -3355,7 +3355,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         orang_tua: { ...editFormData.orang_tua, nama_wali: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1">
@@ -3367,7 +3367,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         orang_tua: { ...editFormData.orang_tua, nik_wali: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1">
@@ -3379,7 +3379,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         orang_tua: { ...editFormData.orang_tua, tempat_lahir_wali: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1">
@@ -3391,7 +3391,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         orang_tua: { ...editFormData.orang_tua, tanggal_lahir_wali: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1">
@@ -3403,7 +3403,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         orang_tua: { ...editFormData.orang_tua, pendidikan_wali: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1">
@@ -3415,7 +3415,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         orang_tua: { ...editFormData.orang_tua, pekerjaan_wali: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1">
@@ -3427,7 +3427,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         orang_tua: { ...editFormData.orang_tua, penghasilan_wali: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1">
@@ -3439,7 +3439,7 @@ export default function PendaftarDetailPage() {
                         ...editFormData,
                         orang_tua: { ...editFormData.orang_tua, no_hp_wali: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850"
                     />
                   </div>
                   <div className="space-y-1 md:col-span-2">
@@ -3451,7 +3451,7 @@ export default function PendaftarDetailPage() {
                         orang_tua: { ...editFormData.orang_tua, alamat_wali: e.target.value }
                       })}
                       rows={2}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850 resize-none"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850 resize-none"
                     />
                   </div>
                 </div>
@@ -3462,14 +3462,14 @@ export default function PendaftarDetailPage() {
                 <button
                   type="button"
                   onClick={() => setIsEditModalOpen(false)}
-                  className="px-6 py-3 bg-stone-100 hover:bg-stone-200 text-stone-800 rounded-xl font-black text-sm uppercase transition-all"
+                  className="p-[16px_20px] bg-stone-100 hover:bg-stone-200 text-stone-800 rounded-[24px] font-black text-sm uppercase transition-all"
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
                   disabled={savingEdit}
-                  className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-black text-sm uppercase transition-all shadow-md flex items-center gap-2 disabled:opacity-50"
+                  className="p-[16px_20px] bg-primary-600 hover:bg-primary-700 text-white rounded-[24px] font-black text-sm uppercase transition-all shadow-md flex items-center gap-2 disabled:opacity-50"
                 >
                   {savingEdit ? "Menyimpan..." : "Simpan Perubahan"}
                 </button>
@@ -3481,7 +3481,7 @@ export default function PendaftarDetailPage() {
 
       {/* MODAL INPUT NILAI MANUAL (ADMIN SUPER ONLY) */}
       {isNilaiModalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-[24px_28px] sm:p-6">
           <div
             className="absolute inset-0 bg-ink-950/60 backdrop-blur-sm"
             onClick={() => setIsNilaiModalOpen(false)}
@@ -3491,7 +3491,7 @@ export default function PendaftarDetailPage() {
               <h2 className="text-xl font-black tracking-tight">Input Nilai Khusus</h2>
               <button
                 onClick={() => setIsNilaiModalOpen(false)}
-                className="p-2 hover:bg-surface-200 rounded-xl transition-colors text-ink-500"
+                className="p-2 hover:bg-surface-200 rounded-[24px] transition-colors text-ink-500"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -3499,7 +3499,7 @@ export default function PendaftarDetailPage() {
             
             <form onSubmit={handleSaveNilaiManual} className="p-6 md:p-8 overflow-y-auto custom-scrollbar flex-1 overscroll-contain">
               <div className="space-y-4">
-                <div className="bg-amber-50 text-amber-800 p-4 rounded-xl text-sm mb-4 border border-amber-200 font-medium">
+                <div className="bg-amber-50 text-amber-800 p-[24px_28px] rounded-[24px] text-sm mb-4 border border-amber-200 font-medium">
                   <strong>Peringatan:</strong> Fitur ini akan langsung menimpa data nilai secara spesifik (untuk pindahan/bypass).
                 </div>
                 
@@ -3510,7 +3510,7 @@ export default function PendaftarDetailPage() {
                     step="any"
                     value={nilaiFormData.score_akademik}
                     onChange={(e) => setNilaiFormData({...nilaiFormData, score_akademik: e.target.value})}
-                    className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
+                    className="w-full bg-surface-50 border border-surface-200 rounded-[24px] px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
                     placeholder="Contoh: 95"
                   />
                 </div>
@@ -3522,7 +3522,7 @@ export default function PendaftarDetailPage() {
                     step="any"
                     value={nilaiFormData.score_kepribadian}
                     onChange={(e) => setNilaiFormData({...nilaiFormData, score_kepribadian: e.target.value})}
-                    className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
+                    className="w-full bg-surface-50 border border-surface-200 rounded-[24px] px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
                     placeholder="Contoh: 52"
                   />
                 </div>
@@ -3534,13 +3534,13 @@ export default function PendaftarDetailPage() {
                     step="any"
                     value={nilaiFormData.score_kesiapan}
                     onChange={(e) => setNilaiFormData({...nilaiFormData, score_kesiapan: e.target.value})}
-                    className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
+                    className="w-full bg-surface-50 border border-surface-200 rounded-[24px] px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
                     placeholder="Contoh: 65.3"
                   />
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <div className="flex gap-4">
+                  <div className="flex gap-[24px_28px]">
                     <div className="flex-1">
                       <label className="text-xs font-black uppercase text-stone-600">Nilai Tes Al Quran</label>
                       <input
@@ -3548,7 +3548,7 @@ export default function PendaftarDetailPage() {
                         step="any"
                         value={nilaiFormData.score_quran}
                         onChange={(e) => setNilaiFormData({...nilaiFormData, score_quran: e.target.value})}
-                        className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
+                        className="w-full bg-surface-50 border border-surface-200 rounded-[24px] px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
                         placeholder="Contoh: 70"
                       />
                     </div>
@@ -3557,7 +3557,7 @@ export default function PendaftarDetailPage() {
                       <select
                         value={nilaiFormData.rek_quran}
                         onChange={(e) => setNilaiFormData({...nilaiFormData, rek_quran: e.target.value})}
-                        className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
+                        className="w-full bg-surface-50 border border-surface-200 rounded-[24px] px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
                       >
                         <option value="">(Kosong)</option>
                         <option value="Diterima">Diterima</option>
@@ -3570,13 +3570,13 @@ export default function PendaftarDetailPage() {
                     value={nilaiFormData.catatan_quran}
                     onChange={(e) => setNilaiFormData({...nilaiFormData, catatan_quran: e.target.value})}
                     placeholder="Catatan tambahan (opsional)..."
-                    className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all text-sm resize-none"
+                    className="w-full bg-surface-50 border border-surface-200 rounded-[24px] px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all text-sm resize-none"
                     rows={2}
                   />
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <div className="flex gap-4">
+                  <div className="flex gap-[24px_28px]">
                     <div className="flex-1">
                       <label className="text-xs font-black uppercase text-stone-600">Wawancara Calon Santri</label>
                       <input
@@ -3584,7 +3584,7 @@ export default function PendaftarDetailPage() {
                         step="any"
                         value={nilaiFormData.score_wawancara}
                         onChange={(e) => setNilaiFormData({...nilaiFormData, score_wawancara: e.target.value})}
-                        className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
+                        className="w-full bg-surface-50 border border-surface-200 rounded-[24px] px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
                         placeholder="Contoh: 85"
                       />
                     </div>
@@ -3593,7 +3593,7 @@ export default function PendaftarDetailPage() {
                       <select
                         value={nilaiFormData.rek_wawancara}
                         onChange={(e) => setNilaiFormData({...nilaiFormData, rek_wawancara: e.target.value})}
-                        className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
+                        className="w-full bg-surface-50 border border-surface-200 rounded-[24px] px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
                       >
                         <option value="">(Kosong)</option>
                         <option value="Diterima">Diterima</option>
@@ -3606,13 +3606,13 @@ export default function PendaftarDetailPage() {
                     value={nilaiFormData.catatan_santri}
                     onChange={(e) => setNilaiFormData({...nilaiFormData, catatan_santri: e.target.value})}
                     placeholder="Catatan tambahan (opsional)..."
-                    className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all text-sm resize-none"
+                    className="w-full bg-surface-50 border border-surface-200 rounded-[24px] px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all text-sm resize-none"
                     rows={2}
                   />
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <div className="flex gap-4">
+                  <div className="flex gap-[24px_28px]">
                     <div className="flex-1">
                       <label className="text-xs font-black uppercase text-stone-600">Wawancara Wali Santri</label>
                       <input
@@ -3620,7 +3620,7 @@ export default function PendaftarDetailPage() {
                         step="any"
                         value={nilaiFormData.nilai_wawancara_ortu}
                         onChange={(e) => setNilaiFormData({...nilaiFormData, nilai_wawancara_ortu: e.target.value})}
-                        className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
+                        className="w-full bg-surface-50 border border-surface-200 rounded-[24px] px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
                         placeholder="Contoh: 90"
                       />
                     </div>
@@ -3629,7 +3629,7 @@ export default function PendaftarDetailPage() {
                       <select
                         value={nilaiFormData.rek_cawalsan}
                         onChange={(e) => setNilaiFormData({...nilaiFormData, rek_cawalsan: e.target.value})}
-                        className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1 text-xs truncate"
+                        className="w-full bg-surface-50 border border-surface-200 rounded-[24px] px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1 text-xs truncate"
                       >
                         <option value="">(Kosong)</option>
                         <option value="A. Sangat Layak diterima (potensi besar berkembang di pesantren).">A. Sangat Layak</option>
@@ -3644,7 +3644,7 @@ export default function PendaftarDetailPage() {
                     value={nilaiFormData.catatan_ortu}
                     onChange={(e) => setNilaiFormData({...nilaiFormData, catatan_ortu: e.target.value})}
                     placeholder="Catatan tambahan (opsional)..."
-                    className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all text-sm resize-none"
+                    className="w-full bg-surface-50 border border-surface-200 rounded-[24px] px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all text-sm resize-none"
                     rows={2}
                   />
                 </div>
@@ -3652,7 +3652,7 @@ export default function PendaftarDetailPage() {
                 {pendaftar?.jenjang === "MA" && (
                   <>
                     <div className="flex flex-col gap-2">
-                      <div className="flex gap-4">
+                      <div className="flex gap-[24px_28px]">
                         <div className="flex-1">
                           <label className="text-xs font-black uppercase text-stone-600">Tes Hafalan Alquran</label>
                           <input
@@ -3660,7 +3660,7 @@ export default function PendaftarDetailPage() {
                             step="any"
                             value={nilaiFormData.score_hafalan}
                             onChange={(e) => setNilaiFormData({...nilaiFormData, score_hafalan: e.target.value})}
-                            className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
+                            className="w-full bg-surface-50 border border-surface-200 rounded-[24px] px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
                             placeholder="Contoh: 88"
                           />
                         </div>
@@ -3669,7 +3669,7 @@ export default function PendaftarDetailPage() {
                           <select
                             value={nilaiFormData.rek_hafalan}
                             onChange={(e) => setNilaiFormData({...nilaiFormData, rek_hafalan: e.target.value})}
-                            className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
+                            className="w-full bg-surface-50 border border-surface-200 rounded-[24px] px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
                           >
                             <option value="">(Kosong)</option>
                             <option value="Diterima">Diterima</option>
@@ -3682,13 +3682,13 @@ export default function PendaftarDetailPage() {
                         value={nilaiFormData.catatan_hafalan}
                         onChange={(e) => setNilaiFormData({...nilaiFormData, catatan_hafalan: e.target.value})}
                         placeholder="Catatan tambahan (opsional)..."
-                        className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all text-sm resize-none"
+                        className="w-full bg-surface-50 border border-surface-200 rounded-[24px] px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all text-sm resize-none"
                         rows={2}
                       />
                     </div>
 
                     <div className="flex flex-col gap-2">
-                      <div className="flex gap-4">
+                      <div className="flex gap-[24px_28px]">
                         <div className="flex-1">
                           <label className="text-xs font-black uppercase text-stone-600">Tes Lisan B. Arab</label>
                           <input
@@ -3696,7 +3696,7 @@ export default function PendaftarDetailPage() {
                             step="any"
                             value={nilaiFormData.score_arab}
                             onChange={(e) => setNilaiFormData({...nilaiFormData, score_arab: e.target.value})}
-                            className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
+                            className="w-full bg-surface-50 border border-surface-200 rounded-[24px] px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
                             placeholder="Contoh: 75"
                           />
                         </div>
@@ -3705,7 +3705,7 @@ export default function PendaftarDetailPage() {
                           <select
                             value={nilaiFormData.rek_arab}
                             onChange={(e) => setNilaiFormData({...nilaiFormData, rek_arab: e.target.value})}
-                            className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
+                            className="w-full bg-surface-50 border border-surface-200 rounded-[24px] px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all mt-1"
                           >
                             <option value="">(Kosong)</option>
                             <option value="Diterima">Diterima</option>
@@ -3718,7 +3718,7 @@ export default function PendaftarDetailPage() {
                         value={nilaiFormData.catatan_arab}
                         onChange={(e) => setNilaiFormData({...nilaiFormData, catatan_arab: e.target.value})}
                         placeholder="Catatan tambahan (opsional)..."
-                        className="w-full bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all text-sm resize-none"
+                        className="w-full bg-surface-50 border border-surface-200 rounded-[24px] px-4 py-3 font-medium focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all text-sm resize-none"
                         rows={2}
                       />
                     </div>
@@ -3730,14 +3730,14 @@ export default function PendaftarDetailPage() {
                 <button
                   type="button"
                   onClick={() => setIsNilaiModalOpen(false)}
-                  className="px-5 py-2.5 hover:bg-surface-100 text-ink-600 rounded-xl font-bold text-sm transition-colors"
+                  className="px-5 py-2.5 hover:bg-surface-100 text-ink-600 rounded-[24px] font-bold text-sm transition-colors"
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
                   disabled={savingNilai}
-                  className="px-6 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-black text-sm uppercase transition-all shadow-md disabled:opacity-50"
+                  className="px-6 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-[24px] font-black text-sm uppercase transition-all shadow-md disabled:opacity-50"
                 >
                   {savingNilai ? "Menyimpan..." : "Simpan Nilai"}
                 </button>
@@ -3749,7 +3749,7 @@ export default function PendaftarDetailPage() {
 
       {/* Modal Welcome Day (Khusus Admin) */}
       {isWdModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-primary-950/40 backdrop-blur-sm overflow-y-auto overscroll-contain custom-scrollbar">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-[24px_28px] bg-primary-950/40 backdrop-blur-sm overflow-y-auto overscroll-contain custom-scrollbar">
           <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl flex flex-col max-h-[90vh]">
             <div className="flex items-center justify-between p-6 border-b border-surface-100 bg-surface-50 rounded-t-3xl">
               <h2 className="text-xl font-black text-primary-950 flex items-center gap-2">
@@ -3758,7 +3758,7 @@ export default function PendaftarDetailPage() {
               </h2>
               <button
                 onClick={() => setIsWdModalOpen(false)}
-                className="p-2 text-ink-300 hover:text-ink-600 hover:bg-surface-200 rounded-xl transition-colors"
+                className="p-2 text-ink-300 hover:text-ink-600 hover:bg-surface-200 rounded-[24px] transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -3769,8 +3769,8 @@ export default function PendaftarDetailPage() {
                 <label className="text-xs font-black uppercase tracking-wider text-ink-300 mb-2 block">
                   Status Kehadiran
                 </label>
-                <div className="flex gap-4">
-                  <label className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-xl border-2 cursor-pointer transition-all ${
+                <div className="flex gap-[24px_28px]">
+                  <label className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-[24px] border-2 cursor-pointer transition-all ${
                     wdFormData.statusKehadiran === "HADIR"
                       ? "border-emerald-500 bg-emerald-50 text-emerald-700"
                       : "border-surface-200 bg-white text-ink-400 hover:bg-surface-50"
@@ -3784,7 +3784,7 @@ export default function PendaftarDetailPage() {
                     <CheckCircle className="w-5 h-5" />
                     <span className="font-bold">Hadir</span>
                   </label>
-                  <label className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-xl border-2 cursor-pointer transition-all ${
+                  <label className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-[24px] border-2 cursor-pointer transition-all ${
                     wdFormData.statusKehadiran === "TIDAK_HADIR"
                       ? "border-rose-500 bg-rose-50 text-rose-700"
                       : "border-surface-200 bg-white text-ink-400 hover:bg-surface-50"
@@ -3803,7 +3803,7 @@ export default function PendaftarDetailPage() {
 
               {wdFormData.statusKehadiran === "HADIR" && (
                 <>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-[24px_28px]">
                     <div>
                       <label className="text-xs font-black uppercase tracking-wider text-ink-300 mb-2 block">
                         Total Rombongan
@@ -3813,7 +3813,7 @@ export default function PendaftarDetailPage() {
                         min="1"
                         value={wdFormData.totalPengantar}
                         onChange={(e) => setWdFormData({ ...wdFormData, totalPengantar: parseInt(e.target.value) || 0 })}
-                        className="w-full p-3 rounded-xl border border-surface-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 outline-none transition-all font-medium text-ink-600 bg-white"
+                        className="w-full p-3 rounded-[24px] border border-surface-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 outline-none transition-all font-medium text-ink-600 bg-white"
                       />
                     </div>
                     <div>
@@ -3823,7 +3823,7 @@ export default function PendaftarDetailPage() {
                       <select
                         value={wdFormData.jumlahPendamping}
                         onChange={(e) => setWdFormData({ ...wdFormData, jumlahPendamping: parseInt(e.target.value) || 0 })}
-                        className="w-full p-3 rounded-xl border border-surface-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 outline-none transition-all font-medium text-ink-600 bg-white"
+                        className="w-full p-3 rounded-[24px] border border-surface-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 outline-none transition-all font-medium text-ink-600 bg-white"
                       >
                         <option value={1}>1 Orang (Pendamping + Santri)</option>
                         <option value={2}>2 Orang (Pendamping + Santri)</option>
@@ -3831,7 +3831,7 @@ export default function PendaftarDetailPage() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-[24px_28px]">
                     <div>
                       <label className="text-xs font-black uppercase tracking-wider text-ink-300 mb-2 block">
                         Jumlah Mobil
@@ -3841,7 +3841,7 @@ export default function PendaftarDetailPage() {
                         min="0"
                         value={wdFormData.jumlahMobil}
                         onChange={(e) => setWdFormData({ ...wdFormData, jumlahMobil: parseInt(e.target.value) || 0 })}
-                        className="w-full p-3 rounded-xl border border-surface-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 outline-none transition-all font-medium text-ink-600 bg-white"
+                        className="w-full p-3 rounded-[24px] border border-surface-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 outline-none transition-all font-medium text-ink-600 bg-white"
                       />
                     </div>
                     <div>
@@ -3853,7 +3853,7 @@ export default function PendaftarDetailPage() {
                         min="0"
                         value={wdFormData.jumlahMotor}
                         onChange={(e) => setWdFormData({ ...wdFormData, jumlahMotor: parseInt(e.target.value) || 0 })}
-                        className="w-full p-3 rounded-xl border border-surface-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 outline-none transition-all font-medium text-ink-600 bg-white"
+                        className="w-full p-3 rounded-[24px] border border-surface-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 outline-none transition-all font-medium text-ink-600 bg-white"
                       />
                     </div>
                   </div>
@@ -3869,7 +3869,7 @@ export default function PendaftarDetailPage() {
                   onChange={(e) => setWdFormData({ ...wdFormData, catatanTambahan: e.target.value })}
                   placeholder="Opsional..."
                   rows={3}
-                  className="w-full p-3 rounded-xl border border-surface-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 outline-none transition-all font-medium text-ink-600 bg-white resize-none"
+                  className="w-full p-3 rounded-[24px] border border-surface-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/20 outline-none transition-all font-medium text-ink-600 bg-white resize-none"
                 />
               </div>
             </div>
@@ -3878,7 +3878,7 @@ export default function PendaftarDetailPage() {
               <button
                 type="button"
                 onClick={() => setIsWdModalOpen(false)}
-                className="px-5 py-2.5 rounded-xl text-ink-600 font-bold hover:bg-surface-200 transition-colors"
+                className="px-5 py-2.5 rounded-[24px] text-ink-600 font-bold hover:bg-surface-200 transition-colors"
               >
                 Batal
               </button>
@@ -3886,7 +3886,7 @@ export default function PendaftarDetailPage() {
                 type="button"
                 disabled={savingWd}
                 onClick={handleSaveWd}
-                className="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black shadow-lg shadow-emerald-500/30 transition-all active:scale-95 disabled:opacity-50"
+                className="px-6 py-2.5 rounded-[24px] bg-emerald-600 hover:bg-emerald-700 text-white font-black shadow-lg shadow-emerald-500/30 transition-all active:scale-95 disabled:opacity-50"
               >
                 {savingWd ? "Menyimpan..." : "Simpan Perubahan"}
               </button>

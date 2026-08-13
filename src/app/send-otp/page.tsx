@@ -173,7 +173,7 @@ export default function SendOtpPage() {
           <div className="space-y-3">
             {/* Telegram Option */}
             <div
-              className={`p-4 border-2 rounded-xl cursor-pointer transition-all app-card ${
+              className={`p-[24px_28px] border-2 rounded-[24px] cursor-pointer transition-all app-card ${
                 selectedChannel === "telegram"
                   ? "border-primary-600 bg-primary-50 shadow-md scale-[1.02]"
                   : "border-surface-200 bg-white hover:border-primary-200 hover:shadow-sm"
@@ -182,7 +182,7 @@ export default function SendOtpPage() {
             >
               <div className="flex items-center">
                 <div
-                  className={`p-2 rounded-lg mr-3 transition-colors ${
+                  className={`p-2 rounded-[24px] mr-3 transition-colors ${
                     selectedChannel === "telegram"
                       ? "bg-primary-600"
                       : "bg-secondary-100"
@@ -224,7 +224,7 @@ export default function SendOtpPage() {
 
             {/* Email Option */}
             <div
-              className={`p-4 border-2 rounded-xl cursor-pointer transition-all app-card ${
+              className={`p-[24px_28px] border-2 rounded-[24px] cursor-pointer transition-all app-card ${
                 selectedChannel === "email"
                   ? "border-primary-600 bg-secondary-50 shadow-md scale-[1.02]"
                   : "border-secondary-200 bg-white hover:border-primary-200 hover:shadow-sm"
@@ -233,7 +233,7 @@ export default function SendOtpPage() {
             >
               <div className="flex items-center">
                 <div
-                  className={`p-2 rounded-lg mr-3 transition-colors ${
+                  className={`p-2 rounded-[24px] mr-3 transition-colors ${
                     selectedChannel === "email"
                       ? "bg-primary-600"
                       : "bg-secondary-100"
@@ -273,7 +273,7 @@ export default function SendOtpPage() {
                     Kode dikirim ke email orang tua
                   </p>
                   {selectedChannel === "email" && (
-                    <div className="mt-2 p-2 bg-secondary-100 border border-secondary-200 rounded-lg">
+                    <div className="mt-2 p-2 bg-secondary-100 border border-secondary-200 rounded-[24px]">
                       <p className="text-[11px] text-primary-800 font-bold flex items-center gap-1">
                         <Check className="w-3.5 h-3.5 text-primary-700" />
                         <span>Akan dikirim ke: {email}</span>
@@ -286,7 +286,7 @@ export default function SendOtpPage() {
 
             {/* SMS Option */}
             <div
-              className={`p-4 border-2 rounded-xl cursor-pointer transition-all app-card ${
+              className={`p-[24px_28px] border-2 rounded-[24px] cursor-pointer transition-all app-card ${
                 selectedChannel === "sms"
                   ? "border-primary-600 bg-secondary-50 shadow-md scale-[1.02]"
                   : "border-secondary-200 bg-white hover:border-primary-200 hover:shadow-sm"
@@ -295,7 +295,7 @@ export default function SendOtpPage() {
             >
               <div className="flex items-center">
                 <div
-                  className={`p-2 rounded-lg mr-3 transition-colors ${
+                  className={`p-2 rounded-[24px] mr-3 transition-colors ${
                     selectedChannel === "sms"
                       ? "bg-primary-600"
                       : "bg-secondary-100"
@@ -349,7 +349,7 @@ export default function SendOtpPage() {
                 value={telegram}
                 onChange={(e) => setTelegram(e.target.value)}
                 placeholder="@username atau ID Telegram"
-                className="w-full px-5 py-3 md:px-6 md:py-4 rounded-xl bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-500 text-sm md:text-base"
+                className="w-full px-5 py-3 md:px-6 md:py-4 rounded-[24px] bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-500 text-sm md:text-base"
                 disabled={loading}
               />
             </div>
@@ -365,7 +365,7 @@ export default function SendOtpPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="nama@email.com"
-                className="w-full px-5 py-3 md:px-6 md:py-4 rounded-xl bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-500 text-sm md:text-base"
+                className="w-full px-5 py-3 md:px-6 md:py-4 rounded-[24px] bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-500 text-sm md:text-base"
                 disabled={loading}
               />
             </div>
@@ -381,7 +381,7 @@ export default function SendOtpPage() {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="081234567890"
-                className="w-full px-5 py-3 md:px-6 md:py-4 rounded-xl bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-500 text-sm md:text-base"
+                className="w-full px-5 py-3 md:px-6 md:py-4 rounded-[24px] bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-500 text-sm md:text-base"
                 disabled={loading}
               />
             </div>
@@ -391,7 +391,7 @@ export default function SendOtpPage() {
         {/* Messages */}
         <div className="relative z-10">
           {successMessage && (
-            <div className="mb-4 p-4 bg-primary-50 border border-primary-200 text-primary-800 rounded-[1rem] shadow-sm">
+            <div className="mb-4 p-[24px_28px] bg-primary-50 border border-primary-200 text-primary-800 rounded-[1rem] shadow-sm">
               <div className="flex items-center">
                 <div className="w-5 h-5 rounded-full bg-primary-500 flex items-center justify-center mr-2">
                   <Check className="w-3.5 h-3.5 text-white" />
@@ -402,7 +402,7 @@ export default function SendOtpPage() {
           )}
 
           {errorMessage && (
-            <div className="mb-4 p-4 bg-red-50 border border-red-200 text-red-800 rounded-[1rem] shadow-sm">
+            <div className="mb-4 p-[24px_28px] bg-red-50 border border-red-200 text-red-800 rounded-[1rem] shadow-sm">
               <div className="flex items-center">
                 <div className="w-5 h-5 rounded-full bg-red-500 flex items-center justify-center mr-2">
                   <span className="text-white text-xs">!</span>
@@ -452,7 +452,7 @@ export default function SendOtpPage() {
         </button>
 
         {/* Tips */}
-        <div className="mt-6 p-4 bg-primary-50 rounded-[1.5rem] border border-primary-100 relative z-10">
+        <div className="mt-6 p-[24px_28px] bg-primary-50 rounded-[1.5rem] border border-primary-100 relative z-10">
           <h3 className="text-xs font-black text-ink-950 mb-2 uppercase tracking-widest pl-1">
             Tips Pemilihan Channel
           </h3>

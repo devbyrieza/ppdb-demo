@@ -75,14 +75,14 @@ export default function UserManagementPage() {
                 <label class="block text-[10px] font-black uppercase text-primary-600 mb-1.5 tracking-wider">
                   Link Singkat (Akses Cepat)
                 </label>
-                <input type="text" value="${data.shortLink}" class="w-full p-3 border-2 border-primary-100 rounded-xl bg-stone-50 font-bold focus:outline-none focus:border-primary-500 text-sm" readonly onclick="this.select()" />
+                <input type="text" value="${data.shortLink}" class="w-full p-3 border-2 border-primary-100 rounded-[24px] bg-stone-50 font-bold focus:outline-none focus:border-primary-500 text-sm" readonly onclick="this.select()" />
               </div>
 
               <div>
                 <label class="block text-[10px] font-black uppercase text-stone-400 mb-1.5 tracking-wider">
                   Link Lengkap (Alternatif)
                 </label>
-                <input type="text" value="${data.link}" class="w-full p-3 border border-stone-200 rounded-xl bg-stone-50 focus:outline-none text-xs text-stone-400" readonly onclick="this.select()" />
+                <input type="text" value="${data.link}" class="w-full p-3 border border-stone-200 rounded-[24px] bg-stone-50 focus:outline-none text-xs text-stone-400" readonly onclick="this.select()" />
               </div>
             </div>
           `,
@@ -282,7 +282,7 @@ export default function UserManagementPage() {
 
       {/* User List Dashboard */}
       <div className="bg-white rounded-4xl border border-secondary-100 shadow-sm overflow-hidden app-card">
-        <div className="p-5 md:p-8 border-b border-stone-50 flex flex-col md:flex-row justify-between items-center gap-6 bg-secondary-50/10">
+        <div className="p-[24px_28px] md:p-8 border-b border-stone-50 flex flex-col md:flex-row justify-between items-center gap-6 bg-secondary-50/10">
           <div className="relative w-full md:w-[28rem]">
             <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-stone-300" />
             <input
@@ -293,7 +293,7 @@ export default function UserManagementPage() {
               className="w-full pl-16 pr-8 py-5 bg-white border-2 border-secondary-100 rounded-[2.5rem] focus:outline-none focus:border-primary-500 font-bold shadow-sm placeholder:text-stone-300"
             />
           </div>
-          <p className="text-[10px] font-black uppercase tracking-widest text-stone-500 bg-stone-100 px-4 py-2 rounded-full">
+          <p className="text-[10px] font-black uppercase tracking-widest text-stone-500 bg-stone-100 p-[16px_20px] rounded-full">
             Total: {users.length} Database entries
           </p>
         </div>
@@ -302,9 +302,9 @@ export default function UserManagementPage() {
           <table className="w-full text-left">
             <thead className="bg-stone-50/50 text-[10px] font-black uppercase tracking-widest text-stone-500 border-b border-stone-50">
               <tr>
-                <th className="p-5 md:p-8">Identitas Akun</th>
-                <th className="p-5 md:p-8 text-center">Akses Sistem</th>
-                <th className="p-5 md:p-8 text-right">Manajemen</th>
+                <th className="p-[24px_28px] md:p-8">Identitas Akun</th>
+                <th className="p-[24px_28px] md:p-8 text-center">Akses Sistem</th>
+                <th className="p-[24px_28px] md:p-8 text-right">Manajemen</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-stone-50">
@@ -321,9 +321,9 @@ export default function UserManagementPage() {
                     key={user.id}
                     className="hover:bg-secondary-50/30 transition-colors group"
                   >
-                    <td className="p-5 md:p-8">
-                      <div className="flex items-center gap-5">
-                        <div className="w-12 h-12 rounded-2xl bg-primary-100 flex items-center justify-center text-primary-700 font-black text-xs border-2 border-white shadow-sm">
+                    <td className="p-[24px_28px] md:p-8">
+                      <div className="flex items-center gap-[24px_28px]">
+                        <div className="w-12 h-12 rounded-[24px] bg-primary-100 flex items-center justify-center text-primary-700 font-black text-xs border-2 border-white shadow-sm">
                           {user.full_name.charAt(0)}
                         </div>
                         <div>
@@ -336,9 +336,9 @@ export default function UserManagementPage() {
                         </div>
                       </div>
                     </td>
-                    <td className="p-5 md:p-8 text-center">
+                    <td className="p-[24px_28px] md:p-8 text-center">
                       <div className="flex flex-wrap justify-center gap-2">
-                        <span className="px-4 py-1.5 bg-primary-50 text-primary-700 text-[10px] font-black rounded-xl border border-primary-100 uppercase tracking-widest shadow-sm">
+                        <span className="px-4 py-1.5 bg-primary-50 text-primary-700 text-[10px] font-black rounded-[24px] border border-primary-100 uppercase tracking-widest shadow-sm">
                           {ROLE_LABELS[user.role as UserRole] ||
                             user.role.replace("_", " ")}
                         </span>
@@ -348,7 +348,7 @@ export default function UserManagementPage() {
                             .map((r, i) => (
                               <span
                                 key={i}
-                                className="px-4 py-1.5 bg-stone-100 text-stone-600 text-[10px] font-black rounded-xl border border-stone-200 uppercase tracking-widest shadow-sm"
+                                className="px-4 py-1.5 bg-stone-100 text-stone-600 text-[10px] font-black rounded-[24px] border border-stone-200 uppercase tracking-widest shadow-sm"
                               >
                                 {ROLE_LABELS[r as UserRole] ||
                                   r.replace("_", " ")}
@@ -356,7 +356,7 @@ export default function UserManagementPage() {
                             ))}
                       </div>
                     </td>
-                    <td className="p-5 md:p-8 text-right">
+                    <td className="p-[24px_28px] md:p-8 text-right">
                       <div className="flex justify-end gap-3 transition-all duration-300">
                         <ActionDropdown 
                           items={[
@@ -431,7 +431,7 @@ export default function UserManagementPage() {
               </button>
             </div>
             <form onSubmit={handleSubmit} className="p-6 md:p-12 space-y-8 overflow-y-auto custom-scrollbar overscroll-contain">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-[24px_28px] md:gap-8">
                 <div className="col-span-1 md:col-span-2">
                   <label className="block text-[10px] font-black uppercase text-stone-500 mb-3 tracking-widest">
                     Nama Lengkap Personal
@@ -443,7 +443,7 @@ export default function UserManagementPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, full_name: e.target.value })
                     }
-                    className="w-full px-4 md:px-5 py-4 bg-stone-100/50 border-2 border-transparent focus:border-primary-600 focus:bg-white focus:outline-none font-bold rounded-2xl transition-all"
+                    className="w-full px-4 md:px-5 py-4 bg-stone-100/50 border-2 border-transparent focus:border-primary-600 focus:bg-white focus:outline-none font-bold rounded-[24px] transition-all"
                   />
                 </div>
                 <div className="col-span-1 md:col-span-2">
@@ -457,7 +457,7 @@ export default function UserManagementPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, email: e.target.value })
                     }
-                    className="w-full px-4 md:px-5 py-4 bg-stone-100/50 border-2 border-transparent focus:border-primary-600 focus:bg-white focus:outline-none font-bold rounded-2xl transition-all"
+                    className="w-full px-4 md:px-5 py-4 bg-stone-100/50 border-2 border-transparent focus:border-primary-600 focus:bg-white focus:outline-none font-bold rounded-[24px] transition-all"
                   />
                 </div>
                 <div>
@@ -469,7 +469,7 @@ export default function UserManagementPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, role: e.target.value })
                     }
-                    className="w-full px-4 md:px-5 py-4 bg-primary-50 border-2 border-primary-100 text-primary-900 rounded-2xl font-black text-xs uppercase tracking-widest cursor-pointer"
+                    className="w-full px-4 md:px-5 py-4 bg-primary-50 border-2 border-primary-100 text-primary-900 rounded-[24px] font-black text-xs uppercase tracking-widest cursor-pointer"
                   >
                     {ROLE_OPTIONS.map((o) => (
                       <option key={o.value} value={o.value}>
@@ -490,7 +490,7 @@ export default function UserManagementPage() {
                       onChange={(e) =>
                         setFormData({ ...formData, password: e.target.value })
                       }
-                      className="w-full px-4 md:px-5 py-4 bg-stone-100/50 border-2 border-transparent focus:border-primary-600 focus:bg-white focus:outline-none font-bold rounded-2xl transition-all pr-16"
+                      className="w-full px-4 md:px-5 py-4 bg-stone-100/50 border-2 border-transparent focus:border-primary-600 focus:bg-white focus:outline-none font-bold rounded-[24px] transition-all pr-16"
                       placeholder={
                         isEditing ? "(Abaikan jika sama)" : "••••••••"
                       }
@@ -519,7 +519,7 @@ export default function UserManagementPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, phone: e.target.value })
                     }
-                    className="w-full px-4 md:px-5 py-4 bg-stone-100/50 border-2 border-transparent focus:border-primary-600 focus:bg-white focus:outline-none font-bold rounded-2xl transition-all"
+                    className="w-full px-4 md:px-5 py-4 bg-stone-100/50 border-2 border-transparent focus:border-primary-600 focus:bg-white focus:outline-none font-bold rounded-[24px] transition-all"
                   />
                 </div>
                 <div className="col-span-1 md:col-span-2">
@@ -531,7 +531,7 @@ export default function UserManagementPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, jenis_kelamin: e.target.value })
                     }
-                    className="w-full px-4 md:px-5 py-4 bg-stone-100/50 border-2 border-transparent focus:border-primary-600 focus:bg-white focus:outline-none font-bold rounded-2xl transition-all cursor-pointer"
+                    className="w-full px-4 md:px-5 py-4 bg-stone-100/50 border-2 border-transparent focus:border-primary-600 focus:bg-white focus:outline-none font-bold rounded-[24px] transition-all cursor-pointer"
                   >
                     <option value="">Pilih Jenis Kelamin</option>
                     <option value="L">Laki-Laki (Ustadz)</option>
@@ -546,7 +546,7 @@ export default function UserManagementPage() {
                     {ROLE_OPTIONS.map((o) => (
                       <label
                         key={o.value}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-xl border cursor-pointer transition-all ${formData.secondary_roles.includes(o.value) ? "bg-primary-50 border-primary-200 text-primary-800" : "bg-stone-50 border-stone-200 text-stone-500 hover:bg-stone-100"} ${formData.role === o.value ? "opacity-50 cursor-not-allowed" : ""}`}
+                        className={`flex items-center gap-2 p-[16px_20px] rounded-[24px] border cursor-pointer transition-all ${formData.secondary_roles.includes(o.value) ? "bg-primary-50 border-primary-200 text-primary-800" : "bg-stone-50 border-stone-200 text-stone-500 hover:bg-stone-100"} ${formData.role === o.value ? "opacity-50 cursor-not-allowed" : ""}`}
                       >
                         <input
                           type="checkbox"

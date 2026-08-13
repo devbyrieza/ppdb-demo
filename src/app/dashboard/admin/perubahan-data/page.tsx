@@ -123,29 +123,29 @@ export default function PerubahanDataPage() {
           </p>
         </div>
 
-        <div className="flex bg-secondary-100 p-1.5 rounded-2xl gap-1">
+        <div className="flex bg-secondary-100 p-1.5 rounded-[24px] gap-1">
           <button
             onClick={() => setFilter("pending")}
-            className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${filter === "pending" ? "bg-white shadow-sm text-primary-700" : "text-ink-500"}`}
+            className={`p-[16px_20px] rounded-[24px] text-sm font-bold transition-all ${filter === "pending" ? "bg-white shadow-sm text-primary-700" : "text-ink-500"}`}
           >
             Pending
           </button>
           <button
             onClick={() => setFilter("submitted")}
-            className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${filter === "submitted" ? "bg-white shadow-sm text-primary-700" : "text-ink-500"}`}
+            className={`p-[16px_20px] rounded-[24px] text-sm font-bold transition-all ${filter === "submitted" ? "bg-white shadow-sm text-primary-700" : "text-ink-500"}`}
           >
             Butuh Verifikasi
           </button>
           <button
             onClick={() => setFilter("all")}
-            className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${filter === "all" ? "bg-white shadow-sm text-primary-700" : "text-ink-500"}`}
+            className={`p-[16px_20px] rounded-[24px] text-sm font-bold transition-all ${filter === "all" ? "bg-white shadow-sm text-primary-700" : "text-ink-500"}`}
           >
             Semua
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-1 gap-[24px_28px]">
         {filtreredRequests.length > 0 ? (
           filtreredRequests.map((req) => (
             <div
@@ -154,8 +154,8 @@ export default function PerubahanDataPage() {
             >
               <div className="flex flex-col md:flex-row gap-6 items-start">
                 {/* Profile Info */}
-                <div className="flex items-center gap-4 min-w-[250px]">
-                  <div className="w-14 h-14 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-700">
+                <div className="flex items-center gap-[24px_28px] min-w-[250px]">
+                  <div className="w-14 h-14 bg-primary-50 rounded-[24px] flex items-center justify-center text-primary-700">
                     <User className="w-8 h-8" />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -173,7 +173,7 @@ export default function PerubahanDataPage() {
                                                 ? "bg-secondary-100 text-secondary-700"
                                                 : req.status ===
                                                     "approved_to_edit"
-                                                  ? "bg-primary-100 text-primary-700"
+                                                  ? "bg-amber-100 text-amber-700"
                                                   : req.status === "submitted"
                                                     ? "bg-purple-100 text-purple-700"
                                                     : "bg-emerald-100 text-emerald-700"
@@ -187,7 +187,7 @@ export default function PerubahanDataPage() {
                 </div>
 
                 {/* Reason */}
-                <div className="flex-1 bg-secondary-50 p-4 rounded-2xl border border-ink-100">
+                <div className="flex-1 bg-secondary-50 p-[24px_28px] rounded-[24px] border border-ink-100">
                   <div className="flex items-center gap-2 mb-2 text-ink-400">
                     <MessageSquare className="w-4 h-4" />
                     <span className="text-xs font-bold uppercase tracking-widest">
@@ -210,7 +210,7 @@ export default function PerubahanDataPage() {
                       <button
                         onClick={() => handleAction(req.id, "approve")}
                         disabled={processing === req.id}
-                        className="flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-3 bg-primary-700 text-white rounded-xl text-sm font-bold shadow-lg shadow-primary-600/20 hover:bg-primary-800 transition-all disabled:opacity-50"
+                        className="flex-1 md:flex-none flex items-center justify-center gap-2 p-[16px_20px] bg-primary-700 text-white rounded-[24px] text-sm font-bold shadow-lg shadow-primary-600/20 hover:bg-primary-800 transition-all disabled:opacity-50"
                       >
                         {processing === req.id ? (
                           <Loader2 className="w-4 h-4 animate-spin" />
@@ -222,7 +222,7 @@ export default function PerubahanDataPage() {
                       <button
                         onClick={() => handleAction(req.id, "reject")}
                         disabled={processing === req.id}
-                        className="flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-3 bg-red-50 text-red-600 rounded-xl text-sm font-bold hover:bg-red-100 transition-all disabled:opacity-50"
+                        className="flex-1 md:flex-none flex items-center justify-center gap-2 p-[16px_20px] bg-red-50 text-red-600 rounded-[24px] text-sm font-bold hover:bg-red-100 transition-all disabled:opacity-50"
                       >
                         Tolak
                       </button>
@@ -233,7 +233,7 @@ export default function PerubahanDataPage() {
                     <div className="flex gap-2 w-full">
                       <Link
                         href={`/dashboard/admin/pendaftar/${req.pendaftar_id}`}
-                        className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-xl text-sm font-bold shadow-lg shadow-primary-500/20 hover:bg-primary-700 transition-all"
+                        className="flex-1 flex items-center justify-center gap-2 p-[16px_20px] bg-primary-600 text-white rounded-[24px] text-sm font-bold shadow-lg shadow-primary-500/20 hover:bg-primary-700 transition-all"
                       >
                         <Eye className="w-4 h-4" />
                         Cek Perubahan
@@ -241,7 +241,7 @@ export default function PerubahanDataPage() {
                       <button
                         onClick={() => handleAction(req.id, "complete")}
                         disabled={processing === req.id}
-                        className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-emerald-600 text-white rounded-xl text-sm font-bold shadow-lg shadow-emerald-500/20 hover:bg-emerald-700 transition-all disabled:opacity-50"
+                        className="flex-1 flex items-center justify-center gap-2 p-[16px_20px] bg-emerald-600 text-white rounded-[24px] text-sm font-bold shadow-lg shadow-emerald-500/20 hover:bg-emerald-700 transition-all disabled:opacity-50"
                       >
                         {processing === req.id ? (
                           <Loader2 className="w-4 h-4 animate-spin" />

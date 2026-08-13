@@ -205,9 +205,9 @@ export default function MonitoringJadwalPage() {
     return (
         <div className="space-y-6">
             {/* Simplified Header */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-primary-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-primary-600/20">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-[24px_28px]">
+                <div className="flex items-center gap-[24px_28px]">
+                    <div className="w-12 h-12 bg-primary-600 rounded-[24px] flex items-center justify-center text-white shadow-lg shadow-primary-600/20">
                         <Calendar className="w-6 h-6" />
                     </div>
                     <div>
@@ -221,9 +221,9 @@ export default function MonitoringJadwalPage() {
 
             {/* Conflict Warning */}
             {conflicts.length > 0 && (
-                <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-6 md:p-8 animate-pulse shadow-lg shadow-red-500/10">
-                    <div className="flex items-start gap-5">
-                        <div className="w-14 h-14 bg-red-100 rounded-2xl flex items-center justify-center text-red-600 shrink-0 border border-red-200">
+                <div className="bg-red-50 border-2 border-red-200 rounded-[24px] p-6 md:p-8 animate-pulse shadow-lg shadow-red-500/10">
+                    <div className="flex items-start gap-[24px_28px]">
+                        <div className="w-14 h-14 bg-red-100 rounded-[24px] flex items-center justify-center text-red-600 shrink-0 border border-red-200">
                             <XCircle className="w-8 h-8" />
                         </div>
                         <div className="flex-1">
@@ -232,7 +232,7 @@ export default function MonitoringJadwalPage() {
                             
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                                 {conflicts.slice(0, 6).map((c, i) => (
-                                    <div key={i} className="bg-white/80 backdrop-blur-sm border border-red-200 rounded-xl p-4 shadow-sm">
+                                    <div key={i} className="bg-white/80 backdrop-blur-sm border border-red-200 rounded-[24px] p-[24px_28px] shadow-sm">
                                         <p className="font-black text-red-800 text-xs uppercase mb-2 border-b border-red-100 pb-2">{c.name}</p>
                                         <div className="space-y-1.5">
                                             {c.items.map((it: any, idx: number) => (
@@ -257,7 +257,7 @@ export default function MonitoringJadwalPage() {
 
             {/* Top Statistics - Split Wawancara */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6">
-                <div className="bg-white rounded-2xl p-4 md:p-6 border border-slate-100 shadow-clay-sm relative overflow-hidden group">
+                <div className="bg-white rounded-[24px] p-[24px_28px] md:p-6 border border-slate-100 shadow-clay-sm relative overflow-hidden group">
                     <div className="absolute top-0 right-0 w-12 h-12 bg-primary-500/5 rounded-full -mr-6 -mt-6 transition-transform group-hover:scale-150"></div>
                     <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1 relative z-10">Total Terjadwal</p>
                     <p className="text-2xl md:text-3xl font-black text-slate-800 relative z-10">
@@ -266,17 +266,17 @@ export default function MonitoringJadwalPage() {
                         <span className="ml-2">{totalSesi}</span> <span className="text-[10px] text-slate-400 font-bold uppercase">Jadwal</span>
                     </p>
                 </div>
-                <div className="bg-white rounded-2xl p-4 md:p-6 border border-slate-100 shadow-clay-sm relative overflow-hidden group">
+                <div className="bg-white rounded-[24px] p-[24px_28px] md:p-6 border border-slate-100 shadow-clay-sm relative overflow-hidden group">
                     <div className="absolute top-0 right-0 w-12 h-12 bg-green-500/5 rounded-full -mr-6 -mt-6 transition-transform group-hover:scale-150"></div>
                     <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1 relative z-10">Selesai Al-Qur&apos;an</p>
                     <p className="text-2xl md:text-3xl font-black text-emerald-600 relative z-10">{selesaiQuran}</p>
                 </div>
-                <div className="bg-white rounded-2xl p-4 md:p-6 border border-slate-100 shadow-clay-sm relative overflow-hidden group">
+                <div className="bg-white rounded-[24px] p-[24px_28px] md:p-6 border border-slate-100 shadow-clay-sm relative overflow-hidden group">
                     <div className="absolute top-0 right-0 w-12 h-12 bg-indigo-500/5 rounded-full -mr-6 -mt-6 transition-transform group-hover:scale-150"></div>
                     <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1 relative z-10">Selesai W. Santri</p>
                     <p className="text-2xl md:text-3xl font-black text-indigo-600 relative z-10">{selesaiWSantri}</p>
                 </div>
-                <div className="bg-white rounded-2xl p-4 md:p-6 border border-slate-100 shadow-clay-sm relative overflow-hidden group">
+                <div className="bg-white rounded-[24px] p-[24px_28px] md:p-6 border border-slate-100 shadow-clay-sm relative overflow-hidden group">
                     <div className="absolute top-0 right-0 w-12 h-12 bg-purple-500/5 rounded-full -mr-6 -mt-6 transition-transform group-hover:scale-150"></div>
                     <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1 relative z-10">Selesai W. Orang Tua</p>
                     <p className="text-2xl md:text-3xl font-black text-purple-600 relative z-10">{selesaiWOrangTua}</p>
@@ -284,7 +284,7 @@ export default function MonitoringJadwalPage() {
             </div>
 
             {/* Filter & Actions Bar */}
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-[24px_28px]">
                 <div className="flex flex-col md:flex-row gap-3">
                     {/* Search & Jenjang */}
                     <div className="flex-1 flex gap-2">
@@ -295,13 +295,13 @@ export default function MonitoringJadwalPage() {
                                 placeholder="Cari santri/penguji Al-Qur'an..."
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
-                                className="w-full bg-white border border-slate-200 rounded-2xl pl-10 pr-4 py-2 text-sm focus:ring-4 focus:ring-primary-500/5 focus:border-primary-500 outline-none font-bold h-12 transition-all shadow-sm"
+                                className="w-full bg-white border border-slate-200 rounded-[24px] pl-10 pr-4 py-2 text-sm focus:ring-4 focus:ring-primary-500/5 focus:border-primary-500 outline-none font-bold h-12 transition-all shadow-sm"
                             />
                         </div>
                         <select 
                             value={filterJenjang}
                             onChange={(e) => setFilterJenjang(e.target.value)}
-                            className="w-32 bg-white border border-slate-200 rounded-2xl px-3 py-2 text-[11px] font-black text-ink-600 focus:ring-4 focus:ring-primary-500/5 focus:border-primary-500 outline-none h-12 shadow-sm appearance-none text-center uppercase tracking-wider"
+                            className="w-32 bg-white border border-slate-200 rounded-[24px] px-3 py-2 text-[11px] font-black text-ink-600 focus:ring-4 focus:ring-primary-500/5 focus:border-primary-500 outline-none h-12 shadow-sm appearance-none text-center uppercase tracking-wider"
                         >
                             <option value="ALL">SEMUA</option>
                             <option value="MTs">MTs</option>
@@ -311,7 +311,7 @@ export default function MonitoringJadwalPage() {
 
                     {/* View Switcher & Actions */}
                     <div className="flex items-center gap-2">
-                        <div className="flex-1 md:flex-none flex bg-slate-100 p-1.5 rounded-2xl h-12 min-w-fit">
+                        <div className="flex-1 md:flex-none flex bg-slate-100 p-1.5 rounded-[24px] h-12 min-w-fit">
                             {[
                                 { id: "flat", label: "List" },
                                 { id: "grouped", label: "Ustadz" },
@@ -320,7 +320,7 @@ export default function MonitoringJadwalPage() {
                                 <button 
                                     key={mode.id}
                                     onClick={() => setViewMode(mode.id as any)}
-                                    className={`px-5 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all ${viewMode === mode.id ? "bg-white text-primary-700 shadow-sm" : "text-slate-400 hover:text-slate-600"}`}
+                                    className={`px-5 rounded-[24px] text-[11px] font-bold uppercase tracking-wider transition-all ${viewMode === mode.id ? "bg-white text-primary-700 shadow-sm" : "text-slate-400 hover:text-slate-600"}`}
                                 >
                                     {mode.label}
                                 </button>
@@ -328,14 +328,14 @@ export default function MonitoringJadwalPage() {
                         </div>
                         <button 
                             onClick={fetchMonitoringData}
-                            className="w-12 h-12 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-2xl shadow-sm transition-all flex items-center justify-center shrink-0"
+                            className="w-12 h-12 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-[24px] shadow-sm transition-all flex items-center justify-center shrink-0"
                             title="Refresh Data"
                         >
-                            <Loader2 className={`w-4 h-4 ${loading ? 'animate-spin text-primary-500' : ''}`} />
+                            <Loader2 className={`w-4 h-4 ${loading ? 'animate-spin text-slate-500' : ''}`} />
                         </button>
                         <button 
                             onClick={() => setShowPast(!showPast)}
-                            className={`px-4 rounded-2xl text-[11px] font-bold uppercase tracking-wider transition-all border h-12 shadow-sm ${
+                            className={`px-4 rounded-[24px] text-[11px] font-bold uppercase tracking-wider transition-all border h-12 shadow-sm ${
                                 showPast 
                                 ? "bg-secondary-100 border-secondary-200 text-secondary-700" 
                                 : "bg-white border-slate-200 text-slate-400 hover:text-slate-600"
@@ -351,7 +351,7 @@ export default function MonitoringJadwalPage() {
             <div className="space-y-6">
                 {loading ? (
                     <div className="bg-white rounded-3xl shadow-clay-lg p-24 text-center border border-white/40">
-                        <Loader2 className="w-8 h-8 animate-spin text-primary-500 mx-auto mb-4" />
+                        <Loader2 className="w-8 h-8 animate-spin text-slate-500 mx-auto mb-4" />
                         <p className="font-bold text-ink-400">Memuat data monitoring...</p>
                     </div>
                 ) : filteredSchedules.length === 0 ? (
@@ -364,7 +364,7 @@ export default function MonitoringJadwalPage() {
                 ) : viewMode === "flat" ? (
                     <>
                         {/* Mobile View: Cards */}
-                        <div className="grid grid-cols-1 gap-4 md:hidden">
+                        <div className="grid grid-cols-1 gap-[24px_28px] md:hidden">
                             {filteredSchedules.map((s) => (
                                 <div key={s.id} className="bg-white rounded-[2.5rem] border border-slate-100 shadow-clay-m p-6 space-y-4">
                                     <div className="flex items-start justify-between">
@@ -406,7 +406,7 @@ export default function MonitoringJadwalPage() {
                                         ].filter(stat => stat.ustadz && stat.ustadz !== '-').map((stat, i) => (
                                             <div key={i} className="flex items-center justify-between px-2">
                                                 <div className="flex items-center gap-3">
-                                                    <div className={`p-1.5 rounded-lg border ${
+                                                    <div className={`p-1.5 rounded-[24px] border ${
                                                         stat.status === 'completed' ? 'bg-green-50 border-green-100' : 
                                                         stat.status === 'absent' ? 'bg-red-50 border-red-100' : 
                                                         'bg-primary-50 border-primary-100'
@@ -421,7 +421,7 @@ export default function MonitoringJadwalPage() {
                                                 <span className={`text-[9px] font-black uppercase px-2 py-0.5 rounded-full ${
                                                     stat.status === 'completed' ? 'bg-emerald-100 text-emerald-700' :
                                                     stat.status === 'absent' ? 'bg-rose-100 text-rose-700' :
-                                                    'bg-primary-100 text-primary-700'
+                                                    'bg-amber-100 text-amber-700'
                                                 }`}>
                                                     {stat.status === 'completed' ? 'Selesai' : stat.status === 'absent' ? 'Absen' : 'Menunggu'}
                                                 </span>
@@ -429,7 +429,7 @@ export default function MonitoringJadwalPage() {
                                         ))}
                                     </div>
 
-                                    <div className="flex items-center gap-2 text-[11px] text-slate-500 font-bold px-3 py-2 bg-slate-50 rounded-xl">
+                                    <div className="flex items-center gap-2 text-[11px] text-slate-500 font-bold px-3 py-2 bg-slate-50 rounded-[24px]">
                                         <MapPin className="w-3.5 h-3.5 text-slate-300" />
                                         {(s.sesi.location || '').replace(/Online\/Pesantren/gi, 'Online').replace(/Pesantren\/Online/gi, 'Online')}
                                     </div>
@@ -442,7 +442,7 @@ export default function MonitoringJadwalPage() {
                             <div className="overflow-x-auto">
                                 <table className="w-full text-left border-collapse">
                                     <thead>
-                                        <tr className="bg-slate-50/50">
+                                        <tr className="even:bg-slate-50 bg-slate-50/50">
                                             <th className="px-6 py-5 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100">Peserta</th>
                                             <th className="px-6 py-5 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100">Jadwal & Lokasi</th>
                                             <th className="px-6 py-5 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100">Penguji Al-Qur'an</th>
@@ -468,7 +468,7 @@ export default function MonitoringJadwalPage() {
                                                 <td className="px-6 py-6">
                                                     <div className="flex flex-col">
                                                         <span className="text-[13px] font-bold text-slate-700 flex items-center gap-1.5">
-                                                            <Calendar className="w-4 h-4 text-primary-500" />
+                                                            <Calendar className="w-4 h-4 text-slate-500" />
                                                             {formatDateTime(s.sesi.start)}
                                                         </span>
                                                         <span className="text-[11px] font-semibold text-slate-400 mt-1 flex items-center gap-1.5 pl-5 uppercase tracking-wide">
@@ -522,8 +522,8 @@ export default function MonitoringJadwalPage() {
                         {getGroupedSchedules().map((group) => (
                             <div key={group.name} className="bg-white rounded-[2rem] shadow-clay-m border border-slate-100 overflow-hidden">
                                 <div className="bg-slate-50 px-7 py-5 flex items-center justify-between border-b border-slate-100/50">
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-11 h-11 bg-primary-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary-600/20">
+                                    <div className="flex items-center gap-[24px_28px]">
+                                        <div className="w-11 h-11 bg-primary-600 rounded-[24px] flex items-center justify-center text-white shadow-lg shadow-primary-600/20">
                                             <Users className="w-5 h-5" />
                                         </div>
                                         <h2 className="text-[17px] font-extrabold text-slate-800">{group.name} <span className="text-primary-600 ml-1">({group.items.length})</span></h2>
@@ -533,7 +533,7 @@ export default function MonitoringJadwalPage() {
                                 <div className="p-0">
                                     <table className="w-full text-left border-collapse">
                                         <thead>
-                                            <tr className="bg-slate-50/20">
+                                            <tr className="even:bg-slate-50 bg-slate-50/20">
                                                 <th className="px-7 py-4 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100/50">Santri</th>
                                                 <th className="px-7 py-4 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100/50">Tugas</th>
                                                 <th className="px-7 py-4 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100/50">Waktu</th>
@@ -580,8 +580,8 @@ export default function MonitoringJadwalPage() {
                         {getGroupedBySantri().map((group) => (
                             <div key={group.name} className="bg-white rounded-[2rem] shadow-clay-m border border-slate-100 overflow-hidden flex flex-col transition-all hover:translate-y-[-4px] group">
                                 <div className="bg-slate-50 px-6 py-6 border-b border-slate-100 group-hover:bg-primary-50/50 transition-colors">
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-slate-100">
+                                    <div className="flex items-center gap-[24px_28px]">
+                                        <div className="w-12 h-12 bg-white rounded-[24px] flex items-center justify-center shadow-sm border border-slate-100">
                                             <Users className="w-6 h-6 text-primary-600" />
                                         </div>
                                         <div>
@@ -590,11 +590,11 @@ export default function MonitoringJadwalPage() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="p-5 flex-1 space-y-4">
+                                <div className="p-[24px_28px] flex-1 space-y-4">
                                     {group.items.map((s, idx) => (
-                                        <div key={`${s.id}-${idx}`} className="bg-slate-50/30 rounded-2xl p-4 border border-slate-100/50">
+                                        <div key={`${s.id}-${idx}`} className="bg-slate-50/30 rounded-[24px] p-[24px_28px] border border-slate-100/50">
                                             <div className="flex items-center gap-2 mb-4">
-                                                <Calendar className="w-4 h-4 text-primary-500" />
+                                                <Calendar className="w-4 h-4 text-slate-500" />
                                                 <span className="text-[12px] font-bold text-slate-700">{formatDateTime(s.sesi.start)}</span>
                                             </div>
                                             <div className="space-y-2.5">

@@ -44,7 +44,7 @@ function DaftarSuksesContent() {
   };
 
   return (
-    <div className="app-card max-w-lg w-full bg-white rounded-[2.5rem] shadow-lg border border-secondary-200 p-5 md:p-8 relative overflow-hidden">
+    <div className="app-card max-w-lg w-full bg-white rounded-[2.5rem] shadow-lg border border-secondary-200 p-[24px_28px] md:p-8 relative overflow-hidden">
       {/* Background Blurs */}
       <div className="absolute -top-32 -right-32 w-64 h-64 bg-secondary-50 rounded-full blur-3xl pointer-events-none" />
 
@@ -78,18 +78,18 @@ function DaftarSuksesContent() {
         </p>
 
         {/* Nomor Pendaftaran */}
-        <div className="bg-white rounded-xl border border-secondary-200 p-4 mb-3 shadow-sm app-card">
+        <div className="bg-white rounded-[24px] border border-secondary-200 p-[24px_28px] mb-3 shadow-sm app-card">
           <p className="text-xs font-bold text-ink-500 mb-2 flex items-center gap-1.5 uppercase tracking-wider">
             <CreditCard className="w-3.5 h-3.5 text-primary-700" />
             Nomor Pendaftaran
           </p>
           <div className="flex items-center justify-between gap-3 flex-wrap">
-            <p className="text-2xl font-black text-primary-900 break-all bg-secondary-50/50 px-2 py-1 rounded-lg">
+            <p className="text-2xl font-black text-primary-900 break-all bg-secondary-50/50 px-2 py-1 rounded-[24px]">
               {nomor_pendaftaran}
             </p>
             <button
               onClick={() => handleCopy(nomor_pendaftaran, "nomor")}
-              className="p-2.5 bg-secondary-50 hover:bg-secondary-200 border border-secondary-300 rounded-xl transition-colors shrink-0 app-card hover:scale-105 active:scale-95"
+              className="p-2.5 bg-secondary-50 hover:bg-secondary-200 border border-secondary-300 rounded-[24px] transition-colors shrink-0 app-card hover:scale-105 active:scale-95"
               title="Salin nomor pendaftaran"
             >
               {copiedField === "nomor" ? (
@@ -102,7 +102,7 @@ function DaftarSuksesContent() {
         </div>
 
         {/* NIK Santri */}
-        <div className="bg-white rounded-xl border border-secondary-200 p-4 mb-3 shadow-sm app-card">
+        <div className="bg-white rounded-[24px] border border-secondary-200 p-[24px_28px] mb-3 shadow-sm app-card">
           <p className="text-xs font-bold text-ink-500 mb-2 flex items-center gap-1.5 uppercase tracking-wider">
             <IdCard className="w-3.5 h-3.5 text-primary-700" />
             NIK Santri (Password)
@@ -111,7 +111,7 @@ function DaftarSuksesContent() {
             <p className="text-lg font-black text-ink-900 break-all">{nik}</p>
             <button
               onClick={() => handleCopy(nik, "nik")}
-              className="p-2.5 bg-secondary-50 hover:bg-secondary-200 border border-secondary-300 rounded-xl transition-colors shrink-0 app-card hover:scale-105 active:scale-95"
+              className="p-2.5 bg-secondary-50 hover:bg-secondary-200 border border-secondary-300 rounded-[24px] transition-colors shrink-0 app-card hover:scale-105 active:scale-95"
               title="Salin NIK"
             >
               {copiedField === "nik" ? (
@@ -139,7 +139,7 @@ function DaftarSuksesContent() {
       </div>
 
       {/* Important Notes */}
-      <div className="bg-white border-2 border-secondary-200 rounded-[1.5rem] p-5 mb-8 relative z-10 shadow-sm">
+      <div className="bg-white border-2 border-secondary-200 rounded-[1.5rem] p-[24px_28px] mb-8 relative z-10 shadow-sm">
         <p className="text-sm text-ink-950 font-black mb-3 flex items-center gap-2">
           <AlertTriangle className="w-4 h-4 text-secondary-500" />
           PENTING - Simpan Data Ini!
@@ -200,7 +200,7 @@ function DaftarSuksesContent() {
 // Loading fallback
 function LoadingFallback() {
   return (
-    <div className="app-card max-w-lg w-full bg-white rounded-[2.5rem] shadow-lg border border-secondary-200 p-5 md:p-8">
+    <div className="app-card max-w-lg w-full bg-white rounded-[2.5rem] shadow-lg border border-secondary-200 p-[24px_28px] md:p-8">
       <div className="flex flex-col items-center justify-center py-12">
         <Loader2 className="w-12 h-12 text-primary-600 animate-spin mb-4" />
         <p className="text-ink-600 font-medium">Memuat halaman...</p>

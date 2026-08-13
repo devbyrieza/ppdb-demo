@@ -129,7 +129,7 @@ export default function HasilSeleksiPage() {
   };
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto p-4 md:p-8">
+    <div className="space-y-6 max-w-[1200px] mx-auto p-[24px_28px] md:p-8">
       {/* Page Title */}
       <div>
         <h1 className="text-2xl font-black text-stone-800">
@@ -142,7 +142,7 @@ export default function HasilSeleksiPage() {
       </div>
 
       {/* Header Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-[24px_28px]">
         <div className="bg-green-50/80 backdrop-blur-xl p-6 rounded-3xl shadow-xl shadow-emerald-500/10 border border-green-100 relative overflow-hidden">
           <p className="text-green-600 text-sm font-bold tracking-wider uppercase mb-1">
             Total Diterima
@@ -188,9 +188,9 @@ export default function HasilSeleksiPage() {
       </div>
 
       {/* Filters & Actions */}
-      <div className="bg-white/80 backdrop-blur-xl p-6 rounded-3xl shadow-xl shadow-emerald-500/10 border border-emerald-100 flex flex-col md:flex-row justify-between items-center gap-4">
-        <div className="flex items-center gap-4 w-full md:w-auto">
-          <div className="flex items-center gap-2 px-4 py-2.5 bg-stone-50 rounded-2xl border border-stone-200">
+      <div className="bg-white/80 backdrop-blur-xl p-6 rounded-3xl shadow-xl shadow-emerald-500/10 border border-emerald-100 flex flex-col md:flex-row justify-between items-center gap-[24px_28px]">
+        <div className="flex items-center gap-[24px_28px] w-full md:w-auto">
+          <div className="flex items-center gap-2 p-[16px_20px].5 bg-stone-50 rounded-[24px] border border-stone-200">
             <Filter className="w-4 h-4 text-stone-500" />
             <select
               className="bg-transparent text-sm font-bold text-stone-700 focus:outline-none"
@@ -205,7 +205,7 @@ export default function HasilSeleksiPage() {
             </select>
           </div>
 
-          <div className="flex items-center gap-2 px-4 py-2.5 bg-stone-50 rounded-2xl border border-stone-200">
+          <div className="flex items-center gap-2 p-[16px_20px].5 bg-stone-50 rounded-[24px] border border-stone-200">
             <Search className="w-4 h-4 text-stone-500" />
             <select
               className="bg-transparent text-sm font-bold text-stone-700 focus:outline-none"
@@ -223,7 +223,7 @@ export default function HasilSeleksiPage() {
         <button
           onClick={handleExportExcel}
           disabled={candidates.length === 0 || loading}
-          className="flex items-center justify-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-green-200 disabled:shadow-none disabled:bg-stone-300 w-full md:w-auto"
+          className="flex items-center justify-center gap-2 p-[16px_20px] bg-green-600 hover:bg-green-700 text-white rounded-[24px] font-bold transition-all shadow-lg shadow-green-200 disabled:shadow-none disabled:bg-stone-300 w-full md:w-auto"
         >
           <Download className="w-4 h-4" />
           Ekspor Excel
@@ -245,8 +245,8 @@ export default function HasilSeleksiPage() {
             </div>
           ) : (
             candidates.map((c) => (
-              <div key={c.id} className="p-5 space-y-4">
-                <div className="flex justify-between items-start gap-4 flex-wrap">
+              <div key={c.id} className="p-[24px_28px] space-y-4">
+                <div className="flex justify-between items-start gap-[24px_28px] flex-wrap">
                   <div className="flex-1 min-w-0">
                     <h4 className="font-black text-stone-900 leading-tight uppercase text-sm truncate">
                       {c.nama_lengkap.replace(

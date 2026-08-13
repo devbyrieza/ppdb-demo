@@ -107,7 +107,7 @@ export default function DashboardPendaftarPage() {
 
 function HeroBanner({ nama, nomorPendaftaran, lastUpdate }: any) {
   return (
-    <div className="relative overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] md:rounded-[3.5rem] bg-linear-to-br from-primary-700 to-primary-900 text-white p-6 sm:p-5 md:p-8 shadow-2xl border border-primary-600/50">
+    <div className="relative overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] md:rounded-[3.5rem] bg-linear-to-br from-primary-700 to-primary-900 text-white p-6 sm:p-[24px_28px] md:p-8 shadow-2xl border border-primary-600/50">
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-secondary-400/10 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/2" />
       <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 lg:gap-10">
         <div className="flex-1 space-y-4 sm:space-y-6">
@@ -152,8 +152,8 @@ function GuidedActionCard({ nextStep }: any) {
   return (
     <div className="bg-white rounded-[1.5rem] sm:rounded-[2rem] md:rounded-[2.5rem] border-2 border-primary-100 shadow-xl shadow-primary/5 overflow-hidden group">
       <div className="flex flex-col md:flex-row items-stretch">
-        <div className="bg-secondary-400 p-6 sm:p-5 md:p-8 flex flex-col items-center justify-center text-primary-950 min-w-[200px]">
-          <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-white/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+        <div className="bg-secondary-400 p-6 sm:p-[24px_28px] md:p-8 flex flex-col items-center justify-center text-primary-950 min-w-[200px]">
+          <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-[24px] bg-white/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
             <Target className="w-6 h-6 sm:w-8 sm:h-8" />
           </div>
           <p className="text-[10px] font-black uppercase tracking-widest opacity-70">
@@ -161,7 +161,7 @@ function GuidedActionCard({ nextStep }: any) {
           </p>
           <p className="text-2xl sm:text-3xl font-black">BERIKUTNYA</p>
         </div>
-        <div className="flex-1 p-6 sm:p-5 md:p-8 space-y-4 sm:space-y-6">
+        <div className="flex-1 p-6 sm:p-[24px_28px] md:p-8 space-y-4 sm:space-y-6">
           <div>
             <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-primary-950 mb-2">
               Apa yang harus saya lakukan sekarang?
@@ -174,10 +174,10 @@ function GuidedActionCard({ nextStep }: any) {
               ."
             </p>
           </div>
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap gap-[24px_28px]">
             <Link
               href={nextStep.href}
-              className="px-6 sm:px-6 md:px-10 py-4 sm:py-5 bg-primary-700 hover:bg-primary-800 text-white rounded-2xl font-black uppercase text-xs sm:text-sm shadow-2xl shadow-primary/20 transition-all hover:scale-105 active:scale-95 flex items-center gap-3 group/btn w-full sm:w-auto justify-center"
+              className="px-6 sm:px-6 md:px-10 py-4 sm:py-5 bg-primary-700 hover:bg-primary-800 text-white rounded-[24px] font-black uppercase text-xs sm:text-sm shadow-2xl shadow-primary/20 transition-all hover:scale-105 active:scale-95 flex items-center gap-3 group/btn w-full sm:w-auto justify-center"
             >
               Mulai Sekarang{" "}
               <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover/btn:translate-x-2 transition-transform" />
@@ -222,14 +222,14 @@ function StatusGrid({ status, statusLabel, pengumuman }: any) {
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-[24px_28px] sm:gap-6">
       {items.map((item, id) => (
         <div
           key={id}
-          className="bg-white rounded-[1.5rem] border border-surface-200 p-6 flex flex-col gap-4 shadow-sm hover:shadow-md transition-shadow"
+          className="bg-white rounded-[1.5rem] border border-surface-200 p-6 flex flex-col gap-[24px_28px] shadow-sm hover:shadow-md transition-shadow"
         >
-          <div className="flex items-center gap-4">
-            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${item.bg} ${item.color}`}>
+          <div className="flex items-center gap-[24px_28px]">
+            <div className={`w-12 h-12 rounded-[24px] flex items-center justify-center ${item.bg} ${item.color}`}>
               <item.icon size={24} />
             </div>
             <div>
@@ -269,7 +269,7 @@ function SupportCenter() {
           <a
             href="https://wa.me/6281285300800"
             target="_blank"
-            className="flex items-center justify-center gap-3 px-6 py-4 bg-secondary-400 text-primary-950 font-black text-sm uppercase tracking-widest rounded-2xl hover:bg-secondary-300 shadow-xl transition-all hover:scale-105 active:scale-95 w-full"
+            className="flex items-center justify-center gap-3 px-6 py-4 bg-secondary-400 text-primary-950 font-black text-sm uppercase tracking-widest rounded-[24px] hover:bg-secondary-300 shadow-xl transition-all hover:scale-105 active:scale-95 w-full"
           >
             Chat di WhatsApp
             <ArrowRight className="w-4 h-4" />

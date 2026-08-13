@@ -460,7 +460,7 @@ export default function KeuanganPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+      <div className="flex justify-between items-center bg-white p-6 rounded-[24px] border border-slate-100 shadow-sm">
         <div>
           <div className="flex items-center gap-3 mb-1">
             <h1 className="text-2xl font-bold text-slate-800 tracking-tight">
@@ -470,7 +470,7 @@ export default function KeuanganPage() {
               <select
                 value={selectedTahunAjaranId}
                 onChange={(e) => setSelectedTahunAjaranId(e.target.value)}
-                className="bg-slate-100 text-slate-700 text-xs font-bold rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer hover:bg-slate-200 transition-all border-none"
+                className="bg-slate-100 text-slate-700 text-xs font-bold rounded-[24px] px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer hover:bg-slate-200 transition-all border-none"
               >
                 {tahunAjaranList.map((ta: any) => (
                   <option key={ta.id} value={ta.id}>
@@ -487,19 +487,19 @@ export default function KeuanganPage() {
         <div className="flex items-center gap-2">
                       <button
               onClick={handleExportKeringanan}
-              className="bg-gold-600 hover:bg-gold-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-bold shadow-md transition-colors"
+              className="bg-gold-600 hover:bg-gold-700 text-white p-[16px_20px] rounded-[24px] flex items-center gap-2 font-bold shadow-md transition-colors"
             >
               <Download className="w-4 h-4" /> Export Keringanan
             </button>
             <button
               onClick={() => handleExport("excel")}
-            className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-bold shadow-md transition-colors"
+            className="bg-emerald-600 hover:bg-emerald-700 text-white p-[16px_20px] rounded-[24px] flex items-center gap-2 font-bold shadow-md transition-colors"
           >
             <Download className="w-4 h-4" /> Export Excel
           </button>
           <button
             onClick={() => handleExport("pdf")}
-            className="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-bold shadow-md transition-colors"
+            className="bg-rose-600 hover:bg-rose-700 text-white p-[16px_20px] rounded-[24px] flex items-center gap-2 font-bold shadow-md transition-colors"
           >
             <Download className="w-4 h-4" /> Export PDF
           </button>
@@ -507,13 +507,13 @@ export default function KeuanganPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 bg-slate-100 p-1 rounded-xl w-fit">
+      <div className="flex gap-1 bg-slate-100 p-1 rounded-[24px] w-fit">
         <button
           onClick={() => {
             setActiveTab("pendaftaran");
             setSearch("");
           }}
-          className={`px-5 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 ${
+          className={`px-5 py-2 rounded-[24px] text-sm font-bold transition-all flex items-center gap-2 ${
             activeTab === "pendaftaran"
               ? "bg-white text-primary-800 shadow-sm"
               : "text-slate-500 hover:text-slate-700"
@@ -526,7 +526,7 @@ export default function KeuanganPage() {
             setActiveTab("uang-pangkal");
             setSearch("");
           }}
-          className={`px-5 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 ${
+          className={`px-5 py-2 rounded-[24px] text-sm font-bold transition-all flex items-center gap-2 ${
             activeTab === "uang-pangkal"
               ? "bg-white text-primary-800 shadow-sm"
               : "text-slate-500 hover:text-slate-700"
@@ -539,7 +539,7 @@ export default function KeuanganPage() {
             setActiveTab("spp");
             setSearch("");
           }}
-          className={`px-5 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 ${
+          className={`px-5 py-2 rounded-[24px] text-sm font-bold transition-all flex items-center gap-2 ${
             activeTab === "spp"
               ? "bg-white text-primary-800 shadow-sm"
               : "text-slate-500 hover:text-slate-700"
@@ -556,8 +556,8 @@ export default function KeuanganPage() {
         <div className="space-y-5">
           {/* Summary Cards */}
           {pendaftaranSummary && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-              <div className="bg-white rounded-xl p-4 border border-slate-100 shadow-sm">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-[24px_28px]">
+              <div className="bg-white rounded-[24px] p-[24px_28px] border border-slate-100 shadow-sm">
                 <p className="text-xs text-slate-500 font-medium mb-1">
                   Total Pendaftar
                 </p>
@@ -565,7 +565,7 @@ export default function KeuanganPage() {
                   {pendaftaranSummary.total}
                 </p>
               </div>
-              <div className="bg-emerald-50 rounded-xl p-4 border border-emerald-100 shadow-sm">
+              <div className="bg-emerald-50 rounded-[24px] p-[24px_28px] border border-emerald-100 shadow-sm">
                 <div className="flex items-center gap-1.5 mb-1">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                   <p className="text-xs text-emerald-700 font-medium">
@@ -576,7 +576,7 @@ export default function KeuanganPage() {
                   {pendaftaranSummary.terverifikasi}
                 </p>
               </div>
-              <div className="bg-secondary-50 rounded-xl p-4 border border-secondary-100 shadow-sm">
+              <div className="bg-secondary-50 rounded-[24px] p-[24px_28px] border border-secondary-100 shadow-sm">
                 <div className="flex items-center gap-1.5 mb-1">
                   <Clock className="w-3.5 h-3.5 text-secondary-600" />
                   <p className="text-xs text-secondary-700 font-medium">Menunggu</p>
@@ -585,7 +585,7 @@ export default function KeuanganPage() {
                   {pendaftaranSummary.menunggu}
                 </p>
               </div>
-              <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 shadow-sm">
+              <div className="bg-slate-50 rounded-[24px] p-[24px_28px] border border-slate-200 shadow-sm">
                 <div className="flex items-center gap-1.5 mb-1">
                   <AlertCircle className="w-3.5 h-3.5 text-slate-500" />
                   <p className="text-xs text-slate-500 font-medium">
@@ -596,7 +596,7 @@ export default function KeuanganPage() {
                   {pendaftaranSummary.belum_upload}
                 </p>
               </div>
-              <div className="bg-white rounded-xl p-4 border border-primary-100 shadow-sm col-span-2 md:col-span-1 lg:col-span-1">
+              <div className="bg-white rounded-[24px] p-[24px_28px] border border-primary-100 shadow-sm col-span-2 md:col-span-1 lg:col-span-1">
                 <div className="flex items-center gap-1.5 mb-1">
                   <TrendingUp className="w-3.5 h-3.5 text-primary-700" />
                   <p className="text-xs text-primary-800 font-medium">
@@ -614,7 +614,7 @@ export default function KeuanganPage() {
           )}
 
           {/* Search */}
-          <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+          <div className="bg-white p-[24px_28px] rounded-[24px] shadow-sm border border-slate-100">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
               <input
@@ -622,13 +622,13 @@ export default function KeuanganPage() {
                 placeholder="Cari nama santri atau nomor pendaftaran..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary-600"
+                className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-[24px] focus:ring-2 focus:ring-primary-600"
               />
             </div>
           </div>
 
           {/* Table */}
-          <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+          <div className="bg-white rounded-[24px] shadow-sm border border-slate-100 overflow-hidden">
             {loadingPendaftaran ? (
               <div className="flex justify-center py-12">
                 <Loader2 className="animate-spin w-6 h-6 text-slate-400" />
@@ -638,12 +638,12 @@ export default function KeuanganPage() {
                 <table className="w-full text-sm text-left">
                   <thead className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
                     <tr>
-                      <th className="px-6 py-3 w-12">No</th>
-                      <th className="px-6 py-3">Nama Santri</th>
-                      <th className="px-6 py-3">Status Bayar</th>
-                      <th className="px-6 py-3">Jumlah</th>
-                      <th className="px-6 py-3">Metode</th>
-                      <th className="px-6 py-3">Update</th>
+                      <th className="p-[16px_20px] w-12">No</th>
+                      <th className="p-[16px_20px]">Nama Santri</th>
+                      <th className="p-[16px_20px]">Status Bayar</th>
+                      <th className="p-[16px_20px]">Jumlah</th>
+                      <th className="p-[16px_20px]">Metode</th>
+                      <th className="p-[16px_20px]">Update</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
@@ -653,30 +653,30 @@ export default function KeuanganPage() {
                           key={row.id}
                           className="hover:bg-slate-50 transition-colors"
                         >
-                          <td className="px-6 py-3 text-center text-slate-400">
+                          <td className="p-[16px_20px] text-center text-slate-400">
                             {row.no}
                           </td>
-                          <td className="px-6 py-3 font-medium text-slate-900">
+                          <td className="p-[16px_20px] font-medium text-slate-900">
                             {row.nama}
                             <div className="text-xs text-slate-400 font-normal">
                               {row.nomor_pendaftaran}
                             </div>
                           </td>
-                          <td className="px-6 py-3">
+                          <td className="p-[16px_20px]">
                             <StatusBadge
                               status={row.status_pembayaran}
                               color={row.status_color}
                             />
                           </td>
-                          <td className="px-6 py-3 font-mono text-slate-700">
+                          <td className="p-[16px_20px] font-mono text-slate-700">
                             {row.jumlah_pembayaran > 0
                               ? formatCurrency(row.jumlah_pembayaran)
                               : "-"}
                           </td>
-                          <td className="px-6 py-3 text-slate-500 capitalize">
+                          <td className="p-[16px_20px] text-slate-500 capitalize">
                             {row.metode}
                           </td>
-                          <td className="px-6 py-3 text-xs text-slate-400">
+                          <td className="p-[16px_20px] text-xs text-slate-400">
                             {new Date(row.last_updated).toLocaleDateString(
                               "id-ID",
                             )}
@@ -704,14 +704,14 @@ export default function KeuanganPage() {
       {/* ── Uang Pangkal & SPP Tab ── */}
       {(activeTab === "uang-pangkal" || activeTab === "spp") && (
         <div className="space-y-5">
-          <div className="bg-secondary-50 border border-secondary-200 rounded-xl px-5 py-3 text-sm text-secondary-800 font-medium flex items-center gap-2">
+          <div className="bg-secondary-50 border border-secondary-200 rounded-[24px] px-5 py-3 text-sm text-secondary-800 font-medium flex items-center gap-2">
             <CreditCard className="w-4 h-4 shrink-0" />
             Menampilkan rekap santri yang <strong>diterima</strong> dan
             status pembayaran {activeTab === "uang-pangkal" ? "uang pangkal" : "SPP bulan pertama"} mereka.
           </div>
 
           {/* Search */}
-          <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+          <div className="bg-white p-[24px_28px] rounded-[24px] shadow-sm border border-slate-100">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
               <input
@@ -719,13 +719,13 @@ export default function KeuanganPage() {
                 placeholder="Cari nama santri atau nomor pendaftaran..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary-600"
+                className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-[24px] focus:ring-2 focus:ring-primary-600"
               />
             </div>
           </div>
 
           {/* Table */}
-          <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+          <div className="bg-white rounded-[24px] shadow-sm border border-slate-100 overflow-hidden">
             {loadingDaftarUlang ? (
               <div className="flex justify-center py-12">
                 <Loader2 className="animate-spin w-6 h-6 text-slate-400" />
@@ -735,14 +735,14 @@ export default function KeuanganPage() {
                 <table className="w-full text-sm text-left">
                   <thead className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
                     <tr>
-                      <th className="px-6 py-3 w-12">No</th>
-                      <th className="px-6 py-3">Nama Santri</th>
-                      <th className="px-6 py-3">Status Kelulusan</th>
-                      <th className="px-6 py-3">Total Bayar</th>
-                      <th className="px-6 py-3">Status Bayar</th>
-                      <th className="px-6 py-3">Sisa Tagihan</th>
-                      <th className="px-6 py-3">Update</th>
-                      <th className="px-6 py-3 text-center w-24">Detail</th>
+                      <th className="p-[16px_20px] w-12">No</th>
+                      <th className="p-[16px_20px]">Nama Santri</th>
+                      <th className="p-[16px_20px]">Status Kelulusan</th>
+                      <th className="p-[16px_20px]">Total Bayar</th>
+                      <th className="p-[16px_20px]">Status Bayar</th>
+                      <th className="p-[16px_20px]">Sisa Tagihan</th>
+                      <th className="p-[16px_20px]">Update</th>
+                      <th className="p-[16px_20px] text-center w-24">Detail</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
@@ -759,31 +759,31 @@ export default function KeuanganPage() {
                               className="hover:bg-slate-50 transition-colors cursor-pointer"
                               onClick={() => setExpandedStudentId(expandedStudentId === row.id ? null : row.id)}
                             >
-                              <td className="px-6 py-3 text-center text-slate-400">
+                              <td className="p-[16px_20px] text-center text-slate-400">
                                 {row.no}
                               </td>
-                              <td className="px-6 py-3 font-medium text-slate-900">
+                              <td className="p-[16px_20px] font-medium text-slate-900">
                                 {row.nama}
                                 <div className="text-xs text-slate-400 font-normal">
                                   {row.nomor_pendaftaran}
                                 </div>
                               </td>
-                              <td className="px-6 py-3">
+                              <td className="p-[16px_20px]">
                                 <span className="px-2 py-1 rounded-md bg-green-100 text-green-700 text-xs font-bold">
                                   {row.status_kelulusan}
                                 </span>
                               </td>
-                              <td className="px-6 py-3 font-mono text-slate-700">
+                              <td className="p-[16px_20px] font-mono text-slate-700">
                                 {formatCurrency(totalBayar)}
                               </td>
-                              <td className="px-6 py-3">
+                              <td className="p-[16px_20px]">
                                 <span
                                   className={`px-2 py-1 rounded-md text-xs font-bold border ${
                                     tipeCicilan === "LUNAS"
                                       ? "bg-emerald-100 text-emerald-700 border-emerald-200"
                                       : tipeCicilan === "BELUM_BAYAR"
                                         ? "bg-red-50 text-red-600 border-red-100"
-                                        : "bg-primary-50 text-primary-600 border-primary-100"
+                                        : "bg-amber-50 text-amber-600 border-primary-100"
                                   }`}
                                 >
                                   {tipeCicilan.replace(/_/g, " ")}
@@ -805,15 +805,15 @@ export default function KeuanganPage() {
                                   );
                                 })()}
                               </td>
-                              <td className="px-6 py-3 font-mono text-slate-500">
+                              <td className="p-[16px_20px] font-mono text-slate-500">
                                 {formatCurrency(sisaTagihan)}
                               </td>
-                              <td className="px-6 py-3 text-xs text-slate-400">
+                              <td className="p-[16px_20px] text-xs text-slate-400">
                                 {new Date(row.last_updated).toLocaleDateString(
                                   "id-ID",
                                 )}
                               </td>
-                              <td className="px-6 py-3 text-center">
+                              <td className="p-[16px_20px] text-center">
                                 <button
                                   className="p-1.5 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors"
                                   onClick={(e) => {
@@ -830,9 +830,9 @@ export default function KeuanganPage() {
                               </td>
                             </tr>
                           {expandedStudentId === row.id && (
-                            <tr className="bg-slate-50/50">
+                            <tr className="even:bg-slate-50 bg-slate-50/50">
                               <td colSpan={8} className="px-6 py-4 border-t border-slate-100">
-                                <div className="grid grid-cols-1 xl:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden p-5">
+                                <div className="grid grid-cols-1 xl:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-white rounded-[24px] border border-slate-200 shadow-sm overflow-hidden p-[24px_28px]">
                                   
                                   {/* Data Orang Tua / Keluarga */}
                                   <div className="xl:col-span-1 space-y-4 border-r border-slate-100 pr-0 xl:pr-6">
@@ -846,7 +846,7 @@ export default function KeuanganPage() {
                                     {row.ortu ? (
                                       <div className="space-y-3.5 text-xs">
                                         {/* Data Ayah */}
-                                        <div className="bg-slate-50/70 p-3 rounded-lg border border-slate-100">
+                                        <div className="bg-slate-50/70 p-3 rounded-[24px] border border-slate-100">
                                           <h4 className="font-bold text-slate-700 border-b border-slate-200/60 pb-1 mb-2 flex justify-between items-center">
                                             <span>Data Ayah</span>
                                             <span className="text-[9px] bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded font-black uppercase tracking-tight">Wali Utama</span>
@@ -867,7 +867,7 @@ export default function KeuanganPage() {
                                         </div>
 
                                         {/* Data Ibu */}
-                                        <div className="bg-slate-50/70 p-3 rounded-lg border border-slate-100">
+                                        <div className="bg-slate-50/70 p-3 rounded-[24px] border border-slate-100">
                                           <h4 className="font-bold text-slate-700 border-b border-slate-200/60 pb-1 mb-2">Data Ibu</h4>
                                           <div className="space-y-1.5">
                                             <div className="flex justify-between"><span className="text-slate-400">Nama:</span> <strong className="text-slate-800 text-right">{row.ortu.nama_ibu || "-"}</strong></div>
@@ -885,13 +885,13 @@ export default function KeuanganPage() {
                                         </div>
 
                                         {/* Kontak Santri */}
-                                        <div className="text-[11px] text-slate-500 bg-slate-50/50 p-2.5 rounded-lg border border-slate-100 space-y-1">
+                                        <div className="text-[11px] text-slate-500 bg-slate-50/50 p-2.5 rounded-[24px] border border-slate-100 space-y-1">
                                           <div className="flex justify-between"><span className="text-slate-400">No. HP Santri:</span> <strong className="text-slate-700">{row.no_hp || "-"}</strong></div>
                                           <div className="flex justify-between"><span className="text-slate-400">Email Santri:</span> <strong className="text-slate-700 break-all text-right">{row.email || "-"}</strong></div>
                                         </div>
                                       </div>
                                     ) : (
-                                      <div className="text-center py-6 text-slate-400 italic bg-slate-50 rounded-lg text-xs">
+                                      <div className="text-center py-6 text-slate-400 italic bg-slate-50 rounded-[24px] text-xs">
                                         Data orang tua belum diisi.
                                       </div>
                                     )}
@@ -916,7 +916,7 @@ export default function KeuanganPage() {
 
                                       if (filteredPayments.length === 0) {
                                         return (
-                                          <div className="text-center py-6 text-slate-400 italic bg-slate-50 rounded-lg text-xs">
+                                          <div className="text-center py-6 text-slate-400 italic bg-slate-50 rounded-[24px] text-xs">
                                             Belum ada riwayat pembayaran {activeTab === "uang-pangkal" ? "Uang Pangkal" : "SPP"}.
                                           </div>
                                         );

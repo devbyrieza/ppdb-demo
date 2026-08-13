@@ -103,10 +103,10 @@ function PilihVerifikasiContent() {
   };
 
   return (
-    <div className="max-w-lg w-full bg-white rounded-2xl shadow-2xl border-2 border-secondary-200 p-5 md:p-8">
+    <div className="max-w-lg w-full bg-white rounded-[24px] shadow-2xl border-2 border-secondary-200 p-[24px_28px] md:p-8">
       {/* Demo Mode Badge */}
       {DEMO_MODE && (
-        <div className="mb-6 p-3 bg-primary-50 border-2 border-primary-100 rounded-xl app-card">
+        <div className="mb-6 p-3 bg-primary-50 border-2 border-primary-100 rounded-[24px] app-card">
           <div className="flex items-center gap-3 justify-center">
             <Zap className="w-5 h-5 text-primary-600" />
             <p className="text-sm font-black text-primary-900">
@@ -155,10 +155,10 @@ function PilihVerifikasiContent() {
             </div>
           )}
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-[24px_28px]">
             {/* Icon */}
             <div
-              className={`p-4 rounded-xl transition-all duration-300 ${
+              className={`p-[24px_28px] rounded-[24px] transition-all duration-300 ${
                 selectedChannel === "whatsapp"
                   ? "bg-primary-600 shadow-md"
                   : "bg-secondary-100"
@@ -232,10 +232,10 @@ function PilihVerifikasiContent() {
             </div>
           )}
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-[24px_28px]">
             {/* Icon */}
             <div
-              className={`p-4 rounded-xl transition-all duration-300 ${
+              className={`p-[24px_28px] rounded-[24px] transition-all duration-300 ${
                 selectedChannel === "sms"
                   ? "bg-primary-600 shadow-md"
                   : "bg-secondary-100"
@@ -281,10 +281,10 @@ function PilihVerifikasiContent() {
 
       {/* Info Box - Pilihan Aktif */}
       <div
-        className={`relative z-10 mb-6 p-4 rounded-xl border transition-all duration-300 bg-secondary-50 border-secondary-200`}
+        className={`relative z-10 mb-6 p-[24px_28px] rounded-[24px] border transition-all duration-300 bg-secondary-50 border-secondary-200`}
       >
         <div className="flex items-center gap-3">
-          <div className={`p-2 rounded-lg bg-primary-600`}>
+          <div className={`p-2 rounded-[24px] bg-primary-600`}>
             <Check className="w-5 h-5 text-white" />
           </div>
           <div className="flex-1">
@@ -343,7 +343,7 @@ function PilihVerifikasiContent() {
       </div>
 
       {/* Tips */}
-      <div className="mt-6 p-4 bg-secondary-50 border border-secondary-200 rounded-[1.5rem] relative z-10">
+      <div className="mt-6 p-[24px_28px] bg-secondary-50 border border-secondary-200 rounded-[1.5rem] relative z-10">
         <div className="flex items-start gap-3">
           <AlertTriangle className="w-5 h-5 text-primary-600 flex-shrink-0 mt-0.5" />
           <div>
@@ -377,7 +377,7 @@ function PilihVerifikasiContent() {
 // Loading fallback
 function LoadingFallback() {
   return (
-    <div className="app-card max-w-lg w-full bg-white rounded-[2rem] shadow-lg border border-secondary-200 p-5 md:p-8 flex items-center justify-center">
+    <div className="app-card max-w-lg w-full bg-white rounded-[2rem] shadow-lg border border-secondary-200 p-[24px_28px] md:p-8 flex items-center justify-center">
       <div className="flex flex-col items-center justify-center py-12">
         <Loader2 className="w-12 h-12 text-primary-600 animate-spin mb-4" />
         <p className="text-ink-600 font-medium">Memuat halaman...</p>

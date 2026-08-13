@@ -194,13 +194,13 @@ export default function RecapFeePage() {
   };
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto pb-20">
+    <div className="space-y-6 max-w-[1200px] mx-auto pb-20">
       {/* Header */}
-      <div className="bg-white rounded-[2rem] md:rounded-[2.5rem] p-5 md:p-8 shadow-clay-lg border border-white/40 overflow-hidden relative">
+      <div className="bg-white rounded-[2rem] md:rounded-[2.5rem] p-[24px_28px] md:p-8 shadow-clay-lg border border-white/40 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-64 h-64 bg-primary-600/5 rounded-full -mr-32 -mt-32 blur-3xl"></div>
-        <div className="relative flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-          <div className="flex items-center gap-4 md:gap-6">
-            <div className="p-3 md:p-4 bg-linear-to-br from-primary-600 to-primary-800 rounded-2xl md:rounded-3xl shadow-xl shadow-primary-600/20 shrink-0">
+        <div className="relative flex flex-col gap-[24px_28px] md:flex-row md:items-center md:justify-between">
+          <div className="flex items-center gap-[24px_28px] md:gap-6">
+            <div className="p-3 md:p-[24px_28px] bg-linear-to-br from-primary-600 to-primary-800 rounded-[24px] md:rounded-3xl shadow-xl shadow-primary-600/20 shrink-0">
               <CreditCard className="w-7 h-7 md:w-8 md:h-8 text-white" />
             </div>
             <div>
@@ -218,13 +218,13 @@ export default function RecapFeePage() {
           <div className="flex gap-2 md:gap-3">
             <Button
               onClick={exportToExcel}
-              className="flex-1 md:flex-none bg-emerald-50 text-emerald-700 border-emerald-100 hover:bg-emerald-100 rounded-2xl h-11 md:h-12 px-4 md:px-6 font-black shadow-none transition-all text-sm"
+              className="flex-1 md:flex-none bg-emerald-50 text-emerald-700 border-emerald-100 hover:bg-emerald-100 rounded-[24px] h-11 md:h-12 px-4 md:px-6 font-black shadow-none transition-all text-sm"
             >
               <Download className="w-4 h-4 mr-1.5" /> Excel
             </Button>
             <Button
               onClick={exportToPDF}
-              className="flex-1 md:flex-none bg-red-50 text-red-700 border-red-100 hover:bg-red-100 rounded-2xl h-11 md:h-12 px-4 md:px-6 font-black shadow-none transition-all text-sm"
+              className="flex-1 md:flex-none bg-red-50 text-red-700 border-red-100 hover:bg-red-100 rounded-[24px] h-11 md:h-12 px-4 md:px-6 font-black shadow-none transition-all text-sm"
             >
               <FileText className="w-4 h-4 mr-1.5" /> PDF
             </Button>
@@ -232,7 +232,7 @@ export default function RecapFeePage() {
               onClick={fetchRecap}
               disabled={loading}
               variant="outline"
-              className="rounded-2xl h-11 md:h-12 px-4 md:px-6 border-ink-100 hover:bg-secondary-50 font-black"
+              className="rounded-[24px] h-11 md:h-12 px-4 md:px-6 border-ink-100 hover:bg-secondary-50 font-black"
             >
               <RefreshCcw
                 className={`w-4 h-4 ${loading ? "animate-spin" : ""}`}
@@ -245,9 +245,9 @@ export default function RecapFeePage() {
       {/* Rate Settings & Global Stats */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left: Global Stats */}
-        <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
-          <div className="bg-white rounded-[1.5rem] md:rounded-[2rem] p-5 md:p-6 shadow-clay-md border border-white/40 relative overflow-hidden group">
-            <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:scale-110 transition-transform">
+        <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-[24px_28px]">
+          <div className="bg-white rounded-[1.5rem] md:rounded-[2rem] p-[24px_28px] md:p-6 shadow-clay-md border border-white/40 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-[24px_28px] opacity-5 group-hover:scale-110 transition-transform">
               <ClipboardCheck className="w-16 h-16" />
             </div>
             <p className="text-[9px] md:text-[10px] font-black text-ink-400 uppercase tracking-widest mb-2 leading-tight">
@@ -260,8 +260,8 @@ export default function RecapFeePage() {
               </span>
             </p>
           </div>
-          <div className="bg-white rounded-[1.5rem] md:rounded-[2rem] p-5 md:p-6 shadow-clay-md border border-white/40 relative overflow-hidden group">
-            <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:scale-110 transition-transform">
+          <div className="bg-white rounded-[1.5rem] md:rounded-[2rem] p-[24px_28px] md:p-6 shadow-clay-md border border-white/40 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-[24px_28px] opacity-5 group-hover:scale-110 transition-transform">
               <TrendingUp className="w-16 h-16" />
             </div>
             <p className="text-[9px] md:text-[10px] font-black text-ink-400 uppercase tracking-widest mb-2 leading-tight">
@@ -275,8 +275,8 @@ export default function RecapFeePage() {
             </p>
           </div>
           {/* Total Estimasi Fee — full width on mobile, normal on md+ */}
-          <div className="col-span-2 md:col-span-1 bg-linear-to-br from-primary-700 to-primary-900 rounded-[1.5rem] md:rounded-[2rem] p-5 md:p-6 shadow-clay-md relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-4 opacity-20">
+          <div className="col-span-2 md:col-span-1 bg-linear-to-br from-primary-700 to-primary-900 rounded-[1.5rem] md:rounded-[2rem] p-[24px_28px] md:p-6 shadow-clay-md relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-[24px_28px] opacity-20">
               <DollarSign className="w-16 h-16 text-white" />
             </div>
             <p className="text-[9px] md:text-[10px] font-black text-white/70 uppercase tracking-widest mb-2 leading-tight">
@@ -295,7 +295,7 @@ export default function RecapFeePage() {
         <div className="lg:col-span-4 h-full">
           <div className="bg-white rounded-[2rem] p-6 shadow-clay-md border border-white/40 h-full">
             <div className="flex items-center gap-2 mb-4">
-              <div className="p-1.5 bg-secondary-100 rounded-lg">
+              <div className="p-1.5 bg-secondary-100 rounded-[24px]">
                 <DollarSign className="w-4 h-4 text-secondary-700" />
               </div>
               <h3 className="text-sm font-black text-ink-900 uppercase tracking-tight">
@@ -329,7 +329,7 @@ export default function RecapFeePage() {
                           [field.id]: parseInt(e.target.value) || 0,
                         })
                       }
-                      className="w-full bg-ink-50 border-none rounded-xl pl-8 pr-4 py-2 text-sm font-black text-ink-900 focus:ring-2 focus:ring-primary-600/20"
+                      className="w-full bg-ink-50 border-none rounded-[24px] pl-8 pr-4 py-2 text-sm font-black text-ink-900 focus:ring-2 focus:ring-primary-600/20"
                     />
                   </div>
                 </div>
@@ -341,7 +341,7 @@ export default function RecapFeePage() {
 
       {/* Main Table Card */}
       <div className="bg-white rounded-[2.5rem] shadow-clay-lg overflow-hidden border border-white/40">
-        <div className="p-6 border-b border-ink-50 bg-ink-50/20 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="p-6 border-b border-ink-50 bg-ink-50/20 flex flex-col md:flex-row md:items-center justify-between gap-[24px_28px]">
           <div className="relative w-full md:w-80">
             <Search className="absolute left-3 top-2.5 w-4 h-4 text-ink-400" />
             <input
@@ -349,7 +349,7 @@ export default function RecapFeePage() {
               placeholder="Cari penguji..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white border border-ink-100 rounded-xl pl-9 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary-600/10 outline-none shadow-inner"
+              className="w-full bg-white border border-ink-100 rounded-[24px] pl-9 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary-600/10 outline-none shadow-inner"
             />
           </div>
           <div className="text-xs font-bold text-ink-400 uppercase tracking-widest">
@@ -361,7 +361,7 @@ export default function RecapFeePage() {
         <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-ink-50/50">
+              <tr className="even:bg-slate-50 bg-ink-50/50">
                 <th className="px-6 py-5 text-[10px] font-black text-ink-400 uppercase tracking-widest">
                   Petugas Seleksi
                 </th>
@@ -405,8 +405,8 @@ export default function RecapFeePage() {
                     className="group hover:bg-primary-50/20 transition-all"
                   >
                     <td className="px-6 py-6">
-                      <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-2xl bg-secondary-100 flex items-center justify-center text-primary-900 font-black shadow-sm border border-secondary-200">
+                      <div className="flex items-center gap-[24px_28px]">
+                        <div className="w-10 h-10 rounded-[24px] bg-secondary-100 flex items-center justify-center text-primary-900 font-black shadow-sm border border-secondary-200">
                           {item.name.charAt(0)}
                         </div>
                         <div>
@@ -505,11 +505,11 @@ export default function RecapFeePage() {
             filteredRecap.map((item) => (
               <div
                 key={item.id}
-                className="p-5 bg-white hover:bg-primary-50/10 transition-colors"
+                className="p-[24px_28px] bg-white hover:bg-primary-50/10 transition-colors"
               >
                 {/* Name + Honor Row */}
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-11 h-11 rounded-2xl bg-secondary-100 flex items-center justify-center text-primary-900 font-black text-lg border border-secondary-200 shrink-0">
+                  <div className="w-11 h-11 rounded-[24px] bg-secondary-100 flex items-center justify-center text-primary-900 font-black text-lg border border-secondary-200 shrink-0">
                     {item.name.charAt(0)}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -523,7 +523,7 @@ export default function RecapFeePage() {
                 </div>
 
                 {/* Fee Badge — full width, prominent */}
-                <div className="mb-3 bg-linear-to-r from-primary-700 to-primary-800 rounded-2xl px-4 py-3 flex items-center justify-between">
+                <div className="mb-3 bg-linear-to-r from-primary-700 to-primary-800 rounded-[24px] px-4 py-3 flex items-center justify-between">
                   <div>
                     <p className="text-[9px] font-black text-white/60 uppercase tracking-widest">
                       Estimasi Honor
@@ -537,7 +537,7 @@ export default function RecapFeePage() {
 
                 {/* Stats Grid — 3 columns */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                  <div className="bg-ink-50 rounded-xl p-3 text-center">
+                  <div className="bg-ink-50 rounded-[24px] p-3 text-center">
                     <p className="text-lg font-black text-ink-900 leading-none">
                       {item.counts.quran}
                     </p>
@@ -545,7 +545,7 @@ export default function RecapFeePage() {
                       Al-Quran
                     </p>
                   </div>
-                  <div className="bg-ink-50 rounded-xl p-3 text-center">
+                  <div className="bg-ink-50 rounded-[24px] p-3 text-center">
                     <p className="text-lg font-black text-ink-900 leading-none">
                       {item.counts.santri}
                     </p>
@@ -553,7 +553,7 @@ export default function RecapFeePage() {
                       W. Santri
                     </p>
                   </div>
-                  <div className="bg-ink-50 rounded-xl p-3 text-center">
+                  <div className="bg-ink-50 rounded-[24px] p-3 text-center">
                     <p className="text-lg font-black text-ink-900 leading-none">
                       {item.counts.ortu}
                     </p>
@@ -566,7 +566,7 @@ export default function RecapFeePage() {
             ))
           )}
           {!loading && filteredRecap.length > 0 && (
-            <div className="p-5 bg-ink-900 text-white rounded-b-[2.5rem]">
+            <div className="p-[24px_28px] bg-ink-900 text-white rounded-b-[2.5rem]">
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between items-center">
                   <span className="text-[10px] font-black uppercase tracking-widest text-white/60">

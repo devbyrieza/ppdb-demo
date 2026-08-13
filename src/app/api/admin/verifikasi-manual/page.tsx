@@ -120,10 +120,10 @@ export default function VerifikasiManualPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-gray-50 p-[24px_28px]">
+      <div className="max-w-[1200px] mx-auto">
         {/* Header */}
-        <div className="bg-white rounded-xl shadow p-6 mb-6">
+        <div className="bg-white rounded-[24px] shadow p-6 mb-6">
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-2xl font-bold">Verifikasi Manual WhatsApp</h1>
@@ -133,7 +133,7 @@ export default function VerifikasiManualPage() {
             </div>
             <button
               onClick={fetchPending}
-              className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 flex items-center gap-2"
+              className="p-[16px_20px] bg-primary-600 text-white rounded-[24px] hover:bg-primary-700 flex items-center gap-2"
             >
               <RefreshCw
                 className={`w-4 h-4 ${refreshing ? "animate-spin" : ""}`}
@@ -146,7 +146,7 @@ export default function VerifikasiManualPage() {
         {/* Daftar Pending */}
         <div className="space-y-4">
           {pending.length === 0 ? (
-            <div className="bg-white rounded-xl shadow p-5 md:p-8 text-center">
+            <div className="bg-white rounded-[24px] shadow p-[24px_28px] md:p-8 text-center">
               <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-4" />
               <h3 className="text-xl font-semibold">
                 Tidak ada verifikasi pending
@@ -154,8 +154,8 @@ export default function VerifikasiManualPage() {
             </div>
           ) : (
             pending.map((item) => (
-              <div key={item.id} className="bg-white rounded-xl shadow p-6">
-                <div className="flex flex-col md:flex-row justify-between gap-4">
+              <div key={item.id} className="bg-white rounded-[24px] shadow p-6">
+                <div className="flex flex-col md:flex-row justify-between gap-[24px_28px]">
                   {/* Info Pendaftar */}
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
@@ -179,7 +179,7 @@ export default function VerifikasiManualPage() {
                   </div>
 
                   {/* Kode OTP */}
-                  <div className="bg-primary-50 rounded-lg p-4 min-w-[200px]">
+                  <div className="bg-primary-50 rounded-[24px] p-[24px_28px] min-w-[200px]">
                     <div className="text-sm text-primary-800 mb-1">
                       KODE VERIFIKASI
                     </div>
@@ -206,14 +206,14 @@ export default function VerifikasiManualPage() {
                         onClick={() =>
                           openWhatsApp(item.no_hp, item.kode_verifikasi)
                         }
-                        className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2"
+                        className="p-[16px_20px] bg-green-600 text-white rounded-[24px] hover:bg-green-700 flex items-center gap-2"
                       >
                         <MessageCircle className="w-4 h-4" />
                         Buka WhatsApp
                       </button>
                       <button
                         onClick={() => markAsSent(item.id)}
-                        className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 flex items-center gap-2"
+                        className="p-[16px_20px] bg-primary-600 text-white rounded-[24px] hover:bg-primary-700 flex items-center gap-2"
                       >
                         <CheckCircle className="w-4 h-4" />
                         Tandai Sudah Dikirim
@@ -222,7 +222,7 @@ export default function VerifikasiManualPage() {
                   ) : (
                     <button
                       onClick={() => sendSmsAuto(item.id, item.no_hp)}
-                      className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 flex items-center gap-2"
+                      className="p-[16px_20px] bg-purple-600 text-white rounded-[24px] hover:bg-purple-700 flex items-center gap-2"
                     >
                       <Phone className="w-4 h-4" />
                       Kirim via Wablas

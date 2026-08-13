@@ -29,7 +29,7 @@ export default function CalendarPage() {
             PPDB.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-[24px_28px] justify-center">
             <Link
               href="/"
               className="inline-flex items-center justify-center px-6 md:px-10 py-4 rounded-pill bg-primary-900 text-white font-black text-lg hover:bg-primary-800 shadow-premium-lg transition-all"

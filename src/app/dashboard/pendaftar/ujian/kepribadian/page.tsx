@@ -157,8 +157,8 @@ export default function KepribadianTestPage() {
 
   if (alreadyDone) {
     return (
-      <div className="max-w-lg mx-auto p-5 md:p-8 text-center mt-10">
-        <div className="bg-white rounded-2xl shadow-lg border p-6 md:p-10">
+      <div className="max-w-lg mx-auto p-[24px_28px] md:p-8 text-center mt-10">
+        <div className="bg-white rounded-[24px] shadow-lg border p-6 md:p-10">
           <CheckCircle className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
           <h2 className="text-xl font-bold mb-2">Tes Sudah Dikerjakan</h2>
           <p className="text-stone-600 mb-6">
@@ -168,7 +168,7 @@ export default function KepribadianTestPage() {
             onClick={() =>
               router.push("/dashboard/pendaftar?tab=undangan-seleksi")
             }
-            className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl transition-colors shadow-lg shadow-primary-100"
+            className="p-[16px_20px] bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-[24px] transition-colors shadow-lg shadow-primary-100"
           >
             Kembali ke Jadwal Seleksi
           </button>
@@ -179,7 +179,7 @@ export default function KepribadianTestPage() {
 
   if (isLocked) {
     return (
-      <div className="max-w-lg mx-auto p-5 md:p-8 text-center mt-10">
+      <div className="max-w-lg mx-auto p-[24px_28px] md:p-8 text-center mt-10">
         <div className="bg-white rounded-[2rem] shadow-xl border p-6 md:p-10">
           <div className="w-20 h-20 bg-secondary-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <AlertCircle className="w-10 h-10 text-secondary-600" />
@@ -193,7 +193,7 @@ export default function KepribadianTestPage() {
           </p>
           <button
             onClick={() => router.push("/dashboard/pendaftar")}
-            className="w-full px-6 py-4 bg-primary-700 hover:bg-primary-800 text-white font-black rounded-xl transition-all shadow-md uppercase tracking-widest text-sm"
+            className="w-full px-6 py-4 bg-primary-700 hover:bg-primary-800 text-white font-black rounded-[24px] transition-all shadow-md uppercase tracking-widest text-sm"
           >
             Kembali ke Dashboard
           </button>
@@ -203,11 +203,11 @@ export default function KepribadianTestPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-4 md:p-6 pb-32">
+    <div className="max-w-4xl mx-auto p-[24px_28px] md:p-6 pb-32">
       <div ref={topRef} />
       
       {pendaftarId && (
-        <div className="mb-4 p-4 bg-amber-100 border border-amber-300 rounded-xl text-amber-900 flex items-center gap-3">
+        <div className="mb-4 p-[24px_28px] bg-amber-100 border border-amber-300 rounded-[24px] text-amber-900 flex items-center gap-3">
           <AlertCircle className="w-5 h-5 flex-shrink-0" />
           <p className="text-sm font-bold">MODE ADMIN: Anda sedang mengakses/mengisikan ujian atas nama santri lain.</p>
         </div>
@@ -220,7 +220,7 @@ export default function KepribadianTestPage() {
         <ArrowLeft className="w-4 h-4" /> Kembali
       </button>
 
-      <div className="bg-linear-to-r from-primary-600 to-primary-800 rounded-xl p-6 mb-6">
+      <div className="bg-linear-to-r from-primary-600 to-primary-800 rounded-[24px] p-6 mb-6">
         <h1 className="text-xl font-bold text-white">
           Seleksi Kepribadian Calon Santri/Wati
         </h1>
@@ -229,8 +229,8 @@ export default function KepribadianTestPage() {
         </p>
       </div>
 
-      <div className="bg-primary-50 border border-primary-200 rounded-xl p-4">
-        <div className="flex gap-4">
+      <div className="bg-primary-50 border border-primary-200 rounded-[24px] p-[24px_28px]">
+        <div className="flex gap-[24px_28px]">
           <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center border border-primary-100 flex-shrink-0">
             <AlertCircle className="w-6 h-6 text-primary-600" />
           </div>
@@ -250,7 +250,7 @@ export default function KepribadianTestPage() {
       </div>
 
       {/* Progress */}
-      <div className="bg-white rounded-xl border p-4 mb-6 shadow-sm mt-6">
+      <div className="bg-white rounded-[24px] border p-[24px_28px] mb-6 shadow-sm mt-6">
         <div className="flex justify-between items-center mb-2 text-sm">
           <span className="text-stone-600">
             Halaman {page + 1} dari {totalPages}
@@ -271,15 +271,15 @@ export default function KepribadianTestPage() {
 
       <div className="space-y-4 mb-6">
         {currentQuestions.map((q) => (
-          <div key={q.id} className="bg-white p-5 rounded-xl border shadow-sm">
+          <div key={q.id} className="bg-white p-[24px_28px] rounded-[24px] border shadow-sm">
             <p className="font-bold text-stone-400 text-sm mb-3">{q.id}.</p>
             <div className="grid grid-cols-1 gap-3">
               <div
                 onClick={() => setAnswers((p) => ({ ...p, [q.id]: "A" }))}
-                className={`cursor-pointer p-5 border-2 rounded-2xl transition-all duration-300 ${answers[q.id] === "A" ? "bg-primary-50 border-primary-500 text-primary-950 shadow-md ring-4 ring-primary-500/5" : "border-stone-100 hover:border-primary-200 hover:bg-slate-50"}`}
+                className={`cursor-pointer p-[24px_28px] border-2 rounded-[24px] transition-all duration-300 ${answers[q.id] === "A" ? "bg-primary-50 border-primary-500 text-primary-950 shadow-md ring-4 ring-primary-500/5" : "border-stone-100 hover:border-primary-200 hover:bg-slate-50"}`}
               >
                 <span
-                  className={`font-black mr-3 border rounded-lg px-2.5 py-1 text-xs transition-colors ${answers[q.id] === "A" ? "bg-primary-600 text-white border-primary-600" : "bg-white text-stone-400 border-stone-200"}`}
+                  className={`font-black mr-3 border rounded-[24px] px-2.5 py-1 text-xs transition-colors ${answers[q.id] === "A" ? "bg-primary-600 text-white border-primary-600" : "bg-white text-stone-400 border-stone-200"}`}
                 >
                   A
                 </span>
@@ -289,10 +289,10 @@ export default function KepribadianTestPage() {
               </div>
               <div
                 onClick={() => setAnswers((p) => ({ ...p, [q.id]: "B" }))}
-                className={`cursor-pointer p-5 border-2 rounded-2xl transition-all duration-300 ${answers[q.id] === "B" ? "bg-primary-50 border-primary-500 text-primary-950 shadow-md ring-4 ring-primary-500/5" : "border-stone-100 hover:border-primary-200 hover:bg-slate-50"}`}
+                className={`cursor-pointer p-[24px_28px] border-2 rounded-[24px] transition-all duration-300 ${answers[q.id] === "B" ? "bg-primary-50 border-primary-500 text-primary-950 shadow-md ring-4 ring-primary-500/5" : "border-stone-100 hover:border-primary-200 hover:bg-slate-50"}`}
               >
                 <span
-                  className={`font-black mr-3 border rounded-lg px-2.5 py-1 text-xs transition-colors ${answers[q.id] === "B" ? "bg-primary-600 text-white border-primary-600" : "bg-white text-stone-400 border-stone-200"}`}
+                  className={`font-black mr-3 border rounded-[24px] px-2.5 py-1 text-xs transition-colors ${answers[q.id] === "B" ? "bg-primary-600 text-white border-primary-600" : "bg-white text-stone-400 border-stone-200"}`}
                 >
                   B
                 </span>
@@ -310,7 +310,7 @@ export default function KepribadianTestPage() {
         {page > 0 && (
           <button
             onClick={() => setPage((p) => p - 1)}
-            className="flex-1 py-4 bg-white border-2 border-stone-300 hover:bg-stone-50 text-stone-700 font-bold rounded-xl shadow-lg transition-colors"
+            className="flex-1 py-4 bg-white border-2 border-stone-300 hover:bg-stone-50 text-stone-700 font-bold rounded-[24px] shadow-lg transition-colors"
           >
             Sebelumnya
           </button>
@@ -318,7 +318,7 @@ export default function KepribadianTestPage() {
         {page < totalPages - 1 ? (
           <button
             onClick={handleNext}
-            className="flex-1 py-4 bg-primary-600 hover:bg-primary-700 text-white font-black uppercase tracking-widest text-sm rounded-2xl shadow-xl shadow-primary-200 transition-all active:scale-95"
+            className="flex-1 py-4 bg-primary-600 hover:bg-primary-700 text-white font-black uppercase tracking-widest text-sm rounded-[24px] shadow-xl shadow-primary-200 transition-all active:scale-95"
           >
             Lanjutkan
           </button>
@@ -326,7 +326,7 @@ export default function KepribadianTestPage() {
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className="flex-1 py-4 bg-primary-600 hover:bg-primary-700 disabled:bg-stone-300 text-white font-black uppercase tracking-widest text-sm rounded-2xl shadow-xl shadow-primary-200 transition-all active:scale-95 flex items-center justify-center gap-2"
+            className="flex-1 py-4 bg-primary-600 hover:bg-primary-700 disabled:bg-stone-300 text-white font-black uppercase tracking-widest text-sm rounded-[24px] shadow-xl shadow-primary-200 transition-all active:scale-95 flex items-center justify-center gap-2"
           >
             {loading ? (
               <>

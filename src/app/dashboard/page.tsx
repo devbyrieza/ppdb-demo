@@ -219,12 +219,12 @@ const ActionCard = ({
     >
       <div className="flex items-start justify-between mb-8">
         <div
-          className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-premium-xs transition-transform group-hover:scale-110 ${disabled ? "bg-ink-100 text-ink-500" : `bg-primary-50 text-primary-600`}`}
+          className={`w-14 h-14 rounded-[24px] flex items-center justify-center shadow-premium-xs transition-transform group-hover:scale-110 ${disabled ? "bg-ink-100 text-ink-500" : `bg-amber-50 text-amber-600`}`}
         >
           <Icon className="w-7 h-7" />
         </div>
         <span
-          className={`px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest ${disabled ? "bg-ink-100 text-ink-600" : "bg-secondary-400 text-primary-950 shadow-sm"}`}
+          className={`px-4 py-1.5 rounded-[24px] text-[10px] font-black uppercase tracking-widest ${disabled ? "bg-ink-100 text-ink-600" : "bg-secondary-400 text-primary-950 shadow-sm"}`}
         >
           Tahap {step.replace("Step ", "")}
         </span>
@@ -359,7 +359,7 @@ export default function DashboardPage() {
                 animate={{ opacity: 1, x: 0 }}
                 className="flex items-center gap-3 mb-6"
               >
-                <div className="w-10 h-10 rounded-xl bg-primary-50 flex items-center justify-center text-primary-600 border border-primary-100 shadow-sm">
+                <div className="w-10 h-10 rounded-[24px] bg-primary-50 flex items-center justify-center text-primary-600 border border-primary-100 shadow-sm">
                   <LayoutDashboard className="w-6 h-6" />
                 </div>
                 <div className="h-0.5 w-12 bg-primary-100 rounded-full" />
@@ -395,7 +395,7 @@ export default function DashboardPage() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.3 }}
-              className="flex items-center gap-4"
+              className="flex items-center gap-[24px_28px]"
             >
               <button
                 onClick={handleLogout}
@@ -451,11 +451,11 @@ export default function DashboardPage() {
                   {statusInfo.message}
                 </p>
 
-                <div className="mt-12 flex flex-wrap gap-4">
-                  <div className="px-5 md:px-8 py-3 rounded-2xl bg-primary-50 border border-primary-100 text-[10px] font-black uppercase tracking-[0.2em] text-primary-700 shadow-sm">
+                <div className="mt-12 flex flex-wrap gap-[24px_28px]">
+                  <div className="px-5 md:px-8 py-3 rounded-[24px] bg-primary-50 border border-primary-100 text-[10px] font-black uppercase tracking-[0.2em] text-primary-700 shadow-sm">
                     ID: {pendaftar.id.substring(0, 8).toUpperCase()}
                   </div>
-                  <div className="px-5 md:px-8 py-3 rounded-2xl bg-primary-50 border border-primary-100 text-[10px] font-black uppercase tracking-[0.2em] text-primary-700 shadow-sm">
+                  <div className="px-5 md:px-8 py-3 rounded-[24px] bg-primary-50 border border-primary-100 text-[10px] font-black uppercase tracking-[0.2em] text-primary-700 shadow-sm">
                     Tgl:{" "}
                     {new Date(pendaftar.created_at).toLocaleDateString(
                       "id-ID",
@@ -475,7 +475,7 @@ export default function DashboardPage() {
                 <div className="h-0.5 flex-1 mx-10 bg-ink-50 rounded-full" />
               </div>
 
-              <div className="grid sm:grid-cols-2 md:grid-cols-2 gap-5 md:gap-8 lg:gap-10">
+              <div className="grid sm:grid-cols-2 md:grid-cols-2 gap-[24px_28px] md:gap-8 lg:gap-10">
                 <ActionCard
                   href="/dashboard/pendaftar/pembayaran-pendaftaran"
                   icon={CreditCard}
@@ -575,7 +575,7 @@ export default function DashboardPage() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.6 }}
-              className="bg-white/70 backdrop-blur-xl p-6 sm:p-5 md:p-8 rounded-[2.5rem] md:rounded-[4rem] shadow-2xl shadow-primary-900/5 border border-white flex flex-col items-center text-center relative overflow-hidden group"
+              className="bg-white/70 backdrop-blur-xl p-6 sm:p-[24px_28px] md:p-8 rounded-[2.5rem] md:rounded-[4rem] shadow-2xl shadow-primary-900/5 border border-white flex flex-col items-center text-center relative overflow-hidden group"
             >
               <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary-600 to-secondary-500" />
               <div className="w-20 h-20 rounded-[2rem] bg-primary-50 flex items-center justify-center text-primary-600 mb-8 border border-primary-100 shadow-sm transition-transform group-hover:scale-110">
@@ -603,7 +603,7 @@ export default function DashboardPage() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.8 }}
-              className="bg-gradient-to-br from-primary-900 to-primary-950 p-6 sm:p-5 md:p-8 rounded-[2.5rem] md:rounded-[4rem] shadow-2xl relative overflow-hidden group"
+              className="bg-gradient-to-br from-primary-900 to-primary-950 p-6 sm:p-[24px_28px] md:p-8 rounded-[2.5rem] md:rounded-[4rem] shadow-2xl relative overflow-hidden group"
             >
               <div className="absolute top-0 left-0 w-full h-1 bg-secondary-400" />
               <div className="absolute bottom-0 right-0 w-40 h-40 bg-primary-500/10 rounded-full blur-[60px] translate-y-1/2 translate-x-1/2 pointer-events-none" />
@@ -625,9 +625,9 @@ export default function DashboardPage() {
                   href="https://wa.me/6281285300800"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-5 p-6 rounded-[2rem] bg-white hover:bg-secondary-400 transition-all group/btn shadow-xl active:scale-95"
+                  className="flex items-center gap-[24px_28px] p-6 rounded-[2rem] bg-white hover:bg-secondary-400 transition-all group/btn shadow-xl active:scale-95"
                 >
-                  <div className="w-14 h-14 rounded-2xl bg-primary-600 text-white flex items-center justify-center shadow-lg group-hover/btn:scale-110 transition-transform">
+                  <div className="w-14 h-14 rounded-[24px] bg-primary-600 text-white flex items-center justify-center shadow-lg group-hover/btn:scale-110 transition-transform">
                     <Phone className="w-7 h-7" />
                   </div>
                   <div className="text-left leading-none">

@@ -135,7 +135,7 @@ export default function PengumumanPage() {
   return (
     <div className="space-y-6">
       {/* Header Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-[24px_28px]">
         <div className="bg-white/80 backdrop-blur-xl p-6 rounded-3xl shadow-xl shadow-emerald-500/10 border border-emerald-100">
           <p className="text-stone-500 text-sm font-medium">Kandidat Tampil</p>
           <h3 className="text-2xl font-bold text-stone-800">{stats.total}</h3>
@@ -155,9 +155,9 @@ export default function PengumumanPage() {
       </div>
 
       {/* Filters & Actions */}
-      <div className="bg-white/80 backdrop-blur-xl p-6 rounded-3xl shadow-xl shadow-emerald-500/10 border border-emerald-100 flex flex-col md:flex-row justify-between items-center gap-4">
-        <div className="flex items-center gap-4 w-full md:w-auto">
-          <div className="flex items-center gap-2 px-4 py-2.5 bg-stone-50 rounded-2xl border border-stone-200">
+      <div className="bg-white/80 backdrop-blur-xl p-6 rounded-3xl shadow-xl shadow-emerald-500/10 border border-emerald-100 flex flex-col md:flex-row justify-between items-center gap-[24px_28px]">
+        <div className="flex items-center gap-[24px_28px] w-full md:w-auto">
+          <div className="flex items-center gap-2 p-[16px_20px].5 bg-stone-50 rounded-[24px] border border-stone-200">
             <Filter className="w-4 h-4 text-stone-500" />
             <select
               className="bg-transparent text-sm focus:outline-none font-bold text-stone-700"
@@ -172,7 +172,7 @@ export default function PengumumanPage() {
             </select>
           </div>
 
-          <div className="flex items-center gap-2 px-4 py-2.5 bg-stone-50 rounded-2xl border border-stone-200">
+          <div className="flex items-center gap-2 p-[16px_20px].5 bg-stone-50 rounded-[24px] border border-stone-200">
             <Search className="w-4 h-4 text-stone-500" />
             <select
               className="bg-transparent text-sm focus:outline-none font-bold text-stone-700"
@@ -189,7 +189,7 @@ export default function PengumumanPage() {
         <button
           onClick={handlePublish}
           disabled={selectedIds.length === 0 || isPublishing}
-          className="flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 disabled:bg-stone-300 text-white rounded-2xl font-bold transition-all shadow-lg shadow-green-200 disabled:shadow-none"
+          className="flex items-center gap-2 p-[16px_20px] bg-green-600 hover:bg-green-700 disabled:bg-stone-300 text-white rounded-[24px] font-bold transition-all shadow-lg shadow-green-200 disabled:shadow-none"
         >
           {isPublishing ? (
             "Memproses..."
@@ -251,7 +251,7 @@ export default function PengumumanPage() {
                 <div
                   key={c.id}
                   onClick={() => handleSelectOne(c.id)}
-                  className={`p-4 flex items-start gap-4 active:bg-stone-50 transition-colors ${selectedIds.includes(c.id) ? "bg-green-50/50" : ""}`}
+                  className={`p-[24px_28px] flex items-start gap-[24px_28px] active:bg-stone-50 transition-colors ${selectedIds.includes(c.id) ? "bg-green-50/50" : ""}`}
                 >
                   <div className="mt-1" onClick={(e) => e.stopPropagation()}>
                     <input
@@ -308,7 +308,7 @@ export default function PengumumanPage() {
                             <CheckCircle2 className="w-3 h-3" /> Lulus
                           </span>
                         ) : c.status_pendaftaran === "scheduled" ? (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary-100 text-primary-700 text-[10px] font-black uppercase">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 text-[10px] font-black uppercase">
                             Siap
                           </span>
                         ) : (
@@ -458,7 +458,7 @@ export default function PengumumanPage() {
                             <CheckCircle2 className="w-3 h-3" /> Lulus
                           </span>
                         ) : c.status_pendaftaran === "scheduled" ? (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary-100 text-primary-700 text-xs font-bold">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-rose-100 text-rose-700 text-xs font-bold">
                             Siap Diumumkan
                           </span>
                         ) : (

@@ -32,7 +32,7 @@ const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown, highlig
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`glass-panel p-5 sm:p-6 lg:p-8 rounded-[2rem] border transition-all group relative overflow-hidden duration-300 hover-lift ${
+      className={`glass-panel p-[24px_28px] sm:p-6 lg:p-8 rounded-[2rem] border transition-all group relative overflow-hidden duration-300 hover-lift ${
         highlighted 
           ? "glass-panel-dark text-white border-primary-800 shadow-premium-lg" 
           : "text-primary-950 border-primary-100 shadow-premium-sm"
@@ -44,7 +44,7 @@ const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown, highlig
       
       <div className="relative z-10">
         <div className="flex items-center justify-between mb-8">
-          <div className={`icon-box w-14 h-14 rounded-2xl bg-linear-to-br ${colorMap[color] || colorMap.blue} text-white shadow-xl group-hover:scale-110 group-hover:rotate-3 duration-500`}>
+          <div className={`icon-box w-14 h-14 rounded-[24px] bg-linear-to-br ${colorMap[color] || colorMap.blue} text-white shadow-xl group-hover:scale-110 group-hover:rotate-3 duration-500`}>
             <Icon className="w-6 h-6" />
           </div>
           {trend && (
@@ -79,7 +79,7 @@ const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown, highlig
                   onClick={(e) => { e.stopPropagation(); onDownload("excel"); }}
                   disabled={!!isDownloading}
                   title="Unduh Excel"
-                  className={`p-2 rounded-xl border transition-all hover:scale-105 duration-300 ${
+                  className={`p-2 rounded-[24px] border transition-all hover:scale-105 duration-300 ${
                     highlighted 
                       ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20" 
                       : "bg-emerald-50 border-emerald-100 text-emerald-600 hover:bg-emerald-100"
@@ -95,7 +95,7 @@ const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown, highlig
                   onClick={(e) => { e.stopPropagation(); onDownload("pdf"); }}
                   disabled={!!isDownloading}
                   title="Unduh PDF"
-                  className={`p-2 rounded-xl border transition-all hover:scale-105 duration-300 ${
+                  className={`p-2 rounded-[24px] border transition-all hover:scale-105 duration-300 ${
                     highlighted 
                       ? "bg-rose-500/10 border-rose-500/20 text-rose-400 hover:bg-rose-500/20" 
                       : "bg-rose-50 border-rose-100 text-rose-600 hover:bg-rose-100"
@@ -118,7 +118,7 @@ const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown, highlig
             <button
               onClick={(e) => { e.stopPropagation(); onPromote(); }}
               disabled={isPromoting}
-              className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-black text-xs uppercase tracking-widest transition-all shadow-lg shadow-emerald-600/20 hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-[24px] font-black text-xs uppercase tracking-widest transition-all shadow-lg shadow-emerald-600/20 hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isPromoting ? (
                 <>
@@ -136,7 +136,7 @@ const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown, highlig
         )}
 
         {breakdown && (
-          <div className={`grid grid-cols-2 gap-4 pt-6 border-t ${
+          <div className={`grid grid-cols-2 gap-[24px_28px] pt-6 border-t ${
             highlighted ? "border-white/10" : "border-primary-100"
           }`}>
             <div className="space-y-4">
@@ -397,7 +397,7 @@ export default function AdminDashboardPage() {
   };
 
   if (loading && stats.total_pendaftar === 0) return (
-    <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
+    <div className="flex flex-col items-center justify-center min-h-[60vh] gap-[24px_28px]">
       <Loader2 className="w-10 h-10 animate-spin text-primary-600" />
       <p className="text-sm font-bold text-primary-400 tracking-widest animate-pulse uppercase">Sinkronisasi Data...</p>
     </div>
@@ -409,20 +409,20 @@ export default function AdminDashboardPage() {
       <div className="glow-blob glow-blob-primary w-[50%] h-[40%] -top-[10%] -left-[10%] opacity-[0.03] fixed" aria-hidden="true" />
       <div className="glow-blob glow-blob-gold w-[40%] h-[50%] top-[20%] -right-[10%] opacity-[0.02] fixed" aria-hidden="true" />
 
-      <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-[24px_28px]">
         <div>
           <h1 className="text-2xl sm:text-3xl font-black tracking-tight">
             <span className="gradient-text-teal">Dashboard Admin {BRANDING.schoolShortName}</span>
           </h1>
           <p className="text-xs sm:text-sm text-primary-600 font-medium mt-1">Sistem Informasi Pendaftaran Santri Baru.</p>
         </div>
-        <button onClick={fetchStats} className="p-3 bg-white border border-primary-100 rounded-2xl text-primary-400 hover:text-primary-600 transition-all shadow-premium-sm self-start sm:self-auto hover-lift">
+        <button onClick={fetchStats} className="p-3 bg-white border border-primary-100 rounded-[24px] text-primary-400 hover:text-primary-600 transition-all shadow-premium-sm self-start sm:self-auto hover-lift">
           <RefreshCw className={`w-5 h-5 ${loading ? "animate-spin" : ""}`} />
         </button>
       </div>
 
       {/* HERO SECTION */}
-      <div className="bg-linear-to-br from-primary-800 via-primary-700 to-emerald-900 rounded-[2.5rem] lg:rounded-[3rem] p-6 sm:p-5 md:p-8 lg:p-6 text-white relative overflow-hidden shadow-[0_32px_64px_-16px_rgba(15,118,110,0.4)] border border-white/10">
+      <div className="bg-linear-to-br from-primary-800 via-primary-700 to-emerald-900 rounded-[2.5rem] lg:rounded-[3rem] p-6 sm:p-[24px_28px] md:p-8 lg:p-6 text-white relative overflow-hidden shadow-[0_32px_64px_-16px_rgba(15,118,110,0.4)] border border-white/10">
         
         <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
           <div className="max-w-xl w-full">
@@ -445,16 +445,16 @@ export default function AdminDashboardPage() {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 w-full lg:w-auto">
-             <div className="bg-white/10 backdrop-blur-xl p-4 sm:p-6 lg:p-5 md:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-white/20 shadow-xl flex flex-col items-center group hover:bg-white/15 transition-all">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-[24px_28px] sm:gap-6 w-full lg:w-auto">
+             <div className="bg-white/10 backdrop-blur-xl p-[24px_28px] sm:p-6 lg:p-[24px_28px] md:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-white/20 shadow-xl flex flex-col items-center group hover:bg-white/15 transition-all">
                 <p className="text-[9px] sm:text-[10px] font-black text-white/80 uppercase tracking-widest mb-2 sm:mb-4 text-center group-hover:text-white transition-colors">Diterima</p>
                 <p className="text-2xl sm:text-2xl md:text-4xl font-black text-emerald-300 drop-shadow-md">{stats.diterima}</p>
              </div>
-             <div className="bg-white/10 backdrop-blur-xl p-4 sm:p-6 lg:p-5 md:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-white/20 shadow-xl flex flex-col items-center group hover:bg-white/15 transition-all">
+             <div className="bg-white/10 backdrop-blur-xl p-[24px_28px] sm:p-6 lg:p-[24px_28px] md:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-white/20 shadow-xl flex flex-col items-center group hover:bg-white/15 transition-all">
                 <p className="text-[9px] sm:text-[10px] font-black text-white/80 uppercase tracking-widest mb-2 sm:mb-4 text-center group-hover:text-white transition-colors">Proses Daftar Ulang</p>
                 <p className="text-2xl sm:text-2xl md:text-4xl font-black text-gold-400 drop-shadow-md">{stats.daftar_ulang_sedang}</p>
              </div>
-             <div className="bg-white/10 backdrop-blur-xl p-4 sm:p-6 lg:p-5 md:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-white/20 shadow-xl flex flex-col items-center group hover:bg-white/15 transition-all md:col-span-2">
+             <div className="bg-white/10 backdrop-blur-xl p-[24px_28px] sm:p-6 lg:p-[24px_28px] md:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-white/20 shadow-xl flex flex-col items-center group hover:bg-white/15 transition-all md:col-span-2">
                 <p className="text-[9px] sm:text-[10px] font-black text-white/80 uppercase tracking-widest mb-2 sm:mb-4 text-center group-hover:text-white transition-colors">Lunas Daftar Ulang</p>
                 <p className="text-2xl sm:text-2xl md:text-4xl font-black text-emerald-300 drop-shadow-md">{stats.daftar_ulang_selesai}</p>
              </div>
@@ -463,7 +463,7 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* STATS GRID */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[24px_28px] sm:gap-6 lg:gap-8">
         {isAdminSuper && (<>
           <StatWidget label="Total Pendaftar" value={stats.total_pendaftar} icon={Users} color="blue" trend={stats.growth_text || "+0% pekan ini"} breakdown={getBreakdown("total")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("", "Total Pendaftar", type)} isDownloading={downloadingKey?.startsWith("_") ? downloadingKey.split("_")[1] : null} />
           <StatWidget label="Bayar Pendaftaran" value={stats.sudah_bayar} icon={Wallet} color="emerald" breakdown={getBreakdown("bayar")} highlighted={false} onDownload={(type: "excel" | "pdf") => handleSingleCardExport("sudah_bayar", "Bayar Pendaftaran", type)} isDownloading={downloadingKey?.startsWith("sudah_bayar_") ? downloadingKey.split("_")[2] : null} />
@@ -496,10 +496,10 @@ export default function AdminDashboardPage() {
 
       {/* SUMMARY INSIGHTS - Terbuka untuk semua Admin */}
       {(isAdminSuper || isAdminBerkas || isAdminKeuangan) && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-[24px_28px] sm:gap-6 lg:gap-8">
           {/* Statistik card — bg primary-800 (valid & dark enough for white text) */}
-        <div className="bg-linear-to-br from-primary-800 to-primary-950 rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] p-5 sm:p-5 md:p-8 lg:p-6 text-white relative overflow-hidden group shadow-[0_16px_40px_-12px_rgba(15,118,110,0.4)] border border-white/5">
-          <div className="absolute top-0 right-0 p-5 md:p-8 opacity-5 group-hover:rotate-12 transition-transform duration-700">
+        <div className="bg-linear-to-br from-primary-800 to-primary-950 rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] p-[24px_28px] sm:p-[24px_28px] md:p-8 lg:p-6 text-white relative overflow-hidden group shadow-[0_16px_40px_-12px_rgba(15,118,110,0.4)] border border-white/5">
+          <div className="absolute top-0 right-0 p-[24px_28px] md:p-8 opacity-5 group-hover:rotate-12 transition-transform duration-700">
             <TrendingUp className="w-48 h-48" />
           </div>
           <div className="relative z-10">
@@ -507,7 +507,7 @@ export default function AdminDashboardPage() {
               <div className="w-2 h-8 bg-emerald-400 rounded-full" />
               Statistik Pendaftaran
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-[24px_28px] sm:gap-8">
               <div className="space-y-6 sm:space-y-8">
                 <div>
                   <p className="text-[10px] font-black text-primary-200/60 uppercase tracking-widest mb-2">Total Lunas</p>
@@ -542,16 +542,16 @@ export default function AdminDashboardPage() {
           </div>
         </div>
  
-        <div className="bg-white rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border border-secondary-100 p-5 sm:p-5 md:p-8 lg:p-6 shadow-premium-sm relative overflow-hidden group">
+        <div className="bg-white rounded-[1.5rem] sm:rounded-[2rem] lg:rounded-[2.5rem] border border-secondary-100 p-[24px_28px] sm:p-[24px_28px] md:p-8 lg:p-6 shadow-premium-sm relative overflow-hidden group">
           <div className="relative z-10">
             <h3 className="text-xl sm:text-2xl font-black text-ink-900 mb-6 sm:mb-8 tracking-tight flex items-center gap-3">
               <div className="w-2 h-8 bg-primary-600 rounded-full" />
               Aksi Cepat
             </h3>
             <div className="space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-6 bg-secondary-50 rounded-2xl sm:rounded-3xl border border-secondary-100 hover:border-primary-200 transition-all cursor-default group/item gap-4">
-                <div className="flex items-center gap-4 sm:gap-5">
-                  <div className="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center text-primary-600 transition-transform group-hover/item:scale-110 shrink-0">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between p-[24px_28px] sm:p-6 bg-secondary-50 rounded-[24px] sm:rounded-3xl border border-secondary-100 hover:border-primary-200 transition-all cursor-default group/item gap-[24px_28px]">
+                <div className="flex items-center gap-[24px_28px] sm:gap-[24px_28px]">
+                  <div className="w-12 h-12 rounded-[24px] bg-white shadow-sm flex items-center justify-center text-primary-600 transition-transform group-hover/item:scale-110 shrink-0">
                     <Users className="w-6 h-6" />
                   </div>
                   <div>
@@ -565,9 +565,9 @@ export default function AdminDashboardPage() {
                 </div>
               </div>
  
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-6 bg-secondary-50 rounded-2xl sm:rounded-3xl border border-secondary-100 hover:border-emerald-200 transition-all cursor-default group/item gap-4">
-                <div className="flex items-center gap-4 sm:gap-5">
-                  <div className="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center text-emerald-600 transition-transform group-hover/item:scale-110 shrink-0">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between p-[24px_28px] sm:p-6 bg-secondary-50 rounded-[24px] sm:rounded-3xl border border-secondary-100 hover:border-emerald-200 transition-all cursor-default group/item gap-[24px_28px]">
+                <div className="flex items-center gap-[24px_28px] sm:gap-[24px_28px]">
+                  <div className="w-12 h-12 rounded-[24px] bg-white shadow-sm flex items-center justify-center text-emerald-600 transition-transform group-hover/item:scale-110 shrink-0">
                     <Wallet className="w-6 h-6" />
                   </div>
                   <div>

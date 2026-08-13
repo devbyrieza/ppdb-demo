@@ -101,10 +101,10 @@ export default function RekapFeePengujiPage() {
   };
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto pb-10">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-3xl border border-ink-100 shadow-sm">
-        <div className="flex items-center gap-4">
-          <div className="p-4 bg-primary-50 text-primary-600 rounded-2xl">
+    <div className="space-y-6 max-w-[1200px] mx-auto pb-10">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-[24px_28px] bg-white p-6 rounded-3xl border border-ink-100 shadow-sm">
+        <div className="flex items-center gap-[24px_28px]">
+          <div className="p-[24px_28px] bg-primary-50 text-primary-600 rounded-[24px]">
             <Wallet className="w-8 h-8 font-black" />
           </div>
           <div>
@@ -120,14 +120,14 @@ export default function RekapFeePengujiPage() {
           <Button
             onClick={fetchData}
             variant="outline"
-            className="rounded-2xl border-ink-200 text-ink-600 font-bold hover:bg-ink-50 h-11"
+            className="rounded-[24px] border-ink-200 text-ink-600 font-bold hover:bg-ink-50 h-11"
           >
             <RefreshCcw className="w-4 h-4 mr-2" />
             Refresh
           </Button>
           <Button
             onClick={handleExportExcel}
-            className="rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-black shadow-lg shadow-emerald-600/20 h-11"
+            className="rounded-[24px] bg-emerald-600 hover:bg-emerald-700 text-white font-black shadow-lg shadow-emerald-600/20 h-11"
           >
             <Download className="w-4 h-4 mr-2" />
             Export Excel
@@ -136,7 +136,7 @@ export default function RekapFeePengujiPage() {
       </div>
 
       <div className="bg-white rounded-3xl border border-ink-100 shadow-sm overflow-hidden">
-        <div className="p-6 border-b border-ink-100 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="p-6 border-b border-ink-100 flex flex-col md:flex-row items-center justify-between gap-[24px_28px]">
           <div className="relative w-full md:max-w-md">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
               <Search className="h-5 w-5 text-ink-400" />
@@ -146,14 +146,14 @@ export default function RekapFeePengujiPage() {
               placeholder="Cari nama penguji..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-ink-50 border border-ink-100 rounded-2xl pl-11 pr-4 py-3 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-primary-600/10 outline-none"
+              className="w-full bg-ink-50 border border-ink-100 rounded-[24px] pl-11 pr-4 py-3 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-primary-600/10 outline-none"
             />
           </div>
-          <div className="flex items-center gap-4 text-sm">
-            <div className="bg-orange-50 text-orange-700 px-4 py-2 rounded-xl font-bold border border-orange-100">
+          <div className="flex items-center gap-[24px_28px] text-sm">
+            <div className="bg-orange-50 text-orange-700 p-[16px_20px] rounded-[24px] font-bold border border-orange-100">
               Total Sesi: <span className="font-black text-lg">{totalSesiSemua}</span>
             </div>
-            <div className="bg-primary-50 text-primary-700 px-4 py-2 rounded-xl font-bold border border-primary-100">
+            <div className="bg-primary-50 text-primary-700 p-[16px_20px] rounded-[24px] font-bold border border-primary-100">
               Total Fee: <span className="font-black text-lg">Rp {totalFeeSemua.toLocaleString("id-ID")}</span>
             </div>
           </div>
@@ -173,7 +173,7 @@ export default function RekapFeePengujiPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-ink-50/50 border-b border-ink-100">
+                <tr className="even:bg-slate-50 bg-ink-50/50 border-b border-ink-100">
                   <th className="px-6 py-4 text-xs font-black text-ink-500 uppercase tracking-wider">
                     Penguji
                   </th>

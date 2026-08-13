@@ -98,7 +98,7 @@ export default function PengujiDashboardPage() {
   return (
     <div className="space-y-8">
       {/* Page Title / Header Banner */}
-      <div className="relative overflow-hidden rounded-4xl bg-linear-to-br from-primary-700 to-primary-900 border border-primary-600 p-5 md:p-8 text-white shadow-2xl shadow-primary-900/30 app-card">
+      <div className="relative overflow-hidden rounded-4xl bg-linear-to-br from-primary-700 to-primary-900 border border-primary-600 p-[24px_28px] md:p-8 text-white shadow-2xl shadow-primary-900/30 app-card">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-secondary-400/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center gap-6">
@@ -119,14 +119,14 @@ export default function PengujiDashboardPage() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[24px_28px] md:gap-6">
         {statCards.map((card, index) => (
           <div
             key={index}
-            className="bg-white rounded-3xl p-5 md:p-8 border border-secondary-100 shadow-xs hover:shadow-xl hover:shadow-primary-900/5 transition-all duration-500 app-card group"
+            className="bg-white rounded-3xl p-[24px_28px] md:p-8 border border-secondary-100 shadow-xs hover:shadow-xl hover:shadow-primary-900/5 transition-all duration-500 app-card group"
           >
             <div
-              className={`w-14 h-14 ${card.bgColor} rounded-2xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}
+              className={`w-14 h-14 ${card.bgColor} rounded-[24px] flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}
             >
               <card.icon className={`w-7 h-7 ${card.iconColor}`} />
             </div>
@@ -143,7 +143,7 @@ export default function PengujiDashboardPage() {
       </div>
 
       {/* Quick Actions */}
-      <div className="bg-white rounded-4xl p-5 md:p-8 border border-secondary-100 shadow-sm app-card">
+      <div className="bg-white rounded-4xl p-[24px_28px] md:p-8 border border-secondary-100 shadow-sm app-card">
         <div className="flex items-center justify-between mb-8">
           <h3 className="text-2xl font-black text-primary-950 tracking-tight font-display">
             Aksi Cepat
@@ -154,10 +154,10 @@ export default function PengujiDashboardPage() {
             href="/dashboard/penguji/jadwal"
             className="flex items-center gap-6 p-7 bg-secondary-50/50 hover:bg-secondary-100/50 rounded-4xl transition-all duration-500 border border-secondary-100 hover:shadow-xl hover:shadow-secondary-400/10 group relative overflow-hidden"
           >
-            <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+            <div className="absolute top-0 right-0 p-[24px_28px] opacity-5 group-hover:opacity-10 transition-opacity">
               <Calendar className="w-20 h-20 text-primary-900" />
             </div>
-            <div className="w-16 h-16 bg-secondary-400 rounded-2xl flex items-center justify-center shadow-lg shadow-secondary-400/20 group-hover:scale-110 group-hover:-rotate-3 transition-all shrink-0">
+            <div className="w-16 h-16 bg-secondary-400 rounded-[24px] flex items-center justify-center shadow-lg shadow-secondary-400/20 group-hover:scale-110 group-hover:-rotate-3 transition-all shrink-0">
               <Calendar className="w-8 h-8 text-primary-950" />
             </div>
             <div>
@@ -174,10 +174,10 @@ export default function PengujiDashboardPage() {
             href="/dashboard/penguji/input-nilai"
             className="flex items-center gap-6 p-7 bg-primary-700 hover:bg-primary-800 rounded-4xl transition-all duration-500 border border-primary-800 shadow-xl shadow-primary-900/20 hover:shadow-2xl hover:shadow-primary-900/30 group relative overflow-hidden"
           >
-            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+            <div className="absolute top-0 right-0 p-[24px_28px] opacity-10 group-hover:opacity-20 transition-opacity">
               <ClipboardCheck className="w-20 h-20 text-white" />
             </div>
-            <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/20 group-hover:scale-110 group-hover:rotate-3 transition-all shrink-0">
+            <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-[24px] flex items-center justify-center border border-white/20 group-hover:scale-110 group-hover:rotate-3 transition-all shrink-0">
               <ClipboardCheck className="w-8 h-8 text-white" />
             </div>
             <div>
@@ -193,13 +193,13 @@ export default function PengujiDashboardPage() {
       </div>
 
       {/* Info Box */}
-      <div className="bg-secondary-50 border-2 border-secondary-100 rounded-3xl p-5 md:p-8 relative overflow-hidden">
-        <div className="absolute top-0 right-0 p-4 opacity-5">
+      <div className="bg-secondary-50 border-2 border-secondary-100 rounded-3xl p-[24px_28px] md:p-8 relative overflow-hidden">
+        <div className="absolute top-0 right-0 p-[24px_28px] opacity-5">
           <Users className="w-32 h-32 text-secondary-900" />
         </div>
         <div className="flex gap-6 relative z-10">
           <div className="shrink-0">
-            <div className="w-14 h-14 bg-secondary-100 rounded-2xl flex items-center justify-center border border-secondary-200 shadow-sm">
+            <div className="w-14 h-14 bg-secondary-100 rounded-[24px] flex items-center justify-center border border-secondary-200 shadow-sm">
               <Users className="w-7 h-7 text-secondary-700" />
             </div>
           </div>
