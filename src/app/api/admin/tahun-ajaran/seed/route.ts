@@ -120,8 +120,8 @@ export async function POST() {
           tahun_selesai: 2027,
           nama: "2027-2028",
           is_active: true,
-          tanggal_buka_pendaftaran: new Date("2026-01-01"),
-          tanggal_tutup_pendaftaran: new Date("2026-07-31"),
+          tanggal_buka_pendaftaran: new Date("2026-09-05"),
+          tanggal_tutup_pendaftaran: new Date("2026-12-28"),
           biaya_pendaftaran: 150000,
         },
       });

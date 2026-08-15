@@ -127,8 +127,8 @@ function PPDBContent() {
   const jenjang = searchParams.get("jenjang");
 
   const stats = [
-    { label: "Kuota MTs", value: "25 Santri", icon: Users },
-    { label: "Kuota I'dad", value: "25 Santri", icon: Users },
+    { label: "Kuota MTs Putra", value: "50 Santri (Terbatas)", icon: Users },
+    { label: "Kuota I'dad Putra", value: "25 Santri (Terbatas)", icon: Users },
     { label: "Asatidz", value: "Lulusan Terbaik", icon: GraduationCap },
     { label: "Target", value: "TimTeng & PTN Favorit", icon: Target },
   ];
@@ -136,7 +136,7 @@ function PPDBContent() {
   const timeline = [
     {
       phase: "Registrasi Online",
-      date: "10 Feb - 7 Juni 2026",
+      date: "5 Sep - 28 Des 2026",
       desc: "Buat akun pendaftar dan isi formulir awal melalui website resmi.",
       status: "active",
     },
@@ -201,8 +201,8 @@ function PPDBContent() {
   ];
 
   const biaya = [
-    { label: "Biaya Pendaftaran", value: "Rp 200rb", icon: CreditCard },
-    { label: "Uang Pangkal", value: "Rp 7.5Jt", icon: Shield },
+    { label: "Biaya Pendaftaran", value: "Rp 250rb", icon: CreditCard },
+    { label: "Uang Pangkal", value: "Rp 7.65Jt", icon: Shield },
     { label: "Taawun (SPP)", value: "Rp 1Jt", icon: Star },
   ];
 
@@ -545,7 +545,7 @@ function PPDBContent() {
                     },
                     {
                       q: "Kapan batas akhir pendaftaran?",
-                      a: "Pendaftaran PPDB Tahun Ajaran 2027-2028 dibuka mulai tanggal 10 Februari sampai dengan 7 Juni 2026. Namun, pendaftaran dapat ditutup lebih awal jika kuota santri baru sudah terpenuhi.",
+                      a: "Pendaftaran PPDB Tahun Ajaran 2027-2028 dibuka mulai tanggal 5 September sampai dengan 28 Desember 2026. Namun, pendaftaran dapat ditutup lebih awal jika kuota santri baru sudah terpenuhi.",
                     },
                     {
                       q: "Bagaimana sistem kurikulumnya?",
