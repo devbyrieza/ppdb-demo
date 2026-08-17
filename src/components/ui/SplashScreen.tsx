@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
+import { BRANDING } from '@/config/branding';
 
 export default function SplashScreen() {
   const [show, setShow] = useState(true);
