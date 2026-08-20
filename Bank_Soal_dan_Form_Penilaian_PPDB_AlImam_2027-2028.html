@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bank Soal Seleksi & Form Penilaian PPDB Demo TA 2027-2028</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0d9488;
+      --primary-dark: #0f766e;
+      --primary-light: #ccfbf1;
+      --primary-subtle: #f0fdf4;
+      --accent: #d97706;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      color: var(--text);
+      background-color: var(--bg);
+      padding: 20px 12px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrapper {
+      max-width: 980px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border-radius: 20px;
+      box-shadow: 0 10px 25px -5px rgba(15, 118, 110, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .top-bar {
+      background: linear-gradient(135deg, #0f766e 0%, #115e59 100%);
+      color: #ffffff;
+      padding: 32px 24px;
+      text-align: center;
+      position: relative;
+    }
+
+    .top-bar h1 {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .top-bar h2 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #99f6e4;
+      margin-bottom: 12px;
+    }
+
+    .top-bar p {
+      font-size: 13px;
+      color: #cbd5e1;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    .badge-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(4px);
+      color: #ffffff;
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-top: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    .content-area {
+      padding: 32px 24px;
+    }
+
+    .action-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 24px;
+      background: var(--primary-subtle);
+      border: 1px solid #bfe7dc;
+      padding: 16px 20px;
+      border-radius: 14px;
+    }
+
+    .action-text {
+      font-size: 13px;
+      color: var(--primary-dark);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-print {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 10px rgba(13, 148, 136, 0.2);
+    }
+
+    .btn-print:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 40px;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .section-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+
+    .section-title-text {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+
+    .sub-heading {
+      font-size: 15px;
+      font-weight: 700;
+      color: #334155;
+      margin: 24px 0 14px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f1f5f9;
+      padding: 8px 14px;
+      border-radius: 8px;
+      border-left: 4px solid var(--primary);
+    }
+
+    .callout-box {
+      background-color: #fffbeb;
+      border: 1px solid #fde68a;
+      color: #92400e;
+      padding: 14px 18px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+
+    .question-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-bottom: 14px;
+      transition: border-color 0.2s;
+    }
+
+    .question-card:hover {
+      border-color: #99f6e4;
+    }
+
+    .question-num {
+      display: inline-block;
+      background: #e0f2fe;
+      color: #0369a1;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin-bottom: 6px;
+    }
+
+    .question-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+      white-space: pre-line;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .option-item {
+      background: #f8fafc;
+      border: 1px solid #f1f5f9;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #334155;
+    }
+
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      margin-bottom: 24px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      min-width: 650px;
+    }
+
+    th {
+      background: #f1f5f9;
+      color: #334155;
+      font-weight: 700;
+      text-align: left;
+      padding: 12px 14px;
+      border-bottom: 2px solid var(--border);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      color: #334155;
+      vertical-align: top;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:nth-child(even) td {
+      background-color: #fafafa;
+    }
+
+    .badge-score {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .score-high { background: #dcfce7; color: #15803d; }
+    .score-mid { background: #fef9c3; color: #a16207; }
+    .score-low { background: #fee2e2; color: #b91c1c; }
+
+    .footer {
+      text-align: center;
+      padding: 24px;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 12px;
+      background: #f8fafc;
+    }
+
+    /* Mobile Responsive Tweaks */
+    @media (max-width: 640px) {
+      body { padding: 8px 4px; }
+      .wrapper { border-radius: 12px; }
+      .top-bar { padding: 24px 16px; }
+      .top-bar h1 { font-size: 18px; }
+      .top-bar h2 { font-size: 14px; }
+      .content-area { padding: 20px 14px; }
+      .options-grid { grid-template-columns: 1fr; }
+      .action-bar { flex-direction: column; align-items: stretch; text-align: center; }
+      .btn-print { width: 100%; justify-content: center; }
+      .section-title-text { font-size: 16px; }
+    }
+
+    /* Print Styles */
+    @media print {
+      body { background: white; padding: 0; }
+      .wrapper { box-shadow: none; border: none; }
+      .no-print { display: none !important; }
+      .top-bar { background: none; color: black; padding: 0; border-bottom: 2px solid black; }
+      .top-bar h1 { color: black; }
+      .top-bar h2 { color: #333; }
+      .top-bar p { color: #555; }
+      .badge-tag { display: none; }
+      .content-area { padding: 10px 0; }
+      .question-card { page-break-inside: avoid; border: 1px solid #ccc; }
+      table { min-width: 100%; }
+      th { background: #eee !important; color: black !important; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrapper">
+  
+  <!-- HEADER KOP -->
+  <div class="top-bar">
+    <h1>PESANTREN AL-ANDALUS AL-IMAM AL-ISLAMI</h1>
+    <h2>BANK SOAL SELEKSI & FORM PENILAIAN PPDB (100% LENGKAP)</h2>
+    <p>Dokumen Resmi Peninjauan, Evaluasi Relevansi, & Upgrade Panitia PPDB (TA 2027–2028)</p>
+    <div class="badge-tag">
+      📌 BERKAS PENINJAUAN PANITIA PPDB - TERMASUK SYARAT KHUSUS MA/SMA LANGSUNG
+    </div>
+  </div>
+
+  <div class="content-area">
+    
+    <!-- ACTION BAR -->
+    <div class="action-bar no-print">
+      <div class="action-text">
+        ℹ️ Dokumen ini berisi seluruh soal & form penilaian lengkap, termasuk ketentuan khusus Jalur SMA/MA Langsung.
+      </div>
+      <button class="btn-print" onclick="window.print()">
+        🖨️ Simpan ke PDF / Cetak
+      </button>
+    </div>
+
+    <!-- CALLOUT KHUSUS JALUR MA/SMA LANGSUNG -->
+    <div class="callout-box">
+      ⚠️ <strong>KETENTUAN KHUSUS JALUR SMA / MA LANGSUNG (TANPA I'DAD LUGHAWI / TANPA IL):</strong><br>
+      Khusus pendaftar Jalur SMA/MA Langsung (Tanpa IL), calon santri <strong>WAJIB</strong> mengikuti <strong>Tes Lisan Bahasa Arab</strong> serta memiliki <strong>Tes Hafalan Al-Qur'an Minimal 4 Juz Mutqin</strong>. Apabila pendaftar tidak memenuhi syarat 4 Juz Mutqin & Lisan Arab, maka pendaftar akan diarahkan ke Jalur I'dad Lughawi (IL).
+    </div>
+
+    <!-- SECTION 1: TES AKADEMIK MTS -->
+    <div class="section-header">
+      <div class="section-icon">📚</div>
+      <div class="section-title-text">1. TES AKADEMIK MTS (20 SOAL UTUH)</div>
+    </div>
+
+    <div class="sub-heading">📖 A. Pendidikan Agama Islam (PAI - Soal 1 s/d 5)</div>
+
+    <div class="question-card">
+      <span class="question-num">SOAL 01 (MTS PAI)</span>
+      <div class="question-title">Makna/arti lafazh syahadat <em>Asyhadu allaa ilaaha illallaah</em> adalah ….</div>
+      <div class="options-grid">
+        <div class="option-item">A. Aku bersaksi bahwa Muhammad adalah utusan Allah</div>
+        <div class="option-item">B. Aku bersaksi bahwa tidak ada tuhan yang berhak disembah kecuali Allah</div>
+        <div class="option-item">C. Allah tidak ada sekutu bagi-Nya</div>
+        <div class="option-item">D. Aku berlindung kepada Allah dari godaan setan yang terkutuk</div>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <span class="question-num">SOAL 02 (MTS PAI)</span>
+      <div class="question-title">Rukun Iman ada 6 (enam), percaya kepada qadha' dan qadar adalah rukun iman yang ke ….</div>
+      <div class="options-grid">
+        <div class="option-item">A. 2</div><div class="option-item">B. 3</div><div class="option-item">C. 5</div><div class="option-item">D. 6</div>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <span class="question-num">SOAL 03 (MTS PAI)</span>
+      <div class="question-title">Idul fitri dilaksanakan pada ….</div>
+      <div class="options-grid">
+        <div class="option-item">A. 1 Syawwal</div><div class="option-item">B. 2 Syawwal</div><div class="option-item">C. 3 Syawwal</div><div class="option-item">D. 4 Syawwal</div>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <span class="question-num">SOAL 04 (MTS PAI)</span>
+      <div class="question-title">Surat yang diterima Nabi Muhammad shallallahu alaihi wa sallam saat diangkat menjadi rasul adalah surat ….</div>
+      <div class="options-grid">
+        <div class="option-item">A. Al Fatihah</div><div class="option-item">B. Al 'Alaq</div><div class="option-item">C. Al Maidah</div><div class="option-item">D. Al Baqoroh</div>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <span class="question-num">SOAL 05 (MTS PAI)</span>
+      <div class="question-title">Khalifah keempat yang merupakan sepupu sekaligus menantu Nabi Muhammad shallallahu alaihi wa sallam adalah ….</div>
+      <div class="options-grid">
+        <div class="option-item">A. Abu Bakar Ash Shiddiiq</div><div class="option-item">B. Umar Bin Khattab</div><div class="option-item">C. Ali Bin Abi Thalib</div><div class="option-item">D. Utsman Bin Affan</div>
+      </div>
+    </div>
+
+    <div class="sub-heading">🇮🇩 B. Bahasa Indonesia (Soal 6 s/d 10)</div>
+
+    <div class="question-card">
+      <span class="question-num">SOAL 06 (MTS B.INDO)</span>
+      <div class="question-title">Sinonim dari kata <em>rajin</em> adalah ….</div>
+      <div class="options-grid">
+        <div class="option-item">A. giat</div><div class="option-item">B. malas</div><div class="option-item">C. humoris</div><div class="option-item">D. enggan</div>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <span class="question-num">SOAL 07 (MTS B.INDO)</span>
+      <div class="question-title">Perhatikan kalimat di bawah ini!
+(1) Annisa adalah anak yang baik.
+(2) Ainun adalah anak yang baik.
+(3) Annisa … Ainun adalah anak yang baik.
+
+Kata penghubung yang tepat untuk melengkapi kalimat (3) adalah ….</div>
+      <div class="options-grid">
+        <div class="option-item">A. dan</div><div class="option-item">B. atau</div><div class="option-item">C. tetapi</div><div class="option-item">D. sedangkan</div>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <span class="question-num">SOAL 08 (MTS B.INDO)</span>
+      <div class="question-title">"Aku ingin belajar di pesantren", kata Hafsah.
+
+Kalimat di atas jika diubah menjadi kalimat tidak langsung menjadi …</div>
+      <div class="options-grid">
+        <div class="option-item">A. Hafsah mengatakan bahwa aku ingin belajar di pesantren.</div>
+        <div class="option-item">B. Hafsah mengatakan bahwa ia ingin belajar di pesantren.</div>
+        <div class="option-item">C. Hafsah berkata aku ingin belajar di pesantren.</div>
+        <div class="option-item">D. Aku berkata Hafsah ingin belajar di pesantren.</div>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <span class="question-num">SOAL 09 (MTS B.INDO)</span>
+      <div class="question-title">Bacalah kutipan teks berikut ini!
+(1) Matahari adalah salah satu bintang di dalam tata surya kita yang menghasilkan panas dan cahaya. (2) Panas dan cahaya Matahari inilah yang memberikan kehidupan di bumi. (3) Perubahan panas Matahari dapat menyebabkan kehidupan makhluk hidup di bumi juga berpengaruh. (4) Jika panas Matahari berkurang, seluruh bagian di dunia akan membeku.
+
+Gagasan utama paragraf di atas terdapat dalam kalimat ….</div>
+      <div class="options-grid">
+        <div class="option-item">A. Kalimat 1</div><div class="option-item">B. Kalimat 2</div><div class="option-item">C. Kalimat 3</div><div class="option-item">D. Kalimat 4</div>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <span class="question-num">SOAL 10 (MTS B.INDO)</span>
+      <div class="question-title">Berdasarkan teks di atas, apa yang dihasilkan oleh matahari?</div>
+      <div class="options-grid">
+        <div class="option-item">A. kehidupan</div><div class="option-item">B. perubahan</div><div class="option-item">C. tata surya</div><div class="option-item">D. cahaya</div>
+      </div>
+    </div>
+
+    <div class="sub-heading">🔬 C. Ilmu Pengetahuan Alam (IPA - Soal 11 s/d 15)</div>
+
+    <div class="question-card">
+      <span class="question-num">SOAL 11 (MTS IPA)</span>
+      <div class="question-title">Kutu memperoleh makanan dengan mengisap darah dari tubuh hewan yang dihinggapinya, sehingga hewan tersebut mengalami pertumbuhan yang tidak sehat dan terganggu. Hubungan kedua makhluk ini disebut simbiosis ….</div>
+      <div class="options-grid">
+        <div class="option-item">A. Mutualisme</div><div class="option-item">B. Komensalisme</div><div class="option-item">C. Parasitisme</div><div class="option-item">D. Amensalisme</div>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <span class="question-num">SOAL 12 (MTS IPA)</span>
+      <div class="question-title">Di bawah ini yang bukan termasuk makhluk hidup yaitu ….</div>
+      <div class="options-grid">
+        <div class="option-item">A. Manusia</div><div class="option-item">B. Angin</div><div class="option-item">C. Hewan</div><div class="option-item">D. Tumbuhan</div>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <span class="question-num">SOAL 13 (MTS IPA)</span>
+      <div class="question-title">Dalam ekosistem sawah, urutan rantai makanan yang benar adalah ….</div>
+      <div class="options-grid">
+        <div class="option-item">A. Padi → Tikus → Ular → Elang</div>
+        <div class="option-item">B. Padi → Ular → Tikus → Elang</div>
+        <div class="option-item">C. Elang → Ular → Tikus → Padi</div>
+        <div class="option-item">D. Tikus → Padi → Ular → Elang</div>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <span class="question-num">SOAL 14 (MTS IPA)</span>
+      <div class="question-title">Ciri utama daun sebagai organ fotosintesis adalah ….</div>
+      <div class="options-grid">
+        <div class="option-item">A. Menghasilkan klorofil</div><div class="option-item">B. Adanya pertulangan daun</div><div class="option-item">C. Daun yang pipih dan lebar</div><div class="option-item">D. Memiliki stomata</div>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <span class="question-num">SOAL 15 (MTS IPA)</span>
+      <div class="question-title">Contoh hewan karnivora dari bangsa reptil adalah sebagai berikut, kecuali ….</div>
+      <div class="options-grid">
+        <div class="option-item">A. Kelinci</div><div class="option-item">B. Kadal</div><div class="option-item">C. Buaya</div><div class="option-item">D. Komodo</div>
+      </div>
+    </div>
+
+    <div class="sub-heading">📐 D. Matematika (Soal 16 s/d 20)</div>
+
+    <div class="question-card">
+      <span class="question-num">SOAL 16 (MTS MAT)</span>
+      <div class="question-title">Hasil dari (-20) x 3 + 24 : (-6) = ....</div>
+      <div class="options-grid">
+        <div class="option-item">A. 64</div><div class="option-item">B. 56</div><div class="option-item">C. -56</div><div class="option-item">D. -64</div>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <span class="question-num">SOAL 17 (MTS MAT)</span>
+      <div class="question-title">Berapakah hasil dari 4 x 1/8 : 2/3 ?</div>
+      <div class="options-grid">
+        <div class="option-item">A. 3/4</div><div class="option-item">B. 4/3</div><div class="option-item">C. 3/8</div><div class="option-item">D. 1</div>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <span class="question-num">SOAL 18 (MTS MAT)</span>
+      <div class="question-title">Umar bersepeda dari rumah ke pasar dengan kecepatan 120 meter/menit. Ia tiba di pasar dalam waktu 15 menit. Berapa meter jarak rumah Umar dari pasar?</div>
+      <div class="options-grid">
+        <div class="option-item">A. 1.250 meter</div><div class="option-item">B. 1.575 meter</div><div class="option-item">C. 1.800 meter</div><div class="option-item">D. 2.100 meter</div>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <span class="question-num">SOAL 19 (MTS MAT)</span>
+      <div class="question-title">Sebuah persegi panjang mempunyai panjang 7 cm dan lebar 4 cm, hitunglah keliling persegi panjang tersebut.</div>
+      <div class="options-grid">
+        <div class="option-item">A. 28 cm</div><div class="option-item">B. 22 cm</div><div class="option-item">C. 20 cm</div><div class="option-item">D. 11 cm</div>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <span class="question-num">SOAL 20 (MTS MAT)</span>
+      <div class="question-title">Nilai ulangan Matematika dari 5 siswa adalah: 80, 70, 90, 60, dan 75. Rata-rata nilai ulangan mereka adalah ….</div>
+      <div class="options-grid">
+        <div class="option-item">A. 70</div><div class="option-item">B. 75</div><div class="option-item">C. 80</div><div class="option-item">D. 85</div>
+      </div>
+    </div>
+
+    <!-- SECTION 2: TES AKADEMIK I'DAD LUGHAWI (IL) -->
+    <div class="section-header">
+      <div class="section-icon">📖</div>
+      <div class="section-title-text">2. TES AKADEMIK I'DAD LUGHAWI (IL - 20 SOAL LENGKAP)</div>
+    </div>
+
+    <div class="sub-heading">🕌 PAI Khusus Jenjang I'dad Lughawi (5 Opsi A-E)</div>
+
+    <div class="question-card">
+      <span class="question-num">SOAL 01 (IL PAI)</span>
+      <div class="question-title">Makna/arti lafazh syahadat Asyhadu allaa ilaaha illallaah adalah ….</div>
+      <div class="options-grid">
+        <div class="option-item">A. Aku bersaksi bahwa Muhammad adalah utusan Allah</div>
+        <div class="option-item">B. Aku bersaksi bahwa tidak ada tuhan yang berhak disembah kecuali Allah</div>
+        <div class="option-item">C. Allah tidak ada sekutu bagi-Nya</div>
+        <div class="option-item">D. Aku berlindung kepada Allah dari godaan setan</div>
+        <div class="option-item">E. Dengan menyebut nama Allah yang maha pengasih dan penyayang</div>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <span class="question-num">SOAL 02 (IL PAI)</span>
+      <div class="question-title">Rukun Iman ada 6 (enam), Iman kepada kitab Allah adalah rukun iman yang ke ….</div>
+      <div class="options-grid">
+        <div class="option-item">A. 2</div><div class="option-item">B. 3</div><div class="option-item">C. 4</div><div class="option-item">D. 5</div><div class="option-item">E. 6</div>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <span class="question-num">SOAL 03 (IL PAI)</span>
+      <div class="question-title">Syafiq adalah anak yang soleh, selalu menjalankan tugas dengan baik sehingga terpilih jadi ketua OSIS. Syafiq meneladani sifat nabi yaitu ….</div>
+      <div class="options-grid">
+        <div class="option-item">A. Tabligh</div><div class="option-item">B. Amanah</div><div class="option-item">C. Al Amiin</div><div class="option-item">D. Siddiiq</div><div class="option-item">E. Fathanah</div>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <span class="question-num">SOAL 04 (IL PAI)</span>
+      <div class="question-title">Allah bersemayam di ….</div>
+      <div class="options-grid">
+        <div class="option-item">A. Di mana-mana</div><div class="option-item">B. Di dalam hati</div><div class="option-item">C. Di atas lautan luas</div><div class="option-item">D. Di atas Arsy</div><div class="option-item">E. Menyatu dengan hamba</div>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <span class="question-num">SOAL 05 (IL PAI)</span>
+      <div class="question-title">Khalifah Ketiga sepeninggal Rasulullah Muhammad SAW wafat adalah ….</div>
+      <div class="options-grid">
+        <div class="option-item">A. Ali Bin Abi Thalib</div><div class="option-item">B. Utsman Bin Affan</div><div class="option-item">C. Abdullah Bin Zubeir</div><div class="option-item">D. Abu Bakar Ash Shiddiq</div><div class="option-item">E. Umar Bin Khattab</div>
+      </div>
+    </div>
+
+    <!-- SECTION 3: TES AKADEMIK MA / SMA NAHWU & BAHASA ARAB -->
+    <div class="section-header">
+      <div class="section-icon">🇸🇦</div>
+      <div class="section-title-text">3. TES AKADEMIK MA / SMA (BAHASA ARAB & NAHWU)</div>
+    </div>
+
+    <div class="question-card">
+      <span class="question-num">SOAL 01 (MA NAHWU)</span>
+      <div class="question-title">اختر المبتدأ في الجملة: الْعِلْمُ نُورٌ</div>
+      <div class="options-grid">
+        <div class="option-item">A. العلم</div><div class="option-item">B. نور</div><div class="option-item">C. ال</div><div class="option-item">D. جملة</div>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <span class="question-num">SOAL 02 (MA NAHWU)</span>
+      <div class="question-title">ما علامة رفع الفاعل في الجملة: «جاءَ الطُّلاَّبُ»</div>
+      <div class="options-grid">
+        <div class="option-item">A. الضمة</div><div class="option-item">B. الفتحة</div><div class="option-item">C. الكسرة</div><div class="option-item">D. السكون</div>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <span class="question-num">SOAL 03 (MA NAHWU)</span>
+      <div class="question-title">في جملة «سافَرَ أحمدُ إلى مكةَ»، كلمة «مكةَ» إعرابها …</div>
+      <div class="options-grid">
+        <div class="option-item">A. فاعل مرفوع</div><div class="option-item">B. مفعول به منصوب</div><div class="option-item">C. اسم مجرور</div><div class="option-item">D. ظرف منصوب</div>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <span class="question-num">SOAL 04 (MA NAHWU)</span>
+      <div class="question-title">أيُّ الجمل الآتية جملةٌ اسميَّة؟</div>
+      <div class="options-grid">
+        <div class="option-item">A. يكتب الطالب الدرس</div><div class="option-item">B. الطالب مجتهد</div><div class="option-item">C. سافر المعلم</div><div class="option-item">D. أكل الولد التفاحة</div>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <span class="question-num">SOAL 05 (MA NAHWU)</span>
+      <div class="question-title">في قولنا: «مَرَرْتُ بِالمُعَلِّمِ»، كلمة «المُعَلِّمِ» مجرورة بسبب …</div>
+      <div class="options-grid">
+        <div class="option-item">A. كونها مفعولا به</div><div class="option-item">B. دخول الباء عليها</div><div class="option-item">C. كونها فاعلا</div><div class="option-item">D. كونها مبتدأ</div>
+      </div>
+    </div>
+
+    <!-- SECTION 4: FORM PENILAIAN AL-QUR'AN, HAFALAN & LISAN BAHASA ARAB -->
+    <div class="section-header">
+      <div class="section-icon">📖</div>
+      <div class="section-title-text">4. FORM PENILAIAN AL-QUR'AN, HAFALAN & LISAN BAHASA ARAB</div>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 180px;">Jenis Ujian Lisan</th>
+            <th>Ketentuan & Target Pendaftar</th>
+            <th>Aspek Penilaian Penguji</th>
+            <th>Bentuk Nilai & Output Sistem</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Tes Al-Qur'an (Utama)</strong></td>
+            <td><strong>SEMUA JENJANG</strong> (MTs, IL, MA/SMA)</td>
+            <td>
+              - Kelancaran Bacaan & Fashohah<br>
+              - Penguasaan Hukum Tajwid<br>
+              - Ketepatan Makhorijul Huruf<br>
+              - Capaian Hafalan Al-Qur'an
+            </td>
+            <td>Nilai 0–100 & Rekomendasi Status (A: Mumtaz, B: Jayyid, C: Dha'if)</td>
+          </tr>
+          <tr>
+            <td><strong>2. Tes Tambahan Hafalan (4 Juz Mutqin)</strong></td>
+            <td><strong style="color: #0f766e;">KHUSUS JALUR SMA / MA LANGSUNG (TANPA IL)</strong></td>
+            <td>
+              - <strong>Syarat Wajib Minimal 4 Juz Mutqin</strong><br>
+              - Kebenaran Hafalan Ziyadah & Muraja'ah<br>
+              - Kelancaran Sambung Ayat
+            </td>
+            <td>Nilai Tes Hafalan (0–100) & Catatan Penguji Hafalan</td>
+          </tr>
+          <tr>
+            <td><strong>3. Tes Lisan Bahasa Arab</strong></td>
+            <td><strong style="color: #d97706;">KHUSUS JALUR SMA / MA LANGSUNG (TANPA IL)</strong></td>
+            <td>
+              - Muhadatsah (Percakapan Bahasa Arab)<br>
+              - Kafa'ah Lughawiyyah (Grammar/Nahwu)<br>
+              - Fahmul Maqru' (Pemahaman Bacaan Kitab)
+            </td>
+            <td>Nilai Lisan Arab (0–100) & Catatan Penguji Bahasa Arab</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    Sistem Informasi PPDB Pesantren Al-Andalus Demo &copy; 2026/2027 — Seluruh Hak Cipta Dilindungi.
+  </div>
+
+</div>
+
+</body>
+</html>
