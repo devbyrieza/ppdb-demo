@@ -444,20 +444,20 @@ export default function AdminDashboardPage() {
                 <p className="text-[10px] sm:text-[11px] font-black text-emerald-100/70 uppercase tracking-widest mt-2">Bayar Pendaftaran</p>
               </div>
             </div>
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 w-full lg:w-[320px] shrink-0 mt-8">
+             <div className="bg-white/10 backdrop-blur-xl p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl border border-white/20 shadow-xl flex flex-col items-center justify-center text-center group hover:bg-white/15 transition-all min-w-0">
+                <p className="text-[10px] sm:text-xs font-black text-white/90 uppercase tracking-wider mb-1 sm:mb-2 text-center group-hover:text-white transition-colors truncate w-full">Diterima</p>
+                <p className="text-2xl sm:text-3xl font-black text-primary-300 drop-shadow-md">{stats.diterima}</p>
+             </div>
+             <div className="bg-white/10 backdrop-blur-xl p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl border border-white/20 shadow-xl flex flex-col items-center justify-center text-center group hover:bg-white/15 transition-all min-w-0">
+                <p className="text-[10px] sm:text-xs font-black text-white/90 uppercase tracking-wider mb-1 sm:mb-2 text-center group-hover:text-white transition-colors truncate w-full">Proses Daftar Ulang</p>
+                <p className="text-2xl sm:text-3xl font-black text-secondary-300 drop-shadow-md">{stats.daftar_ulang_sedang}</p>
+             </div>
+             <div className="col-span-2 bg-white/10 backdrop-blur-xl p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl border border-white/20 shadow-xl flex flex-col items-center justify-center text-center group hover:bg-white/15 transition-all min-w-0">
+                <p className="text-[10px] sm:text-xs font-black text-white/90 uppercase tracking-wider mb-1 sm:mb-2 text-center group-hover:text-white transition-colors truncate w-full">Lunas Daftar Ulang</p>
+                <p className="text-2xl sm:text-3xl font-black text-primary-300 drop-shadow-md">{stats.daftar_ulang_selesai}</p>
+             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-[24px_28px] sm:gap-6 w-full lg:w-auto">
-             <div className="bg-white/10 backdrop-blur-xl p-[24px_28px] sm:p-6 lg:p-[24px_28px] md:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-white/20 shadow-xl flex flex-col items-center group hover:bg-white/15 transition-all">
-                <p className="text-[9px] sm:text-[10px] font-black text-white/80 uppercase tracking-widest mb-2 sm:mb-4 text-center group-hover:text-white transition-colors">Diterima</p>
-                <p className="text-2xl sm:text-2xl md:text-4xl font-black text-emerald-300 drop-shadow-md">{stats.diterima}</p>
-             </div>
-             <div className="bg-white/10 backdrop-blur-xl p-[24px_28px] sm:p-6 lg:p-[24px_28px] md:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-white/20 shadow-xl flex flex-col items-center group hover:bg-white/15 transition-all">
-                <p className="text-[9px] sm:text-[10px] font-black text-white/80 uppercase tracking-widest mb-2 sm:mb-4 text-center group-hover:text-white transition-colors">Proses Daftar Ulang</p>
-                <p className="text-2xl sm:text-2xl md:text-4xl font-black text-gold-400 drop-shadow-md">{stats.daftar_ulang_sedang}</p>
-             </div>
-             <div className="bg-white/10 backdrop-blur-xl p-[24px_28px] sm:p-6 lg:p-[24px_28px] md:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-white/20 shadow-xl flex flex-col items-center group hover:bg-white/15 transition-all md:col-span-2">
-                <p className="text-[9px] sm:text-[10px] font-black text-white/80 uppercase tracking-widest mb-2 sm:mb-4 text-center group-hover:text-white transition-colors">Lunas Daftar Ulang</p>
-                <p className="text-2xl sm:text-2xl md:text-4xl font-black text-emerald-300 drop-shadow-md">{stats.daftar_ulang_selesai}</p>
-             </div>
           </div>
         </div>
       </div>
