@@ -184,52 +184,6 @@ export function formatStatusDisplay(status: StatusProses) {
     selection: { label: "Proses Seleksi", color: "bg-purple-100 text-purple-700" },
     scheduled: { label: "Proses Seleksi", color: "bg-purple-100 text-purple-700" },
     tested: { label: "Proses Seleksi", color: "bg-violet-100 text-violet-700" },
-    announced: { label: "Hasil Pengumuman", color: "bg-cyan-100 text-cyan-700" },
-    accepted: { label: "Diterima", color: "bg-green-100 text-green-700" },
-    enrolled: { label: "Proses Daftar Ulang", color: "bg-emerald-100 text-emerald-700" },
-    enrolled_full: { label: "Lunas Daftar Ulang", color: "bg-primary-100 text-primary-700" },
-    pindah_keluar: { label: "Pindah Keluar", color: "bg-slate-100 text-slate-600" },
-  };
-  return statusMap[status] || { label: status, color: "bg-stone-100 text-stone-700" };
-}
-
-// ─── 5. ROLE-BASED ACCESS CONTROL (RBAC) ───
-
-export type UserRole = "pendaftar" | "admin_berkas" | "admin_keuangan" | "penguji" | "pewawancara_calsan" | "pewawancara_cawalsan" | "admin_super" | "admin" | "penguji_hafalan" | "penguji_bahasa_arab";
-
-export const ROLE_LABELS: Record<UserRole, string> = {
-  pendaftar: "Pendaftar",
-  admin_berkas: "Admin Berkas",
-  admin_keuangan: "Admin Keuangan",
-  penguji: "Penguji Al-Qur'an",
-  pewawancara_calsan: "Pewawancara Calsan",
-  pewawancara_cawalsan: "Pewawancara Cawalsan",
-  penguji_hafalan: "Penguji Hafalan",
-  penguji_bahasa_arab: "Penguji Lisan B. Arab",
-  admin_super: "Admin Super",
-  admin: "Administrator",
-};
-
-export const ROLE_PERMISSIONS: Record<UserRole, string[]> = {
-  pendaftar: ["view_own_data", "edit_own_data", "upload_documents", "view_payment_status", "view_announcement"],
-  admin_berkas: ["view_pendaftar_list", "verify_documents", "export_pendaftar_data"],
-  admin_keuangan: ["view_pendaftar_list", "verify_payment", "view_financial_reports"],
-  penguji: ["view_exam_schedule", "input_exam_scores"],
-  pewawancara_calsan: ["view_exam_schedule", "input_exam_scores"],
-  pewawancara_cawalsan: ["view_exam_schedule", "input_exam_scores"],
-  penguji_hafalan: ["view_exam_schedule", "input_exam_scores"],
-  penguji_bahasa_arab: ["view_exam_schedule", "input_exam_scores"],
-  admin_super: ["view_pendaftar_list", "view_dashboard_stats", "manage_users", "manage_settings"],
-  admin: ["view_pendaftar_list", "verify_documents", "verify_payment", "input_exam_scores"],
-};
-
-export const DASHBOARD_ROUTES: Record<UserRole, string> = {
-  pendaftar: "/dashboard/pendaftar",
-  admin_berkas: "/dashboard/admin",
-  admin_keuangan: "/dashboard/admin",
-  penguji: "/dashboard/penguji",
-  pewawancara_calsan: "/dashboard/penguji",
-  pewawancara_cawalsan: "/dashboard/penguji",
   penguji_hafalan: "/dashboard/penguji",
   penguji_bahasa_arab: "/dashboard/penguji",
   admin_super: "/dashboard/admin",
@@ -242,17 +196,7 @@ export function hasPermission(role: UserRole, permission: string): boolean {
 
 export function isAdminRole(role: UserRole): boolean {
   return ["admin_berkas", "admin_keuangan", "admin_super", "admin"].includes(role);
-}
-
-// ─── 6. DYNAMIC MENU LOGIC ───
-
-export function getMenuItemsForRole(role: UserRole) {
-  const menus: Record<string, any[]> = {
-    admin_berkas: [
-      { name: "Dashboard", href: "/dashboard/admin", icon: "LayoutDashboard" },
-      { name: "Data Pendaftar", href: "/dashboard/admin/pendaftar", icon: "Users" },
-      { name: "Verifikasi Dokumen", href: "/dashboard/admin/verifikasi-dokumen", icon: "FileCheck" },
-  return getStatusIndex(currentStatus) >= getStatusIndex(minimumStatus);
+}return getStatusIndex(currentStatus) >= getStatusIndex(minimumStatus);
 }
 
 // ─── 2. SISTEM TABS (NAVIGATION CONTROL) ───
@@ -510,6 +454,10 @@ export function getMenuItemsForRole(role: UserRole) {
       { name: "Broadcast WA", href: "/dashboard/admin/broadcast", icon: "Zap", group: "KOMUNIKASI" },
       { name: "Manajemen User", href: "/dashboard/admin/users", icon: "UserCog", group: "SISTEM" },
       { name: "Pengaturan", href: "/dashboard/admin/pengaturan", icon: "Settings", group: "SISTEM" },
+    ],
+  };
+  return menus[role] || [];
+}
 
 /**
  * calculateProgressToUnlock
