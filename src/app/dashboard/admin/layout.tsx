@@ -37,7 +37,7 @@ export default async function AdminDashboardLayout({
         }
 
         // Fetch real-time count badges for the admin sidebar
-        const baseWhere = getAdminWhereClause();
+        const baseWhere = await getAdminWhereClause();
 
         // 1. Payments waiting for verification (status is not verified and not rejected)
         unverifiedPaymentsCount = await prisma.pembayaran.count({

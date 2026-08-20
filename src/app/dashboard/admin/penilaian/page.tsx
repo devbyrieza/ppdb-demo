@@ -26,6 +26,7 @@ import {
   FileText,
   Eye,
   Share2,
+  Sparkles,
 } from "lucide-react";
 
 // Removed basic xlsx imports in favor of professional utility
