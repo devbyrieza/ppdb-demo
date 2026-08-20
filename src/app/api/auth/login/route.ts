@@ -110,6 +110,7 @@ export async function POST(request: NextRequest) {
         where: {
           OR: [
             { email: { equals: identifier, mode: "insensitive" } },
+            { username: { equals: identifier, mode: "insensitive" } },
             { phone: { in: phoneVariations } },
           ],
         },

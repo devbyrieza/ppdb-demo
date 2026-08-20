@@ -16,6 +16,7 @@ interface UserSession {
   full_name: string;
   role: string;
   phone?: string;
+  username?: string;
 }
 
 export default function ProfileSettings({ user }: { user: UserSession }) {
@@ -25,6 +26,7 @@ export default function ProfileSettings({ user }: { user: UserSession }) {
   // Profile Info State
   const [fullName, setFullName] = useState(user?.full_name || "");
   const [phone, setPhone] = useState(user?.phone || "");
+  const [username, setUsername] = useState(user?.username || "");
 
   // UI State
   const [loading, setLoading] = useState(false);
@@ -62,7 +64,7 @@ export default function ProfileSettings({ user }: { user: UserSession }) {
       const res = await fetch("/api/profile/update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ full_name: fullName, phone }),
+        body: JSON.stringify({ full_name: fullName, phone, username }),
       });
 
       const data = await res.json();
@@ -209,20 +211,37 @@ export default function ProfileSettings({ user }: { user: UserSession }) {
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Email Saat Ini
-              </label>
-              <input
-                type="text"
-                value={user?.email || ""}
-                disabled
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-500 cursor-not-allowed focus:ring-0"
-              />
-              <p className="text-[10px] text-gray-400 mt-1.5 ml-1 italic">
-                Email tidak dapat diubah sendiri. Hubungi Admin Pusat jika ada
-                kesalahan data.
-              </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                  Username
+                </label>
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="contoh.username"
+                  className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none"
+                />
+                <p className="text-[10px] text-gray-400 mt-1.5 ml-1 italic">
+                  Kosongkan jika belum memiliki username.
+                </p>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Email Saat Ini
+                </label>
+                <input
+                  type="text"
+                  value={user?.email || ""}
+                  disabled
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-500 cursor-not-allowed focus:ring-0"
+                />
+                <p className="text-[10px] text-gray-400 mt-1.5 ml-1 italic">
+                  Email tidak dapat diubah sendiri. Hubungi Admin Pusat jika ada
+                  kesalahan data.
+                </p>
+              </div>
             </div>
 
             <div className="pt-2 flex items-center justify-between">
