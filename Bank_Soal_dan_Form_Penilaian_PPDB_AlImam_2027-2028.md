@@ -1,4 +1,4 @@
-# 📜 Bank Soal Seleksi & Form Penilaian PPDB Al-Andalus Demo (100% LENGKAP)
+# 📜 Bank Soal Seleksi & Form Penilaian PPDB Al-Andalus Al-Andalus (100% LENGKAP)
 > **Dokumen Evaluasi Relevansi & Upgrade Panitia PPDB (TA 2027–2028)**
 
 > ⚠️ **KETENTUAN KHUSUS JALUR SMA / MA LANGSUNG (TANPA I'DAD LUGHAWI / TANPA IL):**
@@ -26,4 +26,4 @@
 | **3. Tes Lisan Bahasa Arab** | **KHUSUS JALUR SMA/MA LANGSUNG (TANPA IL)** | Muhadatsah (Percakapan), Kafa'ah Lughawiyyah (Grammar/Nahwu), Fahmul Maqru' (Pemahaman Bacaan Kitab). |
 
 ---
-*Dokumen ini dibuat otomatis dari codebase Sistem PPDB Al-Andalus Demo untuk keperluan peninjauan dan upgrade Panitia PPDB TA 2027–2028.*
+*Dokumen ini dibuat otomatis dari codebase Sistem PPDB Al-Andalus Al-Andalus untuk keperluan peninjauan dan upgrade Panitia PPDB TA 2027–2028.*

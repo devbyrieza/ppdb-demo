@@ -664,7 +664,7 @@ export default function ExaminerDashboard() {
           <button
             onClick={() => {
               const message = encodeURIComponent(
-                `*Assalamu’alaikum Warahmatullahi Wabarakatuh*\n\nYth. Ustadz / Ustadzah Panitia PPDB Pesantren Al-Andalus Demo,\n\nBerikut link akses khusus Bank Soal Seleksi & Form Penilaian Penguji untuk peninjauan & evaluasi TA 2027–2028:\n\n🔗 https://ppdb.pesantren-demo.com/panitia/bank-soal\n\n_Mohon bantuan ustadz/ustadzah untuk meninjau relevansi soal dan rubrik wawancara._\n\nSyukron, Jazakumullahu Khairan. 🙏`
+                `*Assalamu’alaikum Warahmatullahi Wabarakatuh*\n\nYth. Ustadz / Ustadzah Panitia PPDB Pesantren Al-Andalus Al-Andalus,\n\nBerikut link akses khusus Bank Soal Seleksi & Form Penilaian Penguji untuk peninjauan & evaluasi TA 2027–2028:\n\n🔗 https://ppdb.pesantren-demo.com/panitia/bank-soal\n\n_Mohon bantuan ustadz/ustadzah untuk meninjau relevansi soal dan rubrik wawancara._\n\nSyukron, Jazakumullahu Khairan. 🙏`
               );
               window.open(`https://wa.me/?text=${message}`, "_blank");
             }}

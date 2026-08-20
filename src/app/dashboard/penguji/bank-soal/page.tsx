@@ -106,7 +106,7 @@ export default function BankSoalPanitiaPage() {
               Bank Soal Seleksi & Form Penilaian PPDB
             </h1>
             <p className="text-[#ddc192]/90 text-xs md:text-sm max-w-3xl leading-relaxed font-medium">
-              Pusat peninjauan instrumen tes seleksi (Akademik, Kesiapan, Kepribadian) dan rubrik penilaian resmi penguji (Al-Qur'an, Wawancara Santri & Orang Tua) Pesantren Al-Andalus Demo Sukabumi.
+              Pusat peninjauan instrumen tes seleksi (Akademik, Kesiapan, Kepribadian) dan rubrik penilaian resmi penguji (Al-Qur'an, Wawancara Santri & Orang Tua) Pesantren Al-Andalus Al-Andalus Sukabumi.
             </p>
           </div>
 
