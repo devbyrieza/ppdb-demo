@@ -220,98 +220,27 @@ export const ROLE_PERMISSIONS: Record<UserRole, string[]> = {
   penguji_hafalan: ["view_exam_schedule", "input_exam_scores"],
   penguji_bahasa_arab: ["view_exam_schedule", "input_exam_scores"],
   admin_super: ["view_pendaftar_list", "view_dashboard_stats", "manage_users", "manage_settings"],
-  admin: ["view_pendaftar_list", "verify_documents", "verify_payment", "input_exam_scores"],
-};
-
-export const DASHBOARD_ROUTES: Record<UserRole, string> = {
-  pendaftar: "/dashboard/pendaftar",
-  admin_berkas: "/dashboard/admin",
-  admin_keuangan: "/dashboard/admin",
-  penguji: "/dashboard/penguji",
-  pewawancara_calsan: "/dashboard/penguji",
-  pewawancara_cawalsan: "/dashboard/penguji",
-  penguji_hafalan: "/dashboard/penguji",
-  penguji_bahasa_arab: "/dashboard/penguji",
-  admin_super: "/dashboard/admin",
-  admin: "/dashboard/admin",
-};
-
-export function hasPermission(role: UserRole, permission: string): boolean {
-  return ROLE_PERMISSIONS[role]?.includes(permission) ?? false;
-}
-
-export function isAdminRole(role: UserRole): boolean {
-  return ["admin_berkas", "admin_keuangan", "admin_super", "admin"].includes(role);
-}
-
-// ─── 6. DYNAMIC MENU LOGIC ───
-
-export function getMenuItemsForRole(role: UserRole) {
-  const menus: Record<string, any[]> = {
-    admin_berkas: [
+      admin: [
       { name: "Dashboard", href: "/dashboard/admin", icon: "LayoutDashboard" },
-      { name: "Data Pendaftar", href: "/dashboard/admin/pendaftar", icon: "Users" },
-      { name: "Verifikasi Dokumen", href: "/dashboard/admin/verifikasi-dokumen", icon: "FileCheck" },
-    ],
-    admin_keuangan: [
-      { name: "Dashboard", href: "/dashboard/admin", icon: "LayoutDashboard" },
-      { name: "Data Pendaftar", href: "/dashboard/admin/pendaftar", icon: "Users" },
-      { name: "Verifikasi Pembayaran", href: "/dashboard/admin/verifikasi-pembayaran", icon: "CreditCard" },
-      { name: "Rekap Keuangan", href: "/dashboard/admin/keuangan", icon: "BarChart" },
-    ],
-    penguji: [
-      { name: "Dashboard", href: "/dashboard/penguji", icon: "LayoutDashboard" },
-      { name: "Jadwal Seleksi", href: "/dashboard/penguji/jadwal", icon: "Calendar" },
-      { name: "Input Nilai", href: "/dashboard/penguji/input-nilai", icon: "ClipboardEdit" },
-      { name: "Bank Soal & Penilaian", href: "/dashboard/penguji/bank-soal", icon: "FileText" },
-    ],
-    pewawancara_calsan: [
-      { name: "Dashboard", href: "/dashboard/penguji", icon: "LayoutDashboard" },
-      { name: "Jadwal Seleksi", href: "/dashboard/penguji/jadwal", icon: "Calendar" },
-      { name: "Input Nilai", href: "/dashboard/penguji/input-nilai", icon: "ClipboardEdit" },
-      { name: "Bank Soal & Penilaian", href: "/dashboard/penguji/bank-soal", icon: "FileText" },
-    ],
-    pewawancara_cawalsan: [
-      { name: "Dashboard", href: "/dashboard/penguji", icon: "LayoutDashboard" },
-      { name: "Jadwal Seleksi", href: "/dashboard/penguji/jadwal", icon: "Calendar" },
-      { name: "Input Nilai", href: "/dashboard/penguji/input-nilai", icon: "ClipboardEdit" },
-      { name: "Bank Soal & Penilaian", href: "/dashboard/penguji/bank-soal", icon: "FileText" },
-    ],
-    penguji_hafalan: [
-      { name: "Dashboard", href: "/dashboard/penguji", icon: "LayoutDashboard" },
-      { name: "Jadwal Seleksi", href: "/dashboard/penguji/jadwal", icon: "Calendar" },
-      { name: "Input Nilai", href: "/dashboard/penguji/input-nilai", icon: "ClipboardEdit" },
-      { name: "Bank Soal & Penilaian", href: "/dashboard/penguji/bank-soal", icon: "FileText" },
-    ],
-    penguji_bahasa_arab: [
-      { name: "Dashboard", href: "/dashboard/penguji", icon: "LayoutDashboard" },
-      { name: "Jadwal Seleksi", href: "/dashboard/penguji/jadwal", icon: "Calendar" },
-      { name: "Input Nilai", href: "/dashboard/penguji/input-nilai", icon: "ClipboardEdit" },
-      { name: "Bank Soal & Penilaian", href: "/dashboard/penguji/bank-soal", icon: "FileText" },
-    ],
-    admin: [
-      { name: "Dashboard", href: "/dashboard/admin", icon: "LayoutDashboard" },
-      { name: "Data Pendaftar", href: "/dashboard/admin/pendaftar", icon: "Users" },
-      { name: "Verifikasi Dokumen", href: "/dashboard/admin/verifikasi-dokumen", icon: "FileCheck" },
-      { name: "Verifikasi Pembayaran", href: "/dashboard/admin/verifikasi-pembayaran", icon: "CreditCard" },
-      { name: "Manajemen Jadwal", href: "/dashboard/admin/jadwal/monitoring", icon: "Calendar" },
-      { name: "Bantuan Biaya", href: "/dashboard/admin/beasiswa", icon: "Trophy" },
-      { name: "Rekap Seragam", href: "/dashboard/admin/seragam", icon: "Shirt" },
+      { name: "Data Pendaftar", href: "/dashboard/admin/pendaftar", icon: "Users", group: "OPERASIONAL" },
+      { name: "Manajemen Jadwal", href: "/dashboard/admin/jadwal/monitoring", icon: "Calendar", group: "OPERASIONAL" },
+      { name: "Rekap Keuangan", href: "/dashboard/admin/keuangan", icon: "Landmark", group: "OPERASIONAL" },
+      { name: "Rekap Seragam", href: "/dashboard/admin/seragam", icon: "Shirt", group: "OPERASIONAL" },
+      { name: "Fee Penguji", href: "/dashboard/admin/fee-penguji", icon: "Wallet", group: "OPERASIONAL" },
+      { name: "Bantuan Biaya", href: "/dashboard/admin/beasiswa", icon: "Trophy", group: "OPERASIONAL" },
       { name: "Penilaian & Kelulusan", href: "/dashboard/admin/penilaian", icon: "ClipboardEdit", group: "HASIL SELEKSI" },
-      { name: "Bank Soal & Penilaian", href: "/dashboard/admin/bank-soal", icon: "FileText", group: "HASIL SELEKSI" },
-      { name: "Statistik Wilayah", href: "/dashboard/admin/statistik-wilayah", icon: "Map", group: "HASIL SELEKSI" },
+      { name: "Statistik Wilayah", href: "/dashboard/admin/statistik-wilayah", icon: "Map", group: "STATISTIK WILAYAH" },
     ],
     admin_super: [
       { name: "Dashboard", href: "/dashboard/admin", icon: "LayoutDashboard" },
       { name: "Data Pendaftar", href: "/dashboard/admin/pendaftar", icon: "Users", group: "OPERASIONAL" },
       { name: "Manajemen Jadwal", href: "/dashboard/admin/jadwal/monitoring", icon: "Calendar", group: "OPERASIONAL" },
-      { name: "Bantuan Biaya", href: "/dashboard/admin/beasiswa", icon: "Trophy", group: "OPERASIONAL" },
       { name: "Rekap Keuangan", href: "/dashboard/admin/keuangan", icon: "Landmark", group: "OPERASIONAL" },
       { name: "Rekap Seragam", href: "/dashboard/admin/seragam", icon: "Shirt", group: "OPERASIONAL" },
       { name: "Fee Penguji", href: "/dashboard/admin/fee-penguji", icon: "Wallet", group: "OPERASIONAL" },
+      { name: "Bantuan Biaya", href: "/dashboard/admin/beasiswa", icon: "Trophy", group: "OPERASIONAL" },
       { name: "Penilaian & Kelulusan", href: "/dashboard/admin/penilaian", icon: "ClipboardEdit", group: "HASIL SELEKSI" },
-      { name: "Bank Soal & Penilaian", href: "/dashboard/admin/bank-soal", icon: "FileText", group: "HASIL SELEKSI" },
-      { name: "Statistik Wilayah", href: "/dashboard/admin/statistik-wilayah", icon: "Map", group: "HASIL SELEKSI" },
+      { name: "Statistik Wilayah", href: "/dashboard/admin/statistik-wilayah", icon: "Map", group: "STATISTIK WILAYAH" },
       { name: "Broadcast WA", href: "/dashboard/admin/broadcast", icon: "Zap", group: "KOMUNIKASI" },
       { name: "Manajemen User", href: "/dashboard/admin/users", icon: "UserCog", group: "SISTEM" },
       { name: "Pengaturan", href: "/dashboard/admin/pengaturan", icon: "Settings", group: "SISTEM" },
