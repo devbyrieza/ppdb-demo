@@ -37,19 +37,19 @@ export default function BankSoalPanitiaPage() {
   const filteredMts = AKADEMIK_MTS.filter(
     (q) =>
       q.text.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      q.options.some((o) => o.label.toLowerCase().includes(searchQuery.toLowerCase()))
+      (q.options || []).some((o) => o.label.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   const filteredIl = AKADEMIK_IL.filter(
     (q) =>
       q.text.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      q.options.some((o) => o.label.toLowerCase().includes(searchQuery.toLowerCase()))
+      (q.options || []).some((o) => o.label.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   const filteredMa = AKADEMIK_MA.filter(
     (q) =>
       q.text.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      q.options.some((o) => o.label.toLowerCase().includes(searchQuery.toLowerCase()))
+      (q.options || []).some((o) => o.label.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   const filteredKepribadian = KEPRIBADIAN_QUESTIONS.filter(
@@ -215,7 +215,7 @@ export default function BankSoalPanitiaPage() {
                   </div>
                   <p className="font-bold text-slate-900 text-sm leading-relaxed whitespace-pre-line">{q.text}</p>
                   <div className="grid grid-cols-1 gap-2 pt-1">
-                    {q.options.map((opt) => (
+                    {(q.options || []).map((opt) => (
                       <div
                         key={opt.value}
                         className="p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs font-medium text-slate-800 flex items-start gap-2.5 hover:bg-slate-100/80 transition-colors"
@@ -270,7 +270,7 @@ export default function BankSoalPanitiaPage() {
                   </div>
                   <p className="font-bold text-slate-900 text-sm leading-relaxed whitespace-pre-line">{q.text}</p>
                   <div className="grid grid-cols-1 gap-2 pt-1">
-                    {q.options.map((opt) => (
+                    {(q.options || []).map((opt) => (
                       <div
                         key={opt.value}
                         className="p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs font-medium text-slate-800 flex items-start gap-2.5 hover:bg-slate-100/80 transition-colors"
@@ -333,7 +333,7 @@ export default function BankSoalPanitiaPage() {
                     {q.text}
                   </p>
                   <div className="grid grid-cols-1 gap-2 pt-1">
-                    {q.options.map((opt) => (
+                    {(q.options || []).map((opt) => (
                       <div
                         key={opt.value}
                         className="p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs font-medium text-slate-800 flex items-start gap-2.5 hover:bg-slate-100/80 transition-colors"
