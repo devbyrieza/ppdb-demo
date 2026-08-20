@@ -1,18 +1,17 @@
-name: Auto-Deploy Trigger (Unlimited Free)
+name: Auto-Deploy to Vercel
 
 on:
   push:
     branches:
       - main
-      - master
 
 jobs:
-  notify-deploy:
-    name: Auto Deploy ppdb-demo
+  vercel-notice:
+    name: Vercel Auto-Deploy
     runs-on: ubuntu-latest
 
     steps:
-      - name: 🚀 Trigger Deployment Event
+      - name: 🚀 Vercel Auto Build & Deploy Triggered
         run: |
-          echo "Push detected on branch ${{ github.ref_name }} for ppdb-demo."
-          echo "Coolify server deployment sequence initiated successfully."
+          echo "Push detected on main branch for template-demo."
+          echo "Vercel edge network is automatically compiling and deploying the application."
