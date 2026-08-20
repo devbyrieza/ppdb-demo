@@ -97,12 +97,21 @@ export async function POST(request: NextRequest) {
         );
       }
 
+      const cleanPhone = identifier.replace(/\D/g, "");
+      let phoneVariations = [identifier];
+      if (cleanPhone.startsWith("62")) {
+        phoneVariations.push("0" + cleanPhone.substring(2));
+      } else if (cleanPhone.startsWith("0")) {
+        phoneVariations.push("62" + cleanPhone.substring(1));
+        phoneVariations.push("+62" + cleanPhone.substring(1));
+      }
+
       const profile = await prisma.profile.findFirst({
         where: {
           OR: [
-            { email },
-            { username: email },
-            { phone: email },
+            { email: { equals: identifier, mode: "insensitive" } },
+            { username: { equals: identifier, mode: "insensitive" } },
+            { phone: { in: phoneVariations } },
           ],
         },
       });
