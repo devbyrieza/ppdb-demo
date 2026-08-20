@@ -574,12 +574,12 @@ export default function LoginPage() {
                   onSubmit={handleLoginAdmin}
                   className="space-y-8"
                 >
-                  <AuthInput label="Email Institusi" icon={Mail}>
+                  <AuthInput label="Username / Email / No. WA Admin" icon={Mail}>
                     <input
-                      type="email"
+                      type="text"
                       value={emailAdmin}
                       onChange={(e) => setEmailAdmin(e.target.value)}
-                      placeholder="admin@pesantren-alandalus.com"
+                      placeholder="Username / Email / No. WA"
                       className="w-full px-5 py-3 md:px-8 md:py-5 pl-14 md:pl-16 rounded-[24px] md:rounded-[24px] bg-white/50 backdrop-blur-sm border border-white/50 focus:bg-white/90 focus:border-secondary-400 focus:ring-4 focus:ring-secondary-100 transition-all font-bold text-ink-950 placeholder:font-medium placeholder:text-ink-400 text-sm md:text-base shadow-inner"
                       disabled={isLoading}
                     />

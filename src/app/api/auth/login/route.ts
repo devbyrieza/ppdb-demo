@@ -98,12 +98,18 @@ export async function POST(request: NextRequest) {
       }
 
       const profile = await prisma.profile.findFirst({
-        where: { email },
+        where: {
+          OR: [
+            { email },
+            { username: email },
+            { phone: email },
+          ],
+        },
       });
 
       if (!profile || !profile.password_hash) {
         return NextResponse.json(
-          { error: "Email atau Password salah" },
+          { error: "Username / Email / No. WA atau Password salah" },
           { status: 401 },
         );
       }
