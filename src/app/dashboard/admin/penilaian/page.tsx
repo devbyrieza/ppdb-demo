@@ -639,7 +639,7 @@ export default function ExaminerDashboard() {
         </div>
       </div>
       {/* BARU: Banner Akses Khusus & Share WA Bank Soal Panitia (Al-Andalus Maroon & Krem Emas) */}
-      <div className="bg-gradient-to-r from-[#550000] via-[#480000] to-[#360000] text-white p-5 rounded-3xl shadow-lg border border-[#6b0000]/60 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div style={{ background: "linear-gradient(135deg, #550000 0%, #360000 100%)" }} className="text-white p-5 sm:p-6 rounded-3xl shadow-xl border border-[#6b0000]/60 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex items-center gap-3.5">
           <div className="p-3.5 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 flex-shrink-0">
             <FileText className="w-6 h-6 text-[#ddc192]" />

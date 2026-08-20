@@ -165,7 +165,7 @@ export default function BantuanBiayaPage() {
             Kelola pemberian beasiswa gratis dan keringanan potongan biaya per pendaftar
           </p>
         </div>
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3.5 w-full">
           <button
             onClick={fetchData}
             className="flex items-center gap-2 p-[16px_20px] bg-white hover:bg-stone-50 border border-stone-200 text-stone-600 font-bold text-sm rounded-[24px] shadow-sm"
@@ -259,7 +259,7 @@ export default function BantuanBiayaPage() {
         </div>
 
         {/* Search */}
-        <div className="relative flex-1 min-w-[200px]">
+        <div className="relative w-full lg:w-auto lg:min-w-[260px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
           <input
             type="text"
