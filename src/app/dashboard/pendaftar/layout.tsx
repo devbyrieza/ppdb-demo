@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
@@ -381,7 +381,7 @@ export default function DashboardLayout({
                       </span>
                     </h1>
                     <p className="text-[10px] text-ink-500 font-bold mt-1 uppercase tracking-widest">
-                      Tahun 2027-2028
+                      Tahun 2027/2028
                     </p>
                   </div>
                 </div>
@@ -699,3 +699,4 @@ export default function DashboardLayout({
     </>
   );
 }
+

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { logAdminAction } from "@/lib/audit";
@@ -171,7 +171,7 @@ export async function GET(req: NextRequest) {
 
       sheet.mergeCells("A2:U2");
       const subtitleCell = sheet.getCell("A2");
-      subtitleCell.value = `Tahun Ajaran: 2027-2028 | Tanggal Ekspor: ${new Date().toLocaleDateString("id-ID")}`;
+      subtitleCell.value = `Tahun Ajaran: 2027/2028 | Tanggal Ekspor: ${new Date().toLocaleDateString("id-ID")}`;
       subtitleCell.font = { name: "Arial", size: 11, italic: true };
       subtitleCell.alignment = { vertical: "middle", horizontal: "center" };
       sheet.getRow(2).height = 20;
@@ -346,3 +346,4 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Terjadi kesalahan server saat membuat laporan" }, { status: 500 });
   }
 }
+

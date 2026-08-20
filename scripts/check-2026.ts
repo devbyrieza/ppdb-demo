@@ -9,14 +9,14 @@ async function main() {
         where: { tahun_ajaran_id: year2026ID }
     });
 
-    console.log(`Count for 2027-2028: ${count}`);
+    console.log(`Count for 2027/2028: ${count}`);
 
     const list = await prisma.pendaftar.findMany({
         where: { tahun_ajaran_id: year2026ID },
         select: { nama_lengkap: true, nomor_pendaftaran: true }
     });
 
-    console.log('List for 2027-2028:', list);
+    console.log('List for 2027/2028:', list);
 }
 
 main()

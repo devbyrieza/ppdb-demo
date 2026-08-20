@@ -1,4 +1,4 @@
-// src/components/ui/FloatingWhatsApp.tsx — UPGRADED
+﻿// src/components/ui/FloatingWhatsApp.tsx — UPGRADED
 // Premium floating WhatsApp button — inspired by cekat.ai's CTA floating elements
 // Features: double pulse ring, smooth spring animation, tooltip, backdrop blur
 "use client";
@@ -9,7 +9,7 @@ import { X, MessageCircle } from "lucide-react";
 import { BRANDING } from "@/config/branding";
 
 const WA_NUMBER = "6288809934970";
-const WA_MESSAGE = `Assalamu'alaikum, saya ingin bertanya tentang PPDB ${BRANDING.schoolName} Tahun Ajaran 2027-2028.`;
+const WA_MESSAGE = `Assalamu'alaikum, saya ingin bertanya tentang PPDB ${BRANDING.schoolName} Tahun Ajaran 2027/2028.`;
 
 const SPRING = { type: "spring", stiffness: 400, damping: 28 } as const;
 
@@ -138,3 +138,4 @@ export default function FloatingWhatsApp() {
     </div>
   );
 }
+

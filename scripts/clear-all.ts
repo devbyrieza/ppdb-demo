@@ -23,7 +23,7 @@ async function main() {
   console.log(`✅ ${deletePendaftar.count} Pendaftar berhasil dihapus.`);
   console.log(`✅ ${deleteProfile.count} Profile pendaftar berhasil dihapus.`);
 
-  console.log('\n✨ DATABASE BERSIH! Siap Menampung Migrasi 2027-2028.');
+  console.log('\n✨ DATABASE BERSIH! Siap Menampung Migrasi 2027/2028.');
 }
 
 main()

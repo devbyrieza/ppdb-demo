@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import {
@@ -106,7 +106,7 @@ export default function BankSoalPanitiaPage() {
               className="inline-flex items-center gap-1.5 px-3.5 py-1 bg-[#ddc192] text-[#550000] rounded-full text-xs font-black shadow-md border border-[#ddc192]"
               style={{ backgroundColor: "#ddc192", color: "#550000" }}
             >
-              <Award className="w-3.5 h-3.5 text-[#550000]" /> TA 2027–2028
+              <Award className="w-3.5 h-3.5 text-[#550000]" /> TA 2027/2028
             </span>
           </div>
 
@@ -709,3 +709,4 @@ export default function BankSoalPanitiaPage() {
     </div>
   );
 }
+

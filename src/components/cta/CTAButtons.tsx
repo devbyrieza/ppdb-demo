@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 🎯 CTA BUTTON COMPONENTS
  * Reusable CTA buttons dengan conversion funnel strategy yang benar
  *
@@ -56,7 +56,7 @@ export function CTAInfoPPDB({
       >
         <Link href="/ppdb" className="flex items-center justify-center gap-2">
           <FileText className="w-5 h-5" />
-          <span>Pelajari PPDB 2027-2028</span>
+          <span>Pelajari PPDB 2027/2028</span>
         </Link>
       </Button>
 
@@ -179,7 +179,7 @@ export function CTADaftarSekarang({
   };
 
   const urgencyMessages = {
-    default: "Hanya tersisa 50 kuota untuk tahun ajaran 2027-2028",
+    default: "Hanya tersisa 50 kuota untuk tahun ajaran 2027/2028",
     countdown: "Pendaftaran ditutup dalam 15 hari lagi!",
     scarcity: "50 dari 500 kuota sudah terisi - Buruan daftar!",
     none: null,
@@ -387,3 +387,4 @@ export function MobileCTAPPDB() {
  *   <NavbarCTALogin />
  * </div>
  */
+

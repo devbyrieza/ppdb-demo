@@ -1,4 +1,4 @@
-import { jsPDF } from "jspdf";
+﻿import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 import { PDF_BRANDING } from "@/config/pdf-branding";
 
@@ -588,7 +588,7 @@ export const generateSuratKesehatan = async (data: PendaftarPdfData) => {
   doc.setFont("helvetica", "normal");
 
   y += 6; // Diubah dari 8 ke 6
-  const intro = `Sehubungan dengan kegiatan penerimaan calon santri baru ${institution.name} Tahun Pelajaran 2027-2028, kami selaku panitia membutuhkan pemeriksaan kesehatan bagi para calon santri sebagai salah satu bagian dari rangkaian proses seleksi.`;
+  const intro = `Sehubungan dengan kegiatan penerimaan calon santri baru ${institution.name} Tahun Pelajaran 2027/2028, kami selaku panitia membutuhkan pemeriksaan kesehatan bagi para calon santri sebagai salah satu bagian dari rangkaian proses seleksi.`;
   const introLines = doc.splitTextToSize(intro, contentW);
   doc.text(introLines, leftColX, y);
   y += introLines.length * 5 + 3; // Diubah dari 5.5 + 4 ke 5 + 3
@@ -678,7 +678,7 @@ export const generateSuratKesehatan = async (data: PendaftarPdfData) => {
     { align: "center" },
   );
   y += 6;
-  doc.text("Tahun Pelajaran 2027-2028", pageWidth / 2, y, { align: "center" });
+  doc.text("Tahun Pelajaran 2027/2028", pageWidth / 2, y, { align: "center" });
   y += 10;
 
   doc.setFont("helvetica", "normal");
@@ -1039,7 +1039,7 @@ export const generatePaktaIntegritas = async (data: PendaftarPdfData) => {
   const santriFields2: [string, string][] = [
     ["Nama Lengkap", toTitleCase(data.nama_lengkap || "")],
     ["Jenjang", "MTs / I'dad Lughawiy / MA"],
-    ["Tahun Pelajaran", data.tahun_ajaran || "2027-2028"],
+    ["Tahun Pelajaran", data.tahun_ajaran || "2027/2028"],
     ["Alamat Lengkap", data.alamat || ""],
   ];
   for (const [label, value] of santriFields2) {
@@ -1247,3 +1247,4 @@ export const generatePaktaIntegritas = async (data: PendaftarPdfData) => {
   }
   return doc;
 };
+

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { Send, ShieldCheck, Award, BookOpen } from "lucide-react";
@@ -36,7 +36,7 @@ export default function CtaSection() {
 
             <p className="text-[0.9375rem] md:text-[1.0625rem] text-secondary-50/90 mb-10 leading-relaxed font-[450] text-center max-w-2xl mx-auto">
               Telah dibuka Pendaftaran Santri Baru (PPDB) Tahun Ajaran
-              2027-2028. Kuota sangat terbatas untuk menjaga kualitas pendidikan
+              2027/2028. Kuota sangat terbatas untuk menjaga kualitas pendidikan
               secara optimal.
             </p>
 
@@ -81,3 +81,4 @@ export default function CtaSection() {
     </section>
   );
 }
+

@@ -1,4 +1,4 @@
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+﻿// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 //   PPDB CONFIGURATION - EASY CUSTOMIZATION
 //   Ganti bagian ini saja untuk setiap pesantren baru!
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -110,7 +110,7 @@ export const PPDB_CONFIG = {
     youtube: "Pondok Pesantren Al Fath",
   },
 
-  tahunAjaran: "2027-2028",
+  tahunAjaran: "2027/2028",
   angkatan: "Angkatan IX",
 
   // ⚙️ SETTING TEKNIS (UMUMNYA TIDAK PERLU DIUBAH)
@@ -143,3 +143,4 @@ export const generateCSSVariables = () => {
     accent: colors.accent,
   };
 };
+

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import { X, Clock, Zap } from "lucide-react";
@@ -46,7 +46,7 @@ export default function UrgencyBar() {
           <div className="flex items-center gap-1.5 shrink-0">
             <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse shrink-0" />
             <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-secondary-300 whitespace-nowrap">
-              PPDB 2027-2028 Dibuka
+              PPDB 2027/2028 Dibuka
             </span>
           </div>
 
@@ -127,3 +127,4 @@ export default function UrgencyBar() {
     </div>
   );
 }
+

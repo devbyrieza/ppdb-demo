@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { HelpCircle, ChevronDown, MessageCircleMore } from "lucide-react";
@@ -8,9 +8,9 @@ import { motion, AnimatePresence } from "framer-motion";
 // ─── Data ────────────────────────────────────────────
 const FAQS = [
   {
-    question: "Kapan pendaftaran santri baru angkatan 2027-2028 dibuka?",
+    question: "Kapan pendaftaran santri baru angkatan 2027/2028 dibuka?",
     answer:
-      "Pendaftaran PPDB Tahun Ajaran 2027-2028 dibuka mulai tanggal 5 September sampai dengan 28 Desember 2026. Namun, pendaftaran dapat ditutup lebih awal jika kuota santri baru sudah terpenuhi.",
+      "Pendaftaran PPDB Tahun Ajaran 2027/2028 dibuka mulai tanggal 5 September sampai dengan 28 Desember 2026. Namun, pendaftaran dapat ditutup lebih awal jika kuota santri baru sudah terpenuhi.",
   },
   {
     question: "Apakah santri diwajibkan untuk tinggal di asrama?",
@@ -237,3 +237,4 @@ export default function FaqSection() {
     </section>
   );
 }
+

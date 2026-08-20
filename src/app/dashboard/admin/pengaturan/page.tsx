@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import {
@@ -259,7 +259,7 @@ export default function PengaturanPage() {
               )}
             </div>
 
-            {/* Add 2027-2028 Button */}
+            {/* Add 2027/2028 Button */}
             {!has2026 && (
               <div className="mb-6">
                 <button
@@ -272,7 +272,7 @@ export default function PengaturanPage() {
                   ) : (
                     <Plus className="w-5 h-5" />
                   )}
-                  Tambah & Aktifkan Tahun Ajaran 2027-2028
+                  Tambah & Aktifkan Tahun Ajaran 2027/2028
                 </button>
               </div>
             )}
@@ -483,3 +483,4 @@ export default function PengaturanPage() {
     </div>
   );
 }
+

@@ -18,18 +18,18 @@ console.log('📡 Target Database URL:', process.env.DATABASE_URL);
 const studentIdMap = new Map<number, string>();
 
 async function main() {
-  console.log('🚀 Memulai Proses Migrasi Data FINAL (PSB 2027-2028)...');
+  console.log('🚀 Memulai Proses Migrasi Data FINAL (PSB 2027/2028)...');
 
   const content = fs.readFileSync(SQL_FILE, 'utf8');
 
-  // 1. Tahun Ajaran Target 2027-2028
-  console.log('📅 Memetakan ke Tahun Ajaran 2027-2028...');
+  // 1. Tahun Ajaran Target 2027/2028
+  console.log('📅 Memetakan ke Tahun Ajaran 2027/2028...');
   const activeTahunAjaran = await prisma.tahunAjaran.findUnique({
       where: { id: '88888888-8888-8888-8888-888888888888' }
   });
   
   if (!activeTahunAjaran) {
-      throw new Error('❌ Tahun Ajaran 2027-2028 tidak ditemukan!');
+      throw new Error('❌ Tahun Ajaran 2027/2028 tidak ditemukan!');
   }
 
   // 2. Pre-Parsing Data Map (Nomor HP, Pekerjaan, Biodata, Akun)
@@ -204,7 +204,7 @@ async function main() {
   }
   console.log(`✅ ${docsCount} Data Berkas berhasil dimigrasi.`);
 
-  console.log('\n✨ MIGRASI 2027-2028 SELESAI DENGAN AKURASI 100%! ✨');
+  console.log('\n✨ MIGRASI 2027/2028 SELESAI DENGAN AKURASI 100%! ✨');
 }
 
 function parseInsertValues(content: string, tableName: string): string[][] {

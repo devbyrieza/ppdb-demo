@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -275,7 +275,7 @@ export default function DaftarPage() {
             transition={{ delay: 0.2 }}
             className="text-lg md:text-xl text-ink-700 font-medium"
           >
-            Tahap Awal Penerimaan Santri Baru T.A 2027-2028
+            Tahap Awal Penerimaan Santri Baru T.A 2027/2028
           </motion.p>
         </motion.div>
 
@@ -715,3 +715,4 @@ export default function DaftarPage() {
     </main>
   );
 }
+

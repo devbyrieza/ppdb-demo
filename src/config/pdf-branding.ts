@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Single Source of Truth for Institutional PDF Branding
  * "Locked" specifications for headers, backgrounds, and signatures.
  *
@@ -15,7 +15,7 @@ export const PDF_BRANDING = {
     name: "PESANTREN AL IMAM AL ISLAMI",
     subtitle: "Islamic Boarding School Managed by Al Andalus IIBS",
     committee: "PANITIA PENERIMAAN SANTRI BARU",
-    academic_year: "2027-2028",
+    academic_year: "2027/2028",
     address:
       "Jl. Pelabuhan II KM 18 Kampung Pupunjul, RT./RW/RW.01, 02, Cikembar, Kec. Cikembar, Kabupaten Sukabumi, Jawa Barat 43157",
     contact:
@@ -69,3 +69,4 @@ export const PDF_BRANDING = {
     city: "Sukabumi",
   },
 };
+

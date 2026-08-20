@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { useEffect } from "react";
 
 import Image from "next/image";
@@ -61,7 +61,7 @@ export default function TentangPage() {
           >
             Pesantren Al Imam Al Islami Sukabumi, cabang resmi Managed by Al Andalus IIBS.
             Memadukan intensitas Tahfidz Al-Qur'an dengan pengembangan jiwa Leadership untuk
-            Kaderisasi Ummat Hanif, Kontributif, dan Adaptif. Tahun Ajaran 2027-2028 merupakan
+            Kaderisasi Ummat Hanif, Kontributif, dan Adaptif. Tahun Ajaran 2027/2028 merupakan
             Angkatan Pertama (Era Baru) sejak dikelola oleh Al Andalus IIBS.
           </motion.p>
         </Container>
@@ -448,3 +448,4 @@ export default function TentangPage() {
     </main>
   );
 }
+
