@@ -637,18 +637,18 @@ export default function ExaminerDashboard() {
           </button>
         </div>
       </div>
-      {/* BARU: Banner Akses Khusus & Share WA Bank Soal Panitia */}
-      <div className="bg-gradient-to-r from-teal-800 to-emerald-800 text-white p-5 rounded-3xl shadow-lg border border-teal-700 flex flex-col md:flex-row items-center justify-between gap-4">
+      {/* BARU: Banner Akses Khusus & Share WA Bank Soal Panitia (Al-Andalus Maroon & Krem Emas) */}
+      <div className="bg-gradient-to-r from-[#550000] via-[#480000] to-[#360000] text-white p-5 rounded-3xl shadow-lg border border-[#6b0000]/60 flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-3.5">
           <div className="p-3.5 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 flex-shrink-0">
-            <FileText className="w-6 h-6 text-teal-200" />
+            <FileText className="w-6 h-6 text-[#ddc192]" />
           </div>
           <div>
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-teal-500/30 text-teal-200 text-[10px] font-bold rounded-full border border-teal-400/30 mb-1">
-              📌 AKSES & DISKUSI PANITIA PPDB 2027–2028
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-[#ddc192]/20 text-[#ddc192] text-[10px] font-bold rounded-full border border-[#ddc192]/40 mb-1">
+              <Sparkles className="w-3 h-3 text-[#ddc192]" /> AKSES & DISKUSI PANITIA PPDB 2027–2028
             </div>
             <h3 className="font-extrabold text-base text-white">Bank Soal & Form Penilaian Panitia</h3>
-            <p className="text-xs text-teal-100 max-w-xl">
+            <p className="text-xs text-[#ddc192]/90 max-w-xl font-medium">
               Lihat seluruh soal ujian online, durasi pengerjaan, dan rubrik penguji Al-Qur'an & Wawancara, atau bagikan link ke grup WhatsApp panitia.
             </p>
           </div>
@@ -657,9 +657,9 @@ export default function ExaminerDashboard() {
         <div className="flex items-center gap-2.5 w-full md:w-auto flex-shrink-0">
           <Link
             href="/dashboard/admin/bank-soal"
-            className="flex-1 md:flex-none px-4 py-2.5 bg-white text-teal-800 hover:bg-teal-50 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all"
+            className="flex-1 md:flex-none px-4 py-2.5 bg-[#ddc192] text-[#550000] hover:bg-[#c5a775] rounded-2xl font-black text-xs flex items-center justify-center gap-2 shadow-sm transition-all border border-[#ddc192]"
           >
-            <Eye className="w-4 h-4 text-teal-700" /> Lihat Bank Soal
+            <Eye className="w-4 h-4 text-[#550000]" /> Lihat Bank Soal
           </Link>
           <button
             onClick={() => {
@@ -668,9 +668,9 @@ export default function ExaminerDashboard() {
               );
               window.open(`https://wa.me/?text=${message}`, "_blank");
             }}
-            className="flex-1 md:flex-none px-4 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all"
+            className="flex-1 md:flex-none px-4 py-2.5 bg-white/10 hover:bg-white/20 text-[#ddc192] border border-[#ddc192]/40 rounded-2xl font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all"
           >
-            <Share2 className="w-4 h-4" /> Bagikan ke WA Panitia
+            <Share2 className="w-4 h-4 text-[#ddc192]" /> Bagikan ke WA Panitia
           </button>
         </div>
       </div>
