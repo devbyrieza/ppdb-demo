@@ -31,9 +31,16 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { newPassword } = body;
 
-    if (!newPassword || newPassword.length < 6) {
+    if (!newPassword || newPassword.length < 8) {
       return NextResponse.json(
-        { error: "Password baru minimal 6 karakter." },
+        { error: "Password baru minimal 8 karakter." },
+        { status: 400 },
+      );
+    }
+
+    if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%*?&])/.test(newPassword)) {
+      return NextResponse.json(
+        { error: "Password baru harus mengandung huruf besar, huruf kecil, angka, dan karakter khusus (@, #, !, dsb)." },
         { status: 400 },
       );
     }
@@ -50,12 +57,20 @@ export async function POST(request: Request) {
       );
     }
 
+    if (user.username && newPassword.toLowerCase().includes(user.username.toLowerCase())) {
+      return NextResponse.json(
+        { error: "Password baru tidak boleh mengandung username Anda." },
+        { status: 400 },
+      );
+    }
+
     const password_hash = await hashPassword(newPassword);
 
     await prisma.profile.update({
       where: { id: userId },
       data: {
         password_hash,
+        must_change_password: false,
         updated_at: new Date(),
       },
     });

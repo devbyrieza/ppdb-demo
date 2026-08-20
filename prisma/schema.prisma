@@ -23,6 +23,8 @@ model Profile {
   updated_at            DateTime              @default(now()) @db.Timestamptz(6)
   password_hash         String?
   plain_password        String?
+  tanggal_lahir          DateTime?             @db.Date
+  must_change_password   Boolean               @default(false)
   kesehatan_verified    DataKesehatan[]       @relation("KesehatanVerifiedBy")
   dokumen_verified      Dokumen[]             @relation("DokumenVerifiedBy")
   sessions_created      ExamSession[]         @relation("SessionCreatedBy")

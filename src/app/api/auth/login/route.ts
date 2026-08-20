@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
           sameSite: "lax",
-      domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN || undefined,
+          domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN || undefined,
           maxAge: 60 * 60 * 24 * 90,
           expires: new Date(Date.now() + 60 * 60 * 24 * 90 * 1000), // 90 Days Persistent Session
         },
@@ -169,6 +169,11 @@ export async function POST(request: NextRequest) {
 
       const finalRole = chosenRoleFromRequest || profile.role;
 
+      const isDefaultPassword =
+        profile.must_change_password === true ||
+        password === "2026#@" ||
+        profile.plain_password === "2026#@";
+
       // Single role — login normally
       const responseJson = NextResponse.json({
         success: true,
@@ -179,6 +184,7 @@ export async function POST(request: NextRequest) {
           full_name: profile.full_name,
           phone: profile.phone,
           role: profile.role,
+          is_default_password: isDefaultPassword,
         },
       });
 
@@ -188,13 +194,14 @@ export async function POST(request: NextRequest) {
           role: finalRole,
           id: profile.id,
           full_name: profile.full_name,
+          is_default_password: isDefaultPassword,
         }),
         {
           path: "/",
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
           sameSite: "lax",
-      domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN || undefined,
+          domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN || undefined,
           maxAge: 60 * 60 * 24 * 90,
           expires: new Date(Date.now() + 60 * 60 * 24 * 90 * 1000), // 90 Days Persistent Session
         },

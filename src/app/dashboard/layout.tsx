@@ -5,16 +5,37 @@
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 import IdleTimeoutTracker from "@/components/auth/IdleTimeoutTracker";
+import ForceChangePassword from "@/components/auth/ForceChangePassword";
+import { cookies } from "next/headers";
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const cookieStore = await cookies();
+  const sessionCookie = cookieStore.get("app_session");
+  let isDefaultPassword = false;
+
+  if (sessionCookie) {
+    try {
+      const session = JSON.parse(sessionCookie.value);
+      if (
+        session.is_default_password &&
+        !["pendaftar", "santri", "wali_santri"].includes(session.role)
+      ) {
+        isDefaultPassword = true;
+      }
+    } catch (e) {
+      // ignore
+    }
+  }
+
   return (
     <>
       {/* 🚨 Idle Timeout Tracker - Auto logout setelah 24 jam */}
       <IdleTimeoutTracker />
+      <ForceChangePassword isDefaultPassword={isDefaultPassword} />
 
       {/* Dashboard Content */}
       {children}
