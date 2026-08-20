@@ -184,145 +184,6 @@ export function formatStatusDisplay(status: StatusProses) {
     selection: { label: "Proses Seleksi", color: "bg-purple-100 text-purple-700" },
     scheduled: { label: "Proses Seleksi", color: "bg-purple-100 text-purple-700" },
     tested: { label: "Proses Seleksi", color: "bg-violet-100 text-violet-700" },
-  penguji_hafalan: "/dashboard/penguji",
-  penguji_bahasa_arab: "/dashboard/penguji",
-  admin_super: "/dashboard/admin",
-  admin: "/dashboard/admin",
-};
-
-export function hasPermission(role: UserRole, permission: string): boolean {
-  return ROLE_PERMISSIONS[role]?.includes(permission) ?? false;
-}
-
-export function isAdminRole(role: UserRole): boolean {
-  return ["admin_berkas", "admin_keuangan", "admin_super", "admin"].includes(role);
-}return getStatusIndex(currentStatus) >= getStatusIndex(minimumStatus);
-}
-
-// ─── 2. SISTEM TABS (NAVIGATION CONTROL) ───
-
-export type TabName =
-  | "data-pribadi"
-  | "pembayaran-pendaftaran"
-  | "status-pembayaran"
-  | "kelengkapan-berkas"
-  | "upload-berkas"
-  | "download-berkas"
-  | "undangan-seleksi"
-  | "pengumuman"
-  | "daftar-ulang"
-  | "ukuran-seragam"
-  | "welcome-day"
-  | "profil";
-
-export const STEP_REQUIREMENTS: Record<TabName, { minimumStatus: StatusProses | null; label: string; description: string; }> = {
-  "data-pribadi": { minimumStatus: null, label: "Data Pribadi", description: "Lihat data pendaftaran Anda" },
-  "pembayaran-pendaftaran": { minimumStatus: null, label: "Pembayaran", description: "Lakukan pembayaran pendaftaran" },
-  "status-pembayaran": { minimumStatus: null, label: "Status Bayar", description: "Cek status pembayaran" },
-  profil: { minimumStatus: null, label: "Profil", description: "Kelola profil Anda" },
-  "kelengkapan-berkas": { minimumStatus: "verified", label: "Isi Data Lengkap", description: "Menunggu verifikasi keuangan" },
-  "upload-berkas": { minimumStatus: "data_completed", label: "Upload Berkas", description: "Isi data terlebih dahulu" },
-  "download-berkas": { minimumStatus: "docs_uploaded", label: "Download Berkas", description: "Unggah berkas terlebih dahulu" },
-  "undangan-seleksi": { minimumStatus: "docs_verified", label: "Jadwal Seleksi", description: "Menunggu verifikasi dokumen" },
-  pengumuman: { minimumStatus: "announced", label: "Pengumuman", description: "Selesaikan semua tahapan seleksi terlebih dahulu" },
-  "daftar-ulang": { minimumStatus: "accepted", label: "Daftar Ulang", description: "Hanya tersedia bagi pendaftar yang diterima" },
-  "ukuran-seragam": { minimumStatus: "accepted", label: "Ukuran Seragam", description: "Hanya tersedia bagi pendaftar yang diterima" },
-  "welcome-day": { minimumStatus: "accepted", label: "Welcome Day", description: "Hanya tersedia bagi pendaftar yang diterima" },
-};
-
-// Daftar nomor pendaftaran santri yang mendapat akses khusus ke menu Ukuran Seragam
-// meskipun status mereka belum mencapai "Diterima"
-export const SERAGAM_BYPASS_LIST = [
-  "ILA2600019", // Abdurrahim Pati Raja
-  "ILA2600016", // Fanni Hariri Hamonangan
-  "ILA2600017", // Hibban Hibaturrahman
-  "MTA2600020", // M Fazril Alkais
-  "MTA2600022", // Muh Asrorin Da Silva
-  "MTA2600021", // Azka Panji Kusuma
-  "ILA2600014", // Muhammad Rizky
-];
-
-export function canAccessTab(tabName: TabName, statusProses: StatusProses): boolean {
-  const requirement = STEP_REQUIREMENTS[tabName];
-  if (!requirement || !requirement.minimumStatus) return true;
-  return hasReachedStatus(statusProses, requirement.minimumStatus);
-}
-
-export function canAccessSeragam(statusProses: StatusProses, nomorPendaftaran?: string): boolean {
-  // SPECIAL BYPASS FOR TESTING ACCOUNT
-  if (nomorPendaftaran === "ILI2600007") return true;
-
-  // SPECIAL BYPASS
-  if (nomorPendaftaran && SERAGAM_BYPASS_LIST.includes(nomorPendaftaran)) {
-    return true;
-  }
-
-  return canAccessTab("ukuran-seragam", statusProses);
-}
-
-// ─── 3. GUIDED ACTION LOGIC ───
-
-export function getNextStep(
-  currentStatus: StatusProses,
-  tipePendaftaran?: string,
-) {
-  if (tipePendaftaran === "PINDAHAN") {
-    const nextStepsPindahan: Record<string, { status: StatusProses; action: string; href: string }> = {
-      draft: { status: "payment_verification", action: "Bayar Sekarang", href: "/dashboard/pendaftar/pembayaran-pendaftaran" },
-      registered: { status: "payment_verification", action: "Bayar Sekarang", href: "/dashboard/pendaftar/pembayaran-pendaftaran" },
-      awaiting_payment: { status: "payment_verification", action: "Unggah Bukti", href: "/dashboard/pendaftar/pembayaran-pendaftaran" },
-      payment_verification: { status: "verified", action: "Menunggu Verifikasi", href: "/dashboard/pendaftar/pembayaran-pendaftaran" },
-      verified: { status: "data_completed", action: "Isi Data Pendaftaran", href: "/dashboard/pendaftar/isi-data-lengkap" },
-      paid: { status: "data_completed", action: "Isi Data Pendaftaran", href: "/dashboard/pendaftar/isi-data-lengkap" },
-      data_completed: { status: "docs_uploaded", action: "Unggah Berkas", href: "/dashboard/pendaftar/upload-berkas" },
-      docs_uploaded: { status: "docs_verified", action: "Menunggu Review Admin", href: "/dashboard/pendaftar/upload-berkas" },
-      docs_verified: { status: "announced", action: "Tunggu Pengumuman Kelulusan", href: "/dashboard/pendaftar/pengumuman" },
-      selection: { status: "announced", action: "Tunggu Pengumuman Kelulusan", href: "/dashboard/pendaftar/pengumuman" },
-      scheduled: { status: "announced", action: "Tunggu Pengumuman Kelulusan", href: "/dashboard/pendaftar/pengumuman" },
-      tested: { status: "announced", action: "Tunggu Pengumuman Kelulusan", href: "/dashboard/pendaftar/pengumuman" },
-      announced: { status: "accepted", action: "Cek Hasil", href: "/dashboard/pendaftar/pengumuman" },
-      accepted: { status: "enrolled", action: "Daftar Ulang Sekarang", href: "/dashboard/pendaftar/daftar-ulang" },
-    };
-    return nextStepsPindahan[currentStatus] || null;
-  }
-
-  const nextSteps: Record<string, { status: StatusProses; action: string; href: string }> = {
-    draft: { status: "payment_verification", action: "Bayar Sekarang", href: "/dashboard/pendaftar/pembayaran-pendaftaran" },
-    registered: { status: "payment_verification", action: "Bayar Sekarang", href: "/dashboard/pendaftar/pembayaran-pendaftaran" },
-    awaiting_payment: { status: "payment_verification", action: "Unggah Bukti", href: "/dashboard/pendaftar/pembayaran-pendaftaran" },
-    payment_verification: { status: "verified", action: "Menunggu Verifikasi", href: "/dashboard/pendaftar/pembayaran-pendaftaran" },
-    verified: { status: "data_completed", action: "Isi Data Pendaftaran", href: "/dashboard/pendaftar/isi-data-lengkap" },
-    paid: { status: "data_completed", action: "Isi Data Pendaftaran", href: "/dashboard/pendaftar/isi-data-lengkap" },
-    data_completed: { status: "docs_uploaded", action: "Unggah Berkas", href: "/dashboard/pendaftar/upload-berkas" },
-    docs_uploaded: { status: "docs_verified", action: "Menunggu Review Admin", href: "/dashboard/pendaftar/upload-berkas" },
-    docs_verified: { status: "selection", action: "Mulai Seleksi & Ujian", href: "/dashboard/pendaftar/undangan-seleksi" },
-    selection: { status: "tested", action: "Lanjutkan Seleksi", href: "/dashboard/pendaftar/undangan-seleksi" },
-    scheduled: { status: "tested", action: "Ikuti Ujian Masuk", href: "/dashboard/pendaftar/ujian" },
-    tested: { status: "announced", action: "Menunggu Hasil", href: "/dashboard/pendaftar/pengumuman" },
-    announced: { status: "accepted", action: "Cek Hasil", href: "/dashboard/pendaftar/pengumuman" },
-    accepted: { status: "enrolled", action: "Daftar Ulang Sekarang", href: "/dashboard/pendaftar/daftar-ulang" },
-  };
-  return nextSteps[currentStatus] || null;
-}
-
-// ─── 4. DISPLAY FORMATTERS ───
-
-export function formatStatusDisplay(status: StatusProses) {
-  const statusMap: Record<string, { label: string; color: string }> = {
-    draft: { label: "Tahap 1: Pembayaran", color: "bg-secondary-100 text-secondary-700" },
-    registered: { label: "Tahap 1: Pembayaran", color: "bg-secondary-100 text-secondary-700" },
-    awaiting_payment: { label: "Menunggu Bukti", color: "bg-secondary-100 text-secondary-700" },
-    payment_verification: { label: "Verifikasi Keuangan", color: "bg-orange-100 text-orange-700" },
-    verified: { label: "Terbayar & Terverifikasi", color: "bg-primary-100 text-primary-700" },
-    paid: { label: "Terbayar & Terverifikasi", color: "bg-primary-100 text-primary-700" },
-    payment_rejected: { label: "Masalah Pembayaran", color: "bg-red-100 text-red-700" },
-    rejected: { label: "Berkas Ditolak", color: "bg-red-100 text-red-700" },
-    data_completed: { label: "Tahap 2: Informasi Data", color: "bg-primary-100 text-primary-700" },
-    docs_uploaded: { label: "Review Admin", color: "bg-indigo-100 text-indigo-700" },
-    docs_verified: { label: "Berkas Lengkap", color: "bg-green-100 text-green-700" },
-    selection: { label: "Proses Seleksi", color: "bg-purple-100 text-purple-700" },
-    scheduled: { label: "Proses Seleksi", color: "bg-purple-100 text-purple-700" },
-    tested: { label: "Proses Seleksi", color: "bg-violet-100 text-violet-700" },
     announced: { label: "Hasil Pengumuman", color: "bg-cyan-100 text-cyan-700" },
     accepted: { label: "Diterima", color: "bg-green-100 text-green-700" },
     enrolled: { label: "Proses Daftar Ulang", color: "bg-emerald-100 text-emerald-700" },
@@ -459,6 +320,8 @@ export function getMenuItemsForRole(role: UserRole) {
   return menus[role] || [];
 }
 
+// ─── 7. PROGRESS & MESSAGING UTILS ───
+
 /**
  * calculateProgressToUnlock
  * Menghitung persentase progres menuju terbukanya sebuah tab.
@@ -492,4 +355,3 @@ export function getUnlockMessage(tabName: TabName): string {
     "Selesaikan tahap sebelumnya untuk membuka akses."
   );
 }
-
