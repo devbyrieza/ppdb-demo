@@ -347,48 +347,20 @@ function DokumenCard({
             </div>
           </div>
           <div className="flex items-center gap-2">
-            {/* Template Download Buttons */}
-            {dokumen.key === "surat_kesehatan" && (
-              <a
-                href="/templates/surat-kesehatan.pdf"
-                download="Surat_Keterangan_Kesehatan_AlAndalus.pdf"
-                target="_blank"
-                rel="noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-100 hover:bg-emerald-600 text-emerald-800 hover:text-white rounded-lg text-[10px] font-black border border-emerald-300 transition-colors shadow-sm"
-                title="Download Format Surat Keterangan Kesehatan Panitia"
+            {[
+              "surat_kesehatan",
+              "pakta_integritas_santri",
+              "pakta_integritas_ortu",
+              "pernyataan_bebas_negatif",
+            ].includes(dokumen.key) && (
+              <button
+                disabled
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-primary-50 text-primary-400 rounded-lg text-[10px] font-black border border-primary-100 cursor-not-allowed opacity-70"
+                title="Format dokumen sedang disiapkan panitia"
               >
                 <Download className="w-3.5 h-3.5" />
-                Download Format
-              </a>
-            )}
-            {(dokumen.key === "pakta_integritas_santri" || dokumen.key === "pakta_integritas_ortu" || dokumen.key === "pakta_integritas") && (
-              <a
-                href="/templates/pakta-integritas.pdf"
-                download="Pakta_Integritas_AlAndalus.pdf"
-                target="_blank"
-                rel="noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-100 hover:bg-emerald-600 text-emerald-800 hover:text-white rounded-lg text-[10px] font-black border border-emerald-300 transition-colors shadow-sm"
-                title="Download Format Pakta Integritas Panitia"
-              >
-                <Download className="w-3.5 h-3.5" />
-                Download Format
-              </a>
-            )}
-            {(dokumen.key === "pernyataan_bebas_negatif" || dokumen.key === "surat_pernyataan" || dokumen.key === "surat_pernyataan_ortu") && (
-              <a
-                href="/templates/surat-pernyataan.pdf"
-                download="Surat_Pernyataan_Orang_Tua_AlAndalus.pdf"
-                target="_blank"
-                rel="noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-100 hover:bg-emerald-600 text-emerald-800 hover:text-white rounded-lg text-[10px] font-black border border-emerald-300 transition-colors shadow-sm"
-                title="Download Format Surat Pernyataan Orang Tua Panitia"
-              >
-                <Download className="w-3.5 h-3.5" />
-                Download Format
-              </a>
+                Format Belum Ready
+              </button>
             )}
             {dokumen.status !== "pending" && (
               <>
@@ -935,7 +907,7 @@ export default function UploadBerkasTab() {
 
       {/* Header */}
       <div className="relative overflow-hidden rounded-[2rem] bg-linear-to-br from-primary-700 to-primary-900 border border-primary-600 p-5 md:p-8 text-white shadow-lg app-card">
-        <div className="absolute top-0 right-0 w-full max-w-[400px] h-[400px] bg-secondary-50/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-secondary-50/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center gap-5">
             <div className="w-16 h-16 rounded-[1.5rem] bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-sm shrink-0">
@@ -1058,7 +1030,7 @@ export default function UploadBerkasTab() {
           <h4 className="font-bold text-secondary-900 mb-2 text-lg">
             Petunjuk Upload Dokumen
           </h4>
-          <ul className="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 text-sm text-secondary-800 list-disc pl-4 marker:text-secondary-500">
+          <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 text-sm text-secondary-800 list-disc pl-4 marker:text-secondary-500">
             <li>
               Pastikan dokumen hasil scan atau foto terlihat{" "}
               <strong>jelas dan terbaca</strong>
@@ -1084,7 +1056,7 @@ export default function UploadBerkasTab() {
           </span>
           Dokumen Wajib
         </h2>
-        <div className="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-2 gap-4">
           {dokumenList
             .filter((d) => d.required)
             .map((dokumen) => (
@@ -1113,7 +1085,7 @@ export default function UploadBerkasTab() {
           </span>
           Dokumen Opsional
         </h2>
-        <div className="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-2 gap-4">
           {dokumenList
             .filter((d) => !d.required)
             .map((dokumen) => (
