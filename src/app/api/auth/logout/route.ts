@@ -1,30 +1,39 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST() {
+export async function POST(request: NextRequest) {
   const response = NextResponse.json({
     success: true,
     message: "Logout berhasil",
   });
 
-  // Clear auth session cookie
-  
-  response.cookies.delete({ name: "app_session", domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN || undefined });
-  response.cookies.delete({ name: "siakad_session", domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN || undefined });
-  response.cookies.delete({ name: "ppdb_session", domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN || undefined });
-  // local un-domained cleanup fallback
-  response.cookies.delete("app_session");
-  response.cookies.delete("siakad_session");
-  response.cookies.delete("ppdb_session");
-                    
-  
-  response.cookies.delete({ name: "app_session", domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN || undefined });
-  response.cookies.delete({ name: "siakad_session", domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN || undefined });
-  response.cookies.delete({ name: "ppdb_session", domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN || undefined });
-  // local un-domained cleanup fallback
-  response.cookies.delete("app_session");
-  response.cookies.delete("siakad_session");
-  response.cookies.delete("ppdb_session");
-                    
+  const host = request.headers.get("host") || "";
+  let baseDomain = "";
+  if (host.includes("pesantren-alandalus-putra.com")) {
+    baseDomain = "pesantren-alandalus-putra.com";
+  } else if (host.includes("pesantren-alandalus-putri.com")) {
+    baseDomain = "pesantren-alandalus-putri.com";
+  } else if (host.includes("alandalus-ululalbaab.com")) {
+    baseDomain = "alandalus-ululalbaab.com";
+  } else if (host.includes("pesantren-alimam.com")) {
+    baseDomain = "pesantren-alimam.com";
+  }
 
-  return response;
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+
+  if (baseDomain) {
+    headers.append("Set-Cookie", `al_session=; Path=/; Max-Age=0; Domain=${baseDomain}`);
+    headers.append("Set-Cookie", `siakad_session=; Path=/; Max-Age=0; Domain=${baseDomain}`);
+    headers.append("Set-Cookie", `ppdb_session=; Path=/; Max-Age=0; Domain=${baseDomain}`);
+  }
+
+  headers.append("Set-Cookie", "al_session=; Path=/; Max-Age=0");
+  headers.append("Set-Cookie", "siakad_session=; Path=/; Max-Age=0");
+  headers.append("Set-Cookie", "ppdb_session=; Path=/; Max-Age=0");
+
+  return new Response(JSON.stringify({ success: true, message: "Logout berhasil" }), {
+    status: 200,
+    headers: headers,
+  });
 }
+

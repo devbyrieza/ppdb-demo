@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
       });
 
       responseJson.cookies.set(
-        "app_session",
+        "al_session",
         JSON.stringify({
           role: "pendaftar",
           id: pendaftar.id,
@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
           sameSite: "lax",
-          domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN || undefined,
+      domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN || undefined,
           maxAge: 60 * 60 * 24 * 90,
           expires: new Date(Date.now() + 60 * 60 * 24 * 90 * 1000), // 90 Days Persistent Session
         },
@@ -118,7 +118,7 @@ export async function POST(request: NextRequest) {
 
       if (!profile || !profile.password_hash) {
         return NextResponse.json(
-          { error: "Username / Email / No. WA atau Password salah" },
+          { error: "Email/Username atau Password salah" },
           { status: 401 },
         );
       }
@@ -135,7 +135,6 @@ export async function POST(request: NextRequest) {
         "penguji_calsan",
         "penguji_cawalsan"
       ];
-      
       const userRoleLower = profile.role.toLowerCase();
       if (!allowedRoles.includes(userRoleLower)) {
         return NextResponse.json(
@@ -154,9 +153,7 @@ export async function POST(request: NextRequest) {
 
       // Check for multi-role: if secondary_roles exist, require role selection
       const secondaryRoles: string[] = profile.secondary_roles || [];
-      const chosenRoleFromRequest = body.chosen_role;
-
-      if (secondaryRoles.length > 0 && !chosenRoleFromRequest) {
+      if (secondaryRoles.length > 0) {
         // Return role selection prompt — no cookie yet
         return NextResponse.json({
           success: true,
@@ -167,33 +164,32 @@ export async function POST(request: NextRequest) {
         });
       }
 
-      const finalRole = chosenRoleFromRequest || profile.role;
-
-      const isDefaultPassword =
-        profile.must_change_password === true ||
-        password === "2026#@" ||
-        profile.plain_password === "2026#@";
+      const isDefaultPassword = profile.must_change_password === true || password === "2026#@" || profile.plain_password === "2026#@";
 
       // Single role — login normally
       const responseJson = NextResponse.json({
         success: true,
         message: "Login berhasil",
         role: profile.role,
+        is_default_password: isDefaultPassword,
         data: {
           id: profile.id,
           full_name: profile.full_name,
           phone: profile.phone,
+          username: profile.username,
           role: profile.role,
           is_default_password: isDefaultPassword,
         },
       });
 
       responseJson.cookies.set(
-        "app_session",
+        "al_session",
         JSON.stringify({
-          role: finalRole,
+          role: profile.role,
           id: profile.id,
           full_name: profile.full_name,
+          email: profile.email,
+          username: profile.username,
           is_default_password: isDefaultPassword,
         }),
         {
@@ -201,7 +197,7 @@ export async function POST(request: NextRequest) {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
           sameSite: "lax",
-          domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN || undefined,
+      domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN || undefined,
           maxAge: 60 * 60 * 24 * 90,
           expires: new Date(Date.now() + 60 * 60 * 24 * 90 * 1000), // 90 Days Persistent Session
         },
@@ -222,4 +218,6 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+
 

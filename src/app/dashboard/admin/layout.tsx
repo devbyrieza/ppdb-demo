@@ -10,7 +10,7 @@ export default async function AdminDashboardLayout({
   children: React.ReactNode;
 }) {
   const cookieStore = await cookies();
-  const sessionCookie = cookieStore.get("app_session");
+  const sessionCookie = cookieStore.get("al_session");
 
   let userRole: UserRole | null = null;
   let adminName = "Admin";

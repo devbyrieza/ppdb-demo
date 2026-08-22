@@ -5,7 +5,7 @@ import { enqueueWhatsapp, buildMessageHasilTes } from "@/lib/whatsapp-queue";
 
 async function checkSuperAdmin() {
   const cookieStore = await cookies();
-  const sessionCookie = cookieStore.get("app_session");
+  const sessionCookie = cookieStore.get("al_session");
 
   if (!sessionCookie) return null;
 

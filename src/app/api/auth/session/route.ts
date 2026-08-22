@@ -4,10 +4,10 @@ import { prisma } from "@/lib/prisma";
 export async function GET(request: NextRequest) {
   try {
     // Get cookie dari request (server-side bisa read httpOnly cookies!)
-    const sessionCookie = request.cookies.get("app_session");
+    const sessionCookie = request.cookies.get("al_session");
 
     if (!sessionCookie) {
-      console.log("❌ [API /session] No app_session cookie found");
+      console.log("❌ [API /session] No al_session cookie found");
       return NextResponse.json({ session: null }, { status: 401 });
     }
 

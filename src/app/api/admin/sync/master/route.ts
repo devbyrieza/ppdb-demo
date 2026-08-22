@@ -6,7 +6,7 @@ import { JenisPembayaran, TipeCicilan } from "@prisma/client";
 
 async function checkAdmin() {
   const cookieStore = await cookies();
-  const sessionCookie = cookieStore.get("app_session");
+  const sessionCookie = cookieStore.get("al_session");
   if (!sessionCookie) return null;
   try {
     const session = JSON.parse(sessionCookie.value);

@@ -4,7 +4,7 @@ import { getCache, setCache } from "@/lib/redis";
 
 export async function GET(request: NextRequest) {
   try {
-    const sessionCookie = request.cookies.get("app_session");
+    const sessionCookie = request.cookies.get("al_session");
     if (!sessionCookie) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }

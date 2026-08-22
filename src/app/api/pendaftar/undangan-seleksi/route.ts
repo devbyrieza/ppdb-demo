@@ -1,5 +1,5 @@
-﻿/**
- * Jadwal Seleksi API â€” Main data endpoint for the dashboard.
+/**
+ * Jadwal Seleksi API — Main data endpoint for the dashboard.
  *
  * Returns:
  * - Grup A test completion status (akademik, kepribadian, kesiapan)
@@ -56,7 +56,7 @@ function sanitizeTitle(title: string): string {
 
 async function getSession() {
   const cookieStore = await cookies();
-  const sessionCookie = cookieStore.get("app_session");
+  const sessionCookie = cookieStore.get("al_session");
   if (!sessionCookie) return null;
   try {
     return JSON.parse(sessionCookie.value);
@@ -135,7 +135,7 @@ export async function GET(request: Request) {
       });
     }
 
-    // â”€â”€ EARLY EXIT: Seleksi sudah selesai & pendaftar sudah accepted/enrolled â”€â”€
+    // ── EARLY EXIT: Seleksi sudah selesai & pendaftar sudah accepted/enrolled ──
     // Tampilkan halaman "Seleksi Selesai" daripada form jadwal
     const SELEKSI_DONE_STATUSES = ["accepted", "enrolled"];
     if (SELEKSI_DONE_STATUSES.includes(pendaftar.status_pendaftaran || "")) {
@@ -154,7 +154,7 @@ export async function GET(request: Request) {
       });
     }
 
-    // 2. Fetch Grup A â€” Online test completion status
+    // 2. Fetch Grup A — Online test completion status
     const nilaiUjian = await prisma.nilaiUjian.findMany({
       where: { pendaftar_id: pendaftarId },
       select: { score_akademik: true, score_kepribadian: true, score_kesiapan: true, detail_akademik: true, detail_kepribadian: true, detail_kesiapan: true, nilai_tes_quran: true, detail_quran: true, nilai_wawancara_santri: true, detail_wawancara: true, nilai_wawancara_ortu: true, detail_cawalsan: true },
@@ -180,7 +180,7 @@ export async function GET(request: Request) {
       kesiapan: { completed: hasKesiapan, label: "Seleksi Kesiapan" },
     };
 
-    // 3. Fetch Grup B â€” Available exam sessions (future, active)
+    // 3. Fetch Grup B — Available exam sessions (future, active)
     const availableSessions = await prisma.examSession.findMany({
       where: {
         is_active: true,

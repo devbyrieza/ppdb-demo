@@ -6,7 +6,7 @@ import { hashPassword } from "@/lib/utils/password";
 export async function POST(request: Request) {
   try {
     const cookieStore = await cookies();
-    const sessionCookie = cookieStore.get("app_session");
+    const sessionCookie = cookieStore.get("al_session");
 
     if (!sessionCookie) {
       return NextResponse.json(

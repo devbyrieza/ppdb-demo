@@ -16,7 +16,7 @@ import {
 async function getSession() {
   const { cookies } = await import("next/headers");
   const cookieStore = await cookies();
-  const sessionCookie = cookieStore.get("app_session");
+  const sessionCookie = cookieStore.get("al_session");
   if (!sessionCookie) return null;
   try {
     return JSON.parse(sessionCookie.value);
