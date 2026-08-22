@@ -452,7 +452,7 @@ export default function UserManagementPage() {
                 </div>
                 <div className="col-span-1 md:col-span-2">
                   <label className="block text-[10px] font-black uppercase text-stone-500 mb-3 tracking-widest">
-                    Database Identifier (Email)
+                    Email (Digunakan Untuk Login)
                   </label>
                   <input
                     required
@@ -466,7 +466,7 @@ export default function UserManagementPage() {
                 </div>
                 <div className="col-span-1 md:col-span-2">
                   <label className="block text-[10px] font-black uppercase text-stone-500 mb-3 tracking-widest">
-                    Username Khusus (Opsional)
+                    Username Khusus (Opsional, Bisa Untuk Login)
                   </label>
                   <input
                     type="text"
