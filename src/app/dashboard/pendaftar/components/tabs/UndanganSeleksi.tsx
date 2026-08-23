@@ -14,7 +14,7 @@ import {
   Users,
   UserCheck,
   AlertCircle,
-  Link as LinkIcon as LinkIcon,
+  Link as LinkIcon,
   Info } from "lucide-react";
 import Swal from "sweetalert2";
 import { expandExamTitle } from "@/lib/utils";
