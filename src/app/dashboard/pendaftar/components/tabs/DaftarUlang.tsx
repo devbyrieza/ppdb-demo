@@ -220,7 +220,7 @@ export default function DaftarUlangTab() {
         <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">
           Pilih Jenis Pembayaran Daftar Ulang
         </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="hidden">
           {/* Tab: Uang Pangkal */}
           <button
             type="button"
