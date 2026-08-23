@@ -131,13 +131,13 @@ export default function RadarTamuAdmin() {
           
           <div className="p-6 space-y-4">
             {daftarTamu.map((tamu) => (
-              <div key={tamu.id} className={\`p-6 rounded-2xl border-2 transition-all \${tamu.status === 'WAITING' ? 'border-orange-200 bg-orange-50/30' : tamu.status === 'HANDLED' ? 'border-primary-200 bg-primary-50/30' : 'border-slate-100 bg-slate-50 opacity-60'}\`}>
+              <div key={tamu.id} className={`p-6 rounded-2xl border-2 transition-all \${tamu.status === 'WAITING' ? 'border-orange-200 bg-orange-50/30' : tamu.status === 'HANDLED' ? 'border-primary-200 bg-primary-50/30' : 'border-slate-100 bg-slate-50 opacity-60'}`}>
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                   
                   {/* Guest Info */}
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <span className={\`px-3 py-1 rounded-full text-xs font-black \${tamu.status === 'WAITING' ? 'bg-orange-100 text-orange-700' : 'bg-primary-100 text-primary-700'}\`}>
+                      <span className={`px-3 py-1 rounded-full text-xs font-black \${tamu.status === 'WAITING' ? 'bg-orange-100 text-orange-700' : 'bg-primary-100 text-primary-700'}`}>
                         {tamu.waktu} WIB
                       </span>
                       <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-bold">

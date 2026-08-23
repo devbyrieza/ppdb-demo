@@ -91,9 +91,9 @@ export default function BukuTamuKiosk() {
                     setKategori(item.id as Kategori);
                     setStep(2);
                   }}
-                  className={\`flex flex-col items-center p-8 bg-white rounded-3xl border-2 hover:border-primary-500 hover:shadow-xl transition-all group \${kategori === item.id ? 'border-primary-500 ring-4 ring-primary-500/20' : 'border-slate-100'}\`}
+                  className={`flex flex-col items-center p-8 bg-white rounded-3xl border-2 hover:border-primary-500 hover:shadow-xl transition-all group \${kategori === item.id ? 'border-primary-500 ring-4 ring-primary-500/20' : 'border-slate-100'}`}
                 >
-                  <div className={\`p-5 rounded-2xl mb-4 transition-transform group-hover:scale-110 \${item.color}\`}>
+                  <div className={`p-5 rounded-2xl mb-4 transition-transform group-hover:scale-110 \${item.color}`}>
                     <item.icon className="w-10 h-10" />
                   </div>
                   <h3 className="text-xl font-bold text-slate-800 mb-2">{item.title}</h3>
