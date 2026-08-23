@@ -1,16 +1,15 @@
 "use client";
 
-import { ScanLine,  useState, useEffect } from "react";
-import { ScanLine,  usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 
 // ─── LIBRARIES ───
-import { ScanLine,  motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Swal from "sweetalert2";
 
 // ─── ICONS ───
-import { ScanLine, 
-  LayoutDashboard,
+import { ScanLine, LayoutDashboard,
   Users,
   FileCheck,
   CreditCard,
@@ -41,11 +40,10 @@ import { ScanLine,
   Wallet } from "lucide-react";
 
 // ─── CONFIG & UTILS ───
-import { ScanLine, 
-  getMenuItemsForRole,
+import { getMenuItemsForRole,
   UserRole,
   ROLE_LABELS } from "@/lib/access-control";
-import { ScanLine,  BRANDING } from "@/config/branding";
+import { BRANDING } from "@/config/branding";
 import LanguageSwitcher from "@/components/common/LanguageSwitcher";
 
 /**
