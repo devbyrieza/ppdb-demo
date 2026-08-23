@@ -33,26 +33,46 @@ export default function HomePage() {
   }, []);
 
   return (
+// src/app/page.tsx — template-demo
+"use client";
+
+import { useEffect } from "react";
+import { LazyMotion, domAnimation, m } from "framer-motion";
+import Link from "next/link";
+import { Zap } from "lucide-react";
+
+import { restoreScrollPosition } from "@/lib/navigation-scroll";
+import ScrollAnimation from "@/components/ui/ScrollAnimation";
+
+import HeroSection from "@/components/home/HeroSection";
+import StatsSection from "@/components/home/StatsSection";
+import AboutSection from "@/components/home/AboutSection";
+import ProgramSection from "@/components/home/ProgramSection";
+import FeaturesSection from "@/components/home/FeaturesSection";
+import TeachersSection from "@/components/home/TeachersSection";
+import BoardSection from "@/components/home/BoardSection";
+import ProcessSection from "@/components/home/ProcessSection";
+import FacilitiesSection from "@/components/home/FacilitiesSection";
+import ActivitiesSection from "@/components/home/ActivitiesSection";
+import TestimonialsSection from "@/components/home/TestimonialsSection";
+import FaqSection from "@/components/home/FaqSection";
+import ContactSection from "@/components/home/ContactSection";
+import CtaSection from "@/components/home/CtaSection";
+import StickyFeatureSection from "@/components/home/StickyFeatureSection";
+import BentoGridSection from "@/components/home/BentoGridSection";
+
+export default function HomePage() {
+  useEffect(() => {
+    restoreScrollPosition();
+  }, []);
+
+  return (
     <LazyMotion features={domAnimation}>
       <main
         id="main-content"
         className="relative overflow-x-hidden"
         aria-label="Halaman Utama Template Demo"
       >
-        <section id="beranda" aria-label="Hero">
-          <HeroSection />
-        </section>
-        <section id="program" aria-label="Program Unggulan">
-          <ScrollAnimation delay={0.12} direction="up" duration={0.7}>
-            <ProgramSection />
-          </ScrollAnimation>
-        </section>
-        <section id="statistik" aria-label="Statistik Pesantren">
-          <ScrollAnimation delay={0.15} direction="up" duration={0.7}>
-            <StatsSection />
-          </ScrollAnimation>
-        </section>
-        <section id="beasiswa" aria-label="Program Beasiswa">
           <ScrollAnimation delay={0.1} direction="none" duration={0.8}>
             <ScholarshipSection variant="primary" />
           </ScrollAnimation>
