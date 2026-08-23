@@ -1,11 +1,11 @@
-﻿// src/components/ui/FloatingWhatsApp.tsx — UPGRADED
+// src/components/ui/FloatingWhatsApp.tsx — UPGRADED
 // Premium floating WhatsApp button — inspired by cekat.ai's CTA floating elements
 // Features: double pulse ring, smooth spring animation, tooltip, backdrop blur
 "use client";
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, MessageCircle } from "lucide-react";
+import { X, MessageCircle, MessageSquare } from "lucide-react";
 import { BRANDING } from "@/config/branding";
 
 const WA_NUMBER = "6288809934970";
@@ -70,7 +70,7 @@ export default function FloatingWhatsApp() {
             </div>
 
             <p className="text-[0.75rem] font-bold text-ink-800 leading-snug pr-3">
-              Ada pertanyaan seputar PPDB? Chat kami! 😊
+              Ada pertanyaan seputar PPDB? Chat kami!
             </p>
             <p className="text-[0.65rem] text-ink-500 mt-1">
               Biasanya membalas dalam beberapa menit

@@ -1,8 +1,8 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { User, CreditCard, FileCheck, Calendar, Trophy, CheckCircle, Settings, LogOut, Menu, X, Home, Lock, Loader2, Download, Upload, ClipboardList, ChevronRight, ShieldCheck, Bell, Search, Shirt, HandCoins, PartyPopper, CheckCircle2, AlertTriangle } from "lucide-react";
+import { User, CreditCard, FileCheck, Calendar, Trophy, CheckCircle, Settings, LogOut, Menu, X, Home, Lock, Loader2, Download, Upload, ClipboardList, ChevronRight, ShieldCheck, Bell, Search, Shirt, HandCoins, PartyPopper, CheckCircle2, AlertTriangle, XCircle } from "lucide-react";
 import { BRANDING } from "@/config/branding";
 import Link from "next/link";
 import IdleTimeoutTracker from "@/components/auth/IdleTimeoutTracker";
@@ -76,7 +76,7 @@ export default function DashboardLayout({
         );
 
         if (!statusRes.ok) {
-          console.error("❌ [Layout] Status fetch failed:", statusRes.status);
+          console.error("[Layout] Status fetch failed:", statusRes.status);
           setNamaLengkap(fallbackName);
           setLoading(false);
           return;

@@ -1,5 +1,5 @@
-﻿/**
- * 🎯 CTA BUTTON COMPONENTS
+/**
+ * CTA BUTTON COMPONENTS
  * Reusable CTA buttons dengan conversion funnel strategy yang benar
  *
  * USAGE:
@@ -10,7 +10,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Phone, FileText, Clock, ArrowRight } from "lucide-react";
+import { Sparkles, Phone, FileText, Clock, ArrowRight, Target } from "lucide-react";
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // AWARENESS STAGE - untuk Homepage, About, Features, dll

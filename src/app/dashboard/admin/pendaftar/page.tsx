@@ -3,38 +3,7 @@
 import { useState, useEffect, Suspense, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
-import {
-  Users,
-  Search,
-  Filter,
-  Eye,
-  ChevronLeft,
-  ChevronRight,
-  Loader2,
-  RefreshCw,
-  FileText,
-  Calendar,
-  Phone,
-  Mail,
-  Hash,
-  CheckSquare,
-  Square,
-  Download,
-  Edit,
-  ArrowLeft,
-  FileSpreadsheet,
-  X,
-  Save,
-  FileCheck,
-  RotateCcw,
-  UploadCloud,
-  CreditCard,
-  Trash2,
-  LogOut,
-  Plus,
-  Shuffle,
-  AlertTriangle,
-} from "lucide-react";
+import { Users, Search, Filter, Eye, ChevronLeft, ChevronRight, Loader2, RefreshCw, FileText, Calendar, Phone, Mail, Hash, CheckSquare, Square, Download, Edit, ArrowLeft, FileSpreadsheet, X, Save, FileCheck, RotateCcw, UploadCloud, CreditCard, Trash2, LogOut, Plus, Shuffle, AlertTriangle, , Star } from "lucide-react";
 import Link from "next/link";
 import { UserRole } from "@/lib/access-control";
 import { exportToExcelProfessional, exportToPDF } from "@/lib/utils/export";
@@ -1552,7 +1521,7 @@ function AdminPendaftarContent() {
               <option value="">Semua Tahun Ajaran</option>
               {tahunAjaranList.map((ta) => (
                 <option key={ta.id} value={ta.id}>
-                  {ta.nama} {ta.is_active && "⭐"}
+                  {ta.nama} {ta.is_active && "(Aktif)"}
                 </option>
               ))}
             </select>

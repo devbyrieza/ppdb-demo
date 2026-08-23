@@ -5,15 +5,15 @@ import { Globe, ChevronDown, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const LANGUAGES = [
-  { code: "id", name: "Indonesia", flag: "🇮🇩" },
-  { code: "en", name: "English", flag: "🇺🇸" },
-  { code: "ar", name: "العربية", flag: "🇸🇦" },
-  { code: "ms", name: "Melayu", flag: "🇲🇾" },
-  { code: "zh-CN", name: "简体中文", flag: "🇨🇳" },
-  { code: "ja", name: "日本語", flag: "🇯🇵" },
-  { code: "ko", name: "한국어", flag: "🇰🇷" },
-  { code: "fr", name: "Français", flag: "🇫🇷" },
-  { code: "de", name: "Deutsch", flag: "🇩🇪" },
+  { code: "id", name: "Indonesia", flag: "" },
+  { code: "en", name: "English", flag: "" },
+  { code: "ar", name: "العربية", flag: "" },
+  { code: "ms", name: "Melayu", flag: "" },
+  { code: "zh-CN", name: "简体中文", flag: "" },
+  { code: "ja", name: "日本語", flag: "" },
+  { code: "ko", name: "한국어", flag: "" },
+  { code: "fr", name: "Français", flag: "" },
+  { code: "de", name: "Deutsch", flag: "" },
 ];
 
 export default function LanguageSwitcher() {

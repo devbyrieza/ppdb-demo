@@ -11,6 +11,8 @@ import UrgencyBar from "@/components/ui/UrgencyBar";
 import FloatingWhatsApp from "@/components/ui/FloatingWhatsApp";
 import LiveActivityToast from "@/components/ui/LiveActivityToast";
 import ScrollProgressBar from "@/components/ui/ScrollProgressBar";
+import { CheckCircle2 } from "lucide-react";
+
 
 
 export default function LayoutWrapper({
@@ -29,13 +31,13 @@ export default function LayoutWrapper({
 
   return (
     <div className="relative min-h-screen flex flex-col font-sans">
-      {/* ✅ SCROLL PROGRESS BAR — fixed at very top, always visible */}
+      {/* SCROLL PROGRESS BAR — fixed at very top, always visible */}
       {!hideNavbarFooter && <ScrollProgressBar height={3} />}
 
-      {/* ✅ NAVBAR - Hanya tampil di halaman utama (tidak di login/dashboard) */}
+      {/* NAVBAR - Hanya tampil di halaman utama (tidak di login/dashboard) */}
       {!hideNavbarFooter && <Navbar />}
 
-      {/* ✅ MAIN CONTENT - Page content dengan conditional offset */}
+      {/* MAIN CONTENT - Page content dengan conditional offset */}
       <main className={hideNavbarFooter ? "flex-1" : "flex-1 pt-20 md:pt-24"}>
         {/* URGENCY BAR - Banner PPDB di bawah Navbar, scrolls naturally */}
         {!hideNavbarFooter && <UrgencyBar />}
@@ -46,10 +48,10 @@ export default function LayoutWrapper({
         )}
       </main>
 
-      {/* ✅ FOOTER - Hanya tampil di halaman utama (tidak di login/dashboard) */}
+      {/* FOOTER - Hanya tampil di halaman utama (tidak di login/dashboard) */}
       {!hideNavbarFooter && <Footer />}
 
-      {/* ✅ FLOATING WIDGETS - Always visible on public pages */}
+      {/* FLOATING WIDGETS - Always visible on public pages */}
       {!hideNavbarFooter && (
         <>
           {/* <TawkToScript /> */}

@@ -1,5 +1,5 @@
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// 🎁 BONUS: SESSION MONITOR COMPONENT
+// BONUS: SESSION MONITOR COMPONENT
 // Tampilkan info session di dashboard (opsional)
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // Path: src/components/auth/SessionMonitor.tsx
@@ -8,7 +8,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Clock, Shield, CheckCircle } from "lucide-react";
+import { Clock, Shield, CheckCircle, BookOpen, Palette, CheckCircle2 } from "lucide-react";
 import {
   getSessionRemainingDays,
   formatSessionExpiry,
@@ -71,7 +71,7 @@ export default function SessionMonitor() {
 }
 
 // ============================================
-// 📖 CARA PAKAI:
+// <BookOpen className="w-4 h-4 inline-block mr-1" /> CARA PAKAI:
 // ============================================
 //
 // Di Dashboard Header (src/app/dashboard/page.tsx):
@@ -84,10 +84,10 @@ export default function SessionMonitor() {
 // </div>
 //
 // ============================================
-// 🎨 TAMPILAN:
+// <Palette className="w-4 h-4 inline-block mr-1" /> TAMPILAN:
 // ============================================
 //
-// ✅ Session aman (> 1 hari):
+// <CheckCircle2 className="w-4 h-4 inline-block mr-1" /> Session aman (> 1 hari):
 // ┌──────────────────────────┐
 // │ ✓ Sisa 5 hari 🛡️        │
 // └──────────────────────────┘
@@ -95,6 +95,6 @@ export default function SessionMonitor() {
 //
 // ⚠️ Session akan expired (< 1 hari):
 // ┌──────────────────────────┐
-// │ ⏰ Sisa 8 jam            │
+// │ <Clock className="w-4 h-4 inline-block mr-1" /> Sisa 8 jam            │
 // └──────────────────────────┘
 // (Kuning)

@@ -7,6 +7,8 @@
 import IdleTimeoutTracker from "@/components/auth/IdleTimeoutTracker";
 import ForceChangePassword from "@/components/auth/ForceChangePassword";
 import { cookies } from "next/headers";
+import { AlertTriangle, BookOpen, Target, CheckCircle2, XCircle } from "lucide-react";
+
 
 export default async function DashboardLayout({
   children,
@@ -33,7 +35,7 @@ export default async function DashboardLayout({
 
   return (
     <>
-      {/* 🚨 Idle Timeout Tracker - Auto logout setelah 24 jam */}
+      {/* Idle Timeout Tracker - Auto logout setelah 24 jam */}
       <IdleTimeoutTracker />
       <ForceChangePassword isDefaultPassword={isDefaultPassword} />
 
@@ -44,7 +46,7 @@ export default async function DashboardLayout({
 }
 
 // ============================================
-// 📖 CATATAN:
+// CATATAN:
 // ============================================
 //
 // 1. IdleTimeoutTracker akan otomatis track user activity
@@ -54,14 +56,14 @@ export default async function DashboardLayout({
 // 3. User bisa klik "Saya Masih Di Sini" untuk reset timer
 //
 // ============================================
-// 🎯 AKTIVITAS YANG DI-TRACK:
+// AKTIVITAS YANG DI-TRACK:
 // ============================================
 //
-// ✅ Klik mouse
-// ✅ Gerak mouse
-// ✅ Tekan keyboard
-// ✅ Scroll halaman
-// ✅ Touch di mobile
+// Klik mouse
+// Gerak mouse
+// Tekan keyboard
+// Scroll halaman
+// Touch di mobile
 //
-// ❌ Buka tab lain (tidak dihitung aktivitas)
-// ❌ Minimize browser (tidak dihitung aktivitas)
+// Buka tab lain (tidak dihitung aktivitas)
+// Minimize browser (tidak dihitung aktivitas)

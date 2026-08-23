@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { MessageCircle, X, Bot, Headphones, MessageSquare } from "lucide-react";
+import { MessageCircle, X, Bot, Headphones, MessageSquare, Smartphone } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import AiChatWidget from "./AiChatWidget";
 
@@ -139,7 +139,7 @@ export default function ChatSystem() {
                   </div>
                   <div className="flex-1">
                     <h4 className="font-bold text-ink-900 group-hover:text-primary-800 text-sm mb-0.5">
-                      💬 Tanya AI Assistant
+                      Tanya AI Assistant
                     </h4>
                     <p className="text-[11px] text-ink-500 font-medium">
                       Bantuan cepat informasi PPDB 24/7
@@ -156,8 +156,8 @@ export default function ChatSystem() {
                                         <Headphones className="w-5 h-5 text-primary-600 group-hover:text-white transition-colors" />
                                     </div>
                                     <div>
-                                        <h4 className="font-bold text-ink-900 group-hover:text-primary-800 text-sm mb-0.5">🎧 Live Chat CS</h4>
-                                        <p className="text-[11px] text-ink-500 font-medium">Chat langsung dengan panitia</p>
+                                         <h4 className="font-bold text-ink-900 group-hover:text-primary-800 text-sm mb-0.5">Live Chat CS</h4>
+                                         <p className="text-[11px] text-ink-500 font-medium">Chat langsung dengan panitia</p>
                                     </div>
                                 </button>
 */}
@@ -171,7 +171,7 @@ export default function ChatSystem() {
                   </div>
                   <div>
                     <h4 className="font-bold text-ink-900 group-hover:text-green-800 text-sm mb-0.5">
-                      📱 WhatsApp CS
+                      WhatsApp CS
                     </h4>
                     <p className="text-[11px] text-ink-500 font-medium">
                       Hubungi via aplikasi WhatsApp

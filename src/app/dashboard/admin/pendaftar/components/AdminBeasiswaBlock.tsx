@@ -1,26 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import {
-  HandCoins,
-  CheckCircle,
-  Loader2,
-  Save,
-  Trash2,
-  GraduationCap,
-  Coins,
-  Building2,
-  BookOpen,
-  X,
-  AlertCircle,
-  FileText,
-  UploadCloud,
-  Eye,
-  File,
-  RefreshCw,
-  FolderOpen,
-  AlertTriangle,
-} from "lucide-react";
+import { HandCoins, CheckCircle, Loader2, Save, Trash2, GraduationCap, Coins, Building2, BookOpen, X, AlertCircle, FileText, UploadCloud, Eye, File, RefreshCw, FolderOpen, AlertTriangle,  } from "lucide-react";
 import Swal from "sweetalert2";
 
 // --------------------------------------------------------------------------
@@ -697,7 +678,7 @@ export default function AdminBeasiswaBlock({
           </div>
 
           {current.catatan && (
-            <p className="text-xs text-stone-600 mt-3 italic">📝 {current.catatan}</p>
+            <p className="text-xs text-stone-600 mt-3 italic">Catatan: {current.catatan}</p>
           )}
 
           <div className="flex gap-2 mt-4">

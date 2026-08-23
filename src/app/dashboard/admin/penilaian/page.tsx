@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
@@ -7,27 +7,7 @@ import { Button } from "@/components/ui/button";
 import Swal from "sweetalert2";
 import { exportToExcelProfessional, exportToPDF } from "@/lib/utils/export";
 import Link from "next/link";
-import {
-  ClipboardEdit,
-  MessageSquare,
-  Download,
-  RefreshCcw,
-  Send,
-  BarChart3,
-  AlertCircle,
-  CheckCircle2,
-  Clock,
-  LayoutDashboard,
-  Zap,
-  Users,
-  ChevronRight,
-  Search,
-  Filter,
-  FileText,
-  Eye,
-  Share2,
-  Sparkles,
-} from "lucide-react";
+import { ClipboardEdit, MessageSquare, Download, RefreshCcw, Send, BarChart3, AlertCircle, CheckCircle2, Clock, LayoutDashboard, Zap, Users, ChevronRight, Search, Filter, FileText, Eye, Share2, Sparkles, , Link } from "lucide-react";
 
 // Removed basic xlsx imports in favor of professional utility
 
@@ -665,7 +645,7 @@ export default function ExaminerDashboard() {
           <button
             onClick={() => {
               const message = encodeURIComponent(
-                `*Assalamu’alaikum Warahmatullahi Wabarakatuh*\n\nYth. Ustadz / Ustadzah Panitia PPDB Pesantren Al-Andalus Al-Andalus,\n\nBerikut link akses khusus Bank Soal Seleksi & Form Penilaian Penguji untuk peninjauan & evaluasi TA 2027/2028:\n\n🔗 https://ppdb.pesantren-demo.com/panitia/bank-soal\n\n_Mohon bantuan ustadz/ustadzah untuk meninjau relevansi soal dan rubrik wawancara._\n\nSyukron, Jazakumullahu Khairan. 🙏`
+                `*Assalamu’alaikum Warahmatullahi Wabarakatuh*\n\nYth. Ustadz / Ustadzah Panitia PPDB Pesantren Al-Andalus Al-Andalus,\n\nBerikut link akses khusus Bank Soal Seleksi & Form Penilaian Penguji untuk peninjauan & evaluasi TA 2027/2028:\n\nhttps://ppdb.pesantren-demo.com/panitia/bank-soal\n\n_Mohon bantuan ustadz/ustadzah untuk meninjau relevansi soal dan rubrik wawancara._\n\nSyukron, Jazakumullahu Khairan.`
               );
               window.open(`https://wa.me/?text=${message}`, "_blank");
             }}

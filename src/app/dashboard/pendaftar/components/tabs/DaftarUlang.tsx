@@ -1,20 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  CheckCircle,
-  AlertCircle,
-  FileText,
-  Send,
-  Loader2,
-  History,
-  Copy,
-  Building2,
-  CreditCard as CreditCardIcon,
-  MessageCircle,
-  Banknote,
-  BookOpen,
-} from "lucide-react";
+import { CheckCircle, AlertCircle, FileText, Send, Loader2, History, Copy, Building2, CreditCard as CreditCardIcon, MessageCircle, Banknote, BookOpen, , Clock } from "lucide-react";
 import { Alert } from "@/components/ui";
 import { formatCurrency } from "@/lib/utils";
 
@@ -418,7 +405,7 @@ export default function DaftarUlangTab() {
                       ? "✓ Verified"
                       : p.status_pembayaran === "rejected"
                       ? "✗ Ditolak"
-                      : "⏰ Pending"}
+                      : "Pending"}
                   </span>
                 </div>
               </div>
