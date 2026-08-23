@@ -1,15 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { ScanLine,  useState, useEffect } from "react";
+import { ScanLine,  usePathname } from "next/navigation";
 import Link from "next/link";
 
 // ─── LIBRARIES ───
-import { motion, AnimatePresence } from "framer-motion";
+import { ScanLine,  motion, AnimatePresence } from "framer-motion";
 import Swal from "sweetalert2";
 
 // ─── ICONS ───
-import {
+import { ScanLine, 
   LayoutDashboard,
   Users,
   FileCheck,
@@ -41,11 +41,11 @@ import {
   Wallet } from "lucide-react";
 
 // ─── CONFIG & UTILS ───
-import {
+import { ScanLine, 
   getMenuItemsForRole,
   UserRole,
   ROLE_LABELS } from "@/lib/access-control";
-import { BRANDING } from "@/config/branding";
+import { ScanLine,  BRANDING } from "@/config/branding";
 import LanguageSwitcher from "@/components/common/LanguageSwitcher";
 
 /**
@@ -54,6 +54,7 @@ import LanguageSwitcher from "@/components/common/LanguageSwitcher";
  * Memudahkan penambahan menu baru secara dinamis.
  */
 const ICON_MAP: Record<string, any> = {
+  ScanLine,
   LayoutDashboard,
   Users,
   FileCheck,

@@ -276,21 +276,25 @@ export function getMenuItemsForRole(role: UserRole) {
   const menus: Record<string, any[]> = {
     admin_berkas: [
       { name: "Dashboard", href: "/dashboard/admin", icon: "LayoutDashboard" },
+      { name: "Executive BI", href: "/dashboard/admin/analytics", icon: "PieChart", group: "OPERASIONAL" },
       { name: "Data Pendaftar", href: "/dashboard/admin/pendaftar", icon: "Users" },
       { name: "Verifikasi Dokumen", href: "/dashboard/admin/verifikasi-dokumen", icon: "FileCheck" },
     ],
     admin_keuangan: [
       { name: "Dashboard", href: "/dashboard/admin", icon: "LayoutDashboard" },
+      { name: "Executive BI", href: "/dashboard/admin/analytics", icon: "PieChart", group: "OPERASIONAL" },
       { name: "Data Pendaftar", href: "/dashboard/admin/pendaftar", icon: "Users" },
       { name: "Verifikasi Pembayaran", href: "/dashboard/admin/verifikasi-pembayaran", icon: "CreditCard" },
       { name: "Rekap Keuangan", href: "/dashboard/admin/keuangan", icon: "BarChart" },
     ],
     admin_kesehatan: [
       { name: "Dashboard", href: "/dashboard/admin", icon: "LayoutDashboard" },
+      { name: "Executive BI", href: "/dashboard/admin/analytics", icon: "PieChart", group: "OPERASIONAL" },
       { name: "Data Kesehatan", href: "/dashboard/admin/kesehatan", icon: "Activity" },
     ],
     admin_reservasi: [
       { name: "Dashboard", href: "/dashboard/admin", icon: "LayoutDashboard" },
+      { name: "Executive BI", href: "/dashboard/admin/analytics", icon: "PieChart", group: "OPERASIONAL" },
       { name: "Reservasi PSB", href: "/dashboard/admin/reservasi", icon: "Calendar" },
     ],
     admin_personalia: [
@@ -299,6 +303,7 @@ export function getMenuItemsForRole(role: UserRole) {
     ],
     viewer: [
       { name: "Dashboard", href: "/dashboard/admin", icon: "LayoutDashboard" },
+      { name: "Executive BI", href: "/dashboard/admin/analytics", icon: "PieChart", group: "OPERASIONAL" },
       { name: "Data Pendaftar", href: "/dashboard/admin/pendaftar", icon: "Users" },
       { name: "Statistik", href: "/dashboard/admin/statistik-wilayah", icon: "PieChart" },
     ],
@@ -334,8 +339,10 @@ export function getMenuItemsForRole(role: UserRole) {
     ],
     admin: [
       { name: "Dashboard", href: "/dashboard/admin", icon: "LayoutDashboard" },
+      { name: "Executive BI", href: "/dashboard/admin/analytics", icon: "PieChart", group: "OPERASIONAL" },
       { name: "Data Pendaftar", href: "/dashboard/admin/pendaftar", icon: "Users", group: "OPERASIONAL" },
       { name: "Manajemen Jadwal", href: "/dashboard/admin/jadwal/monitoring", icon: "Calendar", group: "OPERASIONAL" },
+      { name: "Scan Kehadiran (QR)", href: "/dashboard/admin/jadwal/scan", icon: "ScanLine", group: "OPERASIONAL" },
       { name: "Rekap Keuangan", href: "/dashboard/admin/keuangan", icon: "Landmark", group: "OPERASIONAL" },
       { name: "Rekap Seragam", href: "/dashboard/admin/seragam", icon: "Shirt", group: "OPERASIONAL" },
       { name: "Fee Penguji", href: "/dashboard/admin/fee-penguji", icon: "Wallet", group: "OPERASIONAL" },
@@ -346,9 +353,11 @@ export function getMenuItemsForRole(role: UserRole) {
     ],
     admin_super: [
       { name: "Dashboard", href: "/dashboard/admin", icon: "LayoutDashboard" },
+      { name: "Executive BI", href: "/dashboard/admin/analytics", icon: "PieChart", group: "OPERASIONAL" },
       { name: "Data Pendaftar", href: "/dashboard/admin/pendaftar", icon: "Users", group: "OPERASIONAL" },
       { name: "Filter Lanjutan", href: "/dashboard/admin/pendaftar/filter-lanjutan", icon: "Search", group: "OPERASIONAL" },
       { name: "Manajemen Jadwal", href: "/dashboard/admin/jadwal/monitoring", icon: "Calendar", group: "OPERASIONAL" },
+      { name: "Scan Kehadiran (QR)", href: "/dashboard/admin/jadwal/scan", icon: "ScanLine", group: "OPERASIONAL" },
       { name: "Rekap Keuangan", href: "/dashboard/admin/keuangan", icon: "Landmark", group: "OPERASIONAL" },
       { name: "Rekap Seragam", href: "/dashboard/admin/seragam", icon: "Shirt", group: "OPERASIONAL" },
       { name: "Fee Penguji", href: "/dashboard/admin/fee-penguji", icon: "Wallet", group: "OPERASIONAL" },
