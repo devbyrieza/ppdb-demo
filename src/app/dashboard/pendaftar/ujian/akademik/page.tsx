@@ -173,7 +173,7 @@ export default function AkademikTestPage() {
   if (alreadyDone) {
     return (
       <div className="max-w-lg mx-auto p-[24px_28px] md:p-8 text-center mt-10">
-        <div className="bg-white rounded-[24px] shadow-lg border p-6 md:p-10">
+        <div className="bg-white rounded-[24px] shadow-2xl shadow-primary/30  shadow-primary/20 border p-6 md:p-10">
           <CheckCircle className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
           <h2 className="text-xl font-bold mb-2">Tes Sudah Dikerjakan</h2>
           <p className="text-stone-600 mb-6">
@@ -195,7 +195,7 @@ export default function AkademikTestPage() {
   if (isLocked) {
     return (
       <div className="max-w-lg mx-auto p-[24px_28px] md:p-8 text-center mt-10">
-        <div className="bg-white rounded-[2rem] shadow-xl border p-6 md:p-10">
+        <div className="bg-white rounded-[2rem] shadow-2xl shadow-primary/30 border p-6 md:p-10">
           <div className="w-20 h-20 bg-secondary-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <AlertCircle className="w-10 h-10 text-secondary-600" />
           </div>
@@ -208,7 +208,7 @@ export default function AkademikTestPage() {
           </p>
           <button
             onClick={() => router.push("/dashboard/pendaftar")}
-            className="w-full px-6 py-4 bg-primary-700 hover:bg-primary-800 text-white font-black rounded-[24px] transition-all shadow-md uppercase tracking-widest text-sm"
+            className="w-full px-6 py-4 bg-primary-700 hover:bg-primary-800 text-white font-black rounded-[24px] transition-all shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 uppercase tracking-widest text-sm"
           >
             Kembali ke Dashboard
           </button>
@@ -233,7 +233,7 @@ export default function AkademikTestPage() {
           <ArrowLeft className="w-4 h-4" /> Kembali
         </button>
 
-        <div className="bg-gradient-to-r from-primary-600 to-primary-800 rounded-[2rem] p-[24px_28px] md:p-8 mb-8 text-white relative overflow-hidden shadow-lg border border-primary-500">
+        <div className="bg-gradient-to-r from-primary-600 to-primary-800 rounded-[2rem] p-[24px_28px] md:p-8 mb-8 text-white relative overflow-hidden shadow-2xl shadow-primary/30  shadow-primary/20 border border-primary-500">
           <div className="absolute top-0 right-0 p-[24px_28px] md:p-8 opacity-10">
             <FileText className="w-32 h-32" />
           </div>
@@ -312,7 +312,7 @@ export default function AkademikTestPage() {
     <div className="max-w-4xl mx-auto p-[24px_28px] md:p-6 pb-32">
       {/* Floating Timer */}
       <div
-        className={`fixed top-20 right-4 md:right-10 bg-white border shadow-lg rounded-full p-[16px_20px] z-50 flex items-center gap-2 font-bold font-mono text-xl ${timeLeft <= 300 ? "text-red-600 animate-pulse" : "text-indigo-600"}`}
+        className={`fixed top-20 right-4 md:right-10 bg-white border shadow-2xl shadow-primary/30  shadow-primary/20 rounded-full p-[16px_20px] z-50 flex items-center gap-2 font-bold font-mono text-xl ${timeLeft <= 300 ? "text-red-600 animate-pulse" : "text-indigo-600"}`}
       >
         <Timer className="w-5 h-5" /> {formatTime(timeLeft)}
       </div>

@@ -335,8 +335,8 @@ export default function HeroSection() {
               className="absolute top-[-2%] -left-6 md:top-[5%] md:-left-20 lg:-left-28 z-20 scale-[0.8] md:scale-100"
               style={{ transformOrigin: "left center" }}
             >
-              <div className="glass-panel flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2 md:py-3 rounded-xl md:rounded-2xl shadow-premium-lg border-amber-100">
-                <div className="icon-box w-9 h-9 md:w-11 md:h-11 rounded-lg md:rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0">
+              <div className="glass-panel flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2 md:py-3 rounded-2xl md:rounded-2xl shadow-premium-lg border-amber-100">
+                <div className="icon-box w-9 h-9 md:w-11 md:h-11 rounded-2xl md:rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0">
                   <Gift className="w-4 h-4 md:w-5 md:h-5" />
                 </div>
                 <div>
@@ -359,7 +359,7 @@ export default function HeroSection() {
               style={{ transformOrigin: "right center" }}
             >
               <div className="glass-panel flex items-center gap-3 px-4 py-3 rounded-2xl">
-                <div className="icon-box icon-box-primary w-11 h-11 rounded-xl">
+                <div className="icon-box icon-box-primary w-11 h-11 rounded-2xl">
                   <GraduationCap className="w-5 h-5" />
                 </div>
                 <div>
@@ -386,7 +386,7 @@ export default function HeroSection() {
               style={{ transformOrigin: "left center" }}
             >
               <div className="glass-panel flex items-center gap-3 px-4 py-3 rounded-2xl">
-                <div className="icon-box icon-box-primary w-11 h-11 rounded-xl">
+                <div className="icon-box icon-box-primary w-11 h-11 rounded-2xl">
                   <Globe className="w-5 h-5" />
                 </div>
                 <div>

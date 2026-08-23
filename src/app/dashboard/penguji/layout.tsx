@@ -116,9 +116,9 @@ export default function PengujiDashboardLayout({
           key={item.name}
           href={item.href}
           onClick={() => setSidebarOpen(false)}
-          className={`group flex items-center px-4 py-3 text-sm font-bold rounded-xl transition-all duration-200 ${
+          className={`group flex items-center px-4 py-3 text-sm font-bold rounded-2xl transition-all duration-200 ${
             item.active
-              ? "bg-primary-600 text-white shadow-lg shadow-primary-200"
+              ? "bg-primary-600 text-white shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-200"
               : "text-ink-600 hover:bg-primary-50 hover:text-primary-700"
           }`}
         >
@@ -164,7 +164,7 @@ export default function PengujiDashboardLayout({
           className="lg:hidden sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-surface-200 px-5 py-4 flex items-center justify-center"
         >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-linear-to-br from-primary-600 to-primary-700 flex items-center justify-center text-white text-sm font-black shadow-md">
+            <div className="w-8 h-8 rounded-2xl bg-linear-to-br from-primary-600 to-primary-700 flex items-center justify-center text-white text-sm font-black shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">
               <ShieldCheck className="w-4 h-4" />
             </div>
             <span className="font-black text-ink-950 tracking-tight leading-none text-sm">
@@ -180,7 +180,7 @@ export default function PengujiDashboardLayout({
               {/* Brand Header */}
               <div className="px-5 md:px-8 pt-10 pb-8 border-b border-surface-100 mb-8">
                 <div className="flex items-center gap-4 mb-2">
-                  <div className="w-10 h-10 rounded-xl bg-linear-to-br from-primary-600 to-primary-700 flex items-center justify-center text-white shadow-lg shadow-primary-200">
+                  <div className="w-10 h-10 rounded-2xl bg-linear-to-br from-primary-600 to-primary-700 flex items-center justify-center text-white shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-200">
                     <ShieldCheck className="w-6 h-6" />
                   </div>
                   <div>
@@ -213,7 +213,7 @@ export default function PengujiDashboardLayout({
                       </span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 text-[9px] font-black text-primary-700 bg-primary-50 px-2.5 py-1 rounded-lg border border-primary-100 uppercase tracking-widest">
+                  <div className="flex items-center gap-2 text-[9px] font-black text-primary-700 bg-primary-50 px-2.5 py-1 rounded-2xl border border-primary-100 uppercase tracking-widest">
                     <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
                     Aktif Sesi
                   </div>
@@ -238,7 +238,7 @@ export default function PengujiDashboardLayout({
                     <select
                       value={userRole}
                       onChange={handleRoleSwitch}
-                      className="w-full bg-surface-50 border border-surface-100 text-xs font-bold text-ink-900 rounded-xl py-2.5 px-3 focus:ring-4 focus:ring-primary-500/10 focus:border-primary-200 outline-none transition-all shadow-premium-sm"
+                      className="w-full bg-surface-50 border border-surface-100 text-xs font-bold text-ink-900 rounded-2xl py-2.5 px-3 focus:ring-4 focus:ring-primary-500/10 focus:border-primary-200 outline-none transition-all shadow-premium-sm"
                     >
                       {availableRoles.map((role) => (
                         <option key={role} value={role}>
@@ -250,7 +250,7 @@ export default function PengujiDashboardLayout({
                 )}
                 <button
                   onClick={handleLogout}
-                  className="flex items-center w-full px-4 py-3 text-sm font-black text-red-500 hover:bg-red-50 rounded-xl transition-all group"
+                  className="flex items-center w-full px-4 py-3 text-sm font-black text-red-500 hover:bg-red-50 rounded-2xl transition-all group"
                 >
                   <LogOut className="w-5 h-5 mr-3 shrink-0 text-red-300 group-hover:text-red-500 transition-colors" />
                   <span>Logout</span>
@@ -279,7 +279,7 @@ export default function PengujiDashboardLayout({
                 >
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-linear-to-br from-primary-600 to-primary-700 flex items-center justify-center text-white shadow-md">
+                      <div className="w-8 h-8 rounded-2xl bg-linear-to-br from-primary-600 to-primary-700 flex items-center justify-center text-white shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">
                         <ShieldCheck className="w-5 h-5" />
                       </div>
                       <span className="font-black text-ink-950">
@@ -288,7 +288,7 @@ export default function PengujiDashboardLayout({
                     </div>
                     <button
                       onClick={() => setSidebarOpen(false)}
-                      className="p-2 hover:bg-surface-100 rounded-xl"
+                      className="p-2 hover:bg-surface-100 rounded-2xl"
                     >
                       <X className="w-5 h-5 text-ink-400" />
                     </button>
@@ -322,7 +322,7 @@ export default function PengujiDashboardLayout({
                       <select
                         value={userRole}
                         onChange={handleRoleSwitch}
-                        className="w-full bg-surface-50 border border-surface-100 text-xs font-bold text-ink-900 rounded-xl py-2.5 px-3 focus:ring-4 focus:ring-primary-500/10 focus:border-primary-200 outline-none transition-all shadow-sm"
+                        className="w-full bg-surface-50 border border-surface-100 text-xs font-bold text-ink-900 rounded-2xl py-2.5 px-3 focus:ring-4 focus:ring-primary-500/10 focus:border-primary-200 outline-none transition-all shadow-sm"
                       >
                         {availableRoles.map((role) => (
                           <option key={role} value={role}>
@@ -331,7 +331,7 @@ export default function PengujiDashboardLayout({
                         ))}
                       </select>
                     ) : (
-                      <div className="w-full bg-primary-50 border border-primary-100 text-xs font-bold text-primary-900 rounded-xl py-2.5 px-3">
+                      <div className="w-full bg-primary-50 border border-primary-100 text-xs font-bold text-primary-900 rounded-2xl py-2.5 px-3">
                         {ROLE_LABELS[userRole as UserRole] ||
                           userRole ||
                           "Penguji"}
@@ -341,7 +341,7 @@ export default function PengujiDashboardLayout({
 
                   <button
                     onClick={handleLogout}
-                    className="mt-4 flex items-center w-full px-4 py-4 text-sm font-black text-red-600 bg-red-50 rounded-xl"
+                    className="mt-4 flex items-center w-full px-4 py-4 text-sm font-black text-red-600 bg-red-50 rounded-2xl"
                   >
                     <LogOut className="w-5 h-5 mr-3" />
                     Logout Akun
@@ -412,7 +412,7 @@ export default function PengujiDashboardLayout({
                   className="flex flex-col items-center gap-1 group py-1 min-w-[70px]"
                 >
                   <div
-                    className={`p-2 rounded-2xl transition-all ${item.active ? "bg-primary-600 text-white shadow-lg shadow-primary-200" : "text-ink-400 group-hover:bg-primary-50"}`}
+                    className={`p-2 rounded-2xl transition-all ${item.active ? "bg-primary-600 text-white shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-200" : "text-ink-400 group-hover:bg-primary-50"}`}
                   >
                     <item.icon className="w-5 h-5" />
                   </div>

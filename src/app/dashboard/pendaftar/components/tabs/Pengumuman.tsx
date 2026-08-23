@@ -123,7 +123,7 @@ export default function PengumumanTab() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="relative overflow-hidden rounded-[2rem] bg-linear-to-br from-primary-700 to-primary-900 border border-primary-600 p-5 md:p-8 text-white shadow-lg app-card">
+      <div className="relative overflow-hidden rounded-[2rem] bg-linear-to-br from-primary-700 to-primary-900 border border-primary-600 p-5 md:p-8 text-white shadow-2xl shadow-primary/30  shadow-primary/20 app-card">
         <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-secondary-50/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center gap-5">
@@ -167,7 +167,7 @@ export default function PengumumanTab() {
       ) : pengumuman.status_kelulusan === "diterima" ? (
         <div className="space-y-6">
           {/* Success Card */}
-          <div className="bg-linear-to-r from-emerald-500 to-emerald-700 rounded-[2rem] p-5 md:p-8 text-white shadow-xl shadow-emerald-500/20 relative overflow-hidden app-card">
+          <div className="bg-linear-to-r from-emerald-500 to-emerald-700 rounded-[2rem] p-5 md:p-8 text-white shadow-2xl shadow-primary/30 shadow-emerald-500/20 relative overflow-hidden app-card">
             <div className="absolute -top-10 -right-10 p-5 md:p-8 opacity-10 transform rotate-12">
               <Trophy className="w-64 h-64" />
             </div>
@@ -194,7 +194,7 @@ export default function PengumumanTab() {
               <button
                 onClick={handleDownloadSurat}
                 disabled={isGenerating}
-                className="inline-flex items-center justify-center gap-3 px-5 md:px-8 py-3.5 bg-secondary-400 text-primary-950 rounded-full font-black hover:bg-secondary-300 transition-all shadow-lg shadow-secondary-400/20 active:scale-95 disabled:opacity-50 border border-secondary-500"
+                className="inline-flex items-center justify-center gap-3 px-5 md:px-8 py-3.5 bg-secondary-400 text-primary-950 rounded-full font-black hover:bg-secondary-300 transition-all shadow-2xl shadow-primary/30  shadow-primary/20 shadow-secondary-400/20 active:scale-95 disabled:opacity-50 border border-secondary-500"
               >
                 {isGenerating ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
@@ -207,9 +207,9 @@ export default function PengumumanTab() {
           </div>
 
           {/* Info Card */}
-          <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-green-100">
+          <div className="bg-white rounded-2xl shadow-2xl shadow-primary/30  shadow-primary/20 p-6 border-2 border-green-100">
             <div className="flex items-center gap-3 mb-4">
-              <div className="p-2 bg-green-100 rounded-lg">
+              <div className="p-2 bg-green-100 rounded-2xl">
                 <FileText className="w-6 h-6 text-green-600" />
               </div>
               <h3 className="text-lg font-bold text-stone-900">
@@ -228,7 +228,7 @@ export default function PengumumanTab() {
               </div>
 
               {pengumuman.catatan && (
-                <div className="p-4 bg-primary-50 border border-primary-200 rounded-lg">
+                <div className="p-4 bg-primary-50 border border-primary-200 rounded-2xl">
                   <p className="text-sm text-primary-900">
                     <strong>Catatan:</strong> {pengumuman.catatan}
                   </p>
@@ -238,10 +238,10 @@ export default function PengumumanTab() {
           </div>
 
           {/* Next Steps */}
-          <div className="bg-secondary-50 border-2 border-secondary-200 rounded-xl p-6">
+          <div className="bg-secondary-50 border-2 border-secondary-200 rounded-2xl p-6">
             <div className="flex gap-4">
               <div className="flex-shrink-0">
-                <div className="p-2 bg-secondary-200 rounded-lg">
+                <div className="p-2 bg-secondary-200 rounded-2xl">
                   <AlertCircle className="w-6 h-6 text-secondary-700" />
                 </div>
               </div>
@@ -264,7 +264,7 @@ export default function PengumumanTab() {
       ) : (
         <div className="space-y-6">
           {/* Failed Card */}
-          <div className="bg-linear-to-r from-red-600 to-rose-700 rounded-[2rem] p-5 md:p-8 text-white shadow-xl shadow-red-600/20 app-card overflow-hidden relative">
+          <div className="bg-linear-to-r from-red-600 to-rose-700 rounded-[2rem] p-5 md:p-8 text-white shadow-2xl shadow-primary/30 shadow-red-600/20 app-card overflow-hidden relative">
             <div className="absolute -top-10 -right-10 p-5 md:p-8 opacity-10 transform rotate-12">
               <XCircle className="w-64 h-64" />
             </div>
@@ -288,9 +288,9 @@ export default function PengumumanTab() {
           </div>
 
           {/* Info Card */}
-          <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-red-100">
+          <div className="bg-white rounded-2xl shadow-2xl shadow-primary/30  shadow-primary/20 p-6 border-2 border-red-100">
             <div className="flex items-center gap-3 mb-4">
-              <div className="p-2 bg-red-100 rounded-lg">
+              <div className="p-2 bg-red-100 rounded-2xl">
                 <FileText className="w-6 h-6 text-red-600" />
               </div>
               <h3 className="text-lg font-bold text-stone-900">
@@ -309,7 +309,7 @@ export default function PengumumanTab() {
               </div>
 
               {pengumuman.catatan && (
-                <div className="p-4 bg-primary-50 border border-primary-200 rounded-lg">
+                <div className="p-4 bg-primary-50 border border-primary-200 rounded-2xl">
                   <p className="text-sm text-primary-900">
                     <strong>Catatan:</strong> {pengumuman.catatan}
                   </p>
@@ -319,10 +319,10 @@ export default function PengumumanTab() {
           </div>
 
           {/* Encouragement */}
-          <div className="bg-primary-50 border-2 border-primary-200 rounded-xl p-6">
+          <div className="bg-primary-50 border-2 border-primary-200 rounded-2xl p-6">
             <div className="flex gap-4">
               <div className="flex-shrink-0">
-                <div className="p-2 bg-primary-200 rounded-lg">
+                <div className="p-2 bg-primary-200 rounded-2xl">
                   <Trophy className="w-6 h-6 text-primary-700" />
                 </div>
               </div>

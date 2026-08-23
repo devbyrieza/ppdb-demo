@@ -466,7 +466,7 @@ export default function VerifikasiDokumenDetailPage() {
         </p>
         <button
           onClick={() => router.back()}
-          className="p-[16px_20px] bg-primary-700 hover:bg-primary-800 text-white rounded-[24px] font-bold transition-all shadow-lg shadow-primary-700/20 active:scale-95"
+          className="p-[16px_20px] bg-primary-700 hover:bg-primary-800 text-white rounded-[24px] font-bold transition-all shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-700/20 active:scale-95"
         >
           Kembali ke Daftar
         </button>
@@ -494,7 +494,7 @@ export default function VerifikasiDokumenDetailPage() {
             >
               <ChevronLeft className="w-6 h-6" />
             </button>
-            <div className="p-[24px_28px] bg-linear-to-br from-primary-600 to-primary-900 rounded-[24px] shadow-xl shadow-primary-900/20">
+            <div className="p-[24px_28px] bg-linear-to-br from-primary-600 to-primary-900 rounded-[24px] shadow-2xl shadow-primary/30  shadow-primary-900/20">
               <User className="w-8 h-8 text-gold-300" />
             </div>
             <div>
@@ -526,7 +526,7 @@ export default function VerifikasiDokumenDetailPage() {
         {dokumenList.map((dok) => (
           <div
             key={dok.id}
-            className={`bg-white border rounded-3xl overflow-hidden transition-all shadow-xs hover:shadow-xl hover:shadow-primary-900/5 ${
+            className={`bg-white border rounded-3xl overflow-hidden transition-all shadow-xs hover:shadow-2xl shadow-primary/30 hover:shadow-primary-900/5 ${
               dok.status_verifikasi === "verified"
                 ? "border-emerald-200"
                 : dok.status_verifikasi === "rejected"
@@ -641,7 +641,7 @@ export default function VerifikasiDokumenDetailPage() {
                   className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-[24px] text-xs font-bold transition-all ${
                     dok.status_verifikasi === "verified"
                       ? "bg-emerald-50 text-emerald-600 border border-emerald-100 cursor-default"
-                      : "bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-600/20 active:scale-95 disabled:opacity-50"
+                      : "bg-emerald-600 hover:bg-emerald-700 text-white shadow-2xl shadow-primary/30  shadow-primary/20 shadow-emerald-600/20 active:scale-95 disabled:opacity-50"
                   }`}
                 >
                   {processingDocs.has(dok.id) ? (
@@ -911,7 +911,7 @@ export default function VerifikasiDokumenDetailPage() {
                 disabled={
                   processingDocs.has(rejectModal.docId) || !rejectReason.trim()
                 }
-                className="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-[24px] text-sm font-bold shadow-lg shadow-rose-600/20 hover:shadow-rose-600/40 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transform active:scale-95"
+                className="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-[24px] text-sm font-bold shadow-2xl shadow-primary/30  shadow-primary/20 shadow-rose-600/20 hover:shadow-rose-600/40 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transform active:scale-95"
               >
                 {processingDocs.has(rejectModal.docId) ? (
                   <Loader2 className="w-4 h-4 animate-spin" />

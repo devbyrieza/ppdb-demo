@@ -190,7 +190,7 @@ export default function FaqSection() {
           <div className="group relative flex flex-col items-center gap-5 bg-secondary-50 rounded-2xl p-7 border border-secondary-200 text-center overflow-hidden transition-all duration-400 hover:border-primary-200 hover:shadow-premium-sm">
             <div className="absolute inset-0 bg-gradient-to-b from-transparent to-primary-50/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-            <div className="relative z-10 w-12 h-12 rounded-xl bg-white flex items-center justify-center shadow-xs border border-secondary-200 group-hover:border-primary-100 transition-colors duration-300">
+            <div className="relative z-10 w-12 h-12 rounded-2xl bg-white flex items-center justify-center shadow-xs border border-secondary-200 group-hover:border-primary-100 transition-colors duration-300">
               <MessageCircleMore
                 className="w-5 h-5 text-primary-500"
                 strokeWidth={1.75}

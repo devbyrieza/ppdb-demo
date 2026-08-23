@@ -77,7 +77,7 @@ export default function AdminSearchPendaftarModal({ isOpen, onClose }: AdminSear
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Cari nama, nomor pendaftaran, atau no hp..."
-              className="w-full pl-12 pr-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none font-medium transition-all"
+              className="w-full pl-12 pr-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none font-medium transition-all"
               autoFocus
             />
             {isSearching && (
@@ -86,7 +86,7 @@ export default function AdminSearchPendaftarModal({ isOpen, onClose }: AdminSear
           </div>
 
           {query.length >= 2 && (
-            <div className="border border-stone-200 rounded-xl overflow-hidden max-h-[60vh] overflow-y-auto bg-white shadow-sm overscroll-contain custom-scrollbar">
+            <div className="border border-stone-200 rounded-2xl overflow-hidden max-h-[60vh] overflow-y-auto bg-white shadow-sm overscroll-contain custom-scrollbar">
               {results.length > 0 ? (
                 results.map((p) => (
                   <button
@@ -100,7 +100,7 @@ export default function AdminSearchPendaftarModal({ isOpen, onClose }: AdminSear
                     <div>
                       <div className="flex items-center gap-2 mb-1">
                         <span className="font-bold text-stone-800">{p.nama_lengkap}</span>
-                        <span className="text-xs font-black text-primary-600 bg-primary-100 px-2 py-0.5 rounded-lg">
+                        <span className="text-xs font-black text-primary-600 bg-primary-100 px-2 py-0.5 rounded-2xl">
                           {p.jenjang}
                         </span>
                       </div>

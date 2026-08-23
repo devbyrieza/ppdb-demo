@@ -231,7 +231,7 @@ export default function AiChatWidget({
                 onEscalate();
                 onClose();
               }}
-              className="w-full bg-white border border-secondary-200 text-secondary-700 hover:bg-secondary-50 hover:border-secondary-300 py-3 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-premium-xs"
+              className="w-full bg-white border border-secondary-200 text-secondary-700 hover:bg-secondary-50 hover:border-secondary-300 py-3 rounded-2xl text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-premium-xs"
             >
               <Headphones className="w-4 h-4" />
               Chat Langsung dengan CS
@@ -249,13 +249,13 @@ export default function AiChatWidget({
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Ketik pesan Anda..."
-            className="flex-1 bg-surface-50 border border-surface-200 rounded-xl px-4 py-3 text-[14px] text-ink-900 focus:outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-50 transition-all placeholder:text-ink-400"
+            className="flex-1 bg-surface-50 border border-surface-200 rounded-2xl px-4 py-3 text-[14px] text-ink-900 focus:outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-50 transition-all placeholder:text-ink-400"
             disabled={isLoading}
           />
           <button
             onClick={handleSend}
             disabled={isLoading || !input.trim()}
-            className="w-12 h-[46px] bg-primary-700 text-white rounded-xl flex items-center justify-center hover:bg-primary-800 disabled:opacity-50 disabled:hover:bg-primary-700 transition-colors shrink-0 shadow-sm"
+            className="w-12 h-[46px] bg-primary-700 text-white rounded-2xl flex items-center justify-center hover:bg-primary-800 disabled:opacity-50 disabled:hover:bg-primary-700 transition-colors shrink-0 shadow-sm"
           >
             {isLoading ? (
               <Loader2 className="w-5 h-5 animate-spin" />

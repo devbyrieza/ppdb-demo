@@ -256,7 +256,7 @@ function AdminBerkasSection({
 
       {/* Jenis Pengajuan indicator */}
       {pengajuan.jenis_pengajuan && (
-        <div className="text-xs text-stone-500 bg-stone-50 border border-stone-200 rounded-lg px-3 py-1.5">
+        <div className="text-xs text-stone-500 bg-stone-50 border border-stone-200 rounded-2xl px-3 py-1.5">
           Berkas untuk:{" "}
           <span className="font-bold text-ink-900">
             {pengajuan.jenis_pengajuan === "BEASISWA_PRESTASI"
@@ -277,7 +277,7 @@ function AdminBerkasSection({
           return (
             <div
               key={item.fieldKey}
-              className={`rounded-xl border p-3 transition-colors ${
+              className={`rounded-2xl border p-3 transition-colors ${
                 currentPath
                   ? "bg-green-50 border-green-200"
                   : item.required
@@ -313,7 +313,7 @@ function AdminBerkasSection({
                         href={`/api/files/${currentPath}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="p-1.5 text-primary-600 hover:bg-primary-100 rounded-lg transition-colors"
+                        className="p-1.5 text-primary-600 hover:bg-primary-100 rounded-2xl transition-colors"
                         title="Lihat berkas"
                       >
                         <Eye className="w-3.5 h-3.5" />
@@ -322,7 +322,7 @@ function AdminBerkasSection({
                         type="button"
                         onClick={() => handleDelete(item.fieldKey)}
                         disabled={isLoading}
-                        className="p-1.5 text-rose-500 hover:bg-rose-100 rounded-lg transition-colors disabled:opacity-40"
+                        className="p-1.5 text-rose-500 hover:bg-rose-100 rounded-2xl transition-colors disabled:opacity-40"
                         title="Hapus berkas"
                       >
                         {isDeleting ? (
@@ -335,7 +335,7 @@ function AdminBerkasSection({
                   )}
 
                   {/* Upload / Ganti button */}
-                  <label className={`flex items-center gap-1 px-2 py-1 rounded-lg cursor-pointer transition-colors text-xs font-bold ${
+                  <label className={`flex items-center gap-1 px-2 py-1 rounded-2xl cursor-pointer transition-colors text-xs font-bold ${
                     currentPath
                       ? "bg-white border border-stone-200 text-stone-600 hover:border-primary-300 hover:text-primary-700"
                       : "bg-primary-600 text-white hover:bg-primary-700"
@@ -593,7 +593,7 @@ export default function AdminBeasiswaBlock({
     <div className="space-y-4">
       {current ? (
         <div
-          className={`rounded-xl p-4 border ${
+          className={`rounded-2xl p-4 border ${
             isKeduanya ? "bg-primary-50 border-primary-200" : hasBeasiswa ? "bg-emerald-50 border-emerald-200" : "bg-amber-50 border-amber-200"
           }`}
         >
@@ -622,7 +622,7 @@ export default function AdminBeasiswaBlock({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {(cakupanActive === "UANG_PANGKAL" || cakupanActive === "KEDUANYA") && (
-              <div className="bg-white rounded-lg p-3 border border-stone-100">
+              <div className="bg-white rounded-2xl p-3 border border-stone-100">
                 <div className="flex items-center gap-1.5 mb-1">
                   <Building2 className="w-3.5 h-3.5 text-primary-500" />
                   <span className="text-[10px] font-black text-stone-500 uppercase tracking-widest">
@@ -640,7 +640,7 @@ export default function AdminBeasiswaBlock({
               </div>
             )}
             {(cakupanActive === "SPP" || cakupanActive === "KEDUANYA") && (
-              <div className="bg-white rounded-lg p-3 border border-stone-100">
+              <div className="bg-white rounded-2xl p-3 border border-stone-100">
                 <div className="flex items-center gap-1.5 mb-1">
                   <BookOpen className="w-3.5 h-3.5 text-violet-500" />
                   <span className="text-[10px] font-black text-stone-500 uppercase tracking-widest">
@@ -666,20 +666,20 @@ export default function AdminBeasiswaBlock({
           <div className="flex gap-2 mt-4">
             <button
               onClick={openForm}
-              className="flex-1 py-2 text-xs font-bold bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors"
+              className="flex-1 py-2 text-xs font-bold bg-primary-600 hover:bg-primary-700 text-white rounded-2xl transition-colors"
             > Atur Bantuan Biaya </button>
           </div>
           
           <button
             onClick={handleDelete}
-            className="w-full mt-2 bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 py-2.5 rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-2"
+            className="w-full mt-2 bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 py-2.5 rounded-2xl text-xs font-bold transition-colors flex items-center justify-center gap-2"
           >
             <Trash2 className="w-4 h-4" />
             Hapus Bantuan
           </button>
         </div>
       ) : (
-        <div className="rounded-xl border-2 border-dashed border-stone-200 p-5 text-center text-stone-400">
+        <div className="rounded-2xl border-2 border-dashed border-stone-200 p-5 text-center text-stone-400">
           <HandCoins className="w-8 h-8 mx-auto mb-2 opacity-30" />
           <p className="text-sm font-medium">Belum ada bantuan biaya yang diberikan</p>
         </div>
@@ -688,7 +688,7 @@ export default function AdminBeasiswaBlock({
       {!current && !activeSection && (
         <button
           onClick={openForm}
-          className="w-full flex flex-col items-center justify-center gap-2 p-4 bg-primary-50 hover:bg-primary-100 border-2 border-primary-200 rounded-xl transition-all group"
+          className="w-full flex flex-col items-center justify-center gap-2 p-4 bg-primary-50 hover:bg-primary-100 border-2 border-primary-200 rounded-2xl transition-all group"
         >
           <HandCoins className="w-7 h-7 text-primary-500 group-hover:scale-110 transition-transform" />
           <span className="font-black text-sm text-primary-900">Atur Bantuan Biaya</span>
@@ -697,34 +697,34 @@ export default function AdminBeasiswaBlock({
       )}
 
       {activeSection === "form" && (
-        <div className="rounded-xl border-2 border-primary-200 bg-primary-50/30 p-4 sm:p-5 space-y-5">
+        <div className="rounded-2xl border-2 border-primary-200 bg-primary-50/30 p-4 sm:p-5 space-y-5">
           <div className="flex items-center justify-between border-b border-primary-100 pb-3">
             <div className="flex items-center gap-2">
               <HandCoins className="w-5 h-5 text-primary-600" />
               <h4 className="font-black text-primary-900">Form Bantuan Biaya</h4>
             </div>
-            <button onClick={closeSection} className="p-1.5 hover:bg-primary-100 rounded-lg transition-colors">
+            <button onClick={closeSection} className="p-1.5 hover:bg-primary-100 rounded-2xl transition-colors">
               <X className="w-4 h-4 text-primary-600" />
             </button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-white p-4 rounded-xl border border-stone-200 shadow-sm space-y-4">
+            <div className="bg-white p-4 rounded-2xl border border-stone-200 shadow-sm space-y-4">
               <div className="flex items-center gap-2 border-b border-stone-100 pb-2">
                 <Building2 className="w-4 h-4 text-primary-600" />
                 <h5 className="font-black text-xs text-stone-700 uppercase tracking-widest">Uang Pangkal</h5>
               </div>
               
               <div className="space-y-2">
-                <label className="flex items-center gap-2 p-2 rounded-lg border border-stone-100 cursor-pointer hover:bg-stone-50 transition-colors">
+                <label className="flex items-center gap-2 p-2 rounded-2xl border border-stone-100 cursor-pointer hover:bg-stone-50 transition-colors">
                   <input type="radio" name="up_type" checked={tipeUP === "NONE"} onChange={() => { setTipeUP("NONE"); setPotonganUP(""); }} className="text-primary-600 focus:ring-primary-500" />
                   <span className="text-xs font-bold text-stone-700">Tidak ada potongan</span>
                 </label>
-                <label className="flex items-center gap-2 p-2 rounded-lg border border-stone-100 cursor-pointer hover:bg-stone-50 transition-colors">
+                <label className="flex items-center gap-2 p-2 rounded-2xl border border-stone-100 cursor-pointer hover:bg-stone-50 transition-colors">
                   <input type="radio" name="up_type" checked={tipeUP === "KERINGANAN"} onChange={() => setTipeUP("KERINGANAN")} className="text-primary-600 focus:ring-primary-500" />
                   <span className="text-xs font-bold text-stone-700">Keringanan (Sebagian)</span>
                 </label>
-                <label className="flex items-center gap-2 p-2 rounded-lg border border-stone-100 cursor-pointer hover:bg-emerald-50 transition-colors">
+                <label className="flex items-center gap-2 p-2 rounded-2xl border border-stone-100 cursor-pointer hover:bg-emerald-50 transition-colors">
                   <input type="radio" name="up_type" checked={tipeUP === "BEASISWA"} onChange={() => { setTipeUP("BEASISWA"); setPotonganUP(""); }} className="text-emerald-600 focus:ring-emerald-500" />
                   <span className="text-xs font-bold text-emerald-700">Beasiswa Penuh (Gratis)</span>
                 </label>
@@ -742,7 +742,7 @@ export default function AdminBeasiswaBlock({
                       value={potonganUP}
                       onChange={(e) => setPotonganUP(e.target.value)}
                       placeholder="Contoh: 3500000"
-                      className="w-full pl-10 pr-3 py-2 border border-stone-200 rounded-lg text-sm font-bold text-stone-800 focus:border-primary-400 focus:ring-2 focus:ring-primary-400/20 outline-none"
+                      className="w-full pl-10 pr-3 py-2 border border-stone-200 rounded-2xl text-sm font-bold text-stone-800 focus:border-primary-400 focus:ring-2 focus:ring-primary-400/20 outline-none"
                     />
                   </div>
                   {potonganUP && Number(potonganUP) > 0 && (
@@ -754,22 +754,22 @@ export default function AdminBeasiswaBlock({
               )}
             </div>
 
-            <div className="bg-white p-4 rounded-xl border border-stone-200 shadow-sm space-y-4">
+            <div className="bg-white p-4 rounded-2xl border border-stone-200 shadow-sm space-y-4">
               <div className="flex items-center gap-2 border-b border-stone-100 pb-2">
                 <BookOpen className="w-4 h-4 text-violet-600" />
                 <h5 className="font-black text-xs text-stone-700 uppercase tracking-widest">SPP Bulan Pertama</h5>
               </div>
               
               <div className="space-y-2">
-                <label className="flex items-center gap-2 p-2 rounded-lg border border-stone-100 cursor-pointer hover:bg-stone-50 transition-colors">
+                <label className="flex items-center gap-2 p-2 rounded-2xl border border-stone-100 cursor-pointer hover:bg-stone-50 transition-colors">
                   <input type="radio" name="spp_type" checked={tipeSPP === "NONE"} onChange={() => { setTipeSPP("NONE"); setPotonganSPP(""); }} className="text-primary-600 focus:ring-primary-500" />
                   <span className="text-xs font-bold text-stone-700">Tidak ada potongan</span>
                 </label>
-                <label className="flex items-center gap-2 p-2 rounded-lg border border-stone-100 cursor-pointer hover:bg-stone-50 transition-colors">
+                <label className="flex items-center gap-2 p-2 rounded-2xl border border-stone-100 cursor-pointer hover:bg-stone-50 transition-colors">
                   <input type="radio" name="spp_type" checked={tipeSPP === "KERINGANAN"} onChange={() => setTipeSPP("KERINGANAN")} className="text-primary-600 focus:ring-primary-500" />
                   <span className="text-xs font-bold text-stone-700">Keringanan (Sebagian)</span>
                 </label>
-                <label className="flex items-center gap-2 p-2 rounded-lg border border-stone-100 cursor-pointer hover:bg-emerald-50 transition-colors">
+                <label className="flex items-center gap-2 p-2 rounded-2xl border border-stone-100 cursor-pointer hover:bg-emerald-50 transition-colors">
                   <input type="radio" name="spp_type" checked={tipeSPP === "BEASISWA"} onChange={() => { setTipeSPP("BEASISWA"); setPotonganSPP(""); }} className="text-emerald-600 focus:ring-emerald-500" />
                   <span className="text-xs font-bold text-emerald-700">Beasiswa Penuh (Gratis)</span>
                 </label>
@@ -787,7 +787,7 @@ export default function AdminBeasiswaBlock({
                       value={potonganSPP}
                       onChange={(e) => setPotonganSPP(e.target.value)}
                       placeholder="Contoh: 500000"
-                      className="w-full pl-10 pr-3 py-2 border border-stone-200 rounded-lg text-sm font-bold text-stone-800 focus:border-primary-400 focus:ring-2 focus:ring-primary-400/20 outline-none"
+                      className="w-full pl-10 pr-3 py-2 border border-stone-200 rounded-2xl text-sm font-bold text-stone-800 focus:border-primary-400 focus:ring-2 focus:ring-primary-400/20 outline-none"
                     />
                   </div>
                   {potonganSPP && Number(potonganSPP) > 0 && (
@@ -809,19 +809,19 @@ export default function AdminBeasiswaBlock({
               value={catatan}
               onChange={(e) => setCatatan(e.target.value)}
               placeholder="Contoh: Beasiswa yatim dan keringanan SKTM..."
-              className="w-full p-3 bg-white border border-stone-200 rounded-lg text-sm focus:border-primary-400 focus:ring-2 focus:ring-primary-400/20 outline-none"
+              className="w-full p-3 bg-white border border-stone-200 rounded-2xl text-sm focus:border-primary-400 focus:ring-2 focus:ring-primary-400/20 outline-none"
             />
           </div>
 
           <div className="flex gap-3 justify-end pt-2 border-t border-primary-100">
-            <button type="button" onClick={closeSection} className="px-5 py-2.5 text-sm font-bold text-stone-500 hover:bg-stone-100 rounded-lg transition-colors">
+            <button type="button" onClick={closeSection} className="px-5 py-2.5 text-sm font-bold text-stone-500 hover:bg-stone-100 rounded-2xl transition-colors">
               Batal
             </button>
             <button
               type="button"
               onClick={handleSave}
               disabled={submitting || (tipeUP === "NONE" && tipeSPP === "NONE")}
-              className="flex items-center gap-2 px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-bold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-bold rounded-2xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
               Simpan Bantuan

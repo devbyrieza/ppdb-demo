@@ -90,7 +90,7 @@ function VerifyPinContent() {
   if (!token) {
     return (
       <div className="min-h-screen bg-stone-50 flex items-center justify-center p-6 text-center">
-        <div className="max-w-md w-full bg-white p-6 md:p-10 rounded-3xl shadow-xl border border-stone-100">
+        <div className="max-w-md w-full bg-white p-6 md:p-10 rounded-3xl shadow-2xl shadow-primary/30 border border-stone-100">
           <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
           <h1 className="text-2xl font-bold text-stone-800 mb-2">
             Akses Ditolak
@@ -112,7 +112,7 @@ function VerifyPinContent() {
             <div className="absolute top-[-50px] right-[-50px] w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
             <div className="absolute bottom-[-30px] left-[-30px] w-24 h-24 bg-white/5 rounded-full blur-xl"></div>
 
-            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/20 backdrop-blur-md rounded-[24px] flex items-center justify-center mx-auto mb-6 shadow-lg border border-white/30 rotate-3">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/20 backdrop-blur-md rounded-[24px] flex items-center justify-center mx-auto mb-6 shadow-2xl shadow-primary/30  shadow-primary/20 border border-white/30 rotate-3">
               <Lock className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
             </div>
             <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">
@@ -150,7 +150,7 @@ function VerifyPinContent() {
                                             ? "border-emerald-500 text-emerald-600 bg-emerald-50"
                                             : error
                                               ? "border-red-300 bg-red-50 text-red-600 focus:border-red-500"
-                                              : "border-stone-100 focus:border-primary focus:bg-white focus:shadow-md"
+                                              : "border-stone-100 focus:border-primary focus:bg-white focus:shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10"
                                         }`}
                   placeholder="•"
                 />
@@ -174,7 +174,7 @@ function VerifyPinContent() {
             {!loading && !success && (
               <button
                 onClick={handleSubmit}
-                className="group flex items-center justify-center gap-2 w-full py-4 bg-primary hover:bg-primary-700 text-white rounded-[24px] font-bold transition-all shadow-lg hover:shadow-primary-100 uppercase tracking-widest text-xs"
+                className="group flex items-center justify-center gap-2 w-full py-4 bg-primary hover:bg-primary-700 text-white rounded-[24px] font-bold transition-all shadow-2xl shadow-primary/30  shadow-primary/20 hover:shadow-primary-100 uppercase tracking-widest text-xs"
               >
                 Konfirmasi PIN
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -205,7 +205,7 @@ export default function VerifyPinPage() {
     <Suspense
       fallback={
         <div className="min-h-screen bg-stone-50 flex items-center justify-center p-6">
-          <div className="max-w-md w-full bg-white p-6 md:p-10 rounded-3xl shadow-xl flex flex-col items-center gap-[24px_28px]">
+          <div className="max-w-md w-full bg-white p-6 md:p-10 rounded-3xl shadow-2xl shadow-primary/30 flex flex-col items-center gap-[24px_28px]">
             <Loader2 className="w-12 h-12 text-indigo-600 animate-spin" />
             <p className="text-stone-500 font-medium">
               Menyiapkan halaman keamanan...

@@ -1091,7 +1091,7 @@ export default function PendaftarDetailPage() {
       </Link>
 
       {/* Summary Card */}
-      <div className="bg-linear-to-br from-primary-600 to-primary-900 rounded-3xl shadow-xl shadow-primary-900/20 p-[24px_28px] md:p-8 text-white relative overflow-hidden">
+      <div className="bg-linear-to-br from-primary-600 to-primary-900 rounded-3xl shadow-2xl shadow-primary/30  shadow-primary-900/20 p-[24px_28px] md:p-8 text-white relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-gold-400/10 rounded-full -mr-20 -mt-20 blur-3xl pointer-events-none"></div>
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 relative z-10">
           {/* Main Info */}
@@ -1735,7 +1735,7 @@ export default function PendaftarDetailPage() {
                 <div className="mt-4 flex justify-end">
                   <Link
                     href={`/dashboard/penguji/input-nilai?search=${pendaftar.nomor_pendaftaran}`}
-                    className="flex items-center gap-2 p-[16px_20px] bg-purple-600 text-white rounded-[24px] hover:bg-purple-700 transition-colors shadow hover:shadow-md font-bold text-sm"
+                    className="flex items-center gap-2 p-[16px_20px] bg-purple-600 text-white rounded-[24px] hover:bg-purple-700 transition-colors shadow hover:shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 font-bold text-sm"
                   >
                     <Edit className="w-4 h-4" />
                     Input / Lengkapi Edit Nilai
@@ -1783,7 +1783,7 @@ export default function PendaftarDetailPage() {
                           Swal.fire("Error", err.message || "Terjadi kesalahan", "error");
                         }
                       }}
-                      className="flex items-center gap-2 p-[16px_20px] bg-amber-500 text-white rounded-[24px] hover:bg-amber-600 transition-colors shadow hover:shadow-md font-bold text-sm"
+                      className="flex items-center gap-2 p-[16px_20px] bg-amber-500 text-white rounded-[24px] hover:bg-amber-600 transition-colors shadow hover:shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 font-bold text-sm"
                     >
                       <AlertCircle className="w-4 h-4" />
                       Override Status
@@ -1813,7 +1813,7 @@ export default function PendaftarDetailPage() {
                           catatan_arab: (pendaftar.nilai_ujian as any)?.catatan_arab || (pendaftar.nilai_ujian as any)?.catatan_lisan_arab || "" });
                         setIsNilaiModalOpen(true);
                       }}
-                      className="flex items-center gap-2 p-[16px_20px] bg-amber-500 text-white rounded-[24px] hover:bg-amber-600 transition-colors shadow hover:shadow-md font-bold text-sm"
+                      className="flex items-center gap-2 p-[16px_20px] bg-amber-500 text-white rounded-[24px] hover:bg-amber-600 transition-colors shadow hover:shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 font-bold text-sm"
                     >
                       <Edit className="w-4 h-4" />
                       Input Nilai Khusus
@@ -1840,7 +1840,7 @@ export default function PendaftarDetailPage() {
                         Swal.fire("Error", err.message || "Terjadi kesalahan", "error");
                       }
                     }}
-                    className="flex items-center gap-2 p-[16px_20px] bg-violet-600 text-white rounded-[24px] hover:bg-violet-700 transition-colors shadow hover:shadow-md font-bold text-sm"
+                    className="flex items-center gap-2 p-[16px_20px] bg-violet-600 text-white rounded-[24px] hover:bg-violet-700 transition-colors shadow hover:shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 font-bold text-sm"
                   >
                     <Trophy className="w-4 h-4" />
                     Hitung Ulang Nilai
@@ -2404,7 +2404,7 @@ export default function PendaftarDetailPage() {
 
           {/* Riwayat Penyakit (Sembunyikan untuk Keuangan) */}
           {!isKeuangan && (
-            <div className="bg-white rounded-[24px] shadow-lg p-6 border-2 border-red-100">
+            <div className="bg-white rounded-[24px] shadow-2xl shadow-primary/30  shadow-primary/20 p-6 border-2 border-red-100">
               <div className="flex items-center gap-3 mb-4">
                 <div className="p-2 bg-red-100 rounded-[24px]">
                   <Heart className="w-6 h-6 text-red-600" />
@@ -2439,7 +2439,7 @@ export default function PendaftarDetailPage() {
 
           {/* Status Dokumen */}
           {!isKeuangan && (
-            <div className="bg-white rounded-[24px] shadow-lg p-6 border-2 border-primary-100">
+            <div className="bg-white rounded-[24px] shadow-2xl shadow-primary/30  shadow-primary/20 p-6 border-2 border-primary-100">
               <div className="flex items-center gap-3 mb-4">
                 <div className="p-2 bg-primary-100 rounded-[24px]">
                   <FileText className="w-6 h-6 text-primary-700" />
@@ -2500,7 +2500,7 @@ export default function PendaftarDetailPage() {
           {/* Status Pembayaran (Sidebar View - Hide IF Keuangan because it's already on top, OR keep as consistent view) */}
           {/* Hide IF Berkas as well, unless we want them to see it. User request implies focus on relevant data. */}
           {!isKeuangan && !isBerkas && !isPenguji && (
-            <div className="bg-white rounded-[24px] shadow-lg p-6 border-2 border-primary-100">
+            <div className="bg-white rounded-[24px] shadow-2xl shadow-primary/30  shadow-primary/20 p-6 border-2 border-primary-100">
               <div className="flex items-center gap-3 mb-4">
                 <div className="p-2 bg-emerald-100 rounded-[24px]">
                   <CreditCard className="w-6 h-6 text-emerald-600" />
@@ -2559,7 +2559,7 @@ export default function PendaftarDetailPage() {
           )}
 
           {/* Timestamps */}
-          <div className="bg-white rounded-[24px] shadow-lg p-6 border-2 border-primary-100">
+          <div className="bg-white rounded-[24px] shadow-2xl shadow-primary/30  shadow-primary/20 p-6 border-2 border-primary-100">
             <div className="flex items-center gap-3 mb-4">
               <div className="p-2 bg-stone-100 rounded-[24px]">
                 <Calendar className="w-6 h-6 text-stone-600" />
@@ -3417,7 +3417,7 @@ export default function PendaftarDetailPage() {
                 <button
                   type="submit"
                   disabled={savingEdit}
-                  className="p-[16px_20px] bg-primary-600 hover:bg-primary-700 text-white rounded-[24px] font-black text-sm uppercase transition-all shadow-md flex items-center gap-2 disabled:opacity-50"
+                  className="p-[16px_20px] bg-primary-600 hover:bg-primary-700 text-white rounded-[24px] font-black text-sm uppercase transition-all shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 flex items-center gap-2 disabled:opacity-50"
                 >
                   {savingEdit ? "Menyimpan..." : "Simpan Perubahan"}
                 </button>
@@ -3685,7 +3685,7 @@ export default function PendaftarDetailPage() {
                 <button
                   type="submit"
                   disabled={savingNilai}
-                  className="px-6 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-[24px] font-black text-sm uppercase transition-all shadow-md disabled:opacity-50"
+                  className="px-6 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-[24px] font-black text-sm uppercase transition-all shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 disabled:opacity-50"
                 >
                   {savingNilai ? "Menyimpan..." : "Simpan Nilai"}
                 </button>
@@ -3834,7 +3834,7 @@ export default function PendaftarDetailPage() {
                 type="button"
                 disabled={savingWd}
                 onClick={handleSaveWd}
-                className="px-6 py-2.5 rounded-[24px] bg-emerald-600 hover:bg-emerald-700 text-white font-black shadow-lg shadow-emerald-500/30 transition-all active:scale-95 disabled:opacity-50"
+                className="px-6 py-2.5 rounded-[24px] bg-emerald-600 hover:bg-emerald-700 text-white font-black shadow-2xl shadow-primary/30  shadow-primary/20 shadow-emerald-500/30 transition-all active:scale-95 disabled:opacity-50"
               >
                 {savingWd ? "Menyimpan..." : "Simpan Perubahan"}
               </button>

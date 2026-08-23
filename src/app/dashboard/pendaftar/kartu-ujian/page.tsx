@@ -99,18 +99,18 @@ export default function ExamCardPage() {
   return (
     <div className="min-h-screen bg-gray-100 p-[24px_28px] md:p-8 flex flex-col items-center">
       {/* Toolbar */}
-      <div className="w-full max-w-[21cm] mb-6 flex justify-between items-center bg-white/80 backdrop-blur-xl rounded-[24px] shadow-lg border border-emerald-100 p-[24px_28px] no-print">
+      <div className="w-full max-w-[21cm] mb-6 flex justify-between items-center bg-white/80 backdrop-blur-xl rounded-[24px] shadow-2xl shadow-primary/30  shadow-primary/20 border border-emerald-100 p-[24px_28px] no-print">
         <h1 className="text-xl font-bold text-stone-900">Pratinjau Jadwal</h1>
         <button
           onClick={() => window.print()}
-          className="flex items-center gap-2 bg-primary-600 text-white px-5 py-2.5 rounded-[24px] font-bold shadow-md hover:bg-primary-700 transition-colors"
+          className="flex items-center gap-2 bg-primary-600 text-white px-5 py-2.5 rounded-[24px] font-bold shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 hover:bg-primary-700 transition-colors"
         >
           <Printer className="w-4 h-4" /> Cetak Jadwal
         </button>
       </div>
 
       {/* A4 Paper simulating div */}
-      <div className="bg-white shadow-xl w-full max-w-[21cm] min-h-[29.7cm] p-[2cm] relative print:shadow-none print:w-full print:p-0">
+      <div className="bg-white shadow-2xl shadow-primary/30 w-full max-w-[21cm] min-h-[29.7cm] p-[2cm] relative print:shadow-none print:w-full print:p-0">
         {/* Header with Border */}
         <div className="border-2 border-black p-1 mb-1">
           <div className="border border-black p-6 relative">

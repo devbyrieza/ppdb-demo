@@ -255,7 +255,7 @@ export default function UserManagementPage() {
               <span className="bg-white/10 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border border-white/10">
                 Panel Kontrol
               </span>
-              <h1 className="text-3xl md:text-2xl sm:text-3xl lg:text-5xl font-black font-display tracking-tight mt-2 italic shadow-xl shadow-emerald-900/20 text-white">
+              <h1 className="text-3xl md:text-2xl sm:text-3xl lg:text-5xl font-black font-display tracking-tight mt-2 italic shadow-2xl shadow-primary/30 shadow-emerald-900/20 text-white">
                 Manajemen Admin
               </h1>
             </div>
@@ -265,7 +265,7 @@ export default function UserManagementPage() {
               resetForm();
               setIsModalOpen(true);
             }}
-            className="bg-secondary-400 hover:bg-secondary-300 text-primary-950 px-6 md:px-10 py-5 rounded-3xl font-black uppercase text-xs shadow-xl transition-all flex items-center justify-center gap-2 hover:scale-105 active:scale-95"
+            className="bg-secondary-400 hover:bg-secondary-300 text-primary-950 px-6 md:px-10 py-5 rounded-3xl font-black uppercase text-xs shadow-2xl shadow-primary/30 transition-all flex items-center justify-center gap-2 hover:scale-105 active:scale-95"
           >
             <Plus className="w-6 h-6" /> Tambah Pengguna
           </button>
@@ -273,7 +273,7 @@ export default function UserManagementPage() {
       </div>
 
       {/* User List Dashboard */}
-      <div className="bg-white rounded-4xl border border-secondary-100 shadow-xl shadow-emerald-900/20 overflow-hidden app-card">
+      <div className="bg-white rounded-4xl border border-secondary-100 shadow-2xl shadow-primary/30 shadow-emerald-900/20 overflow-hidden app-card">
         <div className="p-5 md:p-8 border-b border-stone-50 flex flex-col md:flex-row justify-between items-center gap-6 bg-secondary-50/10">
           <div className="relative w-full md:w-[28rem]">
             <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-stone-300" />
@@ -282,7 +282,7 @@ export default function UserManagementPage() {
               placeholder="Cari pengguna sistem..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-16 pr-8 py-5 bg-white border-2 border-secondary-100 rounded-[2.5rem] focus:outline-none focus:border-primary-500 font-bold shadow-xl shadow-emerald-900/20 placeholder:text-stone-300"
+              className="w-full pl-16 pr-8 py-5 bg-white border-2 border-secondary-100 rounded-[2.5rem] focus:outline-none focus:border-primary-500 font-bold shadow-2xl shadow-primary/30 shadow-emerald-900/20 placeholder:text-stone-300"
             />
           </div>
           <p className="text-[10px] font-black uppercase tracking-widest text-stone-500 bg-stone-100 px-4 py-2 rounded-full">
@@ -315,7 +315,7 @@ export default function UserManagementPage() {
                   >
                     <td className="p-5 md:p-8">
                       <div className="flex items-center gap-5">
-                        <div className="w-12 h-12 rounded-3xl bg-primary-100 flex items-center justify-center text-primary-700 font-black text-xs border-2 border-white shadow-xl shadow-emerald-900/20">
+                        <div className="w-12 h-12 rounded-3xl bg-primary-100 flex items-center justify-center text-primary-700 font-black text-xs border-2 border-white shadow-2xl shadow-primary/30 shadow-emerald-900/20">
                           {user.full_name.charAt(0)}
                         </div>
                         <div>
@@ -330,7 +330,7 @@ export default function UserManagementPage() {
                     </td>
                     <td className="p-5 md:p-8 text-center">
                       <div className="flex flex-wrap justify-center gap-2">
-                        <span className="px-4 py-1.5 bg-primary-50 text-primary-700 text-[10px] font-black rounded-3xl border border-primary-100 uppercase tracking-widest shadow-xl shadow-emerald-900/20">
+                        <span className="px-4 py-1.5 bg-primary-50 text-primary-700 text-[10px] font-black rounded-3xl border border-primary-100 uppercase tracking-widest shadow-2xl shadow-primary/30 shadow-emerald-900/20">
                           {ROLE_LABELS[user.role as UserRole] ||
                             user.role.replace("_", " ")}
                         </span>
@@ -340,7 +340,7 @@ export default function UserManagementPage() {
                             .map((r, i) => (
                               <span
                                 key={i}
-                                className="px-4 py-1.5 bg-stone-100 text-stone-600 text-[10px] font-black rounded-3xl border border-stone-200 uppercase tracking-widest shadow-xl shadow-emerald-900/20"
+                                className="px-4 py-1.5 bg-stone-100 text-stone-600 text-[10px] font-black rounded-3xl border border-stone-200 uppercase tracking-widest shadow-2xl shadow-primary/30 shadow-emerald-900/20"
                               >
                                 {ROLE_LABELS[r as UserRole] ||
                                   r.replace("_", " ")}

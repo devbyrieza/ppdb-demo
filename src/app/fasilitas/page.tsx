@@ -60,7 +60,7 @@ const HeroStat = ({
     transition={{ delay, duration: 0.5 }}
     className="app-card bg-white p-5 flex flex-col items-center text-center min-w-[140px]"
   >
-    <div className="w-12 h-12 rounded-3xl bg-primary-50 flex items-center justify-center text-primary-600 mb-3 border border-primary-100 shadow-md">
+    <div className="w-12 h-12 rounded-3xl bg-primary-50 flex items-center justify-center text-primary-600 mb-3 border border-primary-100 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">
       <Icon className="w-6 h-6" />
     </div>
     <p className="text-2xl font-black text-primary-950 leading-none mb-1">
@@ -153,7 +153,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-primary-50 border border-primary-100 text-primary-700 text-xs font-bold uppercase tracking-widest mb-8 shadow-md"
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-primary-50 border border-primary-100 text-primary-700 text-xs font-bold uppercase tracking-widest mb-8 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10"
               >
                 <Building2 className="w-3.5 h-3.5" />
                 <span>Sarana & Prasarana</span>
@@ -209,7 +209,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
               className="relative hidden lg:grid grid-cols-1 md:grid-cols-2 gap-6 h-[600px]"
             >
               <div className="space-y-6 pt-12">
-                <div className="aspect-[4/5] max-h-[500px] w-full rounded-[3rem] overflow-hidden shadow-lg relative group border border-primary-100 bg-gradient-to-br from-primary-950 to-primary-900">
+                <div className="aspect-[4/5] max-h-[500px] w-full rounded-[3rem] overflow-hidden shadow-2xl shadow-primary/30  shadow-primary/20 relative group border border-primary-100 bg-gradient-to-br from-primary-950 to-primary-900">
                   <Image
                     src="/images/masjid.webp"
                     alt="Masjid"
@@ -217,14 +217,14 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
                   />
                   <div className="absolute bottom-5 left-5 z-10">
-                    <div className="bg-white/95 backdrop-blur-sm px-4 py-1.5 rounded-3xl shadow-lg border border-white/40 transition-transform duration-300 group-hover:translate-y-[-4px]">
+                    <div className="bg-white/95 backdrop-blur-sm px-4 py-1.5 rounded-3xl shadow-2xl shadow-primary/30  shadow-primary/20 border border-white/40 transition-transform duration-300 group-hover:translate-y-[-4px]">
                       <span className="text-ink-950 font-black text-sm md:text-[15px] tracking-tight">
                         Masjid Jami' Al Imam
                       </span>
                     </div>
                   </div>
                 </div>
-                <div className="aspect-square rounded-[3rem] overflow-hidden shadow-lg relative group border border-primary-100 bg-gradient-to-br from-primary-950 to-primary-900">
+                <div className="aspect-square rounded-[3rem] overflow-hidden shadow-2xl shadow-primary/30  shadow-primary/20 relative group border border-primary-100 bg-gradient-to-br from-primary-950 to-primary-900">
                   <Image
                     src="/images/lapangan-minisoccer.webp"
                     alt="Lapangan"
@@ -232,7 +232,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
                   />
                   <div className="absolute bottom-5 left-5 z-10">
-                    <div className="bg-white/95 backdrop-blur-sm px-4 py-1.5 rounded-3xl shadow-lg border border-white/40 transition-transform duration-300 group-hover:translate-y-[-4px]">
+                    <div className="bg-white/95 backdrop-blur-sm px-4 py-1.5 rounded-3xl shadow-2xl shadow-primary/30  shadow-primary/20 border border-white/40 transition-transform duration-300 group-hover:translate-y-[-4px]">
                       <span className="text-ink-950 font-black text-sm md:text-[15px] tracking-tight">
                         Area Olahraga
                       </span>
@@ -241,7 +241,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                 </div>
               </div>
               <div className="space-y-6">
-                <div className="aspect-square rounded-[3rem] overflow-hidden shadow-lg relative group border border-primary-100 bg-gradient-to-br from-primary-950 to-primary-900">
+                <div className="aspect-square rounded-[3rem] overflow-hidden shadow-2xl shadow-primary/30  shadow-primary/20 relative group border border-primary-100 bg-gradient-to-br from-primary-950 to-primary-900">
                   <Image
                     src="/images/asrama.webp"
                     alt="Asrama"
@@ -249,14 +249,14 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
                   />
                   <div className="absolute bottom-5 left-5 z-10">
-                    <div className="bg-white/95 backdrop-blur-sm px-4 py-1.5 rounded-3xl shadow-lg border border-white/40 transition-transform duration-300 group-hover:translate-y-[-4px]">
+                    <div className="bg-white/95 backdrop-blur-sm px-4 py-1.5 rounded-3xl shadow-2xl shadow-primary/30  shadow-primary/20 border border-white/40 transition-transform duration-300 group-hover:translate-y-[-4px]">
                       <span className="text-ink-950 font-black text-sm md:text-[15px] tracking-tight">
                         Asrama Nyaman
                       </span>
                     </div>
                   </div>
                 </div>
-                <div className="aspect-[4/5] max-h-[500px] w-full rounded-[3rem] overflow-hidden shadow-lg relative group border border-primary-100 bg-gradient-to-br from-primary-950 to-primary-900">
+                <div className="aspect-[4/5] max-h-[500px] w-full rounded-[3rem] overflow-hidden shadow-2xl shadow-primary/30  shadow-primary/20 relative group border border-primary-100 bg-gradient-to-br from-primary-950 to-primary-900">
                   <Image
                     src="/images/kelas-dari-dalam.webp"
                     alt="Kelas"
@@ -264,7 +264,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
                   />
                   <div className="absolute bottom-5 left-5 z-10">
-                    <div className="bg-white/95 backdrop-blur-sm px-4 py-1.5 rounded-3xl shadow-lg border border-white/40 transition-transform duration-300 group-hover:translate-y-[-4px]">
+                    <div className="bg-white/95 backdrop-blur-sm px-4 py-1.5 rounded-3xl shadow-2xl shadow-primary/30  shadow-primary/20 border border-white/40 transition-transform duration-300 group-hover:translate-y-[-4px]">
                       <span className="text-ink-950 font-black text-sm md:text-[15px] tracking-tight">
                         Kelas Modern
                       </span>
@@ -273,7 +273,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                 </div>
               </div>
               {/* Floating Badge */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-5 rounded-[2rem] shadow-xl border border-primary-100 flex flex-col items-center gap-1 z-20">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-5 rounded-[2rem] shadow-2xl shadow-primary/30 border border-primary-100 flex flex-col items-center gap-1 z-20">
                 <Camera className="w-8 h-8 text-primary-600 mb-1" />
                 <span className="text-[10px] font-black uppercase tracking-[0.2em] text-primary-500">
                   Sneak Peek
@@ -334,7 +334,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                     <Home className="w-48 h-48" />
                   </div>
 
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-700 mb-8 sm:mb-10 shadow-md transition-transform group-hover:scale-110 border border-primary-100">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-700 mb-8 sm:mb-10 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 transition-transform group-hover:scale-110 border border-primary-100">
                     <Home className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
@@ -349,7 +349,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
                     <div className="flex items-start gap-4 group/item">
-                      <div className="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center shrink-0 shadow-md mt-0.5">
+                      <div className="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center shrink-0 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 mt-0.5">
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
@@ -362,7 +362,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                       </div>
                     </div>
                     <div className="flex items-start gap-4 group/item">
-                      <div className="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center shrink-0 shadow-md mt-0.5">
+                      <div className="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center shrink-0 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 mt-0.5">
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
@@ -384,7 +384,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                 viewport={{ once: true }}
                 className="order-1 lg:order-2"
               >
-                <div className="aspect-square rounded-[3rem] sm:rounded-[4rem] bg-white p-3 sm:p-6 sm:p-8 shadow-xl relative rotate-2 hover:rotate-0 transition-transform duration-700 border border-primary-100">
+                <div className="aspect-square rounded-[3rem] sm:rounded-[4rem] bg-white p-3 sm:p-6 sm:p-8 shadow-2xl shadow-primary/30 relative rotate-2 hover:rotate-0 transition-transform duration-700 border border-primary-100">
                   <div className="relative w-full h-full rounded-[2.5rem] sm:rounded-[3.2rem] overflow-hidden">
                     <Image
                       src="/images/masjid.webp"
@@ -405,7 +405,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                 viewport={{ once: true }}
                 className="order-1"
               >
-                <div className="aspect-square rounded-[3rem] sm:rounded-[4rem] bg-white p-3 sm:p-6 sm:p-8 shadow-xl relative -rotate-2 hover:rotate-0 transition-transform duration-700 border border-primary-100">
+                <div className="aspect-square rounded-[3rem] sm:rounded-[4rem] bg-white p-3 sm:p-6 sm:p-8 shadow-2xl shadow-primary/30 relative -rotate-2 hover:rotate-0 transition-transform duration-700 border border-primary-100">
                   <div className="relative w-full h-full rounded-[2.5rem] sm:rounded-[3.2rem] overflow-hidden">
                     <Image
                       src="/images/kelas-dari-dalam.webp"
@@ -428,7 +428,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                     <School className="w-48 h-48" />
                   </div>
 
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-700 mb-8 sm:mb-10 shadow-md transition-transform group-hover:scale-110 border border-primary-100">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-700 mb-8 sm:mb-10 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 transition-transform group-hover:scale-110 border border-primary-100">
                     <School className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
@@ -443,7 +443,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
                     <div className="flex items-start gap-4 group/item">
-                      <div className="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center shrink-0 shadow-md mt-0.5">
+                      <div className="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center shrink-0 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 mt-0.5">
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
@@ -456,7 +456,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                       </div>
                     </div>
                     <div className="flex items-start gap-4 group/item">
-                      <div className="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center shrink-0 shadow-md mt-0.5">
+                      <div className="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center shrink-0 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 mt-0.5">
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
@@ -486,7 +486,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                     <Building className="w-48 h-48" />
                   </div>
 
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-700 mb-8 sm:mb-10 shadow-md transition-transform group-hover:scale-110 border border-primary-100">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-700 mb-8 sm:mb-10 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 transition-transform group-hover:scale-110 border border-primary-100">
                     <Building className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
@@ -501,7 +501,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
                     <div className="flex items-start gap-4 group/item">
-                      <div className="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center shrink-0 shadow-md mt-0.5">
+                      <div className="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center shrink-0 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 mt-0.5">
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
@@ -514,7 +514,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                       </div>
                     </div>
                     <div className="flex items-start gap-4 group/item">
-                      <div className="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center shrink-0 shadow-md mt-0.5">
+                      <div className="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center shrink-0 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 mt-0.5">
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
@@ -536,7 +536,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                 viewport={{ once: true }}
                 className="order-1 lg:order-2"
               >
-                <div className="aspect-square rounded-[3rem] sm:rounded-[4rem] bg-white p-3 sm:p-6 sm:p-8 shadow-xl relative rotate-2 hover:rotate-0 transition-transform duration-700 border border-primary-100">
+                <div className="aspect-square rounded-[3rem] sm:rounded-[4rem] bg-white p-3 sm:p-6 sm:p-8 shadow-2xl shadow-primary/30 relative rotate-2 hover:rotate-0 transition-transform duration-700 border border-primary-100">
                   <div className="relative w-full h-full rounded-[2.5rem] sm:rounded-[3.2rem] overflow-hidden">
                     <Image
                       src="/images/asrama.webp"
@@ -557,7 +557,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                 viewport={{ once: true }}
                 className="order-1"
               >
-                <div className="aspect-square rounded-[3rem] sm:rounded-[4rem] bg-white p-3 sm:p-6 sm:p-8 shadow-xl relative -rotate-2 hover:rotate-0 transition-transform duration-700 border border-primary-100">
+                <div className="aspect-square rounded-[3rem] sm:rounded-[4rem] bg-white p-3 sm:p-6 sm:p-8 shadow-2xl shadow-primary/30 relative -rotate-2 hover:rotate-0 transition-transform duration-700 border border-primary-100">
                   <div className="relative w-full h-full rounded-[2.5rem] sm:rounded-[3.2rem] overflow-hidden">
                     <Image
                       src="/images/lapangan-minisoccer.webp"
@@ -580,7 +580,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                     <Trophy className="w-48 h-48" />
                   </div>
 
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-700 mb-8 sm:mb-10 shadow-md transition-transform group-hover:scale-110 border border-primary-100">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-700 mb-8 sm:mb-10 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 transition-transform group-hover:scale-110 border border-primary-100">
                     <Trophy className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
@@ -595,7 +595,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
                     <div className="flex items-start gap-4 group/item">
-                      <div className="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center shrink-0 shadow-md mt-0.5">
+                      <div className="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center shrink-0 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 mt-0.5">
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
@@ -608,7 +608,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                       </div>
                     </div>
                     <div className="flex items-start gap-4 group/item">
-                      <div className="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center shrink-0 shadow-md mt-0.5">
+                      <div className="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center shrink-0 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 mt-0.5">
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
@@ -638,7 +638,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                     <Award className="w-48 h-48" />
                   </div>
 
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-700 mb-8 sm:mb-10 shadow-md transition-transform group-hover:scale-110 border border-primary-100">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-700 mb-8 sm:mb-10 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 transition-transform group-hover:scale-110 border border-primary-100">
                     <Award className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
@@ -653,7 +653,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
                     <div className="flex items-start gap-4 group/item">
-                      <div className="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center shrink-0 shadow-md mt-0.5">
+                      <div className="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center shrink-0 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 mt-0.5">
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
@@ -666,7 +666,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                       </div>
                     </div>
                     <div className="flex items-start gap-4 group/item">
-                      <div className="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center shrink-0 shadow-md mt-0.5">
+                      <div className="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center shrink-0 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 mt-0.5">
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
@@ -688,7 +688,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                 viewport={{ once: true }}
                 className="order-1 lg:order-2"
               >
-                <div className="aspect-square rounded-[3rem] sm:rounded-[4rem] bg-white p-3 sm:p-6 sm:p-8 shadow-xl relative rotate-2 hover:rotate-0 transition-transform duration-700 border border-primary-100">
+                <div className="aspect-square rounded-[3rem] sm:rounded-[4rem] bg-white p-3 sm:p-6 sm:p-8 shadow-2xl shadow-primary/30 relative rotate-2 hover:rotate-0 transition-transform duration-700 border border-primary-100">
                   <div className="relative w-full h-full rounded-[2.5rem] sm:rounded-[3.2rem] overflow-hidden">
                     <Image
                       src="/images/gedung-utama-dan-lapangan-basket.webp"
@@ -709,7 +709,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                 viewport={{ once: true }}
                 className="order-1"
               >
-                <div className="aspect-square rounded-[3rem] sm:rounded-[4rem] bg-white p-3 sm:p-6 sm:p-8 shadow-xl relative -rotate-2 hover:rotate-0 transition-transform duration-700 border border-primary-100">
+                <div className="aspect-square rounded-[3rem] sm:rounded-[4rem] bg-white p-3 sm:p-6 sm:p-8 shadow-2xl shadow-primary/30 relative -rotate-2 hover:rotate-0 transition-transform duration-700 border border-primary-100">
                   <div className="relative w-full h-full rounded-[2.5rem] sm:rounded-[3.2rem] overflow-hidden">
                     <Image
                       src="/images/depot-galon-gratis.webp"
@@ -732,7 +732,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                     <Droplets className="w-48 h-48" />
                   </div>
 
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-700 mb-8 sm:mb-10 shadow-md transition-transform group-hover:scale-110 border border-primary-100">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-700 mb-8 sm:mb-10 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 transition-transform group-hover:scale-110 border border-primary-100">
                     <Droplets className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
@@ -747,7 +747,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
                     <div className="flex items-start gap-4 group/item">
-                      <div className="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center shrink-0 shadow-md mt-0.5">
+                      <div className="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center shrink-0 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 mt-0.5">
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
@@ -760,7 +760,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                       </div>
                     </div>
                     <div className="flex items-start gap-4 group/item">
-                      <div className="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center shrink-0 shadow-md mt-0.5">
+                      <div className="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center shrink-0 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 mt-0.5">
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
@@ -790,7 +790,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                     <Building2 className="w-48 h-48" />
                   </div>
 
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-700 mb-8 sm:mb-10 shadow-md transition-transform group-hover:scale-110 border border-primary-100">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary-50 rounded-2xl flex items-center justify-center text-primary-700 mb-8 sm:mb-10 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 transition-transform group-hover:scale-110 border border-primary-100">
                     <Building2 className="w-8 h-8 sm:w-10 sm:h-10" />
                   </div>
 
@@ -805,7 +805,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
                     <div className="flex items-start gap-4 group/item">
-                      <div className="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center shrink-0 shadow-md mt-0.5">
+                      <div className="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center shrink-0 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 mt-0.5">
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
@@ -818,7 +818,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                       </div>
                     </div>
                     <div className="flex items-start gap-4 group/item">
-                      <div className="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center shrink-0 shadow-md mt-0.5">
+                      <div className="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center shrink-0 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 mt-0.5">
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <div>
@@ -840,7 +840,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                 viewport={{ once: true }}
                 className="order-1 lg:order-2"
               >
-                <div className="aspect-square rounded-[3rem] sm:rounded-[4rem] bg-white p-3 sm:p-6 sm:p-8 shadow-xl relative rotate-2 hover:rotate-0 transition-transform duration-700 border border-primary-100">
+                <div className="aspect-square rounded-[3rem] sm:rounded-[4rem] bg-white p-3 sm:p-6 sm:p-8 shadow-2xl shadow-primary/30 relative rotate-2 hover:rotate-0 transition-transform duration-700 border border-primary-100">
                   <div className="relative w-full h-full rounded-[2.5rem] sm:rounded-[3.2rem] overflow-hidden">
                     <Image
                       src="/images/kantor-ppdb-tamu.webp"
@@ -888,9 +888,9 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform border border-primary-50 shadow-md"
+              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform border border-primary-50 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10"
             >
-              <div className="w-12 h-12 bg-primary-50 rounded-3xl flex items-center justify-center text-primary-700 mb-5 group-hover:scale-110 transition-transform border border-primary-100 shadow-md">
+              <div className="w-12 h-12 bg-primary-50 rounded-3xl flex items-center justify-center text-primary-700 mb-5 group-hover:scale-110 transition-transform border border-primary-100 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">
                 <BookOpen className="w-6 h-6" />
               </div>
               <h3 className="font-black text-lg text-primary-950 mb-2">
@@ -911,9 +911,9 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform border border-primary-50 shadow-md"
+              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform border border-primary-50 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10"
             >
-              <div className="w-12 h-12 bg-primary-50 rounded-3xl flex items-center justify-center text-primary-700 mb-5 group-hover:scale-110 transition-transform border border-primary-100 shadow-md">
+              <div className="w-12 h-12 bg-primary-50 rounded-3xl flex items-center justify-center text-primary-700 mb-5 group-hover:scale-110 transition-transform border border-primary-100 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">
                 <FlaskConical className="w-6 h-6" />
               </div>
               <h3 className="font-black text-lg text-primary-950 mb-2">
@@ -934,9 +934,9 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
-              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform border border-primary-50 shadow-md"
+              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform border border-primary-50 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10"
             >
-              <div className="w-12 h-12 bg-primary-50 rounded-3xl flex items-center justify-center text-primary-700 mb-5 group-hover:scale-110 transition-transform border border-primary-100 shadow-md">
+              <div className="w-12 h-12 bg-primary-50 rounded-3xl flex items-center justify-center text-primary-700 mb-5 group-hover:scale-110 transition-transform border border-primary-100 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">
                 <Utensils className="w-6 h-6" />
               </div>
               <h3 className="font-black text-lg text-primary-950 mb-2">
@@ -958,9 +958,9 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.5 }}
-              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform border border-primary-50 shadow-md"
+              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform border border-primary-50 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10"
             >
-              <div className="w-12 h-12 bg-primary-50 rounded-3xl flex items-center justify-center text-primary-700 mb-5 group-hover:scale-110 transition-transform border border-primary-100 shadow-md">
+              <div className="w-12 h-12 bg-primary-50 rounded-3xl flex items-center justify-center text-primary-700 mb-5 group-hover:scale-110 transition-transform border border-primary-100 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">
                 <Heart className="w-6 h-6" />
               </div>
               <h3 className="font-black text-lg text-primary-950 mb-2">
@@ -981,9 +981,9 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.6 }}
-              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform border border-primary-50 shadow-md"
+              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform border border-primary-50 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10"
             >
-              <div className="w-12 h-12 bg-primary-50 rounded-3xl flex items-center justify-center text-primary-700 mb-5 group-hover:scale-110 transition-transform border border-primary-100 shadow-md">
+              <div className="w-12 h-12 bg-primary-50 rounded-3xl flex items-center justify-center text-primary-700 mb-5 group-hover:scale-110 transition-transform border border-primary-100 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">
                 <Shield className="w-6 h-6" />
               </div>
               <h3 className="font-black text-lg text-primary-950 mb-2">
@@ -1004,9 +1004,9 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.7 }}
-              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform border border-primary-50 shadow-md"
+              className="app-card bg-white p-6 md:p-8 flex flex-col items-start group hover:-translate-y-1 transition-transform border border-primary-50 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10"
             >
-              <div className="w-12 h-12 bg-primary-50 rounded-3xl flex items-center justify-center text-primary-700 mb-5 group-hover:scale-110 transition-transform border border-primary-100 shadow-md">
+              <div className="w-12 h-12 bg-primary-50 rounded-3xl flex items-center justify-center text-primary-700 mb-5 group-hover:scale-110 transition-transform border border-primary-100 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">
                 <Building2 className="w-6 h-6" />
               </div>
               <h3 className="font-black text-lg text-primary-950 mb-2">
@@ -1046,7 +1046,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                 >
-                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-white border border-primary-100 text-primary-700 text-xs font-bold uppercase tracking-widest mb-6 shadow-md">
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-white border border-primary-100 text-primary-700 text-xs font-bold uppercase tracking-widest mb-6 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">
                     <Calendar className="w-3.5 h-3.5" />
                     <span>Survey Pesantren</span>
                   </div>
@@ -1085,7 +1085,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.2 }}
-                    className="mt-10 bg-white p-4.5 rounded-[2rem] border border-primary-100 shadow-lg shadow-primary-900/5 overflow-hidden relative group"
+                    className="mt-10 bg-white p-4.5 rounded-[2rem] border border-primary-100 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-900/5 overflow-hidden relative group"
                   >
                     <div className="rounded-[1.5rem] overflow-hidden h-[200px] relative bg-primary-50">
                       <iframe
@@ -1099,7 +1099,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                         title="Lokasi Pesantren Al Imam Al Islami"
                         className="grayscale group-hover:grayscale-0 transition-all duration-700 opacity-80 group-hover:opacity-100"
                       />
-                      <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-3xl shadow-md border border-primary-100 flex items-center gap-2 z-10 pointer-events-none">
+                      <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-3xl shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 border border-primary-100 flex items-center gap-2 z-10 pointer-events-none">
                         <MapPin className="w-4 h-4 text-primary-600" />
                         <span className="text-[10px] font-black text-ink-950 uppercase tracking-widest">
                           Lokasi Pesantren
@@ -1124,7 +1124,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                       animate={{ scale: 1, opacity: 1 }}
                       className="py-12 flex flex-col items-center text-center"
                     >
-                      <div className="w-20 h-20 rounded-full bg-green-50 text-[#550000] flex items-center justify-center mb-6 border border-green-100 shadow-md">
+                      <div className="w-20 h-20 rounded-full bg-green-50 text-[#550000] flex items-center justify-center mb-6 border border-green-100 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">
                         <Check className="w-10 h-10" strokeWidth={3} />
                       </div>
                       <h3 className="text-2xl font-black text-ink-950 mb-3">Permintaan Terkirim!</h3>
@@ -1216,7 +1216,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
                         />
                       </div>
 
-                      <button type="submit" className="w-full py-4 rounded-3xl bg-primary-600 text-white font-black text-lg shadow-lg shadow-primary-600/20 hover:bg-primary-700 hover:-translate-y-0.5 hover:shadow-xl transition-all flex items-center justify-center gap-2 mt-2">
+                      <button type="submit" className="w-full py-4 rounded-3xl bg-primary-600 text-white font-black text-lg shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-600/20 hover:bg-primary-700 hover:-translate-y-0.5 hover:shadow-2xl shadow-primary/30 transition-all flex items-center justify-center gap-2 mt-2">
                         <span>Ajukan Jadwal Kunjungan</span>
                         <ArrowRight className="w-5 h-5" />
                       </button>

@@ -193,7 +193,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     santri: { ...editFormData.santri, nama_lengkap: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1">
@@ -205,7 +205,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     santri: { ...editFormData.santri, nik: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1">
@@ -217,7 +217,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     santri: { ...editFormData.santri, tempat_lahir: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1">
@@ -229,7 +229,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     santri: { ...editFormData.santri, rounded_xl: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1">
@@ -240,7 +240,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     santri: { ...editFormData.santri, jenis_kelamin: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 >
                   <option value="L">Laki-laki (L)</option>
                   <option value="P">Perempuan (P)</option>
@@ -254,7 +254,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     santri: { ...editFormData.santri, golongan_darah: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 >
                   <option value="">Pilih Golongan Darah</option>
                   <option value="A">A</option>
@@ -273,7 +273,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     santri: { ...editFormData.santri, anak_ke: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1">
@@ -285,7 +285,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     santri: { ...editFormData.santri, jumlah_saudara: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1">
@@ -297,7 +297,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     santri: { ...editFormData.santri, hobi: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1">
@@ -309,7 +309,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     santri: { ...editFormData.santri, cita_cita: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
             </div>
@@ -327,7 +327,7 @@ export default function EditPendaftarModal({
                       ...editFormData,
                       santri: { ...editFormData.santri, no_hp: e.target.value }
                     })}
-                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                   />
                 </div>
                 <div className="space-y-1">
@@ -339,7 +339,7 @@ export default function EditPendaftarModal({
                       ...editFormData,
                       santri: { ...editFormData.santri, email: e.target.value }
                     })}
-                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                   />
                 </div>
               </div>
@@ -352,7 +352,7 @@ export default function EditPendaftarModal({
                     santri: { ...editFormData.santri, alamat: e.target.value }
                   })}
                   rows={3}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800 resize-none"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800 resize-none"
                 />
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -365,7 +365,7 @@ export default function EditPendaftarModal({
                       ...editFormData,
                       santri: { ...editFormData.santri, rt: e.target.value }
                     })}
-                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                   />
                 </div>
                 <div className="space-y-1">
@@ -377,7 +377,7 @@ export default function EditPendaftarModal({
                       ...editFormData,
                       santri: { ...editFormData.santri, rw: e.target.value }
                     })}
-                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                   />
                 </div>
                 <div className="space-y-1">
@@ -389,7 +389,7 @@ export default function EditPendaftarModal({
                       ...editFormData,
                       santri: { ...editFormData.santri, kelurahan: e.target.value }
                     })}
-                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                   />
                 </div>
                 <div className="space-y-1">
@@ -401,7 +401,7 @@ export default function EditPendaftarModal({
                       ...editFormData,
                       santri: { ...editFormData.santri, kecamatan: e.target.value }
                     })}
-                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                   />
                 </div>
               </div>
@@ -415,7 +415,7 @@ export default function EditPendaftarModal({
                       ...editFormData,
                       santri: { ...editFormData.santri, kabupaten: e.target.value }
                     })}
-                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                   />
                 </div>
                 <div className="space-y-1">
@@ -427,7 +427,7 @@ export default function EditPendaftarModal({
                       ...editFormData,
                       santri: { ...editFormData.santri, provinsi: e.target.value }
                     })}
-                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                   />
                 </div>
                 <div className="space-y-1">
@@ -439,7 +439,7 @@ export default function EditPendaftarModal({
                       ...editFormData,
                       santri: { ...editFormData.santri, kode_pos: e.target.value }
                     })}
-                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                   />
                 </div>
               </div>
@@ -459,7 +459,7 @@ export default function EditPendaftarModal({
                       ...editFormData,
                       santri: { ...editFormData.santri, asal_sekolah: e.target.value }
                     })}
-                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                   />
                 </div>
                 <div className="space-y-1">
@@ -471,7 +471,7 @@ export default function EditPendaftarModal({
                       ...editFormData,
                       santri: { ...editFormData.santri, nisn: e.target.value }
                     })}
-                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                   />
                 </div>
                 <div className="space-y-1">
@@ -483,7 +483,7 @@ export default function EditPendaftarModal({
                       ...editFormData,
                       santri: { ...editFormData.santri, alamat_sekolah: e.target.value }
                     })}
-                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                   />
                 </div>
                 <div className="space-y-1">
@@ -495,7 +495,7 @@ export default function EditPendaftarModal({
                       ...editFormData,
                       santri: { ...editFormData.santri, tahun_lulus: e.target.value }
                     })}
-                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                   />
                 </div>
               </div>
@@ -516,7 +516,7 @@ export default function EditPendaftarModal({
                         ...editFormData,
                         santri: { ...editFormData.santri, tipe_pendaftaran: e.target.value }
                       })}
-                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                      className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                     >
                       <option value="BARU">BARU (Reguler)</option>
                       <option value="PINDAHAN">PINDAHAN</option>
@@ -535,7 +535,7 @@ export default function EditPendaftarModal({
                             santri: { ...editFormData.santri, kelas_masuk: e.target.value }
                           })}
                           placeholder="Contoh: 8"
-                          className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                          className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                         />
                       </div>
                       <div className="space-y-1">
@@ -547,7 +547,7 @@ export default function EditPendaftarModal({
                             ...editFormData,
                             santri: { ...editFormData.santri, asal_institusi: e.target.value }
                           })}
-                          className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                          className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                         />
                       </div>
                       <div className="space-y-1">
@@ -559,7 +559,7 @@ export default function EditPendaftarModal({
                             ...editFormData,
                             santri: { ...editFormData.santri, nomor_induk_lama: e.target.value }
                           })}
-                          className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                          className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                         />
                       </div>
                       <div className="space-y-1 md:col-span-2">
@@ -571,7 +571,7 @@ export default function EditPendaftarModal({
                             santri: { ...editFormData.santri, catatan_pindahan: e.target.value }
                           })}
                           rows={3}
-                          className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800 resize-none"
+                          className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800 resize-none"
                         />
                       </div>
                     </>
@@ -592,7 +592,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     orang_tua: { ...editFormData.orang_tua, nama_ayah: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1">
@@ -604,7 +604,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     orang_tua: { ...editFormData.orang_tua, nik_ayah: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1">
@@ -616,7 +616,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     orang_tua: { ...editFormData.orang_tua, tempat_lahir_ayah: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1">
@@ -628,7 +628,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     orang_tua: { ...editFormData.orang_tua, tanggal_lahir_ayah: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1">
@@ -640,7 +640,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     orang_tua: { ...editFormData.orang_tua, pendidikan_ayah: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1">
@@ -652,7 +652,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     orang_tua: { ...editFormData.orang_tua, pekerjaan_ayah: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1">
@@ -664,7 +664,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     orang_tua: { ...editFormData.orang_tua, penghasilan_ayah: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1">
@@ -676,7 +676,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     orang_tua: { ...editFormData.orang_tua, no_hp_ayah: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1">
@@ -687,7 +687,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     orang_tua: { ...editFormData.orang_tua, status_ayah: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 >
                   <option value="Masih Hidup">Masih Hidup</option>
                   <option value="Sudah Meninggal">Sudah Meninggal</option>
@@ -702,7 +702,7 @@ export default function EditPendaftarModal({
                     orang_tua: { ...editFormData.orang_tua, alamat_ayah: e.target.value }
                   })}
                   rows={2}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850 resize-none"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-850 resize-none"
                 />
               </div>
             </div>
@@ -719,7 +719,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     orang_tua: { ...editFormData.orang_tua, nama_ibu: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1">
@@ -731,7 +731,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     orang_tua: { ...editFormData.orang_tua, nik_ibu: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1">
@@ -743,7 +743,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     orang_tua: { ...editFormData.orang_tua, tempat_lahir_ibu: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1">
@@ -755,7 +755,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     orang_tua: { ...editFormData.orang_tua, tanggal_lahir_ibu: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1">
@@ -767,7 +767,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     orang_tua: { ...editFormData.orang_tua, pendidikan_ibu: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1">
@@ -779,7 +779,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     orang_tua: { ...editFormData.orang_tua, pekerjaan_ibu: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1">
@@ -791,7 +791,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     orang_tua: { ...editFormData.orang_tua, penghasilan_ibu: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1">
@@ -803,7 +803,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     orang_tua: { ...editFormData.orang_tua, no_hp_ibu: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1">
@@ -814,7 +814,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     orang_tua: { ...editFormData.orang_tua, status_ibu: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 >
                   <option value="Masih Hidup">Masih Hidup</option>
                   <option value="Sudah Meninggal">Sudah Meninggal</option>
@@ -829,7 +829,7 @@ export default function EditPendaftarModal({
                     orang_tua: { ...editFormData.orang_tua, alamat_ibu: e.target.value }
                   })}
                   rows={2}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800 resize-none"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800 resize-none"
                 />
               </div>
             </div>
@@ -847,7 +847,7 @@ export default function EditPendaftarModal({
                     orang_tua: { ...editFormData.orang_tua, hubungan_wali: e.target.value }
                   })}
                   placeholder="Contoh: Paman, Kakek, Kakak, dll."
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1">
@@ -859,7 +859,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     orang_tua: { ...editFormData.orang_tua, nama_wali: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1">
@@ -871,7 +871,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     orang_tua: { ...editFormData.orang_tua, nik_wali: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1">
@@ -883,7 +883,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     orang_tua: { ...editFormData.orang_tua, tempat_lahir_wali: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1">
@@ -895,7 +895,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     orang_tua: { ...editFormData.orang_tua, tanggal_lahir_wali: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1">
@@ -907,7 +907,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     orang_tua: { ...editFormData.orang_tua, pendidikan_wali: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1">
@@ -919,7 +919,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     orang_tua: { ...editFormData.orang_tua, pekerjaan_wali: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1">
@@ -931,7 +931,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     orang_tua: { ...editFormData.orang_tua, penghasilan_wali: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1">
@@ -943,7 +943,7 @@ export default function EditPendaftarModal({
                     ...editFormData,
                     orang_tua: { ...editFormData.orang_tua, no_hp_wali: e.target.value }
                   })}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800"
                 />
               </div>
               <div className="space-y-1 md:col-span-2">
@@ -955,7 +955,7 @@ export default function EditPendaftarModal({
                     orang_tua: { ...editFormData.orang_tua, alamat_wali: e.target.value }
                   })}
                   rows={2}
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800 resize-none"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-600 font-bold text-stone-800 resize-none"
                 />
               </div>
             </div>
@@ -966,14 +966,14 @@ export default function EditPendaftarModal({
             <button
               type="button"
               onClick={onClose}
-              className="px-6 py-3 bg-stone-100 hover:bg-stone-200 text-stone-800 rounded-xl font-black text-sm uppercase transition-all"
+              className="px-6 py-3 bg-stone-100 hover:bg-stone-200 text-stone-800 rounded-2xl font-black text-sm uppercase transition-all"
             >
               Batal
             </button>
             <button
               type="submit"
               disabled={savingEdit}
-              className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-black text-sm uppercase transition-all shadow-md flex items-center gap-2 disabled:opacity-50"
+              className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-2xl font-black text-sm uppercase transition-all shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 flex items-center gap-2 disabled:opacity-50"
             >
               {savingEdit ? "Menyimpan..." : "Simpan Perubahan"}
             </button>

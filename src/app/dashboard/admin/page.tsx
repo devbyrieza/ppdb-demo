@@ -43,7 +43,7 @@ const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown, highlig
       
       <div className="relative z-10">
         <div className="flex items-center justify-between mb-8">
-          <div className={`icon-box w-14 h-14 rounded-[24px] bg-linear-to-br ${colorMap[color] || colorMap.blue} text-white shadow-xl group-hover:scale-110 group-hover:rotate-3 duration-500`}>
+          <div className={`icon-box w-14 h-14 rounded-[24px] bg-linear-to-br ${colorMap[color] || colorMap.blue} text-white shadow-2xl shadow-primary/30 group-hover:scale-110 group-hover:rotate-3 duration-500`}>
             <Icon className="w-6 h-6" />
           </div>
           {trend && (
@@ -117,7 +117,7 @@ const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown, highlig
             <button
               onClick={(e) => { e.stopPropagation(); onPromote(); }}
               disabled={isPromoting}
-              className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-[24px] font-black text-xs uppercase tracking-widest transition-all shadow-lg shadow-emerald-600/20 hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-[24px] font-black text-xs uppercase tracking-widest transition-all shadow-2xl shadow-primary/30  shadow-primary/20 shadow-emerald-600/20 hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isPromoting ? (
                 <>
@@ -428,27 +428,27 @@ export default function AdminDashboardPage() {
             </h2>
             <div className="flex items-center gap-8 sm:gap-12 mt-8 lg:mt-12">
               <div>
-                <span className="text-3xl sm:text-3xl md:text-5xl font-black text-white drop-shadow-md">{stats.total_pendaftar}</span>
+                <span className="text-3xl sm:text-3xl md:text-5xl font-black text-white drop-shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">{stats.total_pendaftar}</span>
                 <p className="text-[10px] sm:text-[11px] font-black text-emerald-100/70 uppercase tracking-widest mt-2">Pendaftar</p>
               </div>
               <div className="w-px h-12 sm:h-16 bg-white/20" />
               <div>
-                <span className="text-3xl sm:text-3xl md:text-5xl font-black text-gold-400 drop-shadow-md">{stats.sudah_bayar}</span>
+                <span className="text-3xl sm:text-3xl md:text-5xl font-black text-gold-400 drop-shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">{stats.sudah_bayar}</span>
                 <p className="text-[10px] sm:text-[11px] font-black text-emerald-100/70 uppercase tracking-widest mt-2">Bayar Pendaftaran</p>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3 sm:gap-4 w-full lg:w-[320px] shrink-0 mt-8">
-             <div className="bg-white/10 backdrop-blur-xl p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl border border-white/20 shadow-xl flex flex-col items-center justify-center text-center group hover:bg-white/15 transition-all min-w-0">
+             <div className="bg-white/10 backdrop-blur-xl p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl border border-white/20 shadow-2xl shadow-primary/30 flex flex-col items-center justify-center text-center group hover:bg-white/15 transition-all min-w-0">
                 <p className="text-[10px] sm:text-xs font-black text-white/90 uppercase tracking-wider mb-1 sm:mb-2 text-center group-hover:text-white transition-colors truncate w-full">Diterima</p>
-                <p className="text-2xl sm:text-3xl font-black text-primary-300 drop-shadow-md">{stats.diterima}</p>
+                <p className="text-2xl sm:text-3xl font-black text-primary-300 drop-shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">{stats.diterima}</p>
              </div>
-             <div className="bg-white/10 backdrop-blur-xl p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl border border-white/20 shadow-xl flex flex-col items-center justify-center text-center group hover:bg-white/15 transition-all min-w-0">
+             <div className="bg-white/10 backdrop-blur-xl p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl border border-white/20 shadow-2xl shadow-primary/30 flex flex-col items-center justify-center text-center group hover:bg-white/15 transition-all min-w-0">
                 <p className="text-[10px] sm:text-xs font-black text-white/90 uppercase tracking-wider mb-1 sm:mb-2 text-center group-hover:text-white transition-colors truncate w-full">Proses Daftar Ulang</p>
-                <p className="text-2xl sm:text-3xl font-black text-secondary-300 drop-shadow-md">{stats.daftar_ulang_sedang}</p>
+                <p className="text-2xl sm:text-3xl font-black text-secondary-300 drop-shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">{stats.daftar_ulang_sedang}</p>
              </div>
-             <div className="col-span-2 bg-white/10 backdrop-blur-xl p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl border border-white/20 shadow-xl flex flex-col items-center justify-center text-center group hover:bg-white/15 transition-all min-w-0">
+             <div className="col-span-2 bg-white/10 backdrop-blur-xl p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl border border-white/20 shadow-2xl shadow-primary/30 flex flex-col items-center justify-center text-center group hover:bg-white/15 transition-all min-w-0">
                 <p className="text-[10px] sm:text-xs font-black text-white/90 uppercase tracking-wider mb-1 sm:mb-2 text-center group-hover:text-white transition-colors truncate w-full">Lunas Daftar Ulang</p>
-                <p className="text-2xl sm:text-3xl font-black text-primary-300 drop-shadow-md">{stats.daftar_ulang_selesai}</p>
+                <p className="text-2xl sm:text-3xl font-black text-primary-300 drop-shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">{stats.daftar_ulang_selesai}</p>
              </div>
           </div>
           </div>

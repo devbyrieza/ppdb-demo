@@ -207,7 +207,7 @@ export default function MonitoringJadwalPage() {
             {/* Simplified Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-[24px_28px]">
                 <div className="flex items-center gap-[24px_28px]">
-                    <div className="w-12 h-12 bg-primary-600 rounded-[24px] flex items-center justify-center text-white shadow-lg shadow-primary-600/20">
+                    <div className="w-12 h-12 bg-primary-600 rounded-[24px] flex items-center justify-center text-white shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-600/20">
                         <Calendar className="w-6 h-6" />
                     </div>
                     <div>
@@ -221,7 +221,7 @@ export default function MonitoringJadwalPage() {
 
             {/* Conflict Warning */}
             {conflicts.length > 0 && (
-                <div className="bg-red-50 border-2 border-red-200 rounded-[24px] p-6 md:p-8 animate-pulse shadow-lg shadow-red-500/10">
+                <div className="bg-red-50 border-2 border-red-200 rounded-[24px] p-6 md:p-8 animate-pulse shadow-2xl shadow-primary/30  shadow-primary/20 shadow-red-500/10">
                     <div className="flex items-start gap-[24px_28px]">
                         <div className="w-14 h-14 bg-red-100 rounded-[24px] flex items-center justify-center text-red-600 shrink-0 border border-red-200">
                             <XCircle className="w-8 h-8" />
@@ -523,7 +523,7 @@ export default function MonitoringJadwalPage() {
                             <div key={group.name} className="bg-white rounded-[2rem] shadow-clay-m border border-slate-100 overflow-hidden">
                                 <div className="bg-slate-50 px-7 py-5 flex items-center justify-between border-b border-slate-100/50">
                                     <div className="flex items-center gap-[24px_28px]">
-                                        <div className="w-11 h-11 bg-primary-600 rounded-[24px] flex items-center justify-center text-white shadow-lg shadow-primary-600/20">
+                                        <div className="w-11 h-11 bg-primary-600 rounded-[24px] flex items-center justify-center text-white shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-600/20">
                                             <Users className="w-5 h-5" />
                                         </div>
                                         <h2 className="text-[17px] font-extrabold text-slate-800">{group.name} <span className="text-primary-600 ml-1">({group.items.length})</span></h2>

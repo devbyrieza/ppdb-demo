@@ -140,13 +140,13 @@ function PilihVerifikasiContent() {
           }}
           className={`app-card w-full p-6 rounded-[1.5rem] border-2 transition-all duration-300 text-left relative ${
             selectedChannel === "whatsapp"
-              ? "border-primary-600 bg-primary-50 shadow-md scale-[1.02]"
+              ? "border-primary-600 bg-primary-50 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 scale-[1.02]"
               : "border-secondary-200 bg-white hover:border-primary-200 hover:shadow-sm"
           }`}
         >
           {/* Selected Badge */}
           {selectedChannel === "whatsapp" && (
-            <div className="absolute -top-3 -right-3 bg-primary-600 text-white rounded-full p-2 shadow-lg animate-bounce">
+            <div className="absolute -top-3 -right-3 bg-primary-600 text-white rounded-full p-2 shadow-2xl shadow-primary/30  shadow-primary/20 animate-bounce">
               <Check className="w-5 h-5" />
             </div>
           )}
@@ -156,7 +156,7 @@ function PilihVerifikasiContent() {
             <div
               className={`p-[24px_28px] rounded-[24px] transition-all duration-300 ${
                 selectedChannel === "whatsapp"
-                  ? "bg-primary-600 shadow-md"
+                  ? "bg-primary-600 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10"
                   : "bg-secondary-100"
               }`}
             >
@@ -217,13 +217,13 @@ function PilihVerifikasiContent() {
           }}
           className={`app-card w-full p-6 rounded-[1.5rem] border-2 transition-all duration-300 text-left relative ${
             selectedChannel === "sms"
-              ? "border-primary-600 bg-secondary-50 shadow-md scale-[1.02]"
+              ? "border-primary-600 bg-secondary-50 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 scale-[1.02]"
               : "border-secondary-200 bg-white hover:border-primary-200 hover:shadow-sm"
           }`}
         >
           {/* Selected Badge */}
           {selectedChannel === "sms" && (
-            <div className="absolute -top-3 -right-3 bg-primary-600 text-white rounded-full p-2 shadow-lg animate-bounce">
+            <div className="absolute -top-3 -right-3 bg-primary-600 text-white rounded-full p-2 shadow-2xl shadow-primary/30  shadow-primary/20 animate-bounce">
               <Check className="w-5 h-5" />
             </div>
           )}
@@ -233,7 +233,7 @@ function PilihVerifikasiContent() {
             <div
               className={`p-[24px_28px] rounded-[24px] transition-all duration-300 ${
                 selectedChannel === "sms"
-                  ? "bg-primary-600 shadow-md"
+                  ? "bg-primary-600 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10"
                   : "bg-secondary-100"
               }`}
             >
@@ -304,7 +304,7 @@ function PilihVerifikasiContent() {
         <button
           onClick={handleProsesDemo}
           disabled={isLoading}
-          className={`w-full py-4 px-6 font-black text-lg md:text-xl rounded-pill transition-all duration-300 disabled:opacity-50 flex items-center justify-center gap-3 shadow-md hover:scale-[1.02] active:scale-95 bg-primary-900 hover:bg-secondary-100 border border-primary-900 hover:text-primary-900 text-white`}
+          className={`w-full py-4 px-6 font-black text-lg md:text-xl rounded-pill transition-all duration-300 disabled:opacity-50 flex items-center justify-center gap-3 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 hover:scale-[1.02] active:scale-95 bg-primary-900 hover:bg-secondary-100 border border-primary-900 hover:text-primary-900 text-white`}
         >
           {isLoading ? (
             <>
@@ -373,7 +373,7 @@ function PilihVerifikasiContent() {
 // Loading fallback
 function LoadingFallback() {
   return (
-    <div className="app-card max-w-lg w-full bg-white rounded-[2rem] shadow-lg border border-secondary-200 p-[24px_28px] md:p-8 flex items-center justify-center">
+    <div className="app-card max-w-lg w-full bg-white rounded-[2rem] shadow-2xl shadow-primary/30  shadow-primary/20 border border-secondary-200 p-[24px_28px] md:p-8 flex items-center justify-center">
       <div className="flex flex-col items-center justify-center py-12">
         <Loader2 className="w-12 h-12 text-primary-600 animate-spin mb-4" />
         <p className="text-ink-600 font-medium">Memuat halaman...</p>

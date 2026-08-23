@@ -313,7 +313,7 @@ function SectionHeader({
     >
       <div className="flex items-center gap-4">
         <div
-          className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${
+          className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-colors ${
             isCompleted
               ? "bg-emerald-100 text-emerald-600"
               : isOpen
@@ -340,7 +340,7 @@ function SectionHeader({
       </div>
       <div className="flex items-center gap-3">
         {isCompleted && (
-          <span className="px-3 py-1 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-lg uppercase tracking-wide">
+          <span className="px-3 py-1 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-2xl uppercase tracking-wide">
             Lengkap
           </span>
         )}
@@ -383,7 +383,7 @@ function InputField({
   maxLength,
   inputFilter }: InputFieldProps) {
   const baseInputClass =
-    "w-full px-4 py-3 bg-white border border-ink-200 rounded-xl text-ink-900 placeholder:text-stone-600 focus:border-primary-600 focus:ring-4 focus:ring-primary-600/10 transition-all outline-none disabled:bg-surface-100 disabled:text-ink-600 font-medium";
+    "w-full px-4 py-3 bg-white border border-ink-200 rounded-2xl text-ink-900 placeholder:text-stone-600 focus:border-primary-600 focus:ring-4 focus:ring-primary-600/10 transition-all outline-none disabled:bg-surface-100 disabled:text-ink-600 font-medium";
 
   // Filter function for input validation
   const handleFilteredChange = (rawValue: string) => {
@@ -872,7 +872,7 @@ export default function DataLengkapForm({
       {isEditMode ? (
         <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-5 shadow-sm">
           <div className="flex items-start gap-4">
-            <div className="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 bg-emerald-100 rounded-2xl flex items-center justify-center shrink-0">
               <CheckCircle className="w-6 h-6 text-emerald-600" />
             </div>
             <div>
@@ -890,7 +890,7 @@ export default function DataLengkapForm({
       ) : isLocked ? (
         <div className="bg-primary-50 border border-primary-200 rounded-2xl p-5 shadow-sm">
           <div className="flex items-start gap-4">
-            <div className="w-10 h-10 bg-primary-100 rounded-xl flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 bg-primary-100 rounded-2xl flex items-center justify-center shrink-0">
               <Info className="w-6 h-6 text-primary-600" />
             </div>
             <div className="flex-1">
@@ -907,7 +907,7 @@ export default function DataLengkapForm({
                   href="https://wa.me/6281234567801?text=Bismillah,%20saya%20ingin%20mengajukan%20perubahan%20data%20pendaftaran%20untuk%20nomor%20pendaftaran:%20"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-sm hover:bg-emerald-600 transition-colors"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500 text-white rounded-2xl text-xs font-bold shadow-sm hover:bg-emerald-600 transition-colors"
                 >
                   <Phone className="w-3.5 h-3.5 text-white" />
                   Admin Pendaftaran 1
@@ -916,7 +916,7 @@ export default function DataLengkapForm({
                   href="https://wa.me/6281234567899?text=Bismillah,%20saya%20ingin%20mengajukan%20perubahan%20data%20pendaftaran%20untuk%20nomor%20pendaftaran:%20"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-sm hover:bg-emerald-600 transition-colors"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500 text-white rounded-2xl text-xs font-bold shadow-sm hover:bg-emerald-600 transition-colors"
                 >
                   <Phone className="w-3.5 h-3.5 text-white" />
                   Admin Pendaftaran 2
@@ -927,7 +927,7 @@ export default function DataLengkapForm({
         </div>
       ) : (
         <div className="bg-secondary-50 border border-secondary-100 rounded-2xl p-5 flex gap-4">
-          <div className="w-10 h-10 bg-secondary-100 rounded-xl flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 bg-secondary-100 rounded-2xl flex items-center justify-center shrink-0">
             <Info className="w-6 h-6 text-secondary-600" />
           </div>
           <div>
@@ -961,7 +961,7 @@ export default function DataLengkapForm({
               {/* Identitas */}
               <div>
                 <h4 className="flex items-center gap-2 text-lg font-bold text-ink-900 mb-6 pb-2 border-b border-ink-100">
-                  <span className="w-8 h-8 rounded-lg bg-secondary-100 text-primary-700 flex items-center justify-center text-sm">
+                  <span className="w-8 h-8 rounded-2xl bg-secondary-100 text-primary-700 flex items-center justify-center text-sm">
                     1
                   </span>
                   Identitas Utama
@@ -1076,7 +1076,7 @@ export default function DataLengkapForm({
               {/* Fisik */}
               <div>
                 <h4 className="flex items-center gap-2 text-lg font-bold text-ink-900 mb-6 pb-2 border-b border-ink-100">
-                  <span className="w-8 h-8 rounded-lg bg-secondary-100 text-primary-700 flex items-center justify-center text-sm">
+                  <span className="w-8 h-8 rounded-2xl bg-secondary-100 text-primary-700 flex items-center justify-center text-sm">
                     2
                   </span>
                   Fisik & Kesehatan
@@ -1142,7 +1142,7 @@ export default function DataLengkapForm({
               {/* Alamat */}
               <div>
                 <h4 className="flex items-center gap-2 text-lg font-bold text-ink-900 mb-6 pb-2 border-b border-ink-100">
-                  <span className="w-8 h-8 rounded-lg bg-secondary-100 text-primary-700 flex items-center justify-center text-sm">
+                  <span className="w-8 h-8 rounded-2xl bg-secondary-100 text-primary-700 flex items-center justify-center text-sm">
                     3
                   </span>
                   Alamat Tempat Tinggal
@@ -1198,7 +1198,7 @@ export default function DataLengkapForm({
               {/* Sekolah Asal */}
               <div>
                 <h4 className="flex items-center gap-2 text-lg font-bold text-ink-900 mb-6 pb-2 border-b border-ink-100">
-                  <span className="w-8 h-8 rounded-lg bg-secondary-100 text-primary-700 flex items-center justify-center text-sm">
+                  <span className="w-8 h-8 rounded-2xl bg-secondary-100 text-primary-700 flex items-center justify-center text-sm">
                     4
                   </span>
                   Sekolah Asal
@@ -1401,7 +1401,7 @@ export default function DataLengkapForm({
                   formData.santri.tinggal_bersama,
                 ) && (
                   <div className="pt-6 border-t border-ink-100">
-                    <h5 className="font-bold text-ink-800 mb-4 bg-surface-100 inline-block px-3 py-1 rounded-lg text-sm">
+                    <h5 className="font-bold text-ink-800 mb-4 bg-surface-100 inline-block px-3 py-1 rounded-2xl text-sm">
                       Alamat Ayah
                     </h5>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -1603,7 +1603,7 @@ export default function DataLengkapForm({
                   formData.santri.tinggal_bersama,
                 ) && (
                   <div className="pt-6 border-t border-ink-100">
-                    <h5 className="font-bold text-ink-800 mb-4 bg-surface-100 inline-block px-3 py-1 rounded-lg text-sm">
+                    <h5 className="font-bold text-ink-800 mb-4 bg-surface-100 inline-block px-3 py-1 rounded-2xl text-sm">
                       Alamat Ibu
                     </h5>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -1797,7 +1797,7 @@ export default function DataLengkapForm({
 
               {formData.santri.tinggal_bersama !== "Wali" && (
                 <div className="pt-6 border-t border-ink-100">
-                  <h5 className="font-bold text-ink-800 mb-4 bg-surface-100 inline-block px-3 py-1 rounded-lg text-sm">
+                  <h5 className="font-bold text-ink-800 mb-4 bg-surface-100 inline-block px-3 py-1 rounded-2xl text-sm">
                     Alamat Wali
                   </h5>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -1867,7 +1867,7 @@ export default function DataLengkapForm({
           <button
             type="submit"
             disabled={saving}
-            className="flex items-center gap-2 px-5 md:px-8 py-4 rounded-xl bg-gradient-to-r from-primary-600 to-primary-700 text-white font-bold text-lg shadow-lg shadow-primary-600/30 hover:shadow-primary-600/40 hover:-translate-y-1 transition-all disabled:opacity-50 disabled:transform-none"
+            className="flex items-center gap-2 px-5 md:px-8 py-4 rounded-2xl bg-gradient-to-r from-primary-600 to-primary-700 text-white font-bold text-lg shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-600/30 hover:shadow-primary-600/40 hover:-translate-y-1 transition-all disabled:opacity-50 disabled:transform-none"
           >
             {saving ? (
               <Loader2 className="w-6 h-6 animate-spin" />

@@ -166,7 +166,7 @@ export default function IdleTimeoutTracker() {
           {/* Button */}
           <button
             onClick={updateActivity}
-            className="w-full py-3 px-6 bg-gradient-to-r from-[var(--color-brown-700)] to-[var(--color-brown-800)] hover:from-[var(--color-brown-800)] hover:to-[var(--color-brown-900)] text-white font-bold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl"
+            className="w-full py-3 px-6 bg-gradient-to-r from-[var(--color-brown-700)] to-[var(--color-brown-800)] hover:from-[var(--color-brown-800)] hover:to-[var(--color-brown-900)] text-white font-bold rounded-2xl transition-all duration-300 shadow-2xl shadow-primary/30  shadow-primary/20 hover:shadow-2xl shadow-primary/30 "
           >
             Saya Masih Di Sini
           </button>

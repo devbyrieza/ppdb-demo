@@ -676,7 +676,7 @@ function InputNilaiContent() {
 
             <div className="flex flex-col-reverse sm:flex-row gap-3 pt-4 border-t border-teal-100/60">
               <button onClick={cancelEditing} disabled={!!saving} className="px-6 py-4 rounded-[24px] sm:rounded-[24px] font-black text-xs uppercase tracking-widest text-ink-500 hover:bg-ink-100 transition-all flex-1 text-center">Batal</button>
-              <button onClick={() => saveForm(p, "hafalan")} disabled={isInputtedByAdmin || !!saving || !hafalanForm.score_override || !hafalanForm.rekomendasi} className="px-6 py-4 rounded-[24px] sm:rounded-[24px] font-black text-xs uppercase tracking-widest bg-teal-600 text-white hover:bg-teal-700 transition-all shadow-lg shadow-teal-900/20 disabled:opacity-50 disabled:cursor-not-allowed flex-1 text-center flex justify-center items-center gap-2">
+              <button onClick={() => saveForm(p, "hafalan")} disabled={isInputtedByAdmin || !!saving || !hafalanForm.score_override || !hafalanForm.rekomendasi} className="px-6 py-4 rounded-[24px] sm:rounded-[24px] font-black text-xs uppercase tracking-widest bg-teal-600 text-white hover:bg-teal-700 transition-all shadow-2xl shadow-primary/30  shadow-primary/20 shadow-teal-900/20 disabled:opacity-50 disabled:cursor-not-allowed flex-1 text-center flex justify-center items-center gap-2">
                 {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} {saving ? 'Menyimpan...' : 'Simpan Nilai Hafalan'}
               </button>
             </div>
@@ -715,7 +715,7 @@ function InputNilaiContent() {
         {!isEditing && (
           <div className="flex justify-end mt-4">
             {(!isSaved || !getLockInfo(p.input_at_hafalan).isLocked) ? (
-              <button onClick={() => startEditing(p, "hafalan")} className="px-5 md:px-8 py-3.5 sm:py-4 bg-teal-600 text-white rounded-[24px] sm:rounded-[24px] text-[10px] sm:text-xs font-black uppercase tracking-widest hover:bg-teal-700 transition-all shadow-lg shadow-teal-900/20 active:scale-95 leading-none">
+              <button onClick={() => startEditing(p, "hafalan")} className="px-5 md:px-8 py-3.5 sm:py-4 bg-teal-600 text-white rounded-[24px] sm:rounded-[24px] text-[10px] sm:text-xs font-black uppercase tracking-widest hover:bg-teal-700 transition-all shadow-2xl shadow-primary/30  shadow-primary/20 shadow-teal-900/20 active:scale-95 leading-none">
                 {isSaved ? "Edit Nilai" : "Input Nilai Hafalan"}
               </button>
             ) : (
@@ -791,7 +791,7 @@ function InputNilaiContent() {
 
             <div className="flex flex-col-reverse sm:flex-row gap-3 pt-4 border-t border-sky-100/60">
               <button onClick={cancelEditing} disabled={!!saving} className="px-6 py-4 rounded-[24px] sm:rounded-[24px] font-black text-xs uppercase tracking-widest text-ink-500 hover:bg-ink-100 transition-all flex-1 text-center">Batal</button>
-              <button onClick={() => saveForm(p, "lisan_arab")} disabled={isInputtedByAdmin || !!saving || !lisanArabForm.score_override || !lisanArabForm.rekomendasi} className="px-6 py-4 rounded-[24px] sm:rounded-[24px] font-black text-xs uppercase tracking-widest bg-sky-600 text-white hover:bg-sky-700 transition-all shadow-lg shadow-sky-900/20 disabled:opacity-50 disabled:cursor-not-allowed flex-1 text-center flex justify-center items-center gap-2">
+              <button onClick={() => saveForm(p, "lisan_arab")} disabled={isInputtedByAdmin || !!saving || !lisanArabForm.score_override || !lisanArabForm.rekomendasi} className="px-6 py-4 rounded-[24px] sm:rounded-[24px] font-black text-xs uppercase tracking-widest bg-sky-600 text-white hover:bg-sky-700 transition-all shadow-2xl shadow-primary/30  shadow-primary/20 shadow-sky-900/20 disabled:opacity-50 disabled:cursor-not-allowed flex-1 text-center flex justify-center items-center gap-2">
                 {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} {saving ? 'Menyimpan...' : 'Simpan Nilai B. Arab'}
               </button>
             </div>
@@ -830,7 +830,7 @@ function InputNilaiContent() {
         {!isEditing && (
           <div className="flex justify-end mt-4">
             {(!isSaved || !getLockInfo(p.input_at_lisan_arab).isLocked) ? (
-              <button onClick={() => startEditing(p, "lisan_arab")} className="px-5 md:px-8 py-3.5 sm:py-4 bg-sky-600 text-white rounded-[24px] sm:rounded-[24px] text-[10px] sm:text-xs font-black uppercase tracking-widest hover:bg-sky-700 transition-all shadow-lg shadow-sky-900/20 active:scale-95 leading-none">
+              <button onClick={() => startEditing(p, "lisan_arab")} className="px-5 md:px-8 py-3.5 sm:py-4 bg-sky-600 text-white rounded-[24px] sm:rounded-[24px] text-[10px] sm:text-xs font-black uppercase tracking-widest hover:bg-sky-700 transition-all shadow-2xl shadow-primary/30  shadow-primary/20 shadow-sky-900/20 active:scale-95 leading-none">
                 {isSaved ? "Edit Nilai" : "Input Nilai B. Arab"}
               </button>
             ) : (
@@ -924,7 +924,7 @@ function InputNilaiContent() {
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-[24px_28px] pt-2">
               <button onClick={cancelEditing} className="w-full sm:w-auto px-5 md:px-8 py-4 bg-emerald-100 text-emerald-700 rounded-[24px] sm:rounded-[24px] font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-emerald-200 transition-all active:scale-95">Batal</button>
-              <button onClick={() => saveForm(p, "quran")} disabled={isInputtedByAdmin || !quranForm.tajwid || !quranForm.kelancaran || !quranForm.rekomendasi || !quranForm.nama_penguji || saving === p.id + "quran"} className="w-full sm:w-auto px-5 md:px-8 py-4 bg-emerald-600 text-white rounded-[24px] sm:rounded-[24px] font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-emerald-700 transition-all shadow-xl shadow-emerald-900/20 disabled:opacity-50 flex items-center justify-center gap-2 active:scale-95">
+              <button onClick={() => saveForm(p, "quran")} disabled={isInputtedByAdmin || !quranForm.tajwid || !quranForm.kelancaran || !quranForm.rekomendasi || !quranForm.nama_penguji || saving === p.id + "quran"} className="w-full sm:w-auto px-5 md:px-8 py-4 bg-emerald-600 text-white rounded-[24px] sm:rounded-[24px] font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-emerald-700 transition-all shadow-2xl shadow-primary/30 shadow-emerald-900/20 disabled:opacity-50 flex items-center justify-center gap-2 active:scale-95">
                 {saving === p.id + "quran" ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />} Simpan
               </button>
             </div>
@@ -975,7 +975,7 @@ function InputNilaiContent() {
             )}
             
             {(!isSaved || !getLockInfo(p.input_at_quran).isLocked) ? (
-              <button onClick={() => startEditing(p, "quran")} className="mt-5 sm:mt-6 px-5 md:px-8 py-4 bg-emerald-600 text-white rounded-[24px] sm:rounded-[24px] text-[10px] sm:text-xs font-black uppercase tracking-widest hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-900/20 active:scale-95 leading-none">
+              <button onClick={() => startEditing(p, "quran")} className="mt-5 sm:mt-6 px-5 md:px-8 py-4 bg-emerald-600 text-white rounded-[24px] sm:rounded-[24px] text-[10px] sm:text-xs font-black uppercase tracking-widest hover:bg-emerald-700 transition-all shadow-2xl shadow-primary/30  shadow-primary/20 shadow-emerald-900/20 active:scale-95 leading-none">
                 {isSaved ? "Edit Nilai" : "Input Nilai"}
               </button>
             ) : (
@@ -1083,7 +1083,7 @@ function InputNilaiContent() {
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-[24px_28px] pt-2">
               <button onClick={cancelEditing} className="w-full sm:w-auto px-5 md:px-8 py-4 bg-ink-100 text-ink-800 rounded-[24px] sm:rounded-[24px] font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-ink-200 transition-all active:scale-95">Batal</button>
-              <button onClick={() => saveForm(p, "wawancara")} disabled={isInputtedByAdmin || !criteria.every((c) => calsanForm[c.key]) || !calsanForm.rekomendasi || !calsanForm.nama_pewawancara || saving === p.id + "wawancara"} className="w-full sm:w-auto px-5 md:px-8 py-4 bg-primary-700 text-white rounded-[24px] sm:rounded-[24px] font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-primary-800 transition-all shadow-xl shadow-primary-900/20 disabled:opacity-50 flex items-center justify-center gap-2 active:scale-95">
+              <button onClick={() => saveForm(p, "wawancara")} disabled={isInputtedByAdmin || !criteria.every((c) => calsanForm[c.key]) || !calsanForm.rekomendasi || !calsanForm.nama_pewawancara || saving === p.id + "wawancara"} className="w-full sm:w-auto px-5 md:px-8 py-4 bg-primary-700 text-white rounded-[24px] sm:rounded-[24px] font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-primary-800 transition-all shadow-2xl shadow-primary/30  shadow-primary-900/20 disabled:opacity-50 flex items-center justify-center gap-2 active:scale-95">
                 {saving === p.id + "wawancara" ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />} Simpan
               </button>
             </div>
@@ -1118,7 +1118,7 @@ function InputNilaiContent() {
             )}
 
             {(!isSaved || !getLockInfo(p.input_at_santri).isLocked) ? (
-              <button onClick={() => startEditing(p, "wawancara")} className="mt-5 sm:mt-6 px-5 md:px-8 py-4 bg-primary-700 text-white rounded-[24px] sm:rounded-[24px] text-[10px] sm:text-xs font-black uppercase tracking-widest hover:bg-primary-800 transition-all shadow-lg shadow-primary-900/20 active:scale-95 leading-none">
+              <button onClick={() => startEditing(p, "wawancara")} className="mt-5 sm:mt-6 px-5 md:px-8 py-4 bg-primary-700 text-white rounded-[24px] sm:rounded-[24px] text-[10px] sm:text-xs font-black uppercase tracking-widest hover:bg-primary-800 transition-all shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-900/20 active:scale-95 leading-none">
                 {isSaved ? "Edit Nilai" : "Input Nilai"}
               </button>
             ) : (
@@ -1272,7 +1272,7 @@ function InputNilaiContent() {
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-[24px_28px] pt-2">
               <button onClick={cancelEditing} className="w-full sm:w-auto px-5 md:px-8 py-4 bg-secondary-100 text-secondary-900 rounded-[24px] sm:rounded-[24px] font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-secondary-200 transition-all active:scale-95">Batal</button>
-              <button onClick={() => saveForm(p, "ortu")} disabled={isInputtedByAdmin || !cawalsanForm.nama_orangtua || !cawalsanForm.asal || !cawalsanForm.kategori || !cawalsanForm.sumber_info || !cawalsanForm.karakter || !cawalsanForm.tahu_spp || !cawalsanForm.rekomendasi || !cawalsanForm.nama_pewawancara || !CAWALSAN_QUESTIONS.every((q) => cawalsanForm[q.key]) || saving === p.id + "ortu"} className="w-full sm:w-auto px-5 md:px-8 py-4 bg-secondary-400 text-primary-950 rounded-[24px] sm:rounded-[24px] font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-secondary-500 transition-all shadow-xl shadow-secondary-400/20 disabled:opacity-50 flex items-center justify-center gap-2 active:scale-95">
+              <button onClick={() => saveForm(p, "ortu")} disabled={isInputtedByAdmin || !cawalsanForm.nama_orangtua || !cawalsanForm.asal || !cawalsanForm.kategori || !cawalsanForm.sumber_info || !cawalsanForm.karakter || !cawalsanForm.tahu_spp || !cawalsanForm.rekomendasi || !cawalsanForm.nama_pewawancara || !CAWALSAN_QUESTIONS.every((q) => cawalsanForm[q.key]) || saving === p.id + "ortu"} className="w-full sm:w-auto px-5 md:px-8 py-4 bg-secondary-400 text-primary-950 rounded-[24px] sm:rounded-[24px] font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-secondary-500 transition-all shadow-2xl shadow-primary/30 shadow-secondary-400/20 disabled:opacity-50 flex items-center justify-center gap-2 active:scale-95">
                 {saving === p.id + "ortu" ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />} Simpan
               </button>
             </div>
@@ -1307,7 +1307,7 @@ function InputNilaiContent() {
             )}
 
             {(!isSaved || !getLockInfo(p.input_at_ortu).isLocked) ? (
-              <button onClick={() => startEditing(p, "ortu")} className="mt-5 sm:mt-6 px-5 md:px-8 py-4 bg-secondary-400 text-primary-950 rounded-[24px] sm:rounded-[24px] text-[10px] sm:text-xs font-black uppercase tracking-widest hover:bg-secondary-500 transition-all shadow-lg shadow-secondary-400/20 active:scale-95 leading-none">
+              <button onClick={() => startEditing(p, "ortu")} className="mt-5 sm:mt-6 px-5 md:px-8 py-4 bg-secondary-400 text-primary-950 rounded-[24px] sm:rounded-[24px] text-[10px] sm:text-xs font-black uppercase tracking-widest hover:bg-secondary-500 transition-all shadow-2xl shadow-primary/30  shadow-primary/20 shadow-secondary-400/20 active:scale-95 leading-none">
                 {isSaved ? "Edit Hasil" : "Input Hasil"}
               </button>
             ) : (

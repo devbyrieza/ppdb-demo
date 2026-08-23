@@ -222,7 +222,7 @@ export default function AdminSidebar({
             Control Center
           </span>
         </div>
-        <div className="w-10 h-10 rounded-2xl bg-linear-to-br from-primary-700 to-primary-900 flex items-center justify-center text-white text-sm font-black shadow-lg shadow-primary-200">
+        <div className="w-10 h-10 rounded-2xl bg-linear-to-br from-primary-700 to-primary-900 flex items-center justify-center text-white text-sm font-black shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-200">
           {(adminName || "A").charAt(0)}
         </div>
       </div>
@@ -275,7 +275,7 @@ export default function AdminSidebar({
                     onClick={() => setSidebarOpen(false)}
                     className={`flex items-center justify-between px-4 py-4 rounded-2xl transition-all ${
                       item.isActive
-                        ? "bg-primary-700 text-white shadow-xl shadow-primary-200 font-bold"
+                        ? "bg-primary-700 text-white shadow-2xl shadow-primary/30  shadow-primary-200 font-bold"
                         : "text-ink-500 hover:bg-ink-50 hover:text-primary-900"
                     }`}
                   >
@@ -307,7 +307,7 @@ export default function AdminSidebar({
                     <select
                       value={userRole || ""}
                       onChange={handleRoleSwitch}
-                      className="w-full appearance-none bg-ink-50 border border-ink-100 text-[10px] font-black text-primary-900 uppercase tracking-widest pl-10 pr-8 py-3 rounded-xl cursor-pointer focus:outline-none focus:ring-4 focus:ring-primary-500/5 transition-all group-hover:bg-ink-100"
+                      className="w-full appearance-none bg-ink-50 border border-ink-100 text-[10px] font-black text-primary-900 uppercase tracking-widest pl-10 pr-8 py-3 rounded-2xl cursor-pointer focus:outline-none focus:ring-4 focus:ring-primary-500/5 transition-all group-hover:bg-ink-100"
                     >
                       {availableRoles.map((role) => (
                         <option key={role} value={role}>
@@ -340,7 +340,7 @@ export default function AdminSidebar({
             href="/dashboard/admin"
             className="flex items-center gap-4 overflow-hidden group"
           >
-            <div className="shrink-0 w-12 h-12 bg-white rounded-2xl flex items-center justify-center border border-ink-100 shadow-xl group-hover:rotate-6 transition-all duration-500">
+            <div className="shrink-0 w-12 h-12 bg-white rounded-2xl flex items-center justify-center border border-ink-100 shadow-2xl shadow-primary/30 group-hover:rotate-6 transition-all duration-500">
               <img
                 src={BRANDING.logoPath}
                 alt="Logo"
@@ -376,7 +376,7 @@ export default function AdminSidebar({
                 <select
                   value={userRole || ""}
                   onChange={handleRoleSwitch}
-                  className="w-full appearance-none bg-ink-50 border border-ink-100 text-[10px] font-black text-primary-900 uppercase tracking-widest pl-10 pr-8 py-3 rounded-xl cursor-pointer focus:outline-none focus:ring-4 focus:ring-primary-500/5 transition-all group-hover:bg-ink-100"
+                  className="w-full appearance-none bg-ink-50 border border-ink-100 text-[10px] font-black text-primary-900 uppercase tracking-widest pl-10 pr-8 py-3 rounded-2xl cursor-pointer focus:outline-none focus:ring-4 focus:ring-primary-500/5 transition-all group-hover:bg-ink-100"
                 >
                   {availableRoles.map((role) => (
                     <option key={role} value={role}>
@@ -454,7 +454,7 @@ export default function AdminSidebar({
 
                     {/* Tooltip: Hanya muncul saat sidebar dikempiskan (Collapsed Mode) */}
                     {collapsed && (
-                      <div className="absolute left-full ml-6 px-4 py-2 bg-primary-950 text-white text-[11px] font-black rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-[100] shadow-2xl border border-white/10 uppercase tracking-widest">
+                      <div className="absolute left-full ml-6 px-4 py-2 bg-primary-950 text-white text-[11px] font-black rounded-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-[100] shadow-2xl border border-white/10 uppercase tracking-widest">
                         {item.name}
                       </div>
                     )}
@@ -470,7 +470,7 @@ export default function AdminSidebar({
           {/* Toggle Button */}
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className={`w-full flex items-center justify-center p-3 rounded-xl text-ink-400 hover:text-primary-950 hover:bg-white hover:shadow-sm mb-4 transition-all duration-300 active:scale-95 ${collapsed ? "" : "gap-3"}`}
+            className={`w-full flex items-center justify-center p-3 rounded-2xl text-ink-400 hover:text-primary-950 hover:bg-white hover:shadow-sm mb-4 transition-all duration-300 active:scale-95 ${collapsed ? "" : "gap-3"}`}
           >
             <PanelLeft
               className={`w-5 h-5 shrink-0 transition-transform duration-700 ${collapsed ? "rotate-180" : ""}`}
@@ -486,7 +486,7 @@ export default function AdminSidebar({
           <div
             className={`flex items-center gap-4 p-3 rounded-2xl transition-all group relative ${collapsed ? "justify-center" : "bg-white shadow-sm border border-ink-100"}`}
           >
-            <div className="shrink-0 w-10 h-10 rounded-2xl bg-linear-to-br from-primary-700 to-primary-900 flex items-center justify-center text-white font-black text-sm shadow-xl shadow-primary-100 ring-4 ring-white border border-primary-500/20">
+            <div className="shrink-0 w-10 h-10 rounded-2xl bg-linear-to-br from-primary-700 to-primary-900 flex items-center justify-center text-white font-black text-sm shadow-2xl shadow-primary/30  shadow-primary-100 ring-4 ring-white border border-primary-500/20">
               {(adminName || "A").charAt(0)}
             </div>
             {!collapsed && (
@@ -502,7 +502,7 @@ export default function AdminSidebar({
             {!collapsed && (
               <button
                 onClick={handleLogout}
-                className="p-2 text-ink-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all active:scale-90"
+                className="p-2 text-ink-300 hover:text-red-500 hover:bg-red-50 rounded-2xl transition-all active:scale-90"
                 title="Logout"
               >
                 <LogOut className="w-4 h-4" />
@@ -541,7 +541,7 @@ export default function AdminSidebar({
             </button>
             <Link
               href="/"
-              className="px-5 md:px-8 py-3.5 bg-primary-950 text-white text-[11px] font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-primary-800 transition-all shadow-xl shadow-primary-950/20 active:scale-95"
+              className="px-5 md:px-8 py-3.5 bg-primary-950 text-white text-[11px] font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-primary-800 transition-all shadow-2xl shadow-primary/30  shadow-primary-950/20 active:scale-95"
             >
               Kunjungi Situs
             </Link>

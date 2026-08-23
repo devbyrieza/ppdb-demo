@@ -216,7 +216,7 @@ function VerifikasiOTPContent() {
   }, [otpCode]);
 
   return (
-    <div className="app-card max-w-md w-full bg-white rounded-[2.5rem] shadow-lg border border-secondary-200 p-[24px_28px] md:p-8 relative z-10">
+    <div className="app-card max-w-md w-full bg-white rounded-[2.5rem] shadow-2xl shadow-primary/30  shadow-primary/20 border border-secondary-200 p-[24px_28px] md:p-8 relative z-10">
       {/* Decorative Blur Inside Card */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-secondary-50/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
 
@@ -337,7 +337,7 @@ function VerifikasiOTPContent() {
           <button
             onClick={handleVerifyOTP}
             disabled={isVerifying || otpCode.join("").length !== 6}
-            className="w-full py-4 px-6 font-black text-lg md:text-xl rounded-pill transition-all duration-300 disabled:opacity-50 flex items-center justify-center gap-3 shadow-md border border-transparent hover:bg-secondary-100 hover:text-primary-900 bg-primary-900 text-white hover:border-primary-900 active:scale-95 app-card tracking-wide"
+            className="w-full py-4 px-6 font-black text-lg md:text-xl rounded-pill transition-all duration-300 disabled:opacity-50 flex items-center justify-center gap-3 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 border border-transparent hover:bg-secondary-100 hover:text-primary-900 bg-primary-900 text-white hover:border-primary-900 active:scale-95 app-card tracking-wide"
           >
             <CheckCircle2 className="w-6 h-6" />
             Verifikasi Kode
@@ -414,7 +414,7 @@ function VerifikasiOTPContent() {
 // Loading fallback
 function LoadingFallback() {
   return (
-    <div className="app-card max-w-md w-full bg-white rounded-[2.5rem] shadow-lg border border-secondary-200 p-[24px_28px] md:p-8">
+    <div className="app-card max-w-md w-full bg-white rounded-[2.5rem] shadow-2xl shadow-primary/30  shadow-primary/20 border border-secondary-200 p-[24px_28px] md:p-8">
       <div className="flex flex-col items-center justify-center py-12">
         <Loader2 className="w-12 h-12 text-primary-600 animate-spin mb-4" />
         <p className="text-ink-600 font-medium">Memuat halaman...</p>

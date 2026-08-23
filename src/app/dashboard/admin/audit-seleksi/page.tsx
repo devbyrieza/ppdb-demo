@@ -224,7 +224,7 @@ export default function AuditSeleksiPage() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-[24px_28px]">
         <div>
           <h1 className="text-3xl font-black text-ink-900 tracking-tight flex items-center gap-3">
-            <div className="p-2.5 bg-army-600 rounded-[24px] shadow-lg shadow-army-600/20">
+            <div className="p-2.5 bg-army-600 rounded-[24px] shadow-2xl shadow-primary/30  shadow-primary/20 shadow-army-600/20">
               <Activity className="w-6 h-6 text-white" />
             </div>
             Audit <span className="text-army-700">Hasil Seleksi</span>
@@ -301,21 +301,21 @@ export default function AuditSeleksiPage() {
           <Button
             onClick={() => handleBatchPublish("accepted")}
             disabled={selectedIds.length === 0 || isPublishing}
-            className="flex-1 lg:flex-none bg-emerald-600 hover:bg-emerald-700 text-white rounded-[24px] font-black text-[11px] px-6 py-2.5 shadow-lg shadow-emerald-200 transition-all active:scale-95"
+            className="flex-1 lg:flex-none bg-emerald-600 hover:bg-emerald-700 text-white rounded-[24px] font-black text-[11px] px-6 py-2.5 shadow-2xl shadow-primary/30  shadow-primary/20 shadow-emerald-200 transition-all active:scale-95"
           >
             DITERIMA ({selectedIds.length})
           </Button>
           <Button
             onClick={() => handleBatchPublish("cadangan")}
             disabled={selectedIds.length === 0 || isPublishing}
-            className="flex-1 lg:flex-none bg-secondary-500 hover:bg-secondary-600 text-white rounded-[24px] font-black text-[11px] px-6 py-2.5 shadow-lg shadow-secondary-200 transition-all active:scale-95"
+            className="flex-1 lg:flex-none bg-secondary-500 hover:bg-secondary-600 text-white rounded-[24px] font-black text-[11px] px-6 py-2.5 shadow-2xl shadow-primary/30  shadow-primary/20 shadow-secondary-200 transition-all active:scale-95"
           >
             CADANGAN
           </Button>
           <Button
             onClick={() => handleBatchPublish("rejected")}
             disabled={selectedIds.length === 0 || isPublishing}
-            className="flex-1 lg:flex-none bg-rose-600 hover:bg-rose-700 text-white rounded-[24px] font-black text-[11px] px-6 py-2.5 shadow-lg shadow-rose-200 transition-all active:scale-95"
+            className="flex-1 lg:flex-none bg-rose-600 hover:bg-rose-700 text-white rounded-[24px] font-black text-[11px] px-6 py-2.5 shadow-2xl shadow-primary/30  shadow-primary/20 shadow-rose-200 transition-all active:scale-95"
           >
             TOLAK
           </Button>
@@ -480,7 +480,7 @@ export default function AuditSeleksiPage() {
       
       {/* Legend & Help */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-        <div className="bg-primary-950 rounded-3xl p-[24px_28px] md:p-8 text-white relative overflow-hidden group shadow-xl shadow-primary-900/20">
+        <div className="bg-primary-950 rounded-3xl p-[24px_28px] md:p-8 text-white relative overflow-hidden group shadow-2xl shadow-primary/30  shadow-primary-900/20">
           <div className="absolute top-0 right-0 p-[24px_28px] md:p-8 opacity-10 group-hover:rotate-12 transition-transform duration-700">
             <Activity className="w-40 h-40 text-white" />
           </div>

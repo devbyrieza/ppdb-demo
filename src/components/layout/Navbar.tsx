@@ -230,7 +230,7 @@ export default function Navbar() {
                               
                               <Link href="/program#mts" className="group/item p-4 rounded-2xl hover:bg-primary-50 transition-colors border border-transparent hover:border-primary-100">
                                 <div className="flex items-center gap-3 mb-2">
-                                  <div className="w-10 h-10 rounded-xl bg-primary-100 text-primary-700 flex items-center justify-center group-hover/item:scale-110 transition-transform">
+                                  <div className="w-10 h-10 rounded-2xl bg-primary-100 text-primary-700 flex items-center justify-center group-hover/item:scale-110 transition-transform">
                                     <BookOpen className="w-5 h-5" />
                                   </div>
                                   <h4 className="font-bold text-ink-900 group-hover/item:text-primary-700">MTs (Setara SMP)</h4>
@@ -240,7 +240,7 @@ export default function Navbar() {
                               
                               <Link href="/program#il" className="group/item p-4 rounded-2xl hover:bg-primary-50 transition-colors border border-transparent hover:border-primary-100">
                                 <div className="flex items-center gap-3 mb-2">
-                                  <div className="w-10 h-10 rounded-xl bg-secondary-100 text-secondary-700 flex items-center justify-center group-hover/item:scale-110 transition-transform">
+                                  <div className="w-10 h-10 rounded-2xl bg-secondary-100 text-secondary-700 flex items-center justify-center group-hover/item:scale-110 transition-transform">
                                     <Star className="w-5 h-5" />
                                   </div>
                                   <h4 className="font-bold text-ink-900 group-hover/item:text-primary-700">I'dad Lughowi (IL)</h4>
@@ -389,7 +389,7 @@ export default function Navbar() {
 
               {/* School identity strip */}
               <div className="flex items-center gap-3 px-6 py-3 border-b border-[var(--color-primary-50)] flex-shrink-0">
-                <div className="w-9 h-9 rounded-xl bg-[var(--color-primary-50)] border border-[var(--color-primary-100)] flex items-center justify-center overflow-hidden">
+                <div className="w-9 h-9 rounded-2xl bg-[var(--color-primary-50)] border border-[var(--color-primary-100)] flex items-center justify-center overflow-hidden">
                   <Image
                     src={BRANDING.logoPath}
                     alt=""
@@ -428,7 +428,7 @@ export default function Navbar() {
                           handleNavClick(e, link.href);
                           setIsMenuOpen(false);
                         }}
-                        className={`px-4 py-4 rounded-xl text-base font-bold transition-all min-h-[56px] flex items-center justify-between group ${
+                        className={`px-4 py-4 rounded-2xl text-base font-bold transition-all min-h-[56px] flex items-center justify-between group ${
                           isActive(link.href)
                             ? "bg-[var(--color-primary-800)] text-[var(--color-secondary-100)] shadow-[var(--shadow-primary)]"
                             : "text-[var(--color-ink-800)] hover:bg-[var(--color-primary-50)] hover:text-[var(--color-primary-800)]"
@@ -451,7 +451,7 @@ export default function Navbar() {
                     <Link
                       href="/dashboard"
                       onClick={() => setIsMenuOpen(false)}
-                      className="btn-primary w-full justify-center gap-3 min-h-[56px] relative overflow-hidden shadow-md active:scale-98 transition-all"
+                      className="btn-primary w-full justify-center gap-3 min-h-[56px] relative overflow-hidden shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 active:scale-98 transition-all"
                     >
                       <span className="flex h-2 w-2 relative">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-300 opacity-75"></span>
@@ -465,7 +465,7 @@ export default function Navbar() {
                       <Link
                         href="/login"
                         onClick={() => setIsMenuOpen(false)}
-                        className="w-full py-4 text-sm font-bold rounded-xl border border-[var(--color-primary-100)] text-[var(--color-primary-700)] bg-[var(--color-primary-50)] hover:bg-[var(--color-primary-100)] text-center transition-all min-h-[52px] flex items-center justify-center gap-2"
+                        className="w-full py-4 text-sm font-bold rounded-2xl border border-[var(--color-primary-100)] text-[var(--color-primary-700)] bg-[var(--color-primary-50)] hover:bg-[var(--color-primary-100)] text-center transition-all min-h-[52px] flex items-center justify-center gap-2"
                       >
                         Masuk ke Dashboard
                       </Link>

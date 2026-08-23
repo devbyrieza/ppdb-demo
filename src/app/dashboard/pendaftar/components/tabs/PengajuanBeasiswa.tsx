@@ -89,7 +89,7 @@ function FileUploadField({
   };
 
   return (
-    <div className="bg-stone-50 p-4 rounded-xl border border-stone-200">
+    <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200">
       <div className="flex justify-between items-start mb-1">
         <label className="block text-sm font-bold text-ink-900">
           {item.label}{" "}
@@ -97,7 +97,7 @@ function FileUploadField({
         </label>
       </div>
       <p className="text-xs text-stone-500 mb-3">{item.desc}</p>
-      <label className="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-stone-300 rounded-xl cursor-pointer hover:bg-white transition-colors bg-stone-50">
+      <label className="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-stone-300 rounded-2xl cursor-pointer hover:bg-white transition-colors bg-stone-50">
         <div className="flex flex-col items-center justify-center py-4">
           {file ? (
             <>
@@ -388,7 +388,7 @@ export default function PengajuanBeasiswaTab() {
             </div>
           )}
           {data.catatan_keputusan && (
-            <div className="bg-surface-50 p-4 rounded-xl mt-2">
+            <div className="bg-surface-50 p-4 rounded-2xl mt-2">
               <span className="block text-xs font-bold text-surface-600 uppercase mb-1">
                 Catatan Verifikator
               </span>
@@ -400,7 +400,7 @@ export default function PengajuanBeasiswaTab() {
         </div>
 
         {/* Berkas Section */}
-        <div className="border border-stone-200 rounded-xl p-4">
+        <div className="border border-stone-200 rounded-2xl p-4">
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-bold text-ink-900 text-sm flex items-center gap-2">
               <FileText className="w-4 h-4 text-primary-500" />
@@ -418,7 +418,7 @@ export default function PengajuanBeasiswaTab() {
             ))}
           </div>
           {missingCount > 0 && (
-            <p className="text-xs text-amber-700 mt-3 bg-amber-50 border border-amber-100 rounded-lg p-2.5 font-medium">
+            <p className="text-xs text-amber-700 mt-3 bg-amber-50 border border-amber-100 rounded-2xl p-2.5 font-medium">
               ℹ️ Berkas yang belum ada dapat dilengkapi oleh Admin. Silakan hubungi tim administrasi.
             </p>
           )}
@@ -455,7 +455,7 @@ export default function PengajuanBeasiswaTab() {
           </label>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <label
-              className={`cursor-pointer border-2 rounded-xl p-4 flex flex-col items-center text-center transition-all ${
+              className={`cursor-pointer border-2 rounded-2xl p-4 flex flex-col items-center text-center transition-all ${
                 jenisPengajuan === "KERINGANAN_BIAYA"
                   ? "border-primary-500 bg-primary-50 text-primary-900 shadow-sm"
                   : "border-stone-200 hover:border-primary-200"
@@ -475,7 +475,7 @@ export default function PengajuanBeasiswaTab() {
               </span>
             </label>
             <label
-              className={`cursor-pointer border-2 rounded-xl p-4 flex flex-col items-center text-center transition-all ${
+              className={`cursor-pointer border-2 rounded-2xl p-4 flex flex-col items-center text-center transition-all ${
                 jenisPengajuan === "BEASISWA_PRESTASI"
                   ? "border-primary-500 bg-primary-50 text-primary-900 shadow-sm"
                   : "border-stone-200 hover:border-primary-200"
@@ -506,7 +506,7 @@ export default function PengajuanBeasiswaTab() {
             required
             rows={3}
             placeholder="Jelaskan secara singkat alasan pengajuan Anda..."
-            className="w-full p-3 border border-stone-300 rounded-xl focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-all resize-none text-sm"
+            className="w-full p-3 border border-stone-300 rounded-2xl focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-all resize-none text-sm"
             value={alasanPengajuan}
             onChange={(e) => setAlasanPengajuan(e.target.value)}
           />
@@ -524,7 +524,7 @@ export default function PengajuanBeasiswaTab() {
               required
               min="0"
               placeholder="Contoh: 5000000"
-              className="w-full p-3 border border-stone-300 rounded-xl focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-all text-sm"
+              className="w-full p-3 border border-stone-300 rounded-2xl focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-all text-sm"
               value={nominalKesanggupan}
               onChange={(e) => setNominalKesanggupan(e.target.value)}
             />
@@ -547,7 +547,7 @@ export default function PengajuanBeasiswaTab() {
           </div>
 
           {/* Info syarat berkas */}
-          <div className="mb-4 p-3 bg-blue-50 border border-blue-100 rounded-xl text-xs text-blue-800 font-medium">
+          <div className="mb-4 p-3 bg-blue-50 border border-blue-100 rounded-2xl text-xs text-blue-800 font-medium">
             {jenisPengajuan === "BEASISWA_PRESTASI" ? (
               <span>
                 <strong>Beasiswa</strong> memerlukan: SKTM + Surat Keterangan
@@ -579,7 +579,7 @@ export default function PengajuanBeasiswaTab() {
         <button
           type="submit"
           disabled={submitting}
-          className="w-full mt-6 py-4 bg-primary-600 hover:bg-primary-700 text-white font-black rounded-xl shadow-lg shadow-primary-500/30 flex justify-center items-center gap-2 transition-all disabled:opacity-70"
+          className="w-full mt-6 py-4 bg-primary-600 hover:bg-primary-700 text-white font-black rounded-2xl shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-500/30 flex justify-center items-center gap-2 transition-all disabled:opacity-70"
         >
           {submitting ? (
             <Loader2 className="w-5 h-5 animate-spin" />

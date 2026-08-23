@@ -92,7 +92,7 @@ function getTokens(variant: ProgramVariant) {
           "group-hover/item:bg-primary-600 group-hover/item:border-primary-600",
         checkIcon: "text-primary-600 group-hover/item:text-white",
         ctaBtn:
-          "bg-white border-primary-200 text-primary-800 hover:bg-primary-700 hover:border-primary-700 hover:text-white shadow-sm hover:shadow-md" };
+          "bg-white border-primary-200 text-primary-800 hover:bg-primary-700 hover:border-primary-700 hover:text-white shadow-sm hover:shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10" };
     case "secondary":
       return {
         accentBar: "bg-gradient-to-r from-secondary-500 via-secondary-400 to-secondary-200",
@@ -105,7 +105,7 @@ function getTokens(variant: ProgramVariant) {
           "group-hover/item:bg-secondary-500 group-hover/item:border-secondary-500",
         checkIcon: "text-secondary-600 group-hover/item:text-primary-950",
         ctaBtn:
-          "bg-white border-secondary-300 text-primary-800 hover:bg-secondary-400 hover:border-secondary-400 hover:text-primary-950 shadow-sm hover:shadow-md" };
+          "bg-white border-secondary-300 text-primary-800 hover:bg-secondary-400 hover:border-secondary-400 hover:text-primary-950 shadow-sm hover:shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10" };
   }
 }
 

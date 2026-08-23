@@ -257,7 +257,7 @@ export default function WelcomeDayPage() {
     <div className="max-w-4xl mx-auto space-y-6">
 
       {/* ─── HERO BANNER ─── */}
-      <div className="relative bg-gradient-to-br from-primary-800 via-primary-900 to-primary-950 p-6 md:p-8 rounded-3xl overflow-hidden text-white shadow-xl">
+      <div className="relative bg-gradient-to-br from-primary-800 via-primary-900 to-primary-950 p-6 md:p-8 rounded-3xl overflow-hidden text-white shadow-2xl shadow-primary/30 ">
         {/* Decorative circles */}
         <div className="absolute -top-8 -right-8 w-48 h-48 bg-white/5 rounded-full" />
         <div className="absolute -bottom-12 -left-12 w-64 h-64 bg-white/5 rounded-full" />
@@ -269,7 +269,7 @@ export default function WelcomeDayPage() {
             INFORMASI RESMI PESANTREN
           </div>
 
-          <h1 className="text-2xl md:text-3xl font-black leading-tight mb-2 text-white drop-shadow-md">
+          <h1 className="text-2xl md:text-3xl font-black leading-tight mb-2 text-white drop-shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">
             <span className="flex items-center gap-3">
               <PartyPopper className="w-8 h-8 md:w-10 md:h-10 text-gold-400 drop-shadow-sm" />
               Welcome Day & Serah Terima
@@ -453,8 +453,8 @@ export default function WelcomeDayPage() {
                     onClick={() => setFormData({ ...formData, statusKehadiran: "HADIR" })}
                     className={`p-[24px_28px] rounded-[24px] border-2 text-left transition-all duration-300 flex items-center gap-[24px_28px] group ${
                       formData.statusKehadiran === "HADIR"
-                        ? "bg-gradient-to-br from-emerald-500 to-emerald-600 border-emerald-500 text-white shadow-lg shadow-emerald-500/25 scale-[1.02]"
-                        : "bg-white border-ink-200 hover:border-emerald-300 hover:shadow-md hover:bg-emerald-50/30"
+                        ? "bg-gradient-to-br from-emerald-500 to-emerald-600 border-emerald-500 text-white shadow-2xl shadow-primary/30  shadow-primary/20 shadow-emerald-500/25 scale-[1.02]"
+                        : "bg-white border-ink-200 hover:border-emerald-300 hover:shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 hover:bg-emerald-50/30"
                     }`}
                   >
                     <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors ${formData.statusKehadiran === "HADIR" ? "bg-white/20" : "bg-emerald-100 group-hover:bg-emerald-200"}`}>
@@ -472,8 +472,8 @@ export default function WelcomeDayPage() {
                     onClick={() => setFormData({ ...formData, statusKehadiran: "TIDAK_HADIR" })}
                     className={`p-[24px_28px] rounded-[24px] border-2 text-left transition-all duration-300 flex items-center gap-[24px_28px] group ${
                       formData.statusKehadiran === "TIDAK_HADIR"
-                        ? "bg-gradient-to-br from-rose-500 to-rose-600 border-rose-500 text-white shadow-lg shadow-rose-500/25 scale-[1.02]"
-                        : "bg-white border-ink-200 hover:border-rose-300 hover:shadow-md hover:bg-rose-50/30"
+                        ? "bg-gradient-to-br from-rose-500 to-rose-600 border-rose-500 text-white shadow-2xl shadow-primary/30  shadow-primary/20 shadow-rose-500/25 scale-[1.02]"
+                        : "bg-white border-ink-200 hover:border-rose-300 hover:shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 hover:bg-rose-50/30"
                     }`}
                   >
                     <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors ${formData.statusKehadiran === "TIDAK_HADIR" ? "bg-white/20" : "bg-rose-100 group-hover:bg-rose-200"}`}>
@@ -737,7 +737,7 @@ export default function WelcomeDayPage() {
 
             {/* Warning Banner for Users who haven't updated vehicles */}
             {formData.statusKehadiran === "HADIR" && formData.jumlahMobil === 0 && formData.jumlahMotor === 0 && (
-              <div className="bg-gradient-to-br from-orange-500 to-amber-500 text-white p-[24px_28px] rounded-[24px] shadow-lg shadow-orange-500/25 flex flex-col md:flex-row items-center md:items-start justify-between gap-[24px_28px] mt-6">
+              <div className="bg-gradient-to-br from-orange-500 to-amber-500 text-white p-[24px_28px] rounded-[24px] shadow-2xl shadow-primary/30  shadow-primary/20 shadow-orange-500/25 flex flex-col md:flex-row items-center md:items-start justify-between gap-[24px_28px] mt-6">
                 <div className="flex gap-3 items-start">
                   <div className="w-10 h-10 bg-white/20 rounded-[24px] flex items-center justify-center flex-shrink-0 backdrop-blur-sm">
                     <AlertCircle className="w-6 h-6 text-white" />
@@ -1122,7 +1122,7 @@ export default function WelcomeDayPage() {
             href="https://wa.me/6281251971250"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3 bg-white rounded-[24px] p-3 border border-primary-200 hover:shadow-md transition-shadow"
+            className="flex items-center gap-3 bg-white rounded-[24px] p-3 border border-primary-200 hover:shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 transition-shadow"
           >
             <div className="w-9 h-9 bg-green-500 rounded-[24px] flex items-center justify-center flex-shrink-0">
               <Phone className="w-4 h-4 text-white" />
@@ -1176,7 +1176,7 @@ export default function WelcomeDayPage() {
             href={lightbox} 
             download 
             onClick={(e) => e.stopPropagation()}
-            className="mt-6 flex items-center gap-2 bg-emerald-600 text-white p-[16px_20px] rounded-full font-bold hover:bg-emerald-500 transition-colors shadow-lg active:scale-95"
+            className="mt-6 flex items-center gap-2 bg-emerald-600 text-white p-[16px_20px] rounded-full font-bold hover:bg-emerald-500 transition-colors shadow-2xl shadow-primary/30  shadow-primary/20 active:scale-95"
           >
             <Download className="w-5 h-5" /> Download Gambar
           </a>

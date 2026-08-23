@@ -474,19 +474,19 @@ export default function KeuanganPage() {
         <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
                       <button
               onClick={handleExportKeringanan}
-              className="bg-gold-600 hover:bg-gold-700 text-white p-[16px_20px] rounded-[24px] flex items-center gap-2 font-bold shadow-md transition-colors"
+              className="bg-gold-600 hover:bg-gold-700 text-white p-[16px_20px] rounded-[24px] flex items-center gap-2 font-bold shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 transition-colors"
             >
               <Download className="w-4 h-4" /> Export Keringanan
             </button>
             <button
               onClick={() => handleExport("excel")}
-            className="bg-emerald-600 hover:bg-emerald-700 text-white p-[16px_20px] rounded-[24px] flex items-center gap-2 font-bold shadow-md transition-colors"
+            className="bg-emerald-600 hover:bg-emerald-700 text-white p-[16px_20px] rounded-[24px] flex items-center gap-2 font-bold shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 transition-colors"
           >
             <Download className="w-4 h-4" /> Export Excel
           </button>
           <button
             onClick={() => handleExport("pdf")}
-            className="bg-rose-600 hover:bg-rose-700 text-white p-[16px_20px] rounded-[24px] flex items-center gap-2 font-bold shadow-md transition-colors"
+            className="bg-rose-600 hover:bg-rose-700 text-white p-[16px_20px] rounded-[24px] flex items-center gap-2 font-bold shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 transition-colors"
           >
             <Download className="w-4 h-4" /> Export PDF
           </button>

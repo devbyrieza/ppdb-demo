@@ -43,7 +43,7 @@ function DaftarSuksesContent() {
   };
 
   return (
-    <div className="app-card max-w-lg w-full bg-white rounded-[2.5rem] shadow-lg border border-secondary-200 p-[24px_28px] md:p-8 relative overflow-hidden">
+    <div className="app-card max-w-lg w-full bg-white rounded-[2.5rem] shadow-2xl shadow-primary/30  shadow-primary/20 border border-secondary-200 p-[24px_28px] md:p-8 relative overflow-hidden">
       {/* Background Blurs */}
       <div className="absolute -top-32 -right-32 w-64 h-64 bg-secondary-50 rounded-full blur-3xl pointer-events-none" />
 
@@ -171,7 +171,7 @@ function DaftarSuksesContent() {
       <div className="relative z-10 w-full mb-6">
         <button
           onClick={() => router.push("/login")}
-          className="w-full py-4 md:py-5 rounded-pill bg-primary-700 text-white font-black text-lg hover:bg-primary-800 shadow-xl shadow-secondary-100 transition-all flex items-center justify-center gap-2.5 active:scale-95"
+          className="w-full py-4 md:py-5 rounded-pill bg-primary-700 text-white font-black text-lg hover:bg-primary-800 shadow-2xl shadow-primary/30 shadow-secondary-100 transition-all flex items-center justify-center gap-2.5 active:scale-95"
         >
           Lanjut ke Halaman Login
           <ArrowRight className="w-5 h-5" />
@@ -199,7 +199,7 @@ function DaftarSuksesContent() {
 // Loading fallback
 function LoadingFallback() {
   return (
-    <div className="app-card max-w-lg w-full bg-white rounded-[2.5rem] shadow-lg border border-secondary-200 p-[24px_28px] md:p-8">
+    <div className="app-card max-w-lg w-full bg-white rounded-[2.5rem] shadow-2xl shadow-primary/30  shadow-primary/20 border border-secondary-200 p-[24px_28px] md:p-8">
       <div className="flex flex-col items-center justify-center py-12">
         <Loader2 className="w-12 h-12 text-primary-600 animate-spin mb-4" />
         <p className="text-ink-600 font-medium">Memuat halaman...</p>

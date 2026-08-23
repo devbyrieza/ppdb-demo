@@ -88,7 +88,7 @@ export default function IsiSeragamClient({ code, pendaftar }: { code: string; pe
                   <select
                     value={formData.ukuran_seragam_baju}
                     onChange={(e) => setFormData({ ...formData, ukuran_seragam_baju: e.target.value })}
-                    className="w-full bg-ink-50 border border-ink-200 px-4 py-3 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none font-bold"
+                    className="w-full bg-ink-50 border border-ink-200 px-4 py-3 rounded-2xl focus:ring-2 focus:ring-primary-500 outline-none font-bold"
                   >
                     <option value="">-- Pilih Ukuran Baju --</option>
                     <option value="S">Ukuran S</option>
@@ -107,7 +107,7 @@ export default function IsiSeragamClient({ code, pendaftar }: { code: string; pe
                   <select
                     value={formData.ukuran_seragam_celana}
                     onChange={(e) => setFormData({ ...formData, ukuran_seragam_celana: e.target.value })}
-                    className="w-full bg-ink-50 border border-ink-200 px-4 py-3 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none font-bold"
+                    className="w-full bg-ink-50 border border-ink-200 px-4 py-3 rounded-2xl focus:ring-2 focus:ring-primary-500 outline-none font-bold"
                   >
                     <option value="">-- Pilih Ukuran Celana --</option>
                     <option value="S">Ukuran S</option>
@@ -126,7 +126,7 @@ export default function IsiSeragamClient({ code, pendaftar }: { code: string; pe
                   <select
                     value={formData.ukuran_seragam_almamater}
                     onChange={(e) => setFormData({ ...formData, ukuran_seragam_almamater: e.target.value })}
-                    className="w-full bg-ink-50 border border-ink-200 px-4 py-3 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none font-bold"
+                    className="w-full bg-ink-50 border border-ink-200 px-4 py-3 rounded-2xl focus:ring-2 focus:ring-primary-500 outline-none font-bold"
                   >
                     <option value="">-- Pilih Ukuran Almamater --</option>
                     <option value="S">Ukuran S</option>
@@ -142,7 +142,7 @@ export default function IsiSeragamClient({ code, pendaftar }: { code: string; pe
                   <button
                     type="submit"
                     disabled={saving}
-                    className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-primary-700 text-white rounded-xl font-black text-sm shadow-lg shadow-primary-200 hover:bg-primary-800 disabled:opacity-50 transition-all cursor-pointer"
+                    className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-primary-700 text-white rounded-2xl font-black text-sm shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-200 hover:bg-primary-800 disabled:opacity-50 transition-all cursor-pointer"
                   >
                     {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
                     {saving ? "Menyimpan..." : "Simpan Ukuran Seragam"}
@@ -174,7 +174,7 @@ export default function IsiSeragamClient({ code, pendaftar }: { code: string; pe
                   {/* Item 1: Baju */}
                   <div className="flex items-center justify-between p-4 bg-ink-50 border border-ink-100 rounded-2xl">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-primary-50 text-primary-700 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <div className="w-10 h-10 bg-primary-50 text-primary-700 rounded-2xl flex items-center justify-center flex-shrink-0">
                         <Shirt className="w-5 h-5" />
                       </div>
                       <div>
@@ -182,7 +182,7 @@ export default function IsiSeragamClient({ code, pendaftar }: { code: string; pe
                         <p className="text-sm font-bold text-ink-800">Santri / Siswa</p>
                       </div>
                     </div>
-                    <div className="px-4 py-2 bg-white border border-ink-200 text-ink-950 font-black text-lg rounded-xl min-w-16 text-center shadow-sm">
+                    <div className="px-4 py-2 bg-white border border-ink-200 text-ink-950 font-black text-lg rounded-2xl min-w-16 text-center shadow-sm">
                       {formData.ukuran_seragam_baju}
                     </div>
                   </div>
@@ -190,7 +190,7 @@ export default function IsiSeragamClient({ code, pendaftar }: { code: string; pe
                   {/* Item 2: Celana */}
                   <div className="flex items-center justify-between p-4 bg-ink-50 border border-ink-100 rounded-2xl">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-primary-50 text-primary-700 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <div className="w-10 h-10 bg-primary-50 text-primary-700 rounded-2xl flex items-center justify-center flex-shrink-0">
                         <Ruler className="w-5 h-5" />
                       </div>
                       <div>
@@ -198,7 +198,7 @@ export default function IsiSeragamClient({ code, pendaftar }: { code: string; pe
                         <p className="text-sm font-bold text-ink-800">Santri / Siswa</p>
                       </div>
                     </div>
-                    <div className="px-4 py-2 bg-white border border-ink-200 text-ink-950 font-black text-lg rounded-xl min-w-16 text-center shadow-sm">
+                    <div className="px-4 py-2 bg-white border border-ink-200 text-ink-950 font-black text-lg rounded-2xl min-w-16 text-center shadow-sm">
                       {formData.ukuran_seragam_celana}
                     </div>
                   </div>
@@ -206,7 +206,7 @@ export default function IsiSeragamClient({ code, pendaftar }: { code: string; pe
                   {/* Item 3: Almamater */}
                   <div className="flex items-center justify-between p-4 bg-ink-50 border border-ink-100 rounded-2xl">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-primary-50 text-primary-700 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <div className="w-10 h-10 bg-primary-50 text-primary-700 rounded-2xl flex items-center justify-center flex-shrink-0">
                         <Shirt className="w-5 h-5 animate-pulse" />
                       </div>
                       <div>
@@ -214,7 +214,7 @@ export default function IsiSeragamClient({ code, pendaftar }: { code: string; pe
                         <p className="text-sm font-bold text-ink-800">Santri / Siswa</p>
                       </div>
                     </div>
-                    <div className="px-4 py-2 bg-white border border-ink-200 text-ink-950 font-black text-lg rounded-xl min-w-16 text-center shadow-sm">
+                    <div className="px-4 py-2 bg-white border border-ink-200 text-ink-950 font-black text-lg rounded-2xl min-w-16 text-center shadow-sm">
                       {formData.ukuran_seragam_almamater}
                     </div>
                   </div>
@@ -227,7 +227,7 @@ export default function IsiSeragamClient({ code, pendaftar }: { code: string; pe
                     setIsEditing(true);
                     setMessage({ type: "", text: "" });
                   }}
-                  className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-white border border-primary-600 text-primary-700 rounded-xl font-black text-sm hover:bg-primary-50 active:scale-[0.98] transition-all shadow-sm cursor-pointer"
+                  className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-white border border-primary-600 text-primary-700 rounded-2xl font-black text-sm hover:bg-primary-50 active:scale-[0.98] transition-all shadow-sm cursor-pointer"
                 >
                   <Edit className="w-4 h-4" />
                   Ubah Pilihan Ukuran

@@ -382,7 +382,7 @@ export default function DashboardPage() {
               <button
                 onClick={handleLogout}
                 disabled={isLoggingOut}
-                className="group flex items-center gap-2 sm:gap-3 px-6 sm:px-6 md:px-10 py-4 sm:py-5 bg-white border border-ink-100 rounded-[2rem] font-black text-[10px] sm:text-xs uppercase tracking-widest text-ink-500 hover:bg-red-50 hover:text-red-700 hover:border-red-100 transition-all shadow-xl shadow-ink-900/5 active:scale-95 disabled:opacity-50"
+                className="group flex items-center gap-2 sm:gap-3 px-6 sm:px-6 md:px-10 py-4 sm:py-5 bg-white border border-ink-100 rounded-[2rem] font-black text-[10px] sm:text-xs uppercase tracking-widest text-ink-500 hover:bg-red-50 hover:text-red-700 hover:border-red-100 transition-all shadow-2xl shadow-primary/30 shadow-ink-900/5 active:scale-95 disabled:opacity-50"
               >
                 <LogOut className="w-5 h-5 transition-transform group-hover:rotate-12" />
                 <span>{isLoggingOut ? "Keluar..." : "Keluar"}</span>
@@ -409,7 +409,7 @@ export default function DashboardPage() {
               <div className="relative z-10">
                 <div className="flex flex-col md:flex-row md:items-center gap-6 sm:gap-10 mb-8 sm:mb-10">
                   <div
-                    className={`w-20 h-20 sm:w-24 sm:h-24 rounded-[2rem] sm:rounded-[2.5rem] bg-white flex items-center justify-center ${statusInfo.text} shadow-xl border border-ink-50 shrink-0`}
+                    className={`w-20 h-20 sm:w-24 sm:h-24 rounded-[2rem] sm:rounded-[2.5rem] bg-white flex items-center justify-center ${statusInfo.text} shadow-2xl shadow-primary/30 border border-ink-50 shrink-0`}
                   >
                     <StatusIcon
                       className={`w-10 h-10 sm:w-12 sm:h-12 ${pendaftar.status_pendaftaran === "payment_verification" ? "animate-spin" : ""}`}
@@ -591,7 +591,7 @@ export default function DashboardPage() {
               <div className="absolute bottom-0 right-0 w-40 h-40 bg-primary-500/10 rounded-full blur-[60px] translate-y-1/2 translate-x-1/2 pointer-events-none" />
 
               <div className="relative z-10">
-                <div className="w-16 h-16 rounded-[1.5rem] bg-primary-900 flex items-center justify-center text-white mb-8 border border-primary-800 shadow-lg">
+                <div className="w-16 h-16 rounded-[1.5rem] bg-primary-900 flex items-center justify-center text-white mb-8 border border-primary-800 shadow-2xl shadow-primary/30  shadow-primary/20 ">
                   <MessageCircle className="w-8 h-8" />
                 </div>
                 <h4 className="text-3xl font-display font-black mb-4 text-white leading-tight tracking-tight">
@@ -607,9 +607,9 @@ export default function DashboardPage() {
                   href="https://wa.me/6281285300800"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-[24px_28px] p-6 rounded-[2rem] bg-white hover:bg-secondary-400 transition-all group/btn shadow-xl active:scale-95"
+                  className="flex items-center gap-[24px_28px] p-6 rounded-[2rem] bg-white hover:bg-secondary-400 transition-all group/btn shadow-2xl shadow-primary/30 active:scale-95"
                 >
-                  <div className="w-14 h-14 rounded-[24px] bg-primary-600 text-white flex items-center justify-center shadow-lg group-hover/btn:scale-110 transition-transform">
+                  <div className="w-14 h-14 rounded-[24px] bg-primary-600 text-white flex items-center justify-center shadow-2xl shadow-primary/30  shadow-primary/20 group-hover/btn:scale-110 transition-transform">
                     <Phone className="w-7 h-7" />
                   </div>
                   <div className="text-left leading-none">

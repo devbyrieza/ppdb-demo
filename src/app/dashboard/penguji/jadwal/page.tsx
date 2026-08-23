@@ -1102,13 +1102,13 @@ export default function JadwalPengujiPage() {
           <div className="flex bg-ink-50/50 p-1.5 rounded-[24px] border border-ink-100 w-full md:w-auto min-w-[320px]">
             <button
               onClick={() => setActiveTab("assigned")}
-              className={`flex-1 py-3 px-6 rounded-[24px] font-black text-xs transition-all text-center uppercase tracking-wider ${activeTab === "assigned" ? "bg-white shadow-md text-primary-700 border border-ink-100 scale-[1.02]" : "text-ink-400 hover:text-ink-600"}`}
+              className={`flex-1 py-3 px-6 rounded-[24px] font-black text-xs transition-all text-center uppercase tracking-wider ${activeTab === "assigned" ? "bg-white shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 text-primary-700 border border-ink-100 scale-[1.02]" : "text-ink-400 hover:text-ink-600"}`}
             >
               {["admin_super", "admin"].includes(activeRole) ? "Semua Jadwal" : "Jadwal Saya"}
             </button>
             <button
               onClick={() => setActiveTab("slots")}
-              className={`flex-1 py-3 px-6 rounded-[24px] font-black text-xs transition-all text-center uppercase tracking-wider ${activeTab === "slots" ? "bg-white shadow-md text-primary-700 border border-ink-100 scale-[1.02]" : "text-ink-400 hover:text-ink-600"}`}
+              className={`flex-1 py-3 px-6 rounded-[24px] font-black text-xs transition-all text-center uppercase tracking-wider ${activeTab === "slots" ? "bg-white shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 text-primary-700 border border-ink-100 scale-[1.02]" : "text-ink-400 hover:text-ink-600"}`}
             >
               Sesi Ketersediaan
             </button>
@@ -1186,7 +1186,7 @@ export default function JadwalPengujiPage() {
                   {filteredAssignments.map((item) => (
                     <div
                       key={item.id}
-                      className={`bg-white rounded-3xl p-[24px_28px] md:p-8 border transition-all app-card ${isToday(item.tanggal_ujian) ? "border-emerald-200 shadow-md ring-4 ring-emerald-50" : "border-secondary-200 shadow-sm hover:border-primary-200 hover:shadow-md"}`}
+                      className={`bg-white rounded-3xl p-[24px_28px] md:p-8 border transition-all app-card ${isToday(item.tanggal_ujian) ? "border-emerald-200 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 ring-4 ring-emerald-50" : "border-secondary-200 shadow-sm hover:border-primary-200 hover:shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10"}`}
                     >
                       {/* Top section: Date badge + Name */}
                       <div className="flex items-start gap-[24px_28px] mb-6">
@@ -1297,7 +1297,7 @@ export default function JadwalPengujiPage() {
                               ) : (
                                 <button
                                   onClick={() => handleCompleteExam(item.id)}
-                                  className="w-full py-4 bg-primary-600 hover:bg-primary-700 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-[24px] transition-all active:scale-95 shadow-lg shadow-primary-600/20 flex items-center justify-center gap-1.5"
+                                  className="w-full py-4 bg-primary-600 hover:bg-primary-700 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-[24px] transition-all active:scale-95 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-600/20 flex items-center justify-center gap-1.5"
                                 >
                                   <CheckCircle className="w-3.5 h-3.5" /> Tandai Wawancara Calon Santri Selesai
                                 </button>
@@ -1312,7 +1312,7 @@ export default function JadwalPengujiPage() {
                               ) : (
                                 <button
                                   onClick={() => handleCompleteExam(item.id)}
-                                  className="w-full py-4 bg-primary-600 hover:bg-primary-700 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-[24px] transition-all active:scale-95 shadow-lg shadow-primary-600/20 flex items-center justify-center gap-1.5"
+                                  className="w-full py-4 bg-primary-600 hover:bg-primary-700 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-[24px] transition-all active:scale-95 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-600/20 flex items-center justify-center gap-1.5"
                                 >
                                   <CheckCircle className="w-3.5 h-3.5" /> Tandai Seleksi Al Qur'an Selesai
                                 </button>
@@ -1327,7 +1327,7 @@ export default function JadwalPengujiPage() {
                               ) : (
                                 <button
                                   onClick={() => handleCompleteExam(item.id)}
-                                  className="w-full py-4 bg-primary-600 hover:bg-primary-700 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-[24px] transition-all active:scale-95 shadow-lg shadow-primary-600/20 flex items-center justify-center gap-1.5"
+                                  className="w-full py-4 bg-primary-600 hover:bg-primary-700 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-[24px] transition-all active:scale-95 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-600/20 flex items-center justify-center gap-1.5"
                                 >
                                   <CheckCircle className="w-3.5 h-3.5" /> Tandai Seleksi Wawancara Orang Tua Selesai
                                 </button>
@@ -1417,7 +1417,7 @@ export default function JadwalPengujiPage() {
                     </button>
                     <button
                       onClick={() => setIsSlotModalOpen(true)}
-                      className="w-full sm:w-auto flex items-center justify-center gap-3 px-6 py-4 bg-primary-600 hover:bg-primary-700 text-white rounded-[24px] font-black shadow-lg shadow-primary-600/20 transition-all text-xs uppercase tracking-widest active:scale-95"
+                      className="w-full sm:w-auto flex items-center justify-center gap-3 px-6 py-4 bg-primary-600 hover:bg-primary-700 text-white rounded-[24px] font-black shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-600/20 transition-all text-xs uppercase tracking-widest active:scale-95"
                     >
                       <Plus className="w-5 h-5" /> Buat Sesi Tunggal
                     </button>
@@ -1522,7 +1522,7 @@ export default function JadwalPengujiPage() {
                   className={`bg-white rounded-[2rem] p-6 border shadow-sm transition-all group relative app-card ${
                     isSelectMode
                       ? "cursor-pointer hover:border-primary-300"
-                      : "hover:shadow-xl hover:shadow-primary-600/5"
+                      : "hover:shadow-2xl shadow-primary/30 hover:shadow-primary-600/5"
                   } ${
                     slot.ids.every((id: string) => selectedSlotIds.has(id))
                       ? "border-primary-400 ring-2 ring-primary-200 shadow-primary-100"
@@ -1807,7 +1807,7 @@ export default function JadwalPengujiPage() {
                       !bulkEditForm.changeLocation &&
                       !bulkEditForm.changeNotes)
                   }
-                  className="flex-1 py-3.5 bg-primary-600 hover:bg-primary-700 disabled:opacity-40 text-white rounded-[24px] font-black text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary-600/20"
+                  className="flex-1 py-3.5 bg-primary-600 hover:bg-primary-700 disabled:opacity-40 text-white rounded-[24px] font-black text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-600/20"
                 >
                   {submittingBulkEdit ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -1949,7 +1949,7 @@ export default function JadwalPengujiPage() {
                 <button
                   type="submit"
                   disabled={submittingEdit}
-                  className="flex-1 py-3.5 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 text-white rounded-[24px] font-black text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary-600/20"
+                  className="flex-1 py-3.5 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 text-white rounded-[24px] font-black text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-600/20"
                 >
                   {submittingEdit ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -2129,7 +2129,7 @@ export default function JadwalPengujiPage() {
 
               {/* Alerts */}
               <div className="space-y-3">
-                <div className="bg-primary-600 rounded-[24px] p-[24px_28px] shadow-lg shadow-primary-950/20 text-white flex items-start gap-3 relative overflow-hidden group">
+                <div className="bg-primary-600 rounded-[24px] p-[24px_28px] shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-950/20 text-white flex items-start gap-3 relative overflow-hidden group">
                   <div className="absolute top-0 right-0 w-20 h-20 bg-white/10 rounded-full -mr-10 -mt-10 blur-xl"></div>
                   <div className="w-8 h-8 bg-white/20 backdrop-blur-md rounded-[24px] flex items-center justify-center shrink-0">
                     <Sparkles className="w-4 h-4 text-white" />
@@ -2165,7 +2165,7 @@ export default function JadwalPengujiPage() {
               <button
                 type="submit"
                 disabled={submittingSlot}
-                className="w-full py-4 bg-primary-600 hover:bg-primary-700 text-white font-black rounded-[24px] transition-all shadow-xl shadow-primary-900/20 flex items-center justify-center gap-2 active:scale-95 disabled:opacity-50"
+                className="w-full py-4 bg-primary-600 hover:bg-primary-700 text-white font-black rounded-[24px] transition-all shadow-2xl shadow-primary/30  shadow-primary-900/20 flex items-center justify-center gap-2 active:scale-95 disabled:opacity-50"
               >
                 {submittingSlot ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
@@ -2182,7 +2182,7 @@ export default function JadwalPengujiPage() {
       {/* MODAL DETAIL PENDAFTAR */}
       {isDetailModalOpen && selectedPendaftar && (
         <div className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-[24px_28px] bg-black/50 backdrop-blur-sm overflow-hidden overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
-          <div className="bg-white rounded-[24px] shadow-xl w-full max-w-lg max-h-[90vh] flex flex-col">
+          <div className="bg-white rounded-[24px] shadow-2xl shadow-primary/30 w-full max-w-lg max-h-[90vh] flex flex-col">
             <div className="p-[24px_28px] border-b border-secondary-100 flex justify-between items-center bg-secondary-50 rounded-t-2xl shrink-0">
               <h3 className="font-bold text-ink-950">Data Pendaftar</h3>
               <button onClick={() => setIsDetailModalOpen(false)}>
@@ -2414,7 +2414,7 @@ export default function JadwalPengujiPage() {
               )}
 
               {/* Jenis Ujian Info */}
-              <div className="bg-primary-600 rounded-3xl p-6 shadow-xl shadow-primary-950/20 text-white relative overflow-hidden">
+              <div className="bg-primary-600 rounded-3xl p-6 shadow-2xl shadow-primary/30  shadow-primary-950/20 text-white relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
                 <p className="text-[10px] text-primary-100 font-black uppercase tracking-widest mb-1.5 leading-none">
                   Mata Ujian Terpilih
@@ -2454,7 +2454,7 @@ export default function JadwalPengujiPage() {
                         className={`p-[16px_20px].5 rounded-[24px] text-xs font-black transition-all border relative flex flex-col items-center min-w-[70px] ${
                           isSelected
                             ? isActive
-                              ? "bg-primary-700 text-white border-primary-800 shadow-lg scale-105 z-10"
+                              ? "bg-primary-700 text-white border-primary-800 shadow-2xl shadow-primary/30  shadow-primary/20 scale-105 z-10"
                               : "bg-primary-50 text-primary-700 border-primary-100 hover:bg-primary-100"
                             : "bg-stone-50 text-stone-400 border-stone-200 hover:bg-stone-100"
                         }`}
@@ -2534,7 +2534,7 @@ export default function JadwalPengujiPage() {
                     <button
                       type="button"
                       onClick={copySlotsToAll}
-                      className="text-[10px] bg-primary-600 text-white px-3 py-2 rounded-[24px] font-black hover:bg-primary-700 transition-all shadow-md active:scale-95 flex items-center gap-2"
+                      className="text-[10px] bg-primary-600 text-white px-3 py-2 rounded-[24px] font-black hover:bg-primary-700 transition-all shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 active:scale-95 flex items-center gap-2"
                     >
                       <Save className="w-3 h-3" /> SALIN KE SEMUA HARI
                     </button>
@@ -2545,7 +2545,7 @@ export default function JadwalPengujiPage() {
                   {(bulkForm.daySlots[activeDay] || []).map((slot, index) => (
                     <div
                       key={index}
-                      className="flex items-center gap-[24px_28px] bg-white p-[24px_28px] rounded-3xl border border-stone-200 shadow-sm hover:shadow-md transition-shadow group"
+                      className="flex items-center gap-[24px_28px] bg-white p-[24px_28px] rounded-3xl border border-stone-200 shadow-sm hover:shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 transition-shadow group"
                     >
                       <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-[24px_28px]">
                         <CustomTimePicker value={slot.start} onChange={(val) => {

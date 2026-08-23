@@ -42,7 +42,7 @@ function MemberCard({
       className="group flex items-center gap-5 p-4 md:p-5 bg-white rounded-2xl border border-surface-200 shadow-premium-sm hover:shadow-premium-md hover:border-primary-200 transition-all duration-400"
     >
       {/* Avatar */}
-      <div className="relative w-[72px] h-[72px] md:w-20 md:h-20 rounded-xl overflow-hidden shrink-0 bg-secondary-50 border border-secondary-100 shadow-xs transition-transform duration-500 group-hover:scale-[1.04]">
+      <div className="relative w-[72px] h-[72px] md:w-20 md:h-20 rounded-2xl overflow-hidden shrink-0 bg-secondary-50 border border-secondary-100 shadow-xs transition-transform duration-500 group-hover:scale-[1.04]">
         {image ? (
           <Image
             src={image}

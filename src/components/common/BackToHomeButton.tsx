@@ -21,7 +21,7 @@ export default function BackToHomeButton({
   return (
     <Link
       href="/"
-      className={`fixed ${positionClasses[position]} z-50 inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 ${className}`}
+      className={`fixed ${positionClasses[position]} z-50 inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-medium rounded-2xl shadow-2xl shadow-primary/30  shadow-primary/20 hover:shadow-2xl shadow-primary/30 transition-all duration-200 hover:scale-105 ${className}`}
       title="Kembali ke Beranda"
     >
       <Home size={20} />

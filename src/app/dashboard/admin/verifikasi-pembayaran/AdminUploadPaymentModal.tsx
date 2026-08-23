@@ -148,7 +148,7 @@ export default function AdminUploadPaymentModal({
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Cari nama, nomor pendaftaran, atau no hp..."
-                  className="w-full pl-12 pr-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none font-medium transition-all"
+                  className="w-full pl-12 pr-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none font-medium transition-all"
                   autoFocus
                 />
                 {isSearching && (
@@ -157,7 +157,7 @@ export default function AdminUploadPaymentModal({
               </div>
 
               {query.length >= 2 && (
-                <div className="border border-stone-200 rounded-xl overflow-hidden max-h-80 overflow-y-auto bg-white shadow-sm overscroll-contain custom-scrollbar">
+                <div className="border border-stone-200 rounded-2xl overflow-hidden max-h-80 overflow-y-auto bg-white shadow-sm overscroll-contain custom-scrollbar">
                   {results.length > 0 ? (
                     results.map((p) => (
                       <button
@@ -167,7 +167,7 @@ export default function AdminUploadPaymentModal({
                       >
                         <div className="flex items-center justify-between mb-1">
                           <span className="font-bold text-stone-800">{p.nama_lengkap}</span>
-                          <span className="text-xs font-black text-primary-600 bg-primary-100 px-2 py-0.5 rounded-lg">
+                          <span className="text-xs font-black text-primary-600 bg-primary-100 px-2 py-0.5 rounded-2xl">
                             {p.jenjang}
                           </span>
                         </div>
@@ -187,7 +187,7 @@ export default function AdminUploadPaymentModal({
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Selected Pendaftar Info */}
-              <div className="p-4 bg-primary-50 border border-primary-100 rounded-xl flex items-start justify-between">
+              <div className="p-4 bg-primary-50 border border-primary-100 rounded-2xl flex items-start justify-between">
                 <div>
                   <p className="text-xs font-black text-primary-600 uppercase tracking-widest mb-1">Pendaftar Terpilih</p>
                   <p className="font-bold text-primary-950 text-lg">{selectedPendaftar.nama_lengkap}</p>
@@ -212,7 +212,7 @@ export default function AdminUploadPaymentModal({
                     min="1000"
                     value={jumlah}
                     onChange={(e) => setJumlah(e.target.value)}
-                    className="w-full px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none font-bold text-stone-800"
+                    className="w-full px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-2xl focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none font-bold text-stone-800"
                     placeholder="Contoh: 350000"
                   />
                 </div>
@@ -224,7 +224,7 @@ export default function AdminUploadPaymentModal({
                     <button
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
-                      className="px-4 py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl font-bold transition-colors flex items-center gap-2 border border-stone-200"
+                      className="px-4 py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-2xl font-bold transition-colors flex items-center gap-2 border border-stone-200"
                     >
                       <UploadCloud className="w-4 h-4" />
                       Pilih File
@@ -245,13 +245,13 @@ export default function AdminUploadPaymentModal({
 
                 {/* Cicilan untuk DAFTAR_ULANG */}
                 {(activeTab === "DAFTAR_ULANG" || activeTab === "SPP") && (
-                  <div className="col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-violet-50 border border-violet-100 rounded-xl">
+                  <div className="col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-violet-50 border border-violet-100 rounded-2xl">
                     <div className="space-y-1.5">
                       <label className="text-xs font-black text-violet-700 uppercase tracking-widest">Tipe Pembayaran</label>
                       <select
                         value={tipeCicilan}
                         onChange={(e) => setTipeCicilan(e.target.value)}
-                        className="w-full px-4 py-2 bg-white border border-violet-200 rounded-lg focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 font-bold text-violet-900"
+                        className="w-full px-4 py-2 bg-white border border-violet-200 rounded-2xl focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 font-bold text-violet-900"
                       >
                         <option value="LUNAS">LUNAS</option>
                         <option value="CICILAN">CICILAN</option>
@@ -266,7 +266,7 @@ export default function AdminUploadPaymentModal({
                           max="12"
                           value={cicilanKe}
                           onChange={(e) => setCicilanKe(e.target.value)}
-                          className="w-full px-4 py-2 bg-white border border-violet-200 rounded-lg focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 font-bold text-violet-900"
+                          className="w-full px-4 py-2 bg-white border border-violet-200 rounded-2xl focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20 font-bold text-violet-900"
                         />
                       </div>
                     )}
@@ -279,7 +279,7 @@ export default function AdminUploadPaymentModal({
                   <textarea
                     value={catatan}
                     onChange={(e) => setCatatan(e.target.value)}
-                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none resize-none font-medium text-stone-800"
+                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-2xl focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 focus:outline-none resize-none font-medium text-stone-800"
                     placeholder="Contoh: Bukti dikirim via WhatsApp CS oleh orangtua..."
                     rows={2}
                   />
@@ -290,7 +290,7 @@ export default function AdminUploadPaymentModal({
                 <button
                   type="button"
                   onClick={onClose}
-                  className="px-6 py-2.5 rounded-xl font-bold text-stone-600 hover:bg-stone-100 transition-colors"
+                  className="px-6 py-2.5 rounded-2xl font-bold text-stone-600 hover:bg-stone-100 transition-colors"
                   disabled={isSubmitting}
                 >
                   Batal
@@ -298,7 +298,7 @@ export default function AdminUploadPaymentModal({
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex items-center gap-2 px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-bold transition-all disabled:opacity-50"
+                  className="flex items-center gap-2 px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-2xl font-bold transition-all disabled:opacity-50"
                 >
                   {isSubmitting ? (
                     <Loader2 className="w-5 h-5 animate-spin" />

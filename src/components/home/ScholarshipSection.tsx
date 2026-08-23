@@ -91,7 +91,7 @@ export default function ScholarshipSection({ variant = "primary" }: ScholarshipS
                     transition={{ delay: 0.2 + (i * 0.1), duration: 0.5 }}
                     className="flex gap-4 p-4 rounded-2xl border border-gray-100 hover:border-gray-200 hover:bg-gray-50/50 transition-all duration-300 group"
                   >
-                    <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110" style={{ backgroundColor: colors.primaryLight, color: colors.primary }}>
+                    <div className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110" style={{ backgroundColor: colors.primaryLight, color: colors.primary }}>
                       <item.icon className="w-6 h-6" />
                     </div>
                     <div>
@@ -103,7 +103,7 @@ export default function ScholarshipSection({ variant = "primary" }: ScholarshipS
               </div>
 
               <Link href="/ppdb">
-                <button className={`inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-95`} style={{ backgroundColor: colors.primary }}>
+                <button className={`inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-white shadow-2xl shadow-primary/30  shadow-primary/20 hover:shadow-2xl shadow-primary/30 transition-all duration-300 hover:scale-[1.02] active:scale-95`} style={{ backgroundColor: colors.primary }}>
                   Daftar Jalur Beasiswa
                   <ArrowRight className="w-4 h-4" />
                 </button>
@@ -125,7 +125,7 @@ export default function ScholarshipSection({ variant = "primary" }: ScholarshipS
 
                 <div className="relative z-10">
                   <div className="flex items-center justify-between mb-10">
-                    <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-white shadow-xl" style={{ backgroundColor: colors.primary }}>
+                    <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-white shadow-2xl shadow-primary/30 " style={{ backgroundColor: colors.primary }}>
                       <Trophy className="w-8 h-8" />
                     </div>
                     <div className="text-right">

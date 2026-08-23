@@ -120,7 +120,7 @@ export default function ProfilTab() {
 
   if (!profile) {
     return (
-      <div className="bg-white rounded-xl p-5 md:p-8 border-2 border-red-200">
+      <div className="bg-white rounded-2xl p-5 md:p-8 border-2 border-red-200">
         <p className="text-red-600">Gagal memuat data profil</p>
       </div>
     );
@@ -144,9 +144,9 @@ export default function ProfilTab() {
       </div>
 
       {/* Nomor Pendaftaran Card */}
-      <div className="bg-gradient-to-r from-secondary-500 to-orange-500 rounded-xl p-6 text-white shadow-lg">
+      <div className="bg-gradient-to-r from-secondary-500 to-orange-500 rounded-2xl p-6 text-white shadow-2xl shadow-primary/30  shadow-primary/20 ">
         <div className="flex items-center gap-4">
-          <div className="p-3 bg-white bg-opacity-20 rounded-xl">
+          <div className="p-3 bg-white bg-opacity-20 rounded-2xl">
             <CheckCircle className="w-8 h-8" />
           </div>
           <div>
@@ -160,9 +160,9 @@ export default function ProfilTab() {
 
       <div className="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-2 gap-6">
         {/* Data Pribadi */}
-        <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-secondary-100">
+        <div className="bg-white rounded-2xl shadow-2xl shadow-primary/30  shadow-primary/20 p-6 border-2 border-secondary-100">
           <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-secondary-100 rounded-lg">
+            <div className="p-2 bg-secondary-100 rounded-2xl">
               <User className="w-6 h-6 text-primary-700" />
             </div>
             <h3 className="text-lg font-bold text-stone-900">Data Pribadi</h3>
@@ -189,9 +189,9 @@ export default function ProfilTab() {
         </div>
 
         {/* Kontak */}
-        <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-primary-100">
+        <div className="bg-white rounded-2xl shadow-2xl shadow-primary/30  shadow-primary/20 p-6 border-2 border-primary-100">
           <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-primary-100 rounded-lg">
+            <div className="p-2 bg-primary-100 rounded-2xl">
               <Phone className="w-6 h-6 text-primary-600" />
             </div>
             <h3 className="text-lg font-bold text-stone-900">
@@ -214,9 +214,9 @@ export default function ProfilTab() {
         </div>
 
         {/* Alamat */}
-        <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-green-100">
+        <div className="bg-white rounded-2xl shadow-2xl shadow-primary/30  shadow-primary/20 p-6 border-2 border-green-100">
           <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-green-100 rounded-lg">
+            <div className="p-2 bg-green-100 rounded-2xl">
               <MapPin className="w-6 h-6 text-green-600" />
             </div>
             <h3 className="text-lg font-bold text-stone-900">Alamat</h3>
@@ -232,9 +232,9 @@ export default function ProfilTab() {
         </div>
 
         {/* Asal Sekolah */}
-        <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-purple-100">
+        <div className="bg-white rounded-2xl shadow-2xl shadow-primary/30  shadow-primary/20 p-6 border-2 border-purple-100">
           <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-purple-100 rounded-lg">
+            <div className="p-2 bg-purple-100 rounded-2xl">
               <School className="w-6 h-6 text-purple-600" />
             </div>
             <h3 className="text-lg font-bold text-stone-900">Asal Sekolah</h3>
@@ -247,10 +247,10 @@ export default function ProfilTab() {
       </div>
 
       {/* Info Box */}
-      <div className="bg-primary-50 border-2 border-primary-200 rounded-xl p-6">
+      <div className="bg-primary-50 border-2 border-primary-200 rounded-2xl p-6">
         <div className="flex gap-4">
           <div className="flex-shrink-0">
-            <div className="p-2 bg-primary-200 rounded-lg">
+            <div className="p-2 bg-primary-200 rounded-2xl">
               <User className="w-6 h-6 text-primary-700" />
             </div>
           </div>

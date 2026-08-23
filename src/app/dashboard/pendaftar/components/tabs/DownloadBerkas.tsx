@@ -101,7 +101,7 @@ export default function DownloadBerkasTab() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="relative overflow-hidden rounded-[2rem] bg-linear-to-br from-primary-700 to-primary-900 border border-primary-600 p-5 md:p-8 text-white shadow-lg app-card">
+      <div className="relative overflow-hidden rounded-[2rem] bg-linear-to-br from-primary-700 to-primary-900 border border-primary-600 p-5 md:p-8 text-white shadow-2xl shadow-primary/30  shadow-primary/20 app-card">
         <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-secondary-50/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         <div className="relative z-10 flex items-start md:items-center gap-6">
           <div className="w-16 h-16 rounded-[1.5rem] bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-sm shrink-0">
@@ -156,7 +156,7 @@ export default function DownloadBerkasTab() {
             {doc.status === "available" ? (
               <button
                 onClick={doc.action}
-                className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors"
+                className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-2xl font-medium transition-colors"
               >
                 <Download className="w-5 h-5" />
                 Download PDF
@@ -164,7 +164,7 @@ export default function DownloadBerkasTab() {
             ) : doc.status === "locked" ? (
               <button
                 disabled
-                className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-stone-100 text-stone-400 rounded-lg font-medium cursor-not-allowed text-xs lg:text-sm border border-stone-200"
+                className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-stone-100 text-stone-400 rounded-2xl font-medium cursor-not-allowed text-xs lg:text-sm border border-stone-200"
               >
                 <AlertCircle className="w-4 h-4" />
                 Belum Tersedia
@@ -172,7 +172,7 @@ export default function DownloadBerkasTab() {
             ) : (
               <button
                 disabled
-                className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-stone-200 text-stone-500 rounded-lg font-medium cursor-not-allowed text-xs lg:text-sm"
+                className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-stone-200 text-stone-500 rounded-2xl font-medium cursor-not-allowed text-xs lg:text-sm"
               >
                 <AlertCircle className="w-4 h-4" />
                 Disediakan Sesuai Tahapan

@@ -132,7 +132,7 @@ export default function ChatSystem() {
                     setIsMenuOpen(false);
                     setIsAiOpen(true);
                   }}
-                  className="w-full flex items-center gap-3 p-3 hover:bg-primary-50 rounded-xl transition-colors group text-left"
+                  className="w-full flex items-center gap-3 p-3 hover:bg-primary-50 rounded-2xl transition-colors group text-left"
                 >
                   <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center shrink-0 group-hover:bg-primary-600 transition-colors">
                     <Bot className="w-5 h-5 text-primary-600 group-hover:text-white transition-colors" />
@@ -150,7 +150,7 @@ export default function ChatSystem() {
                 {/* 
                                 <button
                                     onClick={openTawkTo}
-                                    className="w-full flex items-center gap-3 p-3 hover:bg-primary-50 rounded-xl transition-colors group text-left"
+                                    className="w-full flex items-center gap-3 p-3 hover:bg-primary-50 rounded-2xl transition-colors group text-left"
                                 >
                                     <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center shrink-0 group-hover:bg-primary-600 transition-colors">
                                         <Headphones className="w-5 h-5 text-primary-600 group-hover:text-white transition-colors" />
@@ -164,7 +164,7 @@ export default function ChatSystem() {
 
                 <button
                   onClick={openWhatsApp}
-                  className="w-full flex items-center gap-3 p-3 hover:bg-green-50 rounded-xl transition-colors group text-left"
+                  className="w-full flex items-center gap-3 p-3 hover:bg-green-50 rounded-2xl transition-colors group text-left"
                 >
                   <div className="w-10 h-10 rounded-full bg-[#25D366]/10 flex items-center justify-center shrink-0 group-hover:bg-[#25D366] transition-colors">
                     <MessageSquare className="w-5 h-5 text-[#25D366] group-hover:text-white transition-colors" />

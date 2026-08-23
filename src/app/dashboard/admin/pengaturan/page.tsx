@@ -151,7 +151,7 @@ export default function PengaturanPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-white rounded-[24px] shadow-lg p-6 border-2 border-purple-100">
+      <div className="bg-white rounded-[24px] shadow-2xl shadow-primary/30  shadow-primary/20 p-6 border-2 border-purple-100">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-[24px_28px]">
             <div className="p-3 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-[24px]">
@@ -194,7 +194,7 @@ export default function PengaturanPage() {
       )}
 
       {/* Tahun Ajaran Section */}
-      <div className="bg-white rounded-[24px] shadow-lg p-6 border-2 border-purple-100">
+      <div className="bg-white rounded-[24px] shadow-2xl shadow-primary/30  shadow-primary/20 p-6 border-2 border-purple-100">
         <div className="flex items-center gap-3 mb-6">
           <Calendar className="w-6 h-6 text-purple-600" />
           <h3 className="text-xl font-bold text-stone-900">Tahun Ajaran</h3>
@@ -235,7 +235,7 @@ export default function PengaturanPage() {
                   </div>
                   <button
                     onClick={() => startEdit(activeTahunAjaran)}
-                    className="p-2 bg-white text-green-600 rounded-[24px] hover:shadow-md transition-all border border-green-100"
+                    className="p-2 bg-white text-green-600 rounded-[24px] hover:shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 transition-all border border-green-100"
                   >
                     <Edit3 className="w-5 h-5" />
                   </button>
@@ -456,7 +456,7 @@ export default function PengaturanPage() {
                 <button
                   type="submit"
                   disabled={updating}
-                  className="flex-1 p-[16px_20px] bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-[24px] shadow-lg shadow-purple-200 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="flex-1 p-[16px_20px] bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-[24px] shadow-2xl shadow-primary/30  shadow-primary/20 shadow-purple-200 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {updating && <Loader2 className="w-4 h-4 animate-spin" />}
                   Simpan Perubahan

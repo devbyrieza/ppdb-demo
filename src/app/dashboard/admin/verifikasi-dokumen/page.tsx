@@ -228,7 +228,7 @@ function VerifikasiDokumenContent() {
       <div className="bg-white rounded-[24px] shadow-sm p-[24px_28px] md:p-8 border border-primary-100 mb-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-[24px_28px] mb-6 flex-wrap">
           <div className="flex flex-wrap items-center gap-3 md:gap-[24px_28px]">
-            <div className="p-2.5 md:p-[24px_28px] bg-linear-to-br from-primary-600 to-primary-900 rounded-[24px] shadow-xl shadow-primary-900/20 flex-shrink-0">
+            <div className="p-2.5 md:p-[24px_28px] bg-linear-to-br from-primary-600 to-primary-900 rounded-[24px] shadow-2xl shadow-primary/30  shadow-primary-900/20 flex-shrink-0">
               <FileCheck className="w-6 h-6 md:w-8 md:h-8 text-secondary-100" />
             </div>
             <div>
@@ -245,7 +245,7 @@ function VerifikasiDokumenContent() {
               <button
                 type="button"
                 onClick={() => setShowSearchModal(true)}
-                className="flex items-center gap-2 px-3 md:p-[16px_20px] bg-primary-600 hover:bg-primary-700 text-white rounded-[24px] text-sm font-bold transition-all shadow-lg shadow-primary-600/20 whitespace-nowrap"
+                className="flex items-center gap-2 px-3 md:p-[16px_20px] bg-primary-600 hover:bg-primary-700 text-white rounded-[24px] text-sm font-bold transition-all shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-600/20 whitespace-nowrap"
               >
                 <UploadCloud className="w-4 h-4" />
                 <span className="hidden sm:inline">Upload Atas Nama</span>
@@ -314,7 +314,7 @@ function VerifikasiDokumenContent() {
                 onClick={() => updateFilters(s.id)}
                 className={`px-4 md:px-8 py-3 rounded-[24px] font-black transition-all text-sm md:text-base whitespace-nowrap active:scale-95 ${
                   statusFilter === s.id
-                    ? "bg-primary-700 text-white shadow-lg shadow-primary-700/30 ring-2 ring-primary-500/20"
+                    ? "bg-primary-700 text-white shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-700/30 ring-2 ring-primary-500/20"
                     : "bg-white border border-primary-100 text-ink-400 hover:bg-primary-50 hover:text-primary-700"
                 }`}
               >
@@ -327,7 +327,7 @@ function VerifikasiDokumenContent() {
 
       {refreshing && (
         <div className="fixed inset-0 bg-white/40 backdrop-blur-[1px] z-[100] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center pointer-events-none overflow-y-auto overflow-x-hidden p-[24px_28px] overscroll-contain custom-scrollbar">
-          <div className="bg-white/80 p-[16px_20px] rounded-[24px] shadow-xl border border-primary-100 flex items-center gap-3 animate-in fade-in zoom-in duration-300">
+          <div className="bg-white/80 p-[16px_20px] rounded-[24px] shadow-2xl shadow-primary/30 border border-primary-100 flex items-center gap-3 animate-in fade-in zoom-in duration-300">
             <Loader2 className="w-5 h-5 animate-spin text-primary-600" />
             <span className="text-sm font-bold text-ink-700 tracking-tight">
               Memperbarui data...
@@ -372,7 +372,7 @@ function VerifikasiDokumenContent() {
                   <Link
                     key={pendaftar.id}
                     href={`/dashboard/admin/verifikasi-dokumen/${pendaftar.id}`}
-                    className="group bg-white rounded-3xl border border-primary-100 hover:border-primary-400 p-6 transition-all hover:shadow-xl hover:shadow-primary-900/5 relative overflow-hidden"
+                    className="group bg-white rounded-3xl border border-primary-100 hover:border-primary-400 p-6 transition-all hover:shadow-2xl shadow-primary/30 hover:shadow-primary-900/5 relative overflow-hidden"
                   >
                     <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-br from-primary-50 to-secondary-50 -mr-16 -mt-16 rounded-full opacity-50 transition-transform group-hover:scale-110" />
 

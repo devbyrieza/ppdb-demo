@@ -34,7 +34,7 @@ export default function TentangPage() {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-primary-50 border border-primary-100 text-primary-700 text-xs font-bold uppercase tracking-widest mb-8 shadow-md"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-primary-50 border border-primary-100 text-primary-700 text-xs font-bold uppercase tracking-widest mb-8 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10"
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span>Mengenal Al Imam Al Islami • Managed by Al Andalus IIBS</span>
@@ -96,7 +96,7 @@ export default function TentangPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="relative aspect-video md:aspect-[21/9] max-h-[480px] w-full rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-lg border border-primary-100 group bg-gradient-to-br from-primary-950 to-primary-900"
+            className="relative aspect-video md:aspect-[21/9] max-h-[480px] w-full rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-2xl shadow-primary/30  shadow-primary/20 border border-primary-100 group bg-gradient-to-br from-primary-950 to-primary-900"
           >
             <Image
               src="/images/welcome-selamat-datang.webp"
@@ -121,7 +121,7 @@ export default function TentangPage() {
               viewport={{ once: true }}
               className="relative order-2 lg:order-1"
             >
-              <div className="aspect-[4/5] max-h-[520px] min-h-[350px] w-full rounded-[2.5rem] md:rounded-[3rem] overflow-hidden shadow-xl relative z-10 bg-white p-3 border border-primary-100">
+              <div className="aspect-[4/5] max-h-[520px] min-h-[350px] w-full rounded-[2.5rem] md:rounded-[3rem] overflow-hidden shadow-2xl shadow-primary/30 relative z-10 bg-white p-3 border border-primary-100">
                 <div className="relative w-full h-full min-h-[330px] rounded-[2rem] md:rounded-[2.5rem] overflow-hidden bg-gradient-to-br from-primary-950 to-primary-900">
                   <Image
                     src="/images/tentang.webp"
@@ -140,10 +140,10 @@ export default function TentangPage() {
                 whileInView={{ opacity: 1, scale: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.4 }}
-                className="absolute -bottom-6 right-0 sm:-bottom-10 sm:-right-6 md:-bottom-12 md:-right-10 z-20 bg-white p-5 md:p-8 rounded-2xl md:rounded-[2rem] shadow-lg border border-primary-100 max-w-[85vw] sm:max-w-[90vw] md:max-w-none"
+                className="absolute -bottom-6 right-0 sm:-bottom-10 sm:-right-6 md:-bottom-12 md:-right-10 z-20 bg-white p-5 md:p-8 rounded-2xl md:rounded-[2rem] shadow-2xl shadow-primary/30  shadow-primary/20 border border-primary-100 max-w-[85vw] sm:max-w-[90vw] md:max-w-none"
               >
                 <div className="flex items-center gap-4 md:gap-5">
-                  <div className="w-12 h-12 md:w-16 md:h-16 bg-linear-to-br from-primary-600 to-primary-800 rounded-3xl md:rounded-2xl flex items-center justify-center text-white shadow-md shrink-0">
+                  <div className="w-12 h-12 md:w-16 md:h-16 bg-linear-to-br from-primary-600 to-primary-800 rounded-3xl md:rounded-2xl flex items-center justify-center text-white shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 shrink-0">
                     <Award className="w-6 h-6 md:w-8 md:h-8" />
                   </div>
                   <div>
@@ -221,7 +221,7 @@ export default function TentangPage() {
                 className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 pt-4 md:pt-6"
               >
                 <div className="app-card bg-white p-5 md:p-6 flex flex-col items-start group">
-                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-3xl bg-orange-50 flex items-center justify-center mb-4 text-orange-600 group-hover:scale-110 transition-transform shadow-md">
+                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-3xl bg-orange-50 flex items-center justify-center mb-4 text-orange-600 group-hover:scale-110 transition-transform shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">
                     <Sparkles className="w-5 h-5 md:w-6 md:h-6" />
                   </div>
                   <h4 className="font-black text-ink-950 text-xl md:text-2xl mb-1">
@@ -232,7 +232,7 @@ export default function TentangPage() {
                   </p>
                 </div>
                 <div className="app-card bg-white p-5 md:p-6 flex flex-col items-start group">
-                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-3xl bg-primary-50 flex items-center justify-center mb-4 text-primary-600 group-hover:scale-110 transition-transform shadow-md">
+                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-3xl bg-primary-50 flex items-center justify-center mb-4 text-primary-600 group-hover:scale-110 transition-transform shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">
                     <ShieldCheck className="w-5 h-5 md:w-6 md:h-6" />
                   </div>
                   <h4 className="font-black text-ink-950 text-lg md:text-xl tracking-tighter mb-1">
@@ -290,7 +290,7 @@ export default function TentangPage() {
               viewport={{ once: true }}
               className="app-card bg-white p-5 md:p-8 flex flex-col group h-full hover:-translate-y-1 transition-transform duration-500"
             >
-              <div className="w-14 h-14 bg-primary-50 rounded-2xl flex items-center justify-center mb-6 text-primary-600 group-hover:scale-110 transition-transform duration-500 shadow-md">
+              <div className="w-14 h-14 bg-primary-50 rounded-2xl flex items-center justify-center mb-6 text-primary-600 group-hover:scale-110 transition-transform duration-500 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">
                 <Target className="w-7 h-7" />
               </div>
               <h3 className="text-xl md:text-2xl font-black text-ink-950 mb-5">
@@ -310,7 +310,7 @@ export default function TentangPage() {
               transition={{ delay: 0.2 }}
               className="app-card bg-linear-to-br from-secondary-50 to-white p-5 md:p-8 flex flex-col group h-full hover:-translate-y-1 transition-transform duration-500"
             >
-              <div className="w-14 h-14 bg-yellow-50 rounded-2xl flex items-center justify-center mb-6 text-yellow-600 group-hover:scale-110 transition-transform duration-500 shadow-md">
+              <div className="w-14 h-14 bg-yellow-50 rounded-2xl flex items-center justify-center mb-6 text-yellow-600 group-hover:scale-110 transition-transform duration-500 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">
                 <Compass className="w-7 h-7" />
               </div>
               <h3 className="text-xl md:text-2xl font-black text-ink-950 mb-6">
@@ -323,7 +323,7 @@ export default function TentangPage() {
                   "Membentuk pribadi Adaptif: cerdas membaca realitas, kreatif, namun teguh prinsip.",
                 ].map((item, idx) => (
                   <li key={idx} className="flex gap-4 items-center group/item">
-                    <div className="w-6 h-6 rounded-full bg-yellow-500 text-white flex items-center justify-center text-[10px] font-bold shrink-0 shadow-md">
+                    <div className="w-6 h-6 rounded-full bg-yellow-500 text-white flex items-center justify-center text-[10px] font-bold shrink-0 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">
                       <CheckCircle2 className="w-3.5 h-3.5" />
                     </div>
                     <span className="text-ink-800 font-bold text-[13px] md:text-sm tracking-tight group-hover/item:text-yellow-700 transition-colors pt-0.5">
@@ -343,7 +343,7 @@ export default function TentangPage() {
               className="md:col-span-2 app-card bg-secondary-100/50 p-5 md:p-8 lg:p-6 hover:-translate-y-1 transition-transform duration-500 group"
             >
               <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 mb-8">
-                <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-primary-700 group-hover:scale-110 transition-transform duration-500 border border-primary-100 shadow-md shrink-0">
+                <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-primary-700 group-hover:scale-110 transition-transform duration-500 border border-primary-100 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 shrink-0">
                   <BookOpen className="w-7 h-7" />
                 </div>
                 <h3 className="text-xl md:text-2xl font-black text-ink-950">
@@ -360,9 +360,9 @@ export default function TentangPage() {
                 ].map((item, idx) => (
                   <li
                     key={idx}
-                    className="flex gap-4 items-start group/item bg-white p-5 rounded-2xl border border-primary-50 shadow-md"
+                    className="flex gap-4 items-start group/item bg-white p-5 rounded-2xl border border-primary-50 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10"
                   >
-                    <div className="w-6 h-6 rounded-full bg-primary-600 text-white flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5 shadow-md">
+                    <div className="w-6 h-6 rounded-full bg-primary-600 text-white flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">
                       <CheckCircle2 className="w-3.5 h-3.5" />
                     </div>
                     <span className="text-ink-700 font-medium text-[13.5px] md:text-sm tracking-tight group-hover/item:text-primary-800 transition-colors leading-normal">
@@ -383,7 +383,7 @@ export default function TentangPage() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-primary-900 bg-linear-to-br from-primary-800 to-primary-950 rounded-[2.5rem] md:rounded-[3rem] lg:rounded-[4rem] p-5 md:p-8 sm:p-6 lg:p-24 relative overflow-hidden text-center shadow-lg border border-primary-700"
+            className="bg-primary-900 bg-linear-to-br from-primary-800 to-primary-950 rounded-[2.5rem] md:rounded-[3rem] lg:rounded-[4rem] p-5 md:p-8 sm:p-6 lg:p-24 relative overflow-hidden text-center shadow-2xl shadow-primary/30  shadow-primary/20 border border-primary-700"
           >
             {/* Decorative background */}
             <div className="hidden sm:block absolute top-0 right-0 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-secondary-50/10 rounded-full blur-[80px] md:blur-[100px] -translate-y-1/2 translate-x-1/2" />
@@ -400,7 +400,7 @@ export default function TentangPage() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center px-4">
                 <Link href="/ppdb" className="w-full sm:w-auto">
-                  <button className="w-full px-5 md:px-8 py-4 sm:py-4.5 rounded-pill bg-white text-primary-900 font-bold text-base md:text-lg shadow-lg hover:bg-secondary-100 hover:shadow-lg transition-all duration-300 min-h-[52px]">
+                  <button className="w-full px-5 md:px-8 py-4 sm:py-4.5 rounded-pill bg-white text-primary-900 font-bold text-base md:text-lg shadow-2xl shadow-primary/30  shadow-primary/20 hover:bg-secondary-100 hover:shadow-2xl shadow-primary/30  shadow-primary/20 transition-all duration-300 min-h-[52px]">
                     Daftar Sekarang
                   </button>
                 </Link>

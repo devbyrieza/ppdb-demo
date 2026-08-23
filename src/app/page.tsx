@@ -42,119 +42,76 @@ export default function HomePage() {
         <section id="beranda" aria-label="Hero">
           <HeroSection />
         </section>
-
-        <section id="statistik" aria-label="Statistik Pesantren">
-          <ScrollAnimation delay={0.15} direction="up" duration={0.7}>
-            <StatsSection />
-          </ScrollAnimation>
-        </section>
-
-        <section id="tentang" aria-label="Tentang Pesantren">
-          <ScrollAnimation delay={0.1} direction="none" duration={0.8}>
-            <AboutSection />
-          </ScrollAnimation>
-        </section>
-
         <section id="program" aria-label="Program Unggulan">
           <ScrollAnimation delay={0.12} direction="up" duration={0.7}>
             <ProgramSection />
           </ScrollAnimation>
         </section>
-
+        <section id="statistik" aria-label="Statistik Pesantren">
+          <ScrollAnimation delay={0.15} direction="up" duration={0.7}>
+            <StatsSection />
+          </ScrollAnimation>
+        </section>
         <section id="beasiswa" aria-label="Program Beasiswa">
           <ScrollAnimation delay={0.1} direction="none" duration={0.8}>
             <ScholarshipSection variant="primary" />
           </ScrollAnimation>
         </section>
-
+        <section id="tentang" aria-label="Tentang Pesantren">
+          <ScrollAnimation delay={0.1} direction="none" duration={0.8}>
+            <AboutSection />
+          </ScrollAnimation>
+        </section>
         <section id="keunggulan" aria-label="Keunggulan Pesantren">
           <ScrollAnimation delay={0.1} direction="none" duration={0.75}>
             <StickyFeatureSection />
           </ScrollAnimation>
         </section>
-
-        <section id="pengajar" aria-label="Tim Pengajar">
-          <ScrollAnimation delay={0.1} direction="left" duration={0.7}>
-            <TeachersSection />
-          </ScrollAnimation>
-        </section>
-
-        <section id="pengurus" aria-label="Dewan Pengurus">
-          <ScrollAnimation delay={0.1} direction="up" duration={0.7}>
-            <BoardSection />
-          </ScrollAnimation>
-        </section>
-
-        <section id="proses" aria-label="Alur Pendaftaran">
-          <ScrollAnimation delay={0.1} direction="none" duration={0.8}>
-            <ProcessSection />
-          </ScrollAnimation>
-        </section>
-
         <section id="fasilitas" aria-label="Fasilitas Pesantren">
           <ScrollAnimation delay={0.1} direction="up" duration={0.7}>
             <BentoGridSection />
           </ScrollAnimation>
         </section>
-
+        <section id="proses" aria-label="Alur Pendaftaran">
+          <ScrollAnimation delay={0.1} direction="none" duration={0.8}>
+            <ProcessSection />
+          </ScrollAnimation>
+        </section>
+        <section id="pengajar" aria-label="Tim Pengajar">
+          <ScrollAnimation delay={0.1} direction="left" duration={0.7}>
+            <TeachersSection />
+          </ScrollAnimation>
+        </section>
+        <section id="pengurus" aria-label="Dewan Pengurus">
+          <ScrollAnimation delay={0.1} direction="up" duration={0.7}>
+            <BoardSection />
+          </ScrollAnimation>
+        </section>
         <section id="kegiatan" aria-label="Kegiatan Pesantren">
           <ScrollAnimation delay={0.1} direction="left" duration={0.7}>
             <ActivitiesSection />
           </ScrollAnimation>
         </section>
-
         <section id="testimoni" aria-label="Testimoni Santri & Wali">
           <ScrollAnimation delay={0.12} direction="up" duration={0.75}>
             <TestimonialsSection />
           </ScrollAnimation>
         </section>
-
         <section id="faq" aria-label="Pertanyaan Umum">
           <ScrollAnimation delay={0.1} direction="none" duration={0.8}>
             <FaqSection />
           </ScrollAnimation>
         </section>
-
-        <section id="kontak" aria-label="Hubungi Kami">
-          <ScrollAnimation delay={0.1} direction="up" duration={0.7}>
-            <ContactSection />
-          </ScrollAnimation>
-        </section>
-
         <section id="daftar" aria-label="Daftar Sekarang">
           <ScrollAnimation delay={0.15} direction="none" duration={0.8}>
             <CtaSection />
           </ScrollAnimation>
         </section>
-
-        {/* ── Floating Demo Button — khusus template-demo, tidak ada di alimam/ululalbaab ── */}
-        <m.div
-          className="fixed bottom-[100px] left-4 md:bottom-8 md:left-8 z-[60]"
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 1.2, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <Link href="/login" aria-label="Coba demo aplikasi">
-            <m.button
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 400, damping: 20 }}
-              className="group flex items-center gap-3 px-6 py-4 rounded-full font-black text-sm uppercase tracking-widest border-2 border-white"
-              style={{
-                background:
-                  "linear-gradient(135deg, var(--color-secondary-300) 0%, var(--color-secondary-500) 100%)",
-                color: "var(--color-primary-900)",
-                boxShadow: "var(--shadow-secondary), 0 0 0 1px rgba(0,0,0,0.04)" }}
-            >
-              <Zap
-                className="w-5 h-5 transition-transform duration-200 group-hover:rotate-12"
-                style={{ fill: "var(--color-primary-900)" }}
-                aria-hidden="true"
-              />
-              <span>Coba Demo</span>
-            </m.button>
-          </Link>
-        </m.div>
+        <section id="kontak" aria-label="Hubungi Kami">
+          <ScrollAnimation delay={0.1} direction="up" duration={0.7}>
+            <ContactSection />
+          </ScrollAnimation>
+        </section>
       </main>
     </LazyMotion>
   );

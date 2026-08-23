@@ -92,7 +92,7 @@ export default function DemoLoginHelper({ onSelect }: DemoLoginHelperProps) {
             whileHover={{ scale: 1.02, y: -2 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => onSelect(acc.email, acc.pass, "admin", acc.id)}
-            className={`flex flex-col items-center justify-center p-4 rounded-2xl border ${acc.color} transition-all hover:shadow-md text-center group`}
+            className={`flex flex-col items-center justify-center p-4 rounded-2xl border ${acc.color} transition-all hover:shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 text-center group`}
           >
             <acc.icon className="w-5 h-5 mb-2 group-hover:scale-110 transition-transform" />
             <span className="text-[10px] font-black uppercase tracking-wider leading-tight">
@@ -106,7 +106,7 @@ export default function DemoLoginHelper({ onSelect }: DemoLoginHelperProps) {
         whileHover={{ scale: 1.01, y: -1 }}
         whileTap={{ scale: 0.99 }}
         onClick={handleRandomPendaftar}
-        className="w-full flex items-center justify-center gap-3 p-4 rounded-2xl border border-slate-200 bg-slate-50 text-slate-700 hover:bg-white hover:shadow-md transition-all group"
+        className="w-full flex items-center justify-center gap-3 p-4 rounded-2xl border border-slate-200 bg-slate-50 text-slate-700 hover:bg-white hover:shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 transition-all group"
       >
         <Users className="w-5 h-5 group-hover:scale-110 transition-transform" />
         <span className="text-xs font-black uppercase tracking-widest">

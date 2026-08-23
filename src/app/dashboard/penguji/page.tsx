@@ -117,7 +117,7 @@ export default function PengujiDashboardPage() {
         {statCards.map((card, index) => (
           <div
             key={index}
-            className="bg-white rounded-3xl p-[24px_28px] md:p-8 border border-secondary-100 shadow-xs hover:shadow-xl hover:shadow-primary-900/5 transition-all duration-500 app-card group"
+            className="bg-white rounded-3xl p-[24px_28px] md:p-8 border border-secondary-100 shadow-xs hover:shadow-2xl shadow-primary/30 hover:shadow-primary-900/5 transition-all duration-500 app-card group"
           >
             <div
               className={`w-14 h-14 ${card.bgColor} rounded-[24px] flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}
@@ -146,12 +146,12 @@ export default function PengujiDashboardPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Link
             href="/dashboard/penguji/jadwal"
-            className="flex items-center gap-6 p-7 bg-secondary-50/50 hover:bg-secondary-100/50 rounded-4xl transition-all duration-500 border border-secondary-100 hover:shadow-xl hover:shadow-secondary-400/10 group relative overflow-hidden"
+            className="flex items-center gap-6 p-7 bg-secondary-50/50 hover:bg-secondary-100/50 rounded-4xl transition-all duration-500 border border-secondary-100 hover:shadow-2xl shadow-primary/30 hover:shadow-secondary-400/10 group relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 p-[24px_28px] opacity-5 group-hover:opacity-10 transition-opacity">
               <Calendar className="w-20 h-20 text-primary-900" />
             </div>
-            <div className="w-16 h-16 bg-secondary-400 rounded-[24px] flex items-center justify-center shadow-lg shadow-secondary-400/20 group-hover:scale-110 group-hover:-rotate-3 transition-all shrink-0">
+            <div className="w-16 h-16 bg-secondary-400 rounded-[24px] flex items-center justify-center shadow-2xl shadow-primary/30  shadow-primary/20 shadow-secondary-400/20 group-hover:scale-110 group-hover:-rotate-3 transition-all shrink-0">
               <Calendar className="w-8 h-8 text-primary-950" />
             </div>
             <div>
@@ -166,7 +166,7 @@ export default function PengujiDashboardPage() {
 
           <Link
             href="/dashboard/penguji/input-nilai"
-            className="flex items-center gap-6 p-7 bg-primary-700 hover:bg-primary-800 rounded-4xl transition-all duration-500 border border-primary-800 shadow-xl shadow-primary-900/20 hover:shadow-2xl hover:shadow-primary-900/30 group relative overflow-hidden"
+            className="flex items-center gap-6 p-7 bg-primary-700 hover:bg-primary-800 rounded-4xl transition-all duration-500 border border-primary-800 shadow-2xl shadow-primary/30  shadow-primary-900/20 hover:shadow-2xl hover:shadow-primary-900/30 group relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 p-[24px_28px] opacity-10 group-hover:opacity-20 transition-opacity">
               <ClipboardCheck className="w-20 h-20 text-white" />

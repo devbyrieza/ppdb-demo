@@ -128,7 +128,7 @@ function GalleryCard({
         {/* Overlay removed for clear images */}
       </div>
 
-      <div className="absolute top-3.5 right-3.5 w-8 h-8 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:bg-secondary-400 group-hover:border-secondary-300 group-hover:text-primary-900 shadow-sm">
+      <div className="absolute top-3.5 right-3.5 w-8 h-8 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:bg-secondary-400 group-hover:border-secondary-300 group-hover:text-primary-900 shadow-sm">
         <Icon className="w-4 h-4" />
       </div>
 
@@ -277,7 +277,7 @@ export default function GallerySection() {
 
               <motion.div variants={fadeUpVariants}>
                 <Link href="/kalender">
-                  <button className="btn-primary inline-flex items-center gap-2 group px-7 py-3.5 shadow-md">
+                  <button className="btn-primary inline-flex items-center gap-2 group px-7 py-3.5 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">
                     Lihat Jadwal Lengkap
                     <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
                   </button>

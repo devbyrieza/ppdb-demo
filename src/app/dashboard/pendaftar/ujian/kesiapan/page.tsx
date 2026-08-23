@@ -134,7 +134,7 @@ export default function KesiapanTestPage() {
   if (alreadyDone) {
     return (
       <div className="max-w-lg mx-auto p-[24px_28px] md:p-8 text-center mt-10">
-        <div className="bg-white rounded-[24px] shadow-lg border p-6 md:p-10">
+        <div className="bg-white rounded-[24px] shadow-2xl shadow-primary/30  shadow-primary/20 border p-6 md:p-10">
           <CheckCircle className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
           <h2 className="text-xl font-bold mb-2">Tes Sudah Dikerjakan</h2>
           <p className="text-stone-600 mb-6">
@@ -156,7 +156,7 @@ export default function KesiapanTestPage() {
   if (isLocked) {
     return (
       <div className="max-w-lg mx-auto p-[24px_28px] md:p-8 text-center mt-10">
-        <div className="bg-white rounded-[2rem] shadow-xl border p-6 md:p-10">
+        <div className="bg-white rounded-[2rem] shadow-2xl shadow-primary/30 border p-6 md:p-10">
           <div className="w-20 h-20 bg-secondary-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <AlertCircle className="w-10 h-10 text-secondary-600" />
           </div>
@@ -169,7 +169,7 @@ export default function KesiapanTestPage() {
           </p>
           <button
             onClick={() => router.push("/dashboard/pendaftar")}
-            className="w-full px-6 py-4 bg-primary-700 hover:bg-primary-800 text-white font-black rounded-[24px] transition-all shadow-md uppercase tracking-widest text-sm"
+            className="w-full px-6 py-4 bg-primary-700 hover:bg-primary-800 text-white font-black rounded-[24px] transition-all shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 uppercase tracking-widest text-sm"
           >
             Kembali ke Dashboard
           </button>
@@ -267,7 +267,7 @@ export default function KesiapanTestPage() {
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className="w-full py-4 bg-emerald-600 hover:bg-emerald-700 disabled:bg-stone-300 text-white font-bold rounded-[24px] shadow-lg transition-colors flex items-center justify-center gap-2"
+          className="w-full py-4 bg-emerald-600 hover:bg-emerald-700 disabled:bg-stone-300 text-white font-bold rounded-[24px] shadow-2xl shadow-primary/30  shadow-primary/20 transition-colors flex items-center justify-center gap-2"
         >
           {loading ? (
             <>

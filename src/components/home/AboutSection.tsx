@@ -114,7 +114,7 @@ export default function AboutSection() {
 
                 <div className="flex flex-col items-center text-center px-8 py-12 md:px-16 md:py-16">
                   {/* Icon */}
-                  <div className="mb-7 w-14 h-14 rounded-xl bg-primary-50 border border-primary-100 flex items-center justify-center shadow-xs group-hover:shadow-sm transition-shadow duration-300">
+                  <div className="mb-7 w-14 h-14 rounded-2xl bg-primary-50 border border-primary-100 flex items-center justify-center shadow-xs group-hover:shadow-sm transition-shadow duration-300">
                     <Target
                       className="w-6 h-6 text-primary-700"
                       strokeWidth={1.75}
@@ -155,7 +155,7 @@ export default function AboutSection() {
               <div className="rounded-2xl border border-primary-100 bg-white shadow-premium-sm overflow-hidden">
                 {/* Header */}
                 <div className="flex items-center gap-4 px-8 py-7 md:px-10 border-b border-primary-50">
-                  <div className="w-11 h-11 rounded-xl bg-primary-50 border border-primary-100 flex items-center justify-center shrink-0">
+                  <div className="w-11 h-11 rounded-2xl bg-primary-50 border border-primary-100 flex items-center justify-center shrink-0">
                     <Rocket
                       className="w-5 h-5 text-primary-600"
                       strokeWidth={1.75}

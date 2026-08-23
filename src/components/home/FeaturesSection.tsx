@@ -90,7 +90,7 @@ export default function FeaturesSection() {
                     className="bg-white/90 backdrop-blur-sm p-6 rounded-2xl flex gap-5 group items-start border border-secondary-100 hover:border-primary-200 hover:shadow-premium-md transition-all duration-400 cursor-default hover:-translate-y-1"
                   >
                     {/* CiroAI Icon Box */}
-                    <div className="icon-box icon-box-primary w-14 h-14 rounded-xl shrink-0">
+                    <div className="icon-box icon-box-primary w-14 h-14 rounded-2xl shrink-0">
                       <feature.icon className="w-7 h-7" />
                     </div>
                     <div>
@@ -142,7 +142,7 @@ export default function FeaturesSection() {
                   </div>
                 </div>
 
-                <div className="bg-linear-to-br from-primary-600 via-primary-700 to-primary-900 shine-top border border-white/10 p-6 sm:p-8 rounded-2xl shadow-xl min-h-64 md:h-72 flex flex-col justify-center items-center text-center relative overflow-hidden group hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
+                <div className="bg-linear-to-br from-primary-600 via-primary-700 to-primary-900 shine-top border border-white/10 p-6 sm:p-8 rounded-2xl shadow-2xl shadow-primary/30 min-h-64 md:h-72 flex flex-col justify-center items-center text-center relative overflow-hidden group hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
                   {/* CiroAI-style ambient glow inside dark card */}
                   <div className="absolute -top-16 -right-16 w-40 h-40 bg-secondary-400/25 blur-[60px] rounded-full pointer-events-none group-hover:bg-secondary-400/40 transition-colors duration-700" />
                   <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-primary-300/10 blur-[50px] rounded-full pointer-events-none" />
@@ -161,7 +161,7 @@ export default function FeaturesSection() {
 
               <div className="space-y-4 lg:space-y-6">
                 <div className="app-card p-6 sm:p-8 min-h-64 md:h-72 flex flex-col justify-center items-center text-center group">
-                  <div className="w-20 h-20 bg-secondary-100 rounded-xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform duration-500">
+                  <div className="w-20 h-20 bg-secondary-100 rounded-2xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform duration-500">
                     <ShieldCheck className="w-10 h-10 text-primary-600" />
                   </div>
                   <p className="font-black text-2xl text-primary-900">
@@ -171,7 +171,7 @@ export default function FeaturesSection() {
                   </p>
                 </div>
 
-                <div className="bg-secondary-50/80 backdrop-blur-lg border border-secondary-200 p-6 sm:p-8 rounded-[2rem] shadow-sm min-h-56 md:h-64 flex flex-col justify-end items-start hover:shadow-md transition-all duration-300">
+                <div className="bg-secondary-50/80 backdrop-blur-lg border border-secondary-200 p-6 sm:p-8 rounded-[2rem] shadow-sm min-h-56 md:h-64 flex flex-col justify-end items-start hover:shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 transition-all duration-300">
                   <p className="text-4xl font-black mb-1 text-primary-800 tracking-tighter">
                     RESMI
                   </p>

@@ -193,7 +193,7 @@ export default function RecapFeePage() {
         <div className="absolute top-0 right-0 w-64 h-64 bg-primary-600/5 rounded-full -mr-32 -mt-32 blur-3xl"></div>
         <div className="relative flex flex-col gap-[24px_28px] md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-[24px_28px] md:gap-6">
-            <div className="p-3 md:p-[24px_28px] bg-linear-to-br from-primary-600 to-primary-800 rounded-[24px] md:rounded-3xl shadow-xl shadow-primary-600/20 shrink-0">
+            <div className="p-3 md:p-[24px_28px] bg-linear-to-br from-primary-600 to-primary-800 rounded-[24px] md:rounded-3xl shadow-2xl shadow-primary/30  shadow-primary-600/20 shrink-0">
               <CreditCard className="w-7 h-7 md:w-8 md:h-8 text-white" />
             </div>
             <div>

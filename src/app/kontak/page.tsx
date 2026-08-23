@@ -47,7 +47,7 @@ const ContactInfoCard = ({
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ delay, duration: 0.5 }}
-    className="app-card bg-white p-6 sm:p-[24px_28px] md:p-8 rounded-[24px] sm:rounded-[2.5rem] border border-primary-100 shadow-sm hover:shadow-md transition-all group flex flex-col items-center text-center"
+    className="app-card bg-white p-6 sm:p-[24px_28px] md:p-8 rounded-[24px] sm:rounded-[2.5rem] border border-primary-100 shadow-sm hover:shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 transition-all group flex flex-col items-center text-center"
   >
     <div className="w-16 h-16 rounded-[24px] bg-primary-50 flex items-center justify-center text-primary-600 mb-6 group-hover:scale-110 transition-transform shadow-sm border border-primary-100">
       <Icon className="w-8 h-8" />
@@ -84,7 +84,7 @@ const SocialCard = ({ social, delay = 0 }: { social: any; delay?: number }) => (
     href={social.url}
     target="_blank"
     rel="noopener noreferrer"
-    className={`app-card group flex items-center gap-[24px_28px] sm:gap-[24px_28px] p-[24px_28px] sm:p-[24px_28px] rounded-[24px] sm:rounded-[2rem] bg-white border border-primary-50 shadow-sm hover:shadow-md transition-all`}
+    className={`app-card group flex items-center gap-[24px_28px] sm:gap-[24px_28px] p-[24px_28px] sm:p-[24px_28px] rounded-[24px] sm:rounded-[2rem] bg-white border border-primary-50 shadow-sm hover:shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 transition-all`}
   >
     <div
       className={`w-14 h-14 rounded-[24px] ${social.bgLight} flex items-center justify-center ${social.textColor} group-hover:scale-110 transition-transform shadow-sm border border-primary-50`}
@@ -270,13 +270,13 @@ export default function ContactPage() {
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="lg:col-span-3 bg-white p-6 md:p-16 rounded-[2.5rem] md:rounded-[4rem] shadow-lg border border-primary-50 relative overflow-hidden"
+              className="lg:col-span-3 bg-white p-6 md:p-16 rounded-[2.5rem] md:rounded-[4rem] shadow-2xl shadow-primary/30  shadow-primary/20 border border-primary-50 relative overflow-hidden"
             >
               <div className="absolute top-0 right-0 w-96 h-96 bg-primary-50/50 rounded-full blur-[100px] translate-x-1/2 -translate-y-1/2" />
 
               <div className="relative z-10">
                 <div className="flex items-center gap-[24px_28px] md:gap-[24px_28px] mb-8 md:mb-12">
-                  <div className="w-12 h-12 md:w-16 md:h-16 bg-primary-900 rounded-[24px] md:rounded-3xl flex items-center justify-center text-white shadow-md shrink-0">
+                  <div className="w-12 h-12 md:w-16 md:h-16 bg-primary-900 rounded-[24px] md:rounded-3xl flex items-center justify-center text-white shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 shrink-0">
                     <Send className="w-6 h-6 md:w-8 md:h-8" />
                   </div>
                   <div>
@@ -379,7 +379,7 @@ export default function ContactPage() {
                     whileTap={{ scale: 0.98 }}
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full py-4 md:py-6 rounded-pill bg-primary-900 text-white font-black text-lg md:text-xl hover:bg-secondary-600 shadow-md transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                    className="w-full py-4 md:py-6 rounded-pill bg-primary-900 text-white font-black text-lg md:text-xl hover:bg-secondary-600 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
                   >
                     {isSubmitting ? "Sedang Mengirim..." : "Kirim Sekarang"}
                   </motion.button>
@@ -424,7 +424,7 @@ export default function ContactPage() {
                     title="Lokasi Pondok Pesantren Al Fath"
                     className="grayscale hover:grayscale-0 transition-all duration-700"
                   />
-                  <div className="absolute bottom-3 left-3 md:bottom-6 md:left-6 bg-white/90 backdrop-blur-sm px-3 py-1.5 md:px-6 md:py-3 rounded-[24px] md:rounded-[24px] shadow-md border border-primary-100 flex items-center gap-1.5 md:gap-3 z-10">
+                  <div className="absolute bottom-3 left-3 md:bottom-6 md:left-6 bg-white/90 backdrop-blur-sm px-3 py-1.5 md:px-6 md:py-3 rounded-[24px] md:rounded-[24px] shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 border border-primary-100 flex items-center gap-1.5 md:gap-3 z-10">
                     <MapIcon className="w-3.5 h-3.5 md:w-5 md:h-5 text-primary-600" />
                     <span className="text-[10px] md:text-sm font-black text-ink-950 uppercase tracking-widest">
                       Buka di Maps
@@ -460,7 +460,7 @@ export default function ContactPage() {
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-[24px_28px] md:gap-6 justify-center px-4">
                 <Link href="/ppdb">
-                  <button className="w-full sm:w-auto px-6 sm:px-6 md:px-10 py-3.5 sm:py-4 md:py-5 rounded-pill bg-white text-primary-900 font-black text-sm sm:text-base md:text-lg hover:bg-secondary-100 shadow-md transition-all min-h-[48px] sm:min-h-[52px]">
+                  <button className="w-full sm:w-auto px-6 sm:px-6 md:px-10 py-3.5 sm:py-4 md:py-5 rounded-pill bg-white text-primary-900 font-black text-sm sm:text-base md:text-lg hover:bg-secondary-100 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 transition-all min-h-[48px] sm:min-h-[52px]">
                     Daftar PPDB Baru
                   </button>
                 </Link>

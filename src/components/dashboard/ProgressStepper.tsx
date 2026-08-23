@@ -92,9 +92,9 @@ export default function ProgressStepper({
               <div
                 className={`w-10 h-10 rounded-full flex items-center justify-center relative z-10 transition-all duration-500 border-2 ${
                   isCompleted
-                    ? "bg-primary-600 border-primary-600 text-white shadow-primary shadow-lg"
+                    ? "bg-primary-600 border-primary-600 text-white shadow-primary shadow-2xl shadow-primary/30  shadow-primary/20 "
                     : isActive
-                      ? "bg-white border-primary-600 text-primary-600 shadow-primary shadow-lg scale-110 font-bold"
+                      ? "bg-white border-primary-600 text-primary-600 shadow-primary shadow-2xl shadow-primary/30  shadow-primary/20 scale-110 font-bold"
                       : "bg-white border-stone-200 text-stone-300"
                 }`}
               >

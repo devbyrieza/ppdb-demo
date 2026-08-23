@@ -207,7 +207,7 @@ export default function ProfilPage() {
             {requestStatus.status === "approved_to_edit" && (
               <Link
                 href="/dashboard/pendaftar/kelengkapan-berkas"
-                className="ml-auto p-[16px_20px] bg-pine-600 text-white text-xs font-bold rounded-[24px] hover:bg-pine-700 shadow-pine-500/20 shadow-lg transition-all"
+                className="ml-auto p-[16px_20px] bg-pine-600 text-white text-xs font-bold rounded-[24px] hover:bg-pine-700 shadow-pine-500/20 shadow-2xl shadow-primary/30  shadow-primary/20 transition-all"
               >
                 Edit Sekarang
               </Link>
@@ -399,7 +399,7 @@ export default function ProfilPage() {
                 !isRequesting ? (
                   <button
                     onClick={() => setIsRequesting(true)}
-                    className="w-full py-4 bg-white border border-ink-200 text-ink-700 font-bold rounded-[24px] hover:bg-surface-50 hover:border-primary-300 hover:text-primary-700 transition-all shadow-sm hover:shadow-md"
+                    className="w-full py-4 bg-white border border-ink-200 text-ink-700 font-bold rounded-[24px] hover:bg-surface-50 hover:border-primary-300 hover:text-primary-700 transition-all shadow-sm hover:shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10"
                   >
                     Ajukan Perubahan
                   </button>
@@ -426,7 +426,7 @@ export default function ProfilPage() {
                       <button
                         onClick={handleRequestEdit}
                         disabled={submittingRequest}
-                        className="py-3 text-sm font-bold text-white bg-pine-600 hover:bg-pine-700 rounded-[24px] shadow-lg shadow-pine-500/20 disabled:opacity-50"
+                        className="py-3 text-sm font-bold text-white bg-pine-600 hover:bg-pine-700 rounded-[24px] shadow-2xl shadow-primary/30  shadow-primary/20 shadow-pine-500/20 disabled:opacity-50"
                       >
                         {submittingRequest ? "Mengirim..." : "Kirim Pengajuan"}
                       </button>
