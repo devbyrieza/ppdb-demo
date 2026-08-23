@@ -8,8 +8,7 @@ import {
   buildMessageJadwalLangsungTersedia,
   buildMessageJadwalBelum,
   buildMessageDocumentVerified,
-  buildMessageDocumentRejected,
-} from "@/lib/whatsapp-queue";
+  buildMessageDocumentRejected } from "@/lib/whatsapp-queue";
 
 export const dynamic = 'force-dynamic';
 
@@ -42,9 +41,7 @@ export async function GET(request: NextRequest) {
     const { getAdminWhereClause } = await import("@/lib/utils/admin");
     const where: any = {
       pendaftar: {
-        is: getAdminWhereClause(),
-      },
-    };
+        is: getAdminWhereClause() } };
     
     if (pendaftarId) {
       where.pendaftar_id = pendaftarId;
@@ -79,12 +76,8 @@ export async function GET(request: NextRequest) {
             nama_lengkap: true,
             jenjang: true,
             no_hp: true,
-            tipe_pendaftaran: true,
-          },
-        },
-      },
-      orderBy: { created_at: "desc" },
-    });
+            tipe_pendaftaran: true } } },
+      orderBy: { created_at: "desc" } });
 
     // Transform to include file_url
     const transformedData = data.map((dok) => {
@@ -93,8 +86,7 @@ export async function GET(request: NextRequest) {
         : Date.now();
       return {
         ...dok,
-        file_url: `/api/files/${dok.file_path}?t=${timestamp}`,
-      };
+        file_url: `/api/files/${dok.file_path}?t=${timestamp}` };
     });
 
     let pendaftarInfo = null;
@@ -107,8 +99,7 @@ export async function GET(request: NextRequest) {
           nama_lengkap: true,
           jenjang: true,
           no_hp: true,
-          tipe_pendaftaran: true,
-        }
+          tipe_pendaftaran: true }
       });
     }
 
@@ -135,8 +126,7 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json(
         {
           error:
-            "Forbidden: Only Document Admin or Super Admin can verify documents",
-        },
+            "Forbidden: Only Document Admin or Super Admin can verify documents" },
         { status: 403 },
       );
     }
@@ -166,8 +156,7 @@ export async function PATCH(request: NextRequest) {
       where: { id: dokumen_id },
       data: {
         is_verified: isVerified,
-        catatan: isVerified ? null : catatan,
-      },
+        catatan: isVerified ? null : catatan },
       include: {
         pendaftar: {
           select: {
@@ -177,13 +166,7 @@ export async function PATCH(request: NextRequest) {
             status_pendaftaran: true,
             user: {
               select: {
-                phone: true,
-              },
-            },
-          },
-        },
-      },
-    });
+                phone: true } } } } } });
 
     // Logging audit action
     logAdminAction({
@@ -195,17 +178,14 @@ export async function PATCH(request: NextRequest) {
       details: {
         jenis_dokumen: dokumen.jenis_dokumen,
         status_verifikasi,
-        dokumen_id,
-      },
-    });
+        dokumen_id } });
 
     // Send WhatsApp notification
     // BATCH NOTIFICATION LOGIC
     // Check if ALL documents for this pendaftar have been processed (verified or rejected)
     if (dokumen.pendaftar_id) {
       const allDocs = await prisma.dokumen.findMany({
-        where: { pendaftar_id: dokumen.pendaftar_id },
-      });
+        where: { pendaftar_id: dokumen.pendaftar_id } });
 
       // Check if all MANDATORY documents for this pendaftar have been processed
       const mandatoryDocs = allDocs.filter((d) =>
@@ -268,8 +248,7 @@ export async function PATCH(request: NextRequest) {
                       isAllVerifiedAndComplete
                         ? ""
                         : "Terdapat dokumen yang perlu diperbaiki. Silakan cek dashboard.",
-                    ),
-              });
+                    ) });
             } else {
               console.warn(
                 `[VERIF] Cannot send notification for ${dokumen.pendaftar_id}: No phone number found in Pendaftar or User profile.`,
@@ -295,14 +274,12 @@ export async function PATCH(request: NextRequest) {
     if (dokumen.pendaftar_id) {
       const currentPendaftar = await prisma.pendaftar.findUnique({
         where: { id: dokumen.pendaftar_id },
-        select: { status_pendaftaran: true },
-      });
+        select: { status_pendaftaran: true } });
 
       if (isVerified) {
         // 1. Get all documents for this pendaftar
         const allDocs = await prisma.dokumen.findMany({
-          where: { pendaftar_id: dokumen.pendaftar_id },
-        });
+          where: { pendaftar_id: dokumen.pendaftar_id } });
 
         // 2. check if every required doc is present and verified
         const verifiedTypes = new Set<string>();
@@ -328,14 +305,12 @@ export async function PATCH(request: NextRequest) {
         ) {
           await prisma.pendaftar.update({
             where: { id: dokumen.pendaftar_id },
-            data: { status_pendaftaran: "docs_verified" },
-          });
+            data: { status_pendaftaran: "docs_verified" } });
 
           // --- AUTOMATED NOTIFICATION LOGIC ---
           try {
             const existingSchedulesCount = await prisma.jadwalUjian.count({
-              where: { pendaftar_id: dokumen.pendaftar_id },
-            });
+              where: { pendaftar_id: dokumen.pendaftar_id } });
 
             // EXTRA GUARD: Only notify if status is 'paid', 'docs_verified', or 'docs_uploaded' (the pre-transition state)
             const isEligibleForNotif = [
@@ -348,8 +323,7 @@ export async function PATCH(request: NextRequest) {
               // Check available slots
               const sessions = await prisma.examSession.findMany({
                 where: { is_active: true, start_time: { gte: new Date() } },
-                include: { _count: { select: { bookings: true } } },
-              });
+                include: { _count: { select: { bookings: true } } } });
 
               const totalAvailableSlots = sessions.reduce(
                 (acc, s) => acc + Math.max(0, s.quota - s._count.bookings),
@@ -365,13 +339,11 @@ export async function PATCH(request: NextRequest) {
                     jenisNotif: "jadwal_langsung_tersedia",
                     messageContent: buildMessageJadwalLangsungTersedia(
                       dokumen.pendaftar.nama_lengkap,
-                    ),
-                  });
+                    ) });
                   // Mark flag so they don't get double notified by manual broadcast later (unless reset)
                   await prisma.pendaftar.update({
                     where: { id: dokumen.pendaftar_id },
-                    data: { notif_jadwal_tersedia_terkirim: true },
-                  });
+                    data: { notif_jadwal_tersedia_terkirim: true } });
                 } else {
                   // Skenario B: Jadwal Belum Ada (Tapi Verifikasi Berhasil)
                   await enqueueWhatsapp({
@@ -380,8 +352,7 @@ export async function PATCH(request: NextRequest) {
                     jenisNotif: "jadwal_belum",
                     messageContent: buildMessageJadwalBelum(
                       dokumen.pendaftar.nama_lengkap,
-                    ),
-                  });
+                    ) });
                 }
               }
             } else {
@@ -398,8 +369,7 @@ export async function PATCH(request: NextRequest) {
         if (currentPendaftar?.status_pendaftaran === "docs_verified") {
           await prisma.pendaftar.update({
             where: { id: dokumen.pendaftar_id },
-            data: { status_pendaftaran: "docs_uploaded" },
-          });
+            data: { status_pendaftaran: "docs_uploaded" } });
         }
       }
     }

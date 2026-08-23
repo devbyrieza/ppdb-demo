@@ -92,8 +92,7 @@ export default function KesiapanTestPage() {
       confirmButtonColor: "#059669",
       cancelButtonColor: "#6b7280",
       confirmButtonText: "Ya, Kirim",
-      cancelButtonText: "Batal",
-    });
+      cancelButtonText: "Batal" });
     if (!result.isConfirmed) return;
 
     try {
@@ -104,8 +103,7 @@ export default function KesiapanTestPage() {
       const res = await fetch("/api/pendaftar/ujian/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+        body: JSON.stringify(payload) });
       if (!res.ok) throw new Error("Gagal mengirim");
 
       if (typeof window !== "undefined") {
@@ -116,8 +114,7 @@ export default function KesiapanTestPage() {
         icon: "success",
         title: "Alhamdulillah!",
         text: "Seleksi Kesiapan berhasil diselesaikan.",
-        confirmButtonColor: "#059669",
-      });
+        confirmButtonColor: "#059669" });
       router.push("/dashboard/pendaftar/undangan-seleksi");
     } catch (err: any) {
       Swal.fire("Error", err.message, "error");

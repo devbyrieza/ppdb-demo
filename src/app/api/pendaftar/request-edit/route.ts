@@ -38,16 +38,12 @@ export async function GET(request: Request) {
       where: {
         pendaftar_id: pendaftar_id,
         status: {
-          in: ["pending", "approved_to_edit", "submitted"],
-        },
-      },
-      orderBy: { created_at: "desc" },
-    });
+          in: ["pending", "approved_to_edit", "submitted"] } },
+      orderBy: { created_at: "desc" } });
 
     return NextResponse.json({
       success: true,
-      data: latestRequest,
-    });
+      data: latestRequest });
   } catch (error: any) {
     console.error("Error fetching request:", error);
     return NextResponse.json(
@@ -93,17 +89,13 @@ export async function POST(request: Request) {
       where: {
         pendaftar_id: pendaftar_id,
         status: {
-          in: ["pending", "approved_to_edit", "submitted"],
-        },
-      },
-    });
+          in: ["pending", "approved_to_edit", "submitted"] } } });
 
     if (existingRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: "Masih ada permintaan perubahan data yang sedang diproses.",
-        },
+          error: "Masih ada permintaan perubahan data yang sedang diproses." },
         { status: 400 },
       );
     }
@@ -113,14 +105,11 @@ export async function POST(request: Request) {
       data: {
         pendaftar_id,
         reason,
-        status: "pending",
-      },
-    });
+        status: "pending" } });
 
     return NextResponse.json({
       success: true,
-      data: newRequest,
-    });
+      data: newRequest });
   } catch (error: any) {
     console.error("Error creating request:", error);
     return NextResponse.json(

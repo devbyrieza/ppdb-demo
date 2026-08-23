@@ -13,8 +13,7 @@ const TESTIMONIALS = [
     initial: "S",
     date: "Oktober 2024",
     quote:
-      "Tujuan kami menyekolahkan anak ke Pesantren adalah agar mereka benar-benar paham agama. Alhamdulillah, sistemnya memberikan perubahan nyata pada anak kami — cara bicara, sikap, dan keseriusannya dalam ibadah.",
-  },
+      "Tujuan kami menyekolahkan anak ke Pesantren adalah agar mereka benar-benar paham agama. Alhamdulillah, sistemnya memberikan perubahan nyata pada anak kami — cara bicara, sikap, dan keseriusannya dalam ibadah." },
   {
     no: "002",
     name: "Ibu Endah Wulandari",
@@ -23,8 +22,7 @@ const TESTIMONIALS = [
     initial: "E",
     date: "Januari 2025",
     quote:
-      "Awalnya saya khawatir dengan sistem boarding, namun kurikulum tahfidz sangat sistematis. Dalam 6 bulan, anak saya sudah mampu memimpin shalat berjamaah di rumah dengan makhraj yang benar.",
-  },
+      "Awalnya saya khawatir dengan sistem boarding, namun kurikulum tahfidz sangat sistematis. Dalam 6 bulan, anak saya sudah mampu memimpin shalat berjamaah di rumah dengan makhraj yang benar." },
   {
     no: "003",
     name: "Muhammad Razan",
@@ -33,8 +31,7 @@ const TESTIMONIALS = [
     initial: "R",
     date: "Maret 2025",
     quote:
-      "Disiplin bahasa Arab dan hafalan Al-Qur'an di pesantren sangat membantu saat melanjutkan pendidikan tinggi. Saat teman-teman lain masih belajar dasar nahwu, saya sudah bisa langsung membaca kitab.",
-  },
+      "Disiplin bahasa Arab dan hafalan Al-Qur'an di pesantren sangat membantu saat melanjutkan pendidikan tinggi. Saat teman-teman lain masih belajar dasar nahwu, saya sudah bisa langsung membaca kitab." },
   {
     no: "004",
     name: "Faisal Ahmad",
@@ -43,8 +40,7 @@ const TESTIMONIALS = [
     initial: "A",
     date: "Agustus 2024",
     quote:
-      "Berkat bimbingan intensif para asatidz, saya berhasil lulus seleksi masuk universitas di Timur Tengah. Fondasi bahasa Arab aktif yang ditanamkan benar-benar menjadi kunci keberhasilan saya.",
-  },
+      "Berkat bimbingan intensif para asatidz, saya berhasil lulus seleksi masuk universitas di Timur Tengah. Fondasi bahasa Arab aktif yang ditanamkan benar-benar menjadi kunci keberhasilan saya." },
 ] as const;
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -57,8 +53,7 @@ function TestimonialCard({
   initial,
   date,
   quote,
-  idx,
-}: (typeof TESTIMONIALS)[number] & { idx: number }) {
+  idx }: (typeof TESTIMONIALS)[number] & { idx: number }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 24, scale: 0.97 }}
@@ -130,15 +125,13 @@ export default function TestimonialsSection() {
       <div
         className="absolute inset-0 pointer-events-none opacity-[0.018]"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230D6E6E' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-        }}
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230D6E6E' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` }}
       />
       <div
         className="absolute -top-48 -left-48 w-[500px] h-[500px] pointer-events-none"
         style={{
           background:
-            "radial-gradient(circle, rgba(176,220,220,0.4) 0%, transparent 65%)",
-        }}
+            "radial-gradient(circle, rgba(176,220,220,0.4) 0%, transparent 65%)" }}
       />
 
       <Container className="relative z-10">

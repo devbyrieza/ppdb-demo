@@ -11,14 +11,12 @@ import {
   ArrowRight,
   Sun,
   Moon,
-  Star,
-} from "lucide-react";
+  Star } from "lucide-react";
 import {
   motion,
   useInView,
   type Variants,
-  type Transition,
-} from "framer-motion";
+  type Transition } from "framer-motion";
 import { useRef } from "react";
 import { Container } from "@/components/layout/Container";
 
@@ -27,26 +25,22 @@ const GALLERY_ITEMS = [
     image: "/images/pembelajaran-kitab-turotz.webp",
     title: "Kajian Kitab Turots",
     description: "Mengkaji Kitab Turots & Ulama Salaf",
-    icon: BookOpen,
-  },
+    icon: BookOpen },
   {
     image: "/images/tahfidz.webp",
     title: "Halaqoh Tahfidz",
     description: "Setoran Hafalan & Muroja'ah",
-    icon: BookMarked,
-  },
+    icon: BookMarked },
   {
     image: "/images/extra-karate.webp",
     title: "Ekstrakurikuler",
     description: "Bela Diri, Panahan & Lifeskill",
-    icon: Target,
-  },
+    icon: Target },
   {
     image: "/images/masjid.webp",
     title: "Masjid Jami'",
     description: "Pusat Ibadah & Tarbiyah Santri",
-    icon: School,
-  },
+    icon: School },
 ] as const;
 
 const SCHEDULE_ITEMS = [
@@ -55,29 +49,25 @@ const SCHEDULE_ITEMS = [
     label: "Tahfidz & Muroja'ah",
     icon: Sun,
     iconBg: "bg-secondary-100",
-    iconColor: "text-secondary-700",
-  },
+    iconColor: "text-secondary-700" },
   {
     time: "Siang",
     label: "Sekolah Formal",
     icon: BookOpen,
     iconBg: "bg-primary-50",
-    iconColor: "text-primary-700",
-  },
+    iconColor: "text-primary-700" },
   {
     time: "Sore",
     label: "Ekskul & Olahraga",
     icon: Target,
     iconBg: "bg-secondary-50",
-    iconColor: "text-secondary-600",
-  },
+    iconColor: "text-secondary-600" },
   {
     time: "Malam",
     label: "Belajar Mandiri",
     icon: Moon,
     iconBg: "bg-primary-50",
-    iconColor: "text-primary-600",
-  },
+    iconColor: "text-primary-600" },
 ] as const;
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -85,9 +75,7 @@ const EASE = [0.16, 1, 0.3, 1] as const;
 const containerVariants: Variants = {
   hidden: {},
   visible: {
-    transition: { staggerChildren: 0.08, delayChildren: 0.1 },
-  },
-};
+    transition: { staggerChildren: 0.08, delayChildren: 0.1 } } };
 
 const fadeUpVariants: Variants = {
   hidden: { opacity: 0, y: 24, filter: "blur(4px)" },
@@ -95,9 +83,7 @@ const fadeUpVariants: Variants = {
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
-    transition: { duration: 0.6, ease: EASE },
-  },
-};
+    transition: { duration: 0.6, ease: EASE } } };
 
 const cardVariants: Variants = {
   hidden: { opacity: 0, y: 24, scale: 0.98 },
@@ -105,26 +91,21 @@ const cardVariants: Variants = {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.6, delay: i * 0.08, ease: EASE },
-  }),
-};
+    transition: { duration: 0.6, delay: i * 0.08, ease: EASE } }) };
 
 const scheduleVariants: Variants = {
   hidden: { opacity: 0, x: -16 },
   visible: (i: number) => ({
     opacity: 1,
     x: 0,
-    transition: { duration: 0.5, delay: i * 0.08, ease: EASE },
-  }),
-};
+    transition: { duration: 0.5, delay: i * 0.08, ease: EASE } }) };
 
 function GalleryCard({
   image,
   title,
   description,
   icon: Icon,
-  index,
-}: (typeof GALLERY_ITEMS)[number] & { index: number }) {
+  index }: (typeof GALLERY_ITEMS)[number] & { index: number }) {
   return (
     <motion.div
       custom={index}
@@ -171,8 +152,7 @@ function ScheduleCard({
   icon: Icon,
   iconBg,
   iconColor,
-  index,
-}: (typeof SCHEDULE_ITEMS)[number] & { index: number }) {
+  index }: (typeof SCHEDULE_ITEMS)[number] & { index: number }) {
   return (
     <motion.div
       custom={index}
@@ -204,8 +184,7 @@ export default function GallerySection() {
   const headerInView = useInView(headerRef, { once: true, margin: "-80px" });
   const scheduleInView = useInView(scheduleRef, {
     once: true,
-    margin: "-60px",
-  });
+    margin: "-60px" });
 
   return (
     <section

@@ -53,8 +53,7 @@ export async function POST(request: NextRequest) {
           file_name: file.name,
           file_path: relativePath,
           file_size: file.size,
-          file_type: file.type,
-        }
+          file_type: file.type }
       });
       return relativePath;
     };
@@ -82,8 +81,7 @@ export async function POST(request: NextRequest) {
       nominal_disetujui: 0,
       dokumen: {
         sktm: sktmPath,
-        permohonan: permohonanPath,
-      },
+        permohonan: permohonanPath },
       submitted_at: new Date().toISOString()
     };
 

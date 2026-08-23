@@ -82,8 +82,7 @@ async function isDuplicate(
         jadwal_belum: "notif_belum_jadwal_terkirim",
         jadwal_tersedia: "notif_jadwal_tersedia_terkirim",
         jadwal_langsung_tersedia: "notif_jadwal_tersedia_terkirim",
-        hasil_tes: "notif_hasil_tes_terkirim",
-    };
+        hasil_tes: "notif_hasil_tes_terkirim" };
 
     const flagColumn = flagMap[jenisNotif];
     if (flagColumn) {
@@ -92,9 +91,7 @@ async function isDuplicate(
             select: {
                 notif_belum_jadwal_terkirim: true,
                 notif_jadwal_tersedia_terkirim: true,
-                notif_hasil_tes_terkirim: true,
-            },
-        });
+                notif_hasil_tes_terkirim: true } });
 
         if (pendaftar) {
             const flagValue =
@@ -119,8 +116,7 @@ async function isDuplicate(
             jenis_notif: jenisNotif,
             status: { in: ["pending", "processing", "sent"] },
             created_at: { gte: recentWindow }
-        },
-    });
+        } });
 
     if (existingLog) {
         console.log(
@@ -149,8 +145,7 @@ async function checkRateLimits(): Promise<{
 
     // Ensure cooldown record exists
     let cooldown = await prisma.whatsappCooldown.findUnique({
-        where: { id: "global" },
-    });
+        where: { id: "global" } });
 
     if (!cooldown) {
         cooldown = await prisma.whatsappCooldown.create({
@@ -158,9 +153,7 @@ async function checkRateLimits(): Promise<{
                 id: "global",
                 sent_count_10m: 0,
                 hourly_count: 0,
-                hourly_reset: now,
-            },
-        });
+                hourly_reset: now } });
     }
 
     // Layer 4: Check active cooldown
@@ -172,8 +165,7 @@ async function checkRateLimits(): Promise<{
         return {
             canSend: false,
             reason: `Cooldown aktif, tunggu ${Math.round(waitMs / 60000)} menit`,
-            waitMs,
-        };
+            waitMs };
     }
 
     // Layer 3: Check hourly limit
@@ -185,8 +177,7 @@ async function checkRateLimits(): Promise<{
         // Reset hourly counter
         await prisma.whatsappCooldown.update({
             where: { id: "global" },
-            data: { hourly_count: 0, hourly_reset: now },
-        });
+            data: { hourly_count: 0, hourly_reset: now } });
     } else if (cooldown.hourly_count >= MAX_MESSAGES_PER_HOUR) {
         const waitMs = (1 - hoursSinceReset) * 60 * 60 * 1000;
         console.log(
@@ -195,8 +186,7 @@ async function checkRateLimits(): Promise<{
         return {
             canSend: false,
             reason: `Limit ${MAX_MESSAGES_PER_HOUR} pesan/jam tercapai`,
-            waitMs,
-        };
+            waitMs };
     }
 
     // Layer 4: Check 10-minute window
@@ -204,9 +194,7 @@ async function checkRateLimits(): Promise<{
     const recentSentCount = await prisma.whatsappLog.count({
         where: {
             status: "sent",
-            sent_at: { gte: tenMinAgo },
-        },
-    });
+            sent_at: { gte: tenMinAgo } } });
 
     if (recentSentCount >= MAX_MESSAGES_PER_10MIN) {
         // Activate cooldown
@@ -217,17 +205,14 @@ async function checkRateLimits(): Promise<{
             where: { id: "global" },
             data: {
                 cooldown_until: cooldownUntil,
-                sent_count_10m: recentSentCount,
-            },
-        });
+                sent_count_10m: recentSentCount } });
         console.log(
             `⏸️ [Layer 4] 10-minute threshold hit (${recentSentCount}/${MAX_MESSAGES_PER_10MIN}), cooldown until ${cooldownUntil.toISOString()}`
         );
         return {
             canSend: false,
             reason: `${MAX_MESSAGES_PER_10MIN} pesan dalam 10 menit, cooldown ${COOLDOWN_MINUTES} menit`,
-            waitMs: COOLDOWN_MINUTES * 60 * 1000,
-        };
+            waitMs: COOLDOWN_MINUTES * 60 * 1000 };
     }
 
     // Layer 3: Check minimum delay between messages
@@ -237,8 +222,7 @@ async function checkRateLimits(): Promise<{
             return {
                 canSend: false,
                 reason: "Jeda minimal belum tercapai",
-                waitMs: MIN_DELAY_MS - timeSinceLastMs,
-            };
+                waitMs: MIN_DELAY_MS - timeSinceLastMs };
         }
     }
 
@@ -271,8 +255,7 @@ async function isNumberBlocked(phone: string): Promise<boolean> {
             phone,
             status: "failed",
             created_at: { gte: new Date(Date.now() - 24 * 60 * 60 * 1000) }, // Last 24h
-        },
-    });
+        } });
 
     if (failedCount >= MAX_RETRY_ATTEMPTS) {
         console.log(
@@ -339,8 +322,7 @@ export async function enqueueWhatsapp(
     // Verify that the pendaftar is active and not soft-deleted
     const pendaftar = await prisma.pendaftar.findUnique({
         where: { id: pendaftarId },
-        select: { deleted_at: true },
-    });
+        select: { deleted_at: true } });
     if (!pendaftar || pendaftar.deleted_at !== null) {
         console.log(`🚫 [Enqueue] Blocked: pendaftar ${pendaftarId} is deleted or not found.`);
         return { queued: false, reason: "Pendaftar telah dihapus (soft-deleted atau tidak ditemukan)" };
@@ -357,8 +339,7 @@ export async function enqueueWhatsapp(
     if (blocked) {
         return {
             queued: false,
-            reason: "Nomor bermasalah (gagal berulang), perlu review admin",
-        };
+            reason: "Nomor bermasalah (gagal berulang), perlu review admin" };
     }
 
     // Create log entry (pending)
@@ -369,9 +350,7 @@ export async function enqueueWhatsapp(
             jenis_notif: jenisNotif,
             status: "pending",
             message_content: messageContent,
-            scheduled_at: scheduledAt || new Date(),
-        },
-    });
+            scheduled_at: scheduledAt || new Date() } });
 
     console.log(
         `📥 [Enqueue] ${jenisNotif} for ${pendaftarId} queued as ${log.id}`
@@ -441,8 +420,7 @@ export async function processWhatsappQueue(): Promise<{
         return {
             processed: false,
             reason: rateLimitCheck.reason,
-            waitMs: rateLimitCheck.waitMs,
-        };
+            waitMs: rateLimitCheck.waitMs };
     }
 
     // Layer 2: Pick ONE message, oldest first (sequential processing)
@@ -459,8 +437,7 @@ export async function processWhatsappQueue(): Promise<{
                 { failed_at: { lte: retryThreshold } }
             ]
         },
-        orderBy: { scheduled_at: "asc" },
-    });
+        orderBy: { scheduled_at: "asc" } });
 
     if (!pendingMessage) {
         return { processed: false, reason: "Tidak ada pesan dalam antrian" };
@@ -474,24 +451,20 @@ export async function processWhatsappQueue(): Promise<{
             data: {
                 status: "failed",
                 error_message: "Message expired (stuck in queue for > 24h)",
-                updated_at: now,
-            },
-        });
+                updated_at: now } });
         console.log(`🚫 [Queue] Discarded obsolete message ${pendingMessage.id} (created: ${pendingMessage.created_at})`);
         return {
             processed: true,
             logId: pendingMessage.id,
             status: "failed",
-            reason: "Message expired",
-        };
+            reason: "Message expired" };
     }
 
     // Verify that the associated pendaftar is active and not soft-deleted
     if (pendingMessage.pendaftar_id) {
         const pendaftar = await prisma.pendaftar.findUnique({
             where: { id: pendingMessage.pendaftar_id },
-            select: { deleted_at: true },
-        });
+            select: { deleted_at: true } });
 
         if (!pendaftar || pendaftar.deleted_at !== null) {
             // Cancel this WhatsApp log
@@ -500,16 +473,13 @@ export async function processWhatsappQueue(): Promise<{
                 data: {
                     status: "failed",
                     error_message: "Pendaftar telah dihapus (soft-deleted atau tidak ditemukan)",
-                    updated_at: new Date(),
-                },
-            });
+                    updated_at: new Date() } });
             console.log(`🚫 [Queue] Skipped sending message ${pendingMessage.id}: pendaftar ${pendingMessage.pendaftar_id} is deleted or not found.`);
             return {
                 processed: true,
                 logId: pendingMessage.id,
                 status: "failed",
-                reason: "Pendaftar telah dihapus",
-            };
+                reason: "Pendaftar telah dihapus" };
         }
     }
 
@@ -524,8 +494,7 @@ export async function processWhatsappQueue(): Promise<{
         if (now < retryAfter) {
             return {
                 processed: false,
-                reason: `Menunggu jeda retry ${RETRY_DELAY_MINUTES} menit`,
-            };
+                reason: `Menunggu jeda retry ${RETRY_DELAY_MINUTES} menit` };
         }
     }
 
@@ -537,15 +506,12 @@ export async function processWhatsappQueue(): Promise<{
             data: {
                 status: "blocked",
                 error_message: "Nomor diblokir: gagal berulang",
-                updated_at: now,
-            },
-        });
+                updated_at: now } });
         return {
             processed: true,
             logId: pendingMessage.id,
             status: "blocked",
-            reason: "Nomor bermasalah",
-        };
+            reason: "Nomor bermasalah" };
     }
 
     // Mark as processing
@@ -554,9 +520,7 @@ export async function processWhatsappQueue(): Promise<{
         data: {
             status: "processing",
             attempt_count: { increment: 1 },
-            updated_at: now,
-        },
-    });
+            updated_at: now } });
 
     // Layer 3: Add random jitter delay before sending
     await waitRandomDelay();
@@ -565,8 +529,7 @@ export async function processWhatsappQueue(): Promise<{
         // SEND via Wablas
         const result = await sendMessage({
             phone: pendingMessage.phone,
-            message: pendingMessage.message_content || "",
-        });
+            message: pendingMessage.message_content || "" });
 
         if (result.status) {
             // SUCCESS — Update log and flags
@@ -576,9 +539,7 @@ export async function processWhatsappQueue(): Promise<{
                     status: "sent",
                     sent_at: new Date(),
                     response_data: JSON.stringify(result.data),
-                    updated_at: new Date(),
-                },
-            });
+                    updated_at: new Date() } });
 
             // Update Pendaftar notification flags (Layer 1)
             if (pendingMessage.pendaftar_id) {
@@ -594,23 +555,19 @@ export async function processWhatsappQueue(): Promise<{
                 update: {
                     last_sent_at: new Date(),
                     hourly_count: { increment: 1 },
-                    updated_at: new Date(),
-                },
+                    updated_at: new Date() },
                 create: {
                     id: "global",
                     last_sent_at: new Date(),
                     hourly_count: 1,
-                    hourly_reset: new Date(),
-                },
-            });
+                    hourly_reset: new Date() } });
 
             console.log(`✅ [Sent] ${pendingMessage.jenis_notif} to ${pendingMessage.phone}`);
 
             return {
                 processed: true,
                 logId: pendingMessage.id,
-                status: "sent",
-            };
+                status: "sent" };
         } else {
             // FAILED — Wablas returned error
             await prisma.whatsappLog.update({
@@ -623,9 +580,7 @@ export async function processWhatsappQueue(): Promise<{
                     failed_at: new Date(),
                     error_message: result.message,
                     response_data: JSON.stringify(result),
-                    updated_at: new Date(),
-                },
-            });
+                    updated_at: new Date() } });
 
             console.error(
                 `❌ [Failed] ${pendingMessage.jenis_notif} to ${pendingMessage.phone}: ${result.message}`
@@ -635,8 +590,7 @@ export async function processWhatsappQueue(): Promise<{
                 processed: true,
                 logId: pendingMessage.id,
                 status: "failed",
-                reason: result.message,
-            };
+                reason: result.message };
         }
     } catch (error: any) {
         // NETWORK ERROR
@@ -649,9 +603,7 @@ export async function processWhatsappQueue(): Promise<{
                         : "pending",
                 failed_at: new Date(),
                 error_message: error.message,
-                updated_at: new Date(),
-            },
-        });
+                updated_at: new Date() } });
 
         console.error(
             `❌ [Error] ${pendingMessage.jenis_notif} to ${pendingMessage.phone}: ${error.message}`
@@ -661,8 +613,7 @@ export async function processWhatsappQueue(): Promise<{
             processed: true,
             logId: pendingMessage.id,
             status: "error",
-            reason: error.message,
-        };
+            reason: error.message };
     }
 }
 
@@ -679,8 +630,7 @@ async function updateNotifFlag(
         jadwal_belum: "notif_belum_jadwal_terkirim",
         jadwal_tersedia: "notif_jadwal_tersedia_terkirim",
         jadwal_langsung_tersedia: "notif_jadwal_tersedia_terkirim",
-        hasil_tes: "notif_hasil_tes_terkirim",
-    };
+        hasil_tes: "notif_hasil_tes_terkirim" };
 
     const flagColumn = flagMap[jenisNotif];
     if (!flagColumn) return; // konfirmasi_jadwal and reminder_h1 don't have persistent flags
@@ -688,8 +638,7 @@ async function updateNotifFlag(
     try {
         await prisma.pendaftar.update({
             where: { id: pendaftarId },
-            data: { [flagColumn]: true },
-        });
+            data: { [flagColumn]: true } });
         console.log(
             `🏷️ [Flag] Set ${flagColumn} = true for ${pendaftarId}`
         );
@@ -1128,8 +1077,7 @@ export async function getQueueStats() {
     ]);
 
     const cooldown = await prisma.whatsappCooldown.findUnique({
-        where: { id: "global" },
-    });
+        where: { id: "global" } });
 
     return {
         queue: { pending, processing, sent, failed, blocked },
@@ -1138,10 +1086,8 @@ export async function getQueueStats() {
                 hourlyCount: cooldown.hourly_count,
                 maxPerHour: MAX_MESSAGES_PER_HOUR,
                 cooldownUntil: cooldown.cooldown_until,
-                lastSentAt: cooldown.last_sent_at,
-            }
-            : null,
-    };
+                lastSentAt: cooldown.last_sent_at }
+            : null };
 }
 
 /**

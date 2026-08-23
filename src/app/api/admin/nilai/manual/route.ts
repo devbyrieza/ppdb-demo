@@ -21,8 +21,7 @@ export async function POST(req: Request) {
       score_kepribadian,
       score_kesiapan,
       override_status,
-      catatan_bypass,
-    } = body;
+      catatan_bypass } = body;
 
     if (!pendaftar_id) {
       return NextResponse.json({ message: "ID Pendaftar wajib diisi" }, { status: 400 });
@@ -45,8 +44,7 @@ export async function POST(req: Request) {
     // Create or update existing NilaiUjian record with priority on the newest one
     const existings = await prisma.nilaiUjian.findMany({
       where: { pendaftar_id },
-      orderBy: { updated_at: "desc" },
-    });
+      orderBy: { updated_at: "desc" } });
 
     let targetId = "";
     if (existings.length > 0) {
@@ -67,9 +65,7 @@ export async function POST(req: Request) {
           input_by_ortu: adminId,
           input_by_quran: adminId,
           catatan_umum: catatan_bypass ? `Bypass Admin Super: ${catatan_bypass}` : "Input Manual oleh Admin Super",
-          updated_at: new Date(),
-        },
-      });
+          updated_at: new Date() } });
     } else {
       // Create new
       const created = await prisma.nilaiUjian.create({
@@ -86,25 +82,21 @@ export async function POST(req: Request) {
           input_by_santri: adminId,
           input_by_ortu: adminId,
           input_by_quran: adminId,
-          catatan_umum: catatan_bypass ? `Bypass Admin Super: ${catatan_bypass}` : "Input Manual oleh Admin Super",
-        },
-      });
+          catatan_umum: catatan_bypass ? `Bypass Admin Super: ${catatan_bypass}` : "Input Manual oleh Admin Super" } });
       targetId = created.id;
     }
 
     // Clean up interviews if any (prevent them from showing up as pending)
     await prisma.jadwalUjian.updateMany({
       where: { pendaftar_id },
-      data: { status_santri: "completed", status_ortu: "completed" },
-    });
+      data: { status_santri: "completed", status_ortu: "completed" } });
 
     // Run recalculation to get total_score, status_kelulusan and update Pendaftar status
     await recalculateNilaiUjian(pendaftar_id, override_status || undefined);
 
     return NextResponse.json({
       success: true,
-      message: "Nilai berhasil disimpan dan dikalkulasi",
-    });
+      message: "Nilai berhasil disimpan dan dikalkulasi" });
   } catch (error: any) {
     console.error("Error in POST /api/admin/nilai/manual:", error);
     return NextResponse.json(

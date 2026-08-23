@@ -14,8 +14,7 @@ const UPLOAD_CONFIG = {
     "image/heic", // iPhone photos
     "image/heif",
     "application/pdf",
-  ],
-};
+  ] };
 
 // Helper function untuk format ukuran file
 function formatFileSize(bytes: number): string {
@@ -34,8 +33,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: "Sesi tidak ditemukan. Silakan login kembali.",
-        },
+          error: "Sesi tidak ditemukan. Silakan login kembali." },
         { status: 401 },
       );
     }
@@ -73,8 +71,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: `Ukuran file terlalu besar! Maksimal ${formatFileSize(UPLOAD_CONFIG.maxSize)}`,
-        },
+          error: `Ukuran file terlalu besar! Maksimal ${formatFileSize(UPLOAD_CONFIG.maxSize)}` },
         { status: 400 },
       );
     }
@@ -88,8 +85,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: `Format file tidak didukung! Gunakan JPG, PNG, PDF, atau WebP. (File Anda: ${safeFileType || "tidak dikenali"})`,
-        },
+          error: `Format file tidak didukung! Gunakan JPG, PNG, PDF, atau WebP. (File Anda: ${safeFileType || "tidak dikenali"})` },
         { status: 400 },
       );
     }
@@ -98,9 +94,7 @@ export async function POST(request: NextRequest) {
     const pendaftar = await prisma.pendaftar.findUnique({
       where: { id: session.id },
       include: {
-        tahun_ajaran: true,
-      },
-    });
+        tahun_ajaran: true } });
 
     if (!pendaftar) {
       return NextResponse.json(
@@ -136,8 +130,7 @@ export async function POST(request: NextRequest) {
           {
             success: false,
             error:
-              "Anda belum dinyatakan DITERIMA, tidak bisa melakukan daftar ulang.",
-          },
+              "Anda belum dinyatakan DITERIMA, tidak bisa melakukan daftar ulang." },
           { status: 400 },
         );
       }
@@ -148,8 +141,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(
           {
             success: false,
-            error: `Nominal pembayaran tidak valid (Minimal Rp ${minAmount.toLocaleString("id-ID")})`,
-          },
+            error: `Nominal pembayaran tidak valid (Minimal Rp ${minAmount.toLocaleString("id-ID")})` },
           { status: 400 },
         );
       }
@@ -200,8 +192,7 @@ export async function POST(request: NextRequest) {
         pendaftar_id: session.id,
         status_pembayaran: "verified",
         jenis_pembayaran: jenisPembayaran as any, // Cast to enum
-      },
-    });
+      } });
 
     if (existingVerified && jenisPembayaran === "PENDAFTARAN") {
       // Untuk pendaftaran, cuma boleh sekali bayar verified.
@@ -215,8 +206,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: "Pembayaran Anda sudah terverifikasi sebelumnya",
-        },
+          error: "Pembayaran Anda sudah terverifikasi sebelumnya" },
         { status: 400 },
       );
     }
@@ -227,9 +217,7 @@ export async function POST(request: NextRequest) {
         pendaftar_id: session.id,
         status_pembayaran: { in: ["pending", "rejected"] },
         jenis_pembayaran: jenisPembayaran as any,
-        metode_pembayaran: "manual",
-      },
-    });
+        metode_pembayaran: "manual" } });
 
     // 8. Detect Real Mime Type via Magic Bytes
     const buffer = Buffer.from(await file.arrayBuffer());
@@ -280,9 +268,7 @@ export async function POST(request: NextRequest) {
           status_pembayaran: "pending",
           catatan_verifikasi: null,
           midtrans_response_json: midtransJson !== null ? midtransJson : undefined,
-          updated_at: new Date(),
-        } as any,
-      });
+          updated_at: new Date() } as any });
     } else {
       pembayaranResult = await prisma.pembayaran.create({
           data: {
@@ -299,9 +285,7 @@ export async function POST(request: NextRequest) {
           bukti_transfer_filename: safeFileName,
           file_data: buffer,
           status_pembayaran: "pending",
-          midtrans_response_json: midtransJson !== null ? midtransJson : undefined,
-        } as any,
-      });
+          midtrans_response_json: midtransJson !== null ? midtransJson : undefined } as any });
     }
 
     // 13. Update status pendaftar (HANYA UNTUK PENDAFTARAN AWAL)
@@ -318,9 +302,7 @@ export async function POST(request: NextRequest) {
           where: { id: session.id },
           data: {
             status_pendaftaran: "payment_verification",
-            updated_at: new Date(),
-          },
-        });
+            updated_at: new Date() } });
       }
     }
 
@@ -333,16 +315,13 @@ export async function POST(request: NextRequest) {
         file_path: filePath,
         file_name: safeFileName,
         file_size: file.size,
-        status: "pending",
-      },
-    });
+        status: "pending" } });
   } catch (error: any) {
     console.error("Error in POST /api/pembayaran/manual/upload:", error);
     return NextResponse.json(
       {
         success: false,
-        error: "Terjadi kesalahan sistem saat mengupload bukti pembayaran",
-      },
+        error: "Terjadi kesalahan sistem saat mengupload bukti pembayaran" },
       { status: 500 },
     );
   }

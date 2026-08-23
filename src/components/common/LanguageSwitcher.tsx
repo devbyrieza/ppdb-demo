@@ -67,8 +67,7 @@ export default function LanguageSwitcher() {
           {
             pageLanguage: "id",
             includedLanguages: "en,ar,ms,zh-CN,id,fr,de,ja,ko",
-            autoDisplay: false,
-          },
+            autoDisplay: false },
           "google_translate_element",
         );
       };

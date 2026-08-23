@@ -11,8 +11,7 @@ import {
   Check,
   X,
   MessageSquare,
-  Eye,
-} from "lucide-react";
+  Eye } from "lucide-react";
 import Link from "next/link";
 import Swal from "sweetalert2";
 
@@ -62,9 +61,7 @@ export default function PerubahanDataPage() {
           admin_note:
             action === "approve"
               ? "Silakan perbaiki data Anda."
-              : "Permintaan ditolak.",
-        }),
-      });
+              : "Permintaan ditolak." }) });
       const result = await res.json();
       if (result.success) {
         fetchRequests();

@@ -25,8 +25,7 @@ export async function getLeastLoadedExaminerFromPool(
     where: {
       start_time: startTime,
       title: { contains: searchKeyword, mode: "insensitive" },
-      is_active: true,
-    },
+      is_active: true },
     select: {
       id: true,
       created_by: true,
@@ -34,11 +33,7 @@ export async function getLeastLoadedExaminerFromPool(
       quota: true,
       creator: {
         select: {
-          jenis_kelamin: true,
-        },
-      },
-    },
-  });
+          jenis_kelamin: true } } } });
 
   if (sessions.length === 0) return null;
 
@@ -78,17 +73,12 @@ export async function getLeastLoadedExaminerFromPool(
             NOT: {
               nama_lengkap: {
                 contains: "tes",
-                mode: "insensitive",
-              },
-            },
-          },
+                mode: "insensitive" } } },
           OR: [
             { penguji_quran_id: id },
             { penguji_santri_id: id },
             { penguji_ortu_id: id },
-          ],
-        },
-      });
+          ] } });
       return { id, count };
     }),
   );
@@ -106,6 +96,5 @@ export async function getLeastLoadedExaminerFromPool(
 
   return {
     examiner_id: winnerId,
-    session_id: winningSession.id,
-  };
+    session_id: winningSession.id };
 }

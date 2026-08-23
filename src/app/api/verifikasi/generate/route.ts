@@ -29,9 +29,7 @@ export async function POST(request: NextRequest) {
         expires_at: expiresAt,
         otp_channel: channel,
         // Prisma model expects status/sent_at which have defaults or are optional, so fine.
-        registration_data: JSON.stringify({ phone, nama }),
-      },
-    });
+        registration_data: JSON.stringify({ phone, nama }) } });
 
     return NextResponse.json({
       success: true,
@@ -53,8 +51,7 @@ Kode verifikasi PPDB Pesantren Al Fath
 • Jangan berikan kode ini kepada siapapun
 • Gunakan kode ini untuk verifikasi di website
 
-Wassalamu'alaikum wr wb`,
-    });
+Wassalamu'alaikum wr wb` });
   } catch (error: any) {
     console.error("Generate OTP error:", error);
     return NextResponse.json(

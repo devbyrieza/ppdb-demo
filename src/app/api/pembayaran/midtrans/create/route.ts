@@ -16,8 +16,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: "Sesi tidak ditemukan. Silakan login kembali.",
-        },
+          error: "Sesi tidak ditemukan. Silakan login kembali." },
         { status: 401 },
       );
     }
@@ -49,8 +48,7 @@ export async function POST(request: NextRequest) {
         {
           success: false,
           error:
-            "Pembayaran online belum dikonfigurasi. Silakan gunakan transfer manual.",
-        },
+            "Pembayaran online belum dikonfigurasi. Silakan gunakan transfer manual." },
         { status: 500 },
       );
     }
@@ -59,9 +57,7 @@ export async function POST(request: NextRequest) {
     const pendaftar = await prisma.pendaftar.findUnique({
       where: { id: session.id },
       include: {
-        tahun_ajaran: true,
-      },
-    });
+        tahun_ajaran: true } });
 
     if (!pendaftar) {
       return NextResponse.json(
@@ -83,16 +79,13 @@ export async function POST(request: NextRequest) {
     const existingPayment = await prisma.pembayaran.findFirst({
       where: {
         pendaftar_id: session.id,
-        status_pembayaran: "verified",
-      },
-    });
+        status_pembayaran: "verified" } });
 
     if (existingPayment) {
       return NextResponse.json(
         {
           success: false,
-          error: "Pembayaran Anda sudah terverifikasi sebelumnya",
-        },
+          error: "Pembayaran Anda sudah terverifikasi sebelumnya" },
         { status: 400 },
       );
     }
@@ -106,26 +99,22 @@ export async function POST(request: NextRequest) {
     const transactionData = {
       transaction_details: {
         order_id: orderId,
-        gross_amount: grossAmount,
-      },
+        gross_amount: grossAmount },
       item_details: [
         {
           id: "BIAYA_PENDAFTARAN",
           price: grossAmount,
           quantity: 1,
-          name: `Biaya Pendaftaran PPDB ${tahunAjaran.nama}`,
-        },
+          name: `Biaya Pendaftaran PPDB ${tahunAjaran.nama}` },
       ],
       customer_details: {
         first_name: pendaftar.nama_lengkap,
         email: pendaftar.email || "noemail@ponpesalimam.sch.id",
-        phone: pendaftar.no_hp || "",
-      },
+        phone: pendaftar.no_hp || "" },
       callbacks: {
         finish: `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/dashboard/pendaftar/pembayaran-pendaftaran?status=finish`,
         error: `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/dashboard/pendaftar/pembayaran-pendaftaran?status=error`,
-        pending: `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/dashboard/pendaftar/pembayaran-pendaftaran?status=pending`,
-      },
+        pending: `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/dashboard/pendaftar/pembayaran-pendaftaran?status=pending` },
       expiry: {
         unit: "days",
         duration: Math.max(
@@ -133,9 +122,7 @@ export async function POST(request: NextRequest) {
           Math.ceil(
             (deadline.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
           ),
-        ),
-      },
-    };
+        ) } };
 
     // 8. Call Midtrans API to get Snap Token
     const midtransUrl = isProduction
@@ -148,10 +135,8 @@ export async function POST(request: NextRequest) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Basic ${authString}`,
-      },
-      body: JSON.stringify(transactionData),
-    });
+        Authorization: `Basic ${authString}` },
+      body: JSON.stringify(transactionData) });
 
     const midtransData = await midtransResponse.json();
 
@@ -160,8 +145,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: "Gagal membuat transaksi pembayaran. Silakan coba lagi.",
-        },
+          error: "Gagal membuat transaksi pembayaran. Silakan coba lagi." },
         { status: 500 },
       );
     }
@@ -178,9 +162,7 @@ export async function POST(request: NextRequest) {
         status_pembayaran: "pending",
         expired_at: new Date(
           now.getTime() + transactionData.expiry.duration * 24 * 60 * 60 * 1000,
-        ),
-      },
-    });
+        ) } });
 
     // 10. Return snap token
     return NextResponse.json({
@@ -191,16 +173,13 @@ export async function POST(request: NextRequest) {
         order_id: orderId,
         snap_token: midtransData.token,
         redirect_url: midtransData.redirect_url,
-        gross_amount: grossAmount,
-      },
-    });
+        gross_amount: grossAmount } });
   } catch (error: any) {
     console.error("Error in POST /api/pembayaran/midtrans/create:", error);
     return NextResponse.json(
       {
         success: false,
-        error: "Terjadi kesalahan saat membuat transaksi pembayaran",
-      },
+        error: "Terjadi kesalahan saat membuat transaksi pembayaran" },
       { status: 500 },
     );
   }

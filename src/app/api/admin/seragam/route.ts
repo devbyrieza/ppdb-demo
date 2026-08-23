@@ -33,9 +33,7 @@ export async function GET(req: Request) {
       where: {
         ...whereClause,
         status_pendaftaran: {
-          in: allowedStatuses,
-        },
-      },
+          in: allowedStatuses } },
       select: {
         id: true,
         nomor_pendaftaran: true,
@@ -50,8 +48,7 @@ export async function GET(req: Request) {
         orang_tua: {
           select: {
             no_hp_ayah: true,
-            no_hp_ibu: true,
-          }
+            no_hp_ibu: true }
         }
       },
       orderBy: { nama_lengkap: "asc" }
@@ -91,8 +88,7 @@ export async function PUT(req: Request) {
       data: {
         ukuran_seragam_baju: ukuran_seragam_baju || null,
         ukuran_seragam_celana: ukuran_seragam_celana || null,
-        ukuran_seragam_almamater: ukuran_seragam_almamater || null,
-      }
+        ukuran_seragam_almamater: ukuran_seragam_almamater || null }
     });
 
     return NextResponse.json({ message: "Berhasil menyimpan ukuran seragam", data: updated });

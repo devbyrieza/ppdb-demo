@@ -36,8 +36,7 @@ export async function PATCH(
       is_active,
       tanggal_buka_pendaftaran,
       tanggal_tutup_pendaftaran,
-      biaya_pendaftaran,
-    } = body;
+      biaya_pendaftaran } = body;
 
     // Use transaction if setting as active
     const result = await prisma.$transaction(async (tx) => {
@@ -46,10 +45,8 @@ export async function PATCH(
         await tx.tahunAjaran.updateMany({
           where: {
             is_active: true,
-            id: { not: id },
-          },
-          data: { is_active: false },
-        });
+            id: { not: id } },
+          data: { is_active: false } });
       }
 
       const updateData: any = {};
@@ -70,8 +67,7 @@ export async function PATCH(
 
       return await tx.tahunAjaran.update({
         where: { id },
-        data: updateData,
-      });
+        data: updateData });
     });
 
     return NextResponse.json({ success: true, data: result });

@@ -9,8 +9,7 @@ import {
   ShieldCheck,
   Zap,
   Building2,
-  ArrowRight,
-} from "lucide-react";
+  ArrowRight } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { motion } from "framer-motion";
 
@@ -19,38 +18,32 @@ const FEATURES = [
     icon: BookOpen,
     title: "Menghidupkan Fitrah Santri",
     description:
-      "Berupaya maksimal menghidupkan fitrah santri, diiringi adab Islami dalam setiap interaksi.",
-  },
+      "Berupaya maksimal menghidupkan fitrah santri, diiringi adab Islami dalam setiap interaksi." },
   {
     icon: ShieldCheck,
     title: "Pengawasan di Setiap Aktivitas",
     description:
-      "Pengawasan menyeluruh di setiap aktivitas santri untuk memastikan perkembangan yang optimal.",
-  },
+      "Pengawasan menyeluruh di setiap aktivitas santri untuk memastikan perkembangan yang optimal." },
   {
     icon: Users,
     title: "Musyrif Tinggal di Kamar Santri",
     description:
-      "Musyrif (Guru Asrama) tinggal langsung di kamar santri untuk pendampingan intensif 24 jam.",
-  },
+      "Musyrif (Guru Asrama) tinggal langsung di kamar santri untuk pendampingan intensif 24 jam." },
   {
     icon: Zap,
     title: "Pendekatan Penyadaran & Pendewasaan",
     description:
-      "Bimbingan dengan pendekatan penyadaran dan pendewasaan pada setiap kesalahan santri, bukan sekadar hukuman.",
-  },
+      "Bimbingan dengan pendekatan penyadaran dan pendewasaan pada setiap kesalahan santri, bukan sekadar hukuman." },
   {
     icon: Award,
     title: "Tidak Ada Hukuman Fisik",
     description:
-      "Tidak menerapkan hukuman yang membahayakan fisik dalam proses pembinaan santri.",
-  },
+      "Tidak menerapkan hukuman yang membahayakan fisik dalam proses pembinaan santri." },
   {
     icon: Building2,
     title: "Tidak Ada Senioritas Menghukum",
     description:
-      "Tidak memberikan kewenangan pada santri senior untuk menghukum santri lain.",
-  },
+      "Tidak memberikan kewenangan pada santri senior untuk menghukum santri lain." },
 ] as const;
 
 export default function FeaturesSection() {

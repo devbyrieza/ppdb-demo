@@ -11,22 +11,19 @@ const CONTACT_INFO = [
     title: "Lokasi Pesantren",
     content: "Jl. Pesantren Raya No. 1",
     detail: "Cikembar, Sukabumi",
-    accent: "primary" as const,
-  },
+    accent: "primary" as const },
   {
     icon: Phone,
     title: "Layanan Telepon",
     content: "+62 812-8530-0800",
     detail: "Senin-Sabtu (08.00 - 16.00)",
-    accent: "secondary" as const,
-  },
+    accent: "secondary" as const },
   {
     icon: Mail,
     title: "Email Resmi",
     content: "info@pesantren-alfath.or.id",
     detail: "Kirim pertanyaan kapan saja",
-    accent: "primary" as const,
-  },
+    accent: "primary" as const },
 ] as const;
 
 const EASE = [0.16, 1, 0.3, 1] as const;

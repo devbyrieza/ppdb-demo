@@ -27,29 +27,22 @@ export async function GET() {
       prisma.pembayaran.count({
         where: {
           status_pembayaran: { notIn: ["verified", "rejected"] },
-          pendaftar: baseWhere,
-        },
-      }),
+          pendaftar: baseWhere } }),
       prisma.dokumen.count({
         where: {
           is_verified: false,
           catatan: null,
-          pendaftar: baseWhere,
-        },
-      }),
+          pendaftar: baseWhere } }),
       prisma.dataPerubahanRequest.count({
         where: {
           status: { in: ["pending", "submitted"] },
-          pendaftar: baseWhere,
-        },
-      })
+          pendaftar: baseWhere } })
     ]);
 
     return NextResponse.json({
       unverifiedPaymentsCount,
       unverifiedDocsCount,
-      pendingDataRequestsCount,
-    });
+      pendingDataRequestsCount });
   } catch (error) {
     console.error("Error fetching sidebar counts:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

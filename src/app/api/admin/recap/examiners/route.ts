@@ -14,42 +14,29 @@ export async function GET() {
                 "pewawancara_calsan",
                 "pewawancara_cawalsan",
                 "admin_super",
-              ],
-            },
-          },
+              ] } },
           {
             secondary_roles: {
               hasSome: [
                 "penguji_calsan",
                 "pewawancara_calsan",
                 "pewawancara_cawalsan",
-              ],
-            },
-          },
-        ],
-      },
+              ] } },
+        ] },
       select: {
         id: true,
         full_name: true,
-        role: true,
-      },
-    });
+        role: true } });
 
     // 2. Fetch all valid schedules matching Monitoring Jadwal exclusions
     const schedules = await prisma.jadwalUjian.findMany({
       where: {
         pendaftar: {
-          deleted_at: null,
-        },
-      },
+          deleted_at: null } },
       include: {
         pendaftar: {
           select: {
-            nama_lengkap: true,
-          },
-        },
-      },
-    });
+            nama_lengkap: true } } } });
 
     // 3. Filter out "tes" data exactly like Monitoring Jadwal
     const cleanedData = schedules.filter((s) => {
@@ -82,9 +69,7 @@ export async function GET() {
             quran: quranCount,
             santri: santriCount,
             ortu: ortuCount,
-            total: quranCount + santriCount + ortuCount,
-          },
-        };
+            total: quranCount + santriCount + ortuCount } };
       })
       .filter((item) => item.counts.total > 0); // Only show those who have actually been scheduled
 

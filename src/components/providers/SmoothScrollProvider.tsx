@@ -9,8 +9,7 @@ interface SmoothScrollProviderProps {
 }
 
 export default function SmoothScrollProvider({
-  children,
-}: SmoothScrollProviderProps) {
+  children }: SmoothScrollProviderProps) {
   const lenisRef = useRef<Lenis | null>(null);
   const pathname = usePathname();
 
@@ -24,8 +23,7 @@ export default function SmoothScrollProvider({
       smoothWheel: true,
 
       // Advanced settings
-      infinite: false,
-    });
+      infinite: false });
 
     // Expose lenis instance globally for custom hooks (like scrollRestoration)
     (window as any).lenis = lenis;

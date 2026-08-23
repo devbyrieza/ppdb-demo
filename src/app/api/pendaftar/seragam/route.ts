@@ -40,14 +40,11 @@ export async function PUT(req: Request) {
       data: {
         ukuran_seragam_baju,
         ukuran_seragam_celana,
-        ukuran_seragam_almamater,
-      },
-    });
+        ukuran_seragam_almamater } });
 
     return NextResponse.json({
       success: true,
-      message: "Data ukuran seragam berhasil disimpan",
-    });
+      message: "Data ukuran seragam berhasil disimpan" });
   } catch (error: any) {
     console.error("Error in PUT /api/pendaftar/seragam:", error);
     return NextResponse.json(

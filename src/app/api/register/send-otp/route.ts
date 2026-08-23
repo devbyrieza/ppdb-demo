@@ -35,9 +35,7 @@ export async function POST(request: NextRequest) {
           otp_hash: hashedOTP,
           expires_at: expiresAt,
           otp_channel: otp_channel,
-          registration_data: body,
-        },
-      });
+          registration_data: body } });
 
       return NextResponse.json({
         success: true,
@@ -52,8 +50,7 @@ export async function POST(request: NextRequest) {
       channel: otp_channel as any,
       identifier: normalizedPhone,
       otp,
-      nama: nama_lengkap,
-    });
+      nama: nama_lengkap });
 
     if (!otpResult.success) {
       // Graceful fallback: jika Wablas gagal, tetap simpan OTP ke DB
@@ -66,15 +63,12 @@ export async function POST(request: NextRequest) {
           otp_hash: hashedOTP,
           expires_at: expiresAt,
           otp_channel: otp_channel,
-          registration_data: body,
-        },
-      });
+          registration_data: body } });
 
       return NextResponse.json({
         success: true,
         message: "OTP disimpan (pengiriman WA tertunda, coba verifikasi manual)",
-        fallback: true,
-      });
+        fallback: true });
     }
 
     await prisma.otpVerification.create({
@@ -83,9 +77,7 @@ export async function POST(request: NextRequest) {
         otp_hash: hashedOTP,
         expires_at: expiresAt,
         otp_channel: otp_channel,
-        registration_data: body,
-      },
-    });
+        registration_data: body } });
 
     return NextResponse.json({ success: true, message: "OTP Sent Successfully" });
   } catch (error: any) {

@@ -27,8 +27,7 @@ export async function GET(request: NextRequest) {
     const skip = (page - 1) * limit;
 
     const whereClause: any = {
-      deleted_at: { not: null },
-    };
+      deleted_at: { not: null } };
 
     if (search) {
       whereClause.OR = [
@@ -44,8 +43,7 @@ export async function GET(request: NextRequest) {
     // Fetch soft-deleted pendaftar
     const [total, data] = await prisma.$transaction([
       prisma.pendaftar.count({
-        where: whereClause,
-      }),
+        where: whereClause }),
       prisma.pendaftar.findMany({
         where: whereClause,
         select: {
@@ -60,13 +58,10 @@ export async function GET(request: NextRequest) {
           deleted_at: true,
           deleted_by: true,
           tahun_ajaran: {
-            select: { nama: true },
-          },
-        },
+            select: { nama: true } } },
         orderBy: { deleted_at: "desc" },
         skip,
-        take: limit,
-      }),
+        take: limit }),
     ]);
 
     // Get deleted_by names
@@ -78,8 +73,7 @@ export async function GET(request: NextRequest) {
       deletedByIds.length > 0
         ? await prisma.profile.findMany({
             where: { id: { in: deletedByIds } },
-            select: { id: true, full_name: true },
-          })
+            select: { id: true, full_name: true } })
         : [];
 
     const profileMap = new Map(profiles.map((p) => [p.id, p.full_name]));
@@ -88,8 +82,7 @@ export async function GET(request: NextRequest) {
       ...item,
       deleted_by_name: item.deleted_by
         ? profileMap.get(item.deleted_by) || "Admin"
-        : "Unknown",
-    }));
+        : "Unknown" }));
 
     return NextResponse.json({
       data: transformedData,
@@ -97,9 +90,7 @@ export async function GET(request: NextRequest) {
         page,
         limit,
         total,
-        totalPages: Math.ceil(total / limit),
-      },
-    });
+        totalPages: Math.ceil(total / limit) } });
   } catch (error) {
     console.error("Error in admin pendaftar trash API:", error);
     return NextResponse.json(

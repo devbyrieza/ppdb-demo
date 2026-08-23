@@ -4,8 +4,7 @@ import { prisma } from "@/lib/prisma";
 import {
   calculateAkademikScore,
   calculateKepribadianScore,
-  calculateKesiapanScore,
-} from "@/lib/grading";
+  calculateKesiapanScore } from "@/lib/grading";
 import { recalculateNilaiUjian } from "@/lib/scoring";
 
 export async function POST(req: Request) {
@@ -44,8 +43,7 @@ export async function POST(req: Request) {
     // --- ACCESS GUARD: Check pendaftar status ---
     const pendaftar = await prisma.pendaftar.findUnique({
       where: { id: pendaftar_id },
-      select: { status_pendaftaran: true },
-    });
+      select: { status_pendaftaran: true } });
 
     const ALLOWED_STATUSES = [
       "docs_verified",
@@ -67,8 +65,7 @@ export async function POST(req: Request) {
       return NextResponse.json(
         {
           error:
-            "Forbidden: Tahap seleksi belum diizinkan karena berkas belum diverifikasi.",
-        },
+            "Forbidden: Tahap seleksi belum diizinkan karena berkas belum diverifikasi." },
         { status: 403 },
       );
     }
@@ -102,13 +99,11 @@ export async function POST(req: Request) {
     // 3. Save to DB
     // Check if NilaiUjian exists
     let nilai = await prisma.nilaiUjian.findFirst({
-      where: { pendaftar_id },
-    });
+      where: { pendaftar_id } });
 
     if (!nilai) {
       nilai = await prisma.nilaiUjian.create({
-        data: { pendaftar_id },
-      });
+        data: { pendaftar_id } });
     }
 
     // Update specific fields
@@ -117,9 +112,7 @@ export async function POST(req: Request) {
       data: {
         [dbFieldScore]: score,
         [dbFieldDetail]: answers,
-        updated_at: new Date(),
-      },
-    });
+        updated_at: new Date() } });
 
     // 4. Trigger recalculation so total_score and status_kelulusan update
     await recalculateNilaiUjian(pendaftar_id);
@@ -128,8 +121,7 @@ export async function POST(req: Request) {
     if (pendaftar.status_pendaftaran === "docs_verified") {
       await prisma.pendaftar.update({
         where: { id: pendaftar_id },
-        data: { status_pendaftaran: "selection" },
-      });
+        data: { status_pendaftaran: "selection" } });
     }
 
     return NextResponse.json({ success: true, score, type });

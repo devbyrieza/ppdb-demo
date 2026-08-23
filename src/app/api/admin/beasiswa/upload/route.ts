@@ -24,8 +24,7 @@ const BERKAS_LABELS: Record<BerkasFieldKey, string> = {
   file_ktp_path: "KTP Orangtua Ayah",
   file_ktp_ibu_path: "KTP Orangtua Ibu",
   file_prestasi_path: "Bukti Prestasi / Hafalan",
-  file_permohonan_path: "Surat Permohonan Keringanan Biaya",
-};
+  file_permohonan_path: "Surat Permohonan Keringanan Biaya" };
 
 // POST: Upload a berkas for an existing pengajuan (admin_super only)
 export async function POST(req: NextRequest) {
@@ -51,8 +50,7 @@ export async function POST(req: NextRequest) {
 
     // Check pengajuan exists
     const pengajuan = await prisma.pengajuanBeasiswa.findUnique({
-      where: { pendaftar_id: pendaftarId },
-    });
+      where: { pendaftar_id: pendaftarId } });
 
     if (!pengajuan) {
       return NextResponse.json({ error: "Pengajuan beasiswa tidak ditemukan untuk pendaftar ini" }, { status: 404 });
@@ -99,14 +97,12 @@ export async function POST(req: NextRequest) {
     // Update record
     await prisma.pengajuanBeasiswa.update({
       where: { pendaftar_id: pendaftarId },
-      data: { [fieldKey]: filePath, updated_at: new Date() },
-    });
+      data: { [fieldKey]: filePath, updated_at: new Date() } });
 
     return NextResponse.json({
       success: true,
       message: `${BERKAS_LABELS[fieldKey as BerkasFieldKey]} berhasil diupload.`,
-      data: { field_key: fieldKey, file_path: filePath },
-    });
+      data: { field_key: fieldKey, file_path: filePath } });
   } catch (error: any) {
     console.error("[admin/beasiswa/upload POST] error:", error);
     return NextResponse.json({ error: "Terjadi kesalahan server" }, { status: 500 });
@@ -134,8 +130,7 @@ export async function DELETE(req: NextRequest) {
     }
 
     const pengajuan = await prisma.pengajuanBeasiswa.findUnique({
-      where: { pendaftar_id: pendaftarId },
-    });
+      where: { pendaftar_id: pendaftarId } });
 
     if (!pengajuan) {
       return NextResponse.json({ error: "Pengajuan tidak ditemukan" }, { status: 404 });
@@ -148,13 +143,11 @@ export async function DELETE(req: NextRequest) {
 
     await prisma.pengajuanBeasiswa.update({
       where: { pendaftar_id: pendaftarId },
-      data: { [fieldKey]: null, updated_at: new Date() },
-    });
+      data: { [fieldKey]: null, updated_at: new Date() } });
 
     return NextResponse.json({
       success: true,
-      message: `${BERKAS_LABELS[fieldKey as BerkasFieldKey]} berhasil dihapus.`,
-    });
+      message: `${BERKAS_LABELS[fieldKey as BerkasFieldKey]} berhasil dihapus.` });
   } catch (error: any) {
     console.error("[admin/beasiswa/upload DELETE] error:", error);
     return NextResponse.json({ error: "Terjadi kesalahan server" }, { status: 500 });

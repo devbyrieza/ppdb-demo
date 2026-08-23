@@ -25,8 +25,7 @@ const StatWidget = ({ label, value, icon: Icon, color, trend, breakdown, highlig
     amber: "from-amber-500 to-amber-600",
     purple: "from-primary-500 to-primary-700",
     rose: "from-rose-500 to-rose-600",
-    slate: "from-slate-500 to-slate-600",
-  };
+    slate: "from-slate-500 to-slate-600" };
 
   return (
     <motion.div 
@@ -255,8 +254,7 @@ export default function AdminDashboardPage() {
             title: `DATA ${cardLabel.toUpperCase()}`,
             subTitle: `Tanggal Ekspor: ${new Date().toLocaleDateString("id-ID")}`,
             header,
-            data: data.map((item) => Object.values(item)),
-          },
+            data: data.map((item) => Object.values(item)) },
         ];
 
         Object.keys(jenjangGroups)
@@ -271,14 +269,12 @@ export default function AdminDashboardPage() {
               title: `DATA ${cardLabel.toUpperCase()} - ${j}`,
               subTitle: `Jenjang: ${j} | Tanggal Ekspor: ${new Date().toLocaleDateString("id-ID")}`,
               header,
-              data: sheetData.map((item) => Object.values(item)),
-            });
+              data: sheetData.map((item) => Object.values(item)) });
           });
 
         await exportToExcelProfessional({
           fileName: filename,
-          sheets,
-        });
+          sheets });
       } else {
         const headers = [
           "No.",
@@ -348,8 +344,7 @@ export default function AdminDashboardPage() {
       cancelButtonColor: "#94a3b8",
       confirmButtonText: `Ya, Promosikan Semua ${stats.cadangan}!`,
       cancelButtonText: "Batal",
-      reverseButtons: true,
-    });
+      reverseButtons: true });
 
     if (!result.isConfirmed) return;
 
@@ -358,8 +353,7 @@ export default function AdminDashboardPage() {
       const response = await fetch("/api/admin/pendaftar/promote-cadangan", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({}),
-      });
+        body: JSON.stringify({}) });
 
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Gagal");
@@ -368,8 +362,7 @@ export default function AdminDashboardPage() {
         title: "Berhasil!",
         text: data.message || `${data.updated_count} Pendaftar berhasil dipindahkan ke Diterima.`,
         icon: "success",
-        confirmButtonColor: "#059669",
-      });
+        confirmButtonColor: "#059669" });
       fetchStats();
     } catch (error: any) {
       Swal.fire("Gagal!", error.message || "Terjadi kesalahan.", "error");

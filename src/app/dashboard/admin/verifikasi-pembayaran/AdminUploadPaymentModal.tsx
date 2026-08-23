@@ -15,8 +15,7 @@ export default function AdminUploadPaymentModal({
   isOpen,
   onClose,
   onSuccess,
-  activeTab,
-}: AdminUploadPaymentModalProps) {
+  activeTab }: AdminUploadPaymentModalProps) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<any[]>([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -90,8 +89,7 @@ export default function AdminUploadPaymentModal({
 
       const res = await fetch("/api/admin/pembayaran/upload-for-pendaftar", {
         method: "POST",
-        body: formData,
-      });
+        body: formData });
 
       const data = await res.json();
       if (data.success) {

@@ -26,8 +26,7 @@ import {
   Briefcase,
   GraduationCap,
   Users,
-  AlertTriangle,
-} from "lucide-react";
+  AlertTriangle } from "lucide-react";
 import DataLengkapForm from "./DataLengkapForm";
 import Swal from "sweetalert2";
 
@@ -147,8 +146,7 @@ function DokumenCard({
   isUploading,
   uploadProgress,
   onUpload,
-  onPreview,
-}: DokumenCardProps) {
+  onPreview }: DokumenCardProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -317,8 +315,7 @@ function DokumenCard({
                           {
                             day: "numeric",
                             month: "short",
-                            year: "numeric",
-                          },
+                            year: "numeric" },
                         )
                       : "-"}
                   </p>
@@ -340,8 +337,7 @@ function DokumenCard({
                     {new Date(dokumen.verified_at).toLocaleDateString("id-ID", {
                       day: "numeric",
                       month: "long",
-                      year: "numeric",
-                    })}
+                      year: "numeric" })}
                   </p>
                 </div>
               )}
@@ -619,8 +615,7 @@ export default function KelengkapanBerkasTab() {
 
       const response = await fetch("/api/upload/dokumen", {
         method: "POST",
-        body: formData,
-      });
+        body: formData });
 
       clearInterval(progressInterval);
       setUploadProgress((prev) => ({ ...prev, [key]: 100 }));
@@ -1305,8 +1300,7 @@ export default function KelengkapanBerkasTab() {
                   try {
                     setLoading(true);
                     const res = await fetch("/api/pendaftar/konfirmasi-data", {
-                      method: "POST",
-                    });
+                      method: "POST" });
                     const result = await res.json();
                     if (result.success) {
                       router.push("/dashboard/pendaftar/upload-berkas");
@@ -1344,8 +1338,7 @@ export default function KelengkapanBerkasTab() {
 
 function SummaryItem({
   label,
-  value,
-}: {
+  value }: {
   label: string;
   value: string | number;
 }) {

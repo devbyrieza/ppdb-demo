@@ -87,13 +87,11 @@ export async function POST(req: Request) {
 
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-flash",
-      systemInstruction: SYSTEM_PROMPT,
-    });
+      systemInstruction: SYSTEM_PROMPT });
 
     // Initialize chat session with history
     const chat = model.startChat({
-      history: history || [],
-    });
+      history: history || [] });
 
     // Send new message
     const result = await chat.sendMessage(message);

@@ -33,8 +33,7 @@ export async function POST(req: Request) {
         orang_tua: {
           select: {
             no_hp_ayah: true,
-            no_hp_ibu: true,
-          }
+            no_hp_ibu: true }
         }
       }
     });

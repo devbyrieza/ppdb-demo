@@ -20,8 +20,7 @@ export default function PageTransition({ children }: PageTransitionProps) {
         exit={{ opacity: 0 }}
         transition={{
           duration: 0.15,
-          ease: "easeOut",
-        }}
+          ease: "easeOut" }}
         className="w-full"
       >
         {children}

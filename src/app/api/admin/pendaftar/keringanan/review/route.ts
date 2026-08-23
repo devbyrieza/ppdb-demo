@@ -76,8 +76,7 @@ export async function POST(request: NextRequest) {
       details: { 
         message: `Review Pengajuan Keringanan: ${action}`,
         nominal_disetujui: action === "approved" ? nominal : 0 
-      },
-    });
+      } });
 
     await invalidateAdminPendaftarCache();
 

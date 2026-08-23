@@ -11,8 +11,7 @@ import {
   GraduationCap,
   Globe,
   CheckCircle2,
-  Gift,
-} from "lucide-react";
+  Gift } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { motion, useReducedMotion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
@@ -26,10 +25,7 @@ const fadeUp = {
     filter: "blur(0px)",
     transition: {
       duration: 0.75,
-      ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-    },
-  },
-};
+      ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } } };
 
 const fadeIn = {
   hidden: { opacity: 0, scale: 0.97 },
@@ -38,10 +34,7 @@ const fadeIn = {
     scale: 1,
     transition: {
       duration: 0.9,
-      ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-    },
-  },
-};
+      ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } } };
 
 export default function HeroSection() {
   const [session, setSession] = useState<any>(null);
@@ -79,8 +72,7 @@ export default function HeroSection() {
       className="relative min-h-[100vh] md:min-h-[90vh] lg:min-h-[85vh] flex items-center pt-24 pb-20 md:pt-28 lg:pt-24 lg:pb-20 overflow-hidden"
       style={{
         background:
-          "linear-gradient(160deg, var(--color-surface-50) 0%, var(--color-white) 55%, var(--color-primary-50) 100%)",
-      }}
+          "linear-gradient(160deg, var(--color-surface-50) 0%, var(--color-white) 55%, var(--color-primary-50) 100%)" }}
     >
       {/* CiroAI Atmospheric Background Blobs */}
       <div className="glow-blob glow-blob-primary w-[60%] h-[70%] -top-[20%] -left-[10%] opacity-20" aria-hidden="true" />
@@ -92,14 +84,12 @@ export default function HeroSection() {
           className="absolute inset-0 opacity-[0.015]"
           style={{
             backgroundImage: `linear-gradient(var(--color-primary-500) 1px, transparent 1px), linear-gradient(90deg, var(--color-primary-500) 1px, transparent 1px)`,
-            backgroundSize: "64px 64px",
-          }}
+            backgroundSize: "64px 64px" }}
         />
         <div
           className="absolute inset-0 opacity-[0.012]"
           style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-          }}
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")` }}
         />
       </div>
 
@@ -131,8 +121,7 @@ export default function HeroSection() {
               <h1
                 className="leading-[1.06] tracking-[-0.03em] mx-auto lg:mx-0 max-w-2xl lg:max-w-none font-black text-balance text-center lg:text-left"
                 style={{
-                  fontSize: "clamp(2.5rem, 5vw + 1rem, 5rem)",
-                }}
+                  fontSize: "clamp(2.5rem, 5vw + 1rem, 5rem)" }}
               >
                 <span className="block text-ink-950">
                   Kaderisasi Ummat
@@ -251,8 +240,7 @@ export default function HeroSection() {
                       style={{
                         background: item.bg,
                         borderColor: "var(--color-white)",
-                        boxShadow: "var(--shadow-xs)",
-                      }}
+                        boxShadow: "var(--shadow-xs)" }}
                       aria-hidden="true"
                     />
                   ))}
@@ -311,8 +299,7 @@ export default function HeroSection() {
                 border: "10px solid var(--color-white)",
                 boxShadow:
                   "var(--shadow-premium-2xl), 0 0 0 1px var(--color-primary-100)",
-                overflow: "hidden",
-              }}
+                overflow: "hidden" }}
             >
               <Image
                 src="/images/hero.jpg"
@@ -323,8 +310,7 @@ export default function HeroSection() {
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
                 className="w-full h-auto object-cover aspect-[4/3]"
                 style={{
-                  transition: "transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)",
-                }}
+                  transition: "transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)" }}
                 onMouseEnter={(e) => {
                   if (!shouldReduceMotion)
                     e.currentTarget.style.transform = "scale(1.04)";
@@ -337,8 +323,7 @@ export default function HeroSection() {
                 className="absolute inset-0 pointer-events-none"
                 style={{
                   background:
-                    "linear-gradient(to top, rgba(10, 22, 16, 0.50) 0%, transparent 55%)",
-                }}
+                    "linear-gradient(to top, rgba(10, 22, 16, 0.50) 0%, transparent 55%)" }}
                 aria-hidden="true"
               />
             </div>
@@ -396,8 +381,7 @@ export default function HeroSection() {
                 duration: 6,
                 repeat: Infinity,
                 ease: "easeInOut",
-                delay: 1,
-              }}
+                delay: 1 }}
               className="absolute -bottom-8 -left-6 md:-bottom-6 lg:-bottom-8 md:-left-4 lg:-left-6 z-20 scale-[0.8] md:scale-100"
               style={{ transformOrigin: "left center" }}
             >
@@ -421,14 +405,12 @@ export default function HeroSection() {
               initial={{
                 opacity: 0,
                 scale: shouldReduceMotion ? 1 : 0.5,
-                rotate: shouldReduceMotion ? -6 : -25,
-              }}
+                rotate: shouldReduceMotion ? -6 : -25 }}
               animate={badgeAnimate}
               transition={{
                 duration: shouldReduceMotion ? 0.01 : 0.85,
                 delay: shouldReduceMotion ? 0 : 0.9,
-                ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-              }}
+                ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
               whileHover={shouldReduceMotion ? {} : { rotate: 0, scale: 1.05 }}
               className="absolute -bottom-16 -right-4 md:bottom-6 md:-right-6 lg:bottom-10 lg:-right-10 z-30 cursor-default scale-[0.85] md:scale-100"
               style={{
@@ -438,8 +420,7 @@ export default function HeroSection() {
                 borderRadius: "1.25rem",
                 border: "4px solid var(--color-white)",
                 boxShadow: "var(--shadow-premium-lg)",
-                transition: "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
-              }}
+                transition: "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)" }}
             >
               <div className="text-center min-w-[80px]">
                 <p

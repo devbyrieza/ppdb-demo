@@ -24,8 +24,7 @@ const DOKUMEN_CONFIG: Record<
       "image/heic",
       "application/pdf",
     ],
-    required: true,
-  },
+    required: true },
   akta_kelahiran: {
     label: "Scan Akte Kelahiran",
     maxSize: 10 * 1024 * 1024,
@@ -37,8 +36,7 @@ const DOKUMEN_CONFIG: Record<
       "image/heic",
       "application/pdf",
     ],
-    required: true,
-  },
+    required: true },
   rapor_sem1: {
     label: "Scan Rapor Semester Ganjil Terakhir",
     maxSize: 10 * 1024 * 1024,
@@ -50,8 +48,7 @@ const DOKUMEN_CONFIG: Record<
       "image/heic",
       "application/pdf",
     ],
-    required: true,
-  },
+    required: true },
   rapor_sem2: {
     label: "Scan Rapor Semester Genap Terakhir",
     maxSize: 10 * 1024 * 1024,
@@ -63,8 +60,7 @@ const DOKUMEN_CONFIG: Record<
       "image/heic",
       "application/pdf",
     ],
-    required: true,
-  },
+    required: true },
   nisn: {
     label: "Scan NISN",
     maxSize: 10 * 1024 * 1024,
@@ -76,8 +72,7 @@ const DOKUMEN_CONFIG: Record<
       "image/heic",
       "application/pdf",
     ],
-    required: true,
-  },
+    required: true },
   foto_setengah_badan: {
     label: "Foto Setengah Badan",
     maxSize: 10 * 1024 * 1024,
@@ -88,8 +83,7 @@ const DOKUMEN_CONFIG: Record<
       "image/webp",
       "image/heic",
     ],
-    required: true,
-  },
+    required: true },
   surat_kesehatan: {
     label: "Surat Keterangan Sehat",
     maxSize: 10 * 1024 * 1024,
@@ -101,8 +95,7 @@ const DOKUMEN_CONFIG: Record<
       "image/heic",
       "application/pdf",
     ],
-    required: true,
-  },
+    required: true },
   pakta_integritas_santri: {
     label: "Scan Pakta Integritas Calon Santri",
     maxSize: 10 * 1024 * 1024,
@@ -114,8 +107,7 @@ const DOKUMEN_CONFIG: Record<
       "image/heic",
       "application/pdf",
     ],
-    required: true,
-  },
+    required: true },
   pakta_integritas_ortu: {
     label: "Scan Pakta Integritas Calon Orangtua/Wali Santri",
     maxSize: 10 * 1024 * 1024,
@@ -127,8 +119,7 @@ const DOKUMEN_CONFIG: Record<
       "image/heic",
       "application/pdf",
     ],
-    required: true,
-  },
+    required: true },
   pernyataan_bebas_negatif: {
     label: "Scan Pernyataan Bebas Perilaku Negatif",
     maxSize: 10 * 1024 * 1024,
@@ -140,9 +131,7 @@ const DOKUMEN_CONFIG: Record<
       "image/heic",
       "application/pdf",
     ],
-    required: true,
-  },
-};
+    required: true } };
 
 function formatFileSize(bytes: number): string {
   if (bytes < 1024) return bytes + " B";
@@ -206,8 +195,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: `Ukuran file terlalu besar! Maksimal ${formatFileSize(config.maxSize)}`,
-        },
+          error: `Ukuran file terlalu besar! Maksimal ${formatFileSize(config.maxSize)}` },
         { status: 400 },
       );
     }
@@ -232,8 +220,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: `Format file tidak didukung. File Anda: ${file.type || "tidak dikenali"}`,
-        },
+          error: `Format file tidak didukung. File Anda: ${file.type || "tidak dikenali"}` },
         { status: 400 },
       );
     }
@@ -241,8 +228,7 @@ export async function POST(request: NextRequest) {
     // 6. Ambil data pendaftar (Check existence)
     const pendaftar = await prisma.pendaftar.findUnique({
       where: { id: session.id },
-      select: { nomor_pendaftaran: true },
-    });
+      select: { nomor_pendaftaran: true } });
 
     if (!pendaftar) {
       return NextResponse.json(
@@ -278,9 +264,7 @@ export async function POST(request: NextRequest) {
     const existingDokumen = await prisma.dokumen.findFirst({
       where: {
         pendaftar_id: session.id,
-        jenis_dokumen: jenisDokumen,
-      },
-    });
+        jenis_dokumen: jenisDokumen } });
 
     if (existingDokumen) {
       await prisma.dokumen.update({
@@ -295,9 +279,7 @@ export async function POST(request: NextRequest) {
           verified_by: null,
           verified_at: null,
           catatan: null,
-          updated_at: new Date(),
-        },
-      });
+          updated_at: new Date() } });
     } else {
       await prisma.dokumen.create({
         data: {
@@ -308,9 +290,7 @@ export async function POST(request: NextRequest) {
           file_size: file.size,
           file_type: detectedType, // Use detected type
           file_data: isRunningOnVercel() ? buffer : null,
-          is_verified: false,
-        },
-      });
+          is_verified: false } });
     }
 
     // UPDATE STATUS PENDAFTAR: REMOVED AUTO UPDATE
@@ -336,9 +316,7 @@ export async function POST(request: NextRequest) {
         file_name: fileName,
         file_path: filePath,
         file_size: file.size,
-        file_type: file.type,
-      },
-    });
+        file_type: file.type } });
   } catch (error: any) {
     console.error("Upload error:", error);
     return NextResponse.json(
@@ -351,6 +329,5 @@ export async function POST(request: NextRequest) {
 export async function GET() {
   return NextResponse.json({
     success: true,
-    data: DOKUMEN_CONFIG,
-  });
+    data: DOKUMEN_CONFIG });
 }

@@ -16,8 +16,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: "Sesi tidak ditemukan. Silakan login kembali.",
-        },
+          error: "Sesi tidak ditemukan. Silakan login kembali." },
         { status: 401 },
       );
     }
@@ -45,9 +44,7 @@ export async function GET(request: NextRequest) {
     const pendaftar = await prisma.pendaftar.findUnique({
       where: { id: pendaftarId },
       include: {
-        tahun_ajaran: true,
-      },
-    });
+        tahun_ajaran: true } });
 
     if (!pendaftar) {
       return NextResponse.json(
@@ -59,8 +56,7 @@ export async function GET(request: NextRequest) {
     // 3. Ambil data pembayaran terbaru (jika ada)
     const pembayaran = await prisma.pembayaran.findFirst({
       where: { pendaftar_id: pendaftarId },
-      orderBy: { created_at: "desc" },
-    });
+      orderBy: { created_at: "desc" } });
 
     // 4. Hitung deadline pembayaran
     const tahunAjaran = {
@@ -68,8 +64,7 @@ export async function GET(request: NextRequest) {
       nama: pendaftar.tahun_ajaran.nama,
       biaya_pendaftaran: Number(pendaftar.tahun_ajaran.biaya_pendaftaran),
       tanggal_tutup_pendaftaran:
-        pendaftar.tahun_ajaran.tanggal_tutup_pendaftaran,
-    };
+        pendaftar.tahun_ajaran.tanggal_tutup_pendaftaran };
 
     const isExpired = false;
 
@@ -99,15 +94,13 @@ export async function GET(request: NextRequest) {
           id: pendaftar.id,
           nomor_pendaftaran: pendaftar.nomor_pendaftaran,
           nama_lengkap: pendaftar.nama_lengkap,
-          status_pendaftaran: pendaftar.status_pendaftaran,
-        },
+          status_pendaftaran: pendaftar.status_pendaftaran },
         tahun_ajaran: {
           // Convert Date to string for JSON serialization compatibility
           id: tahunAjaran.id,
           nama: tahunAjaran.nama,
           biaya_pendaftaran: tahunAjaran.biaya_pendaftaran,
-          tanggal_tutup_pendaftaran: tahunAjaran.tanggal_tutup_pendaftaran,
-        },
+          tanggal_tutup_pendaftaran: tahunAjaran.tanggal_tutup_pendaftaran },
         pembayaran: pembayaran
           ? {
               id: pembayaran.id,
@@ -121,21 +114,17 @@ export async function GET(request: NextRequest) {
               verified_at: pembayaran.verified_at,
               catatan_verifikasi: pembayaran.catatan_verifikasi,
               created_at: pembayaran.created_at,
-              updated_at: pembayaran.updated_at,
-            }
+              updated_at: pembayaran.updated_at }
           : null,
         status: paymentStatus,
         deadline: tahunAjaran.tanggal_tutup_pendaftaran,
-        is_deadline_passed: isExpired,
-      },
-    });
+        is_deadline_passed: isExpired } });
   } catch (error: any) {
     console.error("Error in GET /api/pembayaran/status:", error);
     return NextResponse.json(
       {
         success: false,
-        error: "Terjadi kesalahan saat mengambil status pembayaran",
-      },
+        error: "Terjadi kesalahan saat mengambil status pembayaran" },
       { status: 500 },
     );
   }

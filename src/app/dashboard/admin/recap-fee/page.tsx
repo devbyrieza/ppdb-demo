@@ -12,8 +12,7 @@ import {
   DollarSign,
   ChevronRight,
   Loader2,
-  FileText,
-} from "lucide-react";
+  FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { exportToExcelProfessional } from "@/lib/utils/export";
 import jsPDF from "jspdf";
@@ -41,8 +40,7 @@ export default function RecapFeePage() {
   const [rates, setRates] = useState({
     quran: 20000,
     santri: 15000,
-    ortu: 15000,
-  });
+    ortu: 15000 });
 
   useEffect(() => {
     fetchRecap();
@@ -68,8 +66,7 @@ export default function RecapFeePage() {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
       currency: "IDR",
-      maximumFractionDigits: 0,
-    }).format(amount);
+      maximumFractionDigits: 0 }).format(amount);
   };
 
   const calculateTotalFee = (item: ExaminerRecap) => {
@@ -92,8 +89,7 @@ export default function RecapFeePage() {
     grandTotalFee: filteredRecap.reduce(
       (acc, curr) => acc + calculateTotalFee(curr),
       0,
-    ),
-  };
+    ) };
 
   const exportToExcel = async () => {
     if (!filteredRecap.length) return;
@@ -126,8 +122,7 @@ export default function RecapFeePage() {
           title: "REKAP HONOR PENGUJI PPDB",
           subTitle: `Tanggal Ekspor: ${new Date().toLocaleDateString("id-ID")}`,
           header: headers,
-          data: data,
-        }
+          data: data }
       ]
     });
   };
@@ -176,12 +171,10 @@ export default function RecapFeePage() {
       headStyles: {
         fillColor: [15, 23, 42],
         textColor: [255, 255, 255],
-        fontStyle: "bold",
-      },
+        fontStyle: "bold" },
       alternateRowStyles: { fillColor: [248, 250, 252] },
       margin: { top: 60 },
-      styles: { fontSize: 9 },
-    });
+      styles: { fontSize: 9 } });
 
     // Signatures area
     const finalY = (doc as any).lastAutoTable.finalY + 20;
@@ -308,8 +301,7 @@ export default function RecapFeePage() {
                 {
                   id: "santri",
                   label: "Wawancara Calon Santri",
-                  value: rates.santri,
-                },
+                  value: rates.santri },
                 { id: "ortu", label: "Wawancara Wali/Ortu", value: rates.ortu },
               ].map((field) => (
                 <div key={field.id}>
@@ -326,8 +318,7 @@ export default function RecapFeePage() {
                       onChange={(e) =>
                         setRates({
                           ...rates,
-                          [field.id]: parseInt(e.target.value) || 0,
-                        })
+                          [field.id]: parseInt(e.target.value) || 0 })
                       }
                       className="w-full bg-ink-50 border-none rounded-[24px] pl-8 pr-4 py-2 text-sm font-black text-ink-900 focus:ring-2 focus:ring-primary-600/20"
                     />

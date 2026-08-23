@@ -34,17 +34,12 @@ export async function GET() {
           { penguji_quran_id: userId },
           { penguji_ortu_id: userId },
           { exam_session: { created_by: userId } },
-        ],
-      },
+        ] },
       include: {
         pendaftar: {
           include: {
-            nilai_ujian: true,
-          },
-        },
-        exam_session: { select: { title: true, created_by: true } },
-      },
-    });
+            nilai_ujian: true } },
+        exam_session: { select: { title: true, created_by: true } } } });
 
     const isEmpty = (v: any) => {
       if (v == null || v === "") return true;
@@ -104,8 +99,7 @@ export async function GET() {
           id: pendaftarId,
           roles: roles,
           isToday: date >= today && date < tomorrow,
-          nilai_ujian: item.pendaftar.nilai_ujian || [],
-        });
+          nilai_ujian: item.pendaftar.nilai_ujian || [] });
       }
     }
 
@@ -117,31 +111,20 @@ export async function GET() {
           {
             detail_akademik: {
               path: ["assigned_examiners", "quran"],
-              equals: userId,
-            },
-          },
+              equals: userId } },
           {
             detail_akademik: {
               path: ["assigned_examiners", "wawancara_santri"],
-              equals: userId,
-            },
-          },
+              equals: userId } },
           {
             detail_akademik: {
               path: ["assigned_examiners", "wawancara_ortu"],
-              equals: userId,
-            },
-          },
-        ],
-      },
+              equals: userId } },
+        ] },
       include: {
         pendaftar: {
           include: {
-            nilai_ujian: true,
-          },
-        },
-      },
-    });
+            nilai_ujian: true } } } });
 
     for (const item of assignedByJSON) {
       if (!item.pendaftar) continue;
@@ -167,8 +150,7 @@ export async function GET() {
           id: pendaftarId,
           roles: roles,
           isToday: false,
-          nilai_ujian: item.pendaftar.nilai_ujian || [],
-        });
+          nilai_ujian: item.pendaftar.nilai_ujian || [] });
       }
     }
 
@@ -211,8 +193,7 @@ export async function GET() {
       total_jadwal,
       selesai_dinilai,
       belum_dinilai,
-      jadwal_hari_ini,
-    });
+      jadwal_hari_ini });
   } catch (error: any) {
     console.error("GET penguji/stats error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });

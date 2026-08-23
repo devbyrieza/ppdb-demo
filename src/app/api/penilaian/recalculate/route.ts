@@ -32,8 +32,7 @@ export async function POST() {
 
     // Fetch unique pendaftar_ids from NilaiUjian records
     const uniquePendaftars = await prisma.nilaiUjian.groupBy({
-      by: ["pendaftar_id"],
-    });
+      by: ["pendaftar_id"] });
 
     let successCount = 0;
     let errorCount = 0;

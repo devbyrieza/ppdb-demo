@@ -34,21 +34,16 @@ export async function GET(request: NextRequest) {
         updated_at: true,
         pembayaran: {
           where: {
-            jenis_pembayaran: "PENDAFTARAN" as any,
-          },
+            jenis_pembayaran: "PENDAFTARAN" as any },
           select: {
             id: true,
             jumlah: true,
             status_pembayaran: true,
             metode_pembayaran: true,
             created_at: true,
-            updated_at: true,
-          },
-          orderBy: { created_at: "desc" },
-        },
-      } as any,
-      orderBy: { created_at: "desc" },
-    });
+            updated_at: true },
+          orderBy: { created_at: "desc" } } } as any,
+      orderBy: { created_at: "desc" } });
 
     // 3. Transform
     const data = (pendaftar as any[]).map((p, index) => {
@@ -95,8 +90,7 @@ export async function GET(request: NextRequest) {
         status_color: statusColor,
         metode: latestPayment?.metode_pembayaran || "-",
         tanggal_daftar: p.created_at,
-        last_updated: latestPayment?.updated_at || p.updated_at,
-      };
+        last_updated: latestPayment?.updated_at || p.updated_at };
     });
 
     // 4. Summary stats
@@ -110,8 +104,7 @@ export async function GET(request: NextRequest) {
       belum_upload: data.filter((d) => d.status_pembayaran === "BELUM_UPLOAD")
         .length,
       ditolak: data.filter((d) => d.status_pembayaran === "DITOLAK").length,
-      total_terkumpul: data.reduce((sum, d) => sum + d.total_bayar, 0),
-    };
+      total_terkumpul: data.reduce((sum, d) => sum + d.total_bayar, 0) };
 
     return NextResponse.json({ success: true, data, summary });
   } catch (error) {

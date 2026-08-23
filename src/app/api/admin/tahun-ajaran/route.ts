@@ -10,10 +10,8 @@ export async function GET() {
         nama: true,
         tahun_mulai: true,
         tahun_selesai: true,
-        is_active: true,
-      },
-      orderBy: { tahun_mulai: "desc" },
-    });
+        is_active: true },
+      orderBy: { tahun_mulai: "desc" } });
 
     return NextResponse.json({ data: data || [] });
   } catch (error) {
@@ -56,8 +54,7 @@ export async function POST(request: NextRequest) {
       is_active = false,
       tanggal_buka_pendaftaran,
       tanggal_tutup_pendaftaran,
-      biaya_pendaftaran = 150000,
-    } = body;
+      biaya_pendaftaran = 150000 } = body;
 
     // Validate required fields
     if (
@@ -77,9 +74,7 @@ export async function POST(request: NextRequest) {
     const existing = await prisma.tahunAjaran.findFirst({
       where: {
         tahun_mulai,
-        tahun_selesai,
-      },
-    });
+        tahun_selesai } });
 
     if (existing) {
       return NextResponse.json(
@@ -94,8 +89,7 @@ export async function POST(request: NextRequest) {
       if (is_active) {
         await tx.tahunAjaran.updateMany({
           where: { is_active: true },
-          data: { is_active: false },
-        });
+          data: { is_active: false } });
       }
 
       // Create new tahun ajaran
@@ -107,9 +101,7 @@ export async function POST(request: NextRequest) {
           is_active,
           tanggal_buka_pendaftaran: new Date(tanggal_buka_pendaftaran),
           tanggal_tutup_pendaftaran: new Date(tanggal_tutup_pendaftaran),
-          biaya_pendaftaran,
-        },
-      });
+          biaya_pendaftaran } });
     });
 
     return NextResponse.json({ success: true, data: result });

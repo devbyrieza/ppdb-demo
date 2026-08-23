@@ -30,8 +30,7 @@ export default function AddressInput({
   value,
   onChange,
   disabled = false,
-  required = false,
-}: AddressInputProps) {
+  required = false }: AddressInputProps) {
   // Wilayah data
   const [provinsiList, setProvinsiList] = useState<WilayahItem[]>([]);
   const [kabupatenList, setKabupatenList] = useState<WilayahItem[]>([]);
@@ -167,8 +166,7 @@ export default function AddressInput({
       provinsi: selected?.name || "",
       kabupaten: "",
       kecamatan: "",
-      kelurahan: "",
-    });
+      kelurahan: "" });
   };
 
   const handleKabupatenChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -182,8 +180,7 @@ export default function AddressInput({
       ...value,
       kabupaten: selected?.name || "",
       kecamatan: "",
-      kelurahan: "",
-    });
+      kelurahan: "" });
   };
 
   const handleKecamatanChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -194,8 +191,7 @@ export default function AddressInput({
     onChange({
       ...value,
       kecamatan: selected?.name || "",
-      kelurahan: "",
-    });
+      kelurahan: "" });
   };
 
   const handleKelurahanChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -203,8 +199,7 @@ export default function AddressInput({
     const selected = kelurahanList.find((k) => k.id === id);
     onChange({
       ...value,
-      kelurahan: selected?.name || "",
-    });
+      kelurahan: selected?.name || "" });
   };
 
   const inputClass =

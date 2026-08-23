@@ -39,8 +39,7 @@ export const registrationSchema = z.object({
 
   jenjang: z
     .enum(["MTs", "IL"])
-    .refine((val) => val !== undefined, "Pilih jenjang pendidikan"),
-});
+    .refine((val) => val !== undefined, "Pilih jenjang pendidikan") });
 
 export type RegistrationFormData = z.infer<typeof registrationSchema>;
 
@@ -53,8 +52,7 @@ export const otpVerificationSchema = z.object({
   otp_code: z
     .string()
     .length(6, "Kode OTP harus 6 digit")
-    .regex(/^\d{6}$/, "Kode OTP harus berupa 6 digit angka"),
-});
+    .regex(/^\d{6}$/, "Kode OTP harus berupa 6 digit angka") });
 
 export type OTPVerificationData = z.infer<typeof otpVerificationSchema>;
 
@@ -81,7 +79,7 @@ export function formatNamaLengkap(nama: string): string {
   let cleaned = nama.replace(/[^a-zA-Z\s]/g, "");
   
   // 2. Hapus spasi ganda dan spasi di awal (biarkan spasi di akhir agar bisa ngetik kata kedua)
-  cleaned = cleaned.replace(/\s{2,}/g, " ").replace(/^\s+/, "");
+  cleaned = cleaned.replace(/\s{2 }/g, " ").replace(/^\s+/, "");
   
   // 3. Title Case: huruf pertama setiap kata jadi kapital
   const titleCased = cleaned.toLowerCase().split(" ").map(word => {

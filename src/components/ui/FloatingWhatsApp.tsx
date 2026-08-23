@@ -49,8 +49,7 @@ export default function FloatingWhatsApp() {
             className="relative bg-white rounded-2xl border border-surface-100 px-4 py-3 max-w-[200px] sm:max-w-[220px]"
             style={{
               boxShadow:
-                "0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)",
-            }}
+                "0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)" }}
           >
             {/* Close button */}
             <button
@@ -104,8 +103,7 @@ export default function FloatingWhatsApp() {
         style={{
           background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
           boxShadow:
-            "0 4px 20px rgba(37, 211, 102, 0.45), 0 2px 8px rgba(0,0,0,0.12)",
-        }}
+            "0 4px 20px rgba(37, 211, 102, 0.45), 0 2px 8px rgba(0,0,0,0.12)" }}
       >
         {/* Pulse rings — double layer */}
         <span
@@ -118,8 +116,7 @@ export default function FloatingWhatsApp() {
           style={{
             backgroundColor: "#25D366",
             animationDelay: "0.4s",
-            animationDuration: "2s",
-          }}
+            animationDuration: "2s" }}
           aria-hidden
         />
 

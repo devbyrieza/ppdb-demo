@@ -18,8 +18,7 @@ import {
   MessageSquare,
   Users,
   Clock,
-  Lock as LockIcon,
-} from "lucide-react";
+  Lock as LockIcon } from "lucide-react";
 
 // ============================================================================
 // TYPES
@@ -74,8 +73,7 @@ const CALSAN_CRITERIA_PUTRA = [
       { value: 3, label: "3: Alasan kurang terarah, dipengaruhi orang tua, tapi ada kesediaan." },
       { value: 2, label: "2: Alasan lemah, tidak paham tujuan pesantren." },
       { value: 1, label: "1: Tidak ada motivasi, terpaksa, atau menolak." },
-    ],
-  },
+    ] },
   {
     key: "lingkungan",
     label: "Lingkungan di rumah",
@@ -85,8 +83,7 @@ const CALSAN_CRITERIA_PUTRA = [
       { value: 3, label: "3: Lingkungan biasa saja, kadang ada pengaruh negatif." },
       { value: 2, label: "2: Lingkungan kurang mendukung (teman/saudara sering pengaruh negatif)." },
       { value: 1, label: "1: Lingkungan sangat tidak mendukung (bebas tanpa kontrol, pergaulan buruk)." },
-    ],
-  },
+    ] },
   {
     key: "game",
     label: "Permainan / Game yang Disuka (Putra)",
@@ -96,8 +93,7 @@ const CALSAN_CRITERIA_PUTRA = [
       { value: 3, label: "3: Game online, tapi masih bisa dikontrol." },
       { value: 2, label: "2: Game online intens, mulai kecanduan." },
       { value: 1, label: "1: Sangat kecanduan game, mengganggu sekolah/ibadah." },
-    ],
-  },
+    ] },
   {
     key: "teman",
     label: "Teman / Nongkrong di Rumah",
@@ -107,8 +103,7 @@ const CALSAN_CRITERIA_PUTRA = [
       { value: 3, label: "3: Teman biasa saja, netral." },
       { value: 2, label: "2: Lebih sering bersama teman berpengaruh negatif." },
       { value: 1, label: "1: Nongkrong dengan kelompok bermasalah (merokok, tawuran, dll)." },
-    ],
-  },
+    ] },
   {
     key: "rokok",
     label: "Tentang Rokok/Vape/Pod (Putra)",
@@ -118,8 +113,7 @@ const CALSAN_CRITERIA_PUTRA = [
       { value: 3, label: "3: Netral/tidak tahu, belum ada sikap tegas." },
       { value: 2, label: "2: Pernah mencoba atau terpengaruh." },
       { value: 1, label: "1: Aktif menggunakan rokok/vape/pod." },
-    ],
-  },
+    ] },
   {
     key: "pornografi",
     label: "Pornografi",
@@ -129,8 +123,7 @@ const CALSAN_CRITERIA_PUTRA = [
       { value: 3, label: "3: Pernah melihat, tapi merasa salah dan ingin menjauhi." },
       { value: 2, label: "2: Sering terpapar, belum bisa lepas." },
       { value: 1, label: "1: Kecanduan pornografi." },
-    ],
-  },
+    ] },
   {
     key: "hobi",
     label: "Hobi / Kesukaan",
@@ -140,8 +133,7 @@ const CALSAN_CRITERIA_PUTRA = [
       { value: 3, label: "3: Hobi kurang bermanfaat, tapi tidak berbahaya." },
       { value: 2, label: "2: Hobi berisiko (main game berlebihan, nongkrong tanpa tujuan)." },
       { value: 1, label: "1: Hobi negatif (rokok, balapan liar, dll)." },
-    ],
-  },
+    ] },
 ];
 
 const CALSAN_CRITERIA_PUTRI = [
@@ -154,8 +146,7 @@ const CALSAN_CRITERIA_PUTRI = [
       { value: 3, label: "3: Alasan kurang terarah, dipengaruhi orang tua, tapi ada kesediaan." },
       { value: 2, label: "2: Alasan lemah, tidak paham tujuan pesantren." },
       { value: 1, label: "1: Tidak ada motivasi, terpaksa, atau menolak." },
-    ],
-  },
+    ] },
   {
     key: "lingkungan",
     label: "Lingkungan di rumah",
@@ -165,8 +156,7 @@ const CALSAN_CRITERIA_PUTRI = [
       { value: 3, label: "3: Lingkungan biasa saja, kadang ada pengaruh negatif." },
       { value: 2, label: "2: Lingkungan kurang mendukung (teman/saudara sering pengaruh negatif)." },
       { value: 1, label: "1: Lingkungan sangat tidak mendukung (bebas tanpa kontrol, pergaulan buruk)." },
-    ],
-  },
+    ] },
   {
     key: "game",
     label: "Media Sosial / Gadget (Putri)",
@@ -176,8 +166,7 @@ const CALSAN_CRITERIA_PUTRI = [
       { value: 3, label: "3: Aktif di media sosial, tapi masih dalam batas kewajaran." },
       { value: 2, label: "2: Sering menghabiskan waktu di gadget, mulai kurang terkontrol." },
       { value: 1, label: "1: Kecanduan gadget/media sosial berat." },
-    ],
-  },
+    ] },
   {
     key: "teman",
     label: "Teman / Pergaulan di Rumah",
@@ -187,8 +176,7 @@ const CALSAN_CRITERIA_PUTRI = [
       { value: 3, label: "3: Teman biasa saja, netral." },
       { value: 2, label: "2: Lebih sering bersama teman berpengaruh negatif." },
       { value: 1, label: "1: Pergaulan bebas atau bermasalah." },
-    ],
-  },
+    ] },
   {
     key: "rokok",
     label: "Tentang Adab & Hijab (Putri)",
@@ -198,8 +186,7 @@ const CALSAN_CRITERIA_PUTRI = [
       { value: 3, label: "3: Adab biasa saja, hijab hanya formalitas." },
       { value: 2, label: "2: Kurang menjaga adab, sering tidak berhijab di luar." },
       { value: 1, label: "1: Tidak menjaga adab dan tidak berhijab." },
-    ],
-  },
+    ] },
   {
     key: "pornografi",
     label: "Pornografi / Drakor / K-Pop Berlebihan",
@@ -209,8 +196,7 @@ const CALSAN_CRITERIA_PUTRI = [
       { value: 3, label: "3: Pernah terpapar, merasa salah dan ingin menjauhi." },
       { value: 2, label: "2: Sering menghabiskan waktu untuk hal tersebut, sulit lepas." },
       { value: 1, label: "1: Sangat kecanduan." },
-    ],
-  },
+    ] },
   {
     key: "hobi",
     label: "Hobi / Kesukaan",
@@ -220,8 +206,7 @@ const CALSAN_CRITERIA_PUTRI = [
       { value: 3, label: "3: Hobi kurang bermanfaat, tapi tidak berbahaya." },
       { value: 2, label: "2: Hobi berisiko (main game berlebihan, nongkrong tanpa tujuan)." },
       { value: 1, label: "1: Hobi negatif." },
-    ],
-  },
+    ] },
 ];
 
 const CAWALSAN_QUESTIONS = [
@@ -265,8 +250,7 @@ const ROLE_TO_FORM_TYPES: Record<string, string[]> = {
   penguji_hafalan: ['hafalan'],
   penguji_bahasa_arab: ['lisan_arab'],
   admin: ['quran', 'wawancara', 'ortu', 'hafalan', 'lisan_arab'],
-  admin_super: ['quran', 'wawancara', 'ortu', 'hafalan', 'lisan_arab'],
-};
+  admin_super: ['quran', 'wawancara', 'ortu', 'hafalan', 'lisan_arab'] };
 
 export default function InputNilaiPage() {
   return (
@@ -423,8 +407,7 @@ function InputNilaiContent() {
           detail_quran: quranForm,
           score_quran: totalScore,
           nilai_tes_quran: totalScore,
-          catatan_quran: quranForm.catatan || "",
-        };
+          catatan_quran: quranForm.catatan || "" };
       } else if (formType === "wawancara") {
         const isPutriByJenjang = (p?.jenjang?.toLowerCase() || "").includes('putri');
         const isPutriByPrefix = ['MTI', 'ILI', 'SMI'].some(prefix => p.nomor_pendaftaran?.startsWith(prefix));
@@ -441,8 +424,7 @@ function InputNilaiContent() {
           detail_wawancara: calsanForm,
           score_wawancara: avgScore,
           nilai_wawancara_santri: avgScore,
-          catatan_santri: calsanForm.catatan || "",
-        };
+          catatan_santri: calsanForm.catatan || "" };
       } else if (formType === "ortu") {
         body = {
           detail_cawalsan: cawalsanForm,
@@ -460,8 +442,7 @@ function InputNilaiContent() {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
-        signal: controller.signal,
-      });
+        signal: controller.signal });
 
       clearTimeout(timeoutId);
 
@@ -483,8 +464,7 @@ function InputNilaiContent() {
         const mapping: Record<string, "santri" | "quran" | "ortu"> = {
           quran: "quran",
           wawancara: "santri",
-          ortu: "ortu",
-        };
+          ortu: "ortu" };
         const componentType = mapping[formType];
         if (p.jadwal_id && componentType) {
           fetch("/api/penguji/jadwal/complete", {
@@ -493,8 +473,7 @@ function InputNilaiContent() {
             body: JSON.stringify({ 
               jadwal_id: p.jadwal_id,
               component_type: componentType 
-            }),
-          }).catch(err => console.error("[saveForm] Auto-complete error:", err));
+            }) }).catch(err => console.error("[saveForm] Auto-complete error:", err));
         }
 
         // Silently refresh data without showing full-page loading spinner
@@ -557,15 +536,13 @@ function InputNilaiContent() {
       setHafalanForm({
         ...p.detail_hafalan,
         catatan_tambahan: p.catatan_hafalan || "",
-        score_override: p.score_hafalan || 0,
-      });
+        score_override: p.score_hafalan || 0 });
     }
     if (type === 'lisan_arab') {
       setLisanArabForm({
         ...p.detail_lisan_arab,
         catatan_tambahan: p.catatan_lisan_arab || "",
-        score_override: p.score_lisan_arab || 0,
-      });
+        score_override: p.score_lisan_arab || 0 });
     }
         if (type === 'hafalan') {
           return !!(p.input_at_hafalan || p.score_hafalan || (p.detail_hafalan && Object.keys(p.detail_hafalan).length > 0));

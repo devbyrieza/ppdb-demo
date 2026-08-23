@@ -14,8 +14,7 @@ import {
   School,
   ChevronDown,
   Sparkles,
-  RefreshCw,
-} from "lucide-react";
+  RefreshCw } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { countries } from "@/lib/data/countries";
 import { formatNamaLengkap } from "@/lib/validations/registration";
@@ -38,8 +37,7 @@ interface FormData {
 const InputField = ({
   label,
   error,
-  children,
-}: {
+  children }: {
   label: string;
   error?: string;
   children: React.ReactNode;
@@ -89,8 +87,7 @@ export default function DaftarPage() {
     tanggal_lahir: "",
     no_hp: "",
     jenis_kelamin: "",
-    jenjang: jenjangFromUrl,
-  });
+    jenjang: jenjangFromUrl });
 
   const [countryCode, setCountryCode] = useState("+62");
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
@@ -105,16 +102,14 @@ export default function DaftarPage() {
           setFormData((prev) => ({
             ...prev,
             ...parsed,
-            jenjang: jenjangFromUrl || parsed.jenjang || "",
-          }));
+            jenjang: jenjangFromUrl || parsed.jenjang || "" }));
         } catch (error) {
           console.error("Error parsing saved data:", error);
         }
       } else if (jenjangFromUrl) {
         setFormData((prev) => ({
           ...prev,
-          jenjang: jenjangFromUrl,
-        }));
+          jenjang: jenjangFromUrl }));
       }
     }
   }, [jenjangFromUrl]);
@@ -206,9 +201,7 @@ export default function DaftarPage() {
         body: JSON.stringify({
           ...formData,
           no_hp: fullHp,
-          otp_channel: "whatsapp",
-        }),
-      });
+          otp_channel: "whatsapp" }) });
 
       const data = await response.json();
       if (!response.ok) {
@@ -222,8 +215,7 @@ export default function DaftarPage() {
         no_hp: fullHp,
         jenis_kelamin: formData.jenis_kelamin,
         jenjang: formData.jenjang,
-        channel: "whatsapp",
-      });
+        channel: "whatsapp" });
 
       if (data.simulation_code || data.otp) {
         params.append("sim_code", data.simulation_code || data.otp);
@@ -319,8 +311,7 @@ export default function DaftarPage() {
                           showCancelButton: true,
                           confirmButtonColor: "#3a5029",
                           confirmButtonText: "Ya, Hapus",
-                          cancelButtonText: "Batal",
-                        });
+                          cancelButtonText: "Batal" });
 
                         if (result.isConfirmed) {
                           sessionStorage.removeItem("pendaftaran_form");
@@ -330,8 +321,7 @@ export default function DaftarPage() {
                             tanggal_lahir: "",
                             no_hp: "",
                             jenis_kelamin: "",
-                            jenjang: "",
-                          });
+                            jenjang: "" });
                           setFieldErrors({});
                         }
                       }}
@@ -371,20 +361,17 @@ export default function DaftarPage() {
                       value: "MTs",
                       title: "Madrasah Tsanawiyah",
                       subtitle: "Lulusan SD/Sederajat",
-                      desc: "Jenjang pendidikan dasar setingkat SMP.",
-                    },
+                      desc: "Jenjang pendidikan dasar setingkat SMP." },
                     {
                       value: "IL",
                       title: "I'dad Lughowi",
                       subtitle: "Lulusan SMP/Sederajat",
-                      desc: "Kelas persiapan bahasa Arab sebelum masuk MA.",
-                    },
+                      desc: "Kelas persiapan bahasa Arab sebelum masuk MA." },
                     {
                       value: "MA",
                       title: "Madrasah Aliyah (MA) Langsung",
                       subtitle: "Lulusan SMP/Sederajat",
-                      desc: "Jalur langsung tanpa IL. Khusus yang lancar berbahasa Arab & hafal minimal 5 juz mutqin.",
-                    },
+                      desc: "Jalur langsung tanpa IL. Khusus yang lancar berbahasa Arab & hafal minimal 5 juz mutqin." },
                   ].map((option) => {
                     const isPutra = formData.jenis_kelamin === "L";
                     const isPutri = formData.jenis_kelamin === "P";
@@ -400,8 +387,7 @@ export default function DaftarPage() {
                           if (isClosed) return;
                           setFormData((prev) => ({
                             ...prev,
-                            jenjang: option.value as any,
-                          }));
+                            jenjang: option.value as any }));
                         }}
                         className={`relative cursor-pointer rounded-[2rem] p-6 border-2 transition-all duration-300 app-card flex flex-col justify-between ${
                           isClosed
@@ -513,8 +499,7 @@ export default function DaftarPage() {
                         onChange={(e) =>
                           setFormData((prev) => ({
                             ...prev,
-                            nama_lengkap: formatNamaLengkap(e.target.value),
-                          }))
+                            nama_lengkap: formatNamaLengkap(e.target.value) }))
                         }
                         placeholder="Sesuai Akta Kelahiran santri"
                         className="w-full px-5 py-3 md:px-8 md:py-5 rounded-[24px] md:rounded-[24px] bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold placeholder:text-ink-500 text-sm md:text-base text-ink-950"
@@ -532,8 +517,7 @@ export default function DaftarPage() {
                         onChange={(e) =>
                           setFormData((prev) => ({
                             ...prev,
-                            nik: e.target.value.replace(/\D/g, ""),
-                          }))
+                            nik: e.target.value.replace(/\D/g, "") }))
                         }
                         placeholder="16 Digit NIK"
                         className="w-full px-5 py-3 md:px-8 md:py-5 rounded-[24px] md:rounded-[24px] bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold placeholder:text-ink-500 text-sm md:text-base text-ink-950"
@@ -554,8 +538,7 @@ export default function DaftarPage() {
                       onChange={(e) =>
                         setFormData((prev) => ({
                           ...prev,
-                          tanggal_lahir: e.target.value,
-                        }))
+                          tanggal_lahir: e.target.value }))
                       }
                       className="w-full px-5 py-3 md:px-8 md:py-5 rounded-[24px] md:rounded-[24px] bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold text-sm md:text-base text-ink-950"
                     />
@@ -588,8 +571,7 @@ export default function DaftarPage() {
                               onChange={() =>
                                 setFormData((p) => ({
                                   ...p,
-                                  jenis_kelamin: jk.val as any,
-                                }))
+                                  jenis_kelamin: jk.val as any }))
                               }
                               className="hidden"
                             />

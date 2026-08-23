@@ -27,8 +27,7 @@ export async function GET(request: Request) {
       success: true,
       result,
       stats,
-      timestamp: new Date().toISOString(),
-    });
+      timestamp: new Date().toISOString() });
   } catch (error: any) {
     console.error("❌ Cron WhatsApp error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });

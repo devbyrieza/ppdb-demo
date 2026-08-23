@@ -87,13 +87,11 @@ export async function POST(request: NextRequest) {
             h.toLowerCase().includes("lunas")),
       ),
       nominal1: headers.findIndex((h) => h.toLowerCase().includes("nominal 1")),
-      nominal2: headers.findIndex((h) => h.toLowerCase().includes("nominal 2")),
-    };
+      nominal2: headers.findIndex((h) => h.toLowerCase().includes("nominal 2")) };
 
     // 1. Get Active TA
     const activeTA = await prisma.tahunAjaran.findFirst({
-      where: { is_active: true },
-    });
+      where: { is_active: true } });
     if (!activeTA)
       return NextResponse.json({ error: "No active TA" }, { status: 404 });
 
@@ -101,8 +99,7 @@ export async function POST(request: NextRequest) {
       created: 0,
       updated: 0,
       skipped: 0,
-      details: [] as string[],
-    };
+      details: [] as string[] };
 
     const normalize = (name: string) => {
       if (!name) return "";
@@ -127,16 +124,13 @@ export async function POST(request: NextRequest) {
           { nama_lengkap: { contains: "Iklimah", mode: "insensitive" } },
           { nama_lengkap: { contains: "Nahla", mode: "insensitive" } },
           { nama_lengkap: { contains: "Hudzaifah", mode: "insensitive" } },
-        ],
-      },
-      data: { deleted_at: null },
-    });
+        ] },
+      data: { deleted_at: null } });
 
     // 3. Fetch all current students for matching
     const currentStudents = await prisma.pendaftar.findMany({
       where: { tahun_ajaran_id: activeTA.id, deleted_at: null },
-      select: { id: true, nomor_pendaftaran: true, nama_lengkap: true },
-    });
+      select: { id: true, nomor_pendaftaran: true, nama_lengkap: true } });
 
     const updatedIds = new Set<string>();
 
@@ -179,9 +173,7 @@ export async function POST(request: NextRequest) {
               .padStart(14, "0")}`, // Dummy NIK
             jenis_kelamin,
             jenjang,
-            status_pendaftaran: "draft",
-          },
-        });
+            status_pendaftaran: "draft" } });
         studentId = newStudent.id;
         results.created++;
       } else {
@@ -207,21 +199,17 @@ export async function POST(request: NextRequest) {
 
       await prisma.pendaftar.update({
         where: { id: studentId },
-        data: { status_pendaftaran: newStatus },
-      });
+        data: { status_pendaftaran: newStatus } });
 
       // SYNC PAYMENTS
       const existingPayReg = await prisma.pembayaran.findFirst({
         where: {
           pendaftar_id: studentId,
-          jenis_pembayaran: JenisPembayaran.PENDAFTARAN,
-        },
-      });
+          jenis_pembayaran: JenisPembayaran.PENDAFTARAN } });
       if (existingPayReg) {
         await prisma.pembayaran.update({
           where: { id: existingPayReg.id },
-          data: { status_pembayaran: "verified", verified_at: new Date() },
-        });
+          data: { status_pembayaran: "verified", verified_at: new Date() } });
       } else {
         await prisma.pembayaran.create({
           data: {
@@ -232,9 +220,7 @@ export async function POST(request: NextRequest) {
             status_pembayaran: "verified",
             jenis_pembayaran: JenisPembayaran.PENDAFTARAN,
             verified_at: new Date(),
-            catatan_verifikasi: "Synced from Master Excel",
-          },
-        });
+            catatan_verifikasi: "Synced from Master Excel" } });
       }
 
       if (statusBayar.includes("lunas") || statusBayar.includes("gratis")) {
@@ -251,18 +237,14 @@ export async function POST(request: NextRequest) {
         const existingPayDU = await prisma.pembayaran.findFirst({
           where: {
             pendaftar_id: studentId,
-            jenis_pembayaran: JenisPembayaran.DAFTAR_ULANG,
-          },
-        });
+            jenis_pembayaran: JenisPembayaran.DAFTAR_ULANG } });
         if (existingPayDU) {
           await prisma.pembayaran.update({
             where: { id: existingPayDU.id },
             data: {
               status_pembayaran: "verified",
               jumlah: total || undefined,
-              verified_at: new Date(),
-            },
-          });
+              verified_at: new Date() } });
         } else {
           await prisma.pembayaran.create({
             data: {
@@ -274,9 +256,7 @@ export async function POST(request: NextRequest) {
               jenis_pembayaran: JenisPembayaran.DAFTAR_ULANG,
               tipe_cicilan: TipeCicilan.LUNAS,
               verified_at: new Date(),
-              catatan_verifikasi: "Synced from Master Excel (Lunas/Gratis)",
-            },
-          });
+              catatan_verifikasi: "Synced from Master Excel (Lunas/Gratis)" } });
         }
       }
     }
@@ -291,8 +271,7 @@ export async function POST(request: NextRequest) {
     for (const s of toDelete) {
       await prisma.pendaftar.update({
         where: { id: s.id },
-        data: { deleted_at: new Date() },
-      });
+        data: { deleted_at: new Date() } });
     }
 
     return NextResponse.json({
@@ -301,10 +280,7 @@ export async function POST(request: NextRequest) {
         ...results,
         cleaned: toDelete.length,
         total_in_db: await prisma.pendaftar.count({
-          where: { tahun_ajaran_id: activeTA.id, deleted_at: null },
-        }),
-      },
-    });
+          where: { tahun_ajaran_id: activeTA.id, deleted_at: null } }) } });
   } catch (error: any) {
     console.error("Sync Error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });

@@ -40,9 +40,7 @@ export async function POST(request: Request) {
       const existingUser = await prisma.profile.findFirst({
         where: {
           username,
-          id: { not: session.id },
-        },
-      });
+          id: { not: session.id } } });
       if (existingUser) {
         return NextResponse.json({ error: "Username sudah digunakan" }, { status: 400 });
       }
@@ -55,17 +53,14 @@ export async function POST(request: Request) {
       data: {
         full_name,
         phone: phone || "",
-        username: username || null,
-      },
-    });
+        username: username || null } });
 
     // Update the session cookie with new info
     const newSession = {
       ...session,
       full_name: updatedProfile.full_name,
       phone: updatedProfile.phone,
-      username: updatedProfile.username,
-    };
+      username: updatedProfile.username };
 
     const cookieStore = await cookies();
     cookieStore.set("al_session", JSON.stringify(newSession), {
@@ -79,8 +74,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       success: true,
       message: "Profil Anda berhasil diperbarui.",
-      data: updatedProfile,
-    });
+      data: updatedProfile });
   } catch (error: any) {
     console.error("POST profile/update error:", error);
     return NextResponse.json(

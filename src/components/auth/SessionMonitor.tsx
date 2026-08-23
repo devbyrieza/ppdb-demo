@@ -12,8 +12,7 @@ import { Clock, Shield, CheckCircle, BookOpen, Palette, CheckCircle2 } from "luc
 import {
   getSessionRemainingDays,
   formatSessionExpiry,
-  isSessionExpiringSoon,
-} from "@/lib/auth";
+  isSessionExpiringSoon } from "@/lib/auth";
 
 export default function SessionMonitor() {
   const [remainingDays, setRemainingDays] = useState<number>(0);

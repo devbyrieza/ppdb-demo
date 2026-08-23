@@ -136,28 +136,22 @@ const BARANG_DILARANG = [
 const FAQ = [
   {
     q: "Apakah saya harus hadir di acara Welcome Day ini?",
-    a: "Ya, kehadiran sangat dianjurkan. Welcome Day adalah saat resmi serah terima santri dari orang tua/wali kepada pihak pesantren. Ada sesi sarasehan penting yang berisi informasi yang perlu diketahui wali.",
-  },
+    a: "Ya, kehadiran sangat dianjurkan. Welcome Day adalah saat resmi serah terima santri dari orang tua/wali kepada pihak pesantren. Ada sesi sarasehan penting yang berisi informasi yang perlu diketahui wali." },
   {
     q: "Berapa orang yang boleh menemani santri?",
-    a: "Untuk ruang sarasehan & kupon makan: MAKSIMAL 3 orang (1 santri + 2 wali/pendamping terdekat). Pengantar lain boleh ikut ke area pesantren, namun tidak masuk ruang sarasehan dan tidak mendapat kupon makan.",
-  },
+    a: "Untuk ruang sarasehan & kupon makan: MAKSIMAL 3 orang (1 santri + 2 wali/pendamping terdekat). Pengantar lain boleh ikut ke area pesantren, namun tidak masuk ruang sarasehan dan tidak mendapat kupon makan." },
   {
     q: "Apakah ada tempat parkir?",
-    a: "Ya, tersedia area parkir di lingkungan pesantren. Kami mohon datang tepat waktu agar parkir tidak terlalu penuh. Untuk rombongan besar (bus/minibus), harap informasikan melalui kolom catatan di form konfirmasi.",
-  },
+    a: "Ya, tersedia area parkir di lingkungan pesantren. Kami mohon datang tepat waktu agar parkir tidak terlalu penuh. Untuk rombongan besar (bus/minibus), harap informasikan melalui kolom catatan di form konfirmasi." },
   {
     q: "Bagaimana jika tidak bisa hadir pada tanggal tersebut?",
-    a: "Harap konfirmasi ketidakhadiran melalui form di bawah ini dan hubungi panitia sesegera mungkin. Ada proses tersendiri jika tidak dapat hadir pada hari H.",
-  },
+    a: "Harap konfirmasi ketidakhadiran melalui form di bawah ini dan hubungi panitia sesegera mungkin. Ada proses tersendiri jika tidak dapat hadir pada hari H." },
   {
     q: "Apakah santri boleh pulang setelah acara?",
-    a: "Tidak. Setelah Welcome Day, santri resmi menetap di pesantren. Orang tua dipersilakan pamit pada sesi perpisahan (sekitar pukul 14.30).",
-  },
+    a: "Tidak. Setelah Welcome Day, santri resmi menetap di pesantren. Orang tua dipersilakan pamit pada sesi perpisahan (sekitar pukul 14.30)." },
   {
     q: "Apa yang harus dibawa santri pada hari itu?",
-    a: "Lihat checklist barang bawaan yang sudah kami sediakan di halaman ini. Pastikan semua perlengkapan sudah disiapkan dari rumah.",
-  },
+    a: "Lihat checklist barang bawaan yang sudah kami sediakan di halaman ini. Pastikan semua perlengkapan sudah disiapkan dari rumah." },
 ];
 
 export default function WelcomeDayPage() {
@@ -173,8 +167,7 @@ export default function WelcomeDayPage() {
     totalPengantar: 3,
     catatanTambahan: "",
     jumlahMobil: 0,
-    jumlahMotor: 0,
-  });
+    jumlahMotor: 0 });
   const [message, setMessage] = useState({ type: "", text: "" });
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [openKategori, setOpenKategori] = useState<number | null>(null);
@@ -198,8 +191,7 @@ export default function WelcomeDayPage() {
               totalPengantar: dataJson.totalPengantar !== undefined ? Number(dataJson.totalPengantar) : 3,
               catatanTambahan: dataJson.catatanTambahan || "",
               jumlahMobil: dataJson.jumlahMobil !== undefined ? Number(dataJson.jumlahMobil) : 0,
-              jumlahMotor: dataJson.jumlahMotor !== undefined ? Number(dataJson.jumlahMotor) : 0,
-            });
+              jumlahMotor: dataJson.jumlahMotor !== undefined ? Number(dataJson.jumlahMotor) : 0 });
             setIsEditing(false);
           }
         }
@@ -218,8 +210,7 @@ export default function WelcomeDayPage() {
               sudahIsi: !!(userData.ukuran_seragam_baju && userData.ukuran_seragam_celana && userData.ukuran_seragam_almamater),
               baju: userData.ukuran_seragam_baju || "",
               celana: userData.ukuran_seragam_celana || "",
-              almamater: userData.ukuran_seragam_almamater || "",
-            });
+              almamater: userData.ukuran_seragam_almamater || "" });
           }
         }
       }
@@ -239,8 +230,7 @@ export default function WelcomeDayPage() {
       const res = await fetch("/api/pendaftar/welcome-day", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+        body: JSON.stringify(formData) });
 
       const result = await res.json();
       if (!res.ok) throw new Error(result.message || "Gagal menyimpan konfirmasi");

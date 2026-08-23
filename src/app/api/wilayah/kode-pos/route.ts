@@ -54,9 +54,7 @@ export async function GET(request: Request) {
       success: true,
       data: {
         postal_code: match.code || match.postalcode || "",
-        details: match,
-      },
-    });
+        details: match } });
   } catch (error) {
     console.error("Error fetching postal code:", error);
     return NextResponse.json(

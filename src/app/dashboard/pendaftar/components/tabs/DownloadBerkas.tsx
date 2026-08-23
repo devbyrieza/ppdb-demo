@@ -6,15 +6,13 @@ import {
   FileText,
   AlertCircle,
   CheckCircle,
-  Loader2,
-} from "lucide-react";
+  Loader2 } from "lucide-react";
 import {
   generateBuktiPendaftaran,
   generateKartuUjian,
   generateSuratKesehatan,
   generatePaktaIntegritas,
-  generateSuratPernyataan,
-} from "@/lib/utils/pdf-generator";
+  generateSuratPernyataan } from "@/lib/utils/pdf-generator";
 
 export default function DownloadBerkasTab() {
   const [data, setData] = useState<any>(null);
@@ -77,32 +75,27 @@ export default function DownloadBerkasTab() {
       name: "Bukti Pendaftaran",
       description: "Bukti sudah terdaftar di sistem",
       status: isDataCompleted ? "available" : "pending",
-      action: async () => await generateBuktiPendaftaran(data),
-    },
+      action: async () => await generateBuktiPendaftaran(data) },
     {
       name: "kartu seleksi",
       description: "Kartu identitas ujian seleksi",
       status: isScheduled ? "available" : "pending",
-      action: async () => await generateKartuUjian(data),
-    },
+      action: async () => await generateKartuUjian(data) },
     {
       name: "Template Surat Sehat",
       description: "Format kosong surat keterangan sehat",
       status: "available",
-      action: async () => await generateSuratKesehatan(data),
-    },
+      action: async () => await generateSuratKesehatan(data) },
     {
       name: "Pakta Integritas",
       description: "Format kosong pakta integritas santri",
       status: "available",
-      action: async () => await generatePaktaIntegritas(data),
-    },
+      action: async () => await generatePaktaIntegritas(data) },
     {
       name: "Surat Pernyataan",
       description: "Format kosong pernyataan bebas perilaku negatif",
       status: "available",
-      action: async () => await generateSuratPernyataan(data),
-    },
+      action: async () => await generateSuratPernyataan(data) },
   ];
 
   return (

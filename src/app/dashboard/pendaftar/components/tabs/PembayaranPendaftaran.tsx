@@ -28,8 +28,7 @@ import {
   Check,
   Download,
   Trash2,
-  Star as StarIcon,
-} from "lucide-react";
+  Star as StarIcon } from "lucide-react";
 
 // ============================================
 // TYPES
@@ -79,8 +78,7 @@ const BANK_INFO = {
   nama_bank: "BSI (Bank Syariah Indonesia)",
   nomor_rekening: "4222224441",
   atas_nama: "PP Pesantren Al Fath",
-  kode_bank: "451",
-};
+  kode_bank: "451" };
 
 const STATUS_CONFIG: Record<
   PaymentStatus,
@@ -99,41 +97,35 @@ const STATUS_CONFIG: Record<
     bgColor: "bg-secondary-50",
     borderColor: "border-secondary-200",
     icon: Clock,
-    description: "Silakan lakukan pembayaran untuk melanjutkan pendaftaran",
-  },
+    description: "Silakan lakukan pembayaran untuk melanjutkan pendaftaran" },
   pending: {
     label: "Menunggu Verifikasi",
     color: "text-primary-700",
     bgColor: "bg-primary-50",
     borderColor: "border-primary-200",
     icon: Clock,
-    description: "Pembayaran sedang diverifikasi oleh tim kami (1x24 jam)",
-  },
+    description: "Pembayaran sedang diverifikasi oleh tim kami (1x24 jam)" },
   verified: {
     label: "Pembayaran Terverifikasi",
     color: "text-emerald-700",
     bgColor: "bg-emerald-50",
     borderColor: "border-emerald-200",
     icon: CheckCircle,
-    description: "Alhamdulillah! Pembayaran Anda telah terverifikasi",
-  },
+    description: "Alhamdulillah! Pembayaran Anda telah terverifikasi" },
   rejected: {
     label: "Pembayaran Ditolak",
     color: "text-red-700",
     bgColor: "bg-red-50",
     borderColor: "border-red-200",
     icon: XCircle,
-    description: "Mohon upload ulang bukti pembayaran yang valid",
-  },
+    description: "Mohon upload ulang bukti pembayaran yang valid" },
   expired: {
     label: "Batas Waktu Habis",
     color: "text-stone-700",
     bgColor: "bg-surface-200",
     borderColor: "border-stone-200",
     icon: AlertCircle,
-    description: "Maaf, batas waktu pembayaran telah berakhir",
-  },
-};
+    description: "Maaf, batas waktu pembayaran telah berakhir" } };
 
 // ============================================
 // HELPER FUNCTIONS
@@ -144,16 +136,14 @@ function formatRupiah(amount: number): string {
     style: "currency",
     currency: "IDR",
     minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
+    maximumFractionDigits: 0 }).format(amount);
 }
 
 function formatDate(dateString: string): string {
   return new Date(dateString).toLocaleDateString("id-ID", {
     day: "numeric",
     month: "long",
-    year: "numeric",
-  });
+    year: "numeric" });
 }
 
 function formatDateTime(dateString: string): string {
@@ -162,8 +152,7 @@ function formatDateTime(dateString: string): string {
     month: "long",
     year: "numeric",
     hour: "2-digit",
-    minute: "2-digit",
-  });
+    minute: "2-digit" });
 }
 
 function getDaysRemaining(deadline: string): number {
@@ -237,8 +226,7 @@ function PaymentTimeline({ paymentStatus }: { paymentStatus: PaymentStatus }) {
       status:
         paymentStatus === "unpaid" || paymentStatus === "expired"
           ? "current"
-          : "completed",
-    },
+          : "completed" },
     {
       id: 2,
       title: "Verifikasi Admin",
@@ -250,14 +238,12 @@ function PaymentTimeline({ paymentStatus }: { paymentStatus: PaymentStatus }) {
             ? "completed"
             : paymentStatus === "rejected"
               ? "current"
-              : "upcoming",
-    },
+              : "upcoming" },
     {
       id: 3,
       title: "Selesai",
       description: "Pembayaran valid",
-      status: paymentStatus === "verified" ? "completed" : "upcoming",
-    },
+      status: paymentStatus === "verified" ? "completed" : "upcoming" },
   ];
 
   return (
@@ -319,8 +305,7 @@ function UploadArea({
   isUploading,
   uploadProgress,
   currentFile,
-  isRejected,
-}: UploadAreaProps) {
+  isRejected }: UploadAreaProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -576,8 +561,7 @@ function UploadArea({
 // ============================================
 
 export default function PembayaranPendaftaranTab({
-  view = "payment",
-}: {
+  view = "payment" }: {
   view?: "payment" | "status";
 }) {
   const [loading, setLoading] = useState(true);
@@ -601,8 +585,7 @@ export default function PembayaranPendaftaranTab({
       setTimeout(() => {
         instruksiRef.current?.scrollIntoView({
           behavior: "smooth",
-          block: "start",
-        });
+          block: "start" });
       }, 100); // slight delay to let the section render first
     }
   }, [activePaymentMethod]);
@@ -661,8 +644,7 @@ export default function PembayaranPendaftaranTab({
 
       const response = await fetch("/api/pembayaran/manual/upload", {
         method: "POST",
-        body: formData,
-      });
+        body: formData });
 
       clearInterval(progressInterval);
       setUploadProgress(100);
@@ -687,8 +669,7 @@ export default function PembayaranPendaftaranTab({
     try {
       setIsMidtransLoading(true);
       const response = await fetch("/api/pembayaran/midtrans/create", {
-        method: "POST",
-      });
+        method: "POST" });
       const result = await response.json();
 
       if (!result.success)
@@ -714,8 +695,7 @@ export default function PembayaranPendaftaranTab({
           },
           onClose: () => {
             showToast("info", "Anda menutup popup pembayaran.");
-          },
-        });
+          } });
       } else {
         throw new Error("Tidak dapat membuka halaman pembayaran");
       }
@@ -1192,8 +1172,7 @@ export default function PembayaranPendaftaranTab({
                             data.pembayaran?.bukti_transfer_filename
                               ? {
                                   name: data.pembayaran.bukti_transfer_filename,
-                                  path: "",
-                                }
+                                  path: "" }
                               : null
                           }
                           isRejected={isPaymentRejected}

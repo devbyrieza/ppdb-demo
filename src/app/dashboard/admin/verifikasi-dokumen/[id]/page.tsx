@@ -20,8 +20,7 @@ import {
   ZoomOut,
   Maximize,
   UploadCloud,
-  Clock,
-} from "lucide-react";
+  Clock } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useRef } from "react";
@@ -94,8 +93,7 @@ export default function VerifikasiDokumenDetailPage() {
     isOpen: false,
     docId: "",
     docName: "",
-    initialReason: "",
-  });
+    initialReason: "" });
   const [rejectReason, setRejectReason] = useState("");
 
   const fetchData = useCallback(async () => {
@@ -200,8 +198,7 @@ export default function VerifikasiDokumenDetailPage() {
             file_type: d.file_type,
             created_at: d.created_at,
             updated_at: d.updated_at,
-            pendaftar_id: id,
-          };
+            pendaftar_id: id };
         });
 
         // Add placeholders for missing required documents
@@ -272,8 +269,7 @@ export default function VerifikasiDokumenDetailPage() {
               file_type: null,
               created_at: new Date().toISOString(),
               updated_at: new Date().toISOString(),
-              pendaftar_id: id,
-            });
+              pendaftar_id: id });
           }
         });
 
@@ -319,9 +315,7 @@ export default function VerifikasiDokumenDetailPage() {
         body: JSON.stringify({
           dokumen_id: dokumenId,
           status_verifikasi: status,
-          catatan: catatan || null,
-        }),
-      });
+          catatan: catatan || null }) });
 
       if (!response.ok) throw new Error("Failed to verify");
 
@@ -333,8 +327,7 @@ export default function VerifikasiDokumenDetailPage() {
               ...d,
               status_verifikasi: status,
               is_verified: status === "verified",
-              catatan: status === "verified" ? null : catatan || d.catatan,
-            };
+              catatan: status === "verified" ? null : catatan || d.catatan };
           }
           return d;
         }),
@@ -363,8 +356,7 @@ export default function VerifikasiDokumenDetailPage() {
     return new Date(dateString).toLocaleDateString("id-ID", {
       day: "numeric",
       month: "short",
-      year: "numeric",
-    });
+      year: "numeric" });
   };
 
   const isImageFile = (dok: Dokumen) => {
@@ -427,8 +419,7 @@ export default function VerifikasiDokumenDetailPage() {
 
       const response = await fetch("/api/admin/verifikasi/dokumen/upload", {
         method: "POST",
-        body: formData,
-      });
+        body: formData });
 
       const data = await response.json();
 
@@ -668,8 +659,7 @@ export default function VerifikasiDokumenDetailPage() {
                       isOpen: true,
                       docId: dok.id,
                       docName: dok.jenis_dokumen.replace(/_/g, " "),
-                      initialReason: dok.catatan || "",
-                    });
+                      initialReason: dok.catatan || "" });
                     setRejectReason(dok.catatan || "");
                   }}
                   disabled={processingDocs.has(dok.id)}

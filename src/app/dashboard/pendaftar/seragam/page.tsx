@@ -12,8 +12,7 @@ export default function SeragamPage() {
   const [formData, setFormData] = useState({
     ukuran_seragam_baju: "",
     ukuran_seragam_celana: "",
-    ukuran_seragam_almamater: "",
-  });
+    ukuran_seragam_almamater: "" });
   const [message, setMessage] = useState({ type: "", text: "" });
   const [isAuthorized, setIsAuthorized] = useState(true);
 
@@ -48,8 +47,7 @@ export default function SeragamPage() {
           setFormData({
             ukuran_seragam_baju: baju,
             ukuran_seragam_celana: celana,
-            ukuran_seragam_almamater: alma,
-          });
+            ukuran_seragam_almamater: alma });
           if (baju && celana && alma) {
             setIsEditing(false);
           }
@@ -77,8 +75,7 @@ export default function SeragamPage() {
       const res = await fetch("/api/pendaftar/seragam", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+        body: JSON.stringify(formData) });
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Gagal menyimpan data");

@@ -24,8 +24,7 @@ export async function GET(request: NextRequest) {
         nomor_pendaftaran: true,
         nama_lengkap: true,
         status_pendaftaran: true,
-        data_lengkap: true,
-      },
+        data_lengkap: true },
       orderBy: { created_at: "desc" }
     });
 
@@ -61,8 +60,7 @@ export async function GET(request: NextRequest) {
         "Nominal Potongan": nominalPotongan,
         "Status Pengajuan": pengajuan ? pengajuan.status.toUpperCase() : "AKTIF (MANUAL)",
         "Kesanggupan Bayar (Pengajuan)": kesanggupanBayar,
-        "Alasan/Ket": pengajuan?.alasan || aktif?.alasan || "-",
-      };
+        "Alasan/Ket": pengajuan?.alasan || aktif?.alasan || "-" };
     }).filter(item => item !== null);
 
     return NextResponse.json({

@@ -36,8 +36,7 @@ import {
   Calendar,
   Clock,
   Smartphone,
-  User,
-} from "lucide-react";
+  User } from "lucide-react";
 import { motion } from "framer-motion";
 import { Container } from "@/components/layout/Container";
 
@@ -49,8 +48,7 @@ const HeroStat = ({
   icon: Icon,
   value,
   label,
-  delay = 0,
-}: {
+  delay = 0 }: {
   icon: any;
   value: string;
   label: string;
@@ -82,8 +80,7 @@ export default function FasilitasPage() {
     wa: "",
     tanggal: "",
     jam: "",
-    jumlah: "",
-  });
+    jumlah: "" });
 
   // Autosave visitForm to localStorage
   useEffect(() => {

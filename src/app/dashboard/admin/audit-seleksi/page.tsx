@@ -15,8 +15,7 @@ import {
   FileCheck,
   MoreHorizontal,
   Clock,
-  ArrowRight,
-} from "lucide-react";
+  ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Swal from "sweetalert2";
 import { toast } from "react-hot-toast";
@@ -95,8 +94,7 @@ export default function AuditSeleksiPage() {
     const labels: Record<string, string> = {
       accepted: "DITERIMA",
       rejected: "DITOLAK",
-      cadangan: "CADANGAN",
-    };
+      cadangan: "CADANGAN" };
 
     const result = await Swal.fire({
       title: `Umumkan ${labels[decision]}?`,
@@ -105,8 +103,7 @@ export default function AuditSeleksiPage() {
       showCancelButton: true,
       confirmButtonText: "Ya, Terbitkan!",
       cancelButtonText: "Batal",
-      confirmButtonColor: decision === "accepted" ? "#15803d" : decision === "rejected" ? "#b91c1c" : "#b45309",
-    });
+      confirmButtonColor: decision === "accepted" ? "#15803d" : decision === "rejected" ? "#b91c1c" : "#b45309" });
 
     if (!result.isConfirmed) return;
 
@@ -117,9 +114,7 @@ export default function AuditSeleksiPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           pendaftar_ids: selectedIds,
-          new_status: decision,
-        }),
-      });
+          new_status: decision }) });
 
       if (!res.ok) throw new Error("Failed to publish");
       const data = await res.json();
@@ -219,10 +214,8 @@ export default function AuditSeleksiPage() {
           title: "AUDIT REKAPITULASI HASIL SELEKSI",
           subTitle: `Tanggal: ${new Date().toLocaleDateString("id-ID")}`,
           header,
-          data,
-        },
-      ],
-    });
+          data },
+      ] });
   };
 
   return (
@@ -467,8 +460,7 @@ export default function AuditSeleksiPage() {
                             announced: { l: "PUBLISHED", c: "text-sky-700 bg-sky-100 border-sky-200" },
                             rejected: { l: "DITOLAK", c: "text-rose-700 bg-rose-100 border-rose-200" },
                             cadangan: { l: "CADANGAN", c: "text-secondary-700 bg-secondary-100 border-secondary-200" },
-                            tested: { l: "SIAP AUDIT", c: "text-ink-600 bg-ink-100 border-ink-200" },
-                          };
+                            tested: { l: "SIAP AUDIT", c: "text-ink-600 bg-ink-100 border-ink-200" } };
                           const meta = labels[s] || { l: s.toUpperCase() || "UNKNOWN", c: "text-ink-400 bg-ink-50 border-ink-100" };
                           return (
                             <span className={`px-3 py-1 rounded-full text-[9px] font-black border uppercase shadow-sm ${meta.c}`}>

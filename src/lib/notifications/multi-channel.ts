@@ -43,8 +43,7 @@ export async function sendOTP(
           success: true,
           message: "OTP berhasil dikirim via WhatsApp",
           channel: "whatsapp",
-          messageId: result.messageId,
-        };
+          messageId: result.messageId };
       }
       waError = result.error || "Gagal mengirim via WhatsApp";
     } catch (error: any) {
@@ -60,8 +59,7 @@ export async function sendOTP(
           success: true,
           message: "WhatsApp gagal, OTP dikirim via SMS sebagai fallback",
           channel: "sms",
-          messageId: smsResult.messageId,
-        };
+          messageId: smsResult.messageId };
       }
     } catch (error) {
       console.error("❌ SMS fallback also failed:", error);
@@ -70,8 +68,7 @@ export async function sendOTP(
     return {
       success: false,
       message: `Gagal mengirim OTP: ${waError}`, // Return specific WhatsApp error
-      channel: "whatsapp",
-    };
+      channel: "whatsapp" };
   }
 
   // SMS channel (juga via Wablas WhatsApp)
@@ -84,8 +81,7 @@ export async function sendOTP(
           success: true,
           message: "OTP berhasil dikirim",
           channel: "sms",
-          messageId: result.messageId,
-        };
+          messageId: result.messageId };
       }
     } catch (error) {
       console.error("❌ SMS failed:", error);
@@ -94,15 +90,13 @@ export async function sendOTP(
     return {
       success: false,
       message: "Gagal mengirim OTP",
-      channel: "sms",
-    };
+      channel: "sms" };
   }
 
   return {
     success: false,
     message: `Channel ${channel} tidak didukung`,
-    channel: channel as OTPChannel,
-  };
+    channel: channel as OTPChannel };
 }
 
 export function validateIdentifier(

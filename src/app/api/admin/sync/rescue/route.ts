@@ -6,15 +6,12 @@ export async function GET() {
     // Restore anyone deleted in the last 60 minutes
     const result = await prisma.pendaftar.updateMany({
       where: {
-        deleted_at: { not: null },
-      },
-      data: { deleted_at: null },
-    });
+        deleted_at: { not: null } },
+      data: { deleted_at: null } });
 
     return NextResponse.json({
       message: `Berhasil mengembalikan ${result.count} data pendaftar. Silakan refresh dashboard Anda.`,
-      count: result.count,
-    });
+      count: result.count });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

@@ -5,12 +5,9 @@ export async function GET() {
   try {
     const jadwals = await prisma.jadwalUjian.findMany({
       where: {
-        exam_session_id: { not: null },
-      },
+        exam_session_id: { not: null } },
       include: {
-        exam_session: true,
-      },
-    });
+        exam_session: true } });
 
     let updatedCount = 0;
     const updates = [];
@@ -40,8 +37,7 @@ export async function GET() {
       if (Object.keys(updateData).length > 0) {
         await prisma.jadwalUjian.update({
           where: { id: jadwal.id },
-          data: updateData,
-        });
+          data: updateData });
         updatedCount++;
         updates.push({ id: jadwal.id, ...updateData });
       }
@@ -50,8 +46,7 @@ export async function GET() {
     return NextResponse.json({
       success: true,
       message: `Updated ${updatedCount} records`,
-      updates,
-    });
+      updates });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

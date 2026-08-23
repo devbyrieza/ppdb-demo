@@ -15,8 +15,7 @@ export default function RevealOnScroll({
   className = "",
   threshold = 0.1,
   delay = 0,
-  once = true,
-}: RevealOnScrollProps) {
+  once = true }: RevealOnScrollProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [hasRevealed, setHasRevealed] = useState(false);
@@ -57,8 +56,7 @@ export default function RevealOnScroll({
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
       }`}
       style={{
-        willChange: "opacity, transform",
-      }}
+        willChange: "opacity, transform" }}
     >
       {children}
     </div>

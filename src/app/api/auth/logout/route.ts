@@ -3,8 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
   const response = NextResponse.json({
     success: true,
-    message: "Logout berhasil",
-  });
+    message: "Logout berhasil" });
 
   const host = request.headers.get("host") || "";
   let baseDomain = "";
@@ -33,7 +32,6 @@ export async function POST(request: NextRequest) {
 
   return new Response(JSON.stringify({ success: true, message: "Logout berhasil" }), {
     status: 200,
-    headers: headers,
-  });
+    headers: headers });
 }
 

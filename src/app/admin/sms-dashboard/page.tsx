@@ -35,8 +35,7 @@ export default function AdminSMSDashboard() {
       const response = await fetch("/api/admin/pending-sms", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, status: "sent" }),
-      });
+        body: JSON.stringify({ id, status: "sent" }) });
 
       if (response.ok) {
         fetchPendingSMS(); // Refresh list

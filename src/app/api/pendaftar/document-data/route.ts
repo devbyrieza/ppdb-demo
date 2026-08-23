@@ -30,22 +30,15 @@ export async function GET(request: NextRequest) {
       where: { id: pendaftarId },
       include: {
         tahun_ajaran: {
-          select: { nama: true },
-        },
+          select: { nama: true } },
         jadwal_ujian: {
           select: {
             tanggal_ujian: true,
-            catatan: true,
-          },
-        },
+            catatan: true } },
         pengumuman: {
           select: {
             status_kelulusan: true,
-            catatan: true,
-          },
-        },
-      },
-    });
+            catatan: true } } } });
 
     if (!data) {
       return NextResponse.json(
@@ -72,13 +65,10 @@ export async function GET(request: NextRequest) {
                 month: "long",
                 year: "numeric",
                 hour: "2-digit",
-                minute: "2-digit",
-              })
+                minute: "2-digit" })
               .replace("Minggu", "Ahad")
           : null,
-        status_kelulusan: data.pengumuman?.status_kelulusan || null,
-      },
-    });
+        status_kelulusan: data.pengumuman?.status_kelulusan || null } });
   } catch (error) {
     console.error("Error fetching document data:", error);
     return NextResponse.json(

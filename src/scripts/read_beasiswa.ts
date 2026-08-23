@@ -10,8 +10,7 @@ async function main() {
           id: true,
           nama_lengkap: true,
           nomor_pendaftaran: true,
-          status_pendaftaran: true,
-        }
+          status_pendaftaran: true }
       }
     }
   });
@@ -27,8 +26,7 @@ async function main() {
       status: item.status,
       nominal_potongan: item.nominal_potongan ? Number(item.nominal_potongan) : null,
       tipe_potongan: item.tipe_potongan,
-      persentase_potongan: item.persentase_potongan ? Number(item.persentase_potongan) : null,
-    });
+      persentase_potongan: item.persentase_potongan ? Number(item.persentase_potongan) : null });
   }
 }
 

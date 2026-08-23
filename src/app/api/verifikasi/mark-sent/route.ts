@@ -19,17 +19,14 @@ export async function POST(request: NextRequest) {
 
     if (otp_id) {
       recordToUpdate = await prisma.otpVerification.findUnique({
-        where: { id: otp_id },
-      });
+        where: { id: otp_id } });
     } else {
       recordToUpdate = await prisma.otpVerification.findFirst({
         where: {
           phone: phone,
           verified_at: null,
-          expires_at: { gt: new Date() },
-        },
-        orderBy: { created_at: "desc" },
-      });
+          expires_at: { gt: new Date() } },
+        orderBy: { created_at: "desc" } });
     }
 
     if (!recordToUpdate) {
@@ -44,16 +41,13 @@ export async function POST(request: NextRequest) {
       where: { id: recordToUpdate.id },
       data: {
         sent_at: new Date(),
-        status: "sent",
-      },
-    });
+        status: "sent" } });
 
     return NextResponse.json({
       success: true,
       message: "OTP sudah ditandai sebagai terkirim",
       data: updated,
-      timestamp: new Date().toISOString(),
-    });
+      timestamp: new Date().toISOString() });
   } catch (error: any) {
     return NextResponse.json(
       { success: false, error: error.message },

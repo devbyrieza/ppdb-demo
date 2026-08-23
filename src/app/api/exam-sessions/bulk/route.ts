@@ -42,8 +42,7 @@ export async function POST(request: Request) {
       daySlots, // New: Record<number, { start: string, end: string }[]>
       title,
       location,
-      notes,
-    } = body;
+      notes } = body;
 
     if (!startDate || !endDate || (!daySlots && (!daysOfWeek || !timeSlots))) {
       return NextResponse.json(
@@ -122,8 +121,7 @@ export async function POST(request: Request) {
             quota: 1, // Default to 1 (Private/1-on-1)
             location: location || "Online",
             notes: notes || "",
-            created_by: creatorId,
-          });
+            created_by: creatorId });
         }
       }
 
@@ -146,8 +144,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       success: true,
       message: `Berhasil membuat ${result.length} sesi jadwal.`,
-      count: result.length,
-    });
+      count: result.length });
   } catch (error: any) {
     console.error("Bulk Create error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });

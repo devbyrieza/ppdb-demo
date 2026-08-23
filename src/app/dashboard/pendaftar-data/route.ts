@@ -29,8 +29,7 @@ export async function GET() {
 
     // Fetch data pendaftar using Prisma
     const pendaftar = await prisma.pendaftar.findUnique({
-      where: { id: pendaftarId },
-    });
+      where: { id: pendaftarId } });
 
     if (!pendaftar) {
       return NextResponse.json(
@@ -41,8 +40,7 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
-      data: pendaftar,
-    });
+      data: pendaftar });
   } catch (error) {
     console.error("Error fetching pendaftar data:", error);
     return NextResponse.json(

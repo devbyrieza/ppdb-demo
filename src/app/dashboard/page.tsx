@@ -26,8 +26,7 @@ import {
   RefreshCw,
   LayoutDashboard,
   IdCard,
-  ShieldCheck,
-} from "lucide-react";
+  ShieldCheck } from "lucide-react";
 import BackToHomeButton from "@/components/common/BackToHomeButton";
 import { logoutUser } from "@/lib/auth";
 import { hasReachedStatus, StatusProses } from "@/lib/access-control";
@@ -64,8 +63,7 @@ const STATUS_LABELS: Record<
     border: "border-secondary-200",
     text: "text-secondary-700",
     icon: Clock,
-    message: "Mari lengkapi data untuk melanjutkan ke tahap berikutnya!",
-  },
+    message: "Mari lengkapi data untuk melanjutkan ke tahap berikutnya!" },
   waiting_payment: {
     label: "Menunggu Pembayaran",
     color: "sand",
@@ -74,8 +72,7 @@ const STATUS_LABELS: Record<
     text: "text-secondary-700",
     icon: Clock,
     message:
-      "Tinggal satu langkah lagi! Silakan lakukan pembayaran untuk melanjutkan.",
-  },
+      "Tinggal satu langkah lagi! Silakan lakukan pembayaran untuk melanjutkan." },
   payment_verification: {
     label: "Verifikasi Pembayaran",
     color: "teal",
@@ -84,8 +81,7 @@ const STATUS_LABELS: Record<
     text: "text-primary-700",
     icon: Loader2,
     message:
-      "Pembayaran Anda sedang kami verifikasi. Harap menunggu dengan sabar ya!",
-  },
+      "Pembayaran Anda sedang kami verifikasi. Harap menunggu dengan sabar ya!" },
   data_lengkap: {
     label: "Data Lengkap",
     color: "emerald",
@@ -93,8 +89,7 @@ const STATUS_LABELS: Record<
     border: "border-emerald-200",
     text: "text-emerald-700",
     icon: CheckCircle,
-    message: "Luar biasa! Semua data sudah lengkap. Menunggu verifikasi admin.",
-  },
+    message: "Luar biasa! Semua data sudah lengkap. Menunggu verifikasi admin." },
   verified: {
     label: "Terverifikasi",
     color: "emerald",
@@ -102,8 +97,7 @@ const STATUS_LABELS: Record<
     border: "border-emerald-200",
     text: "text-emerald-700",
     icon: CheckCircle,
-    message: "Alhamdulillah! Pendaftaran Anda telah diverifikasi.",
-  },
+    message: "Alhamdulillah! Pendaftaran Anda telah diverifikasi." },
   tes_tertulis: {
     label: "Tes Tertulis",
     color: "teal",
@@ -111,8 +105,7 @@ const STATUS_LABELS: Record<
     border: "border-primary-200",
     text: "text-primary-700",
     icon: FileText,
-    message: "Persiapkan diri untuk tes tertulis. Semangat!",
-  },
+    message: "Persiapkan diri untuk tes tertulis. Semangat!" },
   lulus_tes_tertulis: {
     label: "Lulus Tes Tertulis",
     color: "emerald",
@@ -120,8 +113,7 @@ const STATUS_LABELS: Record<
     border: "border-emerald-200",
     text: "text-emerald-700",
     icon: CheckCircle,
-    message: "Selamat! Anda lulus tes tertulis. Lanjutkan ke tahap berikutnya!",
-  },
+    message: "Selamat! Anda lulus tes tertulis. Lanjutkan ke tahap berikutnya!" },
   tidak_lulus_tes_tertulis: {
     label: "Ditolak",
     color: "red",
@@ -130,8 +122,7 @@ const STATUS_LABELS: Record<
     text: "text-red-700",
     icon: AlertCircle,
     message:
-      "Jangan berkecil hati. Tetap semangat untuk kesempatan berikutnya!",
-  },
+      "Jangan berkecil hati. Tetap semangat untuk kesempatan berikutnya!" },
   scheduled: {
     label: "Dijadwalkan Ujian",
     color: "teal",
@@ -139,8 +130,7 @@ const STATUS_LABELS: Record<
     border: "border-primary-200",
     text: "text-primary-700",
     icon: Calendar,
-    message: "Ujian Anda telah dijadwalkan. Cek detail jadwal ya!",
-  },
+    message: "Ujian Anda telah dijadwalkan. Cek detail jadwal ya!" },
   tested: {
     label: "Selesai Ujian",
     color: "emerald",
@@ -148,8 +138,7 @@ const STATUS_LABELS: Record<
     border: "border-emerald-200",
     text: "text-emerald-700",
     icon: CheckCircle,
-    message: "Ujian selesai! Menunggu hasil pengumuman. Do'akan yang terbaik!",
-  },
+    message: "Ujian selesai! Menunggu hasil pengumuman. Do'akan yang terbaik!" },
   accepted: {
     label: "Diterima",
     color: "emerald",
@@ -158,8 +147,7 @@ const STATUS_LABELS: Record<
     text: "text-emerald-700",
     icon: Trophy,
     message:
-      "Alhamdulillah! Selamat, putra/putri Anda diterima di Pesantren Al Fath!",
-  },
+      "Alhamdulillah! Selamat, putra/putri Anda diterima di Pesantren Al Fath!" },
   payment_rejected: {
     label: "Pembayaran Bermasalah",
     color: "red",
@@ -168,8 +156,7 @@ const STATUS_LABELS: Record<
     text: "text-red-700",
     icon: AlertCircle,
     message:
-      "Bukti pembayaran Anda ditolak. Silakan cek catatan admin atau hubungi panitia.",
-  },
+      "Bukti pembayaran Anda ditolak. Silakan cek catatan admin atau hubungi panitia." },
   rejected: {
     label: "Perlu Perbaikan",
     color: "red",
@@ -178,9 +165,7 @@ const STATUS_LABELS: Record<
     text: "text-red-700",
     icon: AlertCircle,
     message:
-      "Mohon maaf, ada kendala pada berkas atau pembayaran Anda. Silakan hubungi panitia.",
-  },
-};
+      "Mohon maaf, ada kendala pada berkas atau pembayaran Anda. Silakan hubungi panitia." } };
 
 // ========================================
 // SUB-COMPONENTS
@@ -194,8 +179,7 @@ const ActionCard = ({
   step,
   color,
   disabled,
-  delay = 0,
-}: {
+  delay = 0 }: {
   href: string;
   icon: any;
   title: string;
@@ -295,8 +279,7 @@ export default function DashboardPage() {
       showCancelButton: true,
       confirmButtonColor: "#3a5029",
       confirmButtonText: "Ya, Keluar!",
-      cancelButtonText: "Batal",
-    });
+      cancelButtonText: "Batal" });
 
     if (!isConfirmed) return;
 
@@ -337,8 +320,7 @@ export default function DashboardPage() {
     border: "border-primary-200",
     text: "text-primary-700",
     icon: Clock,
-    message: "Status pendaftaran Anda sedang diproses.",
-  };
+    message: "Status pendaftaran Anda sedang diproses." };
   const StatusIcon = statusInfo.icon;
 
   return (

@@ -109,8 +109,7 @@ export async function GET(request: Request) {
 
     kelurahanCache.set(cacheKey, {
       data: kelurahanNames,
-      timestamp: Date.now(),
-    });
+      timestamp: Date.now() });
 
     return NextResponse.json({ data: kelurahanNames });
   } catch (error) {

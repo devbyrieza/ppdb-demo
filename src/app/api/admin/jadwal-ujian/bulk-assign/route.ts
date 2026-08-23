@@ -24,8 +24,7 @@ export async function POST(request: Request) {
 
     // 1. Get Exam Session details (Link, Time)
     const examSession = await prisma.examSession.findUnique({
-      where: { id: exam_session_id },
-    });
+      where: { id: exam_session_id } });
 
     if (!examSession) {
       return NextResponse.json(
@@ -40,22 +39,17 @@ export async function POST(request: Request) {
       where: {
         status_pendaftaran: "docs_verified",
         jadwal_ujian: {
-          none: { exam_session_id: exam_session_id },
-        },
-      },
+          none: { exam_session_id: exam_session_id } } },
       select: {
         id: true,
         nama_lengkap: true,
         no_hp: true,
-        tahun_ajaran_id: true,
-      },
-    });
+        tahun_ajaran_id: true } });
 
     if (students.length === 0) {
       return NextResponse.json({
         message: "Tidak ada siswa baru yang perlu di-assign.",
-        queue: [],
-      });
+        queue: [] });
     }
 
     // 3. Current Time for schedule
@@ -86,14 +80,11 @@ export async function POST(request: Request) {
               // Dummy for schema compat
               tempat_ortu: "Online",
               waktu_mulai_ortu: examSession.start_time,
-              waktu_selesai_ortu: examSession.end_time,
-            },
-          }),
+              waktu_selesai_ortu: examSession.end_time } }),
           // Update Pendaftar status to 'scheduled'
           prisma.pendaftar.update({
             where: { id: student.id },
-            data: { status_pendaftaran: "scheduled" },
-          }),
+            data: { status_pendaftaran: "scheduled" } }),
         ]);
 
         // Add to Notification Queue for Frontend Processing
@@ -106,11 +97,9 @@ export async function POST(request: Request) {
               weekday: "long",
               day: "numeric",
               month: "long",
-              year: "numeric",
-            }),
+              year: "numeric" }),
             waktu: `${examSession.start_time.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" })} WIB`,
-            tempat: examSession.location || "Online (Link di Dashboard)",
-          });
+            tempat: examSession.location || "Online (Link di Dashboard)" });
         }
 
         successCount++;
@@ -122,8 +111,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       success: true,
       message: `Berhasil assign ${successCount} siswa. Siap kirim notifikasi.`,
-      queue: notificationQueue,
-    });
+      queue: notificationQueue });
   } catch (error: any) {
     console.error("Bulk Assign Error:", error);
     return NextResponse.json(

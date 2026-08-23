@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Send, X, Bot, User, Loader2, MessageSquare, Headphones, , Hand } from "lucide-react";
+import { Send, X, Bot, User, Loader2, MessageSquare, Headphones, Hand } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface Message {
@@ -17,15 +17,13 @@ interface AiChatWidgetProps {
 
 export default function AiChatWidget({
   onClose,
-  onEscalate,
-}: AiChatWidgetProps) {
+  onEscalate }: AiChatWidgetProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "welcome",
       role: "ai",
       content:
-        "Assalamu'alaikum! Saya asisten virtual Al Fath. Ada yang bisa saya bantu terkait informasi pendaftaran, program unggulan, atau jadwal tes?",
-    },
+        "Assalamu'alaikum! Saya asisten virtual Al Fath. Ada yang bisa saya bantu terkait informasi pendaftaran, program unggulan, atau jadwal tes?" },
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -59,14 +57,12 @@ export default function AiChatWidget({
       // Map our existing messages (excluding the new one) to the format expected by our API route
       const history = messages.map((msg) => ({
         role: msg.role === "ai" ? "model" : "user",
-        parts: [{ text: msg.content }],
-      }));
+        parts: [{ text: msg.content }] }));
 
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ history, message: userMsg }),
-      });
+        body: JSON.stringify({ history, message: userMsg }) });
 
       const data = await response.json();
 
@@ -105,8 +101,7 @@ export default function AiChatWidget({
           id: "error-" + Date.now(),
           role: "ai",
           content:
-            "Maaf, koneksi terputus. Silakan coba lagi atau hubungi CS kami.",
-        },
+            "Maaf, koneksi terputus. Silakan coba lagi atau hubungi CS kami." },
       ]);
     } finally {
       setIsLoading(false);
@@ -128,8 +123,7 @@ export default function AiChatWidget({
       className="fixed bottom-0 md:bottom-28 right-0 md:right-6 z-10000 w-full md:w-[400px] h-[85vh] md:h-[550px] bg-white rounded-t-4xl md:rounded-4xl shadow-[0_10px_40px_rgba(0,0,0,0.15)] md:border border-surface-100 flex flex-col overflow-hidden"
       style={{
         // Using transform origin bottom right for desktop, bottom center for mobile
-        transformOrigin: "bottom right",
-      }}
+        transformOrigin: "bottom right" }}
     >
       {/* Header */}
       <div className="bg-primary-800 text-white p-4 md:p-5 flex items-center justify-between shrink-0 shadow-sm relative z-10">

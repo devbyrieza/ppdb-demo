@@ -33,8 +33,7 @@ export async function POST(request: Request) {
           nama: data.nama,
           tanggal: data.tanggal,
           waktu: data.waktu,
-          tempat: data.tempat,
-        });
+          tempat: data.tempat });
         break;
 
       case "status":
@@ -42,8 +41,7 @@ export async function POST(request: Request) {
           phone: data.phone,
           nama: data.nama,
           status: data.status,
-          jenjang: data.jenjang,
-        });
+          jenjang: data.jenjang });
         break;
 
       default:

@@ -34,8 +34,7 @@ export async function GET(req: NextRequest) {
             nama_lengkap: true,
             nomor_pendaftaran: true,
             jenjang: true,
-            data_lengkap: true,
-          }
+            data_lengkap: true }
         }
       },
       orderBy: { created_at: 'desc' }
@@ -71,8 +70,7 @@ export async function POST(req: NextRequest) {
       file_ktp_path, 
       file_ktp_ibu_path,
       file_prestasi_path,
-      file_permohonan_path,
-    } = body;
+      file_permohonan_path } = body;
 
     if (!pendaftar_id || !jenis_pengajuan || !alasan_pengajuan) {
       return NextResponse.json({ error: "Data pengajuan tidak lengkap" }, { status: 400 });
@@ -137,8 +135,7 @@ export async function POST(req: NextRequest) {
       adminName: session.full_name || session.name || "Admin",
       targetId: pendaftar_id,
       targetName: pendaftar.nama_lengkap || "Unknown",
-      details: { jenis_pengajuan },
-    });
+      details: { jenis_pengajuan } });
 
     return NextResponse.json({ success: true, message: "Pengajuan berhasil dikirim", data: pengajuan });
   } catch (error: any) {
@@ -226,8 +223,7 @@ export async function PATCH(req: NextRequest) {
           adminName: session.full_name || session.name || "Admin",
           targetId: pId,
           targetName: pendaftar.nama_lengkap || "Unknown",
-          details: { status, nominal_potongan, catatan_keputusan },
-        });
+          details: { status, nominal_potongan, catatan_keputusan } });
         await invalidateAdminPendaftarCache();
       } catch (e) {}
     }

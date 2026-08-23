@@ -10,8 +10,7 @@ import {
   ArrowLeft,
   Timer,
   AlertCircle,
-  FileText,
-} from "lucide-react";
+  FileText } from "lucide-react";
 import Swal from "sweetalert2";
 
 export default function AkademikTestPage() {
@@ -128,8 +127,7 @@ export default function AkademikTestPage() {
         confirmButtonColor: "#1e40af",
         cancelButtonColor: "#6b7280",
         confirmButtonText: "Ya, Kirim",
-        cancelButtonText: "Batal",
-      });
+        cancelButtonText: "Batal" });
       if (!result.isConfirmed) {
         setTimerActive(true);
         return;
@@ -144,8 +142,7 @@ export default function AkademikTestPage() {
       const res = await fetch("/api/pendaftar/ujian/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+        body: JSON.stringify(payload) });
       if (!res.ok) throw new Error("Gagal mengirim");
 
       if (typeof window !== "undefined") {
@@ -156,8 +153,7 @@ export default function AkademikTestPage() {
         icon: "success",
         title: "Alhamdulillah!",
         text: "Seleksi Akademik berhasil diselesaikan.",
-        confirmButtonColor: "#1e40af",
-      });
+        confirmButtonColor: "#1e40af" });
       router.push("/dashboard/pendaftar/undangan-seleksi");
     } catch (err: any) {
       Swal.fire("Error", err.message, "error");

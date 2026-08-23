@@ -4,8 +4,7 @@ export type {
   Question,
   KesiapanSection,
   KesiapanQuestion,
-  KepribadianQuestion,
-} from "./questions/types";
+  KepribadianQuestion } from "./questions/types";
 export { AKADEMIK_MTS } from "./questions/akademik-mts";
 export { AKADEMIK_IL, AKADEMIK_MA } from "./questions/akademik-il-ma";
 export { KEPRIBADIAN_QUESTIONS } from "./questions/kepribadian";

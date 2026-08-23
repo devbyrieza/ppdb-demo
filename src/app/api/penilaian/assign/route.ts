@@ -24,8 +24,7 @@ export async function POST(req: Request) {
     // Fetch profile to verify if admin_super
     const userProfile = await prisma.profile.findUnique({
       where: { id: userId },
-      select: { role: true, secondary_roles: true },
-    });
+      select: { role: true, secondary_roles: true } });
 
     const allRoles = userProfile
       ? [userProfile.role, ...(userProfile.secondary_roles || [])]
@@ -45,13 +44,11 @@ export async function POST(req: Request) {
 
     // Find NilaiUjian record or create it
     let nilai = await prisma.nilaiUjian.findFirst({
-      where: { pendaftar_id },
-    });
+      where: { pendaftar_id } });
 
     if (!nilai) {
       nilai = await prisma.nilaiUjian.create({
-        data: { pendaftar_id },
-      });
+        data: { pendaftar_id } });
     }
 
     // Parse existing detail_akademik
@@ -76,9 +73,7 @@ export async function POST(req: Request) {
       where: { id: nilai.id },
       data: {
         detail_akademik: detailAkademik,
-        updated_at: new Date(),
-      },
-    });
+        updated_at: new Date() } });
 
     return NextResponse.json({ success: true, detail_akademik: updated.detail_akademik });
   } catch (error: any) {

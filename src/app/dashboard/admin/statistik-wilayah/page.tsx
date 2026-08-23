@@ -7,8 +7,7 @@ import TerjauhCard from "./components/TerjauhCard";
 import GlobalFilter from "./components/GlobalFilter";
 
 export const metadata = {
-  title: "Statistik Wilayah | Admin Dashboard",
-};
+  title: "Statistik Wilayah | Admin Dashboard" };
 
 export default async function StatistikWilayahPage(props: {
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -31,8 +30,7 @@ export default async function StatistikWilayahPage(props: {
 
   const jenjangData = await prisma.pendaftar.findMany({
     select: { jenjang: true },
-    distinct: ['jenjang'],
-  });
+    distinct: ['jenjang'] });
   const jenjangList = jenjangData.map((j) => j.jenjang).filter(Boolean) as string[];
 
   // Ambil data wilayah dari pendaftar
@@ -40,15 +38,12 @@ export default async function StatistikWilayahPage(props: {
     where: {
       ...getAdminWhereClause(),
       ...(filterTahun ? { tahun_ajaran: { nama: filterTahun } } : {}),
-      ...(filterJenjang ? { jenjang: filterJenjang } : {}),
-    },
+      ...(filterJenjang ? { jenjang: filterJenjang } : {}) },
     select: {
       data_lengkap: true,
       jenjang: true,
       jenis_kelamin: true,
-      status_pendaftaran: true,
-    },
-  });
+      status_pendaftaran: true } });
 
   const statsProvinsi: Record<string, number> = {};
   const statsKabupaten: Record<string, number> = {};

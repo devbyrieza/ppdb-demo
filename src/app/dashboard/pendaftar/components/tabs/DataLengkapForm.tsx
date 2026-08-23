@@ -23,8 +23,7 @@ import {
   Ruler,
   Weight,
   Globe,
-  Home as HomeIcon,
-} from "lucide-react";
+  Home as HomeIcon } from "lucide-react";
 
 import WilayahSelector from "@/components/form/WilayahSelector";
 import SearchableSelect from "@/components/form/SearchableSelect";
@@ -224,8 +223,7 @@ const INITIAL_SANTRI: DataDiriSantri = {
   asal_sekolah: "",
   nisn: "",
   alamat_sekolah: "",
-  tahun_lulus: "",
-};
+  tahun_lulus: "" };
 
 const INITIAL_ORTU: DataOrangTua = {
   nama_lengkap: "",
@@ -247,8 +245,7 @@ const INITIAL_ORTU: DataOrangTua = {
   kabupaten: "",
   provinsi: "",
   kode_pos: "",
-  status_hidup: "Masih Hidup",
-};
+  status_hidup: "Masih Hidup" };
 
 const INITIAL_WALI: DataWali = {
   hubungan: "",
@@ -271,8 +268,7 @@ const INITIAL_WALI: DataWali = {
   kecamatan: "",
   kabupaten: "",
   provinsi: "",
-  kode_pos: "",
-};
+  kode_pos: "" };
 
 // ============================================
 // COMPONENTS
@@ -295,8 +291,7 @@ function SectionHeader({
   isOpen,
   onToggle,
   isCompleted,
-  disabled,
-}: SectionHeaderProps) {
+  disabled }: SectionHeaderProps) {
   return (
     <div
       role="button"
@@ -386,8 +381,7 @@ function InputField({
   disabled,
   options,
   maxLength,
-  inputFilter,
-}: InputFieldProps) {
+  inputFilter }: InputFieldProps) {
   const baseInputClass =
     "w-full px-4 py-3 bg-white border border-ink-200 rounded-xl text-ink-900 placeholder:text-stone-600 focus:border-primary-600 focus:ring-4 focus:ring-primary-600/10 transition-all outline-none disabled:bg-surface-100 disabled:text-ink-600 font-medium";
 
@@ -499,8 +493,7 @@ function InputField({
 // ============================================
 
 export default function DataLengkapForm({
-  onSuccess,
-}: {
+  onSuccess }: {
   onSuccess?: () => void;
 }) {
   const [formData, setFormData] = useState<FormData>({
@@ -508,15 +501,13 @@ export default function DataLengkapForm({
     ayah: INITIAL_ORTU,
     ibu: INITIAL_ORTU,
     wali: INITIAL_WALI,
-    wali_sama_dengan_ortu: true,
-  });
+    wali_sama_dengan_ortu: true });
 
   const [openSections, setOpenSections] = useState({
     santri: true,
     ayah: false,
     ibu: false,
-    wali: false,
-  });
+    wali: false });
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -535,29 +526,25 @@ export default function DataLengkapForm({
   ) => {
     setFormData((prev) => ({
       ...prev,
-      santri: { ...prev.santri, [field]: value },
-    }));
+      santri: { ...prev.santri, [field]: value } }));
   };
 
   const updateAyah = (field: keyof DataOrangTua, value: string) => {
     setFormData((prev) => ({
       ...prev,
-      ayah: { ...prev.ayah, [field]: value },
-    }));
+      ayah: { ...prev.ayah, [field]: value } }));
   };
 
   const updateIbu = (field: keyof DataOrangTua, value: string) => {
     setFormData((prev) => ({
       ...prev,
-      ibu: { ...prev.ibu, [field]: value },
-    }));
+      ibu: { ...prev.ibu, [field]: value } }));
   };
 
   const updateWali = (field: keyof DataWali, value: string) => {
     setFormData((prev) => ({
       ...prev,
-      wali: { ...prev.wali, [field]: value },
-    }));
+      wali: { ...prev.wali, [field]: value } }));
   };
 
   const handleSantriAddressChange = (val: any) => {
@@ -569,9 +556,7 @@ export default function DataLengkapForm({
         kabupaten: val.kabupaten,
         kecamatan: val.kecamatan,
         kelurahan: val.kelurahan,
-        kode_pos: val.kode_pos,
-      },
-    }));
+        kode_pos: val.kode_pos } }));
   };
 
   const handleWaliAddressChange = (val: any) => {
@@ -583,9 +568,7 @@ export default function DataLengkapForm({
         kabupaten: val.kabupaten,
         kecamatan: val.kecamatan,
         kelurahan: val.kelurahan,
-        kode_pos: val.kode_pos,
-      },
-    }));
+        kode_pos: val.kode_pos } }));
   };
 
   // Check if parents are deceased
@@ -602,8 +585,7 @@ export default function DataLengkapForm({
     if (isWaliRequired && formData.wali_sama_dengan_ortu) {
       setFormData((prev) => ({
         ...prev,
-        wali_sama_dengan_ortu: false,
-      }));
+        wali_sama_dengan_ortu: false }));
       setOpenSections((prev) => ({ ...prev, wali: true }));
     }
   }, [isWaliRequired, formData.wali_sama_dengan_ortu]);
@@ -647,13 +629,11 @@ export default function DataLengkapForm({
             santri: {
               ...prev.santri,
               ...result.data.santri,
-              jenis_kelamin: autoGender,
-            },
+              jenis_kelamin: autoGender },
             ayah: { ...prev.ayah, ...result.data.ayah },
             ibu: { ...prev.ibu, ...result.data.ibu },
             wali: { ...prev.wali, ...result.data.wali },
-            wali_sama_dengan_ortu: result.data.wali_sama_dengan_ortu ?? true,
-          }));
+            wali_sama_dengan_ortu: result.data.wali_sama_dengan_ortu ?? true }));
         }
 
         if (reqRes) {
@@ -685,8 +665,7 @@ export default function DataLengkapForm({
         await fetch("/api/pendaftar/data-lengkap", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...formData, is_draft: true }),
-        });
+          body: JSON.stringify({ ...formData, is_draft: true }) });
         // Auto-save is silent, we don't show toast to user
         localStorage.setItem("ppdb_datalengkap_draft", JSON.stringify(formData));
       } catch (err) {
@@ -710,8 +689,7 @@ export default function DataLengkapForm({
       const response = await fetch("/api/pendaftar/data-lengkap", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+        body: JSON.stringify(formData) });
 
       const result = await response.json();
       if (!result.success) {
@@ -724,9 +702,7 @@ export default function DataLengkapForm({
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             request_id: requestStatus.id,
-            status: "submitted",
-          }),
-        });
+            status: "submitted" }) });
 
         const reqJson = await reqUpdate.json();
         if (reqJson.success) {
@@ -1212,8 +1188,7 @@ export default function DataLengkapForm({
                         kabupaten: formData.santri.kabupaten,
                         kecamatan: formData.santri.kecamatan,
                         kelurahan: formData.santri.kelurahan,
-                        kode_pos: formData.santri.kode_pos,
-                      }}
+                        kode_pos: formData.santri.kode_pos }}
                       onChange={handleSantriAddressChange}
                     />
                   </div>
@@ -1470,8 +1445,7 @@ export default function DataLengkapForm({
                             kabupaten: formData.ayah.kabupaten || "",
                             kecamatan: formData.ayah.kecamatan || "",
                             kelurahan: formData.ayah.kelurahan || "",
-                            kode_pos: formData.ayah.kode_pos || "",
-                          }}
+                            kode_pos: formData.ayah.kode_pos || "" }}
                           onChange={(val) => {
                             setFormData((prev) => ({
                               ...prev,
@@ -1481,9 +1455,7 @@ export default function DataLengkapForm({
                                 kabupaten: val.kabupaten,
                                 kecamatan: val.kecamatan,
                                 kelurahan: val.kelurahan,
-                                kode_pos: val.kode_pos,
-                              },
-                            }));
+                                kode_pos: val.kode_pos } }));
                           }}
                         />
                       </div>
@@ -1675,8 +1647,7 @@ export default function DataLengkapForm({
                             kabupaten: formData.ibu.kabupaten || "",
                             kecamatan: formData.ibu.kecamatan || "",
                             kelurahan: formData.ibu.kelurahan || "",
-                            kode_pos: formData.ibu.kode_pos || "",
-                          }}
+                            kode_pos: formData.ibu.kode_pos || "" }}
                           onChange={(val) => {
                             setFormData((prev) => ({
                               ...prev,
@@ -1686,9 +1657,7 @@ export default function DataLengkapForm({
                                 kabupaten: val.kabupaten,
                                 kecamatan: val.kecamatan,
                                 kelurahan: val.kelurahan,
-                                kode_pos: val.kode_pos,
-                              },
-                            }));
+                                kode_pos: val.kode_pos } }));
                           }}
                         />
                       </div>
@@ -1872,8 +1841,7 @@ export default function DataLengkapForm({
                           kabupaten: formData.wali.kabupaten,
                           kecamatan: formData.wali.kecamatan,
                           kelurahan: formData.wali.kelurahan,
-                          kode_pos: formData.wali.kode_pos,
-                        }}
+                          kode_pos: formData.wali.kode_pos }}
                         onChange={handleWaliAddressChange}
                       />
                     </div>

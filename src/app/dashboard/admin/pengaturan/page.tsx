@@ -11,8 +11,7 @@ import {
   Plus,
   Star,
   Edit3,
-  X,
-} from "lucide-react";
+  X } from "lucide-react";
 
 interface TahunAjaran {
   id: string;
@@ -42,8 +41,7 @@ export default function PengaturanPage() {
     tanggal_buka_pendaftaran: "",
     tanggal_tutup_pendaftaran: "",
     biaya_pendaftaran: 0,
-    is_active: false,
-  });
+    is_active: false });
 
   const fetchTahunAjaran = async () => {
     try {
@@ -70,8 +68,7 @@ export default function PengaturanPage() {
       setMessage(null);
 
       const response = await fetch("/api/admin/tahun-ajaran/seed", {
-        method: "POST",
-      });
+        method: "POST" });
 
       const result = await response.json();
 
@@ -81,8 +78,7 @@ export default function PengaturanPage() {
       } else {
         setMessage({
           type: "error",
-          text: result.error || "Gagal menambahkan tahun ajaran",
-        });
+          text: result.error || "Gagal menambahkan tahun ajaran" });
       }
     } catch (error) {
       setMessage({ type: "error", text: "Terjadi kesalahan" });
@@ -98,8 +94,7 @@ export default function PengaturanPage() {
       tanggal_buka_pendaftaran: ta.tanggal_buka_pendaftaran.split("T")[0],
       tanggal_tutup_pendaftaran: ta.tanggal_tutup_pendaftaran.split("T")[0],
       biaya_pendaftaran: Number(ta.biaya_pendaftaran),
-      is_active: ta.is_active,
-    });
+      is_active: ta.is_active });
   };
 
   const handleUpdate = async (e: React.FormEvent) => {
@@ -113,22 +108,19 @@ export default function PengaturanPage() {
       const response = await fetch(`/api/admin/tahun-ajaran/${editingTa.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(editFormData),
-      });
+        body: JSON.stringify(editFormData) });
 
       if (response.ok) {
         setMessage({
           type: "success",
-          text: "Tahun ajaran berhasil diperbarui",
-        });
+          text: "Tahun ajaran berhasil diperbarui" });
         setEditingTa(null);
         fetchTahunAjaran();
       } else {
         const err = await response.json();
         setMessage({
           type: "error",
-          text: err.error || "Gagal memperbarui data",
-        });
+          text: err.error || "Gagal memperbarui data" });
       }
     } catch (error) {
       setMessage({ type: "error", text: "Terjadi kesalahan sistem" });
@@ -146,16 +138,14 @@ export default function PengaturanPage() {
     return new Date(dateString).toLocaleDateString("id-ID", {
       day: "numeric",
       month: "long",
-      year: "numeric",
-    });
+      year: "numeric" });
   };
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
       currency: "IDR",
-      minimumFractionDigits: 0,
-    }).format(amount);
+      minimumFractionDigits: 0 }).format(amount);
   };
 
   return (
@@ -394,8 +384,7 @@ export default function PengaturanPage() {
                     onChange={(e) =>
                       setEditFormData({
                         ...editFormData,
-                        tanggal_buka_pendaftaran: e.target.value,
-                      })
+                        tanggal_buka_pendaftaran: e.target.value })
                     }
                     className="w-full p-[16px_20px] rounded-[24px] border-2 border-stone-200 focus:border-purple-500 outline-none transition-all"
                     required
@@ -411,8 +400,7 @@ export default function PengaturanPage() {
                     onChange={(e) =>
                       setEditFormData({
                         ...editFormData,
-                        tanggal_tutup_pendaftaran: e.target.value,
-                      })
+                        tanggal_tutup_pendaftaran: e.target.value })
                     }
                     className="w-full p-[16px_20px] rounded-[24px] border-2 border-stone-200 focus:border-purple-500 outline-none transition-all"
                     required
@@ -430,8 +418,7 @@ export default function PengaturanPage() {
                   onChange={(e) =>
                     setEditFormData({
                       ...editFormData,
-                      biaya_pendaftaran: Number(e.target.value),
-                    })
+                      biaya_pendaftaran: Number(e.target.value) })
                   }
                   className="w-full p-[16px_20px] rounded-[24px] border-2 border-stone-200 focus:border-purple-500 outline-none transition-all"
                   required
@@ -446,8 +433,7 @@ export default function PengaturanPage() {
                   onChange={(e) =>
                     setEditFormData({
                       ...editFormData,
-                      is_active: e.target.checked,
-                    })
+                      is_active: e.target.checked })
                   }
                   className="w-5 h-5 rounded border-2 border-stone-300 text-purple-600 focus:ring-purple-500"
                 />

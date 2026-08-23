@@ -6,8 +6,7 @@ import {
   Target,
   Rocket,
   ArrowRight,
-  Sparkles,
-} from "lucide-react";
+  Sparkles } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { motion, Variants } from "framer-motion";
 import { navigateToDetail } from "@/lib/navigation-scroll";
@@ -17,30 +16,23 @@ const SPRING: [number, number, number, number] = [0.16, 1, 0.3, 1];
 const misi = [
   {
     label: "Unggul",
-    text: "Membentuk pribadi yang memiliki standar kualitas tinggi dalam setiap aspek kehidupan.",
-  },
+    text: "Membentuk pribadi yang memiliki standar kualitas tinggi dalam setiap aspek kehidupan." },
   {
     label: "Cerdas",
-    text: "Membentuk pribadi yang memiliki kedalaman ilmu, kritis dalam berpikir, dan bijak dalam bertindak.",
-  },
+    text: "Membentuk pribadi yang memiliki kedalaman ilmu, kritis dalam berpikir, dan bijak dalam bertindak." },
   {
     label: "Berintegritas",
-    text: "Membentuk pribadi yang jujur, amanah, dan teguh dalam memegang prinsip kebenaran.",
-  },
+    text: "Membentuk pribadi yang jujur, amanah, dan teguh dalam memegang prinsip kebenaran." },
   {
     label: "Dakwah",
-    text: "Menanamkan jiwa dakwah melalui keteladanan para pendidik serta bimbingan tanpa kekerasan dan luka pengasuhan.",
-  },
+    text: "Menanamkan jiwa dakwah melalui keteladanan para pendidik serta bimbingan tanpa kekerasan dan luka pengasuhan." },
 ];
 
 const containerVariants: Variants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.08,
-    },
-  },
-};
+      staggerChildren: 0.08 } } };
 
 const itemVariants: Variants = {
   hidden: { opacity: 0, y: 18 },
@@ -50,10 +42,7 @@ const itemVariants: Variants = {
     transition: {
       type: "tween",
       duration: 0.55,
-      ease: SPRING,
-    },
-  },
-};
+      ease: SPRING } } };
 
 export default function AboutSection() {
   const handleNavigateToDetail = () => {
@@ -161,8 +150,7 @@ export default function AboutSection() {
                 type: "tween",
                 duration: 0.6,
                 ease: SPRING,
-                delay: 0.08,
-              }}
+                delay: 0.08 }}
             >
               <div className="rounded-2xl border border-primary-100 bg-white shadow-premium-sm overflow-hidden">
                 {/* Header */}
@@ -234,8 +222,7 @@ export default function AboutSection() {
               type: "tween",
               duration: 0.5,
               ease: SPRING,
-              delay: 0.1,
-            }}
+              delay: 0.1 }}
             className="flex flex-col items-center"
           >
             <Link

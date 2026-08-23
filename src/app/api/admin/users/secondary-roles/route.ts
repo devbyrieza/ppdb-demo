@@ -47,8 +47,7 @@ export async function PATCH(request: NextRequest) {
     // Update profile
     const updated = await (prisma.profile as any).update({
       where: { id: profile_id },
-      data: { secondary_roles },
-    });
+      data: { secondary_roles } });
 
     return NextResponse.json({ success: true, data: updated });
   } catch (error: any) {

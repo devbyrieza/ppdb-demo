@@ -31,8 +31,7 @@ import {
   BarChart3,
   BookMarked,
   Layers,
-  CheckSquare,
-} from "lucide-react";
+  CheckSquare } from "lucide-react";
 import { AKADEMIK_MTS } from "@/lib/questions/akademik-mts";
 import { AKADEMIK_IL, AKADEMIK_MA } from "@/lib/questions/akademik-il-ma";
 import { KEPRIBADIAN_QUESTIONS } from "@/lib/questions/kepribadian";

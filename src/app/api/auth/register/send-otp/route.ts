@@ -46,8 +46,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: "Terlalu banyak percobaan pendaftaran dari jaringan Anda. Harap tunggu 1 jam.",
-        },
+          error: "Terlalu banyak percobaan pendaftaran dari jaringan Anda. Harap tunggu 1 jam." },
         { status: 429 },
       );
     }
@@ -63,15 +62,13 @@ export async function POST(request: NextRequest) {
       jenjang,
       email,
       telegram_username,
-      otp_channel = "whatsapp",
-    } = body;
+      otp_channel = "whatsapp" } = body;
 
     if (!["whatsapp", "sms"].includes(otp_channel)) {
       return NextResponse.json(
         {
           success: false,
-          error: "Channel OTP tidak valid. Pilih: whatsapp atau sms",
-        },
+          error: "Channel OTP tidak valid. Pilih: whatsapp atau sms" },
         { status: 400 },
       );
     }
@@ -84,17 +81,13 @@ export async function POST(request: NextRequest) {
       where: {
         phone: normalizedPhone,
         created_at: {
-          gte: oneHourAgo,
-        },
-      },
-    });
+          gte: oneHourAgo } } });
 
     if (recentOtps >= 3) {
       return NextResponse.json(
         {
           success: false,
-          error: "Terlalu banyak permintaan OTP. Coba lagi dalam 1 jam.",
-        },
+          error: "Terlalu banyak permintaan OTP. Coba lagi dalam 1 jam." },
         { status: 429 },
       );
     }
@@ -108,8 +101,7 @@ export async function POST(request: NextRequest) {
       identifier: normalizedPhone,
       otp,
       nama: nama_lengkap,
-      data: { phone: normalizedPhone, email },
-    });
+      data: { phone: normalizedPhone, email } });
 
     if (!otpResult.success) {
       return NextResponse.json(
@@ -133,10 +125,7 @@ export async function POST(request: NextRequest) {
           jenis_kelamin,
           jenjang,
           email,
-          telegram_username,
-        }),
-      },
-    });
+          telegram_username }) } });
 
     // No need for updateRateLimit() anymore
 
@@ -150,15 +139,13 @@ export async function POST(request: NextRequest) {
       note:
         otpResult.channel === "sms" && otp_channel === "whatsapp"
           ? "WhatsApp gagal, dikirim via SMS sebagai fallback"
-          : undefined,
-    });
+          : undefined });
   } catch (error: any) {
     console.error("❌ ERROR in auth-send-otp API:", {
       message: error.message,
       stack: error.stack,
       cause: error.cause,
-      code: error.code,
-    });
+      code: error.code });
     return NextResponse.json(
       { success: false, error: error.message || "Terjadi kesalahan server" },
       { status: 500 },

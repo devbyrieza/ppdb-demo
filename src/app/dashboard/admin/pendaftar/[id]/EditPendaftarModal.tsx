@@ -17,8 +17,7 @@ export default function EditPendaftarModal({
   onClose,
   pendaftar,
   paramsId,
-  onSaveSuccess,
-}: EditPendaftarModalProps) {
+  onSaveSuccess }: EditPendaftarModalProps) {
   const [editTab, setEditTab] = useState("santri");
   const [editFormData, setEditFormData] = useState<any>(null);
   const [savingEdit, setSavingEdit] = useState(false);
@@ -57,8 +56,7 @@ export default function EditPendaftarModal({
           kelas_masuk: pendaftar.kelas_masuk ?? "",
           asal_institusi: pendaftar.asal_institusi || "",
           npsn: pendaftar.npsn || "",
-          catatan_pindahan: pendaftar.catatan_pindahan || "",
-        },
+          catatan_pindahan: pendaftar.catatan_pindahan || "" },
         orang_tua: {
           nama_ayah: pendaftar.orang_tua?.nama_ayah || "",
           nik_ayah: pendaftar.orang_tua?.nik_ayah || "",
@@ -101,9 +99,7 @@ export default function EditPendaftarModal({
           penghasilan_wali: pendaftar.orang_tua?.penghasilan_wali || "",
           no_hp_wali: pendaftar.orang_tua?.no_hp_wali || "",
           alamat_wali: pendaftar.orang_tua?.alamat_wali || "",
-          hubungan_wali: pendaftar.orang_tua?.hubungan_wali || "",
-        },
-      });
+          hubungan_wali: pendaftar.orang_tua?.hubungan_wali || "" } });
     }
   }, [pendaftar]);
 
@@ -119,9 +115,7 @@ export default function EditPendaftarModal({
         body: JSON.stringify({
           is_edit_full: true,
           santri: editFormData.santri,
-          orang_tua: editFormData.orang_tua,
-        }),
-      });
+          orang_tua: editFormData.orang_tua }) });
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Gagal menyimpan data");
@@ -130,8 +124,7 @@ export default function EditPendaftarModal({
         icon: "success",
         title: "Berhasil",
         text: data.message || "Data pendaftar berhasil diperbarui secara lengkap!",
-        confirmButtonColor: "#0d6e6e",
-      });
+        confirmButtonColor: "#0d6e6e" });
 
       onSaveSuccess();
     } catch (err: any) {
@@ -139,8 +132,7 @@ export default function EditPendaftarModal({
         icon: "error",
         title: "Gagal",
         text: err.message || "Terjadi kesalahan saat menyimpan data",
-        confirmButtonColor: "#0d6e6e",
-      });
+        confirmButtonColor: "#0d6e6e" });
     } finally {
       setSavingEdit(false);
     }

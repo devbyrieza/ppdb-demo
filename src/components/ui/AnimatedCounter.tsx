@@ -20,15 +20,13 @@ export default function AnimatedCounter({
   className = "",
   prefix = "",
   suffix = "",
-  decimals = 0,
-}: AnimatedCounterProps) {
+  decimals = 0 }: AnimatedCounterProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const motionValue = useMotionValue(direction === "down" ? value : 0);
   const springValue = useSpring(motionValue, {
     damping: 30,
     stiffness: 100,
-    duration: duration * 1000,
-  });
+    duration: duration * 1000 });
   const isInView = useInView(ref, { once: true, margin: "-50px" });
   const [displayValue, setDisplayValue] = useState("0");
 
@@ -43,8 +41,7 @@ export default function AnimatedCounter({
       if (ref.current) {
         setDisplayValue(Intl.NumberFormat("id-ID", {
           minimumFractionDigits: decimals,
-          maximumFractionDigits: decimals,
-        }).format(Number(latest.toFixed(decimals))));
+          maximumFractionDigits: decimals }).format(Number(latest.toFixed(decimals))));
       }
     });
   }, [springValue, decimals]);

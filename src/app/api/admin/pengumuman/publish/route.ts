@@ -42,8 +42,7 @@ export async function POST(request: NextRequest) {
     const statusMap: Record<string, string> = {
       accepted: "Diterima",
       rejected: "Ditolak",
-      cadangan: "Cadangan",
-    };
+      cadangan: "Cadangan" };
     const displayStatus = statusMap[new_status] || new_status;
 
     // Fetch user data first to get their current Tahun Ajaran for Pengumuman table
@@ -54,9 +53,7 @@ export async function POST(request: NextRequest) {
         nama_lengkap: true,
         no_hp: true,
         jenjang: true,
-        tahun_ajaran_id: true,
-      },
-    });
+        tahun_ajaran_id: true } });
 
     // Use transaction for consistency
     await prisma.$transaction(async (tx) => {
@@ -65,9 +62,7 @@ export async function POST(request: NextRequest) {
         where: { id: { in: pendaftar_ids } },
         data: {
           status_pendaftaran: new_status,
-          updated_at: new Date(),
-        },
-      });
+          updated_at: new Date() } });
 
       // Upsert records in Pengumuman table so they appear in student dashboard
       for (const user of updatedUsers) {
@@ -78,17 +73,14 @@ export async function POST(request: NextRequest) {
             is_published: true,
             published_at: new Date(),
             published_by: session.id,
-            updated_at: new Date(),
-          },
+            updated_at: new Date() },
           create: {
             pendaftar_id: user.id,
             status_kelulusan: displayStatus,
             is_published: true,
             published_at: new Date(),
             published_by: session.id,
-            tahun_ajaran_id: user.tahun_ajaran_id,
-          },
-        });
+            tahun_ajaran_id: user.tahun_ajaran_id } });
       }
     });
 
@@ -98,8 +90,7 @@ export async function POST(request: NextRequest) {
       adminId: session.id || "system",
       adminName: session.full_name || session.name || "Admin",
       targetId: "multiple",
-      details: { count: updatedUsers.length, new_status, pendaftar_ids },
-    });
+      details: { count: updatedUsers.length, new_status, pendaftar_ids } });
 
     // 5. Enqueue Notifications to Server-Side Queue
     let queuedCount = 0;
@@ -119,8 +110,7 @@ export async function POST(request: NextRequest) {
           id: user.id,
           name: user.nama_lengkap,
           status: "skipped",
-          reason: "Nomor HP kosong",
-        });
+          reason: "Nomor HP kosong" });
         continue;
       }
 
@@ -141,16 +131,14 @@ export async function POST(request: NextRequest) {
           id: user.id,
           name: user.nama_lengkap,
           status: "queued",
-          logId: resultEnq.logId,
-        });
+          logId: resultEnq.logId });
       } else {
         skippedCount++;
         details.push({
           id: user.id,
           name: user.nama_lengkap,
           status: "skipped",
-          reason: resultEnq.reason,
-        });
+          reason: resultEnq.reason });
       }
     }
 
@@ -160,8 +148,7 @@ export async function POST(request: NextRequest) {
       queued: queuedCount,
       skipped: skippedCount,
       details,
-      message: `${queuedCount} pengumuman telah masuk antrean pengiriman.${skippedCount > 0 ? ` (${skippedCount} dilewati, cek detail)` : ""}`,
-    });
+      message: `${queuedCount} pengumuman telah masuk antrean pengiriman.${skippedCount > 0 ? ` (${skippedCount} dilewati, cek detail)` : ""}` });
   } catch (error: any) {
     console.error("Error publishing announcement:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });

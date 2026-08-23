@@ -148,8 +148,7 @@ export async function GET(req: NextRequest) {
         mengundurkan_diri: "Mengundurkan Diri",
         enrolled: "Proses Daftar Ulang",
         enrolled_full: "Lunas Daftar Ulang",
-        pindah_keluar: "Pindah Keluar",
-      };
+        pindah_keluar: "Pindah Keluar" };
       return statusMap[s] || status.toUpperCase();
     };
 

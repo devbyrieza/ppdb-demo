@@ -31,8 +31,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: "Anda tidak memiliki akses untuk melakukan upload",
-        },
+          error: "Anda tidak memiliki akses untuk melakukan upload" },
         { status: 403 },
       );
     }
@@ -74,18 +73,13 @@ export async function POST(request: NextRequest) {
           select: {
             nomor_pendaftaran: true,
             id: true,
-            nama_lengkap: true,
-          },
-        },
-      },
-    });
+            nama_lengkap: true } } } });
 
     if (!pembayaran) {
       return NextResponse.json(
         {
           success: false,
-          error: "Data pembayaran tidak ditemukan di database",
-        },
+          error: "Data pembayaran tidak ditemukan di database" },
         { status: 404 },
       );
     }
@@ -138,8 +132,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: `Gagal menyimpan file ke server: ${e.message || "Check storage permissions"}`,
-        },
+          error: `Gagal menyimpan file ke server: ${e.message || "Check storage permissions"}` },
         { status: 500 },
       );
     }
@@ -155,25 +148,20 @@ export async function POST(request: NextRequest) {
           verified_by: session.id,
           verified_at: new Date(),
           catatan_verifikasi: "Diunggah dan diverifikasi otomatis oleh Admin",
-          updated_at: new Date(),
-        },
-      });
+          updated_at: new Date() } });
 
       // Also update pendaftar status
       await prisma.pendaftar.update({
         where: { id: pembayaran.pendaftar_id },
         data: {
           status_pendaftaran: "verified",
-          updated_at: new Date(),
-        },
-      });
+          updated_at: new Date() } });
     } catch (e: any) {
       console.error("Error updating database:", e);
       return NextResponse.json(
         {
           success: false,
-          error: `Gambar berhasil diupload, namun gagal memperbarui status di database: ${e.message}`,
-        },
+          error: `Gambar berhasil diupload, namun gagal memperbarui status di database: ${e.message}` },
         { status: 500 },
       );
     }
@@ -187,21 +175,17 @@ export async function POST(request: NextRequest) {
       targetName: pembayaran.pendaftar?.nama_lengkap || "Unknown",
       details: {
         pembayaran_id: pembayaranId,
-        file_path: filePath,
-      },
-    });
+        file_path: filePath } });
 
     return NextResponse.json({
       success: true,
-      message: "Bukti pembayaran berhasil diunggah dan diverifikasi",
-    });
+      message: "Bukti pembayaran berhasil diunggah dan diverifikasi" });
   } catch (error: any) {
     console.error("Critical error in admin upload:", error);
     return NextResponse.json(
       {
         success: false,
-        error: `Kesalahan sistem kritis: ${error.message || "Unknown error"}`,
-      },
+        error: `Kesalahan sistem kritis: ${error.message || "Unknown error"}` },
       { status: 500 },
     );
   }

@@ -49,12 +49,9 @@ export async function POST(request: NextRequest) {
     // 2. Cek kelengkapan dokumen
     const uploadedDocs = await prisma.dokumen.findMany({
       where: {
-        pendaftar_id: session.id,
-      },
+        pendaftar_id: session.id },
       select: {
-        jenis_dokumen: true,
-      },
-    });
+        jenis_dokumen: true } });
 
     const uploadedTypes = new Set(uploadedDocs.map((d) => d.jenis_dokumen));
     const missingDocs = REQUIRED_DOCS.filter((doc) => !uploadedTypes.has(doc));
@@ -64,8 +61,7 @@ export async function POST(request: NextRequest) {
         {
           success: false,
           error: "Dokumen belum lengkap. Harap upload semua dokumen wajib.",
-          missing: missingDocs,
-        },
+          missing: missingDocs },
         { status: 400 },
       );
     }
@@ -73,8 +69,7 @@ export async function POST(request: NextRequest) {
     // 3. Update status pendaftar
     const pendaftar = await prisma.pendaftar.findUnique({
       where: { id: session.id },
-      select: { status_pendaftaran: true },
-    });
+      select: { status_pendaftaran: true } });
 
     // Hanya update jika statusnya masih 'data_completed' atau 'docs_uploaded' (re-submit) atau 'verified'
     // Jika sudah 'docs_verified', jangan diubah mundur
@@ -87,16 +82,13 @@ export async function POST(request: NextRequest) {
         where: { id: session.id },
         data: {
           status_pendaftaran: "docs_uploaded",
-          updated_at: new Date(),
-        },
-      });
+          updated_at: new Date() } });
     }
 
     return NextResponse.json({
       success: true,
       message:
-        "Berkas berhasil dikirim! Tim kami akan memverifikasi dokumen Anda.",
-    });
+        "Berkas berhasil dikirim! Tim kami akan memverifikasi dokumen Anda." });
   } catch (error: any) {
     console.error("Submit docs error:", error);
     return NextResponse.json(

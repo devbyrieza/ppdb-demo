@@ -20,16 +20,14 @@ export const PDF_BRANDING = {
       "Jl. Pelabuhan II KM 18 Kampung Pupunjul, RT./RW/RW.01, 02, Cikembar, Kec. Cikembar, Kabupaten Sukabumi, Jawa Barat 43157",
     contact:
       "Website: https://pesantren-alimam.com | Email: alandalusalimam@gmail.com",
-    phones: "WhatsApp: 0851-1152-4441",
-  },
+    phones: "WhatsApp: 0851-1152-4441" },
 
   // Resource Paths
   assets: {
     logo: "/images/kop-surat.png",
     kop_full: "/images/kop-surat-full.jpg", // Gambar kop surat penuh (full letterhead)
     stamp: "/images/stempel-pesantren.jpg", // Dikembalikan ke stempel lama bawaan (stempel-pesantren.jpg)
-    signature: "/images/ttd-mudir.png",
-  },
+    signature: "/images/ttd-mudir.png" },
 
   // Content Area Coordinates (berlaku ketika template = "full_image")
   // Berdasarkan posisi area kosong di kop-surat-full.jpg
@@ -51,22 +49,16 @@ export const PDF_BRANDING = {
         y_thick: 45,
         y_thin: 46.5,
         thickness_thick: 1.2,
-        thickness_thin: 0.3,
-      },
-    },
+        thickness_thin: 0.3 } },
     signature: {
       stamp: { w: 35, h: 35 },
       ttd: { w: 35, h: 35 },
       margin_right: 95, // Diubah dari 80 ke 95 agar bergeser ke kiri dan tidak menimpa Kemenkumham stamp di background
-      y_offset_ttd: 5,
-    },
-  },
+      y_offset_ttd: 5 } },
 
   // Official Mudir / Authority
   authority: {
     name: "Wahab Rajasam, M.Pd",
     role: "Ketua Panitia",
-    city: "Sukabumi",
-  },
-};
+    city: "Sukabumi" } };
 

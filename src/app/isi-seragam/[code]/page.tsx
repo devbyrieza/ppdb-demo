@@ -31,8 +31,7 @@ export default async function IsiSeragamPage({ params }: { params: Promise<{ cod
       nomor_pendaftaran: true,
       ukuran_seragam_baju: true,
       ukuran_seragam_celana: true,
-      ukuran_seragam_almamater: true,
-    }
+      ukuran_seragam_almamater: true }
   });
 
   if (!pendaftar) {

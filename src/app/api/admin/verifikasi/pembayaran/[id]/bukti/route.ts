@@ -23,8 +23,7 @@ export async function DELETE(
 
     const pembayaran = await prisma.pembayaran.findUnique({
       where: { id: params.id },
-      include: { pendaftar: true },
-    });
+      include: { pendaftar: true } });
 
     if (!pembayaran) {
       return NextResponse.json({ error: "Data pembayaran tidak ditemukan" }, { status: 404 });
@@ -50,13 +49,11 @@ export async function DELETE(
         bukti_transfer_filename: null,
         status_pembayaran: "pending",
         updated_at: new Date()
-      },
-    });
+      } });
 
     await prisma.pendaftar.update({
       where: { id: pembayaran.pendaftar_id },
-      data: { updated_at: new Date() },
-    });
+      data: { updated_at: new Date() } });
 
     await logAdminAction({
       action: "DELETE_BUKTI_PEMBAYARAN" as any,
@@ -64,15 +61,13 @@ export async function DELETE(
       adminName: session.full_name || session.name || "Admin",
       targetId: pembayaran.pendaftar_id,
       targetName: pembayaran.pendaftar?.nama_lengkap || "Unknown",
-      details: { pembayaran_id: params.id },
-    });
+      details: { pembayaran_id: params.id } });
 
     await invalidateAdminPendaftarCache();
 
     return NextResponse.json({
       success: true,
-      message: "Bukti transfer berhasil dihapus",
-    });
+      message: "Bukti transfer berhasil dihapus" });
   } catch (error: any) {
     console.error("Delete bukti pembayaran error:", error);
     return NextResponse.json(

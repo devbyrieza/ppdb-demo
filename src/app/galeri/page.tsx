@@ -16,40 +16,33 @@ const GALLERY_CATEGORIES = [
       { src: "/images/tentang.webp", label: "Gedung Utama" },
       {
         src: "/images/gedung-utama-dan-lapangan-basket.webp",
-        label: "Gedung Utama & Lapangan Basket",
-      },
+        label: "Gedung Utama & Lapangan Basket" },
       { src: "/images/gedung-kelas.webp", label: "Gedung Kelas" },
       { src: "/images/kelas-dari-dalam.webp", label: "Ruang Kelas dari Dalam" },
       { src: "/images/luar-kelas.webp", label: "Koridor Kelas" },
       {
         src: "/images/lapangan-minisoccer.webp",
-        label: "Lapangan Mini Soccer",
-      },
+        label: "Lapangan Mini Soccer" },
       { src: "/images/kantor-ppdb-tamu.webp", label: "Kantor PPDB & Tamu" },
       { src: "/images/depot-galon-gratis.webp", label: "Depot Galon Gratis" },
-    ],
-  },
+    ] },
   {
     title: "Kegiatan Santri",
     items: [
       {
         src: "/images/pembelajaran-kitab-turotz.webp",
-        label: "Pembelajaran Kitab Turots",
-      },
+        label: "Pembelajaran Kitab Turots" },
       { src: "/images/tahfidz.webp", label: "Halaqoh Tahfidz Al-Qur'an" },
       { src: "/images/extra-karate.webp", label: "Ekstrakurikuler Karate" },
-    ],
-  },
+    ] },
   {
     title: "Suasana Pesantren",
     items: [
       {
         src: "/images/welcome-selamat-datang.webp",
-        label: "Selamat Datang di Al Fath",
-      },
+        label: "Selamat Datang di Al Fath" },
       { src: "/images/halaman-dekat-masjid.webp", label: "Halaman Pesantren" },
-    ],
-  },
+    ] },
 ];
 
 export default function GaleriPage() {

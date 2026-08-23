@@ -16,8 +16,7 @@ import {
   CheckCircle2,
   Trophy,
   Globe,
-  ShieldCheck,
-} from "lucide-react";
+  ShieldCheck } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
@@ -46,8 +45,7 @@ const PROGRAMS = [
     image: "/images/mts.webp",
     theme: "maroon",
     accent: "text-primary-600",
-    bg: "bg-primary-50",
-  },
+    bg: "bg-primary-50" },
   {
     id: "il",
     name: "I'dad Lughowi",
@@ -70,8 +68,7 @@ const PROGRAMS = [
     image: "/images/il.webp",
     theme: "gold",
     accent: "text-gold-600",
-    bg: "bg-secondary-50",
-  },
+    bg: "bg-secondary-50" },
 ];
 
 export default function ProgramPage() {

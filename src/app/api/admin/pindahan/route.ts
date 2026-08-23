@@ -25,8 +25,7 @@ export async function GET(request: NextRequest) {
 
     const where: any = {
       ...getAdminWhereClause(tahunAjaranId || undefined),
-      tipe_pendaftaran: "PINDAHAN",
-    };
+      tipe_pendaftaran: "PINDAHAN" };
 
     if (jenjang) where.jenjang = jenjang;
     if (status && status !== "all") where.status_pendaftaran = status;
@@ -54,33 +53,24 @@ export async function GET(request: NextRequest) {
         created_at: true,
         updated_at: true,
         tahun_ajaran: {
-          select: { id: true, nama: true, tahun_mulai: true, tahun_selesai: true },
-        },
+          select: { id: true, nama: true, tahun_mulai: true, tahun_selesai: true } },
         orang_tua: {
           select: {
             nama_ayah: true,
             no_hp_ayah: true,
             nama_ibu: true,
-            no_hp_ibu: true,
-          },
-        },
+            no_hp_ibu: true } },
         dokumen: {
-          select: { id: true, jenis_dokumen: true, is_verified: true },
-        },
+          select: { id: true, jenis_dokumen: true, is_verified: true } },
         pembayaran: {
           select: {
             id: true,
             jumlah: true,
             status_pembayaran: true,
             jenis_pembayaran: true,
-            created_at: true,
-
-          },
-          orderBy: { created_at: "desc" },
-        },
-      },
-      orderBy: { created_at: "desc" },
-    });
+            created_at: true },
+          orderBy: { created_at: "desc" } } },
+      orderBy: { created_at: "desc" } });
 
     return NextResponse.json({ data, total: data.length });
   } catch (error) {
@@ -120,8 +110,7 @@ export async function POST(request: NextRequest) {
       tempat_lahir,
       tanggal_lahir,
       tahun_ajaran_id,
-      status_pendaftaran = "draft",
-    } = body;
+      status_pendaftaran = "draft" } = body;
 
     // Validasi field wajib
     if (!nama_lengkap || !nik || !jenis_kelamin || !jenjang || !kelas_masuk || !asal_institusi) {
@@ -134,8 +123,7 @@ export async function POST(request: NextRequest) {
     // Cek NIK duplikat
     const existingNIK = await prisma.pendaftar.findFirst({
       where: { nik, deleted_at: null },
-      select: { id: true, nama_lengkap: true },
-    });
+      select: { id: true, nama_lengkap: true } });
     if (existingNIK) {
       return NextResponse.json(
         { error: `NIK sudah terdaftar atas nama: ${existingNIK.nama_lengkap}` },
@@ -147,12 +135,10 @@ export async function POST(request: NextRequest) {
     let tahunAjaran;
     if (tahun_ajaran_id) {
       tahunAjaran = await prisma.tahunAjaran.findUnique({
-        where: { id: tahun_ajaran_id },
-      });
+        where: { id: tahun_ajaran_id } });
     } else {
       tahunAjaran = await prisma.tahunAjaran.findFirst({
-        where: { is_active: true },
-      });
+        where: { is_active: true } });
     }
     if (!tahunAjaran) {
       return NextResponse.json({ error: "Tahun ajaran aktif tidak ditemukan" }, { status: 400 });
@@ -186,9 +172,7 @@ export async function POST(request: NextRequest) {
         status_pendaftaran,
         tahun_ajaran_id: tahunAjaran.id,
         // Pindahan tidak perlu asal_sekolah SD/MI, kosongkan
-        asal_sekolah: asal_institusi.trim(),
-      },
-    });
+        asal_sekolah: asal_institusi.trim() } });
 
     logAdminAction({
       action: "REGISTER_PINDAHAN",
@@ -196,14 +180,12 @@ export async function POST(request: NextRequest) {
       adminName: session.full_name || session.name || "Admin",
       targetId: pendaftar.id,
       targetName: pendaftar.nama_lengkap,
-      details: { nomor_pendaftaran, jenjang, kelas_masuk, asal_institusi },
-    });
+      details: { nomor_pendaftaran, jenjang, kelas_masuk, asal_institusi } });
 
     return NextResponse.json({
       success: true,
       data: pendaftar,
-      message: `Siswa pindahan berhasil didaftarkan dengan nomor ${nomor_pendaftaran}`,
-    });
+      message: `Siswa pindahan berhasil didaftarkan dengan nomor ${nomor_pendaftaran}` });
   } catch (error: any) {
     console.error("Error creating pindahan:", error);
     if (error?.message?.includes("tidak valid") || error?.message?.includes("tidak ditemukan")) {
@@ -249,8 +231,7 @@ export async function PATCH(request: NextRequest) {
 
     const updateData: any = {
       status_pendaftaran,
-      updated_at: new Date(),
-    };
+      updated_at: new Date() };
     if (catatan_pindahan !== undefined) {
       updateData.catatan_pindahan = catatan_pindahan;
     }
@@ -262,9 +243,7 @@ export async function PATCH(request: NextRequest) {
         id: true,
         nama_lengkap: true,
         nomor_pendaftaran: true,
-        status_pendaftaran: true,
-      },
-    });
+        status_pendaftaran: true } });
 
     logAdminAction({
       action: status_pendaftaran === "pindah_keluar" ? "MARK_PINDAH_KELUAR" : "UPDATE_PINDAHAN_STATUS",
@@ -272,8 +251,7 @@ export async function PATCH(request: NextRequest) {
       adminName: session.full_name || session.name || "Admin",
       targetId: updated.id,
       targetName: updated.nama_lengkap,
-      details: { status_pendaftaran, nomor_pendaftaran: updated.nomor_pendaftaran },
-    });
+      details: { status_pendaftaran, nomor_pendaftaran: updated.nomor_pendaftaran } });
 
     return NextResponse.json({
       success: true,
@@ -281,8 +259,7 @@ export async function PATCH(request: NextRequest) {
       message:
         status_pendaftaran === "pindah_keluar"
           ? `${updated.nama_lengkap} berhasil ditandai sebagai Pindah Keluar`
-          : `Status ${updated.nama_lengkap} berhasil diperbarui`,
-    });
+          : `Status ${updated.nama_lengkap} berhasil diperbarui` });
   } catch (error) {
     console.error("Error updating pindahan status:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

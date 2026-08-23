@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
-import { Users, Search, Filter, Eye, ChevronLeft, ChevronRight, Loader2, RefreshCw, FileText, Calendar, Phone, Mail, Hash, CheckSquare, Square, Download, Edit, ArrowLeft, FileSpreadsheet, X, Save, FileCheck, RotateCcw, UploadCloud, CreditCard, Trash2, LogOut, Plus, Shuffle, AlertTriangle, , Star } from "lucide-react";
+import { Users, Search, Filter, Eye, ChevronLeft, ChevronRight, Loader2, RefreshCw, FileText, Calendar, Phone, Mail, Hash, CheckSquare, Square, Download, Edit, ArrowLeft, FileSpreadsheet, X, Save, FileCheck, RotateCcw, UploadCloud, CreditCard, Trash2, LogOut, Plus, Shuffle, AlertTriangle, Star } from "lucide-react";
 import Link from "next/link";
 import { UserRole } from "@/lib/access-control";
 import { exportToExcelProfessional, exportToPDF } from "@/lib/utils/export";
@@ -28,8 +28,7 @@ const FILTER_LABELS: Record<string, string> = {
   hasil_ujian: "Hasil Ujian & Wawancara",
   diterima: "Diterima",
   belum_daftar_ulang: "Belum Daftar Ulang",
-  sudah_daftar_ulang: "Daftar Ulang",
-};
+  sudah_daftar_ulang: "Daftar Ulang" };
 
 interface Pendaftar {
   id: string;
@@ -203,8 +202,7 @@ function AdminPendaftarContent() {
   const [announcementForm, setAnnouncementForm] = useState({
     status_kelulusan: "Diterima",
     catatan: "",
-    surat_keputusan_url: "",
-  });
+    surat_keputusan_url: "" });
   const [isSubmittingAnnouncement, setIsSubmittingAnnouncement] =
     useState(false);
 
@@ -294,8 +292,7 @@ function AdminPendaftarContent() {
     try {
       setIsDeleting(true);
       const res = await fetch(`/api/admin/pendaftar/${deletingPendaftar.id}`, {
-        method: "DELETE",
-      });
+        method: "DELETE" });
 
       const result = await res.json();
 
@@ -332,9 +329,7 @@ function AdminPendaftarContent() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           pendaftar_id: selectedPendaftar.id,
-          ...announcementForm,
-        }),
-      });
+          ...announcementForm }) });
 
       if (!response.ok) {
         const err = await response.json();
@@ -367,8 +362,7 @@ function AdminPendaftarContent() {
 
       const response = await fetch("/api/admin/verifikasi/dokumen/upload", {
         method: "POST",
-        body: formData,
-      });
+        body: formData });
 
       const data = await response.json();
       if (data.success) {
@@ -379,8 +373,7 @@ function AdminPendaftarContent() {
           toast: true,
           position: "top-end",
           timer: 3000,
-          showConfirmButton: false,
-        });
+          showConfirmButton: false });
         fetchPendaftar();
       } else {
         Swal.fire("Gagal", data.error, "error");
@@ -410,8 +403,7 @@ function AdminPendaftarContent() {
 
       const response = await fetch("/api/admin/verifikasi/pembayaran/upload", {
         method: "POST",
-        body: formData,
-      });
+        body: formData });
 
       const data = await response.json();
       if (data.success) {
@@ -422,8 +414,7 @@ function AdminPendaftarContent() {
           toast: true,
           position: "top-end",
           timer: 3000,
-          showConfirmButton: false,
-        });
+          showConfirmButton: false });
         fetchPendaftar();
       } else {
         Swal.fire("Gagal", data.error, "error");
@@ -442,8 +433,7 @@ function AdminPendaftarContent() {
     page: 1,
     limit: 20,
     total: 0,
-    totalPages: 0,
-  });
+    totalPages: 0 });
 
   const fetchPendaftar = async () => {
     try {
@@ -454,8 +444,7 @@ function AdminPendaftarContent() {
       }
       const params = new URLSearchParams({
         page: pagination.page.toString(),
-        limit: pagination.limit.toString(),
-      });
+        limit: pagination.limit.toString() });
 
       if (search) params.append("search", search);
       if (statusFilter) params.append("status", statusFilter);
@@ -601,8 +590,7 @@ function AdminPendaftarContent() {
         setKecamatanLoading(true);
         const params = new URLSearchParams({
           provinsi: provinsiFilter,
-          kabupaten: kabupatenFilter,
-        });
+          kabupaten: kabupatenFilter });
         const response = await fetch(
           `/api/admin/locations/kecamatan?${params}`,
         );
@@ -633,8 +621,7 @@ function AdminPendaftarContent() {
         const params = new URLSearchParams({
           provinsi: provinsiFilter,
           kabupaten: kabupatenFilter,
-          kecamatan: kecamatanFilter,
-        });
+          kecamatan: kecamatanFilter });
         const response = await fetch(
           `/api/admin/locations/kelurahan?${params}`,
         );
@@ -692,8 +679,7 @@ function AdminPendaftarContent() {
       cancelButtonColor: "#94a3b8",
       confirmButtonText: "Ya, Promosikan!",
       cancelButtonText: "Batal",
-      reverseButtons: true,
-    });
+      reverseButtons: true });
 
     if (!result.isConfirmed) return;
 
@@ -702,8 +688,7 @@ function AdminPendaftarContent() {
       const response = await fetch("/api/admin/pendaftar/promote-cadangan", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(isPromoteAll ? {} : { ids }),
-      });
+        body: JSON.stringify(isPromoteAll ? {} : { ids }) });
 
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Gagal");
@@ -712,8 +697,7 @@ function AdminPendaftarContent() {
         title: "Berhasil!",
         text: data.message || `${data.updated_count} Pendaftar berhasil dipindahkan ke Diterima.`,
         icon: "success",
-        confirmButtonColor: "#059669",
-      });
+        confirmButtonColor: "#059669" });
       setSelectedIds([]);
       fetchPendaftar();
     } catch (error: any) {
@@ -787,8 +771,7 @@ function AdminPendaftarContent() {
         cancelButtonColor: "#57534e",
         confirmButtonText: "Ya, Update Semua",
         cancelButtonText: "Batal",
-        reverseButtons: true,
-      });
+        reverseButtons: true });
 
       if (!result.isConfirmed) return;
     }
@@ -798,8 +781,7 @@ function AdminPendaftarContent() {
       
       const payload: any = {
         ids: selectedIds,
-        status_pendaftaran: bulkStatus,
-      };
+        status_pendaftaran: bulkStatus };
       if (alasan) {
         payload.alasan = alasan;
       }
@@ -807,8 +789,7 @@ function AdminPendaftarContent() {
       const response = await fetch("/api/admin/pendaftar/bulk-update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+        body: JSON.stringify(payload) });
 
       if (!response.ok) throw new Error("Failed to update");
 
@@ -873,8 +854,7 @@ function AdminPendaftarContent() {
       Swal.fire({
         title: "Menyimpan...",
         allowOutsideClick: false,
-        didOpen: () => Swal.showLoading(),
-      });
+        didOpen: () => Swal.showLoading() });
 
       const response = await fetch("/api/admin/pendaftar/bulk-update", {
         method: "POST",
@@ -882,9 +862,7 @@ function AdminPendaftarContent() {
         body: JSON.stringify({
           ids: [id],
           status_pendaftaran: "mengundurkan_diri",
-          alasan: finalAlasan,
-        }),
-      });
+          alasan: finalAlasan }) });
 
       if (!response.ok) throw new Error("Failed to update");
 
@@ -922,8 +900,7 @@ function AdminPendaftarContent() {
 
       await exportToExcelProfessional({
         fileName: `Laporan_Keringanan_${new Date().toISOString().slice(0, 10)}`,
-        sheets,
-      });
+        sheets });
     } catch (e: any) {
       Swal.fire("Gagal", e.message, "error");
     } finally {
@@ -970,8 +947,7 @@ function AdminPendaftarContent() {
             title: "DATA PENDAFTAR SANTRI BARU (TOTAL)",
             subTitle: `Tanggal Ekspor: ${new Date().toLocaleDateString("id-ID")}`,
             header,
-            data: data.map((item) => Object.values(item)),
-          },
+            data: data.map((item) => Object.values(item)) },
         ];
 
         Object.keys(jenjangGroups)
@@ -982,14 +958,12 @@ function AdminPendaftarContent() {
               title: `DATA PENDAFTAR - ${j}`,
               subTitle: `Jenjang: ${j} | Tanggal Ekspor: ${new Date().toLocaleDateString("id-ID")}`,
               header,
-              data: jenjangGroups[j].map((item) => Object.values(item)),
-            });
+              data: jenjangGroups[j].map((item) => Object.values(item)) });
           });
 
         await exportToExcelProfessional({
           fileName: filename,
-          sheets,
-        });
+          sheets });
       } else {
         // Transform for PDF - Premium 8-column layout
         const headers = [
@@ -1089,84 +1063,64 @@ function AdminPendaftarContent() {
       draft: { label: "Draft", color: "bg-stone-100 text-stone-700 border border-stone-200" },
       awaiting_payment: {
         label: "Draft",
-        color: "bg-stone-100 text-stone-700 border border-stone-200",
-      },
+        color: "bg-stone-100 text-stone-700 border border-stone-200" },
       payment_verification: {
         label: "Verifikasi Bayar",
-        color: "bg-primary-50 text-primary-700 border border-primary-100",
-      },
+        color: "bg-primary-50 text-primary-700 border border-primary-100" },
       paid: {
         label: "Terdaftar",
-        color: "bg-primary-100 text-primary-800 border border-primary-200",
-      },
+        color: "bg-primary-100 text-primary-800 border border-primary-200" },
       verified: {
         label: "Terdaftar",
-        color: "bg-primary-100 text-primary-800 border border-primary-200",
-      },
+        color: "bg-primary-100 text-primary-800 border border-primary-200" },
       data_completed: {
         label: "Data Lengkap",
-        color: "bg-gold-50 text-gold-800 border border-gold-100",
-      },
+        color: "bg-gold-50 text-gold-800 border border-gold-100" },
       docs_uploaded: {
         label: "Data Lengkap",
-        color: "bg-gold-50 text-gold-800 border border-gold-100",
-      },
+        color: "bg-gold-50 text-gold-800 border border-gold-100" },
       docs_verified: {
         label: "Berkas Lengkap",
-        color: "bg-emerald-50 text-emerald-800 border border-emerald-100",
-      },
+        color: "bg-emerald-50 text-emerald-800 border border-emerald-100" },
       selection: {
         label: "Proses Seleksi",
-        color: "bg-purple-50 text-purple-800 border border-purple-100",
-      },
+        color: "bg-purple-50 text-purple-800 border border-purple-100" },
       scheduled: {
         label: "Proses Seleksi",
-        color: "bg-purple-50 text-purple-800 border border-purple-100",
-      },
+        color: "bg-purple-50 text-purple-800 border border-purple-100" },
       testing: {
         label: "Proses Seleksi",
-        color: "bg-purple-50 text-purple-800 border border-purple-100",
-      },
+        color: "bg-purple-50 text-purple-800 border border-purple-100" },
       tested: {
         label: "Proses Seleksi",
-        color: "bg-purple-100 text-purple-800 border border-purple-200 shadow-sm",
-      },
+        color: "bg-purple-100 text-purple-800 border border-purple-200 shadow-sm" },
       exam_completed: {
         label: "Proses Seleksi",
-        color: "bg-purple-100 text-purple-800 border border-purple-200 shadow-sm",
-      },
+        color: "bg-purple-100 text-purple-800 border border-purple-200 shadow-sm" },
       announced: {
         label: "Cadangan",
-        color: "bg-gold-100 text-gold-800 border border-gold-200",
-      },
+        color: "bg-gold-100 text-gold-800 border border-gold-200" },
       cadangan: {
         label: "Cadangan",
-        color: "bg-gold-100 text-gold-800 border border-gold-200",
-      },
+        color: "bg-gold-100 text-gold-800 border border-gold-200" },
       accepted: { label: "Diterima", color: "bg-emerald-600 text-white" },
       rejected: { label: "Ditolak", color: "bg-rose-600 text-white" },
       enrolled: {
         label: "Proses Daftar Ulang",
-        color: "bg-emerald-100 text-emerald-800",
-      },
+        color: "bg-emerald-100 text-emerald-800" },
       enrolled_full: {
         label: "Lunas Daftar Ulang",
-        color: "bg-primary-100 text-primary-800 border border-primary-200",
-      },
+        color: "bg-primary-100 text-primary-800 border border-primary-200" },
       pindah_keluar: {
         label: "Pindah Keluar",
-        color: "bg-slate-100 text-slate-600 border border-slate-200",
-      },
+        color: "bg-slate-100 text-slate-600 border border-slate-200" },
       mengundurkan_diri: {
         label: "Mengundurkan Diri",
-        color: "bg-stone-100 text-stone-500 border border-stone-200 line-through",
-      },
-    };
+        color: "bg-stone-100 text-stone-500 border border-stone-200 line-through" } };
 
     const statusInfo = statusMap[s] || {
       label: status,
-      color: "bg-stone-100 text-stone-700",
-    };
+      color: "bg-stone-100 text-stone-700" };
 
     return (
       <span
@@ -1182,8 +1136,7 @@ function AdminPendaftarContent() {
     return new Date(dateString).toLocaleDateString("id-ID", {
       day: "numeric",
       month: "short",
-      year: "numeric",
-    });
+      year: "numeric" });
   };
 
   // Get active filter label
@@ -1761,8 +1714,7 @@ function AdminPendaftarContent() {
                       cancelButtonColor: "#94a3b8",
                       confirmButtonText: "Ya, Buang ke Sampah",
                       cancelButtonText: "Batal",
-                      reverseButtons: true,
-                    });
+                      reverseButtons: true });
                     if (!result.isConfirmed) return;
 
                     try {
@@ -1770,8 +1722,7 @@ function AdminPendaftarContent() {
                       const response = await fetch("/api/admin/pendaftar/bulk-delete", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ ids: selectedIds }),
-                      });
+                        body: JSON.stringify({ ids: selectedIds }) });
                       const data = await response.json();
                       if (!response.ok) throw new Error(data.error || "Gagal");
                       
@@ -1952,8 +1903,7 @@ function AdminPendaftarContent() {
                               {
                                 label: "Buka Detail",
                                 icon: <Eye className="w-4 h-4" />,
-                                onClick: () => router.push(`/dashboard/admin/pendaftar/${item.id}`),
-                              },
+                                onClick: () => router.push(`/dashboard/admin/pendaftar/${item.id}`) },
                               {
                                 label: "Verifikasi Dokumen",
                                 icon: <FileCheck className="w-4 h-4" />,
@@ -2123,8 +2073,7 @@ function AdminPendaftarContent() {
                               {
                                 label: "Buka Detail",
                                 icon: <Eye className="w-4 h-4" />,
-                                onClick: () => router.push(`/dashboard/admin/pendaftar/${item.id}`),
-                              },
+                                onClick: () => router.push(`/dashboard/admin/pendaftar/${item.id}`) },
                               {
                                 label: "Verifikasi Dokumen",
                                 icon: <FileCheck className="w-4 h-4" />,
@@ -2283,8 +2232,7 @@ function AdminPendaftarContent() {
                       onClick={() =>
                         setAnnouncementForm({
                           ...announcementForm,
-                          status_kelulusan: status,
-                        })
+                          status_kelulusan: status })
                       }
                       className={`py-3 px-4 rounded-[24px] border-2 font-bold transition-all ${
                         announcementForm.status_kelulusan === status
@@ -2313,8 +2261,7 @@ function AdminPendaftarContent() {
                   onChange={(e) =>
                     setAnnouncementForm({
                       ...announcementForm,
-                      catatan: e.target.value,
-                    })
+                      catatan: e.target.value })
                   }
                   placeholder="Tambahkan catatan khusus jika ada..."
                   className="w-full px-4 py-3 border-2 border-stone-200 rounded-[24px] focus:border-primary-500 focus:outline-none transition-colors"
@@ -2334,8 +2281,7 @@ function AdminPendaftarContent() {
                     onChange={(e) =>
                       setAnnouncementForm({
                         ...announcementForm,
-                        surat_keputusan_url: e.target.value,
-                      })
+                        surat_keputusan_url: e.target.value })
                     }
                     placeholder="https://docs.google.com/..."
                     className="w-full pl-12 pr-4 py-3 border-2 border-stone-200 rounded-[24px] focus:border-primary-500 focus:outline-none transition-colors"

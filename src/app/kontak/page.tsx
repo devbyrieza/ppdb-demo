@@ -21,8 +21,7 @@ import {
   Award,
   ShieldCheck,
   GraduationCap,
-  Sparkles,
-} from "lucide-react";
+  Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // ========================================
@@ -35,8 +34,7 @@ const ContactInfoCard = ({
   content,
   href,
   subContent,
-  delay = 0,
-}: {
+  delay = 0 }: {
   icon: any;
   title: string;
   content: string;
@@ -119,8 +117,7 @@ export default function ContactPage() {
     nama: "",
     email: "",
     telepon: "",
-    pesan: "",
-  });
+    pesan: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
@@ -175,24 +172,21 @@ export default function ContactPage() {
       url: "#",
       icon: Instagram,
       textColor: "text-pink-600",
-      bgLight: "bg-pink-50",
-    },
+      bgLight: "bg-pink-50" },
     {
       name: "Facebook",
       username: "Pondok Pesantren Al Fath Sukabumi",
       url: "#",
       icon: Facebook,
       textColor: "text-primary-600",
-      bgLight: "bg-primary-50",
-    },
+      bgLight: "bg-primary-50" },
     {
       name: "Youtube",
       username: "Pondok Pesantren Al Fath",
       url: "#",
       icon: Youtube,
       textColor: "text-red-600",
-      bgLight: "bg-red-50",
-    },
+      bgLight: "bg-red-50" },
   ];
 
   return (

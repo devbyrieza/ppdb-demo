@@ -26,8 +26,7 @@ export default function ScrollAnimation({
   duration = 0.7,
   viewport = { once: true, margin: "-20%", amount: "some" },
   stagger = 0.1,
-  staggerChildren = false,
-}: ScrollAnimationProps) {
+  staggerChildren = false }: ScrollAnimationProps) {
   const shouldReduceMotion = useReducedMotion();
 
   // Premium easing curve - "smooth as butter"
@@ -37,8 +36,7 @@ export default function ScrollAnimation({
     if (shouldReduceMotion) {
       return {
         hidden: { opacity: 0 },
-        visible: { opacity: 1 },
-      };
+        visible: { opacity: 1 } };
     }
 
     const variants = {
@@ -47,8 +45,7 @@ export default function ScrollAnimation({
         x: 0,
         y: 0,
         scale: 1,
-        filter: "blur(10px)",
-      },
+        filter: "blur(10px)" },
       visible: {
         opacity: 1,
         x: 0,
@@ -58,10 +55,7 @@ export default function ScrollAnimation({
         transition: {
           duration,
           delay,
-          ease: easeOutExpo,
-        },
-      },
-    };
+          ease: easeOutExpo } } };
 
     switch (direction) {
       case "up":
@@ -91,27 +85,20 @@ export default function ScrollAnimation({
       opacity: 1,
       transition: {
         staggerChildren: stagger,
-        delayChildren: delay,
-      },
-    },
-  };
+        delayChildren: delay } } };
 
   const childVariants: Variants = {
     hidden: {
       opacity: 0,
       y: 30,
-      filter: "blur(5px)",
-    },
+      filter: "blur(5px)" },
     visible: {
       opacity: 1,
       y: 0,
       filter: "blur(0px)",
       transition: {
         duration: 0.6,
-        ease: easeOutExpo,
-      },
-    },
-  };
+        ease: easeOutExpo } } };
 
   if (staggerChildren) {
     return (

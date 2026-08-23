@@ -42,9 +42,7 @@ export async function GET(request: NextRequest) {
     const pendaftar = await prisma.pendaftar.findUnique({
       where: { id: pendaftarId },
       include: {
-        tahun_ajaran: true,
-      },
-    });
+        tahun_ajaran: true } });
 
     if (!pendaftar) {
       return NextResponse.json(
@@ -57,10 +55,8 @@ export async function GET(request: NextRequest) {
     const pembayaran = await prisma.pembayaran.findFirst({
       where: {
         pendaftar_id: pendaftarId,
-        status_pembayaran: "verified",
-      },
-      orderBy: { verified_at: "desc" },
-    });
+        status_pembayaran: "verified" },
+      orderBy: { verified_at: "desc" } });
 
     if (!pembayaran) {
       return NextResponse.json(
@@ -78,8 +74,7 @@ export async function GET(request: NextRequest) {
       return new Date(date).toLocaleDateString("id-ID", {
         day: "numeric",
         month: "long",
-        year: "numeric",
-      });
+        year: "numeric" });
     };
 
     // Format rupiah
@@ -89,8 +84,7 @@ export async function GET(request: NextRequest) {
       return new Intl.NumberFormat("id-ID", {
         style: "currency",
         currency: "IDR",
-        minimumFractionDigits: 0,
-      }).format(val);
+        minimumFractionDigits: 0 }).format(val);
     };
 
     // Generate nomor kwitansi
@@ -329,9 +323,7 @@ export async function GET(request: NextRequest) {
     return new NextResponse(html, {
       headers: {
         "Content-Type": "text/html; charset=utf-8",
-        "Content-Disposition": `inline; filename="Kwitansi-${pendaftar.nomor_pendaftaran}.html"`,
-      },
-    });
+        "Content-Disposition": `inline; filename="Kwitansi-${pendaftar.nomor_pendaftaran}.html"` } });
   } catch (error: any) {
     console.error("Error in GET /api/pembayaran/kwitansi:", error);
     return NextResponse.json(

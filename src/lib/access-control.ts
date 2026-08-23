@@ -88,8 +88,7 @@ export const STEP_REQUIREMENTS: Record<TabName, { minimumStatus: StatusProses | 
   pengumuman: { minimumStatus: "announced", label: "Pengumuman", description: "Selesaikan semua tahapan seleksi terlebih dahulu" },
   "daftar-ulang": { minimumStatus: "accepted", label: "Daftar Ulang", description: "Hanya tersedia bagi pendaftar yang diterima" },
   "ukuran-seragam": { minimumStatus: "accepted", label: "Ukuran Seragam", description: "Hanya tersedia bagi pendaftar yang diterima" },
-  "welcome-day": { minimumStatus: "accepted", label: "Welcome Day", description: "Hanya tersedia bagi pendaftar yang diterima" },
-};
+  "welcome-day": { minimumStatus: "accepted", label: "Welcome Day", description: "Hanya tersedia bagi pendaftar yang diterima" } };
 
 // Daftar nomor pendaftaran santri yang mendapat akses khusus ke menu Ukuran Seragam
 // meskipun status mereka belum mencapai "Diterima"
@@ -142,8 +141,7 @@ export function getNextStep(
       scheduled: { status: "announced", action: "Tunggu Pengumuman Kelulusan", href: "/dashboard/pendaftar/pengumuman" },
       tested: { status: "announced", action: "Tunggu Pengumuman Kelulusan", href: "/dashboard/pendaftar/pengumuman" },
       announced: { status: "accepted", action: "Cek Hasil", href: "/dashboard/pendaftar/pengumuman" },
-      accepted: { status: "enrolled", action: "Daftar Ulang Sekarang", href: "/dashboard/pendaftar/daftar-ulang" },
-    };
+      accepted: { status: "enrolled", action: "Daftar Ulang Sekarang", href: "/dashboard/pendaftar/daftar-ulang" } };
     return nextStepsPindahan[currentStatus] || null;
   }
 
@@ -161,8 +159,7 @@ export function getNextStep(
     scheduled: { status: "tested", action: "Ikuti Ujian Masuk", href: "/dashboard/pendaftar/ujian" },
     tested: { status: "announced", action: "Menunggu Hasil", href: "/dashboard/pendaftar/pengumuman" },
     announced: { status: "accepted", action: "Cek Hasil", href: "/dashboard/pendaftar/pengumuman" },
-    accepted: { status: "enrolled", action: "Daftar Ulang Sekarang", href: "/dashboard/pendaftar/daftar-ulang" },
-  };
+    accepted: { status: "enrolled", action: "Daftar Ulang Sekarang", href: "/dashboard/pendaftar/daftar-ulang" } };
   return nextSteps[currentStatus] || null;
 }
 
@@ -188,8 +185,7 @@ export function formatStatusDisplay(status: StatusProses) {
     accepted: { label: "Diterima", color: "bg-green-100 text-green-700" },
     enrolled: { label: "Proses Daftar Ulang", color: "bg-emerald-100 text-emerald-700" },
     enrolled_full: { label: "Lunas Daftar Ulang", color: "bg-primary-100 text-primary-700" },
-    pindah_keluar: { label: "Pindah Keluar", color: "bg-slate-100 text-slate-600" },
-  };
+    pindah_keluar: { label: "Pindah Keluar", color: "bg-slate-100 text-slate-600" } };
   return statusMap[status] || { label: status, color: "bg-stone-100 text-stone-700" };
 }
 
@@ -207,8 +203,7 @@ export const ROLE_LABELS: Record<UserRole, string> = {
   penguji_hafalan: "Penguji Hafalan",
   penguji_bahasa_arab: "Penguji Lisan B. Arab",
   admin_super: "Admin Super",
-  admin: "Administrator",
-};
+  admin: "Administrator" };
 
 export const ROLE_PERMISSIONS: Record<UserRole, string[]> = {
   pendaftar: ["view_own_data", "edit_own_data", "upload_documents", "view_payment_status", "view_announcement"],
@@ -220,8 +215,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, string[]> = {
   penguji_hafalan: ["view_exam_schedule", "input_exam_scores"],
   penguji_bahasa_arab: ["view_exam_schedule", "input_exam_scores"],
   admin_super: ["view_pendaftar_list", "view_dashboard_stats", "manage_users", "manage_settings"],
-  admin: ["view_pendaftar_list", "verify_documents", "verify_payment", "input_exam_scores"],
-};
+  admin: ["view_pendaftar_list", "verify_documents", "verify_payment", "input_exam_scores"] };
 
 export const DASHBOARD_ROUTES: Record<UserRole, string> = {
   pendaftar: "/dashboard/pendaftar",
@@ -233,8 +227,7 @@ export const DASHBOARD_ROUTES: Record<UserRole, string> = {
   penguji_hafalan: "/dashboard/penguji",
   penguji_bahasa_arab: "/dashboard/penguji",
   admin_super: "/dashboard/admin",
-  admin: "/dashboard/admin",
-};
+  admin: "/dashboard/admin" };
 
 export function hasPermission(role: UserRole, permission: string): boolean {
   return ROLE_PERMISSIONS[role]?.includes(permission) ?? false;
@@ -313,8 +306,7 @@ export function getMenuItemsForRole(role: UserRole) {
       { name: "Broadcast WA", href: "/dashboard/admin/broadcast", icon: "Zap", group: "KOMUNIKASI" },
       { name: "Manajemen User", href: "/dashboard/admin/users", icon: "UserCog", group: "SISTEM" },
       { name: "Pengaturan", href: "/dashboard/admin/pengaturan", icon: "Settings", group: "SISTEM" },
-    ],
-  };
+    ] };
   return menus[role] || [];
 }
 

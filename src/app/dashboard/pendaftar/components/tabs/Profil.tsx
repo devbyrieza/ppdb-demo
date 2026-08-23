@@ -12,8 +12,7 @@ import {
   Users,
   Briefcase,
   Loader2,
-  CheckCircle,
-} from "lucide-react";
+  CheckCircle } from "lucide-react";
 
 interface ProfileData {
   nama_lengkap: string;
@@ -64,8 +63,7 @@ export default function ProfilTab() {
     return new Date(dateString).toLocaleDateString("id-ID", {
       day: "numeric",
       month: "long",
-      year: "numeric",
-    });
+      year: "numeric" });
   };
 
   const formatStatus = (status: string) => {
@@ -73,42 +71,33 @@ export default function ProfilTab() {
       draft: { label: "Draft", color: "bg-stone-100 text-stone-700" },
       awaiting_payment: {
         label: "Menunggu Pembayaran",
-        color: "bg-secondary-100 text-secondary-700",
-      },
+        color: "bg-secondary-100 text-secondary-700" },
       paid: { label: "Sudah Bayar", color: "bg-primary-100 text-primary-700" },
       data_completed: {
         label: "Data Lengkap",
-        color: "bg-secondary-100 text-primary-800",
-      },
+        color: "bg-secondary-100 text-primary-800" },
       docs_uploaded: {
         label: "Dokumen Terupload",
-        color: "bg-indigo-100 text-indigo-700",
-      },
+        color: "bg-indigo-100 text-indigo-700" },
       docs_verified: {
         label: "Dokumen Terverifikasi",
-        color: "bg-green-100 text-green-700",
-      },
+        color: "bg-green-100 text-green-700" },
       scheduled: {
         label: "Terjadwal Ujian",
-        color: "bg-purple-100 text-purple-700",
-      },
+        color: "bg-purple-100 text-purple-700" },
       testing: {
         label: "Sedang Ujian",
-        color: "bg-violet-100 text-violet-800 border border-violet-200",
-      },
+        color: "bg-violet-100 text-violet-800 border border-violet-200" },
       tested: { label: "Proses Seleksi", color: "bg-violet-100 text-violet-700" },
       announced: { label: "Diumumkan", color: "bg-cyan-100 text-cyan-700" },
       accepted: { label: "Diterima", color: "bg-green-100 text-green-700" },
       rejected: { label: "Ditolak", color: "bg-red-100 text-red-700" },
       enrolled: {
         label: "Terdaftar",
-        color: "bg-emerald-100 text-emerald-700",
-      },
-    };
+        color: "bg-emerald-100 text-emerald-700" } };
     const statusInfo = statusMap[status] || {
       label: status,
-      color: "bg-stone-100 text-stone-700",
-    };
+      color: "bg-stone-100 text-stone-700" };
     return (
       <span
         className={`px-4 py-2 rounded-full text-sm font-bold ${statusInfo.color}`}
@@ -289,8 +278,7 @@ export default function ProfilTab() {
 function InfoItem({
   label,
   value,
-  icon,
-}: {
+  icon }: {
   label: string;
   value: string | null | undefined;
   icon?: React.ReactNode;

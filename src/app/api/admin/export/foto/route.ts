@@ -31,19 +31,13 @@ export async function GET(request: NextRequest) {
           NOT: [
             { nama_lengkap: { startsWith: "TEST ", mode: "insensitive" } },
             { nama_lengkap: { contains: "BYPASS", mode: "insensitive" } },
-          ],
-        },
-      },
+          ] } },
       include: {
         pendaftar: {
           select: {
             nama_lengkap: true,
             jenjang: true,
-            jenis_kelamin: true,
-          },
-        },
-      },
-    });
+            jenis_kelamin: true } } } });
 
     if (fotos.length === 0) {
       return NextResponse.json(
@@ -99,8 +93,7 @@ export async function GET(request: NextRequest) {
         }
 
         archive.finalize();
-      },
-    });
+      } });
 
     return new NextResponse(stream, { headers });
   } catch (error) {

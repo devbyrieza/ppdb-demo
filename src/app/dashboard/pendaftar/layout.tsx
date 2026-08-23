@@ -13,14 +13,12 @@ import {
   getUnlockMessage,
   formatStatusDisplay,
   getNextStep,
-  STATUS_ORDER,
-} from "@/lib/access-control";
+  STATUS_ORDER } from "@/lib/access-control";
 import type { StatusProses, TabName } from "@/lib/access-control";
 import DashboardTabs from "./components/DashboardTabs";
 
 export default function DashboardLayout({
-  children,
-}: {
+  children }: {
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
@@ -129,79 +127,68 @@ export default function DashboardLayout({
       href: "/dashboard/pendaftar",
       tabName: "data-pribadi" as TabName, // Tetap gunakan key internal yang sama jika diperlukan oleh access control
       icon: Home, // Ganti icon menjadi Home agar lebih sesuai
-      active: pathname === "/dashboard/pendaftar",
-    },
+      active: pathname === "/dashboard/pendaftar" },
     {
       name: "Pembayaran",
       href: "/dashboard/pendaftar/pembayaran-pendaftaran",
       tabName: "pembayaran-pendaftaran" as TabName,
       icon: CreditCard,
-      active: pathname === "/dashboard/pendaftar/pembayaran-pendaftaran",
-    },
+      active: pathname === "/dashboard/pendaftar/pembayaran-pendaftaran" },
     {
       name: "Isi Data Lengkap",
       href: "/dashboard/pendaftar/isi-data-lengkap",
       tabName: "kelengkapan-berkas" as TabName,
       icon: ClipboardList,
-      active: pathname === "/dashboard/pendaftar/isi-data-lengkap",
-    },
+      active: pathname === "/dashboard/pendaftar/isi-data-lengkap" },
     {
       name: "Upload Berkas",
       href: "/dashboard/pendaftar/upload-berkas",
       tabName: "upload-berkas" as TabName,
       icon: Upload,
-      active: pathname === "/dashboard/pendaftar/upload-berkas",
-    },
+      active: pathname === "/dashboard/pendaftar/upload-berkas" },
 
     {
       name: "Jadwal Seleksi",
       href: "/dashboard/pendaftar/undangan-seleksi",
       tabName: "undangan-seleksi" as TabName,
       icon: Calendar,
-      active: pathname === "/dashboard/pendaftar/undangan-seleksi",
-    },
+      active: pathname === "/dashboard/pendaftar/undangan-seleksi" },
     {
         name: "Pengumuman",
       href: "/dashboard/pendaftar/pengumuman",
       tabName: "pengumuman" as TabName,
       icon: Trophy,
-      active: pathname === "/dashboard/pendaftar/pengumuman",
-    },
+      active: pathname === "/dashboard/pendaftar/pengumuman" },
     {
       name: "Daftar Ulang",
       href: "/dashboard/pendaftar/daftar-ulang",
       tabName: "daftar-ulang" as TabName,
       icon: CheckCircle,
-      active: pathname === "/dashboard/pendaftar/daftar-ulang",
-    },
+      active: pathname === "/dashboard/pendaftar/daftar-ulang" },
     {
       name: "Ukuran Seragam",
       href: "/dashboard/pendaftar/seragam",
       tabName: "ukuran-seragam" as TabName, // Menggunakan rules akses ukuran-seragam
       icon: Shirt,
-      active: pathname === "/dashboard/pendaftar/seragam",
-    },
+      active: pathname === "/dashboard/pendaftar/seragam" },
     {
       name: "Welcome Day",
       href: "/dashboard/pendaftar/welcome-day",
       tabName: "welcome-day" as TabName,
       icon: PartyPopper,
-      active: pathname === "/dashboard/pendaftar/welcome-day",
-    },
+      active: pathname === "/dashboard/pendaftar/welcome-day" },
     {
       name: "Keuangan (ZAD)",
       href: "http://localhost:3001/wali-santri",
       tabName: "kartu-jajan" as TabName, // still using the same access control rule internally
       icon: HandCoins,
-      active: pathname === "/dashboard/pendaftar/keuangan",
-    },
+      active: pathname === "/dashboard/pendaftar/keuangan" },
     {
       name: "Profil Akun",
       href: "/dashboard/pendaftar/profil",
       tabName: "profil" as TabName,
       icon: Settings,
-      active: pathname === "/dashboard/pendaftar/profil",
-    },
+      active: pathname === "/dashboard/pendaftar/profil" },
   ];
 
   // Function untuk cek apakah tab bisa diakses

@@ -27,8 +27,7 @@ export async function POST(request: Request) {
   if (!admin) {
     return NextResponse.json(
       {
-        error: "Unauthorized. Hanya Admin Super yang bisa membuat pengumuman.",
-      },
+        error: "Unauthorized. Hanya Admin Super yang bisa membuat pengumuman." },
       { status: 403 },
     );
   }
@@ -49,16 +48,13 @@ export async function POST(request: Request) {
     const pendaftar = await prisma.pendaftar.findFirst({
       where: {
         id: pendaftar_id,
-        deleted_at: null,
-      },
+        deleted_at: null },
       select: {
         id: true,
         tahun_ajaran_id: true,
         nama_lengkap: true,
         no_hp: true,
-        jenjang: true,
-      },
-    });
+        jenjang: true } });
 
     if (!pendaftar) {
       return NextResponse.json(
@@ -78,8 +74,7 @@ export async function POST(request: Request) {
         published_by: admin.id,
         updated_at: new Date(),
         is_published: true,
-        published_at: new Date(),
-      },
+        published_at: new Date() },
       create: {
         pendaftar_id,
         tahun_ajaran_id: pendaftar.tahun_ajaran_id,
@@ -89,9 +84,7 @@ export async function POST(request: Request) {
         surat_keputusan_url,
         published_by: admin.id,
         is_published: true,
-        published_at: new Date(),
-      },
-    });
+        published_at: new Date() } });
 
     // 3. Update Pendaftar Status based on Status Kelulusan
     let newStatus = "announced";
@@ -101,8 +94,7 @@ export async function POST(request: Request) {
 
     await prisma.pendaftar.update({
       where: { id: pendaftar_id },
-      data: { status_pendaftaran: newStatus },
-    });
+      data: { status_pendaftaran: newStatus } });
 
     // 4. Send Notification via Queue
     if (pendaftar.no_hp) {
@@ -122,8 +114,7 @@ export async function POST(request: Request) {
         await prisma.pengumuman.update({
           where: { id: pengumuman.id },
           // @ts-ignore: Prisma types lag
-          data: { wa_blast_sent: true, wa_blast_sent_at: new Date() },
-        });
+          data: { wa_blast_sent: true, wa_blast_sent_at: new Date() } });
       } catch (e) {
         console.error("Failed to enqueue announcement notification", e);
       }

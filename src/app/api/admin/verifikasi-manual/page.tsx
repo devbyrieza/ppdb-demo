@@ -7,8 +7,7 @@ import {
   MessageCircle,
   CheckCircle,
   Copy,
-  Phone,
-} from "lucide-react";
+  Phone } from "lucide-react";
 import Swal from "sweetalert2";
 
 interface PendingVerifikasi {
@@ -56,8 +55,7 @@ export default function VerifikasiManualPage() {
         icon: "success",
         title: "Kode disalin!",
         showConfirmButton: false,
-        timer: 1500,
-      });
+        timer: 1500 });
     } catch (error) {
       console.error("Gagal menyalin:", error);
     }
@@ -68,8 +66,7 @@ export default function VerifikasiManualPage() {
       const res = await fetch("/api/admin/verifikasi/mark-sent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ pendaftarId }),
-      });
+        body: JSON.stringify({ pendaftarId }) });
 
       if (res.ok) {
         fetchPending();
@@ -93,8 +90,7 @@ export default function VerifikasiManualPage() {
       const res = await fetch("/api/verifikasi/send-sms", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ pendaftarId, phone }),
-      });
+        body: JSON.stringify({ pendaftarId, phone }) });
 
       const data = await res.json();
       if (data.success) {

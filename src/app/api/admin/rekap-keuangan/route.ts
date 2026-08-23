@@ -29,31 +29,21 @@ export async function GET(request: NextRequest) {
       where: {
         ...baseWhere,
         status_pendaftaran: {
-          not: "mengundurkan_diri",
-        },
+          not: "mengundurkan_diri" },
         OR: [
           {
             nilai_ujian: {
               some: {
-                status_kelulusan: { in: ["LULUS", "DITERIMA"] },
-              },
-            },
-          },
+                status_kelulusan: { in: ["LULUS", "DITERIMA"] } } } },
           {
             hasil_seleksi: {
-              status_seleksi: { in: ["DITERIMA", "CADANGAN"] },
-            },
-          },
+              status_seleksi: { in: ["DITERIMA", "CADANGAN"] } } },
           {
             pengumuman: {
-              status_kelulusan: { in: ["Lulus", "Diterima", "Cadangan"] },
-            },
-          },
+              status_kelulusan: { in: ["Lulus", "Diterima", "Cadangan"] } } },
           {
-            status_pendaftaran: { in: ["accepted", "announced", "cadangan", "passed", "enrolled", "enrolled_full", "re_registered"] },
-          },
-        ],
-      } as any,
+            status_pendaftaran: { in: ["accepted", "announced", "cadangan", "passed", "enrolled", "enrolled_full", "re_registered"] } },
+        ] } as any,
       select: {
         id: true,
         nomor_pendaftaran: true,
@@ -65,8 +55,7 @@ export async function GET(request: NextRequest) {
         updated_at: true,
         status_pendaftaran: true,
         nilai_ujian: {
-          select: { status_kelulusan: true },
-        },
+          select: { status_kelulusan: true } },
         orang_tua: {
           select: {
             nama_ayah: true,
@@ -76,20 +65,15 @@ export async function GET(request: NextRequest) {
             nama_ibu: true,
             pekerjaan_ibu: true,
             penghasilan_ibu: true,
-            no_hp_ibu: true,
-          },
-        },
+            no_hp_ibu: true } },
         pengajuan_beasiswa: {
           select: {
             status: true,
             jenis_pengajuan: true,
-            nominal_potongan: true,
-          },
-        },
+            nominal_potongan: true } },
         pembayaran: {
           where: {
-            jenis_pembayaran: { in: ["DAFTAR_ULANG", "SPP"] } as any,
-          },
+            jenis_pembayaran: { in: ["DAFTAR_ULANG", "SPP"] } as any },
           select: {
             id: true,
             jumlah: true,
@@ -102,12 +86,8 @@ export async function GET(request: NextRequest) {
             keringanan_reason: true,
             cicilan_ke: true,
             created_at: true,
-            updated_at: true,
-          },
-        },
-      } as any,
-      orderBy: { nama_lengkap: "asc" },
-    });
+            updated_at: true } } } as any,
+      orderBy: { nama_lengkap: "asc" } });
 
     // 3. Transform Data
     const rekapData = students.map((student: any, index: number) => {
@@ -245,10 +225,8 @@ export async function GET(request: NextRequest) {
             nama_ibu: cleanVal(student.orang_tua?.nama_ibu) || cleanVal(ibu.nama_lengkap) || "-",
             pekerjaan_ibu: cleanVal(student.orang_tua?.pekerjaan_ibu) || cleanVal(ibu.pekerjaan) || "-",
             penghasilan_ibu: cleanVal(student.orang_tua?.penghasilan_ibu) || cleanVal(ibu.penghasilan) || "-",
-            no_hp_ibu: cleanVal(student.orang_tua?.no_hp_ibu) || cleanVal(ibu.no_hp) || "-",
-          };
-        })(),
-      };
+            no_hp_ibu: cleanVal(student.orang_tua?.no_hp_ibu) || cleanVal(ibu.no_hp) || "-" };
+        })() };
     });
 
     return NextResponse.json({ success: true, data: rekapData });

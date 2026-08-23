@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ChevronRight, Edit, User, FileText, CreditCard, Award, Clock, AlertCircle, , ClipboardList, BarChart2 } from "lucide-react";
+import { ChevronRight, Edit, User, FileText, CreditCard, Award, Clock, AlertCircle, ClipboardList, BarChart2 } from "lucide-react";
 import Swal from "sweetalert2";
 
 // Dummy data sebagai fallback
@@ -18,8 +18,7 @@ const DUMMY_DATA = {
   alamat: "Jl. Pesantren No. 123",
   no_hp: "081234567890",
   status_pendaftaran: "draft",
-  created_at: new Date().toISOString(),
-};
+  created_at: new Date().toISOString() };
 
 export default function DataPendaftaranTab() {
   const [pendaftarData, setPendaftarData] = useState<any>(null);
@@ -59,8 +58,7 @@ export default function DataPendaftaranTab() {
     return date.toLocaleDateString("id-ID", {
       day: "2-digit",
       month: "long",
-      year: "numeric",
-    });
+      year: "numeric" });
   };
 
   if (loading) {
@@ -335,8 +333,7 @@ export default function DataPendaftaranTab() {
             {
               label: "2. Isi Data Lengkap",
               progress: 60,
-              color: "bg-primary-500",
-            },
+              color: "bg-primary-500" },
             { label: "3. Upload Dokumen", progress: 0, color: "bg-green-500" },
             { label: "4. Verifikasi", progress: 0, color: "bg-purple-500" },
           ].map((item, index) => (

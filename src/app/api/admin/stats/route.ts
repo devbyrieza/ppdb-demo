@@ -45,8 +45,7 @@ export async function GET(request: Request) {
     // If no year specified and no active year found by utility, find active manually for deeper payment stats
     if (!where.tahun_ajaran_id) {
       const activeTA = await prisma.tahunAjaran.findFirst({
-        where: { is_active: true },
-      });
+        where: { is_active: true } });
       if (activeTA) {
         where.tahun_ajaran_id = activeTA.id;
       }
@@ -74,20 +73,15 @@ export async function GET(request: Request) {
         jenjang: true,
         provinsi: true,
         jenis_kelamin: true,
-        created_at: true,
-      },
-    });
+        created_at: true } });
 
     // Fetch pembayaran data for the same year
     const pembayaranData = await prisma.pembayaran.findMany({
       where: {
-        tahun_ajaran_id: where.tahun_ajaran_id || undefined,
-      },
+        tahun_ajaran_id: where.tahun_ajaran_id || undefined },
       select: {
         pendaftar_id: true,
-        status_pembayaran: true,
-      },
-    });
+        status_pembayaran: true } });
 
     // 4. Calculate Stats
     const total_pendaftar = pendaftarData.length;
@@ -97,8 +91,7 @@ export async function GET(request: Request) {
     const genderCounts: Record<string, number> = {
       "Laki-laki": 0,
       Perempuan: 0,
-      "Belum Diisi": 0,
-    };
+      "Belum Diisi": 0 };
 
     pendaftarData.forEach((p) => {
       const status = p.status_pendaftaran || "draft";
@@ -145,8 +138,7 @@ export async function GET(request: Request) {
           ulang_selesai_putri: 0,
           seleksi_total: 0,
           seleksi_putra: 0,
-          seleksi_putri: 0,
-        };
+          seleksi_putri: 0 };
       }
 
       const j = jenjangCounts[jenjang];
@@ -273,8 +265,7 @@ export async function GET(request: Request) {
     > = {
       MTS: { putra: 32, putri: 30, total: 62 },
       IL: { putra: 32, putri: 30, total: 62 },
-      SMA: { putra: 0, putri: 0, total: 0 },
-    };
+      SMA: { putra: 0, putri: 0, total: 0 } };
 
     // Calculate weekly growth rate in-memory
     const now = new Date();
@@ -343,8 +334,7 @@ export async function GET(request: Request) {
           seleksi_putri: 0,
           data_total: 0,
           data_putra: 0,
-          data_putri: 0,
-        };
+          data_putri: 0 };
         const q = QUOTAS[jenjang];
         return {
           jenjang,
@@ -381,8 +371,7 @@ export async function GET(request: Request) {
           ulang_sedang_putra: data.ulang_sedang_putra,
           ulang_sedang_putri: data.ulang_sedang_putri,
           ulang_selesai_putra: data.ulang_selesai_putra,
-          ulang_selesai_putri: data.ulang_selesai_putri,
-        };
+          ulang_selesai_putri: data.ulang_selesai_putri };
       }),
 
       stats_per_provinsi: Object.entries(provinsiCounts)
@@ -402,9 +391,7 @@ export async function GET(request: Request) {
           (statusCounts.draft || 0) +
           (statusCounts.verified || 0) +
           (statusCounts.data_completed || 0),
-        ditolak: statusCounts.rejected || 0,
-      },
-    };
+        ditolak: statusCounts.rejected || 0 } };
 
     // Simpan ke Redis selama 60 detik (1 menit)
     await setCache(cacheKey, stats, 60);

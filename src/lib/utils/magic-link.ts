@@ -65,8 +65,7 @@ export function verifyMagicToken(token: string): {
     if (Date.now() > payload.exp) {
       return {
         valid: false,
-        reason: "URL kedaluwarsa. Silakan minta yang baru.",
-      };
+        reason: "URL kedaluwarsa. Silakan minta yang baru." };
     }
 
     return {
@@ -75,9 +74,7 @@ export function verifyMagicToken(token: string): {
         id: payload.id,
         role: payload.role,
         full_name: payload.full_name,
-        redirect: payload.redirect,
-      },
-    };
+        redirect: payload.redirect } };
   } catch (error) {
     return { valid: false, reason: "Terjadi kesalahan saat verifikasi" };
   }
@@ -189,8 +186,7 @@ export const PERMANENT_SLUGS: Record<string, string> = {
   syauqi: "Muhammad Syauqi Al Faruq",
   teguh: "Teguh",
   halimah: "Halimah Fauziah",
-  fatimah: "Andi Fatimah",
-};
+  fatimah: "Andi Fatimah" };
 
 /**
  * Get slug by full name matching

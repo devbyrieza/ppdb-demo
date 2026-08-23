@@ -9,8 +9,7 @@ import {
   Loader2,
   Calendar,
   FileText,
-  Download,
-} from "lucide-react";
+  Download } from "lucide-react";
 import { generateSuratKelulusan } from "@/lib/utils/pdf-generator";
 
 interface Pengumuman {
@@ -61,8 +60,7 @@ export default function PengumumanTab() {
           status_kelulusan: "diterima",
           catatan:
             "Ini adalah tampilan simulasi khusus untuk Akun Rieza Tes (ILI2600007).",
-          tanggal_pengumuman: new Date().toISOString(),
-        });
+          tanggal_pengumuman: new Date().toISOString() });
       }
     } catch (error) {
       console.error("Error fetching pengumuman:", error);
@@ -107,8 +105,7 @@ export default function PengumumanTab() {
         weekday: "long",
         day: "numeric",
         month: "long",
-        year: "numeric",
-      })
+        year: "numeric" })
       .replace("Minggu", "Ahad");
   };
 

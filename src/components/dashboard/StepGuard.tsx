@@ -10,8 +10,7 @@ import {
   getNextStep,
   formatStatusDisplay,
   TabName,
-  StatusProses,
-} from "@/lib/access-control";
+  StatusProses } from "@/lib/access-control";
 
 interface StepGuardProps {
   children: React.ReactNode;
@@ -22,8 +21,7 @@ interface StepGuardProps {
 export default function StepGuard({
   children,
   tabName,
-  redirectOnFail = "/dashboard/pendaftar",
-}: StepGuardProps) {
+  redirectOnFail = "/dashboard/pendaftar" }: StepGuardProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [hasAccess, setHasAccess] = useState(false);

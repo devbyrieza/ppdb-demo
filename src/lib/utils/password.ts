@@ -97,8 +97,7 @@ export function validatePasswordStrength(password: string): {
 
   return {
     isValid: errors.length === 0,
-    errors,
-  };
+    errors };
 }
 
 /**

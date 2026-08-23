@@ -13,8 +13,7 @@ interface ScrollProgressBarProps {
 
 export default function ScrollProgressBar({
   height = 2,
-  zIndex = 100,
-}: ScrollProgressBarProps) {
+  zIndex = 100 }: ScrollProgressBarProps) {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -45,8 +44,7 @@ export default function ScrollProgressBar({
         right: 0,
         height: `${height}px`,
         zIndex,
-        pointerEvents: "none",
-      }}
+        pointerEvents: "none" }}
     >
       <div
         style={{
@@ -55,8 +53,7 @@ export default function ScrollProgressBar({
           background:
             "linear-gradient(90deg, var(--color-primary-500, #14b8a6) 0%, var(--color-secondary-400, #fbbf24) 100%)",
           transition: "width 0.1s linear",
-          borderRadius: "0 999px 999px 0",
-        }}
+          borderRadius: "0 999px 999px 0" }}
       />
     </div>
   );

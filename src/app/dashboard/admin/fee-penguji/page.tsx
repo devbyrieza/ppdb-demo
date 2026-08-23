@@ -7,8 +7,7 @@ import {
   Download,
   Loader2,
   AlertCircle,
-  RefreshCcw,
-} from "lucide-react";
+  RefreshCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { exportToExcelProfessional } from "@/lib/utils/export";
 import { BRANDING } from "@/config/branding";
@@ -94,10 +93,8 @@ export default function RekapFeePengujiPage() {
             "Total Sesi",
             "Total Fee (Rp)",
           ],
-          data: exportData,
-        },
-      ],
-    });
+          data: exportData },
+      ] });
   };
 
   return (

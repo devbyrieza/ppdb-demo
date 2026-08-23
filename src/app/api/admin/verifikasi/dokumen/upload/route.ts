@@ -16,54 +16,43 @@ const DOKUMEN_CONFIG: Record<
   kartu_keluarga: {
     label: "Scan Kartu Keluarga",
     maxSize: 5 * 1024 * 1024,
-    allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
-  },
+    allowedTypes: ["image/jpeg", "image/png", "application/pdf"] },
   akta_kelahiran: {
     label: "Scan Akte Kelahiran",
     maxSize: 5 * 1024 * 1024,
-    allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
-  },
+    allowedTypes: ["image/jpeg", "image/png", "application/pdf"] },
   rapor_sem1: {
     label: "Scan Rapor Semester Ganjil Terakhir",
     maxSize: 5 * 1024 * 1024,
-    allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
-  },
+    allowedTypes: ["image/jpeg", "image/png", "application/pdf"] },
   rapor_sem2: {
     label: "Scan Rapor Semester Genap Terakhir",
     maxSize: 5 * 1024 * 1024,
-    allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
-  },
+    allowedTypes: ["image/jpeg", "image/png", "application/pdf"] },
   nisn: {
     label: "Scan NISN",
     maxSize: 5 * 1024 * 1024,
-    allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
-  },
+    allowedTypes: ["image/jpeg", "image/png", "application/pdf"] },
   foto_setengah_badan: {
     label: "Foto Setengah Badan",
     maxSize: 5 * 1024 * 1024,
-    allowedTypes: ["image/jpeg", "image/png"],
-  },
+    allowedTypes: ["image/jpeg", "image/png"] },
   surat_kesehatan: {
     label: "Surat Keterangan Sehat",
     maxSize: 5 * 1024 * 1024,
-    allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
-  },
+    allowedTypes: ["image/jpeg", "image/png", "application/pdf"] },
   pakta_integritas_santri: {
     label: "Scan Pakta Integritas Calon Santri",
     maxSize: 5 * 1024 * 1024,
-    allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
-  },
+    allowedTypes: ["image/jpeg", "image/png", "application/pdf"] },
   pakta_integritas_ortu: {
     label: "Scan Pakta Integritas Calon Orangtua/Wali Santri",
     maxSize: 5 * 1024 * 1024,
-    allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
-  },
+    allowedTypes: ["image/jpeg", "image/png", "application/pdf"] },
   pernyataan_bebas_negatif: {
     label: "Scan Pernyataan Bebas Perilaku Negatif",
     maxSize: 5 * 1024 * 1024,
-    allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
-  },
-};
+    allowedTypes: ["image/jpeg", "image/png", "application/pdf"] } };
 
 function formatFileSize(bytes: number): string {
   if (bytes < 1024) return bytes + " B";
@@ -116,8 +105,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: "File, jenis dokumen, dan pendaftar ID wajib diisi",
-        },
+          error: "File, jenis dokumen, dan pendaftar ID wajib diisi" },
         { status: 400 },
       );
     }
@@ -134,8 +122,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: `Ukuran file terlalu besar! Maksimal ${formatFileSize(config.maxSize)}`,
-        },
+          error: `Ukuran file terlalu besar! Maksimal ${formatFileSize(config.maxSize)}` },
         { status: 400 },
       );
     }
@@ -149,8 +136,7 @@ export async function POST(request: NextRequest) {
 
     const pendaftar = await prisma.pendaftar.findUnique({
       where: { id: pendaftarId },
-      select: { nomor_pendaftaran: true },
-    });
+      select: { nomor_pendaftaran: true } });
 
     if (!pendaftar) {
       return NextResponse.json(
@@ -191,9 +177,7 @@ export async function POST(request: NextRequest) {
     const existingDokumen = await prisma.dokumen.findFirst({
       where: {
         pendaftar_id: pendaftarId,
-        jenis_dokumen: jenisDokumen,
-      },
-    });
+        jenis_dokumen: jenisDokumen } });
 
     if (existingDokumen) {
       await prisma.dokumen.update({
@@ -207,9 +191,7 @@ export async function POST(request: NextRequest) {
           verified_by: session.id,
           verified_at: new Date(),
           catatan: "Diubah dan disetujui oleh Admin",
-          updated_at: new Date(),
-        },
-      });
+          updated_at: new Date() } });
     } else {
       await prisma.dokumen.create({
         data: {
@@ -221,9 +203,7 @@ export async function POST(request: NextRequest) {
           file_type: detectedType, // Use detected type
           is_verified: true,
           verified_by: session.id,
-          catatan: "Diunggah oleh Admin",
-        },
-      });
+          catatan: "Diunggah oleh Admin" } });
     }
 
     const updatedFilePath = filePath;
@@ -245,8 +225,7 @@ export async function POST(request: NextRequest) {
     ];
 
     const allDocsRaw = await prisma.dokumen.findMany({
-      where: { pendaftar_id: pendaftarId },
-    });
+      where: { pendaftar_id: pendaftarId } });
 
     // Use same logic as main route: filter to required types
     const allDocs = allDocsRaw.filter((d) =>
@@ -268,8 +247,7 @@ export async function POST(request: NextRequest) {
     if (allRequiredVerified) {
       const currentPendaftar = await prisma.pendaftar.findUnique({
         where: { id: pendaftarId },
-        select: { status_pendaftaran: true, no_hp: true, nama_lengkap: true },
-      });
+        select: { status_pendaftaran: true, no_hp: true, nama_lengkap: true } });
 
       const { getStatusIndex } = await import("@/lib/access-control");
       const currentStatusIndex = getStatusIndex(currentPendaftar?.status_pendaftaran || "draft");
@@ -279,8 +257,7 @@ export async function POST(request: NextRequest) {
       if (currentStatusIndex < targetIndex) {
         await prisma.pendaftar.update({
           where: { id: pendaftarId },
-          data: { status_pendaftaran: "docs_verified" },
-        });
+          data: { status_pendaftaran: "docs_verified" } });
         console.log(
           `✅ [Admin Upload] Auto-unlocked pendaftar ${pendaftarId} to docs_verified`,
         );
@@ -302,8 +279,7 @@ export async function POST(request: NextRequest) {
             messageContent: buildMessageDocumentVerified(
               currentPendaftar.nama_lengkap,
               docListStr,
-            ),
-          });
+            ) });
           console.log(
             `📥 [Admin Upload] Queued document_verified for ${pendaftarId}`,
           );
@@ -319,8 +295,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       message: `${config.label} berhasil diubah oleh Admin`,
-      data: { file_path: updatedFilePath },
-    });
+      data: { file_path: updatedFilePath } });
   } catch (error: any) {
     console.error("Admin upload dokumen error:", error);
     return NextResponse.json(

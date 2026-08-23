@@ -10,8 +10,7 @@ export async function GET() {
       {
         status: "ok",
         database: "connected",
-        timestamp: new Date().toISOString(),
-      },
+        timestamp: new Date().toISOString() },
       { status: 200 },
     );
   } catch (error: any) {
@@ -21,8 +20,7 @@ export async function GET() {
         status: "error",
         database: "disconnected",
         error: error.message,
-        timestamp: new Date().toISOString(),
-      },
+        timestamp: new Date().toISOString() },
       { status: 503 },
     );
   }

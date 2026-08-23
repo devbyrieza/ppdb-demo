@@ -84,8 +84,7 @@ export async function GET(request: Request) {
 
     kecamatanCache.set(cacheKey, {
       data: kecamatanNames,
-      timestamp: Date.now(),
-    });
+      timestamp: Date.now() });
 
     return NextResponse.json({ data: kecamatanNames });
   } catch (error) {

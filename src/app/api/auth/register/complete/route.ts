@@ -3,8 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { generateNomorPendaftaran } from "@/lib/utils/nomor-pendaftaran";
 import {
   enqueueWhatsapp,
-  buildMessageRegistrationSuccess,
-} from "@/lib/whatsapp-queue";
+  buildMessageRegistrationSuccess } from "@/lib/whatsapp-queue";
 
 export async function POST(request: NextRequest) {
   try {
@@ -19,8 +18,7 @@ export async function POST(request: NextRequest) {
     }
 
     const otpRecord = await prisma.otpVerification.findUnique({
-      where: { id: otp_id },
-    });
+      where: { id: otp_id } });
 
     if (!otpRecord || !otpRecord.verified_at) {
       return NextResponse.json(
@@ -38,8 +36,7 @@ export async function POST(request: NextRequest) {
       jenis_kelamin,
       jenjang,
       email,
-      telegram_username,
-    } = registrationData;
+      telegram_username } = registrationData;
 
     const parseSafeDate = (val: any) => {
       if (!val) return undefined;
@@ -50,15 +47,13 @@ export async function POST(request: NextRequest) {
     // Check if NIK already registered (ignore soft-deleted)
     const existing = await prisma.pendaftar.findFirst({
       where: { nik, deleted_at: null },
-      select: { nomor_pendaftaran: true },
-    });
+      select: { nomor_pendaftaran: true } });
 
     if (existing) {
       return NextResponse.json(
         {
           success: false,
-          error: `NIK sudah terdaftar dengan nomor ${existing.nomor_pendaftaran}`,
-        },
+          error: `NIK sudah terdaftar dengan nomor ${existing.nomor_pendaftaran}` },
         { status: 409 },
       );
     }
@@ -67,12 +62,10 @@ export async function POST(request: NextRequest) {
     const tahunAjaran =
       (await prisma.tahunAjaran.findFirst({
         where: { is_active: true },
-        select: { id: true },
-      })) ||
+        select: { id: true } })) ||
       (await prisma.tahunAjaran.findFirst({
         orderBy: { created_at: "desc" },
-        select: { id: true },
-      }));
+        select: { id: true } }));
 
     if (!tahunAjaran) {
       console.error(
@@ -81,8 +74,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: "Tahun ajaran tidak ditemukan. Hubungi admin.",
-        },
+          error: "Tahun ajaran tidak ditemukan. Hubungi admin." },
         { status: 500 },
       );
     }
@@ -104,9 +96,7 @@ export async function POST(request: NextRequest) {
         no_hp,
         email: email || null,
         verifikasi_channel: otpRecord.otp_channel || "sms",
-        status_pendaftaran: "registered",
-      },
-    });
+        status_pendaftaran: "registered" } });
 
     // Send WhatsApp notification via Queue
     try {
@@ -139,9 +129,7 @@ export async function POST(request: NextRequest) {
         nik,
         nama_lengkap,
         jenjang,
-        jenis_kelamin,
-      },
-    });
+        jenis_kelamin } });
   } catch (error) {
     console.error("Complete registration error:", error);
     return NextResponse.json(

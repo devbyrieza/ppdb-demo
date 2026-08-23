@@ -35,8 +35,7 @@ import {
   BadgeCheck,
   GraduationCap,
   ArrowRight,
-  Camera,
-} from "lucide-react";
+  Camera } from "lucide-react";
 import { motion } from "framer-motion";
 import { Container } from "@/components/layout/Container";
 
@@ -109,8 +108,7 @@ interface Ekstrakurikuler {
 
 const FeatureCard = ({
   item,
-  index,
-}: {
+  index }: {
   item: KegiatanUtama;
   index: number;
 }) => (
@@ -230,8 +228,7 @@ const StatsCard = ({ icon: Icon, value, label, sublabel }: HeroStat) => (
 
 const ScheduleCard = ({
   schedule,
-  index,
-}: {
+  index }: {
   schedule: JadwalHarian;
   index: number;
 }) => (
@@ -272,8 +269,7 @@ const ScheduleCard = ({
 
 const WeeklyActivityCard = ({
   activity,
-  index,
-}: {
+  index }: {
   activity: KegiatanPekanan;
   index: number;
 }) => (
@@ -312,8 +308,7 @@ const WeeklyActivityCard = ({
 
 const EkskulCard = ({
   ekskul,
-  index,
-}: {
+  index }: {
   ekskul: Ekstrakurikuler;
   index: number;
 }) => (
@@ -370,17 +365,14 @@ export default function KegiatanPage() {
       results: [
         {
           icon: TrendingUp,
-          text: "Mampu membaca kitab gundul (Nahwu-Shorof Applied)",
-        },
+          text: "Mampu membaca kitab gundul (Nahwu-Shorof Applied)" },
         { icon: Award, text: "Aktif dalam Bahtsul Masail & Muhadoroh" },
         { icon: GraduationCap, text: "Alumni tersebar di PTN & Timur Tengah" },
       ],
       testimonial: {
         quote:
           "Prioritas utama kami adalah pendidikan agama. Di sini, kami melihat langsung bagaimana anak dididik menjaga adab dan shalat berjamaah tepat waktu. Investasi akhirat yang luar biasa.",
-        parent: "Bapak Surwanto (Wali Santri)",
-      },
-    },
+        parent: "Bapak Surwanto (Wali Santri)" } },
     {
       image: "/images/tahfidz.webp",
       title: "Tahfidz Al-Qur'an Intensif",
@@ -402,9 +394,7 @@ export default function KegiatanPage() {
       testimonial: {
         quote:
           "Sinergi kurikulum nasional dan tahfidznya sangat menenangkan. Anak kami tidak hanya mengejar target hafalan, tapi juga PAHAM maknanya melalui bimbingan asatidz yang kompeten.",
-        parent: "Ibu Siti Aminah (Wali Santri)",
-      },
-    },
+        parent: "Ibu Siti Aminah (Wali Santri)" } },
     {
       image: "/images/extra-karate.webp",
       title: "Pengembangan Bakat & Prestasi",
@@ -426,9 +416,7 @@ export default function KegiatanPage() {
       testimonial: {
         quote:
           "Fondasi ilmu syar'i dan disiplin bahasa Arab yang saya dapatkan menjadi modal utama saya saat melanjutkan studi. Lingkungan di sini sangat mendukung pembentukan karakter saya.",
-        parent: "Muhammad Razan (Alumni)",
-      },
-    },
+        parent: "Muhammad Razan (Alumni)" } },
   ];
 
   const heroStats: HeroStat[] = [
@@ -436,20 +424,17 @@ export default function KegiatanPage() {
       icon: BookOpen,
       value: "30+",
       label: "Kitab Turots",
-      sublabel: "Kajian Mendalam",
-    },
+      sublabel: "Kajian Mendalam" },
     {
       icon: BookMarked,
       value: "28 Juz",
       label: "Target Tahfidz",
-      sublabel: "Metode Talaqqi",
-    },
+      sublabel: "Metode Talaqqi" },
     {
       icon: Target,
       value: "10+",
       label: "Ekstrakurikuler",
-      sublabel: "Asah bakat santri",
-    },
+      sublabel: "Asah bakat santri" },
   ];
 
   const jadwalHarian: JadwalHarian[] = [
@@ -461,8 +446,7 @@ export default function KegiatanPage() {
         "Halaqoh tahfidz Al-Qur'an intensif dimulai langsung setelah shalat subuh berjamaah di masjid saat kondisi pikiran paling segar.",
       benefit: "Optimasi daya ingat & keberkahan pagi.",
       bgColor: "bg-gold-50/50",
-      iconColor: "text-gold-600",
-    },
+      iconColor: "text-gold-600" },
     {
       icon: Heart,
       time: "06:30 - 07:00",
@@ -471,8 +455,7 @@ export default function KegiatanPage() {
         "Penyelesaian hajat mandiri, makan pagi sehat, dan mandi untuk persiapan menyambut hari dengan kebugaran fisik prima.",
       benefit: "Kesehatan tubuh & kesiapan mental.",
       bgColor: "bg-primary-50/50",
-      iconColor: "text-primary-600",
-    },
+      iconColor: "text-primary-600" },
     {
       icon: BookOpen,
       time: "07:00 - 12:00",
@@ -481,8 +464,7 @@ export default function KegiatanPage() {
         "Belajar aktif di kelas: Mengkaji Kitab Turots, Ilmu Syar'i, Mapel Umum (IPA, MTK, dan lain lain), Entrepreneurship, serta Leadership.",
       benefit: "Integrasi Imtak, Iptek & Entrepreneurship.",
       bgColor: "bg-primary-50",
-      iconColor: "text-primary-700",
-    },
+      iconColor: "text-primary-700" },
     {
       icon: Home,
       time: "12:30 - 15:00",
@@ -491,8 +473,7 @@ export default function KegiatanPage() {
         "Setelah ba'diyah dzuhur dilanjutkan makan siang dan tidur siang tertib. Seluruh santri wajib bangun sebelum adzan ashar.",
       benefit: "Pemulihan stamina & qailulah sunnah.",
       bgColor: "bg-primary-50/50",
-      iconColor: "text-primary-600",
-    },
+      iconColor: "text-primary-600" },
     {
       icon: Dribbble,
       time: "15:30 - 17:30",
@@ -501,8 +482,7 @@ export default function KegiatanPage() {
         "Halaqoh tahfidz singkat pasca ashar, lalu dilanjutkan waktu istirahat, bermain, atau olahraga (Minisoccer, Basket, dll).",
       benefit: "Keseimbangan kognitif & kinestetik.",
       bgColor: "bg-orange-50/50",
-      iconColor: "text-orange-600",
-    },
+      iconColor: "text-orange-600" },
     {
       icon: BookMarked,
       time: "18:00 - 21:00",
@@ -511,8 +491,7 @@ export default function KegiatanPage() {
         "Makan malam sebelum maghrib, halaqoh tahfidz sampai isya, ditutup kajian nasehat asatidzah ba'da isya sebelum jam istirahat.",
       benefit: "Penutup hari penuh adab & muhasabah.",
       bgColor: "bg-primary-100/20",
-      iconColor: "text-primary-800",
-    },
+      iconColor: "text-primary-800" },
   ];
 
   const kegiatanPekanan: KegiatanPekanan[] = [
@@ -523,8 +502,7 @@ export default function KegiatanPage() {
       benefit: "Kebiasaan Ibadah Kokoh",
       icon: Home,
       color: "text-primary-700",
-      bg: "bg-primary-50",
-    },
+      bg: "bg-primary-50" },
     {
       title: "Kajian Jum'at",
       desc: "Wawasan Luas",
@@ -532,8 +510,7 @@ export default function KegiatanPage() {
       benefit: "Literasi Agama Matang",
       icon: BookText,
       color: "text-primary-600",
-      bg: "bg-primary-50",
-    },
+      bg: "bg-primary-50" },
     {
       title: "Bela Diri",
       desc: "Fisik Tangguh",
@@ -541,8 +518,7 @@ export default function KegiatanPage() {
       benefit: "Mental & Fisik Kuat",
       icon: Shield,
       color: "text-primary-600",
-      bg: "bg-primary-50",
-    },
+      bg: "bg-primary-50" },
     {
       title: "Pramuka",
       desc: "Kepanduan",
@@ -551,8 +527,7 @@ export default function KegiatanPage() {
       benefit: "Jiwa Pemimpin",
       icon: Tent,
       color: "text-ink-600",
-      bg: "bg-white",
-    },
+      bg: "bg-white" },
   ];
 
   const ekstrakurikuler: Ekstrakurikuler[] = [
@@ -561,96 +536,81 @@ export default function KegiatanPage() {
       name: "Karate",
       icon: Shield,
       desc: "Bela diri untuk ketahanan fisik dan disiplin diri.",
-      benefit: "Mentalitas Tangguh",
-    },
+      benefit: "Mentalitas Tangguh" },
     {
       name: "Pramuka",
       icon: Tent,
       desc: "Pembentukan karakter, leadership & kemandirian.",
-      benefit: "Jiwa Pemimpin",
-    },
+      benefit: "Jiwa Pemimpin" },
     {
       name: "Panahan",
       icon: Target,
       desc: "Olahraga sunnah untuk melatih fokus & ketenangan.",
-      benefit: "Fokus & Konsentrasi",
-    },
+      benefit: "Fokus & Konsentrasi" },
     {
       name: "Futsal",
       icon: Dribbble,
       desc: "Olahraga tim untuk kesehatan dan sportivitas.",
-      benefit: "Kerjasama Tim",
-    },
+      benefit: "Kerjasama Tim" },
     {
       name: "Volly",
       icon: Trophy,
       desc: "Melatih koordinasi mata-tangan dan kerjasama regu.",
-      benefit: "Ketangkasan Sosial",
-    },
+      benefit: "Ketangkasan Sosial" },
 
     // Baris 2: Kompetensi & Soft Skills
     {
       name: "Komputer",
       icon: Globe,
       desc: "Penguasaan software perkantoran & literasi digital.",
-      benefit: "Kecakapan Teknologi",
-    },
+      benefit: "Kecakapan Teknologi" },
     {
       name: "Design Grafis",
       icon: PenTool,
       desc: "Seni kreativitas digital dan pengolahan visual.",
-      benefit: "Kreativitas Modern",
-    },
+      benefit: "Kreativitas Modern" },
     {
       name: "Kaligrafi",
       icon: PenTool,
       desc: "Seni menulis indah ayat-ayat Al-Qur'an.",
-      benefit: "Ketekunan Seni",
-    },
+      benefit: "Ketekunan Seni" },
     {
       name: "Jurnalistik",
       icon: BookText,
       desc: "Melatih kemampuan menulis dan analisis informasi.",
-      benefit: "Komunikasi Publik",
-    },
+      benefit: "Komunikasi Publik" },
     {
       name: "Konten Kreator",
       icon: Camera,
       desc: "Edukasi pembuatan konten positif & beradab.",
-      benefit: "Dakwah Digital",
-    },
+      benefit: "Dakwah Digital" },
 
     // Baris 3: Pengembangan & Masa Depan
     {
       name: "Basket",
       icon: Trophy,
       desc: "Olahraga dinamis untuk stamina dan tinggi badan.",
-      benefit: "Stamina & Endurance",
-    },
+      benefit: "Stamina & Endurance" },
     {
       name: "Bulutangkis",
       icon: Zap,
       desc: "Melatih ketangkasan dan koordinasi motorik.",
-      benefit: "Kelincahan Fisik",
-    },
+      benefit: "Kelincahan Fisik" },
     {
       name: "Pertanian",
       icon: Home,
       desc: "Edukasi kemandirian pangan dan cinta alam.",
-      benefit: "Kemandirian Hidup",
-    },
+      benefit: "Kemandirian Hidup" },
     {
       name: "Periklanan",
       icon: MessageCircle,
       desc: "Belajar strategi komunikasi visual dan pemasaran.",
-      benefit: "Jiwa Entrepreneur",
-    },
+      benefit: "Jiwa Entrepreneur" },
     {
       name: "Coding & AI",
       icon: Zap,
       desc: "Belajar membangun website, aplikasi modern, serta implementasi & integrasi Artificial Intelligence (AI).",
-      benefit: "Inovator Digital",
-    },
+      benefit: "Inovator Digital" },
   ];
 
   return (
@@ -730,20 +690,16 @@ export default function KegiatanPage() {
               {[
                 {
                   text: "Bahasa Arab sebagai Bahasa Pengantar",
-                  icon: MessageCircle,
-                },
+                  icon: MessageCircle },
                 {
                   text: "Target Hafalan Berstandar Sanad (± 4 Juz/Thn)",
-                  icon: BadgeCheck,
-                },
+                  icon: BadgeCheck },
                 {
                   text: "Lulusan Diterima di LIPIA, PTN & Timur Tengah",
-                  icon: GraduationCap,
-                },
+                  icon: GraduationCap },
                 {
                   text: "Juara Musabaqah Nasional & Prestasi Sains",
-                  icon: Trophy,
-                },
+                  icon: Trophy },
               ].map((item, idx) => (
                 <motion.div
                   key={idx}

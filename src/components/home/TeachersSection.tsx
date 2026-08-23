@@ -6,52 +6,41 @@ import {
   Globe,
   BookOpen,
   Users,
-  CheckCircle2,
-} from "lucide-react";
+  CheckCircle2 } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { motion } from "framer-motion";
 
 const TEACHER_BACKGROUNDS = [
   {
     institution: "Muhammad Ibn Saud Islamic University",
-    location: "Pascasarjana, Riyadh, KSA",
-  },
+    location: "Pascasarjana, Riyadh, KSA" },
   {
     institution: "Univ. Sidi Mohamed ben Abdellah",
-    location: "Pascasarjana, Fes, Maroko",
-  },
+    location: "Pascasarjana, Fes, Maroko" },
   {
     institution: "Universitas Al-Azhar",
-    location: "Kairo, Mesir",
-  },
+    location: "Kairo, Mesir" },
   {
     institution: "Rabithah Al-Alam Al-Islami",
-    location: "Makkah Al-Mukarromah",
-  },
+    location: "Makkah Al-Mukarromah" },
   {
     institution: "Native Speaker",
-    location: "Timur Tengah",
-  },
+    location: "Timur Tengah" },
   {
     institution: "LIPIA Jakarta",
-    location: "Univ. Islam Imam Muhammad bin Saud",
-  },
+    location: "Univ. Islam Imam Muhammad bin Saud" },
   {
     institution: "Universitas Negeri Yogyakarta",
-    location: "Pascasarjana",
-  },
+    location: "Pascasarjana" },
   {
     institution: "STIBA Ar-Raayah",
-    location: "Sukabumi",
-  },
+    location: "Sukabumi" },
   {
     institution: "Lulusan Pondok Terkemuka",
-    location: "Nasional",
-  },
+    location: "Nasional" },
   {
     institution: "Dosen & Praktisi Ahli",
-    location: "Tenaga Ahli",
-  },
+    location: "Tenaga Ahli" },
 ] as const;
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -67,8 +56,7 @@ export default function TeachersSection() {
         className="absolute -top-32 right-0 translate-x-1/3 w-[600px] h-[600px] pointer-events-none"
         style={{
           background:
-            "radial-gradient(circle, rgba(229,224,211,0.4) 0%, transparent 60%)",
-        }}
+            "radial-gradient(circle, rgba(229,224,211,0.4) 0%, transparent 60%)" }}
       />
 
       <Container className="relative z-10">
@@ -102,26 +90,22 @@ export default function TeachersSection() {
                   icon: Globe,
                   label: "Lulusan Luar Negeri",
                   sub: "Timur Tengah, Mesir & Maroko",
-                  accent: "primary",
-                },
+                  accent: "primary" },
                 {
                   icon: Users,
                   label: "Native Speakers",
                   sub: "Timur Tengah",
-                  accent: "secondary",
-                },
+                  accent: "secondary" },
                 {
                   icon: BookOpen,
                   label: "Lulusan Terbaik",
                   sub: "Dalam Negeri & Pondok Unggulan",
-                  accent: "secondary",
-                },
+                  accent: "secondary" },
                 {
                   icon: Award,
                   label: "Dosen & Pakar",
                   sub: "Tenaga Pendidik Profesional",
-                  accent: "primary",
-                },
+                  accent: "primary" },
               ].map((feature, i) => (
                 <div
                   key={i}

@@ -12,15 +12,12 @@ export async function POST(request: NextRequest) {
         phone,
         otp,
         nama,
-        status: "pending",
-      },
-    });
+        status: "pending" } });
 
     return NextResponse.json({
       success: true,
       data: data,
-      message: "SMS data saved for admin manual sending",
-    });
+      message: "SMS data saved for admin manual sending" });
   } catch (error: any) {
     console.error("API error:", error);
     return NextResponse.json(

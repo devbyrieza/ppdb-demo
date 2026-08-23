@@ -14,18 +14,14 @@ export async function GET() {
       where: {
         deleted_at: null,
         kabupaten: {
-          not: null,
-        },
-      },
+          not: null } },
       select: {
         nama_lengkap: true,
         kabupaten: true,
         jenjang: true,
-        created_at: true,
-      },
+        created_at: true },
       orderBy: { created_at: "desc" },
-      take: 20,
-    });
+      take: 20 });
 
     // Filter out empty strings in memory if any
     const validRegistrants = registrants.filter(
@@ -46,8 +42,7 @@ export async function GET() {
         ma: "Madrasah Aliyah",
         idad: "I'dad Lughowi",
         "i'dad": "I'dad Lughowi",
-        "i'dad lughowi": "I'dad Lughowi",
-      };
+        "i'dad lughowi": "I'dad Lughowi" };
       const program =
         programMap[r.jenjang?.toLowerCase() || ""] ||
         r.jenjang ||

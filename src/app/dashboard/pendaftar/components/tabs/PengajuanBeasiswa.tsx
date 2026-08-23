@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Loader2, UploadCloud, CheckCircle, Clock, XCircle, FileText, Eye, Trash2, File, AlertTriangle, , ClipboardList } from "lucide-react";
+import { Loader2, UploadCloud, CheckCircle, Clock, XCircle, FileText, Eye, Trash2, File, AlertTriangle, ClipboardList } from "lucide-react";
 import Swal from "sweetalert2";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -34,43 +34,37 @@ const BERKAS_CONFIG: BerkasItem[] = [
     label: "Surat Keterangan Tidak Mampu (SKTM)",
     desc: "Dari RT/RW atau Kelurahan setempat.",
     required: true,
-    showFor: "BOTH",
-  },
+    showFor: "BOTH" },
   {
     fieldKey: "file_slip_gaji_path",
     label: "Surat Keterangan / Bukti Penghasilan Orangtua",
     desc: "Slip Gaji Ayah dan Ibu, atau Surat Keterangan Penghasilan.",
     required: true,
-    showFor: "BEASISWA",
-  },
+    showFor: "BEASISWA" },
   {
     fieldKey: "file_ktp_path",
     label: "KTP Orangtua Ayah",
     desc: "Scan atau foto KTP Ayah yang jelas dan dapat dibaca.",
     required: true,
-    showFor: "BEASISWA",
-  },
+    showFor: "BEASISWA" },
   {
     fieldKey: "file_ktp_ibu_path",
     label: "KTP Orangtua Ibu",
     desc: "Scan atau foto KTP Ibu yang jelas dan dapat dibaca.",
     required: true,
-    showFor: "BEASISWA",
-  },
+    showFor: "BEASISWA" },
   {
     fieldKey: "file_permohonan_path",
     label: "Surat Permohonan Keringanan Biaya",
     desc: "Menyebutkan jenis biaya (Uang Pangkal / SPP), jumlah yang sanggup dibayar dan/atau potongan yang diminta.",
     required: true,
-    showFor: "KERINGANAN_BIAYA",
-  },
+    showFor: "KERINGANAN_BIAYA" },
   {
     fieldKey: "file_prestasi_path",
     label: "Bukti Memiliki Hafalan Al-Qur'an / Ranking 3 Besar",
     desc: "Sertifikat hafalan atau bukti peringkat 3 besar di sekolah asal.",
     required: true,
-    showFor: "BEASISWA",
-  },
+    showFor: "BEASISWA" },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -80,8 +74,7 @@ const BERKAS_CONFIG: BerkasItem[] = [
 function FileUploadField({
   item,
   file,
-  onFileChange,
-}: {
+  onFileChange }: {
   item: BerkasItem;
   file: File | null;
   onFileChange: (f: File | null) => void;
@@ -142,8 +135,7 @@ function FileUploadField({
 
 function BerkasStatusItem({
   label,
-  path,
-}: {
+  path }: {
   label: string;
   path: string | null | undefined;
 }) {
@@ -219,8 +211,7 @@ export default function PengajuanBeasiswaTab() {
 
     const uploadRes = await fetch("/api/upload/dokumen", {
       method: "POST",
-      body: formData,
-    });
+      body: formData });
     const result = await uploadRes.json();
     if (!uploadRes.ok || !result.path) throw new Error(`Gagal upload ${file.name}`);
     return result.path;
@@ -271,14 +262,12 @@ export default function PengajuanBeasiswaTab() {
         file_ktp_path: uploaded.file_ktp_path || null,
         file_ktp_ibu_path: uploaded.file_ktp_ibu_path || null,
         file_prestasi_path: uploaded.file_prestasi_path || null,
-        file_permohonan_path: uploaded.file_permohonan_path || null,
-      };
+        file_permohonan_path: uploaded.file_permohonan_path || null };
 
       const res = await fetch("/api/pendaftar/beasiswa", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+        body: JSON.stringify(payload) });
 
       const result = await res.json();
       if (result.success) {
@@ -321,21 +310,18 @@ export default function PengajuanBeasiswaTab() {
             { label: "SKTM", path: data.file_sktm_path },
             {
               label: "Surat Keterangan / Bukti Penghasilan",
-              path: data.file_slip_gaji_path,
-            },
+              path: data.file_slip_gaji_path },
             { label: "KTP Orangtua Ayah", path: data.file_ktp_path },
             { label: "KTP Orangtua Ibu", path: data.file_ktp_ibu_path },
             {
               label: "Bukti Prestasi / Hafalan",
-              path: data.file_prestasi_path,
-            },
+              path: data.file_prestasi_path },
           ]
         : [
             { label: "SKTM", path: data.file_sktm_path },
             {
               label: "Surat Permohonan Keringanan",
-              path: data.file_permohonan_path || data.file_prestasi_path,
-            },
+              path: data.file_permohonan_path || data.file_prestasi_path },
           ];
 
     // Check if any required berkas missing

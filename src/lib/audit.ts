@@ -38,8 +38,7 @@ export function logAdminAction({
   adminName,
   targetId,
   targetName,
-  details,
-}: AuditLogParams) {
+  details }: AuditLogParams) {
   const timestamp = new Date().toISOString();
 
   const logEntry = {
@@ -48,8 +47,7 @@ export function logAdminAction({
     action,
     admin: { id: adminId, name: adminName },
     target: { id: targetId, name: targetName },
-    details,
-  };
+    details };
 
   // Structured logging to console
   console.log(`[AUDIT-LOG] ${JSON.stringify(logEntry)}`);

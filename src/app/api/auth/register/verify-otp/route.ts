@@ -44,15 +44,13 @@ export async function POST(request: NextRequest) {
 
     const otpRecord = await prisma.otpVerification.findFirst({
       where: { phone: normalizedPhone },
-      orderBy: { created_at: "desc" },
-    });
+      orderBy: { created_at: "desc" } });
 
     if (!otpRecord) {
       return NextResponse.json(
         {
           success: false,
-          error: "Kode OTP tidak ditemukan. Silakan kirim ulang.",
-        },
+          error: "Kode OTP tidak ditemukan. Silakan kirim ulang." },
         { status: 404 },
       );
     }
@@ -62,8 +60,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: "Kode OTP sudah kadaluarsa. Silakan kirim ulang.",
-        },
+          error: "Kode OTP sudah kadaluarsa. Silakan kirim ulang." },
         { status: 410 },
       );
     }
@@ -73,8 +70,7 @@ export async function POST(request: NextRequest) {
         {
           success: false,
           error:
-            "Terlalu banyak percobaan gagal. Silakan kirim ulang kode OTP.",
-        },
+            "Terlalu banyak percobaan gagal. Silakan kirim ulang kode OTP." },
         { status: 429 },
       );
     }
@@ -82,15 +78,13 @@ export async function POST(request: NextRequest) {
     if (otpRecord.otp_hash !== hashedOTP) {
       await prisma.otpVerification.update({
         where: { id: otpRecord.id },
-        data: { attempts: otpRecord.attempts + 1 },
-      });
+        data: { attempts: otpRecord.attempts + 1 } });
 
       const remainingAttempts = 3 - (otpRecord.attempts + 1);
       return NextResponse.json(
         {
           success: false,
-          error: `Kode OTP salah. Sisa percobaan: ${remainingAttempts}`,
-        },
+          error: `Kode OTP salah. Sisa percobaan: ${remainingAttempts}` },
         { status: 400 },
       );
     }
@@ -99,15 +93,13 @@ export async function POST(request: NextRequest) {
 
     await prisma.otpVerification.update({
       where: { id: otpRecord.id },
-      data: { verified_at: new Date() },
-    });
+      data: { verified_at: new Date() } });
 
     return NextResponse.json({
       success: true,
       message: "Verifikasi berhasil",
       data: registrationData,
-      otp_id: otpRecord.id,
-    });
+      otp_id: otpRecord.id });
   } catch (error) {
     console.error("Verify OTP error:", error);
     return NextResponse.json(

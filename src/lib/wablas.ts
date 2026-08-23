@@ -65,8 +65,7 @@ function formatPhoneNumber(phone: string): string {
  */
 export async function sendMessage({
   phone,
-  message,
-}: SendMessageParams): Promise<WablasResponse> {
+  message }: SendMessageParams): Promise<WablasResponse> {
   if (!WABLAS_DOMAIN || !WABLAS_TOKEN) {
     console.error("Wablas not configured");
     return { status: false, message: "Wablas not configured" };
@@ -99,10 +98,8 @@ export async function sendMessage({
       method: "POST",
       headers: {
         Authorization: authToken,
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: formData.toString(),
-    });
+        "Content-Type": "application/x-www-form-urlencoded" },
+      body: formData.toString() });
 
     const rawText = await response.text();
     let data;
@@ -112,16 +109,14 @@ export async function sendMessage({
       console.error("❌ Wablas Non-JSON Response:", rawText);
       return {
         status: false,
-        message: `Wablas Error: ${response.status} ${response.statusText}`,
-      };
+        message: `Wablas Error: ${response.status} ${response.statusText}` };
     }
 
     if (!response.ok || !data.status) {
       console.error("❌ Wablas API Error:", data);
       return {
         status: false,
-        message: data.message || `Wablas Failed: ${response.status}`,
-      };
+        message: data.message || `Wablas Failed: ${response.status}` };
     }
 
     return { status: true, message: "Message sent successfully", data };
@@ -137,8 +132,7 @@ export async function sendMessage({
 export async function sendTemplate({
   phone,
   templateId,
-  variables = {},
-}: SendTemplateParams): Promise<WablasResponse> {
+  variables = {} }: SendTemplateParams): Promise<WablasResponse> {
   const template = TEMPLATES[templateId];
 
   if (!template) {
@@ -460,8 +454,7 @@ Pengumuman kelulusan belum tersedia saat ini. Mohon menunggu update selanjutnya 
 Dashboard: {{dashboard_url}}
 
 Jazakumullahu khairan,
-Panitia PPDB ${BRANDING.schoolName}`,
-};
+Panitia PPDB ${BRANDING.schoolName}` };
 
 // ============================================
 // NOTIFICATION HELPERS
@@ -488,9 +481,7 @@ export async function notifyRegistrationSuccess(data: {
           ? "Madrasah Tsanawiyah (MTs)"
           : "I'dad Lughowi (Setara SMA)",
       dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar`,
-      kontak: DEFAULT_CONTACT,
-    },
-  });
+      kontak: DEFAULT_CONTACT } });
 }
 
 /**
@@ -515,9 +506,7 @@ export async function notifyDocumentVerified(data: {
       dokumen_list: data.dokumen_list,
       catatan: data.catatan || "",
       dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/${data.status === "verified" ? "undangan-seleksi" : "upload-berkas"}`,
-      kontak: DEFAULT_CONTACT,
-    },
-  });
+      kontak: DEFAULT_CONTACT } });
 }
 
 /**
@@ -546,9 +535,7 @@ export async function notifyPaymentVerified(data: {
       tanggal: data.tanggal,
       catatan: data.catatan || "",
       dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/${data.status === "verified" ? "kelengkapan-berkas" : "pembayaran-pendaftaran"}`,
-      kontak: DEFAULT_CONTACT,
-    },
-  });
+      kontak: DEFAULT_CONTACT } });
 }
 
 /**
@@ -565,8 +552,7 @@ export async function notifyDeadlineReminder(data: {
   return sendTemplate({
     phone: data.phone,
     templateId: "deadline_reminder",
-    variables: data,
-  });
+    variables: data });
 }
 
 /**
@@ -588,8 +574,7 @@ export async function notifyTestSchedule(data: {
     tanggal: data.tanggal,
     waktu: data.waktu,
     tempat: data.tempat,
-    dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || "https://pesantren-ululalbaab.com"}/dashboard/pendaftar/undangan-seleksi`,
-  };
+    dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || "https://pesantren-ululalbaab.com"}/dashboard/pendaftar/undangan-seleksi` };
 
   Object.entries(variables).forEach(([key, value]) => {
     message = message.replace(new RegExp(`{{${key}}}`, "g"), value);
@@ -609,8 +594,7 @@ export async function notifyTestSchedule(data: {
 
   return sendMessage({
     phone: data.phone,
-    message,
-  });
+    message });
 }
 
 /**
@@ -627,8 +611,7 @@ export async function notifyStatusChange(data: {
   const templateMap: Record<string, string> = {
     accepted: "announcement_accepted",
     reserve: "announcement_reserve",
-    rejected: "announcement_rejected",
-  };
+    rejected: "announcement_rejected" };
 
   const templateId = templateMap[data.status];
   if (!templateId) return { status: false, message: "Template not found" };
@@ -640,9 +623,7 @@ export async function notifyStatusChange(data: {
       nama: data.nama,
       jenjang: data.jenjang || "-",
       tahun_ajaran: data.tahun_ajaran || "2025/2026",
-      dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/${data.status === "accepted" ? "daftar-ulang" : "pengumuman"}`,
-    },
-  });
+      dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/${data.status === "accepted" ? "daftar-ulang" : "pengumuman"}` } });
 }
 
 /**
@@ -669,8 +650,7 @@ export async function notifyCombinedFinalResult(data: {
     pendaftarId: data.pendaftarId,
     phone: data.phone,
     jenisNotif: "hasil_tes",
-    messageContent: message,
-  });
+    messageContent: message });
 }
 
 // ============================================
@@ -712,10 +692,8 @@ export async function sendDocumentMessage(params: {
       method: "POST",
       headers: {
         Authorization: authToken,
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: formData.toString(),
-    });
+        "Content-Type": "application/x-www-form-urlencoded" },
+      body: formData.toString() });
 
     const rawText = await response.text();
     let data;
@@ -730,8 +708,7 @@ export async function sendDocumentMessage(params: {
       console.error("❌ Wablas send-document Error:", data);
       return {
         status: false,
-        message: data.message || "Failed to send document",
-      };
+        message: data.message || "Failed to send document" };
     }
 
     return { status: true, message: "Document sent successfully", data };
@@ -757,8 +734,7 @@ export async function sendButtonMessage(params: {
 
   return sendMessage({
     phone: params.phone,
-    message: fullMessage,
-  });
+    message: fullMessage });
 }
 
 // ============================================
@@ -805,15 +781,13 @@ export async function blastWithQueue(params: {
     buttonUrl,
     buttonText,
     delayMs = 2000,
-    onProgress,
-  } = params;
+    onProgress } = params;
 
   const result: BlastResult = {
     total: recipients.length,
     success: 0,
     failed: 0,
-    errors: [],
-  };
+    errors: [] };
 
   console.log(
     `📢 Starting blast to ${recipients.length} recipients (delay: ${delayMs}ms)`,
@@ -831,22 +805,19 @@ export async function blastWithQueue(params: {
         response = await sendDocumentMessage({
           phone: recipient.phone,
           message,
-          documentUrl,
-        });
+          documentUrl });
       } else if (buttonUrl && buttonText) {
         // Kirim pesan dengan link
         response = await sendButtonMessage({
           phone: recipient.phone,
           message,
           buttonText,
-          buttonUrl,
-        });
+          buttonUrl });
       } else {
         // Kirim pesan teks biasa
         response = await sendMessage({
           phone: recipient.phone,
-          message,
-        });
+          message });
       }
 
       if (response.status) {
@@ -855,15 +826,13 @@ export async function blastWithQueue(params: {
         result.failed++;
         result.errors.push({
           phone: recipient.phone,
-          error: response.message,
-        });
+          error: response.message });
       }
     } catch (error: any) {
       result.failed++;
       result.errors.push({
         phone: recipient.phone,
-        error: error.message || "Unknown error",
-      });
+        error: error.message || "Unknown error" });
     }
 
     // Progress callback
@@ -902,8 +871,7 @@ export async function notifySelectionResult(data: {
   const statusMap: Record<string, "accepted" | "reserve" | "rejected"> = {
     DITERIMA: "accepted",
     CADANGAN: "reserve",
-    DITOLAK: "rejected",
-  };
+    DITOLAK: "rejected" };
 
   const currentAppUrl = process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL;
   const dashboardUrl = `${currentAppUrl}/dashboard/pendaftar/${data.status === "DITERIMA" ? "daftar-ulang" : "pengumuman"}`;
@@ -915,8 +883,7 @@ export async function notifySelectionResult(data: {
     status: statusMap[data.status] || "rejected",
     jenjang: data.jenjang,
     tahun_ajaran: data.tahun_ajaran,
-    dashboard_url: dashboardUrl,
-  });
+    dashboard_url: dashboardUrl });
 
   // Jika ada surat keputusan, kirim juga sebagai dokumen
   if (data.suratPath) {
@@ -924,8 +891,7 @@ export async function notifySelectionResult(data: {
     await sendDocumentMessage({
       phone: data.phone,
       message: `📄 Surat Keputusan Hasil Seleksi — ${data.nama}`,
-      documentUrl: suratUrl,
-    });
+      documentUrl: suratUrl });
   }
 
   return notifResult;
@@ -950,9 +916,7 @@ export async function notifyGoogleFormLink(data: {
       form_link: data.formLink,
       keterangan: data.keterangan || "pendaftaran",
       batas_waktu: data.batasWaktu || "Sesuai instruksi panitia",
-      dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar`,
-    },
-  });
+      dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar` } });
 }
 
 /**
@@ -976,9 +940,7 @@ export async function notifyZoomMeeting(data: {
       tanggal: data.tanggal,
       waktu: data.waktu,
       zoom_link: data.zoomLink,
-      dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar`,
-    },
-  });
+      dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar` } });
 }
 
 /**
@@ -994,9 +956,7 @@ export async function notifyDataComplete(data: {
     templateId: "data_complete",
     variables: {
       nama: data.nama,
-      dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/upload-berkas`,
-    },
-  });
+      dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/upload-berkas` } });
 }
 
 /**
@@ -1012,9 +972,7 @@ export async function notifyAllExamsComplete(data: {
     templateId: "all_exams_complete",
     variables: {
       nama: data.nama,
-      dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/pengumuman`,
-    },
-  });
+      dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL || DEFAULT_APP_URL}/dashboard/pendaftar/pengumuman` } });
 }
 
 /**
@@ -1055,8 +1013,7 @@ export async function notifyNewStaffAccess(data: {
     pewawancara_calsan: "Pewawancara Calsan",
     pewawancara_cawalsan: 'Pewawancara Cawalsan',
       penguji_hafalan: "Penguji Hafalan",
-      penguji_bahasa_arab: "Penguji Lisan B. Arab",
-  };
+      penguji_bahasa_arab: "Penguji Lisan B. Arab" };
   const roleLabel = roleLabels[data.role] || data.role;
 
   // Extract last 4 digits of phone number for PIN

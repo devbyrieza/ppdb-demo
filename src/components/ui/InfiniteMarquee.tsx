@@ -26,8 +26,7 @@ interface InfiniteMarqueeProps {
 const SPEED_MAP = {
   slow: "40s",
   normal: "28s",
-  fast: "18s",
-};
+  fast: "18s" };
 
 export default function InfiniteMarquee({
   items,
@@ -37,8 +36,7 @@ export default function InfiniteMarquee({
   className,
   itemClassName,
   separator,
-  variant = "transparent",
-}: InfiniteMarqueeProps) {
+  variant = "transparent" }: InfiniteMarqueeProps) {
   const [isHovered, setIsHovered] = useState(false);
   const trackRef = useRef<HTMLDivElement>(null);
 
@@ -49,15 +47,13 @@ export default function InfiniteMarquee({
     light: "bg-white border-y border-surface-200",
     dark: "bg-primary-950 border-y border-white/10",
     primary: "bg-primary-50 border-y border-primary-100",
-    transparent: "bg-transparent",
-  };
+    transparent: "bg-transparent" };
 
   const itemVariantClasses = {
     light: "text-ink-600",
     dark: "text-white/70",
     primary: "text-primary-700",
-    transparent: "text-ink-500",
-  };
+    transparent: "text-ink-500" };
 
   const animDuration = SPEED_MAP[speed];
   const animDirection = direction === "right" ? "reverse" : "normal";
@@ -84,8 +80,7 @@ export default function InfiniteMarquee({
                   ? "linear-gradient(to right, var(--color-primary-950), transparent)"
                   : variant === "primary"
                     ? "linear-gradient(to right, var(--color-primary-50), transparent)"
-                    : "linear-gradient(to right, var(--color-white, #fff), transparent)",
-            }}
+                    : "linear-gradient(to right, var(--color-white, #fff), transparent)" }}
           />
           {/* Right fade */}
           <div
@@ -96,8 +91,7 @@ export default function InfiniteMarquee({
                   ? "linear-gradient(to left, var(--color-primary-950), transparent)"
                   : variant === "primary"
                     ? "linear-gradient(to left, var(--color-primary-50), transparent)"
-                    : "linear-gradient(to left, var(--color-white, #fff), transparent)",
-            }}
+                    : "linear-gradient(to left, var(--color-white, #fff), transparent)" }}
           />
         </>
       )}
@@ -109,8 +103,7 @@ export default function InfiniteMarquee({
         style={{
           animation: `marquee-scroll ${animDuration} linear infinite ${animDirection}`,
           animationPlayState: isHovered ? "paused" : "running",
-          width: "max-content",
-        }}
+          width: "max-content" }}
       >
         {duplicated.map((item, i) => (
           <div

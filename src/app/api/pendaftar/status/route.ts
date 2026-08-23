@@ -54,21 +54,16 @@ export async function GET(request: NextRequest) {
         updated_at: true,
         pembayaran: {
           where: { status_pembayaran: "verified" },
-          take: 1,
-        },
+          take: 1 },
         pengumuman: {
           select: {
             status_kelulusan: true,
             catatan: true,
-            surat_keputusan_url: true,
-          },
-        },
+            surat_keputusan_url: true } },
         jenis_kelamin: true,
         ukuran_seragam_baju: true,
         ukuran_seragam_celana: true,
-        ukuran_seragam_almamater: true,
-      },
-    });
+        ukuran_seragam_almamater: true } });
 
     if (!data) {
       return NextResponse.json(
@@ -90,8 +85,7 @@ export async function GET(request: NextRequest) {
       );
       await prisma.pendaftar.update({
         where: { id: pendaftarId },
-        data: { status_pendaftaran: "verified" },
-      });
+        data: { status_pendaftaran: "verified" } });
       currentStatus = "verified";
     }
 
@@ -101,8 +95,7 @@ export async function GET(request: NextRequest) {
       include: { 
         creator: { select: { jenis_kelamin: true } },
         _count: { select: { bookings: true } } 
-      },
-    });
+      } });
 
     const jkPendaftar = data.jenis_kelamin?.toUpperCase() || "";
     const isPendaftarPutra = jkPendaftar === "L" || jkPendaftar === "LAKI-LAKI" || jkPendaftar.includes("PUTRA");
@@ -119,8 +112,7 @@ export async function GET(request: NextRequest) {
     );
 
     const existingBooking = await prisma.jadwalUjian.findFirst({
-      where: { pendaftar_id: pendaftarId },
-    });
+      where: { pendaftar_id: pendaftarId } });
 
     const schedules_available = totalAvailableSlots > 0 && !existingBooking;
 
@@ -128,9 +120,7 @@ export async function GET(request: NextRequest) {
     const dataWithNilai = await prisma.pendaftar.findUnique({
       where: { id: pendaftarId },
       include: {
-        nilai_ujian: true,
-      },
-    });
+        nilai_ujian: true } });
 
     const nilai = dataWithNilai?.nilai_ujian[0];
 
@@ -147,8 +137,7 @@ export async function GET(request: NextRequest) {
 
     // 2. Check if they have booked any schedule (Grup B)
     const hasBooking = await prisma.jadwalUjian.count({
-      where: { pendaftar_id: pendaftarId },
-    });
+      where: { pendaftar_id: pendaftarId } });
 
     if (
       currentStatus === "docs_verified" &&
@@ -159,8 +148,7 @@ export async function GET(request: NextRequest) {
       );
       await prisma.pendaftar.update({
         where: { id: pendaftarId },
-        data: { status_pendaftaran: "selection" },
-      });
+        data: { status_pendaftaran: "selection" } });
       currentStatus = "selection";
     }
 
@@ -180,9 +168,7 @@ export async function GET(request: NextRequest) {
       pengumuman: data.pengumuman,
       hasil_kelulusan: {
         status: (nilai as any)?.status_kelulusan || null,
-        catatan: (nilai as any)?.catatan_kelulusan || null,
-      },
-    });
+        catatan: (nilai as any)?.catatan_kelulusan || null } });
   } catch (error) {
     console.error("Error in status API:", error);
     return NextResponse.json(

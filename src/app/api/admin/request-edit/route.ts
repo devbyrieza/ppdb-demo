@@ -42,8 +42,7 @@ export async function PUT(request: Request) {
     }
 
     let updateData: any = {
-      admin_note: admin_note || undefined,
-    };
+      admin_note: admin_note || undefined };
 
     if (action === "approve_edit") {
       updateData.status = "approved_to_edit";
@@ -63,13 +62,11 @@ export async function PUT(request: Request) {
 
     const updatedRequest = await prisma.dataPerubahanRequest.update({
       where: { id: request_id },
-      data: updateData,
-    });
+      data: updateData });
 
     return NextResponse.json({
       success: true,
-      data: updatedRequest,
-    });
+      data: updatedRequest });
   } catch (error: any) {
     console.error("Error updating request:", error);
     return NextResponse.json(

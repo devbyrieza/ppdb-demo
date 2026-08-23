@@ -26,8 +26,7 @@ export async function POST(
 
     // Check if pendaftar exists and is soft-deleted
     const pendaftar = await prisma.pendaftar.findUnique({
-      where: { id: params.id },
-    });
+      where: { id: params.id } });
 
     if (!pendaftar) {
       return NextResponse.json(
@@ -53,8 +52,7 @@ export async function POST(
         OR: [
           { nomor_pendaftaran: originalNomor },
         ],
-        deleted_at: null,
-      }
+        deleted_at: null }
     });
 
     if (conflict) {
@@ -74,20 +72,15 @@ export async function POST(
           nik: originalNik,
           deleted_at: null,
           deleted_by: null,
-          updated_at: new Date(),
-        },
-      }),
+          updated_at: new Date() } }),
       // 2. Mark backup as restored
       prisma.pendaftarBackup.updateMany({
         where: {
           pendaftar_id: params.id,
-          restored_at: null,
-        },
+          restored_at: null },
         data: {
           restored_at: new Date(),
-          restored_by: session.id,
-        },
-      }),
+          restored_by: session.id } }),
     ]);
 
     // Audit log
@@ -98,14 +91,11 @@ export async function POST(
       targetId: params.id,
       targetName: pendaftar.nama_lengkap,
       details: {
-        nomor_pendaftaran: pendaftar.nomor_pendaftaran,
-      },
-    });
+        nomor_pendaftaran: pendaftar.nomor_pendaftaran } });
 
     return NextResponse.json({
       success: true,
-      message: `Data ${pendaftar.nama_lengkap} berhasil dipulihkan/direstore.`,
-    });
+      message: `Data ${pendaftar.nama_lengkap} berhasil dipulihkan/direstore.` });
   } catch (error) {
     console.error("Error in admin pendaftar restore API:", error);
     return NextResponse.json(

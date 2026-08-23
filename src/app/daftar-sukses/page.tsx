@@ -14,8 +14,7 @@ import {
   AlertTriangle,
   Loader2,
   ArrowRight,
-  School,
-} from "lucide-react";
+  School } from "lucide-react";
 
 function DaftarSuksesContent() {
   const router = useRouter();

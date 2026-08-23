@@ -35,9 +35,7 @@ export async function GET(req: Request) {
                 "pewawancara_cawalsan",
                 "penguji_hafalan",
                 "penguji_bahasa_arab",
-              ],
-            },
-          },
+              ] } },
           {
             secondary_roles: {
               hasSome: [
@@ -46,21 +44,15 @@ export async function GET(req: Request) {
                 "pewawancara_cawalsan",
                 "penguji_hafalan",
                 "penguji_bahasa_arab",
-              ],
-            },
-          },
-        ],
-      },
+              ] } },
+        ] },
       select: {
         id: true,
         full_name: true,
         role: true,
-        secondary_roles: true,
-      },
+        secondary_roles: true },
       orderBy: {
-        full_name: "asc",
-      },
-    });
+        full_name: "asc" } });
 
     // We'll fetch all NilaiUjian optionally filtered by tahunAjaranId
     const whereClause: any = {};
@@ -87,12 +79,9 @@ export async function GET(req: Request) {
             penguji_santri_id: true,
             penguji_ortu_id: true,
             penguji_hafalan_id: true,
-            penguji_arab_id: true,
-          }
+            penguji_arab_id: true }
         },
-        detail_akademik: true,
-      },
-    });
+        detail_akademik: true } });
 
     // Tally up counts per examiner
     const tally: Record<
@@ -114,8 +103,7 @@ export async function GET(req: Request) {
         ortu: 0,
         hafalan: 0,
         arab: 0,
-        total: 0,
-      };
+        total: 0 };
     }
 
     for (const nilai of nilaiData) {
@@ -175,8 +163,7 @@ export async function GET(req: Request) {
         jumlah_hafalan: stats.hafalan,
         jumlah_arab: stats.arab,
         total_sesi: stats.total,
-        total_fee: stats.total * FEE_PER_SESSION,
-      };
+        total_fee: stats.total * FEE_PER_SESSION };
     });
 
     return NextResponse.json({ success: true, data: result });

@@ -9,8 +9,7 @@ import { prisma } from "@/lib/prisma";
 import {
     enqueueWhatsapp,
     buildMessageReminderH1Santri,
-    buildMessageReminderH1Penguji,
-} from "@/lib/whatsapp-queue";
+    buildMessageReminderH1Penguji } from "@/lib/whatsapp-queue";
 import { generateMagicToken, generateShortLink, getSlugByName, getPermanentAuthUrl } from "@/lib/utils/magic-link";
 
 const CRON_SECRET = process.env.CRON_SECRET || "ppdb-alimam-cron-2026";
@@ -43,26 +42,19 @@ export async function GET(request: Request) {
                 exam_session: {
                     start_time: {
                         gte: fourHoursFromNow,
-                        lte: fourHoursPlus15Min,
-                    },
-                },
+                        lte: fourHoursPlus15Min } },
                 pendaftar: {
-                    deleted_at: null,
-                },
-            },
+                    deleted_at: null } },
             include: {
                 pendaftar: {
                     include: {
-                        orang_tua: true,
-                    }
+                        orang_tua: true }
                 },
                 exam_session: true,
                 penguji_santri: true,
                 penguji_quran: true,
                 penguji_ortu: true,
-                notif_reminders: true,
-            },
-        });
+                notif_reminders: true } });
 
         let enqueuedSantri = 0;
         let enqueuedPenguji = 0;
@@ -128,8 +120,7 @@ export async function GET(request: Request) {
                         phone: parentPhone,
                         jenisNotif: "reminder_h1",
                         messageContent: msgOrangTua,
-                        scheduledAt: finalScheduledAt,
-                    });
+                        scheduledAt: finalScheduledAt });
                     if (result.queued) enqueuedSantri++;
                 }
             } else {
@@ -149,8 +140,7 @@ export async function GET(request: Request) {
                         phone: jadwal.pendaftar.no_hp,
                         jenisNotif: "reminder_h1",
                         messageContent: msgSantri,
-                        scheduledAt: finalScheduledAt,
-                    });
+                        scheduledAt: finalScheduledAt });
 
                     if (result.queued) enqueuedSantri++;
                 }
@@ -212,8 +202,7 @@ export async function GET(request: Request) {
                         phone: profile.phone,
                         jenisNotif: "reminder_h1_penguji", // Mapping to existing H1 type in DB for now
                         messageContent: msgPenguji,
-                        scheduledAt: finalScheduledAt,
-                    });
+                        scheduledAt: finalScheduledAt });
 
                     if (result.queued) enqueuedPenguji++;
                 }
@@ -225,8 +214,7 @@ export async function GET(request: Request) {
             totalJadwalIn4Hours: jadwalIn4Hours.length,
             enqueuedSantri,
             enqueuedPenguji,
-            timestamp: now.toISOString(),
-        });
+            timestamp: now.toISOString() });
     } catch (error: any) {
         console.error("❌ Cron Reminder error:", error);
         return NextResponse.json(

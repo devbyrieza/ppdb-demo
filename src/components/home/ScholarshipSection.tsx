@@ -30,8 +30,7 @@ export default function ScholarshipSection({ variant = "primary" }: ScholarshipS
     badgeBg: isPrimary ? "bg-primary-50" : "bg-secondary-50",
     badgeText: isPrimary ? "text-primary-700" : "text-secondary-700",
     cardBorder: isPrimary ? "border-primary-100" : "border-secondary-100",
-    iconBg: isPrimary ? "bg-primary-600" : "bg-secondary-600",
-  };
+    iconBg: isPrimary ? "bg-primary-600" : "bg-secondary-600" };
 
   const EASE = [0.16, 1, 0.3, 1] as const;
 

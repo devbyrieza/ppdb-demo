@@ -10,18 +10,15 @@ export async function GET() {
         verified_at: null,
         expires_at: { gt: new Date() },
         otp_channel: "whatsapp",
-        sent_at: null,
-      },
+        sent_at: null },
       orderBy: { created_at: "desc" },
-      take: 50,
-    });
+      take: 50 });
 
     return NextResponse.json({
       success: true,
       pending: pendingOTP,
       count: pendingOTP.length,
-      message: `${pendingOTP.length} OTP menunggu untuk dikirim manual`,
-    });
+      message: `${pendingOTP.length} OTP menunggu untuk dikirim manual` });
   } catch (error: any) {
     console.error("Error:", error);
     return NextResponse.json(

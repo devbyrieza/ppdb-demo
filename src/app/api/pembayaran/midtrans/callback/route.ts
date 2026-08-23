@@ -14,8 +14,7 @@ export async function POST(request: NextRequest) {
     console.log("Midtrans notification received:", {
       order_id: notification.order_id,
       transaction_status: notification.transaction_status,
-      fraud_status: notification.fraud_status,
-    });
+      fraud_status: notification.fraud_status });
 
     // 2. Validate notification signature
     const serverKey = process.env.MIDTRANS_SERVER_KEY;
@@ -49,8 +48,7 @@ export async function POST(request: NextRequest) {
     // 3. Find the payment record by order_id
     const pembayaran = await prisma.pembayaran.findFirst({
       where: { midtrans_order_id: orderId },
-      select: { id: true, pendaftar_id: true, status_pembayaran: true },
-    });
+      select: { id: true, pendaftar_id: true, status_pembayaran: true } });
 
     if (!pembayaran) {
       console.error("Payment not found for order_id:", orderId);
@@ -108,17 +106,14 @@ export async function POST(request: NextRequest) {
             : newStatus === "rejected"
               ? `Pembayaran ${transactionStatus}`
               : null,
-        updated_at: new Date(),
-      },
-    });
+        updated_at: new Date() } });
 
     // 6. Update pendaftar status if payment is successful
     if (shouldUpdatePendaftar) {
       // Get current pendaftar status
       const pendaftar = await prisma.pendaftar.findUnique({
         where: { id: pembayaran.pendaftar_id },
-        select: { status_pendaftaran: true },
-      });
+        select: { status_pendaftaran: true } });
 
       // Only update if still waiting for payment
       if (
@@ -131,9 +126,7 @@ export async function POST(request: NextRequest) {
           where: { id: pembayaran.pendaftar_id },
           data: {
             status_pendaftaran: "verified",
-            updated_at: new Date(),
-          },
-        });
+            updated_at: new Date() } });
 
         console.log(
           `Pendaftar ${pembayaran.pendaftar_id} status updated to verified`,
@@ -145,8 +138,7 @@ export async function POST(request: NextRequest) {
     console.log(`Payment ${orderId} updated to status: ${newStatus}`);
     return NextResponse.json({
       status: "ok",
-      message: "Notification processed successfully",
-    });
+      message: "Notification processed successfully" });
   } catch (error: any) {
     console.error("Error processing Midtrans callback:", error);
     return NextResponse.json(
@@ -159,6 +151,5 @@ export async function POST(request: NextRequest) {
 export async function GET() {
   return NextResponse.json({
     status: "ok",
-    message: "Midtrans callback endpoint is ready",
-  });
+    message: "Midtrans callback endpoint is ready" });
 }

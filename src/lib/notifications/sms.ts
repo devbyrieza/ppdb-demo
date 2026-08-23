@@ -16,8 +16,7 @@ export async function sendSMSOTP(
       console.log(`✅ OTP sent via Wablas to ${phone}`);
       return {
         success: true,
-        messageId: result.messageId,
-      };
+        messageId: result.messageId };
     }
 
     // Fallback: Simulation mode only if explicitly suppressed
@@ -26,19 +25,16 @@ export async function sendSMSOTP(
       console.log(`🔐 Kode OTP: ${otp} untuk ${nama}`);
       return {
         success: true,
-        messageId: `sim_${Date.now()}`,
-      };
+        messageId: `sim_${Date.now()}` };
     }
 
     return {
       success: false,
-      error: result.error || "Gagal mengirim OTP",
-    };
+      error: result.error || "Gagal mengirim OTP" };
   } catch (error: any) {
     console.error("❌ OTP send error:", error);
     return {
       success: false,
-      error: error.message || "Gagal mengirim OTP",
-    };
+      error: error.message || "Gagal mengirim OTP" };
   }
 }

@@ -25,8 +25,7 @@ import {
   DollarSign,
   Trophy,
   UploadCloud,
-  FileSpreadsheet,
-} from "lucide-react";
+  FileSpreadsheet } from "lucide-react";
 import Link from "next/link";
 import { exportToExcelProfessional, exportToPDF } from "@/lib/utils/export";
 import Swal from "sweetalert2";
@@ -176,8 +175,7 @@ export default function PendaftarDetailPage() {
       scan_pakta_integritas_santri: "Scan Pakta Integritas Calon Santri",
       scan_pakta_integritas_ortu: "Scan Pakta Integritas Calon Orangtua/Wali Santri",
       scan_pernyataan_bebas_negatif: "Scan Pernyataan Bebas Perilaku Negatif",
-      scan_pakta_integritas: "Scan Pakta Integritas Calon Santri",
-    };
+      scan_pakta_integritas: "Scan Pakta Integritas Calon Santri" };
     return labels[key] || key.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
   };
   const params = useParams();
@@ -224,8 +222,7 @@ export default function PendaftarDetailPage() {
     catatan_hafalan: "",
     score_arab: "",
     rek_arab: "",
-    catatan_arab: "",
-  });
+    catatan_arab: "" });
   const [savingNilai, setSavingNilai] = useState(false);
 
   // Welcome Day Edit State
@@ -236,8 +233,7 @@ export default function PendaftarDetailPage() {
     totalPengantar: 3,
     catatanTambahan: "",
     jumlahMobil: 0,
-    jumlahMotor: 0,
-  });
+    jumlahMotor: 0 });
   const [savingWd, setSavingWd] = useState(false);
 
   useEffect(() => {
@@ -313,8 +309,7 @@ export default function PendaftarDetailPage() {
           Swal.fire({
             icon: "success",
             title: "Berhasil!",
-            text: data.message,
-          }).then(() => {
+            text: data.message }).then(() => {
             window.location.reload();
           });
         } else {
@@ -358,8 +353,7 @@ export default function PendaftarDetailPage() {
         kelas_masuk: pendaftar.kelas_masuk ?? "",
         asal_institusi: pendaftar.asal_institusi || "",
         nomor_induk_lama: pendaftar.nomor_induk_lama || "",
-        catatan_pindahan: pendaftar.catatan_pindahan || "",
-      },
+        catatan_pindahan: pendaftar.catatan_pindahan || "" },
       orang_tua: {
         nama_ayah: pendaftar.orang_tua?.nama_ayah || "",
         nik_ayah: pendaftar.orang_tua?.nik_ayah || "",
@@ -390,9 +384,7 @@ export default function PendaftarDetailPage() {
         penghasilan_wali: pendaftar.orang_tua?.penghasilan_wali || "",
         no_hp_wali: pendaftar.orang_tua?.no_hp_wali || "",
         alamat_wali: pendaftar.orang_tua?.alamat_wali || "",
-        hubungan_wali: pendaftar.orang_tua?.hubungan_wali || "",
-      },
-    });
+        hubungan_wali: pendaftar.orang_tua?.hubungan_wali || "" } });
     setEditTab("santri");
     setIsEditModalOpen(true);
   };
@@ -407,8 +399,7 @@ export default function PendaftarDetailPage() {
         body: JSON.stringify({
           action: "update_nilai_manual",
           scores: nilaiFormData
-        }),
-      });
+        }) });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Gagal menyimpan nilai");
       
@@ -433,9 +424,7 @@ export default function PendaftarDetailPage() {
         body: JSON.stringify({
           is_edit_full: true,
           santri: editFormData.santri,
-          orang_tua: editFormData.orang_tua,
-        }),
-      });
+          orang_tua: editFormData.orang_tua }) });
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Gagal menyimpan data");
@@ -444,8 +433,7 @@ export default function PendaftarDetailPage() {
         icon: "success",
         title: "Berhasil",
         text: data.message || "Data pendaftar berhasil diperbarui secara lengkap!",
-        confirmButtonColor: "#800000",
-      });
+        confirmButtonColor: "#800000" });
 
       setIsEditModalOpen(false);
       // reload pendaftar data
@@ -460,8 +448,7 @@ export default function PendaftarDetailPage() {
         icon: "error",
         title: "Gagal",
         text: err.message || "Terjadi kesalahan saat menyimpan data",
-        confirmButtonColor: "#800000",
-      });
+        confirmButtonColor: "#800000" });
     } finally {
       setSavingEdit(false);
       setLoading(false);
@@ -506,8 +493,7 @@ export default function PendaftarDetailPage() {
 
       const response = await fetch("/api/admin/verifikasi/dokumen/upload", {
         method: "POST",
-        body: formData,
-      });
+        body: formData });
 
       const data = await response.json();
       if (data.success) {
@@ -540,8 +526,7 @@ export default function PendaftarDetailPage() {
 
       const response = await fetch("/api/admin/verifikasi/pembayaran/upload", {
         method: "POST",
-        body: formData,
-      });
+        body: formData });
 
       const data = await response.json();
       if (data.success) {
@@ -642,8 +627,7 @@ export default function PendaftarDetailPage() {
       inputOptions: {
         "none": "Tidak Ada / Hapus Keringanan",
         "Beasiswa": "Beasiswa (Yatim/Dhuafa/Tahfizh/Prestasi)",
-        "Keringanan": "Keringanan Biaya Daftar Ulang (Sosial/Dhuafa)",
-      },
+        "Keringanan": "Keringanan Biaya Daftar Ulang (Sosial/Dhuafa)" },
       inputPlaceholder: "Pilih Jenis",
       showCancelButton: true,
       confirmButtonText: "Selanjutnya &rarr;",
@@ -717,8 +701,7 @@ export default function PendaftarDetailPage() {
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Ya, Simpan!",
-        cancelButtonText: "Batal",
-      });
+        cancelButtonText: "Batal" });
 
       if (confirm.isConfirmed) {
         Swal.fire({
@@ -726,8 +709,7 @@ export default function PendaftarDetailPage() {
           allowOutsideClick: false,
           didOpen: () => {
             Swal.showLoading();
-          },
-        });
+          } });
 
         try {
           const res = await fetch("/api/admin/pendaftar/keringanan", {
@@ -790,8 +772,7 @@ export default function PendaftarDetailPage() {
       const response = await fetch(`/api/admin/pendaftar/${params.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status_proses: newStatus }),
-      });
+        body: JSON.stringify({ status_proses: newStatus }) });
 
       if (!response.ok) throw new Error("Failed to update");
 
@@ -812,8 +793,7 @@ export default function PendaftarDetailPage() {
       const response = await fetch(`/api/admin/pendaftar/${params.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ no_hp: newPhone }),
-      });
+        body: JSON.stringify({ no_hp: newPhone }) });
 
       if (!response.ok) {
         const err = await response.json();
@@ -841,84 +821,64 @@ export default function PendaftarDetailPage() {
       draft: { label: "Draft", color: "bg-stone-100 text-stone-700" },
       awaiting_payment: {
         label: "Draft",
-        color: "bg-stone-100 text-stone-700",
-      },
+        color: "bg-stone-100 text-stone-700" },
       payment_verification: {
         label: "Verifikasi Bayar",
-        color: "bg-primary-50 text-primary-700 border border-primary-100",
-      },
+        color: "bg-primary-50 text-primary-700 border border-primary-100" },
       paid: {
         label: "Terdaftar",
-        color: "bg-primary-100 text-primary-800 border border-primary-200",
-      },
+        color: "bg-primary-100 text-primary-800 border border-primary-200" },
       verified: {
         label: "Terdaftar",
-        color: "bg-primary-100 text-primary-800 border border-primary-200",
-      },
+        color: "bg-primary-100 text-primary-800 border border-primary-200" },
       data_completed: {
         label: "Data Lengkap",
-        color: "bg-gold-50 text-gold-800 border border-gold-100",
-      },
+        color: "bg-gold-50 text-gold-800 border border-gold-100" },
       docs_uploaded: {
         label: "Data Lengkap",
-        color: "bg-gold-50 text-gold-800 border border-gold-100",
-      },
+        color: "bg-gold-50 text-gold-800 border border-gold-100" },
       docs_verified: {
         label: "Berkas Lengkap",
-        color: "bg-emerald-50 text-emerald-800 border border-emerald-100",
-      },
+        color: "bg-emerald-50 text-emerald-800 border border-emerald-100" },
       scheduled: {
         label: "Proses Seleksi",
-        color: "bg-purple-50 text-purple-800 border border-purple-100",
-      },
+        color: "bg-purple-50 text-purple-800 border border-purple-100" },
       testing: {
         label: "Proses Seleksi",
-        color: "bg-purple-50 text-purple-800 border border-purple-100",
-      },
+        color: "bg-purple-50 text-purple-800 border border-purple-100" },
       selection: {
         label: "Proses Seleksi",
-        color: "bg-purple-50 text-purple-800 border border-purple-100",
-      },
+        color: "bg-purple-50 text-purple-800 border border-purple-100" },
       tested: {
         label: "Proses Seleksi",
-        color: "bg-primary-600 text-white shadow-sm",
-      },
+        color: "bg-primary-600 text-white shadow-sm" },
       exam_completed: {
         label: "Proses Seleksi",
-        color: "bg-primary-600 text-white shadow-sm",
-      },
+        color: "bg-primary-600 text-white shadow-sm" },
       announced: {
         label: "Cadangan",
-        color: "bg-gold-100 text-gold-800 border border-gold-200",
-      },
+        color: "bg-gold-100 text-gold-800 border border-gold-200" },
       cadangan: {
         label: "Cadangan",
-        color: "bg-gold-100 text-gold-800 border border-gold-200",
-      },
+        color: "bg-gold-100 text-gold-800 border border-gold-200" },
       accepted: { label: "Diterima", color: "bg-emerald-600 text-white" },
       rejected: { label: "Ditolak", color: "bg-rose-600 text-white" },
       mengundurkan_diri: {
         label: "Mengundurkan Diri",
-        color: "bg-stone-600 text-white",
-      },
+        color: "bg-stone-600 text-white" },
       pindah_keluar: {
         label: "Pindah Keluar",
-        color: "bg-slate-100 text-slate-600 border border-slate-200",
-      },
+        color: "bg-slate-100 text-slate-600 border border-slate-200" },
       enrolled: {
         label: "Proses Daftar Ulang",
-        color: "bg-emerald-100 text-emerald-800",
-      },
+        color: "bg-emerald-100 text-emerald-800" },
       enrolled_full: {
         label: "Lunas Daftar Ulang",
-        color: "bg-primary-100 text-primary-800 border border-primary-200",
-      },
-    };
+        color: "bg-primary-100 text-primary-800 border border-primary-200" } };
     return (
       statusMap[s] || {
         label: status,
-        color: "bg-stone-100 text-stone-700",
-      }
+        color: "bg-stone-100 text-stone-700" }
     );
   };
 
@@ -935,8 +895,7 @@ export default function PendaftarDetailPage() {
     return new Date(dateString).toLocaleDateString("id-ID", {
       day: "numeric",
       month: "long",
-      year: "numeric",
-    });
+      year: "numeric" });
   };
 
   const handleSaveWd = async () => {
@@ -945,8 +904,7 @@ export default function PendaftarDetailPage() {
       const res = await fetch(`/api/admin/pendaftar/${params.id}/welcome-day`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(wdFormData),
-      });
+        body: JSON.stringify(wdFormData) });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Gagal menyimpan");
       
@@ -1013,8 +971,7 @@ export default function PendaftarDetailPage() {
         "Email": pendaftar.email || "-",
         "Status": statusLabel,
         "Tahun Ajaran": pendaftar.tahun_ajaran?.nama || "-",
-        "Tanggal Daftar": pendaftar.created_at ? new Date(pendaftar.created_at).toLocaleDateString("id-ID") : "-",
-      };
+        "Tanggal Daftar": pendaftar.created_at ? new Date(pendaftar.created_at).toLocaleDateString("id-ID") : "-" };
 
       if (type === "excel") {
         const header = Object.keys(item);
@@ -1024,8 +981,7 @@ export default function PendaftarDetailPage() {
             title: `DATA PENDAFTAR - ${pendaftar.nama_lengkap.toUpperCase()}`,
             subTitle: `Tanggal Ekspor: ${new Date().toLocaleDateString("id-ID")}`,
             header,
-            data: [Object.values(item)],
-          },
+            data: [Object.values(item)] },
         ];
         await exportToExcelProfessional({ fileName: filename, sheets });
       } else {
@@ -1064,8 +1020,7 @@ export default function PendaftarDetailPage() {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
       currency: "IDR",
-      minimumFractionDigits: 0,
-    }).format(parseFloat(amount));
+      minimumFractionDigits: 0 }).format(parseFloat(amount));
   };
 
   if (loading) {
@@ -1231,8 +1186,7 @@ export default function PendaftarDetailPage() {
                   icon: "warning",
                   showCancelButton: true,
                   confirmButtonColor: "#e11d48",
-                  confirmButtonText: "Ya, buka kunci!",
-                }).then(async (result) => {
+                  confirmButtonText: "Ya, buka kunci!" }).then(async (result) => {
                   if (result.isConfirmed) {
                     setSavingStatus(true);
                     try {
@@ -1241,8 +1195,7 @@ export default function PendaftarDetailPage() {
                         {
                           method: "PATCH",
                           headers: { "Content-Type": "application/json" },
-                          body: JSON.stringify({ status_proses: "draft" }),
-                        },
+                          body: JSON.stringify({ status_proses: "draft" }) },
                       );
                       if (res.ok) {
                         await fetchPendaftarDetail();
@@ -1803,8 +1756,7 @@ export default function PendaftarDetailPage() {
                           inputOptions: {
                             DITERIMA: "DITERIMA",
                             CADANGAN: "CADANGAN",
-                            DITOLAK: "DITOLAK",
-                          },
+                            DITOLAK: "DITOLAK" },
                           inputPlaceholder: "Pilih status...",
                           showCancelButton: true,
                           confirmButtonText: "Simpan Perubahan",
@@ -1858,8 +1810,7 @@ export default function PendaftarDetailPage() {
                           catatan_hafalan: (pendaftar.nilai_ujian as any)?.catatan_hafalan || "",
                           score_arab: (pendaftar.nilai_ujian as any)?.score_arab?.toString() || pendaftar.nilai_ujian?.score_lisan_arab?.toString() || pendaftar.nilai_ujian?.nilai_tes_lisan_arab?.toString() || "",
                           rek_arab: (pendaftar.nilai_ujian as any)?.detail_arab?.rekomendasi || (pendaftar.nilai_ujian as any)?.detail_lisan_arab?.rekomendasi || "",
-                          catatan_arab: (pendaftar.nilai_ujian as any)?.catatan_arab || (pendaftar.nilai_ujian as any)?.catatan_lisan_arab || "",
-                        });
+                          catatan_arab: (pendaftar.nilai_ujian as any)?.catatan_arab || (pendaftar.nilai_ujian as any)?.catatan_lisan_arab || "" });
                         setIsNilaiModalOpen(true);
                       }}
                       className="flex items-center gap-2 p-[16px_20px] bg-amber-500 text-white rounded-[24px] hover:bg-amber-600 transition-colors shadow hover:shadow-md font-bold text-sm"
@@ -1877,8 +1828,7 @@ export default function PendaftarDetailPage() {
                         showCancelButton: true,
                         confirmButtonText: "Ya, Hitung Ulang!",
                         cancelButtonText: "Batal",
-                        confirmButtonColor: "#800000",
-                      });
+                        confirmButtonColor: "#800000" });
                       if (!result.isConfirmed) return;
                       try {
                         const res = await fetch(`/api/penilaian/recalculate/${params.id}`, { method: "POST" });
@@ -1929,8 +1879,7 @@ export default function PendaftarDetailPage() {
                         totalPengantar: 3,
                         catatanTambahan: "",
                         jumlahMobil: 0,
-                        jumlahMotor: 0,
-                      });
+                        jumlahMotor: 0 });
                       setIsWdModalOpen(true);
                     }}
                     className="p-[16px_20px] bg-emerald-600 text-white rounded-[24px] text-xs font-black"
@@ -1980,8 +1929,7 @@ export default function PendaftarDetailPage() {
                                 totalPengantar: data.totalPengantar || 3,
                                 catatanTambahan: data.catatanTambahan || "",
                                 jumlahMobil: data.jumlahMobil || 0,
-                                jumlahMotor: data.jumlahMotor || 0,
-                              });
+                                jumlahMotor: data.jumlahMotor || 0 });
                               setIsWdModalOpen(true);
                             }}
                             className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-emerald-200 text-emerald-700 hover:bg-emerald-50 rounded-[24px] text-xs font-black transition-colors"
@@ -3903,8 +3851,7 @@ export default function PendaftarDetailPage() {
 function InfoItem({
   label,
   value,
-  icon,
-}: {
+  icon }: {
   label: string;
   value: string | null | undefined;
   icon?: React.ReactNode;

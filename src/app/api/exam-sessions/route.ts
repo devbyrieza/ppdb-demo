@@ -3,8 +3,7 @@ import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import {
   enqueueWhatsapp,
-  buildMessageJadwalTersedia,
-} from "@/lib/whatsapp-queue";
+  buildMessageJadwalTersedia } from "@/lib/whatsapp-queue";
 
 async function getSession() {
   const cookieStore = await cookies();
@@ -76,10 +75,8 @@ export async function GET(request: Request) {
       where: whereClause,
       include: {
         creator: isPendaftar ? { select: { jenis_kelamin: true } } : { select: { full_name: true, jenis_kelamin: true } },
-        _count: { select: { bookings: true } },
-      },
-      orderBy: { start_time: "asc" },
-    });
+        _count: { select: { bookings: true } } },
+      orderBy: { start_time: "asc" } });
 
     if (isPendaftar) {
       const pendaftar = await prisma.pendaftar.findUnique({
@@ -199,8 +196,7 @@ export async function POST(request: Request) {
         location,
         notes,
         created_by: finalCreatorId, // Ensure correct ID usage
-      },
-    });
+      } });
 
     // NOTE: Automatic notification blast removed to prevent WhatsApp bans.
     // Admins will now use the "Broadcast" button in the dashboard to send notifications manually.
@@ -228,8 +224,7 @@ export async function DELETE(request: Request) {
     // Check if session exists and owned by user (or is admin)
     const targetSession = await prisma.examSession.findUnique({
       where: { id },
-      include: { _count: { select: { bookings: true } } },
-    });
+      include: { _count: { select: { bookings: true } } } });
 
     if (!targetSession)
       return NextResponse.json({ error: "Session not found" }, { status: 404 });
@@ -291,8 +286,7 @@ export async function PATCH(request: Request) {
 
   try {
     const targetSession = await prisma.examSession.findUnique({
-      where: { id },
-    });
+      where: { id } });
     if (!targetSession)
       return NextResponse.json({ error: "Session not found" }, { status: 404 });
 
@@ -341,9 +335,7 @@ export async function PATCH(request: Request) {
         start_time: startDt,
         end_time: endDt,
         ...(location !== undefined && { location }),
-        ...(notes !== undefined && { notes }),
-      },
-    });
+        ...(notes !== undefined && { notes }) } });
 
     return NextResponse.json({ success: true, data: updated });
   } catch (error: any) {

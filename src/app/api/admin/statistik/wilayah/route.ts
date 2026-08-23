@@ -25,30 +25,21 @@ export async function GET(req: NextRequest) {
     const santriRaw = await prisma.pendaftar.groupBy({
       by: ["provinsi", "kabupaten"],
       _count: {
-        id: true,
-      },
+        id: true },
       where: {
         ...where,
-        provinsi: { not: null },
-      },
-    });
+        provinsi: { not: null } } });
 
     // Aggregate Family by Region
     const allFamilyData = await prisma.orangTua.findMany({
       where: {
         pendaftar: {
-          ...where,
-        },
-      },
+          ...where } },
       include: {
         pendaftar: {
           select: {
             provinsi: true,
-            kabupaten: true,
-          },
-        },
-      },
-    });
+            kabupaten: true } } } });
 
     const waliGroups: any = {};
     const ayahGroups: any = {};
@@ -100,9 +91,7 @@ export async function GET(req: NextRequest) {
           total: groups[prov].total,
           cities: Object.entries(groups[prov].cities).map(([name, count]) => ({
             name,
-            count,
-          })),
-        };
+            count })) };
       });
       return formatted;
     };
@@ -121,8 +110,7 @@ export async function GET(req: NextRequest) {
         if (!grouped[prov]) {
           grouped[prov] = {
             total: 0,
-            cities: {} as Record<string, number>,
-          };
+            cities: {} as Record<string, number> };
         }
 
         grouped[prov].total += count;
@@ -136,9 +124,7 @@ export async function GET(req: NextRequest) {
           total: data.total,
           cities: Object.entries(data.cities).map(([name, count]) => ({
             name,
-            count,
-          })),
-        };
+            count })) };
       });
       return finalGrouped;
     };
@@ -148,8 +134,7 @@ export async function GET(req: NextRequest) {
       santri: formatSantriData(santriRaw, "provinsi", "kabupaten"),
       ayah: formatGroupData(ayahGroups),
       ibu: formatGroupData(ibuGroups),
-      wali: formatGroupData(waliGroups),
-    });
+      wali: formatGroupData(waliGroups) });
   } catch (error: any) {
     console.error("Statistik error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });

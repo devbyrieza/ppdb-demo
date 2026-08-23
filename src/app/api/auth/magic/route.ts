@@ -31,8 +31,7 @@ export async function GET(request: NextRequest) {
     const { prisma } = await import("@/lib/prisma");
     const user = await prisma.profile.findUnique({
       where: { id },
-      select: { phone: true },
-    });
+      select: { phone: true } });
 
     const baseUrl =
       process.env.NEXT_PUBLIC_APP_URL || "https://demo-ppdb.vercel.app";
@@ -53,8 +52,7 @@ export async function GET(request: NextRequest) {
       JSON.stringify({
         role: role,
         id: id,
-        full_name: full_name,
-      }),
+        full_name: full_name }),
       {
         path: "/",
         httpOnly: true,

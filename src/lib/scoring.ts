@@ -8,8 +8,7 @@ import {
   evaluateWawancaraGrade,
   evaluateKesiapanGrade,
   evaluateStatusGrade,
-  determineFinalDecision,
-} from "./grading";
+  determineFinalDecision } from "./grading";
 
 /**
  * ─── SCORING & GRADING SYSTEM ───
@@ -61,8 +60,7 @@ export async function recalculateNilaiUjian(pendaftarId: string, overrideStatus?
   // 1. Ambil semua rekaman nilai untuk pendaftar ini (bisa lebih dari satu jika diinput bertahap)
   let allNilai = await prisma.nilaiUjian.findMany({
     where: { pendaftar_id: pendaftarId },
-    orderBy: { updated_at: "desc" },
-  });
+    orderBy: { updated_at: "desc" } });
 
   if (allNilai.length === 0) {
     if (!overrideStatus) return null;
@@ -199,16 +197,14 @@ export async function recalculateNilaiUjian(pendaftarId: string, overrideStatus?
       kepribadian: skippedStages.includes("KEPRIBADIAN") ? "A" as const : evaluateKepribadianGrade(kp || 0),
       kesiapan: skippedStages.includes("KESIAPAN") ? "A" as const : evaluateKesiapanGrade(ks || 0),
       wawancaraSantri: skippedStages.includes("WAWANCARA_SANTRI") ? "A" as const : evaluateWawancaraGrade(ws || 0),
-      wawancaraOrangTua: skippedStages.includes("WAWANCARA_ORTU") ? "A" as const : evaluateWawancaraGrade(wo || 0),
-    };
+      wawancaraOrangTua: skippedStages.includes("WAWANCARA_ORTU") ? "A" as const : evaluateWawancaraGrade(wo || 0) };
 
     status = overrideStatus || determineFinalDecision(grades);
 
     // 6. Sinkronisasi ke Tabel Pendaftar & Pengumuman
     const pendaftar = await prisma.pendaftar.findUnique({
       where: { id: pendaftarId },
-      include: { orang_tua: true },
-    });
+      include: { orang_tua: true } });
 
     if (pendaftar && !["enrolled", "re_registered", "accepted"].includes(pendaftar.status_pendaftaran)) {
       let nextStatus = status === "DITERIMA" ? "accepted" : (status === "DITOLAK" ? "rejected" : "announced");
@@ -225,8 +221,7 @@ export async function recalculateNilaiUjian(pendaftarId: string, overrideStatus?
       await prisma.pengumuman.upsert({
         where: { pendaftar_id: pendaftarId },
         update: { status_kelulusan: displayLabel, is_published: true, published_at: new Date() },
-        create: { pendaftar_id: pendaftarId, status_kelulusan: displayLabel, is_published: true, published_at: new Date(), tahun_ajaran_id: pendaftar.tahun_ajaran_id },
-      });
+        create: { pendaftar_id: pendaftarId, status_kelulusan: displayLabel, is_published: true, published_at: new Date(), tahun_ajaran_id: pendaftar.tahun_ajaran_id } });
 
       // 7. Kirim Notifikasi WhatsApp Otomatis
       if (isStatusChanged) {
@@ -283,9 +278,7 @@ export async function recalculateNilaiUjian(pendaftarId: string, overrideStatus?
       total_score: totalScore, 
       nilai_total: totalScore,
       status_kelulusan: status, 
-      updated_at: new Date(),
-    },
-  });
+      updated_at: new Date() } });
 
   // 9. Bersihkan duplikat jika ada (Hanya sisakan satu record utama)
   if (allNilai.length > 1) {

@@ -35,9 +35,7 @@ export async function POST(req: NextRequest) {
       select: {
         id: true,
         nama_lengkap: true,
-        no_hp: true,
-      },
-    });
+        no_hp: true } });
 
     const results = [];
     const formattedHeader = header ? `${header.trim()}\n\n` : "";
@@ -48,8 +46,7 @@ export async function POST(req: NextRequest) {
         results.push({
           id: recipient.id,
           status: "failed",
-          error: "No phone number",
-        });
+          error: "No phone number" });
         continue;
       }
 
@@ -62,15 +59,13 @@ export async function POST(req: NextRequest) {
           pendaftarId: recipient.id,
           phone: recipient.no_hp,
           jenisNotif: "broadcast",
-          messageContent: finalMessage,
-        });
+          messageContent: finalMessage });
         results.push({ id: recipient.id, status: "success" });
       } catch (error: any) {
         results.push({
           id: recipient.id,
           status: "failed",
-          error: error.message,
-        });
+          error: error.message });
       }
     }
 
@@ -79,8 +74,7 @@ export async function POST(req: NextRequest) {
       total: recipients.length,
       sent: results.filter((r) => r.status === "success").length,
       failed: results.filter((r) => r.status === "failed").length,
-      details: results,
-    });
+      details: results });
   } catch (error: any) {
     console.error("Broadcast error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });

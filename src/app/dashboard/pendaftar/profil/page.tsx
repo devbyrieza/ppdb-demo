@@ -13,8 +13,7 @@ import {
   ShieldAlert,
   Calendar,
   Mail,
-  School,
-} from "lucide-react";
+  School } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
@@ -94,9 +93,7 @@ export default function ProfilPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           pendaftar_id: session.pendaftar_id,
-          reason: reason,
-        }),
-      });
+          reason: reason }) });
 
       const json = await res.json();
       if (json.success) {

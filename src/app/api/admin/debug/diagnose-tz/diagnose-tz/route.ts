@@ -17,14 +17,11 @@ export async function GET(request: Request) {
         title: true,
         start_time: true,
         end_time: true,
-        created_at: true,
-      },
-    });
+        created_at: true } });
 
     return NextResponse.json({
       serverTime: new Date().toISOString(),
-      sessions,
-    });
+      sessions });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

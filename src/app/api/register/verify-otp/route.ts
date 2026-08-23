@@ -18,8 +18,7 @@ export async function POST(request: NextRequest) {
     const normalizedPhone = normalizePhoneNumber(no_hp);
 
     const otpRecord = await prisma.otpVerification.findFirst({
-      where: { phone: normalizedPhone, otp_hash: hashedOTP, expires_at: { gt: new Date() } },
-    });
+      where: { phone: normalizedPhone, otp_hash: hashedOTP, expires_at: { gt: new Date() } } });
 
     if (!otpRecord) return NextResponse.json({ success: false, error: "Invalid or expired OTP" }, { status: 400 });
 
@@ -48,8 +47,7 @@ export async function POST(request: NextRequest) {
       where: { 
         nik: regData.nik,
         deleted_at: null 
-      },
-    });
+      } });
     if (existingPendaftar) {
       // Hapus OTP agar tidak bisa coba lagi dengan data yang sama
       await prisma.otpVerification.delete({ where: { id: otpRecord.id } }).catch(() => {});
@@ -66,8 +64,7 @@ export async function POST(request: NextRequest) {
     await prisma.$transaction([
       // A. Buat Profile untuk Login
       prisma.profile.create({
-        data: { id: profileId, full_name: formatNamaLengkap(regData.nama_lengkap), phone: no_hp, role: "pendaftar" },
-      }),
+        data: { id: profileId, full_name: formatNamaLengkap(regData.nama_lengkap), phone: no_hp, role: "pendaftar" } }),
       // B. Buat Data Pendaftaran Santri
       prisma.pendaftar.create({
         data: {
@@ -88,9 +85,7 @@ export async function POST(request: NextRequest) {
           asal_institusi: regData.asal_institusi || undefined,
           nisn: regData.nisn || undefined,
           npsn: regData.npsn || undefined,
-          catatan_pindahan: regData.catatan_pindahan || undefined,
-        },
-      }),
+          catatan_pindahan: regData.catatan_pindahan || undefined } }),
       prisma.otpVerification.delete({ where: { id: otpRecord.id } }),
     ]);
 
@@ -98,8 +93,7 @@ export async function POST(request: NextRequest) {
       pendaftarId: pendaftarId,
       phone: no_hp,
       jenisNotif: "registration_success",
-      messageContent: buildMessageRegistrationSuccess(regData.nama_lengkap, nomorPendaftaran, regData.jenjang),
-    }).catch(() => {});
+      messageContent: buildMessageRegistrationSuccess(regData.nama_lengkap, nomorPendaftaran, regData.jenjang) }).catch(() => {});
 
     return NextResponse.json({
       success: true,
@@ -107,8 +101,7 @@ export async function POST(request: NextRequest) {
         nomor_pendaftaran: nomorPendaftaran,
         nama_lengkap: regData.nama_lengkap,
         nik: regData.nik,
-        jenjang: regData.jenjang,
-      }
+        jenjang: regData.jenjang }
     });
   } catch (error: any) {
     return NextResponse.json({ success: false, error: "Verification failed" }, { status: 500 });

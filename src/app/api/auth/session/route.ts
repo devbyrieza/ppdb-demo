@@ -22,8 +22,7 @@ export async function GET(request: NextRequest) {
       if (session.role !== "pendaftar" && session.id) {
         const profile = await prisma.profile.findUnique({
           where: { id: session.id },
-          select: { role: true, secondary_roles: true },
-        });
+          select: { role: true, secondary_roles: true } });
         if (profile) {
           availableRoles = [...new Set([profile.role, ...(profile.secondary_roles || [])])];
         }

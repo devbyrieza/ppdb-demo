@@ -11,8 +11,7 @@ import { AlertTriangle, BookOpen, Target, CheckCircle2, XCircle } from "lucide-r
 
 
 export default async function DashboardLayout({
-  children,
-}: {
+  children }: {
   children: React.ReactNode;
 }) {
   const cookieStore = await cookies();

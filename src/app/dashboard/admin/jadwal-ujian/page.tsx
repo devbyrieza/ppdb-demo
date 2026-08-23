@@ -16,8 +16,7 @@ import {
   CheckSquare,
   Square,
   ArrowRight,
-  Send,
-} from "lucide-react";
+  Send } from "lucide-react";
 import Swal from "sweetalert2";
 
 interface ExamSession {
@@ -54,8 +53,7 @@ export default function JadwalUjianPage() {
     end_time: "",
     quota: 10,
     location: "Pondok Pesantren Al Fath",
-    notes: "",
-  });
+    notes: "" });
 
   const [search, setSearch] = useState("");
   const [selectedPendaftarId, setSelectedPendaftarId] = useState<string | null>(
@@ -101,8 +99,7 @@ export default function JadwalUjianPage() {
   const [resetFlags, setResetFlags] = useState(false);
   const [availStats, setAvailStats] = useState({
     eligibleCount: 0,
-    totalAvailableSlots: 0,
-  });
+    totalAvailableSlots: 0 });
   const [broadcasting, setBroadcasting] = useState(false);
   const [sendingProgress, setSendingProgress] = useState<{
     active: boolean;
@@ -113,8 +110,7 @@ export default function JadwalUjianPage() {
     active: false,
     curr: 0,
     total: 0,
-    logs: [],
-  });
+    logs: [] });
 
   useEffect(() => {
     fetchData();
@@ -164,8 +160,7 @@ export default function JadwalUjianPage() {
       const res = await fetch("/api/admin/exam-sessions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newSession),
-      });
+        body: JSON.stringify(newSession) });
       if (res.ok) {
         setShowAddSession(false);
         fetchData();
@@ -188,9 +183,7 @@ export default function JadwalUjianPage() {
         body: JSON.stringify({
           pendaftar_id: selectedPendaftarId,
           exam_session_id: sessionId,
-          tahun_ajaran_id: p?.tahun_ajaran_id,
-        }),
-      });
+          tahun_ajaran_id: p?.tahun_ajaran_id }) });
 
       if (res.ok) {
         setSelectedPendaftarId(null);
@@ -221,8 +214,7 @@ export default function JadwalUjianPage() {
       cancelButtonColor: "#57534e", // Stone 600
       confirmButtonText: "Ya, Mulai Broadcast",
       cancelButtonText: "Batal",
-      reverseButtons: true,
-    });
+      reverseButtons: true });
 
     if (!result.isConfirmed) return;
 
@@ -231,8 +223,7 @@ export default function JadwalUjianPage() {
       const res = await fetch("/api/admin/jadwal-ujian/bulk-assign", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ exam_session_id: sessionId }),
-      });
+        body: JSON.stringify({ exam_session_id: sessionId }) });
       const data = await res.json();
       if (res.ok) {
         if (data.queue && data.queue.length > 0) {
@@ -241,8 +232,7 @@ export default function JadwalUjianPage() {
             active: true,
             curr: 0,
             total: data.queue.length,
-            logs: ["Mulai antrian pengiriman..."],
-          });
+            logs: ["Mulai antrian pengiriman..."] });
 
           let success = 0;
           for (let i = 0; i < data.queue.length; i++) {
@@ -250,8 +240,7 @@ export default function JadwalUjianPage() {
             setSendingProgress((prev) => ({
               ...prev,
               curr: i + 1,
-              logs: [`Mengirim ke ${item.nama}...`, ...prev.logs.slice(0, 3)],
-            }));
+              logs: [`Mengirim ke ${item.nama}...`, ...prev.logs.slice(0, 3)] }));
 
             try {
               await fetch("/api/admin/notifications/send", {
@@ -259,9 +248,7 @@ export default function JadwalUjianPage() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                   type: "schedule",
-                  ...item,
-                }),
-              });
+                  ...item }) });
               success++;
             } catch (err) {
               console.error("Gagal kirim ke", item.nama, err);
@@ -306,8 +293,7 @@ export default function JadwalUjianPage() {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ reset_flags: resetFlags }),
-        },
+          body: JSON.stringify({ reset_flags: resetFlags }) },
       );
       const data = await res.json();
       if (res.ok) {
@@ -497,8 +483,7 @@ export default function JadwalUjianPage() {
                           <div
                             className="h-full bg-gradient-to-r from-purple-500 to-indigo-600"
                             style={{
-                              width: `${(s.booked_count / s.quota) * 100}%`,
-                            }}
+                              width: `${(s.booked_count / s.quota) * 100}%` }}
                           ></div>
                         </div>
                         <button
@@ -642,8 +627,7 @@ export default function JadwalUjianPage() {
                         onChange={(e) =>
                           setNewSession({
                             ...newSession,
-                            start_time: e.target.value,
-                          })
+                            start_time: e.target.value })
                         }
                         className="w-full bg-secondary-50 border-none rounded-[24px] px-4 py-3 text-sm focus:ring-2 focus:ring-purple-500/10 outline-none font-bold"
                       />
@@ -659,8 +643,7 @@ export default function JadwalUjianPage() {
                         onChange={(e) =>
                           setNewSession({
                             ...newSession,
-                            end_time: e.target.value,
-                          })
+                            end_time: e.target.value })
                         }
                         className="w-full bg-secondary-50 border-none rounded-[24px] px-4 py-3 text-sm focus:ring-2 focus:ring-purple-500/10 outline-none font-bold"
                       />
@@ -679,8 +662,7 @@ export default function JadwalUjianPage() {
                         onChange={(e) =>
                           setNewSession({
                             ...newSession,
-                            quota: parseInt(e.target.value),
-                          })
+                            quota: parseInt(e.target.value) })
                         }
                         className="w-full bg-secondary-50 border-none rounded-[24px] px-4 py-3 text-sm focus:ring-2 focus:ring-purple-500/10 outline-none font-bold"
                       />
@@ -695,8 +677,7 @@ export default function JadwalUjianPage() {
                         onChange={(e) =>
                           setNewSession({
                             ...newSession,
-                            location: e.target.value,
-                          })
+                            location: e.target.value })
                         }
                         placeholder="Contoh: Ruang CBT atau Online"
                         className="w-full bg-secondary-50 border-none rounded-[24px] px-4 py-3 text-sm focus:ring-2 focus:ring-purple-500/10 outline-none font-bold"
@@ -756,8 +737,7 @@ export default function JadwalUjianPage() {
               <div
                 className="h-full bg-gradient-to-r from-purple-500 to-indigo-600 transition-all duration-500 ease-out"
                 style={{
-                  width: `${(sendingProgress.curr / sendingProgress.total) * 100}%`,
-                }}
+                  width: `${(sendingProgress.curr / sendingProgress.total) * 100}%` }}
               ></div>
             </div>
 

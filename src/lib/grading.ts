@@ -64,8 +64,7 @@ export const ANSWER_KEYS = {
     18: "D",
     19: "B",
     20: "C", // Mat (q20 replaced)
-  },
-};
+  } };
 
 export function calculateAkademikScore(
   answers: Record<string, string>,

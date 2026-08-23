@@ -25,8 +25,7 @@ export async function POST(req: Request) {
     }
 
     const pendaftar = await prisma.pendaftar.findUnique({
-      where: { nomor_pendaftaran },
-    });
+      where: { nomor_pendaftaran } });
 
     if (!pendaftar) {
       return NextResponse.json({ message: "Pendaftar tidak ditemukan" }, { status: 404 });
@@ -37,8 +36,7 @@ export async function POST(req: Request) {
       data: {
         ukuran_seragam_baju: baju,
         ukuran_seragam_celana: celana,
-        ukuran_seragam_almamater: almamater,
-      }
+        ukuran_seragam_almamater: almamater }
     });
 
     return NextResponse.json({ message: "Berhasil menyimpan ukuran seragam" });

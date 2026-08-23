@@ -24,10 +24,8 @@ export async function GET(
     // Find user by name query
     const user = await prisma.profile.findFirst({
       where: {
-        full_name: { contains: nameQuery, mode: "insensitive" },
-      },
-      select: { id: true, role: true, full_name: true, secondary_roles: true },
-    });
+        full_name: { contains: nameQuery, mode: "insensitive" } },
+      select: { id: true, role: true, full_name: true, secondary_roles: true } });
 
     if (!user) {
       return NextResponse.json(

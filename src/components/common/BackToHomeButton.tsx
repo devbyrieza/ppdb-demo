@@ -12,13 +12,11 @@ interface BackToHomeButtonProps {
 export default function BackToHomeButton({
   variant = "with-text",
   className = "",
-  position = "top-left",
-}: BackToHomeButtonProps) {
+  position = "top-left" }: BackToHomeButtonProps) {
   const positionClasses = {
     "top-left": "top-4 left-4",
     "top-center": "top-4 left-1/2 -translate-x-1/2",
-    "top-right": "top-4 right-4",
-  };
+    "top-right": "top-4 right-4" };
 
   return (
     <Link

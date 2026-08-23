@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { CheckCircle, AlertCircle, FileText, Send, Loader2, History, Copy, Building2, CreditCard as CreditCardIcon, MessageCircle, Banknote, BookOpen, , Clock } from "lucide-react";
+import { CheckCircle, AlertCircle, FileText, Send, Loader2, History, Copy, Building2, CreditCard as CreditCardIcon, MessageCircle, Banknote, BookOpen, Clock } from "lucide-react";
 import { Alert } from "@/components/ui";
 import { formatCurrency } from "@/lib/utils";
 
@@ -168,15 +168,13 @@ export default function DaftarUlangTab() {
 
       const res = await fetch("/api/pembayaran/manual/upload", {
         method: "POST",
-        body: formData,
-      });
+        body: formData });
       const data = await res.json();
 
       if (data.success) {
         setMessage({
           type: "success",
-          text: "Bukti pembayaran berhasil diupload! Tim kami akan memverifikasi dalam 1x24 jam.",
-        });
+          text: "Bukti pembayaran berhasil diupload! Tim kami akan memverifikasi dalam 1x24 jam." });
         setNominal("");
         setFile(null);
         setPernyataan(false);
@@ -185,8 +183,7 @@ export default function DaftarUlangTab() {
       } else {
         setMessage({
           type: "error",
-          text: data.error || "Terjadi kesalahan saat upload.",
-        });
+          text: data.error || "Terjadi kesalahan saat upload." });
       }
     } catch {
       setMessage({ type: "error", text: "Gagal mengirim data. Coba lagi." });
@@ -389,8 +386,7 @@ export default function DaftarUlangTab() {
                     {new Date(p.created_at).toLocaleDateString("id-ID", {
                       day: "numeric",
                       month: "long",
-                      year: "numeric",
-                    })}
+                      year: "numeric" })}
                   </p>
                   <span
                     className={`text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border ${

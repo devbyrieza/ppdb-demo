@@ -53,8 +53,7 @@ export async function POST(
       success: true,
       pendaftar_id: pendaftarId,
       nilai_total: result?.nilai_total ?? null,
-      status_kelulusan: result?.status_kelulusan ?? null,
-    });
+      status_kelulusan: result?.status_kelulusan ?? null });
   } catch (error: any) {
     console.error("Single recalculate error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });

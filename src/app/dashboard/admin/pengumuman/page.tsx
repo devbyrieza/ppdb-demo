@@ -8,8 +8,7 @@ import {
   XCircle,
   Search,
   Filter,
-  Loader2,
-} from "lucide-react";
+  Loader2 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import Swal from "sweetalert2";
 
@@ -97,8 +96,7 @@ export default function PengumumanPage() {
       cancelButtonColor: "#57534e", // Stone 600
       confirmButtonText: "Ya, Umumkan!",
       cancelButtonText: "Batal",
-      reverseButtons: true,
-    });
+      reverseButtons: true });
 
     if (!result.isConfirmed) return;
 
@@ -111,8 +109,7 @@ export default function PengumumanPage() {
           pendaftar_ids: selectedIds,
           new_status: "accepted",
           // Removed hardcoded announcement_message to use buildMessageHasilTes on backend
-        }),
-      });
+        }) });
 
       const result = await res.json();
       if (res.ok) {

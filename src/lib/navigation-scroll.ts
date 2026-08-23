@@ -22,8 +22,7 @@ export const SECTION_MAPPING: Record<string, string> = {
   "/fasilitas": "#fasilitas",
   "/kegiatan": "#kegiatan",
   "/galeri": "#gallery",
-  "/kontak": "#kontak",
-};
+  "/kontak": "#kontak" };
 
 /**
  * Check if this is a back/forward navigation (not refresh)
@@ -172,8 +171,7 @@ export function restoreScrollPosition(): void {
         } else {
           window.scrollTo({
             top: elementPosition - offset,
-            behavior: "smooth",
-          });
+            behavior: "smooth" });
         }
       }
     }, 150);
@@ -198,8 +196,7 @@ export function restoreScrollPosition(): void {
       } else {
         window.scrollTo({
           top: position,
-          behavior: "smooth",
-        });
+          behavior: "smooth" });
       }
     }, 150);
   }
@@ -237,8 +234,7 @@ export function scrollToSection(sectionId: string, offset: number = 100): void {
     } else {
       window.scrollTo({
         top: elementPosition - offset,
-        behavior: "smooth",
-      });
+        behavior: "smooth" });
     }
   }
 }
@@ -256,7 +252,6 @@ export function scrollToTop(): void {
   } else {
     window.scrollTo({
       top: 0,
-      behavior: "smooth",
-    });
+      behavior: "smooth" });
   }
 }

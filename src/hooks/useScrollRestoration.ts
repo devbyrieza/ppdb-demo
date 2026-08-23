@@ -58,13 +58,11 @@ export function useScrollRestoration() {
             lenisInstance.scrollTo(pos, {
               immediate: true,
               force: true,
-              lock: false,
-            });
+              lock: false });
           } else {
             window.scrollTo({
               top: pos,
-              behavior: "instant",
-            });
+              behavior: "instant" });
           }
         };
 

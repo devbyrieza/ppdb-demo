@@ -16,8 +16,7 @@ import {
   Clock,
   AlertCircle,
   UploadCloud,
-  Download,
-} from "lucide-react";
+  Download } from "lucide-react";
 import { exportToExcel, exportToPDF } from "@/lib/utils/export";
 import Link from "next/link";
 import Swal from "sweetalert2";
@@ -120,14 +119,12 @@ function VerifikasiDokumenContent() {
             jenjang: dok.pendaftar.jenjang,
             no_hp: dok.pendaftar.no_hp,
             tipe_pendaftaran: dok.pendaftar.tipe_pendaftaran,
-            dokumen: [],
-          };
+            dokumen: [] };
         }
         grouped[pendaftarId].dokumen.push({
           id: dok.id,
           is_verified: dok.is_verified,
-          catatan: dok.catatan,
-        });
+          catatan: dok.catatan });
       }
 
       setPendaftarList(Object.values(grouped));
@@ -186,8 +183,7 @@ function VerifikasiDokumenContent() {
           Catatan: item.catatan || "-",
           "Tanggal Unggah": new Date(item.created_at).toLocaleDateString(
             "id-ID",
-          ),
-        }),
+          ) }),
       );
 
       const filename = `data-dokumen-${new Date().toISOString().split("T")[0]}`;

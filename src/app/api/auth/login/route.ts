@@ -30,16 +30,13 @@ export async function POST(request: NextRequest) {
       const pendaftar = await prisma.pendaftar.findFirst({
         where: {
           nik,
-          nomor_pendaftaran: nomor_pendaftaran.toUpperCase(),
-        },
-      });
+          nomor_pendaftaran: nomor_pendaftaran.toUpperCase() } });
 
       if (!pendaftar) {
         return NextResponse.json(
           {
             error:
-              "NIK atau Nomor Pendaftaran tidak ditemukan. Periksa kembali data Anda.",
-          },
+              "NIK atau Nomor Pendaftaran tidak ditemukan. Periksa kembali data Anda." },
           { status: 404 },
         );
       }
@@ -56,9 +53,7 @@ export async function POST(request: NextRequest) {
           jenis_kelamin: pendaftar.jenis_kelamin,
           jenjang: pendaftar.jenjang,
           status_pendaftaran: pendaftar.status_pendaftaran,
-          tahun_ajaran_id: pendaftar.tahun_ajaran_id,
-        },
-      });
+          tahun_ajaran_id: pendaftar.tahun_ajaran_id } });
 
       responseJson.cookies.set(
         "al_session",
@@ -67,8 +62,7 @@ export async function POST(request: NextRequest) {
           id: pendaftar.id,
           nik: pendaftar.nik,
           nomor_pendaftaran: pendaftar.nomor_pendaftaran,
-          nama_lengkap: pendaftar.nama_lengkap,
-        }),
+          nama_lengkap: pendaftar.nama_lengkap }),
         {
           path: "/",
           httpOnly: true,
@@ -112,9 +106,7 @@ export async function POST(request: NextRequest) {
             { email: { equals: identifier, mode: "insensitive" } },
             { username: { equals: identifier, mode: "insensitive" } },
             { phone: { in: phoneVariations } },
-          ],
-        },
-      });
+          ] } });
 
       if (!profile || !profile.password_hash) {
         return NextResponse.json(
@@ -160,8 +152,7 @@ export async function POST(request: NextRequest) {
           requires_role_selection: true,
           profile_id: profile.id,
           full_name: profile.full_name,
-          available_roles: [...new Set([profile.role, ...secondaryRoles])],
-        });
+          available_roles: [...new Set([profile.role, ...secondaryRoles])] });
       }
 
       const isDefaultPassword = profile.must_change_password === true || password === "2026#@" || profile.plain_password === "2026#@";
@@ -178,9 +169,7 @@ export async function POST(request: NextRequest) {
           phone: profile.phone,
           username: profile.username,
           role: profile.role,
-          is_default_password: isDefaultPassword,
-        },
-      });
+          is_default_password: isDefaultPassword } });
 
       responseJson.cookies.set(
         "al_session",
@@ -190,8 +179,7 @@ export async function POST(request: NextRequest) {
           full_name: profile.full_name,
           email: profile.email,
           username: profile.username,
-          is_default_password: isDefaultPassword,
-        }),
+          is_default_password: isDefaultPassword }),
         {
           path: "/",
           httpOnly: true,

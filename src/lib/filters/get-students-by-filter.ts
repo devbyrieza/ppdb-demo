@@ -91,8 +91,7 @@ export async function getStudentsByFilter(
     page = 1,
     limit = 20,
     sortBy = "created_at",
-    sortOrder = "desc",
-  } = criteria;
+    sortOrder = "desc" } = criteria;
 
   const skip = (page - 1) * limit;
   const appliedFilters: string[] = [];
@@ -110,13 +109,10 @@ export async function getStudentsByFilter(
         {
           nomor_pendaftaran: {
             contains: criteria.search,
-            mode: "insensitive",
-          },
-        },
+            mode: "insensitive" } },
         { no_hp: { contains: criteria.search, mode: "insensitive" } },
         { asal_sekolah: { contains: criteria.search, mode: "insensitive" } },
-      ],
-    });
+      ] });
     appliedFilters.push(`Pencarian: "${criteria.search}"`);
   }
 
@@ -124,12 +120,10 @@ export async function getStudentsByFilter(
   if (criteria.status) {
     if (Array.isArray(criteria.status)) {
       andConditions.push({
-        status_pendaftaran: { in: criteria.status },
-      });
+        status_pendaftaran: { in: criteria.status } });
     } else {
       andConditions.push({
-        status_pendaftaran: criteria.status,
-      });
+        status_pendaftaran: criteria.status });
     }
     appliedFilters.push(`Status: ${criteria.status}`);
   }
@@ -148,8 +142,7 @@ export async function getStudentsByFilter(
       : ["P", "Perempuan"];
 
     andConditions.push({
-      jenis_kelamin: { in: searchValues },
-    });
+      jenis_kelamin: { in: searchValues } });
 
     appliedFilters.push(
       `Jenis Kelamin: ${searchValues.includes("L") ? "Laki-laki" : "Perempuan"}`,
@@ -165,34 +158,29 @@ export async function getStudentsByFilter(
   // ── Wilayah ───────────────────────────────────────────────────
   if (criteria.provinsi) {
     andConditions.push({
-      provinsi: { contains: criteria.provinsi, mode: "insensitive" },
-    });
+      provinsi: { contains: criteria.provinsi, mode: "insensitive" } });
     appliedFilters.push(`Provinsi: ${criteria.provinsi}`);
   }
   if (criteria.kabupaten) {
     andConditions.push({
-      kabupaten: { contains: criteria.kabupaten, mode: "insensitive" },
-    });
+      kabupaten: { contains: criteria.kabupaten, mode: "insensitive" } });
     appliedFilters.push(`Kabupaten: ${criteria.kabupaten}`);
   }
   if (criteria.kecamatan) {
     andConditions.push({
-      kecamatan: { contains: criteria.kecamatan, mode: "insensitive" },
-    });
+      kecamatan: { contains: criteria.kecamatan, mode: "insensitive" } });
     appliedFilters.push(`Kecamatan: ${criteria.kecamatan}`);
   }
   if (criteria.kelurahan) {
     andConditions.push({
-      kelurahan: { contains: criteria.kelurahan, mode: "insensitive" },
-    });
+      kelurahan: { contains: criteria.kelurahan, mode: "insensitive" } });
     appliedFilters.push(`Kelurahan: ${criteria.kelurahan}`);
   }
 
   // ── Sekolah Asal ──────────────────────────────────────────────
   if (criteria.asal_sekolah) {
     andConditions.push({
-      asal_sekolah: { contains: criteria.asal_sekolah, mode: "insensitive" },
-    });
+      asal_sekolah: { contains: criteria.asal_sekolah, mode: "insensitive" } });
     appliedFilters.push(`Asal Sekolah: ${criteria.asal_sekolah}`);
   }
   if (criteria.tahun_lulus) {
@@ -205,9 +193,7 @@ export async function getStudentsByFilter(
     andConditions.push({
       jumlah_hafalan: {
         contains: criteria.jumlah_hafalan,
-        mode: "insensitive",
-      },
-    });
+        mode: "insensitive" } });
     appliedFilters.push(`Jumlah Hafalan: ${criteria.jumlah_hafalan}`);
   }
 
@@ -218,8 +204,7 @@ export async function getStudentsByFilter(
   if (criteria.pekerjaan_ayah) {
     orangTuaConditions.pekerjaan_ayah = {
       contains: criteria.pekerjaan_ayah,
-      mode: "insensitive",
-    };
+      mode: "insensitive" };
     hasOrangTuaFilter = true;
     appliedFilters.push(`Pekerjaan Ayah: ${criteria.pekerjaan_ayah}`);
   }
@@ -227,8 +212,7 @@ export async function getStudentsByFilter(
   if (criteria.pekerjaan_ibu) {
     orangTuaConditions.pekerjaan_ibu = {
       contains: criteria.pekerjaan_ibu,
-      mode: "insensitive",
-    };
+      mode: "insensitive" };
     hasOrangTuaFilter = true;
     appliedFilters.push(`Pekerjaan Ibu: ${criteria.pekerjaan_ibu}`);
   }
@@ -236,8 +220,7 @@ export async function getStudentsByFilter(
   if (criteria.pendidikan_ayah) {
     orangTuaConditions.pendidikan_ayah = {
       contains: criteria.pendidikan_ayah,
-      mode: "insensitive",
-    };
+      mode: "insensitive" };
     hasOrangTuaFilter = true;
     appliedFilters.push(`Pendidikan Ayah: ${criteria.pendidikan_ayah}`);
   }
@@ -245,8 +228,7 @@ export async function getStudentsByFilter(
   if (criteria.pendidikan_ibu) {
     orangTuaConditions.pendidikan_ibu = {
       contains: criteria.pendidikan_ibu,
-      mode: "insensitive",
-    };
+      mode: "insensitive" };
     hasOrangTuaFilter = true;
     appliedFilters.push(`Pendidikan Ibu: ${criteria.pendidikan_ibu}`);
   }
@@ -288,8 +270,7 @@ export async function getStudentsByFilter(
 
   if (hasOrangTuaFilter) {
     andConditions.push({
-      orang_tua: { is: orangTuaConditions },
-    });
+      orang_tua: { is: orangTuaConditions } });
   }
 
   // ── Hasil Seleksi (Nested Filter) ─────────────────────────────
@@ -298,10 +279,7 @@ export async function getStudentsByFilter(
     const statusSeleksiCondition: any = {
       hasil_seleksi: {
         is: {
-          status_seleksi: criteria.status_seleksi,
-        },
-      },
-    };
+          status_seleksi: criteria.status_seleksi } } };
     andConditions.push(statusSeleksiCondition);
     appliedFilters.push(`Status Seleksi: ${criteria.status_seleksi}`);
   }
@@ -320,10 +298,7 @@ export async function getStudentsByFilter(
     const nilaiCondition: any = {
       hasil_seleksi: {
         is: {
-          nilai_akhir: nilaiFilter,
-        },
-      },
-    };
+          nilai_akhir: nilaiFilter } } };
     andConditions.push(nilaiCondition);
   }
 
@@ -331,18 +306,14 @@ export async function getStudentsByFilter(
   if (criteria.status_pembayaran) {
     andConditions.push({
       pembayaran: {
-        some: { status_pembayaran: criteria.status_pembayaran },
-      },
-    });
+        some: { status_pembayaran: criteria.status_pembayaran } } });
     appliedFilters.push(`Status Pembayaran: ${criteria.status_pembayaran}`);
   }
 
   if (criteria.jenis_pembayaran) {
     const pembayaranCondition: any = {
       pembayaran: {
-        some: { jenis_pembayaran: criteria.jenis_pembayaran },
-      },
-    };
+        some: { jenis_pembayaran: criteria.jenis_pembayaran } } };
     andConditions.push(pembayaranCondition);
     appliedFilters.push(`Jenis Pembayaran: ${criteria.jenis_pembayaran}`);
   }
@@ -394,8 +365,7 @@ export async function getStudentsByFilter(
 
         // Relasi
         tahun_ajaran: {
-          select: { id: true, nama: true },
-        },
+          select: { id: true, nama: true } },
         orang_tua: {
           select: {
             nama_ayah: true,
@@ -409,45 +379,33 @@ export async function getStudentsByFilter(
             nama_wali: true,
             hubungan_wali: true,
             pekerjaan_wali: true,
-            penghasilan_wali: true,
-          },
-        },
+            penghasilan_wali: true } },
         pembayaran: {
           select: {
             id: true,
             jenis_pembayaran: true,
             tipe_cicilan: true,
             jumlah: true,
-            status_pembayaran: true,
-          } as any,
-        },
+            status_pembayaran: true } as any },
         dokumen: {
           select: {
             jenis_dokumen: true,
-            is_verified: true,
-          },
-        },
+            is_verified: true } },
         nilai_ujian: {
           select: {
             nilai_wawancara_santri: true,
             nilai_tes_quran: true,
             nilai_wawancara_ortu: true,
             nilai_tes_tertulis_total: true,
-            nilai_total: true,
-          },
-        },
+            nilai_total: true } },
         hasil_seleksi: {
           select: {
             status_seleksi: true,
             nilai_akhir: true,
-            catatan_admin: true,
-          },
-        } as any,
-      } as any,
+            catatan_admin: true } } as any } as any,
       orderBy,
       skip,
-      take: limit,
-    }),
+      take: limit }),
   ]);
 
   // ── Post-process: Filter penghasilan (karena disimpan string) ──
@@ -495,10 +453,8 @@ export async function getStudentsByFilter(
       total: needsIncomeFilter ? filteredData.length : total,
       totalPages: Math.ceil(
         (needsIncomeFilter ? filteredData.length : total) / limit,
-      ),
-    },
-    appliedFilters,
-  };
+      ) },
+    appliedFilters };
 }
 
 // ============================================================================
@@ -531,8 +487,7 @@ export async function getAggregation(
     kabupaten: "kabupaten",
     status_pendaftaran: "status_pendaftaran",
     sumber_informasi: "sumber_informasi",
-    golongan_darah: "golongan_darah",
-  };
+    golongan_darah: "golongan_darah" };
 
   const groupField = validGroupFields[field];
   if (!groupField) {
@@ -545,13 +500,11 @@ export async function getAggregation(
     _count: { id: true },
     where,
     orderBy: { _count: { id: "desc" } },
-    take: 20,
-  });
+    take: 20 });
 
   return result.map((item: any) => ({
     label: item[groupField] || "Tidak Diketahui",
-    value: item._count.id,
-  }));
+    value: item._count.id }));
 }
 
 /**
@@ -573,42 +526,34 @@ export async function getPaymentStats(tahunAjaranId?: string) {
         _count: { id: true },
         _sum: { jumlah: true },
         where,
-        orderBy: { _count: { id: "desc" } },
-      }),
+        orderBy: { _count: { id: "desc" } } }),
       groupByPayment({
         by: ["jenis_pembayaran"],
         _count: { id: true },
         _sum: { jumlah: true },
         where,
-        orderBy: { _count: { id: "desc" } },
-      }),
+        orderBy: { _count: { id: "desc" } } }),
       groupByPayment({
         by: ["tipe_cicilan"],
         _count: { id: true },
         where,
-        orderBy: { _count: { id: "desc" } },
-      }),
+        orderBy: { _count: { id: "desc" } } }),
       prisma.pembayaran.aggregate({
         _sum: { jumlah: true },
-        where: { ...where, status_pembayaran: "verified" },
-      }),
+        where: { ...where, status_pembayaran: "verified" } }),
     ]);
 
   return {
     byStatus: (byStatus as any[]).map((s: any) => ({
       label: s.status_pembayaran,
       count: s._count.id,
-      total: s._sum?.jumlah,
-    })),
+      total: s._sum?.jumlah })),
     byJenis: (byJenis as any[]).map((j: any) => ({
       label: j.jenis_pembayaran,
       count: j._count.id,
-      total: j._sum?.jumlah,
-    })),
+      total: j._sum?.jumlah })),
     byTipeCicilan: (byTipeCicilan as any[]).map((t: any) => ({
       label: t.tipe_cicilan,
-      count: t._count.id,
-    })),
-    totalVerified: totalAmount._sum.jumlah,
-  };
+      count: t._count.id })),
+    totalVerified: totalAmount._sum.jumlah };
 }

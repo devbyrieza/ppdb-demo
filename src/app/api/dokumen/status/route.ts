@@ -9,39 +9,32 @@ const JENIS_DOKUMEN = [
   {
     key: "rapor_sem1",
     label: "Scan Rapor Semester Ganjil Terakhir",
-    required: true,
-  },
+    required: true },
   {
     key: "rapor_sem2",
     label: "Scan Rapor Semester Genap Terakhir",
-    required: true,
-  },
+    required: true },
   {
     key: "nisn",
     label: "Scan NISN (Nomor Induk Siswa Nasional)",
-    required: true,
-  },
+    required: true },
   { key: "foto_setengah_badan", label: "Foto Setengah Badan", required: true },
   {
     key: "surat_kesehatan",
     label: "Surat Keterangan Sehat (Download format)",
-    required: true,
-  },
+    required: true },
   {
     key: "pakta_integritas_santri",
     label: "Scan Pakta Integritas Calon Santri (Download format)",
-    required: true,
-  },
+    required: true },
   {
     key: "pakta_integritas_ortu",
     label: "Scan Pakta Integritas Calon Orangtua/Wali Santri (Download format)",
-    required: true,
-  },
+    required: true },
   {
     key: "pernyataan_bebas_negatif",
     label: "Scan Pernyataan Bebas Perilaku Negatif (Download format)",
-    required: true,
-  },
+    required: true },
 ];
 
 export async function GET(request: NextRequest) {
@@ -76,8 +69,7 @@ export async function GET(request: NextRequest) {
 
     // 2. Ambil semua dokumen pendaftar
     const dokumenList = await prisma.dokumen.findMany({
-      where: { pendaftar_id: session.id },
-    });
+      where: { pendaftar_id: session.id } });
 
     // 3. Mapping status untuk setiap jenis dokumen
     const dokumenStatus = JENIS_DOKUMEN.map((jenis) => {
@@ -106,8 +98,7 @@ export async function GET(request: NextRequest) {
         is_verified: dokumen?.is_verified || false,
         catatan: dokumen?.catatan || null,
         uploaded_at: dokumen?.created_at || null,
-        verified_at: dokumen?.verified_at || null,
-      };
+        verified_at: dokumen?.verified_at || null };
     });
 
     // 4. Hitung progress
@@ -122,8 +113,7 @@ export async function GET(request: NextRequest) {
     // 5. Get Pendaftar Status
     const pendaftar = await prisma.pendaftar.findUnique({
       where: { id: session.id },
-      select: { status_pendaftaran: true },
-    });
+      select: { status_pendaftaran: true } });
 
     // 6. Return data
     return NextResponse.json({
@@ -140,19 +130,13 @@ export async function GET(request: NextRequest) {
             required: {
               total: totalRequired,
               uploaded: uploadedRequired,
-              percentage: Math.round((uploadedRequired / totalRequired) * 100),
-            },
+              percentage: Math.round((uploadedRequired / totalRequired) * 100) },
             all: {
               total: JENIS_DOKUMEN.length,
               uploaded: dokumenList.length || 0,
               percentage: Math.round(
                 ((dokumenList.length || 0) / JENIS_DOKUMEN.length) * 100,
-              ),
-            },
-          },
-        },
-      },
-    });
+              ) } } } } });
   } catch (error: any) {
     console.error("Error in dokumen status API:", error);
     return NextResponse.json(

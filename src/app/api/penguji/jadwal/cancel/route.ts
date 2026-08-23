@@ -3,8 +3,7 @@ import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import {
   enqueueWhatsapp,
-  buildMessagePembatalanJadwal,
-} from "@/lib/whatsapp-queue";
+  buildMessagePembatalanJadwal } from "@/lib/whatsapp-queue";
 
 async function getSession() {
   const cookieStore = await cookies();
@@ -45,12 +44,8 @@ export async function POST(request: Request) {
             id: true,
             nama_lengkap: true,
             no_hp: true,
-            orang_tua: { select: { no_hp_ayah: true, no_hp_ibu: true } },
-          },
-        },
-        exam_session: true,
-      },
-    });
+            orang_tua: { select: { no_hp_ayah: true, no_hp_ibu: true } } } },
+        exam_session: true } });
 
     if (!jadwal) {
       return NextResponse.json({ error: "Jadwal not found" }, { status: 404 });
@@ -88,29 +83,25 @@ export async function POST(request: Request) {
         weekday: "long",
         day: "numeric",
         month: "long",
-        year: "numeric",
-      })
+        year: "numeric" })
       .replace("Minggu", "Ahad");
 
     const timeFormatted = new Date(
       jadwal.exam_session?.start_time || jadwal.waktu_mulai_santri,
     ).toLocaleTimeString("id-ID", {
       hour: "2-digit",
-      minute: "2-digit",
-    });
+      minute: "2-digit" });
 
     // 4. Perform Transaction: Delete booking and Slot
     await prisma.$transaction(async (tx) => {
       // Delete the booking
       await tx.jadwalUjian.delete({
-        where: { id: jadwal_id },
-      });
+        where: { id: jadwal_id } });
 
       // Delete the slot (ExamSession) as per "Safety First" recommendation
       if (jadwal.exam_session_id) {
         await tx.examSession.delete({
-          where: { id: jadwal.exam_session_id },
-        });
+          where: { id: jadwal.exam_session_id } });
       }
     });
 
@@ -132,14 +123,12 @@ export async function POST(request: Request) {
         pendaftarId: jadwal.pendaftar.id,
         phone,
         jenisNotif: "pembatalan_jadwal",
-        messageContent: message,
-      });
+        messageContent: message });
     }
 
     return NextResponse.json({
       success: true,
-      message: "Jadwal berhasil dibatalkan dan santri telah dinotifikasi.",
-    });
+      message: "Jadwal berhasil dibatalkan dan santri telah dinotifikasi." });
   } catch (error: any) {
     console.error("POST /api/penguji/jadwal/cancel error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });

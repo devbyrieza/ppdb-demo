@@ -48,7 +48,6 @@ export function checkRateLimit(
 
   rateLimit.set(identifier, {
     count: entry.count + 1,
-    timestamp: entry.timestamp,
-  });
+    timestamp: entry.timestamp });
   return true;
 }

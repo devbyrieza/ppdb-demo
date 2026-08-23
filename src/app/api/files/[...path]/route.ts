@@ -61,10 +61,7 @@ export async function GET(
         where: {
           pendaftar_id: session.id,
           file_path: {
-            contains: filename,
-          },
-        },
-      });
+            contains: filename } } });
 
       if (doc) {
         isOwner = true;
@@ -73,10 +70,7 @@ export async function GET(
           where: {
             pendaftar_id: session.id,
             bukti_transfer_path: {
-              contains: filename,
-            },
-          },
-        });
+              contains: filename } } });
         if (payment) {
           isOwner = true;
         }
@@ -99,10 +93,7 @@ export async function GET(
         where: {
           pendaftar_id: ownerId,
           bukti_transfer_path: {
-            contains: filename,
-          },
-        },
-      });
+            contains: filename } } });
 
       if (pembayaran) {
         if (pembayaran.file_data) {
@@ -114,8 +105,7 @@ export async function GET(
 
           fileData = {
             buffer: pembayaran.file_data,
-            mimeType: mime,
-          };
+            mimeType: mime };
           console.log(`[File Serve] Found file_data in Database for ${filename}`);
         } else if (pembayaran.midtrans_response_json) {
           // Fallback to legacy base64 in midtrans_response_json
@@ -123,8 +113,7 @@ export async function GET(
           if (json.base64_image) {
             fileData = {
               buffer: Buffer.from(json.base64_image, "base64"),
-              mimeType: json.mime_type || "image/jpeg",
-            };
+              mimeType: json.mime_type || "image/jpeg" };
             console.log(`[File Serve] Found Base64 Image in midtrans_response_json for ${filename}`);
           }
         }
@@ -138,15 +127,12 @@ export async function GET(
       const dokumen = await prisma.dokumen.findFirst({
         where: {
           pendaftar_id: ownerId,
-          file_name: filename,
-        },
-      });
+          file_name: filename } });
 
       if (dokumen && dokumen.file_data) {
         fileData = {
           buffer: dokumen.file_data,
-          mimeType: dokumen.file_type || "application/octet-stream",
-        };
+          mimeType: dokumen.file_type || "application/octet-stream" };
         console.log(`[File Serve] Found file_data in Database for ${filename}`);
       }
     }
@@ -160,8 +146,7 @@ export async function GET(
         {
           error:
             "File tidak ditemukan di server. Kemungkinan file terhapus saat redeploy atau volume storage belum terpasang.",
-          path: relativePath,
-        },
+          path: relativePath },
         { status: 404 },
       );
     }
@@ -173,9 +158,7 @@ export async function GET(
         "Content-Type": fileData.mimeType,
         "Content-Length": fileData.buffer.length.toString(),
         "Content-Disposition": `inline; filename="${pathSegments[pathSegments.length - 1]}"`,
-        "Cache-Control": "private, max-age=3600",
-      },
-    });
+        "Cache-Control": "private, max-age=3600" } });
 
     return response;
   } catch (error) {

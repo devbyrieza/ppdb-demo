@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import { User, LogOut, CheckCircle2, Clock, FileText, Calendar, Award, AlertCircle, , PartyPopper } from "lucide-react";
+import { User, LogOut, CheckCircle2, Clock, FileText, Calendar, Award, AlertCircle, PartyPopper } from "lucide-react";
 
 export default function DashboardPendaftarPage() {
   const router = useRouter();

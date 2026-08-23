@@ -28,8 +28,7 @@ const Container = React.forwardRef<HTMLDivElement, ContainerProps>(
             "max-w-4xl": size === "sm",
             "max-w-6xl": size === "md",
             "max-w-7xl": size === "lg",
-            "max-w-full": size === "full",
-          },
+            "max-w-full": size === "full" },
           className,
         )}
         {...props}

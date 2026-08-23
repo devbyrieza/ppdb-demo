@@ -144,8 +144,7 @@ export default function HomePage() {
                 background:
                   "linear-gradient(135deg, var(--color-secondary-300) 0%, var(--color-secondary-500) 100%)",
                 color: "var(--color-primary-900)",
-                boxShadow: "var(--shadow-secondary), 0 0 0 1px rgba(0,0,0,0.04)",
-              }}
+                boxShadow: "var(--shadow-secondary), 0 0 0 1px rgba(0,0,0,0.04)" }}
             >
               <Zap
                 className="w-5 h-5 transition-transform duration-200 group-hover:rotate-12"

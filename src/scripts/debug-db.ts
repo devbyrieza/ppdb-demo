@@ -3,10 +3,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient({
   datasources: {
     db: {
-      url: "postgresql://postgres:kbzoN2OhN@127.0.0.1:5433/ppdb_alimam?schema=public",
-    },
-  },
-});
+      url: "postgresql://postgres:kbzoN2OhN@127.0.0.1:5433/ppdb_alimam?schema=public" } } });
 
 async function main() {
   console.log("Checking database...");
@@ -20,12 +17,9 @@ async function main() {
 
     const bukhari = await prisma.pendaftar.findFirst({
       where: {
-        nama_lengkap: { contains: "Bukhari", mode: "insensitive" },
-      },
+        nama_lengkap: { contains: "Bukhari", mode: "insensitive" } },
       include: {
-        pembayaran: true,
-      },
-    });
+        pembayaran: true } });
 
     if (bukhari) {
       console.log("Found Bukhari:");
@@ -41,8 +35,7 @@ async function main() {
     const recent = await prisma.pendaftar.findMany({
       take: 5,
       orderBy: { created_at: "desc" },
-      select: { id: true, nama_lengkap: true, status_pendaftaran: true },
-    });
+      select: { id: true, nama_lengkap: true, status_pendaftaran: true } });
     console.log("Recent 5 Pendaftar:", recent);
   } catch (e) {
     console.error("Error:", e);

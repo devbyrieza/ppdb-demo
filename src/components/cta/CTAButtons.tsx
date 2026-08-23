@@ -25,8 +25,7 @@ export function CTAInfoPPDB({
   size = "lg",
   variant = "primary",
   className = "",
-  showUrgency = false,
-}: {
+  showUrgency = false }: {
   size?: "sm" | "lg" | "xl";
   variant?: "primary" | "outline";
   className?: string;
@@ -35,8 +34,7 @@ export function CTAInfoPPDB({
   const sizeClasses = {
     sm: "px-6 py-2.5 text-sm",
     lg: "px-8 py-4 text-base",
-    xl: "px-10 py-5 text-lg",
-  };
+    xl: "px-10 py-5 text-lg" };
 
   return (
     <div className="space-y-2">
@@ -78,8 +76,7 @@ export function CTAInfoPPDB({
  */
 export function CTASyaratJadwal({
   size = "lg",
-  className = "",
-}: {
+  className = "" }: {
   size?: "sm" | "lg";
   className?: string;
 }) {
@@ -122,8 +119,7 @@ export function CTASyaratJadwal({
 export function CTAKonsultasi({
   size = "lg",
   variant = "outline",
-  className = "",
-}: {
+  className = "" }: {
   size?: "sm" | "lg";
   variant?: "outline" | "soft";
   className?: string;
@@ -165,8 +161,7 @@ export function CTADaftarSekarang({
   size = "lg",
   showSparkles = true,
   urgencyMessage = "default",
-  className = "",
-}: {
+  className = "" }: {
   size?: "sm" | "lg" | "xl";
   showSparkles?: boolean;
   urgencyMessage?: "default" | "countdown" | "scarcity" | "none";
@@ -175,15 +170,13 @@ export function CTADaftarSekarang({
   const sizeClasses = {
     sm: "px-6 py-3 text-sm",
     lg: "px-8 py-4 text-base",
-    xl: "px-10 py-6 text-lg",
-  };
+    xl: "px-10 py-6 text-lg" };
 
   const urgencyMessages = {
     default: "Hanya tersisa 50 kuota untuk tahun ajaran 2027/2028",
     countdown: "Pendaftaran ditutup dalam 15 hari lagi!",
     scarcity: "50 dari 500 kuota sudah terisi - Buruan daftar!",
-    none: null,
-  };
+    none: null };
 
   return (
     <div className="space-y-3">
@@ -288,8 +281,7 @@ export function NavbarCTALogin() {
       className="font-semibold transition-all duration-300 hover:shadow-md shadow-sm"
       style={{
         borderColor: "var(--color-brown-700)",
-        color: "var(--color-brown-700)",
-      }}
+        color: "var(--color-brown-700)" }}
       asChild
     >
       <Link href="/login">

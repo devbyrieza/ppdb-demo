@@ -5,8 +5,7 @@ import { Loader2, MapPin, Search, Navigation } from "lucide-react";
 
 export default function TerjauhCard({
   tahunAjaranList,
-  jenjangList,
-}: {
+  jenjangList }: {
   tahunAjaranList: string[];
   jenjangList: string[];
 }) {
@@ -30,8 +29,7 @@ export default function TerjauhCard({
       const res = await fetch("/api/admin/statistik-wilayah/terjauh", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tahun_ajaran: tahunAjaran, jenjang }),
-      });
+        body: JSON.stringify({ tahun_ajaran: tahunAjaran, jenjang }) });
 
       const data = await res.json();
       if (!data.success) {

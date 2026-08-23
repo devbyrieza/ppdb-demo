@@ -8,8 +8,7 @@ import {
   CheckCircle,
   Clock,
   Loader2,
-  TrendingUp,
-} from "lucide-react";
+  TrendingUp } from "lucide-react";
 import Link from "next/link";
 
 interface DashboardStats {
@@ -25,8 +24,7 @@ export default function PengujiDashboardPage() {
     total_jadwal: 0,
     selesai_dinilai: 0,
     belum_dinilai: 0,
-    jadwal_hari_ini: 0,
-  });
+    jadwal_hari_ini: 0 });
 
   useEffect(() => {
     fetchStats();
@@ -67,32 +65,28 @@ export default function PengujiDashboardPage() {
       icon: Calendar,
       accent: "teal",
       bgColor: "bg-primary-50",
-      iconColor: "text-primary-600",
-    },
+      iconColor: "text-primary-600" },
     {
       title: "Hari Ini",
       value: stats.jadwal_hari_ini,
       icon: Clock,
       accent: "teal",
       bgColor: "bg-primary-50",
-      iconColor: "text-primary-600",
-    },
+      iconColor: "text-primary-600" },
     {
       title: "Selesai",
       value: stats.selesai_dinilai,
       icon: CheckCircle,
       accent: "emerald",
       bgColor: "bg-emerald-50",
-      iconColor: "text-emerald-600",
-    },
+      iconColor: "text-emerald-600" },
     {
       title: "Belum Dinilai",
       value: stats.belum_dinilai,
       icon: ClipboardCheck,
       accent: "sand",
       bgColor: "bg-secondary-50",
-      iconColor: "text-secondary-600",
-    },
+      iconColor: "text-secondary-600" },
   ];
 
   return (

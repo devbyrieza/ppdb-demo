@@ -63,9 +63,7 @@ export default function ExamCardPage() {
                 "id-ID",
               ),
               waktu: j.waktu_mulai.substring(0, 5),
-              lokasi: j.lokasi || "Pondok Pesantren Al Fath",
-            })) || [],
-        };
+              lokasi: j.lokasi || "Pondok Pesantren Al Fath" })) || [] };
 
         setData(student);
       } catch (e) {
@@ -256,8 +254,7 @@ export default function ExamCardPage() {
                   {new Date().toLocaleDateString("id-ID", {
                     day: "numeric",
                     month: "long",
-                    year: "numeric",
-                  })}
+                    year: "numeric" })}
                 </p>
                 <p className="font-bold underline uppercase">
                   Panitia PPDB Al Fath

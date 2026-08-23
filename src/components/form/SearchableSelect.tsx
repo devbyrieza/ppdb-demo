@@ -23,8 +23,7 @@ export default function SearchableSelect({
   required = false,
   disabled = false,
   optionsUrl,
-  options: initialOptions = [],
-}: SearchableSelectProps) {
+  options: initialOptions = [] }: SearchableSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [options, setOptions] = useState<string[]>(initialOptions);
@@ -111,8 +110,7 @@ export default function SearchableSelect({
       opacity: 0,
       y: -6,
       scale: 0.98,
-      filter: "blur(4px)",
-    },
+      filter: "blur(4px)" },
     visible: {
       opacity: 1,
       y: 0,
@@ -120,9 +118,7 @@ export default function SearchableSelect({
       filter: "blur(0px)",
       transition: {
         duration: 0.22,
-        ease: [0.16, 1, 0.3, 1] as any,
-      },
-    },
+        ease: [0.16, 1, 0.3, 1] as any } },
     exit: {
       opacity: 0,
       y: -4,
@@ -130,10 +126,7 @@ export default function SearchableSelect({
       filter: "blur(2px)",
       transition: {
         duration: 0.16,
-        ease: [0.4, 0, 1, 1] as any,
-      },
-    },
-  };
+        ease: [0.4, 0, 1, 1] as any } } };
 
   return (
     <div className="space-y-2" ref={containerRef}>
@@ -218,8 +211,7 @@ export default function SearchableSelect({
                 background: "var(--color-white)",
                 borderRadius: "var(--radius-xl)",
                 border: "1.5px solid var(--color-primary-100)",
-                boxShadow: "var(--shadow-premium-md)",
-              }}
+                boxShadow: "var(--shadow-premium-md)" }}
             >
               {/* ── Search Bar ── */}
               <div
@@ -227,8 +219,7 @@ export default function SearchableSelect({
                 style={{
                   background:
                     "linear-gradient(180deg, var(--color-warm-50) 0%, var(--color-white) 100%)",
-                  borderBottom: "1px solid var(--color-primary-100)",
-                }}
+                  borderBottom: "1px solid var(--color-primary-100)" }}
               >
                 <div className="relative">
                   {/* Search icon */}
@@ -247,8 +238,7 @@ export default function SearchableSelect({
                     style={{
                       background: "var(--color-white)",
                       border: "1.5px solid var(--color-primary-100)",
-                      color: "var(--color-ink-900)",
-                    }}
+                      color: "var(--color-ink-900)" }}
                     onFocus={(e) => {
                       e.currentTarget.style.borderColor =
                         "var(--color-primary-500)";
@@ -279,8 +269,7 @@ export default function SearchableSelect({
                         className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full flex items-center justify-center transition-colors duration-150"
                         style={{
                           color: "var(--color-ink-400)",
-                          background: "var(--color-ink-100)",
-                        }}
+                          background: "var(--color-ink-100)" }}
                         onMouseEnter={(e) => {
                           const el = e.currentTarget as HTMLElement;
                           el.style.background = "var(--color-primary-100)";
@@ -348,13 +337,11 @@ export default function SearchableSelect({
                               exit={{ opacity: 0, scale: 0.5 }}
                               transition={{
                                 duration: 0.18,
-                                ease: [0.16, 1, 0.3, 1],
-                              }}
+                                ease: [0.16, 1, 0.3, 1] }}
                               className="shrink-0 w-5 h-5 rounded-full flex items-center justify-center"
                               style={{
                                 background: "var(--color-primary-100)",
-                                color: "var(--color-primary-700)",
-                              }}
+                                color: "var(--color-primary-700)" }}
                             >
                               <Check className="w-3 h-3" strokeWidth={2.5} />
                             </motion.span>
@@ -370,8 +357,7 @@ export default function SearchableSelect({
                       className="w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-3"
                       style={{
                         background: "var(--color-primary-50)",
-                        color: "var(--color-primary-300)",
-                      }}
+                        color: "var(--color-primary-300)" }}
                     >
                       <Search className="w-4 h-4" />
                     </div>
@@ -390,8 +376,7 @@ export default function SearchableSelect({
                         <span
                           className="font-semibold"
                           style={{
-                            color: "var(--color-primary-600)",
-                          }}
+                            color: "var(--color-primary-600)" }}
                         >
                           &ldquo;{search}&rdquo;
                         </span>
@@ -407,8 +392,7 @@ export default function SearchableSelect({
                   className="px-4 py-2.5 text-center"
                   style={{
                     borderTop: "1px solid var(--color-primary-50)",
-                    background: "var(--color-warm-50)",
-                  }}
+                    background: "var(--color-warm-50)" }}
                 >
                   <p
                     className="text-[11px] font-medium"

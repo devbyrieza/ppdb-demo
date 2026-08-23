@@ -6,8 +6,7 @@ import { Filter } from "lucide-react";
 
 export default function GlobalFilter({
   tahunAjaranList,
-  jenjangList,
-}: {
+  jenjangList }: {
   tahunAjaranList: string[];
   jenjangList: string[];
 }) {

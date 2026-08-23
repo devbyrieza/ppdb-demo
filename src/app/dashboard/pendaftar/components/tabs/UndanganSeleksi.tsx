@@ -15,8 +15,7 @@ import {
   UserCheck,
   AlertCircle,
   Link as LinkIcon,
-  Info,
-} from "lucide-react";
+  Info } from "lucide-react";
 import Swal from "sweetalert2";
 import { expandExamTitle } from "@/lib/utils";
 import Link from "next/link";
@@ -91,16 +90,14 @@ interface UndanganData {
 const GRUP_A_ICONS: Record<string, React.ElementType> = {
   akademik: BookOpen,
   kepribadian: Brain,
-  kesiapan: Heart,
-};
+  kesiapan: Heart };
 
 const GRUP_B_ICONS: Record<string, React.ElementType> = {
   QURAN: BookOpenCheck,
   W_SANTRI: Users,
   W_ORTU: UserCheck,
   HAFALAN: BookOpen,
-  LISAN_ARAB: Brain,
-};
+  LISAN_ARAB: Brain };
 
 // ============================================================================
 // MAIN COMPONENT
@@ -162,8 +159,7 @@ export default function UndanganSeleksiTab() {
       cancelButtonColor: "#ef4444",
       confirmButtonText: "Ya, Pilih Jadwal",
       cancelButtonText: "Batal",
-      reverseButtons: true,
-    });
+      reverseButtons: true });
 
     if (!result.isConfirmed) return;
 
@@ -173,8 +169,7 @@ export default function UndanganSeleksiTab() {
       const response = await fetch("/api/pendaftar/jadwal", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ exam_session_id: sessionId }),
-      });
+        body: JSON.stringify({ exam_session_id: sessionId }) });
 
       const resData = await response.json();
 
@@ -183,8 +178,7 @@ export default function UndanganSeleksiTab() {
           icon: "success",
           title: "Berhasil!",
           text: "Jadwal ujian Anda telah tersimpan. Notifikasi WhatsApp akan dikirimkan.",
-          confirmButtonColor: "#0066ff",
-        });
+          confirmButtonColor: "#0066ff" });
         fetchData();
       } else {
         throw new Error(resData.error || "Gagal memilih jadwal");
@@ -194,8 +188,7 @@ export default function UndanganSeleksiTab() {
         icon: "error",
         title: "Gagal",
         text: error.message,
-        confirmButtonColor: "#ef4444",
-      });
+        confirmButtonColor: "#ef4444" });
     } finally {
       setBookingId(null);
     }
@@ -207,16 +200,14 @@ export default function UndanganSeleksiTab() {
         weekday: "long",
         day: "numeric",
         month: "long",
-        year: "numeric",
-      })
+        year: "numeric" })
       .replace("Minggu", "Ahad");
   };
 
   const formatTime = (timeString: string) => {
     return new Date(timeString).toLocaleTimeString("id-ID", {
       hour: "2-digit",
-      minute: "2-digit",
-    });
+      minute: "2-digit" });
   };
 
   // Loading state

@@ -24,8 +24,7 @@ import {
   Shield,
   Star,
   MapPin,
-  Clock,
-} from "lucide-react";
+  Clock } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -37,8 +36,7 @@ const StatCard = ({
   icon: Icon,
   value,
   label,
-  delay = 0,
-}: {
+  delay = 0 }: {
   icon: any;
   value: string;
   label: string;
@@ -138,38 +136,32 @@ function PPDBContent() {
       phase: "Registrasi Online",
       date: "5 Sep - 28 Des 2026",
       desc: "Buat akun pendaftar dan isi formulir awal melalui website resmi.",
-      status: "active",
-    },
+      status: "active" },
     {
       phase: "Pembayaran Registrasi",
       date: "Setelah Daftar",
       desc: "Lakukan pembayaran biaya pendaftaran via Transfer Manual BSI yang tersedia di dashboard.",
-      status: "upcoming",
-    },
+      status: "upcoming" },
     {
       phase: "Lengkapi Data & Berkas",
       date: "Setelah Bayar",
       desc: "Lengkapi profil santri, data orang tua/wali, dan upload dokumen persyaratan.",
-      status: "upcoming",
-    },
+      status: "upcoming" },
     {
       phase: "Ujian Seleksi",
       date: "Jadwal Dipilih",
       desc: "Tes Lisan (Tahfidz/Bacaan Al-Qur'an), Tes Tertulis (Pengetahuan Dasar Agama & Akademik), serta Seleksi Wawancara Calon Santri & Orang Tua.",
-      status: "upcoming",
-    },
+      status: "upcoming" },
     {
       phase: "Pengumuman Hasil",
       date: "7 Hari Setelah Tes",
       desc: "Hasil seleksi diumumkan melalui Dashboard Pendaftar dan Notifikasi WhatsApp.",
-      status: "upcoming",
-    },
+      status: "upcoming" },
     {
       phase: "Daftar Ulang",
       date: "Setelah Lulus",
       desc: "Melakukan pelunasan biaya masuk.",
-      status: "upcoming",
-    },
+      status: "upcoming" },
   ];
 
   const requirements = [
@@ -182,8 +174,7 @@ function PPDBContent() {
         { name: "Scan Rapor 2 Semester Terakhir", type: "Wajib" },
         { name: "Scan Nomor Induk Siswa Nasional (NISN)", type: "Wajib" },
         { name: "Foto Setengah Badan", type: "Wajib" },
-      ],
-    },
+      ] },
     {
       title: "Dokumen Pendukung",
       icon: CheckCircle,
@@ -194,10 +185,8 @@ function PPDBContent() {
         { name: "Scan Pakta Integritas Calon Orangtua/Wali Santri (Format Panitia)", type: "Wajib" },
         {
           name: "Scan Pernyataan Bebas Perilaku Negatif (Format Panitia)",
-          type: "Wajib",
-        },
-      ],
-    },
+          type: "Wajib" },
+      ] },
   ];
 
   const biaya = [
@@ -496,18 +485,15 @@ function PPDBContent() {
                       {
                         icon: BookOpen,
                         title: "Kurikulum Mutakhir",
-                        desc: "Perpaduan kurikulum Nasional & kurikulum kepesantrenan berbasis Sunnah.",
-                      },
+                        desc: "Perpaduan kurikulum Nasional & kurikulum kepesantrenan berbasis Sunnah." },
                       {
                         icon: GraduationCap,
                         title: "Guru Berkompeten",
-                        desc: "Alumni Perguruan Tinggi Terbaik Dalam & Luar Negeri serta Pondok Pesantren Unggulan.",
-                      },
+                        desc: "Alumni Perguruan Tinggi Terbaik Dalam & Luar Negeri serta Pondok Pesantren Unggulan." },
                       {
                         icon: MapPin,
                         title: "Lingkungan Asri",
-                        desc: "Suasana belajar yang tenang & udara bersih.",
-                      },
+                        desc: "Suasana belajar yang tenang & udara bersih." },
                     ].map((feat, i) => {
                       const FeatIcon = feat.icon;
                       return (
@@ -541,16 +527,13 @@ function PPDBContent() {
                   {[
                     {
                       q: "Apakah santri wajib asrama?",
-                      a: "Ya, seluruh santri di Pesantren Al Fath wajib tinggal di asrama untuk mengikuti seluruh rangkaian kegiatan tarbiyah, halaqah tahfidz, dan pembelajaran kitab turots secara maksimal.",
-                    },
+                      a: "Ya, seluruh santri di Pesantren Al Fath wajib tinggal di asrama untuk mengikuti seluruh rangkaian kegiatan tarbiyah, halaqah tahfidz, dan pembelajaran kitab turots secara maksimal." },
                     {
                       q: "Kapan batas akhir pendaftaran?",
-                      a: "Pendaftaran PPDB Tahun Ajaran 2027/2028 dibuka mulai tanggal 5 September sampai dengan 28 Desember 2026. Namun, pendaftaran dapat ditutup lebih awal jika kuota santri baru sudah terpenuhi.",
-                    },
+                      a: "Pendaftaran PPDB Tahun Ajaran 2027/2028 dibuka mulai tanggal 5 September sampai dengan 28 Desember 2026. Namun, pendaftaran dapat ditutup lebih awal jika kuota santri baru sudah terpenuhi." },
                     {
                       q: "Bagaimana sistem kurikulumnya?",
-                      a: "Kami menerapkan Kurikulum Terpadu yang menggabungkan kurikulum Nasional dengan kurikulum kepesantrenan bermanhaj salaf yang berfokus pada pemurnian akidah, penguasaan Bahasa Arab, Tahfidz Al-Qur'an, dan Kitab Turots.",
-                    },
+                      a: "Kami menerapkan Kurikulum Terpadu yang menggabungkan kurikulum Nasional dengan kurikulum kepesantrenan bermanhaj salaf yang berfokus pada pemurnian akidah, penguasaan Bahasa Arab, Tahfidz Al-Qur'an, dan Kitab Turots." },
                   ].map((faq, i) => (
                     <motion.div key={i} className="group">
                       <details className="bg-white rounded-[24px] border border-surface-100 shadow-premium-sm transition-all duration-300 open:shadow-premium-lg">

@@ -32,8 +32,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json({
       success: true,
-      message: "All schedules successfully shifted by -7 hours to match WIB.",
-    });
+      message: "All schedules successfully shifted by -7 hours to match WIB." });
   } catch (error: any) {
     return NextResponse.json(
       { success: false, error: error.message },

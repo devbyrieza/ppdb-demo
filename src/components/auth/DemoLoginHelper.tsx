@@ -11,8 +11,7 @@ import {
   BookOpen,
   Mic2,
   FileSearch,
-  UserCheck,
-} from "lucide-react";
+  UserCheck } from "lucide-react";
 
 interface DemoLoginHelperProps {
   onSelect: (val1: string, val2: string, type: "pendaftar" | "admin", roleId?: string) => void;
@@ -26,48 +25,42 @@ export default function DemoLoginHelper({ onSelect }: DemoLoginHelperProps) {
       email: "admin@ppdb-demo.com",
       pass: "password123",
       icon: ShieldCheck,
-      color: "bg-secondary-100 text-secondary-700 border-secondary-200",
-    },
+      color: "bg-secondary-100 text-secondary-700 border-secondary-200" },
     {
       role: "Admin Keuangan",
       id: "admin_keuangan",
       email: "keuangan@ppdb-demo.com",
       pass: "password123",
       icon: CreditCard,
-      color: "bg-emerald-100 text-emerald-700 border-emerald-200",
-    },
+      color: "bg-emerald-100 text-emerald-700 border-emerald-200" },
     {
       role: "Admin Berkas",
       id: "admin_berkas",
       email: "berkas@ppdb-demo.com",
       pass: "password123",
       icon: FileSearch,
-      color: "bg-primary-100 text-primary-700 border-primary-200",
-    },
+      color: "bg-primary-100 text-primary-700 border-primary-200" },
     {
       role: "Penguji Al-Qur'an",
       id: "penguji",
       email: "ust.abdullah@ppdb-demo.com",
       pass: "password123",
       icon: BookOpen,
-      color: "bg-primary-100 text-primary-700 border-primary-200",
-    },
+      color: "bg-primary-100 text-primary-700 border-primary-200" },
     {
       role: "Pewawancara Calon Santri",
       id: "pewawancara_calsan",
       email: "ust.umar@ppdb-demo.com",
       pass: "password123",
       icon: Mic2,
-      color: "bg-rose-100 text-rose-700 border-rose-200",
-    },
+      color: "bg-rose-100 text-rose-700 border-rose-200" },
     {
       role: "Pewawancara Calon Orangtua/Wali Santri",
       id: "pewawancara_cawalsan",
       email: "ust.ahmad@ppdb-demo.com",
       pass: "password123",
       icon: UserCheck,
-      color: "bg-purple-100 text-purple-700 border-purple-200",
-    },
+      color: "bg-purple-100 text-purple-700 border-purple-200" },
   ];
 
   // Demo pendaftar accounts for random selection (All fully completed/accepted)

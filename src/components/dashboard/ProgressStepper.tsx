@@ -7,8 +7,7 @@ import {
   FileText,
   Calendar,
   GraduationCap,
-  UserCheck,
-} from "lucide-react";
+  UserCheck } from "lucide-react";
 import { type StatusProses } from "@/lib/access-control";
 
 interface ProgressStepperProps {
@@ -20,8 +19,7 @@ const STEPS = [
     id: "draft",
     label: "Registrasi",
     icon: ClipboardList,
-    statuses: ["draft"],
-  },
+    statuses: ["draft"] },
   {
     id: "payment",
     label: "Pembayaran",
@@ -31,43 +29,36 @@ const STEPS = [
       "awaiting_payment",
       "payment_verification",
       "payment_rejected",
-    ],
-  },
+    ] },
   {
     id: "data",
     label: "Isi Data",
     icon: FileText,
-    statuses: ["paid", "verified", "data_completed"],
-  },
+    statuses: ["paid", "verified", "data_completed"] },
   {
     id: "docs",
     label: "Berkas",
     icon: FileText,
-    statuses: ["docs_uploaded", "docs_verified", "docs_rejected"],
-  },
+    statuses: ["docs_uploaded", "docs_verified", "docs_rejected"] },
   {
     id: "test",
     label: "Seleksi",
     icon: Calendar,
-    statuses: ["scheduled", "tested"],
-  },
+    statuses: ["scheduled", "tested"] },
   {
     id: "result",
     label: "Hasil",
     icon: GraduationCap,
-    statuses: ["announced", "accepted"],
-  },
+    statuses: ["announced", "accepted"] },
   {
     id: "re_register",
     label: "Daftar Ulang",
     icon: UserCheck,
-    statuses: ["enrolled", "re_registered"],
-  },
+    statuses: ["enrolled", "re_registered"] },
 ];
 
 export default function ProgressStepper({
-  currentStatus,
-}: ProgressStepperProps) {
+  currentStatus }: ProgressStepperProps) {
   // Find current step index
   const currentStepIndex = STEPS.findIndex((step) =>
     step.statuses.includes(currentStatus),

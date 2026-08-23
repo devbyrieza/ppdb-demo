@@ -45,9 +45,7 @@ export async function POST(request: NextRequest) {
         asrama: true,
         hasil_seleksi: true,
         reservasi: true,
-        whatsapp_logs: true,
-      },
-    });
+        whatsapp_logs: true } });
 
     if (pendaftars.length === 0) {
       return NextResponse.json(
@@ -63,14 +61,12 @@ export async function POST(request: NextRequest) {
       nama_lengkap: p.nama_lengkap,
       backup_data: JSON.parse(JSON.stringify(p)),
       deleted_by: session.id,
-      deleted_by_name: session.full_name || session.name || "Admin Super",
-    }));
+      deleted_by_name: session.full_name || session.name || "Admin Super" }));
 
     await prisma.$transaction(async (tx) => {
       // 1. Create backups
       await tx.pendaftarBackup.createMany({
-        data: backupDataList,
-      });
+        data: backupDataList });
 
       // 2. Soft delete individually to ensure unique DEL_ prefixes
       for (const p of pendaftars) {
@@ -81,9 +77,7 @@ export async function POST(request: NextRequest) {
             nik: p.nik ? `DEL_${Date.now()}_${p.nik}` : `DEL_${Date.now()}_${p.id}`,
             deleted_at: new Date(),
             deleted_by: session.id,
-            updated_at: new Date(),
-          },
-        });
+            updated_at: new Date() } });
       }
     });
 
@@ -96,15 +90,12 @@ export async function POST(request: NextRequest) {
       targetName: `${pendaftars.length} Pendaftar`,
       details: {
         count: pendaftars.length,
-        deleted_ids: pendaftars.map(p => p.id),
-      },
-    });
+        deleted_ids: pendaftars.map(p => p.id) } });
 
     await invalidateAdminPendaftarCache();
     return NextResponse.json({
       success: true,
-      message: `${pendaftars.length} pendaftar berhasil dipindahkan ke tempat sampah`,
-    });
+      message: `${pendaftars.length} pendaftar berhasil dipindahkan ke tempat sampah` });
   } catch (error: any) {
     console.error("Error in bulk delete API:", error);
     return NextResponse.json(

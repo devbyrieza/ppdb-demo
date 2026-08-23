@@ -33,31 +33,21 @@ export async function GET(request: Request) {
         exam_session: {
           start_time: {
             gte: oneHourFromNow,
-            lte: windowEnd,
-          },
-        },
+            lte: windowEnd } },
         pendaftar: {
-          deleted_at: null,
-        },
-      },
+          deleted_at: null } },
       include: {
         pendaftar: {
           select: {
             id: true,
             nama_lengkap: true,
-            no_hp: true,
-          },
-        },
+            no_hp: true } },
         exam_session: {
           select: {
             title: true,
             start_time: true,
-            location: true,
-          },
-        },
-        notif_reminders: true,
-      },
-    });
+            location: true } },
+        notif_reminders: true } });
 
     let enqueued = 0;
     let skipped = 0;
@@ -105,8 +95,7 @@ export async function GET(request: Request) {
         pendaftarId: jadwal.pendaftar_id,
         phone: jadwal.pendaftar.no_hp,
         jenisNotif: "reminder_h0",
-        messageContent: message,
-      });
+        messageContent: message });
 
       if (result.queued) {
         // Create/update reminder record
@@ -114,16 +103,12 @@ export async function GET(request: Request) {
           where: {
             jadwal_ujian_id_pendaftar_id: {
               jadwal_ujian_id: jadwal.id,
-              pendaftar_id: jadwal.pendaftar_id,
-            },
-          },
+              pendaftar_id: jadwal.pendaftar_id } },
           update: {},
           create: {
             jadwal_ujian_id: jadwal.id,
             pendaftar_id: jadwal.pendaftar_id,
-            reminder_sent: false,
-          },
-        });
+            reminder_sent: false } });
         enqueued++;
       } else {
         skipped++;
@@ -136,8 +121,7 @@ export async function GET(request: Request) {
       enqueued,
       skipped,
       errors,
-      timestamp: new Date().toISOString(),
-    });
+      timestamp: new Date().toISOString() });
   } catch (error: any) {
     console.error("❌ Cron H-0 Reminder error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });

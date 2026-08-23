@@ -8,8 +8,7 @@ import { Menu, X, ArrowRight, GraduationCap, ChevronDown, BookOpen, Users, Star 
 import {
   scrollToSection,
   scrollToTop,
-  navigateToDetail,
-} from "@/lib/navigation-scroll";
+  navigateToDetail } from "@/lib/navigation-scroll";
 import Image from "next/image";
 import { BRANDING } from "@/config/branding";
 import LanguageSwitcher from "@/components/common/LanguageSwitcher";
@@ -108,8 +107,7 @@ export default function Navbar() {
         "/fasilitas": "#fasilitas",
         "/kegiatan": "#kegiatan",
         "/galeri": "#gallery",
-        "/kontak": "#kontak",
-      };
+        "/kontak": "#kontak" };
       navigateToDetail(href, sectionMap[href]);
     }
   };
@@ -379,8 +377,7 @@ export default function Navbar() {
                 background:
                   "linear-gradient(180deg, var(--color-surface-50) 0%, #fff 100%)",
                 borderTop: "1px solid var(--color-primary-100)",
-                boxShadow: "0 -8px 40px rgba(3,105,199,0.10)",
-              }}
+                boxShadow: "0 -8px 40px rgba(3,105,199,0.10)" }}
             >
               {/* Drag Handle */}
               <div

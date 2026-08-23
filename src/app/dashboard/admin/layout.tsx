@@ -5,8 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { getAdminWhereClause } from "@/lib/utils/admin";
 
 export default async function AdminDashboardLayout({
-  children,
-}: {
+  children }: {
   children: React.ReactNode;
 }) {
   const cookieStore = await cookies();
@@ -30,8 +29,7 @@ export default async function AdminDashboardLayout({
       if (userId && userRole !== "pendaftar") {
         const profile = await prisma.profile.findUnique({
           where: { id: userId },
-          select: { role: true, secondary_roles: true },
-        });
+          select: { role: true, secondary_roles: true } });
         if (profile) {
           availableRoles = [profile.role, ...(profile.secondary_roles || [])];
         }
@@ -43,26 +41,20 @@ export default async function AdminDashboardLayout({
         unverifiedPaymentsCount = await prisma.pembayaran.count({
           where: {
             status_pembayaran: { notIn: ["verified", "rejected"] },
-            pendaftar: baseWhere,
-          },
-        });
+            pendaftar: baseWhere } });
 
         // 2. Documents waiting for verification (is_verified is false, no verification notes/catatan yet)
         unverifiedDocsCount = await prisma.dokumen.count({
           where: {
             is_verified: false,
             catatan: null,
-            pendaftar: baseWhere,
-          },
-        });
+            pendaftar: baseWhere } });
 
         // 3. Edit profile requests waiting for action (status is pending or submitted)
         pendingDataRequestsCount = await prisma.dataPerubahanRequest.count({
           where: {
             status: { in: ["pending", "submitted"] },
-            pendaftar: baseWhere,
-          },
-        });
+            pendaftar: baseWhere } });
 
       }
     } catch (error) {

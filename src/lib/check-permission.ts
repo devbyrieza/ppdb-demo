@@ -62,8 +62,7 @@ export async function requirePermission(
       {
         error: "Anda tidak memiliki izin untuk mengakses fitur ini.",
         required: requiredPermissions,
-        your_role: role,
-      },
+        your_role: role },
       { status: 403 },
     );
   }
@@ -93,8 +92,7 @@ export async function requireRole(
     return NextResponse.json(
       {
         error: "Anda tidak memiliki akses ke halaman ini.",
-        your_role: role,
-      },
+        your_role: role },
       { status: 403 },
     );
   }

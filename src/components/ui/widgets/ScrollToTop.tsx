@@ -23,8 +23,7 @@ export default function ScrollToTop() {
     // Smooth scroll to top using native API (works with Lenis)
     window.scrollTo({
       top: 0,
-      behavior: "smooth",
-    });
+      behavior: "smooth" });
 
     // Alternative: If using Lenis directly
     // if (typeof window !== 'undefined' && (window as any).lenis) {

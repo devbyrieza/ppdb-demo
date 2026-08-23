@@ -15,8 +15,7 @@ const UPLOAD_CONFIG = {
     "image/heic",
     "image/heif",
     "application/pdf",
-  ],
-};
+  ] };
 
 function formatFileSize(bytes: number): string {
   if (bytes < 1024) return bytes + " B";
@@ -58,8 +57,7 @@ export async function POST(request: NextRequest) {
         {
           success: false,
           error:
-            "Akses ditolak. Hanya Admin Super dan Admin Keuangan yang dapat mengupload pembayaran atas nama pendaftar.",
-        },
+            "Akses ditolak. Hanya Admin Super dan Admin Keuangan yang dapat mengupload pembayaran atas nama pendaftar." },
         { status: 403 },
       );
     }
@@ -105,8 +103,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: "Nominal pembayaran tidak valid (minimum Rp 1.000)",
-        },
+          error: "Nominal pembayaran tidak valid (minimum Rp 1.000)" },
         { status: 400 },
       );
     }
@@ -123,8 +120,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: `Ukuran file terlalu besar! Maksimal ${formatFileSize(UPLOAD_CONFIG.maxSize)}`,
-        },
+          error: `Ukuran file terlalu besar! Maksimal ${formatFileSize(UPLOAD_CONFIG.maxSize)}` },
         { status: 400 },
       );
     }
@@ -138,8 +134,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: `Format file tidak didukung! Gunakan JPG, PNG, PDF, atau WebP. (File Anda: ${safeFileType || "tidak dikenali"})`,
-        },
+          error: `Format file tidak didukung! Gunakan JPG, PNG, PDF, atau WebP. (File Anda: ${safeFileType || "tidak dikenali"})` },
         { status: 400 },
       );
     }
@@ -148,9 +143,7 @@ export async function POST(request: NextRequest) {
     const pendaftar = await prisma.pendaftar.findUnique({
       where: { id: pendaftarId, deleted_at: null },
       include: {
-        tahun_ajaran: true,
-      },
-    });
+        tahun_ajaran: true } });
 
     if (!pendaftar) {
       return NextResponse.json(
@@ -174,8 +167,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(
           {
             success: false,
-            error: `Pendaftar ${pendaftar.nama_lengkap} belum dinyatakan DITERIMA, tidak bisa melakukan daftar ulang. Status saat ini: ${pendaftar.status_pendaftaran}`,
-          },
+            error: `Pendaftar ${pendaftar.nama_lengkap} belum dinyatakan DITERIMA, tidak bisa melakukan daftar ulang. Status saat ini: ${pendaftar.status_pendaftaran}` },
           { status: 400 },
         );
       }
@@ -228,9 +220,7 @@ export async function POST(request: NextRequest) {
         pendaftar_id: pendaftarId,
         status_pembayaran: { in: ["pending", "rejected"] },
         jenis_pembayaran: jenisPembayaran as any,
-        metode_pembayaran: "manual",
-      },
-    });
+        metode_pembayaran: "manual" } });
 
     let pembayaranResult;
 
@@ -248,9 +238,7 @@ export async function POST(request: NextRequest) {
           catatan_verifikasi: catatan
             ? `Admin upload (Auto-Verified): ${catatan}`
             : "Diunggah dan diverifikasi otomatis oleh Admin",
-          updated_at: new Date(),
-        } as any,
-      });
+          updated_at: new Date() } as any });
     } else {
       // Cek keringanan dari data_lengkap
       let expectedTagihanDaftarUlang = 8500000;
@@ -296,9 +284,7 @@ export async function POST(request: NextRequest) {
           status_pembayaran: "verified",
           catatan_verifikasi: catatan
             ? `Admin upload (Auto-Verified): ${catatan}`
-            : "Diunggah dan diverifikasi otomatis oleh Admin",
-        } as any,
-      });
+            : "Diunggah dan diverifikasi otomatis oleh Admin" } as any });
     }
 
     // 12. Update status pendaftar
@@ -312,8 +298,7 @@ export async function POST(request: NextRequest) {
           jenis_pembayaran: "DAFTAR_ULANG",
           status_pembayaran: "verified",
           id: { not: pembayaranResult.id } // Exclude the one we just updated/created to avoid double counting if it was already in DB
-        },
-      });
+        } });
       const totalPaid = allVerified.reduce((acc, p) => acc + Number(p.jumlah), 0) + jumlah;
       
       let expectedTagihanDaftarUlang = 8500000;
@@ -346,9 +331,7 @@ export async function POST(request: NextRequest) {
         where: { id: pendaftarId },
         data: {
           status_pendaftaran: newPendaftarStatus,
-          updated_at: new Date(),
-        },
-      });
+          updated_at: new Date() } });
     }
 
     // 12b. Kirim Notifikasi WhatsApp
@@ -399,8 +382,7 @@ export async function POST(request: NextRequest) {
           pendaftarId: pendaftarId,
           phone: pendaftar.no_hp,
           jenisNotif: activeJenisNotif as any,
-          messageContent: finalMessage,
-        });
+          messageContent: finalMessage });
       }
     } catch (waError) {
       console.error("WhatsApp notification error:", waError);
@@ -418,9 +400,7 @@ export async function POST(request: NextRequest) {
         jenis_pembayaran: jenisPembayaran,
         jumlah: jumlah,
         file_path: filePath,
-        nomor_pendaftaran: pendaftar.nomor_pendaftaran,
-      },
-    });
+        nomor_pendaftaran: pendaftar.nomor_pendaftaran } });
 
     return NextResponse.json({
       success: true,
@@ -430,9 +410,7 @@ export async function POST(request: NextRequest) {
         pendaftar_nama: pendaftar.nama_lengkap,
         nomor_pendaftaran: pendaftar.nomor_pendaftaran,
         file_path: filePath,
-        status: "verified",
-      },
-    });
+        status: "verified" } });
   } catch (error: any) {
     console.error(
       "Critical error in admin upload-for-pendaftar payment:",
@@ -441,8 +419,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        error: `Kesalahan sistem: ${error.message || "Unknown error"}`,
-      },
+        error: `Kesalahan sistem: ${error.message || "Unknown error"}` },
       { status: 500 },
     );
   }
@@ -473,8 +450,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({
         success: true,
         data: [],
-        message: "Ketik minimal 2 karakter untuk mencari",
-      });
+        message: "Ketik minimal 2 karakter untuk mencari" });
     }
 
     const pendaftarList = await prisma.pendaftar.findMany({
@@ -484,8 +460,7 @@ export async function GET(request: NextRequest) {
           { nama_lengkap: { contains: q, mode: "insensitive" } },
           { nomor_pendaftaran: { contains: q, mode: "insensitive" } },
           { no_hp: { contains: q } },
-        ],
-      },
+        ] },
       select: {
         id: true,
         nomor_pendaftaran: true,
@@ -499,24 +474,17 @@ export async function GET(request: NextRequest) {
             id: true,
             jenis_pembayaran: true,
             status_pembayaran: true,
-            jumlah: true,
-          },
-        },
+            jumlah: true } },
         tahun_ajaran: {
           select: {
             nama: true,
-            biaya_pendaftaran: true,
-          },
-        },
-      },
+            biaya_pendaftaran: true } } },
       orderBy: { created_at: "desc" },
-      take: 10,
-    });
+      take: 10 });
 
     return NextResponse.json({
       success: true,
-      data: pendaftarList,
-    });
+      data: pendaftarList });
   } catch (error: any) {
     console.error("Error searching pendaftar:", error);
     return NextResponse.json(

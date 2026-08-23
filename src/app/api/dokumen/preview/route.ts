@@ -41,14 +41,12 @@ export async function GET(request: NextRequest) {
     const dokumen = await prisma.dokumen.findFirst({
       where: {
         pendaftar_id: session.id,
-        jenis_dokumen: jenisDokumen,
-      },
+        jenis_dokumen: jenisDokumen },
       select: {
         file_path: true,
         file_type: true,
         updated_at: true, // Select updated_at for cache busting
-      },
-    });
+      } });
 
     if (!dokumen) {
       return NextResponse.json(
@@ -72,8 +70,7 @@ export async function GET(request: NextRequest) {
         url: fileUrl,
         file_type: dokumen.file_type,
         expires_in: 3600, // Not actually expiring, but for compatibility
-      },
-    });
+      } });
   } catch (error: any) {
     console.error("Preview error:", error);
     return NextResponse.json(

@@ -13,8 +13,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: "Sesi tidak ditemukan. Silakan login kembali.",
-        },
+          error: "Sesi tidak ditemukan. Silakan login kembali." },
         { status: 401 },
       );
     }
@@ -43,9 +42,7 @@ export async function GET(request: NextRequest) {
       where: { id: session.id },
       include: {
         orang_tua: true,
-        dokumen: true,
-      },
-    });
+        dokumen: true } });
 
     if (!pendaftar) {
       return NextResponse.json(
@@ -58,8 +55,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       success: true,
       data: pendaftar,
-      isDummy: false,
-    });
+      isDummy: false });
   } catch (error: any) {
     console.error("Error in pendaftar-data API:", error);
     return NextResponse.json(

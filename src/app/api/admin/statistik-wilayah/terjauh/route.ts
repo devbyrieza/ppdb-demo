@@ -7,8 +7,7 @@ import { getAdminWhereClause } from "@/lib/utils/admin";
 
 const PESANTREN_COORD = {
   lat: -6.9749, // Koordinat aproksimasi Pesantren Al-Imam (Cikembar)
-  lon: 106.7725,
-};
+  lon: 106.7725 };
 
 // Haversine formula
 function calculateDistance(
@@ -67,8 +66,7 @@ export async function POST(req: Request) {
     if (!tahun_ajaran || !jenjang) {
       return NextResponse.json({
         success: false,
-        error: "tahun_ajaran dan jenjang wajib diisi",
-      });
+        error: "tahun_ajaran dan jenjang wajib diisi" });
     }
 
     const baseWhere = getAdminWhereClause();
@@ -94,21 +92,16 @@ export async function POST(req: Request) {
             "lunas daftar ulang",
             "proses_daftar_ulang",
             "lunas_daftar_ulang"
-          ],
-        },
-      },
+          ] } },
       select: {
         id: true,
         data_lengkap: true,
-        status_pendaftaran: true,
-      },
-    });
+        status_pendaftaran: true } });
 
     if (!pendaftarList.length) {
       return NextResponse.json({
         success: false,
-        error: "Tidak ada data pendaftar (diterima/tes) untuk kriteria ini",
-      });
+        error: "Tidak ada data pendaftar (diterima/tes) untuk kriteria ini" });
     }
 
     const cache = await getGeocodeCache();
@@ -127,8 +120,7 @@ export async function POST(req: Request) {
         provinsi,
         rt,
         rw,
-        kelurahan,
-      } = dataLengkap.santri;
+        kelurahan } = dataLengkap.santri;
       
       if (!kabupaten || !provinsi) continue;
 
@@ -158,9 +150,7 @@ export async function POST(req: Request) {
               )}&format=json&limit=1`,
               {
                 headers: {
-                  "User-Agent": "AlAndalusPesantrenApp/1.0",
-                },
-              }
+                  "User-Agent": "AlAndalusPesantrenApp/1.0" } }
             );
             const data = await res.json();
             if (data && data.length > 0) {
@@ -211,8 +201,7 @@ export async function POST(req: Request) {
     if (allCandidates.length === 0) {
       return NextResponse.json({
         success: false,
-        error: "Gagal menghitung jarak untuk seluruh pendaftar, data alamat mungkin tidak valid",
-      });
+        error: "Gagal menghitung jarak untuk seluruh pendaftar, data alamat mungkin tidak valid" });
     }
 
     const top5 = allCandidates.sort((a, b) => b.jarak_km - a.jarak_km).slice(0, 5);

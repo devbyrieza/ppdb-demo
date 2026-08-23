@@ -27,15 +27,13 @@ export async function GET(request: NextRequest) {
 
     // Attempt to fetch from Pengumuman table
     const pengumuman = await prisma.pengumuman.findUnique({
-      where: { pendaftar_id: pendaftarId },
-    });
+      where: { pendaftar_id: pendaftarId } });
 
     // --- SELF-HEALING & SYNC LOGIC ---
     // Fetch pendaftar status to ensure consistency
     const pendaftar = await prisma.pendaftar.findUnique({
       where: { id: pendaftarId },
-      select: { status_pendaftaran: true, updated_at: true, tahun_ajaran_id: true },
-    });
+      select: { status_pendaftaran: true, updated_at: true, tahun_ajaran_id: true } });
 
     const announcedStatuses = ["accepted", "rejected", "cadangan", "announced", "enrolled", "enrolled_full"];
     
@@ -52,9 +50,7 @@ export async function GET(request: NextRequest) {
           id: pengumuman?.id || pendaftarId,
           status_kelulusan: statusMapped,
           catatan: pengumuman?.catatan || "Hasil seleksi telah diumumkan. Silakan cek detail di atas.",
-          tanggal_pengumuman: pengumuman?.published_at?.toISOString() || pendaftar.updated_at.toISOString(),
-        },
-      };
+          tanggal_pengumuman: pengumuman?.published_at?.toISOString() || pendaftar.updated_at.toISOString() } };
       
       await setCache(cacheKey, responseData, 300); // Cache 5 menit
       return NextResponse.json(responseData);
@@ -72,9 +68,7 @@ export async function GET(request: NextRequest) {
                 ? "ditolak"
                 : "cadangan",
           catatan: pengumuman.catatan,
-          tanggal_pengumuman: pengumuman.published_at?.toISOString() || pengumuman.created_at.toISOString(),
-        },
-      };
+          tanggal_pengumuman: pengumuman.published_at?.toISOString() || pengumuman.created_at.toISOString() } };
 
       await setCache(cacheKey, responseData, 300); // Cache 5 menit
       return NextResponse.json(responseData);

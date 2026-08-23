@@ -43,16 +43,14 @@ const Section = React.forwardRef<HTMLElement, SectionProps>(
           {
             "py-12 md:py-16": spacing === "sm",
             "py-16 md:py-20": spacing === "md",
-            "py-20 md:py-28": spacing === "lg",
-          },
+            "py-20 md:py-28": spacing === "lg" },
           // Background
           {
             "bg-white": background === "white",
             "bg-surface-50": background === "gray",
             "bg-gradient-islamic": background === "gradient",
             "bg-green-50": background === "green",
-            "bg-transparent": background === "transparent",
-          },
+            "bg-transparent": background === "transparent" },
           className,
         )}
         {...props}

@@ -95,8 +95,7 @@ export async function POST(req: NextRequest) {
           }
           
           const newDataLengkap = {
-            ...(parsedData as any),
-          };
+            ...(parsedData as any) };
           if (alasan) {
             newDataLengkap.alasan_mengundurkan_diri = alasan;
           }
@@ -106,8 +105,7 @@ export async function POST(req: NextRequest) {
           const updateData: any = {
             status_pendaftaran: newStatus,
             data_lengkap: safeDataLengkap,
-            updated_at: new Date(),
-          };
+            updated_at: new Date() };
 
           // Rename nomor_pendaftaran to free it up for gap filling
           if (newStatus === "mengundurkan_diri" && !p.nomor_pendaftaran.startsWith("WD_")) {
@@ -124,25 +122,20 @@ export async function POST(req: NextRequest) {
       await invalidateAdminPendaftarCache();
       return NextResponse.json({
         success: true,
-        updated_count: ids.length,
-      });
+        updated_count: ids.length });
     } else {
       // Bulk update
       const result = await prisma.pendaftar.updateMany({
         where: {
-          id: { in: ids },
-        },
+          id: { in: ids } },
         data: {
           status_pendaftaran: newStatus,
-          updated_at: new Date(),
-        },
-      });
+          updated_at: new Date() } });
 
       await invalidateAdminPendaftarCache();
       return NextResponse.json({
         success: true,
-        updated_count: result.count,
-      });
+        updated_count: result.count });
     }
   } catch (error) {
     console.error("Bulk update error:", error);

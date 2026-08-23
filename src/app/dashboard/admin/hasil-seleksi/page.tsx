@@ -7,8 +7,7 @@ import {
   Search,
   Filter,
   Loader2,
-  Download,
-} from "lucide-react";
+  Download } from "lucide-react";
 import { toast } from "react-hot-toast";
 
 export default function HasilSeleksiPage() {
@@ -17,8 +16,7 @@ export default function HasilSeleksiPage() {
   const [stats, setStats] = useState({
     total_lulus: 0,
     total_cadangan: 0,
-    total_gagal: 0,
-  });
+    total_gagal: 0 });
   const [filter, setFilter] = useState({
     jenjang: "",
     status: "accepted", // Default to those accepted
@@ -69,8 +67,7 @@ export default function HasilSeleksiPage() {
         setStats({
           total_lulus: lulus,
           total_gagal: gagal,
-          total_cadangan: cadangan,
-        });
+          total_cadangan: cadangan });
       }
     } catch (error) {
       console.error(error);

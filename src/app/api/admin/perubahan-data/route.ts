@@ -27,12 +27,8 @@ export async function GET() {
           select: {
             nama_lengkap: true,
             no_hp: true,
-            nik: true,
-          },
-        },
-      },
-      orderBy: { created_at: "desc" },
-    });
+            nik: true } } },
+      orderBy: { created_at: "desc" } });
 
     return NextResponse.json({ success: true, data: requests });
   } catch (error: any) {
@@ -68,13 +64,11 @@ export async function PUT(request: NextRequest) {
 
       // If completed, make sure student status is back to data_completed
       const req = await prisma.dataPerubahanRequest.findUnique({
-        where: { id: requestId },
-      });
+        where: { id: requestId } });
       if (req) {
         await prisma.pendaftar.update({
           where: { id: req.pendaftar_id },
-          data: { status_pendaftaran: "data_completed" },
-        });
+          data: { status_pendaftaran: "data_completed" } });
       }
     }
 
@@ -85,9 +79,7 @@ export async function PUT(request: NextRequest) {
         admin_note,
         approved_at: approvedAt,
         completed_at: completedAt,
-        updated_at: new Date(),
-      },
-    });
+        updated_at: new Date() } });
 
     return NextResponse.json({ success: true, data: updated });
   } catch (error: any) {

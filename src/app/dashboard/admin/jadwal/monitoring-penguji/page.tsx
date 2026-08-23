@@ -8,8 +8,7 @@ export default async function MonitoringPengujiPage() {
   await requireRole(["admin_super"]);
 
   const activeTahunAjaran = await prisma.tahunAjaran.findFirst({
-    where: { is_active: true },
-  });
+    where: { is_active: true } });
 
   if (!activeTahunAjaran) {
     return (
@@ -33,9 +32,7 @@ export default async function MonitoringPengujiPage() {
       },
       penguji_santri: { select: { id: true, full_name: true, phone: true } },
       penguji_ortu: { select: { id: true, full_name: true, phone: true } },
-      penguji_quran: { select: { id: true, full_name: true, phone: true } },
-    },
-  });
+      penguji_quran: { select: { id: true, full_name: true, phone: true } } } });
 
   const examinerMap = new Map<string, ExaminerStat>();
 
@@ -55,8 +52,7 @@ export default async function MonitoringPengujiPage() {
         totalAssigned: 0,
         totalGraded: 0,
         totalPending: 0,
-        pendingStudents: [],
-      });
+        pendingStudents: [] });
     }
     return examinerMap.get(key)!;
   };
@@ -77,8 +73,7 @@ export default async function MonitoringPengujiPage() {
           jadwalId: jadwal.id,
           name: jadwal?.pendaftar?.nama_lengkap,
           registrationNumber: jadwal.pendaftar.nomor_pendaftaran,
-          date: jadwal.tanggal_ujian,
-        });
+          date: jadwal.tanggal_ujian });
       }
     }
 
@@ -94,8 +89,7 @@ export default async function MonitoringPengujiPage() {
           jadwalId: jadwal.id,
           name: jadwal?.pendaftar?.nama_lengkap,
           registrationNumber: jadwal.pendaftar.nomor_pendaftaran,
-          date: jadwal.tanggal_ujian,
-        });
+          date: jadwal.tanggal_ujian });
       }
     }
 
@@ -111,8 +105,7 @@ export default async function MonitoringPengujiPage() {
           jadwalId: jadwal.id,
           name: jadwal?.pendaftar?.nama_lengkap,
           registrationNumber: jadwal.pendaftar.nomor_pendaftaran,
-          date: jadwal.tanggal_ujian,
-        });
+          date: jadwal.tanggal_ujian });
       }
     }
   });

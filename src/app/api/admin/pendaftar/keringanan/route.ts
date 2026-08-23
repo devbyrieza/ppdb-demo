@@ -43,16 +43,14 @@ export async function POST(req: NextRequest) {
       // Format lama (backward compat)
       jenis,
       nominal_potongan,
-      kesanggupan_bayar,
-    } = body;
+      kesanggupan_bayar } = body;
 
     if (!pendaftar_id) {
       return NextResponse.json({ error: "Pendaftar ID is required" }, { status: 400 });
     }
 
     const pendaftar = await prisma.pendaftar.findUnique({
-      where: { id: pendaftar_id },
-    });
+      where: { id: pendaftar_id } });
 
     if (!pendaftar) {
       return NextResponse.json({ error: "Pendaftar tidak ditemukan" }, { status: 404 });
@@ -85,8 +83,7 @@ export async function POST(req: NextRequest) {
         nominal_potongan: pUP + pSPP,
         catatan: catatan || null,
         // Jenis lama untuk kompatibilitas
-        jenis: jenis_bantuan === "BEASISWA" ? "BEASISWA_FULL" : "KERINGANAN_BIAYA",
-      };
+        jenis: jenis_bantuan === "BEASISWA" ? "BEASISWA_FULL" : "KERINGANAN_BIAYA" };
 
       await prisma.pengajuanBeasiswa.upsert({
         where: { pendaftar_id },
@@ -124,8 +121,7 @@ export async function POST(req: NextRequest) {
           jenis_bantuan: jenis && jenis.toLowerCase().includes("beasiswa") ? "BEASISWA" : "KERINGANAN",
           ...(kesanggupan_bayar !== undefined && kesanggupan_bayar > 0
             ? { kesanggupan_bayar: Number(kesanggupan_bayar) }
-            : {}),
-        };
+            : {}) };
 
         await prisma.pengajuanBeasiswa.upsert({
           where: { pendaftar_id },
@@ -153,8 +149,7 @@ export async function POST(req: NextRequest) {
 
     await prisma.pendaftar.update({
       where: { id: pendaftar_id },
-      data: { data_lengkap: dataLengkap },
-    });
+      data: { data_lengkap: dataLengkap } });
 
     logAdminAction({
       action: "UPDATE_KERINGANAN" as any,
@@ -164,15 +159,13 @@ export async function POST(req: NextRequest) {
       targetName: pendaftar.nama_lengkap || "Unknown",
       details: isNewFormat
         ? { jenis_bantuan, cakupan, potongan_uang_pangkal, potongan_spp }
-        : { jenis, nominal_potongan },
-    });
+        : { jenis, nominal_potongan } });
 
     await invalidateAdminPendaftarCache();
 
     return NextResponse.json({
       success: true,
-      message: "Bantuan biaya berhasil diperbarui",
-    });
+      message: "Bantuan biaya berhasil diperbarui" });
   } catch (error: any) {
     console.error("Update keringanan error:", error);
     return NextResponse.json(

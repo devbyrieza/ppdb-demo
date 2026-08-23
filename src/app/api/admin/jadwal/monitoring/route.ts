@@ -28,56 +28,40 @@ export async function GET(request: NextRequest) {
     const schedules = await prisma.jadwalUjian.findMany({
       where: {
         pendaftar: {
-          deleted_at: null,
-        },
-      },
+          deleted_at: null } },
       include: {
         pendaftar: {
           select: {
             id: true,
             nomor_pendaftaran: true,
             nama_lengkap: true,
-            jenjang: true,
-          },
-        },
+            jenjang: true } },
         exam_session: {
           select: {
             id: true,
             title: true,
             start_time: true,
             end_time: true,
-            location: true,
-          },
-        },
+            location: true } },
         penguji_quran: {
           select: {
             id: true,
-            full_name: true,
-          },
-        },
+            full_name: true } },
         penguji_santri: {
           select: {
             id: true,
-            full_name: true,
-          },
-        },
+            full_name: true } },
         penguji_ortu: {
           select: {
             id: true,
             full_name: true,
-            google_meet_link: true,
-          },
-        },
+            google_meet_link: true } },
         nilai_ujian: {
           select: {
             detail_quran: true,
             detail_wawancara: true,
-            detail_cawalsan: true,
-          },
-        },
-      },
-      orderBy: [{ tanggal_ujian: "desc" }, { waktu_mulai_santri: "asc" }],
-    });
+            detail_cawalsan: true } } },
+      orderBy: [{ tanggal_ujian: "desc" }, { waktu_mulai_santri: "asc" }] });
 
     // Map to a cleaner format
     const isEmpty = (v: any) => {
@@ -124,25 +108,20 @@ export async function GET(request: NextRequest) {
         pendaftar: {
           nomor: s.pendaftar.nomor_pendaftaran,
           nama: s.pendaftar.nama_lengkap,
-          jenjang: s.pendaftar.jenjang,
-        },
+          jenjang: s.pendaftar.jenjang },
         sesi: {
           title: s.exam_session?.title || "Sesi Ujian",
           start: s.exam_session?.start_time || s.waktu_mulai_santri,
           end: s.exam_session?.end_time || s.waktu_selesai_santri,
-          location: s.exam_session?.location || s.tempat_santri,
-        },
+          location: s.exam_session?.location || s.tempat_santri },
         ustadz: {
           quran: s.penguji_quran?.full_name || "-",
           santri: s.penguji_santri?.full_name || "-",
-          ortu: s.penguji_ortu?.full_name || "-",
-        },
+          ortu: s.penguji_ortu?.full_name || "-" },
         status: {
           quran: hasScoreQuran ? "completed" : s.status_quran || "scheduled",
           santri: hasScoreSantri ? "completed" : s.status_santri || "scheduled",
-          ortu: hasScoreOrtu ? "completed" : s.status_ortu || "scheduled",
-        },
-      };
+          ortu: hasScoreOrtu ? "completed" : s.status_ortu || "scheduled" } };
     });
 
     // Filter out data test/tes as requested

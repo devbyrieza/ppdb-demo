@@ -16,8 +16,7 @@ export async function GET(
     // Find user by id
     const user = await prisma.profile.findUnique({
       where: { id },
-      select: { id: true, role: true, full_name: true, secondary_roles: true },
-    });
+      select: { id: true, role: true, full_name: true, secondary_roles: true } });
 
     if (!user) {
       return NextResponse.redirect(new URL("/login?error=User_tidak_ditemukan", request.url));

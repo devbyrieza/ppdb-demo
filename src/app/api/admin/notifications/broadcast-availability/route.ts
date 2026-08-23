@@ -3,8 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
 import {
   enqueueWhatsapp,
-  buildMessageJadwalTersedia,
-} from "@/lib/whatsapp-queue";
+  buildMessageJadwalTersedia } from "@/lib/whatsapp-queue";
 
 async function getSession() {
   const cookieStore = await cookies();
@@ -31,19 +30,15 @@ export async function GET() {
         notif_jadwal_tersedia_terkirim: false,
         no_hp: { not: null, notIn: [""] },
         jadwal_ujian: { none: {} }, // Has no schedule yet
-      },
-    });
+      } });
 
     // 2. Count total available slots
     const sessions = await prisma.examSession.findMany({
       where: {
         is_active: true,
-        start_time: { gte: new Date() },
-      },
+        start_time: { gte: new Date() } },
       include: {
-        _count: { select: { bookings: true } },
-      },
-    });
+        _count: { select: { bookings: true } } } });
 
     const totalAvailableSlots = sessions.reduce((acc, s) => {
       return acc + Math.max(0, s.quota - s._count.bookings);
@@ -52,9 +47,7 @@ export async function GET() {
     return NextResponse.json({
       data: {
         eligibleCount,
-        totalAvailableSlots,
-      },
-    });
+        totalAvailableSlots } });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
@@ -75,12 +68,9 @@ export async function POST(request: Request) {
       await prisma.pendaftar.updateMany({
         where: {
           status_pendaftaran: { in: ["paid", "docs_verified"] },
-          jadwal_ujian: { none: {} },
-        },
+          jadwal_ujian: { none: {} } },
         data: {
-          notif_jadwal_tersedia_terkirim: false,
-        },
-      });
+          notif_jadwal_tersedia_terkirim: false } });
     }
 
     // 2. Fetch target pendaftars
@@ -89,15 +79,12 @@ export async function POST(request: Request) {
         status_pendaftaran: { in: ["paid", "docs_verified"] },
         notif_jadwal_tersedia_terkirim: false,
         no_hp: { not: null, notIn: [""] },
-        jadwal_ujian: { none: {} },
-      },
-      select: { id: true, nama_lengkap: true, no_hp: true },
-    });
+        jadwal_ujian: { none: {} } },
+      select: { id: true, nama_lengkap: true, no_hp: true } });
 
     if (targets.length === 0) {
       return NextResponse.json({
-        message: "Tidak ada pendaftar yang perlu dikirimi notifikasi.",
-      });
+        message: "Tidak ada pendaftar yang perlu dikirimi notifikasi." });
     }
 
     // 3. Enqueue notifications (staggered is handled by the queue logic itself)
@@ -108,14 +95,12 @@ export async function POST(request: Request) {
           pendaftarId: p.id,
           phone: p.no_hp,
           jenisNotif: "jadwal_tersedia",
-          messageContent: buildMessageJadwalTersedia(p.nama_lengkap),
-        });
+          messageContent: buildMessageJadwalTersedia(p.nama_lengkap) });
 
         // Mark as sent (enqueued)
         await prisma.pendaftar.update({
           where: { id: p.id },
-          data: { notif_jadwal_tersedia_terkirim: true },
-        });
+          data: { notif_jadwal_tersedia_terkirim: true } });
 
         successCount++;
       }
@@ -124,8 +109,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       success: true,
       message: `${successCount} notifikasi telah masuk antrean pengiriman.`,
-      count: successCount,
-    });
+      count: successCount });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

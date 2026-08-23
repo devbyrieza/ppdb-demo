@@ -26,8 +26,7 @@ export async function GET() {
     // Fetch user profile to check admin status
     const userProfile = await prisma.profile.findUnique({
       where: { id: userId },
-      select: { role: true, secondary_roles: true },
-    });
+      select: { role: true, secondary_roles: true } });
     const allRoles = userProfile
       ? [userProfile.role, ...(userProfile.secondary_roles || [])]
       : [];
@@ -48,8 +47,7 @@ export async function GET() {
             { penguji_hafalan_id: userId },
             { penguji_arab_id: userId },
           { exam_session: { created_by: userId } },
-        ],
-      };
+        ] };
     }
 
     const jadwal = await prisma.jadwalUjian.findMany({
@@ -75,27 +73,18 @@ export async function GET() {
                 no_hp_ayah: true,
                 no_hp_ibu: true,
                 pekerjaan_ayah: true,
-                pekerjaan_ibu: true,
-              },
-            },
-          },
-        },
+                pekerjaan_ibu: true } } } },
         tahun_ajaran: {
-          select: { nama: true },
-        },
+          select: { nama: true } },
         exam_session: {
           select: {
             title: true,
             start_time: true,
             end_time: true,
             location: true,
-            created_by: true,
-          },
-        },
-        nilai_ujian: true,
-      },
-      orderBy: { tanggal_ujian: "asc" },
-    });
+            created_by: true } },
+        nilai_ujian: true },
+      orderBy: { tanggal_ujian: "asc" } });
 
     // Transform data to be friendly
     const formattedJadwal = jadwal.map((item: any) => {
@@ -181,8 +170,7 @@ export async function GET() {
           zoom_link_hafalan: item.zoom_link_hafalan,
           zoom_link_arab: item.zoom_link_arab,
         // Also pass created_by so frontend can check
-        session_created_by: item.exam_session?.created_by,
-      };
+        session_created_by: item.exam_session?.created_by };
     });
 
     return NextResponse.json({ data: formattedJadwal });

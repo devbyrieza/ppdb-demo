@@ -18,16 +18,14 @@ export default function ParallaxSection({
   speed = 0.3,
   direction = "up",
   scale = 1,
-  opacity = false,
-}: ParallaxSectionProps) {
+  opacity = false }: ParallaxSectionProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [offset, setOffset] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
 
   const { ref: inViewRef } = useInView({
     threshold: 0.1,
-    triggerOnce: false,
-  });
+    triggerOnce: false });
 
   // Combine refs
   useEffect(() => {
@@ -86,8 +84,7 @@ export default function ParallaxSection({
         transform: `translate3d(0, ${offset}px, 0) scale(${scale})`,
         willChange: "transform",
         transition: isVisible ? "none" : "transform 0.1s ease-out",
-        ...opacityStyle,
-      }}
+        ...opacityStyle }}
     >
       {children}
     </div>

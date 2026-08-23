@@ -16,8 +16,7 @@ export async function sendSms(
     if (result.status) {
       return {
         success: true,
-        messageId: result.data?.id || `sms_${Date.now()}`,
-      };
+        messageId: result.data?.id || `sms_${Date.now()}` };
     }
 
     // Fallback untuk development

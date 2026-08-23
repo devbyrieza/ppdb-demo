@@ -19,10 +19,8 @@ async function main() {
     try {
       const result = await prisma.profile.updateMany({
         where: {
-          full_name: { contains: item.name, mode: "insensitive" },
-        },
-        data: { phone: item.phone },
-      });
+          full_name: { contains: item.name, mode: "insensitive" } },
+        data: { phone: item.phone } });
       console.log(`✅ ${item.name}: updated ${result.count} records`);
     } catch (error) {
       console.error(`❌ Gagal update ${item.name}:`, error);

@@ -5,8 +5,7 @@ import {
   generateSuratKesehatan,
   generateSuratPernyataan,
   generatePaktaIntegritas,
-  PendaftarPdfData,
-} from "@/lib/utils/pdf-generator";
+  PendaftarPdfData } from "@/lib/utils/pdf-generator";
 import { jsPDF } from "jspdf";
 
 export async function GET(
@@ -46,9 +45,7 @@ export async function GET(
     const pendaftar = await prisma.pendaftar.findUnique({
       where: { id: pendaftarId },
       include: {
-        tahun_ajaran: true,
-      },
-    });
+        tahun_ajaran: true } });
 
     if (!pendaftar) {
       return NextResponse.json(
@@ -68,8 +65,7 @@ export async function GET(
         : "",
       alamat: pendaftar.alamat || "",
       no_hp: pendaftar.no_hp || "",
-      tahun_ajaran: pendaftar.tahun_ajaran?.nama || "2027/2028",
-    };
+      tahun_ajaran: pendaftar.tahun_ajaran?.nama || "2027/2028" };
 
     let pdfOutput: ArrayBuffer | null = null;
     let filename = `Template_${type}_${pendaftar.nomor_pendaftaran}.pdf`;
@@ -103,9 +99,7 @@ export async function GET(
     return new NextResponse(pdfOutput, {
       headers: {
         "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename="${filename}"`,
-      },
-    });
+        "Content-Disposition": `attachment; filename="${filename}"` } });
   } catch (error: any) {
     console.error("Error generating PDF template:", error);
     return NextResponse.json(

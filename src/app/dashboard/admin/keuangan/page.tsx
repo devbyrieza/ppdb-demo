@@ -17,8 +17,7 @@ import {
   FileText,
   Users,
   Building,
-  BookOpen,
-} from "lucide-react";
+  BookOpen } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 import Alert from "@/components/ui/Alert";
 import { exportToExcelProfessional, exportToPDF } from "@/lib/utils/export";
@@ -91,8 +90,7 @@ function StatusBadge({ status, color }: { status: string; color: string }) {
     green: "bg-emerald-100 text-emerald-700 border-emerald-200",
     orange: "bg-secondary-100 text-secondary-700 border-secondary-200",
     red: "bg-red-100 text-red-600 border-red-200",
-    gray: "bg-slate-100 text-slate-500 border-slate-200",
-  };
+    gray: "bg-slate-100 text-slate-500 border-slate-200" };
   return (
     <span
       className={`px-2 py-1 rounded-md text-xs font-bold border ${colorMap[color] || colorMap.gray}`}
@@ -238,8 +236,7 @@ export default function KeuanganPage() {
 
       await exportToExcelProfessional({
         fileName: `Laporan_Keringanan_${new Date().toISOString().slice(0, 10)}`,
-        sheets,
-      });
+        sheets });
     } catch (e: any) {
       alert(e.message);
     }
@@ -286,8 +283,7 @@ export default function KeuanganPage() {
             title: "REKAPITULASI PEMBAYARAN PENDAFTARAN (TOTAL)",
             subTitle: `Tanggal: ${new Date().toLocaleDateString("id-ID")}`,
             header,
-            data: filteredPendaftaran.map(formatRow),
-          },
+            data: filteredPendaftaran.map(formatRow) },
         ];
 
         Object.keys(jenjangGroups)
@@ -298,14 +294,12 @@ export default function KeuanganPage() {
               title: `PEMBAYARAN PENDAFTARAN - ${j}`,
               subTitle: "",
               header,
-              data: jenjangGroups[j].map(formatRow),
-            });
+              data: jenjangGroups[j].map(formatRow) });
           });
 
         await exportToExcelProfessional({
           fileName: `Rekap_Pendaftaran_${new Date().toISOString().slice(0, 10)}`,
-          sheets,
-        });
+          sheets });
       } else {
         const data = filteredPendaftaran.map((i) => ({
           No: i.no,
@@ -314,8 +308,7 @@ export default function KeuanganPage() {
           "Status Bayar": i.status_pembayaran === "verified" ? "Terverifikasi" : "Pending",
           "Jumlah (Rp)": i.jumlah_pembayaran,
           Metode: i.metode.toUpperCase(),
-          "Tgl Update": new Date(i.last_updated).toLocaleDateString("id-ID"),
-        }));
+          "Tgl Update": new Date(i.last_updated).toLocaleDateString("id-ID") }));
         const headers = Object.keys(data[0]);
         const rows = data.map((item) => Object.values(item));
         exportToPDF(
@@ -395,32 +388,27 @@ export default function KeuanganPage() {
             name: "REKAP TOTAL",
             title: `REKAPITULASI PEMBAYARAN ${exportTitle} (SEMUA)`,
             header,
-            data: filteredDaftarUlang.map(formatRow),
-          },
+            data: filteredDaftarUlang.map(formatRow) },
           {
             name: "LUNAS",
             title: `${exportTitle} - LUNAS`,
             header,
-            data: lunas.map(formatRow),
-          },
+            data: lunas.map(formatRow) },
           {
             name: "CICILAN",
             title: `${exportTitle} - CICILAN`,
             header,
-            data: cicil.map(formatRow),
-          },
+            data: cicil.map(formatRow) },
           {
             name: "BELUM BAYAR",
             title: `${exportTitle} - BELUM BAYAR`,
             header,
-            data: belumBayar.map(formatRow),
-          },
+            data: belumBayar.map(formatRow) },
         ];
 
         await exportToExcelProfessional({
           fileName: `Rekap_${fileNameStr}_${new Date().toISOString().slice(0, 10)}`,
-          sheets,
-        });
+          sheets });
       } else {
         const data = filteredDaftarUlang.map((i) => ({
           No: i.no,
@@ -442,8 +430,7 @@ export default function KeuanganPage() {
           "Status Bayar": (isUP ? i.tipe_cicilan_up : i.tipe_cicilan_spp) === "LUNAS" ? "Lunas" : ((isUP ? i.tipe_cicilan_up : i.tipe_cicilan_spp) === "BELUM_BAYAR" ? "Belum Bayar" : "Cicilan"),
           "Alasan Keringanan": i.keringanan_reason || "-",
           "Sisa Tagihan (Rp)": isUP ? i.sisa_tagihan_up : i.sisa_tagihan_spp,
-          "Tgl Update": new Date(i.last_updated).toLocaleDateString("id-ID"),
-        }));
+          "Tgl Update": new Date(i.last_updated).toLocaleDateString("id-ID") }));
         const headers = Object.keys(data[0]);
         const rows = data.map((item) => Object.values(item));
         exportToPDF(

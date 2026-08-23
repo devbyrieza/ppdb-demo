@@ -10,8 +10,7 @@ import {
   evaluateQuranGrade,
   evaluateWawancaraGrade,
   evaluateStatusGrade,
-  determineFinalDecision,
-} from "@/lib/grading";
+  determineFinalDecision } from "@/lib/grading";
 
 async function getSession() {
   const { cookies } = await import("next/headers");
@@ -91,8 +90,7 @@ export async function POST(req: Request) {
       if (!isAssigned) {
         const pendaftar = await prisma.pendaftar.findUnique({
           where: { id: pendaftar_id },
-          select: { status_pendaftaran: true },
-        });
+          select: { status_pendaftaran: true } });
 
         const ALLOWED_STATUSES = [
           "docs_verified",
@@ -109,8 +107,7 @@ export async function POST(req: Request) {
           return NextResponse.json(
             {
               error:
-                'Forbidden: Input nilai ditolak karena pendaftar belum berstatus "Terverifikasi Berkas".',
-            },
+                'Forbidden: Input nilai ditolak karena pendaftar belum berstatus "Terverifikasi Berkas".' },
             { status: 403 },
           );
         }
@@ -160,8 +157,7 @@ export async function POST(req: Request) {
     // Perform Update
     const updated = await prisma.nilaiUjian.update({
       where: { id: nilai.id },
-      data: updateData,
-    });
+      data: updateData });
 
     // 4. Trigger Recalculation
     await recalculateNilaiUjian(pendaftar_id);

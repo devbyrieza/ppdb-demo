@@ -18,8 +18,7 @@ import {
   FileText,
   UploadCloud,
   Search,
-  AlertCircle,
-} from "lucide-react";
+  AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { exportToExcel, exportToPDF } from "@/lib/utils/export";
 import Swal from "sweetalert2";
@@ -246,8 +245,7 @@ function VerifikasiPembayaranContent() {
             metode_pembayaran: [cleanMetode],
             status: statusText,
             tanggal_bayar: [tglText],
-            catatan_details: [paymentDetail],
-          };
+            catatan_details: [paymentDetail] };
         } else {
           groups[studentKey].total_nominal += nominalVal;
           if (statusText === "Terverifikasi") groups[studentKey].total_verified += nominalVal;
@@ -286,8 +284,7 @@ function VerifikasiPembayaranContent() {
           "Metode Pembayaran": g.metode_pembayaran.join(", "),
           Status: g.status,
           "Tanggal Bayar": g.tanggal_bayar.join(", "),
-          Catatan: g.catatan_details.join("; "),
-        };
+          Catatan: g.catatan_details.join("; ") };
 
         if (activeTab === "UANG_PANGKAL" || activeTab === "DAFTAR_ULANG") {
           row["Beasiswa (Potongan)"] = g.beasiswa > 0 ? `Rp ${g.beasiswa.toLocaleString("id-ID")}` : "-";
@@ -343,9 +340,7 @@ function VerifikasiPembayaranContent() {
           catatan: catatan.trim() || null,
           jumlah: editJumlah ? parseFloat(editJumlah) : null,
           tipe_cicilan: editTipeCicilan,
-          cicilan_ke: editCicilanKe,
-        }),
-      });
+          cicilan_ke: editCicilanKe }) });
 
       if (!response.ok) throw new Error("Failed to verify");
 
@@ -380,8 +375,7 @@ function VerifikasiPembayaranContent() {
 
       const response = await fetch("/api/admin/verifikasi/pembayaran/upload", {
         method: "POST",
-        body: formData,
-      });
+        body: formData });
 
       const data = await response.json();
 
@@ -447,16 +441,14 @@ function VerifikasiPembayaranContent() {
       month: "short",
       year: "numeric",
       hour: "2-digit",
-      minute: "2-digit",
-    });
+      minute: "2-digit" });
   };
 
   const formatRupiah = (amount: string) => {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
       currency: "IDR",
-      minimumFractionDigits: 0,
-    }).format(parseFloat(amount));
+      minimumFractionDigits: 0 }).format(parseFloat(amount));
   };
 
   return (

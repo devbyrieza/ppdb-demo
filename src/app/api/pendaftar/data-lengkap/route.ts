@@ -37,8 +37,7 @@ export async function GET() {
 
     const pendaftarId = session.id;
     const pendaftar = await prisma.pendaftar.findUnique({
-      where: { id: pendaftarId },
-    });
+      where: { id: pendaftarId } });
 
     if (!pendaftar) {
       return NextResponse.json(
@@ -66,22 +65,18 @@ export async function GET() {
           : ["P", "Perempuan"].includes(pendaftar.jenis_kelamin || "")
             ? "Perempuan"
             : dataLengkap.santri?.jenis_kelamin || "",
-        no_hp: pendaftar.no_hp || dataLengkap.santri?.no_hp || "",
-      },
+        no_hp: pendaftar.no_hp || dataLengkap.santri?.no_hp || "" },
       ayah: dataLengkap.ayah || { status_hidup: "Masih Hidup" },
       ibu: dataLengkap.ibu || { status_hidup: "Masih Hidup" },
       wali: dataLengkap.wali || {},
-      wali_sama_dengan_ortu: dataLengkap.wali_sama_dengan_ortu ?? true,
-    };
+      wali_sama_dengan_ortu: dataLengkap.wali_sama_dengan_ortu ?? true };
 
     return NextResponse.json({
       success: true,
       data: {
         ...responseData,
         jenjang: pendaftar.jenjang,
-        status_pendaftaran: pendaftar.status_pendaftaran,
-      },
-    });
+        status_pendaftaran: pendaftar.status_pendaftaran } });
   } catch (error) {
     console.error("Error in GET /api/pendaftar/data-lengkap:", error);
     return NextResponse.json(
@@ -163,14 +158,12 @@ export async function POST(request: NextRequest) {
       ayah: ayah || {},
       ibu: ibu || {},
       wali: wali || {},
-      wali_sama_dengan_ortu: wali_sama_dengan_ortu ?? true,
-    };
+      wali_sama_dengan_ortu: wali_sama_dengan_ortu ?? true };
 
     // Update main pendaftar record
     const updateData: any = {
       data_lengkap: dataLengkapObj,
-      updated_at: new Date(),
-    };
+      updated_at: new Date() };
 
     // Sync individual columns for the Santri (Main Pendaftar Table)
     if (santri) {
@@ -220,8 +213,7 @@ export async function POST(request: NextRequest) {
     // UPDATE PENDAFTAR
     const updatedPendaftar = await prisma.pendaftar.update({
       where: { id: pendaftarId },
-      data: updateData,
-    });
+      data: updateData });
 
     // SYNC TO ORANG_TUA TABLE
     if (ayah || ibu || wali) {
@@ -253,17 +245,14 @@ export async function POST(request: NextRequest) {
         no_hp_wali: wali?.no_hp,
         hubungan_wali: wali?.hubungan,
         alamat_wali: wali?.alamat,
-        tanggal_lahir_wali: parseSafeDate(wali?.tanggal_lahir),
-      };
+        tanggal_lahir_wali: parseSafeDate(wali?.tanggal_lahir) };
 
       await prisma.orangTua.upsert({
         where: { pendaftar_id: pendaftarId },
         create: {
           pendaftar_id: pendaftarId,
-          ...parentData,
-        },
-        update: parentData,
-      });
+          ...parentData },
+        update: parentData });
     }
 
     // SYNC TO DATA_KESEHATAN TABLE
@@ -271,23 +260,19 @@ export async function POST(request: NextRequest) {
       const kesehatanData = {
         tinggi_badan: parseSafeInt(santri.tinggi_badan) ?? null,
         berat_badan: parseSafeFloat(santri.berat_badan) ?? null,
-        riwayat_penyakit: santri.riwayat_penyakit || null,
-      };
+        riwayat_penyakit: santri.riwayat_penyakit || null };
 
       await prisma.dataKesehatan.upsert({
         where: { pendaftar_id: pendaftarId },
         create: {
           pendaftar_id: pendaftarId,
-          ...kesehatanData,
-        },
-        update: kesehatanData,
-      });
+          ...kesehatanData },
+        update: kesehatanData });
     }
 
     return NextResponse.json({
       success: true,
-      message: is_draft ? "Draft tersimpan" : "Data berhasil disimpan",
-    });
+      message: is_draft ? "Draft tersimpan" : "Data berhasil disimpan" });
   } catch (error: any) {
     console.error("Error in POST /api/pendaftar/data-lengkap:", error);
     return NextResponse.json(

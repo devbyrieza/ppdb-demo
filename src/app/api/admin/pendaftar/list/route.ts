@@ -54,8 +54,7 @@ export async function GET(request: NextRequest) {
     // Build filter
     const baseWhere = getAdminWhereClause(tahunAjaran || undefined) as any;
     const where: Prisma.PendaftarWhereInput = {
-      ...baseWhere,
-    };
+      ...baseWhere };
 
     // Search filter
     if (search) {
@@ -118,8 +117,7 @@ export async function GET(request: NextRequest) {
         ditolak: ["rejected", "docs_rejected"],
         belum_daftar_ulang: ["accepted"],
         sudah_daftar_ulang: ["enrolled"],
-        mengundurkan_diri: ["mengundurkan_diri"],
-      };
+        mengundurkan_diri: ["mengundurkan_diri"] };
 
       const statusValues = filterMapping[status];
       if (statusValues && statusValues.length > 0) {
@@ -177,15 +175,11 @@ export async function GET(request: NextRequest) {
         created_at: true,
         tahun_ajaran: {
           select: {
-            nama: true,
-          },
-        },
+            nama: true } },
         pembayaran: {
-          select: { status_pembayaran: true },
-        },
+          select: { status_pembayaran: true } },
         dokumen: {
-          select: { jenis_dokumen: true, is_verified: true, catatan: true },
-        },
+          select: { jenis_dokumen: true, is_verified: true, catatan: true } },
         nilai_ujian: {
           select: {
             id: true,
@@ -200,22 +194,16 @@ export async function GET(request: NextRequest) {
             status_kelulusan: true,
             catatan_kelulusan: true,
             updated_at: true,
-            detail_akademik: true,
-          },
-        },
+            detail_akademik: true } },
         pengumuman: {
-          select: { status_kelulusan: true },
-        },
+          select: { status_kelulusan: true } },
         whatsapp_logs: {
           orderBy: { created_at: "desc" },
           take: 1,
-          select: { status: true, updated_at: true, error_message: true },
-        },
-      },
+          select: { status: true, updated_at: true, error_message: true } } },
       orderBy: { created_at: "desc" },
       skip,
-      take: limit,
-    });
+      take: limit });
 
     // Transform data: Master Merge for NilaiUjian and document status
     const isEmpty = (v: any) => {
@@ -300,9 +288,7 @@ export async function GET(request: NextRequest) {
             ? "verified"
             : doc.catatan
               ? "rejected"
-              : "pending",
-        })),
-      };
+              : "pending" })) };
     });
 
     // Hapus console.log verbose di sini
@@ -313,9 +299,7 @@ export async function GET(request: NextRequest) {
         page,
         limit,
         total,
-        totalPages: Math.ceil(total / limit),
-      },
-    };
+        totalPages: Math.ceil(total / limit) } };
 
     // Simpan ke Redis selama 60 detik
     await setCache(cacheKey, responseData, 60);

@@ -9,8 +9,7 @@ export default function IsiSeragamClient({ code, pendaftar }: { code: string; pe
   const [formData, setFormData] = useState({
     ukuran_seragam_baju: pendaftar.ukuran_seragam_baju || "",
     ukuran_seragam_celana: pendaftar.ukuran_seragam_celana || "",
-    ukuran_seragam_almamater: pendaftar.ukuran_seragam_almamater || "",
-  });
+    ukuran_seragam_almamater: pendaftar.ukuran_seragam_almamater || "" });
   const [message, setMessage] = useState({ type: "", text: "" });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -32,9 +31,7 @@ export default function IsiSeragamClient({ code, pendaftar }: { code: string; pe
           code,
           baju: formData.ukuran_seragam_baju,
           celana: formData.ukuran_seragam_celana,
-          almamater: formData.ukuran_seragam_almamater,
-        }),
-      });
+          almamater: formData.ukuran_seragam_almamater }) });
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Gagal menyimpan data");

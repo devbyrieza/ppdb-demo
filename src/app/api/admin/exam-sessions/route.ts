@@ -18,10 +18,7 @@ export async function GET(req: NextRequest) {
       orderBy: { start_time: "asc" },
       include: {
         _count: {
-          select: { bookings: true },
-        },
-      },
-    });
+          select: { bookings: true } } } });
 
     return NextResponse.json({ success: true, data: sessions });
   } catch (error: any) {
@@ -47,9 +44,7 @@ export async function POST(req: NextRequest) {
         quota: parseInt(quota),
         location,
         notes,
-        created_by: session.id,
-      },
-    });
+        created_by: session.id } });
 
     return NextResponse.json({ success: true, data: newSession });
   } catch (error: any) {

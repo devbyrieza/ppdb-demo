@@ -21,8 +21,7 @@ export async function GET(request: NextRequest) {
         id: true,
         nomor_pendaftaran: true,
         status_pendaftaran: true, // Remapped from status_proses
-      },
-    });
+      } });
 
     if (!data) {
       return NextResponse.json(
@@ -34,8 +33,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       id: data.id,
       nomor_pendaftaran: data.nomor_pendaftaran,
-      status_proses: data.status_pendaftaran || "draft",
-    });
+      status_proses: data.status_pendaftaran || "draft" });
   } catch (error) {
     console.error("Error in status API:", error);
     return NextResponse.json(

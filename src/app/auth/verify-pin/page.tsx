@@ -8,8 +8,7 @@ import {
   Loader2,
   AlertCircle,
   CheckCircle2,
-  ArrowRight,
-} from "lucide-react";
+  ArrowRight } from "lucide-react";
 
 function VerifyPinContent() {
   const searchParams = useSearchParams();
@@ -70,8 +69,7 @@ function VerifyPinContent() {
       const res = await fetch("/api/auth/verify-pin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token, pin: pin.join("") }),
-      });
+        body: JSON.stringify({ token, pin: pin.join("") }) });
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "PIN salah");

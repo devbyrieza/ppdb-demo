@@ -23,8 +23,7 @@ export async function DELETE(
 
     const dokumen = await prisma.dokumen.findUnique({
       where: { id: params.id },
-      include: { pendaftar: true },
-    });
+      include: { pendaftar: true } });
 
     if (!dokumen) {
       return NextResponse.json({ error: "Dokumen tidak ditemukan" }, { status: 404 });
@@ -44,13 +43,11 @@ export async function DELETE(
 
     // Delete from database
     await prisma.dokumen.delete({
-      where: { id: params.id },
-    });
+      where: { id: params.id } });
 
     await prisma.pendaftar.update({
       where: { id: dokumen.pendaftar_id },
-      data: { updated_at: new Date() },
-    });
+      data: { updated_at: new Date() } });
 
     await logAdminAction({
       action: "DELETE_DOKUMEN" as any,
@@ -58,15 +55,13 @@ export async function DELETE(
       adminName: session.full_name || session.name || "Admin",
       targetId: dokumen.pendaftar_id,
       targetName: dokumen.pendaftar?.nama_lengkap || "Unknown",
-      details: { jenis_dokumen: dokumen.jenis_dokumen, dokumen_id: params.id },
-    });
+      details: { jenis_dokumen: dokumen.jenis_dokumen, dokumen_id: params.id } });
 
     await invalidateAdminPendaftarCache();
 
     return NextResponse.json({
       success: true,
-      message: "Dokumen berhasil dihapus",
-    });
+      message: "Dokumen berhasil dihapus" });
   } catch (error: any) {
     console.error("Delete document error:", error);
     return NextResponse.json(

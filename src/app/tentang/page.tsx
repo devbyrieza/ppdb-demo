@@ -13,8 +13,7 @@ import {
   Sparkles,
   CheckCircle2,
   Send,
-  ShieldCheck,
-} from "lucide-react";
+  ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function TentangPage() {

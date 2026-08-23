@@ -7,8 +7,7 @@ import {
   Save,
   Loader2,
   CheckCircle2,
-  AlertCircle,
-} from "lucide-react";
+  AlertCircle } from "lucide-react";
 
 interface UserSession {
   id: string;
@@ -44,8 +43,7 @@ export default function ProfileSettings({ user }: { user: UserSession }) {
       penguji: "Penguji Al-Qur'an",
       pewawancara_calsan: "Pewawancara Calsan",
       pewawancara_cawalsan: "Pewawancara Cawalsan",
-      admin: "Admin",
-    };
+      admin: "Admin" };
     return roleMap[role] || role.replace("_", " ").toUpperCase();
   };
 
@@ -64,8 +62,7 @@ export default function ProfileSettings({ user }: { user: UserSession }) {
       const res = await fetch("/api/profile/update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ full_name: fullName, phone, username }),
-      });
+        body: JSON.stringify({ full_name: fullName, phone, username }) });
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Gagal memperbarui profil");
@@ -111,8 +108,7 @@ export default function ProfileSettings({ user }: { user: UserSession }) {
       const res = await fetch("/api/profile/password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ newPassword }),
-      });
+        body: JSON.stringify({ newPassword }) });
 
       const data = await res.json();
 

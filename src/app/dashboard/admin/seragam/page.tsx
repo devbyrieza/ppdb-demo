@@ -217,8 +217,7 @@ export default function RekapSeragamPage() {
         const res = await fetch("/api/admin/seragam/broadcast", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ pendaftarIds, isSpecial: showAll }),
-        });
+          body: JSON.stringify({ pendaftarIds, isSpecial: showAll }) });
         
         const json = await res.json();
         

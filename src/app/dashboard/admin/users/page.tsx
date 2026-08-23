@@ -14,8 +14,7 @@ import {
   SearchX,
   Key,
   Eye,
-  EyeOff,
-} from "lucide-react";
+  EyeOff } from "lucide-react";
 import Swal from "sweetalert2";
 import { ActionDropdown } from "@/components/ui/ActionDropdown";
 import { ROLE_LABELS, UserRole } from "@/lib/access-control";
@@ -60,8 +59,7 @@ export default function UserManagementPage() {
       const response = await fetch(`/api/admin/users/magic-link`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user_id: user.id }),
-      });
+        body: JSON.stringify({ user_id: user.id }) });
       const data = await response.json();
       if (response.ok) {
         Swal.fire({
@@ -89,8 +87,7 @@ export default function UserManagementPage() {
           `,
           icon: "success",
           confirmButtonText: "Tutup",
-          confirmButtonColor: "#1e3a8a",
-        });
+          confirmButtonColor: "#1e3a8a" });
       } else {
         Swal.fire("Gagal!", data.error || "Gagal membuat magic link", "error");
       }
@@ -108,8 +105,7 @@ export default function UserManagementPage() {
     role: "admin_berkas",
     secondary_roles: [] as string[],
     phone: "",
-    jenis_kelamin: "",
-  });
+    jenis_kelamin: "" });
 
   const fetchUsers = async () => {
     try {
@@ -140,8 +136,7 @@ export default function UserManagementPage() {
       role: "admin_berkas",
       secondary_roles: [],
       phone: "",
-      jenis_kelamin: "",
-    });
+      jenis_kelamin: "" });
     setIsEditing(false);
   };
 
@@ -158,8 +153,7 @@ export default function UserManagementPage() {
         title: "Gagal!",
         text: "Penguji/Pewawancara wajib memiliki nomor WhatsApp aktif untuk verifikasi PIN 4 digit terakhir.",
         icon: "error",
-        confirmButtonColor: "#e11d48",
-      });
+        confirmButtonColor: "#e11d48" });
       return;
     }
 
@@ -168,15 +162,13 @@ export default function UserManagementPage() {
       const response = await fetch("/api/admin/users", {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+        body: JSON.stringify(formData) });
       if (response.ok) {
         Swal.fire({
           icon: "success",
           title: "Berhasil",
           text: "Data user berhasil disimpan",
-          confirmButtonColor: "#1e3a8a",
-        });
+          confirmButtonColor: "#1e3a8a" });
         setIsModalOpen(false);
         fetchUsers();
       } else {
@@ -193,8 +185,7 @@ export default function UserManagementPage() {
           icon: "error",
           title: "Gagal Menyimpan",
           text: errorText,
-          confirmButtonColor: "#e11d48",
-        });
+          confirmButtonColor: "#e11d48" });
       }
     } catch (err: any) {
       Swal.fire(
@@ -214,13 +205,11 @@ export default function UserManagementPage() {
       confirmButtonColor: "#e11d48",
       cancelButtonColor: "#94a3b8",
       confirmButtonText: "Ya, Hapus!",
-      cancelButtonText: "Batal",
-    }).then(async (result) => {
+      cancelButtonText: "Batal" }).then(async (result) => {
       if (result.isConfirmed) {
         try {
           const response = await fetch(`/api/admin/users?id=${id}`, {
-            method: "DELETE",
-          });
+            method: "DELETE" });
           if (response.ok) {
             Swal.fire(
               "Terhapus!",
@@ -366,8 +355,7 @@ export default function UserManagementPage() {
                             {
                               label: "Buat Magic Link Login",
                               icon: <Key className="w-4 h-4" />,
-                              onClick: () => generateMagicLink(user),
-                            },
+                              onClick: () => generateMagicLink(user) },
                             {
                               label: "Edit User",
                               icon: <Edit className="w-4 h-4" />,
@@ -381,12 +369,10 @@ export default function UserManagementPage() {
                                   role: user.role,
                                   secondary_roles: user.secondary_roles || [],
                                   phone: user.phone || "",
-                                  jenis_kelamin: user.jenis_kelamin || "",
-                                });
+                                  jenis_kelamin: user.jenis_kelamin || "" });
                                 setIsEditing(true);
                                 setIsModalOpen(true);
-                              },
-                            },
+                              } },
                             {
                               label: "Hapus Akses",
                               icon: <Trash2 className="w-4 h-4" />,
@@ -411,8 +397,7 @@ export default function UserManagementPage() {
             if (e.target === e.currentTarget) {
               window.scrollBy({
                 top: e.deltaY,
-                behavior: "auto",
-              });
+                behavior: "auto" });
             }
           }}
           className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-6 bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar"
@@ -577,16 +562,14 @@ export default function UserManagementPage() {
                                 secondary_roles: [
                                   ...formData.secondary_roles,
                                   o.value,
-                                ],
-                              });
+                                ] });
                             } else {
                               setFormData({
                                 ...formData,
                                 secondary_roles:
                                   formData.secondary_roles.filter(
                                     (r) => r !== o.value,
-                                  ),
-                              });
+                                  ) });
                             }
                           }}
                           disabled={formData.role === o.value}

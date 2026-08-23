@@ -18,22 +18,16 @@ export async function GET(request: Request) {
     // 1. Get counts
     const unverifiedPaymentsCount = await prisma.pembayaran.count({
       where: {
-        status_pembayaran: { notIn: ["verified", "rejected"] },
-      },
-    });
+        status_pembayaran: { notIn: ["verified", "rejected"] } } });
 
     const unverifiedDocsCount = await prisma.dokumen.count({
       where: {
         is_verified: false,
-        catatan: null,
-      },
-    });
+        catatan: null } });
 
     const pendingDataRequestsCount = await prisma.dataPerubahanRequest.count({
       where: {
-        status: { in: ["pending", "submitted"] },
-      },
-    });
+        status: { in: ["pending", "submitted"] } } });
 
     if (
       unverifiedPaymentsCount === 0 &&
@@ -41,8 +35,7 @@ export async function GET(request: Request) {
       pendingDataRequestsCount === 0
     ) {
       return NextResponse.json({
-        message: "Tidak ada antrean hari ini. Notifikasi tidak dikirim.",
-      });
+        message: "Tidak ada antrean hari ini. Notifikasi tidak dikirim." });
     }
 
     // 2. Format message
@@ -64,11 +57,8 @@ export async function GET(request: Request) {
     const admins = await prisma.profile.findMany({
       where: {
         role: {
-          not: "pendaftar",
-        },
-      },
-      select: { phone: true, full_name: true, role: true },
-    });
+          not: "pendaftar" } },
+      select: { phone: true, full_name: true, role: true } });
 
     // Send WhatsApp to admins (ensure unique phone numbers)
     const phoneSent = new Set<string>();
@@ -81,13 +71,11 @@ export async function GET(request: Request) {
         try {
           const res = await sendMessage({
             phone: admin.phone,
-            message: messageText,
-          });
+            message: messageText });
           sendResults.push({
             name: admin.full_name,
             phone: admin.phone,
-            success: res.status,
-          });
+            success: res.status });
 
           // Beri jeda 3 detik antar pengiriman agar tidak terdeteksi spam/ban oleh Wablas
           await delay(3000);
@@ -96,8 +84,7 @@ export async function GET(request: Request) {
             name: admin.full_name,
             phone: admin.phone,
             success: false,
-            error: String(err),
-          });
+            error: String(err) });
         }
       }
     }
@@ -105,8 +92,7 @@ export async function GET(request: Request) {
     return NextResponse.json({
       success: true,
       message: "Daily recap checked and sent if needed.",
-      results: sendResults,
-    });
+      results: sendResults });
   } catch (error) {
     console.error("Daily admin recap cron error:", error);
     return NextResponse.json(

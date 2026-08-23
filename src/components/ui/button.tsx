@@ -312,8 +312,7 @@ const buttonVariants = cva(
           "[transition-timing-function:var(--ease-smooth)]",
           "duration-[var(--duration-fast)]",
           "active:scale-100",
-        ].join(" "),
-      },
+        ].join(" ") },
 
       size: {
         xs: "h-8 px-3 text-xs rounded-[var(--radius-md)]",
@@ -323,23 +322,17 @@ const buttonVariants = cva(
         xl: "h-14 px-10 text-lg rounded-[var(--radius-full)]",
         icon: "h-10 w-10 rounded-[var(--radius-md)] p-0",
         "icon-sm": "h-8 w-8 rounded-[var(--radius-md)] p-0",
-        "icon-lg": "h-12 w-12 rounded-[var(--radius-lg)] p-0",
-      },
+        "icon-lg": "h-12 w-12 rounded-[var(--radius-lg)] p-0" },
 
       fullWidth: {
-        true: "w-full",
-      },
+        true: "w-full" },
 
       loading: {
-        true: "pointer-events-none",
-      },
-    },
+        true: "pointer-events-none" } },
 
     defaultVariants: {
       variant: "primary",
-      size: "md",
-    },
-  },
+      size: "md" } },
 );
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -417,8 +410,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         size,
         fullWidth,
         loading: isLoading,
-        className,
-      }),
+        className }),
     );
 
     const content = (

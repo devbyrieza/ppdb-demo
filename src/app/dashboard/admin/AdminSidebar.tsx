@@ -38,15 +38,13 @@ import {
   Search,
   Shuffle,
   Shirt,
-  Wallet,
-} from "lucide-react";
+  Wallet } from "lucide-react";
 
 // ─── CONFIG & UTILS ───
 import {
   getMenuItemsForRole,
   UserRole,
-  ROLE_LABELS,
-} from "@/lib/access-control";
+  ROLE_LABELS } from "@/lib/access-control";
 import { BRANDING } from "@/config/branding";
 import LanguageSwitcher from "@/components/common/LanguageSwitcher";
 
@@ -76,8 +74,7 @@ const ICON_MAP: Record<string, any> = {
   PieChart,
   Shuffle,
   Shirt,
-  Wallet,
-};
+  Wallet };
 
 interface AdminSidebarProps {
   children: React.ReactNode;
@@ -103,8 +100,7 @@ export default function AdminSidebar({
   availableRoles,
   unverifiedPaymentsCount: initialPaymentsCount = 0,
   unverifiedDocsCount: initialDocsCount = 0,
-  pendingDataRequestsCount: initialRequestsCount = 0,
-}: AdminSidebarProps) {
+  pendingDataRequestsCount: initialRequestsCount = 0 }: AdminSidebarProps) {
   const pathname = usePathname();
 
   // State Management: Mengontrol visibilitas sidebar di berbagai ukuran layar
@@ -156,8 +152,7 @@ export default function AdminSidebar({
       ...item,
       icon: ICON_MAP[item.icon] || LayoutDashboard,
       isActive: pathname === item.href,
-      badge: badgeCount,
-    };
+      badge: badgeCount };
   });
 
   /**
@@ -177,9 +172,7 @@ export default function AdminSidebar({
       background: "#ffffff",
       customClass: {
         title: "font-black text-primary-950",
-        popup: "rounded-[2rem] border-4 border-primary-50",
-      },
-    });
+        popup: "rounded-[2rem] border-4 border-primary-50" } });
 
     if (result.isConfirmed) {
       try {
@@ -201,8 +194,7 @@ export default function AdminSidebar({
       const res = await fetch("/api/auth/select-role", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ profile_id: userId, chosen_role: newRole }),
-      });
+        body: JSON.stringify({ profile_id: userId, chosen_role: newRole }) });
       const data = await res.json();
       if (data.success) {
         window.location.href = data.redirectTo;
@@ -429,8 +421,7 @@ export default function AdminSidebar({
                         transition={{
                           type: "spring",
                           bounce: 0.2,
-                          duration: 0.6,
-                        }}
+                          duration: 0.6 }}
                       />
                     )}
                     <div className="flex items-center gap-4">

@@ -71,8 +71,7 @@ export async function GET(request: Request) {
     // Cache
     kabupatenCache.set(province.id, {
       data: kabupatenNames,
-      timestamp: Date.now(),
-    });
+      timestamp: Date.now() });
 
     return NextResponse.json({ data: kabupatenNames });
   } catch (error) {

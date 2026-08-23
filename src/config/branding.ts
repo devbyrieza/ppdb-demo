@@ -22,5 +22,4 @@ export const BRANDING = {
   igUrl: process.env.NEXT_PUBLIC_IG_URL || "https://instagram.com/pesantrenalandalus",
   ytUrl: process.env.NEXT_PUBLIC_YT_URL || "https://youtube.com/pesantrenalandalus",
   fbUrl: process.env.NEXT_PUBLIC_FB_URL || "https://facebook.com/pesantrenalandalus",
-  twitterUrl: process.env.NEXT_PUBLIC_TWITTER_URL || "#",
-};
+  twitterUrl: process.env.NEXT_PUBLIC_TWITTER_URL || "#" };

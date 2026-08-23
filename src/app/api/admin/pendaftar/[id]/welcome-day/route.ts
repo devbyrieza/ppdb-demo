@@ -25,13 +25,11 @@ export async function POST(
       totalPengantar,
       catatanTambahan,
       jumlahMobil,
-      jumlahMotor,
-    } = await request.json();
+      jumlahMotor } = await request.json();
 
     const pendaftar = await prisma.pendaftar.findUnique({
       where: { id: params.id },
-      include: { reservasi: true },
-    });
+      include: { reservasi: true } });
 
     if (!pendaftar) {
       return NextResponse.json({ error: "Pendaftar not found" }, { status: 404 });
@@ -67,8 +65,7 @@ export async function POST(
             jumlahMotor,
             updatedByAdmin: true,
             updatedAt: new Date().toISOString()
-          },
-        }
+          } }
       });
     } else {
       // Update existing
@@ -101,8 +98,7 @@ export async function POST(
       params.id,
       {
         pendaftarId: params.id,
-        action: "Admin updated welcome day info",
-      }
+        action: "Admin updated welcome day info" }
     );
 
     return NextResponse.json({ success: true });

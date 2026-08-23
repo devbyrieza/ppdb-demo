@@ -16,8 +16,7 @@ import {
   ShieldCheck,
   Search,
   ExternalLink,
-  Home,
-} from "lucide-react";
+  Home } from "lucide-react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import Swal from "sweetalert2";
@@ -25,8 +24,7 @@ import IdleTimeoutTracker from "@/components/auth/IdleTimeoutTracker";
 import { UserRole, ROLE_LABELS } from "@/lib/access-control";
 
 export default function PengujiDashboardLayout({
-  children,
-}: {
+  children }: {
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
@@ -74,20 +72,17 @@ export default function PengujiDashboardLayout({
       name: "Beranda",
       href: "/dashboard/penguji",
       icon: LayoutDashboard,
-      active: pathname === "/dashboard/penguji",
-    },
+      active: pathname === "/dashboard/penguji" },
     {
       name: "Jadwal Seleksi Saya",
       href: "/dashboard/penguji/jadwal",
       icon: Calendar,
-      active: pathname === "/dashboard/penguji/jadwal",
-    },
+      active: pathname === "/dashboard/penguji/jadwal" },
     {
       name: "Input Nilai",
       href: "/dashboard/penguji/input-nilai",
       icon: ClipboardCheck,
-      active: pathname === "/dashboard/penguji/input-nilai",
-    },
+      active: pathname === "/dashboard/penguji/input-nilai" },
   ];
 
   const handleLogout = async () => {
@@ -101,8 +96,7 @@ export default function PengujiDashboardLayout({
       const res = await fetch("/api/auth/select-role", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ profile_id: userId, chosen_role: newRole }),
-      });
+        body: JSON.stringify({ profile_id: userId, chosen_role: newRole }) });
       const data = await res.json();
       if (data.success) {
         window.location.href = data.redirectTo;
