@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import Swal from "sweetalert2";
 import { exportToExcelProfessional, exportToPDF } from "@/lib/utils/export";
 import Link from "next/link";
-import { ClipboardEdit, MessageSquare, Download, RefreshCcw, Send, BarChart3, AlertCircle, CheckCircle2, Clock, LayoutDashboard, Zap, Users, ChevronRight, Search, Filter, FileText, Eye, Share2, Sparkles, Link } from "lucide-react";
+import { ClipboardEdit, MessageSquare, Download, RefreshCcw, Send, BarChart3, AlertCircle, CheckCircle2, Clock, LayoutDashboard, Zap, Users, ChevronRight, Search, Filter, FileText, Eye, Share2, Sparkles, Link as LinkIcon } from "lucide-react";
 
 // Removed basic xlsx imports in favor of professional utility
 
