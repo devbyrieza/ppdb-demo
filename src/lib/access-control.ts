@@ -191,19 +191,40 @@ export function formatStatusDisplay(status: StatusProses) {
 
 // ─── 5. ROLE-BASED ACCESS CONTROL (RBAC) ───
 
-export type UserRole = "pendaftar" | "admin_berkas" | "admin_keuangan" | "penguji" | "pewawancara_calsan" | "pewawancara_cawalsan" | "admin_super" | "admin" | "penguji_hafalan" | "penguji_bahasa_arab";
+export type UserRole =
+  | "pendaftar"
+  | "admin_berkas"
+  | "admin_keuangan"
+  | "penguji"
+  | "pewawancara_calsan"
+  | "pewawancara_cawalsan"
+  | "penguji_hafalan"
+  | "penguji_bahasa_arab"
+  | "admin_kesehatan"
+  | "admin_reservasi"
+  | "admin_personalia"
+  | "admin_pelayanan"
+  | "viewer"
+  | "admin_super"
+  | "admin";
 
 export const ROLE_LABELS: Record<UserRole, string> = {
-  pendaftar: "Pendaftar",
+  pendaftar: "Calon Santri",
   admin_berkas: "Admin Berkas",
   admin_keuangan: "Admin Keuangan",
-  penguji: "Penguji Al-Qur'an",
-  pewawancara_calsan: "Pewawancara Calsan",
-  pewawancara_cawalsan: "Pewawancara Cawalsan",
+  penguji: "Penguji / Pewawancara",
+  pewawancara_calsan: "Pewawancara Santri",
+  pewawancara_cawalsan: "Pewawancara Wali",
   penguji_hafalan: "Penguji Hafalan",
   penguji_bahasa_arab: "Penguji Lisan B. Arab",
+  admin_kesehatan: "Admin Kesehatan (Klinik)",
+  admin_reservasi: "Admin Reservasi PSB",
+  admin_personalia: "Admin Personalia",
+  admin_pelayanan: "Admin Pelayanan",
+  viewer: "Viewer (Pemantau)",
   admin_super: "Admin Super",
-  admin: "Administrator" };
+  admin: "Administrator"
+};
 
 export const ROLE_PERMISSIONS: Record<UserRole, string[]> = {
   pendaftar: ["view_own_data", "edit_own_data", "upload_documents", "view_payment_status", "view_announcement"],
@@ -214,8 +235,14 @@ export const ROLE_PERMISSIONS: Record<UserRole, string[]> = {
   pewawancara_cawalsan: ["view_exam_schedule", "input_exam_scores"],
   penguji_hafalan: ["view_exam_schedule", "input_exam_scores"],
   penguji_bahasa_arab: ["view_exam_schedule", "input_exam_scores"],
-  admin_super: ["view_pendaftar_list", "view_dashboard_stats", "manage_users", "manage_settings"],
-  admin: ["view_pendaftar_list", "verify_documents", "verify_payment", "input_exam_scores"] };
+  admin_kesehatan: ["view_pendaftar_list", "verify_kesehatan"],
+  admin_reservasi: ["view_pendaftar_list", "manage_reservasi"],
+  admin_personalia: ["view_dashboard_stats", "manage_users"],
+  admin_pelayanan: ["view_pendaftar_list", "manage_reservasi"],
+  viewer: ["view_dashboard_stats", "view_pendaftar_list"],
+  admin_super: ["view_pendaftar_list", "view_dashboard_stats", "manage_users", "manage_settings", "verify_kesehatan", "manage_reservasi"],
+  admin: ["view_pendaftar_list", "verify_documents", "verify_payment", "input_exam_scores"]
+};
 
 export const DASHBOARD_ROUTES: Record<UserRole, string> = {
   pendaftar: "/dashboard/pendaftar",
@@ -226,15 +253,21 @@ export const DASHBOARD_ROUTES: Record<UserRole, string> = {
   pewawancara_cawalsan: "/dashboard/penguji",
   penguji_hafalan: "/dashboard/penguji",
   penguji_bahasa_arab: "/dashboard/penguji",
+  admin_kesehatan: "/dashboard/admin/kesehatan",
+  admin_reservasi: "/dashboard/admin/reservasi",
+  admin_personalia: "/dashboard/admin/users",
+  admin_pelayanan: "/dashboard/admin/reservasi",
+  viewer: "/dashboard/admin",
   admin_super: "/dashboard/admin",
-  admin: "/dashboard/admin" };
+  admin: "/dashboard/admin"
+};
 
 export function hasPermission(role: UserRole, permission: string): boolean {
   return ROLE_PERMISSIONS[role]?.includes(permission) ?? false;
 }
 
 export function isAdminRole(role: UserRole): boolean {
-  return ["admin_berkas", "admin_keuangan", "admin_super", "admin"].includes(role);
+  return ["admin_berkas", "admin_keuangan", "admin_kesehatan", "admin_reservasi", "admin_personalia", "admin_pelayanan", "viewer", "admin_super", "admin"].includes(role);
 }
 
 // ─── 6. DYNAMIC MENU LOGIC ───
@@ -251,6 +284,23 @@ export function getMenuItemsForRole(role: UserRole) {
       { name: "Data Pendaftar", href: "/dashboard/admin/pendaftar", icon: "Users" },
       { name: "Verifikasi Pembayaran", href: "/dashboard/admin/verifikasi-pembayaran", icon: "CreditCard" },
       { name: "Rekap Keuangan", href: "/dashboard/admin/keuangan", icon: "BarChart" },
+    ],
+    admin_kesehatan: [
+      { name: "Dashboard", href: "/dashboard/admin", icon: "LayoutDashboard" },
+      { name: "Data Kesehatan", href: "/dashboard/admin/kesehatan", icon: "Activity" },
+    ],
+    admin_reservasi: [
+      { name: "Dashboard", href: "/dashboard/admin", icon: "LayoutDashboard" },
+      { name: "Reservasi PSB", href: "/dashboard/admin/reservasi", icon: "Calendar" },
+    ],
+    admin_personalia: [
+      { name: "Manajemen User", href: "/dashboard/admin/users", icon: "UserCog" },
+      { name: "Pengaturan", href: "/dashboard/admin/pengaturan", icon: "Settings" },
+    ],
+    viewer: [
+      { name: "Dashboard", href: "/dashboard/admin", icon: "LayoutDashboard" },
+      { name: "Data Pendaftar", href: "/dashboard/admin/pendaftar", icon: "Users" },
+      { name: "Statistik", href: "/dashboard/admin/statistik-wilayah", icon: "PieChart" },
     ],
     penguji: [
       { name: "Dashboard", href: "/dashboard/penguji", icon: "LayoutDashboard" },
@@ -291,6 +341,7 @@ export function getMenuItemsForRole(role: UserRole) {
       { name: "Fee Penguji", href: "/dashboard/admin/fee-penguji", icon: "Wallet", group: "OPERASIONAL" },
       { name: "Bantuan Biaya", href: "/dashboard/admin/beasiswa", icon: "Trophy", group: "OPERASIONAL" },
       { name: "Penilaian & Kelulusan", href: "/dashboard/admin/penilaian", icon: "ClipboardEdit", group: "HASIL SELEKSI" },
+      { name: "Import Massal CSV", href: "/dashboard/admin/penilaian/import-csv", icon: "FileText", group: "HASIL SELEKSI" },
       { name: "Statistik Wilayah", href: "/dashboard/admin/statistik-wilayah", icon: "Map", group: "STATISTIK WILAYAH" },
     ],
     admin_super: [
@@ -303,6 +354,7 @@ export function getMenuItemsForRole(role: UserRole) {
       { name: "Fee Penguji", href: "/dashboard/admin/fee-penguji", icon: "Wallet", group: "OPERASIONAL" },
       { name: "Bantuan Biaya", href: "/dashboard/admin/beasiswa", icon: "Trophy", group: "OPERASIONAL" },
       { name: "Penilaian & Kelulusan", href: "/dashboard/admin/penilaian", icon: "ClipboardEdit", group: "HASIL SELEKSI" },
+      { name: "Import Massal CSV", href: "/dashboard/admin/penilaian/import-csv", icon: "FileText", group: "HASIL SELEKSI" },
       { name: "Statistik Wilayah", href: "/dashboard/admin/statistik-wilayah", icon: "Map", group: "STATISTIK WILAYAH" },
       { name: "Broadcast WA", href: "/dashboard/admin/broadcast", icon: "Zap", group: "KOMUNIKASI" },
       { name: "Manajemen User", href: "/dashboard/admin/users", icon: "UserCog", group: "SISTEM" },
