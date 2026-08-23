@@ -179,8 +179,7 @@ export default function RadarTamuAdmin() {
 
                     {tamu.status === "FINISHED" && (
                       <div className="text-center text-slate-500 font-bold text-sm bg-slate-100 py-3 rounded-xl">
-                        Survei Dikirim ✅
-                      </div>
+                        Survei Terkirim <CheckCircle2 className="w-4 h-4 ml-1" /></div>
                     )}
                   </div>
                 </div>
