@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
           sameSite: "lax",
-      domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN || undefined,
+      
           maxAge: 60 * 60 * 24 * 90,
           expires: new Date(Date.now() + 60 * 60 * 24 * 90 * 1000), // 90 Days Persistent Session
         },
@@ -185,7 +185,7 @@ export async function POST(request: NextRequest) {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
           sameSite: "lax",
-      domain: process.env.NEXT_PUBLIC_COOKIE_DOMAIN || undefined,
+      
           maxAge: 60 * 60 * 24 * 90,
           expires: new Date(Date.now() + 60 * 60 * 24 * 90 * 1000), // 90 Days Persistent Session
         },
