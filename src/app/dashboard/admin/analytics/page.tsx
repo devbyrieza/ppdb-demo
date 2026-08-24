@@ -11,7 +11,7 @@ export default function AnalyticsDashboard() {
         <div>
           <h1 className="text-3xl font-bold text-gray-900 tracking-tight flex items-center gap-3">
             <TrendingUp className="w-8 h-8 text-indigo-600" />
-            Executive Dashboard BI
+            Statistik & Laporan Analitik
           </h1>
           <p className="text-gray-500 mt-1">
             Visualisasi data real-time, tren pendaftaran, dan laporan pendapatan (Fitur Diamond++).
@@ -25,7 +25,7 @@ export default function AnalyticsDashboard() {
           <div className="flex justify-between items-start">
             <div>
               <p className="text-indigo-100 font-medium">Total Pendaftar</p>
-              <h3 className="text-4xl font-bold mt-2">1,245</h3>
+              <h3 className="text-4xl font-bold mt-2 text-white">1,245</h3>
             </div>
             <div className="p-3 bg-white/20 rounded-2xl"><Users className="w-6 h-6" /></div>
           </div>
@@ -37,8 +37,8 @@ export default function AnalyticsDashboard() {
         <div className="bg-gradient-to-br from-emerald-500 to-emerald-700 p-6 rounded-3xl text-white shadow-xl shadow-emerald-500/30">
           <div className="flex justify-between items-start">
             <div>
-              <p className="text-emerald-100 font-medium">Total Revenue</p>
-              <h3 className="text-4xl font-bold mt-2">Rp 498<span className="text-2xl">Jt</span></h3>
+              <p className="text-emerald-100 font-medium">Total Pendapatan</p>
+              <h3 className="text-4xl font-bold mt-2 text-white">Rp 498<span className="text-2xl">Jt</span></h3>
             </div>
             <div className="p-3 bg-white/20 rounded-2xl"><DollarSign className="w-6 h-6" /></div>
           </div>
