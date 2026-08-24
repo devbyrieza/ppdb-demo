@@ -14,7 +14,11 @@ export async function GET() {
       where: {
         deleted_at: null,
         kabupaten: {
-          not: null } },
+          not: null },
+        status_pendaftaran: {
+          notIn: ['mengundurkan_diri', 'ditolak', 'batal', 'cabut_berkas', 'sampah', 'deleted']
+        }
+      },
       select: {
         nama_lengkap: true,
         kabupaten: true,

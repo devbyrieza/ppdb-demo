@@ -6,8 +6,8 @@ import { Users } from "lucide-react";
 
 // Fallback data (shown while API loads or if DB is empty)
 const FALLBACK_ACTIVITIES = [
-  { name: "Raylan A.", city: "Sleman", program: "Madrasah Tsanawiyah" },
-  { name: "Muhammad A.", city: "Bantul", program: "I'dad Lughowi" },
+  { name: "Fulan A.", city: "Jakarta", program: "SMP IT" },
+  { name: "Fulanah B.", city: "Bekasi", program: "SMA IT" }
 ];
 
 interface Activity {
@@ -70,19 +70,19 @@ export default function LiveActivityToast() {
           transition={{ type: "spring", stiffness: 300, damping: 25 }}
           className="fixed bottom-6 left-3 sm:left-6 z-50 bg-white rounded-2xl shadow-premium-xl border border-surface-100 px-4 py-3 flex items-center gap-3 max-w-[min(260px,calc(100vw-4.5rem))]"
         >
-          <div className="w-9 h-9 rounded-2xl bg-green-50 flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-green-50 to-green-100 shadow-inner border border-green-200/50 flex items-center justify-center shrink-0">
             <Users className="w-4.5 h-4.5 text-green-600" />
           </div>
           <div>
-            <p className="text-xs font-black text-ink-950 leading-tight">
+            <p className="text-[13px] font-black text-ink-950 leading-tight">
               {activity.name} dari {activity.city}
             </p>
-            <p className="text-[11px] text-ink-500 font-medium leading-tight mt-0.5">
+            <p className="text-xs text-ink-500 font-medium leading-tight mt-0.5">
               baru mendaftar Program {activity.program}
             </p>
           </div>
           {/* Live dot */}
-          <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+          <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-gradient-to-br from-green-50 to-green-100 shadow-inner border border-green-200/500 animate-pulse" />
         </motion.div>
       )}
     </AnimatePresence>
