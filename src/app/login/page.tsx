@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -134,6 +134,12 @@ const AuthInput = ({
 // ========================================
 
 export default function LoginPage() {
+  // AGGRESSIVE ZOMBIE COOKIE CLEANUP
+  // To prevent the "bounce back to login" issue, always flush existing legacy cookies when they mount the login page
+  useEffect(() => {
+    fetch("/api/auth/logout", { method: "POST" }).catch(() => {});
+  }, []);
+
   const router = useRouter();
 
   // Tab state
