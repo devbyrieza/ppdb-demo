@@ -607,9 +607,9 @@ export default function KegiatanPage() {
       desc: "Belajar strategi komunikasi visual dan pemasaran.",
       benefit: "Jiwa Entrepreneur" },
     {
-      name: "Coding & AI",
+      name: "Programming & AI",
       icon: Zap,
-      desc: "Belajar membangun website, aplikasi modern, serta implementasi & integrasi Artificial Intelligence (AI).",
+      desc: "Belajar dasar algoritma, logika pemrograman, dan pengenalan Artificial Intelligence (AI) modern.",
       benefit: "Inovator Digital" },
   ];
 
