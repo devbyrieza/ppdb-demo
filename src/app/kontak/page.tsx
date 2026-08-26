@@ -461,7 +461,7 @@ export default function ContactPage() {
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-[24px_28px] md:gap-6 justify-center px-4">
                 <Link href="/ppdb">
                   <button className="w-full sm:w-auto px-6 sm:px-6 md:px-10 py-3.5 sm:py-4 md:py-5 rounded-pill bg-white text-primary-900 font-black text-sm sm:text-base md:text-lg hover:bg-secondary-100 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 transition-all min-h-[48px] sm:min-h-[52px]">
-                    Daftar PPDB Baru
+                    Daftar PPDB
                   </button>
                 </Link>
                 <a

@@ -268,7 +268,7 @@ function PPDBContent() {
                 href={`/daftar${jenjang ? `?jenjang=${jenjang}` : ""}`}
                 className="inline-flex items-center justify-center gap-3 px-6 md:px-10 py-5 rounded-pill bg-primary-900 text-white font-black text-xl hover:bg-primary-800 shadow-premium-lg transition-all"
               >
-                Daftar PPDB Baru
+                Daftar PPDB
               </Link>
               <a
                 href="#alur"
