@@ -111,30 +111,19 @@ export function generatePrefix(jenjang: string, jenis_kelamin: string): string {
   let prefix = "";
   const normJenjang = (jenjang || "").toUpperCase().replace(/[\s\-_]/g, "");
 
-  // Jenjang code mapping
-  if (normJenjang.includes("SMP") || normJenjang === "SMPIT") {
+  if (normJenjang.includes("SMP") || normJenjang.includes("MTS")) {
     prefix = "SP";
-  } else if (normJenjang.includes("MTS")) {
-    prefix = "SP"; // Standardized to SP (or MT for legacy)
-  } else if (normJenjang.includes("SMA") || normJenjang === "SMAIT") {
-    prefix = "SM";
-  } else if (normJenjang.includes("MA") && !normJenjang.includes("IMAM")) {
-    prefix = "SM"; // Standardized to SM (or MA for legacy)
   } else if (normJenjang.includes("IL") || normJenjang.includes("IDAD") || normJenjang.includes("LUGHAW")) {
     prefix = "IL";
+  } else if (normJenjang.includes("SMA") || normJenjang.includes("MA")) {
+    prefix = "SM";
   } else {
     prefix = normJenjang.slice(0, 2) || "SP";
   }
 
-  // Gender suffix: A = Putra / Ikhwan, I = Putri / Akhawat
-  const normGender = (jenis_kelamin || "").toUpperCase();
-  if (normGender === "L" || normGender === "PUTRA" || normGender === "IKHWAN") {
-    prefix += "A"; // Putra
-  } else if (normGender === "P" || normGender === "PUTRI" || normGender === "AKHAWAT") {
-    prefix += "I"; // Putri
-  } else {
-    prefix += "A"; // Default Putra
-  }
+  // Gender suffix: A = Putra, I = Putri
+  const normGender = (jenis_kelamin || "L").toUpperCase();
+  prefix += (normGender === "P" || normGender === "PUTRI" || normGender === "AKHAWAT") ? "I" : "A";
 
   return prefix;
 }
