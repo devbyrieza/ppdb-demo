@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { Users, Clock, CheckCircle2, UserPlus, Star, Shield, ArrowRight } from "lucide-react";
-import DashboardLayout from "../../components/DashboardLayout";
 
 // The Roster based on user instructions
 const ROSTER: Record<number, string> = {

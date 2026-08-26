@@ -50,7 +50,7 @@ export const PPDB_CONFIG = {
     {
       id: "mts",
       name: "MTs",
-      fullName: "Madrasah Tsanawiyah",
+      fullName: "SMP IT",
       description:
         "Program pendidikan formal setara SMP dengan kurikulum integrasi pesantren.",
       image: "/images/mts.webp",

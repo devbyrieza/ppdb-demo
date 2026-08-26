@@ -410,7 +410,7 @@ function InputNilaiContent() {
           catatan_quran: quranForm.catatan || "" };
       } else if (formType === "wawancara") {
         const isPutriByJenjang = (p?.jenjang?.toLowerCase() || "").includes('putri');
-        const isPutriByPrefix = ['MTI', 'ILI', 'SMI'].some(prefix => p.nomor_pendaftaran?.startsWith(prefix));
+        const isPutriByPrefix = ['SPI', 'SMI', 'ILI', 'MTI', 'MAI'].some(prefix => p.nomor_pendaftaran?.startsWith(prefix));
         // Fallback: If examiner is Halimah or Rima, it's definitely a Putri session
         const isPutriByExaminer = ["Halimah Fauziah", "Rima Maryani Putri Utami"].some(name => 
           p.detail_wawancara?.nama_pewawancara === name
@@ -850,7 +850,7 @@ function InputNilaiContent() {
 
     // Gender detection for selection list
     const isPutriByJenjang = (p?.jenjang?.toLowerCase() || "").includes('putri');
-    const isPutriByPrefix = ['MTI', 'ILI', 'SMI'].some(prefix => p.nomor_pendaftaran?.startsWith(prefix));
+    const isPutriByPrefix = ['SPI', 'SMI', 'ILI', 'MTI', 'MAI'].some(prefix => p.nomor_pendaftaran?.startsWith(prefix));
     const isPutriByExaminer = ["Andi Fatimah Azzahra Rahman", "Halimah Fauziah", "Rima Maryani Putri Utami"].some(name => 
       quranForm.nama_penguji === name || p.detail_quran?.nama_penguji === name
     );
@@ -995,7 +995,7 @@ function InputNilaiContent() {
 
     // Gender detection for selection list
     const isPutriByJenjang = (p?.jenjang?.toLowerCase() || "").includes('putri');
-    const isPutriByPrefix = ['MTI', 'ILI', 'SMI'].some(prefix => p.nomor_pendaftaran?.startsWith(prefix));
+    const isPutriByPrefix = ['SPI', 'SMI', 'ILI', 'MTI', 'MAI'].some(prefix => p.nomor_pendaftaran?.startsWith(prefix));
     const isPutriByExaminer = ["Halimah Fauziah", "Rima Maryani Putri Utami"].some(name => 
       calsanForm.nama_pewawancara === name || p.detail_wawancara?.nama_pewawancara === name
     );
@@ -1140,7 +1140,7 @@ function InputNilaiContent() {
     const isEditing = editingId === p.id + "ortu";
 
     const isPutriByJenjang = (p?.jenjang?.toLowerCase() || "").includes('putri');
-    const isPutriByPrefix = ['MTI', 'ILI', 'SMI'].some(prefix => p.nomor_pendaftaran?.startsWith(prefix));
+    const isPutriByPrefix = ['SPI', 'SMI', 'ILI', 'MTI', 'MAI'].some(prefix => p.nomor_pendaftaran?.startsWith(prefix));
     const isPutri = isPutriByJenjang || isPutriByPrefix;
     const interviewerList = isPutri ? PEWAWANCARA_CAWALSAN_LIST_PUTRI : PEWAWANCARA_CAWALSAN_LIST_PUTRA;
 

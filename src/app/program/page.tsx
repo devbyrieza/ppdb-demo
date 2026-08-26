@@ -25,9 +25,9 @@ import { motion, AnimatePresence } from "framer-motion";
 const PROGRAMS = [
   {
     id: "mts",
-    name: "Madrasah Tsanawiyah",
+    name: "SMP IT",
     buttonLabel: "Daftar MTs",
-    fullName: "Program Madrasah Tsanawiyah (SMP)",
+    fullName: "Program SMP IT (SMP)",
     description:
       "Kami menerapkan Kurikulum Terpadu yang menggabungkan standar Nasional dengan khas Andalus, berfokus pada penguasaan Tahfidz Al-Qur'an serta pembentukan karakter Leadership yang kokoh sejak dini.",
     stats: [

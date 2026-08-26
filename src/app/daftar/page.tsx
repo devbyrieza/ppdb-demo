@@ -359,7 +359,7 @@ export default function DaftarPage() {
                   {[
                     {
                       value: "MTs",
-                      title: "Madrasah Tsanawiyah",
+                      title: "SMP IT",
                       subtitle: "Lulusan SD/Sederajat",
                       desc: "Jenjang pendidikan dasar setingkat SMP." },
                     {
@@ -369,7 +369,7 @@ export default function DaftarPage() {
                       desc: "Kelas persiapan bahasa Arab sebelum masuk MA." },
                     {
                       value: "MA",
-                      title: "Madrasah Aliyah (MA) Langsung",
+                      title: "SMA IT (Sekolah Menengah Atas IT) Langsung",
                       subtitle: "Lulusan SMP/Sederajat",
                       desc: "Jalur langsung tanpa IL. Khusus yang lancar berbahasa Arab & hafal minimal 5 juz mutqin." },
                   ].map((option) => {

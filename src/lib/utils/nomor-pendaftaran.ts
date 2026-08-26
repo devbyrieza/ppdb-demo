@@ -109,25 +109,31 @@ export async function generateNomorPendaftaran(
  */
 export function generatePrefix(jenjang: string, jenis_kelamin: string): string {
   let prefix = "";
+  const normJenjang = (jenjang || "").toUpperCase().replace(/[\s\-_]/g, "");
 
-  // Jenjang code
-  if (jenjang === "MTs") {
-    prefix = "MT";
-  } else if (jenjang === "IL") {
+  // Jenjang code mapping
+  if (normJenjang.includes("SMP") || normJenjang === "SMPIT") {
+    prefix = "SP";
+  } else if (normJenjang.includes("MTS")) {
+    prefix = "SP"; // Standardized to SP (or MT for legacy)
+  } else if (normJenjang.includes("SMA") || normJenjang === "SMAIT") {
+    prefix = "SM";
+  } else if (normJenjang.includes("MA") && !normJenjang.includes("IMAM")) {
+    prefix = "SM"; // Standardized to SM (or MA for legacy)
+  } else if (normJenjang.includes("IL") || normJenjang.includes("IDAD") || normJenjang.includes("LUGHAW")) {
     prefix = "IL";
-  } else if (jenjang === "MA") {
-    prefix = "MA";
   } else {
-    throw new Error(`Jenjang tidak valid: ${jenjang}`);
+    prefix = normJenjang.slice(0, 2) || "SP";
   }
 
-  // Gender suffix
-  if (jenis_kelamin === "L") {
+  // Gender suffix: A = Putra / Ikhwan, I = Putri / Akhawat
+  const normGender = (jenis_kelamin || "").toUpperCase();
+  if (normGender === "L" || normGender === "PUTRA" || normGender === "IKHWAN") {
     prefix += "A"; // Putra
-  } else if (jenis_kelamin === "P") {
+  } else if (normGender === "P" || normGender === "PUTRI" || normGender === "AKHAWAT") {
     prefix += "I"; // Putri
   } else {
-    throw new Error(`Jenis kelamin tidak valid: ${jenis_kelamin}`);
+    prefix += "A"; // Default Putra
   }
 
   return prefix;
@@ -181,7 +187,11 @@ export function parseNomorPendaftaran(nomorPendaftaran: string): {
   let jenjang = "";
   let jenis_kelamin = "";
 
-  if (prefix.startsWith("MT")) {
+  if (prefix.startsWith("SP")) {
+    jenjang = "SMP IT";
+  } else if (prefix.startsWith("SM")) {
+    jenjang = "SMA IT";
+  } else if (prefix.startsWith("MT")) {
     jenjang = "MTs";
   } else if (prefix.startsWith("IL")) {
     jenjang = "IL";
@@ -313,12 +323,17 @@ export async function getRegistrationStats(): Promise<{
  */
 export function getPrefixLabel(prefix: string): string {
   const labels: Record<string, string> = {
-    MTA: "MTs Putra (Laki-laki)",
-    MTI: "MTs Putri (Perempuan)",
+    SPA: "SMP IT Putra (Laki-laki)",
+    SPI: "SMP IT Putri (Perempuan)",
+    SMA: "SMA IT Putra (Laki-laki)",
+    SMI: "SMA IT Putri (Perempuan)",
     ILA: "I'dad Lughowi Putra (Laki-laki)",
     ILI: "I'dad Lughowi Putri (Perempuan)",
-    MAA: "MA Langsung Putra (Laki-laki)",
-    MAI: "MA Langsung Putri (Perempuan)" };
+    MTA: "SMP IT / MTs Putra (Laki-laki)",
+    MTI: "SMP IT / MTs Putri (Perempuan)",
+    MAA: "SMA IT / MA Putra (Laki-laki)",
+    MAI: "SMA IT / MA Putri (Perempuan)",
+  };
 
   return labels[prefix] || prefix;
 }

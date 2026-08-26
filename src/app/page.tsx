@@ -1,11 +1,8 @@
-// src/app/page.tsx — template-demo
+// src/app/page.tsx - template-demo
 "use client";
 
 import { useEffect } from "react";
-import { LazyMotion, domAnimation, m } from "framer-motion";
-import Link from "next/link";
-import { Zap } from "lucide-react";
-
+import { LazyMotion, domAnimation } from "framer-motion";
 import { restoreScrollPosition } from "@/lib/navigation-scroll";
 import ScrollAnimation from "@/components/ui/ScrollAnimation";
 
@@ -14,45 +11,9 @@ import StatsSection from "@/components/home/StatsSection";
 import AboutSection from "@/components/home/AboutSection";
 import ProgramSection from "@/components/home/ProgramSection";
 import ScholarshipSection from "@/components/home/ScholarshipSection";
-import FeaturesSection from "@/components/home/FeaturesSection";
 import TeachersSection from "@/components/home/TeachersSection";
 import BoardSection from "@/components/home/BoardSection";
 import ProcessSection from "@/components/home/ProcessSection";
-import FacilitiesSection from "@/components/home/FacilitiesSection";
-import ActivitiesSection from "@/components/home/ActivitiesSection";
-import TestimonialsSection from "@/components/home/TestimonialsSection";
-import FaqSection from "@/components/home/FaqSection";
-import ContactSection from "@/components/home/ContactSection";
-import CtaSection from "@/components/home/CtaSection";
-import StickyFeatureSection from "@/components/home/StickyFeatureSection";
-import BentoGridSection from "@/components/home/BentoGridSection";
-
-export default function HomePage() {
-  useEffect(() => {
-    restoreScrollPosition();
-  }, []);
-
-  return (
-// src/app/page.tsx — template-demo
-"use client";
-
-import { useEffect } from "react";
-import { LazyMotion, domAnimation, m } from "framer-motion";
-import Link from "next/link";
-import { Zap } from "lucide-react";
-
-import { restoreScrollPosition } from "@/lib/navigation-scroll";
-import ScrollAnimation from "@/components/ui/ScrollAnimation";
-
-import HeroSection from "@/components/home/HeroSection";
-import StatsSection from "@/components/home/StatsSection";
-import AboutSection from "@/components/home/AboutSection";
-import ProgramSection from "@/components/home/ProgramSection";
-import FeaturesSection from "@/components/home/FeaturesSection";
-import TeachersSection from "@/components/home/TeachersSection";
-import BoardSection from "@/components/home/BoardSection";
-import ProcessSection from "@/components/home/ProcessSection";
-import FacilitiesSection from "@/components/home/FacilitiesSection";
 import ActivitiesSection from "@/components/home/ActivitiesSection";
 import TestimonialsSection from "@/components/home/TestimonialsSection";
 import FaqSection from "@/components/home/FaqSection";
@@ -73,6 +34,14 @@ export default function HomePage() {
         className="relative overflow-x-hidden"
         aria-label="Halaman Utama Template Demo"
       >
+        <HeroSection />
+        <StatsSection />
+        <section id="program" aria-label="Program Pendidikan">
+          <ScrollAnimation delay={0.1} direction="none" duration={0.8}>
+            <ProgramSection />
+          </ScrollAnimation>
+        </section>
+        <section id="beasiswa" aria-label="Beasiswa Santri">
           <ScrollAnimation delay={0.1} direction="none" duration={0.8}>
             <ScholarshipSection variant="primary" />
           </ScrollAnimation>

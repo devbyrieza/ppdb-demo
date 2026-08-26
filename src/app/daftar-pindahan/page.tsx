@@ -409,11 +409,11 @@ export default function DaftarPindahanPage() {
                   {[
                     {
                       value: "MTs",
-                      title: "Madrasah Tsanawiyah",
+                      title: "SMP IT",
                       subtitle: "Pindahan tingkat SMP/MTs" },
                     {
                       value: "MA",
-                      title: "Madrasah Aliyah",
+                      title: "SMA IT",
                       subtitle: "Pindahan tingkat SMA/MA" },
                   ].map((option) => {
                     const isClosed = false;

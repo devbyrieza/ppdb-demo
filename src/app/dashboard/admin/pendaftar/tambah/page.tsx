@@ -177,9 +177,9 @@ export default function AdminTambahPendaftar() {
                 <label className="text-sm font-bold text-stone-700">Jenjang Tujuan <span className="text-red-500">*</span></label>
                 <select required name="jenjang" value={formData.jenjang} onChange={handleChange} className="w-full p-[16px_20px].5 rounded-[24px] border-2 border-stone-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 outline-none transition-all appearance-none bg-white">
                   <option value="">Pilih Jenjang...</option>
-                  <option value="MTs">MTs (Madrasah Tsanawiyah)</option>
+                  <option value="MTs">MTs (SMP IT)</option>
                   <option value="IL">I'dad Lughowi (IL)</option>
-                  <option value="MA">Madrasah Aliyah (MA)</option>
+                  <option value="MA">SMA IT (Sekolah Menengah Atas IT)</option>
                 </select>
               </div>
                <div className="space-y-2">

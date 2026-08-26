@@ -1453,7 +1453,7 @@ function AdminPendaftarContent() {
               className="w-full px-4 py-3 bg-gold-50/50 border border-gold-100 rounded-[24px] focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950"
             >
               <option value="">Semua Jenjang</option>
-              <option value="MTs">MTs (Madrasah Tsanawiyah)</option>
+              <option value="MTs">MTs (SMP IT)</option>
               <option value="IL">I'dadiyah Lughawiy</option>
             </select>
           </div>

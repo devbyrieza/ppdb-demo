@@ -39,7 +39,7 @@ TUJUAN SANTRI BELAJAR DI SINI:
 - Memiliki Kemampuan Publik Speaking yang Memadai
 
 PROGRAM PENDIDIKAN:
-1. Madrasah Tsanawiyah (MTs) - Tingkat Menengah (Setara SMP)
+1. SMP IT (Sekolah Menengah Pertama IT) - Tingkat Menengah (Setara SMP)
    - Kuota: 25 Kursi
    - Pendidikan 3 tahun: Tahfidz (Target 12 Juz), Dasar Ilmu Syar'i, Akademik Nasional, pembentukan Adab.
    - Fitur: Sinergi Kurikulum Nasional & Pesantren Sunnah, Bahasa Arab & Kitab Turots, Sanad Al-Qur'an & Hadith.

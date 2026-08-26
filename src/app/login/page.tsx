@@ -194,7 +194,7 @@ export default function LoginPage() {
     }
 
     if (!/^(MTI|MTA|ILI|ILA|MAI|MAA)\d{6,8}$/.test(no)) {
-      setError("Format nomor pendaftaran tidak valid (contoh: MTI2600001 atau MAA2600001)");
+      setError("Format nomor pendaftaran tidak valid (contoh: SPA2600001, SPI2600001, atau ILA2600001)");
       setIsLoading(false);
       return;
     }
@@ -501,7 +501,7 @@ export default function LoginPage() {
                       onChange={(e) =>
                         setNomorPendaftaran(e.target.value.toUpperCase())
                       }
-                      placeholder="Contoh: MTI2600001"
+                      placeholder="Contoh: SPA2600001"
                       className="w-full px-5 py-3 md:px-8 md:py-5 pl-14 md:pl-16 rounded-[24px] md:rounded-[24px] bg-white/50 backdrop-blur-sm border border-white/50 focus:bg-white/90 focus:border-secondary-400 focus:ring-4 focus:ring-secondary-100 transition-all font-bold text-ink-950 uppercase placeholder:normal-case placeholder:font-medium placeholder:text-ink-400 text-sm md:text-base shadow-inner"
                       disabled={isLoading}
                     />
