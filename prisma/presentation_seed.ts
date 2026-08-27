@@ -42,7 +42,7 @@ async function main() {
     ];
 
     const createdUsers: Record<string, string> = {};
-    const hashedPassword = await bcrypt.hash('password123', 10);
+    const hashedPassword = await bcrypt.hash("Andalus2026!", 10);
 
     for (const u of usersToCreate) {
         const profile = await (prisma.profile as any).upsert({

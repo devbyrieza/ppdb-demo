@@ -40,7 +40,7 @@ async function main() {
         { email: 'ustazah.fatimah@ppdb-demo.com', role: 'penguji', name: 'Ustadzah Fatimah', phone: '08111111125', label: 'PENGUJI_E' },
     ];
 
-    const passwordHash = await bcrypt.hash('password123', 10);
+    const passwordHash = await bcrypt.hash("Andalus2026!", 10);
     const createdUsers: Record<string, string> = {};
 
     for (const u of staffToCreate) {
