@@ -278,8 +278,57 @@ export async function POST(request: Request) {
         jenisNotif: "konfirmasi_jadwal_pendaftar",
         messageContent: konfirmasiMsg }).catch((err: any) => console.error("Failed to enqueue jadwal confirmation to pendaftar:", err));
 
-      // 2. Note: Notifikasi ke Penguji dibuat Silent saat booking (menghindari chat spam ke asatidz).
-      // Penguji akan menerima pengingat terjadwal via Cron H-1 / 4 jam sebelum ujian serta dapat memantau langsung via /dashboard/penguji.
+      // 2. Notify Interviewer — SEGERA setelah booking (Level Diamond Instant Dispatch)
+      const finalId =
+        pengujiFields.penguji_quran_id ||
+        pengujiFields.penguji_santri_id ||
+        pengujiFields.penguji_ortu_id ||
+        examSession.created_by;
+      if (finalId) {
+        const interviewer = await prisma.profile.findUnique({
+          where: { id: finalId },
+          select: { full_name: true, phone: true, google_meet_link: true } });
+
+        if (interviewer && interviewer.phone) {
+          // Generate Magic Link for this interviewer
+          const redirectPathPath = `/dashboard/penguji/input-nilai?search=${encodeURIComponent(pendaftarInfo.nama_lengkap)}`;
+          const token = generateMagicToken(
+            finalId,
+            "penguji",
+            interviewer.full_name,
+            72, // 3 days expiry
+            redirectPathPath,
+          );
+          const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://ppdb.pesantren-alimam.com";
+          const magicLink = `${appUrl}/api/auth/magic?token=${token}`;
+
+          // Use manual tinyurl if available, otherwise generate automatic
+          const { generateShortLink } = await import("@/lib/utils/magic-link");
+          
+          const shortUrlKonfirmasi = (await generateShortLink(magicLink));
+
+          const intMessage = buildMessageKonfirmasiJadwalInterviewer(
+            interviewer.full_name,
+            pendaftarInfo.nama_lengkap,
+            dateStr,
+            timeStr,
+            interviewer.google_meet_link || lokasi,
+            jenisUjian,
+            shortUrlKonfirmasi,
+          );
+
+          // Delay 1 menit untuk menghindari burst pesan berturut-turut
+          const scheduledAtInt = new Date();
+          scheduledAtInt.setMinutes(scheduledAtInt.getMinutes() + 1);
+
+          enqueueWhatsapp({
+            pendaftarId: session.id,
+            phone: interviewer.phone,
+            jenisNotif: "konfirmasi_jadwal_interviewer",
+            messageContent: intMessage,
+            scheduledAt: scheduledAtInt }).catch((err: any) => console.error("Failed to enqueue interviewer notification:", err));
+        }
+      }
       }
 
       // 3. SCHEDULE 4-HOUR REMINDERS (Sent 4 hours before exam)
