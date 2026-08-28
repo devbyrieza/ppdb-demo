@@ -329,7 +329,7 @@ export async function POST(request: Request) {
             scheduledAt: scheduledAtInt }).catch((err: any) => console.error("Failed to enqueue interviewer notification:", err));
         }
       }
-      }
+
 
       // 3. SCHEDULE 4-HOUR REMINDERS (Sent 4 hours before exam)
       try {
