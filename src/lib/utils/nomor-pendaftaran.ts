@@ -131,10 +131,10 @@ export function validateNomorPendaftaranFormat(
   nomorPendaftaran: string,
 ): boolean {
   // Check length: 3 char prefix + 2 char year + 5 digit number = 10 chars
-  if (nomorPendaftaran.length !== 10) return false;
+  if (!nomorPendaftaran || nomorPendaftaran.length < 8 || nomorPendaftaran.length > 14) return false;
 
   // Check format: Valid prefix + 2 digits + 5 digits
-  const regex = /^(MTA|MTI|ILA|ILI|MAA|MAI)\d{7}$/;
+  const regex = /^(SPA|SPI|SMA|SMI|MTA|MTI|ILA|ILI|MAA|MAI|PAAS|PUAS|[A-Z]{2,6})\d{6,9}$/i;
   return regex.test(nomorPendaftaran);
 }
 
