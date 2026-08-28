@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
+import { Video, AlertCircle, ExternalLink, 
   Users,
   Plus,
   Search,
@@ -28,6 +28,7 @@ interface AdminUser {
   secondary_roles?: string[];
   phone?: string;
   jenis_kelamin?: string;
+  google_meet_link?: string;
   created_at: string;
 }
 
@@ -105,7 +106,8 @@ export default function UserManagementPage() {
     role: "admin_berkas",
     secondary_roles: [] as string[],
     phone: "",
-    jenis_kelamin: "" });
+    jenis_kelamin: "",
+    google_meet_link: "" });
 
   const fetchUsers = async () => {
     try {
@@ -136,7 +138,9 @@ export default function UserManagementPage() {
       role: "admin_berkas",
       secondary_roles: [],
       phone: "",
-      jenis_kelamin: "" });
+      jenis_kelamin: "",
+      google_meet_link: ""
+    });
     setIsEditing(false);
   };
 
@@ -369,7 +373,9 @@ export default function UserManagementPage() {
                                   role: user.role,
                                   secondary_roles: user.secondary_roles || [],
                                   phone: user.phone || "",
-                                  jenis_kelamin: user.jenis_kelamin || "" });
+                                  jenis_kelamin: user.jenis_kelamin || "",
+                                  google_meet_link: user.google_meet_link || ""
+                                });
                                 setIsEditing(true);
                                 setIsModalOpen(true);
                               } },

@@ -57,7 +57,7 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
-    const { email: rawEmail, username: rawUsername, password, full_name, role, secondary_roles, phone, jenis_kelamin } = body;
+    const { email: rawEmail, username: rawUsername, password, full_name, role, secondary_roles, phone, jenis_kelamin, google_meet_link } = body;
     const email = rawEmail?.trim()?.toLowerCase();
     const username = rawUsername?.trim()?.toLowerCase() || null;
 
@@ -151,6 +151,7 @@ export async function POST(request: Request) {
         phone: phone || "-",
         username: username,
         jenis_kelamin: jenis_kelamin || null,
+        google_meet_link: google_meet_link || null,
         password_hash } });
 
     if (isExaminerOrInterviewer && profile.phone && profile.phone !== "-") {
@@ -185,7 +186,7 @@ export async function PUT(request: Request) {
   }
 
   try {
-    const { id, password, role, full_name, email, username, secondary_roles, phone, jenis_kelamin } =
+    const { id, password, role, full_name, email, username, secondary_roles, phone, jenis_kelamin, google_meet_link } =
       await request.json();
 
     if (!id) {
@@ -230,6 +231,7 @@ export async function PUT(request: Request) {
     if (phone !== undefined) data.phone = phone;
     if (username !== undefined) data.username = username?.trim()?.toLowerCase() || null;
     if (jenis_kelamin !== undefined) data.jenis_kelamin = jenis_kelamin;
+    if (google_meet_link !== undefined) data.google_meet_link = google_meet_link || null;
 
     // Email update logic
     if (email) {
