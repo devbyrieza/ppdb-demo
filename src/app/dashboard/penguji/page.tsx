@@ -104,7 +104,7 @@ export default function PengujiDashboardPage() {
                 Ikhtisar Dashboard
               </h1>
               <p className="text-primary-100 font-bold max-w-xl text-sm md:text-lg leading-relaxed opacity-90">
-                Selamat datang kembali di panel penilaian Seleksi PPDB PPDB.
+                Selamat datang kembali di panel penilaian Seleksi SPMB PPDB.
                 Berikut ringkasan tugas Anda hari ini.
               </p>
             </div>

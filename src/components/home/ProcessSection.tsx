@@ -154,7 +154,7 @@ export default function ProcessSection() {
             className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-secondary-200 text-primary-700 text-[0.65rem] font-bold uppercase tracking-[0.12em] mb-5 shadow-xs"
           >
             <CheckCircle2 className="w-3 h-3 shrink-0" strokeWidth={2} />
-            <span>Prosedur PPDB</span>
+            <span>Prosedur SPMB</span>
           </motion.div>
 
           <motion.h2

@@ -78,7 +78,7 @@ Mohon untuk mengisi ukuran seragam baju dan celana/rok melalui link khusus berik
 ${magicLink}
 
 Jazakumullahu khairan.
-Panitia PPDB.`;
+Panitia SPMB.`;
       } else {
         magicLink = pendaftar.user_id ? `${baseUrl}/s/${shortCode}?t=seragam` : `${baseUrl}/isi-seragam/${shortCode}`;
         message = `*PENGINGAT PENGISIAN UKURAN SERAGAM*
@@ -96,7 +96,7 @@ Atau silakan login ke dashboard pendaftaran Anda dan buka menu "Ukuran Seragam".
 Pastikan untuk mengisinya secepatnya karena akan segera diproses.
 
 Jazakumullahu khairan.
-Panitia PPDB.`;
+Panitia SPMB.`;
       }
 
       try {

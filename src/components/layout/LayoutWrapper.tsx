@@ -38,7 +38,7 @@ export default function LayoutWrapper({
 
       {/* MAIN CONTENT - Page content dengan conditional offset */}
       <main className={hideNavbarFooter ? "flex-1" : "flex-1 pt-20 md:pt-24"}>
-        {/* URGENCY BAR - Banner PPDB di bawah Navbar, scrolls naturally */}
+        {/* URGENCY BAR - Banner SPMB di bawah Navbar, scrolls naturally */}
         {!hideNavbarFooter && <UrgencyBar />}
         {hideNavbarFooter ? (
           children

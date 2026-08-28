@@ -105,7 +105,7 @@ export async function POST(request: NextRequest) {
           id: "BIAYA_PENDAFTARAN",
           price: grossAmount,
           quantity: 1,
-          name: `Biaya Pendaftaran PPDB ${tahunAjaran.nama}` },
+          name: `Biaya Pendaftaran SPMB ${tahunAjaran.nama}` },
       ],
       customer_details: {
         first_name: pendaftar.nama_lengkap,

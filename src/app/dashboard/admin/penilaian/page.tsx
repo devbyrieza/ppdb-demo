@@ -608,7 +608,7 @@ export default function ExaminerDashboard() {
           </div>
           <div>
             <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-[#ddc192]/20 text-[#ddc192] text-[10px] font-bold rounded-full border border-[#ddc192]/40 mb-1">
-              <Sparkles className="w-3 h-3 text-[#ddc192]" /> AKSES & DISKUSI PANITIA PPDB 2027/2028
+              <Sparkles className="w-3 h-3 text-[#ddc192]" /> AKSES & DISKUSI PANITIA SPMB 2027/2028
             </div>
             <h3 className="font-extrabold text-base text-white">Bank Soal & Form Penilaian Panitia</h3>
             <p className="text-xs text-[#ddc192]/90 max-w-xl font-medium">
@@ -627,7 +627,7 @@ export default function ExaminerDashboard() {
           <button
             onClick={() => {
               const message = encodeURIComponent(
-                `*Assalamu’alaikum Warahmatullahi Wabarakatuh*\n\nYth. Ustadz / Ustadzah Panitia PPDB Pesantren Al-Andalus Al-Andalus,\n\nBerikut link akses khusus Bank Soal Seleksi & Form Penilaian Penguji untuk peninjauan & evaluasi TA 2027/2028:\n\nhttps://ppdb.pesantren-demo.com/panitia/bank-soal\n\n_Mohon bantuan ustadz/ustadzah untuk meninjau relevansi soal dan rubrik wawancara._\n\nSyukron, Jazakumullahu Khairan.`
+                `*Assalamu’alaikum Warahmatullahi Wabarakatuh*\n\nYth. Ustadz / Ustadzah Panitia SPMB Pesantren Al-Andalus Al-Andalus,\n\nBerikut link akses khusus Bank Soal Seleksi & Form Penilaian Penguji untuk peninjauan & evaluasi TA 2027/2028:\n\nhttps://ppdb.pesantren-demo.com/panitia/bank-soal\n\n_Mohon bantuan ustadz/ustadzah untuk meninjau relevansi soal dan rubrik wawancara._\n\nSyukron, Jazakumullahu Khairan.`
               );
               window.open(`https://wa.me/?text=${message}`, "_blank");
             }}

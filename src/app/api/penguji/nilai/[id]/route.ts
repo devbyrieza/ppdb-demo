@@ -97,7 +97,7 @@ export async function PATCH(
       const hasHafalanMatch = title.includes("hafalan");
       const hasLisanArabMatch = title.includes("arab") || title.includes("lisan");
 
-      // If the title is generic (e.g. "Tes PPDB 1"), grant access to all forms (matches frontend behavior roles: [])
+      // If the title is generic (e.g. "Tes SPMB 1"), grant access to all forms (matches frontend behavior roles: [])
       if (!hasQuranMatch && !hasWawancaraMatch && !hasOrtuMatch && !hasHafalanMatch && !hasLisanArabMatch) {
         isQuranFallback = true;
         isWawancaraFallback = true;

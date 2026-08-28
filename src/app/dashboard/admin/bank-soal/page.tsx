@@ -99,7 +99,7 @@ export default function BankSoalPanitiaPage() {
               className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#3a0000] rounded-full text-xs font-bold text-[#ddc192] border border-[#ddc192]/40 shadow-inner"
               style={{ backgroundColor: "#3a0000" }}
             >
-              <Sparkles className="w-3.5 h-3.5 text-[#ddc192] animate-pulse" /> PORTAL EKSKLUSIF PANITIA & PENGUJI PPDB
+              <Sparkles className="w-3.5 h-3.5 text-[#ddc192] animate-pulse" /> PORTAL EKSKLUSIF PANITIA & PENGUJI SPMB
             </span>
             <span
               className="inline-flex items-center gap-1.5 px-3.5 py-1 bg-[#ddc192] text-[#550000] rounded-full text-xs font-black shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 border border-[#ddc192]"
@@ -111,7 +111,7 @@ export default function BankSoalPanitiaPage() {
 
           <div className="space-y-1.5">
             <h1 className="text-xl sm:text-2xl md:text-4xl font-black tracking-tight text-white drop-shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">
-              Bank Soal Seleksi & Form Penilaian PPDB
+              Bank Soal Seleksi & Form Penilaian SPMB
             </h1>
             <p className="text-[#ddc192] text-xs md:text-sm max-w-3xl leading-relaxed font-medium">
               Pusat peninjauan instrumen tes seleksi (Akademik, Kesiapan, Kepribadian) dan rubrik penilaian resmi penguji (Al-Qur'an, Wawancara Santri & Orang Tua) Pesantren Al-Andalus Al-Andalus Sukabumi.
@@ -661,10 +661,10 @@ export default function BankSoalPanitiaPage() {
         <div className="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
           <div className="space-y-2 border-b border-slate-100 pb-4">
             <h3 className="font-black text-xl text-[#550000] flex items-center gap-2">
-              <Settings className="w-6 h-6 text-[#550000]" /> Bobot Rumus Nilai Akhir & Penentuan Kelulusan Sistem PPDB
+              <Settings className="w-6 h-6 text-[#550000]" /> Bobot Rumus Nilai Akhir & Penentuan Kelulusan Sistem SPMB
             </h3>
             <p className="text-xs md:text-sm text-slate-600 font-medium">
-              Sistem PPDB mengkalkulasi nilai secara otomatis begitu penguji memasukkan nilai pada portal penguji.
+              Sistem SPMB mengkalkulasi nilai secara otomatis begitu penguji memasukkan nilai pada portal penguji.
             </p>
           </div>
 

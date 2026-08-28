@@ -14,7 +14,7 @@ export const BRANDING = {
   faviconPath: process.env.NEXT_PUBLIC_FAVICON_PATH || "/favicon.ico",
   websiteUrl:
     process.env.NEXT_PUBLIC_WEBSITE_URL || "https://ppdb-demo.vercel.app",
-  dashboardTitle: process.env.NEXT_PUBLIC_DASHBOARD_TITLE || "Portal PPDB Al-Andalus",
+  dashboardTitle: process.env.NEXT_PUBLIC_DASHBOARD_TITLE || "Portal SPMB Al-Andalus",
   address:
     process.env.NEXT_PUBLIC_ADDRESS || "Jl. Raya Jonggol - Cileungsi, Sukadamai, Kec. Sukamakmur, Kabupaten Bogor, Jawa Barat 16830",
   phone: process.env.NEXT_PUBLIC_PHONE || "+62 838-1151-5951",

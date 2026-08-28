@@ -1,5 +1,5 @@
 ﻿// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-//   PPDB CONFIGURATION - EASY CUSTOMIZATION
+//   SPMB CONFIGURATION - EASY CUSTOMIZATION
 //   Ganti bagian ini saja untuk setiap pesantren baru!
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -7,7 +7,7 @@ export const PPDB_CONFIG = {
   // 🏫 INFO PESANTREN (GANTI INI DULU!)
   pesantren: {
     nama: "Pondok Pesantren Al Fath",
-    singkatan: "PPDB Al Fath",
+    singkatan: "SPMB Al Fath",
     alamat: "Jl. Pesantren Raya No. 1, Kec. Cikembar, Kabupaten Sukabumi, Jawa Barat 43157",
     telepon: "+62 812-8530-0800",
     email: "info@pesantren-alfath.or.id",
@@ -105,8 +105,8 @@ export const PPDB_CONFIG = {
 
   // ⚙️ SETTING TEKNIS (UMUMNYA TIDAK PERLU DIUBAH)
   technical: {
-    appName: "PPDB Al Fath",
-    appDescription: "Sistem Penerimaan Peserta Didik Baru Pondok Pesantren Al Fath",
+    appName: "SPMB Al Fath",
+    appDescription: "Sistem Sistem Penerimaan Murid Baru Pondok Pesantren Al Fath",
     version: "2.1.0",
     author: "Rieza Eka Tomara" } };
 

@@ -211,7 +211,7 @@ export default function HeroSection() {
                         className="btn-primary shine-hover w-full sm:w-auto px-8 lg:px-10 py-4 lg:py-[1.125rem] min-h-[56px] text-[0.9375rem] flex items-center justify-center gap-2.5 group font-bold"
                         style={{ boxShadow: "var(--shadow-primary-lg)" }}
                       >
-                        Daftar PPDB Sekarang
+                        Daftar SPMB Sekarang
                         <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
                       </button>
                     </Link>
@@ -262,7 +262,7 @@ export default function HeroSection() {
               <div className="flex flex-wrap gap-x-5 gap-y-2 justify-center lg:justify-start mt-1">
                 {[
                   "MTs & IL tersedia",
-                  "Proses PPDB Cepat & Transparan",
+                  "Proses SPMB Cepat & Transparan",
                   "Sistem Boarding (Asrama)",
                 ].map((point) => (
                   <span

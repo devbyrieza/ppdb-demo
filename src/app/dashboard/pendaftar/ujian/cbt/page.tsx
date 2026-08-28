@@ -59,7 +59,7 @@ export default function CBTRoomPage() {
           </div>
           <div>
             <h1 className="font-bold text-gray-800 leading-tight">Ujian Akademik & Diniyah</h1>
-            <p className="text-sm text-gray-500">Computer Based Test (CBT) - PPDB Al-Andalus</p>
+            <p className="text-sm text-gray-500">Computer Based Test (CBT) - SPMB Al-Andalus</p>
           </div>
         </div>
         <div className={`flex items-center gap-3 px-6 py-2 rounded-full font-bold text-xl border-2 ${timeLeft < 300 ? 'border-red-500 text-red-600 bg-red-50' : 'border-emerald-500 text-emerald-600 bg-emerald-50'}`}>

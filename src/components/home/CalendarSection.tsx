@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 const IMPORTANT_DATES = [
   {
     date: "5 Sep - 28 Des 2026",
-    title: "Pendaftaran PPDB",
+    title: "Pendaftaran SPMB",
     description:
       "Pendaftaran santri baru dibuka secara online melalui website resmi.",
     accent: "primary" as const },

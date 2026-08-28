@@ -9,7 +9,7 @@ import { X, MessageCircle, MessageSquare } from "lucide-react";
 import { BRANDING } from "@/config/branding";
 
 const WA_NUMBER = "6288809934970";
-const WA_MESSAGE = `Assalamu'alaikum, saya ingin bertanya tentang PPDB ${BRANDING.schoolName} Tahun Ajaran 2027/2028.`;
+const WA_MESSAGE = `Assalamu'alaikum, saya ingin bertanya tentang SPMB ${BRANDING.schoolName} Tahun Ajaran 2027/2028.`;
 
 const SPRING = { type: "spring", stiffness: 400, damping: 28 } as const;
 

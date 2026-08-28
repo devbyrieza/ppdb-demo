@@ -33,7 +33,7 @@ export default function Footer() {
   ];
 
   const infoLinks = [
-    { label: "Pendaftaran PPDB", href: "/ppdb" },
+    { label: "Pendaftaran SPMB", href: "/ppdb" },
     { label: "Biaya Pendidikan", href: "/ppdb#biaya" },
     { label: "Beasiswa Tahfidz", href: "/ppdb#beasiswa" },
     { label: "Kalender Akademik", href: "/kalender" },

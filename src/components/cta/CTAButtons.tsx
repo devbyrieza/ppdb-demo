@@ -18,7 +18,7 @@ import { Sparkles, Phone, FileText, Clock, ArrowRight, Target } from "lucide-rea
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 /**
- * Primary CTA - Info PPDB (Soft, Educational)
+ * Primary CTA - Info SPMB (Soft, Educational)
  * Use in: Hero, About, Features, Gallery
  */
 export function CTAInfoPPDB({
@@ -54,7 +54,7 @@ export function CTAInfoPPDB({
       >
         <Link href="/ppdb" className="flex items-center justify-center gap-2">
           <FileText className="w-5 h-5" />
-          <span>Pelajari PPDB 2027/2028</span>
+          <span>Pelajari SPMB 2027/2028</span>
         </Link>
       </Button>
 
@@ -149,7 +149,7 @@ export function CTAKonsultasi({
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// DECISION STAGE - untuk PPDB Info Page ONLY!
+// DECISION STAGE - untuk SPMB Info Page ONLY!
 // User sudah informed, siap untuk action
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -213,7 +213,7 @@ export function CTADaftarSekarang({
 }
 
 /**
- * Sticky Bottom CTA - untuk PPDB Page
+ * Sticky Bottom CTA - untuk SPMB Page
  * Always visible di bottom screen
  */
 export function CTAStickyDaftar() {
@@ -264,7 +264,7 @@ export function NavbarCTAPPDB() {
     >
       <Link href="/ppdb" className="flex items-center gap-2">
         <Sparkles className="w-3.5 h-3.5" />
-        Info PPDB 2026
+        Info SPMB 2026
       </Link>
     </Button>
   );
@@ -327,7 +327,7 @@ export function MobileCTAPPDB() {
       >
         <Link href="/ppdb" className="flex items-center justify-center gap-2">
           <Sparkles className="w-4 h-4" />
-          <span>Pelajari PPDB 2026</span>
+          <span>Pelajari SPMB 2026</span>
         </Link>
       </Button>
     </div>
@@ -358,7 +358,7 @@ export function MobileCTAPPDB() {
  */
 
 /**
- * EXAMPLE USAGE IN PPDB INFO PAGE:
+ * EXAMPLE USAGE IN SPMB INFO PAGE:
  *
  * import { CTADaftarSekarang, CTAStickyDaftar } from "@/components/cta/CTAButtons";
  *

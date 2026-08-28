@@ -257,7 +257,7 @@ export default function ExamCardPage() {
                     year: "numeric" })}
                 </p>
                 <p className="font-bold underline uppercase">
-                  Panitia PPDB Al Fath
+                  Panitia SPMB Al Fath
                 </p>
               </div>
             </div>

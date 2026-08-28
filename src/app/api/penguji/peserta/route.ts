@@ -137,7 +137,7 @@ export async function GET() {
           if (hasHafalanMatch) roles.push("hafalan");
           if (hasLisanArabMatch) roles.push("lisan_arab");
 
-          // Fallback if title is generic like "Tes PPDB", just push based on jenjang so the card isn't blank
+          // Fallback if title is generic like "Tes SPMB", just push based on jenjang so the card isn't blank
           if (roles.length === 0) {
             const jenjang = (item.pendaftar.jenjang || "").toUpperCase();
             if (jenjang.includes("MA")) {

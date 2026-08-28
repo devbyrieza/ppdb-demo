@@ -261,7 +261,7 @@ export default function ProfilTab() {
                 • Pastikan data Anda sudah benar dan sesuai dengan dokumen resmi
               </li>
               <li>
-                • Jika ada perubahan data, hubungi panitia PPDB di nomor yang
+                • Jika ada perubahan data, hubungi panitia SPMB di nomor yang
                 tertera
               </li>
               <li>

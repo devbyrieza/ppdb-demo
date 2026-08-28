@@ -268,7 +268,7 @@ function PPDBContent() {
                 href={`/daftar${jenjang ? `?jenjang=${jenjang}` : ""}`}
                 className="inline-flex items-center justify-center gap-3 px-6 md:px-10 py-5 rounded-pill bg-primary-900 text-white font-black text-xl hover:bg-primary-800 shadow-premium-lg transition-all"
               >
-                Daftar PPDB
+                Daftar SPMB
               </Link>
               <a
                 href="#alur"
@@ -467,7 +467,7 @@ function PPDBContent() {
               </div>
             </div>
 
-            {/* Why PPDB & FAQ */}
+            {/* Why SPMB & FAQ */}
             <div className="space-y-12 md:space-y-16">
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
@@ -530,7 +530,7 @@ function PPDBContent() {
                       a: "Ya, seluruh santri di Pesantren Al Fath wajib tinggal di asrama untuk mengikuti seluruh rangkaian kegiatan tarbiyah, halaqah tahfidz, dan pembelajaran kitab turots secara maksimal." },
                     {
                       q: "Kapan batas akhir pendaftaran?",
-                      a: "Pendaftaran PPDB Tahun Ajaran 2027/2028 dibuka mulai tanggal 5 September sampai dengan 28 Desember 2026. Namun, pendaftaran dapat ditutup lebih awal jika kuota santri baru sudah terpenuhi." },
+                      a: "Pendaftaran SPMB Tahun Ajaran 2027/2028 dibuka mulai tanggal 5 September sampai dengan 28 Desember 2026. Namun, pendaftaran dapat ditutup lebih awal jika kuota santri baru sudah terpenuhi." },
                     {
                       q: "Bagaimana sistem kurikulumnya?",
                       a: "Kami menerapkan Kurikulum Terpadu yang menggabungkan kurikulum Nasional dengan kurikulum kepesantrenan bermanhaj salaf yang berfokus pada pemurnian akidah, penguasaan Bahasa Arab, Tahfidz Al-Qur'an, dan Kitab Turots." },
@@ -593,7 +593,7 @@ function PPDBContent() {
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-5 md:px-8 py-3.5 sm:py-4 md:py-5 rounded-pill bg-white/10 text-white font-bold border border-white/20 hover:bg-white/20 transition-all text-sm sm:text-base md:text-lg min-h-[48px] sm:min-h-[52px]"
                 >
                   <Phone className="w-4 h-4 sm:w-5 sm:h-5" />
-                  Hubungi Admin PPDB
+                  Hubungi Admin SPMB
                 </a>
               </div>
 
@@ -642,7 +642,7 @@ function LoadingFallback() {
         <Loader2 className="w-12 h-12" />
       </motion.div>
       <p className="text-ink-500 font-black uppercase tracking-widest text-xs animate-pulse">
-        Memuat Info PPDB...
+        Memuat Info SPMB...
       </p>
     </div>
   );

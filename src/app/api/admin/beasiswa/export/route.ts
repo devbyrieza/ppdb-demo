@@ -35,7 +35,7 @@ export async function GET(req: NextRequest) {
     const keringananPotongan = listBeasiswa.filter(item => item.jenis_pengajuan === "KERINGANAN_BIAYA");
 
     const workbook = new ExcelJS.Workbook();
-    workbook.creator = "PPDB Al-Andalus";
+    workbook.creator = "SPMB Al-Andalus";
     workbook.created = new Date();
 
     const normalTotal = 8500000;

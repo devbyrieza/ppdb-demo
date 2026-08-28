@@ -34,7 +34,7 @@ export default function BroadcastPage() {
 
   const [header, setHeader] = useState("Assalamu'alaikum");
   const [message, setMessage] = useState("");
-  const [footer, setFooter] = useState("Panitia PPDB Al-Fath");
+  const [footer, setFooter] = useState("Panitia SPMB Al-Fath");
   const [includeName, setIncludeName] = useState(true);
 
   const [sending, setSending] = useState(false);

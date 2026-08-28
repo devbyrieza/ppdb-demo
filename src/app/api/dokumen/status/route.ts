@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 
-// Daftar semua jenis dokumen sesuai persyaratan PPDB PPDB
+// Daftar semua jenis dokumen sesuai persyaratan SPMB PPDB
 const JENIS_DOKUMEN = [
   { key: "kartu_keluarga", label: "Scan Kartu Keluarga", required: true },
   { key: "akta_kelahiran", label: "Scan Akte Kelahiran", required: true },

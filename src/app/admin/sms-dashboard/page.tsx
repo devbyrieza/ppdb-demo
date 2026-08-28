@@ -79,7 +79,7 @@ export default function AdminSMSDashboard() {
             <ol className="list-decimal list-inside text-primary-700 space-y-1">
               <li>Salin nomor HP dan OTP di bawah</li>
               <li>Kirim SMS dari HP Admin ke nomor tersebut</li>
-              <li>Pesan: "PPDB AL-FATH: Kode OTP: [OTP] untuk [NAMA]"</li>
+              <li>Pesan: "SPMB AL-FATH: Kode OTP: [OTP] untuk [NAMA]"</li>
               <li>Klik tombol "Sudah Dikirim" setelah selesai</li>
             </ol>
           </div>
@@ -156,7 +156,7 @@ export default function AdminSMSDashboard() {
                       Pesan yang dikirim:
                     </p>
                     <pre className="bg-gray-900 text-white p-[24px_28px] rounded-[24px] text-sm">
-                      {`PPDB AL-FATH
+                      {`SPMB AL-FATH
 Kode OTP: ${item.otp}
 Untuk: ${item.nama}
 

@@ -245,7 +245,7 @@ function SupportCenter() {
           <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 rounded-full border border-white/10">
             <span className="w-2 h-2 rounded-full bg-secondary-400 animate-pulse" />
             <span className="text-[10px] font-black uppercase tracking-widest text-secondary-200">
-              PUSAT BANTUAN PPDB
+              PUSAT BANTUAN SPMB
             </span>
           </div>
           <h3 className="font-black text-2xl sm:text-3xl md:text-4xl font-display leading-tight">

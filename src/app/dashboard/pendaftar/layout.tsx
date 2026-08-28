@@ -450,7 +450,7 @@ export default function DashboardLayout({
                       />
                     </div>
                     <span className="font-black text-lg text-primary-950 tracking-tight">
-                      PPDB {BRANDING.schoolName}
+                      SPMB {BRANDING.schoolName}
                     </span>
                   </div>
                   <button

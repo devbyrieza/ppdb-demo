@@ -313,7 +313,7 @@ export default function DataPendaftaranTab() {
                   Upload Dokumen
                 </h3>
                 <p className="text-sm text-stone-600">
-                  Upload dokumen persyaratan PPDB
+                  Upload dokumen persyaratan SPMB
                 </p>
               </div>
               <ChevronRight className="w-5 h-5 text-stone-400 group-hover:text-green-500" />

@@ -119,7 +119,7 @@ export default function RecapFeePage() {
       sheets: [
         {
           name: "Rekap Honor",
-          title: "REKAP HONOR PENGUJI PPDB",
+          title: "REKAP HONOR PENGUJI SPMB",
           subTitle: `Tanggal Ekspor: ${new Date().toLocaleDateString("id-ID")}`,
           header: headers,
           data: data }
@@ -204,7 +204,7 @@ export default function RecapFeePage() {
                 </span>
               </h1>
               <p className="text-ink-500 font-medium mt-1 uppercase text-[10px] tracking-widest leading-none">
-                Manajemen Insentif Petugas Seleksi PPDB
+                Manajemen Insentif Petugas Seleksi SPMB
               </p>
             </div>
           </div>
