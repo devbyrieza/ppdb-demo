@@ -82,7 +82,7 @@ export default function ChatSystem() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-ink-950/40 backdrop-blur-sm z-9990 md:hidden"
+            className="fixed inset-0 bg-ink-950/40 backdrop-blur-sm z-9990 md:hidden overscroll-contain"
             onClick={() => setIsAiOpen(false)}
           />
         )}

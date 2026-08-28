@@ -352,7 +352,7 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-40 lg:hidden"
+            className="fixed inset-0 z-40 lg:hidden overscroll-contain"
             role="dialog"
             aria-modal="true"
             aria-label="Menu navigasi"

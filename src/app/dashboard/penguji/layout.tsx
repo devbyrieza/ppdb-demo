@@ -110,7 +110,7 @@ export default function PengujiDashboardLayout({
   };
 
   const SidebarNav = () => (
-    <nav className="space-y-1">
+    <nav className="space-y-1 custom-scrollbar overscroll-contain">
       {menuItems.map((item) => (
         <Link
           key={item.name}

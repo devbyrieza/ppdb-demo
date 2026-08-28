@@ -551,7 +551,7 @@ export default function DashboardPage() {
           </div>
 
           {/* RIGHT SIDE: SIDEBAR */}
-          <aside className="md:col-span-4 lg:col-span-4 space-y-8 md:space-y-10">
+          <aside className="md:col-span-4 lg:col-span-4 space-y-8 md:space-y-10 overscroll-contain">
             {/* REG CARD */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}

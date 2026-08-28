@@ -130,10 +130,10 @@ export default function IdleTimeoutTracker() {
   return (
     <>
       {/* Backdrop */}
-      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9998]" />
+      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9998] overscroll-contain" />
 
       {/* Warning Modal */}
-      <div className="fixed inset-0 flex items-center justify-center z-[9999] p-4">
+      <div className="fixed inset-0 flex items-center justify-center z-[9999] p-4 overscroll-contain">
         <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 animate-fadeInUp">
           {/* Icon */}
           <div className="w-16 h-16 rounded-full bg-yellow-100 flex items-center justify-center mx-auto mb-4">

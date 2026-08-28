@@ -3429,7 +3429,7 @@ export default function PendaftarDetailPage() {
 
       {/* MODAL INPUT NILAI MANUAL (ADMIN SUPER ONLY) */}
       {isNilaiModalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-[24px_28px] sm:p-6">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-[24px_28px] sm:p-6 overscroll-contain">
           <div
             className="absolute inset-0 bg-ink-950/60 backdrop-blur-sm"
             onClick={() => setIsNilaiModalOpen(false)}

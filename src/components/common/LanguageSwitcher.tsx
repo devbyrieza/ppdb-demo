@@ -187,7 +187,7 @@ export default function LanguageSwitcher() {
         {isOpen && (
           <>
             <div
-              className="fixed inset-0 z-[60]"
+              className="fixed inset-0 z-[60] overscroll-contain"
               onClick={() => setIsOpen(false)}
             />
             <motion.div

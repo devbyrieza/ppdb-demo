@@ -400,7 +400,7 @@ export default function DashboardLayout({
               </div>
 
               {/* Navigation */}
-              <nav className="flex-1 overflow-y-auto px-3 pb-6 space-y-1 scrollbar-hide overscroll-contain custom-scrollbar">
+              <nav className="flex-1 overflow-y-auto px-3 pb-6 space-y-1  overscroll-contain custom-scrollbar">
                 <div className="px-3 mb-2">
                   <p className="text-xs font-bold text-ink-400 uppercase tracking-wider">
                     Menu Utama

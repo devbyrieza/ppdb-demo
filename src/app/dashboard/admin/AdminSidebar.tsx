@@ -388,7 +388,7 @@ export default function AdminSidebar({
             </div>
           )}
 
-          <nav className="space-y-1.5">
+          <nav className="space-y-1.5 custom-scrollbar overscroll-contain">
             {menuItems.map((item, idx) => {
               const prevItem = menuItems[idx - 1];
               const showGroupLabel =

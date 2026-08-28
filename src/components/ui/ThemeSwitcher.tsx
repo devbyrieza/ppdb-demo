@@ -51,7 +51,7 @@ export default function ThemeSwitcher() {
           <>
             {/* Backdrop for closing */}
             <div
-              className="fixed inset-0 z-[60] bg-transparent cursor-default"
+              className="fixed inset-0 z-[60] bg-transparent cursor-default overscroll-contain"
               onClick={(e) => {
                 e.stopPropagation();
                 setIsOpen(false);

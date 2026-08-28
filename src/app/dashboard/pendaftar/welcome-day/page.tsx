@@ -1158,7 +1158,7 @@ export default function WelcomeDayPage() {
       {/* Lightbox Modal */}
       {lightbox && (
         <div 
-          className="fixed inset-0 z-[100] bg-ink-950/95 flex flex-col items-center justify-center p-[24px_28px] md:p-8 backdrop-blur-sm"
+          className="fixed inset-0 z-[100] bg-ink-950/95 flex flex-col items-center justify-center p-[24px_28px] md:p-8 backdrop-blur-sm overscroll-contain"
           onClick={() => setLightbox(null)}
         >
           <button className="absolute top-[24px_28px] right-4 md:top-6 md:right-6 text-white p-2 hover:bg-white/10 rounded-full transition-colors">
