@@ -297,7 +297,7 @@ export default function Navbar() {
                   </Link>
                   <Link
                     href="/ppdb"
-                    className="btn-primary flex items-center gap-2 group text-sm px-5 py-2.5 glow-ring-primary"
+                    className="btn-primary flex items-center gap-2 group text-sm font-black px-6 py-2.5 scale-[1.03] shadow-lg hover:scale-105 transition-all glow-ring-primary"
                   >
                     Daftar PPDB
                     <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
