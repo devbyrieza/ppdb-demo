@@ -284,7 +284,7 @@ export default function Navbar() {
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                   </span>
-                  Dashboard
+                  Masuk ke Akun
                   <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               ) : (
@@ -457,7 +457,7 @@ export default function Navbar() {
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-300 opacity-75"></span>
                         <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400"></span>
                       </span>
-                      <span>Buka Dashboard Anda</span>
+                      <span>Masuk ke Akun</span>
                       <ArrowRight className="w-4 h-4 ml-1" />
                     </Link>
                   ) : (
