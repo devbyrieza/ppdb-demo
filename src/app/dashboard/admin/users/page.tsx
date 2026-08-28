@@ -548,6 +548,26 @@ export default function UserManagementPage() {
                   </select>
                 </div>
                 <div className="col-span-1 md:col-span-2">
+                  <label className="block text-[10px] font-black uppercase text-stone-500 mb-3 tracking-widest flex items-center justify-between">
+                    <span>Link Google Meet (Khusus Penguji / Wawancara Online)</span>
+                    <span className="text-primary-600 font-bold normal-case text-xs">Wajib untuk Penguji</span>
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="url"
+                      placeholder="Contoh: https://meet.google.com/abc-defg-hij"
+                      value={formData.google_meet_link}
+                      onChange={(e) =>
+                        setFormData({ ...formData, google_meet_link: e.target.value })
+                      }
+                      className="w-full px-4 md:px-5 py-4 bg-stone-100/50 border-2 border-transparent focus:border-primary-600 focus:bg-white focus:outline-none font-bold rounded-xl transition-all font-mono text-sm"
+                    />
+                  </div>
+                  <p className="text-[11px] text-stone-400 font-medium mt-1.5">
+                    Link Google Meet permanen penguji untuk sesi wawancara online santri/wali.
+                  </p>
+                </div>
+                <div className="col-span-1 md:col-span-2">
                   <label className="block text-[10px] font-black uppercase text-stone-500 mb-3 tracking-widest">
                     Secondary Roles (Multi-Role)
                   </label>
