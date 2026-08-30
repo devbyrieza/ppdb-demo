@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pendataan Minat OMI 2026 – MTs Al-Imam</title>
+  <!-- Nunito: bulat, ramah, sangat mudah dibaca siswa -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* =========================================================
+       RESET & BASE
+    ========================================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green-dark:   #1a5c2a;
+      --green-mid:    #2d8346;
+      --green-light:  #4caf70;
+      --gold:         #f5a623;
+      --gold-dark:    #d48b0a;
+      --cream:        #fdfbf4;
+      --white:        #ffffff;
+      --gray-100:     #f5f5f5;
+      --gray-200:     #e8e8e8;
+      --gray-500:     #888;
+      --text-dark:    #1c1c1c;
+      --text-mid:     #444;
+      --shadow-card:  0 4px 20px rgba(0,0,0,.10);
+      --radius:       14px;
+    }
+
+    body {
+      font-family: 'Nunito', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 17px;
+      line-height: 1.75;
+      letter-spacing: 0.01em;
+      background: linear-gradient(160deg, #e8f5e9 0%, #fff9e6 100%);
+      min-height: 100vh;
+      color: var(--text-dark);
+    }
+
+    /* =========================================================
+       HERO HEADER
+    ========================================================= */
+    .hero {
+      background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-mid) 60%, #388e3c 100%);
+      color: var(--white);
+      padding: 40px 24px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 240px; height: 240px;
+      background: rgba(255,255,255,.06);
+      border-radius: 50%;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: -40px;
+      width: 280px; height: 280px;
+      background: rgba(255,255,255,.04);
+      border-radius: 50%;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--green-dark);
+      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 6px 20px;
+      border-radius: 99px;
+      margin-bottom: 16px;
+    }
+    .hero-logo {
+      font-size: 64px;
+      margin-bottom: 8px;
+    }
+    .hero h1 {
+      font-size: clamp(26px, 5vw, 42px);
+      font-weight: 900;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+    .hero h1 span { color: var(--gold); }
+    .hero-sub {
+      font-size: 17px;
+      opacity: .9;
+      max-width: 520px;
+      margin: 0 auto 22px;
+      line-height: 1.75;
+      font-weight: 500;
+    }
+    .hero-deadline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,.15);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 99px;
+      padding: 10px 26px;
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .hero-deadline span { color: var(--gold); font-weight: 900; }
+
+    /* =========================================================
+       WAVE DIVIDER
+    ========================================================= */
+    .wave {
+      display: block;
+      width: 100%;
+      height: 60px;
+      background: linear-gradient(135deg, var(--green-dark) 0%, #388e3c 100%);
+      clip-path: ellipse(55% 100% at 50% 0%);
+      margin-top: -2px;
+    }
+
+    /* =========================================================
+       MAIN WRAPPER
+    ========================================================= */
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 16px 60px;
+    }
+
+    /* =========================================================
+       SECTION CARDS
+    ========================================================= */
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-card);
+      padding: 32px 28px;
+      margin-bottom: 28px;
+    }
+    .card-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--green-dark);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .card-title .icon {
+      width: 42px; height: 42px;
+      background: linear-gradient(135deg, var(--green-mid), var(--green-light));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    /* =========================================================
+       OMI INFO SECTION
+    ========================================================= */
+    .omi-intro p {
+      font-size: 16px;
+      line-height: 1.85;
+      color: var(--text-mid);
+      margin-bottom: 14px;
+    }
+    .omi-intro strong { color: var(--green-dark); }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 20px;
+    }
+    .info-item {
+      background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+      border: 1px solid #c8e6c9;
+      border-radius: 12px;
+      padding: 18px 18px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .info-item .info-icon { font-size: 28px; flex-shrink: 0; margin-top: 2px; }
+    .info-item .info-text { font-size: 15px; line-height: 1.7; color: var(--text-mid); }
+    .info-item .info-text strong { display: block; font-size: 16px; color: var(--green-dark); margin-bottom: 4px; }
+
+    /* =========================================================
+       BENEFITS
+    ========================================================= */
+    .benefits-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .benefit-item {
+      background: var(--cream);
+      border-radius: 10px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-left: 4px solid var(--gold);
+    }
+    .benefit-item .b-icon { font-size: 26px; }
+    .benefit-item .b-text { font-size: 15px; color: var(--text-mid); line-height: 1.6; }
+    .benefit-item .b-text strong { color: var(--text-dark); display: block; font-size: 15px; font-weight: 800; }
+
+    /* =========================================================
+       PERSUASIVE CALL-TO-ACTION BANNER
+    ========================================================= */
+    .cta-banner {
+      background: linear-gradient(135deg, #fff8e1, #fff3cd);
+      border: 2px solid var(--gold);
+      border-radius: var(--radius);
+      padding: 30px;
+      margin-bottom: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-banner::before {
+      content: '⭐';
+      position: absolute;
+      top: -10px; right: 20px;
+      font-size: 60px;
+      opacity: .12;
+    }
+    .cta-banner h2 {
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--gold-dark);
+      margin-bottom: 14px;
+    }
+    .cta-banner p {
+      font-size: 16px;
+      line-height: 1.85;
+      color: #5a4200;
+      margin-bottom: 12px;
+    }
+    .cta-banner p:last-child { margin-bottom: 0; }
+    .cta-banner strong { color: var(--gold-dark); }
+
+    /* =========================================================
+       SUBJECT CARDS
+    ========================================================= */
+    .mapel-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .mapel-card {
+      border-radius: var(--radius);
+      padding: 26px 18px;
+      text-align: center;
+      border: 2px solid transparent;
+      cursor: default;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .mapel-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.12); }
+
+    .mapel-card.mtk  { background: linear-gradient(135deg, #e3f2fd, #bbdefb); border-color: #64b5f6; }
+    .mapel-card.ipa  { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); border-color: #66bb6a; }
+    .mapel-card.ips  { background: linear-gradient(135deg, #fff3e0, #ffe0b2); border-color: #ffa726; }
+
+    .mapel-card .m-icon { font-size: 48px; margin-bottom: 10px; }
+    .mapel-card .m-label { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; opacity: .7; }
+    .mapel-card .m-name { font-size: 22px; font-weight: 900; margin: 6px 0 8px; color: var(--text-dark); }
+    .mapel-card .m-full { font-size: 14px; opacity: .75; margin-bottom: 12px; }
+    .mapel-card .m-quota {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(0,0,0,.08);
+      border-radius: 99px;
+      padding: 5px 16px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    /* =========================================================
+       FORM SECTION
+    ========================================================= */
+    .form-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .form-header h2 {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--green-dark);
+      margin-bottom: 8px;
+    }
+    .form-header p { font-size: 16px; color: var(--gray-500); font-weight: 500; }
+
+    .santri-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .santri-row {
+      background: var(--gray-100);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: grid;
+      grid-template-columns: 38px 1fr auto;
+      align-items: center;
+      gap: 14px;
+      border: 2px solid transparent;
+      transition: border-color .2s, background .2s, box-shadow .2s;
+    }
+    .santri-row:hover {
+      border-color: var(--green-light);
+      background: #f0fff4;
+      box-shadow: 0 2px 10px rgba(45,131,70,.12);
+    }
+    .santri-row.selected {
+      border-color: var(--green-mid);
+      background: #e8f5e9;
+      box-shadow: 0 2px 12px rgba(45,131,70,.2);
+    }
+
+    .row-no {
+      width: 38px; height: 38px;
+      background: var(--green-mid);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+    .row-name {
+      font-weight: 800;
+      font-size: 16px;
+      color: var(--text-dark);
+    }
+    .row-class {
+      font-size: 13px;
+      color: var(--gray-500);
+      margin-top: 2px;
+      font-weight: 600;
+    }
+
+    .subject-checks {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .check-label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .check-label input[type="checkbox"] { display: none; }
+    .check-pill {
+      padding: 8px 18px;
+      border-radius: 99px;
+      font-size: 14px;
+      font-weight: 800;
+      border: 2px solid var(--gray-200);
+      background: var(--white);
+      color: var(--gray-500);
+      transition: all .2s;
+      white-space: nowrap;
+    }
+    .check-label input[type="checkbox"]:checked + .check-pill.mtk {
+      background: #1565c0; border-color: #1565c0; color: white;
+    }
+    .check-label input[type="checkbox"]:checked + .check-pill.ipa {
+      background: var(--green-mid); border-color: var(--green-mid); color: white;
+    }
+    .check-label input[type="checkbox"]:checked + .check-pill.ips {
+      background: #e65100; border-color: #e65100; color: white;
+    }
+    .check-label:hover .check-pill { border-color: var(--gray-500); color: var(--text-dark); }
+
+    /* =========================================================
+       PROGRESS COUNTER
+    ========================================================= */
+    .progress-section {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-card);
+      padding: 24px 28px;
+      margin-bottom: 28px;
+    }
+    .progress-section h3 {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--green-dark);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .progress-bars {
+      display: grid;
+      gap: 14px;
+    }
+    .prog-item { }
+    .prog-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .prog-label .count { font-size: 14px; color: var(--gray-500); font-weight: 600; }
+    .prog-bar-bg {
+      height: 13px;
+      background: var(--gray-200);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .prog-bar-fill {
+      height: 100%;
+      border-radius: 99px;
+      transition: width .4s cubic-bezier(.4,0,.2,1);
+    }
+    .prog-bar-fill.mtk { background: linear-gradient(90deg, #1976d2, #42a5f5); }
+    .prog-bar-fill.ipa { background: linear-gradient(90deg, var(--green-dark), var(--green-light)); }
+    .prog-bar-fill.ips { background: linear-gradient(90deg, #bf360c, #ff8a65); }
+
+    .quota-note {
+      font-size: 12px;
+      color: var(--gray-500);
+      margin-top: 14px;
+      padding: 10px 14px;
+      background: var(--gray-100);
+      border-radius: 8px;
+      line-height: 1.6;
+    }
+
+    /* =========================================================
+       SUBMIT BUTTON
+    ========================================================= */
+    .submit-area {
+      text-align: center;
+      padding: 10px 0 20px;
+    }
+    .btn-submit {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, var(--green-dark), var(--green-mid));
+      color: white;
+      font-size: 16px;
+      font-weight: 800;
+      padding: 15px 44px;
+      border-radius: 99px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(45,131,70,.35);
+      transition: transform .2s, box-shadow .2s;
+      letter-spacing: .5px;
+    }
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(45,131,70,.45);
+    }
+    .btn-submit:active { transform: translateY(0); }
+    .btn-print {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--white);
+      color: var(--green-dark);
+      font-size: 14px;
+      font-weight: 700;
+      padding: 12px 30px;
+      border-radius: 99px;
+      border: 2px solid var(--green-mid);
+      cursor: pointer;
+      margin-left: 12px;
+      transition: all .2s;
+    }
+    .btn-print:hover { background: #e8f5e9; }
+
+    /* =========================================================
+       RESULT TABLE (shown after submit)
+    ========================================================= */
+    .result-section {
+      display: none;
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-card);
+      padding: 28px;
+      margin-bottom: 28px;
+    }
+    .result-section.visible { display: block; }
+    .result-section h3 {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--green-dark);
+      margin-bottom: 16px;
+    }
+    .result-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+    .result-table th {
+      background: var(--green-dark);
+      color: white;
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 12px;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+    }
+    .result-table th:first-child { border-radius: 8px 0 0 0; }
+    .result-table th:last-child { border-radius: 0 8px 0 0; }
+    .result-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--gray-200);
+      vertical-align: middle;
+    }
+    .result-table tr:last-child td { border-bottom: none; }
+    .result-table tr:nth-child(even) td { background: var(--gray-100); }
+
+    .mapel-badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 99px;
+      font-size: 11px;
+      font-weight: 700;
+      margin: 2px 3px 2px 0;
+    }
+    .mapel-badge.mtk { background: #e3f2fd; color: #1565c0; }
+    .mapel-badge.ipa { background: #e8f5e9; color: #1b5e20; }
+    .mapel-badge.ips { background: #fff3e0; color: #bf360c; }
+
+
+    /* =========================================================
+       FOOTER
+    ========================================================= */
+    .footer {
+      text-align: center;
+      padding: 24px 16px;
+      font-size: 12px;
+      color: var(--gray-500);
+      border-top: 1px solid var(--gray-200);
+    }
+    .footer strong { color: var(--green-dark); }
+
+    /* =========================================================
+       PRINT STYLES
+    ========================================================= */
+    @media print {
+      /* ---- Page setup A4 ---- */
+      @page { size: A4 portrait; margin: 15mm 12mm 15mm 12mm; }
+
+      /* ---- Force color print ---- */
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      body { background: white !important; font-size: 11pt; font-family: 'Nunito', sans-serif; }
+
+      /* ---- Sembunyikan HANYA tombol & elemen interaktif ---- */
+      .wave,
+      .progress-section,
+      .btn-submit,
+      .btn-print,
+      .no-print,
+      .footer,
+      .submit-area { display: none !important; }
+
+      /* ---- Result section: tampil saat print ---- */
+      .result-section {
+        display: block !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+
+      /* ---- Container penuh ---- */
+      .container { max-width: 100%; padding: 0; margin: 0; }
+
+      /* ---- HERO: ganti gradient jadi kotak berwarna solid untuk print ---- */
+      .hero {
+        background: #1a5c2a !important;
+        color: white !important;
+        padding: 20px 20px 28px !important;
+        border-radius: 8px !important;
+        margin-bottom: 12px;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+      .hero::before, .hero::after { display: none !important; }
+      .hero-badge {
+        background: #f5a623 !important;
+        color: #1a5c2a !important;
+        font-size: 10pt !important;
+        padding: 4px 14px !important;
+      }
+      .hero-logo { font-size: 40px !important; }
+      .hero h1 { font-size: 22pt !important; color: white !important; }
+      .hero h1 span { color: #f5a623 !important; }
+      .hero-sub { font-size: 12pt !important; color: rgba(255,255,255,.9) !important; }
+      .hero-deadline {
+        background: rgba(255,255,255,.2) !important;
+        border: 1px solid rgba(255,255,255,.4) !important;
+        font-size: 11pt !important;
+        color: white !important;
+      }
+      .hero-deadline span { color: #f5a623 !important; }
+
+      /* ---- OMI INTRO card ---- */
+      .omi-intro { page-break-inside: auto !important; }
+      .omi-intro p { font-size: 11pt !important; line-height: 1.7 !important; }
+      .info-grid { grid-template-columns: 1fr 1fr 1fr !important; gap: 8px !important; }
+      .info-item {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        padding: 10px 12px !important;
+      }
+      .info-item .info-icon { font-size: 20px !important; }
+      .info-item .info-text { font-size: 10pt !important; }
+      .info-item .info-text strong { font-size: 11pt !important; }
+
+      /* ---- CTA BANNER ---- */
+      .cta-banner {
+        background: #fff8e1 !important;
+        border: 2px solid #f5a623 !important;
+        border-radius: 8px !important;
+        padding: 16px 20px !important;
+        margin-bottom: 12px;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+      .cta-banner::before { display: none !important; }
+      .cta-banner h2 { font-size: 14pt !important; color: #d48b0a !important; }
+      .cta-banner p { font-size: 11pt !important; color: #5a4200 !important; }
+
+      /* ---- CARD: hapus shadow, BOLEH page break di dalam ---- */
+      .card {
+        box-shadow: none !important;
+        border: none !important;
+        background: transparent !important;
+        border-radius: 0 !important;
+        page-break-inside: auto !important;
+        break-inside: auto !important;
+        margin-bottom: 15px !important;
+        padding: 0 !important;
+      }
+      .card-title {
+        border-bottom: 2px solid #1a5c2a;
+        padding-bottom: 8px;
+        margin-bottom: 15px;
+      }
+
+      /* ---- Benefits: 2 kolom ---- */
+      .benefits-list { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+      .benefit-item {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        padding: 10px 12px !important;
+      }
+      .benefit-item .b-icon { font-size: 18px !important; }
+      .benefit-item .b-text { font-size: 10pt !important; }
+      .benefit-item .b-text strong { font-size: 10pt !important; }
+
+      /* ---- Mapel cards: 3 kolom horizontal ---- */
+      .mapel-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr 1fr !important;
+        gap: 8px !important;
+        margin-bottom: 10px;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+      .mapel-card {
+        padding: 14px 10px !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+      .mapel-card .m-icon { font-size: 28px !important; }
+      .mapel-card .m-name { font-size: 14pt !important; }
+      .mapel-card .m-full { font-size: 9pt !important; }
+      .mapel-card .m-quota { font-size: 10pt !important; }
+
+      /* ---- Santri rows: tiap baris jangan terpotong ---- */
+      .santri-grid { display: block !important; }
+      .santri-row {
+        display: flex !important;
+        align-items: center;
+        gap: 10px;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        border: 1px solid #ddd !important;
+        border-radius: 6px !important;
+        margin-bottom: 4px !important;
+        padding: 7px 12px !important;
+        background: white !important;
+        box-shadow: none !important;
+      }
+      .santri-row.selected {
+        background: #e8f5e9 !important;
+        border-color: #4caf70 !important;
+      }
+
+      /* ---- Nomor & nama santri ---- */
+      .row-no {
+        width: 26px !important; height: 26px !important;
+        font-size: 11px !important;
+        flex-shrink: 0;
+        background: #2d8346 !important;
+        color: white !important;
+        border-radius: 50% !important;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+      }
+      .row-name { font-size: 11pt !important; font-weight: 800 !important; }
+      .row-class { font-size: 9pt !important; }
+
+      /* ---- Checkbox pills ---- */
+      .subject-checks { margin-left: auto; }
+      .check-pill {
+        border: 1.5px solid #bbb !important;
+        font-size: 9pt !important;
+        padding: 3px 9px !important;
+        font-weight: 700 !important;
+        border-radius: 99px !important;
+        background: white !important;
+        color: #888 !important;
+      }
+      input[type="checkbox"]:checked + .check-pill.mtk {
+        background: #1565c0 !important; color: white !important; border-color: #1565c0 !important;
+      }
+      input[type="checkbox"]:checked + .check-pill.ipa {
+        background: #2d8346 !important; color: white !important; border-color: #2d8346 !important;
+      }
+      input[type="checkbox"]:checked + .check-pill.ips {
+        background: #e65100 !important; color: white !important; border-color: #e65100 !important;
+      }
+
+      /* ---- Benefits grid: JANGAN pisah, semua 6 item harus satu blok ---- */
+      .benefits-list {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      /* ---- Kotak catatan: JANGAN pernah terpotong ---- */
+      .catatan-note {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        page-break-before: auto !important;
+      }
+
+      /* ---- Result table ---- */
+      .result-table { font-size: 10pt; width: 100%; border-collapse: collapse; }
+      .result-table th { background: #1a5c2a !important; color: white !important; }
+      .result-table tr { page-break-inside: avoid !important; break-inside: avoid !important; }
+
+      /* ---- Sembunyikan result-section jika kosong / belum di-submit ---- */
+      .result-section:not(.visible) { display: none !important; }
+
+      /* ---- Kontrol orphan & widow pada paragraf ---- */
+      p { orphans: 3; widows: 3; }
+
+      /* ---- Judul form & card ---- */
+      .form-header h2 { font-size: 15pt; }
+      .form-header p { font-size: 11pt; }
+      .card-title { font-size: 13pt !important; page-break-after: avoid; break-after: avoid; }
+      .card-title .icon { width: 32px !important; height: 32px !important; font-size: 16px !important; }
+      .form-header, .card-title { page-break-after: avoid; break-after: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     HERO
+============================================================ -->
+<div class="hero">
+  <div class="hero-badge">📢 Pengumuman Penting · MTs Al-Imam</div>
+  <div class="hero-logo">🏆</div>
+  <h1>Olimpiade Madrasah Indonesia<br><span>OMI 2026</span></h1>
+  <p class="hero-sub">
+    Kesempatan emas bagi santri MTs Al-Imam untuk berprestasi di tingkat Kabupaten Sukabumi dan meraih kejayaan bersama madrasah tercinta!
+  </p>
+  <div class="hero-deadline">
+    ⏰ Pendaftaran OMI: <span>27 Agustus – 2 September 2026</span>
+  </div>
+  <div style="margin-top: 12px; display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.3); border-radius: 99px; padding: 10px 26px; font-size: 15px; font-weight: 700; color: white;">
+    🗓️ Seleksi Internal Al-Imam: <span style="color: #f5a623; font-weight: 900;">Ahad, 30 Agustus 2026 · Ba'da Ashar (15.30 WIB)</span>
+  </div>
+</div>
+<div class="wave"></div>
+
+<div class="container">
+
+  <!-- ============================================================
+       APA ITU OMI?
+  ============================================================ -->
+  <div class="card omi-intro" style="margin-top: -20px; position: relative; z-index: 10;">
+    <div class="card-title">
+      <div class="icon">🎓</div>
+      Apa Itu Olimpiade Madrasah Indonesia (OMI)?
+    </div>
+    <p>
+      <strong>Olimpiade Madrasah Indonesia (OMI)</strong> adalah kompetisi ilmiah bergengsi yang diselenggarakan oleh
+      <strong>Kementerian Agama RI</strong> setiap tahun, diikuti oleh seluruh madrasah di Indonesia — mulai dari
+      tingkat Kabupaten/Kota hingga tingkat Nasional. OMI 2026 dihelat di Kabupaten Sukabumi pada
+      <strong>29 Agustus 2026</strong>.
+    </p>
+    <p>
+      Untuk jenjang <strong>MTs</strong>, ada <strong>3 bidang lomba</strong> yang dipertandingkan, masing-masing
+      diwakili oleh <strong>3 santri terbaik</strong> dari setiap madrasah. Artinya, Al-Imam akan mengirimkan
+      total <strong>9 santri juara</strong> yang akan membawa nama besar madrasah kita!
+    </p>
+
+    <div class="info-grid">
+      <div class="info-item">
+        <span class="info-icon">🔵</span>
+        <div class="info-text">
+          <strong>Matematika Terintegrasi</strong>
+          Uji kemampuan logika, aljabar, geometri, dan matematika berbasis nilai-nilai islami.
+        </div>
+      </div>
+      <div class="info-item">
+        <span class="info-icon">🟢</span>
+        <div class="info-text">
+          <strong>IPA Terintegrasi</strong>
+          Fisika, Biologi, Kimia dasar yang terintegrasi dengan perspektif sains Islam.
+        </div>
+      </div>
+      <div class="info-item">
+        <span class="info-icon">🟠</span>
+        <div class="info-text">
+          <strong>IPS Terintegrasi</strong>
+          Geografi, Sejarah, Ekonomi, dan Sosiologi berbasis wawasan keislaman dan kebangsaan.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       MANFAAT IKUT OMI
+  ============================================================ -->
+  <div class="card">
+    <div class="card-title">
+      <div class="icon">✨</div>
+      Manfaat Ikut OMI 2026
+    </div>
+    <div class="benefits-list">
+      <div class="benefit-item">
+        <span class="b-icon">🏅</span>
+        <div class="b-text">
+          <strong>Prestasi Bergengsi</strong>
+          Nama kamu tercatat sebagai wakil resmi madrasah di lomba tingkat Kabupaten & nasional.
+        </div>
+      </div>
+      <div class="benefit-item">
+        <span class="b-icon">🧠</span>
+        <div class="b-text">
+          <strong>Otak Makin Tajam</strong>
+          Persiapan OMI melatih cara berpikir kritis, analitis, dan sistematis — berguna seumur hidup.
+        </div>
+      </div>
+      <div class="benefit-item">
+        <span class="b-icon">📜</span>
+        <div class="b-text">
+          <strong>Sertifikat & Piagam</strong>
+          Setiap peserta mendapatkan sertifikat resmi dari Kemenag yang sangat berharga untuk portofolio.
+        </div>
+      </div>
+      <div class="benefit-item">
+        <span class="b-icon">🤝</span>
+        <div class="b-text">
+          <strong>Jaringan & Pertemanan</strong>
+          Bertemu santri-santri cerdas dari seluruh madrasah se-Kabupaten Sukabumi.
+        </div>
+      </div>
+      <div class="benefit-item">
+        <span class="b-icon">💎</span>
+        <div class="b-text">
+          <strong>Nilai Lebih di Raport</strong>
+          Prestasi olimpiade memberi nilai plus di mata sekolah, guru, dan kelak universitas.
+        </div>
+      </div>
+      <div class="benefit-item">
+        <span class="b-icon">🚀</span>
+        <div class="b-text">
+          <strong>Jalan ke Tingkat Nasional</strong>
+          Juara kabupaten = tiket ke OMI Provinsi & Nasional — meraih posisi di kancah Indonesia!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       PERSUASIVE CTA
+  ============================================================ -->
+  <div class="cta-banner">
+    <h2>🔥 Ayo, Jangan Lewatkan Kesempatan Ini!</h2>
+    <p>
+      Bayangkan, kamu mewakili <strong>Al-Imam</strong> di ajang bergengsi tingkat Kabupaten — berdiri tegak di antara
+      santri-santri terbaik, membawa nama madrasah, orang tua, dan gurumu. Ini bukan sekadar lomba, ini adalah
+      <strong>perjalanan tumbuh dan membuktikan diri</strong>.
+    </p>
+    <p>
+      Setiap bidang hanya diambil <strong>3 orang saja</strong> dari 19 santri. Jika kamu berminat, segera
+      daftarkan dirimu sekarang. Ustadz akan membantu persiapan dan memberikan bimbingan khusus.
+      <strong>Yang penting adalah keberanian untuk mencoba!</strong>
+    </p>
+    <p>
+      💬 <em>"Man jadda wajada — siapa yang bersungguh-sungguh pasti berhasil."</em>
+      Tidak ada ruginya mendaftar, yang ada hanyalah kesempatan untuk menjadi lebih baik. <strong>Daftarkan dirimu sekarang!</strong>
+    </p>
+  </div>
+
+  <!-- ============================================================
+       BIDANG LOMBA
+  ============================================================ -->
+  <div class="mapel-grid">
+    <div class="mapel-card mtk">
+      <div class="m-icon">📐</div>
+      <div class="m-label">Bidang Sains MTs</div>
+      <div class="m-name">Matematika</div>
+      <div class="m-full">Matematika Terintegrasi</div>
+      <div class="m-quota">👥 Kuota: <span id="ctr-mtk">0</span> / 3</div>
+    </div>
+    <div class="mapel-card ipa">
+      <div class="m-icon">🔬</div>
+      <div class="m-label">Bidang Sains MTs</div>
+      <div class="m-name">IPA</div>
+      <div class="m-full">IPA Terintegrasi</div>
+      <div class="m-quota">👥 Kuota: <span id="ctr-ipa">0</span> / 3</div>
+    </div>
+    <div class="mapel-card ips">
+      <div class="m-icon">🌍</div>
+      <div class="m-label">Bidang Sains MTs</div>
+      <div class="m-name">IPS</div>
+      <div class="m-full">IPS Terintegrasi</div>
+      <div class="m-quota">👥 Kuota: <span id="ctr-ips">0</span> / 3</div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       FORM PENDATAAN
+  ============================================================ -->
+  <div class="card">
+    <div class="form-header">
+      <h2>📋 Form Minat OMI 2026</h2>
+      <p>Centang bidang yang diminati — boleh lebih dari satu bidang</p>
+    </div>
+
+    <form id="omiForm">
+      <div class="santri-grid" id="santriGrid">
+        <!-- Rows generated by JS -->
+      </div>
+
+      <div class="catatan-note" style="margin-top: 24px; padding: 16px; background: #fff8e1; border-radius: 10px; font-size: 13px; color: #5a4200; line-height: 1.7;">
+        <strong>📌 Catatan:</strong> Santri boleh mencantumkan minat di lebih dari satu bidang.
+        Jika peminat melebihi 3 orang per bidang, akan dilakukan <strong>seleksi lanjutan</strong> oleh Ustadz.
+        Yang terpilih akan mendapatkan <strong>bimbingan intensif</strong> sebelum hari H.
+      </div>
+    </form>
+  </div>
+
+
+  <!-- ============================================================
+       PROGRESS TRACKER
+  ============================================================ -->
+  <div class="progress-section" id="progressSection">
+    <h3>📊 Rekap Minat Real-Time</h3>
+    <div class="progress-bars">
+      <div class="prog-item">
+        <div class="prog-label">
+          <span>📐 Matematika Terintegrasi</span>
+          <span class="count" id="prog-label-mtk">0 peminat</span>
+        </div>
+        <div class="prog-bar-bg">
+          <div class="prog-bar-fill mtk" id="prog-mtk" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="prog-item">
+        <div class="prog-label">
+          <span>🔬 IPA Terintegrasi</span>
+          <span class="count" id="prog-label-ipa">0 peminat</span>
+        </div>
+        <div class="prog-bar-bg">
+          <div class="prog-bar-fill ipa" id="prog-ipa" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="prog-item">
+        <div class="prog-label">
+          <span>🌍 IPS Terintegrasi</span>
+          <span class="count" id="prog-label-ips">0 peminat</span>
+        </div>
+        <div class="prog-bar-bg">
+          <div class="prog-bar-fill ips" id="prog-ips" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+    <div class="quota-note">
+      ℹ️ Progress bar 100% = kuota terpenuhi (3 santri). Jika melebihi kuota, akan ada seleksi tambahan.
+      Total santri MTs Al-Imam: <strong>19 orang</strong>.
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SUBMIT
+  ============================================================ -->
+  <div class="submit-area no-print">
+    <button type="button" class="btn-submit" onclick="submitForm()">
+      ✅ Lihat Rekap & Cetak
+    </button>
+    <button type="button" class="btn-print" onclick="submitForm(); setTimeout(()=>window.print(), 300)">
+      🖨️ Cetak
+    </button>
+  </div>
+
+  <!-- ============================================================
+       RESULT TABLE
+  ============================================================ -->
+  <div class="result-section" id="resultSection">
+    <div id="resultContent"></div>
+  </div>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <div class="footer">
+    <strong>Pondok Pesantren Al-Imam</strong> · MTs · Olimpiade Madrasah Indonesia 2026<br>
+    Kemenag Kabupaten Sukabumi · Pendaftaran: 27 Agustus – 2 September 2026<br>
+    <a href="https://omi.kemenag.go.id/" target="_blank" style="color: var(--green-mid);">omi.kemenag.go.id</a>
+  </div>
+</div>
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script>
+  // Data santri MTs Al-Imam (19 orang)
+  const SANTRI = [
+    { no: 1,  nama: "Abdul Aziz Ali",               kelas: "7 MTs" },
+    { no: 2,  nama: "Abdul Hakim",                  kelas: "7 MTs" },
+    { no: 3,  nama: "Ahmad Farros Al Barqy",        kelas: "7 MTs" },
+    { no: 4,  nama: "Andi Ibra Faeyza Hasan Alnasr",kelas: "7 MTs" },
+    { no: 5,  nama: "Atqanul Ummah Ahmad",          kelas: "7 MTs" },
+    { no: 6,  nama: "Azka Panji Kusuma",            kelas: "7 MTs" },
+    { no: 7,  nama: "Fariq Malaibui",               kelas: "7 MTs" },
+    { no: 8,  nama: "Haidar Ayyubi",                kelas: "7 MTs" },
+    { no: 9,  nama: "Khalish",                      kelas: "7 MTs" },
+    { no: 10, nama: "Labibullah El Fatih",          kelas: "7 MTs" },
+    { no: 11, nama: "M Fazril Alkais",              kelas: "7 MTs" },
+    { no: 12, nama: "M Naufal Alfaniri",            kelas: "7 MTs" },
+    { no: 13, nama: "Muh Asrorin Da Silva",         kelas: "7 MTs" },
+    { no: 14, nama: "Muhammad Azzam Al Hafiz",      kelas: "7 MTs" },
+    { no: 15, nama: "Muhammad Hafidz Reo Afelano",  kelas: "7 MTs" },
+    { no: 16, nama: "Muhammad Rifqi Hamid",         kelas: "7 MTs" },
+    { no: 17, nama: "Muhammad Yahya Ayyash",        kelas: "7 MTs" },
+    { no: 18, nama: "Naufal Dzakiy Purnama",        kelas: "7 MTs" },
+    { no: 19, nama: "Rifqi Arsyad Fadilah",         kelas: "7 MTs" },
+  ];
+
+  const MAPEL = [
+    { key: 'mtk', label: 'MTK', color: 'mtk' },
+    { key: 'ipa', label: 'IPA', color: 'ipa' },
+    { key: 'ips', label: 'IPS', color: 'ips' },
+  ];
+
+  /* ---- Build form rows ---- */
+  const grid = document.getElementById('santriGrid');
+  SANTRI.forEach(s => {
+    const row = document.createElement('div');
+    row.className = 'santri-row';
+    row.id = `row-${s.no}`;
+
+    const checks = MAPEL.map(m => `
+      <label class="check-label">
+        <input type="checkbox" name="${m.key}" data-santri="${s.no}"
+               onchange="updateCounters()">
+        <span class="check-pill ${m.color}">${m.label}</span>
+      </label>
+    `).join('');
+
+    row.innerHTML = `
+      <div class="row-no">${s.no}</div>
+      <div>
+        <div class="row-name">${s.nama}</div>
+        <div class="row-class">${s.kelas} · Al-Imam</div>
+      </div>
+      <div class="subject-checks">${checks}</div>
+    `;
+    grid.appendChild(row);
+  });
+
+  /* ---- Counter updater ---- */
+  function updateCounters() {
+    const counts = { mtk: 0, ipa: 0, ips: 0 };
+    SANTRI.forEach(s => {
+      MAPEL.forEach(m => {
+        const cb = document.querySelector(`input[name="${m.key}"][data-santri="${s.no}"]`);
+        if (cb && cb.checked) counts[m.key]++;
+      });
+      // highlight row if any checked
+      const row = document.getElementById(`row-${s.no}`);
+      const anyChecked = MAPEL.some(m => {
+        const cb = document.querySelector(`input[name="${m.key}"][data-santri="${s.no}"]`);
+        return cb && cb.checked;
+      });
+      row.classList.toggle('selected', anyChecked);
+    });
+
+    // Subject card quotas
+    document.getElementById('ctr-mtk').textContent = counts.mtk;
+    document.getElementById('ctr-ipa').textContent = counts.ipa;
+    document.getElementById('ctr-ips').textContent = counts.ips;
+
+    // Progress bars (max reference = 19 for visual, highlight quota at 3)
+    const MAX = 19;
+    ['mtk','ipa','ips'].forEach(k => {
+      const pct = Math.min((counts[k] / MAX) * 100, 100);
+      document.getElementById(`prog-${k}`).style.width = pct + '%';
+      const label = counts[k] === 0 ? '0 peminat'
+                  : counts[k] >= 3 ? `${counts[k]} peminat ✅`
+                  : `${counts[k]} peminat`;
+      document.getElementById(`prog-label-${k}`).textContent = label;
+    });
+  }
+
+  /* ---- Submit / show result ---- */
+  function submitForm() {
+    const result = {};
+    MAPEL.forEach(m => { result[m.key] = []; });
+
+    SANTRI.forEach(s => {
+      MAPEL.forEach(m => {
+        const cb = document.querySelector(`input[name="${m.key}"][data-santri="${s.no}"]`);
+        if (cb && cb.checked) result[m.key].push(s);
+      });
+    });
+
+    const totalMinat = SANTRI.filter(s =>
+      MAPEL.some(m => {
+        const cb = document.querySelector(`input[name="${m.key}"][data-santri="${s.no}"]`);
+        return cb && cb.checked;
+      })
+    ).length;
+
+    const totalTidak = SANTRI.length - totalMinat;
+
+    let html = `
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:22px;">
+        <div style="background:#e8f5e9;border-radius:10px;padding:14px;text-align:center;">
+          <div style="font-size:28px;font-weight:900;color:#1b5e20;">${totalMinat}</div>
+          <div style="font-size:12px;color:#388e3c;font-weight:600;">Santri Berminat</div>
+        </div>
+        <div style="background:#fff3e0;border-radius:10px;padding:14px;text-align:center;">
+          <div style="font-size:28px;font-weight:900;color:#bf360c;">${totalTidak}</div>
+          <div style="font-size:12px;color:#e65100;font-weight:600;">Belum Berminat</div>
+        </div>
+        <div style="background:#e3f2fd;border-radius:10px;padding:14px;text-align:center;">
+          <div style="font-size:28px;font-weight:900;color:#1565c0;">19</div>
+          <div style="font-size:12px;color:#1976d2;font-weight:600;">Total Santri MTs</div>
+        </div>
+      </div>
+    `;
+
+    const mapelInfo = {
+      mtk: { label: 'Matematika Terintegrasi', icon: '📐', cls: 'mtk' },
+      ipa: { label: 'IPA Terintegrasi', icon: '🔬', cls: 'ipa' },
+      ips: { label: 'IPS Terintegrasi', icon: '🌍', cls: 'ips' },
+    };
+
+    Object.entries(result).forEach(([key, list]) => {
+      const info = mapelInfo[key];
+      const overQuota = list.length > 3;
+      html += `
+        <div style="margin-bottom:20px;">
+          <div style="font-weight:800;font-size:15px;color:#1c1c1c;margin-bottom:8px;">
+            ${info.icon} ${info.label}
+            <span style="font-weight:600;font-size:13px;color:#888;margin-left:8px;">
+              (${list.length} peminat${overQuota ? ' — ⚠️ perlu seleksi' : ''})
+            </span>
+          </div>
+          ${list.length === 0
+            ? '<div style="color:#aaa;font-size:13px;padding:10px 0;">Belum ada peminat</div>'
+            : `<table class="result-table">
+                <thead><tr><th>#</th><th>Nama Santri</th><th>Kelas</th><th>Status</th></tr></thead>
+                <tbody>
+                  ${list.map((s,i) => `
+                    <tr>
+                      <td>${i+1}</td>
+                      <td><strong>${s.nama}</strong></td>
+                      <td>${s.kelas}</td>
+                      <td>${i < 3
+                        ? '<span style="color:#1b5e20;font-weight:700;">✅ Kandidat</span>'
+                        : '<span style="color:#bf360c;font-weight:700;">⚠️ Perlu Seleksi</span>'
+                      }</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>`
+          }
+        </div>
+      `;
+    });
+
+    // Santri yang tidak berminat
+    const tidakMinat = SANTRI.filter(s =>
+      !MAPEL.some(m => {
+        const cb = document.querySelector(`input[name="${m.key}"][data-santri="${s.no}"]`);
+        return cb && cb.checked;
+      })
+    );
+    if (tidakMinat.length > 0) {
+      html += `
+        <div style="margin-top:8px;">
+          <div style="font-weight:800;font-size:15px;color:#888;margin-bottom:8px;">
+            😐 Belum Menyatakan Minat (${tidakMinat.length} santri)
+          </div>
+          <div style="background:#f5f5f5;border-radius:8px;padding:12px;font-size:13px;color:#666;line-height:1.8;">
+            ${tidakMinat.map(s => s.nama).join(' • ')}
+          </div>
+        </div>
+      `;
+    }
+
+    document.getElementById('resultContent').innerHTML = html;
+    const sec = document.getElementById('resultSection');
+    sec.classList.add('visible');
+    sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // Init counters
+  updateCounters();
+</script>
+</body>
+</html>
