@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import {
   Loader2,
@@ -1003,7 +1003,7 @@ export default function WelcomeDayPage() {
             </div>
           </div>
           <a
-            href="https://ppdb.pesantren-alimam.com/berkas/Daftar%20Perlengkapan%20Santri%20Baru.pdf"
+            href="https://spmb.pesantren-alimam.com/berkas/Daftar%20Perlengkapan%20Santri%20Baru.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black p-[16px_20px].5 rounded-[24px] transition-colors"

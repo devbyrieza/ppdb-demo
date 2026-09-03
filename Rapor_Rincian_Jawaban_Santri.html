@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rapor Penilaian Holistik OMI</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f7fafc;
+      color: #2d3748;
+    }
+    .header {
+      text-align: center;
+      border-bottom: 3px double #4a5568;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+      color: #1a365d;
+    }
+    .header p {
+      margin: 5px 0 0 0;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .alert {
+      background-color: #ebf8ff;
+      border-left: 5px solid #3182ce;
+      padding: 12px;
+      font-size: 14px;
+      margin-bottom: 20px;
+      color: #2b6cb0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      background-color: #fff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    th, td {
+      border: 1px solid #e2e8f0;
+      padding: 10px;
+      vertical-align: middle;
+    }
+    th {
+      background-color: #2d3748;
+      color: #fff;
+      text-align: center;
+    }
+    .name {
+      font-weight: bold;
+      color: #1a202c;
+      font-size: 14px;
+    }
+    .score-box {
+      text-align: center;
+      font-weight: bold;
+      padding: 4px;
+      border-radius: 4px;
+    }
+    .score-high { background-color: #c6f6d5; color: #22543d; }
+    .score-med { background-color: #feebc8; color: #9c4221; }
+    .score-low { background-color: #fed7d7; color: #9b2c2c; }
+    
+    .badge-mtk { background-color: #ebf4ff; color: #2b6cb0; border: 1px solid #90cdf4; font-weight: bold; padding: 4px 8px; border-radius: 12px; display: inline-block; text-align: center; width: 85%; }
+    .badge-ipa { background-color: #f0fff4; color: #2f855a; border: 1px solid #9ae6b4; font-weight: bold; padding: 4px 8px; border-radius: 12px; display: inline-block; text-align: center; width: 85%; }
+    .badge-ips { background-color: #fffaf0; color: #c05621; border: 1px solid #fbd38d; font-weight: bold; padding: 4px 8px; border-radius: 12px; display: inline-block; text-align: center; width: 85%; }
+
+    .catatan {
+      font-style: italic;
+      line-height: 1.4;
+      color: #4a5568;
+    }
+    .highlight {
+      font-weight: bold;
+      color: #2b6cb0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>RAPOR PENILAIAN HOLISTIK SELEKSI OMI 2026</h1>
+    <p>MTs Al-Imam Al-Islami (Putra)</p>
+  </div>
+
+  <div class="alert">
+    <strong>📋 KOMPONEN PENILAIAN TIM OMI MTs:</strong><br>
+    Tim Inti dipilih BUKAN HANYA dari Skor Pilihan Ganda (Tebak-tebakan), melainkan penggabungan dari: <strong>(1) Skor Pilihan Ganda, (2) Skor Logika Oretan & Flowchart, (3) Kedisiplinan Aturan LJK & Kecepatan.</strong>
+  </div>
+
+  <table>
+    <tr>
+      <th width="3%">No</th>
+      <th width="16%">Nama Santri</th>
+      <th width="12%">Kecenderungan Bakat Utama</th>
+      <th width="10%">Skor Pilihan Ganda</th>
+      <th width="10%">Skor Logika Oretan</th>
+      <th width="10%">Skor Disiplin LJK</th>
+      <th width="39%">Keterangan Analisis Ustadz</th>
+    </tr>
+
+    <tr>
+      <td align="center">1</td><td class="name">M Hafidz Reo Afelano</td>
+      <td align="center"><div class="badge-ips">IPS TERPADU</div></td>
+      <td><div class="score-box score-high">87</div></td>
+      <td><div class="score-box score-med">65</div></td>
+      <td><div class="score-box score-low">55</div></td>
+      <td class="catatan">Kecepatan baca & kumpul tinggi (#3). Oretan MTK ada sedikit. <span class="highlight">FATAL: Melanggar LJK (MENSILANG).</span></td>
+    </tr>
+
+    <tr>
+      <td align="center">2</td><td class="name">M Fazril Alkais</td>
+      <td align="center"><div class="badge-mtk">MATEMATIKA</div></td>
+      <td><div class="score-box score-high">80</div></td>
+      <td><div class="score-box score-high">95</div></td>
+      <td><div class="score-box score-low">55</div></td>
+      <td class="catatan"><span class="highlight">Oretan jalan MTK sangat bagus (hampir sempurna).</span> Tapi sangat disayangkan, <span class="highlight">FATAL di LJK (MENSILANG).</span></td>
+    </tr>
+
+    <tr>
+      <td align="center">3</td><td class="name">Labibullah El Fatih</td>
+      <td align="center"><div class="badge-mtk">MATEMATIKA</div></td>
+      <td><div class="score-box score-high">80</div></td>
+      <td><div class="score-box score-med">75</div></td>
+      <td><div class="score-box score-med">65</div></td>
+      <td class="catatan">Antusiasme belajar tinggi, berani bertanya/mencoba. <span class="highlight">Catatan Disiplin: LJK digaris searah (bukan dilingkari penuh).</span></td>
+    </tr>
+
+    <tr>
+      <td align="center">4</td><td class="name">Muhammad Rifqi Hamid</td>
+      <td align="center"><div class="badge-ips">IPS TERPADU</div></td>
+      <td><div class="score-box score-med">73</div></td>
+      <td><div class="score-box score-low">50</div></td>
+      <td><div class="score-box score-low">55</div></td>
+      <td class="catatan">Ingatan konseptual sejarah kuat walau <span class="highlight">tidak ada oretan MTK sama sekali</span>. Ditambah <span class="highlight">FATAL melanggar LJK (MENSILANG).</span></td>
+    </tr>
+
+    <tr>
+      <td align="center">5</td><td class="name">Rifqi Arsyad Fadilah</td>
+      <td align="center"><div class="badge-ipa">IPA TERPADU</div></td>
+      <td><div class="score-box score-med">73</div></td>
+      <td><div class="score-box score-high">85</div></td>
+      <td><div class="score-box score-low">55</div></td>
+      <td class="catatan">Insting sains/logika sangat potensial. Alur flowchart lumayan benar. Namun sayang, <span class="highlight">FATAL melanggar LJK (MENSILANG).</span></td>
+    </tr>
+
+    <tr>
+      <td align="center">6</td><td class="name">Naufal Dzaki Purnama</td>
+      <td align="center"><div class="badge-mtk">MATEMATIKA</div></td>
+      <td><div class="score-box score-med">73</div></td>
+      <td><div class="score-box score-med">70</div></td>
+      <td><div class="score-box score-high">95</div></td>
+      <td class="catatan">Punya tekad antusias belajar MTK meski lambat mengumpulkan (#12). <span class="highlight">Kepatuhan LJK sangat baik (melingkari).</span></td>
+    </tr>
+
+    <tr>
+      <td align="center">7</td><td class="name">Ahmad Farros Al Barqy</td>
+      <td align="center"><div class="badge-ips">IPS TERPADU</div></td>
+      <td><div class="score-box score-med">67</div></td>
+      <td><div class="score-box score-high">98</div></td>
+      <td><div class="score-box score-low">55</div></td>
+      <td class="catatan"><span class="highlight">JUARA 1 PEMBUAT FLOWCHART!</span> Logika sangat pede. Tapi nilai hancur karena <span class="highlight">FATAL melanggar aturan LJK (MENSILANG).</span></td>
+    </tr>
+
+    <tr>
+      <td align="center">8</td><td class="name">Khalish</td>
+      <td align="center"><div class="badge-ipa">IPA TERPADU</div></td>
+      <td><div class="score-box score-med">67</div></td>
+      <td><div class="score-box score-low">60</div></td>
+      <td><div class="score-box score-low">55</div></td>
+      <td class="catatan">Cepat diskusi/menangkap (#4 kecepatan kumpul). Tapi <span class="highlight">tidak ada oretan MTK & FATAL melanggar LJK (MENSILANG).</span></td>
+    </tr>
+
+    <tr>
+      <td align="center">9</td><td class="name">M Naufal Alfaniri</td>
+      <td align="center"><div class="badge-ips">IPS TERPADU</div></td>
+      <td><div class="score-box score-med">67</div></td>
+      <td><div class="score-box score-low">40</div></td>
+      <td><div class="score-box score-high">95</div></td>
+      <td class="catatan">Anaknya pendiam tapi kecepatannya <span class="highlight">Juara 2 Tercepat. Disiplin LJK baik (melingkari)</span>, tapi tidak menggambar flowchart sama sekali.</td>
+    </tr>
+
+    <tr>
+      <td align="center">10</td><td class="name">Haidar Ayyubi</td>
+      <td align="center"><div class="badge-mtk">MATEMATIKA</div></td>
+      <td><div class="score-box score-low">60</div></td>
+      <td><div class="score-box score-high">92</div></td>
+      <td><div class="score-box score-low">45</div></td>
+      <td class="catatan">Sang <em>Deep Thinker</em>. Oretan MTK lumayan banget & alur tepat. Sayang, <span class="highlight">Paling lambat (#14) & FATAL di LJK (MENSILANG).</span></td>
+    </tr>
+
+    <tr>
+      <td align="center">11</td><td class="name">Muh Asrorin Da Silva</td>
+      <td align="center"><div class="badge-ipa">IPA TERPADU</div></td>
+      <td><div class="score-box score-low">60</div></td>
+      <td><div class="score-box score-med">65</div></td>
+      <td><div class="score-box score-high">100</div></td>
+      <td class="catatan"><span class="highlight">Peserta Paling Cepat Kumpul (#1). Disiplin LJK sempurna (lingkar).</span> Tidak ada oretan MTK tapi flowchart dapat Nilai Plus.</td>
+    </tr>
+
+    <tr>
+      <td align="center">12</td><td class="name">Abdul Hakim</td>
+      <td align="center"><div class="badge-ips">IPS TERPADU</div></td>
+      <td><div class="score-box score-low">53</div></td>
+      <td><div class="score-box score-med">70</div></td>
+      <td><div class="score-box score-high">90</div></td>
+      <td class="catatan">Oretan MTK lumayan, walau alur flowchart salah. Penguasaan diri cukup iseng tapi <span class="highlight">Disiplin patuh instruksi LJK (melingkari).</span></td>
+    </tr>
+
+    <tr>
+      <td align="center">13</td><td class="name">Andi Ibra Faeyza</td>
+      <td align="center"><div class="badge-ipa">IPA TERPADU</div></td>
+      <td><div class="score-box score-low">47</div></td>
+      <td><div class="score-box score-med">75</div></td>
+      <td><div class="score-box score-high">85</div></td>
+      <td class="catatan">Pendiam yang mampu logika sains. Agak lambat (#13 kecepatan) namun <span class="highlight">Patuh pada instruksi melingkari LJK.</span></td>
+    </tr>
+
+    <tr>
+      <td align="center">14</td><td class="name">M Azzam Al Hafizh</td>
+      <td align="center"><div class="badge-mtk">MATEMATIKA</div></td>
+      <td><div class="score-box score-low">40</div></td>
+      <td><div class="score-box score-high">85</div></td>
+      <td><div class="score-box score-high">90</div></td>
+      <td class="catatan">Oretan MTK lumayan, alur flowchart benar. Walau sering absen, kedisiplinannya solid <span class="highlight">(Mayoritas Melingkari LJK).</span></td>
+    </tr>
+
+  </table>
+
+</body>
+</html>

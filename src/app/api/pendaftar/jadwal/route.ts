@@ -299,7 +299,7 @@ export async function POST(request: Request) {
             72, // 3 days expiry
             redirectPathPath,
           );
-          const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://ppdb.pesantren-alimam.com";
+          const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://spmb.pesantren-alimam.com";
           const magicLink = `${appUrl}/api/auth/magic?token=${token}`;
 
           // Use manual tinyurl if available, otherwise generate automatic
