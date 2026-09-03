@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import { X, Clock, Zap } from "lucide-react";
@@ -92,8 +92,8 @@ export default function UrgencyBar() {
 
         {/* Row 2 (mobile) / Right section (desktop): hint + CTA */}
         <div className="flex items-center gap-2">
-          <span className="text-[9px] sm:text-xs text-primary-300 whitespace-nowrap">
-            lagi • Kuota terbatas
+          <span className="text-[10px] sm:text-xs font-bold text-amber-300 whitespace-nowrap">
+            &bull; Kuota Terbatas
           </span>
 
           {/* CTA Button */}

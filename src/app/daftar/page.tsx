@@ -1,4 +1,5 @@
-﻿"use client";
+﻿// src/app/daftar/page.tsx
+"use client";
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -14,12 +15,18 @@ import {
   School,
   ChevronDown,
   Sparkles,
-  RefreshCw } from "lucide-react";
+  RefreshCw,
+  IdCard,
+  Calendar,
+  ShieldCheck,
+  ArrowLeft
+} from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { countries } from "@/lib/data/countries";
 import { formatNamaLengkap } from "@/lib/validations/registration";
 import { motion, AnimatePresence } from "framer-motion";
 import Swal from "sweetalert2";
+import { BRANDING } from "@/config/branding";
 
 interface FormData {
   nik: string;
@@ -29,39 +36,6 @@ interface FormData {
   jenis_kelamin: "L" | "P" | "";
   jenjang: "MTs" | "IL" | "MA" | "";
 }
-
-// ========================================
-// REUSABLE COMPONENTS
-// ========================================
-
-const InputField = ({
-  label,
-  error,
-  children }: {
-  label: string;
-  error?: string;
-  children: React.ReactNode;
-}) => (
-  <div className="space-y-3" data-error={!!error}>
-    <label className="text-xs font-black text-ink-600 uppercase tracking-widest ml-1">
-      {label}
-    </label>
-    {children}
-    {error && (
-      <motion.p
-        initial={{ opacity: 0, x: -10 }}
-        animate={{ opacity: 1, x: 0 }}
-        className="text-xs text-red-600 font-bold ml-1 flex items-center gap-1"
-      >
-        <AlertCircle className="w-3.5 h-3.5" /> {error}
-      </motion.p>
-    )}
-  </div>
-);
-
-// ========================================
-// MAIN COMPONENT
-// ========================================
 
 export default function DaftarPage() {
   useEffect(() => {
@@ -87,34 +61,41 @@ export default function DaftarPage() {
     tanggal_lahir: "",
     no_hp: "",
     jenis_kelamin: "",
-    jenjang: jenjangFromUrl });
+    jenjang: jenjangFromUrl
+  });
 
   const [countryCode, setCountryCode] = useState("+62");
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [hasDraft, setHasDraft] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const savedData = localStorage.getItem("template_demo_daftar_draft") || sessionStorage.getItem("pendaftaran_form");
+      const savedData =
+        localStorage.getItem("template_demo_daftar_draft") ||
+        sessionStorage.getItem("pendaftaran_form");
       if (savedData) {
         try {
           const parsed = JSON.parse(savedData);
           setFormData((prev) => ({
             ...prev,
             ...parsed,
-            jenjang: jenjangFromUrl || parsed.jenjang || "" }));
+            jenjang: jenjangFromUrl || parsed.jenjang || ""
+          }));
+          setHasDraft(true);
         } catch (error) {
           console.error("Error parsing saved data:", error);
         }
       } else if (jenjangFromUrl) {
         setFormData((prev) => ({
           ...prev,
-          jenjang: jenjangFromUrl }));
+          jenjang: jenjangFromUrl
+        }));
       }
     }
   }, [jenjangFromUrl]);
 
-  // Save data on change
+  // Save draft on change (Mandatory UX Rule)
   useEffect(() => {
     if (typeof window !== "undefined") {
       const timeoutId = setTimeout(() => {
@@ -159,12 +140,13 @@ export default function DaftarPage() {
         }
       }
     }
+
     if (!formData.jenis_kelamin) {
       errors.jenis_kelamin = "Pilih jenis kelamin santri";
     }
 
     if (!formData.jenjang) {
-      errors.jenjang = "Pilih jenjang pendidikan";
+      errors.jenjang = "Pilih jenjang pendidikan yang dituju";
     }
 
     setFieldErrors(errors);
@@ -175,7 +157,7 @@ export default function DaftarPage() {
     e.preventDefault();
 
     if (!validateForm()) {
-      const firstError = document.querySelector('[data-error="true"]');
+      const firstError = document.querySelector("[data-error='true']");
       if (firstError) {
         firstError.scrollIntoView({ behavior: "smooth", block: "center" });
       }
@@ -201,7 +183,9 @@ export default function DaftarPage() {
         body: JSON.stringify({
           ...formData,
           no_hp: fullHp,
-          otp_channel: "whatsapp" }) });
+          otp_channel: "whatsapp"
+        })
+      });
 
       const data = await response.json();
       if (!response.ok) {
@@ -215,7 +199,8 @@ export default function DaftarPage() {
         no_hp: fullHp,
         jenis_kelamin: formData.jenis_kelamin,
         jenjang: formData.jenjang,
-        channel: "whatsapp" });
+        channel: "whatsapp"
+      });
 
       if (data.simulation_code || data.otp) {
         params.append("sim_code", data.simulation_code || data.otp);
@@ -228,7 +213,7 @@ export default function DaftarPage() {
       Swal.fire(
         "Gagal!",
         error.message || "Terjadi kesalahan saat mengirim OTP",
-        "error",
+        "error"
       );
     } finally {
       setIsLoading(false);
@@ -236,465 +221,380 @@ export default function DaftarPage() {
   };
 
   return (
-    <main className="min-h-screen bg-white py-12 md:py-24 relative overflow-hidden">
-      {/* Background Decor */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-secondary-50/50 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-primary-100/30 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/2 pointer-events-none" />
-      <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.02] pointer-events-none" />
+    <main className="min-h-screen bg-gradient-to-b from-[#F0F7FF] via-[#F8FAFC] to-white py-10 sm:py-16 px-4 font-sans relative overflow-hidden flex flex-col justify-center items-center">
+      
+      {/* Background Micro Grid */}
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgc3Ryb2tlPSIjMDAwMDAwIiBzdHJva2Utb3BhY2l0eT0iMC4wMiIgZmlsbD0ibm9uZSI+PHBhdGggZD0iTTAgNjBoNjBNNjAgMGwwIDYwIi8+PC9nPjwvc3ZnPg==')] opacity-70 pointer-events-none" />
 
-      <Container className="relative z-10">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-16"
+      {/* TOP NAVIGATION PILLS (OMI STANDARD) */}
+      <div className="w-full max-w-3xl flex items-center justify-between gap-3 mb-5 z-10">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white/95 border border-slate-200/90 shadow-2xs text-xs font-extrabold uppercase tracking-wider text-slate-700 hover:text-[#1E3A8A] hover:border-[#1E3A8A]/40 transition-all hover:-translate-y-0.5"
         >
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-white rounded-[24px] shadow-sm border border-secondary-200 mb-6 group hover:scale-110 transition-transform app-card">
-            <School className="w-8 h-8 text-primary-600" />
+          <ArrowLeft className="w-3.5 h-3.5" />
+          <span>Kembali ke Beranda</span>
+        </Link>
+        <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white/95 border border-slate-200/90 shadow-2xs text-xs font-bold text-slate-700">
+          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+          <span>Penerimaan Santri Baru 2027/2028</span>
+        </div>
+      </div>
+
+      {/* TWO-SECTION OMI CARD (PLATINUM DIAMOND REGISTRATION) */}
+      <div className="w-full max-w-3xl rounded-3xl overflow-hidden shadow-2xl shadow-blue-950/10 border border-slate-200 bg-white relative z-10">
+        
+        {/* SECTION 1: ROYAL NAVY BLUE GRADIENT HEADER */}
+        <div className="bg-gradient-to-br from-[#0B1528] via-[#1E3A8A] to-[#1D4ED8] p-7 sm:p-10 text-white relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-amber-400/10 rounded-full blur-3xl pointer-events-none" />
+          
+          <div className="relative z-10 space-y-3">
+            <div className="inline-flex items-center gap-3 bg-white px-3.5 py-1.5 rounded-2xl shadow-sm">
+              <img
+                src={BRANDING.logoPath}
+                alt={"Logo " + BRANDING.schoolName}
+                className="w-7 h-7 object-contain"
+              />
+              <span className="text-xs font-extrabold text-slate-900 tracking-tight">
+                {BRANDING.schoolShortName}
+              </span>
+            </div>
+
+            <div>
+              <span className="text-[10px] font-extrabold uppercase tracking-widest text-amber-300 bg-white/10 px-3 py-1 rounded-full border border-white/15 inline-block mb-1">
+                Langkah 1 dari 2 &bull; Registrasi Akun
+              </span>
+              <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-snug">
+                Formulir Pendaftaran Santri Baru
+              </h1>
+              <p className="text-xs sm:text-sm text-slate-200/90 font-normal mt-1 leading-relaxed">
+                Silakan lengkapi data awal calon santri. Akun portal dan kode akses akan dikirimkan otomatis setelah verifikasi nomor WhatsApp.
+              </p>
+            </div>
           </div>
-          <motion.h1
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-2xl md:text-4xl lg:text-6xl font-display font-black text-ink-950 mb-3 tracking-tight"
-          >
-            Mulai Pendaftaran{" "}
-            <span className="text-gradient-primary">Terpadu</span>
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-lg md:text-xl text-ink-700 font-medium"
-          >
-            Tahap Awal Penerimaan Santri Baru T.A 2027/2028
-          </motion.p>
-        </motion.div>
-
-        <div className="w-full max-w-3xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3 }}
-            className="app-card bg-white rounded-[2.5rem] md:rounded-[3.5rem] shadow-2xl shadow-primary/30  shadow-primary/20 p-6 md:p-16 border border-secondary-200 relative overflow-hidden"
-          >
-            {/* Soft decorative blur inside card */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-secondary-50/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-
-            {/* Saved Data Notice */}
-            <AnimatePresence>
-              {(formData.nik || formData.nama_lengkap || formData.no_hp) && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0, marginBottom: 0 }}
-                  animate={{ opacity: 1, height: "auto", marginBottom: 40 }}
-                  exit={{ opacity: 0, height: 0, marginBottom: 0 }}
-                  className="bg-primary-50 border border-primary-100/50 rounded-3xl p-6 flex items-start gap-[24px_28px] relative z-10 overflow-hidden"
-                >
-                  <div className="w-10 h-10 bg-primary-500 rounded-full flex items-center justify-center text-white shrink-0 shadow-premium-xs">
-                    <CheckCircle className="w-6 h-6" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-lg font-display font-black text-primary-900 leading-none mb-1">
-                      Melanjutkan Draft Pendaftaran
-                    </p>
-                    <p className="text-sm text-primary-600 font-medium">
-                      Data yang anda masukkan sebelumnya telah tersimpan
-                      otomatis dalam sesi ini.
-                    </p>
-                    <button
-                      type="button"
-                      onClick={async () => {
-                        const result = await Swal.fire({
-                          title: "Hapus Draf?",
-                          text: "Hapus seluruh draf dan mulai dari awal?",
-                          icon: "question",
-                          showCancelButton: true,
-                          confirmButtonColor: "#3a5029",
-                          confirmButtonText: "Ya, Hapus",
-                          cancelButtonText: "Batal" });
-
-                        if (result.isConfirmed) {
-                          sessionStorage.removeItem("pendaftaran_form");
-                          setFormData({
-                            nik: "",
-                            nama_lengkap: "",
-                            tanggal_lahir: "",
-                            no_hp: "",
-                            jenis_kelamin: "",
-                            jenjang: "" });
-                          setFieldErrors({});
-                        }
-                      }}
-                      className="mt-3 flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-primary-800 hover:text-primary-950 transition-colors"
-                    >
-                      <RefreshCw className="w-3 h-3" /> Mulai dari Awal
-                    </button>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-
-
-            <form onSubmit={handleSubmit} className="space-y-12 relative z-10">
-              {/* Section: Jenjang */}
-              <motion.section
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-              >
-                <div className="flex items-center gap-3 mb-8">
-                  <div className="w-10 h-10 rounded-[24px] bg-secondary-50 flex items-center justify-center text-primary-600 shadow-sm border border-secondary-200">
-                    <GraduationCap className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-2xl font-display font-black text-ink-950">
-                    Pilih Jenjang
-                  </h3>
-                </div>
-
-                <div
-                  data-error={!!fieldErrors.jenjang}
-                  className="grid grid-cols-1 md:grid-cols-3 gap-6"
-                >
-                  {[
-                    {
-                      value: "MTs",
-                      title: "SMP IT",
-                      subtitle: "Lulusan SD/Sederajat",
-                      desc: "Jenjang pendidikan dasar setingkat SMP." },
-                    {
-                      value: "IL",
-                      title: "I'dad Lughowi",
-                      subtitle: "Lulusan SMP/Sederajat",
-                      desc: "Kelas persiapan bahasa Arab sebelum masuk MA." },
-                    {
-                      value: "MA",
-                      title: "SMA IT (Sekolah Menengah Atas IT) Langsung",
-                      subtitle: "Lulusan SMP/Sederajat",
-                      desc: "Jalur langsung tanpa IL. Khusus yang lancar berbahasa Arab & hafal minimal 5 juz mutqin." },
-                  ].map((option) => {
-                    const isPutra = formData.jenis_kelamin === "L";
-                    const isPutri = formData.jenis_kelamin === "P";
-                    // Untuk Template Demo, kita buka semua untuk demo.
-                    const isClosed = false;
-
-                    return (
-                      <motion.div
-                        key={option.value}
-                        whileHover={isClosed ? {} : { scale: 1.02 }}
-                        whileTap={isClosed ? {} : { scale: 0.98 }}
-                        onClick={() => {
-                          if (isClosed) return;
-                          setFormData((prev) => ({
-                            ...prev,
-                            jenjang: option.value as any }));
-                        }}
-                        className={`relative cursor-pointer rounded-[2rem] p-6 border-2 transition-all duration-300 app-card flex flex-col justify-between ${
-                          isClosed
-                            ? "opacity-50 grayscale cursor-not-allowed border-secondary-200 bg-stone-50"
-                            : formData.jenjang === option.value
-                              ? "border-primary-600 bg-secondary-50 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10"
-                              : "border-secondary-200 bg-white hover:border-primary-200 hover:shadow-sm"
-                        }`}
-                      >
-                        {isClosed && (
-                          <div className="absolute top-[24px_28px] right-4 bg-red-600 text-white text-[10px] font-black px-2 py-1 rounded-full uppercase tracking-tighter shadow-sm z-10">
-                            Kuota Penuh / Tutup
-                          </div>
-                        )}
-
-                        <div className="flex flex-col gap-[24px_28px] h-full justify-between">
-                          <div className="flex items-center gap-3 relative z-0">
-                            <div
-                              className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors shrink-0 ${
-                                formData.jenjang === option.value
-                                  ? "border-primary-600"
-                                  : "border-secondary-200"
-                              }`}
-                            >
-                              {formData.jenjang === option.value && (
-                                <motion.div
-                                  layoutId="jk-dot-jenjang"
-                                  className="w-3 h-3 rounded-full bg-primary-600"
-                                />
-                              )}
-                            </div>
-                            <div>
-                              <p className="font-display font-black text-lg text-ink-950 leading-tight mb-0.5">
-                                {option.title}
-                              </p>
-                              <p className="text-[10px] text-ink-600 font-black uppercase tracking-wider">
-                                {option.subtitle}
-                              </p>
-                            </div>
-                          </div>
-                          <p className="text-xs text-ink-500 font-bold leading-relaxed pt-2 border-t border-secondary-100/80">
-                            {option.desc}
-                          </p>
-                        </div>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-
-                {/* Santri Pindahan Highlight Card */}
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.35 }}
-                  className="mt-8 bg-amber-50 border border-amber-200 rounded-3xl p-6 flex items-start gap-[24px_28px] relative z-10 overflow-hidden shadow-premium-xs"
-                >
-                  <div className="w-10 h-10 bg-amber-500 rounded-full flex items-center justify-center text-white shrink-0 shadow-premium-xs">
-                    <AlertCircle className="w-6 h-6" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-lg font-display font-black text-amber-900 leading-none mb-1">
-                      Pendaftaran Santri Pindahan
-                    </p>
-                    <p className="text-sm text-amber-700 font-bold leading-relaxed mb-3">
-                      Khusus calon santri pindahan yang akan masuk ke kelas <strong>8 MTs, 9 MTs, 11 MA, atau 12 MA</strong>, mohon <strong>TIDAK</strong> mengisi formulir reguler ini agar penempatan tidak salah.
-                    </p>
-                    <Link
-                      href="/daftar-pindahan"
-                      className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-amber-800 hover:text-amber-950 transition-colors bg-amber-100 hover:bg-amber-200/80 p-[16px_20px].5 rounded-full border border-amber-200/50"
-                    >
-                      Daftar Lewat Jalur Pindahan <ArrowRight className="w-3.5 h-3.5" />
-                    </Link>
-                  </div>
-                </motion.div>
-
-                {fieldErrors.jenjang && (
-                  <p className="text-xs text-red-600 mt-4 font-bold flex items-center gap-1 ml-1">
-                    <AlertCircle className="w-3.5 h-3.5" />{" "}
-                    {fieldErrors.jenjang}
-                  </p>
-                )}
-              </motion.section>
-
-              {/* Section: Data Diri */}
-              <motion.section
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                className="space-y-8"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-[24px] bg-secondary-50 flex items-center justify-center text-primary-600 shadow-sm border border-secondary-200">
-                    <User className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-2xl font-display font-black text-ink-950">
-                    Data Calon Santri
-                  </h3>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-8">
-                  <div className="md:col-span-2">
-                    <InputField
-                      label="Nama Lengkap"
-                      error={fieldErrors.nama_lengkap}
-                    >
-                      <input
-                        type="text"
-                        value={formData.nama_lengkap}
-                        onChange={(e) =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            nama_lengkap: formatNamaLengkap(e.target.value) }))
-                        }
-                        placeholder="Sesuai Akta Kelahiran santri"
-                        className="w-full px-5 py-3 md:px-8 md:py-5 rounded-[24px] md:rounded-[24px] bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold placeholder:text-ink-500 text-sm md:text-base text-ink-950"
-                      />
-                    </InputField>
-                  </div>
-
-                  <InputField label="NIK Santri" error={fieldErrors.nik}>
-                    <div className="space-y-1">
-                      <input
-                        type="text"
-                        inputMode="numeric"
-                        maxLength={16}
-                        value={formData.nik}
-                        onChange={(e) =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            nik: e.target.value.replace(/\D/g, "") }))
-                        }
-                        placeholder="16 Digit NIK"
-                        className="w-full px-5 py-3 md:px-8 md:py-5 rounded-[24px] md:rounded-[24px] bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold placeholder:text-ink-500 text-sm md:text-base text-ink-950"
-                      />
-                      <p className="text-[10px] text-ink-500 mt-1.5 ml-1 font-bold">
-                        NIK (Nomor Induk Kependudukan) santri dapat dilihat pada lembar Kartu Keluarga (KK) di sebelah nama santri, atau pada KIA/KTP Anak.
-                      </p>
-                    </div>
-                  </InputField>
-
-                  <InputField
-                    label="Tanggal Lahir"
-                    error={fieldErrors.tanggal_lahir}
-                  >
-                    <input
-                      type="date"
-                      value={formData.tanggal_lahir}
-                      onChange={(e) =>
-                        setFormData((prev) => ({
-                          ...prev,
-                          tanggal_lahir: e.target.value }))
-                      }
-                      className="w-full px-5 py-3 md:px-8 md:py-5 rounded-[24px] md:rounded-[24px] bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold text-sm md:text-base text-ink-950"
-                    />
-                  </InputField>
-
-                  <div className="md:col-span-2">
-                    <InputField
-                      label="Jenis Kelamin"
-                      error={fieldErrors.jenis_kelamin}
-                    >
-                      <div className="flex gap-[24px_28px]">
-                        {[
-                          { val: "L", label: "Santri Putra" },
-                          { val: "P", label: "Santri Putri" },
-                        ].map((jk) => (
-                          <motion.label
-                            key={jk.val}
-                            whileTap={{ scale: 0.98 }}
-                            className={`flex-1 flex items-center justify-center px-4 md:p-[16px_20px] md:py-4 rounded-[1.5rem] md:rounded-[2rem] border-2 cursor-pointer transition-all duration-300 text-sm md:text-base ${
-                              formData.jenis_kelamin === jk.val
-                                ? "bg-primary-700 border-primary-700 text-white font-black shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10"
-                                : "bg-secondary-50 border-secondary-200 text-ink-800 hover:border-primary-200 hover:bg-white font-bold"
-                            }`}
-                          >
-                            <input
-                              type="radio"
-                              name="jk"
-                              value={jk.val}
-                              checked={formData.jenis_kelamin === jk.val}
-                              onChange={() =>
-                                setFormData((p) => ({
-                                  ...p,
-                                  jenis_kelamin: jk.val as any }))
-                              }
-                              className="hidden"
-                            />
-                            {jk.label}
-                          </motion.label>
-                        ))}
-                      </div>
-                    </InputField>
-                  </div>
-                </div>
-              </motion.section>
-
-              {/* Section: Kontak */}
-              <motion.section
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
-                className="space-y-8"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-[24px] bg-secondary-50 flex items-center justify-center text-primary-600 shadow-sm border border-secondary-200">
-                    <Phone className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-2xl font-display font-black text-ink-950">
-                    Kontak Verifikasi
-                  </h3>
-                </div>
-
-                <InputField
-                  label="Nomor WhatsApp Orang Tua"
-                  error={fieldErrors.no_hp}
-                >
-                  <div className="relative flex shadow-sm border border-transparent focus-within:border-primary-200 focus-within:ring-4 focus-within:ring-secondary-50 rounded-[24px] md:rounded-[24px] overflow-hidden bg-secondary-50 transition-all">
-                    <div className="relative">
-                      <select
-                        value={countryCode}
-                        onChange={(e) => setCountryCode(e.target.value)}
-                        className="appearance-none h-full pl-4 pr-8 py-3 md:pl-6 md:pr-10 md:py-5 bg-transparent border-r border-secondary-200 text-ink-950 font-black transition-all cursor-pointer text-sm md:text-base"
-                      >
-                        {countries.map((c) => (
-                          <option key={c.name} value={c.code}>
-                            {c.flag} {c.code}
-                          </option>
-                        ))}
-                      </select>
-                      <ChevronDown className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-600 pointer-events-none" />
-                    </div>
-                    <input
-                      type="tel"
-                      inputMode="tel"
-                      value={formData.no_hp}
-                      onChange={(e) => {
-                        const val = e.target.value.replace(/\D/g, "");
-                        setFormData((prev) => ({ ...prev, no_hp: val }));
-                      }}
-                      placeholder={
-                        countryCode === "+62"
-                          ? "812 3456 7890"
-                          : "Nomor Telepon"
-                      }
-                      className="flex-1 px-4 py-3 md:px-8 md:py-5 bg-transparent border-none focus:outline-none focus:ring-0 font-bold text-ink-950 placeholder:text-ink-400 min-w-0 text-sm md:text-base"
-                    />
-                  </div>
-                  <p className="text-xs text-ink-600 font-bold uppercase tracking-widest mt-3 ml-1">
-                    Kami akan mengirimkan kode OTP via WhatsApp ke nomor
-                    tersebut.
-                  </p>
-                </InputField>
-              </motion.section>
-
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.7 }}
-                className="pt-10"
-              >
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  type="submit"
-                  disabled={isLoading}
-                  className="w-full py-4 md:py-6 rounded-pill bg-primary-700 text-white font-black text-lg md:text-xl hover:bg-primary-800 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
-                >
-                  {isLoading ? (
-                    <>
-                      <Loader2 className="w-6 h-6 animate-spin" />
-                      <span>Sedang Memproses...</span>
-                    </>
-                  ) : (
-                    <span>Lanjutkan Registrasi</span>
-                  )}
-                </motion.button>
-
-                <p className="text-center text-sm text-ink-600 font-bold uppercase tracking-widest mt-8">
-                  Punya Akun?{" "}
-                  <Link
-                    href="/login"
-                    className="text-primary-700 hover:text-primary-800 hover:bg-secondary-50 px-3 py-1 rounded-full transition-colors ml-1 border border-transparent hover:border-secondary-200"
-                  >
-                    Masuk di sini
-                  </Link>
-                </p>
-              </motion.div>
-            </form>
-          </motion.div>
         </div>
 
-        {/* Footer Link */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-          className="mt-12 text-center"
-        >
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-ink-600 hover:text-primary-700 text-xs font-black uppercase tracking-widest transition-colors"
-          >
-            <RefreshCw className="w-3.5 h-3.5" /> Kembali Ke Beranda
-          </Link>
-        </motion.div>
-      </Container>
+        {/* SECTION 2: WHITE FORM BODY */}
+        <div className="p-7 sm:p-10 bg-white space-y-8">
+          
+          {/* Draft Autosave Notice Banner */}
+          {hasDraft && (
+            <div className="p-4 rounded-2xl bg-amber-50/80 border border-amber-200/80 flex items-center justify-between gap-3 text-xs text-amber-900">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
+                <span className="font-medium">
+                  Draf formulir Anda sebelumnya telah tersimpan otomatis di perangkat ini.
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  localStorage.removeItem("template_demo_daftar_draft");
+                  sessionStorage.removeItem("pendaftaran_form");
+                  setFormData({
+                    nik: "",
+                    nama_lengkap: "",
+                    tanggal_lahir: "",
+                    no_hp: "",
+                    jenis_kelamin: "",
+                    jenjang: ""
+                  });
+                  setHasDraft(false);
+                }}
+                className="text-amber-800 hover:text-amber-950 font-extrabold flex items-center gap-1 shrink-0 uppercase text-[10px] tracking-wider"
+              >
+                <RefreshCw className="w-3 h-3" /> Mulai Ulang
+              </button>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-8">
+            
+            {/* 1. Pilih Jenjang Pendidikan */}
+            <div className="space-y-3" data-error={!!fieldErrors.jenjang}>
+              <div className="flex items-center gap-2">
+                <GraduationCap className="w-4 h-4 text-[#1E3A8A]" />
+                <label className="text-xs font-extrabold text-slate-800 uppercase tracking-wider">
+                  Pilih Jenjang Pendidikan <span className="text-red-500">*</span>
+                </label>
+              </div>
+
+              <div className="grid sm:grid-cols-3 gap-3.5">
+                {[
+                  {
+                    value: "MTs",
+                    title: "SMP IT",
+                    subtitle: "Lulusan SD / MI",
+                    desc: "Pendidikan dasar 3 tahun berasrama"
+                  },
+                  {
+                    value: "IL",
+                    title: "I'dad Lughowi",
+                    subtitle: "Lulusan SMP / MTs",
+                    desc: "Persiapan bahasa Arab intensif 1 tahun"
+                  },
+                  {
+                    value: "MA",
+                    title: "SMA IT",
+                    subtitle: "Lulusan SMP / MTs",
+                    desc: "Jalur langsung khusus lancar bahasa Arab"
+                  }
+                ].map((item) => (
+                  <div
+                    key={item.value}
+                    onClick={() => setFormData((p) => ({ ...p, jenjang: item.value as any }))}
+                    className={`p-4 rounded-2xl border-2 transition-all cursor-pointer flex flex-col justify-between ${
+                      formData.jenjang === item.value
+                        ? "border-[#1E3A8A] bg-blue-50/50 shadow-sm"
+                        : "border-slate-200 bg-white hover:border-slate-300"
+                    }`}
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="font-extrabold text-sm text-slate-900">
+                          {item.title}
+                        </span>
+                        <div
+                          className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                            formData.jenjang === item.value
+                              ? "border-[#1E3A8A] bg-[#1E3A8A]"
+                              : "border-slate-300"
+                          }`}
+                        >
+                          {formData.jenjang === item.value && (
+                            <div className="w-1.5 h-1.5 rounded-full bg-white" />
+                          )}
+                        </div>
+                      </div>
+                      <span className="text-[11px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md inline-block mb-1">
+                        {item.subtitle}
+                      </span>
+                      <p className="text-[11px] text-slate-500 leading-relaxed">
+                        {item.desc}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {fieldErrors.jenjang && (
+                <p className="text-xs text-red-600 font-bold flex items-center gap-1">
+                  <AlertCircle className="w-3.5 h-3.5" /> {fieldErrors.jenjang}
+                </p>
+              )}
+            </div>
+
+            {/* 2. Data Calon Santri */}
+            <div className="space-y-4 pt-2 border-t border-slate-100">
+              <div className="flex items-center gap-2">
+                <User className="w-4 h-4 text-[#1E3A8A]" />
+                <label className="text-xs font-extrabold text-slate-800 uppercase tracking-wider">
+                  Identitas Calon Santri
+                </label>
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="sm:col-span-2 space-y-1.5" data-error={!!fieldErrors.nama_lengkap}>
+                  <label className="text-xs font-extrabold text-slate-700 flex items-center gap-1">
+                    <span>Nama Lengkap Santri</span>
+                    <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.nama_lengkap}
+                    onChange={(e) =>
+                      setFormData((p) => ({
+                        ...p,
+                        nama_lengkap: formatNamaLengkap(e.target.value)
+                      }))
+                    }
+                    placeholder="Sesuai Akta Kelahiran / Kartu Keluarga"
+                    className="w-full h-12 px-4 bg-slate-50/60 border border-slate-200 rounded-xl text-sm font-bold text-slate-900 placeholder:font-normal placeholder:text-slate-400 focus:bg-white focus:border-[#1E3A8A] focus:ring-4 focus:ring-[#1E3A8A]/10 transition-all"
+                  />
+                  {fieldErrors.nama_lengkap && (
+                    <p className="text-xs text-red-600 font-bold flex items-center gap-1">
+                      <AlertCircle className="w-3.5 h-3.5" /> {fieldErrors.nama_lengkap}
+                    </p>
+                  )}
+                </div>
+
+                <div className="space-y-1.5" data-error={!!fieldErrors.nik}>
+                  <label className="text-xs font-extrabold text-slate-700 flex items-center gap-1">
+                    <span>NIK Calon Santri (16 Digit)</span>
+                    <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={16}
+                    required
+                    value={formData.nik}
+                    onChange={(e) =>
+                      setFormData((p) => ({
+                        ...p,
+                        nik: e.target.value.replace(/\D/g, "")
+                      }))
+                    }
+                    placeholder="16 Digit NIK Santri"
+                    className="w-full h-12 px-4 bg-slate-50/60 border border-slate-200 rounded-xl text-sm font-bold text-slate-900 placeholder:font-normal placeholder:text-slate-400 focus:bg-white focus:border-[#1E3A8A] focus:ring-4 focus:ring-[#1E3A8A]/10 transition-all"
+                  />
+                  {fieldErrors.nik && (
+                    <p className="text-xs text-red-600 font-bold flex items-center gap-1">
+                      <AlertCircle className="w-3.5 h-3.5" /> {fieldErrors.nik}
+                    </p>
+                  )}
+                </div>
+
+                <div className="space-y-1.5" data-error={!!fieldErrors.tanggal_lahir}>
+                  <label className="text-xs font-extrabold text-slate-700 flex items-center gap-1">
+                    <span>Tanggal Lahir</span>
+                    <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    required
+                    value={formData.tanggal_lahir}
+                    onChange={(e) =>
+                      setFormData((p) => ({ ...p, tanggal_lahir: e.target.value }))
+                    }
+                    className="w-full h-12 px-4 bg-slate-50/60 border border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:bg-white focus:border-[#1E3A8A] focus:ring-4 focus:ring-[#1E3A8A]/10 transition-all"
+                  />
+                  {fieldErrors.tanggal_lahir && (
+                    <p className="text-xs text-red-600 font-bold flex items-center gap-1">
+                      <AlertCircle className="w-3.5 h-3.5" /> {fieldErrors.tanggal_lahir}
+                    </p>
+                  )}
+                </div>
+
+                <div className="sm:col-span-2 space-y-1.5" data-error={!!fieldErrors.jenis_kelamin}>
+                  <label className="text-xs font-extrabold text-slate-700 flex items-center gap-1">
+                    <span>Jenis Kelamin</span>
+                    <span className="text-red-500">*</span>
+                  </label>
+                  <div className="grid grid-cols-2 gap-3">
+                    {[
+                      { val: "L", label: "Santri Putra (Ikhwan)" },
+                      { val: "P", label: "Santri Putri (Akhwat)" }
+                    ].map((jk) => (
+                      <button
+                        key={jk.val}
+                        type="button"
+                        onClick={() =>
+                          setFormData((p) => ({ ...p, jenis_kelamin: jk.val as any }))
+                        }
+                        className={`h-12 rounded-xl border-2 font-extrabold text-xs transition-all flex items-center justify-center gap-2 ${
+                          formData.jenis_kelamin === jk.val
+                            ? "border-[#1E3A8A] bg-blue-50 text-[#1E3A8A]"
+                            : "border-slate-200 bg-white text-slate-600 hover:border-slate-300"
+                        }`}
+                      >
+                        <span>{jk.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                  {fieldErrors.jenis_kelamin && (
+                    <p className="text-xs text-red-600 font-bold flex items-center gap-1">
+                      <AlertCircle className="w-3.5 h-3.5" /> {fieldErrors.jenis_kelamin}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* 3. Kontak WhatsApp */}
+            <div className="space-y-4 pt-2 border-t border-slate-100">
+              <div className="flex items-center gap-2">
+                <Phone className="w-4 h-4 text-[#1E3A8A]" />
+                <label className="text-xs font-extrabold text-slate-800 uppercase tracking-wider">
+                  Nomor WhatsApp Orang Tua / Wali <span className="text-red-500">*</span>
+                </label>
+              </div>
+
+              <div className="space-y-1.5" data-error={!!fieldErrors.no_hp}>
+                <div className="flex rounded-xl overflow-hidden border border-slate-200 focus-within:border-[#1E3A8A] focus-within:ring-4 focus-within:ring-[#1E3A8A]/10 bg-slate-50/60 transition-all">
+                  <div className="relative border-r border-slate-200 bg-slate-100/80 px-3 flex items-center">
+                    <select
+                      value={countryCode}
+                      onChange={(e) => setCountryCode(e.target.value)}
+                      className="bg-transparent text-xs font-extrabold text-slate-800 focus:outline-none cursor-pointer pr-4"
+                    >
+                      {countries.map((c) => (
+                        <option key={c.name} value={c.code}>
+                          {c.code}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronDown className="w-3 h-3 text-slate-400 absolute right-1.5 pointer-events-none" />
+                  </div>
+                  <input
+                    type="tel"
+                    inputMode="tel"
+                    required
+                    value={formData.no_hp}
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/\D/g, "");
+                      setFormData((p) => ({ ...p, no_hp: val }));
+                    }}
+                    placeholder="81234567890 (Tanpa awalan angka 0)"
+                    className="flex-1 h-12 px-4 bg-transparent text-sm font-bold text-slate-900 placeholder:font-normal placeholder:text-slate-400 focus:outline-none"
+                  />
+                </div>
+                <p className="text-[11px] text-slate-400 font-medium">
+                  Kode OTP verifikasi akun akan dikirimkan ke nomor WhatsApp ini.
+                </p>
+                {fieldErrors.no_hp && (
+                  <p className="text-xs text-red-600 font-bold flex items-center gap-1">
+                    <AlertCircle className="w-3.5 h-3.5" /> {fieldErrors.no_hp}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <div className="pt-4">
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full h-12 rounded-xl bg-[#1E3A8A] hover:bg-[#1E40AF] text-white font-extrabold text-sm shadow-md shadow-[#1E3A8A]/25 transition-all flex items-center justify-center gap-2 hover:-translate-y-0.5 disabled:opacity-50 cursor-pointer"
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Mengirim Kode OTP WhatsApp...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Lanjutkan ke Verifikasi OTP</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
+              </button>
+            </div>
+
+            {/* Login Link */}
+            <div className="pt-2 text-center border-t border-slate-100">
+              <p className="text-xs text-slate-400 font-medium">
+                Sudah pernah mendaftar sebelumnya?{" "}
+                <Link
+                  href="/login"
+                  className="font-extrabold text-[#1E3A8A] hover:underline"
+                >
+                  Masuk ke Portal Santri di Sini
+                </Link>
+              </p>
+            </div>
+
+          </form>
+
+        </div>
+
+      </div>
+
+      <p className="text-center text-xs text-slate-400 mt-6 font-medium">
+        &copy; 2026 {BRANDING.schoolLegalName} &bull; SPMB v2.0
+      </p>
+
     </main>
   );
 }
-

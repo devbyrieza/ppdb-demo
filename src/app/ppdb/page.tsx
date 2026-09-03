@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { Suspense, useEffect } from "react";
 import Link from "next/link";
@@ -218,42 +218,42 @@ function PPDBContent() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-2xl md:text-4xl sm:text-6xl lg:text-8xl font-display font-black mb-8 md:mb-10 tracking-tight leading-[0.9] text-ink-950"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-black mb-6 md:mb-8 tracking-tight text-slate-900 leading-[1.15]"
             >
-              Siapkan Generasi <br />
-              <span className="text-gradient-primary">Terbaik Kita</span>
+              <span className="block">Kaderisasi Generasi Robbani,</span>
+              <span className="block mt-1 text-[#1E3A8A]">
+                Cendekia &amp; Berakhlak Mulia
+              </span>
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-xl md:text-2xl text-ink-600 max-w-3xl mx-auto leading-relaxed font-medium mb-10"
+              className="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed font-medium mb-10"
             >
-              Bergabunglah dengan Pesantren Al Fath. Lingkungan yang
-              kondusif untuk mencetak Hafidz Qur'an yang berwawasan luas dan
-              berakhlak mulia.
+              Bergabunglah dengan {BRANDING.schoolName}. Lingkungan yang
+              kondusif untuk mencetak generasi penghafal Al-Qur'an yang berwawasan luas,
+              berprestasi global, dan berakhlak mulia.
             </motion.p>
 
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.25 }}
-              className="max-w-4xl mx-auto bg-primary-50 border border-primary-100 rounded-3xl p-6 md:p-8 mb-12 flex flex-col md:flex-row items-center gap-6 text-left shadow-premium-sm"
+              className="max-w-4xl mx-auto bg-blue-50/70 border border-blue-100 rounded-3xl p-6 md:p-8 mb-12 flex flex-col md:flex-row items-center gap-6 text-left shadow-premium-sm"
             >
-              <div className="w-16 h-16 bg-primary-600 rounded-[24px] flex items-center justify-center text-white shrink-0 shadow-premium-md relative overflow-hidden">
+              <div className="w-16 h-16 bg-[#1E3A8A] rounded-[24px] flex items-center justify-center text-white shrink-0 shadow-premium-md relative overflow-hidden">
                 <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-20" />
-                <Award className="w-8 h-8 relative z-10" />
+                <Award className="w-8 h-8 relative z-10 text-amber-300" />
               </div>
               <div>
-                <h3 className="text-xl md:text-2xl font-display font-black text-primary-900 mb-2">
-                  Kesempatan Emas: Angkatan Pelopor Era Al Fath
+                <h3 className="text-xl md:text-2xl font-display font-black text-slate-900 mb-2">
+                  Kesempatan Emas: Penerimaan Santri Baru 2027/2028
                 </h3>
-                <p className="text-primary-800 font-medium leading-relaxed">
-                  Menjadi bagian dari angkatan pelopor 2027/2028 adalah sebuah
-                  keistimewaan. Ananda akan menjadi{" "}
-                  <strong>pionir dan tonggak sejarah pertama</strong> yang
-                  merasakan secara penuh perpaduan mantap antara sistem pendidikan berasrama modern, bimbingan intensif Manhaj Salaf, serta kurikulum kepengasuhan beradab.
+                <p className="text-slate-700 font-medium leading-relaxed">
+                  Menjadi bagian dari {BRANDING.schoolShortName} adalah sebuah
+                  keistimewaan. Ananda akan merasakan secara penuh perpaduan mantap antara sistem pendidikan berasrama modern, intensitas tahfidz Al-Qur'an, wawasan internasional, serta pembentukan karakter beradab.
                 </p>
               </div>
             </motion.div>
@@ -527,7 +527,8 @@ function PPDBContent() {
                   {[
                     {
                       q: "Apakah santri wajib asrama?",
-                      a: "Ya, seluruh santri di Pesantren Al Fath wajib tinggal di asrama untuk mengikuti seluruh rangkaian kegiatan tarbiyah, halaqah tahfidz, dan pembelajaran kitab turots secara maksimal." },
+                      a: `Ya, seluruh santri di ${BRANDING.schoolShortName} wajib tinggal di asrama untuk mengikuti seluruh rangkaian kegiatan tarbiyah, halaqah tahfidz, dan pembelajaran kitab turots secara maksimal.`
+                    },
                     {
                       q: "Kapan batas akhir pendaftaran?",
                       a: "Pendaftaran SPMB Tahun Ajaran 2027/2028 dibuka mulai tanggal 5 September sampai dengan 28 Desember 2026. Namun, pendaftaran dapat ditutup lebih awal jika kuota santri baru sudah terpenuhi." },
