@@ -1,4 +1,4 @@
-// src/app/login/page.tsx
+﻿// src/app/login/page.tsx
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -282,7 +282,8 @@ export default function LoginPage() {
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgc3Ryb2tlPSIjMDAwMDAwIiBzdHJva2Utb3BhY2l0eT0iMC4wMiIgZmlsbD0ibm9uZSI+PHBhdGggZD0iTTAgNjBoNjBNNjAgMGwwIDYwIi8+PC9nPjwvc3ZnPg==')] opacity-70 pointer-events-none" />
 
       {/* TOP NAVIGATION PILLS (OMI STANDARD) */}
-      <div className="w-full max-w-[500px] flex items-center justify-between gap-3 mb-4 z-10">
+      {/* TOP NAVIGATION PILLS (OMI DESKTOP STANDARD) */}
+      <div className="w-full max-w-5xl lg:max-w-6xl flex items-center justify-between gap-3 mb-4 z-10">
         <Link
           href="/"
           className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white/95 border border-slate-200/90 shadow-2xs text-xs font-extrabold uppercase tracking-wider text-slate-700 hover:text-[#1E3A8A] hover:border-[#1E3A8A]/40 transition-all hover:-translate-y-0.5"
@@ -292,19 +293,19 @@ export default function LoginPage() {
         </Link>
         <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white/95 border border-slate-200/90 shadow-2xs text-xs font-bold text-slate-700">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span>Portal SPMB 2027/2028</span>
+          <span>Portal Resmi SPMB 2027/2028</span>
         </div>
       </div>
 
-      {/* TWO-SECTION OMI LOGIN CARD (PLATINUM DIAMOND STANDARD) */}
-      <div className="w-full max-w-[500px] rounded-3xl overflow-hidden shadow-2xl shadow-blue-950/10 border border-slate-200 bg-white relative z-10">
+      {/* TWO-PANEL OMI LOGIN CARD (DESKTOP SPLIT / MOBILE STACKED) */}
+      <div className="w-full max-w-5xl lg:max-w-6xl rounded-3xl overflow-hidden shadow-2xl shadow-blue-950/10 border border-slate-200 bg-white grid grid-cols-1 lg:grid-cols-12 relative z-10">
         
-        {/* SECTION 1: ROYAL NAVY BLUE GRADIENT HEADER */}
-        <div className="bg-gradient-to-br from-[#0B1528] via-[#1E3A8A] to-[#1D4ED8] p-6 sm:p-8 text-white relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-48 h-48 bg-amber-400/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+        {/* SISI KIRI: PANEL IDENTITAS & 2 BENTO UNGGULAN (DESKTOP: 5 COLUMNS) */}
+        <div className="lg:col-span-5 bg-gradient-to-br from-[#0B1528] via-[#1E3A8A] to-[#1D4ED8] p-6 sm:p-8 lg:p-10 text-white relative overflow-hidden flex flex-col justify-between">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-amber-400/10 rounded-full blur-3xl pointer-events-none" />
           
-          <div className="relative z-10 space-y-4">
-            <div className="inline-flex items-center gap-3 bg-white px-3.5 py-1.5 rounded-2xl shadow-sm">
+          <div className="relative z-10 space-y-6">
+            <div className="inline-flex items-center gap-3 bg-white px-3.5 py-2 rounded-2xl shadow-sm">
               <img
                 src={BRANDING.logoPath}
                 alt={"Logo " + BRANDING.schoolName}
@@ -316,22 +317,74 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <span className="text-[10px] font-extrabold uppercase tracking-widest text-amber-300 bg-white/10 px-3 py-1 rounded-full border border-white/15 inline-block mb-2">
+              <span className="text-[10px] font-extrabold uppercase tracking-widest text-amber-300 bg-white/10 px-3 py-1 rounded-full border border-white/15 inline-block mb-3">
                 Penerimaan Santri Baru 2027/2028
               </span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-snug">
-                Masuk Portal SPMB Al-Andalus
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-snug">
+                Pesantren Islam Internasional Al-Andalus
               </h2>
-              <p className="text-xs sm:text-sm text-slate-200/90 font-normal mt-1 leading-relaxed">
-                Silakan masukkan NIK / No. Pendaftaran calon santri atau kredensial akun staf Anda.
+              <p className="text-xs sm:text-sm text-slate-200/90 font-normal mt-2 leading-relaxed">
+                Portal resmi seleksi santri baru dengan perpaduan kurikulum kepesantrenan berstandar internasional dan kepemimpinan modern.
               </p>
             </div>
+
+            {/* 2 KARTU BENTO FITUR UNGGULAN (OMI DESKTOP STYLE) */}
+            <div className="space-y-3 pt-2">
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/15 flex items-center gap-3.5 shadow-sm">
+                <div className="w-11 h-11 rounded-xl bg-amber-400/20 border border-amber-400/30 flex items-center justify-center shrink-0 text-amber-300">
+                  <BookOpen className="w-5 h-5" />
+                </div>
+                <div>
+                  <h4 className="text-xs sm:text-sm font-extrabold text-white">
+                    Pendidikan Holistik Rabbani
+                  </h4>
+                  <p className="text-[11px] text-slate-300 font-normal">
+                    Tahfidz mutqin, bahasa Arab &amp; Inggris aktif
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/15 flex items-center gap-3.5 shadow-sm">
+                <div className="w-11 h-11 rounded-xl bg-sky-400/20 border border-sky-400/30 flex items-center justify-center shrink-0 text-sky-300">
+                  <ShieldCheck className="w-5 h-5" />
+                </div>
+                <div>
+                  <h4 className="text-xs sm:text-sm font-extrabold text-white">
+                    Akreditasi A &amp; Kampus Asri
+                  </h4>
+                  <p className="text-[11px] text-slate-300 font-normal">
+                    Fasilitas modern berasrama penuh 24 jam
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="relative z-10 pt-6 mt-6 border-t border-white/10 text-[11px] text-slate-300/80 font-medium flex items-center justify-between">
+            <span>Sekretariat Panitia &bull; SPMB Al-Andalus</span>
+            <span className="text-amber-300">&bull; Terakreditasi A</span>
           </div>
         </div>
 
-        {/* SECTION 2: WHITE FORM BODY */}
-        <div className="p-6 sm:p-8 bg-white space-y-6">
+        {/* SISI KANAN: WHITE FORM BODY (DESKTOP: 7 COLUMNS) */}
+        <div className="lg:col-span-7 p-6 sm:p-8 lg:p-10 bg-white space-y-6 flex flex-col justify-center">
           
+          <div>
+            <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug">
+              Masuk Portal SPMB Al-Andalus
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-500 font-normal mt-1 leading-relaxed">
+              Silakan masukkan NIK / No. Pendaftaran calon santri atau kredensial akun staf Anda.
+            </p>
+          </div>
+
+          <div className="p-3 bg-blue-50/70 border border-blue-100 rounded-2xl flex items-center justify-between gap-3 text-xs">
+            <span className="text-blue-900 font-medium">Belum memiliki akun pendaftar?</span>
+            <Link href="/daftar" className="font-extrabold text-[#1E3A8A] hover:underline flex items-center gap-1 shrink-0">
+              <span>Daftar Santri Baru</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
           {/* Tab Switcher (Calon Santri vs Portal Staf) */}
           {!roleSelectionData && (
             <div className="bg-slate-100 p-1.5 rounded-2xl flex relative border border-slate-200/80">
