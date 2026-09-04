@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import {
@@ -114,7 +114,7 @@ export default function BankSoalPanitiaPage() {
               Bank Soal Seleksi & Form Penilaian SPMB
             </h1>
             <p className="text-[#ddc192] text-xs md:text-sm max-w-3xl leading-relaxed font-medium">
-              Pusat peninjauan instrumen tes seleksi (Akademik, Kesiapan, Kepribadian) dan rubrik penilaian resmi penguji (Al-Qur'an, Wawancara Santri & Orang Tua) Pesantren Al-Andalus Al-Andalus Sukabumi.
+              Pusat peninjauan instrumen tes seleksi (Akademik, Kesiapan, Kepribadian) dan rubrik penilaian resmi penguji (Al-Qur'an, Wawancara Santri & Orang Tua) Pesantren Islam Internasional Al-Andalus.
             </p>
           </div>
 
