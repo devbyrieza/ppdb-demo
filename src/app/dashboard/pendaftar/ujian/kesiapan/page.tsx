@@ -198,7 +198,7 @@ export default function KesiapanTestPage() {
           Seleksi Kesiapan Calon Santri/Wati
         </h1>
         <p className="text-primary-100 text-sm mt-1">
-          15 pernyataan â€¢ Skala 1-5 â€¢ Durasi 45 menit
+          15 pernyataan • Skala 1-5 • Durasi 45 menit
         </p>
       </div>
 

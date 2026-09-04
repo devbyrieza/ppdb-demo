@@ -222,7 +222,7 @@ export default function KepribadianTestPage() {
           Seleksi Kepribadian Calon Santri/Wati
         </h1>
         <p className="text-primary-100 text-sm mt-1">
-          20 pernyataan â€¢ Skala 1-4 â€¢ Durasi 30 menit
+          20 pernyataan • Skala 1-4 • Durasi 30 menit
         </p>
       </div>
 
