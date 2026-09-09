@@ -261,42 +261,52 @@ const drawFormalSignature = async (doc: jsPDF, y: number) => {
   const pageWidth = doc.internal.pageSize.getWidth();
   const { authority, assets, coords } = PDF_BRANDING;
   
-  // Reposisi tanda tangan: jika full_image (seperti Al-Imam), geser ke kiri agar tidak menabrak Kemenkumham.
-  // Jika programmatic (generik), tetap di kanan bawah seperti biasa.
+  // Reposisi tanda tangan ke kanan sesuai standar surat resmi
   const isFullImage = PDF_BRANDING.template === "full_image";
-  const xBase = isFullImage ? 28 : pageWidth - coords.signature.margin_right;
+  const xBase = pageWidth - (isFullImage ? 70 : coords.signature.margin_right);
+
+  // Batas aman maksimum y agar seluruh blok tanda tangan dan nama Mudir/Ketua Panitia
+  // selesai sebelum y = 250mm, sehingga tidak akan pernah menimpa teks footer
+  const maxSafeY = 206;
+  const actualY = isFullImage ? Math.min(y, maxSafeY) : y;
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(10.5);
   doc.text(
     `${authority.city}, ${new Date().toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}`,
     xBase,
-    y,
+    actualY,
   );
-  doc.text(authority.role + ",", xBase, y + 6);
+  doc.text(authority.role + ",", xBase, actualY + 5);
 
   const stempel = await fetchImageAsBase64(assets.stamp);
   const ttd = await fetchImageAsBase64(assets.signature);
 
+  const stampW = coords.signature.stamp.w > 32 ? 32 : coords.signature.stamp.w;
+  const stampH = coords.signature.stamp.h > 32 ? 32 : coords.signature.stamp.h;
+  const ttdW = coords.signature.ttd.w > 32 ? 32 : coords.signature.ttd.w;
+  const ttdH = coords.signature.ttd.h > 32 ? 32 : coords.signature.ttd.h;
+
   if (isFullImage) {
     if (stempel) {
-      doc.addImage(stempel, "JPEG", xBase - 10, y + 10, coords.signature.stamp.w, coords.signature.stamp.h);
+      doc.addImage(stempel, "PNG", xBase - 10, actualY + 7, stampW, stampH);
     }
     if (ttd) {
-      doc.addImage(ttd, "PNG", xBase + 5, y + 10, coords.signature.ttd.w, coords.signature.ttd.h);
+      doc.addImage(ttd, "PNG", xBase + 5, actualY + 7, ttdW, ttdH);
     }
   } else {
     if (stempel) {
-      doc.addImage(stempel, "JPEG", xBase - 20, y + 10, coords.signature.stamp.w, coords.signature.stamp.h);
+      doc.addImage(stempel, "JPEG", xBase - 20, actualY + 7, stampW, stampH);
     }
     if (ttd) {
-      doc.addImage(ttd, "PNG", xBase + 10, y + 10, coords.signature.ttd.w, coords.signature.ttd.h);
+      doc.addImage(ttd, "PNG", xBase + 10, actualY + 7, ttdW, ttdH);
     }
   }
 
   doc.setFont("helvetica", "bold");
   doc.setFontSize(10.5);
-  doc.text(authority.name, xBase, y + 45);
+  doc.setTextColor(0, 0, 0);
+  doc.text(authority.name, xBase, actualY + 39);
 };
 
 // ============================================================
@@ -546,7 +556,8 @@ export const generateSuratKesehatan = async (data: PendaftarPdfData) => {
   // === HALAMAN 1: SURAT PENGANTAR ===
   await drawHeader(doc);
 
-  let y = startY + 2;
+  const isFullImage = PDF_BRANDING.template === "full_image";
+  let y = isFullImage ? 62 : startY + 2;
   doc.setFontSize(9.5); // Diubah dari 10.5 ke 9.5 untuk menghemat ruang
   doc.setFont("helvetica", "normal");
   doc.setTextColor(50, 50, 50);
@@ -651,7 +662,7 @@ export const generateSuratKesehatan = async (data: PendaftarPdfData) => {
   );
   doc.setFont("helvetica", "normal");
 
-  await drawFormalSignature(doc, y + 8); // Diubah dari 12 ke 8 untuk memajukan TTD Mudir
+  await drawFormalSignature(doc, y + 5); // Diubah dari 12 ke 8 untuk memajukan TTD Mudir
   drawFooter(doc);
 
   // === HALAMAN 2: FORMULIR PEMERIKSAAN ===
