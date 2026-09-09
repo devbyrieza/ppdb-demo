@@ -44,12 +44,12 @@ export async function GET(request: NextRequest) {
       if (isJsonRequest) {
         return NextResponse.json({
           success: true,
-          data: { url: `/api/dokumen/download/${mappedType}` }
+          data: { url: `/api/dokumen/download/${mappedType}?v=${Date.now()}` }
         });
       }
 
       // Direct navigation -> redirect to the typed endpoint
-      return NextResponse.redirect(new URL(`/api/dokumen/download/${mappedType}`, request.url));
+      return NextResponse.redirect(new URL(`/api/dokumen/download/${mappedType}?v=${Date.now()}`, request.url));
     }
 
     // Otherwise, it's an uploaded document file

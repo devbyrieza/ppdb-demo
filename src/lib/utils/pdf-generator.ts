@@ -263,11 +263,11 @@ const drawFormalSignature = async (doc: jsPDF, y: number) => {
   
   // Reposisi tanda tangan ke kanan sesuai standar surat resmi
   const isFullImage = PDF_BRANDING.template === "full_image";
-  const xBase = pageWidth - (isFullImage ? 70 : coords.signature.margin_right);
+  const xBase = pageWidth - (isFullImage ? 75 : coords.signature.margin_right);
 
   // Batas aman maksimum y agar seluruh blok tanda tangan dan nama Mudir/Ketua Panitia
   // selesai sebelum y = 250mm, sehingga tidak akan pernah menimpa teks footer
-  const maxSafeY = 206;
+  const maxSafeY = 196;
   const actualY = isFullImage ? Math.min(y, maxSafeY) : y;
 
   doc.setFont("helvetica", "normal");

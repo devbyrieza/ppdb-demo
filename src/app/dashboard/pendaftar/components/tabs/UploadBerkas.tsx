@@ -349,7 +349,7 @@ function DokumenCard({
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  window.open("/api/dokumen/download/surat-kesehatan", "_blank");
+                  window.open(`/api/dokumen/download/surat-kesehatan?v=${Date.now()}`, "_blank");
                 }}
                 className="flex items-center gap-1.5 px-3 py-1.5 bg-primary-100 hover:bg-primary-600 text-primary-800 hover:text-white rounded-2xl text-[10px] font-black border border-primary-300 transition-colors shadow-sm"
                 title="Download Format Surat Keterangan Kesehatan Panitia"
@@ -362,7 +362,7 @@ function DokumenCard({
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  window.open("/api/dokumen/download/pakta-integritas-santri", "_blank");
+                  window.open(`/api/dokumen/download/pakta-integritas-santri?v=${Date.now()}`, "_blank");
                 }}
                 className="flex items-center gap-1.5 px-3 py-1.5 bg-primary-100 hover:bg-primary-600 text-primary-800 hover:text-white rounded-2xl text-[10px] font-black border border-primary-300 transition-colors shadow-sm"
                 title="Download Format Pakta Integritas Calon Santri"
@@ -375,7 +375,7 @@ function DokumenCard({
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  window.open("/api/dokumen/download/pakta-integritas-ortu", "_blank");
+                  window.open(`/api/dokumen/download/pakta-integritas-ortu?v=${Date.now()}`, "_blank");
                 }}
                 className="flex items-center gap-1.5 px-3 py-1.5 bg-primary-100 hover:bg-primary-600 text-primary-800 hover:text-white rounded-2xl text-[10px] font-black border border-primary-300 transition-colors shadow-sm"
                 title="Download Format Pakta Integritas Calon Orangtua/Wali"
@@ -388,7 +388,7 @@ function DokumenCard({
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  window.open("/api/dokumen/download/pakta-integritas", "_blank");
+                  window.open(`/api/dokumen/download/pakta-integritas?v=${Date.now()}`, "_blank");
                 }}
                 className="flex items-center gap-1.5 px-3 py-1.5 bg-primary-100 hover:bg-primary-600 text-primary-800 hover:text-white rounded-2xl text-[10px] font-black border border-primary-300 transition-colors shadow-sm"
                 title="Download Format Pakta Integritas Panitia"
@@ -401,7 +401,7 @@ function DokumenCard({
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  window.open("/api/dokumen/download/surat-pernyataan", "_blank");
+                  window.open(`/api/dokumen/download/surat-pernyataan?v=${Date.now()}`, "_blank");
                 }}
                 className="flex items-center gap-1.5 px-3 py-1.5 bg-primary-100 hover:bg-primary-600 text-primary-800 hover:text-white rounded-2xl text-[10px] font-black border border-primary-300 transition-colors shadow-sm"
                 title="Download Format Surat Pernyataan Bebas Perilaku Buruk Panitia"
