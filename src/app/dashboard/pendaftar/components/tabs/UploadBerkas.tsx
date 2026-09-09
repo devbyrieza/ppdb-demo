@@ -344,19 +344,70 @@ function DokumenCard({
             </div>
           </div>
           <div className="flex items-center gap-2">
-            {[
-              "surat_kesehatan",
-              "pakta_integritas_santri",
-              "pakta_integritas_ortu",
-              "pernyataan_bebas_negatif",
-            ].includes(dokumen.key) && (
+            {/* Template Download Buttons */}
+            {dokumen.key === "surat_kesehatan" && (
               <button
-                disabled
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-primary-50 text-primary-400 rounded-2xl text-[10px] font-black border border-primary-100 cursor-not-allowed opacity-70"
-                title="Format dokumen sedang disiapkan panitia"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.open("/api/dokumen/download/surat-kesehatan", "_blank");
+                }}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-primary-100 hover:bg-primary-600 text-primary-800 hover:text-white rounded-2xl text-[10px] font-black border border-primary-300 transition-colors shadow-sm"
+                title="Download Format Surat Keterangan Kesehatan Panitia"
               >
                 <Download className="w-3.5 h-3.5" />
-                Format Belum Ready
+                Download Format
+              </button>
+            )}
+            {dokumen.key === "pakta_integritas_santri" && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.open("/api/dokumen/download/pakta-integritas-santri", "_blank");
+                }}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-primary-100 hover:bg-primary-600 text-primary-800 hover:text-white rounded-2xl text-[10px] font-black border border-primary-300 transition-colors shadow-sm"
+                title="Download Format Pakta Integritas Calon Santri"
+              >
+                <Download className="w-3.5 h-3.5" />
+                Download Format
+              </button>
+            )}
+            {dokumen.key === "pakta_integritas_ortu" && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.open("/api/dokumen/download/pakta-integritas-ortu", "_blank");
+                }}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-primary-100 hover:bg-primary-600 text-primary-800 hover:text-white rounded-2xl text-[10px] font-black border border-primary-300 transition-colors shadow-sm"
+                title="Download Format Pakta Integritas Calon Orangtua/Wali"
+              >
+                <Download className="w-3.5 h-3.5" />
+                Download Format
+              </button>
+            )}
+            {dokumen.key === "pakta_integritas" && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.open("/api/dokumen/download/pakta-integritas", "_blank");
+                }}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-primary-100 hover:bg-primary-600 text-primary-800 hover:text-white rounded-2xl text-[10px] font-black border border-primary-300 transition-colors shadow-sm"
+                title="Download Format Pakta Integritas Panitia"
+              >
+                <Download className="w-3.5 h-3.5" />
+                Download Format
+              </button>
+            )}
+            {(dokumen.key === "pernyataan_bebas_negatif" || dokumen.key === "surat_pernyataan" || dokumen.key === "surat_pernyataan_ortu") && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.open("/api/dokumen/download/surat-pernyataan", "_blank");
+                }}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-primary-100 hover:bg-primary-600 text-primary-800 hover:text-white rounded-2xl text-[10px] font-black border border-primary-300 transition-colors shadow-sm"
+                title="Download Format Surat Pernyataan Bebas Perilaku Buruk Panitia"
+              >
+                <Download className="w-3.5 h-3.5" />
+                Download Format
               </button>
             )}
             {dokumen.status !== "pending" && (
