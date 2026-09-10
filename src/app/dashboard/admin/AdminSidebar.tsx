@@ -351,7 +351,7 @@ export default function AdminSidebar({
             href="/dashboard/admin"
             className="flex items-center gap-4 overflow-hidden group"
           >
-            <div className="shrink-0 w-12 h-12 bg-white rounded-2xl flex items-center justify-center border border-ink-100 shadow-2xl shadow-primary/30 group-hover:rotate-6 transition-all duration-500">
+            <div className="shrink-0 w-12 h-12 bg-white rounded-2xl flex items-center justify-center border border-ink-100 shadow-sm group-hover:rotate-6 transition-all duration-500">
               <img
                 src={BRANDING.logoPath}
                 alt="Logo"
