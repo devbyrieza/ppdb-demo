@@ -124,19 +124,10 @@ const TimeDataLists = () => (
 );
 
 const FlexibleTimeInput = ({ value, onChange, type }: { value: string, onChange: (val: string) => void, type: "hour" | "minute" }) => {
-  const [localValue, setLocalValue] = require("react").useState(value);
+  const [localValue, setLocalValue] = useState(value);
 
   require("react").
-  useEffect(() => {
-    if (isSlotModalOpen || isDetailModalOpen || isEditModalOpen || isBulkEditModalOpen || isBulkModalOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [isSlotModalOpen, isDetailModalOpen, isEditModalOpen, isBulkEditModalOpen, isBulkModalOpen]);
+  
 
   useEffect(() => {
     setLocalValue(value);
