@@ -966,10 +966,16 @@ export default function JadwalUjianPage() {
                   <CalendarPlus className="w-3.5 h-3.5 text-white" />
                   Jadwalkan Calon Santri
                 </div>
-                <h2 className="text-2xl font-black tracking-tight text-white !text-white drop-shadow-xs">
+                <h2
+                  style={{ color: "#ffffff" }}
+                  className="text-2xl font-black tracking-tight text-white !text-white drop-shadow-sm"
+                >
                   Penjadwalan Seleksi &amp; Penugasan Penguji
                 </h2>
-                <p className="text-white/85 text-xs mt-1 font-medium">
+                <p
+                  style={{ color: "rgba(255, 255, 255, 0.9)" }}
+                  className="text-xs mt-1 font-medium"
+                >
                   Atur waktu pelaksanaan tes, lokasi ujian, serta penugasan asatidz penguji seleksi
                 </p>
               </div>
