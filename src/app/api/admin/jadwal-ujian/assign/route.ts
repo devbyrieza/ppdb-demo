@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { pendaftar_id, exam_session_id, tahun_ajaran_id } = await req.json();
+    const { pendaftar_id, exam_session_id, tahun_ajaran_id, penguji_ortu_id, penguji_santri_id, penguji_quran_id } = await req.json();
 
     // Get session details
     const examSession = await prisma.examSession.findUnique({
@@ -22,6 +22,24 @@ export async function POST(req: NextRequest) {
 
     if (examSession.booked_count >= examSession.quota) {
       return NextResponse.json({ error: "Session is full" }, { status: 400 });
+    }
+
+    // Fetch Penguji Google Meet links if explicit IDs passed
+    let gmeetOrtu: string | null = null;
+    let gmeetSantri: string | null = null;
+    let gmeetQuran: string | null = null;
+
+    if (penguji_ortu_id) {
+      const p = await prisma.profile.findUnique({ where: { id: penguji_ortu_id }, select: { google_meet_link: true } });
+      if (p?.google_meet_link) gmeetOrtu = p.google_meet_link;
+    }
+    if (penguji_santri_id) {
+      const p = await prisma.profile.findUnique({ where: { id: penguji_santri_id }, select: { google_meet_link: true } });
+      if (p?.google_meet_link) gmeetSantri = p.google_meet_link;
+    }
+    if (penguji_quran_id) {
+      const p = await prisma.profile.findUnique({ where: { id: penguji_quran_id }, select: { google_meet_link: true } });
+      if (p?.google_meet_link) gmeetQuran = p.google_meet_link;
     }
 
     // Create or update JadwalUjian
