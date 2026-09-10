@@ -58,6 +58,34 @@ interface Pendaftar {
 }
 
 // Helper untuk mendeteksi jenjang tanpa IL (MA, SMA, SMA IT non-IL)
+export const formatExaminerRole = (role?: string) => {
+  if (!role) return "";
+  switch (role.toLowerCase()) {
+    case "penguji":
+    case "penguji_quran":
+    case "penguji_bacaan_quran":
+      return "Penguji Al-Qur'an";
+    case "pewawancara_calsan":
+    case "penguji_santri":
+    case "pewawancara_santri":
+      return "Pewawancara Santri";
+    case "pewawancara_cawalsan":
+    case "pewawancara_ortu":
+    case "pewawancara_wali":
+    case "penguji_ortu":
+      return "Pewawancara Ortu/Wali";
+    case "penguji_hafalan":
+    case "penguji_tahfidz":
+      return "Penguji Hafalan";
+    case "penguji_bahasa_arab":
+    case "penguji_arab":
+    case "penguji_lisan_arab":
+      return "Penguji B. Arab";
+    default:
+      return role.replace(/_/g, " ");
+  }
+};
+
 export const isJenjangTanpaIL = (jenjang?: string | null): boolean => {
   if (!jenjang) return false;
   const clean = jenjang.trim().toUpperCase();
@@ -187,6 +215,82 @@ export default function JadwalUjianPage() {
     }
   }, [formStartTime, formDuration]);
 
+  // Helper verifikasi peran penguji/pewawancara (role utama atau secondary_roles)
+  const checkHasRole = (u: any, targetRoles: string[]) => {
+    if (!u) return false;
+    const r = (u.role || "").toLowerCase().trim();
+    if (targetRoles.includes(r)) return true;
+    if (Array.isArray(u.secondary_roles)) {
+      return u.secondary_roles.some((sr: string) =>
+        targetRoles.includes((sr || "").toLowerCase().trim())
+      );
+    }
+    return false;
+  };
+
+  // 1. Penguji Bacaan Al-Qur'an
+  const quranExaminers = useMemo(() => {
+    return examiners.filter((ex) =>
+      checkHasRole(ex, ["penguji", "penguji_quran", "penguji_bacaan_quran"])
+    );
+  }, [examiners]);
+
+  // 2. Pewawancara Calon Santri
+  const santriExaminers = useMemo(() => {
+    return examiners.filter((ex) =>
+      checkHasRole(ex, ["pewawancara_calsan", "penguji_santri", "pewawancara_santri"])
+    );
+  }, [examiners]);
+
+  // 3. Pewawancara Calon Orangtua/Wali
+  const ortuExaminers = useMemo(() => {
+    return examiners.filter((ex) =>
+      checkHasRole(ex, [
+        "pewawancara_cawalsan",
+        "pewawancara_ortu",
+        "pewawancara_wali",
+        "penguji_ortu",
+      ])
+    );
+  }, [examiners]);
+
+  // 4. Penguji Hafalan Al-Qur'an
+  const hafalanExaminers = useMemo(() => {
+    return examiners.filter((ex) =>
+      checkHasRole(ex, ["penguji_hafalan", "penguji_tahfidz"])
+    );
+  }, [examiners]);
+
+  // 5. Penguji Lisan Bahasa Arab
+  const arabExaminers = useMemo(() => {
+    return examiners.filter((ex) =>
+      checkHasRole(ex, ["penguji_bahasa_arab", "penguji_arab", "penguji_lisan_arab"])
+    );
+  }, [examiners]);
+
+  // Seluruh penguji/pewawancara yang valid (mengecualikan staff non-penguji seperti admin_berkas, admin_keuangan, admin_super murni)
+  const allValidExaminers = useMemo(() => {
+    return examiners.filter((ex) =>
+      checkHasRole(ex, [
+        "penguji",
+        "penguji_quran",
+        "penguji_bacaan_quran",
+        "pewawancara_calsan",
+        "penguji_santri",
+        "pewawancara_santri",
+        "pewawancara_cawalsan",
+        "pewawancara_ortu",
+        "pewawancara_wali",
+        "penguji_ortu",
+        "penguji_hafalan",
+        "penguji_tahfidz",
+        "penguji_bahasa_arab",
+        "penguji_arab",
+        "penguji_lisan_arab",
+      ])
+    );
+  }, [examiners]);
+
   // Deteksi otomatis Google Meet dari penguji yang dipilih
   const detectedPengujiSantri = useMemo(() => {
     return examiners.find((u) => u.id === formPengujiSantriId) || null;
@@ -208,16 +312,53 @@ export default function JadwalUjianPage() {
     return examiners.find((u) => u.id === formPengujiHafalanId) || null;
   }, [examiners, formPengujiHafalanId]);
 
+  // Deteksi penguji aktif berdasarkan materi seleksi formTestType
+  const detectedActiveExaminer = useMemo(() => {
+    switch (formTestType) {
+      case "Tes Bacaan Al-Qur'an":
+        return detectedPengujiQuran || (formPengujiSantriId ? detectedPengujiSantri : null);
+      case "Wawancara Calon Santri":
+        return detectedPengujiSantri;
+      case "Wawancara Calon Orangtua/Wali":
+        return detectedPengujiOrtu;
+      case "Tes Hafalan Al-Qur'an":
+        return detectedPengujiHafalan;
+      case "Tes Lisan Bahasa Arab":
+        return detectedPengujiArab;
+      default:
+        return (
+          detectedPengujiQuran ||
+          detectedPengujiSantri ||
+          detectedPengujiOrtu ||
+          detectedPengujiHafalan ||
+          detectedPengujiArab
+        );
+    }
+  }, [
+    formTestType,
+    formPengujiSantriId,
+    detectedPengujiQuran,
+    detectedPengujiSantri,
+    detectedPengujiOrtu,
+    detectedPengujiHafalan,
+    detectedPengujiArab,
+  ]);
+
   const detectedAnyMeet = useMemo(() => {
     return (
-      detectedPengujiSantri?.google_meet_link ||
-      detectedPengujiOrtu?.google_meet_link ||
-      detectedPengujiQuran?.google_meet_link ||
-      detectedPengujiArab?.google_meet_link ||
-      detectedPengujiHafalan?.google_meet_link ||
-      null
+      detectedActiveExaminer?.google_meet_link ||
+      (showAllExaminers
+        ? detectedPengujiSantri?.google_meet_link ||
+          detectedPengujiOrtu?.google_meet_link ||
+          detectedPengujiQuran?.google_meet_link ||
+          detectedPengujiArab?.google_meet_link ||
+          detectedPengujiHafalan?.google_meet_link ||
+          null
+        : null)
     );
   }, [
+    detectedActiveExaminer,
+    showAllExaminers,
     detectedPengujiSantri,
     detectedPengujiOrtu,
     detectedPengujiQuran,
@@ -312,23 +453,21 @@ export default function JadwalUjianPage() {
   }, [formCandidateId, selectedCandidateObj]);
 
   const openScheduleModal = (candidate?: Pendaftar) => {
+    resetScheduleForm();
     if (candidate) {
       setFormCandidateId(candidate.id);
       setSelectedPendaftarId(candidate.id);
-      setFormTestType("Tes Bacaan Al-Qur'an");
     } else if (selectedPendaftarId) {
       setFormCandidateId(selectedPendaftarId);
-      setFormTestType("Tes Bacaan Al-Qur'an");
-    } else {
-      setFormTestType("Tes Bacaan Al-Qur'an");
     }
+    setFormTestType("Tes Bacaan Al-Qur'an");
     setScheduleModalOpen(true);
   };
 
   const resetScheduleForm = () => {
     setFormCandidateId("");
     setFormCandidateSearch("");
-    setFormTestType("Tes Lengkap (Bacaan Al-Qur'an, Wawancara Santri & Ortu)");
+    setFormTestType("Tes Bacaan Al-Qur'an");
     setFormCustomTestType("");
     setFormSessionTitle("");
     setFormPengujiOrtuId("");
@@ -343,6 +482,7 @@ export default function JadwalUjianPage() {
     setFormOnlineUrl("");
     setFormOfflinePlace("Kampus Pesantren (Ruang Penguji Seleksi)");
     setFormNotes("");
+    setShowAllExaminers(false);
   };
 
   const handleSaveSchedule = async (e: React.FormEvent) => {
@@ -412,34 +552,58 @@ export default function JadwalUjianPage() {
       const sessionJson = await sessionRes.json();
       const newSessionId = sessionJson.data.id;
 
-      // 2. Tetapkan pendaftar ke sesi ini & kaitkan seluruh penguji
+      // 2. Tetapkan pendaftar ke sesi ini & kaitkan penguji sesuai materi seleksi
+      const assignPayload: any = {
+        pendaftar_id: formCandidateId,
+        exam_session_id: newSessionId,
+        tahun_ajaran_id: candidate.tahun_ajaran_id,
+        materi_tes: actualTestType,
+        metode_ujian: formLocationType,
+      };
+
+      if (formTestType === "Tes Bacaan Al-Qur'an") {
+        const quranId = formPengujiQuranId || formPengujiSantriId;
+        if (quranId) {
+          assignPayload.penguji_quran_id = quranId;
+          assignPayload.penguji_santri_id = quranId;
+        }
+      } else if (formTestType === "Wawancara Calon Santri") {
+        if (formPengujiSantriId) {
+          assignPayload.penguji_santri_id = formPengujiSantriId;
+        }
+      } else if (formTestType === "Wawancara Calon Orangtua/Wali") {
+        if (formPengujiOrtuId) {
+          assignPayload.penguji_ortu_id = formPengujiOrtuId;
+        }
+      } else if (formTestType === "Tes Hafalan Al-Qur'an") {
+        if (formPengujiHafalanId) {
+          assignPayload.penguji_hafalan_id = formPengujiHafalanId;
+        }
+      } else if (formTestType === "Tes Lisan Bahasa Arab") {
+        if (formPengujiArabId) {
+          assignPayload.penguji_arab_id = formPengujiArabId;
+        }
+      } else {
+        const generalId = formPengujiSantriId || formPengujiQuranId;
+        if (generalId) {
+          assignPayload.penguji_santri_id = generalId;
+          assignPayload.penguji_quran_id = generalId;
+        }
+      }
+
+      // Jika admin membuka 'Tampilkan Semua Posisi Penguji', sertakan penguji lain yang dipilih
+      if (showAllExaminers) {
+        if (formPengujiOrtuId) assignPayload.penguji_ortu_id = formPengujiOrtuId;
+        if (formPengujiSantriId) assignPayload.penguji_santri_id = formPengujiSantriId;
+        if (formPengujiQuranId) assignPayload.penguji_quran_id = formPengujiQuranId;
+        if (formPengujiArabId) assignPayload.penguji_arab_id = formPengujiArabId;
+        if (formPengujiHafalanId) assignPayload.penguji_hafalan_id = formPengujiHafalanId;
+      }
+
       const assignRes = await fetch("/api/admin/jadwal-ujian/assign", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          pendaftar_id: formCandidateId,
-          exam_session_id: newSessionId,
-          tahun_ajaran_id: candidate.tahun_ajaran_id,
-          materi_tes: actualTestType,
-          penguji_ortu_id: formPengujiOrtuId || undefined,
-          penguji_santri_id:
-            formTestType === "Wawancara Calon Santri"
-              ? formPengujiSantriId || undefined
-              : formPengujiSantriId || undefined,
-          penguji_quran_id:
-            formTestType === "Tes Bacaan Al-Qur'an"
-              ? formPengujiQuranId || formPengujiSantriId || undefined
-              : formPengujiQuranId || undefined,
-          penguji_arab_id:
-            formTestType === "Tes Lisan Bahasa Arab"
-              ? formPengujiArabId || formPengujiSantriId || undefined
-              : formPengujiArabId || undefined,
-          penguji_hafalan_id:
-            formTestType === "Tes Hafalan Al-Qur'an"
-              ? formPengujiHafalanId || formPengujiSantriId || undefined
-              : formPengujiHafalanId || undefined,
-          metode_ujian: formLocationType,
-        }),
+        body: JSON.stringify(assignPayload),
       });
 
       if (!assignRes.ok) {
@@ -1306,6 +1470,7 @@ export default function JadwalUjianPage() {
                         {formTestType === "Wawancara Calon Orangtua/Wali" && "Pewawancara Calon Orangtua/Wali"}
                         {formTestType === "Tes Hafalan Al-Qur'an" && "Penguji Hafalan Al-Qur'an"}
                         {formTestType === "Tes Lisan Bahasa Arab" && "Penguji Lisan Bahasa Arab"}
+                        {!["Tes Bacaan Al-Qur'an", "Wawancara Calon Santri", "Wawancara Calon Orangtua/Wali", "Tes Hafalan Al-Qur'an", "Tes Lisan Bahasa Arab"].includes(formTestType) && "Penguji Seleksi"}
                       </span>
                     </div>
                     <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary-100 text-primary-800">
@@ -1318,17 +1483,20 @@ export default function JadwalUjianPage() {
                       value={formPengujiQuranId || formPengujiSantriId}
                       onChange={(e) => {
                         setFormPengujiQuranId(e.target.value);
-                        if (!formPengujiSantriId) setFormPengujiSantriId(e.target.value);
+                        setFormPengujiSantriId(e.target.value);
                       }}
                       className="w-full bg-white border border-primary-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-stone-800 focus:ring-2 focus:ring-primary-500/20 outline-none"
                     >
                       <option value="">-- Bebas / Tentukan Nanti --</option>
-                      {examiners.map((ex) => (
-                        <option key={ex.id} value={ex.id}>
-                          {ex.full_name || ex.name || ex.username}{" "}
-                          {ex.role === "penguji" ? "(Penguji)" : `(${ex.role})`}
-                        </option>
-                      ))}
+                      {quranExaminers.length === 0 ? (
+                        <option value="" disabled>-- Belum ada Penguji Al-Qur'an terdaftar --</option>
+                      ) : (
+                        quranExaminers.map((ex) => (
+                          <option key={ex.id} value={ex.id}>
+                            {ex.full_name || ex.name || ex.username} ({formatExaminerRole(ex.role)})
+                          </option>
+                        ))
+                      )}
                     </select>
                   )}
 
@@ -1339,12 +1507,15 @@ export default function JadwalUjianPage() {
                       className="w-full bg-white border border-primary-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-stone-800 focus:ring-2 focus:ring-primary-500/20 outline-none"
                     >
                       <option value="">-- Bebas / Tentukan Nanti --</option>
-                      {examiners.map((ex) => (
-                        <option key={ex.id} value={ex.id}>
-                          {ex.full_name || ex.name || ex.username}{" "}
-                          {ex.role === "penguji" ? "(Penguji)" : `(${ex.role})`}
-                        </option>
-                      ))}
+                      {santriExaminers.length === 0 ? (
+                        <option value="" disabled>-- Belum ada Pewawancara Calon Santri terdaftar --</option>
+                      ) : (
+                        santriExaminers.map((ex) => (
+                          <option key={ex.id} value={ex.id}>
+                            {ex.full_name || ex.name || ex.username} ({formatExaminerRole(ex.role)})
+                          </option>
+                        ))
+                      )}
                     </select>
                   )}
 
@@ -1355,12 +1526,15 @@ export default function JadwalUjianPage() {
                       className="w-full bg-white border border-primary-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-stone-800 focus:ring-2 focus:ring-primary-500/20 outline-none"
                     >
                       <option value="">-- Bebas / Tentukan Nanti --</option>
-                      {examiners.map((ex) => (
-                        <option key={ex.id} value={ex.id}>
-                          {ex.full_name || ex.name || ex.username}{" "}
-                          {ex.role === "penguji" ? "(Penguji)" : `(${ex.role})`}
-                        </option>
-                      ))}
+                      {ortuExaminers.length === 0 ? (
+                        <option value="" disabled>-- Belum ada Pewawancara Orangtua/Wali terdaftar --</option>
+                      ) : (
+                        ortuExaminers.map((ex) => (
+                          <option key={ex.id} value={ex.id}>
+                            {ex.full_name || ex.name || ex.username} ({formatExaminerRole(ex.role)})
+                          </option>
+                        ))
+                      )}
                     </select>
                   )}
 
@@ -1371,12 +1545,15 @@ export default function JadwalUjianPage() {
                       className="w-full bg-white border border-primary-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-stone-800 focus:ring-2 focus:ring-primary-500/20 outline-none"
                     >
                       <option value="">-- Bebas / Tentukan Nanti --</option>
-                      {examiners.map((ex) => (
-                        <option key={ex.id} value={ex.id}>
-                          {ex.full_name || ex.name || ex.username}{" "}
-                          {ex.role === "penguji" ? "(Penguji)" : `(${ex.role})`}
-                        </option>
-                      ))}
+                      {hafalanExaminers.length === 0 ? (
+                        <option value="" disabled>-- Belum ada Penguji Hafalan terdaftar --</option>
+                      ) : (
+                        hafalanExaminers.map((ex) => (
+                          <option key={ex.id} value={ex.id}>
+                            {ex.full_name || ex.name || ex.username} ({formatExaminerRole(ex.role)})
+                          </option>
+                        ))
+                      )}
                     </select>
                   )}
 
@@ -1387,12 +1564,37 @@ export default function JadwalUjianPage() {
                       className="w-full bg-white border border-primary-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-stone-800 focus:ring-2 focus:ring-primary-500/20 outline-none"
                     >
                       <option value="">-- Bebas / Tentukan Nanti --</option>
-                      {examiners.map((ex) => (
-                        <option key={ex.id} value={ex.id}>
-                          {ex.full_name || ex.name || ex.username}{" "}
-                          {ex.role === "penguji" ? "(Penguji)" : `(${ex.role})`}
-                        </option>
-                      ))}
+                      {arabExaminers.length === 0 ? (
+                        <option value="" disabled>-- Belum ada Penguji Bahasa Arab terdaftar --</option>
+                      ) : (
+                        arabExaminers.map((ex) => (
+                          <option key={ex.id} value={ex.id}>
+                            {ex.full_name || ex.name || ex.username} ({formatExaminerRole(ex.role)})
+                          </option>
+                        ))
+                      )}
+                    </select>
+                  )}
+
+                  {!["Tes Bacaan Al-Qur'an", "Wawancara Calon Santri", "Wawancara Calon Orangtua/Wali", "Tes Hafalan Al-Qur'an", "Tes Lisan Bahasa Arab"].includes(formTestType) && (
+                    <select
+                      value={formPengujiSantriId || formPengujiQuranId}
+                      onChange={(e) => {
+                        setFormPengujiSantriId(e.target.value);
+                        setFormPengujiQuranId(e.target.value);
+                      }}
+                      className="w-full bg-white border border-primary-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-stone-800 focus:ring-2 focus:ring-primary-500/20 outline-none"
+                    >
+                      <option value="">-- Bebas / Tentukan Nanti --</option>
+                      {allValidExaminers.length === 0 ? (
+                        <option value="" disabled>-- Belum ada Penguji terdaftar --</option>
+                      ) : (
+                        allValidExaminers.map((ex) => (
+                          <option key={ex.id} value={ex.id}>
+                            {ex.full_name || ex.name || ex.username} ({formatExaminerRole(ex.role)})
+                          </option>
+                        ))
+                      )}
                     </select>
                   )}
 
@@ -1431,15 +1633,15 @@ export default function JadwalUjianPage() {
                           className="w-full bg-white border border-stone-200 rounded-lg px-2.5 py-1.5 text-xs font-bold text-stone-800 outline-none"
                         >
                           <option value="">-- Bebas / Tentukan Nanti --</option>
-                          {examiners.map((ex) => (
+                          {ortuExaminers.map((ex) => (
                             <option key={ex.id} value={ex.id}>
-                              {ex.full_name || ex.name || ex.username}
+                              {ex.full_name || ex.name || ex.username} ({formatExaminerRole(ex.role)})
                             </option>
                           ))}
                         </select>
                       </div>
 
-                      {/* Penguji Santri */}
+                      {/* Pewawancara Santri */}
                       <div className="space-y-1">
                         <label className="text-[11px] font-bold text-stone-700">
                           Pewawancara Santri:
@@ -1450,9 +1652,9 @@ export default function JadwalUjianPage() {
                           className="w-full bg-white border border-stone-200 rounded-lg px-2.5 py-1.5 text-xs font-bold text-stone-800 outline-none"
                         >
                           <option value="">-- Bebas / Tentukan Nanti --</option>
-                          {examiners.map((ex) => (
+                          {santriExaminers.map((ex) => (
                             <option key={ex.id} value={ex.id}>
-                              {ex.full_name || ex.name || ex.username}
+                              {ex.full_name || ex.name || ex.username} ({formatExaminerRole(ex.role)})
                             </option>
                           ))}
                         </select>
@@ -1469,9 +1671,9 @@ export default function JadwalUjianPage() {
                           className="w-full bg-white border border-stone-200 rounded-lg px-2.5 py-1.5 text-xs font-bold text-stone-800 outline-none"
                         >
                           <option value="">-- Bebas / Tentukan Nanti --</option>
-                          {examiners.map((ex) => (
+                          {quranExaminers.map((ex) => (
                             <option key={ex.id} value={ex.id}>
-                              {ex.full_name || ex.name || ex.username}
+                              {ex.full_name || ex.name || ex.username} ({formatExaminerRole(ex.role)})
                             </option>
                           ))}
                         </select>
@@ -1488,9 +1690,9 @@ export default function JadwalUjianPage() {
                           className="w-full bg-white border border-stone-200 rounded-lg px-2.5 py-1.5 text-xs font-bold text-stone-800 outline-none"
                         >
                           <option value="">-- Bebas / Tentukan Nanti --</option>
-                          {examiners.map((ex) => (
+                          {arabExaminers.map((ex) => (
                             <option key={ex.id} value={ex.id}>
-                              {ex.full_name || ex.name || ex.username}
+                              {ex.full_name || ex.name || ex.username} ({formatExaminerRole(ex.role)})
                             </option>
                           ))}
                         </select>
@@ -1507,9 +1709,9 @@ export default function JadwalUjianPage() {
                           className="w-full bg-white border border-stone-200 rounded-lg px-2.5 py-1.5 text-xs font-bold text-stone-800 outline-none"
                         >
                           <option value="">-- Bebas / Tentukan Nanti --</option>
-                          {examiners.map((ex) => (
+                          {hafalanExaminers.map((ex) => (
                             <option key={ex.id} value={ex.id}>
-                              {ex.full_name || ex.name || ex.username}
+                              {ex.full_name || ex.name || ex.username} ({formatExaminerRole(ex.role)})
                             </option>
                           ))}
                         </select>
