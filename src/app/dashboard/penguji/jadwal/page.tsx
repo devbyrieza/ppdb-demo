@@ -125,11 +125,7 @@ const TimeDataLists = () => (
 
 const FlexibleTimeInput = ({ value, onChange, type }: { value: string, onChange: (val: string) => void, type: "hour" | "minute" }) => {
   const [localValue, setLocalValue] = useState(value);
-
-  require("react").
-  
-
-  useEffect(() => {
+useEffect(() => {
     setLocalValue(value);
   }, [value]);
 

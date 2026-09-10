@@ -232,85 +232,8 @@ export async function GET(request: Request) {
 
     // 7. Build response
     
-    // --- OFFLINE/MANUAL SCORE HANDLING ---
-    // Jika admin sudah menginput nilai secara manual (offline) tanpa melalui booking jadwal,
-    // kita perlu membuat entri "booked" sintetis agar UI pendaftar menunjukkan "Selesai".
-    
-    // Check if they have scores but NO booking
-    const hasQuranBooking = bookedJadwal.some(j => getExamCategory(j.exam_session?.title || "") === "QURAN");
-    const hasWawancaraSantriBooking = bookedJadwal.some(j => getExamCategory(j.exam_session?.title || "") === "W_SANTRI");
-    const hasWawancaraOrtuBooking = bookedJadwal.some(j => getExamCategory(j.exam_session?.title || "") === "W_ORTU");
-    
-    // Look at nilaiUjian from earlier
-    const userNilai = nilaiUjian.length > 0 ? nilaiUjian[0] : null;
-    
-    if (userNilai) {
-      // Helper function to check score existence robustly
-      const checkScore = (scoreField, detailField, rekomendasiField) => {
-        if (scoreField !== null) return true;
-        if (detailField && typeof detailField === 'object') {
-          return !!detailField[rekomendasiField] || !!detailField.nama_penguji;
-        }
-        return false;
-      };
-
-      // 1. Quran
-      if (!hasQuranBooking && checkScore((userNilai as any).nilai_tes_quran, (userNilai as any).detail_quran, 'rekomendasi')) {
-        booked.push({
-          id: "SYNTHETIC_QURAN",
-          jenis_ujian: "Ujian Tahfidz/Al Qur'an (Admin/Jalur Khusus)",
-          tanggal_ujian: "Selesai",
-          waktu_mulai: "00:00",
-          waktu_selesai: "00:00", // Makes isSelesai = true in UI
-          lokasi: "-",
-          keterangan: "Nilai telah disesuaikan oleh sistem/admin",
-          category: "QURAN" });
-      }
-
-      // 2. Wawancara Santri
-      if (!hasWawancaraSantriBooking && checkScore((userNilai as any).nilai_wawancara_santri, (userNilai as any).detail_wawancara, 'rekomendasi')) {
-        booked.push({
-          id: "SYNTHETIC_W_SANTRI",
-          jenis_ujian: "Wawancara Calon Santri (Admin/Jalur Khusus)",
-          tanggal_ujian: "Selesai",
-          waktu_mulai: "00:00",
-          waktu_selesai: "00:00",
-          lokasi: "-",
-          keterangan: "Nilai telah disesuaikan oleh sistem/admin",
-          category: "W_SANTRI" });
-      }
-
-      // 3. Wawancara Ortu
-      if (!hasWawancaraOrtuBooking && checkScore((userNilai as any).nilai_wawancara_ortu, (userNilai as any).detail_cawalsan, 'rekomendasi')) {
-        booked.push({
-          id: "SYNTHETIC_W_ORTU",
-          jenis_ujian: "Wawancara Calon Orangtua/Wali (Admin/Jalur Khusus)",
-          tanggal_ujian: "Selesai",
-          waktu_mulai: "00:00",
-          waktu_selesai: "00:00",
-          lokasi: "-",
-          keterangan: "Nilai telah disesuaikan oleh sistem/admin",
-          category: "W_ORTU" });
-      }
-    }
-    // -------------------------------------
-
-    const openSlots = availableSessions
-      .map((s) => ({
-        id: s.id,
-        title: sanitizeTitle(s.title || "Seleksi Santri Baru"),
-        raw_title: s.title, // Keep for reference if needed
-        category: getExamCategory(s.title || ""),
-        start_time: s.start_time,
-        end_time: s.end_time,
-        quota: s.quota,
-        booked: s._count.bookings,
-        location: s.location,
-        notes: s.notes,
-        isFull: s._count.bookings >= s.quota }));
-
     // Transform booked jadwal
-    const booked = bookedJadwal.map((j) => {
+    const booked: any[] = bookedJadwal.map((j) => {
       const rawTitle = j.exam_session?.title || "Seleksi Santri Baru";
       const hasScoreQuran = j.nilai_ujian?.some((n: any) => {
         const q = n.detail_quran as any;
@@ -339,6 +262,85 @@ export async function GET(request: Request) {
         status_quran: hasScoreQuran ? "completed" : j.status_quran,
         status_ortu: hasScoreOrtu ? "completed" : j.status_ortu };
     });
+
+    
+
+    // --- OFFLINE/MANUAL SCORE HANDLING ---
+    // Jika admin sudah menginput nilai secara manual (offline) tanpa melalui booking jadwal,
+    // kita perlu membuat entri "booked" sintetis agar UI pendaftar menunjukkan "Selesai".
+    
+    // Check if they have scores but NO booking
+    const hasQuranBooking = bookedJadwal.some(j => getExamCategory(j.exam_session?.title || "") === "QURAN");
+    const hasWawancaraSantriBooking = bookedJadwal.some(j => getExamCategory(j.exam_session?.title || "") === "W_SANTRI");
+    const hasWawancaraOrtuBooking = bookedJadwal.some(j => getExamCategory(j.exam_session?.title || "") === "W_ORTU");
+    
+    // Look at nilaiUjian from earlier
+    const userNilai = nilaiUjian.length > 0 ? nilaiUjian[0] : null;
+    
+    if (userNilai) {
+      // Helper function to check score existence robustly
+      const checkScore = (scoreField: any, detailField: any, rekomendasiField: string) => {
+        if (scoreField !== null) return true;
+        if (detailField && typeof detailField === 'object') {
+          return !!detailField[rekomendasiField] || !!detailField.nama_penguji;
+        }
+        return false;
+      };
+
+      // 1. Quran
+      if (!hasQuranBooking && checkScore((userNilai as any).nilai_tes_quran, (userNilai as any).detail_quran, 'rekomendasi')) {
+        booked.push({
+          id: "SYNTHETIC_QURAN",
+          jenis_ujian: "Ujian Tahfidz/Al Qur'an (Admin/Jalur Khusus)",
+          tanggal_ujian: new Date() as any,
+          waktu_mulai: "00:00",
+          waktu_selesai: "00:00", // Makes isSelesai = true in UI
+          lokasi: "-",
+          keterangan: "Nilai telah disesuaikan oleh sistem/admin",
+          category: "QURAN" });
+      }
+
+      // 2. Wawancara Santri
+      if (!hasWawancaraSantriBooking && checkScore((userNilai as any).nilai_wawancara_santri, (userNilai as any).detail_wawancara, 'rekomendasi')) {
+        booked.push({
+          id: "SYNTHETIC_W_SANTRI",
+          jenis_ujian: "Wawancara Calon Santri (Admin/Jalur Khusus)",
+          tanggal_ujian: new Date() as any,
+          waktu_mulai: "00:00",
+          waktu_selesai: "00:00",
+          lokasi: "-",
+          keterangan: "Nilai telah disesuaikan oleh sistem/admin",
+          category: "W_SANTRI" });
+      }
+
+      // 3. Wawancara Ortu
+      if (!hasWawancaraOrtuBooking && checkScore((userNilai as any).nilai_wawancara_ortu, (userNilai as any).detail_cawalsan, 'rekomendasi')) {
+        booked.push({
+          id: "SYNTHETIC_W_ORTU",
+          jenis_ujian: "Wawancara Calon Orangtua/Wali (Admin/Jalur Khusus)",
+          tanggal_ujian: new Date() as any,
+          waktu_mulai: "00:00",
+          waktu_selesai: "00:00",
+          lokasi: "-",
+          keterangan: "Nilai telah disesuaikan oleh sistem/admin",
+          category: "W_ORTU" });
+      }
+    }
+    // -------------------------------------
+
+    const openSlots = availableSessions
+      .map((s) => ({
+        id: s.id,
+        title: sanitizeTitle(s.title || "Seleksi Santri Baru"),
+        raw_title: s.title, // Keep for reference if needed
+        category: getExamCategory(s.title || ""),
+        start_time: s.start_time,
+        end_time: s.end_time,
+        quota: s.quota,
+        booked: s._count.bookings,
+        location: s.location,
+        notes: s.notes,
+        isFull: s._count.bookings >= s.quota }));
 
     // Calculate overall progress
     // Grup B: only count as completed when status is "completed", not just "scheduled"

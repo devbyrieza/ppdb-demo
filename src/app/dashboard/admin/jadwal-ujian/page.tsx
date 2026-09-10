@@ -16,7 +16,8 @@ import {
   CheckSquare,
   Square,
   ArrowRight,
-  Send } from "lucide-react";
+  Send,
+  Video } from "lucide-react";
 import Swal from "sweetalert2";
 
 interface ExamSession {
@@ -161,7 +162,7 @@ export default function JadwalUjianPage() {
       const res = await fetch("/api/admin/exam-sessions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newSession) });
+        body: JSON.stringify({ ...newSession, location: formattedLocation }) });
       if (res.ok) {
         setShowAddSession(false);
         fetchData();
