@@ -962,20 +962,20 @@ export default function JadwalUjianPage() {
             {/* Modal Header */}
             <div className="p-6 bg-gradient-to-r from-primary-900 via-primary-800 to-primary-950 text-white flex items-start justify-between">
               <div>
-                <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-white/10 text-primary-200 text-xs font-bold mb-2 border border-white/10">
-                  <CalendarPlus className="w-3.5 h-3.5" />
+                <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-white/15 text-white text-xs font-bold mb-2 border border-white/20">
+                  <CalendarPlus className="w-3.5 h-3.5 text-white" />
                   Jadwalkan Calon Santri
                 </div>
-                <h2 className="text-2xl font-black tracking-tight">
-                  Penjadwalan Seleksi &amp; Penguji
+                <h2 className="text-2xl font-black tracking-tight text-white !text-white drop-shadow-xs">
+                  Penjadwalan Seleksi &amp; Penugasan Penguji
                 </h2>
-                <p className="text-primary-200/80 text-xs mt-1">
-                  Atur jadwal tes bacaan Al-Qur&apos;an, wawancara santri &amp; ortu, serta tes bahasa Arab &amp; hafalan
+                <p className="text-white/85 text-xs mt-1 font-medium">
+                  Atur waktu pelaksanaan tes, lokasi ujian, serta penugasan asatidz penguji seleksi
                 </p>
               </div>
               <button
                 onClick={() => setScheduleModalOpen(false)}
-                className="p-2 hover:bg-white/10 rounded-xl text-primary-200 hover:text-white transition-all"
+                className="p-2 hover:bg-white/10 rounded-xl text-white/80 hover:text-white transition-all"
               >
                 <X className="w-5 h-5" />
               </button>
