@@ -1,6 +1,6 @@
-// src/app/page.tsx - template-demo
 "use client";
 
+// src/app/page.tsx - template-demo
 import { useEffect } from "react";
 import { LazyMotion, domAnimation } from "framer-motion";
 import { restoreScrollPosition } from "@/lib/navigation-scroll";

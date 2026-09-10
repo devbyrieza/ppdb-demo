@@ -1,6 +1,6 @@
-// app/admin/verifikasi-manual/page.tsx
 "use client";
 
+// app/admin/verifikasi-manual/page.tsx
 import { useState, useEffect } from "react";
 import {
   RefreshCw,

@@ -1,6 +1,6 @@
-﻿// src/app/daftar/page.tsx
 "use client";
 
+// src/app/daftar/page.tsx
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";

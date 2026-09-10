@@ -1,8 +1,8 @@
+"use client";
+
 // src/components/ui/FloatingWhatsApp.tsx — UPGRADED
 // Premium floating WhatsApp button — inspired by cekat.ai's CTA floating elements
 // Features: double pulse ring, smooth spring animation, tooltip, backdrop blur
-"use client";
-
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, MessageCircle, MessageSquare } from "lucide-react";

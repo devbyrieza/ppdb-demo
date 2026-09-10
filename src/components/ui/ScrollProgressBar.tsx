@@ -1,7 +1,7 @@
-// src/components/ui/ScrollProgressBar.tsx
-// Thin scroll progress bar at top of page — inspired by cekat.ai & modern SaaS sites
 "use client";
 
+// src/components/ui/ScrollProgressBar.tsx
+// Thin scroll progress bar at top of page — inspired by cekat.ai & modern SaaS sites
 import { useEffect, useState } from "react";
 
 interface ScrollProgressBarProps {

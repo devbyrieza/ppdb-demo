@@ -1,11 +1,11 @@
+"use client";
+
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // IDLE TIMEOUT TRACKER
 // Auto-logout setelah 24 jam tidak ada aktivitas
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // Path: src/components/auth/IdleTimeoutTracker.tsx
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-"use client";
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";

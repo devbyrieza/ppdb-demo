@@ -1,11 +1,11 @@
+"use client";
+
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // BONUS: SESSION MONITOR COMPONENT
 // Tampilkan info session di dashboard (opsional)
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // Path: src/components/auth/SessionMonitor.tsx
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-"use client";
 
 import { useEffect, useState } from "react";
 import { Clock, Shield, CheckCircle, BookOpen, Palette, CheckCircle2 } from "lucide-react";

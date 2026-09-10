@@ -1,4 +1,6 @@
-﻿"use client";
+"use client";
+
+"use client";
 
 import { useState } from "react";
 import { HelpCircle, ChevronDown, MessageCircleMore } from "lucide-react";

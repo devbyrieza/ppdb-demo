@@ -1,6 +1,6 @@
-// src/components/ui/alert.tsx
 "use client";
 
+// src/components/ui/alert.tsx
 import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { CheckCircle2, XCircle, AlertTriangle, Info, X } from "lucide-react";
 import { cn } from "@/lib/utils";

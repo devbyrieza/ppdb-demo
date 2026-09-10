@@ -1,7 +1,7 @@
-// src/components/home/HeroSection.tsx — alfath-template-demo
-// FIXED: reduced motion badge, tablet breakpoint, touch hover, explicit font sizing
 "use client";
 
+// src/components/home/HeroSection.tsx — alfath-template-demo
+// FIXED: reduced motion badge, tablet breakpoint, touch hover, explicit font sizing
 import { useState, useEffect } from "react";
 
 import Link from "next/link";

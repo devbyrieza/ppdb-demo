@@ -1,6 +1,6 @@
-// app/send-otp/page.tsx
 "use client";
 
+// app/send-otp/page.tsx
 import { useState, useEffect } from "react";
 import { Send, Mail, MessageSquare, Smartphone, ArrowLeft, Check } from "lucide-react";
 import BackToHomeButton from "@/components/common/BackToHomeButton";
