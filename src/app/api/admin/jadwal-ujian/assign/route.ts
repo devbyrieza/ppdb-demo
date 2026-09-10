@@ -17,6 +17,8 @@ export async function POST(req: NextRequest) {
       penguji_ortu_id,
       penguji_santri_id,
       penguji_quran_id,
+      penguji_arab_id,
+      penguji_hafalan_id,
       metode_ujian,
     } = await req.json();
 
@@ -33,6 +35,21 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Session is full" }, { status: 400 });
     }
 
+    let finalTahunAjaranId = tahun_ajaran_id;
+    if (!finalTahunAjaranId) {
+      const p = await prisma.pendaftar.findUnique({
+        where: { id: pendaftar_id },
+        select: { tahun_ajaran_id: true },
+      });
+      finalTahunAjaranId = p?.tahun_ajaran_id;
+    }
+    if (!finalTahunAjaranId) {
+      const activeTa = await prisma.tahunAjaran.findFirst({
+        where: { is_active: true },
+      });
+      finalTahunAjaranId = activeTa?.id;
+    }
+
     // Determine whether this session is online or offline
     const isOffline =
       metode_ujian === "offline" ||
@@ -47,6 +64,8 @@ export async function POST(req: NextRequest) {
     let gmeetOrtu: string | null = null;
     let gmeetSantri: string | null = null;
     let gmeetQuran: string | null = null;
+    let gmeetArab: string | null = null;
+    let gmeetHafalan: string | null = null;
 
     if (!isOffline) {
       if (penguji_ortu_id) {
@@ -70,28 +89,45 @@ export async function POST(req: NextRequest) {
         });
         if (p?.google_meet_link) gmeetQuran = p.google_meet_link;
       }
+      if (penguji_arab_id) {
+        const p = await prisma.profile.findUnique({
+          where: { id: penguji_arab_id },
+          select: { google_meet_link: true },
+        });
+        if (p?.google_meet_link) gmeetArab = p.google_meet_link;
+      }
+      if (penguji_hafalan_id) {
+        const p = await prisma.profile.findUnique({
+          where: { id: penguji_hafalan_id },
+          select: { google_meet_link: true },
+        });
+        if (p?.google_meet_link) gmeetHafalan = p.google_meet_link;
+      }
     }
 
     const meetingLink = isOffline
       ? null
       : gmeetSantri ||
         gmeetOrtu ||
+        gmeetQuran ||
+        gmeetArab ||
+        gmeetHafalan ||
         (examSession.location?.startsWith("http") ? examSession.location : null);
 
     const tempatFinal =
       examSession.location ||
       (isOffline ? "Kampus Pesantren (Ruang Penguji)" : "Online (Google Meet)");
 
+    // Existing JadwalUjian check
+    const existingJadwal = await prisma.jadwalUjian.findFirst({
+      where: { pendaftar_id },
+    });
+
     // Create or update JadwalUjian
     const result = await prisma.$transaction([
       prisma.jadwalUjian.upsert({
         where: {
-          id:
-            (
-              await prisma.jadwalUjian.findFirst({
-                where: { pendaftar_id, tahun_ajaran_id },
-              })
-            )?.id || "00000000-0000-0000-0000-000000000000",
+          id: existingJadwal?.id || "00000000-0000-0000-0000-000000000000",
         },
         update: {
           exam_session_id,
@@ -104,13 +140,15 @@ export async function POST(req: NextRequest) {
           ...(penguji_ortu_id ? { penguji_ortu_id, zoom_link_ortu: isOffline ? null : gmeetOrtu } : {}),
           ...(penguji_santri_id ? { penguji_santri_id, zoom_link_santri: isOffline ? null : gmeetSantri } : {}),
           ...(penguji_quran_id ? { penguji_quran_id, zoom_link_quran: isOffline ? null : gmeetQuran } : {}),
+          ...(penguji_arab_id ? { penguji_arab_id, zoom_link_arab: isOffline ? null : gmeetArab } : {}),
+          ...(penguji_hafalan_id ? { penguji_hafalan_id, zoom_link_hafalan: isOffline ? null : gmeetHafalan } : {}),
           waktu_mulai_ortu: examSession.start_time,
           waktu_selesai_ortu: examSession.end_time,
           tempat_ortu: tempatFinal,
         },
         create: {
           pendaftar_id,
-          tahun_ajaran_id,
+          tahun_ajaran_id: finalTahunAjaranId,
           exam_session_id,
           tanggal_ujian: examSession.start_time,
           waktu_mulai_santri: examSession.start_time,
@@ -121,9 +159,13 @@ export async function POST(req: NextRequest) {
           penguji_ortu_id: penguji_ortu_id || undefined,
           penguji_santri_id: penguji_santri_id || undefined,
           penguji_quran_id: penguji_quran_id || undefined,
+          penguji_arab_id: penguji_arab_id || undefined,
+          penguji_hafalan_id: penguji_hafalan_id || undefined,
           zoom_link_ortu: isOffline ? null : gmeetOrtu,
           zoom_link_santri: isOffline ? null : gmeetSantri,
           zoom_link_quran: isOffline ? null : gmeetQuran,
+          zoom_link_arab: isOffline ? null : gmeetArab,
+          zoom_link_hafalan: isOffline ? null : gmeetHafalan,
           waktu_mulai_ortu: examSession.start_time,
           waktu_selesai_ortu: examSession.end_time,
           tempat_ortu: tempatFinal,
@@ -146,7 +188,11 @@ export async function POST(req: NextRequest) {
       adminId: session.id || "system",
       adminName: session.full_name || session.name || "Admin",
       targetId: pendaftar_id,
-      details: { exam_session_id, session_title: examSession.title, metode: metodeFinal },
+      details: {
+        exam_session_id,
+        session_title: examSession.title,
+        metode: metodeFinal,
+      },
     });
 
     // Send WhatsApp notification
