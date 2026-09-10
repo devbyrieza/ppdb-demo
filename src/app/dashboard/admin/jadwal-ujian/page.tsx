@@ -157,7 +157,9 @@ export default function JadwalUjianPage() {
         start_time: "",
         duration: 60,
         location: "",
-        notes: "Jadwal khusus sesuai permintaan orang tua"
+        notes: "Jadwal khusus sesuai permintaan orang tua",
+        penguji_ortu_id: "",
+        penguji_santri_id: ""
       });
       fetchData();
     } catch (err: any) {
@@ -269,6 +271,12 @@ export default function JadwalUjianPage() {
   const handleCreateSession = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      const loc = newSession.location.trim();
+      const formattedLocation = loc.startsWith("http")
+        ? loc
+        : (loc.length > 0 && (loc.includes("meet.google.com") || loc.includes("zoom.us"))
+            ? `https://${loc}`
+            : loc);
       const res = await fetch("/api/admin/exam-sessions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

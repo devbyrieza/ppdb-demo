@@ -535,7 +535,7 @@ export default function VerifikasiDokumenDetailPage() {
             }`}
           >
             {/* Document Preview */}
-            <div className="relative aspect-[4/3] bg-stone-100">
+            <div className="w-full relative aspect-[4/3] bg-stone-100 overflow-hidden">
               {dok.file_url ? (
                 isImageFile(dok) ? (
                   <img
