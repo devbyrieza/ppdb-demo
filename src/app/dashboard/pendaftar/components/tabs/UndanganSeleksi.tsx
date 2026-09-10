@@ -518,11 +518,23 @@ export default function UndanganSeleksiTab() {
                         </span>
                       </div>
                       {item.lokasi && (
-                        <div className="flex items-center gap-2">
-                          <MapPin className="w-3.5 h-3.5 text-primary-500" />
-                          <span className="font-medium text-ink-700">
-                            {item.lokasi}
-                          </span>
+                        <div className="flex items-center gap-2 mt-1">
+                          <MapPin className="w-3.5 h-3.5 text-primary-500 shrink-0" />
+                          {item.lokasi.startsWith('http') || item.lokasi.includes('meet.google') || item.lokasi.includes('zoom') ? (
+                            <a
+                              href={item.lokasi}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-all shadow-sm hover:scale-105 active:scale-95"
+                            >
+                              <LinkIcon className="w-3.5 h-3.5" />
+                              Gabung Ujian (Google Meet)
+                            </a>
+                          ) : (
+                            <span className="font-medium text-ink-700">
+                              {item.lokasi}
+                            </span>
+                          )}
                         </div>
                       )}
                     </div>
