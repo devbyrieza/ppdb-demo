@@ -113,9 +113,8 @@ export default function JadwalUjianPage() {
   const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
   const [formCandidateId, setFormCandidateId] = useState<string>("");
   const [formCandidateSearch, setFormCandidateSearch] = useState<string>("");
-  const [formTestType, setFormTestType] = useState<string>(
-    "Tes Lengkap (Bacaan Al-Qur'an, Wawancara Santri & Ortu)"
-  );
+  const [formTestType, setFormTestType] = useState<string>("Tes Bacaan Al-Qur'an");
+  const [showAllExaminers, setShowAllExaminers] = useState<boolean>(false);
   const [formCustomTestType, setFormCustomTestType] = useState<string>("");
   const [formSessionTitle, setFormSessionTitle] = useState<string>("");
   
@@ -291,12 +290,23 @@ export default function JadwalUjianPage() {
   // Sesuaikan pilihan jenis tes default secara otomatis saat calon santri berubah
   useEffect(() => {
     if (selectedCandidateObj) {
-      if (isJenjangTanpaIL(selectedCandidateObj.jenjang)) {
-        setFormTestType(
-          "Tes Lengkap (Bacaan Al-Qur'an, Wawancara Santri & Ortu, Bahasa Arab & Hafalan)"
-        );
-      } else {
-        setFormTestType("Tes Lengkap (Bacaan Al-Qur'an, Wawancara Santri & Ortu)");
+      const isNonIL = isJenjangTanpaIL(selectedCandidateObj.jenjang);
+      const validOptions = isNonIL
+        ? [
+            "Tes Bacaan Al-Qur'an",
+            "Wawancara Calon Santri",
+            "Wawancara Calon Orangtua/Wali",
+            "Tes Hafalan Al-Qur'an",
+            "Tes Lisan Bahasa Arab",
+          ]
+        : [
+            "Tes Bacaan Al-Qur'an",
+            "Wawancara Calon Santri",
+            "Wawancara Calon Orangtua/Wali",
+          ];
+
+      if (!validOptions.includes(formTestType)) {
+        setFormTestType("Tes Bacaan Al-Qur'an");
       }
     }
   }, [formCandidateId, selectedCandidateObj]);
@@ -305,23 +315,12 @@ export default function JadwalUjianPage() {
     if (candidate) {
       setFormCandidateId(candidate.id);
       setSelectedPendaftarId(candidate.id);
-      if (isJenjangTanpaIL(candidate.jenjang)) {
-        setFormTestType(
-          "Tes Lengkap (Bacaan Al-Qur'an, Wawancara Santri & Ortu, Bahasa Arab & Hafalan)"
-        );
-      } else {
-        setFormTestType("Tes Lengkap (Bacaan Al-Qur'an, Wawancara Santri & Ortu)");
-      }
+      setFormTestType("Tes Bacaan Al-Qur'an");
     } else if (selectedPendaftarId) {
       setFormCandidateId(selectedPendaftarId);
-      const c = pendaftar.find((p) => p.id === selectedPendaftarId);
-      if (c && isJenjangTanpaIL(c.jenjang)) {
-        setFormTestType(
-          "Tes Lengkap (Bacaan Al-Qur'an, Wawancara Santri & Ortu, Bahasa Arab & Hafalan)"
-        );
-      } else {
-        setFormTestType("Tes Lengkap (Bacaan Al-Qur'an, Wawancara Santri & Ortu)");
-      }
+      setFormTestType("Tes Bacaan Al-Qur'an");
+    } else {
+      setFormTestType("Tes Bacaan Al-Qur'an");
     }
     setScheduleModalOpen(true);
   };
@@ -421,17 +420,24 @@ export default function JadwalUjianPage() {
           pendaftar_id: formCandidateId,
           exam_session_id: newSessionId,
           tahun_ajaran_id: candidate.tahun_ajaran_id,
+          materi_tes: actualTestType,
           penguji_ortu_id: formPengujiOrtuId || undefined,
-          penguji_santri_id: formPengujiSantriId || undefined,
-          penguji_quran_id: formPengujiQuranId || formPengujiSantriId || undefined,
+          penguji_santri_id:
+            formTestType === "Wawancara Calon Santri"
+              ? formPengujiSantriId || undefined
+              : formPengujiSantriId || undefined,
+          penguji_quran_id:
+            formTestType === "Tes Bacaan Al-Qur'an"
+              ? formPengujiQuranId || formPengujiSantriId || undefined
+              : formPengujiQuranId || undefined,
           penguji_arab_id:
-            isCandidateTanpaIL || formTestType.includes("Arab")
+            formTestType === "Tes Lisan Bahasa Arab"
               ? formPengujiArabId || formPengujiSantriId || undefined
-              : undefined,
+              : formPengujiArabId || undefined,
           penguji_hafalan_id:
-            isCandidateTanpaIL || formTestType.includes("Hafalan")
+            formTestType === "Tes Hafalan Al-Qur'an"
               ? formPengujiHafalanId || formPengujiSantriId || undefined
-              : undefined,
+              : formPengujiHafalanId || undefined,
           metode_ujian: formLocationType,
         }),
       });
@@ -1073,257 +1079,248 @@ export default function JadwalUjianPage() {
                 )}
               </div>
 
-              {/* 2. PILIHAN JENIS TES / MATERI SELEKSI */}
-              <div className="space-y-2.5">
+              {/* 2. PILIHAN JENIS TES / MATERI SELEKSI (HANYA PILIH SATU) */}
+              <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <label className="block text-xs font-black text-stone-500 uppercase tracking-wider">
                     2. Jenis Tes / Materi Seleksi <span className="text-rose-500">*</span>
                   </label>
                   {isCandidateTanpaIL ? (
-                    <span className="text-[10px] font-black text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200 flex items-center gap-1">
-                      <GraduationCap className="w-3 h-3" />
-                      Jalur Tanpa IL (Ada Tes Arab &amp; Hafalan)
+                    <span className="text-[10px] font-black text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200 flex items-center gap-1">
+                      <GraduationCap className="w-3 h-3 text-amber-600" />
+                      Jalur Langsung Tanpa IL (Ada Tes Hafalan &amp; Bahasa Arab)
                     </span>
                   ) : (
-                    <span className="text-[10px] font-black text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200 flex items-center gap-1">
-                      <BookOpen className="w-3 h-3" />
-                      Jalur Standar / IL
+                    <span className="text-[10px] font-black text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1">
+                      <BookOpen className="w-3 h-3 text-emerald-600" />
+                      Jalur Standar / IL (3 Materi Seleksi)
                     </span>
                   )}
                 </div>
 
+                {/* Dropdown Select (Hanya satu materi yang dipilih) */}
                 <select
                   value={formTestType}
                   onChange={(e) => setFormTestType(e.target.value)}
-                  className="w-full bg-white border border-stone-300 rounded-xl px-4 py-3 text-sm font-bold text-stone-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none"
+                  className="w-full bg-white border border-stone-300 rounded-xl px-4 py-3 text-sm font-bold text-stone-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none shadow-xs"
                 >
-                  <optgroup label="-- Paket Seleksi Lengkap --">
-                    <option value="Tes Lengkap Standar (Bacaan Al-Qur'an, Wawancara Santri & Ortu)">
-                      Tes Lengkap Standar (Bacaan Qur&apos;an, Wawancara Calon Santri &amp; Ortu)
-                    </option>
-                    <option value="Tes Lengkap (Bacaan Al-Qur'an, Wawancara Santri & Ortu, Bahasa Arab & Hafalan)">
-                      Tes Lengkap Jalur Tanpa IL (Qur&apos;an, Wawancara + Bahasa Arab &amp; Hafalan)
-                    </option>
-                  </optgroup>
-
-                  <optgroup label="-- Materi Seleksi Satuan / Per Komponen --">
-                    <option value="Tes Bacaan Al-Qur'an Saja">
-                      Tes Bacaan Al-Qur&apos;an Saja
-                    </option>
-                    <option value="Wawancara Calon Santri Saja">
-                      Wawancara Calon Santri Saja
-                    </option>
-                    <option value="Wawancara Calon Orangtua/Wali Saja">
-                      Wawancara Calon Orangtua/Wali Saja
-                    </option>
-                    <option value="Tes Bahasa Arab Saja">
-                      Tes Bahasa Arab Saja (Khusus Jenjang Tanpa IL)
-                    </option>
-                    <option value="Tes Hafalan Al-Qur'an Saja">
-                      Tes Hafalan Al-Qur&apos;an Saja (Khusus Jenjang Tanpa IL)
-                    </option>
-                    <option value="Tes Bahasa Arab & Hafalan Al-Qur'an Saja">
-                      Tes Tambahan Saja (Bahasa Arab &amp; Hafalan Al-Qur&apos;an)
-                    </option>
-                  </optgroup>
-
-                  <optgroup label="-- Jadwal Khusus / Kustom --">
-                    <option value="Wawancara Khusus / Request Jadwal Orang Tua">
-                      Wawancara Khusus / Request Jadwal Orang Tua
-                    </option>
-                    <option value="Lainnya">Lainnya / Kustom...</option>
-                  </optgroup>
+                  <option value="Tes Bacaan Al-Qur'an">Tes Bacaan Al-Qur&apos;an</option>
+                  <option value="Wawancara Calon Santri">Wawancara Calon Santri</option>
+                  <option value="Wawancara Calon Orangtua/Wali">Wawancara Calon Orangtua/Wali</option>
+                  {isCandidateTanpaIL && (
+                    <>
+                      <option value="Tes Hafalan Al-Qur'an">
+                        Tes Hafalan Al-Qur&apos;an (Khusus Jenjang Tanpa IL)
+                      </option>
+                      <option value="Tes Lisan Bahasa Arab">
+                        Tes Lisan Bahasa Arab (Khusus Jenjang Tanpa IL)
+                      </option>
+                    </>
+                  )}
                 </select>
 
-                {formTestType === "Lainnya" && (
-                  <input
-                    type="text"
-                    required
-                    placeholder="Tuliskan jenis tes kustom..."
-                    value={formCustomTestType}
-                    onChange={(e) => setFormCustomTestType(e.target.value)}
-                    className="w-full mt-2 bg-white border border-stone-200 rounded-xl px-4 py-2 text-sm font-bold outline-none focus:ring-2 focus:ring-primary-500/20"
-                  />
-                )}
-
-                {/* Visual Rincian Materi Seleksi Card (Selalu menampilkan kelima tes) */}
-                <div className="p-3.5 bg-stone-50 rounded-2xl border border-stone-200/80 space-y-2.5">
+                {/* Visual Card Selector (Klik langsung pada materi tes yang diinginkan) */}
+                <div className="p-3.5 bg-stone-50/80 rounded-2xl border border-stone-200/80 space-y-2.5">
                   <div className="flex items-center justify-between">
                     <span className="text-[11px] font-black uppercase tracking-wider text-stone-600 flex items-center gap-1.5">
                       <BookOpen className="w-3.5 h-3.5 text-primary-600" />
-                      Rincian Materi Seleksi yang Diberlakukan:
+                      Materi Seleksi yang Dijadwalkan (Pilih Salah Satu):
                     </span>
-                    {selectedCandidateObj ? (
-                      isCandidateTanpaIL ? (
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300">
-                          Jenjang Tanpa IL ({selectedCandidateObj.jenjang})
-                        </span>
-                      ) : (
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300">
-                          Jenjang Standar / IL ({selectedCandidateObj.jenjang})
-                        </span>
-                      )
-                    ) : (
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-200 text-stone-700">
-                        Pilih Santri di Atas
-                      </span>
-                    )}
+                    <span className="text-[10px] font-bold text-stone-400">
+                      Klik salah satu tombol tes
+                    </span>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                     {/* 1. Tes Bacaan Al-Qur'an */}
-                    <div
-                      className={`p-2 rounded-xl border flex items-center gap-2 ${
-                        formTestType.includes("Lengkap") ||
-                        formTestType.includes("Bacaan") ||
-                        formTestType === "Lainnya"
-                          ? "bg-white border-emerald-300 text-emerald-950 font-bold shadow-xs"
-                          : "bg-stone-100 border-stone-200 text-stone-400 opacity-60"
+                    <button
+                      type="button"
+                      onClick={() => setFormTestType("Tes Bacaan Al-Qur'an")}
+                      className={`p-2.5 rounded-xl border text-left flex items-center justify-between transition-all ${
+                        formTestType === "Tes Bacaan Al-Qur'an"
+                          ? "bg-emerald-50/90 border-emerald-500 text-emerald-950 font-black shadow-xs ring-2 ring-emerald-500/20"
+                          : "bg-white border-stone-200 text-stone-700 hover:border-emerald-300 hover:bg-emerald-50/30"
                       }`}
                     >
-                      <CheckCircle2
-                        className={`w-3.5 h-3.5 shrink-0 ${
-                          formTestType.includes("Lengkap") ||
-                          formTestType.includes("Bacaan") ||
-                          formTestType === "Lainnya"
-                            ? "text-emerald-600"
-                            : "text-stone-300"
-                        }`}
-                      />
-                      <span>1. Tes Bacaan Al-Qur&apos;an</span>
-                    </div>
+                      <div className="flex items-center gap-2">
+                        <BookOpen
+                          className={`w-3.5 h-3.5 shrink-0 ${
+                            formTestType === "Tes Bacaan Al-Qur'an"
+                              ? "text-emerald-600"
+                              : "text-stone-400"
+                          }`}
+                        />
+                        <span>1. Tes Bacaan Al-Qur&apos;an</span>
+                      </div>
+                      {formTestType === "Tes Bacaan Al-Qur'an" && (
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                      )}
+                    </button>
 
                     {/* 2. Wawancara Calon Santri */}
-                    <div
-                      className={`p-2 rounded-xl border flex items-center gap-2 ${
-                        formTestType.includes("Lengkap") ||
-                        formTestType.includes("Santri") ||
-                        formTestType === "Lainnya"
-                          ? "bg-white border-indigo-300 text-indigo-950 font-bold shadow-xs"
-                          : "bg-stone-100 border-stone-200 text-stone-400 opacity-60"
+                    <button
+                      type="button"
+                      onClick={() => setFormTestType("Wawancara Calon Santri")}
+                      className={`p-2.5 rounded-xl border text-left flex items-center justify-between transition-all ${
+                        formTestType === "Wawancara Calon Santri"
+                          ? "bg-indigo-50/90 border-indigo-500 text-indigo-950 font-black shadow-xs ring-2 ring-indigo-500/20"
+                          : "bg-white border-stone-200 text-stone-700 hover:border-indigo-300 hover:bg-indigo-50/30"
                       }`}
                     >
-                      <CheckCircle2
-                        className={`w-3.5 h-3.5 shrink-0 ${
-                          formTestType.includes("Lengkap") ||
-                          formTestType.includes("Santri") ||
-                          formTestType === "Lainnya"
-                            ? "text-indigo-600"
-                            : "text-stone-300"
-                        }`}
-                      />
-                      <span>2. Wawancara Calon Santri</span>
-                    </div>
+                      <div className="flex items-center gap-2">
+                        <User
+                          className={`w-3.5 h-3.5 shrink-0 ${
+                            formTestType === "Wawancara Calon Santri"
+                              ? "text-indigo-600"
+                              : "text-stone-400"
+                          }`}
+                        />
+                        <span>2. Wawancara Calon Santri</span>
+                      </div>
+                      {formTestType === "Wawancara Calon Santri" && (
+                        <CheckCircle2 className="w-4 h-4 text-indigo-600 shrink-0" />
+                      )}
+                    </button>
 
                     {/* 3. Wawancara Calon Orangtua/Wali */}
-                    <div
-                      className={`p-2 rounded-xl border flex items-center gap-2 ${
-                        formTestType.includes("Lengkap") ||
-                        formTestType.includes("Ortu") ||
-                        formTestType.includes("Orangtua") ||
-                        formTestType === "Lainnya"
-                          ? "bg-white border-primary-300 text-primary-950 font-bold shadow-xs"
-                          : "bg-stone-100 border-stone-200 text-stone-400 opacity-60"
+                    <button
+                      type="button"
+                      onClick={() => setFormTestType("Wawancara Calon Orangtua/Wali")}
+                      className={`p-2.5 rounded-xl border text-left flex items-center justify-between transition-all ${
+                        formTestType === "Wawancara Calon Orangtua/Wali"
+                          ? "bg-primary-50/90 border-primary-500 text-primary-950 font-black shadow-xs ring-2 ring-primary-500/20"
+                          : "bg-white border-stone-200 text-stone-700 hover:border-primary-300 hover:bg-primary-50/30"
                       }`}
                     >
-                      <CheckCircle2
-                        className={`w-3.5 h-3.5 shrink-0 ${
-                          formTestType.includes("Lengkap") ||
-                          formTestType.includes("Ortu") ||
-                          formTestType.includes("Orangtua") ||
-                          formTestType === "Lainnya"
-                            ? "text-primary-600"
-                            : "text-stone-300"
-                        }`}
-                      />
-                      <span>3. Wawancara Calon Ortu/Wali</span>
-                    </div>
-
-                    {/* 4. Tes Bahasa Arab (Khusus Tanpa IL) */}
-                    <div
-                      className={`p-2 rounded-xl border flex items-center gap-2 ${
-                        formTestType.includes("Lengkap (Bacaan Al-Qur'an, Wawancara Santri & Ortu, Bahasa Arab & Hafalan)") ||
-                        formTestType.includes("Arab") ||
-                        formTestType === "Lainnya"
-                          ? "bg-cyan-50/80 border-cyan-300 text-cyan-950 font-bold shadow-xs"
-                          : "bg-stone-100 border-stone-200 text-stone-400 opacity-60"
-                      }`}
-                    >
-                      <CheckCircle2
-                        className={`w-3.5 h-3.5 shrink-0 ${
-                          formTestType.includes("Lengkap (Bacaan Al-Qur'an, Wawancara Santri & Ortu, Bahasa Arab & Hafalan)") ||
-                          formTestType.includes("Arab") ||
-                          formTestType === "Lainnya"
-                            ? "text-cyan-600"
-                            : "text-stone-300"
-                        }`}
-                      />
-                      <div className="truncate flex items-center gap-1">
-                        <span>4. Tes Bahasa Arab</span>
-                        <span className="text-[9px] px-1.5 py-0.2 bg-cyan-100 text-cyan-800 rounded font-black">
-                          Wajib Tanpa IL
-                        </span>
+                      <div className="flex items-center gap-2">
+                        <Users
+                          className={`w-3.5 h-3.5 shrink-0 ${
+                            formTestType === "Wawancara Calon Orangtua/Wali"
+                              ? "text-primary-600"
+                              : "text-stone-400"
+                          }`}
+                        />
+                        <span>3. Wawancara Calon Ortu/Wali</span>
                       </div>
-                    </div>
+                      {formTestType === "Wawancara Calon Orangtua/Wali" && (
+                        <CheckCircle2 className="w-4 h-4 text-primary-600 shrink-0" />
+                      )}
+                    </button>
 
-                    {/* 5. Tes Hafalan Al-Qur'an (Khusus Tanpa IL) */}
-                    <div
-                      className={`p-2 rounded-xl border flex items-center gap-2 ${
-                        formTestType.includes("Lengkap (Bacaan Al-Qur'an, Wawancara Santri & Ortu, Bahasa Arab & Hafalan)") ||
-                        formTestType.includes("Hafalan") ||
-                        formTestType === "Lainnya"
-                          ? "bg-amber-50/80 border-amber-300 text-amber-950 font-bold shadow-xs"
-                          : "bg-stone-100 border-stone-200 text-stone-400 opacity-60"
-                      }`}
-                    >
-                      <CheckCircle2
-                        className={`w-3.5 h-3.5 shrink-0 ${
-                          formTestType.includes("Lengkap (Bacaan Al-Qur'an, Wawancara Santri & Ortu, Bahasa Arab & Hafalan)") ||
-                          formTestType.includes("Hafalan") ||
-                          formTestType === "Lainnya"
-                            ? "text-amber-600"
-                            : "text-stone-300"
+                    {/* 4. Tes Hafalan Al-Qur'an (Khusus Tanpa IL) */}
+                    {isCandidateTanpaIL && (
+                      <button
+                        type="button"
+                        onClick={() => setFormTestType("Tes Hafalan Al-Qur'an")}
+                        className={`p-2.5 rounded-xl border text-left flex items-center justify-between transition-all ${
+                          formTestType === "Tes Hafalan Al-Qur'an"
+                            ? "bg-amber-50/90 border-amber-500 text-amber-950 font-black shadow-xs ring-2 ring-amber-500/20"
+                            : "bg-white border-stone-200 text-stone-700 hover:border-amber-300 hover:bg-amber-50/30"
                         }`}
-                      />
-                      <div className="truncate flex items-center gap-1">
-                        <span>5. Tes Hafalan Al-Qur&apos;an</span>
-                        <span className="text-[9px] px-1.5 py-0.2 bg-amber-100 text-amber-800 rounded font-black">
-                          Wajib Tanpa IL
-                        </span>
-                      </div>
-                    </div>
+                      >
+                        <div className="flex items-center gap-2">
+                          <Sparkles
+                            className={`w-3.5 h-3.5 shrink-0 ${
+                              formTestType === "Tes Hafalan Al-Qur'an"
+                                ? "text-amber-600"
+                                : "text-stone-400"
+                            }`}
+                          />
+                          <div className="truncate">
+                            <span>4. Tes Hafalan Al-Qur&apos;an</span>
+                            <span className="ml-1.5 text-[9px] px-1.5 py-0.2 bg-amber-100 text-amber-800 rounded font-black">
+                              Tanpa IL
+                            </span>
+                          </div>
+                        </div>
+                        {formTestType === "Tes Hafalan Al-Qur'an" && (
+                          <CheckCircle2 className="w-4 h-4 text-amber-600 shrink-0" />
+                        )}
+                      </button>
+                    )}
+
+                    {/* 5. Tes Lisan Bahasa Arab (Khusus Tanpa IL) */}
+                    {isCandidateTanpaIL && (
+                      <button
+                        type="button"
+                        onClick={() => setFormTestType("Tes Lisan Bahasa Arab")}
+                        className={`p-2.5 rounded-xl border text-left flex items-center justify-between transition-all ${
+                          formTestType === "Tes Lisan Bahasa Arab"
+                            ? "bg-cyan-50/90 border-cyan-500 text-cyan-950 font-black shadow-xs ring-2 ring-cyan-500/20"
+                            : "bg-white border-stone-200 text-stone-700 hover:border-cyan-300 hover:bg-cyan-50/30"
+                        }`}
+                      >
+                        <div className="flex items-center gap-2">
+                          <Languages
+                            className={`w-3.5 h-3.5 shrink-0 ${
+                              formTestType === "Tes Lisan Bahasa Arab"
+                                ? "text-cyan-600"
+                                : "text-stone-400"
+                            }`}
+                          />
+                          <div className="truncate">
+                            <span>5. Tes Lisan Bahasa Arab</span>
+                            <span className="ml-1.5 text-[9px] px-1.5 py-0.2 bg-cyan-100 text-cyan-800 rounded font-black">
+                              Tanpa IL
+                            </span>
+                          </div>
+                        </div>
+                        {formTestType === "Tes Lisan Bahasa Arab" && (
+                          <CheckCircle2 className="w-4 h-4 text-cyan-600 shrink-0" />
+                        )}
+                      </button>
+                    )}
                   </div>
 
                   <p className="text-[11px] text-stone-500 leading-relaxed">
                     {isCandidateTanpaIL
-                      ? "Santri jenjang MA/SMA/SMA IT Non-IL diwajibkan mengikuti tes kelancaran Bahasa Arab & mutqin hafalan Al-Qur'an selain 3 tes standar."
-                      : "Santri jenjang SMP/MTs/IL mengikuti tes standar: Bacaan Qur'an, Wawancara Santri, dan Wawancara Calon Ortu/Wali. (Tes Arab & Hafalan dapat dipilih mandiri jika diperlukan)."}
+                      ? "Pilih satu materi seleksi yang ingin dijadwalkan pada sesi ini. Jenjang langsung MA/SMA/SMA IT Tanpa IL memiliki 5 pilihan materi seleksi."
+                      : "Pilih satu materi seleksi yang ingin dijadwalkan pada sesi ini. Jenjang Standar / IL memiliki 3 materi seleksi."}
                   </p>
                 </div>
               </div>
 
-              {/* 3. PILIHAN PENGUJI / PEWAWANCARA */}
-              <div>
-                <div className="flex items-center justify-between mb-2">
+              {/* 3. PENUGASAN PENGUJI / PEWAWANCARA */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
                   <label className="block text-xs font-black text-stone-500 uppercase tracking-wider">
-                    3. Pilihan Penguji &amp; Pewawancara
+                    3. Penugasan Penguji / Pewawancara <span className="text-rose-500">*</span>
                   </label>
                   <span className="text-[10px] font-bold text-stone-400">
-                    Tentukan asatidz penguji untuk masing-masing materi tes
+                    Materi: <span className="text-primary-700 font-black">{formTestType}</span>
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {/* Pewawancara Orang Tua */}
-                  <div className="space-y-1.5 p-3.5 bg-stone-50 rounded-2xl border border-stone-200/60">
-                    <div className="flex items-center gap-1.5 text-xs font-black text-stone-800">
-                      <Users className="w-3.5 h-3.5 text-primary-600" />
-                      1. Pewawancara Ortu / Wali
+                {/* Primary Focused Examiner based on selected formTestType */}
+                <div className="p-4 bg-primary-50/40 rounded-2xl border border-primary-200/80 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-xs font-black text-primary-950">
+                      {formTestType === "Tes Bacaan Al-Qur'an" && <BookOpen className="w-4 h-4 text-primary-600" />}
+                      {formTestType === "Wawancara Calon Santri" && <User className="w-4 h-4 text-indigo-600" />}
+                      {formTestType === "Wawancara Calon Orangtua/Wali" && <Users className="w-4 h-4 text-primary-600" />}
+                      {formTestType === "Tes Hafalan Al-Qur'an" && <Sparkles className="w-4 h-4 text-amber-600" />}
+                      {formTestType === "Tes Lisan Bahasa Arab" && <Languages className="w-4 h-4 text-cyan-600" />}
+                      <span>
+                        {formTestType === "Tes Bacaan Al-Qur'an" && "Penguji Bacaan Al-Qur'an"}
+                        {formTestType === "Wawancara Calon Santri" && "Pewawancara Calon Santri"}
+                        {formTestType === "Wawancara Calon Orangtua/Wali" && "Pewawancara Calon Orangtua/Wali"}
+                        {formTestType === "Tes Hafalan Al-Qur'an" && "Penguji Hafalan Al-Qur'an"}
+                        {formTestType === "Tes Lisan Bahasa Arab" && "Penguji Lisan Bahasa Arab"}
+                      </span>
                     </div>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary-100 text-primary-800">
+                      Penguji Utama
+                    </span>
+                  </div>
+
+                  {formTestType === "Tes Bacaan Al-Qur'an" && (
                     <select
-                      value={formPengujiOrtuId}
-                      onChange={(e) => setFormPengujiOrtuId(e.target.value)}
-                      className="w-full bg-white border border-stone-200 rounded-xl px-3 py-2 text-xs font-bold text-stone-800 focus:ring-2 focus:ring-primary-500/20 outline-none"
+                      value={formPengujiQuranId || formPengujiSantriId}
+                      onChange={(e) => {
+                        setFormPengujiQuranId(e.target.value);
+                        if (!formPengujiSantriId) setFormPengujiSantriId(e.target.value);
+                      }}
+                      className="w-full bg-white border border-primary-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-stone-800 focus:ring-2 focus:ring-primary-500/20 outline-none"
                     >
                       <option value="">-- Bebas / Tentukan Nanti --</option>
                       {examiners.map((ex) => (
@@ -1333,23 +1330,13 @@ export default function JadwalUjianPage() {
                         </option>
                       ))}
                     </select>
-                    {formLocationType === "online" && formPengujiOrtuId && (
-                      <p className="text-[10px] text-stone-400 font-medium truncate">
-                        Meet: {detectedPengujiOrtu?.google_meet_link || "Belum ada link tersimpan"}
-                      </p>
-                    )}
-                  </div>
+                  )}
 
-                  {/* Penguji Santri (Wawancara & Bacaan Al-Qur'an) */}
-                  <div className="space-y-1.5 p-3.5 bg-stone-50 rounded-2xl border border-stone-200/60">
-                    <div className="flex items-center gap-1.5 text-xs font-black text-stone-800">
-                      <User className="w-3.5 h-3.5 text-indigo-600" />
-                      2. Penguji Santri (Wawancara &amp; Qur&apos;an)
-                    </div>
+                  {formTestType === "Wawancara Calon Santri" && (
                     <select
                       value={formPengujiSantriId}
                       onChange={(e) => setFormPengujiSantriId(e.target.value)}
-                      className="w-full bg-white border border-stone-200 rounded-xl px-3 py-2 text-xs font-bold text-stone-800 focus:ring-2 focus:ring-primary-500/20 outline-none"
+                      className="w-full bg-white border border-primary-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-stone-800 focus:ring-2 focus:ring-primary-500/20 outline-none"
                     >
                       <option value="">-- Bebas / Tentukan Nanti --</option>
                       {examiners.map((ex) => (
@@ -1359,30 +1346,15 @@ export default function JadwalUjianPage() {
                         </option>
                       ))}
                     </select>
-                    {formLocationType === "online" && formPengujiSantriId && (
-                      <p className="text-[10px] text-stone-400 font-medium truncate">
-                        Meet: {detectedPengujiSantri?.google_meet_link || "Belum ada link tersimpan"}
-                      </p>
-                    )}
-                  </div>
+                  )}
 
-                  {/* Penguji Bahasa Arab */}
-                  <div className="space-y-1.5 p-3.5 bg-cyan-50/40 rounded-2xl border border-cyan-200/80">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1.5 text-xs font-black text-cyan-950">
-                        <Languages className="w-3.5 h-3.5 text-cyan-600" />
-                        3. Penguji Bahasa Arab
-                      </div>
-                      <span className="text-[9px] px-1.5 py-0.2 bg-cyan-100 text-cyan-800 rounded font-black">
-                        Tanpa IL
-                      </span>
-                    </div>
+                  {formTestType === "Wawancara Calon Orangtua/Wali" && (
                     <select
-                      value={formPengujiArabId}
-                      onChange={(e) => setFormPengujiArabId(e.target.value)}
-                      className="w-full bg-white border border-cyan-200 rounded-xl px-3 py-2 text-xs font-bold text-stone-800 focus:ring-2 focus:ring-cyan-500/20 outline-none"
+                      value={formPengujiOrtuId}
+                      onChange={(e) => setFormPengujiOrtuId(e.target.value)}
+                      className="w-full bg-white border border-primary-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-stone-800 focus:ring-2 focus:ring-primary-500/20 outline-none"
                     >
-                      <option value="">-- Samakan dengan Penguji Santri --</option>
+                      <option value="">-- Bebas / Tentukan Nanti --</option>
                       {examiners.map((ex) => (
                         <option key={ex.id} value={ex.id}>
                           {ex.full_name || ex.name || ex.username}{" "}
@@ -1390,30 +1362,15 @@ export default function JadwalUjianPage() {
                         </option>
                       ))}
                     </select>
-                    {formLocationType === "online" && formPengujiArabId && (
-                      <p className="text-[10px] text-cyan-700 font-medium truncate">
-                        Meet: {detectedPengujiArab?.google_meet_link || "Belum ada link tersimpan"}
-                      </p>
-                    )}
-                  </div>
+                  )}
 
-                  {/* Penguji Hafalan Al-Qur'an */}
-                  <div className="space-y-1.5 p-3.5 bg-amber-50/40 rounded-2xl border border-amber-200/80">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1.5 text-xs font-black text-amber-950">
-                        <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-                        4. Penguji Hafalan Qur&apos;an
-                      </div>
-                      <span className="text-[9px] px-1.5 py-0.2 bg-amber-100 text-amber-800 rounded font-black">
-                        Tanpa IL
-                      </span>
-                    </div>
+                  {formTestType === "Tes Hafalan Al-Qur'an" && (
                     <select
                       value={formPengujiHafalanId}
                       onChange={(e) => setFormPengujiHafalanId(e.target.value)}
-                      className="w-full bg-white border border-amber-200 rounded-xl px-3 py-2 text-xs font-bold text-stone-800 focus:ring-2 focus:ring-amber-500/20 outline-none"
+                      className="w-full bg-white border border-primary-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-stone-800 focus:ring-2 focus:ring-primary-500/20 outline-none"
                     >
-                      <option value="">-- Samakan dengan Penguji Santri --</option>
+                      <option value="">-- Bebas / Tentukan Nanti --</option>
                       {examiners.map((ex) => (
                         <option key={ex.id} value={ex.id}>
                           {ex.full_name || ex.name || ex.username}{" "}
@@ -1421,12 +1378,144 @@ export default function JadwalUjianPage() {
                         </option>
                       ))}
                     </select>
-                    {formLocationType === "online" && formPengujiHafalanId && (
-                      <p className="text-[10px] text-amber-700 font-medium truncate">
-                        Meet: {detectedPengujiHafalan?.google_meet_link || "Belum ada link tersimpan"}
-                      </p>
-                    )}
-                  </div>
+                  )}
+
+                  {formTestType === "Tes Lisan Bahasa Arab" && (
+                    <select
+                      value={formPengujiArabId}
+                      onChange={(e) => setFormPengujiArabId(e.target.value)}
+                      className="w-full bg-white border border-primary-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-stone-800 focus:ring-2 focus:ring-primary-500/20 outline-none"
+                    >
+                      <option value="">-- Bebas / Tentukan Nanti --</option>
+                      {examiners.map((ex) => (
+                        <option key={ex.id} value={ex.id}>
+                          {ex.full_name || ex.name || ex.username}{" "}
+                          {ex.role === "penguji" ? "(Penguji)" : `(${ex.role})`}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+
+                  {formLocationType === "online" && (
+                    <p className="text-[10px] text-stone-500 font-medium">
+                      Google Meet:{" "}
+                      <span className="font-mono text-primary-700 font-bold">
+                        {detectedAnyMeet || "Belum ada link Meet tersimpan"}
+                      </span>
+                    </p>
+                  )}
+                </div>
+
+                {/* Optional Expandable Additional Examiners */}
+                <div className="pt-0.5">
+                  <button
+                    type="button"
+                    onClick={() => setShowAllExaminers(!showAllExaminers)}
+                    className="text-[11px] font-bold text-stone-500 hover:text-primary-700 flex items-center gap-1 transition-all"
+                  >
+                    {showAllExaminers
+                      ? "− Tutup Penugasan Penguji Lainnya"
+                      : "+ Tampilkan Semua Posisi Penguji (Opsional jika satu sesi menggabungkan materi)"}
+                  </button>
+
+                  {showAllExaminers && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mt-2.5 p-3 bg-stone-50 rounded-2xl border border-stone-200/60 animate-in fade-in duration-150">
+                      {/* Pewawancara Ortu */}
+                      <div className="space-y-1">
+                        <label className="text-[11px] font-bold text-stone-700">
+                          Pewawancara Ortu/Wali:
+                        </label>
+                        <select
+                          value={formPengujiOrtuId}
+                          onChange={(e) => setFormPengujiOrtuId(e.target.value)}
+                          className="w-full bg-white border border-stone-200 rounded-lg px-2.5 py-1.5 text-xs font-bold text-stone-800 outline-none"
+                        >
+                          <option value="">-- Bebas / Tentukan Nanti --</option>
+                          {examiners.map((ex) => (
+                            <option key={ex.id} value={ex.id}>
+                              {ex.full_name || ex.name || ex.username}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      {/* Penguji Santri */}
+                      <div className="space-y-1">
+                        <label className="text-[11px] font-bold text-stone-700">
+                          Pewawancara Santri:
+                        </label>
+                        <select
+                          value={formPengujiSantriId}
+                          onChange={(e) => setFormPengujiSantriId(e.target.value)}
+                          className="w-full bg-white border border-stone-200 rounded-lg px-2.5 py-1.5 text-xs font-bold text-stone-800 outline-none"
+                        >
+                          <option value="">-- Bebas / Tentukan Nanti --</option>
+                          {examiners.map((ex) => (
+                            <option key={ex.id} value={ex.id}>
+                              {ex.full_name || ex.name || ex.username}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      {/* Penguji Qur'an */}
+                      <div className="space-y-1">
+                        <label className="text-[11px] font-bold text-stone-700">
+                          Penguji Bacaan Al-Qur&apos;an:
+                        </label>
+                        <select
+                          value={formPengujiQuranId}
+                          onChange={(e) => setFormPengujiQuranId(e.target.value)}
+                          className="w-full bg-white border border-stone-200 rounded-lg px-2.5 py-1.5 text-xs font-bold text-stone-800 outline-none"
+                        >
+                          <option value="">-- Bebas / Tentukan Nanti --</option>
+                          {examiners.map((ex) => (
+                            <option key={ex.id} value={ex.id}>
+                              {ex.full_name || ex.name || ex.username}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      {/* Penguji Arab */}
+                      <div className="space-y-1">
+                        <label className="text-[11px] font-bold text-stone-700">
+                          Penguji Lisan Bahasa Arab:
+                        </label>
+                        <select
+                          value={formPengujiArabId}
+                          onChange={(e) => setFormPengujiArabId(e.target.value)}
+                          className="w-full bg-white border border-stone-200 rounded-lg px-2.5 py-1.5 text-xs font-bold text-stone-800 outline-none"
+                        >
+                          <option value="">-- Bebas / Tentukan Nanti --</option>
+                          {examiners.map((ex) => (
+                            <option key={ex.id} value={ex.id}>
+                              {ex.full_name || ex.name || ex.username}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      {/* Penguji Hafalan */}
+                      <div className="space-y-1">
+                        <label className="text-[11px] font-bold text-stone-700">
+                          Penguji Hafalan Qur&apos;an:
+                        </label>
+                        <select
+                          value={formPengujiHafalanId}
+                          onChange={(e) => setFormPengujiHafalanId(e.target.value)}
+                          className="w-full bg-white border border-stone-200 rounded-lg px-2.5 py-1.5 text-xs font-bold text-stone-800 outline-none"
+                        >
+                          <option value="">-- Bebas / Tentukan Nanti --</option>
+                          {examiners.map((ex) => (
+                            <option key={ex.id} value={ex.id}>
+                              {ex.full_name || ex.name || ex.username}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
