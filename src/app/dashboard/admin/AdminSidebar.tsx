@@ -238,12 +238,12 @@ export default function AdminSidebar({
               onClick={() => setSidebarOpen(false)}
               className="fixed inset-0 z-[70] bg-primary-950/40 backdrop-blur-md lg:hidden overflow-y-auto overflow-x-hidden p-4 overscroll-contain custom-scrollbar"
             />
-            <motion.aside
+            <motion.aside data-sidebar="true"
               initial={{ x: "-100%" }}
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
-              className="fixed top-0 left-0 bottom-0 z-[80] w-80 bg-white shadow-2xl lg:hidden flex flex-col rounded-r-[3rem] overflow-hidden"
+              className="fixed top-0 left-0 bottom-0 z-[80] w-80 bg-white shadow-2xl lg:hidden flex flex-col rounded-r-[3rem] overflow-hidden overscroll-contain"
             >
               <div className="p-5 md:p-8 flex items-center justify-between border-b border-ink-50 bg-linear-to-b from-ink-50 to-white">
                 <div className="flex items-center gap-4">
@@ -331,7 +331,8 @@ export default function AdminSidebar({
 
       {/* ─── DESKTOP SIDEBAR (Premium Slim Design) ─── */}
       <aside
-        className={`hidden lg:flex fixed inset-y-0 left-0 z-50 flex-col bg-white border-r border-ink-100 transition-all duration-500 ease-in-out ${collapsed ? "w-24" : "w-72"}`}
+        data-sidebar="true"
+        className={`hidden lg:flex fixed inset-y-0 left-0 z-50 flex-col bg-white border-r border-ink-100 transition-all duration-500 ease-in-out overscroll-contain ${collapsed ? "w-24" : "w-72"}`}
       >
         {/* Logo & Branding Area */}
         <div className="h-24 flex items-center px-5 md:px-8">

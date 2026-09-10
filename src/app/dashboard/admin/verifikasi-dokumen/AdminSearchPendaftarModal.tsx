@@ -15,6 +15,18 @@ export default function AdminSearchPendaftarModal({ isOpen, onClose }: AdminSear
   const [results, setResults] = useState<any[]>([]);
   const [isSearching, setIsSearching] = useState(false);
 
+  
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
   useEffect(() => {
     if (!isOpen) {
       setQuery("");
@@ -52,7 +64,7 @@ export default function AdminSearchPendaftarModal({ isOpen, onClose }: AdminSear
 
   return (
     <div 
-      className="fixed inset-0 bg-stone-900/80 backdrop-blur-sm z-[100] flex justify-center items-start pt-10 md:pt-16 px-4 overflow-y-auto overscroll-contain custom-scrollbar"
+      role="dialog" aria-modal="true" data-modal="true" className="fixed inset-0 bg-stone-900/80 backdrop-blur-sm z-[100] flex justify-center items-start pt-10 md:pt-16 px-4 overflow-y-auto overscroll-contain custom-scrollbar"
       onClick={onClose}
     >
       <div 

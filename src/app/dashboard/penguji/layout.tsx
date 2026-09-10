@@ -175,7 +175,7 @@ export default function PengujiDashboardLayout({
 
         <div className="flex relative">
           {/* Desktop Sidebar */}
-          <aside className="hidden lg:flex lg:w-72 lg:flex-col lg:fixed lg:top-0 lg:left-0 lg:h-screen z-50 bg-white border-r border-surface-200 shadow-premium-sm transition-all duration-300">
+          <aside data-sidebar="true" className="hidden lg:flex lg:w-72 lg:flex-col lg:fixed lg:top-0 lg:left-0 lg:h-screen z-50 bg-white border-r border-surface-200 shadow-premium-sm transition-all duration-300">
             <div className="flex flex-col h-full">
               {/* Brand Header */}
               <div className="px-5 md:px-8 pt-10 pb-8 border-b border-surface-100 mb-8">
