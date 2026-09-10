@@ -17,6 +17,9 @@ import {
   Square,
   ArrowRight,
   Send,
+  XCircle,
+  Sparkles,
+  CalendarPlus,
   Video } from "lucide-react";
 import Swal from "sweetalert2";
 
@@ -62,6 +65,103 @@ export default function JadwalUjianPage() {
   );
 
   // Automatic End Time Calculation Logic
+
+  const [showDirectModal, setShowDirectModal] = useState(false);
+  const [directForm, setDirectForm] = useState({
+    pendaftar_id: "",
+    title: "Jadwal Khusus Request Ortu",
+    start_time: "",
+    duration: 60,
+    location: "",
+    notes: "Jadwal khusus sesuai permintaan orang tua"
+  });
+
+  const handleCreateDirectJadwalKhusus = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!directForm.pendaftar_id || !directForm.start_time) {
+      Swal.fire("Peringatan", "Pilih pendaftar dan waktu ujian terlebih dahulu", "warning");
+      return;
+    }
+
+    const selectedCandidate = pendaftar.find(p => p.id === directForm.pendaftar_id);
+    if (!selectedCandidate) return;
+
+    try {
+      setAssigning(true);
+      const start = new Date(directForm.start_time);
+      const end = new Date(start.getTime() + (directForm.duration || 60) * 60000);
+
+      let formattedLocation = (directForm.location || "Online (Google Meet)").trim();
+      if (
+        (formattedLocation.includes("meet.google.com") || formattedLocation.includes("zoom.us")) &&
+        !formattedLocation.startsWith("http://") &&
+        !formattedLocation.startsWith("https://")
+      ) {
+        formattedLocation = "https://" + formattedLocation;
+      }
+
+      // 1. Create Session
+      const sessionRes = await fetch("/api/admin/exam-sessions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: `${directForm.title} - ${selectedCandidate.nama_lengkap}`,
+          start_time: start.toISOString(),
+          end_time: end.toISOString(),
+          quota: 1,
+          location: formattedLocation,
+          notes: directForm.notes
+        })
+      });
+
+      if (!sessionRes.ok) {
+        const err = await sessionRes.json();
+        throw new Error(err.error || "Gagal membuat sesi khusus");
+      }
+
+      const sessionData = await sessionRes.json();
+      const newSessionId = sessionData.data.id;
+
+      // 2. Assign Candidate
+      const assignRes = await fetch("/api/admin/jadwal-ujian/assign", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          pendaftar_id: directForm.pendaftar_id,
+          exam_session_id: newSessionId,
+          tahun_ajaran_id: selectedCandidate.tahun_ajaran_id
+        })
+      });
+
+      if (!assignRes.ok) {
+        const err = await assignRes.json();
+        throw new Error(err.error || "Gagal menetapkan jadwal ke pendaftar");
+      }
+
+      Swal.fire({
+        title: "Jadwal Khusus Berhasil!",
+        text: `Jadwal khusus untuk ${selectedCandidate.nama_lengkap} pada ${start.toLocaleDateString("id-ID", { weekday: "long", day: "numeric", month: "long", year: "numeric" })} jam ${start.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" })} WIB telah dibuat dan notifikasi WA dikirim.`,
+        icon: "success",
+        confirmButtonColor: "#7c3aed"
+      });
+
+      setShowDirectModal(false);
+      setDirectForm({
+        pendaftar_id: "",
+        title: "Jadwal Khusus Request Ortu",
+        start_time: "",
+        duration: 60,
+        location: "",
+        notes: "Jadwal khusus sesuai permintaan orang tua"
+      });
+      fetchData();
+    } catch (err: any) {
+      console.error(err);
+      Swal.fire("Error", err.message || "Terjadi kesalahan sistem", "error");
+    } finally {
+      setAssigning(false);
+    }
+  };
 
   useEffect(() => {
     if (newSession.start_time) {
