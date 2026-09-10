@@ -25,7 +25,10 @@ import {
   BookOpen,
   FileCheck,
   User,
-  X
+  X,
+  ExternalLink,
+  School,
+  Sparkle
 } from "lucide-react";
 import Swal from "sweetalert2";
 
@@ -62,9 +65,8 @@ export default function JadwalUjianPage() {
   const [search, setSearch] = useState("");
   const [selectedPendaftarId, setSelectedPendaftarId] = useState<string | null>(null);
 
-  // UNIFIED SCHEDULING MODAL STATE
+  // SCHEDULING MODAL STATE (KHUSUS 1 CALON PENDAFTAR - TANPA KUOTA)
   const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
-  const [scheduleType, setScheduleType] = useState<"spesifik" | "umum">("spesifik");
   const [formCandidateId, setFormCandidateId] = useState<string>("");
   const [formCandidateSearch, setFormCandidateSearch] = useState<string>("");
   const [formTestType, setFormTestType] = useState<string>("Wawancara Calon Santri & Orang Tua");
@@ -75,9 +77,12 @@ export default function JadwalUjianPage() {
   const [formStartTime, setFormStartTime] = useState<string>("");
   const [formDuration, setFormDuration] = useState<number>(60);
   const [formEndTime, setFormEndTime] = useState<string>("");
-  const [formLocationType, setFormLocationType] = useState<"gmeet" | "zoom" | "offline">("gmeet");
-  const [formLocationUrl, setFormLocationUrl] = useState<string>("Online (Google Meet)");
-  const [formQuota, setFormQuota] = useState<number>(1);
+  
+  // HANYA DUA PILIHAN: ONLINE (GOOGLE MEET) ATAU OFFLINE (PESANTREN)
+  const [formLocationType, setFormLocationType] = useState<"online" | "offline">("online");
+  const [formOnlineUrl, setFormOnlineUrl] = useState<string>("");
+  const [formOfflinePlace, setFormOfflinePlace] = useState<string>("Kampus Pesantren (Ruang Penguji Seleksi)");
+  
   const [formNotes, setFormNotes] = useState<string>("");
   const [submittingSchedule, setSubmittingSchedule] = useState(false);
 
@@ -129,17 +134,25 @@ export default function JadwalUjianPage() {
     }
   }, [formStartTime, formDuration]);
 
-  // Auto detect Google Meet link when examiner changes
+  // Deteksi otomatis Google Meet dari penguji yang dipilih
+  const detectedPengujiSantri = useMemo(() => {
+    return examiners.find((u) => u.id === formPengujiSantriId) || null;
+  }, [examiners, formPengujiSantriId]);
+
+  const detectedPengujiOrtu = useMemo(() => {
+    return examiners.find((u) => u.id === formPengujiOrtuId) || null;
+  }, [examiners, formPengujiOrtuId]);
+
+  const detectedAnyMeet = useMemo(() => {
+    return detectedPengujiSantri?.google_meet_link || detectedPengujiOrtu?.google_meet_link || null;
+  }, [detectedPengujiSantri, detectedPengujiOrtu]);
+
+  // Sinkronkan link Google Meet saat penguji terpilih berubah jika mode online
   useEffect(() => {
-    if (formLocationType === "gmeet") {
-      const ortuEx = examiners.find((u) => u.id === formPengujiOrtuId);
-      const santriEx = examiners.find((u) => u.id === formPengujiSantriId);
-      const meet = ortuEx?.google_meet_link || santriEx?.google_meet_link;
-      if (meet && (!formLocationUrl || formLocationUrl === "Online (Google Meet)")) {
-        setFormLocationUrl(meet);
-      }
+    if (formLocationType === "online" && detectedAnyMeet) {
+      setFormOnlineUrl(detectedAnyMeet);
     }
-  }, [formPengujiOrtuId, formPengujiSantriId, formLocationType, examiners]);
+  }, [detectedAnyMeet, formLocationType]);
 
   useEffect(() => {
     fetchData();
@@ -188,12 +201,10 @@ export default function JadwalUjianPage() {
 
   const openScheduleModal = (candidate?: Pendaftar) => {
     if (candidate) {
-      setScheduleType("spesifik");
       setFormCandidateId(candidate.id);
-      setFormQuota(1);
-    } else {
-      setScheduleType("spesifik");
-      setFormQuota(1);
+      setSelectedPendaftarId(candidate.id);
+    } else if (selectedPendaftarId) {
+      setFormCandidateId(selectedPendaftarId);
     }
     setScheduleModalOpen(true);
   };
@@ -209,20 +220,26 @@ export default function JadwalUjianPage() {
     setFormStartTime("");
     setFormDuration(60);
     setFormEndTime("");
-    setFormLocationType("gmeet");
-    setFormLocationUrl("Online (Google Meet)");
-    setFormQuota(1);
+    setFormLocationType("online");
+    setFormOnlineUrl("");
+    setFormOfflinePlace("Kampus Pesantren (Ruang Penguji Seleksi)");
     setFormNotes("");
   };
 
   const handleSaveSchedule = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formStartTime) {
-      Swal.fire("Peringatan", "Waktu mulai pelaksanaan wajib diisi", "warning");
+      Swal.fire("Peringatan", "Waktu mulai pelaksanaan ujian wajib diisi", "warning");
       return;
     }
-    if (scheduleType === "spesifik" && !formCandidateId) {
-      Swal.fire("Peringatan", "Pilih nama pendaftar / calon santri terlebih dahulu", "warning");
+    if (!formCandidateId) {
+      Swal.fire("Peringatan", "Pilih calon santri / pendaftar terlebih dahulu", "warning");
+      return;
+    }
+
+    const candidate = pendaftar.find((p) => p.id === formCandidateId);
+    if (!candidate) {
+      Swal.fire("Peringatan", "Data calon santri tidak ditemukan", "warning");
       return;
     }
 
@@ -231,26 +248,22 @@ export default function JadwalUjianPage() {
       const start = new Date(formStartTime);
       const end = formEndTime ? new Date(formEndTime) : new Date(start.getTime() + formDuration * 60000);
 
-      const actualTestType = formTestType === "Lainnya" ? formCustomTestType || "Tes Seleksi" : formTestType;
-      const candidate = pendaftar.find((p) => p.id === formCandidateId);
-      const sessionTitle =
-        formSessionTitle.trim() ||
-        (scheduleType === "spesifik" && candidate
-          ? `${actualTestType} - ${candidate.nama_lengkap}`
-          : `${actualTestType} (${start.toLocaleDateString("id-ID", { day: "numeric", month: "short" })})`);
-
-      let formattedLocation = (formLocationUrl || "Online (Google Meet)").trim();
-      if (
-        (formattedLocation.includes("meet.google.com") || formattedLocation.includes("zoom.us")) &&
-        !formattedLocation.startsWith("http://") &&
-        !formattedLocation.startsWith("https://")
-      ) {
-        formattedLocation = "https://" + formattedLocation;
+      const actualTestType = formTestType === "Lainnya" ? (formCustomTestType.trim() || "Tes Seleksi") : formTestType;
+      
+      let finalLocation = "";
+      if (formLocationType === "online") {
+        let url = (formOnlineUrl || detectedAnyMeet || "Online (Google Meet)").trim();
+        if (url.startsWith("meet.google.com")) {
+          url = "https://" + url;
+        }
+        finalLocation = url;
+      } else {
+        finalLocation = (formOfflinePlace || "Kampus Pesantren (Ruang Penguji Seleksi)").trim();
       }
 
-      const quota = scheduleType === "spesifik" ? 1 : formQuota || 10;
+      const sessionTitle = formSessionTitle.trim() || `${actualTestType} - ${candidate.nama_lengkap}`;
 
-      // 1. Create Session
+      // 1. Buat Sesi Ujian khusus untuk 1 pendaftar ini (quota = 1)
       const sessionRes = await fetch("/api/admin/exam-sessions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -258,9 +271,9 @@ export default function JadwalUjianPage() {
           title: sessionTitle,
           start_time: start.toISOString(),
           end_time: end.toISOString(),
-          quota: quota,
-          location: formattedLocation,
-          notes: formNotes || `Jenis Tes: ${actualTestType}`,
+          quota: 1, // Khusus 1 pendaftar saja
+          location: finalLocation,
+          notes: formNotes ? `${formNotes} | Jenis Tes: ${actualTestType}` : `Jenis Tes: ${actualTestType}`,
         }),
       });
 
@@ -272,56 +285,51 @@ export default function JadwalUjianPage() {
       const sessionJson = await sessionRes.json();
       const newSessionId = sessionJson.data.id;
 
-      // 2. If specific candidate, assign immediately
-      if (scheduleType === "spesifik" && formCandidateId && candidate) {
-        const assignRes = await fetch("/api/admin/jadwal-ujian/assign", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            pendaftar_id: formCandidateId,
-            exam_session_id: newSessionId,
-            tahun_ajaran_id: candidate.tahun_ajaran_id,
-            penguji_ortu_id: formPengujiOrtuId || undefined,
-            penguji_santri_id: formPengujiSantriId || undefined,
-          }),
-        });
+      // 2. Tetapkan pendaftar ke sesi ini & kaitkan penguji
+      const assignRes = await fetch("/api/admin/jadwal-ujian/assign", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          pendaftar_id: formCandidateId,
+          exam_session_id: newSessionId,
+          tahun_ajaran_id: candidate.tahun_ajaran_id,
+          penguji_ortu_id: formPengujiOrtuId || undefined,
+          penguji_santri_id: formPengujiSantriId || undefined,
+          metode_ujian: formLocationType,
+        }),
+      });
 
-        if (!assignRes.ok) {
-          const aErr = await assignRes.json();
-          throw new Error(aErr.error || "Gagal menetapkan pendaftar ke sesi");
-        }
-
-        Swal.fire({
-          icon: "success",
-          title: "Jadwal Berhasil Dibuat!",
-          text: `Tes "${actualTestType}" untuk ${candidate.nama_lengkap} pada ${start.toLocaleDateString("id-ID", { weekday: "long", day: "numeric", month: "long", year: "numeric" })} jam ${start.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" })} WIB telah berhasil dijadwalkan & notifikasi WhatsApp dikirim.`,
-          confirmButtonColor: "#800000",
-        });
-      } else {
-        Swal.fire({
-          icon: "success",
-          title: "Sesi Berhasil Dibuat!",
-          text: `Sesi "${sessionTitle}" dengan kuota ${quota} peserta berhasil ditambahkan.`,
-          confirmButtonColor: "#800000",
-        });
+      if (!assignRes.ok) {
+        const aErr = await assignRes.json();
+        throw new Error(aErr.error || "Gagal menetapkan jadwal pendaftar");
       }
+
+      Swal.fire({
+        icon: "success",
+        title: "Jadwal Berhasil Dibuat!",
+        text: `Tes "${actualTestType}" untuk ${candidate.nama_lengkap} (${formLocationType === "online" ? "Online via Google Meet" : "Offline di Pesantren"}) pada ${start.toLocaleDateString("id-ID", { weekday: "long", day: "numeric", month: "long", year: "numeric" })} jam ${start.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" })} WIB telah berhasil dijadwalkan & notifikasi WhatsApp dikirim.`,
+        confirmButtonColor: "#800000",
+      });
 
       setScheduleModalOpen(false);
       resetScheduleForm();
       fetchData();
       fetchAvailStats();
     } catch (err: any) {
-      console.error(err);
-      Swal.fire("Error", err.message || "Terjadi kesalahan sistem", "error");
+      Swal.fire("Gagal", err.message || "Terjadi kesalahan saat menyimpan jadwal", "error");
     } finally {
       setSubmittingSchedule(false);
     }
   };
 
   const handleAssign = async (sessionId: string) => {
-    if (!selectedPendaftarId) return;
+    if (!selectedPendaftarId) {
+      Swal.fire("Pilih Calon Santri", "Silakan klik calon santri di kolom kanan terlebih dahulu", "info");
+      return;
+    }
 
-    const p = pendaftar.find((p) => p.id === selectedPendaftarId);
+    const candidate = pendaftar.find((p) => p.id === selectedPendaftarId);
+    if (!candidate) return;
 
     try {
       setAssigning(true);
@@ -329,164 +337,164 @@ export default function JadwalUjianPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          pendaftar_id: selectedPendaftarId,
+          pendaftar_id: candidate.id,
           exam_session_id: sessionId,
-          tahun_ajaran_id: p?.tahun_ajaran_id,
+          tahun_ajaran_id: candidate.tahun_ajaran_id,
         }),
       });
 
-      if (res.ok) {
-        setSelectedPendaftarId(null);
-        fetchData();
-        Swal.fire("Berhasil", "Pendaftar berhasil dijadwalkan ke sesi ini", "success");
-      } else {
+      if (!res.ok) {
         const err = await res.json();
-        Swal.fire("Gagal", err.error || "Gagal menetapkan jadwal", "error");
+        throw new Error(err.error || "Gagal menetapkan jadwal");
       }
-    } catch (e) {
-      console.error(e);
-      Swal.fire("Error", "Terjadi kesalahan sistem saat menetapkan jadwal", "error");
+
+      Swal.fire({
+        icon: "success",
+        title: "Berhasil!",
+        text: `Santri ${candidate.nama_lengkap} berhasil dijadwalkan.`,
+        timer: 2000,
+        showConfirmButton: false,
+      });
+
+      setSelectedPendaftarId(null);
+      fetchData();
+      fetchAvailStats();
+    } catch (e: any) {
+      Swal.fire("Gagal", e.message, "error");
     } finally {
       setAssigning(false);
     }
   };
 
   const handleBulkAssign = async (sessionId: string, sessionTitle: string) => {
-    const result = await Swal.fire({
-      title: "Assign Massal?",
-      text: `Yakin ingin Assign Massal ke sesi "${sessionTitle}"?\n\nLink ujian akan dikirim via WhatsApp ke semua pendaftar yang belum punya jadwal.`,
+    if (availStats.eligibleCount === 0) {
+      Swal.fire("Informasi", "Tidak ada pendaftar yang butuh jadwal saat ini.", "info");
+      return;
+    }
+
+    const confirm = await Swal.fire({
+      title: "Broadcast Notifikasi Sesi?",
+      text: `Kirim pesan WhatsApp blast kepada calon pendaftar agar mengetahui sesi "${sessionTitle}" ini?`,
       icon: "question",
       showCancelButton: true,
-      confirmButtonColor: "#7c3aed",
-      cancelButtonColor: "#57534e",
-      confirmButtonText: "Ya, Mulai Broadcast",
+      confirmButtonText: "Ya, Kirim Notifikasi",
       cancelButtonText: "Batal",
-      reverseButtons: true,
+      confirmButtonColor: "#800000",
     });
 
-    if (!result.isConfirmed) return;
+    if (!confirm.isConfirmed) return;
 
-    try {
-      setAssigning(true);
-      const res = await fetch("/api/admin/jadwal-ujian/bulk-assign", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ exam_session_id: sessionId }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        if (data.queue && data.queue.length > 0) {
-          setSendingProgress({
-            active: true,
-            curr: 0,
-            total: data.queue.length,
-            logs: [`Memulai pengiriman untuk ${data.queue.length} pendaftar...`],
-          });
-
-          for (let i = 0; i < data.queue.length; i++) {
-            const item = data.queue[i];
-            try {
-              const sendRes = await fetch("/api/admin/jadwal-ujian/send-notification", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  pendaftar_id: item.pendaftar_id,
-                  jadwal_id: item.jadwal_id,
-                }),
-              });
-              const sendData = await sendRes.json();
-              setSendingProgress((prev) => ({
-                ...prev,
-                curr: i + 1,
-                logs: [
-                  `[${i + 1}/${data.queue.length}] ${item.nama_lengkap}: ${sendData.success ? "Terkirim" : "Gagal"}`,
-                  ...prev.logs,
-                ],
-              }));
-            } catch (err: any) {
-              setSendingProgress((prev) => ({
-                ...prev,
-                curr: i + 1,
-                logs: [`[${i + 1}/${data.queue.length}] ${item.nama_lengkap}: Error (${err.message})`, ...prev.logs],
-              }));
-            }
-          }
-
-          setTimeout(() => {
-            setSendingProgress((prev) => ({ ...prev, active: false }));
-            Swal.fire("Selesai", "Semua notifikasi telah diproses.", "success");
-            fetchData();
-          }, 1500);
-        } else {
-          Swal.fire("Selesai", data.message || "Berhasil menetapkan jadwal", "success");
-          fetchData();
-        }
-      } else {
-        Swal.fire("Gagal", data.error || "Gagal melakukan assign massal", "error");
-      }
-    } catch (e) {
-      console.error(e);
-      Swal.fire("Error", "Terjadi kesalahan sistem", "error");
-    } finally {
-      setAssigning(false);
-    }
-  };
-
-  const handleBroadcastAvailability = async () => {
     try {
       setBroadcasting(true);
       const res = await fetch("/api/admin/notifications/broadcast-availability", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ resetFlags }),
+        body: JSON.stringify({
+          reset_notified_flags: false,
+        }),
       });
 
-      const data = await res.json();
-      if (res.ok) {
-        Swal.fire({
-          title: "Broadcast Berhasil Dijalankan!",
-          text: `Pesan broadcast telah berhasil dikirim ke antrean untuk ${data.data.count} pendaftar.`,
-          icon: "success",
-          confirmButtonColor: "#7c3aed",
-        });
-        setShowBroadcastModal(false);
-        fetchAvailStats();
-      } else {
-        Swal.fire("Gagal", data.error || "Gagal menjalankan broadcast", "error");
+      if (!res.ok) {
+        throw new Error("Gagal mengirim broadcast notifikasi");
       }
-    } catch (e) {
-      console.error(e);
-      Swal.fire("Error", "Terjadi kesalahan sistem saat broadcast", "error");
+
+      const resData = await res.json();
+      Swal.fire("Terkirim", resData.message || "Notifikasi berhasil diproses.", "success");
+      fetchAvailStats();
+    } catch (e: any) {
+      Swal.fire("Gagal", e.message, "error");
     } finally {
       setBroadcasting(false);
     }
   };
 
+  const handleStartBroadcast = async () => {
+    setShowBroadcastModal(false);
+    setSendingProgress({
+      active: true,
+      curr: 0,
+      total: availStats.eligibleCount || 1,
+      logs: ["Memulai pengiriman notifikasi WhatsApp..."],
+    });
+
+    try {
+      const res = await fetch("/api/admin/notifications/broadcast-availability", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          reset_notified_flags: resetFlags,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setSendingProgress((prev) => ({
+          ...prev,
+          curr: prev.total,
+          logs: [data.message || "Pengiriman selesai!", ...prev.logs],
+        }));
+
+        setTimeout(() => {
+          setSendingProgress((prev) => ({ ...prev, active: false }));
+          Swal.fire("Selesai", "Seluruh notifikasi ketersediaan jadwal telah terkirim.", "success");
+          fetchAvailStats();
+        }, 1200);
+      } else {
+        throw new Error(data.error || "Terjadi kesalahan pengiriman");
+      }
+    } catch (e: any) {
+      setSendingProgress((prev) => ({ ...prev, active: false }));
+      Swal.fire("Error", e.message, "error");
+    }
+  };
+
   const toTitleCase = (str: string) => {
     if (!str) return "";
-    return str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+    return str
+      .toLowerCase()
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
   };
 
   const formatTimeRange = (start: string, end: string) => {
     const s = new Date(start);
     const e = new Date(end);
-    return `${s.toLocaleDateString("id-ID", { weekday: "long", day: "numeric", month: "short" })} • ${s.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" })} - ${e.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" })}`;
+    const optionsDate: Intl.DateTimeFormatOptions = {
+      weekday: "short",
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    };
+    const optionsTime: Intl.DateTimeFormatOptions = {
+      hour: "2-digit",
+      minute: "2-digit",
+    };
+    return `${s.toLocaleDateString("id-ID", optionsDate)} • ${s.toLocaleTimeString("id-ID", optionsTime)} - ${e.toLocaleTimeString("id-ID", optionsTime)} WIB`;
   };
 
+  // Filter candidates for right column
   const filteredPendaftar = useMemo(() => {
-    return pendaftar.filter(
-      (p) =>
-        p.nama_lengkap.toLowerCase().includes(search.toLowerCase()) ||
-        p.nomor_pendaftaran.toLowerCase().includes(search.toLowerCase())
-    );
+    return pendaftar.filter((p) => {
+      const term = search.toLowerCase();
+      return (
+        p.nama_lengkap.toLowerCase().includes(term) ||
+        p.nomor_pendaftaran.toLowerCase().includes(term) ||
+        (p.jenjang && p.jenjang.toLowerCase().includes(term))
+      );
+    });
   }, [pendaftar, search]);
 
+  // Filter candidate dropdown in modal
   const modalCandidateList = useMemo(() => {
-    if (!formCandidateSearch) return pendaftar;
+    if (!formCandidateSearch.trim()) return pendaftar;
+    const term = formCandidateSearch.toLowerCase();
     return pendaftar.filter(
       (p) =>
-        p.nama_lengkap.toLowerCase().includes(formCandidateSearch.toLowerCase()) ||
-        p.nomor_pendaftaran.toLowerCase().includes(formCandidateSearch.toLowerCase())
+        p.nama_lengkap.toLowerCase().includes(term) ||
+        p.nomor_pendaftaran.toLowerCase().includes(term) ||
+        (p.jenjang && p.jenjang.toLowerCase().includes(term))
     );
   }, [pendaftar, formCandidateSearch]);
 
@@ -495,8 +503,8 @@ export default function JadwalUjianPage() {
   }, [pendaftar, formCandidateId]);
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto">
-      {/* Header */}
+    <div className="space-y-6 pb-20 max-w-7xl mx-auto">
+      {/* Header Banner */}
       <div className="bg-white rounded-2xl shadow-sm p-6 border border-stone-100 overflow-hidden relative">
         <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center gap-5">
@@ -508,7 +516,7 @@ export default function JadwalUjianPage() {
                 Plotting & Jadwal <span className="text-primary-600">Seleksi</span>
               </h1>
               <p className="text-stone-500 font-medium text-sm">
-                Atur jadwal tes pendaftar, tentukan penguji/pewawancara, dan buat sesi ujian
+                Atur jadwal wawancara calon santri, tentukan penguji, dan hubungkan Google Meet / lokasi tes
               </p>
             </div>
           </div>
@@ -524,8 +532,8 @@ export default function JadwalUjianPage() {
               onClick={() => openScheduleModal()}
               className="flex items-center gap-2.5 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-black text-sm shadow-lg shadow-primary-600/20 transition-all hover:scale-[1.02] active:scale-95 whitespace-nowrap"
             >
-              <Plus className="w-5 h-5" />
-              Buat Sesi / Jadwalkan Tes
+              <CalendarPlus className="w-5 h-5" />
+              Jadwalkan Seleksi Santri
             </button>
           </div>
         </div>
@@ -563,7 +571,7 @@ export default function JadwalUjianPage() {
               {sessions.length} <span className="text-sm font-bold text-stone-400">Sesi</span>
             </h3>
             <p className="text-xs mt-1.5 text-emerald-600 font-bold flex items-center gap-1">
-              <CheckCircle2 className="w-3.5 h-3.5" /> Total kuota tersedia: {availStats.totalAvailableSlots} slot
+              <CheckCircle2 className="w-3.5 h-3.5" /> Total slot tersedia: {availStats.totalAvailableSlots} slot
             </p>
           </div>
         </div>
@@ -575,10 +583,10 @@ export default function JadwalUjianPage() {
           <div className="flex items-center justify-between px-1">
             <h2 className="font-black text-stone-900 text-lg flex items-center gap-2">
               <Clock className="w-5 h-5 text-primary-600" />
-              Daftar Sesi & Jadwal Ujian
+              Daftar Sesi & Jadwal Seleksi
             </h2>
             <span className="text-xs font-bold text-stone-400">
-              {sessions.length} Sesi Terdaftar
+              {sessions.length} Jadwal Terdaftar
             </span>
           </div>
 
@@ -586,18 +594,18 @@ export default function JadwalUjianPage() {
             {loading ? (
               <div className="bg-white rounded-2xl p-12 text-center border border-stone-100 shadow-sm">
                 <Loader2 className="w-8 h-8 animate-spin text-primary-600 mx-auto" />
-                <p className="text-stone-400 text-sm mt-2 font-medium">Memuat daftar sesi...</p>
+                <p className="text-stone-400 text-sm mt-2 font-medium">Memuat jadwal...</p>
               </div>
             ) : sessions.length === 0 ? (
               <div className="bg-white rounded-2xl p-12 text-center border-2 border-dashed border-stone-200">
                 <Calendar className="w-12 h-12 text-stone-300 mx-auto mb-3" />
-                <p className="font-bold text-stone-600">Belum ada sesi ujian yang dibuat.</p>
-                <p className="text-xs text-stone-400 mt-1 mb-4">Klik tombol di bawah untuk membuat jadwal atau sesi baru</p>
+                <p className="font-bold text-stone-600">Belum ada jadwal seleksi yang dibuat.</p>
+                <p className="text-xs text-stone-400 mt-1 mb-4">Klik tombol di bawah untuk menjadwalkan calon santri</p>
                 <button
                   onClick={() => openScheduleModal()}
                   className="px-5 py-2.5 bg-primary-600 text-white rounded-xl font-bold text-xs inline-flex items-center gap-2 hover:bg-primary-700 transition-all shadow-sm"
                 >
-                  <Plus className="w-4 h-4" /> Buat Sesi Baru Sekarang
+                  <CalendarPlus className="w-4 h-4" /> Jadwalkan Calon Santri
                 </button>
               </div>
             ) : (
@@ -614,27 +622,37 @@ export default function JadwalUjianPage() {
                     </div>
                     <div>
                       <h3 className="font-black text-stone-900 text-base leading-snug">
-                        {s.title || "Sesi Ujian"}
+                        {s.title || "Jadwal Seleksi Santri"}
                       </h3>
                       <p className="text-xs font-bold text-stone-600 mt-1">
                         {formatTimeRange(s.start_time, s.end_time)}
                       </p>
                       <div className="flex flex-wrap items-center gap-3 mt-2">
                         <span className="flex items-center gap-1.5 text-xs font-bold text-stone-500">
-                          <MapPin className="w-3.5 h-3.5 text-stone-400" />
-                          {s.location || "Online (Google Meet)"}
+                          {s.location?.includes("http") || s.location?.toLowerCase().includes("meet") ? (
+                            <Video className="w-3.5 h-3.5 text-emerald-600" />
+                          ) : (
+                            <MapPin className="w-3.5 h-3.5 text-amber-600" />
+                          )}
+                          <span className="truncate max-w-[280px]">
+                            {s.location || "Online (Google Meet)"}
+                          </span>
                         </span>
                         <span className="text-stone-300">•</span>
                         <span className="flex items-center gap-1.5 text-xs font-black text-primary-600">
-                          <Users className="w-3.5 h-3.5" />
-                          {s.booked_count} / {s.quota} Peserta
+                          <UserCheck className="w-3.5 h-3.5" />
+                          {s.quota === 1
+                            ? s.booked_count >= 1
+                              ? "Sudah Diplot (1 Santri)"
+                              : "Tersedia (Khusus 1 Santri)"
+                            : `${s.booked_count} / ${s.quota} Santri`}
                         </span>
                       </div>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-3 shrink-0">
-                    {selectedPendaftarId ? (
+                    {selectedPendaftarId && (
                       <button
                         onClick={() => handleAssign(s.id)}
                         disabled={assigning || s.booked_count >= s.quota}
@@ -643,23 +661,6 @@ export default function JadwalUjianPage() {
                         {assigning && <Loader2 className="w-4 h-4 animate-spin" />}
                         Plotkan Santri Terpilih
                       </button>
-                    ) : (
-                      <div className="flex flex-col gap-2 w-full md:w-56 items-end">
-                        <div className="w-full bg-stone-100 h-2 rounded-full overflow-hidden">
-                          <div
-                            className="h-full bg-gradient-to-r from-primary-600 to-indigo-600 rounded-full"
-                            style={{ width: `${Math.min(100, (s.booked_count / s.quota) * 100)}%` }}
-                          />
-                        </div>
-                        <button
-                          onClick={() => handleBulkAssign(s.id, s.title || "Sesi Ini")}
-                          disabled={assigning}
-                          className="text-xs font-bold text-primary-600 hover:text-primary-800 hover:bg-primary-50 px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5"
-                        >
-                          <Send className="w-3.5 h-3.5" />
-                          Broadcast Link (Massal)
-                        </button>
-                      </div>
                     )}
                   </div>
                 </div>
@@ -668,20 +669,24 @@ export default function JadwalUjianPage() {
           </div>
         </div>
 
-        {/* Right Column: Candidate List */}
-        <div className="lg:col-span-4 space-y-4">
-          <div className="flex items-center justify-between px-1">
-            <h2 className="font-black text-stone-900 text-lg flex items-center gap-2">
-              <Users className="w-5 h-5 text-indigo-600" />
-              Calon Peserta Butuh Jadwal
-            </h2>
-            <span className="text-xs font-bold text-stone-400">
-              {filteredPendaftar.length} Santri
-            </span>
-          </div>
+        {/* Right Column: Unscheduled Candidates List */}
+        <div className="lg:col-span-4">
+          <div className="bg-white rounded-2xl shadow-sm border border-stone-100 overflow-hidden sticky top-6">
+            <div className="p-4 bg-stone-50 border-b border-stone-100 flex items-center justify-between">
+              <div>
+                <h3 className="font-black text-stone-900 text-sm">
+                  Calon Santri Butuh Jadwal
+                </h3>
+                <p className="text-[11px] font-bold text-stone-400">
+                  {filteredPendaftar.length} Santri Berkas Terverifikasi
+                </p>
+              </div>
+              <span className="px-2.5 py-1 bg-amber-100 text-amber-800 rounded-lg text-xs font-black">
+                {filteredPendaftar.length}
+              </span>
+            </div>
 
-          <div className="bg-white rounded-2xl shadow-sm border border-stone-100 overflow-hidden flex flex-col h-[650px] sticky top-24">
-            <div className="p-3.5 border-b border-stone-100 bg-stone-50/70">
+            <div className="p-3 border-b border-stone-100 bg-white">
               <div className="relative">
                 <Search className="absolute left-3 top-2.5 w-4 h-4 text-stone-400" />
                 <input
@@ -689,14 +694,14 @@ export default function JadwalUjianPage() {
                   placeholder="Cari nama atau no. pendaftaran..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="w-full bg-white border border-stone-200 rounded-xl pl-9 pr-4 py-2 text-xs font-bold text-stone-800 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none"
+                  className="w-full pl-9 pr-4 py-2 text-xs bg-stone-50 border border-stone-200 rounded-xl outline-none focus:ring-2 focus:ring-primary-500/20 font-bold"
                 />
               </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-3 space-y-2 overscroll-contain custom-scrollbar">
+            <div className="divide-y divide-stone-100 max-h-[520px] overflow-y-auto overscroll-contain custom-scrollbar p-2 space-y-1">
               {filteredPendaftar.length === 0 ? (
-                <div className="flex flex-col items-center justify-center h-full text-stone-400 p-6 text-center">
+                <div className="p-8 text-center text-stone-400 flex flex-col items-center">
                   <UserCheck className="w-10 h-10 mb-2 opacity-40" />
                   <span className="text-xs font-bold">Semua pendaftar telah memiliki jadwal</span>
                 </div>
@@ -748,9 +753,9 @@ export default function JadwalUjianPage() {
                 <p className="text-[10px] font-bold uppercase tracking-widest text-stone-400">
                   Status Pemilihan
                 </p>
-                <p className="text-xs font-bold font-mono text-stone-200 truncate">
+                <p className="text-xs font-bold font-mono text-stone-200 truncate max-w-[200px]">
                   {selectedPendaftarId
-                    ? `Santri dipilih: ${toTitleCase(pendaftar.find((p) => p.id === selectedPendaftarId)?.nama_lengkap || "")}`
+                    ? `Santri: ${toTitleCase(pendaftar.find((p) => p.id === selectedPendaftarId)?.nama_lengkap || "")}`
                     : "Pilih santri atau klik 'Jadwalkan'"}
                 </p>
               </div>
@@ -768,7 +773,7 @@ export default function JadwalUjianPage() {
       </div>
 
       {/* ========================================================================= */}
-      {/* UNIFIED COMPREHENSIVE SCHEDULING MODAL (PENDAFTAR + PENGUJI + JENIS TES) */}
+      {/* REFINED SCHEDULING MODAL (KHUSUS 1 PENDAFTAR - ONLINE VS OFFLINE PESANTREN) */}
       {/* ========================================================================= */}
       {scheduleModalOpen && (
         <div
@@ -784,19 +789,18 @@ export default function JadwalUjianPage() {
               <div>
                 <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-white/10 text-primary-200 text-xs font-bold mb-2 border border-white/10">
                   <CalendarPlus className="w-3.5 h-3.5" />
-                  Form Penjadwalan Seleksi
+                  Jadwalkan Calon Santri
                 </div>
                 <h2 className="text-2xl font-black tracking-tight">
-                  Atur Jadwal & Penguji Seleksi
+                  Penjadwalan Seleksi & Penguji
                 </h2>
                 <p className="text-primary-200/80 text-xs mt-1">
-                  Pilih pendaftar, jenis tes, pewawancara/penguji, dan waktu pelaksanaan tes
+                  Atur jadwal wawancara & tes seleksi untuk satu calon pendaftar
                 </p>
               </div>
               <button
-                type="button"
                 onClick={() => setScheduleModalOpen(false)}
-                className="p-2 text-white/70 hover:text-white hover:bg-white/10 rounded-full transition-all"
+                className="p-2 hover:bg-white/10 rounded-xl text-primary-200 hover:text-white transition-all"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -804,102 +808,56 @@ export default function JadwalUjianPage() {
 
             {/* Modal Form */}
             <form onSubmit={handleSaveSchedule} className="p-6 space-y-5">
-              {/* 1. TARGET PENJADWALAN */}
-              <div>
-                <label className="block text-xs font-black text-stone-500 uppercase tracking-wider mb-2">
-                  1. Target Penjadwalan
+              {/* 1. PILIH CALON SANTRI / PENDAFTAR (WAJIB) */}
+              <div className="p-4 bg-primary-50/50 rounded-2xl border border-primary-100 space-y-2.5">
+                <label className="block text-xs font-black text-primary-900 uppercase tracking-wider">
+                  1. Pilih Calon Santri / Pendaftar <span className="text-rose-500">*</span>
                 </label>
-                <div className="grid grid-cols-2 gap-3 p-1.5 bg-stone-100 rounded-2xl border border-stone-200/60">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setScheduleType("spesifik");
-                      setFormQuota(1);
-                    }}
-                    className={`flex items-center justify-center gap-2 py-2.5 rounded-xl font-bold text-xs transition-all ${
-                      scheduleType === "spesifik"
-                        ? "bg-white text-primary-700 shadow-sm font-black"
-                        : "text-stone-500 hover:text-stone-800"
-                    }`}
-                  >
-                    <User className="w-4 h-4" />
-                    Pendaftar Tertentu (Jadwal Khusus)
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setScheduleType("umum");
-                      setFormQuota(10);
-                    }}
-                    className={`flex items-center justify-center gap-2 py-2.5 rounded-xl font-bold text-xs transition-all ${
-                      scheduleType === "umum"
-                        ? "bg-white text-primary-700 shadow-sm font-black"
-                        : "text-stone-500 hover:text-stone-800"
-                    }`}
-                  >
-                    <Users className="w-4 h-4" />
-                    Sesi Terbuka / Massal (Banyak Santri)
-                  </button>
-                </div>
-              </div>
-
-              {/* 2. PILIHAN NAMA PENDAFTAR (JIKA MODE SPESIFIK) */}
-              {scheduleType === "spesifik" ? (
-                <div className="p-4 bg-primary-50/50 rounded-2xl border border-primary-100 space-y-2.5">
-                  <label className="block text-xs font-black text-primary-900 uppercase tracking-wider">
-                    Pilih Calon Santri / Pendaftar <span className="text-rose-500">*</span>
-                  </label>
-                  
-                  {/* Search Candidate Filter */}
-                  <div className="relative">
-                    <Search className="absolute left-3 top-2.5 w-3.5 h-3.5 text-stone-400" />
-                    <input
-                      type="text"
-                      placeholder="Ketik untuk memfilter nama calon santri..."
-                      value={formCandidateSearch}
-                      onChange={(e) => setFormCandidateSearch(e.target.value)}
-                      className="w-full pl-8 pr-3 py-1.5 text-xs bg-white border border-stone-200 rounded-lg outline-none focus:ring-2 focus:ring-primary-500/20 font-bold"
-                    />
-                  </div>
-
-                  <select
-                    required
-                    value={formCandidateId}
-                    onChange={(e) => setFormCandidateId(e.target.value)}
-                    className="w-full bg-white border border-stone-300 rounded-xl px-4 py-3 text-sm font-bold text-stone-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none"
-                  >
-                    <option value="">-- Pilih Calon Santri / Pendaftar --</option>
-                    {modalCandidateList.map((p) => (
-                      <option key={p.id} value={p.id}>
-                        [{p.nomor_pendaftaran}] {toTitleCase(p.nama_lengkap)} {p.jenjang ? `(${p.jenjang})` : ""}
-                      </option>
-                    ))}
-                  </select>
-
-                  {selectedCandidateObj && (
-                    <div className="text-[11px] text-primary-800 bg-white p-2.5 rounded-lg border border-primary-100 flex items-center justify-between font-bold">
-                      <span>Calon Santri: <b>{selectedCandidateObj.nama_lengkap}</b> ({selectedCandidateObj.nomor_pendaftaran})</span>
-                      <span className="text-[10px] text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">Siap Dijadwalkan</span>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <div>
-                  <label className="block text-xs font-black text-stone-500 uppercase tracking-wider mb-1.5">
-                    Kuota Peserta untuk Sesi Ini
-                  </label>
+                
+                {/* Search Candidate Filter */}
+                <div className="relative">
+                  <Search className="absolute left-3 top-2.5 w-3.5 h-3.5 text-stone-400" />
                   <input
-                    type="number"
-                    min="1"
-                    max="100"
-                    value={formQuota}
-                    onChange={(e) => setFormQuota(parseInt(e.target.value) || 1)}
-                    className="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-2.5 text-sm font-bold outline-none focus:ring-2 focus:ring-primary-500/20"
+                    type="text"
+                    placeholder="Ketik untuk memfilter nama calon santri..."
+                    value={formCandidateSearch}
+                    onChange={(e) => setFormCandidateSearch(e.target.value)}
+                    className="w-full pl-8 pr-3 py-1.5 text-xs bg-white border border-stone-200 rounded-lg outline-none focus:ring-2 focus:ring-primary-500/20 font-bold"
                   />
                 </div>
-              )}
 
-              {/* 3. PILIHAN JENIS TES */}
+                <select
+                  required
+                  value={formCandidateId}
+                  onChange={(e) => setFormCandidateId(e.target.value)}
+                  className="w-full bg-white border border-stone-300 rounded-xl px-4 py-3 text-sm font-bold text-stone-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none"
+                >
+                  <option value="">-- Pilih Calon Santri / Pendaftar --</option>
+                  {modalCandidateList.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      [{p.nomor_pendaftaran}] {toTitleCase(p.nama_lengkap)} {p.jenjang ? `(${p.jenjang})` : ""}
+                    </option>
+                  ))}
+                </select>
+
+                {selectedCandidateObj && (
+                  <div className="text-[11px] text-primary-900 bg-white p-2.5 rounded-xl border border-primary-200 flex items-center justify-between font-bold shadow-xs">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-black text-[10px]">
+                        {selectedCandidateObj.nama_lengkap.charAt(0)}
+                      </div>
+                      <span>
+                        <b>{selectedCandidateObj.nama_lengkap}</b> ({selectedCandidateObj.nomor_pendaftaran})
+                      </span>
+                    </div>
+                    <span className="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 font-black">
+                      Siap Dijadwalkan
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* 2. PILIHAN JENIS TES */}
               <div className="space-y-2">
                 <label className="block text-xs font-black text-stone-500 uppercase tracking-wider">
                   2. Jenis Tes / Materi Seleksi <span className="text-rose-500">*</span>
@@ -913,7 +871,7 @@ export default function JadwalUjianPage() {
                     Wawancara Calon Santri & Orang Tua (Standar)
                   </option>
                   <option value="Tes Lengkap (Wawancara & Al-Qur'an)">
-                    Tes Lengkap (Wawancara Ortu, Santri & Tes Al-Qur'an/Tahfidz)
+                    Tes Lengkap (Wawancara Ortu, Santri & Tes Al-Qur'an / Tahfidz)
                   </option>
                   <option value="Tes Al-Qur'an & Tahfidz Saja">
                     Tes Al-Qur'an & Tahfidz Saja
@@ -939,7 +897,7 @@ export default function JadwalUjianPage() {
                 )}
               </div>
 
-              {/* 4. PILIHAN PENGUJI / PEWAWANCARA */}
+              {/* 3. PILIHAN PENGUJI / PEWAWANCARA (TETAP DIISI BAIK ONLINE MAUPUN OFFLINE) */}
               <div>
                 <label className="block text-xs font-black text-stone-500 uppercase tracking-wider mb-2">
                   3. Pilihan Penguji / Pewawancara
@@ -963,9 +921,9 @@ export default function JadwalUjianPage() {
                         </option>
                       ))}
                     </select>
-                    {formPengujiOrtuId && (
+                    {formLocationType === "online" && formPengujiOrtuId && (
                       <p className="text-[10px] text-stone-400 font-medium truncate">
-                        Meet Link: {examiners.find((e) => e.id === formPengujiOrtuId)?.google_meet_link || "Belum ada link tersimpan"}
+                        Meet Penguji: {detectedPengujiOrtu?.google_meet_link || "Belum ada link tersimpan"}
                       </p>
                     )}
                   </div>
@@ -988,19 +946,169 @@ export default function JadwalUjianPage() {
                         </option>
                       ))}
                     </select>
-                    {formPengujiSantriId && (
+                    {formLocationType === "online" && formPengujiSantriId && (
                       <p className="text-[10px] text-stone-400 font-medium truncate">
-                        Meet Link: {examiners.find((e) => e.id === formPengujiSantriId)?.google_meet_link || "Belum ada link tersimpan"}
+                        Meet Penguji: {detectedPengujiSantri?.google_meet_link || "Belum ada link tersimpan"}
                       </p>
                     )}
                   </div>
                 </div>
               </div>
 
+              {/* 4. METODE & LOKASI (HANYA DUA PILIHAN: ONLINE VS OFFLINE) */}
+              <div className="space-y-2.5">
+                <label className="block text-xs font-black text-stone-500 uppercase tracking-wider">
+                  4. Metode & Lokasi Seleksi <span className="text-rose-500">*</span>
+                </label>
+
+                {/* 2 Opsi Utama: Online vs Offline */}
+                <div className="grid grid-cols-2 gap-3 p-1.5 bg-stone-100 rounded-2xl border border-stone-200/60">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFormLocationType("online");
+                      if (detectedAnyMeet) setFormOnlineUrl(detectedAnyMeet);
+                    }}
+                    className={`flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-xs transition-all ${
+                      formLocationType === "online"
+                        ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/20 font-black"
+                        : "text-stone-600 hover:text-stone-900"
+                    }`}
+                  >
+                    <Video className="w-4 h-4" />
+                    Online (Google Meet)
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setFormLocationType("offline")}
+                    className={`flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-xs transition-all ${
+                      formLocationType === "offline"
+                        ? "bg-amber-600 text-white shadow-md shadow-amber-600/20 font-black"
+                        : "text-stone-600 hover:text-stone-900"
+                    }`}
+                  >
+                    <MapPin className="w-4 h-4" />
+                    Offline (Tatap Muka di Pesantren)
+                  </button>
+                </div>
+
+                {/* JIKA ONLINE: LINKKAN GOOGLE MEET PENGUJI */}
+                {formLocationType === "online" ? (
+                  <div className="p-4 bg-emerald-50/70 rounded-2xl border border-emerald-200 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1.5 text-xs font-black text-emerald-950">
+                        <Video className="w-4 h-4 text-emerald-600" />
+                        Tautan Google Meet Ujian Online
+                      </div>
+                      {detectedAnyMeet && (
+                        <span className="text-[10px] font-black uppercase px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded-full border border-emerald-300 flex items-center gap-1">
+                          <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                          Terkait dari Profil Penguji
+                        </span>
+                      )}
+                    </div>
+
+                    {detectedAnyMeet ? (
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="text"
+                            required
+                            value={formOnlineUrl || detectedAnyMeet}
+                            onChange={(e) => setFormOnlineUrl(e.target.value)}
+                            placeholder="https://meet.google.com/xxx-yyyy-zzz"
+                            className="flex-1 bg-white border border-emerald-300 rounded-xl px-3.5 py-2 text-xs font-mono font-bold text-emerald-950 focus:ring-2 focus:ring-emerald-500/20 outline-none"
+                          />
+                          <a
+                            href={formOnlineUrl || detectedAnyMeet}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="px-3.5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-1"
+                            title="Buka dan tes tautan Google Meet"
+                          >
+                            <ExternalLink className="w-3.5 h-3.5" />
+                            Tes Link
+                          </a>
+                        </div>
+                        <p className="text-[11px] text-emerald-800/80 font-medium">
+                          Tautan ini dikaitkan langsung dari penguji yang dipilih dan otomatis dikirimkan ke WhatsApp orang tua santri.
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        <p className="text-[11px] text-amber-800 bg-amber-50 p-2.5 rounded-xl border border-amber-200 font-medium flex items-center gap-1.5">
+                          <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
+                          Penguji terpilih belum mencantumkan tautan Google Meet di profil mereka. Masukkan link Google Meet:
+                        </p>
+                        <input
+                          type="text"
+                          required
+                          value={formOnlineUrl}
+                          onChange={(e) => setFormOnlineUrl(e.target.value)}
+                          placeholder="https://meet.google.com/xxx-yyyy-zzz"
+                          className="w-full bg-white border border-stone-300 rounded-xl px-3.5 py-2 text-xs font-mono font-bold text-stone-900 focus:ring-2 focus:ring-emerald-500/20 outline-none"
+                        />
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  /* JIKA OFFLINE: INPUT TEMPAT DI PESANTREN, TANPA GOOGLE MEET */
+                  <div className="p-4 bg-amber-50/70 rounded-2xl border border-amber-200 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1.5 text-xs font-black text-amber-950">
+                        <MapPin className="w-4 h-4 text-amber-600" />
+                        Tempat / Ruangan Ujian Tatap Muka di Pesantren
+                      </div>
+                      <span className="text-[10px] font-black uppercase px-2 py-0.5 bg-amber-100 text-amber-800 rounded-full border border-amber-300">
+                        Tatap Muka (Tanpa Meet)
+                      </span>
+                    </div>
+
+                    <input
+                      type="text"
+                      required
+                      value={formOfflinePlace}
+                      onChange={(e) => setFormOfflinePlace(e.target.value)}
+                      placeholder="misal: Kampus Pesantren - Ruang Penguji Seleksi"
+                      className="w-full bg-white border border-amber-300 rounded-xl px-3.5 py-2.5 text-xs font-bold text-stone-900 focus:ring-2 focus:ring-amber-500/20 outline-none"
+                    />
+
+                    {/* Quick Suggestion Chips */}
+                    <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                      <span className="text-[10px] font-bold text-amber-800/80">Pilihan Cepat:</span>
+                      {[
+                        "Kampus Pesantren (Ruang Penguji Seleksi)",
+                        "Kantor Asatidz / Penguji",
+                        "Ruang Rapat Gedung A",
+                        "Masjid Pesantren",
+                      ].map((chip) => (
+                        <button
+                          key={chip}
+                          type="button"
+                          onClick={() => setFormOfflinePlace(chip)}
+                          className={`text-[10px] px-2 py-0.5 rounded-lg border font-bold transition-all ${
+                            formOfflinePlace === chip
+                              ? "bg-amber-600 text-white border-amber-600"
+                              : "bg-white text-stone-600 border-stone-200 hover:bg-stone-50"
+                          }`}
+                        >
+                          {chip}
+                        </button>
+                      ))}
+                    </div>
+
+                    <p className="text-[11px] text-amber-800/80 font-medium">
+                      Penguji tetap ditugaskan untuk menguji langsung di lokasi. Link Google Meet tidak digunakan untuk ujian offline tatap muka.
+                    </p>
+                  </div>
+                )}
+              </div>
+
               {/* 5. WAKTU PELAKSANAAN & DURASI */}
               <div className="space-y-2">
                 <label className="block text-xs font-black text-stone-500 uppercase tracking-wider">
-                  4. Waktu Pelaksanaan & Durasi <span className="text-rose-500">*</span>
+                  5. Waktu Pelaksanaan & Durasi <span className="text-rose-500">*</span>
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
@@ -1049,79 +1157,7 @@ export default function JadwalUjianPage() {
                 </div>
               </div>
 
-              {/* 6. LOKASI / MEDIA (GOOGLE MEET / ZOOM / OFFLINE) */}
-              <div className="space-y-2">
-                <label className="block text-xs font-black text-stone-500 uppercase tracking-wider">
-                  5. Lokasi / Media Ujian
-                </label>
-                <div className="grid grid-cols-3 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setFormLocationType("gmeet");
-                      if (formLocationUrl.includes("zoom") || formLocationUrl.includes("Ruang")) {
-                        setFormLocationUrl("Online (Google Meet)");
-                      }
-                    }}
-                    className={`py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 border ${
-                      formLocationType === "gmeet"
-                        ? "bg-emerald-50 text-emerald-800 border-emerald-300 font-black"
-                        : "bg-stone-50 text-stone-500 border-stone-200"
-                    }`}
-                  >
-                    <Video className="w-3.5 h-3.5" />
-                    Google Meet
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setFormLocationType("zoom");
-                      if (formLocationUrl.includes("meet") || formLocationUrl.includes("Ruang")) {
-                        setFormLocationUrl("Online (Zoom)");
-                      }
-                    }}
-                    className={`py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 border ${
-                      formLocationType === "zoom"
-                        ? "bg-blue-50 text-blue-800 border-blue-300 font-black"
-                        : "bg-stone-50 text-stone-500 border-stone-200"
-                    }`}
-                  >
-                    <Video className="w-3.5 h-3.5" />
-                    Zoom Meeting
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setFormLocationType("offline");
-                      setFormLocationUrl("Kampus Pesantren (Offline)");
-                    }}
-                    className={`py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 border ${
-                      formLocationType === "offline"
-                        ? "bg-amber-50 text-amber-800 border-amber-300 font-black"
-                        : "bg-stone-50 text-stone-500 border-stone-200"
-                    }`}
-                  >
-                    <MapPin className="w-3.5 h-3.5" />
-                    Tatap Muka (Offline)
-                  </button>
-                </div>
-
-                <input
-                  type="text"
-                  value={formLocationUrl}
-                  onChange={(e) => setFormLocationUrl(e.target.value)}
-                  placeholder={
-                    formLocationType === "gmeet"
-                      ? "Link Google Meet (contoh: https://meet.google.com/abc-defg-hij)"
-                      : formLocationType === "zoom"
-                      ? "Link Zoom Meeting..."
-                      : "Ruangan di Pesantren (contoh: Ruang Rapat Lt. 1)"
-                  }
-                  className="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-2.5 text-xs font-bold outline-none focus:ring-2 focus:ring-primary-500/20"
-                />
-              </div>
-
-              {/* 7. CATATAN TAMBAHAN (OPSIONAL) */}
+              {/* 6. CATATAN TAMBAHAN (OPSIONAL) */}
               <div>
                 <label className="block text-xs font-black text-stone-500 uppercase tracking-wider mb-1">
                   6. Catatan Khusus (Opsional)
@@ -1248,31 +1284,26 @@ export default function JadwalUjianPage() {
                   onClick={() => setResetFlags(!resetFlags)}
                 >
                   <div
-                    className={`w-5 h-5 rounded-lg border-2 flex items-center justify-center transition-all ${
-                      resetFlags ? "bg-indigo-600 border-indigo-600 text-white" : "bg-white border-stone-300"
+                    className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${
+                      resetFlags
+                        ? "bg-indigo-600 border-indigo-600 text-white"
+                        : "border-stone-300 bg-white"
                     }`}
                   >
                     {resetFlags && <CheckSquare className="w-3.5 h-3.5" />}
                   </div>
                   <div>
-                    <p className="text-xs font-black text-stone-900 uppercase">
-                      Reset Status & Broadcast Ulang
+                    <p className="text-xs font-bold text-stone-800">
+                      Kirim Ulang ke Semua yang Belum Jadwal
                     </p>
-                    <p className="text-[10px] text-stone-400 font-bold">
-                      Gunakan jika Anda menambah banyak slot baru.
+                    <p className="text-[10px] text-stone-400 font-medium">
+                      Abaikan histori apakah santri sudah pernah dikirimi WA broadcast sebelumnya
                     </p>
                   </div>
                 </div>
-
-                <div className="bg-stone-50 rounded-xl p-3 border border-stone-200 flex items-start gap-2.5">
-                  <AlertCircle className="w-4 h-4 text-stone-600 shrink-0 mt-0.5" />
-                  <p className="text-[11px] text-stone-600 leading-relaxed font-medium">
-                    Pesan akan masuk antrean untuk mencegah terblokir WhatsApp.
-                  </p>
-                </div>
               </div>
 
-              <div className="flex gap-3">
+              <div className="pt-2 flex gap-3">
                 <button
                   onClick={() => setShowBroadcastModal(false)}
                   className="flex-1 py-3 bg-stone-100 hover:bg-stone-200 text-stone-600 rounded-xl font-bold text-xs transition-all"
@@ -1280,12 +1311,12 @@ export default function JadwalUjianPage() {
                   Batal
                 </button>
                 <button
-                  onClick={handleBroadcastAvailability}
-                  disabled={broadcasting || (availStats.eligibleCount === 0 && !resetFlags)}
-                  className="flex-[2] py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-black text-xs shadow-md shadow-indigo-600/20 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                  onClick={handleStartBroadcast}
+                  disabled={availStats.eligibleCount === 0}
+                  className="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white rounded-xl font-bold text-xs shadow-lg shadow-indigo-600/20 transition-all flex items-center justify-center gap-1.5"
                 >
-                  {broadcasting && <Loader2 className="w-4 h-4 animate-spin" />}
-                  Kirim Sekarang
+                  <Send className="w-3.5 h-3.5" />
+                  Kirim Notifikasi
                 </button>
               </div>
             </div>

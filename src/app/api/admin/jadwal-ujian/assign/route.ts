@@ -10,11 +10,20 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { pendaftar_id, exam_session_id, tahun_ajaran_id, penguji_ortu_id, penguji_santri_id, penguji_quran_id } = await req.json();
+    const {
+      pendaftar_id,
+      exam_session_id,
+      tahun_ajaran_id,
+      penguji_ortu_id,
+      penguji_santri_id,
+      penguji_quran_id,
+      metode_ujian,
+    } = await req.json();
 
     // Get session details
     const examSession = await prisma.examSession.findUnique({
-      where: { id: exam_session_id } });
+      where: { id: exam_session_id },
+    });
 
     if (!examSession) {
       return NextResponse.json({ error: "Session not found" }, { status: 404 });
@@ -24,44 +33,81 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Session is full" }, { status: 400 });
     }
 
-    // Fetch Penguji Google Meet links if explicit IDs passed
+    // Determine whether this session is online or offline
+    const isOffline =
+      metode_ujian === "offline" ||
+      (!metode_ujian &&
+        !(examSession.location || "").toLowerCase().includes("meet") &&
+        !(examSession.location || "").toLowerCase().includes("http") &&
+        !(examSession.location || "").toLowerCase().includes("online"));
+
+    const metodeFinal = isOffline ? "offline" : "online";
+
+    // Fetch Penguji Google Meet links ONLY if online
     let gmeetOrtu: string | null = null;
     let gmeetSantri: string | null = null;
     let gmeetQuran: string | null = null;
 
-    if (penguji_ortu_id) {
-      const p = await prisma.profile.findUnique({ where: { id: penguji_ortu_id }, select: { google_meet_link: true } });
-      if (p?.google_meet_link) gmeetOrtu = p.google_meet_link;
+    if (!isOffline) {
+      if (penguji_ortu_id) {
+        const p = await prisma.profile.findUnique({
+          where: { id: penguji_ortu_id },
+          select: { google_meet_link: true },
+        });
+        if (p?.google_meet_link) gmeetOrtu = p.google_meet_link;
+      }
+      if (penguji_santri_id) {
+        const p = await prisma.profile.findUnique({
+          where: { id: penguji_santri_id },
+          select: { google_meet_link: true },
+        });
+        if (p?.google_meet_link) gmeetSantri = p.google_meet_link;
+      }
+      if (penguji_quran_id) {
+        const p = await prisma.profile.findUnique({
+          where: { id: penguji_quran_id },
+          select: { google_meet_link: true },
+        });
+        if (p?.google_meet_link) gmeetQuran = p.google_meet_link;
+      }
     }
-    if (penguji_santri_id) {
-      const p = await prisma.profile.findUnique({ where: { id: penguji_santri_id }, select: { google_meet_link: true } });
-      if (p?.google_meet_link) gmeetSantri = p.google_meet_link;
-    }
-    if (penguji_quran_id) {
-      const p = await prisma.profile.findUnique({ where: { id: penguji_quran_id }, select: { google_meet_link: true } });
-      if (p?.google_meet_link) gmeetQuran = p.google_meet_link;
-    }
+
+    const meetingLink = isOffline
+      ? null
+      : gmeetSantri ||
+        gmeetOrtu ||
+        (examSession.location?.startsWith("http") ? examSession.location : null);
+
+    const tempatFinal =
+      examSession.location ||
+      (isOffline ? "Kampus Pesantren (Ruang Penguji)" : "Online (Google Meet)");
 
     // Create or update JadwalUjian
     const result = await prisma.$transaction([
       prisma.jadwalUjian.upsert({
         where: {
-          // This assumes unique constraint on pendaftar_id? No, JadwalUjian doesn't have it.
-          // I'll filter by pendaftar_id and tahun_ajaran_id.
           id:
             (
               await prisma.jadwalUjian.findFirst({
-                where: { pendaftar_id, tahun_ajaran_id } })
-            )?.id || "00000000-0000-0000-0000-000000000000" },
+                where: { pendaftar_id, tahun_ajaran_id },
+              })
+            )?.id || "00000000-0000-0000-0000-000000000000",
+        },
         update: {
           exam_session_id,
           tanggal_ujian: examSession.start_time,
           waktu_mulai_santri: examSession.start_time,
           waktu_selesai_santri: examSession.end_time,
-          tempat_santri: examSession.location || "Pesantren Al Fath",
+          metode_ujian: metodeFinal,
+          google_meet_link: meetingLink,
+          tempat_santri: tempatFinal,
+          ...(penguji_ortu_id ? { penguji_ortu_id, zoom_link_ortu: isOffline ? null : gmeetOrtu } : {}),
+          ...(penguji_santri_id ? { penguji_santri_id, zoom_link_santri: isOffline ? null : gmeetSantri } : {}),
+          ...(penguji_quran_id ? { penguji_quran_id, zoom_link_quran: isOffline ? null : gmeetQuran } : {}),
           waktu_mulai_ortu: examSession.start_time,
           waktu_selesai_ortu: examSession.end_time,
-          tempat_ortu: examSession.location || "Pesantren Al Fath" },
+          tempat_ortu: tempatFinal,
+        },
         create: {
           pendaftar_id,
           tahun_ajaran_id,
@@ -69,17 +115,29 @@ export async function POST(req: NextRequest) {
           tanggal_ujian: examSession.start_time,
           waktu_mulai_santri: examSession.start_time,
           waktu_selesai_santri: examSession.end_time,
-          tempat_santri: examSession.location || "Pesantren Al Fath",
+          metode_ujian: metodeFinal,
+          google_meet_link: meetingLink,
+          tempat_santri: tempatFinal,
+          penguji_ortu_id: penguji_ortu_id || undefined,
+          penguji_santri_id: penguji_santri_id || undefined,
+          penguji_quran_id: penguji_quran_id || undefined,
+          zoom_link_ortu: isOffline ? null : gmeetOrtu,
+          zoom_link_santri: isOffline ? null : gmeetSantri,
+          zoom_link_quran: isOffline ? null : gmeetQuran,
           waktu_mulai_ortu: examSession.start_time,
           waktu_selesai_ortu: examSession.end_time,
-          tempat_ortu: examSession.location || "Pesantren Al Fath" } }),
+          tempat_ortu: tempatFinal,
+        },
+      }),
       prisma.examSession.update({
         where: { id: exam_session_id },
-        data: { booked_count: { increment: 1 } } }),
+        data: { booked_count: { increment: 1 } },
+      }),
       // Also update pendaftar status to 'scheduled'
       prisma.pendaftar.update({
         where: { id: pendaftar_id },
-        data: { status_pendaftaran: "scheduled" } }),
+        data: { status_pendaftaran: "scheduled" },
+      }),
     ]);
 
     // Logging audit action
@@ -88,29 +146,37 @@ export async function POST(req: NextRequest) {
       adminId: session.id || "system",
       adminName: session.full_name || session.name || "Admin",
       targetId: pendaftar_id,
-      details: { exam_session_id, session_title: examSession.title } });
+      details: { exam_session_id, session_title: examSession.title, metode: metodeFinal },
+    });
 
-    // NEW ENHANCEMENT: Send WhatsApp notification
+    // Send WhatsApp notification
     try {
       const pendaftar = await prisma.pendaftar.findUnique({
         where: { id: pendaftar_id },
-        select: { nama_lengkap: true, no_hp: true } });
+        select: { nama_lengkap: true, no_hp: true },
+      });
 
       if (pendaftar?.no_hp) {
         const { notifyTestSchedule } = await import("@/lib/wablas");
         await notifyTestSchedule({
           phone: pendaftar.no_hp,
           nama: pendaftar.nama_lengkap,
-          tanggal: new Date(examSession.start_time).toLocaleDateString(
-            "id-ID",
-            {
-              weekday: "long",
-              year: "numeric",
-              month: "long",
-              day: "numeric" },
-          ),
-          waktu: `${new Date(examSession.start_time).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" })} - ${new Date(examSession.end_time).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" })}`,
-          tempat: examSession.location || "Pesantren Al Fath" });
+          tanggal: new Date(examSession.start_time).toLocaleDateString("id-ID", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }),
+          waktu: `${new Date(examSession.start_time).toLocaleTimeString("id-ID", {
+            hour: "2-digit",
+            minute: "2-digit",
+          })} - ${new Date(examSession.end_time).toLocaleTimeString("id-ID", {
+            hour: "2-digit",
+            minute: "2-digit",
+          })} WIB`,
+          tempat: tempatFinal,
+          meeting_link: isOffline ? undefined : meetingLink || undefined,
+        });
       }
     } catch (waError) {
       console.error("WA Notification failed:", waError);
