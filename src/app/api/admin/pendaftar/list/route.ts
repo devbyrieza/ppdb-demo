@@ -52,9 +52,10 @@ export async function GET(request: NextRequest) {
     const skip = (page - 1) * limit;
 
     // Build filter
-    const baseWhere = getAdminWhereClause(tahunAjaran || undefined) as any;
+    const baseWhere = (await getAdminWhereClause(tahunAjaran || undefined)) as any;
     const where: Prisma.PendaftarWhereInput = {
-      ...baseWhere };
+      ...baseWhere,
+    };
 
     // Search filter
     if (search) {
@@ -65,8 +66,8 @@ export async function GET(request: NextRequest) {
       ];
     }
 
-    // Status filter
-    if (status) {
+    // Status filter mapping
+    if (status && status !== "all") {
       const filterMapping: Record<string, string[]> = {
         belum_bayar: ["draft", "waiting_payment", "awaiting_payment"],
         menunggu_verifikasi_pembayaran: ["payment_verification"],
@@ -109,7 +110,7 @@ export async function GET(request: NextRequest) {
         terjadwal_ujian: ["scheduled", "selection"],
         sedang_seleksi: ["selection", "scheduled", "testing"],
         belum_ujian: ["scheduled", "selection"],
-        tested: ["tested", "passed", "announced", "accepted", "enrolled"], // Matches UI filter
+        tested: ["tested", "passed", "announced", "accepted", "enrolled"],
         sudah_ujian: ["tested", "passed", "announced", "accepted", "enrolled"],
         hasil_ujian: ["passed", "announced", "accepted", "enrolled"],
         diterima: ["accepted", "passed"],
@@ -117,13 +118,27 @@ export async function GET(request: NextRequest) {
         ditolak: ["rejected", "docs_rejected"],
         belum_daftar_ulang: ["accepted"],
         sudah_daftar_ulang: ["enrolled"],
-        mengundurkan_diri: ["mengundurkan_diri"] };
+        mengundurkan_diri: ["mengundurkan_diri"],
+      };
 
-      const statusValues = filterMapping[status];
-      if (statusValues && statusValues.length > 0) {
-        where.status_pendaftaran = { in: statusValues };
+      if (status.includes(",")) {
+        const parts = status.split(",").map((s) => s.trim()).filter(Boolean);
+        const allMapped: string[] = [];
+        for (const part of parts) {
+          if (filterMapping[part]) {
+            allMapped.push(...filterMapping[part]);
+          } else {
+            allMapped.push(part);
+          }
+        }
+        where.status_pendaftaran = { in: Array.from(new Set(allMapped)) };
       } else {
-        where.status_pendaftaran = status;
+        const statusValues = filterMapping[status];
+        if (statusValues && statusValues.length > 0) {
+          where.status_pendaftaran = { in: statusValues };
+        } else {
+          where.status_pendaftaran = status;
+        }
       }
     } else {
       where.status_pendaftaran = { not: "mengundurkan_diri" };
@@ -136,21 +151,17 @@ export async function GET(request: NextRequest) {
     if (jenisKelamin) {
       where.jenis_kelamin = { contains: jenisKelamin, mode: "insensitive" };
     }
-    if (tahunAjaran) where.tahun_ajaran_id = tahunAjaran;
+    if (tahunAjaran && tahunAjaran !== "all") where.tahun_ajaran_id = tahunAjaran;
     if (provinsi) where.provinsi = provinsi;
     if (kabupaten) where.kabupaten = kabupaten;
     if (kecamatan) where.kecamatan = kecamatan;
     if (kelurahan) where.kelurahan = kelurahan;
     if (tipePendaftaran) where.tipe_pendaftaran = tipePendaftaran;
 
-    // Execute query with transaction for count and data
-    // Execute query with transaction for count and data
-
     // === REDIS CACHE CHECK ===
     const cacheKey = `admin_pendaftar_list_${tahunAjaran}_${page}_${limit}_${search}_${status}_${jenjang}_${jenisKelamin}_${tipePendaftaran}_${provinsi}_${kabupaten}_${kecamatan}_${kelurahan}`;
     const cachedData = await getCache<any>(cacheKey);
     if (cachedData) {
-      console.log(`⚡ [API Pendaftar List] Mengembalikan data dari Redis Cache!`);
       return NextResponse.json(cachedData);
     }
     // =========================
@@ -171,15 +182,20 @@ export async function GET(request: NextRequest) {
         no_hp: true,
         email: true,
         status_pendaftaran: true,
+        tahun_ajaran_id: true,
         data_lengkap: true,
         created_at: true,
         tahun_ajaran: {
           select: {
-            nama: true } },
+            nama: true,
+          },
+        },
         pembayaran: {
-          select: { status_pembayaran: true } },
+          select: { status_pembayaran: true },
+        },
         dokumen: {
-          select: { jenis_dokumen: true, is_verified: true, catatan: true } },
+          select: { jenis_dokumen: true, is_verified: true, catatan: true },
+        },
         nilai_ujian: {
           select: {
             id: true,
@@ -194,37 +210,39 @@ export async function GET(request: NextRequest) {
             status_kelulusan: true,
             catatan_kelulusan: true,
             updated_at: true,
-            detail_akademik: true } },
+            detail_akademik: true,
+          },
+        },
         pengumuman: {
-          select: { status_kelulusan: true } },
+          select: { status_kelulusan: true },
+        },
         whatsapp_logs: {
           orderBy: { created_at: "desc" },
           take: 1,
-          select: { status: true, updated_at: true, error_message: true } } },
+          select: { status: true, updated_at: true, error_message: true },
+        },
+      },
       orderBy: { created_at: "desc" },
       skip,
-      take: limit });
+      take: limit,
+    });
 
-    // Transform data: Master Merge for NilaiUjian and document status
     const isEmpty = (v: any) => {
       if (v == null || v === "") return true;
       if (typeof v === "object") {
         if (Array.isArray(v)) return v.length === 0;
         const keys = Object.keys(v);
         if (keys.length === 0) return true;
-        // Check if all values are null or empty
         return keys.every((key) => v[key] == null || v[key] === "");
       }
       return false;
     };
 
     const transformedData = data.map((item) => {
-      // 1. Merge multiple NilaiUjian records if exists
       const scores = item.nilai_ujian || [];
       let mergedNilai = null;
 
       if (scores.length > 0) {
-        // Sort newest to oldest so first non-empty value found is the newest
         const sorted = [...scores].sort(
           (a: any, b: any) =>
             new Date(b.updated_at || 0).getTime() -
@@ -234,7 +252,6 @@ export async function GET(request: NextRequest) {
         const master: any = {};
         sorted.forEach((s) => {
           Object.entries(s).forEach(([k, v]) => {
-            // Pick newest non-empty value
             if (!isEmpty(v) && isEmpty(master[k])) {
               master[k] = v;
             }
@@ -243,36 +260,35 @@ export async function GET(request: NextRequest) {
         mergedNilai = master;
       }
 
-      // 2. Count completed score components (6 total)
       let examScoreCount = 0;
       if (mergedNilai) {
         if (mergedNilai.score_akademik != null) examScoreCount++;
         if (mergedNilai.score_kepribadian != null) examScoreCount++;
         if (mergedNilai.score_kesiapan != null) examScoreCount++;
         if (mergedNilai.score_quran != null) examScoreCount++;
-        if (mergedNilai.nilai_wawancara_santri != null) examScoreCount++;
-        if (mergedNilai.nilai_wawancara_ortu != null) examScoreCount++;
+        if (mergedNilai.score_wawancara != null) examScoreCount++;
+        if (
+          mergedNilai.nilai_wawancara_santri != null ||
+          mergedNilai.nilai_wawancara_ortu != null
+        )
+          examScoreCount++;
       }
 
-      // 3. Derive virtual exam_status label for UI
-      const sp = (item as any).status_pendaftaran;
-      const examProgressStatuses = [
-        "scheduled",
-        "testing",
-        "tested",
-        "passed",
-        "announced",
-        "accepted",
-        "enrolled",
-      ];
-      let examStatus = sp;
-      if (examProgressStatuses.includes(sp)) {
+      let examStatus = "unregistered";
+      const sp = item.status_pendaftaran;
+      if (
+        sp === "scheduled" ||
+        sp === "selection" ||
+        sp === "testing" ||
+        sp === "tested" ||
+        sp === "passed"
+      ) {
         if (examScoreCount === 6 || sp === "passed") {
-          examStatus = "tested"; // Sedang Seleksi / Passed by skip-ujian
+          examStatus = "tested";
         } else if (examScoreCount > 0) {
-          examStatus = "testing"; // Sedang Ujian
+          examStatus = "testing";
         } else {
-          examStatus = "scheduled"; // Terjadwal, belum ada nilai
+          examStatus = "scheduled";
         }
       }
 
@@ -288,10 +304,10 @@ export async function GET(request: NextRequest) {
             ? "verified"
             : doc.catatan
               ? "rejected"
-              : "pending" })) };
+              : "pending",
+        })),
+      };
     });
-
-    // Hapus console.log verbose di sini
 
     const responseData = {
       data: transformedData || [],
@@ -299,9 +315,10 @@ export async function GET(request: NextRequest) {
         page,
         limit,
         total,
-        totalPages: Math.ceil(total / limit) } };
+        totalPages: Math.ceil(total / limit),
+      },
+    };
 
-    // Simpan ke Redis selama 60 detik
     await setCache(cacheKey, responseData, 60);
 
     return NextResponse.json(responseData);

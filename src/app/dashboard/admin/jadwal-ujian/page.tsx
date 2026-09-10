@@ -27,8 +27,7 @@ import {
   User,
   X,
   ExternalLink,
-  School,
-  Sparkle
+  School
 } from "lucide-react";
 import Swal from "sweetalert2";
 
@@ -64,6 +63,7 @@ export default function JadwalUjianPage() {
 
   const [search, setSearch] = useState("");
   const [selectedPendaftarId, setSelectedPendaftarId] = useState<string | null>(null);
+  const [candidateFilterTab, setCandidateFilterTab] = useState<"butuh" | "semua">("butuh");
 
   // SCHEDULING MODAL STATE (KHUSUS 1 CALON PENDAFTAR - TANPA KUOTA)
   const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
@@ -176,13 +176,13 @@ export default function JadwalUjianPage() {
       setLoading(true);
       const [sessionsRes, pendaftarRes, usersRes] = await Promise.all([
         fetch("/api/admin/exam-sessions"),
-        fetch("/api/admin/pendaftar/list?status=paid,docs_verified&limit=100"),
+        fetch("/api/admin/pendaftar/list?limit=500&tahun_ajaran=all"),
         fetch("/api/admin/users"),
       ]);
 
       if (sessionsRes.ok) {
         const data = await sessionsRes.json();
-        setSessions(data.data);
+        setSessions(data.data || []);
       }
       if (usersRes.ok) {
         const uData = await usersRes.json();
@@ -190,7 +190,7 @@ export default function JadwalUjianPage() {
       }
       if (pendaftarRes.ok) {
         const data = await pendaftarRes.json();
-        setPendaftar(data.data);
+        setPendaftar(data.data || []);
       }
     } catch (e) {
       console.error(e);
@@ -366,48 +366,6 @@ export default function JadwalUjianPage() {
     }
   };
 
-  const handleBulkAssign = async (sessionId: string, sessionTitle: string) => {
-    if (availStats.eligibleCount === 0) {
-      Swal.fire("Informasi", "Tidak ada pendaftar yang butuh jadwal saat ini.", "info");
-      return;
-    }
-
-    const confirm = await Swal.fire({
-      title: "Broadcast Notifikasi Sesi?",
-      text: `Kirim pesan WhatsApp blast kepada calon pendaftar agar mengetahui sesi "${sessionTitle}" ini?`,
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonText: "Ya, Kirim Notifikasi",
-      cancelButtonText: "Batal",
-      confirmButtonColor: "#800000",
-    });
-
-    if (!confirm.isConfirmed) return;
-
-    try {
-      setBroadcasting(true);
-      const res = await fetch("/api/admin/notifications/broadcast-availability", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          reset_notified_flags: false,
-        }),
-      });
-
-      if (!res.ok) {
-        throw new Error("Gagal mengirim broadcast notifikasi");
-      }
-
-      const resData = await res.json();
-      Swal.fire("Terkirim", resData.message || "Notifikasi berhasil diproses.", "success");
-      fetchAvailStats();
-    } catch (e: any) {
-      Swal.fire("Gagal", e.message, "error");
-    } finally {
-      setBroadcasting(false);
-    }
-  };
-
   const handleStartBroadcast = async () => {
     setShowBroadcastModal(false);
     setSendingProgress({
@@ -474,9 +432,17 @@ export default function JadwalUjianPage() {
     return `${s.toLocaleDateString("id-ID", optionsDate)} • ${s.toLocaleTimeString("id-ID", optionsTime)} - ${e.toLocaleTimeString("id-ID", optionsTime)} WIB`;
   };
 
+  // Candidates who have not been scheduled yet
+  const unscheduledCandidates = useMemo(() => {
+    return pendaftar.filter(
+      (p) => p.status_pendaftaran !== "scheduled" && p.status_pendaftaran !== "accepted" && p.status_pendaftaran !== "enrolled"
+    );
+  }, [pendaftar]);
+
   // Filter candidates for right column
   const filteredPendaftar = useMemo(() => {
-    return pendaftar.filter((p) => {
+    const sourceList = candidateFilterTab === "butuh" && unscheduledCandidates.length > 0 ? unscheduledCandidates : pendaftar;
+    return sourceList.filter((p) => {
       const term = search.toLowerCase();
       return (
         p.nama_lengkap.toLowerCase().includes(term) ||
@@ -484,9 +450,9 @@ export default function JadwalUjianPage() {
         (p.jenjang && p.jenjang.toLowerCase().includes(term))
       );
     });
-  }, [pendaftar, search]);
+  }, [pendaftar, unscheduledCandidates, candidateFilterTab, search]);
 
-  // Filter candidate dropdown in modal
+  // Filter candidate dropdown in modal (SELALU MENAMPILKAN SEMUA PENDAFTAR)
   const modalCandidateList = useMemo(() => {
     if (!formCandidateSearch.trim()) return pendaftar;
     const term = formCandidateSearch.toLowerCase();
@@ -551,10 +517,10 @@ export default function JadwalUjianPage() {
                 Pendaftar Butuh Jadwal
               </p>
               <h3 className="text-3xl font-black text-white leading-none mt-1">
-                {availStats.eligibleCount} <span className="text-sm font-bold text-primary-200">Orang</span>
+                {unscheduledCandidates.length} <span className="text-sm font-bold text-primary-200">Orang</span>
               </h3>
               <p className="text-xs mt-1.5 text-primary-100/70 font-medium">
-                Belum memiliki jadwal atau belum disetujui penguji
+                {pendaftar.length} total calon santri terdaftar di sistem
               </p>
             </div>
           </div>
@@ -571,7 +537,7 @@ export default function JadwalUjianPage() {
               {sessions.length} <span className="text-sm font-bold text-stone-400">Sesi</span>
             </h3>
             <p className="text-xs mt-1.5 text-emerald-600 font-bold flex items-center gap-1">
-              <CheckCircle2 className="w-3.5 h-3.5" /> Total slot tersedia: {availStats.totalAvailableSlots} slot
+              <CheckCircle2 className="w-3.5 h-3.5" /> Total kuota tersedia: {availStats.totalAvailableSlots} slot
             </p>
           </div>
         </div>
@@ -669,21 +635,49 @@ export default function JadwalUjianPage() {
           </div>
         </div>
 
-        {/* Right Column: Unscheduled Candidates List */}
+        {/* Right Column: Candidates List */}
         <div className="lg:col-span-4">
           <div className="bg-white rounded-2xl shadow-sm border border-stone-100 overflow-hidden sticky top-6">
-            <div className="p-4 bg-stone-50 border-b border-stone-100 flex items-center justify-between">
-              <div>
-                <h3 className="font-black text-stone-900 text-sm">
-                  Calon Santri Butuh Jadwal
-                </h3>
-                <p className="text-[11px] font-bold text-stone-400">
-                  {filteredPendaftar.length} Santri Berkas Terverifikasi
-                </p>
+            <div className="p-4 bg-stone-50 border-b border-stone-100 space-y-2.5">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-black text-stone-900 text-sm">
+                    Daftar Calon Santri
+                  </h3>
+                  <p className="text-[11px] font-bold text-stone-400">
+                    {filteredPendaftar.length} Santri Ditampilkan
+                  </p>
+                </div>
+                <span className="px-2.5 py-1 bg-primary-100 text-primary-800 rounded-lg text-xs font-black">
+                  Total: {pendaftar.length}
+                </span>
               </div>
-              <span className="px-2.5 py-1 bg-amber-100 text-amber-800 rounded-lg text-xs font-black">
-                {filteredPendaftar.length}
-              </span>
+
+              {/* Filter Tabs: Butuh Jadwal vs Semua */}
+              <div className="grid grid-cols-2 gap-1.5 p-1 bg-stone-200/70 rounded-xl">
+                <button
+                  type="button"
+                  onClick={() => setCandidateFilterTab("butuh")}
+                  className={`py-1.5 text-xs rounded-lg font-bold transition-all ${
+                    candidateFilterTab === "butuh"
+                      ? "bg-white text-primary-700 shadow-xs font-black"
+                      : "text-stone-600 hover:text-stone-900"
+                  }`}
+                >
+                  Butuh Jadwal ({unscheduledCandidates.length})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setCandidateFilterTab("semua")}
+                  className={`py-1.5 text-xs rounded-lg font-bold transition-all ${
+                    candidateFilterTab === "semua"
+                      ? "bg-white text-primary-700 shadow-xs font-black"
+                      : "text-stone-600 hover:text-stone-900"
+                  }`}
+                >
+                  Semua Santri ({pendaftar.length})
+                </button>
+              </div>
             </div>
 
             <div className="p-3 border-b border-stone-100 bg-white">
@@ -703,7 +697,20 @@ export default function JadwalUjianPage() {
               {filteredPendaftar.length === 0 ? (
                 <div className="p-8 text-center text-stone-400 flex flex-col items-center">
                   <UserCheck className="w-10 h-10 mb-2 opacity-40" />
-                  <span className="text-xs font-bold">Semua pendaftar telah memiliki jadwal</span>
+                  <span className="text-xs font-bold">
+                    {candidateFilterTab === "butuh"
+                      ? "Semua pendaftar telah memiliki jadwal!"
+                      : "Tidak ada pendaftar ditemukan."}
+                  </span>
+                  {candidateFilterTab === "butuh" && pendaftar.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => setCandidateFilterTab("semua")}
+                      className="mt-2 text-xs text-primary-600 font-bold underline"
+                    >
+                      Lihat Semua Santri ({pendaftar.length})
+                    </button>
+                  )}
                 </div>
               ) : (
                 filteredPendaftar.map((p) => (
@@ -722,13 +729,22 @@ export default function JadwalUjianPage() {
                       <p className="font-bold text-stone-900 truncate text-sm leading-tight group-hover:text-primary-700 transition-colors">
                         {toTitleCase(p.nama_lengkap)}
                       </p>
-                      <div className="flex items-center gap-2 mt-1">
+                      <div className="flex flex-wrap items-center gap-1.5 mt-1">
                         <span className="text-[10px] font-mono font-bold text-stone-400">
                           {p.nomor_pendaftaran}
                         </span>
                         {p.jenjang && (
                           <span className="text-[9px] font-black uppercase px-1.5 py-0.5 bg-amber-50 text-amber-700 rounded border border-amber-200">
                             {p.jenjang}
+                          </span>
+                        )}
+                        {p.status_pendaftaran === "scheduled" ? (
+                          <span className="text-[9px] font-bold px-1.5 py-0.5 bg-blue-50 text-blue-700 rounded border border-blue-200">
+                            Terjadwal
+                          </span>
+                        ) : (
+                          <span className="text-[9px] font-bold px-1.5 py-0.5 bg-emerald-50 text-emerald-700 rounded border border-emerald-200">
+                            Belum Jadwal
                           </span>
                         )}
                       </div>
@@ -810,19 +826,24 @@ export default function JadwalUjianPage() {
             <form onSubmit={handleSaveSchedule} className="p-6 space-y-5">
               {/* 1. PILIH CALON SANTRI / PENDAFTAR (WAJIB) */}
               <div className="p-4 bg-primary-50/50 rounded-2xl border border-primary-100 space-y-2.5">
-                <label className="block text-xs font-black text-primary-900 uppercase tracking-wider">
-                  1. Pilih Calon Santri / Pendaftar <span className="text-rose-500">*</span>
-                </label>
+                <div className="flex items-center justify-between">
+                  <label className="block text-xs font-black text-primary-900 uppercase tracking-wider">
+                    1. Pilih Calon Santri / Pendaftar <span className="text-rose-500">*</span>
+                  </label>
+                  <span className="text-[11px] font-bold text-primary-700">
+                    {modalCandidateList.length} Santri Tersedia
+                  </span>
+                </div>
                 
                 {/* Search Candidate Filter */}
                 <div className="relative">
                   <Search className="absolute left-3 top-2.5 w-3.5 h-3.5 text-stone-400" />
                   <input
                     type="text"
-                    placeholder="Ketik untuk memfilter nama calon santri..."
+                    placeholder="Ketik untuk mencari nama atau nomor pendaftaran..."
                     value={formCandidateSearch}
                     onChange={(e) => setFormCandidateSearch(e.target.value)}
-                    className="w-full pl-8 pr-3 py-1.5 text-xs bg-white border border-stone-200 rounded-lg outline-none focus:ring-2 focus:ring-primary-500/20 font-bold"
+                    className="w-full pl-8 pr-3 py-2 text-xs bg-white border border-stone-200 rounded-xl outline-none focus:ring-2 focus:ring-primary-500/20 font-bold"
                   />
                 </div>
 
@@ -832,10 +853,15 @@ export default function JadwalUjianPage() {
                   onChange={(e) => setFormCandidateId(e.target.value)}
                   className="w-full bg-white border border-stone-300 rounded-xl px-4 py-3 text-sm font-bold text-stone-900 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none"
                 >
-                  <option value="">-- Pilih Calon Santri / Pendaftar --</option>
+                  <option value="">
+                    {modalCandidateList.length === 0
+                      ? "-- Memuat data santri... --"
+                      : `-- Pilih Calon Santri (${modalCandidateList.length} Tersedia) --`}
+                  </option>
                   {modalCandidateList.map((p) => (
                     <option key={p.id} value={p.id}>
-                      [{p.nomor_pendaftaran}] {toTitleCase(p.nama_lengkap)} {p.jenjang ? `(${p.jenjang})` : ""}
+                      [{p.nomor_pendaftaran}] {toTitleCase(p.nama_lengkap)} {p.jenjang ? `(${p.jenjang})` : ""}{" "}
+                      {p.status_pendaftaran === "scheduled" ? "• [Sudah Terjadwal]" : ""}
                     </option>
                   ))}
                 </select>
@@ -850,8 +876,12 @@ export default function JadwalUjianPage() {
                         <b>{selectedCandidateObj.nama_lengkap}</b> ({selectedCandidateObj.nomor_pendaftaran})
                       </span>
                     </div>
-                    <span className="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 font-black">
-                      Siap Dijadwalkan
+                    <span className={`text-[10px] px-2 py-0.5 rounded-full border font-black ${
+                      selectedCandidateObj.status_pendaftaran === "scheduled"
+                        ? "bg-blue-50 text-blue-700 border-blue-200"
+                        : "bg-emerald-50 text-emerald-700 border-emerald-200"
+                    }`}>
+                      {selectedCandidateObj.status_pendaftaran === "scheduled" ? "Jadwal Ulang" : "Siap Dijadwalkan"}
                     </span>
                   </div>
                 )}
@@ -1270,7 +1300,7 @@ export default function JadwalUjianPage() {
                 <div className="p-4 bg-indigo-50 rounded-xl border border-indigo-100">
                   <p className="text-xs font-bold text-indigo-900 mb-1">Target Pengiriman</p>
                   <p className="text-2xl font-black text-indigo-600">
-                    {resetFlags ? "Semua yang belum jadwal" : `${availStats.eligibleCount} Pendaftar`}
+                    {resetFlags ? "Semua yang belum jadwal" : `${unscheduledCandidates.length} Pendaftar`}
                   </p>
                   <p className="text-[11px] text-indigo-700/70 mt-1">
                     {resetFlags
@@ -1312,7 +1342,7 @@ export default function JadwalUjianPage() {
                 </button>
                 <button
                   onClick={handleStartBroadcast}
-                  disabled={availStats.eligibleCount === 0}
+                  disabled={unscheduledCandidates.length === 0}
                   className="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white rounded-xl font-bold text-xs shadow-lg shadow-indigo-600/20 transition-all flex items-center justify-center gap-1.5"
                 >
                   <Send className="w-3.5 h-3.5" />
