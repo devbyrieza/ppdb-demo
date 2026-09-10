@@ -215,80 +215,99 @@ export default function JadwalUjianPage() {
     }
   }, [formStartTime, formDuration]);
 
-  // Helper verifikasi peran penguji/pewawancara (role utama atau secondary_roles)
-  const checkHasRole = (u: any, targetRoles: string[]) => {
-    if (!u) return false;
-    const r = (u.role || "").toLowerCase().trim();
-    if (targetRoles.includes(r)) return true;
-    if (Array.isArray(u.secondary_roles)) {
-      return u.secondary_roles.some((sr: string) =>
-        targetRoles.includes((sr || "").toLowerCase().trim())
-      );
-    }
-    return false;
-  };
-
-  // 1. Penguji Bacaan Al-Qur'an
+  // 1. Penguji Bacaan Al-Qur'an (Murni Penguji Al-Qur'an, tidak mencakup Penguji Hafalan / B. Arab / Pewawancara)
   const quranExaminers = useMemo(() => {
-    return examiners.filter((ex) =>
-      checkHasRole(ex, ["penguji", "penguji_quran", "penguji_bacaan_quran"])
-    );
+    return examiners.filter((ex) => {
+      const r = (ex.role || "").toLowerCase().trim();
+      if (
+        r === "penguji_hafalan" ||
+        r === "penguji_bahasa_arab" ||
+        r === "penguji_arab" ||
+        r === "pewawancara_calsan" ||
+        r === "pewawancara_cawalsan" ||
+        r.startsWith("admin") ||
+        r === "pendaftar"
+      ) {
+        return false;
+      }
+      return r === "penguji" || r === "penguji_quran" || r === "penguji_bacaan_quran";
+    });
   }, [examiners]);
 
-  // 2. Pewawancara Calon Santri
+  // 2. Pewawancara Calon Santri (Murni Pewawancara Santri)
   const santriExaminers = useMemo(() => {
-    return examiners.filter((ex) =>
-      checkHasRole(ex, ["pewawancara_calsan", "penguji_santri", "pewawancara_santri"])
-    );
+    return examiners.filter((ex) => {
+      const r = (ex.role || "").toLowerCase().trim();
+      if (
+        r === "penguji_hafalan" ||
+        r === "penguji_bahasa_arab" ||
+        r === "penguji_arab" ||
+        r === "pewawancara_cawalsan" ||
+        r === "penguji" ||
+        r.startsWith("admin") ||
+        r === "pendaftar"
+      ) {
+        return false;
+      }
+      return r === "pewawancara_calsan" || r === "penguji_santri" || r === "pewawancara_santri";
+    });
   }, [examiners]);
 
-  // 3. Pewawancara Calon Orangtua/Wali
+  // 3. Pewawancara Calon Orangtua/Wali (Murni Pewawancara Ortu/Wali)
   const ortuExaminers = useMemo(() => {
-    return examiners.filter((ex) =>
-      checkHasRole(ex, [
-        "pewawancara_cawalsan",
-        "pewawancara_ortu",
-        "pewawancara_wali",
-        "penguji_ortu",
-      ])
-    );
+    return examiners.filter((ex) => {
+      const r = (ex.role || "").toLowerCase().trim();
+      if (
+        r === "penguji_hafalan" ||
+        r === "penguji_bahasa_arab" ||
+        r === "penguji_arab" ||
+        r === "pewawancara_calsan" ||
+        r === "penguji" ||
+        r.startsWith("admin") ||
+        r === "pendaftar"
+      ) {
+        return false;
+      }
+      return (
+        r === "pewawancara_cawalsan" ||
+        r === "pewawancara_ortu" ||
+        r === "pewawancara_wali" ||
+        r === "penguji_ortu"
+      );
+    });
   }, [examiners]);
 
-  // 4. Penguji Hafalan Al-Qur'an
+  // 4. Penguji Hafalan Al-Qur'an (Khusus Materi Hafalan pada Jenjang Non-IL)
   const hafalanExaminers = useMemo(() => {
-    return examiners.filter((ex) =>
-      checkHasRole(ex, ["penguji_hafalan", "penguji_tahfidz"])
-    );
+    return examiners.filter((ex) => {
+      const r = (ex.role || "").toLowerCase().trim();
+      return r === "penguji_hafalan" || r === "penguji_tahfidz";
+    });
   }, [examiners]);
 
-  // 5. Penguji Lisan Bahasa Arab
+  // 5. Penguji Lisan Bahasa Arab (Khusus Materi Bahasa Arab pada Jenjang Non-IL)
   const arabExaminers = useMemo(() => {
-    return examiners.filter((ex) =>
-      checkHasRole(ex, ["penguji_bahasa_arab", "penguji_arab", "penguji_lisan_arab"])
-    );
+    return examiners.filter((ex) => {
+      const r = (ex.role || "").toLowerCase().trim();
+      return r === "penguji_bahasa_arab" || r === "penguji_arab" || r === "penguji_lisan_arab";
+    });
   }, [examiners]);
 
   // Seluruh penguji/pewawancara yang valid (mengecualikan staff non-penguji seperti admin_berkas, admin_keuangan, admin_super murni)
   const allValidExaminers = useMemo(() => {
-    return examiners.filter((ex) =>
-      checkHasRole(ex, [
-        "penguji",
-        "penguji_quran",
-        "penguji_bacaan_quran",
-        "pewawancara_calsan",
-        "penguji_santri",
-        "pewawancara_santri",
-        "pewawancara_cawalsan",
-        "pewawancara_ortu",
-        "pewawancara_wali",
-        "penguji_ortu",
-        "penguji_hafalan",
-        "penguji_tahfidz",
-        "penguji_bahasa_arab",
-        "penguji_arab",
-        "penguji_lisan_arab",
-      ])
-    );
+    return examiners.filter((ex) => {
+      const r = (ex.role || "").toLowerCase().trim();
+      return (
+        r === "penguji" ||
+        r === "penguji_quran" ||
+        r === "penguji_bacaan_quran" ||
+        r === "pewawancara_calsan" ||
+        r === "pewawancara_cawalsan" ||
+        r === "penguji_hafalan" ||
+        r === "penguji_bahasa_arab" ||
+        r === "penguji_arab"
+      );
+    });
   }, [examiners]);
 
   // Deteksi otomatis Google Meet dari penguji yang dipilih
