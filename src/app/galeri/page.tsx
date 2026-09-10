@@ -118,16 +118,6 @@ export default function GaleriPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Body Scroll Lock when modal is open
-  useEffect(() => {
-    if (activeAlbum) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [activeAlbum]);
 
   const openAlbum = (album: Album, startIdx = 0) => {
     setActiveAlbum(album);

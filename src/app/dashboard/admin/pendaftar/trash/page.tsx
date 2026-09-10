@@ -83,18 +83,6 @@ export default function TrashPage() {
     }
   };
 
-  
-  useEffect(() => {
-    if (isRestoreModalOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [isRestoreModalOpen]);
-
   useEffect(() => {
     fetchTrash();
   }, [pagination.page, search, jenjangFilter]);

@@ -82,18 +82,6 @@ function AdminPendaftarContent() {
   const [loadingStats, setLoadingStats] = useState(true);
   const [userRole, setUserRole] = useState<string | null>(null);
 
-  
-  useEffect(() => {
-    if (isAnnouncementModalOpen || isDeleteModalOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [isAnnouncementModalOpen, isDeleteModalOpen]);
-
   useEffect(() => {
     const fetchSession = async () => {
       try {

@@ -1,7 +1,5 @@
 "use client";
 
-"use client";
-
 import { useState, useEffect, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import {
@@ -237,18 +235,6 @@ export default function PendaftarDetailPage() {
     jumlahMobil: 0,
     jumlahMotor: 0 });
   const [savingWd, setSavingWd] = useState(false);
-
-  
-  useEffect(() => {
-    if (isEditModalOpen || isNilaiModalOpen || isWdModalOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [isEditModalOpen, isNilaiModalOpen, isWdModalOpen]);
 
   useEffect(() => {
     const fetchSession = async () => {

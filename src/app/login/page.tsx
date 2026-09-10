@@ -130,16 +130,6 @@ export default function LoginPage() {
   const [error, setError] = useState("");
 
   // Mandatory UX Rule: Modal Scroll Lock
-  useEffect(() => {
-    if (roleSelectionData) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [roleSelectionData]);
 
   // Handle Login Pendaftar
   const handleLoginPendaftar = async (

@@ -61,17 +61,6 @@ export default function JadwalUjianPage() {
   );
 
   // Automatic End Time Calculation Logic
-  
-  useEffect(() => {
-    if (showAddSession || showBroadcastModal) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [showAddSession, showBroadcastModal]);
 
   useEffect(() => {
     if (newSession.start_time) {
