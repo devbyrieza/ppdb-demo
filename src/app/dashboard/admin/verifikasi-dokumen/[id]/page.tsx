@@ -706,7 +706,7 @@ export default function VerifikasiDokumenDetailPage() {
 
       {/* Image/PDF Preview Modal */}
       {previewDoc && (
-        <div
+        <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog"
           className="fixed inset-0 bg-stone-900/95 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center z-[100] p-[24px_28px] backdrop-blur-md overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar"
           onClick={() => setPreviewDoc(null)}
         >
@@ -815,7 +815,7 @@ export default function VerifikasiDokumenDetailPage() {
 
       {/* Reject Modal */}
       {rejectModal.isOpen && (
-        <div
+        <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog"
           className="fixed inset-0 bg-stone-900/50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center z-[110] px-4 backdrop-blur-sm overflow-y-auto overflow-x-hidden p-[24px_28px] overscroll-contain custom-scrollbar"
           onClick={() => {
             if (!processingDocs.has(rejectModal.docId)) {

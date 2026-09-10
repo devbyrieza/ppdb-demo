@@ -83,6 +83,18 @@ function VerifikasiPembayaranContent() {
   const [uploadingProof, setUploadingProof] = useState<string | null>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
 
+  
+  useEffect(() => {
+    if (showModal || showUploadAtasNamaModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [showModal, showUploadAtasNamaModal]);
+
   useEffect(() => {
     const fetchSession = async () => {
       try {
@@ -455,7 +467,7 @@ function VerifikasiPembayaranContent() {
     <div className="space-y-6">
       {/* Refreshing Overlay */}
       {isRefreshing && (
-        <div className="fixed inset-0 bg-white/40 backdrop-blur-[1px] z-[100] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center pointer-events-none overflow-y-auto overflow-x-hidden p-[24px_28px] overscroll-contain custom-scrollbar">
+        <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog" className="fixed inset-0 bg-white/40 backdrop-blur-[1px] z-[100] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center pointer-events-none overflow-y-auto overflow-x-hidden p-[24px_28px] overscroll-contain custom-scrollbar">
           <div className="bg-white/80 p-[16px_20px] rounded-[24px] shadow-2xl shadow-primary/30 border border-stone-100 flex items-center gap-3 animate-in fade-in zoom-in duration-300">
             <Loader2 className="w-5 h-5 animate-spin text-primary-600" />
             <span className="text-sm font-bold text-stone-700 tracking-tight">
@@ -842,7 +854,7 @@ function VerifikasiPembayaranContent() {
 
       {/* Modal */}
       {showModal && selectedPembayaran && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center z-50 p-[24px_28px] animate-in fade-in duration-200 overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
+        <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog" className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center z-50 p-[24px_28px] animate-in fade-in duration-200 overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
           <div className="bg-white rounded-[2rem] shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
             {/* Header - Fixed */}
             <div className="p-6 border-b border-stone-100 bg-stone-50/50 flex justify-between items-center">

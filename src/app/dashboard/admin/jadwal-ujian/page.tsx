@@ -61,6 +61,18 @@ export default function JadwalUjianPage() {
   );
 
   // Automatic End Time Calculation Logic
+  
+  useEffect(() => {
+    if (showAddSession || showBroadcastModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [showAddSession, showBroadcastModal]);
+
   useEffect(() => {
     if (newSession.start_time) {
       const start = new Date(newSession.start_time);
@@ -582,7 +594,7 @@ export default function JadwalUjianPage() {
 
       {/* Add Session Modal */}
       {showAddSession && (
-        <div className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-[24px_28px] bg-ink-900/60 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
+        <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog" className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-[24px_28px] bg-ink-900/60 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
           <div className="bg-white rounded-3xl w-full max-w-lg shadow-clay-lg border border-white overflow-hidden animate-in zoom-in-95 duration-300">
             <form onSubmit={handleCreateSession}>
               <div className="p-[24px_28px] md:p-8 space-y-6">
@@ -723,7 +735,7 @@ export default function JadwalUjianPage() {
 
       {/* Sending Progress Modal */}
       {sendingProgress.active && (
-        <div className="fixed inset-0 z-[60] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-[24px_28px] bg-ink-900/80 backdrop-blur-sm overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
+        <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog" className="fixed inset-0 z-[60] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-[24px_28px] bg-ink-900/80 backdrop-blur-sm overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
           <div className="bg-white rounded-3xl w-full max-w-md shadow-2xl border border-white p-[24px_28px] md:p-8 text-center animate-pulse">
             <Loader2 className="w-12 h-12 text-purple-600 animate-spin mx-auto mb-4" />
             <h2 className="text-2xl font-black text-ink-900 mb-2">
@@ -761,7 +773,7 @@ export default function JadwalUjianPage() {
 
       {/* Broadcast Pulse Modal */}
       {showBroadcastModal && (
-        <div className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-[24px_28px] bg-ink-900/60 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
+        <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog" className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-[24px_28px] bg-ink-900/60 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
           <div className="bg-white rounded-3xl w-full max-w-md shadow-clay-lg border border-white overflow-hidden animate-in zoom-in-95 duration-300">
             <div className="p-[24px_28px] md:p-8 space-y-6">
               <div className="flex items-center justify-between">

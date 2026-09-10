@@ -1528,7 +1528,7 @@ export default function ExaminerDashboard() {
 
       {/* Custom Modal for Assign Examiner (PLOT) */}
       {assignStudent && typeof document !== "undefined" && createPortal(
-        <div
+        <div onWheel={(e) => e.stopPropagation()} data-modal="true"
           className="fixed inset-0 overflow-y-auto p-6 sm:p-8 overscroll-contain custom-scrollbar"
           style={{ zIndex: 99999 }}
           aria-labelledby="modal-title"
@@ -1536,7 +1536,7 @@ export default function ExaminerDashboard() {
           aria-modal="true"
         >
           <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div
+            <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog"
               className="fixed inset-0 bg-ink-900/60 backdrop-blur-sm transition-opacity overflow-y-auto overflow-x-hidden p-6 sm:p-8 overscroll-contain custom-scrollbar"
               aria-hidden="true"
               onClick={() => setAssignStudent(null)}
@@ -1636,7 +1636,7 @@ export default function ExaminerDashboard() {
 
       {/* Custom Modal for Input Nilai */}
       {selectedStudent && typeof document !== "undefined" && createPortal(
-        <div
+        <div onWheel={(e) => e.stopPropagation()} data-modal="true"
           className="fixed inset-0 overflow-y-auto p-6 sm:p-8 overscroll-contain custom-scrollbar"
           style={{ zIndex: 99999 }}
           aria-labelledby="modal-title"
@@ -1644,7 +1644,7 @@ export default function ExaminerDashboard() {
           aria-modal="true"
         >
           <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div
+            <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog"
               className="fixed inset-0 bg-ink-900/60 backdrop-blur-sm transition-opacity overflow-y-auto overflow-x-hidden p-6 sm:p-8 overscroll-contain custom-scrollbar"
               aria-hidden="true"
               onClick={() => setSelectedStudent(null)}

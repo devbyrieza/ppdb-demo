@@ -345,7 +345,7 @@ export default function PengaturanPage() {
 
       {/* Edit Modal Overlay */}
       {editingTa && (
-        <div className="fixed inset-0 z-[9999] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center bg-stone-900/50 backdrop-blur-sm p-[24px_28px] overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
+        <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog" className="fixed inset-0 z-[9999] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center bg-stone-900/50 backdrop-blur-sm p-[24px_28px] overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
           <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden animate-in fade-in zoom-in duration-200">
             <div className="px-6 py-4 bg-gradient-to-r from-purple-600 to-indigo-700 text-white flex items-center justify-between">
               <h3 className="text-lg font-bold">Edit Tahun Ajaran</h3>

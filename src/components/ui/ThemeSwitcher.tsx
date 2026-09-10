@@ -50,7 +50,7 @@ export default function ThemeSwitcher() {
         {isOpen && (
           <>
             {/* Backdrop for closing */}
-            <div
+            <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog"
               className="fixed inset-0 z-[60] bg-transparent cursor-default overscroll-contain"
               onClick={(e) => {
                 e.stopPropagation();

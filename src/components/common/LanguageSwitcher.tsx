@@ -186,7 +186,7 @@ export default function LanguageSwitcher() {
       <AnimatePresence>
         {isOpen && (
           <>
-            <div
+            <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog"
               className="fixed inset-0 z-[60] overscroll-contain"
               onClick={() => setIsOpen(false)}
             />

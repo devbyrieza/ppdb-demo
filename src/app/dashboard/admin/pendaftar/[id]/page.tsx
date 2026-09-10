@@ -236,6 +236,18 @@ export default function PendaftarDetailPage() {
     jumlahMotor: 0 });
   const [savingWd, setSavingWd] = useState(false);
 
+  
+  useEffect(() => {
+    if (isEditModalOpen || isNilaiModalOpen || isWdModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isEditModalOpen, isNilaiModalOpen, isWdModalOpen]);
+
   useEffect(() => {
     const fetchSession = async () => {
       try {
@@ -2583,7 +2595,7 @@ export default function PendaftarDetailPage() {
       </div>
       {/* Edit Data Modal */}
       {isEditModalOpen && editFormData && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center z-50 p-[24px_28px] overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
+        <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog" className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center z-50 p-[24px_28px] overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
           <div className="bg-white rounded-3xl shadow-2xl w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden border border-stone-200">
             {/* Modal Header */}
             <div className="bg-primary-950 p-6 text-white flex items-center justify-between border-b border-primary-900">
@@ -3429,7 +3441,7 @@ export default function PendaftarDetailPage() {
 
       {/* MODAL INPUT NILAI MANUAL (ADMIN SUPER ONLY) */}
       {isNilaiModalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-[24px_28px] sm:p-6 overscroll-contain">
+        <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog" className="fixed inset-0 z-[100] flex items-center justify-center p-[24px_28px] sm:p-6 overscroll-contain">
           <div
             className="absolute inset-0 bg-ink-950/60 backdrop-blur-sm"
             onClick={() => setIsNilaiModalOpen(false)}
@@ -3697,7 +3709,7 @@ export default function PendaftarDetailPage() {
 
       {/* Modal Welcome Day (Khusus Admin) */}
       {isWdModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-[24px_28px] bg-primary-950/40 backdrop-blur-sm overflow-y-auto overscroll-contain custom-scrollbar">
+        <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog" className="fixed inset-0 z-50 flex items-center justify-center p-[24px_28px] bg-primary-950/40 backdrop-blur-sm overflow-y-auto overscroll-contain custom-scrollbar">
           <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl flex flex-col max-h-[90vh]">
             <div className="flex items-center justify-between p-6 border-b border-surface-100 bg-surface-50 rounded-t-3xl">
               <h2 className="text-xl font-black text-primary-950 flex items-center gap-2">

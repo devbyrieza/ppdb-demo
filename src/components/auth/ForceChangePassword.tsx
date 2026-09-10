@@ -14,7 +14,7 @@ export default function ForceChangePassword({ isDefaultPassword }: { isDefaultPa
 
   if (isDefaultPassword && pathname !== "/dashboard/admin/profil") {
     return (
-      <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-white/80 backdrop-blur-sm overscroll-contain">
+      <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog" className="fixed inset-0 z-[9999] flex items-center justify-center bg-white/80 backdrop-blur-sm overscroll-contain">
         <div className="bg-white p-8 rounded-2xl max-w-md w-full shadow-2xl text-center space-y-4">
           <h2 className="text-2xl font-bold text-red-600">Aksi Diperlukan</h2>
           <p className="text-gray-600">

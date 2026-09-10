@@ -63,7 +63,7 @@ export default function AdminSearchPendaftarModal({ isOpen, onClose }: AdminSear
   if (!isOpen) return null;
 
   return (
-    <div 
+    <div onWheel={(e) => e.stopPropagation()} 
       role="dialog" aria-modal="true" data-modal="true" className="fixed inset-0 bg-stone-900/80 backdrop-blur-sm z-[100] flex justify-center items-start pt-10 md:pt-16 px-4 overflow-y-auto overscroll-contain custom-scrollbar"
       onClick={onClose}
     >

@@ -442,7 +442,7 @@ export default function RekapSeragamPage() {
 
       {/* Edit Modal */}
       {editModalOpen && editingItem && (
-        <div className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-[24px_28px] bg-ink-950/50 backdrop-blur-sm overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
+        <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog" className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-[24px_28px] bg-ink-950/50 backdrop-blur-sm overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
           <div className="bg-white rounded-3xl shadow-2xl shadow-primary/30 w-full max-w-md overflow-hidden">
             <div className="p-6 border-b border-ink-100 bg-ink-50/50">
               <h3 className="text-xl font-black text-ink-950">Ubah Ukuran Seragam</h3>
