@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
@@ -110,6 +110,52 @@ export default function AdminSidebar({
   const [paymentsCount, setPaymentsCount] = useState(initialPaymentsCount);
   const [docsCount, setDocsCount] = useState(initialDocsCount);
   const [requestsCount, setRequestsCount] = useState(initialRequestsCount);
+
+  const desktopSidebarRef = useRef<HTMLElement>(null);
+  const mobileSidebarRef = useRef<HTMLElement>(null);
+
+  // Pointer Focus & Scroll Isolation:
+  // Scrolling when pointer is hovering sidebar MUST NEVER leak to the main page body.
+  useEffect(() => {
+    const attachScrollIsolation = (sidebarEl: HTMLElement | null) => {
+      if (!sidebarEl) return () => {};
+
+      const handleWheel = (e: WheelEvent) => {
+        const scrollMenu = sidebarEl.querySelector(".sidebar-scroll-menu") as HTMLElement | null;
+        if (scrollMenu) {
+          const { scrollTop, scrollHeight, clientHeight } = scrollMenu;
+          const canScroll = scrollHeight > clientHeight;
+
+          if (canScroll) {
+            const isScrollingDown = e.deltaY > 0;
+            const isScrollingUp = e.deltaY < 0;
+            const atBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
+            const atTop = scrollTop <= 0;
+
+            if ((isScrollingDown && !atBottom) || (isScrollingUp && !atTop)) {
+              scrollMenu.scrollTop += e.deltaY;
+            }
+          }
+        }
+        // Always prevent leaking scroll to the main page body when cursor is over sidebar
+        e.preventDefault();
+        e.stopPropagation();
+      };
+
+      sidebarEl.addEventListener("wheel", handleWheel, { passive: false });
+      return () => {
+        sidebarEl.removeEventListener("wheel", handleWheel);
+      };
+    };
+
+    const cleanupDesktop = attachScrollIsolation(desktopSidebarRef.current);
+    const cleanupMobile = attachScrollIsolation(mobileSidebarRef.current);
+
+    return () => {
+      cleanupDesktop();
+      cleanupMobile();
+    };
+  }, [sidebarOpen]);
 
   // Polling effect
   useEffect(() => {
@@ -238,19 +284,13 @@ export default function AdminSidebar({
               onClick={() => setSidebarOpen(false)}
               className="fixed inset-0 z-[70] bg-primary-950/40 backdrop-blur-md lg:hidden overflow-y-auto overflow-x-hidden p-4 overscroll-contain custom-scrollbar"
             />
-            <motion.aside data-sidebar="true"
+            <motion.aside data-sidebar="true" ref={mobileSidebarRef}
               initial={{ x: "-100%" }}
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
               className="fixed top-0 left-0 bottom-0 z-[80] w-80 bg-white shadow-2xl lg:hidden flex flex-col rounded-r-[3rem] overflow-hidden overscroll-contain"
-              onWheel={(e) => {
-        const scrollMenu = e.currentTarget.querySelector('.sidebar-scroll-menu') || e.currentTarget;
-        if (scrollMenu) {
-          scrollMenu.scrollTop += e.deltaY;
-        }
-        e.stopPropagation();
-      }}>
+              >
               <div className="p-5 md:p-8 flex items-center justify-between border-b border-ink-50 bg-linear-to-b from-ink-50 to-white">
                 <div className="flex items-center gap-4">
                   <div className="w-10 h-10 bg-white rounded-2xl flex items-center justify-center shadow-clay-sm border border-ink-100">
@@ -336,15 +376,8 @@ export default function AdminSidebar({
       </AnimatePresence>
 
       {/* ─── DESKTOP SIDEBAR (Premium Slim Design) ─── */}
-      <aside data-sidebar="true"
-        className={`hidden lg:flex fixed inset-y-0 left-0 z-50 flex-col bg-white border-r border-ink-100 transition-all duration-500 ease-in-out overscroll-contain ${collapsed ? "w-24" : "w-72"}`}
-        onWheel={(e) => {
-        const scrollMenu = e.currentTarget.querySelector('.sidebar-scroll-menu') || e.currentTarget;
-        if (scrollMenu) {
-          scrollMenu.scrollTop += e.deltaY;
-        }
-        e.stopPropagation();
-      }}>
+      <aside data-sidebar="true" ref={desktopSidebarRef}
+        className={`hidden lg:flex fixed inset-y-0 left-0 z-50 flex-col bg-white border-r border-ink-100 transition-all duration-500 ease-in-out overscroll-contain ${collapsed ? "w-24" : "w-72"}`}>
         {/* Logo & Branding Area */}
         <div className="h-24 flex items-center px-5 md:px-8">
           <Link
