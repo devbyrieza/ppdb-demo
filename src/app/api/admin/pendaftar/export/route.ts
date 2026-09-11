@@ -84,7 +84,7 @@ export async function GET(req: NextRequest) {
     const tipePendaftaran = searchParams.get("tipe_pendaftaran") || "";
 
     // Build query - fetch ALL records (no pagination for export)
-    const baseWhere = getAdminWhereClause(tahunAjaran || undefined) as any;
+    const baseWhere = getAdminWhereClause(tahunAjaran || "all") as any;
     const where: Prisma.PendaftarWhereInput = {
       ...baseWhere };
 
@@ -104,7 +104,7 @@ export async function GET(req: NextRequest) {
     if (jenisKelamin) {
       where.jenis_kelamin = { contains: jenisKelamin, mode: "insensitive" };
     }
-    if (tahunAjaran) where.tahun_ajaran_id = tahunAjaran;
+    if (tahunAjaran && tahunAjaran !== "all") where.tahun_ajaran_id = tahunAjaran;
     if (provinsi) where.provinsi = provinsi;
     if (kabupaten) where.kabupaten = kabupaten;
     if (kecamatan) where.kecamatan = kecamatan;

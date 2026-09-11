@@ -496,7 +496,17 @@ function AdminPendaftarContent() {
         const response = await fetch("/api/admin/tahun-ajaran");
         if (response.ok) {
           const result = await response.json();
-          setTahunAjaranList(result.data || []);
+          const list: TahunAjaran[] = result.data || [];
+          setTahunAjaranList(list);
+
+          if (list.length > 0) {
+            const activeTA = list.find((ta) => ta.is_active);
+            const latestTA = list[0];
+            const defaultTA = activeTA || latestTA;
+            if (defaultTA) {
+              setTahunAjaranFilter((prev) => (prev ? prev : defaultTA.id));
+            }
+          }
         }
       } catch (error) {
         console.error("Error fetching tahun ajaran:", error);
@@ -1471,7 +1481,7 @@ function AdminPendaftarContent() {
               }}
               className="w-full px-4 py-3 bg-gold-50/50 border border-gold-100 rounded-[24px] focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950"
             >
-              <option value="">Semua Tahun Ajaran</option>
+              <option value="all">Semua Tahun Ajaran</option>
               {tahunAjaranList.map((ta) => (
                 <option key={ta.id} value={ta.id}>
                   {ta.nama} {ta.is_active && "(Aktif)"}
@@ -1514,7 +1524,10 @@ function AdminPendaftarContent() {
                   setStatusFilter("");
                   setJenjangFilter("");
                   setJenisKelaminFilter("");
-                  setTahunAjaranFilter("");
+                  const defaultTA =
+                    tahunAjaranList.find((ta) => ta.is_active) ||
+                    tahunAjaranList[0];
+                  setTahunAjaranFilter(defaultTA ? defaultTA.id : "");
                   setTipePendaftaranFilter("");
                   // Clear location filters
                   setProvinsiFilter("");

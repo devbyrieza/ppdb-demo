@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
     const skip = (page - 1) * limit;
 
     // Build filter
-    const baseWhere = (await getAdminWhereClause(tahunAjaran || undefined)) as any;
+    const baseWhere = (await getAdminWhereClause(tahunAjaran || "all")) as any;
     const where: Prisma.PendaftarWhereInput = {
       ...baseWhere,
     };
