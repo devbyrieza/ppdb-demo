@@ -243,14 +243,25 @@ const SUMBER_INFO_OPTIONS = ["Searching umum", "IG", "FB", "YouTube", "TikTok", 
 // ============================================================================
 
 // Map session role to which form types are visible
+
+const isJenjangLangsungNonIL = (jenjang?: string | null): boolean => {
+  if (!jenjang) return false;
+  const clean = jenjang.trim().toUpperCase();
+  if (clean === "IL" || clean.includes("IL ") || clean.includes(" IL") || clean.includes("(IL)") || clean.includes("I'DAD") || clean.includes("IDAD") || clean.includes("IDADIYAH")) return false;
+  if (clean.includes("SMP") || clean.includes("MTS") || clean.includes("TSANAWIYAH")) return false;
+  if (clean.includes("SMA") || clean.includes("MA") || clean.includes("ALIYAH") || clean.includes("SLTA")) return true;
+  return false;
+};
+
 const ROLE_TO_FORM_TYPES: Record<string, string[]> = {
-  penguji: ['quran', 'hafalan', 'lisan_arab'],
+  penguji: ['quran', 'lisan_arab'],
   pewawancara_calsan: ['wawancara'],
   pewawancara_cawalsan: ['ortu'],
-  penguji_hafalan: ['hafalan'],
+  penguji_hafalan: ['quran'],
   penguji_bahasa_arab: ['lisan_arab'],
-  admin: ['quran', 'wawancara', 'ortu', 'hafalan', 'lisan_arab'],
-  admin_super: ['quran', 'wawancara', 'ortu', 'hafalan', 'lisan_arab'] };
+  admin: ['quran', 'wawancara', 'ortu', 'lisan_arab'],
+  admin_super: ['quran', 'wawancara', 'ortu', 'lisan_arab']
+};
 
 export default function InputNilaiPage() {
   return (
@@ -287,8 +298,8 @@ function InputNilaiContent() {
 
   // Determine which form types are visible based on the active session role
   const visibleFormTypes = ["admin", "admin_super"].includes(activeRole) 
-    ? ['quran', 'wawancara', 'ortu', 'hafalan', 'lisan_arab'] 
-    : (ROLE_TO_FORM_TYPES[activeRole] || ['quran', 'wawancara', 'ortu', 'hafalan', 'lisan_arab']);
+    ? ['quran', 'wawancara', 'ortu', 'lisan_arab'] 
+    : (ROLE_TO_FORM_TYPES[activeRole] || ['quran', 'wawancara', 'ortu', 'lisan_arab']);
 
   const toTitleCase = (str: string) => {
     if (!str || typeof str !== 'string') return "";
@@ -402,11 +413,18 @@ function InputNilaiContent() {
       if (formType === "quran") {
         const tajwid = parseFloat(quranForm.tajwid) || 0;
         const kelancaran = parseFloat(quranForm.kelancaran) || 0;
-        const totalScore = (tajwid + kelancaran) / 2;
+        const hafalanVal = quranForm.hafalan !== undefined && quranForm.hafalan !== "" ? parseFloat(quranForm.hafalan) : null;
+        const totalScore = hafalanVal !== null ? Math.round((tajwid + kelancaran + hafalanVal) / 3) : Math.round((tajwid + kelancaran) / 2);
         body = {
-          detail_quran: quranForm,
+          detail_quran: {
+            ...quranForm,
+            tajwid,
+            kelancaran,
+            hafalan: hafalanVal,
+          },
           score_quran: totalScore,
           nilai_tes_quran: totalScore,
+          ...(hafalanVal !== null ? { nilai_tes_hafalan: hafalanVal, score_hafalan: hafalanVal } : {}),
           catatan_quran: quranForm.catatan || "" };
       } else if (formType === "wawancara") {
         const isPutriByJenjang = (p?.jenjang?.toLowerCase() || "").includes('putri');
@@ -518,10 +536,15 @@ function InputNilaiContent() {
   };
 
   const isParticipantFinished = (p: Peserta) => {
-    const formsNeeded = ROLE_TO_FORM_TYPES[activeRole] || [];
+    const isDirectNonIL = isJenjangLangsungNonIL(p.jenjang);
+    const formsNeeded = (ROLE_TO_FORM_TYPES[activeRole] || ['quran', 'wawancara', 'ortu']).filter(t => {
+      if (t === 'lisan_arab' && !isDirectNonIL) return false;
+      if (t === 'hafalan') return false;
+      return true;
+    });
+
     if (formsNeeded.length === 0) return false;
     
-    // Robust check: use input_at_* OR fallback to score/detail data presence
     return formsNeeded.every(type => {
       if (type === 'quran') {
         return !!p.input_at_quran || p.nilai_tes_quran != null || p.score_quran != null;
@@ -532,24 +555,9 @@ function InputNilaiContent() {
       if (type === 'ortu') {
         return !!p.input_at_ortu || p.nilai_wawancara_ortu != null || !!(p.detail_cawalsan?.q1);
       }
-    if (type === 'hafalan') {
-      setHafalanForm({
-        ...p.detail_hafalan,
-        catatan_tambahan: p.catatan_hafalan || "",
-        score_override: p.score_hafalan || 0 });
-    }
-    if (type === 'lisan_arab') {
-      setLisanArabForm({
-        ...p.detail_lisan_arab,
-        catatan_tambahan: p.catatan_lisan_arab || "",
-        score_override: p.score_lisan_arab || 0 });
-    }
-        if (type === 'hafalan') {
-          return !!(p.input_at_hafalan || p.score_hafalan || (p.detail_hafalan && Object.keys(p.detail_hafalan).length > 0));
-        }
-        if (type === 'lisan_arab') {
-          return !!(p.input_at_lisan_arab || p.score_lisan_arab || (p.detail_lisan_arab && Object.keys(p.detail_lisan_arab).length > 0));
-        }
+      if (type === 'lisan_arab') {
+        return !!(p.input_at_lisan_arab || p.score_lisan_arab || (p.detail_lisan_arab && Object.keys(p.detail_lisan_arab).length > 0));
+      }
       return true;
     });
   };
@@ -608,8 +616,7 @@ function InputNilaiContent() {
         {p.roles.includes("quran") && visibleFormTypes.includes("quran") && renderQuranForm(p)}
         {p.roles.includes("wawancara") && visibleFormTypes.includes("wawancara") && renderSantriForm(p)}
         {p.roles.includes("ortu") && visibleFormTypes.includes("ortu") && renderOrangTuaForm(p)}
-        {p.roles.includes("hafalan") && visibleFormTypes.includes("hafalan") && renderHafalanForm(p)}
-        {p.roles.includes("lisan_arab") && visibleFormTypes.includes("lisan_arab") && renderArabForm(p)}
+        {isJenjangLangsungNonIL(p.jenjang) && p.roles.includes("lisan_arab") && visibleFormTypes.includes("lisan_arab") && renderArabForm(p)}
       </div>
     </div>
   );

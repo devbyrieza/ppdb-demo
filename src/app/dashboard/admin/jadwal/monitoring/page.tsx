@@ -74,9 +74,37 @@ interface Schedule {
     };
 }
 
-// Helper untuk memeriksa jenjang tanpa IL
-// Catatan: Di Al-Andalus Pusat HANYA membuka jenjang SMP IT dan IL (tidak ada SMA IT langsung tanpa IL)
-const isJenjangTanpaIL = (_jenjang?: string | null): boolean => {
+// Helper untuk memeriksa jenjang Langsung MA/SMA/SMA IT Tanpa IL (yang memerlukan Tes Lisan Bahasa Arab)
+// Jenjang MTs/SMP/SMP IT dan IL TIDAK memerlukan tes lisan bahasa Arab.
+export const isJenjangLangsungNonIL = (jenjang?: string | null): boolean => {
+    if (!jenjang) return false;
+    const clean = jenjang.trim().toUpperCase();
+    if (
+        clean === "IL" ||
+        clean.includes("IL ") ||
+        clean.includes(" IL") ||
+        clean.includes("(IL)") ||
+        clean.includes("I'DAD") ||
+        clean.includes("IDAD") ||
+        clean.includes("IDADIYAH")
+    ) {
+        return false;
+    }
+    if (
+        clean.includes("SMP") ||
+        clean.includes("MTS") ||
+        clean.includes("TSANAWIYAH")
+    ) {
+        return false;
+    }
+    if (
+        clean.includes("SMA") ||
+        clean.includes("MA") ||
+        clean.includes("ALIYAH") ||
+        clean.includes("SLTA")
+    ) {
+        return true;
+    }
     return false;
 };
 
@@ -116,6 +144,7 @@ export default function MonitoringJadwalPage() {
                 if (s.ustadz_id?.quran) map.set(s.ustadz_id.quran, info);
                 if (s.ustadz_id?.santri) map.set(s.ustadz_id.santri, info);
                 if (s.ustadz_id?.ortu) map.set(s.ustadz_id.ortu, info);
+                if (s.ustadz_id?.arab) map.set(s.ustadz_id.arab, info);
             }
         });
 
@@ -347,12 +376,17 @@ export default function MonitoringJadwalPage() {
         data.forEach(s => {
             const timeKey = new Date(s.sesi.start).getTime().toString();
             
-            // Di Al-Andalus Pusat, tes resmi seleksi hanya 3: Al-Qur'an, Wawancara Santri, Wawancara Orang Tua
+            // Tes standar seluruh jenjang: Al-Qur'an (Bacaan & Hafalan), W. Santri, W. Ortu
             const roles = [
                 { type: 'quran', name: s.ustadz.quran, label: 'Al-Qur\'an' },
                 { type: 'santri', name: s.ustadz.santri, label: 'W. Santri' },
                 { type: 'ortu', name: s.ustadz.ortu, label: 'W. Ortu' }
             ];
+
+            // Tambahan Tes Lisan Bahasa Arab khusus yang Langsung MA/SMA Tanpa IL
+            if (s.ustadz?.arab && s.ustadz.arab !== "-" && isJenjangLangsungNonIL(s.pendaftar?.jenjang)) {
+                roles.push({ type: 'arab', name: s.ustadz.arab, label: 'Lisan B. Arab' });
+            }
 
             roles.forEach(role => {
                 if (role.name && role.name !== "-") {
@@ -1125,7 +1159,7 @@ export default function MonitoringJadwalPage() {
                                         <label className="text-xs font-black text-slate-700 uppercase tracking-wider flex items-center justify-between">
                                             <span className="flex items-center gap-1.5">
                                                 <BookOpen className="w-3.5 h-3.5 text-primary-500" />
-                                                Penguji Bacaan Al-Qur'an
+                                                Penguji Al-Qur'an (Bacaan & Hafalan)
                                             </span>
                                             {selectedQuranId && (
                                                 <button
@@ -1222,69 +1256,40 @@ export default function MonitoringJadwalPage() {
                                         </select>
                                     </div>
 
-                                    {/* Khusus Non-IL: Hafalan & Bahasa Arab */}
-                                    {isJenjangTanpaIL(targetSchedule.pendaftar.jenjang) && (
-                                        <>
-                                            <div className="space-y-1.5 pt-2 border-t border-slate-100">
-                                                <label className="text-xs font-black text-amber-800 uppercase tracking-wider flex items-center justify-between">
-                                                    <span className="flex items-center gap-1.5">
-                                                        <GraduationCap className="w-3.5 h-3.5 text-amber-600" />
-                                                        Penguji Hafalan Al-Qur'an (Khusus Non-IL)
-                                                    </span>
-                                                    {selectedHafalanId && (
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => setSelectedHafalanId("")}
-                                                            className="text-[10px] font-bold text-rose-600 hover:underline"
-                                                        >
-                                                            Kosongkan
-                                                        </button>
-                                                    )}
-                                                </label>
-                                                <select
-                                                    value={selectedHafalanId}
-                                                    onChange={(e) => setSelectedHafalanId(e.target.value)}
-                                                    className="w-full bg-amber-50/40 border border-amber-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800 focus:ring-4 focus:ring-amber-500/10 focus:border-amber-500 outline-none transition-all"
-                                                >
-                                                    <option value="">-- Pilih Penguji Hafalan (Opsional) --</option>
-                                                    {(showAllStaff ? allValidExaminers : (hafalanExaminers.length > 0 ? hafalanExaminers : allValidExaminers)).map((u) => (
+                                    {/* Khusus Langsung MA/SMA/SMA IT Tanpa IL: Penguji Lisan Bahasa Arab */}
+                                    {isJenjangLangsungNonIL(targetSchedule.pendaftar.jenjang) && (
+                                        <div className="space-y-1.5 pt-2 border-t border-slate-100">
+                                            <label className="text-xs font-black text-emerald-800 uppercase tracking-wider flex items-center justify-between">
+                                                <span className="flex items-center gap-1.5">
+                                                    <Languages className="w-3.5 h-3.5 text-emerald-600" />
+                                                    Penguji Lisan Bahasa Arab (Khusus Langsung MA/SMA IT Tanpa IL)
+                                                </span>
+                                                {selectedArabId && (
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setSelectedArabId("")}
+                                                        className="text-[10px] font-bold text-rose-600 hover:underline"
+                                                    >
+                                                        Kosongkan
+                                                    </button>
+                                                )}
+                                            </label>
+                                            <select
+                                                value={selectedArabId}
+                                                onChange={(e) => setSelectedArabId(e.target.value)}
+                                                className="w-full bg-emerald-50/40 border border-emerald-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800 focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 outline-none transition-all"
+                                            >
+                                                <option value="">-- Pilih Penguji Bahasa Arab (Opsional) --</option>
+                                                {(showAllStaff ? allValidExaminers : (arabExaminers.length > 0 ? arabExaminers : allValidExaminers)).map((u) => {
+                                                    const conflictInfo = busyExaminersAtTargetTime.get(u.id);
+                                                    return (
                                                         <option key={u.id} value={u.id}>
-                                                            {u.full_name} {u.role ? `(${u.role.replace(/_/g, " ")})` : ""}
+                                                            {u.full_name} {u.role ? `(${u.role.replace(/_/g, " ")})` : ""}{conflictInfo ? ` ⚠️ [BENTROK: ${conflictInfo}]` : ""}
                                                         </option>
-                                                    ))}
-                                                </select>
-                                            </div>
-
-                                            <div className="space-y-1.5">
-                                                <label className="text-xs font-black text-emerald-800 uppercase tracking-wider flex items-center justify-between">
-                                                    <span className="flex items-center gap-1.5">
-                                                        <Languages className="w-3.5 h-3.5 text-emerald-600" />
-                                                        Penguji Lisan Bahasa Arab (Khusus Non-IL)
-                                                    </span>
-                                                    {selectedArabId && (
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => setSelectedArabId("")}
-                                                            className="text-[10px] font-bold text-rose-600 hover:underline"
-                                                        >
-                                                            Kosongkan
-                                                        </button>
-                                                    )}
-                                                </label>
-                                                <select
-                                                    value={selectedArabId}
-                                                    onChange={(e) => setSelectedArabId(e.target.value)}
-                                                    className="w-full bg-emerald-50/40 border border-emerald-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800 focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 outline-none transition-all"
-                                                >
-                                                    <option value="">-- Pilih Penguji Bahasa Arab (Opsional) --</option>
-                                                    {(showAllStaff ? allValidExaminers : (arabExaminers.length > 0 ? arabExaminers : allValidExaminers)).map((u) => (
-                                                        <option key={u.id} value={u.id}>
-                                                            {u.full_name} {u.role ? `(${u.role.replace(/_/g, " ")})` : ""}
-                                                        </option>
-                                                    ))}
-                                                </select>
-                                            </div>
-                                        </>
+                                                    );
+                                                })}
+                                            </select>
+                                        </div>
                                     )}
 
                                     {/* Checkbox Tampilkan Semua Staff */}

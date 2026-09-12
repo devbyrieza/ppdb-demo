@@ -101,50 +101,59 @@ export async function GET() {
     for (const item of assigned) {
       const pendaftarId = item.pendaftar.id;
 
-      // Determine roles for this jadwal record
+      // Helper to check if applicant is direct MA/SMA without IL
+      const jenjangStr = item.pendaftar.jenjang || "";
+      const cleanJenjang = jenjangStr.trim().toUpperCase();
+      const isDirectNonIL = !(
+        cleanJenjang === "IL" ||
+        cleanJenjang.includes("IL ") ||
+        cleanJenjang.includes(" IL") ||
+        cleanJenjang.includes("(IL)") ||
+        cleanJenjang.includes("I'DAD") ||
+        cleanJenjang.includes("IDAD") ||
+        cleanJenjang.includes("IDADIYAH") ||
+        cleanJenjang.includes("SMP") ||
+        cleanJenjang.includes("MTS") ||
+        cleanJenjang.includes("TSANAWIYAH")
+      ) && (
+        cleanJenjang.includes("SMA") ||
+        cleanJenjang.includes("MA") ||
+        cleanJenjang.includes("ALIYAH") ||
+        cleanJenjang.includes("SLTA")
+      );
+
+      // Determine roles for this jadwal record: Quran (Bacaan & Hafalan), Santri, Ortu for everyone; Arab ONLY for direct Non-IL
       const roles: string[] = [];
       if (isAdmin) {
-        roles.push("wawancara", "quran", "ortu", "hafalan", "lisan_arab");
+        roles.push("wawancara", "quran", "ortu");
+        if (isDirectNonIL) {
+          roles.push("lisan_arab");
+        }
       } else {
         if (item.penguji_santri_id === userId) roles.push("wawancara");
         if (item.penguji_ortu_id === userId) roles.push("ortu");
-        
-        // Handle MA specific logic where penguji_quran_id might be reused for hafalan & arab
-        if (item.penguji_quran_id === userId) {
-          const jenjang = (item.pendaftar.jenjang || "").toUpperCase();
-          if (jenjang.includes("MA")) {
-            roles.push("hafalan", "lisan_arab");
-          } else {
-            roles.push("quran");
-          }
+        if (item.penguji_quran_id === userId || (item as any).penguji_hafalan_id === userId) {
+          roles.push("quran");
         }
-        
-        // Handle explicit hafalan & arab assignees (if used in future)
-        if ((item as any).penguji_hafalan_id === userId) roles.push("hafalan");
-        if ((item as any).penguji_arab_id === userId) roles.push("lisan_arab");
+        if (isDirectNonIL && (item as any).penguji_arab_id === userId) {
+          roles.push("lisan_arab");
+        }
 
         if (roles.length === 0 && item.exam_session?.created_by === userId) {
           const title = (item.exam_session?.title || "").toLowerCase();
-          const hasQuranMatch = title.includes("qur") || title.includes("quran");
+          const hasQuranMatch = title.includes("qur") || title.includes("quran") || title.includes("hafalan") || title.includes("bacaan");
           const hasWawancaraMatch = title.includes("calsan") || title.includes("santri") || title.includes("wawancara");
           const hasOrtuMatch = title.includes("cawalsan") || title.includes("ortu") || title.includes("orang");
-          const hasHafalanMatch = title.includes("hafalan");
-          const hasLisanArabMatch = title.includes("arab") || title.includes("lisan");
+          const hasLisanArabMatch = isDirectNonIL && (title.includes("arab") || title.includes("lisan"));
 
           if (hasQuranMatch) roles.push("quran");
           if (hasWawancaraMatch) roles.push("wawancara");
           if (hasOrtuMatch) roles.push("ortu");
-          if (hasHafalanMatch) roles.push("hafalan");
           if (hasLisanArabMatch) roles.push("lisan_arab");
 
-          // Fallback if title is generic like "Tes SPMB", just push based on jenjang so the card isn't blank
           if (roles.length === 0) {
-            const jenjang = (item.pendaftar.jenjang || "").toUpperCase();
-            if (jenjang.includes("MA")) {
-              roles.push("hafalan", "lisan_arab");
-            } else {
-              roles.push("quran");
-            }
+            roles.push("quran");
+            if (isDirectNonIL) roles.push("lisan_arab");
           }
         }
       }

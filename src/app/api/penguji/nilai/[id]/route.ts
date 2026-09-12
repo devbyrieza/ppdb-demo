@@ -179,6 +179,12 @@ export async function PATCH(
         updateData.detail_quran = body.detail_quran;
       if (body.score_quran !== undefined)
         updateData.score_quran = body.score_quran;
+      if (body.nilai_tes_hafalan !== undefined)
+        updateData.nilai_tes_hafalan = body.nilai_tes_hafalan;
+      if (body.score_hafalan !== undefined)
+        updateData.score_hafalan = body.score_hafalan;
+      if (body.detail_hafalan !== undefined)
+        updateData.detail_hafalan = body.detail_hafalan;
       if (!existing?.input_by_quran || !isAdmin) {
         updateData.input_by_quran = userId;
       }

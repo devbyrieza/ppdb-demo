@@ -21,6 +21,38 @@ async function getAdminSession() {
   return null;
 }
 
+function isJenjangLangsungNonIL(jenjang?: string | null): boolean {
+  if (!jenjang) return false;
+  const clean = jenjang.trim().toUpperCase();
+  if (
+    clean === "IL" ||
+    clean.includes("IL ") ||
+    clean.includes(" IL") ||
+    clean.includes("(IL)") ||
+    clean.includes("I'DAD") ||
+    clean.includes("IDAD") ||
+    clean.includes("IDADIYAH")
+  ) {
+    return false;
+  }
+  if (
+    clean.includes("SMP") ||
+    clean.includes("MTS") ||
+    clean.includes("TSANAWIYAH")
+  ) {
+    return false;
+  }
+  if (
+    clean.includes("SMA") ||
+    clean.includes("MA") ||
+    clean.includes("ALIYAH") ||
+    clean.includes("SLTA")
+  ) {
+    return true;
+  }
+  return false;
+}
+
 export async function GET(request: NextRequest) {
   try {
     const session = await getAdminSession();
@@ -151,10 +183,9 @@ export async function GET(request: NextRequest) {
       }
 
       const quranName = s.penguji_quran?.full_name || fallbackQuran || null;
-      const santriName = s.penguji_santri?.full_name || fallbackSantri || null;
-      const ortuName = s.penguji_ortu?.full_name || fallbackOrtu || null;
+      const isLangsungNonIL = isJenjangLangsungNonIL(s.pendaftar?.jenjang);
       const hafalanName = null;
-      const arabName = null;
+      const arabName = isLangsungNonIL ? (s.penguji_arab?.full_name || null) : null;
 
       return {
         id: s.id,
@@ -177,21 +208,21 @@ export async function GET(request: NextRequest) {
           quran: quranName || "-",
           santri: santriName || "-",
           ortu: ortuName || "-",
-          hafalan: hafalanName || "-",
+          hafalan: "-",
           arab: arabName || "-",
         },
         ustadz_id: {
           quran: s.penguji_quran_id || (fallbackQuran ? creator?.id : null),
           santri: s.penguji_santri_id || (fallbackSantri ? creator?.id : null),
           ortu: s.penguji_ortu_id || (fallbackOrtu ? creator?.id : null),
-          hafalan: s.penguji_hafalan_id || null,
-          arab: s.penguji_arab_id || null,
+          hafalan: null,
+          arab: isLangsungNonIL ? (s.penguji_arab_id || null) : null,
         },
         is_assigned: {
           quran: !!quranName,
           santri: !!santriName,
           ortu: !!ortuName,
-          hafalan: !!hafalanName,
+          hafalan: false,
           arab: !!arabName,
         },
         status: {
@@ -269,7 +300,6 @@ export async function PATCH(request: NextRequest) {
       penguji_quran_id,
       penguji_santri_id,
       penguji_ortu_id,
-      penguji_hafalan_id,
       penguji_arab_id,
     ].filter(Boolean);
 
@@ -289,6 +319,7 @@ export async function PATCH(request: NextRequest) {
                 { penguji_quran_id: { in: newExaminerIds } },
                 { penguji_santri_id: { in: newExaminerIds } },
                 { penguji_ortu_id: { in: newExaminerIds } },
+                { penguji_arab_id: { in: newExaminerIds } },
               ],
             },
           ],
@@ -336,8 +367,11 @@ export async function PATCH(request: NextRequest) {
 
     if (penguji_quran_id !== undefined) {
       updateData.penguji_quran_id = penguji_quran_id || null;
+      // Hafalan is unified under Quran test in Al-Andalus, clear separate hafalan ID
+      updateData.penguji_hafalan_id = null;
       if (isOnline) {
         updateData.zoom_link_quran = await getMeetLink(penguji_quran_id);
+        updateData.zoom_link_hafalan = null;
       }
     }
 

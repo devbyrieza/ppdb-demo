@@ -140,7 +140,7 @@ export async function POST(req: NextRequest) {
           tempat_santri: tempatFinal,
           ...(penguji_ortu_id ? { penguji_ortu_id, zoom_link_ortu: isOffline ? null : gmeetOrtu } : {}),
           ...(penguji_santri_id ? { penguji_santri_id, zoom_link_santri: isOffline ? null : gmeetSantri } : {}),
-          ...(penguji_quran_id ? { penguji_quran_id, zoom_link_quran: isOffline ? null : gmeetQuran } : {}),
+          ...(penguji_quran_id ? { penguji_quran_id, zoom_link_quran: isOffline ? null : gmeetQuran, penguji_hafalan_id: null } : {}),
           ...(penguji_arab_id ? { penguji_arab_id, zoom_link_arab: isOffline ? null : gmeetArab } : {}),
           ...(penguji_hafalan_id ? { penguji_hafalan_id, zoom_link_hafalan: isOffline ? null : gmeetHafalan } : {}),
           waktu_mulai_ortu: examSession.start_time,
