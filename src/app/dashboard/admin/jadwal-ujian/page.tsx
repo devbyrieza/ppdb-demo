@@ -646,7 +646,7 @@ export default function JadwalUjianPage() {
 
       if (
         formTestType === "Tes Al-Qur'an (Bacaan & Hafalan)" ||
-        formTestType === "Tes Bacaan Al-Qur'an" ||
+        (formTestType === "Tes Al-Qur'an (Bacaan & Hafalan)" || formTestType === "Tes Bacaan Al-Qur'an") ||
         formTestType === "Tes Hafalan Al-Qur'an"
       ) {
         const quranId = formPengujiQuranId || formPengujiSantriId || formPengujiHafalanId;
@@ -1460,7 +1460,9 @@ export default function JadwalUjianPage() {
                       <div className="flex items-center gap-2">
                         <BookOpen
                           className={`w-3.5 h-3.5 shrink-0 ${
-                            (formTestType === "Tes Al-Qur'an (Bacaan & Hafalan)" || formTestType === "Tes Bacaan Al-Qur'an") ? "text-emerald-600" : "text-stone-400"
+                            (formTestType === "Tes Al-Qur'an (Bacaan & Hafalan)" || formTestType === "Tes Bacaan Al-Qur'an")
+                              ? "text-emerald-600"
+                              : "text-stone-400"
                           }`}
                         />
                         <span>1. Tes Al-Qur&apos;an (Bacaan &amp; Hafalan)</span>
@@ -1817,8 +1819,7 @@ export default function JadwalUjianPage() {
                           ))}
                         </select>
                       </div>
-
-                      
+                    </div>
                   )}
                 </div>
               </div>

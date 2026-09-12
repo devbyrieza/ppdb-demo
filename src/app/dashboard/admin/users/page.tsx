@@ -36,10 +36,9 @@ const ROLE_OPTIONS = [
   { value: "admin_super", label: "Admin Super" },
   { value: "admin_berkas", label: "Admin Berkas" },
   { value: "admin_keuangan", label: "Admin Keuangan" },
-  { value: "penguji", label: "Penguji Al-Qur'an" },
-  { value: "pewawancara_calsan", label: "Pewawancara Calsan" },
-  { value: "pewawancara_cawalsan", label: "Pewawancara Cawalsan" },
-  { value: "penguji_hafalan", label: "Penguji Hafalan Al-Qur'an" },
+  { value: "penguji", label: "Penguji Al-Qur'an (Bacaan & Hafalan)" },
+  { value: "pewawancara_calsan", label: "Pewawancara Calon Santri" },
+  { value: "pewawancara_cawalsan", label: "Pewawancara Calon Orangtua/Wali" },
   { value: "penguji_bahasa_arab", label: "Penguji Lisan B. Arab" },
 ];
 
@@ -191,12 +190,17 @@ export default function UserManagementPage() {
       return;
     }
 
+    const finalRole = formData.role === "penguji_hafalan" ? "penguji" : formData.role;
+    let finalSecRoles = (formData.secondary_roles || []).map((r) => r === "penguji_hafalan" ? "penguji" : r).filter((r) => r !== finalRole);
+    finalSecRoles = [...new Set(finalSecRoles)];
+    const submitData = { ...formData, role: finalRole, secondary_roles: finalSecRoles };
+
     try {
       const method = isEditing ? "PUT" : "POST";
       const response = await fetch("/api/admin/users", {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData) });
+        body: JSON.stringify(submitData) });
       if (response.ok) {
         Swal.fire({
           icon: "success",
@@ -370,12 +374,14 @@ export default function UserManagementPage() {
                     <td className="p-5 md:p-8 text-center">
                       <div className="flex flex-wrap justify-center gap-2">
                         <span className="px-4 py-1.5 bg-primary-50 text-primary-700 text-[10px] font-black rounded-3xl border border-primary-100 uppercase tracking-widest shadow-2xl shadow-primary/30 shadow-emerald-900/20">
-                          {ROLE_LABELS[user.role as UserRole] ||
+                          {ROLE_LABELS[(user.role === "penguji_hafalan" ? "penguji" : user.role) as UserRole] ||
                             user.role.replace("_", " ")}
                         </span>
                         {user.secondary_roles &&
                           user.secondary_roles
-                            .filter((r) => r !== user.role)
+                            .map((r) => r === "penguji_hafalan" ? "penguji" : r)
+                            .filter((r) => r !== (user.role === "penguji_hafalan" ? "penguji" : user.role))
+                            .filter((r, idx, arr) => arr.indexOf(r) === idx)
                             .map((r, i) => (
                               <span
                                 key={i}
@@ -399,14 +405,17 @@ export default function UserManagementPage() {
                               label: "Edit User",
                               icon: <Edit className="w-4 h-4" />,
                               onClick: () => {
+                                const primaryRole = user.role === "penguji_hafalan" ? "penguji" : user.role;
+                                let secRoles = (user.secondary_roles || []).map(r => r === "penguji_hafalan" ? "penguji" : r);
+                                secRoles = [...new Set(secRoles.filter(r => r !== primaryRole))];
                                 setFormData({
                                   id: user.id,
                                   email: user.email,
                                   username: user.username || "",
                                   password: "",
                                   full_name: user.full_name,
-                                  role: user.role,
-                                  secondary_roles: user.secondary_roles || [],
+                                  role: primaryRole,
+                                  secondary_roles: secRoles,
                                   phone: user.phone || "",
                                   jenis_kelamin: user.jenis_kelamin || "",
                                   google_meet_link: user.google_meet_link || ""

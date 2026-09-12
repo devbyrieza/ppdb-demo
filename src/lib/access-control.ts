@@ -215,7 +215,7 @@ export const ROLE_LABELS: Record<UserRole, string> = {
   penguji: "Penguji / Pewawancara",
   pewawancara_calsan: "Pewawancara Santri",
   pewawancara_cawalsan: "Pewawancara Wali",
-  penguji_hafalan: "Penguji Hafalan",
+  penguji_hafalan: "Penguji Al-Qur'an (Bacaan & Hafalan)",
   penguji_bahasa_arab: "Penguji Lisan B. Arab",
   admin_kesehatan: "Admin Kesehatan (Klinik)",
   admin_reservasi: "Admin Reservasi PSB",

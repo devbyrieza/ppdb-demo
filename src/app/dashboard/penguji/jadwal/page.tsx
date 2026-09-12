@@ -81,33 +81,71 @@ interface ExamSession {
 // --- Component ---
 
 const ROLE_TO_JADWAL_TYPES: Record<string, string[]> = {
-  penguji: ["Seleksi Al Qur'an"],
-  penguji_hafalan: ["Seleksi Hafalan Al-Qur'an"],
-  penguji_bahasa_arab: ["Seleksi Lisan Bahasa Arab"],
-  pewawancara_calsan: ["Seleksi Wawancara Calon Santri"],
-  pewawancara_cawalsan: ["Seleksi Wawancara Orang Tua"],
-  admin: [
-    "Seleksi Hafalan Al-Qur'an",
-    "Seleksi Lisan Bahasa Arab",
+  penguji: [
     "Seleksi Al Qur'an",
+    "Tes Al-Qur'an",
+    "Tes Al-Quran",
+    "Tes Al-Qur'an (Bacaan & Hafalan)",
+    "Tes Hafalan Al-Qur'an",
+    "Seleksi Hafalan Al-Qur'an",
+  ],
+  penguji_hafalan: [
+    "Seleksi Al Qur'an",
+    "Tes Al-Qur'an",
+    "Tes Al-Quran",
+    "Tes Al-Qur'an (Bacaan & Hafalan)",
+    "Tes Hafalan Al-Qur'an",
+    "Seleksi Hafalan Al-Qur'an",
+  ],
+  penguji_bahasa_arab: ["Tes Lisan Bahasa Arab", "Seleksi Lisan Bahasa Arab"],
+  pewawancara_calsan: ["Seleksi Wawancara Calon Santri"],
+  pewawancara_cawalsan: ["Seleksi Wawancara Orang Tua", "Seleksi Wawancara Calon Orangtua/Wali Santri"],
+  admin: [
+    "Seleksi Al Qur'an",
+    "Tes Al-Qur'an",
+    "Tes Al-Quran",
+    "Tes Al-Qur'an (Bacaan & Hafalan)",
+    "Tes Hafalan Al-Qur'an",
+    "Tes Lisan Bahasa Arab",
+    "Seleksi Lisan Bahasa Arab",
     "Seleksi Wawancara Calon Santri",
-    "Seleksi Wawancara Orang Tua/Wali",
+    "Seleksi Wawancara Orang Tua",
+    "Seleksi Wawancara Calon Orangtua/Wali Santri",
   ],
   admin_super: [
-    "Seleksi Hafalan Al-Qur'an",
-    "Seleksi Lisan Bahasa Arab",
     "Seleksi Al Qur'an",
+    "Tes Al-Qur'an",
+    "Tes Al-Quran",
+    "Tes Al-Qur'an (Bacaan & Hafalan)",
+    "Tes Hafalan Al-Qur'an",
+    "Tes Lisan Bahasa Arab",
+    "Seleksi Lisan Bahasa Arab",
     "Seleksi Wawancara Calon Santri",
-    "Seleksi Wawancara Orang Tua/Wali",
-  ] };
+    "Seleksi Wawancara Orang Tua",
+    "Seleksi Wawancara Calon Orangtua/Wali Santri",
+  ],
+  head_of_it: [
+    "Seleksi Al Qur'an",
+    "Tes Al-Qur'an",
+    "Tes Al-Quran",
+    "Tes Al-Qur'an (Bacaan & Hafalan)",
+    "Tes Hafalan Al-Qur'an",
+    "Tes Lisan Bahasa Arab",
+    "Seleksi Lisan Bahasa Arab",
+    "Seleksi Wawancara Calon Santri",
+    "Seleksi Wawancara Orang Tua",
+    "Seleksi Wawancara Calon Orangtua/Wali Santri",
+  ],
+};
 
 // Auto-map role to session title (for specific examiner roles)
 const ROLE_TO_SESSION_TITLE: Record<string, string> = {
-  penguji: "Tes Al-Quran",
-  penguji_hafalan: "Tes Hafalan Al-Qur'an",
+  penguji: "Tes Al-Qur'an (Bacaan & Hafalan)",
+  penguji_hafalan: "Tes Al-Qur'an (Bacaan & Hafalan)",
   penguji_bahasa_arab: "Tes Lisan Bahasa Arab",
   pewawancara_calsan: "Seleksi Wawancara Calon Santri",
-  pewawancara_cawalsan: "Seleksi Wawancara Orang Tua" };
+  pewawancara_cawalsan: "Seleksi Wawancara Orang Tua"
+};
 
 // Roles that can choose any session type (need dropdown)
 const ADMIN_ROLES = ["admin", "admin_super"];
@@ -2048,7 +2086,8 @@ export default function JadwalPengujiPage() {
                     <option value="" disabled>
                       Pilih Jenis Ujian
                     </option>
-                    <option value="Tes Al-Quran">Tes Al-Quran</option>
+                    <option value="Tes Al-Qur'an (Bacaan & Hafalan)">Tes Al-Qur'an (Bacaan & Hafalan)</option>
+                    <option value="Tes Lisan Bahasa Arab">Tes Lisan Bahasa Arab</option>
                     <option value="Seleksi Wawancara Calon Santri">
                       Seleksi Wawancara Calon Santri
                     </option>

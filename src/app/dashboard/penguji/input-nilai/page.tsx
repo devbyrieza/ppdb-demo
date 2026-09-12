@@ -254,7 +254,7 @@ const isJenjangLangsungNonIL = (jenjang?: string | null): boolean => {
 };
 
 const ROLE_TO_FORM_TYPES: Record<string, string[]> = {
-  penguji: ['quran', 'lisan_arab'],
+  penguji: ['quran'],
   pewawancara_calsan: ['wawancara'],
   pewawancara_cawalsan: ['ortu'],
   penguji_hafalan: ['quran'],
@@ -288,6 +288,7 @@ function InputNilaiContent() {
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [activeRole, setActiveRole] = useState<string>("");
   const [activeName, setActiveName] = useState<string>("");
+  const [userRoles, setUserRoles] = useState<string[]>([]);
 
   // Form states for each type
   const [quranForm, setQuranForm] = useState<any>({});
@@ -296,10 +297,11 @@ function InputNilaiContent() {
   const [hafalanForm, setHafalanForm] = useState<any>({});
   const [lisanArabForm, setLisanArabForm] = useState<any>({});
 
-  // Determine which form types are visible based on the active session role
-  const visibleFormTypes = ["admin", "admin_super"].includes(activeRole) 
-    ? ['quran', 'wawancara', 'ortu', 'lisan_arab'] 
-    : (ROLE_TO_FORM_TYPES[activeRole] || ['quran', 'wawancara', 'ortu', 'lisan_arab']);
+  // Determine which form types are visible based on active role & secondary roles
+  const allRoles = userRoles.length > 0 ? userRoles : (activeRole ? [activeRole] : []);
+  const visibleFormTypes = allRoles.some(r => ["admin", "admin_super"].includes(r))
+    ? ['quran', 'wawancara', 'ortu', 'lisan_arab']
+    : [...new Set(allRoles.flatMap(r => ROLE_TO_FORM_TYPES[r] || []))];
 
   const toTitleCase = (str: string) => {
     if (!str || typeof str !== 'string') return "";
@@ -340,6 +342,8 @@ function InputNilaiContent() {
         const name = data.session?.full_name || data.session?.name || "Reviewer";
         setActiveRole(role);
         setActiveName(name);
+        const roles = [role, ...(data.availableRoles || []), ...(data.session?.secondary_roles || [])].filter(Boolean);
+        setUserRoles([...new Set(roles)]);
       })
       .catch((err) => console.error("Error fetching session:", err));
 

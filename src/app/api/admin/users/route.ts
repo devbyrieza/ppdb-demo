@@ -42,7 +42,17 @@ export async function GET() {
       },
       orderBy: { created_at: "desc" } });
 
-    return NextResponse.json({ data: profiles });
+    const normalizedProfiles = profiles.map(p => {
+      const primary = p.role === "penguji_hafalan" ? "penguji" : p.role;
+      let sec = (p.secondary_roles || []).map(r => r === "penguji_hafalan" ? "penguji" : r);
+      sec = [...new Set(sec.filter(r => r !== primary))];
+      return {
+        ...p,
+        role: primary,
+        secondary_roles: sec,
+      };
+    });
+    return NextResponse.json({ data: normalizedProfiles });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
@@ -69,7 +79,12 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
-    const { email: rawEmail, username: rawUsername, password, full_name, role, secondary_roles, phone, jenis_kelamin, google_meet_link } = body;
+    const { email: rawEmail, username: rawUsername, password, full_name, role: rawRole, secondary_roles: rawSecRoles, phone, jenis_kelamin, google_meet_link } = body;
+    const role = rawRole === "penguji_hafalan" ? "penguji" : rawRole;
+    let secondary_roles = (Array.isArray(rawSecRoles) ? rawSecRoles : [])
+      .map((r: string) => r === "penguji_hafalan" ? "penguji" : r)
+      .filter((r: string) => r !== role);
+    secondary_roles = [...new Set(secondary_roles)];
     const email = rawEmail?.trim()?.toLowerCase();
     const username = rawUsername?.trim()?.toLowerCase() || null;
 
@@ -261,9 +276,15 @@ export async function PUT(request: Request) {
 
     const data: any = { updated_at: new Date() };
     if (password) data.password_hash = await hashPassword(password);
-    if (role) data.role = role;
+    if (role) data.role = role === "penguji_hafalan" ? "penguji" : role;
     if (full_name) data.full_name = full_name;
-    if (Array.isArray(secondary_roles)) data.secondary_roles = secondary_roles;
+    if (Array.isArray(secondary_roles)) {
+      const targetRole = data.role || (existingProfile.role === "penguji_hafalan" ? "penguji" : existingProfile.role);
+      let finalSec = secondary_roles
+        .map((r: string) => r === "penguji_hafalan" ? "penguji" : r)
+        .filter((r: string) => r !== targetRole);
+      data.secondary_roles = [...new Set(finalSec)];
+    }
     if (phone !== undefined) data.phone = phone;
     if (username !== undefined) data.username = username?.trim()?.toLowerCase() || null;
     if (jenis_kelamin !== undefined) data.jenis_kelamin = jenis_kelamin;

@@ -73,11 +73,10 @@ const ROLE_INFO: Record<
     color: "from-rose-50 to-pink-50 border-rose-200"
   },
   penguji: {
-    label: "Penguji Al-Qur'an",
+    label: "Penguji Al-Qur'an (Bacaan & Hafalan)",
     icon: BookOpen,
-    desc: "Penguji tes Al-Qur'an",
-    color: "from-green-50 to-lime-50 border-green-200"
-  },
+    desc: "Penguji tes Al-Qur'an (Bacaan & Hafalan)",
+    color: "from-green-50 to-lime-50 border-green-200" },
   penguji_hafalan: {
     label: "Penguji Hafalan",
     icon: Award,
