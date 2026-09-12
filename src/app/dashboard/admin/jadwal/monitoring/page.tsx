@@ -115,7 +115,7 @@ export default function MonitoringJadwalPage() {
     const [search, setSearch] = useState("");
     const [filterJenjang, setFilterJenjang] = useState("ALL");
     const [viewMode, setViewMode] = useState<"flat" | "grouped" | "santri">("flat");
-    const [showPast, setShowPast] = useState(false);
+    const [showPast, setShowPast] = useState(true);
 
     const [conflicts, setConflicts] = useState<any[]>([]);
 
@@ -457,15 +457,16 @@ export default function MonitoringJadwalPage() {
 
     const filteredSchedules = schedules.filter(s => {
         const matchesSearch = 
-            s?.pendaftar?.nama.toLowerCase().includes(search.toLowerCase()) ||
-            s.pendaftar.nomor.toLowerCase().includes(search.toLowerCase()) ||
-            s.ustadz.quran.toLowerCase().includes(search.toLowerCase()) ||
-            s.ustadz.santri.toLowerCase().includes(search.toLowerCase()) ||
-            s.ustadz.ortu.toLowerCase().includes(search.toLowerCase());
+            (s?.pendaftar?.nama || "").toLowerCase().includes(search.toLowerCase()) ||
+            (s?.pendaftar?.nomor || "").toLowerCase().includes(search.toLowerCase()) ||
+            (s?.ustadz?.quran || "").toLowerCase().includes(search.toLowerCase()) ||
+            (s?.ustadz?.santri || "").toLowerCase().includes(search.toLowerCase()) ||
+            (s?.ustadz?.ortu || "").toLowerCase().includes(search.toLowerCase()) ||
+            (s?.ustadz?.arab || "").toLowerCase().includes(search.toLowerCase());
         
-        const matchesJenjang = filterJenjang === "ALL" || s.pendaftar.jenjang === filterJenjang;
+        const matchesJenjang = filterJenjang === "ALL" || s?.pendaftar?.jenjang === filterJenjang;
         
-        const isPast = new Date(s.sesi.end).getTime() < new Date().getTime();
+        const isPast = s?.sesi?.end ? new Date(s.sesi.end).getTime() < new Date().getTime() : false;
         const matchesPast = showPast || !isPast;
 
         return matchesSearch && matchesJenjang && matchesPast;
@@ -755,7 +756,7 @@ export default function MonitoringJadwalPage() {
                                 : "bg-white border-slate-200 text-slate-400 hover:text-slate-600"
                             }`}
                         >
-                            {showPast ? "Sesi Lalu" : "Cek Lampau"}
+                            {showPast ? "Semua Sesi" : "Sesi Mendatang"}
                         </button>
                     </div>
                 </div>

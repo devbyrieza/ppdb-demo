@@ -183,6 +183,8 @@ export async function GET(request: NextRequest) {
       }
 
       const quranName = s.penguji_quran?.full_name || fallbackQuran || null;
+      const santriName = s.penguji_santri?.full_name || fallbackSantri || null;
+      const ortuName = s.penguji_ortu?.full_name || fallbackOrtu || null;
       const isLangsungNonIL = isJenjangLangsungNonIL(s.pendaftar?.jenjang);
       const hafalanName = null;
       const arabName = isLangsungNonIL ? (s.penguji_arab?.full_name || null) : null;
