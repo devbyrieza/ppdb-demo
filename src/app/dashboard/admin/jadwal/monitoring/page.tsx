@@ -372,7 +372,7 @@ export default function MonitoringJadwalPage() {
     };
 
     const findConflicts = (data: Schedule[]) => {
-        const examinerTimeMap: Record<string, { student: string; pendaftarId: string; scheduleId: string }[]> = {};
+        const examinerTimeMap: Record<string, { student: string; pendaftarId: string; scheduleId: string; roleLabel?: string }[]> = {};
         const newConflicts: any[] = [];
 
         data.forEach(s => {
@@ -381,7 +381,9 @@ export default function MonitoringJadwalPage() {
             const roles = [
                 { type: 'quran', name: s.ustadz.quran, label: 'Al-Qur\'an' },
                 { type: 'santri', name: s.ustadz.santri, label: 'W. Santri' },
-                { type: 'ortu', name: s.ustadz.ortu, label: 'W. Ortu' }
+                { type: 'ortu', name: s.ustadz.ortu, label: 'W. Ortu' },
+                { type: 'hafalan', name: s.ustadz.hafalan, label: 'Hafalan' },
+                { type: 'arab', name: s.ustadz.arab, label: 'Bhs. Arab' }
             ];
 
             roles.forEach(role => {
@@ -393,7 +395,8 @@ export default function MonitoringJadwalPage() {
                     examinerTimeMap[key].push({
                         student: s?.pendaftar?.nama,
                         pendaftarId: s.pendaftar.nomor,
-                        scheduleId: s.id
+                        scheduleId: s.id,
+                        roleLabel: role.label
                     });
                 }
             });
@@ -626,26 +629,62 @@ export default function MonitoringJadwalPage() {
                 <motion.div 
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
-                    className="bg-rose-50 border border-rose-200 rounded-xl p-5 flex items-start gap-4 shadow-lg shadow-rose-100"
+                    className="bg-rose-50 border border-rose-200 rounded-2xl p-5 flex items-start gap-4 shadow-lg shadow-rose-100"
                 >
                     <div className="w-10 h-10 bg-rose-100 rounded-xl flex items-center justify-center text-rose-600 shrink-0 whitespace-nowrap">
                         <XCircle className="w-6 h-6" />
                     </div>
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0">
                         <h3 className="text-sm font-black text-rose-900 uppercase tracking-tight">Terdeteksi Bentrokan Jadwal ({conflicts.length})</h3>
                         <p className="text-xs text-rose-700 font-bold mt-1">Satu penguji terdeteksi menangani beberapa santri di jam yang sama. Mohon segera kroscek data berikut:</p>
                         <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                             {conflicts.map((c, i) => (
-                                <div key={i} className="bg-white/60 border border-rose-100 rounded-xl p-3 text-[11px]">
-                                    <p className="font-black text-rose-800 uppercase tracking-wider">{c.name}</p>
-                                    <p className="text-rose-500 font-bold mt-0.5">{formatDateTime(new Date(c.time).toISOString())}</p>
-                                    <div className="mt-2 space-y-1">
-                                        {c.items.map((item: any, j: number) => (
-                                            <div key={j} className="flex items-center gap-2 text-slate-600 font-medium">
-                                                <div className="w-1 h-1 bg-rose-400 rounded-full" />
-                                                <span>{item.student} ({item.pendaftarId})</span>
+                                <div key={i} className="bg-white/80 backdrop-blur-sm border border-rose-200/80 rounded-2xl p-4 text-[11px] shadow-sm flex flex-col justify-between">
+                                    <div>
+                                        <div className="flex items-center justify-between gap-2 border-b border-rose-100 pb-2 mb-2.5">
+                                            <div>
+                                                <span className="text-[9px] font-black text-rose-500 uppercase tracking-wider block">Penguji Bentrok</span>
+                                                <p className="font-black text-rose-900 text-xs uppercase tracking-wide">{c.name}</p>
                                             </div>
-                                        ))}
+                                            <div className="text-right">
+                                                <span className="text-[9px] font-black text-rose-500 uppercase tracking-wider block">Waktu Sesi</span>
+                                                <p className="text-rose-600 font-bold text-[11px]">{formatDateTime(new Date(c.time).toISOString())}</p>
+                                            </div>
+                                        </div>
+                                        <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Santri Terjadwal Bersamaan:</p>
+                                        <div className="space-y-2">
+                                            {c.items.map((item: any, j: number) => (
+                                                <div key={j} className="flex items-center justify-between gap-2 bg-rose-50/70 border border-rose-100 p-2 rounded-xl">
+                                                    <div className="min-w-0 flex-1">
+                                                        <p className="font-bold text-slate-800 text-xs truncate">{item.student}</p>
+                                                        <div className="flex items-center gap-1.5 mt-0.5">
+                                                            <span className="text-[10px] font-bold text-slate-500">{item.pendaftarId}</span>
+                                                            {item.roleLabel && (
+                                                                <span className="text-[9px] font-black px-1.5 py-0.5 bg-rose-200 text-rose-800 rounded uppercase">
+                                                                    {item.roleLabel}
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            const sched = schedules.find(s => s.id === item.scheduleId);
+                                                            if (sched) openAssignModal(sched);
+                                                        }}
+                                                        className="shrink-0 px-2.5 py-1.5 bg-rose-600 hover:bg-rose-700 active:scale-95 text-white rounded-lg text-[10px] font-black uppercase tracking-wider flex items-center gap-1 shadow-sm shadow-rose-200 transition-all cursor-pointer"
+                                                        title="Ganti atau atur penguji untuk santri ini"
+                                                    >
+                                                        <UserCheck className="w-3.5 h-3.5" />
+                                                        <span>Ganti</span>
+                                                    </button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className="mt-3 pt-2 border-t border-rose-100 flex items-center gap-1.5 text-rose-600 text-[10px]">
+                                        <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
+                                        <span>Klik tombol <b>Ganti</b> di atas untuk memindahkan salah satu santri ke penguji lain.</span>
                                     </div>
                                 </div>
                             ))}
@@ -1314,7 +1353,7 @@ export default function MonitoringJadwalPage() {
                                 </button>
                                 <button
                                     type="button"
-                                    onClick={handleSaveAssignment}
+                                    onClick={() => handleSaveAssignment(false)}
                                     disabled={savingAssignment}
                                     className="px-6 py-2.5 rounded-xl text-xs font-bold bg-primary-600 hover:bg-primary-700 text-white shadow-lg shadow-primary-600/20 transition-all flex items-center gap-2 disabled:opacity-50"
                                 >
