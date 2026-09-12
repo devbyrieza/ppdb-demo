@@ -832,19 +832,29 @@ export default function VerifikasiDokumenDetailPage() {
       {/* Image/PDF Preview Modal */}
       {previewDoc && (
         <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog"
-          className="fixed inset-0 bg-stone-900/95 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center z-[100] p-6 sm:p-8 backdrop-blur-md overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar"
+          className="fixed inset-0 bg-stone-900/95 flex items-start md:items-center pt-6 md:pt-0 pb-16 md:pb-0 justify-center z-[100] p-2.5 sm:p-6 md:p-8 backdrop-blur-md overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar"
           onClick={() => setPreviewDoc(null)}
         >
           <div className="relative max-w-6xl max-h-[95vh] w-full h-full bg-white/5 overflow-hidden rounded-3xl flex flex-col shadow-2xl">
             {/* Modal Header */}
-            <div className="flex items-center justify-between p-6 sm:p-8 bg-stone-900/80 backdrop-blur-md border-b border-white/10 shrink-0 z-10 sticky top-0">
-              <h3 className="text-white font-bold capitalize">
-                {previewDoc.label.replace(/_/g, " ")}
-              </h3>
-              <div className="flex items-center gap-2">
+            <div className="flex items-center justify-between gap-2 p-3 sm:p-5 bg-stone-900/90 backdrop-blur-md border-b border-white/10 shrink-0 z-10 sticky top-0">
+              <div className="flex items-center gap-2 min-w-0 flex-1">
+                <button
+                  onClick={() => setPreviewDoc(null)}
+                  className="flex items-center gap-1 px-2.5 sm:px-3 py-1.5 sm:py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl sm:rounded-2xl text-xs font-bold transition-all shrink-0 active:scale-95 border border-white/10"
+                  title="Kembali"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  <span>Kembali</span>
+                </button>
+                <h3 className="text-white font-bold text-xs sm:text-sm md:text-base truncate min-w-0">
+                  {previewDoc.label.replace(/_/g, " ")}
+                </h3>
+              </div>
+              <div className="flex items-center gap-1 sm:gap-2 shrink-0">
                 {/* Zoom Controls for Images Only */}
                 {!isPdfDoc(previewDoc) && (
-                  <div className="flex items-center gap-1 bg-white/10 rounded-3xl p-1 mr-2">
+                  <div className="hidden sm:flex items-center gap-1 bg-white/10 rounded-3xl p-1 mr-1">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -888,26 +898,29 @@ export default function VerifikasiDokumenDetailPage() {
                       `${pendaftar?.nama_lengkap}_${previewDoc.label.replace(/ /g, "_")}.${previewDoc.url.split(".").pop()?.split("?")[0] || "file"}`,
                     );
                   }}
-                  className="p-4.5 bg-[#550000]/20 hover:bg-[#550000]/40 rounded-3xl text-emerald-400 backdrop-blur-md transition-all flex items-center gap-2 text-xs font-bold"
+                  className="p-2 sm:px-3.5 sm:py-2 bg-emerald-600/20 hover:bg-emerald-600/40 rounded-xl sm:rounded-2xl text-emerald-400 backdrop-blur-md transition-all flex items-center gap-1.5 text-xs font-bold active:scale-95"
                   title="Unduh Dokumen"
                 >
                   <Download className="w-4 h-4" />
-                  Unduh
+                  <span className="hidden sm:inline">Unduh</span>
                 </button>
                 <a
                   href={previewDoc.url}
                   target="_blank"
-                  className="p-4.5 bg-white/10 hover:bg-white/20 rounded-3xl text-white backdrop-blur-md transition-all flex items-center gap-2 text-xs font-bold"
+                  rel="noopener noreferrer"
+                  className="p-2 sm:px-3.5 sm:py-2 bg-white/10 hover:bg-white/20 rounded-xl sm:rounded-2xl text-white backdrop-blur-md transition-all flex items-center gap-1.5 text-xs font-bold active:scale-95"
                   onClick={(e) => e.stopPropagation()}
+                  title="Buka Tab Baru"
                 >
                   <ExternalLink className="w-4 h-4" />
-                  Buka Tab Baru
+                  <span className="hidden sm:inline">Tab Baru</span>
                 </a>
                 <button
                   onClick={() => setPreviewDoc(null)}
-                  className="p-4.5 bg-rose-600/20 hover:bg-rose-600/40 rounded-3xl text-rose-400 backdrop-blur-md transition-all ml-1"
+                  className="p-2 bg-rose-600/25 hover:bg-rose-600/40 rounded-xl sm:rounded-2xl text-rose-400 backdrop-blur-md transition-all ml-0.5 active:scale-95"
+                  title="Tutup Pratinjau"
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-4 h-4 sm:w-5 sm:h-5" />
                 </button>
               </div>
             </div>
@@ -945,7 +958,7 @@ export default function VerifikasiDokumenDetailPage() {
                     <p className="text-xs text-stone-500 mb-6 max-w-xs leading-relaxed">
                       Dokumen PDF terlampir. Pada perangkat mobile, buka dokumen secara langsung untuk kenyamanan membaca & zoom resolusi penuh.
                     </p>
-                    <div className="flex flex-col sm:flex-row items-center gap-3 w-full max-w-xs">
+                    <div className="flex flex-col items-center gap-2.5 w-full max-w-xs">
                       <a
                         href={previewDoc.url}
                         target="_blank"
@@ -963,10 +976,18 @@ export default function VerifikasiDokumenDetailPage() {
                             `${pendaftar?.nama_lengkap}_${previewDoc.label.replace(/ /g, "_")}.pdf`,
                           )
                         }
-                        className="w-full py-3 px-5 bg-white hover:bg-stone-100 text-stone-700 rounded-2xl text-xs font-bold border border-stone-200 shadow-xs flex items-center justify-center gap-2 active:scale-95 transition-all"
+                        className="w-full py-2.5 px-4 bg-white hover:bg-stone-100 text-stone-700 rounded-2xl text-xs font-bold border border-stone-200 shadow-xs flex items-center justify-center gap-2 active:scale-95 transition-all"
                       >
                         <Download className="w-4 h-4" />
                         Unduh File
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setPreviewDoc(null)}
+                        className="w-full py-2.5 px-4 text-stone-600 hover:text-stone-900 bg-stone-100 hover:bg-stone-200 rounded-2xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 active:scale-95"
+                      >
+                        <ChevronLeft className="w-4 h-4" />
+                        Kembali ke Halaman Verifikasi
                       </button>
                     </div>
                   </div>
