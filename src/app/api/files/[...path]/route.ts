@@ -16,12 +16,13 @@ export async function GET(
   try {
     const pathSegments = (await params).path;
 
-    if (!pathSegments || pathSegments.length < 3) {
+    if (!pathSegments || pathSegments.length < 2) {
       return NextResponse.json({ error: "Invalid path" }, { status: 400 });
     }
 
-    // Validate structure: category/ownerId/filename
-    const [, ownerId] = pathSegments;
+    // Validate structure: category/ownerId/filename or ownerId/filename
+    const ownerId = pathSegments.length === 2 ? pathSegments[0] : pathSegments[1];
+    const filename = pathSegments[pathSegments.length - 1];
     const relativePath = path.join(...pathSegments);
 
     // 1. Auth Check
@@ -57,19 +58,20 @@ export async function GET(
     ];
     const userRoles = [session.role, ...(session.secondary_roles || [])];
     const isAdmin = userRoles.some((r: string) => adminRoles.includes(r));
-    
     let isOwner = session.role === "pendaftar" && session.id === ownerId;
 
     // Fallback check for migrated files where path segments do not match ownerId directly
     if (!isAdmin && !isOwner && session.role === "pendaftar") {
-      const filename = pathSegments[pathSegments.length - 1];
       const { prisma } = await import("@/lib/prisma");
 
       const doc = await prisma.dokumen.findFirst({
         where: {
           pendaftar_id: session.id,
           file_path: {
-            contains: filename } } });
+            contains: filename,
+          },
+        },
+      });
 
       if (doc) {
         isOwner = true;
@@ -78,7 +80,10 @@ export async function GET(
           where: {
             pendaftar_id: session.id,
             bukti_transfer_path: {
-              contains: filename } } });
+              contains: filename,
+            },
+          },
+        });
         if (payment) {
           isOwner = true;
         }
@@ -93,55 +98,46 @@ export async function GET(
     console.log(`[File Serve] Requesting: ${relativePath}`);
     let fileData = getFileLocal(relativePath);
 
-    // Fallback: Check Database for Base64 image
-    if (!fileData && pathSegments[0] === "bukti-pembayaran") {
-      const { prisma } = await import("@/lib/prisma");
-      const filename = pathSegments[pathSegments.length - 1];
-      const pembayaran = await prisma.pembayaran.findFirst({
-        where: {
-          pendaftar_id: ownerId,
-          bukti_transfer_path: {
-            contains: filename } } });
-
-      if (pembayaran) {
-        if (pembayaran.file_data) {
-          const ext = filename.split(".").pop()?.toLowerCase();
-          let mime = "image/jpeg";
-          if (ext === "png") mime = "image/png";
-          else if (ext === "pdf") mime = "application/pdf";
-          else if (ext === "webp") mime = "image/webp";
-
-          fileData = {
-            buffer: pembayaran.file_data,
-            mimeType: mime };
-          console.log(`[File Serve] Found file_data in Database for ${filename}`);
-        } else if (pembayaran.midtrans_response_json) {
-          // Fallback to legacy base64 in midtrans_response_json
-          const json = pembayaran.midtrans_response_json as any;
-          if (json.base64_image) {
-            fileData = {
-              buffer: Buffer.from(json.base64_image, "base64"),
-              mimeType: json.mime_type || "image/jpeg" };
-            console.log(`[File Serve] Found Base64 Image in midtrans_response_json for ${filename}`);
-          }
-        }
-      }
+    // If not found and path was 2 segments (e.g., ownerId/filename), try with category prefix
+    if (!fileData && pathSegments.length === 2) {
+      fileData =
+        getFileLocal(path.join("dokumen-pendaftaran", relativePath)) ||
+        getFileLocal(path.join("bukti-pembayaran", relativePath));
     }
 
-    // Fallback 2: Check Dokumen table for file_data (Vercel Support)
-    if (!fileData && pathSegments[0] === "dokumen-pendaftaran") {
-      const { prisma } = await import("@/lib/prisma");
-      const filename = pathSegments[pathSegments.length - 1];
-      const dokumen = await prisma.dokumen.findFirst({
-        where: {
-          pendaftar_id: ownerId,
-          file_name: filename } });
+    // Database fallback if file is not found on disk (ephemeral Docker/Vercel support)
+    if (!fileData) {
+      try {
+        const { prisma } = await import("@/lib/prisma");
+        const doc = await prisma.dokumen.findFirst({
+          where: {
+            OR: [
+              { file_path: { contains: filename } },
+              { file_name: filename },
+              { file_path: relativePath },
+            ],
+          },
+          select: {
+            file_data: true,
+            file_type: true,
+            file_name: true,
+          },
+        });
 
-      if (dokumen && dokumen.file_data) {
-        fileData = {
-          buffer: dokumen.file_data,
-          mimeType: dokumen.file_type || "application/octet-stream" };
-        console.log(`[File Serve] Found file_data in Database for ${filename}`);
+        if (doc && doc.file_data) {
+          console.log(`[File Serve] Found in DB (BYTEA): ${filename}`);
+          const buffer = Buffer.from(doc.file_data);
+          let mimeType = doc.file_type || "application/octet-stream";
+          if (mimeType === "application/octet-stream") {
+            const hex = buffer.slice(0, 4).toString("hex").toUpperCase();
+            if (hex.startsWith("FFD8FF")) mimeType = "image/jpeg";
+            else if (hex === "89504E47") mimeType = "image/png";
+            else if (hex === "25504446") mimeType = "application/pdf";
+          }
+          fileData = { buffer, mimeType };
+        }
+      } catch (dbErr) {
+        console.error("[File Serve] DB fallback query error:", dbErr);
       }
     }
 
@@ -154,7 +150,8 @@ export async function GET(
         {
           error:
             "File tidak ditemukan di server. Kemungkinan file terhapus saat redeploy atau volume storage belum terpasang.",
-          path: relativePath },
+          path: relativePath,
+        },
         { status: 404 },
       );
     }

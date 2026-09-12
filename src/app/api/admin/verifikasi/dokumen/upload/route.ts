@@ -187,11 +187,14 @@ export async function POST(request: NextRequest) {
           file_path: filePath,
           file_size: file.size,
           file_type: detectedType, // Use detected type
+          file_data: buffer, // Always store binary in PostgreSQL for reliability
           is_verified: true, // admin mengupload otomatis verified
           verified_by: session.id,
           verified_at: new Date(),
           catatan: "Diubah dan disetujui oleh Admin",
-          updated_at: new Date() } });
+          updated_at: new Date(),
+        },
+      });
     } else {
       await prisma.dokumen.create({
         data: {
@@ -201,9 +204,12 @@ export async function POST(request: NextRequest) {
           file_path: filePath,
           file_size: file.size,
           file_type: detectedType, // Use detected type
+          file_data: buffer, // Always store binary in PostgreSQL for reliability
           is_verified: true,
           verified_by: session.id,
-          catatan: "Diunggah oleh Admin" } });
+          catatan: "Diunggah oleh Admin",
+        },
+      });
     }
 
     const updatedFilePath = filePath;

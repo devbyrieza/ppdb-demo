@@ -95,10 +95,12 @@ export default function VerifikasiDokumenDetailPage() {
     docName: "",
     initialReason: "" });
   const [rejectReason, setRejectReason] = useState("");
+  const [imgErrors, setImgErrors] = useState<Record<string, boolean>>({});
 
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
+      setImgErrors({});
       // We use status=all but filter by pendaftar_id
       const response = await fetch(
         `/api/admin/verifikasi/dokumen?pendaftar_id=${id}&status=all`,
@@ -463,8 +465,8 @@ export default function VerifikasiDokumenDetailPage() {
 
   if (!pendaftar && !loading) {
     return (
-      <div className="bg-white rounded-3xl shadow-sm p-6 md:p-10 border border-gold-200 text-center">
-        <AlertCircle className="w-16 h-16 text-slate-500 mx-auto mb-4" />
+      <div className="bg-white rounded-3xl shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 p-6 md:p-10 border border-gold-200 text-center">
+        <AlertCircle className="w-16 h-16 text-primary-500 mx-auto mb-4" />
         <h2 className="text-2xl font-black text-primary-950 mb-2">
           Data Tidak Ditemukan
         </h2>
@@ -473,7 +475,7 @@ export default function VerifikasiDokumenDetailPage() {
         </p>
         <button
           onClick={() => router.back()}
-          className="p-[16px_20px] bg-primary-700 hover:bg-primary-800 text-white rounded-[24px] font-bold transition-all shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-700/20 active:scale-95"
+          className="px-6 py-3 bg-primary-700 hover:bg-primary-800 text-white rounded-3xl font-bold transition-all shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-700/20 active:scale-95"
         >
           Kembali ke Daftar
         </button>
@@ -491,40 +493,47 @@ export default function VerifikasiDokumenDetailPage() {
         accept="image/jpeg, image/png, application/pdf"
       />
       {/* Header */}
-      <div className="bg-white rounded-3xl shadow-sm p-6 border border-gold-100">
-        <div className="flex items-center justify-between flex-wrap gap-[24px_28px]">
-          <div className="flex items-center gap-[24px_28px]">
+      <div className="bg-white rounded-3xl shadow-xl p-4 sm:p-6 border border-gold-100 overflow-hidden">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-start sm:items-center gap-3 sm:gap-4 min-w-0 flex-1">
             <button
               onClick={() => router.back()}
-              className="p-2 hover:bg-gold-50 rounded-[24px] text-ink-300 transition-colors"
+              className="p-2 sm:p-3 hover:bg-gold-50 rounded-2xl text-ink-300 transition-colors shrink-0 mt-0.5 sm:mt-0"
               title="Kembali"
             >
-              <ChevronLeft className="w-6 h-6" />
+              <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
-            <div className="p-[24px_28px] bg-linear-to-br from-primary-600 to-primary-900 rounded-[24px] shadow-2xl shadow-primary/30  shadow-primary-900/20">
-              <User className="w-8 h-8 text-gold-300" />
+            <div className="p-3 sm:p-4 bg-linear-to-br from-primary-600 to-primary-900 rounded-2xl shadow-lg shrink-0">
+              <User className="w-5 h-5 sm:w-7 sm:h-7 text-gold-300" />
             </div>
-            <div>
-              <h2 className="text-3xl font-black text-primary-950 leading-none mb-1">
+            <div className="min-w-0 flex-1">
+              <h2 className="text-lg sm:text-2xl md:text-3xl font-black text-primary-950 leading-tight mb-1.5 break-words">
                 {toTitleCase(pendaftar?.nama_lengkap || "")}
               </h2>
-              <div className="flex items-center gap-3 text-ink-300">
-                <span className="font-mono bg-primary-50 px-2.5 py-1 rounded-[24px] text-sm font-black text-primary-600 border border-primary-100">
+              <div className="flex flex-wrap items-center gap-2 text-ink-300">
+                <span className="font-mono bg-primary-50 px-2.5 py-0.5 sm:py-1 rounded-xl text-xs sm:text-sm font-black text-primary-600 border border-primary-100 shrink-0">
                   {pendaftar?.nomor_pendaftaran}
                 </span>
-                <span className="px-2.5 py-1 bg-gold-400 text-primary-900 rounded-[24px] text-[10px] font-black uppercase shadow-xs">
+                <span className="px-2.5 py-0.5 sm:py-1 bg-gold-400 text-primary-900 rounded-xl text-[10px] sm:text-xs font-black uppercase shadow-xs shrink-0">
                   {pendaftar?.jenjang}
                 </span>
+                {pendaftar?.no_hp && (
+                  <span className="text-xs text-ink-300 font-medium hidden sm:inline">
+                    • {pendaftar.no_hp}
+                  </span>
+                )}
               </div>
             </div>
           </div>
-          <button
-            onClick={fetchData}
-            className="flex items-center gap-2 p-[16px_20px] bg-primary-600 hover:bg-primary-700 text-white rounded-[24px] transition-colors"
-          >
-            <RefreshCw className="w-4 h-4" />
-            Muat Ulang
-          </button>
+          <div className="flex items-center justify-end sm:justify-center shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-gold-100/60">
+            <button
+              onClick={fetchData}
+              className="flex items-center gap-2 px-3.5 sm:px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-2xl transition-all shadow-md active:scale-95 text-xs sm:text-sm font-bold"
+            >
+              <RefreshCw className="w-4 h-4" />
+              Muat Ulang
+            </button>
+          </div>
         </div>
       </div>
 
@@ -545,18 +554,56 @@ export default function VerifikasiDokumenDetailPage() {
             <div className="w-full relative aspect-[4/3] bg-stone-100 overflow-hidden">
               {dok.file_url ? (
                 isImageFile(dok) ? (
-                  <img
-                    src={dok.file_url}
-                    alt={dok.jenis_dokumen}
-                    className="absolute inset-0 w-full h-full object-cover cursor-pointer"
-                    onClick={() =>
-                      openPreview(
-                        dok.file_url!,
-                        dok.file_type,
-                        dok.jenis_dokumen,
-                      )
-                    }
-                  />
+                  !imgErrors[dok.id] ? (
+                    <img
+                      src={dok.file_url}
+                      alt={dok.jenis_dokumen}
+                      className="absolute inset-0 w-full h-full object-cover cursor-pointer"
+                      onError={() =>
+                        setImgErrors((prev) => ({ ...prev, [dok.id]: true }))
+                      }
+                      onClick={() =>
+                        openPreview(
+                          dok.file_url!,
+                          dok.file_type,
+                          dok.jenis_dokumen,
+                        )
+                      }
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center bg-stone-50 border border-stone-200/70">
+                      <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mb-2 shadow-xs">
+                        <FileText className="w-6 h-6" />
+                      </div>
+                      <p className="text-xs font-bold text-stone-700 mb-1">
+                        Preview Gambar Tidak Tersedia
+                      </p>
+                      <p className="text-[11px] text-stone-500 mb-3 line-clamp-1 max-w-[200px]">
+                        {dok.jenis_dokumen}
+                      </p>
+                      <div className="flex items-center gap-2">
+                        <a
+                          href={dok.file_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-semibold rounded-xl transition-all"
+                        >
+                          <ExternalLink className="w-3.5 h-3.5" />
+                          Buka Tab
+                        </a>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            handleReplaceClick(dok.id, dok.jenis_dokumen)
+                          }
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary-600 hover:bg-primary-700 text-white text-xs font-semibold rounded-xl transition-all shadow-xs"
+                        >
+                          <UploadCloud className="w-3.5 h-3.5" />
+                          Upload Ulang
+                        </button>
+                      </div>
+                    </div>
+                  )
                 ) : (
                   <div 
                     className="absolute inset-0 w-full h-full overflow-hidden cursor-pointer group bg-white"
@@ -578,40 +625,40 @@ export default function VerifikasiDokumenDetailPage() {
               )}
 
               {/* View button overlay for images */}
-              {dok.file_url && isImageFile(dok) && (
+              {dok.file_url && isImageFile(dok) && !imgErrors[dok.id] && (
                 <a
                   href={dok.file_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="absolute top-3 right-3 p-2 bg-white/90 hover:bg-white rounded-[24px] text-stone-700 shadow-sm transition-all"
+                  className="absolute top-3 right-3 p-2 bg-white/90 hover:bg-white rounded-xl text-stone-700 shadow-md transition-all hover:scale-105 z-10"
                 >
                   <ExternalLink className="w-4 h-4" />
                 </a>
               )}
             </div>
 
-            <div className="p-[24px_28px]">
+            <div className="p-5">
               <div className="flex items-start justify-between mb-2">
                 <h3 className="font-black text-primary-950 capitalize tracking-tight leading-tight">
                   {dok.jenis_dokumen.replace(/_/g, " ")}
                 </h3>
                 {dok.status_verifikasi === "verified" ? (
-                  <div className="flex items-center gap-1 text-emerald-600 bg-emerald-50 px-2 py-1 rounded-[24px] text-[10px] font-black uppercase">
+                  <div className="flex items-center gap-1 text-[#550000] bg-emerald-50 px-2 py-1 rounded-2xl text-[10px] font-black uppercase">
                     <CheckCircle className="w-3 h-3" />
                     Diterima
                   </div>
                 ) : dok.status_verifikasi === "rejected" ? (
-                  <div className="flex items-center gap-1 text-rose-600 bg-rose-50 px-2 py-1 rounded-[24px] text-[10px] font-black uppercase">
+                  <div className="flex items-center gap-1 text-rose-600 bg-rose-50 px-2 py-1 rounded-2xl text-[10px] font-black uppercase">
                     <XCircle className="w-3 h-3" />
                     Ditolak
                   </div>
                 ) : dok.status_verifikasi === "empty" ? (
-                  <div className="flex items-center gap-1 text-stone-400 bg-stone-50 px-2 py-1 rounded-[24px] text-[10px] font-black uppercase border border-stone-200 italic">
+                  <div className="flex items-center gap-1 text-stone-400 bg-stone-50 px-2 py-1 rounded-2xl text-[10px] font-black uppercase border border-stone-200 italic">
                     <Clock className="w-3 h-3" />
                     Belum Ada
                   </div>
                 ) : (
-                  <div className="flex items-center gap-1 text-gold-700 bg-gold-50 px-2 py-1 rounded-[24px] text-[10px] font-black uppercase border border-gold-200">
+                  <div className="flex items-center gap-1 text-gold-700 bg-gold-50 px-2 py-1 rounded-2xl text-[10px] font-black uppercase border border-gold-200">
                     <RefreshCw className="w-3 h-3" />
                     Menunggu
                   </div>
@@ -645,10 +692,10 @@ export default function VerifikasiDokumenDetailPage() {
                     processingDocs.has(dok.id) ||
                     dok.status_verifikasi === "verified"
                   }
-                  className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-[24px] text-xs font-bold transition-all ${
+                  className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-3xl text-xs font-bold transition-all ${
                     dok.status_verifikasi === "verified"
-                      ? "bg-emerald-50 text-emerald-600 border border-emerald-100 cursor-default"
-                      : "bg-emerald-600 hover:bg-emerald-700 text-white shadow-2xl shadow-primary/30  shadow-primary/20 shadow-emerald-600/20 active:scale-95 disabled:opacity-50"
+                      ? "bg-emerald-50 text-[#550000] border border-emerald-100 cursor-default"
+                      : "bg-[#550000] hover:bg-[#550000] text-white shadow-2xl shadow-primary/30  shadow-primary/20 shadow-emerald-600/20 active:scale-95 disabled:opacity-50"
                   }`}
                 >
                   {processingDocs.has(dok.id) ? (
@@ -670,7 +717,7 @@ export default function VerifikasiDokumenDetailPage() {
                     setRejectReason(dok.catatan || "");
                   }}
                   disabled={processingDocs.has(dok.id)}
-                  className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-[24px] text-xs font-black transition-all active:scale-95 disabled:opacity-50 ${
+                  className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-3xl text-xs font-black transition-all active:scale-95 disabled:opacity-50 ${
                     dok.status_verifikasi === "rejected"
                       ? "bg-rose-100 text-rose-700 border border-rose-200"
                       : "bg-white border-2 border-gold-100 hover:border-rose-400 hover:text-rose-600 text-ink-300"
@@ -688,7 +735,7 @@ export default function VerifikasiDokumenDetailPage() {
               </div>
 
               {dok.catatan && (
-                <div className="mt-4 p-3 bg-rose-50 border border-rose-100 rounded-[24px]">
+                <div className="mt-4 p-3 bg-rose-50 border border-rose-100 rounded-3xl">
                   <p className="text-[10px] font-bold text-rose-800 uppercase mb-1">
                     Catatan Penolakan:
                   </p>
@@ -714,25 +761,25 @@ export default function VerifikasiDokumenDetailPage() {
       {/* Image/PDF Preview Modal */}
       {previewDoc && (
         <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog"
-          className="fixed inset-0 bg-stone-900/95 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center z-[100] p-[24px_28px] backdrop-blur-md overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar"
+          className="fixed inset-0 bg-stone-900/95 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center z-[100] p-6 sm:p-8 backdrop-blur-md overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar"
           onClick={() => setPreviewDoc(null)}
         >
-          <div className="relative max-w-[1200px] max-h-[95vh] w-full h-full bg-white/5 overflow-hidden rounded-3xl flex flex-col shadow-2xl">
+          <div className="relative max-w-6xl max-h-[95vh] w-full h-full bg-white/5 overflow-hidden rounded-3xl flex flex-col shadow-2xl">
             {/* Modal Header */}
-            <div className="flex items-center justify-between p-[24px_28px] bg-stone-900/80 backdrop-blur-md border-b border-white/10 shrink-0 z-10 sticky top-0">
+            <div className="flex items-center justify-between p-6 sm:p-8 bg-stone-900/80 backdrop-blur-md border-b border-white/10 shrink-0 z-10 sticky top-0">
               <h3 className="text-white font-bold capitalize">
                 {previewDoc.label.replace(/_/g, " ")}
               </h3>
               <div className="flex items-center gap-2">
                 {/* Zoom Controls for Images Only */}
                 {!isPdfDoc(previewDoc) && (
-                  <div className="flex items-center gap-1 bg-white/10 rounded-[24px] p-1 mr-2">
+                  <div className="flex items-center gap-1 bg-white/10 rounded-3xl p-1 mr-2">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         setZoomLevel((prev) => Math.max(0.5, prev - 0.25));
                       }}
-                      className="p-1.5 hover:bg-white/20 rounded-[24px] text-white transition-all"
+                      className="p-1.5 hover:bg-white/20 rounded-2xl text-white transition-all"
                       title="Zoom Out"
                     >
                       <ZoomOut className="w-4 h-4" />
@@ -745,7 +792,7 @@ export default function VerifikasiDokumenDetailPage() {
                         e.stopPropagation();
                         setZoomLevel((prev) => Math.min(4, prev + 0.25));
                       }}
-                      className="p-1.5 hover:bg-white/20 rounded-[24px] text-white transition-all"
+                      className="p-1.5 hover:bg-white/20 rounded-2xl text-white transition-all"
                       title="Zoom In"
                     >
                       <ZoomIn className="w-4 h-4" />
@@ -755,7 +802,7 @@ export default function VerifikasiDokumenDetailPage() {
                         e.stopPropagation();
                         setZoomLevel(1);
                       }}
-                      className="p-1.5 hover:bg-white/20 rounded-[24px] text-white transition-all"
+                      className="p-1.5 hover:bg-white/20 rounded-2xl text-white transition-all"
                       title="Reset Zoom"
                     >
                       <Maximize className="w-4 h-4" />
@@ -770,7 +817,7 @@ export default function VerifikasiDokumenDetailPage() {
                       `${pendaftar?.nama_lengkap}_${previewDoc.label.replace(/ /g, "_")}.${previewDoc.url.split(".").pop()?.split("?")[0] || "file"}`,
                     );
                   }}
-                  className="p-2.5 bg-emerald-600/20 hover:bg-emerald-600/40 rounded-[24px] text-emerald-400 backdrop-blur-md transition-all flex items-center gap-2 text-xs font-bold"
+                  className="p-4.5 bg-[#550000]/20 hover:bg-[#550000]/40 rounded-3xl text-emerald-400 backdrop-blur-md transition-all flex items-center gap-2 text-xs font-bold"
                   title="Unduh Dokumen"
                 >
                   <Download className="w-4 h-4" />
@@ -779,7 +826,7 @@ export default function VerifikasiDokumenDetailPage() {
                 <a
                   href={previewDoc.url}
                   target="_blank"
-                  className="p-2.5 bg-white/10 hover:bg-white/20 rounded-[24px] text-white backdrop-blur-md transition-all flex items-center gap-2 text-xs font-bold"
+                  className="p-4.5 bg-white/10 hover:bg-white/20 rounded-3xl text-white backdrop-blur-md transition-all flex items-center gap-2 text-xs font-bold"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <ExternalLink className="w-4 h-4" />
@@ -787,7 +834,7 @@ export default function VerifikasiDokumenDetailPage() {
                 </a>
                 <button
                   onClick={() => setPreviewDoc(null)}
-                  className="p-2.5 bg-rose-600/20 hover:bg-rose-600/40 rounded-[24px] text-rose-400 backdrop-blur-md transition-all ml-1"
+                  className="p-4.5 bg-rose-600/20 hover:bg-rose-600/40 rounded-3xl text-rose-400 backdrop-blur-md transition-all ml-1"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -796,13 +843,13 @@ export default function VerifikasiDokumenDetailPage() {
 
             {/* Modal Content */}
             <div
-              className="flex-1 overflow-auto bg-stone-100 flex items-center justify-center p-2 relative"
+              className="flex-1 overflow-auto bg-stone-100 flex items-center justify-center p-4 relative whitespace-nowrap shrink-0"
               onClick={(e) => e.stopPropagation()}
             >
               {isPdfDoc(previewDoc) ? (
                 <iframe
                   src={`${previewDoc.url}#toolbar=0`}
-                  className="w-full h-full rounded-[24px] shadow-inner border-0"
+                  className="w-full h-full rounded-3xl shadow-inner border-0"
                   title="PDF Preview"
                 />
               ) : (
@@ -810,7 +857,7 @@ export default function VerifikasiDokumenDetailPage() {
                   <img
                     src={previewDoc.url}
                     alt="Preview"
-                    className="max-w-none origin-center drop-shadow-2xl rounded-[24px] transition-transform duration-200 ease-out"
+                    className="max-w-none origin-center drop-shadow-2xl rounded-2xl transition-transform duration-200 ease-out"
                     style={{ transform: `scale(${zoomLevel})` }}
                   />
                 </div>
@@ -823,7 +870,7 @@ export default function VerifikasiDokumenDetailPage() {
       {/* Reject Modal */}
       {rejectModal.isOpen && (
         <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog"
-          className="fixed inset-0 bg-stone-900/50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center z-[110] px-4 backdrop-blur-sm overflow-y-auto overflow-x-hidden p-[24px_28px] overscroll-contain custom-scrollbar"
+          className="fixed inset-0 bg-stone-900/50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center z-[110] px-4 backdrop-blur-sm overflow-y-auto overflow-x-hidden p-6 sm:p-8 overscroll-contain custom-scrollbar"
           onClick={() => {
             if (!processingDocs.has(rejectModal.docId)) {
               setRejectModal({ ...rejectModal, isOpen: false });
@@ -831,10 +878,10 @@ export default function VerifikasiDokumenDetailPage() {
           }}
         >
           <div
-            className="bg-white rounded-[24px] shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200"
+            className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-[24px_28px] border-b border-stone-100 flex items-center justify-between bg-stone-50">
+            <div className="p-5 border-b border-stone-100 flex items-center justify-between bg-stone-50">
               <h3 className="text-lg font-bold text-stone-900 flex items-center gap-2">
                 <XCircle className="w-5 h-5 text-rose-600" />
                 Tolak Dokumen
@@ -844,14 +891,14 @@ export default function VerifikasiDokumenDetailPage() {
                   setRejectModal({ ...rejectModal, isOpen: false })
                 }
                 disabled={processingDocs.has(rejectModal.docId)}
-                className="text-stone-400 hover:text-stone-600 transition-colors p-2 hover:bg-stone-200 rounded-[24px]"
+                className="text-stone-400 hover:text-stone-600 transition-colors p-4 hover:bg-stone-200 rounded-2xl"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <div className="p-6 space-y-4">
-              <div className="flex items-start gap-3 p-3 bg-rose-50 border border-rose-100 rounded-[24px]">
+              <div className="flex items-start gap-3 p-3 bg-rose-50 border border-rose-100 rounded-3xl">
                 <FileText className="w-5 h-5 text-rose-600 mt-0.5" />
                 <div>
                   <p className="text-xs text-rose-600 font-bold uppercase tracking-wider mb-0.5">
@@ -872,7 +919,7 @@ export default function VerifikasiDokumenDetailPage() {
                     value={rejectReason}
                     onChange={(e) => setRejectReason(e.target.value)}
                     placeholder="Contoh: Foto buram, dokumen tidak terbaca, masa berlaku habis..."
-                    className="w-full px-4 py-3 border-2 border-stone-200 rounded-[24px] focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10 focus:outline-none min-h-[120px] text-sm resize-none transition-all placeholder:text-stone-400"
+                    className="w-full px-4 py-3 border-2 border-stone-200 rounded-3xl focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10 focus:outline-none min-h-[120px] text-sm resize-none transition-all placeholder:text-stone-400"
                     autoFocus
                   />
                   <div className="absolute bottom-3 right-3 text-xs text-stone-400 font-medium bg-white/80 px-2 py-0.5 rounded-md backdrop-blur-sm">
@@ -888,13 +935,13 @@ export default function VerifikasiDokumenDetailPage() {
               </div>
             </div>
 
-            <div className="p-[24px_28px] bg-stone-50 flex items-center justify-end gap-3 border-t border-stone-100">
+            <div className="p-6 sm:p-8 bg-stone-50 flex items-center justify-end gap-3 border-t border-stone-100">
               <button
                 onClick={() =>
                   setRejectModal({ ...rejectModal, isOpen: false })
                 }
                 disabled={processingDocs.has(rejectModal.docId)}
-                className="px-5 py-2.5 rounded-[24px] text-sm font-bold text-stone-500 hover:text-stone-700 hover:bg-stone-200 transition-colors"
+                className="px-5 py-2.5 rounded-3xl text-sm font-bold text-stone-500 hover:text-stone-700 hover:bg-stone-200 transition-colors"
               >
                 Batal
               </button>
@@ -918,7 +965,7 @@ export default function VerifikasiDokumenDetailPage() {
                 disabled={
                   processingDocs.has(rejectModal.docId) || !rejectReason.trim()
                 }
-                className="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-[24px] text-sm font-bold shadow-2xl shadow-primary/30  shadow-primary/20 shadow-rose-600/20 hover:shadow-rose-600/40 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transform active:scale-95"
+                className="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-3xl text-sm font-bold shadow-2xl shadow-primary/30  shadow-primary/20 shadow-rose-600/20 hover:shadow-rose-600/40 transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transform active:scale-95"
               >
                 {processingDocs.has(rejectModal.docId) ? (
                   <Loader2 className="w-4 h-4 animate-spin" />

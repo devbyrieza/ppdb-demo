@@ -64,47 +64,68 @@ export function getFileLocal(
   const candidateDirs = [
     STORAGE_DIR,
     path.join(process.cwd(), "storage_data"),
+    "/app/storage_data",
     path.join("/tmp", "storage_data"),
-  ];
+    "/storage_data",
+  ].filter(Boolean);
+
+  const pathVariations = Array.from(
+    new Set([
+      sanitizedPath,
+      path.join("dokumen-pendaftaran", sanitizedPath),
+      path.join("bukti-pembayaran", sanitizedPath),
+      sanitizedPath.replace(/^dokumen-pendaftaran[/\\]/, ""),
+      sanitizedPath.replace(/^bukti-pembayaran[/\\]/, ""),
+    ]),
+  );
 
   for (const baseDir of candidateDirs) {
-    const fullPath = path.resolve(baseDir, sanitizedPath);
-    const normalizedBase = path.resolve(baseDir);
+    for (const testPath of pathVariations) {
+      const fullPath = path.resolve(baseDir, testPath);
+      const normalizedBase = path.resolve(baseDir);
 
-    // Basic security check to prevent directory traversal
-    if (!fullPath.startsWith(normalizedBase)) {
-      continue;
-    }
-
-    if (fs.existsSync(fullPath)) {
-      const buffer = fs.readFileSync(fullPath);
-
-      // Robust mime type detection based on Magic Bytes (first few bytes)
-      // PDF: %PDF- (25 50 44 46 2D)
-      // JPEG: FF D8 FF
-      // PNG: 89 50 4E 47
-      const hex = buffer.slice(0, 4).toString("hex").toUpperCase();
-
-      let mimeType = "application/octet-stream";
-      if (hex.startsWith("FFD8FF")) {
-        mimeType = "image/jpeg";
-      } else if (hex === "89504E47") {
-        mimeType = "image/png";
-      } else if (hex === "25504446") {
-        mimeType = "application/pdf";
-      } else {
-        // Fallback to extension-based detection if magic bytes don't match known types
-        const ext = path.extname(fullPath).toLowerCase();
-        if (ext === ".jpg" || ext === ".jpeg") mimeType = "image/jpeg";
-        else if (ext === ".png") mimeType = "image/png";
-        else if (ext === ".webp") mimeType = "image/webp";
-        else if (ext === ".pdf") mimeType = "application/pdf";
+      // Basic security check to prevent directory traversal
+      if (!fullPath.startsWith(normalizedBase)) {
+        continue;
       }
 
-      console.log(
-        `[Storage] File found: ${fullPath} (Detected: ${mimeType} via ${hex})`,
-      );
-      return { buffer, mimeType };
+      if (fs.existsSync(fullPath)) {
+        try {
+          const stat = fs.statSync(fullPath);
+          if (stat.isDirectory()) continue;
+
+          const buffer = fs.readFileSync(fullPath);
+
+          // Robust mime type detection based on Magic Bytes (first few bytes)
+          // PDF: %PDF- (25 50 44 46 2D)
+          // JPEG: FF D8 FF
+          // PNG: 89 50 4E 47
+          const hex = buffer.slice(0, 4).toString("hex").toUpperCase();
+
+          let mimeType = "application/octet-stream";
+          if (hex.startsWith("FFD8FF")) {
+            mimeType = "image/jpeg";
+          } else if (hex === "89504E47") {
+            mimeType = "image/png";
+          } else if (hex === "25504446") {
+            mimeType = "application/pdf";
+          } else {
+            // Fallback to extension-based detection if magic bytes don't match known types
+            const ext = path.extname(fullPath).toLowerCase();
+            if (ext === ".jpg" || ext === ".jpeg") mimeType = "image/jpeg";
+            else if (ext === ".png") mimeType = "image/png";
+            else if (ext === ".webp") mimeType = "image/webp";
+            else if (ext === ".pdf") mimeType = "application/pdf";
+          }
+
+          console.log(
+            `[Storage] File found: ${fullPath} (Detected: ${mimeType} via ${hex})`,
+          );
+          return { buffer, mimeType };
+        } catch (e) {
+          console.error(`[Storage] Error reading ${fullPath}:`, e);
+        }
+      }
     }
   }
 

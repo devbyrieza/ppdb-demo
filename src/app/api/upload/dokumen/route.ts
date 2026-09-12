@@ -274,12 +274,14 @@ export async function POST(request: NextRequest) {
           file_path: filePath,
           file_size: file.size,
           file_type: detectedType, // Use detected type
-          file_data: isRunningOnVercel() ? buffer : null,
+          file_data: buffer, // Always store binary in PostgreSQL for reliability
           is_verified: false,
           verified_by: null,
           verified_at: null,
           catatan: null,
-          updated_at: new Date() } });
+          updated_at: new Date(),
+        },
+      });
     } else {
       await prisma.dokumen.create({
         data: {
@@ -289,8 +291,10 @@ export async function POST(request: NextRequest) {
           file_path: filePath,
           file_size: file.size,
           file_type: detectedType, // Use detected type
-          file_data: isRunningOnVercel() ? buffer : null,
-          is_verified: false } });
+          file_data: buffer, // Always store binary in PostgreSQL for reliability
+          is_verified: false,
+        },
+      });
     }
 
     // UPDATE STATUS PENDAFTAR: REMOVED AUTO UPDATE
