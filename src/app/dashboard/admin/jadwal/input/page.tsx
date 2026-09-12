@@ -1,5 +1,5 @@
-import JadwalPengujiPage from "@/app/dashboard/penguji/jadwal/page";
+import { redirect } from "next/navigation";
 
 export default function AdminInputJadwalPage() {
-  return <JadwalPengujiPage />;
+  redirect("/dashboard/admin/jadwal/plotting?tab=ketersediaan");
 }

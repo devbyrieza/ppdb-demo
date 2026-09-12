@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   Calendar,
   Clock,
@@ -32,6 +33,7 @@ import {
   GraduationCap,
 } from "lucide-react";
 import Swal from "sweetalert2";
+import SesiKetersediaanSection from "@/app/dashboard/admin/jadwal/components/SesiKetersediaanSection";
 
 interface ExamSession {
   id: string;
@@ -136,6 +138,20 @@ export default function JadwalUjianPage() {
   const [search, setSearch] = useState("");
   const [selectedPendaftarId, setSelectedPendaftarId] = useState<string | null>(null);
   const [candidateFilterTab, setCandidateFilterTab] = useState<"butuh" | "semua">("butuh");
+
+  const searchParams = useSearchParams();
+  const tabParam = searchParams ? searchParams.get("tab") : null;
+  const [mainTab, setMainTab] = useState<"plotting" | "ketersediaan">(
+    tabParam === "ketersediaan" ? "ketersediaan" : "plotting"
+  );
+
+  useEffect(() => {
+    if (tabParam === "ketersediaan") {
+      setMainTab("ketersediaan");
+    } else if (tabParam === "plotting") {
+      setMainTab("plotting");
+    }
+  }, [tabParam]);
 
   // SCHEDULING MODAL STATE (KHUSUS 1 CALON PENDAFTAR - TANPA KUOTA)
   const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
@@ -819,7 +835,7 @@ export default function JadwalUjianPage() {
 
   return (
     <div className="space-y-6 pb-20 max-w-7xl mx-auto">
-      {/* Header Banner */}
+      {/* Header Banner Terpadu */}
       <div className="bg-white rounded-2xl shadow-sm p-6 border border-stone-100 overflow-hidden relative">
         <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center gap-5">
@@ -828,33 +844,100 @@ export default function JadwalUjianPage() {
             </div>
             <div>
               <h1 className="text-2xl md:text-3xl font-black text-stone-900 tracking-tight">
-                Plotting &amp; Jadwal <span className="text-primary-600">Seleksi</span>
+                Kelola Sesi &amp; Plotting <span className="text-primary-600">Jadwal</span>
               </h1>
               <p className="text-stone-500 font-medium text-sm">
-                Atur jadwal wawancara calon santri &amp; orang tua, tes Al-Qur&apos;an, bahasa Arab &amp; hafalan
+                Pusat pengaturan sesi ketersediaan penguji dan plotting jadwal seleksi calon santri
               </p>
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-3">
             <button
+              onClick={() => setMainTab("ketersediaan")}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs border transition-all whitespace-nowrap ${
+                mainTab === "ketersediaan"
+                  ? "bg-emerald-600 text-white border-emerald-600 shadow-md shadow-emerald-600/20"
+                  : "bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border-emerald-200"
+              }`}
+            >
+              <Clock className="w-4 h-4" />
+              + Buat Sesi Ketersediaan
+            </button>
+            <button
+              onClick={() => openScheduleModal()}
+              className="flex items-center gap-2 px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-black text-xs shadow-lg shadow-primary-600/20 transition-all hover:scale-[1.02] active:scale-95 whitespace-nowrap"
+            >
+              <CalendarPlus className="w-4 h-4" />
+              + Buat Jadwal Khusus Santri
+            </button>
+            <button
               onClick={() => setShowBroadcastModal(true)}
-              className="flex items-center gap-2.5 px-5 py-3 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl font-bold text-sm border border-indigo-200 transition-all whitespace-nowrap"
+              className="flex items-center gap-2 px-4 py-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl font-bold text-xs border border-indigo-200 transition-all whitespace-nowrap"
             >
               <Send className="w-4 h-4" />
               Pulse Notifikasi
             </button>
-            <button
-              onClick={() => openScheduleModal()}
-              className="flex items-center gap-2.5 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-black text-sm shadow-lg shadow-primary-600/20 transition-all hover:scale-[1.02] active:scale-95 whitespace-nowrap"
-            >
-              <CalendarPlus className="w-5 h-5" />
-              Jadwalkan Seleksi Santri
-            </button>
           </div>
+        </div>
+
+        {/* Box Panduan / Penjelasan Fitur (Anti-Bingung) */}
+        <div className="mt-6 p-4 rounded-xl bg-slate-50 border border-slate-200/80 text-xs text-slate-700 grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="flex items-start gap-2.5">
+            <div className="p-1.5 bg-emerald-100 text-emerald-800 rounded-lg shrink-0 mt-0.5">
+              <Clock className="w-3.5 h-3.5" />
+            </div>
+            <div>
+              <span className="font-black text-slate-900">Sesi Ketersediaan Penguji:</span>
+              <p className="text-slate-600 mt-0.5 leading-relaxed">
+                Membuka slot waktu luang ustadz penguji (tanpa santri). Santri dapat memilih sesi ini secara mandiri, atau Anda plotkan manual di tab Plotting.
+              </p>
+            </div>
+          </div>
+          <div className="flex items-start gap-2.5">
+            <div className="p-1.5 bg-primary-100 text-primary-800 rounded-lg shrink-0 mt-0.5">
+              <CalendarPlus className="w-3.5 h-3.5" />
+            </div>
+            <div>
+              <span className="font-black text-slate-900">Plotting / Jadwal Khusus Santri:</span>
+              <p className="text-slate-600 mt-0.5 leading-relaxed">
+                Memasangkan calon santri langsung ke sesi yang sudah ada, atau membuatkan jadwal ujian khusus (1-on-1) langsung untuk santri tertentu.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Segmented Tab Switcher */}
+        <div className="mt-6 flex bg-slate-100 p-1 rounded-xl border border-slate-200 max-w-md">
+          <button
+            type="button"
+            onClick={() => setMainTab("plotting")}
+            className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg font-black text-xs transition-all ${
+              mainTab === "plotting"
+                ? "bg-white text-primary-700 shadow-sm font-black"
+                : "text-slate-600 hover:text-slate-900"
+            }`}
+          >
+            <Users className="w-4 h-4" />
+            Plotting Jadwal Santri
+          </button>
+          <button
+            type="button"
+            onClick={() => setMainTab("ketersediaan")}
+            className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg font-black text-xs transition-all ${
+              mainTab === "ketersediaan"
+                ? "bg-white text-primary-700 shadow-sm font-black"
+                : "text-slate-600 hover:text-slate-900"
+            }`}
+          >
+            <Clock className="w-4 h-4" />
+            Sesi Ketersediaan Penguji
+          </button>
         </div>
       </div>
 
-      {/* Broadcast Info Card */}
+      {mainTab === "plotting" ? (
+        <>
+          {/* Broadcast Info Card */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-950 rounded-2xl p-6 text-white shadow-lg overflow-hidden relative">
           <div className="relative flex items-center gap-5">
@@ -1135,6 +1218,11 @@ export default function JadwalUjianPage() {
           </div>
         </div>
       </div>
+
+              </>
+      ) : (
+        <SesiKetersediaanSection onRefreshPlotting={fetchData} initialExaminers={examiners} />
+      )}
 
       {/* ========================================================================= */}
       {/* REFINED SCHEDULING MODAL (KHUSUS 1 PENDAFTAR - ONLINE VS OFFLINE PESANTREN) */}
