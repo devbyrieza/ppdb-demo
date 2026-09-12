@@ -75,6 +75,7 @@ export async function GET(request: NextRequest) {
             nama_lengkap: true,
             jenjang: true,
             no_hp: true,
+            created_at: true,
           },
         },
         exam_session: {
@@ -191,12 +192,15 @@ export async function GET(request: NextRequest) {
 
       return {
         id: s.id,
+        created_at: s.created_at,
+        updated_at: s.updated_at,
         pendaftar: {
           id: s.pendaftar.id,
           nomor: s.pendaftar.nomor_pendaftaran,
           nama: s.pendaftar.nama_lengkap,
           jenjang: s.pendaftar.jenjang,
           no_hp: s.pendaftar.no_hp,
+          created_at: s.pendaftar.created_at,
         },
         sesi: {
           id: s.exam_session?.id || null,

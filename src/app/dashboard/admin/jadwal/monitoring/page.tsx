@@ -29,12 +29,15 @@ import Swal from "sweetalert2";
 
 interface Schedule {
     id: string;
+    created_at?: string;
+    updated_at?: string;
     pendaftar: {
         id?: string;
         nomor: string;
         nama: string;
         jenjang: string;
         no_hp?: string;
+        created_at?: string;
     };
     sesi: {
         id?: string | null;
@@ -370,15 +373,25 @@ export default function MonitoringJadwalPage() {
     };
 
     const findConflicts = (data: Schedule[]) => {
-        const examinerTimeMap: Record<string, { student: string; pendaftarId: string; scheduleId: string; roleLabel?: string }[]> = {};
+        const examinerTimeMap: Record<string, {
+            student: string;
+            pendaftarId: string;
+            scheduleId: string;
+            roleLabel?: string;
+            createdAt?: string;
+            bookingTime: number;
+        }[]> = {};
         const newConflicts: any[] = [];
 
         data.forEach(s => {
             const timeKey = new Date(s.sesi.start).getTime().toString();
+            const bookingTime = s.created_at 
+                ? new Date(s.created_at).getTime() 
+                : (s.pendaftar.created_at ? new Date(s.pendaftar.created_at).getTime() : 0);
             
             // Tes standar seluruh jenjang: Al-Qur'an (Bacaan & Hafalan), W. Santri, W. Ortu
             const roles = [
-                { type: 'quran', name: s.ustadz.quran, label: 'Al-Qur\'an' },
+                { type: 'quran', name: s.ustadz.quran, label: "Al-Qur'an" },
                 { type: 'santri', name: s.ustadz.santri, label: 'W. Santri' },
                 { type: 'ortu', name: s.ustadz.ortu, label: 'W. Ortu' }
             ];
@@ -398,7 +411,9 @@ export default function MonitoringJadwalPage() {
                         student: s?.pendaftar?.nama,
                         pendaftarId: s.pendaftar.nomor,
                         scheduleId: s.id,
-                        roleLabel: role.label
+                        roleLabel: role.label,
+                        createdAt: s.created_at || s.pendaftar.created_at,
+                        bookingTime: bookingTime
                     });
                 }
             });
@@ -409,10 +424,17 @@ export default function MonitoringJadwalPage() {
             const uniqueStudents = new Set(items.map(item => item.pendaftarId));
             if (uniqueStudents.size > 1) {
                 const [name, time] = key.split('_');
+
+                // Sort ascending: Siapa yang booking lebih dahulu (#1) diletakkan paling atas!
+                const sortedItems = [...items].sort((a, b) => {
+                    if (a.bookingTime !== b.bookingTime) return a.bookingTime - b.bookingTime;
+                    return a.pendaftarId.localeCompare(b.pendaftarId);
+                });
+
                 newConflicts.push({
                     name,
                     time: parseInt(time),
-                    items
+                    items: sortedItems
                 });
             }
         });
@@ -435,6 +457,19 @@ export default function MonitoringJadwalPage() {
         } finally {
             setLoading(false);
         }
+    };
+
+    const formatBookingTime = (isoString?: string) => {
+        if (!isoString) return "-";
+        const d = new Date(isoString);
+        if (isNaN(d.getTime())) return "-";
+        return d.toLocaleDateString("id-ID", {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        }).replace("Minggu", "Ahad") + " WIB";
     };
 
     const formatDateTime = (dateStr: string) => {
@@ -656,40 +691,71 @@ export default function MonitoringJadwalPage() {
                                                 <p className="text-rose-600 font-bold text-[11px]">{formatDateTime(new Date(c.time).toISOString())}</p>
                                             </div>
                                         </div>
-                                        <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Santri Terjadwal Bersamaan:</p>
-                                        <div className="space-y-2">
-                                            {c.items.map((item: any, j: number) => (
-                                                <div key={j} className="flex items-center justify-between gap-2 bg-rose-50/70 border border-rose-100 p-2 rounded-xl">
-                                                    <div className="min-w-0 flex-1">
-                                                        <p className="font-bold text-slate-800 text-xs truncate">{item.student}</p>
-                                                        <div className="flex items-center gap-1.5 mt-0.5">
-                                                            <span className="text-[10px] font-bold text-slate-500">{item.pendaftarId}</span>
-                                                            {item.roleLabel && (
-                                                                <span className="text-[9px] font-black px-1.5 py-0.5 bg-rose-200 text-rose-800 rounded uppercase">
-                                                                    {item.roleLabel}
-                                                                </span>
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => {
-                                                            const sched = schedules.find(s => s.id === item.scheduleId);
-                                                            if (sched) openAssignModal(sched);
-                                                        }}
-                                                        className="shrink-0 px-2.5 py-1.5 bg-rose-600 hover:bg-rose-700 active:scale-95 text-white rounded-lg text-[10px] font-black uppercase tracking-wider flex items-center gap-1 shadow-sm shadow-rose-200 transition-all cursor-pointer"
-                                                        title="Ganti atau atur penguji untuk santri ini"
+                                        <p className="text-[10px] font-black text-slate-500 uppercase tracking-wider mb-2 flex items-center justify-between">
+                                            <span>Santri Terjadwal Bersamaan:</span>
+                                            <span className="text-[9px] text-slate-400 font-bold lowercase italic">(diurutkan sesuai waktu booking)</span>
+                                        </p>
+                                        <div className="space-y-2.5">
+                                            {c.items.map((item: any, j: number) => {
+                                                const isFirst = j === 0;
+                                                return (
+                                                    <div 
+                                                        key={j} 
+                                                        className={`flex items-center justify-between gap-3 p-3 rounded-2xl border transition-all ${
+                                                            isFirst 
+                                                                ? "bg-emerald-50/70 border-emerald-300 shadow-xs" 
+                                                                : "bg-rose-50/90 border-2 border-rose-300 shadow-sm"
+                                                        }`}
                                                     >
-                                                        <UserCheck className="w-3.5 h-3.5" />
-                                                        <span>Ganti</span>
-                                                    </button>
-                                                </div>
-                                            ))}
+                                                        <div className="min-w-0 flex-1">
+                                                            <div className="flex items-center gap-1.5 flex-wrap mb-1">
+                                                                <span className={`text-[9px] font-black px-2 py-0.5 rounded-full inline-flex items-center gap-1 uppercase tracking-wider ${
+                                                                    isFirst 
+                                                                        ? "bg-emerald-200 text-emerald-900 border border-emerald-400" 
+                                                                        : "bg-rose-200 text-rose-900 border border-rose-300 animate-pulse"
+                                                                }`}>
+                                                                    {isFirst ? <CheckCircle2 className="w-2.5 h-2.5 text-emerald-700" /> : <AlertTriangle className="w-2.5 h-2.5 text-rose-700" />}
+                                                                    {isFirst ? "Booking Lebih Awal (#1 Prioritas)" : `Booking Setelahnya (#${j + 1} Bentrok)`}
+                                                                </span>
+                                                                {item.roleLabel && (
+                                                                    <span className="text-[9px] font-black px-1.5 py-0.5 bg-white/90 border border-stone-200 text-stone-700 rounded-md uppercase">
+                                                                        {item.roleLabel}
+                                                                    </span>
+                                                                )}
+                                                            </div>
+                                                            <p className="font-black text-slate-900 text-xs truncate">{item.student}</p>
+                                                            <div className="flex items-center gap-2 mt-1 text-[10px] text-slate-500 font-medium flex-wrap">
+                                                                <span className="font-mono font-bold text-slate-700">{item.pendaftarId}</span>
+                                                                <span>•</span>
+                                                                <span>Waktu Booking: <b className="text-slate-900 font-black">{formatBookingTime(item.createdAt)}</b></span>
+                                                            </div>
+                                                        </div>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => {
+                                                                const sched = schedules.find(s => s.id === item.scheduleId);
+                                                                if (sched) openAssignModal(sched);
+                                                            }}
+                                                            className={`shrink-0 px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer ${
+                                                                isFirst
+                                                                    ? "bg-white hover:bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-xs active:scale-95"
+                                                                    : "bg-rose-600 hover:bg-rose-700 active:scale-95 text-white shadow-md shadow-rose-300 ring-2 ring-rose-400/50"
+                                                            }`}
+                                                            title={isFirst ? "Ganti penguji santri ini" : "Disarankan ganti penguji untuk santri ini agar tidak bentrok"}
+                                                        >
+                                                            <UserCheck className="w-3.5 h-3.5" />
+                                                            <span>{isFirst ? "Ganti" : "Ganti (Disarankan)"}</span>
+                                                        </button>
+                                                    </div>
+                                                );
+                                            })}
                                         </div>
                                     </div>
-                                    <div className="mt-3 pt-2 border-t border-rose-100 flex items-center gap-1.5 text-rose-600 text-[10px]">
-                                        <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
-                                        <span>Klik tombol <b>Ganti</b> di atas untuk memindahkan salah satu santri ke penguji lain.</span>
+                                    <div className="mt-3 pt-2.5 border-t border-rose-100 flex items-start gap-1.5 text-rose-800 text-[10px] leading-relaxed bg-rose-100/50 p-2.5 rounded-xl">
+                                        <AlertTriangle className="w-3.5 h-3.5 shrink-0 text-rose-600 mt-0.5" />
+                                        <span>
+                                            <b>Panduan Keputusan:</b> Santri <b>{c.items[0]?.student}</b> tercatat booking lebih awal ({formatBookingTime(c.items[0]?.createdAt)}). Disarankan klik tombol <b className="text-rose-700 font-black">Ganti (Disarankan)</b> pada <b>{c.items[1]?.student}</b> untuk dialihkan ke penguji lain yang masih luang.
+                                        </span>
                                     </div>
                                 </div>
                             ))}
