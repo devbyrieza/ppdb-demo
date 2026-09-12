@@ -20,6 +20,7 @@ import {
   ZoomOut,
   Maximize,
   UploadCloud,
+  Eye,
   Clock } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -96,6 +97,26 @@ export default function VerifikasiDokumenDetailPage() {
     initialReason: "" });
   const [rejectReason, setRejectReason] = useState("");
   const [imgErrors, setImgErrors] = useState<Record<string, boolean>>({});
+  const [isMobileDevice, setIsMobileDevice] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      const isTouch =
+        typeof window !== "undefined" &&
+        ("ontouchstart" in window ||
+          navigator.maxTouchPoints > 0 ||
+          window.innerWidth < 768);
+      const isIOS =
+        typeof window !== "undefined" &&
+        (/iPad|iPhone|iPod/.test(navigator.userAgent) ||
+          (navigator.maxTouchPoints > 1 &&
+            /Macintosh/.test(navigator.userAgent)));
+      setIsMobileDevice(Boolean(isTouch || isIOS));
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const fetchData = useCallback(async () => {
     try {
@@ -605,16 +626,65 @@ export default function VerifikasiDokumenDetailPage() {
                     </div>
                   )
                 ) : (
-                  <div 
-                    className="absolute inset-0 w-full h-full overflow-hidden cursor-pointer group bg-white"
-                    onClick={() => openPreview(dok.file_url!, dok.file_type, dok.jenis_dokumen)}
+                  <div
+                    className="absolute inset-0 w-full h-full cursor-pointer group"
+                    onClick={() =>
+                      openPreview(
+                        dok.file_url!,
+                        dok.file_type,
+                        dok.jenis_dokumen,
+                      )
+                    }
                   >
-                    <iframe
-                      src={`${dok.file_url}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
-                      className="absolute inset-0 w-full h-full border-0 pointer-events-none"
-                      title={`PDF Preview - ${dok.jenis_dokumen}`}
-                    />
-                    <div className="absolute inset-0 z-10 opacity-0 group-hover:bg-black/5 transition-all"></div>
+                    {/* Desktop View: Interactive embedded PDF iframe */}
+                    {!isMobileDevice && (
+                      <div className="hidden md:block absolute inset-0 w-full h-full overflow-hidden bg-white">
+                        <iframe
+                          src={`${dok.file_url}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
+                          className="absolute inset-0 w-full h-full border-0 pointer-events-none"
+                          title={`PDF Preview - ${dok.jenis_dokumen}`}
+                        />
+                        <div className="absolute inset-0 z-10 opacity-0 group-hover:bg-black/5 transition-all"></div>
+                      </div>
+                    )}
+
+                    {/* Mobile / iOS View: Dedicated SPMB Platinum PDF Card */}
+                    <div
+                      className={`${
+                        !isMobileDevice ? "md:hidden" : ""
+                      } absolute inset-0 flex flex-col items-center justify-center p-4 text-center bg-gradient-to-b from-stone-50 via-white to-stone-50/90 border border-stone-200/60`}
+                    >
+                      <div className="relative mb-2.5">
+                        <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center shadow-xs border border-rose-100 group-hover:scale-105 transition-transform">
+                          <FileText className="w-7 h-7" />
+                        </div>
+                        <span className="absolute -bottom-1 -right-1 bg-rose-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded-md uppercase tracking-wider shadow-xs">
+                          PDF
+                        </span>
+                      </div>
+                      <p className="text-xs font-black text-stone-800 line-clamp-1 max-w-[200px] mb-0.5">
+                        {dok.jenis_dokumen.replace(/_/g, " ")}
+                      </p>
+                      <p className="text-[10px] font-medium text-stone-500 mb-3">
+                        Dokumen PDF Terlampir
+                      </p>
+                      <div className="flex items-center gap-2">
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary-600 group-hover:bg-primary-700 text-white text-xs font-bold rounded-xl shadow-xs transition-all">
+                          <Eye className="w-3.5 h-3.5" />
+                          Pratinjau
+                        </span>
+                        <a
+                          href={dok.file_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="inline-flex items-center gap-1 px-2.5 py-1.5 bg-white hover:bg-stone-100 text-stone-700 text-xs font-bold rounded-xl border border-stone-200 shadow-2xs transition-all"
+                        >
+                          <ExternalLink className="w-3.5 h-3.5" />
+                          Tab Baru
+                        </a>
+                      </div>
+                    </div>
                   </div>
                 )
               ) : (
@@ -624,13 +694,14 @@ export default function VerifikasiDokumenDetailPage() {
                 </div>
               )}
 
-              {/* View button overlay for images */}
-              {dok.file_url && isImageFile(dok) && !imgErrors[dok.id] && (
+              {/* View button overlay */}
+              {dok.file_url && (!isImageFile(dok) || !imgErrors[dok.id]) && (
                 <a
                   href={dok.file_url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="absolute top-3 right-3 p-2 bg-white/90 hover:bg-white rounded-xl text-stone-700 shadow-md transition-all hover:scale-105 z-10"
+                  title="Buka di Tab Baru"
                 >
                   <ExternalLink className="w-4 h-4" />
                 </a>
@@ -847,11 +918,59 @@ export default function VerifikasiDokumenDetailPage() {
               onClick={(e) => e.stopPropagation()}
             >
               {isPdfDoc(previewDoc) ? (
-                <iframe
-                  src={`${previewDoc.url}#toolbar=0`}
-                  className="w-full h-full rounded-3xl shadow-inner border-0"
-                  title="PDF Preview"
-                />
+                <>
+                  {/* Desktop PDF Iframe View */}
+                  {!isMobileDevice && (
+                    <div className="hidden md:block w-full h-full">
+                      <iframe
+                        src={`${previewDoc.url}#toolbar=0`}
+                        className="w-full h-full rounded-3xl shadow-inner border-0"
+                        title="PDF Preview"
+                      />
+                    </div>
+                  )}
+
+                  {/* Mobile PDF Reader View */}
+                  <div
+                    className={`${
+                      !isMobileDevice ? "md:hidden" : ""
+                    } w-full h-full flex flex-col items-center justify-center p-6 text-center bg-stone-50 rounded-3xl whitespace-normal`}
+                  >
+                    <div className="w-18 h-18 rounded-3xl bg-rose-50 text-rose-600 flex items-center justify-center mb-4 shadow-sm border border-rose-200">
+                      <FileText className="w-9 h-9" />
+                    </div>
+                    <h4 className="text-base font-black text-stone-900 mb-1.5 max-w-sm">
+                      {previewDoc.label}
+                    </h4>
+                    <p className="text-xs text-stone-500 mb-6 max-w-xs leading-relaxed">
+                      Dokumen PDF terlampir. Pada perangkat mobile, buka dokumen secara langsung untuk kenyamanan membaca & zoom resolusi penuh.
+                    </p>
+                    <div className="flex flex-col sm:flex-row items-center gap-3 w-full max-w-xs">
+                      <a
+                        href={previewDoc.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full py-3 px-5 bg-primary-600 hover:bg-primary-700 text-white rounded-2xl text-xs font-bold shadow-lg shadow-primary-900/20 flex items-center justify-center gap-2 active:scale-95 transition-all"
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                        Buka Dokumen PDF Penuh
+                      </a>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleDownload(
+                            previewDoc.url,
+                            `${pendaftar?.nama_lengkap}_${previewDoc.label.replace(/ /g, "_")}.pdf`,
+                          )
+                        }
+                        className="w-full py-3 px-5 bg-white hover:bg-stone-100 text-stone-700 rounded-2xl text-xs font-bold border border-stone-200 shadow-xs flex items-center justify-center gap-2 active:scale-95 transition-all"
+                      >
+                        <Download className="w-4 h-4" />
+                        Unduh File
+                      </button>
+                    </div>
+                  </div>
+                </>
               ) : (
                 <div className="w-full h-full flex items-center justify-center overflow-auto absolute inset-0">
                   <img
