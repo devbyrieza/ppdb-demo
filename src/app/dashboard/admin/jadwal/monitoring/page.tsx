@@ -18,12 +18,14 @@ import {
     X,
     Check,
     AlertCircle,
+    AlertTriangle,
     Sparkles,
     BookOpen,
     GraduationCap,
     Languages
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import Swal from "sweetalert2";
 
 interface Schedule {
     id: string;
@@ -128,6 +130,28 @@ export default function MonitoringJadwalPage() {
     const [selectedArabId, setSelectedArabId] = useState<string>("");
     const [showAllStaff, setShowAllStaff] = useState(false);
     const [savingAssignment, setSavingAssignment] = useState(false);
+
+    // Conflict Guard: Map examiner ID to conflicting student info at target schedule time
+    const busyExaminersAtTargetTime = useMemo(() => {
+        if (!targetSchedule?.sesi?.start) return new Map<string, string>();
+        const targetTime = new Date(targetSchedule.sesi.start).getTime();
+        const map = new Map<string, string>();
+
+        schedules.forEach(s => {
+            if (s.id === targetSchedule.id) return;
+            const sTime = new Date(s.sesi.start).getTime();
+            if (sTime === targetTime) {
+                const info = `${s.pendaftar.nama} (${s.pendaftar.nomor})`;
+                if (s.ustadz_id?.quran) map.set(s.ustadz_id.quran, info);
+                if (s.ustadz_id?.santri) map.set(s.ustadz_id.santri, info);
+                if (s.ustadz_id?.ortu) map.set(s.ustadz_id.ortu, info);
+                if (s.ustadz_id?.hafalan) map.set(s.ustadz_id.hafalan, info);
+                if (s.ustadz_id?.arab) map.set(s.ustadz_id.arab, info);
+            }
+        });
+
+        return map;
+    }, [targetSchedule, schedules]);
     const [saveSuccessMsg, setSaveSuccessMsg] = useState<string | null>(null);
 
     // Body scroll lock for modals (Mandatory UX Rule)
@@ -252,8 +276,50 @@ export default function MonitoringJadwalPage() {
         setAssignModalOpen(true);
     };
 
-    const handleSaveAssignment = async () => {
+    const handleSaveAssignment = async (allowConflict: boolean = false) => {
         if (!targetSchedule) return;
+
+        // Front-line Conflict Check
+        if (!allowConflict) {
+            const conflictDetails: string[] = [];
+            if (selectedQuranId && busyExaminersAtTargetTime.has(selectedQuranId)) {
+                const name = allValidExaminers.find(u => u.id === selectedQuranId)?.full_name || "Penguji Al-Qur'an";
+                conflictDetails.push(`${name} (bentrok dengan ${busyExaminersAtTargetTime.get(selectedQuranId)})`);
+            }
+            if (selectedSantriId && busyExaminersAtTargetTime.has(selectedSantriId)) {
+                const name = allValidExaminers.find(u => u.id === selectedSantriId)?.full_name || "Pewawancara Santri";
+                conflictDetails.push(`${name} (bentrok dengan ${busyExaminersAtTargetTime.get(selectedSantriId)})`);
+            }
+            if (selectedOrtuId && busyExaminersAtTargetTime.has(selectedOrtuId)) {
+                const name = allValidExaminers.find(u => u.id === selectedOrtuId)?.full_name || "Pewawancara Ortu";
+                conflictDetails.push(`${name} (bentrok dengan ${busyExaminersAtTargetTime.get(selectedOrtuId)})`);
+            }
+            if (selectedHafalanId && busyExaminersAtTargetTime.has(selectedHafalanId)) {
+                const name = allValidExaminers.find(u => u.id === selectedHafalanId)?.full_name || "Penguji Hafalan";
+                conflictDetails.push(`${name} (bentrok dengan ${busyExaminersAtTargetTime.get(selectedHafalanId)})`);
+            }
+            if (selectedArabId && busyExaminersAtTargetTime.has(selectedArabId)) {
+                const name = allValidExaminers.find(u => u.id === selectedArabId)?.full_name || "Penguji B. Arab";
+                conflictDetails.push(`${name} (bentrok dengan ${busyExaminersAtTargetTime.get(selectedArabId)})`);
+            }
+
+            if (conflictDetails.length > 0) {
+                const confirm = await Swal.fire({
+                    title: "Peringatan Bentrokan Jadwal!",
+                    html: `<p class="text-xs mb-2">Penguji berikut terdeteksi sudah memiliki jadwal ujian lain pada jam yang sama (${formatDateTime(new Date(targetSchedule.sesi.start).toISOString())}):</p><ul class="text-xs font-bold text-rose-700 list-disc pl-5 text-left my-2 space-y-1">${conflictDetails.map(c => `<li>${c}</li>`).join("")}</ul><p class="text-xs mt-3 text-slate-500">Apakah Anda ingin tetap menyimpan (memaksa) atau memilih penguji lain?</p>`,
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#f59e0b",
+                    cancelButtonColor: "#6b7280",
+                    confirmButtonText: "Tetap Simpan (Paksa)",
+                    cancelButtonText: "Pilih Penguji Lain",
+                });
+                if (!confirm.isConfirmed) return;
+                // Admin confirmed, proceed with allowConflict = true
+                return handleSaveAssignment(true);
+            }
+        }
+
         try {
             setSavingAssignment(true);
             const res = await fetch("/api/admin/jadwal/monitoring", {
@@ -266,6 +332,7 @@ export default function MonitoringJadwalPage() {
                     penguji_ortu_id: selectedOrtuId || null,
                     penguji_hafalan_id: selectedHafalanId || null,
                     penguji_arab_id: selectedArabId || null,
+                    allow_conflict: allowConflict,
                 }),
             });
 
@@ -278,11 +345,27 @@ export default function MonitoringJadwalPage() {
                 }, 800);
             } else {
                 const err = await res.json();
-                alert(err.error || "Gagal menyimpan penugasan penguji");
+                if (err.conflict) {
+                    const confirm = await Swal.fire({
+                        title: "Peringatan Bentrokan Jadwal!",
+                        text: err.message,
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#f59e0b",
+                        cancelButtonColor: "#6b7280",
+                        confirmButtonText: "Tetap Simpan (Paksa)",
+                        cancelButtonText: "Pilih Penguji Lain",
+                    });
+                    if (confirm.isConfirmed) {
+                        return handleSaveAssignment(true);
+                    }
+                } else {
+                    Swal.fire("Gagal", err.error || "Gagal menyimpan penugasan penguji", "error");
+                }
             }
         } catch (error) {
             console.error("Error saving assignment:", error);
-            alert("Terjadi kendala saat menyimpan penugasan penguji.");
+            Swal.fire("Error", "Terjadi kendala saat menyimpan penugasan penguji.", "error");
         } finally {
             setSavingAssignment(false);
         }
@@ -1051,11 +1134,14 @@ export default function MonitoringJadwalPage() {
                                             className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800 focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 outline-none transition-all"
                                         >
                                             <option value="">-- Pilih Penguji Al-Qur'an (Belum Ditugaskan) --</option>
-                                            {(showAllStaff ? allValidExaminers : quranExaminers).map((u) => (
-                                                <option key={u.id} value={u.id}>
-                                                    {u.full_name} {u.role ? `(${u.role.replace(/_/g, " ")})` : ""}
-                                                </option>
-                                            ))}
+                                            {(showAllStaff ? allValidExaminers : quranExaminers).map((u) => {
+                                                const conflictInfo = busyExaminersAtTargetTime.get(u.id);
+                                                return (
+                                                    <option key={u.id} value={u.id}>
+                                                        {u.full_name} {u.role ? `(${u.role.replace(/_/g, " ")})` : ""}{conflictInfo ? ` ⚠️ [BENTROK: ${conflictInfo}]` : ""}
+                                                    </option>
+                                                );
+                                            })}
                                         </select>
                                     </div>
 
@@ -1082,11 +1168,14 @@ export default function MonitoringJadwalPage() {
                                             className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800 focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 outline-none transition-all"
                                         >
                                             <option value="">-- Pilih Pewawancara Santri (Belum Ditugaskan) --</option>
-                                            {(showAllStaff ? allValidExaminers : santriExaminers).map((u) => (
-                                                <option key={u.id} value={u.id}>
-                                                    {u.full_name} {u.role ? `(${u.role.replace(/_/g, " ")})` : ""}
-                                                </option>
-                                            ))}
+                                            {(showAllStaff ? allValidExaminers : santriExaminers).map((u) => {
+                                                const conflictInfo = busyExaminersAtTargetTime.get(u.id);
+                                                return (
+                                                    <option key={u.id} value={u.id}>
+                                                        {u.full_name} {u.role ? `(${u.role.replace(/_/g, " ")})` : ""}{conflictInfo ? ` ⚠️ [BENTROK: ${conflictInfo}]` : ""}
+                                                    </option>
+                                                );
+                                            })}
                                         </select>
                                     </div>
 
@@ -1113,11 +1202,14 @@ export default function MonitoringJadwalPage() {
                                             className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-800 focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 outline-none transition-all"
                                         >
                                             <option value="">-- Pilih Pewawancara Ortu/Wali (Belum Ditugaskan) --</option>
-                                            {(showAllStaff ? allValidExaminers : ortuExaminers).map((u) => (
-                                                <option key={u.id} value={u.id}>
-                                                    {u.full_name} {u.role ? `(${u.role.replace(/_/g, " ")})` : ""}
-                                                </option>
-                                            ))}
+                                            {(showAllStaff ? allValidExaminers : ortuExaminers).map((u) => {
+                                                const conflictInfo = busyExaminersAtTargetTime.get(u.id);
+                                                return (
+                                                    <option key={u.id} value={u.id}>
+                                                        {u.full_name} {u.role ? `(${u.role.replace(/_/g, " ")})` : ""}{conflictInfo ? ` ⚠️ [BENTROK: ${conflictInfo}]` : ""}
+                                                    </option>
+                                                );
+                                            })}
                                         </select>
                                     </div>
 

@@ -31,6 +31,7 @@ export async function GET(request: Request) {
   const allowedRoles = [
     "admin_super",
     "admin",
+    "head_of_it",
     "penguji",
     "admin_berkas",
     "pewawancara_calsan",
@@ -122,6 +123,7 @@ export async function POST(request: Request) {
   const allowedRoles = [
     "admin_super",
     "admin",
+    "head_of_it",
     "penguji",
     "admin_berkas",
     "pewawancara_calsan",
@@ -146,8 +148,10 @@ export async function POST(request: Request) {
     let finalCreatorId = session.user_id || session.id;
     let creatorRole = session.role;
 
+    // If admin_super provides a specific creator_id, impersonate them
     if (creator_id && ["admin_super", "admin"].includes(session.role)) {
       finalCreatorId = creator_id;
+      // Fetch the role of the impersonated creator so we can assign the correct title
       const creatorProfile = await prisma.profile.findUnique({
         where: { id: finalCreatorId },
         select: { role: true }
@@ -186,6 +190,52 @@ export async function POST(request: Request) {
       // Otherwise append WIB offset
       return new Date(`${dt}+07:00`);
     };
+
+    // Conflict Guard: Check overlapping session for the same creator
+    const startWIB = parseWIB(start_time);
+    const endWIB = parseWIB(end_time);
+
+    const overlapping = await prisma.examSession.findFirst({
+      where: {
+        created_by: finalCreatorId,
+        is_active: true,
+        OR: [
+          {
+            AND: [
+              { start_time: { lte: startWIB } },
+              { end_time: { gt: startWIB } }
+            ]
+          },
+          {
+            AND: [
+              { start_time: { lt: endWIB } },
+              { end_time: { gte: endWIB } }
+            ]
+          },
+          {
+            AND: [
+              { start_time: { gte: startWIB } },
+              { end_time: { lte: endWIB } }
+            ]
+          }
+        ]
+      },
+      include: {
+        creator: { select: { full_name: true } }
+      }
+    });
+
+    if (overlapping) {
+      const creatorName = overlapping.creator?.full_name || "Penguji ini";
+      const startStr = new Date(overlapping.start_time).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
+      const endStr = new Date(overlapping.end_time).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
+      return NextResponse.json(
+        { 
+          error: `Bentrokan Jadwal: ${creatorName} sudah memiliki sesi aktif pada jam tersebut (${overlapping.title || "Sesi Ujian"}: ${startStr} - ${endStr} WIB). Mohon gunakan jam lain agar tidak bentrok.` 
+        },
+        { status: 400 }
+      );
+    }
 
     const newSession = await prisma.examSession.create({
       data: {
@@ -233,6 +283,7 @@ export async function DELETE(request: Request) {
     const isAdmin = [
       "admin_super",
       "admin",
+      "head_of_it",
       "penguji",
       "admin_berkas",
       "pewawancara_calsan",
@@ -275,6 +326,7 @@ export async function PATCH(request: Request) {
   const allowedRoles = [
     "admin_super",
     "admin",
+    "head_of_it",
     "penguji",
     "admin_berkas",
     "pewawancara_calsan",
@@ -291,7 +343,9 @@ export async function PATCH(request: Request) {
       return NextResponse.json({ error: "Session not found" }, { status: 404 });
 
     // Only owner or admin_super/admin can edit
-    const isAdmin = ["admin_super", "admin"].includes(session.role);
+    const isAdmin = ["admin_super", "admin", "head_of_it"].includes(
+      session.role,
+    );
     const isOwner =
       targetSession.created_by === (session.user_id || session.id);
     if (!isAdmin && !isOwner) {
@@ -343,3 +397,4 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+

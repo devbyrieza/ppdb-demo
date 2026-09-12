@@ -238,6 +238,7 @@ export async function PATCH(request: NextRequest) {
       penguji_ortu_id,
       penguji_hafalan_id,
       penguji_arab_id,
+      allow_conflict,
     } = body;
 
     if (!jadwal_id) {
@@ -251,7 +252,7 @@ export async function PATCH(request: NextRequest) {
       where: { id: jadwal_id },
       include: {
         pendaftar: { select: { id: true, nama_lengkap: true } },
-        exam_session: { select: { location: true } },
+        exam_session: { select: { location: true, start_time: true } },
       },
     });
 
@@ -260,6 +261,57 @@ export async function PATCH(request: NextRequest) {
         { error: "Jadwal ujian tidak ditemukan" },
         { status: 404 },
       );
+    }
+
+    // Conflict Guard: Check conflicting schedules on same start_time
+    const scheduleStartTime = currentJadwal.exam_session?.start_time || currentJadwal.waktu_mulai_santri;
+    const newExaminerIds = [
+      penguji_quran_id,
+      penguji_santri_id,
+      penguji_ortu_id,
+      penguji_hafalan_id,
+      penguji_arab_id,
+    ].filter(Boolean);
+
+    if (newExaminerIds.length > 0 && scheduleStartTime && !allow_conflict) {
+      const conflictingSchedules = await prisma.jadwalUjian.findMany({
+        where: {
+          id: { not: jadwal_id },
+          pendaftar: { deleted_at: null },
+          OR: [
+            { exam_session: { start_time: scheduleStartTime } },
+            { waktu_mulai_santri: scheduleStartTime },
+          ],
+          AND: [
+            {
+              OR: [
+                { penguji_quran_id: { in: newExaminerIds } },
+                { penguji_santri_id: { in: newExaminerIds } },
+                { penguji_ortu_id: { in: newExaminerIds } },
+                { penguji_hafalan_id: { in: newExaminerIds } },
+                { penguji_arab_id: { in: newExaminerIds } },
+              ],
+            },
+          ],
+        },
+        include: {
+          pendaftar: { select: { nama_lengkap: true, nomor_pendaftaran: true } },
+        },
+      });
+
+      if (conflictingSchedules.length > 0) {
+        const details = conflictingSchedules.map(
+          (cs) => `${cs.pendaftar.nama_lengkap} (${cs.pendaftar.nomor_pendaftaran})`
+        );
+        return NextResponse.json(
+          {
+            conflict: true,
+            message: `Terdeteksi bentrokan jadwal: Penguji yang Anda pilih sudah memiliki jadwal ujian lain dengan ${details.join(", ")} pada jam yang sama.`,
+            conflictingWith: details,
+          },
+          { status: 409 }
+        );
+      }
     }
 
     // Determine if online

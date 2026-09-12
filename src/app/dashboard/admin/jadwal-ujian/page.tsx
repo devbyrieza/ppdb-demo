@@ -544,6 +544,53 @@ export default function JadwalUjianPage() {
         ? new Date(formEndTime)
         : new Date(start.getTime() + formDuration * 60000);
 
+      // Conflict Guard: Check if selected examiners already have an overlapping booked session
+      const chosenExaminerIds = [
+        formPengujiQuranId,
+        formPengujiSantriId,
+        formPengujiOrtuId,
+        formPengujiHafalanId,
+        formPengujiArabId,
+      ].filter(Boolean);
+
+      const sTime = start.getTime();
+      const eTime = end.getTime();
+      const conflictingExaminerNames: string[] = [];
+
+      sessions.forEach((s) => {
+        const sessStart = new Date(s.start_time).getTime();
+        const sessEnd = new Date(s.end_time).getTime();
+        const isOverlap = sTime < sessEnd && eTime > sessStart;
+        if (
+          isOverlap &&
+          (s.booked_count > 0 || (s._count?.bookings || 0) > 0) &&
+          s.created_by &&
+          chosenExaminerIds.includes(s.created_by)
+        ) {
+          const ex = examiners.find((u) => u.id === s.created_by);
+          if (ex && !conflictingExaminerNames.includes(ex.full_name)) {
+            conflictingExaminerNames.push(ex.full_name);
+          }
+        }
+      });
+
+      if (conflictingExaminerNames.length > 0) {
+        const confirm = await Swal.fire({
+          title: "Peringatan Bentrokan Jadwal!",
+          html: `<p class="text-xs mb-2">Penguji berikut terdeteksi sudah memiliki jadwal ujian lain pada jam tersebut:</p><p class="text-xs font-bold text-rose-700">${conflictingExaminerNames.join(", ")}</p><p class="text-xs mt-3 text-slate-500">Apakah Anda ingin tetap menyimpan atau memilih penguji lain?</p>`,
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#f59e0b",
+          cancelButtonColor: "#6b7280",
+          confirmButtonText: "Tetap Simpan",
+          cancelButtonText: "Pilih Penguji Lain",
+        });
+        if (!confirm.isConfirmed) {
+          setSubmittingSchedule(false);
+          return;
+        }
+      }
+
       const actualTestType =
         formTestType === "Lainnya"
           ? formCustomTestType.trim() || "Tes Seleksi"

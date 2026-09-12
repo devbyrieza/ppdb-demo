@@ -22,12 +22,13 @@ export async function POST(request: Request) {
   const allowedRoles = [
     "admin_super",
     "admin",
+    "head_of_it",
     "penguji",
     "pewawancara_calsan",
     "pewawancara_cawalsan",
-      "penguji_hafalan",
-      "penguji_bahasa_arab",
-    ];
+    "penguji_hafalan",
+    "penguji_bahasa_arab",
+  ];
   if (!allowedRoles.includes(session.role)) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
@@ -42,7 +43,8 @@ export async function POST(request: Request) {
       daySlots, // New: Record<number, { start: string, end: string }[]>
       title,
       location,
-      notes } = body;
+      notes,
+    } = body;
 
     if (!startDate || !endDate || (!daySlots && (!daysOfWeek || !timeSlots))) {
       return NextResponse.json(
@@ -60,10 +62,9 @@ export async function POST(request: Request) {
     // If admin_super provides a specific creator_id, impersonate them
     if (requestCreatorId && ["admin_super", "admin"].includes(session.role)) {
       creatorId = requestCreatorId;
-      // Fetch the role of the impersonated creator so we can assign the correct title
       const creatorProfile = await prisma.profile.findUnique({
         where: { id: creatorId },
-        select: { role: true }
+        select: { role: true },
       });
       if (creatorProfile) {
         creatorRole = creatorProfile.role;
@@ -79,15 +80,27 @@ export async function POST(request: Request) {
       } else if (role === "pewawancara_calsan") {
         finalTitle = "Seleksi Wawancara Calon Santri";
       } else if (role === "penguji_quran" || role === "penguji") {
-          finalTitle = "Seleksi Al Qur'an";
-        } else if (role === "penguji_hafalan") {
-          finalTitle = "Tes Hafalan Al-Qur'an";
-        } else if (role === "penguji_bahasa_arab") {
-          finalTitle = "Tes Lisan Bahasa Arab";
+        finalTitle = "Seleksi Al Qur'an";
+      } else if (role === "penguji_hafalan") {
+        finalTitle = "Tes Hafalan Al-Qur'an";
+      } else if (role === "penguji_bahasa_arab") {
+        finalTitle = "Tes Lisan Bahasa Arab";
       } else {
         finalTitle = title || "Sesi Ujian";
       }
     }
+
+    // Conflict Guard: fetch existing sessions for this creator within the date range
+    const existingSessions = await prisma.examSession.findMany({
+      where: {
+        created_by: creatorId,
+        is_active: true,
+        start_time: { gte: new Date(`${startDate}T00:00:00+07:00`) },
+        end_time: { lte: new Date(`${endDate}T23:59:59+07:00`) },
+      },
+      select: { start_time: true, end_time: true },
+    });
+    let skippedCount = 0;
 
     const sessionsToCreate = [];
     let currentDate = new Date(start);
@@ -101,35 +114,53 @@ export async function POST(request: Request) {
       if (daySlots && daySlots[dayOfWeek]) {
         currentDaySlots = daySlots[dayOfWeek];
       } else if (daysOfWeek && daysOfWeek.includes(dayOfWeek) && timeSlots) {
-        // Backward compatibility
         currentDaySlots = timeSlots;
       }
 
       if (currentDaySlots.length > 0) {
-        // Formatting date part: YYYY-MM-DD
         const dateStr = currentDate.toISOString().split("T")[0];
 
         for (const slot of currentDaySlots) {
-          // Combine dateStr + slot.start to create full ISO in WIB (+07:00)
           const startISO = `${dateStr}T${slot.start}:00+07:00`;
           const endISO = `${dateStr}T${slot.end}:00+07:00`;
+          const sStart = new Date(startISO);
+          const sEnd = new Date(endISO);
+          const sTime = sStart.getTime();
+          const eTime = sEnd.getTime();
+
+          const isOverlapping = existingSessions.some((ex) => {
+            const exStart = new Date(ex.start_time).getTime();
+            const exEnd = new Date(ex.end_time).getTime();
+            return sTime < exEnd && eTime > exStart;
+          });
+
+          if (isOverlapping) {
+            skippedCount++;
+            continue;
+          }
 
           sessionsToCreate.push({
             title: finalTitle,
-            start_time: new Date(startISO),
-            end_time: new Date(endISO),
+            start_time: sStart,
+            end_time: sEnd,
             quota: 1, // Default to 1 (Private/1-on-1)
             location: location || "Online",
             notes: notes || "",
-            created_by: creatorId });
+            created_by: creatorId,
+          });
         }
       }
 
-      // Move to next day
       currentDate.setDate(currentDate.getDate() + 1);
     }
 
     if (sessionsToCreate.length === 0) {
+      if (skippedCount > 0) {
+        return NextResponse.json(
+          { error: `Seluruh (${skippedCount}) slot waktu yang dipilih sudah ada sebelumnya untuk penguji ini. Tidak ada sesi baru yang dibuat.` },
+          { status: 400 },
+        );
+      }
       return NextResponse.json(
         { error: "Tidak ada jadwal yang cocok dengan kriteria" },
         { status: 400 },
@@ -143,8 +174,12 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       success: true,
-      message: `Berhasil membuat ${result.length} sesi jadwal.`,
-      count: result.length });
+      message: skippedCount > 0
+        ? `Berhasil membuat ${result.length} sesi jadwal (${skippedCount} sesi dilewati karena sudah ada pada jam tersebut).`
+        : `Berhasil membuat ${result.length} sesi jadwal.`,
+      count: result.length,
+      skipped: skippedCount,
+    });
   } catch (error: any) {
     console.error("Bulk Create error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
