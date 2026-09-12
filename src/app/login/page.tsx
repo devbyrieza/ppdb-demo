@@ -283,7 +283,7 @@ export default function LoginPage() {
         </Link>
         <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white/95 border border-slate-200/90 shadow-2xs text-xs font-bold text-slate-700">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span>Portal Resmi SPMB 2027/2028</span>
+          <span>Portal Resmi SPMB</span>
         </div>
       </div>
 
