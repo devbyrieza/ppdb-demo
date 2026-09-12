@@ -362,7 +362,14 @@ export default function VerifikasiDokumenDetailPage() {
   const isImageFile = (dok: Dokumen) => {
     if (dok.file_type) return dok.file_type.startsWith("image/");
     if (!dok.file_url) return false;
-    return /\.(jpg|jpeg|png|gif|webp)$/i.test(dok.file_url);
+    const cleanUrl = dok.file_url.split("?")[0].toLowerCase();
+    return /\.(jpg|jpeg|png|gif|webp|heic|bmp|svg)$/i.test(cleanUrl);
+  };
+
+  const isPdfDoc = (doc: { url: string; type: string | null }) => {
+    if (doc.type === "application/pdf") return true;
+    const cleanUrl = doc.url.split("?")[0].toLowerCase();
+    return cleanUrl.endsWith(".pdf");
   };
 
   const handleDownload = async (url: string, filename: string) => {
@@ -718,7 +725,7 @@ export default function VerifikasiDokumenDetailPage() {
               </h3>
               <div className="flex items-center gap-2">
                 {/* Zoom Controls for Images Only */}
-                {previewDoc.type !== "application/pdf" && (
+                {!isPdfDoc(previewDoc) && (
                   <div className="flex items-center gap-1 bg-white/10 rounded-[24px] p-1 mr-2">
                     <button
                       onClick={(e) => {
@@ -792,7 +799,7 @@ export default function VerifikasiDokumenDetailPage() {
               className="flex-1 overflow-auto bg-stone-100 flex items-center justify-center p-2 relative"
               onClick={(e) => e.stopPropagation()}
             >
-              {previewDoc.type === "application/pdf" ? (
+              {isPdfDoc(previewDoc) ? (
                 <iframe
                   src={`${previewDoc.url}#toolbar=0`}
                   className="w-full h-full rounded-[24px] shadow-inner border-0"

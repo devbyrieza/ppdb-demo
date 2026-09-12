@@ -26,7 +26,8 @@ export async function GET(
 
     // 1. Auth Check
     const cookieStore = await cookies();
-    const sessionCookie = cookieStore.get("al_session");
+    const sessionCookie =
+      cookieStore.get("al_session") || cookieStore.get("app_session");
 
     if (!sessionCookie) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -42,13 +43,20 @@ export async function GET(
     // 2. Authorization
     // Admin can access everything
     // Pendaftar can only access their own files (ownerId must match session.id)
-    const isAdmin = [
+    const adminRoles = [
       "admin",
       "admin_super",
       "admin_berkas",
       "admin_keuangan",
       "penguji",
-    ].includes(session.role);
+      "penguji_quran",
+      "penguji_santri",
+      "penguji_ortu",
+      "penguji_arab",
+      "penguji_hafalan",
+    ];
+    const userRoles = [session.role, ...(session.secondary_roles || [])];
+    const isAdmin = userRoles.some((r: string) => adminRoles.includes(r));
     
     let isOwner = session.role === "pendaftar" && session.id === ownerId;
 
