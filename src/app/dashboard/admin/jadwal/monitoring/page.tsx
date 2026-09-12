@@ -74,38 +74,9 @@ interface Schedule {
     };
 }
 
-// Helper untuk memeriksa jenjang tanpa IL (MA, SMA, SMA IT tanpa IL)
-const isJenjangTanpaIL = (jenjang?: string | null): boolean => {
-    if (!jenjang) return false;
-    const clean = jenjang.trim().toUpperCase();
-    if (
-        clean.includes("NON-IL") ||
-        clean.includes("NON IL") ||
-        clean.includes("TANPA IL") ||
-        clean.includes("TANPA-IL") ||
-        clean.includes("REGULER")
-    ) {
-        return true;
-    }
-    if (
-        clean === "IL" ||
-        clean.includes("IL ") ||
-        clean.includes(" IL") ||
-        clean.includes("(IL)") ||
-        clean.includes("I'DAD") ||
-        clean.includes("IDAD") ||
-        clean.includes("IDADIYAH")
-    ) {
-        return false;
-    }
-    if (
-        clean.includes("MA") ||
-        clean.includes("SMA") ||
-        clean.includes("ALIYAH") ||
-        clean.includes("SLTA")
-    ) {
-        return true;
-    }
+// Helper untuk memeriksa jenjang tanpa IL
+// Catatan: Di Al-Andalus Pusat HANYA membuka jenjang SMP IT dan IL (tidak ada SMA IT langsung tanpa IL)
+const isJenjangTanpaIL = (_jenjang?: string | null): boolean => {
     return false;
 };
 
@@ -138,15 +109,13 @@ export default function MonitoringJadwalPage() {
         const map = new Map<string, string>();
 
         schedules.forEach(s => {
-            if (s.id === targetSchedule.id) return;
+            if (s.id === targetSchedule.id || s.pendaftar?.nomor === targetSchedule.pendaftar?.nomor) return;
             const sTime = new Date(s.sesi.start).getTime();
             if (sTime === targetTime) {
                 const info = `${s.pendaftar.nama} (${s.pendaftar.nomor})`;
                 if (s.ustadz_id?.quran) map.set(s.ustadz_id.quran, info);
                 if (s.ustadz_id?.santri) map.set(s.ustadz_id.santri, info);
                 if (s.ustadz_id?.ortu) map.set(s.ustadz_id.ortu, info);
-                if (s.ustadz_id?.hafalan) map.set(s.ustadz_id.hafalan, info);
-                if (s.ustadz_id?.arab) map.set(s.ustadz_id.arab, info);
             }
         });
 
@@ -378,12 +347,11 @@ export default function MonitoringJadwalPage() {
         data.forEach(s => {
             const timeKey = new Date(s.sesi.start).getTime().toString();
             
+            // Di Al-Andalus Pusat, tes resmi seleksi hanya 3: Al-Qur'an, Wawancara Santri, Wawancara Orang Tua
             const roles = [
                 { type: 'quran', name: s.ustadz.quran, label: 'Al-Qur\'an' },
                 { type: 'santri', name: s.ustadz.santri, label: 'W. Santri' },
-                { type: 'ortu', name: s.ustadz.ortu, label: 'W. Ortu' },
-                { type: 'hafalan', name: s.ustadz.hafalan, label: 'Hafalan' },
-                { type: 'arab', name: s.ustadz.arab, label: 'Bhs. Arab' }
+                { type: 'ortu', name: s.ustadz.ortu, label: 'W. Ortu' }
             ];
 
             roles.forEach(role => {
@@ -403,7 +371,9 @@ export default function MonitoringJadwalPage() {
         });
 
         Object.entries(examinerTimeMap).forEach(([key, items]) => {
-            if (items.length > 1) {
+            // Bentrok HANYA terjadi jika satu penguji menangani LEBIH DARI SATU SANTRI BERBEDA di jam yang sama
+            const uniqueStudents = new Set(items.map(item => item.pendaftarId));
+            if (uniqueStudents.size > 1) {
                 const [name, time] = key.split('_');
                 newConflicts.push({
                     name,

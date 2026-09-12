@@ -153,8 +153,8 @@ export async function GET(request: NextRequest) {
       const quranName = s.penguji_quran?.full_name || fallbackQuran || null;
       const santriName = s.penguji_santri?.full_name || fallbackSantri || null;
       const ortuName = s.penguji_ortu?.full_name || fallbackOrtu || null;
-      const hafalanName = s.penguji_hafalan?.full_name || null;
-      const arabName = s.penguji_arab?.full_name || null;
+      const hafalanName = null;
+      const arabName = null;
 
       return {
         id: s.id,
@@ -277,6 +277,7 @@ export async function PATCH(request: NextRequest) {
       const conflictingSchedules = await prisma.jadwalUjian.findMany({
         where: {
           id: { not: jadwal_id },
+          pendaftar_id: { not: currentJadwal.pendaftar_id },
           pendaftar: { deleted_at: null },
           OR: [
             { exam_session: { start_time: scheduleStartTime } },
@@ -288,8 +289,6 @@ export async function PATCH(request: NextRequest) {
                 { penguji_quran_id: { in: newExaminerIds } },
                 { penguji_santri_id: { in: newExaminerIds } },
                 { penguji_ortu_id: { in: newExaminerIds } },
-                { penguji_hafalan_id: { in: newExaminerIds } },
-                { penguji_arab_id: { in: newExaminerIds } },
               ],
             },
           ],
