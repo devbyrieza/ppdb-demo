@@ -157,16 +157,36 @@ export default function UserManagementPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Client-side validation: enforce phone number for examiners and interviewers
+    // Client-side validation: enforce phone number & Google Meet link for examiners and interviewers (primary or secondary)
     const isExaminerOrInterviewer = 
-      ["penguji", "pewawancara_calsan", "pewawancara_cawalsan"].includes(formData.role) ||
-      formData.secondary_roles.some(role => ["penguji", "pewawancara_calsan", "pewawancara_cawalsan"].includes(role));
+      (formData.role || "").includes("penguji") || 
+      (formData.role || "").includes("pewawancara") ||
+      formData.secondary_roles.some(role => role.includes("penguji") || role.includes("pewawancara"));
 
     if (isExaminerOrInterviewer && (!formData.phone || formData.phone === "-" || formData.phone.trim().length < 6)) {
       Swal.fire({
-        title: "Gagal!",
-        text: "Penguji/Pewawancara wajib memiliki nomor WhatsApp aktif untuk verifikasi PIN 4 digit terakhir.",
+        title: "Nomor WhatsApp Wajib!",
+        text: "Penguji / Pewawancara wajib memiliki nomor WhatsApp aktif untuk verifikasi PIN 4 digit terakhir.",
         icon: "error",
+        confirmButtonColor: "#e11d48" });
+      return;
+    }
+
+    const cleanMeet = (formData.google_meet_link || "").trim();
+    if (isExaminerOrInterviewer && (!cleanMeet || cleanMeet === "-")) {
+      Swal.fire({
+        title: "Link Google Meet Wajib!",
+        text: "Pengguna dengan peran Penguji / Pewawancara (baik role utama atau role tambahan) wajib memiliki Link Google Meet aktif. Akun pengguna tidak bisa dibuat tanpa Link Google Meet.",
+        icon: "warning",
+        confirmButtonColor: "#e11d48" });
+      return;
+    }
+
+    if (isExaminerOrInterviewer && (!cleanMeet.startsWith("http://") && !cleanMeet.startsWith("https://") && !cleanMeet.includes("meet.google.com"))) {
+      Swal.fire({
+        title: "Format Link Tidak Valid!",
+        text: "Harap masukkan tautan Google Meet yang benar (contoh: https://meet.google.com/xxx-yyyy-zzz).",
+        icon: "warning",
         confirmButtonColor: "#e11d48" });
       return;
     }
@@ -247,6 +267,11 @@ export default function UserManagementPage() {
       (u.full_name?.toLowerCase() || "").includes(search.toLowerCase()) ||
       (u.email?.toLowerCase() || "").includes(search.toLowerCase()),
   );
+
+  const isSelectedRoleExaminer = 
+    (formData.role || "").includes("penguji") || 
+    (formData.role || "").includes("pewawancara") ||
+    formData.secondary_roles.some(r => r.includes("penguji") || r.includes("pewawancara"));
 
   if (loading && users.length === 0)
     return (

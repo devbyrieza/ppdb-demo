@@ -48,6 +48,18 @@ export async function GET() {
   }
 }
 
+function checkIsExaminerOrInterviewer(primaryRole?: string, secondaryRoles?: string[]): boolean {
+  const isTarget = (r?: string) => {
+    if (!r) return false;
+    const clean = r.toLowerCase().trim();
+    return clean.includes("penguji") || clean.includes("pewawancara");
+  };
+
+  if (isTarget(primaryRole)) return true;
+  if (Array.isArray(secondaryRoles) && secondaryRoles.some(isTarget)) return true;
+  return false;
+}
+
 // POST: Create new user
 export async function POST(request: Request) {
   const admin = await checkAdminPrivilege();
@@ -68,15 +80,26 @@ export async function POST(request: Request) {
       );
     }
 
-    const isExaminerOrInterviewer = 
-      ["penguji", "pewawancara_calsan", "pewawancara_cawalsan", "penguji_hafalan", "penguji_bahasa_arab"].includes(role) ||
-      (Array.isArray(secondary_roles) && secondary_roles.some((r: string) => 
-        ["penguji", "pewawancara_calsan", "pewawancara_cawalsan", "penguji_hafalan", "penguji_bahasa_arab"].includes(r)
-      ));
+    const isExaminerOrInterviewer = checkIsExaminerOrInterviewer(role, secondary_roles);
 
     if (isExaminerOrInterviewer && (!phone || phone === "-" || phone.trim().length < 6)) {
       return NextResponse.json(
         { error: "Penguji/Pewawancara wajib memiliki nomor WhatsApp aktif untuk verifikasi PIN 4 digit terakhir." },
+        { status: 400 },
+      );
+    }
+
+    const cleanMeet = (google_meet_link || "").trim();
+    if (isExaminerOrInterviewer && (!cleanMeet || cleanMeet === "-")) {
+      return NextResponse.json(
+        { error: "Link Google Meet wajib diisi untuk pengguna dengan peran Penguji / Pewawancara. Akun pengguna tidak bisa dibuat tanpa Link Google Meet." },
+        { status: 400 },
+      );
+    }
+
+    if (isExaminerOrInterviewer && (!cleanMeet.startsWith("http://") && !cleanMeet.startsWith("https://") && !cleanMeet.includes("meet.google.com"))) {
+      return NextResponse.json(
+        { error: "Format Link Google Meet tidak valid. Contoh: https://meet.google.com/xxx-yyyy-zzz" },
         { status: 400 },
       );
     }
@@ -116,6 +139,7 @@ export async function POST(request: Request) {
           secondary_roles: Array.isArray(secondary_roles) ? secondary_roles : [],
           phone: phone || existing.phone || "-",
           username: username || existing.username,
+          google_meet_link: cleanMeet || null,
           password_hash,
           updated_at: new Date() } });
 
@@ -209,16 +233,28 @@ export async function PUT(request: Request) {
     const finalRole = role || existingProfile.role;
     const finalSecondaryRoles = Array.isArray(secondary_roles) ? secondary_roles : existingProfile.secondary_roles;
     const finalPhone = phone !== undefined ? phone : existingProfile.phone;
+    const finalMeet = google_meet_link !== undefined ? google_meet_link : existingProfile.google_meet_link;
+    const cleanFinalMeet = (finalMeet || "").trim();
 
-    const isExaminerOrInterviewer = 
-      ["penguji", "pewawancara_calsan", "pewawancara_cawalsan", "penguji_hafalan", "penguji_bahasa_arab"].includes(finalRole) ||
-      (Array.isArray(finalSecondaryRoles) && finalSecondaryRoles.some((r: string) => 
-        ["penguji", "pewawancara_calsan", "pewawancara_cawalsan", "penguji_hafalan", "penguji_bahasa_arab"].includes(r)
-      ));
+    const isExaminerOrInterviewer = checkIsExaminerOrInterviewer(finalRole, finalSecondaryRoles);
 
     if (isExaminerOrInterviewer && (!finalPhone || finalPhone === "-" || finalPhone.trim().length < 6)) {
       return NextResponse.json(
         { error: "Penguji/Pewawancara wajib memiliki nomor WhatsApp aktif untuk verifikasi PIN 4 digit terakhir." },
+        { status: 400 },
+      );
+    }
+
+    if (isExaminerOrInterviewer && (!cleanFinalMeet || cleanFinalMeet === "-")) {
+      return NextResponse.json(
+        { error: "Link Google Meet wajib diisi untuk pengguna dengan peran Penguji / Pewawancara." },
+        { status: 400 },
+      );
+    }
+
+    if (isExaminerOrInterviewer && (!cleanFinalMeet.startsWith("http://") && !cleanFinalMeet.startsWith("https://") && !cleanFinalMeet.includes("meet.google.com"))) {
+      return NextResponse.json(
+        { error: "Format Link Google Meet tidak valid. Contoh: https://meet.google.com/xxx-yyyy-zzz" },
         { status: 400 },
       );
     }
@@ -231,7 +267,7 @@ export async function PUT(request: Request) {
     if (phone !== undefined) data.phone = phone;
     if (username !== undefined) data.username = username?.trim()?.toLowerCase() || null;
     if (jenis_kelamin !== undefined) data.jenis_kelamin = jenis_kelamin;
-    if (google_meet_link !== undefined) data.google_meet_link = google_meet_link || null;
+    if (google_meet_link !== undefined) data.google_meet_link = cleanFinalMeet || null;
 
     // Email update logic
     if (email) {
