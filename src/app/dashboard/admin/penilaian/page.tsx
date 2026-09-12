@@ -740,8 +740,8 @@ export default function ExaminerDashboard() {
             </div>
 
             {/* Desktop Table View */}
-            <div className="hidden md:block overflow-x-auto">
-              <table className="min-w-full divide-y divide-ink-100">
+            <div className="hidden md:block overflow-x-auto custom-scrollbar">
+              <table className="w-full min-w-[1000px] divide-y divide-ink-100">
                 <thead className="bg-ink-50/50">
                   <tr>
                     <th className="px-6 py-4 text-left text-[10px] font-black text-ink-400 uppercase tracking-widest">

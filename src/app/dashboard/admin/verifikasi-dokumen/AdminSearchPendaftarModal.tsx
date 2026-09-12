@@ -16,6 +16,18 @@ export default function AdminSearchPendaftarModal({ isOpen, onClose }: AdminSear
   const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
+
+  useEffect(() => {
     if (!isOpen) {
       setQuery("");
       setResults([]);

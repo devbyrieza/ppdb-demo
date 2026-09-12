@@ -736,7 +736,7 @@ function VerifikasiPembayaranContent() {
                     </div>
 
                     {/* Details Grid */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-[24px_28px] ml-16 bg-stone-50/50 p-[24px_28px] rounded-[24px] border border-stone-100">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-[24px_28px] ml-0 sm:ml-16 mt-3 sm:mt-0 bg-stone-50/50 p-[24px_28px] rounded-[24px] border border-stone-100">
                       <div>
                         <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-1">
                           Nominal Transfer

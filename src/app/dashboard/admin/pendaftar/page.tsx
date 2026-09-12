@@ -1961,7 +1961,7 @@ function AdminPendaftarContent() {
             </div>
 
             {/* Desktop Table View — disembunyikan di mobile */}
-            <div className="hidden md:block overflow-x-auto">
+            <div className="hidden md:block overflow-x-auto custom-scrollbar">
               <table className="w-full">
                 <thead className="bg-linear-to-r from-primary-50 to-primary-100 border-b border-primary-200">
                   <tr>
