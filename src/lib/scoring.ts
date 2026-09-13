@@ -176,6 +176,7 @@ export async function recalculateNilaiUjian(pendaftarId: string, overrideStatus?
     totalWeight += 0.1;
   }
 
+
   const totalScore = totalWeight > 0 ? (totalWeighted / totalWeight) : 0;
 
   // 5. Tentukan Status Kelulusan (Matriks A/B/C)
@@ -207,47 +208,33 @@ export async function recalculateNilaiUjian(pendaftarId: string, overrideStatus?
       include: { orang_tua: true } });
 
     if (pendaftar && !["enrolled", "re_registered", "accepted"].includes(pendaftar.status_pendaftaran)) {
-      let nextStatus = status === "DITERIMA" ? "accepted" : (status === "DITOLAK" ? "rejected" : "announced");
-      let displayLabel = status === "DITERIMA" ? "Diterima" : (status === "DITOLAK" ? "Ditolak" : "Cadangan");
+      // ── PERUBAHAN ARSITEKTUR: Tidak langsung umumkan & kirim WA ──
+      // Setelah semua nilai terisi, status hanya menjadi "tested" (Selesai Ujian / Menunggu Rapat Kelulusan).
+      // Pengumuman WAJIB dipublikasikan secara MANUAL oleh Admin Super via /dashboard/admin/pengumuman
+      // SETELAH Rapat Kelulusan bersama Mudir. Tidak ada WhatsApp yang dikirim otomatis.
+      const displayLabel = status === "DITERIMA" ? "Diterima" : (status === "DITOLAK" ? "Ditolak" : "Cadangan");
 
-      // Atomic update to prevent race conditions causing duplicate notifications
-      const updateResult = await prisma.pendaftar.updateMany({
-        where: { id: pendaftarId, status_pendaftaran: { not: nextStatus } },
-        data: { status_pendaftaran: nextStatus }
+      // Set status ke "tested" (Menunggu Rapat Kelulusan)
+      await prisma.pendaftar.updateMany({
+        where: { id: pendaftarId, status_pendaftaran: { notIn: ["enrolled", "re_registered", "accepted", "tested"] } },
+        data: { status_pendaftaran: "tested" }
       });
 
-      const isStatusChanged = updateResult.count > 0;
-
+      // Simpan rekomendasi ke tabel pengumuman sebagai DRAFT (is_published: false)
+      // Ini hanya sebagai bahan referensi Admin Super saat Rapat Kelulusan dengan Mudir.
+      // Pendaftar TIDAK dapat melihat ini sampai Admin Super klik "Umumkan Kelulusan".
       await prisma.pengumuman.upsert({
         where: { pendaftar_id: pendaftarId },
-        update: { status_kelulusan: displayLabel, is_published: true, published_at: new Date() },
-        create: { pendaftar_id: pendaftarId, status_kelulusan: displayLabel, is_published: true, published_at: new Date(), tahun_ajaran_id: pendaftar.tahun_ajaran_id } });
+        update: { status_kelulusan: displayLabel, is_published: false },
+        create: { pendaftar_id: pendaftarId, status_kelulusan: displayLabel, is_published: false, tahun_ajaran_id: pendaftar.tahun_ajaran_id } });
 
-      // 7. Kirim Notifikasi WhatsApp Otomatis
-      if (isStatusChanged) {
-        try {
-          const { notifyCombinedFinalResult } = await import("./wablas");
-          const { processWhatsappQueue } = await import("./whatsapp-queue");
-          const phone = pendaftar.no_hp || pendaftar.orang_tua?.no_hp_ayah || pendaftar.orang_tua?.no_hp_ibu;
-          if (phone) {
-            await notifyCombinedFinalResult({
-              pendaftarId, phone, nama: pendaftar.nama_lengkap,
-              status: status as any, jenjang: pendaftar.jenjang
-            });
-
-            // Jalankan proses antrean secara asinkron (fail-safe jika cron delay/mati)
-            processWhatsappQueue().catch((err) =>
-              console.error("Failed to run processWhatsappQueue asynchronously:", err)
-            );
-          }
-        } catch (err) {
-          console.error("WhatsApp Notification Error:", err);
-        }
-      }
-
+      // 7. TIDAK ADA pengiriman WhatsApp otomatis di sini.
+      // WhatsApp pengumuman HANYA dikirim saat Admin Super menekan tombol "Umumkan Kelulusan"
+      // di /dashboard/admin/pengumuman, yang akan memanggil /api/admin/pengumuman/publish.
+      console.log(`[Scoring] Semua ujian selesai. Status ${pendaftar.nama_lengkap} → tested. Rekomendasi: ${displayLabel}. Menunggu Rapat Kelulusan & publish manual Admin.`);
     }
   } else {
-    // If not all graded, but some are, update status to 'tested' (Sedang Seleksi) 
+    // If not all graded, but some are, update status to 'tested' (Sedang Seleksi)
     // to ensure they appear in the right lists
     const someGraded = ak != null || quran != null || kp != null || ks != null || ws != null || wo != null;
     if (someGraded) {
@@ -266,18 +253,18 @@ export async function recalculateNilaiUjian(pendaftarId: string, overrideStatus?
     where: { id: allNilai[0].id },
     data: {
       ...master,
-      score_akademik: ak, 
+      score_akademik: ak,
       nilai_tes_tertulis_total: ak, // Override Decimal field
-      score_quran: quran, 
+      score_quran: quran,
       nilai_tes_quran: quran, // Override Decimal field
-      score_kepribadian: kp, 
+      score_kepribadian: kp,
       score_kesiapan: ks,
       score_wawancara: ws, // Simpan Wawancara Santri (sebelumnya menyimpan wawancaraTotal yang merusak data manual Calsan)
-      nilai_wawancara_santri: ws, 
-      nilai_wawancara_ortu: wo, 
-      total_score: totalScore, 
+      nilai_wawancara_santri: ws,
+      nilai_wawancara_ortu: wo,
+      total_score: totalScore,
       nilai_total: totalScore,
-      status_kelulusan: status, 
+      status_kelulusan: status,
       updated_at: new Date() } });
 
   // 9. Bersihkan duplikat jika ada (Hanya sisakan satu record utama)

@@ -214,7 +214,7 @@ export async function GET(request: NextRequest) {
           },
         },
         pengumuman: {
-          select: { status_kelulusan: true },
+          select: { status_kelulusan: true, is_published: true },
         },
         whatsapp_logs: {
           orderBy: { created_at: "desc" },
