@@ -24,46 +24,7 @@ export default function DashboardLayout({
   const desktopSidebarRef = useRef<HTMLElement>(null);
   const mobileSidebarRef = useRef<HTMLDivElement>(null);
 
-  // Pointer Focus & Scroll Isolation:
-  // Scrolling when pointer is hovering sidebar MUST NEVER leak to the main page body.
-  useEffect(() => {
-    const attachScrollIsolation = (sidebarEl: HTMLElement | null) => {
-      if (!sidebarEl) return () => {};
-
-      const handleWheel = (e: WheelEvent) => {
-        const scrollMenu = sidebarEl.querySelector(".sidebar-scroll-menu") as HTMLElement | null;
-        if (scrollMenu) {
-          const { scrollTop, scrollHeight, clientHeight } = scrollMenu;
-          const canScroll = scrollHeight > clientHeight;
-
-          if (canScroll) {
-            const isScrollingDown = e.deltaY > 0;
-            const isScrollingUp = e.deltaY < 0;
-            const atBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
-            const atTop = scrollTop <= 0;
-
-            if ((isScrollingDown && !atBottom) || (isScrollingUp && !atTop)) {
-              scrollMenu.scrollTop += e.deltaY;
-            }
-          }
-        }
-        // Always prevent leaking scroll to the main page body when cursor is over sidebar
-        e.preventDefault();
-        e.stopPropagation();
-      };
-      
-      sidebarEl.addEventListener("wheel", handleWheel, { passive: false });
-      return () => sidebarEl.removeEventListener("wheel", handleWheel);
-    };
-
-    const cleanupDesktop = attachScrollIsolation(desktopSidebarRef.current);
-    const cleanupMobile = attachScrollIsolation(mobileSidebarRef.current);
-
-    return () => {
-      cleanupDesktop();
-      cleanupMobile();
-    };
-  }, []);
+  
 
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -324,6 +285,48 @@ export default function DashboardLayout({
     await fetch("/api/auth/logout", { method: "POST" });
     window.location.href = "/login";
   };
+
+  
+  // Pointer Focus & Scroll Isolation:
+  useEffect(() => {
+    if (loading) return;
+    
+    const attachScrollIsolation = (sidebarEl: HTMLElement | null) => {
+      if (!sidebarEl) return () => {};
+
+      const handleWheel = (e: WheelEvent) => {
+        const scrollMenu = sidebarEl.querySelector(".sidebar-scroll-menu") as HTMLElement | null;
+        if (scrollMenu) {
+          const { scrollTop, scrollHeight, clientHeight } = scrollMenu;
+          const canScroll = scrollHeight > clientHeight;
+
+          if (canScroll) {
+            const isScrollingDown = e.deltaY > 0;
+            const isScrollingUp = e.deltaY < 0;
+            const atBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
+            const atTop = scrollTop <= 0;
+
+            if ((isScrollingDown && !atBottom) || (isScrollingUp && !atTop)) {
+              scrollMenu.scrollTop += e.deltaY;
+            }
+          }
+        }
+        e.preventDefault();
+        e.stopPropagation();
+      };
+      
+      sidebarEl.addEventListener("wheel", handleWheel, { passive: false });
+      return () => sidebarEl.removeEventListener("wheel", handleWheel);
+    };
+
+    const cleanupDesktop = attachScrollIsolation(desktopSidebarRef.current);
+    const cleanupMobile = attachScrollIsolation(mobileSidebarRef.current);
+
+    return () => {
+      cleanupDesktop();
+      cleanupMobile();
+    };
+  }, [loading]);
 
   // Loading state
   if (loading) {
