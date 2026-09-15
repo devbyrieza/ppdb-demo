@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
@@ -27,6 +27,50 @@ export default function PengujiDashboardLayout({
   children }: {
   children: React.ReactNode;
 }) {
+  const desktopSidebarRef = useRef<HTMLElement>(null);
+  const mobileSidebarRef = useRef<HTMLDivElement>(null);
+
+  // Pointer Focus & Scroll Isolation:
+  // Scrolling when pointer is hovering sidebar MUST NEVER leak to the main page body.
+  useEffect(() => {
+    const attachScrollIsolation = (sidebarEl: HTMLElement | null) => {
+      if (!sidebarEl) return () => {};
+
+      const handleWheel = (e: WheelEvent) => {
+        const scrollMenu = sidebarEl.querySelector(".sidebar-scroll-menu") as HTMLElement | null;
+        if (scrollMenu) {
+          const { scrollTop, scrollHeight, clientHeight } = scrollMenu;
+          const canScroll = scrollHeight > clientHeight;
+
+          if (canScroll) {
+            const isScrollingDown = e.deltaY > 0;
+            const isScrollingUp = e.deltaY < 0;
+            const atBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
+            const atTop = scrollTop <= 0;
+
+            if ((isScrollingDown && !atBottom) || (isScrollingUp && !atTop)) {
+              scrollMenu.scrollTop += e.deltaY;
+            }
+          }
+        }
+        // Always prevent leaking scroll to the main page body when cursor is over sidebar
+        e.preventDefault();
+        e.stopPropagation();
+      };
+      
+      sidebarEl.addEventListener("wheel", handleWheel, { passive: false });
+      return () => sidebarEl.removeEventListener("wheel", handleWheel);
+    };
+
+    const cleanupDesktop = attachScrollIsolation(desktopSidebarRef.current);
+    const cleanupMobile = attachScrollIsolation(mobileSidebarRef.current);
+
+    return () => {
+      cleanupDesktop();
+      cleanupMobile();
+    };
+  }, []);
+
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -175,7 +219,7 @@ export default function PengujiDashboardLayout({
 
         <div className="flex relative">
           {/* Desktop Sidebar */}
-          <aside data-sidebar="true" className="hidden lg:flex lg:w-72 lg:flex-col lg:fixed lg:top-0 lg:left-0 lg:h-screen z-50 bg-white border-r border-surface-200 shadow-premium-sm transition-all duration-300">
+          <aside data-sidebar="true" ref={desktopSidebarRef} className="hidden lg:flex lg:w-72 lg:flex-col lg:fixed lg:top-0 lg:left-0 lg:h-screen z-50 bg-white border-r border-surface-200 shadow-premium-sm transition-all duration-300">
             <div className="flex flex-col h-full">
               {/* Brand Header */}
               <div className="px-5 md:px-8 pt-10 pb-8 border-b border-surface-100 mb-8">

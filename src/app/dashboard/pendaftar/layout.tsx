@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { User, CreditCard, FileCheck, Calendar, Trophy, CheckCircle, Settings, LogOut, Menu, X, Home, Lock, Loader2, Download, Upload, ClipboardList, ChevronRight, ShieldCheck, Bell, Search, Shirt, HandCoins, PartyPopper, CheckCircle2, AlertTriangle, XCircle } from "lucide-react";
 import { BRANDING } from "@/config/branding";
@@ -21,6 +21,50 @@ export default function DashboardLayout({
   children }: {
   children: React.ReactNode;
 }) {
+  const desktopSidebarRef = useRef<HTMLElement>(null);
+  const mobileSidebarRef = useRef<HTMLDivElement>(null);
+
+  // Pointer Focus & Scroll Isolation:
+  // Scrolling when pointer is hovering sidebar MUST NEVER leak to the main page body.
+  useEffect(() => {
+    const attachScrollIsolation = (sidebarEl: HTMLElement | null) => {
+      if (!sidebarEl) return () => {};
+
+      const handleWheel = (e: WheelEvent) => {
+        const scrollMenu = sidebarEl.querySelector(".sidebar-scroll-menu") as HTMLElement | null;
+        if (scrollMenu) {
+          const { scrollTop, scrollHeight, clientHeight } = scrollMenu;
+          const canScroll = scrollHeight > clientHeight;
+
+          if (canScroll) {
+            const isScrollingDown = e.deltaY > 0;
+            const isScrollingUp = e.deltaY < 0;
+            const atBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
+            const atTop = scrollTop <= 0;
+
+            if ((isScrollingDown && !atBottom) || (isScrollingUp && !atTop)) {
+              scrollMenu.scrollTop += e.deltaY;
+            }
+          }
+        }
+        // Always prevent leaking scroll to the main page body when cursor is over sidebar
+        e.preventDefault();
+        e.stopPropagation();
+      };
+      
+      sidebarEl.addEventListener("wheel", handleWheel, { passive: false });
+      return () => sidebarEl.removeEventListener("wheel", handleWheel);
+    };
+
+    const cleanupDesktop = attachScrollIsolation(desktopSidebarRef.current);
+    const cleanupMobile = attachScrollIsolation(mobileSidebarRef.current);
+
+    return () => {
+      cleanupDesktop();
+      cleanupMobile();
+    };
+  }, []);
+
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [statusProses, setStatusProses] = useState<StatusProses>("draft");
@@ -348,7 +392,7 @@ export default function DashboardLayout({
 
         <div className="flex relative">
           {/* Desktop Sidebar */}
-          <aside data-sidebar="true" className="hidden lg:flex lg:w-72 lg:flex-col lg:fixed lg:top-0 lg:left-0 lg:h-screen z-50">
+          <aside data-sidebar="true" ref={desktopSidebarRef} className="hidden lg:flex lg:w-72 lg:flex-col lg:fixed lg:top-0 lg:left-0 lg:h-screen z-50">
             <div className="flex flex-col h-full bg-white/70 backdrop-blur-xl border-r border-white/50 shadow-clay-lg">
               {/* Brand */}
               <div className="px-6 pt-8 pb-6 border-b border-gold-100/50 mb-2">
@@ -400,7 +444,7 @@ export default function DashboardLayout({
               </div>
 
               {/* Navigation */}
-              <nav className="flex-1 overflow-y-auto px-3 pb-6 space-y-1  overscroll-contain custom-scrollbar">
+              <nav className="flex-1 overflow-y-auto sidebar-scroll-menu px-3 pb-6 space-y-1  overscroll-contain custom-scrollbar">
                 <div className="px-3 mb-2">
                   <p className="text-xs font-bold text-ink-400 uppercase tracking-wider">
                     Menu Utama
@@ -435,8 +479,7 @@ export default function DashboardLayout({
               className="absolute inset-0 bg-ink-900/60 backdrop-blur-sm"
               onClick={() => setSidebarOpen(false)}
             />
-            <div
-              className={`absolute top-0 left-0 bottom-0 w-80 bg-white shadow-2xl transition-transform duration-300 transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
+            <div ref={mobileSidebarRef} className={`absolute top-0 left-0 bottom-0 w-80 bg-white shadow-2xl transition-transform duration-300 transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
             >
               {/* Mobile Sidebar Content */}
               <div className="flex flex-col h-full overflow-hidden">
@@ -473,7 +516,7 @@ export default function DashboardLayout({
                   </p>
                 </div>
 
-                <nav className="flex-1 overflow-y-auto p-4 space-y-1 overscroll-contain custom-scrollbar">
+                <nav className="flex-1 overflow-y-auto sidebar-scroll-menu p-4 space-y-1 overscroll-contain custom-scrollbar">
                   {menuItems.map((item) => (
                     <div
                       key={item.name}
