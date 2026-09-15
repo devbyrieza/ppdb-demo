@@ -81,8 +81,7 @@ export default function SesiKetersediaanSection({
   const [slotForm, setSlotForm] = useState({
     title: "Seleksi Al Qur'an",
     date: new Date().toISOString().split("T")[0],
-    start_time: "08:00",
-    end_time: "08:30",
+    slots: [{ start: "08:00", end: "08:30" }],
     quota: 1,
     location: "Online",
     notes: "",
@@ -239,73 +238,60 @@ export default function SesiKetersediaanSection({
     fetchSlots();
   }, [fetchSlots]);
 
-  // Update end_time automatically when title or start_time changes in Single Slot Form
-  useEffect(() => {
-    if (slotForm.start_time && slotForm.title) {
-      setSlotForm((prev) => ({
-        ...prev,
-        end_time: calculateEndTime(prev.start_time, prev.title),
-      }));
-    }
-  }, [slotForm.start_time, slotForm.title]);
+  
 
   // Single Slot Create Handler
   const handleCreateSlot = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!slotForm.date || !slotForm.start_time || !slotForm.end_time) {
-      Swal.fire("Lengkapi Form", "Mohon lengkapi tanggal dan jam mulai/selesai!", "warning");
+    if (!slotForm.date || !slotForm.slots || slotForm.slots.length === 0) {
+      Swal.fire("Lengkapi Form", "Mohon lengkapi tanggal dan minimal 1 slot jam!", "warning");
       return;
     }
 
     setSubmittingSlot(true);
     try {
-      const startDateTime = new Date(`${slotForm.date}T${slotForm.start_time}:00`);
-      const endDateTime = new Date(`${slotForm.date}T${slotForm.end_time}:00`);
+      const promises = slotForm.slots.map(async (s) => {
+        const startDateTime = new Date(`${slotForm.date}T${s.start}:00`);
+        const endDateTime = new Date(`${slotForm.date}T${s.end}:00`);
 
-      if (endDateTime <= startDateTime) {
-        Swal.fire("Jam Tidak Valid", "Jam selesai harus lebih besar dari jam mulai!", "warning");
-        setSubmittingSlot(false);
-        return;
-      }
+        if (endDateTime <= startDateTime) {
+          throw new Error(`Jam selesai harus lebih besar dari jam mulai! (${s.start} - ${s.end})`);
+        }
 
-      const payload: any = {
-        title: slotForm.title,
-        start_time: startDateTime.toISOString(),
-        end_time: endDateTime.toISOString(),
-        quota: Number(slotForm.quota) || 1,
-        location: slotForm.location || "Online",
-        notes: slotForm.notes,
-      };
+        const payload: any = {
+          title: slotForm.title,
+          start_time: startDateTime.toISOString(),
+          end_time: endDateTime.toISOString(),
+          quota: Number(slotForm.quota),
+          location: slotForm.location,
+          notes: slotForm.notes,
+        };
+        if (slotForm.creator_id) {
+          payload.creator_id = slotForm.creator_id;
+        }
 
-      if (slotForm.creator_id) {
-        payload.creator_id = slotForm.creator_id;
-      } else if (filterCreatorId) {
-        payload.creator_id = filterCreatorId;
-      }
-
-      const res = await fetch("/api/exam-sessions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      const result = await res.json();
-      if (res.ok) {
-        Swal.fire({
-          title: "Berhasil!",
-          text: "Sesi ketersediaan berhasil dibuat.",
-          icon: "success",
-          timer: 1500,
-          showConfirmButton: false,
+        const res = await fetch("/api/exam-sessions", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
         });
-        setIsSlotModalOpen(false);
-        fetchSlots();
-        if (onRefreshPlotting) onRefreshPlotting();
-      } else {
-        throw new Error(result.error || "Gagal membuat sesi");
-      }
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.error || "Gagal membuat sesi");
+        }
+      });
+      
+      await Promise.all(promises);
+
+      Swal.fire("Berhasil", "Sesi ketersediaan berhasil dibuat", "success");
+      setIsSlotModalOpen(false);
+      setSlotForm({
+        ...slotForm,
+        slots: [{ start: "08:00", end: "08:30" }],
+      });
+      fetchSlots();
     } catch (error: any) {
-      Swal.fire("Gagal", error.message, "error");
+      Swal.fire("Gagal", error.message || "Terjadi kesalahan sistem", "error");
     } finally {
       setSubmittingSlot(false);
     }
@@ -1029,32 +1015,70 @@ export default function SesiKetersediaanSection({
               </div>
 
               {/* Waktu Mulai & Selesai */}
-              <div className="grid grid-cols-2 gap-3">
-                <div>
+              <div>
                   <label className="block text-xs font-black text-stone-700 mb-1.5">
-                    Jam Mulai (WIB)
+                    Slot Jam (WIB)
                   </label>
-                  <input
-                    type="time"
-                    required
-                    value={slotForm.start_time}
-                    onChange={(e) => setSlotForm({ ...slotForm, start_time: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs font-bold text-stone-900 outline-none focus:ring-2 focus:ring-primary-500/20"
-                  />
+                  <div className="space-y-2">
+                    {slotForm.slots.map((s, idx) => (
+                      <div key={idx} className="flex items-center gap-2">
+                        <input
+                          type="time"
+                          required
+                          value={s.start}
+                          onChange={(e) => {
+                            const newStart = e.target.value;
+                            const newEnd = calculateEndTime(newStart, slotForm.title);
+                            const newSlots = [...slotForm.slots];
+                            newSlots[idx] = { start: newStart, end: newEnd };
+                            setSlotForm({ ...slotForm, slots: newSlots });
+                          }}
+                          className="flex-1 px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs font-bold text-stone-900 outline-none focus:ring-2 focus:ring-primary-500/20"
+                        />
+                        <span className="text-xs font-black text-stone-400">s/d</span>
+                        <input
+                          type="time"
+                          required
+                          value={s.end}
+                          onChange={(e) => {
+                            const newSlots = [...slotForm.slots];
+                            newSlots[idx] = { ...s, end: e.target.value };
+                            setSlotForm({ ...slotForm, slots: newSlots });
+                          }}
+                          className="flex-1 px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs font-bold text-stone-900 outline-none focus:ring-2 focus:ring-primary-500/20"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (slotForm.slots.length > 1) {
+                              const newSlots = slotForm.slots.filter((_, i) => i !== idx);
+                              setSlotForm({ ...slotForm, slots: newSlots });
+                            }
+                          }}
+                          className="p-2 text-stone-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all disabled:opacity-50"
+                          disabled={slotForm.slots.length <= 1}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const lastSlot = slotForm.slots[slotForm.slots.length - 1];
+                      const nextStart = lastSlot ? lastSlot.end : "08:00";
+                      const nextEnd = calculateEndTime(nextStart, slotForm.title);
+                      setSlotForm({
+                        ...slotForm,
+                        slots: [...slotForm.slots, { start: nextStart, end: nextEnd }]
+                      });
+                    }}
+                    className="mt-3 flex items-center gap-1.5 text-xs font-bold text-primary-700 hover:text-primary-800 transition-colors"
+                  >
+                    <Plus className="w-3.5 h-3.5" /> Tambah Slot Jam
+                  </button>
                 </div>
-                <div>
-                  <label className="block text-xs font-black text-stone-700 mb-1.5">
-                    Jam Selesai (WIB)
-                  </label>
-                  <input
-                    type="time"
-                    required
-                    value={slotForm.end_time}
-                    onChange={(e) => setSlotForm({ ...slotForm, end_time: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs font-bold text-stone-900 outline-none focus:ring-2 focus:ring-primary-500/20"
-                  />
-                </div>
-              </div>
 
               {/* Lokasi & Kuota */}
               <div className="grid grid-cols-2 gap-3">
