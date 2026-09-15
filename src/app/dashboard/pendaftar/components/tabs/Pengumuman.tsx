@@ -197,7 +197,28 @@ export default function PengumumanTab() {
             </div>
           </div>
         )
-      ) : pengumuman.status_kelulusan === "diterima" ? (
+      
+        ) : pengumuman.status_kelulusan === "dokumen_belum_lengkap" ? (
+          <div className="bg-white rounded-[2rem] p-6 md:p-12 shadow-sm border border-secondary-100 app-card">
+            <div className="text-center">
+              <div className="w-20 h-20 bg-secondary-50 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
+                <AlertCircle className="w-10 h-10 text-secondary-700" />
+              </div>
+              <h3 className="text-xl font-bold text-ink-900 mb-3 font-display">
+                Tahan Dulu... Dokumen Berkas Belum Lengkap!
+              </h3>
+              <p className="text-ink-600 max-w-md mx-auto mb-6 leading-relaxed">
+                {pengumuman.catatan}
+              </p>
+              <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-secondary-50 text-secondary-800 rounded-full font-black border border-secondary-200 shadow-sm">
+                <FileCheck className="w-4 h-4 text-secondary-600" />
+                <span className="text-sm">
+                  Silakan kembali ke menu Upload Berkas
+                </span>
+              </div>
+            </div>
+          </div>
+        ) : pengumuman.status_kelulusan === "diterima" ? (
         <div className="space-y-6">
           {/* Success Card */}
           <div className="bg-linear-to-r from-primary-500 to-primary-700 rounded-[2rem] p-5 md:p-8 text-white shadow-lg shadow-primary-500/20 relative overflow-hidden app-card">

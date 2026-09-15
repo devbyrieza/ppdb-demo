@@ -16,6 +16,33 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
+    
+    // === BYPASS BERKAS CHECK ===
+    // Verify if all required documents are verified before showing announcement
+    const dokumen = await prisma.dokumen.findMany({ where: { pendaftar_id: pendaftarId } });
+    const verifiedTypes = new Set(dokumen.filter(d => d.is_verified).map(d => d.jenis_dokumen === 'pakta_integritas' ? 'pakta_integritas_santri' : d.jenis_dokumen));
+    
+    const REQUIRED_DOC_TYPES = [
+      "kartu_keluarga",
+      "akta_kelahiran",
+      "ijazah",
+      "pas_foto",
+      "pakta_integritas_santri",
+      "pakta_integritas_ortu",
+    ];
+    
+    if (!REQUIRED_DOC_TYPES.every((type) => verifiedTypes.has(type))) {
+      return NextResponse.json({
+        data: {
+          id: "dokumen_belum_lengkap",
+          status_kelulusan: "dokumen_belum_lengkap",
+          catatan: "Mohon lengkapi dan tunggu verifikasi seluruh dokumen pendaftaran (berkas) Anda oleh Panitia sebelum hasil kelulusan dapat diterbitkan.",
+          tanggal_pengumuman: new Date().toISOString()
+        }
+      });
+    }
+    // ===========================
+
     // === REDIS CACHE CHECK ===
     const cacheKey = `pengumuman_${pendaftarId}`;
     const cachedData = await getCache<any>(cacheKey);
