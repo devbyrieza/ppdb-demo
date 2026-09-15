@@ -61,11 +61,12 @@ export async function GET(request: NextRequest) {
     }
 
     // Fetch all JadwalUjian with relations (filtering out deleted students)
+        const { getAdminWhereClause } = await import("@/lib/utils/admin");
+    const pendaftarWhere = await getAdminWhereClause();
+
     const schedules = await prisma.jadwalUjian.findMany({
       where: {
-        pendaftar: {
-          deleted_at: null,
-        },
+        pendaftar: pendaftarWhere,
       },
       include: {
         pendaftar: {
