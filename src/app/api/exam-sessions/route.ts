@@ -47,7 +47,20 @@ export async function GET(request: Request) {
   }
 
   try {
+    const activeTa = await prisma.tahunAjaran.findFirst({
+      where: { is_active: true },
+      select: { tanggal_buka_pendaftaran: true }
+    });
+
     const whereClause: any = {};
+    
+    // Filter old academic year schedules out
+    if (activeTa?.tanggal_buka_pendaftaran) {
+      // 30 days buffer before PPDB open date
+      const limitDate = new Date(activeTa.tanggal_buka_pendaftaran);
+      limitDate.setDate(limitDate.getDate() - 30);
+      whereClause.start_time = { gte: limitDate };
+    }
 
     // Pendaftar Restriction: Must be active + future
     if (isPendaftar) {
