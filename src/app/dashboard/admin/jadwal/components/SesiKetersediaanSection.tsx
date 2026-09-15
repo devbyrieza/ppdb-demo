@@ -1146,7 +1146,7 @@ export default function SesiKetersediaanSection({
 
             <form
               onSubmit={handleCreateBulk}
-              className="p-6 space-y-5 overflow-y-auto custom-scrollbar"
+                className="p-6 space-y-5 overflow-y-auto custom-scrollbar flex-1 min-h-0"
             >
               {/* Ustadz Penguji */}
               <div>
