@@ -1,4 +1,4 @@
-"use client";
+{renderedSlotList}"use client";
 
 import { useState, useEffect, useMemo, useCallback } from "react";
 import {
@@ -606,6 +606,14 @@ export default function SesiKetersediaanSection({
       minute: "2-digit",
     });
   };
+
+  // Memoize rendered slots to prevent lag when typing in modals
+  const renderedSlotList = useMemo(() => {
+    return (
+      
+    );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filteredSlots, isSelectMode, selectedSlotIds]);
 
   return (
     <div className="space-y-6" id="sesi-ketersediaan-root">
