@@ -10,8 +10,8 @@ export default function ProgressBarProvider({ children }: { children: React.Reac
       <ProgressBar
         height="4px"
         color={BRANDING.primaryColor}
-        options={{ showSpinner: false }}
-        shallowRouting
+        options={{ showSpinner: true, minimum: 0.2 }}
+        shallowRouting={false}
       />
     </>
   );
