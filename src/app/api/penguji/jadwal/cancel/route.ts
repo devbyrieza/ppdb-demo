@@ -88,9 +88,7 @@ export async function POST(request: Request) {
 
     const timeFormatted = new Date(
       jadwal.exam_session?.start_time || jadwal.waktu_mulai_santri,
-    ).toLocaleTimeString("id-ID", {
-      hour: "2-digit",
-      minute: "2-digit" });
+    ).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Jakarta" });
 
     // 4. Perform Transaction: Delete booking and Slot
     await prisma.$transaction(async (tx) => {

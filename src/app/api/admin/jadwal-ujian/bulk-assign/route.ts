@@ -98,7 +98,7 @@ export async function POST(request: Request) {
               day: "numeric",
               month: "long",
               year: "numeric" }),
-            waktu: `${examSession.start_time.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" })} WIB`,
+            waktu: `${examSession.start_time.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Jakarta" })} WIB`,
             tempat: examSession.location || "Online (Link di Dashboard)" });
         }
 

@@ -240,8 +240,8 @@ export async function POST(request: Request) {
 
     if (overlapping) {
       const creatorName = overlapping.creator?.full_name || "Penguji ini";
-      const startStr = new Date(overlapping.start_time).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
-      const endStr = new Date(overlapping.end_time).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
+      const startStr = new Date(overlapping.start_time).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Jakarta" });
+      const endStr = new Date(overlapping.end_time).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Jakarta" });
       return NextResponse.json(
         { 
           error: `Bentrokan Jadwal: ${creatorName} sudah memiliki sesi aktif pada jam tersebut (${overlapping.title || "Sesi Ujian"}: ${startStr} - ${endStr} WIB). Mohon gunakan jam lain agar tidak bentrok.` 

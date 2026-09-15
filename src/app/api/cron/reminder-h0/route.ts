@@ -75,10 +75,7 @@ export async function GET(request: Request) {
         continue;
       }
 
-      const waktu = new Date(jadwal.exam_session.start_time).toLocaleTimeString(
-        "id-ID",
-        { hour: "2-digit", minute: "2-digit" },
-      );
+      const waktu = new Date(jadwal.exam_session.start_time).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Jakarta" });
 
       const lokasi =
         jadwal.exam_session.location || "Pesantren Al Imam Al Islami";
