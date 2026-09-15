@@ -326,7 +326,7 @@ export async function DELETE(request: Request) {
 }
 
 // PATCH: Edit exam session (owner or admin)
-export async function PATCH(request: Request) {
+export async function PUT(request: Request) {
   const session = await getSession();
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -406,7 +406,7 @@ export async function PATCH(request: Request) {
 
     return NextResponse.json({ success: true, data: updated });
   } catch (error: any) {
-    console.error("PATCH exam-sessions error:", error);
+    console.error("PUT exam-sessions error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
