@@ -1000,7 +1000,7 @@ export default function SesiKetersediaanSection({
                   <option value="Seleksi Wawancara Orang Tua">
                     Seleksi Wawancara Orang Tua/Wali
                   </option>
-                  <option value="Tes Hafalan Al-Qur'an">Tes Hafalan Al-Qur&apos;an</option>
+                  
                   <option value="Tes Lisan Bahasa Arab">Tes Lisan Bahasa Arab</option>
                   <option value="Sesi Ujian Terpadu">Sesi Ujian Terpadu (Semua Materi)</option>
                 </select>
@@ -1184,7 +1184,7 @@ export default function SesiKetersediaanSection({
                   <option value="Seleksi Wawancara Orang Tua">
                     Seleksi Wawancara Orang Tua/Wali
                   </option>
-                  <option value="Tes Hafalan Al-Qur'an">Tes Hafalan Al-Qur&apos;an</option>
+                  
                   <option value="Tes Lisan Bahasa Arab">Tes Lisan Bahasa Arab</option>
                   <option value="Sesi Ujian Terpadu">Sesi Ujian Terpadu</option>
                 </select>
