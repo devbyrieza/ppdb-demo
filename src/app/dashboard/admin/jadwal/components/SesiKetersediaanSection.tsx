@@ -608,7 +608,7 @@ export default function SesiKetersediaanSection({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" id="sesi-ketersediaan-root">
       {/* Top Filter & Actions Card */}
       <div className="bg-white rounded-2xl p-5 md:p-6 border border-stone-100 shadow-sm space-y-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">

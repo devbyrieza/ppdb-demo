@@ -521,6 +521,18 @@ export default function JadwalUjianPage() {
     setShowAllExaminers(false);
   };
 
+    const handleSwitchToKetersediaan = () => {
+    setMainTab("ketersediaan");
+    setTimeout(() => {
+      const el = document.getElementById("sesi-ketersediaan-root");
+      if (el) {
+        const yOffset = -80; // Account for sticky header padding
+        const y = el.getBoundingClientRect().top + window.scrollY + yOffset;
+        window.scrollTo({ top: y, behavior: "smooth" });
+      }
+    }, 150);
+  };
+
   const handleSaveSchedule = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formStartTime) {
@@ -902,7 +914,7 @@ export default function JadwalUjianPage() {
           </div>
           <div className="flex flex-wrap items-center gap-3">
             <button
-              onClick={() => setMainTab("ketersediaan")}
+              onClick={handleSwitchToKetersediaan}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs border transition-all whitespace-nowrap ${
                 mainTab === "ketersediaan"
                   ? "bg-emerald-600 text-white border-emerald-600 shadow-md shadow-emerald-600/20"
@@ -971,7 +983,7 @@ export default function JadwalUjianPage() {
           </button>
           <button
             type="button"
-            onClick={() => setMainTab("ketersediaan")}
+            onClick={handleSwitchToKetersediaan}
             className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg font-black text-xs transition-all ${
               mainTab === "ketersediaan"
                 ? "bg-white text-primary-700 shadow-sm font-black"
