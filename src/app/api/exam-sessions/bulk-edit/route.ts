@@ -52,7 +52,7 @@ export async function PUT(request: Request) {
     const parseWIB = (dt: string) => {
       if (!dt) return new Date();
       if (dt.includes("Z") || dt.match(/[+-]\\d{2}(:?\\d{2})?$/)) return new Date(dt);
-      return new Date(\`\${dt}+07:00\`);
+      return new Date(`${dt}+07:00`);
     };
 
     // Update sequentially to handle dates properly
@@ -64,8 +64,8 @@ export async function PUT(request: Request) {
         const targetDate = new Date(target.start_time);
         const yyyyMmDd = targetDate.toISOString().split("T")[0];
         
-        const newStartDt = parseWIB(\`\${yyyyMmDd}T\${start_time}:00\`);
-        const newEndDt = parseWIB(\`\${yyyyMmDd}T\${end_time}:00\`);
+        const newStartDt = parseWIB(`${yyyyMmDd}T${start_time}:00`);
+        const newEndDt = parseWIB(`${yyyyMmDd}T${end_time}:00`);
         
         if (newEndDt > newStartDt) {
           updateData.start_time = newStartDt;
@@ -92,7 +92,7 @@ export async function PUT(request: Request) {
 
     return NextResponse.json({ 
       success: true, 
-      message: \`Berhasil memperbarui \${updatedCount} sesi terpilih.\` 
+      message: `Berhasil memperbarui ${updatedCount} sesi terpilih.` 
     });
 
   } catch (error: any) {

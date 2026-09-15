@@ -59,7 +59,7 @@ export async function DELETE(request: Request) {
 
     return NextResponse.json({ 
       success: true, 
-      message: \`Berhasil menghapus \${result.count} sesi. (\${targets.length - deletableIds.length} sesi dilewati karena sudah dibooking).\`
+      message: `Berhasil menghapus ${result.count} sesi. (${targets.length - deletableIds.length} sesi dilewati karena sudah dibooking).`
     });
 
   } catch (error: any) {
