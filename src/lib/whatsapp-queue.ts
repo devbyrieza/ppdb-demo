@@ -913,7 +913,7 @@ export function buildMessageKonfirmasiJadwal(
 Jadwal *${jenisUjian}* Ananda telah terkonfirmasi:
 
 📅 *Hari/Tanggal:* ${tanggal}
-⏰ *Waktu:* ${waktu} WIB
+⏰ *Waktu:* ${waktu}
 📍 *Lokasi/Link:* ${lokasi}
 
 Kami akan mengirimkan pengingat kembali beberapa saat sebelum jadwal tiba.
@@ -943,7 +943,7 @@ Assalamu'alaikum Abu/Ummu,
 Jadwal *${jenisUjian}* untuk Ananda *${namaSantri}* telah berhasil disimpan ke dalam sistem:
 
 📅 *Tanggal:* ${tanggal}
-⏰ *Waktu:* ${waktu} WIB
+⏰ *Waktu:* ${waktu}
 
 Link ujian dan pesan pengingat akan dikirimkan menyusul mendekati waktu pelaksanaan.
 
@@ -965,7 +965,7 @@ Assalamu'alaikum Abu/Ummu,
 Ini adalah pengingat bahwa Ananda *${nama}* dijadwalkan mengikuti *${jenisUjian}* pada:
 
 📅 *Hari/Tanggal:* ${tanggal}
-⏰ *Waktu:* ${waktu} WIB
+⏰ *Waktu:* ${waktu}
 📍 *Lokasi/Link:* ${lokasi}
 
 Mohon persiapkan diri dengan baik dan pastikan koneksi internet stabil. Sampai jumpa!
@@ -986,7 +986,7 @@ export function buildMessageReminderH0(
 
 Assalamu'alaikum Abu/Ummu,
 
-🕐 *Waktu:* ${waktu} WIB
+🕐 *Waktu:* ${waktu}
 📍 *Lokasi/Link:* ${lokasi}
 
 Mohon segera bersiap. Pastikan koneksi internet stabil.
@@ -1049,6 +1049,10 @@ export function buildMessageKonfirmasiJadwalInterviewer(
         agendaText = "Wawancara Calon Orangtua/Wali Santri";
     }
 
+    let cleanJam = (waktu || "").replace(/\s*WIB\s*/gi, " ").trim();
+    cleanJam = cleanJam.replace(/\s+/g, " ");
+    const finalWaktu = `${cleanJam} WIB`;
+
     let msg = `${agendaTitle}
 
 ${opening} ${title} *${namaInterviewer}*,
@@ -1056,7 +1060,7 @@ ${opening} ${title} *${namaInterviewer}*,
 Santri atas nama *${namaSantri}* baru saja memilih jadwal *${agendaText}* pada:
 
 📅 *Tanggal:* ${tanggal}
-⏰ *Waktu:* ${waktu} WIB
+⏰ *Waktu:* ${waktu}
 
 Pesan pengingat beserta link meeting dan link input nilai akan dikirimkan otomatis menyusul mendekati waktu pelaksanaan.
 
@@ -1286,7 +1290,7 @@ Assalamu'alaikum Abu/Ummu dari Ananda *${namaSantri}*,
 Kami menginformasikan bahwa jadwal *${jenisUjian}* pada:
 
 📅 *Tanggal:* ${tanggal}
-⏰ *Waktu:* ${jam} WIB
+⏰ *Waktu:* ${jam}
 
 Telah *DIBATALKAN* oleh Penguji karena alasan: *${alasan}*.
 
