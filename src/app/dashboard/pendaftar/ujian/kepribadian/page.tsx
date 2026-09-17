@@ -127,7 +127,10 @@ export default function KepribadianTestPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload) });
-      if (!res.ok) throw new Error("Gagal mengirim");
+      if (!res.ok) {
+          const errData = await res.json().catch(() => null);
+          throw new Error(errData?.error || "Gagal mengirim");
+        }
 
       if (typeof window !== "undefined") {
         localStorage.removeItem("template_demo_ujian_kepribadian_draft");
