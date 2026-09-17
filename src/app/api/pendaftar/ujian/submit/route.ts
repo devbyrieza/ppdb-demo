@@ -46,6 +46,10 @@ export async function POST(req: Request) {
       select: { status_pendaftaran: true } });
 
     const ALLOWED_STATUSES = [
+      "data_completed",
+      "docs_uploaded",
+      "docs_incomplete",
+      "docs_rejected",
       "docs_verified",
       "selection",
       "testing",
