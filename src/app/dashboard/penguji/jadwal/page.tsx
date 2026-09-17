@@ -1414,7 +1414,19 @@ export default function JadwalPengujiPage() {
                             {/* Bottom row: Lihat Data + Batalkan */}
                             <div className="flex gap-3 mt-2">
 
-                                {isPendingReschedule ? (
+                                {(() => {
+                                  const parsedCatatan = (() => {
+                                    if (!item.catatan) return null;
+                                    try {
+                                      const p = JSON.parse(item.catatan);
+                                      if (p.type === "RESCHEDULE_REQUEST") return p;
+                                    } catch(e) {}
+                                    return null;
+                                  })();
+                                  const isPendingReschedule = parsedCatatan?.status === "pending";
+                                  return (
+                                    <>
+                                      {isPendingReschedule ? (
                                   <div className="flex-1 py-4 bg-yellow-50 border border-yellow-200 text-yellow-700 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] flex flex-col items-center justify-center gap-1 text-center px-2">
                                     <Clock className="w-4 h-4 mb-1" />
                                     <span>Menunggu Persetujuan Admin</span>
@@ -1437,6 +1449,9 @@ export default function JadwalPengujiPage() {
                                     <Calendar className="w-4 h-4" /> Ubah Jadwal
                                   </button>
                                 )}
+                                    </>
+                                  );
+                                })()}
 
                               <button
                                 onClick={() => {
