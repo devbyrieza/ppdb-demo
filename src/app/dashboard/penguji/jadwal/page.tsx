@@ -2299,7 +2299,113 @@ export default function JadwalPengujiPage() {
         </div>
       )}
 
-      {/* MODAL DETAIL PENDAFTAR */}
+      
+      {/* Reschedule Modal */}
+      <>
+        {rescheduleModalOpen && rescheduleItem && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div
+              
+              
+              
+              className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
+              onClick={() => setRescheduleModalOpen(false)}
+            />
+            <div
+              
+              
+              
+              className="relative w-full max-w-lg bg-white rounded-[2rem] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] z-10"
+            >
+              <div className="p-6 sm:p-8 overflow-y-auto custom-scrollbar flex-1">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-xl sm:text-2xl font-black text-ink-950">
+                    Ajukan Ubah Jadwal
+                  </h3>
+                  <button
+                    onClick={() => setRescheduleModalOpen(false)}
+                    className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-400 hover:text-slate-600"
+                  >
+                    <XCircle className="w-6 h-6" />
+                  </button>
+                </div>
+                
+                <p className="text-sm text-ink-600 mb-6 bg-blue-50 p-4 rounded-xl border border-blue-100 font-medium">
+                  Pengajuan perubahan jadwal ini akan dikirim ke Admin Super. Jadwal Anda di sistem baru akan berubah setelah Admin menyetujuinya.
+                </p>
+
+                <form onSubmit={handleRescheduleSubmit} className="space-y-5">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-ink-600 uppercase tracking-wider">Tanggal Baru</label>
+                    <input 
+                      type="date" 
+                      value={rescheduleForm.date}
+                      onChange={e => setRescheduleForm({...rescheduleForm, date: e.target.value})}
+                      className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all font-medium text-ink-900"
+                      required
+                    />
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-bold text-ink-600 uppercase tracking-wider">Jam Mulai</label>
+                      <input 
+                        type="time" 
+                        value={rescheduleForm.start_time}
+                        onChange={e => setRescheduleForm({...rescheduleForm, start_time: e.target.value})}
+                        className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all font-medium text-ink-900"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-bold text-ink-600 uppercase tracking-wider">Jam Selesai</label>
+                      <input 
+                        type="time" 
+                        value={rescheduleForm.end_time}
+                        onChange={e => setRescheduleForm({...rescheduleForm, end_time: e.target.value})}
+                        className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all font-medium text-ink-900"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-ink-600 uppercase tracking-wider">Alasan Perubahan</label>
+                    <textarea 
+                      rows={3}
+                      value={rescheduleForm.reason}
+                      onChange={e => setRescheduleForm({...rescheduleForm, reason: e.target.value})}
+                      placeholder="Contoh: Ada udzur syar'i mendadak / bentrok dengan kegiatan lain..."
+                      className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all font-medium text-ink-900 resize-none"
+                      required
+                    />
+                  </div>
+
+                  <div className="pt-4 flex gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setRescheduleModalOpen(false)}
+                      className="px-6 py-4 rounded-2xl font-bold text-slate-500 hover:bg-slate-100 transition-colors"
+                    >
+                      Batal
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={submittingReschedule}
+                      className="flex-1 py-4 bg-primary-600 hover:bg-primary-700 text-white rounded-2xl font-black transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
+                    >
+                      {submittingReschedule ? <Loader2 className="w-5 h-5 animate-spin" /> : <CheckCircle className="w-5 h-5" />}
+                      AJUKAN SEKARANG
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        )}
+      </>
+
+        {/* MODAL DETAIL PENDAFTAR */}
       {isDetailModalOpen && selectedPendaftar && (
         <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog" className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-[24px_28px] bg-black/50 backdrop-blur-sm overflow-hidden overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
           <div className="bg-white rounded-[24px] shadow-2xl shadow-primary/30 w-full max-w-lg max-h-[90vh] flex flex-col">
