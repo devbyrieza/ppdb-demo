@@ -737,9 +737,11 @@ export default function UploadBerkasTab() {
     fetchDokumenStatus();
   }, [fetchDokumenStatus]);
 
-  const isAllRequiredUploaded = Boolean(
+    const isAllRequiredUploaded = Boolean(
     summary && summary.progress.required.total > 0 && summary.progress.required.uploaded === summary.progress.required.total
   );
+  
+  const hasRejectedOrPendingRequired = dokumenList.some(d => d.required && (d.status === 'pending' || d.status === 'rejected'));
 
   const isLocked = [
     "docs_uploaded",
@@ -749,7 +751,7 @@ export default function UploadBerkasTab() {
     "announced",
     "accepted",
     "enrolled",
-  ].includes(pendaftarStatus) && (!["accepted", "enrolled"].includes(pendaftarStatus) || isAllRequiredUploaded);
+  ].includes(pendaftarStatus) && !hasRejectedOrPendingRequired;
   const isVerified = [
     "docs_verified",
     "scheduled",

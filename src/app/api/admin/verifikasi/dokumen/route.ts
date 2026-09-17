@@ -365,11 +365,12 @@ export async function PATCH(request: NextRequest) {
           }
         }
       } else {
-        // REJECTED: Revert status if it was 'docs_verified'
-        if (currentPendaftar?.status_pendaftaran === "docs_verified") {
+        // REJECTED: Change status to docs_rejected so they can re-upload
+        const revertStatuses = ["docs_verified", "docs_uploaded", "selection"];
+        if (currentPendaftar && revertStatuses.includes(currentPendaftar.status_pendaftaran)) {
           await prisma.pendaftar.update({
             where: { id: dokumen.pendaftar_id },
-            data: { status_pendaftaran: "docs_uploaded" } });
+            data: { status_pendaftaran: "docs_rejected" } });
         }
       }
     }
