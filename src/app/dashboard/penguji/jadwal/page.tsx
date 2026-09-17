@@ -1413,6 +1413,31 @@ export default function JadwalPengujiPage() {
                               ))}
                             {/* Bottom row: Lihat Data + Batalkan */}
                             <div className="flex gap-3 mt-2">
+
+                                {isPendingReschedule ? (
+                                  <div className="flex-1 py-4 bg-yellow-50 border border-yellow-200 text-yellow-700 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] flex flex-col items-center justify-center gap-1 text-center px-2">
+                                    <Clock className="w-4 h-4 mb-1" />
+                                    <span>Menunggu Persetujuan Admin</span>
+                                    <span className="text-[9px] text-yellow-600 normal-case tracking-normal">({parsedCatatan?.proposed_date} | {parsedCatatan?.proposed_start})</span>
+                                  </div>
+                                ) : (
+                                  <button
+                                    onClick={() => {
+                                      setRescheduleItem(item);
+                                      setRescheduleForm({
+                                        date: item.tanggal_ujian ? new Date(item.tanggal_ujian).toISOString().split('T')[0] : "",
+                                        start_time: item.waktu_mulai ? item.waktu_mulai.substring(0, 5) : "",
+                                        end_time: item.waktu_selesai ? item.waktu_selesai.substring(0, 5) : "",
+                                        reason: ""
+                                      });
+                                      setRescheduleModalOpen(true);
+                                    }}
+                                    className="flex-1 py-4 bg-orange-50 border border-orange-200 text-orange-700 hover:bg-orange-100 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2 active:scale-95 shadow-xl shadow-orange-500/10"
+                                  >
+                                    <Calendar className="w-4 h-4" /> Ubah Jadwal
+                                  </button>
+                                )}
+
                               <button
                                 onClick={() => {
                                   setSelectedPendaftar(item.pendaftar);
