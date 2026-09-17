@@ -394,7 +394,7 @@ export default function JadwalPengujiPage() {
   const fetchAssignments = async () => {
     try {
       setLoadingAssignments(true);
-      const response = await fetch("/api/penguji/jadwal");
+      const response = await fetch("/api/penguji/jadwal", { cache: "no-store" });
       if (response.ok) {
         const result = await response.json();
         setAssignments(result.data || []);
