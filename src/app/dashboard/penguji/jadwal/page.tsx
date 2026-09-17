@@ -278,6 +278,47 @@ export default function JadwalPengujiPage() {
     notes: "" });
   const [submittingSlot, setSubmittingSlot] = useState(false);
 
+  const [rescheduleModalOpen, setRescheduleModalOpen] = useState(false);
+  const [rescheduleItem, setRescheduleItem] = useState<JadwalAssignment | null>(null);
+  const [rescheduleForm, setRescheduleForm] = useState({ date: "", start_time: "", end_time: "", reason: "" });
+  const [submittingReschedule, setSubmittingReschedule] = useState(false);
+
+  const handleRescheduleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!rescheduleItem || !rescheduleForm.date || !rescheduleForm.start_time || !rescheduleForm.end_time || !rescheduleForm.reason) {
+      Swal.fire("Peringatan", "Harap lengkapi semua isian.", "warning");
+      return;
+    }
+    
+    setSubmittingReschedule(true);
+    try {
+      const res = await fetch("/api/penguji/jadwal/reschedule", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          jadwal_id: rescheduleItem.id,
+          proposed_date: rescheduleForm.date,
+          proposed_start: rescheduleForm.start_time,
+          proposed_end: rescheduleForm.end_time,
+          reason: rescheduleForm.reason
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        Swal.fire("Berhasil", data.message, "success");
+        setRescheduleModalOpen(false);
+        fetchAssignments();
+      } else {
+        Swal.fire("Gagal", data.error, "error");
+      }
+    } catch (err) {
+      Swal.fire("Error", "Gagal mengirim pengajuan.", "error");
+    } finally {
+      setSubmittingReschedule(false);
+    }
+  };
+
+
   // Edit Modal State
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingSlot, setEditingSlot] = useState<ExamSession | null>(null);
