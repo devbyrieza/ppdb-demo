@@ -4,7 +4,7 @@ import { getServerSession } from "@/lib/session";
 
 export async function POST(request: Request) {
   const session = await getServerSession();
-  if (!session || !["penguji", "pewawancara_calsan", "pewawancara_cawalsan", "penguji_hafalan", "penguji_bahasa_arab"].includes(session.role)) {
+  if (!session || !["penguji", "pewawancara_calsan", "pewawancara_cawalsan", "penguji_bahasa_arab"].includes(session.role)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
