@@ -597,11 +597,11 @@ export default function VerifikasiDokumenDetailPage() {
                         <FileText className="w-6 h-6" />
                       </div>
                       <p className="text-xs font-bold text-stone-700 mb-1">
-                        Preview Gambar Tidak Tersedia
-                      </p>
-                      <p className="text-[11px] text-stone-500 mb-3 line-clamp-1 max-w-[200px]">
-                        {dok.jenis_dokumen}
-                      </p>
+                          Preview Tidak Didukung
+                        </p>
+                        <p className="text-[10px] text-stone-500 mb-3 line-clamp-2 max-w-[200px] leading-tight">
+                          Format (HEIC/PDF) tidak bisa dirender browser. Silakan klik <b>Buka Tab</b>.
+                        </p>
                       <div className="flex items-center gap-2">
                         <a
                           href={dok.file_url}
