@@ -221,12 +221,8 @@ export async function POST(req: NextRequest) {
             day: "numeric",
           }),
           waktu: `${new Date(examSession.start_time).toLocaleTimeString("id-ID", {
-            hour: "2-digit",
-            minute: "2-digit",
-          })} - ${new Date(examSession.end_time).toLocaleTimeString("id-ID", {
-            hour: "2-digit",
-            minute: "2-digit",
-          })} WIB`,
+            hour: "2-digit", minute: "2-digit", hour12: false })} - ${new Date(examSession.end_time).toLocaleTimeString("id-ID", {
+            hour: "2-digit", minute: "2-digit", hour12: false })} WIB`,
           tempat: tempatFinal,
           meeting_link: isOffline ? undefined : meetingLink || undefined,
         });
