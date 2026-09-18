@@ -25,6 +25,7 @@ import {
     Languages
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import CalendarView from "./components/CalendarView";
 import Swal from "sweetalert2";
 
 interface Schedule {
@@ -127,7 +128,7 @@ export default function MonitoringJadwalPage() {
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
     const [filterJenjang, setFilterJenjang] = useState("ALL");
-    const [viewMode, setViewMode] = useState<"flat" | "grouped" | "santri">("flat");
+    const [viewMode, setViewMode] = useState<"flat" | "grouped" | "santri" | "calendar">("flat");
     const [showPast, setShowPast] = useState(true);
 
     const [conflicts, setConflicts] = useState<any[]>([]);
@@ -831,7 +832,8 @@ export default function MonitoringJadwalPage() {
                             {[
                                 { id: "flat", label: "List" },
                                 { id: "grouped", label: "Ustadz" },
-                                { id: "santri", label: "Santri" }
+                                { id: "santri", label: "Santri" },
+                                { id: "calendar", label: "Kalender" }
                             ].map((mode) => (
                                 <button 
                                     key={mode.id}
@@ -877,7 +879,9 @@ export default function MonitoringJadwalPage() {
                         </div>
                         <p className="font-bold text-ink-400">Tidak ada jadwal yang ditemukan.</p>
                     </div>
-                ) : viewMode === "flat" ? (
+                ) : viewMode === "calendar" ? (
+                      <CalendarView schedules={filteredSchedules as any[]} />
+                  ) : viewMode === "flat" ? (
                     <>
                         {/* Mobile View: Cards */}
                         <div className="grid grid-cols-1 gap-4 md:hidden">
