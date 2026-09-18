@@ -111,6 +111,16 @@ export const isJenjangLangsungNonIL = (jenjang?: string | null): boolean => {
     return false;
 };
 
+
+function getExamCategory(title: string): string {
+    const t = (title || "").toLowerCase();
+    if (t.includes("quran") || t.includes("qur'an") || t.includes("bacaan") || t.includes("hafalan")) return "QURAN";
+    if (t.includes("arab") || t.includes("lisan")) return "LISAN_ARAB";
+    if (t.includes("calsan") || t.includes("santri")) return "W_SANTRI";
+    if (t.includes("cawalsan") || t.includes("ortu") || t.includes("orang tua") || t.includes("wali")) return "W_ORTU";
+    return "OTHER";
+}
+
 export default function MonitoringJadwalPage() {
     const [schedules, setSchedules] = useState<Schedule[]>([]);
     const [examiners, setExaminers] = useState<any[]>([]);
@@ -538,6 +548,23 @@ export default function MonitoringJadwalPage() {
             });
     };
 
+    
+    const renderUstadzCell = (title: string, roleCat: string, ustadzName: string | null, status: string) => {
+        const sessionCat = getExamCategory(title);
+        if (sessionCat !== "OTHER" && sessionCat !== roleCat && !(sessionCat === "LISAN_ARAB" && roleCat === "QURAN")) {
+            return <span className="text-slate-300 text-xs italic font-medium">-</span>;
+        }
+        if (ustadzName && ustadzName !== '-') {
+            return (
+                <>
+                    <span className="font-bold text-slate-700">{ustadzName}</span>
+                    <div className={`w-2 h-2 rounded-full ${status === 'completed' ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.4)]' : 'bg-primary-400 shadow-[0_0_8px_rgba(96,165,250,0.4)]'}`} />
+                </>
+            );
+        }
+        return <span className="text-amber-600 text-[11px] font-bold italic">Belum Ditugaskan</span>;
+    };
+
     const getGroupedBySantri = () => {
         const groups: Record<string, Schedule[]> = {};
 
@@ -570,6 +597,14 @@ export default function MonitoringJadwalPage() {
         roleType: 'quran' | 'santri' | 'ortu',
         schedule: Schedule
     ) => {
+        const cat = getExamCategory(schedule.sesi.title);
+        if (cat !== "OTHER") {
+            if (cat === "QURAN" && roleType !== "quran") return <span className="text-slate-300 text-xs italic font-medium">-</span>;
+            if (cat === "W_SANTRI" && roleType !== "santri") return <span className="text-slate-300 text-xs italic font-medium">-</span>;
+            if (cat === "W_ORTU" && roleType !== "ortu") return <span className="text-slate-300 text-xs italic font-medium">-</span>;
+            if (cat === "LISAN_ARAB" && roleType !== "quran") return <span className="text-slate-300 text-xs italic font-medium">-</span>;
+        }
+
         const isAssigned = name && name !== "-";
         const isConflict = isAssigned && conflicts.some(c => c.name === name && c.time === new Date(schedule.sesi.start).getTime());
 
@@ -1119,21 +1154,22 @@ export default function MonitoringJadwalPage() {
                                             </div>
                                             <div className="space-y-2.5">
                                                 {[
-                                                    { role: 'Al-Qur\'an', ustadz: s.ustadz.quran, status: s.status.quran },
-                                                    { role: 'Santri', ustadz: s.ustadz.santri, status: s.status.santri },
-                                                    { role: 'Ortu', ustadz: s.ustadz.ortu, status: s.status.ortu }
-                                                ].map((x, i) => (
+                                                    { role: 'Al-Qur\'an', ustadz: s.ustadz.quran, status: s.status.quran, cat: "QURAN" },
+                                                    { role: 'Santri', ustadz: s.ustadz.santri, status: s.status.santri, cat: "W_SANTRI" },
+                                                    { role: 'Ortu', ustadz: s.ustadz.ortu, status: s.status.ortu, cat: "W_ORTU" }
+                                                ].filter(x => {
+                                                    const cat = getExamCategory(s.sesi.title);
+                                                    if (cat === "OTHER") return true;
+                                                    if (cat === "QURAN" && x.cat === "QURAN") return true;
+                                                    if (cat === "W_SANTRI" && x.cat === "W_SANTRI") return true;
+                                                    if (cat === "W_ORTU" && x.cat === "W_ORTU") return true;
+                                                    if (cat === "LISAN_ARAB" && x.cat === "QURAN") return true;
+                                                    return false;
+                                                }).map((x, i) => (
                                                     <div key={i} className="flex items-center justify-between text-[12px]">
                                                         <span className="font-bold text-slate-400 text-[10px] uppercase tracking-tight">{x.role}</span>
                                                         <div className="flex items-center gap-2.5">
-                                                            {x.ustadz && x.ustadz !== '-' ? (
-                                                                <>
-                                                                    <span className="font-bold text-slate-700">{x.ustadz}</span>
-                                                                    <div className={`w-2 h-2 rounded-full ${x.status === 'completed' ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.4)]' : 'bg-primary-400 shadow-[0_0_8px_rgba(96,165,250,0.4)]'}`} />
-                                                                </>
-                                                            ) : (
-                                                                <span className="text-amber-600 text-xs font-bold italic">Belum Ditugaskan</span>
-                                                            )}
+                                                            {renderUstadzCell(s.sesi.title, x.cat || "", x.ustadz, x.status)}
                                                         </div>
                                                     </div>
                                                 ))}
