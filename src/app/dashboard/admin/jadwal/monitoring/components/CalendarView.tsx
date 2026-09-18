@@ -98,7 +98,7 @@ export default function CalendarView({ schedules }: CalendarViewProps) {
             {/* Grid Header (Days) */}
             <div className="grid grid-cols-7 border-b border-slate-100">
                 {DAY_NAMES.map((day, idx) => (
-                    <div key={day} className={\`px-2 py-3 text-center text-xs font-black uppercase tracking-wider \${idx === 0 ? 'text-rose-500' : 'text-slate-500'}\`}>
+                    <div key={day} className={`px-2 py-3 text-center text-xs font-black uppercase tracking-wider ${idx === 0 ? 'text-rose-500' : 'text-slate-500'}`}>
                         {day}
                     </div>
                 ))}
@@ -113,12 +113,12 @@ export default function CalendarView({ schedules }: CalendarViewProps) {
                     return (
                         <div 
                             key={idx} 
-                            className={\`min-h-[120px] bg-white p-2 flex flex-col \${!day ? 'bg-slate-50/50' : 'hover:bg-slate-50 transition-colors'}\`}
+                            className={`min-h-[120px] bg-white p-2 flex flex-col ${!day ? 'bg-slate-50/50' : 'hover:bg-slate-50 transition-colors'}`}
                         >
                             {day && (
                                 <>
                                     <div className="flex items-center justify-between mb-2">
-                                        <span className={\`text-sm font-bold w-7 h-7 flex items-center justify-center rounded-full \${isToday ? 'bg-primary-600 text-white shadow-md' : (idx % 7 === 0 ? 'text-rose-500' : 'text-slate-700')}\`}>
+                                        <span className={`text-sm font-bold w-7 h-7 flex items-center justify-center rounded-full ${isToday ? 'bg-primary-600 text-white shadow-md' : (idx % 7 === 0 ? 'text-rose-500' : 'text-slate-700')}`}>
                                             {day}
                                         </span>
                                         {daySchedules.length > 0 && (
