@@ -180,7 +180,7 @@ export async function PATCH(
       if (body.score_quran !== undefined)
         updateData.score_quran = body.score_quran;
       if (body.nilai_tes_hafalan !== undefined)
-        updateData.nilai_tes_hafalan = body.nilai_tes_hafalan;
+        updateData.nilai_hafalan_total = body.nilai_tes_hafalan;
       if (body.score_hafalan !== undefined)
         updateData.score_hafalan = body.score_hafalan;
       if (body.detail_hafalan !== undefined)
@@ -273,7 +273,7 @@ export async function PATCH(
         }
       }
 
-      if (body.nilai_tes_hafalan !== undefined) updateData.nilai_tes_hafalan = body.nilai_tes_hafalan;
+      if (body.nilai_tes_hafalan !== undefined) updateData.nilai_hafalan_total = body.nilai_tes_hafalan;
       if (body.catatan_hafalan !== undefined) updateData.catatan_hafalan = body.catatan_hafalan;
       if (body.detail_hafalan !== undefined) updateData.detail_hafalan = body.detail_hafalan;
       if (body.score_hafalan !== undefined) updateData.score_hafalan = body.score_hafalan;
@@ -298,10 +298,10 @@ export async function PATCH(
         }
       }
 
-      if (body.nilai_tes_lisan_arab !== undefined) updateData.nilai_tes_lisan_arab = body.nilai_tes_lisan_arab;
-      if (body.catatan_lisan_arab !== undefined) updateData.catatan_lisan_arab = body.catatan_lisan_arab;
-      if (body.detail_lisan_arab !== undefined) updateData.detail_lisan_arab = body.detail_lisan_arab;
-      if (body.score_lisan_arab !== undefined) updateData.score_lisan_arab = body.score_lisan_arab;
+      if (body.nilai_tes_lisan_arab !== undefined) updateData.nilai_arab_total = body.nilai_tes_lisan_arab;
+      if (body.catatan_lisan_arab !== undefined) updateData.catatan_arab = body.catatan_lisan_arab;
+      if (body.detail_lisan_arab !== undefined) updateData.detail_arab = body.detail_lisan_arab;
+      if (body.score_lisan_arab !== undefined) updateData.score_arab = body.score_lisan_arab;
       if (!existing?.input_by_arab || !isAdmin) {
         updateData.input_by_arab = userId;
       }
