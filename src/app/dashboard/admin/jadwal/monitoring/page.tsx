@@ -903,7 +903,7 @@ export default function MonitoringJadwalPage() {
                         <p className="font-bold text-ink-400">Tidak ada jadwal yang ditemukan.</p>
                     </div>
                 ) : viewMode === "calendar" ? (
-                      <CalendarView schedules={filteredSchedules as any[]} />
+                      <CalendarView schedules={filteredSchedules as any[]} onScheduleClick={(s: any) => openAssignModal(s)} />
                   ) : viewMode === "flat" ? (
                     <>
                         {/* Mobile View: Cards */}
