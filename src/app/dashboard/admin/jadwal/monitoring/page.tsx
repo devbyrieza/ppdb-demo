@@ -366,6 +366,7 @@ export default function MonitoringJadwalPage() {
                     penguji_ortu_id: selectedOrtuId || null,
                     penguji_hafalan_id: selectedHafalanId || null,
                     penguji_arab_id: selectedArabId || null,
+                    new_session_id: selectedSessionId || undefined,
                     allow_conflict: allowConflict,
                 }),
             });
