@@ -26,6 +26,7 @@ interface Schedule {
 
 interface CalendarViewProps {
     schedules: Schedule[];
+    onScheduleClick?: (schedule: Schedule) => void;
 }
 
 const MONTH_NAMES = [
@@ -35,7 +36,7 @@ const MONTH_NAMES = [
 
 const DAY_NAMES = ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
 
-export default function CalendarView({ schedules }: CalendarViewProps) {
+export default function CalendarView({ schedules, onScheduleClick }: CalendarViewProps) {
     const [currentDate, setCurrentDate] = useState(new Date());
 
     const year = currentDate.getFullYear();
@@ -113,7 +114,7 @@ export default function CalendarView({ schedules }: CalendarViewProps) {
                     return (
                         <div 
                             key={idx} 
-                            className={`min-h-[120px] bg-white p-2 flex flex-col ${!day ? 'bg-slate-50/50' : 'hover:bg-slate-50 transition-colors'}`}
+                            className={`min-h-[180px] bg-white p-2 flex flex-col ${!day ? 'bg-slate-50/50' : 'hover:bg-slate-50 transition-colors'}`}
                         >
                             {day && (
                                 <>
@@ -127,11 +128,11 @@ export default function CalendarView({ schedules }: CalendarViewProps) {
                                             </span>
                                         )}
                                     </div>
-                                    <div className="flex-1 space-y-1 overflow-y-auto custom-scrollbar max-h-[80px]">
+                                    <div className="flex-1 space-y-1 overflow-y-auto custom-scrollbar max-h-[250px]">
                                         {daySchedules.map((s, sIdx) => {
                                             const time = new Date(s.sesi.start).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
                                             return (
-                                                <div key={s.id + sIdx} className="px-1.5 py-1 bg-slate-50 hover:bg-slate-100 border border-slate-100 rounded text-left cursor-default group transition-colors">
+                                                <div key={s.id + sIdx} onClick={() => onScheduleClick?.(s)} className="px-1.5 py-1 bg-slate-50 hover:bg-primary-50 border border-slate-100 hover:border-primary-200 rounded text-left cursor-pointer group transition-colors shadow-sm">
                                                     <div className="flex items-center justify-between gap-1 mb-0.5">
                                                         <span className="text-[9px] font-bold text-slate-500 flex items-center gap-0.5">
                                                             <Clock className="w-2.5 h-2.5" /> {time}
@@ -156,3 +157,4 @@ export default function CalendarView({ schedules }: CalendarViewProps) {
         </div>
     );
 }
+
