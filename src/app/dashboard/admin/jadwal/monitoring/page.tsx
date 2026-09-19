@@ -140,6 +140,8 @@ export default function MonitoringJadwalPage() {
     const [selectedSantriId, setSelectedSantriId] = useState<string>("");
     const [selectedOrtuId, setSelectedOrtuId] = useState<string>("");
     const [selectedHafalanId, setSelectedHafalanId] = useState<string>("");
+    const [activeSessions, setActiveSessions] = useState<any[]>([]);
+    const [selectedSessionId, setSelectedSessionId] = useState<string>("");
     const [selectedArabId, setSelectedArabId] = useState<string>("");
     const [showAllStaff, setShowAllStaff] = useState(false);
     const [savingAssignment, setSavingAssignment] = useState(false);
@@ -181,8 +183,21 @@ export default function MonitoringJadwalPage() {
     useEffect(() => {
         fetchMonitoringData();
         fetchExaminers();
+        fetchExamSessions();
     }, []);
 
+    const fetchExamSessions = async () => {
+        try {
+            const res = await fetch("/api/admin/exam-sessions");
+            const data = await res.json();
+            if (data.data) {
+                setActiveSessions(data.data.filter((s: any) => s.is_active));
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    };
+    
     const fetchExaminers = async () => {
         try {
             const res = await fetch("/api/admin/users");
@@ -285,6 +300,7 @@ export default function MonitoringJadwalPage() {
         setSelectedArabId(schedule.ustadz_id?.arab || "");
         setShowAllStaff(false);
         setSaveSuccessMsg(null);
+        setSelectedSessionId(schedule.sesi.id || "");
         setAssignModalOpen(true);
     };
 
@@ -1259,7 +1275,30 @@ export default function MonitoringJadwalPage() {
                                     </motion.div>
                                 )}
 
-                                {/* Penguji Selection Dropdowns */}
+                                {/* Pengubah Hari/Jam Sesi (Opsional) */}
+                                  <div className="p-4 rounded-2xl bg-amber-50/50 border border-amber-100">
+                                      <label className="text-xs font-black text-amber-800 uppercase tracking-wider mb-2 block flex items-center gap-2">
+                                          <Calendar className="w-3.5 h-3.5" />
+                                          Pindah Sesi / Ubah Hari Ujian
+                                      </label>
+                                      <select
+                                          value={selectedSessionId}
+                                          onChange={(e) => setSelectedSessionId(e.target.value)}
+                                          className="w-full bg-white border border-amber-200 rounded-xl px-3 py-2 text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all cursor-pointer"
+                                      >
+                                          <option value="">Pilih sesi ujian baru...</option>
+                                          {activeSessions.map((ses) => (
+                                              <option key={ses.id} value={ses.id}>
+                                                  {ses.title} - {new Date(ses.start_time).toLocaleDateString("id-ID", { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })} ({new Date(ses.start_time).toLocaleTimeString("id-ID", { hour: '2-digit', minute: '2-digit', hour12: false })} WIB)
+                                              </option>
+                                          ))}
+                                      </select>
+                                      <p className="text-[10px] text-amber-600/70 font-medium mt-1.5 flex items-center gap-1 leading-tight">
+                                          *Ubah hanya jika santri minta ganti hari/jam ujian (Reschedule).
+                                      </p>
+                                  </div>
+
+                                  {/* Penguji Selection Dropdowns */}
                                 <div className="space-y-4">
                                     {/* 1. Penguji Al-Qur'an */}
                                     <div className="space-y-1.5">
