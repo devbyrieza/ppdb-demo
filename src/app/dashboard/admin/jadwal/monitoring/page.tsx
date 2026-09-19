@@ -148,14 +148,21 @@ export default function MonitoringJadwalPage() {
 
     // Conflict Guard: Map examiner ID to conflicting student info at target schedule time
     const busyExaminersAtTargetTime = useMemo(() => {
-        if (!targetSchedule?.sesi?.start) return new Map<string, string>();
-        const targetTime = new Date(targetSchedule.sesi.start).getTime();
-        const map = new Map<string, string>();
+        let targetTimeMs: number | null = null;
+        if (selectedSessionId) {
+            const selectedSess = activeSessions.find(s => s.id === selectedSessionId);
+            if (selectedSess) targetTimeMs = new Date(selectedSess.start_time).getTime();
+        }
+        if (!targetTimeMs && targetSchedule?.sesi?.start) {
+            targetTimeMs = new Date(targetSchedule.sesi.start).getTime();
+        }
+        if (!targetTimeMs) return new Map<string, string>();
 
+        const map = new Map<string, string>();
         schedules.forEach(s => {
-            if (s.id === targetSchedule.id || s.pendaftar?.nomor === targetSchedule.pendaftar?.nomor) return;
+            if (s.id === targetSchedule?.id || s.pendaftar?.nomor === targetSchedule?.pendaftar?.nomor) return;
             const sTime = new Date(s.sesi.start).getTime();
-            if (sTime === targetTime) {
+            if (sTime === targetTimeMs) {
                 const info = `${s.pendaftar.nama} (${s.pendaftar.nomor})`;
                 if (s.ustadz_id?.quran) map.set(s.ustadz_id.quran, info);
                 if (s.ustadz_id?.santri) map.set(s.ustadz_id.santri, info);
@@ -163,9 +170,8 @@ export default function MonitoringJadwalPage() {
                 if (s.ustadz_id?.arab) map.set(s.ustadz_id.arab, info);
             }
         });
-
         return map;
-    }, [targetSchedule, schedules]);
+    }, [targetSchedule, schedules, selectedSessionId, activeSessions]);
     const [saveSuccessMsg, setSaveSuccessMsg] = useState<string | null>(null);
 
     // Body scroll lock for modals (Mandatory UX Rule)

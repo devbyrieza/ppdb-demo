@@ -302,8 +302,32 @@ export async function PATCH(request: NextRequest) {
       );
     }
 
+    // Prepare update data
+    const updateData: any = {};
+
+    let targetStartTime = currentJadwal.exam_session?.start_time || currentJadwal.waktu_mulai_santri;
+    
+    if (new_session_id && new_session_id !== currentJadwal.exam_session_id) {
+      const newSession = await prisma.examSession.findUnique({
+        where: { id: new_session_id }
+      });
+      if (newSession) {
+        targetStartTime = newSession.start_time;
+        updateData.exam_session_id = newSession.id;
+        updateData.tanggal_ujian = newSession.date || new Date(newSession.start_time);
+        updateData.waktu_mulai_santri = newSession.start_time;
+        updateData.waktu_selesai_santri = newSession.end_time;
+        updateData.waktu_mulai_ortu = newSession.start_time;
+        updateData.waktu_selesai_ortu = newSession.end_time;
+        if (newSession.location) {
+          updateData.tempat_santri = newSession.location;
+          updateData.tempat_ortu = newSession.location;
+        }
+      }
+    }
+
     // Conflict Guard: Check conflicting schedules on same start_time
-    const scheduleStartTime = currentJadwal.exam_session?.start_time || currentJadwal.waktu_mulai_santri;
+    const scheduleStartTime = targetStartTime;
     const newExaminerIds = [
       penguji_quran_id,
       penguji_santri_id,
@@ -360,8 +384,7 @@ export async function PATCH(request: NextRequest) {
       loc.includes("meet") ||
       loc.includes("http");
 
-    // Prepare update data
-    const updateData: any = {};
+    
 
     // Helper to fetch meet link
     const getMeetLink = async (profileId?: string | null) => {
@@ -372,25 +395,6 @@ export async function PATCH(request: NextRequest) {
       });
       return p?.google_meet_link || null;
     };
-
-    if (new_session_id && new_session_id !== currentJadwal.exam_session_id) {
-      const newSession = await prisma.examSession.findUnique({
-        where: { id: new_session_id }
-      });
-      if (newSession) {
-        updateData.exam_session_id = newSession.id;
-        updateData.tanggal_ujian = newSession.date || new Date(newSession.start_time);
-        updateData.waktu_mulai_santri = newSession.start_time;
-        updateData.waktu_selesai_santri = newSession.end_time;
-        updateData.waktu_mulai_ortu = newSession.start_time;
-        updateData.waktu_selesai_ortu = newSession.end_time;
-        
-        if (newSession.location) {
-          updateData.tempat_santri = newSession.location;
-          updateData.tempat_ortu = newSession.location;
-        }
-      }
-    }
 
     if (penguji_quran_id !== undefined) {
       updateData.penguji_quran_id = penguji_quran_id || null;
