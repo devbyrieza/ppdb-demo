@@ -16,7 +16,7 @@ export async function POST(request: Request) {
 
     const upcomingSchedules = await prisma.jadwalUjian.findMany({
       where: {
-        jadwal_status: "SCHEDULED",
+        
         exam_session: {
           start_time: { gte: today },
         },
