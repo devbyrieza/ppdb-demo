@@ -14,7 +14,7 @@ import { motion, Variants } from "framer-motion";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-type ProgramVariant = "primary" | "secondary";
+type ProgramVariant = "primary" | "secondary" | "pink";
 
 interface ProgramItem {
   title: string;

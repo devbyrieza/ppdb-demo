@@ -21,6 +21,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import Swal from "sweetalert2";
 
 interface FormData {
+  nisn: string;
+  npsn: string;
   nik: string;
   nama_lengkap: string;
   tempat_lahir: string;

@@ -28,6 +28,7 @@ import Swal from "sweetalert2";
 // --- Types ---
 
 interface JadwalAssignment {
+  catatan?: string | null;
   id: string;
   pendaftar: {
     nama_lengkap: string;

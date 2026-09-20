@@ -18,7 +18,7 @@ import InfiniteMarquee from "@/components/ui/InfiniteMarquee";
 
 
 // ─── Types ───────────────────────────────────────────
-type StatColor = "primary" | "secondary";
+type StatColor = "primary" | "secondary" | "pink";
 
 interface Stat {
   id: string;

@@ -10,7 +10,7 @@ import {
   Calendar,
   FileText,
   Download,
-  Clock } from "lucide-react";
+  Clock } from "FileCheck } from "lucide-react";
 import { generateSuratKelulusan } from "@/lib/utils/pdf-generator";
 
 interface Pengumuman {
