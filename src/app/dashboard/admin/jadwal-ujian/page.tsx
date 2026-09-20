@@ -783,6 +783,45 @@ export default function JadwalUjianPage() {
     }
   };
 
+  
+  const handleBroadcastPenguji = async () => {
+    Swal.fire({
+      title: "Kirim Ulang Notifikasi Penguji?",
+      text: "Sistem akan mengirimkan pesan WhatsApp ke seluruh penguji yang memiliki jadwal aktif hari ini hingga ke depan.",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Ya, Kirim Sekarang",
+      cancelButtonText: "Batal",
+      confirmButtonColor: "#4f46e5",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        setBroadcasting(true);
+        Swal.fire({
+          title: "Mengirim Notifikasi...",
+          html: "Harap tunggu, sistem sedang memproses pengiriman ke penguji.",
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        try {
+          const res = await fetch("/api/admin/notifications/broadcast-penguji", { method: "POST" });
+          const data = await res.json();
+          if (res.ok) {
+            Swal.fire("Berhasil!", data.message, "success");
+          } else {
+            Swal.fire("Gagal", data.error || "Gagal mengirim notifikasi", "error");
+          }
+        } catch (error) {
+          Swal.fire("Error", "Terjadi kesalahan jaringan", "error");
+        } finally {
+          setBroadcasting(false);
+        }
+      }
+    });
+  };
+
   const handleStartBroadcast = async () => {
     setShowBroadcastModal(false);
     setSendingProgress({
@@ -937,7 +976,15 @@ export default function JadwalUjianPage() {
             >
               <Send className="w-4 h-4" />
               Pulse Notifikasi
-            </button>
+              </button>
+              <button
+                onClick={handleBroadcastPenguji}
+                className="flex items-center gap-2 px-4 py-2.5 bg-violet-50 hover:bg-violet-100 text-violet-700 rounded-xl font-bold text-xs border border-violet-200 transition-all whitespace-nowrap"
+              >
+                <Send className="w-4 h-4" />
+                Pulse Penguji
+              </button>
+
           </div>
         </div>
 
