@@ -1048,13 +1048,24 @@ export default function MonitoringJadwalPage() {
                                             <MapPin className="w-3.5 h-3.5 text-slate-400" />
                                             {(s.sesi.location || '').replace(/Online\/Pesantren/gi, 'Online').replace(/Pesantren\/Online/gi, 'Online')}
                                         </div>
-                                        <button
+                                        
+                                        <div className="flex gap-2">
+                                            <button
                                             onClick={() => openAssignModal(s)}
-                                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-primary-600 text-white hover:bg-primary-700 transition-all shadow-sm"
+                                            className="flex-1 justify-center items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-primary-600 text-white hover:bg-primary-700 transition-all shadow-sm"
                                         >
                                             <UserCheck className="w-3.5 h-3.5" />
                                             <span>Atur Penguji</span>
                                         </button>
+                                            <button
+                                                onClick={() => handleDeleteSchedule(s.id, s.pendaftar.nama)}
+                                                className="inline-flex items-center justify-center px-3 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded-xl transition-all border border-red-100 shadow-sm"
+                                                title="Hapus Jadwal"
+                                            >
+                                                <Trash2 className="w-4 h-4" />
+                                            </button>
+                                        </div>
+      
                                     </div>
                                 </div>
                             ))}
@@ -1116,7 +1127,9 @@ export default function MonitoringJadwalPage() {
                                                     {renderExaminerCell(s.ustadz.ortu, s.status.ortu, 'ortu', s)}
                                                 </td>
                                                 <td className="px-6 py-5 text-center">
-                                                    <button
+                                                    
+                                                      <div className="flex justify-center gap-2">
+                                                          <button
                                                         onClick={() => openAssignModal(s)}
                                                         className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-primary-50 text-primary-700 border border-primary-200/60 hover:bg-primary-600 hover:text-white hover:border-primary-600 transition-all shadow-sm"
                                                         title="Atur Seluruh Penguji Peserta Ini"
@@ -1124,6 +1137,15 @@ export default function MonitoringJadwalPage() {
                                                         <UserCheck className="w-3.5 h-3.5" />
                                                         <span>Atur Penguji</span>
                                                     </button>
+                                                          <button
+                                                              onClick={() => handleDeleteSchedule(s.id, s.pendaftar.nama)}
+                                                              className="inline-flex items-center justify-center px-3 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded-xl transition-all border border-red-100 shadow-sm"
+                                                              title="Hapus Jadwal"
+                                                          >
+                                                              <Trash2 className="w-4 h-4" />
+                                                          </button>
+                                                      </div>
+      
                                                 </td>
                                             </tr>
                                         ))}
