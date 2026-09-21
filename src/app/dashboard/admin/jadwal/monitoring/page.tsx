@@ -129,7 +129,7 @@ export default function MonitoringJadwalPage() {
     const [search, setSearch] = useState("");
     const [filterJenjang, setFilterJenjang] = useState("ALL");
     const [viewMode, setViewMode] = useState<"flat" | "grouped" | "santri" | "calendar">("flat");
-    const [showPast, setShowPast] = useState(true);
+    const [dateFilter, setDateFilter] = useState<"hari_ini" | "besok" | "akan_datang" | "berlalu" | "semua">("hari_ini");
 
     const [conflicts, setConflicts] = useState<any[]>([]);
 
@@ -535,10 +535,34 @@ export default function MonitoringJadwalPage() {
         
         const matchesJenjang = filterJenjang === "ALL" || s?.pendaftar?.jenjang === filterJenjang;
         
-        const isPast = s?.sesi?.end ? new Date(s.sesi.end).getTime() < new Date().getTime() : false;
-        const matchesPast = showPast || !isPast;
+        
+        const now = new Date();
+        const todayStr = new Date(now.getTime() - (now.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
+        
+        let matchesDate = true;
+        if (s?.sesi?.start) {
+            const sessDateObj = new Date(s.sesi.start);
+            const sessDateStr = new Date(sessDateObj.getTime() - (sessDateObj.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
+            
+            const tomorrowObj = new Date(now);
+            tomorrowObj.setDate(tomorrowObj.getDate() + 1);
+            const tomorrowStr = new Date(tomorrowObj.getTime() - (tomorrowObj.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
 
-        return matchesSearch && matchesJenjang && matchesPast;
+            if (dateFilter === "hari_ini") {
+                matchesDate = sessDateStr === todayStr;
+            } else if (dateFilter === "besok") {
+                matchesDate = sessDateStr === tomorrowStr;
+            } else if (dateFilter === "akan_datang") {
+                // If it hasn't ended yet, it's upcoming (or active)
+                const endTime = s.sesi.end ? new Date(s.sesi.end).getTime() : sessDateObj.getTime();
+                matchesDate = endTime >= now.getTime();
+            } else if (dateFilter === "berlalu") {
+                const endTime = s.sesi.end ? new Date(s.sesi.end).getTime() : sessDateObj.getTime();
+                matchesDate = endTime < now.getTime();
+            }
+        }
+
+        return matchesSearch && matchesJenjang && matchesDate;
     }).sort((a, b) => new Date(a.sesi.start).getTime() - new Date(b.sesi.start).getTime());
 
     const getGroupedSchedules = () => {
@@ -874,16 +898,17 @@ export default function MonitoringJadwalPage() {
                         >
                             <Loader2 className={`w-4 h-4 ${loading ? 'animate-spin text-primary-500' : ''}`} />
                         </button>
-                        <button 
-                            onClick={() => setShowPast(!showPast)}
-                            className={`px-4 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all border h-12 shadow-sm ${
-                                showPast 
-                                ? "bg-secondary-100 border-secondary-200 text-secondary-700" 
-                                : "bg-white border-slate-200 text-slate-400 hover:text-slate-600"
-                            }`}
+                        <select
+                            value={dateFilter}
+                            onChange={(e) => setDateFilter(e.target.value as any)}
+                            className="px-4 pr-8 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all border h-12 shadow-sm bg-white border-slate-200 text-slate-600 focus:border-primary-500 focus:ring-1 focus:ring-primary-500 outline-none appearance-none cursor-pointer hover:bg-slate-50"
                         >
-                            {showPast ? "Semua Sesi" : "Sesi Mendatang"}
-                        </button>
+                            <option value="hari_ini">Jadwal Hari Ini</option>
+                            <option value="besok">Jadwal Besok</option>
+                            <option value="akan_datang">Sesi Mendatang</option>
+                            <option value="berlalu">Sesi Berlalu</option>
+                            <option value="semua">Semua Waktu</option>
+                        </select>
                     </div>
                 </div>
             </div>
