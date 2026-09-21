@@ -130,7 +130,9 @@ export default function MonitoringJadwalPage() {
     const [search, setSearch] = useState("");
     const [filterJenjang, setFilterJenjang] = useState("ALL");
     const [viewMode, setViewMode] = useState<"flat" | "grouped" | "santri" | "calendar">("flat");
-    const [dateFilter, setDateFilter] = useState<"hari_ini" | "besok" | "akan_datang" | "berlalu" | "semua">("hari_ini");
+    const [dateFilter, setDateFilter] = useState<"hari_ini" | "besok" | "akan_datang" | "berlalu" | "semua" | "kustom">("hari_ini");
+    const [customDate, setCustomDate] = useState("");
+    const [customTime, setCustomTime] = useState("");
 
     const [conflicts, setConflicts] = useState<any[]>([]);
 
@@ -593,6 +595,18 @@ export default function MonitoringJadwalPage() {
             } else if (dateFilter === "berlalu") {
                 const endTime = s.sesi.end ? new Date(s.sesi.end).getTime() : sessDateObj.getTime();
                 matchesDate = endTime < now.getTime();
+            } else if (dateFilter === "kustom") {
+                let isMatch = true;
+                if (customDate) {
+                    isMatch = isMatch && (sessDateStr === customDate);
+                }
+                if (customTime) {
+                    const hours = sessDateObj.getHours().toString().padStart(2, '0');
+                    const mins = sessDateObj.getMinutes().toString().padStart(2, '0');
+                    const sessTimeStr = `${hours}:${mins}`;
+                    isMatch = isMatch && (sessTimeStr === customTime);
+                }
+                matchesDate = isMatch;
             }
         }
 
@@ -942,7 +956,26 @@ export default function MonitoringJadwalPage() {
                             <option value="akan_datang">Sesi Mendatang</option>
                             <option value="berlalu">Sesi Berlalu</option>
                             <option value="semua">Semua Waktu</option>
+                            <option value="kustom">Spesifik (Tgl / Jam)</option>
                         </select>
+                        {dateFilter === "kustom" && (
+                            <div className="flex gap-2 animate-in fade-in zoom-in duration-300">
+                                <input
+                                    type="date"
+                                    value={customDate}
+                                    onChange={(e) => setCustomDate(e.target.value)}
+                                    className="px-3 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all border h-12 shadow-sm bg-white border-slate-200 text-slate-600 focus:border-primary-500 focus:ring-1 focus:ring-primary-500 outline-none hover:bg-slate-50"
+                                    title="Pilih Tanggal Sesi"
+                                />
+                                <input
+                                    type="time"
+                                    value={customTime}
+                                    onChange={(e) => setCustomTime(e.target.value)}
+                                    className="px-3 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all border h-12 shadow-sm bg-white border-slate-200 text-slate-600 focus:border-primary-500 focus:ring-1 focus:ring-primary-500 outline-none hover:bg-slate-50"
+                                    title="Pilih Jam Sesi"
+                                />
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
