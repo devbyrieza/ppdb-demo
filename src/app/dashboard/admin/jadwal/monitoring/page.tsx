@@ -15,6 +15,7 @@ import {
     UserPlus,
     UserCheck,
     Edit2,
+    Trash2,
     X,
     Check,
     AlertCircle,
@@ -145,6 +146,39 @@ export default function MonitoringJadwalPage() {
     const [selectedArabId, setSelectedArabId] = useState<string>("");
     const [showAllStaff, setShowAllStaff] = useState(false);
     const [savingAssignment, setSavingAssignment] = useState(false);
+
+    
+    const handleDeleteSchedule = async (id: string, name: string) => {
+        Swal.fire({
+            title: "Hapus Jadwal?",
+            html: `Yakin ingin menghapus jadwal untuk santri <b>${name}</b>?<br/><span class="text-xs text-red-500 mt-2 block">Tindakan ini tidak dapat dibatalkan.</span>`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Ya, Hapus",
+            cancelButtonText: "Batal",
+            confirmButtonColor: "#ef4444",
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Menghapus...",
+                    allowOutsideClick: false,
+                    didOpen: () => Swal.showLoading()
+                });
+                try {
+                    const res = await fetch(`/api/admin/jadwal/${id}`, { method: "DELETE" });
+                    if (res.ok) {
+                        Swal.fire("Berhasil", "Jadwal berhasil dihapus", "success");
+                        fetchMonitoringData();
+                    } else {
+                        const data = await res.json();
+                        Swal.fire("Gagal", data.error || "Gagal menghapus jadwal", "error");
+                    }
+                } catch (error) {
+                    Swal.fire("Error", "Terjadi kesalahan jaringan", "error");
+                }
+            }
+        });
+    };
 
     // Conflict Guard: Map examiner ID to conflicting student info at target schedule time
     const busyExaminersAtTargetTime = useMemo(() => {
