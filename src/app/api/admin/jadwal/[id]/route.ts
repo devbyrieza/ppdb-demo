@@ -13,7 +13,8 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const params = await props.params;`n    const { id } = params;
+    const params = await props.params;
+    const { id } = params;
 
     if (!id) {
       return NextResponse.json({ error: "ID jadwal tidak valid" }, { status: 400 });
@@ -52,4 +53,5 @@ export async function DELETE(
     );
   }
 }
+
 
