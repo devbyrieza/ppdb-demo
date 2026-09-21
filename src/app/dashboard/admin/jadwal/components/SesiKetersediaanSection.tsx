@@ -664,8 +664,7 @@ export default function SesiKetersediaanSection({
                     onClick={() => setIsSelectMode(true)}
                     className="flex items-center gap-2 px-3.5 py-2 bg-stone-50 hover:bg-stone-100 text-stone-700 border border-stone-200 rounded-xl font-bold text-xs transition-all whitespace-nowrap"
                   >
-                    <Layers className="w-3.5 h-3.5" />
-                    Pilih Massal
+                    <CheckSquare className="w-3.5 h-3.5" /> Pilih / Hapus Massal
                   </button>
                 )}
                 <button
@@ -1657,3 +1656,4 @@ export default function SesiKetersediaanSection({
     </div>
   );
 }
+
