@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  props: { params: Promise<{ id: string }> }
 ) {
   try {
     const cookieStore = await cookies();
@@ -13,7 +13,7 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { id } = params;
+    const params = await props.params;`n    const { id } = params;
 
     if (!id) {
       return NextResponse.json({ error: "ID jadwal tidak valid" }, { status: 400 });
@@ -52,3 +52,4 @@ export async function DELETE(
     );
   }
 }
+
