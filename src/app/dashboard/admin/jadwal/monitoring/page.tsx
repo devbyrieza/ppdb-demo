@@ -565,7 +565,7 @@ export default function MonitoringJadwalPage() {
             (s?.ustadz?.quran || "").toLowerCase().includes(search.toLowerCase()) ||
             (s?.ustadz?.santri || "").toLowerCase().includes(search.toLowerCase()) ||
             (s?.ustadz?.ortu || "").toLowerCase().includes(search.toLowerCase()) ||
-            (s?.ustadz?.arab || "").toLowerCase().includes(search.toLowerCase());
+            (s?.ustadz?.arab || "").toLowerCase().includes(search.toLowerCase()) || (s?.sesi?.start ? formatDateTime(s.sesi.start).toLowerCase() : "").includes(search.toLowerCase());
         
         const matchesJenjang = filterJenjang === "ALL" || s?.pendaftar?.jenjang === filterJenjang;
         
@@ -1586,3 +1586,4 @@ export default function MonitoringJadwalPage() {
         </div>
     );
 }
+
