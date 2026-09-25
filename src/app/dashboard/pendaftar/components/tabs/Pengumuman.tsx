@@ -191,7 +191,7 @@ export default function PengumumanTab() {
               <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary-50 text-primary-800 rounded-full font-black border border-primary-200 shadow-sm">
                 <Calendar className="w-4 h-4 text-primary-600" />
                 <span className="text-sm">
-                  Estimasi update: H+7 setelah tes & verifikasi berkas selesai
+                  Estimasi update: Maksimal H+7 setelah tes & verifikasi berkas selesai
                 </span>
               </div>
             </div>
