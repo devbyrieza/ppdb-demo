@@ -185,14 +185,13 @@ export default function PengumumanTab() {
                 Pengumuman Belum Tersedia
               </h3>
               <p className="text-ink-600 max-w-md mx-auto mb-6 leading-relaxed">
-                Hasil seleksi akan diumumkan setelah seluruh proses ujian selesai
-                dilakukan oleh panitia. Silakan cek kembali halaman ini secara
+                Hasil seleksi akan diumumkan setelah seluruh rangkaian tes Anda selesaikan, dan hasil akhirnya telah melalui tahap pengecekan serta rapat kelulusan oleh Pimpinan dan Panitia. Silakan cek kembali halaman ini secara
                 berkala.
               </p>
               <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary-50 text-primary-800 rounded-full font-black border border-primary-200 shadow-sm">
                 <Calendar className="w-4 h-4 text-primary-600" />
                 <span className="text-sm">
-                  Estimasi update: setelah ujian selesai
+                  Estimasi update: setelah rapat kelulusan
                 </span>
               </div>
             </div>
