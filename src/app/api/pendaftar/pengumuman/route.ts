@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCache, setCache } from "@/lib/redis";
+import { getStatusIndex } from "@/lib/access-control";
 
 export async function GET(request: NextRequest) {
   try {
@@ -16,22 +17,20 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
+    // Fetch pendaftar status to ensure consistency
+    const pendaftar = await prisma.pendaftar.findUnique({
+      where: { id: pendaftarId },
+      select: { status_pendaftaran: true, updated_at: true, tahun_ajaran_id: true } });
+
+    if (!pendaftar) {
+      return NextResponse.json({ error: "Not Found" }, { status: 404 });
+    }
+
+    // === BYPASS BERKAS CHECK (DYNAMIC VIA STATE MACHINE) ===
+    const currentIndex = getStatusIndex(pendaftar.status_pendaftaran);
+    const docsVerifiedIndex = getStatusIndex("docs_verified");
     
-    // === BYPASS BERKAS CHECK ===
-    // Verify if all required documents are verified before showing announcement
-    const dokumen = await prisma.dokumen.findMany({ where: { pendaftar_id: pendaftarId } });
-    const verifiedTypes = new Set(dokumen.filter(d => d.is_verified).map(d => d.jenis_dokumen === 'pakta_integritas' ? 'pakta_integritas_santri' : d.jenis_dokumen));
-    
-    const REQUIRED_DOC_TYPES = [
-      "kartu_keluarga",
-      "akta_kelahiran",
-      "ijazah",
-      "pas_foto",
-      "pakta_integritas_santri",
-      "pakta_integritas_ortu",
-    ];
-    
-    if (!REQUIRED_DOC_TYPES.every((type) => verifiedTypes.has(type))) {
+    if (currentIndex < docsVerifiedIndex) {
       return NextResponse.json({
         data: {
           id: "dokumen_belum_lengkap",
@@ -47,7 +46,7 @@ export async function GET(request: NextRequest) {
     const cacheKey = `pengumuman_${pendaftarId}`;
     const cachedData = await getCache<any>(cacheKey);
     if (cachedData) {
-      console.log(`⚡ [API Pengumuman] Mengembalikan data dari Redis Cache untuk ${pendaftarId}`);
+      console.log(`[API Pengumuman] Mengembalikan data dari Redis Cache untuk ${pendaftarId}`);
       return NextResponse.json(cachedData);
     }
     // =========================
@@ -57,15 +56,10 @@ export async function GET(request: NextRequest) {
       where: { pendaftar_id: pendaftarId } });
 
     // --- SELF-HEALING & SYNC LOGIC ---
-    // Fetch pendaftar status to ensure consistency
-    const pendaftar = await prisma.pendaftar.findUnique({
-      where: { id: pendaftarId },
-      select: { status_pendaftaran: true, updated_at: true, tahun_ajaran_id: true } });
-
     const announcedStatuses = ["accepted", "rejected", "cadangan", "announced", "enrolled", "enrolled_full"];
     
     // If Pendaftar status is already in a final state, PRIORITIZE it over Pengumuman table
-    if (pendaftar && announcedStatuses.includes(pendaftar.status_pendaftaran)) {
+    if (announcedStatuses.includes(pendaftar.status_pendaftaran)) {
       const statusMapped = ["accepted", "enrolled", "enrolled_full"].includes(pendaftar.status_pendaftaran)
         ? "diterima"
         : pendaftar.status_pendaftaran === "rejected"
