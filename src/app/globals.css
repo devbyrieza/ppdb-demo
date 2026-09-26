@@ -1,9 +1,9 @@
-/* â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
-   AL-ANDALUS TEMPLATE â€” GLOBAL STYLES
-   Master Template Â· Brand-Agnostic Â· Fleksibel
-   Mobile-First Â· Linear-Inspired Premium UI
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   AL-ANDALUS TEMPLATE — GLOBAL STYLES
+   Master Template · Brand-Agnostic · Fleksibel
+   Mobile-First · Linear-Inspired Premium UI
    Tailwind CSS v4
-   â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â” */
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
 @import "tailwindcss";
 @layer base {
@@ -15,20 +15,20 @@
 }
 
 
-/* â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    1. CUSTOM THEME CONFIGURATION (@theme)
-   â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â” */
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 @theme {
-  /* â”€â”€â”€ Typography â”€â”€â”€ */
-  --font-sans: var(--font-plus-jakarta), "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  /* ─── Typography ─── */
+  --font-sans: var(--font-inter), "Inter", system-ui, -apple-system, sans-serif;
   --font-display:
     var(--font-plus-jakarta), "Plus Jakarta Sans", system-ui, -apple-system,
     sans-serif;
   --font-arabic: "Amiri", "Traditional Arabic", "Arabic Typesetting", serif;
 
-  /* â”â”â” BRAND COLOR PALETTE â€” LENGKAP SEMUA PESANTREN â”â”â” */
+  /* ━━━ BRAND COLOR PALETTE — LENGKAP SEMUA PESANTREN ━━━ */
 
-  /* â”€â”€â”€ Biru Cerah (Ulul Albaab Primary) â”€â”€â”€ */
+  /* ─── Biru Cerah (Ulul Albaab Primary) ─── */
   --color-blue-50: #f0f8ff;
   --color-blue-100: #dcedff;
   --color-blue-200: #b3d7ff;
@@ -41,7 +41,7 @@
   --color-blue-900: #013062;
   --color-blue-950: #011e42;
 
-  /* â”€â”€â”€ Kuning (Ulul Albaab Secondary) â”€â”€â”€ */
+  /* ─── Kuning (Ulul Albaab Secondary) ─── */
   --color-amber-50: #fffbeb;
   --color-amber-100: #fef3c7;
   --color-amber-200: #fde68a;
@@ -53,7 +53,7 @@
   --color-amber-800: #92400e;
   --color-amber-900: #713b12;
 
-  /* â”€â”€â”€ Gold (Accent premium) â”€â”€â”€ */
+  /* ─── Gold (Accent premium) ─── */
   --color-gold-50: #fffbeb;
   --color-gold-100: #fef3c7;
   --color-gold-200: #fde68a;
@@ -63,42 +63,64 @@
   --color-gold-600: #d97706;
   --color-gold-700: #b45309;
 
-  /* â”€â”€â”€ Maroon (Al Imam Primary) â”€â”€â”€ */
+  /* ─── Maroon (Al Imam Primary) ─── */
   --color-maroon-50: #fdf5f5;
   --color-maroon-100: #f7e6e6;
   --color-maroon-200: #edcaca;
   --color-maroon-300: #dda0a0;
-  --color-maroon-400: #c06060;  /* lebih cerah & vibrant */
-  --color-maroon-500: #a03030;  /* lebih vibrant */
-  --color-maroon-600: #800a0a;  /* lebih bold */
-  --color-maroon-700: #640a0a;  /* sedikit lebih cerah */
+  --color-maroon-400: #c87070;
+  --color-maroon-500: #b04040;
+  --color-maroon-600: #8b2020;
+  --color-maroon-700: #6b0f0f;
   --color-maroon-800: #520a0a;
   --color-maroon-900: #3d0707;
-  --color-maroon-950: #550000;  /* identitas utama Al Imam */
+  --color-maroon-950: #800000;
 
-  /* â”€â”€â”€ Cream (Al Imam Secondary) â”€â”€â”€ */
+  /* ─── Cream (Al Imam Secondary) ─── */
   --color-cream-50: #fefcf7;
   --color-cream-100: #fdf8ee;
   --color-cream-200: #faf0d7;
-  --color-cream-300: #f0d8a8;  /* lebih warm */
-  --color-cream-400: #ddc192;  /* identitas utama */
-  --color-cream-500: #c9a84c;  /* lebih gold */
-  --color-cream-600: #b8922e;
+  --color-cream-300: #f5e4b8;
+  --color-cream-400: #edd494;
+  --color-cream-500: #e4c16f;
+  --color-cream-600: #c9a84c;
 
-  /* â”€â”€â”€ Teal Fresh Accent (pai-next spirit â€” untuk keseimbangan cerah) â”€â”€â”€ */
-  --color-teal-accent: #0d9488;
-  --color-teal-light: #ccfbf1;
-  --color-teal-mid: #14b8a6;
+  /* ─── Hijau Emerald (Template-Demo Primary — Premium Islamic Emerald) ─── */
+  --color-teal-50: #ecfdf5;
+  --color-teal-100: #d1fae5;
+  --color-teal-200: #a7f3d0;
+  --color-teal-300: #6ee7b7;
+  --color-teal-400: #2dd4bf;   /* Teal vibrant dari pai-next */
+  --color-teal-500: #14b8a6;   /* Teal medium — identik pai-next primary */
+  /* Hijau Emerald Medium */
+  --color-teal-600: #0d9488;   /* Teal primary */
+  /* Hijau Emerald Primary */
+  --color-teal-700: #0f766e;   /* Teal dark */
+  --color-teal-800: #115e59;   /* Teal deeper */
+  --color-teal-900: #064e3b;
+  --color-teal-950: #022c22;
 
-  /* â”€â”€â”€ Surface / White â”€â”€â”€ */
+  /* ─── Gold Islami (Template-Demo Secondary — Warm Islamic Gold) ─── */
+  --color-sand-50: #fffdf0;
+  --color-sand-100: #fef9d9;
+  --color-sand-200: #fdf0a8;
+  --color-sand-300: #fcd34d;   /* Gold ceria */
+  --color-sand-400: #fbbf24;   /* Amber warm — sama pai-next */
+  --color-sand-500: #f59e0b;   /* Gold primary amber */
+  /* Gold Islami Secondary */
+  --color-sand-600: #d97706;   /* Gold rich */
+  --color-sand-700: #9a7520;
+  --color-sand-800: #7a5c18;
+  --color-sand-900: #5c4410;
+  --color-gold-islami: #D4AF37;  /* Gold Islami klasik */
+
+  /* ─── Surface / White ─── */
   --color-white: #ffffff;
   --color-surface-50: #F8FAFC;
   --color-surface-100: #F1F5F9;
   --color-surface-200: #e5e7eb;
-  --color-surface-warm: #fdf8f0;  /* Warm tint â€” campuran cream */
-  --color-surface-maroon: #fdf5f5; /* Maroon tint subtle */
 
-  /* â”€â”€â”€ Ink (Text â€” neutral gray, fresh & clean) â”€â”€â”€ */
+  /* ─── Ink (Text — neutral gray, fresh & clean) ─── */
   --color-ink-950: #111827;
   --color-ink-900: #374151;
   --color-ink-800: #374151;
@@ -112,38 +134,38 @@
   --color-ink-50: #f8f8f8;
 
   
-  /* â”â”â” SEMANTIC THEME â”â”â” */
-  --color-primary-50: var(--color-maroon-50);
-  --color-primary-100: var(--color-maroon-100);
-  --color-primary-200: var(--color-maroon-200);
-  --color-primary-300: var(--color-maroon-300);
-  --color-primary-400: var(--color-maroon-400);
-  --color-primary-500: var(--color-maroon-500);
-  --color-primary-600: var(--color-maroon-600);
-  --color-primary-700: var(--color-maroon-700);
-  --color-primary-800: var(--color-maroon-800);
-  --color-primary-900: var(--color-maroon-900);
-  --color-primary-950: var(--color-maroon-950);
-  --color-primary: var(--color-maroon-950);
-  --color-primary-light: var(--color-maroon-50);
-  --color-primary-dark: var(--color-maroon-900);
+  /* ━━━ SEMANTIC THEME ━━━ */
+  --color-primary-50: var(--color-teal-50);
+  --color-primary-100: var(--color-teal-100);
+  --color-primary-200: var(--color-teal-200);
+  --color-primary-300: var(--color-teal-300);
+  --color-primary-400: var(--color-teal-400);
+  --color-primary-500: var(--color-teal-500);
+  --color-primary-600: var(--color-teal-600);
+  --color-primary-700: var(--color-teal-700);
+  --color-primary-800: var(--color-teal-800);
+  --color-primary-900: var(--color-teal-900);
+  --color-primary-950: var(--color-teal-950);
+  --color-primary: var(--color-teal-700);
+  --color-primary-light: var(--color-teal-50);
+  --color-primary-dark: var(--color-teal-900);
 
-  --color-secondary-50: var(--color-cream-50);
-  --color-secondary-100: var(--color-cream-100);
-  --color-secondary-200: var(--color-cream-200);
-  --color-secondary-300: var(--color-cream-300);
-  --color-secondary-400: var(--color-cream-400);
-  --color-secondary-500: var(--color-cream-500);
-  --color-secondary-600: var(--color-cream-600);
-  --color-secondary-700: var(--color-cream-700);
-  --color-secondary-800: var(--color-cream-800);
-  --color-secondary-900: var(--color-cream-900);
-  --color-secondary-950: var(--color-cream-950);
-  --color-secondary: var(--color-cream-400);
-  --color-secondary-light: var(--color-cream-50);
-  --color-secondary-dark: var(--color-cream-800);
+  --color-secondary-50: var(--color-sand-50);
+  --color-secondary-100: var(--color-sand-100);
+  --color-secondary-200: var(--color-sand-200);
+  --color-secondary-300: var(--color-sand-300);
+  --color-secondary-400: var(--color-sand-400);
+  --color-secondary-500: var(--color-sand-500);
+  --color-secondary-600: var(--color-sand-600);
+  --color-secondary-700: var(--color-sand-700);
+  --color-secondary-800: var(--color-sand-800);
+  --color-secondary-900: var(--color-sand-900);
+  --color-secondary-950: var(--color-sand-900);
+  --color-secondary: var(--color-sand-400);    /* Amber/gold vibrant */
+  --color-secondary-light: var(--color-sand-50);
+  --color-secondary-dark: var(--color-sand-600);
 
-  /* â”€â”€â”€ Status Colors â”€â”€â”€ */
+  /* ─── Status Colors ─── */
   --color-success-500: #16a34a;
   --color-success-100: #dcfce7;
   --color-success-50: #f0fdf4;
@@ -157,23 +179,27 @@
   --color-info-100: #dcedff;
   --color-info-50: #f0f8ff;
 
-  /* â”â”â” TEMPLATE SEMANTIC TOKENS â”â”â”
-     Al Imam Branding: Maroon #550000 + Cream #ddc192
-   â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â” */
+  /* ━━━ TEMPLATE SEMANTIC TOKENS ━━━
+     Override ini di masing-masing project untuk ganti branding.
+     Default: Hijau Islami + Gold (Template-Demo)
+     Untuk Ulul Albaab: teal + sand
+     Untuk Al Imam: maroon + cream
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
-  /* â”€â”€â”€ Islamic Color Palette â€” Semantic Tokens â”€â”€â”€ */
-  --color-primary: var(--color-maroon-950);
-  /* Maroon utama #550000 */
-  --color-primary-light: var(--color-maroon-50);
-  /* Maroon muda / background aksen */
-  --color-secondary: var(--color-cream-400);
-  /* Cream Secondary #ddc192 */
-  --color-background: #fafaf9; /* Warm white â€” lebih segar dari pure white */
+  /* ─── Islamic Color Palette — Semantic Tokens ─── */
+  --color-primary: var(--color-teal-700);      /* Emerald Green */
+  /* Emerald Green utama */
+  --color-primary-light: var(--color-teal-50);
+  /* Emerald muda / background aksen */
+  --color-primary-dark: var(--color-teal-900);
+  --color-secondary: var(--color-sand-400);    /* Yellow/Gold Al-Andalus */
+  /* Yellow/Gold Islami — pai-next style */
+  --color-background: #f8fafc;  /* Clean Slate White */
   /* Background utama */
-  --color-text: #374151;
-  /* Teks utama */
+  --color-text: #0f172a;
+  /* Teks utama (slate-900) */
 
-  /* â”€â”€â”€ Shadows â€” neutral, tidak condong ke brand mana pun â”€â”€â”€ */
+  /* ─── Shadows — neutral, tidak condong ke brand mana pun ─── */
   --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
   --shadow-sm:
     0 1px 4px 0 rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
@@ -186,7 +212,7 @@
   --shadow-2xl:
     0 40px 72px -8px rgba(0, 0, 0, 0.15), 0 16px 32px -8px rgba(0, 0, 0, 0.09);
 
-  /* Premium shadows â€” bias-neutral */
+  /* Premium shadows — bias-neutral */
   --shadow-premium-sm:
     0 2px 10px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
   --shadow-premium-md:
@@ -198,7 +224,7 @@
   --shadow-premium-2xl:
     0 40px 80px rgba(0, 0, 0, 0.16), 0 16px 36px rgba(0, 0, 0, 0.09);
 
-  /* Colored shadows â€” tersedia untuk semua brand */
+  /* Colored shadows — tersedia untuk semua brand */
   --shadow-blue:
     0 4px 16px -2px rgba(3, 105, 199, 0.32), 0 2px 6px rgba(3, 105, 199, 0.16);
   --shadow-blue-lg:
@@ -217,12 +243,24 @@
   --shadow-gold-lg:
     0 8px 28px -4px rgba(212, 175, 55, 0.45), 0 4px 10px rgba(212, 175, 55, 0.12);
   --shadow-cream:
-    0 4px 14px -2px rgba(228, 193, 111, 0.3), 0 2px 6px rgba(0, 0, 0, 0.05);
+    0 4px 14px -2px rgba(254, 252, 247, 0.32), 0 2px 6px rgba(0, 0, 0, 0.05);
+  /* Teal shadows — using correct teal-600 rgba(13,148,136) */
+  --shadow-teal:
+    0 4px 16px -2px rgba(13, 148, 136, 0.35), 0 2px 6px rgba(13, 148, 136, 0.18);
+  --shadow-teal-lg:
+    0 8px 28px -4px rgba(13, 148, 136, 0.42),
+    0 4px 10px rgba(13, 148, 136, 0.22);
+  --shadow-sand:
+    0 4px 14px -2px rgba(212, 175, 55, 0.3), 0 2px 6px rgba(0, 0, 0, 0.05);
+
+  /* Legacy aliases — backward compat */
+  --shadow-sand:
+    0 4px 16px -4px rgba(212, 175, 55, 0.32), 0 2px 6px rgba(0, 0, 0, 0.04);
 
   /* Inner shadow */
   --shadow-inner: inset 0 2px 6px rgba(0, 0, 0, 0.06);
 
-  /* â”€â”€â”€ Border Radius â€” Watzap-style Ceria & Rounded â”€â”€â”€ */
+  /* ─── Border Radius — Watzap-style Ceria & Rounded ─── */
   --radius-xs: 0.25rem;
   --radius-sm: 0.5rem;
   --radius-md: 1rem;
@@ -233,11 +271,11 @@
   --radius-full: 9999px;
   --radius-pill: 9999px;
 
-  /* â”€â”€â”€ Spacing Scale â”€â”€â”€ */
+  /* ─── Spacing Scale ─── */
   --space-section-y: clamp(4rem, 10vw, 7rem);
   --space-section-y-sm: clamp(3rem, 7vw, 5rem);
 
-  /* â”€â”€â”€ Transitions â€” Linear-style easing â”€â”€â”€ */
+  /* ─── Transitions — Linear-style easing ─── */
   --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-out: cubic-bezier(0, 0, 0.2, 1);
@@ -248,17 +286,17 @@
   --duration-slower: 600ms;
 }
 
-/* â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    2. BASE STYLES
-   â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â” */
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 @layer base {
   :root {
   /* TIER PLATINUM: The Best of Both Worlds */
   --primary:        #550000;
   --primary-dark:   #3d0707;
   --primary-light:  #8b2020;
-  --secondary:      #ddc192;
-  --secondary-light: #ebd6b3;
+  --secondary:      #c9a84c;
+  --secondary-light: #e4c16f;
   --secondary-pale: #fcfaf5;
   --bg:             #fdfaf6;
   --bg-card:        #ffffff;
@@ -322,7 +360,7 @@
     cursor: pointer;
   }
 
-  /* â”€â”€â”€ Fluid Typography â€” Linear-style tight & intentional â”€â”€â”€ */
+  /* ─── Fluid Typography — Linear-style tight & intentional ─── */
   h1 {
     font-family: var(--font-display);
     font-weight: 900;
@@ -404,14 +442,14 @@
     overflow-wrap: break-word;
   }
 
-  /* â”€â”€â”€ Selection â€” teal-tinted â”€â”€â”€ */
+  /* ─── Selection — teal-tinted ─── */
   ::selection {
     background-color: #2563eb !important;
     color: #ffffff !important;
     -webkit-text-fill-color: #ffffff !important;
   }
 
-  /* â”€â”€â”€ Custom Scrollbar â”€â”€â”€ */
+  /* ─── Custom Scrollbar ─── */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -423,25 +461,25 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: var(--color-maroon-300);
+    background: var(--color-teal-300);
     border-radius: 9999px;
     border: 1.5px solid var(--color-surface-100);
     background-clip: content-box;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-maroon-400);
+    background: var(--color-ink-400);
     background-clip: content-box;
   }
 
-  /* â”€â”€â”€ Focus Ring â”€â”€â”€ */
+  /* ─── Focus Ring ─── */
   :focus-visible {
     outline: 2px solid var(--color-primary);
     outline-offset: 3px;
     border-radius: var(--radius-sm);
   }
 
-  /* â”€â”€â”€ Touch targets â€” mobile-first â”€â”€â”€ */
+  /* ─── Touch targets — mobile-first ─── */
   @media (max-width: 768px) {
 
     button,
@@ -462,16 +500,16 @@
   }
 }
 
-/* â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    3. COMPONENTS
-   â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â” */
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 @layer components {
-  /* â”â”â” BUTTONS â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+  /* ━━━ BUTTONS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
      Template menyediakan SEMUA varian.
      Template-Demo default: teal/sand
-  â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â” */
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
-  /* â”€â”€â”€ Primary Maroon (Al Imam â€” overrides template-demo gold default) â”€â”€â”€ */
+  /* ─── Primary gold (Template-Demo default) ─── */
   .btn-primary {
     display: inline-flex;
     align-items: center;
@@ -482,11 +520,9 @@
     font-weight: 700;
     font-size: 0.9375rem;
     letter-spacing: -0.01em;
-    color: var(--color-cream-100);
-    background: linear-gradient(135deg,
-        var(--color-maroon-700) 0%,
-        var(--color-maroon-950) 100%);
-    box-shadow: var(--shadow-maroon);
+    color: #0d5c3a;  /* Dark forest green untuk kontras dengan gold */
+    background: linear-gradient(135deg, var(--color-sand-300) 0%, var(--color-sand-500) 100%);
+    box-shadow: var(--shadow-gold);
     transition: all var(--duration-base) var(--ease-spring);
     border: none;
     text-decoration: none;
@@ -498,7 +534,7 @@
       position: absolute;
       inset: 0;
       background: linear-gradient(135deg,
-          rgba(255, 255, 255, 0.10) 0%,
+          rgba(255, 255, 255, 0.25) 0%,
           rgba(255, 255, 255, 0) 60%);
       border-radius: inherit;
       pointer-events: none;
@@ -506,13 +542,13 @@
 
     &:hover {
       transform: translateY(-2px);
-      box-shadow: var(--shadow-maroon-lg);
-      filter: brightness(1.08);
+      box-shadow: var(--shadow-gold-lg);
+      filter: brightness(1.06);
     }
 
     &:active {
       transform: translateY(0) scale(0.98);
-      box-shadow: var(--shadow-maroon);
+      box-shadow: var(--shadow-gold);
     }
 
     &:disabled {
@@ -523,7 +559,7 @@
     }
   }
 
-  /* â”€â”€â”€ Primary Blue (Ulul Albaab variant â€” kept for compat) â”€â”€â”€ */
+  /* ─── Primary Blue (Ulul Albaab variant) ─── */
   .btn-primary-blue {
     display: inline-flex;
     align-items: center;
@@ -534,11 +570,11 @@
     font-weight: 700;
     font-size: 0.9375rem;
     letter-spacing: -0.01em;
-    color: var(--color-cream-100);
+    color: var(--color-white);
     background: linear-gradient(135deg,
-        var(--color-maroon-600) 0%,
-        var(--color-maroon-900) 100%);
-    box-shadow: var(--shadow-maroon);
+        var(--color-teal-500) 0%,
+        var(--color-teal-800) 100%);
+    box-shadow: var(--shadow-blue);
     transition: all var(--duration-base) var(--ease-spring);
     border: none;
     text-decoration: none;
@@ -558,13 +594,13 @@
 
     &:hover {
       transform: translateY(-2px);
-      box-shadow: var(--shadow-maroon-lg);
+      box-shadow: var(--shadow-blue-lg);
       filter: brightness(1.08);
     }
 
     &:active {
       transform: translateY(0) scale(0.98);
-      box-shadow: var(--shadow-maroon);
+      box-shadow: var(--shadow-blue);
     }
 
     &:disabled {
@@ -575,7 +611,7 @@
     }
   }
 
-  /* â”€â”€â”€ Primary Maroon (Al Imam variant) â”€â”€â”€ */
+  /* ─── Primary Maroon (Al Imam variant) ─── */
   .btn-primary-maroon {
     display: inline-flex;
     align-items: center;
@@ -590,8 +626,8 @@
     background: linear-gradient(135deg,
         var(--color-maroon-700) 0%,
         var(--color-maroon-950) 100%);
-    box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.15), var(--shadow-maroon);
-    transition: transform 0.3s var(--ease-spring), box-shadow 0.3s var(--ease-spring), filter 0.3s var(--ease-spring);
+    box-shadow: var(--shadow-maroon);
+    transition: all var(--duration-base) var(--ease-spring);
     border: none;
     text-decoration: none;
     position: relative;
@@ -609,14 +645,13 @@
     }
 
     &:hover {
-      transform: translateY(-2.5px);
-      box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.25), var(--shadow-maroon-lg);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-maroon-lg);
       filter: brightness(1.08);
     }
 
     &:active {
       transform: translateY(0) scale(0.98);
-      box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.1), var(--shadow-maroon);
     }
 
     &:disabled {
@@ -627,7 +662,7 @@
     }
   }
 
-  /* â”€â”€â”€ Secondary teal (Template-Demo default) â”€â”€â”€ */
+  /* ─── Secondary teal (Template-Demo default) ─── */
   .btn-secondary {
     display: inline-flex;
     align-items: center;
@@ -638,16 +673,16 @@
     font-weight: 600;
     font-size: 0.9375rem;
     letter-spacing: -0.01em;
-    color: var(--color-maroon-700);
+    color: var(--color-teal-700);
     background: var(--color-background);
-    border: 1.5px solid var(--color-maroon-200);
+    border: 1.5px solid var(--color-teal-200);
     box-shadow: var(--shadow-xs);
     transition: all var(--duration-base) var(--ease-smooth);
     text-decoration: none;
 
     &:hover {
       background: var(--color-primary-light);
-      border-color: var(--color-maroon-400);
+      border-color: var(--color-teal-400);
       box-shadow: var(--shadow-sm);
       transform: translateY(-1px);
     }
@@ -663,8 +698,44 @@
     }
   }
 
-  /* â”€â”€â”€ Secondary Blue (Ulul Albaab compat variant) â”€â”€â”€ */
+  /* ─── Secondary Blue (Ulul Albaab variant) ─── */
   .btn-secondary-blue {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 2rem;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    letter-spacing: -0.01em;
+    color: var(--color-teal-700);
+    background: var(--color-white);
+    border: 1.5px solid var(--color-teal-200);
+    box-shadow: var(--shadow-xs);
+    transition: all var(--duration-base) var(--ease-smooth);
+    text-decoration: none;
+
+    &:hover {
+      background: var(--color-teal-50);
+      border-color: var(--color-teal-400);
+      box-shadow: var(--shadow-sm);
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    &:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+    }
+  }
+
+  /* ─── Secondary Maroon (Al Imam variant) ─── */
+  .btn-secondary-maroon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -699,44 +770,8 @@
     }
   }
 
-  /* â”€â”€â”€ Secondary Maroon (Al Imam variant) â”€â”€â”€ */
-  .btn-secondary-maroon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.875rem 2rem;
-    border-radius: var(--radius-full);
-    font-weight: 700;
-    font-size: 0.9375rem;
-    letter-spacing: -0.01em;
-    color: var(--color-maroon-900);
-    background: var(--color-white);
-    border: none;
-    box-shadow: inset 0 0 0 1.5px var(--color-maroon-300), var(--shadow-xs);
-    transition: transform 0.3s var(--ease-spring), box-shadow 0.3s var(--ease-spring), background 0.3s var(--ease-spring);
-    text-decoration: none;
-
-    &:hover {
-      background: var(--color-maroon-50);
-      box-shadow: inset 0 0 0 1.5px var(--color-maroon-500), var(--shadow-md);
-      transform: translateY(-2.5px);
-    }
-
-    &:active {
-      transform: translateY(0) scale(0.98);
-      box-shadow: inset 0 0 0 1.5px var(--color-maroon-400), var(--shadow-xs);
-    }
-
-    &:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: inset 0 0 0 1.5px var(--color-maroon-200);
-    }
-  }
-
-  /* â”€â”€â”€ sand accent (Template-Demo) â”€â”€â”€ */
+  /* ─── sand accent (Template-Demo) ─── */
+  /* btn-sand = alias btn-primary gold, border subtle untuk konteks lebih halus */
   .btn-sand {
     display: inline-flex;
     align-items: center;
@@ -747,19 +782,32 @@
     font-weight: 700;
     font-size: 0.9375rem;
     letter-spacing: -0.01em;
-    color: var(--color-maroon-900);
+    color: #0d5c3a;
     background: linear-gradient(135deg,
-        var(--color-cream-200) 0%,
-        var(--color-cream-400) 100%);
-    box-shadow: var(--shadow-cream);
+        var(--color-sand-300) 0%,
+        var(--color-sand-500) 100%);
+    box-shadow: var(--shadow-gold);
     transition: all var(--duration-base) var(--ease-spring);
     text-decoration: none;
-    border: 1px solid var(--color-cream-300);
+    border: 1px solid var(--color-sand-400);
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg,
+          rgba(255, 255, 255, 0.25) 0%,
+          rgba(255, 255, 255, 0) 60%);
+      border-radius: inherit;
+      pointer-events: none;
+    }
 
     &:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 24px -4px rgba(175, 165, 90, 0.4);
-      filter: brightness(1.05);
+      box-shadow: var(--shadow-gold-lg);
+      filter: brightness(1.06);
     }
 
     &:active {
@@ -773,7 +821,7 @@
     }
   }
 
-  /* â”€â”€â”€ Yellow / Cream accent â”€â”€â”€ */
+  /* ─── Yellow / Cream accent ─── */
   .btn-yellow {
     display: inline-flex;
     align-items: center;
@@ -784,10 +832,10 @@
     font-weight: 700;
     font-size: 0.9375rem;
     letter-spacing: -0.01em;
-    color: var(--color-maroon-900);
+    color: var(--color-teal-900);
     background: linear-gradient(135deg,
-        var(--color-cream-300) 0%,
-        var(--color-cream-500) 100%);
+        var(--color-sand-300) 0%,
+        var(--color-sand-500) 100%);
     box-shadow: var(--shadow-yellow);
     transition: all var(--duration-base) var(--ease-spring);
     text-decoration: none;
@@ -841,7 +889,7 @@
     }
   }
 
-  /* â”€â”€â”€ Gold â”€â”€â”€ */
+  /* ─── Gold ─── */
   .btn-gold {
     display: inline-flex;
     align-items: center;
@@ -872,7 +920,7 @@
     }
   }
 
-  /* â”€â”€â”€ Ghost â”€â”€â”€ */
+  /* ─── Ghost ─── */
   .btn-ghost {
     display: inline-flex;
     align-items: center;
@@ -899,7 +947,7 @@
     }
   }
 
-  /* â”€â”€â”€ Outline teal (Template-Demo) â”€â”€â”€ */
+  /* ─── Outline teal (Template-Demo) ─── */
   .btn-outline-teal {
     display: inline-flex;
     align-items: center;
@@ -909,17 +957,17 @@
     border-radius: var(--radius-full);
     font-weight: 600;
     font-size: 0.9375rem;
-    color: var(--color-maroon-700);
+    color: var(--color-teal-700);
     background: transparent;
-    border: 1.5px solid var(--color-maroon-300);
+    border: 1.5px solid var(--color-teal-300);
     transition: all var(--duration-base) var(--ease-smooth);
     text-decoration: none;
 
     &:hover {
-      background: var(--color-maroon-800);
-      color: var(--color-cream-100);
-      border-color: var(--color-maroon-800);
-      box-shadow: var(--shadow-maroon);
+      background: var(--color-teal-800);
+      color: var(--color-sand-100);
+      border-color: var(--color-teal-800);
+      box-shadow: var(--shadow-teal);
       transform: translateY(-1px);
     }
 
@@ -928,7 +976,7 @@
     }
   }
 
-  /* â”€â”€â”€ Outline Blue (Ulul Albaab variant) â”€â”€â”€ */
+  /* ─── Outline Blue (Ulul Albaab variant) ─── */
   .btn-outline-blue {
     display: inline-flex;
     align-items: center;
@@ -938,16 +986,16 @@
     border-radius: var(--radius-full);
     font-weight: 600;
     font-size: 0.9375rem;
-    color: var(--color-maroon-600);
+    color: var(--color-teal-600);
     background: transparent;
-    border: 1.5px solid var(--color-maroon-300);
+    border: 1.5px solid var(--color-teal-300);
     transition: all var(--duration-base) var(--ease-smooth);
     text-decoration: none;
 
     &:hover {
-      background: var(--color-maroon-800);
+      background: var(--color-teal-800);
       color: var(--color-white);
-      border-color: var(--color-maroon-800);
+      border-color: var(--color-teal-800);
       box-shadow: var(--shadow-blue);
       transform: translateY(-1px);
     }
@@ -957,7 +1005,7 @@
     }
   }
 
-  /* â”€â”€â”€ Outline Maroon (Al Imam variant) â”€â”€â”€ */
+  /* ─── Outline Maroon (Al Imam variant) ─── */
   .btn-outline-maroon {
     display: inline-flex;
     align-items: center;
@@ -986,7 +1034,7 @@
     }
   }
 
-  /* â”â”â” CARDS â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â” */
+  /* ━━━ CARDS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
   .app-card {
     background-color: var(--color-white);
@@ -1022,10 +1070,10 @@
   /* teal variant (Template-Demo) */
   .card-teal {
     background: linear-gradient(145deg,
-        var(--color-maroon-50) 0%,
+        var(--color-teal-50) 0%,
         var(--color-white) 100%);
     border-radius: var(--radius-xl);
-    border: 1px solid var(--color-maroon-100);
+    border: 1px solid var(--color-teal-100);
     box-shadow: var(--shadow-premium-sm);
     transition: all var(--duration-slow) var(--ease-spring);
     overflow: hidden;
@@ -1033,20 +1081,20 @@
     &:hover {
       transform: translateY(-3px);
       box-shadow: var(--shadow-premium-md);
-      border-color: var(--color-maroon-200);
+      border-color: var(--color-teal-200);
     }
   }
 
-  /* Dark teal (Template-Demo â€” hero/CTA) */
+  /* Dark teal (Template-Demo — hero/CTA) */
   .card-dark-teal {
     background: linear-gradient(135deg,
-        var(--color-maroon-700) 0%,
-        var(--color-maroon-950) 100%);
+        var(--color-teal-700) 0%,
+        var(--color-teal-950) 100%);
     border-radius: var(--radius-xl);
     border: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow: var(--shadow-premium-lg);
     overflow: hidden;
-    color: var(--color-cream-100);
+    color: var(--color-sand-100);
     position: relative;
 
     &::before {
@@ -1066,10 +1114,10 @@
   /* sand variant (Template-Demo) */
   .card-sand {
     background: linear-gradient(145deg,
-        var(--color-cream-50) 0%,
+        var(--color-sand-50) 0%,
         var(--color-white) 100%);
     border-radius: var(--radius-xl);
-    border: 1px solid var(--color-cream-200);
+    border: 1px solid var(--color-sand-200);
     box-shadow: var(--shadow-premium-sm);
     transition: all var(--duration-slow) var(--ease-spring);
     overflow: hidden;
@@ -1077,17 +1125,17 @@
     &:hover {
       transform: translateY(-3px);
       box-shadow: var(--shadow-premium-md);
-      border-color: var(--color-cream-300);
+      border-color: var(--color-sand-300);
     }
   }
 
   /* Blue variant (Ulul Albaab) */
   .card-blue {
     background: linear-gradient(145deg,
-        var(--color-maroon-50) 0%,
+        var(--color-teal-50) 0%,
         var(--color-white) 100%);
     border-radius: var(--radius-xl);
-    border: 1px solid var(--color-maroon-100);
+    border: 1px solid var(--color-teal-100);
     box-shadow: var(--shadow-premium-sm);
     transition: all var(--duration-slow) var(--ease-spring);
     overflow: hidden;
@@ -1095,15 +1143,15 @@
     &:hover {
       transform: translateY(-3px);
       box-shadow: var(--shadow-premium-md);
-      border-color: var(--color-maroon-200);
+      border-color: var(--color-teal-200);
     }
   }
 
-  /* Dark blue (Ulul Albaab â€” hero/CTA) */
+  /* Dark blue (Ulul Albaab — hero/CTA) */
   .card-dark-blue {
     background: linear-gradient(135deg,
-        var(--color-maroon-800) 0%,
-        var(--color-maroon-950) 100%);
+        var(--color-teal-800) 0%,
+        var(--color-teal-950) 100%);
     border-radius: var(--radius-xl);
     border: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow: var(--shadow-premium-lg);
@@ -1143,7 +1191,7 @@
     }
   }
 
-  /* Dark maroon (Al Imam â€” hero/CTA) */
+  /* Dark maroon (Al Imam — hero/CTA) */
   .card-maroon {
     background: linear-gradient(135deg,
         var(--color-maroon-900) 0%,
@@ -1183,7 +1231,7 @@
     }
   }
 
-  /* â”â”â” INPUTS â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â” */
+  /* ━━━ INPUTS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
   .input-clean {
     width: 100%;
@@ -1210,7 +1258,7 @@
       background: var(--color-background);
       border-color: var(--color-primary);
       box-shadow:
-        0 0 0 3px rgba(139, 32, 32, 0.12),
+        0 0 0 3px rgba(13, 148, 136, 0.12),
         var(--shadow-xs);
     }
 
@@ -1245,7 +1293,7 @@
       background: var(--color-background);
       border-color: var(--color-primary);
       box-shadow:
-        0 0 0 3px rgba(139, 32, 32, 0.12),
+        0 0 0 3px rgba(13, 148, 136, 0.12),
         var(--shadow-xs);
     }
   }
@@ -1275,12 +1323,12 @@
       background: var(--color-background);
       border-color: var(--color-primary);
       box-shadow:
-        0 0 0 3px rgba(139, 32, 32, 0.12),
+        0 0 0 3px rgba(13, 148, 136, 0.12),
         var(--shadow-xs);
     }
   }
 
-  /* â”â”â” BADGES â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â” */
+  /* ━━━ BADGES ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
   .badge {
     display: inline-flex;
@@ -1296,30 +1344,30 @@
 
   /* teal brand (Template-Demo) */
   .badge-teal {
-    background: var(--color-maroon-100);
-    color: var(--color-maroon-800);
-    border: 1px solid var(--color-maroon-200);
+    background: var(--color-teal-100);
+    color: var(--color-teal-800);
+    border: 1px solid var(--color-teal-200);
   }
 
   /* sand brand (Template-Demo) */
   .badge-sand {
-    background: var(--color-cream-100);
-    color: var(--color-cream-800);
-    border: 1px solid var(--color-cream-200);
+    background: var(--color-sand-100);
+    color: var(--color-sand-800);
+    border: 1px solid var(--color-sand-200);
   }
 
   /* Blue brand (Ulul Albaab) */
   .badge-teal {
-    background: var(--color-maroon-100);
-    color: var(--color-maroon-700);
-    border: 1px solid var(--color-maroon-200);
+    background: var(--color-teal-100);
+    color: var(--color-teal-700);
+    border: 1px solid var(--color-teal-200);
   }
 
   /* Yellow brand (Ulul Albaab) */
   .badge-sand {
-    background: var(--color-cream-100);
-    color: var(--color-cream-700);
-    border: 1px solid var(--color-cream-200);
+    background: var(--color-sand-100);
+    color: var(--color-sand-700);
+    border: 1px solid var(--color-sand-200);
   }
 
   /* Maroon (Al Imam) */
@@ -1368,7 +1416,7 @@
     border: 1px solid rgba(3, 105, 199, 0.15);
   }
 
-  /* â”€â”€â”€ Status Pill (fintech style) â”€â”€â”€ */
+  /* ─── Status Pill (fintech style) ─── */
   .status-pill {
     display: inline-flex;
     align-items: center;
@@ -1412,11 +1460,11 @@
   }
 
   .status-pill-pending {
-    background: var(--color-cream-100);
-    color: var(--color-cream-700);
+    background: var(--color-sand-100);
+    color: var(--color-sand-700);
   }
 
-  /* â”â”â” NAVIGATION â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â” */
+  /* ━━━ NAVIGATION ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
   .nav-link {
     display: flex;
@@ -1442,7 +1490,7 @@
     }
   }
 
-  /* â”€â”€â”€ Bottom Navigation â”€â”€â”€ */
+  /* ─── Bottom Navigation ─── */
   .bottom-nav {
     position: fixed;
     bottom: 0;
@@ -1494,11 +1542,11 @@
     }
   }
 
-  /* â”€â”€â”€ App Header â”€â”€â”€ */
+  /* ─── App Header ─── */
   .app-header {
     background: linear-gradient(135deg,
         var(--color-primary) 0%,
-        var(--color-maroon-900) 100%);
+        var(--color-teal-900) 100%);
     color: var(--color-primary-light);
     padding: 1.5rem;
     position: relative;
@@ -1530,7 +1578,7 @@
     }
   }
 
-  /* â”€â”€â”€ Quick Action Card â”€â”€â”€ */
+  /* ─── Quick Action Card ─── */
   .quick-action-card {
     display: flex;
     flex-direction: column;
@@ -1577,7 +1625,7 @@
     }
   }
 
-  /* â”€â”€â”€ Progress Bar â”€â”€â”€ */
+  /* ─── Progress Bar ─── */
   .progress-track {
     width: 100%;
     height: 6px;
@@ -1590,7 +1638,7 @@
     height: 100%;
     border-radius: var(--radius-full);
     background: linear-gradient(90deg,
-        var(--color-maroon-400),
+        var(--color-teal-400),
         var(--color-primary));
     transition: width 0.7s var(--ease-spring);
     position: relative;
@@ -1609,19 +1657,19 @@
     }
   }
 
-  /* â”€â”€â”€ Info Banner â”€â”€â”€ */
+  /* ─── Info Banner ─── */
   .info-banner {
     display: flex;
     align-items: flex-start;
     gap: 0.875rem;
     padding: 1rem 1.25rem;
     background: var(--color-primary-light);
-    border: 1px solid var(--color-maroon-200);
+    border: 1px solid var(--color-teal-200);
     border-radius: var(--radius-lg);
     border-left: 3px solid var(--color-primary);
   }
 
-  /* â”â”â” SECTIONS â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â” */
+  /* ━━━ SECTIONS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
   .section-std {
     padding-top: var(--space-section-y);
@@ -1634,7 +1682,7 @@
   .section-alt {
     padding-top: var(--space-section-y);
     padding-bottom: var(--space-section-y);
-    background: linear-gradient(180deg, #fafaf9 0%, var(--color-cream-50) 100%);
+    background: linear-gradient(180deg, #f8fffe 0%, var(--color-teal-50) 100%);
     position: relative;
     overflow: hidden;
   }
@@ -1643,9 +1691,7 @@
   .section-teal {
     padding-top: var(--space-section-y);
     padding-bottom: var(--space-section-y);
-    background: linear-gradient(180deg,
-        var(--color-maroon-50) 0%,
-        var(--color-surface-50) 100%);
+    background: linear-gradient(180deg, var(--color-teal-50) 0%, #f8fffe 100%);
     position: relative;
     overflow: hidden;
   }
@@ -1655,19 +1701,19 @@
     padding-top: var(--space-section-y);
     padding-bottom: var(--space-section-y);
     background: linear-gradient(180deg,
-        var(--color-cream-50) 0%,
+        var(--color-sand-50) 0%,
         var(--color-white) 100%);
     position: relative;
     overflow: hidden;
   }
 
-  /* Dark Hijau Islami (Template-Demo â€” hero/CTA) */
+  /* Dark Hijau Islami (Template-Demo — hero/CTA) */
   .section-dark-teal {
     padding-top: var(--space-section-y);
     padding-bottom: var(--space-section-y);
     background: linear-gradient(135deg,
         var(--color-primary) 0%,
-        var(--color-maroon-900) 100%);
+        var(--color-teal-900) 100%);
     position: relative;
     overflow: hidden;
 
@@ -1690,7 +1736,7 @@
     padding-top: var(--space-section-y);
     padding-bottom: var(--space-section-y);
     background: linear-gradient(180deg,
-        var(--color-maroon-50) 0%,
+        var(--color-teal-50) 0%,
         var(--color-surface-50) 100%);
     position: relative;
     overflow: hidden;
@@ -1712,8 +1758,8 @@
     padding-top: var(--space-section-y);
     padding-bottom: var(--space-section-y);
     background: linear-gradient(135deg,
-        var(--color-maroon-700) 0%,
-        var(--color-maroon-900) 100%);
+        var(--color-teal-700) 0%,
+        var(--color-teal-900) 100%);
     position: relative;
     overflow: hidden;
 
@@ -1755,7 +1801,7 @@
     }
   }
 
-  /* Legacy â€” backward compat */
+  /* Legacy — backward compat */
   .section-dark {
     @extend .section-dark-teal;
   }
@@ -1764,7 +1810,7 @@
     font-family: var(--font-display);
     font-size: clamp(1.75rem, 3.5vw, 3rem);
     font-weight: 800;
-    color: var(--color-maroon-800);
+    color: var(--color-teal-800);
     letter-spacing: -0.025em;
     line-height: 1.15;
   }
@@ -1785,13 +1831,13 @@
 
   }
 
-  /* â”â”â” SIDEBAR â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â” */
+  /* ━━━ SIDEBAR ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
   /* Hijau Islami sidebar (Template-Demo default) */
   .sidebar-teal {
     background: linear-gradient(180deg,
         var(--color-primary) 0%,
-        var(--color-maroon-900) 100%);
+        var(--color-teal-900) 100%);
     color: var(--color-primary-light);
     height: 100%;
     overflow-y: auto;
@@ -1800,9 +1846,9 @@
   /* Blue sidebar (Ulul Albaab) */
   .sidebar-blue {
     background: linear-gradient(180deg,
-        var(--color-maroon-700) 0%,
-        var(--color-maroon-900) 100%);
-    color: var(--color-cream-100);
+        var(--color-teal-700) 0%,
+        var(--color-teal-900) 100%);
+    color: var(--color-sand-100);
     height: 100%;
     overflow-y: auto;
   }
@@ -1859,7 +1905,7 @@
   }
 
   .sidebar-blue .sidebar-link.active {
-    color: var(--color-cream-300);
+    color: var(--color-sand-300);
   }
 
   .sidebar-maroon .sidebar-link.active {
@@ -1876,7 +1922,7 @@
     margin-top: 1rem;
   }
 
-  /* â”€â”€â”€ Divider â”€â”€â”€ */
+  /* ─── Divider ─── */
   .divider {
     height: 1px;
     background: linear-gradient(90deg,
@@ -1891,7 +1937,7 @@
     height: 1px;
     background: linear-gradient(90deg,
         transparent,
-        var(--color-maroon-200),
+        var(--color-teal-200),
         transparent);
     border: none;
     margin: 0;
@@ -1901,7 +1947,7 @@
     height: 1px;
     background: linear-gradient(90deg,
         transparent,
-        var(--color-maroon-100),
+        var(--color-teal-100),
         transparent);
     border: none;
     margin: 0;
@@ -1918,13 +1964,31 @@
   }
 }
 
-/* â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    4. UTILITIES
-   â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â” */
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 @layer utilities {
 
-  /* â”€â”€â”€ Text Gradients â€” semua brand â”€â”€â”€ */
-  /* â”€â”€â”€ Text Gradients â€” semua brand â”€â”€â”€ */
+  /* ─── Text Gradients — semua brand ─── */
+  .text-gradient-teal {
+    background: linear-gradient(135deg,
+        var(--color-teal-500) 0%,
+        var(--color-teal-900) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-teal-sand {
+    background: linear-gradient(135deg,
+        var(--color-teal-700) 0%,
+        var(--color-sand-500) 60%,
+        var(--color-teal-900) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
   .text-gradient-primary {
     background: linear-gradient(135deg, var(--color-primary-600) 0%, var(--color-primary-900) 100%);
     -webkit-background-clip: text;
@@ -1933,92 +1997,127 @@
   }
 
   .text-gradient-blue {
-    background: linear-gradient(135deg, var(--color-blue-500) 0%, var(--color-amber-400) 55%, var(--color-blue-700) 100%);
+    background: linear-gradient(135deg,
+        var(--color-teal-500) 0%,
+        var(--color-teal-900) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-teal {
+    background: linear-gradient(135deg,
+        var(--color-teal-600) 0%,
+        var(--color-teal-900) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
   .text-gradient-maroon {
-    background: linear-gradient(135deg, var(--color-maroon-600) 0%, var(--color-maroon-900) 100%);
+    background: linear-gradient(135deg,
+        var(--color-maroon-600) 0%,
+        var(--color-maroon-950) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
   .text-gradient-gold {
-    background: linear-gradient(135deg, var(--color-gold-400) 0%, var(--color-gold-600) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  .text-gradient-amber {
-    background: linear-gradient(135deg, var(--color-amber-400) 0%, var(--color-amber-600) 100%);
+    background: linear-gradient(135deg,
+        var(--color-gold-400) 0%,
+        var(--color-gold-600) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
   .text-gradient-cream {
-    background: linear-gradient(135deg, var(--color-cream-300) 0%, var(--color-cream-500) 100%);
+    background: linear-gradient(135deg,
+        var(--color-cream-300) 0%,
+        var(--color-cream-500) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
-  /* â”€â”€â”€ Backgrounds â€” semua brand â”€â”€â”€ */
+  .text-gradient-sky {
+    background: linear-gradient(135deg,
+        var(--color-teal-300) 0%,
+        var(--color-teal-600) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* ─── Backgrounds — semua brand ─── */
+  .bg-teal-gradient {
+    background: linear-gradient(135deg,
+        var(--color-primary) 0%,
+        var(--color-teal-900) 100%);
+  }
+
+  .bg-teal-subtle {
+    background: linear-gradient(160deg, #f8fffe 0%, var(--color-teal-50) 60%, var(--color-white) 100%);
+  }
+
+  .bg-sand-gradient {
+    background: linear-gradient(160deg,
+        var(--color-sand-50) 0%,
+        var(--color-white) 50%,
+        var(--color-sand-100) 100%);
+  }
+
   .bg-blue-gradient {
-    background: linear-gradient(135deg, var(--color-blue-600) 0%, var(--color-blue-900) 100%);
+    background: linear-gradient(135deg,
+        var(--color-teal-600) 0%,
+        var(--color-teal-900) 100%);
   }
 
   .bg-blue-subtle {
-    background: linear-gradient(160deg, var(--color-blue-50) 0%, var(--color-white) 60%, var(--color-surface-50) 100%);
+    background: linear-gradient(160deg,
+        var(--color-teal-50) 0%,
+        var(--color-white) 60%,
+        var(--color-surface-100) 100%);
   }
 
-  .bg-amber-gradient {
-    background: linear-gradient(135deg, var(--color-amber-400) 0%, var(--color-amber-600) 100%);
-  }
-
-  .bg-amber-subtle {
-    background: linear-gradient(160deg, var(--color-amber-50) 0%, var(--color-white) 60%, var(--color-surface-50) 100%);
+  .bg-yellow-gradient {
+    background: linear-gradient(160deg,
+        var(--color-sand-50) 0%,
+        var(--color-white) 50%,
+        var(--color-sand-100) 100%);
   }
 
   .bg-maroon-gradient {
-    background: linear-gradient(135deg, var(--color-maroon-600) 0%, var(--color-maroon-900) 100%);
+    background: linear-gradient(135deg,
+        var(--color-maroon-800) 0%,
+        var(--color-maroon-950) 100%);
   }
 
   .bg-maroon-subtle {
-    background: linear-gradient(160deg, var(--color-maroon-50) 0%, var(--color-white) 60%, var(--color-surface-50) 100%);
+    background: linear-gradient(160deg,
+        var(--color-maroon-50) 0%,
+        var(--color-white) 60%,
+        var(--color-cream-50) 100%);
   }
 
   .bg-cream-gradient {
-    background: linear-gradient(135deg, var(--color-cream-100) 0%, var(--color-cream-200) 100%);
-  }
-
-  .bg-cream-subtle {
-    background: linear-gradient(160deg, var(--color-cream-50) 0%, var(--color-white) 60%, var(--color-cream-100) 100%);
-  }
-
-  .bg-maroon-gradient {
-    background: linear-gradient(135deg, var(--color-maroon-600) 0%, var(--color-maroon-900) 100%);
-  }
-
-  /* Fresher bg-maroon-subtle â€” pai-next spirit */
-  .bg-maroon-subtle {
-    background: linear-gradient(160deg, var(--color-maroon-50) 0%, #fafaf9 60%, var(--color-cream-50) 100%);
+    background: linear-gradient(160deg,
+        var(--color-cream-50) 0%,
+        var(--color-white) 50%,
+        var(--color-cream-100) 100%);
   }
 
   /* Legacy aliases */
-  .bg-maroon-gradient {
+  .bg-teal-gradient {
     @extend .bg-blue-gradient;
   }
 
-  .bg-cream-gradient {
+  .bg-sand-gradient {
     @extend .bg-yellow-gradient;
   }
 
-  /* â”€â”€â”€ Glass â”€â”€â”€ */
+  /* ─── Glass ─── */
   .glass {
     background: rgba(255, 255, 255, 0.75);
     backdrop-filter: blur(24px) saturate(1.8);
@@ -2026,11 +2125,12 @@
     border: 1px solid rgba(255, 255, 255, 0.55);
   }
 
+  /* Teal glass — using correct teal rgba */
   .glass-teal {
-    background: rgba(107, 15, 15, 0.82);
+    background: rgba(13, 148, 136, 0.80);
     backdrop-filter: blur(24px) saturate(1.5);
     -webkit-backdrop-filter: blur(24px) saturate(1.5);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.12);
   }
 
   .glass-blue {
@@ -2061,7 +2161,7 @@
     border: 1px solid rgba(0, 0, 0, 0.06);
   }
 
-  /* â”€â”€â”€ Typography â”€â”€â”€ */
+  /* ─── Typography ─── */
   .text-balance {
     text-wrap: balance;
   }
@@ -2082,7 +2182,7 @@
     letter-spacing: -0.04em;
   }
 
-  /* â”€â”€â”€ Animations â€” Linear-style â”€â”€â”€ */
+  /* ─── Animations — Linear-style ─── */
   .custom-fade-in-up {
     opacity: 0;
     transform: translateY(24px);
@@ -2144,7 +2244,7 @@
     }
   }
 
-  /* â”€â”€â”€ Stagger delays â”€â”€â”€ */
+  /* ─── Stagger delays ─── */
   .stagger-1 {
     transition-delay: 60ms;
   }
@@ -2177,7 +2277,7 @@
     transition-delay: 480ms;
   }
 
-  /* â”€â”€â”€ Hover utilities â”€â”€â”€ */
+  /* ─── Hover utilities ─── */
   .hover-lift {
     transition:
       transform var(--duration-slow) var(--ease-spring),
@@ -2201,214 +2301,7 @@
     }
   }
 
-  /* â”â”â” CINOVA-INSPIRED PREMIUM UTILITIES (Al-Imam Overhaul) â”â”â”
-     Referensi: creatorcinova.site + omi.kemenag.go.id design language
-  â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â” */
-
-  /* â”€â”€â”€ Eyebrow Pill Badge (Cinova-style) â”€â”€â”€ */
-  .eyebrow-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.375rem 0.875rem;
-    border-radius: 9999px;
-    background: rgba(85, 0, 0, 0.08);
-    border: 1px solid rgba(85, 0, 0, 0.18);
-    color: var(--color-maroon-700);
-    font-weight: 700;
-    font-size: 0.75rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  .eyebrow-pill-gold {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.375rem 0.875rem;
-    border-radius: 9999px;
-    background: rgba(201, 168, 76, 0.12);
-    border: 1px solid rgba(201, 168, 76, 0.3);
-    color: var(--color-cream-600);
-    font-weight: 700;
-    font-size: 0.75rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  /* â”€â”€â”€ CTA Button with Glow (Cinova-style) â”€â”€â”€ */
-  .btn-glow-maroon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 1rem 2.25rem;
-    border-radius: 9999px;
-    font-weight: 700;
-    font-size: 0.9375rem;
-    color: var(--color-cream-100);
-    background: linear-gradient(135deg, var(--color-maroon-700) 0%, var(--color-maroon-950) 100%);
-    box-shadow: 0 0 40px -10px rgba(85, 0, 0, 0.55), 0 4px 16px -4px rgba(85, 0, 0, 0.35);
-    border: none;
-    text-decoration: none;
-    transition: transform 0.2s var(--ease-spring), box-shadow 0.2s var(--ease-smooth), filter 0.2s ease;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-
-    &::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.10) 0%, transparent 60%);
-      border-radius: inherit;
-      pointer-events: none;
-    }
-
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 60px -8px rgba(85, 0, 0, 0.65), 0 8px 24px -4px rgba(85, 0, 0, 0.4);
-      filter: brightness(1.08);
-    }
-
-    &:active {
-      transform: translateY(0) scale(0.98);
-    }
-  }
-
-  /* â”€â”€â”€ Flow Chips (Cinova-style process strip) â”€â”€â”€ */
-  .flow-chip {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.25rem 0.625rem;
-    background: var(--color-surface-50);
-    border: 1px solid var(--color-surface-200);
-    border-radius: 6px;
-    font-size: 0.8125rem;
-    font-weight: 600;
-    color: var(--color-ink-700);
-  }
-
-  .flow-chip-arrow {
-    color: var(--color-maroon-500);
-    font-weight: 800;
-    font-size: 0.875rem;
-  }
-
-  /* â”€â”€â”€ Countdown Box (OMI-style) â”€â”€â”€ */
-  .countdown-box {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 1rem 1.25rem;
-    background: var(--color-white);
-    border: 1px solid var(--color-maroon-100);
-    border-radius: 1rem;
-    box-shadow: var(--shadow-premium-sm);
-  }
-
-  .countdown-unit {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-width: 52px;
-  }
-
-  .countdown-number {
-    font-family: var(--font-display);
-    font-size: 1.875rem;
-    font-weight: 900;
-    letter-spacing: -0.04em;
-    color: var(--color-maroon-900);
-    line-height: 1;
-  }
-
-  .countdown-label {
-    font-size: 0.625rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--color-ink-400);
-    margin-top: 0.25rem;
-  }
-
-  .countdown-sep {
-    font-size: 1.5rem;
-    font-weight: 900;
-    color: var(--color-maroon-200);
-    line-height: 1;
-    margin-bottom: 12px;
-  }
-
-  /* â”€â”€â”€ Section Cream Background â”€â”€â”€ */
-  .section-cream {
-    background: var(--color-surface-warm);
-  }
-
-  /* â”€â”€â”€ Step Ghost Number (Cinova-style) â”€â”€â”€ */
-  .step-ghost-number {
-    position: absolute;
-    top: -0.5rem;
-    left: 1rem;
-    font-family: var(--font-display);
-    font-size: 5rem;
-    font-weight: 900;
-    color: var(--color-maroon-100);
-    line-height: 1;
-    z-index: 0;
-    user-select: text;
-    pointer-events: none;
-  }
-
-  /* â”€â”€â”€ Cinova-style Disclaimer / Callout Strip â”€â”€â”€ */
-  .callout-strip-maroon {
-    display: inline-block;
-    padding: 0.625rem 1.25rem;
-    border-radius: 9999px;
-    background: rgba(85, 0, 0, 0.06);
-    border: 1px solid rgba(85, 0, 0, 0.14);
-    font-weight: 600;
-    color: var(--color-ink-700);
-    font-size: 0.875rem;
-  }
-
-  /* â”€â”€â”€ Marquee Announcement Bar â”€â”€â”€ */
-  .announcement-bar {
-    width: 100%;
-    background: linear-gradient(135deg, var(--color-maroon-900) 0%, var(--color-maroon-950) 100%);
-    overflow: hidden;
-    height: 36px;
-    display: flex;
-    align-items: center;
-  }
-
-  .announcement-track {
-    display: flex;
-    white-space: nowrap;
-    animation: marquee-scroll 22s linear infinite;
-  }
-
-  .announcement-track span {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0 2rem;
-    color: var(--color-cream-200);
-    font-weight: 700;
-    font-size: 0.8rem;
-    letter-spacing: 0.02em;
-  }
-
-  .announcement-track .dot {
-    display: inline-block;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--color-cream-400);
-    flex-shrink: 0;
-  }
-
-  /* â”€â”€â”€ Keyframe Animations â”€â”€â”€ */
+  /* ─── Keyframe Animations ─── */
   .float {
     animation: float 7s var(--ease-in-out) infinite;
   }
@@ -2482,7 +2375,7 @@
     }
   }
 
-  /* â”€â”€â”€ Shimmer (loading skeleton) â”€â”€â”€ */
+  /* ─── Shimmer (loading skeleton) ─── */
   .shimmer {
     background: linear-gradient(90deg,
         var(--color-surface-100) 25%,
@@ -2502,7 +2395,7 @@
     }
   }
 
-  /* â”€â”€â”€ Spin â”€â”€â”€ */
+  /* ─── Spin ─── */
   .spin-slow {
     animation: spin 3s linear infinite;
   }
@@ -2513,7 +2406,7 @@
     }
   }
 
-  /* â”€â”€â”€ Performance â”€â”€â”€ */
+  /* ─── Performance ─── */
   .will-change-transform {
     will-change: transform;
   }
@@ -2528,7 +2421,7 @@
     perspective: 1000px;
   }
 
-  /* â”€â”€â”€ Safe area â”€â”€â”€ */
+  /* ─── Safe area ─── */
   .pb-safe {
     padding-bottom: max(1rem, env(safe-area-inset-bottom));
   }
@@ -2545,7 +2438,7 @@
     padding-right: max(0px, env(safe-area-inset-right));
   }
 
-  /* â”€â”€â”€ Mask utilities â”€â”€â”€ */
+  /* ─── Mask utilities ─── */
   .mask-fade-bottom {
     mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
     -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
@@ -2569,7 +2462,7 @@
         transparent 100%);
   }
 
-  /* â”€â”€â”€ Noise texture overlay â”€â”€â”€ */
+  /* ─── Noise texture overlay ─── */
   .noise-overlay {
     position: relative;
     isolation: isolate;
@@ -2586,13 +2479,13 @@
     z-index: 1;
   }
 
-  /* â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
      CIROAI PREMIUM ENTERPRISE AESTHETIC
      Terinspirasi dari UI www.ciroai.us
-     Brand-agnostic â€” Dipakai semua project
-     â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â” */
+     Brand-agnostic — Dipakai semua project
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
-  /* â”€â”€ Section Label Badge (CiroAI "ENTERPRISE DATA INTELLIGENCE" pill) â”€â”€
+  /* ── Section Label Badge (CiroAI "ENTERPRISE DATA INTELLIGENCE" pill) ──
      Gunakan di atas heading section sebagai label kecil uppercase
      Contoh: <span class="section-label section-label-teal">Fitur Unggulan</span>
   */
@@ -2621,11 +2514,18 @@
     }
   }
 
-  /* Teal variant (Template-Demo) â€” mapped to maroon for Al Imam brand */
+  /* Teal variant (Template-Demo) */
   .section-label-teal {
-    background: rgba(128, 0, 0, 0.08);
-    color: var(--color-maroon-700);
-    border-color: rgba(128, 0, 0, 0.18);
+    background: rgba(13, 148, 136, 0.10);
+    color: var(--color-teal-700);
+    border-color: rgba(13, 148, 136, 0.22);
+  }
+
+  /* Primary alias (Template-Demo) */
+  .section-label-primary {
+    background: rgba(13, 148, 136, 0.10);
+    color: var(--color-teal-700);
+    border-color: rgba(13, 148, 136, 0.22);
   }
 
   /* Blue variant (Ulul Albaab) */
@@ -2637,16 +2537,9 @@
 
   /* Maroon variant (Al Imam) */
   .section-label-maroon {
-    background: rgba(100, 10, 10, 0.09);
+    background: rgba(128, 0, 0, 0.08);
     color: var(--color-maroon-700);
-    border-color: rgba(100, 10, 10, 0.20);
-  }
-
-  /* Alias primary â€” untuk kemudahan pakai di Al Imam */
-  .section-label-primary {
-    background: rgba(100, 10, 10, 0.09);
-    color: var(--color-maroon-700);
-    border-color: rgba(100, 10, 10, 0.20);
+    border-color: rgba(128, 0, 0, 0.18);
   }
 
   /* White variant (untuk section gelap) */
@@ -2656,7 +2549,7 @@
     border-color: rgba(255, 255, 255, 0.20);
   }
 
-  /* â”€â”€ Glassmorphism Panels (CiroAI floating card effect) â”€â”€
+  /* ── Glassmorphism Panels (CiroAI floating card effect) ──
      Gunakan untuk floating cards, navbar, atau stat widget overlay
   */
   .glass-panel {
@@ -2720,7 +2613,7 @@
     box-shadow: 0 2px 16px rgba(128, 0, 0, 0.08);
   }
 
-  /* â”€â”€ Ambient Glow Blobs (CiroAI background orbs) â”€â”€
+  /* ── Ambient Glow Blobs (CiroAI background orbs) ──
      Gunakan sebagai elemen dekoratif absolut di dalam section/hero
      Tidak memerlukan tailwind khusus, cukup pakai class ini
   */
@@ -2728,46 +2621,89 @@
     position: absolute;
     border-radius: 50%;
     pointer-events: none;
-    filter: blur(60px);
-    opacity: 0.25;
+    filter: blur(55px);
+    opacity: 0.30;
+  }
+
+  /* Emerald primary blob */
+  .glow-blob-primary {
+    background: radial-gradient(ellipse, var(--color-teal-400) 0%, transparent 70%);
+  }
+
+  /* Gold secondary blob */
+  .glow-blob-secondary {
+    background: radial-gradient(ellipse, var(--color-sand-400) 0%, transparent 70%);
+  }
+
+  .glow-blob-teal {
+    background: radial-gradient(ellipse, var(--color-teal-400) 0%, transparent 70%);
+  }
+
+  .glow-blob-blue {
+    background: radial-gradient(ellipse, var(--color-blue-400) 0%, transparent 70%);
   }
 
   .glow-blob-maroon {
     background: radial-gradient(ellipse, var(--color-maroon-500) 0%, transparent 70%);
   }
 
-  .glow-blob-primary {
-    background: radial-gradient(ellipse, var(--color-maroon-400) 0%, transparent 70%);
+  .glow-blob-gold {
+    background: radial-gradient(ellipse, var(--color-gold-400) 0%, transparent 70%);
   }
 
-  .glow-blob-secondary {
-    background: radial-gradient(ellipse, var(--color-cream-400) 0%, transparent 70%);
+  .glow-blob-amber {
+    background: radial-gradient(ellipse, var(--color-amber-400) 0%, transparent 70%);
   }
 
-  /* â”€â”€ Gradient Text (CiroAI "Platform." styling) â”€â”€
+  /* ── Gradient Text (CiroAI "Platform." styling) ──
      Gunakan pada h1/h2 keyword penting agar lebih dramatis & premium
-     Contoh: <span class="gradient-text-maroon">Penerimaan Santri</span>
+     Contoh: <span class="gradient-text-teal">Penerimaan Santri</span>
   */
+  .gradient-text-teal {
+    background: linear-gradient(135deg, var(--color-teal-600) 0%, var(--color-teal-900) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline;
+  }
+
+  .gradient-text-blue {
+    background: linear-gradient(135deg, var(--color-blue-600) 0%, var(--color-blue-900) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline;
+  }
+
   .gradient-text-maroon {
-    background: linear-gradient(135deg, var(--color-maroon-700) 0%, var(--color-maroon-950) 100%);
+    background: linear-gradient(135deg, var(--color-maroon-600) 0%, var(--color-maroon-900) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     display: inline;
   }
 
-  /* Gold-warmth gradient (pai-next style â€” maroon to cream/gold) */
-  .gradient-text-maroon-gold {
-    background: linear-gradient(135deg, var(--color-maroon-700) 0%, var(--color-cream-500) 60%, var(--color-maroon-600) 100%);
+  /* Teal-Gold gradient (pai-next signature style, versi template-demo) */
+  .gradient-text-teal-gold {
+    background: linear-gradient(135deg, var(--color-teal-600) 0%, var(--color-sand-400) 55%, var(--color-teal-500) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     display: inline;
   }
 
-  /* Cream-to-white (untuk section gelap) */
-  .gradient-text-cream-warm {
-    background: linear-gradient(135deg, var(--color-cream-200) 0%, #fff5e0 100%);
+  /* Emerald fresh */
+  .gradient-text-emerald {
+    background: linear-gradient(135deg, var(--color-teal-500) 0%, var(--color-teal-700) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline;
+  }
+
+  /* Gold warm */
+  .gradient-text-gold-warm {
+    background: linear-gradient(135deg, var(--color-sand-300) 0%, var(--color-sand-500) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -2783,9 +2719,27 @@
     display: inline;
   }
 
-  /* â”€â”€ Neon Accent Border (CiroAI blue button glow) â”€â”€
+  /* ── Neon Accent Border (CiroAI blue button glow) ──
      Menambah glow effect pada elemen dengan brand color
   */
+  .glow-ring-teal {
+    box-shadow: 0 0 0 1px rgba(13, 148, 136, 0.3), 0 0 20px rgba(13, 148, 136, 0.15);
+    transition: box-shadow var(--duration-base) var(--ease-smooth);
+
+    &:hover {
+      box-shadow: 0 0 0 1px rgba(13, 148, 136, 0.5), 0 0 30px rgba(13, 148, 136, 0.22);
+    }
+  }
+
+  .glow-ring-blue {
+    box-shadow: 0 0 0 1px rgba(3, 105, 199, 0.3), 0 0 20px rgba(3, 105, 199, 0.15);
+    transition: box-shadow var(--duration-base) var(--ease-smooth);
+
+    &:hover {
+      box-shadow: 0 0 0 1px rgba(3, 105, 199, 0.5), 0 0 30px rgba(3, 105, 199, 0.22);
+    }
+  }
+
   .glow-ring-maroon {
     box-shadow: 0 0 0 1px rgba(128, 0, 0, 0.3), 0 0 20px rgba(128, 0, 0, 0.15);
     transition: box-shadow var(--duration-base) var(--ease-smooth);
@@ -2795,7 +2749,7 @@
     }
   }
 
-  /* â”€â”€ Shimmer Loading Effect (CiroAI sophistication) â”€â”€ */
+  /* ── Shimmer Loading Effect (CiroAI sophistication) ── */
   .shimmer {
     background: linear-gradient(
       90deg,
@@ -2813,7 +2767,7 @@
     100% { background-position: 200% 0; }
   }
 
-  /* â”€â”€ Top Shine Line (CiroAI card top highlight) â”€â”€
+  /* ── Top Shine Line (CiroAI card top highlight) ──
      Tambahkan class ini pada card dark untuk efek "sheen" di bagian atas
      Requires: position:relative; overflow:hidden
   */
@@ -2828,7 +2782,7 @@
     pointer-events: none;
   }
 
-  /* â”€â”€ Stat Number Style (CiroAI "20+ / Multi-LLM" stat blocks) â”€â”€ */
+  /* ── Stat Number Style (CiroAI "20+ / Multi-LLM" stat blocks) ── */
   .stat-label {
     font-size: 0.625rem;
     font-weight: 800;
@@ -2847,7 +2801,7 @@
     color: var(--color-ink-900);
   }
 
-  /* â”€â”€ Divider Line (CiroAI subtle separator) â”€â”€ */
+  /* ── Divider Line (CiroAI subtle separator) ── */
   .divider-gradient {
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--color-ink-200) 30%, var(--color-ink-200) 70%, transparent);
@@ -2855,9 +2809,9 @@
     margin: 0;
   }
 
-  .divider-gradient-brand-maroon {
+  .divider-gradient-brand-teal {
     height: 1px;
-    background: linear-gradient(90deg, transparent, var(--color-maroon-200) 30%, var(--color-maroon-200) 70%, transparent);
+    background: linear-gradient(90deg, transparent, var(--color-teal-200) 30%, var(--color-teal-200) 70%, transparent);
     border: none;
   }
 
@@ -2873,7 +2827,7 @@
     border: none;
   }
 
-  /* â”€â”€ Hover Lift (standard micro-interaction) â”€â”€ */
+  /* ── Hover Lift (standard micro-interaction) ── */
   .hover-lift {
     transition: transform var(--duration-base) var(--ease-spring), box-shadow var(--duration-base) var(--ease-spring);
 
@@ -2901,7 +2855,7 @@
   }
 }
 
-  /* â”€â”€ Icon Box (CiroAI feature icon container) â”€â”€ */
+  /* ── Icon Box (CiroAI feature icon container) ── */
   .icon-box {
     display: inline-flex;
     align-items: center;
@@ -2927,13 +2881,14 @@
     box-shadow: var(--shadow-sm);
   }
 
-/* â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
-   6. CEKAT.AI INSPIRED â€” PREMIUM ADDITIONS
-   Infinite Marquee Â· Section Numbering
-   Shine Effects Â· Social Proof Strips
-   â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â” */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   6. CEKAT.AI INSPIRED — PREMIUM ADDITIONS
+   Infinite Marquee · Section Numbering
+   Noise Overlays · Shine Effects
+   Social Proof Strips
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
-/* â”€â”€â”€ Infinite Marquee Keyframes â”€â”€â”€ */
+/* ─── Infinite Marquee Keyframes ─── */
 @keyframes marquee-scroll {
   0% { transform: translateX(0); }
   100% { transform: translateX(-33.333%); }
@@ -2944,139 +2899,200 @@
   100% { transform: translateX(0); }
 }
 
-/* â”€â”€â”€ Section Label Numbered â”€â”€â”€ */
-
-.section-label-numbered {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.625rem;
-  font-size: 0.6875rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-primary-600);
-  line-height: 1;
-
-  & .num {
-    font-family: var(--font-display);
-    font-size: 0.625rem;
-    font-weight: 900;
-    letter-spacing: 0.08em;
-    color: var(--color-ink-400);
-  }
-  & .slash {
-    color: var(--color-ink-300);
-    font-weight: 300;
-  }
-}
-
-/* â”€â”€â”€ Shine on Hover â”€â”€â”€ */
-.shine-hover {
-  position: relative;
-  overflow: hidden;
-
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 60%;
-    height: 100%;
-    background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.12) 50%, transparent 60%);
-    transition: left 0.6s var(--ease-smooth);
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  &:hover::before {
-    left: 150%;
-  }
-}
-
-/* â”€â”€â”€ Editorial Divider â”€â”€â”€ */
-.divider-editorial {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin: 0;
-
-  &::before,
-  &::after {
-    content: "";
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(to right, transparent, var(--color-ink-200), transparent);
-  }
-
-  & span {
-    font-size: 0.6rem;
+/* ─── Section Label Numbered (Cekat.ai editorial style) ─── */
+/* Usage: <div class="section-label-numbered">01 / Tentang Kami</div> */
+@layer components {
+  .section-label-numbered {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-size: 0.6875rem;
     font-weight: 800;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: var(--color-ink-300);
-    white-space: nowrap;
+    color: var(--color-primary-600);
+    line-height: 1;
+
+    /* Number part gets different style */
+    & .num {
+      font-family: var(--font-display);
+      font-size: 0.625rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      color: var(--color-ink-400);
+    }
+
+    /* Divider slash */
+    & .slash {
+      color: var(--color-ink-300);
+      font-weight: 300;
+    }
   }
-}
 
-/* â”€â”€â”€ Live Pill Badge â”€â”€â”€ */
-.pill-live {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  padding: 0.3rem 0.75rem;
-  border-radius: 9999px;
-  background: var(--color-success-50);
-  border: 1px solid rgba(22, 163, 74, 0.2);
-  color: var(--color-success-500);
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  line-height: 1;
+  /* ─── Noise Overlay (Cekat.ai subtle texture) ─── */
+  /* Apply to a pseudo-element or overlay div for subtle paper texture */
+  .noise-overlay {
+    position: relative;
 
-  & .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--color-success-500);
-    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      border-radius: inherit;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
   }
-}
 
-/* â”€â”€â”€ Social Proof Strip â”€â”€â”€ */
-.social-proof-strip {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  padding: 0.5rem 1rem;
+  /* ─── Shine on Hover (Cekat.ai premium card sheen) ─── */
+  /* Apply to cards for a subtle sweep light effect on hover */
+  .shine-hover {
+    position: relative;
+    overflow: hidden;
 
-  & .proof-label {
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(
+        105deg,
+        transparent 40%,
+        rgba(255, 255, 255, 0.12) 50%,
+        transparent 60%
+      );
+      transition: left 0.6s var(--ease-smooth);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    &:hover::before {
+      left: 150%;
+    }
+  }
+
+  /* ─── Social Proof Strip (Cekat.ai "dipercaya oleh..." row) ─── */
+  .social-proof-strip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    padding: 0.5rem 1rem;
+
+    & .proof-label {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-ink-400);
+      white-space: nowrap;
+    }
+
+    & .proof-divider {
+      width: 1px;
+      height: 14px;
+      background: var(--color-ink-200);
+      flex-shrink: 0;
+    }
+  }
+
+  /* ─── Enhanced Section Divider (editorial horizontal rule) ─── */
+  .divider-editorial {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0;
+
+    &::before,
+    &::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(
+        to right,
+        transparent,
+        var(--color-ink-200),
+        transparent
+      );
+    }
+
+    & span {
+      font-size: 0.6rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--color-ink-300);
+      white-space: nowrap;
+    }
+  }
+
+  /* ─── Pill Badge Enhanced (Cekat.ai "🟢 Live" pill) ─── */
+  .pill-live {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: 9999px;
+    background: var(--color-success-50);
+    border: 1px solid rgba(22, 163, 74, 0.2);
+    color: var(--color-success-500);
     font-size: 0.6875rem;
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--color-ink-400);
-    white-space: nowrap;
+    line-height: 1;
+
+    & .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-success-500);
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
   }
 
-  & .proof-divider {
-    width: 1px;
-    height: 14px;
-    background: var(--color-ink-200);
-    flex-shrink: 0;
+  /* ─── Featured Number Display (Cekat.ai "3.000+" large stat) ─── */
+  .featured-stat {
+    & .featured-stat-number {
+      font-family: var(--font-display);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: var(--color-primary-700);
+    }
+
+    & .featured-stat-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--color-ink-500);
+      margin-top: 0.25rem;
+      line-height: 1.4;
+    }
+
+    & .featured-stat-sublabel {
+      font-size: 0.625rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-primary-400);
+      margin-top: 0.125rem;
+    }
   }
 }
 
-
+/* ─── @keyframes for pulse (if not already defined by tailwind) ─── */
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.4; }
 }
 
 
-/* â”â”â” QONTAK-INSPIRED UTILITIES â”â”â” */
+/* ━━━ QONTAK-INSPIRED UTILITIES ━━━ */
 @layer components {
   .glass-panel-qontak {
     background: rgba(255, 255, 255, 0.85);
@@ -3084,19 +3100,6 @@
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.5);
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
-  }
-
-  .card-tactile {
-    background: #ffffff;
-    border-radius: var(--radius); /* or 20px */
-    border: 1px solid rgba(229, 231, 235, 0.6); /* slate-200/60 */
-    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.7), 0 2px 10px rgba(0, 0, 0, 0.04);
-    transition: transform var(--duration-base) var(--ease-spring), box-shadow var(--duration-base) var(--ease-spring);
-    overflow: hidden;
-  }
-  .card-tactile:hover {
-    box-shadow: inset 0 0 0 1px rgba(255,255,255,1), 0 8px 30px rgba(85, 0, 0, 0.08);
-    transform: translateY(-2px);
   }
 
   .bento-card {
@@ -3122,7 +3125,7 @@
   }
 }
 
-/* â”â”â” MOBILE RESPONSIVENESS OVERRIDES â”â”â” */
+/* ━━━ MOBILE RESPONSIVENESS OVERRIDES ━━━ */
 html, body {
   overflow-x: hidden !important;
   width: 100%;
@@ -3160,7 +3163,7 @@ html, body {
   }
 }
 
-/* â”€â”€ Viracun UI Adoptions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── Viracun UI Adoptions ────────────────────────────────────────────────── */
 @layer base {
   body {
     background:
@@ -3201,24 +3204,24 @@ html, body {
 .stat-card:hover .stat-icon {
   transform: scale(1.06) !important;
 }
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ────────────────────────────────────────────────────────────────────────── */
 
 
-/* â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
-   BLU BCA "CALM, NOT SELLS" â€” DESIGN ENHANCEMENT LAYER
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   BLU BCA "CALM, NOT SELLS" — DESIGN ENHANCEMENT LAYER
    Inspired by blu by BCA Digital's premium mobile app aesthetic.
    NON-DESTRUCTIVE: Zero color changes. Only refines feel & polish.
    Applied: radius, shadow depth, transitions, surface, typography rhythm.
-   â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â” */
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
-/* â”€â”€ 1. APP SURFACE BACKGROUND â€” Ice-Blue tint (BLU signature) â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── 1. APP SURFACE BACKGROUND — Ice-Blue tint (BLU signature) ──────── */
 @layer base {
   /* Subtle ice-blue tint makes screens feel calm & premium vs. flat white */
   html, body {
     background-color: #F8FAFC;
   }
 
-  /* â”€â”€ 2. TYPOGRAPHY RHYTHM â€” Plus Jakarta Sans, breathable â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  /* ── 2. TYPOGRAPHY RHYTHM — Plus Jakarta Sans, breathable ────────────
      More generous line-height & letter-spacing for readability */
   body {
     line-height: 1.65;
@@ -3229,7 +3232,7 @@ html, body {
     font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
   }
 
-  /* Heading letter-spacing refinement â€” BLU uses tight, intentional tracking */
+  /* Heading letter-spacing refinement — BLU uses tight, intentional tracking */
   h1, h2 {
     letter-spacing: -0.03em;
     line-height: 1.1;
@@ -3249,7 +3252,7 @@ html, body {
     line-height: 1.75;
   }
 
-  /* â”€â”€ 3. SCROLLBAR â€” Slim, pill-shaped, BLU-style â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  /* ── 3. SCROLLBAR — Slim, pill-shaped, BLU-style ─────────────────── */
   ::-webkit-scrollbar {
     width: 4px;
     height: 4px;
@@ -3266,7 +3269,7 @@ html, body {
     background: rgba(100, 116, 139, 0.65);
   }
 
-  /* â”€â”€ 4. FOCUS RING â€” Elegant glow ring, BLU-style â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  /* ── 4. FOCUS RING — Elegant glow ring, BLU-style ──────────────────
      Replaces harsh outline with smooth ring + offset */
   :focus-visible {
     outline: none;
@@ -3275,20 +3278,20 @@ html, body {
     transition: box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* â”€â”€ 5. SELECTION â€” Soft brand-tinted â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  /* ── 5. SELECTION — Soft brand-tinted ────────────────────────────── */
   ::selection {
     background-color: #2563eb !important;
     color: #ffffff !important;
     -webkit-text-fill-color: #ffffff !important;
   }
 
-  /* â”€â”€ 6. IMAGES â€” Smooth rendering â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  /* ── 6. IMAGES — Smooth rendering ────────────────────────────────── */
   img {
     image-rendering: -webkit-optimize-contrast;
   }
 }
 
-/* â”€â”€ 7. BUTTON MICRO-INTERACTIONS â€” BLU tactile press feel â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── 7. BUTTON MICRO-INTERACTIONS — BLU tactile press feel ────────── */
 @layer base {
   button,
   [role="button"],
@@ -3318,7 +3321,7 @@ html, body {
   }
 }
 
-/* â”€â”€ 8. INPUT FIELD STATES â€” BLU's elegant floating label feel â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── 8. INPUT FIELD STATES — BLU's elegant floating label feel ──────── */
 @layer base {
   input,
   textarea,
@@ -3349,7 +3352,7 @@ html, body {
   }
 }
 
-/* â”€â”€ 9. CARD & PANEL REFINEMENTS â€” BLU floating card depth â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── 9. CARD & PANEL REFINEMENTS — BLU floating card depth ─────────── */
 @layer components {
   /* Standard card: white with refined shadow depth */
   .card,
@@ -3369,7 +3372,7 @@ html, body {
     transform: translateY(-1px);
   }
 
-  /* Glass card variant â€” BLU signature glassmorphism */
+  /* Glass card variant — BLU signature glassmorphism */
   .card-glass {
     background: rgba(255, 255, 255, 0.82);
     backdrop-filter: blur(16px) saturate(1.6);
@@ -3381,7 +3384,7 @@ html, body {
                 inset 0 1px 0 rgba(255, 255, 255, 0.7);
   }
 
-  /* Elevated floating card â€” for hero/feature panels */
+  /* Elevated floating card — for hero/feature panels */
   .card-elevated {
     background: #FFFFFF;
     border-radius: 20px;
@@ -3400,7 +3403,7 @@ html, body {
   }
 }
 
-/* â”€â”€ 10. LINK TRANSITIONS â€” Smooth, intentional â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── 10. LINK TRANSITIONS — Smooth, intentional ──────────────────────── */
 @layer base {
   a {
     transition: color 0.15s cubic-bezier(0.4, 0, 0.2, 1),
@@ -3409,7 +3412,7 @@ html, body {
   }
 }
 
-/* â”€â”€ 11. TABLE REFINEMENTS â€” BLU density with breathing room â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── 11. TABLE REFINEMENTS — BLU density with breathing room ─────────── */
 @layer components {
   table {
     border-collapse: separate;
@@ -3430,7 +3433,7 @@ html, body {
   thead th:last-child  { border-radius: 0 12px 0 0; }
 }
 
-/* â”€â”€ 12. MODAL & BOTTOM SHEET â€” BLU slide-up rounded panels â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── 12. MODAL & BOTTOM SHEET — BLU slide-up rounded panels ──────────── */
 @layer components {
   .modal-panel,
   [role="dialog"] > div {
@@ -3447,7 +3450,7 @@ html, body {
   }
 }
 
-/* â”€â”€ 13. BADGE & TAG REFINEMENTS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── 13. BADGE & TAG REFINEMENTS ─────────────────────────────────────── */
 @layer components {
   .badge,
   .tag {
@@ -3458,7 +3461,7 @@ html, body {
   }
 }
 
-/* â”€â”€ 14. ANIMATION UTILITIES â€” BLU micro-interaction helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── 14. ANIMATION UTILITIES — BLU micro-interaction helpers ─────────── */
 @layer utilities {
   .transition-smooth {
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -3497,9 +3500,9 @@ html, body {
   }
 }
 
-/* â”€â”€ 15. SIDEBAR/NAV REFINEMENTS for Dashboard Projects â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── 15. SIDEBAR/NAV REFINEMENTS for Dashboard Projects ─────────────── */
 @layer components {
-  /* Sidebar active item â€” BLU's clear but calm active state */
+  /* Sidebar active item — BLU's clear but calm active state */
   .sidebar-item-active,
   [data-active="true"] {
     border-radius: 12px;
@@ -3517,7 +3520,7 @@ html, body {
   }
 }
 
-/* â”€â”€ 16. LOADING & SKELETON â€” BLU animated shimmer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── 16. LOADING & SKELETON — BLU animated shimmer ──────────────────── */
 @layer utilities {
   @keyframes shimmer {
     0% { background-position: -400px 0; }
@@ -3537,7 +3540,7 @@ html, body {
   }
 }
 
-/* â”€â”€ 17. FORM SECTION GROUPING â€” Breathing room like BLU â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── 17. FORM SECTION GROUPING — Breathing room like BLU ────────────── */
 @layer components {
   .form-section {
     background: #FFFFFF;
@@ -3560,9 +3563,9 @@ html, body {
     margin-bottom: 0.375rem;
   }
 }
-/* â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    END BLU BCA DESIGN ENHANCEMENT LAYER
-   â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â” */
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
 /* ═══════════════════════════════════════════════════════════════════
    UNIFIED SCROLL ISOLATION & CUSTOM SCROLLBAR STANDARD (MANDATORY UX)
@@ -3645,35 +3648,6 @@ body.modal-open,
 body.swal2-shown {
   overflow: hidden !important;
   overscroll-behavior: contain !important;
-}
-
-
-/* ════════════════════════════════════════════════════════════════
-   OMI KEMENAG ENTERPRISE DESIGN SYSTEM (MASTER TOKENS)
-   ════════════════════════════════════════════════════════════════ */
-.glass-nav-omi {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(226, 232, 240, 0.9);
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
-}
-
-.card-clean-omi {
-  background: #FFFFFF;
-  border: 1px solid #E2E8F0;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
-  transition: all 0.25s ease-in-out;
-}
-
-.card-clean-omi:hover {
-  border-color: #0073C6;
-  box-shadow: 0 12px 24px -6px rgba(0, 115, 198, 0.12);
-  transform: translateY(-2px);
-}
-
-.bg-canvas-omi {
-  background: linear-gradient(180deg, #F8FAFC 0%, #F0F7FF 100%);
 }
 
 

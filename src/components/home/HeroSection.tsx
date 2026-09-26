@@ -1,236 +1,460 @@
 "use client";
 
-// src/components/home/HeroSection.tsx
+// src/components/home/HeroSection.tsx — alfath-template-demo
+// FIXED: reduced motion badge, tablet breakpoint, touch hover, explicit font sizing
 import { useState, useEffect } from "react";
+
 import Link from "next/link";
 import Image from "next/image";
 import {
   ArrowRight,
   GraduationCap,
-  Award,
-  BookOpen,
-  Download,
-  ShieldCheck,
-} from "lucide-react";
+  Globe,
+  CheckCircle2,
+  Gift } from "lucide-react";
 import { Container } from "@/components/layout/Container";
+import { motion, useReducedMotion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 import { BRANDING } from "@/config/branding";
 
-function useCountdown(targetDate: string) {
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-  useEffect(() => {
-    const target = new Date(targetDate).getTime();
-    function tick() {
-      const diff = Math.max(0, target - Date.now());
-      setTimeLeft({
-        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((diff / 1000 / 60) % 60),
-        seconds: Math.floor((diff / 1000) % 60),
-      });
-    }
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, [targetDate]);
-  return timeLeft;
-}
+const fadeUp = {
+  hidden: { opacity: 0, y: 28, filter: "blur(4px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: {
+      duration: 0.75,
+      ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } } };
 
-function pad(n: number) {
-  return String(n).padStart(2, "0");
-}
+const fadeIn = {
+  hidden: { opacity: 0, scale: 0.97 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.9,
+      ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } } };
 
 export default function HeroSection() {
   const [session, setSession] = useState<any>(null);
-  const countdown = useCountdown("2026-12-28T23:59:59+07:00");
 
   useEffect(() => {
-    fetch("/api/auth/session")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data?.session) setSession(data.session);
-      })
-      .catch(() => {});
+    const fetchSession = async () => {
+      try {
+        const res = await fetch("/api/auth/session");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.session) {
+            setSession(data.session);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch session:", error);
+      }
+    };
+    fetchSession();
   }, []);
+
+  const shouldReduceMotion = useReducedMotion();
+  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.08 });
+  const animate = inView ? "visible" : "hidden";
+
+  // FIX #4: Badge animate computed correctly — no scale jump when reduced motion is on
+  const badgeAnimate = inView
+    ? { opacity: 1, scale: 1, rotate: -6 }
+    : { opacity: 0, scale: shouldReduceMotion ? 1 : 0.5, rotate: -25 };
 
   return (
     <section
-      id="beranda"
-      className="relative w-full overflow-hidden bg-gradient-to-b from-[#FDFCF9] via-[#F8FAFC] to-white pt-6 sm:pt-8 lg:pt-3 xl:pt-6 pb-12 sm:pb-16 lg:pb-20"
+      ref={ref}
+      aria-label="Hero — Beranda Al Fath"
+      className="relative min-h-[100vh] md:min-h-[90vh] lg:min-h-[85vh] flex items-center pt-24 pb-20 md:pt-28 lg:pt-24 lg:pb-20 overflow-hidden"
+      style={{
+        background:
+          "linear-gradient(160deg, var(--color-surface-50) 0%, var(--color-white) 55%, var(--color-primary-50) 100%)" }}
     >
-      {/* Background micro grid */}
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgc3Ryb2tlPSIjMDAwMDAwIiBzdHJva2Utb3BhY2l0eT0iMC4wMiIgZmlsbD0ibm9uZSI+PHBhdGggZD0iTTAgNjBoNjBNNjAgMGwwIDYwIi8+PC9nPjwvc3ZnPg==')] opacity-70 pointer-events-none" />
+      {/* CiroAI Atmospheric Background Blobs */}
+      <div className="glow-blob glow-blob-primary w-[60%] h-[70%] -top-[20%] -left-[10%] opacity-20" aria-hidden="true" />
+      <div className="glow-blob glow-blob-gold w-[50%] h-[60%] top-[10%] -right-[10%] opacity-15" aria-hidden="true" />
+      <div className="glow-blob glow-blob-primary w-[40%] h-[40%] bottom-[-10%] left-[20%] opacity-10" aria-hidden="true" />
+      
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+        <div
+          className="absolute inset-0 opacity-[0.015]"
+          style={{
+            backgroundImage: `linear-gradient(var(--color-primary-500) 1px, transparent 1px), linear-gradient(90deg, var(--color-primary-500) 1px, transparent 1px)`,
+            backgroundSize: "64px 64px" }}
+        />
+        <div
+          className="absolute inset-0 opacity-[0.012]"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")` }}
+        />
+      </div>
 
-      {/* Ambient glow — pakai token brand, bukan hex manual */}
-      <div className="glow-blob glow-blob-primary w-[420px] h-[420px] -top-32 -right-24" aria-hidden="true" />
-      <div className="glow-blob glow-blob-secondary w-[320px] h-[320px] bottom-0 -left-20" aria-hidden="true" />
-
-      <Container className="relative z-10 max-w-7xl mx-auto px-4 md:px-6">
-        <div className="grid lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-12 items-center">
-          {/* ═════════ LEFT COLUMN ═════════ */}
-          <div className="lg:col-span-7 space-y-4 sm:space-y-5 lg:space-y-4 xl:space-y-6 text-center lg:text-left">
-            {/* Eyebrow pill — pakai token secondary/primary */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary/20 border border-secondary/50 shadow-xs">
-              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              <span className="text-xs font-extrabold uppercase tracking-wider text-primary">
-                Portal Resmi SPMB Tahun Ajaran {BRANDING.academicYear}
+      <Container className="relative z-10">
+        <div className="grid lg:grid-cols-[1.1fr_0.9fr] xl:grid-cols-[1.2fr_0.8fr] gap-12 lg:gap-16 xl:gap-20 items-center">
+          {/* CONTENT SIDE */}
+          <div className="flex flex-col gap-7 lg:gap-9 text-center lg:text-left items-center lg:items-start w-full">
+            {/* Opening Badge */}
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              animate={animate}
+              transition={{ delay: 0.1 }}
+              className="flex justify-center lg:justify-start w-full"
+            >
+              <span className="section-label section-label-primary">
+                Selamat Datang di {BRANDING.schoolShortName}
               </span>
-            </div>
+            </motion.div>
 
-            {/* Headline */}
-            <h1 className="text-3xl sm:text-5xl lg:text-[2.75rem] xl:text-[3.25rem] 2xl:text-[3.5rem] font-extrabold text-slate-900 tracking-tight leading-[1.12]">
-              Kaderisasi Ummat <br />
-              <span className="text-primary">Hanif, Kontributif, &amp; Adaptif</span>
-            </h1>
-
-            {/* Description */}
-            <p className="text-slate-600 text-sm sm:text-base lg:text-[0.95rem] xl:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
-              Bukan sekadar tempat belajar — sebuah ekosistem kaderisasi ummat yang hanif, kontributif, dan adaptif,{" "}
-              <strong className="font-semibold text-slate-900">
-                mendidik dengan keteladanan tanpa luka pengasuhan
-              </strong>
-              . Menyelaraskan penguasaan <strong className="font-semibold text-slate-900">Bahasa Arab intensif</strong>, Tahfidz
-              Al-Qur&apos;an, pendalaman ilmu syar&apos;i, keunggulan sains akademik umum, serta penempaan{" "}
-              <em>leadership</em> dan <em>entrepreneurship</em> berlandaskan Al-Qur&apos;an dan Sunnah.
-            </p>
-
-            {/* Tagline */}
-            <div className="flex items-center gap-3 justify-center lg:justify-start max-w-xl mx-auto lg:mx-0 py-1">
-              <div className="h-px w-8 bg-secondary" />
-              <p className="text-xs sm:text-sm font-semibold italic text-primary">&ldquo;{BRANDING.schoolTagline}&rdquo;</p>
-              <div className="h-px w-8 bg-secondary" />
-            </div>
-
-            {/* 3 Action Buttons — pakai .btn-primary yang sudah ada di globals.css */}
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-2.5 sm:gap-3 pt-1 sm:pt-1.5 w-full">
-              {session ? (
-                <a href="https://spmb.pesantren-alimam.com/dashboard" className="btn-primary w-full sm:w-auto">
-                  <span>Buka Dashboard</span>
-                  <ArrowRight className="w-4 h-4" />
-                </a>
-              ) : (
-                <a href="https://spmb.pesantren-alimam.com/daftar" className="btn-primary w-full sm:w-auto">
-                  <span>Daftar SPMB 2027</span>
-                  <ArrowRight className="w-4 h-4" />
-                </a>
-              )}
-
-              <Link href="/program" className="btn-secondary w-full sm:w-auto">
-                <span>Lihat Program</span>
-              </Link>
-
-              <a
-                href="/documents/Brosur-SPMB-Al-Imam-2027-2028.pdf"
-                download="Brosur-SPMB-Pesantren-Al-Imam-2027-2028.pdf"
-                className="btn-cream w-full sm:w-auto"
+            {/* Headline — FIX #1: explicit clamp for 360px safety */}
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              animate={animate}
+              transition={{ delay: 0.2 }}
+              className="space-y-3"
+            >
+              <h1
+                className="leading-[1.06] tracking-[-0.03em] mx-auto lg:mx-0 max-w-2xl lg:max-w-none font-black text-balance text-center lg:text-left"
+                style={{
+                  fontSize: "clamp(2.5rem, 5vw + 1rem, 5rem)" }}
               >
-                <Download className="w-4 h-4" />
-                <span>Unduh Brosur</span>
-              </a>
-            </div>
-
-            {/* Live Countdown Card */}
-            <div className="pt-2 sm:pt-2.5 max-w-lg mx-auto lg:mx-0">
-              <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-sm">
-                <div className="flex items-center justify-between text-xs font-extrabold text-slate-600 uppercase tracking-wider mb-2.5 sm:mb-3">
-                  <span>Pendaftaran Dibuka: 5 Sep - 28 Des 2026</span>
-                  <span className="text-primary font-bold flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-primary" />
-                    Status: Aktif
+                <span className="block text-ink-950">
+                  Kaderisasi Ummat
+                </span>
+                <span className="block mt-1 text-[var(--color-primary-700)]">
+                  <span className="gradient-text-teal">
+                    Unggul, Cerdas, 
                   </span>
-                </div>
-                <div className="grid grid-cols-4 gap-2.5 sm:gap-3 text-center">
+                  <br className="hidden sm:block" />
+                  <span className="gradient-text-teal">
+                    dan Berintegritas
+                  </span>
+                </span>
+              </h1>
+            </motion.div>
+
+            {/* Body Copy */}
+            <motion.p
+              variants={fadeUp}
+              initial="hidden"
+              animate={animate}
+              transition={{ delay: 0.3 }}
+              className="text-base lg:text-[1.075rem] leading-[1.85] max-w-[42rem] mx-auto lg:mx-0 text-center lg:text-left text-pretty"
+              style={{ color: "var(--color-ink-600)", fontWeight: 450 }}
+            >
+              Bukan sekadar tempat belajar — sebuah sistem pembentukan karakter
+              yang{" "}
+              <strong
+                className="font-bold"
+                style={{ color: "var(--color-primary-700)" }}
+              >
+                mengedepankan keteladanan para pendidik serta mendidik tanpa kekerasan dan luka pengasuhan
+              </strong>, memadukan Intensitas Tahfidz Al-Qur'an, Ilmu Syar'i, Akademik, Leadership, dan Enterpreneurship.
+            </motion.p>
+
+            {/* Tagline Divider */}
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              animate={animate}
+              transition={{ delay: 0.38 }}
+              className="flex items-center gap-3 justify-center lg:justify-start"
+            >
+              <div
+                className="h-px flex-1 max-w-[3rem]"
+                style={{ background: "var(--color-primary-200)" }}
+              />
+              <p
+                className="text-sm font-semibold italic"
+                style={{ color: "var(--color-primary-700)" }}
+              >
+                &ldquo;{BRANDING.schoolTagline}&rdquo;
+              </p>
+              <div
+                className="h-px flex-1 max-w-[3rem]"
+                style={{ background: "var(--color-primary-200)" }}
+              />
+            </motion.div>
+
+            {/* CTA Group */}
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              animate={animate}
+              transition={{ delay: 0.45 }}
+              className="flex flex-col gap-4 items-center lg:items-start"
+            >
+              <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                {session ? (
+                  <Link href="/dashboard" className="w-full sm:w-auto">
+                    <button
+                      className="btn-primary w-full sm:w-auto px-10 lg:px-12 py-4 lg:py-[1.125rem] min-h-[56px] text-[0.9375rem] flex items-center justify-center gap-3 hover:scale-[1.02] active:scale-98 transition-all relative overflow-hidden group font-bold"
+                      style={{ boxShadow: "var(--shadow-primary-lg)" }}
+                    >
+                      <span className="flex h-2.5 w-2.5 relative">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-300 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-400"></span>
+                      </span>
+                      <span>Lanjutkan Ke Dashboard</span>
+                      <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    </button>
+                  </Link>
+                ) : (
+                  <>
+                    <Link href="/ppdb" className="w-full sm:w-auto">
+                      <button
+                        className="btn-primary shine-hover w-full sm:w-auto px-8 lg:px-10 py-4 lg:py-[1.125rem] min-h-[56px] text-[0.9375rem] flex items-center justify-center gap-2.5 group font-bold"
+                        style={{ boxShadow: "var(--shadow-primary-lg)" }}
+                      >
+                        Daftar SPMB Sekarang
+                        <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                      </button>
+                    </Link>
+                    <Link href="/program" className="w-full sm:w-auto">
+                      <button className="btn-secondary w-full sm:w-auto px-8 lg:px-10 py-4 lg:py-[1.125rem] min-h-[56px] text-[0.9375rem] flex items-center justify-center gap-2 group">
+                        Lihat Program Kami
+                        <ArrowRight className="w-4 h-4 opacity-50 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0.5" />
+                      </button>
+                    </Link>
+                  </>
+                )}
+
+              </div>
+
+              <div className="flex items-center gap-3 mt-1">
+                <div className="flex -space-x-2.5">
                   {[
-                    { value: countdown.days, label: "Hari" },
-                    { value: countdown.hours, label: "Jam" },
-                    { value: countdown.minutes, label: "Menit" },
-                    { value: countdown.seconds, label: "Detik" },
-                  ].map((unit) => (
-                    <div key={unit.label} className="bg-slate-50 border border-slate-200 rounded-xl p-2.5 sm:p-3">
-                      <div className="stat-value text-xl sm:text-2xl md:text-3xl text-primary tabular-nums">
-                        {pad(unit.value)}
-                      </div>
-                      <div className="stat-label mt-1">{unit.label}</div>
-                    </div>
+                    { bg: "var(--color-primary-200)" },
+                    { bg: "var(--color-secondary-300)" },
+                    { bg: "var(--color-primary-300)" },
+                    { bg: "var(--color-secondary-200)" },
+                  ].map((item, i) => (
+                    <div
+                      key={i}
+                      className="w-7 h-7 rounded-full border-2 flex-shrink-0"
+                      style={{
+                        background: item.bg,
+                        borderColor: "var(--color-white)",
+                        boxShadow: "var(--shadow-xs)" }}
+                      aria-hidden="true"
+                    />
                   ))}
                 </div>
+                <p
+                  className="text-[11px] font-semibold leading-tight"
+                  style={{ color: "var(--color-ink-500)" }}
+                >
+                  <span
+                    className="font-bold uppercase tracking-wide"
+                    style={{ color: "var(--color-primary-700)" }}
+                  >
+                    Angkatan Pertama
+                  </span>
+                  {" • "}Pesantren Al Fath
+                </p>
               </div>
-            </div>
+
+              <div className="flex flex-wrap gap-x-5 gap-y-2 justify-center lg:justify-start mt-1">
+                {[
+                  "MTs & IL tersedia",
+                  "Proses SPMB Cepat & Transparan",
+                  "Sistem Boarding (Asrama)",
+                ].map((point) => (
+                  <span
+                    key={point}
+                    className="flex items-center gap-1.5 text-[11px] font-semibold"
+                    style={{ color: "var(--color-ink-500)" }}
+                  >
+                    <CheckCircle2
+                      className="w-3.5 h-3.5 flex-shrink-0"
+                      style={{ color: "var(--color-primary-500)" }}
+                      aria-hidden="true"
+                    />
+                    {point}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
           </div>
 
-          {/* ═════════ RIGHT COLUMN: PHOTO + FLOATING BADGES ═════════ */}
-          <div className="lg:col-span-5 relative">
-            <div className="relative rounded-3xl overflow-hidden shadow-xl border-4 border-white group bg-white aspect-[4/5] sm:aspect-square lg:aspect-[4/5] max-h-[500px] xl:max-h-[560px]">
+          {/* VISUAL SIDE — FIX #2: overflow visible + md breakpoints */}
+          <motion.div
+            variants={fadeIn}
+            initial="hidden"
+            animate={animate}
+            transition={{ delay: shouldReduceMotion ? 0 : 0.25 }}
+            className="relative w-full mt-8 lg:-mt-8 xl:-mt-12 lg:max-w-[500px] xl:max-w-[540px] lg:ml-auto"
+            style={{ overflow: "visible" }}
+          >
+            {/* Main Image */}
+            <div
+              className="relative z-10"
+              style={{
+                borderRadius: "2rem",
+                border: "10px solid var(--color-white)",
+                boxShadow:
+                  "var(--shadow-premium-2xl), 0 0 0 1px var(--color-primary-100)",
+                overflow: "hidden" }}
+            >
               <Image
                 src="/images/hero.jpg"
-                alt="Santri Pesantren Al Imam Al Islami"
-                fill
+                alt={`${BRANDING.schoolName} — Pesantren Al Fath`}
+                width={800}
+                height={600}
                 priority
-                sizes="(max-width: 768px) 100vw, 40vw"
-                className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
+                className="w-full h-auto object-cover aspect-[4/3]"
+                style={{
+                  transition: "transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)" }}
+                onMouseEnter={(e) => {
+                  if (!shouldReduceMotion)
+                    e.currentTarget.style.transform = "scale(1.04)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "scale(1)";
+                }}
               />
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background:
+                    "linear-gradient(to top, rgba(10, 22, 16, 0.50) 0%, transparent 55%)" }}
+                aria-hidden="true"
+              />
+            </div>
 
-              {/* Top-Left Floating Badge */}
-              <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-md rounded-2xl p-3 border border-slate-200 shadow-lg flex items-center gap-3">
-                <div className="icon-box icon-box-secondary w-10 h-10">
-                  <Award className="w-5 h-5" />
+            {/* Floating Card: Beasiswa — NEW highlight */}
+            <motion.div
+              animate={shouldReduceMotion ? {} : { y: [0, -12, 0] }}
+              transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+              className="absolute top-[-2%] -left-6 md:top-[5%] md:-left-20 lg:-left-28 z-20 scale-[0.8] md:scale-100"
+              style={{ transformOrigin: "left center" }}
+            >
+              <div className="glass-panel flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2 md:py-3 rounded-2xl md:rounded-2xl shadow-premium-lg border-amber-100">
+                <div className="icon-box w-9 h-9 md:w-11 md:h-11 rounded-2xl md:rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0">
+                  <Gift className="w-4 h-4 md:w-5 md:h-5" />
                 </div>
                 <div>
-                  <p className="text-xs font-extrabold text-slate-900">Standar Mutu</p>
-                  <p className="text-[10px] text-slate-500 font-semibold">Al Andalus IIBS</p>
+                  <p className="text-[9px] md:text-[10px] font-black uppercase tracking-wider mb-0.5 text-amber-600">Beasiswa</p>
+                  <p className="text-xs md:text-sm font-black leading-tight text-[var(--color-primary-900)]">
+                    Dhuafa Berprestasi
+                  </p>
+                  <p className="text-[9px] md:text-[10px] font-semibold mt-0.5 text-[var(--color-ink-500)]">
+                    Tersedia 10 Kuota
+                  </p>
                 </div>
               </div>
+            </motion.div>
 
-              {/* Bottom-Right Floating Badge */}
-              <div className="absolute bottom-4 right-4 bg-white/95 backdrop-blur-md rounded-2xl p-3 border border-slate-200 shadow-lg flex items-center gap-3">
-                <div className="icon-box icon-box-primary w-10 h-10">
-                  <BookOpen className="w-5 h-5" />
+            {/* Floating Card: Tersedia — FIX #2 md breakpoint */}
+            <motion.div
+              animate={shouldReduceMotion ? {} : { y: [0, -10, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -top-8 -right-6 md:-top-5 lg:-top-6 md:-right-4 lg:-right-6 z-20 scale-[0.8] md:scale-100"
+              style={{ transformOrigin: "right center" }}
+            >
+              <div className="glass-panel flex items-center gap-3 px-4 py-3 rounded-2xl">
+                <div className="icon-box icon-box-primary w-11 h-11 rounded-2xl">
+                  <GraduationCap className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-xs font-extrabold text-slate-900">Tahfidz Mutqin</p>
-                  <p className="text-[10px] text-slate-500 font-semibold">Tajwid &amp; Bersanad</p>
+                  <p className="stat-label mb-1">Tersedia</p>
+                  <p className="text-sm font-black leading-tight text-[var(--color-primary-900)]">
+                    MTs &amp; IL
+                  </p>
+                  <p className="text-[10px] font-semibold mt-0.5 text-[var(--color-ink-500)]">
+                    Kuota terbatas
+                  </p>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
+            </motion.div>
 
-        {/* ═════════ 3 FEATURE CARDS ═════════ */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 mt-12 lg:mt-16">
-          <div className="app-card p-6 hover:border-secondary">
-            <div className="icon-box icon-box-secondary w-12 h-12 mb-4">
-              <BookOpen className="w-6 h-6" />
-            </div>
-            <span className="text-xs font-extrabold text-primary uppercase tracking-wider">Fokus Utama</span>
-            <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1">Bahasa Arab &amp; Syar&apos;i</h3>
-            <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">
-              Penguasaan bahasa Arab intensif harian, tahfidz Al-Qur&apos;an mutqin, dan pendalaman kitab turots sesuai
-              bimbingan Sunnah.
-            </p>
-          </div>
+            {/* Floating Card: Jaringan Global — FIX #2 md breakpoint */}
+            <motion.div
+              animate={shouldReduceMotion ? {} : { y: [0, 10, 0] }}
+              transition={{
+                duration: 6,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 1 }}
+              className="absolute -bottom-8 -left-6 md:-bottom-6 lg:-bottom-8 md:-left-4 lg:-left-6 z-20 scale-[0.8] md:scale-100"
+              style={{ transformOrigin: "left center" }}
+            >
+              <div className="glass-panel flex items-center gap-3 px-4 py-3 rounded-2xl">
+                <div className="icon-box icon-box-primary w-11 h-11 rounded-2xl">
+                  <Globe className="w-5 h-5" />
+                </div>
+                <div>
+                  <p className="text-sm font-black leading-tight text-[var(--color-primary-900)]">
+                    Bekerjasama dengan
+                  </p>
+                  <p className="text-[10px] font-semibold mt-0.5 text-[var(--color-ink-500)]">
+                    Universitas Islam Terkemuka di 3 Benua
+                  </p>
+                </div>
+              </div>
+            </motion.div>
 
-          <div className="app-card p-6 hover:border-primary/40">
-            <div className="icon-box icon-box-primary w-12 h-12 mb-4">
-              <GraduationCap className="w-6 h-6" />
-            </div>
-            <span className="text-xs font-extrabold text-primary uppercase tracking-wider">Karakter &amp; Kemandirian</span>
-            <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1">Sains &amp; Leadership</h3>
-            <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">
-              Pelajaran umum dan sains tetap pintar berdaya saing, berpadu dengan penempaan jiwa kepemimpinan dan
-              kewirausahaan.
-            </p>
-          </div>
+            {/* Info Badge — FIX #4: proper reduced motion, FIX #2: md position */}
+            <motion.div
+              initial={{
+                opacity: 0,
+                scale: shouldReduceMotion ? 1 : 0.5,
+                rotate: shouldReduceMotion ? -6 : -25 }}
+              animate={badgeAnimate}
+              transition={{
+                duration: shouldReduceMotion ? 0.01 : 0.85,
+                delay: shouldReduceMotion ? 0 : 0.9,
+                ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
+              whileHover={shouldReduceMotion ? {} : { rotate: 0, scale: 1.05 }}
+              className="absolute -bottom-16 -right-4 md:bottom-6 md:-right-6 lg:bottom-10 lg:-right-10 z-30 cursor-default scale-[0.85] md:scale-100"
+              style={{
+                background:
+                  "linear-gradient(135deg, var(--color-secondary-300) 0%, var(--color-secondary-500) 100%)",
+                padding: "0.85rem 1rem",
+                borderRadius: "1.25rem",
+                border: "4px solid var(--color-white)",
+                boxShadow: "var(--shadow-premium-lg)",
+                transition: "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)" }}
+            >
+              <div className="text-center min-w-[80px]">
+                <p
+                  className="text-[9px] font-black uppercase tracking-[0.1em] leading-none mb-1.5"
+                  style={{ color: "var(--color-primary-950)" }}
+                >
+                  Info Penting
+                </p>
+                <p
+                  className="text-base font-black leading-tight"
+                  style={{ color: "var(--color-primary-900)" }}
+                >
+                  Pendaftaran
+                  <br />
+                  Dibuka
+                </p>
+                <div
+                  className="mt-2 py-1 px-2.5 rounded-full"
+                  style={{ background: "rgba(10, 22, 16, 0.12)" }}
+                >
+                  <p
+                    className="text-[9px] font-bold"
+                    style={{ color: "var(--color-primary-900)" }}
+                  >
+                    Kuota Terbatas
+                  </p>
+                </div>
+              </div>
+            </motion.div>
 
-          <div className="app-card p-6 hover:border-emerald-300">
-            <div className="icon-box w-12 h-12 mb-4 bg-emerald-50 text-emerald-600 border border-emerald-200">
-              <ShieldCheck className="w-6 h-6" />
-            </div>
-            <span className="text-xs font-extrabold text-emerald-600 uppercase tracking-wider">Pola Pengasuhan</span>
-            <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1">Mendidik Tanpa Luka</h3>
-            <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">
-              Keteladanan asatidz 24 jam tanpa kekerasan fisik, lingkungan aman terlindungi dari rokok, perundungan, dan
-              penyimpangan.
-            </p>
-          </div>
+            {/* Decorative glows */}
+            <div className="glow-blob glow-blob-primary w-64 h-64 -bottom-14 -right-14 opacity-15" aria-hidden="true" />
+            <div className="glow-blob glow-blob-gold w-48 h-48 -top-10 -left-10 opacity-20" aria-hidden="true" />
+          </motion.div>
         </div>
       </Container>
     </section>

@@ -1,134 +1,170 @@
 "use client";
 
-// src/components/home/TeachersSection.tsx
+import {
+  GraduationCap,
+  Award,
+  Globe,
+  BookOpen,
+  Users,
+  CheckCircle2 } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { motion } from "framer-motion";
-import { Award, BookOpen, GraduationCap, ShieldCheck } from "lucide-react";
-import Image from "next/image";
 
-const TEACHERS = [
+const TEACHER_BACKGROUNDS = [
   {
-    role: "Pimpinan / Mudir",
-    title: "Ustadz Wahab Rajasam, M.Pd.",
-    institution: "Mudir Pesantren Al Imam Al Islami",
-    desc: "Membina arah kebijakan pendidikan, aqidah shahihah, dan manhaj tarbiyah santri.",
-    icon: Award,
-    badge: "Pimpinan",
-    photo: "/images/wahab-rajasam.webp",
-  },
+    institution: "Muhammad Ibn Saud Islamic University",
+    location: "Pascasarjana, Riyadh, KSA" },
   {
-    role: "Pembina / Penasehat Syar'i",
-    title: "Dr. Muhammad Arifin Badri, M.A.",
-    institution: "Pakar Fiqih & Mu'amalat Islam",
-    desc: "Memberikan bimbingan manhaj syar'i, arahan fatwa, dan pembinaan aqidah Ahlussunnah.",
-    icon: BookOpen,
-    badge: "Penasehat",
-    photo: "/images/muhammad-arifin-badri.webp",
-  },
+    institution: "Univ. Sidi Mohamed ben Abdellah",
+    location: "Pascasarjana, Fes, Maroko" },
   {
-    role: "Kepala Madrasah",
-    title: "Tim Kurikulum Akademik",
-    institution: "Pakar Kurikulum Nasional & Kemenag",
-    desc: "Mengawal integrasi sains modern, literasi digital, dan kesiapan ijazah formal negara.",
-    icon: GraduationCap,
-    badge: "Akademik",
-    photo: null,
-  },
+    institution: "Universitas Al-Azhar",
+    location: "Kairo, Mesir" },
   {
-    role: "Kepala Pengasuhan & Musyrif",
-    title: "Tim Kesantrian 24 Jam",
-    institution: "Tarbiyah Adab & Karakter",
-    desc: "Mendampingi santri di asrama dengan pendekatan keteladanan penuh tanpa kekerasan.",
-    icon: ShieldCheck,
-    badge: "Pengasuhan",
-    photo: null,
-  },
-];
+    institution: "Rabithah Al-Alam Al-Islami",
+    location: "Makkah Al-Mukarromah" },
+  {
+    institution: "Native Speaker",
+    location: "Timur Tengah" },
+  {
+    institution: "LIPIA Jakarta",
+    location: "Univ. Islam Imam Muhammad bin Saud" },
+  {
+    institution: "Universitas Negeri Yogyakarta",
+    location: "Pascasarjana" },
+  {
+    institution: "STIBA Ar-Raayah",
+    location: "Sukabumi" },
+  {
+    institution: "Lulusan Pondok Terkemuka",
+    location: "Nasional" },
+  {
+    institution: "Dosen & Praktisi Ahli",
+    location: "Tenaga Ahli" },
+] as const;
+
+const EASE = [0.16, 1, 0.3, 1] as const;
 
 export default function TeachersSection() {
   return (
-    <section id="pengajar" className="py-24 bg-white border-b border-slate-200 scroll-mt-20">
-      <Container className="max-w-7xl mx-auto px-4 md:px-6">
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-          <span className="section-label section-label-primary inline-flex">Kompetensi &amp; Keteladanan</span>
-          <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
-            Dibimbing oleh <span className="text-primary">Asatidzah Ahli</span>
-          </h2>
-          <p className="text-slate-600 text-sm md:text-base leading-relaxed">
-            Didukung barisan pendidik berkompeten lulusan universitas Islam ternama dan praktisi pendidikan teruji.
-          </p>
-        </div>
+    <section
+      id="pengajar"
+      className="section-alt relative border-y border-secondary-200 overflow-hidden"
+    >
+      <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.02] pointer-events-none" />
+      <div
+        className="absolute -top-32 right-0 translate-x-1/3 w-[600px] h-[600px] pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(229,224,211,0.4) 0%, transparent 60%)" }}
+      />
 
-        {/* Banner Foto Dewan Asatidzah */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="relative w-full aspect-[16/10] sm:aspect-[16/9] lg:aspect-[21/9] min-h-[220px] sm:min-h-0 rounded-3xl overflow-hidden shadow-xl border-2 border-secondary/30 mb-12"
-        >
-          <Image
-            src="/images/para-asatidzah.jpg"
-            alt="Dewan Asatidzah & Pengajar Pesantren Al Imam Al Islami"
-            fill
-            sizes="(max-width: 1200px) 100vw, 1200px"
-            className="object-cover object-top"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 lg:p-8 text-white">
-            <span className="text-[10px] font-extrabold uppercase tracking-widest text-secondary bg-white/10 px-3 py-1 rounded-full border border-white/20 inline-block mb-2">
-              Dewan Asatidzah Al Imam Al Islami
-            </span>
-            <h3 className="text-base sm:text-xl lg:text-2xl font-extrabold leading-tight">Para Pendidik &amp; Pembina Santri Al Imam</h3>
-            <p className="text-white/80 text-xs sm:text-sm mt-1 font-normal max-w-xl line-clamp-2 sm:line-clamp-none">
-              Lulusan universitas Islam ternama Timur Tengah, para hafizh Al-Qur&apos;an bersanad, dan praktisi tarbiyah
-              berpengalaman.
+      <Container className="relative z-10">
+        <div className="flex flex-col lg:flex-row gap-14 lg:gap-24 items-start">
+          {/* ── Text Content ── */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.6, ease: EASE }}
+            className="lg:w-[42%] text-center lg:text-left lg:sticky lg:top-32"
+          >
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-secondary-200 text-primary-700 text-[0.65rem] font-bold uppercase tracking-[0.12em] mb-5 shadow-xs">
+              <GraduationCap className="w-3 h-3 shrink-0" strokeWidth={2} />
+              <span>Tenaga Pendidik</span>
+            </div>
+
+            <h2 className="section-title mb-5">
+              Dibimbing Oleh{" "}
+              <span className="text-gradient-primary">Asatidz Kompeten</span>
+            </h2>
+
+            <p className="section-subtitle lg:ml-0 text-justify lg:text-left mb-10 max-w-lg mx-auto lg:mx-0">
+              Pesantren kami didukung oleh asatidzah profesional lulusan
+              universitas terbaik dunia Islam serta pakar pendidikan nasional.
             </p>
-          </div>
-        </motion.div>
 
-        {/* 4 Pillar Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {TEACHERS.map((teacher, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.08, duration: 0.5 }}
-              className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-xs hover:shadow-md hover:border-secondary transition-all flex flex-col justify-between group"
-            >
-              <div>
-                {/* Photo or Icon */}
-                <div className="flex items-center justify-between mb-5">
-                  {teacher.photo ? (
-                    <div className="w-14 h-14 rounded-2xl overflow-hidden border border-secondary/40 shadow-sm shrink-0">
-                      <Image src={teacher.photo} alt={teacher.title} width={56} height={56} className="object-cover w-full h-full" />
-                    </div>
-                  ) : (
-                    <div className="w-12 h-12 rounded-2xl bg-secondary/20 border border-secondary/40 text-primary flex items-center justify-center font-bold">
-                      <teacher.icon className="w-6 h-6" />
-                    </div>
-                  )}
-                  <span className="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-slate-100 text-slate-700 whitespace-nowrap inline-block shrink-0">
-                    {teacher.badge}
-                  </span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3 sm:gap-4">
+              {[
+                {
+                  icon: Globe,
+                  label: "Lulusan Luar Negeri",
+                  sub: "Timur Tengah, Mesir & Maroko",
+                  accent: "primary" },
+                {
+                  icon: Users,
+                  label: "Native Speakers",
+                  sub: "Timur Tengah",
+                  accent: "secondary" },
+                {
+                  icon: BookOpen,
+                  label: "Lulusan Terbaik",
+                  sub: "Dalam Negeri & Pondok Unggulan",
+                  accent: "secondary" },
+                {
+                  icon: Award,
+                  label: "Dosen & Pakar",
+                  sub: "Tenaga Pendidik Profesional",
+                  accent: "primary" },
+              ].map((feature, i) => (
+                <div
+                  key={i}
+                  className="group flex items-center gap-4 bg-white p-3.5 rounded-2xl border border-secondary-200 shadow-premium-sm hover:shadow-premium-md hover:border-primary-200 transition-all duration-400"
+                >
+                  <div
+                    className={`w-11 h-11 rounded-[12px] flex items-center justify-center shrink-0 shadow-xs transition-transform duration-400 group-hover:scale-105 ${
+                      feature.accent === "primary"
+                        ? "bg-primary-50 text-primary-600"
+                        : feature.accent === "secondary"
+                          ? "bg-secondary-100 text-primary-800 border border-secondary-200"
+                          : "bg-secondary-50/50 text-primary-600"
+                    }`}
+                  >
+                    <feature.icon className="w-5 h-5" strokeWidth={1.8} />
+                  </div>
+                  <div className="text-left min-w-0">
+                    <p className="text-[0.875rem] font-bold text-ink-900 leading-tight mb-0.5 truncate">
+                      {feature.label}
+                    </p>
+                    <p className="text-[0.6rem] font-bold text-ink-400 uppercase tracking-[0.1em] leading-tight truncate">
+                      {feature.sub}
+                    </p>
+                  </div>
                 </div>
+              ))}
+            </div>
+          </motion.div>
 
-                <span className="text-xs font-extrabold text-primary uppercase tracking-wider block mb-1">{teacher.role}</span>
-                <h3 className="text-base font-extrabold text-slate-900 mb-1 group-hover:text-primary transition-colors leading-tight">
-                  {teacher.title}
-                </h3>
-                <p className="text-xs text-slate-400 font-semibold mb-3">{teacher.institution}</p>
-                <p className="text-xs text-slate-600 leading-relaxed font-normal">{teacher.desc}</p>
-              </div>
+          {/* ── Grid Content ── */}
+          <div className="lg:w-[58%] grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 w-full">
+            {TEACHER_BACKGROUNDS.map((item, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 16, scale: 0.98 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, margin: "-20px" }}
+                transition={{ delay: idx * 0.05, duration: 0.5, ease: EASE }}
+                className="group relative bg-white p-5 rounded-2xl border border-secondary-200 shadow-premium-sm hover:shadow-premium-md hover:border-primary-200 flex items-start gap-3.5 overflow-hidden transition-all duration-400"
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-primary-50/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-              <div className="mt-6 pt-3 border-t border-slate-100 flex items-center gap-1.5 text-[11px] font-bold text-slate-400">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                <span>Standar Mutu Al Andalus IIBS</span>
-              </div>
-            </motion.div>
-          ))}
+                <div className="mt-0.5 w-6 h-6 rounded-full bg-secondary-100 border border-secondary-200 flex items-center justify-center shrink-0 shadow-xs transition-transform duration-400 group-hover:scale-110 group-hover:bg-secondary-200">
+                  <CheckCircle2
+                    className="w-3.5 h-3.5 text-primary-700"
+                    strokeWidth={2.5}
+                  />
+                </div>
+                <div className="space-y-1 mt-0.5 relative z-10">
+                  <h4 className="font-bold text-ink-900 text-[0.875rem] leading-snug group-hover:text-primary-800 transition-colors duration-200">
+                    {item.institution}
+                  </h4>
+                  <p className="text-[0.625rem] font-bold text-ink-400 uppercase tracking-[0.1em] leading-tight">
+                    {item.location}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </Container>
     </section>
