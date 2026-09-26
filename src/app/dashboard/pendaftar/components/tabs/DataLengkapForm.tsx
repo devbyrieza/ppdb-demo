@@ -303,9 +303,9 @@ function SectionHeader({
           onToggle();
         }
       }}
-      className={`w-full flex items-center justify-between p-5 rounded-2xl transition-all duration-300 border ${
+      className={`w-full flex items-center justify-between p-5 rounded-[1.5rem] transition-all duration-300 border hover:shadow-md hover:border-primary-200 ${
         disabled
-          ? "bg-slate-50 border-slate-200 opacity-60 cursor-not-allowed"
+          ? "bg-slate-50/50 border-slate-100 opacity-70 cursor-not-allowed"
           : isOpen
             ? "bg-white border-secondary-200 shadow-sm border border-secondary-200 app-card"
             : "bg-surface-50 border-white/50 hover:bg-white hover:border-secondary-100"
@@ -340,7 +340,7 @@ function SectionHeader({
       </div>
       <div className="flex items-center gap-3">
         {isCompleted && (
-          <span className="px-3 py-1 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-2xl uppercase tracking-wide">
+          <span className="px-3 py-1 bg-emerald-50 text-emerald-600 border border-emerald-100 text-xs font-bold rounded-2xl uppercase tracking-wide">
             Lengkap
           </span>
         )}

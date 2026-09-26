@@ -1,241 +1,84 @@
 "use client";
 
-import Link from "next/link";
-import {
-  CheckCircle,
-  Target,
-  Rocket,
-  ArrowRight,
-  Sparkles } from "lucide-react";
+// src/components/home/AboutSection.tsx
 import { Container } from "@/components/layout/Container";
-import { motion, Variants } from "framer-motion";
-import { navigateToDetail } from "@/lib/navigation-scroll";
+import Image from "next/image";
+import { Check } from "lucide-react";
+import { BRANDING } from "@/config/branding";
 
-const SPRING: [number, number, number, number] = [0.16, 1, 0.3, 1];
-
-const misi = [
-  {
-    label: "Unggul",
-    text: "Membentuk pribadi yang memiliki standar kualitas tinggi dalam setiap aspek kehidupan." },
-  {
-    label: "Cerdas",
-    text: "Membentuk pribadi yang memiliki kedalaman ilmu, kritis dalam berpikir, dan bijak dalam bertindak." },
-  {
-    label: "Berintegritas",
-    text: "Membentuk pribadi yang jujur, amanah, dan teguh dalam memegang prinsip kebenaran." },
-  {
-    label: "Dakwah",
-    text: "Menanamkan jiwa dakwah melalui keteladanan para pendidik serta bimbingan tanpa kekerasan dan luka pengasuhan." },
+const PILLARS = [
+  "Bahasa Arab sangat intensif & kajian turots sunnah.",
+  "Tahfidz Al-Qur'an mutqin & pembiasaan ibadah harian.",
+  "Akademik umum & sains tetap pintar dan berdaya saing.",
+  "Mendidik tanpa luka: nol perundungan & tanpa sanksi fisik.",
 ];
 
-const containerVariants: Variants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.08 } } };
-
-const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 18 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      type: "tween",
-      duration: 0.55,
-      ease: SPRING } } };
-
 export default function AboutSection() {
-  const handleNavigateToDetail = () => {
-    navigateToDetail("/tentang", "#about");
-  };
-
   return (
-    <section id="about" className="section-alt relative overflow-hidden">
-      {/* Ambient background blobs — teal & sand sesuai branding template-demo */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 overflow-hidden"
-      >
-        <div className="absolute -top-32 -left-32 w-[480px] h-[480px] rounded-full bg-primary-100/20 blur-3xl" />
-        <div className="absolute -bottom-24 -right-24 w-[360px] h-[360px] rounded-full bg-secondary-100/25 blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full bg-primary-50/30 blur-3xl" />
-      </div>
+    <section id="tentang" className="py-24 bg-white border-b border-slate-200 scroll-mt-20">
+      <Container className="max-w-7xl mx-auto px-4 md:px-6 space-y-16">
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto space-y-3">
+          <span className="section-label section-label-primary inline-flex">Landasan &amp; Visi Pendidikan</span>
+          <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
+            Tentang {BRANDING.schoolShortName}
+          </h2>
+          <p className="text-slate-600 text-sm md:text-base leading-relaxed">
+            Ekosistem kaderisasi ummat yang hanif, kontributif, dan adaptif — memadukan Bahasa Arab intensif, tahfidz
+            Al-Qur&apos;an mutqin, ilmu syar&apos;i, sains akademik unggul, serta mendidik tanpa luka pengasuhan.
+          </p>
+        </div>
 
-      <Container className="relative z-10">
-        <div className="max-w-5xl mx-auto">
-          {/* ── Header ─────────────────────────────── */}
-          <motion.div
-            className="text-center mb-16 lg:mb-24"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-60px" }}
-            variants={containerVariants}
-          >
-            <motion.div variants={itemVariants} className="inline-flex mb-6">
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-primary-100 text-primary-700 text-[11px] font-bold uppercase tracking-[0.12em] shadow-xs">
-                <Sparkles className="w-3 h-3" />
-                Profil Pesantren
-              </span>
-            </motion.div>
-
-            <motion.h2
-              variants={itemVariants}
-              className="section-title mb-5 text-balance"
-            >
-              Mengedepankan{" "}
-              <span className="text-gradient-primary">
-                Bimbingan &amp; Pengawasan Melekat
-              </span>
-            </motion.h2>
-
-            <motion.p
-              variants={itemVariants}
-              className="section-subtitle text-justify md:text-center"
-            >
-              <span className="font-semibold text-primary-800">
-                Bukan sekadar tempat belajar agama.
-              </span>{" "}
-              Sistem pembentukan karakter yang mengedepankan keteladanan para pendidik serta mendidik tanpa kekerasan dan luka pengasuhan — untuk mengusung visi Kaderisasi Ummat Unggul, Cerdas, dan Berintegritas.
-            </motion.p>
-          </motion.div>
-
-          {/* ── Visi & Misi Grid ─────────────────── */}
-          <div className="grid gap-5 lg:gap-6 mb-16 lg:mb-20">
-            {/* Visi — Full Width, Statement Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ type: "tween", duration: 0.6, ease: SPRING }}
-            >
-              <div className="relative overflow-hidden rounded-2xl border border-primary-100 bg-white shadow-premium-sm group">
-                {/* Card top accent bar — teal ke sand */}
-                <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-primary-700 via-primary-500 to-primary-900 rounded-t-2xl" />
-
-                <div className="flex flex-col items-center text-center px-8 py-12 md:px-16 md:py-16">
-                  {/* Icon */}
-                  <div className="mb-7 w-14 h-14 rounded-2xl bg-primary-50 border border-primary-100 flex items-center justify-center shadow-xs group-hover:shadow-sm transition-shadow duration-300">
-                    <Target
-                      className="w-6 h-6 text-primary-700"
-                      strokeWidth={1.75}
-                    />
-                  </div>
-
-                  <span className="badge badge-primary mb-5 text-[11px] tracking-wider uppercase">
-                    Visi Utama
-                  </span>
-
-                  <blockquote className="max-w-2xl mx-auto">
-                    <p className="font-display font-black text-2xl md:text-[2.15rem] leading-[1.2] tracking-tight text-primary-900 italic">
-                      &ldquo;Kaderisasi Ummat Unggul,
-                      Cerdas, dan Berintegritas.&rdquo;
-                    </p>
-                  </blockquote>
-
-                  <div className="mt-8 flex items-center gap-3">
-                    <div className="h-px w-10 bg-gradient-to-r from-transparent to-primary-200" />
-                    <div className="w-1.5 h-1.5 rounded-full bg-secondary-400" />
-                    <div className="h-px w-10 bg-gradient-to-l from-transparent to-primary-200" />
-                  </div>
-                </div>
+        {/* 2-Column Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          {/* Left: Branding Card */}
+          <div className="lg:col-span-5">
+            <div className="bg-gradient-to-b from-secondary/15 via-white to-slate-50 border border-slate-200 rounded-3xl p-8 text-center shadow-sm">
+              <div className="w-32 h-32 relative mx-auto mb-4">
+                <Image src={BRANDING.logoPath} alt={`Logo ${BRANDING.schoolName}`} fill className="object-contain drop-shadow-sm" />
               </div>
-            </motion.div>
-
-            {/* Misi — Full Width */}
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{
-                type: "tween",
-                duration: 0.6,
-                ease: SPRING,
-                delay: 0.08 }}
-            >
-              <div className="rounded-2xl border border-primary-100 bg-white shadow-premium-sm overflow-hidden">
-                {/* Header */}
-                <div className="flex items-center gap-4 px-8 py-7 md:px-10 border-b border-primary-50">
-                  <div className="w-11 h-11 rounded-2xl bg-primary-50 border border-primary-100 flex items-center justify-center shrink-0">
-                    <Rocket
-                      className="w-5 h-5 text-primary-600"
-                      strokeWidth={1.75}
-                    />
-                  </div>
-                  <div>
-                    <h3 className="font-display font-bold text-xl text-primary-900 tracking-tight leading-tight">
-                      Misi Kami
-                    </h3>
-                    <p className="text-[13px] text-ink-400 mt-0.5">
-                      Empat langkah strategis pembentukan karakter
-                    </p>
-                  </div>
-                  <div className="ml-auto hidden sm:block">
-                    <span className="badge badge-secondary text-[11px] tracking-wider uppercase">
-                      Langkah Strategis
-                    </span>
-                  </div>
-                </div>
-
-                {/* Misi list */}
-                <motion.ul
-                  className="grid md:grid-cols-2 divide-y divide-primary-50 md:divide-y-0 md:divide-x md:divide-primary-50"
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-40px" }}
-                  variants={containerVariants}
-                >
-                  {misi.map((item, i) => (
-                    <motion.li
-                      key={i}
-                      variants={itemVariants}
-                      className="flex gap-4 items-start p-6 md:p-8 group/item hover:bg-primary-50/40 transition-colors duration-200"
-                    >
-                      <div className="mt-0.5 shrink-0">
-                        <div className="w-7 h-7 rounded-full bg-primary-50 border border-primary-100 flex items-center justify-center group-hover/item:bg-primary-100 transition-colors duration-200">
-                          <CheckCircle
-                            className="w-3.5 h-3.5 text-primary-600"
-                            strokeWidth={2.25}
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        <span className="block text-[11px] font-bold uppercase tracking-[0.1em] text-primary-500 mb-1.5">
-                          {item.label}
-                        </span>
-                        <p className="text-[14.5px] text-ink-600 leading-relaxed font-[450]">
-                          {item.text}
-                        </p>
-                      </div>
-                    </motion.li>
-                  ))}
-                </motion.ul>
+              <div className="mt-6 pt-6 border-t border-slate-200">
+                <h4 className="font-extrabold text-slate-900 text-base">{BRANDING.schoolName}</h4>
+                <p className="text-xs text-slate-500 mt-1 font-semibold">
+                  Pondok Pesantren Berbasis Sunnah &amp; Kurikulum Modern
+                </p>
               </div>
-            </motion.div>
+            </div>
           </div>
 
-          {/* ── CTA ──────────────────────────────── */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{
-              type: "tween",
-              duration: 0.5,
-              ease: SPRING,
-              delay: 0.1 }}
-            className="flex flex-col items-center"
-          >
-            <Link
-              href="/tentang"
-              onClick={handleNavigateToDetail}
-              className="w-full sm:w-auto"
-            >
-              <button className="btn-secondary w-full px-10 py-3.5 group">
-                Lanjut Baca Profil
-                <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </button>
-            </Link>
-          </motion.div>
+          {/* Right: Policy & 4 Core Pillars */}
+          <div className="lg:col-span-7 space-y-5">
+            <div className="bg-white border border-slate-200 rounded-2xl p-7 space-y-4 text-slate-700 text-sm leading-relaxed shadow-sm">
+              <p>
+                <strong className="text-slate-900">{BRANDING.schoolName}</strong> didirikan dengan komitmen kuat melahirkan
+                kaderisasi ummat yang hanif, kontributif, dan adaptif — menguasai{" "}
+                <strong className="text-slate-900">Bahasa Arab secara intensif</strong>, mutqin dalam hafalan Al-Qur&apos;an,
+                mendalami ilmu syar&apos;i dan adab sunnah, serta tetap berprestasi cemerlang dalam pelajaran sains dan
+                akademik umum.
+              </p>
+              <p>
+                Dalam pembinaan karakter, Al-Imam teguh memegang prinsip <strong className="text-primary">Mendidik Tanpa Luka</strong> —
+                mengedepankan keteladanan 24 jam para pendidik dan asatidz, pendekatan kasih sayang dan dialog penyadaran{" "}
+                <strong className="text-slate-900">tanpa sanksi fisik</strong>, sembari bertindak tegas mencegah pelanggaran
+                berat seperti rokok, pergaulan bebas, penyimpangan, dan perundungan (bullying).
+              </p>
+            </div>
+
+            {/* 4 Feature Badges */}
+            <div className="grid sm:grid-cols-2 gap-3.5">
+              {PILLARS.map((text, i) => (
+                <div
+                  key={i}
+                  className="bg-white border border-slate-200 p-4 rounded-xl flex items-start gap-3 shadow-sm hover:border-secondary transition-colors"
+                >
+                  <span className="w-6 h-6 rounded-lg bg-secondary/25 text-primary font-extrabold flex items-center justify-center text-xs shrink-0 mt-0.5">
+                    <Check className="w-3.5 h-3.5 stroke-[3]" />
+                  </span>
+                  <span className="text-xs text-slate-700 font-semibold leading-relaxed">{text}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </Container>
     </section>
