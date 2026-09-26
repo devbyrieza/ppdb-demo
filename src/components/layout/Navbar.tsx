@@ -151,7 +151,7 @@ export default function Navbar() {
                 <div
                   className={`w-10 h-10 sm:w-11 sm:h-11 rounded-[14px] flex items-center justify-center border overflow-hidden transition-all duration-500 group-hover:scale-105 group-hover:-rotate-3 ${
                     isScrolled
-                      ? "bg-white border-[var(--color-primary-100)] shadow-[var(--shadow-premium-sm)]"
+                      ? "bg-white border-primary/20 shadow-xl shadow-primary/10"
                       : "bg-white/90 border-white/70 shadow-[0_2px_12px_rgba(3,105,199,0.12)]"
                   }`}
                 >
@@ -207,8 +207,8 @@ export default function Navbar() {
                         onClick={(e) => handleNavClick(e, link.href)}
                         className={`px-4 py-2 text-sm font-bold rounded-full transition-all duration-300 min-h-[40px] flex items-center gap-1.5 ${
                           isActive(link.href)
-                            ? "bg-[var(--color-primary-800)] text-[var(--color-secondary-100)] shadow-[var(--shadow-primary)]"
-                            : "text-[var(--color-ink-600)] hover:text-[var(--color-primary-800)] hover:bg-[var(--color-primary-50)]"
+                            ? "bg-primary-50 text-primary-900 font-extrabold shadow-sm"
+                            : "text-ink-600 hover:text-primary-900 hover:bg-primary-50/50"
                         }`}
                       >
                         {link.label}
@@ -262,8 +262,8 @@ export default function Navbar() {
                     onClick={(e) => handleNavClick(e, link.href)}
                     className={`px-4 py-2 text-sm font-bold rounded-full transition-all duration-300 min-h-[40px] flex items-center ${
                       isActive(link.href)
-                        ? "bg-[var(--color-primary-800)] text-[var(--color-secondary-100)] shadow-[var(--shadow-primary)]"
-                        : "text-[var(--color-ink-600)] hover:text-[var(--color-primary-800)] hover:bg-[var(--color-primary-50)]"
+                        ? "bg-primary-50 text-primary-900 font-extrabold shadow-sm"
+                        : "text-ink-600 hover:text-primary-900 hover:bg-primary-50/50"
                     }`}
                   >
                     {link.label}
@@ -430,7 +430,7 @@ export default function Navbar() {
                         }}
                         className={`px-4 py-4 rounded-2xl text-base font-bold transition-all min-h-[56px] flex items-center justify-between group ${
                           isActive(link.href)
-                            ? "bg-[var(--color-primary-800)] text-[var(--color-secondary-100)] shadow-[var(--shadow-primary)]"
+                            ? "bg-primary-50 text-primary-900 font-extrabold shadow-sm"
                             : "text-[var(--color-ink-800)] hover:bg-[var(--color-primary-50)] hover:text-[var(--color-primary-800)]"
                         }`}
                       >

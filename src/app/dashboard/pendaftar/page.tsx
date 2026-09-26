@@ -145,7 +145,7 @@ function HeroBanner({ nama, nomorPendaftaran, lastUpdate }: any) {
 
 function GuidedActionCard({ nextStep }: any) {
   return (
-    <div className="bg-white rounded-[1.5rem] sm:rounded-[2rem] md:rounded-[2.5rem] border-2 border-primary-100 shadow-2xl shadow-primary/30  shadow-primary/5 overflow-hidden group">
+    <div className="bg-white rounded-[1.5rem] sm:rounded-[2rem] md:rounded-[2.5rem] border-2 border-[var(--color-primary-100)] shadow-2xl shadow-[var(--color-primary-600)]/10 hover:shadow-[var(--color-primary-600)]/20 transition-shadow duration-300 overflow-hidden group">
       <div className="flex flex-col md:flex-row items-stretch">
         <div className="bg-secondary-400 p-6 sm:p-[24px_28px] md:p-8 flex flex-col items-center justify-center text-primary-950 min-w-[200px]">
           <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-[24px] bg-white/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
