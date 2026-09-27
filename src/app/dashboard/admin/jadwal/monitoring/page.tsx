@@ -649,7 +649,9 @@ export default function MonitoringJadwalPage() {
         schedule: Schedule
     ) => {
         const cat = getExamCategory(schedule.sesi.title);
-        if (cat !== "OTHER") {
+        const isAssigned = name && name !== "-";
+
+        if (!isAssigned && cat !== "OTHER") {
             if (cat === "QURAN" && roleType !== "quran") return <span className="text-slate-300 text-xs italic font-medium">-</span>;
             if (cat === "W_SANTRI" && roleType !== "santri") return <span className="text-slate-300 text-xs italic font-medium">-</span>;
             if (cat === "W_ORTU" && roleType !== "ortu") return <span className="text-slate-300 text-xs italic font-medium">-</span>;
