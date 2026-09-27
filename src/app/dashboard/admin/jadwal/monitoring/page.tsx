@@ -252,78 +252,33 @@ export default function MonitoringJadwalPage() {
         }
     };
 
+    // Helper to check roles including secondary_roles
+    const checkRoles = (ex: any, allowedRoles: string[]) => {
+        const mainRole = (ex.role || "").toLowerCase().trim();
+        const secRoles = Array.isArray(ex.secondary_roles) ? ex.secondary_roles.map((r: string) => r.toLowerCase().trim()) : [];
+        const allRoles = [mainRole, ...secRoles];
+        return allRoles.some(r => allowedRoles.includes(r));
+    };
+
     // Filter daftar penguji berdasarkan keahlian
     const quranExaminers = useMemo(() => {
-        return examiners.filter((ex) => {
-            const r = (ex.role || "").toLowerCase().trim();
-            if (
-                r === "penguji_hafalan" ||
-                r === "penguji_bahasa_arab" ||
-                r === "penguji_arab" ||
-                r === "pewawancara_calsan" ||
-                r === "pewawancara_cawalsan" ||
-                r.startsWith("admin") ||
-                r === "pendaftar"
-            ) {
-                return false;
-            }
-            return r === "penguji" || r === "penguji_quran" || r === "penguji_bacaan_quran";
-        });
+        return examiners.filter((ex) => checkRoles(ex, ["penguji", "penguji_quran", "penguji_bacaan_quran"]));
     }, [examiners]);
 
     const santriExaminers = useMemo(() => {
-        return examiners.filter((ex) => {
-            const r = (ex.role || "").toLowerCase().trim();
-            if (
-                r === "penguji_hafalan" ||
-                r === "penguji_bahasa_arab" ||
-                r === "penguji_arab" ||
-                r === "pewawancara_cawalsan" ||
-                r === "penguji" ||
-                r.startsWith("admin") ||
-                r === "pendaftar"
-            ) {
-                return false;
-            }
-            return r === "pewawancara_calsan" || r === "penguji_santri" || r === "pewawancara_santri";
-        });
+        return examiners.filter((ex) => checkRoles(ex, ["pewawancara_calsan", "penguji_santri", "pewawancara_santri"]));
     }, [examiners]);
 
     const ortuExaminers = useMemo(() => {
-        return examiners.filter((ex) => {
-            const r = (ex.role || "").toLowerCase().trim();
-            if (
-                r === "penguji_hafalan" ||
-                r === "penguji_bahasa_arab" ||
-                r === "penguji_arab" ||
-                r === "pewawancara_calsan" ||
-                r === "penguji" ||
-                r.startsWith("admin") ||
-                r === "pendaftar"
-            ) {
-                return false;
-            }
-            return (
-                r === "pewawancara_cawalsan" ||
-                r === "pewawancara_ortu" ||
-                r === "pewawancara_wali" ||
-                r === "penguji_ortu"
-            );
-        });
+        return examiners.filter((ex) => checkRoles(ex, ["pewawancara_cawalsan", "pewawancara_ortu", "pewawancara_wali", "penguji_ortu"]));
     }, [examiners]);
 
     const hafalanExaminers = useMemo(() => {
-        return examiners.filter((ex) => {
-            const r = (ex.role || "").toLowerCase().trim();
-            return r === "penguji_hafalan" || r === "penguji_tahfidz";
-        });
+        return examiners.filter((ex) => checkRoles(ex, ["penguji_hafalan", "penguji_tahfidz"]));
     }, [examiners]);
 
     const arabExaminers = useMemo(() => {
-        return examiners.filter((ex) => {
-            const r = (ex.role || "").toLowerCase().trim();
-            return r === "penguji_bahasa_arab" || r === "penguji_arab" || r === "penguji_lisan_arab";
-        });
+        return examiners.filter((ex) => checkRoles(ex, ["penguji_bahasa_arab", "penguji_arab", "penguji_lisan_arab"]));
     }, [examiners]);
 
     const allValidExaminers = useMemo(() => {
