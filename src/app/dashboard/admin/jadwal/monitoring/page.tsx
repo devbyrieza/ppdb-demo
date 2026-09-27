@@ -657,8 +657,6 @@ export default function MonitoringJadwalPage() {
             if (cat === "W_ORTU" && roleType !== "ortu") return <span className="text-slate-300 text-xs italic font-medium">-</span>;
             if (cat === "LISAN_ARAB" && roleType !== "quran") return <span className="text-slate-300 text-xs italic font-medium">-</span>;
         }
-
-        const isAssigned = name && name !== "-";
         const isConflict = isAssigned && conflicts.some(c => c.name === name && c.time === new Date(schedule.sesi.start).getTime());
 
         if (!isAssigned) {
