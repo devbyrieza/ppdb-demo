@@ -298,7 +298,7 @@ function InputNilaiContent() {
   const [lisanArabForm, setLisanArabForm] = useState<any>({});
 
   // Determine which form types are visible based on active role & secondary roles
-  const allRoles = userRoles.length > 0 ? userRoles : (activeRole ? [activeRole] : []);
+  const allRoles = activeRole ? [activeRole] : userRoles;
   const visibleFormTypes = allRoles.some(r => ["admin", "admin_super"].includes(r))
     ? ['quran', 'wawancara', 'ortu', 'lisan_arab']
     : [...new Set(allRoles.flatMap(r => ROLE_TO_FORM_TYPES[r] || []))];
