@@ -161,15 +161,8 @@ export default function PengumumanTab() {
                 Seluruh rangkaian ujian seleksi Ananda telah selesai. Hasil
                 seleksi sedang dalam proses evaluasi dan{" "}
                 <strong>Rapat Kelulusan bersama Panitia dan Mudir
-                Pesantren</strong>. Pengumuman resmi akan dirilis sesuai jadwal
-                (estimasi 7 hari setelah ujian).
+                Pesantren</strong>.
               </p>
-              <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-50 text-amber-800 rounded-full font-bold border border-amber-300 shadow-sm">
-                <Clock className="w-4 h-4 text-amber-600" />
-                <span className="text-sm">
-                  Estimasi: 7 hari setelah ujian selesai
-                </span>
-              </div>
               <p className="text-xs text-ink-400 mt-4">
                 Notifikasi WhatsApp akan dikirimkan saat pengumuman resmi tersedia.
               </p>
@@ -188,12 +181,7 @@ export default function PengumumanTab() {
                 Hasil seleksi akan diumumkan setelah seluruh rangkaian tes Anda selesaikan, dan hasil akhirnya telah melalui tahap pengecekan serta rapat kelulusan oleh Pimpinan dan Panitia. Silakan cek kembali halaman ini secara
                 berkala.
               </p>
-              <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary-50 text-primary-800 rounded-full font-black border border-primary-200 shadow-sm">
-                <Calendar className="w-4 h-4 text-primary-600" />
-                <span className="text-sm">
-                  Estimasi update: Maksimal H+7 setelah tes & verifikasi berkas selesai
-                </span>
-              </div>
+
             </div>
           </div>
         )
