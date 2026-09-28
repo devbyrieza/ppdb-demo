@@ -23,32 +23,26 @@ export async function GET() {
   const userId = session.user_id || session.id;
 
   try {
-    // Fetch user profile to check admin status
+    // Fetch user profile to check roles (disabled admin bypass for personal schedule view)
     const userProfile = await prisma.profile.findUnique({
       where: { id: userId },
       select: { role: true, secondary_roles: true } });
     const allRoles = userProfile
       ? [userProfile.role, ...(userProfile.secondary_roles || [])]
       : [];
-    const isAdmin = allRoles.some((r: string) =>
-      ["admin_super", "admin"].includes(r),
-    );
+    const isAdmin = false; // Set to false to restrict view to own schedule
 
-    // Determine which field to check based on role?
-    // Actually, just check all fields since a person might have multiple roles or assignments
-    let whereClause: any = { pendaftar: { deleted_at: null } };
-    if (!isAdmin) {
-      whereClause = {
-        pendaftar: { deleted_at: null },
-        OR: [
-          { penguji_santri_id: userId },
-          { penguji_quran_id: userId },
-          { penguji_ortu_id: userId },
-            { penguji_hafalan_id: userId },
-            { penguji_arab_id: userId },
-          { exam_session: { created_by: userId } },
-        ] };
-    }
+    let whereClause: any = {
+      pendaftar: { deleted_at: null },
+      OR: [
+        { penguji_santri_id: userId },
+        { penguji_quran_id: userId },
+        { penguji_ortu_id: userId },
+        { penguji_hafalan_id: userId },
+        { penguji_arab_id: userId },
+        { exam_session: { created_by: userId } },
+      ]
+    };
 
     const jadwal = await prisma.jadwalUjian.findMany({
       where: whereClause,
@@ -93,8 +87,10 @@ export async function GET() {
         // Admin can see all assignment types
         jenis_tugas.push(
           "Seleksi Al Qur'an",
+          "Tes Al-Qur'an (Bacaan & Hafalan)",
           "Seleksi Wawancara Calon Santri",
-          "Seleksi Wawancara Orang Tua",
+          "Seleksi Wawancara Calon Orangtua/Wali Santri",
+          "Tes Lisan Bahasa Arab",
         );
       } else {
         if (item.penguji_santri_id === userId)
@@ -104,7 +100,7 @@ export async function GET() {
           if (item.penguji_arab_id === userId)
             jenis_tugas.push("Tes Lisan Bahasa Arab");
         if (item.penguji_ortu_id === userId)
-          jenis_tugas.push("Seleksi Wawancara Orang Tua");
+          jenis_tugas.push("Seleksi Wawancara Calon Orangtua/Wali Santri");
 
         // Fallback: if matched via exam_session.created_by, derive from session title
         if (
@@ -123,7 +119,7 @@ export async function GET() {
             title.includes("ortu") ||
             title.includes("orang")
           )
-            jenis_tugas.push("Seleksi Wawancara Orang Tua");
+            jenis_tugas.push("Seleksi Wawancara Calon Orangtua/Wali Santri");
           else jenis_tugas.push(item.exam_session?.title || "Ujian");
         }
       }

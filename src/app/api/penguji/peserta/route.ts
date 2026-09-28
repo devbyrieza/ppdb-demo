@@ -27,28 +27,26 @@ export async function GET() {
   );
 
   try {
-    // Fetch user profile to see if they're an admin
+    // Fetch user profile to see roles (we keep this for role injection if needed, but disable admin bypass)
     const userProfile = await prisma.profile.findUnique({
       where: { id: userId },
       select: { role: true, secondary_roles: true } });
     const allRoles = userProfile
       ? [userProfile.role, ...(userProfile.secondary_roles || [])]
       : [];
-    const isAdmin = allRoles.some((r) => ["admin_super", "admin"].includes(r));
+    const isAdmin = false; // Always false here to restrict view to own assigned participants
 
-    let whereClause: any = { pendaftar: { deleted_at: null } };
-    if (!isAdmin) {
-      whereClause = {
-        pendaftar: { deleted_at: null },
-        OR: [
-          { penguji_santri_id: userId }, // Seleksi Wawancara Calon Santri (or general Interview)
-          { penguji_quran_id: userId }, // Tes Quran
-          { penguji_ortu_id: userId }, // Seleksi Wawancara Orang Tua
-          { penguji_hafalan_id: userId }, // Tes Hafalan (MA)
-          { penguji_arab_id: userId }, // Tes Bahasa Arab (MA)
-          { exam_session: { created_by: userId } }, // Sessions created by this penguji
-        ] };
-    }
+    let whereClause: any = {
+      pendaftar: { deleted_at: null },
+      OR: [
+        { penguji_santri_id: userId }, // Seleksi Wawancara Calon Santri (or general Interview)
+        { penguji_quran_id: userId }, // Tes Quran
+        { penguji_ortu_id: userId }, // Seleksi Wawancara Orang Tua
+        { penguji_hafalan_id: userId }, // Tes Hafalan (MA)
+        { penguji_arab_id: userId }, // Tes Bahasa Arab (MA)
+        { exam_session: { created_by: userId } }, // Sessions created by this penguji
+      ]
+    };
 
     const assigned = await prisma.jadwalUjian.findMany({
       where: whereClause,
