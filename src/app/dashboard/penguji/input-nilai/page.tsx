@@ -540,14 +540,8 @@ function InputNilaiContent() {
   };
 
   const isParticipantFinished = (p: Peserta) => {
-    const isDirectNonIL = isJenjangLangsungNonIL(p.jenjang);
-    const formsNeeded = (ROLE_TO_FORM_TYPES[activeRole] || ['quran', 'wawancara', 'ortu']).filter(t => {
-      if (t === 'lisan_arab' && !isDirectNonIL) return false;
-      if (t === 'hafalan') return false;
-      return true;
-    });
-
-    if (formsNeeded.length === 0) return false;
+      const formsNeeded = visibleFormTypes.filter(t => p.roles.includes(t));
+      if (formsNeeded.length === 0) return true;
     
     return formsNeeded.every(type => {
       if (type === 'quran') {
@@ -566,19 +560,20 @@ function InputNilaiContent() {
     });
   };
 
-  const pendingPeserta = peserta.filter(p => !isParticipantFinished(p)).filter(
+  const relevantPeserta = peserta.filter(p => p.roles.some(r => visibleFormTypes.includes(r)));
+    const pendingPeserta = relevantPeserta.filter(p => !isParticipantFinished(p)).filter(
     (p) =>
       (p.nama_lengkap || "").toLowerCase().includes(search.toLowerCase()) ||
       (p.nomor_pendaftaran || "").toLowerCase().includes(search.toLowerCase())
   );
   
-  const finishedPeserta = peserta.filter(p => isParticipantFinished(p)).filter(
+  const finishedPeserta = relevantPeserta.filter(p => isParticipantFinished(p)).filter(
     (p) =>
       (p.nama_lengkap || "").toLowerCase().includes(search.toLowerCase()) ||
       (p.nomor_pendaftaran || "").toLowerCase().includes(search.toLowerCase())
   );
 
-  const filteredPeserta = peserta.filter(
+  const filteredPeserta = relevantPeserta.filter(
     (p) =>
       (p.nama_lengkap || "").toLowerCase().includes(search.toLowerCase()) ||
       (p.nomor_pendaftaran || "").toLowerCase().includes(search.toLowerCase())
