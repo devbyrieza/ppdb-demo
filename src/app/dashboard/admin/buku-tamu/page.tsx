@@ -69,7 +69,7 @@ export default function RadarTamuAdmin() {
   };
 
   return (
-    <DashboardLayout>
+    <>
       <div className="p-8 max-w-7xl mx-auto space-y-8">
         
         {/* Header & Roster Banner */}
@@ -187,6 +187,6 @@ export default function RadarTamuAdmin() {
           </div>
         </div>
       </div>
-    </DashboardLayout>
+    </>
   );
 }

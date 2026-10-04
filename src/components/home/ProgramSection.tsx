@@ -106,7 +106,9 @@ function getTokens(variant: ProgramVariant) {
         checkIcon: "text-secondary-600 group-hover/item:text-primary-950",
         ctaBtn:
           "bg-white border-secondary-300 text-primary-800 hover:bg-secondary-400 hover:border-secondary-400 hover:text-primary-950 shadow-sm hover:shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10" };
-  }
+  default:
+return { accentBar: "", corner: "", icon: "", subtitleText: "", dividerLine: "", checkBg: "", checkHover: "", checkIcon: "", ctaBtn: "" };
+}
 }
 
 export default function ProgramSection() {
