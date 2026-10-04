@@ -3,6 +3,13 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "@/lib/session";
 import { logAdminAction } from "@/lib/audit";
 
+function formatTime(dateStr) {
+  const d = new Date(dateStr);
+  const h = d.getHours().toString().padStart(2, '0');
+  const m = d.getMinutes().toString().padStart(2, '0');
+  return h + '.' + m;
+}
+
 export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession();
@@ -220,9 +227,7 @@ export async function POST(req: NextRequest) {
             month: "long",
             day: "numeric",
           }),
-          waktu: `${new Date(examSession.start_time).toLocaleTimeString("id-ID", {
-            hour: "2-digit", minute: "2-digit", hour12: false })} - ${new Date(examSession.end_time).toLocaleTimeString("id-ID", {
-            hour: "2-digit", minute: "2-digit", hour12: false })} WIB`,
+          waktu: `${formatTime(examSession.start_time)} - ${formatTime(examSession.end_time)} WIB`,
           tempat: tempatFinal,
           meeting_link: isOffline ? undefined : meetingLink || undefined,
         });

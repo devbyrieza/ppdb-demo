@@ -582,11 +582,18 @@ export async function notifyTestSchedule(data: {
 
   // Append meeting link if available
   if (data.meeting_link) {
-    message = message.replace(
-      /📍 \*Tempat:\* .*/,
-      `📍 *Tempat:* ${data.tempat}\n🔗 *Link Meeting:* ${data.meeting_link}`,
-    );
-    // Fallback if regex fails or just append
+    if (data.tempat === data.meeting_link || data.tempat.includes("Online")) {
+      message = message.replace(
+        /(.+) \*Tempat:\* .*/,
+        `$1 *Link Meeting:* ${data.meeting_link}`
+      );
+    } else {
+      message = message.replace(
+        /(.+) \*Tempat:\* .*/,
+        `$1 *Tempat:* ${data.tempat}\n$1 *Link Meeting:* ${data.meeting_link}`
+      );
+    }
+    // Fallback if regex fails
     if (!message.includes(data.meeting_link)) {
       message += `\n\n🔗 *Link Meeting:* ${data.meeting_link}`;
     }

@@ -4,6 +4,13 @@ import { getServerSession } from "@/lib/session";
 
 type NotificationType = "schedule" | "status";
 
+function formatTime(dateStr) {
+  const d = new Date(dateStr);
+  const h = d.getHours().toString().padStart(2, '0');
+  const m = d.getMinutes().toString().padStart(2, '0');
+  return h + '.' + m;
+}
+
 export async function POST(request: Request) {
   try {
     const session = await getServerSession();
