@@ -48,6 +48,10 @@ export async function GET(request: Request) {
             title: true,
             start_time: true,
             location: true } },
+        penguji_santri: true,
+        penguji_quran: true,
+        penguji_ortu: true,
+        penguji_arab: true,
         notif_reminders: true } });
 
     let enqueued = 0;
@@ -75,10 +79,18 @@ export async function GET(request: Request) {
         continue;
       }
 
-      const waktu = new Date(jadwal.exam_session.start_time).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Jakarta" });
+      const waktu = new Date(jadwal.exam_session.start_time).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Jakarta" }) + " WIB";
 
-      const lokasi =
-        jadwal.exam_session.location || "Pesantren Al Imam Al Islami";
+      const googleMeetLink = jadwal.google_meet_link || 
+          jadwal.penguji_santri?.google_meet_link || 
+          jadwal.penguji_quran?.google_meet_link || 
+          jadwal.penguji_ortu?.google_meet_link || 
+          jadwal.penguji_arab?.google_meet_link;
+
+      const sessionLoc = jadwal.exam_session.location || "Pesantren";
+      const lokasi = googleMeetLink
+          ? googleMeetLink
+          : (sessionLoc.toLowerCase() === "online" ? "-" : sessionLoc);
       const jenisUjian = jadwal.exam_session.title || "Seleksi Santri Baru";
 
       const message = buildMessageReminderH0(
