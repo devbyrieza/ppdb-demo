@@ -436,8 +436,18 @@ export const generateSuratKelulusan = async (data: PendaftarPdfData) => {
 
   const toRoman = (num: number) => ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"][num];
   const romanMonth = toRoman(new Date().getMonth() + 1);
-  const sequence = (data.nomor_pendaftaran || "001").replace(/\D/g, '').slice(-3);
-  const nomorSurat = `${sequence}-GF/PPSB-PAAI/${romanMonth}/${new Date().getFullYear()}`;
+  const sequenceMatch = (data.nomor_pendaftaran || "001").match(/\d+$/);
+  const seqNumber = sequenceMatch ? parseInt(sequenceMatch[0].slice(-3), 10) : 1;
+  const sequenceStr = seqNumber.toString().padStart(3, '0');
+
+  const getAlphaCode = (n: number) => {
+      const first = String.fromCharCode(65 + Math.floor((n - 1) / 26) % 26);
+      const second = String.fromCharCode(65 + ((n - 1) % 26));
+      return first + second;
+  };
+  const alphaCode = getAlphaCode(seqNumber);
+
+  const nomorSurat = `${sequenceStr}/${alphaCode}/PSB-PAAI/${romanMonth}/${new Date().getFullYear()}`;
 
   let y = startY + 5;
   doc.setFontSize(11);
