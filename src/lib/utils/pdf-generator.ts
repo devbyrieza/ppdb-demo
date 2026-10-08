@@ -1,4 +1,4 @@
-import { jsPDF } from "jspdf";
+﻿import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 import { PDF_BRANDING } from "@/config/pdf-branding";
 
@@ -261,12 +261,12 @@ const drawFormalSignature = async (doc: jsPDF, y: number) => {
   const pageWidth = doc.internal.pageSize.getWidth();
   const { authority, assets, coords } = PDF_BRANDING;
   
-  // Reposisi tanda tangan ke kanan sesuai permintaan
+  // Reposisi tanda tangan ke kanan sesuai standar surat resmi
   const isFullImage = PDF_BRANDING.template === "full_image";
   const xBase = pageWidth - (isFullImage ? 75 : coords.signature.margin_right);
 
   // Batas aman maksimum y agar seluruh blok tanda tangan dan nama Mudir/Ketua Panitia
-  // selesai sebelum y = 250mm, sehingga tidak akan pernah menimpa teks footer Kemenkumham (y = 265.6mm)
+  // selesai sebelum y = 250mm, sehingga tidak akan pernah menimpa teks footer
   const maxSafeY = 196;
   const actualY = isFullImage ? Math.min(y, maxSafeY) : y;
 
@@ -434,104 +434,81 @@ export const generateSuratKelulusan = async (data: PendaftarPdfData) => {
 
   await drawHeader(doc);
 
-  const toRoman = (num: number) => ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"][num];
-  const romanMonth = toRoman(new Date().getMonth() + 1);
-  const sequenceMatch = (data.nomor_pendaftaran || "001").match(/\d+$/);
-  const seqNumber = sequenceMatch ? parseInt(sequenceMatch[0].slice(-3), 10) : 1;
-  const sequenceStr = seqNumber.toString().padStart(3, '0');
+  doc.setFontSize(16);
+  doc.setFont("helvetica", "bold");
+  doc.text("SURAT KETERANGAN HASIL SELEKSI", pageWidth / 2, startY + 10, {
+    align: "center" });
+  doc.setFontSize(10);
+  doc.text(
+    `Nomor: ${data.nomor_pendaftaran}/SKL-PPDB/${new Date().getFullYear()}`,
+    pageWidth / 2,
+    startY + 17,
+    { align: "center" },
+  );
 
-  const getAlphaCode = (n: number) => {
-      const first = String.fromCharCode(65 + Math.floor((n - 1) / 26) % 26);
-      const second = String.fromCharCode(65 + ((n - 1) % 26));
-      return first + second;
-  };
-  const alphaCode = getAlphaCode(seqNumber);
-
-  const nomorSurat = `${sequenceStr}/${alphaCode}/PSB-PAAI/${romanMonth}/${new Date().getFullYear()}`;
-
-  let y = startY + 5;
   doc.setFontSize(11);
   doc.setFont("helvetica", "normal");
-  
-  doc.text(`No      : ${nomorSurat}`, 20, y); y += 6;
-  doc.text(`Hal     : Informasi Hasil Seleksi Penerimaan Santri Baru`, 20, y); y += 12;
-
-  doc.text("Kepada Yth.", 20, y); y += 6;
-  doc.text("Orangtua/Wali Ananda Calon Santri", 20, y); y += 6;
-  doc.text("di Tempat", 20, y); y += 15;
-
-  doc.setFont("helvetica", "italic");
-  doc.text("Bismillahirrahmanirrahim", pageWidth / 2, y, { align: "center" }); y += 6;
-  doc.text("Assalamu'alaikum Warahmatullahi Wabarakatuh", pageWidth / 2, y, { align: "center" }); y += 12;
-
-  doc.setFont("helvetica", "normal");
-  const p1 = `Alhamdulillah segala puji bagi Allah Rabb semesta alam. Shalawat dan salam semoga tercurah kepada Rasulullah Shallallahu 'Alaihi Wasallam, keluarga, para sahabat, dan pengikutnya hingga akhir zaman.`;
-  doc.text(doc.splitTextToSize(p1, pageWidth - 40), 20, y, { align: "justify" });
-  y += 15;
-
-  const p2 = `Kami berharap bapak/ibu wali calon santri ${PDF_BRANDING.schoolName} senantiasa dalam keadaan sehat serta dalam ketaatan yang diridhai Allah Subhanahu Wa Ta'ala, amin.`;
-  doc.text(doc.splitTextToSize(p2, pageWidth - 40), 20, y, { align: "justify" });
-  y += 12;
-
-  const p3 = `Selanjutnya, Kami selaku Panitia Penerimaan Santri Baru ${PDF_BRANDING.schoolName} Tahun Pelajaran ${data.tahun_ajaran} mengucapkan selamat kepada putra/putri Bapak/Ibu yang bernama:`;
-  doc.text(doc.splitTextToSize(p3, pageWidth - 40), 20, y, { align: "justify" });
-  y += 12;
+  const content = `Berdasarkan hasil seleksi Penerimaan Santri Baru (PPDB) Tahun Ajaran ${data.tahun_ajaran}, dengan ini Panitia menyatakan bahwa:`;
+  doc.text(doc.splitTextToSize(content, pageWidth - 40), 20, startY + 30);
 
   const tableData = [
-    ["Ananda", `: ${data.nama_lengkap.toUpperCase()}`],
-    ["No. Pendaftaran", `: ${data.nomor_pendaftaran}`]
+    ["Nomor Pendaftaran", `: ${data.nomor_pendaftaran}`],
+    ["Nama Lengkap", `: ${toTitleCase(data.nama_lengkap)}`],
+    ["NIK", `: ${data.nik}`],
+    ["Jenjang Pendidikan", `: ${data.jenjang}`],
   ];
 
   autoTable(doc, {
-    startY: y,
+    startY: startY + 40,
     body: tableData,
     theme: "plain",
-    margin: { left: 30 },
-    styles: { fontSize: 11, cellPadding: 2, font: "helvetica", fontStyle: "bold" },
-    columnStyles: { 0: { cellWidth: 40 } } 
-  });
+    margin: { left: 25 },
+    styles: { fontSize: 11, cellPadding: 3 },
+    columnStyles: { 0: { fontStyle: "bold", cellWidth: 50 } } });
 
-  y = (doc as any).lastAutoTable.finalY + 10;
+  const finalY = (doc as any).lastAutoTable.finalY + 10;
 
-  let statusText = "DITERIMA";
-  if (data.status_kelulusan === "cadangan") statusText = "CADANGAN";
-  if (data.status_kelulusan === "ditolak" || data.status_kelulusan === "rejected") statusText = "TIDAK DITERIMA";
-
-  doc.setFontSize(14);
   doc.setFont("helvetica", "bold");
-  doc.text(statusText, pageWidth / 2, y, { align: "center" });
-  y += 8;
+  doc.setFontSize(14);
 
+  let statusText = "LULUS / DITERIMA";
+  if (data.status_kelulusan === "cadangan") statusText = "CADANGAN";
+  if (
+    data.status_kelulusan === "ditolak" ||
+    data.status_kelulusan === "rejected"
+  )
+    statusText = "BELUM DITERIMA";
+
+  doc.text(`DINYATAKAN: ${statusText}`, pageWidth / 2, finalY + 10, {
+    align: "center" });
+
+  doc.setFont("helvetica", "normal");
   doc.setFontSize(11);
-  if (statusText === "DITERIMA") {
-    doc.text(`Sebagai Santri ${PDF_BRANDING.schoolName} Tahun Pelajaran ${data.tahun_ajaran} di jenjang ${data.jenjang}`, pageWidth / 2, y, { align: "center" });
-    y += 12;
-    doc.setFont("helvetica", "normal");
-    const p4 = "Selanjutnya, diharapkan kepada orangtua/wali untuk segera melakukan proses Daftar Ulang dan pembayaran Uang Pangkal sesuai jadwal yang ditentukan.";
-    doc.text(doc.splitTextToSize(p4, pageWidth - 40), 20, y, { align: "justify" });
-    y += 12;
-  } else if (statusText === "CADANGAN") {
-    doc.setFont("helvetica", "normal");
-    const p4 = "Ananda masuk dalam daftar cadangan. Panitia akan menghubungi Bapak/Ibu apabila terdapat kuota yang kosong.";
-    doc.text(doc.splitTextToSize(p4, pageWidth - 40), 20, y, { align: "center" });
-    y += 12;
-  } else {
-    doc.setFont("helvetica", "normal");
-    const p4 = "Tetap semangat dan jangan berkecil hati. Ananda dapat kembali mendaftar pada gelombang atau periode berikutnya.";
-    doc.text(doc.splitTextToSize(p4, pageWidth - 40), 20, y, { align: "center" });
-    y += 12;
+
+  let closing =
+    "Selamat bergabung menjadi keluarga besar Pesantren Al Imam Al Islami. Silakan segera melakukan proses daftar ulang sesuai jadwal yang ditentukan.";
+  if (statusText === "CADANGAN")
+    closing =
+      "Anda masuk dalam daftar cadangan. Panitia akan menghubungi Anda jika terdapat kuota yang kosong.";
+  if (statusText === "BELUM DITERIMA")
+    closing =
+      "Tetap semangat dan jangan berkecil hati. Anda dapat kembali mendaftar pada gelombang atau periode berikutnya.";
+
+  doc.text(doc.splitTextToSize(closing, pageWidth - 40), 20, finalY + 25);
+
+  if (statusText === "LULUS / DITERIMA") {
+    const daftarUlangInfo =
+      "Pembayaran daftar ulang harus segera dibayarkan minimal 50% paling lambat sepekan setelah pengumuman hasil. Bagi yang membutuhkan keringanan, silakan menghubungi bagian Finance di 0812-2063-6945.";
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(10);
+    doc.text(
+      doc.splitTextToSize(daftarUlangInfo, pageWidth - 40),
+      20,
+      finalY + 40,
+    );
   }
 
-  const p5 = "Demikian informasi ini kami sampaikan, semoga Allah Subhanahu Wa Ta'ala memudahkan kita dalam kebaikan, atas perhatiannya kami ucapkan terima kasih dan jazakumullohu khoiron katsiron.";
-  doc.text(doc.splitTextToSize(p5, pageWidth - 40), 20, y, { align: "justify" });
-  y += 15;
-
-  doc.setFont("helvetica", "italic");
-  doc.text("Wassalamu'alaikum Warahmatullahi Wabarakatuh", 20, y);
-  y += 20;
-
-  // Signatures
-  await drawFormalSignature(doc, y);
+  await drawFormalSignature(doc, finalY + 65);
 
   drawFooter(doc);
   if (typeof window !== "undefined") {
@@ -581,7 +558,7 @@ export const generateSuratKesehatan = async (data: PendaftarPdfData) => {
 
   const isFullImage = PDF_BRANDING.template === "full_image";
   let y = isFullImage ? 62 : startY + 2;
-  doc.setFontSize(9.5); // Ukuran proporsional dan rapi
+  doc.setFontSize(9.5); // Diubah dari 10.5 ke 9.5 untuk menghemat ruang
   doc.setFont("helvetica", "normal");
   doc.setTextColor(50, 50, 50);
 
@@ -590,45 +567,45 @@ export const generateSuratKesehatan = async (data: PendaftarPdfData) => {
   const colonX = margin + 20;
   doc.text("Lamp.", leftColX, y);
   doc.text(":", colonX, y);
-  doc.text("-", colonX + 4, y);
-  y += 4.5;
+  doc.text("1 Lembar", colonX + 4, y);
+  y += 5; // Diubah dari 6 ke 5
   doc.text("Hal", leftColX, y);
   doc.text(":", colonX, y);
   doc.setFont("helvetica", "bold");
   doc.setTextColor(0, 0, 0);
-  const halText = `Pemeriksaan Kesehatan Calon Santri Baru\nPesantren Al Imam Al Islami`;
+  const halText = `Pemeriksaan Kesehatan Calon Santri Baru\n${institution.name}`;
   doc.text(halText, colonX + 4, y);
   doc.setFont("helvetica", "normal");
 
-  y += 9;
+  y += 10; // Diubah dari 18 ke 10 untuk menghemat ruang vertikal
   doc.setTextColor(50, 50, 50);
   doc.text("Kepada Yth.", leftColX, y);
-  y += 4.5;
+  y += 5; // Diubah dari 6 ke 5
   doc.text("Petugas Kesehatan Puskesmas/Rumah Sakit", leftColX, y);
-  y += 4.5;
+  y += 5;
   doc.text(".............................................", leftColX, y);
-  y += 4.5;
+  y += 5;
   doc.text("Di Tempat", leftColX, y);
 
-  y += 6.5;
+  y += 8; // Diubah dari 12 ke 8
   doc.setTextColor(0, 0, 0);
   doc.setFont("helvetica", "italic");
   doc.text("Dengan hormat,", leftColX, y);
   doc.setFont("helvetica", "normal");
 
-  y += 5.5;
-  const intro = `Sehubungan dengan kegiatan penerimaan calon santri baru Pesantren Al Imam Al Islami Tahun Pelajaran 2027/2028, kami selaku panitia membutuhkan pemeriksaan kesehatan bagi para calon santri sebagai salah satu bagian dari rangkaian proses seleksi.`;
+  y += 6; // Diubah dari 8 ke 6
+  const intro = `Sehubungan dengan kegiatan penerimaan calon santri baru ${institution.name} Tahun Pelajaran 2027/2028, kami selaku panitia membutuhkan pemeriksaan kesehatan bagi para calon santri sebagai salah satu bagian dari rangkaian proses seleksi.`;
   const introLines = doc.splitTextToSize(intro, contentW);
   doc.text(introLines, leftColX, y);
-  y += introLines.length * 4.5 + 2;
+  y += introLines.length * 5 + 3; // Diubah dari 5.5 + 4 ke 5 + 3
 
   const intro2 =
     "Untuk itu, kami mohon kesediaan Bapak/Ibu untuk melakukan pemeriksaan kesehatan bagi calon santri dengan identitas berikut:";
   const intro2Lines = doc.splitTextToSize(intro2, contentW);
   doc.text(intro2Lines, leftColX, y);
-  y += intro2Lines.length * 4.5 + 2;
+  y += intro2Lines.length * 5 + 3;
 
-  // Data calon santri (Otomatis terisi jika ada data, fallback titik-titik untuk format kosong)
+  // Data calon santri
   const fields1: [string, string][] = [
     ["Nama", data.nama_lengkap ? toTitleCase(data.nama_lengkap) : ".................................................................................."],
     ["Nomor Pendaftaran", data.nomor_pendaftaran || ".................................................................................."],
@@ -641,12 +618,12 @@ export const generateSuratKesehatan = async (data: PendaftarPdfData) => {
     doc.setFont("helvetica", "normal");
     doc.text(":", leftColX + 54, y);
     doc.text(value, leftColX + 57, y);
-    y += 4.8;
+    y += 5.2; // Diubah dari 6 ke 5.2
   }
 
-  y += 2;
+  y += 3; // Diubah dari 5 ke 3
   doc.text("Jenis pemeriksaan kesehatan yang dibutuhkan adalah:", leftColX, y);
-  y += 4.5;
+  y += 5; // Diubah dari 7 ke 5
   const checks = [
     "Riwayat Penyakit (Anamnesis)",
     "Pemeriksaan Fisik (Physical Test)",
@@ -655,27 +632,27 @@ export const generateSuratKesehatan = async (data: PendaftarPdfData) => {
   for (const item of checks) {
     doc.setFillColor(80, 80, 80);
     // Menggambar bulatan bullet point kecil menggunakan metode lingkaran vector
-    doc.circle(leftColX + 7, y - 1.2, 0.7, "F");
+    doc.circle(leftColX + 7, y - 1.2, 0.7, "F"); // Bulatan sedikit lebih kecil
     doc.text(item, leftColX + 11, y);
-    y += 4.8;
+    y += 5.2; // Diubah dari 6 ke 5.2
   }
 
-  y += 2;
+  y += 2; // Diubah dari 4 ke 2
   const note =
     "Catatan: Bila visus tidak normal, mohon dilengkapi dengan nilai negatif, positif, atau nilai silindrisnya (contoh: V.OD/V.OS: -1/-0,5).";
   const noteLines = doc.splitTextToSize(note, contentW - 5);
   doc.setFont("helvetica", "italic");
-  doc.setFontSize(8.5);
+  doc.setFontSize(8.5); // Ukuran catatan diperkecil sedikit
   doc.text(noteLines, leftColX + 5, y);
   doc.setFont("helvetica", "normal");
-  doc.setFontSize(9.5);
-  y += noteLines.length * 4 + 2;
+  doc.setFontSize(9.5); // Kembalikan ke 9.5
+  y += noteLines.length * 4.5 + 3;
 
   const closing1 =
     "Hasil pemeriksaan dapat diisikan pada formulir terlampir. Seluruh biaya pemeriksaan kesehatan dibebankan kepada calon santri yang bersangkutan, dengan mekanisme yang ditentukan oleh pihak Rumah Sakit/Puskesmas.";
   const closing1Lines = doc.splitTextToSize(closing1, contentW);
   doc.text(closing1Lines, leftColX, y);
-  y += closing1Lines.length * 4.5 + 2.5;
+  y += closing1Lines.length * 5 + 4;
 
   doc.setFont("helvetica", "italic");
   doc.text(
@@ -685,7 +662,7 @@ export const generateSuratKesehatan = async (data: PendaftarPdfData) => {
   );
   doc.setFont("helvetica", "normal");
 
-  await drawFormalSignature(doc, y + 5);
+  await drawFormalSignature(doc, y + 5); // Diubah dari 12 ke 8 untuk memajukan TTD Mudir
   drawFooter(doc);
 
   // === HALAMAN 2: FORMULIR PEMERIKSAAN ===
@@ -700,7 +677,7 @@ export const generateSuratKesehatan = async (data: PendaftarPdfData) => {
   y += 7;
   doc.setFontSize(11);
   doc.text(
-    `CALON SANTRI BARU Pesantren Al Imam Al Islami`,
+    `CALON SANTRI BARU ${institution.name.toUpperCase()}`,
     pageWidth / 2,
     y,
     { align: "center" },
