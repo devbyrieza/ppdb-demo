@@ -37,7 +37,7 @@ import { ScanLine, LayoutDashboard,
   Search,
   Shuffle,
   Shirt,
-  Wallet } from "lucide-react";
+  Wallet, Megaphone } from "lucide-react";
 
 // ─── CONFIG & UTILS ───
 import { getMenuItemsForRole,
@@ -73,7 +73,7 @@ const ICON_MAP: Record<string, any> = {
   PieChart,
   Shuffle,
   Shirt,
-  Wallet };
+  Wallet, Megaphone };
 
 interface AdminSidebarProps {
   children: React.ReactNode;
