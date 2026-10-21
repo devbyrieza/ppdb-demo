@@ -1,5 +1,5 @@
 /**
- * Jadwal Seleksi API — Main data endpoint for the dashboard.
+ * Jadwal Seleksi API â€” Main data endpoint for the dashboard.
  *
  * Returns:
  * - Grup A test completion status (akademik, kepribadian, kesiapan)
@@ -18,10 +18,11 @@ import {
 
 function getExamCategory(title: string): string {
   const t = title.toLowerCase();
-  if (t.includes("quran") || t.includes("qur'an")) return "QURAN";
+  if (t.includes("quran") || t.includes("qur'an") || t.includes("bacaan") || t.includes("hafalan")) return "QURAN";
+  if (t.includes("arab") || t.includes("lisan")) return "LISAN_ARAB";
+  // W_ORTU must be checked BEFORE W_SANTRI
+  if (t.includes("cawalsan") || t.includes("ortu") || t.includes("orang tua") || t.includes("orangtua") || t.includes("wali")) return "W_ORTU";
   if (t.includes("calsan") || t.includes("santri")) return "W_SANTRI";
-  if (t.includes("cawalsan") || t.includes("ortu") || t.includes("orang tua"))
-    return "W_ORTU";
   return "OTHER";
 }
 
@@ -135,7 +136,7 @@ export async function GET(request: Request) {
           current_status: pendaftar.status_pendaftaran } });
     }
 
-    // ── EARLY EXIT: Seleksi sudah selesai & pendaftar sudah accepted/enrolled ──
+    // â”€â”€ EARLY EXIT: Seleksi sudah selesai & pendaftar sudah accepted/enrolled â”€â”€
     // Tampilkan halaman "Seleksi Selesai" daripada form jadwal
     const SELEKSI_DONE_STATUSES = ["accepted", "enrolled"];
     if (SELEKSI_DONE_STATUSES.includes(pendaftar.status_pendaftaran || "")) {
@@ -151,7 +152,7 @@ export async function GET(request: Request) {
           progress: { completed: 6, total: 6, percentage: 100 } } });
     }
 
-    // 2. Fetch Grup A — Online test completion status
+    // 2. Fetch Grup A â€” Online test completion status
     const nilaiUjian = await prisma.nilaiUjian.findMany({
       where: { pendaftar_id: pendaftarId },
       select: { score_akademik: true, score_kepribadian: true, score_kesiapan: true, detail_akademik: true, detail_kepribadian: true, detail_kesiapan: true, nilai_tes_quran: true, detail_quran: true, nilai_wawancara_santri: true, detail_wawancara: true, nilai_wawancara_ortu: true, detail_cawalsan: true } });
@@ -174,7 +175,7 @@ export async function GET(request: Request) {
         label: "Identifikasi Kepribadian" },
       kesiapan: { completed: hasKesiapan, label: "Seleksi Kesiapan" } };
 
-    // 3. Fetch Grup B — Available exam sessions (future, active)
+    // 3. Fetch Grup B â€” Available exam sessions (future, active)
     const availableSessions = await prisma.examSession.findMany({
       where: {
         is_active: true,
