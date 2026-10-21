@@ -21,6 +21,9 @@ interface UserSession {
 export default function ProfileSettings({ user }: { user: UserSession }) {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [isDefaultPassword, setIsDefaultPassword] = useState(
+    Boolean(user?.is_default_password)
+  );
 
   // Profile Info State
   const [fullName, setFullName] = useState(user?.full_name || "");
@@ -117,6 +120,7 @@ export default function ProfileSettings({ user }: { user: UserSession }) {
       }
 
       setSuccess(true);
+      setIsDefaultPassword(false);
       setNewPassword("");
       setConfirmPassword("");
 
@@ -141,6 +145,20 @@ export default function ProfileSettings({ user }: { user: UserSession }) {
           Kelola informasi akun dan pengaturan keamanan Anda.
         </p>
       </div>
+      {/* Highlight Saran Ganti Password Default */}
+      {isDefaultPassword && !success && (
+        <div className="p-4 md:p-5 rounded-2xl bg-amber-50 border-2 border-amber-300 text-amber-900 flex items-start gap-3.5 shadow-sm">
+          <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+          <div className="space-y-1">
+            <h4 className="font-bold text-sm text-amber-950">
+              Saran Keamanan: Segera Ganti Kata Sandi Bawaan
+            </h4>
+            <p className="text-xs text-amber-800 leading-relaxed font-medium">
+              Akun Anda saat ini masih menggunakan kata sandi default sistem. Demi menjaga privasi dan keamanan data seleksi, sangat disarankan untuk membuat kata sandi baru pada formulir <strong>Ubah Password</strong> di bawah. Peringatan saran ini akan otomatis hilang setelah kata sandi berhasil diperbarui.
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Error Alert */}
       {error && (
@@ -287,6 +305,20 @@ export default function ProfileSettings({ user }: { user: UserSession }) {
                 </p>
                 <p className="text-xs text-emerald-700/80 mt-0.5">
                   Silakan gunakan password baru Anda saat login berikutnya.
+                </p>
+              </div>
+            </div>
+          )}
+          {/* Highlight Saran di Dalam Form Password */}
+          {isDefaultPassword && !success && (
+            <div className="mb-6 p-4 rounded-2xl bg-amber-50 border border-amber-300 text-amber-900 flex items-start gap-3">
+              <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+              <div className="text-xs space-y-1">
+                <p className="font-bold text-amber-950">
+                  Password Anda masih merupakan password default sistem.
+                </p>
+                <p className="text-amber-800 leading-relaxed font-medium">
+                  Demi keamanan akun Anda, silakan ubah password sekarang. Syarat minimal 8 karakter (kombinasi huruf besar, huruf kecil, angka, dan simbol khusus).
                 </p>
               </div>
             </div>
