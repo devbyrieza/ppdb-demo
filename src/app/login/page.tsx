@@ -265,7 +265,7 @@ export default function LoginPage() {
   };
 
   return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 sm:p-8 relative overflow-hidden font-sans">
+      <div className="min-h-dvh bg-slate-50 flex items-center justify-center p-4 sm:p-8 relative overflow-hidden font-sans">
         {/* Background Mesh */}
         <div className="absolute top-[-20%] left-[-10%] w-[800px] h-[800px] bg-primary-400/20 rounded-full blur-[120px] pointer-events-none max-w-full" />
         <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-primary-600/10 rounded-full blur-[100px] pointer-events-none max-w-full" />

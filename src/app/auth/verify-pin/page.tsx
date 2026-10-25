@@ -89,7 +89,7 @@ function VerifyPinContent() {
 
   if (!token) {
     return (
-      <div className="min-h-screen bg-stone-50 flex items-center justify-center p-6 text-center">
+      <div className="min-h-dvh bg-stone-50 flex items-center justify-center p-6 text-center">
         <div className="max-w-md w-full bg-white p-6 md:p-10 rounded-3xl shadow-2xl shadow-primary/30 border border-stone-100">
           <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
           <h1 className="text-2xl font-bold text-stone-800 mb-2">
@@ -104,7 +104,7 @@ function VerifyPinContent() {
   }
 
   return (
-    <div className="min-h-screen bg-stone-50 flex items-center justify-center p-6 font-sans">
+    <div className="min-h-dvh bg-stone-50 flex items-center justify-center p-6 font-sans">
       <div className="max-w-md w-full animate-in fade-in zoom-in duration-500">
         <div className="bg-white rounded-[2.5rem] shadow-2xl shadow-indigo-100/50 border border-stone-100 overflow-hidden text-stone-900">
           <div className="bg-primary p-[24px_28px] md:p-8 sm:p-6 text-center relative overflow-hidden">
@@ -204,7 +204,7 @@ export default function VerifyPinPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-stone-50 flex items-center justify-center p-6">
+        <div className="min-h-dvh bg-stone-50 flex items-center justify-center p-6">
           <div className="max-w-md w-full bg-white p-6 md:p-10 rounded-3xl shadow-2xl shadow-primary/30 flex flex-col items-center gap-[24px_28px]">
             <Loader2 className="w-12 h-12 text-indigo-600 animate-spin" />
             <p className="text-stone-500 font-medium">

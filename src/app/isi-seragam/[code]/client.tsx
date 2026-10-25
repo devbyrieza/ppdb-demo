@@ -46,7 +46,7 @@ export default function IsiSeragamClient({ code, pendaftar }: { code: string; pe
   };
 
   return (
-    <div className="min-h-screen bg-ink-50 p-4 md:p-8 font-sans">
+    <div className="min-h-dvh bg-ink-50 p-4 md:p-8 font-sans">
       <div className="max-w-4xl mx-auto space-y-6">
         <div className="bg-white p-6 rounded-3xl shadow-sm border border-ink-100 flex items-start gap-4 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-primary-50 rounded-bl-[100px] -z-0"></div>

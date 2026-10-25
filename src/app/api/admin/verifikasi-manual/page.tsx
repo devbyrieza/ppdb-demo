@@ -106,7 +106,7 @@ export default function VerifikasiManualPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen p-6 flex items-center justify-center">
+      <div className="min-h-dvh p-6 flex items-center justify-center">
         <div className="text-center">
           <RefreshCw className="w-8 h-8 animate-spin mx-auto" />
           <p className="mt-2">Memuat data...</p>
@@ -116,7 +116,7 @@ export default function VerifikasiManualPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-[24px_28px]">
+    <div className="min-h-dvh bg-gray-50 p-[24px_28px]">
       <div className="max-w-[1200px] mx-auto">
         {/* Header */}
         <div className="bg-white rounded-[24px] shadow p-6 mb-6">

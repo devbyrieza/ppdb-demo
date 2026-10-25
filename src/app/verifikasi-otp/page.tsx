@@ -425,7 +425,7 @@ function LoadingFallback() {
 
 export default function VerifikasiOTPPage() {
   return (
-    <main className="min-h-screen bg-white flex items-center justify-center p-6 relative overflow-hidden">
+    <main className="min-h-dvh bg-white flex items-center justify-center p-6 relative overflow-hidden">
       {/* Background Decor */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-secondary-50/50 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none max-w-full" />
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-primary-50/30 rounded-full blur-[100px] -translate-x-1/2 translate-y-1/2 pointer-events-none max-w-full" />

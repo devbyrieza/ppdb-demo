@@ -12,7 +12,7 @@ export default function CalendarPage() {
   }, []);
 
   return (
-    <main className="bg-surface-50 min-h-screen flex items-center justify-center">
+    <main className="bg-surface-50 min-h-dvh flex items-center justify-center">
       <Container>
         <div className="max-w-2xl mx-auto text-center">
           <div className="w-24 h-24 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-8 animate-pulse border border-primary-100 shadow-sm">

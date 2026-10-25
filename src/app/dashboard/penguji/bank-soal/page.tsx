@@ -81,7 +81,7 @@ export default function BankSoalPanitiaPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#faf8f5] p-3 sm:p-5 md:p-8 space-y-5 md:space-y-6 max-w-[1400px] mx-auto pb-16">
+    <div className="min-h-dvh bg-[#faf8f5] p-3 sm:p-5 md:p-8 space-y-5 md:space-y-6 max-w-[1400px] mx-auto pb-16">
       {/* HEADER BANNER MAROON & KREM EMAS AL-IMAM (FAILSAFE INLINE STYLES FOR MOBILE) */}
       <div
         className="relative overflow-hidden rounded-3xl bg-[#550000] text-white p-5 sm:p-7 md:p-9 shadow-2xl border border-[#6b0000]"

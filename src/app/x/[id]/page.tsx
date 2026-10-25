@@ -50,7 +50,7 @@ export default function MagicLinkVerification({ params }: { params: Promise<{ id
   };
 
   return (
-    <div className="min-h-screen bg-surface-50 flex items-center justify-center p-4">
+    <div className="min-h-dvh bg-surface-50 flex items-center justify-center p-4">
       <div className="bg-white max-w-md w-full rounded-[2rem] p-8 shadow-clay-lg border border-gold-100">
         <div className="w-20 h-20 bg-primary-50 rounded-[2rem] flex items-center justify-center mx-auto mb-6 shadow-inner rotate-3">
           <UserCheck className="w-10 h-10 text-primary-600 -rotate-3" />

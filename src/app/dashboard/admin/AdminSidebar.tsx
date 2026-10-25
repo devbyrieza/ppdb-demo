@@ -250,7 +250,7 @@ export default function AdminSidebar({
   };
 
   return (
-    <div className="min-h-screen bg-[#fafaf9] font-sans selection:bg-primary-100 selection:text-primary-900">
+    <div className="min-h-dvh bg-[#fafaf9] font-sans selection:bg-primary-100 selection:text-primary-900">
       {/* ─── MOBILE HEADER (Hanya muncul di layar < 1024px) ─── */}
       <div className="lg:hidden fixed top-0 left-0 right-0 z-[60] bg-white/90 backdrop-blur-2xl border-b border-ink-200/60 px-6 py-4 flex items-center justify-between shadow-sm">
         <button

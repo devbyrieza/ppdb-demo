@@ -196,7 +196,7 @@ function PPDBContent() {
   ];
 
   return (
-    <main className="bg-white min-h-screen">
+    <main className="bg-white min-h-dvh">
       {/* 1. Hero Section - Airy & Impactful */}
       <section className="relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden bg-white">
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary-50/50 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none max-w-full" />
@@ -634,7 +634,7 @@ function PPDBContent() {
 
 function LoadingFallback() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-white">
+    <div className="flex flex-col items-center justify-center min-h-dvh bg-white">
       <motion.div
         animate={{ rotate: 360 }}
         transition={{ repeat: Infinity, duration: 1, ease: "linear" }}

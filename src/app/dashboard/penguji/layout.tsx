@@ -183,7 +183,7 @@ export default function PengujiDashboardLayout({
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-surface-50 flex items-center justify-center p-6">
+      <div className="min-h-dvh bg-surface-50 flex items-center justify-center p-6">
         <div className="text-center">
           <div className="relative w-16 h-16 mx-auto mb-6">
             <div className="absolute inset-0 border-4 border-primary-100 rounded-full" />
@@ -204,7 +204,7 @@ export default function PengujiDashboardLayout({
   return (
     <>
       <IdleTimeoutTracker />
-      <div className="min-h-screen bg-surface-50 font-sans selection:bg-primary-100 selection:text-primary-900">
+      <div className="min-h-dvh bg-surface-50 font-sans selection:bg-primary-100 selection:text-primary-900">
         {/* Mobile Header - branding only, NO hamburger */}
         <header
           data-ui-version="2"
@@ -399,7 +399,7 @@ export default function PengujiDashboardLayout({
           </AnimatePresence>
 
           {/* Main Content Content */}
-          <div className="flex-1 flex flex-col min-w-0 lg:ml-72 min-h-screen">
+          <div className="flex-1 flex flex-col min-w-0 lg:ml-72 min-h-dvh">
             {/* Topbar Desktop */}
             <header className="hidden lg:flex items-center justify-between h-24 px-6 md:px-10 sticky top-0 bg-surface-50/80 backdrop-blur-md z-30 shrink-0">
               <div className="flex-1 max-w-xl">

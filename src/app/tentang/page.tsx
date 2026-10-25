@@ -24,7 +24,7 @@ export default function TentangPage() {
   }, []);
 
   return (
-    <main className="bg-white min-h-screen">
+    <main className="bg-white min-h-dvh">
       {/* 1. Hero Section - Professional Airy Design */}
       <section className="section-std pb-0! relative overflow-hidden">
         {/* Sophisticated Background Elements */}

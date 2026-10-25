@@ -50,7 +50,7 @@ export default function CBTRoomPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
+    <div className="min-h-dvh bg-gray-50 flex flex-col font-sans">
       {/* Header CBT */}
       <header className="bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center sticky top-0 z-10 shadow-sm">
         <div className="flex items-center gap-4">

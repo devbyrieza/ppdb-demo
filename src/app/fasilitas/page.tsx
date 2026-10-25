@@ -142,7 +142,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
   }, []);
 
   return (
-    <main className="bg-white min-h-screen">
+    <main className="bg-white min-h-dvh">
       {/* 1. Hero Section - Airy & Clean */}
       <section className="relative py-24 md:py-32 overflow-hidden section-std">
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary-50/60 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none max-w-full" />

@@ -1123,7 +1123,7 @@ export default function VerifikasiPembayaranPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex items-center justify-center min-h-screen">
+        <div className="flex items-center justify-center min-h-dvh">
           <Loader2 className="w-10 h-10 animate-spin text-primary-600" />
         </div>
       }

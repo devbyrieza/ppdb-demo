@@ -51,14 +51,14 @@ export default function AdminSMSDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-dvh bg-gray-50 flex items-center justify-center">
         <RefreshCw className="w-8 h-8 animate-spin text-primary-600" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6 md:p-10">
+    <div className="min-h-dvh bg-gray-50 p-6 md:p-10">
       <div className="max-w-[1200px] mx-auto space-y-6">
         <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl shadow-primary/30 shadow-emerald-500/10 border border-emerald-100 p-6 md:p-8">
           <h1 className="text-2xl font-bold text-gray-900 mb-2 flex items-center gap-2">

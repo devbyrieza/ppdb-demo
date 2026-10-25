@@ -97,7 +97,7 @@ export default function ExamCardPage() {
   if (!data) return <div>Data tidak ditemukan</div>;
 
   return (
-    <div className="min-h-screen bg-gray-100 p-[24px_28px] md:p-8 flex flex-col items-center">
+    <div className="min-h-dvh bg-gray-100 p-[24px_28px] md:p-8 flex flex-col items-center">
       {/* Toolbar */}
       <div className="w-full max-w-[21cm] mb-6 flex justify-between items-center bg-white/80 backdrop-blur-xl rounded-[24px] shadow-2xl shadow-primary/30  shadow-primary/20 border border-emerald-100 p-[24px_28px] no-print">
         <h1 className="text-xl font-bold text-stone-900">Pratinjau Jadwal</h1>

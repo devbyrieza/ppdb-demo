@@ -331,7 +331,7 @@ export default function DashboardLayout({
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-surface-50 flex items-center justify-center">
+      <div className="min-h-dvh bg-surface-50 flex items-center justify-center">
         <div className="bg-white p-5 md:p-8 rounded-3xl shadow-clay-lg text-center max-w-sm w-full mx-4">
           <div className="relative w-16 h-16 mx-auto mb-6">
             <div className="absolute inset-0 border-4 border-gold-100 rounded-full" />
@@ -352,7 +352,7 @@ export default function DashboardLayout({
   return (
     <>
       <IdleTimeoutTracker />
-      <div className="min-h-screen bg-surface-50 font-sans selection:bg-primary-100 selection:text-primary-900">
+      <div className="min-h-dvh bg-surface-50 font-sans selection:bg-primary-100 selection:text-primary-900">
         {/* Mobile Header (Fintech Style) */}
         <div className="lg:hidden bg-white/90 backdrop-blur-xl sticky top-0 z-40 px-4 sm:px-5 py-3 sm:py-4 flex items-center justify-between border-b border-gold-200 shadow-sm">
           <div className="flex items-center gap-2 sm:gap-3">
@@ -545,7 +545,7 @@ export default function DashboardLayout({
           </div>
 
           {/* Main Content Area */}
-          <main className="flex-1 lg:pl-72 w-full transition-all duration-300 flex flex-col min-h-screen relative pb-24 lg:pb-0">
+          <main className="flex-1 lg:pl-72 w-full transition-all duration-300 flex flex-col min-h-dvh relative pb-24 lg:pb-0">
             {/* Desktop Topbar - Glass Effect */}
             <header className="hidden lg:flex sticky top-4 z-30 mx-8 mt-4 rounded-[1.5rem] bg-white/70 backdrop-blur-xl px-6 py-4 items-center justify-between shadow-sm border border-gold-100">
               <div>
