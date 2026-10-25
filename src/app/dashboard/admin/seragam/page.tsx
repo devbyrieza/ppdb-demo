@@ -313,7 +313,7 @@ export default function RekapSeragamPage() {
               <Loader2 className="w-8 h-8 animate-spin text-slate-500" />
             </div>
           ) : (
-            <table className="w-full min-w-[750px] text-left text-sm whitespace-nowrap">
+            <table className="w-full min-w-[750px] text-left text-sm whitespace-nowrap max-w-full">
               <thead className="bg-ink-50/50 text-ink-500 text-xs uppercase font-black tracking-wider">
                 <tr>
                   <th className="px-6 py-4">Pendaftar</th>

@@ -53,7 +53,7 @@ export default function TeachersSection() {
     >
       <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.02] pointer-events-none" />
       <div
-        className="absolute -top-32 right-0 translate-x-1/3 w-[600px] h-[600px] pointer-events-none"
+        className="absolute -top-32 right-0 translate-x-1/3 w-[600px] h-[600px] pointer-events-none max-w-full"
         style={{
           background:
             "radial-gradient(circle, rgba(229,224,211,0.4) 0%, transparent 60%)" }}

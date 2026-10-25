@@ -122,8 +122,8 @@ export default function ProgramSection() {
         aria-hidden
         className="pointer-events-none absolute inset-0 overflow-hidden"
       >
-        <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-secondary-200/70 blur-[100px]" />
-        <div className="absolute -bottom-32 -left-32 w-[400px] h-[400px] rounded-full bg-primary-50/60 blur-[80px]" />
+        <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-secondary-200/70 blur-[100px] max-w-full" />
+        <div className="absolute -bottom-32 -left-32 w-[400px] h-[400px] rounded-full bg-primary-50/60 blur-[80px] max-w-full" />
       </div>
 
       <Container className="relative z-10">

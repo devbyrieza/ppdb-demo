@@ -145,7 +145,7 @@ Mohon konfirmasi kesediaan waktu kunjungan tersebut. Terima kasih.`;
     <main className="bg-white min-h-screen">
       {/* 1. Hero Section - Airy & Clean */}
       <section className="relative py-24 md:py-32 overflow-hidden section-std">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary-50/60 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary-50/60 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none max-w-full" />
         <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.02] pointer-events-none" />
 
         <Container className="relative z-10">

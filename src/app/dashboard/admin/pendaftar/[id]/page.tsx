@@ -1441,21 +1441,21 @@ export default function PendaftarDetailPage() {
                       href={`/dashboard/pendaftar/ujian/akademik?pendaftarId=${pendaftar.id}`}
                       target="_blank"
                       className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-[24px] text-[11px] font-bold transition-colors shadow-sm"
-                    >
+                     rel="noopener noreferrer">
                       Buka CBT Akademik
                     </a>
                     <a
                       href={`/dashboard/pendaftar/ujian/kepribadian?pendaftarId=${pendaftar.id}`}
                       target="_blank"
                       className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-[24px] text-[11px] font-bold transition-colors shadow-sm"
-                    >
+                     rel="noopener noreferrer">
                       Buka CBT Kepribadian
                     </a>
                     <a
                       href={`/dashboard/pendaftar/ujian/kesiapan?pendaftarId=${pendaftar.id}`}
                       target="_blank"
                       className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-[24px] text-[11px] font-bold transition-colors shadow-sm"
-                    >
+                     rel="noopener noreferrer">
                       Buka CBT Kesiapan
                     </a>
                   </div>

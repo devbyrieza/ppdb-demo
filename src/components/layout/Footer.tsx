@@ -50,7 +50,7 @@ export default function Footer() {
       {/* ── Decorative orbs — teal-tinted ── */}
       {/* Orb utama: teal warm kanan-atas */}
       <div
-        className="absolute top-0 right-0 w-[520px] h-[520px] rounded-full pointer-events-none -translate-y-1/2 translate-x-1/3"
+        className="absolute top-0 right-0 w-[520px] h-[520px] rounded-full pointer-events-none -translate-y-1/2 translate-x-1/3 max-w-full"
         style={{
           background:
             "radial-gradient(circle, rgba(92,125,74,0.18) 0%, transparent 70%)" }}

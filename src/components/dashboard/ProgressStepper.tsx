@@ -68,7 +68,7 @@ export default function ProgressStepper({
 
   return (
     <div className="w-full py-6 px-4 mb-8 bg-white/50 backdrop-blur-sm rounded-[2rem] border border-stone-100 shadow-sm overflow-x-auto scrollbar-hide">
-      <div className="flex items-center justify-between min-w-[700px] lg:min-w-0 px-4">
+      <div className="flex items-center justify-between min-w-[700px] lg:min-w-0 px-4 max-w-full">
         {STEPS.map((step, idx) => {
           const isCompleted = idx < activeIndex;
           const isActive = idx === activeIndex;

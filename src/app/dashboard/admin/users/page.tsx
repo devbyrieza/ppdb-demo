@@ -334,7 +334,7 @@ export default function UserManagementPage() {
         </div>
 
         <div className="overflow-x-auto custom-scrollbar">
-          <table className="w-full min-w-[650px] text-left">
+          <table className="w-full min-w-[650px] text-left max-w-full">
             <thead className="bg-stone-50/50 text-[10px] font-black uppercase tracking-widest text-stone-500 border-b border-stone-50">
               <tr>
                 <th className="p-5 md:p-8">Identitas Akun</th>

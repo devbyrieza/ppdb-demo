@@ -267,8 +267,8 @@ export default function LoginPage() {
   return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 sm:p-8 relative overflow-hidden font-sans">
         {/* Background Mesh */}
-        <div className="absolute top-[-20%] left-[-10%] w-[800px] h-[800px] bg-primary-400/20 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-primary-600/10 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute top-[-20%] left-[-10%] w-[800px] h-[800px] bg-primary-400/20 rounded-full blur-[120px] pointer-events-none max-w-full" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-primary-600/10 rounded-full blur-[100px] pointer-events-none max-w-full" />
         
         {/* Subtle grid */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(15,23,42,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.03)_1px,transparent_1px)] bg-[size:64px_64px] pointer-events-none" />

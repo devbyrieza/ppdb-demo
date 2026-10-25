@@ -55,7 +55,7 @@ export default function ExtraSection() {
     >
       <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.02] pointer-events-none" />
       <div
-        className="absolute top-0 right-0 w-[500px] h-[500px] pointer-events-none -translate-y-1/2 translate-x-1/2"
+        className="absolute top-0 right-0 w-[500px] h-[500px] pointer-events-none -translate-y-1/2 translate-x-1/2 max-w-full"
         style={{
           background:
             "radial-gradient(circle, rgba(229,224,211,0.4) 0%, transparent 60%)" }}

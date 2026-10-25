@@ -1062,7 +1062,7 @@ export default function MonitoringJadwalPage() {
                         {/* Desktop View: Table */}
                         <div className="hidden md:block bg-white rounded-2xl shadow-clay-lg overflow-hidden border border-slate-100">
                             <div className="overflow-x-auto custom-scrollbar">
-                                <table className="w-full min-w-[850px] text-left border-collapse">
+                                <table className="w-full min-w-[850px] text-left border-collapse max-w-full">
                                     <thead>
                                         <tr className="bg-slate-50/70">
                                             <th className="px-6 py-5 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100">Peserta</th>
@@ -1163,7 +1163,7 @@ export default function MonitoringJadwalPage() {
                                     <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Penguji Al-Qur'an / Pewawancara</span>
                                 </div>
                                 <div className="p-0 overflow-x-auto custom-scrollbar">
-                                    <table className="w-full min-w-[750px] text-left border-collapse">
+                                    <table className="w-full min-w-[750px] text-left border-collapse max-w-full">
                                         <thead>
                                             <tr className="bg-slate-50/20">
                                                 <th className="px-7 py-4 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100/50">Santri</th>

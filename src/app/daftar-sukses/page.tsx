@@ -212,8 +212,8 @@ export default function DaftarSuksesPage() {
   return (
     <main className="min-h-screen bg-white flex items-center justify-center p-6 relative overflow-hidden">
       {/* Background Decor */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-secondary-100/40 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-secondary-200/20 rounded-full blur-[100px] -translate-x-1/2 translate-y-1/2 pointer-events-none" />
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-secondary-100/40 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none max-w-full" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-secondary-200/20 rounded-full blur-[100px] -translate-x-1/2 translate-y-1/2 pointer-events-none max-w-full" />
       <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.02] pointer-events-none" />
 
       <Suspense fallback={<LoadingFallback />}>

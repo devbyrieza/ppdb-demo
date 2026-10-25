@@ -160,7 +160,7 @@ export default function ActivitiesSection() {
 
       {/* Ambient glow */}
       <div
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] -translate-y-1/2 pointer-events-none"
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] -translate-y-1/2 pointer-events-none max-w-full"
         style={{
           background:
             "radial-gradient(ellipse, rgba(240,253,250,0.7) 0%, transparent 70%)" }}

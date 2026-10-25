@@ -122,7 +122,7 @@ export default function FaqSection() {
   return (
     <section id="faq" className="section-std relative overflow-hidden">
       <div
-        className="absolute top-1/2 -left-32 -translate-y-1/2 w-[380px] h-[380px] pointer-events-none"
+        className="absolute top-1/2 -left-32 -translate-y-1/2 w-[380px] h-[380px] pointer-events-none max-w-full"
         style={{
           background:
             "radial-gradient(circle, rgba(229,224,211,0.5) 0%, transparent 65%)" }}

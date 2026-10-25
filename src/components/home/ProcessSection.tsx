@@ -132,13 +132,13 @@ export default function ProcessSection() {
       className="section-alt relative border-y border-secondary-100/60 overflow-hidden"
     >
       <div
-        className="absolute -top-32 right-0 translate-x-1/3 w-[500px] h-[500px] pointer-events-none"
+        className="absolute -top-32 right-0 translate-x-1/3 w-[500px] h-[500px] pointer-events-none max-w-full"
         style={{
           background:
             "radial-gradient(circle, rgba(229,224,211,0.4) 0%, transparent 65%)" }}
       />
       <div
-        className="absolute -bottom-24 left-0 -translate-x-1/3 w-[400px] h-[400px] pointer-events-none"
+        className="absolute -bottom-24 left-0 -translate-x-1/3 w-[400px] h-[400px] pointer-events-none max-w-full"
         style={{
           background:
             "radial-gradient(circle, rgba(176,220,220,0.3) 0%, transparent 65%)" }}

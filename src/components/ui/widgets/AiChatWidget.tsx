@@ -120,7 +120,7 @@ export default function AiChatWidget({
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 20, scale: 0.95 }}
       transition={{ duration: 0.3 }}
-      className="fixed bottom-0 md:bottom-28 right-0 md:right-6 z-10000 w-full md:w-[400px] h-[85vh] md:h-[550px] bg-white rounded-t-4xl md:rounded-4xl shadow-[0_10px_40px_rgba(0,0,0,0.15)] md:border border-surface-100 flex flex-col overflow-hidden"
+      className="fixed bottom-0 md:bottom-28 right-0 md:right-6 z-10000 w-full md:w-[400px] h-[85vh] md:h-[550px] bg-white rounded-t-4xl md:rounded-4xl shadow-[0_10px_40px_rgba(0,0,0,0.15)] md:border border-surface-100 flex flex-col overflow-hidden max-w-full"
       style={{
         // Using transform origin bottom right for desktop, bottom center for mobile
         transformOrigin: "bottom right" }}
