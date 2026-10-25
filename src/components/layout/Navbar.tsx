@@ -48,6 +48,19 @@ export default function Navbar() {
     setIsMenuOpen(false);
   }, [pathname]);
 
+  /* Kunci scroll saat menu mobile terbuka (termasuk Lenis smooth-scroll) */
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const lenis = (window as any).lenis;
+    lenis?.stop?.();
+    return () => {
+      document.body.style.overflow = previous;
+      lenis?.start?.();
+    };
+  }, [isMenuOpen]);
+
   const navLinks = [
     { href: "/", label: "Beranda" },
     { href: "/tentang", label: "Tentang" },
@@ -352,6 +365,7 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
+            data-lenis-prevent
             className="fixed inset-0 z-40 lg:hidden overscroll-contain"
             role="dialog"
             aria-modal="true"
@@ -409,7 +423,7 @@ export default function Navbar() {
               </div>
 
               {/* Scrollable Nav */}
-              <div className="overflow-y-auto flex-1 px-4 py-4 pb-safe overscroll-contain custom-scrollbar">
+              <div data-lenis-prevent className="overflow-y-auto flex-1 px-4 py-4 pb-safe overscroll-contain custom-scrollbar">
                 <p className="text-[10px] font-black text-[var(--color-ink-400)] uppercase tracking-[0.12em] px-3 mb-3">
                   Navigasi
                 </p>
