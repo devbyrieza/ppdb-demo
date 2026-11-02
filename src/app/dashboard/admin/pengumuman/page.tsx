@@ -5,12 +5,14 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import Swal from "sweetalert2";
 import { SuratPengumumanDialog } from "@/components/admin/SuratPengumumanDialog";
+import { BulkPengumumanDialog } from "@/components/admin/BulkPengumumanDialog";
 
 export default function PengumumanPage() {
   const [loading, setLoading] = useState(false);
   const [candidates, setCandidates] = useState<any[]>([]);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [stats, setStats] = useState({ total: 0, ready: 0, accepted: 0 });
+  const [showBulkAcceptedDialog, setShowBulkAcceptedDialog] = useState(false);
   const [suratTarget, setSuratTarget] = useState<{
     id: string;
     nama_lengkap: string;
@@ -83,14 +85,16 @@ export default function PengumumanPage() {
   const handlePublish = async (new_status: "accepted" | "cadangan" | "rejected") => {
     if (selectedIds.length === 0) return;
 
+    if (new_status === "accepted") {
+      setShowBulkAcceptedDialog(true);
+      return;
+    }
+
     const actionText =
-      new_status === "accepted"
-        ? "menetapkan DITERIMA"
-        : new_status === "cadangan"
-          ? "menjadikan CADANGAN"
-          : "MENOLAK";
-    const btnColor =
-      new_status === "accepted" ? "#059669" : new_status === "cadangan" ? "#d97706" : "#dc2626";
+      new_status === "cadangan"
+        ? "menjadikan CADANGAN"
+        : "MENOLAK";
+    const btnColor = new_status === "cadangan" ? "#d97706" : "#dc2626";
 
     const result = await Swal.fire({
       title: "Publikasi Pengumuman?",

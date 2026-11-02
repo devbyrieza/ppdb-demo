@@ -1,9 +1,13 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import { BRANDING } from "@/config/branding";
 import { logAdminAction } from "@/lib/audit";
 import { prisma } from "@/lib/prisma";
-import { delCache } from "@/lib/redis";
+import { delCache, invalidateAdminPendaftarCache } from "@/lib/redis";
 import { saveFileLocal } from "@/lib/storage/local";
+import { signFilePath } from "@/lib/storage/file-signing";
+import { enqueueWhatsapp } from "@/lib/whatsapp-queue";
+import { sendDocumentMessage } from "@/lib/wablas";
 
 export const runtime = "nodejs";
 
@@ -19,11 +23,6 @@ async function checkSuperAdmin() {
   }
 }
 
-/**
- * POST — upload surat pengumuman resmi manual (PDF / JPG / PNG).
- * FormData: pendaftar_id, nomor_surat?, kelas_diterima?, kirim_wa?, file
- * Setelah upload: publish Pengumuman + status pendaftar accepted + kirim WA.
- */
 export async function POST(request: Request) {
   const admin = await checkSuperAdmin();
   if (!admin) {
@@ -57,6 +56,7 @@ export async function POST(request: Request) {
       where: { id: pendaftarId, deleted_at: null },
       select: {
         id: true,
+        nomor_pendaftaran: true,
         tahun_ajaran_id: true,
         nama_lengkap: true,
         no_hp: true,
@@ -69,7 +69,7 @@ export async function POST(request: Request) {
 
     const bytes = Buffer.from(await file.arrayBuffer());
     const safeName =
-      `Surat Pengumuman Hasil PSB ${pendaftar.nama_lengkap}.${file.type === "application/pdf" ? "pdf" : file.type === "image/png" ? "png" : "jpg"}`.replace(
+      `Surat Pengumuman Hasil PSB ${pendaftar.nama_lengkap.trim()}.${file.type === "application/pdf" ? "pdf" : file.type === "image/png" ? "png" : "jpg"}`.replace(
         /[^a-zA-Z0-9 .-]/g,
         "-"
       );
@@ -104,6 +104,7 @@ export async function POST(request: Request) {
     });
 
     await delCache(`pengumuman_${pendaftarId}`);
+    await invalidateAdminPendaftarCache();
 
     logAdminAction({
       action: "UPLOAD_SURAT_PENGUMUMAN_MANUAL" as any,
@@ -117,16 +118,59 @@ export async function POST(request: Request) {
     let waSent = false;
     if (kirimWa && pendaftar.no_hp) {
       try {
-        const { sendDocumentMessage } = await import("@/lib/wablas");
-        const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://pesantren-alandalus.com";
-        const { signFilePath } = await import("@/lib/storage/file-signing");
-        const docResult = await sendDocumentMessage({
+        const b = BRANDING as any;
+        const appUrl = process.env.NEXT_PUBLIC_APP_URL || b.websiteUrl || "https://pesantren-alandalus.com";
+        const token = signFilePath(suratPath);
+        const suratDownloadUrl = `${appUrl}/api/files/${encodeURI(suratPath)}?k=${token}`;
+        const targetKelas = kelasDiterima || pendaftar.jenjang || "Reguler";
+        const santriWord = b.santri || "Santri";
+        const shalehWord = b.shaleh || "sholeh";
+
+        const messageContent = `📋 *PENGUMUMAN HASIL KELULUSAN SELEKSI PSB*
+*${(b.schoolName || "PESANTREN AL-ANDALUS").toUpperCase()}*
+
+Assalamu'alaikum Warahmatullahi Wabarakatuh,
+
+Yth. Bapak/Ibu Orang Tua / Wali dari:
+👤 *${pendaftar.nama_lengkap}*
+No. Pendaftaran: *${pendaftar.nomor_pendaftaran}*
+
+Alhamdulillah, ananda dinyatakan *DITERIMA* sebagai ${santriWord} Baru di ${b.schoolName || "Pesantren Al-Andalus"}:
+🎓 *Jenjang / Kelas:* ${targetKelas}
+${nomorSurat ? `📜 *No. Surat Keputusan:* ${nomorSurat}\n` : ""}
+📄 *Unduh Surat Keputusan Resmi (PDF):*
+${suratDownloadUrl}
+
+📝 *Tahap Selanjutnya (Daftar Ulang):*
+Silakan masuk ke portal pendaftar untuk melihat rincian pengumuman dan panduan daftar ulang:
+🔗 ${appUrl}/login
+
+Semoga Allah ﷻ memberkahi ananda dan menjadikannya ${santriWord.toLowerCase()} yang ${shalehWord}, berilmu, dan berakhlak mulia. Aamiin.
+
+Jazakumullahu khairan katsiran.
+Wassalamu'alaikum Warahmatullahi Wabarakatuh.
+---
+*Panitia PSB ${b.schoolName || "Pesantren Al-Andalus"}*`;
+
+        const enqResult = await enqueueWhatsapp({
+          pendaftarId: pendaftar.id,
           phone: pendaftar.no_hp,
-          message:
-            "Alhamdulillah, ananda ${pendaftar.nama_lengkap} DITERIMA sebagai Santri Baru TA 2027/2028. Terlampir Surat Pengumuman Hasil Resmi. Jazakumullohu khoiron katsiron.",
-          documentUrl: `${appUrl}/api/files/${suratPath}?k=${signFilePath(suratPath)}`,
+          jenisNotif: "hasil_seleksi",
+          messageContent,
+          force: true,
+          sendNow: true,
         });
-        waSent = !!docResult.status;
+
+        waSent = !!enqResult.queued;
+
+        try {
+          await sendDocumentMessage({
+            phone: pendaftar.no_hp,
+            message: `📄 Surat Keputusan Kelulusan — ${pendaftar.nama_lengkap} (${nomorSurat || "-"})`,
+            documentUrl: suratDownloadUrl,
+          });
+        } catch {}
+
         await prisma.pengumuman.update({
           where: { id: pengumuman.id },
           data: { wa_blast_sent: waSent, wa_blast_sent_at: waSent ? new Date() : null },
