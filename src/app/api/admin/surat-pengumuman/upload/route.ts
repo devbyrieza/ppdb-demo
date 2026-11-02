@@ -100,6 +100,43 @@ export async function POST(request: Request) {
         where: { id: pendaftarId },
         data: { status_pendaftaran: "accepted" },
       });
+
+      // Persistensi permanen binary PDF ke tabel Dokumen (BYTEA)
+      const existingDoc = await tx.dokumen.findFirst({
+        where: {
+          pendaftar_id: pendaftarId,
+          jenis_dokumen: "surat_pengumuman",
+        },
+      });
+
+      if (existingDoc) {
+        await tx.dokumen.update({
+          where: { id: existingDoc.id },
+          data: {
+            file_name: safeName,
+            file_path: suratPath,
+            file_size: bytes.length,
+            file_type: file.type || "application/pdf",
+            file_data: bytes,
+            is_verified: true,
+            updated_at: new Date(),
+          },
+        });
+      } else {
+        await tx.dokumen.create({
+          data: {
+            pendaftar_id: pendaftarId,
+            jenis_dokumen: "surat_pengumuman",
+            file_name: safeName,
+            file_path: suratPath,
+            file_size: bytes.length,
+            file_type: file.type || "application/pdf",
+            file_data: bytes,
+            is_verified: true,
+          },
+        });
+      }
+
       return p;
     });
 
