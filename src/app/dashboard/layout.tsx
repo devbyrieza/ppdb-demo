@@ -5,6 +5,7 @@
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 import IdleTimeoutTracker from "@/components/auth/IdleTimeoutTracker";
+import ToastProvider from "@/components/common/ToastProvider";
 import ForceChangePassword from "@/components/auth/ForceChangePassword";
 import { cookies } from "next/headers";
 import { AlertTriangle, BookOpen, Target, CheckCircle2, XCircle } from "lucide-react";
@@ -36,6 +37,9 @@ export default async function DashboardLayout({
     <>
       {/* Idle Timeout Tracker - Auto logout setelah 24 jam */}
       <IdleTimeoutTracker />
+
+      {/* Notifikasi toast global (react-hot-toast) */}
+      <ToastProvider />
       <ForceChangePassword isDefaultPassword={isDefaultPassword} />
 
       {/* Dashboard Content */}

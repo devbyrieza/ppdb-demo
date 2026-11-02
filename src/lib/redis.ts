@@ -42,6 +42,15 @@ export async function getCache<T>(key: string): Promise<T | null> {
   }
 }
 
+export async function delCache(key: string) {
+  try {
+    await redis.del(key);
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
 export default redis;
 
 export async function invalidateAdminPendaftarCache() {

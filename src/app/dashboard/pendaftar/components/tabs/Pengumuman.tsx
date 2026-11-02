@@ -32,9 +32,20 @@ export default function PengumumanTab() {
     fetchPengumuman();
   }, []);
 
-  const fetchPengumuman = async () => {
+  // Auto-refresh: jika pengumuman belum tersedia, cek ulang tiap 30 detik
+  // tanpa spinner, supaya hasil muncul sendiri begitu panitia menerbitkannya.
+  useEffect(() => {
+    if (pengumuman) return;
+    const iv = setInterval(() => {
+      if (document.visibilityState === "visible") fetchPengumuman(true);
+    }, 30000);
+    return () => clearInterval(iv);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pengumuman]);
+
+  const fetchPengumuman = async (silent = false) => {
     try {
-      setLoading(true);
+      if (!silent) setLoading(true);
 
       // Check session for testing account bypass & status pendaftar
       const sessionRes = await fetch("/api/auth/session");

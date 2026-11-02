@@ -87,7 +87,7 @@ export default function PengumumanPage() {
   const handlePublish = async (new_status: "accepted" | "cadangan" | "rejected") => {
     if (selectedIds.length === 0) return;
 
-    const actionText = new_status === "accepted" ? "MELULUSKAN" : new_status === "cadangan" ? "menjadikan CADANGAN" : "MENOLAK";
+    const actionText = new_status === "accepted" ? "menetapkan DITERIMA" : new_status === "cadangan" ? "menjadikan CADANGAN" : "MENOLAK";
     const btnColor = new_status === "accepted" ? "#059669" : new_status === "cadangan" ? "#d97706" : "#dc2626";
 
     const result = await Swal.fire({
@@ -147,7 +147,7 @@ export default function PengumumanPage() {
           <h3 className="text-2xl font-bold text-primary-700">{stats.ready}</h3>
         </div>
         <div className="bg-green-50 p-6 rounded-xl shadow-sm border border-green-100">
-          <p className="text-green-600 text-sm font-medium">Sudah Lulus</p>
+          <p className="text-green-600 text-sm font-medium">Sudah Diterima</p>
           <h3 className="text-2xl font-bold text-green-700">
             {stats.accepted}
           </h3>
@@ -180,7 +180,7 @@ export default function PengumumanPage() {
               onChange={(e) => setFilter({ ...filter, status: e.target.value })}
             >
               <option value="tested">Proses Seleksi (sudah ujian)</option>
-              <option value="accepted">Sudah Lulus/Diumumkan</option>
+              <option value="accepted">Diterima</option>
               <option value="scheduled">Terjadwal Ujian</option>
             </select>
           </div>
@@ -192,7 +192,7 @@ export default function PengumumanPage() {
             disabled={selectedIds.length === 0 || isPublishing}
             className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 disabled:bg-stone-300 text-white rounded-xl font-bold transition-all shadow-sm"
           >
-            {isPublishing ? "Proses..." : `Luluskan (${selectedIds.length})`}
+            {isPublishing ? "Proses..." : `Diterima (${selectedIds.length})`}
           </button>
           <button
             onClick={() => handlePublish("cadangan")}
@@ -332,7 +332,7 @@ export default function PengumumanPage() {
                           if (c.status_pendaftaran === "accepted") {
                             return (
                               <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-green-100 text-green-700 text-[10px] font-black uppercase whitespace-nowrap shrink-0">
-                                <CheckCircle2 className="w-3 h-3" /> Lulus
+                                <CheckCircle2 className="w-3 h-3" /> Diterima
                               </span>
                             );
                           }
@@ -499,7 +499,7 @@ export default function PengumumanPage() {
                           if (c.status_pendaftaran === "accepted") {
                             return (
                               <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-green-100 text-green-700 text-xs font-bold">
-                                <CheckCircle2 className="w-3 h-3" /> Lulus
+                                <CheckCircle2 className="w-3 h-3" /> Diterima
                               </span>
                             );
                           }

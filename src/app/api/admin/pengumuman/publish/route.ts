@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { delCache } from "@/lib/redis";
 import { enqueueWhatsapp, buildMessageHasilTes } from "@/lib/whatsapp-queue";
 import { getServerSession } from "@/lib/session";
 import { logAdminAction } from "@/lib/audit";
@@ -83,6 +84,11 @@ export async function POST(request: NextRequest) {
             tahun_ajaran_id: user.tahun_ajaran_id } });
       }
     });
+
+    // Invalidasi cache pengumuman agar dashboard pendaftar langsung menampilkan hasil
+    for (const user of updatedUsers) {
+      await delCache(`pengumuman_${user.id}`);
+    }
 
     // Logging audit action
     logAdminAction({

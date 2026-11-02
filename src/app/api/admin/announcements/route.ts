@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
+import { delCache } from "@/lib/redis";
 import { enqueueWhatsapp, buildMessageHasilTes } from "@/lib/whatsapp-queue";
 
 async function checkSuperAdmin() {
@@ -86,10 +87,15 @@ export async function POST(request: Request) {
         is_published: true,
         published_at: new Date() } });
 
+    // Invalidasi cache pengumuman pendaftar terkait
+    await delCache(`pengumuman_${pendaftar_id}`);
+
     // 3. Update Pendaftar Status based on Status Kelulusan
     let newStatus = "announced";
-    if (status_kelulusan === "Lulus") newStatus = "accepted";
-    else if ((status_kelulusan === "Tidak Lulus" || status_kelulusan === "Ditolak")) newStatus = "rejected";
+    const sNorm = (status_kelulusan || "").toLowerCase().trim();
+    if (["lulus", "diterima", "accepted"].includes(sNorm)) newStatus = "accepted";
+    else if (["tidak lulus", "tidak_lulus", "ditolak", "rejected"].includes(sNorm)) newStatus = "rejected";
+    else if (["cadangan"].includes(sNorm)) newStatus = "cadangan";
     // "Cadangan" remains "announced" or use a specific status if available.
 
     await prisma.pendaftar.update({

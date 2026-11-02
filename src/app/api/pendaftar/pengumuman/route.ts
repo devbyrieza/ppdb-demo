@@ -83,9 +83,9 @@ export async function GET(request: NextRequest) {
         data: {
           id: pengumuman.id,
           status_kelulusan:
-            pengumuman.status_kelulusan === "Lulus"
+            ["lulus", "diterima", "accepted"].includes((pengumuman.status_kelulusan || "").toLowerCase())
               ? "diterima"
-              : (pengumuman.status_kelulusan === "Tidak Lulus" || pengumuman.status_kelulusan === "Ditolak")
+              : ["tidak lulus", "tidak_lulus", "ditolak", "rejected"].includes((pengumuman.status_kelulusan || "").toLowerCase())
                 ? "ditolak"
                 : "cadangan",
           catatan: pengumuman.catatan,
