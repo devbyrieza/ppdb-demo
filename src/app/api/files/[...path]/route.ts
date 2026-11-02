@@ -1,6 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { type NextRequest, NextResponse } from "next/server";
 import path from "path";
+import { verifyFilePath } from "@/lib/storage/file-signing";
 import { getFileLocal } from "@/lib/storage/local";
 
 /**
@@ -11,7 +12,7 @@ import { getFileLocal } from "@/lib/storage/local";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ path: string[] }> },
+  { params }: { params: Promise<{ path: string[] }> }
 ) {
   try {
     const pathSegments = (await params).path;
@@ -25,73 +26,78 @@ export async function GET(
     const filename = pathSegments[pathSegments.length - 1];
     const relativePath = path.join(...pathSegments);
 
-    // 1. Auth Check
-    const cookieStore = await cookies();
-    const sessionCookie =
-      cookieStore.get("al_session") || cookieStore.get("app_session");
+    // 1a. Bypass via signed token (server-to-server, mis. Wablas kirim dokumen surat pengumuman)
+    const token = request.nextUrl.searchParams.get("k");
+    if (token && verifyFilePath(pathSegments.join("/"), token)) {
+      // lanjut ke penyajian file tanpa sesi
+    } else {
+      // 1. Auth Check
+      const cookieStore = await cookies();
+      const sessionCookie = cookieStore.get("al_session") || cookieStore.get("app_session");
 
-    if (!sessionCookie) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+      if (!sessionCookie) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      }
 
-    let session;
-    try {
-      session = JSON.parse(sessionCookie.value);
-    } catch {
-      return NextResponse.json({ error: "Invalid session" }, { status: 401 });
-    }
+      let session;
+      try {
+        session = JSON.parse(sessionCookie.value);
+      } catch {
+        return NextResponse.json({ error: "Invalid session" }, { status: 401 });
+      }
 
-    // 2. Authorization
-    // Admin can access everything
-    // Pendaftar can only access their own files (ownerId must match session.id)
-    const adminRoles = [
-      "admin",
-      "admin_super",
-      "admin_berkas",
-      "admin_keuangan",
-      "penguji",
-      "penguji_quran",
-      "penguji_santri",
-      "penguji_ortu",
-      "penguji_arab",
-      "penguji_hafalan",
-    ];
-    const userRoles = [session.role, ...(session.secondary_roles || [])];
-    const isAdmin = userRoles.some((r: string) => adminRoles.includes(r));
-    let isOwner = session.role === "pendaftar" && session.id === ownerId;
+      // 2. Authorization
+      // Admin can access everything
+      // Pendaftar can only access their own files (ownerId must match session.id)
+      const adminRoles = [
+        "admin",
+        "admin_super",
+        "admin_berkas",
+        "admin_keuangan",
+        "penguji",
+        "penguji_quran",
+        "penguji_santri",
+        "penguji_ortu",
+        "penguji_arab",
+        "penguji_hafalan",
+      ];
+      const userRoles = [session.role, ...(session.secondary_roles || [])];
+      const isAdmin = userRoles.some((r: string) => adminRoles.includes(r));
+      let isOwner = session.role === "pendaftar" && session.id === ownerId;
 
-    // Fallback check for migrated files where path segments do not match ownerId directly
-    if (!isAdmin && !isOwner && session.role === "pendaftar") {
-      const { prisma } = await import("@/lib/prisma");
+      // Fallback check for migrated files where path segments do not match ownerId directly
+      if (!isAdmin && !isOwner && session.role === "pendaftar") {
+        const { prisma } = await import("@/lib/prisma");
 
-      const doc = await prisma.dokumen.findFirst({
-        where: {
-          pendaftar_id: session.id,
-          file_path: {
-            contains: filename,
-          },
-        },
-      });
-
-      if (doc) {
-        isOwner = true;
-      } else {
-        const payment = await prisma.pembayaran.findFirst({
+        const doc = await prisma.dokumen.findFirst({
           where: {
             pendaftar_id: session.id,
-            bukti_transfer_path: {
+            file_path: {
               contains: filename,
             },
           },
         });
-        if (payment) {
+
+        if (doc) {
           isOwner = true;
+        } else {
+          const payment = await prisma.pembayaran.findFirst({
+            where: {
+              pendaftar_id: session.id,
+              bukti_transfer_path: {
+                contains: filename,
+              },
+            },
+          });
+          if (payment) {
+            isOwner = true;
+          }
         }
       }
-    }
 
-    if (!isAdmin && !isOwner) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      if (!isAdmin && !isOwner) {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
     }
 
     // 3. Get File
@@ -144,7 +150,7 @@ export async function GET(
     if (!fileData) {
       console.error(`[File Serve] ❌ NOT FOUND: ${relativePath}`);
       console.log(
-        `[File Serve] Full Path Attempted: ${path.join(process.cwd(), "storage_data", relativePath)}`,
+        `[File Serve] Full Path Attempted: ${path.join(process.cwd(), "storage_data", relativePath)}`
       );
       return NextResponse.json(
         {
@@ -152,7 +158,7 @@ export async function GET(
             "File tidak ditemukan di server. Kemungkinan file terhapus saat redeploy atau volume storage belum terpasang.",
           path: relativePath,
         },
-        { status: 404 },
+        { status: 404 }
       );
     }
 
@@ -163,14 +169,13 @@ export async function GET(
         "Content-Type": fileData.mimeType,
         "Content-Length": fileData.buffer.length.toString(),
         "Content-Disposition": `inline; filename="${pathSegments[pathSegments.length - 1]}"`,
-        "Cache-Control": "private, max-age=3600" } });
+        "Cache-Control": "private, max-age=3600",
+      },
+    });
 
     return response;
   } catch (error) {
     console.error("File serve error:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
+import type { Prisma } from "@prisma/client";
 import { cookies } from "next/headers";
+import { type NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { Prisma } from "@prisma/client";
-import { getAdminWhereClause } from "@/lib/utils/admin";
 import { getCache, setCache } from "@/lib/redis";
+import { getAdminWhereClause } from "@/lib/utils/admin";
 
 export async function GET(request: NextRequest) {
   try {
@@ -23,13 +23,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Check custom role
-    const allowedRoles = [
-      "admin",
-      "admin_super",
-      "admin_berkas",
-      "admin_keuangan",
-      "penguji",
-    ];
+    const allowedRoles = ["admin", "admin_super", "admin_berkas", "admin_keuangan", "penguji"];
     if (!allowedRoles.includes(session.role)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
@@ -122,7 +116,10 @@ export async function GET(request: NextRequest) {
       };
 
       if (status.includes(",")) {
-        const parts = status.split(",").map((s) => s.trim()).filter(Boolean);
+        const parts = status
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean);
         const allMapped: string[] = [];
         for (const part of parts) {
           if (filterMapping[part]) {
@@ -214,7 +211,7 @@ export async function GET(request: NextRequest) {
           },
         },
         pengumuman: {
-          select: { status_kelulusan: true, is_published: true },
+          select: { status_kelulusan: true, is_published: true, surat_pengumuman_path: true },
         },
         whatsapp_logs: {
           orderBy: { created_at: "desc" },
@@ -245,8 +242,7 @@ export async function GET(request: NextRequest) {
       if (scores.length > 0) {
         const sorted = [...scores].sort(
           (a: any, b: any) =>
-            new Date(b.updated_at || 0).getTime() -
-            new Date(a.updated_at || 0).getTime(),
+            new Date(b.updated_at || 0).getTime() - new Date(a.updated_at || 0).getTime()
         );
 
         const master: any = {};
@@ -267,10 +263,7 @@ export async function GET(request: NextRequest) {
         if (mergedNilai.score_kesiapan != null) examScoreCount++;
         if (mergedNilai.score_quran != null) examScoreCount++;
         if (mergedNilai.score_wawancara != null) examScoreCount++;
-        if (
-          mergedNilai.nilai_wawancara_santri != null ||
-          mergedNilai.nilai_wawancara_ortu != null
-        )
+        if (mergedNilai.nilai_wawancara_santri != null || mergedNilai.nilai_wawancara_ortu != null)
           examScoreCount++;
       }
 
@@ -300,11 +293,7 @@ export async function GET(request: NextRequest) {
         whatsapp_status: item.whatsapp_logs?.[0] || null,
         dokumen: item.dokumen.map((doc) => ({
           jenis_dokumen: doc.jenis_dokumen,
-          status_verifikasi: doc.is_verified
-            ? "verified"
-            : doc.catatan
-              ? "rejected"
-              : "pending",
+          status_verifikasi: doc.is_verified ? "verified" : doc.catatan ? "rejected" : "pending",
         })),
       };
     });
@@ -324,9 +313,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(responseData);
   } catch (error) {
     console.error("Error in admin pendaftar list API:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

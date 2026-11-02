@@ -1,22 +1,21 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import {
-  AlertCircle,
-  Send,
-  CheckCircle2,
-  XCircle,
-  Search,
-  Filter,
-  Loader2 } from "lucide-react";
+import { AlertCircle, CheckCircle2, Filter, Loader2, Search, Send, XCircle } from "lucide-react";
+import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import Swal from "sweetalert2";
+import { SuratPengumumanDialog } from "@/components/admin/SuratPengumumanDialog";
 
 export default function PengumumanPage() {
   const [loading, setLoading] = useState(false);
   const [candidates, setCandidates] = useState<any[]>([]);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [stats, setStats] = useState({ total: 0, ready: 0, accepted: 0 });
+  const [suratTarget, setSuratTarget] = useState<{
+    id: string;
+    nama_lengkap: string;
+    nomor_pendaftaran: string;
+  } | null>(null);
   const [filter, setFilter] = useState({
     jenjang: "",
     status: "tested", // Default to those who have completed ALL 6 exams
@@ -28,7 +27,7 @@ export default function PengumumanPage() {
     if (!str) return "";
     return str.replace(
       /\w\S*/g,
-      (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(),
+      (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
     );
   };
 
@@ -48,12 +47,9 @@ export default function PengumumanPage() {
         setCandidates(data.data || []);
         // Calculate basic stats from this batch
         const ready = data.data.filter(
-          (c: any) =>
-            c.exam_status === "tested" || c.status_pendaftaran === "tested",
+          (c: any) => c.exam_status === "tested" || c.status_pendaftaran === "tested"
         ).length;
-        const accepted = data.data.filter(
-          (c: any) => c.status_pendaftaran === "accepted",
-        ).length;
+        const accepted = data.data.filter((c: any) => c.status_pendaftaran === "accepted").length;
         setStats({ total: data.data.length, ready, accepted });
       }
     } catch (error) {
@@ -87,8 +83,14 @@ export default function PengumumanPage() {
   const handlePublish = async (new_status: "accepted" | "cadangan" | "rejected") => {
     if (selectedIds.length === 0) return;
 
-    const actionText = new_status === "accepted" ? "menetapkan DITERIMA" : new_status === "cadangan" ? "menjadikan CADANGAN" : "MENOLAK";
-    const btnColor = new_status === "accepted" ? "#059669" : new_status === "cadangan" ? "#d97706" : "#dc2626";
+    const actionText =
+      new_status === "accepted"
+        ? "menetapkan DITERIMA"
+        : new_status === "cadangan"
+          ? "menjadikan CADANGAN"
+          : "MENOLAK";
+    const btnColor =
+      new_status === "accepted" ? "#059669" : new_status === "cadangan" ? "#d97706" : "#dc2626";
 
     const result = await Swal.fire({
       title: "Publikasi Pengumuman?",
@@ -99,7 +101,8 @@ export default function PengumumanPage() {
       cancelButtonColor: "#57534e", // Stone 600
       confirmButtonText: "Ya, Publikasikan!",
       cancelButtonText: "Batal",
-      reverseButtons: true });
+      reverseButtons: true,
+    });
 
     if (!result.isConfirmed) return;
 
@@ -112,13 +115,13 @@ export default function PengumumanPage() {
           pendaftar_ids: selectedIds,
           new_status: new_status,
           // Removed hardcoded announcement_message to use buildMessageHasilTes on backend
-        }) });
+        }),
+      });
 
       const result = await res.json();
       if (res.ok) {
         toast.success(
-          result.message ||
-            `Berhasil! ${result.queued} pengumuman sedang mengantri untuk dikirim.`,
+          result.message || `Berhasil! ${result.queued} pengumuman sedang mengantri untuk dikirim.`
         );
         fetchCandidates();
         setSelectedIds([]);
@@ -141,16 +144,12 @@ export default function PengumumanPage() {
           <h3 className="text-2xl font-bold text-stone-800">{stats.total}</h3>
         </div>
         <div className="bg-primary-50 p-6 rounded-xl shadow-sm border border-primary-100">
-          <p className="text-primary-600 text-sm font-medium">
-            Proses Seleksi (Belum Selesai)
-          </p>
+          <p className="text-primary-600 text-sm font-medium">Proses Seleksi (Belum Selesai)</p>
           <h3 className="text-2xl font-bold text-primary-700">{stats.ready}</h3>
         </div>
         <div className="bg-green-50 p-6 rounded-xl shadow-sm border border-green-100">
           <p className="text-green-600 text-sm font-medium">Sudah Diterima</p>
-          <h3 className="text-2xl font-bold text-green-700">
-            {stats.accepted}
-          </h3>
+          <h3 className="text-2xl font-bold text-green-700">{stats.accepted}</h3>
         </div>
       </div>
 
@@ -162,9 +161,7 @@ export default function PengumumanPage() {
             <select
               className="bg-transparent text-sm focus:outline-none"
               value={filter.jenjang}
-              onChange={(e) =>
-                setFilter({ ...filter, jenjang: e.target.value })
-              }
+              onChange={(e) => setFilter({ ...filter, jenjang: e.target.value })}
             >
               <option value="">Semua Jenjang</option>
               <option value="MTs">SMP IT</option>
@@ -222,16 +219,11 @@ export default function PengumumanPage() {
           ) : (
             candidates.map((c) => {
               const nu = c.nilai_ujian;
-              const getGradeBadge = (
-                score: number | null | undefined,
-                type: string,
-              ) => {
+              const getGradeBadge = (score: number | null | undefined, type: string) => {
                 if (score == null) return null;
                 let grade = "C";
-                if (type === "quran")
-                  grade = score >= 80 ? "A" : score >= 65 ? "B" : "C";
-                else if (type === "akademik")
-                  grade = score >= 75 ? "A" : score >= 60 ? "B" : "C";
+                if (type === "quran") grade = score >= 80 ? "A" : score >= 65 ? "B" : "C";
+                else if (type === "akademik") grade = score >= 75 ? "A" : score >= 60 ? "B" : "C";
                 else if (type === "kepribadian")
                   grade = score >= 70 ? "A" : score >= 50 ? "B" : "C";
                 else grade = score >= 80 ? "A" : score >= 60 ? "B" : "C";
@@ -297,17 +289,9 @@ export default function PengumumanPage() {
                           Total Nilai
                         </span>
                         <span className="text-sm font-black text-stone-700">
-                          {nu?.nilai_total != null
-                            ? Number(nu.nilai_total).toFixed(2)
-                            : "-"}
+                          {nu?.nilai_total != null ? Number(nu.nilai_total).toFixed(2) : "-"}
                           <span className="ml-1 text-stone-400 font-bold">
-                            (
-                            {nu?.nilai_total >= 80
-                              ? "A"
-                              : nu?.nilai_total >= 65
-                                ? "B"
-                                : "C"}
-                            )
+                            ({nu?.nilai_total >= 80 ? "A" : nu?.nilai_total >= 65 ? "B" : "C"})
                           </span>
                         </span>
                       </div>
@@ -316,9 +300,16 @@ export default function PengumumanPage() {
                           if (c.status_pendaftaran === "tested") {
                             if (c.pengumuman) {
                               const sL = c.pengumuman.status_kelulusan;
-                              const cls = sL === "Diterima" ? "bg-green-100 text-green-700" : sL === "Cadangan" ? "bg-amber-100 text-amber-700" : "bg-red-100 text-red-700";
+                              const cls =
+                                sL === "Diterima"
+                                  ? "bg-green-100 text-green-700"
+                                  : sL === "Cadangan"
+                                    ? "bg-amber-100 text-amber-700"
+                                    : "bg-red-100 text-red-700";
                               return (
-                                <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full ${cls} text-[10px] font-black uppercase whitespace-nowrap shrink-0`}>
+                                <span
+                                  className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full ${cls} text-[10px] font-black uppercase whitespace-nowrap shrink-0`}
+                                >
                                   DRAFT: {sL}
                                 </span>
                               );
@@ -361,10 +352,7 @@ export default function PengumumanPage() {
                     type="checkbox"
                     className="w-4 h-4 rounded border-stone-300 text-green-600 focus:ring-green-500"
                     onChange={handleSelectAll}
-                    checked={
-                      candidates.length > 0 &&
-                      selectedIds.length === candidates.length
-                    }
+                    checked={candidates.length > 0 && selectedIds.length === candidates.length}
                   />
                 </th>
                 <th className="px-6 py-4 text-left text-xs font-bold text-stone-500 uppercase">
@@ -384,24 +372,17 @@ export default function PengumumanPage() {
             <tbody className="divide-y divide-stone-100">
               {candidates.length === 0 ? (
                 <tr>
-                  <td
-                    colSpan={5}
-                    className="px-6 py-8 text-center text-stone-500"
-                  >
+                  <td colSpan={5} className="px-6 py-8 text-center text-stone-500">
                     Tidak ada data kandidat sesuai filter
                   </td>
                 </tr>
               ) : (
                 candidates.map((c) => {
                   const nu = c.nilai_ujian;
-                  const getGradeBadge = (
-                    score: number | null | undefined,
-                    type: string,
-                  ) => {
+                  const getGradeBadge = (score: number | null | undefined, type: string) => {
                     if (score == null) return null;
                     let grade = "C";
-                    if (type === "quran")
-                      grade = score >= 80 ? "A" : score >= 65 ? "B" : "C";
+                    if (type === "quran") grade = score >= 80 ? "A" : score >= 65 ? "B" : "C";
                     else if (type === "akademik")
                       grade = score >= 75 ? "A" : score >= 60 ? "B" : "C";
                     else if (type === "kepribadian")
@@ -426,8 +407,7 @@ export default function PengumumanPage() {
 
                   const ws = nu?.nilai_wawancara_santri || 0;
                   const wo = nu?.nilai_wawancara_ortu || 0;
-                  const avgWawancara =
-                    ws > 0 && wo > 0 ? (ws + wo) / 2 : ws || wo;
+                  const avgWawancara = ws > 0 && wo > 0 ? (ws + wo) / 2 : ws || wo;
 
                   return (
                     <tr key={c.id} className="hover:bg-stone-50/50">
@@ -443,9 +423,7 @@ export default function PengumumanPage() {
                         <div className="font-bold text-stone-800">
                           {toTitleCase(c.nama_lengkap)}
                         </div>
-                        <div className="text-xs text-stone-500 mb-2">
-                          {c.nomor_pendaftaran}
-                        </div>
+                        <div className="text-xs text-stone-500 mb-2">{c.nomor_pendaftaran}</div>
                         <div className="flex gap-1">
                           {getGradeBadge(nu?.score_quran, "quran")}
                           {getGradeBadge(nu?.score_akademik, "akademik")}
@@ -462,18 +440,11 @@ export default function PengumumanPage() {
                       <td className="px-6 py-4">
                         <div className="flex flex-col">
                           <div className="font-black text-stone-800 text-lg leading-none">
-                            {nu?.nilai_total != null
-                              ? Number(nu.nilai_total).toFixed(2)
-                              : "-"}
+                            {nu?.nilai_total != null ? Number(nu.nilai_total).toFixed(2) : "-"}
                           </div>
                           {nu?.nilai_total != null && (
                             <span className="text-[10px] font-bold text-stone-400 mt-1 italic">
-                              Grade:{" "}
-                              {nu.nilai_total >= 80
-                                ? "A"
-                                : nu.nilai_total >= 65
-                                  ? "B"
-                                  : "C"}
+                              Grade: {nu.nilai_total >= 80 ? "A" : nu.nilai_total >= 65 ? "B" : "C"}
                             </span>
                           )}
                         </div>
@@ -483,9 +454,16 @@ export default function PengumumanPage() {
                           if (c.status_pendaftaran === "tested") {
                             if (c.pengumuman) {
                               const sL = c.pengumuman.status_kelulusan;
-                              const cls = sL === "Diterima" ? "bg-green-100 text-green-700" : sL === "Cadangan" ? "bg-amber-100 text-amber-700" : "bg-red-100 text-red-700";
+                              const cls =
+                                sL === "Diterima"
+                                  ? "bg-green-100 text-green-700"
+                                  : sL === "Cadangan"
+                                    ? "bg-amber-100 text-amber-700"
+                                    : "bg-red-100 text-red-700";
                               return (
-                                <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full ${cls} text-xs font-bold whitespace-nowrap shrink-0`}>
+                                <span
+                                  className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full ${cls} text-xs font-bold whitespace-nowrap shrink-0`}
+                                >
                                   DRAFT: {sL}
                                 </span>
                               );

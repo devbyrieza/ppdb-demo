@@ -1,17 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import {
-  Trophy,
-  CheckCircle,
-  XCircle,
   AlertCircle,
-  Loader2,
   Calendar,
-  FileText,
+  CheckCircle,
+  Clock,
   Download,
-  Clock, FileCheck,
+  FileCheck,
+  FileText,
+  Loader2,
+  Trophy,
+  XCircle,
 } from "lucide-react";
+import { useEffect, useState } from "react";
 import { generateSuratKelulusan } from "@/lib/utils/pdf-generator";
 
 interface Pengumuman {
@@ -19,6 +20,7 @@ interface Pengumuman {
   status_kelulusan: string;
   catatan: string | null;
   tanggal_pengumuman: string;
+  surat_pengumuman_path?: string | null;
 }
 
 export default function PengumumanTab() {
@@ -54,7 +56,7 @@ export default function PengumumanTab() {
         const session = await sessionRes.json();
         if (session.pendaftar_id) {
           const statusRes = await fetch(
-            `/api/pendaftar/status?pendaftar_id=${session.pendaftar_id}`,
+            `/api/pendaftar/status?pendaftar_id=${session.pendaftar_id}`
           );
           if (statusRes.ok) {
             const statusData = await statusRes.json();
@@ -73,9 +75,9 @@ export default function PengumumanTab() {
         setPengumuman({
           id: "test-id",
           status_kelulusan: "diterima",
-          catatan:
-            "Ini adalah tampilan simulasi khusus untuk Akun Rieza Tes (ILI2600007).",
-          tanggal_pengumuman: new Date().toISOString() });
+          catatan: "Ini adalah tampilan simulasi khusus untuk Akun Rieza Tes (ILI2600007).",
+          tanggal_pengumuman: new Date().toISOString(),
+        });
       }
     } catch (error) {
       console.error("Error fetching pengumuman:", error);
@@ -96,7 +98,7 @@ export default function PengumumanTab() {
 
         if (session.pendaftar_id) {
           const res = await fetch(
-            `/api/pendaftar/document-data?pendaftar_id=${session.pendaftar_id}`,
+            `/api/pendaftar/document-data?pendaftar_id=${session.pendaftar_id}`
           );
           const result = await res.json();
           currentDocData = result.data;
@@ -120,7 +122,8 @@ export default function PengumumanTab() {
         weekday: "long",
         day: "numeric",
         month: "long",
-        year: "numeric" })
+        year: "numeric",
+      })
       .replace("Minggu", "Ahad");
   };
 
@@ -169,10 +172,9 @@ export default function PengumumanTab() {
                 Menunggu Rapat Kelulusan
               </h3>
               <p className="text-ink-600 max-w-lg mx-auto mb-6 leading-relaxed">
-                Seluruh rangkaian ujian seleksi Ananda telah selesai. Hasil
-                seleksi sedang dalam proses evaluasi dan{" "}
-                <strong>Rapat Kelulusan bersama Panitia dan Mudir
-                Pesantren</strong>.
+                Seluruh rangkaian ujian seleksi Ananda telah selesai. Hasil seleksi sedang dalam
+                proses evaluasi dan{" "}
+                <strong>Rapat Kelulusan bersama Panitia dan Mudir Pesantren</strong>.
               </p>
               <p className="text-xs text-ink-400 mt-4">
                 Notifikasi WhatsApp akan dikirimkan saat pengumuman resmi tersedia.
@@ -189,35 +191,32 @@ export default function PengumumanTab() {
                 Pengumuman Belum Tersedia
               </h3>
               <p className="text-ink-600 max-w-md mx-auto mb-6 leading-relaxed">
-                Hasil seleksi akan diumumkan setelah seluruh rangkaian tes Anda selesaikan, dan hasil akhirnya telah melalui tahap pengecekan serta rapat kelulusan oleh Pimpinan dan Panitia. Silakan cek kembali halaman ini secara
-                berkala.
+                Hasil seleksi akan diumumkan setelah seluruh rangkaian tes Anda selesaikan, dan
+                hasil akhirnya telah melalui tahap pengecekan serta rapat kelulusan oleh Pimpinan
+                dan Panitia. Silakan cek kembali halaman ini secara berkala.
               </p>
-
             </div>
           </div>
         )
-      
-        ) : pengumuman.status_kelulusan === "dokumen_belum_lengkap" ? (
-          <div className="bg-white rounded-[2rem] p-6 md:p-12 shadow-sm border border-secondary-100 app-card">
-            <div className="text-center">
-              <div className="w-20 h-20 bg-secondary-50 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
-                <AlertCircle className="w-10 h-10 text-secondary-700" />
-              </div>
-              <h3 className="text-xl font-bold text-ink-900 mb-3 font-display">
-                Tahan Dulu... Dokumen Berkas Belum Lengkap!
-              </h3>
-              <p className="text-ink-600 max-w-md mx-auto mb-6 leading-relaxed">
-                {pengumuman.catatan}
-              </p>
-              <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-secondary-50 text-secondary-800 rounded-full font-black border border-secondary-200 shadow-sm">
-                <FileCheck className="w-4 h-4 text-secondary-600" />
-                <span className="text-sm">
-                  Silakan kembali ke menu Upload Berkas
-                </span>
-              </div>
+      ) : pengumuman.status_kelulusan === "dokumen_belum_lengkap" ? (
+        <div className="bg-white rounded-[2rem] p-6 md:p-12 shadow-sm border border-secondary-100 app-card">
+          <div className="text-center">
+            <div className="w-20 h-20 bg-secondary-50 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
+              <AlertCircle className="w-10 h-10 text-secondary-700" />
+            </div>
+            <h3 className="text-xl font-bold text-ink-900 mb-3 font-display">
+              Tahan Dulu... Dokumen Berkas Belum Lengkap!
+            </h3>
+            <p className="text-ink-600 max-w-md mx-auto mb-6 leading-relaxed">
+              {pengumuman.catatan}
+            </p>
+            <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-secondary-50 text-secondary-800 rounded-full font-black border border-secondary-200 shadow-sm">
+              <FileCheck className="w-4 h-4 text-secondary-600" />
+              <span className="text-sm">Silakan kembali ke menu Upload Berkas</span>
             </div>
           </div>
-        ) : pengumuman.status_kelulusan === "diterima" ? (
+        </div>
+      ) : pengumuman.status_kelulusan === "diterima" ? (
         <div className="space-y-6">
           {/* Success Card */}
           <div className="bg-linear-to-r from-primary-500 to-primary-700 rounded-[2rem] p-5 md:p-8 text-white shadow-lg shadow-primary-500/20 relative overflow-hidden app-card">
@@ -239,23 +238,26 @@ export default function PengumumanTab() {
                 </div>
               </div>
               <p className="text-primary-50/90 mb-10 max-w-xl text-lg leading-relaxed">
-                Berdasarkan hasil seleksi, Anda dinyatakan{" "}
-                <strong>DITERIMA</strong> sebagai santri baru PP Al
-                Andalus Al-Andalus Putri.
+                Berdasarkan hasil seleksi, Anda dinyatakan <strong>DITERIMA</strong> sebagai santri
+                baru PP Al Andalus Al-Andalus Putri.
               </p>
 
-              <button
-                onClick={handleDownloadSurat}
-                disabled={isGenerating}
-                className="inline-flex items-center justify-center gap-3 px-5 md:px-8 py-3.5 bg-gold-400 text-primary-950 rounded-full font-black hover:bg-gold-300 transition-all shadow-lg shadow-gold-400/20 active:scale-95 disabled:opacity-50 border border-gold-500"
-              >
-                {isGenerating ? (
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                ) : (
+              {pengumuman?.surat_pengumuman_path ? (
+                <a
+                  href={`/api/files/${pengumuman.surat_pengumuman_path}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-3 px-5 md:px-8 py-3.5 bg-gold-400 text-primary-950 rounded-full font-black hover:bg-gold-300 transition-all shadow-lg shadow-gold-400/20 active:scale-95 border border-gold-500"
+                >
                   <Download className="w-5 h-5" />
-                )}
-                Download Surat Kelulusan
-              </button>
+                  Unduh Surat Pengumuman Hasil (Resmi)
+                </a>
+              ) : (
+                <div className="inline-flex items-center gap-2.5 px-6 py-3.5 bg-white/15 backdrop-blur-md text-white rounded-2xl font-bold border border-white/20 text-sm shadow-sm">
+                  <Clock className="w-4 h-4 text-gold-300 animate-pulse shrink-0" />
+                  <span>Surat Pengumuman Resmi sedang disiapkan oleh Panitia PSB.</span>
+                </div>
+              )}
             </div>
           </div>
 
@@ -265,16 +267,12 @@ export default function PengumumanTab() {
               <div className="p-2 bg-green-100 rounded-xl">
                 <FileText className="w-6 h-6 text-green-600" />
               </div>
-              <h3 className="text-lg font-bold text-stone-900">
-                Detail Pengumuman
-              </h3>
+              <h3 className="text-lg font-bold text-stone-900">Detail Pengumuman</h3>
             </div>
 
             <div className="space-y-3">
               <div>
-                <p className="text-xs text-stone-500 mb-1">
-                  Tanggal Pengumuman
-                </p>
+                <p className="text-xs text-stone-500 mb-1">Tanggal Pengumuman</p>
                 <p className="font-bold text-stone-900">
                   {formatDate(pengumuman.tanggal_pengumuman)}
                 </p>
@@ -299,13 +297,9 @@ export default function PengumumanTab() {
                 </div>
               </div>
               <div>
-                <h4 className="font-bold text-secondary-900 mb-2">
-                  Langkah Selanjutnya
-                </h4>
+                <h4 className="font-bold text-secondary-900 mb-2">Langkah Selanjutnya</h4>
                 <ul className="text-sm text-secondary-800 space-y-1">
-                  <li>
-                    • Segera lakukan daftar ulang melalui tab &quot;Daftar Ulang&quot;
-                  </li>
+                  <li>• Segera lakukan daftar ulang melalui tab &quot;Daftar Ulang&quot;</li>
                   <li>• Siapkan dokumen yang diperlukan untuk daftar ulang</li>
                   <li>• Ikuti petunjuk yang diberikan oleh panitia</li>
                   <li>• Hubungi panitia jika ada pertanyaan</li>
@@ -337,8 +331,7 @@ export default function PengumumanTab() {
               </div>
               <p className="text-secondary-50/90 mb-10 max-w-xl text-lg leading-relaxed">
                 Berdasarkan hasil seleksi, Anda dinyatakan masuk dalam{" "}
-                <strong>DAFTAR CADANGAN</strong> santri baru PP Al Andalus Al
-                Imam.
+                <strong>DAFTAR CADANGAN</strong> santri baru PP Al Andalus Al Imam.
               </p>
 
               <div className="inline-flex items-center justify-center gap-3 px-5 md:px-8 py-3.5 bg-white text-secondary-900 rounded-full font-black shadow-lg transition-all border border-secondary-100">
@@ -354,16 +347,12 @@ export default function PengumumanTab() {
               <div className="p-2 bg-secondary-100 rounded-xl">
                 <FileText className="w-6 h-6 text-secondary-600" />
               </div>
-              <h3 className="text-lg font-bold text-stone-900">
-                Detail Pengumuman
-              </h3>
+              <h3 className="text-lg font-bold text-stone-900">Detail Pengumuman</h3>
             </div>
 
             <div className="space-y-3">
               <div>
-                <p className="text-xs text-stone-500 mb-1">
-                  Tanggal Pengumuman
-                </p>
+                <p className="text-xs text-stone-500 mb-1">Tanggal Pengumuman</p>
                 <p className="font-bold text-stone-900">
                   {formatDate(pengumuman.tanggal_pengumuman)}
                 </p>
@@ -388,19 +377,11 @@ export default function PengumumanTab() {
                 </div>
               </div>
               <div>
-                <h4 className="font-bold text-primary-900 mb-2">
-                  Informasi Penting
-                </h4>
+                <h4 className="font-bold text-primary-900 mb-2">Informasi Penting</h4>
                 <ul className="text-sm text-primary-800 space-y-1">
-                  <li>
-                    • Panitia akan menghubungi Anda jika terdapat kuota yang
-                    kosong
-                  </li>
+                  <li>• Panitia akan menghubungi Anda jika terdapat kuota yang kosong</li>
                   <li>• Pastikan nomor WhatsApp pendaftaran tetap aktif</li>
-                  <li>
-                    • Hubungi panitia melalui layanan informasi untuk pertanyaan
-                    lebih lanjut
-                  </li>
+                  <li>• Hubungi panitia melalui layanan informasi untuk pertanyaan lebih lanjut</li>
                 </ul>
               </div>
             </div>
@@ -427,8 +408,8 @@ export default function PengumumanTab() {
               </div>
             </div>
             <p className="text-red-50/90 leading-relaxed max-w-xl text-lg relative z-10">
-              Berdasarkan hasil seleksi, Anda belum dapat diterima pada periode
-              ini. Tetap semangat dan jangan berkecil hati.
+              Berdasarkan hasil seleksi, Anda belum dapat diterima pada periode ini. Tetap semangat
+              dan jangan berkecil hati.
             </p>
           </div>
 
@@ -438,16 +419,12 @@ export default function PengumumanTab() {
               <div className="p-2 bg-red-100 rounded-xl">
                 <FileText className="w-6 h-6 text-red-600" />
               </div>
-              <h3 className="text-lg font-bold text-stone-900">
-                Detail Pengumuman
-              </h3>
+              <h3 className="text-lg font-bold text-stone-900">Detail Pengumuman</h3>
             </div>
 
             <div className="space-y-3">
               <div>
-                <p className="text-xs text-stone-500 mb-1">
-                  Tanggal Pengumuman
-                </p>
+                <p className="text-xs text-stone-500 mb-1">Tanggal Pengumuman</p>
                 <p className="font-bold text-stone-900">
                   {formatDate(pengumuman.tanggal_pengumuman)}
                 </p>
@@ -472,14 +449,11 @@ export default function PengumumanTab() {
                 </div>
               </div>
               <div>
-                <h4 className="font-bold text-primary-900 mb-2">
-                  Tetap Semangat!
-                </h4>
+                <h4 className="font-bold text-primary-900 mb-2">Tetap Semangat!</h4>
                 <p className="text-sm text-primary-800">
-                  Anda dapat mendaftar kembali pada periode pendaftaran
-                  berikutnya. Gunakan kesempatan ini untuk mempersiapkan diri
-                  dengan lebih baik. Jangan ragu untuk bertanya kepada panitia
-                  mengenai hal yang perlu ditingkatkan.
+                  Anda dapat mendaftar kembali pada periode pendaftaran berikutnya. Gunakan
+                  kesempatan ini untuk mempersiapkan diri dengan lebih baik. Jangan ragu untuk
+                  bertanya kepada panitia mengenai hal yang perlu ditingkatkan.
                 </p>
               </div>
             </div>
