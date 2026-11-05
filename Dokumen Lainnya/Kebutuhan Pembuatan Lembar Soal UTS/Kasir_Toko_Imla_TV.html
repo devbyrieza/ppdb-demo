@@ -496,9 +496,8 @@
           <h2>💻 KODE PROGRAM KASIR SANTRI</h2>
           <span style="font-size:12px; color:#cbd5e1;">Bahasa: <b>Python 3</b></span>
         </div>
-        <div style="display:flex; gap:8px;">
-          <button onclick="kosongkanKode()" style="background:#ef4444; border:1px solid #fca5a5; color:white; padding:7px 12px; border-radius:8px; font-size:12px; font-weight:bold; cursor:pointer;">🧹 Kosongkan (Santri Baru)</button>
-          <button onclick="muatContohUstaz()" style="background:#3b82f6; border:1px solid #93c5fd; color:white; padding:7px 12px; border-radius:8px; font-size:12px; font-weight:bold; cursor:pointer;">💡 Contoh Ustaz</button>
+        <div>
+          <button onclick="kosongkanKode()" style="background:#ef4444; border:1px solid #fca5a5; color:white; padding:7px 14px; border-radius:8px; font-size:12px; font-weight:bold; cursor:pointer;">🧹 Kosongkan (Santri Lainnya)</button>
         </div>
       </div>
 
@@ -880,27 +879,6 @@
       currentStoreTitle = "TOKO IMLA";
 
       beep(500, 0.08, "sine", 0.2);
-    }
-
-    function muatContohUstaz() {
-      document.getElementById('realCodeEditor').value = 
-`# FARROS MART
-namaSiPembeli = "Ahmad Farros Al Barqy"
-barang = "Es Teh Manis Jumbo"
-harga = 7000
-uang = int(input("Masukkan jumlah uang antum: "))
-
-if uang >= harga:
-    print("Alhamdulillah lunas, syukron ya udah jajan")
-else:
-    print("Afwan ya akhi, uang antum kurang, silakan cek lagi dompet antum")`;
-
-      onEditorInput();
-      document.getElementById('badgeSyntax').innerText = "CONTOH USTAZ DIMUAT ✅";
-      document.getElementById('badgeSyntax').style.background = "#3b82f6";
-      document.getElementById('boxNotifBug').style.display = "none";
-
-      beep(880, 0.08, "sine", 0.2);
     }
 
     function showBug(msg) {
