@@ -327,6 +327,152 @@
     font-size: 14px;
     text-align: center;
   }
+
+  /* VS CODE STYLE IDE WINDOW */
+  .code-window {
+    background: #020617;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 8px;
+    box-shadow: 0 12px 36px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+  .editor-top-bar {
+    background: #090d16;
+    padding: 0 14px;
+    border-bottom: 1px solid #1e293b;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 38px;
+  }
+  .editor-tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #020617;
+    padding: 6px 14px;
+    border-top: 2px solid #38bdf8;
+    border-right: 1px solid #1e293b;
+    border-left: 1px solid #1e293b;
+    font-family: 'Consolas', monospace;
+    font-size: 13px;
+    color: #f1f5f9;
+    font-weight: bold;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    margin-top: 4px;
+  }
+  .editor-workspace {
+    display: flex;
+    position: relative;
+    height: 330px;
+    background: #020617;
+  }
+  .editor-gutter {
+    width: 44px;
+    background: #050811;
+    border-right: 1px solid #1e293b;
+    color: #475569;
+    font-family: 'Consolas', monospace;
+    font-size: 15px;
+    line-height: 26px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    text-align: center;
+    user-select: none;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .gutter-num {
+    height: 26px;
+    line-height: 26px;
+    font-weight: 600;
+  }
+  .editor-code-container {
+    position: relative;
+    flex: 1;
+    height: 100%;
+    overflow: hidden;
+  }
+  #highlightBackdrop, #realCodeEditor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 14px 16px;
+    box-sizing: border-box;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 15px;
+    line-height: 26px;
+    white-space: pre;
+    tab-size: 4;
+    -moz-tab-size: 4;
+    border: none;
+    outline: none;
+    letter-spacing: normal;
+    word-spacing: normal;
+  }
+  #highlightBackdrop {
+    z-index: 1;
+    pointer-events: none;
+    background: transparent;
+    color: #f8fafc;
+    overflow: hidden;
+  }
+  #highlightBackdrop code {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    white-space: inherit;
+  }
+  #realCodeEditor {
+    z-index: 2;
+    background: transparent;
+    color: transparent;
+    caret-color: #38bdf8;
+    resize: none;
+    overflow: auto;
+  }
+  #realCodeEditor::placeholder {
+    color: #475569;
+    font-style: italic;
+  }
+  #realCodeEditor::selection {
+    background: rgba(56, 189, 248, 0.35);
+    color: transparent;
+  }
+
+  /* SYNTAX HIGHLIGHTING TOKENS */
+  .token-comment {
+    color: #64748b;
+    font-style: italic;
+  }
+  .token-string {
+    color: #fde047;
+    font-weight: 500;
+  }
+  .token-keyword {
+    color: #c084fc;
+    font-weight: bold;
+  }
+  .token-builtin {
+    color: #38bdf8;
+    font-weight: bold;
+  }
+  .token-number {
+    color: #4ade80;
+    font-weight: bold;
+  }
+  .token-operator {
+    color: #f43f5e;
+    font-weight: bold;
+  }
+  .token-var {
+    color: #93c5fd;
+  }
 </style>
 </head>
 <body>
@@ -362,12 +508,47 @@
         <span id="badgeSyntax" style="font-size:11px; background:#64748b; color:white; padding:2px 8px; border-radius:10px; font-weight:bold;">KODE KOSONG ⏳</span>
       </div>
 
-      <div style="position:relative; background:#020617; border:1px solid #334155; border-radius:12px; overflow:hidden; margin-top:8px; box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);">
-        <div style="background:#0f172a; padding:8px 16px; border-bottom:1px solid #1e293b; display:flex; justify-content:space-between; align-items:center;">
-          <span style="font-size:13px; color:#38bdf8; font-family:'Consolas',monospace; font-weight:bold;">📄 main_kasir.py</span>
-          <span style="font-size:11px; color:#94a3b8;">Python 3 Editor</span>
+      <!-- VS CODE STYLE IDE WINDOW -->
+      <div class="code-window">
+        <!-- Top Bar like VS Code -->
+        <div class="editor-top-bar">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <div style="display:flex; gap:6px;">
+              <span style="width:10px; height:10px; border-radius:50%; background:#ef4444; display:inline-block; opacity:0.85;"></span>
+              <span style="width:10px; height:10px; border-radius:50%; background:#f59e0b; display:inline-block; opacity:0.85;"></span>
+              <span style="width:10px; height:10px; border-radius:50%; background:#10b981; display:inline-block; opacity:0.85;"></span>
+            </div>
+            <div class="editor-tab">
+              <span style="font-size:14px;">🐍</span>
+              <span>main_kasir.py</span>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:11px; background:#1e293b; color:#38bdf8; padding:3px 8px; border-radius:6px; font-family:'Consolas',monospace; font-weight:bold;">Python 3.12</span>
+            <span style="font-size:11px; background:#1e293b; color:#94a3b8; padding:3px 8px; border-radius:6px; font-family:'Consolas',monospace;">UTF-8</span>
+          </div>
         </div>
-        <textarea id="realCodeEditor" oninput="updateDynamicButton()" onkeyup="updateDynamicButton()" onpaste="updateDynamicButton()" spellcheck="false" placeholder="# Ketik kode program Python antum di sini mulai baris 1..." style="width:100%; height:320px; background:#020617; color:#f8fafc; font-family:'Consolas', monospace; font-size:16px; line-height:1.7; padding:16px; border:none; outline:none; resize:none;"></textarea>
+
+        <!-- Editor Workspace: Gutter + Code Area -->
+        <div class="editor-workspace">
+          <!-- Gutter (Line Numbers) -->
+          <div id="editorGutter" class="editor-gutter">
+            <div class="gutter-num">1</div>
+            <div class="gutter-num">2</div>
+            <div class="gutter-num">3</div>
+            <div class="gutter-num">4</div>
+            <div class="gutter-num">5</div>
+            <div class="gutter-num">6</div>
+            <div class="gutter-num">7</div>
+            <div class="gutter-num">8</div>
+          </div>
+
+          <!-- Code Overlay Container -->
+          <div class="editor-code-container">
+            <pre id="highlightBackdrop" aria-hidden="true"><code id="highlightCode"></code></pre>
+            <textarea id="realCodeEditor" oninput="onEditorInput()" onkeyup="onEditorInput()" onpaste="setTimeout(onEditorInput, 50)" onscroll="syncScroll()" spellcheck="false" placeholder="# Ketik kode program Python antum di sini mulai baris 1..."></textarea>
+          </div>
+        </div>
       </div>
 
       <!-- NOTIFIKASI VALIDASI KODE -->
@@ -536,10 +717,102 @@
         editor.value = editor.value
           .replace(/barang\s*=\s*["'][^"']+["']/i, `barang = "${nama}"`)
           .replace(/harga\s*=\s*\d+/i, `harga = ${harga}`);
+        onEditorInput();
       }
     }
 
     let currentStoreTitle = "TOKO IMLA";
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    function highlightPython(code) {
+      if (!code) return "";
+      const TOKEN_REGEX = /(#[^\n]*)|("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')|\b(if|else|elif|for|while|def|return|and|or|not)\b|\b(print|int|input|str|float|len)\b|(\b\d+\b)|(>=|<=|==|!=|>|<|=|\+|\-|\*|\/)|(\b[a-zA-Z_][a-zA-Z0-9_]*\b)/g;
+
+      let lastIndex = 0;
+      let html = "";
+      let match;
+
+      while ((match = TOKEN_REGEX.exec(code)) !== null) {
+        if (match.index > lastIndex) {
+          html += escapeHtml(code.substring(lastIndex, match.index));
+        }
+
+        const [full, comment, str, keyword, builtin, number, operator, ident] = match;
+
+        if (comment) {
+          html += `<span class="token-comment">${escapeHtml(comment)}</span>`;
+        } else if (str) {
+          html += `<span class="token-string">${escapeHtml(str)}</span>`;
+        } else if (keyword) {
+          html += `<span class="token-keyword">${escapeHtml(keyword)}</span>`;
+        } else if (builtin) {
+          html += `<span class="token-builtin">${escapeHtml(builtin)}</span>`;
+        } else if (number) {
+          html += `<span class="token-number">${escapeHtml(number)}</span>`;
+        } else if (operator) {
+          html += `<span class="token-operator">${escapeHtml(operator)}</span>`;
+        } else if (ident) {
+          html += `<span class="token-var">${escapeHtml(ident)}</span>`;
+        }
+
+        lastIndex = match.index + full.length;
+      }
+
+      if (lastIndex < code.length) {
+        html += escapeHtml(code.substring(lastIndex));
+      }
+
+      if (code.endsWith('\n')) {
+        html += ' ';
+      }
+
+      return html;
+    }
+
+    function renderGutter(lineCount) {
+      const gutter = document.getElementById('editorGutter');
+      if (!gutter) return;
+      const count = Math.max(lineCount, 8);
+      let html = "";
+      for (let i = 1; i <= count; i++) {
+        html += `<div class="gutter-num">${i}</div>`;
+      }
+      gutter.innerHTML = html;
+    }
+
+    function syncScroll() {
+      const editor = document.getElementById('realCodeEditor');
+      const backdrop = document.getElementById('highlightBackdrop');
+      const gutter = document.getElementById('editorGutter');
+      if (!editor) return;
+      if (backdrop) {
+        backdrop.scrollTop = editor.scrollTop;
+        backdrop.scrollLeft = editor.scrollLeft;
+      }
+      if (gutter) {
+        gutter.scrollTop = editor.scrollTop;
+      }
+    }
+
+    function onEditorInput() {
+      const editor = document.getElementById('realCodeEditor');
+      if (!editor) return;
+      const code = editor.value;
+      const hlCode = document.getElementById('highlightCode');
+      if (hlCode) {
+        hlCode.innerHTML = highlightPython(code);
+      }
+      const lines = code.split('\n');
+      renderGutter(lines.length);
+      updateDynamicButton();
+      syncScroll();
+    }
 
     function updateDynamicButton() {
       const editor = document.getElementById('realCodeEditor');
@@ -581,6 +854,7 @@
 
     function kosongkanKode() {
       document.getElementById('realCodeEditor').value = "";
+      onEditorInput();
       document.getElementById('badgeSyntax').innerText = "KODE KOSONG ⏳";
       document.getElementById('badgeSyntax').style.background = "#64748b";
       document.getElementById('boxNotifBug').style.display = "none";
@@ -597,18 +871,18 @@
 
     function muatContohUstaz() {
       document.getElementById('realCodeEditor').value = 
-`# Program Kasir Toko Imla
-nama = "Ahmad Farros"
-barang = "Susu Kurma Imla"
-harga = 8000
-uang = int(input("Masukkan uang bayar: "))
+`# FARROS MART
+nama_pembeli = "Ahmad Farros Al Barqy"
+barang = "Es Teh Manis Jumbo"
+harga = 7000
+uang = int(input("Masukkan jumlah uang antum: "))
 
 if uang >= harga:
-    print("Alhamdulillah Lunas! Syukron sudah jajan di Toko Imla!")
+    print("Alhamdulillah lunas, syukron ya udah jajan")
 else:
-    print("Afwan ya akhi, uang antum kurang! Barang disimpan di rak lagi.")`;
+    print("Afwan ya akhi, uang antum kurang, silakan cek lagi dompet antum")`;
 
-      updateDynamicButton();
+      onEditorInput();
       document.getElementById('badgeSyntax').innerText = "CONTOH USTAZ DIMUAT ✅";
       document.getElementById('badgeSyntax').style.background = "#3b82f6";
       document.getElementById('boxNotifBug').style.display = "none";
@@ -909,9 +1183,21 @@ else:
     window.addEventListener("DOMContentLoaded", () => {
       const editor = document.getElementById('realCodeEditor');
       if (editor) {
-        editor.addEventListener('input', updateDynamicButton);
-        editor.addEventListener('keyup', updateDynamicButton);
-        editor.addEventListener('paste', () => setTimeout(updateDynamicButton, 50));
+        editor.addEventListener('input', onEditorInput);
+        editor.addEventListener('keyup', onEditorInput);
+        editor.addEventListener('paste', () => setTimeout(onEditorInput, 50));
+        editor.addEventListener('scroll', syncScroll);
+        editor.addEventListener('keydown', function(e) {
+          if (e.key === 'Tab') {
+            e.preventDefault();
+            const start = this.selectionStart;
+            const end = this.selectionEnd;
+            this.value = this.value.substring(0, start) + "    " + this.value.substring(end);
+            this.selectionStart = this.selectionEnd = start + 4;
+            onEditorInput();
+          }
+        });
+        onEditorInput(); // Inisialisasi highlight & line numbers
       }
     });
   </script>
