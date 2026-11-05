@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>📱 Pegangan Guru: Bedah Soal & Kunci Otorisasi Roket</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f1f5f9;
+    color: #1e293b;
+    margin: 0;
+    padding: 12px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* HEADER */
+  header {
+    background: #0f172a;
+    color: white;
+    padding: 16px;
+    border-radius: 14px;
+    text-align: center;
+    margin-bottom: 14px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+  h1 { font-size: 19px; margin: 0 0 4px 0; color: #38bdf8; }
+  .subtitle { font-size: 12.5px; color: #94a3b8; }
+
+  /* QUICK NAV BUTTONS */
+  .quick-nav {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    margin-bottom: 14px;
+    position: sticky;
+    top: 8px;
+    z-index: 100;
+  }
+  .nav-btn {
+    background: #ffffff;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 8px 4px;
+    text-align: center;
+    font-size: 11.5px;
+    font-weight: bold;
+    color: #475569;
+    text-decoration: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  }
+  .nav-btn:active { background: #e2e8f0; }
+
+  /* TEAM CARD */
+  .team-section {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border: 1px solid #e2e8f0;
+    scroll-margin-top: 60px;
+  }
+  .team-1 { border-top: 5px solid #f97316; }
+  .team-2 { border-top: 5px solid #22c55e; }
+  .team-3 { border-top: 5px solid #0284c7; }
+  .team-4 { border-top: 5px solid #a855f7; }
+
+  .team-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    border-bottom: 1px dashed #cbd5e1;
+    padding-bottom: 8px;
+  }
+  .team-name { font-size: 16px; font-weight: 800; }
+  .pin-badge {
+    background: #0f172a;
+    color: #facc15;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-family: monospace;
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: 2px;
+  }
+
+  .roster-box {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 12px;
+    color: #475569;
+    margin-bottom: 14px;
+    border-left: 3px solid #64748b;
+  }
+
+  /* DIGIT ITEM */
+  .digit-item {
+    margin-bottom: 14px;
+    background: #fafafa;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 12px;
+  }
+  .digit-title {
+    font-size: 13.5px;
+    font-weight: bold;
+    color: #0f172a;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+  .digit-ans {
+    color: #0284c7;
+    font-weight: 900;
+    font-size: 15px;
+    background: #e0f2fe;
+    padding: 1px 8px;
+    border-radius: 4px;
+  }
+  .soal-text {
+    font-size: 13px;
+    color: #334155;
+    margin-bottom: 8px;
+    background: #fff;
+    padding: 8px;
+    border-radius: 6px;
+    border-left: 3px solid #cbd5e1;
+  }
+  .cara-hitung {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 12px;
+    color: #166534;
+  }
+  .tanya-lisan {
+    margin-top: 6px;
+    background: #fefce8;
+    border: 1px dashed #fef08a;
+    border-radius: 6px;
+    padding: 6px 8px;
+    font-size: 11.5px;
+    color: #854d0e;
+  }
+
+  /* MATRIKS RANGKUMAN */
+  .summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-top: 10px;
+  }
+  .summary-table th, .summary-table td {
+    padding: 6px 8px;
+    border: 1px solid #cbd5e1;
+    text-align: center;
+  }
+  .summary-table th { background: #0f172a; color: white; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header>
+    <h1>📱 PEGANGAN RAHASIA GURU</h1>
+    <div class="subtitle">Bedah Soal, Jalan Hitung & Kunci 4 Digit Otorisasi Mars</div>
+    <div style="font-size:11px; color:#38bdf8; margin-top:4px;">Ustaz Rieza Eka Tomara, S.Kom | MTs Al-Andalus</div>
+  </header>
+
+  <!-- QUICK NAV JUMP -->
+  <div class="quick-nav">
+    <a href="#tim1" class="nav-btn" style="border-top:3px solid #f97316;">Tim Alpha</a>
+    <a href="#tim2" class="nav-btn" style="border-top:3px solid #22c55e;">Tim Bravo</a>
+    <a href="#tim3" class="nav-btn" style="border-top:3px solid #0284c7;">Tim Delta</a>
+    <a href="#tim4" class="nav-btn" style="border-top:3px solid #a855f7;">Tim Omega</a>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- TIM ALPHA                                  -->
+  <!-- ========================================== -->
+  <div class="team-section team-1" id="tim1">
+    <div class="team-header">
+      <div class="team-name" style="color: #ea580c;">🚀 TIM ALPHA</div>
+      <div class="pin-badge">7 4 8 5</div>
+    </div>
+
+    <div class="roster-box">
+      👑 <b>Ketua Tim:</b> M. Rifqi Hamid<br>
+      Awak A: Labib | Awak B: Farros | Awak C: Fariq | Awak D: Dzaki 🔥
+    </div>
+
+    <!-- DIGIT A -->
+    <div class="digit-item">
+      <div class="digit-title">
+        <span>Digit A [Petugas: Labibullah El Fatih]</span>
+        <span class="digit-ans">Kunci = 7</span>
+      </div>
+      <div class="soal-text">
+        Sebuah segitiga sama kaki memiliki keliling 24 cm. Jika panjang sisi alasnya adalah 10 cm, berapakah panjang salah satu sisi kakinya?
+      </div>
+      <div class="cara-hitung">
+        <b>📐 Jalan Matematikanya:</b><br>
+        • Rumus Keliling = alas + (2 × kaki)<br>
+        • 24 = 10 + 2k<br>
+        • 2k = 24 - 10 = 14<br>
+        • k = 14 ÷ 2 = <b>7 cm</b>
+      </div>
+      <div class="tanya-lisan">
+        🗣️ <b>Tanya Lisan ke Labib:</b> <i>"Labib, kenapa tadi 14 harus dibagi 2?"</i><br>
+        👉 Jawaban benar: <i>"Karena kakinya ada 2 yang sama panjang, Ustaz!"</i>
+      </div>
+    </div>
+
+    <!-- DIGIT B -->
+    <div class="digit-item">
+      <div class="digit-title">
+        <span>Digit B [Petugas: Ahmad Farros Al-Barqy]</span>
+        <span class="digit-ans">Kunci = 4</span>
+      </div>
+      <div class="soal-text">
+        Berapakah Faktor Persekutuan Terbesar (FPB) dari bilangan 12 dan 20?
+      </div>
+      <div class="cara-hitung">
+        <b>📐 Jalan Matematikanya:</b><br>
+        • Faktor 12 = 1, 2, 3, <b>4</b>, 6, 12<br>
+        • Faktor 20 = 1, 2, <b>4</b>, 5, 10, 20<br>
+        • Faktor persekutuan terbesar yang sama = <b>4</b>
+      </div>
+      <div class="tanya-lisan">
+        🗣️ <b>Tanya Lisan ke Farros:</b> <i>"Farros, sebutkan angka yang bisa membagi habis 12 dan 20!"</i><br>
+        👉 Jawaban benar: <i>"Angka 1, 2, dan paling besarnya 4, Ustaz!"</i>
+      </div>
+    </div>
+
+    <!-- DIGIT C -->
+    <div class="digit-item">
+      <div class="digit-title">
+        <span>Digit C [Petugas: Fariq Malaibui]</span>
+        <span class="digit-ans">Kunci = 8</span>
+      </div>
+      <div class="soal-text">
+        Tentukan angka pengganti titik-titik pada barisan: 2, 5, ..., 11
+      </div>
+      <div class="cara-hitung">
+        <b>📐 Jalan Matematikanya:</b><br>
+        • Pola bertambah 3 (+3):<br>
+        • 2 + 3 = 5<br>
+        • 5 + 3 = <b>8</b><br>
+        • 8 + 3 = 11 (Pas!)<br>
+        • Maka angka pengganti titik-titik adalah <b>8</b>
+      </div>
+      <div class="tanya-lisan">
+        🗣️ <b>Tanya Lisan ke Fariq:</b> <i>"Fariq, dari 2 ke 5 bertambah berapa? Berarti setelah 5 ditambah 3 jadi berapa?"</i><br>
+        👉 Jawaban benar: <i>"Bertambah 3, Ustaz! Jadi 5 + 3 = 8!"</i>
+      </div>
+    </div>
+
+    <!-- DIGIT D -->
+    <div class="digit-item">
+      <div class="digit-title">
+        <span>Digit D [Petugas: Naufal Dzaki Purnama 🔥]</span>
+        <span class="digit-ans">Kunci = 5</span>
+      </div>
+      <div class="soal-text">
+        Nilai rata-rata dari keempat digit kode tim kalian (Digit A, B, C, D) adalah 6. Berapakah nilai Digit D?
+      </div>
+      <div class="cara-hitung">
+        <b>📐 Jalan Matematikanya:</b><br>
+        • Rumus Rata-rata: (A + B + C + D) ÷ 4 = 6<br>
+        • Total 4 digit = 6 × 4 = 24<br>
+        • Yang sudah ada: 7 + 4 + 8 = 19<br>
+        • Digit D = 24 - 19 = <b>5</b>
+      </div>
+      <div class="tanya-lisan">
+        🗣️ <b>Tanya Lisan ke Dzaki:</b> <i>"Dzaki, dari mana dapat angka 24?"</i><br>
+        👉 Jawaban benar: <i>"Dari rata-rata 6 dikali 4 digit, Ustaz!"</i>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ========================================== -->
+  <!-- TIM BRAVO                                  -->
+  <!-- ========================================== -->
+  <div class="team-section team-2" id="tim2">
+    <div class="team-header">
+      <div class="team-name" style="color: #16a34a;">🚀 TIM BRAVO</div>
+      <div class="pin-badge">6 9 3 2</div>
+    </div>
+
+    <div class="roster-box">
+      👑 <b>Ketua Tim:</b> M. Hafidz Reo<br>
+      Awak A: Fadil | Awak B: Iwan (Da Silva) | Awak C: Aziz Ali | Awak D: Ibra 🔥
+    </div>
+
+    <!-- DIGIT A -->
+    <div class="digit-item">
+      <div class="digit-title">
+        <span>Digit A [Petugas: Rifqi Arsyad Fadilah (Fadil)]</span>
+        <span class="digit-ans">Kunci = 6</span>
+      </div>
+      <div class="soal-text">
+        Sebuah segitiga sama kaki memiliki keliling 20 cm. Jika panjang sisi alasnya adalah 8 cm, berapakah panjang salah satu sisi kakinya?
+      </div>
+      <div class="cara-hitung">
+        <b>📐 Jalan Matematikanya:</b><br>
+        • 20 = 8 + 2k<br>
+        • 2k = 20 - 8 = 12<br>
+        • k = 12 ÷ 2 = <b>6 cm</b>
+      </div>
+      <div class="tanya-lisan">
+        🗣️ <b>Tanya Lisan ke Fadil:</b> <i>"Fadil, kenapa rumusnya dikurang 8 dulu?"</i><br>
+        👉 Jawaban benar: <i>"Karena alasnya 8 cm dikurangi dari keliling, Ustaz!"</i>
+      </div>
+    </div>
+
+    <!-- DIGIT B -->
+    <div class="digit-item">
+      <div class="digit-title">
+        <span>Digit B [Petugas: Muh Asrorin Da Silva (Iwan)]</span>
+        <span class="digit-ans">Kunci = 9</span>
+      </div>
+      <div class="soal-text">
+        Berapakah Faktor Persekutuan Terbesar (FPB) dari bilangan 18 dan 27?
+      </div>
+      <div class="cara-hitung">
+        <b>📐 Jalan Matematikanya:</b><br>
+        • Faktor 18 = 1, 2, 3, 6, <b>9</b>, 18<br>
+        • Faktor 27 = 1, 3, <b>9</b>, 27<br>
+        • FPB terbesar yang sama = <b>9</b>
+      </div>
+      <div class="tanya-lisan">
+        🗣️ <b>Tanya Lisan ke Iwan:</b> <i>"Iwan, apakah 18 dan 27 bisa dibagi 9?"</i><br>
+        👉 Jawaban benar: <i>"Bisa Ustaz, 18:9=2 dan 27:9=3!"</i>
+      </div>
+    </div>
+
+    <!-- DIGIT C -->
+    <div class="digit-item">
+      <div class="digit-title">
+        <span>Digit C [Petugas: Abdul Aziz Ali]</span>
+        <span class="digit-ans">Kunci = 3</span>
+      </div>
+      <div class="soal-text">
+        Tentukan angka pengganti titik-titik pada barisan: 1, ..., 5, 7
+      </div>
+      <div class="cara-hitung">
+        <b>📐 Jalan Matematikanya:</b><br>
+        • Pola bilangan ganjil / bertambah 2 (+2):<br>
+        • 1 + 2 = <b>3</b><br>
+        • 3 + 2 = 5 (Pas!)<br>
+        • Maka angka pengganti titik-titik adalah <b>3</b>
+      </div>
+      <div class="tanya-lisan">
+        🗣️ <b>Tanya Lisan ke Aziz:</b> <i>"Aziz, pola bilangannya lompat berapa? Setelah angka 1 angka berapa?"</i><br>
+        👉 Jawaban benar: <i>"Lompat 2, Ustaz! Jadi 1 + 2 = 3!"</i>
+      </div>
+    </div>
+
+    <!-- DIGIT D -->
+    <div class="digit-item">
+      <div class="digit-title">
+        <span>Digit D [Petugas: Andi Ibra Faeyza Hasan 🔥]</span>
+        <span class="digit-ans">Kunci = 2</span>
+      </div>
+      <div class="soal-text">
+        Nilai rata-rata dari keempat digit kode tim kalian (Digit A, B, C, D) adalah 5. Berapakah nilai Digit D?
+      </div>
+      <div class="cara-hitung">
+        <b>📐 Jalan Matematikanya:</b><br>
+        • Total 4 digit = 5 × 4 = 20<br>
+        • Yang sudah ada: 6 + 9 + 3 = 18<br>
+        • Digit D = 20 - 18 = <b>2</b>
+      </div>
+      <div class="tanya-lisan">
+        🗣️ <b>Tanya Lisan ke Ibra:</b> <i>"Ibra, dari mana dapat 18?"</i><br>
+        👉 Jawaban benar: <i>"Dari penjumlahan angka Fadil, Iwan, dan Aziz (6+9+3), Ustaz!"</i>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ========================================== -->
+  <!-- TIM DELTA                                  -->
+  <!-- ========================================== -->
+  <div class="team-section team-3" id="tim3">
+    <div class="team-header">
+      <div class="team-name" style="color: #0284c7;">🚀 TIM DELTA</div>
+      <div class="pin-badge">8 3 7 6</div>
+    </div>
+
+    <div class="roster-box">
+      👑 <b>Ketua Tim:</b> Khalish<br>
+      Awak A: Haidar | Awak B: Hakim | Awak C: Azzam | Awak D: Khalish 🔥
+    </div>
+
+    <!-- DIGIT A -->
+    <div class="digit-item">
+      <div class="digit-title">
+        <span>Digit A [Petugas: Haidar Ayyubi]</span>
+        <span class="digit-ans">Kunci = 8</span>
+      </div>
+      <div class="soal-text">
+        Sebuah segitiga sama kaki memiliki keliling 22 cm. Jika panjang sisi alasnya adalah 6 cm, berapakah panjang salah satu sisi kakinya?
+      </div>
+      <div class="cara-hitung">
+        <b>📐 Jalan Matematikanya:</b><br>
+        • 22 = 6 + 2k<br>
+        • 2k = 22 - 6 = 16<br>
+        • k = 16 ÷ 2 = <b>8 cm</b>
+      </div>
+      <div class="tanya-lisan">
+        🗣️ <b>Tanya Lisan ke Haidar:</b> <i>"Haidar, kalau alasnya 6 dan kakinya masing-masing 8, total kelilingnya pas 22?"</i><br>
+        👉 Jawaban benar: <i>"Pas Ustaz: 6 + 8 + 8 = 22!"</i>
+      </div>
+    </div>
+
+    <!-- DIGIT B -->
+    <div class="digit-item">
+      <div class="digit-title">
+        <span>Digit B [Petugas: Abdul Hakim]</span>
+        <span class="digit-ans">Kunci = 3</span>
+      </div>
+      <div class="soal-text">
+        Berapakah Faktor Persekutuan Terbesar (FPB) dari bilangan 15 dan 24?
+      </div>
+      <div class="cara-hitung">
+        <b>📐 Jalan Matematikanya:</b><br>
+        • Faktor 15 = 1, <b>3</b>, 5, 15<br>
+        • Faktor 24 = 1, 2, <b>3</b>, 4, 6, 8, 12, 24<br>
+        • FPB terbesar yang sama = <b>3</b>
+      </div>
+      <div class="tanya-lisan">
+        🗣️ <b>Tanya Lisan ke Hakim:</b> <i>"Hakim, bisa nggak 15 dan 24 dibagi 5?"</i><br>
+        👉 Jawaban benar: <i>"Nggak bisa Ustaz, 24 nggak habis dibagi 5, jadi cuma bisa dibagi 3!"</i>
+      </div>
+    </div>
+
+    <!-- DIGIT C -->
+    <div class="digit-item">
+      <div class="digit-title">
+        <span>Digit C [Petugas: Muhammad Azzam Al Hafiz]</span>
+        <span class="digit-ans">Kunci = 7</span>
+      </div>
+      <div class="soal-text">
+        Tentukan angka pengganti titik-titik pada barisan: 1, 4, ..., 10
+      </div>
+      <div class="cara-hitung">
+        <b>📐 Jalan Matematikanya:</b><br>
+        • Pola bertambah 3 (+3):<br>
+        • 1 + 3 = 4<br>
+        • 4 + 3 = <b>7</b><br>
+        • 7 + 3 = 10 (Pas!)<br>
+        • Maka angka pengganti titik-titik adalah <b>7</b>
+      </div>
+      <div class="tanya-lisan">
+        🗣️ <b>Tanya Lisan ke Azzam:</b> <i>"Azzam, dari 1 ke 4 bertambah berapa? Setelah 4 angka berapa?"</i><br>
+        👉 Jawaban benar: <i>"Bertambah 3, Ustaz! Jadi 4 + 3 = 7!"</i>
+      </div>
+    </div>
+
+    <!-- DIGIT D -->
+    <div class="digit-item">
+      <div class="digit-title">
+        <span>Digit D [Petugas: Khalish 🔥]</span>
+        <span class="digit-ans">Kunci = 6</span>
+      </div>
+      <div class="soal-text">
+        Nilai rata-rata dari keempat digit kode tim kalian (Digit A, B, C, D) adalah 6. Berapakah nilai Digit D?
+      </div>
+      <div class="cara-hitung">
+        <b>📐 Jalan Matematikanya:</b><br>
+        • Total 4 digit = 6 × 4 = 24<br>
+        • Yang sudah ada: 8 + 3 + 7 = 18<br>
+        • Digit D = 24 - 18 = <b>6</b>
+      </div>
+      <div class="tanya-lisan">
+        🗣️ <b>Tanya Lisan ke Khalish:</b> <i>"Khalish, kenapa digit D nilainya 6?"</i><br>
+        👉 Jawaban benar: <i>"Karena total harus 24, sedangkan teman-teman baru dapat 18, jadi 24 - 18 = 6, Ustaz!"</i>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ========================================== -->
+  <!-- TIM OMEGA                                  -->
+  <!-- ========================================== -->
+  <div class="team-section team-4" id="tim4">
+    <div class="team-header">
+      <div class="team-name" style="color: #9333ea;">🚀 TIM OMEGA</div>
+      <div class="pin-badge">5 7 4 4</div>
+    </div>
+
+    <div class="roster-box">
+      👑 <b>Ketua Tim:</b> M. Naufal Alfaniri<br>
+      Awak A: Fazril | Awak B: Atqan | Awak C: Ayyash | Awak D: Naufal 🔥<br>
+      🚀 <b>Duta Peluncuran:</b> Azka Panji Kusuma <i>(Maju bersama tim & menekan tombol peluncuran TV)</i>
+    </div>
+
+    <!-- DIGIT A -->
+    <div class="digit-item">
+      <div class="digit-title">
+        <span>Digit A [Petugas: M. Fazril Alkais]</span>
+        <span class="digit-ans">Kunci = 5</span>
+      </div>
+      <div class="soal-text">
+        Sebuah segitiga sama kaki memiliki keliling 18 cm. Jika panjang sisi alasnya adalah 8 cm, berapakah panjang salah satu sisi kakinya?
+      </div>
+      <div class="cara-hitung">
+        <b>📐 Jalan Matematikanya:</b><br>
+        • 18 = 8 + 2k<br>
+        • 2k = 18 - 8 = 10<br>
+        • k = 10 ÷ 2 = <b>5 cm</b>
+      </div>
+      <div class="tanya-lisan">
+        🗣️ <b>Tanya Lisan ke Fazril:</b> <i>"Fazril, 10 dibagi 2 dapat berapa?"</i><br>
+        👉 Jawaban benar: <i>"5 cm, Ustaz!"</i>
+      </div>
+    </div>
+
+    <!-- DIGIT B -->
+    <div class="digit-item">
+      <div class="digit-title">
+        <span>Digit B [Petugas: Atqanul Ummah]</span>
+        <span class="digit-ans">Kunci = 7</span>
+      </div>
+      <div class="soal-text">
+        Berapakah Faktor Persekutuan Terbesar (FPB) dari bilangan 14 dan 21?
+      </div>
+      <div class="cara-hitung">
+        <b>📐 Jalan Matematikanya:</b><br>
+        • Faktor 14 = 1, 2, <b>7</b>, 14<br>
+        • Faktor 21 = 1, 3, <b>7</b>, 21<br>
+        • FPB terbesar yang sama = <b>7</b>
+      </div>
+      <div class="tanya-lisan">
+        🗣️ <b>Tanya Lisan ke Atqan:</b> <i>"Atqan, kenapa FPB-nya bukan 14?"</i><br>
+        👉 Jawaban benar: <i>"Karena 21 tidak bisa dibagi 14, yang bisa membagi dua-duanya adalah 7, Ustaz!"</i>
+      </div>
+    </div>
+
+    <!-- DIGIT C -->
+    <div class="digit-item">
+      <div class="digit-title">
+        <span>Digit C [Petugas: M. Yahya Ayyash]</span>
+        <span class="digit-ans">Kunci = 4</span>
+      </div>
+      <div class="soal-text">
+        Tentukan angka pengganti titik-titik pada barisan: 2, ..., 6, 8
+      </div>
+      <div class="cara-hitung">
+        <b>📐 Jalan Matematikanya:</b><br>
+        • Pola bilangan genap / bertambah 2 (+2):<br>
+        • 2 + 2 = <b>4</b><br>
+        • 4 + 2 = 6 (Pas!)<br>
+        • Maka angka pengganti titik-titik adalah <b>4</b>
+      </div>
+      <div class="tanya-lisan">
+        🗣️ <b>Tanya Lisan ke Ayyash:</b> <i>"Ayyash, dari 6 ke 8 bertambah berapa? Berarti setelah 2 angka berapa?"</i><br>
+        👉 Jawaban benar: <i>"Bertambah 2, Ustaz! Jadi 2 + 2 = 4!"</i>
+      </div>
+    </div>
+
+    <!-- DIGIT D -->
+    <div class="digit-item">
+      <div class="digit-title">
+        <span>Digit D [Petugas: M. Naufal Alfaniri 🔥]</span>
+        <span class="digit-ans">Kunci = 4</span>
+      </div>
+      <div class="soal-text">
+        Nilai rata-rata dari keempat digit kode tim kalian (Digit A, B, C, D) adalah 5. Berapakah nilai Digit D?
+      </div>
+      <div class="cara-hitung">
+        <b>📐 Jalan Matematikanya:</b><br>
+        • Total 4 digit = 5 × 4 = 20<br>
+        • Yang sudah ada: 5 + 7 + 4 = 16<br>
+        • Digit D = 20 - 16 = <b>4</b>
+      </div>
+      <div class="tanya-lisan">
+        🗣️ <b>Tanya Lisan ke Naufal:</b> <i>"Naufal, 20 dikurang 16 berapa?"</i><br>
+        👉 Jawaban benar: <i>"4 Ustaz! Jadi digit D adalah 4!"</i>
+      </div>
+    </div>
+
+    <!-- PERAN KHUSUS AZKA -->
+    <div style="margin-top:10px; background:#eff6ff; border:1.5px dashed #93c5fd; border-radius:8px; padding:10px 12px; font-size:12px; color:#1e40af;">
+      🌟 <b>Peran Mulia Azka Panji Kusuma (Duta Peluncuran TV):</b><br>
+      Azka berdiri di depan bersama tim di samping laptop/layar TV. Saat keempat digit [ 5 7 4 4 ] selesai diinput oleh Naufal, Fazril, Atqan, dan Ayyash, <b>Azka bertugas menekan tombol merah: 🚀 OTORISASI & LUNCURKAN ROKET!</b><br>
+      <i>(Bebas dari beban pertanyaan lisan agar Azka merasa nyaman, bangga, dan tetap menjadi penentu kesuksesan misi tim!).</i>
+    </div>
+  </div>
+
+
+  <!-- ========================================== -->
+  <!-- TABEL RANGKUMAN CEPAT USTAZ                -->
+  <!-- ========================================== -->
+  <div style="background:#0f172a; color:white; border-radius:14px; padding:16px; margin-top:20px;">
+    <h3 style="margin:0 0 8px 0; font-size:15px; color:#facc15; text-align:center;">
+      📊 RANGKUMAN CEPAT KUNCI 4 TIM
+    </h3>
+    <table class="summary-table">
+      <tr>
+        <th>Tim</th>
+        <th>Digit A</th>
+        <th>Digit B</th>
+        <th>Digit C</th>
+        <th>Digit D</th>
+        <th>PIN UTUH</th>
+      </tr>
+      <tr>
+        <td style="color:#f97316; font-weight:bold;">Tim Alpha</td>
+        <td>7</td>
+        <td>4</td>
+        <td>8</td>
+        <td>5</td>
+        <td style="background:#1e293b; color:#facc15; font-weight:bold;">7 4 8 5</td>
+      </tr>
+      <tr>
+        <td style="color:#22c55e; font-weight:bold;">Tim Bravo</td>
+        <td>6</td>
+        <td>9</td>
+        <td>3</td>
+        <td>2</td>
+        <td style="background:#1e293b; color:#facc15; font-weight:bold;">6 9 3 2</td>
+      </tr>
+      <tr>
+        <td style="color:#38bdf8; font-weight:bold;">Tim Delta</td>
+        <td>8</td>
+        <td>3</td>
+        <td>7</td>
+        <td>6</td>
+        <td style="background:#1e293b; color:#facc15; font-weight:bold;">8 3 7 6</td>
+      </tr>
+      <tr>
+        <td style="color:#c084fc; font-weight:bold;">Tim Omega</td>
+        <td>5</td>
+        <td>7</td>
+        <td>4</td>
+        <td>4</td>
+        <td style="background:#1e293b; color:#facc15; font-weight:bold;">5 7 4 4</td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+
+</body>
+</html>

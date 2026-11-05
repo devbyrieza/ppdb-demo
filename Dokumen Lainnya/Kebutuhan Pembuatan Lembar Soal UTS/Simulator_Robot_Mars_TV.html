@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🚀 SIMULATOR ROBOT MARS - EDISI ALGORITMA UNIVERSAL (TV DISPLAY)</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 14px;
+    background: radial-gradient(circle at top, #111827 0%, #030712 100%);
+    color: #e2e8f0;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+  }
+  
+  header {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  h1 {
+    margin: 0;
+    font-size: 28px;
+    color: #38bdf8;
+    text-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
+    letter-spacing: 1px;
+  }
+  .sub {
+    font-size: 13.5px;
+    color: #94a3b8;
+    margin-top: 3px;
+  }
+
+  .main-container {
+    display: flex;
+    gap: 20px;
+    max-width: 1280px;
+    width: 100%;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  /* ARENA CONTAINER */
+  .arena-card {
+    background: #0f172a;
+    border: 3px solid #1e293b;
+    border-radius: 18px;
+    padding: 18px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.8), inset 0 0 30px rgba(56, 189, 248, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    flex: 1;
+    max-width: 580px;
+  }
+
+  /* GEMPA LAYAR (SCREEN SHAKE) SAAT MENABRAK */
+  .shake-screen {
+    animation: shake 0.55s cubic-bezier(.36,.07,.19,.97) both;
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 50px rgba(239, 68, 68, 0.8) !important;
+  }
+
+  @keyframes shake {
+    10%, 90% { transform: translate3d(-4px, 2px, 0) rotate(-1deg); }
+    20%, 80% { transform: translate3d(6px, -4px, 0) rotate(2deg); }
+    30%, 50%, 70% { transform: translate3d(-8px, 6px, 0) rotate(-2deg); }
+    40%, 60% { transform: translate3d(8px, -6px, 0) rotate(1deg); }
+  }
+
+  /* KOTAK ARENA GRID */
+  .grid-board {
+    display: grid;
+    grid-template-columns: repeat(5, 90px);
+    grid-template-rows: repeat(3, 90px);
+    gap: 10px;
+    background: #020617;
+    padding: 14px;
+    border-radius: 14px;
+    border: 2px solid #334155;
+    position: relative;
+  }
+
+  .cell {
+    background: #1e293b;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 44px;
+    position: relative;
+    border: 2px solid #334155;
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    user-select: none;
+  }
+
+  .cell.robot {
+    background: radial-gradient(circle, #0284c7 0%, #0369a1 100%);
+    border-color: #38bdf8;
+    box-shadow: 0 0 25px rgba(56, 189, 248, 0.8);
+    transform: scale(1.08);
+    z-index: 10;
+  }
+
+  .robot-icon {
+    display: inline-block;
+    transition: transform 0.25s ease;
+  }
+  .rot-kanan { transform: rotate(0deg); }
+  .rot-bawah { transform: rotate(90deg); }
+  .rot-kiri  { transform: rotate(180deg) scaleY(-1); }
+  .rot-atas  { transform: rotate(-90deg); }
+
+  .cell.crash-explosion {
+    background: radial-gradient(circle, #f97316 0%, #dc2626 70%, #7f1d1d 100%) !important;
+    border-color: #fbbf24 !important;
+    animation: explodePulse 0.4s infinite alternate;
+    box-shadow: 0 0 40px #ef4444, inset 0 0 20px #fbbf24 !important;
+    z-index: 20;
+  }
+
+  @keyframes explodePulse {
+    0% { transform: scale(1.0); }
+    100% { transform: scale(1.2) rotate(4deg); }
+  }
+
+  .cell.batu {
+    background: #1e293b;
+    border-color: #475569;
+  }
+
+  .cell.finish {
+    background: radial-gradient(circle, #065f46 0%, #042f2e 100%);
+    border-color: #34d399;
+    box-shadow: 0 0 20px rgba(52, 211, 153, 0.4);
+    animation: pialaPulse 1.5s infinite;
+  }
+  @keyframes pialaPulse {
+    0%, 100% { box-shadow: 0 0 15px rgba(52, 211, 153, 0.4); }
+    50% { box-shadow: 0 0 35px rgba(52, 211, 153, 0.9); }
+  }
+
+  /* COMIC POPUP (BOOM / WIN) */
+  .comic-popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    padding: 16px 26px;
+    border-radius: 16px;
+    font-size: 24px;
+    font-weight: 900;
+    text-align: center;
+    z-index: 100;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+    pointer-events: none;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    white-space: nowrap;
+  }
+  .popup-boom {
+    background: #dc2626;
+    color: #fef08a;
+    border: 5px solid #fbbf24;
+    text-shadow: 2px 2px 0px #000;
+  }
+  .popup-win {
+    background: #16a34a;
+    color: #ffffff;
+    border: 5px solid #fef08a;
+    text-shadow: 2px 2px 0px #000;
+  }
+  .show-popup {
+    transform: translate(-50%, -50%) scale(1.1) rotate(-2deg);
+  }
+
+  /* DUAL SENSOR DASHBOARD */
+  .sensor-dashboard {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .sensor-card {
+    background: #020617;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    padding: 8px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .sensor-title {
+    font-size: 11.5px;
+    color: #94a3b8;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  .sensor-val {
+    font-size: 15px;
+    font-weight: 800;
+    color: #38bdf8;
+    margin-top: 2px;
+  }
+  .val-batu { color: #f87171 !important; }
+  .val-aman { color: #4ade80 !important; }
+  .val-finish { color: #facc15 !important; }
+
+  /* STATUS BAR */
+  .status-box {
+    margin-top: 12px;
+    width: 100%;
+    background: #020617;
+    border: 2px solid #334155;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 14.5px;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .status-msg {
+    color: #f8fafc;
+    font-weight: 700;
+  }
+
+  /* PANEL KONTROL */
+  .control-card {
+    background: #0f172a;
+    border: 3px solid #1e293b;
+    border-radius: 18px;
+    padding: 18px;
+    width: 480px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+  }
+
+  button {
+    background: #1e293b;
+    color: white;
+    border: 2px solid #475569;
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  button:hover {
+    background: #334155;
+    transform: translateY(-2px);
+  }
+  button.danger {
+    background: linear-gradient(135deg, #b91c1c 0%, #ef4444 100%);
+    border-color: #fca5a5;
+    font-size: 13.5px;
+    box-shadow: 0 0 16px rgba(239, 68, 68, 0.4);
+  }
+  button.map-btn {
+    background: #1e1b4b;
+    border-color: #818cf8;
+    color: #c7d2fe;
+  }
+  button.map-btn.active {
+    background: #4338ca;
+    color: white;
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.6);
+  }
+
+  .btn-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  button.team1 { border-left: 5px solid #f97316; }
+  button.team2 { border-left: 5px solid #22c55e; }
+  button.team3 { border-left: 5px solid #38bdf8; }
+  button.team4 { border-left: 5px solid #a855f7; }
+
+  /* TABEL KEPUTUSAN LOGIKA GURU */
+  .logic-table-box {
+    background: #020617;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+  .logic-table-box table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 4px;
+  }
+  .logic-table-box th, .logic-table-box td {
+    padding: 4px 6px;
+    border: 1px solid #1e293b;
+    text-align: left;
+  }
+  .logic-table-box th {
+    background: #1e293b;
+    color: #38bdf8;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🚀 MISI TINGKAT TINGGI: ALGORITMA UNIVERSAL ROBOT MARS</h1>
+  <div class="sub">Ustaz Rieza Eka Tomara, S.Kom | Uji Logika Otonom 2 Sensor di 2 Peta Berbeda</div>
+</header>
+
+<div class="main-container">
+
+  <!-- ARENA GRID TV -->
+  <div class="arena-card" id="arenaCard">
+    <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+      <span style="font-size: 13.5px; color: #94a3b8; font-weight: 800; letter-spacing: 0.5px;" id="mapLabel">
+        📍 LABIRIN: PETA A (STANDAR)
+      </span>
+      <span style="font-size: 12px; color: #38bdf8; background:#020617; padding: 2px 8px; border-radius: 4px; border: 1px solid #0369a1;">
+        Grid 3 × 5
+      </span>
+    </div>
+
+    <!-- COMIC POPUP -->
+    <div class="comic-popup" id="comicPopup">💥 BOOOOMM!!</div>
+
+    <div class="grid-board" id="board">
+      <!-- Di-generate JavaScript -->
+    </div>
+
+    <!-- DASHBOARD 2 SENSOR (DEPAN & KANAN) -->
+    <div class="sensor-dashboard">
+      <div class="sensor-card">
+        <span class="sensor-title">📡 SENSOR 1: DEPAN</span>
+        <span class="sensor-val val-aman" id="sensorDepanVal">AMAN</span>
+      </div>
+      <div class="sensor-card">
+        <span class="sensor-title">📡 SENSOR 2: KANAN</span>
+        <span class="sensor-val val-batu" id="sensorKananVal">BATU</span>
+      </div>
+    </div>
+
+    <div class="status-box">
+      <div class="status-msg" id="statusMsg">Robot standby di titik awal (0,0)</div>
+    </div>
+  </div>
+
+  <!-- PANEL KONTROL GURU & UJI COBA -->
+  <div class="control-card">
+    <div style="font-size: 14px; color: #38bdf8; font-weight: 800; border-bottom: 2px solid #1e293b; padding-bottom: 6px;">
+      🎮 KONTROL GURU: 2 PETA & PEMBUKTIAN ALGORITMA
+    </div>
+
+    <!-- PILIHAN PETA UNTUK MEMBUKTIKAN JEBAKAN HAFALAN -->
+    <div style="font-size: 12px; color: #94a3b8; font-weight: bold;">
+      🗺️ GANTI DUNIA LABIRIN (UJI KETANGGUHAN ALGORITMA):
+    </div>
+    <div class="btn-group">
+      <button class="map-btn active" id="btnMapA" onclick="gantiPeta('A')">Peta A (Labirin 1)</button>
+      <button class="map-btn" id="btnMapB" onclick="gantiPeta('B')">Peta B (Labirin Ranjau 2) ⚡</button>
+    </div>
+
+    <!-- DEMO PEMBUKA: BUKTIKAN HAFALAN GAGAL -->
+    <button class="danger" onclick="demoKegagalanHafalan()">
+      💥 DEMO GURU: Mengapa "Hafalan Langkah" Pasti Hancur?
+    </button>
+
+    <!-- UJI ALGORITMA UNIVERSAL 4 TIM -->
+    <div style="font-size: 12px; color: #94a3b8; font-weight: bold; margin-top: 4px;">
+      🧠 UJI ALGORITMA CERDAS 4 TIM (TEMBUS DI PETA MANA PUN):
+    </div>
+    <div class="btn-group">
+      <button class="team1" onclick="jalankanAlgoritmaUniversal('Tim 1 (Rifqi H. & Haidar)')">Uji Tim 1 (Rifqi H.)</button>
+      <button class="team2" onclick="jalankanAlgoritmaUniversal('Tim 2 (Fazril & Hafidz)')">Uji Tim 2 (Fazril)</button>
+      <button class="team3" onclick="jalankanAlgoritmaUniversal('Tim 3 (Labib & Naufal A.)')">Uji Tim 3 (Labib)</button>
+      <button class="team4" onclick="jalankanAlgoritmaUniversal('Tim 4 (Khalish & Farros)')">Uji Tim 4 (Khalish)</button>
+    </div>
+
+    <button onclick="resetBoard()" style="background: #1e293b; color: #94a3b8; border-color: #334155; padding: 6px;">
+      🔄 Reset Posisi Robot
+    </button>
+
+    <!-- KUNCI MATRIKS KEPUTUSAN GURU -->
+    <div class="logic-table-box">
+      <strong style="color: #f59e0b;">📊 KUNCI TABEL KEPUTUSAN NALAR (IF-ELIF-ELSE):</strong>
+      <table>
+        <tr><th>Kondisi Sensor</th><th>Logika Tindakan Robot</th></tr>
+        <tr><td>Depan AMAN</td><td><code>maju()</code></td></tr>
+        <tr><td>Depan BATU & Kanan AMAN</td><td><code>belok_kanan()</code> ➔ <code>maju()</code></td></tr>
+        <tr><td>Depan BATU & Kanan BATU</td><td><code>belok_kiri()</code> (hindari jepitan)</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // AUDIO WEB API
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+  function playSoundStep() {
+    try {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(320, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(540, audioCtx.currentTime + 0.08);
+      gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.08);
+    } catch(e) {}
+  }
+
+  function playSoundTurn() {
+    try {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(450, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(250, audioCtx.currentTime + 0.1);
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.1);
+    } catch(e) {}
+  }
+
+  function playSoundBoom() {
+    try {
+      const bufferSize = audioCtx.sampleRate * 0.7;
+      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+      const noise = audioCtx.createBufferSource();
+      noise.buffer = buffer;
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = "lowpass";
+      filter.frequency.setValueAtTime(600, audioCtx.currentTime);
+      filter.frequency.linearRampToValueAtTime(60, audioCtx.currentTime + 0.7);
+      const gain = audioCtx.createGain();
+      gain.gain.setValueAtTime(0.8, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.7);
+      noise.connect(filter);
+      filter.connect(gain);
+      gain.connect(audioCtx.destination);
+      noise.start();
+    } catch(e) {}
+  }
+
+  function playSoundVictory() {
+    try {
+      const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99];
+      notes.forEach((freq, i) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime + (i * 0.1));
+        gain.gain.setValueAtTime(0.25, audioCtx.currentTime + (i * 0.1));
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + (i * 0.1) + 0.25);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(audioCtx.currentTime + (i * 0.1));
+        osc.stop(audioCtx.currentTime + (i * 0.1) + 0.3);
+      });
+    } catch(e) {}
+  }
+
+  // -------------------------------------------------------------
+  // DUA PETA BERBEDA UNTUK MENGUJI GENERALISASI ALGORITMA
+  // -------------------------------------------------------------
+  const MAPS = {
+    A: [
+      [0, 0, 1, 0, 0],
+      [1, 0, 1, 0, 1],
+      [0, 0, 0, 0, 2]
+    ],
+    B: [
+      [0, 1, 0, 0, 0],
+      [0, 1, 0, 1, 0],
+      [0, 0, 0, 1, 2]
+    ]
+  };
+
+  let petaAktif = "A";
+  let botR = 0;
+  let botC = 0;
+  let botArah = "KANAN";
+  let isRunning = false;
+  let isCrashed = false;
+  let crashCell = null;
+
+  function gantiPeta(pilihan) {
+    if (isRunning) return;
+    petaAktif = pilihan;
+    document.getElementById("btnMapA").className = "map-btn" + (pilihan === "A" ? " active" : "");
+    document.getElementById("btnMapB").className = "map-btn" + (pilihan === "B" ? " active" : "");
+    document.getElementById("mapLabel").innerText = pilihan === "A" ? "📍 LABIRIN: PETA A (STANDAR)" : "📍 LABIRIN: PETA B (RANJAU BERBEDA!) ⚡";
+    resetBoard();
+  }
+
+  function renderGrid() {
+    const board = document.getElementById("board");
+    board.innerHTML = "";
+    const activeMap = MAPS[petaAktif];
+    
+    for (let r = 0; r < 3; r++) {
+      for (let c = 0; c < 5; c++) {
+        const cell = document.createElement("div");
+        cell.className = "cell";
+        
+        if (isCrashed && crashCell && crashCell.r === r && crashCell.c === c) {
+          cell.className += " crash-explosion";
+          cell.innerHTML = "💥";
+        } else if (r === botR && c === botC) {
+          cell.className += " robot";
+          let rotClass = "rot-kanan";
+          if (botArah === "BAWAH") rotClass = "rot-bawah";
+          else if (botArah === "KIRI") rotClass = "rot-kiri";
+          else if (botArah === "ATAS") rotClass = "rot-atas";
+          cell.innerHTML = `<span class="robot-icon ${rotClass}">🤖</span>`;
+        } else if (activeMap[r][c] === 1) {
+          cell.className += " batu";
+          cell.innerHTML = "🪨";
+        } else if (activeMap[r][c] === 2) {
+          cell.className += " finish";
+          cell.innerHTML = "🏆";
+        } else {
+          cell.innerHTML = "·";
+        }
+        board.appendChild(cell);
+      }
+    }
+    updateSensorDisplay();
+  }
+
+  function getRadarDepan() {
+    let dr = 0, dc = 0;
+    if (botArah === "KANAN") dc = 1;
+    else if (botArah === "BAWAH") dr = 1;
+    else if (botArah === "KIRI") dc = -1;
+    else if (botArah === "ATAS") dr = -1;
+
+    let nr = botR + dr, nc = botC + dc;
+    const activeMap = MAPS[petaAktif];
+    if (nr >= 0 && nr < 3 && nc >= 0 && nc < 5) {
+      if (activeMap[nr][nc] === 1) return "BATU";
+      if (activeMap[nr][nc] === 2) return "PIALA";
+      return "AMAN";
+    }
+    return "TEMBOK";
+  }
+
+  function getRadarKanan() {
+    let dr = 0, dc = 0;
+    // Kanan relatif dari arah hadap robot
+    if (botArah === "KANAN") dr = 1;
+    else if (botArah === "BAWAH") dc = -1;
+    else if (botArah === "KIRI") dr = -1;
+    else if (botArah === "ATAS") dc = 1;
+
+    let nr = botR + dr, nc = botC + dc;
+    const activeMap = MAPS[petaAktif];
+    if (nr >= 0 && nr < 3 && nc >= 0 && nc < 5) {
+      if (activeMap[nr][nc] === 1) return "BATU";
+      if (activeMap[nr][nc] === 2) return "PIALA";
+      return "AMAN";
+    }
+    return "TEMBOK";
+  }
+
+  function updateSensorDisplay() {
+    const dep = getRadarDepan();
+    const kan = getRadarKanan();
+    
+    const elDep = document.getElementById("sensorDepanVal");
+    const elKan = document.getElementById("sensorKananVal");
+
+    elDep.innerText = dep;
+    elDep.className = "sensor-val " + (dep === "AMAN" ? "val-aman" : (dep === "PIALA" ? "val-finish" : "val-batu"));
+
+    elKan.innerText = kan;
+    elKan.className = "sensor-val " + (kan === "AMAN" ? "val-aman" : (kan === "PIALA" ? "val-finish" : "val-batu"));
+  }
+
+  function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
+
+  function resetBoard() {
+    botR = 0;
+    botC = 0;
+    botArah = "KANAN";
+    isRunning = false;
+    isCrashed = false;
+    crashCell = null;
+    
+    document.getElementById("comicPopup").className = "comic-popup";
+    document.getElementById("arenaCard").classList.remove("shake-screen");
+    document.getElementById("statusMsg").innerText = "Robot standby di pangkalan (0,0)";
+    renderGrid();
+  }
+
+  async function triggerDramaticCrash(targetR, targetC) {
+    isCrashed = true;
+    crashCell = { r: targetR, c: targetC };
+    playSoundBoom();
+    const arena = document.getElementById("arenaCard");
+    arena.classList.add("shake-screen");
+    renderGrid();
+    const popup = document.getElementById("comicPopup");
+    popup.className = "comic-popup popup-boom show-popup";
+    popup.innerHTML = "💥 DUARRR!! ROBOT HANCUR!<br><span style='font-size:14px;'>HAFALAN LANGKAH TIDAK BERLAKU DI PETA INI!</span>";
+    document.getElementById("statusMsg").innerHTML = "💥 <span style='color:#ef4444;'>HANCUR KARENA HANYA MENGHAFAL JALAN!</span>";
+    setTimeout(() => arena.classList.remove("shake-screen"), 600);
+  }
+
+  function triggerVictory(pesan="PIALA KEMENANGAN DIRAIH!") {
+    playSoundVictory();
+    const popup = document.getElementById("comicPopup");
+    popup.className = "comic-popup popup-win show-popup";
+    popup.innerHTML = `🏆 ALGORITMA LOLOS!!<br><span style='font-size:14px;'>${pesan}</span>`;
+    document.getElementById("statusMsg").innerHTML = "🎉 <span style='color:#34d399;'>SUKSES! LOGIKA MATEMATIKA UNIVERSAL BERHASIL!</span>";
+  }
+
+  async function maju() {
+    let dr = 0, dc = 0;
+    if (botArah === "KANAN") dc = 1;
+    else if (botArah === "BAWAH") dr = 1;
+    else if (botArah === "KIRI") dc = -1;
+    else if (botArah === "ATAS") dr = -1;
+
+    let nr = botR + dr, nc = botC + dc;
+    const activeMap = MAPS[petaAktif];
+
+    if (nr < 0 || nr >= 3 || nc < 0 || nc >= 5 || activeMap[nr][nc] === 1) {
+      await triggerDramaticCrash(nr, nc);
+      return false;
+    }
+
+    botR = nr;
+    botC = nc;
+    playSoundStep();
+    renderGrid();
+
+    if (activeMap[botR][botC] === 2) {
+      triggerVictory();
+      return "WIN";
+    }
+    return true;
+  }
+
+  function belokKanan() {
+    const list = ["KANAN", "BAWAH", "KIRI", "ATAS"];
+    botArah = list[(list.indexOf(botArah) + 1) % 4];
+    playSoundTurn();
+    renderGrid();
+    document.getElementById("statusMsg").innerText = "Belok Kanan ↩️ (Arah: " + botArah + ")";
+  }
+
+  function belokKiri() {
+    const list = ["KANAN", "BAWAH", "KIRI", "ATAS"];
+    botArah = list[(list.indexOf(botArah) + 3) % 4];
+    playSoundTurn();
+    renderGrid();
+    document.getElementById("statusMsg").innerText = "Belok Kiri ↪️ (Arah: " + botArah + ")";
+  }
+
+  // -------------------------------------------------------------
+  // DEMO GURU: MEMBUKTIKAN KENAPA HAFALAN LANGKAH PASTI HANCUR
+  // -------------------------------------------------------------
+  async function demoKegagalanHafalan() {
+    if (isRunning) return;
+    isRunning = true;
+    
+    // Pertama, buktikan hafalan jalan di Peta A
+    gantiPeta('A');
+    document.getElementById("statusMsg").innerText = "Uji 1: Hafalan jalan di Peta A (Kelihatannya berhasil)...";
+    await sleep(600);
+    await maju(); await sleep(400);
+    belokKanan(); await sleep(400);
+    await maju(); await sleep(400);
+    await maju(); await sleep(400);
+    belokKiri(); await sleep(400);
+    await maju(); await sleep(400);
+    await maju(); await sleep(400);
+    await maju(); await sleep(600);
+
+    alert("💡 Di Peta A hafalan langkah berhasil! Tapi sekarang mari kita ubah ke PETA B...");
+
+    // Kedua, jalankan hafalan yang sama persis di Peta B -> DUARRR LANGSUNG HANCUR!
+    gantiPeta('B');
+    document.getElementById("statusMsg").innerText = "Uji 2: Hafalan yang sama dijalankan di Peta B...";
+    await sleep(700);
+    
+    // Di Peta B, di depan (0,1) langsung ada BATU! Tapi hafalan memaksa maju!
+    await maju();
+    isRunning = false;
+  }
+
+  // -------------------------------------------------------------
+  // ALGORITMA CERDAS UNIVERSAL (BERDASARKAN TABEL LOGIKA NALAR)
+  // -------------------------------------------------------------
+  async function jalankanAlgoritmaUniversal(namaTim) {
+    if (isRunning) return;
+    isRunning = true;
+    resetBoard();
+    await sleep(500);
+
+    document.getElementById("statusMsg").innerText = "🧠 Mengaktifkan Otak Logika: " + namaTim;
+    await sleep(700);
+
+    // Algoritma Wall-Follower / Logika Cerdas 2 Sensor
+    for (let step = 0; step < 18; step++) {
+      let depan = getRadarDepan();
+      let kanan = getRadarKanan();
+
+      if (depan === "PIALA") {
+        await maju();
+        break;
+      }
+
+      // KASUS 1: Depan AMAN & Kanan BATU -> Terus maju telusuri jalan
+      if (depan === "AMAN" && kanan === "BATU") {
+        let res = await maju();
+        await sleep(500);
+        if (res === "WIN" || res === false) break;
+      }
+      // KASUS 2: Depan BATU/TEMBOK & Kanan AMAN -> Ambil celah kanan
+      else if ((depan === "BATU" || depan === "TEMBOK") && kanan === "AMAN") {
+        document.getElementById("statusMsg").innerText = "🛡️ Depan buntu, kanan ada celah! Belok kanan...";
+        await sleep(400);
+        belokKanan();
+        await sleep(450);
+        let res = await maju();
+        await sleep(500);
+        if (res === "WIN" || res === false) break;
+      }
+      // KASUS 3: Depan AMAN & Kanan AMAN (Simpang terbuka)
+      else if (depan === "AMAN" && kanan === "AMAN") {
+        // Coba eksplorasi kanan jika memungkinkan atau terus maju
+        let res = await maju();
+        await sleep(500);
+        if (res === "WIN" || res === false) break;
+      }
+      // KASUS 4: Depan BATU & Kanan BATU (Terjepit di sudut) -> Harus putar kiri!
+      else if ((depan === "BATU" || depan === "TEMBOK") && (kanan === "BATU" || kanan === "TEMBOK")) {
+        document.getElementById("statusMsg").innerText = "⚠️ Depan & Kanan buntu terjepit! Putar kiri...";
+        await sleep(400);
+        belokKiri();
+        await sleep(450);
+      }
+      else {
+        let res = await maju();
+        await sleep(500);
+        if (res === "WIN" || res === false) break;
+      }
+    }
+    isRunning = false;
+  }
+
+  resetBoard();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🚀 PUSAT KOMANDO PELUNCURAN ROKET MARS - TV DISPLAY (CINEMATIC EDITION)</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 10px 16px;
+    background: #020617;
+    color: #e2e8f0;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* CANVAS LAYERS */
+  #canvasSpace, #canvasFx {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+  }
+  #canvasSpace { z-index: 1; }
+  #canvasFx { z-index: 999; }
+
+  header {
+    text-align: center;
+    margin-bottom: 8px;
+    z-index: 10;
+  }
+  h1 {
+    margin: 0;
+    font-size: 26px;
+    color: #38bdf8;
+    text-shadow: 0 0 25px rgba(56, 189, 248, 0.7);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .sub {
+    font-size: 13px;
+    color: #94a3b8;
+    margin-top: 2px;
+  }
+
+  /* MAIN LAYOUT */
+  .main-wrapper {
+    display: flex;
+    gap: 20px;
+    max-width: 1300px;
+    width: 100%;
+    z-index: 10;
+    justify-content: center;
+    align-items: stretch;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  /* LAUNCHPAD CARD */
+  .launchpad-card {
+    background: rgba(15, 23, 42, 0.85);
+    border: 2px solid #1e293b;
+    border-radius: 20px;
+    padding: 18px;
+    flex: 1.1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.8), inset 0 0 40px rgba(56, 189, 248, 0.05);
+    backdrop-filter: blur(8px);
+    overflow: hidden;
+    min-height: 480px;
+  }
+
+  /* SCREEN SHAKE KERAS */
+  .screen-shake-violent {
+    animation: shakeViolent 0.08s infinite alternate !important;
+  }
+  @keyframes shakeViolent {
+    0% { transform: translate3d(-6px, 4px, 0) rotate(-0.5deg); }
+    100% { transform: translate3d(6px, -4px, 0) rotate(0.5deg); }
+  }
+
+  /* ROCKET STAGE */
+  .rocket-scene {
+    position: relative;
+    width: 100%;
+    height: 380px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    border-bottom: 4px solid #334155;
+  }
+
+  .launch-tower {
+    position: absolute;
+    left: 28%;
+    bottom: 0;
+    width: 28px;
+    height: 320px;
+    border-right: 4px solid #475569;
+    background: repeating-linear-gradient(45deg, #1e293b, #1e293b 8px, #334155 8px, #334155 16px);
+    opacity: 0.8;
+  }
+
+  .rocket-container {
+    position: relative;
+    width: 110px;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 3.8s cubic-bezier(0.2, 0.05, 0.2, 1);
+  }
+  .rocket-svg {
+    width: 110px;
+    filter: drop-shadow(0 0 15px rgba(56, 189, 248, 0.4));
+  }
+
+  .thruster-fire {
+    width: 44px;
+    height: 0px;
+    background: linear-gradient(to bottom, #ffffff 0%, #facc15 25%, #f97316 60%, #dc2626 90%, transparent 100%);
+    border-radius: 0 0 40px 40px;
+    filter: blur(2px) drop-shadow(0 0 35px #f97316);
+    transition: height 0.25s ease;
+    animation: flamePulse 0.06s infinite alternate;
+  }
+  @keyframes flamePulse {
+    0% { transform: scaleX(0.85) scaleY(0.95); }
+    100% { transform: scaleX(1.2) scaleY(1.05); }
+  }
+
+  /* TELEMETRY HUD */
+  .telemetry-bar {
+    width: 100%;
+    margin-top: 12px;
+    background: rgba(2, 6, 23, 0.85);
+    border: 1px solid #334155;
+    border-radius: 10px;
+    padding: 10px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+  }
+  .hud-stat { display: flex; flex-direction: column; }
+  .hud-lbl { color: #64748b; font-size: 10.5px; text-transform: uppercase; font-weight: bold; }
+  .hud-val { color: #38bdf8; font-size: 14px; font-weight: 800; font-family: monospace; }
+
+  /* CONTROL CONSOLE */
+  .console-card {
+    background: rgba(15, 23, 42, 0.85);
+    border: 2px solid #1e293b;
+    border-radius: 20px;
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+    backdrop-filter: blur(8px);
+  }
+
+  /* TEAM TABS */
+  .team-tabs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+  .tab-btn {
+    background: #1e293b;
+    border: 2px solid #334155;
+    color: #94a3b8;
+    padding: 8px 4px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .tab-btn:hover { background: #334155; color: white; }
+  .tab-btn.active {
+    background: #0284c7;
+    border-color: #38bdf8;
+    color: white;
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+  }
+
+  /* PIN INPUT DISPLAY */
+  .pin-section {
+    background: #020617;
+    border: 2px solid #334155;
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .pin-title {
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .pin-display {
+    display: flex;
+    gap: 12px;
+  }
+  .digit-slot {
+    width: 65px;
+    height: 75px;
+    background: #0f172a;
+    border: 2px solid #0284c7;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 42px;
+    font-weight: 900;
+    color: #38bdf8;
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.25), inset 0 0 15px rgba(2, 132, 199, 0.3);
+    font-family: 'Courier New', monospace;
+    user-select: none;
+    transition: all 0.2s;
+  }
+
+  /* KEYPAD */
+  .keypad {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    width: 100%;
+  }
+  .key-btn {
+    background: #1e293b;
+    border: 2px solid #475569;
+    color: #f1f5f9;
+    padding: 10px 0;
+    font-size: 18px;
+    font-weight: 800;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .key-btn:hover {
+    background: #0369a1;
+    border-color: #38bdf8;
+    transform: translateY(-2px);
+  }
+  .key-btn.clear-btn {
+    background: #7f1d1d;
+    border-color: #ef4444;
+    color: #fca5a5;
+    grid-column: span 2;
+    font-size: 14px;
+  }
+  .key-btn.back-btn {
+    background: #334155;
+    font-size: 14px;
+  }
+
+  .btn-launch {
+    background: linear-gradient(135deg, #b91c1c 0%, #dc2626 50%, #f97316 100%);
+    border: 3px solid #fecaca;
+    color: white;
+    font-size: 18px;
+    font-weight: 900;
+    padding: 16px 20px;
+    border-radius: 14px;
+    cursor: pointer;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    box-shadow: 0 0 30px rgba(239, 68, 68, 0.5);
+    transition: all 0.2s;
+    width: 100%;
+  }
+  .btn-launch:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 45px rgba(239, 68, 68, 0.8);
+  }
+
+  /* COUNTDOWN OVERLAY */
+  .overlay-countdown {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    font-size: 150px;
+    font-weight: 900;
+    color: #facc15;
+    text-shadow: 0 0 50px #f59e0b, 0 0 100px #dc2626;
+    z-index: 1000;
+    pointer-events: none;
+    transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  /* FAIL BANNER */
+  .banner-fail {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    padding: 24px 36px;
+    border-radius: 20px;
+    z-index: 1000;
+    text-align: center;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.9);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-width: 650px;
+    width: 90%;
+    background: radial-gradient(circle, #7f1d1d 0%, #450a0a 100%);
+    border: 4px solid #f87171;
+    color: #fef2f2;
+  }
+  .show-banner { transform: translate(-50%, -50%) scale(1) !important; }
+
+  /* ============================================================== */
+  /* CINEMATIC VICTORY STAGE (MARS ARRIVAL & CEREMONY)             */
+  /* ============================================================== */
+  .cinematic-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle at 50% 60%, #450a0a 0%, #0c0202 70%, #000000 100%);
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1.2s ease;
+  }
+  .cinematic-active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* GLOWING MARS PLANET */
+  .mars-planet {
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #f97316 0%, #ea580c 45%, #9a3412 80%, #431407 100%);
+    box-shadow: inset -30px -30px 60px rgba(0,0,0,0.9), 0 0 80px rgba(249, 115, 22, 0.7);
+    position: relative;
+    animation: marsFloat 6s ease-in-out infinite alternate;
+  }
+  @keyframes marsFloat {
+    0% { transform: translateY(-10px) rotate(0deg); }
+    100% { transform: translateY(10px) rotate(15deg); }
+  }
+
+  /* SATELLITE ORBITING MARS */
+  .orbit-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 360px;
+    height: 140px;
+    border: 2px dashed rgba(56, 189, 248, 0.4);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) rotate(-25deg);
+    animation: spinOrbit 8s linear infinite;
+  }
+  .orbiting-ship {
+    position: absolute;
+    top: -16px;
+    left: 50%;
+    font-size: 32px;
+    filter: drop-shadow(0 0 15px #38bdf8);
+  }
+  @keyframes spinOrbit {
+    0% { transform: translate(-50%, -50%) rotate(-25deg) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(-25deg) rotate(360deg); }
+  }
+
+  /* CEREMONY CARD */
+  .ceremony-card {
+    margin-top: 25px;
+    background: rgba(15, 23, 42, 0.9);
+    border: 3px solid #facc15;
+    border-radius: 20px;
+    padding: 24px 40px;
+    text-align: center;
+    box-shadow: 0 0 60px rgba(250, 204, 21, 0.5);
+    max-width: 850px;
+    width: 90%;
+    z-index: 600;
+  }
+  .trophy-3d {
+    font-size: 70px;
+    animation: trophyBounce 1s infinite alternate;
+    display: inline-block;
+  }
+  @keyframes trophyBounce {
+    0% { transform: scale(1) translateY(0); filter: drop-shadow(0 0 20px #facc15); }
+    100% { transform: scale(1.15) translateY(-10px); filter: drop-shadow(0 0 45px #f59e0b); }
+  }
+
+  .winner-team-name {
+    font-size: 32px;
+    font-weight: 900;
+    color: #fef08a;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-shadow: 0 0 25px #f59e0b;
+    margin: 8px 0;
+  }
+  .winner-members {
+    font-size: 17px;
+    color: #38bdf8;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  .btn-continue {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border: 2px solid #6ee7b7;
+    color: white;
+    padding: 12px 32px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 25px rgba(16, 185, 129, 0.6);
+  }
+</style>
+</head>
+<body>
+
+<canvas id="canvasSpace"></canvas>
+<canvas id="canvasFx"></canvas>
+
+<!-- COUNTDOWN OVERLAY -->
+<div class="overlay-countdown" id="countdownOverlay">3</div>
+
+<header id="mainHeader">
+  <div style="display:flex; justify-content:space-between; align-items:center; width:100%; max-width:1300px;">
+    <div style="text-align:left;">
+      <h1 style="margin:0; font-size:24px;">🚀 PUSAT KOMANDO PELUNCURAN ROKET MARS</h1>
+      <div class="sub">Ustaz Rieza Eka Tomara, S.Kom | Uji Otorisasi Logika Matematika 4 Digit</div>
+    </div>
+    <div>
+      <button onclick="bukaModalSoal()" style="background:linear-gradient(135deg, #1d4ed8 0%, #0284c7 100%); border:2px solid #38bdf8; color:white; padding:10px 18px; border-radius:10px; font-size:13.5px; font-weight:bold; cursor:pointer; box-shadow:0 0 20px rgba(56,189,248,0.4);">
+        📜 TAMPILKAN SOAL 4 TIM DI TV (FULLSCREEN)
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="main-wrapper" id="mainWrapper">
+
+  <!-- LEFT: LAUNCHPAD -->
+  <div class="launchpad-card" id="launchpadCard">
+    <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+      <span style="font-size: 12px; color: #38bdf8; font-weight: bold; letter-spacing: 1px;" id="missionName">
+        🛰️ MISI: TIM ALPHA
+      </span>
+      <button onclick="resetSceneManual()" style="background:#1e293b; color:#94a3b8; border:1px solid #334155; padding:4px 10px; border-radius:6px; font-size:11px; cursor:pointer;">
+        🔄 Reset
+      </button>
+    </div>
+
+    <!-- ROCKET SCENE -->
+    <div class="rocket-scene">
+      <div class="launch-tower"></div>
+      
+      <div class="rocket-container" id="rocketObj">
+        <svg class="rocket-svg" viewBox="0 0 120 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Nose cone -->
+          <path d="M60 10 C45 45, 30 90, 30 140 L90 140 C90 90, 75 45, 60 10 Z" fill="#E2E8F0" stroke="#94A3B8" stroke-width="2"/>
+          <path d="M60 10 C50 35, 45 60, 45 80 L75 80 C75 60, 70 35, 60 10 Z" fill="#EF4444"/>
+          <!-- Body -->
+          <rect x="30" y="140" width="60" height="90" fill="#F8FAFC" stroke="#94A3B8" stroke-width="2"/>
+          <circle cx="60" cy="115" r="14" fill="#0284C7" stroke="#38BDF8" stroke-width="3"/>
+          <circle cx="64" cy="111" r="4" fill="#E0F2FE"/>
+          <rect x="30" y="170" width="60" height="8" fill="#DC2626"/>
+          <!-- Fins -->
+          <path d="M30 170 L8 230 L30 220 Z" fill="#DC2626"/>
+          <path d="M90 170 L112 230 L90 220 Z" fill="#DC2626"/>
+          <!-- Nozzle -->
+          <path d="M42 230 L46 245 L74 245 L78 230 Z" fill="#475569"/>
+        </svg>
+
+        <!-- FLAME -->
+        <div class="thruster-fire" id="thrusterFire"></div>
+      </div>
+    </div>
+
+    <!-- TELEMETRY -->
+    <div class="telemetry-bar">
+      <div class="hud-stat">
+        <span class="hud-lbl">Status Mesin</span>
+        <span class="hud-val" id="statEngine">STANDBY 🟢</span>
+      </div>
+      <div class="hud-stat">
+        <span class="hud-lbl">Tekanan Ruang Bakar</span>
+        <span class="hud-val" id="statPressure">101.3 kPa</span>
+      </div>
+      <div class="hud-stat">
+        <span class="hud-lbl">Kecepatan Orbit</span>
+        <span class="hud-val" id="statVelocity">0.0 km/s</span>
+      </div>
+      <div class="hud-stat">
+        <span class="hud-lbl">Suhu Inti</span>
+        <span class="hud-val" id="statTemp">24°C</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: CONTROL CONSOLE -->
+  <div class="console-card">
+    <div style="font-size: 12px; color: #94a3b8; font-weight: bold;">PILIH KELOMPOK YANG MENGUJI KODE:</div>
+    <div class="team-tabs">
+      <button class="tab-btn active" id="tab1" onclick="pilihTim(1)">Tim Alpha</button>
+      <button class="tab-btn" id="tab2" onclick="pilihTim(2)">Tim Bravo</button>
+      <button class="tab-btn" id="tab3" onclick="pilihTim(3)">Tim Delta</button>
+      <button class="tab-btn" id="tab4" onclick="pilihTim(4)">Tim Omega</button>
+    </div>
+
+    <!-- 4-DIGIT PIN DISPLAY -->
+    <div class="pin-section">
+      <div class="pin-title">INPUT 4 DIGIT KODE OTORISASI RAHASIA</div>
+      <div class="pin-display">
+        <div class="digit-slot" id="d0">-</div>
+        <div class="digit-slot" id="d1">-</div>
+        <div class="digit-slot" id="d2">-</div>
+        <div class="digit-slot" id="d3">-</div>
+      </div>
+    </div>
+
+    <!-- KEYPAD -->
+    <div class="keypad">
+      <button class="key-btn" onclick="ketikAngka(1)">1</button>
+      <button class="key-btn" onclick="ketikAngka(2)">2</button>
+      <button class="key-btn" onclick="ketikAngka(3)">3</button>
+      <button class="key-btn" onclick="ketikAngka(4)">4</button>
+      <button class="key-btn" onclick="ketikAngka(5)">5</button>
+      <button class="key-btn" onclick="ketikAngka(6)">6</button>
+      <button class="key-btn" onclick="ketikAngka(7)">7</button>
+      <button class="key-btn" onclick="ketikAngka(8)">8</button>
+      <button class="key-btn" onclick="ketikAngka(9)">9</button>
+      <button class="key-btn" onclick="ketikAngka(0)">0</button>
+      <button class="key-btn clear-btn" onclick="hapusSemua()">🧹 RESET</button>
+      <button class="key-btn back-btn" onclick="hapusSatu()">⌫ HAPUS</button>
+    </div>
+
+    <!-- LAUNCH BUTTON -->
+    <button class="btn-launch" onclick="eksekusiPeluncuran()">
+      🚀 OTORISASI & LUNCURKAN ROKET!
+    </button>
+  </div>
+
+</div>
+
+<!-- BANNER GAGAL -->
+<!-- ============================================================== -->
+<!-- MODAL FULLSCREEN SOAL 4 TIM UNTUK DITAYANGKAN DI TV            -->
+<!-- ============================================================== -->
+<div id="modalSoal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(2,6,23,0.96); z-index:2000; overflow-y:auto; padding:20px 28px;">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; border-bottom:2px solid #334155; padding-bottom:10px;">
+    <div>
+      <h2 style="margin:0; font-size:24px; color:#38bdf8; letter-spacing:1px;">📜 MISI KALKULASI 4 TIM MARS (WAKTU DISKUSI: 15 MENIT)</h2>
+    </div>
+    <button onclick="tutupModalSoal()" style="background:#ef4444; border:2px solid #fca5a5; color:white; padding:10px 22px; border-radius:10px; font-size:15px; font-weight:bold; cursor:pointer;">
+      ✖️ TUTUP & MULAI PELUNCURAN DI TV
+    </button>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:18px;">
+    <!-- KARTU TIM 1 -->
+    <div style="background:#0f172a; border-left:6px solid #f97316; border-radius:14px; padding:18px 20px; border-top:1px solid #334155; border-right:1px solid #334155; border-bottom:1px solid #334155; box-shadow:0 4px 20px rgba(0,0,0,0.35);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid #1e293b; padding-bottom:8px; gap:8px;">
+        <span style="font-size:16px; font-weight:900; color:#ea580c; white-space:nowrap; letter-spacing:0.5px;">🚀 TIM ALPHA</span>
+        <span style="font-size:12px; color:#cbd5e1; background:#1e293b; padding:4px 10px; border-radius:6px; border:1px solid #334155;">Tim: <b>Hamid, Labib, Farros, Dzaki, Fariq</b></span>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:10px 14px; font-size:14px; color:#e2e8f0; line-height:1.5;">
+          <b style="color:#fdba74;">• Digit A:</b> Segitiga sama kaki keliling 24 cm, alas 10 cm. Sisi kakinya?
+        </div>
+        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:10px 14px; font-size:14px; color:#e2e8f0; line-height:1.5;">
+          <b style="color:#fdba74;">• Digit B:</b> Faktor Persekutuan Terbesar (FPB) dari 12 dan 20?
+        </div>
+        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:10px 14px; font-size:14px; color:#e2e8f0; line-height:1.5;">
+          <b style="color:#fdba74;">• Digit C:</b> Tentukan angka pada titik-titik: 2, 5, ..., 11
+        </div>
+        <div style="background:rgba(249,115,22,0.08); border:1px solid rgba(249,115,22,0.25); border-radius:8px; padding:10px 14px; font-size:14px; color:#f8fafc; line-height:1.5;">
+          <b style="color:#fb923c;">• Digit D:</b> Rata-rata 4 digit (A, B, C, D) adalah <b>6</b>. Berapa Digit D?
+        </div>
+      </div>
+    </div>
+
+    <!-- KARTU TIM 2 -->
+    <div style="background:#0f172a; border-left:6px solid #22c55e; border-radius:14px; padding:18px 20px; border-top:1px solid #334155; border-right:1px solid #334155; border-bottom:1px solid #334155; box-shadow:0 4px 20px rgba(0,0,0,0.35);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid #1e293b; padding-bottom:8px; gap:8px;">
+        <span style="font-size:16px; font-weight:900; color:#16a34a; white-space:nowrap; letter-spacing:0.5px;">🚀 TIM BRAVO</span>
+        <span style="font-size:12px; color:#cbd5e1; background:#1e293b; padding:4px 10px; border-radius:6px; border:1px solid #334155;">Tim: <b>Hafidz, Fadil, Iwan, Aziz, Ibra</b></span>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:10px 14px; font-size:14px; color:#e2e8f0; line-height:1.5;">
+          <b style="color:#86efac;">• Digit A:</b> Segitiga sama kaki keliling 20 cm, alas 8 cm. Sisi kakinya?
+        </div>
+        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:10px 14px; font-size:14px; color:#e2e8f0; line-height:1.5;">
+          <b style="color:#86efac;">• Digit B:</b> Faktor Persekutuan Terbesar (FPB) dari 18 dan 27?
+        </div>
+        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:10px 14px; font-size:14px; color:#e2e8f0; line-height:1.5;">
+          <b style="color:#86efac;">• Digit C:</b> Tentukan angka pada titik-titik: 1, ..., 5, 7
+        </div>
+        <div style="background:rgba(34,197,94,0.08); border:1px solid rgba(34,197,94,0.25); border-radius:8px; padding:10px 14px; font-size:14px; color:#f8fafc; line-height:1.5;">
+          <b style="color:#4ade80;">• Digit D:</b> Rata-rata 4 digit (A, B, C, D) adalah <b>5</b>. Berapa Digit D?
+        </div>
+      </div>
+    </div>
+
+    <!-- KARTU TIM 3 -->
+    <div style="background:#0f172a; border-left:6px solid #0284c7; border-radius:14px; padding:18px 20px; border-top:1px solid #334155; border-right:1px solid #334155; border-bottom:1px solid #334155; box-shadow:0 4px 20px rgba(0,0,0,0.35);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid #1e293b; padding-bottom:8px; gap:8px;">
+        <span style="font-size:16px; font-weight:900; color:#0284c7; white-space:nowrap; letter-spacing:0.5px;">🚀 TIM DELTA</span>
+        <span style="font-size:12px; color:#cbd5e1; background:#1e293b; padding:4px 10px; border-radius:6px; border:1px solid #334155;">Tim: <b>Khalish, Haidar, Hakim, Azzam</b></span>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:10px 14px; font-size:14px; color:#e2e8f0; line-height:1.5;">
+          <b style="color:#7dd3fc;">• Digit A:</b> Segitiga sama kaki keliling 22 cm, alas 6 cm. Sisi kakinya?
+        </div>
+        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:10px 14px; font-size:14px; color:#e2e8f0; line-height:1.5;">
+          <b style="color:#7dd3fc;">• Digit B:</b> Faktor Persekutuan Terbesar (FPB) dari 15 dan 24?
+        </div>
+        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:10px 14px; font-size:14px; color:#e2e8f0; line-height:1.5;">
+          <b style="color:#7dd3fc;">• Digit C:</b> Tentukan angka pada titik-titik: 1, 4, ..., 10
+        </div>
+        <div style="background:rgba(2,132,199,0.08); border:1px solid rgba(2,132,199,0.25); border-radius:8px; padding:10px 14px; font-size:14px; color:#f8fafc; line-height:1.5;">
+          <b style="color:#38bdf8;">• Digit D:</b> Rata-rata 4 digit (A, B, C, D) adalah <b>6</b>. Berapa Digit D?
+        </div>
+      </div>
+    </div>
+
+    <!-- KARTU TIM 4 -->
+    <div style="background:#0f172a; border-left:6px solid #a855f7; border-radius:14px; padding:18px 20px; border-top:1px solid #334155; border-right:1px solid #334155; border-bottom:1px solid #334155; box-shadow:0 4px 20px rgba(0,0,0,0.35);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid #1e293b; padding-bottom:8px; gap:8px;">
+        <span style="font-size:16px; font-weight:900; color:#9333ea; white-space:nowrap; letter-spacing:0.5px;">🚀 TIM OMEGA</span>
+        <span style="font-size:12px; color:#cbd5e1; background:#1e293b; padding:4px 10px; border-radius:6px; border:1px solid #334155;">Tim: <b>Naufal, Fazril, Atqan, Ayyash, Azka</b></span>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:10px 14px; font-size:14px; color:#e2e8f0; line-height:1.5;">
+          <b style="color:#d8b4fe;">• Digit A:</b> Segitiga sama kaki keliling 18 cm, alas 8 cm. Sisi kakinya?
+        </div>
+        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:10px 14px; font-size:14px; color:#e2e8f0; line-height:1.5;">
+          <b style="color:#d8b4fe;">• Digit B:</b> Faktor Persekutuan Terbesar (FPB) dari 14 dan 21?
+        </div>
+        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:10px 14px; font-size:14px; color:#e2e8f0; line-height:1.5;">
+          <b style="color:#d8b4fe;">• Digit C:</b> Tentukan angka pada titik-titik: 2, ..., 6, 8
+        </div>
+        <div style="background:rgba(168,85,247,0.08); border:1px solid rgba(168,85,247,0.25); border-radius:8px; padding:10px 14px; font-size:14px; color:#f8fafc; line-height:1.5;">
+          <b style="color:#c084fc;">• Digit D:</b> Rata-rata 4 digit (A, B, C, D) adalah <b>5</b>. Berapa Digit D?
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BANNER GAGAL -->
+<div class="banner-fail" id="bannerFail">
+  <div style="font-size: 55px; margin-bottom: 6px;">💥🚨</div>
+  <h2 style="margin: 0; font-size: 26px; letter-spacing: 1px;">OTORISASI DITOLAK: KODE KELIRU!</h2>
+  <p style="margin: 8px 0 16px 0; font-size: 15px; color: #fecaca;">
+    Sistem pengapian terkunci! Tekanan ruang bakar meledak. Periksa kembali hitungan tim kalian!
+  </p>
+  <button class="key-btn" onclick="tutupBannerFail()" style="padding: 8px 24px; font-size: 14px; background:#ef4444; border-color:#fca5a5;">
+    Coba Kembali
+  </button>
+</div>
+
+<!-- ============================================================== -->
+<!-- CINEMATIC SCREEN: PENAKLUKAN PLANET MARS + TROPHY              -->
+<!-- ============================================================== -->
+<div class="cinematic-overlay" id="cinematicStage">
+  <div class="mars-planet">
+    <div class="orbit-ring">
+      <div class="orbiting-ship">🚀</div>
+    </div>
+  </div>
+
+  <div class="ceremony-card">
+    <div class="trophy-3d">🏆</div>
+    <div style="font-size: 14px; color: #f59e0b; font-weight: bold; letter-spacing: 2px;">
+      ★ MISI MATEMATIKA SPEKTAKULER BERHASIL ★
+    </div>
+    <div class="winner-team-name" id="winnerTeamTitle">TIM ALPHA PENAKLUK PLANET MARS!</div>
+    <div class="winner-members" id="winnerMembersList">M. Rifqi Hamid • Labibullah • Ahmad Farros • Naufal Dzaki • Fariq</div>
+    <div style="font-size: 14px; color: #cbd5e1; margin-bottom: 20px;" id="winnerCodeEcho">
+      Kode Otorisasi [ 7 4 8 5 ] Valid 100% | Efisiensi Aljabar & Bilangan Sempurna!
+    </div>
+    <button class="btn-continue" onclick="tutupCinematic()">
+      🌟 KEMBALI KE PUSAT KOMANDO 🌟
+    </button>
+  </div>
+</div>
+
+<script>
+  function bukaModalSoal() {
+    document.getElementById("modalSoal").style.display = "block";
+  }
+  function tutupModalSoal() {
+    document.getElementById("modalSoal").style.display = "none";
+  }
+
+  // KUNCI JAWABAN TIM (100% SEIMBANG)
+  const KUNCI_TIM = {
+    1: { 
+      kode: "7485", 
+      nama: "Tim Alpha", 
+      anggota: "M. Rifqi Hamid (Ketua) • Labibullah • Ahmad Farros • Naufal Dzaki • Fariq",
+      petugas: ["Labib (A)", "Farros (B)", "Fariq (C)", "Dzaki (D)"]
+    },
+    2: { 
+      kode: "6932", 
+      nama: "Tim Bravo", 
+      anggota: "M. Hafidz Reo (Ketua) • Rifqi Arsyad (Fadil) • Muh Asrorin (Iwan) • Aziz Ali • Andi Ibra",
+      petugas: ["Fadil (A)", "Iwan (B)", "Aziz (C)", "Ibra (D)"]
+    },
+    3: { 
+      kode: "8376", 
+      nama: "Tim Delta", 
+      anggota: "Khalish (Ketua) • Haidar Ayyubi • Abdul Hakim • Muhammad Azzam",
+      petugas: ["Haidar (A)", "Hakim (B)", "Azzam (C)", "Khalish (D)"]
+    },
+    4: { 
+      kode: "5744", 
+      nama: "Tim Omega", 
+      anggota: "M. Naufal Alfaniri (Ketua) • M. Fazril Alkais • Atqanul Ummah • M. Yahya Ayyash • Azka Panji (Duta)",
+      petugas: ["Fazril (A)", "Atqan (B)", "Ayyash (C)", "Naufal (D)"]
+    }
+  };
+
+  let timAktif = 1;
+  let inputDigits = [];
+  let isLaunching = false;
+  let warpSpeedActive = false;
+
+  // WEB AUDIO API
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+  function beep(freq, duration, type="sine", vol=0.2) {
+    try {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + duration);
+    } catch(e) {}
+  }
+
+  function playKeyBeep() { beep(800, 0.05, "sine", 0.12); }
+
+  function playKlaxonSiren() {
+    try {
+      for (let i = 0; i < 3; i++) {
+        setTimeout(() => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = "sawtooth";
+          osc.frequency.setValueAtTime(450, audioCtx.currentTime);
+          osc.frequency.linearRampToValueAtTime(900, audioCtx.currentTime + 0.35);
+          osc.frequency.linearRampToValueAtTime(450, audioCtx.currentTime + 0.7);
+          gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+          gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.75);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.75);
+        }, i * 750);
+      }
+    } catch(e) {}
+  }
+
+  // GEMURUH ROKET MENGGELEGAR + SUARA WHOOSH WARP
+  function playCinematicLaunchAudio() {
+    try {
+      const bufferSize = audioCtx.sampleRate * 6;
+      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+
+      const noise = audioCtx.createBufferSource();
+      noise.buffer = buffer;
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = "lowpass";
+      filter.frequency.setValueAtTime(140, audioCtx.currentTime);
+      filter.frequency.linearRampToValueAtTime(1200, audioCtx.currentTime + 3.0);
+      filter.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 5.5);
+
+      const gain = audioCtx.createGain();
+      gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+      gain.gain.linearRampToValueAtTime(1.0, audioCtx.currentTime + 2.0);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 5.8);
+
+      noise.connect(filter);
+      filter.connect(gain);
+      gain.connect(audioCtx.destination);
+      noise.start();
+    } catch(e) {}
+  }
+
+  // FANFARE MEWAH HOLLYWOOD / ORKESTRA MELEDAK
+  function playEpicVictoryFanfare() {
+    const chord1 = [261.63, 329.63, 392.00, 523.25]; // C Mayor
+    const chord2 = [349.23, 440.00, 523.25, 698.46]; // F Mayor
+    const chord3 = [392.00, 493.88, 587.33, 783.99]; // G Mayor
+    const chordWin = [523.25, 659.25, 783.99, 1046.50]; // C High
+
+    function playChord(notes, time, duration, vol=0.25) {
+      setTimeout(() => {
+        notes.forEach(f => {
+          try {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = "triangle";
+            osc.frequency.setValueAtTime(f, audioCtx.currentTime);
+            gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+          } catch(e) {}
+        });
+      }, time);
+    }
+
+    playChord(chord1, 0, 0.4);
+    playChord(chord2, 350, 0.4);
+    playChord(chord3, 700, 0.5);
+    playChord(chordWin, 1200, 1.8, 0.35);
+  }
+
+  // KEYPAD
+  function updateSlots() {
+    for (let i = 0; i < 4; i++) {
+      const el = document.getElementById("d" + i);
+      if (i < inputDigits.length) {
+        el.innerText = inputDigits[i];
+        el.style.borderColor = "#38bdf8";
+        el.style.color = "#38bdf8";
+      } else {
+        el.innerText = "-";
+        el.style.borderColor = "#0284c7";
+        el.style.color = "#64748b";
+      }
+    }
+  }
+
+  function ketikAngka(num) {
+    if (isLaunching) return;
+    if (inputDigits.length < 4) {
+      inputDigits.push(num);
+      playKeyBeep();
+      updateSlots();
+    }
+  }
+
+  function hapusSatu() {
+    if (isLaunching) return;
+    if (inputDigits.length > 0) {
+      inputDigits.pop();
+      playKeyBeep();
+      updateSlots();
+    }
+  }
+
+  function hapusSemua() {
+    if (isLaunching) return;
+    inputDigits = [];
+    playKeyBeep();
+    updateSlots();
+  }
+
+  function pilihTim(no) {
+    if (isLaunching) return;
+    timAktif = no;
+    for (let i = 1; i <= 4; i++) {
+      document.getElementById("tab" + i).className = "tab-btn" + (i === no ? " active" : "");
+    }
+    const data = KUNCI_TIM[no];
+    document.getElementById("missionName").innerText = "🛰️ MISI: " + data.nama.toUpperCase();
+    
+    hapusSemua();
+    resetSceneManual();
+  }
+
+  function resetSceneManual() {
+    isLaunching = false;
+    warpSpeedActive = false;
+    const rkt = document.getElementById("rocketObj");
+    const fire = document.getElementById("thrusterFire");
+    rkt.style.transform = "translateY(0px)";
+    fire.style.height = "0px";
+
+    document.getElementById("statEngine").innerText = "STANDBY 🟢";
+    document.getElementById("statEngine").style.color = "#38bdf8";
+    document.getElementById("statVelocity").innerText = "0.0 km/s";
+    document.getElementById("statPressure").innerText = "101.3 kPa";
+    document.getElementById("statTemp").innerText = "24°C";
+    document.getElementById("launchpadCard").classList.remove("screen-shake-violent");
+    document.body.classList.remove("screen-shake-violent");
+    tutupBannerFail();
+    tutupCinematic();
+  }
+
+  function tutupBannerFail() {
+    document.getElementById("bannerFail").classList.remove("show-banner");
+  }
+
+  function tutupCinematic() {
+    document.getElementById("cinematicStage").classList.remove("cinematic-active");
+    particles = [];
+  }
+
+  // ==============================================================
+  // EKSEKUSI PELUNCURAN CINEMATIC
+  // ==============================================================
+  async function eksekusiPeluncuran() {
+    if (isLaunching) return;
+    if (inputDigits.length < 4) {
+      alert("⚠️ Masukkan lengkap 4 digit kode otorisasi!");
+      return;
+    }
+
+    isLaunching = true;
+    const kodeInput = inputDigits.join("");
+    const dataTim = KUNCI_TIM[timAktif];
+
+    // JIKA GAGAL
+    if (kodeInput !== dataTim.kode) {
+      playKlaxonSiren();
+      const pad = document.getElementById("launchpadCard");
+      pad.classList.add("screen-shake-violent");
+      document.getElementById("statEngine").innerText = "💥 OVERHEAT FAILURE!";
+      document.getElementById("statEngine").style.color = "#ef4444";
+      document.getElementById("statPressure").innerText = "890.4 kPa (CRITICAL)";
+      document.getElementById("statTemp").innerText = "1420°C (DANGER)";
+
+      setTimeout(() => {
+        document.getElementById("bannerFail").classList.add("show-banner");
+        isLaunching = false;
+        pad.classList.remove("screen-shake-violent");
+      }, 700);
+      return;
+    }
+
+    // JIKA BENAR (CINEMATIC HYPERDRIVE & MARS LANDING)
+    document.getElementById("statEngine").innerText = "IGNITION SEQUENCE ARMED 🟡";
+    const overlay = document.getElementById("countdownOverlay");
+
+    // COUNTDOWN
+    for (let c = 3; c >= 1; c--) {
+      overlay.innerText = c;
+      overlay.style.transform = "translate(-50%, -50%) scale(1.3)";
+      beep(700, 0.15, "square", 0.3);
+      await new Promise(r => setTimeout(r, 900));
+      overlay.style.transform = "translate(-50%, -50%) scale(0)";
+      await new Promise(r => setTimeout(r, 100));
+    }
+
+    // LIFTOFF
+    overlay.innerText = "🚀 LIFTOFF!!";
+    overlay.style.transform = "translate(-50%, -50%) scale(1.1)";
+    setTimeout(() => overlay.style.transform = "translate(-50%, -50%) scale(0)", 1000);
+
+    // AUDIO GEMURUH ROKET
+    playCinematicLaunchAudio();
+
+    // GEMPA BUMI SATU LAYAR
+    document.body.classList.add("screen-shake-violent");
+
+    // API ROKET MEMANJANG
+    const rkt = document.getElementById("rocketObj");
+    const fire = document.getElementById("thrusterFire");
+    fire.style.height = "160px";
+
+    // GENERATE ASAP ROKET DI CANVAS
+    spawnLaunchSmoke();
+
+    // ROKET MELLESAT NAIK
+    rkt.style.transform = "translateY(-750px)";
+
+    // TELEMETRI MAKSIMAL
+    document.getElementById("statEngine").innerText = "HYPER-THRUST 100% 🚀";
+    document.getElementById("statVelocity").innerText = "11.2 km/s (ESCAPE VELOCITY)";
+    document.getElementById("statPressure").innerText = "480.0 kPa";
+    document.getElementById("statTemp").innerText = "3200°C";
+
+    // TRANSISI WARP SPEED
+    setTimeout(() => {
+      warpSpeedActive = true; // Bintang jadi garis melesat
+    }, 1800);
+
+    // MASUK KE LAYAR MARS & PERAYAAN JUARA
+    setTimeout(() => {
+      document.body.classList.remove("screen-shake-violent");
+      warpSpeedActive = false;
+
+      // UPDATE DATA KEMENANGAN DI MODAL MARS
+      document.getElementById("winnerTeamTitle").innerText = dataTim.nama.toUpperCase() + " PENAKLUK MARS!";
+      document.getElementById("winnerMembersList").innerText = dataTim.anggota;
+      document.getElementById("winnerCodeEcho").innerText = `Kode Otorisasi [ ${dataTim.kode} ] Terverifikasi 100% Benar!`;
+
+      // BUKA PANGGUNG CINEMATIC MARS
+      document.getElementById("cinematicStage").classList.add("cinematic-active");
+
+      // KEMBANG API & CONFETTI HUJAN DERAS
+      startMassiveCelebration();
+
+      // LAGU KEMENANGAN ORKESTRA
+      playEpicVictoryFanfare();
+
+      isLaunching = false;
+    }, 3600);
+  }
+
+  // ==============================================================
+  // CANVAS BACKGROUND: BINTANG KOSMIK & HYPERSPACE WARP EFFECT
+  // ==============================================================
+  const cvsSpace = document.getElementById("canvasSpace");
+  const ctxSpace = cvsSpace.getContext("2d");
+  const cvsFx = document.getElementById("canvasFx");
+  const ctxFx = cvsFx.getContext("2d");
+
+  let w, h;
+  function resize() {
+    w = cvsSpace.width = cvsFx.width = window.innerWidth;
+    h = cvsSpace.height = cvsFx.height = window.innerHeight;
+  }
+  window.addEventListener("resize", resize);
+  resize();
+
+  const stars = [];
+  for (let i = 0; i < 200; i++) {
+    stars.push({
+      x: (Math.random() - 0.5) * w * 2,
+      y: (Math.random() - 0.5) * h * 2,
+      z: Math.random() * w,
+      size: Math.random() * 2 + 1,
+      alpha: Math.random()
+    });
+  }
+
+  function drawSpace() {
+    ctxSpace.fillStyle = "#020617";
+    ctxSpace.fillRect(0, 0, w, h);
+
+    const cx = w / 2;
+    const cy = h / 2;
+
+    stars.forEach(s => {
+      if (warpSpeedActive) {
+        // EFEK WARP STAR WARS (Garis Bintang)
+        s.z -= 28;
+        if (s.z <= 0) s.z = w;
+
+        const k = 250 / s.z;
+        const px = s.x * k + cx;
+        const py = s.y * k + cy;
+
+        const prevK = 250 / (s.z + 40);
+        const prevPx = s.x * prevK + cx;
+        const prevPy = s.y * prevK + cy;
+
+        ctxSpace.beginPath();
+        ctxSpace.strokeStyle = "#a5f3fc";
+        ctxSpace.lineWidth = 2.5;
+        ctxSpace.moveTo(prevPx, prevPy);
+        ctxSpace.lineTo(px, py);
+        ctxSpace.stroke();
+      } else {
+        // Bintang Normal
+        const k = 300 / s.z;
+        const px = s.x * k + cx;
+        const py = s.y * k + cy;
+
+        if (px >= 0 && px < w && py >= 0 && py < h) {
+          ctxSpace.fillStyle = `rgba(255, 255, 255, ${s.alpha})`;
+          ctxSpace.fillRect(px, py, s.size, s.size);
+          s.alpha += (Math.random() - 0.5) * 0.05;
+          if (s.alpha < 0.2) s.alpha = 0.2;
+          if (s.alpha > 0.9) s.alpha = 0.9;
+        }
+      }
+    });
+
+    requestAnimationFrame(drawSpace);
+  }
+  drawSpace();
+
+  // ==============================================================
+  // CANVAS PARTICLES: ASAP ROKET + KEMBANG API & RIBUAN CONFETTI
+  // ==============================================================
+  let particles = [];
+
+  function spawnLaunchSmoke() {
+    for (let i = 0; i < 90; i++) {
+      particles.push({
+        type: "smoke",
+        x: w * 0.32 + (Math.random() - 0.5) * 120,
+        y: h * 0.65 + (Math.random() - 0.5) * 40,
+        vx: (Math.random() - 0.5) * 12,
+        vy: (Math.random() - 0.2) * 5,
+        size: Math.random() * 25 + 15,
+        alpha: 0.8,
+        color: Math.random() > 0.5 ? "220, 38, 38" : "249, 115, 22"
+      });
+    }
+  }
+
+  function startMassiveCelebration() {
+    particles = [];
+    // 300 Keping Confetti Hujan Emas & Warna-Warni
+    const colors = ["#facc15", "#38bdf8", "#ec4899", "#10b981", "#a855f7", "#ffffff", "#f97316"];
+    for (let i = 0; i < 350; i++) {
+      particles.push({
+        type: "confetti",
+        x: Math.random() * w,
+        y: -20 - Math.random() * 150,
+        vx: (Math.random() - 0.5) * 5,
+        vy: Math.random() * 5 + 3,
+        rot: Math.random() * 360,
+        vRot: (Math.random() - 0.5) * 10,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        size: Math.random() * 10 + 6,
+        life: 1
+      });
+    }
+
+    // Kembang Api Berkala
+    for (let k = 0; k < 6; k++) {
+      setTimeout(() => {
+        spawnFirework(Math.random() * w * 0.8 + w * 0.1, Math.random() * h * 0.5 + h * 0.1);
+      }, k * 450);
+    }
+  }
+
+  function spawnFirework(fx, fy) {
+    const fwColor = ["#facc15", "#38bdf8", "#f43f5e", "#34d399"][Math.floor(Math.random() * 4)];
+    for (let i = 0; i < 60; i++) {
+      const angle = (Math.PI * 2 / 60) * i;
+      const speed = Math.random() * 9 + 4;
+      particles.push({
+        type: "spark",
+        x: fx,
+        y: fy,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        size: Math.random() * 3 + 2,
+        color: fwColor,
+        life: 1
+      });
+    }
+  }
+
+  function drawFx() {
+    ctxFx.clearRect(0, 0, w, h);
+
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+
+      if (p.type === "smoke") {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.size += 0.8;
+        p.alpha -= 0.015;
+        if (p.alpha <= 0) { particles.splice(i, 1); continue; }
+
+        ctxFx.fillStyle = `rgba(${p.color}, ${p.alpha})`;
+        ctxFx.beginPath();
+        ctxFx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctxFx.fill();
+      }
+      else if (p.type === "confetti") {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rot += p.vRot;
+        if (p.y > h + 20) p.y = -20; // Hujan terus-menerus selama selebrasi
+
+        ctxFx.save();
+        ctxFx.translate(p.x, p.y);
+        ctxFx.rotate((p.rot * Math.PI) / 180);
+        ctxFx.fillStyle = p.color;
+        ctxFx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+        ctxFx.restore();
+      }
+      else if (p.type === "spark") {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.15; // gravitasi
+        p.life -= 0.018;
+        if (p.life <= 0) { particles.splice(i, 1); continue; }
+
+        ctxFx.fillStyle = p.color;
+        ctxFx.globalAlpha = p.life;
+        ctxFx.beginPath();
+        ctxFx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctxFx.fill();
+        ctxFx.globalAlpha = 1;
+      }
+    }
+
+    requestAnimationFrame(drawFx);
+  }
+  drawFx();
+
+  // INIT
+  updateSlots();
+</script>
+
+</body>
+</html>

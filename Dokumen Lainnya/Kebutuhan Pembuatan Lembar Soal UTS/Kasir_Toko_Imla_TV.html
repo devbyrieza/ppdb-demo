@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistem Kasir Digital Toko Imla - Pesantren Al-Andalus</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+  body {
+    background: radial-gradient(circle at top, #0f172a 0%, #020617 100%);
+    color: #f8fafc;
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* HEADER */
+  .header-card {
+    width: 100%;
+    max-width: 1200px;
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border: 2px solid #334155;
+    border-radius: 16px;
+    padding: 18px 26px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    margin-bottom: 22px;
+  }
+  .header-title h1 {
+    font-size: 26px;
+    color: #38bdf8;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .header-title p {
+    font-size: 14px;
+    color: #94a3b8;
+    margin-top: 4px;
+  }
+  .badge-store {
+    background: #059669;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 13px;
+    letter-spacing: 1px;
+    box-shadow: 0 0 15px rgba(5,150,105,0.4);
+  }
+
+  /* MAIN WORKSPACE */
+  .main-grid {
+    width: 100%;
+    max-width: 1200px;
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 24px;
+  }
+
+  /* LEFT: CODE CONSOLE */
+  .panel-card {
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #1e293b;
+    padding-bottom: 12px;
+  }
+  .panel-header h2 {
+    font-size: 18px;
+    color: #f59e0b;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* DAFTAR BARANG TOKO IMLA */
+  .catalog-title {
+    font-size: 13px;
+    color: #94a3b8;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .items-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  .item-btn {
+    background: #1e293b;
+    border: 1px solid #475569;
+    border-radius: 10px;
+    padding: 10px 8px;
+    color: white;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+  }
+  .item-btn:hover, .item-btn.active {
+    background: #0284c7;
+    border-color: #38bdf8;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(2,132,199,0.4);
+  }
+  .item-btn .item-icon { font-size: 24px; margin-bottom: 4px; }
+  .item-btn .item-name { font-size: 12px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .item-btn .item-price { font-size: 11px; color: #facc15; }
+
+  /* CODE BOX */
+  .code-container {
+    background: #020617;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 16px;
+    font-family: 'Consolas', monospace;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #cbd5e1;
+    position: relative;
+  }
+  .code-kw { color: #f43f5e; font-weight: bold; }
+  .code-fn { color: #38bdf8; }
+  .code-str { color: #a3e635; }
+  .code-num { color: #fb923c; font-weight: bold; }
+  .code-var { color: #facc15; }
+
+  .code-input-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 4px 0;
+  }
+  .code-input-row input {
+    background: #1e293b;
+    border: 1px solid #38bdf8;
+    color: #facc15;
+    font-family: 'Consolas', monospace;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 3px 8px;
+    border-radius: 6px;
+    outline: none;
+    width: 140px;
+  }
+  .code-msg-input {
+    background: #1e293b;
+    border: 1px dashed #64748b;
+    color: #a3e635;
+    font-family: 'Consolas', monospace;
+    font-size: 13px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    outline: none;
+    width: 100%;
+    margin-top: 2px;
+  }
+  .code-msg-input:focus { border-color: #a3e635; background: #0f172a; }
+
+  /* ACTION BUTTON */
+  .btn-run {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    border: none;
+    padding: 14px 20px;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(16,185,129,0.4);
+    transition: all 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  .btn-run:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(16,185,129,0.6);
+  }
+  .btn-run:active { transform: translateY(1px); }
+
+  /* RIGHT: STRUK THERMAL & MESIN KASIR */
+  .register-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .cashier-machine {
+    width: 100%;
+    background: #1e293b;
+    border: 2px solid #475569;
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    position: relative;
+  }
+  .printer-slot {
+    width: 280px;
+    height: 10px;
+    background: #020617;
+    border-radius: 5px;
+    border: 1px solid #334155;
+    margin-bottom: -5px;
+    z-index: 5;
+  }
+
+  /* KERTAS STRUK THERMAL */
+  .receipt-paper {
+    width: 320px;
+    background: #ffffff;
+    color: #1e293b;
+    padding: 24px 20px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 13px;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.7);
+    border-radius: 4px;
+    position: relative;
+    transform-origin: top center;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    margin-top: 5px;
+  }
+  .receipt-header {
+    text-align: center;
+    border-bottom: 2px dashed #94a3b8;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+  }
+  .receipt-header h3 { font-size: 16px; font-weight: 900; color: #0f172a; letter-spacing: 1px; }
+  .receipt-header p { font-size: 11px; color: #64748b; margin-top: 2px; }
+  
+  .receipt-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 4px 0;
+  }
+  .receipt-total {
+    border-top: 2px dashed #94a3b8;
+    border-bottom: 2px dashed #94a3b8;
+    padding: 8px 0;
+    margin: 10px 0;
+    font-weight: 900;
+    font-size: 15px;
+  }
+
+  /* STAMPEL STATUS */
+  .receipt-stamp {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 900;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 14px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transform: rotate(-3deg);
+    transition: all 0.3s;
+  }
+  .stamp-success {
+    border: 3px solid #16a34a;
+    color: #16a34a;
+    background: rgba(34,197,94,0.1);
+  }
+  .stamp-fail {
+    border: 3px solid #dc2626;
+    color: #dc2626;
+    background: rgba(239,68,68,0.1);
+  }
+
+  .receipt-custom-msg {
+    margin-top: 12px;
+    font-style: italic;
+    font-size: 12px;
+    text-align: center;
+    color: #334155;
+    background: #f1f5f9;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px dotted #cbd5e1;
+  }
+
+  .zigzag-bottom {
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 100%;
+    height: 10px;
+    background: radial-gradient(circle, transparent, transparent 50%, #ffffff 50%, #ffffff 100%);
+    background-size: 12px 12px;
+  }
+
+  /* ANIMASI PRINT STRUK */
+  .print-animation {
+    animation: slideDownReceipt 0.8s ease-out forwards;
+  }
+  @keyframes slideDownReceipt {
+    0% { transform: translateY(-50px) scaleY(0.1); opacity: 0; }
+    100% { transform: translateY(0) scaleY(1); opacity: 1; }
+  }
+
+  /* FOOTER */
+  .footer-tip {
+    margin-top: 25px;
+    color: #94a3b8;
+    font-size: 14px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header-card">
+    <div class="header-title">
+      <h1>🏪 SISTEM KASIR CERDAS TOKO IMLA</h1>
+      <p>Pesantren Islam Al-Andalus | Simulasi Logika Pemrograman Matematika (If - Else) Kelas 7 MTs</p>
+    </div>
+    <div class="badge-store">ONLINE & SIAP TRANSAKSI 🟢</div>
+  </div>
+
+  <!-- MAIN WORKSPACE -->
+  <div class="main-grid">
+
+    <!-- LEFT: EDITOR KODING SANTRI -->
+    <div class="panel-card">
+      <div class="panel-header">
+        <div>
+          <h2>💻 KODE PROGRAM KASIR SANTRI</h2>
+          <span style="font-size:12px; color:#cbd5e1;">Bahasa: <b>Python 3</b></span>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <button onclick="kosongkanKode()" style="background:#ef4444; border:1px solid #fca5a5; color:white; padding:7px 12px; border-radius:8px; font-size:12px; font-weight:bold; cursor:pointer;">🧹 Kosongkan (Santri Baru)</button>
+          <button onclick="muatContohUstaz()" style="background:#3b82f6; border:1px solid #93c5fd; color:white; padding:7px 12px; border-radius:8px; font-size:12px; font-weight:bold; cursor:pointer;">💡 Contoh Ustaz</button>
+        </div>
+      </div>
+
+      <!-- REAL CODE EDITOR TEXTAREA -->
+      <div class="catalog-title" style="display:flex; justify-content:space-between; align-items:center;">
+        <span>Tulis Kode Program Python Antum (Mulai Baris 1 Sampai Selesai):</span>
+        <span id="badgeSyntax" style="font-size:11px; background:#64748b; color:white; padding:2px 8px; border-radius:10px; font-weight:bold;">KODE KOSONG ⏳</span>
+      </div>
+
+      <div style="position:relative; background:#020617; border:1px solid #334155; border-radius:12px; overflow:hidden; margin-top:8px; box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);">
+        <div style="background:#0f172a; padding:8px 16px; border-bottom:1px solid #1e293b; display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:13px; color:#38bdf8; font-family:'Consolas',monospace; font-weight:bold;">📄 main_kasir.py</span>
+          <span style="font-size:11px; color:#94a3b8;">Python 3 Editor</span>
+        </div>
+        <textarea id="realCodeEditor" oninput="updateDynamicButton()" onkeyup="updateDynamicButton()" onpaste="updateDynamicButton()" spellcheck="false" placeholder="# Ketik kode program Python antum di sini mulai baris 1..." style="width:100%; height:320px; background:#020617; color:#f8fafc; font-family:'Consolas', monospace; font-size:16px; line-height:1.7; padding:16px; border:none; outline:none; resize:none;"></textarea>
+      </div>
+
+      <!-- NOTIFIKASI VALIDASI KODE -->
+      <div id="boxNotifBug" style="display:none; background:rgba(239,68,68,0.15); border:1px solid #ef4444; color:#fecaca; padding:10px 14px; border-radius:8px; font-size:13px; margin-top:8px;">
+        ⚠️ <span id="textNotifBug">Bug Ditemukan! Periksa kembali ketikan antum!</span>
+      </div>
+
+      <!-- RUN BUTTON (JUDUL DINAMIS MENGIKUTI KODINGAN SANTRI) -->
+      <button class="btn-run" id="btnRunCode" onclick="eksekusiKasir()" style="margin-top:10px;">
+        ▶️ JALANKAN PROGRAM KASIR TOKO IMLA!
+      </button>
+    </div>
+
+    <!-- RIGHT: STRUK DIGITAL KASIR -->
+    <div class="register-view">
+      <!-- STANDBY BOX SEBELUM KODE DIJALANKAN -->
+      <div id="printerStandbyBox" style="width:100%; min-height:360px; border:2px dashed #475569; border-radius:16px; display:flex; flex-direction:column; justify-content:center; align-items:center; color:#94a3b8; text-align:center; padding:30px; background:rgba(0,0,0,0.25);">
+        <div style="font-size:55px; margin-bottom:12px;">🖨️</div>
+        <div style="font-size:18px; font-weight:bold; color:#cbd5e1;">MESIN KASIR STANDBY</div>
+        <p style="font-size:13px; color:#64748b; margin-top:8px; line-height:1.6; max-width:280px;">
+          Mesin kasir & struk belum aktif.<br>Santri silakan selesaikan kodingan di sebelah kiri, lalu klik tombol hijau untuk <b>mengaktifkan mesin kasir</b>!
+        </p>
+      </div>
+
+      <!-- MESIN KASIR + STRUK (HANYA TAMPIL SETELAH RUN KODE BERHASIL) -->
+      <div class="cashier-machine" id="cashierMachineCard" style="display:none;">
+        <div style="font-size: 13px; color: #94a3b8; margin-bottom: 10px; font-weight: bold; letter-spacing: 1px;">
+          🖨️ PRINTER STRUK THERMAL
+        </div>
+        <div class="printer-slot"></div>
+
+        <!-- STRUK KERTAS -->
+        <div class="receipt-paper" id="receiptPaper">
+          <div class="receipt-header">
+            <h3 id="receiptStoreHeader">TOKO IMLA</h3>
+          </div>
+
+          <div style="font-size:11px; color:#475569; margin-bottom:8px; border-bottom: 1px dashed #cbd5e1; padding-bottom: 8px;">
+            <div class="receipt-row">
+              <span>Santri:</span>
+              <span id="receiptSantri" style="font-weight:bold; color:#0f172a;">Ahmad Farros</span>
+            </div>
+            <div class="receipt-row" style="margin-top: 4px;">
+              <span>Waktu:</span>
+              <span id="receiptDateTime" style="font-weight:600; color:#334155;">06 Nov 2026, 01.12 WIB</span>
+            </div>
+          </div>
+
+          <div style="padding-top: 2px;">
+            <div class="receipt-row" style="font-weight:bold;">
+              <span id="receiptNamaBarang">1x Susu Kurma Imla</span>
+              <span id="receiptHargaBarang">Rp 8.000</span>
+            </div>
+          </div>
+
+          <div class="receipt-total">
+            <div class="receipt-row">
+              <span>TOTAL BELANJA</span>
+              <span id="receiptTotalVal">Rp 8.000</span>
+            </div>
+          </div>
+
+          <div class="receipt-row">
+            <span>UANG TUNAI:</span>
+            <span id="receiptBayarVal" style="font-weight:bold;">Rp 10.000</span>
+          </div>
+          <div class="receipt-row" id="rowKembalian">
+            <span>KEMBALIAN:</span>
+            <span id="receiptKembalianVal" style="font-weight:bold; color:#16a34a;">Rp 2.000</span>
+          </div>
+
+          <!-- STAMPEL STATUS -->
+          <div class="receipt-stamp stamp-success" id="receiptStamp">
+            ✅ LUNAS & BERHASIL
+          </div>
+
+          <!-- PESAN KHUSUS DARI PRINT KODING SANTRI -->
+          <div class="receipt-custom-msg" id="receiptMsg">
+            "Alhamdulillah Lunas! Syukron sudah jajan di Toko Imla!"
+          </div>
+
+          <div class="zigzag-bottom"></div>
+        </div>
+
+        <!-- KOTAK INPUT PEMBAYARAN KASIR LANGSUNG -->
+        <div style="margin-top: 18px; width: 100%; background: #0f172a; border: 1px solid #334155; border-radius: 12px; padding: 14px; text-align: center;">
+          <div style="font-size: 13px; color: #38bdf8; font-weight: bold; margin-bottom: 8px; letter-spacing: 0.5px;">
+            💵 MASUKKAN UANG PEMBAYARAN DI KASIR:
+          </div>
+          <div style="display: flex; gap: 8px; justify-content: center; align-items: center;">
+            <span style="font-size: 16px; font-weight: bold; color: #facc15;">Rp</span>
+            <input type="number" id="inputUangLive" value="10000" placeholder="Ketik Uang..." step="1000" onkeydown="if(event.key==='Enter') prosesUangLive()" style="background: #1e293b; border: 2px solid #38bdf8; color: #facc15; font-family: 'Consolas', monospace; font-size: 18px; font-weight: 900; padding: 6px 12px; border-radius: 8px; width: 140px; text-align: center; outline: none;">
+            <button onclick="prosesUangLive()" style="background: #10b981; border: none; color: white; padding: 8px 16px; border-radius: 8px; font-weight: 900; font-size: 14px; cursor: pointer; box-shadow: 0 4px 12px rgba(16,185,129,0.4);">
+              ⚡ BAYAR KASIR!
+            </button>
+          </div>
+
+          <!-- Pilihan Cepat Nominal Uang -->
+          <div style="display: flex; gap: 6px; justify-content: center; margin-top: 10px; flex-wrap: wrap;">
+            <span style="font-size:11px; color:#94a3b8; align-self:center;">Pecahan Cepat:</span>
+            <button onclick="setUangLive(5000)" style="background:#1e293b; border:1px solid #475569; color:#cbd5e1; padding:4px 8px; border-radius:6px; font-size:11px; cursor:pointer;">Rp 5.000</button>
+            <button onclick="setUangLive(10000)" style="background:#1e293b; border:1px solid #475569; color:#cbd5e1; padding:4px 8px; border-radius:6px; font-size:11px; cursor:pointer;">Rp 10.000</button>
+            <button onclick="setUangLive(20000)" style="background:#1e293b; border:1px solid #475569; color:#cbd5e1; padding:4px 8px; border-radius:6px; font-size:11px; cursor:pointer;">Rp 20.000</button>
+            <button onclick="setUangLive(50000)" style="background:#1e293b; border:1px solid #475569; color:#cbd5e1; padding:4px 8px; border-radius:6px; font-size:11px; cursor:pointer;">Rp 50.000</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-tip">
+    💡 <b>Petunjuk Guru:</b> Panggil santri ke meja guru, masukkan nama & uang belanjanya, lalu klik <b>JALANKAN PROGRAM KASIR</b> untuk melihat hasil logika koding mereka!
+  </div>
+
+  <!-- AUDIO SYNTHESIZER (WEB AUDIO API) -->
+  <script>
+    let currentBarang = "Susu Kurma Imla";
+    let currentHarga = 8000;
+
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function beep(freq, duration, type="sine", vol=0.2) {
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch(e) {}
+    }
+
+    function playSuccessSound() {
+      // BEEP SCANNER
+      beep(1200, 0.08, "sine", 0.3);
+      setTimeout(() => {
+        // KA-CHING KASIR
+        beep(987.77, 0.15, "triangle", 0.4); // B5
+        setTimeout(() => beep(1318.51, 0.35, "triangle", 0.5), 120); // E6
+      }, 250);
+    }
+
+    function playFailSound() {
+      // BUZZER SALAH KASIR
+      beep(300, 0.15, "sawtooth", 0.4);
+      setTimeout(() => beep(200, 0.3, "sawtooth", 0.4), 160);
+    }
+
+    function pilihBarang(nama, harga, icon, el) {
+      currentBarang = nama;
+      currentHarga = harga;
+
+      document.querySelectorAll('.item-btn').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+
+      beep(800, 0.05, "sine", 0.15);
+
+      // Jika di editor ada teks, update nilai barang & harga otomatis
+      const editor = document.getElementById('realCodeEditor');
+      if (editor.value.includes('barang =') || editor.value.includes('harga =')) {
+        editor.value = editor.value
+          .replace(/barang\s*=\s*["'][^"']+["']/i, `barang = "${nama}"`)
+          .replace(/harga\s*=\s*\d+/i, `harga = ${harga}`);
+      }
+    }
+
+    let currentStoreTitle = "TOKO IMLA";
+
+    function updateDynamicButton() {
+      const editor = document.getElementById('realCodeEditor');
+      if (!editor) return;
+      const code = editor.value;
+      const lines = code.split('\n');
+      let customTitle = "";
+
+      for (let line of lines) {
+        let trimmed = line.trim();
+        if (trimmed.startsWith('#')) {
+          let titleText = trimmed.replace(/^#\s*/, '').trim();
+          if (titleText.length > 0) {
+            customTitle = titleText;
+            break;
+          }
+        }
+      }
+
+      const btnRun = document.getElementById('btnRunCode');
+      if (!btnRun) return;
+
+      if (customTitle) {
+        // Normalisasi: bersihkan 'program' atau 'kasir' di awal agar tidak dobel
+        let cleanStoreName = customTitle
+          .replace(/^program\s*/i, '')
+          .replace(/^kasir\s*/i, '')
+          .trim();
+
+        if (!cleanStoreName) cleanStoreName = "TOKO IMLA";
+
+        currentStoreTitle = cleanStoreName;
+        btnRun.innerText = `▶️ JALANKAN PROGRAM KASIR ${cleanStoreName.toUpperCase()}!`;
+      } else {
+        currentStoreTitle = "TOKO IMLA";
+        btnRun.innerText = "▶️ JALANKAN PROGRAM KASIR TOKO IMLA!";
+      }
+    }
+
+    function kosongkanKode() {
+      document.getElementById('realCodeEditor').value = "";
+      document.getElementById('badgeSyntax').innerText = "KODE KOSONG ⏳";
+      document.getElementById('badgeSyntax').style.background = "#64748b";
+      document.getElementById('boxNotifBug').style.display = "none";
+
+      // Sembunyikan mesin kasir dan struk, tampilkan Standby Box
+      document.getElementById('cashierMachineCard').style.display = "none";
+      document.getElementById('printerStandbyBox').style.display = "flex";
+
+      document.getElementById('btnRunCode').innerText = "▶️ JALANKAN PROGRAM KASIR TOKO IMLA!";
+      currentStoreTitle = "TOKO IMLA";
+
+      beep(500, 0.08, "sine", 0.2);
+    }
+
+    function muatContohUstaz() {
+      document.getElementById('realCodeEditor').value = 
+`# Program Kasir Toko Imla
+nama = "Ahmad Farros"
+barang = "Susu Kurma Imla"
+harga = 8000
+uang = int(input("Masukkan uang bayar: "))
+
+if uang >= harga:
+    print("Alhamdulillah Lunas! Syukron sudah jajan di Toko Imla!")
+else:
+    print("Afwan ya akhi, uang antum kurang! Barang disimpan di rak lagi.")`;
+
+      updateDynamicButton();
+      document.getElementById('badgeSyntax').innerText = "CONTOH USTAZ DIMUAT ✅";
+      document.getElementById('badgeSyntax').style.background = "#3b82f6";
+      document.getElementById('boxNotifBug').style.display = "none";
+
+      beep(880, 0.08, "sine", 0.2);
+    }
+
+    function showBug(msg) {
+      const notifBug = document.getElementById('boxNotifBug');
+      const textBug = document.getElementById('textNotifBug');
+      const badgeSyntax = document.getElementById('badgeSyntax');
+
+      notifBug.style.display = "block";
+      textBug.innerText = msg;
+      badgeSyntax.innerText = "ADA BUG ❌";
+      badgeSyntax.style.background = "#dc2626";
+      playFailSound();
+    }
+
+    function setUangLive(val) {
+      document.getElementById('inputUangLive').value = val;
+      prosesUangLive();
+    }
+
+    function prosesUangLive() {
+      const val = parseInt(document.getElementById('inputUangLive').value) || 0;
+      eksekusiKasir(val);
+    }
+
+    function eksekusiKasir(overrideUang) {
+      const code = document.getElementById('realCodeEditor').value.trim();
+      if (!code) {
+        showBug("Editor masih kosong! Ketik kode antum mulai dari baris 1.");
+        return;
+      }
+
+      // PARSING BARIS DEMI BARIS
+      const lines = code.split('\n');
+
+      let namaSantri = "";
+      let namaBarang = "";
+      let hargaBarang = 0;
+      let uangBayar = 0;
+      let hasUangLine = false;
+      let hasIf = false;
+      let ifConditionValid = false;
+      let hasElse = false;
+      let printSuccess = "";
+      let printFail = "";
+
+      let inIfBlock = false;
+      let inElseBlock = false;
+
+      for (let i = 0; i < lines.length; i++) {
+        let rawLine = lines[i].trim();
+
+        if (rawLine.startsWith('#') || rawLine === "") continue;
+
+        // Hilangkan komentar inline di ujung baris jika ada
+        const hashIdx = rawLine.indexOf('#');
+        let line = (hashIdx !== -1 ? rawLine.substring(0, hashIdx) : rawLine).trim();
+        if (!line) continue;
+
+        if (line.startsWith("nama")) {
+          const m = line.match(/^nama\s*=\s*["']([^"']+)["']$/i);
+          if (m) {
+            namaSantri = m[1];
+          } else {
+            showBug(`Baris ${i+1}: Ada kesalahan! Silakan teliti dan periksa kembali baris ini.`);
+            return;
+          }
+        }
+        else if (line.startsWith("barang")) {
+          const m = line.match(/^barang\s*=\s*["']([^"']+)["']$/i);
+          if (m) {
+            namaBarang = m[1];
+          } else {
+            showBug(`Baris ${i+1}: Ada kesalahan! Silakan teliti dan periksa kembali baris ini.`);
+            return;
+          }
+        }
+        else if (line.startsWith("harga")) {
+          const m = line.match(/^harga\s*=\s*(\d+)$/i);
+          if (m) {
+            hargaBarang = parseInt(m[1]);
+          } else {
+            showBug(`Baris ${i+1}: Ada kesalahan! Silakan teliti dan periksa kembali baris ini.`);
+            return;
+          }
+        }
+        else if (line.startsWith("uang")) {
+          hasUangLine = true;
+          if (line.includes("input")) {
+            if (/uang\s*=\s*int\s*\(\s*input\s*\(.*\)\s*\)/i.test(line)) {
+              uangBayar = parseInt(document.getElementById('inputUangLive').value) || 10000;
+            } else {
+              showBug(`Baris ${i+1}: Ada kesalahan! Silakan teliti dan periksa kembali baris ini.`);
+              return;
+            }
+          } else {
+            const m = line.match(/^uang\s*=\s*(\d+)$/i);
+            if (m) {
+              uangBayar = parseInt(m[1]);
+            } else {
+              showBug(`Baris ${i+1}: Ada kesalahan! Silakan teliti dan periksa kembali baris ini.`);
+              return;
+            }
+          }
+        }
+        else if (line.startsWith("if")) {
+          if (!line.endsWith(":")) {
+            showBug(`Baris ${i+1}: Ada kesalahan! Silakan teliti dan periksa kembali baris ini.`);
+            return;
+          }
+          const cond = line.substring(2, line.length - 1).toLowerCase().replace(/\s+/g, '');
+          if (cond === "uang>=harga" || cond === "uang>harga" || cond.startsWith("uang>=") || cond.startsWith("uang>")) {
+            hasIf = true;
+            ifConditionValid = true;
+            inIfBlock = true;
+            inElseBlock = false;
+          } else {
+            showBug(`Baris ${i+1}: Ada kesalahan! Silakan teliti dan periksa kembali baris ini.`);
+            return;
+          }
+        }
+        else if (line.startsWith("else")) {
+          if (line !== "else:") {
+            showBug(`Baris ${i+1}: Ada kesalahan! Silakan teliti dan periksa kembali baris ini.`);
+            return;
+          }
+          hasElse = true;
+          inIfBlock = false;
+          inElseBlock = true;
+        }
+        else if (line.startsWith("print")) {
+          const m = line.match(/^print\s*\(\s*["']([^"']+)["']\s*\)$/i);
+          if (m) {
+            if (inIfBlock) printSuccess = m[1];
+            else if (inElseBlock) printFail = m[1];
+            else {
+              showBug(`Baris ${i+1}: Ada kesalahan! Silakan teliti dan periksa kembali baris ini.`);
+              return;
+            }
+          } else {
+            showBug(`Baris ${i+1}: Ada kesalahan! Silakan teliti dan periksa kembali baris ini.`);
+            return;
+          }
+        }
+        else {
+          showBug(`Baris ${i+1}: Ada kesalahan! Silakan teliti dan periksa kembali baris ini.`);
+          return;
+        }
+      }
+
+      // VALIDASI LENGKAP JIKA ADA BAGIAN YANG BELUM DIBUAT
+      if (!namaSantri) {
+        showBug("Variabel 'nama' belum ditemukan! Periksa kodingan antum.");
+        return;
+      }
+      if (!hargaBarang) {
+        showBug("Variabel 'harga' belum ditemukan! Periksa kodingan antum.");
+        return;
+      }
+      if (!hasUangLine) {
+        showBug("Variabel 'uang' belum ditemukan! Periksa kodingan antum.");
+        return;
+      }
+
+      // PENENTUAN JUMLAH UANG: DIAMBIL DARI KASIR ATAU DARI KODE
+      if (overrideUang !== undefined && overrideUang > 0) {
+        uangBayar = overrideUang;
+      } else if (!uangBayar) {
+        uangBayar = parseInt(document.getElementById('inputUangLive').value) || 10000;
+      }
+      document.getElementById('inputUangLive').value = uangBayar;
+
+      if (!hasIf || !ifConditionValid) {
+        showBug("Percabangan 'if' belum lengkap!");
+        return;
+      }
+      if (!printSuccess) {
+        showBug("Perintah print di dalam blok if belum lengkap!");
+        return;
+      }
+      if (!hasElse) {
+        showBug("Percabangan 'else' belum lengkap!");
+        return;
+      }
+      if (!printFail) {
+        showBug("Perintah print di dalam blok else belum lengkap!");
+        return;
+      }
+      // KODE 100% LOLOS VALIDASI!
+      document.getElementById('boxNotifBug').style.display = "none";
+      const badgeSyntax = document.getElementById('badgeSyntax');
+      badgeSyntax.innerText = "SINTAKS VALID 100% ✅";
+      badgeSyntax.style.background = "#16a34a";
+
+      // TAMPILKAN SELURUH MESIN KASIR & STRUK, SEMBUNYIKAN STANDBY BOX!
+      document.getElementById('printerStandbyBox').style.display = "none";
+      const machineCard = document.getElementById('cashierMachineCard');
+      machineCard.style.display = "flex";
+
+      const paper = document.getElementById('receiptPaper');
+      paper.style.display = "block";
+
+      // UPDATE JUDUL HEADER STRUK SESUAI DENGAN KODING SANTRI
+      const storeHeader = document.getElementById('receiptStoreHeader');
+      if (currentStoreTitle) {
+        storeHeader.innerText = currentStoreTitle.toUpperCase();
+      } else {
+        storeHeader.innerText = "TOKO IMLA";
+      }
+
+      const finalBarang = namaBarang || currentBarang;
+      const finalHarga = hargaBarang;
+
+      // UPDATE DATA STRUK
+      document.getElementById('receiptSantri').innerText = namaSantri;
+      document.getElementById('receiptNamaBarang').innerText = "1x " + finalBarang;
+      document.getElementById('receiptHargaBarang').innerText = "Rp " + finalHarga.toLocaleString('id-ID');
+      document.getElementById('receiptTotalVal').innerText = "Rp " + finalHarga.toLocaleString('id-ID');
+      document.getElementById('receiptBayarVal').innerText = "Rp " + uangBayar.toLocaleString('id-ID');
+
+      // TANGGAL & JAM SEKARANG (SAAT TOMBOL SUBMIT DIKLIK)
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('id-ID', { day:'2-digit', month:'short', year:'numeric' });
+      const timeStr = String(now.getHours()).padStart(2, '0') + '.' + String(now.getMinutes()).padStart(2, '0') + ' WIB';
+      const dtEl = document.getElementById('receiptDateTime');
+      if (dtEl) {
+        dtEl.innerText = `${dateStr}, ${timeStr}`;
+      }
+
+      const stampEl = document.getElementById('receiptStamp');
+      const msgEl = document.getElementById('receiptMsg');
+      const rowKembalian = document.getElementById('rowKembalian');
+      const valKembalian = document.getElementById('receiptKembalianVal');
+
+      // LOGIKA IF - ELSE PERSIS SEPERTI KODING
+      if (uangBayar >= finalHarga) {
+        const kembalian = uangBayar - finalHarga;
+        rowKembalian.style.display = "flex";
+        valKembalian.innerText = "Rp " + kembalian.toLocaleString('id-ID');
+        valKembalian.style.color = "#16a34a";
+
+        stampEl.className = "receipt-stamp stamp-success";
+        stampEl.innerText = "✅ LUNAS & BERHASIL";
+        msgEl.innerText = `"${printSuccess}"`;
+        msgEl.style.borderColor = "#86efac";
+        msgEl.style.background = "#f0fdf4";
+
+        playSuccessSound();
+      } else {
+        const kurang = finalHarga - uangBayar;
+        rowKembalian.style.display = "flex";
+        valKembalian.innerText = "Kurang Rp " + kurang.toLocaleString('id-ID');
+        valKembalian.style.color = "#dc2626";
+
+        stampEl.className = "receipt-stamp stamp-fail";
+        stampEl.innerText = "❌ DITOLAK (UANG KURANG)";
+        msgEl.innerText = `"${printFail}"`;
+        msgEl.style.borderColor = "#fca5a5";
+        msgEl.style.background = "#fef2f2";
+
+        playFailSound();
+      }
+
+      // ANIMASI KELUAR STRUK
+      paper.classList.remove('print-animation');
+      void paper.offsetWidth; // trigger reflow
+      paper.classList.add('print-animation');
+    }
+
+    // LISTENER OTOMATIS SAAT HALAMAN SELESAI DIMUAT
+    window.addEventListener("DOMContentLoaded", () => {
+      const editor = document.getElementById('realCodeEditor');
+      if (editor) {
+        editor.addEventListener('input', updateDynamicButton);
+        editor.addEventListener('keyup', updateDynamicButton);
+        editor.addEventListener('paste', () => setTimeout(updateDynamicButton, 50));
+      }
+    });
+  </script>
+</body>
+</html>

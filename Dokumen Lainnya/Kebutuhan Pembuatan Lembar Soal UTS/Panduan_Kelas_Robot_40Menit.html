@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panduan Guru: Misi 40 Menit Algoritma Universal (MTs)</title>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f0f2f5;
+    color: #2c3e50;
+    padding: 16px;
+    margin: 0;
+    line-height: 1.5;
+  }
+  .container { max-width: 920px; margin: 0 auto; }
+  .card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    border: 1px solid #e1e8ed;
+  }
+  h1 { font-size: 22px; color: #1a365d; text-align: center; margin: 5px 0; }
+  .subtitle { text-align: center; color: #718096; font-size: 13.5px; margin-bottom: 18px; }
+  
+  .timeline-step {
+    border-left: 3px solid #cbd5e0;
+    padding-left: 16px;
+    margin-bottom: 22px;
+    position: relative;
+  }
+  .timeline-step::before {
+    content: '';
+    position: absolute;
+    left: -8px;
+    top: 0;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: #3182ce;
+  }
+  .timeline-title {
+    font-weight: bold;
+    font-size: 15px;
+    color: #2b6cb0;
+    margin-bottom: 4px;
+  }
+  .script-box {
+    background: #f7fafc;
+    border: 1px dashed #cbd5e0;
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin: 8px 0;
+    font-size: 13px;
+    color: #2d3748;
+  }
+  .script-box strong { color: #d69e2e; }
+
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 10px;
+  }
+  .team-card {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 12px;
+    border-top: 4px solid #4a5568;
+    font-size: 12.5px;
+  }
+  .team-1 { border-top-color: #dd6b20; }
+  .team-2 { border-top-color: #38a169; }
+  .team-3 { border-top-color: #3182ce; }
+  .team-4 { border-top-color: #805ad5; }
+
+  .code-block {
+    background: #1a202c;
+    color: #edf2f7;
+    font-family: Consolas, Monaco, monospace;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 12.5px;
+    overflow-x: auto;
+    line-height: 1.4;
+  }
+  .table-cases {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+    margin-top: 8px;
+  }
+  .table-cases th, .table-cases td {
+    padding: 8px 10px;
+    border: 1px solid #e2e8f0;
+    text-align: left;
+  }
+  .table-cases th {
+    background: #edf2f7;
+    color: #2d3748;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <h1>🧠 Panduan Guru: Misi 40 Menit Algoritma Universal (MTs)</h1>
+  <div class="subtitle">Melatih Nalar Komputasi & Generalisasi Matematika (If-Else Bersarang) | 19 Santri (4 Tim)</div>
+
+  <!-- PERSYARATAN & RUNNING -->
+  <div class="card" style="border-left: 5px solid #3182ce;">
+    <h3 style="margin-top:0; color:#2b6cb0;">⚡ Persiapan Sebelum Kelas Dimulai:</h3>
+    <ol style="margin-bottom: 5px; font-size: 13px; padding-left: 20px;">
+      <li>Buka file simulator di laptop: <br>
+        <code>file:///C:/Users/itpua/Dev/Work/Dokumen Lainnya/Kebutuhan Pembuatan Lembar Soal UTS/Simulator_Robot_Mars_TV.html</code></li>
+      <li>Tekan <b>F11</b> (Layar Penuh). Pastikan volume audio laptop menyala agar suara ledakan & fanfare terdengar jelas.</li>
+      <li>Siapkan 4 lembar kertas HVS kosong (1 per tim) untuk fase perancangan logika.</li>
+    </ol>
+  </div>
+
+  <!-- PEMBAGIAN 4 TIM SEIMBANG -->
+  <div class="card">
+    <h3 style="margin-top:0; color:#2d3748;">👥 Pembagian 4 Tim Engineer Seimbang (Total 19 Santri):</h3>
+    <div class="team-grid">
+      <div class="team-card team-1">
+        <strong style="color:#dd6b20;">Tim 1 (5 Santri)</strong><br>
+        👑 <b>Rifqi Hamid</b> (Nalar MTK)<br>
+        • <b>Haidar Ayyubi</b> (Nalar MTK)<br>
+        • Atqanul Ummah (Aktif)<br>
+        • Fariq Malaibui (Aktif)<br>
+        • <i>Naufal Dzaki Purnama</i> (Didorong)
+      </div>
+      <div class="team-card team-2">
+        <strong style="color:#38a169;">Tim 2 (5 Santri)</strong><br>
+        👑 <b>M. Fazril Alkais</b> (Nalar MTK)<br>
+        • <b>M. Hafidz Reo</b> (Nalar MTK)<br>
+        • Muh Asrorin Da Silva (Aktif)<br>
+        • Abdul Aziz Ali (Aktif)<br>
+        • <i>M. Yahya Ayyash</i> (Didorong)
+      </div>
+      <div class="team-card team-3">
+        <strong style="color:#3182ce;">Tim 3 (5 Santri)</strong><br>
+        👑 <b>Labibullah El Fatih</b> (Nalar MTK)<br>
+        • <b>M. Naufal Alfaniri</b> (Nalar MTK)<br>
+        • <b>Rifqi Arsyad Fadilah</b> (Nalar MTK)<br>
+        • Andi Ibra Faeyza (Aktif)<br>
+        • <i>Azka Panji Kusuma</i> (Didorong)
+      </div>
+      <div class="team-card team-4">
+        <strong style="color:#805ad5;">Tim 4 (4 Santri)</strong><br>
+        👑 <b>Khalish</b> (Nalar MTK)<br>
+        • <b>Ahmad Farros Al-Barqy</b> (Nalar MTK)<br>
+        • Abdul Hakim (Aktif)<br>
+        • <i>Muhammad Azzam</i> (Didorong)
+      </div>
+    </div>
+  </div>
+
+  <!-- ALUR 40 MENIT -->
+  <div class="card">
+    <h3 style="margin-top:0; color:#2d3748;">⏱️ Skenario 40 Menit & Naskah Guru:</h3>
+
+    <!-- STEP 1 -->
+    <div class="timeline-step">
+      <div class="timeline-title">Menit 00:00 – 07:00 | Tragedi Robot Hafalan (Hook Pemikiran)</div>
+      <div>Klik tombol merah di TV: <b>"💥 DEMO GURU: Mengapa Hafalan Langkah Pasti Hancur?"</b></div>
+      <div class="script-box">
+        <strong>🎤 Naskah Ustaz:</strong><br>
+        <i>"Assalamu’alaikum warahmatullah. Anak-anak, beberapa pertemuan terakhir kita belajar hal yang santai. Hari ini, Ustaz ingin menguji seberapa tajam nalar kalian sesungguhnya!<br><br>
+        Lihat layar TV: kalau Ustaz memprogram robot dengan hafalan: 'Maju 2x, belok kanan 1x, maju 3x', di Peta A dia kelihatannya berhasil. TAPI begitu batunya Ustaz pindah ke Peta B, lihat apa yang terjadi... <b>DUARRR! MELEDAK!</b><br><br>
+        Kenapa hancur? Karena menghafal jalan itu cara orang malas. Orang berilmu membuat <b>RUMUS / ALGORITMA</b> yang bisa menyelesaikan masalah di situasi MANA PUN!"</i>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="timeline-step">
+      <div class="timeline-title">Menit 07:00 – 16:00 | Pengantar 2 Sensor & Tabel Keputusan Logika</div>
+      <div>Tuliskan 2 sensor robot di papan tulis: <code>sensor_depan</code> dan <code>sensor_kanan</code>.</div>
+      <div class="script-box">
+        <strong>🎤 Naskah Ustaz:</strong><br>
+        <i>"Robot ini punya 2 mata sensor: Sensor 1 melihat depan, Sensor 2 melihat kanan. Tugas kalian adalah merumuskan aturan bersyarat (IF-ELIF-ELSE) untuk 4 kasus genting:"</i>
+      </div>
+      
+      <table class="table-cases">
+        <tr>
+          <th>Kasus</th>
+          <th>Sensor Depan</th>
+          <th>Sensor Kanan</th>
+          <th>Tantangan Logika untuk Santri</th>
+        </tr>
+        <tr>
+          <td><b>Kasus 1</b></td>
+          <td><code>AMAN</code></td>
+          <td><code>BATU</code></td>
+          <td>Depan kosong, kanan ada tebing batu. Apa aksi robot? <i>(Kunci: <code>maju()</code>)</i></td>
+        </tr>
+        <tr>
+          <td><b>Kasus 2</b></td>
+          <td><code>BATU</code></td>
+          <td><code>AMAN</code></td>
+          <td>Depan buntu ada batu, tapi ada celah kosong di kanan. Aksi robot? <i>(Kunci: <code>belok_kanan()</code> $\rightarrow$ <code>maju()</code>)</i></td>
+        </tr>
+        <tr>
+          <td><b>Kasus 3 (Jebakan!)</b></td>
+          <td><code>BATU</code></td>
+          <td><code>BATU</code></td>
+          <td>Depan batu, kanan juga batu buntu! Mau belok ke mana? <i>(Kunci: <code>belok_kiri()</code> agar tidak kejepit!)</i></td>
+        </tr>
+        <tr>
+          <td><b>Kasus 4 (Finish)</b></td>
+          <td><code>PIALA</code></td>
+          <td>Bebas</td>
+          <td>Di depan ada piala kemenangan! <i>(Kunci: <code>maju()</code> raih piala!)</i></td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="timeline-step">
+      <div class="timeline-title">Menit 16:00 – 26:00 | Fase Perancangan Kertas Tim (10 Menit)</div>
+      <div>
+        • <b>2 Menit Pertama:</b> Tiap santri menganalisis 4 kasus di kertasnya sendiri (hening total).<br>
+        • <b>8 Menit Diskusi:</b> Debat dan sepakati aturan logika tim di 1 lembar kertas besar. Pastikan leader (Rifqi H, Fazril, Labib, Khalish) menguji kasus ekstrem bersama rekannya.
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="timeline-step">
+      <div class="timeline-title">Menit 26:00 – 37:00 | Uji Coba Dua Dunia di Layar TV! (Momen WOW)</div>
+      <div>
+        Panggil tim secara acak. Klik tombol uji tim mereka di TV.<br>
+        • Uji di <b>Peta A</b>: Robot meliuk menghindari batu dengan cerdas $\rightarrow$ Berhasil!<br>
+        • Ganti ke <b>Peta B (Ranjau Berbeda)</b>: Uji lagi tombol tim mereka $\rightarrow$ Robot tetap berhasil menembus labirin karena logikanya universal!<br>
+        • <b>Pemberian Gelar:</b> Tim yang berhasil lolos di Peta A & B dinobatkan sebagai <i>Grand Master Algorithm</i>.
+      </div>
+    </div>
+
+    <!-- STEP 5 -->
+    <div class="timeline-step">
+      <div class="timeline-title">Menit 37:00 – 40:00 | Refleksi Matematika & Jembatan ke Hari Jumat</div>
+      <div class="script-box">
+        <strong>🎤 Naskah Penutup Ustaz:</strong><br>
+        <i>"Alhamdulillah! Apa pelajaran matematika paling berharga hari ini?<br>
+        Di matematika, aljabar mengajarkan bahwa rumus luas $L = p \times l$ berlaku untuk lapangan apa pun di dunia ini, bukan cuma untuk angka 5 kali 3. Hari ini kalian membuktikan bahwa logika algoritma yang benar berlaku untuk labirin apa pun di Mars!<br><br>
+        Hari Jumat nanti (80 menit), kita akan turun langsung ke lapangan: mengukur luas tanah, menghitung kawat pembatas 2 putaran, botol karbol, dan membagi hak waris 1/6 (Faraidh) dengan rumus matematika yang presisi. Bersiaplah!"</i>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>
