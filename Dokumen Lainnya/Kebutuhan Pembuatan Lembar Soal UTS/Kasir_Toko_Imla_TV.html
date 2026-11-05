@@ -5,7 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sistem Kasir Digital - Pesantren Al-Imam Al-Islami Managed By Al-Andalus IIBS</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body, button, input, select, optgroup {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
   body {
     background: radial-gradient(circle at top, #0f172a 0%, #020617 100%);
     color: #f8fafc;
@@ -19,7 +22,7 @@
   /* HEADER */
   .header-card {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1280px;
     background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
     border: 2px solid #334155;
     border-radius: 16px;
@@ -57,7 +60,7 @@
   /* MAIN WORKSPACE */
   .main-grid {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1280px;
     display: grid;
     grid-template-columns: 1.15fr 0.85fr;
     gap: 24px;
@@ -395,28 +398,39 @@
     height: 100%;
     overflow: hidden;
   }
-  #highlightBackdrop, #realCodeEditor {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 14px 16px;
-    box-sizing: border-box;
-    font-family: Consolas, monospace !important;
+  /* ATURAN FONT & METRIK 100% PERSISI UNTUK KURSOR & BACKDROP */
+  #highlightBackdrop,
+  #highlightBackdrop *,
+  #realCodeEditor,
+  #realCodeEditor * {
+    font-family: Consolas, 'Courier New', monospace !important;
     font-size: 16px !important;
     line-height: 26px !important;
     font-weight: 400 !important;
     font-style: normal !important;
     letter-spacing: 0px !important;
     word-spacing: 0px !important;
-    white-space: pre !important;
     tab-size: 4 !important;
     -moz-tab-size: 4 !important;
+    text-rendering: auto !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+  }
+
+  #highlightBackdrop, #realCodeEditor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0 !important;
+    padding: 14px 16px !important;
+    box-sizing: border-box !important;
+    white-space: pre !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
     border: none !important;
     outline: none !important;
-    text-rendering: auto !important;
   }
   #highlightBackdrop {
     z-index: 1;
@@ -444,41 +458,62 @@
     color: transparent !important;
   }
 
-  /* SYNTAX HIGHLIGHTING TOKENS - SEMUA FONT-STYLE & WEIGHT NORMAL AGAR KURSOR 100% PERSISI */
+  /* SYNTAX HIGHLIGHTING TOKENS - SETIAP SPAN TETAP MONOSPACE & SAMA UKURAN KARAKTER */
   .token-comment {
     color: #64748b !important;
     font-style: normal !important;
-    font-weight: normal !important;
+    font-weight: 400 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline !important;
   }
   .token-string {
     color: #fde047 !important;
     font-style: normal !important;
-    font-weight: normal !important;
+    font-weight: 400 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline !important;
   }
   .token-keyword {
     color: #c084fc !important;
     font-style: normal !important;
-    font-weight: normal !important;
+    font-weight: 400 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline !important;
   }
   .token-builtin {
     color: #38bdf8 !important;
     font-style: normal !important;
-    font-weight: normal !important;
+    font-weight: 400 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline !important;
   }
   .token-number {
     color: #4ade80 !important;
     font-style: normal !important;
-    font-weight: normal !important;
+    font-weight: 400 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline !important;
   }
   .token-operator {
     color: #f43f5e !important;
     font-style: normal !important;
-    font-weight: normal !important;
+    font-weight: 400 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline !important;
   }
   .token-var {
     color: #93c5fd !important;
     font-style: normal !important;
-    font-weight: normal !important;
+    font-weight: 400 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: inline !important;
   }
 </style>
 </head>
