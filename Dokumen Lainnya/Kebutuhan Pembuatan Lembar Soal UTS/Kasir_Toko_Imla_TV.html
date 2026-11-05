@@ -557,7 +557,7 @@
 
       <!-- RUN BUTTON (JUDUL DINAMIS MENGIKUTI KODINGAN SANTRI) -->
       <button class="btn-run" id="btnRunCode" onclick="eksekusiKasir()" style="margin-top:10px;">
-        ▶️ JALANKAN PROGRAM KASIR TOKO IMLA!
+        ▶️ JALANKAN PROGRAM KASIR!
       </button>
     </div>
 
@@ -859,8 +859,8 @@
         currentStoreTitle = cleanStoreName;
         btnRun.innerText = `▶️ JALANKAN PROGRAM KASIR ${cleanStoreName.toUpperCase()}!`;
       } else {
-        currentStoreTitle = "TOKO IMLA";
-        btnRun.innerText = "▶️ JALANKAN PROGRAM KASIR TOKO IMLA!";
+        currentStoreTitle = "";
+        btnRun.innerText = "▶️ JALANKAN PROGRAM KASIR!";
       }
     }
 
@@ -875,8 +875,8 @@
       document.getElementById('cashierMachineCard').style.display = "none";
       document.getElementById('printerStandbyBox').style.display = "flex";
 
-      document.getElementById('btnRunCode').innerText = "▶️ JALANKAN PROGRAM KASIR TOKO IMLA!";
-      currentStoreTitle = "TOKO IMLA";
+      document.getElementById('btnRunCode').innerText = "▶️ JALANKAN PROGRAM KASIR!";
+      currentStoreTitle = "";
 
       beep(500, 0.08, "sine", 0.2);
     }
