@@ -588,7 +588,7 @@
 
           <div style="font-size:11px; color:#475569; margin-bottom:8px; border-bottom: 1px dashed #cbd5e1; padding-bottom: 8px;">
             <div class="receipt-row">
-              <span>Pembeli:</span>
+              <span id="receiptBuyerLabel">Pembeli:</span>
               <span id="receiptSantri" style="font-weight:bold; color:#0f172a;">Ahmad Farros</span>
             </div>
             <div class="receipt-row" style="margin-top: 4px;">
@@ -728,6 +728,19 @@
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;');
+    }
+
+    function formatVariableToLabel(varName) {
+      if (!varName) return "Pembeli";
+      if (varName.includes('_')) {
+        return varName
+          .split('_')
+          .filter(w => w.length > 0)
+          .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+          .join(' ');
+      }
+      const spaced = varName.replace(/([a-z])([A-Z])/g, (m, p1, p2) => p1 + " " + p2);
+      return spaced.charAt(0).toUpperCase() + spaced.slice(1);
     }
 
     function highlightPython(code) {
@@ -872,7 +885,7 @@
     function muatContohUstaz() {
       document.getElementById('realCodeEditor').value = 
 `# FARROS MART
-nama_pembeli = "Ahmad Farros Al Barqy"
+namaSiPembeli = "Ahmad Farros Al Barqy"
 barang = "Es Teh Manis Jumbo"
 harga = 7000
 uang = int(input("Masukkan jumlah uang antum: "))
@@ -933,6 +946,11 @@ else:
       let printSuccess = "";
       let printFail = "";
 
+      let buyerVarName = "";
+      let itemVarName = "";
+      let priceVarName = "";
+      let moneyVarName = "";
+
       let inIfBlock = false;
       let inElseBlock = false;
 
@@ -960,57 +978,70 @@ else:
           }
         }
 
-        // 1. VARIABEL NAMA / PEMBELI
-        if (/^(nama|nama_pembeli|pembeli|nama_santri|santri|nama_siswa|siswa)\b/i.test(line)) {
-          const m = line.match(/^(?:nama|nama_pembeli|pembeli|nama_santri|santri|nama_siswa|siswa)\s*=\s*["']([^"']+)["']$/i);
-          if (m) {
-            namaSantri = m[1];
-          } else {
+        // PENUGASAN VARIABEL APAPUN (camelCase, snake_case, bebas): varName = value
+        const equalIdx = line.indexOf('=');
+        if (equalIdx !== -1 && !line.startsWith("if") && !line.startsWith("print") && !line.startsWith("else")) {
+          const varName = line.substring(0, equalIdx).trim();
+          const varValue = line.substring(equalIdx + 1).trim();
+
+          // Aturan Python: Nama variabel harus valid (tidak boleh mengandung spasi, harus diawali huruf/underscore)
+          if (!/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(varName)) {
             showBug(`Baris ${i+1}: Ada kesalahan! Silakan teliti dan periksa kembali baris ini.`);
             return;
           }
-        }
-        // 2. VARIABEL BARANG / PRODUK
-        else if (/^(barang|nama_barang|item|produk)\b/i.test(line)) {
-          const m = line.match(/^(?:barang|nama_barang|item|produk)\s*=\s*["']([^"']+)["']$/i);
-          if (m) {
-            namaBarang = m[1];
-          } else {
-            showBug(`Baris ${i+1}: Ada kesalahan! Silakan teliti dan periksa kembali baris ini.`);
-            return;
-          }
-        }
-        // 3. VARIABEL HARGA
-        else if (/^(harga|harga_barang|total)\b/i.test(line)) {
-          const m = line.match(/^(?:harga|harga_barang|total)\s*=\s*(\d+)$/i);
-          if (m) {
-            hargaBarang = parseInt(m[1]);
-          } else {
-            showBug(`Baris ${i+1}: Ada kesalahan! Silakan teliti dan periksa kembali baris ini.`);
-            return;
-          }
-        }
-        // 4. VARIABEL UANG
-        else if (/^(uang|uang_bayar|bayar|uang_pembeli|uang_santri)\b/i.test(line)) {
-          hasUangLine = true;
-          if (line.includes("input")) {
-            if (/(?:uang|uang_bayar|bayar|uang_pembeli|uang_santri)\s*=\s*int\s*\(\s*input\s*\(.*\)\s*\)/i.test(line)) {
-              uangBayar = parseInt(document.getElementById('inputUangLive').value) || 10000;
+
+          // A. String assignment: "..." atau '...'
+          const strMatch = varValue.match(/^["']([^"']+)["']$/);
+          if (strMatch) {
+            const val = strMatch[1];
+            const lowerName = varName.toLowerCase();
+            // Jika nama variabel menandakan barang/produk
+            if (lowerName.includes("barang") || lowerName.includes("item") || lowerName.includes("produk") || lowerName.includes("makan") || lowerName.includes("minum") || lowerName.includes("jajan") || (lowerName.includes("beli") && !lowerName.includes("pembeli"))) {
+              itemVarName = varName;
+              namaBarang = val;
             } else {
-              showBug(`Baris ${i+1}: Ada kesalahan! Silakan teliti dan periksa kembali baris ini.`);
-              return;
+              // Default ke variabel nama pembeli
+              if (!namaSantri) {
+                buyerVarName = varName;
+                namaSantri = val;
+              } else if (!namaBarang) {
+                itemVarName = varName;
+                namaBarang = val;
+              }
             }
-          } else {
-            const m = line.match(/^(?:uang|uang_bayar|bayar|uang_pembeli|uang_santri)\s*=\s*(\d+)$/i);
-            if (m) {
-              uangBayar = parseInt(m[1]);
-            } else {
-              showBug(`Baris ${i+1}: Ada kesalahan! Silakan teliti dan periksa kembali baris ini.`);
-              return;
-            }
+            continue;
           }
+
+          // B. Input uang: int(input(...))
+          if (/int\s*\(\s*input\s*\(.*\)\s*\)/i.test(varValue)) {
+            moneyVarName = varName;
+            hasUangLine = true;
+            uangBayar = parseInt(document.getElementById('inputUangLive').value) || 10000;
+            continue;
+          }
+
+          // C. Angka: 7000 dsb
+          const numMatch = varValue.match(/^(\d+)$/);
+          if (numMatch) {
+            const numVal = parseInt(numMatch[1]);
+            const lowerName = varName.toLowerCase();
+            if (lowerName.includes("uang") || lowerName.includes("bayar") || lowerName.includes("cash") || lowerName.includes("duit") || lowerName.includes("dompet")) {
+              moneyVarName = varName;
+              hasUangLine = true;
+              uangBayar = numVal;
+            } else {
+              priceVarName = varName;
+              hargaBarang = numVal;
+            }
+            continue;
+          }
+
+          // Jika format penugasan tidak valid
+          showBug(`Baris ${i+1}: Ada kesalahan! Silakan teliti dan periksa kembali baris ini.`);
+          return;
         }
-        // 5. PERCABANGAN IF
+
+        // PERCABANGAN IF
         else if (line.startsWith("if")) {
           if (!line.endsWith(":")) {
             showBug(`Baris ${i+1}: Ada kesalahan! Silakan teliti dan periksa kembali baris ini.`);
@@ -1028,7 +1059,7 @@ else:
             return;
           }
         }
-        // 6. PERCABANGAN ELSE
+        // PERCABANGAN ELSE
         else if (line.startsWith("else")) {
           if (line !== "else:") {
             showBug(`Baris ${i+1}: Ada kesalahan! Silakan teliti dan periksa kembali baris ini.`);
@@ -1038,7 +1069,7 @@ else:
           inIfBlock = false;
           inElseBlock = true;
         }
-        // 7. CETAK PRINT
+        // CETAK PRINT
         else if (line.startsWith("print")) {
           const m = line.match(/^print\s*\(\s*["']([\s\S]*?)["']\s*\)$/i);
           if (m) {
@@ -1053,7 +1084,7 @@ else:
             return;
           }
         }
-        // 8. TIDAK DIKENALI
+        // TIDAK DIKENALI
         else {
           showBug(`Baris ${i+1}: Ada kesalahan! Silakan teliti dan periksa kembali baris ini.`);
           return;
@@ -1124,6 +1155,11 @@ else:
       const finalHarga = hargaBarang;
 
       // UPDATE DATA STRUK
+      const buyerLabel = formatVariableToLabel(buyerVarName || "pembeli");
+      const labelEl = document.getElementById('receiptBuyerLabel');
+      if (labelEl) {
+        labelEl.innerText = buyerLabel + ":";
+      }
       document.getElementById('receiptSantri').innerText = namaSantri;
       document.getElementById('receiptNamaBarang').innerText = "1x " + finalBarang;
       document.getElementById('receiptHargaBarang').innerText = "Rp " + finalHarga.toLocaleString('id-ID');
