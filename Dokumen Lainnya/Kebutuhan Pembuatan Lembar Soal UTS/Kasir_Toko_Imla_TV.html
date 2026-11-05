@@ -672,8 +672,23 @@ else:
         let line = (hashIdx !== -1 ? rawLine.substring(0, hashIdx) : rawLine).trim();
         if (!line) continue;
 
-        if (line.startsWith("nama")) {
-          const m = line.match(/^nama\s*=\s*["']([^"']+)["']$/i);
+        // Dukungan multiline untuk print yang terpotong enter
+        if (line.startsWith("print") && !line.endsWith(")")) {
+          let combined = line;
+          let j = i + 1;
+          while (j < lines.length && !combined.endsWith(")")) {
+            combined += " " + lines[j].trim();
+            j++;
+          }
+          if (combined.endsWith(")")) {
+            line = combined;
+            i = j - 1; // Lompat ke baris penutup
+          }
+        }
+
+        // 1. VARIABEL NAMA / PEMBELI
+        if (/^(nama|nama_pembeli|pembeli|nama_santri|santri|nama_siswa|siswa)\b/i.test(line)) {
+          const m = line.match(/^(?:nama|nama_pembeli|pembeli|nama_santri|santri|nama_siswa|siswa)\s*=\s*["']([^"']+)["']$/i);
           if (m) {
             namaSantri = m[1];
           } else {
@@ -681,8 +696,9 @@ else:
             return;
           }
         }
-        else if (line.startsWith("barang")) {
-          const m = line.match(/^barang\s*=\s*["']([^"']+)["']$/i);
+        // 2. VARIABEL BARANG / PRODUK
+        else if (/^(barang|nama_barang|item|produk)\b/i.test(line)) {
+          const m = line.match(/^(?:barang|nama_barang|item|produk)\s*=\s*["']([^"']+)["']$/i);
           if (m) {
             namaBarang = m[1];
           } else {
@@ -690,8 +706,9 @@ else:
             return;
           }
         }
-        else if (line.startsWith("harga")) {
-          const m = line.match(/^harga\s*=\s*(\d+)$/i);
+        // 3. VARIABEL HARGA
+        else if (/^(harga|harga_barang|total)\b/i.test(line)) {
+          const m = line.match(/^(?:harga|harga_barang|total)\s*=\s*(\d+)$/i);
           if (m) {
             hargaBarang = parseInt(m[1]);
           } else {
@@ -699,17 +716,18 @@ else:
             return;
           }
         }
-        else if (line.startsWith("uang")) {
+        // 4. VARIABEL UANG
+        else if (/^(uang|uang_bayar|bayar|uang_pembeli|uang_santri)\b/i.test(line)) {
           hasUangLine = true;
           if (line.includes("input")) {
-            if (/uang\s*=\s*int\s*\(\s*input\s*\(.*\)\s*\)/i.test(line)) {
+            if (/(?:uang|uang_bayar|bayar|uang_pembeli|uang_santri)\s*=\s*int\s*\(\s*input\s*\(.*\)\s*\)/i.test(line)) {
               uangBayar = parseInt(document.getElementById('inputUangLive').value) || 10000;
             } else {
               showBug(`Baris ${i+1}: Ada kesalahan! Silakan teliti dan periksa kembali baris ini.`);
               return;
             }
           } else {
-            const m = line.match(/^uang\s*=\s*(\d+)$/i);
+            const m = line.match(/^(?:uang|uang_bayar|bayar|uang_pembeli|uang_santri)\s*=\s*(\d+)$/i);
             if (m) {
               uangBayar = parseInt(m[1]);
             } else {
@@ -718,13 +736,15 @@ else:
             }
           }
         }
+        // 5. PERCABANGAN IF
         else if (line.startsWith("if")) {
           if (!line.endsWith(":")) {
             showBug(`Baris ${i+1}: Ada kesalahan! Silakan teliti dan periksa kembali baris ini.`);
             return;
           }
-          const cond = line.substring(2, line.length - 1).toLowerCase().replace(/\s+/g, '');
-          if (cond === "uang>=harga" || cond === "uang>harga" || cond.startsWith("uang>=") || cond.startsWith("uang>")) {
+          const rawCond = line.substring(2, line.length - 1).toLowerCase().replace(/[\(\)]/g, '').trim();
+          const cond = rawCond.replace(/\s+/g, '');
+          if (cond.includes(">=") || cond.includes(">") || cond.includes("==")) {
             hasIf = true;
             ifConditionValid = true;
             inIfBlock = true;
@@ -734,6 +754,7 @@ else:
             return;
           }
         }
+        // 6. PERCABANGAN ELSE
         else if (line.startsWith("else")) {
           if (line !== "else:") {
             showBug(`Baris ${i+1}: Ada kesalahan! Silakan teliti dan periksa kembali baris ini.`);
@@ -743,8 +764,9 @@ else:
           inIfBlock = false;
           inElseBlock = true;
         }
+        // 7. CETAK PRINT
         else if (line.startsWith("print")) {
-          const m = line.match(/^print\s*\(\s*["']([^"']+)["']\s*\)$/i);
+          const m = line.match(/^print\s*\(\s*["']([\s\S]*?)["']\s*\)$/i);
           if (m) {
             if (inIfBlock) printSuccess = m[1];
             else if (inElseBlock) printFail = m[1];
@@ -757,6 +779,7 @@ else:
             return;
           }
         }
+        // 8. TIDAK DIKENALI
         else {
           showBug(`Baris ${i+1}: Ada kesalahan! Silakan teliti dan periksa kembali baris ini.`);
           return;
