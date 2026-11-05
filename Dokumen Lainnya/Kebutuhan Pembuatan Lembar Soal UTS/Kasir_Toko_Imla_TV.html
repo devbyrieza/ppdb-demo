@@ -404,16 +404,19 @@
     margin: 0;
     padding: 14px 16px;
     box-sizing: border-box;
-    font-family: 'Consolas', 'Courier New', monospace;
-    font-size: 15px;
-    line-height: 26px;
-    white-space: pre;
-    tab-size: 4;
-    -moz-tab-size: 4;
-    border: none;
-    outline: none;
-    letter-spacing: normal;
-    word-spacing: normal;
+    font-family: Consolas, monospace !important;
+    font-size: 16px !important;
+    line-height: 26px !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    letter-spacing: 0px !important;
+    word-spacing: 0px !important;
+    white-space: pre !important;
+    tab-size: 4 !important;
+    -moz-tab-size: 4 !important;
+    border: none !important;
+    outline: none !important;
+    text-rendering: auto !important;
   }
   #highlightBackdrop {
     z-index: 1;
@@ -422,56 +425,60 @@
     color: #f8fafc;
     overflow: hidden;
   }
-  #highlightBackdrop code {
-    font-family: inherit;
-    font-size: inherit;
-    line-height: inherit;
-    white-space: inherit;
-  }
   #realCodeEditor {
     z-index: 2;
     background: transparent;
-    color: transparent;
-    caret-color: #38bdf8;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
+    caret-color: #38bdf8 !important;
     resize: none;
     overflow: auto;
   }
   #realCodeEditor::placeholder {
-    color: #475569;
-    font-style: italic;
+    -webkit-text-fill-color: #475569 !important;
+    color: #475569 !important;
   }
   #realCodeEditor::selection {
-    background: rgba(56, 189, 248, 0.35);
-    color: transparent;
+    background: rgba(56, 189, 248, 0.35) !important;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
   }
 
-  /* SYNTAX HIGHLIGHTING TOKENS */
+  /* SYNTAX HIGHLIGHTING TOKENS - SEMUA FONT-STYLE & WEIGHT NORMAL AGAR KURSOR 100% PERSISI */
   .token-comment {
-    color: #64748b;
-    font-style: italic;
+    color: #64748b !important;
+    font-style: normal !important;
+    font-weight: normal !important;
   }
   .token-string {
-    color: #fde047;
-    font-weight: 500;
+    color: #fde047 !important;
+    font-style: normal !important;
+    font-weight: normal !important;
   }
   .token-keyword {
-    color: #c084fc;
-    font-weight: bold;
+    color: #c084fc !important;
+    font-style: normal !important;
+    font-weight: normal !important;
   }
   .token-builtin {
-    color: #38bdf8;
-    font-weight: bold;
+    color: #38bdf8 !important;
+    font-style: normal !important;
+    font-weight: normal !important;
   }
   .token-number {
-    color: #4ade80;
-    font-weight: bold;
+    color: #4ade80 !important;
+    font-style: normal !important;
+    font-weight: normal !important;
   }
   .token-operator {
-    color: #f43f5e;
-    font-weight: bold;
+    color: #f43f5e !important;
+    font-style: normal !important;
+    font-weight: normal !important;
   }
   .token-var {
-    color: #93c5fd;
+    color: #93c5fd !important;
+    font-style: normal !important;
+    font-weight: normal !important;
   }
 </style>
 </head>
@@ -544,7 +551,7 @@
 
           <!-- Code Overlay Container -->
           <div class="editor-code-container">
-            <pre id="highlightBackdrop" aria-hidden="true"><code id="highlightCode"></code></pre>
+            <pre id="highlightBackdrop" aria-hidden="true"></pre>
             <textarea id="realCodeEditor" oninput="onEditorInput()" onkeyup="onEditorInput()" onpaste="setTimeout(onEditorInput, 50)" onscroll="syncScroll()" spellcheck="false" placeholder="# Ketik kode program antum disini"></textarea>
           </div>
         </div>
@@ -781,7 +788,7 @@
       }
 
       if (code.endsWith('\n')) {
-        html += ' ';
+        html += '<br>';
       }
 
       return html;
@@ -816,9 +823,9 @@
       const editor = document.getElementById('realCodeEditor');
       if (!editor) return;
       const code = editor.value;
-      const hlCode = document.getElementById('highlightCode');
-      if (hlCode) {
-        hlCode.innerHTML = highlightPython(code);
+      const backdrop = document.getElementById('highlightBackdrop');
+      if (backdrop) {
+        backdrop.innerHTML = highlightPython(code);
       }
       const lines = code.split('\n');
       renderGutter(lines.length);
