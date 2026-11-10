@@ -104,33 +104,54 @@
   }
 
   /* HALAMAN 3: PEGANGAN WASIT */
-  .ref-section { margin-bottom: 10px; }
+  .ref-section { margin-bottom: 7px; }
   .ref-section h3 {
-    font-size: 12px;
+    font-size: 11px;
     background: #0f172a;
     color: white;
-    padding: 4px 8px;
+    padding: 3px 8px;
     border-radius: 4px;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
+  }
+  .ref-teams-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+    font-size: 8.6px;
+    line-height: 1.32;
+  }
+  .ref-team-box {
+    border: 1px solid #94a3b8;
+    border-radius: 5px;
+    padding: 4px 6px;
+    background: #f8fafc;
+  }
+  .ref-team-box b.t-head {
+    display: block;
+    font-size: 9.2px;
+    border-bottom: 1px solid #cbd5e1;
+    margin-bottom: 2px;
+    padding-bottom: 1px;
+    color: #0f172a;
   }
   table.ref-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 9.5px;
+    font-size: 9px;
   }
   table.ref-table th, table.ref-table td {
     border: 1px solid #94a3b8;
-    padding: 3px 5px;
+    padding: 2.2px 5px;
   }
   table.ref-table th { background: #e2e8f0; text-align: left; }
   .q-two-col {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 8px;
-    font-size: 9.2px;
-    line-height: 1.35;
+    font-size: 8.8px;
+    line-height: 1.3;
   }
-  .q-item { border-bottom: 1px dotted #cbd5e1; padding: 2px 0; }
+  .q-item { border-bottom: 1px dotted #cbd5e1; padding: 1.5px 0; }
 
   @media print {
     body { background: white; padding: 0; }
@@ -319,17 +340,66 @@
   </div>
 
   <div class="ref-section">
-    <h3>⏱️ KONTROL WAKTU &amp; JADWAL MATCH ADIL (40 MENIT PAS)</h3>
-    <div style="font-size:10px; line-height:1.45; border:1px solid #cbd5e1; padding:6px 8px; border-radius:6px;">
-      <b>09.00&ndash;09.04 (4 mnt):</b> Bagi 4 Tim, jelaskan poin &amp; denda <b>-100</b> kalau bocorin. Taruh 1 spidol di meja tengah.<br>
-      <b>09.04&ndash;09.18 (14 mnt) &mdash; Babak 1 (Rebut Spidol Best of 3):</b> Jalankan 6 duel (1v2, 3v4, 1v3, 2v4, 1v4, 2v3). Benar <b>+50</b>, Salah/Diam &gt;3 dtk <b>-25</b>, Menang Duel <b>+50</b>.<br>
-      <b>09.18&ndash;09.33 (15 mnt) &mdash; Babak 2 (Tebak Sosok 2 Menit):</b> Wajib jalankan minimal 4 match awal (1v2, 3v4, 1v3, 2v4) agar semua tim main 2x. Jika jam masih &le;09.28, lanjut Match 5 (1v4) &amp; Match 6 (2v3). &le;60 dtk: <b>+300</b> | 61&ndash;120 dtk: <b>+200</b> | Salah tembak: <b>-50</b>.<br>
-      <b>09.33&ndash;09.40 (7 mnt) &mdash; Final Top 10 Militer:</b> 2 menit tulis rahasia <b>6 Negara</b> di kertas &rarr; kumpulkan &rarr; buka #10 ke #1! (Benar <b>+100</b>, Zonk <b>-50</b>, 6/6 Sempurna <b>+200</b>).
+    <h3>⏱️ KONTROL WAKTU &amp; JADWAL 6 SESI ADIL (40 MENIT PAS)</h3>
+    <div style="font-size:8.9px; line-height:1.34; border:1px solid #cbd5e1; padding:4px 7px; border-radius:6px;">
+      <b>09.00&ndash;09.03 (3 mnt):</b> Duduk per 4 Tim Baru, jelaskan poin &amp; denda <b>-100</b> kalau bocorin. Taruh 1 spidol di tengah. (Juara 1: Kupon Kantin Rp 5.000/anak + Nilai Harian; MVP/Kilat: Nilai Kompetensi).<br>
+      <b>09.03&ndash;09.16 (13 mnt) &mdash; Babak 1 (Rebut Spidol Best of 3):</b> 6 Sesi Round-Robin (1v2, 3v4, 1v3, 2v4, 1v4, 2v3) &times; <b>3 Soal/Sesi</b> (~2 mnt/sesi). Benar <b>+50</b>, Salah/&gt;3 dtk <b>-25</b>, Menang Duel <b>+50</b>.<br>
+      <b>09.16&ndash;09.29 (13 mnt) &mdash; Babak 2 (Tebak Sosok 90 Detik):</b> 6 Duel Round-Robin seimbang (~2 mnt/duel). &le;45 dtk: <b>+300</b> | 46&ndash;90 dtk: <b>+200</b> | Salah tembak: <b>-50</b> | Habis/Clue: <b>+100</b>.<br>
+      <b>09.29&ndash;09.40 (11 mnt) &mdash; Final Top 10 Militer &amp; Podium:</b> 2 mnt tulis rahasia <b>6 Negara</b> &rarr; buka #10 ke #1 (Benar <b>+100</b>, Zonk <b>-50</b>, 6/6 Bonus <b>+200</b>) &rarr; Umumkan Podium &amp; Bagikan Kupon.
     </div>
   </div>
 
   <div class="ref-section">
-    <h3>🏫 MATRIKS CEPAT 9 USTADZ PESANTREN (CEK JAWABAN YA/TIDAK)</h3>
+    <h3>👥 4 TIM SUPER SEIMBANG (PISAH GRUP KUAT + SEBAR TOP 4 &amp; 5 BINTANG PU)</h3>
+    <div class="ref-teams-grid">
+      <div class="ref-team-box">
+        <b class="t-head">TIM 1 (5 Santri)</b>
+        👑 Ahmad Farros Al-Barqy 🌟🌟<br>
+        2. Labibullah El Fatih<br>
+        3. Atqanul Ummah<br>
+        4. Abdul Aziz Ali<br>
+        5. Naufal Dzaki Purnama
+      </div>
+      <div class="ref-team-box">
+        <b class="t-head">TIM 2 (5 Santri)</b>
+        👑 Rifqi Hamid 🌟<br>
+        2. Muh Asrorin (Iwan) 🌟<br>
+        3. M. Naufal Alfaniri<br>
+        4. Fariq Malaibui<br>
+        5. Muhammad Azzam
+      </div>
+      <div class="ref-team-box">
+        <b class="t-head">TIM 3 (4 Aktif + Azka)</b>
+        👑 M. Hafidz Reo<br>
+        2. Abdul Hakim 🌟<br>
+        3. M. Fazril Alkais<br>
+        4. M. Yahya Ayyash<br>
+        5. Azka Panji K. 🤝<i>(Khusus)</i>
+      </div>
+      <div class="ref-team-box">
+        <b class="t-head">TIM 4 (4 Santri)</b>
+        👑 Haidar Ayyubi 🌟<br>
+        2. Khalish<br>
+        3. Rifqi Arsyad Fadilah<br>
+        4. Andi Ibra Faeyza
+      </div>
+    </div>
+    <div style="font-size:8.2px; background:#fefce8; border:1px solid #facc15; border-radius:4px; padding:2.5px 6px; margin-top:3.5px; color:#713f12;">
+      <b>🤝 Pendampingan Azka (Tim 3 — Jika Masuk):</b> Tidak usah adu cepat lisan 3 detik! Jadikan Azka <b>Asisten Isyarat 👍/👎 (YA/TIDAK)</b> bersama rekan saat menjawab lawan di Babak 2 &amp; <b>Juru Tulis 6 Negara</b> di Babak Final. (Penjawab cepat Tim 3 = 4 orang, sama adil dengan Tim 4; tetap dapat kupon &amp; nilai penuh!).
+    </div>
+  </div>
+
+  <div class="ref-section">
+    <h3>🏫 MATRIKS 9 USTADZ &amp; PASANGAN ADIL 6 DUEL BABAK 2 (1 USTADZ + 1 FIKSI + 1 TOKOH PER TIM)</h3>
+    <div style="font-size:8.5px; background:#eff6ff; border:1px solid #93c5fd; border-radius:4px; padding:3px 6px; margin-bottom:4px;">
+      <b>Rekomendasi 6 Duel Adil Babak 2:</b>
+      <b>D1(1v2):</b> Ust. Rieza vs Naruto &bull;
+      <b>D2(3v4):</b> BJ Habibie vs C. Ronaldo &bull;
+      <b>D3(1v3):</b> Ir. Soekarno vs Ust. Wahab &bull;
+      <b>D4(2v4):</b> Ust. Agus vs Spider-Man &bull;
+      <b>D5(1v4):</b> SpongeBob vs Ust. Iqbal &bull;
+      <b>D6(2v3):</b> L. Messi vs Doraemon
+    </div>
     <table class="ref-table">
       <thead>
         <tr>
@@ -351,44 +421,44 @@
   </div>
 
   <div class="ref-section">
-    <h3>⚡ KUNCI CEPAT 26 SOAL BABAK 1 (JIKA INGIN BACA LISAN LANGSUNG)</h3>
+    <h3>⚡ KUNCI 6 SESI BABAK 1 (3 SOAL TERKURASI PER SESI + 8 CADANGAN)</h3>
     <div class="q-two-col">
       <div>
-        <div class="q-item"><b>1.</b> Provinsi Gunung Rinjani? &rarr; <b>NTB</b></div>
-        <div class="q-item"><b>2.</b> Kepanjangan FYP TikTok? &rarr; <b>For You Page</b></div>
-        <div class="q-item"><b>3.</b> Hewan air bikin bingung halal/haram? &rarr; <b>Anjing Laut</b></div>
-        <div class="q-item"><b>4.</b> Jumlah bidak catur 1 pemain? &rarr; <b>16 Bidak</b> (bukan 32)</div>
-        <div class="q-item"><b>5.</b> Kedipan mata per menit? &rarr; <b>15&ndash;20 kali</b></div>
-        <div class="q-item"><b>6.</b> Ekor penyeimbang saat lompat? &rarr; <b>Kanguru</b></div>
-        <div class="q-item"><b>7.</b> Suara terkeras di laut? &rarr; <b>Paus Sperma / Paus Biru</b></div>
-        <div class="q-item"><b>8.</b> Jumlah huruf alfabet Indonesia? &rarr; <b>26 huruf</b></div>
-        <div class="q-item"><b>9.</b> Generasi setelah Gen Alpha? &rarr; <b>Gen Beta</b></div>
-        <div class="q-item"><b>10.</b> Huruf tersering dlm B. Indo? &rarr; <b>Huruf A</b></div>
-        <div class="q-item"><b>11.</b> Hewan pertama mengorbit Bumi (1957)? &rarr; <b>Anjing (Laika)</b></div>
-        <div class="q-item"><b>12.</b> Saus tomat abad ke-19 dijual sbg? &rarr; <b>Obat (diare)</b></div>
-        <div class="q-item"><b>13.</b> Planet terpanas Tata Surya? &rarr; <b>Venus</b> (bkn Merkurius)</div>
+        <div class="q-item"><b>[S1] 1.</b> Provinsi Gunung Rinjani? &rarr; <b>NTB</b></div>
+        <div class="q-item"><b>[S1] 2.</b> Kepanjangan QR (QRIS)? &rarr; <b>Quick Response</b></div>
+        <div class="q-item"><b>[S1] 3.</b> Salip posisi ke-2 jadi posisi? &rarr; <b>Ke-2</b></div>
+        <div class="q-item"><b>[S2] 4.</b> Selat pemisah Jawa &amp; Sumatera? &rarr; <b>Selat Sunda</b></div>
+        <div class="q-item"><b>[S2] 5.</b> Poin menang 1 set badminton? &rarr; <b>21 poin</b></div>
+        <div class="q-item"><b>[S2] 6.</b> Hewan air bikin bingung halal/haram? &rarr; <b>Anjing Laut</b></div>
+        <div class="q-item"><b>[S3] 7.</b> Negara ASEAN tak pernah dijajah? &rarr; <b>Thailand</b></div>
+        <div class="q-item"><b>[S3] 8.</b> Planet terpanas Tata Surya? &rarr; <b>Venus</b> (bkn Merkurius)</div>
+        <div class="q-item"><b>[S3] 9.</b> 19 santri dibagi 4 tim: brp tim isi 5? &rarr; <b>3 Tim</b></div>
+        <div class="q-item"><b>[S4] 10.</b> Mata uang resmi Jepang? &rarr; <b>Yen</b></div>
+        <div class="q-item"><b>[S4] 11.</b> Kepanjangan FYP TikTok? &rarr; <b>For You Page</b></div>
+        <div class="q-item"><b>[S4] 12.</b> Jumlah bidak catur 1 pemain? &rarr; <b>16 Bidak</b></div>
+        <div class="q-item"><b>[S5] 13.</b> Surah berisi 2 Bismillah? &rarr; <b>Surah An-Naml</b></div>
       </div>
       <div>
-        <div class="q-item"><b>14.</b> Hewan laut 3 jantung &amp; darah biru? &rarr; <b>Gurita</b></div>
-        <div class="q-item"><b>15.</b> Poin menang 1 set badminton? &rarr; <b>21 poin</b></div>
-        <div class="q-item"><b>16.</b> Negara ASEAN tak pernah dijajah? &rarr; <b>Thailand</b></div>
-        <div class="q-item"><b>17.</b> Kepanjangan QR pada QR Code? &rarr; <b>Quick Response</b></div>
-        <div class="q-item"><b>18.</b> Mata uang resmi Jepang? &rarr; <b>Yen</b></div>
-        <div class="q-item"><b>19.</b> Tulang terpanjang &amp; terkuat? &rarr; <b>Tulang Paha (Femur)</b></div>
-        <div class="q-item"><b>20.</b> Jam 09.00 WIB = di Makkah jam? &rarr; <b>05.00 Subuh/Pagi</b></div>
-        <div class="q-item"><b>21.</b> Salip posisi ke-2 jadi posisi? &rarr; <b>Ke-2</b></div>
-        <div class="q-item"><b>22.</b> 19 santri dibagi 4 tim: brp tim isi 5? &rarr; <b>3 Tim</b></div>
-        <div class="q-item"><b>23.</b> Samudra terluas di dunia? &rarr; <b>Samudra Pasifik</b></div>
-        <div class="q-item"><b>24.</b> Bidak catur cuma jalan diagonal? &rarr; <b>Gajah/Menteri</b></div>
-        <div class="q-item"><b>25.</b> Selat pemisah Jawa &amp; Sumatera? &rarr; <b>Selat Sunda</b></div>
-        <div class="q-item"><b>26.</b> Surah berisi 2 Bismillah? &rarr; <b>An-Naml</b></div>
+        <div class="q-item"><b>[S5] 14.</b> Hewan laut 3 jantung &amp; darah biru? &rarr; <b>Gurita</b></div>
+        <div class="q-item"><b>[S5] 15.</b> Jam 09.00 WIB = di Makkah jam? &rarr; <b>05.00 Subuh/Pagi</b></div>
+        <div class="q-item"><b>[S6] 16.</b> Samudra terluas di dunia? &rarr; <b>Samudra Pasifik</b></div>
+        <div class="q-item"><b>[S6] 17.</b> Tulang terpanjang &amp; terkuat? &rarr; <b>Tulang Paha (Femur)</b></div>
+        <div class="q-item"><b>[S6] 18.</b> Jumlah huruf alfabet Indonesia? &rarr; <b>26 huruf</b></div>
+        <div class="q-item"><b>[CAD] 19.</b> Ekor penyeimbang saat lompat? &rarr; <b>Kanguru</b></div>
+        <div class="q-item"><b>[CAD] 20.</b> Generasi setelah Gen Alpha? &rarr; <b>Gen Beta</b></div>
+        <div class="q-item"><b>[CAD] 21.</b> Hewan pertama mengorbit Bumi (1957)? &rarr; <b>Anjing (Laika)</b></div>
+        <div class="q-item"><b>[CAD] 22.</b> Saus tomat abad ke-19 dijual sbg? &rarr; <b>Obat (diare)</b></div>
+        <div class="q-item"><b>[CAD] 23.</b> Vitamin dari sinar matahari pagi? &rarr; <b>Vitamin D</b></div>
+        <div class="q-item"><b>[CAD] 24.</b> Suara terkeras di laut? &rarr; <b>Paus Sperma / Biru</b></div>
+        <div class="q-item"><b>[CAD] 25.</b> Huruf tersering dlm B. Indo? &rarr; <b>Huruf A</b></div>
+        <div class="q-item"><b>[CAD] 26.</b> Khalifah pertama setelah Nabi SAW? &rarr; <b>Abu Bakar Ash-Shiddiq RA</b></div>
       </div>
     </div>
   </div>
 
-  <div class="ref-section">
+  <div class="ref-section" style="margin-bottom:0;">
     <h3>🌍 KUNCI BABAK FINAL: TOP 10 MILITER TERKUAT DUNIA (GLOBAL FIREPOWER 2026)</h3>
-    <div style="font-size:10px; background:#f8fafc; border:1px solid #94a3b8; border-radius:6px; padding:6px 8px;">
+    <div style="font-size:9.1px; background:#f8fafc; border:1px solid #94a3b8; border-radius:6px; padding:4px 7px;">
       <b>Urutan #1 &rarr; #10:</b> (1) Amerika Serikat &bull; (2) Rusia &bull; (3) China &bull; (4) India &bull; (5) Korea Selatan &bull; (6) Prancis &bull; (7) Jepang &bull; (8) Inggris (UK) &bull; (9) Turki &bull; (10) Italia.<br>
       <i>Catatan Pengecoh (Zonk -50):</i> Indonesia (#13), Pakistan (#12), Jerman (#14), Israel (#15), Arab Saudi, Korea Utara tidak masuk 10 besar.
     </div>
