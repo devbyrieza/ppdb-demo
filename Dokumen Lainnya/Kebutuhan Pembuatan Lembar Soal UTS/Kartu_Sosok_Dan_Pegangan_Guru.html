@@ -69,8 +69,8 @@
   .sosok-card {
     border: 2px dashed #334155;
     border-radius: 8px;
-    padding: 7px 7px;
-    min-height: 44mm;
+    padding: 5.5px 6.5px;
+    min-height: 42mm;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -80,26 +80,26 @@
     page-break-inside: avoid;
   }
   .card-code {
-    font-size: 8.5px;
+    font-size: 8px;
     color: #64748b;
     font-weight: bold;
     display: flex;
     justify-content: space-between;
   }
   .card-name {
-    font-size: 15.5px;
+    font-size: 14.2px;
     font-weight: 900;
     color: #020617;
-    line-height: 1.15;
-    margin: 4px 0;
+    line-height: 1.12;
+    margin: 2px 0;
   }
   .card-facts {
-    font-size: 9px;
+    font-size: 8.3px;
     color: #334155;
     background: #f1f5f9;
     border-radius: 5px;
-    padding: 4px 5px;
-    line-height: 1.3;
+    padding: 3.5px 5px;
+    line-height: 1.25;
     text-align: left;
   }
 
@@ -164,170 +164,189 @@
 
 <div class="no-print">
   <div>
-    <b>🖨️ KARTU TEBAK SOSOK (TEMPEL DI PECI/DAHI) &amp; PEGANGAN WASIT</b><br>
-    <span style="font-size:12px; color:#cbd5e1;">Tips: Fakta kecil di bawah nama membantu LAWAN menjawab Ya/Tidak dengan tepat tanpa blunder!</span>
+    <b>🖨️ KARTU "SIAPA / APA DI KEPALAKU?" (TEMPEL DI PECI/DAHI) &amp; PEGANGAN WASIT</b><br>
+    <span style="font-size:12px; color:#cbd5e1;">Tips: 16 Kartu Utama (R1–R4) tidak pernah mengulang kategori antar ronde (orang, benda fisik seperti Mushaf, mapel Aljabar, dll)!</span>
   </div>
   <button class="btn-print" onclick="window.print()">🖨️ Cetak / Simpan PDF (3 Halaman A4)</button>
 </div>
 
-<!-- HALAMAN 1: 15 KARTU SOSOK (CAMPUR SILANG 5 DUNIA) -->
+<!-- HALAMAN 1: 15 KARTU UTAMA (RONDE 1, 2, 3 & R4 TIM 1-3) -->
 <div class="a4-page">
   <div class="page-title">
-    <h2>Kartu Tebak Sosok "Siapa di Kepalaku?" &mdash; Set 1 (Gunting Garis Putus-Putus)</h2>
-    <p>Pasangkan 1 duel secara SILANG BEDA DUNIA (misal kode [U] vs [K], atau [P] vs [B]). Jangan beritahu kategorinya di awal!</p>
+    <h2>Kartu "Siapa / Apa di Kepalaku?" &mdash; Set Utama R1 s/d R4 (Gunting Garis Putus-Putus)</h2>
+    <p>Tiap ronde maju 4 tim sekaligus (4 kategori berbeda total!). Jangan beri tahu kategorinya di awal ronde agar santri berpikir kritis.</p>
   </div>
   <div class="cards-grid">
+    <!-- RONDE 1 -->
     <div class="sosok-card">
-      <div class="card-code"><span>[U-01]</span><span>Pondok</span></div>
-      <div class="card-name">USTADZ WAHAB</div>
-      <div class="card-facts">&bull; Mudir Pesantren (Nyata)<br>&bull; Bukan Musyrif / Halaqoh<br>&bull; Bukan Guru Mapel B. Arab</div>
-    </div>
-    <div class="sosok-card">
-      <div class="card-code"><span>[K-01]</span><span>Fiksi</span></div>
-      <div class="card-name">NARUTO UZUMAKI</div>
-      <div class="card-facts">&bull; Karakter Anime (Tidak Nyata)<br>&bull; Ninja Konoha, Suka Ramen<br>&bull; Jurus Bayangan &amp; Rasengan</div>
-    </div>
-    <div class="sosok-card">
-      <div class="card-code"><span>[P-01]</span><span>Nasional</span></div>
-      <div class="card-name">JENDERAL SUDIRMAN</div>
-      <div class="card-facts">&bull; Pahlawan Nasional (Wafat)<br>&bull; Panglima TNI, Gerilya Tandu<br>&bull; Berasal dari Indonesia</div>
-    </div>
-
-    <div class="sosok-card">
-      <div class="card-code"><span>[U-02]</span><span>Pondok</span></div>
+      <div class="card-code"><span>[R1 • TIM 1]</span><span>Ustadz Pondok</span></div>
       <div class="card-name">USTADZ RIEZA</div>
-      <div class="card-facts">&bull; IT &amp; Guru MTK MTs (Nyata)<br>&bull; Bukan Musyrif / Bukan B. Arab<br>&bull; Lagi Mengajar Sekarang!</div>
+      <div class="card-facts">&bull; Manusia Nyata / Guru Pondok<br>&bull; IT &amp; Guru MTK di MTs<br>&bull; Bukan Musyrif / Bukan B. Arab</div>
     </div>
     <div class="sosok-card">
-      <div class="card-code"><span>[B-01]</span><span>Kejutan</span></div>
-      <div class="card-name">SANDAL JEPIT MASJID</div>
-      <div class="card-facts">&bull; Benda Mati (Bukan Manusia)<br>&bull; Dipakai di Kaki Santri<br>&bull; Sering Tertukar di Masjid!</div>
-    </div>
-    <div class="sosok-card">
-      <div class="card-code"><span>[A-01]</span><span>Olahraga</span></div>
+      <div class="card-code"><span>[R1 • TIM 2]</span><span>Atlet Dunia</span></div>
       <div class="card-name">CRISTIANO RONALDO</div>
       <div class="card-facts">&bull; Manusia Nyata (Masih Hidup)<br>&bull; Pesepakbola Portugal (#7)<br>&bull; Selebrasi Terkenal "SIUUU!"</div>
     </div>
+    <div class="sosok-card">
+      <div class="card-code"><span>[R1 • TIM 3]</span><span>Tokoh Anime</span></div>
+      <div class="card-name">NARUTO UZUMAKI</div>
+      <div class="card-facts">&bull; Karakter Anime Jepang (Fiksi)<br>&bull; Ninja Konoha, Suka Ramen<br>&bull; Jurus Bayangan &amp; Rasengan</div>
+    </div>
+    <div class="sosok-card">
+      <div class="card-code"><span>[R1 • TIM 4]</span><span>Alas Kaki Harian</span></div>
+      <div class="card-name">SANDAL JEPIT MASJID</div>
+      <div class="card-facts">&bull; Benda Mati (Bukan Manusia)<br>&bull; Dipakai di Kaki ke Masjid<br>&bull; Sering Tertukar / "Hilang"!</div>
+    </div>
 
+    <!-- RONDE 2 -->
     <div class="sosok-card">
-      <div class="card-code"><span>[U-03]</span><span>Pondok</span></div>
-      <div class="card-name">USTADZ BACHTIAR</div>
-      <div class="card-facts">&bull; Bendahara Keuangan Pesantren<br>&bull; Mengajar Bahasa Inggris<br>&bull; Bukan Musyrif / Bukan Arab</div>
+      <div class="card-code"><span>[R2 • TIM 1]</span><span>Kitab Fisik (Benda)</span></div>
+      <div class="card-name">MUSHAF</div>
+      <div class="card-facts">&bull; Benda Fisik Cetak (Wujud Kalamullah)<br>&bull; Berisi 30 Juz &amp; 114 Surah Al-Qur'an<br>&bull; Wajib Punya Wudhu Saat Menyentuhnya</div>
     </div>
     <div class="sosok-card">
-      <div class="card-code"><span>[K-02]</span><span>Fiksi</span></div>
-      <div class="card-name">DORAEMON</div>
-      <div class="card-facts">&bull; Karakter Kartun (Robot Kucing)<br>&bull; Warna Biru, Takut Tikus<br>&bull; Kantong Ajaib &amp; Pintu Ajaib</div>
-    </div>
-    <div class="sosok-card">
-      <div class="card-code"><span>[P-02]</span><span>Nasional</span></div>
+      <div class="card-code"><span>[R2 • TIM 2]</span><span>Presiden Pertama RI</span></div>
       <div class="card-name">IR. SOEKARNO</div>
-      <div class="card-facts">&bull; Manusia Nyata (Wafat 1970)<br>&bull; Presiden Pertama Indonesia<br>&bull; Pembaca Teks Proklamasi</div>
+      <div class="card-facts">&bull; Manusia Nyata (Wafat 1970)<br>&bull; Presiden Pertama Indonesia<br>&bull; Pembaca Teks Proklamasi 1945</div>
+    </div>
+    <div class="sosok-card">
+      <div class="card-code"><span>[R2 • TIM 3]</span><span>Game Digital</span></div>
+      <div class="card-name">ROBLOX</div>
+      <div class="card-facts">&bull; Bukan Orang &amp; Bukan Benda Fisik<br>&bull; Game Online Terkenal Anak Sekolah<br>&bull; Karakter Kotak, Banyak Minigame</div>
+    </div>
+    <div class="sosok-card">
+      <div class="card-code"><span>[R2 • TIM 4]</span><span>Bangunan Kiblat</span></div>
+      <div class="card-name">KA'BAH</div>
+      <div class="card-facts">&bull; Bangunan Nyata di Masjidil Haram<br>&bull; Kubus Kain Hitam di Kota Makkah<br>&bull; Arah Kiblat Sholat Umat Islam</div>
     </div>
 
+    <!-- RONDE 3 -->
     <div class="sosok-card">
-      <div class="card-code"><span>[U-04]</span><span>Pondok</span></div>
-      <div class="card-name">USTADZ IMRON</div>
-      <div class="card-facts">&bull; Kepala Kurikulum &amp; Guru B. Arab IL<br>&bull; Tidak Mengajar di MTs<br>&bull; Bukan Musyrif Asrama</div>
-    </div>
-    <div class="sosok-card">
-      <div class="card-code"><span>[K-03]</span><span>Fiksi</span></div>
-      <div class="card-name">SPONGEBOB</div>
-      <div class="card-facts">&bull; Karakter Kartun (Bukan Manusia)<br>&bull; Warna Kuning Kotak, Bawah Laut<br>&bull; Tinggal di Rumah Nanas</div>
-    </div>
-    <div class="sosok-card">
-      <div class="card-code"><span>[A-02]</span><span>Ilmuwan</span></div>
+      <div class="card-code"><span>[R3 • TIM 1]</span><span>Ilmuwan Dunia</span></div>
       <div class="card-name">ALBERT EINSTEIN</div>
-      <div class="card-facts">&bull; Ilmuwan Nyata (Wafat 1955)<br>&bull; Rambut Putih Berantakan<br>&bull; Penemu Rumus E = mc²</div>
+      <div class="card-facts">&bull; Ilmuwan Fisika Nyata (Wafat 1955)<br>&bull; Rambut Putih Berantakan<br>&bull; Penemu Rumus Terkenal E = mc²</div>
+    </div>
+    <div class="sosok-card">
+      <div class="card-code"><span>[R3 • TIM 2]</span><span>Makanan Khas</span></div>
+      <div class="card-name">RENDANG</div>
+      <div class="card-facts">&bull; Makanan Nyata (Bukan Orang)<br>&bull; Daging &amp; Santan Asal Padang/Minang<br>&bull; Masuk Daftar Makanan Terenak Dunia</div>
+    </div>
+    <div class="sosok-card">
+      <div class="card-code"><span>[R3 • TIM 3]</span><span>Hewan Peliharaan</span></div>
+      <div class="card-name">KUCING</div>
+      <div class="card-facts">&bull; Makhluk Hidup / Hewan (Berkaki 4)<br>&bull; Berbulu Halus &amp; Bersuara "Meong"<br>&bull; Hewan Kesayangan Nabi SAW</div>
+    </div>
+    <div class="sosok-card">
+      <div class="card-code"><span>[R3 • TIM 4]</span><span>Materi Pelajaran</span></div>
+      <div class="card-name">ALJABAR</div>
+      <div class="card-facts">&bull; Bukan Orang &amp; Bukan Benda Fisik!<br>&bull; Bab Pelajaran Matematika (Pakai x, y)<br>&bull; Tentang Variabel &amp; Persamaan MTK</div>
     </div>
 
+    <!-- RONDE 4 (TIM 1 - 3) -->
     <div class="sosok-card">
-      <div class="card-code"><span>[U-05]</span><span>Pondok</span></div>
-      <div class="card-name">USTADZ WAHYUDI</div>
-      <div class="card-facts">&bull; Kepala Kepengasuhan<br>&bull; Guru Bahasa Arab di MTs<br>&bull; Bukan Musyrif Kamar</div>
+      <div class="card-code"><span>[R4 • TIM 1]</span><span>Negara Dunia</span></div>
+      <div class="card-name">NEGARA MESIR</div>
+      <div class="card-facts">&bull; Negara Nyata di Afrika (Bukan Orang)<br>&bull; Ada Sungai Nil, Piramida &amp; Al-Azhar<br>&bull; Negeri Kisah Nabi Musa &amp; Firaun</div>
     </div>
     <div class="sosok-card">
-      <div class="card-code"><span>[B-02]</span><span>Kejutan</span></div>
-      <div class="card-name">BOLA BASKET</div>
-      <div class="card-facts">&bull; Benda Mati Olahraga<br>&bull; Bulat Warna Oranye, Dipantul<br>&bull; Dimasukkan ke Ring Tinggi</div>
+      <div class="card-code"><span>[R4 • TIM 2]</span><span>Fenomena Alam</span></div>
+      <div class="card-name">PELANGI</div>
+      <div class="card-facts">&bull; Gejala Alam (Tak Bisa Dipegang)<br>&bull; Muncul di Langit Setelah Hujan<br>&bull; Melengkung Punya 7 Warna Berjajar</div>
     </div>
     <div class="sosok-card">
-      <div class="card-code"><span>[P-03]</span><span>Nasional</span></div>
-      <div class="card-name">BJ HABIBIE</div>
-      <div class="card-facts">&bull; Presiden RI ke-3 (Wafat 2019)<br>&bull; Jenius Pembuat Pesawat Terbang<br>&bull; Pernah Sekolah/Kerja di Jerman</div>
+      <div class="card-code"><span>[R4 • TIM 3]</span><span>Profesi Penyelamat</span></div>
+      <div class="card-name">PEMADAM KEBAKARAN</div>
+      <div class="card-facts">&bull; Profesi Manusia (Bukan Nama Khusus)<br>&bull; Seragam Tahan Api &amp; Mobil Sirine<br>&bull; Tugasnya Memadamkan Api Kebakaran</div>
     </div>
   </div>
 </div>
 
-<!-- HALAMAN 2: SET 2 (12 KARTU TAMBAHAN TERMASUK USTADZ MUSYRIF & KARAKTER) -->
+<!-- HALAMAN 2: 15 KARTU (R4 TIM 4 + 6 CADANGAN UNIK + 8 ALTERNATIF USTADZ R1) -->
 <div class="a4-page">
   <div class="page-title">
-    <h2>Kartu Tebak Sosok "Siapa di Kepalaku?" &mdash; Set 2</h2>
-    <p>Pastikan saat 1 pemain mendapat kartu Ustadz [U], lawannya mendapat kartu [K], [P], [A], atau [B] agar tidak ketebak!</p>
+    <h2>Kartu Babak 2 &mdash; Set 2 (Pelengkap R4, 6 Cadangan Unik &amp; Opsi Alternatif Ustadz R1)</h2>
+    <p>Kartu [ALT-U] hanya dipakai JIKA ingin menukar Ustadz Rieza pada slot tunggal Ustadz di Ronde 1 (jangan ulangi Ustadz di R2–R4!).</p>
   </div>
   <div class="cards-grid">
     <div class="sosok-card">
-      <div class="card-code"><span>[U-06]</span><span>Pondok</span></div>
-      <div class="card-name">USTADZ AGUS CAHYONO</div>
-      <div class="card-facts">&bull; Guru Kitabah di IL &amp; MTs<br>&bull; Musyrif &amp; Pengampu Halaqoh<br>&bull; Ngajar di MTs DAN IL!</div>
+      <div class="card-code"><span>[R4 • TIM 4]</span><span>Transportasi</span></div>
+      <div class="card-name">SEPEDA</div>
+      <div class="card-facts">&bull; Kendaraan Roda 2 (Tanpa Mesin/Bensin)<br>&bull; Dikayuh Pakai Kaki di Pedal<br>&bull; Punya Stang, Sadel &amp; Rantai</div>
     </div>
     <div class="sosok-card">
-      <div class="card-code"><span>[K-04]</span><span>Fiksi</span></div>
-      <div class="card-name">UPIN (UPIN &amp; IPIN)</div>
-      <div class="card-facts">&bull; Karakter Kartun Anak Malaysia<br>&bull; Kembar Botak (1 Rambut)<br>&bull; Tinggal dengan Opah &amp; Kak Ros</div>
+      <div class="card-code"><span>[CAD-1]</span><span>Buah Sunnah</span></div>
+      <div class="card-name">BUAH KURMA</div>
+      <div class="card-facts">&bull; Buah/Makanan Asal Timur Tengah<br>&bull; Warna Cokelat Manis Berbiji Satu<br>&bull; Sunnah Dimakan Saat Buka Puasa</div>
     </div>
     <div class="sosok-card">
-      <div class="card-code"><span>[P-04]</span><span>Nasional</span></div>
-      <div class="card-name">PANGERAN DIPONEGORO</div>
-      <div class="card-facts">&bull; Pahlawan dari Yogyakarta (Wafat)<br>&bull; Ciri Khas Jubah &amp; Sorban Putih<br>&bull; Memimpin Perang Jawa 5 Tahun</div>
+      <div class="card-code"><span>[CAD-2]</span><span>Elektronik</span></div>
+      <div class="card-name">LAPTOP</div>
+      <div class="card-facts">&bull; Benda Mati Teknologi / Sekolah<br>&bull; Punya Layar &amp; Keyboard Bisa Dilipat<br>&bull; Dipakai Guru Presentasi / Coding</div>
     </div>
 
     <div class="sosok-card">
-      <div class="card-code"><span>[U-07]</span><span>Pondok</span></div>
+      <div class="card-code"><span>[CAD-3]</span><span>Alat Musik</span></div>
+      <div class="card-name">GITAR</div>
+      <div class="card-facts">&bull; Benda Mati Pembuat Nada<br>&bull; Berbadan Kayu &amp; Punya 6 Senar<br>&bull; Dimainkan Dengan Cara Dipetik</div>
+    </div>
+    <div class="sosok-card">
+      <div class="card-code"><span>[CAD-4]</span><span>Alat Tukar</span></div>
+      <div class="card-name">UANG KERTAS</div>
+      <div class="card-facts">&bull; Benda Mati Lembaran Tipis<br>&bull; Ada Nominal Rupiah &amp; Gambar Pahlawan<br>&bull; Dipakai Beli Jajan di Kantin!</div>
+    </div>
+    <div class="sosok-card">
+      <div class="card-code"><span>[CAD-5]</span><span>Benda Langit</span></div>
+      <div class="card-name">MATAHARI</div>
+      <div class="card-facts">&bull; Benda Luar Angkasa (Bukan di Bumi)<br>&bull; Pusat Tata Surya, Bintang Terdekat<br>&bull; Terbit Dari Timur, Bersinar Panas</div>
+    </div>
+
+    <div class="sosok-card">
+      <div class="card-code"><span>[CAD-6]</span><span>Penunjuk Waktu</span></div>
+      <div class="card-name">JAM DINDING</div>
+      <div class="card-facts">&bull; Benda Mati Menempel di Tembok<br>&bull; Punya Jarum Berputar &amp; Angka 1&ndash;12<br>&bull; Penunjuk Waktu Masuk Kelas/Sholat</div>
+    </div>
+    <div class="sosok-card">
+      <div class="card-code"><span>[ALT-U1]</span><span>Opsi Ustadz R1</span></div>
+      <div class="card-name">USTADZ WAHAB</div>
+      <div class="card-facts">&bull; Mudir Pesantren (Nyata)<br>&bull; Bukan Musyrif / Halaqoh<br>&bull; Bukan Guru Mapel B. Arab</div>
+    </div>
+    <div class="sosok-card">
+      <div class="card-code"><span>[ALT-U2]</span><span>Opsi Ustadz R1</span></div>
+      <div class="card-name">USTADZ BACHTIAR</div>
+      <div class="card-facts">&bull; Bendahara Keuangan Pesantren<br>&bull; Mengajar Bahasa Inggris<br>&bull; Bukan Musyrif / Bukan B. Arab</div>
+    </div>
+
+    <div class="sosok-card">
+      <div class="card-code"><span>[ALT-U3]</span><span>Opsi Ustadz R1</span></div>
+      <div class="card-name">USTADZ IMRON</div>
+      <div class="card-facts">&bull; Kepala Kurikulum &amp; Guru B. Arab IL<br>&bull; Tidak Mengajar di MTs<br>&bull; Bukan Musyrif Asrama</div>
+    </div>
+    <div class="sosok-card">
+      <div class="card-code"><span>[ALT-U4]</span><span>Opsi Ustadz R1</span></div>
+      <div class="card-name">USTADZ WAHYUDI</div>
+      <div class="card-facts">&bull; Kepala Kepengasuhan<br>&bull; Guru Bahasa Arab di MTs<br>&bull; Bukan Musyrif Kamar</div>
+    </div>
+    <div class="sosok-card">
+      <div class="card-code"><span>[ALT-U5]</span><span>Opsi Ustadz R1</span></div>
+      <div class="card-name">USTADZ AGUS CAHYONO</div>
+      <div class="card-facts">&bull; Guru Kitabah di IL &amp; MTs<br>&bull; Musyrif &amp; Pengampu Halaqoh<br>&bull; Ngajar di MTs DAN IL!</div>
+    </div>
+
+    <div class="sosok-card">
+      <div class="card-code"><span>[ALT-U6]</span><span>Opsi Ustadz R1</span></div>
       <div class="card-name">USTADZ IQBAL</div>
       <div class="card-facts">&bull; Guru Shorof di IL &amp; MTs<br>&bull; Musyrif &amp; Pengampu Halaqoh<br>&bull; Ngajar di MTs DAN IL!</div>
     </div>
     <div class="sosok-card">
-      <div class="card-code"><span>[K-05]</span><span>Fiksi</span></div>
-      <div class="card-name">SPIDER-MAN</div>
-      <div class="card-facts">&bull; Superhero Fiksi (Tidak Nyata)<br>&bull; Kostum Merah-Biru, Bertopeng<br>&bull; Digigit Laba-Laba &amp; Keluar Jaring</div>
-    </div>
-    <div class="sosok-card">
-      <div class="card-code"><span>[A-03]</span><span>Olahraga</span></div>
-      <div class="card-name">LIONEL MESSI</div>
-      <div class="card-facts">&bull; Manusia Nyata (Masih Hidup)<br>&bull; Pesepakbola Argentina (#10)<br>&bull; Juara Piala Dunia 2022</div>
-    </div>
-
-    <div class="sosok-card">
-      <div class="card-code"><span>[U-08]</span><span>Pondok</span></div>
+      <div class="card-code"><span>[ALT-U7]</span><span>Opsi Ustadz R1</span></div>
       <div class="card-name">USTADZ AZZAM</div>
       <div class="card-facts">&bull; Guru Nahwu di IL (Tidak di MTs)<br>&bull; Musyrif &amp; Pengampu Halaqoh<br>&bull; Fokus Mengajar IL!</div>
     </div>
     <div class="sosok-card">
-      <div class="card-code"><span>[K-06]</span><span>Game</span></div>
-      <div class="card-name">STEVE (MINECRAFT)</div>
-      <div class="card-facts">&bull; Karakter Game (Tidak Nyata)<br>&bull; Bentuk Serba Kotak / Kubus<br>&bull; Suka Menambang &amp; Bangun Blok</div>
-    </div>
-    <div class="sosok-card">
-      <div class="card-code"><span>[A-04]</span><span>Ilmuwan</span></div>
-      <div class="card-name">AL-KHAWARIZMI</div>
-      <div class="card-facts">&bull; Ilmuwan Muslim Sejarah (Wafat)<br>&bull; Penemu Aljabar &amp; Angka Nol<br>&bull; Namanya Asal Kata "Algoritma"</div>
-    </div>
-
-    <div class="sosok-card">
-      <div class="card-code"><span>[U-09]</span><span>Pondok</span></div>
+      <div class="card-code"><span>[ALT-U8]</span><span>Opsi Ustadz R1</span></div>
       <div class="card-name">USTADZ THORIQ</div>
       <div class="card-facts">&bull; Guru Siroh di MTs &amp; IL<br>&bull; Bukan Guru Nahwu/Shorof<br>&bull; Bukan Musyrif Asrama</div>
-    </div>
-    <div class="sosok-card">
-      <div class="card-code"><span>[B-03]</span><span>Kejutan</span></div>
-      <div class="card-name">BUAH KURMA</div>
-      <div class="card-facts">&bull; Benda Mati / Makanan Sunnah<br>&bull; Berwarna Cokelat, Manis<br>&bull; Identik Bulan Ramadhan</div>
-    </div>
-    <div class="sosok-card">
-      <div class="card-code"><span>[P-05]</span><span>Sejarah</span></div>
-      <div class="card-name">MUHAMMAD AL-FATIH</div>
-      <div class="card-facts">&bull; Pemimpin Islam (Wafat 1481)<br>&bull; Penakluk Konstantinopel Usia Muda<br>&bull; Angkut Kapal Lewat Darat/Bukit</div>
     </div>
   </div>
 </div>
@@ -344,7 +363,7 @@
     <div style="font-size:8.9px; line-height:1.34; border:1px solid #cbd5e1; padding:4px 7px; border-radius:6px;">
       <b>09.00&ndash;09.03 (3 mnt):</b> Duduk per 4 Tim Baru, jelaskan poin &amp; denda <b>-100</b> kalau bocorin. Taruh 1 spidol di tengah. (Juara 1: Kupon Kantin Rp 5.000/anak + Nilai Harian; MVP/Kilat: Nilai Kompetensi).<br>
       <b>09.03&ndash;09.16 (13 mnt) &mdash; Babak 1 (Rebut Spidol Best of 3):</b> 6 Sesi Round-Robin (1v2, 3v4, 1v3, 2v4, 1v4, 2v3) &times; <b>3 Soal/Sesi</b> (~2 mnt/sesi). Benar <b>+50</b>, Salah/&gt;3 dtk <b>-25</b>, Menang Duel <b>+50</b>.<br>
-      <b>09.16&ndash;09.29 (13 mnt) &mdash; Babak 2 (Tebak Sosok 90 Detik):</b> 6 Duel Round-Robin seimbang (~2 mnt/duel). &le;45 dtk: <b>+300</b> | 46&ndash;90 dtk: <b>+200</b> | Salah tembak: <b>-50</b> | Habis/Clue: <b>+100</b>.<br>
+      <b>09.16&ndash;09.29 (13 mnt) &mdash; Babak 2 (4 Tim Serentak &bull; 4 Ronde @ 3 Menit):</b> Tiap ronde, <b>4 tim kirim 1 wakil maju bersama</b>! Bergilir tanya <b>YA/TIDAK</b> searah jarum jam. Urutan tebak benar: <b>#1 (+300)</b> &bull; <b>#2 (+200)</b> &bull; <b>#3 (+150)</b> &bull; <b>#4 (+100)</b> | Salah tembak: <b>-50</b> | <i>Kategori TIDAK diulang antar ronde!</i><br>
       <b>09.29&ndash;09.40 (11 mnt) &mdash; Final Top 10 Militer &amp; Podium:</b> 2 mnt tulis rahasia <b>6 Negara</b> &rarr; buka #10 ke #1 (Benar <b>+100</b>, Zonk <b>-50</b>, 6/6 Bonus <b>+200</b>) &rarr; Umumkan Podium &amp; Bagikan Kupon.
     </div>
   </div>
@@ -390,15 +409,13 @@
   </div>
 
   <div class="ref-section">
-    <h3>🏫 MATRIKS 9 USTADZ &amp; PASANGAN ADIL 6 DUEL BABAK 2 (1 USTADZ + 1 FIKSI + 1 TOKOH PER TIM)</h3>
-    <div style="font-size:8.5px; background:#eff6ff; border:1px solid #93c5fd; border-radius:4px; padding:3px 6px; margin-bottom:4px;">
-      <b>Rekomendasi 6 Duel Adil Babak 2:</b>
-      <b>D1(1v2):</b> Ust. Rieza vs Naruto &bull;
-      <b>D2(3v4):</b> BJ Habibie vs C. Ronaldo &bull;
-      <b>D3(1v3):</b> Ir. Soekarno vs Ust. Wahab &bull;
-      <b>D4(2v4):</b> Ust. Agus vs Spider-Man &bull;
-      <b>D5(1v4):</b> SpongeBob vs Ust. Iqbal &bull;
-      <b>D6(2v3):</b> L. Messi vs Doraemon
+    <h3>🏫 4 RONDE BABAK 2 (ANTI-KATEGORI SAMA!) &amp; MATRIKS 9 USTADZ</h3>
+    <div style="font-size:8.4px; background:#eff6ff; border:1px solid #93c5fd; border-radius:4px; padding:3px 6px; margin-bottom:4px; line-height:1.34;">
+      <b>R1:</b> T1 Ust. Rieza (atau <i>ALT-U</i>) &bull; T2 C. Ronaldo &bull; T3 Naruto &bull; T4 Sandal Jepit Masjid &nbsp;|&nbsp;
+      <b>R2:</b> T1 Mushaf <i>(Benda)</i> &bull; T2 Soekarno &bull; T3 Roblox &bull; T4 Ka'bah<br>
+      <b>R3:</b> T1 A. Einstein &bull; T2 Rendang &bull; T3 Kucing &bull; T4 Aljabar <i>(Mapel!)</i> &nbsp;|&nbsp;
+      <b>R4:</b> T1 Negara Mesir &bull; T2 Pelangi &bull; T3 Pemadam Kebakaran &bull; T4 Sepeda &nbsp;|&nbsp;
+      <b>Cad:</b> Kurma, Laptop, Gitar, Uang Kertas
     </div>
     <table class="ref-table">
       <thead>
