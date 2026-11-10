@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kartu Tebak Sosok &amp; Pegangan Wasit (Print A4)</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #e2e8f0;
+    color: #0f172a;
+    padding: 16px;
+  }
+  .no-print {
+    max-width: 210mm;
+    margin: 0 auto 14px;
+    background: #0f172a;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  .btn-print {
+    background: #10b981;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 7mm;
+  }
+
+  .a4-page {
+    width: 210mm;
+    min-height: 280mm;
+    background: white;
+    margin: 0 auto 16px;
+    padding: 8mm 8mm;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    page-break-after: always;
+  }
+  .a4-page:last-child { page-break-after: auto; }
+
+  .page-title {
+    text-align: center;
+    border-bottom: 2px solid #0f172a;
+    padding-bottom: 5px;
+    margin-bottom: 8px;
+  }
+  .page-title h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .page-title p { font-size: 10px; color: #475569; margin-top: 2px; }
+
+  /* GRID KARTU SOSOK (3 KOLOM x 5 BARIS = 15 KARTU PER HALAMAN) */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+  }
+  .sosok-card {
+    border: 2px dashed #334155;
+    border-radius: 8px;
+    padding: 7px 7px;
+    min-height: 44mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    background: #ffffff;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .card-code {
+    font-size: 8.5px;
+    color: #64748b;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+  }
+  .card-name {
+    font-size: 15.5px;
+    font-weight: 900;
+    color: #020617;
+    line-height: 1.15;
+    margin: 4px 0;
+  }
+  .card-facts {
+    font-size: 9px;
+    color: #334155;
+    background: #f1f5f9;
+    border-radius: 5px;
+    padding: 4px 5px;
+    line-height: 1.3;
+    text-align: left;
+  }
+
+  /* HALAMAN 3: PEGANGAN WASIT */
+  .ref-section { margin-bottom: 10px; }
+  .ref-section h3 {
+    font-size: 12px;
+    background: #0f172a;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-bottom: 6px;
+  }
+  table.ref-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.5px;
+  }
+  table.ref-table th, table.ref-table td {
+    border: 1px solid #94a3b8;
+    padding: 3px 5px;
+  }
+  table.ref-table th { background: #e2e8f0; text-align: left; }
+  .q-two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    font-size: 9.2px;
+    line-height: 1.35;
+  }
+  .q-item { border-bottom: 1px dotted #cbd5e1; padding: 2px 0; }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .no-print { display: none; }
+    .a4-page { box-shadow: none; margin: 0; width: 100%; min-height: auto; height: auto; padding: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="no-print">
+  <div>
+    <b>🖨️ KARTU TEBAK SOSOK (TEMPEL DI PECI/DAHI) &amp; PEGANGAN WASIT</b><br>
+    <span style="font-size:12px; color:#cbd5e1;">Tips: Fakta kecil di bawah nama membantu LAWAN menjawab Ya/Tidak dengan tepat tanpa blunder!</span>
+  </div>
+  <button class="btn-print" onclick="window.print()">🖨️ Cetak / Simpan PDF (3 Halaman A4)</button>
+</div>
+
+<!-- HALAMAN 1: 15 KARTU SOSOK (CAMPUR SILANG 5 DUNIA) -->
+<div class="a4-page">
+  <div class="page-title">
+    <h2>Kartu Tebak Sosok "Siapa di Kepalaku?" &mdash; Set 1 (Gunting Garis Putus-Putus)</h2>
+    <p>Pasangkan 1 duel secara SILANG BEDA DUNIA (misal kode [U] vs [K], atau [P] vs [B]). Jangan beritahu kategorinya di awal!</p>
+  </div>
+  <div class="cards-grid">
+    <div class="sosok-card">
+      <div class="card-code"><span>[U-01]</span><span>Pondok</span></div>
+      <div class="card-name">USTADZ WAHAB</div>
+      <div class="card-facts">&bull; Mudir Pesantren (Nyata)<br>&bull; Bukan Musyrif / Halaqoh<br>&bull; Bukan Guru Mapel B. Arab</div>
+    </div>
+    <div class="sosok-card">
+      <div class="card-code"><span>[K-01]</span><span>Fiksi</span></div>
+      <div class="card-name">NARUTO UZUMAKI</div>
+      <div class="card-facts">&bull; Karakter Anime (Tidak Nyata)<br>&bull; Ninja Konoha, Suka Ramen<br>&bull; Jurus Bayangan &amp; Rasengan</div>
+    </div>
+    <div class="sosok-card">
+      <div class="card-code"><span>[P-01]</span><span>Nasional</span></div>
+      <div class="card-name">JENDERAL SUDIRMAN</div>
+      <div class="card-facts">&bull; Pahlawan Nasional (Wafat)<br>&bull; Panglima TNI, Gerilya Tandu<br>&bull; Berasal dari Indonesia</div>
+    </div>
+
+    <div class="sosok-card">
+      <div class="card-code"><span>[U-02]</span><span>Pondok</span></div>
+      <div class="card-name">USTADZ RIEZA</div>
+      <div class="card-facts">&bull; IT &amp; Guru MTK MTs (Nyata)<br>&bull; Bukan Musyrif / Bukan B. Arab<br>&bull; Lagi Mengajar Sekarang!</div>
+    </div>
+    <div class="sosok-card">
+      <div class="card-code"><span>[B-01]</span><span>Kejutan</span></div>
+      <div class="card-name">SANDAL JEPIT MASJID</div>
+      <div class="card-facts">&bull; Benda Mati (Bukan Manusia)<br>&bull; Dipakai di Kaki Santri<br>&bull; Sering Tertukar di Masjid!</div>
+    </div>
+    <div class="sosok-card">
+      <div class="card-code"><span>[A-01]</span><span>Olahraga</span></div>
+      <div class="card-name">CRISTIANO RONALDO</div>
+      <div class="card-facts">&bull; Manusia Nyata (Masih Hidup)<br>&bull; Pesepakbola Portugal (#7)<br>&bull; Selebrasi Terkenal "SIUUU!"</div>
+    </div>
+
+    <div class="sosok-card">
+      <div class="card-code"><span>[U-03]</span><span>Pondok</span></div>
+      <div class="card-name">USTADZ BACHTIAR</div>
+      <div class="card-facts">&bull; Bendahara Keuangan Pesantren<br>&bull; Mengajar Bahasa Inggris<br>&bull; Bukan Musyrif / Bukan Arab</div>
+    </div>
+    <div class="sosok-card">
+      <div class="card-code"><span>[K-02]</span><span>Fiksi</span></div>
+      <div class="card-name">DORAEMON</div>
+      <div class="card-facts">&bull; Karakter Kartun (Robot Kucing)<br>&bull; Warna Biru, Takut Tikus<br>&bull; Kantong Ajaib &amp; Pintu Ajaib</div>
+    </div>
+    <div class="sosok-card">
+      <div class="card-code"><span>[P-02]</span><span>Nasional</span></div>
+      <div class="card-name">IR. SOEKARNO</div>
+      <div class="card-facts">&bull; Manusia Nyata (Wafat 1970)<br>&bull; Presiden Pertama Indonesia<br>&bull; Pembaca Teks Proklamasi</div>
+    </div>
+
+    <div class="sosok-card">
+      <div class="card-code"><span>[U-04]</span><span>Pondok</span></div>
+      <div class="card-name">USTADZ IMRON</div>
+      <div class="card-facts">&bull; Kepala Kurikulum &amp; Guru B. Arab IL<br>&bull; Tidak Mengajar di MTs<br>&bull; Bukan Musyrif Asrama</div>
+    </div>
+    <div class="sosok-card">
+      <div class="card-code"><span>[K-03]</span><span>Fiksi</span></div>
+      <div class="card-name">SPONGEBOB</div>
+      <div class="card-facts">&bull; Karakter Kartun (Bukan Manusia)<br>&bull; Warna Kuning Kotak, Bawah Laut<br>&bull; Tinggal di Rumah Nanas</div>
+    </div>
+    <div class="sosok-card">
+      <div class="card-code"><span>[A-02]</span><span>Ilmuwan</span></div>
+      <div class="card-name">ALBERT EINSTEIN</div>
+      <div class="card-facts">&bull; Ilmuwan Nyata (Wafat 1955)<br>&bull; Rambut Putih Berantakan<br>&bull; Penemu Rumus E = mc²</div>
+    </div>
+
+    <div class="sosok-card">
+      <div class="card-code"><span>[U-05]</span><span>Pondok</span></div>
+      <div class="card-name">USTADZ WAHYUDI</div>
+      <div class="card-facts">&bull; Kepala Kepengasuhan<br>&bull; Guru Bahasa Arab di MTs<br>&bull; Bukan Musyrif Kamar</div>
+    </div>
+    <div class="sosok-card">
+      <div class="card-code"><span>[B-02]</span><span>Kejutan</span></div>
+      <div class="card-name">BOLA BASKET</div>
+      <div class="card-facts">&bull; Benda Mati Olahraga<br>&bull; Bulat Warna Oranye, Dipantul<br>&bull; Dimasukkan ke Ring Tinggi</div>
+    </div>
+    <div class="sosok-card">
+      <div class="card-code"><span>[P-03]</span><span>Nasional</span></div>
+      <div class="card-name">BJ HABIBIE</div>
+      <div class="card-facts">&bull; Presiden RI ke-3 (Wafat 2019)<br>&bull; Jenius Pembuat Pesawat Terbang<br>&bull; Pernah Sekolah/Kerja di Jerman</div>
+    </div>
+  </div>
+</div>
+
+<!-- HALAMAN 2: SET 2 (12 KARTU TAMBAHAN TERMASUK USTADZ MUSYRIF & KARAKTER) -->
+<div class="a4-page">
+  <div class="page-title">
+    <h2>Kartu Tebak Sosok "Siapa di Kepalaku?" &mdash; Set 2</h2>
+    <p>Pastikan saat 1 pemain mendapat kartu Ustadz [U], lawannya mendapat kartu [K], [P], [A], atau [B] agar tidak ketebak!</p>
+  </div>
+  <div class="cards-grid">
+    <div class="sosok-card">
+      <div class="card-code"><span>[U-06]</span><span>Pondok</span></div>
+      <div class="card-name">USTADZ AGUS CAHYONO</div>
+      <div class="card-facts">&bull; Guru Kitabah di IL &amp; MTs<br>&bull; Musyrif &amp; Pengampu Halaqoh<br>&bull; Ngajar di MTs DAN IL!</div>
+    </div>
+    <div class="sosok-card">
+      <div class="card-code"><span>[K-04]</span><span>Fiksi</span></div>
+      <div class="card-name">UPIN (UPIN &amp; IPIN)</div>
+      <div class="card-facts">&bull; Karakter Kartun Anak Malaysia<br>&bull; Kembar Botak (1 Rambut)<br>&bull; Tinggal dengan Opah &amp; Kak Ros</div>
+    </div>
+    <div class="sosok-card">
+      <div class="card-code"><span>[P-04]</span><span>Nasional</span></div>
+      <div class="card-name">PANGERAN DIPONEGORO</div>
+      <div class="card-facts">&bull; Pahlawan dari Yogyakarta (Wafat)<br>&bull; Ciri Khas Jubah &amp; Sorban Putih<br>&bull; Memimpin Perang Jawa 5 Tahun</div>
+    </div>
+
+    <div class="sosok-card">
+      <div class="card-code"><span>[U-07]</span><span>Pondok</span></div>
+      <div class="card-name">USTADZ IQBAL</div>
+      <div class="card-facts">&bull; Guru Shorof di IL &amp; MTs<br>&bull; Musyrif &amp; Pengampu Halaqoh<br>&bull; Ngajar di MTs DAN IL!</div>
+    </div>
+    <div class="sosok-card">
+      <div class="card-code"><span>[K-05]</span><span>Fiksi</span></div>
+      <div class="card-name">SPIDER-MAN</div>
+      <div class="card-facts">&bull; Superhero Fiksi (Tidak Nyata)<br>&bull; Kostum Merah-Biru, Bertopeng<br>&bull; Digigit Laba-Laba &amp; Keluar Jaring</div>
+    </div>
+    <div class="sosok-card">
+      <div class="card-code"><span>[A-03]</span><span>Olahraga</span></div>
+      <div class="card-name">LIONEL MESSI</div>
+      <div class="card-facts">&bull; Manusia Nyata (Masih Hidup)<br>&bull; Pesepakbola Argentina (#10)<br>&bull; Juara Piala Dunia 2022</div>
+    </div>
+
+    <div class="sosok-card">
+      <div class="card-code"><span>[U-08]</span><span>Pondok</span></div>
+      <div class="card-name">USTADZ AZZAM</div>
+      <div class="card-facts">&bull; Guru Nahwu di IL (Tidak di MTs)<br>&bull; Musyrif &amp; Pengampu Halaqoh<br>&bull; Fokus Mengajar IL!</div>
+    </div>
+    <div class="sosok-card">
+      <div class="card-code"><span>[K-06]</span><span>Game</span></div>
+      <div class="card-name">STEVE (MINECRAFT)</div>
+      <div class="card-facts">&bull; Karakter Game (Tidak Nyata)<br>&bull; Bentuk Serba Kotak / Kubus<br>&bull; Suka Menambang &amp; Bangun Blok</div>
+    </div>
+    <div class="sosok-card">
+      <div class="card-code"><span>[A-04]</span><span>Ilmuwan</span></div>
+      <div class="card-name">AL-KHAWARIZMI</div>
+      <div class="card-facts">&bull; Ilmuwan Muslim Sejarah (Wafat)<br>&bull; Penemu Aljabar &amp; Angka Nol<br>&bull; Namanya Asal Kata "Algoritma"</div>
+    </div>
+
+    <div class="sosok-card">
+      <div class="card-code"><span>[U-09]</span><span>Pondok</span></div>
+      <div class="card-name">USTADZ THORIQ</div>
+      <div class="card-facts">&bull; Guru Siroh di MTs &amp; IL<br>&bull; Bukan Guru Nahwu/Shorof<br>&bull; Bukan Musyrif Asrama</div>
+    </div>
+    <div class="sosok-card">
+      <div class="card-code"><span>[B-03]</span><span>Kejutan</span></div>
+      <div class="card-name">BUAH KURMA</div>
+      <div class="card-facts">&bull; Benda Mati / Makanan Sunnah<br>&bull; Berwarna Cokelat, Manis<br>&bull; Identik Bulan Ramadhan</div>
+    </div>
+    <div class="sosok-card">
+      <div class="card-code"><span>[P-05]</span><span>Sejarah</span></div>
+      <div class="card-name">MUHAMMAD AL-FATIH</div>
+      <div class="card-facts">&bull; Pemimpin Islam (Wafat 1481)<br>&bull; Penakluk Konstantinopel Usia Muda<br>&bull; Angkut Kapal Lewat Darat/Bukit</div>
+    </div>
+  </div>
+</div>
+
+<!-- HALAMAN 3: PEGANGAN WASIT / USTADZ RIEZA -->
+<div class="a4-page">
+  <div class="page-title">
+    <h2>Pegangan Cepat Wasit &mdash; Sesi 40 Menit (09.00 &ndash; 09.40 WIB)</h2>
+    <p>Gunakan lembar ini sebagai panduan kontrol waktu, kunci soal lisan, matriks ustadz, dan kunci final Top 10.</p>
+  </div>
+
+  <div class="ref-section">
+    <h3>⏱️ KONTROL WAKTU &amp; JADWAL MATCH ADIL (40 MENIT PAS)</h3>
+    <div style="font-size:10px; line-height:1.45; border:1px solid #cbd5e1; padding:6px 8px; border-radius:6px;">
+      <b>09.00&ndash;09.04 (4 mnt):</b> Bagi 4 Tim, jelaskan poin &amp; denda <b>-100</b> kalau bocorin. Taruh 1 spidol di meja tengah.<br>
+      <b>09.04&ndash;09.18 (14 mnt) &mdash; Babak 1 (Rebut Spidol Best of 3):</b> Jalankan 6 duel (1v2, 3v4, 1v3, 2v4, 1v4, 2v3). Benar <b>+50</b>, Salah/Diam &gt;3 dtk <b>-25</b>, Menang Duel <b>+50</b>.<br>
+      <b>09.18&ndash;09.33 (15 mnt) &mdash; Babak 2 (Tebak Sosok 2 Menit):</b> Wajib jalankan minimal 4 match awal (1v2, 3v4, 1v3, 2v4) agar semua tim main 2x. Jika jam masih &le;09.28, lanjut Match 5 (1v4) &amp; Match 6 (2v3). &le;60 dtk: <b>+300</b> | 61&ndash;120 dtk: <b>+200</b> | Salah tembak: <b>-50</b>.<br>
+      <b>09.33&ndash;09.40 (7 mnt) &mdash; Final Top 10 Militer:</b> 2 menit tulis rahasia <b>6 Negara</b> di kertas &rarr; kumpulkan &rarr; buka #10 ke #1! (Benar <b>+100</b>, Zonk <b>-50</b>, 6/6 Sempurna <b>+200</b>).
+    </div>
+  </div>
+
+  <div class="ref-section">
+    <h3>🏫 MATRIKS CEPAT 9 USTADZ PESANTREN (CEK JAWABAN YA/TIDAK)</h3>
+    <table class="ref-table">
+      <thead>
+        <tr>
+          <th>Nama Ustadz</th><th>Jabatan / Mapel</th><th>MTs?</th><th>IL?</th><th>B. Arab/Cabang?</th><th>Musyrif &amp; Halaqoh?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><b>Ust. Wahab</b></td><td>Mudir Pesantren</td><td>Tidak</td><td>Tidak</td><td>Tidak</td><td>Tidak</td></tr>
+        <tr><td><b>Ust. Rieza</b></td><td>IT &amp; Guru MTK</td><td>Ya</td><td>Tidak</td><td>Tidak</td><td>Tidak</td></tr>
+        <tr><td><b>Ust. Bachtiar</b></td><td>Bendahara &amp; B. Inggris</td><td>Ya/Umum</td><td>Ya/Umum</td><td>Tidak</td><td>Tidak</td></tr>
+        <tr><td><b>Ust. Imron</b></td><td>Kep. Kurikulum &amp; B. Arab IL</td><td>Tidak</td><td>Ya</td><td>Ya</td><td>Tidak</td></tr>
+        <tr><td><b>Ust. Wahyudi</b></td><td>Kep. Kepengasuhan &amp; B. Arab MTs</td><td>Ya</td><td>Tidak</td><td>Ya</td><td>Tidak</td></tr>
+        <tr><td><b>Ust. Agus Cahyono</b></td><td>Kitabah (IL &amp; MTs)</td><td>Ya</td><td>Ya</td><td>Ya</td><td>Ya</td></tr>
+        <tr><td><b>Ust. Iqbal</b></td><td>Shorof (IL &amp; MTs)</td><td>Ya</td><td>Ya</td><td>Ya</td><td>Ya</td></tr>
+        <tr><td><b>Ust. Azzam</b></td><td>Nahwu (IL)</td><td>Tidak</td><td>Ya</td><td>Ya</td><td>Ya</td></tr>
+        <tr><td><b>Ust. Thoriq</b></td><td>Siroh (MTs &amp; IL)</td><td>Ya</td><td>Ya</td><td>Tidak</td><td>Tidak</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="ref-section">
+    <h3>⚡ KUNCI CEPAT 26 SOAL BABAK 1 (JIKA INGIN BACA LISAN LANGSUNG)</h3>
+    <div class="q-two-col">
+      <div>
+        <div class="q-item"><b>1.</b> Provinsi Gunung Rinjani? &rarr; <b>NTB</b></div>
+        <div class="q-item"><b>2.</b> Kepanjangan FYP TikTok? &rarr; <b>For You Page</b></div>
+        <div class="q-item"><b>3.</b> Hewan air bikin bingung halal/haram? &rarr; <b>Anjing Laut</b></div>
+        <div class="q-item"><b>4.</b> Jumlah bidak catur 1 pemain? &rarr; <b>16 Bidak</b> (bukan 32)</div>
+        <div class="q-item"><b>5.</b> Kedipan mata per menit? &rarr; <b>15&ndash;20 kali</b></div>
+        <div class="q-item"><b>6.</b> Ekor penyeimbang saat lompat? &rarr; <b>Kanguru</b></div>
+        <div class="q-item"><b>7.</b> Suara terkeras di laut? &rarr; <b>Paus Sperma / Paus Biru</b></div>
+        <div class="q-item"><b>8.</b> Jumlah huruf alfabet Indonesia? &rarr; <b>26 huruf</b></div>
+        <div class="q-item"><b>9.</b> Generasi setelah Gen Alpha? &rarr; <b>Gen Beta</b></div>
+        <div class="q-item"><b>10.</b> Huruf tersering dlm B. Indo? &rarr; <b>Huruf A</b></div>
+        <div class="q-item"><b>11.</b> Hewan pertama mengorbit Bumi (1957)? &rarr; <b>Anjing (Laika)</b></div>
+        <div class="q-item"><b>12.</b> Saus tomat abad ke-19 dijual sbg? &rarr; <b>Obat (diare)</b></div>
+        <div class="q-item"><b>13.</b> Planet terpanas Tata Surya? &rarr; <b>Venus</b> (bkn Merkurius)</div>
+      </div>
+      <div>
+        <div class="q-item"><b>14.</b> Hewan laut 3 jantung &amp; darah biru? &rarr; <b>Gurita</b></div>
+        <div class="q-item"><b>15.</b> Poin menang 1 set badminton? &rarr; <b>21 poin</b></div>
+        <div class="q-item"><b>16.</b> Negara ASEAN tak pernah dijajah? &rarr; <b>Thailand</b></div>
+        <div class="q-item"><b>17.</b> Kepanjangan QR pada QR Code? &rarr; <b>Quick Response</b></div>
+        <div class="q-item"><b>18.</b> Mata uang resmi Jepang? &rarr; <b>Yen</b></div>
+        <div class="q-item"><b>19.</b> Tulang terpanjang &amp; terkuat? &rarr; <b>Tulang Paha (Femur)</b></div>
+        <div class="q-item"><b>20.</b> Jam 09.00 WIB = di Makkah jam? &rarr; <b>05.00 Subuh/Pagi</b></div>
+        <div class="q-item"><b>21.</b> Salip posisi ke-2 jadi posisi? &rarr; <b>Ke-2</b></div>
+        <div class="q-item"><b>22.</b> 19 santri dibagi 4 tim: brp tim isi 5? &rarr; <b>3 Tim</b></div>
+        <div class="q-item"><b>23.</b> Samudra terluas di dunia? &rarr; <b>Samudra Pasifik</b></div>
+        <div class="q-item"><b>24.</b> Bidak catur cuma jalan diagonal? &rarr; <b>Gajah/Menteri</b></div>
+        <div class="q-item"><b>25.</b> Selat pemisah Jawa &amp; Sumatera? &rarr; <b>Selat Sunda</b></div>
+        <div class="q-item"><b>26.</b> Surah berisi 2 Bismillah? &rarr; <b>An-Naml</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ref-section">
+    <h3>🌍 KUNCI BABAK FINAL: TOP 10 MILITER TERKUAT DUNIA (GLOBAL FIREPOWER 2026)</h3>
+    <div style="font-size:10px; background:#f8fafc; border:1px solid #94a3b8; border-radius:6px; padding:6px 8px;">
+      <b>Urutan #1 &rarr; #10:</b> (1) Amerika Serikat &bull; (2) Rusia &bull; (3) China &bull; (4) India &bull; (5) Korea Selatan &bull; (6) Prancis &bull; (7) Jepang &bull; (8) Inggris (UK) &bull; (9) Turki &bull; (10) Italia.<br>
+      <i>Catatan Pengecoh (Zonk -50):</i> Indonesia (#13), Pakistan (#12), Jerman (#14), Israel (#15), Arab Saudi, Korea Utara tidak masuk 10 besar.
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

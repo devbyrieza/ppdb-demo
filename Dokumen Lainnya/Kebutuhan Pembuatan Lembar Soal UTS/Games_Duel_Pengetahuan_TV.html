@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arena Duel Pengetahuan — Kelas 7 MTs (40 Menit)</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg-dark: #040814;
+    --bg-panel: #0d1526;
+    --bg-card: #152038;
+    --border: #2a3a5e;
+    --cyan: #38bdf8;
+    --amber: #f59e0b;
+    --emerald: #10b981;
+    --rose: #f43f5e;
+    --purple: #a855f7;
+    --text: #f8fafc;
+    --muted: #94a3b8;
+  }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: radial-gradient(circle at top center, #111c36 0%, #040814 75%);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 14px 18px 28px;
+  }
+  .container {
+    max-width: 1380px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  /* TOP BAR & MASTER TIMER */
+  .top-bar {
+    background: linear-gradient(135deg, #131f3a 0%, #0b1224 100%);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 12px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.45);
+  }
+  .brand h1 {
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 0.8px;
+    color: var(--cyan);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .brand p {
+    font-size: 12.5px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .master-clock-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #070c1a;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 8px 14px;
+  }
+  .clock-readout {
+    font-family: Consolas, monospace;
+    font-size: 28px;
+    font-weight: 900;
+    color: #4ade80;
+    min-width: 88px;
+    text-align: center;
+  }
+  .clock-readout.warn { color: var(--amber); }
+  .clock-readout.danger { color: var(--rose); animation: pulse 1s infinite; }
+  .pace-pill {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: rgba(56, 189, 248, 0.15);
+    color: var(--cyan);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    max-width: 240px;
+  }
+  .btn-xs {
+    background: #1e293b;
+    border: 1px solid #475569;
+    color: white;
+    padding: 5px 9px;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-xs:hover { background: #334155; transform: translateY(-1px); }
+  .btn-xs.active-green { background: #059669; border-color: #34d399; }
+
+  /* NAVIGATION TABS */
+  .nav-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    flex: 1;
+    min-width: 150px;
+    background: var(--bg-panel);
+    border: 2px solid var(--border);
+    color: var(--muted);
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  .tab-btn span.time-tag {
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0.8;
+  }
+  .tab-btn:hover { border-color: var(--cyan); color: white; }
+  .tab-btn.active {
+    background: linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%);
+    border-color: #7dd3fc;
+    color: white;
+    box-shadow: 0 4px 18px rgba(2, 132, 199, 0.45);
+  }
+
+  /* SCOREBOARD 4 TIM */
+  .scoreboard-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .team-card {
+    background: var(--bg-panel);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 10px 12px;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .team-card.t1 { border-top: 5px solid #f97316; }
+  .team-card.t2 { border-top: 5px solid #10b981; }
+  .team-card.t3 { border-top: 5px solid #38bdf8; }
+  .team-card.t4 { border-top: 5px solid #a855f7; }
+  .team-card.leading { box-shadow: 0 0 20px rgba(250, 204, 21, 0.28); border-color: #facc15; }
+
+  .team-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .team-name { font-size: 15px; font-weight: 900; }
+  .team-leader { font-size: 11px; color: var(--muted); }
+  .team-score {
+    font-family: Consolas, monospace;
+    font-size: 36px;
+    font-weight: 900;
+    text-align: center;
+    margin: 4px 0 8px;
+    color: #facc15;
+    text-shadow: 0 2px 10px rgba(250, 204, 21, 0.25);
+  }
+  .score-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    justify-content: center;
+  }
+  .s-btn {
+    border: none;
+    border-radius: 6px;
+    padding: 4px 7px;
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+    color: white;
+    transition: transform 0.1s;
+  }
+  .s-btn:active { transform: scale(0.92); }
+  .s-plus { background: #059669; }
+  .s-plus-big { background: #0284c7; }
+  .s-minus { background: #b91c1c; }
+  .s-leak { background: #7f1d1d; border: 1px solid #f87171; }
+
+  /* STAGE SECTIONS */
+  .stage { display: none; }
+  .stage.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.45; } }
+
+  /* TV TOAST NOTIFICATION */
+  .tv-toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: linear-gradient(135deg, #065f46 0%, #0f172a 100%);
+    border: 2px solid #34d399;
+    color: #ffffff;
+    padding: 14px 28px;
+    border-radius: 14px;
+    font-size: 18px;
+    font-weight: 900;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.75);
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.25s ease;
+  }
+  .tv-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .panel {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px 22px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  }
+
+  /* TAB 0: RULES */
+  .rules-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 12px;
+  }
+  .rule-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+  }
+  .rule-box h3 { font-size: 16px; color: var(--cyan); margin-bottom: 8px; }
+  .rule-box ul { padding-left: 18px; font-size: 13.5px; line-height: 1.65; color: #e2e8f0; }
+  .penalty-banner {
+    margin-top: 14px;
+    background: rgba(244, 63, 94, 0.14);
+    border: 2px solid var(--rose);
+    border-radius: 12px;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  /* MATCH SELECTOR BAR */
+  .match-bar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+    align-items: center;
+  }
+  .match-pill {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: #cbd5e1;
+    padding: 7px 12px;
+    border-radius: 9px;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .match-pill.active {
+    background: var(--amber);
+    color: #020617;
+    border-color: #fde047;
+  }
+  .match-pill.done {
+    opacity: 0.65;
+    border-color: var(--emerald);
+  }
+
+  /* BABAK 1 STAGE */
+  .duel-arena {
+    display: grid;
+    grid-template-columns: 230px 1fr 230px;
+    gap: 16px;
+    align-items: stretch;
+  }
+  .fighter-box {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+  }
+  .fighter-label { font-size: 12px; font-weight: 800; color: var(--muted); text-transform: uppercase; }
+  .fighter-team { font-size: 20px; font-weight: 900; margin: 4px 0; }
+  .duel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0;
+  }
+  .dot {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 2px solid #475569;
+    background: #090e1c;
+  }
+  .dot.won { background: #10b981; border-color: #6ee7b7; box-shadow: 0 0 12px rgba(16,185,129,0.7); }
+
+  .question-stage {
+    background: linear-gradient(180deg, #0b1326 0%, #060b17 100%);
+    border: 2px solid #38bdf8;
+    border-radius: 16px;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 280px;
+    position: relative;
+  }
+  .q-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .q-cat {
+    background: rgba(56, 189, 248, 0.18);
+    color: #7dd3fc;
+    border: 1px solid rgba(56, 189, 248, 0.4);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 800;
+  }
+  .q-text {
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1.4;
+    color: #ffffff;
+    text-align: center;
+    margin: auto 0;
+    padding: 10px 0;
+  }
+  .answer-box {
+    margin-top: 12px;
+    background: rgba(16, 185, 129, 0.16);
+    border: 2px solid #10b981;
+    border-radius: 12px;
+    padding: 12px 16px;
+    text-align: center;
+    display: none;
+  }
+  .answer-box.show { display: block; animation: fadeIn 0.2s ease; }
+  .answer-main { font-size: 24px; font-weight: 900; color: #4ade80; }
+  .answer-fact { font-size: 13px; color: #cbd5e1; margin-top: 4px; }
+
+  .action-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 14px;
+  }
+  .btn-lg {
+    border: none;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    color: white;
+    transition: transform 0.12s;
+  }
+  .btn-lg:hover { transform: translateY(-2px); }
+  .btn-lg:active { transform: scale(0.96); }
+
+  /* 3-SECOND BUZZER */
+  .timer-3s-overlay {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #1e293b;
+    padding: 4px 12px;
+    border-radius: 10px;
+    border: 1px solid #475569;
+  }
+  .timer-3s-num {
+    font-family: Consolas, monospace;
+    font-size: 20px;
+    font-weight: 900;
+    color: #facc15;
+  }
+
+  /* BABAK 2: TEBAK SOSOK */
+  .sosok-arena {
+    display: grid;
+    grid-template-columns: 1fr 340px 1fr;
+    gap: 16px;
+    align-items: center;
+  }
+  .clock-big-card {
+    background: #060b17;
+    border: 3px solid var(--emerald);
+    border-radius: 18px;
+    padding: 20px;
+    text-align: center;
+  }
+  .clock-big-card.zone-normal { border-color: var(--amber); }
+  .clock-big-card.zone-end { border-color: var(--rose); }
+  .big-seconds {
+    font-family: Consolas, monospace;
+    font-size: 62px;
+    font-weight: 900;
+    line-height: 1;
+    margin: 8px 0;
+  }
+  .zone-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 900;
+    margin-bottom: 10px;
+  }
+
+  /* FINAL TOP 10 MILITER */
+  .top10-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .rank-card {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all 0.25s;
+    min-height: 62px;
+  }
+  .rank-card:hover { border-color: var(--amber); transform: translateX(3px); }
+  .rank-card.revealed {
+    background: linear-gradient(135deg, #064e3b 0%, #0f172a 100%);
+    border-color: #34d399;
+    cursor: default;
+  }
+  .rank-num {
+    font-family: Consolas, monospace;
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--amber);
+    width: 48px;
+  }
+  .rank-country {
+    flex: 1;
+    font-size: 19px;
+    font-weight: 900;
+  }
+  .rank-hidden-label {
+    color: var(--muted);
+    font-size: 14px;
+    letter-spacing: 1px;
+  }
+
+  /* MODAL RAHASIA & PODIUM */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(2, 6, 23, 0.88);
+    backdrop-filter: blur(6px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    padding: 20px;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal-card {
+    background: #0f172a;
+    border: 2px solid var(--cyan);
+    border-radius: 18px;
+    max-width: 960px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 22px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+  }
+
+  /* ROSTER TABLE */
+  .roster-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .student-chip {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 8px 10px;
+    border-radius: 8px;
+    margin-top: 6px;
+    cursor: pointer;
+    font-size: 13px;
+  }
+  .student-chip.played {
+    background: rgba(16, 185, 129, 0.16);
+    border-color: #10b981;
+    color: #6ee7b7;
+  }
+
+  table.matrix {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+    margin-top: 10px;
+  }
+  table.matrix th, table.matrix td {
+    border: 1px solid #334155;
+    padding: 6px 8px;
+    text-align: center;
+  }
+  table.matrix th { background: #1e293b; color: #38bdf8; }
+  table.matrix td:first-child { text-align: left; font-weight: bold; }
+
+  @media (max-width: 1024px) {
+    .scoreboard-grid, .rules-grid, .roster-grid { grid-template-columns: repeat(2, 1fr); }
+    .duel-arena, .sosok-arena { grid-template-columns: 1fr; }
+    .top10-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div class="brand">
+      <h1>⚡ ARENA DUEL PENGETAHUAN &mdash; KELAS 7 MTs</h1>
+      <p>Pesantren Al-Imam Al-Islami Managed By Al-Andalus IIBS &bull; Sesi 40 Menit (09.00 &ndash; 09.40 WIB)</p>
+    </div>
+
+    <div class="master-clock-box">
+      <div>
+        <div style="font-size:10px; color:#94a3b8; font-weight:700; text-transform:uppercase;">Sisa Waktu 40 Menit</div>
+        <div id="masterClock" class="clock-readout">40:00</div>
+      </div>
+      <div id="paceAdvice" class="pace-pill">Siap Mulai (09.00 WIB)</div>
+      <div style="display:flex; flex-direction:column; gap:4px;">
+        <div style="display:flex; gap:4px;">
+          <button id="btnMasterToggle" class="btn-xs active-green" onclick="toggleMasterClock()">▶️ Mulai</button>
+          <button class="btn-xs" onclick="adjustMaster(-60)">-1m</button>
+          <button class="btn-xs" onclick="adjustMaster(60)">+1m</button>
+          <button class="btn-xs" onclick="resetMasterClock()">↺</button>
+        </div>
+        <button class="btn-xs" id="btnSound" onclick="toggleSound()">🔊 Suara: ON</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAVIGATION TABS -->
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="switchTab(0, this)">
+      <span>📋 Aturan & Sistem Poin</span>
+      <span class="time-tag">09.00 &ndash; 09.04 (4 Menit)</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab(1, this)">
+      <span>⚡ Babak 1: Rebut Spidol 1v1</span>
+      <span class="time-tag">09.04 &ndash; 09.18 (14 Menit)</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab(2, this)">
+      <span>🎭 Babak 2: Siapa di Kepalaku?</span>
+      <span class="time-tag">09.18 &ndash; 09.33 (15 Menit)</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab(3, this)">
+      <span>🌍 Final: Top 10 Militer Dunia</span>
+      <span class="time-tag">09.33 &ndash; 09.40 (7 Menit)</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab(4, this)">
+      <span>👥 Giliran 19 Santri</span>
+      <span class="time-tag">Ceklis Partisipasi Adil</span>
+    </button>
+  </div>
+
+  <!-- LIVE SCOREBOARD -->
+  <div class="scoreboard-grid" id="scoreboardGrid"></div>
+
+  <!-- ==================== TAB 0: ATURAN & POIN ==================== -->
+  <div class="stage active" id="stage-0">
+    <div class="panel">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <h2 style="color:var(--cyan); font-size:20px;">📋 ATURAN MAIN &amp; SISTEM PENILAIAN (40 MENIT PAS)</h2>
+        <span style="background:#1e293b; padding:5px 12px; border-radius:8px; font-size:12.5px; color:#facc15; font-weight:700;">Jadwal Adil: 1v2 &bull; 3v4 &bull; 1v3 &bull; 2v4 &bull; (1v4 &bull; 2v3)</span>
+      </div>
+
+      <div class="rules-grid">
+        <div class="rule-box">
+          <h3>⚡ Babak 1: Rebut Spidol 1v1 (14 mnt)</h3>
+          <ul>
+            <li>Sistem <b>Best of 3</b> (duluan raih 2 poin menang duel).</li>
+            <li>Sambar spidol &rarr; wajib jawab maks <b>3 detik</b>!</li>
+            <li>Jawab <b>BENAR:</b> <b style="color:#4ade80;">+50 Poin</b></li>
+            <li>Asal sambar &amp; <b>SALAH / &gt;3 dtk:</b> <b style="color:#f43f5e;">-25 Poin</b> &amp; soal dilempar gratis ke lawan!</li>
+            <li><b>Bonus Menang Duel:</b> <b style="color:#38bdf8;">+50 Poin</b></li>
+          </ul>
+        </div>
+
+        <div class="rule-box">
+          <h3>🎭 Babak 2: Siapa di Kepalaku? (15 mnt)</h3>
+          <ul>
+            <li>Tanpa label kategori &amp; <b>silang 5 dunia acak</b> (Ustadz Pondok, Karakter, Pahlawan, Atlet, Benda).</li>
+            <li>Bergantian lempar pertanyaan <b>YA / TIDAK</b>.</li>
+            <li>Tebak benar <b>&le; 60 detik:</b> <b style="color:#4ade80;">+300 Poin</b></li>
+            <li>Tebak benar <b>61&ndash;120 detik:</b> <b style="color:#facc15;">+200 Poin</b></li>
+            <li>Salah tembak nama: <b style="color:#f43f5e;">-50 Poin</b> &amp; giliran pindah!</li>
+            <li>Waktu habis &rarr; <b>Clue Pamungkas:</b> <b style="color:#38bdf8;">+100 Poin</b></li>
+          </ul>
+        </div>
+
+        <div class="rule-box">
+          <h3>🌍 Babak Final: Top 10 Militer (7 mnt)</h3>
+          <ul>
+            <li>Semua 4 tim bermain <b>serentak &amp; rahasia</b>.</li>
+            <li>Diskusi <b>2 menit</b>, tulis <b>TEPAT 6 NEGARA</b> yang diyakini masuk <i>Top 10 Militer Dunia 2026</i>.</li>
+            <li>1 negara <b>BENAR</b> masuk Top 10: <b style="color:#4ade80;">+100 Poin</b></li>
+            <li>1 negara <b>ZONK (salah):</b> <b style="color:#f43f5e;">-50 Poin</b></li>
+            <li><b>Jackpot 6/6 Benar Semua:</b> Bonus <b style="color:#facc15;">+200 Poin!</b></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="penalty-banner">
+        <span>🗣️ Penonton Bocorin Jawaban / Kasih Kode = <span style="color:#fca5a5;">-100 POIN TIM!</span></span>
+        <span>🚫 Tanya Huruf Awal / Jumlah Kata di Babak 2 = <span style="color:#fca5a5;">-25 POIN &amp; HANGUS!</span></span>
+        <span>⭐ Bonus Adab &amp; Tim Terkompak = <span style="color:#6ee7b7;">+100 POIN</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TAB 1: BABAK 1 DUEL CEPAT ==================== -->
+  <div class="stage" id="stage-1">
+    <div class="panel">
+      <div class="match-bar" id="b1MatchBar"></div>
+
+      <div class="duel-arena">
+        <!-- KIRI -->
+        <div class="fighter-box" id="b1FighterLeft">
+          <div>
+            <div class="fighter-label">Sudut Kiri</div>
+            <div class="fighter-team" id="b1TeamLeftName" style="color:#f97316;">TIM 1</div>
+            <div style="font-size:12px; color:#94a3b8;">Target Menang: 2 Poin</div>
+          </div>
+          <div class="duel-dots">
+            <div class="dot" id="b1DotL1"></div>
+            <div class="dot" id="b1DotL2"></div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <button class="btn-lg" style="background:#059669;" onclick="b1Score('left', true)">✅ Benar (+50)</button>
+            <button class="btn-lg" style="background:#b91c1c;" onclick="b1Score('left', false)">❌ Salah / Telat (-25)</button>
+          </div>
+        </div>
+
+        <!-- SOAL STAGE -->
+        <div class="question-stage">
+          <div class="q-meta">
+            <span class="q-cat" id="b1Category">🌋 GEOGRAFI</span>
+            <div class="timer-3s-overlay">
+              <span style="font-size:11px; color:#cbd5e1; font-weight:700;">Timer Jawab:</span>
+              <span id="timer3s" class="timer-3s-num">3.0s</span>
+              <button class="btn-xs" style="background:#d97706; border-color:#fbbf24;" onclick="start3sTimer()">⚡ Sambar!</button>
+            </div>
+            <span id="b1Counter" style="font-family:Consolas,monospace; font-size:13px; color:#94a3b8; font-weight:700;">Soal 1 / 26</span>
+          </div>
+
+          <div class="q-text" id="b1QuestionText">Memuat pertanyaan...</div>
+
+          <div class="answer-box" id="b1AnswerBox">
+            <div class="answer-main" id="b1AnswerMain">Nusa Tenggara Barat (NTB)</div>
+            <div class="answer-fact" id="b1AnswerFact">Info tambahan</div>
+          </div>
+
+          <div class="action-row">
+            <button class="btn-lg" style="background:#334155;" onclick="prevQuestion()">⬅️ Sebelumnya</button>
+            <button class="btn-lg" style="background:#0284c7;" onclick="toggleAnswer()">👁️ Buka / Tutup Jawaban</button>
+            <button class="btn-lg" style="background:#7c3aed;" onclick="nextUnusedQuestion()">🎲 Soal Berikutnya ➡️</button>
+          </div>
+        </div>
+
+        <!-- KANAN -->
+        <div class="fighter-box" id="b1FighterRight">
+          <div>
+            <div class="fighter-label">Sudut Kanan</div>
+            <div class="fighter-team" id="b1TeamRightName" style="color:#10b981;">TIM 2</div>
+            <div style="font-size:12px; color:#94a3b8;">Target Menang: 2 Poin</div>
+          </div>
+          <div class="duel-dots">
+            <div class="dot" id="b1DotR1"></div>
+            <div class="dot" id="b1DotR2"></div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <button class="btn-lg" style="background:#059669;" onclick="b1Score('right', true)">✅ Benar (+50)</button>
+            <button class="btn-lg" style="background:#b91c1c;" onclick="b1Score('right', false)">❌ Salah / Telat (-25)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TAB 2: BABAK 2 TEBAK SOSOK ==================== -->
+  <div class="stage" id="stage-2">
+    <div class="panel">
+      <div class="match-bar" id="b2MatchBar">
+        <span style="font-size:12px; color:#94a3b8; font-weight:700; margin-right:4px;">Pilih Duel:</span>
+      </div>
+
+      <div class="sosok-arena">
+        <!-- KIRI -->
+        <div class="fighter-box" style="min-height:260px;">
+          <div>
+            <div class="fighter-label">Peserta Kiri</div>
+            <div class="fighter-team" id="b2TeamLeftName" style="color:#f97316; font-size:24px;">TIM 1</div>
+            <p style="font-size:12.5px; color:#cbd5e1; margin-top:6px;">Menghadap kanan &amp; wajib lihat kartu di kepala lawan!</p>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:8px; margin-top:14px;">
+            <button class="btn-lg" style="background:#059669; font-size:15px;" onclick="b2Win('left')">🎉 Kiri Tebak BENAR!</button>
+            <button class="btn-lg" style="background:#b91c1c;" onclick="b2Penalty('left', -50, 'Salah Tembak Nama')">❌ Salah Tembak (-50)</button>
+            <button class="btn-lg" style="background:#7f1d1d;" onclick="b2Penalty('left', -25, 'Tanya Huruf/Kata')">🚫 Tanya Huruf (-25)</button>
+          </div>
+        </div>
+
+        <!-- TIMER TENGAH 120 DETIK -->
+        <div class="clock-big-card" id="b2ClockCard">
+          <div id="b2ZoneBadge" class="zone-badge" style="background:rgba(16,185,129,0.2); color:#4ade80; border:1px solid #10b981;">
+            🔥 ZONA KILAT: TEBAK = +300 POIN!
+          </div>
+          <div class="big-seconds" id="b2TimerDisplay">02:00</div>
+          <div style="display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-top:12px;">
+            <button id="btnB2Toggle" class="btn-lg" style="background:#059669;" onclick="toggleB2Timer()">▶️ Mulai Duel</button>
+            <button class="btn-lg" style="background:#334155;" onclick="resetB2Timer()">↺ Reset 2:00</button>
+          </div>
+          <div style="margin-top:12px; display:flex; flex-direction:column; gap:6px;">
+            <button id="btnHintUsed" class="btn-xs" style="padding:7px; background:#1e293b; border-color:#f59e0b; color:#fde047;" onclick="toggleB2Hint()">
+              💡 Bantuan Kategori: OFF (Normal +300/+200)
+            </button>
+            <button class="btn-xs" style="padding:7px; background:#312e81; border-color:#818cf8;" onclick="openRefereeModal()">
+              🔒 Area Rahasia Wasit (Acak Kartu &amp; Matriks 9 Ustadz)
+            </button>
+          </div>
+        </div>
+
+        <!-- KANAN -->
+        <div class="fighter-box" style="min-height:260px;">
+          <div>
+            <div class="fighter-label">Peserta Kanan</div>
+            <div class="fighter-team" id="b2TeamRightName" style="color:#10b981; font-size:24px;">TIM 2</div>
+            <p style="font-size:12.5px; color:#cbd5e1; margin-top:6px;">Menghadap kiri &amp; wajib lihat kartu di kepala lawan!</p>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:8px; margin-top:14px;">
+            <button class="btn-lg" style="background:#059669; font-size:15px;" onclick="b2Win('right')">🎉 Kanan Tebak BENAR!</button>
+            <button class="btn-lg" style="background:#b91c1c;" onclick="b2Penalty('right', -50, 'Salah Tembak Nama')">❌ Salah Tembak (-50)</button>
+            <button class="btn-lg" style="background:#7f1d1d;" onclick="b2Penalty('right', -25, 'Tanya Huruf/Kata')">🚫 Tanya Huruf (-25)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TAB 3: FINAL TOP 10 MILITER ==================== -->
+  <div class="stage" id="stage-3">
+    <div class="panel">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+        <div>
+          <h2 style="color:var(--amber); font-size:21px;">🌍 BABAK FINAL: TOP 10 MILITER TERKUAT DI DUNIA (2026)</h2>
+          <p style="font-size:13px; color:#cbd5e1; margin-top:3px;">
+            Semua tim tulis <b>TEPAT 6 NEGARA</b> rahasia! <b>Benar = +100</b> &bull; <b>Salah/Zonk = -50</b> &bull; <b>6/6 Sempurna = +200 Bonus!</b>
+          </p>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:10px; background:#060b17; padding:8px 14px; border-radius:12px; border:1px solid #334155;">
+          <span style="font-size:12px; color:#94a3b8; font-weight:700;">Timer Diskusi:</span>
+          <span id="finalTimer" style="font-family:Consolas,monospace; font-size:24px; font-weight:900; color:#facc15;">02:00</span>
+          <button id="btnFinalTimer" class="btn-xs active-green" onclick="toggleFinalTimer()">▶️ Mulai 2m</button>
+          <button class="btn-xs" onclick="resetFinalTimer()">↺</button>
+        </div>
+      </div>
+
+      <!-- Papan Reveal 10 -> 1 -->
+      <div class="top10-grid" id="top10Grid"></div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-top:16px;">
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn-lg" style="background:#334155;" onclick="toggleTrapCountries()">🔎 Tampilkan Negara Pengecoh (Di Luar Top 10)</button>
+          <button class="btn-lg" style="background:#0284c7;" onclick="revealNextTop10()">🥁 Buka Peringkat Berikutnya (#10 &rarr; #1)</button>
+          <button class="btn-lg" style="background:#475569;" onclick="resetTop10()">↺ Tutup Semua</button>
+        </div>
+        <button class="btn-lg" style="background:linear-gradient(135deg,#f59e0b,#d97706); color:#020617; font-size:16px;" onclick="openPodiumModal()">
+          🏆 UMUMKAN JUARA AKHIR!
+        </button>
+      </div>
+
+      <div id="trapBox" style="display:none; margin-top:12px; background:rgba(244,63,94,0.12); border:1px solid #f43f5e; border-radius:10px; padding:12px 14px; font-size:13.5px;">
+        <b style="color:#fda4af;">⚠️ Fakta Pengecoh (Global Firepower 2026 &mdash; DI LUAR 10 BESAR = ZONK -50):</b><br>
+        🇮🇩 <b>Indonesia</b> (Peringkat 13 dunia &mdash; Terkuat #1 di Asia Tenggara, tapi belum masuk Top 10!), 🇵🇰 <b>Pakistan</b> (#12), 🇩🇪 <b>Jerman</b> (#14), 🇮🇱 <b>Israel</b> (#15), 🇪🇸 <b>Spanyol</b>, 🇸🇦 <b>Arab Saudi</b>, 🇰🇵 <b>Korea Utara</b> (masuk 30-an di GFP).
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TAB 4: ROSTER 19 SANTRI ==================== -->
+  <div class="stage" id="stage-4">
+    <div class="panel">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:10px;">
+        <div>
+          <h2 style="color:var(--cyan); font-size:19px;">👥 CEKLIS PARTISIPASI 19 SANTRI (BIAR SEMUA KEJATAHAN MAJU)</h2>
+          <p style="font-size:12.5px; color:#94a3b8;">Klik nama santri untuk menandai <b>Sudah Tampil (✅)</b> agar anggota yang belum maju diprioritaskan.</p>
+        </div>
+        <button class="btn-xs" onclick="resetRoster()">↺ Reset Semua Ceklis</button>
+      </div>
+      <div class="roster-grid" id="rosterGrid"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAL RAHASIA WASIT (BABAK 2) -->
+<div class="modal-backdrop" id="refereeModal">
+  <div class="modal-card">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155; padding-bottom:10px; margin-bottom:12px;">
+      <h2 style="color:#fde047; font-size:18px;">🔒 AREA RAHASIA WASIT (HANYA DILIHAT USTADZ!)</h2>
+      <button class="btn-xs" style="background:#dc2626;" onclick="closeModal('refereeModal')">✖ Tutup</button>
+    </div>
+
+    <div style="background:#1e293b; border-radius:12px; padding:14px; margin-bottom:14px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <b style="color:#38bdf8;">🎲 Generator Pasangan Kartu Silang Dunia (Anti-Tebak Pola)</b>
+        <button class="btn-xs active-green" onclick="drawCrossPair()">Acak Pasangan Baru</button>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:10px;">
+        <div style="background:#0f172a; padding:12px; border-radius:10px; border-left:4px solid #f97316;">
+          <div style="font-size:11px; color:#94a3b8;" id="drawWorldL">Dunia Kartu Kiri</div>
+          <div style="font-size:20px; font-weight:900; color:white;" id="drawCardL">-</div>
+          <div style="font-size:12px; color:#cbd5e1; margin-top:4px;" id="drawHintL">Klik Acak Pasangan Baru</div>
+        </div>
+        <div style="background:#0f172a; padding:12px; border-radius:10px; border-left:4px solid #10b981;">
+          <div style="font-size:11px; color:#94a3b8;" id="drawWorldR">Dunia Kartu Kanan</div>
+          <div style="font-size:20px; font-weight:900; color:white;" id="drawCardR">-</div>
+          <div style="font-size:12px; color:#cbd5e1; margin-top:4px;" id="drawHintR">Klik Acak Pasangan Baru</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="color:#38bdf8; font-size:15px;">🏫 Matriks Contekan Cepat: 9 Ustadz Pesantren</h3>
+    <table class="matrix">
+      <thead>
+        <tr>
+          <th>Nama Ustadz</th>
+          <th>Jabatan / Mapel</th>
+          <th>Ngajar MTs?</th>
+          <th>Ngajar IL?</th>
+          <th>B. Arab / Cabang?</th>
+          <th>Musyrif &amp; Halaqoh?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Ustadz Wahab</td><td>Mudir Pesantren</td><td>Tidak</td><td>Tidak</td><td>Tidak</td><td>Tidak</td></tr>
+        <tr><td>Ustadz Rieza</td><td>IT &amp; Guru MTK</td><td>Ya</td><td>Tidak</td><td>Tidak</td><td>Tidak</td></tr>
+        <tr><td>Ustadz Bachtiar</td><td>Bendahara &amp; B. Inggris</td><td>Ya/Umum</td><td>Ya/Umum</td><td>Tidak</td><td>Tidak</td></tr>
+        <tr><td>Ustadz Imron</td><td>Kep. Kurikulum &amp; B. Arab IL</td><td>Tidak</td><td>Ya</td><td>Ya</td><td>Tidak</td></tr>
+        <tr><td>Ustadz Wahyudi</td><td>Kep. Kepengasuhan &amp; B. Arab MTs</td><td>Ya</td><td>Tidak</td><td>Ya</td><td>Tidak</td></tr>
+        <tr><td>Ustadz Agus Cahyono</td><td>Kitabah (IL &amp; MTs)</td><td>Ya</td><td>Ya</td><td>Ya</td><td>Ya</td></tr>
+        <tr><td>Ustadz Iqbal</td><td>Shorof (IL &amp; MTs)</td><td>Ya</td><td>Ya</td><td>Ya</td><td>Ya</td></tr>
+        <tr><td>Ustadz Azzam</td><td>Nahwu (IL)</td><td>Tidak</td><td>Ya</td><td>Ya</td><td>Ya</td></tr>
+        <tr><td>Ustadz Thoriq</td><td>Siroh (MTs &amp; IL)</td><td>Ya</td><td>Ya</td><td>Tidak</td><td>Tidak</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- MODAL PODIUM JUARA -->
+<div class="modal-backdrop" id="podiumModal">
+  <div class="modal-card" style="text-align:center; border-color:#facc15;">
+    <h2 style="font-size:28px; color:#facc15; margin-bottom:6px;">🏆 KLASEMEN AKHIR DUEL PENGETAHUAN 🏆</h2>
+    <p style="color:#cbd5e1; margin-bottom:18px;">Kelas 7 MTs &bull; Pesantren Al-Imam Al-Islami Managed By Al-Andalus IIBS</p>
+    <div id="podiumList" style="display:flex; flex-direction:column; gap:10px; max-width:540px; margin:0 auto;"></div>
+    <button class="btn-lg" style="background:#334155; margin-top:20px;" onclick="closeModal('podiumModal')">Tutup Podium</button>
+  </div>
+</div>
+
+<!-- TOAST NOTIFICATION TV -->
+<div class="tv-toast" id="tvToast"></div>
+
+<script>
+  // ==================== DATA & STATE ====================
+  const TEAMS = [
+    { id: 0, name: "TIM 1", leader: "Rifqi Hamid", color: "#f97316", cls: "t1", score: 0,
+      members: ["Rifqi Hamid (L)", "Haidar Ayyubi", "Atqanul Ummah", "Fariq Malaibui", "Naufal Dzaki"] },
+    { id: 1, name: "TIM 2", leader: "M. Fazril Alkais", color: "#10b981", cls: "t2", score: 0,
+      members: ["M. Fazril Alkais (L)", "M. Hafidz Reo", "Muh Asrorin", "Abdul Aziz Ali", "M. Yahya Ayyash"] },
+    { id: 2, name: "TIM 3", leader: "Labibullah El Fatih", color: "#38bdf8", cls: "t3", score: 0,
+      members: ["Labibullah (L)", "M. Naufal A.", "Rifqi Arsyad", "Andi Ibra", "Azka Panji"] },
+    { id: 3, name: "TIM 4", leader: "Khalish", color: "#a855f7", cls: "t4", score: 0,
+      members: ["Khalish (L)", "Ahmad Farros", "Abdul Hakim", "Muhammad Azzam"] }
+  ];
+
+  // JADWAL LIGA ADIL: 4 MATCH PERTAMA SEMUA TIM MAIN 2x! MATCH 5-6 EKSTRA!
+  const MATCHES = [
+    { label: "Match 1: Tim 1 vs Tim 2", left: 0, right: 1, ekstra: false },
+    { label: "Match 2: Tim 3 vs Tim 4", left: 2, right: 3, ekstra: false },
+    { label: "Match 3: Tim 1 vs Tim 3", left: 0, right: 2, ekstra: false },
+    { label: "Match 4: Tim 2 vs Tim 4", left: 1, right: 3, ekstra: false },
+    { label: "Match 5: Tim 1 vs Tim 4", left: 0, right: 3, ekstra: true },
+    { label: "Match 6: Tim 2 vs Tim 3", left: 1, right: 2, ekstra: true }
+  ];
+
+  // 26 SOAL DUEL CEPAT (SOAL REQUEST + TAMBAHAN UNIK + CADANGAN)
+  const QUESTIONS = [
+    { cat: "🌋 GEOGRAFI", q: "Di provinsi manakah Gunung Rinjani berada?", a: "Nusa Tenggara Barat (NTB)", f: "Gunung berapi tertinggi kedua di Indonesia ini terletak di Pulau Lombok, NTB." },
+    { cat: "📱 DIGITAL", q: "Apa kepanjangan dari FYP yang sering muncul di TikTok?", a: "For You Page", f: "Halaman rekomendasi utama yang dikurasi algoritma sesuai minat pengguna." },
+    { cat: "🐟 FIQIH UNIK", q: "Hewan laut ini sering bikin bingung halal atau haram karena memakai nama hewan najis berat di darat, padahal hidupnya di air sehingga halal dimakan. Hewan apakah itu?", a: "Anjing Laut", f: "Dalam fiqih mayoritas ulama, seluruh hewan air/laut hukumnya halal dikonsumsi." },
+    { cat: "♟️ LOGIKA GAME", q: "Berapa jumlah bidak catur yang dimiliki oleh SETIAP SATU pemain di awal permainan?", a: "16 Bidak", f: "8 pion + 2 benteng + 2 kuda + 2 gajah + 1 ratu + 1 raja = 16 per pemain (total 32)." },
+    { cat: "🧠 TUBUH MANUSIA", q: "Rata-rata manusia berkedip berapa kali dalam satu menit?", a: "15 sampai 20 Kali", f: "Dalam sehari manusia bisa berkedip lebih dari 14.000 kali untuk menjaga mata tetap lembab." },
+    { cat: "🦘 FAUNA", q: "Hewan apa yang menggunakan ekornya yang berotot kuat untuk menjaga keseimbangan saat melompat tinggi?", a: "Kanguru", f: "Ekor kanguru bahkan sanggup menopang seluruh berat tubuhnya seperti kaki ketiga." },
+    { cat: "🐳 DUNIA LAUT", q: "Hewan laut apakah yang menghasilkan suara paling keras di lautan?", a: "Paus Sperma / Paus Biru", f: "Klik sonar Paus Sperma mencapai 230 dB, sedangkan suara Paus Biru terdengar ratusan km." },
+    { cat: "✍️ BAHASA", q: "Berapa jumlah huruf dalam alfabet Bahasa Indonesia?", a: "26 Huruf", f: "Terdiri dari A sampai Z (5 huruf vokal dan 21 huruf konsonan)." },
+    { cat: "👶 GENERASI", q: "Setelah Gen Alpha, generasi anak-anak yang lahir mulai tahun 2025 disebut generasi apa?", a: "Generasi Beta (Gen Beta)", f: "Urutannya: Gen X -> Milenial (Y) -> Gen Z -> Gen Alpha -> Gen Beta." },
+    { cat: "🅰️ BAHASA", q: "Huruf apakah yang paling sering muncul dalam tulisan Bahasa Indonesia?", a: "Huruf A", f: "Dalam analisis teks Bahasa Indonesia, huruf A menempati urutan #1 terbanyak (~19%)." },
+    { cat: "🚀 ANTARIKSA", q: "Hewan apakah yang pertama kali berhasil MENGORBIT Bumi di luar angkasa pada misi Sputnik 2 tahun 1957?", a: "Anjing (Bernama Laika)", f: "Dikirim Uni Soviet pada 1957. (Lalat buah pernah lebih dulu pada uji sub-orbital 1947)." },
+    { cat: "🍅 SEJARAH UNIK", q: "Sebelum dikenal sebagai pelengkap makanan, pada abad ke-19 saus tomat pernah dijual dan dipasarkan sebagai apa?", a: "Obat (Obat Diare / Sakit Perut)", f: "Sekitar tahun 1830-an dokter Dr. John Cook Bennett mempromosikan tomat sebagai pil obat pencernaan." },
+    { cat: "🪐 SAINS", q: "Planet manakah yang memiliki suhu permukaan paling panas di Tata Surya kita?", a: "Venus", f: "Bukan Merkurius! Atmosfer Venus sangat tebal penuh gas rumah kaca sehingga suhunya ~465°C." },
+    { cat: "🐙 BIOLOGI LAUT", q: "Hewan laut bertentakel apakah yang memiliki 3 jantung dan darah berwarna biru?", a: "Gurita", f: "Darahnya berbasis tembaga (hemocyanin), bukan zat besi, sehingga berwarna biru." },
+    { cat: "🏸 OLAHRAGA", q: "Dalam bulu tangkis (badminton), berapa poin standar untuk memenangkan 1 gim/set (sebelum deuce)?", a: "21 Poin", f: "Jangan tertukar dengan bola voli (25 poin)!" },
+    { cat: "🌏 SEJARAH ASIA", q: "Negara manakah di Asia Tenggara yang terkenal tidak pernah dijajah oleh bangsa Eropa?", a: "Thailand", f: "Dalam bahasa lokalnya disebut Prathet Thai yang berarti 'Tanah Kebebasan'." },
+    { cat: "📲 TEKNOLOGI", q: "Apa kepanjangan dari kata 'QR' pada QR Code atau pembayaran QRIS?", a: "Quick Response", f: "Artinya kode matriks yang bisa terbaca dengan respons super cepat oleh kamera." },
+    { cat: "💴 WAWASAN DUNIA", q: "Apa nama mata uang resmi negara Jepang?", a: "Yen", f: "Hati-hati jangan ketukar dengan Won (Korea Selatan) atau Yuan (China)!" },
+    { cat: "🦴 ANATOMI", q: "Bagian tubuh manusia manakah yang memiliki tulang terpanjang dan terkuat?", a: "Tulang Paha (Femur)", f: "Tulang paha menyumbang sekitar seperempat tinggi tubuh manusia dewasa." },
+    { cat: "🕰️ LOGIKA WAKTU", q: "Jika di pondok (WIB) jam 09.00 pagi, maka saat ini di Makkah (Arab Saudi) jam berapa?", a: "Jam 05.00 Pagi (Subuh)", f: "Selisih waktu WIB (UTC+7) dengan Arab Saudi (UTC+3) adalah 4 jam lebih awal di Saudi." },
+    { cat: "🏃 TEKA-TEKI", q: "Dalam lomba lari, kamu berhasil menyalip orang di posisi ke-2. Sekarang kamu di posisi ke berapa?", a: "Posisi Ke-2", f: "Kamu mengambil alih posisinya sebagai peringkat ke-2, bukan ke-1!" },
+    { cat: "🧮 HITUNG SANTRI", q: "Jika ada 19 santri di kelas dibagi menjadi 4 tim seimbang (isi 4 atau 5 orang), ada berapa tim yang berisi 5 orang?", a: "3 Tim", f: "5 + 5 + 5 + 4 = 19 santri (sama persis dengan kelas antum saat ini!)." },
+    { cat: "🌊 SAMUDRA", q: "Apa nama samudra terluas di dunia yang berbatasan dengan wilayah timur Indonesia?", a: "Samudra Pasifik", f: "Mencakup hampir sepertiga luas seluruh permukaan Bumi." },
+    { cat: "♟️ CATUR", q: "Bidak catur manakah yang jalannya HANYA boleh miring (diagonal)?", a: "Gajah / Menteri (Bishop)", f: "Bidak ini selalu berada di warna petak yang sama sepanjang permainan." },
+    { cat: "🏔️ NUSANTARA", q: "Apa nama selat yang memisahkan Pulau Jawa dan Pulau Sumatera?", a: "Selat Sunda", f: "Di tengah selat ini berdiri Gunung Krakatau yang legendaris." },
+    { cat: "🕌 PENGETAHUAN", q: "Surah apakah di dalam Al-Qur'an yang memiliki DUA bacaan Bismillah di dalamnya?", a: "Surah An-Naml", f: "Di awal surat dan di ayat ke-30 (surat Nabi Sulaiman kepada Ratu Balqis)." }
+  ];
+
+  // POOL KARTU BABAK 2 LINTAS 5 DUNIA
+  const SOSOK_POOL = [
+    // Dunia 1: 9 Ustadz Pondok
+    { world: "🏫 Ustadz Pondok", name: "Ustadz Wahab", hint: "Mudir Pesantren. Tidak ngajar MTs/IL secara khusus, bukan musyrif." },
+    { world: "🏫 Ustadz Pondok", name: "Ustadz Rieza", hint: "IT & Guru MTK di MTs. Bukan guru Bahasa Arab, bukan musyrif." },
+    { world: "🏫 Ustadz Pondok", name: "Ustadz Bachtiar", hint: "Bendahara Keuangan & Guru Bahasa Inggris. Bukan guru Arab, bukan musyrif." },
+    { world: "🏫 Ustadz Pondok", name: "Ustadz Imron", hint: "Kepala Kurikulum & Guru Bahasa Arab IL. Fokus IL, bukan musyrif." },
+    { world: "🏫 Ustadz Pondok", name: "Ustadz Wahyudi", hint: "Kepala Kepengasuhan & Guru Bahasa Arab MTs. Fokus MTs, bukan musyrif." },
+    { world: "🏫 Ustadz Pondok", name: "Ustadz Agus Cahyono", hint: "Guru Kitabah di IL & MTs + Musyrif & Pengampu Halaqoh." },
+    { world: "🏫 Ustadz Pondok", name: "Ustadz Iqbal", hint: "Guru Shorof di IL & MTs + Musyrif & Pengampu Halaqoh." },
+    { world: "🏫 Ustadz Pondok", name: "Ustadz Azzam", hint: "Guru Nahwu di IL + Musyrif & Pengampu Halaqoh (Fokus IL)." },
+    { world: "🏫 Ustadz Pondok", name: "Ustadz Thoriq", hint: "Guru Siroh di MTs & IL. Bukan guru Bahasa Arab, bukan musyrif." },
+
+    // Dunia 2: Karakter Anime/Kartun/Game
+    { world: "🎮 Karakter Fiksi", name: "Naruto Uzumaki", hint: "Ninja anime rambut pirang, suka ramen, jurus bayangan & Rasengan." },
+    { world: "🎮 Karakter Fiksi", name: "Doraemon", hint: "Robot kucing biru dari masa depan, takut tikus, kantong ajaib." },
+    { world: "🎮 Karakter Fiksi", name: "SpongeBob", hint: "Spons kuning kotak bawah laut, tinggal di rumah nanas." },
+    { world: "🎮 Karakter Fiksi", name: "Upin", hint: "Anak kembar botak asal Malaysia bersama Ipin & Kak Ros." },
+    { world: "🎮 Karakter Fiksi", name: "Spider-Man", hint: "Superhero merah-biru penembak jaring laba-laba." },
+    { world: "🎮 Karakter Fiksi", name: "Steve (Minecraft)", hint: "Karakter game serba kotak berbaju biru muda." },
+
+    // Dunia 3: Pahlawan & Ilmuwan
+    { world: "🇮🇩 Pahlawan / Tokoh", name: "Ir. Soekarno", hint: "Presiden pertama RI & Proklamator Kemerdekaan 1945." },
+    { world: "🇮🇩 Pahlawan / Tokoh", name: "Jenderal Sudirman", hint: "Panglima TNI yang bergerilya dengan tandu meski sakit." },
+    { world: "🇮🇩 Pahlawan / Tokoh", name: "Pangeran Diponegoro", hint: "Pahlawan bersorban putih dari Yogyakarta (Perang Jawa)." },
+    { world: "🇮🇩 Pahlawan / Tokoh", name: "BJ Habibie", hint: "Presiden RI ke-3 & ahli perancang pesawat terbang." },
+    { world: "🇮🇩 Pahlawan / Tokoh", name: "Albert Einstein", hint: "Ilmuwan berambut putih berantakan, penemu rumus E=mc²." },
+    { world: "🇮🇩 Pahlawan / Tokoh", name: "Al-Khawarizmi", hint: "Ilmuwan Muslim penemu Aljabar & asal kata Algoritma." },
+
+    // Dunia 4: Atlet / Sejarah
+    { world: "⚽ Atlet / Tokoh Dunia", name: "Cristiano Ronaldo", hint: "Pesepakbola Portugal bernomor 7, selebrasi 'SIUUU!'." },
+    { world: "⚽ Atlet / Tokoh Dunia", name: "Lionel Messi", hint: "Pesepakbola Argentina, juara Piala Dunia 2022." },
+    { world: "⚽ Atlet / Tokoh Dunia", name: "Muhammad Al-Fatih", hint: "Sultan penakluk Konstantinopel di usia muda." },
+
+    // Dunia 5: Benda/Hewan Kejutan
+    { world: "🎁 Kejutan Pondok", name: "Sandal Jepit Masjid", hint: "Benda mati! Sering tertukar atau 'hilang' saat pulang salat berjamaah." },
+    { world: "🎁 Kejutan Pondok", name: "Bola Basket", hint: "Benda mati bulat berwarna oranye yang dipantulkan di lapangan." },
+    { world: "🎁 Kejutan Pondok", name: "Buah Kurma", hint: "Makanan sunnah manis berbiji satu saat berbuka puasa." }
+  ];
+
+  // DATA TOP 10 MILITER 2026 (DISPLAY REVEAL #10 KE #1)
+  const TOP10_DATA = [
+    { rank: 10, flag: "🇮🇹", name: "ITALIA", fact: "Armada kapal induk Mediterania & angkatan udara modern", revealed: false },
+    { rank: 9,  flag: "🇹🇷", name: "TURKI", fact: "Unggul di industri drone tempur (Bayraktar) & pasukan aktif besar", revealed: false },
+    { rank: 8,  flag: "🇬🇧", name: "INGGRIS (UK)", fact: "Angkatan laut tangguh & kekuatan senjata nuklir strategis", revealed: false },
+    { rank: 7,  flag: "🇯🇵", name: "JEPANG", fact: "Teknologi pertahanan laut (kapal perusak) & dirgantara super canggih", revealed: false },
+    { rank: 6,  flag: "🇫🇷", name: "PRANCIS", fact: "Satu-satunya kekuatan nuklir & kapal induk nuklir di Uni Eropa", revealed: false },
+    { rank: 5,  flag: "🇰🇷", name: "KOREA SELATAN", fact: "Wajib militer masif, tank canggih & industri alutsista ekspor besar", revealed: false },
+    { rank: 4,  flag: "🇮🇳", name: "INDIA", fact: "Jumlah personel aktif jutaan, kapal induk & misil jarak jauh", revealed: false },
+    { rank: 3,  flag: "🇨🇳", name: "CHINA", fact: "Jumlah personel militer & armada kapal perang terbanyak di dunia", revealed: false },
+    { rank: 2,  flag: "🇷🇺", name: "RUSIA", fact: "Gudang tank, artileri & hulu ledak nuklir terbesar", revealed: false },
+    { rank: 1,  flag: "🇺🇸", name: "AMERIKA SERIKAT", fact: "Anggaran pertahanan #1 dunia, 11 kapal induk nuklir & dominasi udara", revealed: false }
+  ];
+
+  // STATE VARIABEL
+  let soundEnabled = true;
+  let audioCtx = null;
+
+  let masterSeconds = 40 * 60;
+  let masterInterval = null;
+
+  let currentB1Match = 0;
+  let b1MatchScores = MATCHES.map(() => ({ left: 0, right: 0, winner: null }));
+  let currentQIdx = 0;
+  let usedQuestions = new Set();
+  let timer3sInterval = null;
+
+  let currentB2Match = 0;
+  let b2DoneMatches = new Set();
+  let b2Seconds = 120;
+  let b2Interval = null;
+  let b2HintActive = false;
+
+  let finalSeconds = 120;
+  let finalInterval = null;
+
+  let drawnPairsUsed = new Set();
+  let playedStudents = new Set();
+
+  // ==================== AUDIO ENGINE ====================
+  function playTone(freq, dur, type="sine", vol=0.25) {
+    if (!soundEnabled) return;
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + dur);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + dur);
+    } catch(e) {}
+  }
+  function sfxCorrect() { playTone(880, 0.1, "triangle", 0.3); setTimeout(() => playTone(1318, 0.28, "triangle", 0.35), 90); }
+  function sfxWrong()   { playTone(220, 0.18, "sawtooth", 0.35); setTimeout(() => playTone(165, 0.32, "sawtooth", 0.35), 140); }
+  function sfxWin()     { [523, 659, 784, 1046].forEach((f, i) => setTimeout(() => playTone(f, 0.22, "triangle", 0.35), i * 110)); }
+  function sfxReveal()  { playTone(587, 0.12, "sine", 0.3); setTimeout(() => playTone(987, 0.32, "triangle", 0.35), 100); }
+
+  function toggleSound() {
+    soundEnabled = !soundEnabled;
+    document.getElementById('btnSound').innerText = soundEnabled ? "🔊 Suara: ON" : "🔇 Suara: OFF";
+  }
+
+  // ==================== MASTER CLOCK (40 MENIT) ====================
+  function updateMasterUI() {
+    const m = Math.floor(masterSeconds / 60);
+    const s = masterSeconds % 60;
+    const el = document.getElementById('masterClock');
+    el.innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    el.className = "clock-readout";
+    if (masterSeconds <= 420) el.classList.add('danger');
+    else if (masterSeconds <= 1320) el.classList.add('warn');
+
+    const elapsed = (40 * 60) - masterSeconds;
+    const pace = document.getElementById('paceAdvice');
+    if (elapsed < 4 * 60) pace.innerText = "Fase Pembukaan (Mnt 0–4)";
+    else if (elapsed < 18 * 60) pace.innerText = "Fase Babak 1: Spidol (Mnt 4–18)";
+    else if (elapsed < 33 * 60) pace.innerText = "Fase Babak 2: Sosok (Mnt 18–33)";
+    else if (masterSeconds > 0) pace.innerText = "🔥 WAKTUNYA BABAK FINAL TOP 10!";
+    else pace.innerText = "🔔 WAKTU 40 MENIT SELESAI!";
+  }
+  function toggleMasterClock() {
+    const btn = document.getElementById('btnMasterToggle');
+    if (masterInterval) {
+      clearInterval(masterInterval);
+      masterInterval = null;
+      btn.innerText = "▶️ Lanjut";
+      btn.classList.remove('active-green');
+    } else {
+      masterInterval = setInterval(() => {
+        if (masterSeconds > 0) {
+          masterSeconds--;
+          updateMasterUI();
+          if (masterSeconds === 420) sfxReveal(); // Reminder masuk babak final (7 menit terakhir)
+          if (masterSeconds === 0) sfxWin();
+        }
+      }, 1000);
+      btn.innerText = "⏸️ Jeda";
+      btn.classList.add('active-green');
+    }
+  }
+  function adjustMaster(delta) {
+    masterSeconds = Math.max(0, Math.min(3600, masterSeconds + delta));
+    updateMasterUI();
+  }
+  function resetMasterClock() {
+    if (masterInterval) toggleMasterClock();
+    masterSeconds = 40 * 60;
+    updateMasterUI();
+    document.getElementById('btnMasterToggle').innerText = "▶️ Mulai";
+  }
+
+  // ==================== TABS & SCOREBOARD ====================
+  function switchTab(idx, btn) {
+    document.querySelectorAll('.stage').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(`stage-${idx}`).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  function renderScoreboard() {
+    const maxScore = Math.max(...TEAMS.map(t => t.score));
+    const grid = document.getElementById('scoreboardGrid');
+    grid.innerHTML = TEAMS.map(t => `
+      <div class="team-card ${t.cls} ${t.score > 0 && t.score === maxScore ? 'leading' : ''}">
+        <div class="team-header">
+          <span class="team-name" style="color:${t.color};">${t.name} ${t.score > 0 && t.score === maxScore ? '👑' : ''}</span>
+          <span class="team-leader">${t.leader}</span>
+        </div>
+        <div class="team-score">${t.score}</div>
+        <div class="score-controls">
+          <button class="s-btn s-plus" onclick="addScore(${t.id}, 50, 'good')">+50</button>
+          <button class="s-btn s-plus-big" onclick="addScore(${t.id}, 100, 'good')">+100</button>
+          <button class="s-btn s-plus-big" onclick="addScore(${t.id}, 200, 'win')">+200</button>
+          <button class="s-btn s-minus" onclick="addScore(${t.id}, -25, 'bad')">-25</button>
+          <button class="s-btn s-minus" onclick="addScore(${t.id}, -50, 'bad')">-50</button>
+          <button class="s-btn s-leak" title="Denda Bocorin Jawaban" onclick="addScore(${t.id}, -100, 'bad')">🗣️ -100</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  let toastTimeout = null;
+  function showToast(msg, borderColor="#34d399") {
+    const t = document.getElementById('tvToast');
+    if (!t) return;
+    t.innerText = msg;
+    t.style.borderColor = borderColor;
+    t.classList.add('show');
+    if (toastTimeout) clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  function addScore(teamId, pts, sfx="none") {
+    TEAMS[teamId].score += pts;
+    if (sfx === 'good') sfxCorrect();
+    else if (sfx === 'win') sfxWin();
+    else if (sfx === 'bad') sfxWrong();
+    if (pts === -100) showToast(`🗣️ DENDA BOCORIN JAWABAN! ${TEAMS[teamId].name} (-100 Poin)`, "#f43f5e");
+    renderScoreboard();
+  }
+
+  // ==================== BABAK 1 LOGIC ====================
+  function renderB1MatchBar() {
+    const bar = document.getElementById('b1MatchBar');
+    bar.innerHTML = `<span style="font-size:12px; color:#94a3b8; font-weight:700;">Jadwal Liga:</span>` +
+      MATCHES.map((m, idx) => {
+        const ms = b1MatchScores[idx];
+        const doneCls = ms.winner !== null ? 'done' : '';
+        const actCls = idx === currentB1Match ? 'active' : '';
+        const tag = ms.winner !== null ? ' ✅' : '';
+        return `<button class="match-pill ${actCls} ${doneCls}" onclick="selectB1Match(${idx})">${m.label}${tag}</button>`;
+      }).join('');
+    updateB1FightersUI();
+  }
+
+  function selectB1Match(idx) {
+    currentB1Match = idx;
+    renderB1MatchBar();
+  }
+
+  function updateB1FightersUI() {
+    const m = MATCHES[currentB1Match];
+    const ms = b1MatchScores[currentB1Match];
+    const tL = TEAMS[m.left], tR = TEAMS[m.right];
+    document.getElementById('b1TeamLeftName').innerText = tL.name;
+    document.getElementById('b1TeamLeftName').style.color = tL.color;
+    document.getElementById('b1TeamRightName').innerText = tR.name;
+    document.getElementById('b1TeamRightName').style.color = tR.color;
+
+    document.getElementById('b1DotL1').className = 'dot' + (ms.left >= 1 ? ' won' : '');
+    document.getElementById('b1DotL2').className = 'dot' + (ms.left >= 2 ? ' won' : '');
+    document.getElementById('b1DotR1').className = 'dot' + (ms.right >= 1 ? ' won' : '');
+    document.getElementById('b1DotR2').className = 'dot' + (ms.right >= 2 ? ' won' : '');
+  }
+
+  function b1Score(side, isCorrect) {
+    const m = MATCHES[currentB1Match];
+    const ms = b1MatchScores[currentB1Match];
+    const teamIdx = side === 'left' ? m.left : m.right;
+
+    if (!isCorrect) {
+      addScore(teamIdx, -25, 'bad');
+      return;
+    }
+
+    if (ms.winner !== null) {
+      addScore(teamIdx, 50, 'good');
+      return;
+    }
+
+    ms[side]++;
+    if (ms[side] >= 2) {
+      ms.winner = side;
+      addScore(teamIdx, 100, 'win'); // +50 soal +50 bonus menang duel!
+      showToast(`🎉 ${TEAMS[teamIdx].name} MENANG DUEL! (+50 Soal +50 Bonus = +100 Poin)`, TEAMS[teamIdx].color);
+    } else {
+      addScore(teamIdx, 50, 'good');
+    }
+    usedQuestions.add(currentQIdx);
+    renderB1MatchBar();
+  }
+
+  function renderQuestion() {
+    const item = QUESTIONS[currentQIdx];
+    document.getElementById('b1Category').innerText = item.cat;
+    document.getElementById('b1QuestionText').innerText = item.q;
+    document.getElementById('b1AnswerMain').innerText = item.a;
+    document.getElementById('b1AnswerFact').innerText = item.f;
+    document.getElementById('b1AnswerBox').classList.remove('show');
+    const usedMark = usedQuestions.has(currentQIdx) ? " ✅" : "";
+    document.getElementById('b1Counter').innerText = `Soal ${currentQIdx + 1} / ${QUESTIONS.length}${usedMark}`;
+  }
+
+  function toggleAnswer() {
+    const box = document.getElementById('b1AnswerBox');
+    box.classList.toggle('show');
+    if (box.classList.contains('show')) {
+      usedQuestions.add(currentQIdx);
+      renderQuestion();
+      document.getElementById('b1AnswerBox').classList.add('show');
+    }
+  }
+
+  function prevQuestion() {
+    currentQIdx = (currentQIdx - 1 + QUESTIONS.length) % QUESTIONS.length;
+    renderQuestion();
+  }
+
+  function nextUnusedQuestion() {
+    usedQuestions.add(currentQIdx);
+    for (let step = 1; step <= QUESTIONS.length; step++) {
+      const idx = (currentQIdx + step) % QUESTIONS.length;
+      if (!usedQuestions.has(idx)) {
+        currentQIdx = idx;
+        renderQuestion();
+        return;
+      }
+    }
+    currentQIdx = (currentQIdx + 1) % QUESTIONS.length;
+    renderQuestion();
+  }
+
+  function start3sTimer() {
+    if (timer3sInterval) clearInterval(timer3sInterval);
+    let ms = 30;
+    const el = document.getElementById('timer3s');
+    playTone(1000, 0.08, "sine", 0.3);
+    timer3sInterval = setInterval(() => {
+      ms--;
+      el.innerText = (ms / 10).toFixed(1) + "s";
+      if (ms <= 0) {
+        clearInterval(timer3sInterval);
+        timer3sInterval = null;
+        el.innerText = "HABIS!";
+        sfxWrong();
+      }
+    }, 100);
+  }
+
+  // ==================== BABAK 2 LOGIC ====================
+  function renderB2MatchBar() {
+    const bar = document.getElementById('b2MatchBar');
+    bar.innerHTML = `<span style="font-size:12px; color:#94a3b8; font-weight:700;">Jadwal Adil (4 Wajib + 2 Ekstra):</span>` +
+      MATCHES.map((m, idx) => {
+        const done = b2DoneMatches.has(idx) ? 'done' : '';
+        const act = idx === currentB2Match ? 'active' : '';
+        const tag = m.ekstra ? ' (Ekstra)' : '';
+        return `<button class="match-pill ${act} ${done}" onclick="selectB2Match(${idx})">${m.label}${tag}${b2DoneMatches.has(idx)?' ✅':''}</button>`;
+      }).join('');
+    const m = MATCHES[currentB2Match];
+    document.getElementById('b2TeamLeftName').innerText = TEAMS[m.left].name;
+    document.getElementById('b2TeamLeftName').style.color = TEAMS[m.left].color;
+    document.getElementById('b2TeamRightName').innerText = TEAMS[m.right].name;
+    document.getElementById('b2TeamRightName').style.color = TEAMS[m.right].color;
+  }
+
+  function selectB2Match(idx) {
+    currentB2Match = idx;
+    resetB2Timer();
+    renderB2MatchBar();
+  }
+
+  function updateB2TimerUI() {
+    const m = Math.floor(b2Seconds / 60);
+    const s = b2Seconds % 60;
+    document.getElementById('b2TimerDisplay').innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+
+    const card = document.getElementById('b2ClockCard');
+    const badge = document.getElementById('b2ZoneBadge');
+    card.className = "clock-big-card";
+
+    if (b2Seconds === 0) {
+      card.classList.add('zone-end');
+      badge.style.background = "rgba(244,63,94,0.2)";
+      badge.style.color = "#fda4af";
+      badge.style.borderColor = "#f43f5e";
+      badge.innerText = "⏰ WAKTU HABIS! CLUE PAMUNGKAS = +100 POIN!";
+    } else if (b2HintActive) {
+      card.classList.add('zone-normal');
+      badge.style.background = "rgba(245,158,11,0.2)";
+      badge.style.color = "#fde047";
+      badge.style.borderColor = "#f59e0b";
+      badge.innerText = "💡 PAKAI BANTUAN KATEGORI: MAX +150 POIN";
+    } else if (b2Seconds >= 60) {
+      badge.style.background = "rgba(16,185,129,0.2)";
+      badge.style.color = "#4ade80";
+      badge.style.borderColor = "#10b981";
+      badge.innerText = "🔥 ZONA KILAT: TEBAK BENAR = +300 POIN!";
+    } else {
+      card.classList.add('zone-normal');
+      badge.style.background = "rgba(56,189,248,0.2)";
+      badge.style.color = "#7dd3fc";
+      badge.style.borderColor = "#38bdf8";
+      badge.innerText = "⚡ ZONA NORMAL: TEBAK BENAR = +200 POIN!";
+    }
+  }
+
+  function toggleB2Timer() {
+    const btn = document.getElementById('btnB2Toggle');
+    if (b2Interval) {
+      clearInterval(b2Interval);
+      b2Interval = null;
+      btn.innerText = "▶️ Lanjut";
+    } else {
+      b2Interval = setInterval(() => {
+        if (b2Seconds > 0) {
+          b2Seconds--;
+          updateB2TimerUI();
+          if (b2Seconds === 60) playTone(660, 0.2, "triangle", 0.3);
+          if (b2Seconds === 0) {
+            clearInterval(b2Interval);
+            b2Interval = null;
+            btn.innerText = "⏰ Habis";
+            sfxWrong();
+          }
+        }
+      }, 1000);
+      btn.innerText = "⏸️ Jeda";
+    }
+  }
+
+  function resetB2Timer() {
+    if (b2Interval) { clearInterval(b2Interval); b2Interval = null; }
+    b2Seconds = 120;
+    b2HintActive = false;
+    document.getElementById('btnB2Toggle').innerText = "▶️ Mulai Duel";
+    document.getElementById('btnHintUsed').innerText = "💡 Bantuan Kategori: OFF (Normal +300/+200)";
+    updateB2TimerUI();
+  }
+
+  function toggleB2Hint() {
+    b2HintActive = !b2HintActive;
+    document.getElementById('btnHintUsed').innerText = b2HintActive
+      ? "💡 Bantuan Kategori: AKTIF (Max Poin -> +150)"
+      : "💡 Bantuan Kategori: OFF (Normal +300/+200)";
+    updateB2TimerUI();
+  }
+
+  function b2Win(side) {
+    if (b2Interval) { clearInterval(b2Interval); b2Interval = null; }
+    document.getElementById('btnB2Toggle').innerText = "✅ Selesai";
+    const m = MATCHES[currentB2Match];
+    const teamIdx = side === 'left' ? m.left : m.right;
+    let pts = 200;
+    if (b2Seconds === 0) pts = 100;
+    else if (b2HintActive) pts = 150;
+    else if (b2Seconds >= 60) pts = 300;
+
+    addScore(teamIdx, pts, 'win');
+    b2DoneMatches.add(currentB2Match);
+    renderB2MatchBar();
+    showToast(`🎉 MANTAP! ${TEAMS[teamIdx].name} menebak sosok & meraih +${pts} Poin!`, TEAMS[teamIdx].color);
+  }
+
+  function b2Penalty(side, pts, reason) {
+    const m = MATCHES[currentB2Match];
+    const teamIdx = side === 'left' ? m.left : m.right;
+    addScore(teamIdx, pts, 'bad');
+  }
+
+  // ==================== AREA RAHASIA WASIT ====================
+  function openRefereeModal() { document.getElementById('refereeModal').classList.add('open'); }
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+  function drawCrossPair() {
+    const avail = SOSOK_POOL.filter(s => !drawnPairsUsed.has(s.name));
+    if (avail.length < 2) {
+      drawnPairsUsed.clear();
+      return drawCrossPair();
+    }
+    const leftIdx = Math.floor(Math.random() * avail.length);
+    const leftCard = avail[leftIdx];
+    const diffWorld = avail.filter(s => s.world !== leftCard.world);
+    const rightCard = diffWorld.length > 0
+      ? diffWorld[Math.floor(Math.random() * diffWorld.length)]
+      : avail.find(s => s.name !== leftCard.name);
+
+    drawnPairsUsed.add(leftCard.name);
+    drawnPairsUsed.add(rightCard.name);
+
+    document.getElementById('drawWorldL').innerText = leftCard.world;
+    document.getElementById('drawCardL').innerText = leftCard.name;
+    document.getElementById('drawHintL').innerText = leftCard.hint;
+    document.getElementById('drawWorldR').innerText = rightCard.world;
+    document.getElementById('drawCardR').innerText = rightCard.name;
+    document.getElementById('drawHintR').innerText = rightCard.hint;
+  }
+
+  // ==================== FINAL TOP 10 MILITER ====================
+  function renderTop10() {
+    const grid = document.getElementById('top10Grid');
+    // Urutkan tampilan #10 turun ke #6 kiri, #5 ke #1 kanan agar dramatis membacanya dari #10 -> #1
+    grid.innerHTML = TOP10_DATA.map((item, idx) => `
+      <div class="rank-card ${item.revealed ? 'revealed' : ''}" onclick="revealRank(${idx})">
+        <div class="rank-num">#${item.rank}</div>
+        <div class="rank-country">
+          ${item.revealed
+            ? `<span>${item.flag} ${item.name}</span><div style="font-size:11.5px; color:#a7f3d0; font-weight:500;">${item.fact}</div>`
+            : `<span class="rank-hidden-label">[ KLIK UNTUK BUKA PERINGKAT #${item.rank} ]</span>`
+          }
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function revealRank(idx) {
+    if (!TOP10_DATA[idx].revealed) {
+      TOP10_DATA[idx].revealed = true;
+      sfxReveal();
+      renderTop10();
+    }
+  }
+  function revealNextTop10() {
+    const nextIdx = TOP10_DATA.findIndex(x => !x.revealed);
+    if (nextIdx !== -1) revealRank(nextIdx);
+  }
+  function resetTop10() {
+    TOP10_DATA.forEach(x => x.revealed = false);
+    renderTop10();
+  }
+  function toggleTrapCountries() {
+    const el = document.getElementById('trapBox');
+    el.style.display = el.style.display === 'none' ? 'block' : 'none';
+  }
+
+  function toggleFinalTimer() {
+    const btn = document.getElementById('btnFinalTimer');
+    if (finalInterval) {
+      clearInterval(finalInterval);
+      finalInterval = null;
+      btn.innerText = "▶️ Lanjut";
+    } else {
+      finalInterval = setInterval(() => {
+        if (finalSeconds > 0) {
+          finalSeconds--;
+          const m = Math.floor(finalSeconds / 60), s = finalSeconds % 60;
+          document.getElementById('finalTimer').innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+          if (finalSeconds === 0) {
+            clearInterval(finalInterval);
+            finalInterval = null;
+            btn.innerText = "⏰ Kumpul!";
+            sfxWrong();
+          }
+        }
+      }, 1000);
+      btn.innerText = "⏸️ Jeda";
+    }
+  }
+  function resetFinalTimer() {
+    if (finalInterval) { clearInterval(finalInterval); finalInterval = null; }
+    finalSeconds = 120;
+    document.getElementById('finalTimer').innerText = "02:00";
+    document.getElementById('btnFinalTimer').innerText = "▶️ Mulai 2m";
+  }
+
+  function openPodiumModal() {
+    sfxWin();
+    const sorted = [...TEAMS].sort((a, b) => b.score - a.score);
+    const medals = ["🥇 JUARA 1", "🥈 JUARA 2", "🥉 JUARA 3", "🏅 PERINGKAT 4"];
+    document.getElementById('podiumList').innerHTML = sorted.map((t, i) => `
+      <div style="background:#1e293b; border:2px solid ${i===0?'#facc15':'#334155'}; border-radius:12px; padding:12px 18px; display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:18px; font-weight:900; color:${t.color};">${medals[i]} &mdash; ${t.name}</span>
+        <span style="font-family:Consolas,monospace; font-size:24px; font-weight:900; color:#facc15;">${t.score} Poin</span>
+      </div>
+    `).join('');
+    document.getElementById('podiumModal').classList.add('open');
+  }
+
+  // ==================== ROSTER 19 SANTRI ====================
+  function renderRoster() {
+    const grid = document.getElementById('rosterGrid');
+    grid.innerHTML = TEAMS.map(t => `
+      <div class="team-card ${t.cls}">
+        <div style="font-weight:900; font-size:15px; color:${t.color}; margin-bottom:6px;">${t.name}</div>
+        ${t.members.map(name => {
+          const isPlayed = playedStudents.has(name);
+          return `<div class="student-chip ${isPlayed ? 'played' : ''}" onclick="toggleStudent('${name.replace(/'/g,"\\'")}')">
+            <span>${name}</span>
+            <span>${isPlayed ? '✅ Sudah' : '⏳ Belum'}</span>
+          </div>`;
+        }).join('')}
+      </div>
+    `).join('');
+  }
+  function toggleStudent(name) {
+    if (playedStudents.has(name)) playedStudents.delete(name);
+    else playedStudents.add(name);
+    renderRoster();
+  }
+  function resetRoster() { playedStudents.clear(); renderRoster(); }
+
+  // INIT
+  renderScoreboard();
+  renderB1MatchBar();
+  renderQuestion();
+  renderB2MatchBar();
+  updateB2TimerUI();
+  renderTop10();
+  renderRoster();
+  updateMasterUI();
+</script>
+</body>
+</html>
