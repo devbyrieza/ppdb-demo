@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#040814">
 <title>Arena Duel Pengetahuan — Kelas 7 MTs (40 Menit)</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  button, .tm-pill, .student-chip, .rank-card { touch-action: manipulation; }
   :root {
     --bg-dark: #040814;
     --bg-panel: #0d1526;
@@ -273,6 +275,8 @@
     opacity: 0;
     pointer-events: none;
     transition: all 0.25s ease;
+    max-width: calc(100vw - 24px);
+    text-align: center;
   }
   .tv-toast.show {
     opacity: 1;
@@ -751,10 +755,168 @@
   table.matrix th { background: #1e293b; color: #38bdf8; }
   table.matrix td:first-child { text-align: left; font-weight: bold; }
 
+  .table-scroll {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .ref-card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .ref-card-placeholder {
+    grid-column: 1 / -1;
+    font-size: 12px;
+    color: #94a3b8;
+    text-align: center;
+    padding: 8px;
+  }
+  .b2-clock-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .b2-clock-controls {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .master-controls-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .master-controls-row {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  .final-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .final-timer-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #060b17;
+    padding: 8px 14px;
+    border-radius: 12px;
+    border: 1px solid #334155;
+  }
+  .final-footer-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .final-footer-left {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
   @media (max-width: 1024px) {
     .scoreboard-grid, .rules-grid, .roster-grid, .b2-arena-grid { grid-template-columns: repeat(2, 1fr); }
-    .duel-arena { grid-template-columns: 1fr; }
+    .duel-arena { grid-template-columns: repeat(2, 1fr); }
+    .question-stage { grid-column: 1 / -1; order: -1; }
     .top10-grid { grid-template-columns: 1fr; }
+    .b2-top-clock { flex-wrap: wrap; justify-content: center; }
+    .b2-clock-info { flex-wrap: wrap; justify-content: center; text-align: center; }
+    .b2-clock-controls { flex-wrap: wrap; justify-content: center; width: 100%; flex-shrink: 1; }
+  }
+
+  @media (max-width: 640px) {
+    body { padding: 6px 8px 20px; overflow-x: hidden; }
+    .container { gap: 7px; }
+    .top-bar { padding: 8px 10px; justify-content: center; text-align: center; }
+    .brand h1 { font-size: 15.5px; justify-content: center; line-height: 1.25; }
+    .brand p { font-size: 11px; line-height: 1.35; }
+    .master-clock-box { width: 100%; flex-wrap: wrap; justify-content: center; gap: 7px; padding: 8px; }
+    .clock-readout { font-size: 22px; min-width: 72px; }
+    .pace-pill { max-width: 100%; font-size: 11px; text-align: center; }
+    .master-controls-wrap { width: 100%; align-items: center; }
+    .master-controls-row { justify-content: center; }
+    .btn-xs { padding: 6px 9px; font-size: 11.5px; min-height: 32px; }
+
+    .nav-tabs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+    .tab-btn { min-width: 0; width: 100%; padding: 8px 6px; font-size: 11.5px; line-height: 1.25; text-align: center; }
+    .tab-btn:last-child { grid-column: 1 / -1; }
+    .tab-btn span.time-tag { font-size: 9.5px; }
+
+    .scoreboard-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+    .team-card { padding: 7px 6px; border-radius: 11px; }
+    .team-header { gap: 4px; flex-wrap: wrap; }
+    .team-name { font-size: 13px; }
+    .team-leader { font-size: 9.5px; padding: 3px 6px; }
+    .team-score { font-size: 22px; margin: 2px 0 4px; }
+    .score-controls { gap: 3px; }
+    .s-btn { padding: 5px 6px; font-size: 10.5px; min-height: 28px; }
+    .tm-pill { font-size: 9.5px; padding: 2.5px 5.5px; }
+
+    .panel { padding: 10px; border-radius: 12px; }
+    .panel h2 { font-size: 16px !important; line-height: 1.3; }
+    .rules-grid, .roster-grid { grid-template-columns: 1fr; gap: 8px; }
+    .rule-box h3 { font-size: 14px; }
+    .rule-box ul { font-size: 12.5px; }
+    .penalty-banner, .reward-banner { font-size: 12px; padding: 8px 10px; justify-content: flex-start; text-align: left; }
+
+    .match-bar { gap: 5px; }
+    .match-pill { font-size: 11px; padding: 6px 9px; flex: 1 1 auto; text-align: center; }
+
+    .duel-arena { grid-template-columns: 1fr; gap: 9px; }
+    .question-stage { padding: 11px 10px; min-height: auto; border-radius: 12px; }
+    .q-meta { flex-wrap: wrap; gap: 6px; justify-content: center; }
+    .q-cat { font-size: 11.5px; padding: 3px 10px; }
+    .timer-3s-overlay { padding: 4px 9px; gap: 6px; }
+    .timer-3s-num { font-size: 17px; }
+    .q-text { font-size: 18px; line-height: 1.38; padding: 10px 2px; }
+    .answer-main { font-size: 18px; }
+    .answer-fact { font-size: 12px; }
+    .action-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+    .action-row .btn-lg { width: 100%; padding: 9px 6px; font-size: 12px; }
+    .fighter-box { padding: 9px; }
+    .fighter-team { font-size: 16px; }
+    .corner-member-btn { padding: 5px 8px; font-size: 11.5px; min-height: 30px; }
+
+    .b2-top-clock { padding: 8px; gap: 7px; }
+    .b2-clock-num { font-size: 26px; min-width: auto; }
+    .zone-badge { font-size: 10.5px; line-height: 1.35; }
+    .b2-clock-controls { gap: 5px; }
+    .b2-clock-controls button { padding: 7px 9px !important; font-size: 11.5px !important; flex: 1 1 auto; }
+    .b2-arena-grid { grid-template-columns: 1fr; gap: 9px; }
+    .b2-lane { padding: 9px; }
+    .b2-btn-win { padding: 10px 8px; font-size: 13px; }
+    .b2-btn-pen { padding: 7px 6px; font-size: 11.5px; }
+
+    .final-timer-box { width: 100%; justify-content: center; flex-wrap: wrap; }
+    .rank-card { padding: 10px 12px; min-height: 54px; }
+    .rank-num { font-size: 18px; width: 38px; }
+    .rank-country { font-size: 15px; }
+    .rank-hidden-label { font-size: 12px; }
+    .final-footer-left { width: 100%; }
+    .final-footer-left .btn-lg { flex: 1 1 100%; padding: 9px 10px; font-size: 12.5px; }
+    .final-footer-bar > .btn-lg { width: 100%; font-size: 14.5px !important; padding: 11px; }
+
+    .modal-backdrop { padding: 8px; align-items: flex-start; }
+    .modal-card { padding: 12px; border-radius: 14px; max-height: 94vh; margin: auto 0; }
+    .modal-card h2 { font-size: 16px !important; line-height: 1.3; }
+    .ref-card-grid { grid-template-columns: 1fr; }
+    table.matrix { min-width: 520px; font-size: 11.5px; }
+    .student-chip { padding: 10px 12px; min-height: 40px; font-size: 13px; }
+    .tv-toast { font-size: 14px; padding: 10px 14px; bottom: 14px; border-radius: 10px; }
+    .podium-row { padding: 10px 12px !important; flex-wrap: wrap; gap: 6px; }
+    .podium-row .podium-title { font-size: 14.5px !important; }
+    .podium-row .podium-pts { font-size: 17px !important; }
   }
 </style>
 </head>
@@ -775,14 +937,14 @@
         <div id="masterClock" class="clock-readout">40:00</div>
       </div>
       <div id="paceAdvice" class="pace-pill">Siap Mulai (09.00 WIB)</div>
-      <div style="display:flex; flex-direction:column; gap:4px;">
-        <div style="display:flex; gap:4px;">
+      <div class="master-controls-wrap">
+        <div class="master-controls-row">
           <button id="btnMasterToggle" class="btn-xs active-green" onclick="toggleMasterClock()">▶️ Mulai</button>
           <button class="btn-xs" onclick="adjustMaster(-60)">-1m</button>
           <button class="btn-xs" onclick="adjustMaster(60)">+1m</button>
           <button class="btn-xs" onclick="resetMasterClock()">↺</button>
         </div>
-        <div style="display:flex; gap:4px;">
+        <div class="master-controls-row">
           <button class="btn-xs" style="background:#1e3a8a; border-color:#60a5fa;" onclick="openTeamsModal()">👥 Lihat 4 Tim</button>
           <button class="btn-xs" id="btnToggleNames" onclick="toggleScoreboardNames()" title="Sembunyikan/Tampilkan nama santri di Papan Skor">👁️ Nama: ON</button>
           <button class="btn-xs" id="btnSound" onclick="toggleSound()">🔊 ON</button>
@@ -955,7 +1117,7 @@
 
       <!-- STRIP KONTROL TIMER 3 MENIT & BANTUAN -->
       <div class="b2-top-clock" id="b2ClockCard">
-        <div style="display:flex; align-items:center; gap:10px; min-width:0;">
+        <div class="b2-clock-info">
           <div class="b2-clock-num" id="b2TimerDisplay">03:00</div>
           <div>
             <div id="b2ZoneBadge" class="zone-badge" style="background:rgba(16,185,129,0.2); color:#4ade80; border:1px solid #10b981;">
@@ -965,7 +1127,7 @@
           </div>
         </div>
 
-        <div style="display:flex; gap:5px; align-items:center; flex-shrink:0;">
+        <div class="b2-clock-controls">
           <button id="btnB2Toggle" class="btn-lg" style="background:#059669; padding:7px 12px; font-size:12.5px;" onclick="toggleB2Timer()">▶️ Mulai Ronde</button>
           <button class="btn-lg" style="background:#334155; padding:7px 10px; font-size:12.5px;" onclick="resetB2Timer()">↺ 3:00</button>
           <button class="btn-lg" style="background:#475569; padding:7px 10px; font-size:12.5px;" onclick="addB2Seconds(30)">+30d</button>
@@ -987,7 +1149,7 @@
   <!-- ==================== TAB 3: FINAL TOP 10 MILITER ==================== -->
   <div class="stage" id="stage-3">
     <div class="panel">
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+      <div class="final-header-row">
         <div>
           <h2 style="color:var(--amber); font-size:21px;">🌍 BABAK FINAL: TOP 10 MILITER TERKUAT DI DUNIA (2026)</h2>
           <p style="font-size:13px; color:#cbd5e1; margin-top:3px;">
@@ -995,7 +1157,7 @@
           </p>
         </div>
 
-        <div style="display:flex; align-items:center; gap:10px; background:#060b17; padding:8px 14px; border-radius:12px; border:1px solid #334155;">
+        <div class="final-timer-box">
           <span style="font-size:12px; color:#94a3b8; font-weight:700;">Timer Diskusi:</span>
           <span id="finalTimer" style="font-family:Consolas,monospace; font-size:24px; font-weight:900; color:#facc15;">02:00</span>
           <button id="btnFinalTimer" class="btn-xs active-green" onclick="toggleFinalTimer()">▶️ Mulai 2m</button>
@@ -1006,8 +1168,8 @@
       <!-- Papan Reveal 10 -> 1 -->
       <div class="top10-grid" id="top10Grid"></div>
 
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-top:16px;">
-        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+      <div class="final-footer-bar">
+        <div class="final-footer-left">
           <button class="btn-lg" style="background:#334155;" onclick="toggleTrapCountries()">🔎 Tampilkan Negara Pengecoh (Di Luar Top 10)</button>
           <button class="btn-lg" style="background:#0284c7;" onclick="revealNextTop10()">🥁 Buka Peringkat Berikutnya (#10 &rarr; #1)</button>
           <button class="btn-lg" style="background:#475569;" onclick="resetTop10()">↺ Tutup Semua</button>
@@ -1053,7 +1215,7 @@
         <b style="color:#6ee7b7;" id="fairRoundHeader">🎯 Rekomendasi 4 Kartu Adil &mdash; Ronde 1</b>
         <span style="font-size:11.5px; color:#d1fae5;">Tingkat Kesulitan Seimbang &bull; Kategori Tidak Pernah Diulang!</span>
       </div>
-      <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:8px; margin-top:8px;" id="fair4Grid"></div>
+      <div class="ref-card-grid" id="fair4Grid"></div>
     </div>
 
     <div style="background:#1e293b; border-radius:12px; padding:10px 12px; margin-bottom:12px;">
@@ -1061,12 +1223,13 @@
         <b style="color:#38bdf8;">🎲 Generator 4 Kartu Acak (Cadangan &bull; Anti-Kategori Sama)</b>
         <button class="btn-xs active-green" onclick="draw4CrossCards()">Acak 4 Kartu Baru</button>
       </div>
-      <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:8px; margin-top:8px;" id="draw4Grid">
-        <div style="grid-column:span 2; font-size:12px; color:#94a3b8; text-align:center; padding:8px;">Klik "Acak 4 Kartu Baru" untuk mengundi 4 kartu baru dari kategori berbeda yang belum terpakai.</div>
+      <div class="ref-card-grid" id="draw4Grid">
+        <div class="ref-card-placeholder">Klik "Acak 4 Kartu Baru" untuk mengundi 4 kartu baru dari kategori berbeda yang belum terpakai.</div>
       </div>
     </div>
 
     <h3 style="color:#38bdf8; font-size:15px;">🏫 Matriks Contekan Cepat: 9 Ustadz Pesantren</h3>
+    <div class="table-scroll">
     <table class="matrix">
       <thead>
         <tr>
@@ -1090,6 +1253,7 @@
         <tr><td>Ustadz Thoriq</td><td>Siroh (MTs &amp; IL)</td><td>Ya</td><td>Ya</td><td>Tidak</td><td>Tidak</td></tr>
       </tbody>
     </table>
+    </div>
   </div>
 </div>
 
@@ -1288,7 +1452,7 @@
   let drawnCardsUsed = new Set();
   let drawnWorldsUsed = new Set();
   let playedStudents = new Set();
-  let showScoreboardNames = true;
+  let showScoreboardNames = window.innerWidth > 640;
   let activeFighters = {
     b1: { left: null, right: null },
     b2: [null, null, null, null]
@@ -1963,9 +2127,9 @@
     const sorted = [...TEAMS].sort((a, b) => b.score - a.score);
     const medals = ["🥇 JUARA 1", "🥈 JUARA 2", "🥉 JUARA 3", "🏅 PERINGKAT 4"];
     document.getElementById('podiumList').innerHTML = sorted.map((t, i) => `
-      <div style="background:#1e293b; border:2px solid ${i===0?'#facc15':'#334155'}; border-radius:12px; padding:12px 18px; display:flex; justify-content:space-between; align-items:center;">
-        <span style="font-size:18px; font-weight:900; color:${t.color};">${medals[i]} &mdash; ${t.name}</span>
-        <span style="font-family:Consolas,monospace; font-size:24px; font-weight:900; color:#facc15;">${t.score} Poin</span>
+      <div class="podium-row" style="background:#1e293b; border:2px solid ${i===0?'#facc15':'#334155'}; border-radius:12px; padding:12px 18px; display:flex; justify-content:space-between; align-items:center;">
+        <span class="podium-title" style="font-size:18px; font-weight:900; color:${t.color};">${medals[i]} &mdash; ${t.name}</span>
+        <span class="podium-pts" style="font-family:Consolas,monospace; font-size:24px; font-weight:900; color:#facc15;">${t.score} Poin</span>
       </div>
     `).join('');
     document.getElementById('podiumModal').classList.add('open');
@@ -2074,6 +2238,8 @@
   }
 
   // INIT
+  const btnNamesEl = document.getElementById('btnToggleNames');
+  if (btnNamesEl) btnNamesEl.innerText = showScoreboardNames ? "👁️ Nama: ON" : "👁️ Nama: OFF";
   renderScoreboard();
   renderB1MatchBar();
   renderQuestion();

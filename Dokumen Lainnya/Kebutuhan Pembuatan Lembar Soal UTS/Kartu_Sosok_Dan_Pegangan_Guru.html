@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0f172a">
 <title>Kartu Tebak Sosok &amp; Pegangan Wasit (Print A4)</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
   body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: #e2e8f0;
@@ -153,6 +155,79 @@
   }
   .q-item { border-bottom: 1px dotted #cbd5e1; padding: 1.5px 0; }
 
+  .quick-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .quick-nav a {
+    background: #1e293b;
+    color: #e2e8f0;
+    border: 1px solid #475569;
+    text-decoration: none;
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 5px 10px;
+    border-radius: 6px;
+  }
+  .quick-nav a:hover { border-color: #38bdf8; color: white; }
+  .table-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .ref-note-time { font-size: 8.9px; line-height: 1.34; border: 1px solid #cbd5e1; padding: 4px 7px; border-radius: 6px; }
+  .ref-note-azka { font-size: 8.2px; background: #fefce8; border: 1px solid #facc15; border-radius: 4px; padding: 2.5px 6px; margin-top: 3.5px; color: #713f12; }
+  .ref-note-rounds { font-size: 8.4px; background: #eff6ff; border: 1px solid #93c5fd; border-radius: 4px; padding: 3px 6px; margin-bottom: 4px; line-height: 1.34; }
+  .ref-note-final { font-size: 9.1px; background: #f8fafc; border: 1px solid #94a3b8; border-radius: 6px; padding: 4px 7px; }
+
+  @media screen and (max-width: 820px) {
+    body { padding: 8px; }
+    .no-print {
+      max-width: 100%;
+      flex-direction: column;
+      align-items: stretch;
+      padding: 12px;
+      gap: 10px;
+      font-size: 13px;
+    }
+    .btn-print { width: 100%; padding: 11px 14px; font-size: 14px; }
+    .quick-nav a { flex: 1 1 auto; text-align: center; padding: 7px 8px; }
+    .a4-page {
+      width: 100%;
+      min-height: auto;
+      padding: 12px;
+      margin-bottom: 14px;
+      border-radius: 10px;
+    }
+    .page-title { margin-bottom: 10px; padding-bottom: 8px; }
+    .page-title h2 { font-size: 14.5px; line-height: 1.3; }
+    .page-title p { font-size: 11.5px; line-height: 1.45; margin-top: 4px; }
+
+    .cards-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .sosok-card { min-height: auto; padding: 10px; gap: 6px; }
+    .card-code { font-size: 10.5px; }
+    .card-name { font-size: 16.5px; margin: 2px 0; }
+    .card-facts { font-size: 11.5px; line-height: 1.45; padding: 6px 8px; }
+
+    .ref-section { margin-bottom: 14px; }
+    .ref-section h3 { font-size: 12.5px; padding: 6px 10px; line-height: 1.35; margin-bottom: 7px; }
+    .ref-note-time, .ref-note-azka, .ref-note-rounds, .ref-note-final {
+      font-size: 12px;
+      line-height: 1.5;
+      padding: 8px 10px;
+    }
+    .ref-teams-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; font-size: 12px; line-height: 1.5; }
+    .ref-team-box { padding: 8px 10px; }
+    .ref-team-box b.t-head { font-size: 13px; margin-bottom: 4px; padding-bottom: 3px; }
+    table.ref-table { min-width: 500px; font-size: 11.5px; }
+    table.ref-table th, table.ref-table td { padding: 5px 7px; }
+    .q-two-col { grid-template-columns: 1fr; gap: 2px; font-size: 12px; line-height: 1.48; }
+    .q-item { padding: 5px 0; }
+  }
+
+  @media screen and (max-width: 519px) {
+    .cards-grid { grid-template-columns: 1fr; }
+    .ref-teams-grid { grid-template-columns: 1fr; }
+  }
+
   @media print {
     body { background: white; padding: 0; }
     .no-print { display: none; }
@@ -166,12 +241,17 @@
   <div>
     <b>🖨️ KARTU "SIAPA / APA DI KEPALAKU?" (TEMPEL DI PECI/DAHI) &amp; PEGANGAN WASIT</b><br>
     <span style="font-size:12px; color:#cbd5e1;">Tips: 16 Kartu Utama (R1–R4) tidak pernah mengulang kategori antar ronde (orang, benda fisik seperti Mushaf, mapel Aljabar, dll)!</span>
+    <div class="quick-nav">
+      <a href="#page-kartu-1">🃏 Kartu R1–R4</a>
+      <a href="#page-kartu-2">🃏 Cadangan &amp; Ustadz</a>
+      <a href="#page-wasit">📋 Pegangan Wasit (HP)</a>
+    </div>
   </div>
   <button class="btn-print" onclick="window.print()">🖨️ Cetak / Simpan PDF (3 Halaman A4)</button>
 </div>
 
 <!-- HALAMAN 1: 15 KARTU UTAMA (RONDE 1, 2, 3 & R4 TIM 1-3) -->
-<div class="a4-page">
+<div class="a4-page" id="page-kartu-1">
   <div class="page-title">
     <h2>Kartu "Siapa / Apa di Kepalaku?" &mdash; Set Utama R1 s/d R4 (Gunting Garis Putus-Putus)</h2>
     <p>Tiap ronde maju 4 tim sekaligus (4 kategori berbeda total!). Jangan beri tahu kategorinya di awal ronde agar santri berpikir kritis.</p>
@@ -263,7 +343,7 @@
 </div>
 
 <!-- HALAMAN 2: 15 KARTU (R4 TIM 4 + 6 CADANGAN UNIK + 8 ALTERNATIF USTADZ R1) -->
-<div class="a4-page">
+<div class="a4-page" id="page-kartu-2">
   <div class="page-title">
     <h2>Kartu Babak 2 &mdash; Set 2 (Pelengkap R4, 6 Cadangan Unik &amp; Opsi Alternatif Ustadz R1)</h2>
     <p>Kartu [ALT-U] hanya dipakai JIKA ingin menukar Ustadz Rieza pada slot tunggal Ustadz di Ronde 1 (jangan ulangi Ustadz di R2–R4!).</p>
@@ -352,7 +432,7 @@
 </div>
 
 <!-- HALAMAN 3: PEGANGAN WASIT / USTADZ RIEZA -->
-<div class="a4-page">
+<div class="a4-page" id="page-wasit">
   <div class="page-title">
     <h2>Pegangan Cepat Wasit &mdash; Sesi 40 Menit (09.00 &ndash; 09.40 WIB)</h2>
     <p>Gunakan lembar ini sebagai panduan kontrol waktu, kunci soal lisan, matriks ustadz, dan kunci final Top 10.</p>
@@ -360,7 +440,7 @@
 
   <div class="ref-section">
     <h3>⏱️ KONTROL WAKTU &amp; JADWAL 6 SESI ADIL (40 MENIT PAS)</h3>
-    <div style="font-size:8.9px; line-height:1.34; border:1px solid #cbd5e1; padding:4px 7px; border-radius:6px;">
+    <div class="ref-note-time">
       <b>09.00&ndash;09.03 (3 mnt):</b> Duduk per 4 Tim Baru, jelaskan poin &amp; denda <b>-100</b> kalau bocorin. Taruh 1 spidol di tengah. (Juara 1: Kupon Kantin Rp 5.000/anak + Nilai Harian; MVP/Kilat: Nilai Kompetensi).<br>
       <b>09.03&ndash;09.16 (13 mnt) &mdash; Babak 1 (Rebut Spidol Best of 3):</b> 6 Sesi Round-Robin (1v2, 3v4, 1v3, 2v4, 1v4, 2v3) &times; <b>3 Soal/Sesi</b> (~2 mnt/sesi). Benar <b>+50</b>, Salah/&gt;3 dtk <b>-25</b>, Menang Duel <b>+50</b>.<br>
       <b>09.16&ndash;09.29 (13 mnt) &mdash; Babak 2 (4 Tim Serentak &bull; 4 Ronde @ 3 Menit):</b> Tiap ronde, <b>4 tim kirim 1 wakil maju bersama</b>! Bergilir tanya <b>YA/TIDAK</b> searah jarum jam. Urutan tebak benar: <b>#1 (+300)</b> &bull; <b>#2 (+200)</b> &bull; <b>#3 (+150)</b> &bull; <b>#4 (+100)</b> | Salah tembak: <b>-50</b> | <i>Kategori TIDAK diulang antar ronde!</i><br>
@@ -403,20 +483,21 @@
         4. Andi Ibra Faeyza
       </div>
     </div>
-    <div style="font-size:8.2px; background:#fefce8; border:1px solid #facc15; border-radius:4px; padding:2.5px 6px; margin-top:3.5px; color:#713f12;">
+    <div class="ref-note-azka">
       <b>🤝 Pendampingan Azka (Tim 3 — Jika Masuk):</b> Tidak usah adu cepat lisan 3 detik! Jadikan Azka <b>Asisten Isyarat 👍/👎 (YA/TIDAK)</b> bersama rekan saat menjawab lawan di Babak 2 &amp; <b>Juru Tulis 6 Negara</b> di Babak Final. (Penjawab cepat Tim 3 = 4 orang, sama adil dengan Tim 4; tetap dapat kupon &amp; nilai penuh!).
     </div>
   </div>
 
   <div class="ref-section">
     <h3>🏫 4 RONDE BABAK 2 (ANTI-KATEGORI SAMA!) &amp; MATRIKS 9 USTADZ</h3>
-    <div style="font-size:8.4px; background:#eff6ff; border:1px solid #93c5fd; border-radius:4px; padding:3px 6px; margin-bottom:4px; line-height:1.34;">
+    <div class="ref-note-rounds">
       <b>R1:</b> T1 Ust. Rieza (atau <i>ALT-U</i>) &bull; T2 C. Ronaldo &bull; T3 Naruto &bull; T4 Sandal Jepit Masjid &nbsp;|&nbsp;
       <b>R2:</b> T1 Mushaf <i>(Benda)</i> &bull; T2 Soekarno &bull; T3 Roblox &bull; T4 Ka'bah<br>
       <b>R3:</b> T1 A. Einstein &bull; T2 Rendang &bull; T3 Kucing &bull; T4 Aljabar <i>(Mapel!)</i> &nbsp;|&nbsp;
       <b>R4:</b> T1 Negara Mesir &bull; T2 Pelangi &bull; T3 Pemadam Kebakaran &bull; T4 Sepeda &nbsp;|&nbsp;
       <b>Cad:</b> Kurma, Laptop, Gitar, Uang Kertas
     </div>
+    <div class="table-wrap">
     <table class="ref-table">
       <thead>
         <tr>
@@ -435,6 +516,7 @@
         <tr><td><b>Ust. Thoriq</b></td><td>Siroh (MTs &amp; IL)</td><td>Ya</td><td>Ya</td><td>Tidak</td><td>Tidak</td></tr>
       </tbody>
     </table>
+    </div>
   </div>
 
   <div class="ref-section">
@@ -475,7 +557,7 @@
 
   <div class="ref-section" style="margin-bottom:0;">
     <h3>🌍 KUNCI BABAK FINAL: TOP 10 MILITER TERKUAT DUNIA (GLOBAL FIREPOWER 2026)</h3>
-    <div style="font-size:9.1px; background:#f8fafc; border:1px solid #94a3b8; border-radius:6px; padding:4px 7px;">
+    <div class="ref-note-final">
       <b>Urutan #1 &rarr; #10:</b> (1) Amerika Serikat &bull; (2) Rusia &bull; (3) China &bull; (4) India &bull; (5) Korea Selatan &bull; (6) Prancis &bull; (7) Jepang &bull; (8) Inggris (UK) &bull; (9) Turki &bull; (10) Italia.<br>
       <i>Catatan Pengecoh (Zonk -50):</i> Indonesia (#13), Pakistan (#12), Jerman (#14), Israel (#15), Arab Saudi, Korea Utara tidak masuk 10 besar.
     </div>
