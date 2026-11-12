@@ -5,7 +5,8 @@ import { markExamComponentAsComplete } from "@/lib/exam-status";
 
 async function getSession() {
   const cookieStore = await cookies();
-  const sessionCookie = cookieStore.get("al_session");
+  const sessionCookie =
+    cookieStore.get("al_session") || cookieStore.get("app_session");
   if (!sessionCookie) return null;
   try {
     return JSON.parse(sessionCookie.value);
@@ -37,12 +38,14 @@ export async function POST(request: Request) {
     const result = await markExamComponentAsComplete({
       jadwalId: jadwal_id,
       userId,
-      componentType: component_type });
+      componentType: component_type,
+    });
 
     return NextResponse.json({
       success: true,
       message: `Berhasil menandai ${result.updatedField} selesai.`,
-      isAllDone: result.isAllDone });
+      isAllDone: result.isAllDone,
+    });
   } catch (error: any) {
     console.error("POST /api/penguji/jadwal/complete error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });

@@ -53,6 +53,10 @@ interface Peserta {
     catatan_lisan_arab?: string | null;
     detail_hafalan?: any;
     detail_lisan_arab?: any;
+  detail_arab?: any;
+  catatan_arab?: string | null;
+  score_arab?: number | null;
+  nilai_arab_total?: number | null;
     score_hafalan?: number | null;
     score_lisan_arab?: number | null;
     input_at_hafalan?: string | null;
@@ -255,12 +259,18 @@ const isJenjangLangsungNonIL = (jenjang?: string | null): boolean => {
 
 const ROLE_TO_FORM_TYPES: Record<string, string[]> = {
   penguji: ['quran'],
+  penguji_quran: ['quran'],
+  pewawancara: ['wawancara', 'ortu'],
   pewawancara_calsan: ['wawancara'],
   pewawancara_cawalsan: ['ortu'],
+  penguji_calsan: ['wawancara'],
+  penguji_cawalsan: ['ortu'],
   penguji_hafalan: ['quran'],
   penguji_bahasa_arab: ['lisan_arab'],
+  penguji_arab: ['lisan_arab'],
   admin: ['quran', 'wawancara', 'ortu', 'lisan_arab'],
-  admin_super: ['quran', 'wawancara', 'ortu', 'lisan_arab']
+  admin_super: ['quran', 'wawancara', 'ortu', 'lisan_arab'],
+  head_of_it: ['quran', 'wawancara', 'ortu', 'lisan_arab']
 };
 
 export default function InputNilaiPage() {
@@ -297,11 +307,48 @@ function InputNilaiContent() {
   const [hafalanForm, setHafalanForm] = useState<any>({});
   const [lisanArabForm, setLisanArabForm] = useState<any>({});
 
+  // Autosave grading forms draft
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = localStorage.getItem("template_demo_penguji_nilai_draft");
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed.quranForm) setQuranForm(parsed.quranForm);
+          if (parsed.calsanForm) setSantriForm(parsed.calsanForm);
+          if (parsed.cawalsanForm) setOrangTuaForm(parsed.cawalsanForm);
+          if (parsed.hafalanForm) setHafalanForm(parsed.hafalanForm);
+          if (parsed.lisanArabForm) setLisanArabForm(parsed.lisanArabForm);
+        }
+      } catch (e) {
+        console.warn("Failed to load penguji nilai draft:", e);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem(
+          "template_demo_penguji_nilai_draft",
+          JSON.stringify({ quranForm, calsanForm, cawalsanForm, hafalanForm, lisanArabForm })
+        );
+      } catch (e) {
+        console.warn("Failed to save penguji nilai draft:", e);
+      }
+    }
+  }, [quranForm, calsanForm, cawalsanForm, hafalanForm, lisanArabForm]);
+
   // Determine which form types are visible based on active role & secondary roles
-  const allRoles = activeRole ? [activeRole] : userRoles;
-  const visibleFormTypes = allRoles.some(r => ["admin", "admin_super"].includes(r))
+  // Determine which form types are visible based on active role & secondary roles
+  const allRoles = [...new Set([activeRole, ...userRoles])].filter(Boolean);
+  const isAdmin = allRoles.some(r => ["admin", "admin_super", "head_of_it"].includes(r));
+  const rawFormTypes = isAdmin
     ? ['quran', 'wawancara', 'ortu', 'lisan_arab']
     : [...new Set(allRoles.flatMap(r => ROLE_TO_FORM_TYPES[r] || []))];
+  const visibleFormTypes = rawFormTypes.length > 0
+    ? rawFormTypes
+    : ['quran', 'wawancara', 'ortu', 'lisan_arab'];
 
   const toTitleCase = (str: string) => {
     if (!str || typeof str !== 'string') return "";
@@ -312,25 +359,8 @@ function InputNilaiContent() {
   };
 
   const getLockInfo = (inputAt: string | null | undefined) => {
-    if (!inputAt) return { isLocked: false, remainingText: "" };
-    
-    const isAdmin = ['admin_super', 'admin'].includes(activeRole);
-    if (isAdmin) return { isLocked: false, remainingText: "Akses Admin: Bebas Edit" };
-
-    const inputDate = new Date(inputAt);
-    const lockDate = new Date(inputDate.getTime() + 24 * 60 * 60 * 1000);
-    const now = new Date();
-    
-    const isLocked = now > lockDate;
-    
-    if (isLocked) {
-      return { isLocked: true, remainingText: "Terkunci (Batas edit 24 jam habis)" };
-    } else {
-      const diffMs = lockDate.getTime() - now.getTime();
-      const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-      const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-      return { isLocked: false, remainingText: `Masa edit: ${diffHours}j ${diffMins}m lagi` };
-    }
+    // Kebijakan: penguji bebas edit nilai kapan saja - tanpa penguncian
+    return { isLocked: false, remainingText: inputAt ? "Bebas edit kapan saja" : "" };
   };
 
   useEffect(() => {
@@ -376,19 +406,19 @@ function InputNilaiContent() {
   const startEditing = (p: Peserta, type: "quran" | "wawancara" | "ortu" | "hafalan" | "lisan_arab") => {
     setEditingId(p.id + type);
     
-    // Pre-fill forms from existing data
-    const quranData = p.detail_quran || {};
-    const calsanData = p.detail_wawancara || {};
-    const cawalsanData = p.detail_cawalsan || {};
-    const hafalanData = p.detail_hafalan || {};
-    const lisanArabData = p.detail_lisan_arab || {};
+    // Pre-fill forms from existing data (clone objects to avoid mutating memory)
+    const quranData = p.detail_quran ? { ...p.detail_quran } : {};
+    const calsanData = p.detail_wawancara ? { ...p.detail_wawancara } : {};
+    const cawalsanData = p.detail_cawalsan ? { ...p.detail_cawalsan } : {};
+    const hafalanData = p.detail_hafalan ? { ...p.detail_hafalan } : {};
+    const lisanArabData = (p.detail_arab || p.detail_lisan_arab) ? { ...(p.detail_arab || p.detail_lisan_arab) } : {};
 
     // Auto-fill examiner/interviewer name if not already set
-    if (!quranData.nama_penguji) quranData.nama_penguji = activeName;
-    if (!calsanData.nama_pewawancara) calsanData.nama_pewawancara = activeName;
-    if (!cawalsanData.nama_pewawancara) cawalsanData.nama_pewawancara = activeName;
-    if (!hafalanData.nama_penguji) hafalanData.nama_penguji = activeName;
-    if (!lisanArabData.nama_penguji) lisanArabData.nama_penguji = activeName;
+    if (!quranData.nama_penguji && activeName) quranData.nama_penguji = activeName;
+    if (!calsanData.nama_pewawancara && activeName) calsanData.nama_pewawancara = activeName;
+    if (!cawalsanData.nama_pewawancara && activeName) cawalsanData.nama_pewawancara = activeName;
+    if (!hafalanData.nama_penguji && activeName) hafalanData.nama_penguji = activeName;
+    if (!lisanArabData.nama_penguji && activeName) lisanArabData.nama_penguji = activeName;
 
     setQuranForm(quranData);
     setSantriForm(calsanData);
@@ -422,6 +452,7 @@ function InputNilaiContent() {
         body = {
           detail_quran: {
             ...quranForm,
+            nama_penguji: quranForm.nama_penguji || activeName,
             tajwid,
             kelancaran,
             hafalan: hafalanVal,
@@ -443,13 +474,19 @@ function InputNilaiContent() {
         const scores = criteria.map((c) => calsanForm[c.key] || 0);
         const avgScore = scores.reduce((a: number, b: number) => a + b, 0) / scores.length;
         body = {
-          detail_wawancara: calsanForm,
+          detail_wawancara: {
+            ...calsanForm,
+            nama_pewawancara: calsanForm.nama_pewawancara || activeName,
+          },
           score_wawancara: avgScore,
           nilai_wawancara_santri: avgScore,
           catatan_santri: calsanForm.catatan || "" };
       } else if (formType === "ortu") {
         body = {
-          detail_cawalsan: cawalsanForm,
+          detail_cawalsan: {
+            ...cawalsanForm,
+            nama_pewawancara: cawalsanForm.nama_pewawancara || activeName,
+          },
           catatan_ortu: cawalsanForm.catatan || "",
           nilai_wawancara_ortu: 1, // Flag that form is filled
         };
@@ -483,10 +520,13 @@ function InputNilaiContent() {
         });
         
         // NEW: Automatically mark as complete in backend if not already (frontend trigger for redundancy)
-        const mapping: Record<string, "santri" | "quran" | "ortu"> = {
+        const mapping: Record<string, "santri" | "quran" | "ortu" | "hafalan" | "arab"> = {
           quran: "quran",
           wawancara: "santri",
-          ortu: "ortu" };
+          ortu: "ortu",
+          hafalan: "hafalan",
+          lisan_arab: "arab"
+        };
         const componentType = mapping[formType];
         if (p.jadwal_id && componentType) {
           fetch("/api/penguji/jadwal/complete", {
@@ -641,7 +681,7 @@ function InputNilaiContent() {
         {isEditing ? (
           <div className="space-y-5 sm:space-y-6">
             {(() => {
-              const isInputtedByAdmin = p.score_hafalan != null && !p.input_at_hafalan;
+              const isInputtedByAdmin = false as boolean; // Penguji bebas edit nilai kapan saja
               return (
                 <>
                   {isInputtedByAdmin && (
@@ -756,7 +796,7 @@ function InputNilaiContent() {
         {isEditing ? (
           <div className="space-y-5 sm:space-y-6">
             {(() => {
-              const isInputtedByAdmin = p.score_lisan_arab != null && !p.input_at_lisan_arab;
+              const isInputtedByAdmin = false as boolean; // Penguji bebas edit nilai kapan saja
               return (
                 <>
                   {isInputtedByAdmin && (
@@ -880,7 +920,7 @@ function InputNilaiContent() {
         {isEditing ? (
           <div className="space-y-5 sm:space-y-6">
             {(() => {
-              const isInputtedByAdmin = p.score_quran != null && !p.input_at_quran;
+              const isInputtedByAdmin = false as boolean; // Penguji bebas edit nilai kapan saja
               return (
                 <>
                   {isInputtedByAdmin && (
@@ -930,7 +970,7 @@ function InputNilaiContent() {
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-[24px_28px] pt-2">
               <button onClick={cancelEditing} className="w-full sm:w-auto px-5 md:px-8 py-4 bg-emerald-100 text-emerald-700 rounded-[24px] sm:rounded-[24px] font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-emerald-200 transition-all active:scale-95">Batal</button>
-              <button onClick={() => saveForm(p, "quran")} disabled={isInputtedByAdmin || !quranForm.tajwid || !quranForm.kelancaran || !quranForm.rekomendasi || !quranForm.nama_penguji || saving === p.id + "quran"} className="w-full sm:w-auto px-5 md:px-8 py-4 bg-emerald-600 text-white rounded-[24px] sm:rounded-[24px] font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-emerald-700 transition-all shadow-2xl shadow-primary/30 shadow-emerald-900/20 disabled:opacity-50 flex items-center justify-center gap-2 active:scale-95">
+              <button onClick={() => saveForm(p, "quran")} disabled={isInputtedByAdmin || !quranForm.tajwid || !quranForm.kelancaran || !quranForm.rekomendasi || !(quranForm.nama_penguji || activeName) || saving === p.id + "quran"} className="w-full sm:w-auto px-5 md:px-8 py-4 bg-emerald-600 text-white rounded-[24px] sm:rounded-[24px] font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-emerald-700 transition-all shadow-2xl shadow-primary/30 shadow-emerald-900/20 disabled:opacity-50 flex items-center justify-center gap-2 active:scale-95">
                 {saving === p.id + "quran" ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />} Simpan
               </button>
             </div>
@@ -1026,7 +1066,7 @@ function InputNilaiContent() {
         {isEditing ? (
           <div className="space-y-5 sm:space-y-6">
             {(() => {
-              const isInputtedByAdmin = p.score_wawancara != null && !p.input_at_santri;
+              const isInputtedByAdmin = false as boolean; // Penguji bebas edit nilai kapan saja
               return (
                 <>
                   {isInputtedByAdmin && (
@@ -1089,7 +1129,7 @@ function InputNilaiContent() {
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-[24px_28px] pt-2">
               <button onClick={cancelEditing} className="w-full sm:w-auto px-5 md:px-8 py-4 bg-ink-100 text-ink-800 rounded-[24px] sm:rounded-[24px] font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-ink-200 transition-all active:scale-95">Batal</button>
-              <button onClick={() => saveForm(p, "wawancara")} disabled={isInputtedByAdmin || !criteria.every((c) => calsanForm[c.key]) || !calsanForm.rekomendasi || !calsanForm.nama_pewawancara || saving === p.id + "wawancara"} className="w-full sm:w-auto px-5 md:px-8 py-4 bg-primary-700 text-white rounded-[24px] sm:rounded-[24px] font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-primary-800 transition-all shadow-2xl shadow-primary/30  shadow-primary-900/20 disabled:opacity-50 flex items-center justify-center gap-2 active:scale-95">
+              <button onClick={() => saveForm(p, "wawancara")} disabled={isInputtedByAdmin || !criteria.every((c) => calsanForm[c.key]) || !calsanForm.rekomendasi || !(calsanForm.nama_pewawancara || activeName) || saving === p.id + "wawancara"} className="w-full sm:w-auto px-5 md:px-8 py-4 bg-primary-700 text-white rounded-[24px] sm:rounded-[24px] font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-primary-800 transition-all shadow-2xl shadow-primary/30  shadow-primary-900/20 disabled:opacity-50 flex items-center justify-center gap-2 active:scale-95">
                 {saving === p.id + "wawancara" ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />} Simpan
               </button>
             </div>
@@ -1167,7 +1207,7 @@ function InputNilaiContent() {
         {isEditing ? (
           <div className="space-y-5 sm:space-y-6">
             {(() => {
-              const isInputtedByAdmin = p.nilai_wawancara_ortu != null && !p.input_at_ortu;
+              const isInputtedByAdmin = false as boolean; // Penguji bebas edit nilai kapan saja
               return (
                 <>
                   {isInputtedByAdmin && (
@@ -1278,7 +1318,7 @@ function InputNilaiContent() {
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-[24px_28px] pt-2">
               <button onClick={cancelEditing} className="w-full sm:w-auto px-5 md:px-8 py-4 bg-secondary-100 text-secondary-900 rounded-[24px] sm:rounded-[24px] font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-secondary-200 transition-all active:scale-95">Batal</button>
-              <button onClick={() => saveForm(p, "ortu")} disabled={isInputtedByAdmin || !cawalsanForm.nama_orangtua || !cawalsanForm.asal || !cawalsanForm.kategori || !cawalsanForm.sumber_info || !cawalsanForm.karakter || !cawalsanForm.tahu_spp || !cawalsanForm.rekomendasi || !cawalsanForm.nama_pewawancara || !CAWALSAN_QUESTIONS.every((q) => cawalsanForm[q.key]) || saving === p.id + "ortu"} className="w-full sm:w-auto px-5 md:px-8 py-4 bg-secondary-400 text-primary-950 rounded-[24px] sm:rounded-[24px] font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-secondary-500 transition-all shadow-2xl shadow-primary/30 shadow-secondary-400/20 disabled:opacity-50 flex items-center justify-center gap-2 active:scale-95">
+              <button onClick={() => saveForm(p, "ortu")} disabled={isInputtedByAdmin || !cawalsanForm.nama_orangtua || !cawalsanForm.asal || !cawalsanForm.kategori || !cawalsanForm.sumber_info || !cawalsanForm.karakter || !cawalsanForm.tahu_spp || !cawalsanForm.rekomendasi || !(cawalsanForm.nama_pewawancara || activeName) || !CAWALSAN_QUESTIONS.every((q) => cawalsanForm[q.key]) || saving === p.id + "ortu"} className="w-full sm:w-auto px-5 md:px-8 py-4 bg-secondary-400 text-primary-950 rounded-[24px] sm:rounded-[24px] font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-secondary-500 transition-all shadow-2xl shadow-primary/30 shadow-secondary-400/20 disabled:opacity-50 flex items-center justify-center gap-2 active:scale-95">
                 {saving === p.id + "ortu" ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />} Simpan
               </button>
             </div>
