@@ -51,13 +51,38 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Jadwal not found" }, { status: 404 });
     }
 
-    // 2. Permission Check: Only assigned examiners or session creators
+    // 2. Permission Check: Only assigned examiners or session creators (when category is not reassigned)
     const isAssigned =
       jadwal.penguji_santri_id === userId ||
       jadwal.penguji_quran_id === userId ||
-      jadwal.penguji_ortu_id === userId;
+      jadwal.penguji_ortu_id === userId ||
+      jadwal.penguji_hafalan_id === userId ||
+      jadwal.penguji_arab_id === userId;
 
-    const isCreator = jadwal.exam_session?.created_by === userId;
+    const sessionTitle = (jadwal.exam_session?.title || "").toLowerCase();
+    const isOrtuSess =
+      sessionTitle.includes("cawalsan") ||
+      sessionTitle.includes("ortu") ||
+      sessionTitle.includes("orang") ||
+      sessionTitle.includes("wali");
+    const hasExplicitExaminerForSession =
+      (sessionTitle.includes("qur") || sessionTitle.includes("quran") || sessionTitle.includes("hafalan") || sessionTitle.includes("bacaan"))
+        ? Boolean(jadwal.penguji_quran_id || jadwal.penguji_hafalan_id)
+        : (sessionTitle.includes("arab") || sessionTitle.includes("lisan"))
+          ? Boolean(jadwal.penguji_arab_id)
+          : isOrtuSess
+            ? Boolean(jadwal.penguji_ortu_id || jadwal.penguji_santri_id)
+            : (sessionTitle.includes("calsan") || sessionTitle.includes("santri") || sessionTitle.includes("wawancara"))
+              ? Boolean(jadwal.penguji_santri_id)
+              : Boolean(
+                  jadwal.penguji_quran_id ||
+                  jadwal.penguji_hafalan_id ||
+                  jadwal.penguji_santri_id ||
+                  jadwal.penguji_ortu_id ||
+                  jadwal.penguji_arab_id
+                );
+
+    const isCreator = jadwal.exam_session?.created_by === userId && !hasExplicitExaminerForSession;
 
     if (!isAssigned && !isCreator) {
       return NextResponse.json(

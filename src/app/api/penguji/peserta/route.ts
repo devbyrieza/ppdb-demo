@@ -4,7 +4,8 @@ import { prisma } from "@/lib/prisma";
 
 async function getSession() {
   const cookieStore = await cookies();
-  const sessionCookie = cookieStore.get("al_session");
+  const sessionCookie =
+    cookieStore.get("al_session") || cookieStore.get("app_session");
   if (!sessionCookie) return null;
   try {
     return JSON.parse(sessionCookie.value);
@@ -121,6 +122,25 @@ export async function GET() {
       );
 
       // Determine roles for this jadwal record: Quran (Bacaan & Hafalan), Santri, Ortu for everyone; Arab ONLY for direct Non-IL
+      const sessionTitle = (item.exam_session?.title || "").toLowerCase();
+      const isSessionOrtu =
+        sessionTitle.includes("cawalsan") ||
+        sessionTitle.includes("ortu") ||
+        sessionTitle.includes("orang") ||
+        sessionTitle.includes("wali");
+      const isSessionQuran =
+        sessionTitle.includes("qur") ||
+        sessionTitle.includes("quran") ||
+        sessionTitle.includes("hafalan") ||
+        sessionTitle.includes("bacaan");
+      const isSessionSantri =
+        (sessionTitle.includes("calsan") ||
+        sessionTitle.includes("santri") ||
+        sessionTitle.includes("wawancara")) && !isSessionOrtu;
+
+      const userIsCawalsan = allRoles.includes("pewawancara_cawalsan");
+      const userIsCalsan = allRoles.includes("pewawancara_calsan");
+
       const roles: string[] = [];
       if (isAdmin) {
         roles.push("wawancara", "quran", "ortu");
@@ -128,8 +148,32 @@ export async function GET() {
           roles.push("lisan_arab");
         }
       } else {
-        if (item.penguji_santri_id === userId) roles.push("wawancara");
-        if (item.penguji_ortu_id === userId) roles.push("ortu");
+        if (item.penguji_ortu_id === userId) {
+          roles.push("ortu");
+        } else if (item.penguji_santri_id === userId) {
+          if (isSessionOrtu || userIsCawalsan) {
+            // Auto-heal: session was for Ortu/Cawalsan or reviewer is Cawalsan interviewer
+            roles.push("ortu");
+            if (!item.penguji_ortu_id) {
+              prisma.jadwalUjian.update({
+                where: { id: item.id },
+                data: {
+                  penguji_ortu_id: userId,
+                  penguji_santri_id: null,
+                  status_ortu: item.status_santri || item.status_ortu || "scheduled",
+                  status_santri: null,
+                },
+              }).catch((e) => console.error("Auto-heal jadwal error:", e));
+            }
+          } else {
+            roles.push("wawancara");
+          }
+        }
+
+        if (item.penguji_santri_id === userId && !roles.includes("wawancara") && !isSessionOrtu && !userIsCawalsan) {
+          roles.push("wawancara");
+        }
+
         if (item.penguji_quran_id === userId || (item as any).penguji_hafalan_id === userId) {
           roles.push("quran");
         }
@@ -138,23 +182,38 @@ export async function GET() {
         }
 
         if (roles.length === 0 && item.exam_session?.created_by === userId) {
-          const title = (item.exam_session?.title || "").toLowerCase();
-          const hasQuranMatch = title.includes("qur") || title.includes("quran") || title.includes("hafalan") || title.includes("bacaan");
-          const hasWawancaraMatch = title.includes("calsan") || title.includes("santri") || title.includes("wawancara");
-          const hasOrtuMatch = title.includes("cawalsan") || title.includes("ortu") || title.includes("orang");
-          const hasLisanArabMatch = isDirectNonIL && (title.includes("arab") || title.includes("lisan"));
+          const hasNoExplicitExaminer =
+            !item.penguji_quran_id &&
+            !(item as any).penguji_hafalan_id &&
+            !item.penguji_santri_id &&
+            !item.penguji_ortu_id &&
+            !(item as any).penguji_arab_id;
+
+          const hasQuranMatch = isSessionQuran && !item.penguji_quran_id && !(item as any).penguji_hafalan_id;
+          const hasOrtuMatch = isSessionOrtu && !item.penguji_ortu_id && !item.penguji_santri_id;
+          const hasWawancaraMatch = isSessionSantri && !item.penguji_santri_id;
+          const hasLisanArabMatch =
+            isDirectNonIL &&
+            (sessionTitle.includes("arab") || sessionTitle.includes("lisan")) &&
+            !(item as any).penguji_arab_id;
 
           if (hasQuranMatch) roles.push("quran");
           if (hasWawancaraMatch) roles.push("wawancara");
           if (hasOrtuMatch) roles.push("ortu");
           if (hasLisanArabMatch) roles.push("lisan_arab");
 
-          if (roles.length === 0) {
-            roles.push("quran");
-            if (isDirectNonIL) roles.push("lisan_arab");
+          if (roles.length === 0 && !isSessionQuran && !isSessionSantri && !isSessionOrtu && hasNoExplicitExaminer) {
+            if (userIsCawalsan) roles.push("ortu");
+            else if (userIsCalsan) roles.push("wawancara");
+            else {
+              roles.push("quran");
+              if (isDirectNonIL) roles.push("lisan_arab");
+            }
           }
         }
       }
+
+      if (roles.length === 0) continue;
 
       // Find ALL score records for this pendaftar
       const allScoresInPendaftar = item.pendaftar.nilai_ujian || [];
@@ -178,6 +237,11 @@ export async function GET() {
         "input_at_ortu",
         "input_at_hafalan",
         "input_at_arab",
+        "input_by_arab",
+        "nilai_arab_total",
+        "score_arab",
+        "detail_arab",
+        "catatan_arab",
         "input_by_ortu",
         "score_wawancara",
         "nilai_tes_tertulis",
@@ -255,6 +319,8 @@ export async function GET() {
           detail_quran: scoreData.detail_quran,
           detail_wawancara: scoreData.detail_wawancara,
           detail_cawalsan: scoreData.detail_cawalsan,
+          detail_lisan_arab: scoreData.detail_arab || scoreData.detail_lisan_arab,
+          catatan_lisan_arab: scoreData.catatan_arab || scoreData.catatan_lisan_arab,
           input_at_quran: scoreData.input_at_quran,
           input_at_santri: scoreData.input_at_santri,
           input_at_ortu: scoreData.input_at_ortu,

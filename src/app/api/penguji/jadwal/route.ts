@@ -102,27 +102,47 @@ export async function GET() {
         if (item.penguji_ortu_id === userId)
           jenis_tugas.push("Seleksi Wawancara Calon Orangtua/Wali Santri");
 
-        // Fallback: if matched via exam_session.created_by, derive from session title
+        // Fallback: if matched via exam_session.created_by, derive from session title (only if category has not been assigned/reassigned)
         if (
           jenis_tugas.length === 0 &&
           item.exam_session?.created_by === userId
         ) {
           const title = (item.exam_session?.title || "").toLowerCase();
-          if (title.includes("hafalan") || title.includes("qur") || title.includes("quran"))
+          const hasNoExplicitExaminer =
+            !item.penguji_quran_id &&
+            !item.penguji_hafalan_id &&
+            !item.penguji_arab_id &&
+            !item.penguji_santri_id &&
+            !item.penguji_ortu_id;
+
+          if (title.includes("hafalan") || title.includes("qur") || title.includes("quran")) {
+            if (!item.penguji_quran_id && !item.penguji_hafalan_id) {
               jenis_tugas.push("Seleksi Al Qur'an", "Tes Al-Qur'an (Bacaan & Hafalan)");
-            else if (title.includes("arab") || title.includes("lisan"))
+            }
+          } else if (title.includes("arab") || title.includes("lisan")) {
+            if (!item.penguji_arab_id) {
               jenis_tugas.push("Tes Lisan Bahasa Arab");
-          else if (title.includes("calsan") || title.includes("santri"))
-            jenis_tugas.push("Seleksi Wawancara Calon Santri");
-          else if (
+            }
+          } else if (
             title.includes("cawalsan") ||
             title.includes("ortu") ||
-            title.includes("orang")
-          )
-            jenis_tugas.push("Seleksi Wawancara Calon Orangtua/Wali Santri");
-          else jenis_tugas.push(item.exam_session?.title || "Ujian");
+            title.includes("orang") ||
+            title.includes("wali")
+          ) {
+            if (!item.penguji_ortu_id && !item.penguji_santri_id) {
+              jenis_tugas.push("Seleksi Wawancara Calon Orangtua/Wali Santri");
+            }
+          } else if (title.includes("calsan") || title.includes("santri") || title.includes("wawancara")) {
+            if (!item.penguji_santri_id) {
+              jenis_tugas.push("Seleksi Wawancara Calon Santri");
+            }
+          } else if (hasNoExplicitExaminer) {
+            jenis_tugas.push(item.exam_session?.title || "Ujian");
+          }
         }
       }
+
+      if (jenis_tugas.length === 0) return null;
 
       const hasScoreQuran = item.nilai_ujian?.some((n: any) => {
         const q = n.detail_quran as any;
@@ -165,7 +185,7 @@ export async function GET() {
         session_created_by: item.exam_session?.created_by };
     });
 
-    return NextResponse.json({ data: formattedJadwal });
+    return NextResponse.json({ data: formattedJadwal.filter(Boolean) });
   } catch (error: any) {
     console.error("GET penguji/jadwal error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });

@@ -363,12 +363,35 @@ export default function MonitoringJadwalPage() {
             });
 
             if (res.ok) {
-                setSaveSuccessMsg("Penugasan penguji berhasil diperbarui!");
+                const resJson = await res.json().catch(() => ({}));
+                const notifs = resJson?.notifications;
+                const sentList = Array.isArray(notifs?.sent) ? notifs.sent : [];
+                const skippedList = Array.isArray(notifs?.skipped) ? notifs.skipped : [];
+                const failedList = Array.isArray(notifs?.failed) ? notifs.failed : [];
+
+                const waIssues = [...skippedList, ...failedList];
+                const uniqueSentNames = Array.from(new Set(sentList.map((s: any) => s.name)));
+                const successText = uniqueSentNames.length > 0
+                    ? `Penugasan diperbarui & notifikasi WhatsApp terkirim ke ${uniqueSentNames.join(", ")}!`
+                    : "Penugasan penguji berhasil diperbarui!";
+
+                setSaveSuccessMsg(successText);
                 await fetchMonitoringData();
                 setTimeout(() => {
                     setAssignModalOpen(false);
                     setSaveSuccessMsg(null);
-                }, 800);
+                    if (waIssues.length > 0) {
+                        const issueLines = waIssues
+                            .map((w: any) => `<li><b>${w.name}</b> (${w.role}): ${w.reason}</li>`)
+                            .join("");
+                        Swal.fire({
+                            icon: "warning",
+                            title: "Penugasan Tersimpan, Sebagian WA Terkendala",
+                            html: `<p class="text-xs text-slate-600 mb-2">Perubahan penugasan sudah disimpan, namun notifikasi WhatsApp berikut belum terkirim:</p><ul class="text-xs text-left list-disc pl-5 space-y-1 text-rose-700">${issueLines}</ul>`,
+                            confirmButtonText: "Mengerti",
+                        });
+                    }
+                }, uniqueSentNames.length > 0 ? 1200 : 800);
             } else {
                 const err = await res.json();
                 if (err.conflict) {
@@ -1312,7 +1335,7 @@ export default function MonitoringJadwalPage() {
                             </div>
 
                             {/* Modal Body */}
-                            <div className="p-6 space-y-5 max-h-[75vh] overflow-y-auto overscroll-contain">
+                            <div className="p-6 space-y-5 max-h-[75vh] overflow-y-auto overscroll-contain custom-scrollbar">
                                 {/* Detail Santri Card */}
                                 <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-between">
                                     <div>
@@ -1533,7 +1556,7 @@ export default function MonitoringJadwalPage() {
                                 <div className="p-3.5 bg-blue-50/70 border border-blue-100 rounded-xl flex items-start gap-2.5 text-[11px] text-blue-800 font-medium">
                                     <AlertCircle className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
                                     <span>
-                                        Penguji yang dipilih akan otomatis mendapatkan akses input nilai untuk santri ini, dan tautan Google Meet (jika sesi online) akan disinkronkan secara otomatis.
+                                        Penguji yang dipilih otomatis mendapatkan akses input nilai, tautan Google Meet (jika sesi online) disinkronkan, dan notifikasi WhatsApp langsung dikirim ke penguji baru maupun penguji sebelumnya (jika ada pengalihan).
                                     </span>
                                 </div>
                             </div>

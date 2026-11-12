@@ -38,12 +38,15 @@ export type NotifType =
     | "payment_rejected"
     | "daftar_ulang_verified"
     | "broadcast"
+    | "broadcast_penguji"
+    | "penugasan_penguji"
+    | "pengalihan_jadwal_penguji"
     | "pembatalan_jadwal";
 
 export interface EnqueueParams {
-    pendaftarId: string;
+    pendaftarId?: string | null;
     phone: string;
-    jenisNotif: NotifType;
+    jenisNotif: NotifType | string;
     messageContent: string;
     scheduledAt?: Date;
     force?: boolean;
@@ -73,45 +76,59 @@ const DEFAULT_APP_URL = BRANDING.websiteUrl;
  * Uses both the Pendaftar flag columns AND the WhatsappLog table.
  */
 async function isDuplicate(
-    pendaftarId: string,
-    jenisNotif: NotifType,
+    pendaftarId: string | null | undefined,
+    jenisNotif: NotifType | string,
     phone: string
 ): Promise<boolean> {
-    // Check Pendaftar flag columns for persistent flags
-    const flagMap: Partial<Record<NotifType, string>> = {
-        jadwal_belum: "notif_belum_jadwal_terkirim",
-        jadwal_tersedia: "notif_jadwal_tersedia_terkirim",
-        jadwal_langsung_tersedia: "notif_jadwal_tersedia_terkirim",
-        hasil_tes: "notif_hasil_tes_terkirim" };
+    // Broadcasts are manual and intentional announcements sent by admin.
+    // They should NEVER be blocked by the anti-duplicate check.
+    if (typeof jenisNotif === "string" && (jenisNotif === "broadcast" || jenisNotif.startsWith("broadcast"))) {
+        return false;
+    }
 
-    const flagColumn = flagMap[jenisNotif];
-    if (flagColumn) {
-        const pendaftar = await prisma.pendaftar.findUnique({
-            where: { id: pendaftarId },
-            select: {
-                notif_belum_jadwal_terkirim: true,
-                notif_jadwal_tersedia_terkirim: true,
-                notif_hasil_tes_terkirim: true } });
+    const isRealPendaftar = !!(
+        pendaftarId &&
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(pendaftarId)
+    );
 
-        if (pendaftar) {
-            const flagValue =
-                pendaftar[flagColumn as keyof typeof pendaftar] as boolean;
-            if (flagValue) {
-                console.log(
-                    `🚫 [Layer 1] Duplicate blocked: ${jenisNotif} for ${pendaftarId} (flag already true)`
-                );
-                return true;
+    if (isRealPendaftar) {
+        // Check Pendaftar flag columns for persistent flags
+        const flagMap: Partial<Record<string, string>> = {
+            jadwal_belum: "notif_belum_jadwal_terkirim",
+            jadwal_tersedia: "notif_jadwal_tersedia_terkirim",
+            jadwal_langsung_tersedia: "notif_jadwal_tersedia_terkirim",
+            hasil_tes: "notif_hasil_tes_terkirim" };
+
+        const flagColumn = flagMap[jenisNotif];
+        if (flagColumn) {
+            const pendaftar = await prisma.pendaftar.findUnique({
+                where: { id: pendaftarId! },
+                select: {
+                    notif_belum_jadwal_terkirim: true,
+                    notif_jadwal_tersedia_terkirim: true,
+                    notif_hasil_tes_terkirim: true } });
+
+            if (pendaftar) {
+                const flagValue =
+                    pendaftar[flagColumn as keyof typeof pendaftar] as boolean;
+                if (flagValue) {
+                    console.log(
+                        `🚫 [Layer 1] Duplicate blocked: ${jenisNotif} for ${pendaftarId} (flag already true)`
+                    );
+                    return true;
+                }
             }
         }
     }
 
     // For non-flag types (konfirmasi_jadwal, reminder_h1), check WhatsappLog
     // Added phone check & 48h limit to allow multiple examiners per student and re-tests
-    const recentWindow = new Date(Date.now() - 48 * 60 * 60 * 1000);
+    const windowHours = isRealPendaftar ? 48 : 0.5;
+    const recentWindow = new Date(Date.now() - windowHours * 60 * 60 * 1000);
 
     const existingLog = await prisma.whatsappLog.findFirst({
         where: {
-            pendaftar_id: pendaftarId,
+            ...(isRealPendaftar ? { pendaftar_id: pendaftarId } : {}),
             phone: phone, // Check phone too!
             jenis_notif: jenisNotif,
             status: { in: ["pending", "processing", "sent"] },
@@ -120,7 +137,7 @@ async function isDuplicate(
 
     if (existingLog) {
         console.log(
-            `🚫 [Layer 1] Duplicate blocked: ${jenisNotif} for ${pendaftarId} (existing log: ${existingLog.status})`
+            `🚫 [Layer 1] Duplicate blocked: ${jenisNotif} for ${phone} (existing log: ${existingLog.status})`
         );
         return true;
     }
@@ -319,33 +336,44 @@ export async function enqueueWhatsapp(
     const { pendaftarId, phone, jenisNotif, messageContent, scheduledAt, force } =
         params;
 
-    // Verify that the pendaftar is active and not soft-deleted
-    const pendaftar = await prisma.pendaftar.findUnique({
-        where: { id: pendaftarId },
-        select: { deleted_at: true } });
-    if (!pendaftar || pendaftar.deleted_at !== null) {
-        console.log(`🚫 [Enqueue] Blocked: pendaftar ${pendaftarId} is deleted or not found.`);
-        return { queued: false, reason: "Pendaftar telah dihapus (soft-deleted atau tidak ditemukan)" };
+    const isRealPendaftar = !!(
+        pendaftarId &&
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(pendaftarId)
+    );
+
+    const isBroadcast = typeof jenisNotif === "string" && (jenisNotif === "broadcast" || jenisNotif.startsWith("broadcast"));
+
+    // Verify that the pendaftar is active and not soft-deleted (only if a real pendaftar ID is provided)
+    if (isRealPendaftar) {
+        const pendaftar = await prisma.pendaftar.findUnique({
+            where: { id: pendaftarId! },
+            select: { deleted_at: true } });
+        if (!pendaftar || pendaftar.deleted_at !== null) {
+            console.log(`🚫 [Enqueue] Blocked: pendaftar ${pendaftarId} is deleted or not found.`);
+            return { queued: false, reason: "Pendaftar telah dihapus (soft-deleted atau tidak ditemukan)" };
+        }
     }
 
-    // Layer 1: Duplicate check (skip if force is true)
-    const duplicate = !force && await isDuplicate(pendaftarId, jenisNotif, phone);
+    // Layer 1: Duplicate check (skip if force is true or if broadcast)
+    const duplicate = !force && !isBroadcast && await isDuplicate(pendaftarId, jenisNotif, phone);
     if (duplicate) {
         return { queued: false, reason: "Notifikasi serupa sudah pernah dikirim/diantri" };
     }
 
-    // Layer 5: Check if number is blocked
-    const blocked = await isNumberBlocked(phone);
-    if (blocked) {
-        return {
-            queued: false,
-            reason: "Nomor bermasalah (gagal berulang), perlu review admin" };
+    // Layer 5: Check if number is blocked (skip for broadcast so admin can always deliver)
+    if (!force && !isBroadcast) {
+        const blocked = await isNumberBlocked(phone);
+        if (blocked) {
+            return {
+                queued: false,
+                reason: "Nomor bermasalah (gagal berulang), perlu review admin" };
+        }
     }
 
     // Create log entry (pending)
     const log = await prisma.whatsappLog.create({
         data: {
-            pendaftar_id: pendaftarId,
+            pendaftar_id: isRealPendaftar ? pendaftarId : null,
             phone,
             jenis_notif: jenisNotif,
             status: "pending",
@@ -353,7 +381,7 @@ export async function enqueueWhatsapp(
             scheduled_at: scheduledAt || new Date() } });
 
     console.log(
-        `📥 [Enqueue] ${jenisNotif} for ${pendaftarId} queued as ${log.id}`
+        `📥 [Enqueue] ${jenisNotif} for ${pendaftarId || phone} queued as ${log.id}`
     );
 
     // Trigger auto-flush in the background using Next.js after() to survive Vercel serverless freeze
@@ -372,12 +400,29 @@ export async function enqueueWhatsapp(
                     }
                 });
                 console.log(`✅ [Enqueue] sent successfully: ${log.id}`);
+                return { queued: true, logId: log.id };
             } else {
-                console.warn(`⚠️ [Enqueue] sendNow returned false status, leaving as pending. Result:`, sendResult);
+                await prisma.whatsappLog.update({
+                    where: { id: log.id },
+                    data: {
+                        status: "failed",
+                        error_message: sendResult.message || "Wablas returned false status",
+                        response_data: JSON.stringify(sendResult)
+                    }
+                });
+                console.warn(`⚠️ [Enqueue] sendNow failed:`, sendResult);
+                return { queued: false, reason: sendResult.message || "Gagal dari gateway WhatsApp", logId: log.id };
             }
         } catch (err: any) {
             console.error(`❌ [Enqueue] sendNow error:`, err);
-            // Will fallback to the queue naturally
+            await prisma.whatsappLog.update({
+                where: { id: log.id },
+                data: {
+                    status: "failed",
+                    error_message: err.message
+                }
+            });
+            return { queued: false, reason: err.message, logId: log.id };
         }
     } else {
         try {
@@ -1232,6 +1277,130 @@ Mohon kehadirannya tepat waktu. Jazakumullahu khairan.
 
 ---
 *Sistem SPMB ${BRANDING.schoolName}*`;
+}
+
+const SYSTEM_FOOTER_TEMPLATE_DEMO = `*Sistem SPMB ${BRANDING.schoolName}*`;
+
+export function getExaminerSalutationTemplateDemo(gender?: string | null, nama?: string): string {
+    if (gender === "P") return "Ustadzah";
+    if (gender === "L") return "Ustadz";
+    if (nama && nama.toLowerCase().includes("ustadzah")) return "Ustadzah";
+    return "Ustadz";
+}
+
+export function formatJenjangTemplateDemo(jenjang?: string | null): string {
+    return (jenjang || "").trim() || "-";
+}
+
+/**
+ * B. UNTUK PENGUJI & PEWAWANCARA — 4. Notifikasi Penugasan / Pengalihan Jadwal ke Penguji Baru
+ */
+export function buildMessagePenugasanPenguji(params: {
+    namaPenguji: string;
+    gender?: string | null;
+    jenisUjian: string;
+    namaSantri: string;
+    jenjang?: string | null;
+    hariTanggal: string;
+    waktu: string;
+    googleMeetLink?: string | null;
+    lokasi?: string | null;
+    linkInputNilai: string;
+    namaPengujiLama?: string | null;
+    genderPengujiLama?: string | null;
+    isRescheduled?: boolean;
+}): string {
+    const jenjang = formatJenjangTemplateDemo(params.jenjang);
+    const title = getExaminerSalutationTemplateDemo(params.gender, params.namaPenguji);
+    const isWawancara = (params.jenisUjian || "").toLowerCase().includes("wawancara");
+    const actionVerbUpper = isWawancara ? "MEWAWANCARA" : "MENGUJI";
+    const jenisUpper = (params.jenisUjian || "SELEKSI").toUpperCase();
+
+    const cleanMeet = params.googleMeetLink && params.googleMeetLink !== "-" ? params.googleMeetLink.trim() : "";
+    const cleanLokasi = params.lokasi && params.lokasi !== "-" ? params.lokasi.trim() : "";
+    const mediaLine = cleanMeet
+        ? `📍 *Link Google Meet:* ${cleanMeet}`
+        : `📍 *Lokasi / Media:* ${cleanLokasi || "-"}`;
+
+    const inputNilai = params.linkInputNilai && params.linkInputNilai !== "-" ? params.linkInputNilai.trim() : "-";
+
+    let header = `*🔔 PENUGASAN JADWAL ${actionVerbUpper} — ${jenisUpper}*`;
+    let intro = `Anda telah ditugaskan oleh Panitia SPMB untuk jadwal *${params.jenisUjian}*:`;
+
+    if (params.namaPengujiLama) {
+        const oldTitle = getExaminerSalutationTemplateDemo(params.genderPengujiLama, params.namaPengujiLama);
+        header = `*🔔 PENGALIHAN JADWAL ${actionVerbUpper} — ${jenisUpper}*`;
+        intro = `Anda ditugaskan untuk *mengambil alih / menggantikan* ${oldTitle} *${params.namaPengujiLama}* pada jadwal *${params.jenisUjian}*${params.isRescheduled ? " (jadwal baru)" : ""}:`;
+    } else if (params.isRescheduled) {
+        header = `*🔔 PERUBAHAN JADWAL ${actionVerbUpper} — ${jenisUpper}*`;
+        intro = `Jadwal *${params.jenisUjian}* yang ditugaskan kepada Anda telah *diperbarui* oleh Panitia SPMB:`;
+    }
+
+    return `${header}
+
+Assalamu'alaikum warahmatullahi wabarakatuh, ${title} *${params.namaPenguji}*,
+
+${intro}
+
+👤 *Nama Santri:* ${params.namaSantri}
+🎓 *Jenjang:* ${jenjang}
+📅 *Hari/Tanggal:* ${params.hariTanggal}
+⏰ *Waktu:* ${params.waktu}
+${mediaLine}
+🔗 *Input Nilai:* ${inputNilai}
+
+Mohon persiapkan diri dan hadir tepat waktu sesuai jadwal tersebut. Jazakumullahu khairan.
+
+---
+${SYSTEM_FOOTER_TEMPLATE_DEMO}`;
+}
+
+/**
+ * B. UNTUK PENGUJI & PEWAWANCARA — 5. Pemberitahuan Pengalihan / Pembatalan Tugas ke Penguji Sebelumnya
+ */
+export function buildMessagePengalihanJadwalPengujiLama(params: {
+    namaPengujiLama: string;
+    genderPengujiLama?: string | null;
+    jenisUjian: string;
+    namaSantri: string;
+    jenjang?: string | null;
+    hariTanggal: string;
+    waktu: string;
+    namaPengujiBaru?: string | null;
+    genderPengujiBaru?: string | null;
+}): string {
+    const jenjang = formatJenjangTemplateDemo(params.jenjang);
+    const oldTitle = getExaminerSalutationTemplateDemo(params.genderPengujiLama, params.namaPengujiLama);
+    const isWawancara = (params.jenisUjian || "").toLowerCase().includes("wawancara");
+    const actionVerbUpper = isWawancara ? "MEWAWANCARA" : "MENGUJI";
+    const actionVerbLower = isWawancara ? "mewawancara" : "menguji";
+
+    let header = `*ℹ️ PEMBATALAN PENUGASAN JADWAL ${actionVerbUpper}*`;
+    let intro = `Menginformasikan bahwa penugasan Anda untuk jadwal *${params.jenisUjian}* berikut ini telah *dilepas / dibatalkan* oleh Panitia SPMB:`;
+
+    if (params.namaPengujiBaru) {
+        const newTitle = getExaminerSalutationTemplateDemo(params.genderPengujiBaru, params.namaPengujiBaru);
+        header = `*🔄 PENGALIHAN JADWAL ${actionVerbUpper}*`;
+        intro = `Menginformasikan bahwa jadwal *${params.jenisUjian}* Anda berikut ini telah *diambil alih / dialihkan* kepada ${newTitle} *${params.namaPengujiBaru}*:`;
+    }
+
+    return `${header}
+
+Assalamu'alaikum warahmatullahi wabarakatuh, ${oldTitle} *${params.namaPengujiLama}*,
+
+${intro}
+
+👤 *Nama Santri:* ${params.namaSantri}
+🎓 *Jenjang:* ${jenjang}
+📅 *Hari/Tanggal:* ${params.hariTanggal}
+⏰ *Waktu:* ${params.waktu}
+
+Dengan demikian, ${oldTitle} tidak perlu lagi ${actionVerbLower} santri tersebut pada jadwal di atas.
+
+Jazakumullahu khairan atas kesiapan dan bantuannya.
+
+---
+${SYSTEM_FOOTER_TEMPLATE_DEMO}`;
 }
 
 export function buildMessageCombinedFinal(
