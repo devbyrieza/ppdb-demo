@@ -161,8 +161,8 @@ export function gradeToScore(grade: string): number {
 
 export function scoreToGrade(score: number): string {
   if (score >= 85) return "A";
-  if (score >= 70) return "B";
-  if (score >= 55) return "C";
+  if (score >= 75) return "B";
+  if (score >= 70) return "C";
   if (score >= 40) return "D";
   return "E";
 }
@@ -192,10 +192,16 @@ export function evaluateAkademikGrade(
 }
 
 export function evaluateQuranGrade(score: number): "A" | "B" | "C" | "D" | "E" {
-  if (score >= 80) return "A";
-  if (score >= 65) return "B";
-  if (score >= 50) return "C";
-  if (score >= 35) return "D";
+  // Standar KKM Resmi Ujian Bacaan Al-Qur'an:
+  // >= 85: A (Sangat Baik / Lulus Murni)
+  // 75 - 84: B (Baik / Lulus Murni - Memenuhi KKM 75)
+  // 70 - 74: C (Cukup / Lulus Bersyarat - Wajib Matrikulasi Tahsin)
+  // 40 - 69: D (Kurang / Tidak Lulus - Hard Gate Fail)
+  // < 40: E (Sangat Kurang / Tidak Lulus)
+  if (score >= 85) return "A";
+  if (score >= 75) return "B";
+  if (score >= 70) return "C";
+  if (score >= 40) return "D";
   return "E";
 }
 
@@ -254,21 +260,15 @@ export function determineFinalDecision(grades: {
 }): "DITERIMA" | "CADANGAN" | "DITOLAK" {
   const vals = Object.values(grades);
 
-  // 1. CRITICAL REJECTION (DITOLAK)
-  // Any E is an automatic rejection
+  // 1. HARD GATE: CRITICAL REJECTION (DITOLAK MUTLAK)
   if (vals.includes("E")) return "DITOLAK";
 
-  // Critical Components (Quran or Wawancara Calon Santri) getting C or D is an automatic rejection
-  if (
-    grades.quran === "D" ||
-    grades.wawancaraSantri === "D" ||
-    grades.quran === "C" ||
-    grades.wawancaraSantri === "C"
-  ) {
-    return "DITOLAK";
-  }
+  // Pilar Mutlak: Bacaan Al-Qur'an < 70 (Grade D) otomatis DITOLAK
+  // Nilai CBT Akademik/Wawancara setinggi apapun tidak bisa menyelamatkan jika Al-Qur'an < 70
+  if (grades.quran === "D") return "DITOLAK";
+  if (grades.wawancaraSantri === "D") return "DITOLAK";
 
-  // If there are multiple Ds in secondary components, it's a rejection
+  // Jika ada lebih dari satu komponen sekunder bernilai D
   const secondaryDs = [
     grades.akademik,
     grades.kepribadian,
@@ -277,24 +277,15 @@ export function determineFinalDecision(grades: {
   ].filter((v) => v === "D").length;
   if (secondaryDs > 1) return "DITOLAK";
 
-  // 2. AUTOMATIC RESERVE (CADANGAN)
-  // Rule: "Jika Quran dapet Cadangan (B), otomatis masuk Cadangan"
-  if (grades.quran === "B") return "CADANGAN";
-
-  // If there is exactly one D in secondary components, it becomes CADANGAN
+  // 2. PILAR CADANGAN / LULUS BERSYARAT (CADANGAN)
+  // Bacaan Al-Qur'an bernilai C (skor 70-74): Lulus Bersyarat / Wajib Matrikulasi Tahsin
+  if (grades.quran === "C") return "CADANGAN";
   if (secondaryDs === 1) return "CADANGAN";
 
-  // Also if Wawancara Calon Santri is B, it's very likely Cadangan unless everything else is A
-  if (grades.wawancaraSantri === "B") {
-    const countA = vals.filter((v) => v === "A").length;
-    if (countA < 4) return "CADANGAN";
-  }
-
-  // 3. DITERIMA (LULUS)
-  // At this point Quran is 'A'.
-  // Allowed one 'C' in non-critical components (Akademik, Ortu, Kesiapan, Kepribadian)
   const countC = vals.filter((v) => v === "C").length;
   if (countC > 1) return "CADANGAN";
 
+  // 3. DITERIMA (LULUS MURNI)
+  // Al-Qur'an bernilai A atau B (>= 75) dan komponen lain aman
   return "DITERIMA";
 }
