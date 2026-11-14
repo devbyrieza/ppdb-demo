@@ -15,7 +15,7 @@ async function getSession() {
 }
 
 // GET: List all exam participants assigned to this reviewer
-export async function GET() {
+export async function GET(request: Request) {
   const session = await getSession();
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -23,8 +23,14 @@ export async function GET() {
 
   const userId = session.user_id || session.id;
   const full_name = session.full_name || session.name || "Reviewer";
+
+  const { searchParams } = new URL(request.url);
+  const queryRole = (searchParams.get("role") || "").toLowerCase().trim();
+  const sessionRole = (session.role || "").toLowerCase().trim();
+  const activeRole = queryRole || sessionRole;
+
   console.log(
-    `🔍 [API /penguji/peserta] userId: ${userId} | name: ${full_name}`,
+    `🔍 [API /penguji/peserta] userId: ${userId} | name: ${full_name} | activeRole: ${activeRole}`,
   );
 
   try {
@@ -33,21 +39,64 @@ export async function GET() {
       where: { id: userId },
       select: { role: true, secondary_roles: true } });
     const allRoles = userProfile
-      ? [userProfile.role, ...(userProfile.secondary_roles || [])]
+      ? [userProfile.role, ...(userProfile.secondary_roles || [])].map((r: string) => (r || "").toLowerCase())
       : [];
-    const isAdmin = false; // Always false here to restrict view to own assigned participants
+    const isAdmin = ["admin", "admin_super", "head_of_it"].includes(activeRole);
 
     let whereClause: any = {
       pendaftar: { deleted_at: null },
-      OR: [
-        { penguji_santri_id: userId }, // Seleksi Wawancara Calon Santri (or general Interview)
-        { penguji_quran_id: userId }, // Tes Quran
-        { penguji_ortu_id: userId }, // Seleksi Wawancara Orang Tua
-        { penguji_hafalan_id: userId }, // Tes Hafalan (MA)
-        { penguji_arab_id: userId }, // Tes Bahasa Arab (MA)
-        { exam_session: { created_by: userId } }, // Sessions created by this penguji
-      ]
     };
+
+    if (isAdmin) {
+      whereClause.OR = [
+        { penguji_santri_id: userId },
+        { penguji_quran_id: userId },
+        { penguji_ortu_id: userId },
+        { penguji_hafalan_id: userId },
+        { penguji_arab_id: userId },
+        { exam_session: { created_by: userId } },
+      ];
+    } else if (activeRole === "penguji_bahasa_arab" || activeRole === "penguji_arab") {
+      whereClause.OR = [
+        { penguji_arab_id: userId },
+        { exam_session: { created_by: userId, title: { contains: "arab", mode: "insensitive" } } },
+        { exam_session: { created_by: userId, title: { contains: "lisan", mode: "insensitive" } } },
+      ];
+    } else if (activeRole === "penguji_hafalan") {
+      whereClause.OR = [
+        { penguji_hafalan_id: userId },
+        { exam_session: { created_by: userId, title: { contains: "hafalan", mode: "insensitive" } } },
+      ];
+    } else if (activeRole === "penguji" || activeRole === "penguji_quran") {
+      whereClause.OR = [
+        { penguji_quran_id: userId },
+        { penguji_hafalan_id: userId },
+        { exam_session: { created_by: userId, title: { contains: "quran", mode: "insensitive" } } },
+        { exam_session: { created_by: userId, title: { contains: "bacaan", mode: "insensitive" } } },
+      ];
+    } else if (activeRole === "pewawancara_calsan" || activeRole === "penguji_calsan") {
+      whereClause.OR = [
+        { penguji_santri_id: userId },
+        { exam_session: { created_by: userId, title: { contains: "santri", mode: "insensitive" } } },
+        { exam_session: { created_by: userId, title: { contains: "calsan", mode: "insensitive" } } },
+      ];
+    } else if (activeRole === "pewawancara_cawalsan" || activeRole === "penguji_cawalsan") {
+      whereClause.OR = [
+        { penguji_ortu_id: userId },
+        { exam_session: { created_by: userId, title: { contains: "cawalsan", mode: "insensitive" } } },
+        { exam_session: { created_by: userId, title: { contains: "ortu", mode: "insensitive" } } },
+        { exam_session: { created_by: userId, title: { contains: "wali", mode: "insensitive" } } },
+      ];
+    } else {
+      whereClause.OR = [
+        { penguji_santri_id: userId },
+        { penguji_quran_id: userId },
+        { penguji_ortu_id: userId },
+        { penguji_hafalan_id: userId },
+        { penguji_arab_id: userId },
+        { exam_session: { created_by: userId } },
+      ];
+    }
 
     const assigned = await prisma.jadwalUjian.findMany({
       where: whereClause,
@@ -141,43 +190,59 @@ export async function GET() {
       const userIsCawalsan = allRoles.includes("pewawancara_cawalsan");
       const userIsCalsan = allRoles.includes("pewawancara_calsan");
 
+      const isRoleArab = activeRole === "penguji_bahasa_arab" || activeRole === "penguji_arab";
+      const isRoleQuran = activeRole === "penguji" || activeRole === "penguji_quran";
+      const isRoleHafalan = activeRole === "penguji_hafalan";
+      const isRoleCalsan = activeRole === "pewawancara_calsan" || activeRole === "penguji_calsan";
+      const isRoleCawalsan = activeRole === "pewawancara_cawalsan" || activeRole === "penguji_cawalsan";
+
       const roles: string[] = [];
       if (isAdmin) {
         roles.push("wawancara", "quran", "ortu");
         if (isDirectNonIL) {
-          roles.push("lisan_arab");
+          roles.push("lisan_arab", "hafalan");
         }
       } else {
-        if (item.penguji_ortu_id === userId) {
+        const allowOrtu = !activeRole || isRoleCawalsan;
+        const allowSantri = !activeRole || isRoleCalsan;
+        const allowQuran = !activeRole || isRoleQuran;
+        const allowHafalan = !activeRole || isRoleHafalan || isRoleQuran;
+        const allowArab = !activeRole || isRoleArab;
+
+        if (allowOrtu && item.penguji_ortu_id === userId) {
           roles.push("ortu");
         } else if (item.penguji_santri_id === userId) {
           if (isSessionOrtu || userIsCawalsan) {
-            // Auto-heal: session was for Ortu/Cawalsan or reviewer is Cawalsan interviewer
-            roles.push("ortu");
-            if (!item.penguji_ortu_id) {
-              prisma.jadwalUjian.update({
-                where: { id: item.id },
-                data: {
-                  penguji_ortu_id: userId,
-                  penguji_santri_id: null,
-                  status_ortu: item.status_santri || item.status_ortu || "scheduled",
-                  status_santri: null,
-                },
-              }).catch((e) => console.error("Auto-heal jadwal error:", e));
+            if (allowOrtu) {
+              roles.push("ortu");
+              if (!item.penguji_ortu_id) {
+                prisma.jadwalUjian.update({
+                  where: { id: item.id },
+                  data: {
+                    penguji_ortu_id: userId,
+                    penguji_santri_id: null,
+                    status_ortu: item.status_santri || item.status_ortu || "scheduled",
+                    status_santri: null,
+                  },
+                }).catch((e) => console.error("Auto-heal jadwal error:", e));
+              }
             }
           } else {
-            roles.push("wawancara");
+            if (allowSantri) roles.push("wawancara");
           }
         }
 
-        if (item.penguji_santri_id === userId && !roles.includes("wawancara") && !isSessionOrtu && !userIsCawalsan) {
+        if (allowSantri && item.penguji_santri_id === userId && !roles.includes("wawancara") && !isSessionOrtu && !userIsCawalsan) {
           roles.push("wawancara");
         }
 
-        if (item.penguji_quran_id === userId || (item as any).penguji_hafalan_id === userId) {
+        if (allowQuran && item.penguji_quran_id === userId) {
           roles.push("quran");
         }
-        if (isDirectNonIL && (item as any).penguji_arab_id === userId) {
+        if (allowHafalan && (item as any).penguji_hafalan_id === userId) {
+          roles.push("hafalan");
+        }
+        if (allowArab && isDirectNonIL && (item as any).penguji_arab_id === userId) {
           roles.push("lisan_arab");
         }
 
@@ -197,17 +262,17 @@ export async function GET() {
             (sessionTitle.includes("arab") || sessionTitle.includes("lisan")) &&
             !(item as any).penguji_arab_id;
 
-          if (hasQuranMatch) roles.push("quran");
-          if (hasWawancaraMatch) roles.push("wawancara");
-          if (hasOrtuMatch) roles.push("ortu");
-          if (hasLisanArabMatch) roles.push("lisan_arab");
+          if (allowQuran && hasQuranMatch) roles.push("quran");
+          if (allowSantri && hasWawancaraMatch) roles.push("wawancara");
+          if (allowOrtu && hasOrtuMatch) roles.push("ortu");
+          if (allowArab && hasLisanArabMatch) roles.push("lisan_arab");
 
           if (roles.length === 0 && !isSessionQuran && !isSessionSantri && !isSessionOrtu && hasNoExplicitExaminer) {
-            if (userIsCawalsan) roles.push("ortu");
-            else if (userIsCalsan) roles.push("wawancara");
+            if (allowOrtu && userIsCawalsan) roles.push("ortu");
+            else if (allowSantri && userIsCalsan) roles.push("wawancara");
             else {
-              roles.push("quran");
-              if (isDirectNonIL) roles.push("lisan_arab");
+              if (allowQuran) roles.push("quran");
+              if (allowArab && isDirectNonIL) roles.push("lisan_arab");
             }
           }
         }

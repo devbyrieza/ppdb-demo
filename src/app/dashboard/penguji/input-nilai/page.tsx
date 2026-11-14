@@ -345,7 +345,7 @@ function InputNilaiContent() {
   const isAdmin = allRoles.some(r => ["admin", "admin_super", "head_of_it"].includes(r));
   const rawFormTypes = isAdmin
     ? ['quran', 'wawancara', 'ortu', 'lisan_arab']
-    : [...new Set(allRoles.flatMap(r => ROLE_TO_FORM_TYPES[r] || []))];
+    : (activeRole && ROLE_TO_FORM_TYPES[activeRole]) ? ROLE_TO_FORM_TYPES[activeRole] : [...new Set(allRoles.flatMap(r => ROLE_TO_FORM_TYPES[r] || []))];
   const visibleFormTypes = rawFormTypes.length > 0
     ? rawFormTypes
     : ['quran', 'wawancara', 'ortu', 'lisan_arab'];
@@ -377,7 +377,12 @@ function InputNilaiContent() {
       })
       .catch((err) => console.error("Error fetching session:", err));
 
-    fetchPeserta();
+    fetchPeserta(true, role);
+      })
+      .catch((err) => {
+        console.error("Error fetching session:", err);
+        fetchPeserta();
+      });
   }, []);
 
   const fetchPeserta = async (showLoading = true) => {
