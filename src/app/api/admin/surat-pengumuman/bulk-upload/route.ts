@@ -201,23 +201,29 @@ Wassalamu'alaikum Warahmatullahi Wabarakatuh.
             jenisNotif: "hasil_seleksi",
             messageContent,
             force: true,
-            sendNow: true,
+            sendNow: false, // Non-blocking: langsung masuk antrean cepat
           });
 
           waSent = !!enqResult.queued;
 
-          try {
-            await sendDocumentMessage({
-              phone: pendaftar.no_hp,
-              message: `📄 Surat Keputusan Kelulusan — ${pendaftar.nama_lengkap}`,
-              documentUrl: suratDownloadUrl,
-            });
-          } catch {}
-
-          await prisma.pengumuman.update({
-            where: { pendaftar_id: pendaftar.id },
-            data: { wa_blast_sent: waSent, wa_blast_sent_at: waSent ? new Date() : null },
-          });
+          // Dispatch WA document di background tanpa memblokir respon HTTP pengguna
+          void (async () => {
+            try {
+              const targetPhone = pendaftar.no_hp;
+              if (!targetPhone) return;
+              await sendDocumentMessage({
+                phone: targetPhone,
+                message: `📄 Surat Keputusan Kelulusan — ${pendaftar.nama_lengkap}`,
+                documentUrl: suratDownloadUrl,
+              });
+              await prisma.pengumuman.update({
+                where: { pendaftar_id: pendaftar.id },
+                data: { wa_blast_sent: true, wa_blast_sent_at: new Date() },
+              });
+            } catch (err) {
+              console.error(`[Background WA Doc Error] ${pendaftar.nama_lengkap}:`, err);
+            }
+          })();
         } catch (waErr) {
           console.error(`[BulkUpload] WA gagal untuk ${pendaftar.nama_lengkap}:`, waErr);
         }
