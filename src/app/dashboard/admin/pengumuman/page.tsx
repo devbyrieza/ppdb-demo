@@ -596,6 +596,27 @@ export default function PengumumanPage() {
           </table>
         </div>
       </div>
+
+      {/* Modal Pengumuman Massal */}
+      {showBulkAcceptedDialog && (
+        <BulkPengumumanDialog
+          candidates={candidates
+            .filter((c) => selectedIds.includes(c.id))
+            .map((c) => ({
+              id: c.id,
+              nama_lengkap: c.nama_lengkap,
+              nomor_pendaftaran: c.nomor_pendaftaran,
+              jenjang: c.jenjang,
+              kelas_diterima: c.pengumuman?.kelas_diterima,
+            }))}
+          onClose={() => setShowBulkAcceptedDialog(false)}
+          onSuccess={() => {
+            setShowBulkAcceptedDialog(false);
+            setSelectedIds([]);
+            fetchCandidates();
+          }}
+        />
+      )}
     </div>
   );
 }

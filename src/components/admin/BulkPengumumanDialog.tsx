@@ -9,7 +9,7 @@ import {
   Loader2,
   Plus,
   RefreshCw,
-  Trash2,
+  Upload,
   UploadCloud,
   X,
 } from "lucide-react";
@@ -77,13 +77,11 @@ export function BulkPengumumanDialog({
     // 2. SPECIAL CASE: If only 1 candidate and multiple files uploaded
     if (candidates.length === 1) {
       const c = candidates[0];
-      // Keep existing manual mapping if file is still present
       if (newMappings[c.id] && uploadedFiles.some((f) => f.name === newMappings[c.id])) {
         setFileMappings(newMappings);
         return;
       }
 
-      // Try smart match
       const cleanReg = c.nomor_pendaftaran.replace(/\W/g, "").toLowerCase();
       const regDigits = c.nomor_pendaftaran.replace(/\D/g, "");
       const fullName = c.nama_lengkap.trim().toLowerCase();
@@ -98,7 +96,6 @@ export function BulkPengumumanDialog({
         return false;
       });
 
-      // Default to best match, or first uploaded file
       newMappings[c.id] = match ? match.name : uploadedFiles[0].name;
       setFileMappings(newMappings);
       return;
@@ -117,13 +114,17 @@ export function BulkPengumumanDialog({
     });
 
     // Score-based matching for unassigned candidates
-    candidates.forEach((c) => {
+    candidates.forEach((c, idx) => {
       if (newMappings[c.id]) return; // already assigned
 
       const cleanReg = c.nomor_pendaftaran.replace(/\W/g, "").toLowerCase();
       const regDigits = c.nomor_pendaftaran.replace(/\D/g, "");
       const fullName = c.nama_lengkap.trim().toLowerCase();
       const nameParts = fullName.split(/\s+/).filter((p) => p.length >= 3);
+
+      // Prefix check e.g. "001-", "002-", "012-"
+      const pad3 = String(idx + 1).padStart(3, "0");
+      const pad2 = String(idx + 1).padStart(2, "0");
 
       let bestFile: File | null = null;
       let highestScore = 0;
@@ -136,17 +137,21 @@ export function BulkPengumumanDialog({
         // Full registration number match
         if (cleanReg && fn.includes(cleanReg)) score += 100;
         // Registration digits match (e.g. 2700001)
-        else if (regDigits && regDigits.length >= 4 && fn.includes(regDigits)) score += 70;
+        else if (regDigits && regDigits.length >= 4 && fn.includes(regDigits)) score += 75;
 
         // Full name match
-        if (fn.includes(fullName)) score += 90;
+        if (fn.includes(fullName)) score += 95;
         // Multiple name parts match
-        else if (nameParts.length >= 2 && fn.includes(nameParts[0]) && fn.includes(nameParts[1])) score += 60;
+        else if (nameParts.length >= 2 && fn.includes(nameParts[0]) && fn.includes(nameParts[1])) score += 65;
         // Single distinct name part match
         else {
           const matchedParts = nameParts.filter((p) => fn.includes(p));
-          if (matchedParts.length > 0) score += matchedParts.length * 25;
+          if (matchedParts.length > 0) score += matchedParts.length * 30;
         }
+
+        // Prefix match with candidate order index (e.g. 001- or 01-)
+        if (fn.startsWith(`${pad3}-`) || fn.startsWith(`${pad3} `) || fn.includes(`${pad3}-`)) score += 80;
+        else if (fn.startsWith(`${pad2}-`) || fn.startsWith(`${pad2} `)) score += 50;
 
         if (score > highestScore) {
           highestScore = score;
@@ -203,6 +208,26 @@ export function BulkPengumumanDialog({
     }
   };
 
+  // Upload file specifically for one individual candidate
+  const handleIndividualCandidateUpload = (candidateId: string, files: FileList | null) => {
+    if (!files || files.length === 0) return;
+    const file = files[0];
+    if (!file.name.toLowerCase().endsWith(".pdf")) {
+      Swal.fire("Format Tidak Sesuai", "Hanya file berekstensi .pdf yang diperbolehkan.", "warning");
+      return;
+    }
+
+    setUploadedFiles((prev) => {
+      if (prev.some((f) => f.name === file.name)) return prev;
+      return [...prev, file];
+    });
+
+    setFileMappings((prev) => ({
+      ...prev,
+      [candidateId]: file.name,
+    }));
+  };
+
   const handleRemoveFile = (fileName: string) => {
     setUploadedFiles((prev) => prev.filter((f) => f.name !== fileName));
     setFileMappings((prev) => {
@@ -214,12 +239,26 @@ export function BulkPengumumanDialog({
     });
   };
 
+  const handleUnlinkCandidate = (candidateId: string) => {
+    setFileMappings((prev) => {
+      const next = { ...prev };
+      delete next[candidateId];
+      return next;
+    });
+  };
+
+  const handleAutoRematch = () => {
+    // Reset mappings and re-run smart matching
+    setFileMappings({});
+    setUploadedFiles((prev) => [...prev]);
+  };
+
   const handleSubmitUpload = async () => {
     const matchedCount = Object.keys(fileMappings).length;
     if (matchedCount === 0) {
       Swal.fire({
         title: "Belum Ada File Dipasangkan",
-        text: "Silakan unggah file PDF atau pilih file dari menu dropdown di samping nama santri.",
+        text: "Silakan unggah file PDF surat kelulusan santri terlebih dahulu.",
         icon: "warning",
         confirmButtonColor: "#059669",
       });
@@ -321,68 +360,93 @@ export function BulkPengumumanDialog({
           <div className="rounded-xl bg-blue-50/80 border border-blue-200/80 p-3.5 text-blue-900 text-xs flex items-start gap-3">
             <HelpCircle className="h-4 w-4 text-blue-600 shrink-0 mt-0.5" />
             <div className="leading-relaxed">
-              <p className="font-semibold text-blue-950">Smart File Matching & Fleksibilitas Penuh</p>
+              <p className="font-semibold text-blue-950">Fleksibilitas Upload: Sekaligus atau Per Santri</p>
               <p className="mt-0.5 text-blue-800">
                 {candidates.length === 1
-                  ? "Cukup tarik atau pilih 1 file PDF surat kelulusan. Sistem otomatis memasangkan file tersebut ke santri yang dipilih."
-                  : "Tarik seluruh file PDF sekaligus. Sistem akan mencocokkan otomatis berdasarkan nama/nomor pendaftaran santri, atau Anda dapat memilih file secara manual pada dropdown di tabel."}
+                  ? "Cukup pilih atau tarik 1 file PDF surat pengumuman santri ini."
+                  : "Anda dapat memilih atau menarik SEMUA file PDF sekaligus di area atas (otomatis dicocokkan ke nama santri), ATAU Anda dapat memilih/mengunggah file satu per satu langsung pada baris masing-masing santri di bawah."}
               </p>
             </div>
           </div>
 
-          {/* Dropzone Area */}
-          {uploadedFiles.length === 0 ? (
-            <div
-              onDragOver={handleDragOver}
-              onDrop={handleDrop}
-              className="relative border-2 border-dashed border-stone-300 rounded-2xl p-6 text-center hover:border-emerald-500 hover:bg-emerald-50/20 transition cursor-pointer group"
-            >
-              <input
-                type="file"
-                multiple
-                accept=".pdf"
-                onChange={handleFilesDropped}
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-              />
+          {/* Bulk Dropzone Area (Always Accessible) */}
+          <div
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
+            className={`relative border-2 border-dashed rounded-2xl transition cursor-pointer group ${
+              uploadedFiles.length === 0
+                ? "border-emerald-300 bg-emerald-50/20 hover:border-emerald-500 hover:bg-emerald-50/40 p-6 text-center"
+                : "border-stone-300 bg-stone-50/50 hover:border-emerald-500 hover:bg-emerald-50/20 p-4 text-center"
+            }`}
+          >
+            <input
+              type="file"
+              multiple
+              accept=".pdf"
+              onChange={handleFilesDropped}
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+              title="Klik atau seret file PDF ke sini"
+            />
+
+            {uploadedFiles.length === 0 ? (
               <div className="flex flex-col items-center justify-center">
-                <div className="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
-                  <UploadCloud className="h-6 w-6 text-emerald-600" />
+                <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                  <UploadCloud className="h-6 w-6" />
                 </div>
                 <p className="text-sm font-bold text-stone-800">
                   Klik atau Tarik & Lepas File PDF ke Sini
                 </p>
-                <p className="text-xs text-stone-400 mt-1">
-                  Mendukung 1 atau banyak file PDF sekaligus (Format .pdf)
+                <p className="text-xs text-stone-500 mt-1">
+                  Mendukung <b>pilih banyak file sekaligus</b> (Format .pdf) — Otomatis dipasangkan ke masing-masing santri
                 </p>
+                <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-bold shadow-xs">
+                  <Upload className="h-3.5 w-3.5" /> Pilih Semua File Sekaligus
+                </div>
               </div>
-            </div>
-          ) : (
-            <div className="rounded-xl border border-emerald-200 bg-emerald-50/40 p-3.5 space-y-2.5">
+            ) : (
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-left">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+                    <UploadCloud className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-stone-800">
+                      Tarik & Lepas File PDF Tambahan ke Sini
+                    </p>
+                    <p className="text-[11px] text-stone-500">
+                      Atau klik area ini untuk menambah file PDF lainnya ke daftar
+                    </p>
+                  </div>
+                </div>
+
+                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-emerald-300 bg-white hover:bg-emerald-50 text-emerald-800 text-xs font-bold transition shadow-xs shrink-0">
+                  <Plus className="h-3.5 w-3.5 text-emerald-600" /> Tambah File PDF Lainnya
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Uploaded Files Summary Pill Box (Shown when files exist) */}
+          {uploadedFiles.length > 0 && (
+            <div className="rounded-xl border border-emerald-200 bg-emerald-50/40 p-3.5 space-y-2">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-600 text-white text-xs font-bold">
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-600 text-white text-[11px] font-bold">
                     ✓
                   </span>
                   <span className="text-xs font-bold text-emerald-950">
-                    {uploadedFiles.length} file PDF siap diproses ({matchedCount} terpasang ke santri)
+                    {uploadedFiles.length} file PDF terkumpul ({matchedCount}/{candidates.length} santri terpasang)
                   </span>
                 </div>
 
-                <div className="relative">
-                  <input
-                    type="file"
-                    multiple
-                    accept=".pdf"
-                    onChange={handleFilesDropped}
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                  />
-                  <button
-                    type="button"
-                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border border-emerald-300 bg-white hover:bg-emerald-50 text-emerald-800 text-xs font-bold transition shadow-xs"
-                  >
-                    <Plus className="h-3.5 w-3.5" /> Tambah File Lain
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={handleAutoRematch}
+                  className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 hover:text-emerald-900 transition hover:underline"
+                  title="Cocokkan ulang file yang belum terpasang otomatis"
+                >
+                  <RefreshCw className="h-3 w-3" /> Cocokkan Ulang Otomatis
+                </button>
               </div>
 
               {/* Uploaded File Pills */}
@@ -393,12 +457,12 @@ export function BulkPengumumanDialog({
                     className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white border border-emerald-200 text-stone-700 text-xs shadow-2xs"
                   >
                     <FileText className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-                    <span className="max-w-[220px] truncate font-medium">{f.name}</span>
+                    <span className="max-w-[200px] truncate font-medium">{f.name}</span>
                     <button
                       type="button"
                       onClick={() => handleRemoveFile(f.name)}
                       className="text-stone-400 hover:text-red-500 transition ml-0.5"
-                      title="Hapus file"
+                      title="Hapus file dari daftar"
                     >
                       <X className="h-3.5 w-3.5" />
                     </button>
@@ -408,7 +472,7 @@ export function BulkPengumumanDialog({
             </div>
           )}
 
-          {/* Matching Table (Always Visible) */}
+          {/* Matching Table (Per Santri Rows) */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <label className="text-xs font-bold text-stone-800">
@@ -425,7 +489,7 @@ export function BulkPengumumanDialog({
               </label>
             </div>
 
-            <div className="border border-stone-200 rounded-xl overflow-hidden divide-y divide-stone-100 max-h-64 overflow-y-auto custom-scrollbar bg-white">
+            <div className="border border-stone-200 rounded-xl overflow-hidden divide-y divide-stone-100 max-h-72 overflow-y-auto custom-scrollbar bg-white">
               {candidates.map((c, idx) => {
                 const matchedFileName = fileMappings[c.id];
                 return (
@@ -435,6 +499,7 @@ export function BulkPengumumanDialog({
                       matchedFileName ? "bg-emerald-50/15" : "bg-amber-50/20"
                     }`}
                   >
+                    {/* Candidate Info */}
                     <div className="flex items-center gap-3">
                       <span className="font-mono text-stone-400 font-bold w-5">{idx + 1}.</span>
                       <div>
@@ -452,47 +517,110 @@ export function BulkPengumumanDialog({
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2 shrink-0 self-end sm:self-auto">
+                    {/* Candidate File Actions */}
+                    <div className="flex items-center gap-2 shrink-0 self-end sm:self-auto flex-wrap sm:flex-nowrap">
                       {matchedFileName ? (
-                        <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-medium">
-                          <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
-                          <span className="max-w-[200px] truncate font-bold text-emerald-900" title={matchedFileName}>
-                            {matchedFileName}
-                          </span>
-                        </div>
-                      ) : (
-                        <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-xs font-medium">
-                          <AlertCircle className="h-4 w-4 text-amber-600 shrink-0" />
-                          <span>Pilih file di kanan ➔</span>
-                        </div>
-                      )}
+                        <>
+                          <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-medium">
+                            <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
+                            <span className="max-w-[190px] truncate font-bold text-emerald-900" title={matchedFileName}>
+                              {matchedFileName}
+                            </span>
+                          </div>
 
-                      {/* Dropdown Selector */}
-                      {uploadedFiles.length > 0 && (
-                        <select
-                          value={matchedFileName || ""}
-                          onChange={(e) => {
-                            const val = e.target.value;
-                            setFileMappings((prev) => {
-                              const next = { ...prev };
-                              if (val) next[c.id] = val;
-                              else delete next[c.id];
-                              return next;
-                            });
-                          }}
-                          className={`rounded-lg border px-2.5 py-1.5 text-xs text-stone-800 bg-white font-medium focus:outline-none max-w-[180px] shadow-2xs ${
-                            matchedFileName
-                              ? "border-stone-200 hover:border-emerald-500 focus:border-emerald-500"
-                              : "border-amber-400 bg-amber-50/50 font-bold text-amber-900 animate-pulse"
-                          }`}
-                        >
-                          <option value="">-- {matchedFileName ? "Ganti File" : "Pilih File"} --</option>
-                          {uploadedFiles.map((f) => (
-                            <option key={f.name} value={f.name}>
-                              {f.name}
-                            </option>
-                          ))}
-                        </select>
+                          {/* Direct Re-upload File for This Santri */}
+                          <label
+                            className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-stone-200 bg-white hover:bg-stone-100 text-stone-700 text-xs font-medium cursor-pointer transition shadow-2xs"
+                            title="Ganti dengan file PDF baru dari komputer"
+                          >
+                            <Upload className="h-3.5 w-3.5 text-stone-500" />
+                            <span>Ganti File</span>
+                            <input
+                              type="file"
+                              accept=".pdf"
+                              className="hidden"
+                              onChange={(e) => {
+                                handleIndividualCandidateUpload(c.id, e.target.files);
+                                e.target.value = "";
+                              }}
+                            />
+                          </label>
+
+                          {/* Dropdown Selector if multiple files available */}
+                          {uploadedFiles.length > 1 && (
+                            <select
+                              value={matchedFileName}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                setFileMappings((prev) => {
+                                  const next = { ...prev };
+                                  if (val) next[c.id] = val;
+                                  else delete next[c.id];
+                                  return next;
+                                });
+                              }}
+                              className="rounded-lg border border-stone-200 px-2 py-1.5 text-xs text-stone-700 bg-white font-medium focus:outline-none max-w-[140px]"
+                              title="Pilih dari file yang sudah diunggah"
+                            >
+                              {uploadedFiles.map((f) => (
+                                <option key={f.name} value={f.name}>
+                                  {f.name}
+                                </option>
+                              ))}
+                            </select>
+                          )}
+
+                          {/* Unlink button */}
+                          <button
+                            type="button"
+                            onClick={() => handleUnlinkCandidate(c.id)}
+                            className="p-1 rounded-lg text-stone-400 hover:text-red-500 hover:bg-red-50 transition"
+                            title="Lepaskan file dari santri ini"
+                          >
+                            <X className="h-3.5 w-3.5" />
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          {/* Direct Upload Button for This Santri */}
+                          <label className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold transition cursor-pointer shadow-xs active:scale-95">
+                            <Upload className="h-3.5 w-3.5 text-emerald-600" />
+                            <span>Upload File Santri Ini</span>
+                            <input
+                              type="file"
+                              accept=".pdf"
+                              className="hidden"
+                              onChange={(e) => {
+                                handleIndividualCandidateUpload(c.id, e.target.files);
+                                e.target.value = "";
+                              }}
+                            />
+                          </label>
+
+                          {/* Dropdown Selector from pool if uploadedFiles exist */}
+                          {uploadedFiles.length > 0 && (
+                            <select
+                              value=""
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                if (val) {
+                                  setFileMappings((prev) => ({
+                                    ...prev,
+                                    [c.id]: val,
+                                  }));
+                                }
+                              }}
+                              className="rounded-lg border border-amber-300 bg-amber-50/60 px-2 py-1.5 text-xs font-medium text-amber-900 focus:outline-none max-w-[170px]"
+                            >
+                              <option value="">-- Atau Pilih dari Pool --</option>
+                              {uploadedFiles.map((f) => (
+                                <option key={f.name} value={f.name}>
+                                  {f.name}
+                                </option>
+                              ))}
+                            </select>
+                          )}
+                        </>
                       )}
                     </div>
                   </div>
@@ -505,15 +633,15 @@ export function BulkPengumumanDialog({
         {/* Footer */}
         <div className="flex items-center justify-between border-t border-stone-200 bg-stone-50 px-6 py-4 shrink-0">
           <div className="text-xs text-stone-500 font-medium">
-            {uploadedFiles.length === 0 ? (
-              <span className="text-stone-400 italic">Silakan masukkan file PDF di atas</span>
+            {uploadedFiles.length === 0 && matchedCount === 0 ? (
+              <span className="text-stone-400 italic">Silakan masukkan file PDF di atas atau pada baris santri</span>
             ) : matchedCount < candidates.length ? (
               <span className="text-amber-700 font-bold">
                 ⚠️ {candidates.length - matchedCount} santri belum terpasang file PDF
               </span>
             ) : (
               <span className="text-emerald-700 font-bold flex items-center gap-1.5">
-                <CheckCircle2 className="h-4 w-4 text-emerald-600 inline" /> Seluruh santri ({matchedCount}) siap diterbitkan
+                <CheckCircle2 className="h-4 w-4 text-emerald-600 inline" /> Seluruh santri ({matchedCount}/{candidates.length}) siap diterbitkan
               </span>
             )}
           </div>
