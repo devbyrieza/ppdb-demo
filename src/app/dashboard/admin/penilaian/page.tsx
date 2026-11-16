@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import Swal from "sweetalert2";
 import { exportToExcelProfessional, exportToPDF } from "@/lib/utils/export";
 import Link from "next/link";
-import { ClipboardEdit, MessageSquare, Download, RefreshCcw, Send, BarChart3, AlertCircle, CheckCircle2, Clock, LayoutDashboard, Zap, Users, ChevronRight, Search, Filter, FileText, Eye, Share2, Sparkles, Link as LinkIcon } from "lucide-react";
+import { ClipboardEdit, MessageSquare, Download, RefreshCcw, Send, BarChart3, AlertCircle, CheckCircle2, Clock, LayoutDashboard, Zap, Users, X, ChevronRight, Search, Filter, FileText, Eye, Share2, Sparkles, Link as LinkIcon } from "lucide-react";
 
 // Removed basic xlsx imports in favor of professional utility
 
@@ -1546,55 +1546,62 @@ export default function ExaminerDashboard() {
       )}
 
       {/* Custom Modal for Assign Examiner (PLOT) */}
-      {assignStudent && typeof document !== "undefined" && createPortal(
-        <div onWheel={(e) => e.stopPropagation()} data-modal="true"
-          className="fixed inset-0 overflow-y-auto p-6 sm:p-8 overscroll-contain custom-scrollbar"
-          style={{ zIndex: 99999 }}
-          aria-labelledby="modal-title"
-          role="dialog"
-          aria-modal="true"
-        >
-          <div className="flex items-end justify-center min-h-dvh pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog"
-              className="fixed inset-0 bg-ink-900/60 backdrop-blur-sm transition-opacity overflow-y-auto overflow-x-hidden p-6 sm:p-8 overscroll-contain custom-scrollbar"
+      {assignStudent &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-6 overflow-hidden"
+            aria-labelledby="modal-title"
+            role="dialog"
+            aria-modal="true"
+          >
+            {/* Backdrop */}
+            <div
+              className="fixed inset-0 bg-ink-900/60 backdrop-blur-xs transition-opacity"
               aria-hidden="true"
               onClick={() => setAssignStudent(null)}
-            ></div>
-            <span
-              className="hidden sm:inline-block sm:align-middle sm:h-screen"
-              aria-hidden="true"
-            >
-              &#8203;
-            </span>
-            <div className="inline-block align-bottom bg-white rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-white/20">
-              <div className="bg-white px-6 pt-8 pb-6 sm:p-5 md:p-8">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="p-3 bg-primary-50 text-primary-600 rounded-2xl">
+            />
+
+            {/* Modal Dialog Card */}
+            <div className="relative w-full max-w-lg max-h-[90vh] bg-white rounded-2xl shadow-2xl border border-ink-100 flex flex-col overflow-hidden z-10 animate-in fade-in zoom-in-95 duration-150">
+              {/* Header (Sticky at top) */}
+              <div className="px-6 py-4 sm:py-5 border-b border-ink-100 flex items-center justify-between bg-white shrink-0">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 bg-primary-50 text-primary-600 rounded-xl">
                     <Users className="w-5 h-5 font-black" />
                   </div>
-                  <h3
-                    className="text-xl leading-6 font-black text-ink-900"
-                    id="modal-title"
-                  >
-                    Plotting Penguji / Pewawancara
-                  </h3>
+                  <div>
+                    <h3 className="text-lg font-black text-ink-900" id="modal-title">
+                      Plotting Penguji / Pewawancara
+                    </h3>
+                    <p className="text-xs text-ink-500 font-medium">
+                      Atur penugasan penguji untuk peserta ujian
+                    </p>
+                  </div>
                 </div>
+                <button
+                  type="button"
+                  onClick={() => setAssignStudent(null)}
+                  className="p-2 text-ink-400 hover:text-ink-600 hover:bg-ink-100 rounded-xl transition"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
 
-                <div className="bg-ink-50 rounded-2xl p-6 sm:p-8 mb-6 border border-ink-100">
+              {/* Scrollable Body */}
+              <div className="p-5 sm:p-6 overflow-y-auto space-y-4 flex-1 custom-scrollbar">
+                <div className="bg-ink-50 rounded-xl p-4 border border-ink-100">
                   <p className="text-[10px] font-black text-ink-400 uppercase tracking-widest mb-1">
                     Peserta
                   </p>
-                  <p className="text-lg font-black text-ink-900">
+                  <p className="text-base font-black text-ink-900">
                     {(assignStudent.nama_lengkap || "").replace(
-                      /\w\S*/g,
-                      (txt) =>
-                        txt.charAt(0).toUpperCase() +
-                        txt.substr(1).toLowerCase(),
+                      /\\w\\S*/g,
+                      (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
                     )}
                   </p>
                   <p className="text-xs font-bold text-ink-500 font-mono mt-0.5">
-                    {assignStudent.nomor_pendaftaran || "-"} •{" "}
-                    {assignStudent.jenjang || "-"}
+                    {assignStudent.nomor_pendaftaran || "-"} • {assignStudent.jenjang || "-"}
                   </p>
                 </div>
 
@@ -1605,8 +1612,10 @@ export default function ExaminerDashboard() {
                     </label>
                     <select
                       value={assignType}
-                      onChange={(e) => handleAssignTypeChange(e.target.value as any, assignStudent)}
-                      className="w-full bg-ink-50 border border-ink-100 rounded-3xl px-4 py-3 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-primary-600/10 outline-none"
+                      onChange={(e) =>
+                        handleAssignTypeChange(e.target.value as any, assignStudent)
+                      }
+                      className="w-full bg-ink-50 border border-ink-100 rounded-xl px-4 py-3 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-primary-600/10 outline-none"
                     >
                       <option value="quran">Tes Al-Qur&apos;an</option>
                       <option value="wawancara_santri">Wawancara Calon Santri</option>
@@ -1621,7 +1630,7 @@ export default function ExaminerDashboard() {
                     <select
                       value={assignExaminerId}
                       onChange={(e) => setAssignExaminerId(e.target.value)}
-                      className="w-full bg-ink-50 border border-ink-100 rounded-3xl px-4 py-3 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-primary-600/10 outline-none"
+                      className="w-full bg-ink-50 border border-ink-100 rounded-xl px-4 py-3 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-primary-600/10 outline-none"
                     >
                       <option value="">-- Pilih Staff/Penguji (Kosongkan untuk Hapus) --</option>
                       {usersList.map((u) => (
@@ -1633,118 +1642,134 @@ export default function ExaminerDashboard() {
                   </div>
                 </div>
               </div>
-              <div className="bg-ink-50 px-6 py-6 sm:px-5 md:px-8 sm:flex sm:flex-row-reverse gap-3 border-t border-ink-100">
-                <Button
-                  onClick={handleSaveAssignment}
-                  className="w-full sm:w-auto bg-primary-600 hover:bg-primary-700 text-white rounded-2xl px-5 md:px-8 py-3 font-black shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-600/20"
-                >
-                  Simpan Penugasan
-                </Button>
+
+              {/* Footer (Sticky at bottom) */}
+              <div className="bg-ink-50 px-6 py-4 border-t border-ink-100 flex items-center justify-end gap-3 shrink-0">
                 <button
                   type="button"
                   onClick={() => setAssignStudent(null)}
-                  className="mt-3 sm:mt-0 w-full sm:w-auto bg-white border border-ink-200 text-ink-600 hover:bg-ink-100 rounded-2xl px-5 md:px-8 py-3 font-black shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 transition-all"
+                  className="w-full sm:w-auto bg-white border border-ink-200 text-ink-600 hover:bg-ink-100 rounded-xl px-5 py-2.5 text-sm font-bold shadow-sm transition"
                 >
                   Batal
                 </button>
+                <Button
+                  onClick={handleSaveAssignment}
+                  className="w-full sm:w-auto bg-primary-600 hover:bg-primary-700 text-white rounded-xl px-6 py-2.5 text-sm font-bold shadow-lg shadow-primary-600/20"
+                >
+                  Simpan Penugasan
+                </Button>
               </div>
             </div>
-          </div>
-        </div>
-      , document.body)}
+          </div>,
+          document.body
+        )}
 
       {/* Custom Modal for Input Nilai */}
-      {selectedStudent && typeof document !== "undefined" && createPortal(
-        <div onWheel={(e) => e.stopPropagation()} data-modal="true"
-          className="fixed inset-0 overflow-y-auto p-6 sm:p-8 overscroll-contain custom-scrollbar"
-          style={{ zIndex: 99999 }}
-          aria-labelledby="modal-title"
-          role="dialog"
-          aria-modal="true"
-        >
-          <div className="flex items-end justify-center min-h-dvh pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog"
-              className="fixed inset-0 bg-ink-900/60 backdrop-blur-sm transition-opacity overflow-y-auto overflow-x-hidden p-6 sm:p-8 overscroll-contain custom-scrollbar"
+      {selectedStudent &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-6 overflow-hidden"
+            aria-labelledby="modal-title"
+            role="dialog"
+            aria-modal="true"
+          >
+            {/* Backdrop */}
+            <div
+              className="fixed inset-0 bg-ink-900/60 backdrop-blur-xs transition-opacity"
               aria-hidden="true"
               onClick={() => setSelectedStudent(null)}
-            ></div>
-            <span
-              className="hidden sm:inline-block sm:align-middle sm:h-screen"
-              aria-hidden="true"
-            >
-              &#8203;
-            </span>
-            <div className="inline-block align-bottom bg-white rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-white/20">
-              <div className="bg-white px-6 pt-8 pb-6 sm:p-5 md:p-8">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="p-3 bg-primary-50 text-primary-600 rounded-2xl">
+            />
+
+            {/* Modal Dialog Card (Never cut off, scrollable body, sticky header & footer) */}
+            <div className="relative w-full max-w-lg max-h-[92vh] bg-white rounded-2xl shadow-2xl border border-ink-100 flex flex-col overflow-hidden z-10 animate-in fade-in zoom-in-95 duration-150">
+              {/* Header (Sticky / Fixed at top) */}
+              <div className="px-6 py-4 sm:py-5 border-b border-ink-100 flex items-center justify-between bg-white shrink-0">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 bg-primary-50 text-primary-600 rounded-xl">
                     <Zap className="w-5 h-5 font-black" />
                   </div>
-                  <h3
-                    className="text-xl leading-6 font-black text-ink-900"
-                    id="modal-title"
-                  >
-                    Input Nilai{" "}
-                    {inputType === "quran"
-                      ? "Al-Qur'an"
-                      : inputType === "wawancara_santri"
-                        ? "Wawancara Calon Santri"
-                        : "Wawancara Ortu/Wali"}
-                  </h3>
+                  <div>
+                    <h3 className="text-lg font-black text-ink-900" id="modal-title">
+                      Input Nilai{" "}
+                      {inputType === "quran"
+                        ? "Al-Qur'an"
+                        : inputType === "wawancara_santri"
+                          ? "Wawancara Calon Santri"
+                          : "Wawancara Ortu/Wali"}
+                    </h3>
+                    <p className="text-xs text-ink-500 font-medium">
+                      {(selectedStudent.nama_lengkap || "").replace(
+                        /\\w\\S*/g,
+                        (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+                      )}{" "}
+                      • {selectedStudent.nomor_pendaftaran || "-"}
+                    </p>
+                  </div>
                 </div>
+                <button
+                  type="button"
+                  onClick={() => setSelectedStudent(null)}
+                  className="p-2 text-ink-400 hover:text-ink-600 hover:bg-ink-100 rounded-xl transition"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
 
-                <div className="bg-ink-50 rounded-2xl p-6 sm:p-8 mb-6 border border-ink-100">
+              {/* Scrollable Body (Accommodates all fields comfortably) */}
+              <div className="p-5 sm:p-6 overflow-y-auto space-y-4 flex-1 custom-scrollbar">
+                {/* Info Peserta */}
+                <div className="bg-ink-50 rounded-xl p-4 border border-ink-100">
                   <p className="text-[10px] font-black text-ink-400 uppercase tracking-widest mb-1">
                     Peserta Tes
                   </p>
-                  <p className="text-lg font-black text-ink-900">
+                  <p className="text-base font-black text-ink-900">
                     {(selectedStudent.nama_lengkap || "").replace(
-                      /\w\S*/g,
-                      (txt) =>
-                        txt.charAt(0).toUpperCase() +
-                        txt.substr(1).toLowerCase(),
+                      /\\w\\S*/g,
+                      (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
                     )}
                   </p>
                   <p className="text-xs font-bold text-ink-500 font-mono mt-0.5">
-                    {selectedStudent.nomor_pendaftaran || "-"} •{" "}
-                    {selectedStudent.jenjang || "-"}
+                    {selectedStudent.nomor_pendaftaran || "-"} • {selectedStudent.jenjang || "-"}
                   </p>
                 </div>
 
-                  {isAdminSuper && (
-                    <div className="mb-5 bg-primary-50/50 p-4 rounded-xl border border-primary-100">
-                      <div className="flex items-center justify-between mb-1.5">
-                        <label className="block text-xs font-black text-primary-900 uppercase tracking-wider">
-                          Penguji / Pewawancara
-                        </label>
-                        <span className="text-[10px] font-bold text-primary-600 bg-primary-100/60 px-2 py-0.5 rounded-full">
-                          Default: Akun Anda
-                        </span>
-                      </div>
-                      <select
-                        value={selectedExaminerId || currentUserId}
-                        onChange={(e) => setSelectedExaminerId(e.target.value)}
-                        className="w-full bg-white border border-primary-200 rounded-xl px-4 py-2.5 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-primary-600/20 outline-none shadow-sm"
-                      >
-                        {currentUserId && (
-                          <option value={currentUserId}>
-                            -- Saya Sendiri ({currentUserName || "Admin Super"}) --
-                          </option>
-                        )}
-                        {usersList
-                          .filter((u) => u.id !== currentUserId)
-                          .map((u) => (
-                            <option key={u.id} value={u.id}>
-                              {u.full_name} ({u.role.replace("_", " ").toUpperCase()})
-                            </option>
-                          ))}
-                      </select>
-                      <p className="text-[11px] text-ink-500 mt-1.5 font-medium">
-                        Nilai akan tercatat resmi atas nama penguji yang dipilih di atas.
-                      </p>
+                {/* Penguji Selection */}
+                {isAdminSuper && (
+                  <div className="bg-primary-50/50 p-4 rounded-xl border border-primary-100">
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="block text-xs font-black text-primary-900 uppercase tracking-wider">
+                        Penguji / Pewawancara
+                      </label>
+                      <span className="text-[10px] font-bold text-primary-600 bg-primary-100/60 px-2 py-0.5 rounded-full">
+                        Default: Akun Anda
+                      </span>
                     </div>
-                  )}
+                    <select
+                      value={selectedExaminerId || currentUserId}
+                      onChange={(e) => setSelectedExaminerId(e.target.value)}
+                      className="w-full bg-white border border-primary-200 rounded-xl px-4 py-2.5 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-primary-600/20 outline-none shadow-sm"
+                    >
+                      {currentUserId && (
+                        <option value={currentUserId}>
+                          -- Saya Sendiri ({currentUserName || "Admin Super"}) --
+                        </option>
+                      )}
+                      {usersList
+                        .filter((u) => u.id !== currentUserId)
+                        .map((u) => (
+                          <option key={u.id} value={u.id}>
+                            {u.full_name} ({u.role.replace("_", " ").toUpperCase()})
+                          </option>
+                        ))}
+                    </select>
+                    <p className="text-[11px] text-ink-500 mt-1.5 font-medium">
+                      Nilai akan tercatat resmi atas nama penguji yang dipilih di atas.
+                    </p>
+                  </div>
+                )}
 
+                {/* Form Fields */}
                 <div className="space-y-4">
                   {inputType === "quran" && (
                     <div className="flex flex-col sm:flex-row gap-4">
@@ -1758,10 +1783,11 @@ export default function ExaminerDashboard() {
                           onChange={(e) =>
                             setQuranForm({
                               ...quranForm,
-                              tajwid: e.target.value })
+                              tajwid: e.target.value,
+                            })
                           }
                           placeholder="0-100"
-                          className="w-full bg-ink-50 border border-ink-100 rounded-3xl px-4 py-3 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-primary-600/10 outline-none"
+                          className="w-full bg-ink-50 border border-ink-100 rounded-xl px-4 py-3 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-primary-600/10 outline-none"
                         />
                       </div>
                       <div className="flex-1">
@@ -1774,10 +1800,11 @@ export default function ExaminerDashboard() {
                           onChange={(e) =>
                             setQuranForm({
                               ...quranForm,
-                              kelancaran: e.target.value })
+                              kelancaran: e.target.value,
+                            })
                           }
                           placeholder="0-100"
-                          className="w-full bg-ink-50 border border-ink-100 rounded-3xl px-4 py-3 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-primary-600/10 outline-none"
+                          className="w-full bg-ink-50 border border-ink-100 rounded-xl px-4 py-3 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-primary-600/10 outline-none"
                         />
                       </div>
                     </div>
@@ -1800,10 +1827,8 @@ export default function ExaminerDashboard() {
                           </label>
                           <select
                             value={(wsForm as any)[f.k]}
-                            onChange={(e) =>
-                              setWsForm({ ...wsForm, [f.k]: e.target.value })
-                            }
-                            className="w-full bg-ink-50 border border-ink-100 rounded-3xl px-3 py-2 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-primary-600/10 outline-none"
+                            onChange={(e) => setWsForm({ ...wsForm, [f.k]: e.target.value })}
+                            className="w-full bg-ink-50 border border-ink-100 rounded-xl px-3 py-2 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-primary-600/10 outline-none"
                           >
                             <option value="">Pilih...</option>
                             <option value="1">1</option>
@@ -1818,7 +1843,7 @@ export default function ExaminerDashboard() {
                   )}
 
                   {inputType === "wawancara_ortu" && (
-                    <div className="space-y-4 max-h-64 overflow-y-auto pr-2 custom-scrollbar overscroll-contain">
+                    <div className="space-y-4">
                       <p className="text-[10px] font-black text-ink-500 uppercase">
                         Pilih A/B/C untuk 10 Pertanyaan Standar Wawancara Wali
                       </p>
@@ -1832,14 +1857,13 @@ export default function ExaminerDashboard() {
                             onChange={(e) =>
                               setWoForm({
                                 ...woForm,
-                                [`q${idx + 1}`]: e.target.value })
+                                [`q${idx + 1}`]: e.target.value,
+                              })
                             }
-                            className="w-full bg-ink-50 border border-ink-100 rounded-3xl px-3 py-2 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-primary-600/10 outline-none"
+                            className="w-full bg-ink-50 border border-ink-100 rounded-xl px-3 py-2 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-primary-600/10 outline-none"
                           >
                             <option value="">Pilih...</option>
-                            <option value="A">
-                              A (Sangat Baik / Menerima)
-                            </option>
+                            <option value="A">A (Sangat Baik / Menerima)</option>
                             <option value="B">B (Baik / Kondisional)</option>
                             <option value="C">C (Kurang / Tidak Ideal)</option>
                           </select>
@@ -1847,8 +1871,6 @@ export default function ExaminerDashboard() {
                       ))}
                     </div>
                   )}
-
-                  
 
                   <div>
                     <label className="block text-xs font-black text-ink-400 uppercase tracking-wider mb-2">
@@ -1859,31 +1881,33 @@ export default function ExaminerDashboard() {
                       onChange={(e) => setCatatan(e.target.value)}
                       rows={3}
                       placeholder="Tambahkan catatan jika diperlukan..."
-                      className="w-full bg-ink-50 border border-ink-100 rounded-3xl px-4 py-3 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-primary-600/10 outline-none"
+                      className="w-full bg-ink-50 border border-ink-100 rounded-xl px-4 py-3 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-primary-600/10 outline-none"
                     ></textarea>
                   </div>
                 </div>
               </div>
-              <div className="bg-ink-50 px-6 py-6 sm:px-5 md:px-8 sm:flex sm:flex-row-reverse gap-3 border-t border-ink-100">
-                <Button
-                  onClick={handleSubmitScore}
-                  disabled={isSubmitting}
-                  className="w-full sm:w-auto bg-primary-600 hover:bg-primary-700 text-white rounded-2xl px-5 md:px-8 py-3 font-black shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-600/20 disabled:opacity-50"
-                >
-                  {isSubmitting ? "Menyimpan..." : "Simpan Nilai"}
-                </Button>
+
+              {/* Footer (Sticky / Fixed at bottom - ALWAYS VISIBLE!) */}
+              <div className="bg-ink-50 px-6 py-4 border-t border-ink-100 flex items-center justify-end gap-3 shrink-0">
                 <button
                   type="button"
                   onClick={() => setSelectedStudent(null)}
-                  className="mt-3 sm:mt-0 w-full sm:w-auto bg-white border border-ink-200 text-ink-600 hover:bg-ink-100 rounded-2xl px-5 md:px-8 py-3 font-black shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 transition-all"
+                  className="w-full sm:w-auto bg-white border border-ink-200 text-ink-600 hover:bg-ink-100 rounded-xl px-5 py-2.5 text-sm font-bold shadow-sm transition"
                 >
                   Batal
                 </button>
+                <Button
+                  onClick={handleSubmitScore}
+                  disabled={isSubmitting}
+                  className="w-full sm:w-auto bg-primary-600 hover:bg-primary-700 text-white rounded-xl px-6 py-2.5 text-sm font-bold shadow-lg shadow-primary-600/20 disabled:opacity-50"
+                >
+                  {isSubmitting ? "Menyimpan..." : "Simpan Nilai"}
+                </Button>
               </div>
             </div>
-          </div>
-        </div>
-      , document.body)}
+          </div>,
+          document.body
+        )}
     </div>
   );
 }
