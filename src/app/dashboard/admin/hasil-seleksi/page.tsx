@@ -341,23 +341,40 @@ export default function HasilSeleksiPage() {
                   const getGradeBadge = (
                     score: number | null | undefined,
                     type: string,
+                    label?: string
                   ) => {
                     if (score == null) return null;
+                    let s = Number(score);
+                    if (s > 0 && s <= 5) s = s * 20;
+
                     let grade = "C";
-                    if (type === "quran")
-                      grade = score >= 80 ? "A" : score >= 65 ? "B" : "C";
-                    else if (type === "akademik")
-                      grade = score >= 75 ? "A" : score >= 60 ? "B" : "C";
-                    else if (type === "kepribadian")
-                      grade = score >= 70 ? "A" : score >= 50 ? "B" : "C";
-                    else grade = score >= 80 ? "A" : score >= 60 ? "B" : "C";
+                    if (type === "quran" || type === "hafalan" || type === "arab") {
+                      grade = s >= 85 ? "A" : s >= 75 ? "B" : s >= 70 ? "C" : s >= 40 ? "D" : "E";
+                    } else if (type === "akademik") {
+                      grade = s >= 75 ? "A" : s >= 60 ? "B" : s >= 45 ? "C" : s >= 30 ? "D" : "E";
+                    } else if (type === "kepribadian") {
+                      grade = s >= 80 ? "A" : s >= 65 ? "B" : s >= 50 ? "C" : s >= 35 ? "D" : "E";
+                    } else if (type.startsWith("wawancara")) {
+                      grade = s >= 80 ? "A" : s >= 65 ? "B" : s >= 50 ? "C" : s >= 35 ? "D" : "E";
+                    } else if (type === "kesiapan") {
+                      grade = s >= 75 ? "A" : s >= 55 ? "B" : s >= 40 ? "C" : s >= 25 ? "D" : "E";
+                    } else {
+                      grade = s >= 80 ? "A" : s >= 65 ? "B" : "C";
+                    }
 
                     const color =
                       grade === "A"
-                        ? "bg-green-500"
+                        ? "bg-emerald-500 text-white"
                         : grade === "B"
-                          ? "bg-sky-400"
-                          : "bg-secondary-400";
+                          ? "bg-blue-500 text-white"
+                          : grade === "C"
+                            ? "bg-amber-500 text-white"
+                            : grade === "D"
+                              ? "bg-orange-500 text-white"
+                              : "bg-rose-500 text-white";
+
+                    const titleText = `${label || type}: ${grade} (${s.toFixed(1)})`;
+
                     return (
                       <span
                         title={type}
@@ -391,12 +408,15 @@ export default function HasilSeleksiPage() {
                           {c.nomor_pendaftaran}
                         </div>
                         {/* Component Grades Mini Bar */}
-                        <div className="flex gap-1 mt-2">
-                          {getGradeBadge(nu?.score_quran, "quran")}
-                          {getGradeBadge(nu?.score_akademik, "akademik")}
-                          {getGradeBadge(nu?.score_kepribadian, "kepribadian")}
-                          {getGradeBadge(avgWawancara, "wawancara")}
-                          {getGradeBadge(nu?.score_kesiapan, "kesiapan")}
+                        <div className="flex gap-1 mt-2 items-center" title="Predikat per Komponen (Arahkan kursor untuk skor angka)">
+                          {getGradeBadge(nu?.score_quran, "quran", "Al-Qur'an")}
+                          {getGradeBadge(nu?.score_akademik, "akademik", "Akademik")}
+                          {getGradeBadge(nu?.score_kepribadian, "kepribadian", "Kepribadian")}
+                          {getGradeBadge(ws, "wawancara_santri", "W. Santri")}
+                          {getGradeBadge(wo, "wawancara_ortu", "W. Ortu")}
+                          {getGradeBadge(nu?.score_kesiapan, "kesiapan", "Kesiapan")}
+                          {nu?.score_hafalan != null && getGradeBadge(nu?.score_hafalan, "hafalan", "Hafalan")}
+                          {nu?.score_arab != null && getGradeBadge(nu?.score_arab, "arab", "B. Arab")}
                         </div>
                       </td>
                       <td className="px-6 py-4">

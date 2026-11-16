@@ -29,7 +29,7 @@ import Swal from "sweetalert2";
 import { SuratPengumumanDialog } from "@/components/admin/SuratPengumumanDialog";
 import { BulkPengumumanDialog } from "@/components/admin/BulkPengumumanDialog";
 
-const KKM_STANDAR = 80;
+const KKM_STANDAR = 75;
 
 type MainTab = "siap_pleno" | "sudah_diumumkan" | "proses_seleksi";
 
@@ -155,6 +155,9 @@ function PengumumanContent() {
 
   const isMemenuhiKKM = (c: any) => {
     const total = Number(c.nilai_ujian?.nilai_total ?? 0);
+    const quran = c.nilai_ujian?.score_quran != null ? Number(c.nilai_ujian.score_quran) : null;
+    // Hard gate Al-Qur'an: Skor < 70 (Grade D/E) mutlak tidak boleh lolos otomatis (wajib dirapatkan tim)
+    if (quran != null && quran < 70) return false;
     return total >= KKM_STANDAR;
   };
 
@@ -439,24 +442,49 @@ function PengumumanContent() {
     }
   };
 
-  const getGradeBadge = (score: number | null | undefined, type: string) => {
+  const getGradeBadge = (
+    score: number | null | undefined,
+    type: string,
+    label?: string
+  ) => {
     if (score == null) return null;
+    let s = Number(score);
+    // Normalisasi jika skor penguji skala 1-5
+    if (s > 0 && s <= 5) s = s * 20;
+
     let grade = "C";
-    if (type === "quran") grade = score >= 80 ? "A" : score >= 65 ? "B" : "C";
-    else if (type === "akademik") grade = score >= 75 ? "A" : score >= 60 ? "B" : "C";
-    else if (type === "kepribadian") grade = score >= 70 ? "A" : score >= 50 ? "B" : "C";
-    else grade = score >= 80 ? "A" : score >= 60 ? "B" : "C";
+    if (type === "quran" || type === "hafalan" || type === "arab") {
+      grade = s >= 85 ? "A" : s >= 75 ? "B" : s >= 70 ? "C" : s >= 40 ? "D" : "E";
+    } else if (type === "akademik") {
+      grade = s >= 75 ? "A" : s >= 60 ? "B" : s >= 45 ? "C" : s >= 30 ? "D" : "E";
+    } else if (type === "kepribadian") {
+      grade = s >= 80 ? "A" : s >= 65 ? "B" : s >= 50 ? "C" : s >= 35 ? "D" : "E";
+    } else if (type.startsWith("wawancara")) {
+      grade = s >= 80 ? "A" : s >= 65 ? "B" : s >= 50 ? "C" : s >= 35 ? "D" : "E";
+    } else if (type === "kesiapan") {
+      grade = s >= 75 ? "A" : s >= 55 ? "B" : s >= 40 ? "C" : s >= 25 ? "D" : "E";
+    } else {
+      grade = s >= 80 ? "A" : s >= 65 ? "B" : "C";
+    }
 
     const color =
       grade === "A"
-        ? "bg-green-500"
+        ? "bg-emerald-500 text-white"
         : grade === "B"
-          ? "bg-primary-400"
-          : "bg-secondary-400";
+          ? "bg-blue-500 text-white"
+          : grade === "C"
+            ? "bg-amber-500 text-white"
+            : grade === "D"
+              ? "bg-orange-500 text-white"
+              : "bg-rose-500 text-white";
+
+    const titleText = `${label || type}: ${grade} (${s.toFixed(1)})`;
+
     return (
       <span
         key={type}
-        className={`${color} text-white text-[8px] font-black px-1.5 py-0.5 rounded-sm uppercase shrink-0`}
+        title={titleText}
+        className={`${color} text-[9px] font-black w-5 h-5 rounded-full inline-flex items-center justify-center uppercase shrink-0 shadow-xs cursor-help hover:scale-110 transition-transform`}
       >
         {grade}
       </span>
@@ -606,7 +634,7 @@ function PengumumanContent() {
                 </span>
               </div>
               <p className="text-xs text-emerald-700/90 leading-relaxed font-medium">
-                Nilai akhir mencapai standar kelulusan KKM (≥ {KKM_STANDAR}.00 / Grade A). Siap diumumkan diterima langsung atau pilih &apos;Rapatkan Dulu&apos; jika ingin pembahasan khusus.
+                Nilai akhir mencapai standar kelulusan KKM (≥ {KKM_STANDAR}.00 / Grade A-B). Siap diumumkan diterima langsung atau pilih &apos;Rapatkan Dulu&apos; jika ingin pembahasan khusus.
               </p>
             </div>
 
@@ -628,7 +656,7 @@ function PengumumanContent() {
                 </span>
               </div>
               <p className="text-xs text-amber-700/90 leading-relaxed font-medium">
-                Nilai akhir di bawah standar KKM (&lt; {KKM_STANDAR}.00 / Grade B-C). Arahkan untuk dirapatkan bersama tim apakah santri tetap diterima (dispensasi/kuota), cadangan, atau ditolak.
+                Nilai akhir di bawah standar KKM (&lt; {KKM_STANDAR}.00 / Grade C-D-E). Arahkan untuk dirapatkan bersama tim apakah santri tetap diterima (dispensasi/kuota), cadangan, atau ditolak.
               </p>
             </div>
           </div>
@@ -853,12 +881,11 @@ function PengumumanContent() {
                 {filteredCandidates.map((c) => {
                   const nu = c.nilai_ujian;
                   const total = nu?.nilai_total != null ? Number(nu.nilai_total) : 0;
-                  const grade = total >= 80 ? "A" : total >= 65 ? "B" : "C";
-                  const lolosKKM = total >= KKM_STANDAR;
+                  const grade = total >= 85 ? "A" : total >= 75 ? "B" : total >= 60 ? "C" : "D";
+                  const lolosKKM = isMemenuhiKKM(c);
 
-                  const ws = nu?.nilai_wawancara_santri || 0;
-                  const wo = nu?.nilai_wawancara_ortu || 0;
-                  const avgWawancara = ws > 0 && wo > 0 ? (ws + wo) / 2 : ws || wo;
+                  const ws = nu?.nilai_wawancara_santri ?? nu?.score_wawancara;
+                  const wo = nu?.nilai_wawancara_ortu;
 
                   return (
                     <tr
@@ -884,16 +911,19 @@ function PengumumanContent() {
                           {c.nomor_pendaftaran}
                         </div>
                         <div className="flex items-center gap-1.5 flex-wrap">
-                          <div className="flex gap-1">
-                            {getGradeBadge(nu?.score_quran, "quran")}
-                            {getGradeBadge(nu?.score_akademik, "akademik")}
-                            {getGradeBadge(nu?.score_kepribadian, "kepribadian")}
-                            {getGradeBadge(avgWawancara, "wawancara")}
-                            {getGradeBadge(nu?.score_kesiapan, "kesiapan")}
+                          <div className="flex gap-1 items-center" title="Predikat per Komponen (Arahkan kursor untuk skor angka)">
+                            {getGradeBadge(nu?.score_quran, "quran", "Al-Qur'an")}
+                            {getGradeBadge(nu?.score_akademik, "akademik", "Akademik")}
+                            {getGradeBadge(nu?.score_kepribadian, "kepribadian", "Kepribadian")}
+                            {getGradeBadge(ws, "wawancara_santri", "W. Santri")}
+                            {getGradeBadge(wo, "wawancara_ortu", "W. Ortu")}
+                            {getGradeBadge(nu?.score_kesiapan, "kesiapan", "Kesiapan")}
+                            {nu?.score_hafalan != null && getGradeBadge(nu?.score_hafalan, "hafalan", "Hafalan")}
+                            {nu?.score_arab != null && getGradeBadge(nu?.score_arab, "arab", "B. Arab")}
                           </div>
-                          {c.exam_score_count === 6 ? (
+                          {c.exam_score_count >= 6 ? (
                             <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
-                              ✓ 6/6 Nilai Lengkap
+                              ✓ {c.exam_score_count === 6 ? "6/6 Nilai Lengkap" : `${c.exam_score_count} Nilai Lengkap`}
                             </span>
                           ) : c.exam_score_count > 0 ? (
                             <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">
