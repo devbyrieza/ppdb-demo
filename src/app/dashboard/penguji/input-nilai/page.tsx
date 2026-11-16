@@ -293,6 +293,7 @@ function InputNilaiContent() {
   const [peserta, setPeserta] = useState<Peserta[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState(initialSearch);
+  const [viewFilter, setViewFilter] = useState<"all" | "mine">("all");
   const [saving, setSaving] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
@@ -374,10 +375,7 @@ function InputNilaiContent() {
         setActiveName(name);
         const roles = [role, ...(data.availableRoles || []), ...(data.session?.secondary_roles || [])].filter(Boolean);
         setUserRoles([...new Set(roles)]);
-      })
-      .catch((err) => console.error("Error fetching session:", err));
-
-    fetchPeserta(true, role);
+        fetchPeserta(true, role);
       })
       .catch((err) => {
         console.error("Error fetching session:", err);
@@ -385,11 +383,16 @@ function InputNilaiContent() {
       });
   }, []);
 
-  const fetchPeserta = async (showLoading = true) => {
+  const fetchPeserta = async (showLoading = true, roleOverride?: string, filterOverride?: string) => {
     try {
       if (showLoading) setLoading(true);
+      const targetRole = roleOverride !== undefined ? roleOverride : activeRole;
+      const targetFilter = filterOverride !== undefined ? filterOverride : viewFilter;
+      const roleParam = targetRole ? `&role=${encodeURIComponent(targetRole)}` : "";
+      const filterParam = targetFilter ? `&filter=${encodeURIComponent(targetFilter)}` : "";
+      const searchParam = search ? `&search=${encodeURIComponent(search.trim())}` : "";
       // Use no-store and timestamp to prevent caching issues after saving
-      const response = await fetch(`/api/penguji/peserta?t=${Date.now()}`, {
+      const response = await fetch(`/api/penguji/peserta?t=${Date.now()}${roleParam}${filterParam}${searchParam}`, {
         cache: 'no-store'
       });
       if (response.ok) {
@@ -406,6 +409,11 @@ function InputNilaiContent() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleViewFilterChange = (filter: "all" | "mine") => {
+    setViewFilter(filter);
+    fetchPeserta(true, activeRole, filter);
   };
 
   const startEditing = (p: Peserta, type: "quran" | "wawancara" | "ortu" | "hafalan" | "lisan_arab") => {
@@ -1391,6 +1399,34 @@ function InputNilaiContent() {
             </div>
           </div>
         </div>
+
+        {/* Admin Filter View Toggle */}
+        {isAdmin && (
+          <div className="mt-6 flex flex-wrap items-center gap-2 bg-ink-50 p-1.5 rounded-xl border border-ink-100 w-fit relative z-10">
+            <button
+              type="button"
+              onClick={() => handleViewFilterChange("all")}
+              className={`px-3 py-1.5 text-xs font-black rounded-lg transition-all ${
+                viewFilter === "all"
+                  ? "bg-white text-primary-700 shadow-sm"
+                  : "text-ink-600 hover:text-ink-900"
+              }`}
+            >
+              🌐 Semua Peserta Ujian (Admin View)
+            </button>
+            <button
+              type="button"
+              onClick={() => handleViewFilterChange("mine")}
+              className={`px-3 py-1.5 text-xs font-black rounded-lg transition-all ${
+                viewFilter === "mine"
+                  ? "bg-white text-primary-700 shadow-sm"
+                  : "text-ink-600 hover:text-ink-900"
+              }`}
+            >
+              👤 Khusus Plotting Saya
+            </button>
+          </div>
+        )}
 
         {/* Search */}
         <div className="mt-8 relative z-10">

@@ -48,6 +48,7 @@ export default function ExaminerDashboard() {
   const [usersList, setUsersList] = useState<any[]>([]);
   const [selectedExaminerId, setSelectedExaminerId] = useState("");
   const [currentUserId, setCurrentUserId] = useState("");
+  const [currentUserName, setCurrentUserName] = useState("");
   const [assignStudent, setAssignStudent] = useState<Student | null>(null);
   const [assignType, setAssignType] = useState<"quran" | "wawancara_santri" | "wawancara_ortu">("quran");
   const [assignExaminerId, setAssignExaminerId] = useState("");
@@ -101,7 +102,14 @@ export default function ExaminerDashboard() {
         const data = await res.json();
         if (data?.session) {
           setCurrentUserId(data.session.id || "");
-          if (data.session.role === "admin_super") {
+          setCurrentUserName(data.session.full_name || data.session.name || "Admin");
+          const roles = [
+            data.session.role,
+            ...(data.availableRoles || []),
+            ...(data.session.secondary_roles || []),
+          ].map((r: string) => (r || "").toLowerCase());
+
+          if (roles.some((r: string) => ["admin_super", "admin", "head_of_it"].includes(r))) {
             setIsAdminSuper(true);
             fetchUsers();
           }
@@ -178,13 +186,15 @@ export default function ExaminerDashboard() {
       q9: "",
       q10: "" });
     setCatatan("");
-    setSelectedExaminerId("");
+    // Default to current logged-in admin
+    setSelectedExaminerId(currentUserId || "");
   };
 
   const handleSubmitScore = async () => {
     if (!selectedStudent) return;
 
-    if (isAdminSuper && !selectedExaminerId) {
+    const effectiveExaminerId = selectedExaminerId || currentUserId;
+    if (isAdminSuper && !effectiveExaminerId) {
       Swal.fire("Peringatan", "Silakan pilih Penguji/Pewawancara terlebih dahulu", "warning");
       return;
     }
@@ -192,15 +202,18 @@ export default function ExaminerDashboard() {
     setIsSubmitting(true);
     try {
       let finalScore = 0;
+      let detailData: any = { catatan };
+
       if (inputType === "quran") {
-        finalScore =
-          (Number(quranForm.tajwid) + Number(quranForm.kelancaran)) / 2;
+        finalScore = (Number(quranForm.tajwid) + Number(quranForm.kelancaran)) / 2;
+        detailData = { ...detailData, ...quranForm, quran: quranForm };
       } else if (inputType === "wawancara_santri") {
         const sum = Object.values(wsForm).reduce(
           (acc, val) => acc + Number(val || 0),
           0,
         );
         finalScore = (sum / 35) * 100;
+        detailData = { ...detailData, ...wsForm, calsan: wsForm };
       } else if (inputType === "wawancara_ortu") {
         let total = 0;
         let counted = 0;
@@ -217,28 +230,34 @@ export default function ExaminerDashboard() {
           }
         });
         finalScore = counted > 0 ? total / counted : 0;
+        detailData = { ...detailData, ...woForm, cawalsan: woForm };
       }
 
       const payload = {
         pendaftar_id: selectedStudent.id,
         type: inputType,
         score: finalScore,
-        details: { catatan },
-        examiner_id: isAdminSuper ? selectedExaminerId : (currentUserId || "mock-examiner-id") };
+        details: detailData,
+        examiner_id: effectiveExaminerId || currentUserId || "admin-system",
+      };
 
       const res = await fetch("/api/penilaian/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload) });
+        body: JSON.stringify(payload),
+      });
 
-      if (!res.ok) throw new Error("Failed to submit");
+      const resJson = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(resJson.error || "Gagal menyimpan nilai");
+      }
 
       Swal.fire("Sukses", "Nilai berhasil disimpan", "success");
       setSelectedStudent(null);
       fetchStudents();
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      Swal.fire("Error", "Gagal menyimpan nilai", "error");
+      Swal.fire("Error", error.message || "Gagal menyimpan nilai", "error");
     } finally {
       setIsSubmitting(false);
     }
@@ -1692,6 +1711,40 @@ export default function ExaminerDashboard() {
                   </p>
                 </div>
 
+                  {isAdminSuper && (
+                    <div className="mb-5 bg-primary-50/50 p-4 rounded-xl border border-primary-100">
+                      <div className="flex items-center justify-between mb-1.5">
+                        <label className="block text-xs font-black text-primary-900 uppercase tracking-wider">
+                          Penguji / Pewawancara
+                        </label>
+                        <span className="text-[10px] font-bold text-primary-600 bg-primary-100/60 px-2 py-0.5 rounded-full">
+                          Default: Akun Anda
+                        </span>
+                      </div>
+                      <select
+                        value={selectedExaminerId || currentUserId}
+                        onChange={(e) => setSelectedExaminerId(e.target.value)}
+                        className="w-full bg-white border border-primary-200 rounded-xl px-4 py-2.5 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-primary-600/20 outline-none shadow-sm"
+                      >
+                        {currentUserId && (
+                          <option value={currentUserId}>
+                            -- Saya Sendiri ({currentUserName || "Admin Super"}) --
+                          </option>
+                        )}
+                        {usersList
+                          .filter((u) => u.id !== currentUserId)
+                          .map((u) => (
+                            <option key={u.id} value={u.id}>
+                              {u.full_name} ({u.role.replace("_", " ").toUpperCase()})
+                            </option>
+                          ))}
+                      </select>
+                      <p className="text-[11px] text-ink-500 mt-1.5 font-medium">
+                        Nilai akan tercatat resmi atas nama penguji yang dipilih di atas.
+                      </p>
+                    </div>
+                  )}
+
                 <div className="space-y-4">
                   {inputType === "quran" && (
                     <div className="flex flex-col sm:flex-row gap-4">
@@ -1795,25 +1848,7 @@ export default function ExaminerDashboard() {
                     </div>
                   )}
 
-                  {isAdminSuper && (
-                    <div className="mb-4">
-                      <label className="block text-xs font-black text-ink-400 uppercase tracking-wider mb-2">
-                        Pilih Penguji / Pewawancara
-                      </label>
-                      <select
-                        value={selectedExaminerId}
-                        onChange={(e) => setSelectedExaminerId(e.target.value)}
-                        className="w-full bg-ink-50 border border-ink-100 rounded-3xl px-4 py-3 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-primary-600/10 outline-none"
-                      >
-                        <option value="">-- Pilih Staff/Penguji --</option>
-                        {usersList.map((u) => (
-                          <option key={u.id} value={u.id}>
-                            {u.full_name} ({u.role.replace("_", " ").toUpperCase()})
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  )}
+                  
 
                   <div>
                     <label className="block text-xs font-black text-ink-400 uppercase tracking-wider mb-2">

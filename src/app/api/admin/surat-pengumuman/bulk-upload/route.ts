@@ -134,9 +134,9 @@ export async function POST(request: Request) {
             data: {
               file_name: safeName,
               file_path: suratPath,
-              file_size: buffer.length,
+              file_size: bytes.length,
               file_type: "application/pdf",
-              file_data: buffer,
+              file_data: bytes,
               is_verified: true,
               updated_at: new Date(),
             },
@@ -148,9 +148,9 @@ export async function POST(request: Request) {
               jenis_dokumen: "surat_pengumuman",
               file_name: safeName,
               file_path: suratPath,
-              file_size: buffer.length,
+              file_size: bytes.length,
               file_type: "application/pdf",
-              file_data: buffer,
+              file_data: bytes,
               is_verified: true,
             },
           });
