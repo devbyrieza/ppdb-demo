@@ -194,11 +194,29 @@ function PengumumanContent() {
   };
 
   const isMemenuhiKKM = (c: any) => {
-    const total = Number(c.nilai_ujian?.nilai_total ?? 0);
-    const quran = c.nilai_ujian?.score_quran != null ? Number(c.nilai_ujian.score_quran) : null;
-    // Hard gate Al-Qur'an: Skor < 70 (Grade D/E) mutlak tidak boleh lolos otomatis (wajib dirapatkan tim)
-    if (quran != null && quran < 70) return false;
-    return total >= KKM_STANDAR;
+    if (c.pengumuman?.status_kelulusan === "Menunggu Rapat") return false;
+
+    const nu = c.nilai_ujian;
+    const total = Number(nu?.nilai_total ?? 0);
+    const quran = nu?.score_quran != null ? Number(nu.score_quran) : null;
+    const hafalan = nu?.score_hafalan != null ? Number(nu.score_hafalan) : null;
+    const arab = nu?.score_arab != null ? Number(nu.score_arab) : null;
+
+    // 1. Total nilai akhir wajib mencapai KKM (>= 75 / Grade A atau B)
+    if (total < KKM_STANDAR) return false;
+
+    // 2. Al-Qur'an mutlak minimal Grade B (>= 75).
+    // Jika Grade C (< 75), D (< 70), atau E -> Di bawah standar nilai, wajib dirapatkan tim!
+    if (quran != null && quran < KKM_STANDAR) return false;
+
+    // 3. Khusus jenjang MA/SMA: Hafalan dan Bahasa Arab juga minimal Grade B (>= 75)
+    const isMA = (c.jenjang || "").toUpperCase() === "MA" || (c.jenjang || "").toUpperCase() === "SMA";
+    if (isMA) {
+      if (hafalan != null && hafalan < KKM_STANDAR) return false;
+      if (arab != null && arab < KKM_STANDAR) return false;
+    }
+
+    return true;
   };
 
   const getRekomendasiDetail = (c: any) => {
@@ -207,6 +225,9 @@ function PengumumanContent() {
     const grade = total >= 85 ? "A" : total >= 75 ? "B" : total >= 60 ? "C" : "D";
     const quran = nu?.score_quran != null ? Number(nu.score_quran) : null;
     const quranGrade = quran != null ? (quran >= 85 ? "A" : quran >= 75 ? "B" : quran >= 70 ? "C" : "D") : null;
+    const hafalan = nu?.score_hafalan != null ? Number(nu.score_hafalan) : null;
+    const arab = nu?.score_arab != null ? Number(nu.score_arab) : null;
+    const isMA = (c.jenjang || "").toUpperCase() === "MA" || (c.jenjang || "").toUpperCase() === "SMA";
 
     if (c.pengumuman?.status_kelulusan === "Menunggu Rapat") {
       return {
@@ -217,18 +238,8 @@ function PengumumanContent() {
       };
     }
 
-    // Memenuhi KKM Murni (Total >= 75 dan Al-Qur'an >= 75)
-    if (total >= KKM_STANDAR && (quran == null || quran >= 75)) {
-      return {
-        badgeText: "Rekomendasi: Diterima",
-        subText: `Lolos KKM ${KKM_STANDAR} (Grade ${grade})`,
-        badgeClass: "bg-emerald-100 text-emerald-800 border-emerald-200",
-        icon: Sparkles,
-      };
-    }
-
-    // Total >= 75 tapi Al-Qur'an < 70 (Grade D/E - Hard Gate)
-    if (total >= KKM_STANDAR && quran != null && quran < 70) {
+    // 1. Al-Qur'an Kurang (Grade D/E < 70)
+    if (quran != null && quran < 70) {
       return {
         badgeText: "Perlu Dirapatkan Tim",
         subText: `Al-Qur'an Kurang (Grade ${quranGrade} / ${quran.toFixed(0)}) • Total ${total.toFixed(2)}`,
@@ -237,8 +248,8 @@ function PengumumanContent() {
       };
     }
 
-    // Total >= 75 tapi Al-Qur'an Grade C (70-74.99 - Bersyarat)
-    if (total >= KKM_STANDAR && quran != null && quran < 75) {
+    // 2. Al-Qur'an Grade C (70-74.99 - Di bawah standar minimal B)
+    if (quran != null && quran < KKM_STANDAR) {
       return {
         badgeText: "Perlu Dirapatkan Tim",
         subText: `Al-Qur'an Bersyarat (Grade C / ${quran.toFixed(0)}) • Total ${total.toFixed(2)}`,
@@ -247,12 +258,42 @@ function PengumumanContent() {
       };
     }
 
-    // Total < 75
+    // 3. Khusus MA: Hafalan / Bahasa Arab di bawah KKM (< 75)
+    if (isMA) {
+      if (hafalan != null && hafalan < KKM_STANDAR) {
+        return {
+          badgeText: "Perlu Dirapatkan Tim",
+          subText: `Hafalan di Bawah KKM (${hafalan.toFixed(0)}) • Total ${total.toFixed(2)}`,
+          badgeClass: "bg-amber-100 text-amber-800 border-amber-200",
+          icon: Gavel,
+        };
+      }
+      if (arab != null && arab < KKM_STANDAR) {
+        return {
+          badgeText: "Perlu Dirapatkan Tim",
+          subText: `Bahasa Arab di Bawah KKM (${arab.toFixed(0)}) • Total ${total.toFixed(2)}`,
+          badgeClass: "bg-amber-100 text-amber-800 border-amber-200",
+          icon: Gavel,
+        };
+      }
+    }
+
+    // 4. Total di bawah KKM (< 75)
+    if (total < KKM_STANDAR) {
+      return {
+        badgeText: "Perlu Dirapatkan Tim",
+        subText: `Total di Bawah KKM ${KKM_STANDAR} (Skor ${total.toFixed(2)} / Grade ${grade})`,
+        badgeClass: "bg-amber-100 text-amber-800 border-amber-200",
+        icon: Gavel,
+      };
+    }
+
+    // 5. Memenuhi KKM Murni (Total >= 75 dan Al-Qur'an >= 75 / Minimal Grade B)
     return {
-      badgeText: "Perlu Dirapatkan Tim",
-      subText: `Total di Bawah KKM ${KKM_STANDAR} (Skor ${total.toFixed(2)} / Grade ${grade})`,
-      badgeClass: "bg-amber-100 text-amber-800 border-amber-200",
-      icon: Gavel,
+      badgeText: "Rekomendasi: Diterima",
+      subText: `Lolos KKM ${KKM_STANDAR} (Grade ${grade})`,
+      badgeClass: "bg-emerald-100 text-emerald-800 border-emerald-200",
+      icon: Sparkles,
     };
   };
 
@@ -389,7 +430,7 @@ function PengumumanContent() {
     const ids = statsReady.filter(isMemenuhiKKM).map((c) => c.id);
     setSelectedIds(ids);
     toast.success(
-      `${ids.length} santri yang lolos standar KKM (≥ 80) berhasil dipilih. Silakan klik tombol 'Diterima (${ids.length})' untuk proses SK.`,
+      `${ids.length} santri yang lolos standar KKM (≥ ${KKM_STANDAR} & Al-Qur'an min. Grade B) berhasil dipilih. Silakan klik tombol 'Diterima (${ids.length})' untuk proses SK.`,
       { duration: 4000 }
     );
   };
