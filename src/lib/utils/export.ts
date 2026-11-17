@@ -222,6 +222,11 @@ export const exportToExcelProfessional = async ({
             val.trim().startsWith("MAI") || 
             val.trim().startsWith("MTA") || 
             val.trim().startsWith("ILA") ||
+            val.trim().startsWith("SMA") ||
+            val.trim().startsWith("SMI") ||
+            val.trim().startsWith("SPA") ||
+            val.trim().startsWith("SPI") ||
+            val.trim().startsWith("MAA") ||
             val.trim().toLowerCase() === "laki-laki" || 
             val.trim().toLowerCase() === "perempuan" ||
             val.trim().toLowerCase() === "l" || 

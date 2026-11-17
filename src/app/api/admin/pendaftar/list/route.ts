@@ -4,6 +4,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCache, setCache } from "@/lib/redis";
 import { getAdminWhereClause, resolveTahunAjaranId } from "@/lib/utils/admin";
+import { BRANDING } from "@/config/branding";
 
 export async function GET(request: NextRequest) {
   try {
@@ -28,92 +29,194 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    // Auto-sync prefix: Pastikan seluruh pendaftar di Al-Imam (Putri) menggunakan prefix MTI, ILI, MAI
+    // Auto-sync prefix: Pastikan prefix dan jenis kelamin pendaftar konsisten sesuai branding sekolah
     try {
-      const mismatched = await prisma.pendaftar.findMany({
-        where: {
-          OR: [
-            { nomor_pendaftaran: { startsWith: "MTA" } },
-            { nomor_pendaftaran: { startsWith: "ILA" } },
-            { nomor_pendaftaran: { startsWith: "MAA" } },
-            { nomor_pendaftaran: { startsWith: "SMA" } },
-            { jenis_kelamin: "L" },
-          ],
-        },
-        select: {
-          id: true,
-          nomor_pendaftaran: true,
-          jenjang: true,
-          jenis_kelamin: true,
-          data_lengkap: true,
-        },
-        orderBy: { nomor_pendaftaran: "asc" },
-        take: 100,
-      });
+      const isPutriInstitution = 
+        BRANDING?.gender?.toLowerCase() === "putri" ||
+        (BRANDING?.subtitle || "").toLowerCase().includes("putri") ||
+        (BRANDING?.schoolName || "").toLowerCase().includes("putri");
 
-      if (mismatched.length > 0) {
-        const reservedNomor = new Set<string>();
+      const isPutraInstitution = 
+        BRANDING?.gender?.toLowerCase() === "putra" ||
+        (BRANDING?.subtitle || "").toLowerCase().includes("putra") ||
+        (BRANDING?.schoolName || "").toLowerCase().includes("putra") ||
+        (BRANDING?.schoolShortName || "").toLowerCase().includes("ulul albaab");
 
-        for (const item of mismatched) {
-          let targetPrefix = "MTI";
-          const normJ = (item.jenjang || "").toUpperCase();
-          if (normJ.includes("IL")) targetPrefix = "ILI";
-          else if (normJ.includes("MA") || normJ.includes("SMA")) targetPrefix = "MAI";
-          else targetPrefix = "MTI";
+      if (isPutriInstitution) {
+        // Al-Imam / Putri: MTI (MTs), ILI (IL), MAI (MA), jenis kelamin "P"
+        const mismatched = await prisma.pendaftar.findMany({
+          where: {
+            OR: [
+              { nomor_pendaftaran: { startsWith: "MTA" } },
+              { nomor_pendaftaran: { startsWith: "ILA" } },
+              { nomor_pendaftaran: { startsWith: "MAA" } },
+              { nomor_pendaftaran: { startsWith: "SMA" } },
+              { jenis_kelamin: "L" },
+            ],
+          },
+          select: {
+            id: true,
+            nomor_pendaftaran: true,
+            jenjang: true,
+            jenis_kelamin: true,
+            data_lengkap: true,
+          },
+          orderBy: { nomor_pendaftaran: "asc" },
+          take: 100,
+        });
 
-          let newNomor = item.nomor_pendaftaran;
-          if (item.nomor_pendaftaran && /^(MTA|ILA|MAA|SMA|SPA)/.test(item.nomor_pendaftaran)) {
-            const tahun = item.nomor_pendaftaran.slice(3, 5);
-            const candidate = `${targetPrefix}${item.nomor_pendaftaran.slice(3)}`;
+        if (mismatched.length > 0) {
+          const reservedNomor = new Set<string>();
 
-            const conflict = await prisma.pendaftar.findUnique({
-              where: { nomor_pendaftaran: candidate },
-            });
-            if ((!conflict || conflict.id === item.id) && !reservedNomor.has(candidate)) {
-              newNomor = candidate;
-            } else {
-              const existingList = await prisma.pendaftar.findMany({
-                where: { nomor_pendaftaran: { startsWith: `${targetPrefix}${tahun}` } },
-                select: { nomor_pendaftaran: true },
+          for (const item of mismatched) {
+            let targetPrefix = "MTI";
+            const normJ = (item.jenjang || "").toUpperCase();
+            if (normJ.includes("IL")) targetPrefix = "ILI";
+            else if (normJ.includes("MA") || normJ.includes("SMA")) targetPrefix = "MAI";
+            else targetPrefix = "MTI";
+
+            let newNomor = item.nomor_pendaftaran;
+            if (item.nomor_pendaftaran && /^(MTA|ILA|MAA|SMA|SPA)/.test(item.nomor_pendaftaran)) {
+              const tahun = item.nomor_pendaftaran.slice(3, 5);
+              const candidate = `${targetPrefix}${item.nomor_pendaftaran.slice(3)}`;
+
+              const conflict = await prisma.pendaftar.findUnique({
+                where: { nomor_pendaftaran: candidate },
               });
-              const usedSeqs = new Set(
-                existingList
-                  .map((p) => parseInt(p.nomor_pendaftaran.slice(5), 10))
-                  .filter((n) => !isNaN(n))
-              );
-              let nextSeq = 1;
-              while (
-                usedSeqs.has(nextSeq) ||
-                reservedNomor.has(`${targetPrefix}${tahun}${String(nextSeq).padStart(5, "0")}`)
-              ) {
-                nextSeq++;
+              if ((!conflict || conflict.id === item.id) && !reservedNomor.has(candidate)) {
+                newNomor = candidate;
+              } else {
+                const existingList = await prisma.pendaftar.findMany({
+                  where: { nomor_pendaftaran: { startsWith: `${targetPrefix}${tahun}` } },
+                  select: { nomor_pendaftaran: true },
+                });
+                const usedSeqs = new Set(
+                  existingList
+                    .map((p) => parseInt(p.nomor_pendaftaran.slice(5), 10))
+                    .filter((n) => !isNaN(n))
+                );
+                let nextSeq = 1;
+                while (
+                  usedSeqs.has(nextSeq) ||
+                  reservedNomor.has(`${targetPrefix}${tahun}${String(nextSeq).padStart(5, "0")}`)
+                ) {
+                  nextSeq++;
+                }
+                newNomor = `${targetPrefix}${tahun}${String(nextSeq).padStart(5, "0")}`;
               }
-              newNomor = `${targetPrefix}${tahun}${String(nextSeq).padStart(5, "0")}`;
+              reservedNomor.add(newNomor);
             }
-            reservedNomor.add(newNomor);
-          }
 
-          const updateData: any = {};
-          if (newNomor !== item.nomor_pendaftaran) {
-            updateData.nomor_pendaftaran = newNomor;
-            const dl = (item.data_lengkap as any) || {};
-            dl.legacy_nomor_pendaftaran = item.nomor_pendaftaran;
-            updateData.data_lengkap = dl;
-          }
-          if (item.jenis_kelamin !== "P") {
-            updateData.jenis_kelamin = "P";
-          }
+            const updateData: any = {};
+            if (newNomor !== item.nomor_pendaftaran) {
+              updateData.nomor_pendaftaran = newNomor;
+              const dl = (item.data_lengkap as any) || {};
+              dl.legacy_nomor_pendaftaran = item.nomor_pendaftaran;
+              updateData.data_lengkap = dl;
+            }
+            if (item.jenis_kelamin !== "P") {
+              updateData.jenis_kelamin = "P";
+            }
 
-          if (Object.keys(updateData).length > 0) {
-            await prisma.pendaftar.update({
-              where: { id: item.id },
-              data: updateData,
-            });
+            if (Object.keys(updateData).length > 0) {
+              await prisma.pendaftar.update({
+                where: { id: item.id },
+                data: updateData,
+              });
+            }
+          }
+        }
+      } else if (isPutraInstitution) {
+        // Ulul Albaab / Putra: MTA (MTs), ILA (IL), SMA (SMA), jenis kelamin "L"
+        const mismatched = await prisma.pendaftar.findMany({
+          where: {
+            OR: [
+              { nomor_pendaftaran: { startsWith: "MTI" } },
+              { nomor_pendaftaran: { startsWith: "ILI" } },
+              { nomor_pendaftaran: { startsWith: "MAI" } },
+              { nomor_pendaftaran: { startsWith: "MAA" } },
+              { nomor_pendaftaran: { startsWith: "SMI" } },
+              { jenis_kelamin: "P" },
+            ],
+          },
+          select: {
+            id: true,
+            nomor_pendaftaran: true,
+            jenjang: true,
+            jenis_kelamin: true,
+            data_lengkap: true,
+          },
+          orderBy: { nomor_pendaftaran: "asc" },
+          take: 100,
+        });
+
+        if (mismatched.length > 0) {
+          const reservedNomor = new Set<string>();
+
+          for (const item of mismatched) {
+            let targetPrefix = "MTA";
+            const normJ = (item.jenjang || "").toUpperCase();
+            if (normJ.includes("IL")) targetPrefix = "ILA";
+            else if (normJ.includes("SMA") || normJ.includes("MA")) targetPrefix = "SMA";
+            else targetPrefix = "MTA";
+
+            let newNomor = item.nomor_pendaftaran;
+            if (item.nomor_pendaftaran && /^(MTI|ILI|MAI|MAA|SMI|SPI)/.test(item.nomor_pendaftaran)) {
+              const tahun = item.nomor_pendaftaran.slice(3, 5);
+              const candidate = `${targetPrefix}${item.nomor_pendaftaran.slice(3)}`;
+
+              const conflict = await prisma.pendaftar.findUnique({
+                where: { nomor_pendaftaran: candidate },
+              });
+              if ((!conflict || conflict.id === item.id) && !reservedNomor.has(candidate)) {
+                newNomor = candidate;
+              } else {
+                const existingList = await prisma.pendaftar.findMany({
+                  where: { nomor_pendaftaran: { startsWith: `${targetPrefix}${tahun}` } },
+                  select: { nomor_pendaftaran: true },
+                });
+                const usedSeqs = new Set(
+                  existingList
+                    .map((p) => parseInt(p.nomor_pendaftaran.slice(5), 10))
+                    .filter((n) => !isNaN(n))
+                );
+                let nextSeq = 1;
+                while (
+                  usedSeqs.has(nextSeq) ||
+                  reservedNomor.has(`${targetPrefix}${tahun}${String(nextSeq).padStart(5, "0")}`)
+                ) {
+                  nextSeq++;
+                }
+                newNomor = `${targetPrefix}${tahun}${String(nextSeq).padStart(5, "0")}`;
+              }
+              reservedNomor.add(newNomor);
+            }
+
+            const updateData: any = {};
+            if (newNomor !== item.nomor_pendaftaran) {
+              updateData.nomor_pendaftaran = newNomor;
+              const dl = (item.data_lengkap as any) || {};
+              dl.legacy_nomor_pendaftaran = item.nomor_pendaftaran;
+              updateData.data_lengkap = dl;
+            }
+            if (normJ.includes("SMA") || normJ === "MA") {
+              updateData.jenjang = "SMA";
+            }
+            if (item.jenis_kelamin !== "L") {
+              updateData.jenis_kelamin = "L";
+            }
+
+            if (Object.keys(updateData).length > 0) {
+              await prisma.pendaftar.update({
+                where: { id: item.id },
+                data: updateData,
+              });
+            }
           }
         }
       }
     } catch (e: any) {
-      console.warn("[AUTO-SYNC-PREFIX-ALIMAM] Warning:", e?.message);
+      console.warn("[AUTO-SYNC-PREFIX] Warning:", e?.message);
     }
 
     // Get query params
