@@ -13,6 +13,7 @@ import {
   HelpCircle,
   Info,
   Loader2,
+  MessageCircle,
   RotateCcw,
   Search,
   Send,
@@ -48,6 +49,36 @@ function PengumumanContent() {
     nama_lengkap: string;
     nomor_pendaftaran: string;
   } | null>(null);
+  const [selectedMissingCandidate, setSelectedMissingCandidate] = useState<any | null>(null);
+
+  // Helper WhatsApp & Phone
+  const formatPhoneForWA = (phone?: string | null): string => {
+    if (!phone) return "";
+    let clean = phone.replace(/[^0-9]/g, "");
+    if (clean.startsWith("0")) {
+      clean = "62" + clean.substring(1);
+    } else if (clean.startsWith("8")) {
+      clean = "62" + clean;
+    }
+    return clean;
+  };
+
+  const getWAExaminerUrl = (
+    candidate: any,
+    component: { name: string; penguji_name?: string | null; penguji_phone?: string | null }
+  ) => {
+    const phone = formatPhoneForWA(component.penguji_phone);
+    if (!phone) return "";
+    const msg = `Assalamu'alaikum Wr. Wb. Ustadz/Ustadzah ${component.penguji_name || ""},\n\nIzin mengingatkan Panitia PPDB terkait penilaian seleksi calon santri:\n• Nama: ${candidate.nama_lengkap}\n• No. Pendaftaran: ${candidate.nomor_pendaftaran}\n• Jenjang: ${candidate.jenjang}\n• Komponen Nilai: ${component.name}\n\nMohon kesediaannya untuk dapat segera menginput nilai melalui portal penilaian PPDB agar rekap hasil ujian santri dapat segera diplenokan.\n\nJazakumullahu khairan katsiran.\n- Panitia PPDB`;
+    return `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+  };
+
+  const getWACandidateUrl = (candidate: any) => {
+    const phone = formatPhoneForWA(candidate.wali_phone || candidate.no_hp);
+    if (!phone) return "";
+    const msg = `Assalamu'alaikum Warahmatullahi Wabarakatuh,\n\nYth. ${candidate.wali_name || "Bapak/Ibu Wali Calon Santri"} dari ananda:\n• Nama: ${candidate.nama_lengkap}\n• No. Pendaftaran: ${candidate.nomor_pendaftaran}\n• Jenjang: ${candidate.jenjang}\n\nKami dari Panitia PPDB menginformasikan bahwa ananda saat ini *belum memilih Jadwal Tes Seleksi / Wawancara*.\n\nMohon kesediaannya untuk segera login ke akun portal pendaftaran PPDB Anda dan memilih sesi jadwal tes yang tersedia, atau konfirmasikan ke kami jika memerlukan bantuan penjadwalan khusus dari panitia.\n\nTerima kasih banyak.\nWassalamu'alaikum Warahmatullahi Wabarakatuh.\n- Panitia PPDB`;
+    return `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+  };
 
   // Tab & Sub-Filter States
   const [activeTab, setActiveTab] = useState<MainTab>("siap_pleno");
@@ -1317,6 +1348,32 @@ function PengumumanContent() {
                             </span>
                           ) : null}
                         </div>
+
+                        {activeTab === "proses_seleksi" && getKategoriBelumLengkap(c) === "menunggu_penilaian" && (
+                          <div className="mt-2">
+                            <button
+                              type="button"
+                              onClick={() => setSelectedMissingCandidate(c)}
+                              className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 rounded-lg text-[11px] font-bold transition-all shadow-xs cursor-pointer group"
+                              title="Klik untuk melihat komponen nilai apa saja yang belum diinput dan kontak pengujinya"
+                            >
+                              <span className="text-amber-600">⚠️</span>
+                              <span>Belum Input: <strong>{(c.missing_components?.length || (6 - (c.exam_score_count || 0)))} Komponen</strong></span>
+                              <span className="text-amber-700 underline text-[10px] group-hover:text-amber-950 font-semibold ml-0.5">
+                                Cek &amp; Kontak Penguji ↗
+                              </span>
+                            </button>
+                          </div>
+                        )}
+
+                        {activeTab === "proses_seleksi" && getKategoriBelumLengkap(c) === "belum_pilih_jadwal" && (
+                          <div className="mt-2 flex items-center gap-1.5 flex-wrap">
+                            <span className="inline-flex items-center gap-1 text-[11px] font-bold text-purple-800 bg-purple-50 px-2 py-0.5 rounded-md border border-purple-200">
+                              <Calendar className="w-3 h-3 text-purple-600" />
+                              Belum Memilih Jadwal
+                            </span>
+                          </div>
+                        )}
                       </td>
 
                       <td className="px-6 py-4">
@@ -1379,16 +1436,21 @@ function PengumumanContent() {
                             )}
                           </div>
                         ) : activeTab === "proses_seleksi" ? (
-                          <div className="flex flex-col items-center gap-1">
+                          <div className="flex flex-col items-center gap-1.5">
                             {getKategoriBelumLengkap(c) === "menunggu_penilaian" ? (
                               <>
                                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-900 border border-amber-300 text-xs font-black uppercase whitespace-nowrap shadow-xs">
                                   <Clock className="w-3.5 h-3.5 text-amber-700" />
                                   Menunggu Penilaian ({c.exam_score_count ?? 0}/6)
                                 </span>
-                                <span className="text-[10px] text-amber-700 font-bold">
-                                  Jadwal ada, menunggu input penguji
-                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() => setSelectedMissingCandidate(c)}
+                                  className="text-[11px] text-amber-800 hover:text-amber-950 font-bold underline flex items-center gap-1 cursor-pointer transition-colors"
+                                >
+                                  <Search className="w-3 h-3" />
+                                  <span>Rincian &amp; Kontak Penguji</span>
+                                </button>
                               </>
                             ) : (
                               <>
@@ -1397,7 +1459,7 @@ function PengumumanContent() {
                                   Belum Pilih Jadwal
                                 </span>
                                 <span className="text-[10px] text-purple-700 font-bold">
-                                  Belum terjadwal di sistem
+                                  Perlu Floating Jadwal
                                 </span>
                               </>
                             )}
@@ -1504,25 +1566,99 @@ function PengumumanContent() {
                               </button>
                             </>
                           ) : (
-                            <div className="flex items-center justify-center gap-1.5">
+                            <div className="flex items-center justify-center gap-1.5 flex-wrap">
                               {getKategoriBelumLengkap(c) === "menunggu_penilaian" ? (
-                                <a
-                                  href="/dashboard/admin/penilaian"
-                                  className="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 rounded-xl text-xs font-bold shadow-xs transition-all flex items-center gap-1.5 cursor-pointer"
-                                  title="Buka form input nilai ujian penguji"
-                                >
-                                  <ExternalLink className="w-3.5 h-3.5 text-amber-700" />
-                                  <span>Buka Penilaian</span>
-                                </a>
+                                <>
+                                  {/* 1. Tombol Cek Rincian Nilai */}
+                                  <button
+                                    type="button"
+                                    onClick={() => setSelectedMissingCandidate(c)}
+                                    title="Lihat komponen nilai apa saja yang belum diinput & kontak pengujinya"
+                                    className="px-2.5 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 rounded-xl text-xs font-bold shadow-xs transition-all flex items-center gap-1 cursor-pointer"
+                                  >
+                                    <Search className="w-3.5 h-3.5 text-amber-700" />
+                                    <span>Cek Nilai</span>
+                                  </button>
+
+                                  {/* 2. Tombol Hubungi WA Penguji */}
+                                  {(() => {
+                                    const missingWithPhone = (c.missing_components || []).filter(
+                                      (m: any) => m.penguji_phone
+                                    );
+                                    if (missingWithPhone.length === 1) {
+                                      return (
+                                        <a
+                                          href={getWAExaminerUrl(c, missingWithPhone[0])}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          title={`Hubungi WA ${missingWithPhone[0].penguji_name || "Penguji"} (${missingWithPhone[0].name})`}
+                                          className="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-xs transition-all flex items-center gap-1 cursor-pointer whitespace-nowrap"
+                                        >
+                                          <MessageCircle className="w-3.5 h-3.5" />
+                                          <span>WA Penguji</span>
+                                        </a>
+                                      );
+                                    } else if (missingWithPhone.length > 1) {
+                                      return (
+                                        <button
+                                          type="button"
+                                          onClick={() => setSelectedMissingCandidate(c)}
+                                          title={`Ada ${missingWithPhone.length} penguji yang dapat dihubungi. Klik untuk pilih penguji.`}
+                                          className="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-xs transition-all flex items-center gap-1 cursor-pointer whitespace-nowrap"
+                                        >
+                                          <MessageCircle className="w-3.5 h-3.5" />
+                                          <span>WA Penguji ({missingWithPhone.length})</span>
+                                        </button>
+                                      );
+                                    }
+                                    return null;
+                                  })()}
+
+                                  {/* 3. Tombol Buka Input Nilai */}
+                                  <a
+                                    href={`/dashboard/admin/penilaian?search=${encodeURIComponent(c.nomor_pendaftaran)}`}
+                                    className="px-2.5 py-1.5 bg-stone-100 hover:bg-stone-200 text-stone-700 border border-stone-200 rounded-xl text-xs font-bold shadow-xs transition-all flex items-center gap-1 cursor-pointer whitespace-nowrap"
+                                    title="Buka form input nilai ujian penguji / admin"
+                                  >
+                                    <ExternalLink className="w-3.5 h-3.5 text-stone-600" />
+                                    <span>Input Nilai ↗</span>
+                                  </a>
+                                </>
                               ) : (
-                                <a
-                                  href="/dashboard/admin/jadwal"
-                                  className="px-3 py-1.5 bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-200 rounded-xl text-xs font-bold shadow-xs transition-all flex items-center gap-1.5 cursor-pointer"
-                                  title="Atur jadwal seleksi untuk santri ini"
-                                >
-                                  <Calendar className="w-3.5 h-3.5 text-purple-700" />
-                                  <span>Atur Jadwal</span>
-                                </a>
+                                <>
+                                  {/* 1. Tombol Hubungi WA Pendaftar / Wali */}
+                                  {c.wali_phone || c.no_hp ? (
+                                    <a
+                                      href={getWACandidateUrl(c)}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      title={`Ingatkan ${c.wali_name || "Wali Santri"} via WhatsApp untuk memilih jadwal seleksi`}
+                                      className="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-xs transition-all flex items-center gap-1 cursor-pointer whitespace-nowrap"
+                                    >
+                                      <MessageCircle className="w-3.5 h-3.5" />
+                                      <span>WA Pendaftar</span>
+                                    </a>
+                                  ) : (
+                                    <span
+                                      title="Nomor telepon wali tidak ditemukan di data pendaftar"
+                                      className="px-2 py-1.5 bg-stone-100 text-stone-400 rounded-xl text-xs font-medium cursor-not-allowed"
+                                    >
+                                      WA Tidak Ada
+                                    </span>
+                                  )}
+
+                                  {/* 2. Tombol Arahkan Langsung ke Manajemen Jadwal (Floating / Plotting) */}
+                                  <a
+                                    href={`/dashboard/admin/jadwal/plotting?tab=plotting&filter=butuh&search=${encodeURIComponent(
+                                      c.nomor_pendaftaran
+                                    )}`}
+                                    title="Arahkan langsung ke Manajemen Jadwal bagian Floating untuk aturkan jadwal santri ini"
+                                    className="px-2.5 py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold shadow-xs transition-all flex items-center gap-1 cursor-pointer whitespace-nowrap"
+                                  >
+                                    <Calendar className="w-3.5 h-3.5" />
+                                    <span>Floating Jadwal ↗</span>
+                                  </a>
+                                </>
                               )}
                             </div>
                           )}
@@ -1568,6 +1704,275 @@ function PengumumanContent() {
             fetchCandidates();
           }}
         />
+      )}
+
+      {/* Modal Detail Komponen Nilai Belum Input & Kontak Penguji */}
+      {selectedMissingCandidate && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
+          <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col border border-stone-200 animate-in fade-in zoom-in-95 duration-200">
+            {/* Modal Header */}
+            <div className="px-6 py-5 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white flex items-center justify-between shrink-0">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-xs flex items-center justify-center text-lg shadow-inner">
+                  📋
+                </div>
+                <div>
+                  <h3 className="text-base font-black leading-tight">
+                    Rincian Komponen Nilai Seleksi
+                  </h3>
+                  <p className="text-xs text-amber-100 font-medium mt-0.5">
+                    {toTitleCase(selectedMissingCandidate.nama_lengkap)} • {selectedMissingCandidate.nomor_pendaftaran} ({selectedMissingCandidate.jenjang})
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setSelectedMissingCandidate(null)}
+                className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition-all cursor-pointer"
+                title="Tutup dialog"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-6 overflow-y-auto space-y-4">
+              {/* Status Banner */}
+              <div className="p-4 bg-amber-50 rounded-2xl border border-amber-200 flex items-start gap-3">
+                <Clock className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                <div className="text-xs text-amber-900 leading-relaxed">
+                  <div className="font-bold text-amber-950">
+                    Progres Penilaian: {selectedMissingCandidate.exam_score_count || 0} dari {selectedMissingCandidate.jenjang === "MA" || selectedMissingCandidate.jenjang === "SMA" ? 8 : 6} Komponen Terisi
+                  </div>
+                  <div className="text-amber-800/90 mt-0.5 font-medium">
+                    Santri ini belum dapat diplenokan karena masih menunggu penginputan nilai. Anda dapat langsung menghubungi Penguji / Pewawancara yang bersangkutan via WhatsApp di bawah ini.
+                  </div>
+                </div>
+              </div>
+
+              {/* List Komponen */}
+              <div className="space-y-2.5">
+                <h4 className="text-xs font-black text-stone-600 uppercase tracking-wider">
+                  Status Per Komponen Ujian &amp; Kontak Penguji
+                </h4>
+
+                {(() => {
+                  const c = selectedMissingCandidate;
+                  const nu = c.nilai_ujian;
+                  const j = c.jadwal_ujian;
+                  const ws = nu?.nilai_wawancara_santri ?? nu?.score_wawancara;
+                  const isMA = (c.jenjang || "").toUpperCase() === "MA" || (c.jenjang || "").toUpperCase() === "SMA";
+
+                  const components = [
+                    {
+                      key: "quran",
+                      name: "Tes Bacaan Al-Qur'an",
+                      score: nu?.score_quran,
+                      type: "penguji",
+                      penguji_name: j?.penguji_quran?.full_name || null,
+                      penguji_phone: j?.penguji_quran?.phone || null,
+                      role_label: "Penguji Al-Qur'an",
+                    },
+                    {
+                      key: "wawancara_santri",
+                      name: "Wawancara Calon Santri",
+                      score: ws,
+                      type: "penguji",
+                      penguji_name: j?.penguji_santri?.full_name || null,
+                      penguji_phone: j?.penguji_santri?.phone || null,
+                      role_label: "Pewawancara Santri",
+                    },
+                    {
+                      key: "wawancara_ortu",
+                      name: "Wawancara Orang Tua / Wali",
+                      score: nu?.nilai_wawancara_ortu,
+                      type: "penguji",
+                      penguji_name: j?.penguji_ortu?.full_name || null,
+                      penguji_phone: j?.penguji_ortu?.phone || null,
+                      role_label: "Pewawancara Orang Tua",
+                    },
+                    {
+                      key: "akademik",
+                      name: "CBT Potensi Akademik",
+                      score: nu?.score_akademik,
+                      type: "sistem",
+                      desc: "Dikerjakan santri secara online melalui aplikasi CBT.",
+                    },
+                    {
+                      key: "kepribadian",
+                      name: "Tes Kepribadian / Minat Bakat",
+                      score: nu?.score_kepribadian,
+                      type: "sistem",
+                      desc: "Kuesioner psikologi santri melalui sistem.",
+                    },
+                    {
+                      key: "kesiapan",
+                      name: "Tes Kesiapan & Kemandirian Santri",
+                      score: nu?.score_kesiapan,
+                      type: "sistem",
+                      desc: "Evaluasi kesiapan santri tinggal di asrama.",
+                    },
+                  ];
+
+                  if (isMA) {
+                    components.push({
+                      key: "hafalan",
+                      name: "Tes Hafalan Al-Qur'an",
+                      score: nu?.score_hafalan,
+                      type: "penguji",
+                      penguji_name: j?.penguji_hafalan?.full_name || null,
+                      penguji_phone: j?.penguji_hafalan?.phone || null,
+                      role_label: "Penguji Hafalan Al-Qur'an",
+                    });
+                    components.push({
+                      key: "arab",
+                      name: "Tes Lisan Bahasa Arab",
+                      score: nu?.score_arab,
+                      type: "penguji",
+                      penguji_name: j?.penguji_arab?.full_name || null,
+                      penguji_phone: j?.penguji_arab?.phone || null,
+                      role_label: "Penguji Lisan Bahasa Arab",
+                    });
+                  }
+
+                  return components.map((comp) => {
+                    const hasScore = comp.score != null;
+                    const waUrl = !hasScore && comp.type === "penguji" ? getWAExaminerUrl(c, comp) : "";
+
+                    return (
+                      <div
+                        key={comp.key}
+                        className={`p-3.5 rounded-2xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
+                          hasScore
+                            ? "bg-emerald-50/50 border-emerald-200"
+                            : "bg-white border-stone-200 shadow-xs hover:border-amber-300"
+                        }`}
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 ${
+                            hasScore ? "bg-emerald-100 text-emerald-800" : "bg-stone-100 text-stone-600"
+                          }`}>
+                            {hasScore ? "✓" : "—"}
+                          </div>
+                          <div>
+                            <div className="font-bold text-stone-900 text-xs flex items-center gap-2">
+                              <span>{comp.name}</span>
+                              {hasScore ? (
+                                <span className="bg-emerald-100 text-emerald-800 text-[10px] px-2 py-0.5 rounded-full font-black">
+                                  Skor: {Number(comp.score).toFixed(1)}
+                                </span>
+                              ) : (
+                                <span className="bg-rose-100 text-rose-800 text-[10px] px-2 py-0.5 rounded-full font-black">
+                                  Belum Diinput
+                                </span>
+                              )}
+                            </div>
+
+                            {comp.type === "penguji" ? (
+                              <div className="text-[11px] text-stone-500 mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                                <span className="font-semibold text-stone-700">
+                                  {comp.role_label}:
+                                </span>
+                                <span>
+                                  {comp.penguji_name ? (
+                                    <strong className="text-stone-800">{comp.penguji_name}</strong>
+                                  ) : (
+                                    <em className="text-stone-400">Belum ditugaskan di jadwal</em>
+                                  )}
+                                </span>
+                                {comp.penguji_phone && (
+                                  <span className="text-stone-400 font-mono text-[10px]">
+                                    ({comp.penguji_phone})
+                                  </span>
+                                )}
+                              </div>
+                            ) : (
+                              <div className="text-[11px] text-stone-500 mt-1">
+                                <em>{comp.desc}</em>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Action per component */}
+                        <div className="flex items-center gap-2 self-end sm:self-center shrink-0">
+                          {!hasScore && comp.type === "penguji" && (
+                            comp.penguji_phone ? (
+                              <a
+                                href={waUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-xs transition-all flex items-center gap-1.5 cursor-pointer"
+                                title={`Kirim pesan WhatsApp pengingat nilai ke ${comp.penguji_name}`}
+                              >
+                                <MessageCircle className="w-3.5 h-3.5" />
+                                <span>Hubungi WA Penguji</span>
+                              </a>
+                            ) : (
+                              <span className="text-[10px] font-semibold text-stone-400 bg-stone-100 px-2.5 py-1 rounded-lg">
+                                No WA Penguji Belum Ada
+                              </span>
+                            )
+                          )}
+                          {hasScore && (
+                            <span className="text-[11px] font-bold text-emerald-700 flex items-center gap-1">
+                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                              <span>Selesai</span>
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  });
+                })()}
+              </div>
+
+              {/* Hubungi Wali Santri Info Box */}
+              {(selectedMissingCandidate.wali_phone || selectedMissingCandidate.no_hp) && (
+                <div className="p-3.5 bg-stone-50 rounded-2xl border border-stone-200 flex items-center justify-between gap-3">
+                  <div className="text-xs">
+                    <span className="font-bold text-stone-800">Kontak Wali Santri: </span>
+                    <span className="text-stone-600">
+                      {selectedMissingCandidate.wali_name || "Wali Santri"} ({selectedMissingCandidate.wali_phone || selectedMissingCandidate.no_hp})
+                    </span>
+                  </div>
+                  <a
+                    href={`https://wa.me/${formatPhoneForWA(selectedMissingCandidate.wali_phone || selectedMissingCandidate.no_hp)}?text=${encodeURIComponent(
+                      `Assalamu'alaikum Warahmatullahi Wabarakatuh,\n\nYth. ${selectedMissingCandidate.wali_name || "Bapak/Ibu Wali Santri"} dari calon santri ananda ${selectedMissingCandidate.nama_lengkap} (${selectedMissingCandidate.nomor_pendaftaran}).\n\nKami dari Panitia PPDB menginformasikan bahwa proses penilaian seleksi ananda saat ini sedang dalam rekapitulasi akhir panitia. Jika ada berkas atau konfirmasi yang dibutuhkan, kami akan menghubungi Bapak/Ibu kembali.\n\nTerima kasih atas kesabarannya.\nWassalamu'alaikum Warahmatullahi Wabarakatuh.`
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-1 bg-stone-200 hover:bg-emerald-100 hover:text-emerald-800 text-stone-700 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0"
+                  >
+                    <MessageCircle className="w-3.5 h-3.5" />
+                    <span>Chat Wali</span>
+                  </a>
+                </div>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="px-6 py-4 bg-stone-50 border-t border-stone-200 flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
+              <a
+                href={`/dashboard/admin/penilaian?search=${encodeURIComponent(selectedMissingCandidate.nomor_pendaftaran)}`}
+                className="w-full sm:w-auto px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <ExternalLink className="w-4 h-4" />
+                <span>Buka Form Penilaian Penguji / Admin ↗</span>
+              </a>
+
+              <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+                <button
+                  type="button"
+                  onClick={() => setSelectedMissingCandidate(null)}
+                  className="px-4 py-2 bg-stone-200 hover:bg-stone-300 text-stone-700 rounded-xl text-xs font-bold transition-all cursor-pointer"
+                >
+                  Tutup
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

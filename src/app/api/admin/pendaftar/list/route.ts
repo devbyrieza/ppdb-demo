@@ -308,6 +308,16 @@ export async function GET(request: NextRequest) {
         pengumuman: {
           select: { status_kelulusan: true, is_published: true, surat_pengumuman_path: true },
         },
+        orang_tua: {
+          select: {
+            nama_ayah: true,
+            no_hp_ayah: true,
+            nama_ibu: true,
+            no_hp_ibu: true,
+            nama_wali: true,
+            no_hp_wali: true,
+          },
+        },
         jadwal_ujian: {
           select: {
             id: true,
@@ -319,6 +329,21 @@ export async function GET(request: NextRequest) {
             penguji_quran_id: true,
             penguji_santri_id: true,
             penguji_ortu_id: true,
+            penguji_quran: {
+              select: { id: true, full_name: true, phone: true },
+            },
+            penguji_santri: {
+              select: { id: true, full_name: true, phone: true },
+            },
+            penguji_ortu: {
+              select: { id: true, full_name: true, phone: true },
+            },
+            penguji_hafalan: {
+              select: { id: true, full_name: true, phone: true },
+            },
+            penguji_arab: {
+              select: { id: true, full_name: true, phone: true },
+            },
           },
           take: 1,
         },
@@ -418,6 +443,99 @@ export async function GET(request: NextRequest) {
         }
       }
 
+      // Komponen nilai yang belum diinput beserta penguji yang bertugas
+      const missingComponents: Array<{
+        key: string;
+        name: string;
+        type: "penguji" | "sistem";
+        penguji_name?: string | null;
+        penguji_phone?: string | null;
+      }> = [];
+
+      if (!mergedNilai || mergedNilai.score_quran == null) {
+        missingComponents.push({
+          key: "quran",
+          name: "Bacaan Al-Qur'an",
+          type: "penguji",
+          penguji_name: j?.penguji_quran?.full_name || null,
+          penguji_phone: j?.penguji_quran?.phone || null,
+        });
+      }
+      if (!mergedNilai || mergedNilai.score_akademik == null) {
+        missingComponents.push({
+          key: "akademik",
+          name: "CBT Akademik",
+          type: "sistem",
+        });
+      }
+      if (!mergedNilai || mergedNilai.score_kepribadian == null) {
+        missingComponents.push({
+          key: "kepribadian",
+          name: "Tes Kepribadian",
+          type: "sistem",
+        });
+      }
+      if (!mergedNilai || (mergedNilai.nilai_wawancara_santri == null && mergedNilai.score_wawancara == null)) {
+        missingComponents.push({
+          key: "wawancara_santri",
+          name: "Wawancara Calon Santri",
+          type: "penguji",
+          penguji_name: j?.penguji_santri?.full_name || null,
+          penguji_phone: j?.penguji_santri?.phone || null,
+        });
+      }
+      if (!mergedNilai || mergedNilai.nilai_wawancara_ortu == null) {
+        missingComponents.push({
+          key: "wawancara_ortu",
+          name: "Wawancara Orang Tua",
+          type: "penguji",
+          penguji_name: j?.penguji_ortu?.full_name || null,
+          penguji_phone: j?.penguji_ortu?.phone || null,
+        });
+      }
+      if (!mergedNilai || mergedNilai.score_kesiapan == null) {
+        missingComponents.push({
+          key: "kesiapan",
+          name: "Kesiapan Santri",
+          type: "sistem",
+        });
+      }
+
+      const jenjangUp = (item.jenjang || "").toUpperCase();
+      if (jenjangUp === "MA" || jenjangUp === "SMA") {
+        if (!mergedNilai || mergedNilai.score_hafalan == null) {
+          missingComponents.push({
+            key: "hafalan",
+            name: "Hafalan Al-Qur'an",
+            type: "penguji",
+            penguji_name: j?.penguji_hafalan?.full_name || null,
+            penguji_phone: j?.penguji_hafalan?.phone || null,
+          });
+        }
+        if (!mergedNilai || mergedNilai.score_arab == null) {
+          missingComponents.push({
+            key: "arab",
+            name: "Lisan Bahasa Arab",
+            type: "penguji",
+            penguji_name: j?.penguji_arab?.full_name || null,
+            penguji_phone: j?.penguji_arab?.phone || null,
+          });
+        }
+      }
+
+      const waliPhone =
+        item.orang_tua?.no_hp_ayah ||
+        item.orang_tua?.no_hp_ibu ||
+        item.orang_tua?.no_hp_wali ||
+        item.no_hp ||
+        null;
+
+      const waliName =
+        item.orang_tua?.nama_ayah ||
+        item.orang_tua?.nama_ibu ||
+        item.orang_tua?.nama_wali ||
+        "Bapak/Ibu Wali Santri";
+
       return {
         ...item,
         nilai_ujian: mergedNilai,
@@ -426,6 +544,9 @@ export async function GET(request: NextRequest) {
         has_jadwal: hasValidJadwal,
         kategori_belum_lengkap: kategoriBelumLengkap,
         jadwal_ujian: j || null,
+        missing_components: missingComponents,
+        wali_phone: waliPhone,
+        wali_name: waliName,
         whatsapp_status: item.whatsapp_logs?.[0] || null,
         dokumen: item.dokumen.map((doc) => ({
           jenis_dokumen: doc.jenis_dokumen,

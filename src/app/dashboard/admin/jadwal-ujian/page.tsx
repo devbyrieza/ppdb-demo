@@ -152,7 +152,15 @@ export default function JadwalUjianPage() {
     } else if (tabParam === "plotting") {
       setMainTab("plotting");
     }
-  }, [tabParam]);
+    const qSearch = searchParams?.get("search");
+    if (qSearch) {
+      setSearch(qSearch);
+    }
+    const qFilter = searchParams?.get("filter");
+    if (qFilter === "butuh" || qFilter === "semua") {
+      setCandidateFilterTab(qFilter);
+    }
+  }, [tabParam, searchParams]);
 
   // SCHEDULING MODAL STATE (KHUSUS 1 CALON PENDAFTAR - TANPA KUOTA)
   const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
