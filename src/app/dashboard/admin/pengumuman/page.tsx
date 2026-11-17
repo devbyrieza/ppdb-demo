@@ -195,6 +195,49 @@ function PengumumanContent() {
     return "menunggu_penilaian";
   };
 
+  // Helper deteksi jenjang SMA / MA langsung (tanpa IL)
+  const isJenjangTanpaIL = (jenjang?: string | null): boolean => {
+    if (!jenjang) return false;
+    const clean = jenjang.trim().toUpperCase();
+    if (clean === "IL" || clean === "I'DAD LUGHAWI" || clean === "IDAD") {
+      return false;
+    }
+    if (
+      clean.includes("NON-IL") ||
+      clean.includes("NON IL") ||
+      clean.includes("TANPA IL") ||
+      clean === "MA" ||
+      clean === "SMA" ||
+      clean.startsWith("MA ") ||
+      clean.startsWith("SMA ") ||
+      clean.includes("ALIYAH") ||
+      clean.includes("SLTA")
+    ) {
+      return true;
+    }
+    return false;
+  };
+
+  const getComponentGrade = (score: number | null | undefined, type: string): string => {
+    if (score == null) return "-";
+    let s = Number(score);
+    if (s > 0 && s <= 5) s = s * 20;
+
+    if (type === "quran" || type === "hafalan" || type === "arab") {
+      return s >= 85 ? "A" : s >= 75 ? "B" : s >= 70 ? "C" : s >= 40 ? "D" : "E";
+    } else if (type === "akademik") {
+      return s >= 75 ? "A" : s >= 60 ? "B" : s >= 45 ? "C" : s >= 30 ? "D" : "E";
+    } else if (type === "kepribadian") {
+      return s >= 80 ? "A" : s >= 65 ? "B" : s >= 50 ? "C" : s >= 35 ? "D" : "E";
+    } else if (type.startsWith("wawancara")) {
+      return s >= 80 ? "A" : s >= 65 ? "B" : s >= 50 ? "C" : s >= 35 ? "D" : "E";
+    } else if (type === "kesiapan") {
+      return s >= 75 ? "A" : s >= 55 ? "B" : s >= 40 ? "C" : s >= 25 ? "D" : "E";
+    } else {
+      return s >= 80 ? "A" : s >= 65 ? "B" : "C";
+    }
+  };
+
   const isMemenuhiKKM = (c: any) => {
     if (c.pengumuman?.status_kelulusan === "Menunggu Rapat") return false;
 
@@ -212,7 +255,7 @@ function PengumumanContent() {
     if (quran != null && quran < KKM_STANDAR) return false;
 
     // 3. Khusus jenjang MA/SMA: Hafalan dan Bahasa Arab juga minimal Grade B (>= 75)
-    const isMA = (c.jenjang || "").toUpperCase() === "MA" || (c.jenjang || "").toUpperCase() === "SMA";
+    const isMA = isJenjangTanpaIL(c.jenjang);
     if (isMA) {
       if (hafalan != null && hafalan < KKM_STANDAR) return false;
       if (arab != null && arab < KKM_STANDAR) return false;
@@ -224,12 +267,13 @@ function PengumumanContent() {
   const getRekomendasiDetail = (c: any) => {
     const nu = c.nilai_ujian;
     const total = nu?.nilai_total != null ? Number(nu.nilai_total) : 0;
-    const grade = total >= 85 ? "A" : total >= 75 ? "B" : total >= 60 ? "C" : "D";
     const quran = nu?.score_quran != null ? Number(nu.score_quran) : null;
-    const quranGrade = quran != null ? (quran >= 85 ? "A" : quran >= 75 ? "B" : quran >= 70 ? "C" : "D") : null;
+    const quranGrade = quran != null ? getComponentGrade(quran, "quran") : null;
     const hafalan = nu?.score_hafalan != null ? Number(nu.score_hafalan) : null;
+    const hafalanGrade = hafalan != null ? getComponentGrade(hafalan, "hafalan") : null;
     const arab = nu?.score_arab != null ? Number(nu.score_arab) : null;
-    const isMA = (c.jenjang || "").toUpperCase() === "MA" || (c.jenjang || "").toUpperCase() === "SMA";
+    const arabGrade = arab != null ? getComponentGrade(arab, "arab") : null;
+    const isMA = isJenjangTanpaIL(c.jenjang);
 
     if (c.pengumuman?.status_kelulusan === "Menunggu Rapat") {
       return {
@@ -240,6 +284,61 @@ function PengumumanContent() {
       };
     }
 
+    // ─── KHUSUS JENJANG SMA / MA SEDERAJAT (Al-Qur'an, Hafalan, dan Bahasa Arab) ───
+    if (isMA) {
+      const getQuranStatus = () => {
+        if (quran == null) return "Al-Qur'an (-)";
+        if (quran < 70) return `Al-Qur'an Kurang (Grade ${quranGrade} / ${quran.toFixed(0)})`;
+        if (quran < KKM_STANDAR) return `Al-Qur'an Bersyarat (Grade C / ${quran.toFixed(0)})`;
+        return `Al-Qur'an Lolos (Grade ${quranGrade} / ${quran.toFixed(0)})`;
+      };
+
+      const getHafalanStatus = () => {
+        if (hafalan == null) return "Hafalan (-)";
+        if (hafalan < 70) return `Hafalan Kurang (Grade ${hafalanGrade} / ${hafalan.toFixed(0)})`;
+        if (hafalan < KKM_STANDAR) return `Hafalan Bersyarat (Grade C / ${hafalan.toFixed(0)})`;
+        return `Hafalan Lolos (Grade ${hafalanGrade} / ${hafalan.toFixed(0)})`;
+      };
+
+      const getArabStatus = () => {
+        if (arab == null) return "B. Arab (-)";
+        if (arab < 70) return `B. Arab Kurang (Grade ${arabGrade} / ${arab.toFixed(0)})`;
+        if (arab < KKM_STANDAR) return `B. Arab Bersyarat (Grade C / ${arab.toFixed(0)})`;
+        return `B. Arab Lolos (Grade ${arabGrade} / ${arab.toFixed(0)})`;
+      };
+
+      const quranBelow = quran != null && quran < KKM_STANDAR;
+      const hafalanBelow = hafalan != null && hafalan < KKM_STANDAR;
+      const arabBelow = arab != null && arab < KKM_STANDAR;
+
+      if (quranBelow || hafalanBelow || arabBelow || total < KKM_STANDAR) {
+        if (quranBelow || hafalanBelow || arabBelow) {
+          const detailSMA = [getQuranStatus(), getHafalanStatus(), getArabStatus()].join(" • ");
+          return {
+            badgeText: "Perlu Dirapatkan Tim",
+            subText: detailSMA,
+            badgeClass: "bg-amber-100 text-amber-800 border-amber-200",
+            icon: Gavel,
+          };
+        }
+
+        return {
+          badgeText: "Perlu Dirapatkan Tim",
+          subText: `Total di Bawah KKM ${KKM_STANDAR} (Al-Qur'an, Hafalan & B. Arab Lolos)`,
+          badgeClass: "bg-amber-100 text-amber-800 border-amber-200",
+          icon: Gavel,
+        };
+      }
+
+      return {
+        badgeText: "Rekomendasi: Diterima",
+        subText: `Lolos KKM ${KKM_STANDAR} (Al-Qur'an, Hafalan & B. Arab Lolos)`,
+        badgeClass: "bg-emerald-100 text-emerald-800 border-emerald-200",
+        icon: Sparkles,
+      };
+    }
+
+    // ─── JENJANG MTs / SMP / IL ───
     // 1. Al-Qur'an Kurang (Grade D/E < 70)
     if (quran != null && quran < 70) {
       return {
@@ -260,27 +359,7 @@ function PengumumanContent() {
       };
     }
 
-    // 3. Khusus MA: Hafalan / Bahasa Arab di bawah KKM (< 75)
-    if (isMA) {
-      if (hafalan != null && hafalan < KKM_STANDAR) {
-        return {
-          badgeText: "Perlu Dirapatkan Tim",
-          subText: `Hafalan di Bawah KKM (${hafalan.toFixed(0)})`,
-          badgeClass: "bg-amber-100 text-amber-800 border-amber-200",
-          icon: Gavel,
-        };
-      }
-      if (arab != null && arab < KKM_STANDAR) {
-        return {
-          badgeText: "Perlu Dirapatkan Tim",
-          subText: `Bahasa Arab di Bawah KKM (${arab.toFixed(0)})`,
-          badgeClass: "bg-amber-100 text-amber-800 border-amber-200",
-          icon: Gavel,
-        };
-      }
-    }
-
-    // 4. Total di bawah KKM (< 75)
+    // 3. Total di bawah KKM (< 75)
     if (total < KKM_STANDAR) {
       return {
         badgeText: "Perlu Dirapatkan Tim",
@@ -290,7 +369,7 @@ function PengumumanContent() {
       };
     }
 
-    // 5. Memenuhi KKM Murni (Total >= 75 dan Al-Qur'an >= 75 / Minimal Grade B)
+    // 4. Memenuhi KKM Murni (Total >= 75 dan Al-Qur'an >= 75 / Minimal Grade B)
     return {
       badgeText: "Rekomendasi: Diterima",
       subText: `Lolos KKM ${KKM_STANDAR}`,
@@ -592,49 +671,6 @@ function PengumumanContent() {
       toast.error("Terjadi kesalahan sistem");
     } finally {
       setIsPublishing(false);
-    }
-  };
-
-  // Helper deteksi jenjang SMA / MA langsung (tanpa IL)
-  const isJenjangTanpaIL = (jenjang?: string | null): boolean => {
-    if (!jenjang) return false;
-    const clean = jenjang.trim().toUpperCase();
-    if (clean === "IL" || clean === "I'DAD LUGHAWI" || clean === "IDAD") {
-      return false;
-    }
-    if (
-      clean.includes("NON-IL") ||
-      clean.includes("NON IL") ||
-      clean.includes("TANPA IL") ||
-      clean === "MA" ||
-      clean === "SMA" ||
-      clean.startsWith("MA ") ||
-      clean.startsWith("SMA ") ||
-      clean.includes("ALIYAH") ||
-      clean.includes("SLTA")
-    ) {
-      return true;
-    }
-    return false;
-  };
-
-  const getComponentGrade = (score: number | null | undefined, type: string): string => {
-    if (score == null) return "-";
-    let s = Number(score);
-    if (s > 0 && s <= 5) s = s * 20;
-
-    if (type === "quran" || type === "hafalan" || type === "arab") {
-      return s >= 85 ? "A" : s >= 75 ? "B" : s >= 70 ? "C" : s >= 40 ? "D" : "E";
-    } else if (type === "akademik") {
-      return s >= 75 ? "A" : s >= 60 ? "B" : s >= 45 ? "C" : s >= 30 ? "D" : "E";
-    } else if (type === "kepribadian") {
-      return s >= 80 ? "A" : s >= 65 ? "B" : s >= 50 ? "C" : s >= 35 ? "D" : "E";
-    } else if (type.startsWith("wawancara")) {
-      return s >= 80 ? "A" : s >= 65 ? "B" : s >= 50 ? "C" : s >= 35 ? "D" : "E";
-    } else if (type === "kesiapan") {
-      return s >= 75 ? "A" : s >= 55 ? "B" : s >= 40 ? "C" : s >= 25 ? "D" : "E";
-    } else {
-      return s >= 80 ? "A" : s >= 65 ? "B" : "C";
     }
   };
 
