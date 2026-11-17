@@ -519,6 +519,16 @@ function InputNilaiContent() {
       let body: any = {};
 
       if (formType === "quran") {
+        if (!quranForm.rekomendasi) {
+          setSaving(null);
+          await Swal.fire({
+            icon: 'warning',
+            title: 'Rekomendasi Penguji Wajib Dipilih',
+            text: 'Mohon pilih rekomendasi penguji Al-Qur\'an (Diterima / Cadangan / Ditolak) sebelum mengisi komentar dan menyimpan nilai.'
+          });
+          return;
+        }
+
         if (!quranForm.catatan || !quranForm.catatan.trim()) {
           setSaving(null);
           await Swal.fire({
@@ -537,6 +547,7 @@ function InputNilaiContent() {
           detail_quran: {
             ...quranForm,
             nama_penguji: quranForm.nama_penguji || activeName,
+            rekomendasi: quranForm.rekomendasi,
             tajwid,
             kelancaran,
             hafalan: hafalanVal,
@@ -546,6 +557,16 @@ function InputNilaiContent() {
           ...(hafalanVal !== null ? { nilai_tes_hafalan: hafalanVal, score_hafalan: hafalanVal } : {}),
           catatan_quran: quranForm.catatan.trim() };
       } else if (formType === "wawancara") {
+        if (!calsanForm.rekomendasi) {
+          setSaving(null);
+          await Swal.fire({
+            icon: 'warning',
+            title: 'Rekomendasi Pewawancara Wajib Dipilih',
+            text: 'Mohon pilih rekomendasi hasil wawancara calon santri sebelum mengisi komentar dan menyimpan nilai.'
+          });
+          return;
+        }
+
         if (!calsanForm.catatan || !calsanForm.catatan.trim()) {
           setSaving(null);
           await Swal.fire({
@@ -571,11 +592,22 @@ function InputNilaiContent() {
           detail_wawancara: {
             ...calsanForm,
             nama_pewawancara: calsanForm.nama_pewawancara || activeName,
+            rekomendasi: calsanForm.rekomendasi,
           },
           score_wawancara: avgScore,
           nilai_wawancara_santri: avgScore,
           catatan_santri: calsanForm.catatan.trim() };
       } else if (formType === "ortu") {
+        if (!cawalsanForm.rekomendasi) {
+          setSaving(null);
+          await Swal.fire({
+            icon: 'warning',
+            title: 'Rekomendasi Pewawancara Wajib Dipilih',
+            text: 'Mohon pilih rekomendasi hasil wawancara orang tua/wali santri (Diterima / Diterima dengan catatan / Ditolak) sebelum mengisi komentar dan menyimpan nilai.'
+          });
+          return;
+        }
+
         if (!cawalsanForm.catatan || !cawalsanForm.catatan.trim()) {
           setSaving(null);
           await Swal.fire({
@@ -590,11 +622,22 @@ function InputNilaiContent() {
           detail_cawalsan: {
             ...cawalsanForm,
             nama_pewawancara: cawalsanForm.nama_pewawancara || activeName,
+            rekomendasi: cawalsanForm.rekomendasi,
           },
           catatan_ortu: cawalsanForm.catatan.trim(),
           nilai_wawancara_ortu: 1, // Flag that form is filled
         };
       } else if (formType === "hafalan") {
+        if (!hafalanForm.rekomendasi) {
+          setSaving(null);
+          await Swal.fire({
+            icon: 'warning',
+            title: 'Rekomendasi Penguji Wajib Dipilih',
+            text: 'Mohon pilih rekomendasi hasil tes hafalan sebelum mengisi komentar dan menyimpan nilai.'
+          });
+          return;
+        }
+
         if (!hafalanForm.catatan_tambahan || !hafalanForm.catatan_tambahan.trim()) {
           setSaving(null);
           await Swal.fire({
@@ -625,6 +668,16 @@ function InputNilaiContent() {
           catatan_hafalan: hafalanForm.catatan_tambahan.trim(),
         };
       } else if (formType === "lisan_arab") {
+        if (!lisanArabForm.rekomendasi) {
+          setSaving(null);
+          await Swal.fire({
+            icon: 'warning',
+            title: 'Rekomendasi Penguji Wajib Dipilih',
+            text: 'Mohon pilih rekomendasi hasil tes bahasa Arab sebelum mengisi komentar dan menyimpan nilai.'
+          });
+          return;
+        }
+
         if (!lisanArabForm.catatan_tambahan || !lisanArabForm.catatan_tambahan.trim()) {
           setSaving(null);
           await Swal.fire({
@@ -1342,7 +1395,9 @@ function InputNilaiContent() {
             </div>
 
             <div>
-              <label className="block text-[10px] sm:text-xs font-black text-ink-700 uppercase tracking-widest mb-3 sm:mb-4">Rekomendasi Penguji Al-Qur&apos;an *</label>
+              <label className="block text-[10px] sm:text-xs font-black text-ink-700 uppercase tracking-widest mb-3 sm:mb-4">
+                Rekomendasi Penguji Al-Qur&apos;an <span className="text-red-600 font-bold">* (Wajib Dipilih)</span>
+              </label>
               <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
                 {["Diterima", "Cadangan", "Ditolak"].map((opt) => (
                   <label key={opt} className={`px-4 sm:px-5 py-3.5 sm:py-4 rounded-3xl cursor-pointer border-2 transition-all text-xs sm:text-sm font-black text-center ${quranForm.rekomendasi === opt ? (opt === "Diterima" ? "border-emerald-500 bg-emerald-50 text-[#9D174D] shadow-2xl     " : opt === "Cadangan" ? "border-secondary-500 bg-secondary-50 text-secondary-800 shadow-2xl     " : "border-red-500 bg-red-50 text-red-700 shadow-2xl     ") : "border-emerald-50 bg-white hover:border-emerald-200"}`}>
@@ -1494,7 +1549,9 @@ function InputNilaiContent() {
             <div className="space-y-5 sm:space-y-6 pt-2">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
                 <div className="space-y-3 sm:space-y-4">
-                  <label className="block text-[10px] sm:text-xs font-black text-ink-800 uppercase tracking-widest mb-2 sm:mb-3">Rekomendasi Hasil</label>
+                  <label className="block text-[10px] sm:text-xs font-black text-ink-800 uppercase tracking-widest mb-2 sm:mb-3">
+                    Rekomendasi Hasil <span className="text-red-600 font-bold">* (Wajib Dipilih)</span>
+                  </label>
                   <div className="grid grid-cols-1 gap-2 sm:gap-3">
                     {[
                       "A. Sangat Layak diterima (potensi besar berkembang di pesantren).",
@@ -1691,7 +1748,9 @@ function InputNilaiContent() {
               </div>
 
               <div>
-                <label className="block text-[10px] sm:text-xs font-black text-ink-800 uppercase tracking-widest mb-3 sm:mb-4">Rekomendasi Pewawancara *</label>
+                <label className="block text-[10px] sm:text-xs font-black text-ink-800 uppercase tracking-widest mb-3 sm:mb-4">
+                  Rekomendasi Pewawancara <span className="text-red-600 font-bold">* (Wajib Dipilih)</span>
+                </label>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-2 sm:gap-3">
                   {["Diterima", "Diterima dengan catatan", "Ditolak"].map((opt) => (
                     <label key={opt} className={`px-4 sm:px-5 py-3.5 sm:py-4 rounded-3xl cursor-pointer border-2 transition-all text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-center shadow-2xl ${cawalsanForm.rekomendasi === opt ? (opt === "Diterima" ? "border-emerald-500 bg-emerald-50 text-[#9D174D] shadow-2xl     " : opt.includes("catatan") ? "border-secondary-500 bg-secondary-50 text-secondary-800 shadow-2xl     " : "border-red-500 bg-red-50 text-red-700 shadow-2xl     ") : "border-ink-200 bg-ink-50/30 text-ink-700"}`}>

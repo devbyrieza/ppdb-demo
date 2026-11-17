@@ -585,6 +585,9 @@ export async function GET(request: NextRequest) {
             mergedNilai?.catatan_quran ||
             mergedNilai?.detail_quran?.catatan ||
             "-",
+          recommendation:
+            mergedNilai?.detail_quran?.rekomendasi ||
+            "-",
         },
         wawancara_santri: {
           name:
@@ -595,6 +598,9 @@ export async function GET(request: NextRequest) {
           notes:
             mergedNilai?.catatan_santri ||
             mergedNilai?.detail_wawancara?.catatan ||
+            "-",
+          recommendation:
+            mergedNilai?.detail_wawancara?.rekomendasi ||
             "-",
         },
         wawancara_ortu: {
@@ -607,6 +613,9 @@ export async function GET(request: NextRequest) {
             mergedNilai?.catatan_ortu ||
             mergedNilai?.detail_cawalsan?.catatan ||
             "-",
+          recommendation:
+            mergedNilai?.detail_cawalsan?.rekomendasi ||
+            "-",
         },
         hafalan: {
           name:
@@ -618,6 +627,9 @@ export async function GET(request: NextRequest) {
             mergedNilai?.catatan_hafalan ||
             mergedNilai?.detail_hafalan?.catatan_tambahan ||
             "-",
+          recommendation:
+            mergedNilai?.detail_hafalan?.rekomendasi ||
+            "-",
         },
         arab: {
           name:
@@ -628,6 +640,10 @@ export async function GET(request: NextRequest) {
           notes:
             mergedNilai?.catatan_arab ||
             mergedNilai?.detail_arab?.catatan_tambahan ||
+            "-",
+          recommendation:
+            mergedNilai?.detail_arab?.rekomendasi ||
+            mergedNilai?.detail_lisan_arab?.rekomendasi ||
             "-",
         },
       };

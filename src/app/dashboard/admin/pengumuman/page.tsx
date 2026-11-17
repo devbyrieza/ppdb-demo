@@ -691,6 +691,28 @@ function PengumumanContent() {
     return "-";
   };
 
+  const getExaminerRecommendation = (
+    c: any,
+    componentKey: "quran" | "wawancara_santri" | "wawancara_ortu" | "hafalan" | "arab"
+  ): string => {
+    if (c?.examiner_info?.[componentKey]?.recommendation && c.examiner_info[componentKey].recommendation !== "-") {
+      return c.examiner_info[componentKey].recommendation;
+    }
+    const nu = c?.nilai_ujian;
+    if (componentKey === "quran") {
+      return nu?.detail_quran?.rekomendasi || "-";
+    } else if (componentKey === "wawancara_santri") {
+      return nu?.detail_wawancara?.rekomendasi || "-";
+    } else if (componentKey === "wawancara_ortu") {
+      return nu?.detail_cawalsan?.rekomendasi || "-";
+    } else if (componentKey === "hafalan") {
+      return nu?.detail_hafalan?.rekomendasi || "-";
+    } else if (componentKey === "arab") {
+      return nu?.detail_arab?.rekomendasi || nu?.detail_lisan_arab?.rekomendasi || "-";
+    }
+    return "-";
+  };
+
   const handleExportExcel = async () => {
     if (!filteredCandidates.length) {
       toast.error("Tidak ada data santri untuk diekspor");
@@ -724,20 +746,25 @@ function PengumumanContent() {
         "Kesiapan",
         "Al-Qur'an",
         "Penguji Al-Qur'an",
+        "Rekomendasi Al-Qur'an",
         "Catatan Al-Qur'an",
         "Wawancara Calsan",
         "Pewawancara Calsan",
+        "Rekomendasi Calsan",
         "Catatan Calsan",
         "Wawancara Cawalsan",
         "Pewawancara Cawalsan",
+        "Rekomendasi Cawalsan",
         "Catatan Cawalsan",
         ...(hasMACandidates
           ? [
               "Hafalan",
               "Penguji Hafalan",
+              "Rekomendasi Hafalan",
               "Catatan Hafalan",
               "Bahasa Arab",
               "Penguji B. Arab",
+              "Rekomendasi B. Arab",
               "Catatan B. Arab",
             ]
           : []),
@@ -791,20 +818,25 @@ function PengumumanContent() {
           formatScoreWithGrade(nu?.score_kesiapan, "kesiapan"),
           formatScoreWithGrade(nu?.score_quran, "quran"),
           getExaminerName(c, "quran"),
+          getExaminerRecommendation(c, "quran"),
           getExaminerNotes(c, "quran"),
           formatScoreWithGrade(ws, "wawancara_santri"),
           getExaminerName(c, "wawancara_santri"),
+          getExaminerRecommendation(c, "wawancara_santri"),
           getExaminerNotes(c, "wawancara_santri"),
           formatScoreWithGrade(wo, "wawancara_ortu"),
           getExaminerName(c, "wawancara_ortu"),
+          getExaminerRecommendation(c, "wawancara_ortu"),
           getExaminerNotes(c, "wawancara_ortu"),
           ...(hasMACandidates
             ? [
                 isCandidateMA ? formatScoreWithGrade(nu?.score_hafalan, "hafalan") : "-",
                 isCandidateMA ? getExaminerName(c, "hafalan") : "-",
+                isCandidateMA ? getExaminerRecommendation(c, "hafalan") : "-",
                 isCandidateMA ? getExaminerNotes(c, "hafalan") : "-",
                 isCandidateMA ? formatScoreWithGrade(nu?.score_arab, "arab") : "-",
                 isCandidateMA ? getExaminerName(c, "arab") : "-",
+                isCandidateMA ? getExaminerRecommendation(c, "arab") : "-",
                 isCandidateMA ? getExaminerNotes(c, "arab") : "-",
               ]
             : []),
@@ -825,16 +857,21 @@ function PengumumanContent() {
         "Grade",
         "Rekomendasi / Keputusan",
         "Penguji Al-Qur'an",
+        "Rekomendasi Penguji Al-Qur'an",
         "Catatan Penguji Al-Qur'an",
         "Pewawancara Calsan",
+        "Rekomendasi Pewawancara Calsan",
         "Catatan Pewawancara Calsan",
         "Pewawancara Cawalsan",
+        "Rekomendasi Pewawancara Cawalsan",
         "Catatan Pewawancara Cawalsan",
         ...(hasMACandidates
           ? [
               "Penguji Hafalan",
+              "Rekomendasi Penguji Hafalan",
               "Catatan Penguji Hafalan",
               "Penguji Bahasa Arab",
+              "Rekomendasi Penguji Bahasa Arab",
               "Catatan Penguji Bahasa Arab",
             ]
           : []),
@@ -881,16 +918,21 @@ function PengumumanContent() {
           grade,
           statusText,
           getExaminerName(c, "quran"),
+          getExaminerRecommendation(c, "quran"),
           getExaminerNotes(c, "quran"),
           getExaminerName(c, "wawancara_santri"),
+          getExaminerRecommendation(c, "wawancara_santri"),
           getExaminerNotes(c, "wawancara_santri"),
           getExaminerName(c, "wawancara_ortu"),
+          getExaminerRecommendation(c, "wawancara_ortu"),
           getExaminerNotes(c, "wawancara_ortu"),
           ...(hasMACandidates
             ? [
                 isCandidateMA ? getExaminerName(c, "hafalan") : "-",
+                isCandidateMA ? getExaminerRecommendation(c, "hafalan") : "-",
                 isCandidateMA ? getExaminerNotes(c, "hafalan") : "-",
                 isCandidateMA ? getExaminerName(c, "arab") : "-",
+                isCandidateMA ? getExaminerRecommendation(c, "arab") : "-",
                 isCandidateMA ? getExaminerNotes(c, "arab") : "-",
               ]
             : []),
@@ -1037,12 +1079,19 @@ function PengumumanContent() {
             c.nilai_ujian?.score_arab != null;
 
           const rek = getRekomendasiDetail(c);
-          const quranNote = `${getExaminerName(c, "quran")}\n"${getExaminerNotes(c, "quran")}"`;
-          const wsNote = `${getExaminerName(c, "wawancara_santri")}\n"${getExaminerNotes(c, "wawancara_santri")}"`;
-          const woNote = `${getExaminerName(c, "wawancara_ortu")}\n"${getExaminerNotes(c, "wawancara_ortu")}"`;
+          const quranRec = getExaminerRecommendation(c, "quran");
+          const quranNote = `${getExaminerName(c, "quran")}${quranRec !== "-" ? ` [Rek: ${quranRec}]` : ""}\n"${getExaminerNotes(c, "quran")}"`;
 
+          const wsRec = getExaminerRecommendation(c, "wawancara_santri");
+          const wsNote = `${getExaminerName(c, "wawancara_santri")}${wsRec !== "-" ? ` [Rek: ${wsRec}]` : ""}\n"${getExaminerNotes(c, "wawancara_santri")}"`;
+
+          const woRec = getExaminerRecommendation(c, "wawancara_ortu");
+          const woNote = `${getExaminerName(c, "wawancara_ortu")}${woRec !== "-" ? ` [Rek: ${woRec}]` : ""}\n"${getExaminerNotes(c, "wawancara_ortu")}"`;
+
+          const hafalanRec = getExaminerRecommendation(c, "hafalan");
+          const arabRec = getExaminerRecommendation(c, "arab");
           const maNotes = isCandidateMA
-            ? `Hafalan (${getExaminerName(c, "hafalan")}): "${getExaminerNotes(c, "hafalan")}"\nArab (${getExaminerName(c, "arab")}): "${getExaminerNotes(c, "arab")}"`
+            ? `Hafalan (${getExaminerName(c, "hafalan")}${hafalanRec !== "-" ? ` [Rek: ${hafalanRec}]` : ""}): "${getExaminerNotes(c, "hafalan")}"\nArab (${getExaminerName(c, "arab")}${arabRec !== "-" ? ` [Rek: ${arabRec}]` : ""}): "${getExaminerNotes(c, "arab")}"`
             : "-";
 
           return [
@@ -2399,9 +2448,16 @@ function PengumumanContent() {
                     <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
                     <h4 className="text-xs font-black text-emerald-950 uppercase tracking-wider">Tes Al-Qur&apos;an</h4>
                   </div>
-                  <span className="text-xs font-bold text-emerald-800 bg-emerald-100/80 px-2 py-0.5 rounded-md">
-                    Nilai: {formatScoreWithGrade(selectedNotesCandidate.nilai_ujian?.score_quran, "quran")}
-                  </span>
+                  <div className="flex items-center gap-1.5 flex-wrap justify-end">
+                    {getExaminerRecommendation(selectedNotesCandidate, "quran") !== "-" && (
+                      <span className="text-[11px] font-bold text-emerald-900 bg-emerald-200/90 px-2 py-0.5 rounded-md border border-emerald-300">
+                        Rekomendasi: {getExaminerRecommendation(selectedNotesCandidate, "quran")}
+                      </span>
+                    )}
+                    <span className="text-xs font-bold text-emerald-800 bg-emerald-100/80 px-2 py-0.5 rounded-md">
+                      Nilai: {formatScoreWithGrade(selectedNotesCandidate.nilai_ujian?.score_quran, "quran")}
+                    </span>
+                  </div>
                 </div>
                 <div className="text-xs text-stone-700">
                   <span className="font-bold text-stone-500">Penguji: </span>
@@ -2419,9 +2475,16 @@ function PengumumanContent() {
                     <span className="w-2 h-2 rounded-full bg-blue-500"></span>
                     <h4 className="text-xs font-black text-blue-950 uppercase tracking-wider">Wawancara Calon Santri</h4>
                   </div>
-                  <span className="text-xs font-bold text-blue-800 bg-blue-100/80 px-2 py-0.5 rounded-md">
-                    Nilai: {formatScoreWithGrade(selectedNotesCandidate.nilai_ujian?.nilai_wawancara_santri ?? selectedNotesCandidate.nilai_ujian?.score_wawancara, "wawancara_santri")}
-                  </span>
+                  <div className="flex items-center gap-1.5 flex-wrap justify-end">
+                    {getExaminerRecommendation(selectedNotesCandidate, "wawancara_santri") !== "-" && (
+                      <span className="text-[11px] font-bold text-blue-900 bg-blue-200/90 px-2 py-0.5 rounded-md border border-blue-300">
+                        Rekomendasi: {getExaminerRecommendation(selectedNotesCandidate, "wawancara_santri")}
+                      </span>
+                    )}
+                    <span className="text-xs font-bold text-blue-800 bg-blue-100/80 px-2 py-0.5 rounded-md">
+                      Nilai: {formatScoreWithGrade(selectedNotesCandidate.nilai_ujian?.nilai_wawancara_santri ?? selectedNotesCandidate.nilai_ujian?.score_wawancara, "wawancara_santri")}
+                    </span>
+                  </div>
                 </div>
                 <div className="text-xs text-stone-700">
                   <span className="font-bold text-stone-500">Pewawancara: </span>
@@ -2439,9 +2502,16 @@ function PengumumanContent() {
                     <span className="w-2 h-2 rounded-full bg-amber-500"></span>
                     <h4 className="text-xs font-black text-amber-950 uppercase tracking-wider">Wawancara Calon Wali Santri</h4>
                   </div>
-                  <span className="text-xs font-bold text-amber-800 bg-amber-100/80 px-2 py-0.5 rounded-md">
-                    Nilai: {formatScoreWithGrade(selectedNotesCandidate.nilai_ujian?.nilai_wawancara_ortu, "wawancara_ortu")}
-                  </span>
+                  <div className="flex items-center gap-1.5 flex-wrap justify-end">
+                    {getExaminerRecommendation(selectedNotesCandidate, "wawancara_ortu") !== "-" && (
+                      <span className="text-[11px] font-bold text-amber-900 bg-amber-200/90 px-2 py-0.5 rounded-md border border-amber-300">
+                        Rekomendasi: {getExaminerRecommendation(selectedNotesCandidate, "wawancara_ortu")}
+                      </span>
+                    )}
+                    <span className="text-xs font-bold text-amber-800 bg-amber-100/80 px-2 py-0.5 rounded-md">
+                      Nilai: {formatScoreWithGrade(selectedNotesCandidate.nilai_ujian?.nilai_wawancara_ortu, "wawancara_ortu")}
+                    </span>
+                  </div>
                 </div>
                 <div className="text-xs text-stone-700">
                   <span className="font-bold text-stone-500">Pewawancara: </span>
@@ -2460,9 +2530,16 @@ function PengumumanContent() {
                       <span className="w-2 h-2 rounded-full bg-teal-500"></span>
                       <h4 className="text-xs font-black text-teal-950 uppercase tracking-wider">Tes Hafalan</h4>
                     </div>
-                    <span className="text-xs font-bold text-teal-800 bg-teal-100/80 px-2 py-0.5 rounded-md">
-                      Nilai: {formatScoreWithGrade(selectedNotesCandidate.nilai_ujian?.score_hafalan, "hafalan")}
-                    </span>
+                    <div className="flex items-center gap-1.5 flex-wrap justify-end">
+                      {getExaminerRecommendation(selectedNotesCandidate, "hafalan") !== "-" && (
+                        <span className="text-[11px] font-bold text-teal-900 bg-teal-200/90 px-2 py-0.5 rounded-md border border-teal-300">
+                          Rekomendasi: {getExaminerRecommendation(selectedNotesCandidate, "hafalan")}
+                        </span>
+                      )}
+                      <span className="text-xs font-bold text-teal-800 bg-teal-100/80 px-2 py-0.5 rounded-md">
+                        Nilai: {formatScoreWithGrade(selectedNotesCandidate.nilai_ujian?.score_hafalan, "hafalan")}
+                      </span>
+                    </div>
                   </div>
                   <div className="text-xs text-stone-700">
                     <span className="font-bold text-stone-500">Penguji: </span>
@@ -2482,9 +2559,16 @@ function PengumumanContent() {
                       <span className="w-2 h-2 rounded-full bg-sky-500"></span>
                       <h4 className="text-xs font-black text-sky-950 uppercase tracking-wider">Tes Bahasa Arab</h4>
                     </div>
-                    <span className="text-xs font-bold text-sky-800 bg-sky-100/80 px-2 py-0.5 rounded-md">
-                      Nilai: {formatScoreWithGrade(selectedNotesCandidate.nilai_ujian?.score_arab, "arab")}
-                    </span>
+                    <div className="flex items-center gap-1.5 flex-wrap justify-end">
+                      {getExaminerRecommendation(selectedNotesCandidate, "arab") !== "-" && (
+                        <span className="text-[11px] font-bold text-sky-900 bg-sky-200/90 px-2 py-0.5 rounded-md border border-sky-300">
+                          Rekomendasi: {getExaminerRecommendation(selectedNotesCandidate, "arab")}
+                        </span>
+                      )}
+                      <span className="text-xs font-bold text-sky-800 bg-sky-100/80 px-2 py-0.5 rounded-md">
+                        Nilai: {formatScoreWithGrade(selectedNotesCandidate.nilai_ujian?.score_arab, "arab")}
+                      </span>
+                    </div>
                   </div>
                   <div className="text-xs text-stone-700">
                     <span className="font-bold text-stone-500">Penguji: </span>
