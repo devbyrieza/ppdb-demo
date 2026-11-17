@@ -540,40 +540,66 @@ export default function ExaminerDashboard() {
     try {
       setIsExporting(true);
 
-      const getGrade = (score: number | undefined | null, type: string) => {
-        if (score == null) return "-";
-        if (type === "akademik") {
-          if (score >= 75) return "A";
-          if (score >= 60) return "B";
-          if (score >= 45) return "C";
-          if (score >= 30) return "D";
-          return "E";
+      const isJenjangTanpaIL = (jenjang?: string | null): boolean => {
+        if (!jenjang) return false;
+        const clean = jenjang.trim().toUpperCase();
+        if (clean === "IL" || clean === "I'DAD LUGHAWI" || clean === "IDAD") return false;
+        if (
+          clean.includes("NON-IL") ||
+          clean.includes("NON IL") ||
+          clean.includes("TANPA IL") ||
+          clean === "MA" ||
+          clean === "SMA" ||
+          clean.startsWith("MA ") ||
+          clean.startsWith("SMA ") ||
+          clean.includes("ALIYAH") ||
+          clean.includes("SLTA")
+        ) {
+          return true;
         }
-        if (type === "quran") {
-          if (score >= 80) return "A";
-          if (score >= 65) return "B";
-          if (score >= 50) return "C";
-          if (score >= 35) return "D";
-          return "E";
-        }
-        if (type === "kepribadian") {
-          if (score >= 85) return "A";
-          if (score >= 70) return "B";
-          if (score >= 55) return "C";
-          if (score >= 40) return "D";
-          return "E";
-        }
-        // Wawancara & Kesiapan
-        if (score >= 80) return "A";
-        if (score >= 65) return "B";
-        if (score >= 50) return "C";
-        if (score >= 35) return "D";
-        return "E";
+        return false;
       };
 
+      const getGrade = (score: number | undefined | null, type: string) => {
+        if (score == null) return "-";
+        let s = Number(score);
+        if (s > 0 && s <= 5) s = s * 20;
+        if (type === "quran" || type === "hafalan" || type === "arab") {
+          return s >= 85 ? "A" : s >= 75 ? "B" : s >= 70 ? "C" : s >= 40 ? "D" : "E";
+        }
+        if (type === "akademik") {
+          return s >= 75 ? "A" : s >= 60 ? "B" : s >= 45 ? "C" : s >= 30 ? "D" : "E";
+        }
+        if (type === "kepribadian") {
+          return s >= 80 ? "A" : s >= 65 ? "B" : s >= 50 ? "C" : s >= 35 ? "D" : "E";
+        }
+        if (type.startsWith("wawancara")) {
+          return s >= 80 ? "A" : s >= 65 ? "B" : s >= 50 ? "C" : s >= 35 ? "D" : "E";
+        }
+        if (type === "kesiapan") {
+          return s >= 75 ? "A" : s >= 55 ? "B" : s >= 40 ? "C" : s >= 25 ? "D" : "E";
+        }
+        return s >= 80 ? "A" : s >= 65 ? "B" : "C";
+      };
+
+      const formatScoreWithGrade = (score: number | undefined | null, type: string) => {
+        if (score == null) return "-";
+        let s = Number(score);
+        if (s > 0 && s <= 5) s = s * 20;
+        const grade = getGrade(s, type);
+        return `${s.toFixed(1)} (${grade})`;
+      };
+
+      const hasMACandidates = students.some(
+        (s) =>
+          isJenjangTanpaIL(s.jenjang) ||
+          s.nilai_ujian?.score_hafalan != null ||
+          s.nilai_ujian?.score_arab != null
+      );
+
       const formatStudentForExport = (s: Student) => {
-        const ws = s?.nilai_ujian?.nilai_wawancara_santri || 0;
-        const wo = s?.nilai_ujian?.nilai_wawancara_ortu || 0;
+        const ws = s?.nilai_ujian?.nilai_wawancara_santri ?? (s?.nilai_ujian as any)?.score_wawancara;
+        const wo = s?.nilai_ujian?.nilai_wawancara_ortu;
 
         let examStatus = s?.nilai_ujian?.status_kelulusan;
         const pendaftaranStatus = (s?.status_pendaftaran || "").toUpperCase();
@@ -590,39 +616,59 @@ export default function ExaminerDashboard() {
           examStatus = "DITERIMA";
         }
 
-        const totalScore =
-          s?.nilai_ujian?.nilai_total != null ? Number(s.nilai_ujian.nilai_total).toFixed(2) : "-";
+        const totalNum = s?.nilai_ujian?.nilai_total != null ? Number(s.nilai_ujian.nilai_total) : null;
+        const totalScore = totalNum != null ? totalNum.toFixed(2) : "-";
+        const totalGrade =
+          totalNum != null
+            ? totalNum >= 85
+              ? "A"
+              : totalNum >= 75
+                ? "B"
+                : totalNum >= 60
+                  ? "C"
+                  : "D"
+            : "-";
+
+        const isCandidateMA =
+          isJenjangTanpaIL(s.jenjang) ||
+          s.nilai_ujian?.score_hafalan != null ||
+          s.nilai_ujian?.score_arab != null;
 
         return [
           s?.nomor_pendaftaran || "-",
           (s?.nama_lengkap || "").toUpperCase(),
           s?.jenjang || "-",
-          getGrade(s?.nilai_ujian?.score_quran, "quran"),
-          getGrade(s?.nilai_ujian?.score_hafalan, "quran"),
-          getGrade(s?.nilai_ujian?.score_arab, "akademik"),
-          getGrade(s?.nilai_ujian?.score_akademik, "akademik"),
-          getGrade(s?.nilai_ujian?.score_kepribadian, "kepribadian"),
-          getGrade(ws, "wawancara"),
-          getGrade(wo, "wawancara"),
-          getGrade(s?.nilai_ujian?.score_kesiapan, "kesiapan"),
+          formatScoreWithGrade(s?.nilai_ujian?.score_akademik, "akademik"),
+          formatScoreWithGrade(s?.nilai_ujian?.score_kepribadian, "kepribadian"),
+          formatScoreWithGrade(s?.nilai_ujian?.score_kesiapan, "kesiapan"),
+          formatScoreWithGrade(s?.nilai_ujian?.score_quran, "quran"),
+          formatScoreWithGrade(ws, "wawancara_santri"),
+          formatScoreWithGrade(wo, "wawancara_ortu"),
+          ...(hasMACandidates
+            ? [
+                isCandidateMA ? formatScoreWithGrade(s?.nilai_ujian?.score_hafalan, "hafalan") : "-",
+                isCandidateMA ? formatScoreWithGrade(s?.nilai_ujian?.score_arab, "arab") : "-",
+              ]
+            : []),
           totalScore,
+          totalGrade,
           examStatus || "BELUM LENGKAP",
         ];
       };
 
       const header = [
-        "NP",
+        "No. Pendaftaran",
         "Nama Santri",
         "Jenjang",
-        "Bacaan Qur'an",
-        "Hafalan Qur'an",
-        "Lisan B. Arab",
         "Akademik",
         "Kepribadian",
-        "W. Santri",
-        "W. Ortu",
         "Kesiapan",
+        "Al-Qur'an",
+        "Wawancara Calsan",
+        "Wawancara Cawalsan",
+        ...(hasMACandidates ? ["Hafalan", "Bahasa Arab"] : []),
         "Total Skor",
+        "Grade",
         "Keputusan",
       ];
 
@@ -688,77 +734,125 @@ export default function ExaminerDashboard() {
     }
 
     try {
+      const isJenjangTanpaIL = (jenjang?: string | null): boolean => {
+        if (!jenjang) return false;
+        const clean = jenjang.trim().toUpperCase();
+        if (clean === "IL" || clean === "I'DAD LUGHAWI" || clean === "IDAD") return false;
+        if (
+          clean.includes("NON-IL") ||
+          clean.includes("NON IL") ||
+          clean.includes("TANPA IL") ||
+          clean === "MA" ||
+          clean === "SMA" ||
+          clean.startsWith("MA ") ||
+          clean.startsWith("SMA ") ||
+          clean.includes("ALIYAH") ||
+          clean.includes("SLTA")
+        ) {
+          return true;
+        }
+        return false;
+      };
+
       const getGrade = (score: number | undefined | null, type: string) => {
         if (score == null) return "-";
-        if (type === "akademik") {
-          if (score >= 75) return "A";
-          if (score >= 60) return "B";
-          if (score >= 45) return "C";
-          if (score >= 30) return "D";
-          return "E";
+        let s = Number(score);
+        if (s > 0 && s <= 5) s = s * 20;
+        if (type === "quran" || type === "hafalan" || type === "arab") {
+          return s >= 85 ? "A" : s >= 75 ? "B" : s >= 70 ? "C" : s >= 40 ? "D" : "E";
         }
-        if (type === "quran") {
-          if (score >= 85) return "A";
-          if (score >= 75) return "B";
-          if (score >= 70) return "C";
-          if (score >= 40) return "D";
-          return "E";
+        if (type === "akademik") {
+          return s >= 75 ? "A" : s >= 60 ? "B" : s >= 45 ? "C" : s >= 30 ? "D" : "E";
         }
         if (type === "kepribadian") {
-          if (score >= 80) return "A";
-          if (score >= 65) return "B";
-          if (score >= 50) return "C";
-          if (score >= 35) return "D";
-          return "E";
+          return s >= 80 ? "A" : s >= 65 ? "B" : s >= 50 ? "C" : s >= 35 ? "D" : "E";
         }
-        if (score >= 80) return "A";
-        if (score >= 65) return "B";
-        if (score >= 50) return "C";
-        if (score >= 35) return "D";
-        return "E";
+        if (type.startsWith("wawancara")) {
+          return s >= 80 ? "A" : s >= 65 ? "B" : s >= 50 ? "C" : s >= 35 ? "D" : "E";
+        }
+        if (type === "kesiapan") {
+          return s >= 75 ? "A" : s >= 55 ? "B" : s >= 40 ? "C" : s >= 25 ? "D" : "E";
+        }
+        return s >= 80 ? "A" : s >= 65 ? "B" : "C";
       };
+
+      const formatScoreWithGrade = (score: number | undefined | null, type: string) => {
+        if (score == null) return "-";
+        let s = Number(score);
+        if (s > 0 && s <= 5) s = s * 20;
+        const grade = getGrade(s, type);
+        return `${s.toFixed(1)} (${grade})`;
+      };
+
+      const hasMACandidates = students.some(
+        (s) =>
+          isJenjangTanpaIL(s.jenjang) ||
+          s.nilai_ujian?.score_hafalan != null ||
+          s.nilai_ujian?.score_arab != null
+      );
 
       const columns = [
         "No",
-        "NP",
+        "No. Pendaftaran",
         "Nama Santri",
         "Jenjang",
-        "Qur'an",
-        "Hafalan",
-        "B. Arab",
         "Akademik",
         "Kepribadian",
-        "W. Santri",
-        "W. Ortu",
         "Kesiapan",
+        "Al-Qur'an",
+        "W. Calsan",
+        "W. Cawalsan",
+        ...(hasMACandidates ? ["Hafalan", "B. Arab"] : []),
         "Total",
+        "Grade",
         "Keputusan",
       ];
 
       const data = students.map((s, idx) => {
-        const ws = s?.nilai_ujian?.nilai_wawancara_santri || 0;
-        const wo = s?.nilai_ujian?.nilai_wawancara_ortu || 0;
+        const ws = s?.nilai_ujian?.nilai_wawancara_santri ?? (s?.nilai_ujian as any)?.score_wawancara;
+        const wo = s?.nilai_ujian?.nilai_wawancara_ortu;
         let examStatus = s?.nilai_ujian?.status_kelulusan;
         const pendaftaranStatus = (s?.status_pendaftaran || "").toUpperCase();
         if (["ACCEPTED", "ENROLLED", "ENROLLED_FULL", "DITERIMA"].includes(pendaftaranStatus)) {
           examStatus = "DITERIMA";
         }
-        const totalScore = s?.nilai_ujian?.nilai_total != null ? Number(s.nilai_ujian.nilai_total).toFixed(1) : "-";
+        const totalNum = s?.nilai_ujian?.nilai_total != null ? Number(s.nilai_ujian.nilai_total) : null;
+        const totalScore = totalNum != null ? totalNum.toFixed(1) : "-";
+        const totalGrade =
+          totalNum != null
+            ? totalNum >= 85
+              ? "A"
+              : totalNum >= 75
+                ? "B"
+                : totalNum >= 60
+                  ? "C"
+                  : "D"
+            : "-";
+
+        const isCandidateMA =
+          isJenjangTanpaIL(s.jenjang) ||
+          s.nilai_ujian?.score_hafalan != null ||
+          s.nilai_ujian?.score_arab != null;
 
         return [
           String(idx + 1),
           s?.nomor_pendaftaran || "-",
           (s?.nama_lengkap || "").substring(0, 18),
           s?.jenjang || "-",
-          getGrade(s?.nilai_ujian?.score_quran, "quran"),
-          getGrade(s?.nilai_ujian?.score_hafalan, "quran"),
-          getGrade(s?.nilai_ujian?.score_arab, "akademik"),
-          getGrade(s?.nilai_ujian?.score_akademik, "akademik"),
-          getGrade(s?.nilai_ujian?.score_kepribadian, "kepribadian"),
-          getGrade(ws, "wawancara"),
-          getGrade(wo, "wawancara"),
-          getGrade(s?.nilai_ujian?.score_kesiapan, "kesiapan"),
+          formatScoreWithGrade(s?.nilai_ujian?.score_akademik, "akademik"),
+          formatScoreWithGrade(s?.nilai_ujian?.score_kepribadian, "kepribadian"),
+          formatScoreWithGrade(s?.nilai_ujian?.score_kesiapan, "kesiapan"),
+          formatScoreWithGrade(s?.nilai_ujian?.score_quran, "quran"),
+          formatScoreWithGrade(ws, "wawancara_santri"),
+          formatScoreWithGrade(wo, "wawancara_ortu"),
+          ...(hasMACandidates
+            ? [
+                isCandidateMA ? formatScoreWithGrade(s?.nilai_ujian?.score_hafalan, "hafalan") : "-",
+                isCandidateMA ? formatScoreWithGrade(s?.nilai_ujian?.score_arab, "arab") : "-",
+              ]
+            : []),
           totalScore,
+          totalGrade,
           examStatus || "BELUM LENGKAP",
         ];
       });

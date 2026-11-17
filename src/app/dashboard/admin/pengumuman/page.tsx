@@ -593,6 +593,57 @@ function PengumumanContent() {
     }
   };
 
+  // Helper deteksi jenjang SMA / MA langsung (tanpa IL)
+  const isJenjangTanpaIL = (jenjang?: string | null): boolean => {
+    if (!jenjang) return false;
+    const clean = jenjang.trim().toUpperCase();
+    if (clean === "IL" || clean === "I'DAD LUGHAWI" || clean === "IDAD") {
+      return false;
+    }
+    if (
+      clean.includes("NON-IL") ||
+      clean.includes("NON IL") ||
+      clean.includes("TANPA IL") ||
+      clean === "MA" ||
+      clean === "SMA" ||
+      clean.startsWith("MA ") ||
+      clean.startsWith("SMA ") ||
+      clean.includes("ALIYAH") ||
+      clean.includes("SLTA")
+    ) {
+      return true;
+    }
+    return false;
+  };
+
+  const getComponentGrade = (score: number | null | undefined, type: string): string => {
+    if (score == null) return "-";
+    let s = Number(score);
+    if (s > 0 && s <= 5) s = s * 20;
+
+    if (type === "quran" || type === "hafalan" || type === "arab") {
+      return s >= 85 ? "A" : s >= 75 ? "B" : s >= 70 ? "C" : s >= 40 ? "D" : "E";
+    } else if (type === "akademik") {
+      return s >= 75 ? "A" : s >= 60 ? "B" : s >= 45 ? "C" : s >= 30 ? "D" : "E";
+    } else if (type === "kepribadian") {
+      return s >= 80 ? "A" : s >= 65 ? "B" : s >= 50 ? "C" : s >= 35 ? "D" : "E";
+    } else if (type.startsWith("wawancara")) {
+      return s >= 80 ? "A" : s >= 65 ? "B" : s >= 50 ? "C" : s >= 35 ? "D" : "E";
+    } else if (type === "kesiapan") {
+      return s >= 75 ? "A" : s >= 55 ? "B" : s >= 40 ? "C" : s >= 25 ? "D" : "E";
+    } else {
+      return s >= 80 ? "A" : s >= 65 ? "B" : "C";
+    }
+  };
+
+  const formatScoreWithGrade = (score: number | null | undefined, type: string): string => {
+    if (score == null) return "-";
+    let s = Number(score);
+    if (s > 0 && s <= 5) s = s * 20;
+    const grade = getComponentGrade(s, type);
+    return `${s.toFixed(1)} (${grade})`;
+  };
+
   const handleExportExcel = async () => {
     if (!filteredCandidates.length) {
       toast.error("Tidak ada data santri untuk diekspor");
@@ -608,29 +659,45 @@ function PengumumanContent() {
             ? "REKAPITULASI PENETAPAN KELULUSAN SANTRI PPDB"
             : "REKAPITULASI SANTRI PROSES SELEKSI PPDB";
 
+      // Cek apakah terdapat santri SMA/MA tanpa IL yang memiliki nilai Hafalan / Bahasa Arab
+      const hasMACandidates = filteredCandidates.some(
+        (c) =>
+          isJenjangTanpaIL(c.jenjang) ||
+          c.nilai_ujian?.score_hafalan != null ||
+          c.nilai_ujian?.score_arab != null
+      );
+
       const header = [
         "No",
         "No. Pendaftaran",
         "Nama Lengkap",
         "Jenjang",
-        "Al-Qur'an",
         "Akademik",
         "Kepribadian",
-        "W. Santri",
-        "W. Ortu",
         "Kesiapan",
+        "Al-Qur'an",
+        "Wawancara Calsan",
+        "Wawancara Cawalsan",
+        ...(hasMACandidates ? ["Hafalan", "Bahasa Arab"] : []),
         "Total Skor",
         "Grade",
         "Rekomendasi / Keputusan",
         "Kelengkapan",
       ];
 
-      const fmt = (v: any) => (v != null ? Number(v).toFixed(1) : "-");
-
       const rows = filteredCandidates.map((c, idx) => {
         const nu = c.nilai_ujian;
         const total = nu?.nilai_total != null ? Number(nu.nilai_total).toFixed(2) : "-";
-        const grade = nu?.nilai_total != null ? (Number(nu.nilai_total) >= 85 ? "A" : Number(nu.nilai_total) >= 75 ? "B" : Number(nu.nilai_total) >= 60 ? "C" : "D") : "-";
+        const grade =
+          nu?.nilai_total != null
+            ? Number(nu.nilai_total) >= 85
+              ? "A"
+              : Number(nu.nilai_total) >= 75
+                ? "B"
+                : Number(nu.nilai_total) >= 60
+                  ? "C"
+                  : "D"
+            : "-";
         const ws = nu?.nilai_wawancara_santri ?? nu?.score_wawancara;
         const wo = nu?.nilai_wawancara_ortu;
 
@@ -641,20 +708,34 @@ function PengumumanContent() {
         } else if (activeTab === "sudah_diumumkan") {
           statusText = c.status_pendaftaran?.toUpperCase() || c.pengumuman?.status_kelulusan || "DITERBITKAN";
         } else {
-          statusText = getKategoriBelumLengkap(c) === "belum_pilih_jadwal" ? "Belum Pilih Jadwal" : "Menunggu Penilaian Penguji";
+          statusText =
+            getKategoriBelumLengkap(c) === "belum_pilih_jadwal"
+              ? "Belum Pilih Jadwal"
+              : "Menunggu Penilaian Penguji";
         }
+
+        const isCandidateMA =
+          isJenjangTanpaIL(c.jenjang) ||
+          nu?.score_hafalan != null ||
+          nu?.score_arab != null;
 
         return [
           idx + 1,
           c.nomor_pendaftaran || "-",
           (c.nama_lengkap || "").toUpperCase(),
           c.jenjang || "-",
-          fmt(nu?.score_quran),
-          fmt(nu?.score_akademik),
-          fmt(nu?.score_kepribadian),
-          fmt(ws),
-          fmt(wo),
-          fmt(nu?.score_kesiapan),
+          formatScoreWithGrade(nu?.score_akademik, "akademik"),
+          formatScoreWithGrade(nu?.score_kepribadian, "kepribadian"),
+          formatScoreWithGrade(nu?.score_kesiapan, "kesiapan"),
+          formatScoreWithGrade(nu?.score_quran, "quran"),
+          formatScoreWithGrade(ws, "wawancara_santri"),
+          formatScoreWithGrade(wo, "wawancara_ortu"),
+          ...(hasMACandidates
+            ? [
+                isCandidateMA ? formatScoreWithGrade(nu?.score_hafalan, "hafalan") : "-",
+                isCandidateMA ? formatScoreWithGrade(nu?.score_arab, "arab") : "-",
+              ]
+            : []),
           total,
           grade,
           statusText,
@@ -697,28 +778,43 @@ function PengumumanContent() {
             ? "REKAPITULASI PENETAPAN KELULUSAN SANTRI PPDB"
             : "REKAPITULASI SANTRI PROSES SELEKSI PPDB";
 
+      const hasMACandidates = filteredCandidates.some(
+        (c) =>
+          isJenjangTanpaIL(c.jenjang) ||
+          c.nilai_ujian?.score_hafalan != null ||
+          c.nilai_ujian?.score_arab != null
+      );
+
       const columns = [
         "No",
         "No. Pendaftaran",
         "Nama Lengkap",
         "Jenjang",
-        "Qur'an",
         "Akademik",
         "Kepribadian",
-        "W. Santri",
-        "W. Ortu",
         "Kesiapan",
+        "Al-Qur'an",
+        "W. Calsan",
+        "W. Cawalsan",
+        ...(hasMACandidates ? ["Hafalan", "B. Arab"] : []),
         "Total",
         "Grade",
         "Status / Rekomendasi",
       ];
 
-      const fmt = (v: any) => (v != null ? Number(v).toFixed(0) : "-");
-
       const data = filteredCandidates.map((c, idx) => {
         const nu = c.nilai_ujian;
         const total = nu?.nilai_total != null ? Number(nu.nilai_total).toFixed(1) : "-";
-        const grade = nu?.nilai_total != null ? (Number(nu.nilai_total) >= 85 ? "A" : Number(nu.nilai_total) >= 75 ? "B" : Number(nu.nilai_total) >= 60 ? "C" : "D") : "-";
+        const grade =
+          nu?.nilai_total != null
+            ? Number(nu.nilai_total) >= 85
+              ? "A"
+              : Number(nu.nilai_total) >= 75
+                ? "B"
+                : Number(nu.nilai_total) >= 60
+                  ? "C"
+                  : "D"
+            : "-";
         const ws = nu?.nilai_wawancara_santri ?? nu?.score_wawancara;
         const wo = nu?.nilai_wawancara_ortu;
 
@@ -729,20 +825,32 @@ function PengumumanContent() {
         } else if (activeTab === "sudah_diumumkan") {
           statusText = c.status_pendaftaran?.toUpperCase() || "DITERBITKAN";
         } else {
-          statusText = getKategoriBelumLengkap(c) === "belum_pilih_jadwal" ? "Belum Jadwal" : "Menunggu Nilai";
+          statusText =
+            getKategoriBelumLengkap(c) === "belum_pilih_jadwal" ? "Belum Jadwal" : "Menunggu Nilai";
         }
+
+        const isCandidateMA =
+          isJenjangTanpaIL(c.jenjang) ||
+          nu?.score_hafalan != null ||
+          nu?.score_arab != null;
 
         return [
           String(idx + 1),
           c.nomor_pendaftaran || "-",
-          (c.nama_lengkap || "").substring(0, 22),
+          (c.nama_lengkap || "").substring(0, 20),
           c.jenjang || "-",
-          fmt(nu?.score_quran),
-          fmt(nu?.score_akademik),
-          fmt(nu?.score_kepribadian),
-          fmt(ws),
-          fmt(wo),
-          fmt(nu?.score_kesiapan),
+          formatScoreWithGrade(nu?.score_akademik, "akademik"),
+          formatScoreWithGrade(nu?.score_kepribadian, "kepribadian"),
+          formatScoreWithGrade(nu?.score_kesiapan, "kesiapan"),
+          formatScoreWithGrade(nu?.score_quran, "quran"),
+          formatScoreWithGrade(ws, "wawancara_santri"),
+          formatScoreWithGrade(wo, "wawancara_ortu"),
+          ...(hasMACandidates
+            ? [
+                isCandidateMA ? formatScoreWithGrade(nu?.score_hafalan, "hafalan") : "-",
+                isCandidateMA ? formatScoreWithGrade(nu?.score_arab, "arab") : "-",
+              ]
+            : []),
           total,
           grade,
           statusText,
@@ -1370,14 +1478,16 @@ function PengumumanContent() {
                         </div>
                         <div className="flex items-center gap-1.5 flex-wrap">
                           <div className="flex gap-1 items-center" title="Predikat per Komponen (Arahkan kursor untuk skor angka)">
-                            {getGradeBadge(nu?.score_quran, "quran", "Al-Qur'an", activeTab === "proses_seleksi")}
                             {getGradeBadge(nu?.score_akademik, "akademik", "Akademik", activeTab === "proses_seleksi")}
                             {getGradeBadge(nu?.score_kepribadian, "kepribadian", "Kepribadian", activeTab === "proses_seleksi")}
-                            {getGradeBadge(ws, "wawancara_santri", "W. Santri", activeTab === "proses_seleksi")}
-                            {getGradeBadge(wo, "wawancara_ortu", "W. Ortu", activeTab === "proses_seleksi")}
                             {getGradeBadge(nu?.score_kesiapan, "kesiapan", "Kesiapan", activeTab === "proses_seleksi")}
-                            {nu?.score_hafalan != null && getGradeBadge(nu?.score_hafalan, "hafalan", "Hafalan")}
-                            {nu?.score_arab != null && getGradeBadge(nu?.score_arab, "arab", "B. Arab")}
+                            {getGradeBadge(nu?.score_quran, "quran", "Al-Qur'an", activeTab === "proses_seleksi")}
+                            {getGradeBadge(ws, "wawancara_santri", "W. Calsan", activeTab === "proses_seleksi")}
+                            {getGradeBadge(wo, "wawancara_ortu", "W. Cawalsan", activeTab === "proses_seleksi")}
+                            {(isJenjangTanpaIL(c.jenjang) || nu?.score_hafalan != null) &&
+                              getGradeBadge(nu?.score_hafalan, "hafalan", "Hafalan", activeTab === "proses_seleksi")}
+                            {(isJenjangTanpaIL(c.jenjang) || nu?.score_arab != null) &&
+                              getGradeBadge(nu?.score_arab, "arab", "B. Arab", activeTab === "proses_seleksi")}
                           </div>
                           {c.exam_score_count >= 6 ? (
                             <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
@@ -1802,36 +1912,9 @@ function PengumumanContent() {
                   const nu = c.nilai_ujian;
                   const j = c.jadwal_ujian;
                   const ws = nu?.nilai_wawancara_santri ?? nu?.score_wawancara;
-                  const isMA = (c.jenjang || "").toUpperCase() === "MA" || (c.jenjang || "").toUpperCase() === "SMA";
+                  const isMA = isJenjangTanpaIL(c.jenjang) || nu?.score_hafalan != null || nu?.score_arab != null;
 
                   const components = [
-                    {
-                      key: "quran",
-                      name: "Tes Bacaan Al-Qur'an",
-                      score: nu?.score_quran,
-                      type: "penguji",
-                      penguji_name: j?.penguji_quran?.full_name || null,
-                      penguji_phone: j?.penguji_quran?.phone || null,
-                      role_label: "Penguji Al-Qur'an",
-                    },
-                    {
-                      key: "wawancara_santri",
-                      name: "Wawancara Calon Santri",
-                      score: ws,
-                      type: "penguji",
-                      penguji_name: j?.penguji_santri?.full_name || null,
-                      penguji_phone: j?.penguji_santri?.phone || null,
-                      role_label: "Pewawancara Santri",
-                    },
-                    {
-                      key: "wawancara_ortu",
-                      name: "Wawancara Orang Tua / Wali",
-                      score: nu?.nilai_wawancara_ortu,
-                      type: "penguji",
-                      penguji_name: j?.penguji_ortu?.full_name || null,
-                      penguji_phone: j?.penguji_ortu?.phone || null,
-                      role_label: "Pewawancara Orang Tua",
-                    },
                     {
                       key: "akademik",
                       name: "CBT Potensi Akademik",
@@ -1852,6 +1935,33 @@ function PengumumanContent() {
                       score: nu?.score_kesiapan,
                       type: "sistem",
                       desc: "Evaluasi kesiapan santri tinggal di asrama.",
+                    },
+                    {
+                      key: "quran",
+                      name: "Tes Bacaan Al-Qur'an",
+                      score: nu?.score_quran,
+                      type: "penguji",
+                      penguji_name: j?.penguji_quran?.full_name || null,
+                      penguji_phone: j?.penguji_quran?.phone || null,
+                      role_label: "Penguji Al-Qur'an",
+                    },
+                    {
+                      key: "wawancara_santri",
+                      name: "Wawancara Calon Santri (Calsan)",
+                      score: ws,
+                      type: "penguji",
+                      penguji_name: j?.penguji_santri?.full_name || null,
+                      penguji_phone: j?.penguji_santri?.phone || null,
+                      role_label: "Pewawancara Santri",
+                    },
+                    {
+                      key: "wawancara_ortu",
+                      name: "Wawancara Orang Tua / Wali (Cawalsan)",
+                      score: nu?.nilai_wawancara_ortu,
+                      type: "penguji",
+                      penguji_name: j?.penguji_ortu?.full_name || null,
+                      penguji_phone: j?.penguji_ortu?.phone || null,
+                      role_label: "Pewawancara Orang Tua",
                     },
                   ];
 
