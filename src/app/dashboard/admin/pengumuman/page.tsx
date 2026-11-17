@@ -14,6 +14,7 @@ import {
   Info,
   Loader2,
   MessageCircle,
+  MessageSquare,
   RotateCcw,
   Search,
   Send,
@@ -50,6 +51,7 @@ function PengumumanContent() {
     nomor_pendaftaran: string;
   } | null>(null);
   const [selectedMissingCandidate, setSelectedMissingCandidate] = useState<any | null>(null);
+  const [selectedNotesCandidate, setSelectedNotesCandidate] = useState<any | null>(null);
 
   // Helper WhatsApp & Phone
   const formatPhoneForWA = (phone?: string | null): string => {
@@ -644,6 +646,51 @@ function PengumumanContent() {
     return `${s.toFixed(1)} (${grade})`;
   };
 
+  const getExaminerName = (
+    c: any,
+    componentKey: "quran" | "wawancara_santri" | "wawancara_ortu" | "hafalan" | "arab"
+  ): string => {
+    if (c?.examiner_info?.[componentKey]?.name && c.examiner_info[componentKey].name !== "-") {
+      return c.examiner_info[componentKey].name;
+    }
+    const nu = c?.nilai_ujian;
+    const ju = c?.jadwal_ujian;
+    if (componentKey === "quran") {
+      return nu?.input_by_quran_profile?.full_name || nu?.detail_quran?.nama_penguji || ju?.penguji_quran?.full_name || "-";
+    } else if (componentKey === "wawancara_santri") {
+      return nu?.input_by_santri_profile?.full_name || nu?.detail_wawancara?.nama_pewawancara || ju?.penguji_santri?.full_name || "-";
+    } else if (componentKey === "wawancara_ortu") {
+      return nu?.input_by_ortu_profile?.full_name || nu?.detail_cawalsan?.nama_pewawancara || ju?.penguji_ortu?.full_name || "-";
+    } else if (componentKey === "hafalan") {
+      return nu?.input_by_hafalan_profile?.full_name || nu?.detail_hafalan?.nama_penguji || ju?.penguji_hafalan?.full_name || "-";
+    } else if (componentKey === "arab") {
+      return nu?.input_by_arab_profile?.full_name || nu?.detail_arab?.nama_penguji || ju?.penguji_arab?.full_name || "-";
+    }
+    return "-";
+  };
+
+  const getExaminerNotes = (
+    c: any,
+    componentKey: "quran" | "wawancara_santri" | "wawancara_ortu" | "hafalan" | "arab"
+  ): string => {
+    if (c?.examiner_info?.[componentKey]?.notes && c.examiner_info[componentKey].notes !== "-") {
+      return c.examiner_info[componentKey].notes;
+    }
+    const nu = c?.nilai_ujian;
+    if (componentKey === "quran") {
+      return nu?.catatan_quran || nu?.detail_quran?.catatan || "-";
+    } else if (componentKey === "wawancara_santri") {
+      return nu?.catatan_santri || nu?.detail_wawancara?.catatan || "-";
+    } else if (componentKey === "wawancara_ortu") {
+      return nu?.catatan_ortu || nu?.detail_cawalsan?.catatan || "-";
+    } else if (componentKey === "hafalan") {
+      return nu?.catatan_hafalan || nu?.detail_hafalan?.catatan_tambahan || "-";
+    } else if (componentKey === "arab") {
+      return nu?.catatan_arab || nu?.detail_arab?.catatan_tambahan || "-";
+    }
+    return "-";
+  };
+
   const handleExportExcel = async () => {
     if (!filteredCandidates.length) {
       toast.error("Tidak ada data santri untuk diekspor");
@@ -676,9 +723,24 @@ function PengumumanContent() {
         "Kepribadian",
         "Kesiapan",
         "Al-Qur'an",
+        "Penguji Al-Qur'an",
+        "Catatan Al-Qur'an",
         "Wawancara Calsan",
+        "Pewawancara Calsan",
+        "Catatan Calsan",
         "Wawancara Cawalsan",
-        ...(hasMACandidates ? ["Hafalan", "Bahasa Arab"] : []),
+        "Pewawancara Cawalsan",
+        "Catatan Cawalsan",
+        ...(hasMACandidates
+          ? [
+              "Hafalan",
+              "Penguji Hafalan",
+              "Catatan Hafalan",
+              "Bahasa Arab",
+              "Penguji B. Arab",
+              "Catatan B. Arab",
+            ]
+          : []),
         "Total Skor",
         "Grade",
         "Rekomendasi / Keputusan",
@@ -728,12 +790,22 @@ function PengumumanContent() {
           formatScoreWithGrade(nu?.score_kepribadian, "kepribadian"),
           formatScoreWithGrade(nu?.score_kesiapan, "kesiapan"),
           formatScoreWithGrade(nu?.score_quran, "quran"),
+          getExaminerName(c, "quran"),
+          getExaminerNotes(c, "quran"),
           formatScoreWithGrade(ws, "wawancara_santri"),
+          getExaminerName(c, "wawancara_santri"),
+          getExaminerNotes(c, "wawancara_santri"),
           formatScoreWithGrade(wo, "wawancara_ortu"),
+          getExaminerName(c, "wawancara_ortu"),
+          getExaminerNotes(c, "wawancara_ortu"),
           ...(hasMACandidates
             ? [
                 isCandidateMA ? formatScoreWithGrade(nu?.score_hafalan, "hafalan") : "-",
+                isCandidateMA ? getExaminerName(c, "hafalan") : "-",
+                isCandidateMA ? getExaminerNotes(c, "hafalan") : "-",
                 isCandidateMA ? formatScoreWithGrade(nu?.score_arab, "arab") : "-",
+                isCandidateMA ? getExaminerName(c, "arab") : "-",
+                isCandidateMA ? getExaminerNotes(c, "arab") : "-",
               ]
             : []),
           total,
@@ -743,19 +815,108 @@ function PengumumanContent() {
         ];
       });
 
+      // Sheet 2: Khusus fokus pada Catatan Penguji & Pewawancara untuk Rapat Pleno
+      const headerCatatan = [
+        "No",
+        "No. Pendaftaran",
+        "Nama Lengkap",
+        "Jenjang",
+        "Total Skor",
+        "Grade",
+        "Rekomendasi / Keputusan",
+        "Penguji Al-Qur'an",
+        "Catatan Penguji Al-Qur'an",
+        "Pewawancara Calsan",
+        "Catatan Pewawancara Calsan",
+        "Pewawancara Cawalsan",
+        "Catatan Pewawancara Cawalsan",
+        ...(hasMACandidates
+          ? [
+              "Penguji Hafalan",
+              "Catatan Penguji Hafalan",
+              "Penguji Bahasa Arab",
+              "Catatan Penguji Bahasa Arab",
+            ]
+          : []),
+      ];
+
+      const rowsCatatan = filteredCandidates.map((c, idx) => {
+        const nu = c.nilai_ujian;
+        const total = nu?.nilai_total != null ? Number(nu.nilai_total).toFixed(2) : "-";
+        const grade =
+          nu?.nilai_total != null
+            ? Number(nu.nilai_total) >= 85
+              ? "A"
+              : Number(nu.nilai_total) >= 75
+                ? "B"
+                : Number(nu.nilai_total) >= 60
+                  ? "C"
+                  : "D"
+            : "-";
+
+        let statusText = "-";
+        if (activeTab === "siap_pleno") {
+          const rek = getRekomendasiDetail(c);
+          statusText = `${rek.badgeText} - ${rek.subText}`;
+        } else if (activeTab === "sudah_diumumkan") {
+          statusText = c.status_pendaftaran?.toUpperCase() || c.pengumuman?.status_kelulusan || "DITERBITKAN";
+        } else {
+          statusText =
+            getKategoriBelumLengkap(c) === "belum_pilih_jadwal"
+              ? "Belum Pilih Jadwal"
+              : "Menunggu Penilaian Penguji";
+        }
+
+        const isCandidateMA =
+          isJenjangTanpaIL(c.jenjang) ||
+          nu?.score_hafalan != null ||
+          nu?.score_arab != null;
+
+        return [
+          idx + 1,
+          c.nomor_pendaftaran || "-",
+          (c.nama_lengkap || "").toUpperCase(),
+          c.jenjang || "-",
+          total,
+          grade,
+          statusText,
+          getExaminerName(c, "quran"),
+          getExaminerNotes(c, "quran"),
+          getExaminerName(c, "wawancara_santri"),
+          getExaminerNotes(c, "wawancara_santri"),
+          getExaminerName(c, "wawancara_ortu"),
+          getExaminerNotes(c, "wawancara_ortu"),
+          ...(hasMACandidates
+            ? [
+                isCandidateMA ? getExaminerName(c, "hafalan") : "-",
+                isCandidateMA ? getExaminerNotes(c, "hafalan") : "-",
+                isCandidateMA ? getExaminerName(c, "arab") : "-",
+                isCandidateMA ? getExaminerNotes(c, "arab") : "-",
+              ]
+            : []),
+        ];
+      });
+
       await exportToExcelProfessional({
         fileName: `Rekap_${activeTab}_${new Date().toISOString().split("T")[0]}`,
         sheets: [
           {
-            name: "Rekap Santri",
+            name: "Rekap Nilai & Penguji",
             title: tabTitle,
             subTitle: `Tanggal Ekspor: ${new Date().toLocaleDateString("id-ID")} | Total: ${filteredCandidates.length} Santri`,
             header,
             data: rows,
           },
+          {
+            name: "Catatan Rapat Pleno",
+            title: "CATATAN & EVALUASI PENGUJI UNTUK RAPAT PLENO PPDB",
+            subTitle: `Tanggal Ekspor: ${new Date().toLocaleDateString("id-ID")} | Total: ${filteredCandidates.length} Santri`,
+            header: headerCatatan,
+            data: rowsCatatan,
+          },
         ],
       });
-      toast.success("File Excel berhasil diunduh!");
+      toast.success("File Excel berhasil diunduh dengan rincian nama penguji & catatan lengkap!");
     } catch (e: any) {
       console.error(e);
       toast.error("Gagal mengekspor data ke Excel");
@@ -857,14 +1018,55 @@ function PengumumanContent() {
         ];
       });
 
+      const pdfDetailTable = {
+        title: "DETAIL CATATAN PENGUJI & EVALUASI SELEKSI (RAPAT PLENO PPDB)",
+        columns: [
+          "No",
+          "No. Daftar",
+          "Nama Lengkap",
+          "Rekomendasi",
+          "Al-Qur'an (Penguji & Catatan)",
+          "W. Calsan (Pewawancara & Catatan)",
+          "W. Cawalsan (Pewawancara & Catatan)",
+          ...(hasMACandidates ? ["Hafalan & B. Arab"] : []),
+        ],
+        data: filteredCandidates.map((c, idx) => {
+          const isCandidateMA =
+            isJenjangTanpaIL(c.jenjang) ||
+            c.nilai_ujian?.score_hafalan != null ||
+            c.nilai_ujian?.score_arab != null;
+
+          const rek = getRekomendasiDetail(c);
+          const quranNote = `${getExaminerName(c, "quran")}\n"${getExaminerNotes(c, "quran")}"`;
+          const wsNote = `${getExaminerName(c, "wawancara_santri")}\n"${getExaminerNotes(c, "wawancara_santri")}"`;
+          const woNote = `${getExaminerName(c, "wawancara_ortu")}\n"${getExaminerNotes(c, "wawancara_ortu")}"`;
+
+          const maNotes = isCandidateMA
+            ? `Hafalan (${getExaminerName(c, "hafalan")}): "${getExaminerNotes(c, "hafalan")}"\nArab (${getExaminerName(c, "arab")}): "${getExaminerNotes(c, "arab")}"`
+            : "-";
+
+          return [
+            String(idx + 1),
+            c.nomor_pendaftaran || "-",
+            (c.nama_lengkap || "").substring(0, 22),
+            rek.badgeText,
+            quranNote,
+            wsNote,
+            woNote,
+            ...(hasMACandidates ? [maNotes] : []),
+          ];
+        }),
+      };
+
       exportToPDF(
         tabTitle,
         columns,
         data,
         `Rekap_${activeTab}_${new Date().toISOString().split("T")[0]}`,
-        "landscape"
+        "landscape",
+        pdfDetailTable
       );
-      toast.success("File PDF berhasil diunduh!");
+      toast.success("File PDF berhasil diunduh lengkap dengan catatan penguji!");
     } catch (e: any) {
       console.error(e);
       toast.error("Gagal mengekspor data ke PDF");
@@ -1498,6 +1700,16 @@ function PengumumanContent() {
                               {c.exam_score_count}/6 Nilai
                             </span>
                           ) : null}
+
+                          <button
+                            type="button"
+                            onClick={() => setSelectedNotesCandidate(c)}
+                            className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-stone-100 hover:bg-emerald-50 text-stone-700 hover:text-emerald-800 border border-stone-200 hover:border-emerald-300 rounded-full text-[10px] font-bold transition-all shadow-2xs cursor-pointer group"
+                            title="Lihat Nama Penguji & Catatan Evaluasi Rapat"
+                          >
+                            <MessageSquare className="w-3 h-3 text-emerald-600 group-hover:scale-110 transition-transform" />
+                            <span>Catatan &amp; Penguji</span>
+                          </button>
                         </div>
 
                         {activeTab === "proses_seleksi" && getKategoriBelumLengkap(c) === "menunggu_penilaian" && (
@@ -2121,6 +2333,179 @@ function PengumumanContent() {
                   Tutup
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Modal Detail Catatan & Penguji Evaluasi (Rapat Pleno) */}
+      {selectedNotesCandidate && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
+          <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col border border-stone-200 animate-in fade-in zoom-in-95 duration-200">
+            {/* Modal Header */}
+            <div className="px-6 py-5 bg-gradient-to-r from-emerald-700 via-teal-700 to-emerald-800 text-white flex items-center justify-between shrink-0">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
+                  <MessageSquare className="w-5 h-5 text-emerald-200" />
+                </div>
+                <div>
+                  <h3 className="text-base font-black tracking-tight leading-tight">
+                    Catatan &amp; Evaluasi Penguji
+                  </h3>
+                  <p className="text-xs text-emerald-100/90 font-medium">
+                    {toTitleCase(selectedNotesCandidate.nama_lengkap)} • {selectedNotesCandidate.nomor_pendaftaran} ({selectedNotesCandidate.jenjang})
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setSelectedNotesCandidate(null)}
+                className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all cursor-pointer"
+                title="Tutup Modal"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-6 overflow-y-auto space-y-4">
+              {/* Summary Bar */}
+              <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200 flex items-center justify-between flex-wrap gap-3">
+                <div>
+                  <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block">Total Skor</span>
+                  <span className="text-lg font-black text-stone-900">
+                    {selectedNotesCandidate.nilai_ujian?.nilai_total != null ? Number(selectedNotesCandidate.nilai_ujian.nilai_total).toFixed(2) : "-"}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block">Grade</span>
+                  <span className="text-lg font-black text-stone-900">
+                    {selectedNotesCandidate.nilai_ujian?.nilai_total != null
+                      ? Number(selectedNotesCandidate.nilai_ujian.nilai_total) >= 85 ? "A" : Number(selectedNotesCandidate.nilai_ujian.nilai_total) >= 75 ? "B" : Number(selectedNotesCandidate.nilai_ujian.nilai_total) >= 60 ? "C" : "D"
+                      : "-"}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block">Rekomendasi</span>
+                  <span className="text-xs font-black text-stone-800">
+                    {getRekomendasiDetail(selectedNotesCandidate).badgeText}
+                  </span>
+                </div>
+              </div>
+
+              {/* Catatan Al-Qur'an */}
+              <div className="p-4 rounded-2xl bg-emerald-50/50 border border-emerald-200/80 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    <h4 className="text-xs font-black text-emerald-950 uppercase tracking-wider">Tes Al-Qur&apos;an</h4>
+                  </div>
+                  <span className="text-xs font-bold text-emerald-800 bg-emerald-100/80 px-2 py-0.5 rounded-md">
+                    Nilai: {formatScoreWithGrade(selectedNotesCandidate.nilai_ujian?.score_quran, "quran")}
+                  </span>
+                </div>
+                <div className="text-xs text-stone-700">
+                  <span className="font-bold text-stone-500">Penguji: </span>
+                  <span className="font-semibold text-stone-900">{getExaminerName(selectedNotesCandidate, "quran")}</span>
+                </div>
+                <div className="bg-white p-3 rounded-xl border border-emerald-100 text-xs text-stone-800 italic leading-relaxed">
+                  &ldquo;{getExaminerNotes(selectedNotesCandidate, "quran")}&rdquo;
+                </div>
+              </div>
+
+              {/* Catatan Wawancara Calsan */}
+              <div className="p-4 rounded-2xl bg-blue-50/50 border border-blue-200/80 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                    <h4 className="text-xs font-black text-blue-950 uppercase tracking-wider">Wawancara Calon Santri</h4>
+                  </div>
+                  <span className="text-xs font-bold text-blue-800 bg-blue-100/80 px-2 py-0.5 rounded-md">
+                    Nilai: {formatScoreWithGrade(selectedNotesCandidate.nilai_ujian?.nilai_wawancara_santri ?? selectedNotesCandidate.nilai_ujian?.score_wawancara, "wawancara_santri")}
+                  </span>
+                </div>
+                <div className="text-xs text-stone-700">
+                  <span className="font-bold text-stone-500">Pewawancara: </span>
+                  <span className="font-semibold text-stone-900">{getExaminerName(selectedNotesCandidate, "wawancara_santri")}</span>
+                </div>
+                <div className="bg-white p-3 rounded-xl border border-blue-100 text-xs text-stone-800 italic leading-relaxed">
+                  &ldquo;{getExaminerNotes(selectedNotesCandidate, "wawancara_santri")}&rdquo;
+                </div>
+              </div>
+
+              {/* Catatan Wawancara Cawalsan */}
+              <div className="p-4 rounded-2xl bg-amber-50/50 border border-amber-200/80 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-amber-500"></span>
+                    <h4 className="text-xs font-black text-amber-950 uppercase tracking-wider">Wawancara Calon Wali Santri</h4>
+                  </div>
+                  <span className="text-xs font-bold text-amber-800 bg-amber-100/80 px-2 py-0.5 rounded-md">
+                    Nilai: {formatScoreWithGrade(selectedNotesCandidate.nilai_ujian?.nilai_wawancara_ortu, "wawancara_ortu")}
+                  </span>
+                </div>
+                <div className="text-xs text-stone-700">
+                  <span className="font-bold text-stone-500">Pewawancara: </span>
+                  <span className="font-semibold text-stone-900">{getExaminerName(selectedNotesCandidate, "wawancara_ortu")}</span>
+                </div>
+                <div className="bg-white p-3 rounded-xl border border-amber-100 text-xs text-stone-800 italic leading-relaxed">
+                  &ldquo;{getExaminerNotes(selectedNotesCandidate, "wawancara_ortu")}&rdquo;
+                </div>
+              </div>
+
+              {/* Catatan Hafalan (jika ada) */}
+              {(isJenjangTanpaIL(selectedNotesCandidate.jenjang) || selectedNotesCandidate.nilai_ujian?.score_hafalan != null) && (
+                <div className="p-4 rounded-2xl bg-teal-50/50 border border-teal-200/80 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-teal-500"></span>
+                      <h4 className="text-xs font-black text-teal-950 uppercase tracking-wider">Tes Hafalan</h4>
+                    </div>
+                    <span className="text-xs font-bold text-teal-800 bg-teal-100/80 px-2 py-0.5 rounded-md">
+                      Nilai: {formatScoreWithGrade(selectedNotesCandidate.nilai_ujian?.score_hafalan, "hafalan")}
+                    </span>
+                  </div>
+                  <div className="text-xs text-stone-700">
+                    <span className="font-bold text-stone-500">Penguji: </span>
+                    <span className="font-semibold text-stone-900">{getExaminerName(selectedNotesCandidate, "hafalan")}</span>
+                  </div>
+                  <div className="bg-white p-3 rounded-xl border border-teal-100 text-xs text-stone-800 italic leading-relaxed">
+                    &ldquo;{getExaminerNotes(selectedNotesCandidate, "hafalan")}&rdquo;
+                  </div>
+                </div>
+              )}
+
+              {/* Catatan Bahasa Arab (jika ada) */}
+              {(isJenjangTanpaIL(selectedNotesCandidate.jenjang) || selectedNotesCandidate.nilai_ujian?.score_arab != null) && (
+                <div className="p-4 rounded-2xl bg-sky-50/50 border border-sky-200/80 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-sky-500"></span>
+                      <h4 className="text-xs font-black text-sky-950 uppercase tracking-wider">Tes Bahasa Arab</h4>
+                    </div>
+                    <span className="text-xs font-bold text-sky-800 bg-sky-100/80 px-2 py-0.5 rounded-md">
+                      Nilai: {formatScoreWithGrade(selectedNotesCandidate.nilai_ujian?.score_arab, "arab")}
+                    </span>
+                  </div>
+                  <div className="text-xs text-stone-700">
+                    <span className="font-bold text-stone-500">Penguji: </span>
+                    <span className="font-semibold text-stone-900">{getExaminerName(selectedNotesCandidate, "arab")}</span>
+                  </div>
+                  <div className="bg-white p-3 rounded-xl border border-sky-100 text-xs text-stone-800 italic leading-relaxed">
+                    &ldquo;{getExaminerNotes(selectedNotesCandidate, "arab")}&rdquo;
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="px-6 py-4 bg-stone-50 border-t border-stone-200 flex items-center justify-end shrink-0">
+              <button
+                type="button"
+                onClick={() => setSelectedNotesCandidate(null)}
+                className="px-5 py-2.5 bg-stone-900 hover:bg-stone-800 text-white rounded-xl text-xs font-bold transition-all shadow-sm cursor-pointer"
+              >
+                Tutup
+              </button>
             </div>
           </div>
         </div>

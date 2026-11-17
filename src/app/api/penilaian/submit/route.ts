@@ -57,6 +57,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing fields" }, { status: 400 });
     }
 
+    if (!details?.catatan || !details.catatan.trim()) {
+      return NextResponse.json(
+        { error: "Catatan/komentar evaluasi wajib diisi untuk keperluan rapat pleno." },
+        { status: 400 },
+      );
+    }
+
     // RBAC Validation (Bypassed if user is Admin / Admin Super)
     if (!isSuper) {
       const allowedRolesForType: Record<string, string[]> = {

@@ -303,6 +303,42 @@ export async function GET(request: NextRequest) {
             catatan_kelulusan: true,
             updated_at: true,
             detail_akademik: true,
+            score_hafalan: true,
+            score_arab: true,
+            nilai_hafalan_total: true,
+            nilai_arab_total: true,
+            catatan_quran: true,
+            catatan_santri: true,
+            catatan_ortu: true,
+            catatan_hafalan: true,
+            catatan_arab: true,
+            catatan_tes_tertulis: true,
+            catatan_umum: true,
+            detail_quran: true,
+            detail_wawancara: true,
+            detail_cawalsan: true,
+            detail_hafalan: true,
+            detail_arab: true,
+            input_by_quran: true,
+            input_by_santri: true,
+            input_by_ortu: true,
+            input_by_hafalan: true,
+            input_by_arab: true,
+            input_by_quran_profile: {
+              select: { id: true, full_name: true },
+            },
+            input_by_santri_profile: {
+              select: { id: true, full_name: true },
+            },
+            input_by_ortu_profile: {
+              select: { id: true, full_name: true },
+            },
+            input_by_hafalan_profile: {
+              select: { id: true, full_name: true },
+            },
+            input_by_arab_profile: {
+              select: { id: true, full_name: true },
+            },
           },
         },
         pengumuman: {
@@ -329,6 +365,8 @@ export async function GET(request: NextRequest) {
             penguji_quran_id: true,
             penguji_santri_id: true,
             penguji_ortu_id: true,
+            penguji_hafalan_id: true,
+            penguji_arab_id: true,
             penguji_quran: {
               select: { id: true, full_name: true, phone: true },
             },
@@ -536,9 +574,68 @@ export async function GET(request: NextRequest) {
         item.orang_tua?.nama_wali ||
         "Bapak/Ibu Wali Santri";
 
+      const examinerInfo = {
+        quran: {
+          name:
+            mergedNilai?.input_by_quran_profile?.full_name ||
+            mergedNilai?.detail_quran?.nama_penguji ||
+            j?.penguji_quran?.full_name ||
+            "-",
+          notes:
+            mergedNilai?.catatan_quran ||
+            mergedNilai?.detail_quran?.catatan ||
+            "-",
+        },
+        wawancara_santri: {
+          name:
+            mergedNilai?.input_by_santri_profile?.full_name ||
+            mergedNilai?.detail_wawancara?.nama_pewawancara ||
+            j?.penguji_santri?.full_name ||
+            "-",
+          notes:
+            mergedNilai?.catatan_santri ||
+            mergedNilai?.detail_wawancara?.catatan ||
+            "-",
+        },
+        wawancara_ortu: {
+          name:
+            mergedNilai?.input_by_ortu_profile?.full_name ||
+            mergedNilai?.detail_cawalsan?.nama_pewawancara ||
+            j?.penguji_ortu?.full_name ||
+            "-",
+          notes:
+            mergedNilai?.catatan_ortu ||
+            mergedNilai?.detail_cawalsan?.catatan ||
+            "-",
+        },
+        hafalan: {
+          name:
+            mergedNilai?.input_by_hafalan_profile?.full_name ||
+            mergedNilai?.detail_hafalan?.nama_penguji ||
+            j?.penguji_hafalan?.full_name ||
+            "-",
+          notes:
+            mergedNilai?.catatan_hafalan ||
+            mergedNilai?.detail_hafalan?.catatan_tambahan ||
+            "-",
+        },
+        arab: {
+          name:
+            mergedNilai?.input_by_arab_profile?.full_name ||
+            mergedNilai?.detail_arab?.nama_penguji ||
+            j?.penguji_arab?.full_name ||
+            "-",
+          notes:
+            mergedNilai?.catatan_arab ||
+            mergedNilai?.detail_arab?.catatan_tambahan ||
+            "-",
+        },
+      };
+
       return {
         ...item,
         nilai_ujian: mergedNilai,
+        examiner_info: examinerInfo,
         exam_score_count: examScoreCount,
         exam_status: examStatus,
         has_jadwal: hasValidJadwal,

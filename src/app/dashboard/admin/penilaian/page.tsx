@@ -253,6 +253,11 @@ export default function ExaminerDashboard() {
       return;
     }
 
+    if (!catatan || !catatan.trim()) {
+      Swal.fire("Peringatan", "Catatan / Komentar penguji wajib diisi sebelum menyimpan nilai.", "warning");
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       let finalScore = 0;
@@ -2261,13 +2266,14 @@ export default function ExaminerDashboard() {
 
                   <div>
                     <label className="block text-xs font-black text-ink-400 uppercase tracking-wider mb-2">
-                      Catatan Khusus
+                      Catatan / Komentar Penguji <span className="text-red-500 font-bold">* (Wajib Diisi untuk Rapat)</span>
                     </label>
                     <textarea
                       value={catatan}
                       onChange={(e) => setCatatan(e.target.value)}
                       rows={3}
-                      placeholder="Tambahkan catatan jika diperlukan..."
+                      required
+                      placeholder="Tuliskan catatan/komentar evaluasi santri untuk bahan pertimbangan rapat..."
                       className="w-full bg-ink-50 border border-ink-100 rounded-xl px-4 py-3 text-sm font-bold text-ink-900 focus:ring-2 focus:ring-primary-600/10 outline-none"
                     ></textarea>
                   </div>
