@@ -60,14 +60,14 @@ interface Pendaftar {
   no_hp?: string;
 }
 
-// Helper untuk mendeteksi jenjang tanpa IL (MA, SMA, SMA IT non-IL)
+// Helper untuk mendeteksi jenjang tanpa IL (MA non-IL)
 export const formatExaminerRole = (role?: string) => {
   if (!role) return "";
   switch (role.toLowerCase()) {
     case "penguji":
     case "penguji_quran":
     case "penguji_bacaan_quran":
-      return "Penguji Al-Qur'an";
+      return "Penguji Tes Al-Qur'an";
     case "pewawancara_calsan":
     case "penguji_santri":
     case "pewawancara_santri":
@@ -83,7 +83,7 @@ export const formatExaminerRole = (role?: string) => {
     case "penguji_bahasa_arab":
     case "penguji_arab":
     case "penguji_lisan_arab":
-      return "Penguji B. Arab";
+      return "Penguji Tes Lisan Bahasa Arab";
     default:
       return role.replace(/_/g, " ");
   }
@@ -117,7 +117,7 @@ export const isJenjangTanpaIL = (jenjang?: string | null): boolean => {
     return false;
   }
 
-  // Jika jenjangnya MA / SMA / SMA IT / ALIYAH dan tidak ada indikasi IL
+  // Jika jenjangnya MA dan tidak ada indikasi IL
   if (
     clean.includes("MA") ||
     clean.includes("SMA") ||
@@ -139,6 +139,12 @@ export default function JadwalUjianPage() {
   const [search, setSearch] = useState("");
   const [selectedPendaftarId, setSelectedPendaftarId] = useState<string | null>(null);
   const [candidateFilterTab, setCandidateFilterTab] = useState<"butuh" | "semua">("butuh");
+  const [candidatePageSize, setCandidatePageSize] = useState(25);
+  const [sessionPageSize, setSessionPageSize] = useState(20);
+
+  useEffect(() => {
+    setCandidatePageSize(25);
+  }, [search, candidateFilterTab]);
 
   const searchParams = useSearchParams();
   const tabParam = searchParams ? searchParams.get("tab") : null;
@@ -248,7 +254,7 @@ export default function JadwalUjianPage() {
       return allRoles.some(r => allowedRoles.includes(r));
   };
 
-  // 1. Penguji Bacaan Al-Qur'an (Murni Penguji Al-Qur'an, tidak mencakup Penguji Hafalan / B. Arab / Pewawancara)
+  // 1. Penguji Bacaan Al-Qur'an (Murni Penguji Tes Al-Qur'an, tidak mencakup Penguji Hafalan / B. Arab / Pewawancara)
   const quranExaminers = useMemo(() => {
       return examiners.filter((ex) => checkRoles(ex, ["penguji", "penguji_quran", "penguji_bacaan_quran"]));
   }, [examiners]);
@@ -258,7 +264,7 @@ export default function JadwalUjianPage() {
       return examiners.filter((ex) => checkRoles(ex, ["pewawancara_calsan", "penguji_santri", "pewawancara_santri"]));
   }, [examiners]);
 
-  // 3. Pewawancara Calon Orangtua/Wali (Murni Pewawancara Ortu/Wali)
+  // 3. Pewawancara Calon Orang Tua/Wali (Murni Pewawancara Ortu/Wali)
   const ortuExaminers = useMemo(() => {
       return examiners.filter((ex) => checkRoles(ex, ["pewawancara_cawalsan", "pewawancara_ortu", "pewawancara_wali", "penguji_ortu"]));
   }, [examiners]);
@@ -307,7 +313,7 @@ export default function JadwalUjianPage() {
         return detectedPengujiQuran || (formPengujiSantriId ? detectedPengujiSantri : null);
       case "Wawancara Calon Santri":
         return detectedPengujiSantri;
-      case "Wawancara Calon Orangtua/Wali":
+      case "Wawancara Calon Orang Tua/Wali":
         return detectedPengujiOrtu;
       case "Tes Hafalan Al-Qur'an":
         return detectedPengujiHafalan;
@@ -424,14 +430,14 @@ export default function JadwalUjianPage() {
         ? [
             "Tes Bacaan Al-Qur'an",
             "Wawancara Calon Santri",
-            "Wawancara Calon Orangtua/Wali",
+            "Wawancara Calon Orang Tua/Wali",
             "Tes Hafalan Al-Qur'an",
             "Tes Lisan Bahasa Arab",
           ]
         : [
             "Tes Bacaan Al-Qur'an",
             "Wawancara Calon Santri",
-            "Wawancara Calon Orangtua/Wali",
+            "Wawancara Calon Orang Tua/Wali",
           ];
 
       if (!validOptions.includes(formTestType)) {
@@ -608,21 +614,27 @@ export default function JadwalUjianPage() {
         metode_ujian: formLocationType,
       };
 
-      if (
-        formTestType === "Tes Al-Qur'an (Bacaan & Hafalan)" ||
-        (formTestType === "Tes Al-Qur'an (Bacaan & Hafalan)" || formTestType === "Tes Bacaan Al-Qur'an") ||
-        formTestType === "Tes Hafalan Al-Qur'an"
-      ) {
-        const quranId = formPengujiQuranId || formPengujiSantriId || formPengujiHafalanId;
+      if (formTestType === "Tes Al-Qur'an (Bacaan & Hafalan)") {
+        const quranId = formPengujiQuranId || formPengujiHafalanId || formPengujiSantriId;
         if (quranId) {
           assignPayload.penguji_quran_id = quranId;
-          assignPayload.penguji_hafalan_id = null;
+          assignPayload.penguji_hafalan_id = formPengujiHafalanId || quranId;
+        }
+      } else if (formTestType === "Tes Bacaan Al-Qur'an") {
+        const quranId = formPengujiQuranId || formPengujiSantriId;
+        if (quranId) {
+          assignPayload.penguji_quran_id = quranId;
+        }
+      } else if (formTestType === "Tes Hafalan Al-Qur'an") {
+        const hafalanId = formPengujiHafalanId || formPengujiQuranId;
+        if (hafalanId) {
+          assignPayload.penguji_hafalan_id = hafalanId;
         }
       } else if (formTestType === "Wawancara Calon Santri") {
         if (formPengujiSantriId) {
           assignPayload.penguji_santri_id = formPengujiSantriId;
         }
-      } else if (formTestType === "Wawancara Calon Orangtua/Wali") {
+      } else if (formTestType === "Wawancara Calon Orang Tua/Wali") {
         if (formPengujiOrtuId) {
           assignPayload.penguji_ortu_id = formPengujiOrtuId;
         }
@@ -635,7 +647,6 @@ export default function JadwalUjianPage() {
         if (generalId) {
           assignPayload.penguji_santri_id = generalId;
           assignPayload.penguji_quran_id = generalId;
-          assignPayload.penguji_hafalan_id = null;
         }
       }
 
@@ -645,7 +656,7 @@ export default function JadwalUjianPage() {
         if (formPengujiSantriId) assignPayload.penguji_santri_id = formPengujiSantriId;
         if (formPengujiQuranId) assignPayload.penguji_quran_id = formPengujiQuranId;
         if (formPengujiArabId) assignPayload.penguji_arab_id = formPengujiArabId;
-        assignPayload.penguji_hafalan_id = null;
+        if (formPengujiHafalanId) assignPayload.penguji_hafalan_id = formPengujiHafalanId;
       }
 
       const assignRes = await fetch("/api/admin/jadwal-ujian/assign", {
@@ -665,15 +676,17 @@ export default function JadwalUjianPage() {
         text: `Tes "${actualTestType}" untuk ${candidate.nama_lengkap} (${
           formLocationType === "online" ? "Online via Google Meet" : "Offline Tatap Muka di Pesantren"
         }) pada ${start.toLocaleDateString("id-ID", {
+        timeZone: "Asia/Jakarta",
           weekday: "long",
           day: "numeric",
           month: "long",
           year: "numeric",
         })} jam ${start.toLocaleTimeString("id-ID", {
+        timeZone: "Asia/Jakarta",
           hour: "2-digit",
           minute: "2-digit",
         })} WIB telah berhasil dijadwalkan & notifikasi WhatsApp dikirim.`,
-        confirmButtonColor: "#800000",
+        confirmButtonColor: "#BE185D",
       });
 
       setScheduleModalOpen(false);
@@ -885,6 +898,14 @@ export default function JadwalUjianPage() {
     );
   }, [pendaftar, formCandidateSearch]);
 
+  const displayedCandidates = useMemo(() => {
+    return filteredPendaftar.slice(0, candidatePageSize);
+  }, [filteredPendaftar, candidatePageSize]);
+
+  const displayedSessions = useMemo(() => {
+    return sessions.slice(0, sessionPageSize);
+  }, [sessions, sessionPageSize]);
+
   return (
     <div className="space-y-6 pb-20 max-w-7xl mx-auto">
       {/* Header Banner Terpadu */}
@@ -903,12 +924,12 @@ export default function JadwalUjianPage() {
               </p>
             </div>
           </div>
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-wrap items-center gap-2.5 w-full lg:w-auto">
             <button
               onClick={handleSwitchToKetersediaan}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs border transition-all whitespace-nowrap ${
+              className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs border transition-all whitespace-nowrap w-full lg:w-auto ${
                 mainTab === "ketersediaan"
-                  ? "bg-emerald-600 text-white border-emerald-600 shadow-md shadow-emerald-600/20"
+                  ? "bg-emerald-600 text-white border-emerald-600 shadow-md "
                   : "bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border-emerald-200"
               }`}
             >
@@ -917,25 +938,25 @@ export default function JadwalUjianPage() {
             </button>
             <button
               onClick={() => openScheduleModal()}
-              className="flex items-center gap-2 px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-black text-xs shadow-lg shadow-primary-600/20 transition-all hover:scale-[1.02] active:scale-95 whitespace-nowrap"
+              className="flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-black text-xs shadow-lg transition-all hover:scale-[1.02] active:scale-95 whitespace-nowrap w-full lg:w-auto"
             >
               <CalendarPlus className="w-4 h-4" />
               + Buat Jadwal Khusus Santri
             </button>
             <button
               onClick={() => setShowBroadcastModal(true)}
-              className="flex items-center gap-2 px-4 py-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl font-bold text-xs border border-indigo-200 transition-all whitespace-nowrap"
+              className="flex items-center justify-center gap-2 px-4 py-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl font-bold text-xs border border-indigo-200 transition-all whitespace-nowrap w-full lg:w-auto"
             >
-              <Send className="w-4 h-4" />
+              <Send className="w-4 h-4 shrink-0" />
               Pulse Notifikasi
-              </button>
-              <button
-                onClick={handleBroadcastPenguji}
-                className="flex items-center gap-2 px-4 py-2.5 bg-violet-50 hover:bg-violet-100 text-violet-700 rounded-xl font-bold text-xs border border-violet-200 transition-all whitespace-nowrap"
-              >
-                <Send className="w-4 h-4" />
-                Pulse Penguji
-              </button>
+            </button>
+            <button
+              onClick={handleBroadcastPenguji}
+              className="flex items-center justify-center gap-2 px-4 py-2.5 bg-violet-50 hover:bg-violet-100 text-violet-700 rounded-xl font-bold text-xs border border-violet-200 transition-all whitespace-nowrap w-full lg:w-auto"
+            >
+              <Send className="w-4 h-4 shrink-0" />
+              Pulse Penguji
+            </button>
 
           </div>
         </div>
@@ -1070,7 +1091,7 @@ export default function JadwalUjianPage() {
                 </button>
               </div>
             ) : (
-              sessions.map((s) => (
+              displayedSessions.map((s) => (
                 <div
                   key={s.id}
                   className={`bg-white rounded-2xl shadow-sm border border-stone-100 hover:border-primary-200 p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 transition-all hover:shadow-md ${
@@ -1118,7 +1139,7 @@ export default function JadwalUjianPage() {
                       <button
                         onClick={() => handleAssign(s.id)}
                         disabled={assigning || s.booked_count >= s.quota}
-                        className="w-full md:w-auto px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-bold text-xs shadow-md shadow-primary-600/20 transition-all flex items-center justify-center gap-2"
+                        className="w-full md:w-auto px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-bold text-xs shadow-md transition-all flex items-center justify-center gap-2"
                       >
                         {assigning && <Loader2 className="w-4 h-4 animate-spin" />}
                         Plotkan Santri Terpilih
@@ -1127,6 +1148,15 @@ export default function JadwalUjianPage() {
                   </div>
                 </div>
               ))
+            )}
+            {sessions.length > sessionPageSize && (
+              <button
+                type="button"
+                onClick={() => setSessionPageSize((prev) => prev + 20)}
+                className="w-full py-3 bg-stone-50 hover:bg-stone-100 text-stone-700 font-bold text-xs rounded-2xl border border-stone-200 transition-all text-center shadow-xs"
+              >
+                Tampilkan 20 Sesi Lagi ({sessions.length - sessionPageSize} tersisa)
+              </button>
             )}
           </div>
         </div>
@@ -1192,7 +1222,7 @@ export default function JadwalUjianPage() {
                   Tidak ada data pendaftar yang cocok
                 </div>
               ) : (
-                filteredPendaftar.map((p) => (
+                displayedCandidates.map((p) => (
                   <div
                     key={p.id}
                     onClick={() =>
@@ -1253,6 +1283,18 @@ export default function JadwalUjianPage() {
               )}
             </div>
 
+            {filteredPendaftar.length > candidatePageSize && (
+              <div className="p-2 border-t border-stone-100 bg-stone-50">
+                <button
+                  type="button"
+                  onClick={() => setCandidatePageSize((prev) => prev + 25)}
+                  className="w-full py-2 bg-white hover:bg-stone-100 text-stone-700 font-bold text-xs rounded-xl border border-stone-200 transition-all text-center"
+                >
+                  Tampilkan 25 Santri Lagi ({filteredPendaftar.length - candidatePageSize} tersisa)
+                </button>
+              </div>
+            )}
+
             <div className="p-3.5 bg-stone-900 text-white flex items-center justify-between">
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-stone-400">
@@ -1289,15 +1331,14 @@ export default function JadwalUjianPage() {
       {/* ========================================================================= */}
       {scheduleModalOpen && (
         <div
-          onWheel={(e) => e.stopPropagation()}
           data-modal="true"
           aria-modal="true"
           role="dialog"
-          className="fixed inset-0 z-50 flex items-start md:items-center pt-8 pb-16 justify-center p-4 bg-stone-900/60 backdrop-blur-xs overflow-y-auto overscroll-contain custom-scrollbar"
+          className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-3 sm:p-4 bg-stone-900/60 backdrop-blur-xs overflow-y-auto overscroll-contain custom-scrollbar"
         >
-          <div className="bg-white rounded-3xl w-full max-w-2xl shadow-2xl border border-stone-100 overflow-hidden my-auto animate-in zoom-in-95 duration-200">
+          <div className="bg-white rounded-2xl sm:rounded-3xl w-full max-w-2xl max-h-[calc(100dvh-1.5rem)] sm:max-h-[calc(100dvh-3rem)] flex flex-col shadow-2xl border border-stone-100 overflow-hidden my-auto animate-in zoom-in-95 duration-200">
             {/* Modal Header */}
-            <div className="p-6 bg-gradient-to-r from-primary-900 via-primary-800 to-primary-950 text-white flex items-start justify-between">
+            <div className="p-4 sm:p-6 bg-gradient-to-r from-primary-900 via-primary-800 to-primary-950 text-white flex items-start justify-between shrink-0">
               <div>
                 <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-white/15 text-white text-xs font-bold mb-2 border border-white/20">
                   <CalendarPlus className="w-3.5 h-3.5 text-white" />
@@ -1305,7 +1346,7 @@ export default function JadwalUjianPage() {
                 </div>
                 <h2
                   style={{ color: "#ffffff" }}
-                  className="text-2xl font-black tracking-tight text-white !text-white drop-shadow-sm"
+                  className="text-xl sm:text-2xl font-black tracking-tight text-white !text-white drop-shadow-sm"
                 >
                   Penjadwalan Seleksi &amp; Penugasan Penguji
                 </h2>
@@ -1318,14 +1359,14 @@ export default function JadwalUjianPage() {
               </div>
               <button
                 onClick={() => setScheduleModalOpen(false)}
-                className="p-2 hover:bg-white/10 rounded-xl text-white/80 hover:text-white transition-all"
+                className="p-2 hover:bg-white/10 rounded-xl text-white/80 hover:text-white transition-all shrink-0"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Modal Form */}
-            <form onSubmit={handleSaveSchedule} className="p-6 space-y-5">
+            <form onSubmit={handleSaveSchedule} className="flex-1 min-h-0 overflow-y-auto custom-scrollbar p-4 sm:p-6 space-y-5 touch-pan-y">
               {/* 1. PILIH CALON SANTRI / PENDAFTAR (WAJIB) */}
               <div className="p-4 bg-primary-50/50 rounded-2xl border border-primary-100 space-y-2.5">
                 <div className="flex items-center justify-between">
@@ -1437,7 +1478,7 @@ export default function JadwalUjianPage() {
                 >
                   <option value="Tes Al-Qur'an (Bacaan & Hafalan)">Tes Al-Qur&apos;an (Bacaan &amp; Hafalan)</option>
                   <option value="Wawancara Calon Santri">Wawancara Calon Santri</option>
-                  <option value="Wawancara Calon Orangtua/Wali">Wawancara Calon Orangtua/Wali</option>
+                  <option value="Wawancara Calon Orang Tua/Wali">Wawancara Calon Orang Tua/Wali</option>
                   {isCandidateTanpaIL && (
                     <option value="Tes Lisan Bahasa Arab">
                       Tes Lisan Bahasa Arab (Khusus Jenjang Tanpa IL)
@@ -1508,12 +1549,12 @@ export default function JadwalUjianPage() {
                       )}
                     </button>
 
-                    {/* 3. Wawancara Calon Orangtua/Wali */}
+                    {/* 3. Wawancara Calon Orang Tua/Wali */}
                     <button
                       type="button"
-                      onClick={() => setFormTestType("Wawancara Calon Orangtua/Wali")}
+                      onClick={() => setFormTestType("Wawancara Calon Orang Tua/Wali")}
                       className={`p-2.5 rounded-xl border text-left flex items-center justify-between transition-all ${
-                        formTestType === "Wawancara Calon Orangtua/Wali"
+                        formTestType === "Wawancara Calon Orang Tua/Wali"
                           ? "bg-primary-50/90 border-primary-500 text-primary-950 font-black shadow-xs ring-2 ring-primary-500/20"
                           : "bg-white border-stone-200 text-stone-700 hover:border-primary-300 hover:bg-primary-50/30"
                       }`}
@@ -1521,14 +1562,14 @@ export default function JadwalUjianPage() {
                       <div className="flex items-center gap-2">
                         <Users
                           className={`w-3.5 h-3.5 shrink-0 ${
-                            formTestType === "Wawancara Calon Orangtua/Wali"
+                            formTestType === "Wawancara Calon Orang Tua/Wali"
                               ? "text-primary-600"
                               : "text-stone-400"
                           }`}
                         />
                         <span>3. Wawancara Calon Ortu/Wali</span>
                       </div>
-                      {formTestType === "Wawancara Calon Orangtua/Wali" && (
+                      {formTestType === "Wawancara Calon Orang Tua/Wali" && (
                         <CheckCircle2 className="w-4 h-4 text-primary-600 shrink-0" />
                       )}
                     </button>
@@ -1571,7 +1612,7 @@ export default function JadwalUjianPage() {
 
                   <p className="text-[11px] text-stone-500 leading-relaxed">
                     {isCandidateTanpaIL
-                      ? "Pilih satu materi seleksi yang ingin dijadwalkan pada sesi ini. Jenjang langsung MA/SMA/SMA IT Tanpa IL memiliki 5 pilihan materi seleksi."
+                      ? "Pilih satu materi seleksi yang ingin dijadwalkan pada sesi ini. Jenjang langsung MA Tanpa IL memiliki 5 pilihan materi seleksi."
                       : "Pilih satu materi seleksi yang ingin dijadwalkan pada sesi ini. Jenjang Standar / IL memiliki 3 materi seleksi."}
                   </p>
                 </div>
@@ -1594,16 +1635,16 @@ export default function JadwalUjianPage() {
                     <div className="flex items-center gap-2 text-xs font-black text-primary-950">
                       {formTestType === "Tes Bacaan Al-Qur'an" && <BookOpen className="w-4 h-4 text-primary-600" />}
                       {formTestType === "Wawancara Calon Santri" && <User className="w-4 h-4 text-indigo-600" />}
-                      {formTestType === "Wawancara Calon Orangtua/Wali" && <Users className="w-4 h-4 text-primary-600" />}
+                      {formTestType === "Wawancara Calon Orang Tua/Wali" && <Users className="w-4 h-4 text-primary-600" />}
                       {formTestType === "Tes Hafalan Al-Qur'an" && <Sparkles className="w-4 h-4 text-amber-600" />}
                       {formTestType === "Tes Lisan Bahasa Arab" && <Languages className="w-4 h-4 text-cyan-600" />}
                       <span>
-                        {(formTestType === "Tes Al-Qur'an (Bacaan & Hafalan)" || formTestType === "Tes Bacaan Al-Qur'an" || formTestType === "Tes Hafalan Al-Qur'an") && "Penguji Al-Qur'an (Bacaan & Hafalan)"}
+                        {(formTestType === "Tes Al-Qur'an (Bacaan & Hafalan)" || formTestType === "Tes Bacaan Al-Qur'an" || formTestType === "Tes Hafalan Al-Qur'an") && "Penguji Tes Al-Qur'an"}
                         {formTestType === "Wawancara Calon Santri" && "Pewawancara Calon Santri"}
-                        {formTestType === "Wawancara Calon Orangtua/Wali" && "Pewawancara Calon Orangtua/Wali"}
+                        {formTestType === "Wawancara Calon Orang Tua/Wali" && "Pewawancara Calon Orang Tua/Wali"}
                         {formTestType === "Tes Hafalan Al-Qur'an" && "Penguji Hafalan Al-Qur'an"}
-                        {formTestType === "Tes Lisan Bahasa Arab" && "Penguji Lisan Bahasa Arab"}
-                        {!["Tes Bacaan Al-Qur'an", "Wawancara Calon Santri", "Wawancara Calon Orangtua/Wali", "Tes Hafalan Al-Qur'an", "Tes Lisan Bahasa Arab"].includes(formTestType) && "Penguji Seleksi"}
+                        {formTestType === "Tes Lisan Bahasa Arab" && "Penguji Tes Lisan Bahasa Arab"}
+                        {!["Tes Bacaan Al-Qur'an", "Wawancara Calon Santri", "Wawancara Calon Orang Tua/Wali", "Tes Hafalan Al-Qur'an", "Tes Lisan Bahasa Arab"].includes(formTestType) && "Penguji Seleksi"}
                       </span>
                     </div>
                     <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary-100 text-primary-800">
@@ -1622,7 +1663,7 @@ export default function JadwalUjianPage() {
                     >
                       <option value="">-- Bebas / Tentukan Nanti --</option>
                       {quranExaminers.length === 0 ? (
-                        <option value="" disabled>-- Belum ada Penguji Al-Qur'an terdaftar --</option>
+                        <option value="" disabled>-- Belum ada Penguji Tes Al-Qur'an terdaftar --</option>
                       ) : (
                         quranExaminers.map((ex) => (
                           <option key={ex.id} value={ex.id}>
@@ -1652,7 +1693,7 @@ export default function JadwalUjianPage() {
                     </select>
                   )}
 
-                  {formTestType === "Wawancara Calon Orangtua/Wali" && (
+                  {formTestType === "Wawancara Calon Orang Tua/Wali" && (
                     <select
                       value={formPengujiOrtuId}
                       onChange={(e) => setFormPengujiOrtuId(e.target.value)}
@@ -1709,7 +1750,7 @@ export default function JadwalUjianPage() {
                     </select>
                   )}
 
-                  {!["Tes Bacaan Al-Qur'an", "Wawancara Calon Santri", "Wawancara Calon Orangtua/Wali", "Tes Hafalan Al-Qur'an", "Tes Lisan Bahasa Arab"].includes(formTestType) && (
+                  {!["Tes Bacaan Al-Qur'an", "Wawancara Calon Santri", "Wawancara Calon Orang Tua/Wali", "Tes Hafalan Al-Qur'an", "Tes Lisan Bahasa Arab"].includes(formTestType) && (
                     <select
                       value={formPengujiSantriId || formPengujiQuranId}
                       onChange={(e) => {
@@ -1815,7 +1856,7 @@ export default function JadwalUjianPage() {
                       {/* Penguji Arab */}
                       <div className="space-y-1">
                         <label className="text-[11px] font-bold text-stone-700">
-                          Penguji Lisan Bahasa Arab:
+                          Penguji Tes Lisan Bahasa Arab:
                         </label>
                         <select
                           value={formPengujiArabId}
@@ -1851,7 +1892,7 @@ export default function JadwalUjianPage() {
                     }}
                     className={`flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-xs transition-all ${
                       formLocationType === "online"
-                        ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/20 font-black"
+                        ? "bg-emerald-600 text-white shadow-md  font-black"
                         : "text-stone-600 hover:text-stone-900"
                     }`}
                   >
@@ -1987,9 +2028,20 @@ export default function JadwalUjianPage() {
 
               {/* 5. WAKTU PELAKSANAAN & DURASI */}
               <div className="space-y-2">
-                <label className="block text-xs font-black text-stone-500 uppercase tracking-wider">
-                  5. Waktu Pelaksanaan &amp; Durasi <span className="text-rose-500">*</span>
-                </label>
+                <div className="flex items-center justify-between">
+                  <label className="block text-xs font-black text-stone-500 uppercase tracking-wider">
+                    5. Waktu Pelaksanaan &amp; Durasi <span className="text-rose-500">*</span>
+                  </label>
+                  <span className="text-[10px] font-bold px-2 py-0.5 bg-amber-50 text-amber-800 border border-amber-200 rounded-full">
+                    Format 24 Jam (Contoh: 14.00 untuk jam 2 siang)
+                  </span>
+                </div>
+                <div className="p-2.5 bg-amber-50/70 border border-amber-200 rounded-xl text-[11px] text-amber-900 flex items-start gap-1.5">
+                  <AlertCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                  <span>
+                    <strong>Penting:</strong> Masukkan jam dalam format <strong>24 Jam (WIB)</strong>. Jika ujian jam 2 siang, pilih/ketik <strong>14:00</strong> (jangan 02:00) agar notifikasi WhatsApp ke calon santri dan penguji sinkron serta tidak terbaca subuh.
+                  </span>
+                </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-[11px] font-bold text-stone-500 mb-1">
@@ -2063,7 +2115,7 @@ export default function JadwalUjianPage() {
                 <button
                   type="submit"
                   disabled={submittingSchedule}
-                  className="flex-[2] py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-black text-sm shadow-lg shadow-primary-600/20 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                  className="flex-[2] py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-black text-sm shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50"
                 >
                   {submittingSchedule ? (
                     <>

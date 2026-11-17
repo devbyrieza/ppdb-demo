@@ -6,6 +6,28 @@ import { getCache, setCache } from "@/lib/redis";
 import { getAdminWhereClause, resolveTahunAjaranId } from "@/lib/utils/admin";
 import { BRANDING } from "@/config/branding";
 
+function isJenjangTanpaIL(jenjang?: string | null): boolean {
+  if (!jenjang) return false;
+  const clean = jenjang.trim().toUpperCase();
+  if (clean === "IL" || clean === "I'DAD LUGHAWI" || clean === "IDAD") {
+    return false;
+  }
+  if (
+    clean.includes("NON-IL") ||
+    clean.includes("NON IL") ||
+    clean.includes("TANPA IL") ||
+    clean === "MA" ||
+    clean === "SMA" ||
+    clean.startsWith("MA ") ||
+    clean.startsWith("SMA ") ||
+    clean.includes("ALIYAH") ||
+    clean.includes("SLTA")
+  ) {
+    return true;
+  }
+  return false;
+}
+
 export async function GET(request: NextRequest) {
   try {
     // 1. Validasi session manual
@@ -585,16 +607,19 @@ export async function GET(request: NextRequest) {
         if (mergedNilai.score_arab != null) examScoreCount++;
       }
 
+      const isCandidateMA = isJenjangTanpaIL(item.jenjang);
+      const requiredScoreCount = isCandidateMA ? 8 : 6;
+
       const jadwalList = item.jadwal_ujian || [];
       const j = jadwalList[0];
       const hasValidJadwal =
         Boolean(j && j.tanggal_ujian) ||
         ["scheduled", "selection", "testing", "tested", "passed"].includes(item.status_pendaftaran);
 
-      // Kategori belum lengkap jika examScoreCount < 6
+      // Kategori belum lengkap jika examScoreCount < requiredScoreCount (6 untuk MTs/IL, 8 untuk SMA/MA)
       // Aturan: Jika ada seleksi yang belum dinilai dan ada yang belum pilih jadwal, masukkan ke belum_pilih_jadwal
       let kategoriBelumLengkap: "belum_pilih_jadwal" | "menunggu_penilaian" | null = null;
-      if (examScoreCount < 6) {
+      if (examScoreCount < requiredScoreCount) {
         if (
           !hasValidJadwal ||
           item.status_pendaftaran === "submitted" ||
@@ -617,7 +642,7 @@ export async function GET(request: NextRequest) {
         sp === "tested" ||
         sp === "passed"
       ) {
-        if (examScoreCount >= 6 || sp === "passed") {
+        if (examScoreCount >= requiredScoreCount || sp === "passed") {
           examStatus = "tested";
         } else if (examScoreCount > 0) {
           examStatus = "testing";
@@ -684,8 +709,7 @@ export async function GET(request: NextRequest) {
         });
       }
 
-      const jenjangUp = (item.jenjang || "").toUpperCase();
-      if (jenjangUp === "MA" || jenjangUp === "SMA") {
+      if (isCandidateMA) {
         if (!mergedNilai || mergedNilai.score_hafalan == null) {
           missingComponents.push({
             key: "hafalan",
@@ -865,6 +889,7 @@ export async function GET(request: NextRequest) {
         nilai_ujian: mergedNilai,
         examiner_info: examinerInfo,
         exam_score_count: examScoreCount,
+        required_score_count: requiredScoreCount,
         exam_status: examStatus,
         has_jadwal: hasValidJadwal,
         kategori_belum_lengkap: kategoriBelumLengkap,

@@ -176,25 +176,6 @@ function PengumumanContent() {
     );
   };
 
-  // Santri Siap Pleno HANYA yang seluruh nilai ujiannya sudah lengkap (minimal 6 nilai)
-  const isReadyForPleno = (c: any) => {
-    if (isAnnounced(c)) return false;
-    return Number(c.exam_score_count ?? 0) >= 6;
-  };
-
-  const isProsesSeleksi = (c: any) => {
-    return !isAnnounced(c) && !isReadyForPleno(c);
-  };
-
-  const getKategoriBelumLengkap = (c: any): "belum_pilih_jadwal" | "menunggu_penilaian" => {
-    if (c.kategori_belum_lengkap) return c.kategori_belum_lengkap;
-    // Aturan: Jika belum pilih jadwal atau ada tahapan belum terjadwal, prioritaskan belum_pilih_jadwal
-    if (!c.has_jadwal || ["submitted", "docs_verified", "registered", "data_completed"].includes(c.status_pendaftaran)) {
-      return "belum_pilih_jadwal";
-    }
-    return "menunggu_penilaian";
-  };
-
   // Helper deteksi jenjang SMA / MA langsung (tanpa IL)
   const isJenjangTanpaIL = (jenjang?: string | null): boolean => {
     if (!jenjang) return false;
@@ -216,6 +197,26 @@ function PengumumanContent() {
       return true;
     }
     return false;
+  };
+
+  // Santri Siap Pleno HANYA yang seluruh nilai ujiannya sudah lengkap (minimal 6 nilai untuk MTs/IL, atau 8 nilai untuk SMA/MA)
+  const isReadyForPleno = (c: any) => {
+    if (isAnnounced(c)) return false;
+    const required = isJenjangTanpaIL(c.jenjang) ? 8 : 6;
+    return Number(c.exam_score_count ?? 0) >= required;
+  };
+
+  const isProsesSeleksi = (c: any) => {
+    return !isAnnounced(c) && !isReadyForPleno(c);
+  };
+
+  const getKategoriBelumLengkap = (c: any): "belum_pilih_jadwal" | "menunggu_penilaian" => {
+    if (c.kategori_belum_lengkap) return c.kategori_belum_lengkap;
+    // Aturan: Jika belum pilih jadwal atau ada tahapan belum terjadwal, prioritaskan belum_pilih_jadwal
+    if (!c.has_jadwal || ["submitted", "docs_verified", "registered", "data_completed"].includes(c.status_pendaftaran)) {
+      return "belum_pilih_jadwal";
+    }
+    return "menunggu_penilaian";
   };
 
   const getComponentGrade = (score: number | null | undefined, type: string): string => {
@@ -909,7 +910,13 @@ function PengumumanContent() {
           total,
           grade,
           statusText,
-          `${c.exam_score_count ?? 0}/6 Nilai`,
+          (() => {
+            const reqCount = isCandidateMA ? 8 : 6;
+            const currentCount = c.exam_score_count ?? 0;
+            return currentCount >= reqCount
+              ? `${reqCount}/${reqCount} Nilai Lengkap`
+              : `${currentCount}/${reqCount} Nilai`;
+          })(),
         ];
       });
 
@@ -1423,7 +1430,7 @@ function PengumumanContent() {
                   </span>
                 </h3>
                 <p className="text-xs text-stone-600 font-medium">
-                  Santri dalam daftar ini dipisahkan dari agenda rapat pleno penetapan kelulusan karena belum memiliki 6 nilai lengkap.
+                  Santri dalam daftar ini dipisahkan dari agenda rapat pleno penetapan kelulusan karena belum memiliki nilai lengkap ({isJenjangTanpaIL(filter.jenjang) ? "8" : "6 atau 8"} nilai lengkap).
                 </p>
               </div>
             </div>
@@ -1792,15 +1799,19 @@ function PengumumanContent() {
                             {isJenjangTanpaIL(c.jenjang) &&
                               getGradeBadge(nu?.score_arab, "arab", "B. Arab", activeTab === "proses_seleksi")}
                           </div>
-                          {c.exam_score_count >= 6 ? (
-                            <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
-                              ✓ {c.exam_score_count === 6 ? "6/6 Nilai Lengkap" : `${c.exam_score_count} Nilai Lengkap`}
-                            </span>
-                          ) : c.exam_score_count > 0 ? (
-                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">
-                              {c.exam_score_count}/6 Nilai
-                            </span>
-                          ) : null}
+                          {(() => {
+                            const req = isJenjangTanpaIL(c.jenjang) ? 8 : 6;
+                            const count = Number(c.exam_score_count ?? 0);
+                            return count >= req ? (
+                              <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                ✓ {req}/{req} Nilai Lengkap
+                              </span>
+                            ) : count > 0 ? (
+                              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">
+                                {count}/{req} Nilai
+                              </span>
+                            ) : null;
+                          })()}
 
                           <button
                             type="button"
@@ -1822,7 +1833,7 @@ function PengumumanContent() {
                               title="Klik untuk melihat komponen nilai apa saja yang belum diinput dan kontak pengujinya"
                             >
                               <span className="text-amber-600">⚠️</span>
-                              <span>Belum Input: <strong>{(c.missing_components?.length || (6 - (c.exam_score_count || 0)))} Komponen</strong></span>
+                              <span>Belum Input: <strong>{(c.missing_components?.length || ((isJenjangTanpaIL(c.jenjang) ? 8 : 6) - (c.exam_score_count || 0)))} Komponen</strong></span>
                               <span className="text-amber-700 underline text-[10px] group-hover:text-amber-950 font-semibold ml-0.5">
                                 Cek &amp; Kontak Penguji ↗
                               </span>
@@ -1905,7 +1916,7 @@ function PengumumanContent() {
                               <>
                                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-900 border border-amber-300 text-xs font-black uppercase whitespace-nowrap shadow-xs">
                                   <Clock className="w-3.5 h-3.5 text-amber-700" />
-                                  Menunggu Penilaian ({c.exam_score_count ?? 0}/6)
+                                  Menunggu Penilaian ({c.exam_score_count ?? 0}/{isJenjangTanpaIL(c.jenjang) ? 8 : 6})
                                 </span>
                                 <button
                                   type="button"
@@ -2206,7 +2217,7 @@ function PengumumanContent() {
                 <Clock className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
                 <div className="text-xs text-amber-900 leading-relaxed">
                   <div className="font-bold text-amber-950">
-                    Progres Penilaian: {selectedMissingCandidate.exam_score_count || 0} dari {selectedMissingCandidate.jenjang === "MA" || selectedMissingCandidate.jenjang === "SMA" ? 8 : 6} Komponen Terisi
+                    Progres Penilaian: {selectedMissingCandidate.exam_score_count || 0} dari {isJenjangTanpaIL(selectedMissingCandidate.jenjang) ? 8 : 6} Komponen Terisi
                   </div>
                   <div className="text-amber-800/90 mt-0.5 font-medium">
                     Santri ini belum dapat diplenokan karena masih menunggu penginputan nilai. Anda dapat langsung menghubungi Penguji / Pewawancara yang bersangkutan via WhatsApp di bawah ini.
