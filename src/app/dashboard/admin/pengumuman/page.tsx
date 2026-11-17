@@ -5,6 +5,7 @@ import {
   Calendar,
   CheckCircle2,
   Clock,
+  Download,
   ExternalLink,
   FileText,
   Filter,
@@ -28,6 +29,7 @@ import { toast } from "react-hot-toast";
 import Swal from "sweetalert2";
 import { SuratPengumumanDialog } from "@/components/admin/SuratPengumumanDialog";
 import { BulkPengumumanDialog } from "@/components/admin/BulkPengumumanDialog";
+import { exportToExcelProfessional, exportToPDF } from "@/lib/utils/export";
 
 const KKM_STANDAR = 75;
 
@@ -51,6 +53,7 @@ function PengumumanContent() {
   const [activeTab, setActiveTab] = useState<MainTab>("siap_pleno");
   const [plenoFilter, setPlenoFilter] = useState<"all" | "rekomendasi_diterima" | "perlu_dirapatkan">("all");
   const [announcedFilter, setAnnouncedFilter] = useState<"all" | "accepted" | "cadangan" | "rejected">("all");
+  const [prosesFilter, setProsesFilter] = useState<"all" | "menunggu_penilaian" | "belum_pilih_jadwal">("all");
 
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -61,6 +64,7 @@ function PengumumanContent() {
   });
 
   const [isPublishing, setIsPublishing] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -139,18 +143,23 @@ function PengumumanContent() {
     );
   };
 
+  // Santri Siap Pleno HANYA yang seluruh nilai ujiannya sudah lengkap (minimal 6 nilai)
   const isReadyForPleno = (c: any) => {
     if (isAnnounced(c)) return false;
-    return (
-      c.status_pendaftaran === "tested" ||
-      c.status_pendaftaran === "passed" ||
-      c.exam_score_count === 6 ||
-      c.exam_status === "tested"
-    );
+    return Number(c.exam_score_count ?? 0) >= 6;
   };
 
   const isProsesSeleksi = (c: any) => {
     return !isAnnounced(c) && !isReadyForPleno(c);
+  };
+
+  const getKategoriBelumLengkap = (c: any): "belum_pilih_jadwal" | "menunggu_penilaian" => {
+    if (c.kategori_belum_lengkap) return c.kategori_belum_lengkap;
+    // Aturan: Jika belum pilih jadwal atau ada tahapan belum terjadwal, prioritaskan belum_pilih_jadwal
+    if (!c.has_jadwal || ["submitted", "docs_verified", "registered", "data_completed"].includes(c.status_pendaftaran)) {
+      return "belum_pilih_jadwal";
+    }
+    return "menunggu_penilaian";
   };
 
   const isMemenuhiKKM = (c: any) => {
@@ -159,6 +168,61 @@ function PengumumanContent() {
     // Hard gate Al-Qur'an: Skor < 70 (Grade D/E) mutlak tidak boleh lolos otomatis (wajib dirapatkan tim)
     if (quran != null && quran < 70) return false;
     return total >= KKM_STANDAR;
+  };
+
+  const getRekomendasiDetail = (c: any) => {
+    const nu = c.nilai_ujian;
+    const total = nu?.nilai_total != null ? Number(nu.nilai_total) : 0;
+    const grade = total >= 85 ? "A" : total >= 75 ? "B" : total >= 60 ? "C" : "D";
+    const quran = nu?.score_quran != null ? Number(nu.score_quran) : null;
+    const quranGrade = quran != null ? (quran >= 85 ? "A" : quran >= 75 ? "B" : quran >= 70 ? "C" : "D") : null;
+
+    if (c.pengumuman?.status_kelulusan === "Menunggu Rapat") {
+      return {
+        badgeText: "Diagendakan Rapat",
+        subText: "Menunggu Keputusan Tim Pleno",
+        badgeClass: "bg-blue-100 text-blue-800 border-blue-200",
+        icon: Users,
+      };
+    }
+
+    // Memenuhi KKM Murni (Total >= 75 dan Al-Qur'an >= 75)
+    if (total >= KKM_STANDAR && (quran == null || quran >= 75)) {
+      return {
+        badgeText: "Rekomendasi: Diterima",
+        subText: `Lolos KKM ${KKM_STANDAR} (Grade ${grade})`,
+        badgeClass: "bg-emerald-100 text-emerald-800 border-emerald-200",
+        icon: Sparkles,
+      };
+    }
+
+    // Total >= 75 tapi Al-Qur'an < 70 (Grade D/E - Hard Gate)
+    if (total >= KKM_STANDAR && quran != null && quran < 70) {
+      return {
+        badgeText: "Perlu Dirapatkan Tim",
+        subText: `Al-Qur'an Kurang (Grade ${quranGrade} / ${quran.toFixed(0)}) • Total ${total.toFixed(2)}`,
+        badgeClass: "bg-amber-100 text-amber-800 border-amber-200",
+        icon: Gavel,
+      };
+    }
+
+    // Total >= 75 tapi Al-Qur'an Grade C (70-74.99 - Bersyarat)
+    if (total >= KKM_STANDAR && quran != null && quran < 75) {
+      return {
+        badgeText: "Perlu Dirapatkan Tim",
+        subText: `Al-Qur'an Bersyarat (Grade C / ${quran.toFixed(0)}) • Total ${total.toFixed(2)}`,
+        badgeClass: "bg-amber-100 text-amber-800 border-amber-200",
+        icon: Gavel,
+      };
+    }
+
+    // Total < 75
+    return {
+      badgeText: "Perlu Dirapatkan Tim",
+      subText: `Total di Bawah KKM ${KKM_STANDAR} (Skor ${total.toFixed(2)} / Grade ${grade})`,
+      badgeClass: "bg-amber-100 text-amber-800 border-amber-200",
+      icon: Gavel,
+    };
   };
 
   // Sort candidates by total score descending
@@ -177,6 +241,15 @@ function PengumumanContent() {
 
   const countLolosKKM = useMemo(() => statsReady.filter(isMemenuhiKKM).length, [statsReady]);
   const countPerluRapat = useMemo(() => statsReady.filter((c) => !isMemenuhiKKM(c)).length, [statsReady]);
+
+  const countMenungguPenilaian = useMemo(
+    () => statsProses.filter((c) => getKategoriBelumLengkap(c) === "menunggu_penilaian").length,
+    [statsProses]
+  );
+  const countBelumPilihJadwal = useMemo(
+    () => statsProses.filter((c) => getKategoriBelumLengkap(c) === "belum_pilih_jadwal").length,
+    [statsProses]
+  );
 
   const countAccepted = useMemo(
     () =>
@@ -239,9 +312,15 @@ function PengumumanContent() {
       }
       return list;
     } else {
-      return statsProses;
+      let list = statsProses;
+      if (prosesFilter === "menunggu_penilaian") {
+        list = list.filter((c) => getKategoriBelumLengkap(c) === "menunggu_penilaian");
+      } else if (prosesFilter === "belum_pilih_jadwal") {
+        list = list.filter((c) => getKategoriBelumLengkap(c) === "belum_pilih_jadwal");
+      }
+      return list;
     }
-  }, [statsReady, statsAnnounced, statsProses, activeTab, plenoFilter, announcedFilter]);
+  }, [statsReady, statsAnnounced, statsProses, activeTab, plenoFilter, announcedFilter, prosesFilter]);
 
   // Search filter
   const filteredCandidates = useMemo(() => {
@@ -442,12 +521,194 @@ function PengumumanContent() {
     }
   };
 
+  const handleExportExcel = async () => {
+    if (!filteredCandidates.length) {
+      toast.error("Tidak ada data santri untuk diekspor");
+      return;
+    }
+
+    try {
+      setIsExporting(true);
+      const tabTitle =
+        activeTab === "siap_pleno"
+          ? "REKAPITULASI CALON SANTRI SIAP RAPAT PLENO PPDB"
+          : activeTab === "sudah_diumumkan"
+            ? "REKAPITULASI PENETAPAN KELULUSAN SANTRI PPDB"
+            : "REKAPITULASI SANTRI PROSES SELEKSI PPDB";
+
+      const header = [
+        "No",
+        "No. Pendaftaran",
+        "Nama Lengkap",
+        "Jenjang",
+        "Al-Qur'an",
+        "Akademik",
+        "Kepribadian",
+        "W. Santri",
+        "W. Ortu",
+        "Kesiapan",
+        "Total Skor",
+        "Grade",
+        "Rekomendasi / Keputusan",
+        "Kelengkapan",
+      ];
+
+      const fmt = (v: any) => (v != null ? Number(v).toFixed(1) : "-");
+
+      const rows = filteredCandidates.map((c, idx) => {
+        const nu = c.nilai_ujian;
+        const total = nu?.nilai_total != null ? Number(nu.nilai_total).toFixed(2) : "-";
+        const grade = nu?.nilai_total != null ? (Number(nu.nilai_total) >= 85 ? "A" : Number(nu.nilai_total) >= 75 ? "B" : Number(nu.nilai_total) >= 60 ? "C" : "D") : "-";
+        const ws = nu?.nilai_wawancara_santri ?? nu?.score_wawancara;
+        const wo = nu?.nilai_wawancara_ortu;
+
+        let statusText = "-";
+        if (activeTab === "siap_pleno") {
+          const rek = getRekomendasiDetail(c);
+          statusText = `${rek.badgeText} - ${rek.subText}`;
+        } else if (activeTab === "sudah_diumumkan") {
+          statusText = c.status_pendaftaran?.toUpperCase() || c.pengumuman?.status_kelulusan || "DITERBITKAN";
+        } else {
+          statusText = getKategoriBelumLengkap(c) === "belum_pilih_jadwal" ? "Belum Pilih Jadwal" : "Menunggu Penilaian Penguji";
+        }
+
+        return [
+          idx + 1,
+          c.nomor_pendaftaran || "-",
+          (c.nama_lengkap || "").toUpperCase(),
+          c.jenjang || "-",
+          fmt(nu?.score_quran),
+          fmt(nu?.score_akademik),
+          fmt(nu?.score_kepribadian),
+          fmt(ws),
+          fmt(wo),
+          fmt(nu?.score_kesiapan),
+          total,
+          grade,
+          statusText,
+          `${c.exam_score_count ?? 0}/6 Nilai`,
+        ];
+      });
+
+      await exportToExcelProfessional({
+        fileName: `Rekap_${activeTab}_${new Date().toISOString().split("T")[0]}`,
+        sheets: [
+          {
+            name: "Rekap Santri",
+            title: tabTitle,
+            subTitle: `Tanggal Ekspor: ${new Date().toLocaleDateString("id-ID")} | Total: ${filteredCandidates.length} Santri`,
+            header,
+            data: rows,
+          },
+        ],
+      });
+      toast.success("File Excel berhasil diunduh!");
+    } catch (e: any) {
+      console.error(e);
+      toast.error("Gagal mengekspor data ke Excel");
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  const handleExportPDF = () => {
+    if (!filteredCandidates.length) {
+      toast.error("Tidak ada data santri untuk diekspor");
+      return;
+    }
+
+    try {
+      const tabTitle =
+        activeTab === "siap_pleno"
+          ? "REKAPITULASI CALON SANTRI SIAP RAPAT PLENO PPDB"
+          : activeTab === "sudah_diumumkan"
+            ? "REKAPITULASI PENETAPAN KELULUSAN SANTRI PPDB"
+            : "REKAPITULASI SANTRI PROSES SELEKSI PPDB";
+
+      const columns = [
+        "No",
+        "No. Pendaftaran",
+        "Nama Lengkap",
+        "Jenjang",
+        "Qur'an",
+        "Akademik",
+        "Kepribadian",
+        "W. Santri",
+        "W. Ortu",
+        "Kesiapan",
+        "Total",
+        "Grade",
+        "Status / Rekomendasi",
+      ];
+
+      const fmt = (v: any) => (v != null ? Number(v).toFixed(0) : "-");
+
+      const data = filteredCandidates.map((c, idx) => {
+        const nu = c.nilai_ujian;
+        const total = nu?.nilai_total != null ? Number(nu.nilai_total).toFixed(1) : "-";
+        const grade = nu?.nilai_total != null ? (Number(nu.nilai_total) >= 85 ? "A" : Number(nu.nilai_total) >= 75 ? "B" : Number(nu.nilai_total) >= 60 ? "C" : "D") : "-";
+        const ws = nu?.nilai_wawancara_santri ?? nu?.score_wawancara;
+        const wo = nu?.nilai_wawancara_ortu;
+
+        let statusText = "-";
+        if (activeTab === "siap_pleno") {
+          const rek = getRekomendasiDetail(c);
+          statusText = rek.badgeText;
+        } else if (activeTab === "sudah_diumumkan") {
+          statusText = c.status_pendaftaran?.toUpperCase() || "DITERBITKAN";
+        } else {
+          statusText = getKategoriBelumLengkap(c) === "belum_pilih_jadwal" ? "Belum Jadwal" : "Menunggu Nilai";
+        }
+
+        return [
+          String(idx + 1),
+          c.nomor_pendaftaran || "-",
+          (c.nama_lengkap || "").substring(0, 22),
+          c.jenjang || "-",
+          fmt(nu?.score_quran),
+          fmt(nu?.score_akademik),
+          fmt(nu?.score_kepribadian),
+          fmt(ws),
+          fmt(wo),
+          fmt(nu?.score_kesiapan),
+          total,
+          grade,
+          statusText,
+        ];
+      });
+
+      exportToPDF(
+        tabTitle,
+        columns,
+        data,
+        `Rekap_${activeTab}_${new Date().toISOString().split("T")[0]}`,
+        "landscape"
+      );
+      toast.success("File PDF berhasil diunduh!");
+    } catch (e: any) {
+      console.error(e);
+      toast.error("Gagal mengekspor data ke PDF");
+    }
+  };
+
   const getGradeBadge = (
     score: number | null | undefined,
     type: string,
-    label?: string
+    label?: string,
+    showMissingPlaceholder?: boolean
   ) => {
-    if (score == null) return null;
+    if (score == null) {
+      if (!showMissingPlaceholder) return null;
+      return (
+        <span
+          key={type}
+          title={`${label || type}: Belum Dinilai / Belum Ada`}
+          className="border border-dashed border-stone-300 text-stone-400 bg-stone-50 text-[9px] font-bold w-5 h-5 rounded-full inline-flex items-center justify-center uppercase shrink-0 cursor-help"
+        >
+          -
+        </span>
+      );
+    }
     let s = Number(score);
     // Normalisasi jika skor penguji skala 1-5
     if (s > 0 && s <= 5) s = s * 20;
@@ -663,6 +924,76 @@ function PengumumanContent() {
         </div>
       )}
 
+      {/* 2B. TAB CONTENT: PROCESS & INCOMPLETE TEST MONITORING BANNER (PROSES SELEKSI) */}
+      {activeTab === "proses_seleksi" && (
+        <div className="bg-gradient-to-r from-stone-50 via-amber-50/30 to-purple-50/20 p-6 rounded-2xl border border-stone-200/90 shadow-md">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-4 border-b border-stone-200">
+            <div className="flex items-center gap-3">
+              <div className="p-3 bg-stone-800 text-white rounded-xl shadow-md">
+                <Clock className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-base font-black text-stone-900 flex items-center gap-2">
+                  <span>Monitoring Santri Belum Lengkap Seleksi</span>
+                  <span className="bg-stone-200 text-stone-800 text-[10px] px-2 py-0.5 rounded-full font-bold">
+                    Tahapan Ujian Belum Selesai
+                  </span>
+                </h3>
+                <p className="text-xs text-stone-600 font-medium">
+                  Santri dalam daftar ini dipisahkan dari agenda rapat pleno penetapan kelulusan karena belum memiliki 6 nilai lengkap.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            {/* 1. Menunggu Penilaian Penguji */}
+            <div
+              onClick={() => setProsesFilter(prosesFilter === "menunggu_penilaian" ? "all" : "menunggu_penilaian")}
+              className={`p-4 rounded-xl border transition-all cursor-pointer ${
+                prosesFilter === "menunggu_penilaian"
+                  ? "bg-amber-100/90 border-amber-300 ring-2 ring-amber-500"
+                  : "bg-white/90 hover:bg-amber-50/50 border-amber-200"
+              }`}
+            >
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-xs font-black text-amber-900 uppercase flex items-center gap-1.5">
+                  <span>🕒</span> Menunggu Penilaian Penguji
+                </span>
+                <span className="text-lg font-black text-amber-900 bg-amber-100 px-2.5 py-0.5 rounded-full">
+                  {countMenungguPenilaian} Santri
+                </span>
+              </div>
+              <p className="text-xs text-amber-800/90 leading-relaxed font-medium">
+                Santri sudah memiliki jadwal atau sedang ujian, namun penguji/pewawancara belum selesai menginput semua komponen nilai.
+              </p>
+            </div>
+
+            {/* 2. Belum Pilih Jadwal Seleksi */}
+            <div
+              onClick={() => setProsesFilter(prosesFilter === "belum_pilih_jadwal" ? "all" : "belum_pilih_jadwal")}
+              className={`p-4 rounded-xl border transition-all cursor-pointer ${
+                prosesFilter === "belum_pilih_jadwal"
+                  ? "bg-purple-100/90 border-purple-300 ring-2 ring-purple-500"
+                  : "bg-white/90 hover:bg-purple-50/50 border-purple-200"
+              }`}
+            >
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-xs font-black text-purple-900 uppercase flex items-center gap-1.5">
+                  <span>📅</span> Belum Pilih Jadwal Seleksi
+                </span>
+                <span className="text-lg font-black text-purple-900 bg-purple-100 px-2.5 py-0.5 rounded-full">
+                  {countBelumPilihJadwal} Santri
+                </span>
+              </div>
+              <p className="text-xs text-purple-800/90 leading-relaxed font-medium">
+                Santri belum memilih jadwal ujian seleksi atau ada tahapan seleksi yang belum dijadwalkan oleh panitia.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* 3. FILTERS & BATCH ACTIONS BAR */}
       <div className="bg-white p-4 rounded-2xl shadow-xl border border-stone-100 flex flex-col md:flex-row justify-between items-center gap-4">
         <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
@@ -754,8 +1085,41 @@ function PengumumanContent() {
             </div>
           )}
 
+          {activeTab === "proses_seleksi" && (
+            <div className="flex items-center gap-1 bg-stone-100 p-1 rounded-xl">
+              <button
+                onClick={() => setProsesFilter("all")}
+                className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${
+                  prosesFilter === "all" ? "bg-white text-stone-900 shadow-xs" : "text-stone-600 hover:text-stone-900"
+                }`}
+              >
+                Semua ({statsProses.length})
+              </button>
+              <button
+                onClick={() => setProsesFilter("menunggu_penilaian")}
+                className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${
+                  prosesFilter === "menunggu_penilaian"
+                    ? "bg-amber-600 text-white shadow-xs"
+                    : "text-amber-700 hover:bg-amber-50"
+                }`}
+              >
+                🕒 Menunggu Penilaian ({countMenungguPenilaian})
+              </button>
+              <button
+                onClick={() => setProsesFilter("belum_pilih_jadwal")}
+                className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${
+                  prosesFilter === "belum_pilih_jadwal"
+                    ? "bg-purple-600 text-white shadow-xs"
+                    : "text-purple-700 hover:bg-purple-50"
+                }`}
+              >
+                📅 Belum Pilih Jadwal ({countBelumPilihJadwal})
+              </button>
+            </div>
+          )}
+
           {/* Search Box */}
-          <div className="flex items-center gap-2 px-3 py-2 bg-stone-50 rounded-xl border border-stone-200 focus-within:border-primary-500 focus-within:bg-white transition-all w-full sm:w-64">
+          <div className="flex items-center gap-2 px-3 py-2 bg-stone-50 rounded-xl border border-stone-200 focus-within:border-primary-500 focus-within:bg-white transition-all w-full sm:w-56">
             <Search className="w-4 h-4 text-stone-400 shrink-0" />
             <input
               type="text"
@@ -774,6 +1138,28 @@ function PengumumanContent() {
                 <X className="w-3.5 h-3.5" />
               </button>
             )}
+          </div>
+
+          {/* Export Buttons */}
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={handleExportExcel}
+              disabled={isExporting || filteredCandidates.length === 0}
+              className="flex items-center gap-1.5 px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-xl text-xs font-bold transition-all disabled:opacity-50 cursor-pointer shadow-xs"
+              title="Ekspor daftar santri saat ini ke Excel (.xlsx)"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>{isExporting ? "Mengekspor..." : "Excel"}</span>
+            </button>
+            <button
+              onClick={handleExportPDF}
+              disabled={isExporting || filteredCandidates.length === 0}
+              className="flex items-center gap-1.5 px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-200 rounded-xl text-xs font-bold transition-all disabled:opacity-50 cursor-pointer shadow-xs"
+              title="Ekspor daftar santri saat ini ke PDF (.pdf)"
+            >
+              <FileText className="w-3.5 h-3.5" />
+              <span>PDF</span>
+            </button>
           </div>
         </div>
 
@@ -912,12 +1298,12 @@ function PengumumanContent() {
                         </div>
                         <div className="flex items-center gap-1.5 flex-wrap">
                           <div className="flex gap-1 items-center" title="Predikat per Komponen (Arahkan kursor untuk skor angka)">
-                            {getGradeBadge(nu?.score_quran, "quran", "Al-Qur'an")}
-                            {getGradeBadge(nu?.score_akademik, "akademik", "Akademik")}
-                            {getGradeBadge(nu?.score_kepribadian, "kepribadian", "Kepribadian")}
-                            {getGradeBadge(ws, "wawancara_santri", "W. Santri")}
-                            {getGradeBadge(wo, "wawancara_ortu", "W. Ortu")}
-                            {getGradeBadge(nu?.score_kesiapan, "kesiapan", "Kesiapan")}
+                            {getGradeBadge(nu?.score_quran, "quran", "Al-Qur'an", activeTab === "proses_seleksi")}
+                            {getGradeBadge(nu?.score_akademik, "akademik", "Akademik", activeTab === "proses_seleksi")}
+                            {getGradeBadge(nu?.score_kepribadian, "kepribadian", "Kepribadian", activeTab === "proses_seleksi")}
+                            {getGradeBadge(ws, "wawancara_santri", "W. Santri", activeTab === "proses_seleksi")}
+                            {getGradeBadge(wo, "wawancara_ortu", "W. Ortu", activeTab === "proses_seleksi")}
+                            {getGradeBadge(nu?.score_kesiapan, "kesiapan", "Kesiapan", activeTab === "proses_seleksi")}
                             {nu?.score_hafalan != null && getGradeBadge(nu?.score_hafalan, "hafalan", "Hafalan")}
                             {nu?.score_arab != null && getGradeBadge(nu?.score_arab, "arab", "B. Arab")}
                           </div>
@@ -956,32 +1342,21 @@ function PengumumanContent() {
                       <td className="px-6 py-4 text-center">
                         {activeTab === "siap_pleno" ? (
                           <div className="flex flex-col items-center gap-1">
-                            {c.pengumuman?.status_kelulusan === "Menunggu Rapat" ? (
-                              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-black uppercase whitespace-nowrap shadow-xs">
-                                <Users className="w-3.5 h-3.5" />
-                                Diagendakan Rapat
-                              </span>
-                            ) : lolosKKM ? (
-                              <>
-                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-black uppercase whitespace-nowrap shadow-xs border border-emerald-200">
-                                  <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
-                                  Rekomendasi: Diterima
-                                </span>
-                                <span className="text-[10px] text-emerald-700 font-bold">
-                                  Lolos KKM {KKM_STANDAR} (Grade {grade})
-                                </span>
-                              </>
-                            ) : (
-                              <>
-                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-black uppercase whitespace-nowrap shadow-xs border border-amber-200">
-                                  <Gavel className="w-3.5 h-3.5 text-amber-700" />
-                                  Perlu Dirapatkan Tim
-                                </span>
-                                <span className="text-[10px] text-amber-700 font-bold">
-                                  Di Bawah KKM (Grade {grade})
-                                </span>
-                              </>
-                            )}
+                            {(() => {
+                              const rek = getRekomendasiDetail(c);
+                              const IconComponent = rek.icon;
+                              return (
+                                <>
+                                  <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black uppercase whitespace-nowrap shadow-xs border ${rek.badgeClass}`}>
+                                    <IconComponent className="w-3.5 h-3.5" />
+                                    {rek.badgeText}
+                                  </span>
+                                  <span className="text-[10px] text-stone-600 font-bold">
+                                    {rek.subText}
+                                  </span>
+                                </>
+                              );
+                            })()}
                           </div>
                         ) : activeTab === "sudah_diumumkan" ? (
                           <div className="flex flex-col items-center gap-1">
@@ -1001,6 +1376,30 @@ function PengumumanContent() {
                                 <XCircle className="w-3.5 h-3.5 text-red-600" />
                                 Ditolak
                               </span>
+                            )}
+                          </div>
+                        ) : activeTab === "proses_seleksi" ? (
+                          <div className="flex flex-col items-center gap-1">
+                            {getKategoriBelumLengkap(c) === "menunggu_penilaian" ? (
+                              <>
+                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-900 border border-amber-300 text-xs font-black uppercase whitespace-nowrap shadow-xs">
+                                  <Clock className="w-3.5 h-3.5 text-amber-700" />
+                                  Menunggu Penilaian ({c.exam_score_count ?? 0}/6)
+                                </span>
+                                <span className="text-[10px] text-amber-700 font-bold">
+                                  Jadwal ada, menunggu input penguji
+                                </span>
+                              </>
+                            ) : (
+                              <>
+                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-100 text-purple-900 border border-purple-300 text-xs font-black uppercase whitespace-nowrap shadow-xs">
+                                  <Calendar className="w-3.5 h-3.5 text-purple-700" />
+                                  Belum Pilih Jadwal
+                                </span>
+                                <span className="text-[10px] text-purple-700 font-bold">
+                                  Belum terjadwal di sistem
+                                </span>
+                              </>
                             )}
                           </div>
                         ) : (
@@ -1105,7 +1504,27 @@ function PengumumanContent() {
                               </button>
                             </>
                           ) : (
-                            <span className="text-xs text-stone-400 italic">Menunggu Ujian Selesai</span>
+                            <div className="flex items-center justify-center gap-1.5">
+                              {getKategoriBelumLengkap(c) === "menunggu_penilaian" ? (
+                                <a
+                                  href="/dashboard/admin/penilaian"
+                                  className="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 rounded-xl text-xs font-bold shadow-xs transition-all flex items-center gap-1.5 cursor-pointer"
+                                  title="Buka form input nilai ujian penguji"
+                                >
+                                  <ExternalLink className="w-3.5 h-3.5 text-amber-700" />
+                                  <span>Buka Penilaian</span>
+                                </a>
+                              ) : (
+                                <a
+                                  href="/dashboard/admin/jadwal"
+                                  className="px-3 py-1.5 bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-200 rounded-xl text-xs font-bold shadow-xs transition-all flex items-center gap-1.5 cursor-pointer"
+                                  title="Atur jadwal seleksi untuk santri ini"
+                                >
+                                  <Calendar className="w-3.5 h-3.5 text-purple-700" />
+                                  <span>Atur Jadwal</span>
+                                </a>
+                              )}
+                            </div>
                           )}
                         </div>
                       </td>

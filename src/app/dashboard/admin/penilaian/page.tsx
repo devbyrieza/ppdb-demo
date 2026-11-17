@@ -1,13 +1,35 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { createPortal } from "react-dom";
+"use client";
 
-import { Button } from "@/components/ui/button";
-import Swal from "sweetalert2";
-import { exportToExcelProfessional, exportToPDF } from "@/lib/utils/export";
+import {
+  AlertCircle,
+  BarChart3,
+  CheckCircle2,
+  ChevronRight,
+  ClipboardEdit,
+  Clock,
+  Download,
+  Eye,
+  FileText,
+  Filter,
+  LayoutDashboard,
+  MessageSquare,
+  RefreshCcw,
+  Search,
+  Send,
+  Share2,
+  Sparkles,
+  Users,
+  X,
+  Zap,
+} from "lucide-react";
 import Link from "next/link";
-import { ClipboardEdit, MessageSquare, Download, RefreshCcw, Send, BarChart3, AlertCircle, CheckCircle2, Clock, LayoutDashboard, Zap, Users, X, ChevronRight, Search, Filter, FileText, Eye, Share2, Sparkles, Link as LinkIcon } from "lucide-react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import Swal from "sweetalert2";
+import { Button } from "@/components/ui/button";
+import { exportToExcelProfessional, exportToPDF } from "@/lib/utils/export";
 
 // Removed basic xlsx imports in favor of professional utility
 
@@ -23,6 +45,8 @@ type Student = {
     status_kelulusan: string;
     catatan_kelulusan: string;
     score_quran: number;
+    score_hafalan?: number;
+    score_arab?: number;
     score_wawancara: number;
     nilai_wawancara_santri: number;
     score_akademik: number;
@@ -50,13 +74,15 @@ export default function ExaminerDashboard() {
   const [currentUserId, setCurrentUserId] = useState("");
   const [currentUserName, setCurrentUserName] = useState("");
   const [assignStudent, setAssignStudent] = useState<Student | null>(null);
-  const [assignType, setAssignType] = useState<"quran" | "wawancara_santri" | "wawancara_ortu">("quran");
+  const [assignType, setAssignType] = useState<"quran" | "wawancara_santri" | "wawancara_ortu">(
+    "quran"
+  );
   const [assignExaminerId, setAssignExaminerId] = useState("");
 
   // Form State for Modal
-  const [inputType, setInputType] = useState<
-    "quran" | "wawancara_santri" | "wawancara_ortu"
-  >("quran");
+  const [inputType, setInputType] = useState<"quran" | "wawancara_santri" | "wawancara_ortu">(
+    "quran"
+  );
 
   // Dedicated Sub-form States
   const [quranForm, setQuranForm] = useState({ tajwid: "", kelancaran: "" });
@@ -67,7 +93,8 @@ export default function ExaminerDashboard() {
     teman: "",
     rokok: "",
     pornografi: "",
-    hobi: "" });
+    hobi: "",
+  });
   const [woForm, setWoForm] = useState({
     q1: "",
     q2: "",
@@ -78,22 +105,33 @@ export default function ExaminerDashboard() {
     q7: "",
     q8: "",
     q9: "",
-    q10: "" });
+    q10: "",
+  });
   const [catatan, setCatatan] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isBroadcasting, setIsBroadcasting] = useState(false);
   const [isProcessingQueue, setIsProcessingQueue] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   const [queueStats, setQueueStats] = useState<{
     pending: number;
     sent: number;
     failed: number;
   } | null>(null);
   const [flushProgress, setFlushProgress] = useState(0);
+  const [taList, setTaList] = useState<{ id: string; nama: string; is_active: boolean }[]>([]);
+  const [selectedTa, setSelectedTa] = useState<string>("");
 
   useEffect(() => {
-    fetchStudents();
     checkUserRole();
+    fetchTahunAjaran();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Refetch data saat filter tahun ajaran berubah
+  useEffect(() => {
+    if (selectedTa) fetchStudents();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedTa]);
 
   const checkUserRole = async () => {
     try {
@@ -133,24 +171,38 @@ export default function ExaminerDashboard() {
     }
   };
 
+  const fetchTahunAjaran = async () => {
+    try {
+      const res = await fetch("/api/admin/tahun-ajaran");
+      const json = await res.json();
+      const list: { id: string; nama: string; is_active: boolean }[] = json.data || [];
+      setTaList(list);
+      // Default: tahun ajaran TERBARU (API urut tahun_mulai desc)
+      setSelectedTa(list.length > 0 ? list[0].id : "all");
+    } catch (e) {
+      console.error("Error fetching tahun ajaran:", e);
+      setSelectedTa("all");
+    }
+  };
+
   const fetchStudents = async () => {
     try {
       setLoading(true);
-      const res = await fetch("/api/admin/pendaftar/list?limit=500");
+      const taParam = selectedTa ? "&tahun_ajaran=" + encodeURIComponent(selectedTa) : "";
+      const res = await fetch("/api/admin/pendaftar/list?limit=500" + taParam);
       if (!res.ok) throw new Error("Failed to fetch");
       const json = await res.json();
       setStudents(json.data || []);
 
       // Also fetch stats from cron result (using same secret)
-      const statsRes = await fetch(
-        "/api/cron/whatsapp?secret=ppdb-demo-cron-2026",
-      );
+      const statsRes = await fetch("/api/cron/whatsapp?secret=ppdb-alimam-cron-2026");
       const statsJson = await statsRes.json();
       if (statsJson.stats?.queue) {
         setQueueStats({
           pending: statsJson.stats.queue.pending || 0,
           sent: statsJson.stats.queue.sent || 0,
-          failed: statsJson.stats.queue.failed || 0 });
+          failed: statsJson.stats.queue.failed || 0,
+        });
       }
     } catch (error) {
       console.error(error);
@@ -161,7 +213,7 @@ export default function ExaminerDashboard() {
 
   const handleOpenInput = (
     student: Student,
-    type: "quran" | "wawancara_santri" | "wawancara_ortu",
+    type: "quran" | "wawancara_santri" | "wawancara_ortu"
   ) => {
     setSelectedStudent(student);
     setInputType(type);
@@ -173,7 +225,8 @@ export default function ExaminerDashboard() {
       teman: "",
       rokok: "",
       pornografi: "",
-      hobi: "" });
+      hobi: "",
+    });
     setWoForm({
       q1: "",
       q2: "",
@@ -184,7 +237,8 @@ export default function ExaminerDashboard() {
       q7: "",
       q8: "",
       q9: "",
-      q10: "" });
+      q10: "",
+    });
     setCatatan("");
     // Default to current logged-in admin
     setSelectedExaminerId(currentUserId || "");
@@ -208,10 +262,7 @@ export default function ExaminerDashboard() {
         finalScore = (Number(quranForm.tajwid) + Number(quranForm.kelancaran)) / 2;
         detailData = { ...detailData, ...quranForm, quran: quranForm };
       } else if (inputType === "wawancara_santri") {
-        const sum = Object.values(wsForm).reduce(
-          (acc, val) => acc + Number(val || 0),
-          0,
-        );
+        const sum = Object.values(wsForm).reduce((acc, val) => acc + Number(val || 0), 0);
         finalScore = (sum / 35) * 100;
         detailData = { ...detailData, ...wsForm, calsan: wsForm };
       } else if (inputType === "wawancara_ortu") {
@@ -280,9 +331,7 @@ export default function ExaminerDashboard() {
 
       for (let i = 0; i < maxToProcess; i++) {
         try {
-          const res = await fetch(
-            "/api/cron/whatsapp?secret=ppdb-demo-cron-2026",
-          );
+          const res = await fetch("/api/cron/whatsapp?secret=ppdb-alimam-cron-2026");
           if (!res.ok) break;
 
           const data = await res.json();
@@ -302,7 +351,8 @@ export default function ExaminerDashboard() {
       Swal.fire({
         title: "Antrean Diproses",
         text: `${processedInLoop} pesan telah dikirim ke Wablas.`,
-        icon: "success" });
+        icon: "success",
+      });
       fetchStudents();
     } catch (error) {
       console.error(error);
@@ -329,7 +379,10 @@ export default function ExaminerDashboard() {
     }
   };
 
-  const handleAssignTypeChange = (type: "quran" | "wawancara_santri" | "wawancara_ortu", student: Student) => {
+  const handleAssignTypeChange = (
+    type: "quran" | "wawancara_santri" | "wawancara_ortu",
+    student: Student
+  ) => {
     setAssignType(type);
     try {
       const da = student.nilai_ujian?.detail_akademik;
@@ -353,7 +406,9 @@ export default function ExaminerDashboard() {
         body: JSON.stringify({
           pendaftar_id: assignStudent.id,
           type: assignType,
-          examiner_id: assignExaminerId }) });
+          examiner_id: assignExaminerId,
+        }),
+      });
 
       if (res.ok) {
         Swal.fire("Berhasil", "Penugasan penguji berhasil diperbarui", "success");
@@ -395,8 +450,8 @@ export default function ExaminerDashboard() {
         (stg) => `
         <div style="display: flex; align-items: center; margin-bottom: 12px; font-family: sans-serif; text-align: left;">
           <input type="checkbox" id="skip_stage_${stg.id}" value="${stg.id}" ${
-          currentSkipped.includes(stg.id) ? "checked" : ""
-        } style="width: 18px; height: 18px; cursor: pointer; accent-color: #f59e0b; margin-right: 10px;" />
+            currentSkipped.includes(stg.id) ? "checked" : ""
+          } style="width: 18px; height: 18px; cursor: pointer; accent-color: #f59e0b; margin-right: 10px;" />
           <label for="skip_stage_${stg.id}" style="font-size: 14px; font-weight: 600; cursor: pointer; color: #1f2937;">
             ${stg.label}
           </label>
@@ -428,7 +483,8 @@ export default function ExaminerDashboard() {
           }
         });
         return selected;
-      } });
+      },
+    });
 
     if (result.isConfirmed) {
       const skipped_stages = result.value || [];
@@ -438,14 +494,17 @@ export default function ExaminerDashboard() {
           allowOutsideClick: false,
           didOpen: () => {
             Swal.showLoading();
-          } });
+          },
+        });
 
         const res = await fetch("/api/penilaian/skip", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             pendaftar_id: student.id,
-            skipped_stages }) });
+            skipped_stages,
+          }),
+        });
 
         if (!res.ok) {
           const errorJson = await res.json();
@@ -455,7 +514,8 @@ export default function ExaminerDashboard() {
         Swal.fire({
           title: "Sukses!",
           text: "Konfigurasi bypass berhasil disimpan dan nilai telah dikalkulasi ulang.",
-          icon: "success" });
+          icon: "success",
+        });
 
         fetchStudents();
       } catch (err: any) {
@@ -473,102 +533,247 @@ export default function ExaminerDashboard() {
   });
 
   const handleExportExcel = async () => {
-    if (!students?.length)
-      return Swal.fire("Info", "Tidak ada data untuk diekspor", "info");
+    if (!students?.length) {
+      return Swal.fire("Info", "Tidak ada data santri untuk diekspor", "info");
+    }
 
-    const getGrade = (score: number | undefined | null, type: string) => {
-      if (score == null) return "-";
-      if (type === "akademik") {
-        if (score >= 75) return "A";
-        if (score >= 60) return "B";
-        if (score >= 45) return "C";
-        if (score >= 30) return "D";
-        return "E";
-      }
-      if (type === "quran") {
+    try {
+      setIsExporting(true);
+
+      const getGrade = (score: number | undefined | null, type: string) => {
+        if (score == null) return "-";
+        if (type === "akademik") {
+          if (score >= 75) return "A";
+          if (score >= 60) return "B";
+          if (score >= 45) return "C";
+          if (score >= 30) return "D";
+          return "E";
+        }
+        if (type === "quran") {
+          if (score >= 80) return "A";
+          if (score >= 65) return "B";
+          if (score >= 50) return "C";
+          if (score >= 35) return "D";
+          return "E";
+        }
+        if (type === "kepribadian") {
+          if (score >= 85) return "A";
+          if (score >= 70) return "B";
+          if (score >= 55) return "C";
+          if (score >= 40) return "D";
+          return "E";
+        }
+        // Wawancara & Kesiapan
         if (score >= 80) return "A";
         if (score >= 65) return "B";
         if (score >= 50) return "C";
         if (score >= 35) return "D";
         return "E";
-      }
-      if (type === "kepribadian") {
-        if (score >= 85) return "A";
-        if (score >= 70) return "B";
-        if (score >= 55) return "C";
-        if (score >= 40) return "D";
-        return "E";
-      }
-      // Wawancara & Kesiapan
-      if (score >= 80) return "A";
-      if (score >= 65) return "B";
-      if (score >= 50) return "C";
-      if (score >= 35) return "D";
-      return "E";
-    };
+      };
 
-    const formatStudentForExport = (s: Student) => {
-      const ws = s.nilai_ujian?.nilai_wawancara_santri || 0;
-      const wo = s.nilai_ujian?.nilai_wawancara_ortu || 0;
-      const avgWawancara = ws > 0 && wo > 0 ? (ws + wo) / 2 : ws || wo || 0;
+      const formatStudentForExport = (s: Student) => {
+        const ws = s?.nilai_ujian?.nilai_wawancara_santri || 0;
+        const wo = s?.nilai_ujian?.nilai_wawancara_ortu || 0;
 
-      return [
-        s.nomor_pendaftaran || "-",
-        (s.nama_lengkap || "").toUpperCase(),
-        s.jenjang || "-",
-        getGrade(s.nilai_ujian?.score_quran, "quran"),
-        getGrade(s.nilai_ujian?.score_akademik, "akademik"),
-        getGrade(s.nilai_ujian?.score_kepribadian, "kepribadian"),
-        getGrade(avgWawancara, "wawancara"),
-        getGrade(s.nilai_ujian?.score_kesiapan, "kesiapan"),
-        s.nilai_ujian?.status_kelulusan || "BELUM LENGKAP",
+        let examStatus = s?.nilai_ujian?.status_kelulusan;
+        const pendaftaranStatus = (s?.status_pendaftaran || "").toUpperCase();
+        if (
+          [
+            "ACCEPTED",
+            "ENROLLED",
+            "ENROLLED_FULL",
+            "DITERIMA",
+            "PROSES_DAFTAR_ULANG",
+            "LUNAS_DAFTAR_ULANG",
+          ].includes(pendaftaranStatus)
+        ) {
+          examStatus = "DITERIMA";
+        }
+
+        const totalScore =
+          s?.nilai_ujian?.nilai_total != null ? Number(s.nilai_ujian.nilai_total).toFixed(2) : "-";
+
+        return [
+          s?.nomor_pendaftaran || "-",
+          (s?.nama_lengkap || "").toUpperCase(),
+          s?.jenjang || "-",
+          getGrade(s?.nilai_ujian?.score_quran, "quran"),
+          getGrade(s?.nilai_ujian?.score_hafalan, "quran"),
+          getGrade(s?.nilai_ujian?.score_arab, "akademik"),
+          getGrade(s?.nilai_ujian?.score_akademik, "akademik"),
+          getGrade(s?.nilai_ujian?.score_kepribadian, "kepribadian"),
+          getGrade(ws, "wawancara"),
+          getGrade(wo, "wawancara"),
+          getGrade(s?.nilai_ujian?.score_kesiapan, "kesiapan"),
+          totalScore,
+          examStatus || "BELUM LENGKAP",
+        ];
+      };
+
+      const header = [
+        "NP",
+        "Nama Santri",
+        "Jenjang",
+        "Bacaan Qur'an",
+        "Hafalan Qur'an",
+        "Lisan B. Arab",
+        "Akademik",
+        "Kepribadian",
+        "W. Santri",
+        "W. Ortu",
+        "Kesiapan",
+        "Total Skor",
+        "Keputusan",
       ];
-    };
 
-    const header = [
-      "NP",
-      "Nama Santri",
-      "Jenjang",
-      "Al-Qur'an",
-      "Akademik",
-      "Kepribadian",
-      "Wawancara",
-      "Kesiapan",
-      "Keputusan",
-    ];
-
-    // Grouping by Jenjang
-    const jenjangGroups: Record<string, Student[]> = {};
-    students.forEach((s) => {
-      const j = s.jenjang || "LAINNYA";
-      if (!jenjangGroups[j]) jenjangGroups[j] = [];
-      jenjangGroups[j].push(s);
-    });
-
-    const sheets = [
-      {
-        name: "REKAP TOTAL",
-        title: "REKAPITULASI HASIL SELEKSI PENDAFTAR (SEMUA JENJANG)",
-        subTitle: `Tanggal Ekspor: ${new Date().toLocaleDateString("id-ID")}`,
-        header,
-        data: students.map(formatStudentForExport) },
-    ];
-
-    // Add sheets for each Jenjang
-    Object.keys(jenjangGroups)
-      .sort()
-      .forEach((j) => {
-        sheets.push({
-          name: j.substring(0, 31), // Excel sheet name limit
-          title: `REKAPITULASI HASIL SELEKSI - ${j}`,
-          subTitle: `Jenjang: ${j} | Total: ${jenjangGroups[j].length} Peserta`,
-          header,
-          data: jenjangGroups[j].map(formatStudentForExport) });
+      // Grouping by Jenjang
+      const jenjangGroups: Record<string, Student[]> = {};
+      students.forEach((s) => {
+        const rawJ = s?.jenjang || "LAINNYA";
+        const j = rawJ.replace(/[*?:\\/[\]]/g, "-").trim() || "LAINNYA";
+        if (!jenjangGroups[j]) jenjangGroups[j] = [];
+        jenjangGroups[j].push(s);
       });
 
-    await exportToExcelProfessional({
-      fileName: `Rekap_Nilai_PPDB_Professional_${new Date().toISOString().split("T")[0]}`,
-      sheets });
+      const sheets = [
+        {
+          name: "REKAP TOTAL",
+          title: "REKAPITULASI HASIL SELEKSI PENDAFTAR (SEMUA JENJANG)",
+          subTitle: `Tanggal Ekspor: ${new Date().toLocaleDateString("id-ID")} | Total: ${students.length} Peserta`,
+          header,
+          data: students.map(formatStudentForExport),
+        },
+      ];
+
+      // Add sheets for each Jenjang
+      Object.keys(jenjangGroups)
+        .sort()
+        .forEach((j) => {
+          sheets.push({
+            name: j.substring(0, 31),
+            title: `REKAPITULASI HASIL SELEKSI - ${j}`,
+            subTitle: `Jenjang: ${j} | Total: ${jenjangGroups[j].length} Peserta`,
+            header,
+            data: jenjangGroups[j].map(formatStudentForExport),
+          });
+        });
+
+      await exportToExcelProfessional({
+        fileName: `Rekap_Nilai_PPDB_Professional_${new Date().toISOString().split("T")[0]}`,
+        sheets,
+      });
+
+      Swal.fire({
+        title: "Berhasil!",
+        text: "Data rekap penilaian berhasil diekspor ke Excel.",
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+    } catch (error: any) {
+      console.error("Export Excel error:", error);
+      Swal.fire(
+        "Gagal Ekspor",
+        error?.message || "Terjadi kesalahan saat mengekspor data ke Excel",
+        "error"
+      );
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  const handleExportPDF = () => {
+    if (!students?.length) {
+      return Swal.fire("Info", "Tidak ada data santri untuk diekspor", "info");
+    }
+
+    try {
+      const getGrade = (score: number | undefined | null, type: string) => {
+        if (score == null) return "-";
+        if (type === "akademik") {
+          if (score >= 75) return "A";
+          if (score >= 60) return "B";
+          if (score >= 45) return "C";
+          if (score >= 30) return "D";
+          return "E";
+        }
+        if (type === "quran") {
+          if (score >= 85) return "A";
+          if (score >= 75) return "B";
+          if (score >= 70) return "C";
+          if (score >= 40) return "D";
+          return "E";
+        }
+        if (type === "kepribadian") {
+          if (score >= 80) return "A";
+          if (score >= 65) return "B";
+          if (score >= 50) return "C";
+          if (score >= 35) return "D";
+          return "E";
+        }
+        if (score >= 80) return "A";
+        if (score >= 65) return "B";
+        if (score >= 50) return "C";
+        if (score >= 35) return "D";
+        return "E";
+      };
+
+      const columns = [
+        "No",
+        "NP",
+        "Nama Santri",
+        "Jenjang",
+        "Qur'an",
+        "Hafalan",
+        "B. Arab",
+        "Akademik",
+        "Kepribadian",
+        "W. Santri",
+        "W. Ortu",
+        "Kesiapan",
+        "Total",
+        "Keputusan",
+      ];
+
+      const data = students.map((s, idx) => {
+        const ws = s?.nilai_ujian?.nilai_wawancara_santri || 0;
+        const wo = s?.nilai_ujian?.nilai_wawancara_ortu || 0;
+        let examStatus = s?.nilai_ujian?.status_kelulusan;
+        const pendaftaranStatus = (s?.status_pendaftaran || "").toUpperCase();
+        if (["ACCEPTED", "ENROLLED", "ENROLLED_FULL", "DITERIMA"].includes(pendaftaranStatus)) {
+          examStatus = "DITERIMA";
+        }
+        const totalScore = s?.nilai_ujian?.nilai_total != null ? Number(s.nilai_ujian.nilai_total).toFixed(1) : "-";
+
+        return [
+          String(idx + 1),
+          s?.nomor_pendaftaran || "-",
+          (s?.nama_lengkap || "").substring(0, 18),
+          s?.jenjang || "-",
+          getGrade(s?.nilai_ujian?.score_quran, "quran"),
+          getGrade(s?.nilai_ujian?.score_hafalan, "quran"),
+          getGrade(s?.nilai_ujian?.score_arab, "akademik"),
+          getGrade(s?.nilai_ujian?.score_akademik, "akademik"),
+          getGrade(s?.nilai_ujian?.score_kepribadian, "kepribadian"),
+          getGrade(ws, "wawancara"),
+          getGrade(wo, "wawancara"),
+          getGrade(s?.nilai_ujian?.score_kesiapan, "kesiapan"),
+          totalScore,
+          examStatus || "BELUM LENGKAP",
+        ];
+      });
+
+      exportToPDF(
+        "REKAPITULASI PENILAIAN HASIL SELEKSI PPDB",
+        columns,
+        data,
+        `Rekap_Nilai_PPDB_${new Date().toISOString().split("T")[0]}`,
+        "landscape"
+      );
+    } catch (e: any) {
+      console.error("Export PDF error:", e);
+      Swal.fire("Gagal Ekspor", "Terjadi kesalahan saat mengekspor ke PDF", "error");
+    }
   };
 
   return (
@@ -577,7 +782,7 @@ export default function ExaminerDashboard() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-black text-ink-900 tracking-tight flex items-center gap-3">
-            <div className="p-4 bg-primary-600 rounded-3xl shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-600/20">
+            <div className="p-4 bg-primary-600 rounded-3xl shadow-2xl">
               <ClipboardEdit className="w-6 h-6 text-white" />
             </div>
             Pusat <span className="text-primary-700">Penilaian</span>
@@ -619,8 +824,11 @@ export default function ExaminerDashboard() {
           </button>
         </div>
       </div>
-      {/* BARU: Banner Akses Khusus & Share WA Bank Soal Panitia (Al-Andalus Maroon & Krem Emas) */}
-      <div style={{ background: "linear-gradient(135deg, #550000 0%, #360000 100%)" }} className="text-white p-5 sm:p-6 rounded-3xl shadow-2xl shadow-primary/30 border border-[#6b0000]/60 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      {/* BARU: Banner Akses Khusus & Share WA Bank Soal Panitia (Al-Imam Maroon & Krem Emas) */}
+      <div
+        style={{ background: "linear-gradient(135deg, #9D174D 0%, #500724 100%)" }}
+        className="text-white p-5 sm:p-6 rounded-3xl shadow-2xl border border-[#831843]/60 flex flex-col md:flex-row items-start md:items-center justify-between gap-4"
+      >
         <div className="flex items-center gap-3.5">
           <div className="p-3.5 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 flex-shrink-0">
             <FileText className="w-6 h-6 text-[#ddc192]" />
@@ -629,9 +837,12 @@ export default function ExaminerDashboard() {
             <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-[#ddc192]/20 text-[#ddc192] text-[10px] font-bold rounded-full border border-[#ddc192]/40 mb-1">
               <Sparkles className="w-3 h-3 text-[#ddc192]" /> AKSES & DISKUSI PANITIA SPMB 2027/2028
             </div>
-            <h3 className="font-extrabold text-base text-white">Bank Soal & Form Penilaian Panitia</h3>
+            <h3 className="font-extrabold text-base text-white">
+              Bank Soal & Form Penilaian Panitia
+            </h3>
             <p className="text-xs text-[#ddc192]/90 max-w-xl font-medium">
-              Lihat seluruh soal ujian online, durasi pengerjaan, dan rubrik penguji Al-Qur'an & Wawancara, atau bagikan link ke grup WhatsApp panitia.
+              Lihat seluruh soal ujian online, durasi pengerjaan, dan rubrik penguji Al-Qur'an &
+              Wawancara, atau bagikan link ke grup WhatsApp panitia.
             </p>
           </div>
         </div>
@@ -639,14 +850,14 @@ export default function ExaminerDashboard() {
         <div className="flex items-center gap-2.5 w-full md:w-auto flex-shrink-0">
           <Link
             href="/dashboard/admin/bank-soal"
-            className="flex-1 md:flex-none px-4 py-2.5 bg-[#ddc192] text-[#550000] hover:bg-[#c5a775] rounded-2xl font-black text-xs flex items-center justify-center gap-2 shadow-sm transition-all border border-[#ddc192]"
+            className="flex-1 md:flex-none px-4 py-2.5 bg-[#ddc192] text-[#9D174D] hover:bg-[#c5a775] rounded-2xl font-black text-xs flex items-center justify-center gap-2 shadow-sm transition-all border border-[#ddc192]"
           >
-            <Eye className="w-4 h-4 text-[#550000]" /> Lihat Bank Soal
+            <Eye className="w-4 h-4 text-[#9D174D]" /> Lihat Bank Soal
           </Link>
           <button
             onClick={() => {
               const message = encodeURIComponent(
-                `*Assalamu’alaikum Warahmatullahi Wabarakatuh*\n\nYth. Ustadz / Ustadzah Panitia SPMB Pesantren Islam Internasional Al-Andalus,\n\nBerikut link akses khusus Bank Soal Seleksi & Form Penilaian Penguji untuk peninjauan & evaluasi TA 2027/2028:\n\nhttps://ppdb.pesantren-demo.com/panitia/bank-soal\n\n_Mohon bantuan ustadz/ustadzah untuk meninjau relevansi soal dan rubrik wawancara._\n\nSyukron, Jazakumullahu Khairan.`
+                `*Assalamu’alaikum Warahmatullahi Wabarakatuh*\n\nYth. Ustadz / Ustadzah Panitia SPMB Pesantren Al-Andalus Al-Imam,\n\nBerikut link akses khusus Bank Soal Seleksi & Form Penilaian Penguji untuk peninjauan & evaluasi TA 2027/2028:\n\n https://spmb.pesantren-alimam.com/panitia/bank-soal\n\n_Mohon bantuan ustadz/ustadzah untuk meninjau relevansi soal dan rubrik wawancara._\n\nSyukron, Jazakumullahu Khairan. `
               );
               window.open(`https://wa.me/?text=${message}`, "_blank");
             }}
@@ -660,51 +871,101 @@ export default function ExaminerDashboard() {
       {activeTab === "data" ? (
         /* TAB 1: DATA PENILAIAN */
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
-          
-        {/* Header Stats (Rekap Kelulusan) */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <div className="bg-green-50 p-6 rounded-3xl shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 border border-green-100 relative overflow-hidden">
-            <p className="text-[#550000] text-sm font-bold tracking-wider uppercase mb-1">Total Diterima</p>
-            <div className="flex items-end gap-2">
-              <h3 className="text-2xl md:text-4xl font-black text-[#550000]">
-                {students.filter(c => c.status_pendaftaran === "accepted" || c.status_pendaftaran === "enrolled").length}
-              </h3>
-              <span className="text-[#550000]/70 font-medium mb-1 pl-1">Santri</span>
+          {/* Filter Tahun Ajaran */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+            <div className="flex items-center gap-3">
+              <Filter className="w-4 h-4 text-ink-500" />
+              <span className="text-sm font-black uppercase tracking-wider text-ink-600">
+                Tahun Ajaran
+              </span>
+              <select
+                value={selectedTa}
+                onChange={(e) => setSelectedTa(e.target.value)}
+                className="px-4 py-2.5 bg-white border-2 border-ink-100 rounded-2xl text-sm font-bold text-ink-800 focus:outline-none focus:border-primary-500 shadow-sm cursor-pointer"
+              >
+                <option value="all">Semua Tahun Ajaran</option>
+                {taList.map((ta) => (
+                  <option key={ta.id} value={ta.id}>
+                    {ta.nama}
+                    {ta.is_active ? " (Aktif)" : ""}
+                  </option>
+                ))}
+              </select>
             </div>
-            <div className="absolute -right-4 -bottom-4 bg-green-200/50 w-24 h-24 rounded-full blur-xl"></div>
+            <p className="text-xs text-ink-400 font-medium">
+              Rekap & daftar mengikuti tahun ajaran terpilih (default: terbaru).
+            </p>
           </div>
-          <div className="bg-secondary-50 p-6 rounded-3xl shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 border border-secondary-100 relative overflow-hidden">
-            <p className="text-secondary-600 text-sm font-bold tracking-wider uppercase mb-1">Cadangan</p>
-            <div className="flex items-end gap-2">
-              <h3 className="text-2xl md:text-4xl font-black text-secondary-700">
-                {students.filter(c => c.status_pendaftaran === "cadangan" || c.status_pendaftaran === "announced").length}
-              </h3>
-              <span className="text-secondary-600/70 font-medium mb-1 pl-1">Santri</span>
+
+          {/* Header Stats (Rekap Kelulusan) */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div className="bg-green-50 p-6 rounded-3xl shadow-2xl border border-green-100 relative overflow-hidden">
+              <p className="text-[#9D174D] text-sm font-bold tracking-wider uppercase mb-1">
+                Total Diterima
+              </p>
+              <div className="flex items-end gap-2">
+                <h3 className="text-2xl md:text-4xl font-black text-[#9D174D]">
+                  {
+                    students.filter(
+                      (c) =>
+                        c.status_pendaftaran === "accepted" || c.status_pendaftaran === "enrolled"
+                    ).length
+                  }
+                </h3>
+                <span className="text-[#9D174D]/70 font-medium mb-1 pl-1">Santri</span>
+              </div>
+              <div className="absolute -right-4 -bottom-4 bg-green-200/50 w-24 h-24 rounded-full blur-xl"></div>
             </div>
-            <div className="absolute -right-4 -bottom-4 bg-secondary-200/50 w-24 h-24 rounded-full blur-xl"></div>
-          </div>
-          <div className="bg-rose-50 p-6 rounded-3xl shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 border border-rose-100 relative overflow-hidden">
-            <p className="text-rose-600 text-sm font-bold tracking-wider uppercase mb-1">Ditolak</p>
-            <div className="flex items-end gap-2">
-              <h3 className="text-2xl md:text-4xl font-black text-rose-700">
-                {students.filter(c => c.status_pendaftaran === "rejected").length}
-              </h3>
-              <span className="text-rose-600/70 font-medium mb-1 pl-1">Santri</span>
+            <div className="bg-secondary-50 p-6 rounded-3xl shadow-2xl border border-secondary-100 relative overflow-hidden">
+              <p className="text-secondary-600 text-sm font-bold tracking-wider uppercase mb-1">
+                Cadangan
+              </p>
+              <div className="flex items-end gap-2">
+                <h3 className="text-2xl md:text-4xl font-black text-secondary-700">
+                  {
+                    students.filter(
+                      (c) =>
+                        c.status_pendaftaran === "cadangan" || c.status_pendaftaran === "announced"
+                    ).length
+                  }
+                </h3>
+                <span className="text-secondary-600/70 font-medium mb-1 pl-1">Santri</span>
+              </div>
+              <div className="absolute -right-4 -bottom-4 bg-secondary-200/50 w-24 h-24 rounded-full blur-xl"></div>
             </div>
-            <div className="absolute -right-4 -bottom-4 bg-rose-200/50 w-24 h-24 rounded-full blur-xl"></div>
-          </div>
-          <div className="bg-ink-50 p-6 rounded-3xl shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 border border-ink-200 relative overflow-hidden">
-            <p className="text-ink-600 text-sm font-bold tracking-wider uppercase mb-1">Proses Penilaian</p>
-            <div className="flex items-end gap-2">
-              <h3 className="text-2xl md:text-4xl font-black text-ink-700">
-                {students.filter(c => !["accepted", "enrolled", "cadangan", "announced", "rejected"].includes(c.status_pendaftaran)).length}
-              </h3>
-              <span className="text-ink-600/70 font-medium mb-1 pl-1">Santri</span>
+            <div className="bg-rose-50 p-6 rounded-3xl shadow-2xl border border-rose-100 relative overflow-hidden">
+              <p className="text-rose-600 text-sm font-bold tracking-wider uppercase mb-1">
+                Ditolak
+              </p>
+              <div className="flex items-end gap-2">
+                <h3 className="text-2xl md:text-4xl font-black text-rose-700">
+                  {students.filter((c) => c.status_pendaftaran === "rejected").length}
+                </h3>
+                <span className="text-rose-600/70 font-medium mb-1 pl-1">Santri</span>
+              </div>
+              <div className="absolute -right-4 -bottom-4 bg-rose-200/50 w-24 h-24 rounded-full blur-xl"></div>
             </div>
-            <div className="absolute -right-4 -bottom-4 bg-ink-200/50 w-24 h-24 rounded-full blur-xl"></div>
+            <div className="bg-ink-50 p-6 rounded-3xl shadow-2xl border border-ink-200 relative overflow-hidden">
+              <p className="text-ink-600 text-sm font-bold tracking-wider uppercase mb-1">
+                Proses Penilaian
+              </p>
+              <div className="flex items-end gap-2">
+                <h3 className="text-2xl md:text-4xl font-black text-ink-700">
+                  {
+                    students.filter(
+                      (c) =>
+                        !["accepted", "enrolled", "cadangan", "announced", "rejected"].includes(
+                          c.status_pendaftaran
+                        )
+                    ).length
+                  }
+                </h3>
+                <span className="text-ink-600/70 font-medium mb-1 pl-1">Santri</span>
+              </div>
+              <div className="absolute -right-4 -bottom-4 bg-ink-200/50 w-24 h-24 rounded-full blur-xl"></div>
+            </div>
           </div>
-        </div>
-      
+
           <div className="bg-white rounded-3xl shadow-clay-md border border-white/40 overflow-hidden">
             <div className="p-6 border-b border-ink-50 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 bg-ink-50/30">
               <div className="relative w-full lg:w-96">
@@ -721,29 +982,51 @@ export default function ExaminerDashboard() {
               <div className="flex flex-wrap gap-2 w-full lg:w-auto">
                 <Button
                   onClick={handleExportExcel}
-                  className="btn-secondary flex items-center gap-2 bg-emerald-50 text-[#550000] border-emerald-100 hover:bg-emerald-100 rounded-3xl font-bold py-2"
+                  disabled={isExporting}
+                  className="btn-secondary flex items-center gap-2 bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100 rounded-3xl font-bold py-2 whitespace-nowrap shrink-0 disabled:opacity-50"
                 >
-                  <Download className="w-4 h-4" /> Export Excel
+                  {isExporting ? (
+                    <>
+                      <RefreshCcw className="w-4 h-4 animate-spin" /> Mengekspor...
+                    </>
+                  ) : (
+                    <>
+                      <Download className="w-4 h-4" /> Export Excel
+                    </>
+                  )}
+                </Button>
+
+                <Button
+                  onClick={handleExportPDF}
+                  disabled={isExporting}
+                  className="btn-secondary flex items-center gap-2 bg-rose-50 text-rose-800 border-rose-200 hover:bg-rose-100 rounded-3xl font-bold py-2 whitespace-nowrap shrink-0 disabled:opacity-50"
+                >
+                  <FileText className="w-4 h-4" /> Export PDF
                 </Button>
 
                 <Button
                   onClick={async () => {
                     try {
                       const res = await fetch("/api/penilaian/recalculate", {
-                        method: "POST" });
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          tahun_ajaran_id: selectedTa === "all" ? null : selectedTa,
+                        }),
+                      });
                       if (!res.ok) throw new Error("Failed");
                       const result = await res.json();
                       Swal.fire(
                         "Sukses",
                         `${result.recalculated} data berhasil dihitung ulang`,
-                        "success",
+                        "success"
                       );
                       fetchStudents();
                     } catch {
                       Swal.fire("Error", "Gagal menghitung ulang", "error");
                     }
                   }}
-                  className="btn-secondary flex items-center gap-2 bg-purple-50 text-purple-700 border-purple-100 hover:bg-purple-100 rounded-3xl font-bold py-2"
+                  className="btn-secondary flex items-center gap-2 bg-purple-50 text-purple-700 border-purple-100 hover:bg-purple-100 rounded-3xl font-bold py-2 whitespace-nowrap shrink-0"
                 >
                   <RefreshCcw className="w-4 h-4" /> Hitung Ulang
                 </Button>
@@ -819,10 +1102,7 @@ export default function ExaminerDashboard() {
                     </tr>
                   ) : (
                     filteredStudents.map((s) => (
-                      <tr
-                        key={s.id}
-                        className="hover:bg-primary-50/30 transition-colors group"
-                      >
+                      <tr key={s.id} className="hover:bg-primary-50/30 transition-colors group">
                         <td className="px-6 py-4 whitespace-nowrap text-xs font-mono font-bold text-ink-400">
                           {s.nomor_pendaftaran || "-"}
                         </td>
@@ -832,9 +1112,7 @@ export default function ExaminerDashboard() {
                               .toLowerCase()
                               .replace(
                                 /\w\S*/g,
-                                (txt) =>
-                                  txt.charAt(0).toUpperCase() +
-                                  txt.substr(1).toLowerCase(),
+                                (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
                               )}
                           </p>
                           <p className="text-[10px] font-bold text-ink-400 uppercase tracking-wider mt-0.5">
@@ -849,30 +1127,36 @@ export default function ExaminerDashboard() {
                         <td className="px-4 py-4 whitespace-nowrap">
                           {(() => {
                             let examStatus = s.nilai_ujian?.status_kelulusan;
-                            
+
                             // OVERRIDE: Jika status pendaftaran menandakan tahap lanjutan, override ke DITERIMA
                             const pendaftaranStatus = (s.status_pendaftaran || "").toUpperCase();
-                            if (["ACCEPTED", "ENROLLED", "ENROLLED_FULL", "DITERIMA", "PROSES_DAFTAR_ULANG", "LUNAS_DAFTAR_ULANG"].includes(pendaftaranStatus)) {
+                            if (
+                              [
+                                "ACCEPTED",
+                                "ENROLLED",
+                                "ENROLLED_FULL",
+                                "DITERIMA",
+                                "PROSES_DAFTAR_ULANG",
+                                "LUNAS_DAFTAR_ULANG",
+                              ].includes(pendaftaranStatus)
+                            ) {
                               examStatus = "DITERIMA";
                             }
 
                             const colors: any = {
-                              LULUS:
-                                "bg-green-100 text-[#550000] border-green-200",
-                              DITERIMA:
-                                "bg-green-100 text-[#550000] border-green-200",
-                              CADANGAN:
-                                "bg-secondary-100 text-secondary-700 border-secondary-200",
+                              LULUS: "bg-green-100 text-[#9D174D] border-green-200",
+                              DITERIMA: "bg-green-100 text-[#9D174D] border-green-200",
+                              CADANGAN: "bg-secondary-100 text-secondary-700 border-secondary-200",
                               DITOLAK: "bg-red-100 text-red-700 border-red-200",
-                              "BELUM LENGKAP":
-                                "bg-orange-100 text-orange-700 border-orange-200",
-                              pending: "bg-ink-100 text-ink-500 border-ink-200" };
+                              "BELUM LENGKAP": "bg-orange-100 text-orange-700 border-orange-200",
+                              pending: "bg-ink-100 text-ink-500 border-ink-200",
+                            };
                             const color =
                               colors[examStatus || "pending"] ||
                               "bg-ink-100 text-ink-500 border-ink-200";
                             return (
                               <span
-                                className={`px-2.5 py-1 text-[10px] font-black rounded-full border shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 ${color}`}
+                                className={`px-2.5 py-1 text-[10px] font-black rounded-full border ${color}`}
                               >
                                 {examStatus || "MENUNGGU"}
                               </span>
@@ -893,17 +1177,15 @@ export default function ExaminerDashboard() {
 
                             if (isSkipped) {
                               return (
-                                <span className="bg-amber-100 text-amber-800 text-[10px] font-black px-2 py-1 rounded shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 border border-amber-200">
+                                <span className="bg-amber-100 text-amber-800 text-[10px] font-black px-2 py-1 rounded border border-amber-200 whitespace-nowrap inline-block shrink-0">
                                   SKIP
                                 </span>
                               );
                             }
 
                             const score = s.nilai_ujian?.score_quran;
-                            if (score == null)
-                              return <span className="text-ink-200">-</span>;
-                            const grade =
-                              score >= 80 ? "A" : score >= 65 ? "B" : "C";
+                            if (score == null) return <span className="text-ink-200">-</span>;
+                            const grade = score >= 80 ? "A" : score >= 65 ? "B" : "C";
                             const color =
                               grade === "A"
                                 ? "bg-green-500"
@@ -912,7 +1194,7 @@ export default function ExaminerDashboard() {
                                   : "bg-secondary-400";
                             return (
                               <span
-                                className={`${color} text-white text-[10px] font-black px-2 py-1 rounded shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10`}
+                                className={`${color} text-white text-[10px] font-black px-2 py-1 rounded      `}
                               >
                                 {grade}
                               </span>
@@ -932,17 +1214,15 @@ export default function ExaminerDashboard() {
 
                             if (isSkipped) {
                               return (
-                                <span className="bg-amber-100 text-amber-800 text-[10px] font-black px-2 py-1 rounded shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 border border-amber-200">
+                                <span className="bg-amber-100 text-amber-800 text-[10px] font-black px-2 py-1 rounded border border-amber-200 whitespace-nowrap inline-block shrink-0">
                                   SKIP
                                 </span>
                               );
                             }
 
                             const score = s.nilai_ujian?.score_akademik;
-                            if (score == null)
-                              return <span className="text-ink-200">-</span>;
-                            const grade =
-                              score >= 75 ? "A" : score >= 60 ? "B" : "C";
+                            if (score == null) return <span className="text-ink-200">-</span>;
+                            const grade = score >= 75 ? "A" : score >= 60 ? "B" : "C";
                             const color =
                               grade === "A"
                                 ? "bg-green-500"
@@ -951,7 +1231,7 @@ export default function ExaminerDashboard() {
                                   : "bg-secondary-400";
                             return (
                               <span
-                                className={`${color} text-white text-[10px] font-black px-2 py-1 rounded shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10`}
+                                className={`${color} text-white text-[10px] font-black px-2 py-1 rounded      `}
                               >
                                 {grade}
                               </span>
@@ -971,17 +1251,15 @@ export default function ExaminerDashboard() {
 
                             if (isSkipped) {
                               return (
-                                <span className="bg-amber-100 text-amber-800 text-[10px] font-black px-2 py-1 rounded shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 border border-amber-200">
+                                <span className="bg-amber-100 text-amber-800 text-[10px] font-black px-2 py-1 rounded border border-amber-200 whitespace-nowrap inline-block shrink-0">
                                   SKIP
                                 </span>
                               );
                             }
 
                             const score = s.nilai_ujian?.score_kepribadian;
-                            if (score == null)
-                              return <span className="text-ink-200">-</span>;
-                            const grade =
-                              score >= 70 ? "A" : score >= 50 ? "B" : "C";
+                            if (score == null) return <span className="text-ink-200">-</span>;
+                            const grade = score >= 70 ? "A" : score >= 50 ? "B" : "C";
                             const color =
                               grade === "A"
                                 ? "bg-green-500"
@@ -990,7 +1268,7 @@ export default function ExaminerDashboard() {
                                   : "bg-secondary-400";
                             return (
                               <span
-                                className={`${color} text-white text-[10px] font-black px-2 py-1 rounded shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10`}
+                                className={`${color} text-white text-[10px] font-black px-2 py-1 rounded      `}
                               >
                                 {grade}
                               </span>
@@ -1012,7 +1290,7 @@ export default function ExaminerDashboard() {
 
                             if (isWsSkipped && isWoSkipped) {
                               return (
-                                <span className="bg-amber-100 text-amber-800 text-[10px] font-black px-2 py-1 rounded shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 border border-amber-200">
+                                <span className="bg-amber-100 text-amber-800 text-[10px] font-black px-2 py-1 rounded border border-amber-200 whitespace-nowrap inline-block shrink-0">
                                   SKIP
                                 </span>
                               );
@@ -1023,14 +1301,14 @@ export default function ExaminerDashboard() {
 
                             if (isWsSkipped && wo === 0) {
                               return (
-                                <span className="bg-amber-100 text-amber-800 text-[10px] font-black px-2 py-1 rounded shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 border border-amber-200">
+                                <span className="bg-amber-100 text-amber-800 text-[10px] font-black px-2 py-1 rounded border border-amber-200 whitespace-nowrap inline-block shrink-0">
                                   S: SKIP
                                 </span>
                               );
                             }
                             if (isWoSkipped && ws === 0) {
                               return (
-                                <span className="bg-amber-100 text-amber-800 text-[10px] font-black px-2 py-1 rounded shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 border border-amber-200">
+                                <span className="bg-amber-100 text-amber-800 text-[10px] font-black px-2 py-1 rounded border border-amber-200 whitespace-nowrap inline-block shrink-0">
                                   O: SKIP
                                 </span>
                               );
@@ -1039,10 +1317,8 @@ export default function ExaminerDashboard() {
                             if (ws === 0 && wo === 0)
                               return <span className="text-ink-200">-</span>;
 
-                            const score =
-                              ws > 0 && wo > 0 ? (ws + wo) / 2 : ws || wo;
-                            const grade =
-                              score >= 80 ? "A" : score >= 60 ? "B" : "C";
+                            const score = ws > 0 && wo > 0 ? (ws + wo) / 2 : ws || wo;
+                            const grade = score >= 80 ? "A" : score >= 60 ? "B" : "C";
                             const color =
                               grade === "A"
                                 ? "bg-green-500"
@@ -1051,7 +1327,7 @@ export default function ExaminerDashboard() {
                                   : "bg-secondary-400";
                             return (
                               <span
-                                className={`${color} text-white text-[10px] font-black px-2 py-1 rounded shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10`}
+                                className={`${color} text-white text-[10px] font-black px-2 py-1 rounded      `}
                               >
                                 {grade} {isWsSkipped ? "(S:SKIP)" : isWoSkipped ? "(O:SKIP)" : ""}
                               </span>
@@ -1071,17 +1347,15 @@ export default function ExaminerDashboard() {
 
                             if (isSkipped) {
                               return (
-                                <span className="bg-amber-100 text-amber-800 text-[10px] font-black px-2 py-1 rounded shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 border border-amber-200">
+                                <span className="bg-amber-100 text-amber-800 text-[10px] font-black px-2 py-1 rounded border border-amber-200 whitespace-nowrap inline-block shrink-0">
                                   SKIP
                                 </span>
                               );
                             }
 
                             const score = s.nilai_ujian?.score_kesiapan;
-                            if (score == null)
-                              return <span className="text-ink-200">-</span>;
-                            const grade =
-                              score >= 75 ? "A" : score >= 55 ? "B" : "C";
+                            if (score == null) return <span className="text-ink-200">-</span>;
+                            const grade = score >= 75 ? "A" : score >= 55 ? "B" : "C";
                             const color =
                               grade === "A"
                                 ? "bg-green-500"
@@ -1090,7 +1364,7 @@ export default function ExaminerDashboard() {
                                   : "bg-secondary-400";
                             return (
                               <span
-                                className={`${color} text-white text-[10px] font-black px-2 py-1 rounded shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10`}
+                                className={`${color} text-white text-[10px] font-black px-2 py-1 rounded      `}
                               >
                                 {grade}
                               </span>
@@ -1113,13 +1387,13 @@ export default function ExaminerDashboard() {
                               <>
                                 <button
                                   onClick={() => handleOpenSkipDialog(s)}
-                                  className="flex items-center gap-1.5 bg-amber-500 text-white px-3 py-1.5 rounded-3xl text-[10px] font-black hover:bg-amber-600 transition-all shadow-2xl shadow-primary/30  shadow-primary/20 group-hover:scale-105"
+                                  className="flex items-center gap-1.5 bg-amber-500 text-white px-3 py-1.5 rounded-3xl text-[10px] font-black hover:bg-amber-600 transition-all shadow-2xl group-hover:scale-105"
                                 >
                                   <Zap className="w-3 h-3" /> BYPASS
                                 </button>
                                 <button
                                   onClick={() => handleOpenAssignDialog(s)}
-                                  className="flex items-center gap-1.5 bg-[#550000] text-white px-3 py-1.5 rounded-3xl text-[10px] font-black hover:bg-[#550000] transition-all shadow-2xl shadow-primary/30  shadow-primary/20 group-hover:scale-105"
+                                  className="flex items-center gap-1.5 bg-[#9D174D] text-white px-3 py-1.5 rounded-3xl text-[10px] font-black hover:bg-[#9D174D] transition-all shadow-2xl group-hover:scale-105"
                                 >
                                   <Users className="w-3 h-3" /> PLOT
                                 </button>
@@ -1127,23 +1401,19 @@ export default function ExaminerDashboard() {
                             )}
                             <button
                               onClick={() => handleOpenInput(s, "quran")}
-                              className="flex items-center gap-1.5 bg-ink-900 text-white px-3 py-1.5 rounded-3xl text-[10px] font-black hover:bg-primary-600 transition-all shadow-2xl shadow-primary/30  shadow-primary/20 group-hover:scale-105"
+                              className="flex items-center gap-1.5 bg-ink-900 text-white px-3 py-1.5 rounded-3xl text-[10px] font-black hover:bg-primary-600 transition-all shadow-2xl group-hover:scale-105"
                             >
                               <Zap className="w-3 h-3" /> QUR&apos;AN
                             </button>
                             <button
-                              onClick={() =>
-                                handleOpenInput(s, "wawancara_santri")
-                              }
-                              className="flex items-center gap-1.5 bg-white border border-ink-200 text-ink-700 px-3 py-1.5 rounded-3xl text-[10px] font-black hover:border-primary-600 transition-all shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 group-hover:scale-105"
+                              onClick={() => handleOpenInput(s, "wawancara_santri")}
+                              className="flex items-center gap-1.5 bg-white border border-ink-200 text-ink-700 px-3 py-1.5 rounded-3xl text-[10px] font-black hover:border-primary-600 transition-all shadow-2xl group-hover:scale-105"
                             >
                               <MessageSquare className="w-3 h-3" /> W.SANTRI
                             </button>
                             <button
-                              onClick={() =>
-                                handleOpenInput(s, "wawancara_ortu")
-                              }
-                              className="flex items-center gap-1.5 bg-gold-50 border border-gold-200 text-gold-800 px-3 py-1.5 rounded-3xl text-[10px] font-black hover:border-gold-400 transition-all shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 group-hover:scale-105"
+                              onClick={() => handleOpenInput(s, "wawancara_ortu")}
+                              className="flex items-center gap-1.5 bg-gold-50 border border-gold-200 text-gold-800 px-3 py-1.5 rounded-3xl text-[10px] font-black hover:border-gold-400 transition-all shadow-2xl group-hover:scale-105"
                             >
                               <MessageSquare className="w-3 h-3" /> W.ORTU
                             </button>
@@ -1188,9 +1458,7 @@ export default function ExaminerDashboard() {
                             .toLowerCase()
                             .replace(
                               /\w\S*/g,
-                              (txt) =>
-                                txt.charAt(0).toUpperCase() +
-                                txt.substr(1).toLowerCase(),
+                              (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
                             )}
                         </h3>
                         <p className="text-[10px] font-bold text-ink-400 uppercase tracking-wider mt-0.5">
@@ -1199,9 +1467,7 @@ export default function ExaminerDashboard() {
                       </div>
                       {/* Total Badge */}
                       <div className="bg-primary-600 px-4 py-2.5 rounded-2xl text-white text-center shrink-0">
-                        <p className="text-[8px] font-black opacity-70 uppercase">
-                          Total
-                        </p>
+                        <p className="text-[8px] font-black opacity-70 uppercase">Total</p>
                         <p className="text-xl font-black leading-none mt-0.5">
                           {s.nilai_ujian?.nilai_total != null
                             ? Number(s.nilai_ujian.nilai_total).toFixed(2)
@@ -1214,18 +1480,15 @@ export default function ExaminerDashboard() {
                     {(() => {
                       const examStatus = s.nilai_ujian?.status_kelulusan;
                       const colors: any = {
-                        LULUS: "bg-green-100 text-[#550000] border-green-200",
-                        DITERIMA:
-                          "bg-green-100 text-[#550000] border-green-200",
-                        CADANGAN:
-                          "bg-secondary-100 text-secondary-700 border-secondary-200",
+                        LULUS: "bg-green-100 text-[#9D174D] border-green-200",
+                        DITERIMA: "bg-green-100 text-[#9D174D] border-green-200",
+                        CADANGAN: "bg-secondary-100 text-secondary-700 border-secondary-200",
                         DITOLAK: "bg-red-100 text-red-700 border-red-200",
-                        "BELUM LENGKAP":
-                          "bg-orange-100 text-orange-700 border-orange-200",
-                        pending: "bg-ink-100 text-ink-500 border-ink-200" };
+                        "BELUM LENGKAP": "bg-orange-100 text-orange-700 border-orange-200",
+                        pending: "bg-ink-100 text-ink-500 border-ink-200",
+                      };
                       const color =
-                        colors[examStatus || "pending"] ||
-                        "bg-ink-100 text-ink-500 border-ink-200";
+                        colors[examStatus || "pending"] || "bg-ink-100 text-ink-500 border-ink-200";
                       return (
                         <span
                           className={`inline-flex px-3 py-1 text-[10px] font-black rounded-full border ${color}`}
@@ -1241,32 +1504,35 @@ export default function ExaminerDashboard() {
                         {
                           label: "Akademik",
                           value: s.nilai_ujian?.score_akademik,
-                          stageKey: "AKADEMIK" },
+                          stageKey: "AKADEMIK",
+                        },
                         {
                           label: "Kepribadian",
                           value: s.nilai_ujian?.score_kepribadian,
-                          stageKey: "KEPRIBADIAN" },
+                          stageKey: "KEPRIBADIAN",
+                        },
                         {
                           label: "Kesiapan",
                           value: s.nilai_ujian?.score_kesiapan,
-                          stageKey: "KESIAPAN" },
+                          stageKey: "KESIAPAN",
+                        },
                         {
                           label: "Al-Qur'an",
                           value: s.nilai_ujian?.score_quran,
-                          stageKey: "QURAN" },
+                          stageKey: "QURAN",
+                        },
                         {
                           label: "W. Santri",
                           value: s.nilai_ujian?.nilai_wawancara_santri,
-                          stageKey: "WAWANCARA_SANTRI" },
+                          stageKey: "WAWANCARA_SANTRI",
+                        },
                         {
                           label: "W. Orang Tua",
                           value: s.nilai_ujian?.nilai_wawancara_ortu,
-                          stageKey: "WAWANCARA_ORTU" },
+                          stageKey: "WAWANCARA_ORTU",
+                        },
                       ].map((item) => (
-                        <div
-                          key={item.label}
-                          className="bg-ink-50 rounded-3xl p-4.5 text-center"
-                        >
+                        <div key={item.label} className="bg-ink-50 rounded-3xl p-4.5 text-center">
                           <p className="text-sm font-black text-ink-900 leading-none">
                             {(() => {
                               let isSkipped = false;
@@ -1278,7 +1544,8 @@ export default function ExaminerDashboard() {
                                 }
                               } catch (e) {}
 
-                              if (isSkipped) return <span className="text-amber-600 font-bold">SKIP</span>;
+                              if (isSkipped)
+                                return <span className="text-amber-600 font-bold">SKIP</span>;
                               return item.value != null ? (
                                 Math.round(item.value)
                               ) : (
@@ -1299,13 +1566,13 @@ export default function ExaminerDashboard() {
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 col-span-full">
                           <button
                             onClick={() => handleOpenSkipDialog(s)}
-                            className="flex items-center justify-center gap-2 bg-amber-500 text-white py-3 rounded-2xl text-[11px] font-black shadow-2xl shadow-primary/30  shadow-primary/20 shadow-amber-500/20 active:scale-95 transition-all"
+                            className="flex items-center justify-center gap-2 bg-amber-500 text-white py-3 rounded-2xl text-[11px] font-black shadow-2xl shadow-amber-500/20 active:scale-95 transition-all"
                           >
                             <Zap className="w-3.5 h-3.5" /> BYPASS
                           </button>
                           <button
                             onClick={() => handleOpenAssignDialog(s)}
-                            className="flex items-center justify-center gap-2 bg-[#550000] text-white py-3 rounded-2xl text-[11px] font-black shadow-2xl shadow-primary/30  shadow-primary/20 shadow-blue-500/20 active:scale-95 transition-all"
+                            className="flex items-center justify-center gap-2 bg-[#9D174D] text-white py-3 rounded-2xl text-[11px] font-black shadow-2xl active:scale-95 transition-all"
                           >
                             <Users className="w-3.5 h-3.5" /> PLOT
                           </button>
@@ -1313,13 +1580,13 @@ export default function ExaminerDashboard() {
                       )}
                       <button
                         onClick={() => handleOpenInput(s, "quran")}
-                        className="flex items-center justify-center gap-2 bg-ink-900 text-white py-3 rounded-2xl text-[11px] font-black shadow-2xl shadow-primary/30  shadow-primary/20 shadow-ink-900/10 active:scale-95 transition-all"
+                        className="flex items-center justify-center gap-2 bg-ink-900 text-white py-3 rounded-2xl text-[11px] font-black shadow-2xl shadow-ink-900/10 active:scale-95 transition-all"
                       >
                         <Zap className="w-3.5 h-3.5" /> TES QUR&apos;AN
                       </button>
                       <button
                         onClick={() => handleOpenInput(s, "wawancara_santri")}
-                        className="flex flex-col items-center justify-center bg-gold-400 text-primary-900 py-2 rounded-2xl text-[10px] sm:text-[11px] font-black shadow-2xl shadow-primary/30  shadow-primary/20 shadow-gold-400/20 active:scale-95 transition-all"
+                        className="flex flex-col items-center justify-center bg-gold-400 text-primary-900 py-2 rounded-2xl text-[10px] sm:text-[11px] font-black shadow-2xl shadow-gold-400/20 active:scale-95 transition-all"
                       >
                         <span className="flex items-center gap-1">
                           <MessageSquare className="w-3 h-3" /> SANTRI
@@ -1327,7 +1594,7 @@ export default function ExaminerDashboard() {
                       </button>
                       <button
                         onClick={() => handleOpenInput(s, "wawancara_ortu")}
-                        className="flex flex-col items-center justify-center bg-gold-200 text-gold-900 py-2 rounded-2xl text-[10px] sm:text-[11px] font-black shadow-2xl shadow-primary/30  shadow-primary/20 shadow-gold-200/20 active:scale-95 transition-all"
+                        className="flex flex-col items-center justify-center bg-gold-200 text-gold-900 py-2 rounded-2xl text-[10px] sm:text-[11px] font-black shadow-2xl shadow-gold-200/20 active:scale-95 transition-all"
                       >
                         <span className="flex items-center gap-1">
                           <MessageSquare className="w-3 h-3" /> ORTU
@@ -1345,14 +1612,13 @@ export default function ExaminerDashboard() {
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
           {/* Progress Monitor if Processing */}
           {isProcessingQueue && (
-            <div className="bg-primary-600 rounded-3xl p-6 text-white shadow-2xl shadow-primary/30  shadow-primary-600/20 overflow-hidden relative">
+            <div className="bg-primary-600 rounded-3xl p-6 text-white shadow-2xl overflow-hidden relative">
               <div className="absolute top-0 right-0 p-5 md:p-8 opacity-10">
                 <Send className="w-32 h-32 rotate-12" />
               </div>
               <div className="relative z-10">
                 <h3 className="text-lg font-black flex items-center gap-2 mb-2">
-                  <RefreshCcw className="w-5 h-5 animate-spin" /> Sedang
-                  Mengirim Pesan...
+                  <RefreshCcw className="w-5 h-5 animate-spin" /> Sedang Mengirim Pesan...
                 </h3>
                 <div className="w-full bg-white/20 rounded-full h-4 mb-2">
                   <div
@@ -1377,22 +1643,18 @@ export default function ExaminerDashboard() {
                 <p className="text-[10px] font-black text-ink-400 uppercase tracking-widest leading-none mb-1">
                   Antrean Pending
                 </p>
-                <p className="text-3xl font-black text-ink-900">
-                  {queueStats?.pending || 0}
-                </p>
+                <p className="text-3xl font-black text-ink-900">{queueStats?.pending || 0}</p>
               </div>
             </div>
             <div className="bg-white rounded-3xl p-6 shadow-clay-md border border-white/40 flex items-center gap-4">
-              <div className="p-6 sm:p-8 bg-green-50 text-[#550000] rounded-2xl">
+              <div className="p-6 sm:p-8 bg-green-50 text-[#9D174D] rounded-2xl">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
               <div>
                 <p className="text-[10px] font-black text-ink-400 uppercase tracking-widest leading-none mb-1">
                   Berhasil Terkirim
                 </p>
-                <p className="text-3xl font-black text-ink-900">
-                  {queueStats?.sent || 0}
-                </p>
+                <p className="text-3xl font-black text-ink-900">{queueStats?.sent || 0}</p>
               </div>
             </div>
             <div className="bg-white rounded-3xl p-6 shadow-clay-md border border-white/40 flex items-center gap-4">
@@ -1403,49 +1665,89 @@ export default function ExaminerDashboard() {
                 <p className="text-[10px] font-black text-ink-400 uppercase tracking-widest leading-none mb-1">
                   Gagal / Error
                 </p>
-                <p className="text-3xl font-black text-ink-900">
-                  {queueStats?.failed || 0}
-                </p>
+                <p className="text-3xl font-black text-ink-900">{queueStats?.failed || 0}</p>
               </div>
             </div>
           </div>
 
           {/* System Actions Area */}
-          
-        {/* Header Stats (Rekap Kelulusan) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <div className="bg-green-50 p-6 rounded-3xl shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 border border-green-100 relative overflow-hidden">
-            <p className="text-[#550000] text-sm font-bold tracking-wider uppercase mb-1">Total Diterima</p>
-            <div className="flex items-end gap-2">
-              <h3 className="text-2xl md:text-4xl font-black text-[#550000]">
-                {students.filter(c => c.status_pendaftaran === "accepted" || c.status_pendaftaran === "enrolled").length}
-              </h3>
-              <span className="text-[#550000]/70 font-medium mb-1 pl-1">Santri</span>
+
+          {/* Filter Tahun Ajaran */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+            <div className="flex items-center gap-3">
+              <Filter className="w-4 h-4 text-ink-500" />
+              <span className="text-sm font-black uppercase tracking-wider text-ink-600">
+                Tahun Ajaran
+              </span>
+              <select
+                value={selectedTa}
+                onChange={(e) => setSelectedTa(e.target.value)}
+                className="px-4 py-2.5 bg-white border-2 border-ink-100 rounded-2xl text-sm font-bold text-ink-800 focus:outline-none focus:border-primary-500 shadow-sm cursor-pointer"
+              >
+                <option value="all">Semua Tahun Ajaran</option>
+                {taList.map((ta) => (
+                  <option key={ta.id} value={ta.id}>
+                    {ta.nama}
+                    {ta.is_active ? " (Aktif)" : ""}
+                  </option>
+                ))}
+              </select>
             </div>
-            <div className="absolute -right-4 -bottom-4 bg-green-200/50 w-24 h-24 rounded-full blur-xl"></div>
+            <p className="text-xs text-ink-400 font-medium">
+              Rekap & daftar mengikuti tahun ajaran terpilih (default: terbaru).
+            </p>
           </div>
-          <div className="bg-secondary-50 p-6 rounded-3xl shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 border border-secondary-100 relative overflow-hidden">
-            <p className="text-secondary-600 text-sm font-bold tracking-wider uppercase mb-1">Cadangan</p>
-            <div className="flex items-end gap-2">
-              <h3 className="text-2xl md:text-4xl font-black text-secondary-700">
-                {students.filter(c => c.status_pendaftaran === "cadangan" || c.status_pendaftaran === "announced").length}
-              </h3>
-              <span className="text-secondary-600/70 font-medium mb-1 pl-1">Santri</span>
+
+          {/* Header Stats (Rekap Kelulusan) */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div className="bg-green-50 p-6 rounded-3xl shadow-2xl border border-green-100 relative overflow-hidden">
+              <p className="text-[#9D174D] text-sm font-bold tracking-wider uppercase mb-1">
+                Total Diterima
+              </p>
+              <div className="flex items-end gap-2">
+                <h3 className="text-2xl md:text-4xl font-black text-[#9D174D]">
+                  {
+                    students.filter(
+                      (c) =>
+                        c.status_pendaftaran === "accepted" || c.status_pendaftaran === "enrolled"
+                    ).length
+                  }
+                </h3>
+                <span className="text-[#9D174D]/70 font-medium mb-1 pl-1">Santri</span>
+              </div>
+              <div className="absolute -right-4 -bottom-4 bg-green-200/50 w-24 h-24 rounded-full blur-xl"></div>
             </div>
-            <div className="absolute -right-4 -bottom-4 bg-secondary-200/50 w-24 h-24 rounded-full blur-xl"></div>
-          </div>
-          <div className="bg-rose-50 p-6 rounded-3xl shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 border border-rose-100 relative overflow-hidden">
-            <p className="text-rose-600 text-sm font-bold tracking-wider uppercase mb-1">Ditolak</p>
-            <div className="flex items-end gap-2">
-              <h3 className="text-2xl md:text-4xl font-black text-rose-700">
-                {students.filter(c => c.status_pendaftaran === "rejected").length}
-              </h3>
-              <span className="text-rose-600/70 font-medium mb-1 pl-1">Santri</span>
+            <div className="bg-secondary-50 p-6 rounded-3xl shadow-2xl border border-secondary-100 relative overflow-hidden">
+              <p className="text-secondary-600 text-sm font-bold tracking-wider uppercase mb-1">
+                Cadangan
+              </p>
+              <div className="flex items-end gap-2">
+                <h3 className="text-2xl md:text-4xl font-black text-secondary-700">
+                  {
+                    students.filter(
+                      (c) =>
+                        c.status_pendaftaran === "cadangan" || c.status_pendaftaran === "announced"
+                    ).length
+                  }
+                </h3>
+                <span className="text-secondary-600/70 font-medium mb-1 pl-1">Santri</span>
+              </div>
+              <div className="absolute -right-4 -bottom-4 bg-secondary-200/50 w-24 h-24 rounded-full blur-xl"></div>
             </div>
-            <div className="absolute -right-4 -bottom-4 bg-rose-200/50 w-24 h-24 rounded-full blur-xl"></div>
+            <div className="bg-rose-50 p-6 rounded-3xl shadow-2xl border border-rose-100 relative overflow-hidden">
+              <p className="text-rose-600 text-sm font-bold tracking-wider uppercase mb-1">
+                Ditolak
+              </p>
+              <div className="flex items-end gap-2">
+                <h3 className="text-2xl md:text-4xl font-black text-rose-700">
+                  {students.filter((c) => c.status_pendaftaran === "rejected").length}
+                </h3>
+                <span className="text-rose-600/70 font-medium mb-1 pl-1">Santri</span>
+              </div>
+              <div className="absolute -right-4 -bottom-4 bg-rose-200/50 w-24 h-24 rounded-full blur-xl"></div>
+            </div>
           </div>
-        </div>
-      
+
           <div className="bg-white rounded-3xl shadow-clay-md border border-white/40 overflow-hidden">
             <div className="p-5 md:p-8 space-y-8">
               <div className="flex items-center gap-4">
@@ -1464,13 +1766,10 @@ export default function ExaminerDashboard() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-4">
                 <div className="p-6 bg-primary-50/30 rounded-3xl border border-primary-100/50 hover:bg-primary-50 transition-colors">
-                  <h4 className="font-black text-primary-900 mb-2">
-                    Broadcast Jadwal Seleksi
-                  </h4>
+                  <h4 className="font-black text-primary-900 mb-2">Broadcast Jadwal Seleksi</h4>
                   <p className="text-xs text-primary-700/70 mb-6 font-medium leading-relaxed">
-                    Sistem akan memindai pendaftar yang sudah terverifikasi
-                    berkasnya tapi belum memiliki jadwal, lalu memasukkannya ke
-                    antrean notifikasi.
+                    Sistem akan memindai pendaftar yang sudah terverifikasi berkasnya tapi belum
+                    memiliki jadwal, lalu memasukkannya ke antrean notifikasi.
                   </p>
                   <Button
                     onClick={async () => {
@@ -1481,7 +1780,8 @@ export default function ExaminerDashboard() {
                         showCancelButton: true,
                         confirmButtonColor: "#2563eb",
                         confirmButtonText: "Ya, Siarkan!",
-                        cancelButtonText: "Batal" });
+                        cancelButtonText: "Batal",
+                      });
                       if (result.isConfirmed) {
                         try {
                           setIsBroadcasting(true);
@@ -1490,49 +1790,42 @@ export default function ExaminerDashboard() {
                             {
                               method: "POST",
                               headers: { "Content-Type": "application/json" },
-                              body: JSON.stringify({ reset_flags: false }) },
+                              body: JSON.stringify({ reset_flags: false }),
+                            }
                           );
                           if (!res.ok) throw new Error("Failed");
                           const data = await res.json();
                           Swal.fire(
                             "Berhasil",
                             `${data.count || 0} pendaftar masuk antrean.`,
-                            "success",
+                            "success"
                           );
                           fetchStudents();
                         } catch (error) {
                           console.error(error);
-                          Swal.fire(
-                            "Error",
-                            "Gagal memproses broadcast",
-                            "error",
-                          );
+                          Swal.fire("Error", "Gagal memproses broadcast", "error");
                         } finally {
                           setIsBroadcasting(false);
                         }
                       }
                     }}
                     disabled={isBroadcasting}
-                    className="w-full bg-primary-600 hover:bg-primary-700 text-white rounded-2xl py-6 font-black text-base shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-600/20"
+                    className="w-full bg-primary-600 hover:bg-primary-700 text-white rounded-2xl py-6 font-black text-base shadow-2xl"
                   >
-                    {isBroadcasting
-                      ? "Memproses..."
-                      : "Siarkan Jadwal Sekarang"}
+                    {isBroadcasting ? "Memproses..." : "Siarkan Jadwal Sekarang"}
                   </Button>
                 </div>
 
                 <div className="p-6 bg-emerald-50/30 rounded-3xl border border-emerald-100/50 hover:bg-emerald-50 transition-colors">
-                  <h4 className="font-black text-[#550000] mb-2">
-                    Kirim Paksa Antrean (Flush)
-                  </h4>
-                  <p className="text-xs text-[#550000]/70 mb-6 font-medium leading-relaxed">
-                    Jalankan pemicu manual untuk mengirim pesan yang sedang
-                    tertahan di antrean ke server provider WhatsApp (Wablas).
+                  <h4 className="font-black text-[#9D174D] mb-2">Kirim Paksa Antrean (Flush)</h4>
+                  <p className="text-xs text-[#9D174D]/70 mb-6 font-medium leading-relaxed">
+                    Jalankan pemicu manual untuk mengirim pesan yang sedang tertahan di antrean ke
+                    server provider WhatsApp (Wablas).
                   </p>
                   <Button
                     onClick={handleFlushQueue}
                     disabled={isProcessingQueue || !queueStats?.pending}
-                    className="w-full bg-[#550000] hover:bg-[#550000] text-white rounded-2xl py-6 font-black text-base shadow-2xl shadow-primary/30  shadow-primary/20 shadow-emerald-600/20 disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none"
+                    className="w-full bg-[#9D174D] hover:bg-[#9D174D] text-white rounded-2xl py-6 font-black text-base shadow-md disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none"
                   >
                     {isProcessingQueue
                       ? `Mengirim (${flushProgress}%)...`
@@ -1596,7 +1889,7 @@ export default function ExaminerDashboard() {
                   </p>
                   <p className="text-base font-black text-ink-900">
                     {(assignStudent.nama_lengkap || "").replace(
-                      /\\w\\S*/g,
+                      /\w\S*/g,
                       (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
                     )}
                   </p>
@@ -1700,7 +1993,7 @@ export default function ExaminerDashboard() {
                     </h3>
                     <p className="text-xs text-ink-500 font-medium">
                       {(selectedStudent.nama_lengkap || "").replace(
-                        /\\w\\S*/g,
+                        /\w\S*/g,
                         (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
                       )}{" "}
                       • {selectedStudent.nomor_pendaftaran || "-"}
@@ -1725,7 +2018,7 @@ export default function ExaminerDashboard() {
                   </p>
                   <p className="text-base font-black text-ink-900">
                     {(selectedStudent.nama_lengkap || "").replace(
-                      /\\w\\S*/g,
+                      /\w\S*/g,
                       (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
                     )}
                   </p>
@@ -1911,4 +2204,3 @@ export default function ExaminerDashboard() {
     </div>
   );
 }
-
