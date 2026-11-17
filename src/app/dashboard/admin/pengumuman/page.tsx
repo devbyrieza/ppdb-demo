@@ -242,7 +242,7 @@ function PengumumanContent() {
     if (quran != null && quran < 70) {
       return {
         badgeText: "Perlu Dirapatkan Tim",
-        subText: `Al-Qur'an Kurang (Grade ${quranGrade} / ${quran.toFixed(0)}) • Total ${total.toFixed(2)}`,
+        subText: `Al-Qur'an Kurang (Grade ${quranGrade} / ${quran.toFixed(0)})`,
         badgeClass: "bg-amber-100 text-amber-800 border-amber-200",
         icon: Gavel,
       };
@@ -252,7 +252,7 @@ function PengumumanContent() {
     if (quran != null && quran < KKM_STANDAR) {
       return {
         badgeText: "Perlu Dirapatkan Tim",
-        subText: `Al-Qur'an Bersyarat (Grade C / ${quran.toFixed(0)}) • Total ${total.toFixed(2)}`,
+        subText: `Al-Qur'an Bersyarat (Grade C / ${quran.toFixed(0)})`,
         badgeClass: "bg-amber-100 text-amber-800 border-amber-200",
         icon: Gavel,
       };
@@ -263,7 +263,7 @@ function PengumumanContent() {
       if (hafalan != null && hafalan < KKM_STANDAR) {
         return {
           badgeText: "Perlu Dirapatkan Tim",
-          subText: `Hafalan di Bawah KKM (${hafalan.toFixed(0)}) • Total ${total.toFixed(2)}`,
+          subText: `Hafalan di Bawah KKM (${hafalan.toFixed(0)})`,
           badgeClass: "bg-amber-100 text-amber-800 border-amber-200",
           icon: Gavel,
         };
@@ -271,7 +271,7 @@ function PengumumanContent() {
       if (arab != null && arab < KKM_STANDAR) {
         return {
           badgeText: "Perlu Dirapatkan Tim",
-          subText: `Bahasa Arab di Bawah KKM (${arab.toFixed(0)}) • Total ${total.toFixed(2)}`,
+          subText: `Bahasa Arab di Bawah KKM (${arab.toFixed(0)})`,
           badgeClass: "bg-amber-100 text-amber-800 border-amber-200",
           icon: Gavel,
         };
@@ -282,7 +282,7 @@ function PengumumanContent() {
     if (total < KKM_STANDAR) {
       return {
         badgeText: "Perlu Dirapatkan Tim",
-        subText: `Total di Bawah KKM ${KKM_STANDAR} (Skor ${total.toFixed(2)} / Grade ${grade})`,
+        subText: `Total di Bawah KKM ${KKM_STANDAR}`,
         badgeClass: "bg-amber-100 text-amber-800 border-amber-200",
         icon: Gavel,
       };
@@ -291,7 +291,7 @@ function PengumumanContent() {
     // 5. Memenuhi KKM Murni (Total >= 75 dan Al-Qur'an >= 75 / Minimal Grade B)
     return {
       badgeText: "Rekomendasi: Diterima",
-      subText: `Lolos KKM ${KKM_STANDAR} (Grade ${grade})`,
+      subText: `Lolos KKM ${KKM_STANDAR}`,
       badgeClass: "bg-emerald-100 text-emerald-800 border-emerald-200",
       icon: Sparkles,
     };
