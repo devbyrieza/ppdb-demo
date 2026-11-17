@@ -141,11 +141,50 @@ export const exportToExcelProfessional = async ({
     // Data
     worksheet.addRows(sheetInfo.data);
 
-    // Style data cells
+    // Auto-width columns with intelligent wrapping and padding
+    const wrapColumns = new Set<number>();
+    sheetInfo.header.forEach((h, i) => {
+      const colIndex = i + 1;
+      const headerStr = (h || "").toString();
+      let maxLen = headerStr.length;
+      worksheet.eachRow((row, rowIndex) => {
+        if (rowIndex >= currentRow) {
+          const val = row.getCell(colIndex).value;
+          if (val) {
+            const len = val.toString().length;
+            if (len > maxLen) maxLen = len;
+          }
+        }
+      });
+      const column = worksheet.getColumn(colIndex);
+      // Bold headers need ~35% extra optical space in Excel
+      const minHeaderWidth = Math.ceil(headerStr.length * 1.35) + 4;
+      let calculatedWidth = Math.max(maxLen + 5, minHeaderWidth, 14);
+
+      const lower = headerStr.toLowerCase();
+      if (lower.includes("total") || lower.includes("skor") || lower.includes("score")) {
+        calculatedWidth = Math.max(calculatedWidth, 16);
+      } else if (lower.includes("catatan") || lower.includes("komentar")) {
+        calculatedWidth = Math.min(Math.max(calculatedWidth, 42), 70);
+        wrapColumns.add(colIndex);
+      } else if (lower.includes("nama") || lower.includes("penguji") || lower.includes("pewawancara")) {
+        calculatedWidth = Math.max(calculatedWidth, 26);
+      } else if (lower.includes("rekomendasi") || lower.includes("keputusan")) {
+        calculatedWidth = Math.max(calculatedWidth, 38);
+        wrapColumns.add(colIndex);
+      } else if (lower.includes("daftar") || lower.includes("pendaftaran")) {
+        calculatedWidth = Math.max(calculatedWidth, 18);
+      }
+
+      column.width = calculatedWidth;
+    });
+
+    // Style data cells & calculate dynamic row heights for multiline text
     const lastRow = currentRow + sheetInfo.data.length - 1;
     for (let r = currentRow; r <= lastRow; r++) {
       const row = worksheet.getRow(r);
-      row.height = 22;
+      let maxLinesInRow = 1;
+
       row.eachCell({ includeEmpty: true }, (cell, colIndex) => {
         cell.font = { name: "Arial", size: 9 };
         cell.border = {
@@ -157,7 +196,19 @@ export const exportToExcelProfessional = async ({
 
         // Auto align values
         const val = cell.value;
-        if (sheetInfo.centeredColumns && sheetInfo.centeredColumns.includes(colIndex)) {
+        const valStr = val != null ? val.toString() : "";
+        const isWrapCol = wrapColumns.has(colIndex);
+
+        if (isWrapCol && valStr.trim().length > 0 && valStr.trim() !== "-") {
+          const colWidth = worksheet.getColumn(colIndex).width || 42;
+          const charLimitPerLine = Math.max(25, Math.floor(colWidth * 0.85));
+          const lines = valStr.split("\n").reduce((acc, part) => {
+            return acc + Math.max(1, Math.ceil(part.length / charLimitPerLine));
+          }, 0);
+          if (lines > maxLinesInRow) maxLinesInRow = lines;
+
+          cell.alignment = { vertical: "top", horizontal: "left", wrapText: true };
+        } else if (sheetInfo.centeredColumns && sheetInfo.centeredColumns.includes(colIndex)) {
           cell.alignment = { vertical: "middle", horizontal: "center" };
         } else if (typeof val === "number") {
           cell.alignment = { vertical: "middle", horizontal: "right" };
@@ -196,57 +247,14 @@ export const exportToExcelProfessional = async ({
           cell.alignment = { vertical: "middle", horizontal: "left" };
         }
       });
+
+      // Set dynamic row height
+      if (maxLinesInRow > 1) {
+        row.height = Math.max(26, maxLinesInRow * 17 + 8);
+      } else {
+        row.height = 24;
+      }
     }
-
-    // Auto-width columns with intelligent wrapping and padding
-    sheetInfo.header.forEach((h, i) => {
-      const colIndex = i + 1;
-      const headerStr = (h || "").toString();
-      let maxLen = headerStr.length;
-      worksheet.eachRow((row, rowIndex) => {
-        if (rowIndex >= currentRow) {
-          const val = row.getCell(colIndex).value;
-          if (val) {
-            const len = val.toString().length;
-            if (len > maxLen) maxLen = len;
-          }
-        }
-      });
-      const column = worksheet.getColumn(colIndex);
-      // Bold headers need ~35% extra optical space in Excel
-      const minHeaderWidth = Math.ceil(headerStr.length * 1.35) + 4;
-      let calculatedWidth = Math.max(maxLen + 5, minHeaderWidth, 14);
-
-      const lower = headerStr.toLowerCase();
-      if (lower.includes("total") || lower.includes("skor") || lower.includes("score")) {
-        calculatedWidth = Math.max(calculatedWidth, 16);
-      } else if (lower.includes("catatan") || lower.includes("komentar")) {
-        calculatedWidth = Math.min(Math.max(calculatedWidth, 34), 60);
-      } else if (lower.includes("nama") || lower.includes("penguji") || lower.includes("pewawancara")) {
-        calculatedWidth = Math.max(calculatedWidth, 24);
-      } else if (lower.includes("rekomendasi") || lower.includes("keputusan")) {
-        calculatedWidth = Math.max(calculatedWidth, 36);
-      } else if (lower.includes("daftar") || lower.includes("pendaftaran")) {
-        calculatedWidth = Math.max(calculatedWidth, 18);
-      }
-
-      column.width = calculatedWidth;
-
-      // Wrap text for notes & recommendations so content doesn't clip
-      if (
-        lower.includes("catatan") ||
-        lower.includes("komentar") ||
-        lower.includes("rekomendasi") ||
-        lower.includes("keputusan")
-      ) {
-        worksheet.eachRow((row, rowIndex) => {
-          if (rowIndex >= currentRow) {
-            const cell = row.getCell(colIndex);
-            cell.alignment = { vertical: "middle", horizontal: "left", wrapText: true };
-          }
-        });
-      }
-    });
   }
 
   // Generate Buffer & trigger safe browser download

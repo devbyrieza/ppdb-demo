@@ -655,16 +655,54 @@ function PengumumanContent() {
     }
     const nu = c?.nilai_ujian;
     const ju = c?.jadwal_ujian;
+    const juList = Array.isArray(ju) ? ju : ju ? [ju] : [];
+
     if (componentKey === "quran") {
-      return nu?.input_by_quran_profile?.full_name || nu?.detail_quran?.nama_penguji || ju?.penguji_quran?.full_name || "-";
+      return (
+        nu?.detail_quran?.nama_penguji ||
+        nu?.detail_quran?.penguji ||
+        nu?.detail_quran?.nama ||
+        nu?.input_by_quran_profile?.full_name ||
+        juList.find((x: any) => x.penguji_quran?.full_name)?.penguji_quran?.full_name ||
+        "-"
+      );
     } else if (componentKey === "wawancara_santri") {
-      return nu?.input_by_santri_profile?.full_name || nu?.detail_wawancara?.nama_pewawancara || ju?.penguji_santri?.full_name || "-";
+      return (
+        nu?.detail_wawancara?.nama_pewawancara ||
+        nu?.detail_wawancara?.nama_penguji ||
+        nu?.detail_wawancara?.pewawancara ||
+        nu?.detail_wawancara?.penguji ||
+        nu?.input_by_santri_profile?.full_name ||
+        juList.find((x: any) => x.penguji_santri?.full_name)?.penguji_santri?.full_name ||
+        "-"
+      );
     } else if (componentKey === "wawancara_ortu") {
-      return nu?.input_by_ortu_profile?.full_name || nu?.detail_cawalsan?.nama_pewawancara || ju?.penguji_ortu?.full_name || "-";
+      return (
+        nu?.detail_cawalsan?.nama_pewawancara ||
+        nu?.detail_cawalsan?.nama_penguji ||
+        nu?.detail_cawalsan?.pewawancara ||
+        nu?.detail_cawalsan?.penguji ||
+        nu?.input_by_ortu_profile?.full_name ||
+        juList.find((x: any) => x.penguji_ortu?.full_name)?.penguji_ortu?.full_name ||
+        "-"
+      );
     } else if (componentKey === "hafalan") {
-      return nu?.input_by_hafalan_profile?.full_name || nu?.detail_hafalan?.nama_penguji || ju?.penguji_hafalan?.full_name || "-";
+      return (
+        nu?.detail_hafalan?.nama_penguji ||
+        nu?.detail_hafalan?.penguji ||
+        nu?.input_by_hafalan_profile?.full_name ||
+        juList.find((x: any) => x.penguji_hafalan?.full_name)?.penguji_hafalan?.full_name ||
+        "-"
+      );
     } else if (componentKey === "arab") {
-      return nu?.input_by_arab_profile?.full_name || nu?.detail_arab?.nama_penguji || ju?.penguji_arab?.full_name || "-";
+      return (
+        nu?.detail_arab?.nama_penguji ||
+        nu?.detail_lisan_arab?.nama_penguji ||
+        nu?.detail_arab?.penguji ||
+        nu?.input_by_arab_profile?.full_name ||
+        juList.find((x: any) => x.penguji_arab?.full_name)?.penguji_arab?.full_name ||
+        "-"
+      );
     }
     return "-";
   };
@@ -728,13 +766,8 @@ function PengumumanContent() {
             ? "REKAPITULASI PENETAPAN KELULUSAN SANTRI PPDB"
             : "REKAPITULASI SANTRI PROSES SELEKSI PPDB";
 
-      // Cek apakah terdapat santri SMA/MA tanpa IL yang memiliki nilai Hafalan / Bahasa Arab
-      const hasMACandidates = filteredCandidates.some(
-        (c) =>
-          isJenjangTanpaIL(c.jenjang) ||
-          c.nilai_ujian?.score_hafalan != null ||
-          c.nilai_ujian?.score_arab != null
-      );
+      // Cek apakah terdapat santri jenjang SMA/MA langsung (tanpa IL)
+      const hasMACandidates = filteredCandidates.some((c) => isJenjangTanpaIL(c.jenjang));
 
       const header = [
         "No",
@@ -803,10 +836,7 @@ function PengumumanContent() {
               : "Menunggu Penilaian Penguji";
         }
 
-        const isCandidateMA =
-          isJenjangTanpaIL(c.jenjang) ||
-          nu?.score_hafalan != null ||
-          nu?.score_arab != null;
+        const isCandidateMA = isJenjangTanpaIL(c.jenjang);
 
         return [
           idx + 1,
@@ -904,10 +934,7 @@ function PengumumanContent() {
               : "Menunggu Penilaian Penguji";
         }
 
-        const isCandidateMA =
-          isJenjangTanpaIL(c.jenjang) ||
-          nu?.score_hafalan != null ||
-          nu?.score_arab != null;
+        const isCandidateMA = isJenjangTanpaIL(c.jenjang);
 
         return [
           idx + 1,
@@ -981,12 +1008,7 @@ function PengumumanContent() {
             ? "REKAPITULASI PENETAPAN KELULUSAN SANTRI PPDB"
             : "REKAPITULASI SANTRI PROSES SELEKSI PPDB";
 
-      const hasMACandidates = filteredCandidates.some(
-        (c) =>
-          isJenjangTanpaIL(c.jenjang) ||
-          c.nilai_ujian?.score_hafalan != null ||
-          c.nilai_ujian?.score_arab != null
-      );
+      const hasMACandidates = filteredCandidates.some((c) => isJenjangTanpaIL(c.jenjang));
 
       const columns = [
         "No",
@@ -1032,10 +1054,7 @@ function PengumumanContent() {
             getKategoriBelumLengkap(c) === "belum_pilih_jadwal" ? "Belum Jadwal" : "Menunggu Nilai";
         }
 
-        const isCandidateMA =
-          isJenjangTanpaIL(c.jenjang) ||
-          nu?.score_hafalan != null ||
-          nu?.score_arab != null;
+        const isCandidateMA = isJenjangTanpaIL(c.jenjang);
 
         return [
           String(idx + 1),
@@ -1073,10 +1092,7 @@ function PengumumanContent() {
           ...(hasMACandidates ? ["Hafalan & B. Arab"] : []),
         ],
         data: filteredCandidates.map((c, idx) => {
-          const isCandidateMA =
-            isJenjangTanpaIL(c.jenjang) ||
-            c.nilai_ujian?.score_hafalan != null ||
-            c.nilai_ujian?.score_arab != null;
+          const isCandidateMA = isJenjangTanpaIL(c.jenjang);
 
           const rek = getRekomendasiDetail(c);
           const quranRec = getExaminerRecommendation(c, "quran");
@@ -1735,9 +1751,9 @@ function PengumumanContent() {
                             {getGradeBadge(nu?.score_quran, "quran", "Al-Qur'an", activeTab === "proses_seleksi")}
                             {getGradeBadge(ws, "wawancara_santri", "W. Calsan", activeTab === "proses_seleksi")}
                             {getGradeBadge(wo, "wawancara_ortu", "W. Cawalsan", activeTab === "proses_seleksi")}
-                            {(isJenjangTanpaIL(c.jenjang) || nu?.score_hafalan != null) &&
+                            {isJenjangTanpaIL(c.jenjang) &&
                               getGradeBadge(nu?.score_hafalan, "hafalan", "Hafalan", activeTab === "proses_seleksi")}
-                            {(isJenjangTanpaIL(c.jenjang) || nu?.score_arab != null) &&
+                            {isJenjangTanpaIL(c.jenjang) &&
                               getGradeBadge(nu?.score_arab, "arab", "B. Arab", activeTab === "proses_seleksi")}
                           </div>
                           {c.exam_score_count >= 6 ? (
@@ -2522,8 +2538,8 @@ function PengumumanContent() {
                 </div>
               </div>
 
-              {/* Catatan Hafalan (jika ada) */}
-              {(isJenjangTanpaIL(selectedNotesCandidate.jenjang) || selectedNotesCandidate.nilai_ujian?.score_hafalan != null) && (
+              {/* Catatan Hafalan (khusus SMA/MA langsung tanpa IL) */}
+              {isJenjangTanpaIL(selectedNotesCandidate.jenjang) && (
                 <div className="p-4 rounded-2xl bg-teal-50/50 border border-teal-200/80 space-y-2">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -2551,8 +2567,8 @@ function PengumumanContent() {
                 </div>
               )}
 
-              {/* Catatan Bahasa Arab (jika ada) */}
-              {(isJenjangTanpaIL(selectedNotesCandidate.jenjang) || selectedNotesCandidate.nilai_ujian?.score_arab != null) && (
+              {/* Catatan Bahasa Arab (khusus SMA/MA langsung tanpa IL) */}
+              {isJenjangTanpaIL(selectedNotesCandidate.jenjang) && (
                 <div className="p-4 rounded-2xl bg-sky-50/50 border border-sky-200/80 space-y-2">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">

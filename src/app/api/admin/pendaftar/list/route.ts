@@ -339,6 +339,16 @@ export async function GET(request: NextRequest) {
             input_by_arab_profile: {
               select: { id: true, full_name: true },
             },
+            jadwal_ujian: {
+              select: {
+                id: true,
+                penguji_quran: { select: { id: true, full_name: true, phone: true } },
+                penguji_santri: { select: { id: true, full_name: true, phone: true } },
+                penguji_ortu: { select: { id: true, full_name: true, phone: true } },
+                penguji_hafalan: { select: { id: true, full_name: true, phone: true } },
+                penguji_arab: { select: { id: true, full_name: true, phone: true } },
+              },
+            },
           },
         },
         pengumuman: {
@@ -383,7 +393,7 @@ export async function GET(request: NextRequest) {
               select: { id: true, full_name: true, phone: true },
             },
           },
-          take: 1,
+          orderBy: { created_at: "desc" },
         },
         whatsapp_logs: {
           orderBy: { created_at: "desc" },
@@ -406,6 +416,38 @@ export async function GET(request: NextRequest) {
       }
       return false;
     };
+
+    // Kumpulkan semua User ID penguji / pewawancara untuk fallback Profile lookup jika relasi null
+    const referencedUserIds = new Set<string>();
+    data.forEach((item: any) => {
+      (item.nilai_ujian || []).forEach((nu: any) => {
+        if (nu.input_by_quran) referencedUserIds.add(nu.input_by_quran);
+        if (nu.input_by_santri) referencedUserIds.add(nu.input_by_santri);
+        if (nu.input_by_ortu) referencedUserIds.add(nu.input_by_ortu);
+        if (nu.input_by_hafalan) referencedUserIds.add(nu.input_by_hafalan);
+        if (nu.input_by_arab) referencedUserIds.add(nu.input_by_arab);
+      });
+      (item.jadwal_ujian || []).forEach((ju: any) => {
+        if (ju.penguji_quran_id) referencedUserIds.add(ju.penguji_quran_id);
+        if (ju.penguji_santri_id) referencedUserIds.add(ju.penguji_santri_id);
+        if (ju.penguji_ortu_id) referencedUserIds.add(ju.penguji_ortu_id);
+        if (ju.penguji_hafalan_id) referencedUserIds.add(ju.penguji_hafalan_id);
+        if (ju.penguji_arab_id) referencedUserIds.add(ju.penguji_arab_id);
+      });
+    });
+
+    let profileMap = new Map<string, string>();
+    if (referencedUserIds.size > 0) {
+      try {
+        const profiles = await prisma.profile.findMany({
+          where: { id: { in: Array.from(referencedUserIds) } },
+          select: { id: true, full_name: true },
+        });
+        profileMap = new Map(profiles.map((p) => [p.id, p.full_name]));
+      } catch (e) {
+        console.error("Failed to build profileMap fallback:", e);
+      }
+    }
 
     const transformedData = data.map((item) => {
       const scores = item.nilai_ujian || [];
@@ -574,13 +616,96 @@ export async function GET(request: NextRequest) {
         item.orang_tua?.nama_wali ||
         "Bapak/Ibu Wali Santri";
 
+      // Helper pencarian nama penguji/pewawancara multi-tier (scores -> profileMap -> jadwal -> exam session)
+      const findExaminer = (
+        componentKey: "quran" | "wawancara_santri" | "wawancara_ortu" | "hafalan" | "arab"
+      ): string => {
+        if (componentKey === "quran") {
+          for (const s of scores) {
+            const dq = s.detail_quran as any;
+            const nameFromDetail = dq?.nama_penguji || dq?.penguji || dq?.nama || dq?.examiner_name;
+            if (nameFromDetail && nameFromDetail !== "-") return nameFromDetail;
+            if (s.input_by_quran_profile?.full_name && s.input_by_quran_profile.full_name !== "-") return s.input_by_quran_profile.full_name;
+            if (s.input_by_quran && profileMap.get(s.input_by_quran)) return profileMap.get(s.input_by_quran)!;
+            if ((s as any).jadwal_ujian?.penguji_quran?.full_name && (s as any).jadwal_ujian.penguji_quran.full_name !== "-") return (s as any).jadwal_ujian.penguji_quran.full_name;
+          }
+          for (const sch of jadwalList) {
+            if (sch.penguji_quran?.full_name && sch.penguji_quran.full_name !== "-") return sch.penguji_quran.full_name;
+            if (sch.penguji_quran_id && profileMap.get(sch.penguji_quran_id)) return profileMap.get(sch.penguji_quran_id)!;
+          }
+          return "-";
+        }
+
+        if (componentKey === "wawancara_santri") {
+          for (const s of scores) {
+            const dw = s.detail_wawancara as any;
+            const nameFromDetail = dw?.nama_pewawancara || dw?.nama_penguji || dw?.pewawancara || dw?.penguji || dw?.nama;
+            if (nameFromDetail && nameFromDetail !== "-") return nameFromDetail;
+            if (s.input_by_santri_profile?.full_name && s.input_by_santri_profile.full_name !== "-") return s.input_by_santri_profile.full_name;
+            if (s.input_by_santri && profileMap.get(s.input_by_santri)) return profileMap.get(s.input_by_santri)!;
+            if ((s as any).jadwal_ujian?.penguji_santri?.full_name && (s as any).jadwal_ujian.penguji_santri.full_name !== "-") return (s as any).jadwal_ujian.penguji_santri.full_name;
+          }
+          for (const sch of jadwalList) {
+            if (sch.penguji_santri?.full_name && sch.penguji_santri.full_name !== "-") return sch.penguji_santri.full_name;
+            if (sch.penguji_santri_id && profileMap.get(sch.penguji_santri_id)) return profileMap.get(sch.penguji_santri_id)!;
+          }
+          return "-";
+        }
+
+        if (componentKey === "wawancara_ortu") {
+          for (const s of scores) {
+            const dc = s.detail_cawalsan as any;
+            const nameFromDetail = dc?.nama_pewawancara || dc?.nama_penguji || dc?.pewawancara || dc?.penguji || dc?.nama;
+            if (nameFromDetail && nameFromDetail !== "-") return nameFromDetail;
+            if (s.input_by_ortu_profile?.full_name && s.input_by_ortu_profile.full_name !== "-") return s.input_by_ortu_profile.full_name;
+            if (s.input_by_ortu && profileMap.get(s.input_by_ortu)) return profileMap.get(s.input_by_ortu)!;
+            if ((s as any).jadwal_ujian?.penguji_ortu?.full_name && (s as any).jadwal_ujian.penguji_ortu.full_name !== "-") return (s as any).jadwal_ujian.penguji_ortu.full_name;
+          }
+          for (const sch of jadwalList) {
+            if (sch.penguji_ortu?.full_name && sch.penguji_ortu.full_name !== "-") return sch.penguji_ortu.full_name;
+            if (sch.penguji_ortu_id && profileMap.get(sch.penguji_ortu_id)) return profileMap.get(sch.penguji_ortu_id)!;
+          }
+          return "-";
+        }
+
+        if (componentKey === "hafalan") {
+          for (const s of scores) {
+            const dh = s.detail_hafalan as any;
+            const nameFromDetail = dh?.nama_penguji || dh?.penguji || dh?.nama;
+            if (nameFromDetail && nameFromDetail !== "-") return nameFromDetail;
+            if (s.input_by_hafalan_profile?.full_name && s.input_by_hafalan_profile.full_name !== "-") return s.input_by_hafalan_profile.full_name;
+            if (s.input_by_hafalan && profileMap.get(s.input_by_hafalan)) return profileMap.get(s.input_by_hafalan)!;
+            if ((s as any).jadwal_ujian?.penguji_hafalan?.full_name && (s as any).jadwal_ujian.penguji_hafalan.full_name !== "-") return (s as any).jadwal_ujian.penguji_hafalan.full_name;
+          }
+          for (const sch of jadwalList) {
+            if (sch.penguji_hafalan?.full_name && sch.penguji_hafalan.full_name !== "-") return sch.penguji_hafalan.full_name;
+            if (sch.penguji_hafalan_id && profileMap.get(sch.penguji_hafalan_id)) return profileMap.get(sch.penguji_hafalan_id)!;
+          }
+          return "-";
+        }
+
+        if (componentKey === "arab") {
+          for (const s of scores) {
+            const da = (s.detail_arab || (s as any).detail_lisan_arab) as any;
+            const nameFromDetail = da?.nama_penguji || da?.penguji || da?.nama;
+            if (nameFromDetail && nameFromDetail !== "-") return nameFromDetail;
+            if (s.input_by_arab_profile?.full_name && s.input_by_arab_profile.full_name !== "-") return s.input_by_arab_profile.full_name;
+            if (s.input_by_arab && profileMap.get(s.input_by_arab)) return profileMap.get(s.input_by_arab)!;
+            if ((s as any).jadwal_ujian?.penguji_arab?.full_name && (s as any).jadwal_ujian.penguji_arab.full_name !== "-") return (s as any).jadwal_ujian.penguji_arab.full_name;
+          }
+          for (const sch of jadwalList) {
+            if (sch.penguji_arab?.full_name && sch.penguji_arab.full_name !== "-") return sch.penguji_arab.full_name;
+            if (sch.penguji_arab_id && profileMap.get(sch.penguji_arab_id)) return profileMap.get(sch.penguji_arab_id)!;
+          }
+          return "-";
+        }
+
+        return "-";
+      };
+
       const examinerInfo = {
         quran: {
-          name:
-            mergedNilai?.input_by_quran_profile?.full_name ||
-            mergedNilai?.detail_quran?.nama_penguji ||
-            j?.penguji_quran?.full_name ||
-            "-",
+          name: findExaminer("quran"),
           notes:
             mergedNilai?.catatan_quran ||
             mergedNilai?.detail_quran?.catatan ||
@@ -590,11 +715,7 @@ export async function GET(request: NextRequest) {
             "-",
         },
         wawancara_santri: {
-          name:
-            mergedNilai?.input_by_santri_profile?.full_name ||
-            mergedNilai?.detail_wawancara?.nama_pewawancara ||
-            j?.penguji_santri?.full_name ||
-            "-",
+          name: findExaminer("wawancara_santri"),
           notes:
             mergedNilai?.catatan_santri ||
             mergedNilai?.detail_wawancara?.catatan ||
@@ -604,11 +725,7 @@ export async function GET(request: NextRequest) {
             "-",
         },
         wawancara_ortu: {
-          name:
-            mergedNilai?.input_by_ortu_profile?.full_name ||
-            mergedNilai?.detail_cawalsan?.nama_pewawancara ||
-            j?.penguji_ortu?.full_name ||
-            "-",
+          name: findExaminer("wawancara_ortu"),
           notes:
             mergedNilai?.catatan_ortu ||
             mergedNilai?.detail_cawalsan?.catatan ||
@@ -618,11 +735,7 @@ export async function GET(request: NextRequest) {
             "-",
         },
         hafalan: {
-          name:
-            mergedNilai?.input_by_hafalan_profile?.full_name ||
-            mergedNilai?.detail_hafalan?.nama_penguji ||
-            j?.penguji_hafalan?.full_name ||
-            "-",
+          name: findExaminer("hafalan"),
           notes:
             mergedNilai?.catatan_hafalan ||
             mergedNilai?.detail_hafalan?.catatan_tambahan ||
@@ -632,11 +745,7 @@ export async function GET(request: NextRequest) {
             "-",
         },
         arab: {
-          name:
-            mergedNilai?.input_by_arab_profile?.full_name ||
-            mergedNilai?.detail_arab?.nama_penguji ||
-            j?.penguji_arab?.full_name ||
-            "-",
+          name: findExaminer("arab"),
           notes:
             mergedNilai?.catatan_arab ||
             mergedNilai?.detail_arab?.catatan_tambahan ||
