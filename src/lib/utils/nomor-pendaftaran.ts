@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { BRANDING } from "@/config/branding";
+import { getInstitutionType } from "./jenjang";
 
 // ===================================
 // NOMOR PENDAFTARAN GENERATION
@@ -106,35 +107,24 @@ export async function generateNomorPendaftaran(
  */
 export function generatePrefix(jenjang: string, jenis_kelamin?: string): string {
   const normJenjang = (jenjang || "").toUpperCase().replace(/[\s\-_]/g, "");
+  const inst = getInstitutionType();
 
-  const isPutriInstitution =
-    BRANDING?.gender?.toLowerCase() === "putri" ||
-    (BRANDING?.subtitle || "").toLowerCase().includes("putri") ||
-    (BRANDING?.schoolName || "").toLowerCase().includes("putri");
+  if (inst === "ANDALUS_PUSAT") {
+    const isPutri = (jenis_kelamin || "").toUpperCase() === "P" || (BRANDING as any)?.gender?.toLowerCase() === "putri";
+    if (normJenjang.includes("IL") || normJenjang.includes("IDAD") || normJenjang.includes("LUGHAW")) return isPutri ? "ILI" : "ILA";
+    return isPutri ? "SPI" : "SPA";
+  }
 
-  const isPutraInstitution =
-    BRANDING?.gender?.toLowerCase() === "putra" ||
-    (BRANDING?.subtitle || "").toLowerCase().includes("putra") ||
-    (BRANDING?.schoolName || "").toLowerCase().includes("putra") ||
-    (BRANDING?.schoolShortName || "").toLowerCase().includes("ulul albaab");
-
-  if (isPutriInstitution) {
+  if (inst === "AL_IMAM") {
     if (normJenjang.includes("IL") || normJenjang.includes("IDAD") || normJenjang.includes("LUGHAW")) return "ILI";
     if (normJenjang.includes("MA") || normJenjang.includes("SMA")) return "MAI";
     return "MTI";
   }
 
-  if (isPutraInstitution) {
-    if (normJenjang.includes("IL") || normJenjang.includes("IDAD") || normJenjang.includes("LUGHAW")) return "ILA";
-    if (normJenjang.includes("SMA") || normJenjang.includes("MA")) return "SMA";
-    return "MTA";
-  }
-
-  // Fallback untuk institusi campuran (contoh: template-demo) berdasarkan jenis_kelamin
-  const isPutri = (jenis_kelamin || "").toUpperCase() === "P" || (jenis_kelamin || "").toUpperCase() === "PUTRI";
-  if (normJenjang.includes("IL") || normJenjang.includes("IDAD") || normJenjang.includes("LUGHAW")) return isPutri ? "ILI" : "ILA";
-  if (normJenjang.includes("SMA") || normJenjang.includes("MA")) return isPutri ? "SMI" : "SMA";
-  return isPutri ? "SPI" : "SPA";
+  // Ulul Albaab (Putra): MTA, ILA, SMA (TIDAK ADA MAI / MAA)
+  if (normJenjang.includes("IL") || normJenjang.includes("IDAD") || normJenjang.includes("LUGHAW")) return "ILA";
+  if (normJenjang.includes("SMA") || normJenjang.includes("MA")) return "SMA";
+  return "MTA";
 }
 
 // ===================================

@@ -3,12 +3,43 @@
 import { useState, useEffect, Suspense, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
-import { Users, Search, Filter, Eye, ChevronLeft, ChevronRight, Loader2, RefreshCw, FileText, Calendar, Phone, Mail, Hash, CheckSquare, Square, Download, Edit, ArrowLeft, FileSpreadsheet, X, Save, FileCheck, RotateCcw, UploadCloud, CreditCard, Trash2, LogOut, Plus, Shuffle, AlertTriangle, Star } from "lucide-react";
+import {
+  Users,
+  Search,
+  Filter,
+  Eye,
+  ChevronLeft,
+  ChevronRight,
+  Loader2,
+  RefreshCw,
+  FileText,
+  Calendar,
+  Phone,
+  Mail,
+  Hash,
+  CheckSquare,
+  Square,
+  Download,
+  Edit,
+  ArrowLeft,
+  FileSpreadsheet,
+  X,
+  Save,
+  FileCheck,
+  RotateCcw,
+  UploadCloud,
+  AlertTriangle,
+  CreditCard,
+  Trash2,
+  LogOut,
+  Plus,
+  Shuffle } from "lucide-react";
 import Link from "next/link";
 import { UserRole } from "@/lib/access-control";
 import { exportToExcelProfessional, exportToPDF } from "@/lib/utils/export";
 import Swal from "sweetalert2";
 import { ActionDropdown } from "@/components/ui/ActionDropdown";
+import { getAvailableJenjang, normalizeJenjang } from "@/lib/utils/jenjang";
 
 // Filter labels for dashboard categories
 const FILTER_LABELS: Record<string, string> = {
@@ -22,13 +53,15 @@ const FILTER_LABELS: Record<string, string> = {
   menunggu_verifikasi_dokumen: "Menunggu Verifikasi Dokumen",
   dokumen_terverifikasi: "Dokumen Terverifikasi",
   dokumen_ditolak: "Dokumen Ditolak",
-  terjadwal_ujian: "Terjadwal Ujian & Wawancara",
-  belum_ujian: "Belum Ujian & Wawancara",
-  sudah_ujian: "Sedang Seleksi",
-  hasil_ujian: "Hasil Ujian & Wawancara",
+  terjadwal_ujian: "Terjadwal Ujian",
+  belum_ujian: "Belum Ujian",
+  sudah_ujian: "Siap Dirapatkan (Ujian Selesai)",
+  hasil_ujian: "Hasil Ujian (Sudah Ditetapkan)",
   diterima: "Diterima",
   belum_daftar_ulang: "Belum Daftar Ulang",
-  sudah_daftar_ulang: "Daftar Ulang" };
+  sudah_daftar_ulang: "Daftar Ulang",
+  dikeluarkan: "Dikeluarkan (DO)",
+  mengundurkan_diri: "Mengundurkan Diri" };
 
 interface Pendaftar {
   id: string;
@@ -52,6 +85,7 @@ interface Pendaftar {
   };
   pembayaran?: Array<{ id: string; status_pembayaran: string }>;
   tipe_pendaftaran?: string;
+  catatan_pindahan?: string | null;
   data_lengkap?: any;
 }
 
@@ -147,8 +181,7 @@ function AdminPendaftarContent() {
   */
 
   const [jenjangFilter, setJenjangFilter] = useState("");
-  const [jenisKelaminFilter, setJenisKelaminFilter] = useState("");
-  const [tahunAjaranFilter, setTahunAjaranFilter] = useState("");
+    const [tahunAjaranFilter, setTahunAjaranFilter] = useState("");
   const [tipePendaftaranFilter, setTipePendaftaranFilter] = useState("");
   const [tahunAjaranList, setTahunAjaranList] = useState<TahunAjaran[]>([]);
   // Location filters
@@ -449,9 +482,7 @@ function AdminPendaftarContent() {
       if (search) params.append("search", search);
       if (statusFilter) params.append("status", statusFilter);
       if (jenjangFilter) params.append("jenjang", jenjangFilter);
-      if (jenisKelaminFilter)
-        params.append("jenis_kelamin", jenisKelaminFilter);
-      if (tipePendaftaranFilter)
+            if (tipePendaftaranFilter)
         params.append("tipe_pendaftaran", tipePendaftaranFilter);
       if (tahunAjaranFilter) params.append("tahun_ajaran", tahunAjaranFilter);
       if (provinsiFilter) params.append("provinsi", provinsiFilter);
@@ -480,8 +511,7 @@ function AdminPendaftarContent() {
     search,
     statusFilter,
     jenjangFilter,
-    jenisKelaminFilter,
-    tipePendaftaranFilter,
+        tipePendaftaranFilter,
     tahunAjaranFilter,
     provinsiFilter,
     kabupatenFilter,
@@ -925,9 +955,7 @@ function AdminPendaftarContent() {
       if (search) params.append("search", search);
       if (statusFilter) params.append("status", statusFilter);
       if (jenjangFilter) params.append("jenjang", jenjangFilter);
-      if (jenisKelaminFilter)
-        params.append("jenis_kelamin", jenisKelaminFilter);
-      if (tahunAjaranFilter) params.append("tahun_ajaran", tahunAjaranFilter);
+            if (tahunAjaranFilter) params.append("tahun_ajaran", tahunAjaranFilter);
       if (provinsiFilter) params.append("provinsi", provinsiFilter);
       if (kabupatenFilter) params.append("kabupaten", kabupatenFilter);
       if (kecamatanFilter) params.append("kecamatan", kecamatanFilter);
@@ -1091,33 +1119,33 @@ function AdminPendaftarContent() {
         color: "bg-gold-50 text-gold-800 border border-gold-100" },
       docs_verified: {
         label: "Berkas Lengkap",
-        color: "bg-emerald-50 text-emerald-800 border border-emerald-100" },
+        color: "bg-emerald-50 text-[#9D174D] border border-emerald-100" },
       selection: {
-        label: "Proses Seleksi",
-        color: "bg-purple-50 text-purple-800 border border-purple-100" },
+        label: "Sedang Ujian",
+        color: "bg-amber-50 text-amber-800 border border-amber-200" },
       scheduled: {
-        label: "Proses Seleksi",
-        color: "bg-purple-50 text-purple-800 border border-purple-100" },
+        label: "Terjadwal Ujian",
+        color: "bg-indigo-50 text-indigo-800 border border-indigo-200" },
       testing: {
-        label: "Proses Seleksi",
-        color: "bg-purple-50 text-purple-800 border border-purple-100" },
+        label: "Sedang Ujian",
+        color: "bg-amber-50 text-amber-800 border border-amber-200" },
       tested: {
-        label: "Proses Seleksi",
-        color: "bg-purple-100 text-purple-800 border border-purple-200 shadow-sm" },
+        label: "Siap Dirapatkan",
+        color: "bg-emerald-100 text-emerald-900 border border-emerald-300 font-extrabold shadow-xs" },
       exam_completed: {
-        label: "Proses Seleksi",
-        color: "bg-purple-100 text-purple-800 border border-purple-200 shadow-sm" },
+        label: "Siap Dirapatkan",
+        color: "bg-emerald-100 text-emerald-900 border border-emerald-300 font-extrabold shadow-xs" },
       announced: {
         label: "Cadangan",
         color: "bg-gold-100 text-gold-800 border border-gold-200" },
       cadangan: {
         label: "Cadangan",
         color: "bg-gold-100 text-gold-800 border border-gold-200" },
-      accepted: { label: "Diterima", color: "bg-emerald-600 text-white" },
+      accepted: { label: "Diterima", color: "bg-[#9D174D] text-white" },
       rejected: { label: "Ditolak", color: "bg-rose-600 text-white" },
       enrolled: {
         label: "Proses Daftar Ulang",
-        color: "bg-emerald-100 text-emerald-800" },
+        color: "bg-emerald-100 text-[#9D174D]" },
       enrolled_full: {
         label: "Lunas Daftar Ulang",
         color: "bg-primary-100 text-primary-800 border border-primary-200" },
@@ -1156,8 +1184,8 @@ function AdminPendaftarContent() {
     <div className="space-y-6">
       {/* Refreshing Overlay */}
       {refreshing && (
-        <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog" className="fixed inset-0 bg-white/40 backdrop-blur-[1px] z-[100] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center pointer-events-none overflow-y-auto overflow-x-hidden p-[24px_28px] overscroll-contain custom-scrollbar">
-          <div className="bg-white/80 p-[16px_20px] rounded-[24px] shadow-2xl shadow-primary/30 border border-stone-100 flex items-center gap-3 animate-in fade-in zoom-in duration-300">
+        <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog" className="fixed inset-0 bg-white/40 backdrop-blur-[1px] z-[100] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center pointer-events-none overflow-y-auto overflow-x-hidden p-6 sm:p-8 overscroll-contain custom-scrollbar">
+          <div className="bg-white/80 px-6 py-3 rounded-2xl shadow-2xl border border-stone-100 flex items-center gap-3 animate-in fade-in zoom-in duration-300">
             <Loader2 className="w-5 h-5 animate-spin text-primary-600" />
             <span className="text-sm font-bold text-stone-700 tracking-tight">
               Memperbarui data...
@@ -1191,10 +1219,10 @@ function AdminPendaftarContent() {
       )}
 
       {/* Header */}
-      <div className="bg-white rounded-3xl shadow-sm p-[24px_28px] md:p-8 border border-gold-100">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-[24px_28px] flex-wrap">
-          <div className="flex flex-wrap items-center gap-3 md:gap-[24px_28px]">
-            <div className="p-2.5 md:p-[24px_28px] bg-linear-to-br from-primary-600 to-primary-900 rounded-[24px] shadow-2xl shadow-primary/30  shadow-primary-900/20 flex-shrink-0">
+      <div className="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 md:p-8 border border-gold-100">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 flex-wrap">
+          <div className="flex flex-wrap items-center gap-3 md:gap-5">
+            <div className="p-4.5 md:p-6 sm:p-8 bg-linear-to-br from-primary-600 to-primary-900 rounded-2xl shadow-2xl flex-shrink-0">
               <Users className="w-6 h-6 md:w-8 md:h-8 text-gold-300" />
             </div>
             <div className="min-w-0">
@@ -1213,7 +1241,7 @@ function AdminPendaftarContent() {
                 <>
                   <button
                     onClick={() => updateFilter("mengundurkan_diri")}
-                    className="flex items-center gap-2 px-3 md:p-[16px_20px] bg-slate-500 hover:bg-slate-600 text-white rounded-[24px] transition-colors text-sm"
+                    className="flex items-center gap-2 px-3 md:px-4 py-2 bg-slate-500 hover:bg-slate-600 text-white rounded-2xl transition-colors text-sm"
                     title="Lihat pendaftar yang mengundurkan diri"
                   >
                     <LogOut className="w-4 h-4" />
@@ -1226,7 +1254,7 @@ function AdminPendaftarContent() {
                   </button>
                   <Link
                     href="/dashboard/admin/pendaftar/trash"
-                    className="flex items-center gap-2 px-3 md:p-[16px_20px] bg-stone-600 hover:bg-stone-700 text-white rounded-[24px] transition-colors text-sm"
+                    className="flex items-center gap-2 px-3 md:px-4 py-2 bg-stone-600 hover:bg-stone-700 text-white rounded-2xl transition-colors text-sm"
                     title="Lihat data terhapus"
                   >
                     <Trash2 className="w-4 h-4" />
@@ -1242,7 +1270,7 @@ function AdminPendaftarContent() {
             <button
               onClick={() => handleExport("excel")}
               disabled={exporting}
-              className="flex items-center gap-2 px-3 md:p-[16px_20px] bg-emerald-600 hover:bg-emerald-700 text-white rounded-[24px] transition-colors disabled:opacity-50 text-sm"
+              className="flex items-center gap-2 px-3 md:px-4 py-2 bg-[#9D174D] hover:bg-[#9D174D] text-white rounded-2xl transition-colors disabled:opacity-50 text-sm"
               title="Download Excel"
             >
               {exporting ? (
@@ -1255,7 +1283,7 @@ function AdminPendaftarContent() {
             <button
               onClick={() => handleExport("pdf")}
               disabled={exporting}
-              className="flex items-center gap-2 px-3 md:p-[16px_20px].5 bg-rose-600 hover:bg-rose-700 text-white rounded-[24px] font-bold transition-all shadow-sm hover:shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 disabled:opacity-50 text-sm"
+              className="flex items-center gap-2 px-3 md:px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-3xl font-bold transition-all shadow-2xl hover:shadow-xl disabled:opacity-50 text-sm"
               title="Download PDF"
             >
               {exporting ? (
@@ -1268,7 +1296,7 @@ function AdminPendaftarContent() {
             <button
               onClick={() => fetchPendaftar()}
               disabled={refreshing}
-              className="flex items-center gap-2 px-3 md:p-[16px_20px].5 bg-white hover:bg-stone-50 border border-stone-200 text-stone-700 rounded-[24px] font-bold transition-all shadow-sm hover:shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 text-sm disabled:opacity-50"
+              className="flex items-center gap-2 px-3 md:px-4 py-2.5 bg-white hover:bg-stone-50 border border-stone-200 text-stone-700 rounded-3xl font-bold transition-all shadow-2xl hover:shadow-xl text-sm disabled:opacity-50"
               title="Muat Ulang"
             >
               <RefreshCw
@@ -1279,7 +1307,7 @@ function AdminPendaftarContent() {
               <>
               <Link
                 href="/dashboard/admin/pendaftar/tambah?type=BARU"
-                className="flex items-center gap-2 px-3 md:p-[16px_20px].5 bg-violet-700 hover:bg-violet-800 text-white rounded-[24px] font-bold shadow-sm shadow-violet-700/20 transition-all text-sm ml-1"
+                className="flex items-center gap-2 px-3 md:px-4 py-2.5 bg-violet-700 hover:bg-violet-800 text-white rounded-3xl font-bold shadow-2xl shadow-violet-700/20 transition-all text-sm ml-1"
                 title="Daftarkan Santri Reguler"
               >
                 <Plus className="w-4 h-4" />
@@ -1287,7 +1315,7 @@ function AdminPendaftarContent() {
               </Link>
               <Link
                 href="/dashboard/admin/pendaftar/tambah?type=PINDAHAN"
-                className="flex items-center gap-2 px-3 md:p-[16px_20px].5 bg-purple-600 hover:bg-purple-700 text-white rounded-[24px] font-bold shadow-sm shadow-purple-600/20 transition-all text-sm"
+                className="flex items-center gap-2 px-3 md:px-4 py-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded-3xl font-bold shadow-2xl shadow-purple-600/20 transition-all text-sm"
                 title="Daftarkan Santri Pindahan"
               >
                 <Shuffle className="w-4 h-4" />
@@ -1300,8 +1328,8 @@ function AdminPendaftarContent() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-[24px] shadow-sm p-6 border border-gold-100">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-[24px_28px]">
+      <div className="bg-white rounded-2xl shadow-2xl p-6 border border-gold-100">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Search */}
           <div className="md:col-span-2">
             <label className="block text-sm font-bold text-primary-900 mb-2 leading-none uppercase tracking-widest text-[10px]">
@@ -1315,11 +1343,11 @@ function AdminPendaftarContent() {
                 onChange={(e) => setSearchInput(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && handleSearch()}
                 placeholder="Cari nama, NIK, atau nomor pendaftaran..."
-                className="flex-1 w-full px-4 py-3 bg-gold-50/50 border border-gold-100 rounded-[24px] focus:border-primary-500 focus:bg-white focus:outline-none text-sm md:text-base font-bold text-primary-950 placeholder:text-ink-400"
+                className="flex-1 w-full px-4 py-3 bg-gold-50/50 border border-gold-100 rounded-3xl focus:border-primary-500 focus:bg-white focus:outline-none text-sm md:text-base font-bold text-primary-950 placeholder:text-ink-400"
               />
               <button
                 onClick={handleSearch}
-                className="w-full sm:w-auto px-5 md:px-8 py-3 bg-primary-700 hover:bg-primary-800 text-white rounded-[24px] font-black transition-all flex-shrink-0 text-sm md:text-base shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-700/20 active:scale-95"
+                className="w-full sm:w-auto px-5 md:px-8 py-3 bg-primary-700 hover:bg-primary-800 text-white rounded-3xl font-black transition-all flex-shrink-0 text-sm md:text-base shadow-md active:scale-95"
               >
                 Cari
               </button>
@@ -1335,7 +1363,7 @@ function AdminPendaftarContent() {
             <select
               value={statusFilter}
               onChange={(e) => updateFilter(e.target.value)}
-              className="w-full px-4 py-3 bg-gold-50/50 border border-gold-100 rounded-[24px] focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950"
+              className="w-full px-4 py-3 bg-gold-50/50 border border-gold-100 rounded-3xl focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950"
             >
               <option value="">Semua Status</option>
 
@@ -1383,9 +1411,7 @@ function AdminPendaftarContent() {
                   <optgroup label="--- Ujian & Wawancara ---">
                     <option
                       value="terjadwal_ujian"
-                      className={isPenguji ? "font-bold bg-purple-50" : ""}
-                    >
-                      Terjadwal Ujian {isPenguji ? "(PRIORITAS)" : ""}
+                      className={isPenguji ? "font-bold bg-purple-50" : ""} > Terjadwal Ujian{isPenguji ? "(PRIORITAS)" : ""}
                     </option>
                     <option value="sedang_seleksi">Sedang Seleksi</option>
                     <option value="belum_ujian">Belum Ujian</option>
@@ -1397,9 +1423,9 @@ function AdminPendaftarContent() {
                     <option value="belum_daftar_ulang">
                       Belum Daftar Ulang
                     </option>
-                    <option value="sudah_daftar_ulang">
-                      Daftar Ulang
-                    </option>
+                    <option value="sudah_daftar_ulang">Semua Daftar Ulang</option>
+                    <option value="daftar_ulang_sedang">Proses Daftar Ulang (Cicil)</option>
+                    <option value="daftar_ulang_selesai">Lunas Daftar Ulang</option>
                   </optgroup>
                 </>
               )}
@@ -1429,26 +1455,7 @@ function AdminPendaftarContent() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-[24px_28px] mt-4">
-          {/* Gender Filter */}
-          <div>
-            <label className="block text-[10px] font-black text-primary-900 mb-2 leading-none uppercase tracking-widest">
-              Filter Putra / Putri
-            </label>
-            <select
-              value={jenisKelaminFilter}
-              onChange={(e) => {
-                setJenisKelaminFilter(e.target.value);
-                setPagination((prev) => ({ ...prev, page: 1 }));
-              }}
-              className="w-full px-4 py-3 bg-gold-50/50 border border-gold-100 rounded-[24px] focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950"
-            >
-              <option value="">Semua (Putra & Putri)</option>
-              <option value="L">Putra (Laki-laki)</option>
-              <option value="P">Putri (Perempuan)</option>
-            </select>
-          </div>
-
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
           {/* Jenjang Filter */}
           <div>
             <label className="block text-[10px] font-black text-primary-900 mb-2 leading-none uppercase tracking-widest">
@@ -1460,11 +1467,14 @@ function AdminPendaftarContent() {
                 setJenjangFilter(e.target.value);
                 setPagination((prev) => ({ ...prev, page: 1 }));
               }}
-              className="w-full px-4 py-3 bg-gold-50/50 border border-gold-100 rounded-[24px] focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950"
+              className="w-full px-4 py-3 bg-gold-50/50 border border-gold-100 rounded-3xl focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950"
             >
               <option value="">Semua Jenjang</option>
-              <option value="MTs">MTs (SMP IT)</option>
-              <option value="IL">I'dadiyah Lughawiy</option>
+              {getAvailableJenjang().map((j) => (
+                <option key={j} value={j}>
+                  {j === "IL" ? "IL (I'dad Lughowi)" : j}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -1479,12 +1489,12 @@ function AdminPendaftarContent() {
                 setTahunAjaranFilter(e.target.value);
                 setPagination((prev) => ({ ...prev, page: 1 }));
               }}
-              className="w-full px-4 py-3 bg-gold-50/50 border border-gold-100 rounded-[24px] focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950"
+              className="w-full px-4 py-3 bg-gold-50/50 border border-gold-100 rounded-3xl focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950"
             >
               <option value="all">Semua Tahun Ajaran</option>
               {tahunAjaranList.map((ta) => (
                 <option key={ta.id} value={ta.id}>
-                  {ta.nama} {ta.is_active && "(Aktif)"}
+                  {ta.nama} {ta.is_active && ""}
                 </option>
               ))}
             </select>
@@ -1501,7 +1511,7 @@ function AdminPendaftarContent() {
                 setTipePendaftaranFilter(e.target.value);
                 setPagination((prev) => ({ ...prev, page: 1 }));
               }}
-              className="w-full px-4 py-3 bg-secondary-50/50 border border-secondary-100 rounded-[24px] focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950"
+              className="w-full px-4 py-3 bg-secondary-50/50 border border-secondary-100 rounded-3xl focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950"
             >
               <option value="">Semua Jalur</option>
               <option value="BARU">Reguler (Baru)</option>
@@ -1514,8 +1524,7 @@ function AdminPendaftarContent() {
             statusFilter ||
             jenjangFilter ||
             tipePendaftaranFilter ||
-            tahunAjaranFilter ||
-            jenisKelaminFilter) && (
+            tahunAjaranFilter) && (
             <div className="flex items-end">
               <button
                 onClick={() => {
@@ -1523,8 +1532,7 @@ function AdminPendaftarContent() {
                   setSearchInput("");
                   setStatusFilter("");
                   setJenjangFilter("");
-                  setJenisKelaminFilter("");
-                  const defaultTA =
+                                    const defaultTA =
                     tahunAjaranList.find((ta) => ta.is_active) ||
                     tahunAjaranList[0];
                   setTahunAjaranFilter(defaultTA ? defaultTA.id : "");
@@ -1536,7 +1544,7 @@ function AdminPendaftarContent() {
                   setKelurahanFilter("");
                   setPagination((prev) => ({ ...prev, page: 1 }));
                 }}
-                className="p-[16px_20px] bg-stone-200 hover:bg-stone-300 text-stone-700 rounded-[24px] font-medium transition-colors"
+                className="px-4 py-2 bg-stone-200 hover:bg-stone-300 text-stone-700 rounded-2xl font-medium transition-colors"
               >
                 Reset Filter
               </button>
@@ -1545,7 +1553,7 @@ function AdminPendaftarContent() {
         </div>
 
         {/* Location cascading filters */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-[24px_28px] mt-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4">
           <div>
             <label className="block text-[10px] font-black text-primary-900 mb-2 leading-none uppercase tracking-widest">
               Provinsi{" "}
@@ -1560,7 +1568,7 @@ function AdminPendaftarContent() {
               onChange={(e) => setProvinsiFilter(e.target.value)}
               aria-label="Filter provinsi"
               aria-busy={provinsiLoading}
-              className="w-full px-4 py-3 bg-gold-50/50 border border-gold-100 rounded-[24px] focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950"
+              className="w-full px-4 py-3 bg-gold-50/50 border border-gold-100 rounded-3xl focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950"
             >
               <option value="">Semua Provinsi</option>
               {provinsiList.map((p) => (
@@ -1586,7 +1594,7 @@ function AdminPendaftarContent() {
               disabled={kabupatenList.length === 0 || kabupatenLoading}
               aria-label="Filter kabupaten atau kota"
               aria-busy={kabupatenLoading}
-              className="w-full px-4 py-3 bg-gold-50/50 border border-gold-100 rounded-[24px] focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950 disabled:opacity-50"
+              className="w-full px-4 py-3 bg-gold-50/50 border border-gold-100 rounded-3xl focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950 disabled:opacity-50"
             >
               <option value="">Semua Kabupaten / Kota</option>
               {kabupatenList.map((k) => (
@@ -1612,7 +1620,7 @@ function AdminPendaftarContent() {
               disabled={kecamatanList.length === 0 || kecamatanLoading}
               aria-label="Filter kecamatan"
               aria-busy={kecamatanLoading}
-              className="w-full px-4 py-3 bg-gold-50/50 border border-gold-100 rounded-[24px] focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950 disabled:opacity-50"
+              className="w-full px-4 py-3 bg-gold-50/50 border border-gold-100 rounded-3xl focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950 disabled:opacity-50"
             >
               <option value="">Semua Kecamatan</option>
               {kecamatanList.map((c) => (
@@ -1638,7 +1646,7 @@ function AdminPendaftarContent() {
               disabled={kelurahanList.length === 0 || kelurahanLoading}
               aria-label="Filter kelurahan"
               aria-busy={kelurahanLoading}
-              className="w-full px-4 py-3 bg-gold-50/50 border border-gold-100 rounded-[24px] focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950 disabled:opacity-50"
+              className="w-full px-4 py-3 bg-gold-50/50 border border-gold-100 rounded-3xl focus:border-primary-500 focus:bg-white focus:outline-none font-bold text-primary-950 disabled:opacity-50"
             >
               <option value="">Semua Kelurahan</option>
               {kelurahanList.map((k) => (
@@ -1653,9 +1661,9 @@ function AdminPendaftarContent() {
 
       {/* Bulk Actions */}
       {selectedIds.length > 0 && (
-        <div className="bg-gradient-to-r from-purple-50 to-primary-50 rounded-[24px] shadow-2xl shadow-primary/30  shadow-primary/20 p-[24px_28px] border-2 border-purple-200">
-          <div className="flex items-center justify-between flex-wrap gap-[24px_28px]">
-            <div className="flex items-center gap-[24px_28px]">
+        <div className="bg-gradient-to-r from-purple-50 to-primary-50 rounded-3xl shadow-2xl p-6 sm:p-8 border-2 border-purple-200">
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
                 <CheckSquare className="w-5 h-5 text-purple-600" />
                 <span className="font-bold text-purple-900">
@@ -1674,7 +1682,7 @@ function AdminPendaftarContent() {
               <select
                 value={bulkStatus}
                 onChange={(e) => setBulkStatus(e.target.value)}
-                className="w-full sm:w-64 p-[16px_20px].5 bg-white border-2 border-purple-200 rounded-[24px] focus:border-purple-500 focus:outline-none font-bold text-purple-900"
+                className="w-full sm:w-64 px-4 py-2.5 bg-white border-2 border-purple-200 rounded-3xl focus:border-purple-500 focus:outline-none font-bold text-purple-900"
               >
                 <option value="" disabled={bulkStatus !== ""}>
                   Pilih status baru...
@@ -1699,7 +1707,7 @@ function AdminPendaftarContent() {
               <button
                 onClick={handleBulkUpdate}
                 disabled={!bulkStatus || bulkUpdating}
-                className="flex items-center justify-center gap-2 px-5 md:px-8 py-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded-[24px] font-black transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-2xl shadow-primary/30  shadow-primary/20 shadow-purple-600/20 active:scale-95 text-sm"
+                className="flex items-center justify-center gap-2 px-5 md:px-8 py-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded-3xl font-black transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-purple-600/20 active:scale-95 text-sm"
               >
                 {bulkUpdating ? (
                   <>
@@ -1750,7 +1758,7 @@ function AdminPendaftarContent() {
                     }
                   }}
                   disabled={bulkUpdating}
-                  className="flex items-center justify-center gap-2 px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-[24px] font-black transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-2xl shadow-primary/30  shadow-primary/20 shadow-rose-600/20 active:scale-95 text-sm ml-auto"
+                  className="flex items-center justify-center gap-2 px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-3xl font-black transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-2xl shadow-rose-600/20 active:scale-95 text-sm ml-auto"
                 >
                   <Trash2 className="w-4 h-4" />
                   <span className="hidden lg:inline">Ke Sampah</span>
@@ -1766,7 +1774,7 @@ function AdminPendaftarContent() {
                     return p && (p.status_pendaftaran === "announced" || p.status_pendaftaran === "cadangan");
                   }))}
                   disabled={isPromotingCadangan}
-                  className="flex items-center justify-center gap-2 px-5 md:px-8 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-[24px] font-black transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-2xl shadow-primary/30  shadow-primary/20 shadow-emerald-600/20 active:scale-95 text-sm"
+                  className="flex items-center justify-center gap-2 px-5 md:px-8 py-2.5 bg-[#9D174D] hover:bg-[#9D174D] text-white rounded-3xl font-black transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-2xl active:scale-95 text-sm"
                 >
                   {isPromotingCadangan ? (
                     <>
@@ -1787,7 +1795,7 @@ function AdminPendaftarContent() {
       )}
 
       {/* Table */}
-      <div className="bg-white rounded-3xl shadow-sm border border-gold-100 overflow-hidden">
+      <div className="bg-white rounded-3xl shadow-2xl border border-gold-100 overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center py-20">
             <div className="text-center">
@@ -1799,7 +1807,7 @@ function AdminPendaftarContent() {
           <div className="text-center py-20">
             <div className="relative inline-flex mb-6">
               <div className="absolute inset-0 bg-primary-100 rounded-full blur-xl opacity-50"></div>
-              <div className="relative bg-white p-[24px_28px] rounded-full shadow-sm border border-primary-50">
+              <div className="relative bg-white p-6 sm:p-8 rounded-full shadow-2xl border border-primary-50">
                 <Users className="w-12 h-12 text-primary-300" />
               </div>
             </div>
@@ -1817,7 +1825,7 @@ function AdminPendaftarContent() {
               {pendaftar.map((item) => (
                 <div
                   key={item.id}
-                  className={`p-[24px_28px] ${selectedIds.includes(item.id) ? "bg-purple-50" : "bg-white"}`}
+                  className={`p-5 ${selectedIds.includes(item.id) ? "bg-purple-50" : "bg-white"}`}
                 >
                   <div className="flex items-start gap-3">
                     <button
@@ -1832,27 +1840,38 @@ function AdminPendaftarContent() {
                     </button>
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-wrap items-center gap-2 mb-1">
-                        <span className="font-mono text-xs font-bold text-primary-700 bg-primary-50 px-2 py-0.5 rounded">
+                        <Link
+                          href={`/dashboard/admin/pendaftar/${item.id}`}
+                          className="font-mono text-xs font-bold text-primary-700 bg-primary-50 hover:bg-primary-100 px-2 py-0.5 rounded transition-colors"
+                        >
                           {item.nomor_pendaftaran}
-                        </span>
-                        <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 bg-purple-100 text-purple-700 rounded-full">
-                          {item.jenjang}
-                        </span>
+                        </Link>
+                        {(item.nomor_pendaftaran?.startsWith("MA") || item.nomor_pendaftaran?.startsWith("SMA")) && (normalizeJenjang(item.jenjang) === "IL" || item.catatan_pindahan?.includes("Pengalihan")) ? (
+                          <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 bg-amber-100 text-amber-800 border border-amber-300 rounded-full whitespace-nowrap inline-flex items-center gap-1 shrink-0" title="Pendaftaran dialihkan ke I'dad Lughowi">
+                            {item.nomor_pendaftaran?.startsWith("SMA") ? "SMA" : "MA"} ➔ IL
+                          </span>
+                        ) : (
+                          <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 bg-purple-100 text-purple-700 rounded-full whitespace-nowrap inline-block shrink-0">
+                            {normalizeJenjang(item.jenjang)}
+                          </span>
+                        )}
                       </div>
-                      <p className="font-black text-primary-950 leading-tight text-sm flex items-center gap-1.5 flex-wrap">
-                        <span>{toTitleCase(item.nama_lengkap)}</span>
+                      <Link
+                        href={`/dashboard/admin/pendaftar/${item.id}`}
+                        className="font-black text-primary-950 hover:text-primary-700 leading-tight text-sm flex items-center gap-1.5 flex-wrap group transition-colors"
+                      >
+                        <span className="group-hover:underline underline-offset-2">{toTitleCase(item.nama_lengkap)}</span>
                         {item.tipe_pendaftaran === "PINDAHAN" && (
-                          <span className="px-1.5 py-0.5 bg-violet-100 text-violet-700 rounded-md text-[9px] font-black uppercase tracking-wider">
+                          <span className="px-1.5 py-0.5 bg-violet-100 text-violet-700 rounded-md text-[9px] font-black uppercase tracking-wider whitespace-nowrap inline-block shrink-0">
                             PINDAHAN
                           </span>
                         )}
-                      </p>
-                      <p className="text-xs text-stone-500 mt-0.5">
-                        {["L", "Laki-laki"].includes(item.jenis_kelamin)
-                          ? "Laki-laki"
-                          : "Perempuan"}
-                        {item.no_hp && <> &bull; {item.no_hp}</>}
-                      </p>
+                      </Link>
+                      {item.no_hp && (
+                        <p className="text-xs text-stone-500 mt-0.5">
+                          {item.no_hp}
+                        </p>
+                      )}
                       <div className="flex flex-wrap items-center gap-2 mt-2">
                         {formatStatus(item.status_pendaftaran, item.data_lengkap)}
                         <span className="text-[10px] text-stone-500">
@@ -1872,7 +1891,7 @@ function AdminPendaftarContent() {
                                   100,
                                 );
                               }}
-                              className="px-2 py-1 bg-primary-50 text-primary-700 rounded-[24px] text-[9px] font-black uppercase flex items-center gap-1 border border-primary-100"
+                              className="px-2 py-1 bg-primary-50 text-primary-700 rounded-2xl text-[9px] font-black uppercase flex items-center gap-1 border border-primary-100"
                             >
                               <UploadCloud className="w-3 h-3" /> KK
                             </button>
@@ -1885,7 +1904,7 @@ function AdminPendaftarContent() {
                                   100,
                                 );
                               }}
-                              className="px-2 py-1 bg-primary-50 text-primary-700 rounded-[24px] text-[9px] font-black uppercase flex items-center gap-1 border border-primary-100"
+                              className="px-2 py-1 bg-primary-50 text-primary-700 rounded-2xl text-[9px] font-black uppercase flex items-center gap-1 border border-primary-100"
                             >
                               <UploadCloud className="w-3 h-3" /> Akta
                             </button>
@@ -1903,16 +1922,22 @@ function AdminPendaftarContent() {
                                   100,
                                 );
                               }}
-                              className="px-2 py-1 bg-gold-50 text-gold-700 rounded-[24px] text-[9px] font-black uppercase flex items-center gap-1 border border-gold-100"
+                              className="px-2 py-1 bg-gold-50 text-gold-700 rounded-2xl text-[9px] font-black uppercase flex items-center gap-1 border border-gold-100"
                             >
                               <CreditCard className="w-3 h-3" /> Bayar
                             </button>
                           )}
                       </div>
-                      <div className="flex justify-end mt-3 border-t border-gold-50 pt-3">
+                      <div className="flex items-center justify-between mt-3 border-t border-gold-50 pt-3">
+                        <Link
+                          href={`/dashboard/admin/pendaftar/${item.id}`}
+                          className="px-3 py-1.5 bg-primary-700 hover:bg-primary-800 text-white rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-1.5 shadow-sm transition-all active:scale-95"
+                        >
+                          <Eye className="w-3.5 h-3.5" /> Buka Detail
+                        </Link>
 
-                          <ActionDropdown 
-                            items={[
+                        <ActionDropdown 
+                          items={[
                               {
                                 label: "Buka Detail",
                                 icon: <Eye className="w-4 h-4" />,
@@ -2023,25 +2048,26 @@ function AdminPendaftarContent() {
                         </button>
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap">
-                        <span className="font-mono text-sm font-bold text-primary-700 bg-primary-50 px-2 py-1 rounded">
+                        <Link
+                          href={`/dashboard/admin/pendaftar/${item.id}`}
+                          className="font-mono text-sm font-bold text-primary-700 bg-primary-50 hover:bg-primary-100 px-2 py-1 rounded transition-colors inline-block"
+                        >
                           {item.nomor_pendaftaran}
-                        </span>
+                        </Link>
                       </td>
                       <td className="px-4 py-3">
                         <div>
-                          <div className="font-bold text-stone-900 flex items-center gap-1.5 flex-wrap">
-                            <span>{toTitleCase(item.nama_lengkap)}</span>
+                          <Link
+                            href={`/dashboard/admin/pendaftar/${item.id}`}
+                            className="font-bold text-stone-900 hover:text-primary-700 flex items-center gap-1.5 flex-wrap group transition-colors"
+                          >
+                            <span className="group-hover:underline underline-offset-2">{toTitleCase(item.nama_lengkap)}</span>
                             {item.tipe_pendaftaran === "PINDAHAN" && (
-                              <span className="px-1.5 py-0.5 bg-violet-100 text-violet-700 rounded-md text-[9px] font-black uppercase tracking-wider">
+                              <span className="px-1.5 py-0.5 bg-violet-100 text-violet-700 rounded-md text-[9px] font-black uppercase tracking-wider whitespace-nowrap inline-block shrink-0">
                                 PINDAHAN
                               </span>
                             )}
-                          </div>
-                          <div className="text-xs text-stone-600 font-medium">
-                            {["L", "Laki-laki"].includes(item.jenis_kelamin)
-                              ? "Laki-laki"
-                              : "Perempuan"}
-                          </div>
+                          </Link>
                         </div>
                       </td>
                       <td className="px-4 py-3">
@@ -2070,16 +2096,33 @@ function AdminPendaftarContent() {
                         </td>
                       )}
                       <td className="px-4 py-3">
-                        <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-bold">
-                          {item.jenjang}
-                        </span>
+                        {(item.nomor_pendaftaran?.startsWith("MA") || item.nomor_pendaftaran?.startsWith("SMA")) && (normalizeJenjang(item.jenjang) === "IL" || item.catatan_pindahan?.includes("Pengalihan")) ? (
+                          <div className="flex flex-col gap-0.5 items-start">
+                            <span className="px-2.5 py-1 bg-amber-100 text-amber-900 border border-amber-300 rounded-full text-xs font-black inline-flex items-center gap-1 shadow-xs" title="Pendaftaran dialihkan ke I'dad Lughowi">
+                              {item.nomor_pendaftaran?.startsWith("SMA") ? "SMA" : "MA"} ➔ IL
+                            </span>
+                            <span className="text-[10px] text-amber-700 font-semibold">Pengalihan IL</span>
+                          </div>
+                        ) : (
+                          <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-bold whitespace-nowrap inline-block shrink-0">
+                            {normalizeJenjang(item.jenjang)}
+                          </span>
+                        )}
                       </td>
                       <td className="px-4 py-3">
                         {formatStatus(item.status_pendaftaran, item.data_lengkap)}
                       </td>
                       
                       <td className="px-4 py-3 whitespace-nowrap sticky right-0 bg-white/95 backdrop-blur z-10 shadow-[-10px_0_15px_-3px_rgba(0,0,0,0.05)] group-hover:bg-primary-50 transition-colors">
-                        <div className="flex justify-end gap-2">
+                        <div className="flex items-center justify-end gap-2">
+                          <Link
+                            href={`/dashboard/admin/pendaftar/${item.id}`}
+                            className="px-2.5 py-1.5 bg-primary-50 hover:bg-primary-100 text-primary-700 rounded-xl text-xs font-bold flex items-center gap-1 border border-primary-200 transition-all active:scale-95"
+                            title="Buka Detail"
+                          >
+                            <Eye className="w-3.5 h-3.5" />
+                            <span>Detail</span>
+                          </Link>
 
                           <ActionDropdown 
                             items={[
@@ -2133,7 +2176,7 @@ function AdminPendaftarContent() {
 
             {/* Pagination */}
             <div className="bg-stone-50 px-6 py-4 border-t-2 border-primary-200">
-              <div className="flex flex-col md:flex-row items-center justify-between gap-[24px_28px]">
+              <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                 <div className="text-sm text-stone-600 text-center md:text-left">
                   Menampilkan{" "}
                   <span className="font-bold text-stone-900">
@@ -2157,7 +2200,7 @@ function AdminPendaftarContent() {
                   <button
                     onClick={() => handlePageChange(pagination.page - 1)}
                     disabled={pagination.page === 1}
-                    className="px-3 md:p-[16px_20px] bg-white border-2 border-stone-200 rounded-[24px] font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary-50 hover:border-primary-300 transition-colors"
+                    className="px-3 md:px-4 py-2 bg-white border-2 border-stone-200 rounded-2xl font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary-50 hover:border-primary-300 transition-colors"
                   >
                     <ChevronLeft className="w-5 h-5" />
                   </button>
@@ -2185,7 +2228,7 @@ function AdminPendaftarContent() {
                           )}
                           <button
                             onClick={() => handlePageChange(page)}
-                            className={`w-8 h-8 md:w-10 md:h-10 rounded-[24px] font-medium transition-colors text-sm md:text-base ${
+                            className={`w-8 h-8 md:w-10 md:h-10 rounded-2xl font-medium transition-colors text-sm md:text-base ${
                               page === pagination.page
                                 ? "bg-primary-700 text-white"
                                 : "bg-white border-2 border-stone-200 hover:bg-primary-50 hover:border-primary-300"
@@ -2200,7 +2243,7 @@ function AdminPendaftarContent() {
                   <button
                     onClick={() => handlePageChange(pagination.page + 1)}
                     disabled={pagination.page === pagination.totalPages}
-                    className="px-3 md:p-[16px_20px] bg-white border-2 border-stone-200 rounded-[24px] font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary-50 hover:border-primary-300 transition-colors"
+                    className="px-3 md:px-4 py-2 bg-white border-2 border-stone-200 rounded-2xl font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary-50 hover:border-primary-300 transition-colors"
                   >
                     <ChevronRight className="w-5 h-5" />
                   </button>
@@ -2212,8 +2255,8 @@ function AdminPendaftarContent() {
       </div>
       {/* Announcement Modal */}
       {isAnnouncementModalOpen && selectedPendaftar && (
-        <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog" className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center bg-black/50 backdrop-blur-sm p-[24px_28px] overflow-y-auto overscroll-contain custom-scrollbar">
-          <div className="bg-white rounded-[24px] shadow-2xl shadow-primary/30 w-full max-w-lg border-2 border-stone-100 animate-in fade-in zoom-in duration-200">
+        <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog" className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center bg-black/50 backdrop-blur-sm p-6 sm:p-8 overflow-y-auto overscroll-contain custom-scrollbar">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg border-2 border-stone-100 animate-in fade-in zoom-in duration-200">
             <div className="flex justify-between items-center p-6 border-b border-stone-100">
               <div>
                 <h3 className="text-xl font-bold text-stone-900">
@@ -2225,7 +2268,7 @@ function AdminPendaftarContent() {
               </div>
               <button
                 onClick={() => setIsAnnouncementModalOpen(false)}
-                className="p-2 hover:bg-stone-100 rounded-full transition-colors text-stone-400 hover:text-stone-600"
+                className="p-4 hover:bg-stone-100 rounded-full transition-colors text-stone-400 hover:text-stone-600 whitespace-nowrap inline-block shrink-0"
               >
                 <X className="w-6 h-6" />
               </button>
@@ -2247,10 +2290,10 @@ function AdminPendaftarContent() {
                           ...announcementForm,
                           status_kelulusan: status })
                       }
-                      className={`py-3 px-4 rounded-[24px] border-2 font-bold transition-all ${
+                      className={`py-3 px-4 rounded-3xl border-2 font-bold transition-all ${
                         announcementForm.status_kelulusan === status
                           ? status === "Diterima"
-                            ? "border-green-500 bg-green-50 text-green-700"
+                            ? "border-green-500 bg-green-50 text-[#9D174D]"
                             : status === "Cadangan"
                               ? "border-yellow-500 bg-yellow-50 text-yellow-700"
                               : "border-red-500 bg-red-50 text-red-700"
@@ -2277,7 +2320,7 @@ function AdminPendaftarContent() {
                       catatan: e.target.value })
                   }
                   placeholder="Tambahkan catatan khusus jika ada..."
-                  className="w-full px-4 py-3 border-2 border-stone-200 rounded-[24px] focus:border-primary-500 focus:outline-none transition-colors"
+                  className="w-full px-4 py-3 border-2 border-stone-200 rounded-3xl focus:border-primary-500 focus:outline-none transition-colors"
                 />
               </div>
 
@@ -2297,7 +2340,7 @@ function AdminPendaftarContent() {
                         surat_keputusan_url: e.target.value })
                     }
                     placeholder="https://docs.google.com/..."
-                    className="w-full pl-12 pr-4 py-3 border-2 border-stone-200 rounded-[24px] focus:border-primary-500 focus:outline-none transition-colors"
+                    className="w-full pl-12 pr-4 py-3 border-2 border-stone-200 rounded-3xl focus:border-primary-500 focus:outline-none transition-colors"
                   />
                 </div>
                 <p className="text-xs text-stone-500 mt-2">
@@ -2311,7 +2354,7 @@ function AdminPendaftarContent() {
                 <button
                   type="button"
                   onClick={() => setIsAnnouncementModalOpen(false)}
-                  className="px-6 py-2.5 font-bold text-stone-500 hover:bg-stone-100 rounded-[24px] transition-colors"
+                  className="px-6 py-2.5 font-bold text-stone-500 hover:bg-stone-100 rounded-3xl transition-colors whitespace-nowrap inline-block shrink-0"
                   disabled={isSubmittingAnnouncement}
                 >
                   Batal
@@ -2319,7 +2362,7 @@ function AdminPendaftarContent() {
                 <button
                   type="submit"
                   disabled={isSubmittingAnnouncement}
-                  className="flex items-center gap-2 px-6 py-2.5 bg-primary-700 hover:bg-primary-800 text-white font-bold rounded-[24px] shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-200 hover:shadow-primary-300 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex items-center gap-2 px-6 py-2.5 bg-primary-700 hover:bg-primary-800 text-white font-bold rounded-3xl shadow-md-200 hover: transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmittingAnnouncement ? (
                     <>
@@ -2341,11 +2384,11 @@ function AdminPendaftarContent() {
 
       {/* Delete Confirmation Modal */}
       {isDeleteModalOpen && deletingPendaftar && (
-        <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog" className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center bg-black/50 backdrop-blur-sm p-[24px_28px] overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
-          <div className="bg-white rounded-[24px] shadow-2xl shadow-primary/30 w-full max-w-md border-2 border-red-100 animate-in fade-in zoom-in duration-200">
+        <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog" className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center bg-black/50 backdrop-blur-sm p-6 sm:p-8 overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md border-2 border-red-100 animate-in fade-in zoom-in duration-200">
             <div className="flex justify-between items-center p-6 border-b border-red-100">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-red-100 rounded-[24px]">
+                <div className="p-4 bg-red-100 rounded-2xl">
                   <Trash2 className="w-6 h-6 text-red-600" />
                 </div>
                 <div>
@@ -2359,16 +2402,16 @@ function AdminPendaftarContent() {
               </div>
               <button
                 onClick={() => setIsDeleteModalOpen(false)}
-                className="p-2 hover:bg-stone-100 rounded-full transition-colors text-stone-400 hover:text-stone-600"
+                className="p-4 hover:bg-stone-100 rounded-full transition-colors text-stone-400 hover:text-stone-600 whitespace-nowrap inline-block shrink-0"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <div className="p-6 space-y-4">
-              <div className="bg-secondary-50 border-2 border-secondary-200 rounded-[24px] p-[24px_28px]">
-                <p className="text-sm text-secondary-800 font-medium flex items-start gap-1.5">
-                  <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+              <div className="bg-secondary-50 border-2 border-secondary-200 rounded-3xl p-6 sm:p-8">
+                <p className="text-sm text-secondary-800 font-medium flex items-center gap-1.5">
+                  <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
                   <span>
                     Anda akan menghapus data{" "}
                     <strong>{toTitleCase(deletingPendaftar.nama_lengkap)}</strong>{" "}
@@ -2391,7 +2434,7 @@ function AdminPendaftarContent() {
                   value={deleteConfirmName}
                   onChange={(e) => setDeleteConfirmName(e.target.value)}
                   placeholder="Ketik nama lengkap pendaftar..."
-                  className="w-full px-4 py-3 border-2 border-stone-200 rounded-[24px] focus:border-red-500 focus:outline-none transition-colors"
+                  className="w-full px-4 py-3 border-2 border-stone-200 rounded-3xl focus:border-red-500 focus:outline-none transition-colors"
                   autoFocus
                 />
               </div>
@@ -2400,7 +2443,7 @@ function AdminPendaftarContent() {
                 <button
                   type="button"
                   onClick={() => setIsDeleteModalOpen(false)}
-                  className="px-5 py-2.5 font-bold text-stone-500 hover:bg-stone-100 rounded-[24px] transition-colors"
+                  className="px-5 py-2.5 font-bold text-stone-500 hover:bg-stone-100 rounded-3xl transition-colors whitespace-nowrap inline-block shrink-0"
                   disabled={isDeleting}
                 >
                   Batal
@@ -2412,7 +2455,7 @@ function AdminPendaftarContent() {
                     deleteConfirmName.trim().toLowerCase() !==
                       deletingPendaftar.nama_lengkap.trim().toLowerCase()
                   }
-                  className="flex items-center gap-2 px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-[24px] shadow-2xl shadow-primary/30  shadow-primary/20 shadow-red-200 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex items-center gap-2 px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-3xl shadow-md shadow-red-200 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isDeleting ? (
                     <>

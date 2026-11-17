@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "@/lib/session";
 import { generateNomorPendaftaran } from "@/lib/utils/nomor-pendaftaran";
+import { normalizeJenjang } from "@/lib/utils/jenjang";
 import { enqueueWhatsapp, buildMessageRegistrationSuccess } from "@/lib/whatsapp-queue";
 import { normalizePhoneNumber, formatNamaLengkap } from "@/lib/validations/registration";
 import crypto from "crypto";
@@ -52,7 +53,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Generate Nomor Pendaftaran Unik
-    const nomorPendaftaran = await generateNomorPendaftaran(regData.jenjang, regData.jenis_kelamin);
+    const targetJenjang = normalizeJenjang(regData.jenjang);
+    const nomorPendaftaran = await generateNomorPendaftaran(targetJenjang, regData.jenis_kelamin);
 
     // PEMBUATAN AKUN (Profile & Pendaftar)
     const profileId = crypto.randomUUID();
@@ -71,7 +73,7 @@ export async function POST(request: NextRequest) {
           tempat_lahir: regData.tempat_lahir || undefined,
           tanggal_lahir: regData.tanggal_lahir ? new Date(regData.tanggal_lahir) : undefined,
           jenis_kelamin: regData.jenis_kelamin,
-          jenjang: regData.jenjang,
+          jenjang: targetJenjang,
           no_hp: normalizedPhone,
           email: regData.email || "",
           status_pendaftaran: "draft",
@@ -91,7 +93,7 @@ export async function POST(request: NextRequest) {
       pendaftarId: pendaftarId,
       phone: normalizedPhone,
       jenisNotif: "registration_success",
-      messageContent: buildMessageRegistrationSuccess(regData.nama_lengkap, nomorPendaftaran, regData.jenjang) }).catch(e => console.error("WA Queue Error:", e.message));
+      messageContent: buildMessageRegistrationSuccess(regData.nama_lengkap, nomorPendaftaran, targetJenjang) }).catch(e => console.error("WA Queue Error:", e.message));
 
     return NextResponse.json({
       success: true,
@@ -100,7 +102,7 @@ export async function POST(request: NextRequest) {
         nomor_pendaftaran: nomorPendaftaran,
         nama_lengkap: regData.nama_lengkap,
         nik: regData.nik,
-        jenjang: regData.jenjang }
+        jenjang: targetJenjang }
     });
 
   } catch (error: any) {

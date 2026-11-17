@@ -32,6 +32,7 @@ import Swal from "sweetalert2";
 import { SuratPengumumanDialog } from "@/components/admin/SuratPengumumanDialog";
 import { BulkPengumumanDialog } from "@/components/admin/BulkPengumumanDialog";
 import { exportToExcelProfessional, exportToPDF } from "@/lib/utils/export";
+import { normalizeJenjang, isJenjangTanpaIL } from "@/lib/utils/jenjang";
 
 const KKM_STANDAR = 75;
 
@@ -71,14 +72,14 @@ function PengumumanContent() {
   ) => {
     const phone = formatPhoneForWA(component.penguji_phone);
     if (!phone) return "";
-    const msg = `Assalamu'alaikum Wr. Wb. Ustadz/Ustadzah ${component.penguji_name || ""},\n\nIzin mengingatkan Panitia PPDB terkait penilaian seleksi calon santri:\n• Nama: ${candidate.nama_lengkap}\n• No. Pendaftaran: ${candidate.nomor_pendaftaran}\n• Jenjang: ${candidate.jenjang}\n• Komponen Nilai: ${component.name}\n\nMohon kesediaannya untuk dapat segera menginput nilai melalui portal penilaian PPDB agar rekap hasil ujian santri dapat segera diplenokan.\n\nJazakumullahu khairan katsiran.\n- Panitia PPDB`;
+    const msg = `Assalamu'alaikum Wr. Wb. Ustadz/Ustadzah ${component.penguji_name || ""},\n\nIzin mengingatkan Panitia PPDB terkait penilaian seleksi calon santri:\n• Nama: ${candidate.nama_lengkap}\n• No. Pendaftaran: ${candidate.nomor_pendaftaran}\n• Jenjang: ${normalizeJenjang(candidate.jenjang)}\n• Komponen Nilai: ${component.name}\n\nMohon kesediaannya untuk dapat segera menginput nilai melalui portal penilaian PPDB agar rekap hasil ujian santri dapat segera diplenokan.\n\nJazakumullahu khairan katsiran.\n- Panitia PPDB`;
     return `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
   };
 
   const getWACandidateUrl = (candidate: any) => {
     const phone = formatPhoneForWA(candidate.wali_phone || candidate.no_hp);
     if (!phone) return "";
-    const msg = `Assalamu'alaikum Warahmatullahi Wabarakatuh,\n\nYth. ${candidate.wali_name || "Bapak/Ibu Wali Calon Santri"} dari ananda:\n• Nama: ${candidate.nama_lengkap}\n• No. Pendaftaran: ${candidate.nomor_pendaftaran}\n• Jenjang: ${candidate.jenjang}\n\nKami dari Panitia PPDB menginformasikan bahwa ananda saat ini *belum memilih Jadwal Tes Seleksi / Wawancara*.\n\nMohon kesediaannya untuk segera login ke akun portal pendaftaran PPDB Anda dan memilih sesi jadwal tes yang tersedia, atau konfirmasikan ke kami jika memerlukan bantuan penjadwalan khusus dari panitia.\n\nTerima kasih banyak.\nWassalamu'alaikum Warahmatullahi Wabarakatuh.\n- Panitia PPDB`;
+    const msg = `Assalamu'alaikum Warahmatullahi Wabarakatuh,\n\nYth. ${candidate.wali_name || "Bapak/Ibu Wali Calon Santri"} dari ananda:\n• Nama: ${candidate.nama_lengkap}\n• No. Pendaftaran: ${candidate.nomor_pendaftaran}\n• Jenjang: ${normalizeJenjang(candidate.jenjang)}\n\nKami dari Panitia PPDB menginformasikan bahwa ananda saat ini *belum memilih Jadwal Tes Seleksi / Wawancara*.\n\nMohon kesediaannya untuk segera login ke akun portal pendaftaran PPDB Anda dan memilih sesi jadwal tes yang tersedia, atau konfirmasikan ke kami jika memerlukan bantuan penjadwalan khusus dari panitia.\n\nTerima kasih banyak.\nWassalamu'alaikum Warahmatullahi Wabarakatuh.\n- Panitia PPDB`;
     return `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
   };
 
@@ -174,29 +175,6 @@ function PengumumanContent() {
       ["accepted", "enrolled", "enrolled_full", "cadangan", "rejected"].includes(c.status_pendaftaran) ||
       Boolean(c.pengumuman?.is_published)
     );
-  };
-
-  // Helper deteksi jenjang SMA / MA langsung (tanpa IL)
-  const isJenjangTanpaIL = (jenjang?: string | null): boolean => {
-    if (!jenjang) return false;
-    const clean = jenjang.trim().toUpperCase();
-    if (clean === "IL" || clean === "I'DAD LUGHAWI" || clean === "IDAD") {
-      return false;
-    }
-    if (
-      clean.includes("NON-IL") ||
-      clean.includes("NON IL") ||
-      clean.includes("TANPA IL") ||
-      clean === "MA" ||
-      clean === "SMA" ||
-      clean.startsWith("MA ") ||
-      clean.startsWith("SMA ") ||
-      clean.includes("ALIYAH") ||
-      clean.includes("SLTA")
-    ) {
-      return true;
-    }
-    return false;
   };
 
   // Santri Siap Pleno HANYA yang seluruh nilai ujiannya sudah lengkap (minimal 6 nilai untuk MTs/IL, atau 8 nilai untuk SMA/MA)
@@ -879,7 +857,7 @@ function PengumumanContent() {
           idx + 1,
           c.nomor_pendaftaran || "-",
           (c.nama_lengkap || "").toUpperCase(),
-          c.jenjang || "-",
+          normalizeJenjang(c.jenjang) || "-",
           formatScoreWithGrade(nu?.score_akademik, "akademik"),
           formatScoreWithGrade(nu?.score_kepribadian, "kepribadian"),
           formatScoreWithGrade(nu?.score_kesiapan, "kesiapan"),
@@ -983,7 +961,7 @@ function PengumumanContent() {
           idx + 1,
           c.nomor_pendaftaran || "-",
           (c.nama_lengkap || "").toUpperCase(),
-          c.jenjang || "-",
+          normalizeJenjang(c.jenjang) || "-",
           total,
           grade,
           statusText,
@@ -1103,7 +1081,7 @@ function PengumumanContent() {
           String(idx + 1),
           c.nomor_pendaftaran || "-",
           (c.nama_lengkap || "").substring(0, 20),
-          c.jenjang || "-",
+          normalizeJenjang(c.jenjang) || "-",
           formatScoreWithGrade(nu?.score_akademik, "akademik"),
           formatScoreWithGrade(nu?.score_kepribadian, "kepribadian"),
           formatScoreWithGrade(nu?.score_kesiapan, "kesiapan"),
@@ -1853,7 +1831,7 @@ function PengumumanContent() {
 
                       <td className="px-6 py-4">
                         <span className="px-2.5 py-1 bg-stone-100 text-stone-700 rounded-lg text-xs font-black uppercase whitespace-nowrap inline-block shrink-0">
-                          {c.jenjang}
+                          {normalizeJenjang(c.jenjang)}
                         </span>
                       </td>
 
@@ -2157,7 +2135,7 @@ function PengumumanContent() {
               id: c.id,
               nama_lengkap: c.nama_lengkap,
               nomor_pendaftaran: c.nomor_pendaftaran,
-              jenjang: c.jenjang,
+              jenjang: normalizeJenjang(c.jenjang),
               kelas_diterima: c.pengumuman?.kelas_diterima,
             }))}
           onClose={() => setShowBulkAcceptedDialog(false)}
@@ -2196,7 +2174,7 @@ function PengumumanContent() {
                     Rincian Komponen Nilai Seleksi
                   </h3>
                   <p className="text-xs text-amber-100 font-medium mt-0.5">
-                    {toTitleCase(selectedMissingCandidate.nama_lengkap)} • {selectedMissingCandidate.nomor_pendaftaran} ({selectedMissingCandidate.jenjang})
+                    {toTitleCase(selectedMissingCandidate.nama_lengkap)} • {selectedMissingCandidate.nomor_pendaftaran} ({normalizeJenjang(selectedMissingCandidate.jenjang)})
                   </p>
                 </div>
               </div>
@@ -2464,7 +2442,7 @@ function PengumumanContent() {
                     Catatan &amp; Evaluasi Penguji
                   </h3>
                   <p className="text-xs text-emerald-100/90 font-medium">
-                    {toTitleCase(selectedNotesCandidate.nama_lengkap)} • {selectedNotesCandidate.nomor_pendaftaran} ({selectedNotesCandidate.jenjang})
+                    {toTitleCase(selectedNotesCandidate.nama_lengkap)} • {selectedNotesCandidate.nomor_pendaftaran} ({normalizeJenjang(selectedNotesCandidate.jenjang)})
                   </p>
                 </div>
               </div>
