@@ -270,6 +270,16 @@ export async function PATCH(
         updateData.score_hafalan = body.score_hafalan;
       if (body.detail_hafalan !== undefined)
         updateData.detail_hafalan = body.detail_hafalan;
+      if (body.catatan_hafalan !== undefined)
+        updateData.catatan_hafalan = body.catatan_hafalan;
+      if (body.score_hafalan !== undefined || body.detail_hafalan !== undefined) {
+        if (!existing?.input_by_hafalan || !isAdmin) {
+          updateData.input_by_hafalan = userId;
+        }
+        if (!existing?.input_at_hafalan) {
+          updateData.input_at_hafalan = now;
+        }
+      }
       if (!existing?.input_by_quran || !isAdmin) {
         updateData.input_by_quran = userId;
       }
@@ -500,7 +510,18 @@ export async function PATCH(
         else if (body.detail_lisan_arab || body.detail_arab)
           componentType = "lisan_arab";
 
-        if (componentType) {
+        if (body.detail_quran && (body.detail_hafalan || body.score_hafalan !== undefined)) {
+          await markExamComponentAsComplete({
+            jadwalId: assignment.id,
+            userId,
+            componentType: "quran",
+          });
+          await markExamComponentAsComplete({
+            jadwalId: assignment.id,
+            userId,
+            componentType: "hafalan",
+          });
+        } else if (componentType) {
           await markExamComponentAsComplete({
             jadwalId: assignment.id,
             userId,

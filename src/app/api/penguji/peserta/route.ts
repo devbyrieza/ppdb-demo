@@ -253,9 +253,12 @@ export async function GET(request: Request) {
 
         if (allowQuran && item.penguji_quran_id === userId) {
           roles.push("quran");
+          if (isDirectNonIL) {
+            roles.push("hafalan");
+          }
         }
         if (allowHafalan && (item as any).penguji_hafalan_id === userId) {
-          roles.push("hafalan");
+          if (!roles.includes("hafalan")) roles.push("hafalan");
         }
         if (allowArab && isDirectNonIL && (item as any).penguji_arab_id === userId) {
           roles.push("lisan_arab");
@@ -320,6 +323,12 @@ export async function GET(request: Request) {
         "detail_cawalsan",
         "catatan_ortu",
         "input_at_ortu",
+        "nilai_tes_hafalan",
+        "nilai_hafalan_total",
+        "score_hafalan",
+        "detail_hafalan",
+        "catatan_hafalan",
+        "input_by_hafalan",
         "input_at_hafalan",
         "input_at_arab",
         "input_by_arab",
@@ -393,8 +402,10 @@ export async function GET(request: Request) {
           score_wawancara: scoreData.score_wawancara,
           nilai_tes_quran: scoreData.nilai_tes_quran,
           score_quran: scoreData.score_quran,
-          nilai_tes_hafalan: scoreData.nilai_tes_hafalan,
-          score_hafalan: scoreData.score_hafalan,
+          nilai_tes_hafalan: scoreData.nilai_tes_hafalan || scoreData.nilai_hafalan_total || null,
+          score_hafalan: scoreData.score_hafalan || scoreData.nilai_hafalan_total || null,
+          detail_hafalan: scoreData.detail_hafalan || null,
+          catatan_hafalan: scoreData.catatan_hafalan || null,
           nilai_tes_lisan_arab: scoreData.nilai_tes_lisan_arab,
           score_arab: scoreData.score_arab,
           nilai_wawancara_ortu: scoreData.nilai_wawancara_ortu,
@@ -492,8 +503,10 @@ export async function GET(request: Request) {
           score_wawancara: scoreData.score_wawancara,
           nilai_tes_quran: scoreData.nilai_tes_quran,
           score_quran: scoreData.score_quran,
-          nilai_tes_hafalan: scoreData.nilai_tes_hafalan,
-          score_hafalan: scoreData.score_hafalan,
+          nilai_tes_hafalan: scoreData.nilai_tes_hafalan || scoreData.nilai_hafalan_total || null,
+          score_hafalan: scoreData.score_hafalan || scoreData.nilai_hafalan_total || null,
+          detail_hafalan: scoreData.detail_hafalan || null,
+          catatan_hafalan: scoreData.catatan_hafalan || null,
           nilai_tes_lisan_arab: scoreData.nilai_tes_lisan_arab,
           score_arab: scoreData.score_arab,
           nilai_wawancara_ortu: scoreData.nilai_wawancara_ortu,
@@ -567,6 +580,8 @@ export async function GET(request: Request) {
             catatan_quran: score.catatan_quran ?? null,
             catatan_ortu: score.catatan_ortu ?? null,
             detail_quran: score.detail_quran ?? null,
+            detail_hafalan: score.detail_hafalan ?? null,
+            catatan_hafalan: score.catatan_hafalan ?? null,
             detail_wawancara: score.detail_wawancara ?? null,
             detail_cawalsan: score.detail_cawalsan ?? null,
             detail_lisan_arab: score.detail_arab || null,

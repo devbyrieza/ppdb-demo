@@ -494,6 +494,22 @@ function InputNilaiContent() {
     if (!hafalanData.nama_penguji && activeName) hafalanData.nama_penguji = activeName;
     if (!lisanArabData.nama_penguji && activeName) lisanArabData.nama_penguji = activeName;
 
+    // Pre-fill hafalan in quranData if candidate is SMA/MA
+    if (isJenjangLangsungNonIL(p.jenjang)) {
+      if ((quranData.hafalan === undefined || quranData.hafalan === "") && (hafalanData.score_override != null || p.score_hafalan != null || p.nilai_tes_hafalan != null)) {
+        quranData.hafalan = hafalanData.score_override ?? p.score_hafalan ?? p.nilai_tes_hafalan ?? "";
+      }
+      if (!quranData.jumlah_juz && (hafalanData.jumlah_juz || p.detail_hafalan?.jumlah_juz)) {
+        quranData.jumlah_juz = hafalanData.jumlah_juz || p.detail_hafalan?.jumlah_juz;
+      }
+      if (!quranData.rekomendasi_hafalan && (hafalanData.rekomendasi || p.detail_hafalan?.rekomendasi)) {
+        quranData.rekomendasi_hafalan = hafalanData.rekomendasi || p.detail_hafalan?.rekomendasi;
+      }
+      if (!quranData.catatan_hafalan && (hafalanData.catatan_tambahan || p.catatan_hafalan || p.detail_hafalan?.catatan_tambahan)) {
+        quranData.catatan_hafalan = hafalanData.catatan_tambahan || p.catatan_hafalan || p.detail_hafalan?.catatan_tambahan || "";
+      }
+    }
+
     setQuranForm(quranData);
     setSantriForm(calsanData);
     setOrangTuaForm(cawalsanData);
@@ -539,10 +555,45 @@ function InputNilaiContent() {
           return;
         }
 
+        const isDirectSMA = isJenjangLangsungNonIL(p.jenjang);
+
+        if (isDirectSMA) {
+          if (quranForm.hafalan === undefined || quranForm.hafalan === "") {
+            setSaving(null);
+            await Swal.fire({
+              icon: 'warning',
+              title: 'Nilai Hafalan Wajib Diisi',
+              text: 'Santri jenjang SMA/MA memiliki seleksi hafalan Al-Qur\'an. Mohon isi nilai tes hafalan (1-100).'
+            });
+            return;
+          }
+          if (!quranForm.rekomendasi_hafalan) {
+            setSaving(null);
+            await Swal.fire({
+              icon: 'warning',
+              title: 'Rekomendasi Hafalan Wajib Dipilih',
+              text: 'Mohon pilih rekomendasi untuk tes hafalan (Diterima / Cadangan / Ditolak).'
+            });
+            return;
+          }
+          if (!quranForm.catatan_hafalan || !quranForm.catatan_hafalan.trim()) {
+            setSaving(null);
+            await Swal.fire({
+              icon: 'warning',
+              title: 'Catatan Hafalan Wajib Diisi',
+              text: 'Mohon berikan catatan evaluasi hafalan (misal: jumlah juz, kelancaran tajwid hafalan) untuk bahan rapat pleno kelulusan.'
+            });
+            return;
+          }
+        }
+
         const tajwid = parseFloat(quranForm.tajwid) || 0;
         const kelancaran = parseFloat(quranForm.kelancaran) || 0;
-        const hafalanVal = quranForm.hafalan !== undefined && quranForm.hafalan !== "" ? parseFloat(quranForm.hafalan) : null;
-        const totalScore = hafalanVal !== null ? Math.round((tajwid + kelancaran + hafalanVal) / 3) : Math.round((tajwid + kelancaran) / 2);
+        const totalScore = Math.round((tajwid + kelancaran) / 2);
+        const hafalanVal = isDirectSMA && quranForm.hafalan !== undefined && quranForm.hafalan !== ""
+          ? Math.min(100, Math.max(0, parseFloat(quranForm.hafalan)))
+          : null;
+
         body = {
           detail_quran: {
             ...quranForm,
@@ -550,12 +601,30 @@ function InputNilaiContent() {
             rekomendasi: quranForm.rekomendasi,
             tajwid,
             kelancaran,
-            hafalan: hafalanVal,
           },
           score_quran: totalScore,
           nilai_tes_quran: totalScore,
-          ...(hafalanVal !== null ? { nilai_tes_hafalan: hafalanVal, score_hafalan: hafalanVal } : {}),
-          catatan_quran: quranForm.catatan.trim() };
+          catatan_quran: quranForm.catatan.trim(),
+        };
+
+        if (isDirectSMA && hafalanVal !== null) {
+          const autoRekomHafalan = hafalanVal >= 75 ? "Diterima" : (hafalanVal >= 60 ? "Cadangan" : "Ditolak");
+          const rekomHafalan = quranForm.rekomendasi_hafalan || autoRekomHafalan;
+          body.detail_hafalan = {
+            ...hafalanForm,
+            nama_penguji: quranForm.nama_penguji || activeName,
+            score_override: hafalanVal,
+            total_score: hafalanVal,
+            score_hafalan: hafalanVal,
+            jumlah_juz: quranForm.jumlah_juz || hafalanForm.jumlah_juz || "",
+            rekomendasi: rekomHafalan,
+            catatan_tambahan: quranForm.catatan_hafalan?.trim() || hafalanForm.catatan_tambahan?.trim() || "",
+          };
+          body.score_hafalan = hafalanVal;
+          body.nilai_tes_hafalan = hafalanVal;
+          body.nilai_hafalan_total = hafalanVal;
+          body.catatan_hafalan = quranForm.catatan_hafalan?.trim() || "";
+        }
       } else if (formType === "wawancara") {
         if (!calsanForm.rekomendasi) {
           setSaving(null);
@@ -760,6 +829,16 @@ function InputNilaiContent() {
               jadwal_id: p.jadwal_id,
               component_type: componentType 
             }) }).catch(err => console.error("[saveForm] Auto-complete error:", err));
+
+          if (formType === "quran" && isJenjangLangsungNonIL(p.jenjang)) {
+            fetch("/api/penguji/jadwal/complete", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ 
+                jadwal_id: p.jadwal_id,
+                component_type: "hafalan" 
+              }) }).catch(err => console.error("[saveForm] Auto-complete hafalan error:", err));
+          }
         }
 
         // Silently refresh data without showing full-page loading spinner
@@ -809,7 +888,15 @@ function InputNilaiContent() {
     
     return formsNeeded.every(type => {
       if (type === 'quran') {
-        return !!p.input_at_quran || p.nilai_tes_quran != null || p.score_quran != null;
+        const quranDone = !!p.input_at_quran || p.nilai_tes_quran != null || p.score_quran != null;
+        if (isJenjangLangsungNonIL(p.jenjang)) {
+          const hafalanDone = !!p.input_at_hafalan || p.nilai_tes_hafalan != null || p.score_hafalan != null;
+          return quranDone && hafalanDone;
+        }
+        return quranDone;
+      }
+      if (type === 'hafalan') {
+        return !!p.input_at_hafalan || p.nilai_tes_hafalan != null || p.score_hafalan != null;
       }
       if (type === 'wawancara') {
         return !!p.input_at_santri || p.nilai_wawancara_santri != null || !!(p.detail_wawancara?.rekomendasi);
@@ -863,6 +950,7 @@ function InputNilaiContent() {
       (p.roles.includes("quran") && visibleFormTypes.includes("quran")) ||
       (p.roles.includes("wawancara") && visibleFormTypes.includes("wawancara")) ||
       (p.roles.includes("ortu") && visibleFormTypes.includes("ortu")) ||
+      (isJenjangLangsungNonIL(p.jenjang) && p.roles.includes("hafalan") && visibleFormTypes.includes("hafalan")) ||
       (isJenjangLangsungNonIL(p.jenjang) && p.roles.includes("lisan_arab") && visibleFormTypes.includes("lisan_arab"));
 
     const allowAllCandidateRoles = !hasAnyMatchingRole && isSpecificSearch;
@@ -900,7 +988,7 @@ function InputNilaiContent() {
         {p.roles.includes("quran") && (visibleFormTypes.includes("quran") || allowAllCandidateRoles) && renderQuranForm(p)}
         {p.roles.includes("wawancara") && (visibleFormTypes.includes("wawancara") || allowAllCandidateRoles) && renderSantriForm(p)}
         {p.roles.includes("ortu") && (visibleFormTypes.includes("ortu") || allowAllCandidateRoles) && renderOrangTuaForm(p)}
-        {isJenjangLangsungNonIL(p.jenjang) && p.roles.includes("hafalan") && (visibleFormTypes.includes("hafalan") || allowAllCandidateRoles) && renderHafalanForm(p)}
+        {isJenjangLangsungNonIL(p.jenjang) && p.roles.includes("hafalan") && (visibleFormTypes.includes("hafalan") || allowAllCandidateRoles) && !visibleFormTypes.includes("quran") && renderHafalanForm(p)}
         {isJenjangLangsungNonIL(p.jenjang) && p.roles.includes("lisan_arab") && (visibleFormTypes.includes("lisan_arab") || allowAllCandidateRoles) && renderArabForm(p)}
         {!isJenjangLangsungNonIL(p.jenjang) && (p.roles.includes("lisan_arab") || p.roles.includes("hafalan")) && (
           <div className="p-4 bg-amber-50 border border-amber-200 rounded-2xl text-amber-900 text-xs font-bold">
@@ -1361,7 +1449,9 @@ function InputNilaiContent() {
           <div className="p-4 sm:p-4.5 bg-emerald-100 rounded-3xl whitespace-nowrap inline-block shrink-0">
             <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-[#9D174D]" />
           </div>
-          <h3 className="text-lg sm:text-xl font-black text-[#9D174D] tracking-tight">Tes Al-Qur&apos;an</h3>
+          <h3 className="text-lg sm:text-xl font-black text-[#9D174D] tracking-tight">
+            {isJenjangLangsungNonIL(p.jenjang) ? "Tes Al-Qur'an (Bacaan & Hafalan)" : "Tes Al-Qur'an"}
+          </h3>
           {isSaved && !isEditing && (
             <span className="ml-auto px-3 py-1 sm:px-4 sm:py-1.5 bg-[#9D174D] text-white text-[9px] sm:text-[10px] font-black uppercase tracking-widest rounded-2xl sm:rounded-3xl flex items-center gap-1.5">
               <CheckCircle className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> Dinilai
@@ -1415,14 +1505,110 @@ function InputNilaiContent() {
 
             <div>
               <label className="block text-[10px] sm:text-xs font-black text-ink-700 uppercase tracking-widest mb-2 sm:mb-3">
-                Catatan / Komentar Penguji <span className="text-red-600 font-bold">* (Wajib Diisi untuk Rapat)</span>
+                Catatan / Komentar Penguji Bacaan <span className="text-red-600 font-bold">* (Wajib Diisi untuk Rapat)</span>
               </label>
-              <textarea value={quranForm.catatan || ""} onChange={(e) => setQuranForm({ ...quranForm, catatan: e.target.value })} rows={3} required className="w-full px-4 sm:px-5 py-3.5 sm:py-4 bg-white border-2 border-emerald-100 rounded-3xl sm:rounded-2xl focus:border-emerald-500 outline-none font-medium text-emerald-950 transition-all resize-none placeholder:text-ink-400" placeholder="Tuliskan catatan/komentar evaluasi Al-Qur'an santri (misal: makharijul huruf, tajwid, kelancaran, irama, adab)..." />
+              <textarea value={quranForm.catatan || ""} onChange={(e) => setQuranForm({ ...quranForm, catatan: e.target.value })} rows={3} required className="w-full px-4 sm:px-5 py-3.5 sm:py-4 bg-white border-2 border-emerald-100 rounded-3xl sm:rounded-2xl focus:border-emerald-500 outline-none font-medium text-emerald-950 transition-all resize-none placeholder:text-ink-400" placeholder="Tuliskan catatan/komentar evaluasi bacaan Al-Qur'an santri (misal: makharijul huruf, tajwid, kelancaran, irama, adab)..." />
             </div>
+
+            {/* Khusus SMA / MA: Section Penilaian Hafalan Al-Qur'an (Tahfidz) */}
+            {isJenjangLangsungNonIL(p.jenjang) && (
+              <div className="pt-6 border-t-2 border-emerald-200/80 space-y-5 sm:space-y-6">
+                <div className="flex items-center gap-2">
+                  <span className="px-3 py-1 bg-teal-100 text-teal-800 text-[10px] font-black uppercase tracking-widest rounded-xl">
+                    Khusus Jenjang {p.jenjang}
+                  </span>
+                  <h4 className="text-sm sm:text-base font-black text-teal-950 uppercase tracking-wider">
+                    Penilaian Hafalan Al-Qur&apos;an (Tahfidz)
+                  </h4>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 text-sm">
+                  <div>
+                    <label className="block text-[10px] sm:text-xs font-black text-ink-700 uppercase tracking-widest mb-2 sm:mb-3">
+                      Jumlah Juz yang Dihafal *
+                    </label>
+                    <input
+                      type="text"
+                      value={quranForm.jumlah_juz || ""}
+                      onChange={(e) => setQuranForm({ ...quranForm, jumlah_juz: e.target.value })}
+                      className="w-full px-4 sm:px-5 py-3.5 sm:py-4 bg-white border-2 border-teal-100 rounded-3xl sm:rounded-2xl focus:border-teal-500 outline-none font-black text-teal-950 transition-all placeholder:text-ink-400"
+                      placeholder="Misal: 1 Juz, 3 Juz, Juz 30"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] sm:text-xs font-black text-ink-700 uppercase tracking-widest mb-2 sm:mb-3">
+                      Nilai Hafalan (1-100) *
+                    </label>
+                    <input
+                      type="number"
+                      min="1"
+                      max="100"
+                      value={quranForm.hafalan !== undefined ? quranForm.hafalan : ""}
+                      onChange={(e) => setQuranForm({ ...quranForm, hafalan: e.target.value })}
+                      className="w-full px-4 sm:px-5 py-3.5 sm:py-4 bg-white border-2 border-teal-100 rounded-3xl sm:rounded-2xl focus:border-teal-500 outline-none font-black text-teal-950 transition-all placeholder:text-ink-400"
+                      placeholder="0-100"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] sm:text-xs font-black text-ink-700 uppercase tracking-widest mb-3 sm:mb-4">
+                    Rekomendasi Penguji Hafalan <span className="text-red-600 font-bold">* (Wajib Dipilih)</span>
+                  </label>
+                  <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
+                    {["Diterima", "Cadangan", "Ditolak"].map((opt) => (
+                      <label key={opt} className={`px-4 sm:px-5 py-3.5 sm:py-4 rounded-3xl cursor-pointer border-2 transition-all text-xs sm:text-sm font-black text-center ${quranForm.rekomendasi_hafalan === opt ? (opt === "Diterima" ? "border-teal-500 bg-teal-50 text-teal-700 shadow-2xl" : opt === "Cadangan" ? "border-gold-500 bg-gold-50 text-gold-800 shadow-2xl" : "border-red-500 bg-red-50 text-red-700 shadow-2xl") : "border-teal-50 bg-white hover:border-teal-200"}`}>
+                        <input
+                          type="radio"
+                          name={`rekom-hafalan-quran-${p.id}`}
+                          value={opt}
+                          checked={quranForm.rekomendasi_hafalan === opt}
+                          onChange={() => setQuranForm({ ...quranForm, rekomendasi_hafalan: opt })}
+                          className="hidden"
+                        />
+                        {opt}
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] sm:text-xs font-black text-ink-700 uppercase tracking-widest mb-2 sm:mb-3">
+                    Catatan / Komentar Hafalan <span className="text-red-600 font-bold">* (Wajib Diisi untuk Rapat)</span>
+                  </label>
+                  <textarea
+                    value={quranForm.catatan_hafalan || ""}
+                    onChange={(e) => setQuranForm({ ...quranForm, catatan_hafalan: e.target.value })}
+                    rows={3}
+                    required
+                    className="w-full px-4 sm:px-5 py-3.5 sm:py-4 bg-white border-2 border-teal-100 rounded-3xl sm:rounded-2xl focus:border-teal-500 outline-none font-medium text-teal-950 transition-all resize-none placeholder:text-ink-400"
+                    placeholder="Tuliskan catatan evaluasi hafalan (misal: jumlah juz, kelancaran sambung ayat, tajwid hafalan, mutqin/ziyadah)..."
+                  />
+                </div>
+              </div>
+            )}
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
               <button onClick={cancelEditing} className="w-full sm:w-auto px-5 md:px-8 py-4 bg-emerald-100 text-[#9D174D] rounded-3xl sm:rounded-2xl font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-emerald-200 transition-all active:scale-95 whitespace-nowrap inline-block shrink-0">Batal</button>
-              <button onClick={() => saveForm(p, "quran")} disabled={isInputtedByAdmin || !quranForm.tajwid || !quranForm.kelancaran || !quranForm.rekomendasi || !(quranForm.nama_penguji || activeName) || !quranForm.catatan?.trim() || saving === p.id + "quran"} className="w-full sm:w-auto px-5 md:px-8 py-4 bg-[#9D174D] text-white rounded-3xl sm:rounded-2xl font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-[#9D174D] transition-all shadow-2xl disabled:opacity-50 flex items-center justify-center gap-2 active:scale-95">
+              <button
+                onClick={() => saveForm(p, "quran")}
+                disabled={
+                  isInputtedByAdmin ||
+                  !quranForm.tajwid ||
+                  !quranForm.kelancaran ||
+                  !quranForm.rekomendasi ||
+                  !(quranForm.nama_penguji || activeName) ||
+                  !quranForm.catatan?.trim() ||
+                  (isJenjangLangsungNonIL(p.jenjang) && (
+                    quranForm.hafalan === undefined ||
+                    quranForm.hafalan === "" ||
+                    !quranForm.rekomendasi_hafalan ||
+                    !quranForm.catatan_hafalan?.trim()
+                  )) ||
+                  saving === p.id + "quran"
+                }
+                className="w-full sm:w-auto px-5 md:px-8 py-4 bg-[#9D174D] text-white rounded-3xl sm:rounded-2xl font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-[#9D174D] transition-all shadow-2xl disabled:opacity-50 flex items-center justify-center gap-2 active:scale-95"
+              >
                 {saving === p.id + "quran" ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />} Simpan
               </button>
             </div>
@@ -1442,18 +1628,31 @@ function InputNilaiContent() {
                     <div className="mt-2 space-y-1">
                       {(p.score_quran != null || p.nilai_tes_quran != null) && (
                         <p className="text-[#9D174D]/70 text-[10px] sm:text-xs font-black uppercase tracking-widest">
-                          Skor: {p.score_quran ?? p.nilai_tes_quran}
+                          Skor Bacaan: {p.score_quran ?? p.nilai_tes_quran}
                         </p>
                       )}
                       {p.detail_quran?.rekomendasi && (
                         <p className="text-[#9D174D]/70 text-[10px] sm:text-xs font-black uppercase tracking-widest">
-                          Rekomendasi: {p.detail_quran.rekomendasi}
+                          Rekomendasi Bacaan: {p.detail_quran.rekomendasi}
                         </p>
                       )}
                       {p.detail_quran?.nama_penguji && (
                         <p className="text-[#9D174D]/70 text-[10px] sm:text-xs font-black uppercase tracking-widest">
-                          Penguji Al-Qur&apos;an: {p.detail_quran.nama_penguji}
+                          Penguji: {p.detail_quran.nama_penguji}
                         </p>
+                      )}
+                      {isJenjangLangsungNonIL(p.jenjang) && (p.score_hafalan != null || p.nilai_tes_hafalan != null) && (
+                        <div className="mt-2 pt-2 border-t border-emerald-100 space-y-1">
+                          <p className="text-teal-800 text-[10px] sm:text-xs font-black uppercase tracking-widest">
+                            Skor Hafalan: {p.score_hafalan ?? p.nilai_tes_hafalan}
+                            {p.detail_hafalan?.jumlah_juz ? ` (${p.detail_hafalan.jumlah_juz})` : ""}
+                          </p>
+                          {p.detail_hafalan?.rekomendasi && (
+                            <p className="text-teal-800/80 text-[10px] sm:text-xs font-black uppercase tracking-widest">
+                              Rekomendasi Hafalan: {p.detail_hafalan.rekomendasi}
+                            </p>
+                          )}
+                        </div>
                       )}
                     </div>
                   </div>
