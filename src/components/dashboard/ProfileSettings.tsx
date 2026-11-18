@@ -7,7 +7,10 @@ import {
   Save,
   Loader2,
   CheckCircle2,
-  AlertCircle } from "lucide-react";
+  AlertCircle,
+  AlertTriangle,
+  Sparkles } from "lucide-react";
+import { generateProfessionalUsername, validateUsernameFormat } from "@/lib/utils/username";
 
 interface UserSession {
   id: string;
@@ -16,6 +19,7 @@ interface UserSession {
   role: string;
   phone?: string;
   username?: string;
+  is_default_password?: boolean;
 }
 
 export default function ProfileSettings({ user }: { user: UserSession }) {
@@ -60,12 +64,18 @@ export default function ProfileSettings({ user }: { user: UserSession }) {
       return;
     }
 
+    const usernameCheck = validateUsernameFormat(username);
+    if (!usernameCheck.isValid) {
+      setError(usernameCheck.error || "Format username tidak valid.");
+      return;
+    }
+
     setProfileLoading(true);
     try {
       const res = await fetch("/api/profile/update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ full_name: fullName, phone, username }) });
+        body: JSON.stringify({ full_name: fullName, phone, username: usernameCheck.normalized }) });
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Gagal memperbarui profil");
@@ -227,20 +237,50 @@ export default function ProfileSettings({ user }: { user: UserSession }) {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-                  Username
-                </label>
-                <input
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  placeholder="contoh.username"
-                  className="w-full px-4 py-3 bg-white border border-gray-200 rounded-2xl focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none"
-                />
-                <p className="text-[10px] text-gray-400 mt-1.5 ml-1 italic">
-                  Kosongkan jika belum memiliki username.
-                </p>
-              </div>
+              {(() => {
+                const suggested = generateProfessionalUsername(fullName);
+                const validation = validateUsernameFormat(username);
+                return (
+                  <>
+                    <div className="flex flex-wrap items-center justify-between gap-2 mb-1.5">
+                      <label className="block text-sm font-medium text-gray-700">
+                        Username
+                      </label>
+                      {suggested && suggested !== username.trim().toLowerCase() && (
+                        <button
+                          type="button"
+                          onClick={() => setUsername(suggested)}
+                          className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-primary-50 hover:bg-primary-100 text-primary-700 text-[11px] font-semibold transition-colors cursor-pointer"
+                        >
+                          <Sparkles className="w-3 h-3" />
+                          Saran Format: {suggested}
+                        </button>
+                      )}
+                    </div>
+                    <input
+                      type="text"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/\s+/g, "."))}
+                      placeholder="Contoh: imron.abdillah (opsional)"
+                      className={`w-full px-4 py-3 bg-white border rounded-2xl focus:ring-2 outline-none ${
+                        username && !validation.isValid
+                          ? "border-red-400 focus:ring-red-500/20 focus:border-red-500 text-red-700"
+                          : "border-gray-200 focus:ring-primary-500/20 focus:border-primary-500"
+                      }`}
+                    />
+                    {username && !validation.isValid ? (
+                      <p className="text-xs font-semibold text-red-600 mt-1.5 ml-1">
+                        {validation.error}
+                      </p>
+                    ) : (
+                      <p className="text-[11px] text-gray-400 mt-1.5 ml-1">
+                        Format profesional: <span className="font-semibold text-gray-500">namadepan.namabelakang</span> (huruf kecil, angka, titik/underscore, 4–30 karakter, tanpa spasi).
+                      </p>
+                    )}
+                  </>
+                );
+              })()}
+            </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Email Saat Ini

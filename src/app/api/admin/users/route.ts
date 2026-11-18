@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { hashPassword } from "@/lib/utils/password";
+import { validateUsernameFormat } from "@/lib/utils/username";
 import crypto from "crypto";
 
 async function checkAdminPrivilege() {
@@ -86,13 +87,35 @@ export async function POST(request: Request) {
       .filter((r: string) => r !== role);
     secondary_roles = [...new Set(secondary_roles)];
     const email = rawEmail?.trim()?.toLowerCase();
-    const username = rawUsername?.trim()?.toLowerCase() || null;
+    const usernameCheck = validateUsernameFormat(rawUsername);
+    if (!usernameCheck.isValid) {
+      return NextResponse.json(
+        { error: usernameCheck.error || "Format username tidak valid." },
+        { status: 400 },
+      );
+    }
+    const username = usernameCheck.normalized || null;
 
     if (!email || !password || !full_name || !role) {
       return NextResponse.json(
         { error: "Data tidak lengkap" },
         { status: 400 },
       );
+    }
+
+    if (username) {
+      const existingUsername = await prisma.profile.findFirst({
+        where: {
+          username: { equals: username, mode: "insensitive" },
+          NOT: { email },
+        },
+      });
+      if (existingUsername) {
+        return NextResponse.json(
+          { error: `Username "${username}" sudah digunakan oleh akun lain.` },
+          { status: 400 },
+        );
+      }
     }
 
     const isExaminerOrInterviewer = checkIsExaminerOrInterviewer(role, secondary_roles);
@@ -286,7 +309,31 @@ export async function PUT(request: Request) {
       data.secondary_roles = [...new Set(finalSec)];
     }
     if (phone !== undefined) data.phone = phone;
-    if (username !== undefined) data.username = username?.trim()?.toLowerCase() || null;
+    if (username !== undefined) {
+      const usernameCheck = validateUsernameFormat(username);
+      if (!usernameCheck.isValid) {
+        return NextResponse.json(
+          { error: usernameCheck.error || "Format username tidak valid." },
+          { status: 400 },
+        );
+      }
+      const cleanUsername = usernameCheck.normalized || null;
+      if (cleanUsername) {
+        const existingUsername = await prisma.profile.findFirst({
+          where: {
+            username: { equals: cleanUsername, mode: "insensitive" },
+            NOT: { id },
+          },
+        });
+        if (existingUsername) {
+          return NextResponse.json(
+            { error: `Username "${cleanUsername}" sudah digunakan oleh akun lain.` },
+            { status: 400 },
+          );
+        }
+      }
+      data.username = cleanUsername;
+    }
     if (jenis_kelamin !== undefined) data.jenis_kelamin = jenis_kelamin;
     if (google_meet_link !== undefined) data.google_meet_link = cleanFinalMeet || null;
 

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
+import { validateUsernameFormat } from "@/lib/utils/username";
 
 async function getSession() {
   const cookieStore = await cookies();
@@ -30,19 +31,19 @@ export async function POST(request: Request) {
       );
     }
 
-    if (username) {
-      if (username.length < 4) {
-        return NextResponse.json({ error: "Username minimal 4 karakter" }, { status: 400 });
-      }
-      if (!/^[a-zA-Z0-9._]+$/.test(username)) {
-        return NextResponse.json({ error: "Username hanya boleh berisi huruf, angka, titik, atau underscore" }, { status: 400 });
-      }
+    const usernameCheck = validateUsernameFormat(username);
+    if (!usernameCheck.isValid) {
+      return NextResponse.json({ error: usernameCheck.error || "Format username tidak valid" }, { status: 400 });
+    }
+    const cleanUsername = usernameCheck.normalized || null;
+
+    if (cleanUsername) {
       const existingUser = await prisma.profile.findFirst({
         where: {
-          username,
+          username: { equals: cleanUsername, mode: "insensitive" },
           id: { not: session.id } } });
       if (existingUser) {
-        return NextResponse.json({ error: "Username sudah digunakan" }, { status: 400 });
+        return NextResponse.json({ error: `Username "${cleanUsername}" sudah digunakan` }, { status: 400 });
       }
     }
 
@@ -53,7 +54,7 @@ export async function POST(request: Request) {
       data: {
         full_name,
         phone: phone || "",
-        username: username || null } });
+        username: cleanUsername } });
 
     // Update the session cookie with new info
     const newSession = {

@@ -14,10 +14,12 @@ import { Video, AlertCircle, ExternalLink,
   SearchX,
   Key,
   Eye,
-  EyeOff } from "lucide-react";
+  EyeOff,
+  Sparkles } from "lucide-react";
 import Swal from "sweetalert2";
 import { ActionDropdown } from "@/components/ui/ActionDropdown";
 import { ROLE_LABELS, UserRole } from "@/lib/access-control";
+import { generateProfessionalUsername, validateUsernameFormat } from "@/lib/utils/username";
 
 interface AdminUser {
   id: string;
@@ -106,6 +108,8 @@ export default function UserManagementPage() {
     }
   };
 
+  const [usernameTouched, setUsernameTouched] = useState(false);
+
   const [formData, setFormData] = useState({
     id: "",
     email: "",
@@ -151,10 +155,22 @@ export default function UserManagementPage() {
       google_meet_link: ""
     });
     setIsEditing(false);
+    setUsernameTouched(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validasi format username profesional (jika diisi)
+    const usernameCheck = validateUsernameFormat(formData.username);
+    if (!usernameCheck.isValid) {
+      Swal.fire({
+        title: "Format Username Tidak Valid",
+        text: usernameCheck.error || "Gunakan huruf kecil, angka, titik, atau underscore (4-30 karakter).",
+        icon: "warning",
+        confirmButtonColor: "#e11d48" });
+      return;
+    }
 
     // Client-side validation: enforce phone number & Google Meet link for examiners and interviewers (primary or secondary)
     const isExaminerOrInterviewer = 
@@ -193,7 +209,7 @@ export default function UserManagementPage() {
     const finalRole = formData.role === "penguji_hafalan" ? "penguji" : formData.role;
     let finalSecRoles = (formData.secondary_roles || []).map((r) => r === "penguji_hafalan" ? "penguji" : r).filter((r) => r !== finalRole);
     finalSecRoles = [...new Set(finalSecRoles)];
-    const submitData = { ...formData, role: finalRole, secondary_roles: finalSecRoles };
+    const submitData = { ...formData, username: usernameCheck.normalized, role: finalRole, secondary_roles: finalSecRoles };
 
     try {
       const method = isEditing ? "PUT" : "POST";
@@ -421,6 +437,7 @@ export default function UserManagementPage() {
                                   google_meet_link: user.google_meet_link || ""
                                 });
                                 setIsEditing(true);
+                                setUsernameTouched(true);
                                 setIsModalOpen(true);
                               } },
                             {
@@ -473,9 +490,18 @@ export default function UserManagementPage() {
                     required
                     type="text"
                     value={formData.full_name}
-                    onChange={(e) =>
-                      setFormData({ ...formData, full_name: e.target.value })
-                    }
+                      onChange={(e) => {
+                        const newName = e.target.value;
+                        if (!isEditing && !usernameTouched) {
+                          setFormData({
+                            ...formData,
+                            full_name: newName,
+                            username: generateProfessionalUsername(newName),
+                          });
+                        } else {
+                          setFormData({ ...formData, full_name: newName });
+                        }
+                      }}
                     className="w-full px-4 md:px-5 py-4 bg-stone-100/50 border-2 border-transparent focus:border-primary-600 focus:bg-white focus:outline-none font-bold rounded-3xl transition-all"
                   />
                 </div>
@@ -494,18 +520,58 @@ export default function UserManagementPage() {
                   />
                 </div>
                 <div className="col-span-1 md:col-span-2">
-                  <label className="block text-[10px] font-black uppercase text-stone-500 mb-3 tracking-widest">
-                    Username Khusus (Opsional, Bisa Untuk Login)
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.username}
-                    onChange={(e) =>
-                      setFormData({ ...formData, username: e.target.value })
-                    }
-                    placeholder="Contoh: ustadz_fulan"
-                    className="w-full px-4 md:px-5 py-4 bg-stone-100/50 border-2 border-transparent focus:border-primary-600 focus:bg-white focus:outline-none font-bold rounded-3xl transition-all"
-                  />
+                  {(() => {
+                    const suggested = generateProfessionalUsername(formData.full_name);
+                    const validation = validateUsernameFormat(formData.username);
+                    return (
+                      <>
+                        <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                          <label className="block text-[10px] font-black uppercase text-stone-500 tracking-widest">
+                            Username Khusus (Opsional, Bisa Untuk Login)
+                          </label>
+                          {suggested && suggested !== formData.username.trim().toLowerCase() && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setUsernameTouched(true);
+                                setFormData({ ...formData, username: suggested });
+                              }}
+                              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-50 hover:bg-primary-100 text-primary-700 text-[10px] font-black tracking-wide transition-colors cursor-pointer"
+                            >
+                              <Sparkles className="w-3 h-3" />
+                              Saran Format: {suggested}
+                            </button>
+                          )}
+                        </div>
+                        <input
+                          type="text"
+                          value={formData.username}
+                          onChange={(e) => {
+                            setUsernameTouched(true);
+                            setFormData({
+                              ...formData,
+                              username: e.target.value.toLowerCase().replace(/\s+/g, "."),
+                            });
+                          }}
+                          placeholder="Contoh: imron.abdillah"
+                          className={`w-full px-4 md:px-5 py-4 bg-stone-100/50 border-2 focus:bg-white focus:outline-none font-bold rounded-3xl transition-all ${
+                            formData.username && !validation.isValid
+                              ? "border-red-400 focus:border-red-500 text-red-700"
+                              : "border-transparent focus:border-primary-600"
+                          }`}
+                        />
+                        {formData.username && !validation.isValid ? (
+                          <p className="text-[11px] font-bold text-red-600 mt-2 ml-2">
+                            {validation.error}
+                          </p>
+                        ) : (
+                          <p className="text-[11px] text-stone-400 font-medium mt-2 ml-2">
+                            Format profesional: <span className="font-bold text-stone-500">namadepan.namabelakang</span> (huruf kecil, angka, titik/underscore, 4–30 karakter, tanpa spasi).
+                          </p>
+                        )}
+                      </>
+                    );
+                  })()}
                 </div>
                 <div>
                   <label className="block text-[10px] font-black uppercase text-stone-500 mb-3 tracking-widest">
