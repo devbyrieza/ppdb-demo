@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { getAdminWhereClause } from "@/lib/utils/admin";
 import { getCache, setCache } from "@/lib/redis";
+import { getAvailableJenjang, normalizeJenjang } from "@/lib/utils/jenjang";
 
 async function checkAdmin() {
   const cookieStore = await cookies();
@@ -56,11 +57,14 @@ export async function GET(request: Request) {
     );
 
     // === REDIS CACHE CHECK ===
-    const cacheKey = `admin_stats_${where.tahun_ajaran_id || "all"}`;
-    const cachedStats = await getCache<any>(cacheKey);
-    if (cachedStats) {
-      console.log("⚡ [API Stats] Mengembalikan data dari Redis Cache!");
-      return NextResponse.json(cachedStats);
+    const isFresh = searchParams.get("fresh") === "true";
+    const cacheKey = `admin_stats_v2_${where.tahun_ajaran_id || "all"}`;
+    if (!isFresh) {
+      const cachedStats = await getCache<any>(cacheKey);
+      if (cachedStats) {
+        console.log("⚡ [API Stats] Mengembalikan data dari Redis Cache!");
+        return NextResponse.json(cachedStats);
+      }
     }
     // =========================
 
@@ -97,13 +101,8 @@ export async function GET(request: Request) {
       const status = p.status_pendaftaran || "draft";
       statusCounts[status] = (statusCounts[status] || 0) + 1;
 
-      // Normalize Jenjang: Handle common variations
-      let jRaw = (p.jenjang || "UNKNOWN").toUpperCase().trim();
-      let jenjang = "MTS"; // Default fallback
-      if (jRaw.includes("MTS")) jenjang = "MTS";
-      else if (jRaw.includes("IL")) jenjang = "IL";
-      else if (jRaw.includes("SMA") || jRaw === "MA" || jRaw.includes("MA")) jenjang = "SMA";
-      else jenjang = "MTS";
+      // Normalize Jenjang sesuai standar institusi (MTs/IL/MA, MTs/IL/SMA, atau SMP IT/IL)
+      const jenjang = normalizeJenjang(p.jenjang);
 
       if (!jenjangCounts[jenjang]) {
         jenjangCounts[jenjang] = {
@@ -157,14 +156,10 @@ export async function GET(request: Request) {
         genderCounts["Belum Diisi"]++;
       }
 
-      // Bayar Pendaftaran Logic: verified or higher
-      const verifiedIndex = 3; // 'verified' index in status list below
-      const statusList = [
-        "draft",
-        "awaiting_payment",
-        "payment_verification",
-        "verified",
+      // Status lists yang identik antara total kartu atas & breakdown per jenjang
+      const BAYAR_STATUSES = [
         "paid",
+        "verified",
         "data_completed",
         "docs_uploaded",
         "docs_verified",
@@ -177,9 +172,33 @@ export async function GET(request: Request) {
         "enrolled",
         "enrolled_full",
       ];
-      const currentIndex = statusList.indexOf(status);
+      const DATA_LENGKAP_STATUSES = [
+        "data_completed",
+        "docs_uploaded",
+        "docs_verified",
+        "selection",
+        "scheduled",
+        "testing",
+        "tested",
+        "announced",
+        "accepted",
+        "enrolled",
+        "enrolled_full",
+      ];
+      const BERKAS_LENGKAP_STATUSES = [
+        "docs_verified",
+        "selection",
+        "scheduled",
+        "testing",
+        "tested",
+        "announced",
+        "accepted",
+        "enrolled",
+        "enrolled_full",
+      ];
 
-      if (currentIndex >= verifiedIndex || status === "paid") {
+      // Bayar Pendaftaran Logic
+      if (BAYAR_STATUSES.includes(status)) {
         j.bayar_total++;
         if (isL) j.bayar_putra++;
         if (isP) j.bayar_putri++;
@@ -206,17 +225,15 @@ export async function GET(request: Request) {
         if (isP) j.ditolak_putri++;
       }
 
-      // Data Lengkap Logic: payment_verification or higher
-      const dataVerifiedIndex = 2; // 'payment_verification' index
-      if (currentIndex >= dataVerifiedIndex && status !== "rejected") {
+      // Data Lengkap Logic (sinkron dengan sudah_isi_data)
+      if (DATA_LENGKAP_STATUSES.includes(status)) {
         j.data_total++;
         if (isL) j.data_putra++;
         if (isP) j.data_putri++;
       }
 
-      // Berkas Lengkap Logic: docs_verified or higher
-      const docsVerifiedIndex = 8; // 'docs_verified' index
-      if (currentIndex >= docsVerifiedIndex && status !== "rejected" && status !== "selection") {
+      // Berkas Lengkap Logic (sinkron dengan berkas_lengkap)
+      if (BERKAS_LENGKAP_STATUSES.includes(status)) {
         j.berkas_total++;
         if (isL) j.berkas_putra++;
         if (isP) j.berkas_putri++;
@@ -312,7 +329,7 @@ export async function GET(request: Request) {
       waiting_payment: statusCounts.waiting_payment || 0,
       waiting_docs: statusCounts.data_completed || 0,
 
-      stats_per_jenjang: ["MTS", "IL", "SMA"].map((jenjang) => {
+      stats_per_jenjang: getAvailableJenjang().map((jenjang) => {
         const data = jenjangCounts[jenjang] || {
           total: 0,
           putra: 0,
@@ -326,52 +343,66 @@ export async function GET(request: Request) {
           cadangan: 0,
           cadangan_putra: 0,
           cadangan_putri: 0,
+          ditolak: 0,
+          ditolak_putra: 0,
+          ditolak_putri: 0,
+          berkas_total: 0,
+          berkas_putra: 0,
+          berkas_putri: 0,
           ulang_total: 0,
           ulang_putra: 0,
           ulang_putri: 0,
+          ulang_sedang_total: 0,
+          ulang_sedang_putra: 0,
+          ulang_sedang_putri: 0,
+          ulang_selesai_total: 0,
+          ulang_selesai_putra: 0,
+          ulang_selesai_putri: 0,
           seleksi_total: 0,
           seleksi_putra: 0,
           seleksi_putri: 0,
           data_total: 0,
           data_putra: 0,
           data_putri: 0 };
-        const q = QUOTAS[jenjang];
+        const q = QUOTAS[jenjang.toUpperCase()] || { putra: 0, putri: 0, total: 0 };
         return {
           jenjang,
           kuota_putra: q.putra,
           kuota_putri: q.putri,
           kuota_total: q.total,
-          pendaftar: data.total,
-          pendaftar_putra: data.putra,
-          pendaftar_putri: data.putri,
-          bayar_total: data.bayar_total,
-          bayar_putra: data.bayar_putra,
-          bayar_putri: data.bayar_putri,
+          pendaftar: data.total || 0,
+          pendaftar_putra: data.putra || 0,
+          pendaftar_putri: data.putri || 0,
+          bayar_total: data.bayar_total || 0,
+          bayar_putra: data.bayar_putra || 0,
+          bayar_putri: data.bayar_putri || 0,
           data_total: data.data_total || 0,
           data_putra: data.data_putra || 0,
           data_putri: data.data_putri || 0,
-          diterima: data.accepted,
-          diterima_putra: data.accepted_putra,
-          diterima_putri: data.accepted_putri,
-          cadangan: data.cadangan,
-          cadangan_putra: data.cadangan_putra,
-          cadangan_putri: data.cadangan_putri,
-          ditolak: data.ditolak,
-          ditolak_putra: data.ditolak_putra,
-          ditolak_putri: data.ditolak_putri,
-          berkas_lengkap: data.berkas_total,
-          berkas_putra: data.berkas_putra,
-          berkas_putri: data.berkas_putri,
-          sedang_seleksi: data.seleksi_total,
-          seleksi_putra: data.seleksi_putra,
-          seleksi_putri: data.seleksi_putri,
-          daftar_ulang: data.ulang_total,
-          ulang_putra: data.ulang_putra,
-          ulang_putri: data.ulang_putri,
-          ulang_sedang_putra: data.ulang_sedang_putra,
-          ulang_sedang_putri: data.ulang_sedang_putri,
-          ulang_selesai_putra: data.ulang_selesai_putra,
-          ulang_selesai_putri: data.ulang_selesai_putri };
+          diterima: data.accepted || 0,
+          diterima_putra: data.accepted_putra || 0,
+          diterima_putri: data.accepted_putri || 0,
+          cadangan: data.cadangan || 0,
+          cadangan_putra: data.cadangan_putra || 0,
+          cadangan_putri: data.cadangan_putri || 0,
+          ditolak: data.ditolak || 0,
+          ditolak_putra: data.ditolak_putra || 0,
+          ditolak_putri: data.ditolak_putri || 0,
+          berkas_lengkap: data.berkas_total || 0,
+          berkas_putra: data.berkas_putra || 0,
+          berkas_putri: data.berkas_putri || 0,
+          sedang_seleksi: data.seleksi_total || 0,
+          seleksi_putra: data.seleksi_putra || 0,
+          seleksi_putri: data.seleksi_putri || 0,
+          daftar_ulang: data.ulang_total || 0,
+          ulang_putra: data.ulang_putra || 0,
+          ulang_putri: data.ulang_putri || 0,
+          ulang_sedang: data.ulang_sedang_total || 0,
+          ulang_sedang_putra: data.ulang_sedang_putra || 0,
+          ulang_sedang_putri: data.ulang_sedang_putri || 0,
+          ulang_selesai: data.ulang_selesai_total || 0,
+          ulang_selesai_putra: data.ulang_selesai_putra || 0,
+          ulang_selesai_putri: data.ulang_selesai_putri || 0 };
       }),
 
       stats_per_provinsi: Object.entries(provinsiCounts)
