@@ -4,7 +4,7 @@ import { prisma } from "../prisma";
  * Mencari penguji dengan beban kerja paling ringan dari sekumpulan sesi yang tersedia di waktu yang sama.
  *
  * @param startTime Waktu mulai ujian
- * @param category Kategori ujian (QURAN, W_SANTRI, W_ORTU, LISAN_ARAB)
+ * @param category Kategori ujian (QURAN, W_SANTRI, W_ORTU)
  * @param tahunAjaranId ID Tahun Ajaran aktif
  * @returns Object berisi examiner_id dan session_id pemenang, atau null jika tidak ada pilihan
  */
@@ -84,7 +84,13 @@ export async function getLeastLoadedExaminerFromPool(
       end_time: true,
       creator: {
         select: {
-          jenis_kelamin: true } } } });
+          role: true,
+          secondary_roles: true,
+          jenis_kelamin: true,
+        },
+      },
+    },
+  });
 
   if (sessions.length === 0) return null;
 
@@ -98,20 +104,20 @@ export async function getLeastLoadedExaminerFromPool(
     },
     select: {
       penguji_quran_id: true,
+      penguji_hafalan_id: true,
       penguji_santri_id: true,
       penguji_ortu_id: true,
       penguji_arab_id: true,
-      exam_session: { select: { created_by: true } },
     },
   });
 
   const busyExaminerIds = new Set<string>();
   busyExaminers.forEach((b) => {
     if (b.penguji_quran_id) busyExaminerIds.add(b.penguji_quran_id);
+    if (b.penguji_hafalan_id) busyExaminerIds.add(b.penguji_hafalan_id);
     if (b.penguji_santri_id) busyExaminerIds.add(b.penguji_santri_id);
     if (b.penguji_ortu_id) busyExaminerIds.add(b.penguji_ortu_id);
     if (b.penguji_arab_id) busyExaminerIds.add(b.penguji_arab_id);
-    if (b.exam_session?.created_by) busyExaminerIds.add(b.exam_session.created_by);
   });
 
   // 3. Filter sesi yang masih memiliki kuota, memiliki pencipta (penguji), bebas bentrokan jadwal, dan mencocokkan jenis kelamin (jika disediakan)
@@ -120,8 +126,11 @@ export async function getLeastLoadedExaminerFromPool(
 
   const availableSessions = sessions.filter((s) => {
     if (s.booked_count >= s.quota || !s.created_by) return false;
-    // Exclude if examiner is already occupied at this time
-    if (busyExaminerIds.has(s.created_by)) return false;
+    
+    // Admin creator menandakan sesi umum/pool, bukan penguji 1-on-1
+    const isCreatorAdmin = s.creator?.role === "admin" || s.creator?.role === "admin_super";
+    // Exclude if examiner is already occupied at this time (kecuali sesi yang dibuat admin)
+    if (!isCreatorAdmin && busyExaminerIds.has(s.created_by)) return false;
     
     // Jika gender pendaftar disediakan, filter berdasarkan gender penguji
     if (pendaftarGender) {

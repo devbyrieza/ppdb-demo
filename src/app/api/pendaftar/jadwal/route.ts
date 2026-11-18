@@ -12,11 +12,20 @@ import { getLeastLoadedExaminerFromPool } from "@/lib/utils/assignment";
 
 function getExamCategory(title: string): string {
   const t = (title || "").toLowerCase();
-  if (t.includes("quran") || t.includes("qur'an") || t.includes("bacaan") || t.includes("hafalan")) return "QURAN";
+  if (t.includes("hafalan")) return "HAFALAN";
+  if (t.includes("quran") || t.includes("qur'an") || t.includes("bacaan")) return "QURAN";
   if (t.includes("arab") || t.includes("lisan")) return "LISAN_ARAB";
-  if (t.includes("calsan") || t.includes("santri")) return "W_SANTRI";
-  if (t.includes("cawalsan") || t.includes("ortu") || t.includes("orang tua"))
+  // W_ORTU must be checked BEFORE W_SANTRI because titles often contain "Orangtua/Wali Santri", "Calon Wali Santri", "Cawalsan", etc.
+  if (
+    t.includes("cawalsan") ||
+    t.includes("ortu") ||
+    t.includes("orang tua") ||
+    t.includes("orangtua") ||
+    t.includes("wali")
+  ) {
     return "W_ORTU";
+  }
+  if (t.includes("calsan") || t.includes("santri")) return "W_SANTRI";
   return "OTHER";
 }
 
@@ -31,12 +40,42 @@ async function getSession() {
   if (!sessionCookie) return null;
   try {
     return JSON.parse(sessionCookie.value);
+
   } catch {
     return null;
   }
 }
 
 // GET: Fetch existing schedule for pendaftar
+// JADWAL H+1 s/d H+14 (Maksimal 2 Pekan):
+// 1. Pendaftar hanya dapat memilih jadwal mulai BESOK (H+1). Jadwal hari ini tidak dapat dipilih.
+// 2. Pendaftar hanya dapat memilih jadwal maksimal 14 hari (2 pekan) ke depan.
+function getEarliestSelectableDate(): Date {
+  const WIB_OFFSET_MS = 7 * 60 * 60 * 1000;
+  const nowWIB = new Date(Date.now() + WIB_OFFSET_MS);
+  return new Date(
+    Date.UTC(
+      nowWIB.getUTCFullYear(),
+      nowWIB.getUTCMonth(),
+      nowWIB.getUTCDate() + 1,
+      0, 0, 0, 0
+    ) - WIB_OFFSET_MS,
+  );
+}
+
+function getLatestSelectableDate(): Date {
+  const WIB_OFFSET_MS = 7 * 60 * 60 * 1000;
+  const nowWIB = new Date(Date.now() + WIB_OFFSET_MS);
+  return new Date(
+    Date.UTC(
+      nowWIB.getUTCFullYear(),
+      nowWIB.getUTCMonth(),
+      nowWIB.getUTCDate() + 14,
+      23, 59, 59, 999
+    ) - WIB_OFFSET_MS,
+  );
+}
+
 export async function GET() {
   const session = await getSession();
   if (!session || session.role !== "pendaftar") {
@@ -81,7 +120,7 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
-    const { exam_session_id } = body;
+    const { exam_session_id, target_category } = body;
 
     if (!exam_session_id) {
       return NextResponse.json(
@@ -106,12 +145,29 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Kuota penuh" }, { status: 400 });
     }
 
-    // 2. Check for categorical duplication (Quran, Santri, Ortu)
+    // JADWAL H+1 s/d H+14 (Maksimal 2 Pekan):
+    // 1. Paling awal: Mulai besok (H+1). Jadwal hari ini tidak dapat dipilih.
+    if (new Date(examSession.start_time).getTime() < getEarliestSelectableDate().getTime()) {
+      return NextResponse.json(
+        { error: "Jadwal untuk hari ini tidak dapat dipilih. Silakan pilih jadwal mulai besok (H+1)." },
+        { status: 400 },
+      );
+    }
+
+    // 2. Paling akhir: Maksimal 14 hari (2 pekan) ke depan.
+    if (new Date(examSession.start_time).getTime() > getLatestSelectableDate().getTime()) {
+      return NextResponse.json(
+        { error: "Jadwal yang dipilih melebihi batas 14 hari (2 pekan) ke depan." },
+        { status: 400 },
+      );
+    }
+
+    // 2. Check for categorical duplication (Quran, Hafalan, Arab, Santri, Ortu)
     const existingBookings = await prisma.jadwalUjian.findMany({
       where: { pendaftar_id: session.id },
       include: { exam_session: true } });
 
-    const currentCategory = getExamCategory(examSession.title || "");
+    const currentCategory = target_category || getExamCategory(examSession.title || "");
 
     // Check if any existing booking has the same category
     const duplicateCategory = existingBookings.find((booking) => {
@@ -122,21 +178,54 @@ export async function POST(request: Request) {
     if (duplicateCategory) {
       const categoryLabel =
         currentCategory === "HAFALAN"
-            ? "Tes Hafalan Al-Qur'an"
+          ? "Tes Hafalan Al-Qur'an"
           : currentCategory === "LISAN_ARAB"
-            ? "Tes Lisan Bahasa Arab"
+          ? "Tes Lisan Bahasa Arab"
           : currentCategory === "QURAN"
-          ? "Ujian Al-Quran"
+          ? "Tes Bacaan Al-Qur'an"
           : currentCategory === "W_SANTRI"
-            ? "Seleksi Wawancara Calon Santri"
-            : currentCategory === "W_ORTU"
-              ? "Wawancara Orang Tua"
-              : "Ujian ini";
+          ? "Seleksi Wawancara Calon Santri"
+          : currentCategory === "W_ORTU"
+          ? "Wawancara Calon Orang Tua/Wali"
+          : "Ujian ini";
 
       return NextResponse.json(
         {
           error: `Anda sudah memiliki jadwal untuk ${categoryLabel}.` },
         { status: 400 },
+      );
+    }
+
+    // 2b. Guard: Mencegah pendaftar memilih dua ujian berbeda pada rentang waktu yang sama (bentrok waktu santri)
+    const sStart = new Date(examSession.start_time).getTime();
+    const sEnd = new Date(examSession.end_time).getTime();
+    const overlappingCandidateBooking = existingBookings.find((b) => {
+      if (!b.exam_session) return false;
+      const bStart = new Date(b.exam_session.start_time).getTime();
+      const bEnd = new Date(b.exam_session.end_time).getTime();
+      return sStart < bEnd && sEnd > bStart;
+    });
+
+    if (overlappingCandidateBooking) {
+      const bookedCat = getExamCategory(overlappingCandidateBooking.exam_session?.title || "");
+      const bookedLabel =
+        bookedCat === "HAFALAN"
+          ? "Tes Hafalan Al-Qur'an"
+          : bookedCat === "LISAN_ARAB"
+          ? "Tes Lisan Bahasa Arab"
+          : bookedCat === "QURAN"
+          ? "Tes Bacaan Al-Qur'an"
+          : bookedCat === "W_SANTRI"
+          ? "Seleksi Wawancara Calon Santri"
+          : bookedCat === "W_ORTU"
+          ? "Wawancara Calon Orang Tua/Wali"
+          : overlappingCandidateBooking.exam_session?.title || "Ujian lain";
+
+      return NextResponse.json(
+        {
+          error: `Jadwal bentrok: Anda sudah memiliki jadwal untuk ${bookedLabel} pada rentang waktu yang sama. Silakan pilih jam atau hari lain agar jadwal tidak tumpang tindih.`
+        },
+        { status: 400 }
       );
     }
 
@@ -148,6 +237,36 @@ export async function POST(request: Request) {
         { error: "Data pendaftar tidak ditemukan" },
         { status: 404 },
       );
+    }
+
+    // Guard: Tes Hafalan dan Bahasa Arab HANYA boleh dipilih oleh pendaftar jenjang SMA/MA langsung (bukan MTs/SMP/IL)
+    const jenjangStr = pendaftar.jenjang || "";
+    const cleanJenjang = jenjangStr.trim().toUpperCase();
+    const isDirectSMAorMA = !(
+      cleanJenjang === "IL" ||
+      cleanJenjang.includes("IL ") ||
+      cleanJenjang.includes(" IL") ||
+      cleanJenjang.includes("(IL)") ||
+      cleanJenjang.includes("I'DAD") ||
+      cleanJenjang.includes("IDAD") ||
+      cleanJenjang.includes("IDADIYAH") ||
+      cleanJenjang.includes("SMP") ||
+      cleanJenjang.includes("MTS") ||
+      cleanJenjang.includes("TSANAWIYAH")
+    ) && (
+      cleanJenjang.includes("SMA") ||
+      cleanJenjang.includes("MA") ||
+      cleanJenjang.includes("ALIYAH") ||
+      cleanJenjang.includes("SLTA")
+    );
+
+    if (currentCategory === "LISAN_ARAB" || currentCategory === "HAFALAN") {
+      if (!isDirectSMAorMA) {
+        return NextResponse.json(
+          { error: "Tes Hafalan Al-Qur'an dan Tes Lisan Bahasa Arab khusus diperuntukkan bagi pendaftar jenjang SMA/MA langsung." },
+          { status: 400 }
+        );
+      }
     }
 
     // RUN LOAD BALANCING (outside transaction to avoid connection pool deadlock)
@@ -177,24 +296,64 @@ export async function POST(request: Request) {
       if (finalExaminerId) {
         const interviewer = await tx.profile.findUnique({
           where: { id: finalExaminerId },
-          select: { google_meet_link: true, full_name: true, phone: true } });
+          select: { role: true, secondary_roles: true, google_meet_link: true, full_name: true, phone: true } });
+
+        const isCreatorAdmin = interviewer?.role === "admin" || interviewer?.role === "admin_super";
+
+        // Atomic Dual-Role Conflict Guard: hanya cek untuk penguji riil (bukan admin pembuat batch sesi)
+        if (!isCreatorAdmin) {
+          const conflictingBooking = await tx.jadwalUjian.findFirst({
+            where: {
+              OR: [
+                { penguji_quran_id: finalExaminerId },
+                { penguji_hafalan_id: finalExaminerId },
+                { penguji_santri_id: finalExaminerId },
+                { penguji_ortu_id: finalExaminerId },
+                { penguji_arab_id: finalExaminerId },
+              ],
+              exam_session: {
+                start_time: { lt: examSession.end_time },
+                end_time: { gt: examSession.start_time },
+              },
+            },
+          });
+
+          if (conflictingBooking) {
+            throw new Error("Penguji ini baru saja terisi untuk sesi ujian lain di waktu yang sama. Silakan pilih sesi atau waktu lainnya.");
+          }
+        }
 
         if (currentCategory === "LISAN_ARAB") {
-            pengujiFields = {
-              penguji_arab_id: finalExaminerId,
-              zoom_link_arab: interviewer?.google_meet_link || null };
-          } else if (currentCategory === "QURAN" || currentCategory === "HAFALAN") {
-            pengujiFields = {
-              penguji_quran_id: finalExaminerId,
-              google_meet_link: interviewer?.google_meet_link || null };
-          } else if (currentCategory === "W_SANTRI") {
+          pengujiFields = {
+            penguji_arab_id: finalExaminerId,
+            zoom_link_arab: interviewer?.google_meet_link || null
+          };
+        } else if (currentCategory === "HAFALAN") {
+          pengujiFields = {
+            penguji_hafalan_id: finalExaminerId,
+            penguji_quran_id: finalExaminerId,
+            zoom_link_hafalan: interviewer?.google_meet_link || null,
+            google_meet_link: interviewer?.google_meet_link || null
+          };
+        } else if (currentCategory === "QURAN") {
+          pengujiFields = {
+            penguji_quran_id: finalExaminerId,
+            penguji_hafalan_id: finalExaminerId,
+            zoom_link_quran: interviewer?.google_meet_link || null,
+            google_meet_link: interviewer?.google_meet_link || null
+          };
+        } else if (currentCategory === "W_SANTRI") {
           pengujiFields = {
             penguji_santri_id: finalExaminerId,
-            google_meet_link: interviewer?.google_meet_link || null };
+            zoom_link_santri: interviewer?.google_meet_link || null,
+            google_meet_link: interviewer?.google_meet_link || null
+          };
         } else if (currentCategory === "W_ORTU") {
           pengujiFields = {
             penguji_ortu_id: finalExaminerId,
-            google_meet_link: interviewer?.google_meet_link || null };
+            zoom_link_ortu: interviewer?.google_meet_link || null,
+            google_meet_link: interviewer?.google_meet_link || null
+          };
         }
       }
 
@@ -212,7 +371,9 @@ export async function POST(request: Request) {
           tempat_ortu: examSession.location || "Pesantren",
           status_santri: "scheduled",
           status_quran: "scheduled",
+          status_hafalan: "scheduled",
           status_ortu: "scheduled",
+          status_arab: "scheduled",
           status_online_test: "pending",
           ...pengujiFields } });
 
@@ -254,7 +415,7 @@ export async function POST(request: Request) {
           hour: "2-digit",
           minute: "2-digit",
           timeZone: "Asia/Jakarta" }) + " WIB";
-      const lokasi = examSession.location || "Pesantren SPMB";
+      const lokasi = examSession.location || "Pesantren Al Imam Al Islami";
       const jenisUjian = sanitizeTitle(
         examSession.title || "Seleksi Santri Baru",
       );
@@ -278,29 +439,21 @@ export async function POST(request: Request) {
         pengujiFields.penguji_quran_id ||
         pengujiFields.penguji_santri_id ||
         pengujiFields.penguji_ortu_id ||
+        pengujiFields.penguji_arab_id ||
         examSession.created_by;
       if (finalId) {
         const interviewer = await prisma.profile.findUnique({
           where: { id: finalId },
-          select: { full_name: true, phone: true, google_meet_link: true } });
+          select: { id: true, full_name: true, phone: true, jenis_kelamin: true, google_meet_link: true } });
 
         if (interviewer && interviewer.phone) {
-          // Generate Magic Link for this interviewer
-          const redirectPathPath = `/dashboard/penguji/input-nilai?search=${encodeURIComponent(pendaftarInfo.nama_lengkap)}`;
-          const token = generateMagicToken(
-            finalId,
-            "penguji",
-            interviewer.full_name,
-            72, // 3 days expiry
-            redirectPathPath,
-          );
           const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://spmb.pesantren-alimam.com";
-          const magicLink = `${appUrl}/api/auth/magic?token=${token}`;
-
-          // Use manual tinyurl if available, otherwise generate automatic
-          const { generateShortLink } = await import("@/lib/utils/magic-link");
-          
-          const shortUrlKonfirmasi = (await generateShortLink(magicLink));
+          const { generateExaminerInputLink } = await import("@/lib/utils/magic-link");
+          const shortUrlKonfirmasi = generateExaminerInputLink(
+            interviewer.id,
+            pendaftarInfo.nomor_pendaftaran,
+            appUrl
+          );
 
           const intMessage = buildMessageKonfirmasiJadwalInterviewer(
             interviewer.full_name,
@@ -310,6 +463,7 @@ export async function POST(request: Request) {
             interviewer.google_meet_link || lokasi,
             jenisUjian,
             shortUrlKonfirmasi,
+            interviewer.jenis_kelamin
           );
 
           // Delay 1 menit untuk menghindari burst pesan berturut-turut
@@ -328,7 +482,7 @@ export async function POST(request: Request) {
 
     }
 
-    return NextResponse.json({ success: true, data: jadwal });
+    return NextResponse.json({ success: true, data: result.jadwal });
   } catch (error: any) {
     console.error("POST pendaftar/jadwal error:", error);
     return NextResponse.json(
@@ -337,3 +491,4 @@ export async function POST(request: Request) {
     );
   }
 }
+

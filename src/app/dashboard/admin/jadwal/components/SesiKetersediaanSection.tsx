@@ -42,6 +42,7 @@ interface ExamSession {
   _count?: {
     bookings: number;
   };
+  is_busy_elsewhere?: boolean;
 }
 
 interface Examiner {
@@ -86,6 +87,7 @@ export default function SesiKetersediaanSection({
     location: "Online",
     notes: "",
     creator_id: "",
+    duration: 30,
   });
 
   // Edit Slot Form
@@ -137,6 +139,7 @@ export default function SesiKetersediaanSection({
     location: "Online",
     notes: "",
     creator_id: "",
+    duration: 30,
   });
 
   // Body scroll lock effect for modals
@@ -154,19 +157,29 @@ export default function SesiKetersediaanSection({
   }, [isSlotModalOpen, isBulkModalOpen, isEditModalOpen, isBulkEditModalOpen]);
 
   // Duration Helper
-  const getDurationFromTitle = (title: string) => {
+  const getDurationFromTitle = (title: string, customDuration?: number) => {
+    if (customDuration && customDuration > 0) return customDuration;
     const t = (title || "").toLowerCase();
+    // Khusus Wawancara Calon Orang Tua / Wali: Default 60 Menit
+    if (
+      t.includes("orang tua") ||
+      t.includes("ortu") ||
+      t.includes("wali") ||
+      t.includes("cawalsan")
+    ) {
+      return 60;
+    }
+    // Tes Al-Qur'an, Wawancara Calon Santri, Tes Lisan Bahasa Arab, Hafalan: Default 30 Menit
     if (t.includes("quran") || t.includes("qur'an")) return 30;
     if (t.includes("santri") || t.includes("calsan")) return 30;
-    if (t.includes("orang tua") || t.includes("ortu") || t.includes("wali")) return 30;
     if (t.includes("hafalan")) return 30;
-    if (t.includes("arab")) return 30;
-    return 60;
+    if (t.includes("arab") || t.includes("lisan")) return 30;
+    return 30;
   };
 
-  const calculateEndTime = (startTime: string, title: string) => {
+  const calculateEndTime = (startTime: string, title: string, customDuration?: number) => {
     if (!startTime) return "";
-    const duration = getDurationFromTitle(title);
+    const duration = getDurationFromTitle(title, customDuration);
     const [h, m] = startTime.split(":").map(Number);
     const date = new Date();
     date.setHours(h, m + duration, 0, 0);
@@ -574,10 +587,25 @@ export default function SesiKetersediaanSection({
     });
   }, [slots, searchQuery, statusFilter]);
 
+  // Pagination for Mobile & Performance Optimization
+  const [currentPage, setCurrentPage] = useState(1);
+  const SLOTS_PER_PAGE = 24;
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, statusFilter, filterCreatorId]);
+
+  const totalPages = Math.ceil(filteredSlots.length / SLOTS_PER_PAGE) || 1;
+  const paginatedSlots = useMemo(() => {
+    const start = (currentPage - 1) * SLOTS_PER_PAGE;
+    return filteredSlots.slice(start, start + SLOTS_PER_PAGE);
+  }, [filteredSlots, currentPage]);
+
   // Format Date & Time
   const formatSlotDate = (dateStr: string) => {
     const d = new Date(dateStr);
     return d.toLocaleDateString("id-ID", {
+        timeZone: "Asia/Jakarta",
       weekday: "short",
       day: "numeric",
       month: "short",
@@ -588,6 +616,7 @@ export default function SesiKetersediaanSection({
   const formatSlotTime = (dateStr: string) => {
     const d = new Date(dateStr);
     return d.toLocaleTimeString("id-ID", {
+        timeZone: "Asia/Jakarta",
       hour: "2-digit",
       minute: "2-digit",
     });
@@ -597,15 +626,15 @@ export default function SesiKetersediaanSection({
     <div className="space-y-6" id="sesi-ketersediaan-root">
       {/* Top Filter & Actions Card */}
       <div className="bg-white rounded-2xl p-5 md:p-6 border border-stone-100 shadow-sm space-y-4">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div className="flex flex-col sm:flex-row sm:items-center gap-3">
             {/* Filter Penguji */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 w-full sm:w-auto">
               <Filter className="w-4 h-4 text-stone-400 shrink-0" />
               <select
                 value={filterCreatorId}
                 onChange={(e) => setFilterCreatorId(e.target.value)}
-                className="bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-xs font-bold text-stone-800 outline-none focus:ring-2 focus:ring-primary-500/20"
+                className="w-full sm:w-auto bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-xs font-bold text-stone-800 outline-none focus:ring-2 focus:ring-primary-500/20"
               >
                 <option value="">Semua Ustadz Penguji</option>
                 {examiners.map((u) => (
@@ -617,11 +646,11 @@ export default function SesiKetersediaanSection({
             </div>
 
             {/* Filter Status */}
-            <div className="flex items-center gap-1.5 p-1 bg-stone-100 rounded-xl">
+            <div className="flex items-center gap-1.5 p-1 bg-stone-100 rounded-xl overflow-x-auto custom-scrollbar touch-pan-x">
               <button
                 type="button"
                 onClick={() => setStatusFilter("all")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                className={`flex-1 sm:flex-initial px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
                   statusFilter === "all"
                     ? "bg-white text-primary-700 shadow-xs font-black"
                     : "text-stone-600 hover:text-stone-900"
@@ -632,7 +661,7 @@ export default function SesiKetersediaanSection({
               <button
                 type="button"
                 onClick={() => setStatusFilter("available")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                className={`flex-1 sm:flex-initial px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
                   statusFilter === "available"
                     ? "bg-white text-emerald-700 shadow-xs font-black"
                     : "text-stone-600 hover:text-stone-900"
@@ -643,7 +672,7 @@ export default function SesiKetersediaanSection({
               <button
                 type="button"
                 onClick={() => setStatusFilter("booked")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                className={`flex-1 sm:flex-initial px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${
                   statusFilter === "booked"
                     ? "bg-white text-amber-700 shadow-xs font-black"
                     : "text-stone-600 hover:text-stone-900"
@@ -655,14 +684,14 @@ export default function SesiKetersediaanSection({
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center gap-2.5 flex-wrap">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-wrap items-center gap-2.5 w-full lg:w-auto">
             {!isSelectMode ? (
               <>
                 {slots.length > 0 && (
                   <button
                     type="button"
                     onClick={() => setIsSelectMode(true)}
-                    className="flex items-center gap-2 px-3.5 py-2 bg-stone-50 hover:bg-stone-100 text-stone-700 border border-stone-200 rounded-xl font-bold text-xs transition-all whitespace-nowrap"
+                    className="flex items-center justify-center gap-2 px-3.5 py-2 bg-stone-50 hover:bg-stone-100 text-stone-700 border border-stone-200 rounded-xl font-bold text-xs transition-all whitespace-nowrap w-full sm:w-auto"
                   >
                     <CheckSquare className="w-3.5 h-3.5" /> Pilih / Hapus Massal
                   </button>
@@ -675,7 +704,7 @@ export default function SesiKetersediaanSection({
                     }
                     setIsBulkModalOpen(true);
                   }}
-                  className="flex items-center gap-2 px-4 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 rounded-xl font-black text-xs transition-all whitespace-nowrap"
+                  className="flex items-center justify-center gap-2 px-4 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 rounded-xl font-black text-xs transition-all whitespace-nowrap w-full sm:w-auto"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   Buat Massal (Batch)
@@ -688,14 +717,14 @@ export default function SesiKetersediaanSection({
                     }
                     setIsSlotModalOpen(true);
                   }}
-                  className="flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-black text-xs shadow-md shadow-primary-600/20 transition-all active:scale-95 whitespace-nowrap"
+                  className="flex items-center justify-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-black text-xs shadow-md transition-all active:scale-95 whitespace-nowrap w-full sm:w-auto"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   Buat Sesi Tunggal
                 </button>
               </>
             ) : (
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto">
                 <button
                   type="button"
                   onClick={toggleSelectAll}
@@ -790,7 +819,7 @@ export default function SesiKetersediaanSection({
                 if (filterCreatorId) setSlotForm((p) => ({ ...p, creator_id: filterCreatorId }));
                 setIsSlotModalOpen(true);
               }}
-              className="px-4 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-black text-xs shadow-md shadow-primary-600/20 transition-all"
+              className="px-4 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-black text-xs shadow-md transition-all"
             >
               + Buat Sesi Tunggal
             </button>
@@ -798,8 +827,10 @@ export default function SesiKetersediaanSection({
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredSlots.map((slot) => {
-            const isBooked = (slot._count?.bookings || 0) >= slot.quota;
+          {paginatedSlots.map((slot) => {
+            const isDirectBooked = (slot._count?.bookings || 0) >= slot.quota;
+            const isBusyElsewhere = Boolean(slot.is_busy_elsewhere);
+            const isBooked = isDirectBooked || isBusyElsewhere;
             const isSelected = selectedSlotIds.has(slot.id);
 
             return (
@@ -819,9 +850,13 @@ export default function SesiKetersediaanSection({
                 {/* Select checkbox overlay */}
                 {isSelectMode && (
                   <div className="absolute top-4 right-4 z-10">
-                    {isBooked ? (
+                    {isDirectBooked ? (
                       <span className="text-[10px] bg-stone-100 text-stone-400 px-2 py-1 rounded-md font-bold">
                         Terisi
+                      </span>
+                    ) : isBusyElsewhere ? (
+                      <span className="text-[10px] bg-purple-100 text-purple-700 px-2 py-1 rounded-md font-bold">
+                        Terkunci
                       </span>
                     ) : isSelected ? (
                       <CheckSquare className="w-5 h-5 text-primary-600" />
@@ -836,12 +871,18 @@ export default function SesiKetersediaanSection({
                   <div className="pr-8">
                     <span
                       className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-wide mb-1.5 ${
-                        isBooked
+                        isDirectBooked
                           ? "bg-amber-100 text-amber-800"
+                          : isBusyElsewhere
+                          ? "bg-purple-100 text-purple-800"
                           : "bg-emerald-100 text-emerald-800"
                       }`}
                     >
-                      {isBooked ? "Sudah Diplot / Terisi" : "Tersedia (Siap Diplot)"}
+                      {isDirectBooked
+                        ? "Sudah Diplot / Terisi"
+                        : isBusyElsewhere
+                        ? "Terkunci (Penguji Terisi di Sesi Lain)"
+                        : "Tersedia (Siap Diplot)"}
                     </span>
                     <h4 className="font-black text-stone-900 text-sm leading-snug">
                       {slot.title || "Sesi Ujian"}
@@ -889,7 +930,9 @@ export default function SesiKetersediaanSection({
                   {!isSelectMode && (
                     <div className="flex items-center justify-between pt-2 border-t border-stone-100">
                       <span className="text-[11px] font-bold text-stone-400">
-                        Kuota: {slot._count?.bookings || 0} / {slot.quota} Santri
+                        {isBusyElsewhere
+                          ? "Terkunci (Bentrok Role Ganda)"
+                          : `Kuota: ${slot._count?.bookings || 0} / ${slot.quota} Santri`}
                       </span>
                       <div className="flex items-center gap-1.5">
                         <button
@@ -923,17 +966,59 @@ export default function SesiKetersediaanSection({
         </div>
       )}
 
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-stone-100 shadow-xs">
+          <p className="text-xs font-bold text-stone-500 text-center sm:text-left">
+            Menampilkan {(currentPage - 1) * SLOTS_PER_PAGE + 1} -{" "}
+            {Math.min(currentPage * SLOTS_PER_PAGE, filteredSlots.length)} dari{" "}
+            {filteredSlots.length} sesi
+          </p>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              disabled={currentPage === 1}
+              onClick={() => {
+                setCurrentPage((p) => Math.max(1, p - 1));
+                document
+                  .getElementById("sesi-ketersediaan-root")
+                  ?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="px-3.5 py-1.5 bg-stone-100 hover:bg-stone-200 disabled:opacity-40 text-stone-700 rounded-xl text-xs font-bold transition-all"
+            >
+              ← Sebelumnya
+            </button>
+            <span className="text-xs font-black text-stone-700 px-2">
+              {currentPage} / {totalPages}
+            </span>
+            <button
+              type="button"
+              disabled={currentPage >= totalPages}
+              onClick={() => {
+                setCurrentPage((p) => Math.min(totalPages, p + 1));
+                document
+                  .getElementById("sesi-ketersediaan-root")
+                  ?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="px-3.5 py-1.5 bg-stone-100 hover:bg-stone-200 disabled:opacity-40 text-stone-700 rounded-xl text-xs font-bold transition-all"
+            >
+              Selanjutnya →
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* MODAL: BUAT SESI TUNGGAL */}
       {isSlotModalOpen && (
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs overflow-y-auto overscroll-contain custom-scrollbar"
+          className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs overflow-y-auto overscroll-contain custom-scrollbar"
         >
-          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg p-6 md:p-8 space-y-6 animate-in fade-in zoom-in-95 duration-200">
-            <div className="flex items-center justify-between pb-4 border-b border-stone-100">
+          <div className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl w-full max-w-lg max-h-[calc(100dvh-1.5rem)] sm:max-h-[calc(100dvh-3rem)] flex flex-col overflow-hidden my-auto animate-in fade-in zoom-in-95 duration-200">
+            <div className="flex items-center justify-between p-4 sm:p-6 border-b border-stone-100 shrink-0">
               <div>
-                <h3 className="text-xl font-black text-stone-900 tracking-tight">
+                <h3 className="text-lg sm:text-xl font-black text-stone-900 tracking-tight">
                   Buat Sesi Ketersediaan Tunggal
                 </h3>
                 <p className="text-xs text-stone-500 font-bold mt-0.5">
@@ -948,7 +1033,7 @@ export default function SesiKetersediaanSection({
               </button>
             </div>
 
-            <form onSubmit={handleCreateSlot} className="space-y-4">
+            <form onSubmit={handleCreateSlot} className="p-4 sm:p-6 space-y-4 overflow-y-auto custom-scrollbar flex-1 min-h-0 touch-pan-y">
               {/* Ustadz Penguji */}
               <div>
                 <label className="block text-xs font-black text-stone-700 mb-1.5">
@@ -1007,9 +1092,14 @@ export default function SesiKetersediaanSection({
 
               {/* Waktu Mulai & Selesai */}
               <div>
-                  <label className="block text-xs font-black text-stone-700 mb-1.5">
-                    Slot Jam (WIB)
-                  </label>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="block text-xs font-black text-stone-700">
+                      Slot Jam (WIB)
+                    </label>
+                    <span className="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
+                      Format 24 Jam (Contoh: 14.00 = jam 2 siang)
+                    </span>
+                  </div>
                   <div className="space-y-2">
                     {slotForm.slots.map((s, idx) => (
                       <div key={idx} className="flex items-center gap-2">
@@ -1019,7 +1109,7 @@ export default function SesiKetersediaanSection({
                           value={s.start}
                           onChange={(e) => {
                             const newStart = e.target.value;
-                            const newEnd = calculateEndTime(newStart, slotForm.title);
+                            const newEnd = calculateEndTime(newStart, slotForm.title, slotForm.duration);
                             const newSlots = [...slotForm.slots];
                             newSlots[idx] = { start: newStart, end: newEnd };
                             setSlotForm({ ...slotForm, slots: newSlots });
@@ -1059,7 +1149,7 @@ export default function SesiKetersediaanSection({
                     onClick={() => {
                       const lastSlot = slotForm.slots[slotForm.slots.length - 1];
                       const nextStart = lastSlot ? lastSlot.end : "08:00";
-                      const nextEnd = calculateEndTime(nextStart, slotForm.title);
+                      const nextEnd = calculateEndTime(nextStart, slotForm.title, slotForm.duration);
                       setSlotForm({
                         ...slotForm,
                         slots: [...slotForm.slots, { start: nextStart, end: nextEnd }]
@@ -1099,7 +1189,7 @@ export default function SesiKetersediaanSection({
                 />
               </div>
 
-              <div className="flex items-center gap-3 pt-4 border-t border-stone-100">
+              <div className="flex items-center gap-3 pt-4 border-t border-stone-100 shrink-0 bg-white">
                 <button
                   type="button"
                   onClick={() => setIsSlotModalOpen(false)}
@@ -1110,7 +1200,7 @@ export default function SesiKetersediaanSection({
                 <button
                   type="submit"
                   disabled={submittingSlot}
-                  className="flex-1 py-3 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 text-white font-black rounded-xl text-xs shadow-lg shadow-primary-600/20 transition-all flex items-center justify-center gap-2"
+                  className="flex-1 py-3 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 text-white font-black rounded-xl text-xs shadow-lg transition-all flex items-center justify-center gap-2"
                 >
                   {submittingSlot ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -1130,12 +1220,12 @@ export default function SesiKetersediaanSection({
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs overflow-y-auto overscroll-contain custom-scrollbar"
+          className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs overflow-y-auto overscroll-contain custom-scrollbar"
         >
-          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-            <div className="p-6 border-b border-stone-100 flex items-center justify-between shrink-0">
+          <div className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl w-full max-w-2xl max-h-[calc(100dvh-1.5rem)] sm:max-h-[calc(100dvh-3rem)] flex flex-col overflow-hidden my-auto animate-in fade-in zoom-in-95 duration-200">
+            <div className="p-4 sm:p-6 border-b border-stone-100 flex items-center justify-between shrink-0">
               <div>
-                <h3 className="text-xl font-black text-stone-900 tracking-tight">
+                <h3 className="text-lg sm:text-xl font-black text-stone-900 tracking-tight">
                   Batch Generator Sesi Ketersediaan
                 </h3>
                 <p className="text-xs text-stone-500 font-bold mt-0.5">
@@ -1152,7 +1242,7 @@ export default function SesiKetersediaanSection({
 
             <form
               onSubmit={handleCreateBulk}
-                className="p-6 space-y-5 overflow-y-auto custom-scrollbar flex-1 min-h-0"
+              className="p-4 sm:p-6 space-y-5 overflow-y-auto custom-scrollbar flex-1 min-h-0 touch-pan-y"
             >
               {/* Ustadz Penguji */}
               <div>
@@ -1301,7 +1391,7 @@ export default function SesiKetersediaanSection({
                           value={slot.start}
                           onChange={(e) => {
                             const newStart = e.target.value;
-                            const newEnd = calculateEndTime(newStart, bulkForm.title);
+                            const newEnd = calculateEndTime(newStart, bulkForm.title, bulkForm.duration);
                             const current = [...(bulkForm.daySlots[activeDay] || [])];
                             current[idx] = { start: newStart, end: newEnd };
                             setBulkForm({
@@ -1349,7 +1439,7 @@ export default function SesiKetersediaanSection({
                         const current = bulkForm.daySlots[activeDay] || [];
                         const lastSlot = current[current.length - 1];
                         const nextStart = lastSlot ? lastSlot.end : "08:00";
-                        const nextEnd = calculateEndTime(nextStart, bulkForm.title);
+                        const nextEnd = calculateEndTime(nextStart, bulkForm.title, bulkForm.duration);
                         setBulkForm({
                           ...bulkForm,
                           daySlots: {
@@ -1366,7 +1456,7 @@ export default function SesiKetersediaanSection({
                 </div>
               )}
 
-              <div className="flex items-center gap-3 pt-4 border-t border-stone-100">
+              <div className="flex items-center gap-3 pt-4 border-t border-stone-100 shrink-0 bg-white">
                 <button
                   type="button"
                   onClick={() => setIsBulkModalOpen(false)}
@@ -1377,7 +1467,7 @@ export default function SesiKetersediaanSection({
                 <button
                   type="submit"
                   disabled={submittingBulk}
-                  className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-black rounded-xl text-xs shadow-lg shadow-emerald-600/20 transition-all flex items-center justify-center gap-2"
+                  className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-black rounded-xl text-xs shadow-lg transition-all flex items-center justify-center gap-2"
                 >
                   {submittingBulk ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -1397,12 +1487,12 @@ export default function SesiKetersediaanSection({
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs overflow-y-auto overscroll-contain custom-scrollbar"
+          className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs overflow-y-auto overscroll-contain custom-scrollbar"
         >
-          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md p-6 md:p-8 space-y-5 animate-in fade-in zoom-in-95 duration-200">
-            <div className="flex items-center justify-between pb-4 border-b border-stone-100">
+          <div className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl w-full max-w-md max-h-[calc(100dvh-1.5rem)] sm:max-h-[calc(100dvh-3rem)] flex flex-col overflow-hidden my-auto animate-in fade-in zoom-in-95 duration-200">
+            <div className="flex items-center justify-between p-4 sm:p-6 border-b border-stone-100 shrink-0">
               <div>
-                <h3 className="text-xl font-black text-stone-900 tracking-tight">Edit Sesi</h3>
+                <h3 className="text-lg sm:text-xl font-black text-stone-900 tracking-tight">Edit Sesi</h3>
                 <p className="text-xs text-stone-500 font-bold mt-0.5">
                   {editingSlot.title || "Sesi Ujian"}
                 </p>
@@ -1415,7 +1505,7 @@ export default function SesiKetersediaanSection({
               </button>
             </div>
 
-            <form onSubmit={handleEditSlot} className="space-y-4">
+            <form onSubmit={handleEditSlot} className="p-4 sm:p-6 space-y-4 overflow-y-auto custom-scrollbar flex-1 min-h-0 touch-pan-y">
               <div>
                 <label className="block text-xs font-black text-stone-700 mb-1.5">
                   Judul Sesi
@@ -1480,7 +1570,7 @@ export default function SesiKetersediaanSection({
                 />
               </div>
 
-              <div className="flex items-center gap-3 pt-4 border-t border-stone-100">
+              <div className="flex items-center gap-3 pt-4 border-t border-stone-100 shrink-0 bg-white">
                 <button
                   type="button"
                   onClick={() => setIsEditModalOpen(false)}
@@ -1491,7 +1581,7 @@ export default function SesiKetersediaanSection({
                 <button
                   type="submit"
                   disabled={submittingEdit}
-                  className="flex-1 py-3 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 text-white font-black rounded-xl text-xs shadow-lg shadow-primary-600/20 transition-all flex items-center justify-center gap-2"
+                  className="flex-1 py-3 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 text-white font-black rounded-xl text-xs shadow-lg transition-all flex items-center justify-center gap-2"
                 >
                   {submittingEdit ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -1511,13 +1601,13 @@ export default function SesiKetersediaanSection({
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs overflow-y-auto overscroll-contain custom-scrollbar"
+          className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs overflow-y-auto overscroll-contain custom-scrollbar"
         >
-          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md p-6 md:p-8 space-y-5 animate-in fade-in zoom-in-95 duration-200">
-            <div className="flex items-center justify-between pb-4 border-b border-stone-100">
+          <div className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl w-full max-w-md max-h-[calc(100dvh-1.5rem)] sm:max-h-[calc(100dvh-3rem)] flex flex-col overflow-hidden my-auto animate-in fade-in zoom-in-95 duration-200">
+            <div className="flex items-center justify-between p-4 sm:p-6 border-b border-stone-100 shrink-0">
               <div>
-                <h3 className="text-xl font-black text-stone-900 tracking-tight">
-                  Edit ${selectedSlotIds.size} Sesi Sekaligus
+                <h3 className="text-lg sm:text-xl font-black text-stone-900 tracking-tight">
+                  Edit {selectedSlotIds.size} Sesi Sekaligus
                 </h3>
                 <p className="text-xs text-stone-500 font-bold mt-0.5">
                   Centang bagian yang ingin Anda ubah secara massal
@@ -1531,7 +1621,7 @@ export default function SesiKetersediaanSection({
               </button>
             </div>
 
-            <form onSubmit={handleBulkEdit} className="space-y-4">
+            <form onSubmit={handleBulkEdit} className="p-4 sm:p-6 space-y-4 overflow-y-auto custom-scrollbar flex-1 min-h-0 touch-pan-y">
               {/* Checkbox Ubah Jam */}
               <div className="space-y-2">
                 <label className="flex items-center gap-2 text-xs font-black text-stone-800 cursor-pointer">
@@ -1623,7 +1713,7 @@ export default function SesiKetersediaanSection({
                 )}
               </div>
 
-              <div className="flex items-center gap-3 pt-4 border-t border-stone-100">
+              <div className="flex items-center gap-3 pt-4 border-t border-stone-100 shrink-0 bg-white">
                 <button
                   type="button"
                   onClick={() => setIsBulkEditModalOpen(false)}

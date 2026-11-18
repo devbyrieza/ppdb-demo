@@ -13,6 +13,24 @@ async function getSession() {
   }
 }
 
+function getExamCategory(title: string): string {
+  const t = (title || "").toLowerCase();
+  if (t.includes("hafalan")) return "HAFALAN";
+  if (t.includes("quran") || t.includes("qur'an") || t.includes("bacaan")) return "QURAN";
+  if (t.includes("arab") || t.includes("lisan")) return "LISAN_ARAB";
+  if (
+    t.includes("cawalsan") ||
+    t.includes("ortu") ||
+    t.includes("orang tua") ||
+    t.includes("orangtua") ||
+    t.includes("wali")
+  ) {
+    return "W_ORTU";
+  }
+  if (t.includes("calsan") || t.includes("santri")) return "W_SANTRI";
+  return "OTHER";
+}
+
 export async function POST(request: Request) {
   const session = await getSession();
   if (!session) {
@@ -91,14 +109,14 @@ export async function POST(request: Request) {
     }
 
     // Conflict Guard: fetch existing sessions for this creator within the date range
-    const existingSessions = await prisma.examSession.findMany({
+    const existingSessions: Array<{ start_time: Date; end_time: Date; title: string | null }> = await prisma.examSession.findMany({
       where: {
         created_by: creatorId,
         is_active: true,
         start_time: { gte: new Date(`${startDate}T00:00:00+07:00`) },
         end_time: { lte: new Date(`${endDate}T23:59:59+07:00`) },
       },
-      select: { start_time: true, end_time: true },
+      select: { start_time: true, end_time: true, title: true },
     });
     let skippedCount = 0;
 
@@ -128,16 +146,30 @@ export async function POST(request: Request) {
           const sTime = sStart.getTime();
           const eTime = sEnd.getTime();
 
+          // Hanya tolak jika ada sesi yang jamnya tumpang tindih DAN jenis/kategori ujiannya SAMA (duplikasi sesi identik).
+          // Jika kategori berbeda (misal Wawancara Santri vs Tes Lisan Bahasa Arab), DIPERBOLEHKAN dibuat
+          // agar penguji multi-role bisa standby di jam yang sama (sesi lainnya otomatis terkunci begitu salah satu dibooking).
           const isOverlapping = existingSessions.some((ex) => {
             const exStart = new Date(ex.start_time).getTime();
             const exEnd = new Date(ex.end_time).getTime();
-            return sTime < exEnd && eTime > exStart;
+            const timeOverlaps = sTime < exEnd && eTime > exStart;
+            if (!timeOverlaps) return false;
+
+            const exCat = getExamCategory(ex.title || "");
+            const newCat = getExamCategory(finalTitle || "");
+            return exCat === newCat || (ex.title && finalTitle && ex.title.trim().toLowerCase() === finalTitle.trim().toLowerCase());
           });
 
           if (isOverlapping) {
             skippedCount++;
             continue;
           }
+
+          existingSessions.push({
+            start_time: sStart,
+            end_time: sEnd,
+            title: finalTitle,
+          });
 
           sessionsToCreate.push({
             title: finalTitle,

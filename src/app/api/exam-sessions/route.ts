@@ -16,7 +16,54 @@ async function getSession() {
   }
 }
 
+function getExamCategory(title: string): string {
+  const t = (title || "").toLowerCase();
+  if (t.includes("hafalan")) return "HAFALAN";
+  if (t.includes("quran") || t.includes("qur'an") || t.includes("bacaan")) return "QURAN";
+  if (t.includes("arab") || t.includes("lisan")) return "LISAN_ARAB";
+  if (
+    t.includes("cawalsan") ||
+    t.includes("ortu") ||
+    t.includes("orang tua") ||
+    t.includes("orangtua") ||
+    t.includes("wali")
+  ) {
+    return "W_ORTU";
+  }
+  if (t.includes("calsan") || t.includes("santri")) return "W_SANTRI";
+  return "OTHER";
+}
+
 // GET: List exam sessions
+// JADWAL H+1 s/d H+14 (Maksimal 2 Pekan):
+// 1. Pendaftar hanya dapat memilih jadwal mulai BESOK (H+1). Jadwal hari ini tidak dapat dipilih.
+// 2. Pendaftar hanya dapat memilih jadwal maksimal 14 hari (2 pekan) ke depan.
+function getEarliestSelectableDate(): Date {
+  const WIB_OFFSET_MS = 7 * 60 * 60 * 1000;
+  const nowWIB = new Date(Date.now() + WIB_OFFSET_MS);
+  return new Date(
+    Date.UTC(
+      nowWIB.getUTCFullYear(),
+      nowWIB.getUTCMonth(),
+      nowWIB.getUTCDate() + 1,
+      0, 0, 0, 0
+    ) - WIB_OFFSET_MS,
+  );
+}
+
+function getLatestSelectableDate(): Date {
+  const WIB_OFFSET_MS = 7 * 60 * 60 * 1000;
+  const nowWIB = new Date(Date.now() + WIB_OFFSET_MS);
+  return new Date(
+    Date.UTC(
+      nowWIB.getUTCFullYear(),
+      nowWIB.getUTCMonth(),
+      nowWIB.getUTCDate() + 14,
+      23, 59, 59, 999
+    ) - WIB_OFFSET_MS,
+  );
+}
+
 export async function GET(request: Request) {
   const session = await getSession();
   if (!session) {
@@ -65,7 +112,10 @@ export async function GET(request: Request) {
     // Pendaftar Restriction: Must be active + future
     if (isPendaftar) {
       whereClause.is_active = true;
-      whereClause.start_time = { gte: new Date() };
+      whereClause.start_time = {
+        gte: getEarliestSelectableDate(),
+        lte: getLatestSelectableDate(),
+      };
 
       // Pendaftar cannot see other filters
       if (creator_id) {
@@ -116,6 +166,58 @@ export async function GET(request: Request) {
       });
 
       return NextResponse.json({ data: cleanSessions });
+    }
+
+    // Untuk Admin / Penguji: Enrich dengan status apakah penguji sedang sibuk di sesi lain
+    if (sessions.length > 0) {
+      const minStartTime = sessions[0].start_time;
+      const maxEndTime = sessions[sessions.length - 1].end_time;
+
+      const activeBookings = await prisma.jadwalUjian.findMany({
+        where: {
+          exam_session: {
+            start_time: { gte: minStartTime, lte: maxEndTime },
+          },
+        },
+        select: {
+          penguji_quran_id: true,
+          penguji_hafalan_id: true,
+          penguji_santri_id: true,
+          penguji_ortu_id: true,
+          penguji_arab_id: true,
+          exam_session: {
+            select: { id: true, start_time: true, end_time: true },
+          },
+        },
+      });
+
+      const enrichedSessions = sessions.map((s) => {
+        if (!s.created_by) return { ...s, is_busy_elsewhere: false };
+        const sStart = new Date(s.start_time).getTime();
+        const sEnd = new Date(s.end_time).getTime();
+
+        const isBusyElsewhere = activeBookings.some((b) => {
+          if (b.exam_session?.id === s.id) return false;
+          const isThisExaminer =
+            b.penguji_quran_id === s.created_by ||
+            b.penguji_hafalan_id === s.created_by ||
+            b.penguji_santri_id === s.created_by ||
+            b.penguji_ortu_id === s.created_by ||
+            b.penguji_arab_id === s.created_by;
+
+          if (!isThisExaminer || !b.exam_session) return false;
+          const bStart = new Date(b.exam_session.start_time).getTime();
+          const bEnd = new Date(b.exam_session.end_time).getTime();
+          return sStart < bEnd && sEnd > bStart;
+        });
+
+        return {
+          ...s,
+          is_busy_elsewhere: isBusyElsewhere,
+        };
+      });
+
+      return NextResponse.json({ data: enrichedSessions });
     }
 
     return NextResponse.json({ data: sessions });
@@ -204,11 +306,11 @@ export async function POST(request: Request) {
       return new Date(`${dt}+07:00`);
     };
 
-    // Conflict Guard: Check overlapping session for the same creator
+    // Conflict Guard: Check duplicate session for the same creator & category
     const startWIB = parseWIB(start_time);
     const endWIB = parseWIB(end_time);
 
-    const overlapping = await prisma.examSession.findFirst({
+    const overlapping = await prisma.examSession.findMany({
       where: {
         created_by: finalCreatorId,
         is_active: true,
@@ -238,13 +340,22 @@ export async function POST(request: Request) {
       }
     });
 
-    if (overlapping) {
-      const creatorName = overlapping.creator?.full_name || "Penguji ini";
-      const startStr = new Date(overlapping.start_time).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Jakarta" });
-      const endStr = new Date(overlapping.end_time).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Jakarta" });
+    // Hanya tolak jika jam tumpang tindih DAN jenis/kategori ujiannya SAMA (duplikasi sesi identik)
+    // Jika jenis ujian berbeda (misal Wawancara Santri vs Tes Lisan Bahasa Arab), DIPERBOLEHKAN
+    // agar penguji multi-role bisa standby di jam yang sama (sesi lainnya otomatis terkunci begitu salah satu dibooking).
+    const duplicateSameCategory = overlapping.find((ex) => {
+      const exCat = getExamCategory(ex.title || "");
+      const newCat = getExamCategory(finalTitle || "");
+      return exCat === newCat || (ex.title && finalTitle && ex.title.trim().toLowerCase() === finalTitle.trim().toLowerCase());
+    });
+
+    if (duplicateSameCategory) {
+      const creatorName = duplicateSameCategory.creator?.full_name || "Penguji ini";
+      const startStr = new Date(duplicateSameCategory.start_time).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Jakarta" });
+      const endStr = new Date(duplicateSameCategory.end_time).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Jakarta" });
       return NextResponse.json(
         { 
-          error: `Bentrokan Jadwal: ${creatorName} sudah memiliki sesi aktif pada jam tersebut (${overlapping.title || "Sesi Ujian"}: ${startStr} - ${endStr} WIB). Mohon gunakan jam lain agar tidak bentrok.` 
+          error: `Duplikasi Sesi: ${creatorName} sudah memiliki sesi aktif untuk jenis ujian yang sama pada jam tersebut (${duplicateSameCategory.title || "Sesi Ujian"}: ${startStr} - ${endStr} WIB).` 
         },
         { status: 400 }
       );
