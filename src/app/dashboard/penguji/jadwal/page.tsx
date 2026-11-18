@@ -380,6 +380,35 @@ export default function JadwalPengujiPage() {
     notes: "",
     duration: 30 });
 
+  // Body & HTML scroll lock for modals to prevent background scrolling
+  useEffect(() => {
+    const isAnyModalOpen =
+      isSlotModalOpen ||
+      isBulkModalOpen ||
+      isEditModalOpen ||
+      isBulkEditModalOpen ||
+      rescheduleModalOpen ||
+      isDetailModalOpen;
+    if (isAnyModalOpen) {
+      document.documentElement.style.overflow = "hidden";
+      document.body.style.overflow = "hidden";
+    } else {
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
+    };
+  }, [
+    isSlotModalOpen,
+    isBulkModalOpen,
+    isEditModalOpen,
+    isBulkEditModalOpen,
+    rescheduleModalOpen,
+    isDetailModalOpen,
+  ]);
+
   // Grouping Logic
   const displaySlots = useMemo(() => {
     const groups: Record<string, any> = {};
@@ -2652,30 +2681,43 @@ export default function JadwalPengujiPage() {
 
       {/* MODAL BULK CREATE SLOT */}
       {isBulkModalOpen && (
-        <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog" className="fixed inset-0 z-[60] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-6 sm:p-8 bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
-          <div className="bg-white rounded-[40px] shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col animate-in zoom-in-95 duration-300 border border-white/20">
+        <div
+          onWheel={(e) => e.stopPropagation()}
+          data-modal="true"
+          aria-modal="true"
+          role="dialog"
+          className="fixed inset-0 z-[60] flex items-center justify-center p-3 sm:p-6 bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300 overflow-hidden overscroll-none"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white rounded-[32px] sm:rounded-[40px] shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col animate-in zoom-in-95 duration-300 border border-white/20 overflow-hidden"
+          >
             {/* Header */}
-            <div className="p-5 md:p-8 border-b border-stone-100 flex justify-between items-center bg-white/95 backdrop-blur rounded-t-[40px] shrink-0 sticky top-0 z-30 shadow-xs">
+            <div className="p-5 md:p-6 border-b border-stone-100 flex justify-between items-center bg-white/95 backdrop-blur shrink-0">
               <div>
-                <h3 className="text-2xl font-black text-primary-950 tracking-tight leading-tight">
+                <h3 className="text-xl sm:text-2xl font-black text-primary-950 tracking-tight leading-tight">
                   Buat Jadwal Massal
                 </h3>
-                <p className="text-xs text-ink-300 font-bold uppercase tracking-widest mt-2">
+                <p className="text-xs text-ink-300 font-bold uppercase tracking-widest mt-1">
                   Bulk Availability Scheduler
                 </p>
               </div>
               <button
                 onClick={() => setIsBulkModalOpen(false)}
-                className="p-3 hover:bg-stone-200 rounded-full transition-colors text-stone-400"
+                className="p-2 hover:bg-stone-100 rounded-full transition-colors text-stone-400 hover:text-stone-700"
               >
-                <XCircle className="w-8 h-8" />
+                <XCircle className="w-7 h-7" />
               </button>
             </div>
 
             <form
               onSubmit={handleCreateBulk}
-              className="p-6 md:p-10 space-y-8 overflow-y-auto overscroll-contain custom-scrollbar flex-1"
+              className="flex flex-col flex-1 min-h-0 overflow-hidden"
             >
+              <div
+                className="p-5 md:p-8 space-y-6 overflow-y-auto overscroll-contain custom-scrollbar flex-1 min-h-0 touch-pan-y"
+                style={{ overscrollBehavior: 'contain' }}
+              >
               {/* Select Penguji (Admin Super / Admin Only) */}
               {["admin_super", "admin"].includes(activeRole) && (
                 <div className="space-y-3">
@@ -2986,18 +3028,29 @@ export default function JadwalPengujiPage() {
                 </div>
               </div>
 
-              <button
-                type="submit"
-                disabled={submittingBulk}
-                className="w-full py-5 bg-primary-600 hover:bg-primary-700 text-white font-black rounded-[32px] transition-all shadow-md flex items-center justify-center gap-3 active:scale-95 disabled:opacity-50 text-lg tracking-tight"
-              >
-                {submittingBulk ? (
-                  <Loader2 className="w-6 h-6 animate-spin" />
-                ) : (
-                  <Save className="w-6 h-6" />
-                )}
-                BUAT JADWAL RUTIN SEKARANG
-              </button>
+              </div>
+
+              <div className="p-4 sm:p-6 border-t border-stone-100 bg-white shrink-0 flex items-center gap-3 shadow-[0_-4px_12px_rgba(0,0,0,0.03)]">
+                <button
+                  type="button"
+                  onClick={() => setIsBulkModalOpen(false)}
+                  className="py-3.5 px-6 bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold rounded-2xl transition-all text-sm"
+                >
+                  Batal
+                </button>
+                <button
+                  type="submit"
+                  disabled={submittingBulk}
+                  className="flex-1 py-3.5 bg-primary-600 hover:bg-primary-700 text-white font-black rounded-2xl transition-all shadow-md flex items-center justify-center gap-2 active:scale-95 disabled:opacity-50 text-sm tracking-tight"
+                >
+                  {submittingBulk ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                    <Save className="w-5 h-5" />
+                  )}
+                  BUAT JADWAL RUTIN SEKARANG
+                </button>
+              </div>
             </form>
           </div>
         </div>

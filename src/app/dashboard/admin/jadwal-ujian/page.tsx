@@ -218,15 +218,18 @@ export default function JadwalUjianPage() {
     logs: [],
   });
 
-  // Body scroll lock for modals
+  // Body & HTML scroll lock for modals
   useEffect(() => {
     if (scheduleModalOpen || showBroadcastModal || sendingProgress.active) {
+      document.documentElement.style.overflow = "hidden";
       document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "unset";
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
     }
     return () => {
-      document.body.style.overflow = "unset";
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
     };
   }, [scheduleModalOpen, showBroadcastModal, sendingProgress.active]);
 

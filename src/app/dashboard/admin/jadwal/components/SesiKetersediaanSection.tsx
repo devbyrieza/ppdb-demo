@@ -142,17 +142,20 @@ export default function SesiKetersediaanSection({
     duration: 30,
   });
 
-  // Body scroll lock effect for modals
+  // Body & HTML scroll lock effect for modals to completely isolate background scrolling
   useEffect(() => {
     const isAnyModalOpen =
       isSlotModalOpen || isBulkModalOpen || isEditModalOpen || isBulkEditModalOpen;
     if (isAnyModalOpen) {
+      document.documentElement.style.overflow = "hidden";
       document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "unset";
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
     }
     return () => {
-      document.body.style.overflow = "unset";
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
     };
   }, [isSlotModalOpen, isBulkModalOpen, isEditModalOpen, isBulkEditModalOpen]);
 
@@ -1013,9 +1016,13 @@ export default function SesiKetersediaanSection({
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs overflow-y-auto overscroll-contain custom-scrollbar"
+          onWheel={(e) => e.stopPropagation()}
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs overflow-hidden overscroll-none"
         >
-          <div className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl w-full max-w-lg max-h-[calc(100dvh-1.5rem)] sm:max-h-[calc(100dvh-3rem)] flex flex-col overflow-hidden my-auto animate-in fade-in zoom-in-95 duration-200">
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200"
+          >
             <div className="flex items-center justify-between p-4 sm:p-6 border-b border-stone-100 shrink-0">
               <div>
                 <h3 className="text-lg sm:text-xl font-black text-stone-900 tracking-tight">
@@ -1033,7 +1040,11 @@ export default function SesiKetersediaanSection({
               </button>
             </div>
 
-            <form onSubmit={handleCreateSlot} className="p-4 sm:p-6 space-y-4 overflow-y-auto custom-scrollbar flex-1 min-h-0 touch-pan-y">
+            <form onSubmit={handleCreateSlot} className="flex flex-col flex-1 min-h-0 overflow-hidden">
+              <div
+                className="p-4 sm:p-6 space-y-4 overflow-y-auto custom-scrollbar flex-1 min-h-0 touch-pan-y overscroll-contain"
+                style={{ overscrollBehavior: 'contain' }}
+              >
               {/* Ustadz Penguji */}
               <div>
                 <label className="block text-xs font-black text-stone-700 mb-1.5">
@@ -1188,29 +1199,30 @@ export default function SesiKetersediaanSection({
                   className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs font-bold text-stone-900 outline-none focus:ring-2 focus:ring-primary-500/20 resize-none"
                 />
               </div>
+            </div>
 
-              <div className="flex items-center gap-3 pt-4 border-t border-stone-100 shrink-0 bg-white">
-                <button
-                  type="button"
-                  onClick={() => setIsSlotModalOpen(false)}
-                  className="flex-1 py-3 bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold rounded-xl text-xs transition-all"
-                >
-                  Batal
-                </button>
-                <button
-                  type="submit"
-                  disabled={submittingSlot}
-                  className="flex-1 py-3 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 text-white font-black rounded-xl text-xs shadow-lg transition-all flex items-center justify-center gap-2"
-                >
-                  {submittingSlot ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                  ) : (
-                    <Save className="w-4 h-4" />
-                  )}
-                  Simpan Sesi
-                </button>
-              </div>
-            </form>
+            <div className="flex items-center gap-3 p-4 sm:p-5 border-t border-stone-100 shrink-0 bg-white shadow-[0_-4px_12px_rgba(0,0,0,0.03)]">
+              <button
+                type="button"
+                onClick={() => setIsSlotModalOpen(false)}
+                className="flex-1 py-3 bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold rounded-xl text-xs transition-all"
+              >
+                Batal
+              </button>
+              <button
+                type="submit"
+                disabled={submittingSlot}
+                className="flex-1 py-3 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 text-white font-black rounded-xl text-xs shadow-lg transition-all flex items-center justify-center gap-2"
+              >
+                {submittingSlot ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Save className="w-4 h-4" />
+                )}
+                Simpan Sesi
+              </button>
+            </div>
+          </form>
           </div>
         </div>
       )}
@@ -1220,9 +1232,13 @@ export default function SesiKetersediaanSection({
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs overflow-y-auto overscroll-contain custom-scrollbar"
+          onWheel={(e) => e.stopPropagation()}
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs overflow-hidden overscroll-none"
         >
-          <div className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl w-full max-w-2xl max-h-[calc(100dvh-1.5rem)] sm:max-h-[calc(100dvh-3rem)] flex flex-col overflow-hidden my-auto animate-in fade-in zoom-in-95 duration-200">
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200"
+          >
             <div className="p-4 sm:p-6 border-b border-stone-100 flex items-center justify-between shrink-0">
               <div>
                 <h3 className="text-lg sm:text-xl font-black text-stone-900 tracking-tight">
@@ -1242,8 +1258,12 @@ export default function SesiKetersediaanSection({
 
             <form
               onSubmit={handleCreateBulk}
-              className="p-4 sm:p-6 space-y-5 overflow-y-auto custom-scrollbar flex-1 min-h-0 touch-pan-y"
+              className="flex flex-col flex-1 min-h-0 overflow-hidden"
             >
+              <div
+                className="p-4 sm:p-6 space-y-5 overflow-y-auto custom-scrollbar flex-1 min-h-0 touch-pan-y overscroll-contain"
+                style={{ overscrollBehavior: 'contain' }}
+              >
               {/* Ustadz Penguji */}
               <div>
                 <label className="block text-xs font-black text-stone-700 mb-1.5">
@@ -1455,41 +1475,46 @@ export default function SesiKetersediaanSection({
                   </div>
                 </div>
               )}
+            </div>
 
-              <div className="flex items-center gap-3 pt-4 border-t border-stone-100 shrink-0 bg-white">
-                <button
-                  type="button"
-                  onClick={() => setIsBulkModalOpen(false)}
-                  className="flex-1 py-3 bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold rounded-xl text-xs transition-all"
-                >
-                  Batal
-                </button>
-                <button
-                  type="submit"
-                  disabled={submittingBulk}
-                  className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-black rounded-xl text-xs shadow-lg transition-all flex items-center justify-center gap-2"
-                >
-                  {submittingBulk ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                  ) : (
-                    <Sparkles className="w-4 h-4" />
-                  )}
-                  Generate Sesi Massal
-                </button>
-              </div>
-            </form>
-          </div>
+            <div className="p-4 sm:p-5 border-t border-stone-100 flex items-center gap-3 shrink-0 bg-white shadow-[0_-4px_12px_rgba(0,0,0,0.03)]">
+              <button
+                type="button"
+                onClick={() => setIsBulkModalOpen(false)}
+                className="flex-1 py-3 bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold rounded-xl text-xs transition-all"
+              >
+                Batal
+              </button>
+              <button
+                type="submit"
+                disabled={submittingBulk}
+                className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-black rounded-xl text-xs shadow-lg transition-all flex items-center justify-center gap-2"
+              >
+                {submittingBulk ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Sparkles className="w-4 h-4" />
+                )}
+                Generate Sesi Massal
+              </button>
+            </div>
+          </form>
         </div>
-      )}
+      </div>
+    )}
 
       {/* MODAL: EDIT SESI TUNGGAL */}
       {isEditModalOpen && editingSlot && (
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs overflow-y-auto overscroll-contain custom-scrollbar"
+          onWheel={(e) => e.stopPropagation()}
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs overflow-hidden overscroll-none"
         >
-          <div className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl w-full max-w-md max-h-[calc(100dvh-1.5rem)] sm:max-h-[calc(100dvh-3rem)] flex flex-col overflow-hidden my-auto animate-in fade-in zoom-in-95 duration-200">
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl w-full max-w-md max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200"
+          >
             <div className="flex items-center justify-between p-4 sm:p-6 border-b border-stone-100 shrink-0">
               <div>
                 <h3 className="text-lg sm:text-xl font-black text-stone-900 tracking-tight">Edit Sesi</h3>
@@ -1505,72 +1530,77 @@ export default function SesiKetersediaanSection({
               </button>
             </div>
 
-            <form onSubmit={handleEditSlot} className="p-4 sm:p-6 space-y-4 overflow-y-auto custom-scrollbar flex-1 min-h-0 touch-pan-y">
-              <div>
-                <label className="block text-xs font-black text-stone-700 mb-1.5">
-                  Judul Sesi
-                </label>
-                <input
-                  type="text"
-                  value={editForm.title}
-                  onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
-                  className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs font-bold text-stone-900 outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-black text-stone-700 mb-1.5">
-                  Tanggal Ujian
-                </label>
-                <input
-                  type="date"
-                  required
-                  value={editForm.date}
-                  onChange={(e) => setEditForm({ ...editForm, date: e.target.value })}
-                  className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs font-bold text-stone-900 outline-none"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
+            <form onSubmit={handleEditSlot} className="flex flex-col flex-1 min-h-0 overflow-hidden">
+              <div
+                className="p-4 sm:p-6 space-y-4 overflow-y-auto custom-scrollbar flex-1 min-h-0 touch-pan-y overscroll-contain"
+                style={{ overscrollBehavior: 'contain' }}
+              >
                 <div>
                   <label className="block text-xs font-black text-stone-700 mb-1.5">
-                    Jam Mulai
+                    Judul Sesi
                   </label>
                   <input
-                    type="time"
-                    required
-                    value={editForm.start_time}
-                    onChange={(e) => setEditForm({ ...editForm, start_time: e.target.value })}
+                    type="text"
+                    value={editForm.title}
+                    onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
                     className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs font-bold text-stone-900 outline-none"
                   />
                 </div>
+
                 <div>
                   <label className="block text-xs font-black text-stone-700 mb-1.5">
-                    Jam Selesai
+                    Tanggal Ujian
                   </label>
                   <input
-                    type="time"
+                    type="date"
                     required
-                    value={editForm.end_time}
-                    onChange={(e) => setEditForm({ ...editForm, end_time: e.target.value })}
+                    value={editForm.date}
+                    onChange={(e) => setEditForm({ ...editForm, date: e.target.value })}
+                    className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs font-bold text-stone-900 outline-none"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-black text-stone-700 mb-1.5">
+                      Jam Mulai
+                    </label>
+                    <input
+                      type="time"
+                      required
+                      value={editForm.start_time}
+                      onChange={(e) => setEditForm({ ...editForm, start_time: e.target.value })}
+                      className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs font-bold text-stone-900 outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-black text-stone-700 mb-1.5">
+                      Jam Selesai
+                    </label>
+                    <input
+                      type="time"
+                      required
+                      value={editForm.end_time}
+                      onChange={(e) => setEditForm({ ...editForm, end_time: e.target.value })}
+                      className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs font-bold text-stone-900 outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-black text-stone-700 mb-1.5">
+                    Lokasi / Link Meet
+                  </label>
+                  <input
+                    type="text"
+                    value={editForm.location}
+                    onChange={(e) => setEditForm({ ...editForm, location: e.target.value })}
                     className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs font-bold text-stone-900 outline-none"
                   />
                 </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-black text-stone-700 mb-1.5">
-                  Lokasi / Link Meet
-                </label>
-                <input
-                  type="text"
-                  value={editForm.location}
-                  onChange={(e) => setEditForm({ ...editForm, location: e.target.value })}
-                  className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs font-bold text-stone-900 outline-none"
-                />
-              </div>
-
-              <div className="flex items-center gap-3 pt-4 border-t border-stone-100 shrink-0 bg-white">
+              <div className="p-4 sm:p-5 border-t border-stone-100 flex items-center gap-3 shrink-0 bg-white shadow-[0_-4px_12px_rgba(0,0,0,0.03)]">
                 <button
                   type="button"
                   onClick={() => setIsEditModalOpen(false)}
@@ -1601,9 +1631,13 @@ export default function SesiKetersediaanSection({
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs overflow-y-auto overscroll-contain custom-scrollbar"
+          onWheel={(e) => e.stopPropagation()}
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs overflow-hidden overscroll-none"
         >
-          <div className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl w-full max-w-md max-h-[calc(100dvh-1.5rem)] sm:max-h-[calc(100dvh-3rem)] flex flex-col overflow-hidden my-auto animate-in fade-in zoom-in-95 duration-200">
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl w-full max-w-md max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200"
+          >
             <div className="flex items-center justify-between p-4 sm:p-6 border-b border-stone-100 shrink-0">
               <div>
                 <h3 className="text-lg sm:text-xl font-black text-stone-900 tracking-tight">
@@ -1621,99 +1655,104 @@ export default function SesiKetersediaanSection({
               </button>
             </div>
 
-            <form onSubmit={handleBulkEdit} className="p-4 sm:p-6 space-y-4 overflow-y-auto custom-scrollbar flex-1 min-h-0 touch-pan-y">
-              {/* Checkbox Ubah Jam */}
-              <div className="space-y-2">
-                <label className="flex items-center gap-2 text-xs font-black text-stone-800 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={bulkEditForm.changeTime}
-                    onChange={(e) =>
-                      setBulkEditForm({ ...bulkEditForm, changeTime: e.target.checked })
-                    }
-                    className="rounded text-primary-600"
-                  />
-                  Ubah Jam Mulai &amp; Selesai
-                </label>
-                {bulkEditForm.changeTime && (
-                  <div className="grid grid-cols-2 gap-2 pl-6">
+            <form onSubmit={handleBulkEdit} className="flex flex-col flex-1 min-h-0 overflow-hidden">
+              <div
+                className="p-4 sm:p-6 space-y-4 overflow-y-auto custom-scrollbar flex-1 min-h-0 touch-pan-y overscroll-contain"
+                style={{ overscrollBehavior: 'contain' }}
+              >
+                {/* Checkbox Ubah Jam */}
+                <div className="space-y-2">
+                  <label className="flex items-center gap-2 text-xs font-black text-stone-800 cursor-pointer">
                     <input
-                      type="time"
-                      value={bulkEditForm.start_time}
+                      type="checkbox"
+                      checked={bulkEditForm.changeTime}
                       onChange={(e) =>
-                        setBulkEditForm({ ...bulkEditForm, start_time: e.target.value })
+                        setBulkEditForm({ ...bulkEditForm, changeTime: e.target.checked })
                       }
-                      className="px-3 py-1.5 bg-stone-50 border border-stone-200 rounded-lg text-xs font-bold"
+                      className="rounded text-primary-600"
                     />
+                    Ubah Jam Mulai & Selesai
+                  </label>
+                  {bulkEditForm.changeTime && (
+                    <div className="grid grid-cols-2 gap-2 pl-6">
+                      <input
+                        type="time"
+                        value={bulkEditForm.start_time}
+                        onChange={(e) =>
+                          setBulkEditForm({ ...bulkEditForm, start_time: e.target.value })
+                        }
+                        className="px-3 py-1.5 bg-stone-50 border border-stone-200 rounded-lg text-xs font-bold"
+                      />
+                      <input
+                        type="time"
+                        value={bulkEditForm.end_time}
+                        onChange={(e) =>
+                          setBulkEditForm({ ...bulkEditForm, end_time: e.target.value })
+                        }
+                        className="px-3 py-1.5 bg-stone-50 border border-stone-200 rounded-lg text-xs font-bold"
+                      />
+                    </div>
+                  )}
+                </div>
+
+                {/* Checkbox Ubah Lokasi */}
+                <div className="space-y-2">
+                  <label className="flex items-center gap-2 text-xs font-black text-stone-800 cursor-pointer">
                     <input
-                      type="time"
-                      value={bulkEditForm.end_time}
+                      type="checkbox"
+                      checked={bulkEditForm.changeLocation}
                       onChange={(e) =>
-                        setBulkEditForm({ ...bulkEditForm, end_time: e.target.value })
+                        setBulkEditForm({ ...bulkEditForm, changeLocation: e.target.checked })
                       }
-                      className="px-3 py-1.5 bg-stone-50 border border-stone-200 rounded-lg text-xs font-bold"
+                      className="rounded text-primary-600"
                     />
-                  </div>
-                )}
+                    Ubah Lokasi / Link Meet
+                  </label>
+                  {bulkEditForm.changeLocation && (
+                    <div className="pl-6">
+                      <input
+                        type="text"
+                        placeholder="Online (Google Meet) / Offline"
+                        value={bulkEditForm.location}
+                        onChange={(e) =>
+                          setBulkEditForm({ ...bulkEditForm, location: e.target.value })
+                        }
+                        className="w-full px-3 py-1.5 bg-stone-50 border border-stone-200 rounded-lg text-xs font-bold"
+                      />
+                    </div>
+                  )}
+                </div>
+
+                {/* Checkbox Ubah Catatan */}
+                <div className="space-y-2">
+                  <label className="flex items-center gap-2 text-xs font-black text-stone-800 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={bulkEditForm.changeNotes}
+                      onChange={(e) =>
+                        setBulkEditForm({ ...bulkEditForm, changeNotes: e.target.checked })
+                      }
+                      className="rounded text-primary-600"
+                    />
+                    Ubah Catatan
+                  </label>
+                  {bulkEditForm.changeNotes && (
+                    <div className="pl-6">
+                      <textarea
+                        rows={2}
+                        placeholder="Catatan untuk seluruh sesi terpilih..."
+                        value={bulkEditForm.notes}
+                        onChange={(e) =>
+                          setBulkEditForm({ ...bulkEditForm, notes: e.target.value })
+                        }
+                        className="w-full px-3 py-1.5 bg-stone-50 border border-stone-200 rounded-lg text-xs font-bold resize-none"
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
 
-              {/* Checkbox Ubah Lokasi */}
-              <div className="space-y-2">
-                <label className="flex items-center gap-2 text-xs font-black text-stone-800 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={bulkEditForm.changeLocation}
-                    onChange={(e) =>
-                      setBulkEditForm({ ...bulkEditForm, changeLocation: e.target.checked })
-                    }
-                    className="rounded text-primary-600"
-                  />
-                  Ubah Lokasi / Link Meet
-                </label>
-                {bulkEditForm.changeLocation && (
-                  <div className="pl-6">
-                    <input
-                      type="text"
-                      placeholder="Online (Google Meet) / Offline"
-                      value={bulkEditForm.location}
-                      onChange={(e) =>
-                        setBulkEditForm({ ...bulkEditForm, location: e.target.value })
-                      }
-                      className="w-full px-3 py-1.5 bg-stone-50 border border-stone-200 rounded-lg text-xs font-bold"
-                    />
-                  </div>
-                )}
-              </div>
-
-              {/* Checkbox Ubah Catatan */}
-              <div className="space-y-2">
-                <label className="flex items-center gap-2 text-xs font-black text-stone-800 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={bulkEditForm.changeNotes}
-                    onChange={(e) =>
-                      setBulkEditForm({ ...bulkEditForm, changeNotes: e.target.checked })
-                    }
-                    className="rounded text-primary-600"
-                  />
-                  Ubah Catatan
-                </label>
-                {bulkEditForm.changeNotes && (
-                  <div className="pl-6">
-                    <textarea
-                      rows={2}
-                      placeholder="Catatan untuk seluruh sesi terpilih..."
-                      value={bulkEditForm.notes}
-                      onChange={(e) =>
-                        setBulkEditForm({ ...bulkEditForm, notes: e.target.value })
-                      }
-                      className="w-full px-3 py-1.5 bg-stone-50 border border-stone-200 rounded-lg text-xs font-bold resize-none"
-                    />
-                  </div>
-                )}
-              </div>
-
-              <div className="flex items-center gap-3 pt-4 border-t border-stone-100 shrink-0 bg-white">
+              <div className="p-4 sm:p-5 border-t border-stone-100 flex items-center gap-3 shrink-0 bg-white shadow-[0_-4px_12px_rgba(0,0,0,0.03)]">
                 <button
                   type="button"
                   onClick={() => setIsBulkEditModalOpen(false)}
@@ -1746,4 +1785,3 @@ export default function SesiKetersediaanSection({
     </div>
   );
 }
-
