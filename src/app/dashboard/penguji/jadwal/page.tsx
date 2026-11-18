@@ -2,27 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect, useMemo } from "react";
-import {
-  Calendar,
-  Clock,
-  MapPin,
-  Users,
-  FileText,
-  Loader2,
-  Plus,
-  Trash2,
-  CheckCircle,
-  XCircle,
-  Hash,
-  AlertTriangle,
-  Save,
-  Trophy,
-  AlertCircle,
-  Edit2,
-  CheckSquare,
-  Square,
-  Layers,
-  Sparkles } from "lucide-react";
+import { Calendar, Clock, MapPin, Users, FileText, Loader2, Plus, Trash2, CheckCircle, XCircle, Hash, AlertTriangle, Save, Trophy, AlertCircle, Edit2, CheckSquare, Square, Layers, Sparkles } from "lucide-react";
 import Swal from "sweetalert2";
 
 // --- Types ---
@@ -99,8 +79,9 @@ const ROLE_TO_JADWAL_TYPES: Record<string, string[]> = {
     "Seleksi Hafalan Al-Qur'an",
   ],
   penguji_bahasa_arab: ["Tes Lisan Bahasa Arab", "Seleksi Lisan Bahasa Arab"],
+  pewawancara: ["Seleksi Wawancara Calon Santri", "Seleksi Wawancara Orang Tua", "Seleksi Wawancara Calon Orang Tua/Wali Santri"],
   pewawancara_calsan: ["Seleksi Wawancara Calon Santri"],
-  pewawancara_cawalsan: ["Seleksi Wawancara Orang Tua", "Seleksi Wawancara Calon Orangtua/Wali Santri"],
+  pewawancara_cawalsan: ["Seleksi Wawancara Orang Tua", "Seleksi Wawancara Calon Orang Tua/Wali Santri"],
   admin: [
     "Seleksi Al Qur'an",
     "Tes Al-Qur'an",
@@ -111,7 +92,7 @@ const ROLE_TO_JADWAL_TYPES: Record<string, string[]> = {
     "Seleksi Lisan Bahasa Arab",
     "Seleksi Wawancara Calon Santri",
     "Seleksi Wawancara Orang Tua",
-    "Seleksi Wawancara Calon Orangtua/Wali Santri",
+    "Seleksi Wawancara Calon Orang Tua/Wali Santri",
   ],
   admin_super: [
     "Seleksi Al Qur'an",
@@ -123,7 +104,7 @@ const ROLE_TO_JADWAL_TYPES: Record<string, string[]> = {
     "Seleksi Lisan Bahasa Arab",
     "Seleksi Wawancara Calon Santri",
     "Seleksi Wawancara Orang Tua",
-    "Seleksi Wawancara Calon Orangtua/Wali Santri",
+    "Seleksi Wawancara Calon Orang Tua/Wali Santri",
   ],
   head_of_it: [
     "Seleksi Al Qur'an",
@@ -135,7 +116,7 @@ const ROLE_TO_JADWAL_TYPES: Record<string, string[]> = {
     "Seleksi Lisan Bahasa Arab",
     "Seleksi Wawancara Calon Santri",
     "Seleksi Wawancara Orang Tua",
-    "Seleksi Wawancara Calon Orangtua/Wali Santri",
+    "Seleksi Wawancara Calon Orang Tua/Wali Santri",
   ],
 };
 
@@ -213,7 +194,7 @@ useEffect(() => {
 const CustomTimePicker = ({ value, onChange }: { value: string, onChange: (val: string) => void }) => {
   const [h, m] = (value || "00:00").split(":");
   return (
-    <div className="relative flex items-center justify-center bg-white border border-stone-200 rounded-[24px] pl-4 pr-10 py-2.5 text-sm font-black text-primary-950 focus-within:ring-2 focus-within:ring-primary-500 shadow-sm w-full">
+    <div className="relative flex items-center justify-center bg-white border border-stone-200 rounded-2xl pl-4 pr-10 py-2.5 text-sm font-black text-primary-950 focus-within:ring-2 focus-within:ring-primary-500 shadow-2xl w-full">
       <FlexibleTimeInput type="hour" value={h || "00"} onChange={(newH) => onChange(`${newH}:${m || "00"}`)} />
       <span className="text-stone-400 font-bold mx-1">:</span>
       <FlexibleTimeInput type="minute" value={m || "00"} onChange={(newM) => onChange(`${h || "00"}:${newM}`)} />
@@ -226,6 +207,28 @@ export default function JadwalPengujiPage() {
   const [activeTab, setActiveTab] = useState<"assigned" | "slots">("assigned");
   const [userId, setUserId] = useState<string | null>(null);
   const [activeRole, setActiveRole] = useState<string>("");
+  const [userRoles, setUserRoles] = useState<string[]>([]);
+
+  // List of session titles available to this user (based on primary + secondary roles, or all for admin)
+  const availableSessionTitles = useMemo(() => {
+    if (ADMIN_ROLES.includes(activeRole)) {
+      return [
+        "Tes Al-Qur'an (Bacaan & Hafalan)",
+        "Tes Lisan Bahasa Arab",
+        "Seleksi Wawancara Calon Santri",
+        "Seleksi Wawancara Orang Tua",
+      ];
+    }
+    const titles: string[] = [];
+    userRoles.forEach((r) => {
+      const t = ROLE_TO_SESSION_TITLE[r];
+      if (t && !titles.includes(t)) titles.push(t);
+    });
+    if (titles.length === 0 && ROLE_TO_SESSION_TITLE[activeRole]) {
+      titles.push(ROLE_TO_SESSION_TITLE[activeRole]);
+    }
+    return titles.length > 0 ? titles : ["Seleksi Wawancara Calon Santri"];
+  }, [userRoles, activeRole]);
 
   // State for Assignments
   const [assignments, setAssignments] = useState<JadwalAssignment[]>([]);
@@ -243,16 +246,29 @@ export default function JadwalPengujiPage() {
   >(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
-  const getDurationFromTitle = (title: string) => {
+  const getDurationFromTitle = (title: string, customDuration?: number) => {
+    if (customDuration && customDuration > 0) return customDuration;
     const t = (title || "").toLowerCase();
+    // Khusus Wawancara Calon Orang Tua / Wali: Default 60 Menit
+    if (
+      t.includes("orang tua") ||
+      t.includes("ortu") ||
+      t.includes("wali") ||
+      t.includes("cawalsan")
+    ) {
+      return 60;
+    }
+    // Tes Al-Qur'an, Wawancara Calon Santri, Tes Lisan Bahasa Arab, Hafalan: Default 30 Menit
     if (t.includes("quran") || t.includes("qur'an")) return 30;
-    if (t.includes("calon santri") || t.includes("calsan")) return 30;
-    return 60;
+    if (t.includes("santri") || t.includes("calsan")) return 30;
+    if (t.includes("hafalan")) return 30;
+    if (t.includes("arab") || t.includes("lisan")) return 30;
+    return 30;
   };
 
-  const calculateEndTime = (startTime: string, title: string) => {
+  const calculateEndTime = (startTime: string, title: string, customDuration?: number) => {
     if (!startTime) return "";
-    const duration = getDurationFromTitle(title);
+    const duration = getDurationFromTitle(title, customDuration);
     const [h, m] = startTime.split(":").map(Number);
     const date = new Date();
     date.setHours(h, m + duration, 0, 0);
@@ -276,7 +292,8 @@ export default function JadwalPengujiPage() {
     end_time: "09:00",
     quota: 1,
     location: "", // Default empty, falls back to "Online" on submit if empty
-    notes: "" });
+    notes: "",
+    duration: 30 });
   const [submittingSlot, setSubmittingSlot] = useState(false);
 
   const [rescheduleModalOpen, setRescheduleModalOpen] = useState(false);
@@ -360,7 +377,8 @@ export default function JadwalPengujiPage() {
     endDate: "",
     selectedDays: [] as number[], // 0=Sun, 1=Mon, etc.
     daySlots: {} as Record<number, { start: string; end: string }[]>,
-    notes: "" });
+    notes: "",
+    duration: 30 });
 
   // Grouping Logic
   const displaySlots = useMemo(() => {
@@ -435,6 +453,11 @@ export default function JadwalPengujiPage() {
           if (session) {
             setUserId(session.id || session.user_id);
             setActiveRole(session.role || "");
+            if (Array.isArray(data.availableRoles) && data.availableRoles.length > 0) {
+              setUserRoles(data.availableRoles);
+            } else if (session.role) {
+              setUserRoles([session.role]);
+            }
           }
         }
       } catch (e) {
@@ -478,15 +501,32 @@ export default function JadwalPengujiPage() {
 
   // Auto-set session title and duration from role when role is known
   useEffect(() => {
-    const autoTitle = ROLE_TO_SESSION_TITLE[activeRole];
-    if (autoTitle) {
-      setSlotForm((prev) => ({
-        ...prev,
-        title: autoTitle,
-        end_time: calculateEndTime(prev.start_time, autoTitle) }));
-      setBulkForm((prev) => ({ ...prev, title: autoTitle }));
+    if (availableSessionTitles.length > 0) {
+      setSlotForm((prev) => {
+        const titleToUse = availableSessionTitles.includes(prev.title)
+          ? prev.title
+          : availableSessionTitles[0];
+        const defDur = getDurationFromTitle(titleToUse);
+        return {
+          ...prev,
+          title: titleToUse,
+          duration: defDur,
+          end_time: calculateEndTime(prev.start_time, titleToUse, defDur),
+        };
+      });
+      setBulkForm((prev) => {
+        const titleToUse = availableSessionTitles.includes(prev.title)
+          ? prev.title
+          : availableSessionTitles[0];
+        const defDur = getDurationFromTitle(titleToUse);
+        return {
+          ...prev,
+          title: titleToUse,
+          duration: defDur,
+        };
+      });
     }
-  }, [activeRole]);
+  }, [availableSessionTitles]);
 
   // Update end_time when title changes (for admins or manual selection)
   useEffect(() => {
@@ -659,7 +699,7 @@ export default function JadwalPengujiPage() {
           ...currentSlots,
           {
             start: newStart,
-            end: calculateEndTime(newStart, bulkForm.title) },
+            end: calculateEndTime(newStart, bulkForm.title, bulkForm.duration || getDurationFromTitle(bulkForm.title)) },
         ] } });
   };
 
@@ -977,35 +1017,28 @@ export default function JadwalPengujiPage() {
       allowOutsideClick: false,
       didOpen: () => Swal.showLoading() });
 
-    let successCount = 0;
-    let errorCount = 0;
-
-    for (const slot of emptySlots) {
-      try {
-        const res = await fetch(`/api/exam-sessions?id=${slot.id}`, {
-          method: "DELETE" });
-        if (res.ok) successCount++;
-        else errorCount++;
-      } catch {
-        errorCount++;
+    try {
+      const res = await fetch("/api/exam-sessions/bulk-delete", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slot_ids: emptySlots.map((s) => s.id) }),
+      });
+      const data = await res.json();
+      exitSelectMode();
+      await fetchSlots();
+      if (res.ok) {
+        Swal.fire(
+          "Terhapus!",
+          data.message || `${emptySlots.length} sesi berhasil dihapus.`,
+          "success",
+        );
+      } else {
+        Swal.fire("Gagal", data.error || "Gagal menghapus sesi", "error");
       }
-    }
-
-    exitSelectMode();
-    fetchSlots();
-
-    if (errorCount === 0) {
-      Swal.fire(
-        "Terhapus!",
-        `${successCount} sesi berhasil dihapus.`,
-        "success",
-      );
-    } else {
-      Swal.fire(
-        "Selesai",
-        `${successCount} berhasil dihapus, ${errorCount} gagal.`,
-        "warning",
-      );
+    } catch {
+      exitSelectMode();
+      await fetchSlots();
+      Swal.fire("Gagal", "Terjadi kesalahan koneksi ke server", "error");
     }
   };
 
@@ -1036,19 +1069,23 @@ export default function JadwalPengujiPage() {
       allowOutsideClick: false,
       didOpen: () => Swal.showLoading() });
 
-    let successCount = 0;
-    for (const id of ids) {
-      try {
-        const response = await fetch(`/api/exam-sessions?id=${id}`, {
-          method: "DELETE" });
-        if (response.ok) successCount++;
-      } catch (error: any) {}
-    }
-
-    Swal.close();
-    if (successCount > 0) {
-      setMessage({ type: "success", text: `${successCount} sesi berhasil dihapus` });
-      fetchSlots();
+    try {
+      const response = await fetch("/api/exam-sessions/bulk-delete", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slot_ids: ids }),
+      });
+      const data = await response.json();
+      Swal.close();
+      if (response.ok) {
+        setMessage({ type: "success", text: data.message || `${ids.length} sesi berhasil dihapus` });
+        fetchSlots();
+      } else {
+        Swal.fire("Gagal", data.error || "Gagal menghapus sesi", "error");
+      }
+    } catch {
+      Swal.close();
+      Swal.fire("Gagal", "Terjadi kesalahan koneksi ke server", "error");
     }
   };
 
@@ -1136,6 +1173,7 @@ export default function JadwalPengujiPage() {
   const formatDate = (dateString: string) => {
     return new Date(dateString)
       .toLocaleDateString("id-ID", {
+        timeZone: "Asia/Jakarta",
         weekday: "long",
         day: "numeric",
         month: "long",
@@ -1145,6 +1183,7 @@ export default function JadwalPengujiPage() {
 
   const formatTime = (dateString: string) => {
     return new Date(dateString).toLocaleTimeString("id-ID", {
+        timeZone: "Asia/Jakarta",
       hour: "2-digit",
       minute: "2-digit" });
   };
@@ -1161,12 +1200,12 @@ export default function JadwalPengujiPage() {
     <div className="space-y-6">
       <TimeDataLists />
       {/* Header Section */}
-      <div className="bg-white rounded-[2rem] p-6 md:p-10 border border-gold-100 shadow-sm app-card overflow-hidden relative">
+      <div className="bg-white rounded-[2rem] p-6 md:p-10 border border-gold-100 shadow-2xl app-card overflow-hidden relative">
         <div className="absolute top-0 right-0 w-64 h-64 bg-primary-600/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
 
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 relative z-10">
-          <div className="flex items-center gap-[24px_28px]">
-            <div className="w-16 h-16 bg-primary-50 rounded-[24px] flex items-center justify-center border border-primary-100 shrink-0 shadow-sm">
+          <div className="flex items-center gap-5">
+            <div className="w-16 h-16 bg-primary-50 rounded-2xl flex items-center justify-center border border-primary-100 shrink-0 shadow-2xl">
               <Calendar className="w-8 h-8 text-primary-700" />
             </div>
             <div>
@@ -1179,16 +1218,16 @@ export default function JadwalPengujiPage() {
             </div>
           </div>
 
-          <div className="flex bg-ink-50/50 p-1.5 rounded-[24px] border border-ink-100 w-full md:w-auto min-w-[320px]">
+          <div className="flex bg-ink-50/50 p-1.5 rounded-2xl border border-ink-100 w-full md:w-auto min-w-[320px]">
             <button
               onClick={() => setActiveTab("assigned")}
-              className={`flex-1 py-3 px-6 rounded-[24px] font-black text-xs transition-all text-center uppercase tracking-wider ${activeTab === "assigned" ? "bg-white shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 text-primary-700 border border-ink-100 scale-[1.02]" : "text-ink-400 hover:text-ink-600"}`}
+              className={`flex-1 py-3 px-6 rounded-3xl font-black text-xs transition-all text-center uppercase tracking-wider ${activeTab === "assigned" ? "bg-white shadow-2xl    text-primary-700 border border-ink-100 scale-[1.02]" : "text-ink-400 hover:text-ink-600"}`}
             >
               {["admin_super", "admin"].includes(activeRole) ? "Semua Jadwal" : "Jadwal Saya"}
             </button>
             <button
               onClick={() => setActiveTab("slots")}
-              className={`flex-1 py-3 px-6 rounded-[24px] font-black text-xs transition-all text-center uppercase tracking-wider ${activeTab === "slots" ? "bg-white shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 text-primary-700 border border-ink-100 scale-[1.02]" : "text-ink-400 hover:text-ink-600"}`}
+              className={`flex-1 py-3 px-6 rounded-3xl font-black text-xs transition-all text-center uppercase tracking-wider ${activeTab === "slots" ? "bg-white shadow-2xl    text-primary-700 border border-ink-100 scale-[1.02]" : "text-ink-400 hover:text-ink-600"}`}
             >
               Sesi Ketersediaan
             </button>
@@ -1199,7 +1238,7 @@ export default function JadwalPengujiPage() {
       {/* Message */}
       {message && (
         <div
-          className={`p-[24px_28px] rounded-[24px] border-2 flex items-center justify-between ${message.type === "success" ? "bg-green-50 border-green-200 text-green-800" : "bg-red-50 border-red-200 text-red-800"}`}
+          className={`p-6 sm:p-8 rounded-3xl border-2 flex items-center justify-between ${message.type === "success" ? "bg-green-50 border-green-200 text-[#9D174D]" : "bg-red-50 border-red-200 text-red-800"}`}
         >
           <div className="flex items-center gap-2">
             {message.type === "success" ? (
@@ -1220,10 +1259,10 @@ export default function JadwalPengujiPage() {
         <>
           {loadingAssignments ? (
             <div className="text-center py-12">
-              <Loader2 className="w-8 h-8 animate-spin mx-auto text-slate-500" />
+              <Loader2 className="w-8 h-8 animate-spin mx-auto text-primary-500" />
             </div>
           ) : assignments.length === 0 ? (
-            <div className="bg-white rounded-[24px] p-6 md:p-12 border-2 border-secondary-200 text-center">
+            <div className="bg-white rounded-3xl p-6 md:p-12 border-2 border-secondary-200 text-center">
               <div className="w-16 h-16 bg-secondary-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Calendar className="w-8 h-8 text-ink-400" />
               </div>
@@ -1239,6 +1278,7 @@ export default function JadwalPengujiPage() {
                 "Seleksi Al Qur'an",
                 "Seleksi Wawancara Calon Santri",
                 "Seleksi Wawancara Orang Tua",
+                "Seleksi Wawancara Calon Orang Tua/Wali Santri",
               ];
               const filteredAssignments = assignments.filter((item) => {
                 // Check if any of the item's jenis_tugas matches the visible types
@@ -1249,7 +1289,7 @@ export default function JadwalPengujiPage() {
 
               if (filteredAssignments.length === 0) {
                 return (
-                  <div className="bg-white rounded-[24px] p-6 md:p-12 border-2 border-secondary-200 text-center">
+                  <div className="bg-white rounded-3xl p-6 md:p-12 border-2 border-secondary-200 text-center">
                     <div className="w-16 h-16 bg-secondary-100 rounded-full flex items-center justify-center mx-auto mb-4">
                       <Calendar className="w-8 h-8 text-ink-400" />
                     </div>
@@ -1262,20 +1302,21 @@ export default function JadwalPengujiPage() {
               }
 
               return (
-                <div className="grid gap-[24px_28px]">
+                <div className="grid gap-4">
                   {filteredAssignments.map((item) => (
                     <div
                       key={item.id}
-                      className={`bg-white rounded-3xl p-[24px_28px] md:p-8 border transition-all app-card ${isToday(item.tanggal_ujian) ? "border-emerald-200 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 ring-4 ring-emerald-50" : "border-secondary-200 shadow-sm hover:border-primary-200 hover:shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10"}`}
+                      className={`bg-white rounded-3xl p-5 md:p-8 border transition-all app-card ${isToday(item.tanggal_ujian) ? "border-emerald-200 shadow-2xl    ring-4 ring-emerald-50" : "border-secondary-200 shadow-2xl      hover:border-primary-200 hover:shadow-xl    "}`}
                     >
                       {/* Top section: Date badge + Name */}
-                      <div className="flex items-start gap-[24px_28px] mb-6">
+                      <div className="flex items-start gap-5 mb-6">
                         <div
-                          className={`p-[24px_28px] rounded-[1.5rem] font-bold text-center min-w-[85px] shrink-0 border flex flex-col justify-center shadow-sm ${isToday(item.tanggal_ujian) ? "bg-primary-600 text-white border-primary-500" : "bg-primary-50 border-primary-100 text-primary-900"}`}
+                          className={`p-6 sm:p-8 rounded-[1.5rem] font-bold text-center min-w-[85px] shrink-0 border flex flex-col justify-center shadow-2xl ${isToday(item.tanggal_ujian) ? "bg-primary-600 text-white border-primary-500" : "bg-primary-50 border-primary-100 text-primary-900"}`}
                         >
                           <div className="text-[10px] uppercase tracking-[0.2em] font-black opacity-80 mb-1">
                             {new Date(item.tanggal_ujian)
-                              .toLocaleDateString("id-ID", { weekday: "short" })
+                              .toLocaleDateString("id-ID", {
+        timeZone: "Asia/Jakarta", weekday: "short" })
                               .replace("Min", "Ahd")}
                           </div>
                           <div className="text-3xl font-black font-display leading-none">
@@ -1284,16 +1325,17 @@ export default function JadwalPengujiPage() {
                           <div className="text-[10px] uppercase tracking-widest font-black mt-1 opacity-80">
                             {new Date(item.tanggal_ujian).toLocaleDateString(
                               "id-ID",
-                              { month: "short" },
+                              {
+        timeZone: "Asia/Jakarta", month: "short" },
                             )}
                           </div>
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex flex-wrap items-center gap-2 mb-3">
-                            <span className="px-3 py-1 bg-primary-50 text-primary-700 border border-primary-100 rounded-[24px] text-[9px] font-black uppercase tracking-[0.15em]">
+                            <span className="px-3 py-1 bg-primary-50 text-primary-700 border border-primary-100 rounded-2xl text-[9px] font-black uppercase tracking-[0.15em]">
                               {item.pendaftar.jenjang}
                             </span>
-                            <span className="px-3 py-1 bg-gold-400 text-primary-950 rounded-[24px] text-[9px] font-black uppercase tracking-[0.15em] flex items-center gap-1.5">
+                            <span className="px-3 py-1 bg-gold-400 text-primary-950 rounded-2xl text-[9px] font-black uppercase tracking-[0.15em] flex items-center gap-1.5">
                               <Hash className="w-3.5 h-3.5" />{" "}
                               {item.pendaftar.nomor_pendaftaran}
                             </span>
@@ -1311,9 +1353,9 @@ export default function JadwalPengujiPage() {
                       </div>
 
                       {/* Time & Location Row */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-[24px_28px] mb-6 px-4 py-4 bg-primary-50/30 rounded-[24px] border border-primary-100/50">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 px-4 py-4 bg-primary-50/30 rounded-2xl border border-primary-100/50">
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-[24px] bg-white flex items-center justify-center shadow-sm">
+                          <div className="w-8 h-8 rounded-3xl bg-white flex items-center justify-center shadow-2xl">
                             <Clock className="w-4 h-4 text-primary-600" />
                           </div>
                           <div className="flex flex-col">
@@ -1326,7 +1368,7 @@ export default function JadwalPengujiPage() {
                           </div>
                         </div>
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-[24px] bg-white flex items-center justify-center shadow-sm">
+                          <div className="w-8 h-8 rounded-3xl bg-white flex items-center justify-center shadow-2xl">
                             <MapPin className="w-4 h-4 text-primary-600" />
                           </div>
                           <div className="flex flex-col">
@@ -1352,17 +1394,18 @@ export default function JadwalPengujiPage() {
                         let showOrtu = isOrtu;
                         if (!isSantri && !isQuran && !isOrtu && isCreator) {
                           const tugas = (item.jenis_tugas || "").toLowerCase();
+                          const hasOrtuTugas =
+                            tugas.includes("cawalsan") ||
+                            tugas.includes("ortu") ||
+                            tugas.includes("wali") ||
+                            tugas.includes("orang");
+                          if (hasOrtuTugas) showOrtu = true;
                           if (
-                            tugas.includes("calsan") ||
-                            tugas.includes("santri")
+                            (tugas.includes("calsan") ||
+                            tugas.includes("santri")) && !hasOrtuTugas
                           )
                             showSantri = true;
                           if (tugas.includes("qur")) showQuran = true;
-                          if (
-                            tugas.includes("cawalsan") ||
-                            tugas.includes("ortu")
-                          )
-                            showOrtu = true;
                         }
 
                         return (
@@ -1370,46 +1413,46 @@ export default function JadwalPengujiPage() {
                             {userId &&
                               showSantri &&
                               (item.status_santri === "completed" ? (
-                                <div className="flex items-center gap-2 px-4 py-3 bg-green-50 text-green-700 rounded-[24px] text-sm font-bold border border-green-100">
+                                <div className="flex items-center gap-2 px-4 py-3 bg-green-50 text-[#9D174D] rounded-2xl text-sm font-bold border border-green-100">
                                   <CheckCircle className="w-4 h-4" /> Seleksi
                                   Wawancara Calon Santri Selesai
                                 </div>
                               ) : (
                                 <button
                                   onClick={() => handleCompleteExam(item.id)}
-                                  className="w-full py-4 bg-primary-600 hover:bg-primary-700 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-[24px] transition-all active:scale-95 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-600/20 flex items-center justify-center gap-1.5"
+                                  className="w-full py-4 bg-primary-600 hover:bg-primary-700 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl transition-all active:scale-95 shadow-2xl"
                                 >
-                                  <CheckCircle className="w-3.5 h-3.5" /> Tandai Wawancara Calon Santri Selesai
+                                  ✓ Tandai Wawancara Calon Santri Selesai
                                 </button>
                               ))}
                             {userId &&
                               showQuran &&
                               (item.status_quran === "completed" ? (
-                                <div className="flex items-center gap-2 px-4 py-3 bg-green-50 text-green-700 rounded-[24px] text-sm font-bold border border-green-100">
+                                <div className="flex items-center gap-2 px-4 py-3 bg-green-50 text-[#9D174D] rounded-2xl text-sm font-bold border border-green-100">
                                   <CheckCircle className="w-4 h-4" /> Seleksi Al
                                   Qur'an Selesai
                                 </div>
                               ) : (
                                 <button
                                   onClick={() => handleCompleteExam(item.id)}
-                                  className="w-full py-4 bg-primary-600 hover:bg-primary-700 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-[24px] transition-all active:scale-95 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-600/20 flex items-center justify-center gap-1.5"
+                                  className="w-full py-4 bg-primary-600 hover:bg-primary-700 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl transition-all active:scale-95 shadow-2xl"
                                 >
-                                  <CheckCircle className="w-3.5 h-3.5" /> Tandai Seleksi Al Qur'an Selesai
+                                  ✓ Tandai Seleksi Al Qur'an Selesai
                                 </button>
                               ))}
                             {userId &&
                               showOrtu &&
                               (item.status_ortu === "completed" ? (
-                                <div className="flex items-center gap-2 px-4 py-3 bg-green-50 text-green-700 rounded-[24px] text-sm font-bold border border-green-100">
+                                <div className="flex items-center gap-2 px-4 py-3 bg-green-50 text-[#9D174D] rounded-2xl text-sm font-bold border border-green-100">
                                   <CheckCircle className="w-4 h-4" /> Seleksi
                                   Wawancara Orang Tua Selesai
                                 </div>
                               ) : (
                                 <button
                                   onClick={() => handleCompleteExam(item.id)}
-                                  className="w-full py-4 bg-primary-600 hover:bg-primary-700 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-[24px] transition-all active:scale-95 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-600/20 flex items-center justify-center gap-1.5"
+                                  className="w-full py-4 bg-primary-600 hover:bg-primary-700 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-2xl transition-all active:scale-95 shadow-2xl"
                                 >
-                                  <CheckCircle className="w-3.5 h-3.5" /> Tandai Seleksi Wawancara Orang Tua Selesai
+                                  ✓ Tandai Seleksi Wawancara Orang Tua Selesai
                                 </button>
                               ))}
                             {/* Bottom row: Lihat Data + Batalkan */}
@@ -1459,7 +1502,7 @@ export default function JadwalPengujiPage() {
                                   setSelectedPendaftar(item.pendaftar);
                                   setIsDetailModalOpen(true);
                                 }}
-                                className="flex-1 py-4 bg-white border border-primary-100 text-primary-700 hover:bg-primary-50 rounded-[24px] text-[10px] font-black uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2 active:scale-95 shadow-sm"
+                                className="flex-1 py-4 bg-white border border-primary-100 text-primary-700 hover:bg-primary-50 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2 active:scale-95 shadow-2xl"
                               >
                                 <FileText className="w-4 h-4" /> Lihat Data
                               </button>
@@ -1470,7 +1513,7 @@ export default function JadwalPengujiPage() {
                                     item?.pendaftar?.nama_lengkap,
                                   )
                                 }
-                                className="px-4 py-4 border border-red-100 text-red-500 hover:bg-red-50 rounded-[24px] transition-all flex items-center justify-center active:scale-95 shadow-sm"
+                                className="px-4 py-4 border border-red-100 text-red-500 hover:bg-red-50 rounded-2xl transition-all flex items-center justify-center active:scale-95 shadow-2xl"
                                 title="Batalkan Jadwal"
                               >
                                 <Trash2 className="w-4 h-4" />
@@ -1491,7 +1534,7 @@ export default function JadwalPengujiPage() {
       {/* TAB CONTENT: SLOTS */}
       {activeTab === "slots" && (
         <>
-          <div className="bg-white p-6 md:p-8 rounded-[2rem] border border-gold-100 shadow-sm app-card relative overflow-hidden">
+          <div className="bg-white p-6 md:p-8 rounded-[2rem] border border-gold-100 shadow-2xl app-card relative overflow-hidden">
             <div className="absolute top-0 left-0 w-32 h-32 bg-primary-600/5 rounded-full blur-2xl -translate-x-1/2 -translate-y-1/2" />
 
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
@@ -1514,7 +1557,7 @@ export default function JadwalPengujiPage() {
                             setIsSelectMode(true);
                             setBulkActionType("edit");
                           }}
-                          className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-4 bg-stone-50 hover:bg-stone-100 text-stone-600 rounded-[24px] font-black border border-stone-200 transition-all text-xs uppercase tracking-widest active:scale-95"
+                          className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-4 bg-stone-50 hover:bg-stone-100 text-stone-600 rounded-2xl font-black border border-stone-200 transition-all text-xs uppercase tracking-widest active:scale-95 whitespace-nowrap shrink-0"
                         >
                           <Layers className="w-4 h-4" /> Edit Massal
                         </button>
@@ -1523,7 +1566,7 @@ export default function JadwalPengujiPage() {
                             setIsSelectMode(true);
                             setBulkActionType("delete");
                           }}
-                          className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-4 bg-red-50 hover:bg-red-100 text-red-600 rounded-[24px] font-black border border-red-200 transition-all text-xs uppercase tracking-widest active:scale-95"
+                          className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-4 bg-red-50 hover:bg-red-100 text-red-600 rounded-2xl font-black border border-red-200 transition-all text-xs uppercase tracking-widest active:scale-95"
                         >
                           <Trash2 className="w-4 h-4" /> Hapus Massal
                         </button>
@@ -1531,13 +1574,13 @@ export default function JadwalPengujiPage() {
                     )}
                     <button
                       onClick={() => setIsBulkModalOpen(true)}
-                      className="w-full sm:w-auto flex items-center justify-center gap-3 px-6 py-4 bg-primary-50 hover:bg-amber-100 text-amber-700 rounded-[24px] font-black border border-primary-100 transition-all text-xs uppercase tracking-widest active:scale-95 shadow-sm"
+                      className="w-full sm:w-auto flex items-center justify-center gap-3 px-6 py-4 bg-primary-50 hover:bg-primary-100 text-primary-700 rounded-2xl font-black border border-primary-100 transition-all text-xs uppercase tracking-widest active:scale-95 shadow-md whitespace-nowrap shrink-0"
                     >
                       <Plus className="w-5 h-5" /> Buat Massal
                     </button>
                     <button
                       onClick={() => setIsSlotModalOpen(true)}
-                      className="w-full sm:w-auto flex items-center justify-center gap-3 px-6 py-4 bg-primary-600 hover:bg-primary-700 text-white rounded-[24px] font-black shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-600/20 transition-all text-xs uppercase tracking-widest active:scale-95"
+                      className="w-full sm:w-auto flex items-center justify-center gap-3 px-6 py-4 bg-primary-600 hover:bg-primary-700 text-white rounded-2xl font-black shadow-2xl transition-all text-xs uppercase tracking-widest active:scale-95"
                     >
                       <Plus className="w-5 h-5" /> Buat Sesi Tunggal
                     </button>
@@ -1546,7 +1589,7 @@ export default function JadwalPengujiPage() {
                   <div className="flex items-center gap-3">
                     <button
                       onClick={toggleSelectAll}
-                      className="flex items-center gap-2 px-4 py-3 bg-primary-50 text-primary-700 rounded-[24px] font-black text-xs border border-primary-100 hover:bg-primary-100 transition-all"
+                      className="flex items-center gap-2 px-4 py-3 bg-primary-50 text-primary-700 rounded-3xl font-black text-xs border border-primary-100 hover:bg-primary-100 transition-all whitespace-nowrap shrink-0"
                     >
                       {selectedSlotIds.size === slots.length ? (
                         <CheckSquare className="w-4 h-4" />
@@ -1559,7 +1602,7 @@ export default function JadwalPengujiPage() {
                     </button>
                     <button
                       onClick={exitSelectMode}
-                      className="px-4 py-3 border border-stone-200 text-stone-500 rounded-[24px] font-black text-xs hover:bg-stone-50 transition-all"
+                      className="px-4 py-3 border border-stone-200 text-stone-500 rounded-3xl font-black text-xs hover:bg-stone-50 transition-all"
                     >
                       Batal
                     </button>
@@ -1571,7 +1614,7 @@ export default function JadwalPengujiPage() {
 
           {/* PILIH CEPAT - muncul saat select mode aktif */}
           {isSelectMode && uniqueTimesForChips.length > 1 && (
-            <div className="bg-white rounded-[24px] border border-primary-100 px-5 py-4 flex flex-wrap items-center gap-2">
+            <div className="bg-white rounded-2xl border border-primary-100 px-5 py-4 flex flex-wrap items-center gap-2">
               <span className="text-[10px] font-black text-ink-400 uppercase tracking-widest shrink-0 mr-1">
                 Pilih Cepat:
               </span>
@@ -1593,9 +1636,9 @@ export default function JadwalPengujiPage() {
                   <button
                     key={hhmm}
                     onClick={() => selectByTime(hhmm)}
-                    className={`flex items-center gap-2 px-3 py-2 rounded-[24px] font-black text-xs border transition-all active:scale-95 ${
+                    className={`flex items-center gap-2 px-3 py-2 rounded-3xl font-black text-xs border transition-all active:scale-95 ${
                       allSelected
-                        ? "bg-primary-600 text-white border-primary-600 shadow-sm"
+                        ? "bg-primary-600 text-white border-primary-600 shadow-2xl     "
                         : "bg-primary-50 text-primary-700 border-primary-100 hover:bg-primary-100"
                     }`}
                   >
@@ -1609,7 +1652,7 @@ export default function JadwalPengujiPage() {
                       className={`px-1.5 py-0.5 rounded-md text-[9px] font-black ${
                         allSelected
                           ? "bg-white/20 text-white"
-                          : "bg-rose-100 text-rose-700"
+                          : "bg-primary-100 text-primary-700"
                       }`}
                     >
                       {count}
@@ -1625,7 +1668,7 @@ export default function JadwalPengujiPage() {
 
           {loadingSlots ? (
             <div className="text-center py-12">
-              <Loader2 className="w-8 h-8 animate-spin mx-auto text-slate-500" />
+              <Loader2 className="w-8 h-8 animate-spin mx-auto text-primary-500" />
             </div>
           ) : displaySlots.length === 0 ? (
             <div className="text-center py-12 text-secondary-500">
@@ -1639,19 +1682,19 @@ export default function JadwalPengujiPage() {
                   onClick={
                     isSelectMode ? () => toggleSelectSlot(slot.ids) : undefined
                   }
-                  className={`bg-white rounded-[2rem] p-6 border shadow-sm transition-all group relative app-card ${
+                  className={`bg-white rounded-[2rem] p-6 border shadow-2xl transition-all group relative app-card ${
                     isSelectMode
                       ? "cursor-pointer hover:border-primary-300"
-                      : "hover:shadow-2xl shadow-primary/30 hover:shadow-primary-600/5"
+                      : "hover:shadow-xl  hover:"
                   } ${
                     slot.ids.every((id: string) => selectedSlotIds.has(id))
-                      ? "border-primary-400 ring-2 ring-primary-200 shadow-primary-100"
+                      ? "border-primary-400 ring-2 ring-primary-200 "
                       : "border-gold-100"
                   }`}
                 >
                   {/* Checkbox overlay in select mode */}
                   {isSelectMode && (
-                    <div className="absolute top-[24px_28px] left-5 z-10">
+                    <div className="absolute top-5 left-5 z-10">
                       {slot.ids.every((id: string) => selectedSlotIds.has(id)) ? (
                         <CheckSquare className="w-6 h-6 text-primary-600" />
                       ) : (
@@ -1664,7 +1707,7 @@ export default function JadwalPengujiPage() {
                   >
                     <button
                       onClick={() => handleOpenEdit(slot)}
-                      className="p-2.5 text-ink-300 hover:text-primary-600 hover:bg-primary-50 rounded-full transition-all active:scale-90"
+                      className="p-4.5 text-ink-300 hover:text-primary-600 hover:bg-primary-50 rounded-full transition-all active:scale-90"
                       title="Edit Sesi"
                     >
                       <Edit2 className="w-4 h-4" />
@@ -1673,15 +1716,15 @@ export default function JadwalPengujiPage() {
                       onClick={() =>
                         handleDeleteGroup(slot.ids, slot.totalBookings)
                       }
-                      className="p-2.5 text-ink-300 hover:text-red-600 hover:bg-red-50 rounded-full transition-all active:scale-90"
+                      className="p-4.5 text-ink-300 hover:text-red-600 hover:bg-red-50 rounded-full transition-all active:scale-90"
                       title="Hapus Sesi"
                     >
                       <Trash2 className="w-5 h-5" />
                     </button>
                   </div>
 
-                  <div className="flex items-center gap-[24px_28px] mb-6">
-                    <div className="w-14 h-14 bg-primary-50 rounded-[24px] flex items-center justify-center border border-primary-100 text-primary-700 font-black text-xl shadow-sm">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-14 h-14 bg-primary-50 rounded-2xl flex items-center justify-center border border-primary-100 text-primary-700 font-black text-xl shadow-2xl">
                       {slot.title?.charAt(0) || "S"}
                     </div>
                     <div>
@@ -1701,11 +1744,11 @@ export default function JadwalPengujiPage() {
                   </div>
 
                   <div className="space-y-3 mb-2">
-                    <div className="flex items-center gap-3 text-primary-900 bg-primary-50/50 p-3 rounded-[24px] border border-primary-100/30 font-bold text-xs">
+                    <div className="flex items-center gap-3 text-primary-900 bg-primary-50/50 p-3 rounded-2xl border border-primary-100/30 font-bold text-xs">
                       <Calendar className="w-4 h-4 text-primary-600 shrink-0" />
                       {formatDate(slot.start_time)}
                     </div>
-                    <div className="flex items-center gap-3 text-primary-900 bg-primary-50/50 p-3 rounded-[24px] border border-primary-100/30 font-bold text-xs">
+                    <div className="flex items-center gap-3 text-primary-900 bg-primary-50/50 p-3 rounded-2xl border border-primary-100/30 font-bold text-xs">
                       <Clock className="w-4 h-4 text-primary-600 shrink-0" />
                       {formatTime(slot.start_time)}
                       {slot.end_time
@@ -1713,7 +1756,7 @@ export default function JadwalPengujiPage() {
                         : ""}{" "}
                       WIB
                     </div>
-                    <div className="flex items-center gap-3 text-primary-900 bg-primary-50/50 p-3 rounded-[24px] border border-primary-100/30 font-bold text-xs">
+                    <div className="flex items-center gap-3 text-primary-900 bg-primary-50/50 p-3 rounded-2xl border border-primary-100/30 font-bold text-xs">
                       <MapPin className="w-4 h-4 text-primary-600 shrink-0" />
                       <span className="truncate">
                         {slot.location || "Online / Zoom"}
@@ -1730,7 +1773,7 @@ export default function JadwalPengujiPage() {
       {/* FLOATING BOTTOM BAR (select mode) */}
       {isSelectMode && selectedSlotIds.size > 0 && (
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[55] animate-in slide-in-from-bottom-4 duration-300">
-          <div className="flex items-center gap-[24px_28px] bg-primary-950 text-white px-6 py-4 rounded-[2rem] shadow-2xl shadow-primary-950/40">
+          <div className="flex items-center gap-4 bg-primary-950 text-white px-6 py-4 rounded-[2rem] shadow-2xl">
             <div className="flex items-center gap-2">
               <CheckSquare className="w-5 h-5 text-gold-400" />
               <span className="font-black text-sm">
@@ -1752,7 +1795,7 @@ export default function JadwalPengujiPage() {
                     changeNotes: false });
                   setIsBulkEditModalOpen(true);
                 }}
-                className="flex items-center gap-2 px-5 py-2.5 bg-gold-400 text-primary-950 rounded-[24px] font-black text-xs uppercase tracking-widest hover:bg-gold-300 transition-all active:scale-95"
+                className="flex items-center gap-2 px-5 py-2.5 bg-gold-400 text-primary-950 rounded-3xl font-black text-xs uppercase tracking-widest hover:bg-gold-300 transition-all active:scale-95"
               >
                 <Edit2 className="w-4 h-4" /> Edit Terpilih
               </button>
@@ -1760,14 +1803,14 @@ export default function JadwalPengujiPage() {
             {bulkActionType === "delete" && (
               <button
                 onClick={handleBulkDelete}
-                className="flex items-center gap-2 px-5 py-2.5 bg-red-500 text-white rounded-[24px] font-black text-xs uppercase tracking-widest hover:bg-red-600 transition-all active:scale-95"
+                className="flex items-center gap-2 px-5 py-2.5 bg-red-500 text-white rounded-3xl font-black text-xs uppercase tracking-widest hover:bg-red-600 transition-all active:scale-95"
               >
                 <Trash2 className="w-4 h-4" /> Hapus Terpilih
               </button>
             )}
             <button
               onClick={exitSelectMode}
-              className="p-[16px_20px].5 border border-white/20 text-white/70 hover:text-white rounded-[24px] font-black text-xs transition-all"
+              className="px-4 py-2.5 border border-white/20 text-white/70 hover:text-white rounded-3xl font-black text-xs transition-all"
             >
               Batal
             </button>
@@ -1777,7 +1820,7 @@ export default function JadwalPengujiPage() {
 
       {/* MODAL BULK EDIT */}
       {isBulkEditModalOpen && (
-        <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog" className="fixed inset-0 z-[60] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-[24px_28px] bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
+        <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog" className="fixed inset-0 z-[60] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-6 sm:p-8 bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
           <div className="bg-white rounded-[32px] shadow-2xl w-full max-w-md overflow-hidden border border-white/20 animate-in zoom-in-95 duration-300">
             <div className="p-5 md:p-6 border-b border-stone-100 flex justify-between items-center bg-white/95 backdrop-blur rounded-t-[32px] shrink-0 sticky top-0 z-30 shadow-xs">
               <div>
@@ -1791,16 +1834,16 @@ export default function JadwalPengujiPage() {
               </div>
               <button
                 onClick={() => setIsBulkEditModalOpen(false)}
-                type="button" className="p-2 hover:bg-stone-200 rounded-full transition-colors text-stone-400 shrink-0"
+                className="p-4 hover:bg-stone-200 rounded-full transition-colors text-stone-400"
               >
                 <XCircle className="w-6 h-6" />
               </button>
             </div>
 
-            <form onSubmit={handleBulkEdit} className="p-[24px_28px] md:p-8 space-y-5">
+            <form onSubmit={handleBulkEdit} className="p-5 md:p-8 space-y-5 overflow-y-auto overscroll-contain custom-scrollbar flex-1">
               {/* Waktu */}
               <div
-                className={`p-[24px_28px] rounded-[24px] border-2 transition-all ${bulkEditForm.changeTime ? "border-primary-300 bg-primary-50/30" : "border-stone-100 bg-stone-50/50"}`}
+                className={`p-6 sm:p-8 rounded-2xl border-2 transition-all ${bulkEditForm.changeTime ? "border-primary-300 bg-primary-50/30" : "border-stone-100 bg-stone-50/50"}`}
               >
                 <label className="flex items-center gap-3 cursor-pointer mb-3">
                   <input
@@ -1837,7 +1880,7 @@ export default function JadwalPengujiPage() {
 
               {/* Lokasi */}
               <div
-                className={`p-[24px_28px] rounded-[24px] border-2 transition-all ${bulkEditForm.changeLocation ? "border-primary-300 bg-primary-50/30" : "border-stone-100 bg-stone-50/50"}`}
+                className={`p-6 sm:p-8 rounded-2xl border-2 transition-all ${bulkEditForm.changeLocation ? "border-primary-300 bg-primary-50/30" : "border-stone-100 bg-stone-50/50"}`}
               >
                 <label className="flex items-center gap-3 cursor-pointer mb-3">
                   <input
@@ -1858,7 +1901,7 @@ export default function JadwalPengujiPage() {
                   <input
                     type="text"
                     placeholder="Online / Zoom / Pesantren"
-                    className="w-full px-3 py-2.5 bg-white border border-stone-200 rounded-[24px] font-bold text-primary-950 text-sm focus:ring-2 focus:ring-primary-400 outline-none mt-2"
+                    className="w-full px-3 py-2.5 bg-white border border-stone-200 rounded-3xl font-bold text-primary-950 text-sm focus:ring-2 focus:ring-primary-400 outline-none mt-2"
                     value={bulkEditForm.location}
                     onChange={(e) =>
                       setBulkEditForm({
@@ -1871,7 +1914,7 @@ export default function JadwalPengujiPage() {
 
               {/* Catatan */}
               <div
-                className={`p-[24px_28px] rounded-[24px] border-2 transition-all ${bulkEditForm.changeNotes ? "border-primary-300 bg-primary-50/30" : "border-stone-100 bg-stone-50/50"}`}
+                className={`p-6 sm:p-8 rounded-2xl border-2 transition-all ${bulkEditForm.changeNotes ? "border-primary-300 bg-primary-50/30" : "border-stone-100 bg-stone-50/50"}`}
               >
                 <label className="flex items-center gap-3 cursor-pointer mb-3">
                   <input
@@ -1892,7 +1935,7 @@ export default function JadwalPengujiPage() {
                   <textarea
                     rows={2}
                     placeholder="Catatan untuk semua sesi..."
-                    className="w-full px-3 py-2.5 bg-white border border-stone-200 rounded-[24px] font-bold text-primary-950 text-sm focus:ring-2 focus:ring-primary-400 outline-none resize-none mt-2"
+                    className="w-full px-3 py-2.5 bg-white border border-stone-200 rounded-3xl font-bold text-primary-950 text-sm focus:ring-2 focus:ring-primary-400 outline-none resize-none mt-2"
                     value={bulkEditForm.notes}
                     onChange={(e) =>
                       setBulkEditForm({
@@ -1915,7 +1958,7 @@ export default function JadwalPengujiPage() {
                 <button
                   type="button"
                   onClick={() => setIsBulkEditModalOpen(false)}
-                  className="flex-1 py-3.5 border border-stone-200 text-stone-600 rounded-[24px] font-black text-xs uppercase tracking-widest hover:bg-stone-50 transition-all"
+                  className="flex-1 py-3.5 border border-stone-200 text-stone-600 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-stone-50 transition-all"
                 >
                   Batal
                 </button>
@@ -1927,7 +1970,7 @@ export default function JadwalPengujiPage() {
                       !bulkEditForm.changeLocation &&
                       !bulkEditForm.changeNotes)
                   }
-                  className="flex-1 py-3.5 bg-primary-600 hover:bg-primary-700 disabled:opacity-40 text-white rounded-[24px] font-black text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-600/20"
+                  className="flex-1 py-3.5 bg-primary-600 hover:bg-primary-700 disabled:opacity-40 text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-md"
                 >
                   {submittingBulkEdit ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -1944,7 +1987,7 @@ export default function JadwalPengujiPage() {
 
       {/* MODAL EDIT SLOT */}
       {isEditModalOpen && editingSlot && (
-        <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog" className="fixed inset-0 z-[60] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-[24px_28px] bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
+        <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog" className="fixed inset-0 z-[60] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-6 sm:p-8 bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
           <div className="bg-white rounded-[32px] shadow-2xl w-full max-w-md overflow-hidden border border-white/20 animate-in zoom-in-95 duration-300">
             <div className="p-5 md:p-6 border-b border-stone-100 flex justify-between items-center bg-white/95 backdrop-blur rounded-t-[32px] shrink-0 sticky top-0 z-30 shadow-xs">
               <div>
@@ -1960,13 +2003,13 @@ export default function JadwalPengujiPage() {
                   setIsEditModalOpen(false);
                   setEditingSlot(null);
                 }}
-                type="button" className="p-2 hover:bg-stone-200 rounded-full transition-colors text-stone-400 shrink-0"
+                className="p-4 hover:bg-stone-200 rounded-full transition-colors text-stone-400"
               >
                 <XCircle className="w-6 h-6" />
               </button>
             </div>
 
-            <form onSubmit={handleEditSlot} className="p-[24px_28px] md:p-8 space-y-5">
+            <form onSubmit={handleEditSlot} className="p-5 md:p-8 space-y-5 overflow-y-auto overscroll-contain custom-scrollbar flex-1">
               {/* Tanggal */}
               <div>
                 <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2">
@@ -1975,7 +2018,7 @@ export default function JadwalPengujiPage() {
                 <input
                   type="date"
                   required
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:ring-2 focus:ring-primary-500 outline-none font-bold text-primary-950 transition-all"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-3xl focus:ring-2 focus:ring-primary-500 outline-none font-bold text-primary-950 transition-all"
                   value={editForm.date}
                   onChange={(e) =>
                     setEditForm({ ...editForm, date: e.target.value })
@@ -1984,7 +2027,7 @@ export default function JadwalPengujiPage() {
               </div>
 
               {/* Waktu */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-[24px_28px]">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2">
                     Mulai
@@ -1992,7 +2035,7 @@ export default function JadwalPengujiPage() {
                   <input
                     type="time"
                     required
-                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:ring-2 focus:ring-primary-500 outline-none font-bold text-primary-950"
+                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-3xl focus:ring-2 focus:ring-primary-500 outline-none font-bold text-primary-950"
                     value={editForm.start_time}
                     onChange={(e) => {
                       const newStart = e.target.value;
@@ -2013,7 +2056,7 @@ export default function JadwalPengujiPage() {
                   <input
                     type="time"
                     required
-                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:ring-2 focus:ring-primary-500 outline-none font-bold text-primary-950"
+                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-3xl focus:ring-2 focus:ring-primary-500 outline-none font-bold text-primary-950"
                     value={editForm.end_time}
                     onChange={(e) =>
                       setEditForm({ ...editForm, end_time: e.target.value })
@@ -2030,7 +2073,7 @@ export default function JadwalPengujiPage() {
                 <input
                   type="text"
                   placeholder="Online / Zoom / Pesantren"
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:ring-2 focus:ring-primary-500 outline-none font-bold text-primary-950"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-3xl focus:ring-2 focus:ring-primary-500 outline-none font-bold text-primary-950"
                   value={editForm.location}
                   onChange={(e) =>
                     setEditForm({ ...editForm, location: e.target.value })
@@ -2046,7 +2089,7 @@ export default function JadwalPengujiPage() {
                 <textarea
                   rows={2}
                   placeholder="Catatan tambahan..."
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:ring-2 focus:ring-primary-500 outline-none font-bold text-primary-950 resize-none"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-3xl focus:ring-2 focus:ring-primary-500 outline-none font-bold text-primary-950 resize-none"
                   value={editForm.notes}
                   onChange={(e) =>
                     setEditForm({ ...editForm, notes: e.target.value })
@@ -2062,14 +2105,14 @@ export default function JadwalPengujiPage() {
                     setIsEditModalOpen(false);
                     setEditingSlot(null);
                   }}
-                  className="flex-1 py-3.5 border border-stone-200 text-stone-600 rounded-[24px] font-black text-xs uppercase tracking-widest hover:bg-stone-50 transition-all"
+                  className="flex-1 py-3.5 border border-stone-200 text-stone-600 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-stone-50 transition-all"
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
                   disabled={submittingEdit}
-                  className="flex-1 py-3.5 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 text-white rounded-[24px] font-black text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-600/20"
+                  className="flex-1 py-3.5 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-md"
                 >
                   {submittingEdit ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -2086,7 +2129,7 @@ export default function JadwalPengujiPage() {
 
       {/* MODAL CREATE SLOT */}
       {isSlotModalOpen && (
-        <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog" className="fixed inset-0 z-[60] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-[24px_28px] bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
+        <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog" className="fixed inset-0 z-[60] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-6 sm:p-8 bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
           <div className="bg-white rounded-[32px] shadow-2xl w-full max-w-md overflow-hidden border border-white/20 animate-in zoom-in-95 duration-300">
             {/* Header */}
             <div className="p-5 md:p-6 border-b border-stone-100 flex justify-between items-center bg-white/95 backdrop-blur rounded-t-[32px] shrink-0 sticky top-0 z-30 shadow-xs">
@@ -2100,13 +2143,13 @@ export default function JadwalPengujiPage() {
               </div>
               <button
                 onClick={() => setIsSlotModalOpen(false)}
-                type="button" className="p-2 hover:bg-stone-200 rounded-full transition-colors text-stone-400 shrink-0"
+                className="p-4 hover:bg-stone-200 rounded-full transition-colors text-stone-400"
               >
                 <XCircle className="w-6 h-6" />
               </button>
             </div>
 
-            <form onSubmit={handleCreateSlot} className="p-[24px_28px] md:p-8 space-y-6">
+            <form onSubmit={handleCreateSlot} className="p-5 md:p-8 space-y-6 overflow-y-auto overscroll-contain custom-scrollbar flex-1">
               {/* Select Penguji (Admin Super / Admin Only) */}
               {["admin_super", "admin"].includes(activeRole) && (
                 <div>
@@ -2114,7 +2157,7 @@ export default function JadwalPengujiPage() {
                     Buat Atas Nama Penguji
                   </label>
                   <select
-                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:ring-2 focus:ring-primary-500 outline-none font-bold text-primary-950 transition-all"
+                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-3xl focus:ring-2 focus:ring-primary-500 outline-none font-bold text-primary-950 transition-all"
                     value={selectedCreatorId}
                     onChange={(e) => {
                       setSelectedCreatorId(e.target.value);
@@ -2152,38 +2195,44 @@ export default function JadwalPengujiPage() {
               )}
 
               {/* Jenis Ujian */}
-              {ADMIN_ROLES.includes(activeRole) ? (
+              {availableSessionTitles.length > 1 || ADMIN_ROLES.includes(activeRole) ? (
                 <div>
                   <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2">
                     Jenis Ujian
                   </label>
                   <select
                     required
-                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:ring-2 focus:ring-primary-500 outline-none font-bold text-primary-950 transition-all"
+                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-3xl focus:ring-2 focus:ring-primary-500 outline-none font-bold text-primary-950 transition-all"
                     value={slotForm.title}
-                    onChange={(e) =>
-                      setSlotForm({ ...slotForm, title: e.target.value })
-                    }
+                    onChange={(e) => {
+                      const newTitle = e.target.value;
+                      const newDur = getDurationFromTitle(newTitle);
+                      setSlotForm((prev) => ({
+                        ...prev,
+                        title: newTitle,
+                        duration: newDur,
+                        end_time: calculateEndTime(prev.start_time, newTitle, newDur),
+                      }));
+                    }}
                   >
-                    <option value="" disabled>
-                      Pilih Jenis Ujian
-                    </option>
-                    <option value="Tes Al-Qur'an (Bacaan & Hafalan)">Tes Al-Qur'an (Bacaan & Hafalan)</option>
-                    <option value="Tes Lisan Bahasa Arab">Tes Lisan Bahasa Arab</option>
-                    <option value="Seleksi Wawancara Calon Santri">
-                      Seleksi Wawancara Calon Santri
-                    </option>
-                    <option value="Seleksi Wawancara Orang Tua">
-                      Seleksi Wawancara Orang Tua
-                    </option>
+                    {availableSessionTitles.map((t) => (
+                      <option key={t} value={t}>
+                        {t}
+                      </option>
+                    ))}
                   </select>
+                  {availableSessionTitles.length > 1 && !ADMIN_ROLES.includes(activeRole) && (
+                    <p className="text-[10px] text-ink-400 font-bold mt-1.5">
+                      *Pilih jenis ujian sesuai penugasan peran Anda.
+                    </p>
+                  )}
                 </div>
               ) : (
                 <div>
                   <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2">
                     Jenis Ujian
                   </label>
-                  <div className="w-full px-4 py-3 bg-primary-50/50 border border-primary-100 rounded-[24px] text-primary-900 font-black flex items-center gap-2 shadow-inner">
+                  <div className="w-full px-4 py-3 bg-primary-50/50 border border-primary-100 rounded-3xl text-primary-900 font-black flex items-center gap-2 shadow-inner">
                     <div className="w-2 h-2 rounded-full bg-primary-500 animate-pulse"></div>
                     {slotForm.title || "—"}
                   </div>
@@ -2201,7 +2250,7 @@ export default function JadwalPengujiPage() {
                 <input
                   type="date"
                   required
-                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:ring-2 focus:ring-primary-500 outline-none font-bold text-primary-950 transition-all"
+                  className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-3xl focus:ring-2 focus:ring-primary-500 outline-none font-bold text-primary-950 transition-all"
                   value={slotForm.date}
                   onChange={(e) =>
                     setSlotForm({ ...slotForm, date: e.target.value })
@@ -2210,7 +2259,7 @@ export default function JadwalPengujiPage() {
               </div>
 
               {/* Waktu */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-[24px_28px]">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-black text-ink-400 uppercase tracking-widest mb-2">
                     Mulai
@@ -2218,14 +2267,14 @@ export default function JadwalPengujiPage() {
                   <input
                     type="time"
                     required
-                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:ring-2 focus:ring-primary-500 outline-none font-bold text-primary-950"
+                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-3xl focus:ring-2 focus:ring-primary-500 outline-none font-bold text-primary-950"
                     value={slotForm.start_time}
                     onChange={(e) => {
                       const newStart = e.target.value;
                       setSlotForm({
                         ...slotForm,
                         start_time: newStart,
-                        end_time: calculateEndTime(newStart, slotForm.title) });
+                        end_time: calculateEndTime(newStart, slotForm.title, slotForm.duration) });
                     }}
                   />
                 </div>
@@ -2236,7 +2285,7 @@ export default function JadwalPengujiPage() {
                   <input
                     type="time"
                     required
-                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-[24px] focus:ring-2 focus:ring-primary-500 outline-none font-bold text-primary-950"
+                    className="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-3xl focus:ring-2 focus:ring-primary-500 outline-none font-bold text-primary-950"
                     value={slotForm.end_time}
                     onChange={(e) =>
                       setSlotForm({ ...slotForm, end_time: e.target.value })
@@ -2245,15 +2294,53 @@ export default function JadwalPengujiPage() {
                 </div>
               </div>
               <p className="text-[10px] text-ink-300 italic -mt-4">
-                <Clock className="w-3 h-3 inline-block mr-1 text-ink-300" /> Durasi sesi: {getDurationFromTitle(slotForm.title)} menit.
+                <Clock className="w-3 h-3 inline-block mr-1 text-ink-300" /> Durasi sesi: {slotForm.duration || getDurationFromTitle(slotForm.title)} menit.
               </p>
+
+              {/* Pilihan Cepat Durasi Sesi */}
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="block text-xs font-black text-ink-400 uppercase tracking-widest">
+                    Pilih Durasi Sesi
+                  </label>
+                  <span className="text-[10px] font-bold text-ink-400">
+                    Default: {getDurationFromTitle(slotForm.title)} menit
+                  </span>
+                </div>
+                <div className="grid grid-cols-5 gap-1.5">
+                  {[15, 20, 30, 45, 60].map((dur) => {
+                    const isSelected =
+                      (slotForm.duration || getDurationFromTitle(slotForm.title)) === dur;
+                    return (
+                      <button
+                        key={dur}
+                        type="button"
+                        onClick={() => {
+                          setSlotForm((prev) => ({
+                            ...prev,
+                            duration: dur,
+                            end_time: calculateEndTime(prev.start_time, prev.title, dur),
+                          }));
+                        }}
+                        className={`py-2 rounded-2xl text-xs font-black transition-all border ${
+                          isSelected
+                            ? "bg-primary-600 text-white border-primary-600 shadow-md shadow-primary-500/20"
+                            : "bg-stone-50 hover:bg-stone-100 text-stone-600 border-stone-200"
+                        }`}
+                      >
+                        {dur} mnt
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
 
               {/* Alerts */}
               <div className="space-y-3">
-                <div className="bg-primary-600 rounded-[24px] p-[24px_28px] shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-950/20 text-white flex items-start gap-3 relative overflow-hidden group">
+                <div className="bg-primary-600 rounded-2xl p-6 sm:p-8 shadow-2xl text-white flex items-start gap-3 relative overflow-hidden group">
                   <div className="absolute top-0 right-0 w-20 h-20 bg-white/10 rounded-full -mr-10 -mt-10 blur-xl"></div>
-                  <div className="w-8 h-8 bg-white/20 backdrop-blur-md rounded-[24px] flex items-center justify-center shrink-0">
-                    <Sparkles className="w-4 h-4 text-white" />
+                  <div className="w-8 h-8 bg-white/20 backdrop-blur-md rounded-3xl flex items-center justify-center shrink-0">
+                    <span className="text-sm"><Sparkles className="w-4 h-4 inline-block mr-1" /></span>
                   </div>
                   <div>
                     <p className="text-[10px] text-primary-100 font-black uppercase tracking-widest mb-0.5">
@@ -2267,15 +2354,15 @@ export default function JadwalPengujiPage() {
                   </div>
                 </div>
 
-                <div className="bg-emerald-50 rounded-[24px] p-[24px_28px] border border-emerald-100 flex items-start gap-3">
-                  <div className="w-8 h-8 bg-emerald-100 rounded-[24px] flex items-center justify-center shrink-0 text-emerald-600">
+                <div className="bg-emerald-50 rounded-2xl p-6 sm:p-8 border border-emerald-100 flex items-start gap-3">
+                  <div className="w-8 h-8 bg-emerald-100 rounded-3xl flex items-center justify-center shrink-0 text-[#9D174D] whitespace-nowrap shrink-0">
                     <Users className="w-4 h-4" />
                   </div>
                   <div>
-                    <p className="text-[10px] text-emerald-800 font-black uppercase tracking-widest mb-0.5">
+                    <p className="text-[10px] text-[#9D174D] font-black uppercase tracking-widest mb-0.5">
                       Kapasitas
                     </p>
-                    <p className="text-[11px] text-emerald-700 leading-relaxed font-medium">
+                    <p className="text-[11px] text-[#9D174D] leading-relaxed font-medium">
                       Setiap sesi memiliki <b>Kuota 1 Santri</b> (Private /
                       1-on-1).
                     </p>
@@ -2286,7 +2373,7 @@ export default function JadwalPengujiPage() {
               <button
                 type="submit"
                 disabled={submittingSlot}
-                className="w-full py-4 bg-primary-600 hover:bg-primary-700 text-white font-black rounded-[24px] transition-all shadow-2xl shadow-primary/30  shadow-primary-900/20 flex items-center justify-center gap-2 active:scale-95 disabled:opacity-50"
+                className="w-full py-4 bg-primary-600 hover:bg-primary-700 text-white font-black rounded-2xl transition-all shadow-md flex items-center justify-center gap-2 active:scale-95 disabled:opacity-50"
               >
                 {submittingSlot ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
@@ -2349,7 +2436,7 @@ export default function JadwalPengujiPage() {
                   
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <label className="text-xs font-bold text-ink-600 uppercase tracking-wider">Jam Mulai</label>
+                      <label className="text-xs font-bold text-ink-600 uppercase tracking-wider">Jam Mulai (24 Jam, misal 14:00)</label>
                       <input 
                         type="time" 
                         value={rescheduleForm.start_time}
@@ -2408,9 +2495,9 @@ export default function JadwalPengujiPage() {
 
         {/* MODAL DETAIL PENDAFTAR */}
       {isDetailModalOpen && selectedPendaftar && (
-        <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog" className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-[24px_28px] bg-black/50 backdrop-blur-sm overflow-hidden overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
-          <div className="bg-white rounded-[24px] shadow-2xl shadow-primary/30 w-full max-w-lg max-h-[90vh] flex flex-col">
-            <div className="p-[24px_28px] border-b border-secondary-100 flex justify-between items-center bg-secondary-50 rounded-t-2xl shrink-0">
+        <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog" className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-6 sm:p-8 bg-black/50 backdrop-blur-sm overflow-hidden overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col">
+            <div className="p-6 sm:p-8 border-b border-secondary-100 flex justify-between items-center bg-secondary-50 rounded-t-2xl shrink-0">
               <h3 className="font-bold text-ink-950">Data Pendaftar</h3>
               <button onClick={() => setIsDetailModalOpen(false)}>
                 <XCircle className="w-6 h-6 text-ink-400 hover:text-ink-600" />
@@ -2422,7 +2509,7 @@ export default function JadwalPengujiPage() {
                 <h4 className="text-sm font-bold text-ink-400 uppercase tracking-wider mb-3">
                   Identitas Santri
                 </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-[24px_28px] text-sm">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                   <div>
                     <label className="block text-secondary-500 text-xs">
                       Nama Lengkap
@@ -2476,7 +2563,7 @@ export default function JadwalPengujiPage() {
                     <label className="block text-secondary-500 text-xs">
                       No. WA / HP (Wali/Utama)
                     </label>
-                    <p className="font-mono font-bold text-green-700">
+                    <p className="font-mono font-bold text-[#9D174D]">
                       {selectedPendaftar.no_hp || "-"}
                     </p>
                   </div>
@@ -2506,7 +2593,7 @@ export default function JadwalPengujiPage() {
                 <h4 className="text-sm font-bold text-ink-400 uppercase tracking-wider mb-3">
                   Data Orang Tua
                 </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-[24px_28px] text-sm">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                   <div>
                     <label className="block text-secondary-500 text-xs">
                       Nama Ayah
@@ -2551,10 +2638,10 @@ export default function JadwalPengujiPage() {
                 </div>
               </div>
             </div>
-            <div className="p-[24px_28px] border-t border-secondary-100 bg-secondary-50 rounded-b-2xl shrink-0">
+            <div className="p-6 sm:p-8 border-t border-secondary-100 bg-secondary-50 rounded-b-2xl shrink-0">
               <button
                 onClick={() => setIsDetailModalOpen(false)}
-                className="w-full py-2.5 bg-secondary-200 hover:bg-secondary-200 text-ink-900 font-bold rounded-[24px] transition-colors"
+                className="w-full py-2.5 bg-secondary-200 hover:bg-secondary-200 text-ink-900 font-bold rounded-3xl transition-colors"
               >
                 Tutup
               </button>
@@ -2565,10 +2652,10 @@ export default function JadwalPengujiPage() {
 
       {/* MODAL BULK CREATE SLOT */}
       {isBulkModalOpen && (
-        <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog" className="fixed inset-0 z-[60] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-[24px_28px] bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
+        <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog" className="fixed inset-0 z-[60] flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-6 sm:p-8 bg-primary-950/40 backdrop-blur-md animate-in fade-in duration-300 overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
           <div className="bg-white rounded-[40px] shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col animate-in zoom-in-95 duration-300 border border-white/20">
             {/* Header */}
-            <div className="p-[24px_28px] md:p-8 border-b border-stone-100 flex justify-between items-center bg-stone-50/50 rounded-t-[40px] shrink-0">
+            <div className="p-5 md:p-8 border-b border-stone-100 flex justify-between items-center bg-white/95 backdrop-blur rounded-t-[40px] shrink-0 sticky top-0 z-30 shadow-xs">
               <div>
                 <h3 className="text-2xl font-black text-primary-950 tracking-tight leading-tight">
                   Buat Jadwal Massal
@@ -2596,7 +2683,7 @@ export default function JadwalPengujiPage() {
                     Buat Atas Nama Penguji
                   </label>
                   <select
-                    className="w-full px-5 py-4 bg-stone-100/50 border border-stone-200 text-stone-900 font-bold rounded-[24px] focus:ring-4 focus:ring-primary-500/20 focus:border-primary-500 transition-all appearance-none outline-none"
+                    className="w-full px-5 py-4 bg-stone-100/50 border border-stone-200 text-stone-900 font-bold rounded-2xl focus:ring-4 focus:ring-primary-500/20 focus:border-primary-500 transition-all appearance-none outline-none whitespace-nowrap inline-block shrink-0"
                     value={selectedCreatorId}
                     onChange={(e) => {
                       setSelectedCreatorId(e.target.value);
@@ -2640,21 +2727,49 @@ export default function JadwalPengujiPage() {
                 </div>
               )}
 
-              {/* Jenis Ujian Info */}
-              <div className="bg-primary-600 rounded-3xl p-6 shadow-2xl shadow-primary/30  shadow-primary-950/20 text-white relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
-                <p className="text-[10px] text-primary-100 font-black uppercase tracking-widest mb-1.5 leading-none">
-                  Mata Ujian Terpilih
-                </p>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-[24px] flex items-center justify-center text-xl shadow-inner">
-                    <Trophy className="w-5 h-5 text-gold-300" />
-                  </div>
-                  <p className="text-2xl font-black tracking-tight text-white">
-                    {bulkForm.title || "—"}
+              {/* Jenis Ujian Info / Selector */}
+              {availableSessionTitles.length > 1 || ADMIN_ROLES.includes(activeRole) ? (
+                <div className="space-y-3">
+                  <label className="block text-sm font-black text-primary-950 uppercase tracking-wider">
+                    Pilih Jenis Ujian / Sesi
+                  </label>
+                  <select
+                    className="w-full px-5 py-4 bg-stone-100/50 border border-stone-200 text-stone-900 font-bold rounded-2xl focus:ring-4 focus:ring-primary-500/20 focus:border-primary-500 transition-all appearance-none outline-none"
+                    value={bulkForm.title}
+                    onChange={(e) => {
+                      const newTitle = e.target.value;
+                      const newDur = getDurationFromTitle(newTitle);
+                      setBulkForm((prev) => ({ ...prev, title: newTitle, duration: newDur }));
+                    }}
+                  >
+                    {availableSessionTitles.map((t) => (
+                      <option key={t} value={t}>
+                        {t}
+                      </option>
+                    ))}
+                  </select>
+                  <p className="text-xs text-stone-500 font-medium">
+                    {ADMIN_ROLES.includes(activeRole)
+                      ? "Pilih jenis ujian yang ingin dibuat slot massalnya."
+                      : "Akun Anda memiliki beberapa peran penguji. Silakan pilih jenis ujian yang ingin dibuat slot ketersediaannya."}
                   </p>
                 </div>
-              </div>
+              ) : (
+                <div className="bg-primary-600 rounded-3xl p-6 shadow-2xl text-white relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
+                  <p className="text-[10px] text-primary-100 font-black uppercase tracking-widest mb-1.5 leading-none">
+                    Mata Ujian Terpilih
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-white/20 backdrop-blur-md rounded-3xl flex items-center justify-center text-xl shadow-inner">
+                      <Trophy className="w-5 h-5 text-gold-300" />
+                    </div>
+                    <p className="text-2xl font-black tracking-tight text-white">
+                      {bulkForm.title || "—"}
+                    </p>
+                  </div>
+                </div>
+              )}
 
               {/* Day Selection */}
               <div>
@@ -2678,17 +2793,17 @@ export default function JadwalPengujiPage() {
                         key={day.id}
                         type="button"
                         onClick={() => toggleDay(day.id)}
-                        className={`p-[16px_20px].5 rounded-[24px] text-xs font-black transition-all border relative flex flex-col items-center min-w-[70px] ${
+                        className={`px-4 py-2.5 rounded-2xl text-xs font-black transition-all border relative flex flex-col items-center min-w-[70px] ${
                           isSelected
                             ? isActive
-                              ? "bg-primary-700 text-white border-primary-800 shadow-2xl shadow-primary/30  shadow-primary/20 scale-105 z-10"
+                              ? "bg-primary-700 text-white border-primary-800 shadow-2xl    scale-105 z-10"
                               : "bg-primary-50 text-primary-700 border-primary-100 hover:bg-primary-100"
                             : "bg-stone-50 text-stone-400 border-stone-200 hover:bg-stone-100"
                         }`}
                       >
                         {day.label}
                         {isSelected && !isActive && (
-                          <div className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white shadow-sm" />
+                          <div className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white shadow-2xl" />
                         )}
                         {isActive && (
                           <div className="mt-1 w-5 h-1 bg-gold-400 rounded-full"></div>
@@ -2713,7 +2828,7 @@ export default function JadwalPengujiPage() {
                   <input
                     type="date"
                     required
-                    className="w-full px-4 py-3 bg-white border border-stone-200 rounded-[24px] focus:ring-2 focus:ring-primary-500 outline-none font-black text-primary-950 shadow-sm"
+                    className="w-full px-4 py-3 bg-white border border-stone-200 rounded-2xl focus:ring-2 focus:ring-primary-500 outline-none font-black text-primary-950 shadow-sm"
                     value={bulkForm.startDate}
                     onChange={(e) =>
                       setBulkForm({ ...bulkForm, startDate: e.target.value })
@@ -2727,7 +2842,7 @@ export default function JadwalPengujiPage() {
                   <input
                     type="date"
                     required
-                    className="w-full px-4 py-3 bg-white border border-stone-200 rounded-[24px] focus:ring-2 focus:ring-primary-500 outline-none font-black text-primary-950 shadow-sm"
+                    className="w-full px-4 py-3 bg-white border border-stone-200 rounded-2xl focus:ring-2 focus:ring-primary-500 outline-none font-black text-primary-950 shadow-sm"
                     value={bulkForm.endDate}
                     onChange={(e) =>
                       setBulkForm({ ...bulkForm, endDate: e.target.value })
@@ -2737,7 +2852,7 @@ export default function JadwalPengujiPage() {
               </div>
 
               {/* Time Slots */}
-              <div className="bg-stone-50 rounded-[32px] p-[24px_28px] md:p-8 border border-stone-100">
+              <div className="bg-stone-50 rounded-[32px] p-5 md:p-8 border border-stone-100">
                 <div className="flex items-center justify-between mb-6 border-b border-stone-200 pb-4">
                   <div>
                     <label className="block text-[10px] text-ink-300 font-black uppercase tracking-[0.2em] mb-1">
@@ -2761,24 +2876,72 @@ export default function JadwalPengujiPage() {
                     <button
                       type="button"
                       onClick={copySlotsToAll}
-                      className="text-[10px] bg-primary-600 text-white px-3 py-2 rounded-[24px] font-black hover:bg-primary-700 transition-all shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 active:scale-95 flex items-center gap-2"
+                      className="text-[10px] bg-primary-600 text-white px-3 py-2 rounded-3xl font-black hover:bg-primary-700 transition-all shadow-md active:scale-95 flex items-center gap-2"
                     >
                       <Save className="w-3 h-3" /> SALIN KE SEMUA HARI
                     </button>
                   )}
                 </div>
 
+                {/* Pilihan Cepat Durasi Sesi Bulk */}
+                <div className="mb-4">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="block text-xs font-black text-ink-400 uppercase tracking-widest">
+                      Durasi Tiap Sesi (Slot)
+                    </label>
+                    <span className="text-[10px] font-bold text-ink-400">
+                      Default: {getDurationFromTitle(bulkForm.title)} menit
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-5 gap-1.5">
+                    {[15, 20, 30, 45, 60].map((dur) => {
+                      const isSelected =
+                        (bulkForm.duration || getDurationFromTitle(bulkForm.title)) === dur;
+                      return (
+                        <button
+                          key={dur}
+                          type="button"
+                          onClick={() => {
+                            setBulkForm((prev) => {
+                              const newDaySlots = { ...prev.daySlots };
+                              Object.keys(newDaySlots).forEach((day) => {
+                                const dayId = Number(day);
+                                newDaySlots[dayId] = (newDaySlots[dayId] || []).map((s) => ({
+                                  start: s.start,
+                                  end: calculateEndTime(s.start, prev.title, dur),
+                                }));
+                              });
+                              return {
+                                ...prev,
+                                duration: dur,
+                                daySlots: newDaySlots,
+                              };
+                            });
+                          }}
+                          className={`py-2 rounded-2xl text-xs font-black transition-all border ${
+                            isSelected
+                              ? "bg-primary-600 text-white border-primary-600 shadow-md shadow-primary-500/20"
+                              : "bg-stone-50 hover:bg-stone-100 text-stone-600 border-stone-200"
+                          }`}
+                        >
+                          {dur} mnt
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
                 <div className="space-y-4">
                   {(bulkForm.daySlots[activeDay] || []).map((slot, index) => (
                     <div
                       key={index}
-                      className="flex items-center gap-[24px_28px] bg-white p-[24px_28px] rounded-3xl border border-stone-200 shadow-sm hover:shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 transition-shadow group"
+                      className="flex items-center gap-4 bg-white p-6 sm:p-8 rounded-3xl border border-stone-200 shadow-2xl hover:shadow-xl transition-shadow group"
                     >
-                      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-[24px_28px]">
+                      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
                         <CustomTimePicker value={slot.start} onChange={(val) => {
                           const newSlots = [...(bulkForm.daySlots[activeDay] || [])];
                           newSlots[index].start = val;
-                          newSlots[index].end = calculateEndTime(val, bulkForm.title);
+                          newSlots[index].end = calculateEndTime(val, bulkForm.title, bulkForm.duration || getDurationFromTitle(bulkForm.title));
                           setBulkForm({ ...bulkForm, daySlots: { ...bulkForm.daySlots, [activeDay]: newSlots } });
                         }} />
                         <CustomTimePicker value={slot.end} onChange={(val) => {
@@ -2790,7 +2953,7 @@ export default function JadwalPengujiPage() {
                       <button
                         type="button"
                         onClick={() => removeTimeSlot(index)}
-                        className="p-3 text-stone-300 hover:text-rose-600 hover:bg-rose-50 rounded-[24px] transition-all"
+                        className="p-3 text-stone-300 hover:text-rose-600 hover:bg-rose-50 rounded-2xl transition-all"
                       >
                         <Trash2 className="w-5 h-5" />
                       </button>
@@ -2807,8 +2970,8 @@ export default function JadwalPengujiPage() {
               </div>
 
               {/* Informational Alert */}
-              <div className="bg-gold-50 rounded-3xl p-6 border border-gold-100 flex items-start gap-[24px_28px]">
-                <div className="w-10 h-10 bg-gold-400 rounded-[24px] flex items-center justify-center shrink-0 text-primary-950">
+              <div className="bg-gold-50 rounded-3xl p-6 border border-gold-100 flex items-start gap-4">
+                <div className="w-10 h-10 bg-gold-400 rounded-2xl flex items-center justify-center shrink-0 text-primary-950">
                   <AlertCircle className="w-5 h-5" />
                 </div>
                 <div>
@@ -2818,7 +2981,7 @@ export default function JadwalPengujiPage() {
                   <p className="text-[11px] text-primary-900 leading-relaxed font-bold">
                     Semua sesi yang dibuat massal akan otomatis diset sebagai{" "}
                     <span className="text-primary-600">Online</span> dan memiliki{" "}
-                    <span className="text-emerald-600">Kuota 1 Santri</span>.
+                    <span className="text-[#9D174D]">Kuota 1 Santri</span>.
                   </p>
                 </div>
               </div>
@@ -2826,7 +2989,7 @@ export default function JadwalPengujiPage() {
               <button
                 type="submit"
                 disabled={submittingBulk}
-                className="w-full py-5 bg-primary-600 hover:bg-primary-700 text-white font-black rounded-[32px] transition-all shadow-2xl shadow-primary-900/40 flex items-center justify-center gap-3 active:scale-95 disabled:opacity-50 text-lg tracking-tight"
+                className="w-full py-5 bg-primary-600 hover:bg-primary-700 text-white font-black rounded-[32px] transition-all shadow-md flex items-center justify-center gap-3 active:scale-95 disabled:opacity-50 text-lg tracking-tight"
               >
                 {submittingBulk ? (
                   <Loader2 className="w-6 h-6 animate-spin" />
