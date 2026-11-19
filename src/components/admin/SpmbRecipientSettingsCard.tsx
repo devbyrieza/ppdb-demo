@@ -387,25 +387,25 @@ export default function SpmbRecipientSettingsCard() {
       {/* Form Settings */}
       <form onSubmit={handleSave} className="space-y-5">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {/* Admin Keuangan */}
-          <PhoneListField
-            label="1. Nomor WhatsApp Admin Keuangan"
-            required
-            description="Menerima alert santri yang mendekati jatuh tempo DP 50% dan permohonan dispensasi."
-            placeholder="Contoh: 081298765432"
-            phones={form.adminKeuangan}
-            onChange={(phones) => setForm({ ...form, adminKeuangan: phones })}
-            accentColor="emerald"
-          />
-
           {/* Super Admin */}
           <PhoneListField
-            label="2. Nomor WhatsApp Super Admin"
+            label="1. Nomor WhatsApp Super Admin"
             required
             description="Menerima notifikasi teknis kuota kosong, alert eskalasi santri cadangan, dan ringkasan harian."
             placeholder="Contoh: 081234567890"
             phones={form.superAdmin}
             onChange={(phones) => setForm({ ...form, superAdmin: phones })}
+            accentColor="emerald"
+          />
+
+          {/* Admin Keuangan */}
+          <PhoneListField
+            label="2. Nomor WhatsApp Admin Keuangan"
+            required
+            description="Menerima alert santri yang mendekati jatuh tempo DP 50% dan permohonan dispensasi."
+            placeholder="Contoh: 081298765432"
+            phones={form.adminKeuangan}
+            onChange={(phones) => setForm({ ...form, adminKeuangan: phones })}
             accentColor="emerald"
           />
 
