@@ -185,13 +185,25 @@ export default function SpmbRecipientBanner({ role }: { role?: string }) {
     loadSettings();
   }, []);
 
-  // Lock scroll background saat popup modal terbuka
+  // Lock scroll background saat popup modal terbuka (termasuk Lenis smooth-scroll)
   useEffect(() => {
     if (showModal) {
-      const prevOverflow = document.body.style.overflow;
+      const prevBodyOverflow = document.body.style.overflow;
+      const prevHtmlOverflow = document.documentElement.style.overflow;
       document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+
+      const lenis = (window as any).lenis;
+      if (lenis && typeof lenis.stop === "function") {
+        lenis.stop();
+      }
+
       return () => {
-        document.body.style.overflow = prevOverflow;
+        document.body.style.overflow = prevBodyOverflow;
+        document.documentElement.style.overflow = prevHtmlOverflow;
+        if (lenis && typeof lenis.start === "function") {
+          lenis.start();
+        }
       };
     }
   }, [showModal]);
@@ -299,11 +311,17 @@ export default function SpmbRecipientBanner({ role }: { role?: string }) {
       {/* MODAL / DIALOG FORM PENGATURAN NOMOR WHATSAPP */}
       {showModal && (
         <div
-          className="fixed inset-0 z-60 bg-black/75 backdrop-blur-xs overflow-y-auto p-3 sm:p-6 flex items-start sm:items-center justify-center animate-in fade-in duration-150"
+          data-lenis-prevent="true"
+          onWheel={(e) => e.stopPropagation()}
+          onTouchMove={(e) => e.stopPropagation()}
+          className="fixed inset-0 z-60 bg-black/75 backdrop-blur-xs overflow-y-auto p-3 sm:p-6 flex items-start sm:items-center justify-center overscroll-contain animate-in fade-in duration-150"
           onClick={() => setShowModal(false)}
         >
           <div
-            className="bg-white rounded-3xl shadow-2xl w-full max-w-xl my-auto border border-stone-200 flex flex-col max-h-[92vh] overflow-hidden animate-in fade-in zoom-in-95 duration-150"
+            data-lenis-prevent="true"
+            onWheel={(e) => e.stopPropagation()}
+            onTouchMove={(e) => e.stopPropagation()}
+            className="bg-white rounded-3xl shadow-2xl w-full max-w-xl my-auto border border-stone-200 flex flex-col max-h-[85vh] sm:max-h-[88vh] overflow-hidden overscroll-contain animate-in fade-in zoom-in-95 duration-150"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header Modal (Pinned / Sticky) */}
@@ -335,7 +353,10 @@ export default function SpmbRecipientBanner({ role }: { role?: string }) {
             <form
               id="spmb-recipient-form"
               onSubmit={handleSave}
-              className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-4"
+              data-lenis-prevent="true"
+              onWheel={(e) => e.stopPropagation()}
+              onTouchMove={(e) => e.stopPropagation()}
+              className="flex-1 min-h-0 overflow-y-auto overscroll-contain custom-scrollbar p-5 sm:p-6 space-y-4 touch-pan-y"
             >
               {/* 1. Admin Keuangan */}
               <PhoneListField

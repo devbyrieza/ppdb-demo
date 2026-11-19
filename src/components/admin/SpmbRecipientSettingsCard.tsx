@@ -188,13 +188,25 @@ export default function SpmbRecipientSettingsCard() {
     fetchSettings();
   }, []);
 
-  // Lock scroll background saat preview modal terbuka
+  // Lock scroll background saat preview modal terbuka (termasuk Lenis smooth-scroll)
   useEffect(() => {
     if (previewText) {
-      const prev = document.body.style.overflow;
+      const prevBodyOverflow = document.body.style.overflow;
+      const prevHtmlOverflow = document.documentElement.style.overflow;
       document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+
+      const lenis = (window as any).lenis;
+      if (lenis && typeof lenis.stop === "function") {
+        lenis.stop();
+      }
+
       return () => {
-        document.body.style.overflow = prev;
+        document.body.style.overflow = prevBodyOverflow;
+        document.documentElement.style.overflow = prevHtmlOverflow;
+        if (lenis && typeof lenis.start === "function") {
+          lenis.start();
+        }
       };
     }
   }, [previewText]);
@@ -473,11 +485,17 @@ export default function SpmbRecipientSettingsCard() {
       {/* Preview Modal */}
       {previewText && (
         <div
-          className="fixed inset-0 z-60 bg-black/70 backdrop-blur-xs overflow-y-auto p-4 flex items-center justify-center animate-in fade-in duration-150"
+          data-lenis-prevent="true"
+          onWheel={(e) => e.stopPropagation()}
+          onTouchMove={(e) => e.stopPropagation()}
+          className="fixed inset-0 z-60 bg-black/70 backdrop-blur-xs overflow-y-auto p-4 flex items-center justify-center overscroll-contain animate-in fade-in duration-150"
           onClick={() => setPreviewText(null)}
         >
           <div
-            className="bg-white rounded-2xl shadow-xl w-full max-w-lg my-auto overflow-hidden border border-stone-200 flex flex-col max-h-[90vh]"
+            data-lenis-prevent="true"
+            onWheel={(e) => e.stopPropagation()}
+            onTouchMove={(e) => e.stopPropagation()}
+            className="bg-white rounded-2xl shadow-xl w-full max-w-lg my-auto overflow-hidden border border-stone-200 flex flex-col max-h-[85vh] sm:max-h-[88vh] overscroll-contain"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="shrink-0 flex items-center justify-between px-5 py-3 border-b border-stone-100 bg-stone-50">
@@ -492,7 +510,12 @@ export default function SpmbRecipientSettingsCard() {
                 <X className="w-4 h-4" />
               </button>
             </div>
-            <div className="flex-1 overflow-y-auto p-5 bg-stone-100">
+            <div
+              data-lenis-prevent="true"
+              onWheel={(e) => e.stopPropagation()}
+              onTouchMove={(e) => e.stopPropagation()}
+              className="flex-1 min-h-0 overflow-y-auto overscroll-contain custom-scrollbar p-5 bg-stone-100 touch-pan-y"
+            >
               <pre className="text-xs font-mono whitespace-pre-wrap bg-white p-4 rounded-xl border border-stone-200 text-stone-800 shadow-2xs leading-relaxed">
                 {previewText}
               </pre>
