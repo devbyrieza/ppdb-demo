@@ -154,29 +154,66 @@ export async function getSpmbNotificationSettings(): Promise<SpmbNotificationSet
       roleLabel: getRoleLabel(p.role),
     }));
 
-    const hasRoleExact = (p: typeof staffProfiles[0], exactRoles: string[]) => {
+    const isAlImamProject = Boolean(
+      (BRANDING.schoolName && BRANDING.schoolName.toLowerCase().includes("imam")) ||
+      (BRANDING.websiteUrl && BRANDING.websiteUrl.toLowerCase().includes("alimam"))
+    );
+
+    const isExcludedStaffForPopup = (name: string, phone: string): boolean => {
+      const n = (name || "").toLowerCase();
+      const p = (phone || "").replace(/\D/g, "");
+
+      // 1. Wahab Rajasam: Hapus dari rekomendasi popup di seluruh project
+      if (n.includes("wahab") || n.includes("rajasam") || p.includes("81326611671")) {
+        return true;
+      }
+
+      // 2. Rieza Eka Tomara: Hapus dari rekomendasi popup di semua project KECUALI alimam
+      if (!isAlImamProject) {
+        if (n.includes("rieza") || n.includes("tomara") || p.includes("81271414441")) {
+          return true;
+        }
+      }
+
+      return false;
+    };
+
+    const popupEligibleProfiles = staffProfiles.filter(
+      (p) => !isExcludedStaffForPopup(p.full_name, p.phone)
+    );
+
+    const popupEligibleStaff = popupEligibleProfiles.map((p) => ({
+      id: p.id,
+      name: p.full_name,
+      phone: normalizePhone(p.phone),
+      rawPhone: p.phone,
+      role: p.role,
+      roleLabel: getRoleLabel(p.role),
+    }));
+
+    const hasRoleExact = (p: typeof popupEligibleProfiles[0], exactRoles: string[]) => {
       const allRoles = [p.role, ...(p.secondary_roles || [])].map((r) => r.toLowerCase().trim());
       return exactRoles.some((target) => allRoles.includes(target.toLowerCase().trim()));
     };
 
     // 1. Super Admin: Hanya yang memiliki role admin_super, superadmin, atau head_of_it
-    superAdminStaff = allStaff.filter((_, idx) =>
-      hasRoleExact(staffProfiles[idx], ["admin_super", "superadmin", "head_of_it"])
+    superAdminStaff = popupEligibleStaff.filter((_, idx) =>
+      hasRoleExact(popupEligibleProfiles[idx], ["admin_super", "superadmin", "head_of_it"])
     );
 
     // 2. Admin Keuangan: Hanya yang memiliki role admin_keuangan atau keuangan
-    keuanganStaff = allStaff.filter((_, idx) =>
-      hasRoleExact(staffProfiles[idx], ["admin_keuangan", "keuangan"])
+    keuanganStaff = popupEligibleStaff.filter((_, idx) =>
+      hasRoleExact(popupEligibleProfiles[idx], ["admin_keuangan", "keuangan"])
     );
 
     // 3. Admin Berkas: Hanya yang memiliki role admin_berkas atau berkas
-    berkasStaff = allStaff.filter((_, idx) =>
-      hasRoleExact(staffProfiles[idx], ["admin_berkas", "berkas"])
+    berkasStaff = popupEligibleStaff.filter((_, idx) =>
+      hasRoleExact(popupEligibleProfiles[idx], ["admin_berkas", "berkas"])
     );
 
     // 4. Ketua Panitia: Sesuai arahan user, direkomendasikan para admin super (dan mudir / ketua_panitia jika ada)
-    ketuaStaff = allStaff.filter((_, idx) =>
-      hasRoleExact(staffProfiles[idx], ["admin_super", "superadmin", "head_of_it", "mudir", "ketua_panitia"])
+    ketuaStaff = popupEligibleStaff.filter((_, idx) =>
+      hasRoleExact(popupEligibleProfiles[idx], ["admin_super", "superadmin", "head_of_it", "mudir", "ketua_panitia"])
     );
   } catch (errStaff) {
     console.error("Error fetching staff profiles for suggestions:", errStaff);
