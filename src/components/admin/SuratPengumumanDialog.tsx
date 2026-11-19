@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckCircle2, FileText, Loader2, Upload, X } from "lucide-react";
+import { CheckCircle2, ExternalLink, Eye, FileText, Loader2, Upload, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
@@ -26,10 +26,17 @@ export function SuratPengumumanDialog({
   onDone?: () => void;
 }) {
   const [file, setFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [nomorSurat, setNomorSurat] = useState("");
   const [kelas, setKelas] = useState("VII MTs");
   const [kirimWa, setKirimWa] = useState(true);
   const [uploading, setUploading] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+    };
+  }, [previewUrl]);
 
   // Body Scroll Lock (Mandatory UX Rule)
   useEffect(() => {
@@ -168,6 +175,21 @@ export function SuratPengumumanDialog({
                   <p className="text-xs text-stone-400 mt-0.5">
                     Ukuran: {(file.size / 1024).toFixed(1)} KB — Klik untuk mengganti file
                   </p>
+                  <div className="mt-2.5">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        const url = URL.createObjectURL(file);
+                        setPreviewUrl(url);
+                      }}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-sky-300 bg-sky-50 hover:bg-sky-100 text-sky-800 text-xs font-bold transition shadow-xs active:scale-95 cursor-pointer"
+                    >
+                      <Eye className="w-3.5 h-3.5 text-sky-600" />
+                      <span>Lihat / Cek Isi Surat Sebelum Upload</span>
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <div>
@@ -222,6 +244,87 @@ export function SuratPengumumanDialog({
           </div>
         </div>
       </div>
+
+      {/* Modal Pratinjau Surat PDF */}
+      {previewUrl && (
+        <div
+          className="fixed inset-0 z-60 bg-black/75 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-150"
+          onClick={() => {
+            URL.revokeObjectURL(previewUrl);
+            setPreviewUrl(null);
+          }}
+        >
+          <div
+            className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl h-[90vh] flex flex-col overflow-hidden border border-stone-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header Preview */}
+            <div className="flex items-center justify-between px-5 py-3.5 border-b border-stone-200 bg-stone-50">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+                  <FileText className="h-4 w-4" />
+                </div>
+                <div className="min-w-0">
+                  <h4 className="text-sm font-bold text-stone-900 truncate">
+                    Pratinjau Surat: {pendaftar.nama_lengkap}
+                  </h4>
+                  <p className="text-[11px] text-stone-500 truncate font-mono">
+                    {file?.name}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0">
+                <a
+                  href={previewUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-stone-300 bg-white hover:bg-stone-100 text-stone-700 text-xs font-semibold shadow-2xs transition"
+                  title="Buka di tab browser baru untuk zoom / cetak"
+                >
+                  <ExternalLink className="h-3.5 w-3.5 text-stone-500" />
+                  <span className="hidden sm:inline">Buka Tab Baru</span>
+                </a>
+                <button
+                  type="button"
+                  onClick={() => {
+                    URL.revokeObjectURL(previewUrl);
+                    setPreviewUrl(null);
+                  }}
+                  className="w-8 h-8 rounded-lg text-stone-400 hover:text-stone-700 hover:bg-stone-200 flex items-center justify-center transition cursor-pointer"
+                  title="Tutup Pratinjau"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* PDF Viewer */}
+            <div className="flex-1 bg-stone-100 relative">
+              <iframe
+                src={`${previewUrl}#toolbar=1&navpanes=0`}
+                className="w-full h-full border-0"
+                title={`Pratinjau Surat - ${file?.name}`}
+              />
+            </div>
+
+            {/* Footer Preview */}
+            <div className="px-5 py-2.5 bg-white border-t border-stone-200 flex items-center justify-between text-xs text-stone-500">
+              <span>Periksa nama santri, nomor pendaftaran, dan nomor surat sebelum menerbitkan.</span>
+              <button
+                type="button"
+                onClick={() => {
+                  URL.revokeObjectURL(previewUrl);
+                  setPreviewUrl(null);
+                }}
+                className="px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold transition shadow-xs cursor-pointer"
+              >
+                Tutup &amp; Lanjutkan
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

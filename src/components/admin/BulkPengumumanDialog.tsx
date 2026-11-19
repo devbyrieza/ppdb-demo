@@ -3,6 +3,8 @@
 import {
   AlertCircle,
   CheckCircle2,
+  ExternalLink,
+  Eye,
   FileText,
   FileUp,
   HelpCircle,
@@ -39,6 +41,41 @@ export function BulkPengumumanDialog({
   // Multi-Upload state
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [fileMappings, setFileMappings] = useState<Record<string, string>>({}); // candidateId -> filename
+  const [previewFile, setPreviewFile] = useState<{
+    name: string;
+    url: string;
+    santriName?: string;
+  } | null>(null);
+
+  const handlePreviewFile = (fileName: string, santriName?: string) => {
+    const file = uploadedFiles.find((f) => f.name === fileName);
+    if (!file) {
+      Swal.fire({
+        icon: "warning",
+        title: "File Tidak Ditemukan",
+        text: "File PDF belum tersedia di memori browser untuk dipratinjau.",
+      });
+      return;
+    }
+    const url = URL.createObjectURL(file);
+    setPreviewFile({ name: file.name, url, santriName });
+  };
+
+  const closePreview = () => {
+    if (previewFile?.url) {
+      URL.revokeObjectURL(previewFile.url);
+    }
+    setPreviewFile(null);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (previewFile?.url) {
+        URL.revokeObjectURL(previewFile.url);
+      }
+    };
+  }, [previewFile]);
+
   const [candidateClasses, setCandidateClasses] = useState<Record<string, string>>(() => {
     const map: Record<string, string> = {};
     candidates.forEach((c) => {
@@ -457,11 +494,26 @@ export function BulkPengumumanDialog({
                     className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white border border-emerald-200 text-stone-700 text-xs shadow-2xs"
                   >
                     <FileText className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-                    <span className="max-w-[200px] truncate font-medium">{f.name}</span>
+                    <button
+                      type="button"
+                      onClick={() => handlePreviewFile(f.name)}
+                      className="max-w-[200px] truncate font-medium hover:text-emerald-700 hover:underline text-left cursor-pointer"
+                      title="Klik untuk pratinjau file ini"
+                    >
+                      {f.name}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handlePreviewFile(f.name)}
+                      className="text-stone-400 hover:text-sky-600 transition p-0.5"
+                      title="Lihat / Pratinjau file ini"
+                    >
+                      <Eye className="h-3.5 w-3.5" />
+                    </button>
                     <button
                       type="button"
                       onClick={() => handleRemoveFile(f.name)}
-                      className="text-stone-400 hover:text-red-500 transition ml-0.5"
+                      className="text-stone-400 hover:text-red-500 transition ml-0.5 p-0.5"
                       title="Hapus file dari daftar"
                     >
                       <X className="h-3.5 w-3.5" />
@@ -521,12 +573,27 @@ export function BulkPengumumanDialog({
                     <div className="flex items-center gap-2 shrink-0 self-end sm:self-auto flex-wrap sm:flex-nowrap">
                       {matchedFileName ? (
                         <>
-                          <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-medium">
+                          <div
+                            onClick={() => handlePreviewFile(matchedFileName, c.nama_lengkap)}
+                            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100/70 border border-emerald-200 text-emerald-900 text-xs font-medium cursor-pointer transition"
+                            title="Klik untuk membuka pratinjau surat ini"
+                          >
                             <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
-                            <span className="max-w-[190px] truncate font-bold text-emerald-900" title={matchedFileName}>
+                            <span className="max-w-[190px] truncate font-bold text-emerald-900">
                               {matchedFileName}
                             </span>
                           </div>
+
+                          {/* Tombol Lihat Surat */}
+                          <button
+                            type="button"
+                            onClick={() => handlePreviewFile(matchedFileName, c.nama_lengkap)}
+                            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-sky-300 bg-sky-50 hover:bg-sky-100 text-sky-800 text-xs font-bold transition shadow-2xs active:scale-95"
+                            title="Buka dan cek pratinjau surat keputusan santri ini"
+                          >
+                            <Eye className="h-3.5 w-3.5 text-sky-600" />
+                            <span>Lihat Surat</span>
+                          </button>
 
                           {/* Direct Re-upload File for This Santri */}
                           <label
@@ -677,6 +744,78 @@ export function BulkPengumumanDialog({
           </div>
         </div>
       </div>
+
+      {/* Modal Pratinjau Surat PDF */}
+      {previewFile && (
+        <div
+          className="fixed inset-0 z-60 bg-black/75 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-150"
+          onClick={closePreview}
+        >
+          <div
+            className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl h-[90vh] flex flex-col overflow-hidden border border-stone-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header Preview */}
+            <div className="flex items-center justify-between px-5 py-3.5 border-b border-stone-200 bg-stone-50">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+                  <FileText className="h-4 w-4" />
+                </div>
+                <div className="min-w-0">
+                  <h4 className="text-sm font-bold text-stone-900 truncate">
+                    Pratinjau Surat: {previewFile.santriName || previewFile.name}
+                  </h4>
+                  <p className="text-[11px] text-stone-500 truncate font-mono">
+                    {previewFile.name}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0">
+                <a
+                  href={previewFile.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-stone-300 bg-white hover:bg-stone-100 text-stone-700 text-xs font-semibold shadow-2xs transition"
+                  title="Buka di tab browser baru untuk zoom / cetak"
+                >
+                  <ExternalLink className="h-3.5 w-3.5 text-stone-500" />
+                  <span className="hidden sm:inline">Buka Tab Baru</span>
+                </a>
+                <button
+                  type="button"
+                  onClick={closePreview}
+                  className="w-8 h-8 rounded-lg text-stone-400 hover:text-stone-700 hover:bg-stone-200 flex items-center justify-center transition cursor-pointer"
+                  title="Tutup Pratinjau"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* PDF Viewer */}
+            <div className="flex-1 bg-stone-100 relative">
+              <iframe
+                src={`${previewFile.url}#toolbar=1&navpanes=0`}
+                className="w-full h-full border-0"
+                title={`Pratinjau Surat - ${previewFile.name}`}
+              />
+            </div>
+
+            {/* Footer Preview */}
+            <div className="px-5 py-2.5 bg-white border-t border-stone-200 flex items-center justify-between text-xs text-stone-500">
+              <span>Periksa nama santri, nomor pendaftaran, dan nomor surat sebelum menerbitkan.</span>
+              <button
+                type="button"
+                onClick={closePreview}
+                className="px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold transition shadow-xs cursor-pointer"
+              >
+                Tutup &amp; Lanjutkan
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
