@@ -2,6 +2,15 @@ import { prisma } from "@/lib/prisma";
 import { BRANDING } from "@/config/branding";
 import { sendMessage } from "@/lib/wablas";
 
+export interface StaffUserSummary {
+  id: string;
+  name: string;
+  phone: string;
+  rawPhone: string;
+  role: string;
+  roleLabel: string;
+}
+
 export interface SpmbNotificationSettings {
   adminKeuangan: string[];
   superAdmin: string[];
@@ -15,6 +24,13 @@ export interface SpmbNotificationSettings {
   };
   waitingDays: number;
   isConfigured: boolean;
+  staffSuggestions?: {
+    superAdmin: StaffUserSummary[];
+    adminKeuangan: StaffUserSummary[];
+    adminBerkas: StaffUserSummary[];
+    ketuaPanitia: StaffUserSummary[];
+    allStaff: StaffUserSummary[];
+  };
 }
 
 const KEY_ADMIN_KEUANGAN = "spmb_wa_admin_keuangan";
@@ -92,6 +108,76 @@ export async function getSpmbNotificationSettings(): Promise<SpmbNotificationSet
     console.error("Error reading spmb notification settings:", err);
   }
 
+  let allStaff: StaffUserSummary[] = [];
+  let superAdminStaff: StaffUserSummary[] = [];
+  let keuanganStaff: StaffUserSummary[] = [];
+  let berkasStaff: StaffUserSummary[] = [];
+  let ketuaStaff: StaffUserSummary[] = [];
+
+  try {
+    const staffProfiles = await prisma.profile.findMany({
+      where: {
+        role: { not: "pendaftar" },
+        phone: { notIn: ["", "-"] },
+      },
+      select: {
+        id: true,
+        full_name: true,
+        role: true,
+        secondary_roles: true,
+        phone: true,
+      },
+      orderBy: { full_name: "asc" },
+    });
+
+    const getRoleLabel = (role: string): string => {
+      const map: Record<string, string> = {
+        admin_super: "Super Admin",
+        superadmin: "Super Admin",
+        head_of_it: "Head of IT",
+        admin: "Administrator",
+        admin_keuangan: "Admin Keuangan",
+        admin_berkas: "Admin Berkas",
+        mudir: "Mudir",
+        ketua_panitia: "Ketua Panitia",
+        penguji: "Penguji",
+      };
+      return map[role] || role;
+    };
+
+    allStaff = staffProfiles.map((p) => ({
+      id: p.id,
+      name: p.full_name,
+      phone: normalizePhone(p.phone),
+      rawPhone: p.phone,
+      role: p.role,
+      roleLabel: getRoleLabel(p.role),
+    }));
+
+    const matchRole = (p: typeof staffProfiles[0], targetKeys: string[]) => {
+      const allRoles = [p.role, ...(p.secondary_roles || [])].map((r) => r.toLowerCase().trim());
+      return targetKeys.some((k) => allRoles.some((r) => r.includes(k)));
+    };
+
+    superAdminStaff = allStaff.filter((_, idx) =>
+      matchRole(staffProfiles[idx], ["super", "it", "admin"])
+    );
+
+    keuanganStaff = allStaff.filter((_, idx) =>
+      matchRole(staffProfiles[idx], ["keuangan", "finance", "bendahara"])
+    );
+
+    berkasStaff = allStaff.filter((_, idx) =>
+      matchRole(staffProfiles[idx], ["berkas", "dokumen", "sekretaris", "admin"])
+    );
+
+    ketuaStaff = allStaff.filter((_, idx) =>
+      matchRole(staffProfiles[idx], ["mudir", "ketua", "pimpinan", "kepala", "admin"])
+    );
+  } catch (errStaff) {
+    console.error("Error fetching staff profiles for suggestions:", errStaff);
+  }
+
   const listKeuangan = parsePhoneList(rawKeuangan);
   const listSuper = parsePhoneList(rawSuper);
   const listKetua = parsePhoneList(rawKetua);
@@ -113,6 +199,13 @@ export async function getSpmbNotificationSettings(): Promise<SpmbNotificationSet
     },
     waitingDays,
     isConfigured,
+    staffSuggestions: {
+      superAdmin: superAdminStaff,
+      adminKeuangan: keuanganStaff,
+      adminBerkas: berkasStaff,
+      ketuaPanitia: ketuaStaff,
+      allStaff,
+    },
   };
 }
 

@@ -13,8 +13,19 @@ import {
   X,
   Plus,
   Trash2,
+  Sparkles,
+  UserCheck,
 } from "lucide-react";
 import Swal from "sweetalert2";
+
+export interface StaffUserSummary {
+  id: string;
+  name: string;
+  phone: string;
+  rawPhone: string;
+  role: string;
+  roleLabel: string;
+}
 
 function PhoneListField({
   label,
@@ -24,6 +35,8 @@ function PhoneListField({
   placeholder = "Contoh: 0812xxxx / 62812xxxx",
   phones,
   onChange,
+  suggestions = [],
+  allStaff = [],
   accentColor = "emerald",
 }: {
   label: string;
@@ -33,9 +46,26 @@ function PhoneListField({
   placeholder?: string;
   phones: string[];
   onChange: (phones: string[]) => void;
+  suggestions?: StaffUserSummary[];
+  allStaff?: StaffUserSummary[];
   accentColor?: "amber" | "emerald";
 }) {
   const currentPhones = phones && phones.length > 0 ? phones : [""];
+
+  const norm = (p?: string | null) => {
+    if (!p) return "";
+    let c = p.replace(/\D/g, "");
+    if (c.startsWith("0")) c = "62" + c.slice(1);
+    else if (c.startsWith("8")) c = "628" + c.slice(1);
+    return c;
+  };
+
+  const findStaffInfo = (phoneStr: string) => {
+    if (!phoneStr || !allStaff || allStaff.length === 0) return null;
+    const clean = norm(phoneStr);
+    if (!clean) return null;
+    return allStaff.find((s) => norm(s.phone) === clean || norm(s.rawPhone) === clean);
+  };
 
   const updatePhone = (index: number, val: string) => {
     // Jika user paste beberapa nomor sekaligus
@@ -68,6 +98,31 @@ function PhoneListField({
     }
   };
 
+  const handleToggleSuggestion = (staff: StaffUserSummary) => {
+    const targetPhone = staff.rawPhone || staff.phone;
+    const targetNorm = norm(targetPhone);
+
+    const isAlreadySelected = currentPhones.some(
+      (p) => p.trim() && norm(p) === targetNorm
+    );
+
+    if (isAlreadySelected) {
+      // Hapus jika sudah terpilih (toggle off)
+      const next = currentPhones.filter((p) => norm(p) !== targetNorm);
+      onChange(next.length > 0 ? next : [""]);
+    } else {
+      // Masukkan ke slot kosong jika ada, atau buat slot baru
+      const emptyIdx = currentPhones.findIndex((p) => !p.trim());
+      if (emptyIdx !== -1) {
+        const next = [...currentPhones];
+        next[emptyIdx] = targetPhone;
+        onChange(next);
+      } else {
+        onChange([...currentPhones, targetPhone]);
+      }
+    }
+  };
+
   const focusRing =
     accentColor === "emerald"
       ? "focus:ring-emerald-500 focus:border-emerald-500"
@@ -97,41 +152,150 @@ function PhoneListField({
 
         <p className="text-[11px] text-stone-500 leading-relaxed mt-0.5">{description}</p>
 
+        {/* Input Rows */}
         <div className="space-y-2 mt-2.5">
-          {currentPhones.map((phone, idx) => (
-            <div key={idx} className="flex items-center gap-2">
-              <input
-                type="tel"
-                placeholder={placeholder}
-                value={phone}
-                onChange={(e) => updatePhone(idx, e.target.value)}
-                className={`flex-1 px-3.5 py-2 text-xs font-medium bg-white border border-stone-300 rounded-xl outline-none transition ${focusRing}`}
-                required={required && idx === 0 && validCount === 0}
-              />
-              {currentPhones.length > 1 && (
-                <button
-                  type="button"
-                  onClick={() => removePhone(idx)}
-                  className="w-8 h-8 rounded-lg text-stone-400 hover:text-red-600 hover:bg-red-50 flex items-center justify-center transition shrink-0 cursor-pointer"
-                  title="Hapus nomor ini"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              )}
-            </div>
-          ))}
+          {currentPhones.map((phone, idx) => {
+            const staff = findStaffInfo(phone);
+            return (
+              <div key={idx} className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <input
+                    type="tel"
+                    placeholder={placeholder}
+                    value={phone}
+                    onChange={(e) => updatePhone(idx, e.target.value)}
+                    className={`flex-1 px-3.5 py-2 text-xs font-medium bg-white border border-stone-300 rounded-xl outline-none transition ${focusRing}`}
+                    required={required && idx === 0 && validCount === 0}
+                  />
+                  {currentPhones.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => removePhone(idx)}
+                      className="w-8 h-8 rounded-lg text-stone-400 hover:text-red-600 hover:bg-red-50 flex items-center justify-center transition shrink-0 cursor-pointer"
+                      title="Hapus nomor ini"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+
+                {staff && (
+                  <div className="flex items-center gap-1.5 text-[11px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200/90 rounded-lg px-2.5 py-1 w-fit animate-in fade-in duration-150">
+                    <UserCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <span>
+                      Terdaftar di Manajemen User: <strong>{staff.name}</strong>{" "}
+                      <span className="text-[10px] text-emerald-600 font-normal">({staff.roleLabel})</span>
+                    </span>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
 
-      <div className="pt-2">
-        <button
-          type="button"
-          onClick={addPhone}
-          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold border transition cursor-pointer ${btnText}`}
-        >
-          <Plus className="w-3.5 h-3.5" />
-          <span>+ Tambah Nomor WhatsApp</span>
-        </button>
+      <div className="space-y-2 pt-2">
+        {/* Tombol Tambah Manual */}
+        <div>
+          <button
+            type="button"
+            onClick={addPhone}
+            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold border transition cursor-pointer ${btnText}`}
+          >
+            <Plus className="w-3.5 h-3.5" />
+            <span>+ Tambah Nomor WhatsApp</span>
+          </button>
+        </div>
+
+        {/* REKOMENDASI PERSONIL DARI MANAJEMEN USER */}
+        {suggestions && suggestions.length > 0 && (
+          <div className="pt-2 border-t border-stone-200/70">
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-[10px] font-black uppercase tracking-wider text-stone-500 flex items-center gap-1">
+                <Sparkles className="w-3 h-3 text-emerald-600" />
+                Rekomendasi dari Manajemen User:
+              </span>
+              <span className="text-[10px] text-stone-400 font-medium hidden sm:inline">
+                Klik nama untuk memilih
+              </span>
+            </div>
+
+            <div className="flex flex-wrap gap-1.5">
+              {suggestions.map((s) => {
+                const isSelected = currentPhones.some(
+                  (p) => p.trim() && norm(p) === norm(s.phone)
+                );
+                return (
+                  <button
+                    key={s.id}
+                    type="button"
+                    onClick={() => handleToggleSuggestion(s)}
+                    className={`text-[11px] font-bold px-2.5 py-1 rounded-xl transition flex items-center gap-1.5 cursor-pointer shadow-2xs ${
+                      isSelected
+                        ? "bg-emerald-100 text-emerald-900 border border-emerald-300 hover:bg-emerald-200/80"
+                        : "bg-white hover:bg-stone-100 text-stone-700 border border-stone-300"
+                    }`}
+                    title={
+                      isSelected
+                        ? `Nomor ${s.name} sudah dipilih (klik untuk membatalkan)`
+                        : `Klik untuk menambahkan nomor ${s.name} (${s.rawPhone || s.phone})`
+                    }
+                  >
+                    {isSelected ? (
+                      <>
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                        <span>
+                          <strong>{s.name}</strong>{" "}
+                          <span className="font-normal opacity-75">({s.rawPhone || s.phone})</span>
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <Plus className="w-3.5 h-3.5 text-stone-400 shrink-0" />
+                        <span>
+                          <strong>{s.name}</strong>{" "}
+                          <span className="font-normal text-stone-500">({s.rawPhone || s.phone})</span>
+                        </span>
+                      </>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Pilihan Staf Lainnya jika ada staf di luar saran utama */}
+        {allStaff && allStaff.length > (suggestions?.length || 0) && (
+          <div className="pt-1">
+            <select
+              value=""
+              onChange={(e) => {
+                const val = e.target.value;
+                if (val) {
+                  const emptyIdx = currentPhones.findIndex((p) => !p.trim());
+                  if (emptyIdx !== -1) {
+                    const next = [...currentPhones];
+                    next[emptyIdx] = val;
+                    onChange(next);
+                  } else {
+                    onChange([...currentPhones, val]);
+                  }
+                }
+              }}
+              className="text-[11px] font-medium text-stone-600 bg-white/80 border border-dashed border-stone-300 rounded-xl px-2.5 py-1 outline-none cursor-pointer hover:border-stone-400 transition"
+            >
+              <option value="">+ Tambahkan personil lain dari Manajemen User...</option>
+              {allStaff
+                .filter((st) => !suggestions?.some((s) => s.id === st.id))
+                .map((st) => (
+                  <option key={st.id} value={st.rawPhone || st.phone}>
+                    {st.name} — {st.roleLabel} ({st.rawPhone || st.phone})
+                  </option>
+                ))}
+            </select>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -144,11 +308,25 @@ export default function SpmbRecipientSettingsCard() {
   const [previewText, setPreviewText] = useState<string | null>(null);
 
   const [form, setForm] = useState({
-    adminKeuangan: [""] as string[],
     superAdmin: [""] as string[],
+    adminKeuangan: [""] as string[],
     ketuaPanitia: [""] as string[],
     adminBerkas: [""] as string[],
     waitingDays: 14,
+  });
+
+  const [staffSuggestions, setStaffSuggestions] = useState<{
+    superAdmin: StaffUserSummary[];
+    adminKeuangan: StaffUserSummary[];
+    adminBerkas: StaffUserSummary[];
+    ketuaPanitia: StaffUserSummary[];
+    allStaff: StaffUserSummary[];
+  }>({
+    superAdmin: [],
+    adminKeuangan: [],
+    adminBerkas: [],
+    ketuaPanitia: [],
+    allStaff: [],
   });
 
   const [isConfigured, setIsConfigured] = useState(false);
@@ -169,13 +347,16 @@ export default function SpmbRecipientSettingsCard() {
       if (res.ok) {
         const d = await res.json();
         setForm({
-          adminKeuangan: parseToArray(d.raw?.adminKeuangan),
           superAdmin: parseToArray(d.raw?.superAdmin),
+          adminKeuangan: parseToArray(d.raw?.adminKeuangan),
           ketuaPanitia: parseToArray(d.raw?.ketuaPanitia),
           adminBerkas: parseToArray(d.raw?.adminBerkas),
           waitingDays: d.waitingDays || 14,
         });
         setIsConfigured(Boolean(d.isConfigured));
+        if (d.staffSuggestions) {
+          setStaffSuggestions(d.staffSuggestions);
+        }
       }
     } catch (e) {
       console.error("Gagal load pengaturan:", e);
@@ -214,8 +395,8 @@ export default function SpmbRecipientSettingsCard() {
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const keuanganClean = form.adminKeuangan.map((s) => s.trim()).filter(Boolean).join(", ");
     const superClean = form.superAdmin.map((s) => s.trim()).filter(Boolean).join(", ");
+    const keuanganClean = form.adminKeuangan.map((s) => s.trim()).filter(Boolean).join(", ");
     const berkasClean = form.adminBerkas.map((s) => s.trim()).filter(Boolean).join(", ");
     const ketuaClean = form.ketuaPanitia.map((s) => s.trim()).filter(Boolean).join(", ");
 
@@ -223,7 +404,7 @@ export default function SpmbRecipientSettingsCard() {
       Swal.fire({
         icon: "warning",
         title: "Nomor Wajib Belum Diisi",
-        text: "Nomor WhatsApp Admin Keuangan dan Super Admin wajib diisi agar notifikasi kuota berjalan.",
+        text: "Nomor WhatsApp Super Admin dan Admin Keuangan wajib diisi agar notifikasi kuota berjalan.",
       });
       return;
     }
@@ -234,8 +415,8 @@ export default function SpmbRecipientSettingsCard() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          adminKeuangan: keuanganClean,
           superAdmin: superClean,
+          adminKeuangan: keuanganClean,
           adminBerkas: berkasClean,
           ketuaPanitia: ketuaClean,
           waitingDays: form.waitingDays,
@@ -395,6 +576,8 @@ export default function SpmbRecipientSettingsCard() {
             placeholder="Contoh: 081234567890"
             phones={form.superAdmin}
             onChange={(phones) => setForm({ ...form, superAdmin: phones })}
+            suggestions={staffSuggestions.superAdmin}
+            allStaff={staffSuggestions.allStaff}
             accentColor="emerald"
           />
 
@@ -406,6 +589,8 @@ export default function SpmbRecipientSettingsCard() {
             placeholder="Contoh: 081298765432"
             phones={form.adminKeuangan}
             onChange={(phones) => setForm({ ...form, adminKeuangan: phones })}
+            suggestions={staffSuggestions.adminKeuangan}
+            allStaff={staffSuggestions.allStaff}
             accentColor="emerald"
           />
 
@@ -417,6 +602,8 @@ export default function SpmbRecipientSettingsCard() {
             placeholder="Boleh dikosongkan jika tidak diperlukan"
             phones={form.adminBerkas}
             onChange={(phones) => setForm({ ...form, adminBerkas: phones })}
+            suggestions={staffSuggestions.adminBerkas}
+            allStaff={staffSuggestions.allStaff}
             accentColor="emerald"
           />
 
@@ -428,6 +615,8 @@ export default function SpmbRecipientSettingsCard() {
             placeholder="Boleh dikosongkan jika tidak diperlukan"
             phones={form.ketuaPanitia}
             onChange={(phones) => setForm({ ...form, ketuaPanitia: phones })}
+            suggestions={staffSuggestions.ketuaPanitia}
+            allStaff={staffSuggestions.allStaff}
             accentColor="emerald"
           />
         </div>
