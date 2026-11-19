@@ -1978,7 +1978,32 @@ function PengumumanContent() {
                             </>
                           ) : activeTab === "sudah_diumumkan" ? (
                             <>
-                              {/* Ganti Surat */}
+                              {/* Jika Santri Cadangan: Tombol Promosikan ke Diterima */}
+                              {(c.status_pendaftaran === "cadangan" || c.pengumuman?.status_kelulusan === "Cadangan") ? (
+                                <>
+                                  <button
+                                    onClick={() => {
+                                      setSelectedIds([c.id]);
+                                      setShowBulkAcceptedDialog(true);
+                                    }}
+                                    title="Promosikan Santri Cadangan ke Diterima & Terbitkan Surat"
+                                    className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-xs transition-all flex items-center gap-1 cursor-pointer"
+                                  >
+                                    <CheckCircle2 className="w-3.5 h-3.5" />
+                                    <span>Promosikan ke Diterima</span>
+                                  </button>
+                                  <button
+                                    onClick={() => handlePublishSingle(c.id, c.nama_lengkap, "rejected")}
+                                    title="Tutup Kuota & Tetapkan Ditolak"
+                                    className="px-2.5 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold shadow-xs transition-all flex items-center gap-1 cursor-pointer"
+                                  >
+                                    <XCircle className="w-3.5 h-3.5" />
+                                    <span>Tutup / Tolak</span>
+                                  </button>
+                                </>
+                              ) : (
+                                <>
+                                  {/* Ganti Surat */}
                               <button
                                 onClick={() => {
                                   setSuratTarget({
@@ -2006,6 +2031,9 @@ function PengumumanContent() {
                                   <FileText className="w-3.5 h-3.5 text-red-600" />
                                   <span>Lihat</span>
                                 </a>
+                              )}
+
+                                </>
                               )}
 
                               {/* Kembalikan ke Pleno */}

@@ -738,3 +738,11 @@ model PengajuanBeasiswa {
   @@map("pengajuan_beasiswa")
 }
 
+/// Key-value store untuk konfigurasi aplikasi
+model AppSetting {
+  key        String   @id
+  value      String
+  updated_at DateTime @default(now()) @db.Timestamptz(6)
+
+  @@map("app_settings")
+}

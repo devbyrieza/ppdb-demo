@@ -9,10 +9,12 @@ import {
   FileCheck,
   FileText,
   Loader2,
+  MessageCircle,
   Trophy,
   XCircle,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { BRANDING } from "@/config/branding";
 import { generateSuratKelulusan } from "@/lib/utils/pdf-generator";
 
 interface Pengumuman {
@@ -334,9 +336,20 @@ export default function PengumumanTab() {
                 <strong>DAFTAR CADANGAN</strong> santri baru PP Al Andalus Al Imam.
               </p>
 
-              <div className="inline-flex items-center justify-center gap-3 px-5 md:px-8 py-3.5 bg-white text-secondary-900 rounded-full font-black shadow-lg transition-all border border-secondary-100">
-                <Calendar className="w-5 h-5" />
-                Menunggu Konfirmasi Kuota
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-secondary-900 rounded-full font-black shadow-lg transition-all border border-secondary-100 text-xs sm:text-sm">
+                  <Clock className="w-4 h-4 text-amber-600 animate-pulse" />
+                  <span>Tahap Evaluasi Kuota (Maksimal 14 Hari Kerja)</span>
+                </div>
+                <a
+                  href={`https://wa.me/${((BRANDING as any).phone || "081296869854").replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`Assalamu'alaikum Panitia SPMB ${BRANDING.schoolName}, saya wali santri dari calon santri yang berstatus Cadangan, izin bertanya terkait perkembangan evaluasi kuota.`)}}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full font-bold shadow-md transition-all text-xs cursor-pointer"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  <span>Konsultasi CS / Helpdesk</span>
+                </a>
               </div>
             </div>
           </div>

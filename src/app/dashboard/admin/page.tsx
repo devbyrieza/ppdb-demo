@@ -14,6 +14,7 @@ import { exportToExcelProfessional, exportToPDF } from "@/lib/utils/export";
 import { getAvailableJenjang } from "@/lib/utils/jenjang";
 import Swal from "sweetalert2";
 import { BRANDING } from "@/config/branding";
+import SpmbRecipientBanner from "@/components/admin/SpmbRecipientBanner";
 
 /**
  * ─── ADMIN DASHBOARD PAGE (TEMPLATE DEMO) ───
@@ -436,6 +437,8 @@ export default function AdminDashboardPage() {
           <RefreshCw className={`w-5 h-5 ${loading ? "animate-spin" : ""}`} />
         </button>
       </div>
+
+      <SpmbRecipientBanner role={role ?? undefined} />
 
       {/* HERO SECTION */}
       <div className="bg-linear-to-br from-primary-800 via-primary-700 to-emerald-900 rounded-[2.5rem] lg:rounded-[3rem] p-6 sm:p-[24px_28px] md:p-8 lg:p-6 text-white relative overflow-hidden shadow-[0_32px_64px_-16px_rgba(15,118,110,0.4)] border border-white/10">
