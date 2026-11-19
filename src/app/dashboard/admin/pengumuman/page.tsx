@@ -294,7 +294,7 @@ function PengumumanContent() {
         if (quranBelow || hafalanBelow || arabBelow) {
           const detailSMA = [getQuranStatus(), getHafalanStatus(), getArabStatus()].join(" • ");
           return {
-            badgeText: "Perlu Dirapatkan Tim",
+            badgeText: "Perlu Dirapatkan",
             subText: detailSMA,
             badgeClass: "bg-amber-100 text-amber-800 border-amber-200",
             icon: Gavel,
@@ -302,7 +302,7 @@ function PengumumanContent() {
         }
 
         return {
-          badgeText: "Perlu Dirapatkan Tim",
+          badgeText: "Perlu Dirapatkan",
           subText: `Total di Bawah KKM ${KKM_STANDAR} (Al-Qur'an, Hafalan & B. Arab Lolos)`,
           badgeClass: "bg-amber-100 text-amber-800 border-amber-200",
           icon: Gavel,
@@ -321,7 +321,7 @@ function PengumumanContent() {
     // 1. Al-Qur'an Kurang (Grade D/E < 70)
     if (quran != null && quran < 70) {
       return {
-        badgeText: "Perlu Dirapatkan Tim",
+        badgeText: "Perlu Dirapatkan",
         subText: `Al-Qur'an Kurang (Grade ${quranGrade} / ${quran.toFixed(0)})`,
         badgeClass: "bg-amber-100 text-amber-800 border-amber-200",
         icon: Gavel,
@@ -331,7 +331,7 @@ function PengumumanContent() {
     // 2. Al-Qur'an Grade C (70-74.99 - Di bawah standar minimal B)
     if (quran != null && quran < KKM_STANDAR) {
       return {
-        badgeText: "Perlu Dirapatkan Tim",
+        badgeText: "Perlu Dirapatkan",
         subText: `Al-Qur'an Bersyarat (Grade C / ${quran.toFixed(0)})`,
         badgeClass: "bg-amber-100 text-amber-800 border-amber-200",
         icon: Gavel,
@@ -341,7 +341,7 @@ function PengumumanContent() {
     // 3. Total di bawah KKM (< 75)
     if (total < KKM_STANDAR) {
       return {
-        badgeText: "Perlu Dirapatkan Tim",
+        badgeText: "Perlu Dirapatkan",
         subText: `Total di Bawah KKM ${KKM_STANDAR}`,
         badgeClass: "bg-amber-100 text-amber-800 border-amber-200",
         icon: Gavel,
@@ -1363,7 +1363,7 @@ function PengumumanContent() {
                 </span>
               </div>
               <p className="text-xs text-emerald-700/90 leading-relaxed font-medium">
-                Nilai akhir mencapai standar kelulusan KKM (≥ {KKM_STANDAR}.00 / Grade A-B). Siap diumumkan diterima langsung atau pilih &apos;Rapatkan Dulu&apos; jika ingin pembahasan khusus.
+                Nilai akhir mencapai standar kelulusan KKM (≥ {KKM_STANDAR}.00 / Grade A-B). Siap untuk ditetapkan status kelulusannya.
               </p>
             </div>
 
@@ -1378,14 +1378,14 @@ function PengumumanContent() {
             >
               <div className="flex items-center justify-between mb-1">
                 <span className="text-xs font-black text-amber-800 uppercase flex items-center gap-1.5">
-                  <span>⚖️</span> Perlu Dirapatkan Tim Pleno
+                  <span>⚖️</span> Perlu Dirapatkan
                 </span>
                 <span className="text-lg font-black text-amber-900 bg-amber-100 px-2.5 py-0.5 rounded-full">
                   {countPerluRapat} Santri
                 </span>
               </div>
               <p className="text-xs text-amber-700/90 leading-relaxed font-medium">
-                Nilai akhir di bawah standar KKM (&lt; {KKM_STANDAR}.00 / Grade C-D-E). Arahkan untuk dirapatkan bersama tim apakah santri tetap diterima (dispensasi/kuota), cadangan, atau ditolak.
+                Nilai akhir di bawah standar KKM (&lt; {KKM_STANDAR}.00 / Grade C-D-E). Arahkan untuk dirapatkan apakah santri tetap diterima (dispensasi/kuota), cadangan, atau ditolak.
               </p>
             </div>
           </div>
@@ -1511,7 +1511,7 @@ function PengumumanContent() {
                     : "text-amber-700 hover:bg-amber-50"
                 }`}
               >
-                ⚖️ Rapat Tim ({countPerluRapat})
+                ⚖️ Perlu Dirapatkan ({countPerluRapat})
               </button>
             </div>
           )}
@@ -1727,7 +1727,7 @@ function PengumumanContent() {
                     {activeTab === "siap_pleno" ? "Rekomendasi Seleksi" : "Status Pengumuman"}
                   </th>
                   <th className="px-6 py-4 text-center text-xs font-black text-stone-600 uppercase tracking-wider">
-                    Aksi Penetapan (1-Klik)
+                    Aksi Penetapan
                   </th>
                 </tr>
               </thead>
@@ -1929,7 +1929,7 @@ function PengumumanContent() {
                         <div className="flex items-center justify-center gap-1.5 flex-wrap">
                           {activeTab === "siap_pleno" ? (
                             <>
-                              {/* 1. Diterima */}
+                              {/* 1. Terima */}
                               <button
                                 onClick={() => {
                                   setSelectedIds([c.id]);
@@ -1939,24 +1939,10 @@ function PengumumanContent() {
                                 className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-xs transition-all flex items-center gap-1 cursor-pointer"
                               >
                                 <CheckCircle2 className="w-3.5 h-3.5" />
-                                <span>{lolosKKM ? "Diterima" : "Terima (Pleno)"}</span>
+                                <span>Terima</span>
                               </button>
 
-                              {/* 2. Rapatkan Dulu */}
-                              <button
-                                onClick={() => handleRapatkanDulu(c.id, c.nama_lengkap)}
-                                title="Agendakan santri ini untuk dirapatkan bersama tim pleno"
-                                className={`px-2.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1 transition-all cursor-pointer ${
-                                  !lolosKKM
-                                    ? "bg-blue-600 hover:bg-blue-700 text-white shadow-xs"
-                                    : "bg-stone-100 hover:bg-stone-200 text-stone-700 border border-stone-200"
-                                }`}
-                              >
-                                <Users className="w-3.5 h-3.5" />
-                                <span>Rapatkan Dulu</span>
-                              </button>
-
-                              {/* 3. Cadangan */}
+                              {/* 2. Cadangan */}
                               <button
                                 onClick={() => handlePublishSingle(c.id, c.nama_lengkap, "cadangan")}
                                 title="Jadikan Cadangan"
@@ -1966,7 +1952,7 @@ function PengumumanContent() {
                                 <span>Cadangan</span>
                               </button>
 
-                              {/* 4. Tolak */}
+                              {/* 3. Tolak */}
                               <button
                                 onClick={() => handlePublishSingle(c.id, c.nama_lengkap, "rejected")}
                                 title="Tolak Pendaftar"
