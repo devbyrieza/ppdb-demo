@@ -24,6 +24,7 @@ export default function SpmbRecipientSettingsCard() {
     adminKeuangan: "",
     superAdmin: "",
     ketuaPanitia: "",
+    adminBerkas: "",
     waitingDays: 14,
   });
 
@@ -39,6 +40,7 @@ export default function SpmbRecipientSettingsCard() {
           adminKeuangan: d.raw?.adminKeuangan || "",
           superAdmin: d.raw?.superAdmin || "",
           ketuaPanitia: d.raw?.ketuaPanitia || "",
+          adminBerkas: d.raw?.adminBerkas || "",
           waitingDays: d.waitingDays || 14,
         });
         setIsConfigured(Boolean(d.isConfigured));
@@ -183,7 +185,7 @@ export default function SpmbRecipientSettingsCard() {
               )}
             </div>
             <p className="text-xs text-stone-500 mt-0.5">
-              Notifikasi otomatis pengingat jatuh tempo DP 50%, dispensasi, dan rekap antrean santri cadangan.
+              Notifikasi bot otomatis untuk kelancaran alur operasional SPMB, status pembayaran, dan rekap antrean.
             </p>
           </div>
         </div>
@@ -254,10 +256,28 @@ export default function SpmbRecipientSettingsCard() {
             />
           </div>
 
+          {/* Admin Berkas */}
+          <div>
+            <label className="block text-xs font-black text-stone-800 uppercase tracking-wider mb-1">
+              3. Nomor WhatsApp Admin Berkas{" "}
+              <span className="text-stone-400 font-normal lowercase">(opsional)</span>
+            </label>
+            <p className="text-[11px] text-stone-500 mb-2">
+              Menerima pengingat rekap antrean berkas santri yang menunggu verifikasi atau perbaikan berkas. Boleh dikosongkan.
+            </p>
+            <input
+              type="text"
+              placeholder="Boleh dikosongkan jika tidak diperlukan"
+              value={form.adminBerkas}
+              onChange={(e) => setForm({ ...form, adminBerkas: e.target.value })}
+              className="w-full px-3.5 py-2.5 text-xs font-medium border border-stone-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition"
+            />
+          </div>
+
           {/* Ketua Panitia / Mudir */}
           <div>
             <label className="block text-xs font-black text-stone-800 uppercase tracking-wider mb-1">
-              3. Nomor WhatsApp Ketua Panitia / Mudir{" "}
+              4. Nomor WhatsApp Ketua Panitia / Mudir{" "}
               <span className="text-stone-400 font-normal lowercase">(opsional)</span>
             </label>
             <p className="text-[11px] text-stone-500 mb-2">

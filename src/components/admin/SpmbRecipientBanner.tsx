@@ -17,6 +17,7 @@ export default function SpmbRecipientBanner({ role }: { role?: string }) {
     adminKeuangan: "",
     superAdmin: "",
     ketuaPanitia: "",
+    adminBerkas: "",
     waitingDays: 14,
   });
 
@@ -31,6 +32,7 @@ export default function SpmbRecipientBanner({ role }: { role?: string }) {
           adminKeuangan: data.raw?.adminKeuangan || "",
           superAdmin: data.raw?.superAdmin || "",
           ketuaPanitia: data.raw?.ketuaPanitia || "",
+          adminBerkas: data.raw?.adminBerkas || "",
           waitingDays: data.waitingDays || 14,
         });
       }
@@ -112,12 +114,12 @@ export default function SpmbRecipientBanner({ role }: { role?: string }) {
                     Konfigurasi Penting
                   </span>
                   <h4 className="text-sm font-black text-amber-950">
-                    Nomor WhatsApp Penanggung Jawab SPMB Belum Diatur
+                    Nomor WhatsApp Penanggung Jawab Belum Diatur
                   </h4>
                 </div>
                 <p className="text-xs text-amber-900/80 mt-1 leading-relaxed max-w-2xl">
-                  Notifikasi bot pengingat jatuh tempo DP 50% dan pemantauan santri cadangan membutuhkan nomor WhatsApp <strong>Admin Keuangan</strong> dan <strong>Super Admin</strong>.
-                  Silakan atur nomor WhatsApp agar alur operasional berjalan otomatis dan terpantau.
+                  Untuk kelancaran notifikasi bot pengingat alur operasional, sistem memerlukan nomor WhatsApp <strong>Admin Super</strong> dan <strong>Admin Keuangan</strong>.
+                  Silakan atur nomor WhatsApp agar alur otomatisasi berjalan lancar dan terpantau.
                 </p>
               </div>
             </div>
@@ -154,7 +156,7 @@ export default function SpmbRecipientBanner({ role }: { role?: string }) {
                     Atur Nomor WhatsApp Penanggung Jawab
                   </h3>
                   <p className="text-xs text-stone-500">
-                    Untuk notifikasi bot pengingat jatuh tempo &amp; kuota cadangan
+                    Untuk kelancaran notifikasi bot pengingat alur operasional SPMB
                   </p>
                 </div>
               </div>
@@ -205,10 +207,27 @@ export default function SpmbRecipientBanner({ role }: { role?: string }) {
                 />
               </div>
 
-              {/* 3. Ketua Panitia / Mudir */}
+              {/* 3. Admin Berkas (Opsional) */}
               <div>
                 <label className="block text-xs font-black text-stone-800 uppercase tracking-wider mb-1">
-                  3. Nomor WhatsApp Ketua Panitia / Mudir <span className="text-stone-400 font-normal">(Opsional)</span>
+                  3. Nomor WhatsApp Admin Berkas <span className="text-stone-400 font-normal">(Opsional)</span>
+                </label>
+                <p className="text-[11px] text-stone-500 mb-1.5">
+                  Menerima pengingat rekap antrean berkas santri yang menunggu verifikasi atau perbaikan berkas. Boleh dikosongkan.
+                </p>
+                <input
+                  type="text"
+                  placeholder="Boleh dikosongkan jika tidak diperlukan"
+                  value={form.adminBerkas}
+                  onChange={(e) => setForm({ ...form, adminBerkas: e.target.value })}
+                  className="w-full px-3.5 py-2.5 text-xs font-medium border border-stone-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none"
+                />
+              </div>
+
+              {/* 4. Ketua Panitia / Mudir */}
+              <div>
+                <label className="block text-xs font-black text-stone-800 uppercase tracking-wider mb-1">
+                  4. Nomor WhatsApp Ketua Panitia / Mudir <span className="text-stone-400 font-normal">(Opsional)</span>
                 </label>
                 <p className="text-[11px] text-stone-500 mb-1.5">
                   Hanya menerima rekap progres kuota harian (tanpa pesan teknis). Boleh dikosongkan jika tidak ingin mengganggu beliau.

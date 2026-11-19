@@ -6,10 +6,12 @@ export interface SpmbNotificationSettings {
   adminKeuangan: string[];
   superAdmin: string[];
   ketuaPanitia: string[];
+  adminBerkas: string[];
   raw: {
     adminKeuangan: string;
     superAdmin: string;
     ketuaPanitia: string;
+    adminBerkas: string;
   };
   waitingDays: number;
   isConfigured: boolean;
@@ -18,6 +20,7 @@ export interface SpmbNotificationSettings {
 const KEY_ADMIN_KEUANGAN = "spmb_wa_admin_keuangan";
 const KEY_SUPER_ADMIN = "spmb_wa_super_admin";
 const KEY_KETUA_PANITIA = "spmb_wa_ketua_panitia";
+const KEY_ADMIN_BERKAS = "spmb_wa_admin_berkas";
 const KEY_WAITING_DAYS = "spmb_cadangan_waiting_days";
 
 export function normalizePhone(raw: string): string {
@@ -46,13 +49,14 @@ export async function getSpmbNotificationSettings(): Promise<SpmbNotificationSet
   let rawKeuangan = "";
   let rawSuper = "";
   let rawKetua = "";
+  let rawBerkas = "";
   let waitingDays = 14;
 
   try {
     const rows = await prisma.appSetting.findMany({
       where: {
         key: {
-          in: [KEY_ADMIN_KEUANGAN, KEY_SUPER_ADMIN, KEY_KETUA_PANITIA, KEY_WAITING_DAYS],
+          in: [KEY_ADMIN_KEUANGAN, KEY_SUPER_ADMIN, KEY_KETUA_PANITIA, KEY_ADMIN_BERKAS, KEY_WAITING_DAYS],
         },
       },
     });
@@ -61,6 +65,7 @@ export async function getSpmbNotificationSettings(): Promise<SpmbNotificationSet
       if (r.key === KEY_ADMIN_KEUANGAN) rawKeuangan = r.value || "";
       if (r.key === KEY_SUPER_ADMIN) rawSuper = r.value || "";
       if (r.key === KEY_KETUA_PANITIA) rawKetua = r.value || "";
+      if (r.key === KEY_ADMIN_BERKAS) rawBerkas = r.value || "";
       if (r.key === KEY_WAITING_DAYS) {
         const val = parseInt(r.value, 10);
         if (!isNaN(val) && val > 0) waitingDays = val;
@@ -90,6 +95,7 @@ export async function getSpmbNotificationSettings(): Promise<SpmbNotificationSet
   const listKeuangan = parsePhoneList(rawKeuangan);
   const listSuper = parsePhoneList(rawSuper);
   const listKetua = parsePhoneList(rawKetua);
+  const listBerkas = parsePhoneList(rawBerkas);
 
   // Dinyatakan configured jika minimal Admin Keuangan dan Super Admin telah terisi nomor valid
   const isConfigured = listKeuangan.length > 0 && listSuper.length > 0;
@@ -98,10 +104,12 @@ export async function getSpmbNotificationSettings(): Promise<SpmbNotificationSet
     adminKeuangan: listKeuangan,
     superAdmin: listSuper,
     ketuaPanitia: listKetua,
+    adminBerkas: listBerkas,
     raw: {
       adminKeuangan: rawKeuangan,
       superAdmin: rawSuper,
       ketuaPanitia: rawKetua,
+      adminBerkas: rawBerkas,
     },
     waitingDays,
     isConfigured,
@@ -115,6 +123,7 @@ export async function saveSpmbNotificationSettings(data: {
   adminKeuangan?: string;
   superAdmin?: string;
   ketuaPanitia?: string;
+  adminBerkas?: string;
   waitingDays?: number;
 }): Promise<SpmbNotificationSettings> {
   const operations: Promise<any>[] = [];
@@ -145,6 +154,16 @@ export async function saveSpmbNotificationSettings(data: {
         where: { key: KEY_KETUA_PANITIA },
         update: { value: data.ketuaPanitia.trim(), updated_at: new Date() },
         create: { key: KEY_KETUA_PANITIA, value: data.ketuaPanitia.trim() },
+      })
+    );
+  }
+
+  if (data.adminBerkas !== undefined) {
+    operations.push(
+      prisma.appSetting.upsert({
+        where: { key: KEY_ADMIN_BERKAS },
+        update: { value: data.adminBerkas.trim(), updated_at: new Date() },
+        create: { key: KEY_ADMIN_BERKAS, value: data.adminBerkas.trim() },
       })
     );
   }

@@ -71,6 +71,7 @@ export async function POST(request: Request) {
       adminKeuangan: body.adminKeuangan,
       superAdmin: body.superAdmin,
       ketuaPanitia: body.ketuaPanitia,
+      adminBerkas: body.adminBerkas,
       waitingDays: body.waitingDays ? Number(body.waitingDays) : undefined,
     });
 
@@ -83,6 +84,7 @@ export async function POST(request: Request) {
         adminKeuangan: updated.adminKeuangan.length,
         superAdmin: updated.superAdmin.length,
         ketuaPanitia: updated.ketuaPanitia.length,
+        adminBerkas: updated.adminBerkas.length,
         isConfigured: updated.isConfigured,
       },
     });
