@@ -6,6 +6,7 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import Swal from "sweetalert2";
 import { exportToExcelProfessional } from "@/lib/utils/export";
+import { getUniformConfig } from "@/config/seragam";
 
 export default function RekapSeragamPage() {
   const [data, setData] = useState<any[]>([]);
@@ -18,6 +19,9 @@ export default function RekapSeragamPage() {
   const [editingItem, setEditingItem] = useState<any>(null);
   const [formSizes, setFormSizes] = useState({ baju: "", celana: "", almamater: "" });
   const [savingEdit, setSavingEdit] = useState(false);
+
+  const config = getUniformConfig();
+  const isPutri = config.isPutri;
 
   const handleEditClick = (item: any) => {
     setEditingItem(item);
@@ -87,6 +91,7 @@ export default function RekapSeragamPage() {
     "SD": 2,
     "MI": 2,
     "SMP": 3,
+    "SMP IT": 3,
     "MTs": 3,
     "IL": 4,
     "SMA": 5,
@@ -106,15 +111,18 @@ export default function RekapSeragamPage() {
     const belumIsi = sortedDataForExport.filter(d => !d.ukuran_seragam_baju || !d.ukuran_seragam_celana || !d.ukuran_seragam_almamater).length;
     const sudahIsi = sortedDataForExport.length - belumIsi;
 
+    const colBaju = isPutri ? "Gamis" : "Baju";
+    const colCelana = isPutri ? "Bawahan/Rok" : "Celana";
+
     try {
       await exportToExcelProfessional({
         fileName: `Rekap_Seragam_${new Date().toISOString().slice(0, 10)}`,
         sheets: [
           {
             name: "Rekap Seragam",
-            title: "Laporan Rekapitulasi Ukuran Seragam",
+            title: isPutri ? "Laporan Rekapitulasi Ukuran Seragam Santriwati" : "Laporan Rekapitulasi Ukuran Seragam Santri",
             subTitle: `Total Pendaftar: ${sortedDataForExport.length} | Lengkap: ${sudahIsi} | Belum: ${belumIsi}`,
-            header: ["No", "No. Pendaftaran", "Nama Lengkap", "Jenjang", "L/P", "Baju", "Celana/Rok", "Almamater"],
+            header: ["No", "No. Pendaftaran", "Nama Lengkap", "Jenjang", "L/P", colBaju, colCelana, "Almamater"],
             centeredColumns: [1, 2, 4, 5, 6, 7, 8],
             data: sortedDataForExport.map((item, index) => [
               index + 1,
@@ -148,8 +156,11 @@ export default function RekapSeragamPage() {
     const belumIsi = sortedDataForExport.filter(d => !d.ukuran_seragam_baju || !d.ukuran_seragam_celana || !d.ukuran_seragam_almamater).length;
     const sudahIsi = sortedDataForExport.length - belumIsi;
 
+    const colBaju = isPutri ? "Gamis" : "Baju";
+    const colCelana = isPutri ? "Bawahan" : "Celana";
+
     const doc = new jsPDF("p", "pt", "a4");
-    const tableColumn = ["No. Pendaftaran", "Nama Lengkap", "Jenjang", "L/P", "Baju", "Celana", "Almamater"];
+    const tableColumn = ["No. Pendaftaran", "Nama Lengkap", "Jenjang", "L/P", colBaju, colCelana, "Almamater"];
     const tableRows: any[] = [];
 
     sortedDataForExport.forEach(item => {
@@ -166,7 +177,7 @@ export default function RekapSeragamPage() {
     });
 
     doc.setFontSize(16);
-    doc.text("Laporan Rekapitulasi Ukuran Seragam", 40, 40);
+    doc.text(isPutri ? "Laporan Rekapitulasi Ukuran Seragam Santriwati" : "Laporan Rekapitulasi Ukuran Seragam Santri", 40, 40);
     doc.setFontSize(10);
     doc.text(`Tanggal Cetak: ${new Date().toLocaleDateString("id-ID")}`, 40, 55);
     doc.text(`Total Pendaftar: ${filteredData.length}`, 40, 70);
@@ -178,7 +189,7 @@ export default function RekapSeragamPage() {
       startY: 100,
       theme: 'grid',
       styles: { fontSize: 8, cellPadding: 4 },
-      headStyles: { fillColor: [124, 45, 18], textColor: 255 } // Maroon
+      headStyles: { fillColor: isPutri ? [157, 23, 77] : [30, 58, 138], textColor: 255 }
     });
 
     doc.save(`Rekap_Seragam_${new Date().toISOString().slice(0,10)}.pdf`);
@@ -217,7 +228,8 @@ export default function RekapSeragamPage() {
         const res = await fetch("/api/admin/seragam/broadcast", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ pendaftarIds, isSpecial: showAll }) });
+          body: JSON.stringify({ pendaftarIds, isSpecial: showAll })
+        });
         
         const json = await res.json();
         
@@ -235,26 +247,28 @@ export default function RekapSeragamPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-linear-to-br from-primary-700 to-primary-900 rounded-3xl p-[24px_28px] md:p-8 text-white relative overflow-hidden shadow-2xl shadow-primary/30 ">
+      <div className="bg-gradient-to-br from-primary-700 to-primary-900 rounded-3xl p-5 md:p-8 text-white relative overflow-hidden shadow-2xl">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-20 -mt-20 blur-3xl pointer-events-none"></div>
-        <div className="flex items-center gap-[24px_28px] relative z-10">
-          <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-[24px] flex items-center justify-center text-primary-100 shadow-inner">
+        <div className="flex items-center gap-5 relative z-10">
+          <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-primary-100 shadow-inner">
             <Shirt className="w-8 h-8" />
           </div>
           <div>
             <h1 className="text-3xl font-black text-white tracking-tight leading-tight">
-              Rekap Ukuran Seragam
+              {isPutri ? "Rekap Ukuran Seragam Santriwati" : "Rekap Ukuran Seragam Santri"}
             </h1>
             <p className="text-primary-100 mt-1 font-medium">
-              Data ukuran seragam santri yang telah masuk tahap Daftar Ulang
+              {isPutri
+                ? "Data ukuran gamis dan perlengkapan seragam santriwati tahap Daftar Ulang"
+                : "Data ukuran seragam santri yang telah masuk tahap Daftar Ulang"}
             </p>
           </div>
         </div>
       </div>
 
-      <div className="bg-white rounded-3xl shadow-sm border border-ink-100 flex flex-col min-h-[500px]">
+      <div className="bg-white rounded-3xl shadow-xl border border-ink-100 flex flex-col min-h-[500px]">
         {/* Toolbar */}
-        <div className="p-6 border-b border-ink-100 flex flex-col md:flex-row gap-[24px_28px] justify-between items-center bg-ink-50/50 rounded-t-3xl">
+        <div className="p-6 border-b border-ink-100 flex flex-col md:flex-row gap-4 justify-between items-center bg-ink-50/50 rounded-t-3xl">
           <div className="relative w-full md:w-80">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
               <Search className="h-5 w-5 text-ink-400" />
@@ -264,12 +278,12 @@ export default function RekapSeragamPage() {
               placeholder="Cari nama atau no pendaftaran..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-11 pr-4 py-3 bg-white border border-ink-200 rounded-[24px] focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none text-sm font-medium transition-all shadow-sm"
+              className="w-full pl-11 pr-4 py-3 bg-white border border-ink-200 rounded-3xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none text-sm font-medium transition-all shadow-sm"
             />
           </div>
 
           <div className="flex flex-wrap gap-3 w-full md:w-auto items-center">
-            <div className="flex items-center gap-2 px-4 py-3 bg-white rounded-[24px] border border-ink-200 shadow-sm md:mr-2">
+            <div className="flex items-center gap-2 px-4 py-3 bg-white rounded-3xl border border-ink-200 shadow-sm md:mr-2">
               <input 
                 type="checkbox" 
                 id="showAll" 
@@ -284,21 +298,21 @@ export default function RekapSeragamPage() {
             
             <button
               onClick={exportExcel}
-              className="flex-1 md:flex-none flex items-center justify-center gap-2 px-5 py-3 bg-white border border-ink-200 text-ink-700 rounded-[24px] text-sm font-black hover:bg-ink-50 shadow-sm transition-all"
+              className="flex-1 md:flex-none flex items-center justify-center gap-2 px-5 py-3 bg-white border border-ink-200 text-ink-700 rounded-3xl text-sm font-black hover:bg-ink-50 shadow-sm transition-all"
             >
               <Download className="w-4 h-4" />
               Download Excel
             </button>
             <button
               onClick={exportPDF}
-              className="flex-1 md:flex-none flex items-center justify-center gap-2 px-5 py-3 bg-white border border-red-200 text-red-700 rounded-[24px] text-sm font-black hover:bg-red-50 shadow-sm transition-all"
+              className="flex-1 md:flex-none flex items-center justify-center gap-2 px-5 py-3 bg-white border border-red-200 text-red-700 rounded-3xl text-sm font-black hover:bg-red-50 shadow-sm transition-all"
             >
               <FileText className="w-4 h-4" />
               Download PDF
             </button>
             <button
               onClick={handleBroadcast}
-              className="flex-1 md:flex-none flex items-center justify-center gap-2 px-5 py-3 bg-primary-700 text-white rounded-[24px] text-sm font-black hover:bg-primary-800 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-200 transition-all"
+              className="flex-1 md:flex-none flex items-center justify-center gap-2 px-5 py-3 bg-primary-700 text-white rounded-3xl text-sm font-black hover:bg-primary-800 shadow-sm transition-all"
             >
               <MessageSquare className="w-4 h-4" />
               Ingatkan (WA)
@@ -310,15 +324,15 @@ export default function RekapSeragamPage() {
         <div className="flex-1 overflow-x-auto custom-scrollbar">
           {loading ? (
             <div className="flex justify-center items-center h-64">
-              <Loader2 className="w-8 h-8 animate-spin text-slate-500" />
+              <Loader2 className="w-8 h-8 animate-spin text-primary-500" />
             </div>
           ) : (
             <table className="w-full min-w-[750px] text-left text-sm whitespace-nowrap max-w-full">
               <thead className="bg-ink-50/50 text-ink-500 text-xs uppercase font-black tracking-wider">
                 <tr>
                   <th className="px-6 py-4">Pendaftar</th>
-                  <th className="px-6 py-4 text-center">Baju</th>
-                  <th className="px-6 py-4 text-center">Celana/Rok</th>
+                  <th className="px-6 py-4 text-center">{isPutri ? "Gamis" : "Baju"}</th>
+                  <th className="px-6 py-4 text-center">{isPutri ? "Bawahan/Rok" : "Celana"}</th>
                   <th className="px-6 py-4 text-center">Almamater</th>
                   <th className="px-6 py-4 text-center">Status Form</th>
                   <th className="px-6 py-4 text-center">Aksi</th>
@@ -332,7 +346,7 @@ export default function RekapSeragamPage() {
                     </td>
                   </tr>
                 ) : (
-                  filteredData.map((item, idx) => {
+                  filteredData.map((item) => {
                     const sudahIsi = item.ukuran_seragam_baju && item.ukuran_seragam_celana && item.ukuran_seragam_almamater;
                     
                     return (
@@ -347,7 +361,7 @@ export default function RekapSeragamPage() {
                         </td>
                         <td className="px-6 py-4 text-center">
                           {item.ukuran_seragam_baju ? (
-                            <span className="inline-flex items-center justify-center w-8 h-8 rounded-[24px] bg-blue-50 text-blue-700 font-black text-xs border border-blue-100">
+                            <span className="inline-flex items-center justify-center px-2.5 py-1 min-w-8 rounded-xl bg-blue-50 text-blue-900 font-black text-xs border border-blue-200">
                               {item.ukuran_seragam_baju}
                             </span>
                           ) : (
@@ -356,7 +370,7 @@ export default function RekapSeragamPage() {
                         </td>
                         <td className="px-6 py-4 text-center">
                           {item.ukuran_seragam_celana ? (
-                            <span className="inline-flex items-center justify-center w-8 h-8 rounded-[24px] bg-emerald-50 text-emerald-700 font-black text-xs border border-emerald-100">
+                            <span className="inline-flex items-center justify-center px-2.5 py-1 min-w-8 rounded-xl bg-emerald-50 text-emerald-900 font-black text-xs border border-emerald-200">
                               {item.ukuran_seragam_celana}
                             </span>
                           ) : (
@@ -365,7 +379,7 @@ export default function RekapSeragamPage() {
                         </td>
                         <td className="px-6 py-4 text-center">
                           {item.ukuran_seragam_almamater ? (
-                            <span className="inline-flex items-center justify-center w-8 h-8 rounded-[24px] bg-purple-50 text-purple-700 font-black text-xs border border-purple-100">
+                            <span className="inline-flex items-center justify-center px-2.5 py-1 min-w-8 rounded-xl bg-purple-50 text-purple-900 font-black text-xs border border-purple-200">
                               {item.ukuran_seragam_almamater}
                             </span>
                           ) : (
@@ -374,24 +388,24 @@ export default function RekapSeragamPage() {
                         </td>
                         <td className="px-6 py-4 text-center">
                           {sudahIsi ? (
-                            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-50 text-green-700 border border-green-200 text-xs font-black">
+                            <span className="inline-flex items-center gap-1 px-3 py-1 bg-green-50 text-green-700 border border-green-200 rounded-full text-xs font-black">
                               <CheckCircle2 className="w-3.5 h-3.5" />
-                              LENGKAP
-                            </div>
+                              Lengkap
+                            </span>
                           ) : (
-                            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 text-red-700 border border-red-200 text-xs font-black">
+                            <span className="inline-flex items-center gap-1 px-3 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-full text-xs font-black">
                               <XCircle className="w-3.5 h-3.5" />
-                              BELUM
-                            </div>
+                              Belum Lengkap
+                            </span>
                           )}
                         </td>
                         <td className="px-6 py-4 text-center">
                           <button
                             onClick={() => handleEditClick(item)}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-primary-50 border border-ink-200 hover:border-primary-200 text-ink-700 hover:text-primary-700 rounded-[24px] text-xs font-black transition-all shadow-sm"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-black text-primary-700 bg-primary-50 hover:bg-primary-100 rounded-2xl border border-primary-200 transition-colors cursor-pointer"
                           >
                             <Edit className="w-3.5 h-3.5" />
-                            Ubah
+                            Edit
                           </button>
                         </td>
                       </tr>
@@ -403,101 +417,118 @@ export default function RekapSeragamPage() {
           )}
         </div>
 
-        {/* Footer Stats */}
-        {!loading && filteredData.length > 0 && (
-          <div className="p-[24px_28px] md:p-6 border-t border-ink-100 bg-ink-50/50 rounded-b-3xl flex flex-col md:flex-row gap-[24px_28px] justify-between items-center text-sm">
-            <div className="font-bold text-ink-600">
-              Total: <span className="text-ink-900 font-black">{filteredData.length}</span> Pendaftar
-            </div>
-            <div className="flex items-center gap-6">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center">
-                  <CheckCircle2 className="w-4 h-4" />
-                </div>
-                <div>
-                  <div className="text-xs text-ink-500 font-bold uppercase tracking-wider">Lengkap</div>
-                  <div className="font-black text-ink-900 leading-none mt-0.5">
-                    {filteredData.filter(d => d.ukuran_seragam_baju && d.ukuran_seragam_celana && d.ukuran_seragam_almamater).length}
-                  </div>
-                </div>
-              </div>
-              
-              <div className="w-px h-8 bg-ink-200"></div>
-              
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-red-100 text-red-700 flex items-center justify-center">
-                  <XCircle className="w-4 h-4" />
-                </div>
-                <div>
-                  <div className="text-xs text-ink-500 font-bold uppercase tracking-wider">Belum</div>
-                  <div className="font-black text-ink-900 leading-none mt-0.5">
-                    {filteredData.filter(d => !d.ukuran_seragam_baju || !d.ukuran_seragam_celana || !d.ukuran_seragam_almamater).length}
-                  </div>
-                </div>
-              </div>
-            </div>
+        {/* Footer info */}
+        <div className="p-4 border-t border-ink-100 bg-ink-50/50 flex flex-col md:flex-row justify-between items-center text-xs text-ink-500 font-bold gap-2">
+          <span>Menampilkan {filteredData.length} pendaftar</span>
+          <div className="flex items-center gap-4">
+            <span className="flex items-center gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+              Sudah Lengkap: {filteredData.filter(d => d.ukuran_seragam_baju && d.ukuran_seragam_celana && d.ukuran_seragam_almamater).length}
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+              Belum Lengkap: {filteredData.filter(d => !d.ukuran_seragam_baju || !d.ukuran_seragam_celana || !d.ukuran_seragam_almamater).length}
+            </span>
           </div>
-        )}
+        </div>
       </div>
 
       {/* Edit Modal */}
-      {editModalOpen && editingItem && (
-        <div onWheel={(e) => e.stopPropagation()} data-modal="true" aria-modal="true" role="dialog" className="fixed inset-0 z-50 flex items-start md:items-center pt-10 md:pt-0 pb-20 md:pb-0 justify-center p-[24px_28px] bg-ink-950/50 backdrop-blur-sm overflow-y-auto overflow-x-hidden overscroll-contain custom-scrollbar">
-          <div className="bg-white rounded-3xl shadow-2xl shadow-primary/30 w-full max-w-md overflow-hidden">
+      {editModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink-950/60 backdrop-blur-xs">
+          <div className="bg-white rounded-3xl max-w-md w-full overflow-hidden shadow-2xl border border-ink-100 animate-in fade-in zoom-in-95 duration-200">
             <div className="p-6 border-b border-ink-100 bg-ink-50/50">
-              <h3 className="text-xl font-black text-ink-950">Ubah Ukuran Seragam</h3>
-              <p className="text-sm font-medium text-ink-500 mt-1">{editingItem.nama_lengkap}</p>
+              <h3 className="text-lg font-black text-ink-900">
+                Edit Ukuran Seragam
+              </h3>
+              <p className="text-xs text-ink-500 font-bold mt-1">
+                {editingItem?.nama_lengkap} ({editingItem?.nomor_pendaftaran})
+              </p>
             </div>
             
             <div className="p-6 space-y-4">
               <div className="space-y-2">
-                <label className="text-xs font-black text-ink-500 uppercase tracking-widest">Ukuran Baju</label>
-                <select
-                  value={formSizes.baju}
-                  onChange={(e) => setFormSizes({ ...formSizes, baju: e.target.value })}
-                  className="w-full bg-ink-50 border border-ink-200 px-4 py-3 rounded-[24px] focus:ring-2 focus:ring-primary-500 outline-none font-bold"
-                >
-                  <option value="">-- Pilih --</option>
-                  <option value="S">S</option>
-                  <option value="M">M</option>
-                  <option value="L">L</option>
-                  <option value="XL">XL</option>
-                  <option value="XXL">XXL</option>
-                  <option value="3XL">3XL</option>
-                </select>
+                <label className="text-xs font-black text-ink-500 uppercase tracking-widest">
+                  {isPutri ? "Ukuran Gamis" : "Ukuran Baju"}
+                </label>
+                <div className="space-y-2">
+                  <select
+                    value={config.sizeOptions.some(o => o.value === formSizes.baju) ? formSizes.baju : formSizes.baju.startsWith(">XXL") ? ">XXL" : "CUSTOM"}
+                    onChange={(e) => {
+                      if (e.target.value !== "CUSTOM") {
+                        setFormSizes({ ...formSizes, baju: e.target.value });
+                      }
+                    }}
+                    className="w-full bg-ink-50 border border-ink-200 px-4 py-3 rounded-2xl focus:ring-2 focus:ring-primary-500 outline-none font-bold text-sm"
+                  >
+                    <option value="">-- Pilih --</option>
+                    {config.sizeOptions.map((opt) => (
+                      <option key={opt.value} value={opt.value}>{opt.label}</option>
+                    ))}
+                    {!config.sizeOptions.some(o => o.value === formSizes.baju) && formSizes.baju && (
+                      <option value="CUSTOM">Khusus: {formSizes.baju}</option>
+                    )}
+                  </select>
+                  {/* Field text bila admin ingin mengubah teks ukuran khusus */}
+                  {(formSizes.baju.startsWith(">XXL") || !config.sizeOptions.some(o => o.value === formSizes.baju)) && formSizes.baju && (
+                    <input
+                      type="text"
+                      placeholder="Detail ukuran khusus..."
+                      value={formSizes.baju}
+                      onChange={(e) => setFormSizes({ ...formSizes, baju: e.target.value })}
+                      className="w-full bg-white border border-amber-200 px-3 py-2 rounded-xl text-xs font-bold focus:ring-2 focus:ring-amber-500 outline-none"
+                    />
+                  )}
+                </div>
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-black text-ink-500 uppercase tracking-widest">Ukuran Celana / Rok</label>
-                <select
-                  value={formSizes.celana}
-                  onChange={(e) => setFormSizes({ ...formSizes, celana: e.target.value })}
-                  className="w-full bg-ink-50 border border-ink-200 px-4 py-3 rounded-[24px] focus:ring-2 focus:ring-primary-500 outline-none font-bold"
-                >
-                  <option value="">-- Pilih --</option>
-                  <option value="S">S</option>
-                  <option value="M">M</option>
-                  <option value="L">L</option>
-                  <option value="XL">XL</option>
-                  <option value="XXL">XXL</option>
-                  <option value="3XL">3XL</option>
-                </select>
+                <label className="text-xs font-black text-ink-500 uppercase tracking-widest">
+                  {isPutri ? "Ukuran Rok / Bawahan" : "Ukuran Celana"}
+                </label>
+                <div className="space-y-2">
+                  <select
+                    value={config.sizeOptions.some(o => o.value === formSizes.celana) ? formSizes.celana : formSizes.celana.startsWith(">XXL") ? ">XXL" : "CUSTOM"}
+                    onChange={(e) => {
+                      if (e.target.value !== "CUSTOM") {
+                        setFormSizes({ ...formSizes, celana: e.target.value });
+                      }
+                    }}
+                    className="w-full bg-ink-50 border border-ink-200 px-4 py-3 rounded-2xl focus:ring-2 focus:ring-primary-500 outline-none font-bold text-sm"
+                  >
+                    <option value="">-- Pilih --</option>
+                    {config.sizeOptions.map((opt) => (
+                      <option key={opt.value} value={opt.value}>{opt.label}</option>
+                    ))}
+                    {!config.sizeOptions.some(o => o.value === formSizes.celana) && formSizes.celana && (
+                      <option value="CUSTOM">Khusus: {formSizes.celana}</option>
+                    )}
+                  </select>
+                  {(formSizes.celana.startsWith(">XXL") || !config.sizeOptions.some(o => o.value === formSizes.celana)) && formSizes.celana && (
+                    <input
+                      type="text"
+                      placeholder="Detail ukuran khusus..."
+                      value={formSizes.celana}
+                      onChange={(e) => setFormSizes({ ...formSizes, celana: e.target.value })}
+                      className="w-full bg-white border border-amber-200 px-3 py-2 rounded-xl text-xs font-bold focus:ring-2 focus:ring-amber-500 outline-none"
+                    />
+                  )}
+                </div>
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-black text-ink-500 uppercase tracking-widest">Ukuran Almamater</label>
+                <label className="text-xs font-black text-ink-500 uppercase tracking-widest">
+                  Ukuran Almamater
+                </label>
                 <select
-                  value={formSizes.almamater}
+                  value={config.sizeOptions.some(o => o.value === formSizes.almamater) ? formSizes.almamater : formSizes.almamater ? formSizes.almamater : ""}
                   onChange={(e) => setFormSizes({ ...formSizes, almamater: e.target.value })}
-                  className="w-full bg-ink-50 border border-ink-200 px-4 py-3 rounded-[24px] focus:ring-2 focus:ring-primary-500 outline-none font-bold"
+                  className="w-full bg-ink-50 border border-ink-200 px-4 py-3 rounded-2xl focus:ring-2 focus:ring-primary-500 outline-none font-bold text-sm"
                 >
                   <option value="">-- Pilih --</option>
-                  <option value="S">S</option>
-                  <option value="M">M</option>
-                  <option value="L">L</option>
-                  <option value="XL">XL</option>
-                  <option value="XXL">XXL</option>
-                  <option value="3XL">3XL</option>
+                  {config.sizeOptions.map((opt) => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -506,14 +537,14 @@ export default function RekapSeragamPage() {
               <button
                 onClick={() => setEditModalOpen(false)}
                 disabled={savingEdit}
-                className="px-5 py-2.5 rounded-[24px] text-sm font-black text-ink-600 hover:bg-ink-100 transition-colors"
+                className="px-5 py-2.5 rounded-2xl text-sm font-black text-ink-600 hover:bg-ink-100 transition-colors cursor-pointer"
               >
                 Batal
               </button>
               <button
                 onClick={handleSaveEdit}
                 disabled={savingEdit}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-[24px] text-sm font-black bg-primary-600 hover:bg-primary-700 text-white shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-200 transition-all disabled:opacity-50"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-black bg-primary-600 hover:bg-primary-700 text-white shadow-sm transition-all disabled:opacity-50 cursor-pointer"
               >
                 {savingEdit && <Loader2 className="w-4 h-4 animate-spin" />}
                 Simpan Perubahan
