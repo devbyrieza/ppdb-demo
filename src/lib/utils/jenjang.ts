@@ -39,6 +39,28 @@ export function getInstitutionType(): "ULUL_ALBAAB" | "AL_IMAM" | "ANDALUS_PUSAT
 }
 
 /**
+ * Deteksi apakah institusi ini khusus Putri
+ */
+export function isPutriInstitution(): boolean {
+  const b = BRANDING as any;
+  if (b?.gender?.toLowerCase() === "putri") return true;
+  if (b?.gender?.toLowerCase() === "putra") return false;
+  if (b?.APP_MODE === "PUTRI" || b?.IS_PUTRI === true) return true;
+  if (b?.APP_MODE === "PUTRA" || b?.IS_PUTRA === true) return false;
+  const schoolName = (b?.schoolName || "").toLowerCase();
+  const subtitle = (b?.subtitle || "").toLowerCase();
+  if (schoolName.includes("putri") || subtitle.includes("putri") || schoolName.includes("al-imam")) return true;
+  return false;
+}
+
+/**
+ * Deteksi apakah institusi ini khusus Putra
+ */
+export function isPutraInstitution(): boolean {
+  return !isPutriInstitution();
+}
+
+/**
  * Daftar jenjang resmi yang dibuka di institusi saat ini:
  * - Ulul Albaab: MTs, IL, SMA
  * - Al-Imam: MTs, IL, MA

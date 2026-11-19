@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { BRANDING } from "@/config/branding";
-import { getInstitutionType } from "./jenjang";
+import { getInstitutionType, isPutriInstitution } from "./jenjang";
 
 // ===================================
 // NOMOR PENDAFTARAN GENERATION
@@ -110,8 +110,19 @@ export function generatePrefix(jenjang: string, jenis_kelamin?: string): string 
   const inst = getInstitutionType();
 
   if (inst === "ANDALUS_PUSAT") {
-    const isPutri = (jenis_kelamin || "").toUpperCase() === "P" || (BRANDING as any)?.gender?.toLowerCase() === "putri";
-    if (normJenjang.includes("IL") || normJenjang.includes("IDAD") || normJenjang.includes("LUGHAW")) return isPutri ? "ILI" : "ILA";
+    const isPutri =
+      isPutriInstitution() ||
+      (jenis_kelamin || "").toUpperCase() === "P" ||
+      (jenis_kelamin || "").toUpperCase() === "PUTRI" ||
+      (BRANDING as any)?.gender?.toLowerCase() === "putri";
+
+    if (normJenjang.includes("IL") || normJenjang.includes("IDAD") || normJenjang.includes("LUGHAW")) {
+      return isPutri ? "ILI" : "ILA";
+    }
+    if (normJenjang.includes("SMA") || normJenjang.includes("MA")) {
+      return isPutri ? "SMI" : "SMA";
+    }
+    // SMP IT: SPA for Putra, SPI for Putri
     return isPutri ? "SPI" : "SPA";
   }
 
@@ -177,8 +188,11 @@ export function parseNomorPendaftaran(nomorPendaftaran: string): {
 
   if (prefix === "SMA" || prefix === "SMI") {
     jenjang = "SMA";
-  } else if (prefix.startsWith("SP") || prefix.startsWith("MT")) {
-    jenjang = "MTs";
+  } else if (prefix.startsWith("SP")) {
+    jenjang = "SMP IT";
+  } else if (prefix.startsWith("MT")) {
+    const inst = getInstitutionType();
+    jenjang = inst === "ANDALUS_PUSAT" ? "SMP IT" : "MTs";
   } else if (prefix.startsWith("IL")) {
     jenjang = "IL";
   } else if (prefix.startsWith("MA")) {
@@ -309,8 +323,8 @@ export async function getRegistrationStats(): Promise<{
  */
 export function getPrefixLabel(prefix: string): string {
   const labels: Record<string, string> = {
-    SPA: "MTs Putra (Laki-laki)",
-    SPI: "MTs Putri (Perempuan)",
+    SPA: "SMP IT Putra (Laki-laki)",
+    SPI: "SMP IT Putri (Perempuan)",
     SMA: "SMA Putra (Laki-laki)",
     SMI: "SMA Putri (Perempuan)",
     ILA: "I'dad Lughowi Putra (Laki-laki)",

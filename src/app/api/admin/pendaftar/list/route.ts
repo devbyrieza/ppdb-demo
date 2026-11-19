@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { getCache, setCache } from "@/lib/redis";
 import { getAdminWhereClause, resolveTahunAjaranId } from "@/lib/utils/admin";
 import { BRANDING } from "@/config/branding";
-import { getInstitutionType, normalizeJenjang, isJenjangTanpaIL } from "@/lib/utils/jenjang";
+import { getInstitutionType, normalizeJenjang, isJenjangTanpaIL, isPutriInstitution } from "@/lib/utils/jenjang";
 
 export async function GET(request: NextRequest) {
   try {
@@ -306,6 +306,14 @@ export async function GET(request: NextRequest) {
         }
       } else if (inst === "ANDALUS_PUSAT") {
         // Andalus Pusat: HANYA SMP IT dan IL
+        // Putra: SMP IT -> SPA, IL -> ILA, gender -> L
+        // Putri: SMP IT -> SPI, IL -> ILI, gender -> P
+        const isPutri = isPutriInstitution();
+        const targetGender = isPutri ? "P" : "L";
+        const targetSMPPrefix = isPutri ? "SPI" : "SPA";
+        const targetILPrefix = isPutri ? "ILI" : "ILA";
+
+        // 1. Direct bulk update jenjang agar hanya SMP IT dan IL
         await prisma.pendaftar.updateMany({
           where: {
             AND: [
@@ -315,6 +323,75 @@ export async function GET(request: NextRequest) {
           },
           data: { jenjang: "SMP IT" },
         });
+
+        // 2. Direct bulk update jenis kelamin sesuai kampus
+        await prisma.pendaftar.updateMany({
+          where: { jenis_kelamin: { not: targetGender } },
+          data: { jenis_kelamin: targetGender },
+        });
+
+        // 3. Auto-sync nomor pendaftaran yang prefix-nya salah
+        const wrongPrefixes = isPutri
+          ? ["MTA", "MTI", "SPA", "MAI", "MAA", "SMA", "ILA"]
+          : ["MTI", "MTA", "SPI", "MAI", "MAA", "SMI", "ILI"];
+
+        const mismatchedRecords = await prisma.pendaftar.findMany({
+          where: {
+            OR: wrongPrefixes.map((pfx) => ({ nomor_pendaftaran: { startsWith: pfx } })),
+          },
+          select: {
+            id: true,
+            nomor_pendaftaran: true,
+            jenjang: true,
+            data_lengkap: true,
+          },
+          take: 200,
+        });
+
+        for (const item of mismatchedRecords) {
+          const oldNomor = item.nomor_pendaftaran;
+          const normJ = (item.jenjang || "").toUpperCase();
+          const targetPrefix =
+            normJ.includes("IL") || normJ.includes("IDAD") || normJ.includes("LUGHAW")
+              ? targetILPrefix
+              : targetSMPPrefix;
+
+          const candidate = `${targetPrefix}${oldNomor.slice(3)}`;
+          const conflict = await prisma.pendaftar.findUnique({
+            where: { nomor_pendaftaran: candidate },
+          });
+
+          let finalNomor = candidate;
+          if (conflict && conflict.id !== item.id) {
+            const tahun = oldNomor.slice(3, 5);
+            const existingList = await prisma.pendaftar.findMany({
+              where: { nomor_pendaftaran: { startsWith: `${targetPrefix}${tahun}` } },
+              select: { nomor_pendaftaran: true },
+            });
+            const usedSeqs = new Set(
+              existingList
+                .map((p) => parseInt(p.nomor_pendaftaran.slice(5), 10))
+                .filter((n) => !isNaN(n))
+            );
+            let nextSeq = 1;
+            while (usedSeqs.has(nextSeq)) {
+              nextSeq++;
+            }
+            finalNomor = `${targetPrefix}${tahun}${String(nextSeq).padStart(5, "0")}`;
+          }
+
+          const dl = (item.data_lengkap as any) || {};
+          dl.legacy_nomor_pendaftaran = oldNomor;
+
+          await prisma.pendaftar.update({
+            where: { id: item.id },
+            data: {
+              nomor_pendaftaran: finalNomor,
+              jenis_kelamin: targetGender,
+              data_lengkap: dl,
+            },
+          });
+        }
       }
     } catch (e: any) {
       console.warn("[AUTO-SYNC-PREFIX] Warning:", e?.message);

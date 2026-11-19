@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { BRANDING } from "@/config/branding";
+import { getInstitutionType, isPutriInstitution } from "@/lib/utils/jenjang";
 import { comparePassword, hashPassword } from "@/lib/utils/password";
 import crypto from "crypto";
 
@@ -29,31 +30,39 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      const isPutraInstitution = 
-        BRANDING?.gender?.toLowerCase() === "putra" ||
-        (BRANDING?.subtitle || "").toLowerCase().includes("putra") ||
-        (BRANDING?.schoolName || "").toLowerCase().includes("putra") ||
-        (BRANDING?.schoolShortName || "").toLowerCase().includes("ulul albaab");
-
+      const inst = getInstitutionType();
+      const isPutri = isPutriInstitution();
       const inputNomor = (nomor_pendaftaran || "").trim().toUpperCase();
-      const mappedNomor = isPutraInstitution
-        ? inputNomor
-            .replace(/^MTI/, "MTA")
-            .replace(/^ILI/, "ILA")
-            .replace(/^MAI/, "SMA")
-            .replace(/^MAA/, "SMA")
-            .replace(/^SMI/, "SMA")
-        : inputNomor
-            .replace(/^MTA/, "MTI")
-            .replace(/^ILA/, "ILI")
-            .replace(/^MAA/, "MAI")
-            .replace(/^SMA/, "MAI");
+
+      const candidateNumbers = new Set<string>([inputNomor]);
+
+      if (inst === "ANDALUS_PUSAT") {
+        if (isPutri) {
+          // Pusat Putri: SPI (SMP IT), ILI (IL)
+          candidateNumbers.add(inputNomor.replace(/^(SPA|MTA|MTI)/, "SPI"));
+          candidateNumbers.add(inputNomor.replace(/^(ILA)/, "ILI"));
+        } else {
+          // Pusat Putra: SPA (SMP IT), ILA (IL)
+          candidateNumbers.add(inputNomor.replace(/^(SPI|MTI|MTA)/, "SPA"));
+          candidateNumbers.add(inputNomor.replace(/^(ILI)/, "ILA"));
+        }
+      } else if (isPutri) {
+        // Al-Imam: MTI (MTs), ILI (IL), MAI (MA)
+        candidateNumbers.add(inputNomor.replace(/^(MTA|SPA|SPI)/, "MTI"));
+        candidateNumbers.add(inputNomor.replace(/^(ILA)/, "ILI"));
+        candidateNumbers.add(inputNomor.replace(/^(SMA|MAA)/, "MAI"));
+      } else {
+        // Ulul Albaab: MTA (MTs), ILA (IL), SMA (SMA)
+        candidateNumbers.add(inputNomor.replace(/^(MTI|SPA|SPI)/, "MTA"));
+        candidateNumbers.add(inputNomor.replace(/^(ILI)/, "ILA"));
+        candidateNumbers.add(inputNomor.replace(/^(MAI|MAA|SMI)/, "SMA"));
+      }
 
       const pendaftar = await prisma.pendaftar.findFirst({
         where: {
           nik,
           OR: [
-            { nomor_pendaftaran: { in: [inputNomor, mappedNomor] } },
+            { nomor_pendaftaran: { in: Array.from(candidateNumbers) } },
             { data_lengkap: { path: ["legacy_nomor_pendaftaran"], equals: inputNomor } }
           ]
         }

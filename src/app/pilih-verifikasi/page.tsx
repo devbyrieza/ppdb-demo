@@ -14,6 +14,7 @@ import {
   Zap } from "lucide-react";
 import Swal from "sweetalert2";
 import { BRANDING } from "@/config/branding";
+import { generatePrefix } from "@/lib/utils/nomor-pendaftaran";
 
 // MODE DEMO - Set true untuk bypass OTP
 const DEMO_MODE = true;
@@ -38,21 +39,7 @@ function PilihVerifikasiContent() {
   // Function untuk generate nomor pendaftaran (sesuai identitas institusi)
   const generateNomorPendaftaran = () => {
     const year = String(new Date().getFullYear()).slice(-2);
-    const normJenjang = (jenjang || "").toUpperCase();
-
-    const isPutraInstitution = 
-      BRANDING?.gender?.toLowerCase() === "putra" ||
-      (BRANDING?.subtitle || "").toLowerCase().includes("putra") ||
-      (BRANDING?.schoolName || "").toLowerCase().includes("putra") ||
-      (BRANDING?.schoolShortName || "").toLowerCase().includes("ulul albaab");
-
-    let prefix = isPutraInstitution ? "MTA" : "MTI";
-    if (normJenjang.includes("IL")) {
-      prefix = isPutraInstitution ? "ILA" : "ILI";
-    } else if (normJenjang.includes("SMA") || normJenjang.includes("MA")) {
-      prefix = isPutraInstitution ? "SMA" : "MAI";
-    }
-
+    const prefix = generatePrefix(jenjang || "");
     // Random 5 digit untuk demo
     const randomNum = Math.floor(10000 + Math.random() * 90000);
     return `${prefix}${year}${randomNum}`;
