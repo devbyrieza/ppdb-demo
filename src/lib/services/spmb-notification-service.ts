@@ -309,16 +309,22 @@ export async function sendDailyQuotaDigest(): Promise<{
       ...settings.adminKeuangan,
       ...settings.superAdmin,
       ...settings.ketuaPanitia,
+      ...settings.adminBerkas,
     ])
   );
 
   const { text } = await buildDailyQuotaReport();
   let sentCount = 0;
 
-  for (const phone of allPhones) {
+  for (let i = 0; i < allPhones.length; i++) {
+    const phone = allPhones[i];
     try {
       await sendMessage({ phone, message: text });
       sentCount++;
+      // Anti-ban throttling: jeda 1.5 detik antar nomor untuk mencegah deteksi burst spam oleh Meta
+      if (i < allPhones.length - 1) {
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+      }
     } catch (err) {
       console.error(`Gagal mengirim digest ke ${phone}:`, err);
     }
