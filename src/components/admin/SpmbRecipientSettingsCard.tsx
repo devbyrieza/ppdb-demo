@@ -264,38 +264,6 @@ function PhoneListField({
             </div>
           </div>
         )}
-
-        {/* Pilihan Staf Lainnya jika ada staf di luar saran utama */}
-        {allStaff && allStaff.length > (suggestions?.length || 0) && (
-          <div className="pt-1">
-            <select
-              value=""
-              onChange={(e) => {
-                const val = e.target.value;
-                if (val) {
-                  const emptyIdx = currentPhones.findIndex((p) => !p.trim());
-                  if (emptyIdx !== -1) {
-                    const next = [...currentPhones];
-                    next[emptyIdx] = val;
-                    onChange(next);
-                  } else {
-                    onChange([...currentPhones, val]);
-                  }
-                }
-              }}
-              className="text-[11px] font-medium text-stone-600 bg-white/80 border border-dashed border-stone-300 rounded-xl px-2.5 py-1 outline-none cursor-pointer hover:border-stone-400 transition"
-            >
-              <option value="">+ Tambahkan personil lain dari Manajemen User...</option>
-              {allStaff
-                .filter((st) => !suggestions?.some((s) => s.id === st.id))
-                .map((st) => (
-                  <option key={st.id} value={st.rawPhone || st.phone}>
-                    {st.name} — {st.roleLabel} ({st.rawPhone || st.phone})
-                  </option>
-                ))}
-            </select>
-          </div>
-        )}
       </div>
     </div>
   );

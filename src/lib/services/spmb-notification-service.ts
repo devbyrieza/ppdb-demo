@@ -154,25 +154,29 @@ export async function getSpmbNotificationSettings(): Promise<SpmbNotificationSet
       roleLabel: getRoleLabel(p.role),
     }));
 
-    const matchRole = (p: typeof staffProfiles[0], targetKeys: string[]) => {
+    const hasRoleExact = (p: typeof staffProfiles[0], exactRoles: string[]) => {
       const allRoles = [p.role, ...(p.secondary_roles || [])].map((r) => r.toLowerCase().trim());
-      return targetKeys.some((k) => allRoles.some((r) => r.includes(k)));
+      return exactRoles.some((target) => allRoles.includes(target.toLowerCase().trim()));
     };
 
+    // 1. Super Admin: Hanya yang memiliki role admin_super, superadmin, atau head_of_it
     superAdminStaff = allStaff.filter((_, idx) =>
-      matchRole(staffProfiles[idx], ["super", "it", "admin"])
+      hasRoleExact(staffProfiles[idx], ["admin_super", "superadmin", "head_of_it"])
     );
 
+    // 2. Admin Keuangan: Hanya yang memiliki role admin_keuangan atau keuangan
     keuanganStaff = allStaff.filter((_, idx) =>
-      matchRole(staffProfiles[idx], ["keuangan", "finance", "bendahara"])
+      hasRoleExact(staffProfiles[idx], ["admin_keuangan", "keuangan"])
     );
 
+    // 3. Admin Berkas: Hanya yang memiliki role admin_berkas atau berkas
     berkasStaff = allStaff.filter((_, idx) =>
-      matchRole(staffProfiles[idx], ["berkas", "dokumen", "sekretaris", "admin"])
+      hasRoleExact(staffProfiles[idx], ["admin_berkas", "berkas"])
     );
 
+    // 4. Ketua Panitia: Sesuai arahan user, direkomendasikan para admin super (dan mudir / ketua_panitia jika ada)
     ketuaStaff = allStaff.filter((_, idx) =>
-      matchRole(staffProfiles[idx], ["mudir", "ketua", "pimpinan", "kepala", "admin"])
+      hasRoleExact(staffProfiles[idx], ["admin_super", "superadmin", "head_of_it", "mudir", "ketua_panitia"])
     );
   } catch (errStaff) {
     console.error("Error fetching staff profiles for suggestions:", errStaff);
