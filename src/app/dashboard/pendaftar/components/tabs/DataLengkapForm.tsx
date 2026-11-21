@@ -368,6 +368,7 @@ interface InputFieldProps {
   options?: (string | { label: string; value: string })[];
   maxLength?: number;
   inputFilter?: "letters" | "numbers";
+  helperText?: string;
 }
 
 function InputField({
@@ -381,7 +382,8 @@ function InputField({
   disabled,
   options,
   maxLength,
-  inputFilter }: InputFieldProps) {
+  inputFilter,
+  helperText }: InputFieldProps) {
   const baseInputClass =
     "w-full px-4 py-3 bg-white border border-ink-200 rounded-2xl text-ink-900 placeholder:text-stone-600 focus:border-primary-600 focus:ring-4 focus:ring-primary-600/10 transition-all outline-none disabled:bg-surface-100 disabled:text-ink-600 font-medium";
 
@@ -484,6 +486,7 @@ function InputField({
         className={baseInputClass}
       />
       {filterHint && <p className="text-xs text-ink-600 ml-1">{filterHint}</p>}
+      {helperText && <p className="text-xs text-ink-500 ml-1">{helperText}</p>}
     </div>
   );
 }
@@ -515,6 +518,9 @@ export default function DataLengkapForm({
   const [statusPendaftaran, setStatusPendaftaran] = useState<string>("draft");
   const [jenjang, setJenjang] = useState<string>("");
   const [initialFormComplete, setInitialFormComplete] = useState<boolean | null>(null);
+  const [pendaftarId, setPendaftarId] = useState<string>("");
+  const [isNameLocked, setIsNameLocked] = useState<boolean>(false);
+  const [isNikLocked, setIsNikLocked] = useState<boolean>(false);
 
   const toggleSection = (section: keyof typeof openSections) => {
     setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
@@ -624,16 +630,73 @@ export default function DataLengkapForm({
             autoGender = "Perempuan";
           }
 
+          const currentId =
+            result.data.id ||
+            result.data.pendaftar_id ||
+            session?.pendaftar_id ||
+            session?.id ||
+            "";
+          if (currentId) {
+            setPendaftarId(currentId);
+          }
+
+          const serverSantri = result.data.santri || {};
+          if (
+            serverSantri.nama_lengkap &&
+            serverSantri.nama_lengkap.trim() !== ""
+          ) {
+            setIsNameLocked(true);
+          }
+          if (serverSantri.nik && serverSantri.nik.trim() !== "") {
+            setIsNikLocked(true);
+          }
+
+          // Scoped per pendaftar ID agar tidak bocor antar calon santri
+          const draftKey = currentId
+            ? `ppdb_datalengkap_draft_${currentId}`
+            : "ppdb_datalengkap_draft";
+          const localDraftStr = localStorage.getItem(draftKey);
+          let initialData = { ...result.data };
+          if (localDraftStr) {
+            try {
+              const localDraft = JSON.parse(localDraftStr);
+              initialData = {
+                ...initialData,
+                ...localDraft,
+                santri: {
+                  ...(localDraft.santri || {}),
+                  nama_lengkap:
+                    serverSantri.nama_lengkap ||
+                    localDraft.santri?.nama_lengkap ||
+                    "",
+                  nik: serverSantri.nik || localDraft.santri?.nik || "",
+                },
+              };
+            } catch (e) {}
+          }
+
+          try {
+            localStorage.removeItem("ppdb_datalengkap_draft");
+          } catch (e) {}
+
           setFormData((prev) => ({
             ...prev,
             santri: {
               ...prev.santri,
-              ...result.data.santri,
-              jenis_kelamin: autoGender },
-            ayah: { ...prev.ayah, ...result.data.ayah },
-            ibu: { ...prev.ibu, ...result.data.ibu },
-            wali: { ...prev.wali, ...result.data.wali },
-            wali_sama_dengan_ortu: result.data.wali_sama_dengan_ortu ?? true }));
+              ...initialData.santri,
+              jenis_kelamin:
+                autoGender ||
+                initialData.santri?.jenis_kelamin ||
+                prev.santri.jenis_kelamin,
+            },
+            ayah: { ...prev.ayah, ...initialData.ayah },
+            ibu: { ...prev.ibu, ...initialData.ibu },
+            wali: { ...prev.wali, ...initialData.wali },
+            wali_sama_dengan_ortu:
+              initialData.wali_sama_dengan_ortu !== undefined
+                ? initialData.wali_sama_dengan_ortu
+                : prev.wali_sama_dengan_ortu,
+          }));
         }
 
         if (reqRes) {
@@ -656,8 +719,8 @@ export default function DataLengkapForm({
 
   // Auto-save logic
   useEffect(() => {
-    // Don't auto-save while loading initial data
-    if (loading) return;
+    // Don't auto-save while loading initial data or before pendaftarId is set
+    if (loading || !pendaftarId) return;
 
     // Use a debounce to prevent excessive API calls
     const timer = setTimeout(async () => {
@@ -665,16 +728,21 @@ export default function DataLengkapForm({
         await fetch("/api/pendaftar/data-lengkap", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...formData, is_draft: true }) });
-        // Auto-save is silent, we don't show toast to user
-        localStorage.setItem("ppdb_datalengkap_draft", JSON.stringify(formData));
+          body: JSON.stringify({ ...formData, is_draft: true }),
+        });
+        const draftKey = `ppdb_datalengkap_draft_${pendaftarId}`;
+        localStorage.setItem(draftKey, JSON.stringify(formData));
       } catch (err) {
         console.error("Background auto-save failed", err);
+        try {
+          const draftKey = `ppdb_datalengkap_draft_${pendaftarId}`;
+          localStorage.setItem(draftKey, JSON.stringify(formData));
+        } catch (e) {}
       }
     }, 2000);
 
     return () => clearTimeout(timer);
-  }, [formData, loading]);
+  }, [formData, loading, pendaftarId]);
 
   const showToast = (type: "success" | "error", message: string) => {
     setToast({ type, message });
@@ -695,6 +763,14 @@ export default function DataLengkapForm({
       if (!result.success) {
         throw new Error(result.error || "Gagal menyimpan data");
       }
+
+      // Bersihkan draft saat sukses submit data final
+      try {
+        localStorage.removeItem("ppdb_datalengkap_draft");
+        if (pendaftarId) {
+          localStorage.removeItem(`ppdb_datalengkap_draft_${pendaftarId}`);
+        }
+      } catch (e) {}
 
       if (requestStatus?.status === "approved_to_edit") {
         const reqUpdate = await fetch("/api/pendaftar/request-edit", {
@@ -975,7 +1051,12 @@ export default function DataLengkapForm({
                     placeholder="16 digit NIK"
                     maxLength={16}
                     required
-                    disabled={!!formData.santri.nik}
+                    disabled={isNikLocked}
+                    helperText={
+                      isNikLocked
+                        ? "NIK terkunci sesuai data pendaftaran (hubungi admin untuk perubahan)"
+                        : undefined
+                    }
                   />
                   <InputField
                     label="Nama Lengkap"
@@ -985,6 +1066,12 @@ export default function DataLengkapForm({
                     placeholder="Sesuai akta kelahiran"
                     required
                     inputFilter="letters"
+                    disabled={isNameLocked}
+                    helperText={
+                      isNameLocked
+                        ? "Nama resmi terkunci sesuai pendaftaran awal (hubungi admin untuk perubahan)"
+                        : undefined
+                    }
                   />
                   <SearchableSelect
                     label="Tempat Lahir"

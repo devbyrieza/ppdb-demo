@@ -75,6 +75,8 @@ export async function GET() {
       success: true,
       data: {
         ...responseData,
+        id: pendaftar.id,
+        pendaftar_id: pendaftar.id,
         jenjang: pendaftar.jenjang,
         status_pendaftaran: pendaftar.status_pendaftaran } });
   } catch (error) {
@@ -145,6 +147,23 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Ambil data pendaftar saat ini untuk proteksi identitas utama
+    const existingPendaftar = await prisma.pendaftar.findUnique({
+      where: { id: pendaftarId },
+      select: {
+        id: true,
+        nama_lengkap: true,
+        nik: true,
+      },
+    });
+
+    if (!existingPendaftar) {
+      return NextResponse.json(
+        { success: false, error: "Data pendaftar tidak ditemukan" },
+        { status: 404 },
+      );
+    }
+
     // Prepare data for individual columns (identity sync)
     let jenisKelaminDb = null;
     if (["L", "Laki-laki"].includes(santri?.jenis_kelamin))
@@ -153,23 +172,40 @@ export async function POST(request: NextRequest) {
       jenisKelaminDb = "P";
 
     // Reconstruct data_lengkap object to be saved
+    const safeSantri = { ...(santri || {}) };
+
+    // Identity Lock: jika di database pendaftar sudah memiliki nama_lengkap atau NIK,
+    // data_lengkap.santri TIDAK BOLEH ditimpa oleh input santri dari client (mencegah kontaminasi draft / tab ganda)
+    if (existingPendaftar.nama_lengkap) {
+      safeSantri.nama_lengkap = existingPendaftar.nama_lengkap;
+    }
+    if (existingPendaftar.nik) {
+      safeSantri.nik = existingPendaftar.nik;
+    }
+
     const dataLengkapObj = {
-      santri: santri || {},
+      santri: safeSantri,
       ayah: ayah || {},
       ibu: ibu || {},
       wali: wali || {},
-      wali_sama_dengan_ortu: wali_sama_dengan_ortu ?? true };
+      wali_sama_dengan_ortu: wali_sama_dengan_ortu ?? true,
+    };
 
     // Update main pendaftar record
     const updateData: any = {
       data_lengkap: dataLengkapObj,
-      updated_at: new Date() };
+      updated_at: new Date(),
+    };
 
     // Sync individual columns for the Santri (Main Pendaftar Table)
     if (santri) {
-      // Identity Sync
-      if (santri.nama_lengkap) updateData.nama_lengkap = santri.nama_lengkap;
-      if (santri.nik) updateData.nik = santri.nik;
+      // Identity Sync (HANYA update nama / NIK jika kolom di database masih kosong)
+      if (santri.nama_lengkap && !existingPendaftar.nama_lengkap) {
+        updateData.nama_lengkap = santri.nama_lengkap;
+      }
+      if (santri.nik && !existingPendaftar.nik) {
+        updateData.nik = santri.nik;
+      }
       if (santri.tanggal_lahir) {
         const d = parseSafeDate(santri.tanggal_lahir);
         if (d) updateData.tanggal_lahir = d;
