@@ -62,47 +62,10 @@ export async function GET(request: Request) {
     if (isAdmin && filter !== "mine") {
       // Admin Super / Admin: Tampilkan semua peserta ujian (tanpa dibatasi hanya ID penguji tertentu)
       // agar tidak ada kandidat yang hilang dari pantauan admin
-    } else if (isAdmin && filter === "mine") {
-      whereClause.OR = [
-        { penguji_santri_id: userId },
-        { penguji_quran_id: userId },
-        { penguji_ortu_id: userId },
-        { penguji_hafalan_id: userId },
-        { penguji_arab_id: userId },
-        { exam_session: { created_by: userId } },
-      ];
-    } else if (activeRole === "penguji_bahasa_arab" || activeRole === "penguji_arab") {
-      whereClause.OR = [
-        { penguji_arab_id: userId },
-        { exam_session: { created_by: userId, title: { contains: "arab", mode: "insensitive" } } },
-        { exam_session: { created_by: userId, title: { contains: "lisan", mode: "insensitive" } } },
-      ];
-    } else if (activeRole === "penguji_hafalan") {
-      whereClause.OR = [
-        { penguji_hafalan_id: userId },
-        { exam_session: { created_by: userId, title: { contains: "hafalan", mode: "insensitive" } } },
-      ];
-    } else if (activeRole === "penguji" || activeRole === "penguji_quran") {
-      whereClause.OR = [
-        { penguji_quran_id: userId },
-        { penguji_hafalan_id: userId },
-        { exam_session: { created_by: userId, title: { contains: "quran", mode: "insensitive" } } },
-        { exam_session: { created_by: userId, title: { contains: "bacaan", mode: "insensitive" } } },
-      ];
-    } else if (activeRole === "pewawancara_calsan" || activeRole === "penguji_calsan") {
-      whereClause.OR = [
-        { penguji_santri_id: userId },
-        { exam_session: { created_by: userId, title: { contains: "santri", mode: "insensitive" } } },
-        { exam_session: { created_by: userId, title: { contains: "calsan", mode: "insensitive" } } },
-      ];
-    } else if (activeRole === "pewawancara_cawalsan" || activeRole === "penguji_cawalsan") {
-      whereClause.OR = [
-        { penguji_ortu_id: userId },
-        { exam_session: { created_by: userId, title: { contains: "cawalsan", mode: "insensitive" } } },
-        { exam_session: { created_by: userId, title: { contains: "ortu", mode: "insensitive" } } },
-        { exam_session: { created_by: userId, title: { contains: "wali", mode: "insensitive" } } },
-      ];
     } else {
+      // Penguji / Pewawancara (atau Admin filter 'mine'):
+      // Tampilkan seluruh peserta yang ditugaskan ke user ini pada komponen ujian APAPUN,
+      // konsisten dengan logika pada /api/penguji/jadwal.
       whereClause.OR = [
         { penguji_santri_id: userId },
         { penguji_quran_id: userId },
@@ -218,52 +181,47 @@ export async function GET(request: Request) {
           roles.push("lisan_arab", "hafalan");
         }
       } else {
-        const allowOrtu = !activeRole || isRoleCawalsan;
-        const allowSantri = !activeRole || isRoleCalsan;
-        const allowQuran = !activeRole || isRoleQuran;
-        const allowHafalan = !activeRole || isRoleHafalan || isRoleQuran;
-        const allowArab = !activeRole || isRoleArab;
+        // 1. Direct assignments in jadwal_ujian:
+        // Always honor explicit assignments so examiners are never locked out of grading
+        if (item.penguji_ortu_id === userId) {
+          if (!roles.includes("ortu")) roles.push("ortu");
+        }
 
-        if (allowOrtu && item.penguji_ortu_id === userId) {
-          roles.push("ortu");
-        } else if (item.penguji_santri_id === userId) {
+        if (item.penguji_santri_id === userId) {
           if (isSessionOrtu || userIsCawalsan) {
-            if (allowOrtu) {
-              roles.push("ortu");
-              if (!item.penguji_ortu_id) {
-                prisma.jadwalUjian.update({
-                  where: { id: item.id },
-                  data: {
-                    penguji_ortu_id: userId,
-                    penguji_santri_id: null,
-                    status_ortu: item.status_santri || item.status_ortu || "scheduled",
-                    status_santri: null,
-                  },
-                }).catch((e) => console.error("Auto-heal jadwal error:", e));
-              }
+            if (!roles.includes("ortu")) roles.push("ortu");
+            if (!item.penguji_ortu_id) {
+              prisma.jadwalUjian.update({
+                where: { id: item.id },
+                data: {
+                  penguji_ortu_id: userId,
+                  penguji_santri_id: null,
+                  status_ortu: item.status_santri || item.status_ortu || "scheduled",
+                  status_santri: null,
+                },
+              }).catch((e) => console.error("Auto-heal jadwal error:", e));
             }
           } else {
-            if (allowSantri) roles.push("wawancara");
+            if (!roles.includes("wawancara")) roles.push("wawancara");
           }
         }
 
-        if (allowSantri && item.penguji_santri_id === userId && !roles.includes("wawancara") && !isSessionOrtu && !userIsCawalsan) {
-          roles.push("wawancara");
-        }
-
-        if (allowQuran && item.penguji_quran_id === userId) {
-          roles.push("quran");
-          if (isDirectNonIL) {
+        if (item.penguji_quran_id === userId) {
+          if (!roles.includes("quran")) roles.push("quran");
+          if (isDirectNonIL && !roles.includes("hafalan")) {
             roles.push("hafalan");
           }
         }
-        if (allowHafalan && (item as any).penguji_hafalan_id === userId) {
+
+        if ((item as any).penguji_hafalan_id === userId) {
           if (!roles.includes("hafalan")) roles.push("hafalan");
         }
-        if (allowArab && isDirectNonIL && (item as any).penguji_arab_id === userId) {
-          roles.push("lisan_arab");
+
+        if (isDirectNonIL && (item as any).penguji_arab_id === userId) {
+          if (!roles.includes("lisan_arab")) roles.push("lisan_arab");
         }
 
+        // 2. Exam session creator fallback (if not explicitly assigned as penguji):
         if (roles.length === 0 && item.exam_session?.created_by === userId) {
           const hasQuranMatch = isSessionQuran;
           const hasOrtuMatch = isSessionOrtu;
@@ -271,10 +229,10 @@ export async function GET(request: Request) {
           const isSessionArab = sessionTitle.includes("arab") || sessionTitle.includes("lisan");
           const hasLisanArabMatch = isDirectNonIL && isSessionArab;
 
-          if (allowQuran && hasQuranMatch && !item.penguji_quran_id && !(item as any).penguji_hafalan_id) roles.push("quran");
-          if (allowSantri && hasWawancaraMatch && !item.penguji_santri_id) roles.push("wawancara");
-          if (allowOrtu && hasOrtuMatch && !item.penguji_ortu_id && !item.penguji_santri_id) roles.push("ortu");
-          if (allowArab && hasLisanArabMatch && !(item as any).penguji_arab_id) roles.push("lisan_arab");
+          if (hasQuranMatch && !item.penguji_quran_id && !(item as any).penguji_hafalan_id) roles.push("quran");
+          if (hasWawancaraMatch && !item.penguji_santri_id) roles.push("wawancara");
+          if (hasOrtuMatch && !item.penguji_ortu_id && !item.penguji_santri_id) roles.push("ortu");
+          if (hasLisanArabMatch && !(item as any).penguji_arab_id) roles.push("lisan_arab");
 
           const hasNoExplicitExaminer =
             !item.penguji_quran_id &&
@@ -291,12 +249,24 @@ export async function GET(request: Request) {
             !isSessionArab &&
             hasNoExplicitExaminer
           ) {
-            if (allowOrtu && userIsCawalsan) roles.push("ortu");
-            else if (allowSantri && userIsCalsan) roles.push("wawancara");
+            if (userIsCawalsan) roles.push("ortu");
+            else if (userIsCalsan) roles.push("wawancara");
             else {
-              if (allowQuran) roles.push("quran");
-              if (allowArab && isDirectNonIL) roles.push("lisan_arab");
+              roles.push("quran");
+              if (isDirectNonIL) roles.push("lisan_arab");
             }
+          }
+        }
+
+        // 3. Fallback if roles is still empty:
+        if (roles.length === 0) {
+          if (userIsCawalsan) roles.push("ortu");
+          if (userIsCalsan) roles.push("wawancara");
+          if (isRoleArab && isDirectNonIL) roles.push("lisan_arab");
+          if (isRoleHafalan) roles.push("hafalan");
+          if (isRoleQuran || (!userIsCawalsan && !userIsCalsan && !isRoleArab && !isRoleHafalan)) {
+            roles.push("quran");
+            if (isDirectNonIL) roles.push("hafalan");
           }
         }
 

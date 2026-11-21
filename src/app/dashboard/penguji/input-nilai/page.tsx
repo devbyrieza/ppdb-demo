@@ -405,9 +405,7 @@ function InputNilaiContent() {
   const isAdmin = allRoles.some(r => ["admin", "admin_super", "head_of_it"].includes(r));
   const rawFormTypes = isAdmin
     ? ['quran', 'wawancara', 'ortu', 'hafalan', 'lisan_arab']
-    : (activeRole && ROLE_TO_FORM_TYPES[activeRole])
-      ? ROLE_TO_FORM_TYPES[activeRole]
-      : [...new Set(allRoles.flatMap(r => ROLE_TO_FORM_TYPES[r] || []))];
+    : [...new Set(allRoles.flatMap(r => ROLE_TO_FORM_TYPES[r] || []))];
   const visibleFormTypes = rawFormTypes.length > 0
     ? rawFormTypes
     : ['quran', 'wawancara', 'ortu', 'hafalan', 'lisan_arab'];
@@ -922,7 +920,8 @@ function InputNilaiContent() {
     )) {
       return true;
     }
-    return p.roles.some(r => visibleFormTypes.includes(r));
+    if (isAdmin) return true;
+    return p.roles.some(r => visibleFormTypes.includes(r)) || p.roles.length > 0;
   });
   const pendingPeserta = relevantPeserta.filter(p => !isParticipantFinished(p)).filter(
     (p) =>
@@ -953,7 +952,7 @@ function InputNilaiContent() {
       (isJenjangLangsungNonIL(p.jenjang) && p.roles.includes("hafalan") && visibleFormTypes.includes("hafalan")) ||
       (isJenjangLangsungNonIL(p.jenjang) && p.roles.includes("lisan_arab") && visibleFormTypes.includes("lisan_arab"));
 
-    const allowAllCandidateRoles = !hasAnyMatchingRole && isSpecificSearch;
+    const allowAllCandidateRoles = !hasAnyMatchingRole || isSpecificSearch;
 
     return (
     <div key={p.id} className="bg-white rounded-3xl sm:rounded-4xl p-5 sm:p-6 md:p-10 border border-secondary-100 shadow-2xl app-card">
