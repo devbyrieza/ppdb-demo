@@ -217,6 +217,233 @@ function PengumumanContent() {
     }
   };
 
+  const formatScoreWithGrade = (score: number | null | undefined, type: string): string => {
+    if (score == null) return "-";
+    let s = Number(score);
+    if (s > 0 && s <= 5) s = s * 20;
+    const grade = getComponentGrade(s, type);
+    return `${s.toFixed(1)} (${grade})`;
+  };
+
+  const getExaminerName = (
+    c: any,
+    componentKey: "quran" | "wawancara_santri" | "wawancara_ortu" | "hafalan" | "arab"
+  ): string => {
+    if (c?.examiner_info?.[componentKey]?.name && c.examiner_info[componentKey].name !== "-") {
+      return c.examiner_info[componentKey].name;
+    }
+    const nu = c?.nilai_ujian;
+    const ju = c?.jadwal_ujian;
+    const juList = Array.isArray(ju) ? ju : ju ? [ju] : [];
+
+    if (componentKey === "quran") {
+      return (
+        nu?.detail_quran?.nama_penguji ||
+        nu?.detail_quran?.penguji ||
+        nu?.detail_quran?.nama ||
+        nu?.input_by_quran_profile?.full_name ||
+        juList.find((x: any) => x.penguji_quran?.full_name)?.penguji_quran?.full_name ||
+        "-"
+      );
+    } else if (componentKey === "wawancara_santri") {
+      return (
+        nu?.detail_wawancara?.nama_pewawancara ||
+        nu?.detail_wawancara?.nama_penguji ||
+        nu?.detail_wawancara?.pewawancara ||
+        nu?.detail_wawancara?.penguji ||
+        nu?.input_by_santri_profile?.full_name ||
+        juList.find((x: any) => x.penguji_santri?.full_name)?.penguji_santri?.full_name ||
+        "-"
+      );
+    } else if (componentKey === "wawancara_ortu") {
+      return (
+        nu?.detail_cawalsan?.nama_pewawancara ||
+        nu?.detail_cawalsan?.nama_penguji ||
+        nu?.detail_cawalsan?.pewawancara ||
+        nu?.detail_cawalsan?.penguji ||
+        nu?.input_by_ortu_profile?.full_name ||
+        juList.find((x: any) => x.penguji_ortu?.full_name)?.penguji_ortu?.full_name ||
+        "-"
+      );
+    } else if (componentKey === "hafalan") {
+      return (
+        nu?.detail_hafalan?.nama_penguji ||
+        nu?.detail_hafalan?.penguji ||
+        nu?.input_by_hafalan_profile?.full_name ||
+        juList.find((x: any) => x.penguji_hafalan?.full_name)?.penguji_hafalan?.full_name ||
+        "-"
+      );
+    } else if (componentKey === "arab") {
+      return (
+        nu?.detail_arab?.nama_penguji ||
+        nu?.detail_lisan_arab?.nama_penguji ||
+        nu?.detail_arab?.penguji ||
+        nu?.input_by_arab_profile?.full_name ||
+        juList.find((x: any) => x.penguji_arab?.full_name)?.penguji_arab?.full_name ||
+        "-"
+      );
+    }
+    return "-";
+  };
+
+  const getExaminerNotes = (
+    c: any,
+    componentKey: "quran" | "wawancara_santri" | "wawancara_ortu" | "hafalan" | "arab"
+  ): string => {
+    if (c?.examiner_info?.[componentKey]?.notes && c.examiner_info[componentKey].notes !== "-") {
+      return c.examiner_info[componentKey].notes;
+    }
+    const nu = c?.nilai_ujian;
+    if (componentKey === "quran") {
+      return nu?.catatan_quran || nu?.detail_quran?.catatan || "-";
+    } else if (componentKey === "wawancara_santri") {
+      return nu?.catatan_santri || nu?.detail_wawancara?.catatan || "-";
+    } else if (componentKey === "wawancara_ortu") {
+      return nu?.catatan_ortu || nu?.detail_cawalsan?.catatan || "-";
+    } else if (componentKey === "hafalan") {
+      return nu?.catatan_hafalan || nu?.detail_hafalan?.catatan_tambahan || "-";
+    } else if (componentKey === "arab") {
+      return nu?.catatan_arab || nu?.detail_arab?.catatan_tambahan || "-";
+    }
+    return "-";
+  };
+
+  const getExaminerRecommendation = (
+    c: any,
+    componentKey: "quran" | "wawancara_santri" | "wawancara_ortu" | "hafalan" | "arab"
+  ): string => {
+    if (c?.examiner_info?.[componentKey]?.recommendation && c.examiner_info[componentKey].recommendation !== "-") {
+      return c.examiner_info[componentKey].recommendation;
+    }
+    const nu = c?.nilai_ujian;
+    if (componentKey === "quran") {
+      return nu?.detail_quran?.rekomendasi || "-";
+    } else if (componentKey === "wawancara_santri") {
+      return nu?.detail_wawancara?.rekomendasi || "-";
+    } else if (componentKey === "wawancara_ortu") {
+      return nu?.detail_cawalsan?.rekomendasi || "-";
+    } else if (componentKey === "hafalan") {
+      return nu?.detail_hafalan?.rekomendasi || "-";
+    } else if (componentKey === "arab") {
+      return nu?.detail_arab?.rekomendasi || nu?.detail_lisan_arab?.rekomendasi || "-";
+    }
+    return "-";
+  };
+
+  interface SaranSistemResult {
+    keputusan: "Diterima" | "Cadangan" | "Ditolak";
+    label: string;
+    badgeClass: string;
+    alasan: string;
+  }
+
+  const getSaranSistem = (c: any): SaranSistemResult => {
+    const nu = c?.nilai_ujian;
+    const total = nu?.nilai_total != null ? Number(nu.nilai_total) : (nu?.total_score != null ? Number(nu.total_score) : 0);
+    const quran = nu?.score_quran != null ? Number(nu.score_quran) : (nu?.nilai_tes_quran != null ? Number(nu.nilai_tes_quran) : null);
+    const hafalan = nu?.score_hafalan != null ? Number(nu.score_hafalan) : (nu?.nilai_hafalan_total != null ? Number(nu.nilai_hafalan_total) : null);
+    const arab = nu?.score_arab != null ? Number(nu.score_arab) : (nu?.nilai_arab_total != null ? Number(nu.nilai_arab_total) : null);
+    const ws = nu?.score_wawancara != null ? Number(nu.score_wawancara) : (nu?.nilai_wawancara_santri != null ? Number(nu.nilai_wawancara_santri) : null);
+    const wo = nu?.nilai_wawancara_ortu != null ? Number(nu.nilai_wawancara_ortu) : null;
+
+    const rekQuran = (getExaminerRecommendation(c, "quran") || "").trim();
+    const catQuran = (getExaminerNotes(c, "quran") || "").trim();
+    const rekSantri = (getExaminerRecommendation(c, "wawancara_santri") || "").trim();
+    const catSantri = (getExaminerNotes(c, "wawancara_santri") || "").trim();
+    const rekOrtu = (getExaminerRecommendation(c, "wawancara_ortu") || "").trim();
+    const catOrtu = (getExaminerNotes(c, "wawancara_ortu") || "").trim();
+    const isMA = isJenjangTanpaIL(c.jenjang);
+
+    let dw = nu?.detail_wawancara;
+    if (typeof dw === "string") { try { dw = JSON.parse(dw); } catch (e) {} }
+    let dc = nu?.detail_cawalsan;
+    if (typeof dc === "string") { try { dc = JSON.parse(dc); } catch (e) {} }
+
+    const rokok = dw?.rokok ? Number(dw.rokok) : null;
+    const porn = dw?.pornografi ? Number(dw.pornografi) : null;
+
+    const hasPerilakuRisk =
+      (rokok != null && rokok <= 2) ||
+      (porn != null && porn <= 2) ||
+      rekSantri.toLowerCase().includes("tidak disarankan") ||
+      rekSantri.toLowerCase().includes("tidak direkomendasikan") ||
+      rekSantri.toLowerCase().includes("tidak layak");
+
+    const ortuTolak =
+      rekOrtu.toLowerCase().includes("tolak") ||
+      (dc?.rekomendasi && typeof dc.rekomendasi === "string" && dc.rekomendasi.toLowerCase().includes("tolak"));
+
+    // 1. DISARANKAN DITOLAK
+    if (
+      (quran != null && quran < 50) ||
+      hasPerilakuRisk ||
+      ortuTolak ||
+      (total < 60 && quran != null && quran < 65) ||
+      (rekQuran.toLowerCase().includes("tolak") && quran != null && quran < 60)
+    ) {
+      let alasan = "";
+      if (hasPerilakuRisk) {
+        alasan = `Pewawancara santri mencatat risiko perilaku/kedisiplinan tinggi (${catSantri && catSantri !== "-" ? `"${catSantri}"` : rekSantri}). Berisiko terhadap kenyamanan dan ketertiban asrama.`;
+      } else if (ortuTolak) {
+        alasan = `Wawancara calon orang tua belum mencapai kesepahaman komitmen pembiayaan atau tata tertib pesantren (${catOrtu && catOrtu !== "-" ? `"${catOrtu}"` : rekOrtu}).`;
+      } else if (quran != null && quran < 50) {
+        alasan = `Kemampuan membaca Al-Qur'an sangat mendasar (Skor ${quran.toFixed(0)} / ${catQuran && catQuran !== "-" ? `"${catQuran}"` : "Grade E"}). Kurikulum pesantren berbasis tahfizh membutuhkan kesiapan membaca yang belum terpenuhi.`;
+      } else if (total < 60) {
+        alasan = `Skor akumulasi seleksi (${total.toFixed(2)}) dan Al-Qur'an (${quran ? quran.toFixed(0) : "-"}) berada jauh di bawah ambang KKM 75.`;
+      } else {
+        alasan = `Penguji Al-Qur'an merekomendasikan penolakan (${rekQuran}) dengan skor ${quran ? quran.toFixed(0) : "-"}.`;
+      }
+
+      return {
+        keputusan: "Ditolak",
+        label: "Disarankan Ditolak",
+        badgeClass: "bg-red-100 text-red-800 border-red-300",
+        alasan,
+      };
+    }
+
+    // 2. DISARANKAN DITERIMA (BERSYARAT / MATRIKULASI)
+    if (
+      (quran != null && quran >= 70 && quran < 75 && total >= 74) ||
+      (quran != null && quran >= 70 && total >= 75) ||
+      (isMA && quran != null && quran >= 75 && total >= 72 && ((hafalan != null && hafalan < 75) || (arab != null && arab < 75))) ||
+      (total >= 73 && quran != null && quran >= 70 && (ws != null && ws >= 85) && (wo != null && wo >= 85))
+    ) {
+      let alasan = "";
+      if (isMA && ((hafalan != null && hafalan < 75) || (arab != null && arab < 75))) {
+        alasan = `Al-Qur'an lolos KKM (${quran ? quran.toFixed(0) : "-"}), total skor kuat (${total.toFixed(2)}). Kekurangan pada ${hafalan != null && hafalan < 75 ? `Hafalan (${hafalan.toFixed(0)})` : ""} ${arab != null && arab < 75 ? `B. Arab (${arab.toFixed(0)})` : ""} dapat dituntaskan melalui matrikulasi awal jenjang SLTA.`;
+      } else if (quran != null && quran >= 70 && quran < 75) {
+        alasan = `Total skor memenuhi KKM (${total.toFixed(2)}) serta wawancara santri & ortu positif. Nilai Al-Qur'an (${quran.toFixed(0)} / Grade C) hanya sedikit di bawah standar dan sangat potensial ditingkatkan melalui matrikulasi tahsin.`;
+      } else {
+        alasan = `Karakter santri dan komitmen orang tua sangat baik (${wo != null ? `W. Ortu ${wo.toFixed(0)}` : ""}). Kelemahan minor pada ujian dinilai dapat dibina secara efektif di pesantren.`;
+      }
+
+      return {
+        keputusan: "Diterima",
+        label: "Disarankan Diterima (Bersyarat)",
+        badgeClass: "bg-emerald-100 text-emerald-800 border-emerald-300",
+        alasan,
+      };
+    }
+
+    // 3. DISARANKAN CADANGAN
+    let alasanCadangan = "";
+    if (total < 75 && quran != null && quran >= 75) {
+      alasanCadangan = `Bacaan Al-Qur'an sudah memenuhi standar KKM (${quran.toFixed(0)} / Lolos). Kekurangan hanya pada nilai tes akademik/total (${total.toFixed(2)}). Layak diprioritaskan sebagai Cadangan Utama jika kuota tersedia.`;
+    } else if (quran != null && quran >= 60 && quran < 70) {
+      alasanCadangan = `Wawancara santri & ortu cukup baik, namun bacaan Al-Qur'an (${quran.toFixed(0)} / Grade D) dan total skor (${total.toFixed(2)}) memerlukan pembinaan intensif. Disarankan masuk daftar Cadangan menunggu kesiapan kuota pembinaan.`;
+    } else {
+      alasanCadangan = `Akumulasi nilai seleksi (${total.toFixed(2)}) dan Al-Qur'an (${quran ? quran.toFixed(0) : "-"}) berada di bawah KKM standar 75. Disarankan masuk daftar Cadangan.`;
+    }
+
+    return {
+      keputusan: "Cadangan",
+      label: "Disarankan Cadangan",
+      badgeClass: "bg-amber-100 text-amber-800 border-amber-300",
+      alasan: alasanCadangan,
+    };
+  };
+
   const isMemenuhiKKM = (c: any) => {
     if (c.pengumuman?.status_kelulusan === "Menunggu Rapat") return false;
 
@@ -260,6 +487,7 @@ function PengumumanContent() {
         subText: "Menunggu Keputusan Tim Pleno",
         badgeClass: "bg-blue-100 text-blue-800 border-blue-200",
         icon: Users,
+        saranSistem: getSaranSistem(c),
       };
     }
 
@@ -298,6 +526,7 @@ function PengumumanContent() {
             subText: detailSMA,
             badgeClass: "bg-amber-100 text-amber-800 border-amber-200",
             icon: Gavel,
+            saranSistem: getSaranSistem(c),
           };
         }
 
@@ -306,6 +535,7 @@ function PengumumanContent() {
           subText: `Total di Bawah KKM ${KKM_STANDAR} (Al-Qur'an, Hafalan & B. Arab Lolos)`,
           badgeClass: "bg-amber-100 text-amber-800 border-amber-200",
           icon: Gavel,
+          saranSistem: getSaranSistem(c),
         };
       }
 
@@ -325,6 +555,7 @@ function PengumumanContent() {
         subText: `Al-Qur'an Kurang (Grade ${quranGrade} / ${quran.toFixed(0)})`,
         badgeClass: "bg-amber-100 text-amber-800 border-amber-200",
         icon: Gavel,
+        saranSistem: getSaranSistem(c),
       };
     }
 
@@ -335,6 +566,7 @@ function PengumumanContent() {
         subText: `Al-Qur'an Bersyarat (Grade C / ${quran.toFixed(0)})`,
         badgeClass: "bg-amber-100 text-amber-800 border-amber-200",
         icon: Gavel,
+        saranSistem: getSaranSistem(c),
       };
     }
 
@@ -345,6 +577,7 @@ function PengumumanContent() {
         subText: `Total di Bawah KKM ${KKM_STANDAR}`,
         badgeClass: "bg-amber-100 text-amber-800 border-amber-200",
         icon: Gavel,
+        saranSistem: getSaranSistem(c),
       };
     }
 
@@ -653,119 +886,6 @@ function PengumumanContent() {
     }
   };
 
-  const formatScoreWithGrade = (score: number | null | undefined, type: string): string => {
-    if (score == null) return "-";
-    let s = Number(score);
-    if (s > 0 && s <= 5) s = s * 20;
-    const grade = getComponentGrade(s, type);
-    return `${s.toFixed(1)} (${grade})`;
-  };
-
-  const getExaminerName = (
-    c: any,
-    componentKey: "quran" | "wawancara_santri" | "wawancara_ortu" | "hafalan" | "arab"
-  ): string => {
-    if (c?.examiner_info?.[componentKey]?.name && c.examiner_info[componentKey].name !== "-") {
-      return c.examiner_info[componentKey].name;
-    }
-    const nu = c?.nilai_ujian;
-    const ju = c?.jadwal_ujian;
-    const juList = Array.isArray(ju) ? ju : ju ? [ju] : [];
-
-    if (componentKey === "quran") {
-      return (
-        nu?.detail_quran?.nama_penguji ||
-        nu?.detail_quran?.penguji ||
-        nu?.detail_quran?.nama ||
-        nu?.input_by_quran_profile?.full_name ||
-        juList.find((x: any) => x.penguji_quran?.full_name)?.penguji_quran?.full_name ||
-        "-"
-      );
-    } else if (componentKey === "wawancara_santri") {
-      return (
-        nu?.detail_wawancara?.nama_pewawancara ||
-        nu?.detail_wawancara?.nama_penguji ||
-        nu?.detail_wawancara?.pewawancara ||
-        nu?.detail_wawancara?.penguji ||
-        nu?.input_by_santri_profile?.full_name ||
-        juList.find((x: any) => x.penguji_santri?.full_name)?.penguji_santri?.full_name ||
-        "-"
-      );
-    } else if (componentKey === "wawancara_ortu") {
-      return (
-        nu?.detail_cawalsan?.nama_pewawancara ||
-        nu?.detail_cawalsan?.nama_penguji ||
-        nu?.detail_cawalsan?.pewawancara ||
-        nu?.detail_cawalsan?.penguji ||
-        nu?.input_by_ortu_profile?.full_name ||
-        juList.find((x: any) => x.penguji_ortu?.full_name)?.penguji_ortu?.full_name ||
-        "-"
-      );
-    } else if (componentKey === "hafalan") {
-      return (
-        nu?.detail_hafalan?.nama_penguji ||
-        nu?.detail_hafalan?.penguji ||
-        nu?.input_by_hafalan_profile?.full_name ||
-        juList.find((x: any) => x.penguji_hafalan?.full_name)?.penguji_hafalan?.full_name ||
-        "-"
-      );
-    } else if (componentKey === "arab") {
-      return (
-        nu?.detail_arab?.nama_penguji ||
-        nu?.detail_lisan_arab?.nama_penguji ||
-        nu?.detail_arab?.penguji ||
-        nu?.input_by_arab_profile?.full_name ||
-        juList.find((x: any) => x.penguji_arab?.full_name)?.penguji_arab?.full_name ||
-        "-"
-      );
-    }
-    return "-";
-  };
-
-  const getExaminerNotes = (
-    c: any,
-    componentKey: "quran" | "wawancara_santri" | "wawancara_ortu" | "hafalan" | "arab"
-  ): string => {
-    if (c?.examiner_info?.[componentKey]?.notes && c.examiner_info[componentKey].notes !== "-") {
-      return c.examiner_info[componentKey].notes;
-    }
-    const nu = c?.nilai_ujian;
-    if (componentKey === "quran") {
-      return nu?.catatan_quran || nu?.detail_quran?.catatan || "-";
-    } else if (componentKey === "wawancara_santri") {
-      return nu?.catatan_santri || nu?.detail_wawancara?.catatan || "-";
-    } else if (componentKey === "wawancara_ortu") {
-      return nu?.catatan_ortu || nu?.detail_cawalsan?.catatan || "-";
-    } else if (componentKey === "hafalan") {
-      return nu?.catatan_hafalan || nu?.detail_hafalan?.catatan_tambahan || "-";
-    } else if (componentKey === "arab") {
-      return nu?.catatan_arab || nu?.detail_arab?.catatan_tambahan || "-";
-    }
-    return "-";
-  };
-
-  const getExaminerRecommendation = (
-    c: any,
-    componentKey: "quran" | "wawancara_santri" | "wawancara_ortu" | "hafalan" | "arab"
-  ): string => {
-    if (c?.examiner_info?.[componentKey]?.recommendation && c.examiner_info[componentKey].recommendation !== "-") {
-      return c.examiner_info[componentKey].recommendation;
-    }
-    const nu = c?.nilai_ujian;
-    if (componentKey === "quran") {
-      return nu?.detail_quran?.rekomendasi || "-";
-    } else if (componentKey === "wawancara_santri") {
-      return nu?.detail_wawancara?.rekomendasi || "-";
-    } else if (componentKey === "wawancara_ortu") {
-      return nu?.detail_cawalsan?.rekomendasi || "-";
-    } else if (componentKey === "hafalan") {
-      return nu?.detail_hafalan?.rekomendasi || "-";
-    } else if (componentKey === "arab") {
-      return nu?.detail_arab?.rekomendasi || nu?.detail_lisan_arab?.rekomendasi || "-";
-    }
-    return "-";
-  };
-
   const handleExportExcel = async () => {
     if (!filteredCandidates.length) {
       toast.error("Tidak ada data santri untuk diekspor");
@@ -841,7 +961,9 @@ function PengumumanContent() {
         let statusText = "-";
         if (activeTab === "siap_pleno") {
           const rek = getRekomendasiDetail(c);
-          statusText = `${rek.badgeText} - ${rek.subText}`;
+          statusText = rek.saranSistem
+            ? `${rek.badgeText} [Saran: ${rek.saranSistem.label} - ${rek.saranSistem.alasan}] (${rek.subText})`
+            : `${rek.badgeText} - ${rek.subText}`;
         } else if (activeTab === "sudah_diumumkan") {
           statusText = c.status_pendaftaran?.toUpperCase() || c.pengumuman?.status_kelulusan || "DITERBITKAN";
         } else {
@@ -945,7 +1067,9 @@ function PengumumanContent() {
         let statusText = "-";
         if (activeTab === "siap_pleno") {
           const rek = getRekomendasiDetail(c);
-          statusText = `${rek.badgeText} - ${rek.subText}`;
+          statusText = rek.saranSistem
+            ? `${rek.badgeText} [Saran: ${rek.saranSistem.label} - ${rek.saranSistem.alasan}] (${rek.subText})`
+            : `${rek.badgeText} - ${rek.subText}`;
         } else if (activeTab === "sudah_diumumkan") {
           statusText = c.status_pendaftaran?.toUpperCase() || c.pengumuman?.status_kelulusan || "DITERBITKAN";
         } else {
@@ -1116,6 +1240,9 @@ function PengumumanContent() {
           const isCandidateMA = isJenjangTanpaIL(c.jenjang);
 
           const rek = getRekomendasiDetail(c);
+          const rekDisplay = rek.saranSistem
+            ? `${rek.badgeText}\n[Saran: ${rek.saranSistem.label}]\n"${rek.saranSistem.alasan}"`
+            : rek.badgeText;
           const quranRec = getExaminerRecommendation(c, "quran");
           const quranNote = `${getExaminerName(c, "quran")}${quranRec !== "-" ? ` [Rek: ${quranRec}]` : ""}\n"${getExaminerNotes(c, "quran")}"`;
 
@@ -1135,7 +1262,7 @@ function PengumumanContent() {
             String(idx + 1),
             c.nomor_pendaftaran || "-",
             (c.nama_lengkap || "").substring(0, 22),
-            rek.badgeText,
+            rekDisplay,
             quranNote,
             wsNote,
             woNote,
@@ -1851,7 +1978,7 @@ function PengumumanContent() {
                       {/* Status / Recommendation Column */}
                       <td className="px-6 py-4 text-center">
                         {activeTab === "siap_pleno" ? (
-                          <div className="flex flex-col items-center gap-1">
+                          <div className="flex flex-col items-center gap-1.5 max-w-[280px] mx-auto">
                             {(() => {
                               const rek = getRekomendasiDetail(c);
                               const IconComponent = rek.icon;
@@ -1861,9 +1988,25 @@ function PengumumanContent() {
                                     <IconComponent className="w-3.5 h-3.5" />
                                     {rek.badgeText}
                                   </span>
-                                  <span className="text-[10px] text-stone-600 font-bold">
+                                  <span className="text-[10px] text-stone-600 font-bold text-center">
                                     {rek.subText}
                                   </span>
+                                  {rek.saranSistem && (
+                                    <div className="w-full mt-1 p-2 bg-stone-50/95 border border-stone-200/90 rounded-xl text-left shadow-2xs">
+                                      <div className="flex items-center justify-between gap-1 mb-1">
+                                        <span className="text-[9.5px] font-black uppercase tracking-wider text-stone-500 flex items-center gap-1">
+                                          <Sparkles className="w-3 h-3 text-emerald-600 shrink-0" />
+                                          Saran Sistem:
+                                        </span>
+                                        <span className={`text-[9.5px] font-black px-1.5 py-0.5 rounded border ${rek.saranSistem.badgeClass}`}>
+                                          {rek.saranSistem.label}
+                                        </span>
+                                      </div>
+                                      <p className="text-[10px] leading-snug text-stone-700 font-normal">
+                                        {rek.saranSistem.alasan}
+                                      </p>
+                                    </div>
+                                  )}
                                 </>
                               );
                             })()}
@@ -1989,36 +2132,35 @@ function PengumumanContent() {
                                 </>
                               ) : (
                                 <>
-                                  {/* Ganti Surat */}
-                              <button
-                                onClick={() => {
-                                  setSuratTarget({
-                                    id: c.id,
-                                    nama_lengkap: c.nama_lengkap,
-                                    nomor_pendaftaran: c.nomor_pendaftaran,
-                                  });
-                                }}
-                                title="Upload / Ganti Surat Pengumuman Resmi"
-                                className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-xs transition-all flex items-center gap-1 cursor-pointer"
-                              >
-                                <UploadCloud className="w-3.5 h-3.5" />
-                                <span>Ganti Surat</span>
-                              </button>
+                                  {/* Ganti Surat (untuk santri diterima) */}
+                                  <button
+                                    onClick={() => {
+                                      setSuratTarget({
+                                        id: c.id,
+                                        nama_lengkap: c.nama_lengkap,
+                                        nomor_pendaftaran: c.nomor_pendaftaran,
+                                      });
+                                    }}
+                                    title="Upload / Ganti Surat Pengumuman Resmi"
+                                    className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-xs transition-all flex items-center gap-1 cursor-pointer"
+                                  >
+                                    <UploadCloud className="w-3.5 h-3.5" />
+                                    <span>Ganti Surat</span>
+                                  </button>
 
-                              {/* Lihat Surat jika ada */}
-                              {c.pengumuman?.surat_pengumuman_path && (
-                                <a
-                                  href={c.pengumuman.surat_pengumuman_path}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  title="Lihat Surat Pengumuman Resmi"
-                                  className="px-2.5 py-1.5 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl text-xs font-bold border border-stone-200 flex items-center gap-1 cursor-pointer"
-                                >
-                                  <FileText className="w-3.5 h-3.5 text-red-600" />
-                                  <span>Lihat</span>
-                                </a>
-                              )}
-
+                                  {/* Lihat Surat jika ada */}
+                                  {c.pengumuman?.surat_pengumuman_path && (
+                                    <a
+                                      href={c.pengumuman.surat_pengumuman_path}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      title="Lihat Surat Pengumuman Resmi"
+                                      className="px-2.5 py-1.5 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl text-xs font-bold border border-stone-200 flex items-center gap-1 cursor-pointer"
+                                    >
+                                      <FileText className="w-3.5 h-3.5 text-red-600" />
+                                      <span>Lihat</span>
+                                    </a>
+                                  )}
                                 </>
                               )}
 
@@ -2495,6 +2637,38 @@ function PengumumanContent() {
                   </span>
                 </div>
               </div>
+
+              {/* Saran Sistem Highlight Box */}
+              {(() => {
+                const rek = getRekomendasiDetail(selectedNotesCandidate);
+                if (!rek.saranSistem) return null;
+                const isDiterima = rek.saranSistem.keputusan === "Diterima";
+                const isCadangan = rek.saranSistem.keputusan === "Cadangan";
+                return (
+                  <div
+                    className={`p-4 rounded-2xl border shadow-xs transition-all ${
+                      isDiterima
+                        ? "bg-emerald-50/80 border-emerald-300 text-emerald-950"
+                        : isCadangan
+                          ? "bg-amber-50/80 border-amber-300 text-amber-950"
+                          : "bg-red-50/80 border-red-300 text-red-950"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between gap-2 mb-2 flex-wrap">
+                      <div className="flex items-center gap-1.5 font-black text-xs uppercase tracking-wider">
+                        <Sparkles className="w-4 h-4 text-primary-600 shrink-0" />
+                        <span>Saran Sistem (Pertimbangan Rapat Pleno):</span>
+                      </div>
+                      <span className={`text-xs font-black px-2.5 py-0.5 rounded-full border shadow-2xs ${rek.saranSistem.badgeClass}`}>
+                        {rek.saranSistem.label}
+                      </span>
+                    </div>
+                    <p className="text-xs leading-relaxed font-medium">
+                      {rek.saranSistem.alasan}
+                    </p>
+                  </div>
+                );
+              })()}
 
               {/* Catatan Al-Qur'an */}
               <div className="p-4 rounded-2xl bg-emerald-50/50 border border-emerald-200/80 space-y-2">
