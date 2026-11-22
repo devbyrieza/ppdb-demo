@@ -570,7 +570,7 @@ function InputNilaiContent() {
             await Swal.fire({
               icon: 'warning',
               title: 'Rekomendasi Hafalan Wajib Dipilih',
-              text: 'Mohon pilih rekomendasi untuk tes hafalan (Diterima / Cadangan / Ditolak).'
+              text: 'Mohon pilih rekomendasi untuk tes hafalan.'
             });
             return;
           }
@@ -1078,7 +1078,7 @@ function InputNilaiContent() {
                 </div>
                 <div>
                   <p className="text-[10px] font-black uppercase tracking-widest text-ink-400 mb-1.5">Rekomendasi</p>
-                  <span className={`inline-flex items-center px-3 py-1.5 rounded-2xl text-xs font-black uppercase tracking-wider ${p.detail_hafalan?.rekomendasi === "Diterima" ? "bg-teal-100 text-teal-800" : p.detail_hafalan?.rekomendasi === "Cadangan" ? "bg-gold-100 text-gold-800" : "bg-red-100 text-red-800"}`}>{p.detail_hafalan?.rekomendasi || "-"}</span>
+                  <span className={`inline-flex items-center px-3 py-1.5 rounded-2xl text-xs font-black uppercase tracking-wider ${p.detail_hafalan?.rekomendasi === "Diterima" ? "bg-teal-100 text-teal-800" : p.detail_hafalan?.rekomendasi?.includes("IL") ? "bg-blue-100 text-blue-800" : p.detail_hafalan?.rekomendasi === "Cadangan" ? "bg-gold-100 text-gold-800" : "bg-red-100 text-red-800"}`}>{p.detail_hafalan?.rekomendasi || "-"}</span>
                 </div>
                 {p.catatan_hafalan && (
                   <div className="md:col-span-2 mt-2 pt-4 border-t border-teal-50">
@@ -1487,13 +1487,49 @@ function InputNilaiContent() {
               <label className="block text-[10px] sm:text-xs font-black text-ink-700 uppercase tracking-widest mb-3 sm:mb-4">
                 Rekomendasi Penguji Al-Qur&apos;an <span className="text-red-600 font-bold">* (Wajib Dipilih)</span>
               </label>
-              <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
-                {["Diterima", "Cadangan", "Ditolak"].map((opt) => (
-                  <label key={opt} className={`px-4 sm:px-5 py-3.5 sm:py-4 rounded-3xl cursor-pointer border-2 transition-all text-xs sm:text-sm font-black text-center ${quranForm.rekomendasi === opt ? (opt === "Diterima" ? "border-emerald-500 bg-emerald-50 text-[#9D174D] shadow-2xl     " : opt === "Cadangan" ? "border-secondary-500 bg-secondary-50 text-secondary-800 shadow-2xl     " : "border-red-500 bg-red-50 text-red-700 shadow-2xl     ") : "border-emerald-50 bg-white hover:border-emerald-200"}`}>
-                    <input type="radio" name={`rekom-quran-${p.id}`} value={opt} checked={quranForm.rekomendasi === opt} onChange={() => setQuranForm({ ...quranForm, rekomendasi: opt })} className="hidden" />
-                    {opt}
-                  </label>
-                ))}
+              <div className={`grid grid-cols-1 ${isJenjangLangsungNonIL(p.jenjang) ? "sm:grid-cols-2 lg:grid-cols-4" : "sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3"} gap-2 sm:gap-3`}>
+                {(isJenjangLangsungNonIL(p.jenjang)
+                  ? [
+                      { key: "Diterima", label: `Diterima (Langsung ${(p.jenjang?.toUpperCase() || "").includes("MA") ? "MA" : "SMA"})`, desc: "Lulus langsung ke jenjang", color: "teal" },
+                      { key: "Rekomendasi ke IL", label: "Rekomendasi ke IL", desc: "Matrikulasi I'dad Lughawi", color: "blue" },
+                      { key: "Cadangan", label: "Cadangan", desc: "Masuk kuota cadangan", color: "amber" },
+                      { key: "Ditolak", label: "Ditolak", desc: "Tidak memenuhi syarat", color: "red" },
+                    ]
+                  : [
+                      { key: "Diterima", label: "Diterima", desc: "Memenuhi kriteria", color: "teal" },
+                      { key: "Cadangan", label: "Cadangan", desc: "Masuk kuota cadangan", color: "amber" },
+                      { key: "Ditolak", label: "Ditolak", desc: "Tidak memenuhi syarat", color: "red" },
+                    ]
+                ).map((opt) => {
+                  const isSelected = quranForm.rekomendasi === opt.key;
+                  return (
+                    <label
+                      key={opt.key}
+                      className={`p-3.5 rounded-2xl cursor-pointer border-2 transition-all flex flex-col items-center justify-center text-center ${
+                        isSelected
+                          ? opt.color === "teal"
+                            ? "border-emerald-500 bg-emerald-50 text-emerald-900 shadow-md ring-2 ring-emerald-500/20"
+                            : opt.color === "blue"
+                            ? "border-blue-500 bg-blue-50 text-blue-900 shadow-md ring-2 ring-blue-500/20"
+                            : opt.color === "amber"
+                            ? "border-amber-500 bg-amber-50 text-amber-900 shadow-md ring-2 ring-amber-500/20"
+                            : "border-red-500 bg-red-50 text-red-900 shadow-md ring-2 ring-red-500/20"
+                          : "border-emerald-50 bg-white hover:border-emerald-200 text-slate-700"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name={`rekom-quran-${p.id}`}
+                        value={opt.key}
+                        checked={isSelected}
+                        onChange={() => setQuranForm({ ...quranForm, rekomendasi: opt.key })}
+                        className="hidden"
+                      />
+                      <span className="text-xs sm:text-sm font-black">{opt.label}</span>
+                      <span className="text-[10px] font-medium opacity-75 mt-0.5">{opt.desc}</span>
+                    </label>
+                  );
+                })}
               </div>
             </div>
 
@@ -1554,20 +1590,42 @@ function InputNilaiContent() {
                   <label className="block text-[10px] sm:text-xs font-black text-ink-700 uppercase tracking-widest mb-3 sm:mb-4">
                     Rekomendasi Penguji Hafalan <span className="text-red-600 font-bold">* (Wajib Dipilih)</span>
                   </label>
-                  <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
-                    {["Diterima", "Cadangan", "Ditolak"].map((opt) => (
-                      <label key={opt} className={`px-4 sm:px-5 py-3.5 sm:py-4 rounded-3xl cursor-pointer border-2 transition-all text-xs sm:text-sm font-black text-center ${quranForm.rekomendasi_hafalan === opt ? (opt === "Diterima" ? "border-teal-500 bg-teal-50 text-teal-700 shadow-2xl" : opt === "Cadangan" ? "border-gold-500 bg-gold-50 text-gold-800 shadow-2xl" : "border-red-500 bg-red-50 text-red-700 shadow-2xl") : "border-teal-50 bg-white hover:border-teal-200"}`}>
-                        <input
-                          type="radio"
-                          name={`rekom-hafalan-quran-${p.id}`}
-                          value={opt}
-                          checked={quranForm.rekomendasi_hafalan === opt}
-                          onChange={() => setQuranForm({ ...quranForm, rekomendasi_hafalan: opt })}
-                          className="hidden"
-                        />
-                        {opt}
-                      </label>
-                    ))}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
+                    {[
+                      { key: "Diterima", label: `Diterima (Langsung ${(p.jenjang?.toUpperCase() || "").includes("MA") ? "MA" : "SMA"})`, desc: "Lulus langsung ke SMA", color: "teal" },
+                      { key: "Rekomendasi ke IL", label: "Rekomendasi ke IL", desc: "Matrikulasi I'dad Lughawi", color: "blue" },
+                      { key: "Cadangan", label: "Cadangan", desc: "Masuk kuota cadangan", color: "amber" },
+                      { key: "Ditolak", label: "Ditolak", desc: "Tidak memenuhi syarat", color: "red" }
+                    ].map((opt) => {
+                      const isSelected = quranForm.rekomendasi_hafalan === opt.key;
+                      return (
+                        <label
+                          key={opt.key}
+                          className={`p-3.5 rounded-2xl cursor-pointer border-2 transition-all flex flex-col items-center justify-center text-center ${
+                            isSelected
+                              ? opt.color === "teal"
+                                ? "border-teal-500 bg-teal-50 text-teal-900 shadow-md ring-2 ring-teal-500/20"
+                                : opt.color === "blue"
+                                ? "border-blue-500 bg-blue-50 text-blue-900 shadow-md ring-2 ring-blue-500/20"
+                                : opt.color === "amber"
+                                ? "border-amber-500 bg-amber-50 text-amber-900 shadow-md ring-2 ring-amber-500/20"
+                                : "border-red-500 bg-red-50 text-red-900 shadow-md ring-2 ring-red-500/20"
+                              : "border-slate-100 bg-white hover:border-slate-300 text-slate-700"
+                          }`}
+                        >
+                          <input
+                            type="radio"
+                            name={`rekom-hafalan-quran-${p.id}`}
+                            value={opt.key}
+                            checked={isSelected}
+                            onChange={() => setQuranForm({ ...quranForm, rekomendasi_hafalan: opt.key })}
+                            className="hidden"
+                          />
+                          <span className="text-xs sm:text-sm font-black">{opt.label}</span>
+                          <span className="text-[10px] font-medium opacity-75 mt-0.5">{opt.desc}</span>
+                        </label>
+                      );
+                    })}
                   </div>
                 </div>
 
@@ -1631,9 +1689,24 @@ function InputNilaiContent() {
                         </p>
                       )}
                       {p.detail_quran?.rekomendasi && (
-                        <p className="text-[#9D174D]/70 text-[10px] sm:text-xs font-black uppercase tracking-widest">
-                          Rekomendasi Bacaan: {p.detail_quran.rekomendasi}
-                        </p>
+                        <div className="flex items-center gap-2 pt-0.5">
+                          <span className="text-[#9D174D]/70 text-[10px] sm:text-xs font-black uppercase tracking-widest">
+                            Rekomendasi Bacaan:
+                          </span>
+                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
+                            p.detail_quran.rekomendasi === "Diterima"
+                              ? "bg-emerald-100 text-emerald-800 border border-emerald-200"
+                              : p.detail_quran.rekomendasi?.includes("IL")
+                              ? "bg-blue-100 text-blue-800 border border-blue-200"
+                              : p.detail_quran.rekomendasi === "Cadangan"
+                              ? "bg-amber-100 text-amber-800 border border-amber-200"
+                              : "bg-red-100 text-red-800 border border-red-200"
+                          }`}>
+                            {p.detail_quran.rekomendasi === "Diterima" && isJenjangLangsungNonIL(p.jenjang)
+                              ? `Diterima (${(p.jenjang?.toUpperCase() || "").includes("MA") ? "MA" : "SMA"})`
+                              : p.detail_quran.rekomendasi}
+                          </span>
+                        </div>
                       )}
                       {p.detail_quran?.nama_penguji && (
                         <p className="text-[#9D174D]/70 text-[10px] sm:text-xs font-black uppercase tracking-widest">
@@ -1647,9 +1720,24 @@ function InputNilaiContent() {
                             {p.detail_hafalan?.jumlah_juz ? ` (${p.detail_hafalan.jumlah_juz})` : ""}
                           </p>
                           {p.detail_hafalan?.rekomendasi && (
-                            <p className="text-teal-800/80 text-[10px] sm:text-xs font-black uppercase tracking-widest">
-                              Rekomendasi Hafalan: {p.detail_hafalan.rekomendasi}
-                            </p>
+                            <div className="flex items-center gap-2 pt-0.5">
+                              <span className="text-teal-800/80 text-[10px] sm:text-xs font-black uppercase tracking-widest">
+                                Rekomendasi Hafalan:
+                              </span>
+                              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
+                                p.detail_hafalan.rekomendasi === "Diterima"
+                                  ? "bg-teal-100 text-teal-800 border border-teal-200"
+                                  : p.detail_hafalan.rekomendasi?.includes("IL")
+                                  ? "bg-blue-100 text-blue-800 border border-blue-200"
+                                  : p.detail_hafalan.rekomendasi === "Cadangan"
+                                  ? "bg-amber-100 text-amber-800 border border-amber-200"
+                                  : "bg-red-100 text-red-800 border border-red-200"
+                              }`}>
+                                {p.detail_hafalan.rekomendasi === "Diterima"
+                                  ? `Diterima (${(p.jenjang?.toUpperCase() || "").includes("MA") ? "MA" : "SMA"})`
+                                  : p.detail_hafalan.rekomendasi}
+                              </span>
+                            </div>
                           )}
                         </div>
                       )}
