@@ -44,8 +44,12 @@ export default function PengujiDashboardLayout({
     const fetchPengujiData = async () => {
       try {
         setLoading(true);
-        const sessionRes = await fetch("/api/auth/session");
-        if (!sessionRes.ok) throw new Error("Failed to get session");
+        const sessionRes = await fetch("/api/auth/session", { credentials: "include" });
+        if (!sessionRes.ok) {
+          console.warn("[Penguji Layout] Session invalid or expired, redirecting to login...");
+          window.location.href = "/login";
+          return;
+        }
 
         const sessionData = await sessionRes.json();
         const name =

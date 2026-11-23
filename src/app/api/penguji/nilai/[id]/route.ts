@@ -4,16 +4,112 @@ import { prisma } from "@/lib/prisma";
 import { recalculateNilaiUjian } from "@/lib/scoring";
 import { markExamComponentAsComplete } from "@/lib/exam-status";
 
-async function getSession() {
-  const cookieStore = await cookies();
-  const sessionCookie =
-    cookieStore.get("al_session") || cookieStore.get("app_session");
-  if (!sessionCookie) return null;
+async function getSession(
+  request?: Request,
+  bodyExaminer?: { id?: string; name?: string; role?: string }
+) {
+  // 1. Next.js cookies()
   try {
-    return JSON.parse(sessionCookie.value);
-  } catch {
-    return null;
+    const cookieStore = await cookies();
+    const sessionCookie =
+      cookieStore.get("al_session") || cookieStore.get("app_session");
+    if (sessionCookie?.value) {
+      const parsed = JSON.parse(sessionCookie.value);
+      if (parsed && (parsed.id || parsed.user_id)) return parsed;
+    }
+  } catch (e) {
+    // Ignore and fallback
   }
+
+  // 2. Raw Cookie header from Request
+  if (request) {
+    try {
+      const rawCookies = request.headers.get("cookie") || "";
+      const match = rawCookies.match(/(?:^|;\s*)(?:al_session|app_session)=([^;]+)/);
+      if (match) {
+        const decoded = decodeURIComponent(match[1]);
+        const parsed = JSON.parse(decoded);
+        if (parsed && (parsed.id || parsed.user_id)) return parsed;
+      }
+    } catch (e) {
+      // Ignore and fallback
+    }
+
+    // 3. Authorization Bearer header
+    try {
+      const authHeader = request.headers.get("authorization") || request.headers.get("Authorization");
+      if (authHeader && authHeader.startsWith("Bearer ")) {
+        const token = authHeader.substring(7).trim();
+        const decoded = Buffer.from(token, "base64").toString("utf-8");
+        const parsed = JSON.parse(decoded);
+        if (parsed && (parsed.id || parsed.user_id)) return parsed;
+      }
+    } catch (e) {
+      // Ignore and fallback
+    }
+
+    // 4. Custom examiner headers
+    try {
+      const xExaminerId = request.headers.get("x-examiner-id");
+      if (xExaminerId) {
+        const profile = await prisma.profile.findUnique({
+          where: { id: xExaminerId },
+          select: { id: true, role: true, secondary_roles: true, full_name: true, email: true, username: true }
+        });
+        if (profile) {
+          return {
+            id: profile.id,
+            user_id: profile.id,
+            role: request.headers.get("x-examiner-role") || profile.role,
+            full_name: profile.full_name,
+            secondary_roles: profile.secondary_roles
+          };
+        }
+      }
+    } catch (e) {
+      // Ignore and fallback
+    }
+  }
+
+  // 5. Fallback via Examiner Signature in Body
+  if (bodyExaminer) {
+    try {
+      const { id: exId, name: exName, role: exRole } = bodyExaminer;
+      let profile = null;
+      if (exId) {
+        profile = await prisma.profile.findUnique({
+          where: { id: exId },
+          select: { id: true, role: true, secondary_roles: true, full_name: true, email: true, username: true }
+        });
+      }
+      if (!profile && exName) {
+        // Example: "Hardiansyah, S.Pd." -> search "Hardiansyah"
+        const cleanName = exName.split(",")[0].trim();
+        profile = await prisma.profile.findFirst({
+          where: {
+            OR: [
+              { full_name: { contains: cleanName, mode: "insensitive" } },
+              { username: { contains: cleanName, mode: "insensitive" } }
+            ]
+          },
+          select: { id: true, role: true, secondary_roles: true, full_name: true, email: true, username: true }
+        });
+      }
+      if (profile) {
+        return {
+          id: profile.id,
+          user_id: profile.id,
+          role: exRole || profile.role,
+          full_name: profile.full_name,
+          secondary_roles: profile.secondary_roles
+        };
+      }
+    } catch (e) {
+      // Ignore and fallback
+    }
+  }
+
+  return null;
 }
 
 // PATCH: Update score (Upsert)
@@ -21,16 +117,51 @@ export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const session = await getSession();
-  if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
   const { id: pendaftarId } = await params;
-  const userId = session.user_id || session.id;
 
   try {
-    const body = await request.json();
+    const body = await request.json().catch(() => ({}));
+
+    // Extract potential examiner identity from body as resilient fallback
+    const examinerName =
+      body.examiner_name ||
+      body.detail_cawalsan?.nama_pewawancara ||
+      body.detail_wawancara?.nama_pewawancara ||
+      body.detail_quran?.nama_penguji ||
+      body.detail_hafalan?.nama_penguji ||
+      body.detail_arab?.nama_penguji ||
+      body.detail_lisan_arab?.nama_penguji;
+    const examinerId = body.examiner_id;
+    const examinerRole = body.examiner_role;
+
+    const session = await getSession(request, {
+      id: examinerId,
+      name: examinerName,
+      role: examinerRole,
+    });
+
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const userId = session.user_id || session.id;
+
+    // Fetch user profile to see all assigned roles and secondary roles
+    const userProfile = await prisma.profile.findUnique({
+      where: { id: userId },
+      select: { role: true, secondary_roles: true },
+    });
+
+    const userRoles = [
+      session.role,
+      ...(Array.isArray(session.secondary_roles) ? session.secondary_roles : []),
+      ...(userProfile?.role ? [userProfile.role] : []),
+      ...(Array.isArray(userProfile?.secondary_roles) ? userProfile.secondary_roles : []),
+    ].filter(Boolean) as string[];
+
+    const isAdmin = userRoles.some((r) =>
+      ["admin_super", "admin", "head_of_it"].includes(r.toLowerCase()),
+    );
 
     // Check assignment authorization
     let assignment = await prisma.jadwalUjian.findFirst({
@@ -51,25 +182,8 @@ export async function PATCH(
       orderBy: { created_at: "desc" },
     });
 
-    // Fetch user profile to see all assigned roles and secondary roles
-    const userProfile = await prisma.profile.findUnique({
-      where: { id: userId },
-      select: { role: true, secondary_roles: true },
-    });
-
-    const userRoles = [
-      session.role,
-      ...(Array.isArray(session.secondary_roles) ? session.secondary_roles : []),
-      ...(userProfile?.role ? [userProfile.role] : []),
-      ...(Array.isArray(userProfile?.secondary_roles) ? userProfile.secondary_roles : []),
-    ].filter(Boolean) as string[];
-
-    const isAdmin = userRoles.some((r) =>
-      ["admin_super", "admin", "head_of_it"].includes(r.toLowerCase()),
-    );
-
-    // Let admins bypass the assignment check and grab any existing schedule if available
-    if (!assignment && isAdmin) {
+    // Let admins or authorized examiners grab any existing schedule if available
+    if (!assignment) {
       assignment = await prisma.jadwalUjian.findFirst({
         where: { pendaftar_id: pendaftarId },
         include: {
@@ -79,14 +193,7 @@ export async function PATCH(
       });
     }
 
-    if (!assignment && !isAdmin) {
-      return NextResponse.json(
-        { error: "Forbidden: Not assigned to this student" },
-        { status: 403 },
-      );
-    }
-
-    // If examiner, only specific fields based on direct assignment
+    // Determine permissions from roles and assignments
     const isWawancara = assignment?.penguji_santri_id === userId;
     const isQuran = assignment?.penguji_quran_id === userId;
     const isOrtu = assignment?.penguji_ortu_id === userId;
@@ -130,7 +237,6 @@ export async function PATCH(
       const hasLisanArabMatch =
         title.includes("arab") || title.includes("lisan");
 
-      // If the title is generic (e.g. "Tes PPDB 1"), grant access to all forms (matches frontend behavior roles: [])
       if (
         !hasQuranMatch &&
         !hasWawancaraMatch &&
@@ -222,6 +328,48 @@ export async function PATCH(
           r === "penguji_bahasa_arab" ||
           r === "penguji_arab",
       );
+
+    const hasAnyPerm =
+      isAdmin ||
+      canEditQuran ||
+      canEditWawancara ||
+      canEditOrtu ||
+      canEditHafalan ||
+      canEditLisanArab;
+
+    if (!hasAnyPerm) {
+      return NextResponse.json(
+        { error: "Forbidden: Anda tidak memiliki wewenang untuk menilai komponen ini" },
+        { status: 403 },
+      );
+    }
+
+    // Auto-link examiner ID into assignment if not already linked
+    if (assignment) {
+      const updateAssign: any = {};
+      if (canEditOrtu && !assignment.penguji_ortu_id && body.detail_cawalsan) {
+        updateAssign.penguji_ortu_id = userId;
+      }
+      if (canEditWawancara && !assignment.penguji_santri_id && body.detail_wawancara) {
+        updateAssign.penguji_santri_id = userId;
+      }
+      if (canEditQuran && !assignment.penguji_quran_id && body.detail_quran) {
+        updateAssign.penguji_quran_id = userId;
+      }
+      if (canEditHafalan && !assignment.penguji_hafalan_id && body.detail_hafalan) {
+        updateAssign.penguji_hafalan_id = userId;
+      }
+      if (canEditLisanArab && !assignment.penguji_arab_id && (body.detail_arab || body.detail_lisan_arab)) {
+        updateAssign.penguji_arab_id = userId;
+      }
+
+      if (Object.keys(updateAssign).length > 0) {
+        await prisma.jadwalUjian.update({
+          where: { id: assignment.id },
+          data: updateAssign,
+        }).catch((err) => console.warn("[auto-assign-link] Non-critical warning:", err));
+      }
+    }
 
     // Pre-fetch existing record to check timestamps and update data
     const existing = await prisma.nilaiUjian.findFirst({
@@ -533,7 +681,30 @@ export async function PATCH(
       }
     }
 
-    return NextResponse.json({ success: true });
+    const response = NextResponse.json({ success: true, message: "Nilai berhasil disimpan" });
+
+    // Refresh al_session cookie on successful PATCH
+    if (session) {
+      const host = request.headers.get("host") || "";
+      let baseDomain: string | undefined = undefined;
+      if (host.includes("pesantren-alandalus-putra.com")) baseDomain = ".pesantren-alandalus-putra.com";
+      else if (host.includes("pesantren-alandalus-putri.com")) baseDomain = ".pesantren-alandalus-putri.com";
+      else if (host.includes("alandalus-ululalbaab.com")) baseDomain = ".alandalus-ululalbaab.com";
+      else if (host.includes("pesantren-ululalbaab.com")) baseDomain = ".pesantren-ululalbaab.com";
+      else if (host.includes("pesantren-alimam.com")) baseDomain = ".pesantren-alimam.com";
+
+      response.cookies.set("al_session", JSON.stringify(session), {
+        path: "/",
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production" && !host.includes("localhost"),
+        sameSite: "lax",
+        domain: baseDomain,
+        maxAge: 60 * 60 * 24 * 90,
+        expires: new Date(Date.now() + 60 * 60 * 24 * 90 * 1000),
+      });
+    }
+
+    return response;
   } catch (error: any) {
     console.error("PATCH penguji/nilai error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });

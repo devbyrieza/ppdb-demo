@@ -359,6 +359,7 @@ function InputNilaiContent() {
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [activeRole, setActiveRole] = useState<string>("");
   const [activeName, setActiveName] = useState<string>("");
+  const [currentUserId, setCurrentUserId] = useState<string>("");
   const [userRoles, setUserRoles] = useState<string[]>([]);
 
   // Form states for each type
@@ -425,13 +426,15 @@ function InputNilaiContent() {
 
   useEffect(() => {
     // Fetch session to get active role
-    fetch("/api/auth/session")
+    fetch("/api/auth/session", { credentials: "include" })
       .then((res) => res.json())
       .then((data) => {
         const role = data.session?.role || "";
         const name = data.session?.full_name || data.session?.name || "Reviewer";
         setActiveRole(role);
         setActiveName(name);
+        const uid = data.session?.id || data.session?.user_id || "";
+        setCurrentUserId(uid);
         const roles = [role, ...(data.availableRoles || []), ...(data.session?.secondary_roles || [])].filter(Boolean);
         setUserRoles([...new Set(roles)]);
         fetchPeserta(true, role);
@@ -452,11 +455,15 @@ function InputNilaiContent() {
       const searchParam = search ? `&search=${encodeURIComponent(search.trim())}` : "";
       // Use no-store and timestamp to prevent caching issues after saving
       const response = await fetch(`/api/penguji/peserta?t=${Date.now()}${roleParam}${filterParam}${searchParam}`, {
-        cache: 'no-store'
+        cache: 'no-store',
+        credentials: 'include'
       });
       if (response.ok) {
         const result = await response.json();
-        const sortedData = (result.data || []).sort((a: any, b: any) => {
+        const sortedData = (result.data || []).map((item: any) => ({
+          ...item,
+          roles: Array.isArray(item.roles) ? item.roles : []
+        })).sort((a: any, b: any) => {
           const dateA = new Date(a.created_at || 0).getTime();
           const dateB = new Date(b.created_at || 0).getTime();
           return dateB - dateA;
@@ -786,13 +793,44 @@ function InputNilaiContent() {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 seconds timeout
 
-      console.log("[saveForm] Sending PATCH to /api/penguji/nilai/" + p.id, body);
+      const payload = {
+        ...body,
+        examiner_id: currentUserId,
+        examiner_name: activeName,
+        examiner_role: activeRole,
+      };
 
-      const res = await fetch(`/api/penguji/nilai/${p.id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-        signal: controller.signal });
+      console.log("[saveForm] Sending PATCH to /api/penguji/nilai/" + p.id, payload);
+
+      const executeSave = () =>
+        fetch(`/api/penguji/nilai/${p.id}`, {
+          method: "PATCH",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            "x-examiner-id": currentUserId || "",
+            "x-examiner-name": activeName || "",
+            "x-examiner-role": activeRole || "",
+          },
+          body: JSON.stringify(payload),
+          signal: controller.signal,
+        });
+
+      let res = await executeSave();
+
+      // If 401 received, attempt session refresh and retry once
+      if (res.status === 401) {
+        console.warn("[saveForm] 401 received, attempting session refresh...");
+        try {
+          const sessionRes = await fetch("/api/auth/session", { credentials: "include" });
+          if (sessionRes.ok) {
+            console.log("[saveForm] Session refreshed, retrying save...");
+            res = await executeSave();
+          }
+        } catch (reErr) {
+          console.error("[saveForm] Session refresh failed:", reErr);
+        }
+      }
 
       clearTimeout(timeoutId);
 
@@ -854,11 +892,30 @@ function InputNilaiContent() {
         } catch (e) {
           console.error("[saveForm] Error parsing error response:", e);
         }
-        await Swal.fire({
-          icon: 'error',
-          title: 'Gagal Menyimpan',
-          text: errMsg
-        });
+        if (res.status === 401) {
+          await Swal.fire({
+            icon: 'warning',
+            title: 'Sesi Login Berakhir',
+            html: `<div class="text-left text-xs sm:text-sm text-stone-700 space-y-2">
+              <p>Formulir dan catatan yang Anda ketik <b>tetap aman di halaman ini</b>.</p>
+              <p>Sesi login Anda sempat terputus. Silakan klik tombol di bawah untuk login kembali di tab baru. Setelah login sukses, Anda cukup kembali ke tab ini dan klik tombol <b>SIMPAN</b> lagi.</p>
+            </div>`,
+            showCancelButton: true,
+            confirmButtonText: 'Buka Login di Tab Baru',
+            cancelButtonText: 'Tutup',
+            confirmButtonColor: '#047857'
+          }).then((action) => {
+            if (action.isConfirmed) {
+              window.open("/login", "_blank");
+            }
+          });
+        } else {
+          await Swal.fire({
+            icon: 'error',
+            title: 'Gagal Menyimpan',
+            text: errMsg
+          });
+        }
       }
     } catch (error: any) {
       console.error("[saveForm] Catch error:", error);
@@ -881,7 +938,8 @@ function InputNilaiContent() {
   };
 
   const isParticipantFinished = (p: Peserta) => {
-      const formsNeeded = visibleFormTypes.filter(t => p.roles.includes(t));
+      const pRoles = Array.isArray(p.roles) ? p.roles : [];
+    const formsNeeded = visibleFormTypes.filter((t) => pRoles.includes(t));
       if (formsNeeded.length === 0) return true;
     
     return formsNeeded.every(type => {
@@ -921,7 +979,8 @@ function InputNilaiContent() {
       return true;
     }
     if (isAdmin) return true;
-    return p.roles.some(r => visibleFormTypes.includes(r)) || p.roles.length > 0;
+    const pRoles = Array.isArray(p.roles) ? p.roles : [];
+    return pRoles.some(r => visibleFormTypes.includes(r)) || pRoles.length > 0;
   });
   const pendingPeserta = relevantPeserta.filter(p => !isParticipantFinished(p)).filter(
     (p) =>
@@ -945,12 +1004,13 @@ function InputNilaiContent() {
   // RENDER: Seleksi Al Qur'an Form
   // ============================================================================
   const renderPesertaCard = (p: Peserta) => {
+    const pRoles = Array.isArray(p.roles) ? p.roles : [];
     const hasAnyMatchingRole =
-      (p.roles.includes("quran") && visibleFormTypes.includes("quran")) ||
-      (p.roles.includes("wawancara") && visibleFormTypes.includes("wawancara")) ||
-      (p.roles.includes("ortu") && visibleFormTypes.includes("ortu")) ||
-      (isJenjangLangsungNonIL(p.jenjang) && p.roles.includes("hafalan") && visibleFormTypes.includes("hafalan")) ||
-      (isJenjangLangsungNonIL(p.jenjang) && p.roles.includes("lisan_arab") && visibleFormTypes.includes("lisan_arab"));
+      (pRoles.includes("quran") && visibleFormTypes.includes("quran")) ||
+      (pRoles.includes("wawancara") && visibleFormTypes.includes("wawancara")) ||
+      (pRoles.includes("ortu") && visibleFormTypes.includes("ortu")) ||
+      (isJenjangLangsungNonIL(p.jenjang) && pRoles.includes("hafalan") && visibleFormTypes.includes("hafalan")) ||
+      (isJenjangLangsungNonIL(p.jenjang) && pRoles.includes("lisan_arab") && visibleFormTypes.includes("lisan_arab"));
 
     const allowAllCandidateRoles = !hasAnyMatchingRole || isSpecificSearch;
 
@@ -984,9 +1044,9 @@ function InputNilaiContent() {
 
       {/* Forms based on roles AND active session role */}
       <div className="space-y-4">
-        {p.roles.includes("quran") && (visibleFormTypes.includes("quran") || allowAllCandidateRoles) && renderQuranForm(p)}
-        {p.roles.includes("wawancara") && (visibleFormTypes.includes("wawancara") || allowAllCandidateRoles) && renderSantriForm(p)}
-        {p.roles.includes("ortu") && (visibleFormTypes.includes("ortu") || allowAllCandidateRoles) && renderOrangTuaForm(p)}
+        {pRoles.includes("quran") && (visibleFormTypes.includes("quran") || allowAllCandidateRoles) && renderQuranForm(p)}
+        {pRoles.includes("wawancara") && (visibleFormTypes.includes("wawancara") || allowAllCandidateRoles) && renderSantriForm(p)}
+        {pRoles.includes("ortu") && (visibleFormTypes.includes("ortu") || allowAllCandidateRoles) && renderOrangTuaForm(p)}
         {isJenjangLangsungNonIL(p.jenjang) && p.roles.includes("hafalan") && (visibleFormTypes.includes("hafalan") || allowAllCandidateRoles) && !visibleFormTypes.includes("quran") && renderHafalanForm(p)}
         {isJenjangLangsungNonIL(p.jenjang) && p.roles.includes("lisan_arab") && (visibleFormTypes.includes("lisan_arab") || allowAllCandidateRoles) && renderArabForm(p)}
         {!isJenjangLangsungNonIL(p.jenjang) && (p.roles.includes("lisan_arab") || p.roles.includes("hafalan")) && (

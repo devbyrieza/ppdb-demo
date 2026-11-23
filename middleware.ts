@@ -188,6 +188,7 @@ export async function middleware(request: NextRequest) {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
+      domain: baseDomain ? `.${baseDomain}` : undefined,
       
       maxAge,
       expires,

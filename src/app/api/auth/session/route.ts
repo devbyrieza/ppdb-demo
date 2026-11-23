@@ -56,11 +56,20 @@ export async function GET(request: NextRequest) {
       const response = NextResponse.json({ session: updatedSession, pendaftar_id, availableRoles });
 
       if (cookieNeedsUpdate) {
+            const host = request.headers.get("host") || "";
+    let baseDomain = undefined;
+    if (host.includes("pesantren-alandalus-putra.com")) baseDomain = ".pesantren-alandalus-putra.com";
+    else if (host.includes("pesantren-alandalus-putri.com")) baseDomain = ".pesantren-alandalus-putri.com";
+    else if (host.includes("alandalus-ululalbaab.com")) baseDomain = ".alandalus-ululalbaab.com";
+    else if (host.includes("pesantren-ululalbaab.com")) baseDomain = ".pesantren-ululalbaab.com";
+    else if (host.includes("pesantren-alimam.com")) baseDomain = ".pesantren-alimam.com";
+
         response.cookies.set("al_session", JSON.stringify(updatedSession), {
           path: "/",
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
           sameSite: "lax",
+          domain: baseDomain,
           maxAge: 60 * 60 * 24 * 90,
           expires: new Date(Date.now() + 60 * 60 * 24 * 90 * 1000),
         });
