@@ -158,6 +158,20 @@ export default function AdminSidebar({
   }, [sidebarOpen]);
 
   // Polling effect
+  // Synchronize state when initial props change
+  useEffect(() => {
+    setPaymentsCount(initialPaymentsCount);
+  }, [initialPaymentsCount]);
+
+  useEffect(() => {
+    setDocsCount(initialDocsCount);
+  }, [initialDocsCount]);
+
+  useEffect(() => {
+    setRequestsCount(initialRequestsCount);
+  }, [initialRequestsCount]);
+
+  // Polling effect & Real-time Reactive Badge Listeners
   useEffect(() => {
     if (!userRole || userRole === "pendaftar") return;
     const fetchCounts = async () => {
@@ -165,16 +179,65 @@ export default function AdminSidebar({
         const res = await fetch("/api/admin/sidebar-counts");
         if (res.ok) {
           const data = await res.json();
-          setPaymentsCount(data.unverifiedPaymentsCount || 0);
-          setDocsCount(data.unverifiedDocsCount || 0);
-          setRequestsCount(data.pendingDataRequestsCount || 0);
+          if (typeof data.unverifiedPaymentsCount === "number") setPaymentsCount(data.unverifiedPaymentsCount);
+          if (typeof data.unverifiedDocsCount === "number") setDocsCount(data.unverifiedDocsCount);
+          if (typeof data.pendingDataRequestsCount === "number") setRequestsCount(data.pendingDataRequestsCount);
         }
       } catch (error) {
         console.error("Failed to poll sidebar counts:", error);
       }
     };
+
+    // Instant local event listener (0ms latency without reload)
+    const handleBadgeDecrement = (e: Event) => {
+      const customEvent = e as CustomEvent<{ type?: string; amount?: number }>;
+      const targetType = customEvent.detail?.type || "docs";
+      const amount = customEvent.detail?.amount ?? 1;
+
+      if (targetType === "docs") {
+        setDocsCount((prev) => Math.max(0, prev - amount));
+      } else if (targetType === "payments") {
+        setPaymentsCount((prev) => Math.max(0, prev - amount));
+      } else if (targetType === "requests") {
+        setRequestsCount((prev) => Math.max(0, prev - amount));
+      }
+    };
+
+    const handleCountsRefresh = () => {
+      fetchCounts();
+    };
+
+    window.addEventListener("sidebar-badge-decrement", handleBadgeDecrement);
+    window.addEventListener("sidebar-counts-refresh", handleCountsRefresh);
+
+    // Cross-tab broadcast channel for multi-tab synchronization
+    let channel: BroadcastChannel | null = null;
+    try {
+      if (typeof window !== "undefined" && "BroadcastChannel" in window) {
+        channel = new BroadcastChannel("spmb-sidebar-badges");
+        channel.onmessage = (event) => {
+          if (event.data?.type === "decrement") {
+            const targetType = event.data.targetType || "docs";
+            const amount = event.data.amount ?? 1;
+            if (targetType === "docs") setDocsCount((prev) => Math.max(0, prev - amount));
+            else if (targetType === "payments") setPaymentsCount((prev) => Math.max(0, prev - amount));
+            else if (targetType === "requests") setRequestsCount((prev) => Math.max(0, prev - amount));
+          } else if (event.data?.type === "refresh") {
+            fetchCounts();
+          }
+        };
+      }
+    } catch {}
+
     const interval = setInterval(fetchCounts, 60000); // 1 minute
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("sidebar-badge-decrement", handleBadgeDecrement);
+      window.removeEventListener("sidebar-counts-refresh", handleCountsRefresh);
+      if (channel) {
+        channel.close();
+      }
+    };
   }, [userRole]);
 
   /**

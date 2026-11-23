@@ -344,6 +344,23 @@ function VerifikasiPembayaranContent() {
 
       if (!response.ok) throw new Error("Failed to verify");
 
+      // Decrement payment badge count instantly
+      if (status === "verified" || status === "rejected") {
+        window.dispatchEvent(
+          new CustomEvent("sidebar-badge-decrement", {
+            detail: { type: "payments", amount: 1 }
+          })
+        );
+        try {
+          if (typeof window !== "undefined" && "BroadcastChannel" in window) {
+            const ch = new BroadcastChannel("spmb-sidebar-badges");
+            ch.postMessage({ type: "decrement", targetType: "payments", amount: 1 });
+            ch.close();
+          }
+        } catch {}
+      }
+      window.dispatchEvent(new CustomEvent("sidebar-counts-refresh"));
+
       await fetchPembayaran(true); // Silent refresh
       setShowModal(false);
       setSelectedPembayaran(null);

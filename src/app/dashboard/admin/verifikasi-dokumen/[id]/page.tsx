@@ -332,6 +332,9 @@ export default function VerifikasiDokumenDetailPage() {
     try {
       setProcessingDocs((prev) => new Set(prev).add(dokumenId));
 
+      const targetDoc = dokumenList.find((d) => d.id === dokumenId);
+      const wasPending = targetDoc && !targetDoc.is_verified && !targetDoc.catatan;
+
       const response = await fetch("/api/admin/verifikasi/dokumen", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
@@ -355,6 +358,25 @@ export default function VerifikasiDokumenDetailPage() {
           return d;
         }),
       );
+
+      // Decrement sidebar count badge instantly without waiting for page reload
+      if (wasPending) {
+        window.dispatchEvent(
+          new CustomEvent("sidebar-badge-decrement", {
+            detail: { type: "docs", amount: 1 }
+          })
+        );
+        try {
+          if (typeof window !== "undefined" && "BroadcastChannel" in window) {
+            const ch = new BroadcastChannel("spmb-sidebar-badges");
+            ch.postMessage({ type: "decrement", targetType: "docs", amount: 1 });
+            ch.close();
+          }
+        } catch {}
+      }
+
+      // Also trigger a background refresh to sync with server
+      window.dispatchEvent(new CustomEvent("sidebar-counts-refresh"));
     } catch (error) {
       console.error("Error verifying dokumen:", error);
       Swal.fire("Gagal!", "Gagal memverifikasi dokumen", "error");
@@ -459,6 +481,23 @@ export default function VerifikasiDokumenDetailPage() {
           "Dokumen berhasil diganti dan otomatis diverifikasi",
           "success",
         );
+        const targetDoc = dokumenList.find((d) => d.id === selectedUploadDoc?.id);
+        const wasPending = targetDoc && !targetDoc.is_verified && !targetDoc.catatan;
+        if (wasPending) {
+          window.dispatchEvent(
+            new CustomEvent("sidebar-badge-decrement", {
+              detail: { type: "docs", amount: 1 }
+            })
+          );
+          try {
+            if (typeof window !== "undefined" && "BroadcastChannel" in window) {
+              const ch = new BroadcastChannel("spmb-sidebar-badges");
+              ch.postMessage({ type: "decrement", targetType: "docs", amount: 1 });
+              ch.close();
+            }
+          } catch {}
+        }
+        window.dispatchEvent(new CustomEvent("sidebar-counts-refresh"));
         fetchData(); // Reload all data to see the new document
       } else {
         Swal.fire("Gagal!", data.error || "Gagal mengunggah dokumen", "error");
