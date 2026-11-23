@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Users, Search, Building, User, ChevronRight, CheckCircle2, UserCheck, ArrowRight } from "lucide-react";
+import { BRANDING } from "@/config/branding";
 
 type Kategori = "WALI_SANTRI" | "SURVEY" | "DINAS" | "UMUM" | null;
 
@@ -56,12 +57,12 @@ export default function BukuTamuKiosk() {
             onClick={() => setStep(1)}
             className="flex flex-col items-center justify-center min-h-[60vh] cursor-pointer hover:scale-[1.02] transition-transform duration-500"
           >
-            <div className="bg-white/80 backdrop-blur-xl p-16 rounded-[3rem] shadow-2xl shadow-primary-500/10 text-center border border-white">
+            <div className="bg-white/80 backdrop-blur-xl p-16 rounded-[3rem] shadow-2xl text-center border border-white">
               <img src="/logo.png" alt="Logo" className="w-32 h-32 mx-auto mb-8 drop-shadow-md" onError={(e) => (e.currentTarget.style.display = 'none')} />
               <h1 className="text-5xl font-black text-slate-800 mb-4 tracking-tight">Ahlan wa Sahlan</h1>
-              <p className="text-2xl text-slate-600 mb-12">Pesantren Al-Andalus / Al-Imam</p>
+              <p className="text-2xl text-slate-600 mb-12">{BRANDING.schoolName}</p>
               
-              <div className="inline-flex items-center gap-4 bg-primary-600 text-white px-8 py-5 rounded-full font-bold text-xl shadow-lg shadow-primary-600/30 animate-pulse">
+              <div className="inline-flex items-center gap-4 bg-primary-600 text-white px-8 py-5 rounded-full font-bold text-xl shadow-lg animate-pulse">
                 <span>Sentuh Layar Untuk Mengisi Buku Tamu</span>
                 <ChevronRight className="w-6 h-6" />
               </div>
@@ -80,10 +81,10 @@ export default function BukuTamuKiosk() {
             
             <div className="grid grid-cols-2 gap-6">
               {[
-                { id: "WALI_SANTRI", title: "Wali Santri", desc: "Orang tua / wali dari santri aktif", icon: Users, color: "bg-emerald-50 text-emerald-600 border-emerald-200" },
-                { id: "SURVEY", title: "Tamu Survey", desc: "Calon pendaftar yang ingin survey lokasi", icon: Search, color: "bg-blue-50 text-blue-600 border-blue-200" },
-                { id: "DINAS", title: "Tamu Dinas", desc: "Kunjungan resmi / instansi pemerintahan", icon: Building, color: "bg-violet-50 text-violet-600 border-violet-200" },
-                { id: "UMUM", title: "Tamu Umum", desc: "Kunjungan personal / silaturahmi", icon: User, color: "bg-orange-50 text-orange-600 border-orange-200" },
+                { id: "WALI_SANTRI", title: "Wali Santri", desc: "Orang tua / wali dari santri aktif", icon: Users, color: "bg-emerald-50 text-emerald-700 border-emerald-200" },
+                { id: "SURVEY", title: "Tamu Survey", desc: "Calon pendaftar yang ingin survey lokasi", icon: Search, color: "bg-blue-50 text-blue-700 border-blue-200" },
+                { id: "DINAS", title: "Tamu Dinas", desc: "Kunjungan resmi / instansi pemerintahan", icon: Building, color: "bg-violet-50 text-violet-700 border-violet-200" },
+                { id: "UMUM", title: "Tamu Umum", desc: "Kunjungan personal / silaturahmi", icon: User, color: "bg-orange-50 text-orange-700 border-orange-200" },
               ].map((item) => (
                 <button
                   key={item.id}
@@ -116,7 +117,7 @@ export default function BukuTamuKiosk() {
                 <h2 className="text-2xl font-black text-slate-800">Lengkapi Data Diri</h2>
                 <p className="text-slate-500 mt-1">Kategori: <span className="font-bold text-primary-600">{kategori?.replace("_", " ")}</span></p>
               </div>
-              <button onClick={() => setStep(1)} className="px-4 py-2 text-sm font-bold text-slate-500 bg-slate-100 rounded-full hover:bg-slate-200 transition-colors">
+              <button onClick={() => setStep(1)} className="px-4 py-2 text-sm font-bold text-slate-600 bg-slate-100 rounded-full hover:bg-slate-200 transition-colors whitespace-nowrap inline-block shrink-0">
                 Ganti Kategori
               </button>
             </div>
@@ -158,7 +159,7 @@ export default function BukuTamuKiosk() {
               </div>
 
               <div className="pt-6">
-                <button type="submit" className="w-full flex items-center justify-center gap-3 bg-primary-600 hover:bg-primary-700 text-white px-8 py-5 rounded-2xl font-black text-xl shadow-xl shadow-primary-600/20 transition-all hover:scale-[1.02]">
+                <button type="submit" className="w-full flex items-center justify-center gap-3 bg-primary-600 hover:bg-primary-700 text-white px-8 py-5 rounded-2xl font-black text-xl shadow-xl transition-all hover:scale-[1.02]">
                   Simpan Buku Tamu
                   <ArrowRight className="w-6 h-6" />
                 </button>
@@ -170,7 +171,7 @@ export default function BukuTamuKiosk() {
         {/* STEP 3: SUCCESS SCREEN */}
         {step === 3 && (
           <div className="animate-in zoom-in-95 duration-500 flex flex-col items-center justify-center min-h-[60vh] text-center">
-            <div className="w-32 h-32 bg-emerald-100 rounded-full flex items-center justify-center mb-8 shadow-2xl shadow-emerald-500/20">
+            <div className="w-32 h-32 bg-emerald-100 rounded-full flex items-center justify-center mb-8 shadow-2xl whitespace-nowrap shrink-0">
               <CheckCircle2 className="w-16 h-16 text-emerald-500" />
             </div>
             <h2 className="text-4xl font-black text-slate-800 mb-4">Terima Kasih, {nama.split(' ')[0]}!</h2>

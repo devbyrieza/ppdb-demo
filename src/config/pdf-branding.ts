@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Single Source of Truth for Institutional PDF Branding
  * "Locked" specifications for headers, backgrounds, and signatures.
  *
@@ -6,27 +6,28 @@
  * template: "programmatic" → render kop surat secara programatik (jsPDF elements)
  */
 
+import { BRANDING } from "./branding";
+
 export const PDF_BRANDING = {
   // Template Mode
   template: "full_image" as "full_image" | "programmatic",
 
   // Institution Labels
   institution: {
-    name: "PESANTREN AL IMAM AL ISLAMI",
-    subtitle: "Islamic Boarding School Managed by Al Andalus IIBS",
+    name: BRANDING.schoolName.toUpperCase(),
+    subtitle: BRANDING.schoolTagline,
     committee: "PANITIA PENERIMAAN SANTRI BARU",
-    academic_year: "2027/2028",
-    address:
-      "Jl. Pelabuhan II KM 18 Kampung Pupunjul, RT./RW/RW.01, 02, Cikembar, Kec. Cikembar, Kabupaten Sukabumi, Jawa Barat 43157",
-    contact:
-      "Website: https://pesantren-alimam.com | Email: alandalusalimam@gmail.com",
-    phones: "WhatsApp: 0851-1152-4441" },
+    academic_year: BRANDING.academicYear,
+    address: BRANDING.address,
+    contact: `Website: ${BRANDING.websiteUrl} | Email: ${BRANDING.email}`,
+    phones: `WhatsApp: ${BRANDING.phone}`,
+  },
 
   // Resource Paths
   assets: {
-    logo: "/images/kop-surat.png",
+    logo: "/images/kop-surat-clean.jpg",
     kop_full: "/images/kop-surat-full.jpg", // Gambar kop surat penuh (full letterhead)
-    stamp: "/images/stempel-pesantren.jpg", // Dikembalikan ke stempel lama bawaan (stempel-pesantren.jpg)
+    stamp: "/images/stempel-5.png", // Menggunakan stempel alimam baru (Stempel 5)
     signature: "/images/ttd-mudir.png" },
 
   // Content Area Coordinates (berlaku ketika template = "full_image")

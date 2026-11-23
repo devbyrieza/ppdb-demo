@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { MessageCircle, X, Bot, Headphones, MessageSquare, Smartphone } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import AiChatWidget from "./AiChatWidget";
+import { BRANDING } from "@/config/branding";
 
 export default function ChatSystem() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -65,9 +66,9 @@ export default function ChatSystem() {
   };
 
   const openWhatsApp = () => {
-    const waNumber = "6281285300800";
+    const waNumber = BRANDING.phone.replace(/[^0-9]/g, "");
     const waMessage = encodeURIComponent(
-      "Halo Panitia SPMB Pesantren PPDB, saya ingin bertanya...",
+      `Halo Panitia SPMB ${BRANDING.schoolShortName}, saya ingin bertanya...`,
     );
     window.open(`https://wa.me/${waNumber}?text=${waMessage}`, "_blank");
     setIsMenuOpen(false);
@@ -116,11 +117,11 @@ export default function ChatSystem() {
             >
               <div className="px-3 pb-3 pt-2 mb-2 border-b border-surface-100 flex items-center justify-between">
                 <span className="text-[10px] uppercase font-black tracking-widest text-secondary-500 mb-0.5">
-                  SPMB PPDB
+                  SPMB {BRANDING.schoolShortName}
                 </span>
                 <button
                   onClick={() => setIsMenuOpen(false)}
-                  className="p-1.5 hover:bg-surface-50 rounded-full transition-colors text-ink-400 hover:text-ink-600"
+                  className="p-1.5 hover:bg-surface-50 rounded-full transition-colors text-ink-600 hover:text-ink-600"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -134,12 +135,12 @@ export default function ChatSystem() {
                   }}
                   className="w-full flex items-center gap-3 p-3 hover:bg-primary-50 rounded-2xl transition-colors group text-left"
                 >
-                  <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center shrink-0 group-hover:bg-primary-600 transition-colors">
+                  <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center shrink-0 group-hover:bg-primary-600 transition-colors whitespace-nowrap shrink-0">
                     <Bot className="w-5 h-5 text-primary-600 group-hover:text-white transition-colors" />
                   </div>
                   <div className="flex-1">
                     <h4 className="font-bold text-ink-900 group-hover:text-primary-800 text-sm mb-0.5">
-                      Tanya AI Assistant
+                      <MessageCircle className="w-4 h-4 inline-block mr-1" /> Tanya AI Assistant
                     </h4>
                     <p className="text-[11px] text-ink-500 font-medium">
                       Bantuan cepat informasi SPMB 24/7
@@ -152,12 +153,12 @@ export default function ChatSystem() {
                                     onClick={openTawkTo}
                                     className="w-full flex items-center gap-3 p-3 hover:bg-primary-50 rounded-2xl transition-colors group text-left"
                                 >
-                                    <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center shrink-0 group-hover:bg-primary-600 transition-colors">
+                                    <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center shrink-0 group-hover:bg-primary-600 transition-colors whitespace-nowrap shrink-0">
                                         <Headphones className="w-5 h-5 text-primary-600 group-hover:text-white transition-colors" />
                                     </div>
                                     <div>
-                                         <h4 className="font-bold text-ink-900 group-hover:text-primary-800 text-sm mb-0.5">Live Chat CS</h4>
-                                         <p className="text-[11px] text-ink-500 font-medium">Chat langsung dengan panitia</p>
+                                        <h4 className="font-bold text-ink-900 group-hover:text-primary-800 text-sm mb-0.5"><Headphones className="w-4 h-4 inline-block mr-1" /> Live Chat CS</h4>
+                                        <p className="text-[11px] text-ink-500 font-medium">Chat langsung dengan panitia</p>
                                     </div>
                                 </button>
 */}
@@ -171,7 +172,7 @@ export default function ChatSystem() {
                   </div>
                   <div>
                     <h4 className="font-bold text-ink-900 group-hover:text-green-800 text-sm mb-0.5">
-                      WhatsApp CS
+                      <Smartphone className="w-4 h-4 inline-block mr-1" /> WhatsApp CS
                     </h4>
                     <p className="text-[11px] text-ink-500 font-medium">
                       Hubungi via aplikasi WhatsApp
@@ -198,7 +199,7 @@ export default function ChatSystem() {
                     Butuh Bantuan?
                   </p>
                   <p className="text-xs text-ink-400 font-medium tracking-wide">
-                    SPMB PPDB
+                    {BRANDING.schoolShortName} SPMB
                   </p>
                 </div>
                 <button
@@ -225,7 +226,7 @@ export default function ChatSystem() {
                 animate={{ opacity: 1, scale: 1 }}
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-[60px] h-[60px] md:w-16 md:h-16 bg-primary-700 text-white rounded-[1.2rem] md:rounded-[1.3rem] flex items-center justify-center shadow-[0_10px_30px_rgba(13,110,110,0.4)] relative transition-all duration-300"
+                className="w-[60px] h-[60px] md:w-16 md:h-16 bg-primary-700 text-white rounded-[1.2rem] md:rounded-[1.3rem] flex items-center justify-center shadow-[0_10px_30px_rgba(190,24,93,0.4)] relative transition-all duration-300"
               >
                 {/* Pulse Effect */}
                 <span

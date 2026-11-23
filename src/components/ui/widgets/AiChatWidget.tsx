@@ -1,8 +1,16 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Send, X, Bot, User, Loader2, MessageSquare, Headphones, Hand } from "lucide-react";
+import {
+  Send,
+  X,
+  Bot,
+  User,
+  Loader2,
+  MessageSquare,
+  Headphones } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { BRANDING } from "@/config/branding";
 
 interface Message {
   id: string;
@@ -23,7 +31,7 @@ export default function AiChatWidget({
       id: "welcome",
       role: "ai",
       content:
-        "Assalamu'alaikum! Saya asisten virtual Al Fath. Ada yang bisa saya bantu terkait informasi pendaftaran, program unggulan, atau jadwal tes?" },
+        " Assalamu'alaikum! Saya asisten virtual Al Andalus. Ada yang bisa saya bantu terkait informasi pendaftaran, program unggulan, atau jadwal tes?" },
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -129,11 +137,11 @@ export default function AiChatWidget({
       <div className="bg-primary-800 text-white p-4 md:p-5 flex items-center justify-between shrink-0 shadow-sm relative z-10">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center shrink-0 border border-white/20">
-            <Bot className="w-6 h-6 text-secondary-400" />
+            <Bot className="w-6 h-6 text-gold-300" />
           </div>
           <div>
             <h3 className="font-bold text-[15px] leading-tight flex items-center gap-2">
-              Al Fath Assistant
+              {BRANDING.schoolShortName} Assistant
               <span className="flex w-2 h-2 rounded-full bg-green-400"></span>
             </h3>
             <p className="text-[11px] text-primary-200 mt-0.5 font-medium">
@@ -162,7 +170,7 @@ export default function AiChatWidget({
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 mb-1 ${
                 msg.role === "user"
-                  ? "bg-primary-100 text-primary-700"
+                  ? "bg-primary-100 text-primary-900"
                   : "bg-primary-600 text-white shadow-premium-xs"
               }`}
             >
@@ -231,7 +239,7 @@ export default function AiChatWidget({
                 onEscalate();
                 onClose();
               }}
-              className="w-full bg-white border border-secondary-200 text-secondary-700 hover:bg-secondary-50 hover:border-secondary-300 py-3 rounded-2xl text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-premium-xs"
+              className="w-full bg-white border border-gold-200 text-gold-700 hover:bg-gold-50 hover:border-gold-300 py-3 rounded-2xl text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-premium-xs"
             >
               <Headphones className="w-4 h-4" />
               Chat Langsung dengan CS

@@ -22,23 +22,23 @@ import { Container } from "@/components/layout/Container";
 
 const GALLERY_ITEMS = [
   {
-    image: "/images/pembelajaran-kitab-turotz.webp",
+    image: "/images/kegiatan-belajar-akhwat.jpg",
     title: "Kajian Kitab Turots",
     description: "Mengkaji Kitab Turots & Ulama Salaf",
     icon: BookOpen },
   {
-    image: "/images/tahfidz.webp",
+    image: "/images/kegiatan-halaqah-akhwat.jpg",
     title: "Halaqoh Tahfidz",
     description: "Setoran Hafalan & Muroja'ah",
     icon: BookMarked },
   {
-    image: "/images/extra-karate.webp",
-    title: "Ekstrakurikuler",
-    description: "Bela Diri, Panahan & Lifeskill",
+    image: "/images/ekskul-tataboga-1.jpg",
+    title: "Tata Boga & Lifeskill",
+    description: "Baking, Menjahit & Keputrian",
     icon: Target },
   {
-    image: "/images/masjid.webp",
-    title: "Masjid Jami'",
+    image: "/images/masjid-utama-pesantren.png",
+    title: "Masjid Jami' Pesantren",
     description: "Pusat Ibadah & Tarbiyah Santri",
     icon: School },
 ] as const;
@@ -48,8 +48,8 @@ const SCHEDULE_ITEMS = [
     time: "Pagi",
     label: "Tahfidz & Muroja'ah",
     icon: Sun,
-    iconBg: "bg-secondary-100",
-    iconColor: "text-secondary-700" },
+    iconBg: "bg-gold-50",
+    iconColor: "text-gold-600" },
   {
     time: "Siang",
     label: "Sekolah Formal",
@@ -60,14 +60,14 @@ const SCHEDULE_ITEMS = [
     time: "Sore",
     label: "Ekskul & Olahraga",
     icon: Target,
-    iconBg: "bg-secondary-50",
-    iconColor: "text-secondary-600" },
+    iconBg: "bg-emerald-50",
+    iconColor: "text-emerald-600" },
   {
     time: "Malam",
     label: "Belajar Mandiri",
     icon: Moon,
-    iconBg: "bg-primary-50",
-    iconColor: "text-primary-600" },
+    iconBg: "bg-indigo-50",
+    iconColor: "text-indigo-600" },
 ] as const;
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -125,23 +125,24 @@ function GalleryCard({
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
         />
 
-        {/* Overlay removed for clear images */}
+        {/* Subtle bottom gradient for text readability while leaving image 100% clear */}
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />
       </div>
 
-      <div className="absolute top-3.5 right-3.5 w-8 h-8 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:bg-secondary-400 group-hover:border-secondary-300 group-hover:text-primary-900 shadow-sm">
+      <div className="absolute top-3.5 right-3.5 w-8 h-8 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:bg-primary-700 group-hover:border-primary-600 group-hover:text-white shadow-sm">
         <Icon className="w-4 h-4" />
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 p-5">
+      <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5">
         <h3 className="text-white font-bold text-[0.9375rem] tracking-tight leading-snug translate-y-1.5 group-hover:translate-y-0 transition-transform duration-300 drop-shadow-sm">
           {title}
         </h3>
-        <p className="text-secondary-100/90 text-[0.65rem] mt-1 font-semibold uppercase tracking-[0.1em] opacity-0 translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 delay-75">
+        <p className="text-secondary-50/90 text-[0.65rem] mt-1 font-semibold uppercase tracking-[0.1em] opacity-0 translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 delay-75">
           {description}
         </p>
       </div>
 
-      <div className="absolute bottom-0 left-0 w-0 h-[3px] bg-gradient-to-r from-secondary-400 to-secondary-300 group-hover:w-full transition-all duration-500 ease-out" />
+      <div className="absolute bottom-0 left-0 w-0 h-[3px] bg-gradient-to-r from-primary-400 to-primary-300 group-hover:w-full transition-all duration-500 ease-out" />
     </motion.div>
   );
 }
@@ -157,7 +158,7 @@ function ScheduleCard({
     <motion.div
       custom={index}
       variants={scheduleVariants}
-      className="flex items-center gap-3.5 p-3.5 rounded-[1.25rem] bg-white border border-secondary-200 transition-all duration-300 hover:border-primary-200 shadow-premium-sm hover:shadow-premium-md"
+      className="flex items-center gap-3.5 p-3.5 rounded-[1.25rem] bg-white border border-secondary-100 transition-all duration-300 hover:border-primary-200 shadow-premium-sm hover:shadow-premium-md"
     >
       <div
         className={`w-10 h-10 rounded-[10px] ${iconBg} flex items-center justify-center ${iconColor} shrink-0 ring-1 ring-black/5`}
@@ -203,7 +204,7 @@ export default function GallerySection() {
         >
           <div className="max-w-xl">
             <motion.div variants={fadeUpVariants}>
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-secondary-200 text-primary-700 text-[0.65rem] font-bold uppercase tracking-[0.12em] mb-4 shadow-xs">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-primary-200 text-primary-700 text-[0.65rem] font-bold uppercase tracking-[0.12em] mb-4 shadow-xs">
                 <Images className="w-3 h-3" strokeWidth={2} />
                 <span>Dokumentasi</span>
               </div>
@@ -217,14 +218,14 @@ export default function GallerySection() {
               variants={fadeUpVariants}
               className="section-subtitle lg:ml-0 text-left mt-3 text-justify"
             >
-              Intip kegiatan sehari-hari para santri dalam menuntut ilmu dan
+              Intip kegiatan sehari-hari para santriwati dalam menuntut ilmu dan
               beribadah.
             </motion.p>
           </div>
 
           <motion.div variants={fadeUpVariants} className="shrink-0">
             <Link href="/kegiatan">
-              <button className="btn-secondary group inline-flex items-center gap-2 px-6 py-2.5 bg-white border border-secondary-200 hover:border-primary-200">
+              <button className="btn-secondary group inline-flex items-center gap-2 px-6 py-2.5 bg-white border border-secondary-200">
                 <span className="font-bold text-[0.875rem]">Lihat Semua</span>
                 <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
               </button>
@@ -247,14 +248,14 @@ export default function GallerySection() {
         >
           <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-primary-300 via-primary-200 to-transparent" />
 
-          <div className="relative z-10 grid lg:grid-cols-[1fr_1.1fr] gap-10 lg:gap-14 items-center p-8 md:p-12 lg:p-14 max-w-6xl mx-auto">
+          <div className="relative z-10 grid lg:grid-cols-[1fr_1.1fr] gap-8 lg:gap-14 items-center p-5 sm:p-8 md:p-12 lg:p-14 max-w-6xl mx-auto">
             <motion.div
               variants={containerVariants}
               initial="hidden"
               animate={scheduleInView ? "visible" : "hidden"}
             >
               <motion.div variants={fadeUpVariants}>
-                <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-secondary-100 border border-secondary-200 text-primary-700 text-[0.65rem] font-bold uppercase tracking-[0.12em] mb-5 shadow-xs">
+                <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-primary-50 border border-primary-200 text-primary-900 text-[0.65rem] font-bold uppercase tracking-[0.12em] mb-5 shadow-xs">
                   <Star className="w-3 h-3 fill-current" />
                   <span>Jadwal Harian</span>
                 </div>
@@ -271,13 +272,13 @@ export default function GallerySection() {
                 variants={fadeUpVariants}
                 className="text-ink-600 font-[450] mb-8 max-w-md leading-relaxed text-[0.9375rem] text-justify"
               >
-                Setiap detik sangat berharga. Kami mengatur jadwal santri agar
+                Setiap detik sangat berharga. Kami mengatur jadwal santriwati agar
                 seimbang antara ibadah, belajar, istirahat, dan bersosialisasi.
               </motion.p>
 
               <motion.div variants={fadeUpVariants}>
                 <Link href="/kalender">
-                  <button className="btn-primary inline-flex items-center gap-2 group px-7 py-3.5 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">
+                  <button className="btn-primary inline-flex items-center gap-2 group px-7 py-3.5 shadow-md">
                     Lihat Jadwal Lengkap
                     <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
                   </button>

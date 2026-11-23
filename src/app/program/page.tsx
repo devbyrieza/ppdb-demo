@@ -1,364 +1,249 @@
 "use client";
 
-import Image from "next/image";
+// src/app/program/page.tsx
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import {
-  BookOpen,
-  GraduationCap,
-  CheckCircle,
-  Users,
-  Clock,
-  Calendar,
-  ArrowRight,
-  Star,
-  Sparkles,
-  CheckCircle2,
-  Trophy,
-  Globe,
-  ShieldCheck } from "lucide-react";
 import { Container } from "@/components/layout/Container";
-import { Button } from "@/components/ui/button";
-import { motion, AnimatePresence } from "framer-motion";
-
-// Program Data with Refined Info
-const PROGRAMS = [
-  {
-    id: "mts",
-    name: "SMP IT",
-    buttonLabel: "Daftar MTs",
-    fullName: "Program SMP IT (SMP)",
-    description:
-      "Kami menerapkan Kurikulum Terpadu yang menggabungkan standar Nasional dengan khas Andalus, berfokus pada penguasaan Tahfidz Al-Qur'an serta pembentukan karakter Leadership yang kokoh sejak dini.",
-    stats: [
-      { label: "Tahfidz", value: "Target 12 Juz", icon: BookOpen },
-      { label: "Prioritas", value: "Leadership", icon: ShieldCheck },
-      { label: "Bahasa", value: "Dwi-Bahasa", icon: Globe },
-    ],
-    curriculum: [
-      "Target Hafalan 12 Juz Mutqin",
-      "Leadership & Character Building",
-      "Bahasa Arab & Inggris Yaumiyah",
-      "Kajian Kitab Turots Dasar",
-      "Kurikulum Nasional Lengkap",
-    ],
-    image: "/images/mts.webp",
-    theme: "maroon",
-    accent: "text-primary-600",
-    bg: "bg-primary-50" },
-  {
-    id: "il",
-    name: "I'dad Lughowi",
-    buttonLabel: "Daftar IL",
-    fullName: "Program I'dad Lughowi (IL)",
-    description:
-      "Program pendalaman dan pemantapan Bahasa Arab intensif selama 1 tahun bagi santri lulusan SMP/MTs umum sebelum melanjutkan ke jenjang tingkat atas (SMA/MA) selama 3 tahun di pesantren. Program ini membekali santri agar mampu menggunakan bahasa Arab secara aktif sebagai bahasa pengantar di kelas maupun percakapan harian. Bagi calon santri yang sudah lancar berbahasa Arab aktif dan memiliki hafalan Al-Qur'an minimal 4 Juz mutqin, dapat langsung masuk jenjang SMA/MA tanpa melalui kelas persiapan I'dad Lughowi.",
-    stats: [
-      { label: "Tahfidz", value: "Target 16 Juz", icon: BookOpen },
-      { label: "Fokus Utama", value: "Bahasa Arab Aktif", icon: Globe },
-      { label: "Masa Studi", value: "1 Th IL + 3 Th SMA/MA", icon: Clock },
-    ],
-    curriculum: [
-      "Tahun I'dad: Intensif Bahasa Arab (Nahwu, Sharaf, Muhadatsah)",
-      "Target Hafalan 16 Juz Mutqin",
-      "Pondasi Kitab Turots Dasar & Fiqih Ibadah",
-      "Pembiasaan Bahasa Arab Aktif di Kelas & Asrama",
-      "Pembinaan Karakter Mandiri & Dakwah Lapangan",
-    ],
-    image: "/images/il.webp",
-    theme: "gold",
-    accent: "text-gold-600",
-    bg: "bg-secondary-50" },
-];
+import {
+  GraduationCap,
+  BookKey,
+  BookOpen,
+  Check,
+  Clock,
+  Award,
+  ArrowRight,
+  ShieldCheck,
+  Calendar,
+  Languages,
+  Layers
+} from "lucide-react";
+import { motion } from "framer-motion";
+import { BRANDING } from "@/config/branding";
 
 export default function ProgramPage() {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  const [activeSection, setActiveSection] = useState<string>("mts");
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const viewportMiddle = window.scrollY + window.innerHeight / 2;
-      for (const program of PROGRAMS) {
-        const element = document.getElementById(program.id);
-        if (element) {
-          const { offsetTop, offsetHeight } = element;
-          if (
-            viewportMiddle >= offsetTop &&
-            viewportMiddle < offsetTop + offsetHeight
-          ) {
-            setActiveSection(program.id);
-            break;
-          }
-        }
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
-    <main className="bg-white min-h-dvh">
-      {/* 1. Hero Section - Airy & Clean */}
-      <section className="relative py-24 md:py-32 overflow-hidden bg-white">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-secondary-50/50 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none max-w-full" />
-        <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.02] pointer-events-none" />
+    <main className="bg-gradient-to-b from-[#FDFCF9] via-[#F8FAFC] to-white min-h-dvh pt-28 pb-24 lg:pt-36">
+      
+      {/* ─── 1. HERO OMI EDITORIAL ─── */}
+      <section className="relative overflow-hidden pb-16">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgc3Ryb2tlPSIjMDAwMDAwIiBzdHJva2Utb3BhY2l0eT0iMC4wMiIgZmlsbD0ibm9uZSI+PHBhdGggZD0iTTAgNjBoNjBNNjAgMGwwIDYwIi8+PC9nPjwvc3ZnPg==')] opacity-70 pointer-events-none" />
 
-        <Container className="relative z-10 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-primary-50 border border-primary-100 text-primary-700 text-xs font-bold uppercase tracking-widest mb-8 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10"
-          >
-            <GraduationCap className="w-3.5 h-3.5" />
-            <span>Jenjang Pendidikan</span>
-          </motion.div>
+        <Container className="relative z-10 max-w-4xl mx-auto px-4 text-center space-y-6">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 shadow-2xs">
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <span className="text-xs font-extrabold uppercase tracking-wider text-emerald-800">
+              Katalog Pendidikan & Kurikulum
+            </span>
+          </div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-3xl md:text-5xl lg:text-8xl font-display font-black mb-10 tracking-tight leading-[0.9] text-ink-950"
-          >
-            Program <br />
-            <span className="text-gradient-primary">Terbaik Kita</span>
-          </motion.h1>
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.15]">
+            Kurikulum Terpadu <br />
+            <span className="text-primary">{BRANDING.schoolName}</span>
+          </h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-lg md:text-xl text-ink-600 max-w-2xl mx-auto leading-relaxed font-medium"
-          >
-            Kurikulum terintegrasi komprehensif yang menyelaraskan standar
-            Nasional dengan khas Andalus.
-          </motion.p>
+          <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed font-normal">
+            Menyelaraskan penguasaan Bahasa Arab sangat intensif, bimbingan Tahfidz Al-Qur'an mutqin, pendalaman kitab turots syar'i, keunggulan sains akademik umum, serta penempaan leadership dan kewirausahaan.
+          </p>
         </Container>
       </section>
 
-      {/* 2. Navigation Tabs (Sticky) - Refined */}
-      <div className="sticky top-[72px] z-40 bg-white/60 backdrop-blur-xl border-y border-surface-100 py-4">
-        <Container>
-          <div className="flex flex-wrap justify-center gap-3">
-            {PROGRAMS.map((program) => (
-              <button
-                key={program.id}
-                onClick={() => {
-                  document
-                    .getElementById(program.id)
-                    ?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className={`px-8 py-3 rounded-pill font-black text-sm transition-all border shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10
-                                ${
-                                  activeSection === program.id
-                                    ? program.theme === "maroon"
-                                      ? "bg-primary-700 text-white border-primary-700"
-                                      : "bg-gold-500 text-white border-gold-500"
-                                    : "bg-white text-ink-500 border-primary-100 hover:border-primary-300 hover:text-primary-700"
-                                }`}
-              >
-                {program.name}
-              </button>
-            ))}
-          </div>
-        </Container>
-      </div>
-
-      {/* 3. Program Content Sections */}
-      <div className="py-12">
-        {PROGRAMS.map((program, idx) => (
-          <section
-            key={program.id}
-            id={program.id}
-            className="py-24 md:py-32 scroll-mt-32 overflow-hidden"
-          >
-            <Container>
-              <div
-                className={`grid lg:grid-cols-2 gap-16 lg:gap-24 items-center ${idx % 2 === 1 ? "lg:grid-flow-dense" : ""}`}
-              >
-                {/* Image Side */}
-                <motion.div
-                  initial={{ opacity: 0, x: idx % 2 === 0 ? -40 : 40 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  className={`relative ${idx % 2 === 1 ? "lg:col-start-2" : ""}`}
-                >
-                  <div className="aspect-[4/5] max-h-[520px] min-h-[350px] md:min-h-[440px] w-full rounded-[2.5rem] md:rounded-[3.5rem] overflow-hidden shadow-2xl shadow-primary/30  shadow-primary/20 relative z-10 p-2.5 md:p-3 bg-white border border-primary-100">
-                    <div className="relative w-full h-full min-h-[330px] md:min-h-[420px] rounded-[2rem] md:rounded-[2.8rem] overflow-hidden bg-gradient-to-br from-primary-950 via-primary-900 to-primary-950">
-                      <Image
-                        src={program.image}
-                        alt={program.fullName}
-                        fill
-                        priority={idx === 0}
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                        className="object-cover transition-transform duration-700 hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-
-                      <div className="absolute bottom-10 left-10 right-10 z-20">
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 text-white text-[10px] font-black uppercase tracking-widest mb-3">
-                          <Star className="w-3.5 h-3.5 fill-gold-400 text-gold-400" />
-                          <span>Program Unggulan</span>
-                        </div>
-                        <h3 className="text-3 font-display font-black text-white md:text-4xl leading-none">
-                          Pengalaman Terbaik
-                        </h3>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Decorative Blob */}
-                  <div
-                    className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] rounded-full blur-[120px] -z-10 opacity-30
-                                        ${program.theme === "maroon" ? "bg-primary-100" : "bg-secondary-200"}
-                                    `}
-                  />
-                </motion.div>
-
-                {/* Content Side */}
-                <div className={idx % 2 === 1 ? "lg:col-start-1" : ""}>
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="text-center lg:text-left"
-                  >
-                    <h2 className="text-2xl md:text-4xl lg:text-6xl font-display font-black text-ink-950 leading-[0.95] mb-8">
-                      {program.fullName}
-                    </h2>
-                    <p className="text-xl text-ink-600 font-medium leading-relaxed mb-10 text-center lg:text-left">
-                      {program.description}
-                    </p>
-                  </motion.div>
-
-                  {/* Stats Grid - Modern Design */}
-                  <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
-                    {program.stats.map((stat, sIdx) => (
-                      <div
-                        key={sIdx}
-                        className={`app-card bg-white p-5 rounded-[2rem] border border-primary-50 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 hover:shadow-2xl shadow-primary/30  shadow-primary/20 transition-all text-center group`}
-                      >
-                        <div
-                          className={`w-10 h-10 rounded-3xl mx-auto mb-3 flex items-center justify-center transition-transform group-hover:scale-110 border border-primary-100
-                                                    ${program.theme === "maroon" ? "bg-primary-50 text-primary-600" : "bg-secondary-100 text-gold-700"}
-                                                `}
-                        >
-                          <stat.icon className="w-5 h-5" />
-                        </div>
-                        <p className="text-[10px] text-ink-400 font-black uppercase tracking-widest mb-1">
-                          {stat.label}
-                        </p>
-                        <p
-                          className={`font-black text-ink-950 ${stat.value.length > 20 ? "text-sm leading-tight" : "text-lg"}`}
-                        >
-                          {stat.value}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Curriculum Card - Refined */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className={`app-card rounded-[3rem] p-10 mb-10 border ${program.bg} border-primary-100 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 relative overflow-hidden`}
-                  >
-                    <div className="absolute top-0 right-0 p-5 md:p-8 opacity-5">
-                      <BookOpen className="w-32 h-32 text-primary-900" />
-                    </div>
-
-                    <h3 className="text-2xl font-black text-ink-950 mb-8 flex items-center gap-3">
-                      <div
-                        className={`w-3 h-10 rounded-full ${program.theme === "maroon" ? "bg-primary-600" : "bg-gold-500"}`}
-                      />
-                      Kurikulum & Fokus
-                    </h3>
-
-                    <ul className="space-y-5 relative z-10">
-                      {program.curriculum.map((item, cIdx) => (
-                        <li
-                          key={cIdx}
-                          className="flex items-start gap-4 group/item"
-                        >
-                          <div
-                            className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10
-                                                        ${program.theme === "maroon" ? "bg-primary-600 text-white" : "bg-gold-500 text-white"}
-                                                    `}
-                          >
-                            <CheckCircle2 className="w-4 h-4" />
-                          </div>
-                          <span className="text-ink-800 font-bold text-lg leading-tight tracking-tight group-hover/item:text-ink-950 transition-colors">
-                            {item}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </motion.div>
-
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                  >
-                    <Link href={`/daftar?program=${program.id}`}>
-                      <button
-                        className={`w-full sm:w-auto px-14 py-5 rounded-pill font-black text-white text-lg shadow-2xl shadow-primary/30  shadow-primary/20 transition-all hover:-translate-y-1
-                                                ${program.theme === "maroon" ? "bg-primary-700 hover:bg-primary-800" : "bg-gold-600 hover:bg-gold-700"}
-                                            `}
-                      >
-                        Daftarkan Sekarang
-                      </button>
-                    </Link>
-                  </motion.div>
-                </div>
+      {/* ─── 2. 3 MAIN PROGRAMS DETAILED (OMI BIDANG LOMBA STYLE) ─── */}
+      <section className="py-10">
+        <Container className="max-w-6xl mx-auto px-4 space-y-12">
+          
+          {/* PROGRAM 1: SMP IT */}
+          <div id="smp" className="bg-white rounded-3xl p-8 sm:p-10 border border-slate-200 shadow-sm scroll-mt-28">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-slate-100">
+              <div className="space-y-2">
+                <span className="px-3.5 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-primary text-white inline-block">
+                  Kurikulum Terpadu Pesantren & Nasional • Jenjang 3 Tahun
+                </span>
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
+                  SMP IT (Sekolah Menengah Pertama IT)
+                </h2>
+                <p className="text-xs sm:text-sm text-slate-500">
+                  Pendidikan formal tingkat menengah pertama bagi lulusan SD/MI.
+                </p>
               </div>
-            </Container>
-          </section>
-        ))}
-      </div>
 
-      {/* Bottom CTA - Impactful */}
-      <section className="py-16 md:py-24 lg:py-32 bg-surface-50">
-        <Container>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="bg-primary-900 bg-linear-to-br from-primary-800 to-primary-950 rounded-[2rem] md:rounded-[3rem] lg:rounded-[4rem] p-6 sm:p-5 md:p-8 lg:p-24 text-center text-white relative overflow-hidden"
-          >
-            <div className="absolute top-0 right-0 w-32 h-32 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-white/5 rounded-full blur-[60px] md:blur-[100px] -translate-y-1/2 translate-x-1/2" />
-            <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-5" />
+              <a
+                href="/daftar"
+                className="h-11 px-6 rounded-xl bg-primary hover:bg-primary-dark text-white font-extrabold text-xs shadow-md transition-all inline-flex items-center gap-2 self-start lg:self-center"
+              >
+                <span>Daftar SMP IT</span>
+                <ArrowRight className="w-4 h-4" />
+              </a>
+            </div>
 
-            <div className="relative z-10">
-              <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-3xl xl:text-6xl font-display font-black mb-4 sm:mb-6 md:mb-8 text-white leading-tight">
-                Mulai Perjalanan <br />{" "}
-                <span className="text-secondary-300">Terbaik</span> Mereka
-              </h2>
-              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-primary-50 max-w-2xl mx-auto mb-6 sm:mb-8 md:mb-10 lg:mb-12 font-medium px-2">
-                Konsultasikan rencana pendidikan putra-putri Anda dengan tim
-                kami untuk mendapatkan pilihan program yang paling tepat.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 justify-center px-4">
-                <Link href="/daftar">
-                  <button className="w-full sm:w-auto px-6 sm:px-6 md:px-10 py-3.5 sm:py-4 md:py-5 rounded-pill bg-white text-primary-900 font-black text-sm sm:text-base md:text-lg hover:bg-primary-50 shadow-2xl shadow-primary/30  shadow-primary/20 transition-all min-h-[48px] sm:min-h-[52px]">
-                    Pendaftaran Online
-                  </button>
-                </Link>
-                <Link href="/kontak">
-                  <button className="w-full sm:w-auto px-6 sm:px-6 md:px-10 py-3.5 sm:py-4 md:py-5 rounded-pill bg-white/10 text-white font-bold border border-white/20 hover:bg-white/20 transition-all text-sm sm:text-base md:text-lg min-h-[48px] sm:min-h-[52px]">
-                    Hubungi Admissions
-                  </button>
-                </Link>
+            <div className="grid md:grid-cols-3 gap-6 pt-8">
+              <div className="space-y-3 bg-slate-50/70 p-5 rounded-2xl border border-slate-200/80">
+                <h4 className="text-sm font-extrabold text-slate-900 flex items-center gap-2">
+                  <Languages className="w-4 h-4 text-primary" />
+                  <span>Bahasa Arab Sangat Intensif</span>
+                </h4>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Santri dibiasakan muhadatsah harian, pengayaan mufrodat tematik, dan tata bahasa Nahwu-Shorof aplikatif untuk membaca kitab turots sejak dini.
+                </p>
+              </div>
+
+              <div className="space-y-3 bg-slate-50/70 p-5 rounded-2xl border border-slate-200/80">
+                <h4 className="text-sm font-extrabold text-slate-900 flex items-center gap-2">
+                  <BookOpen className="w-4 h-4 text-primary" />
+                  <span>Tahfidz Mutqin & Syar'i Sunnah</span>
+                </h4>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Bimbingan hafalan Al-Qur'an mutqin berkaidah tajwid, tasmi' berkala, pembiasaan ibadah harian sesuai Sunnah, dan pendalaman turots aqidah-fiqih.
+                </p>
+              </div>
+
+              <div className="space-y-3 bg-slate-50/70 p-5 rounded-2xl border border-slate-200/80">
+                <h4 className="text-sm font-extrabold text-slate-900 flex items-center gap-2">
+                  <GraduationCap className="w-4 h-4 text-emerald-600" />
+                  <span>Sains, Akademik & Leadership</span>
+                </h4>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Pelajaran umum (Matematika, IPA, Bahasa) tetap diajarkan berkualitas tinggi agar santri pintar, berdaya saing, mandiri, dan berjiwa kepemimpinan.
+                </p>
               </div>
             </div>
-          </motion.div>
+          </div>
+
+          {/* PROGRAM 2: I'DAD LUGHAWI */}
+          <div id="idad" className="bg-white rounded-3xl p-8 sm:p-10 border border-slate-200 shadow-sm scroll-mt-28">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-slate-100">
+              <div className="space-y-2">
+                <span className="px-3.5 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-primary text-white inline-block">
+                  Program Matrikulasi • 1 Tahun
+                </span>
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
+                  IL (I'dad Lughowi - Persiapan Bahasa)
+                </h2>
+                <p className="text-xs sm:text-sm text-slate-500">
+                  Program akselerasi bahasa Arab dan dasar-dasar syar'i bagi lulusan SMP umum.
+                </p>
+              </div>
+
+              <a
+                href="/daftar"
+                className="h-11 px-6 rounded-xl bg-white hover:bg-emerald-50 text-primary font-extrabold text-xs shadow-md transition-all inline-flex items-center gap-2 self-start lg:self-center"
+              >
+                <span>Daftar IL</span>
+                <ArrowRight className="w-4 h-4" />
+              </a>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6 pt-8">
+              <div className="space-y-3 bg-slate-50/70 p-5 rounded-2xl border border-slate-200/80">
+                <h4 className="text-sm font-extrabold text-slate-900 flex items-center gap-2">
+                  <BookKey className="w-4 h-4 text-primary" />
+                  <span>Imersi Total Bahasa Arab</span>
+                </h4>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Santri dibimbing secara intensif untuk menguasai keterampilan mendengar, muhadatsah aktif, membaca kitab, dan menulis bahasa Arab dalam tempo 1 tahun.
+                </p>
+              </div>
+
+              <div className="space-y-3 bg-slate-50/70 p-5 rounded-2xl border border-slate-200/80">
+                <h4 className="text-sm font-extrabold text-slate-900 flex items-center gap-2">
+                  <Layers className="w-4 h-4 text-emerald-600" />
+                  <span>Dasar Syar'i & Kesiapan Menuju SMA IT</span>
+                </h4>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Pembekalan dasar-dasar ilmu syar'i, pembiasaan adab thalabul 'ilmi, dan adaptasi kultur asrama mandiri sebagai jembatan mantap melangkah ke jenjang SMA IT.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* PROGRAM 3: SMA IT */}
+          <div id="sma" className="bg-white rounded-3xl p-8 sm:p-10 border border-slate-200 shadow-sm scroll-mt-28">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-slate-100">
+              <div className="space-y-2">
+                <span className="px-3.5 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider bg-primary text-white inline-block">
+                  Jalur Langsung 3 Tahun (Tanpa IL) • Lulusan SMP IT / Sederajat
+                </span>
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
+                  SMA IT (Sekolah Menengah Atas IT) Langsung
+                </h2>
+                <p className="text-xs sm:text-sm text-slate-500">
+                  Pendidikan tingkat menengah atas jalur langsung bagi santri yang telah lancar berbahasa Arab aktif dan memiliki hafalan Al-Qur'an mutqin.
+                </p>
+              </div>
+
+              <Link
+                href="/daftar"
+                className="h-11 px-6 rounded-xl bg-primary hover:bg-primary-dark text-white font-extrabold text-xs shadow-md transition-all inline-flex items-center gap-2 self-start lg:self-center"
+              >
+                <span>Daftar SMA IT</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6 pt-8">
+              <div className="space-y-3 bg-slate-50/70 p-5 rounded-2xl border border-slate-200/80">
+                <h4 className="text-sm font-extrabold text-slate-900 flex items-center gap-2">
+                  <BookOpen className="w-4 h-4 text-primary" />
+                  <span>Pendalaman Kitab Turots</span>
+                </h4>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Kajian literatur kitab para ulama bersanad dalam Aqidah, Fiqih, Ushul, dan Hadits dengan pengantar bahasa Arab penuh.
+                </p>
+              </div>
+
+              <div className="space-y-3 bg-slate-50/70 p-5 rounded-2xl border border-slate-200/80">
+                <h4 className="text-sm font-extrabold text-slate-900 flex items-center gap-2">
+                  <GraduationCap className="w-4 h-4 text-primary" />
+                  <span>Persiapan PTN & Timur Tengah</span>
+                </h4>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Bimbingan intensif persiapan seleksi beasiswa universitas Islam di Timur Tengah serta seleksi SNBP/SNBT Perguruan Tinggi Negeri.
+                </p>
+              </div>
+
+              <div className="space-y-3 bg-slate-50/70 p-5 rounded-2xl border border-slate-200/80">
+                <h4 className="text-sm font-extrabold text-slate-900 flex items-center gap-2">
+                  <Award className="w-4 h-4 text-emerald-600" />
+                  <span>Leadership & Kemandirian</span>
+                </h4>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Kaderisasi dakwah, kecakapan hidup (life skills), serta kemandirian santri berkarakter Rabbani dan berakhlakul karimah.
+                </p>
+              </div>
+            </div>
+          </div>
+
         </Container>
       </section>
+
+      {/* ─── 3. BOTTOM CTA BANNER ─── */}
+      <section className="py-12">
+        <Container className="max-w-5xl mx-auto px-4">
+          <div className="rounded-3xl p-8 sm:p-12 text-center bg-gradient-to-br from-emerald-950 via-emerald-850 to-emerald-700 text-white shadow-xl border border-white/15 space-y-5">
+            <h3 className="text-2xl sm:text-3xl font-extrabold text-white">
+              Ingin Mengetahui Lebih Lengkap Seputar Kurikulum?
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-200 max-w-xl mx-auto font-normal leading-relaxed">
+              Unduh brosur resmi SPMB dalam format PDF atau konsultasikan langsung dengan panitia penerimaan santri.
+            </p>
+            <div className="pt-2 flex flex-wrap justify-center gap-3">
+              <a
+                href="/documents/Brosur-SPMB-Pesantren-Al-Basyir-2027-2028.pdf"
+                download="Brosur-SPMB-Pesantren-Al-Basyir-2027-2028.pdf"
+                className="h-11 px-7 rounded-xl bg-white hover:bg-emerald-50 text-emerald-800 font-extrabold text-xs shadow-md transition-all inline-flex items-center gap-2"
+              >
+                <span>Unduh Brosur</span>
+                <ArrowRight className="w-4 h-4" />
+              </a>
+              <Link
+                href="/kontak"
+                className="h-11 px-7 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/25 font-extrabold text-xs transition-all inline-flex items-center"
+              >
+                <span>Tanya Jawab Kurikulum</span>
+              </Link>
+            </div>
+          </div>
+        </Container>
+      </section>
+
     </main>
   );
 }

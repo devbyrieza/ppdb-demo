@@ -7,51 +7,50 @@ import {
   Users,
   BookOpenCheck,
   ShieldCheck,
-  Zap,
-  Building2,
+  GraduationCap,
+  Heart,
+  Sparkles,
   ArrowRight } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { motion } from "framer-motion";
+import { BRANDING } from "@/config/branding";
 
 const FEATURES = [
   {
     icon: BookOpen,
-    title: "Menghidupkan Fitrah Santri",
+    title: "Bahasa Arab Intensif & Syar'i",
     description:
-      "Berupaya maksimal menghidupkan fitrah santri, diiringi adab Islami dalam setiap interaksi." },
+      "Perhatian mendalam pada bahasa Arab aktif harian, tahfidz Al-Qur'an mutqin, serta pendalaman kitab turots bimbingan Sunnah." },
+  {
+    icon: GraduationCap,
+    title: "Akademik & Sains Tetap Pintar",
+    description:
+      "Pelajaran umum dan sains diajarkan berstandar tinggi agar santri tetap cerdas, berpikiran maju, dan berdaya saing." },
   {
     icon: ShieldCheck,
-    title: "Pengawasan di Setiap Aktivitas",
+    title: "Mendidik Tanpa Luka & Nol Sanksi Fisik",
     description:
-      "Pengawasan menyeluruh di setiap aktivitas santri untuk memastikan perkembangan yang optimal." },
+      "Pendekatan keteladanan pendidik dan kasih sayang tanpa kekerasan fisik, tanpa luka pengasuhan, serta tanpa senioritas." },
+  {
+    icon: Heart,
+    title: "Zero Tolerance Pelanggaran Berat",
+    description:
+      "Pencegahan dan penindakan tegas terhadap rokok, pergaulan bebas/pacaran, penyimpangan, perundungan (bullying), dan pencurian." },
   {
     icon: Users,
-    title: "Musyrif Tinggal di Kamar Santri",
+    title: "Pendampingan Keteladanan 24 Jam",
     description:
-      "Musyrif (Guru Asrama) tinggal langsung di kamar santri untuk pendampingan intensif 24 jam." },
+      "Musyrif dan asatidz tinggal mendampingi santri secara intensif untuk membimbing adab, shalat berjamaah, dan ibadah sunnah." },
   {
-    icon: Zap,
-    title: "Pendekatan Penyadaran & Pendewasaan",
+    icon: Sparkles,
+    title: "Leadership & Jiwa Kewirausahaan",
     description:
-      "Bimbingan dengan pendekatan penyadaran dan pendewasaan pada setiap kesalahan santri, bukan sekadar hukuman." },
-  {
-    icon: Award,
-    title: "Tidak Ada Hukuman Fisik",
-    description:
-      "Tidak menerapkan hukuman yang membahayakan fisik dalam proses pembinaan santri." },
-  {
-    icon: Building2,
-    title: "Tidak Ada Senioritas Menghukum",
-    description:
-      "Tidak memberikan kewenangan pada santri senior untuk menghukum santri lain." },
+      "Menumbuhkan kemandirian santri, kepemimpinan amanah, serta keterampilan entrepreneurship beretika syar'i." },
 ] as const;
 
 export default function FeaturesSection() {
   return (
     <section id="keunggulan" className="section-std relative overflow-hidden">
-      {/* CiroAI-style ambient glow blobs */}
-      <div className="glow-blob glow-blob-primary w-[500px] h-[500px] -top-[15%] -right-[10%] opacity-[0.12] max-w-full" aria-hidden="true" />
-      <div className="glow-blob glow-blob-gold w-[400px] h-[400px] bottom-[5%] left-[5%] opacity-[0.10] max-w-full" aria-hidden="true" />
       <Container className="relative z-10">
         <div className="flex flex-col lg:flex-row items-start gap-16 lg:gap-24">
           {/* TEXT SIDE */}
@@ -69,7 +68,7 @@ export default function FeaturesSection() {
                     Keunggulan Utama
                   </span>
                 </div>
-                <h2 className="section-title mb-3">Kenapa Harus Al Fath?</h2>
+                <h2 className="section-title mb-3">Kenapa Harus {BRANDING.schoolShortName}?</h2>
                 <p className="text-lg text-ink-600 leading-relaxed font-medium text-justify lg:text-left">
                   Sistem pembentukan karakter berbasis{" "}
                   <strong className="text-primary-700">
@@ -106,12 +105,12 @@ export default function FeaturesSection() {
               </div>
 
               <div className="pt-4">
-                <Link href="/ppdb" className="inline-block">
+                <a href="/daftar" className="inline-block">
                   <button className="btn-primary w-full sm:w-auto text-base">
                     Daftar Sekarang
                     <ArrowRight className="w-5 h-5 ml-1" />
                   </button>
-                </Link>
+                </a>
               </div>
             </motion.div>
           </div>
@@ -136,26 +135,26 @@ export default function FeaturesSection() {
                     <p className="text-xs leading-tight text-ink-500 font-medium">
                       Dimulainya Sejarah Baru <br />
                       <span className="text-primary-700 font-bold block mt-1">
-                        Pesantren Al Fath
+                        {BRANDING.schoolName}
                       </span>
                     </p>
                   </div>
                 </div>
 
-                <div className="bg-linear-to-br from-primary-600 via-primary-700 to-primary-900 shine-top border border-white/10 p-6 sm:p-8 rounded-2xl shadow-2xl shadow-primary/30 min-h-64 md:h-72 flex flex-col justify-center items-center text-center relative overflow-hidden group hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
+                <div className="bg-linear-to-br from-primary-700 via-primary-800 to-primary-950 shine-top border border-white/10 p-6 sm:p-8 rounded-2xl shadow-2xl min-h-64 md:h-72 flex flex-col justify-center items-center text-center relative overflow-hidden group hover:shadow-xl hover:-translate-y-2 transition-all duration-500">
                   {/* CiroAI-style ambient glow inside dark card */}
-                  <div className="absolute -top-16 -right-16 w-40 h-40 bg-secondary-400/25 blur-[60px] rounded-full pointer-events-none group-hover:bg-secondary-400/40 transition-colors duration-700" />
+                  <div className="absolute -top-16 -right-16 w-40 h-40 bg-amber-400/25 blur-[60px] rounded-full pointer-events-none group-hover:bg-amber-400/40 transition-colors duration-700" />
                   <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-primary-300/10 blur-[50px] rounded-full pointer-events-none" />
 
-                  <div className="icon-box icon-box-secondary w-20 h-20 rounded-2xl mb-6 group-hover:scale-110 transition-transform duration-500">
+                  <div className="icon-box icon-box-gold w-20 h-20 rounded-2xl mb-6 group-hover:scale-110 transition-transform duration-500">
                     <BookOpenCheck className="w-10 h-10" />
                   </div>
-                  <h3 className="font-black text-2xl text-white tracking-tight leading-tight group-hover:text-secondary-100 transition-colors">
+                  <h3 className="font-black text-2xl text-white tracking-tight leading-tight group-hover:text-amber-100 transition-colors">
                     Tahfidz
                     <br />
                     Intensif
                   </h3>
-                  <div className="mt-4 w-12 h-0.5 bg-secondary-400/40 rounded-full group-hover:w-16 group-hover:bg-secondary-300 transition-all duration-500" />
+                  <div className="mt-4 w-12 h-0.5 bg-amber-300/50 rounded-full group-hover:w-16 group-hover:bg-amber-300 transition-all duration-500" />
                 </div>
               </div>
 
@@ -171,7 +170,7 @@ export default function FeaturesSection() {
                   </p>
                 </div>
 
-                <div className="bg-secondary-50/80 backdrop-blur-lg border border-secondary-200 p-6 sm:p-8 rounded-[2rem] shadow-sm min-h-56 md:h-64 flex flex-col justify-end items-start hover:shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 transition-all duration-300">
+                <div className="bg-secondary-50/80 backdrop-blur-lg border border-secondary-200 p-6 sm:p-8 rounded-[2rem] shadow-sm min-h-56 md:h-64 flex flex-col justify-end items-start hover:shadow-xl transition-all duration-300">
                   <p className="text-4xl font-black mb-1 text-primary-800 tracking-tighter">
                     RESMI
                   </p>
@@ -188,7 +187,7 @@ export default function FeaturesSection() {
             </motion.div>
 
             {/* CiroAI-style center ambient glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] rounded-full blur-[120px] z-0 pointer-events-none" style={{ background: "radial-gradient(ellipse, rgba(13,148,136,0.07) 0%, rgba(212,175,55,0.06) 50%, transparent 70%)" }} aria-hidden="true" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] rounded-full blur-[120px] z-0 pointer-events-none" style={{ background: "radial-gradient(ellipse, rgba(190,24,93,0.07) 0%, rgba(255,253,240,0.06) 50%, transparent 70%)" }} aria-hidden="true" />
           </div>
         </div>
       </Container>

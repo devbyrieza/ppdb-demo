@@ -52,7 +52,7 @@ export default function ExamCardPage() {
           jenjang:
             profileData.role === "admin"
               ? "ADMIN"
-              : profileData.jenjang || "MTs", // Fallback
+              : profileData.jenjang || "SMP IT", // Fallback
           // Mocking some details if not available in session
           tempat_lahir: "-",
           tanggal_lahir: "-",
@@ -63,7 +63,7 @@ export default function ExamCardPage() {
                 "id-ID",
               ),
               waktu: j.waktu_mulai.substring(0, 5),
-              lokasi: j.lokasi || "Pondok Pesantren Al Fath" })) || [] };
+              lokasi: j.lokasi || "Pesantren Al-Basyir" })) || [] };
 
         setData(student);
       } catch (e) {
@@ -97,20 +97,20 @@ export default function ExamCardPage() {
   if (!data) return <div>Data tidak ditemukan</div>;
 
   return (
-    <div className="min-h-dvh bg-gray-100 p-[24px_28px] md:p-8 flex flex-col items-center">
+    <div className="min-h-dvh bg-gray-100 p-5 md:p-8 flex flex-col items-center">
       {/* Toolbar */}
-      <div className="w-full max-w-[21cm] mb-6 flex justify-between items-center bg-white/80 backdrop-blur-xl rounded-[24px] shadow-2xl shadow-primary/30  shadow-primary/20 border border-emerald-100 p-[24px_28px] no-print">
-        <h1 className="text-xl font-bold text-stone-900">Pratinjau Jadwal</h1>
+      <div className="w-full max-w-[21cm] mb-6 flex justify-between items-center no-print">
+        <h1 className="text-xl font-bold">Pratinjau Jadwal</h1>
         <button
           onClick={() => window.print()}
-          className="flex items-center gap-2 bg-primary-600 text-white px-5 py-2.5 rounded-[24px] font-bold shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 hover:bg-primary-700 transition-colors"
+          className="flex items-center gap-2 bg-primary-600 text-white px-4 py-2 rounded shadow hover:bg-primary-700 transition"
         >
           <Printer className="w-4 h-4" /> Cetak Jadwal
         </button>
       </div>
 
       {/* A4 Paper simulating div */}
-      <div className="bg-white shadow-2xl shadow-primary/30 w-full max-w-[21cm] min-h-[29.7cm] p-[2cm] relative print:shadow-none print:w-full print:p-0">
+      <div className="bg-white shadow-2xl w-full max-w-[21cm] min-h-[29.7cm] p-[2cm] relative print:shadow-none print:w-full print:p-0">
         {/* Header with Border */}
         <div className="border-2 border-black p-1 mb-1">
           <div className="border border-black p-6 relative">
@@ -155,7 +155,7 @@ export default function ExamCardPage() {
             </div>
 
             <div className="mb-8 font-serif">
-              <div className="bg-gray-50 p-[24px_28px] border border-gray-200 rounded text-sm">
+              <div className="bg-gray-50 p-6 sm:p-8 border border-gray-200 rounded text-sm">
                 <div className="grid grid-cols-12 gap-2 mb-2">
                   <span className="col-span-3 font-bold">
                     Nomor Pendaftaran
@@ -182,15 +182,15 @@ export default function ExamCardPage() {
               </h3>
               <div className="w-full overflow-x-auto rounded-xl border border-slate-200 shadow-sm custom-scrollbar"><table className="w-full border-collapse border border-black text-sm">
                 <thead>
-                  <tr className="even:bg-slate-50 bg-gray-100">
-                    <th className="border border-black p-2 text-left">
+                  <tr className="bg-gray-100">
+                    <th className="border border-black p-4 text-left">
                       Mata Ujian
                     </th>
-                    <th className="border border-black p-2 text-left">
+                    <th className="border border-black p-4 text-left">
                       Hari, Tanggal
                     </th>
-                    <th className="border border-black p-2 text-left">Waktu</th>
-                    <th className="border border-black p-2 text-left">
+                    <th className="border border-black p-4 text-left">Waktu</th>
+                    <th className="border border-black p-4 text-left">
                       Lokasi
                     </th>
                   </tr>
@@ -199,23 +199,23 @@ export default function ExamCardPage() {
                   {data.jadwal && data.jadwal.length > 0 ? (
                     data.jadwal.map((j, idx) => (
                       <tr key={idx}>
-                        <td className="border border-black p-2 font-medium">
+                        <td className="border border-black p-4 font-medium">
                           {expandExamTitle(j.jenis_ujian)}
                         </td>
-                        <td className="border border-black p-2">
+                        <td className="border border-black p-4">
                           {j.tanggal_ujian}
                         </td>
-                        <td className="border border-black p-2">
+                        <td className="border border-black p-4">
                           {j.waktu} WIB
                         </td>
-                        <td className="border border-black p-2">{j.lokasi}</td>
+                        <td className="border border-black p-4">{j.lokasi}</td>
                       </tr>
                     ))
                   ) : (
                     <tr>
                       <td
                         colSpan={4}
-                        className="border border-black p-[24px_28px] text-center italic text-gray-500"
+                        className="border border-black p-6 sm:p-8 text-center italic text-gray-500"
                       >
                         Jadwal belum dipilih/ditentukan
                       </td>
@@ -257,7 +257,7 @@ export default function ExamCardPage() {
                     year: "numeric" })}
                 </p>
                 <p className="font-bold underline uppercase">
-                  Panitia SPMB Al Fath
+                  Panitia SPMB Pesantren Al-Basyir
                 </p>
               </div>
             </div>

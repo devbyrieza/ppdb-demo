@@ -147,7 +147,7 @@ export default function PengumumanTab() {
         <div className="absolute top-0 right-0 w-full max-w-[400px] h-[400px] bg-gold-50/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center gap-5">
-            <div className="w-16 h-16 rounded-[1.5rem] bg-white/10  flex items-center justify-center border border-white/20 shadow-sm shrink-0">
+            <div className="w-16 h-16 rounded-[1.5rem] bg-white/10 flex items-center justify-center border border-white/20 shadow-sm shrink-0">
               <Trophy className="w-8 h-8 text-gold-100" />
             </div>
             <div>
@@ -221,13 +221,13 @@ export default function PengumumanTab() {
       ) : pengumuman.status_kelulusan === "diterima" ? (
         <div className="space-y-6">
           {/* Success Card */}
-          <div className="bg-linear-to-r from-primary-500 to-primary-700 rounded-[2rem] p-5 md:p-8 text-white shadow-lg shadow-primary-500/20 relative overflow-hidden app-card">
+          <div className="bg-linear-to-r from-primary-500 to-primary-700 rounded-[2rem] p-5 md:p-8 text-white shadow-lg relative overflow-hidden app-card">
             <div className="absolute -top-10 -right-10 p-5 md:p-8 opacity-10 transform rotate-12">
               <Trophy className="w-64 h-64" />
             </div>
             <div className="relative z-10">
               <div className="flex items-center gap-5 mb-8">
-                <div className="p-4 bg-white/20  rounded-[1.5rem] shadow-sm border border-white/20">
+                <div className="p-4 bg-white/20 rounded-[1.5rem] shadow-sm border border-white/20">
                   <CheckCircle className="w-10 h-10 text-primary-50" />
                 </div>
                 <div>
@@ -241,7 +241,7 @@ export default function PengumumanTab() {
               </div>
               <p className="text-primary-50/90 mb-10 max-w-xl text-lg leading-relaxed">
                 Berdasarkan hasil seleksi, Anda dinyatakan <strong>DITERIMA</strong> sebagai santri
-                baru PP Al Andalus Al-Andalus Putri.
+                baru Pesantren Al-Basyir.
               </p>
 
               {pengumuman?.surat_pengumuman_path ? (
@@ -319,7 +319,7 @@ export default function PengumumanTab() {
             </div>
             <div className="relative z-10">
               <div className="flex items-center gap-5 mb-8">
-                <div className="p-4 bg-white/20  rounded-[1.5rem] shadow-sm border border-white/20">
+                <div className="p-4 bg-white/20 rounded-[1.5rem] shadow-sm border border-white/20">
                   <AlertCircle className="w-10 h-10 text-secondary-50" />
                 </div>
                 <div>
@@ -331,9 +331,9 @@ export default function PengumumanTab() {
                   </h2>
                 </div>
               </div>
-              <p className="text-secondary-50/90 mb-10 max-w-xl text-lg leading-relaxed">
-                Berdasarkan hasil seleksi, Anda dinyatakan masuk dalam{" "}
-                <strong>DAFTAR CADANGAN</strong> santri baru PP Al Andalus Al Imam.
+              <p className="text-secondary-50/90 mb-8 max-w-xl text-base sm:text-lg leading-relaxed">
+                Berdasarkan hasil seleksi pleno, ananda dinyatakan masuk dalam{" "}
+                <strong>DAFTAR CADANGAN</strong> santri baru {BRANDING.schoolName || "Pesantren"}.
               </p>
 
               <div className="flex flex-wrap items-center gap-3">
@@ -342,7 +342,7 @@ export default function PengumumanTab() {
                   <span>Tahap Evaluasi Kuota (Maksimal 14 Hari Kerja)</span>
                 </div>
                 <a
-                  href={`https://wa.me/${((BRANDING as any).phone || "081296869854").replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`Assalamu'alaikum Panitia SPMB ${BRANDING.schoolName}, saya wali santri dari calon santri yang berstatus Cadangan, izin bertanya terkait perkembangan evaluasi kuota.`)}}`}
+                  href={`https://wa.me/${((BRANDING as any).phone || "081296869854").replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`Assalamu'alaikum Panitia SPMB ${BRANDING.schoolName}, saya wali santri dari calon santri yang berstatus Cadangan, izin bertanya terkait perkembangan evaluasi kuota.`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-5 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full font-bold shadow-md transition-all text-xs cursor-pointer"
@@ -360,7 +360,7 @@ export default function PengumumanTab() {
               <div className="p-2 bg-secondary-100 rounded-xl">
                 <FileText className="w-6 h-6 text-secondary-600" />
               </div>
-              <h3 className="text-lg font-bold text-stone-900">Detail Pengumuman</h3>
+              <h3 className="text-lg font-bold text-stone-900">Detail Status Cadangan</h3>
             </div>
 
             <div className="space-y-3">
@@ -375,7 +375,7 @@ export default function PengumumanTab() {
                 <p className="text-sm text-secondary-900 leading-relaxed">
                   <strong>Catatan Panitia:</strong>{" "}
                   {pengumuman.catatan ||
-                    "Mohon bersabar menunggu informasi lebih lanjut jika terdapat kuota yang tersedia dari pembatalan pendaftar lain."}
+                    "Ketersediaan kuota dievaluasi secara berkala seiring penyelesaian daftar ulang santri diterima (maksimal 7 hari kerja). Jika terdapat kuota kosong akibat pembatalan, panitia akan langsung mempromosikan santri cadangan sesuai urutan nilai seleksi."}
                 </p>
               </div>
             </div>
@@ -390,11 +390,12 @@ export default function PengumumanTab() {
                 </div>
               </div>
               <div>
-                <h4 className="font-bold text-primary-900 mb-2">Informasi Penting</h4>
-                <ul className="text-sm text-primary-800 space-y-1">
-                  <li>• Panitia akan menghubungi Anda jika terdapat kuota yang kosong</li>
-                  <li>• Pastikan nomor WhatsApp pendaftaran tetap aktif</li>
-                  <li>• Hubungi panitia melalui layanan informasi untuk pertanyaan lebih lanjut</li>
+                <h4 className="font-bold text-primary-900 mb-2">Informasi Penting &amp; Prosedur</h4>
+                <ul className="text-sm text-primary-800 space-y-1.5 leading-relaxed">
+                  <li>• Santri cadangan diprioritaskan berdasarkan <strong>urutan peringkat nilai ujian</strong> jika ada kursi kosong.</li>
+                  <li>• Estimasi kepastian kuota: <strong>maksimal 14 hari kerja</strong> sejak tanggal pengumuman terbit.</li>
+                  <li>• Pastikan nomor WhatsApp pendaftaran tetap aktif untuk menerima konfirmasi dari panitia.</li>
+                  <li>• Untuk konsultasi atau pertanyaan lebih lanjut, silakan hubungi tim CS/Helpdesk kami.</li>
                 </ul>
               </div>
             </div>
@@ -408,7 +409,7 @@ export default function PengumumanTab() {
               <XCircle className="w-64 h-64" />
             </div>
             <div className="flex items-center gap-5 mb-8 relative z-10">
-              <div className="p-4 bg-white/20  rounded-[1.5rem] shadow-sm border border-white/20">
+              <div className="p-4 bg-white/20 rounded-[1.5rem] shadow-sm border border-white/20">
                 <XCircle className="w-10 h-10 text-red-50" />
               </div>
               <div>
