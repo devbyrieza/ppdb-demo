@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { UserRole } from "@/lib/access-control";
 import AdminSidebar from "./AdminSidebar";
 import { prisma } from "@/lib/prisma";
-import { getAdminWhereClause } from "@/lib/utils/admin";
+import { getAdminWhereClause, resolveTahunAjaran } from "@/lib/utils/admin";
 
 export default async function AdminDashboardLayout({
   children }: {
@@ -18,6 +18,7 @@ export default async function AdminDashboardLayout({
   let unverifiedPaymentsCount = 0;
   let unverifiedDocsCount = 0;
   let pendingDataRequestsCount = 0;
+  let pendingRescheduleCount = 0;
 
   if (sessionCookie) {
     try {
@@ -34,27 +35,103 @@ export default async function AdminDashboardLayout({
           availableRoles = [profile.role, ...(profile.secondary_roles || [])];
         }
 
-        // Fetch real-time count badges for the admin sidebar
+        // Fetch real-time count badges for the admin sidebar (filtered for active Tahun Ajaran 2027/2028)
         const baseWhere = await getAdminWhereClause();
 
-        // 1. Payments waiting for verification (status is not verified and not rejected)
-        unverifiedPaymentsCount = await prisma.pembayaran.count({
-          where: {
-            status_pembayaran: { notIn: ["verified", "rejected"] },
-            pendaftar: baseWhere } });
+        const [pendingPayments, pendingDocs, pendingRequests, pendingReschedules] = await Promise.all([
+          prisma.pembayaran.findMany({
+            where: {
+              status_pembayaran: { notIn: ["verified", "rejected"] },
+              pendaftar: baseWhere,
+            },
+            select: {
+              id: true,
+              pendaftar: {
+                select: {
+                  nomor_pendaftaran: true,
+                  created_at: true,
+                  tahun_ajaran: { select: { nama: true } },
+                },
+              },
+            },
+          }),
+          prisma.dokumen.findMany({
+            where: {
+              is_verified: false,
+              catatan: null,
+              pendaftar: baseWhere,
+            },
+            select: {
+              id: true,
+              pendaftar: {
+                select: {
+                  nomor_pendaftaran: true,
+                  created_at: true,
+                  tahun_ajaran: { select: { nama: true } },
+                },
+              },
+            },
+          }),
+          prisma.dataPerubahanRequest.findMany({
+            where: {
+              status: { in: ["pending", "submitted"] },
+              pendaftar: baseWhere,
+            },
+            select: {
+              id: true,
+              pendaftar: {
+                select: {
+                  nomor_pendaftaran: true,
+                  created_at: true,
+                  tahun_ajaran: { select: { nama: true } },
+                },
+              },
+            },
+          }),
+          prisma.jadwalUjian.findMany({
+            where: {
+              catatan: { contains: "RESCHEDULE_REQUEST" },
+              pendaftar: baseWhere,
+            },
+            select: {
+              id: true,
+              catatan: true,
+              pendaftar: {
+                select: {
+                  nomor_pendaftaran: true,
+                  created_at: true,
+                  tahun_ajaran: { select: { nama: true } },
+                },
+              },
+            },
+          }),
+        ]);
 
-        // 2. Documents waiting for verification (is_verified is false, no verification notes/catatan yet)
-        unverifiedDocsCount = await prisma.dokumen.count({
-          where: {
-            is_verified: false,
-            catatan: null,
-            pendaftar: baseWhere } });
+        unverifiedPaymentsCount = pendingPayments.filter((p) => {
+          if (!p.pendaftar) return false;
+          return resolveTahunAjaran(p.pendaftar) === "2027/2028";
+        }).length;
 
-        // 3. Edit profile requests waiting for action (status is pending or submitted)
-        pendingDataRequestsCount = await prisma.dataPerubahanRequest.count({
-          where: {
-            status: { in: ["pending", "submitted"] },
-            pendaftar: baseWhere } });
+        unverifiedDocsCount = pendingDocs.filter((d) => {
+          if (!d.pendaftar) return false;
+          return resolveTahunAjaran(d.pendaftar) === "2027/2028";
+        }).length;
+
+        pendingDataRequestsCount = pendingRequests.filter((r) => {
+          if (!r.pendaftar) return false;
+          return resolveTahunAjaran(r.pendaftar) === "2027/2028";
+        }).length;
+
+        pendingRescheduleCount = pendingReschedules.filter((j) => {
+          try {
+            if (!j.catatan || !j.pendaftar) return false;
+            if (resolveTahunAjaran(j.pendaftar) !== "2027/2028") return false;
+            const parsed = JSON.parse(j.catatan);
+            return parsed.type === "RESCHEDULE_REQUEST" && parsed.status === "pending";
+          } catch {
+            return false;
+          }
+        }).length;
 
       }
     } catch (error) {
@@ -71,6 +148,7 @@ export default async function AdminDashboardLayout({
       unverifiedPaymentsCount={unverifiedPaymentsCount}
       unverifiedDocsCount={unverifiedDocsCount}
       pendingDataRequestsCount={pendingDataRequestsCount}
+      pendingRescheduleCount={pendingRescheduleCount}
     >
       {children}
     </AdminSidebar>

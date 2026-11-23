@@ -84,7 +84,7 @@ export const STEP_REQUIREMENTS: Record<TabName, { minimumStatus: StatusProses | 
   "kelengkapan-berkas": { minimumStatus: "verified", label: "Isi Data Lengkap", description: "Menunggu verifikasi keuangan" },
   "upload-berkas": { minimumStatus: "data_completed", label: "Upload Berkas", description: "Isi data terlebih dahulu" },
   "download-berkas": { minimumStatus: "docs_uploaded", label: "Download Berkas", description: "Unggah berkas terlebih dahulu" },
-  "undangan-seleksi": { minimumStatus: "data_completed", label: "Jadwal Seleksi", description: "Menunggu verifikasi dokumen" },
+  "undangan-seleksi": { minimumStatus: "docs_verified", label: "Jadwal Seleksi", description: "Menunggu verifikasi dokumen oleh admin" },
   pengumuman: { minimumStatus: "tested", label: "Pengumuman", description: "Selesaikan semua tahapan seleksi terlebih dahulu" },
   "daftar-ulang": { minimumStatus: "accepted", label: "Daftar Ulang", description: "Hanya tersedia bagi pendaftar yang diterima" },
   "ukuran-seragam": { minimumStatus: "accepted", label: "Ukuran Seragam", description: "Hanya tersedia bagi pendaftar yang diterima" },
@@ -156,7 +156,7 @@ export function getNextStep(
     docs_uploaded: { status: "docs_verified", action: "Menunggu Review Admin", href: "/dashboard/pendaftar/upload-berkas" },
     docs_verified: { status: "selection", action: "Mulai Seleksi & Ujian", href: "/dashboard/pendaftar/undangan-seleksi" },
     selection: { status: "tested", action: "Lanjutkan Seleksi", href: "/dashboard/pendaftar/undangan-seleksi" },
-    scheduled: { status: "tested", action: "Ikuti Ujian Masuk", href: "/dashboard/pendaftar/ujian" },
+    scheduled: { status: "tested", action: "Ikuti Ujian Masuk", href: "/dashboard/pendaftar/undangan-seleksi" },
     tested: { status: "announced", action: "Menunggu Hasil", href: "/dashboard/pendaftar/pengumuman" },
     announced: { status: "accepted", action: "Cek Hasil", href: "/dashboard/pendaftar/pengumuman" },
     accepted: { status: "enrolled", action: "Daftar Ulang Sekarang", href: "/dashboard/pendaftar/daftar-ulang" } };
@@ -167,15 +167,15 @@ export function getNextStep(
 
 export function formatStatusDisplay(status: StatusProses) {
   const statusMap: Record<string, { label: string; color: string }> = {
-    draft: { label: "Tahap 1: Pembayaran", color: "bg-secondary-100 text-secondary-700" },
-    registered: { label: "Tahap 1: Pembayaran", color: "bg-secondary-100 text-secondary-700" },
-    awaiting_payment: { label: "Menunggu Bukti", color: "bg-secondary-100 text-secondary-700" },
+    draft: { label: "Tahap 1: Pembayaran", color: "bg-secondary-100 text-secondary-800" },
+    registered: { label: "Tahap 1: Pembayaran", color: "bg-secondary-100 text-secondary-800" },
+    awaiting_payment: { label: "Menunggu Bukti", color: "bg-secondary-100 text-secondary-800" },
     payment_verification: { label: "Verifikasi Keuangan", color: "bg-orange-100 text-orange-700" },
-    verified: { label: "Terbayar & Terverifikasi", color: "bg-primary-100 text-primary-700" },
-    paid: { label: "Terbayar & Terverifikasi", color: "bg-primary-100 text-primary-700" },
+    verified: { label: "Terbayar & Terverifikasi", color: "bg-primary-100 text-primary-900" },
+    paid: { label: "Terbayar & Terverifikasi", color: "bg-primary-100 text-primary-900" },
     payment_rejected: { label: "Masalah Pembayaran", color: "bg-red-100 text-red-700" },
     rejected: { label: "Berkas Ditolak", color: "bg-red-100 text-red-700" },
-    data_completed: { label: "Tahap 2: Informasi Data", color: "bg-primary-100 text-primary-700" },
+    data_completed: { label: "Tahap 2: Informasi Data", color: "bg-primary-100 text-primary-900" },
     docs_uploaded: { label: "Review Admin", color: "bg-indigo-100 text-indigo-700" },
     docs_verified: { label: "Berkas Lengkap", color: "bg-green-100 text-green-700" },
     selection: { label: "Proses Seleksi", color: "bg-purple-100 text-purple-700" },
@@ -184,7 +184,7 @@ export function formatStatusDisplay(status: StatusProses) {
     announced: { label: "Hasil Pengumuman", color: "bg-cyan-100 text-cyan-700" },
     accepted: { label: "Diterima", color: "bg-green-100 text-green-700" },
     enrolled: { label: "Proses Daftar Ulang", color: "bg-pink-100 text-pink-700" },
-    enrolled_full: { label: "Lunas Daftar Ulang", color: "bg-primary-100 text-primary-700" },
+    enrolled_full: { label: "Lunas Daftar Ulang", color: "bg-primary-100 text-primary-900" },
     pindah_keluar: { label: "Pindah Keluar", color: "bg-slate-100 text-slate-600" } };
   return statusMap[status] || { label: status, color: "bg-stone-100 text-stone-700" };
 }
@@ -197,11 +197,11 @@ export const ROLE_LABELS: Record<UserRole, string> = {
   pendaftar: "Pendaftar",
   admin_berkas: "Admin Berkas",
   admin_keuangan: "Admin Keuangan",
-  penguji: "Penguji Al-Qur'an (Bacaan & Hafalan)",
+  penguji: "Penguji Tes Al-Qur'an",
   pewawancara_calsan: "Pewawancara Calon Santri",
-  pewawancara_cawalsan: "Pewawancara Calon Orangtua/Wali",
-  penguji_hafalan: "Penguji Al-Qur'an (Bacaan & Hafalan)",
-  penguji_bahasa_arab: "Penguji Lisan B. Arab",
+  pewawancara_cawalsan: "Pewawancara Calon Orang Tua/Wali Santri",
+  penguji_hafalan: "Penguji Tes Al-Qur'an",
+  penguji_bahasa_arab: "Penguji Tes Lisan Bahasa Arab",
   admin_super: "Admin Super",
   admin: "Administrator" };
 
@@ -217,15 +217,23 @@ export const ROLE_PERMISSIONS: Record<UserRole, string[]> = {
   admin_super: ["view_pendaftar_list", "view_dashboard_stats", "manage_users", "manage_settings"],
   admin: ["view_pendaftar_list", "verify_documents", "verify_payment", "input_exam_scores"] };
 
-export const DASHBOARD_ROUTES: Record<UserRole, string> = {
+// Selain UserRole inti, peta ini memuat alias role lama yang masih tersimpan
+// di database (penguji_quran, penguji_calsan, dst.) agar halaman login dan
+// middleware tidak menolaknya. Role staf baru cukup didaftarkan di sini.
+export const DASHBOARD_ROUTES: Record<string, string> = {
   pendaftar: "/dashboard/pendaftar",
   admin_berkas: "/dashboard/admin",
   admin_keuangan: "/dashboard/admin",
   penguji: "/dashboard/penguji",
+  pewawancara: "/dashboard/penguji",
   pewawancara_calsan: "/dashboard/penguji",
   pewawancara_cawalsan: "/dashboard/penguji",
   penguji_hafalan: "/dashboard/penguji",
   penguji_bahasa_arab: "/dashboard/penguji",
+  penguji_quran: "/dashboard/penguji",
+  penguji_calsan: "/dashboard/penguji",
+  penguji_cawalsan: "/dashboard/penguji",
+  head_of_it: "/dashboard/admin",
   admin_super: "/dashboard/admin",
   admin: "/dashboard/admin" };
 
@@ -286,7 +294,6 @@ export function getMenuItemsForRole(role: UserRole) {
       { name: "Dashboard", href: "/dashboard/admin", icon: "LayoutDashboard" },
       { name: "Data Pendaftar", href: "/dashboard/admin/pendaftar", icon: "Users", group: "OPERASIONAL" },
       { name: "Manajemen Jadwal", href: "/dashboard/admin/jadwal/monitoring", icon: "Calendar", group: "OPERASIONAL" },
-        { name: "Request Ubah Jadwal", href: "/dashboard/admin/jadwal/reschedule", icon: "Calendar", group: "OPERASIONAL" },
       { name: "Rekap Keuangan", href: "/dashboard/admin/keuangan", icon: "Landmark", group: "OPERASIONAL" },
       { name: "Rekap Seragam", href: "/dashboard/admin/seragam", icon: "Shirt", group: "OPERASIONAL" },
       { name: "Fee Penguji", href: "/dashboard/admin/fee-penguji", icon: "Wallet", group: "OPERASIONAL" },
@@ -299,7 +306,6 @@ export function getMenuItemsForRole(role: UserRole) {
       { name: "Dashboard", href: "/dashboard/admin", icon: "LayoutDashboard" },
       { name: "Data Pendaftar", href: "/dashboard/admin/pendaftar", icon: "Users", group: "OPERASIONAL" },
       { name: "Manajemen Jadwal", href: "/dashboard/admin/jadwal/monitoring", icon: "Calendar", group: "OPERASIONAL" },
-        { name: "Request Ubah Jadwal", href: "/dashboard/admin/jadwal/reschedule", icon: "Calendar", group: "OPERASIONAL" },
       { name: "Rekap Keuangan", href: "/dashboard/admin/keuangan", icon: "Landmark", group: "OPERASIONAL" },
       { name: "Rekap Seragam", href: "/dashboard/admin/seragam", icon: "Shirt", group: "OPERASIONAL" },
       { name: "Fee Penguji", href: "/dashboard/admin/fee-penguji", icon: "Wallet", group: "OPERASIONAL" },

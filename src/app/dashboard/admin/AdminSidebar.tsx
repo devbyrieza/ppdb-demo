@@ -84,6 +84,7 @@ interface AdminSidebarProps {
   unverifiedPaymentsCount?: number;
   unverifiedDocsCount?: number;
   pendingDataRequestsCount?: number;
+  pendingRescheduleCount?: number;
 }
 
 /**
@@ -99,7 +100,8 @@ export default function AdminSidebar({
   availableRoles,
   unverifiedPaymentsCount: initialPaymentsCount = 0,
   unverifiedDocsCount: initialDocsCount = 0,
-  pendingDataRequestsCount: initialRequestsCount = 0 }: AdminSidebarProps) {
+  pendingDataRequestsCount: initialRequestsCount = 0,
+  pendingRescheduleCount: initialRescheduleCount = 0 }: AdminSidebarProps) {
   const pathname = usePathname();
 
   // State Management: Mengontrol visibilitas sidebar di berbagai ukuran layar
@@ -110,6 +112,7 @@ export default function AdminSidebar({
   const [paymentsCount, setPaymentsCount] = useState(initialPaymentsCount);
   const [docsCount, setDocsCount] = useState(initialDocsCount);
   const [requestsCount, setRequestsCount] = useState(initialRequestsCount);
+  const [rescheduleCount, setRescheduleCount] = useState(initialRescheduleCount);
 
   const desktopSidebarRef = useRef<HTMLElement>(null);
   const mobileSidebarRef = useRef<HTMLElement>(null);
@@ -171,6 +174,10 @@ export default function AdminSidebar({
     setRequestsCount(initialRequestsCount);
   }, [initialRequestsCount]);
 
+  useEffect(() => {
+    setRescheduleCount(initialRescheduleCount);
+  }, [initialRescheduleCount]);
+
   // Polling effect & Real-time Reactive Badge Listeners
   useEffect(() => {
     if (!userRole || userRole === "pendaftar") return;
@@ -182,6 +189,7 @@ export default function AdminSidebar({
           if (typeof data.unverifiedPaymentsCount === "number") setPaymentsCount(data.unverifiedPaymentsCount);
           if (typeof data.unverifiedDocsCount === "number") setDocsCount(data.unverifiedDocsCount);
           if (typeof data.pendingDataRequestsCount === "number") setRequestsCount(data.pendingDataRequestsCount);
+          if (typeof data.pendingRescheduleCount === "number") setRescheduleCount(data.pendingRescheduleCount);
         }
       } catch (error) {
         console.error("Failed to poll sidebar counts:", error);
@@ -200,6 +208,8 @@ export default function AdminSidebar({
         setPaymentsCount((prev) => Math.max(0, prev - amount));
       } else if (targetType === "requests") {
         setRequestsCount((prev) => Math.max(0, prev - amount));
+      } else if (targetType === "reschedule") {
+        setRescheduleCount((prev) => Math.max(0, prev - amount));
       }
     };
 
@@ -222,6 +232,7 @@ export default function AdminSidebar({
             if (targetType === "docs") setDocsCount((prev) => Math.max(0, prev - amount));
             else if (targetType === "payments") setPaymentsCount((prev) => Math.max(0, prev - amount));
             else if (targetType === "requests") setRequestsCount((prev) => Math.max(0, prev - amount));
+            else if (targetType === "reschedule") setRescheduleCount((prev) => Math.max(0, prev - amount));
           } else if (event.data?.type === "refresh") {
             fetchCounts();
           }
@@ -254,12 +265,14 @@ export default function AdminSidebar({
       badgeCount = docsCount;
     } else if (item.name === "Perubahan Data" || item.name.includes("Perubahan") || item.name.includes("Edit")) {
       badgeCount = requestsCount;
+    } else if (item.name === "Manajemen Jadwal") {
+      badgeCount = rescheduleCount;
     }
 
     return {
       ...item,
       icon: ICON_MAP[item.icon] || LayoutDashboard,
-      isActive: pathname === item.href,
+      isActive: item.href === "/dashboard/admin/jadwal/monitoring" ? pathname.startsWith("/dashboard/admin/jadwal") : pathname === item.href,
       badge: badgeCount };
   });
 

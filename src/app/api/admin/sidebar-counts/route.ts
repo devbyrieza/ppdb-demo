@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getAdminWhereClause } from "@/lib/utils/admin";
+import { getAdminWhereClause, resolveTahunAjaran } from "@/lib/utils/admin";
 import { cookies } from "next/headers";
 
 export const dynamic = "force-dynamic";
@@ -21,28 +21,109 @@ export async function GET() {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    const baseWhere = getAdminWhereClause();
+    const baseWhere = await getAdminWhereClause();
 
-    const [unverifiedPaymentsCount, unverifiedDocsCount, pendingDataRequestsCount] = await Promise.all([
-      prisma.pembayaran.count({
+    const [pendingPayments, pendingDocs, pendingRequests, pendingReschedules] = await Promise.all([
+      prisma.pembayaran.findMany({
         where: {
           status_pembayaran: { notIn: ["verified", "rejected"] },
-          pendaftar: baseWhere } }),
-      prisma.dokumen.count({
+          pendaftar: baseWhere,
+        },
+        select: {
+          id: true,
+          pendaftar: {
+            select: {
+              nomor_pendaftaran: true,
+              created_at: true,
+              tahun_ajaran: { select: { nama: true } },
+            },
+          },
+        },
+      }),
+      prisma.dokumen.findMany({
         where: {
           is_verified: false,
           catatan: null,
-          pendaftar: baseWhere } }),
-      prisma.dataPerubahanRequest.count({
+          pendaftar: baseWhere,
+        },
+        select: {
+          id: true,
+          pendaftar: {
+            select: {
+              nomor_pendaftaran: true,
+              created_at: true,
+              tahun_ajaran: { select: { nama: true } },
+            },
+          },
+        },
+      }),
+      prisma.dataPerubahanRequest.findMany({
         where: {
           status: { in: ["pending", "submitted"] },
-          pendaftar: baseWhere } })
+          pendaftar: baseWhere,
+        },
+        select: {
+          id: true,
+          pendaftar: {
+            select: {
+              nomor_pendaftaran: true,
+              created_at: true,
+              tahun_ajaran: { select: { nama: true } },
+            },
+          },
+        },
+      }),
+      prisma.jadwalUjian.findMany({
+        where: {
+          catatan: { contains: "RESCHEDULE_REQUEST" },
+          pendaftar: baseWhere,
+        },
+        select: {
+          id: true,
+          catatan: true,
+          pendaftar: {
+            select: {
+              nomor_pendaftaran: true,
+              created_at: true,
+              tahun_ajaran: { select: { nama: true } },
+            },
+          },
+        },
+      }),
     ]);
+
+    const unverifiedPaymentsCount = pendingPayments.filter((p) => {
+      if (!p.pendaftar) return false;
+      return resolveTahunAjaran(p.pendaftar) === "2027/2028";
+    }).length;
+
+    const unverifiedDocsCount = pendingDocs.filter((d) => {
+      if (!d.pendaftar) return false;
+      return resolveTahunAjaran(d.pendaftar) === "2027/2028";
+    }).length;
+
+    const pendingDataRequestsCount = pendingRequests.filter((r) => {
+      if (!r.pendaftar) return false;
+      return resolveTahunAjaran(r.pendaftar) === "2027/2028";
+    }).length;
+
+    const pendingRescheduleCount = pendingReschedules.filter((j) => {
+      try {
+        if (!j.catatan || !j.pendaftar) return false;
+        if (resolveTahunAjaran(j.pendaftar) !== "2027/2028") return false;
+        const parsed = JSON.parse(j.catatan);
+        return parsed.type === "RESCHEDULE_REQUEST" && parsed.status === "pending";
+      } catch {
+        return false;
+      }
+    }).length;
 
     return NextResponse.json({
       unverifiedPaymentsCount,
       unverifiedDocsCount,
-      pendingDataRequestsCount });
+      pendingDataRequestsCount,
+      pendingRescheduleCount,
+    });
   } catch (error) {
     console.error("Error fetching sidebar counts:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
