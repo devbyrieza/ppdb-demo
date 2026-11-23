@@ -91,7 +91,7 @@ export default function TentangPage() {
             <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/50 to-transparent flex items-end p-6 sm:p-10">
               <div className="text-white space-y-1">
                 <span className="text-[10px] font-extrabold uppercase tracking-widest text-emerald-200 bg-white/10 px-3 py-1 rounded-full border border-white/20 inline-block">
-                  Kampus Representatif Putra &amp; Putri
+                  Kompleks Terpadu Putra &amp; Putri
                 </span>
                 <h3 className="text-xl sm:text-2xl font-extrabold">
                   Lingkungan Asri, Nyaman, dan Kondusif untuk Menuntut Ilmu

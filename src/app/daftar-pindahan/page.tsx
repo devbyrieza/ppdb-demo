@@ -141,9 +141,9 @@ export default function DaftarPindahanPage() {
 
   // Handle class default options based on Jenjang
   useEffect(() => {
-    if (formData.jenjang === "MTs" || formData.jenjang === "SMP IT") {
+    if (formData.jenjang === "SMP IT" || formData.jenjang === "MTs") {
       setFormData((p) => ({ ...p, kelas_masuk: "8" }));
-    } else if (formData.jenjang === "MA" || formData.jenjang === "SMA") {
+    } else if (formData.jenjang === "SMA IT" || formData.jenjang === "SMA" || formData.jenjang === "MA") {
       setFormData((p) => ({ ...p, kelas_masuk: "11" }));
     } else {
       setFormData((p) => ({ ...p, kelas_masuk: "" }));
@@ -189,12 +189,6 @@ export default function DaftarPindahanPage() {
 
     if (!formData.jenis_kelamin) {
       errors.jenis_kelamin = "Pilih jenis kelamin santri";
-    } else if (formData.jenis_kelamin === "P") {
-      errors.jenis_kelamin =
-        "Mohon maaf, pendaftaran Santri Putri dilakukan melalui Pesantren Ulul Albaab.";
-    } else if (formData.jenis_kelamin === "L") {
-      errors.jenis_kelamin =
-        "Mohon maaf, pendaftaran Santri Pindahan Al-Imam Belum Dibuka.";
     }
 
     if (!formData.jenjang) {
@@ -418,6 +412,12 @@ export default function DaftarPindahanPage() {
                 >
                   {(() => {
                     const inst = getInstitutionType();
+                    if (inst === "AL_BASYIR" || (inst as any) === "PRIMA_IIBS") {
+                      return [
+                        { value: "SMP IT", title: "SMP IT", subtitle: "Pindahan tingkat SMP IT (Kelas 8 & 9)" },
+                        { value: "SMA IT", title: "SMA IT", subtitle: "Pindahan tingkat SMA IT (Kelas 11 & 12)" },
+                      ];
+                    }
                     if (inst === "ANDALUS_PUSAT") {
                       return [
                         { value: "SMP IT", title: "SMP IT", subtitle: "Pindahan tingkat SMP IT" },
@@ -430,13 +430,13 @@ export default function DaftarPindahanPage() {
                       ];
                     }
                     return [
-                      { value: "MTs", title: "MTs", subtitle: "Pindahan tingkat MTs" },
-                      { value: "MA", title: "MA", subtitle: "Pindahan tingkat MA" },
+                      { value: "SMP IT", title: "SMP IT", subtitle: "Pindahan tingkat SMP IT (Kelas 8 & 9)" },
+                      { value: "SMA IT", title: "SMA IT", subtitle: "Pindahan tingkat SMA IT (Kelas 11 & 12)" },
                     ];
                   })().map((option) => {
                     const isPutra = formData.jenis_kelamin === "L";
                     const isPutri = formData.jenis_kelamin === "P";
-                    const isClosed = isPutri;
+                    const isClosed = false;
                     const closedLabel = "Pendaftaran Pindahan Belum Dibuka";
 
                     return (
@@ -568,31 +568,54 @@ export default function DaftarPindahanPage() {
                       label="Jenis Kelamin"
                       error={fieldErrors.jenis_kelamin}
                     >
-                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 p-4 md:p-5 rounded-2xl bg-pink-50/70 border border-pink-200">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center font-black shadow-md text-sm">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <button
+                          type="button"
+                          onClick={() => setFormData((prev) => ({ ...prev, jenis_kelamin: "L" }))}
+                          className={`p-4 rounded-2xl border-2 flex items-center gap-3.5 transition-all text-left ${
+                            formData.jenis_kelamin === "L"
+                              ? "border-emerald-600 bg-emerald-50/80 shadow-xs"
+                              : "border-slate-200 bg-white hover:border-slate-300"
+                          }`}
+                        >
+                          <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-black text-sm shrink-0 ${
+                            formData.jenis_kelamin === "L" ? "bg-emerald-700 text-white shadow-xs" : "bg-slate-100 text-slate-600"
+                          }`}>
+                            L
+                          </div>
+                          <div>
+                            <p className="font-extrabold text-slate-900 text-sm">
+                              Santri Putra (Laki-laki)
+                            </p>
+                            <p className="text-[11px] text-slate-500 font-medium">
+                              Kompleks Pendidikan &amp; Asrama Putra
+                            </p>
+                          </div>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => setFormData((prev) => ({ ...prev, jenis_kelamin: "P" }))}
+                          className={`p-4 rounded-2xl border-2 flex items-center gap-3.5 transition-all text-left ${
+                            formData.jenis_kelamin === "P"
+                              ? "border-emerald-600 bg-emerald-50/80 shadow-xs"
+                              : "border-slate-200 bg-white hover:border-slate-300"
+                          }`}
+                        >
+                          <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-black text-sm shrink-0 ${
+                            formData.jenis_kelamin === "P" ? "bg-emerald-700 text-white shadow-xs" : "bg-slate-100 text-slate-600"
+                          }`}>
                             P
                           </div>
                           <div>
-                            <p className="font-extrabold text-slate-900 text-sm md:text-base">
-                              Khusus Santriwati Putri (Perempuan)
+                            <p className="font-extrabold text-slate-900 text-sm">
+                              Santriwati (Perempuan)
                             </p>
-                            <p className="text-xs text-slate-500 font-medium">
-                              Pesantren Al-Imam Al-Islami khusus mendidik santriwati Putri
+                            <p className="text-[11px] text-slate-500 font-medium">
+                              Kompleks Pendidikan &amp; Asrama Putri
                             </p>
                           </div>
-                        </div>
-                        <div className="sm:text-right text-xs text-slate-500 font-medium border-t sm:border-t-0 sm:border-l border-pink-200/80 pt-2 sm:pt-0 sm:pl-4">
-                          <span>Untuk calon santri putra?</span>
-                          <a
-                            href="https://spmb.pesantren-ululalbaab.com/daftar"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="block font-bold text-blue-600 hover:text-blue-700 hover:underline"
-                          >
-                            Daftar di Ulul Albaab (Putra) →
-                          </a>
-                        </div>
+                        </button>
                       </div>
                     </InputField>
                   </div>
@@ -626,13 +649,13 @@ export default function DaftarPindahanPage() {
                         className="w-full px-5 py-3 md:px-8 md:py-5 rounded-3xl md:rounded-2xl bg-secondary-50 border border-transparent focus:bg-white focus:border-primary-200 focus:ring-4 focus:ring-secondary-50 transition-all font-bold text-sm md:text-base text-ink-950 appearance-none cursor-pointer"
                       >
                         <option value="">Pilih Jenjang Terlebih Dahulu</option>
-                        {formData.jenjang === "MTs" && (
+                        {(formData.jenjang === "SMP IT" || formData.jenjang === "MTs") && (
                           <>
                             <option value="8">Kelas 8</option>
                             <option value="9">Kelas 9</option>
                           </>
                         )}
-                        {formData.jenjang === "MA" && (
+                        {(formData.jenjang === "SMA IT" || formData.jenjang === "SMA" || formData.jenjang === "MA") && (
                           <>
                             <option value="11">Kelas 11</option>
                             <option value="12">Kelas 12</option>
