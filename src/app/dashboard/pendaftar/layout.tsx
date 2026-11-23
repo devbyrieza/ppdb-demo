@@ -341,7 +341,7 @@ export default function DashboardLayout({
             </div>
           </div>
           <h1 className="text-3xl font-serif font-black uppercase text-primary-950 mb-2">
-            Pondok Pesantren {BRANDING.schoolName}
+            {BRANDING.schoolName}
           </h1>
           <p className="text-ink-500 text-sm">Mohon tunggu sebentar...</p>
         </div>
