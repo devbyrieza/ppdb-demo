@@ -71,8 +71,8 @@ export async function POST(req: Request) {
         hafalan: ["penguji", "penguji_calsan", "penguji_quran", "penguji_hafalan"],
         arab: ["penguji", "penguji_bahasa_arab", "penguji_arab"],
         lisan_arab: ["penguji", "penguji_bahasa_arab", "penguji_arab"],
-        wawancara_santri: ["pewawancara_calsan", "pewawancara", "penguji_calsan"],
-        wawancara_ortu: ["pewawancara_cawalsan", "pewawancara", "penguji_cawalsan"],
+        wawancara_santri: ["penguji", "pewawancara_calsan", "pewawancara", "penguji_calsan"],
+        wawancara_ortu: ["penguji", "pewawancara_cawalsan", "pewawancara", "penguji_cawalsan"],
       };
 
       const allowedRoles = allowedRolesForType[type] || [];
