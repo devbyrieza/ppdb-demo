@@ -328,7 +328,7 @@ export default function LoginPage() {
         setSetupError("Kata sandi baru minimal 8 karakter");
         return;
       }
-      if (!/[A-Z]/.test(setupPassword) || !/[a-z]/.test(setupPassword) || !/\d/.test(setupPassword) || !/[!@#$%^&*(),.?":{}|<>-=_+]/.test(setupPassword)) {
+      if (!/[A-Z]/.test(setupPassword) || !/[a-z]/.test(setupPassword) || !/\d/.test(setupPassword) || !/[!@#$%^&*(),.?":{}|<>_=+ -]/.test(setupPassword)) {
         setSetupError("Kata sandi harus mengandung kombinasi huruf besar, huruf kecil, angka, dan karakter khusus");
         return;
       }
