@@ -92,7 +92,7 @@ export default function KartuJajanPrint({ santri, fotoUrl }: KartuJajanPrintProp
         <div 
           className="absolute inset-0 z-0 opacity-10"
           style={{ 
-            backgroundImage: "url('/images/gedung-utama-dan-lapangan-basket.png')", 
+            backgroundImage: "url('/images/campus-academic-building.webp')", 
             backgroundSize: 'cover', 
             backgroundPosition: 'center' 
           }}

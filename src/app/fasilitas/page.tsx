@@ -24,43 +24,43 @@ const FACILITIES = [
   {
     title: "Masjid Jami' Pesantren",
     category: "Pusat Ibadah & Tahfidz",
-    image: "/images/masjid-utama-pesantren.png",
+    image: "/images/campus-mosque-interior.webp",
     desc: "Kapasitas ratusan jamaah, nyaman berkarpet tebal, dan menjadi sentra halaqah Al-Qur'an serta shalat berjamaah 5 waktu.",
     badge: "Utama"
   },
   {
     title: "Asrama Santri Kondusif",
     category: "Hunian & Tarbiyah",
-    image: "/images/asrama.png",
+    image: "/images/campus-dormitory-room.webp",
     desc: "Kamar berventilasi luas, kasur bertingkat kokoh, lemari pribadi, dan pendampingan musyrif/musyrifah asrama 24 jam.",
     badge: "Kenyamanan Santri"
   },
   {
     title: "Ruang Kelas Multimedia Ber-AC",
     category: "Akademik & Sains",
-    image: "/images/kegiatan-belajar-akhwat.jpg",
-    desc: "Dilengkapi proyektor interaktif, pendingin ruangan (AC), serta suasana belajar santriwati yang nyaman dan interaktif.",
+    image: "/images/campus-library-classroom.webp",
+    desc: "Dilengkapi proyektor interaktif, pendingin ruangan (AC), serta suasana belajar santri yang nyaman dan interaktif.",
     badge: "Modern"
   },
   {
-    title: "Laboratorium Tata Boga & Pastry",
-    category: "Life Skill & Kewirausahaan",
-    image: "/images/ekskul-tataboga-1.jpg",
-    desc: "Dapur praktik pembuatan kue, roti, dan aneka olahan kuliner sehat untuk mengasah bakat tata boga santriwati.",
-    badge: "Kreatif"
+    title: "Gedung Akademik & Sains Terpadu",
+    category: "Akademik & Keilmuan",
+    image: "/images/campus-academic-building.webp",
+    desc: "Gedung representatif untuk perkuliahan umum, pendalaman ilmu syar'i, dan laboratorium sains modern.",
+    badge: "Representatif"
   },
   {
-    title: "Studio Menjahit & Merajut",
-    category: "Life Skill & Seni Busana",
-    image: "/images/ekskul-menjahit.jpg",
-    desc: "Fasilitas mesin jahit modern dan peralatan merajut untuk membekali santriwati keterampilan busana muslimah dan kerajinan tangan.",
-    badge: "Kemandirian"
+    title: "Sentra Tahfidz & Kajian Turots",
+    category: "Al-Qur'an & Syar'i",
+    image: "/images/campus-quran-halaqah.webp",
+    desc: "Fasilitas halaqah intensif mutqin, tasmi' hafalan Al-Qur'an, dan kajian kitab-kitab turots bersanad.",
+    badge: "Mutqin"
   },
   {
-    title: "Sarana Olahraga & Bela Diri Muslimah",
+    title: "Sarana Olahraga & Lapangan Terbuka",
     category: "Olahraga & Kebugaran",
-    image: "/images/ekskul-karate-akhwat.jpg",
-    desc: "Fasilitas olahraga dan latihan karate santriwati untuk melatih ketangkasan fisik, kesehatan jasmani, dan kepercayaan diri.",
+    image: "/images/campus-sports-facility.webp",
+    desc: "Fasilitas olahraga dan lapangan hijau terbuka untuk melatih ketangkasan fisik, kebugaran jasmani, dan sportivitas santri.",
     badge: "Kebugaran"
   },
   {

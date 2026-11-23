@@ -22,22 +22,22 @@ import { Container } from "@/components/layout/Container";
 
 const GALLERY_ITEMS = [
   {
-    image: "/images/kegiatan-belajar-akhwat.jpg",
+    image: "/images/campus-library-classroom.webp",
     title: "Kajian Kitab Turots",
     description: "Mengkaji Kitab Turots & Ulama Salaf",
     icon: BookOpen },
   {
-    image: "/images/kegiatan-halaqah-akhwat.jpg",
+    image: "/images/campus-quran-halaqah.webp",
     title: "Halaqoh Tahfidz",
     description: "Setoran Hafalan & Muroja'ah",
     icon: BookMarked },
   {
-    image: "/images/ekskul-tataboga-1.jpg",
-    title: "Tata Boga & Lifeskill",
-    description: "Baking, Menjahit & Keputrian",
+    image: "/images/campus-sports-facility.webp",
+    title: "Kebugaran & Olahraga",
+    description: "Sarana Olahraga Terbuka Hijau",
     icon: Target },
   {
-    image: "/images/masjid-utama-pesantren.png",
+    image: "/images/campus-mosque-interior.webp",
     title: "Masjid Jami' Pesantren",
     description: "Pusat Ibadah & Tarbiyah Santri",
     icon: School },

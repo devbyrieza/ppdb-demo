@@ -1,22 +1,28 @@
 "use client";
 
-"use client";
+// src/app/tentang/page.tsx
 import { useEffect } from "react";
-
 import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/layout/Container";
 import {
-  Users,
   Target,
   Award,
   BookOpen,
-  Compass,
+  Check,
+  ArrowRight,
+  ShieldCheck,
+  GraduationCap,
+  Heart,
+  Users,
+  Building,
   Sparkles,
-  CheckCircle2,
-  Send,
-  ShieldCheck } from "lucide-react";
+  Languages,
+  AlertCircle,
+  CheckCircle2
+} from "lucide-react";
 import { motion } from "framer-motion";
+import { BRANDING } from "@/config/branding";
 
 export default function TentangPage() {
   useEffect(() => {
@@ -24,429 +30,443 @@ export default function TentangPage() {
   }, []);
 
   return (
-    <main className="bg-white min-h-dvh">
-      {/* 1. Hero Section - Professional Airy Design */}
-      <section className="section-std pb-0! relative overflow-hidden">
-        {/* Sophisticated Background Elements */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-secondary-100/60 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none max-w-full" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary-50/40 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2 pointer-events-none max-w-full" />
-        <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.02] pointer-events-none" />
+    <main className="bg-gradient-to-b from-[#FDFCF9] via-[#F8FAFC] to-white min-h-dvh pt-28 pb-20 lg:pt-36">
+      
+      {/* ─── 1. HERO EDITORIAL OMI ─── */}
+      <section className="relative overflow-hidden pb-16">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgc3Ryb2tlPSIjMDAwMDAwIiBzdHJva2Utb3BhY2l0eT0iMC4wMiIgZmlsbD0ibm9uZSI+PHBhdGggZD0iTTAgNjBoNjBNNjAgMGwwIDYwIi8+PC9nPjwvc3ZnPg==')] opacity-70 pointer-events-none" />
 
-        <Container className="relative z-10 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-pill bg-primary-50 border border-primary-100 text-primary-700 text-xs font-bold uppercase tracking-widest mb-8 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10"
-          >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Mengenal Al Imam Al Islami • Managed by Al Andalus IIBS</span>
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-2xl md:text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-black mb-6 md:mb-10 tracking-tight leading-[0.95] md:leading-[0.9] text-ink-950"
-          >
-            Babak Baru <br />
-            <span className="text-gradient-primary pb-2 block sm:inline">
-              Pendidikan Qur'ani
+        <Container className="relative z-10 max-w-5xl mx-auto px-4 text-center space-y-6">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 shadow-2xs">
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <span className="text-xs font-extrabold uppercase tracking-wider text-emerald-800">
+              Profil Resmi {BRANDING.schoolShortName}
             </span>
-          </motion.h1>
+          </div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-base sm:text-lg md:text-xl text-ink-600 max-w-3xl mx-auto leading-relaxed font-medium mb-12 px-4"
-          >
-            Pesantren Al Imam Al Islami Sukabumi, cabang resmi Managed by Al Andalus IIBS.
-            Memadukan intensitas Tahfidz Al-Qur'an dengan pengembangan jiwa Leadership untuk
-            Kaderisasi Ummat Hanif, Kontributif, dan Adaptif. Tahun Ajaran 2027/2028 merupakan
-            Angkatan Pertama (Era Baru) sejak dikelola oleh Al Andalus IIBS.
-          </motion.p>
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.15]">
+            Mengenal Lebih Dekat <br />
+            <span className="text-primary">
+              {BRANDING.schoolName}
+            </span>
+          </h1>
+
+          <p className="text-base sm:text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed font-normal">
+            Lembaga pendidikan Islam modern bertaraf internasional yang berorientasi pada{" "}
+            <strong className="text-slate-900 font-semibold">kaderisasi ummat yang hanif, kontributif, dan adaptif</strong> melalui{" "}
+            <strong className="text-slate-900">Bahasa Arab sangat intensif</strong>, tahfidz Al-Qur'an mutqin, pendalaman ilmu syar'i, sains akademik umum yang berdaya saing, kepemimpinan amanah, serta pola pengasuhan{" "}
+            <strong className="text-primary">Mendidik Tanpa Luka</strong> berbasis keteladanan tanpa kekerasan fisik.
+          </p>
+
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+            <a
+              href="/daftar"
+              className="h-11 px-6 rounded-xl bg-primary hover:bg-primary-dark text-white font-extrabold text-xs shadow-md transition-all inline-flex items-center gap-2"
+            >
+              <span>Daftar SPMB 2027/2028</span>
+              <ArrowRight className="w-4 h-4" />
+            </a>
+            <Link
+              href="/program"
+              className="h-11 px-6 rounded-xl bg-white text-slate-800 font-extrabold text-xs border border-slate-200 shadow-xs hover:border-emerald-200 transition-all inline-flex items-center"
+            >
+              <span>Lihat Kurikulum Pendidikan</span>
+            </Link>
+          </div>
         </Container>
       </section>
 
-      {/* 2. Welcome Banner - Refined Section */}
-      <section className="py-12 md:py-20 lg:py-24 bg-white overflow-hidden border-t border-primary-100/50">
-        <Container>
-          <div className="mb-10 lg:mb-16 text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="inline-flex items-center gap-3 text-primary-700 mb-4"
-            >
-              <div className="w-8 h-0.5 bg-primary-600/30 rounded-full" />
-              <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.3em] text-primary-700">
-                Ahlan Wa Sahlan
-              </span>
-              <div className="w-8 h-0.5 bg-primary-600/30 rounded-full" />
-            </motion.div>
-            <h2 className="section-title text-center text-3xl sm:text-2xl md:text-4xl lg:text-6xl leading-[1.1] mb-0">
-              Masa Depan Qur'ani <br className="hidden md:block" />
-              Dimulai dari{" "}
-              <span className="text-primary-700 underline decoration-primary-500/30 underline-offset-4 md:underline-offset-8">
-                Sini
-              </span>
-            </h2>
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="relative aspect-video md:aspect-[21/9] max-h-[480px] w-full rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-2xl shadow-primary/30  shadow-primary/20 border border-primary-100 group bg-gradient-to-br from-primary-950 to-primary-900"
-          >
+      {/* ─── 2. WELCOME BANNER IMAGE (OMI FRAMED PHOTO) ─── */}
+      <section className="py-8">
+        <Container className="max-w-6xl mx-auto px-4">
+          <div className="relative aspect-video md:aspect-[21/9] w-full rounded-3xl overflow-hidden shadow-xl border-4 border-white bg-slate-900">
             <Image
-              src="/images/welcome-selamat-datang.webp"
-              alt="Selamat Datang di Al Imam Al Islami"
+              src="/images/campus-landscape-hero.webp"
+              alt={`Lanskap Representatif ${BRANDING.schoolName}`}
               fill
               priority
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
-              className="object-cover transition-transform duration-1000 group-hover:scale-105"
+              sizes="(max-width: 1200px) 100vw, 1200px"
+              className="object-cover"
             />
-          </motion.div>
-        </Container>
-      </section>
-
-      {/* 3. History & Profile - Enhanced Layout */}
-      <section className="section-alt border-y border-primary-100">
-        <Container>
-          <div className="grid lg:grid-cols-1 md:grid-cols-2 gap-12 sm:gap-16 lg:gap-24 items-center">
-            {/* Image Column */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="relative order-2 lg:order-1"
-            >
-              <div className="aspect-[4/5] max-h-[520px] min-h-[350px] w-full rounded-[2.5rem] md:rounded-[3rem] overflow-hidden shadow-2xl shadow-primary/30 relative z-10 bg-white p-3 border border-primary-100">
-                <div className="relative w-full h-full min-h-[330px] rounded-[2rem] md:rounded-[2.5rem] overflow-hidden bg-gradient-to-br from-primary-950 to-primary-900">
-                  <Image
-                    src="/images/tentang.webp"
-                    alt="Pesantren Al Imam Al Islami"
-                    fill
-                    priority
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover"
-                  />
-                </div>
-              </div>
-
-              {/* Floating Stats Card */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8, y: 20 }}
-                whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.4 }}
-                className="absolute -bottom-6 right-0 sm:-bottom-10 sm:-right-6 md:-bottom-12 md:-right-10 z-20 bg-white p-5 md:p-8 rounded-2xl md:rounded-[2rem] shadow-2xl shadow-primary/30  shadow-primary/20 border border-primary-100 max-w-[85vw] sm:max-w-[90vw] md:max-w-none"
-              >
-                <div className="flex items-center gap-4 md:gap-5">
-                  <div className="w-12 h-12 md:w-16 md:h-16 bg-linear-to-br from-primary-600 to-primary-800 rounded-3xl md:rounded-2xl flex items-center justify-center text-white shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 shrink-0">
-                    <Award className="w-6 h-6 md:w-8 md:h-8" />
-                  </div>
-                  <div>
-                    <p className="text-2xl sm:text-3xl md:text-4xl font-black text-ink-950 tracking-tight leading-none mb-1">
-                      2026
-                    </p>
-                    <p className="text-primary-700 font-bold text-[9px] md:text-[10px] uppercase tracking-widest mb-1.5 md:mb-2">
-                      Era Baru
-                    </p>
-                    <div className="text-[9px] md:text-[10px] font-bold text-primary-900 bg-primary-50 px-2.5 py-1.5 rounded-2xl border border-primary-100 leading-tight">
-                      Managed by Al Andalus IIBS
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Decorative Grid */}
-              <div className="absolute -top-10 -left-10 w-40 h-40 bg-[url('/grid-pattern.svg')] opacity-5 pointer-events-none -z-10" />
-            </motion.div>
-
-            {/* Content Column */}
-            <div className="space-y-8 order-1 lg:order-2">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-              >
-                <h2 className="section-title text-left lg:ml-0 mb-6">
-                  Sejarah & <br />
-                  <span className="text-gradient-primary">Profil Pesantren</span>
-                </h2>
-                <div className="w-20 h-1.5 bg-primary-600 rounded-full mb-8 lg:mb-10" />
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
-                className="space-y-4 md:space-y-6 text-base md:text-[17px] text-ink-700 font-medium leading-[1.8] text-justify"
-              >
-                <p>
-                  <span className="text-ink-950 font-black">
-                    Pesantren Al Imam Al Islami
-                  </span>{" "}
-                  hadir sebagai babak baru dalam dunia pendidikan Islam di
-                  Sukabumi. Sebagai cabang resmi dari{" "}
-                  <span className="text-primary-700 italic font-bold">
-                    Managed by Al Andalus IIBS
-                  </span>
-                  , kami menerapkan standar operasional, kurikulum, dan
-                  pengasuhan yang identik dengan kampus pusat.
-                </p>
-                <p>
-                  Kami berkomitmen mencetak kader ulama rabbani yang beraqidah
-                  lurus dan berwawasan luas dengan dukungan fasilitas modern
-                  serta barisan asatidzah yang kompeten di bidangnya.
-                </p>
-                <p>
-                  Mulai tahun 2026, Al Imam Al Islami bertransformasi total untuk
-                  memberikan layanan pendidikan terbaik, mencakup hirarki
-                  kepengurusan yang profesional, sistem pendidikan tahfidz
-                  intensif, dan pengasuhan berbasis adab.
-                </p>
-                <p className="font-bold text-primary-800 bg-primary-50/50 p-6 sm:p-8 rounded-3xl border border-primary-100 italic text-center text-lg mt-6">
-                  "Standar Internasional, Kini Hadir di Sukabumi"
-                </p>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-                className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 pt-4 md:pt-6"
-              >
-                <div className="app-card bg-white p-5 md:p-6 flex flex-col items-start group">
-                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-3xl bg-orange-50 flex items-center justify-center mb-4 text-orange-600 group-hover:scale-110 transition-transform shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">
-                    <Sparkles className="w-5 h-5 md:w-6 md:h-6" />
-                  </div>
-                  <h4 className="font-black text-ink-950 text-xl md:text-2xl mb-1">
-                    PREMIUM
-                  </h4>
-                  <p className="text-[9px] md:text-[10px] font-bold text-ink-500 uppercase tracking-widest">
-                    Fasilitas Modern
-                  </p>
-                </div>
-                <div className="app-card bg-white p-5 md:p-6 flex flex-col items-start group">
-                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-3xl bg-primary-50 flex items-center justify-center mb-4 text-primary-600 group-hover:scale-110 transition-transform shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">
-                    <ShieldCheck className="w-5 h-5 md:w-6 md:h-6" />
-                  </div>
-                  <h4 className="font-black text-ink-950 text-lg md:text-xl tracking-tighter mb-1">
-                    STABIL
-                  </h4>
-                  <p className="text-[9px] md:text-[10px] font-bold text-ink-500 uppercase tracking-widest">
-                    Jaringan Al Andalus
-                  </p>
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        </Container>
-      </section>
-
-      {/* 3. Vision Mission - Modern Cards */}
-      <section className="section-std relative">
-        <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-secondary-100/50 rounded-full blur-[100px] -translate-y-1/2 -translate-x-1/2 opacity-50 pointer-events-none max-w-full" />
-        <Container className="relative z-10">
-          <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
-            <motion.span
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-primary-700 font-bold tracking-[0.2em] uppercase text-[10px] xl:text-xs mb-3 block"
-            >
-              Landasan Dasar
-            </motion.span>
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="section-title mb-6"
-            >
-              Visi & Misi
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="section-subtitle"
-            >
-              Komitmen berkelanjutan kami dalam menjalankan misi pendidikan
-              Islam yang unggul dan integratif.
-            </motion.p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
-            {/* Visi */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="app-card bg-white p-5 md:p-8 flex flex-col group h-full hover:-translate-y-1 transition-transform duration-500"
-            >
-              <div className="w-14 h-14 bg-primary-50 rounded-2xl flex items-center justify-center mb-6 text-primary-600 group-hover:scale-110 transition-transform duration-500 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">
-                <Target className="w-7 h-7" />
-              </div>
-              <h3 className="text-xl md:text-2xl font-black text-ink-950 mb-5">
-                Visi
-              </h3>
-              <p className="text-lg md:text-xl font-black text-primary-800 italic leading-[1.5] md:leading-[1.4] flex-1">
-                "Kaderisasi Ummat Hanif, Kontributif, dan
-                Adaptif."
-              </p>
-            </motion.div>
-
-            {/* Tujuan - Moved to occupy 2nd slot */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="app-card bg-linear-to-br from-secondary-50 to-white p-5 md:p-8 flex flex-col group h-full hover:-translate-y-1 transition-transform duration-500"
-            >
-              <div className="w-14 h-14 bg-yellow-50 rounded-2xl flex items-center justify-center mb-6 text-yellow-600 group-hover:scale-110 transition-transform duration-500 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">
-                <Compass className="w-7 h-7" />
-              </div>
-              <h3 className="text-xl md:text-2xl font-black text-ink-950 mb-6">
-                Tujuan
-              </h3>
-              <ul className="space-y-4 md:space-y-6 flex-1">
-                {[
-                  "Membentuk pribadi Hanif: lurus akidah, benar ibadah, baik akhlaq.",
-                  "Membentuk Pemimpin Kontributif: memiliki jiwa leadership, berkarya, dan berperan nyata.",
-                  "Membentuk pribadi Adaptif: cerdas membaca realitas, kreatif, namun teguh prinsip.",
-                ].map((item, idx) => (
-                  <li key={idx} className="flex gap-4 items-center group/item">
-                    <div className="w-6 h-6 rounded-full bg-yellow-500 text-white flex items-center justify-center text-[10px] font-bold shrink-0 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">
-                      <CheckCircle2 className="w-3.5 h-3.5" />
-                    </div>
-                    <span className="text-ink-800 font-bold text-[13px] md:text-sm tracking-tight group-hover/item:text-yellow-700 transition-colors pt-0.5">
-                      {item}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-
-            {/* Misi - Moved to Bottom, Full Width */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="md:col-span-2 app-card bg-secondary-100/50 p-5 md:p-8 lg:p-6 hover:-translate-y-1 transition-transform duration-500 group"
-            >
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 mb-8">
-                <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-primary-700 group-hover:scale-110 transition-transform duration-500 border border-primary-100 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10 shrink-0">
-                  <BookOpen className="w-7 h-7" />
-                </div>
-                <h3 className="text-xl md:text-2xl font-black text-ink-950">
-                  Misi Utama
+            <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/50 to-transparent flex items-end p-6 sm:p-10">
+              <div className="text-white space-y-1">
+                <span className="text-[10px] font-extrabold uppercase tracking-widest text-emerald-200 bg-white/10 px-3 py-1 rounded-full border border-white/20 inline-block">
+                  Kampus Representatif Putra &amp; Putri
+                </span>
+                <h3 className="text-xl sm:text-2xl font-extrabold">
+                  Lingkungan Asri, Nyaman, dan Kondusif untuk Menuntut Ilmu
                 </h3>
               </div>
-
-              <ul className="grid md:grid-cols-2 gap-x-8 lg:gap-x-12 gap-y-6">
-                {[
-                  "Menguatkan akidah shahihah dan membiasakan beribadah sesuai sunnah melalui sistem Tahfidz intensif, pembelajaran Bahasa Arab, dan adab Islami.",
-                  "Membina jiwa Leadership melalui partisipasi aktif dalam organisasi, manajemen kegiatan, dan public speaking berbasis dakwah.",
-                  "Membimbing pembentukan karakter melalui sistem pengasuhan berbasis fitrah dengan pendekatan penyadaran dan pendewasaan.",
-                  "Membekali Hard Skill melalui kewirausahaan dan keterampilan praktis sebagai bekal hidup mandiri dan bermanfaat bagi umat.",
-                ].map((item, idx) => (
-                  <li
-                    key={idx}
-                    className="flex gap-4 items-start group/item bg-white p-5 rounded-2xl border border-primary-50 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10"
-                  >
-                    <div className="w-6 h-6 rounded-full bg-primary-600 text-white flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5 shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10">
-                      <CheckCircle2 className="w-3.5 h-3.5" />
-                    </div>
-                    <span className="text-ink-700 font-medium text-[13.5px] md:text-sm tracking-tight group-hover/item:text-primary-800 transition-colors leading-normal">
-                      {item}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
+            </div>
           </div>
         </Container>
       </section>
 
-      {/* 4. CTA Section - Direct and impactful */}
-      <section className="py-16 md:py-24 lg:py-32 relative overflow-hidden bg-white border-t border-primary-100">
-        <Container>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="bg-primary-900 bg-linear-to-br from-primary-800 to-primary-950 rounded-[2.5rem] md:rounded-[3rem] lg:rounded-[4rem] p-5 md:p-8 sm:p-6 lg:p-24 relative overflow-hidden text-center shadow-2xl shadow-primary/30  shadow-primary/20 border border-primary-700"
-          >
-            {/* Decorative background */}
-            <div className="hidden sm:block absolute top-0 right-0 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-secondary-50/10 rounded-full blur-[80px] md:blur-[100px] -translate-y-1/2 translate-x-1/2" />
-            <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.03] pointer-events-none" />
-
-            <div className="relative z-10 max-w-3xl mx-auto">
-              <h2 className="text-3xl sm:text-2xl md:text-4xl lg:text-6xl font-black mb-6 md:mb-8 text-white tracking-tight leading-[1.1]">
-                Mari Menjadi Bagian <br />
-                Keluarga <span className="text-secondary-300">Al Imam Al Islami</span>
-              </h2>
-              <p className="text-base md:text-lg lg:text-xl text-white/90 mb-8 md:mb-10 lg:mb-12 max-w-2xl mx-auto leading-relaxed font-medium px-2">
-                Daftarkan putra Anda sekarang dan persiapkan masa depan gemilang
-                bersama kami.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center px-4">
-                <Link href="/ppdb" className="w-full sm:w-auto">
-                  <button className="w-full px-5 md:px-8 py-4 sm:py-4.5 rounded-pill bg-white text-primary-900 font-bold text-base md:text-lg shadow-2xl shadow-primary/30  shadow-primary/20 hover:bg-secondary-100 hover:shadow-2xl shadow-primary/30  shadow-primary/20 transition-all duration-300 min-h-[52px]">
-                    Daftar Sekarang
-                  </button>
-                </Link>
-                <Link href="/kontak" className="w-full sm:w-auto">
-                  <button className="w-full flex items-center justify-center gap-2 px-5 md:px-8 py-4 sm:py-4.5 rounded-pill bg-white/10 text-white font-bold border-2 border-white/20 hover:bg-white/20 transition-all duration-300 min-h-[52px] text-base md:text-lg">
-                    Hubungi Kami
-                    <Send className="w-4 h-4 ml-1" />
-                  </button>
-                </Link>
+      {/* ─── 3. SEJARAH & TRANSFORMASI (BENTO 2-COLUMN) ─── */}
+      <section className="py-20">
+        <Container className="max-w-6xl mx-auto px-4">
+          <div className="grid lg:grid-cols-12 gap-12 items-center">
+            
+            {/* Left Column: Image with Floating Badge */}
+            <div className="lg:col-span-5 relative">
+              <div className="relative rounded-3xl overflow-hidden shadow-xl border-4 border-white aspect-[4/5]">
+                <Image
+                  src="/images/campus-academic-building.webp"
+                  alt={`Gedung Utama Akademik ${BRANDING.schoolName}`}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 40vw"
+                  className="object-cover"
+                />
               </div>
 
-              {/* Trust microcopy */}
-              <div className="mt-8 mb-4">
-                <span className="inline-block px-4 py-1.5 rounded-pill bg-white/10 backdrop-blur-sm border border-white/10 text-[10px] sm:text-xs text-white/80 font-bold uppercase tracking-widest">
-                  ✦ Pendaftaran Gratis • Proses Mudah • Langsung Konfirmasi
-                </span>
-              </div>
-
-              {/* Legalitas badges */}
-              <div className="mt-10 pt-8 border-t border-white/10 flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
-                <div className="flex items-center gap-2 text-gold-100/70">
-                  <ShieldCheck className="w-4 h-4 text-green-400" />
-                  <span className="text-[10px] font-bold uppercase tracking-widest">
-                    Terakreditasi
-                  </span>
+              {/* Floating Badge (OMI Style) */}
+              <div className="relative sm:absolute -bottom-3 sm:-bottom-6 right-0 sm:right-4 bg-white/95 backdrop-blur-md rounded-2xl p-3.5 sm:p-4 border border-slate-200 shadow-xl flex items-center gap-3 mt-3 sm:mt-0">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-primary text-white flex items-center justify-center font-black text-lg sm:text-xl shadow-xs shrink-0">
+                  <Award className="w-5 h-5 sm:w-6 sm:h-6" />
                 </div>
-                <div className="flex items-center gap-2 text-gold-100/70">
-                  <BookOpen className="w-4 h-4 text-yellow-400" />
-                  <span className="text-[10px] font-bold uppercase tracking-widest">
-                    Kurikulum Al Andalus
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 text-gold-100/70">
-                  <Award className="w-4 h-4 text-primary-400" />
-                  <span className="text-[10px] font-bold uppercase tracking-widest">
-                    Resmi Kemendikdasmen
-                  </span>
+                <div>
+                  <p className="text-[10px] sm:text-xs font-black uppercase text-slate-400 tracking-wider">Standar Mutu</p>
+                  <p className="text-xs sm:text-sm font-extrabold text-slate-900 leading-tight">Internasional Boarding School</p>
                 </div>
               </div>
             </div>
-          </motion.div>
+
+            {/* Right Column: Editorial Text */}
+            <div className="lg:col-span-7 space-y-6">
+              <div className="space-y-2">
+                <span className="text-xs font-extrabold uppercase tracking-widest text-emerald-800 bg-emerald-50 px-3.5 py-1 rounded-full border border-emerald-200/50 inline-block">
+                  Pondasi & Karakter
+                </span>
+                <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+                  Visi Besar & Nilai Luhur <br />
+                  <span className="text-primary">{BRANDING.schoolShortName}</span>
+                </h2>
+              </div>
+
+              <div className="space-y-4 text-slate-600 text-sm sm:text-base leading-relaxed">
+                <p>
+                  <strong className="text-slate-900 font-semibold">{BRANDING.schoolName}</strong> hadir sebagai ikhtiar mulia membangun pusat keilmuan Islam modern yang memadukan kedalaman ilmu agama (Tafaqquh Fiddin) dan keunggulan intelektual global.
+                </p>
+                <p>
+                  Berlandaskan trilogi nilai luhur <strong className="text-primary font-bold">Hanif, Solutif, dan Progresif</strong>, Pesantren Al-Basyir berkomitmen melahirkan generasi mukmin yang bertauhid kokoh, fasih berbahasa Arab, mencintai Al-Qur'an, cerdas dalam sains akademik, serta mandiri dalam mengarungi kehidupan.
+                </p>
+                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-slate-800 text-xs sm:text-sm font-semibold italic border-l-4 border-l-primary">
+                  &ldquo;{BRANDING.schoolTagline}&rdquo;
+                </div>
+              </div>
+
+              {/* 2 Quick KPI Pills */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4 pt-2">
+                <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs">
+                  <span className="text-xs font-extrabold uppercase text-primary block mb-1">Standar Akademik</span>
+                  <p className="text-base sm:text-lg font-black text-slate-900">Kurikulum Terpadu</p>
+                  <p className="text-[11px] text-slate-500 mt-0.5">Nasional, Turots &amp; Standar Global</p>
+                </div>
+                <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs">
+                  <span className="text-xs font-extrabold uppercase text-emerald-600 block mb-1">Pola Pengasuhan</span>
+                  <p className="text-base sm:text-lg font-black text-slate-900">Mendidik Tanpa Luka</p>
+                  <p className="text-[11px] text-slate-500 mt-0.5">Keteladanan penuh tanpa kekerasan fisik</p>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
         </Container>
       </section>
+
+      {/* ─── 4. VISI & MISI BENTO CARDS ─── */}
+      <section className="py-20 bg-[#F8FAFC] border-y border-slate-200">
+        <Container className="max-w-6xl mx-auto px-4">
+          
+          <div className="text-center max-w-2xl mx-auto mb-14 space-y-2.5">
+            <span className="text-xs font-extrabold uppercase tracking-widest text-emerald-800 bg-emerald-50 px-3.5 py-1 rounded-full border border-emerald-200/50 inline-block">
+              Kompas Arah Pembinaan
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+              Visi & Misi Pesantren
+            </h2>
+            <p className="text-slate-600 text-xs sm:text-sm">
+              Pedoman fundamental dalam setiap aktivitas belajar, tahfidz, dan peribadatan harian santri.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-12 gap-6">
+            {/* Visi (Card 1) */}
+            <div className="md:col-span-5 bg-white rounded-3xl p-8 border border-slate-200 shadow-xs flex flex-col justify-between border-t-4 border-t-primary">
+              <div>
+                <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-primary flex items-center justify-center font-bold mb-6">
+                  <Target className="w-6 h-6" />
+                </div>
+                <span className="text-xs font-extrabold uppercase text-slate-400 tracking-wider">Visi Pesantren</span>
+                <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-2 leading-snug">
+                  &ldquo;Kaderisasi Ummat yang Hanif, Berwawasan Solutif, dan Progresif&rdquo;
+                </h3>
+              </div>
+              <p className="text-xs text-slate-500 font-normal leading-relaxed mt-6 pt-4 border-t border-slate-100">
+                Melahirkan pribadi muslim yang istiqomah di atas kemurnian tauhid dan bimbingan Sunnah, bermanfaat nyata bagi peradaban masyarakat, serta cerdas dan tangguh menghadapi tantangan global.
+              </p>
+            </div>
+
+            {/* Misi (Card 2) */}
+            <div className="md:col-span-7 bg-white rounded-3xl p-8 border border-slate-200 shadow-xs flex flex-col justify-between border-t-4 border-t-emerald-600">
+              <div>
+                <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold mb-6">
+                  <ShieldCheck className="w-6 h-6" />
+                </div>
+                <span className="text-xs font-extrabold uppercase text-slate-400 tracking-wider">Misi Utama</span>
+                <h3 className="text-xl font-extrabold text-slate-900 mt-2 mb-4">
+                  6 Komitmen Pendidikan Terpadu
+                </h3>
+                <div className="space-y-3">
+                  {[
+                    "Menanamkan aqidah shahihah, adab mulia, dan ibadah harian sesuai bimbingan Al-Qur'an dan Sunnah.",
+                    "Menyelenggarakan pembelajaran Bahasa Arab sangat intensif sebagai bahasa percakapan harian dan kunci memahami turots.",
+                    "Membimbing hafalan Al-Qur'an secara mutqin dengan kaidah tajwid yang benar dan bersanad.",
+                    "Mengajarkan pelajaran akademik umum dan sains secara terpadu agar santri tetap pintar, kritis, dan berdaya saing.",
+                    "Menumbuhkan jiwa kepemimpinan (leadership), kemandirian santri, dan kepekaan kewirausahaan (entrepreneurship).",
+                    "Menerapkan sistem pengasuhan 'Mendidik Tanpa Luka' berbasis keteladanan pendidik 24 jam dan kasih sayang tanpa kekerasan fisik."
+                  ].map((misi, i) => (
+                    <div key={i} className="flex items-start gap-3 text-xs sm:text-sm text-slate-700">
+                      <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5 font-bold">
+                        <Check className="w-3 h-3 stroke-[3]" />
+                      </span>
+                      <span className="leading-relaxed">{misi}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </Container>
+      </section>
+
+      {/* ─── 5. PILAR PENDIDIKAN (6 OMI CARDS) ─── */}
+      <section className="py-24">
+        <Container className="max-w-6xl mx-auto px-4">
+          <div className="text-center max-w-2xl mx-auto mb-16 space-y-2.5">
+            <span className="text-xs font-extrabold uppercase tracking-widest text-emerald-800 bg-emerald-50 px-3.5 py-1 rounded-full border border-emerald-200/50 inline-block">
+              Pilar Kurikulum
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+              6 Pilar Pendidikan Pesantren Al-Basyir
+            </h2>
+            <p className="text-slate-600 text-xs sm:text-sm">
+              Harmoni antara kemurnian ilmu syar'i, keluhuran adab, penguasaan sains, dan kemandirian hidup.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                icon: Languages,
+                title: "Bahasa Arab Sangat Intensif",
+                desc: "Bahasa Arab mendapat perhatian penuh sebagai bahasa harian (muhadatsah harian, nahwu & shorof) dan pintu utama memahami literatur Islam."
+              },
+              {
+                icon: BookOpen,
+                title: "Tahfidz Al-Qur'an Mutqin",
+                desc: "Halaqah hafalan Al-Qur'an intensif dengan bimbingan tajwid yang teliti, tasmi' berkala, dan persiapan sanad qira'ah."
+              },
+              {
+                icon: ShieldCheck,
+                title: "Pendalaman Ilmu Syar'i (Turots)",
+                desc: "Kajian kitab turots Ahlussunnah wal Jama'ah meliputi aqidah, tafsir, hadits, fiqih ibadah praktis, dan adab penuntut ilmu."
+              },
+              {
+                icon: GraduationCap,
+                title: "Akademik & Sains Tetap Pintar",
+                desc: "Pelajaran umum berstandar nasional diajarkan secara berkualitas agar santri tetap pintar berdaya saing dan berpikiran solutif."
+              },
+              {
+                icon: Sparkles,
+                title: "Leadership & Entrepreneurship",
+                desc: "Penempaan jiwa kepemimpinan amanah, kemandirian hidup di asrama, serta etika dasar kewirausahaan islami."
+              },
+              {
+                icon: Heart,
+                title: "Mendidik Tanpa Luka",
+                desc: "Pola pengasuhan berbasis keteladanan 24 jam para pendidik dan kasih sayang tanpa kekerasan fisik serta tanpa perundungan."
+              }
+            ].map((pilar, idx) => (
+              <div
+                key={idx}
+                className="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200 shadow-2xs hover:shadow-md hover:border-emerald-200 transition-all flex flex-col justify-between"
+              >
+                <div>
+                  <div className="w-11 h-11 rounded-xl bg-emerald-50 text-primary flex items-center justify-center font-bold mb-5 border border-emerald-200">
+                    <pilar.icon className="w-5 h-5" />
+                  </div>
+                  <h4 className="font-extrabold text-slate-900 text-base mb-2">
+                    {pilar.title}
+                  </h4>
+                  <p className="text-xs sm:text-sm text-slate-600 font-normal leading-relaxed">
+                    {pilar.desc}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </Container>
+      </section>
+
+      {/* ─── 5.5 KOMITMEN PERLINDUNGAN SANTRI & MENDIDIK TANPA LUKA ─── */}
+      <section className="py-20 bg-[#F8FAFC] border-y border-slate-200">
+        <Container className="max-w-6xl mx-auto px-4">
+          <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+            <span className="text-xs font-extrabold uppercase tracking-widest text-emerald-800 bg-emerald-50 px-4 py-1.5 rounded-full border border-emerald-200/50 inline-block">
+              Pola Asuh Rabbani & Keamanan Santri
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+              Komitmen Pengasuhan: <span className="text-primary">Mendidik Tanpa Luka</span>
+            </h2>
+            <p className="text-slate-600 text-xs sm:text-sm leading-relaxed max-w-2xl mx-auto">
+              {BRANDING.schoolName} meyakini bahwa pembentukan adab dan karakter sejati lahir dari keteladanan pendidik dan kasih sayang, bukan dari rasa takut terhadap kekerasan fisik atau intimidasi verbal.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-12 gap-8 items-stretch">
+            
+            {/* Left Card: 3 Prinsip Keteladanan */}
+            <div className="lg:col-span-6 bg-white rounded-3xl p-8 border border-slate-200 shadow-sm flex flex-col justify-between border-t-4 border-t-emerald-600">
+              <div className="space-y-6">
+                <div className="flex items-center gap-3 pb-4 border-b border-slate-100">
+                  <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold border border-emerald-100 shrink-0">
+                    <Heart className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <span className="text-[11px] font-extrabold uppercase tracking-wider text-emerald-600">Metode Tarbiyah</span>
+                    <h3 className="text-lg sm:text-xl font-extrabold text-slate-900">Keteladanan & Kasih Sayang</h3>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3.5">
+                    <div className="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5 whitespace-nowrap shrink-0">
+                      <Check className="w-3.5 h-3.5 stroke-[3]" />
+                    </div>
+                    <div>
+                      <h4 className="text-xs sm:text-sm font-extrabold text-slate-900">Keteladanan Pendidik 24 Jam</h4>
+                      <p className="text-xs text-slate-600 mt-0.5 leading-relaxed">
+                        Para asatidz dan musyrif tinggal mendampingi santri secara langsung, menjadi contoh nyata dalam shalat berjamaah, adab bertutur kata, dan ibadah harian.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3.5">
+                    <div className="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5 whitespace-nowrap shrink-0">
+                      <Check className="w-3.5 h-3.5 stroke-[3]" />
+                    </div>
+                    <div>
+                      <h4 className="text-xs sm:text-sm font-extrabold text-slate-900">Pendekatan Dialogis & Penyadaran</h4>
+                      <p className="text-xs text-slate-600 mt-0.5 leading-relaxed">
+                        Setiap kekhilafan santri diarahkan melalui nasihat hikmah, konseling terarah, dan penanaman kesadaran iman tanpa melukai harga diri santri.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3.5">
+                    <div className="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5 whitespace-nowrap shrink-0">
+                      <Check className="w-3.5 h-3.5 stroke-[3]" />
+                    </div>
+                    <div>
+                      <h4 className="text-xs sm:text-sm font-extrabold text-slate-900">Mutlak Tanpa Sanksi Fisik</h4>
+                      <p className="text-xs text-slate-600 mt-0.5 leading-relaxed">
+                        Pesantren melarang keras hukuman fisik dalam bentuk apapun, meniadakan senioritas menghukum, serta mengharamkan caci maki yang melukai psikologis.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 pt-4 border-t border-slate-100 bg-emerald-50/50 -mx-8 -mb-8 p-6 rounded-b-3xl">
+                <p className="text-xs text-emerald-800 font-semibold leading-relaxed">
+                  Menjaga fitrah santri agar tumbuh menjadi pribadi yang percaya diri, mencintai Al-Qur'an, dan memiliki kesehatan mental yang prima.
+                </p>
+              </div>
+            </div>
+
+            {/* Right Card: Zero Tolerance Pelanggaran Berat */}
+            <div className="lg:col-span-6 bg-white rounded-3xl p-8 border border-slate-200 shadow-sm flex flex-col justify-between border-t-4 border-t-primary">
+              <div className="space-y-6">
+                <div className="flex items-center gap-3 pb-4 border-b border-slate-100">
+                  <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-primary flex items-center justify-center font-bold border border-emerald-200 shrink-0">
+                    <ShieldCheck className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <span className="text-[11px] font-extrabold uppercase tracking-wider text-primary">Disiplin & Integritas</span>
+                    <h3 className="text-lg sm:text-xl font-extrabold text-slate-900">Pencegahan & Tindakan Tegas</h3>
+                  </div>
+                </div>
+
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  {BRANDING.schoolName} berkomitmen penuh mencegah, mengantisipasi, dan menindak tegas pelanggaran berat demi ketentraman dan kesucian lingkungan belajar:
+                </p>
+
+                <div className="grid sm:grid-cols-2 gap-3 pt-1">
+                  {[
+                    "Bebas Rokok & Zat Terlarang",
+                    "Bebas Pacaran & Pergaulan Bebas",
+                    "Bebas Penyimpangan (LGBT)",
+                    "Bebas Perundungan (Bullying)",
+                    "Bebas Kekerasan & Perkelahian",
+                    "Bebas Pencurian & Gangguan Ketentraman"
+                  ].map((rule, idx) => (
+                    <div
+                      key={idx}
+                      className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center gap-2.5 text-xs font-bold text-slate-800"
+                    >
+                      <span className="w-5 h-5 rounded-full bg-emerald-50 text-primary flex items-center justify-center shrink-0">
+                        <ShieldCheck className="w-3 h-3" />
+                      </span>
+                      <span>{rule}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-6 pt-4 border-t border-slate-100 bg-emerald-50/50 -mx-8 -mb-8 p-6 rounded-b-3xl">
+                <p className="text-xs text-primary font-semibold leading-relaxed">
+                  Penegakan aturan dilakukan secara terukur dan edukatif tanpa sanksi fisik, demi melindungi seluruh santri dan menjaga kenyamanan wali santri.
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </Container>
+      </section>
+
+      {/* ─── 6. BOTTOM CTA (OMI ENTERPRISE BANNER) ─── */}
+      <section className="py-12">
+        <Container className="max-w-5xl mx-auto px-4">
+          <div className="rounded-3xl p-8 sm:p-12 text-center bg-gradient-to-br from-emerald-950 via-emerald-850 to-emerald-700 text-white shadow-xl border border-white/15 space-y-5">
+            <h3 className="text-2xl sm:text-3xl font-extrabold text-white">
+              Tertarik Bergabung dengan Keluarga Besar {BRANDING.schoolShortName}?
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-200 max-w-xl mx-auto font-normal leading-relaxed">
+              Daftarkan putra-putri Anda sekarang dan ikuti proses seleksi penerimaan santri baru Tahun Ajaran 2027/2028.
+            </p>
+            <div className="pt-2 flex flex-wrap justify-center gap-3">
+              <a
+                href="/daftar"
+                className="h-11 px-7 rounded-xl bg-white hover:bg-emerald-50 text-emerald-800 font-extrabold text-xs shadow-md transition-all inline-flex items-center gap-2"
+              >
+                <span>Daftar SPMB Online</span>
+                <ArrowRight className="w-4 h-4" />
+              </a>
+              <Link
+                href="/kontak"
+                className="h-11 px-7 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/25 font-extrabold text-xs transition-all inline-flex items-center"
+              >
+                <span>Hubungi Panitia Admisi</span>
+              </Link>
+            </div>
+          </div>
+        </Container>
+      </section>
+
     </main>
   );
 }
-

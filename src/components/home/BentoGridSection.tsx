@@ -36,7 +36,7 @@ export default function BentoGridSection() {
             className="md:col-span-2 lg:col-span-2 row-span-2 rounded-3xl overflow-hidden border border-slate-200/60 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.7),_0_2px_10px_rgba(0,0,0,0.04)] relative group bg-slate-900 hover:shadow-lg transition-all duration-300"
           >
             <Image
-              src="/images/masjid-utama-pesantren.png"
+              src="/images/campus-mosque-interior.webp"
               alt="Masjid Jami' Pesantren"
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -81,7 +81,7 @@ export default function BentoGridSection() {
               </p>
             </div>
             <div className="w-20 h-20 sm:w-28 sm:h-28 relative rounded-2xl overflow-hidden shrink-0 border border-slate-200">
-              <Image src="/images/kegiatan-belajar-akhwat.jpg" alt="Santri Belajar di Kelas" fill className="object-cover" />
+              <Image src="/images/campus-library-classroom.webp" alt="Ruang Kelas & Belajar" fill className="object-cover" />
             </div>
           </motion.div>
 

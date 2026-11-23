@@ -3,46 +3,49 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Container } from "@/components/layout/Container";
-import { CheckCircle2, ShieldCheck, Star, Users } from "lucide-react";
+import { CheckCircle2, ShieldCheck, Star, Users, BookOpen } from "lucide-react";
 import Image from "next/image";
 
 const FEATURES = [
   {
-    id: "kurikulum",
-    title: "Kurikulum Terintegrasi",
-    description: "Memadukan pendidikan pesantren salaf dengan kurikulum nasional. Santri menguasai ilmu agama yang shahih sekaligus unggul dalam sains dan teknologi.",
+    id: "bahasa-syari",
+    title: "Bahasa Arab Intensif & Syar'i",
+    description: "Bahasa Arab mendapat perhatian sangat intensif sebagai bahasa percakapan harian dan kunci memahami kitab turots. Dipadukan dengan tahfidz Al-Qur'an mutqin serta penguasaan akademik sains modern.",
+    icon: BookOpen,
+    points: [
+      "Bahasa Arab sangat intensif (Muhadatsah harian & Nahwu-Shorof)",
+      "Tahfidz Al-Qur'an mutqin kaidah tajwid bersanad",
+      "Pendalaman ilmu syar'i & turots bimbingan Sunnah",
+      "Pelajaran umum & sains tetap pintar dan berdaya saing"
+    ],
+    image: "/images/campus-library-classroom.webp"
+  },
+  {
+    id: "mendidik-tanpa-luka",
+    title: "Mendidik Tanpa Luka Pengasuhan",
+    description: "Pola pengasuhan rabbani yang mengutamakan keteladanan 24 jam para asatidz dan pendidik dengan kasih sayang tanpa sanksi fisik. Menjaga santri dari segala bentuk pelanggaran berat demi ketentraman dan kesehatan mental santri.",
     icon: ShieldCheck,
     points: [
-      "Tahfidz Al-Qur'an bersanad",
-      "Aqidah Ahlussunnah wal Jama'ah",
-      "Matematika & Sains modern",
-      "Program bahasa Arab & Inggris aktif"
+      "Keteladanan 24 jam asatidz & musyrif tinggal mendampingi",
+      "Zero Tolerance: bebas rokok, perundungan (bullying), pacaran, & LGBT",
+      "Penindakan tegas edukatif tanpa kekerasan & tanpa sanksi fisik",
+      "Penerapan akhlak mulia & ibadah harian sesuai Sunnah"
     ],
-    image: "/images/pembelajaran-kitab-turotz.webp" },
+    image: "/images/campus-quran-halaqah.webp"
+  },
   {
-    id: "pengasuhan",
-    title: "Pengasuhan Berbasis Keteladanan",
-    description: "Kami menerapkan sistem pendidikan tanpa kekerasan dan tanpa luka pengasuhan. Pendekatan holistik yang mengedepankan dialog dan teladan.",
+    id: "leadership-kemandirian",
+    title: "Leadership & Entrepreneurship",
+    description: "Menempa jiwa kepemimpinan yang amanah, kemandirian santri, dan kepekaan berwirausaha (entrepreneurship) berlandaskan etika Islam di dalam lingkungan pesantren yang asri dan representatif.",
     icon: Users,
     points: [
-      "Rasio musyrif dan santri ideal",
-      "Pendekatan persuasif dan dialogis",
-      "Konseling psikologi berkala",
-      "Pengembangan kecerdasan emosional"
+      "Penempaan kepemimpinan santri & kedisiplinan organisasi",
+      "Edukasi dasar entrepreneurship & etika muamalah syar'i",
+      "Lingkungan kampus asri, modern, & kondusif",
+      "Fasilitas ruang kelas multimedia, olahraga, & asrama representatif"
     ],
-    image: "/images/tahfidz.webp" },
-  {
-    id: "fasilitas",
-    title: "Fasilitas Modern & Nyaman",
-    description: "Lingkungan belajar yang asri dan representatif, mendukung konsentrasi santri dalam menghafal Al-Qur'an dan mengkaji ilmu syar'i.",
-    icon: Star,
-    points: [
-      "Ruang kelas ber-AC & Multimedia",
-      "Masjid jami' yang luas & nyaman",
-      "Asrama bersih standar hotel",
-      "Area olahraga lengkap"
-    ],
-    image: "/images/gedung-utama-dan-lapangan-basket.webp" }
+    image: "/images/campus-sports-facility.webp"
+  }
 ];
 
 export default function StickyFeatureSection() {
@@ -54,7 +57,7 @@ export default function StickyFeatureSection() {
         <div className="text-center max-w-3xl mx-auto mb-16 md:mb-20">
           <span className="section-label section-label-primary mb-4">Sistem Pendidikan</span>
           <h2 className="text-3xl md:text-5xl font-black mb-6">Mengapa Memilih Kami?</h2>
-          <p className="text-ink-600 text-lg">Platform pendidikan yang didesain untuk mencetak generasi Rabbani yang unggul dalam Imtaq dan Iptek.</p>
+          <p className="text-ink-600 text-lg">Platform pendidikan yang didesain untuk mencetak kader ummat yang hanif, solutif, dan progresif.</p>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-start">
@@ -66,17 +69,17 @@ export default function StickyFeatureSection() {
                 <button
                   key={feature.id}
                   onClick={() => setActiveFeature(i)}
-                  className={`text-left p-6 md:p-8 rounded-[2rem] transition-all duration-300 border border-transparent ${
+                  className={`text-left p-4 sm:p-6 md:p-8 rounded-[1.5rem] sm:rounded-[2rem] transition-all duration-300 border border-transparent ${
                     isActive 
-                      ? 'bg-white shadow-premium-lg border-primary-100 scale-[1.02]' 
+                      ? 'bg-white shadow-premium-lg border-primary-100 scale-[1.01] sm:scale-[1.02]' 
                       : 'hover:bg-white/60 hover:scale-[1.01]'
                   }`}
                 >
-                  <div className="flex items-center gap-4 mb-2">
-                    <div className={`w-12 h-12 shrink-0 rounded-2xl flex items-center justify-center transition-colors duration-300 ${isActive ? 'bg-primary-500 text-white shadow-primary-md' : 'bg-surface-200 text-ink-400'}`}>
-                      <feature.icon className="w-6 h-6" />
+                  <div className="flex items-center gap-3 sm:gap-4 mb-2">
+                    <div className={`w-10 h-10 sm:w-12 sm:h-12 shrink-0 rounded-2xl flex items-center justify-center transition-colors duration-300 ${isActive ? 'bg-primary-500 text-ink-950 shadow-md' : 'bg-surface-200 text-ink-600'}`}>
+                      <feature.icon className="w-5 h-5 sm:w-6 sm:h-6" />
                     </div>
-                    <h3 className={`text-xl md:text-2xl font-bold transition-colors duration-300 ${isActive ? 'text-primary-900' : 'text-ink-500'}`}>
+                    <h3 className={`text-lg sm:text-xl md:text-2xl font-bold transition-colors duration-300 ${isActive ? 'text-primary-900' : 'text-ink-500'}`}>
                       {feature.title}
                     </h3>
                   </div>
@@ -90,14 +93,14 @@ export default function StickyFeatureSection() {
                         transition={{ duration: 0.3, ease: "easeInOut" }}
                         className="overflow-hidden"
                       >
-                        <div className="pt-4 pl-16">
-                          <p className="text-ink-600 mb-6 leading-relaxed">
+                        <div className="pt-3 sm:pt-4 pl-2 sm:pl-16">
+                          <p className="text-ink-600 mb-5 sm:mb-6 text-sm sm:text-base leading-relaxed">
                             {feature.description}
                           </p>
-                          <ul className="space-y-3">
+                          <ul className="space-y-2.5 sm:space-y-3">
                             {feature.points.map((point, idx) => (
-                              <li key={idx} className="flex items-center gap-3">
-                                <CheckCircle2 className="w-5 h-5 text-primary-500 shrink-0" />
+                              <li key={idx} className="flex items-center gap-2.5 sm:gap-3 text-xs sm:text-sm">
+                                <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-primary-500 shrink-0" />
                                 <span className="font-medium text-ink-700">{point}</span>
                               </li>
                             ))}
@@ -112,7 +115,7 @@ export default function StickyFeatureSection() {
           </div>
 
           {/* Right Side: Sticky Visual */}
-          <div className="w-full lg:w-1/2 lg:sticky lg:top-32 h-[400px] md:h-[500px] lg:h-[600px] mt-8 lg:mt-0">
+          <div className="w-full lg:w-1/2 lg:sticky lg:top-32 h-[260px] sm:h-[380px] md:h-[500px] lg:h-[600px] mt-4 lg:mt-0">
             <div className="relative w-full h-full rounded-[2.5rem] border-[8px] border-white shadow-premium-2xl overflow-hidden bg-white">
               <AnimatePresence mode="wait">
                 <motion.div
@@ -130,13 +133,10 @@ export default function StickyFeatureSection() {
                     className="object-cover"
                     sizes="(max-width: 1024px) 100vw, 50vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary-950/40 to-transparent" />
+                  {/* No overlay — foto tampil jernih */}
                 </motion.div>
               </AnimatePresence>
             </div>
-            
-            {/* Decorative blobs */}
-            <div className="glow-blob glow-blob-primary w-64 h-64 -bottom-10 -right-10 opacity-30 z-[-1]" />
           </div>
         </div>
       </Container>
