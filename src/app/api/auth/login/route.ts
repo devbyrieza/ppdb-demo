@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { BRANDING } from "@/config/branding";
 import { getInstitutionType, isPutriInstitution } from "@/lib/utils/jenjang";
 import { comparePassword, hashPassword } from "@/lib/utils/password";
+import { isUsernameStandard, generateProfessionalUsername } from "@/lib/utils/username";
 import crypto from "crypto";
 
 export async function POST(request: NextRequest) {
@@ -309,6 +310,24 @@ export async function POST(request: NextRequest) {
         profile.plain_password === "2026#@" ||
         profile.plain_password === "Paas2026!" ||
         profile.plain_password === "PAAS2026!";
+
+      const usernameStandard = isUsernameStandard(profile.username);
+
+      // Wajib Intersept jika akun belum memiliki Username standar atau Kata Sandi masih default
+      if (!usernameStandard || isDefaultPassword) {
+        return NextResponse.json({
+          success: true,
+          require_account_setup: true,
+          profile_id: profile.id,
+          full_name: profile.full_name,
+          current_username: profile.username || "",
+          suggested_username: generateProfessionalUsername(profile.full_name),
+          needs_username: !usernameStandard,
+          needs_password: isDefaultPassword,
+          role: profile.role,
+          available_roles: secondaryRoles.length > 0 ? [...new Set([profile.role, ...secondaryRoles])] : undefined,
+        });
+      }
 
       // Single role — login normally
       const responseJson = NextResponse.json({

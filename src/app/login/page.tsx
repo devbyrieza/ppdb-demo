@@ -126,6 +126,26 @@ export default function LoginPage() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [selectingRole, setSelectingRole] = useState(false);
+
+  // Account setup state (mandatory setup for non-standard username / default password)
+  const [accountSetupData, setAccountSetupData] = useState<{
+    profile_id: string;
+    full_name: string;
+    current_username?: string;
+    suggested_username?: string;
+    needs_username: boolean;
+    needs_password: boolean;
+    role: string;
+    available_roles?: string[];
+    redirectTo?: string;
+  } | null>(null);
+
+  const [setupUsername, setSetupUsername] = useState("");
+  const [setupPassword, setSetupPassword] = useState("");
+  const [setupConfirmPassword, setSetupConfirmPassword] = useState("");
+  const [showSetupPassword, setShowSetupPassword] = useState(false);
+  const [submittingSetup, setSubmittingSetup] = useState(false);
+  const [setupError, setSetupError] = useState("");
   const [error, setError] = useState("");
 
   // Mandatory UX Rule: Modal Scroll Lock
@@ -207,6 +227,27 @@ export default function LoginPage() {
 
       setIsLoading(false);
 
+            // Account setup required (username missing/non-standard or password default)
+      if (data.require_account_setup) {
+        setAccountSetupData({
+          profile_id: data.profile_id,
+          full_name: data.full_name,
+          current_username: data.current_username,
+          suggested_username: data.suggested_username,
+          needs_username: data.needs_username,
+          needs_password: data.needs_password,
+          role: data.role,
+          available_roles: data.available_roles,
+          redirectTo: data.redirectTo,
+        });
+        setSetupUsername(data.suggested_username || data.current_username || "");
+        setSetupPassword("");
+        setSetupConfirmPassword("");
+        setSetupError("");
+        return;
+      }
+
+      // Multi-role: show role picker
       if (data.requires_role_selection) {
         setRoleSelectionData({
           profile_id: data.profile_id,
@@ -314,7 +355,129 @@ export default function LoginPage() {
 
           {/* Main Card */}
           <div className="bg-white/80 backdrop-blur-2xl rounded-[32px] p-6 sm:p-8 shadow-[0_24px_80px_rgba(0,0,0,0.07)] border border-white">
-            {roleSelectionData ? (
+            {accountSetupData ? (
+              <form onSubmit={handleSaveAccountSetup} className="space-y-5">
+                <div className="text-center mb-5">
+                  <div className="w-14 h-14 mx-auto rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 shadow-sm mb-3">
+                    <ShieldCheck className="w-7 h-7" />
+                  </div>
+                  <h3 className="text-lg font-black text-slate-900 tracking-tight">
+                    Lengkapi & Amankan Akun Anda
+                  </h3>
+                  <p className="text-xs text-slate-500 font-medium mt-1 leading-relaxed max-w-sm mx-auto">
+                    Ahlan wa Sahlan, <strong>{accountSetupData.full_name}</strong>. Sesuai standar keamanan pesantren, silakan tetapkan Username standar dan amankan kata sandi Anda.
+                  </p>
+                </div>
+
+                {setupError && (
+                  <div className="flex items-center gap-2.5 p-3.5 rounded-2xl bg-red-50 border border-red-100 text-xs font-bold text-red-600">
+                    <AlertCircle className="w-4 h-4 shrink-0" />
+                    <span>{setupError}</span>
+                  </div>
+                )}
+
+                {/* Field Username */}
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between ml-1">
+                    <label className="text-[10px] font-black text-slate-600 uppercase tracking-widest">
+                      Username Standar Pesantren <span className="text-red-500">*</span>
+                    </label>
+                    <span className="text-[10px] font-bold text-primary-600">
+                      namadepan.namabelakang
+                    </span>
+                  </div>
+                  <div className="relative">
+                    <IdCard className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                    <input
+                      type="text"
+                      required
+                      value={setupUsername}
+                      onChange={(e) => setSetupUsername(e.target.value.toLowerCase().replace(/\s+/g, "."))}
+                      placeholder="contoh: ahmad.zakaria"
+                      disabled={submittingSetup}
+                      className="w-full h-13 pl-12 pr-4 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-bold text-slate-800 placeholder:font-medium placeholder:text-slate-400 focus:bg-white focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none"
+                    />
+                  </div>
+                  <p className="text-[10.5px] text-slate-400 ml-1">
+                    Gunakan 4-30 huruf kecil, angka, titik (.) atau underscore (_). Tanpa spasi & tanpa gelar.
+                  </p>
+                </div>
+
+                {/* Field Password (jika needs_password) */}
+                {accountSetupData.needs_password && (
+                  <>
+                    <div className="space-y-1.5">
+                      <label className="block text-[10px] font-black text-slate-600 uppercase tracking-widest ml-1">
+                        Kata Sandi Baru yang Kuat <span className="text-red-500">*</span>
+                      </label>
+                      <div className="relative">
+                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                        <input
+                          type={showSetupPassword ? "text" : "password"}
+                          required
+                          value={setupPassword}
+                          onChange={(e) => setSetupPassword(e.target.value)}
+                          placeholder="Minimal 8 karakter unik"
+                          disabled={submittingSetup}
+                          className="w-full h-13 pl-12 pr-12 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-bold text-slate-800 placeholder:font-medium placeholder:text-slate-400 focus:bg-white focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowSetupPassword(!showSetupPassword)}
+                          className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1"
+                        >
+                          {showSetupPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                        </button>
+                      </div>
+                      <p className="text-[10.5px] text-slate-400 ml-1">
+                        Wajib kombinasi huruf besar, huruf kecil, angka, dan simbol (!@#$% dll).
+                      </p>
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <label className="block text-[10px] font-black text-slate-600 uppercase tracking-widest ml-1">
+                        Konfirmasi Kata Sandi Baru <span className="text-red-500">*</span>
+                      </label>
+                      <div className="relative">
+                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                        <input
+                          type={showSetupPassword ? "text" : "password"}
+                          required
+                          value={setupConfirmPassword}
+                          onChange={(e) => setSetupConfirmPassword(e.target.value)}
+                          placeholder="Ulangi kata sandi baru"
+                          disabled={submittingSetup}
+                          className="w-full h-13 pl-12 pr-4 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-bold text-slate-800 placeholder:font-medium placeholder:text-slate-400 focus:bg-white focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none"
+                        />
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={submittingSetup}
+                  className="w-full h-13 mt-2 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs tracking-wide flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20 hover:shadow-emerald-600/30 transition-all disabled:opacity-70"
+                >
+                  {submittingSetup ? (
+                    <><Loader2 className="w-4 h-4 animate-spin" /> <span>Menyimpan ke Database...</span></>
+                  ) : (
+                    <><span>Simpan Kredensial & Masuk</span> <ArrowRight className="w-4 h-4" /></>
+                  )}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAccountSetupData(null);
+                    setSetupError("");
+                  }}
+                  className="w-full text-center text-xs text-slate-500 hover:text-slate-800 font-bold flex items-center justify-center gap-2 cursor-pointer transition-colors pt-1"
+                >
+                  <ArrowLeft className="w-4 h-4" /> Batal / Gunakan akun lain
+                </button>
+              </form>
+            ) : roleSelectionData ? (
               <div className="space-y-4">
                  <div className="text-center mb-6">
                    <h3 className="text-xl font-black text-slate-900 tracking-tight">

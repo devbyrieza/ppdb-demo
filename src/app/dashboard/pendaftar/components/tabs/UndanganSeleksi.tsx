@@ -475,7 +475,7 @@ export default function UndanganSeleksiTab() {
             const Icon = GRUP_A_ICONS[key] || BookOpen;
             const linkHref =
               key === "akademik"
-                ? "/dashboard/pendaftar/ujian-online/akademik"
+                ? "/dashboard/pendaftar/ujian/cbt"
                 : key === "kepribadian"
                 ? "/dashboard/pendaftar/ujian-online/kepribadian"
                 : "/dashboard/pendaftar/ujian-online/kesiapan";
@@ -521,7 +521,7 @@ export default function UndanganSeleksiTab() {
                     href={linkHref}
                     className="w-full py-2.5 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl text-center text-xs transition-all shadow-md shadow-primary-600/20 flex items-center justify-center gap-1.5"
                   >
-                    <span>Mulai Kerjakan</span>
+                    <span>{key === "akademik" ? "Mulai Tes CBT (Kamera Online)" : "Mulai Kerjakan"}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 ) : (

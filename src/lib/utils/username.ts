@@ -222,3 +222,16 @@ export function validateUsernameFormat(raw?: string | null): UsernameValidationR
 
   return { isValid: true, normalized };
 }
+
+/**
+ * Mengecek apakah username memenuhi standar wajib sistem pesantren:
+ * - Tidak boleh null/kosong
+ * - Panjang 4 s.d. 30 karakter
+ * - Memenuhi validateUsernameFormat
+ */
+export function isUsernameStandard(raw?: string | null): boolean {
+  if (!raw || !raw.trim()) return false;
+  const res = validateUsernameFormat(raw);
+  return Boolean(res.isValid && res.normalized && res.normalized.length >= 4);
+}
+
