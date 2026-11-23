@@ -273,7 +273,7 @@ export default function AdminSidebar({
       text: "Anda akan diarahkan kembali ke halaman login.",
       icon: "question",
       showCancelButton: true,
-      confirmButtonColor: "#7c2d12", // Maroon 900
+      confirmButtonColor: "#9D174D", // Maroon 900
       cancelButtonColor: "#94a3b8", // Slate 400
       confirmButtonText: "Ya, Keluar",
       cancelButtonText: "Batal",
@@ -330,7 +330,7 @@ export default function AdminSidebar({
             Control Center
           </span>
         </div>
-        <div className="w-10 h-10 rounded-2xl bg-linear-to-br from-primary-700 to-primary-900 flex items-center justify-center text-white text-sm font-black shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary-200">
+        <div className="w-10 h-10 rounded-2xl bg-linear-to-br from-primary-700 to-primary-900 flex items-center justify-center text-white text-sm font-black shadow-2xl-200">
           {(adminName || "A").charAt(0)}
         </div>
       </div>
@@ -383,7 +383,7 @@ export default function AdminSidebar({
                     onClick={() => setSidebarOpen(false)}
                     className={`flex items-center justify-between px-4 py-4 rounded-2xl transition-all ${
                       item.isActive
-                        ? "bg-primary-700 text-white shadow-2xl shadow-primary/30  shadow-primary-200 font-bold"
+                        ? "bg-primary-700 text-white shadow-2xl    font-bold"
                         : "text-ink-500 hover:bg-ink-50 hover:text-primary-900"
                     }`}
                   >
@@ -442,12 +442,12 @@ export default function AdminSidebar({
       <aside data-sidebar="true" ref={desktopSidebarRef}
         className={`hidden lg:flex fixed inset-y-0 left-0 z-50 flex-col bg-white border-r border-ink-100 transition-all duration-500 ease-in-out overscroll-contain ${collapsed ? "w-24" : "w-72"}`}>
         {/* Logo & Branding Area */}
-        <div className="h-24 flex items-center px-5 md:px-8">
+        <div className="h-24 flex items-center px-4 md:px-6">
           <Link
             href="/dashboard/admin"
-            className="flex items-center gap-4 overflow-hidden group"
+            className="flex items-center gap-3 overflow-hidden group min-w-0"
           >
-            <div className="shrink-0 w-12 h-12 bg-white rounded-2xl flex items-center justify-center border border-ink-100 shadow-sm group-hover:rotate-6 transition-all duration-500">
+            <div className="shrink-0 w-11 h-11 bg-white rounded-2xl flex items-center justify-center border border-ink-100 shadow-sm group-hover:rotate-6 transition-all duration-500">
               <img
                 src={BRANDING.logoPath}
                 alt="Logo"
@@ -458,9 +458,9 @@ export default function AdminSidebar({
               <motion.div
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="whitespace-nowrap"
+                className="min-w-0 flex-1"
               >
-                <span className="font-black text-primary-950 text-lg uppercase tracking-tighter italic">
+                <span className="font-black text-primary-950 text-sm tracking-tight block uppercase leading-snug truncate">
                   {BRANDING.schoolShortName}
                 </span>
                 <span className="block text-[10px] text-primary-600/40 font-black uppercase tracking-[0.2em] -mt-1">
@@ -593,7 +593,7 @@ export default function AdminSidebar({
           <div
             className={`flex items-center gap-4 p-3 rounded-2xl transition-all group relative ${collapsed ? "justify-center" : "bg-white shadow-sm border border-ink-100"}`}
           >
-            <div className="shrink-0 w-10 h-10 rounded-2xl bg-linear-to-br from-primary-700 to-primary-900 flex items-center justify-center text-white font-black text-sm shadow-2xl shadow-primary/30  shadow-primary-100 ring-4 ring-white border border-primary-500/20">
+            <div className="shrink-0 w-10 h-10 rounded-2xl bg-linear-to-br from-primary-700 to-primary-900 flex items-center justify-center text-white font-black text-sm shadow-2xl-100 ring-4 ring-white border border-primary-500/20">
               {(adminName || "A").charAt(0)}
             </div>
             {!collapsed && (
@@ -648,7 +648,7 @@ export default function AdminSidebar({
             </button>
             <Link
               href="/"
-              className="px-5 md:px-8 py-3.5 bg-primary-950 text-white text-[11px] font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-primary-800 transition-all shadow-2xl shadow-primary/30  shadow-primary-950/20 active:scale-95"
+              className="px-5 md:px-8 py-3.5 bg-primary-950 text-white text-[11px] font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-primary-800 transition-all shadow-2xl active:scale-95"
             >
               Kunjungi Situs
             </Link>
@@ -656,7 +656,7 @@ export default function AdminSidebar({
         </header>
 
         {/* Main Page Content: Area di mana halaman Dashboard sebenarnya dirender */}
-        <div className="p-6 md:p-8 pt-24 lg:pt-8 max-w-[1600px] mx-auto animate-in fade-in slide-in-from-bottom-2 duration-500">
+        <div className="p-3.5 sm:p-6 md:p-8 pt-20 sm:pt-24 lg:pt-8 max-w-[1600px] mx-auto animate-in fade-in slide-in-from-bottom-2 duration-500">
           {children}
         </div>
       </main>
