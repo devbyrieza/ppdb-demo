@@ -438,7 +438,7 @@ export default function PengujiDashboardLayout({
             </header>
 
             {/* Content Area */}
-            <main className="flex-1 p-6 lg:p-6 md:p-10 pb-28 lg:pb-8">
+            <main className="flex-1 p-3.5 sm:p-6 md:p-10 pb-28 lg:pb-8">
               <div className="max-w-7xl mx-auto">
                 <AnimatePresence mode="wait">
                   <motion.div
