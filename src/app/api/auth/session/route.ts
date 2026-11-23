@@ -28,15 +28,26 @@ export async function GET(request: NextRequest) {
           select: { role: true, secondary_roles: true, full_name: true, email: true, username: true }
         });
         if (profile) {
-          availableRoles = [...new Set([profile.role, ...(profile.secondary_roles || [])])];
+          availableRoles = [...new Set([profile.role, ...(profile.secondary_roles || [])].filter(Boolean))];
 
           // Auto-sync live profile data from DB into session so roles are never stale
-          if (profile.role && session.role !== profile.role) {
+          // Auto-sync live profile data from DB into session.
+          // Only revert role to profile.role if the session's active role is NOT among allowed roles.
+          const currentRoleLower = (session.role || "").toLowerCase();
+          const isCurrentRoleAllowed = availableRoles.some(
+            (r) => r.toLowerCase() === currentRoleLower
+          );
+
+          if (!isCurrentRoleAllowed && profile.role) {
             updatedSession.role = profile.role;
             cookieNeedsUpdate = true;
           }
           if (profile.full_name && session.full_name !== profile.full_name) {
             updatedSession.full_name = profile.full_name;
+            cookieNeedsUpdate = true;
+          }
+          if (profile.username && session.username !== profile.username) {
+            updatedSession.username = profile.username;
             cookieNeedsUpdate = true;
           }
         }

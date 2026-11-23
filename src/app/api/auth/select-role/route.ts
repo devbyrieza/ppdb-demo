@@ -4,8 +4,20 @@ import { DASHBOARD_ROUTES, ROLE_LABELS, UserRole } from "@/lib/access-control";
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { profile_id, chosen_role } = body;
+    const body = await request.json().catch(() => ({}));
+    let { profile_id, chosen_role } = body;
+
+    // Resilient fallback: jika profile_id tidak dikirim dari UI, ambil dari cookie al_session
+    const sessionCookie = request.cookies.get("al_session");
+    let existingSession: Record<string, any> = {};
+    if (sessionCookie) {
+      try {
+        existingSession = JSON.parse(sessionCookie.value);
+        if (!profile_id && existingSession.id) {
+          profile_id = existingSession.id;
+        }
+      } catch {}
+    }
 
     if (!profile_id || !chosen_role) {
       return NextResponse.json(
@@ -47,6 +59,7 @@ export async function POST(request: NextRequest) {
     response.cookies.set(
       "al_session",
       JSON.stringify({
+        ...existingSession,
         role: chosen_role,
         id: profile.id,
         full_name: profile.full_name }),
