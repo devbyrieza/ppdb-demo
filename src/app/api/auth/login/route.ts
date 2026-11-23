@@ -312,14 +312,24 @@ export async function POST(request: NextRequest) {
         });
       }
 
+      // Penguji & pewawancara tidak diintersep wajib ganti password agar kelancaran ujian seleksi tidak terganggu
+      const isExaminerRole = [
+        "penguji",
+        "pewawancara",
+        "pewawancara_calsan",
+        "pewawancara_cawalsan",
+        "penguji_bahasa_arab",
+      ].includes((profile.role || "").toLowerCase());
+
       const isDefaultPassword =
-        profile.must_change_password === true ||
-        password === "2026#@" ||
-        password === "Paas2026!" ||
-        password === "PAAS2026!" ||
-        profile.plain_password === "2026#@" ||
-        profile.plain_password === "Paas2026!" ||
-        profile.plain_password === "PAAS2026!";
+        !isExaminerRole &&
+        (profile.must_change_password === true ||
+          password === "2026#@" ||
+          password === "Paas2026!" ||
+          password === "PAAS2026!" ||
+          profile.plain_password === "2026#@" ||
+          profile.plain_password === "Paas2026!" ||
+          profile.plain_password === "PAAS2026!");
 
       const usernameStandard = isUsernameStandard(profile.username);
 

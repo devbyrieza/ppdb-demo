@@ -304,6 +304,59 @@ export default function LoginPage() {
       setSelectingRole(false);
     }
   };
+  // Handle save account setup
+  const handleSaveAccountSetup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!accountSetupData) return;
+    setSetupError("");
+
+    if (accountSetupData.needs_username && !setupUsername.trim()) {
+      setSetupError("Username wajib diisi");
+      return;
+    }
+
+    if (accountSetupData.needs_password) {
+      if (!setupPassword) {
+        setSetupError("Kata sandi baru wajib diisi");
+        return;
+      }
+      if (setupPassword !== setupConfirmPassword) {
+        setSetupError("Konfirmasi kata sandi tidak cocok");
+        return;
+      }
+      if (setupPassword.length < 8) {
+        setSetupError("Kata sandi baru minimal 8 karakter");
+        return;
+      }
+      if (!/[A-Z]/.test(setupPassword) || !/[a-z]/.test(setupPassword) || !/\d/.test(setupPassword) || !/[!@#$%^&*(),.?":{}|<>-=_+]/.test(setupPassword)) {
+        setSetupError("Kata sandi harus mengandung kombinasi huruf besar, huruf kecil, angka, dan karakter khusus");
+        return;
+      }
+    }
+
+    setSubmittingSetup(true);
+    try {
+      const res = await fetch("/api/auth/setup-account", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          profile_id: accountSetupData.profile_id,
+          username: setupUsername.trim().toLowerCase(),
+          new_password: setupPassword || undefined,
+          chosen_role: accountSetupData.role,
+        }),
+      });
+
+      const resData = await res.json();
+      if (!res.ok) throw new Error(resData.error || "Gagal memperbarui kredensial akun");
+
+      window.location.href = resData.redirectTo || "/dashboard";
+    } catch (err: any) {
+      setSetupError(err.message);
+      setSubmittingSetup(false);
+    }
+  };
+
 
   return (
       <div className="min-h-dvh bg-slate-50 flex items-center justify-center p-4 sm:p-8 relative overflow-hidden font-sans">

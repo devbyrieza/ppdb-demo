@@ -113,13 +113,13 @@ export async function POST(request: NextRequest) {
     // 3. Update database
     const updateData: any = {
       username: cleanUsername,
+      must_change_password: false,
       updated_at: new Date(),
     };
 
     if (updatedPasswordHash) {
       updateData.password_hash = updatedPasswordHash;
       updateData.plain_password = new_password;
-      updateData.must_change_password = false;
     }
 
     const updatedProfile = await prisma.profile.update({
