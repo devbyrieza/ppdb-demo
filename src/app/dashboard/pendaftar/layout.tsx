@@ -468,7 +468,7 @@ export default function DashboardLayout({
                   <span>Keluar Akun</span>
                 </button>
                 <p className="text-[10px] text-center text-ink-600 mt-4">
-                  &copy; 2026 Ponpes {BRANDING.schoolName}
+                  &copy; 2026 {BRANDING.schoolName}
                 </p>
               </div>
             </div>
