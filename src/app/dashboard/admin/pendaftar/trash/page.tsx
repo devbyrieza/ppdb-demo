@@ -61,6 +61,9 @@ export default function TrashPage() {
   );
   const [isRestoring, setIsRestoring] = useState(false);
 
+  // Selection state for bulk permanent delete
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
   const fetchTrash = async () => {
     try {
       setLoading(true);
@@ -125,6 +128,148 @@ export default function TrashPage() {
     }
   };
 
+  const handleToggleSelect = (id: string) => {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+    );
+  };
+
+  const handleToggleSelectAll = () => {
+    const pageIds = data.map((d) => d.id);
+    const isAllSelected =
+      pageIds.length > 0 && pageIds.every((id) => selectedIds.includes(id));
+    if (isAllSelected) {
+      setSelectedIds((prev) => prev.filter((id) => !pageIds.includes(id)));
+    } else {
+      setSelectedIds((prev) => Array.from(new Set([...prev, ...pageIds])));
+    }
+  };
+
+  const executePermanentDelete = async (payload: {
+    ids?: string[];
+    all?: boolean;
+  }) => {
+    try {
+      Swal.fire({
+        title: "Menghapus Data...",
+        text: "Sedang memproses penghapusan permanen dari database",
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
+      const res = await fetch("/api/admin/pendaftar/trash", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const resData = await res.json();
+      if (!res.ok) {
+        throw new Error(resData.error || "Gagal menghapus data secara permanen");
+      }
+
+      setSelectedIds([]);
+      Swal.fire({
+        icon: "success",
+        title: "Berhasil Dihapus Permanen",
+        text: resData.message || "Data berhasil dihapus permanen dari sistem.",
+        confirmButtonColor: "#dc2626",
+      });
+      fetchTrash();
+    } catch (err: any) {
+      console.error("Error permanent delete:", err);
+      Swal.fire({
+        icon: "error",
+        title: "Gagal Menghapus",
+        text: err.message || "Terjadi kesalahan saat menghapus data",
+        confirmButtonColor: "#dc2626",
+      });
+    }
+  };
+
+  const handlePermanentDelete = async (item: DeletedPendaftar) => {
+    const result = await Swal.fire({
+      title: "Hapus Permanen?",
+      html: `
+        <div class="text-left text-xs text-stone-600 space-y-2.5">
+          <p>Apakah Anda yakin ingin menghapus data calon santri berikut secara <strong>PERMANEN</strong>?</p>
+          <div class="p-3 bg-red-50 rounded-xl border border-red-200 text-red-950 font-medium space-y-1">
+            <div><strong>Nama:</strong> ${toTitleCase(item.nama_lengkap)}</div>
+            <div><strong>No. Pendaftaran:</strong> <span class="font-mono text-red-700 font-bold">${item.nomor_pendaftaran}</span></div>
+            <div><strong>Jenjang:</strong> ${item.jenjang}</div>
+          </div>
+          <div class="p-2.5 bg-amber-50 rounded-xl border border-amber-300 text-amber-900 text-[11px] leading-relaxed">
+            ⚠️ <strong>PERINGATAN:</strong> Tindakan ini <u>TIDAK DAPAT DIBATALKAN</u>. Seluruh berkas dokumen, nilai ujian, riwayat pembayaran, dan data pendaftar akan dimusnahkan secara permanen dari server.
+          </div>
+        </div>
+      `,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Ya, Hapus Permanen",
+      cancelButtonText: "Batal",
+      confirmButtonColor: "#dc2626",
+      cancelButtonColor: "#6b7280",
+    });
+
+    if (result.isConfirmed) {
+      await executePermanentDelete({ ids: [item.id] });
+    }
+  };
+
+  const handleBulkPermanentDelete = async () => {
+    if (selectedIds.length === 0) return;
+
+    const result = await Swal.fire({
+      title: `Hapus Permanen ${selectedIds.length} Data?`,
+      html: `
+        <div class="text-left text-xs text-stone-600 space-y-2.5">
+          <p>Sebanyak <strong>${selectedIds.length} data pendaftar</strong> yang dipilih akan dihapus secara <strong>PERMANEN</strong> dari database.</p>
+          <div class="p-2.5 bg-amber-50 rounded-xl border border-amber-300 text-amber-900 text-[11px] leading-relaxed">
+            ⚠️ <strong>PERINGATAN:</strong> Tindakan ini <u>TIDAK DAPAT DIBATALKAN</u>. Semua data yang terpilih tidak akan dapat dipulihkan kembali.
+          </div>
+        </div>
+      `,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: `Ya, Hapus ${selectedIds.length} Data Permanen`,
+      cancelButtonText: "Batal",
+      confirmButtonColor: "#dc2626",
+      cancelButtonColor: "#6b7280",
+    });
+
+    if (result.isConfirmed) {
+      await executePermanentDelete({ ids: selectedIds });
+    }
+  };
+
+  const handleEmptyTrash = async () => {
+    if (pagination.total === 0) return;
+
+    const result = await Swal.fire({
+      title: "Kosongkan Semua Sampah?",
+      html: `
+        <div class="text-left text-xs text-stone-600 space-y-2.5">
+          <p>Apakah Anda yakin ingin mengosongkan seluruh isi folder sampah (<strong>${pagination.total} data</strong>)?</p>
+          <div class="p-2.5 bg-red-100 rounded-xl border border-red-300 text-red-950 text-[11px] font-semibold leading-relaxed">
+            🚨 <strong>PERINGATAN FATAL:</strong> SELURUH data pendaftar di folder sampah akan DIHAPUS PERMANEN secara total dari database dan TIDAK DAPAT dipulihkan lagi!
+          </div>
+        </div>
+      `,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Ya, Kosongkan Semua Sampah",
+      cancelButtonText: "Batal",
+      confirmButtonColor: "#dc2626",
+      cancelButtonColor: "#6b7280",
+    });
+
+    if (result.isConfirmed) {
+      await executePermanentDelete({ all: true });
+    }
+  };
+
   const toTitleCase = (str: string) => {
     if (!str) return "";
     return str.replace(
@@ -175,7 +320,7 @@ export default function TrashPage() {
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
             <div className="flex gap-2">
               <input
                 type="text"
@@ -208,9 +353,45 @@ export default function TrashPage() {
               <option value="MTs">MTs</option>
               <option value="IL">IL</option>
             </select>
+            <button
+              onClick={handleEmptyTrash}
+              disabled={pagination.total === 0 || loading}
+              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-red-600 hover:bg-red-700 active:scale-95 text-white rounded-[24px] text-sm font-bold transition-all shadow-md hover:shadow-lg disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
+              title="Hapus permanen semua data di folder sampah"
+            >
+              <Trash2 className="w-4 h-4" />
+              <span>Kosongkan Sampah</span>
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Bulk Action Bar */}
+      {selectedIds.length > 0 && (
+        <div className="bg-stone-900 text-white px-5 py-3.5 rounded-2xl shadow-xl flex flex-col sm:flex-row items-center justify-between gap-3 border border-stone-800 animate-in fade-in slide-in-from-top-2">
+          <div className="flex items-center gap-2.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse" />
+            <span className="text-sm font-semibold">
+              <strong className="text-red-400">{selectedIds.length}</strong> data dipilih
+            </span>
+          </div>
+          <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+            <button
+              onClick={() => setSelectedIds([])}
+              className="px-3 py-1.5 text-xs text-stone-300 hover:text-white transition-colors"
+            >
+              Batal Pilih
+            </button>
+            <button
+              onClick={handleBulkPermanentDelete}
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-red-600 hover:bg-red-700 active:scale-95 text-white rounded-xl text-xs font-bold transition-all shadow-md hover:shadow-lg"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              <span>Hapus Permanen Terpilih ({selectedIds.length})</span>
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Table */}
       <div className="bg-white rounded-[24px] shadow-2xl shadow-primary/30  shadow-primary/20 border-2 border-red-100 overflow-hidden">
@@ -235,6 +416,18 @@ export default function TrashPage() {
               <table className="w-full">
                 <thead className="bg-gradient-to-r from-red-50 to-rose-50 border-b-2 border-red-200">
                   <tr>
+                    <th className="px-3 py-3 w-10 text-center">
+                      <input
+                        type="checkbox"
+                        checked={
+                          data.length > 0 &&
+                          data.every((d) => selectedIds.includes(d.id))
+                        }
+                        onChange={handleToggleSelectAll}
+                        className="w-4 h-4 text-red-600 rounded border-stone-300 focus:ring-red-500 cursor-pointer"
+                        title="Pilih semua data pada halaman ini"
+                      />
+                    </th>
                     <th className="px-4 py-3 text-left text-xs font-bold text-red-900 uppercase tracking-wider">
                       No. Pendaftaran
                     </th>
@@ -259,8 +452,18 @@ export default function TrashPage() {
                   {data.map((item) => (
                     <tr
                       key={item.id}
-                      className="hover:bg-red-50/50 transition-colors"
+                      className={`hover:bg-red-50/50 transition-colors ${
+                        selectedIds.includes(item.id) ? "bg-red-50/70" : ""
+                      }`}
                     >
+                      <td className="px-3 py-3 text-center">
+                        <input
+                          type="checkbox"
+                          checked={selectedIds.includes(item.id)}
+                          onChange={() => handleToggleSelect(item.id)}
+                          className="w-4 h-4 text-red-600 rounded border-stone-300 focus:ring-red-500 cursor-pointer"
+                        />
+                      </td>
                       <td className="px-4 py-3 whitespace-nowrap">
                         <div className="flex items-center gap-2">
                           <Hash className="w-4 h-4 text-red-400" />
@@ -300,16 +503,27 @@ export default function TrashPage() {
                         </div>
                       </td>
                       <td className="px-4 py-3 whitespace-nowrap">
-                        <button
-                          onClick={() => {
-                            setRestoringItem(item);
-                            setIsRestoreModalOpen(true);
-                          }}
-                          className="inline-flex items-center gap-2 p-[16px_20px] bg-green-600 hover:bg-green-700 text-white rounded-[24px] text-sm font-bold transition-all shadow-sm hover:shadow-2xl shadow-primary/30  shadow-primary/20  shadow-primary/10"
-                        >
-                          <RotateCcw className="w-4 h-4" />
-                          <span>Restore</span>
-                        </button>
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => {
+                              setRestoringItem(item);
+                              setIsRestoreModalOpen(true);
+                            }}
+                            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-green-600 hover:bg-green-700 active:scale-95 text-white rounded-xl text-xs font-bold transition-all shadow-md hover:shadow-lg"
+                            title="Pulihkan data pendaftar ini"
+                          >
+                            <RotateCcw className="w-3.5 h-3.5" />
+                            <span>Restore</span>
+                          </button>
+                          <button
+                            onClick={() => handlePermanentDelete(item)}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-700 border border-red-300 hover:border-red-400 active:scale-95 rounded-xl text-xs font-bold transition-all shadow-2xs hover:shadow-xs"
+                            title="Hapus data ini secara permanen dari database"
+                          >
+                            <Trash2 className="w-3.5 h-3.5 text-red-600" />
+                            <span>Hapus Permanen</span>
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
