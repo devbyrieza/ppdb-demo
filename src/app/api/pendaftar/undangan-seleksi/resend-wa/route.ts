@@ -55,9 +55,10 @@ export async function POST(request: Request) {
     }
 
     // Ambil detail jadwal dan pastikan milik pendaftar ini
+    const realJadwalId = String(jadwal_id).split("__")[0];
     const jadwal = await prisma.jadwalUjian.findFirst({
       where: {
-        id: jadwal_id,
+        id: realJadwalId,
         pendaftar_id: pendaftar.id,
       },
       include: {

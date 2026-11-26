@@ -310,10 +310,19 @@ export async function GET(request: Request) {
 
     // 7. Build response
     
-    // Transform booked jadwal
-    const booked: any[] = bookedJadwal.map((j) => {
+    // Transform booked jadwal — expand 1 row into multiple entries if multiple examiners/categories are plotted on it
+    const CATEGORY_LABELS: Record<string, string> = {
+      QURAN: "Tes Bacaan Al-Qur'an",
+      W_SANTRI: "Wawancara Calon Santri",
+      W_ORTU: "Wawancara Calon Orang Tua/Wali Santri",
+      LISAN_ARAB: "Tes Lisan Bahasa Arab",
+      HAFALAN: "Tes Hafalan Al-Qur'an",
+    };
+
+    const booked: any[] = [];
+    for (const j of bookedJadwal) {
       const rawTitle = j.exam_session?.title || "Seleksi Santri Baru";
-      const cat = getExamCategory(rawTitle);
+      const baseCat = getExamCategory(rawTitle);
       const hasScoreQuran = j.nilai_ujian?.some((n: any) => {
         const q = n.detail_quran as any;
         return n.nilai_tes_quran != null || !!(q && typeof q === "object" && (q.rekomendasi || q.nama_penguji));
@@ -327,44 +336,70 @@ export async function GET(request: Request) {
         return n.nilai_wawancara_ortu != null || !!(c && typeof c === "object" && (c.rekomendasi || c.nama_penguji));
       });
 
-      const meetLink =
-        (cat === "QURAN" && (j.penguji_quran?.google_meet_link || (j as any).zoom_link_quran)) ||
-        (cat === "W_ORTU" && (j.penguji_ortu?.google_meet_link || (j as any).zoom_link_ortu)) ||
-        (cat === "W_SANTRI" && (j.penguji_santri?.google_meet_link || (j as any).zoom_link_santri)) ||
-        (cat === "LISAN_ARAB" && (j.penguji_arab?.google_meet_link || (j as any).zoom_link_arab)) ||
-        (cat === "HAFALAN" && (j.penguji_hafalan?.google_meet_link || (j as any).zoom_link_hafalan)) ||
-        j.google_meet_link ||
-        j.online_test_link ||
-        (j.exam_session?.location?.startsWith("http") ? j.exam_session.location : null) ||
-        j.exam_session?.creator?.google_meet_link ||
-        null;
+      const cats = new Set<string>();
+      if (baseCat !== "OTHER") cats.add(baseCat);
+      if (j.penguji_quran_id || j.penguji_hafalan_id) cats.add("QURAN");
+      if (j.penguji_santri_id) cats.add("W_SANTRI");
+      if (j.penguji_ortu_id) cats.add("W_ORTU");
+      if (j.penguji_arab_id) cats.add("LISAN_ARAB");
+      if (cats.size === 0) cats.add(baseCat);
 
-      return {
-        id: j.id,
-        jenis_ujian: sanitizeTitle(rawTitle),
-        category: cat,
-        tanggal_ujian: j.tanggal_ujian,
-        waktu_mulai: j.exam_session?.start_time || j.waktu_mulai_santri,
-        waktu_selesai: j.exam_session?.end_time || j.waktu_selesai_santri,
-        lokasi: j.exam_session?.location || j.tempat_santri,
-        keterangan: j.catatan || j.exam_session?.notes,
-        online_test_link: j.online_test_link,
-        meet_link: meetLink,
-        status_santri: hasScoreSantri ? "completed" : j.status_santri,
-        status_quran: hasScoreQuran ? "completed" : j.status_quran,
-        status_ortu: hasScoreOrtu ? "completed" : j.status_ortu };
-    });
+      let idx = 0;
+      for (const cat of cats) {
+        const meetLink =
+          (cat === "QURAN" && (j.penguji_quran?.google_meet_link || j.penguji_hafalan?.google_meet_link || (j as any).zoom_link_quran)) ||
+          (cat === "W_ORTU" && (j.penguji_ortu?.google_meet_link || (j as any).zoom_link_ortu)) ||
+          (cat === "W_SANTRI" && (j.penguji_santri?.google_meet_link || (j as any).zoom_link_santri)) ||
+          (cat === "LISAN_ARAB" && (j.penguji_arab?.google_meet_link || (j as any).zoom_link_arab)) ||
+          (cat === "HAFALAN" && (j.penguji_hafalan?.google_meet_link || (j as any).zoom_link_hafalan)) ||
+          j.google_meet_link ||
+          j.online_test_link ||
+          (j.exam_session?.location?.startsWith("http") ? j.exam_session.location : null) ||
+          j.exam_session?.creator?.google_meet_link ||
+          null;
 
-    
+        const isBase = cat === baseCat || idx === 0;
+        const title = cat === baseCat ? sanitizeTitle(rawTitle) : (CATEGORY_LABELS[cat] || sanitizeTitle(rawTitle));
+        const waktuMulai =
+          cat === "W_ORTU"
+            ? j.waktu_mulai_ortu || j.exam_session?.start_time || j.waktu_mulai_santri
+            : j.exam_session?.start_time || j.waktu_mulai_santri;
+        const waktuSelesai =
+          cat === "W_ORTU"
+            ? j.waktu_selesai_ortu || j.exam_session?.end_time || j.waktu_selesai_santri
+            : j.exam_session?.end_time || j.waktu_selesai_santri;
+        const lokasi =
+          cat === "W_ORTU"
+            ? j.tempat_ortu || j.exam_session?.location || j.tempat_santri
+            : j.exam_session?.location || j.tempat_santri;
+
+        booked.push({
+          id: isBase ? j.id : `${j.id}__${cat}`,
+          jenis_ujian: title,
+          category: cat,
+          tanggal_ujian: j.tanggal_ujian,
+          waktu_mulai: waktuMulai,
+          waktu_selesai: waktuSelesai,
+          lokasi,
+          keterangan: j.catatan || j.exam_session?.notes,
+          online_test_link: j.online_test_link,
+          meet_link: meetLink,
+          status_santri: hasScoreSantri ? "completed" : j.status_santri,
+          status_quran: hasScoreQuran ? "completed" : j.status_quran,
+          status_ortu: hasScoreOrtu ? "completed" : j.status_ortu,
+        });
+        idx++;
+      }
+    }
 
     // --- OFFLINE/MANUAL SCORE HANDLING ---
     // Jika admin sudah menginput nilai secara manual (offline) tanpa melalui booking jadwal,
     // kita perlu membuat entri "booked" sintetis agar UI pendaftar menunjukkan "Selesai".
     
     // Check if they have scores but NO booking
-    const hasQuranBooking = bookedJadwal.some(j => getExamCategory(j.exam_session?.title || "") === "QURAN");
-    const hasWawancaraSantriBooking = bookedJadwal.some(j => getExamCategory(j.exam_session?.title || "") === "W_SANTRI");
-    const hasWawancaraOrtuBooking = bookedJadwal.some(j => getExamCategory(j.exam_session?.title || "") === "W_ORTU");
+    const hasQuranBooking = booked.some((b) => b.category === "QURAN");
+    const hasWawancaraSantriBooking = booked.some((b) => b.category === "W_SANTRI");
+    const hasWawancaraOrtuBooking = booked.some((b) => b.category === "W_ORTU");
     
     // Look at nilaiUjian from earlier
     const userNilai = nilaiUjian.length > 0 ? nilaiUjian[0] : null;

@@ -89,20 +89,44 @@ export async function GET() {
         exam_session: true },
       orderBy: { created_at: "desc" } });
 
-    // Transform to match front-end expectation
-    const data = jadwal.map((item) => ({
-      id: item.id,
-      jenis_ujian: sanitizeTitle(
-        item.exam_session?.title || "Seleksi Santri Baru",
-      ),
-      category: getExamCategory(item.exam_session?.title || ""),
-      tanggal_ujian: item.tanggal_ujian,
-      waktu_mulai: item.exam_session?.start_time || item.waktu_mulai_santri,
-      waktu_selesai: item.exam_session?.end_time || item.waktu_selesai_santri,
-      lokasi: item.exam_session?.location || item.tempat_santri,
-      keterangan: item.catatan || item.exam_session?.notes,
-      online_test_link: item.online_test_link, // For Phase 1
-    }));
+    // Transform to match front-end expectation — expand multi-assigned examiners on 1 row
+    const CATEGORY_LABELS: Record<string, string> = {
+      QURAN: "Tes Bacaan Al-Qur'an",
+      W_SANTRI: "Wawancara Calon Santri",
+      W_ORTU: "Wawancara Calon Orang Tua/Wali Santri",
+      LISAN_ARAB: "Tes Lisan Bahasa Arab",
+      HAFALAN: "Tes Hafalan Al-Qur'an",
+    };
+
+    const data: any[] = [];
+    for (const item of jadwal) {
+      const rawTitle = item.exam_session?.title || "Seleksi Santri Baru";
+      const baseCat = getExamCategory(rawTitle);
+      const cats = new Set<string>();
+      if (baseCat !== "OTHER") cats.add(baseCat);
+      if (item.penguji_quran_id || item.penguji_hafalan_id) cats.add("QURAN");
+      if (item.penguji_santri_id) cats.add("W_SANTRI");
+      if (item.penguji_ortu_id) cats.add("W_ORTU");
+      if (item.penguji_arab_id) cats.add("LISAN_ARAB");
+      if (cats.size === 0) cats.add(baseCat);
+
+      let idx = 0;
+      for (const cat of cats) {
+        const isBase = cat === baseCat || idx === 0;
+        data.push({
+          id: isBase ? item.id : `${item.id}__${cat}`,
+          jenis_ujian: cat === baseCat ? sanitizeTitle(rawTitle) : (CATEGORY_LABELS[cat] || sanitizeTitle(rawTitle)),
+          category: cat,
+          tanggal_ujian: item.tanggal_ujian,
+          waktu_mulai: cat === "W_ORTU" ? item.waktu_mulai_ortu || item.exam_session?.start_time || item.waktu_mulai_santri : item.exam_session?.start_time || item.waktu_mulai_santri,
+          waktu_selesai: cat === "W_ORTU" ? item.waktu_selesai_ortu || item.exam_session?.end_time || item.waktu_selesai_santri : item.exam_session?.end_time || item.waktu_selesai_santri,
+          lokasi: cat === "W_ORTU" ? item.tempat_ortu || item.exam_session?.location || item.tempat_santri : item.exam_session?.location || item.tempat_santri,
+          keterangan: item.catatan || item.exam_session?.notes,
+          online_test_link: item.online_test_link, // For Phase 1
+        });
+        idx++;
+      }
+    }
 
     return NextResponse.json({ data });
   } catch (error: any) {
